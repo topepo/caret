@@ -1,0 +1,343 @@
+<!--begin.rcode results='hide', echo=FALSE, message=FALSE
+library(caret)
+library(proxy)
+
+hook_inline = knit_hooks$get('inline')
+knit_hooks$set(inline = function(x) {
+  if (is.character(x)) highr::hi_html(x) else hook_inline(x)
+  })
+opts_chunk$set(comment=NA)
+
+session <- paste(format(Sys.time(), "%a %b %d %Y"),
+                 "using caret version",
+                 packageDescription("caret")$Version,
+                 "and",
+                 R.Version()$version.string)
+
+    end.rcode-->
+<!--begin.rcode makeTags, results='hide', echo=FALSE, message=FALSE
+modFiles <- list.files("~/Code/caret/models/files", pattern = "\\.R$", full.names= TRUE)
+
+tags <- vector(mode = "list", length = length(modFiles))
+Classification <- Regression <- ClassProbs <- rep(NA, length = length(modFiles))
+
+for(i in seq(along = modFiles)){
+  source(modFiles[i])
+  tags[[i]] <- modelInfo$tags
+  Classification[i] <- ifelse("Classification" %in% modelInfo$type, 1, 0)
+  Regression[i] <- ifelse("Regression" %in% modelInfo$type, 1, 0)
+  ClassProbs[i] <- ifelse(is.null(modelInfo$prob), 0, 1)
+  names(tags)[i] <- paste(modelInfo$label, 
+                          " (", gsub("\\.R", "", basename(modFiles[i])),
+                          ")", sep = "")
+  
+  rm(modelInfo)
+  
+}
+tabs <- table(unlist(tags))
+tabs <- tabs[order(tolower(names(tabs)))]
+
+terms <- names(tabs)
+terms <- terms[terms != ""]
+dat <- matrix(0, ncol = length(terms), nrow = length(tags))
+colnames(dat) <- terms
+hasTag <- lapply(tags, function(x, y) which(y%in%x), y = terms)
+
+for(i in seq(along = hasTag)) {
+  dat[i, hasTag[[i]]] <- 1
+}
+dat <- cbind(Classification, Regression, dat)
+rownames(dat) <- names(tags)
+
+write.csv(dat, file = "tag_data.csv")
+
+D <- dist(dat, method = "Jaccard")
+Dm <- as.matrix(D)
+sim <- 1 - Dm
+
+grps <- rep(NA, nrow(sim))
+grps[dat[,"Classification"] == 1 & dat[,"Regression"] == 1] <- 3
+grps[dat[,"Classification"] == 0 & dat[,"Regression"] == 1] <- 1
+grps[dat[,"Classification"] == 1 & dat[,"Regression"] == 0] <- 2
+
+nodes <- paste('    {"name":"', rownames(sim), '","group":',
+               grps, "}", sep = "")
+nodes <- paste('  "nodes":[\n',
+               paste(nodes, collapse = ",\n"),
+               '\n  ],', sep = "")
+
+thresh <- 0.58
+binary <- sim >= thresh
+links <- NULL
+index <- 0
+for(i in 1:nrow(binary)){
+  for(j in i:ncol(binary)){
+    if(i != j) {
+      if(binary[i,j]) {
+        index <- index + 1
+        val <- round((sim[i,j]- thresh)*20, 2)
+        tmp <- paste('    {"source":', i - 1,
+                     ',"target":', j - 1,
+                     ',"value":', val, '}', sep = "")
+        links <- if(is.null(links)) tmp else c(links, tmp)
+        rm(tmp)
+      }
+      
+    }
+  }
+}
+links <- paste('  "links":[\n', 
+               paste(links, collapse = ",\n", sep = ""),
+               '\n  ]\n', sep = "")
+cat('{\n', nodes, links, '}', sep = "", file = "model_tags.json")
+    end.rcode-->
+   
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+    Design by Free CSS Templates
+    http://www.freecsstemplates.org
+    Released for free under a Creative Commons Attribution 2.5 License
+
+    Name       : Emerald 
+    Description: A two-column, fixed-width design with dark color scheme.
+    Version    : 1.0
+    Released   : 20120902
+
+  -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+<style type="text/css">.knitr.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+  font-weight: bold;
+  color: #FF0000;
+},
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0em 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage.left {
+  text-align: left;
+}
+.rimage.right {
+  text-align: right;
+}
+.rimage.center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+</style>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>The caret Package</title>
+    <link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+    <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="header-wrapper" class="container">
+	<div id="header" class="container">
+	  <div id="logo">
+	    <h1><a href="#">Models Clustered by Tag Similarity</a></h1>
+	  </div>
+          <!--
+	      <div id="menu">
+		<ul>
+		  <li class="current_page_item"><a href="#">Homepage</a></li>
+		  <li><a href="#">Blog</a></li>
+		  <li><a href="#">Photos</a></li>
+		  <li><a href="#">About</a></li>
+		  <li><a href="#">Contact</a></li>
+		</ul>
+	      </div>
+              -->
+	</div>
+	<div><img src="images/img03.png" width="1000" height="40" alt="" /></div>
+      </div>
+      <!-- end #header -->
+      <div id="page">
+	<div id="content">
+	
+  
+<p>This page shows a network diagram of all the models that can be accessed by  <a href="http://cran.r-project.org/web/packages/caret/index.html"><strong>caret's</strong></a> <span class="mx funCall">train</span> function. See the <a href="http://blog.revolutionanalytics.com/">Revolutions blog</a> for details about how this visualization was made. In summary, the package annotates each model by a set of tags (e.g. "Bagging", "L1 Regularization" etc.). Using this information we can cluster models that are similar to each other. </p>
+
+<p>Green circles are models only used for regression, blue is classification only and orange is &ldquo;dual use&rdquo;. Hover over a circle to get the model name and the model code used by the <a href="http://cran.r-project.org/web/packages/caret/index.html"><strong>caret</strong></a> package and refreshing the screen will re-configure the layout.
+</p>
+<br>
+
+  <script src="d3.v3.min.js"></script>
+<script>
+
+var width = 800, 
+    height = 800;
+
+var color = d3.scale.category10();
+
+var force = d3.layout.force()
+    .charge(-120)
+    .linkDistance(60)
+    .size([width, height]);
+
+var svg = d3.select("#content").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+d3.json("model_tags.json", function(error, graph) {
+  force
+      .nodes(graph.nodes)
+      .links(graph.links)
+      .start();
+
+  var link = svg.selectAll(".link")
+      .data(graph.links)
+    .enter().append("line")
+      .attr("class", "link")
+      .style("stroke-width", function(d) { return Math.sqrt(d.value); });
+
+  var node = svg.selectAll(".node")
+      .data(graph.nodes)
+    .enter().append("circle")
+      .attr("class", "node")
+      .attr("r", 9)
+      .style("fill", function(d) { return color(d.group); })
+      .call(force.drag);
+
+  node.append("title")
+      .text(function(d) { return d.name; });
+
+  force.on("tick", function() {
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+    node.attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+  });
+});
+
+</script>
+
+<br>
+
+<p>The data used to create this graph can be found <a  href="tag_data.csv">here</a>. You can also use it along with maximum dissimilarity sampling to pick out a diverse set of models. Suppose you would like to use a SVM model with a radial basis function on some regression data. Based on these tags, what other four models would constitute the most diverse set?
+</p>
+<!--begin.rcode dissim, tidy = FALSE
+tag <- read.csv("tag_data.csv", row.names = 1)
+tag <- as.matrix(tag)
+
+## Select only models for regression
+regModels <- tag[tag[,"Regression"] == 1,]
+
+all <- 1:nrow(regModels)
+## Seed the analysis with the SVM model
+start <- grep("(svmRadial)", rownames(regModels), fixed = TRUE)
+pool <- all[all != start]
+
+## Select 4 model models by maximizing the Jaccard
+## dissimilarity between sets of models
+nextMods <- maxDissim(regModels[start,,drop = FALSE], 
+                      regModels[pool, ], 
+                      method = "Jaccard",
+                      n = 4)
+
+rownames(regModels)[c(start, nextMods)]
+
+    end.rcode-->
+	</div>
+	<!-- end #content -->
+	<div id="sidebar">
+	  <ul>
+	    <li>
+	      <h2>Links</h2>
+	      <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
+	    </li>
+	    <li>
+	      <h2>Topics</h2>
+	      <ul>
+        <li><a href="index.html">Main Page</a></li>     
+  		<li><a href="datasets.html">Data Sets</a></li>
+                <li><a href="visualizations.html">Visualizations</a></li>
+                <li><a href="preprocess.html">Pre-Processing</a></li>
+                <li><a href="splitting.html">Data Splitting</a></li>
+                <li><a href="misc.html">Miscellaneous Model Functions</a></li>
+                <li><a href="training.html">Model Training and Tuning</a></li>
+                <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
+                <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
+                 <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
+                <li><a href="custom_models.html">Using Custom Models</a></li>
+                <li><a href="varimp.html">Variable Importance</a></li>
+                <li><a href="featureselection.html">Feature Selection</a></li>
+                <li><a href="other.html">Other Functions</a></li>
+                <li><a href="parallel.html">Parallel Processing</a></li>
+	      </ul>
+	    </li>
+	  </ul>
+	</div>
+	<!-- end #sidebar -->
+	<div style="clear: both;">&nbsp;</div>
+      </div>
+      <div class="container"><img src="images/img03.png" width="1000" height="40" alt="" /></div>
+      <!-- end #page -->
+    </div>
+    <div id="footer-content"></div>
+<!--begin.rcode echo = FALSE
+knit_hooks$set(inline = hook_inline)    
+    end.rcode--> 
+ 
+    <div id="footer">
+      <p>Created on <!--rinline I(session) -->.</p>
+    </div>
+    <!-- end #footer -->
+  </body>
+</html>

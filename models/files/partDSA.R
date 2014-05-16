@@ -1,0 +1,90 @@
+modelInfo <- list(label = "partDSA",
+                  library = "partDSA",
+                  type = c("Regression", "Classification"),
+                  parameters = data.frame(parameter = c('cut.off.growth', 'MPD'),
+                                          class = c("numeric", "numeric"),
+                                          label = c('Number of Terminal Partitions', 'Minimum Percent Difference')),
+                  grid = function(x, y, len = NULL)
+                    expand.grid(cut.off.growth = 1:len, MPD = .1),
+                  loop = function(grid) {   
+                    grid <- grid[order(grid$MPD, grid$cut.off.growth, decreasing = TRUE),, drop = FALSE]
+                    
+                    uniqueMPD <- unique(grid$MPD)
+                    
+                    loop <- data.frame(MPD = uniqueMPD)
+                    loop$cut.off.growth <- NA
+                    
+                    submodels <- vector(mode = "list", length = length(uniqueMPD))
+                    
+                    for(i in seq(along = uniqueMPD))
+                    {
+                      subCuts <- grid[grid$MPD == uniqueMPD[i],"cut.off.growth"]
+                      loop$cut.off.growth[loop$MPD == uniqueMPD[i]] <- subCuts[which.max(subCuts)]
+                      submodels[[i]] <- data.frame(cut.off.growth = subCuts[-which.max(subCuts)])
+                    }
+                    list(loop = loop, submodels = submodels)
+                  },
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
+                    partDSA(x, y,
+                            control = DSA.control(
+                              cut.off.growth = param$cut.off.growth,
+                              MPD = param$MPD,
+                              vfold = 1),
+                            ...),
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.null(submodels))
+                    {
+                      tmp <- c(modelFit$tuneValue$cut.off.growth, submodels$cut.off.growth)
+                      
+                      ## There are cases where the number of models saved by the function is
+                      ## less than the values in cut.off.growth (e.g. cut.off.growth = 1:10
+                      ## but partDSA only has 6 partitions). We will predict the "overage" using
+                      ## the largest model in the obejct (e.g. models 7:10 predicted by model 6).
+                      if(modelFit$problemType == "Classification")
+                      {
+                        out <- predict(modelFit, newdata)
+                        if(max(tmp) > length(out)) tmp[tmp > length(out)] <- length(out)
+                        out <- out[tmp]
+                      } else {
+                        out <- predict(modelFit, newdata)
+                        if(max(tmp) > ncol(out)) tmp[tmp > ncol(out)] <- ncol(out)
+                        out <- out[,tmp, drop= FALSE]
+                        out <- as.list(as.data.frame(out))
+                      }
+                    } else {
+                      
+                      ## use best Tune
+                      if(modelFit$problemType == "Classification")
+                      {
+                        out <- as.character(predict(modelFit, newdata)[[modelFit$cut.off.growth]])
+                      } else {
+                        out <- predict(modelFit, newdata)[,modelFit$cut.off.growth]
+                      }
+                    }
+                    out        
+                  },
+                  predictors = function(x, cuts = NULL, ...) {
+                    if(is.null(cuts) & !is.null(x$tuneValue))
+                    {
+                      cuts <- x$tuneValue$cut.off.growth[1]
+                    } else {
+                      if(is.null(cuts)) stop("please supply a value for 'cuts'")
+                    }
+                    tmp <- x$var.importance[,cuts]
+                    names(tmp)[which(tmp != 0)]
+                  },
+                  tags = "",
+                  prob = NULL,
+                  varImp = function(object, cuts = NULL, ...) {
+                    if(is.null(cuts) & !is.null(object$tuneValue))
+                    {
+                      cuts <- object$tuneValue$cut.off.growth[1]
+                    } else {
+                      if(is.null(cuts)) stop("please supply a value for 'cuts'")
+                    }
+                    tmp <- object$var.importance[,cuts]
+                    out <- data.frame(Overall = tmp)
+                    rownames(out) <- names(tmp)
+                    out
+                  },
+                  sort = function(x) x[order(x$cut.off.growth, x$MPD),])

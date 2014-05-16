@@ -1,0 +1,26 @@
+modelInfo <- list(label ="Polynomial Kernel Regularized Least Squares",
+                  library = c("KRLS"),
+                  loop = NULL,
+                  type = c('Regression'),
+                  parameters = data.frame(parameter = c('lambda', 'degree'),
+                                          class = c('numeric', 'numeric'),
+                                          label = c('Regularization Parameter', 'Polynomial Degree')),
+                  grid = function(x, y, len = NULL) 
+                    expand.grid(lambda = NA, degree = 1:3),
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    if(!(param$degree %in% 1:4)) stop("Degree should be either 1, 2, 3 or 4")
+                    krn <- switch(param$degree,
+                                  '1' = "linear",
+                                  '2' = "poly2",
+                                  '3' = "poly3",
+                                  '4' = "poly4")
+                    krls(x, y, lambda = if(is.na(param$lambda)) NULL else param$lambda,
+                         derivative = FALSE,
+                         whichkernel = krn, ...)
+                  },
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    predict(modelFit, newdata)$fit[,1]
+                  },
+                  tags = c("Kernel Method", "L2 Regularization", "Polynomial Model"),
+                  prob = NULL,
+                  sort = function(x) x[order(x$degree, x$lambda),])
