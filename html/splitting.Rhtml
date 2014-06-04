@@ -225,6 +225,7 @@ useOuterStrips(
                 <li><a href="featureselection.html">Feature Selection</a></li>
                 <li><a href="other.html">Other Functions</a></li>
                 <li><a href="parallel.html">Parallel Processing</a></li>
+                <li><a href="adaptive.html">Adaptive Resampling</a></li> 
 </ul>
   </li>
   </ul>
@@ -236,11 +237,11 @@ useOuterStrips(
   <!-- end #page -->
 </div>
   <div id="footer-content"></div>
-<!--begin.rcode echo = FALSE
-knit_hooks$set(inline = hook_inline)    
-    end.rcode-->   
   <div id="footer">
-  <p>Created on <Sexpr session>.</p>
+  <!--begin.rcode echo = FALSE
+    knit_hooks$set(inline = hook_inline)    
+    end.rcode-->   
+  <p>Created on <!--rinline I(session) -->.</p>
   </div>
   <!-- end #footer -->
 </body>

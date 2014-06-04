@@ -22,47 +22,48 @@ library(plyr)
 library(pls)
 
 
-setwd("~/Code/caret/html/")
+setwd("/Users/kuhna03/Code/github/caret/html")
 
 startPath <- getwd()
+dest <- "~/tmp/"
 
 ###########################################################################
 
 dPath <- paste("html_",format(Sys.time(), "%Y_%m_%d_%H_%M"), sep = "")
-dir.create(dPath)
+dir.create(file.path(dest, dPath))
                  
 rnwFiles <- c("index", "similarity", "datasets", "misc", "preprocess", "visualizations",
               "featureSelection", "training", "bytag", 
-              "varImp", "parallel", "splitting", "custom_models", "other")
+              "varImp", "parallel", "splitting", "custom_models", "other", "adaptive")
 
 rnwFiles <- paste(rnwFiles, ".Rhtml", sep = "")
-file.copy(rnwFiles, file.path(getwd(), dPath, rnwFiles))
+file.copy(rnwFiles, file.path(dest, dPath, rnwFiles))
 
 file.copy(list.files(pattern = "png$"),
-          file.path(getwd(), dPath, list.files(pattern = "png$")))
+          file.path(dest, dPath, list.files(pattern = "png$")))
 file.copy("TrainAlgo",
-          file.path(getwd(), dPath, "TrainAlgo"))
+          file.path(dest, dPath, "TrainAlgo"))
 file.copy("style.css",
-          file.path(getwd(), dPath, "style.css"))
+          file.path(dest, dPath, "style.css"))
 dir.create(file.path(dPath, "images"))
-file.copy(list.files(path = file.path(getwd(), "images"), 
+file.copy(list.files(path = file.path(dest, "images"), 
                      pattern = "^img", 
                      full.names = TRUE),
-          file.path(getwd(), dPath, "images"))
+          file.path(dest, dPath, "images"))
 file.copy("style.css",
-          file.path(getwd(), dPath, "style.css"))
+          file.path(dest, dPath, "style.css"))
 file.copy("parallel.pdf",
-          file.path(getwd(), dPath, "parallel.pdf"))
+          file.path(dest, dPath, "parallel.pdf"))
 file.copy("template.html",
-          file.path(getwd(), dPath, "template.html"))
+          file.path(dest, dPath, "template.html"))
 file.copy("MaxDissim.gif",
-          file.path(getwd(), dPath, "MaxDissim.gif"))
+          file.path(dest, dPath, "MaxDissim.gif"))
 file.copy("d3.v3.js",
-          file.path(getwd(), dPath, "d3.v3.js"))
+          file.path(dest, dPath, "d3.v3.js"))
 file.copy("d3.v3.min.js",
-          file.path(getwd(), dPath, "d3.v3.min.js"))
-setwd(file.path(getwd(), dPath))
-pathName <- paste(file.path(getwd()), "/", sep = "")
+          file.path(dest, dPath, "d3.v3.min.js"))
+setwd(file.path(dest, dPath))
+pathName <- paste(file.path(dest), "/", sep = "")
 
 ###########################################################################
 
@@ -77,7 +78,7 @@ for(fileIndex in seq(along = rnwFiles)) {
 }
 
 
-unlink(list.files(pattern = "Rnw$"))
+unlink(list.files(pattern = "Rhtml$"))
 
 
 
