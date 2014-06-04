@@ -1,0 +1,267 @@
+
+    
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+  <!--
+  Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Name       : Emerald 
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20120902
+
+-->
+  <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+<style type="text/css">.knitr.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+  font-weight: bold;
+	color: #FF0000;
+},
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0em 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage.left {
+  text-align: left;
+}
+.rimage.right {
+  text-align: right;
+}
+.rimage.center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}</style>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Discriminant Analysis Models</title>
+  <link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+  <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+  </head>
+  <body>
+  <div id="wrapper">
+  <div id="header-wrapper" class="container">
+  <div id="header" class="container">
+  <div id="logo">
+  <h1><a href="#">Discriminant Analysis Models</a></h1>
+</div>
+  <!--
+  <div id="menu">
+  <ul>
+  <li class="current_page_item"><a href="#">Homepage</a></li>
+<li><a href="#">Blog</a></li>
+<li><a href="#">Photos</a></li>
+<li><a href="#">About</a></li>
+<li><a href="#">Contact</a></li>
+</ul>
+  </div>
+  -->
+  </div>
+  <div><img src="images/img03.png" width="1000" height="40" alt="" /></div>
+  </div>
+  <!-- end #header -->
+<div id="page">
+  <div id="content">
+  
+<h1>Factor-Based Linear Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'RFlda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">q</span></code> (# Factors)</p>
+
+<h1>Heteroscedastic Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'hda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">gamma</span></code> (Gamma), <code><span class="mx arg">lambda</span></code> (Lambda), <code><span class="mx arg">newdim</span></code> (Dimension of the Discriminative Subspace)</p>
+
+<h1>High Dimensional Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'hdda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">threshold</span></code> (Threshold), <code><span class="mx arg">model</span></code> (Model Type)</p>
+
+<h1>Linear Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'lda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p>No Tuning Parameters</p>
+
+<h1>Linear Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'lda2'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">dimen</span></code> (#Discriminant Functions)</p>
+
+<h1>Linear Discriminant Analysis with Stepwise Feature Selection</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'stepLDA'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">maxvar</span></code> (Maximum #Variables), <code><span class="mx arg">direction</span></code> (Search Direction)</p>
+
+<h1>Maximum Uncertainty Linear Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'Mlda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p>No Tuning Parameters</p>
+
+<h1>Mixture Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'mda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">subclasses</span></code> (#Subclasses Per Class)</p>
+
+<h1>Penalized Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'pda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda</span></code> (Shrinkage Penalty Coefficient)</p>
+
+<h1>Penalized Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'pda2'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">df</span></code> (Degrees of Freedom)</p>
+
+<h1>Penalized Linear Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'PenalizedLDA'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda</span></code> (L1 Penalty), <code><span class="mx arg">K</span></code> (#Discriminant Functions)</p>
+
+<h1>Quadratic Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'qda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p>No Tuning Parameters</p>
+
+<h1>Quadratic Discriminant Analysis with Stepwise Feature Selection</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'stepQDA'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">maxvar</span></code> (Maximum #Variables), <code><span class="mx arg">direction</span></code> (Search Direction)</p>
+
+<h1>Regularized Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'rda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">gamma</span></code> (Gamma), <code><span class="mx arg">lambda</span></code> (Lambda)</p>
+
+<h1>Robust Linear Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'Linda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p>No Tuning Parameters</p>
+
+<h1>Robust Quadratic Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'QdaCov'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p>No Tuning Parameters</p>
+
+<h1>Robust Regularized Linear Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'rrlda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda</span></code> (Penalty Parameter), <code><span class="mx arg">hp</span></code> (Robustness Parameter), <code><span class="mx arg">penalty</span></code> (Penalty Type)</p>
+
+<h1>Shrinkage Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'sda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">diagonal</span></code> (Diagonalize), <code><span class="mx arg">lambda</span></code> (shrinkage)</p>
+
+<h1>Sparse Linear Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'sparseLDA'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">NumVars</span></code> (# Predictors), <code><span class="mx arg">lambda</span></code> (Lambda)</p>
+
+<h1>Sparse Mixture Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'smda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">NumVars</span></code> (# Predictors), <code><span class="mx arg">lambda</span></code> (Lambda), <code><span class="mx arg">R</span></code> (# Subclasses)</p>
+
+<h1>Stabilized Linear Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'slda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p>No Tuning Parameters</p>
+
+<h1>Stepwise Diagonal Linear Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'sddaLDA'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p>No Tuning Parameters</p>
+
+<h1>Stepwise Diagonal Quadratic Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'sddaQDA'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p>No Tuning Parameters</p>
+
+
+<div style="clear: both;">&nbsp;</div>
+  </div>
+  <!-- end #content -->
+<div id="sidebar">
+  <ul>
+  <li>
+  <h2>Links</h2>
+  <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
+  </li>
+  <li>
+  <h2>Topics</h2>
+  <ul>
+  		<li><a href="datasets.html">Data Sets</a></li>
+        <li><a href="visualizations.html">Visualizations</a></li>
+        <li><a href="preprocess.html">Pre-Processing</a></li>
+        <li><a href="splitting.html">Data Splitting</a></li>
+        <li><a href="misc.html">Miscellaneous Model Functions</a></li>
+        <li><a href="training.html">Model Training and Tuning</a></li>
+        <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
+        <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
+        <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
+        <li><a href="custom_models.html">Using Custom Models</a></li>
+        <li><a href="varimp.html">Variable Importance</a></li>
+        <li><a href="featureselection.html">Feature Selection</a></li>
+        <li><a href="other.html">Other Functions</a></li>
+        <li><a href="parallel.html">Parallel Processing</a></li>
+</ul>
+  </li>
+  </ul>
+  </div>
+  <!-- end #sidebar -->
+<div style="clear: both;">&nbsp;</div>
+  </div>
+  <div class="container"><img src="images/img03.png" width="1000" height="40" alt="" /></div>
+  <!-- end #page -->
+</div>
+  <div id="footer-content"></div>
+  <div id="footer">
+  <p>Created on <Sexpr session>.</p>
+  </div>
+  <!-- end #footer -->
+</body>
+  </html>

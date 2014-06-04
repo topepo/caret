@@ -1,0 +1,1216 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+  <!--
+  Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Name       : Emerald 
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20120902
+
+-->
+  <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+<style type="text/css">.knitr.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+},
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0em 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage.left {
+  text-align: left;
+}
+.rimage.right {
+  text-align: right;
+}
+.rimage.center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}</style>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Model Training and Tuning</title>
+  <link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+  <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+  </head>
+  <body>
+  <div id="wrapper">
+  <div id="header-wrapper" class="container">
+  <div id="header" class="container">
+  <div id="logo">
+  <h1><a href="#">Model Training and Tuning</a></h1>
+</div>
+  <!--
+  <div id="menu">
+  <ul>
+  <li class="current_page_item"><a href="#">Homepage</a></li>
+<li><a href="#">Blog</a></li>
+<li><a href="#">Photos</a></li>
+<li><a href="#">About</a></li>
+<li><a href="#">Contact</a></li>
+</ul>
+  </div>
+  -->
+  </div>
+  <div><img src="images/img03.png" width="1000" height="40" alt="" /></div>
+  </div>
+  <!-- end #header -->
+<div id="page">
+  <div id="content">
+
+<h1>Contents</h1>  
+<ul>
+  <li><a href="#builtin">Model Training and Parameter Tuning</a></li>
+  <ul>
+     <li><a href="#example">An Example</a></li>
+  </ul>   
+  <li><a href="#tune">Basic Parameter Tuning</a></li>
+  <li><a href="#custom">Customizing the Tuning Process</a></li> 
+  <ul>
+     <li><a href="#preproc">Pre-Processing Options</a></li>
+     <li><a href="#grids">Alternate Tuning Grids</a></li>
+     <li><a href="#plots">Plotting the Resampling Profile</a></li>
+     <li><a href="#control">The <span class="mx funCall">trainControl</span> Function</a></li>
+     <li><a href="#metrics">Alternate Performance Metrics</a></li>
+     <li><a href="#final">Choosing the Final Model</a></li>
+  </ul>   
+  <li><a href="#pred">Extracting Predictions and Class Probabilities</a></li> 
+  <li><a href="#resamp">Exploring and Comparing Resampling Distributions</a></li> 
+  <ul>
+     <li><a href="#within">Within-Model</a></li>
+     <li><a href="#between">Between-Models</a></li>
+  </ul>  
+  <li><a href="#notune">Fitting Models Without Parameter Tuning</a></li> 
+ </ul>   
+      
+<div id="builtin"></div> 
+<h1>Model Training and Parameter Tuning</h1>
+
+<p>
+The <a href="http://cran.r-project.org/web/packages/caret/index.html"><strong>caret</strong></a> package has several functions that attempt to streamline the model building and evaluation process. <p>
+</p> 
+<p>
+<p>
+The <span class="mx funCall">train</span> function can be used to
+  <ul>
+  <li> evaluate, using resampling, the effect of model tuning parameters on performance
+  <li> choose the "optimal" model across these parameters 
+  <li> estimate model performance from a training set
+  </ul>
+</p> 
+
+<p>
+First, a specific model must be chosen. Currently,
+150 are available using
+<a href="http://cran.r-project.org/web/packages/caret/index.html"><strong>caret</strong></a>; see <a href="modelList.html"><tt>train</tt> Model List</a> 
+or <a href="bytag.html"><tt>train</tt> Models By Tag</a> for details. 
+On these pages, there are lists of tuning parameters that can
+potentially be optimized.  
+<a href="custom_models.html">User-defined models</a> can also be created.
+</p>
+
+<p>The first step in tuning the model (line
+1 in the algorithm above is to choose a set of
+parameters to evaluate. For example, if fitting a Partial Least Squares
+(PLS) model, the number of PLS components to evaluate must be specified. 
+</p>
+
+<p><br><img width = 629 height =234 src="TrainAlgo.png"><br><br></p>
+
+<p>
+Once the model and tuning parameter values have been defined, the type
+of resampling should be also be specified. Currently, <i>k</i>-fold
+cross-validation (once or repeated), 
+leave-one-out cross-validation and bootstrap
+(simple estimation or the 632 rule) 
+resampling methods can be used by <span class="mx funCall">train</span>. After resampling,
+the process produces a profile of performance measures is available to
+guide the user as to which tuning parameter values should be
+chosen. By default, the function automatically chooses the tuning
+parameters associated with the best value, although different
+algorithms can be used (see details below below). 
+</p>
+
+<div id="example"></div> 
+<h2>An Example</h2>
+
+<p>The Sonar data are available in the <a href="http://cran.r-project.org/web/packages/mlbench/index.html"><strong>mlbench</strong></a> package. Here, we load the data:
+
+<div class="chunk" id="train_sonar1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(mlbench)</span>
+<span class="hl kwd">data</span><span class="hl std">(Sonar)</span>
+<span class="hl kwd">str</span><span class="hl std">(Sonar[,</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span><span class="hl std">])</span>
+</pre></div>
+<div class="output"><pre class="knitr r">'data.frame':	208 obs. of  10 variables:
+ $ V1 : num  0.02 0.0453 0.0262 0.01 0.0762 0.0286 0.0317 0.0519 0.0223 0.0164 ...
+ $ V2 : num  0.0371 0.0523 0.0582 0.0171 0.0666 0.0453 0.0956 0.0548 0.0375 0.0173 ...
+ $ V3 : num  0.0428 0.0843 0.1099 0.0623 0.0481 ...
+ $ V4 : num  0.0207 0.0689 0.1083 0.0205 0.0394 ...
+ $ V5 : num  0.0954 0.1183 0.0974 0.0205 0.059 ...
+ $ V6 : num  0.0986 0.2583 0.228 0.0368 0.0649 ...
+ $ V7 : num  0.154 0.216 0.243 0.11 0.121 ...
+ $ V8 : num  0.16 0.348 0.377 0.128 0.247 ...
+ $ V9 : num  0.3109 0.3337 0.5598 0.0598 0.3564 ...
+ $ V10: num  0.211 0.287 0.619 0.126 0.446 ...
+</pre></div>
+</div></div>
+
+
+<p>
+The function <span class="mx funCall">createDataPartition</span> can be used to create a stratified random sample of the data into training and test sets:
+</p>
+<div class="chunk" id="train_sonar2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(caret)</span>
+<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">998</span><span class="hl std">)</span>
+<span class="hl std">inTraining</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">createDataPartition</span><span class="hl std">(Sonar</span><span class="hl opt">$</span><span class="hl std">Class,</span> <span class="hl kwc">p</span> <span class="hl std">=</span> <span class="hl num">0.75</span><span class="hl std">,</span> <span class="hl kwc">list</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">)</span>
+<span class="hl std">training</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[inTraining, ]</span>
+<span class="hl std">testing</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[</span><span class="hl opt">-</span><span class="hl std">inTraining, ]</span>
+</pre></div>
+</div></div>
+
+
+<p>We will use these data illustrate functionality on this (and other) pages.
+</p>
+
+<div id="tune"></div> 
+<h1>Basic Parameter Tuning</h1>
+
+<p>
+By default, simple bootstrap resampling is used for line
+3 in the algorithm above. Others are availible, such
+as repeated <i>K</i>-fold cross-validation, leave-one-out etc. The function
+<span class="mx funCall">trainControl</span> can be used to specifiy the type of resampling:
+</p>
+<div class="chunk" id="train_control"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">fitControl</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">trainControl</span><span class="hl std">(</span><span class="hl com">## 10-fold CV</span>
+                           <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;repeatedcv&quot;</span><span class="hl std">,</span>
+                           <span class="hl kwc">number</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">,</span>
+                           <span class="hl com">## repeated ten times</span>
+                           <span class="hl kwc">repeats</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">)</span>
+</pre></div>
+</div></div>
+
+<p>
+More information about <span class="mx funCall">trainControl</span> is given in  <a href="#custom">a section below</a>.
+</p>
+
+<p>The first two arguments to <span class="mx funCall">train</span> are the predictor and
+outcome data objects, respectively. The third argument,
+<span class="mx arg">method</span>, specifies the type of model (see <a href="modelList.html"><tt>train</tt> Model List</a> 
+or <a href="bytag.html"><tt>train</tt> Models By Tag</a>). 
+To illustrate, we will fit a boosted tree model via the <a href="http://cran.r-project.org/web/packages/gbm/index.html"><strong>gbm</strong></a>
+package. The basic syntax for fitting this model using repeated
+cross-validation is shown below:
+</p>
+
+
+<div class="chunk" id="train_gbm1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
+<span class="hl std">gbmFit1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= training,</span>
+                 <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;gbm&quot;</span><span class="hl std">,</span>
+                 <span class="hl kwc">trControl</span> <span class="hl std">= fitControl,</span>
+                 <span class="hl com">## This last option is actually one</span>
+                 <span class="hl com">## for gbm() that passes through</span>
+                 <span class="hl kwc">verbose</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">)</span>
+<span class="hl std">gbmFit1</span>
+</pre></div>
+<div class="output"><pre class="knitr r">Stochastic Gradient Boosting 
+
+157 samples
+ 60 predictors
+  2 classes: 'M', 'R' 
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 10 times) 
+
+Summary of sample sizes: 142, 142, 140, 142, 142, 141, ... 
+
+Resampling results across tuning parameters:
+
+  interaction.depth  n.trees  Accuracy  Kappa  Accuracy SD  Kappa SD
+  1                  50       0.8       0.5    0.1          0.2     
+  1                  100      0.8       0.6    0.1          0.2     
+  1                  200      0.8       0.6    0.09         0.2     
+  2                  50       0.8       0.6    0.1          0.2     
+  2                  100      0.8       0.6    0.09         0.2     
+  2                  200      0.8       0.6    0.1          0.2     
+  3                  50       0.8       0.6    0.09         0.2     
+  3                  100      0.8       0.6    0.09         0.2     
+  3                  200      0.8       0.6    0.08         0.2     
+
+Tuning parameter 'shrinkage' was held constant at a value of 0.1
+Accuracy was used to select the optimal model using  the largest value.
+The final values used for the model were n.trees = 150, interaction.depth = 3 and shrinkage = 0.1. 
+</pre></div>
+</div></div>
+
+
+<p>
+For a gradient boosting machine (GBM) model, there are three main
+tuning parameters:
+  <ul>
+  <li> number of iterations, i.e. trees,  (called <span class="mx arg">n.trees</span> in the
+  <span class="mx funCall">gbm</span> function)
+  <li> complexity of the tree, called <span class="mx arg">interaction.depth</span>
+  <li> learning rate: how quickly the algorithm adapts, called
+  <span class="mx arg">shrinkage</span> 
+  </ul>
+</p>  
+<p>
+The default values tested for this model are shown in the first two
+columns (<span class="mx arg">shrinkage</span> is not shown beause the grid set of
+candidate models all use a value of 0.1 for this tuning parameter). 
+The column labeled "<code>Accuracy</code>" is the overall agreement rate
+averaged over cross-validation iterations. The agreement standard
+deviation is also calculated from the cross-validation results. The
+column "<code>Kappa</code>" is Cohen's (unweighted) Kappa statistic
+averaged across the resampling results. <span class="mx funCall">train</span> works with
+specific models (see <a href="modelList.html"><tt>train</tt> Model List</a> 
+or <a href="bytag.html"><tt>train</tt> Models By Tag</a>). 
+For these models, <span class="mx funCall">train</span> can automatically
+create a grid of tuning parameters. By default, if <i>p</i> is the number
+of tuning parameters, the grid size is <i>3^p</i>. As another example, regularized
+discriminant analysis (RDA) models have two  parameters
+(<span class="mx arg">gamma</span> and <span class="mx arg">lambda</span>), both of which lie on [0,
+1]. The default training grid would produce nine combinations in this
+two-dimensional space. 
+</p>
+
+<p>There are several <a href="notes.html">notes</a> regarding specific model behaviors 
+for <span class="mx funCall">train</span>. There is additional functionality in <span class="mx funCall">train</span> that is described in the next section.
+</p>
+
+<div id="custom"></div> 
+<h1>Customizing the Tuning Process</h1>
+
+<p>
+There are a few ways to customize the process of selecting
+tuning/complexity parameters and building the final model.
+</p>
+
+<div id="preproc"></div> 
+<h2>Pre-Processing Options</h2>
+
+<p>
+As previously mentioned,<span class="mx funCall">train</span> can pre-process the data in
+various ways prior to model fitting. The function
+<span class="mx funCall">preProcess</span> is automatically used. This function can be used
+for centering and scaling, imputation (see details below),
+applying the spatial sign transformation and feature extraction via
+principal component analysis or independent component
+analysis. 
+</p>
+<p>
+To specify what pre-processing should occur, the <span class="mx funCall">train</span> function has an argument called <span class="mx arg">preProcess</span>. This argument takes a character string of methods that would normally be passed to the <span class="mx arg">method</span> argument of the <a href="preprocess.html"><span class="mx funCall">preProcess</span> function</a>. Additional options to the <span class="mx funCall">preProcess</span> function can be passed
+via the <span class="mx funCall">trainControl</span> function. 
+</p>
+<p>
+These processing steps would be applied during any predictions
+generated using <span class="mx funCall">predict.train</span>, <span class="mx funCall">extractPrediction</span> or
+<span class="mx funCall">extractProbs</span> (see details later in this document). The
+pre-processing would <b>not</b> be applied to predictions that
+directly use the <code>object$finalModel</code> object.  
+</p>
+<p>
+For imputation, there are three methods currently implemented:
+</p>
+
+  <ul>
+  <li> <i>k</i>-nearest neighbors takes a sample with missing values and
+  finds the <i>k</i> closest samples in the training set. The average of
+  the <i>k</i> training set values for that predictor are used as a
+  substitute for the original data. When calculating the distances to
+  the training set samples, the predictors used in the calculation are
+  the ones with no missing values for that sample and no missing
+  values in the training set.</li>
+  <li> another approach is to fit a bagged tree model for each
+  predictor using the training set samples. This is usually a fairly
+  accurate model and can handle missing values. When a predictor for a
+  sample requires imputation, the values for the other predictors are
+  fed through the bagged tree and the prediction is used as the new
+  value. This model can have significant computational cost.</li>
+  <li> the median of the predictor's training set values can be used
+  to estimate the missing data.</li>  
+  </ul>
+<p>
+If there are missing values in the training set, PCA and ICA models
+only use complete samples.
+</p>
+
+<div id="grids"></div> 
+<h2>Alternate Tuning Grids</h2>
+<p>
+The tuning parameter grid can be specified by the user. The argument
+<span class="mx arg">tuneGrid</span> can take a data frame with columns for each tuning parameter. The column names should be the same as the fitting function's arguments. For the previously mentioned RDA example, the names would be
+<code>gamma</code> and <code>lambda</code>. <span class="mx funCall">train</span> will tune the
+model over each combination of values in the rows. 
+</p>
+<p>
+For the boosted tree model, we can fix the learning rate and evaluate more than three values of
+<span class="mx arg">n.trees</span>: 
+</p>
+
+<div class="chunk" id="train_gbm2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">gbmGrid</span> <span class="hl kwb">&lt;-</span>  <span class="hl kwd">expand.grid</span><span class="hl std">(</span><span class="hl kwc">interaction.depth</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">5</span><span class="hl std">,</span> <span class="hl num">9</span><span class="hl std">),</span>
+                        <span class="hl kwc">n.trees</span> <span class="hl std">= (</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">30</span><span class="hl std">)</span><span class="hl opt">*</span><span class="hl num">50</span><span class="hl std">,</span>
+                        <span class="hl kwc">shrinkage</span> <span class="hl std">=</span> <span class="hl num">0.1</span><span class="hl std">)</span>
+<span class="hl kwd">nrow</span><span class="hl std">(gbmGrid)</span>
+<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
+<span class="hl std">gbmFit2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= training,</span>
+                 <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;gbm&quot;</span><span class="hl std">,</span>
+                 <span class="hl kwc">trControl</span> <span class="hl std">= fitControl,</span>
+                 <span class="hl kwc">verbose</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">,</span>
+                 <span class="hl com">## Now specify the exact models </span>
+                 <span class="hl com">## to evaludate:</span>
+                 <span class="hl kwc">tuneGrid</span> <span class="hl std">= gbmGrid)</span>
+<span class="hl std">gbmFit2</span>
+</pre></div>
+</div></div>
+
+<div class="chunk" id="train_gbm2_print"><div class="rcode"><div class="output"><pre class="knitr r"><pre>
+</pre></div>
+<div class="output"><pre class="knitr r">Stochastic Gradient Boosting 
+
+157 samples
+ 60 predictors
+  2 classes: 'M', 'R' 
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 10 times) 
+
+Summary of sample sizes: 142, 142, 140, 142, 142, 141, ... 
+
+Resampling results across tuning parameters:
+
+  interaction.depth  n.trees  Accuracy  Kappa  Accuracy SD  Kappa SD
+  1                  50       0.77      0.53   0.1          0.2     
+  1                  100      0.78      0.56   0.095        0.19    
+  1                  150      0.79      0.58   0.094        0.19    
+  1                  200      0.79      0.58   0.094        0.19    
+  :                   :        :         :      :            :
+  9                  1200     0.82      0.64   0.092        0.19    
+  9                  1200     0.82      0.64   0.09         0.18    
+  9                  1300     0.83      0.65   0.088        0.18    
+  9                  1400     0.82      0.64   0.092        0.19    
+  9                  1400     0.82      0.63   0.095        0.19    
+  9                  1400     0.82      0.63   0.092        0.19    
+  9                  1500     0.82      0.63   0.093        0.19    
+
+Tuning parameter 'shrinkage' was held constant at a value of 0.1
+Accuracy was used to select the optimal model using  the largest value.
+The final values used for the model were n.trees = 1400, interaction.depth = 5 and shrinkage = 0.1. 
+</pre></div>
+<div class="output"><pre class="knitr r"></pre>
+</pre></div>
+</div></div>
+
+
+<div id="plots"></div> 
+<h2>Plotting the Resampling Profile</h2>
+
+<p>The <span class="mx funCall">plot</span> function can be used to examine the relationship between the 
+estimates of performance and the tuning parameters. For example, a simple invokation of 
+the function shows the results for the first performance measure:
+</p>
+
+
+<div class="chunk" id="train_plot1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">trellis.par.set</span><span class="hl std">(</span><span class="hl kwd">caretTheme</span><span class="hl std">())</span>
+<span class="hl kwd">plot</span><span class="hl std">(gbmFit2)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/train_plot1.png" title="plot of chunk train_plot1" alt="plot of chunk train_plot1" class="plot" /></div></div>
+
+    
+<p>Other performance metrics can be shown using the <span class="mx arg">metric</span> option:
+
+
+<div class="chunk" id="train_plot2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">trellis.par.set</span><span class="hl std">(</span><span class="hl kwd">caretTheme</span><span class="hl std">())</span>
+<span class="hl kwd">plot</span><span class="hl std">(gbmFit2,</span> <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;Kappa&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/train_plot2.png" title="plot of chunk train_plot2" alt="plot of chunk train_plot2" class="plot" /></div></div>
+
+
+<p>Other types of plot are also available. See <code>?plot.train</code> for more details.
+The code below shows a heatmap of the results:
+</p>
+
+
+<div class="chunk" id="train_plot3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">trellis.par.set</span><span class="hl std">(</span><span class="hl kwd">caretTheme</span><span class="hl std">())</span>
+<span class="hl kwd">plot</span><span class="hl std">(gbmFit2,</span> <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;Kappa&quot;</span><span class="hl std">,</span> <span class="hl kwc">plotType</span> <span class="hl std">=</span> <span class="hl str">&quot;level&quot;</span><span class="hl std">,</span>
+     <span class="hl kwc">scales</span> <span class="hl std">=</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">=</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">rot</span> <span class="hl std">=</span> <span class="hl num">90</span><span class="hl std">)))</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/train_plot3.png" title="plot of chunk train_plot3" alt="plot of chunk train_plot3" class="plot" /></div></div>
+
+
+    
+<p>A <span class="mx funCall">ggplot</span> method can also be used:</p>
+
+<div class="chunk" id="train_ggplot1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">ggplot</span><span class="hl std">(gbmFit2)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/train_ggplot1.png" title="plot of chunk train_ggplot1" alt="plot of chunk train_ggplot1" class="plot" /></div></div>
+
+
+
+<p>There are also plot functions that show more detailed representations of the 
+resampled estimates. See <code>?xyplot.train</code> for more details.
+</p>
+<p>
+From these plots, a different set of tuning parameters may be desired. To change the 
+final values without starting the whole process again, the <span class="mx funCall">update.train</span>
+can be used to refit the final model. See <code>?update.train</code>
+</p>
+
+<div id="control"></div> 
+<h2>The <span class="mx funCall">trainControl</span> Function</h2>
+
+<p>
+The function <span class="mx funCall">trainControl</span> generates parameters that further
+control how models are created, with possible values: 
+</p>
+<ul>
+ <li> <span class="mx arg">method</span>: The resampling method: <tt><span class="hl str">&quot;boot&quot;</span></tt>,  <tt><span class="hl str">&quot;cv&quot;</span></tt>, <tt><span class="hl str">&quot;LOOCV&quot;</span></tt>, <tt><span class="hl str">&quot;LGOCV&quot;</span></tt>, <tt><span class="hl str">&quot;repeatedcv&quot;</span></tt>, <tt><span class="hl str">&quot;timeslice&quot;</span></tt>, <tt><span class="hl str">&quot;none&quot;</span></tt> and <tt><span class="hl str">&quot;oob&quot;</span></tt>. 
+ The
+  last value, out-of-bag estimates, can only be used by random
+  forest, bagged trees, bagged earth, bagged flexible discriminant
+  analysis, or conditional tree forest models. GBM models are not
+  included (the <a href="http://cran.r-project.org/web/packages/gbm/index.html"><strong>gbm</strong></a> package maintainer has indicated that
+  it would not be a good idea to choose tuning parameter values
+  based on the model OOB error estimates with boosted trees). Also,
+  for leave-one-out cross-validation, no uncertainty estimates
+  are given for the resampled performance measures.  </li>
+ <li> <span class="mx arg">number</span> and <span class="mx arg">repeats</span>: <span class="mx arg">number</span> controls with the 
+  number of folds in <i>K</i>-fold cross-validation or number of
+  resampling iterations for bootstrapping and leave-group-out
+  cross-validation. <span class="mx arg">repeats</span> applied only to repeated  
+  <i>K</i>-fold cross-validation. Suppose that 
+  <span class="mx arg">method</span><tt> = <span class="hl str">&quot;repeatedcv&quot;</span></tt>,
+  <span class="mx arg">number</span><tt> = <span class="hl num">10</span></tt> and
+  <span class="mx arg">repeats</span><tt> = <span class="hl num">3</span></tt>,then three separate
+  10-fold cross-validations are used as the resampling scheme. </li>
+ <li> <span class="mx arg">verboseIter</span>: A logical for printing a training log. </li>
+ <li> <span class="mx arg">returnData</span>: A logical for saving the data into a slot
+  called <code>trainingData</code>.  </li>
+ <li> <span class="mx arg">p</span>: For leave-group out cross-validation: the training
+  percentage  </li>
+  <li>For <span class="mx arg">method</span><tt> = <span class="hl str">&quot;timeslice&quot;</span></tt>, <span class="mx funCall">trainControl</span> has options <span class="mx arg">initialWindow</span>, <span class="mx arg">horizon</span> and <span class="mx arg">fixedWindow</span> that govern how <a href="splitting.html">cross-validation can be used for time series data. </a> 
+  <li> <span class="mx arg">classProbs</span>: a logical value determining whether
+  class probabilities should be computed for held-out samples
+  during resample.  </li>
+ <li> <span class="mx arg">index</span> and <span class="mx arg">indexOut</span>: optional lists with elements for each resampling
+  iteration. Each list element is the sample rows used for training
+  at that iteration or should be held-out. When these values are not specified,
+  <span class="mx funCall">train</span> will generate them.  </li>
+ <li> <span class="mx arg">summaryFunction</span>: a function to compute alternate
+  performance summaries. </li> 
+ <li> <span class="mx arg">selectionFunction</span>: a function to choose the optimal
+  tuning parameters. 
+  and examples.  </li>
+ <li> <span class="mx arg">PCAthresh</span>, <span class="mx arg">ICAcomp</span> and <span class="mx arg">k</span>: these are
+  all options to pass to the <span class="mx funCall">preProcess</span> function (when used). </li>
+ <li> <span class="mx arg">returnResamp</span>: a character string containing one of
+  the following values: <tt><span class="hl str">&quot;all&quot;</span></tt>, <tt><span class="hl str">&quot;final&quot;</span></tt> or
+  <tt><span class="hl str">&quot;none&quot;</span></tt>. This specifies how much of the resampled
+  performance measures to save. </li>  
+  <li> <span class="mx arg">allowParallel</span>: a logical that governs whether <span class="mx funCall">train</span> should <a href="parallel.html">use parallel processing (if availible). </a>  </li>
+</ul>
+<p>There are several other options not discussed here.<p/>
+
+<div id="metrics"></div> 
+<h2>Alternate Performance Metrics</h2>
+
+<p>
+The user can change the metric used to determine the best settings. By
+default, RMSE and <i>R</i><sup>2</sup> are computed for regression while accuracy and
+Kappa are computed for classification. Also by default, the parameter
+values are chosen using RMSE and accuracy, respectively  for
+regression and classification. The <span class="mx arg">metric</span> argument of the
+<span class="mx funCall">train</span> function allows the user to control which the
+optimality criterion is used. For example, in problems where there are
+a low percentage of samples in one class, using <span class="mx arg">metric</span><tt> = <span class="hl str">&quot;Kappa&quot;</span></tt> can improve quality of the final model. 
+</p>
+<p>
+If none of these parameters are satisfactory, the user can also
+compute custom performance metrics. The <span class="mx funCall">trainControl</span> function
+has a argument called <span class="mx arg">summaryFunction</span> that specifies a
+function for computing performance. The function should have these
+arguments: 
+</p>
+<p>
+<ul>
+ <li> <span class="mx arg">data</span> is a reference for a data frame or matrix with
+  columns called <code>obs</code> and <code>pred</code> for the observed and
+  predicted outcome values (either numeric data for regression or
+  character values for classification). Currently, class probabilities
+  are not passed to the function. The values in data are the held-out
+  predictions (and their associated reference values) for a single
+  combination of tuning parameters. If the <span class="mx arg">classProbs</span>
+  argument of the <span class="mx funCall">trainControl</span> object is set to
+  <tt><span class="hl num">TRUE</span></tt>, additional columns in <code>data</code> will be present
+  that contains the class probabilities. The names of these columns
+  are the same as the class levels. Also, if  <span class="mx arg">weights</span> were specified in the call to <span class="mx funCall">train</span>, a column called <code>weights</code> will also be in the data set. </li>
+ <li> <span class="mx arg">lev</span> is a character string that has the outcome factor
+  levels taken from the training data. For regression, a value of
+  <tt><span class="hl kwa">NULL</span></tt> is passed into the function. </li>
+ <li> <span class="mx arg">model</span> is a character string for the model being used
+  (i.e. the value passed to the <span class="mx arg">method</span> argument of
+  <span class="mx funCall">train</span>). </li>
+</ul>
+</p>
+<p>
+The output to the function should be a vector of numeric summary
+metrics with non-null names.  By default, <span class="mx funCall">train</span> evaluate classification models in terms of
+the predicted classes. Optionally, class probabilities can also be
+used to measure performance. To obtain predicted class probabilities
+within the resampling process, the argument <span class="mx arg">classProbs</span> in
+<span class="mx funCall">trainControl</span> must be set to <tt><span class="hl num">TRUE</span></tt>. This merges
+columns of probabilities into the predictions generated from each
+resample (there is a column per class and the column names are the
+class names).
+</p>
+<p>
+As shown in the last section, custom functions can be used to
+calculate performance scores that are averaged over the
+resamples. Another built-in function, <span class="mx funCall">twoClassSummary</span>, will
+compute the sensitivity, specificity and area under the ROC curve:
+</p>
+<div class="chunk" id="train_summary1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">head</span><span class="hl std">(twoClassSummary)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">                                                                          
+1 function (data, lev = NULL, model = NULL)                               
+2 {                                                                       
+3     require(pROC)                                                       
+4     if (!all(levels(data[, "pred"]) == levels(data[, "obs"])))          
+5         stop("levels of observed and predicted data do not match")      
+6     rocObject <- try(pROC::roc(data$obs, data[, lev[1]]), silent = TRUE)
+</pre></div>
+</div></div>
+
+
+<p>
+To rebuild the boosted tree model using this criterion, we
+can see the relationship between the tuning parameters and
+the area under the ROC curve using the following code: 
+</p>
+               
+<div class="chunk" id="train_summary2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">fitControl</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">trainControl</span><span class="hl std">(</span><span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;repeatedcv&quot;</span><span class="hl std">,</span>
+                           <span class="hl kwc">number</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">,</span>
+                           <span class="hl kwc">repeats</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">,</span>
+                           <span class="hl com">## Estimate class probabilities</span>
+                           <span class="hl kwc">classProbs</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">,</span>
+                           <span class="hl com">## Evaluate performance using </span>
+                           <span class="hl com">## the following function</span>
+                           <span class="hl kwc">summaryFunction</span> <span class="hl std">= twoClassSummary)</span>
+<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
+<span class="hl std">gbmFit3</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= training,</span>
+                 <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;gbm&quot;</span><span class="hl std">,</span>
+                 <span class="hl kwc">trControl</span> <span class="hl std">= fitControl,</span>
+                 <span class="hl kwc">verbose</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">,</span>
+                 <span class="hl kwc">tuneGrid</span> <span class="hl std">= gbmGrid,</span>
+                 <span class="hl com">## Specify which metric to optimize</span>
+                 <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;ROC&quot;</span><span class="hl std">)</span>
+<span class="hl std">gbmFit3</span>
+</pre></div>
+</div></div>
+
+<div class="chunk" id="train_gbm3_print"><div class="rcode"><div class="output"><pre class="knitr r"><pre>
+</pre></div>
+<div class="output"><pre class="knitr r">Stochastic Gradient Boosting 
+
+157 samples
+ 60 predictors
+  2 classes: 'M', 'R' 
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 10 times) 
+
+Summary of sample sizes: 142, 142, 140, 142, 142, 141, ... 
+
+Resampling results across tuning parameters:
+
+  interaction.depth  n.trees  ROC   Sens  Spec  ROC SD  Sens SD  Spec SD
+  1                  50       0.86  0.83  0.69  0.1     0.15     0.17   
+  1                  100      0.87  0.84  0.73  0.093   0.14     0.16   
+  1                  150      0.88  0.85  0.74  0.088   0.13     0.17   
+  1                  200      0.88  0.86  0.75  0.084   0.14     0.17   
+  :                   :        :     :      :     :       :        :
+  9                  1200     0.91  0.89  0.76  0.075   0.12     0.16   
+  9                  1200     0.91  0.89  0.75  0.074   0.12     0.15   
+  9                  1300     0.91  0.89  0.75  0.075   0.11     0.15   
+  9                  1400     0.91  0.89  0.76  0.073   0.11     0.15   
+  9                  1400     0.91  0.88  0.76  0.073   0.12     0.15   
+  9                  1400     0.91  0.87  0.77  0.072   0.13     0.15   
+  9                  1500     0.92  0.87  0.78  0.072   0.13     0.15   
+
+Tuning parameter 'shrinkage' was held constant at a value of 0.1
+ROC was used to select the optimal model using  the largest value.
+The final values used for the model were n.trees = 1500, interaction.depth = 9 and shrinkage = 0.1. 
+</pre></div>
+<div class="output"><pre class="knitr r"></pre>
+</pre></div>
+</div></div>
+
+
+
+<p>
+In this case, the average area under the ROC curve associated with the
+optimal tuning parameters was
+0.916 across
+the 100 resamples.
+</p>
+
+<div id="final"></div> 
+<h2>Choosing the Final Model</h2>
+
+<p>
+Another method for customizing the tuning process is to modify the
+algorithm that is used to select the "best" parameter values, given
+the performance numbers. By default, the <span class="mx funCall">train</span> function
+chooses the model with the largest performance value (or smallest, for
+mean squared error in regression models). Other schemes for selecting
+model can be used.  <a href="http://books.google.com/books/about/Classification_and_Regression_Trees.html?id=JwQx-WOmSyQC">Breiman et al (1984)</a> suggested the "one standard
+error rule" for simple tree-based models. In this case, the model
+with the best performance value is identified and, using resampling,
+we can estimate the standard error of performance. The final model
+used was the simplest model within one standard error of the
+(empirically) best model. With simple trees this makes sense, since
+these models will start to over-fit as they become more and more
+specific to the training data. 
+</p>
+<p>
+<span class="mx funCall">train</span> allows the user to specify alternate rules for
+selecting the final model. The argument <span class="mx arg">selectionFunction</span>
+can be used to supply a function to algorithmically determine the
+final model. There are three existing functions in the package:
+<span class="mx arg">best</span> is chooses the largest/smallest value, <span class="mx funCall">oneSE</span>
+attempts to capture the spirit of <a href="http://books.google.com/books/about/Classification_and_Regression_Trees.html?id=JwQx-WOmSyQC">Breiman et al (1984)</a> and
+<span class="mx funCall">tolerance</span> selects the least complex model within some percent
+tolerance of the best value. See <code>?best</code> for more details. 
+</p>
+<p>
+User-defined functions can be used, as long as they have the
+following arguments: 
+<ul>
+  <li><span class="mx arg">x</span> is a data frame containing the tune parameters and
+    their associated performance metrics. Each row corresponds to a
+    different tuning parameter combination. </li> 
+  <li><span class="mx arg">metric</span> a character string indicating which
+      performance metric should be optimized (this is passed in
+      directly from the <span class="mx arg">metric</span> argument of <span class="mx funCall">train</span>.</li>  
+  <li><span class="mx arg">maximize</span> is a single logical value indicating
+        whether larger values of the performance metric are better
+        (this is also directly passed from the call to
+        <span class="mx funCall">train</span>). </li>
+</ul>
+<p>
+  The function should output a single integer indicating which row in
+  <code>x</code> is chosen. 
+</p>
+
+
+  
+<p>  
+As an example, if we chose the previous boosted tree model on the basis of
+overall accuracy, we would choose:
+n.trees = 1500, interaction.depth = 9, shrinkage = 0.1. However, the scale in this plots is
+fairly tight, with accuracy values ranging from
+0.863 to
+0.916. A less complex model
+(e.g. fewer, more shallow trees) might also yield acceptable
+accuracy. 
+</p>
+<p>
+The tolerance function could be used to find a less complex
+model based on (<i>x</i>-<i>x</i><sub>best</sub>)/<i>x</i><sub>best</sub>x 100, which is the percent
+difference. For example, to select parameter values based on a 2% loss of performance: 
+</p>
+<div class="chunk" id="train_tolerance"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">whichTwoPct</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">tolerance</span><span class="hl std">(gbmFit3</span><span class="hl opt">$</span><span class="hl std">results,</span> <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;ROC&quot;</span><span class="hl std">,</span> <span class="hl kwc">tol</span> <span class="hl std">=</span> <span class="hl num">2</span><span class="hl std">,</span> <span class="hl kwc">maximize</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">)</span>
+<span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;best model within 2 pct of best:\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">best model within 2 pct of best:
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">gbmFit3</span><span class="hl opt">$</span><span class="hl std">results[whichTwoPct,</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">6</span><span class="hl std">]</span>
+</pre></div>
+<div class="output"><pre class="knitr r">   shrinkage interaction.depth n.trees    ROC  Sens  Spec
+32       0.1                 5     100 0.8988 0.864 0.765
+</pre></div>
+</div></div>
+
+    
+<p>
+This indicates that we can get a less complex model with an area under the ROC curve 
+of 0.899 (compared
+to the "pick the best" value of 
+ 0.916). 
+</p>
+<p>
+The main issue with these functions is related to ordering the models
+from simplest to complex. In some cases, this is easy (e.g. simple
+trees, partial least squares), but in cases such as this model, the ordering of
+models is subjective. For example, is a boosted tree model using 100
+iterations and a tree depth of 2 more complex than one with 50
+iterations and a depth of 8? The package makes some choices regarding
+the orderings. In the case of boosted trees, the package assumes that
+increasing the number of iterations adds complexity at a faster rate
+than increasing the tree depth, so models are ordered on the number of
+iterations then ordered with depth. See <code>?best</code> for more
+examples for specific models. 
+</p>
+
+<div id="pred"></div> 
+<h1>Extracting Predictions and Class Probabilities</h1>
+
+<p>
+As previously mentioned, objects produced by the <span class="mx funCall">train</span>
+function contain the "optimized" model in the <code>finalModel</code>
+sub-object. Predictions can be made from these objects as usual. In
+some cases, such as <span class="mx funCall">pls</span> or <span class="mx funCall">gbm</span> objects, additional
+parameters from the optimized fit may need to be specified. In these
+cases, the <span class="mx funCall">train</span> objects uses the results of the parameter
+optimization to predict new samples. For example, if predictions were create
+using <span class="mx funCall">predict.gbm</span>, the user would have to specify the number of trees 
+directly (there is no default). Also, for binary classification, the predictions
+from this function take the form of the probability of one of the classes, so 
+extra steps are required to convert this to a factor vector. <span class="mx funCall">predict.train</span>
+automatically handles these details for this (and for other models).
+</p>
+<p>
+Also, there are very few standard syntaxes for model predictions in R. For example, 
+to get class probabilities, many <span class="mx funCall">predict</span> methods have an argument called 
+<span class="mx arg">type</span> that is used to specify whether the classes or probabilities should 
+be generated. Different packages use different values of <span class="mx arg">type</span>, such as 
+<tt><span class="hl str">&quot;prob&quot;</span></tt>, <tt><span class="hl str">&quot;posterior&quot;</span></tt>, <tt><span class="hl str">&quot;response&quot;</span></tt>, <tt><span class="hl str">&quot;probability&quot;</span></tt> or <tt><span class="hl str">&quot;raw&quot;</span></tt>. In other cases, completely 
+different syntax is used.
+</p>
+<p>For <span class="mx funCall">predict.train</span>, the type options are standardized to be <tt><span class="hl str">&quot;class&quot;</span></tt> and <tt><span class="hl str">&quot;prob&quot;</span></tt> (the underlying code matches these to the appropriate choices for each model. For example:
+</p>
+<div class="chunk" id="train_pred1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">predict</span><span class="hl std">(gbmFit3,</span> <span class="hl kwc">newdata</span> <span class="hl std">=</span> <span class="hl kwd">head</span><span class="hl std">(testing))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] R R R R M M
+Levels: M R
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">predict</span><span class="hl std">(gbmFit3,</span> <span class="hl kwc">newdata</span> <span class="hl std">=</span> <span class="hl kwd">head</span><span class="hl std">(testing),</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;prob&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">          M         R
+1 1.957e-06 0.9999980
+2 4.824e-14 1.0000000
+3 1.118e-32 1.0000000
+4 1.528e-10 1.0000000
+5 9.997e-01 0.0003027
+6 9.995e-01 0.0004851
+</pre></div>
+</div></div>
+
+
+<div id="resamp"></div> 
+<h1>Exploring and Comparing Resampling Distributions</h1>
+
+<div id="within"></div> 
+<h2>Within-Model</h2>
+<p>
+There are several <a href="http://cran.r-project.org/web/packages/lattice/index.html"><strong>lattice</strong></a> functions than can be used to explore
+relationships between tuning parameters and the resampling results for
+a specific model:
+<ul>
+ <li><span class="mx funCall">xyplot</span> and <span class="mx funCall">stripplot</span> can be used to plot resampling statistics
+  against (numeric) tuning parameters.</li>
+ <li><span class="mx funCall">histogram</span> and <span class="mx funCall">densityplot</span> can also be used
+      to look at distributions of the tuning parameters across tuning parameters.</li>
+</ul>
+</p>
+<p>
+For example, the following statements create a density plot: 
+</p>
+
+
+<div class="chunk" id="4"><div class="rimage default"><img src="figure/4.png" title="plot of chunk 4" alt="plot of chunk 4" class="plot" /></div></div>
+
+
+<p>Note that if you are interested in plotting the resampling results across multiple tuning parameters, the option <tt><span class="hl std">resamples</span> <span class="hl kwb">=</span> <span class="hl str">&quot;all&quot;</span></tt> should be used in the control object.</p>
+
+<div id="between"></div> 
+<h2>Between-Models</h2>
+
+<p>
+The <a href="http://cran.r-project.org/web/packages/caret/index.html"><strong>caret</strong></a> package also includes functions to characterize the differences
+between models (generated using <span class="mx funCall">train</span>, <span class="mx funCall">sbf</span> or
+<span class="mx funCall">rfe</span>) via their resampling distributions. These functions are
+based on the work of <a href="http://www.stat.uni-muenchen.de/~leisch/papers/Hothorn+Leisch+Zeileis-2005.pdf">Hothorn et al. (2005)</a> and <a href="http://epub.ub.uni-muenchen.de/10604/1/tr56.pdf">Eugster et al (2008)</a>.
+</p>
+<p>
+First, a support vector machine model is fit to the Sonar data. The data are centered and scaled using the <span class="mx arg">preProc</span> argument. Note that the same random number seed is set prior to the model that is idenditcal to the seed used for the boosted tree model. This ensures that the same resampling sets are used, which will come in handy when we compare the resamling profiles between models. </p>
+</p>
+<div class="chunk" id="train_svmFit"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
+<span class="hl std">svmFit</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= training,</span>
+                 <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;svmRadial&quot;</span><span class="hl std">,</span>
+                 <span class="hl kwc">trControl</span> <span class="hl std">= fitControl,</span>
+                 <span class="hl kwc">preProc</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;center&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;scale&quot;</span><span class="hl std">),</span>
+                 <span class="hl kwc">tuneLength</span> <span class="hl std">=</span> <span class="hl num">8</span><span class="hl std">,</span>
+                 <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;ROC&quot;</span><span class="hl std">)</span>
+<span class="hl std">svmFit</span>
+</pre></div>
+<div class="output"><pre class="knitr r">Support Vector Machines with Radial Basis Function Kernel 
+
+157 samples
+ 60 predictors
+  2 classes: 'M', 'R' 
+
+Pre-processing: centered, scaled 
+Resampling: Cross-Validated (10 fold, repeated 10 times) 
+
+Summary of sample sizes: 142, 142, 140, 142, 142, 141, ... 
+
+Resampling results across tuning parameters:
+
+  C    ROC  Sens  Spec  ROC SD  Sens SD  Spec SD
+  0.2  0.9  0.7   0.7   0.08    0.1      0.2    
+  0.5  0.9  0.8   0.8   0.06    0.1      0.2    
+  1    0.9  0.9   0.8   0.06    0.1      0.1    
+  2    0.9  0.9   0.8   0.05    0.1      0.2    
+  4    0.9  0.9   0.8   0.05    0.1      0.2    
+  8    0.9  0.9   0.8   0.05    0.1      0.2    
+  20   0.9  0.9   0.8   0.06    0.09     0.2    
+  30   0.9  0.9   0.8   0.06    0.1      0.2    
+
+Tuning parameter 'sigma' was held constant at a value of 0.01234
+ROC was used to select the optimal model using  the largest value.
+The final values used for the model were sigma = 0.01 and C = 8. 
+</pre></div>
+</div></div>
+
+<p>
+Also, a regularized discriminant analysis model was fit.  
+</p>
+<div class="chunk" id="train_rdaFit"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
+<span class="hl std">rdaFit</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= training,</span>
+                 <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;rda&quot;</span><span class="hl std">,</span>
+                 <span class="hl kwc">trControl</span> <span class="hl std">= fitControl,</span>
+                 <span class="hl kwc">tuneLength</span> <span class="hl std">=</span> <span class="hl num">4</span><span class="hl std">,</span>
+                 <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;ROC&quot;</span><span class="hl std">)</span>
+<span class="hl std">rdaFit</span>
+</pre></div>
+<div class="output"><pre class="knitr r">Regularized Discriminant Analysis 
+
+157 samples
+ 60 predictors
+  2 classes: 'M', 'R' 
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 10 times) 
+
+Summary of sample sizes: 142, 142, 140, 142, 142, 141, ... 
+
+Resampling results across tuning parameters:
+
+  gamma  lambda  ROC  Sens  Spec  ROC SD  Sens SD  Spec SD
+  0      0       0.8  0.8   0.8   0.1     0.1      0.2    
+  0      0.3     0.8  0.8   0.8   0.1     0.1      0.2    
+  0      0.7     0.8  0.8   0.8   0.1     0.1      0.2    
+  0      1       0.9  0.8   0.8   0.1     0.1      0.2    
+  0.3    0       0.9  0.9   0.8   0.07    0.1      0.2    
+  0.3    0.3     0.9  0.9   0.8   0.08    0.1      0.1    
+  0.3    0.7     0.9  0.9   0.8   0.07    0.1      0.2    
+  0.3    1       0.9  0.9   0.8   0.08    0.1      0.2    
+  0.7    0       0.9  0.9   0.7   0.08    0.1      0.2    
+  0.7    0.3     0.9  0.9   0.7   0.09    0.1      0.2    
+  0.7    0.7     0.9  0.9   0.7   0.09    0.1      0.2    
+  0.7    1       0.9  0.9   0.7   0.09    0.1      0.2    
+  1      0       0.7  0.7   0.6   0.1     0.2      0.2    
+  1      0.3     0.7  0.7   0.6   0.1     0.2      0.2    
+  1      0.7     0.7  0.7   0.6   0.1     0.2      0.2    
+  1      1       0.7  0.7   0.7   0.1     0.2      0.2    
+
+ROC was used to select the optimal model using  the largest value.
+The final values used for the model were gamma = 0.3 and lambda = 0. 
+</pre></div>
+</div></div>
+
+<p>
+Given these models, can we make statistical statements about their
+performance differences? To do this, we first collect the resampling
+results using <span class="mx funCall">resamples</span>. 
+</p>
+<div class="chunk" id="train_resamps1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">resamps</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">resamples</span><span class="hl std">(</span><span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">GBM</span> <span class="hl std">= gbmFit3,</span>
+                          <span class="hl kwc">SVM</span> <span class="hl std">= svmFit,</span>
+                          <span class="hl kwc">RDA</span> <span class="hl std">= rdaFit))</span>
+<span class="hl std">resamps</span>
+</pre></div>
+<div class="output"><pre class="knitr r">
+Call:
+resamples.default(x = list(GBM = gbmFit3, SVM = svmFit, RDA = rdaFit))
+
+Models: GBM, SVM, RDA 
+Number of resamples: 100 
+Performance metrics: ROC, Sens, Spec 
+Time estimates for: everything, final model fit 
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">summary</span><span class="hl std">(resamps)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">
+Call:
+summary.resamples(object = resamps)
+
+Models: GBM, SVM, RDA 
+Number of resamples: 100 
+
+ROC 
+     Min. 1st Qu. Median  Mean 3rd Qu. Max. NA's
+GBM 0.625   0.889  0.933 0.916   0.968    1    0
+SVM 0.696   0.918  0.961 0.946   0.984    1    0
+RDA 0.635   0.857  0.929 0.907   0.954    1    0
+
+Sens 
+    Min. 1st Qu. Median  Mean 3rd Qu. Max. NA's
+GBM  0.5   0.778  0.875 0.867       1    1    0
+SVM  0.5   0.875  0.889 0.910       1    1    0
+RDA  0.5   0.851  0.944 0.903       1    1    0
+
+Spec 
+     Min. 1st Qu. Median  Mean 3rd Qu. Max. NA's
+GBM 0.375   0.714  0.857 0.782   0.875    1    0
+SVM 0.286   0.714  0.857 0.815   0.906    1    0
+RDA 0.286   0.714  0.750 0.761   0.857    1    0
+</pre></div>
+</div></div>
+
+
+<p>Note that, in this case, the option <tt><span class="hl std">resamples</span> <span class="hl kwb">=</span> <span class="hl str">&quot;final&quot;</span></tt> should be used in the control objects.</p>
+
+<p>
+There are several <pkg>lattice</pkg> plot methods that can be used to visualize
+the resampling distributions: density plots, box-whisker plots,
+scatterplot matrices and scatterplots of summary statistics. For example:
+</p>
+
+<div class="chunk" id="train_resample_box"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">trellis.par.set</span><span class="hl std">(theme1)</span>
+<span class="hl kwd">bwplot</span><span class="hl std">(resamps,</span> <span class="hl kwc">layout</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">))</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/train_resample_box.png" title="plot of chunk train_resample_box" alt="plot of chunk train_resample_box" class="plot" /></div></div>
+
+
+<div class="chunk" id="train_resample_ci"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">trellis.par.set</span><span class="hl std">(</span><span class="hl kwd">caretTheme</span><span class="hl std">())</span>
+<span class="hl kwd">dotplot</span><span class="hl std">(resamps,</span> <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;ROC&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/train_resample_ci.png" title="plot of chunk train_resample_ci" alt="plot of chunk train_resample_ci" class="plot" /></div></div>
+
+
+<div class="chunk" id="train_resample_ba"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">trellis.par.set</span><span class="hl std">(theme1)</span>
+<span class="hl kwd">xyplot</span><span class="hl std">(resamps,</span> <span class="hl kwc">what</span> <span class="hl std">=</span> <span class="hl str">&quot;BlandAltman&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/train_resample_ba.png" title="plot of chunk train_resample_ba" alt="plot of chunk train_resample_ba" class="plot" /></div></div>
+
+
+
+<div class="chunk" id="train_resample_scatmat"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">splom</span><span class="hl std">(resamps)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/train_resample_scatmat.png" title="plot of chunk train_resample_scatmat" alt="plot of chunk train_resample_scatmat" class="plot" /></div></div>
+
+
+<p> Other visualizations are availible in <span class="mx funCall">densityplot.resamples</span> and <span class="mx funCall">parallel.resamples</span></p>
+
+
+<p>
+Since models are fit on the same versions of the training data, it
+makes sense to make inferences on the differences between models. In
+this way we reduce the within-resample correlation that may exist. We
+can compute the differences, then use a simple <i>t</i>-test to evaluate
+the null hypothesis that there is no difference between models. 
+</p>
+<div class="chunk" id="train_resamps3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">difValues</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">diff</span><span class="hl std">(resamps)</span>
+<span class="hl std">difValues</span>
+</pre></div>
+<div class="output"><pre class="knitr r">
+Call:
+diff.resamples(x = resamps)
+
+Models: GBM, SVM, RDA 
+Metrics: ROC, Sens, Spec 
+Number of differences: 3 
+p-value adjustment: bonferroni 
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">summary</span><span class="hl std">(difValues)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">
+Call:
+summary.diff.resamples(object = difValues)
+
+p-value adjustment: bonferroni 
+Upper diagonal: estimates of the difference
+Lower diagonal: p-value for H0: difference = 0
+
+ROC 
+    GBM      SVM      RDA     
+GBM          -0.03050  0.00885
+SVM 1.81e-06           0.03935
+RDA 0.824    5.02e-08         
+
+Sens 
+    GBM      SVM      RDA     
+GBM          -0.04333 -0.03611
+SVM 0.000983           0.00722
+RDA 0.042556 1.000000         
+
+Spec 
+    GBM     SVM     RDA    
+GBM         -0.0334  0.0211
+SVM 0.05664          0.0545
+RDA 0.71443 0.00414        
+</pre></div>
+</div></div>
+
+
+
+<div class="chunk" id="train_diff_box"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">trellis.par.set</span><span class="hl std">(theme1)</span>
+<span class="hl kwd">bwplot</span><span class="hl std">(difValues,</span> <span class="hl kwc">layout</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">))</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/train_diff_box.png" title="plot of chunk train_diff_box" alt="plot of chunk train_diff_box" class="plot" /></div></div>
+
+
+
+<div class="chunk" id="train_diff_ci"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">trellis.par.set</span><span class="hl std">(</span><span class="hl kwd">caretTheme</span><span class="hl std">())</span>
+<span class="hl kwd">dotplot</span><span class="hl std">(difValues)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/train_diff_ci.png" title="plot of chunk train_diff_ci" alt="plot of chunk train_diff_ci" class="plot" /></div></div>
+
+
+<div id="notune"></div> 
+<h1>Fitting Models Without Parameter Tuning</h1>
+
+<p>In cases where the model tuning values are known, <span class="mx funCall">train</span> can be used to fit the model to the entire training set without any resampling or parameter tuning. Using the <tt><span class="hl std">method</span> <span class="hl kwb">=</span> <span class="hl str">&quot;none&quot;</span></tt> option in <span class="mx funCall">trainControl</span> can be used. For example:
+</p>
+<div class="chunk" id="train_noresamp"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">fitControl</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">trainControl</span><span class="hl std">(</span><span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;none&quot;</span><span class="hl std">,</span> <span class="hl kwc">classProbs</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">)</span>
+<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
+<span class="hl std">gbmFit4</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= training,</span>
+                 <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;gbm&quot;</span><span class="hl std">,</span>
+                 <span class="hl kwc">trControl</span> <span class="hl std">= fitControl,</span>
+                 <span class="hl kwc">verbose</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">,</span>
+                 <span class="hl com">## Only a single model can be passed to the</span>
+                 <span class="hl com">## function when no resampling is used:</span>
+                 <span class="hl kwc">tuneGrid</span> <span class="hl std">=</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">interaction.depth</span> <span class="hl std">=</span> <span class="hl num">4</span><span class="hl std">,</span>
+                                       <span class="hl kwc">n.trees</span> <span class="hl std">=</span> <span class="hl num">100</span><span class="hl std">,</span>
+                                       <span class="hl kwc">shrinkage</span> <span class="hl std">=</span> <span class="hl num">.1</span><span class="hl std">),</span>
+                 <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;ROC&quot;</span><span class="hl std">)</span>
+<span class="hl std">gbmFit4</span>
+</pre></div>
+<div class="output"><pre class="knitr r">Stochastic Gradient Boosting 
+
+157 samples
+ 60 predictors
+  2 classes: 'M', 'R' 
+
+No pre-processing
+Resampling: None 
+</pre></div>
+</div></div>
+
+
+<p>
+Note that <span class="mx funCall">plot.train</span>, <span class="mx funCall">resamples</span>, <span class="mx funCall">confusionMatrix.train</span> and several other functions will not work with this object but <span class="mx funCall">predict.train</span> and others will:
+</p>
+<div class="chunk" id="train_noresamppred1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">predict</span><span class="hl std">(gbmFit4,</span> <span class="hl kwc">newdata</span> <span class="hl std">=</span> <span class="hl kwd">head</span><span class="hl std">(testing))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] R R R R M M
+Levels: M R
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">predict</span><span class="hl std">(gbmFit4,</span> <span class="hl kwc">newdata</span> <span class="hl std">=</span> <span class="hl kwd">head</span><span class="hl std">(testing),</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;prob&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">          M      R
+1 0.4060186 0.5940
+2 0.0301124 0.9699
+3 0.0009584 0.9990
+4 0.0399826 0.9600
+5 0.9614988 0.0385
+6 0.7496510 0.2503
+</pre></div>
+</div></div>
+
+
+<div style="clear: both;">&nbsp;</div>
+  </div>
+  <!-- end #content -->
+<div id="sidebar">
+  <ul>
+  <li>
+  <h2>Links</h2>
+  <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
+  </li>
+  <li>
+  <h2>Topics</h2>
+  <ul>
+      	<li><a href="index.html">Main Page</a></li>
+  		<li><a href="datasets.html">Data Sets</a></li>
+                <li><a href="visualizations.html">Visualizations</a></li>
+                <li><a href="preprocess.html">Pre-Processing</a></li>
+                <li><a href="splitting.html">Data Splitting</a></li>
+                <li><a href="misc.html">Miscellaneous Model Functions</a></li>
+                <li><a href="training.html">Model Training and Tuning</a></li>
+                <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
+                 <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
+                 <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
+                <li><a href="custom_models.html">Using Custom Models</a></li>
+                <li><a href="varimp.html">Variable Importance</a></li>
+                <li><a href="featureselection.html">Feature Selection</a></li>
+                <li><a href="other.html">Other Functions</a></li>
+                <li><a href="parallel.html">Parallel Processing</a></li>
+                <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+</ul>
+  </li>
+  </ul>
+  </div>
+  <!-- end #sidebar -->
+<div style="clear: both;">&nbsp;</div>
+  </div>
+  <div class="container"><img src="images/img03.png" width="1000" height="40" alt="" /></div>
+  <!-- end #page -->
+</div>
+
+
+  <div id="footer-content"></div>
+  <div id="footer">
+  <p>Created on Sat May 31 2014 using caret version 6.0-29 and R version 3.0.3 (2014-03-06).</p>
+  </div>
+  <!-- end #footer -->
+</body>
+  </html>

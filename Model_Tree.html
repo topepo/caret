@@ -1,0 +1,172 @@
+
+    
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+  <!--
+  Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Name       : Emerald 
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20120902
+
+-->
+  <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+<style type="text/css">.knitr.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+  font-weight: bold;
+	color: #FF0000;
+},
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0em 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage.left {
+  text-align: left;
+}
+.rimage.right {
+  text-align: right;
+}
+.rimage.center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}</style>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Model Tree</title>
+  <link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+  <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+  </head>
+  <body>
+  <div id="wrapper">
+  <div id="header-wrapper" class="container">
+  <div id="header" class="container">
+  <div id="logo">
+  <h1><a href="#">Model Tree</a></h1>
+</div>
+  <!--
+  <div id="menu">
+  <ul>
+  <li class="current_page_item"><a href="#">Homepage</a></li>
+<li><a href="#">Blog</a></li>
+<li><a href="#">Photos</a></li>
+<li><a href="#">About</a></li>
+<li><a href="#">Contact</a></li>
+</ul>
+  </div>
+  -->
+  </div>
+  <div><img src="images/img03.png" width="1000" height="40" alt="" /></div>
+  </div>
+  <!-- end #header -->
+<div id="page">
+  <div id="content">
+  
+<h1>Cubist</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'cubist'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">committees</span></code> (#Committees), <code><span class="mx arg">neighbors</span></code> (#Instances)</p>
+
+<h1>Logistic Model Trees</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'LMT'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">iter</span></code> (# Iteratons)</p>
+
+<h1>Model Rules</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'M5Rules'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">pruned</span></code> (Pruned), <code><span class="mx arg">smoothed</span></code> (Smoothed)</p>
+
+<h1>Model Tree</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'M5'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">pruned</span></code> (Pruned), <code><span class="mx arg">smoothed</span></code> (Smoothed), <code><span class="mx arg">rules</span></code> (Rules)</p>
+
+
+<div style="clear: both;">&nbsp;</div>
+  </div>
+  <!-- end #content -->
+<div id="sidebar">
+  <ul>
+  <li>
+  <h2>Links</h2>
+  <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
+  </li>
+  <li>
+  <h2>Topics</h2>
+  <ul>
+  		<li><a href="datasets.html">Data Sets</a></li>
+        <li><a href="visualizations.html">Visualizations</a></li>
+        <li><a href="preprocess.html">Pre-Processing</a></li>
+        <li><a href="splitting.html">Data Splitting</a></li>
+        <li><a href="misc.html">Miscellaneous Model Functions</a></li>
+        <li><a href="training.html">Model Training and Tuning</a></li>
+        <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
+        <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
+        <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
+        <li><a href="custom_models.html">Using Custom Models</a></li>
+        <li><a href="varimp.html">Variable Importance</a></li>
+        <li><a href="featureselection.html">Feature Selection</a></li>
+        <li><a href="other.html">Other Functions</a></li>
+        <li><a href="parallel.html">Parallel Processing</a></li>
+</ul>
+  </li>
+  </ul>
+  </div>
+  <!-- end #sidebar -->
+<div style="clear: both;">&nbsp;</div>
+  </div>
+  <div class="container"><img src="images/img03.png" width="1000" height="40" alt="" /></div>
+  <!-- end #page -->
+</div>
+  <div id="footer-content"></div>
+  <div id="footer">
+  <p>Created on <Sexpr session>.</p>
+  </div>
+  <!-- end #footer -->
+</body>
+  </html>
