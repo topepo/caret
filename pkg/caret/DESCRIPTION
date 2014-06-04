@@ -1,0 +1,15 @@
+Package: caret
+Version: 6.0-30
+Date: 2014-06-03
+Title: Classification and Regression Training
+Author: Max Kuhn. Contributions from Jed Wing, Steve Weston, Andre
+  Williams, Chris Keefer, Allan Engelhardt, Tony Cooper, Zachary Mayer
+  and the R Core Team
+Description: Misc functions for training and plotting classification and regression models
+Maintainer: Max Kuhn <Max.Kuhn@pfizer.com>
+Depends: R (>= 2.10), stats, lattice (>= 0.20), ggplot2
+URL: http://caret.r-forge.r-project.org/
+Imports: car, reshape2, foreach, methods, plyr, nlme, BradleyTerry2
+Suggests: e1071, earth (>= 2.2-3), ellipse, fastICA, gam, ipred, kernlab, klaR, MASS, 
+  mda, mgcv, mlbench, nnet, party (>= 0.9-99992), pls, pROC, proxy, randomForest, RANN, spls, affy
+License: GPL-2
