@@ -1,0 +1,247 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+  <!--
+  Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Name       : Emerald 
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20120902
+
+-->
+  <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+<style type="text/css">.knitr.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+},
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0em 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage.left {
+  text-align: left;
+}
+.rimage.right {
+  text-align: right;
+}
+.rimage.center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}</style>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Adaptive Resampling</title>
+  <link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+  <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+  </head>
+  <body>
+  <div id="wrapper">
+  <div id="header-wrapper" class="container">
+  <div id="header" class="container">
+  <div id="logo">
+  <h1><a href="#">Adaptive Resampling</a></h1>
+</div>
+  <!--
+  <div id="menu">
+  <ul>
+  <li class="current_page_item"><a href="#">Homepage</a></li>
+<li><a href="#">Blog</a></li>
+<li><a href="#">Photos</a></li>
+<li><a href="#">About</a></li>
+<li><a href="#">Contact</a></li>
+</ul>
+  </div>
+  -->
+  </div>
+  <div><img src="images/img03.png" width="1000" height="40" alt="" /></div>
+  </div>
+  <!-- end #header -->
+<div id="page">
+  <div id="content">
+      
+ <div id="outcome"></div>        
+
+<p>
+Models can benefit significantly from tuning but the optimal values are rarely known beforehand. <span class="mx funCall">train</span> can be used to define a grid of possible points and resampling can be used to generate good estimates of performance for each tuning parameter combination. However, in the nominal resampling process, all the tuning parameter combinations are computed for all the resamples before a choice is made about which parameters are good and which are poor. 
+</p>
+<p>
+<a href="http://cran.r-project.org/web/packages/caret/index.html"><strong>caret</strong></a> contains the ability to adaptively resample the tuning parameter grid in a way that concentrates on values that are the in the neighborhood of the optimal settings. See <a href="http://arxiv.org/abs/1405.6974">this paper</a> for the details. 
+</p>
+<p>
+To illustrate, we will use the chemical mutagenicity data from <a href="http://pubs.acs.org/doi/abs/10.1021/jm040835a">Kazius et al (2005)</a>:
+</p>
+<div class="chunk" id="adapt_mutagen"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(QSARdata)</span>
+<span class="hl kwd">data</span><span class="hl std">(Mutagen)</span>
+<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">4567</span><span class="hl std">)</span>
+<span class="hl std">inTraining</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">createDataPartition</span><span class="hl std">(Mutagen_Outcome,</span> <span class="hl kwc">p</span> <span class="hl std">=</span> <span class="hl num">0.75</span><span class="hl std">,</span> <span class="hl kwc">list</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">)</span>
+<span class="hl std">training_x</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Mutagen_Dragon[inTraining, ]</span>
+<span class="hl std">training_y</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Mutagen_Outcome[inTraining]</span>
+<span class="hl std">testing_x</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Mutagen_Dragon[</span><span class="hl opt">-</span><span class="hl std">inTraining, ]</span>
+<span class="hl std">testing_y</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Mutagen_Outcome[</span><span class="hl opt">-</span><span class="hl std">inTraining]</span>
+<span class="hl com">## Get rid of predictors that are very sparse</span>
+<span class="hl std">nzv</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">nearZeroVar</span><span class="hl std">(training_x)</span>
+<span class="hl std">training_x</span> <span class="hl kwb">&lt;-</span> <span class="hl std">training_x[,</span> <span class="hl opt">-</span><span class="hl std">nzv]</span>
+<span class="hl std">testing_x</span> <span class="hl kwb">&lt;-</span> <span class="hl std">testing_x[,</span> <span class="hl opt">-</span><span class="hl std">nzv]</span>
+</pre></div>
+</div></div>
+
+<p>
+Previously, we used this code to tune the model:
+</p>
+<div class="chunk" id="adapt_full"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">fitControl</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">trainControl</span><span class="hl std">(</span><span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;repeatedcv&quot;</span><span class="hl std">,</span>
+                           <span class="hl kwc">number</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">,</span>
+                           <span class="hl kwc">repeats</span> <span class="hl std">=</span> <span class="hl num">5</span><span class="hl std">,</span>
+                           <span class="hl com">## Estimate class probabilities</span>
+                           <span class="hl kwc">classProbs</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">,</span>
+                           <span class="hl com">## Evaluate performance using </span>
+                           <span class="hl com">## the following function</span>
+                           <span class="hl kwc">summaryFunction</span> <span class="hl std">= twoClassSummary)</span>
+<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
+<span class="hl std">svmFit</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">= training_x,</span>
+                <span class="hl kwc">y</span> <span class="hl std">= training_y,</span>
+                <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;svmRadial&quot;</span><span class="hl std">,</span>
+                <span class="hl kwc">trControl</span> <span class="hl std">= fitControl,</span>
+                <span class="hl kwc">preProc</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;center&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;scale&quot;</span><span class="hl std">),</span>
+                <span class="hl kwc">tuneLength</span> <span class="hl std">=</span> <span class="hl num">8</span><span class="hl std">,</span>
+                <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;ROC&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div></div>
+
+<p>Using this method, the optimal tuning parameters were a RBF kernel parameter of 8 &times; 10<sup>-4</sup>  and a cost value of 8. To use the adaptive procedure, the <span class="mx funCall">trainControl</span> option needs some additional arguments:
+</p>
+  <ul>
+  <li> <span class="mx arg">min</span> is the minimum number of resamples that will be used for each tuning parameter. The default value is 5 and increasing it will decrease the speed-up generated by adaptive resampling but should also increase the likelihood of finding a good model. </li>
+  <li> <span class="mx arg">alpha</span> is a confidence level that is used to remove parameter settings. To date, this value has not shown much of an effect.  </li>
+  <li> <span class="mx arg">method</span> is either <tt><span class="hl str">&quot;gls&quot;</span></tt> for a linear model or <tt><span class="hl str">&quot;BT&quot;</span></tt> for a Bradley-Terry model. The latter may be more useful when you expect the model to do very well (e.g. an area under the ROC curve near 1) or when there are a large number of tuning parameter settings.  </li>
+  <li> <span class="mx arg">complete</span> is a logical value that specifies whether <span class="mx funCall">train</span> should generate the full resampling set if it finds an optimal solution before the end of resampling. If you want to know the optimal parameter settings and don't care much for the estimated performance value, a value of <tt><span class="hl num">FALSE</span></tt> would be appropriate here. </li>
+  </ul>
+<p>
+The new code is:
+</p>
+<div class="chunk" id="adapt_gls"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">fitControl2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">trainControl</span><span class="hl std">(</span><span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;adaptive_cv&quot;</span><span class="hl std">,</span>
+                            <span class="hl kwc">number</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">,</span>
+                            <span class="hl kwc">repeats</span> <span class="hl std">=</span> <span class="hl num">5</span><span class="hl std">,</span>
+                            <span class="hl com">## Estimate class probabilities</span>
+                            <span class="hl kwc">classProbs</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">,</span>
+                            <span class="hl com">## Evaluate performance using </span>
+                            <span class="hl com">## the following function</span>
+                            <span class="hl kwc">summaryFunction</span> <span class="hl std">= twoClassSummary,</span>
+                            <span class="hl com">## Adaptive resampling information:</span>
+                            <span class="hl kwc">adaptive</span> <span class="hl std">=</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">min</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">,</span>
+                                            <span class="hl kwc">alpha</span> <span class="hl std">=</span> <span class="hl num">0.05</span><span class="hl std">,</span>
+                                            <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;gls&quot;</span><span class="hl std">,</span>
+                                            <span class="hl kwc">complete</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">))</span>
+<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
+<span class="hl std">svmFit2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">= training_x,</span>
+                 <span class="hl kwc">y</span> <span class="hl std">= training_y,</span>
+                 <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;svmRadial&quot;</span><span class="hl std">,</span>
+                 <span class="hl kwc">trControl</span> <span class="hl std">= fitControl2,</span>
+                 <span class="hl kwc">preProc</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;center&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;scale&quot;</span><span class="hl std">),</span>
+                 <span class="hl kwc">tuneLength</span> <span class="hl std">=</span> <span class="hl num">8</span><span class="hl std">,</span>
+                 <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;ROC&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div></div>
+
+<p>
+These computations were 2.8-fold faster than the original analysis. Here, the optimal tuning parameters were a RBF kernel parameter of 8 &times; 10<sup>-4</sup>  and a cost value of 8. These match the previous settings.
+<p/>
+<p>
+Remember that this methodology is experimental, so please send any questions or bug reports to the package maintainer. 
+</p>
+
+
+<div style="clear: both;">&nbsp;</div>
+  </div>
+  <!-- end #content -->
+<div id="sidebar">
+  <ul>
+  <li>
+  <h2>Links</h2>
+  <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
+  </li>
+  <li>
+  <h2>Topics</h2>
+  <ul>
+        <li><a href="index.html">Main Page</a></li>
+  		<li><a href="datasets.html">Data Sets</a></li>
+                <li><a href="visualizations.html">Visualizations</a></li>
+                <li><a href="preprocess.html">Pre-Processing</a></li>
+                <li><a href="splitting.html">Data Splitting</a></li>
+                <li><a href="misc.html">Miscellaneous Model Functions</a></li>
+                <li><a href="training.html">Model Training and Tuning</a></li>
+                <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
+                <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
+                 <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
+                <li><a href="custom_models.html">Using Custom Models</a></li>
+                <li><a href="varimp.html">Variable Importance</a></li>
+                <li><a href="featureselection.html">Feature Selection</a></li>
+                <li><a href="other.html">Other Functions</a></li>
+                <li><a href="parallel.html">Parallel Processing</a></li>
+                <li><a href="adaptive.html">Adaptive Resampling</a></li>
+</ul>
+  </li>
+  </ul>
+  </div>
+  <!-- end #sidebar -->
+<div style="clear: both;">&nbsp;</div>
+  </div>
+  <div class="container"><img src="images/img03.png" width="1000" height="40" alt="" /></div>
+  <!-- end #page -->
+</div>
+  <div id="footer-content"></div>
+
+
+  <div id="footer">
+  <p>Created on Sun Jun 01 2014 using caret version 6.0-29 and R version 3.0.3 (2014-03-06).</p>
+  </div>
+  <!-- end #footer -->
+</body>
+  </html>
