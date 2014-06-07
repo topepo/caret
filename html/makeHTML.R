@@ -20,7 +20,8 @@ library(e1071)
 library(mda)
 library(plyr)
 library(pls)
-
+library(animation)
+library(ggplot2)
 
 setwd("/Users/kuhna03/Code/github/caret/html")
 
@@ -66,6 +67,8 @@ setwd(file.path(dest, dPath))
 pathName <- paste(file.path(dest), "/", sep = "")
 
 ###########################################################################
+
+setwd(file.path(dest, dPath))
 
 library(knitr)
 

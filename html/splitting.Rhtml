@@ -3,6 +3,8 @@ library(caret)
 data(BloodBrain)
 library(proxy)
 library(latticeExtra)
+library(animation)
+library(ggplot2)
 
 theme1 <- caretTheme()
 theme1$superpose.symbol$col = c(rgb(1, 0, 0, .4), rgb(0, 0, 1, .4), 
@@ -116,7 +118,7 @@ library(mlbench)
 data(BostonHousing)
 
 testing <- scale(BostonHousing[, c("age", "nox")])
-set.seed(11)
+set.seed(5)
 ## A random sample of 5 data points
 startSet <- sample(1:dim(testing)[1], 5)
 samplePool <- testing[-startSet,]
@@ -125,11 +127,76 @@ newSamp <- maxDissim(start, samplePool, n = 20)
 head(newSamp)
     end.rcode--> 
 
+<!--begin.rcode SplitGIF, results='hide', echo=FALSE, message=FALSE, fig.show='hide'
+testing <- scale(BostonHousing[, c("age", "nox")])
+testing <- as.data.frame(testing)
+testing$index <- 1:nrow(testing)
 
-<p>The visualization below shows the data set, the starting samples
-(show as "S") and the order in which the other 20 samples are added. </p>
+set.seed(5)
+## A random sample of 5 data points
+startSet <- sample(1:dim(testing)[1], 5)
+samplePool <- testing[-startSet,]
+start <- testing[startSet,]
 
-<p><a href="MaxDissim.gif"><img width =250 height =250 src="MaxDissim.gif"><br>(click image for larger gif)</a><br><br></p>
+newSamp <- maxDissim(as.matrix(start[, 1:2]), 
+                     as.matrix(samplePool[, 1:2]), 
+                     n = 20)
+head(newSamp)
+new_index <- samplePool$index[newSamp]
+
+plot_data <- BostonHousing[, c("age", "nox")]
+plot_data$Label <- "Pool"
+plot_data$Label[start$index] <- "Starting Set"
+plot_data$Label <- factor(as.character(plot_data$Label), 
+                          levels = c("Pool", "Starting Set", "Sampled"))
+
+library(ggplot2)
+cbPalette <- c("#999999", "#0072B2", "#D55E00")
+
+library(animation)
+
+ani.options(ani.width = 550,  outdir = getwd(), autoplay = FALSE)
+
+ani.record(reset = TRUE)
+
+for(i in 1:5) {
+  print(ggplot(plot_data, aes(x = age, y = nox, color = Label, size = Label)) + 
+          geom_point() +
+          scale_colour_manual(values=cbPalette) + 
+          ggtitle(paste("Data pool with random starting samples ", 
+                        paste(rep(".", 5-i+1), collapse = ""))))
+  ani.record()
+}
+
+for(i in 1:length(newSamp)) {
+  tmp <- plot_data
+  tmp$Label[new_index[1:i]] <- "Sampled"
+  tmp$Label <- factor(as.character(tmp$Label), levels = c("Pool", "Starting Set", "Sampled"))
+  fname <- gsub(" ", "0", format((1:length(newSamp))+1)[i])
+  
+
+  print(ggplot(tmp, aes(x = age, y = nox, color = Label, size = Label)) + 
+          geom_point() + scale_colour_manual(values=cbPalette) + 
+          ggtitle(paste("Adding sample", i)))
+  ani.record()
+}
+
+for(i in 3:1) {
+  print(ggplot(tmp, aes(x = age, y = nox, color = Label, size = Label)) + 
+          geom_point() + scale_colour_manual(values=cbPalette) + 
+          ggtitle(paste("Restarting in ", i)))
+  ani.record()
+}
+
+
+saveGIF(ani.replay(), img.name = "record_plot", movie.name = "MaxDissim.gif")
+    end.rcode--> 
+    
+<p>The visualization below shows the data set (small points), the starting samples
+(larger blue points) and the order in which the other 20 samples are added. </p>
+
+
+<div class="chunk" id="Split_gif"><div class="rimage default"><img src="MaxDissim.gif" class="plot" /></div></div>
 
 
  <div id="time"></div>        
