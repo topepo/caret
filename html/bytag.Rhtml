@@ -113,6 +113,7 @@ for(j in seq(along = utags)) {
   tt <- lapply(subs, printModelInfo)
   tt <- paste(tt, collapse = "\n", sep = "")
   temp_temp <- gsub("CONTENTCONTENT", tt, temp_temp) 
+  temp_temp <- gsub("FOOTERFOOTER", session, temp_temp) 
   cat(temp_temp, file = fname[j])
   rm(tt, temp_temp, subs, hasit)
 }
