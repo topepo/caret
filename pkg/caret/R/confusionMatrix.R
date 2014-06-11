@@ -269,7 +269,14 @@ resampName <- function(x, numbers = TRUE)
                   repeatedcv = paste("Cross-Validated (", x$control$number, " fold, repeated ",
                                      x$control$repeats, " times)", sep = ""),
                   lgocv = paste("Repeated Train/Test Splits Estimated (", numResamp, " reps, ",
-                                round(x$control$p, 2), "%)", sep = ""))
+                                round(x$control$p, 2), "%)", sep = ""),
+                  
+                  adaptive_boot = paste("Adaptively Bootstrapped (", numResamp, " reps)", sep = ""),
+                  adaptive_cv = paste("Adaptively Cross-Validated (", x$control$number, " fold, repeated ",
+                                     x$control$repeats, " times)", sep = ""),
+                  adaptive_lgocv = paste("Adaptive Repeated Train/Test Splits Estimated (", numResamp, " reps, ",
+                                round(x$control$p, 2), "%)", sep = "")
+                  )
   } else {
     out <- switch(tolower(x$control$method),
                   none = "None", 
