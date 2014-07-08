@@ -2,6 +2,19 @@
 \title{News for Package \pkg{caret}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{Changes in version 6.0-xx}{
+\itemize{
+\item \code{plsRglm} was added. 
+
+\item \code{cluster.resamples} was added to the namespace.
+
+\item An option to choose the \code{metric} was added to  \code{summary.resamples}.
+
+\item \code{prcomp.resamples} now passed  \code{...} to \code{prcomp}.  Also the call to  \code{prcomp} uses the formula method so that  \code{na.action} can be used.
+
+}
+}
+
 \section{Changes in version 6.0-30}{
 \itemize{
 \item A missing piece of documentation in \code{trainControl} for adaptive models was filled in. 
