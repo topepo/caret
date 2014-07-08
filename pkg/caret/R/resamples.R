@@ -99,8 +99,11 @@ prcomp.resamples <- function(x, metric = x$metrics[1],  ...)
                            names(tmpData),
                            fixed = TRUE)
 
-    tmpData <- t(tmpData)
-    out <- prcomp(tmpData)
+    tmpData <- as.data.frame(t(tmpData))
+    colnames(tmpData) <- paste("Resample", 
+                               gsub(" ", "0", format(1:ncol(tmpData))), 
+                               sep = "")
+    out <- prcomp(~., data = tmpData, ...)
     out$metric <- metric
     out$call <- match.call()
     class(out) <- c("prcomp.resamples", "prcomp")
@@ -142,12 +145,16 @@ plot.prcomp.resamples <- function(x, what = "scree", dims = max(2, ncol(x$rotati
   switch(what,
          scree =
          {
-           barchart(x$sdev ~ paste("PC", seq(along = x$sdev)),
+           barchart(x$sdev ~ paste("PC", 
+                                   gsub(" ", "0", format(seq(along = x$sdev))), 
+                                   sep = ""),
                     ylab = "Standard Deviation", ...)
          },
          cumulative =
          {
-           barchart(cumsum(x$sdev^2)/sum(x$sdev^2) ~ paste("PC", seq(along = x$sdev)),
+           barchart(cumsum(x$sdev^2)/sum(x$sdev^2) ~ paste("PC", 
+                                                           gsub(" ", "0", format(seq(along = x$sdev))), 
+                                                           sep = ""),
                     ylab = "Culmulative Percent of Variance", ...)
          },
          loadings =
@@ -236,33 +243,29 @@ print.resamples <- function(x, ...)
     invisible(x)
   }
 
-summary.resamples <- function(object, ...)
-{
-
+summary.resamples <- function(object, metric = object$metrics, ...){
   vals <- object$values[, names(object$values) != "Resample", drop = FALSE]
-
-  out <- vector(mode = "list", length = length(object$metrics))
-  for(i in seq(along = object$metrics))
-    {
-      tmpData <- vals[, grep(paste("~", object$metrics[i], sep = ""), names(vals), fixed = TRUE), drop = FALSE]
+  out <- vector(mode = "list", length = length(metric))
+  for(i in seq(along = metric)) {
+      tmpData <- vals[, grep(paste("~", metric[i], sep = ""), names(vals), fixed = TRUE), drop = FALSE]
       
       out[[i]] <- do.call("rbind", lapply(tmpData, function(x) summary(x)[1:6]))
       naSum <- matrix(unlist(lapply(tmpData, function(x) sum(is.na(x)))), ncol = 1)
       colnames(naSum) <- "NA's"
       out[[i]] <- cbind(out[[i]], naSum)
-      rownames(out[[i]]) <- gsub(paste("~", object$metrics[i], sep = ""),
+      rownames(out[[i]]) <- gsub(paste("~", metric[i], sep = ""),
                                  "",
                                  rownames(out[[i]]),
                                  fixed = TRUE)
     }
   
-  names(out) <- object$metrics
+  names(out) <- metric
   out <- structure(
                    list(values = vals,
                         call = match.call(),
                         statistics = out,
                         models = object$models,
-                        metrics = object$metrics,
+                        metrics = metric,
                         methods = object$methods),
                    class = "summary.resamples")
   out
