@@ -718,24 +718,17 @@ print.diff.resamples <- function(x, ...)
 
 summary.diff.resamples <- function(object, digits = max(3, getOption("digits") - 3), ...)
 {
-  comps <- ncol(object$difs[[1]])
-
-  
   all <- vector(mode = "list", length = length(object$metric))
   names(all) <- object$metric
 
   for(h in seq(along = object$metric))
     {
-      pvals <- matrix(NA, nrow = length(object$models), ncol = length( object$models))
+      pvals <- matrix(NA, nrow = length(object$models), ncol = length(object$models))
       meanDiff <- pvals
       index <- 0
-      for(i in seq(along = object$models))
-        {
-          for(j in seq(along = object$models))
-            {
-              
-              if(i < j)
-                {
+      for(i in seq(along = object$models)) {
+          for(j in seq(along = object$models)) {
+              if(i < j) {
                   index <- index + 1
                   meanDiff[i, j] <- object$statistics[[h]][index][[1]]$estimate
                 }
@@ -743,13 +736,9 @@ summary.diff.resamples <- function(object, digits = max(3, getOption("digits") -
         }
       
       index <- 0
-      for(i in seq(along = object$models))
-        {
-          for(j in seq(along = object$models))
-            {
-              
-              if(i < j)
-                {
+      for(i in seq(along = object$models)) {
+          for(j in seq(along = object$models)) {
+              if(i < j) {
                   index <- index + 1
                   pvals[j, i] <- object$statistics[[h]][index][[1]]$p.value
 
