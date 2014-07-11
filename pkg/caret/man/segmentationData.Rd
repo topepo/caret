@@ -11,7 +11,7 @@ The outcome class is contained in a factor variable called \code{Class} with lev
 
 The raw data used in the paper can be found at the Biomedcentral website. Versions of caret < 4.98 contained the original data. The version now contained in \code{segmentationData} is modified. First, several discrete versions of some of the predictors (with the suffix "Status") were removed. Second, there are several skewed predictors with minimum values of zero (that would benefit from some transformation, such as the log). A constant value of 1 was added to these fields: \code{AvgIntenCh2},  \code{FiberAlign2Ch3},  \code{FiberAlign2Ch4},  \code{SpotFiberCountCh4} and \code{TotalIntenCh2}.
 
-A binary version of the original data is at \url{http://caret.r-forge.r-project.org/segmentationOriginal.RData}.
+A binary version of the original data is at \url{http://topepo.github.io/caret/segmentationOriginal.RData}.
 
 }
 

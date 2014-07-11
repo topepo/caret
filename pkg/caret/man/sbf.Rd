@@ -36,7 +36,7 @@ sbf(x, ...)
 }
 
 \details{
-More details on this function can be found at \url{http://caret.r-forge.r-project.org/featureselection.html}.
+More details on this function can be found at \url{http://topepo.github.io/caret/featureselection.html#filter}.
 
 This function can be used to get resampling estimates for models when simple, filter-based feature selection is applied to the training data.
 

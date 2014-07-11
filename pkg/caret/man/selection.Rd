@@ -21,7 +21,7 @@ tolerance(x, metric, tol = 1.5, maximize)
 \details{
 These functions can be used by \code{\link{train}} to select the "optimal" model form a series of models. Each requires the user to select a metric that will be used to judge performance. For regression models, values of \code{"RMSE"} and \code{"Rsquared"} are applicable. Classification models use either \code{"Accuracy"} or \code{"Kappa"} (for unbalanced class distributions.
 
-More details on these functions can be found at \url{http://caret.r-forge.r-project.org/training.html#custom}.
+More details on these functions can be found at \url{http://topepo.github.io/caret/training.html#custom}.
 
 By default, \code{\link{train}} uses \code{best}.
 

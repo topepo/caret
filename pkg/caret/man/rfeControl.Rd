@@ -36,7 +36,7 @@ rfeControl(functions = NULL,
   \item{allowParallel}{if a parallel backend is loaded and available, should the function use it?}
 }
 \details{
-More details on this function can be found at \url{http://caret.r-forge.r-project.org/featureselection.html}.
+More details on this function can be found at \url{http://topepo.github.io/caret/featureselection.html#rfe}.
 
 Backwards selection requires function to be specified for some operations. 
 
@@ -105,7 +105,7 @@ This function should return a character string of predictor names (of length \co
 
 Examples of these functions are included in the package: \code{\link{lmFuncs}}, \code{\link{rfFuncs}}, \code{\link{treebagFuncs}} and \code{\link{nbFuncs}}.
 
-Model details about these functions, including examples, are at \url{http://caret.r-forge.r-project.org/featureselection.html}.
+Model details about these functions, including examples, are at \url{http://topepo.github.io/caret/featureselection.html}.
 .
 
 }

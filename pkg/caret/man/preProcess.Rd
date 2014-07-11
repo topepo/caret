@@ -81,7 +81,10 @@ The function will throw an error of any variables in \code{x} has less than two 
 \author{ Max Kuhn, median imputation by Zachary Mayer }
 
 \references{
-\url{http://caret.r-forge.r-project.org/preprocess.html}
+\url{http://topepo.github.io/caret/preprocess.html}
+
+Kuhn and Johnson (2013), Applied Predictive Modeling, Springer, New York (chapter 4)
+
 
 Kuhn (2008), Building predictive models in R using the caret (\url{http://www.jstatsoft.org/v28/i05/})
 

@@ -37,7 +37,7 @@ sbfControl(functions = NULL,
 }
 
 \details{
-More details on this function can be found at \url{http://caret.r-forge.r-project.org/featureselection.html}.
+More details on this function can be found at \url{http://topepo.github.io/caret/featureselection.html#filter}.
 
 Simple filter-based feature selection requires function to be specified for some operations. 
 
@@ -78,7 +78,7 @@ The function should return a named logical vector.
 
 Examples of these functions are included in the package: \code{\link{caretSBF}}, \code{\link{lmSBF}}, \code{\link{rfSBF}}, \code{\link{treebagSBF}}, \code{\link{ldaSBF}} and \code{\link{nbSBF}}.
 
-The web page  \url{http://caret.r-forge.r-project.org/} has more details and examples related to this function.
+The web page  \url{http://topepo.github.io/caret/} has more details and examples related to this function.
 
 }
 \value{

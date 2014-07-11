@@ -73,7 +73,7 @@ createTimeSlices(y, initialWindow, horizon = 1, fixedWindow = TRUE)
    data
 }
 \references{
-\url{http://caret.r-forge.r-project.org/splitting.html}
+\url{http://topepo.github.io/caret/splitting.html}
 
 Hyndman and Athanasopoulos (2013), Forecasting: principles and practice. \url{https://www.otexts.org/fpp}
 }
