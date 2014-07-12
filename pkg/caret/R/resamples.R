@@ -9,6 +9,15 @@ resamples.default <- function(x, modelNames = names(x), ...)
     classes <- unlist(lapply(x, function(x) class(x)[1]))
     if(!all(classes %in% c("sbf", "rfe", "train"))) stop("all objects in x must of class train, sbf or rfe")
 
+    if(is.null(modelNames)){
+      modelNames <- well_numbered("Model", length(x)) 
+      
+    } else {
+      if(any(modelNames == "")) {
+        no_name <- which(modelNames == "")
+        modelNames[no_name] <- well_numbered("Model", length(x))[no_name] 
+      }
+    }
  
     numResamp <- unlist(lapply(x, function(x) length(x$control$index)))
     if(length(unique(numResamp)) > 1) stop("There are different numbers of resamples in each model")
@@ -46,25 +55,19 @@ resamples.default <- function(x, modelNames = names(x), ...)
     pNames <- unique(as.vector(perfs))
 
     
-    if(is.null(modelNames)) modelNames <- paste("Model", seq(along = x))
-    for(i in seq(along = x))
-      {
-
-        ## TODO check for returnResamp in control object and select appropriate
-        ## data for train
-        if(class(x[[i]])[1] == "rfe" && x[[i]]$control$returnResamp == "all")
-          {
-            x[[i]]$resample <- subset(x[[i]]$resample, Variables == x[[i]]$bestSubset)
-          }
-##        if(class(x[[i]])[1] == "train" && x[[i]]$control$returnResamp == "all")
-##          {
-##            x[[i]]$resample <- merge(x[[i]]$resample, x[[i]]$bestTune)
-##          }          
+    for(i in seq(along = x)) {
+        if(class(x[[i]])[1] == "rfe" && x[[i]]$control$returnResamp == "all"){
+            x[[i]]$resample <- subset(x[[i]]$resample, Variables == x[[i]]$bestSubset) 
+            warning(paste0("'", modelNames[i], "' did not have 'returnResamp=\"final\"; the optimal subset is used"))
+        }
+        if(class(x[[i]])[1] == "train" && x[[i]]$control$returnResamp == "all"){
+          x[[i]]$resample <- merge(x[[i]]$resample, x[[i]]$bestTune) 
+          warning(paste0("'", modelNames[i], "' did not have 'returnResamp=\"final\"; the optimal tuning parameters are used"))
+        }        
         tmp <- x[[i]]$resample[, c(pNames, "Resample"), drop = FALSE]
         names(tmp)[names(tmp) %in% pNames] <- paste(modelNames[i], names(tmp)[names(tmp) %in% pNames], sep = "~")
         out <- if(i == 1) tmp else merge(out, tmp)
       }
-    if(any(unlist(lapply(x, function(x) x$control$returnResamp)) != "final")) stop("some model did not have 'returnResamp=\"final\"")
 
     timings <- do.call("rbind", lapply(x, getTimes))
     colnames(timings) <- c("Everything", "FinalModel", "Prediction")
