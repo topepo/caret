@@ -835,3 +835,25 @@ predict.rfe <- function(object, newdata, ...)
     newdata <- newdata[, object$optVar, drop = FALSE]
     object$control$functions$pred(object$fit, newdata)
   }
+
+
+update.rfe <- function(object, x, y, size, ...) {
+  size <- size[1]
+  selectedVars <- object$variables
+  bestVar <- object$control$functions$selectVar(selectedVars, size)  
+  object$fit <- object$control$functions$fit(x[, bestVar, drop = FALSE],
+                                             y,
+                                             first = FALSE,
+                                             last = TRUE,
+                                             ...)
+  object$bestSubset <- size
+  object$bestVar <- bestVar
+  
+  if(object$control$returnResamp == "final") {
+    warning("The saved resamples are no longer appropriate and were removed")
+    object$resampledCM <- object$resample <- NULL
+  }
+  object
+}
+
+
