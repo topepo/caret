@@ -1,3 +1,8 @@
+well_numbered <- function(prefix, items) {
+  paste0(prefix, gsub(" ", "0", format(1:items)))
+}
+
+
 evalSummaryFunction <- function(y, wts, ctrl, lev, metric, method) {
   ## get phoney performance to obtain the names of the outputs
   testOutput <- data.frame(pred = sample(y, min(10, length(y))),
