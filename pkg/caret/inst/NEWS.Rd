@@ -6,11 +6,15 @@
 \itemize{
 \item \code{plsRglm} was added. 
 
+\item A function \code{update.rfe} was added.
+
 \item \code{cluster.resamples} was added to the namespace.
 
 \item An option to choose the \code{metric} was added to  \code{summary.resamples}.
 
 \item \code{prcomp.resamples} now passed  \code{...} to \code{prcomp}.  Also the call to  \code{prcomp} uses the formula method so that  \code{na.action} can be used.
+
+\item A function \code{resamples} was enhanced so that \code{train} and \code{rfe} models that used \code{returnResamp="all"} subsets the resamples to get the appropriate values and issues a warning. The function also fills in missing model names if one or more are not given.
 
 }
 }
