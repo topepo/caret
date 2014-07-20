@@ -201,8 +201,9 @@ export(anovaScores,
        varImp,
        varImp.bagEarth,
        varImp.bagFDA,
-       xyplot.rfe,
-       varImp.plsda
+       varImp.plsda,
+       well_numbered,
+       xyplot.rfe
        )
 
 S3method(confusionMatrix, default)
