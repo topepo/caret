@@ -131,6 +131,8 @@ train.default <- function(x, y,
   }
   
   if(trControl$method != "oob" & is.null(trControl$index)) names(trControl$index) <- prettySeq(trControl$index)
+  if(is.null(names(trControl$index))) names(trControl$index) <- prettySeq(trControl$index)
+  if(is.null(names(trControl$indexOut))) names(trControl$indexOut) <- prettySeq(trControl$indexOut)
   
   if(!is.data.frame(x)) x <- as.data.frame(x)
   
