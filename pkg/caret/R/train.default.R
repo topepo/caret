@@ -106,7 +106,14 @@ train.default <- function(x, y,
                               timeslice = createTimeSlices(seq(along = y),
                                                            initialWindow = trControl$initialWindow,
                                                            horizon = trControl$horizon,
-                                                           fixedWindow = trControl$fixedWindow)$train)
+                                                           fixedWindow = trControl$fixedWindow)$train,
+                              subsemble = subsemble_index(y, V = trControl$number, J = trControl$repeats))
+  }
+  
+  if(trControl$method == "subsemble") {
+    if(!trControl$savePredictions) trControl$savePredictions <- TRUE
+    trControl$indexOut <- trControl$index$holdout
+    trControl$index <- trControl$index$model    
   }
   
   ## Create hold--out indicies

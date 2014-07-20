@@ -1,3 +1,28 @@
+
+subsemble_index <- function(y, J = 2, V = 10){
+  dat <- data.frame(y = y, index = seq(along = y))
+  outer_index <- sample(1:J, size = nrow(dat), replace = TRUE)
+  outer_splits <- vector(mode = "list", length = J)
+  for(i in 1:J) {
+    outer_splits[[i]] <- dat[outer_index == i,]
+    outer_splits[[i]]$label <- well_numbered("Outer", J)[i]
+  }
+  foo <- function(x, V = 10) {
+    inner_index_0 <- createFolds(x$y, k = V, returnTrain = TRUE)
+    modeling_index <- lapply(inner_index_0, function(x, y) y[x], y = x$index)
+    holdout_index <- lapply(inner_index_0, function(x, y) y[-unique(x)], y = x$index)
+    names(modeling_index) <- names(holdout_index) <- paste(x$label[1], names(modeling_index), sep = ".")
+    list(model = modeling_index, holdout = holdout_index)
+  }
+  all_index <- lapply(outer_splits, foo, V = V)
+  model_index <- holdout_index <- NULL
+  for(i in seq(along = all_index)) {
+    model_index   <- c(model_index,   all_index[[i]]$model)
+    holdout_index <- c(holdout_index, all_index[[i]]$holdout)
+  }
+  list(model = model_index, holdout = holdout_index)  
+}
+
 well_numbered <- function(prefix, items) {
   paste0(prefix, gsub(" ", "0", format(1:items)))
 }
