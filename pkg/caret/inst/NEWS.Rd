@@ -16,6 +16,8 @@
 
 \item A function \code{resamples} was enhanced so that \code{train} and \code{rfe} models that used \code{returnResamp="all"} subsets the resamples to get the appropriate values and issues a warning. The function also fills in missing model names if one or more are not given.
 
+\item Several regression simulation functions were added: \code{SLC14_1}, \code{SLC14_2}, \code{LPH07_1} and \code{LPH07_2}
+
 }
 }
 

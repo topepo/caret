@@ -1,6 +1,4 @@
-## These are from Sapp, S., van der Laan, M. J., & Canny, J. (2014). 
-## Subsemble: an ensemble method for combining subset-specific algorithm 
-## fits. Journal of Applied Statistics, 41(6), 1247-1259.
+
 
 make_noise <- function(n, noiseVars = 0, 
                        corrVars = 0, corrType = "AR1", corrValue = 0) {

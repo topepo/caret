@@ -1,15 +1,31 @@
 \name{twoClassSim}
 \alias{twoClassSim}
+\alias{SLC14_1}
+\alias{SLC14_2}
+\alias{LPH07_1}
+\alias{LPH07_2}
 \title{
-Two-Class Simulations
+Simulation Functions
 }
 \description{
-This function simulates data with two classes, truly important predictors and irrelevant predictions.
+This function simulates regression and classification data with truly important predictors and irrelevant predictions.
 }
 \usage{
-twoClassSim(n = 100, intercept = -5, 
-            linearVars = 10, noiseVars = 0, corrVars = 0, 
+twoClassSim(n = 100, intercept = -5, linearVars = 10, 
+	        noiseVars = 0, corrVars = 0, 
             corrType = "AR1", corrValue = 0, mislabel = 0)
+
+SLC14_1(n = 100, noiseVars = 0, corrVars = 0, 
+	    corrType = "AR1", corrValue = 0)
+
+SLC14_2(n = 100, noiseVars = 0, corrVars = 0, 
+	    corrType = "AR1", corrValue = 0)
+
+LPH07_1(n = 100, noiseVars = 0, corrVars = 0, 
+	    corrType = "AR1", corrValue = 0)
+
+LPH07_2(n = 100, noiseVars = 0, corrVars = 0, 
+	    corrType = "AR1", corrValue = 0)
 }
 \arguments{
   \item{n}{
@@ -38,7 +54,7 @@ The correlation value.
   }
 }
 \details{
-The data are simulated in sets. First, two multivariate normal predictors (denoted here as \code{A} and \code{B}) are created with a correlation our about 0.65. They change the log-odds using main effects and an interaction:
+The first function (\code{twoClassSim}) generates two class data. The data are simulated in different sets. First, two multivariate normal predictors (denoted here as \code{A} and \code{B}) are created with a correlation our about 0.65. They change the log-odds using main effects and an interaction:
 
 \preformatted{
 intercept - 4A + 4B + 2AB 
@@ -66,7 +82,46 @@ The fourth set of informative predictors are copied from one of Friedman's syste
 
 All of these effects are added up to model the log-odds. This is used to calculate the probability of a sample being in the first class and a random uniform number is used to actually make the assignment of the actual class. To mislabel the data, the probability is reversed (i.e. \code{p = 1 - p}) before the random number generation. 
 
-The user can also add non-informative predictors to the data. These are random standard normal predictors and can be optionally added to the data in two ways: a specified number of independent predictors or a set number of predictors that follow a particular correlation structure. The only two correlation structure that have been implemented are 
+The remaining functions simulate regression data sets. \code{LPH07_1} and \code{LPH07_2} are from van der Laan et al (2007). The first function uses random Bernoulli variables that have a 40\% probability of being a value of 1. The true regression equation is:
+
+\preformatted{
+2*w_1*w_10 + 4*w_2*w_7 + 3*w_4*w_5 
+- 5*w_6*w_10 + 3*w_8*w_9 + w_1*w_2*w_4 
+- 2*w_7*(1-w_6)*w_2*w_9 
+- 4*(1 - w_10)*w_1*(1-w_4)
+}
+
+The simulated error term is a standard normal (i.e. Gaussian). The second function uses 20 independent Gaussians with mean zero and variance 16. The functional form here is:
+
+\preformatted{
+x_1*x_2 + x_10^2 - x_3*x_17 
+- x_15*x_4 + x_9*x_5 + x_19 
+- x_20^2 + x_9*x_8
+}
+
+The error term is also Gaussian with mean zero and variance 16.
+
+The function \code{SLC14_1} simulates a system from Sapp et al (2014). All informative predictors are independent Gaussian random variables with mean zero and a variance of 9. The prediction equation is:
+
+\preformatted{
+x_1 + sin(x_2) + log(abs(x_3)) + x_4^2 + x_5*x_6 + 
+I(x_7*x_8*x_9 < 0) + I(x_10 > 0) + x_11*I(x_11 > 0) + 
+sqrt(abs(x_12)) + cos(x_13) + 2*x_14 + abs(x_15) + 
+I(x_16 < -1) + x_17*I(x_17 < -1) - 2 * x_18 - x_19*x_20
+}
+
+The random error here is also Gaussian with mean zero and a variance of 9. 
+
+\code{SLC14_2} is also from Sapp et al (2014). Two hundred independent Gaussian variables are generated, each having mean zero and variance 16. The functional form is
+
+\preformatted{
+-1 + log(abs(x_1)) + ... + log(abs(x_200))
+}
+
+and the error term is Gaussian with mean zero and a variance of 25. 
+
+
+For each simulation, the user can also add non-informative predictors to the data. These are random standard normal predictors and can be optionally added to the data in two ways: a specified number of independent predictors or a set number of predictors that follow a particular correlation structure. The only two correlation structure that have been implemented are 
 
 \itemize{
 \item compound-symmetry (aka exchangeable) where there is a constant correlation between all the predictors
@@ -100,6 +155,12 @@ Max Kuhn
 \examples{
 example <- twoClassSim(100, linearVars = 1)
 splom(~example[, 1:6], groups = example$Class)
+}
+
+\references{
+van der Laan, M. J., & Polley Eric, C. (2007). Super learner. Statistical Applications in Genetics and Molecular Biology, 6(1), 1–23.
+
+Sapp, S., van der Laan, M. J., & Canny, J. (2014). Subsemble: an ensemble method for combining subset-specific algorithm fits. Journal of Applied Statistics, 41(6), 1247–1259.	
 }
 
 \keyword{models}
