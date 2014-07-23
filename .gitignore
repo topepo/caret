@@ -2,3 +2,7 @@
 *.o
 
 *.so
+
+pkg/caret/DESCRIPTION~
+
+pkg/caret_6.0-31.tar.gz
