@@ -424,3 +424,10 @@ S3method(levels, train)
 
 S3method(ggplot, train)
 S3method(ggplot, rfe)
+
+S3method(oob_pred, train)
+S3method(oob_pred, rfe)
+S3method(oob_pred, sbf)
+S3method(oob_pred, list)
+
+
