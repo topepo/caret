@@ -142,7 +142,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
       scaleValue[which(scaleValue == 0)] <- 1
     }
 
-  cols <- if(any(method == "knnImpute")) which(apply(x, 2, function(x) !any(is.na(x)))) else NULL
+  cols <- if(any(method == "knnImpute")) which(apply(x, 2, function(x) any(is.na(x)))) else NULL
 
   if(any(method == "bagImpute"))
     {
