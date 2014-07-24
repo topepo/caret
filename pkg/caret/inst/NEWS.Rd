@@ -4,7 +4,7 @@
 
 \section{Changes in version 6.0-xx}{
 \itemize{
-\item \code{plsRglm} was added. 
+\item \code{plsRglm} was added as was a two-layer neural network (\code{brnn_extended}).
 
 \item A function \code{update.rfe} was added.
 
@@ -17,6 +17,8 @@
 \item A function \code{resamples} was enhanced so that \code{train} and \code{rfe} models that used \code{returnResamp="all"} subsets the resamples to get the appropriate values and issues a warning. The function also fills in missing model names if one or more are not given.
 
 \item Several regression simulation functions were added: \code{SLC14_1}, \code{SLC14_2}, \code{LPH07_1} and \code{LPH07_2}
+
+\item \code{print.train} was re-factored so that \code{format.data.frame} is now used. This should behave better when using \cpkg{knitr}. 
 
 }
 }
