@@ -24,6 +24,7 @@ test_class_cv_model <- train(trainX, trainY,
                              method = "plsRglm", 
                              trControl = cctrl1,
                              metric = "ROC", 
+                             verbose = FALSE,
                              preProc = c("center", "scale"))
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
@@ -34,6 +35,7 @@ test_class_loo_model <- train(trainX, trainY,
                               method = "plsRglm", 
                               trControl = cctrl2,
                               metric = "ROC", 
+                              verbose = FALSE, 
                               preProc = c("center", "scale"))
 
 set.seed(849)
@@ -42,6 +44,7 @@ test_class_none_model <- train(trainX, trainY,
                                trControl = cctrl3,
                                tuneGrid = data.frame(nt = 1, alpha.pvals.expli = 1),
                                metric = "ROC", 
+                               verbose = FALSE, 
                                preProc = c("center", "scale"))
 
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
@@ -70,20 +73,23 @@ rctrl3 <- trainControl(method = "none")
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
                            method = "plsRglm", 
-                           trControl = rctrl1,
+                           trControl = rctrl1, 
+                           verbose = FALSE,
                            preProc = c("center", "scale"))
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 
                             method = "plsRglm",
-                            trControl = rctrl2,
+                            trControl = rctrl2, 
+                            verbose = FALSE,
                             preProc = c("center", "scale"))
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
                              method = "plsRglm", 
-                             trControl = rctrl3,
+                             trControl = rctrl3, 
+                             verbose = FALSE,
                              tuneGrid = data.frame(nt = 1, alpha.pvals.expli = 1),
                              preProc = c("center", "scale"))
 test_reg_none_pred <- predict(test_reg_none_model, testX)
