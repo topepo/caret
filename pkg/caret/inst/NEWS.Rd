@@ -2,7 +2,7 @@
 \title{News for Package \pkg{caret}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{Changes in version 6.0-xx}{
+\section{Changes in version 6.0-32}{
 \itemize{
 \item \code{plsRglm} was added as was a two-layer neural network (\code{brnn_extended}).
 
@@ -19,6 +19,11 @@
 \item Several regression simulation functions were added: \code{SLC14_1}, \code{SLC14_2}, \code{LPH07_1} and \code{LPH07_2}
 
 \item \code{print.train} was re-factored so that \code{format.data.frame} is now used. This should behave better when using \cpkg{knitr}. 
+
+\item The error message in \code{train.formula} was improved to provide more helpful feedback in cases where there is at least one missing value in each row of the data set. 
+
+\item For the input data \code{x} to \code{train}, we now  respect the class of the input value to accommodate other data types (such as sparse matrices). There are some complications though; for pre-processing we throw a
+warning if the data are not simple matrices or data frames since there is some infrastructure that does not exist for other classes( e.g. \code{complete.cases}). We also throw a warning if \code{returnData <- TRUE} and it cannot be converted to a data frame.
 
 }
 }

@@ -69,8 +69,8 @@ test_class_cv_3_model <- train(Species ~ ., data = iris,
                                method = "glmnet", 
                                trControl = cctrl4,
                                preProc = c("center", "scale"),
-                               tuneGrid = expand.grid(.alpha = seq(.05, 1, length = 15),
-                                                      .lambda = c((1:5)/10)))
+                               tuneGrid = expand.grid(alpha = seq(.05, 1, length = 15),
+                                                      lambda = c((1:5)/10)))
 
 test_class_pred <- predict(test_class_cv_3_model, iris[, 1:4])
 
@@ -79,8 +79,8 @@ test_class_loo_3_model <- train(Species ~ ., data = iris[sample(1:150, 20),],
                                 method = "glmnet", 
                                 trControl = cctrl5,
                                 preProc = c("center", "scale"),
-                                tuneGrid = expand.grid(.alpha = seq(.05, 1, length = 15),
-                                                       .lambda = c((1:5)/10)))
+                                tuneGrid = expand.grid(alpha = seq(.05, 1, length = 15),
+                                                       lambda = c((1:5)/10)))
 
 set.seed(849)
 test_class_none_3_model <- train(Species ~ ., data = iris, 
@@ -96,7 +96,7 @@ test_class_none_pred <- predict(test_class_none_3_model, iris[, 1:4])
 library(glmnet)
 ## From ?cv.glmnet 
 set.seed(1010)
-n=1000;p=100
+n=1000;p=30
 nzc=trunc(p/10)
 x=matrix(rnorm(n*p),n,p)
 beta=rnorm(nzc)
@@ -114,16 +114,16 @@ set.seed(849)
 test_reg_cv_model <- train(x, y, method = "glmnet",
                            preProc = c("center", "scale"),
                            trControl = rctrl1,
-                           tuneGrid = data.frame(.alpha = c(.5, 1),
-                                                 .lambda = cvob1$lambda))
+                           tuneGrid = expand.grid(alpha = c(.5, 1),
+                                                 lambda = cvob1$lambda))
 test_reg_pred <- predict(test_reg_cv_model, x)
 
 set.seed(849)
 test_reg_loo_model <- train(x, y, method = "glmnet",
                             preProc = c("center", "scale"),
                             trControl = rctrl2,
-                            tuneGrid = data.frame(.alpha = c(.5, 1),
-                                                  .lambda = cvob1$lambda))
+                            tuneGrid = expand.grid(alpha = c(.5, 1),
+                                                  lambda = cvob1$lambda))
 
 set.seed(849)
 test_reg_none_model <- train(x, y, 
@@ -132,6 +132,41 @@ test_reg_none_model <- train(x, y,
                              tuneGrid = test_reg_cv_model$bestTune,
                              preProc = c("center", "scale"))
 test_reg_none_pred <- predict(test_reg_none_model, x)
+
+#########################################################################
+
+library(Matrix)
+
+rctrl1$returnData <- FALSE
+rctrl2$returnData <- FALSE
+rctrl3$returnData <- FALSE
+
+x2 <- Matrix(matrix(sample(0:1, 
+                           size = p*nrow(x),
+                           replace = TRUE),
+                    ncol = p), sparse = TRUE)
+
+cvob2=cv.glmnet(x2,y)
+
+set.seed(849)
+test_sparse_cv_model <- train(x2, y, method = "glmnet",
+                              trControl = rctrl1,
+                              tuneGrid = expand.grid(alpha = c(.5, 1),
+                                                    lambda = cvob2$lambda[-(1:5)]))
+test_sparse_pred <- predict(test_sparse_cv_model, x2)
+
+set.seed(849)
+test_sparse_loo_model <- train(x2, y, method = "glmnet",
+                               trControl = rctrl2,
+                               tuneGrid = expand.grid(alpha = c(.5, 1),
+                                                     lambda = cvob2$lambda[-(1:5)]))
+
+set.seed(849)
+test_sparse_none_model <- train(x2, y, 
+                                method = "glmnet", 
+                                trControl = rctrl3,
+                                tuneGrid = test_sparse_cv_model$bestTune)
+test_sparse_none_pred <- predict(test_sparse_none_model, x2)
 
 #########################################################################
 
