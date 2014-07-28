@@ -5,7 +5,7 @@ modelInfo <- list(label = "Bayesian Regularized Neural Networks",
                                           class = c("numeric", "numeric"),
                                           label = c('Layer 1 Neurons', 'Layer 2 Neurons')),
                   grid = function(x, y, len = NULL)
-                    expand.grid(neurons1 = 1:len, neurons2 = 1:len,
+                    expand.grid(neurons1 = 1:len, neurons2 = 1:len),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
                     brnn(as.matrix(x), y, 

@@ -11,7 +11,7 @@ modelInfo <- list(label = "k-Nearest Neighbors",
                                kernel = "optimal")
                   ,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     train.kknn(.outcome ~ ., data = dat,
                                kmax = param$kmax,

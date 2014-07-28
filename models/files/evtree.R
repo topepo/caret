@@ -8,7 +8,7 @@ modelInfo <- list(label = "Tree Models from Genetic Algorithms",
                   grid = function(x, y, len = NULL)
                     data.frame(alpha = seq(0, 1, length = len)),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     theDots <- list(...)
                     

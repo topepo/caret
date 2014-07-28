@@ -5,7 +5,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                                           class = c("numeric", "numeric"),
                                           label = c('#Terms', 'Product Degree')),
                   grid = function(x, y, len = NULL) {
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     
                     mod <- earth( .outcome~., data = dat, pmethod = "none")

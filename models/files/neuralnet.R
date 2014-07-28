@@ -9,7 +9,7 @@ modelInfo <- list(label = "Neural Network",
                     expand.grid(layer1 = ((1:len) * 2) - 1, layer2 = 0, layer3 = 0),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     colNames <- colnames(x)
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     form <- as.formula(paste(".outcome ~",paste(colNames, collapse = "+")))
                     if(param$layer1 == 0) stop("the first layer must have at least one hidden unit")

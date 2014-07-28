@@ -8,7 +8,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                   grid = function(x, y, len = NULL) 
                     expand.grid(select = c(TRUE, FALSE), method = "GCV.Cp"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     modForm <- caret:::smootherFormula(x)
                     if(is.factor(y)) {
                       dat$.outcome <- ifelse(y == lev[1], 1, 0)

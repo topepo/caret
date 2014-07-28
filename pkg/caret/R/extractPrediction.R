@@ -25,7 +25,7 @@ extractPrediction <- function(models,
   pred <- obs <- modelName <- dataType <- objName <- NULL
   if(!is.null(testX))
   {
-    if(!is.data.frame(testX)) testX <- as.data.frame(testX)
+    #if(!is.data.frame(testX)) testX <- as.data.frame(testX)
     hasNa <- apply(testX, 1, function(data) any(is.na(data)))
     if(verbose) cat("There were ", sum(hasNa), "rows with missing values\n\n")
   }
@@ -57,14 +57,12 @@ extractPrediction <- function(models,
       
       if(!is.null(testX) & !is.null(testY))
       {
-        if(!is.data.frame(testX)) testX <- as.data.frame(testX)
-        tempX <- testX
-        tempY <- testY
-        tempX$.outcome <- NULL
+        if(any(colnames(testX) == ".outcome")) 
+         testX <- testX[, colnames(testX) != ".outcome", drop = FALSE]
         
         tempTestPred <- predictionFunction(models[[i]]$modelInfo,
                                            models[[i]]$finalModel, 
-                                           tempX, 
+                                           testX, 
                                            models[[i]]$preProcess)              
         
         if(verbose) cat(models[[i]]$method, ":", length(tempTestPred), "test predictions were added\n")         
@@ -72,11 +70,11 @@ extractPrediction <- function(models,
         if(models[[i]]$modelType == "Classification")
         {
           pred <- c(pred, as.character(tempTestPred))
-          obs <- c(obs, as.character(tempY))    
+          obs <- c(obs, as.character(testY))    
         } else {
           tempTestPred <- trimPredictions(models[[i]], tempTestPred)
           pred <- c(pred, tempTestPred)   
-          obs <- c(obs, tempY) 
+          obs <- c(obs, testY) 
         }
         
         modelName <- c(modelName, rep(models[[i]]$method, length(tempTestPred)))
@@ -88,13 +86,11 @@ extractPrediction <- function(models,
     }
     if(!is.null(unkX))
     {
-      if(!is.data.frame(unkX)) unkX <- as.data.frame(unkX)
-      tempX <- unkX
-      tempX$.outcome <- NULL
-      
+      if(any(colnames(unkX) == ".outcome")) 
+         unkX <- unkX[, colnames(unkX) != ".outcome", drop = FALSE]
       tempUnkPred <- predictionFunction(models[[i]]$modelInfo,
                                         models[[i]]$finalModel, 
-                                        tempX, 
+                                        unkX, 
                                         models[[i]]$preProcess)     
       
       if(verbose) cat(models[[i]]$method, ":", length(tempUnkPred), "unknown predictions were added\n")         

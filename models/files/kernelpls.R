@@ -17,7 +17,7 @@ modelInfo <- list(label = "Partial Least Squares",
                     {      
                       plsda(x, y, method = "oscorespls", ncomp = param$ncomp, ...)
                     } else {
-                      dat <- x
+                      dat <- if(is.data.frame(x)) x else as.data.frame(x)
                       dat$.outcome <- y
                       plsr(.outcome ~ ., data = dat, method = "kernelpls", ncomp = param$ncomp, ...)
                     }

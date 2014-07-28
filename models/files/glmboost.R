@@ -28,7 +28,7 @@ modelInfo <- list(label = "Boosted Generalized Linear Model",
                     ## pass in any model weights
                     if(!is.null(wts)) theDots$weights <- wts                       
                     
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."), data = dat, control = ctl), 
                                    theDots)

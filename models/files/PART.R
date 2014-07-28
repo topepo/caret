@@ -8,7 +8,7 @@ modelInfo <- list(label = "Rule-Based Classifier",
                   grid = function(x, y, len = NULL) 
                     data.frame(threshold = 0.25, pruned = "yes"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     theDots <- list(...)
                     

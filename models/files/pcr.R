@@ -13,7 +13,7 @@ modelInfo <- list(label = "Principal Component Analysis",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     pcr(.outcome ~ ., data = dat, ncomp = param$ncomp, ...)
                   },

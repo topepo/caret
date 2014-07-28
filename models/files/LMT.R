@@ -7,7 +7,7 @@ modelInfo <- list(label = "Logistic Model Trees",
                                           label = "# Iteratons"),
                   grid = function(x, y, len = NULL) data.frame(iter = 1+(0:(len-1)) * 20),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     theDots <- list(...)
                     

@@ -17,7 +17,7 @@ modelInfo <- list(label = "Flexible Discriminant Analysis",
                                degree = 1)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     fda(.outcome ~ ., data = dat, method = earth, 
                         degree = param$degree,

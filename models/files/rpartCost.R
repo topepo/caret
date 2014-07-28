@@ -5,7 +5,7 @@ modelInfo <- list(label = "Cost-Sensitive CART",
                                           class = c("numeric", "numeric"),
                                           label = c("Complexity Parameter", "Cost")),
                   grid = function(x, y, len = NULL){
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     initialFit <- rpart(.outcome ~ .,
                                         data = dat,

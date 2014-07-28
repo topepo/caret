@@ -8,7 +8,7 @@ modelInfo <- list(label = "Neural Network",
                   grid = function(x, y, len = NULL) expand.grid(size = ((1:len) * 2) - 1, 
                                                                 decay = c(0, 10 ^ seq(-1, -4, length = len - 1))),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     if(!is.null(wts))
                     {

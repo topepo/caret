@@ -8,7 +8,7 @@ modelInfo <- list(label = "Generalized Additive Model using LOESS",
                   grid = function(x, y, len = NULL) 
                     expand.grid(span = .5, degree = 1),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     
                     gam:::gam(caret:::smootherFormula(x,

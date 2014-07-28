@@ -8,7 +8,7 @@ modelInfo <- list(label = "Mixture Discriminant Analysis",
                   grid = function(x, y, len = NULL) 
                     data.frame(subclasses = (1:len) + 1),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     mda(as.formula(".outcome ~ ."), data = dat, 
                         subclasses = param$subclasses, ...)      

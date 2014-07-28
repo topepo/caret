@@ -5,7 +5,7 @@ modelInfo <- list(label = "CART",
                                           class = c("numeric"),
                                           label = c("Max Tree Depth")),
                   grid = function(x, y, len = NULL){
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     initialFit <- rpart(.outcome ~ .,
                                         data = dat,

@@ -14,9 +14,6 @@
 ##    do the real work
 ## 3. TEST TEST TEST
 
-
-## test the crap out of this and circulate to LA group
-
 ###################################################################
 ##
 

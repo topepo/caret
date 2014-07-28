@@ -8,7 +8,7 @@ modelInfo <- list(label = "Penalized Discriminant Analysis",
                   grid = function(x, y, len = NULL) 
                     data.frame(lambda = 1:len),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     if(!is.null(wts))
                     {

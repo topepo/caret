@@ -131,10 +131,10 @@ train.default <- function(x, y,
   }
   
   if(trControl$method != "oob" & is.null(trControl$index)) names(trControl$index) <- prettySeq(trControl$index)
-  if(is.null(names(trControl$index))) names(trControl$index) <- prettySeq(trControl$index)
-  if(is.null(names(trControl$indexOut))) names(trControl$indexOut) <- prettySeq(trControl$indexOut)
+  if(trControl$method != "oob" & is.null(names(trControl$index)))    names(trControl$index)    <- prettySeq(trControl$index)
+  if(trControl$method != "oob" & is.null(names(trControl$indexOut))) names(trControl$indexOut) <- prettySeq(trControl$indexOut)
   
-  if(!is.data.frame(x)) x <- as.data.frame(x)
+#   if(!is.data.frame(x)) x <- as.data.frame(x)
   
   ## Gather all the pre-processing info. We will need it to pass into the grid creation
   ## code so that there is a concorance between the data used for modeling and grid creation
@@ -485,8 +485,11 @@ train.default <- function(x, y,
   if(method == "glmnet") finalModel$lambdaOpt <- bestTune$lambda
   
   if(trControl$returnData) { 
-    outData <- if(!is.data.frame(x)) as.data.frame(x) else x
-    outData$.outcome <- y
+    outData <- if(!is.data.frame(x)) try(as.data.frame(x), silent = TRUE) else x
+    if(class(outData)[1] == "try-error") {
+      warning("The training data could not be converted to a data frame for saving")
+      outData <- NULL
+    } else  outData$.outcome <- y
   } else outData <- NULL
   
   ## In the case of pam, the data will need to be saved differently
@@ -536,7 +539,7 @@ train.formula <- function (form, data, ..., weights, subset, na.action = na.fail
   m$... <- m$contrasts <- NULL
   m[[1]] <- as.name("model.frame")
   m <- eval.parent(m)
-  stopifnot(nrow(m)>1)
+  if(nrow(m) < 1) stop("Every row has at least one missing value were found")
   Terms <- attr(m, "terms")
   x <- model.matrix(Terms, m, contrasts, na.action = na.action)
   cons <- attr(x, "contrast")

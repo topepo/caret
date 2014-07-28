@@ -9,7 +9,7 @@ modelInfo <- list(label = "Oblique Trees",
                     expand.grid(oblique.splits = c("only", "on", "off"),
                                 variable.selection = c("none", "model.selection.aic")),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
-                    dat <- x
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     oblique.tree(.outcome ~ ., data = dat,
                                  oblique.splits = as.character(param$oblique.splits),
