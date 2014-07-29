@@ -22,18 +22,23 @@ rctrl2 <- trainControl(method = "LOOCV")
 rctrl3 <- trainControl(method = "none")
 
 set.seed(849)
-test_reg_cv_model <- train(trainX[, 1:3], trainY, method = "brnn", trControl = rctrl1)
+test_reg_cv_model <- train(trainX[, 1:3], trainY, method = "brnn", 
+                           tuneLength = 2,
+                           trControl = rctrl1, verbose =FALSE)
 test_reg_pred <- predict(test_reg_cv_model, testX[, 1:3])
 
 set.seed(849)
-test_reg_loo_model <- train(trainX[, 1:3], trainY, method = "brnn", trControl = rctrl2)
+test_reg_loo_model <- train(trainX[, 1:3], trainY, method = "brnn", 
+                            tuneLength = 2, trControl = rctrl2, 
+                            verbose =FALSE)
 
 set.seed(849)
 test_reg_none_model <- train(trainX[, 1:3], trainY, 
-                             method = "lm", 
+                             method = "brnn", 
                              trControl = rctrl3,
-                             tuneLength = test_reg_cv_model$bestTune,
-                             preProc = c("center", "scale"))
+                             tuneGrid = test_reg_cv_model$bestTune,
+                             preProc = c("center", "scale"), 
+                             verbose =FALSE)
 test_reg_none_pred <- predict(test_reg_none_model, testX[, 1:3])
 
 #########################################################################
