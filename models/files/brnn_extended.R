@@ -8,9 +8,9 @@ modelInfo <- list(label = "Bayesian Regularized Neural Networks",
                     expand.grid(neurons1 = 1:len, neurons2 = 1:len),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    brnn(as.matrix(x), y, 
-                         neurons1 = param$neurons1, 
-                         neurons2 = param$neurons2, ...),
+                    brnn_extended(as.matrix(x), y, 
+                                  neurons1 = param$neurons1, 
+                                  neurons2 = param$neurons2, ...),
                   predict = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit,as.matrix(newdata)),
                   prob = NULL,

@@ -1,4 +1,4 @@
-setwd("/Users/kuhna03/Code/caret/RegressionTests")
+setwd("/Users/kuhna03/Code/github/caret/RegressionTests")
 
 #############################################################################
 
@@ -6,13 +6,11 @@ newPath <- paste(format(Sys.time(), "%Y_%m_%d_%H"),
                  packageDescription("caret")$Version,
                  sep = "__")
                  
-dir.create(newPath)
+dir.create(paste0("~/tmp/", newPath))
 
 testFiles <- list.files(file.path(getwd(), "Code"),
                         full.names = TRUE)
-newFiles <- gsub("/RegressionTests/Code/",
-                 paste("/RegressionTests/", newPath, "/", sep = ""),
-                 testFiles)
+newFiles <- paste0("~/tmp/", newPath, "/", basename(testFiles))
 
 file.copy(testFiles, newFiles)
 
@@ -45,7 +43,7 @@ cat(deps, sep = "")
 mf <- c("SHELL = /bin/bash\n\n", deps,
           paste(header, strt, batch, fini, sep = ""))
 
-cat(mf, sep = "",  file = file.path(getwd(), newPath, "makefile"))
+cat(mf, sep = "",  file = file.path("~/tmp", newPath, "makefile"))
 
 #############################################################################
 ## missing tests
@@ -57,7 +55,7 @@ if(FALSE){
   testfiles <- gsub(".R", "", rFiles, fixed = TRUE)
   
   testFiles <- list.files(file.path(getwd(), "Code"))
-  modelFiles <- list.files("/Users/kuhna03/Code/caret/pkg/caret/inst/models")  
+  modelFiles <- list.files("/Users/kuhna03/Code/github/caret/pkg/caret/inst/models")  
   
   modelFiles[!(modelFiles %in% testFiles)]
 }

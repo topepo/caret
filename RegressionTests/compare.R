@@ -1,9 +1,9 @@
-setwd("/Users/kuhna03/Code/caret/RegressionTests")
+setwd("~/tmp")
 
 ##############################################################
 
-Old <- "2013_12_09_15__5.17-7"
-New <- "2013_12_09_13__6.00-9"
+Old <- "2014_07_28_19__6.0-30"
+New <- "2014_07_28_12__6.0-32"
 
 oldResults <- list.files(file.path(getwd(), Old), pattern = "RData")
 newResults <- list.files(file.path(getwd(), New), pattern = "RData")
