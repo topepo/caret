@@ -6,3 +6,7 @@
 pkg/caret/DESCRIPTION~
 
 pkg/caret_6.0-31.tar.gz
+
+RegressionTests/.Rhistory
+
+pkg/caret_6.0-32.tar.gz
