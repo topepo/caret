@@ -4,7 +4,7 @@
 
 \section{Changes in version 6.0-32}{
 \itemize{
-\item \code{plsRglm} was added as was a two-layer neural network (\code{brnn_extended}).
+\item \code{plsRglm} was added.
 
 \item A function \code{update.rfe} was added.
 
