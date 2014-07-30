@@ -1,0 +1,53 @@
+library(caret)
+timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
+
+model <- "svmBoundrangeString"
+
+#########################################################################
+
+library(kernlab)
+data(reuters)
+
+cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
+cctrl2 <- trainControl(method = "LOOCV", savePredictions = TRUE)
+cctrl3 <- trainControl(method = "none",
+                       classProbs = TRUE, summaryFunction = twoClassSummary)
+
+set.seed(849)
+test_class_cv_model <- train(matrix(reuters, ncol = 1), rlabels, 
+                             method = "svmBoundrangeString",
+                             trControl = cctrl1)
+
+test_class_pred <- predict(test_class_cv_model, matrix(reuters, ncol = 1))
+
+set.seed(849)
+test_class_loo_model <- train(matrix(reuters, ncol = 1), rlabels, 
+                              method = "svmBoundrangeString",
+                              trControl = cctrl2)
+
+set.seed(849)
+test_class_none_model <- train(matrix(reuters, ncol = 1), rlabels, 
+                               method = "svmBoundrangeString", 
+                               trControl = cctrl3,
+                               tuneGrid = test_class_cv_model$bestTune,
+                               metric = "ROC")
+
+test_class_none_pred <- predict(test_class_none_model, matrix(reuters, ncol = 1))
+test_class_none_prob <- predict(test_class_none_model, matrix(reuters, ncol = 1), type = "prob")
+
+test_levels <- levels(test_class_cv_model)
+if(!all(levels(trainY) %in% test_levels))
+  cat("wrong levels")
+
+#########################################################################
+
+tests <- grep("test_", ls(), fixed = TRUE, value = TRUE)
+
+sInfo <- sessionInfo()
+
+save(list = c(tests, "sInfo", "timestamp"),
+     file = file.path(getwd(), paste(model, ".RData", sep = "")))
+
+q("no")
+
+
