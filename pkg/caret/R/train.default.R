@@ -37,6 +37,18 @@ train.default <- function(x, y,
   funcCall <- match.call(expand.dots = TRUE)
   modelType <- if(is.factor(y)) "Classification"  else "Regression"
   if(!(modelType %in% models$type)) stop(paste("wrong model type for", tolower(modelType)))
+
+  if(grepl("^svm", method) & grepl("String$", mods)) {
+    if(is.vector(x) && is.character(x)) {
+      stop("'x' should be a character matrix with a single column for string kernel methods")
+    }
+    if(is.matrix(x) && is.numeric(x)) {
+      stop("'x' should be a character matrix with a single column for string kernel methods")
+    }
+    if(is.data,frame(x)) {
+      stop("'x' should be a character matrix with a single column for string kernel methods")
+    }
+  }
   
   if(any(class(x) == "data.table")) x <- as.data.frame(x)
   stopifnot(length(y) > 1)
