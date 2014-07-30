@@ -31,7 +31,7 @@ stringFunc <- function (x)  {
       cat(chDim[1], 
           " samples\n", 
           chDim[2],
-          " predictors\n",
+          " predictor", ifelse(chDim[2] > 1, "s\n", "\n"),
           sep = "")
       if(is.character(lev)){
         cat(chDim[3], 
