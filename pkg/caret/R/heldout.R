@@ -20,7 +20,7 @@
 oob_pred <- function (x, ...) UseMethod("oob_pred")
 
 oob_pred.train <- function(x, best = TRUE, average = TRUE) {
-  library(plyr)
+
   if(is.null(x$pred)) 
     stop("re-fit the model using 'trainControl(savePredictions=TRUE)'")
   prd <- x$pred
@@ -45,7 +45,7 @@ oob_pred.train <- function(x, best = TRUE, average = TRUE) {
 }
 
 oob_pred.rfe <- function(x, best = TRUE, average = TRUE) {
-  library(plyr)
+
   if(is.null(x$pred)) 
     stop("re-fit the model using 'rfeControl(saveDetails=TRUE)'")
   prd <- x$pred
@@ -70,7 +70,7 @@ oob_pred.rfe <- function(x, best = TRUE, average = TRUE) {
 }
 
 oob_pred.sbf <- function(x, average = TRUE) {
-  library(plyr)
+
   if(is.null(x$pred)) 
     stop("re-fit the model using 'rfeControl(saveDetails=TRUE)'")
   prd <- x$pred[names(x$pred) == "predictions"]
