@@ -17,6 +17,7 @@
 \alias{cforestStats}
 \alias{ipredStats}
 \alias{rfStats}
+\alias{well_numbered}
 
 \description{Internal functions}
 \usage{
@@ -41,7 +42,7 @@ progress(x, names, iter, start = TRUE)
 hasTerms(x)
 sbfIter(x, y, testX, testY, sbfControl = sbfControl(), ...)
 gamFormula(data, smoother = "s", cut = 8, y = "y") 
-
+well_numbered(prefix, items) 
 }
 \author{Max Kuhn, but \code{caretTheme} uses an expanded grid of the "Blues" palette designed by Cynthia Brewer and Mark Harrower}
 
