@@ -6,7 +6,6 @@
 }
 \usage{
 \method{print}{train}(x, 
-      digits = min(3, getOption("digits") - 3), 
       printCall = FALSE, 
       details = FALSE, 
       selectCol = FALSE,
@@ -14,8 +13,6 @@
 }
 \arguments{
   \item{x}{an object of class  \code{\link{train}}.}
-  \item{digits}{an integer specifying the number of significant digits
-    to print.}
   \item{printCall}{a logical to print the call at the top of the output}
   \item{details}{a logical to show print or summary methods for the
   final model. In some cases (such as \code{gbm}, \code{knn},
@@ -23,7 +20,7 @@
   be printed even if \code{details = TRUE}}
   \item{selectCol}{a logical to a column with a star next to the final model}
   
-  \item{\ldots}{options passed to the generic print method}
+  \item{\ldots}{options passed to \code{\link[base]{format}}}
 }
 \details{
    The table of complexity parameters used, their resampled performance and a
