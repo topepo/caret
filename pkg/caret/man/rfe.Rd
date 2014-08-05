@@ -3,6 +3,7 @@
 \alias{rfe.default}
 \alias{rfeIter}
 \alias{predict.rfe}
+\alias{update.rfe}
 
 \title{Backwards Feature Selection}
 \description{
