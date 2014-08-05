@@ -25,6 +25,8 @@
 \item For the input data \code{x} to \code{train}, we now  respect the class of the input value to accommodate other data types (such as sparse matrices). There are some complications though; for pre-processing we throw a
 warning if the data are not simple matrices or data frames since there is some infrastructure that does not exist for other classes( e.g. \code{complete.cases}). We also throw a warning if \code{returnData <- TRUE} and it cannot be converted to a data frame.
 
+\item \code{ggplot.train} was modified so that groups are distinguished by color and shape.
+
 }
 }
 
