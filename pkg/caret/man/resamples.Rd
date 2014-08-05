@@ -16,7 +16,7 @@ resamples(x, ...)
 
 \method{resamples}{default}(x, modelNames = names(x), ...)
 
-\method{summary}{resamples}(object, ...)
+\method{summary}{resamples}(object, metric = object$metrics, ...)
 
 \method{sort}{resamples}(x, decreasing = FALSE, metric = x$metric[1], FUN = mean, ...)
 
