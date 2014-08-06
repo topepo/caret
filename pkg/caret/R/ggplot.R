@@ -56,9 +56,11 @@ ggplot.train <- function(data = NULL, metric = data$metric[1], plotType = "scatt
     
     if(output == "layered") {
       if(p >= 2) {
+        leg_name <- paramData$label[paramData$parameter == names(dat)[3]]
         out <- out + geom_point(aes_string(color = dnm[3], shape = dnm[3]))
         out <- out + geom_line(aes_string(color = dnm[3], shape = dnm[3]))
-        out <- out + scale_colour_discrete(name = paramData$label[paramData$parameter == names(dat)[3]])
+        out <- out + scale_colour_discrete(name = leg_name) +
+                     scale_shape_discrete(name = leg_name)
       } else out <- out + geom_point() + geom_line()
       ## TODO change legend (to blank when needed)
       if(p == 3) {
