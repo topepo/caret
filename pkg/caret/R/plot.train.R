@@ -1,4 +1,4 @@
-#"plot.train" <-  function(x,
+"plot.train" <-  function(x,
                     plotType = "scatter",
                     metric = x$metric[1],
                     digits = getOption("digits") - 3,

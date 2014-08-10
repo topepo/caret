@@ -1,5 +1,4 @@
-#ggplot.train
-foo<- function(data = NULL, metric = data$metric[1], plotType = "scatter", output = "layered", 
+ggplot.train <- function(data = NULL, metric = data$metric[1], plotType = "scatter", output = "layered", 
                nameInStrip = FALSE, ...) {
   if(!(output %in% c("data", "layered", "ggplot"))) stop("'outout' should be either 'data', 'ggplot' or 'layered'")
   params <- data$modelInfo$parameters$parameter
