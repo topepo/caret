@@ -12,6 +12,7 @@
      metric = x$metric[1],
      digits = getOption("digits") - 3, 
      xTrans = NULL, 
+     nameInStrip = FALSE,
      ...)
 
 \method{ggplot}{train}(data = NULL, 
@@ -29,6 +30,7 @@
   \item{xTrans}{a function that will be used to scale the x-axis in scatter plots.}
   \item{data}{an object of class \code{\link{train}}.}  
   \item{output}{either "data", "ggplot" or "layered". The first returns a data frame while the second returns a simple \code{ggplot} object with no layers. The third value returns a plot with a set of layers. }  
+  \item{nameInStrip}{a logical: if there are more than 2 tuning parameters, should the name and value be included in the panel title?}
   \item{\dots}{\code{plot} only: specifications to be passed to \code{\link[lattice]{levelplot}}, \code{\link[lattice]{xyplot}}, \code{\link[lattice:xyplot]{stripplot}} (for line plots). The function automatically sets some arguments (e.g. axis labels) but passing in values here will over-ride the defaults }
 }
 \details{

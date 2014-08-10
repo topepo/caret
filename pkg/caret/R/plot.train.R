@@ -1,8 +1,9 @@
-"plot.train" <-  function(x,
+#"plot.train" <-  function(x,
                     plotType = "scatter",
                     metric = x$metric[1],
                     digits = getOption("digits") - 3,
                     xTrans = NULL,
+                    nameInStrip = FALSE,
                     ...)
   {
     
@@ -95,7 +96,12 @@
                   dat[,i] <- prettyVal(dat[,i], dig = digits, Name = if(i > 3) params[i-1] else  NULL)
               }
             for(i in 2:ncol(dat)) if(is.logical(dat[,i])) dat[,i] <- factor(dat[,i])
-            
+            if(p > 2 & nameInStrip) {
+              strip_vars <- params[-(1:2)]
+              strip_lab <- subset(x$modelInfo$parameters, parameter %in% strip_vars)$label
+              for(i in seq_along(strip_vars))
+                dat[, strip_vars[i]] <- factor(paste(strip_lab[i], dat[, strip_vars[i]], sep = ": "))
+            }
             ## make formula
             form <- if(p <= 2)
               {          
@@ -149,7 +155,12 @@
 
             for(i in 2:ncol(dat))
               dat[,i] <- prettyVal(dat[,i], dig = digits, Name = if(i > 3) params[i-1] else  NULL)
-            
+            if(p > 2 & nameInStrip) {
+              strip_vars <- params[-(1:2)]
+              strip_lab <- subset(x$modelInfo$parameters, parameter %in% strip_vars)$label
+              for(i in seq_along(strip_vars))
+                dat[, strip_vars[i]] <- factor(paste(strip_lab[i], dat[, strip_vars[i]], sep = ": "))
+            }
             ## make formula
             form <- if(p <= 2)
               {          

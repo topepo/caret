@@ -6,11 +6,15 @@
 \itemize{
 \item \code{plsRglm} was added.
 
+\item From the \cpkg{frbs}, the following rule-based models were added: \code{ANFIS}, \code{DENFIS}, \code{FH.GBML}, \code{FIR.DM}, \code{FRBCS.CHI}, \code{FRBCS.W}, \code{FS.HGD}, \code{GFS.FR.MOGAL}, \code{GFS.GCCL}, \code{GFS.LTS}, \code{GFS.THRIFT}, \code{HYFIS}, \code{SBC} and \code{WM}. Thanks to Lala Riza for suggesting these and facilitating their addition to the package. 
+
+\item From the \cpkg{kernlab} package, SVM models using string kerenls were added: \code{svmBoundrangeString}, \code{svmExpoString}, \code{svmSpectrumString}
+
 \item A function \code{update.rfe} was added.
 
 \item \code{cluster.resamples} was added to the namespace.
 
-\item An option to choose the \code{metric} was added to  \code{summary.resamples}.
+\item An option to choose the \code{metric} was added to \code{summary.resamples}.
 
 \item \code{prcomp.resamples} now passed  \code{...} to \code{prcomp}.  Also the call to  \code{prcomp} uses the formula method so that  \code{na.action} can be used.
 
@@ -26,6 +30,8 @@
 warning if the data are not simple matrices or data frames since there is some infrastructure that does not exist for other classes( e.g. \code{complete.cases}). We also throw a warning if \code{returnData <- TRUE} and it cannot be converted to a data frame.
 
 \item \code{ggplot.train} was modified so that groups are distinguished by color and shape.
+
+\item Options were added to \code{plot.train} and \code{ggplot.train} called \code{nameInStrip} that will print the name and value of any tuning parameters shown in panels. 
 
 }
 }
