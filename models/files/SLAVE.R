@@ -6,8 +6,8 @@ modelInfo <- list(label = "Fuzzy Rules Using the Structural Learning Algorithm o
                                           label = c('#Fuzzy Terms', 'Max. Iterations',
                                                     'Max. Generations')),
                   grid = function(x, y, len = NULL)
-                    expand.grid(max.num.rule = 1+(1:len)*2,      
-                                popu.size = 10,
+                    expand.grid(num.labels = 1+(1:len)*2,      
+                                max.iter = 10,
                                 max.gen = 10),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 

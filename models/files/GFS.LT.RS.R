@@ -1,4 +1,4 @@
-modelInfo <- list(label = "Fuzzy Rules via Thrift",
+modelInfo <- list(label = "Genetic Lateral Tuning and Rule Selection of Linguistic Fuzzy Systems",
                   library = "frbs",
                   type = "Regression",
                   parameters = data.frame(parameter = c('popu.size', 
