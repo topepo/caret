@@ -181,7 +181,7 @@ stringFunc <- function (x)  {
       }
       
       cat(truncateText(optString), "\n")
-    } else printList <- NULL
+    } else printMat <- NULL
     
     if(details) {
       if(!(x$method %in% c("gbm", "treebag", "nb", "lvq", "knn"))) {
