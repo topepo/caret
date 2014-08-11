@@ -19,6 +19,7 @@
        metric = data$metric[1], 
        plotType = "scatter", 
        output = "layered", 
+       nameInStrip = FALSE,
        ...) 
    
 }
