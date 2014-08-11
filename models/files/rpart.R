@@ -42,7 +42,7 @@ modelInfo <- list(label = "CART",
                     if(!is.null(wts)) theDots$weights <- wts    
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
-                                        data = x,
+                                        data = if(is.data.frame(x)) x else as.data.frame(x),
                                         control = ctl),
                                    theDots)
                     modelArgs$data$.outcome <- y

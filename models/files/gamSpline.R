@@ -8,7 +8,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                   grid = function(x, y, len = NULL) 
                     expand.grid(df = seq(1, 3, length = len)),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    args <- list(data = x)
+                    args <- list(data = if(is.data.frame(x)) x else as.data.frame(x))
                     args$data$.outcome <- y
                     ## if(!is.null(wts))  args$weights <- wts
                     args$formula <- caret:::smootherFormula(x,

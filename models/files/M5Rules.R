@@ -23,7 +23,7 @@ modelInfo <- list(label = "Model Rules",
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
                                         control = ctl),
                                    theDots)
-                    modelArgs$data <- x
+                    modelArgs$data <- if(is.data.frame(x)) x else as.data.frame(x)
                     modelArgs$data$.outcome <- y
                     
                     out <- do.call("M5Rules", modelArgs) 

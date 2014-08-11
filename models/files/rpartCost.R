@@ -59,7 +59,7 @@ modelInfo <- list(label = "Cost-Sensitive CART",
                     if(!is.null(wts)) theDots$weights <- wts    
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
-                                        data = x,
+                                        data = if(is.data.frame(x)) x else as.data.frame(x),
                                         parms = parms,
                                         control = ctl),
                                    theDots)
