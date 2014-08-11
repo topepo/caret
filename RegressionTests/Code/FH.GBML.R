@@ -6,8 +6,8 @@ model <- "FH.GBML"
 #########################################################################
 
 set.seed(2)
-training <- twoClassSim(30)
-testing <- twoClassSim(30)
+training <- twoClassSim(30)[, 13:16]
+testing <- twoClassSim(30)[, 13:16]
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
