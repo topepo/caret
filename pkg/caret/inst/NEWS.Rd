@@ -4,11 +4,16 @@
 
 \section{Changes in version 6.0-32}{
 \itemize{
+
+\item For the input data \code{x} to \code{train}, we now  respect the class of the input value to accommodate other data types (such as sparse matrices). There are some complications though; for pre-processing we throw a
+warning if the data are not simple matrices or data frames since there is some infrastructure that does not exist for other classes( e.g. \code{complete.cases}). We also throw a warning if \code{returnData <- TRUE} and it cannot be converted to a data frame. This allows the use of sparse matrices and text corpus to be used as inputs into that function. 
+
+
 \item \code{plsRglm} was added.
 
 \item From the \cpkg{frbs}, the following rule-based models were added: \code{ANFIS}, \code{DENFIS}, \code{FH.GBML}, \code{FIR.DM}, \code{FRBCS.CHI}, \code{FRBCS.W}, \code{FS.HGD}, \code{GFS.FR.MOGAL}, \code{GFS.GCCL}, \code{GFS.LTS}, \code{GFS.THRIFT}, \code{HYFIS}, \code{SBC} and \code{WM}. Thanks to Lala Riza for suggesting these and facilitating their addition to the package. 
 
-\item From the \cpkg{kernlab} package, SVM models using string kerenls were added: \code{svmBoundrangeString}, \code{svmExpoString}, \code{svmSpectrumString}
+\item From the \cpkg{kernlab} package, SVM models using string kernels were added: \code{svmBoundrangeString}, \code{svmExpoString}, \code{svmSpectrumString}
 
 \item A function \code{update.rfe} was added.
 
@@ -18,7 +23,7 @@
 
 \item \code{prcomp.resamples} now passed  \code{...} to \code{prcomp}.  Also the call to  \code{prcomp} uses the formula method so that  \code{na.action} can be used.
 
-\item A function \code{resamples} was enhanced so that \code{train} and \code{rfe} models that used \code{returnResamp="all"} subsets the resamples to get the appropriate values and issues a warning. The function also fills in missing model names if one or more are not given.
+\item The function \code{resamples} was enhanced so that \code{train} and \code{rfe} models that used \code{returnResamp="all"} subsets the resamples to get the appropriate values and issues a warning. The function also fills in missing model names if one or more are not given.
 
 \item Several regression simulation functions were added: \code{SLC14_1}, \code{SLC14_2}, \code{LPH07_1} and \code{LPH07_2}
 
@@ -26,13 +31,12 @@
 
 \item The error message in \code{train.formula} was improved to provide more helpful feedback in cases where there is at least one missing value in each row of the data set. 
 
-\item For the input data \code{x} to \code{train}, we now  respect the class of the input value to accommodate other data types (such as sparse matrices). There are some complications though; for pre-processing we throw a
-warning if the data are not simple matrices or data frames since there is some infrastructure that does not exist for other classes( e.g. \code{complete.cases}). We also throw a warning if \code{returnData <- TRUE} and it cannot be converted to a data frame.
 
 \item \code{ggplot.train} was modified so that groups are distinguished by color and shape.
 
 \item Options were added to \code{plot.train} and \code{ggplot.train} called \code{nameInStrip} that will print the name and value of any tuning parameters shown in panels. 
 
+\item A bug was fixed by Jia Xu within the knn imputation code used by \code{preProcess}. 
 }
 }
 
