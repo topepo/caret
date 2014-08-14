@@ -7,8 +7,8 @@ model <- "hda"
 #########################################################################
 
 set.seed(2)
-training <- twoClassSim(100)
-testing <- twoClassSim(500)
+training <- twoClassSim(50, linearVars = 2)
+testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
@@ -28,8 +28,18 @@ test_class_cv_model <- train(trainX, trainY,
                              preProc = c("center", "scale"),
                              verbose = FALSE)
 
+set.seed(849)
+test_class_cv_form <- train(Class ~ ., data = training, 
+                            method = "hda", 
+                            trControl = cctrl1,
+                            metric = "ROC", 
+                            preProc = c("center", "scale"),
+                            verbose = FALSE)
+
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
+test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
+test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 

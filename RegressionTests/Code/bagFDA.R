@@ -6,8 +6,8 @@ model <- "bagFDA"
 #########################################################################
 
 set.seed(1)
-training <- twoClassSim(200)
-testing <- twoClassSim(500)
+training <- twoClassSim(100, linearVars = 2)
+testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
@@ -29,8 +29,20 @@ test_class_cv_model <- train(trainX, trainY,
                              preProc = c("center", "scale"),
                              B = 10)
 
+set.seed(849)
+test_class_cv_form <- train(Class ~ ., data = training, 
+                            method = "bagFDA",
+                            tuneGrid = data.frame(.degree = 1,
+                                                  .nprune = 2:4), 
+                            trControl = cctrl1,
+                            metric = "ROC", 
+                            preProc = c("center", "scale"),
+                            B = 10)
+
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
+test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
+test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
@@ -57,7 +69,7 @@ test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)]
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
   cat("wrong levels")
-  
+
 #########################################################################
 
 test_class_predictors1 <- predictors(test_class_cv_model)

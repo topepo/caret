@@ -36,7 +36,7 @@ test_class_none_pred <- predict(test_class_none_model, matrix(reuters, ncol = 1)
 test_class_none_prob <- predict(test_class_none_model, matrix(reuters, ncol = 1), type = "prob")
 
 test_levels <- levels(test_class_cv_model)
-if(!all(levels(trainY) %in% test_levels))
+if(!all(levels(rlabels) %in% test_levels))
   cat("wrong levels")
 
 #########################################################################

@@ -11,11 +11,13 @@ gobinary <- function(x){
 } 
 
 set.seed(2)
-training <- twoClassSim(100)
-testing <- twoClassSim(500)
-trainX <- gobinary(training[, -ncol(training)])
+training <- twoClassSim(50, linearVars = 2)
+testing <- twoClassSim(500, linearVars = 2)
+training[, -ncol(training)] <- gobinary(training[, -ncol(training)])
+testing[, -ncol(testing)] <- gobinary(testing[, -ncol(testing)])
+trainX <- training[, -ncol(training)]
 trainY <- training$Class
-testX <- gobinary(testing[, -ncol(testing)])
+testX <- testing[, -ncol(testing)]
 testY <- testing$Class
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
@@ -28,7 +30,14 @@ test_class_cv_model <- train(trainX, trainY,
                              trControl = cctrl1,
                              seed = 1)
 
+set.seed(849)
+test_class_cv_form <- train(Class ~ ., data = training, 
+                            method = "logreg", 
+                            trControl = cctrl1,
+                            seed = 1)
+
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
+test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
@@ -51,19 +60,29 @@ if(!all(levels(trainY) %in% test_levels))
 
 #########################################################################
 
-data(BloodBrain)
-bbbDescr <-bbbDescr[, -nearZeroVar(bbbDescr)]
-bbbDescr <-bbbDescr[, -findCorrelation(cor(bbbDescr), .5)]
-numVal <- apply(bbbDescr, 2, function(x) length(unique(x)))
-bbbDescr <- bbbDescr[, numVal > 10]
+SLC14_1 <- function(n = 100) {
+  dat <- matrix(rnorm(n*20, sd = 3), ncol = 20)
+  foo <- function(x) x[1] + sin(x[2]) + log(abs(x[3])) + x[4]^2 + x[5]*x[6] + 
+    ifelse(x[7]*x[8]*x[9] < 0, 1, 0) +
+    ifelse(x[10] > 0, 1, 0) + x[11]*ifelse(x[11] > 0, 1, 0) + 
+    sqrt(abs(x[12])) + cos(x[13]) + 2*x[14] + abs(x[15]) + 
+    ifelse(x[16] < -1, 1, 0) + x[17]*ifelse(x[17] < -1, 1, 0) -
+    2 * x[18] - x[19]*x[20]
+  dat <- as.data.frame(dat)
+  colnames(dat) <- well_numbered("Var", ncol(dat))
+  dat$y <- apply(dat[, 1:20], 1, foo) + rnorm(n, sd = 3)
+  dat
+}
 
-set.seed(2)
-
-inTrain <- createDataPartition(logBBB, p = .5)
-trainX <-gobinary(bbbDescr[inTrain[[1]], ])
-trainY <- logBBB[inTrain[[1]]]
-testX <- gobinary(bbbDescr[-inTrain[[1]], ])
-testY <- logBBB[-inTrain[[1]]]
+set.seed(1)
+training <- SLC14_1(30)
+testing <- SLC14_1(100)
+training[, -ncol(training)] <- gobinary(training[, -ncol(training)])
+testing[, -ncol(testing)] <- gobinary(testing[, -ncol(testing)])
+trainX <- training[, -ncol(training)]
+trainY <- training$y
+testX <- trainX[, -ncol(training)]
+testY <- trainX$y 
 
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
@@ -74,6 +93,13 @@ test_reg_cv_model <- train(trainX, trainY,
                            trControl = rctrl1,
                            seed = 1)
 test_reg_pred <- predict(test_reg_cv_model, testX)
+
+set.seed(849)
+test_reg_cv_form <- train(y ~ ., data = training, 
+                          method = "logreg", 
+                          trControl = rctrl1,
+                          seed = 1)
+test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 

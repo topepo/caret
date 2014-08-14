@@ -6,8 +6,8 @@ model <- "rbf"
 #########################################################################
 
 set.seed(2)
-training <- twoClassSim(100)
-testing <- twoClassSim(500)
+training <- twoClassSim(50, linearVars = 2)
+testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
@@ -29,8 +29,17 @@ test_class_cv_model <- train(trainX, trainY,
                              metric = "ROC", 
                              preProc = c("center", "scale"))
 
+set.seed(849)
+test_class_cv_form <- train(Class ~ ., data = training, 
+                            method = "rbf", 
+                            trControl = cctrl1,
+                            metric = "ROC", 
+                            preProc = c("center", "scale"))
+
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
+test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
+test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
 
 setSnnsRSeedValue(1)
 set.seed(849)

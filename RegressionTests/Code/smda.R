@@ -6,8 +6,8 @@ model <- "smda"
 #########################################################################
 
 set.seed(2)
-training <- twoClassSim(100)
-testing <- twoClassSim(500)
+training <- twoClassSim(50, linearVars = 2)
+testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
@@ -24,7 +24,18 @@ test_class_cv_model <- train(trainX[, 1:3], trainY,
                                                     .lambda = c(.1, .2)),
                              preProc = c("center", "scale"))
 
-test_class_pred <- predict(test_class_cv_model, testing[, 1:3])
+set.seed(849)
+test_class_cv_form <- train(Class ~ ., data = training[, 5:8], 
+                            method = "smda", 
+                            trControl = cctrl1,
+                            tuneGrid = expand.grid(.NumVars = 2:3,
+                                                   .R = 2:3,
+                                                   .lambda = c(.1, .2)),
+                            preProc = c("center", "scale"))
+
+test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
+test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
+
 # 
 # set.seed(849)
 # test_class_loo_model <- train(trainX[, 1:3], trainY, 

@@ -6,8 +6,8 @@ model <- "svmRadialWeights"
 #########################################################################
 
 set.seed(2)
-training <- twoClassSim(100)
-testing <- twoClassSim(500)
+training <- twoClassSim(50, linearVars = 2)
+testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
@@ -24,7 +24,17 @@ test_class_cv_model <- train(trainX, trainY,
                                                     .Weight = 1:2),
                              preProc = c("center", "scale"))
 
+set.seed(849)
+test_class_cv_form <- train(Class ~ ., data = training, 
+                            method = "svmRadialWeights", 
+                            trControl = cctrl1,
+                            tuneGrid = expand.grid(.C = c(.25, .5, 1),
+                                                   .sigma = .05,
+                                                   .Weight = 1:2),
+                            preProc = c("center", "scale"))
+
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
+test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 

@@ -21,6 +21,8 @@ trainX <-Glass[inTrain[[1]], -ncol(Glass)]
 trainY <-Glass$Type[inTrain[[1]]]
 testX <-Glass[-inTrain[[1]], -ncol(Glass)]
 testY <- Glass$Type[-inTrain[[1]]]
+training <-Glass[inTrain[[1]], ]
+testing <-Glass[-inTrain[[1]], ]
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE)
@@ -35,8 +37,16 @@ test_class_cv_model <- train(trainX, trainY,
                              trControl = cctrl1,
                              preProc = c("center", "scale"))
 
-test_class_pred <- predict(test_class_cv_model, testX)
-test_class_prob <- predict(test_class_cv_model, testX, type = "prob")
+set.seed(849)
+test_class_cv_form <- train(Type ~ ., data = training, 
+                            method = "lda2", 
+                            trControl = cctrl1,
+                            preProc = c("center", "scale"))
+
+test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
+test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
+test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
+test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 

@@ -22,7 +22,15 @@ test_class_cv_model <- train(trainX, trainY,
                              tuneLength = 2,
                              preProc = c("center", "scale"))
 
+set.seed(849)
+test_class_cv_form <- train(Class ~ ., data = training, 
+                            method = "FH.GBML", 
+                            trControl = cctrl1,
+                            tuneLength = 2,
+                            preProc = c("center", "scale"))
+
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
+test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 

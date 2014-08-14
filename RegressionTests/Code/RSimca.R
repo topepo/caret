@@ -6,8 +6,8 @@ model <- "RSimca"
 #########################################################################
 
 set.seed(1)
-training <- twoClassSim(50)
-testing <- twoClassSim(500)
+training <- twoClassSim(50, linearVars = 2)
+testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
@@ -21,7 +21,14 @@ test_class_cv_model <- train(trainX, trainY,
                              trControl = cctrl1,
                              preProc = c("center", "scale"))
 
+set.seed(849)
+test_class_cv_form <- train(Class ~ ., data = training, 
+                            method = "RSimca", 
+                            trControl = cctrl1,
+                            preProc = c("center", "scale"))
+
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
+test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 

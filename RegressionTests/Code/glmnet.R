@@ -5,17 +5,12 @@ model <- "glmnet"
 
 #########################################################################
 
-set.seed(545)
-
-data(mdrr)
-mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
-mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .8)]
-
-inTrain <- createDataPartition(mdrrClass)
-trainX <- mdrrDescr[inTrain[[1]], ]
-trainY <- mdrrClass[inTrain[[1]]]
-testX <- mdrrDescr[-inTrain[[1]], ]
-testY <- mdrrClass[-inTrain[[1]]]
+set.seed(2)
+training <- twoClassSim(50, linearVars = 2)
+testing <- twoClassSim(500, linearVars = 2)
+trainX <- training[, -ncol(training)]
+testX <- testing[, -ncol(testing)]
+trainY <- training$Class
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
@@ -32,7 +27,17 @@ test_class_cv_model <- train(trainX, trainY,
                              tuneGrid = expand.grid(.alpha = seq(.05, 1, length = 15),
                                                     .lambda = c((1:5)/10)))
 
-test_class_pred <- predict(test_class_cv_model, testX)
+set.seed(849)
+test_class_cv_form <- train(Class ~ ., data = training, 
+                            method = "glmnet", 
+                            trControl = cctrl1,
+                            metric = "ROC",
+                            preProc = c("center", "scale"),
+                            tuneGrid = expand.grid(.alpha = seq(.05, 1, length = 15),
+                                                   .lambda = c((1:5)/10)))
+
+test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
+test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
