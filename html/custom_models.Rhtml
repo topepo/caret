@@ -618,14 +618,12 @@ lbFuncs <- list(library = "caTools",
                 },
                 predict = function(modelFit, newdata, preProc = NULL, submodels = NULL) {
                   out <- predict(modelFit, newdata, type="class")
-                  if(!is.null(submodels))
-                  {                   
+                  if(!is.null(submodels)) {                   
                     tmp <- out
                     out <- vector(mode = "list", length = nrow(submodels) + 1)
                     out[[1]] <- tmp
                     
-                    for(j in seq(along = submodels$nIter))
-                    {
+                    for(j in seq(along = submodels$nIter)) {
                       out[[j+1]] <- predict(modelFit,
                                             newdata,
                                             nIter = submodels$nIter[j])
@@ -796,7 +794,7 @@ pls_rf <- list(label = "PLS-RF",
                  ## be used later
 
                  ## plsr only has a formula interface so create one data frame
-                 dat <- x
+                 dat <- if(!is.data.frame(x)) x <- as.data.frame(x)
                  dat$y <- y
                  pre <- plsr(y~ ., data = dat, ncomp = param$ncomp)
                  scores <- predict(pre, x, type = "scores")
@@ -975,8 +973,7 @@ thresh_code$predict = function(modelFit, newdata, submodels = NULL) {
   out <- ifelse(class1Prob >= modelFit$tuneValue$threshold,
                 modelFit$obsLevels[1], 
                 modelFit$obsLevels[2])
-  if(!is.null(submodels))
-    {
+  if(!is.null(submodels)) {
     tmp2 <- out
     out <- vector(mode = "list", length = length(submodels$threshold))
     out[[1]] <- tmp2
@@ -994,8 +991,7 @@ thresh_code$predict = function(modelFit, newdata, submodels = NULL) {
 ## thresholds
 thresh_code$prob = function(modelFit, newdata, submodels = NULL) {
   out <- as.data.frame(predict(modelFit, newdata, type = "prob"))
-  if(!is.null(submodels))
-    {
+  if(!is.null(submodels)) {
     probs <- out
     out <- vector(mode = "list", length = length(submodels$threshold)+1)
     out <- lapply(out, function(x) probs)
