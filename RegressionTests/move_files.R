@@ -10,6 +10,10 @@ dir.create(paste0("~/tmp/", newPath))
 
 testFiles <- list.files(file.path(getwd(), "Code"),
                         full.names = TRUE)
+
+## package archived:
+testFiles <- testFiles[!grepl("(Mlda)|(RFlda)", testFiles)]
+
 newFiles <- paste0("~/tmp/", newPath, "/", basename(testFiles))
 
 file.copy(testFiles, newFiles)
@@ -18,6 +22,8 @@ file.copy(testFiles, newFiles)
 ## write out makefile here and save to code directory prior to copy
 
 rFiles <- list.files(file.path(getwd(), "Code"), pattern = "R$")
+## package archived:
+rFiles <- rFiles[!grepl("(Mlda)|(RFlda)", rFiles)]
 
 header <- paste(sort(rFiles), "Data: ", sort(rFiles), "\n", sep = "")
 
