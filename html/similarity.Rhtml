@@ -16,23 +16,19 @@ session <- paste(format(Sys.time(), "%a %b %d %Y"),
 
     end.rcode-->
 <!--begin.rcode makeTags, results='hide', echo=FALSE, message=FALSE
-modFiles <- list.files("~/Code/caret/models/files", pattern = "\\.R$", full.names= TRUE)
+modelInfo <- getModelInfo()
 
-tags <- vector(mode = "list", length = length(modFiles))
-Classification <- Regression <- ClassProbs <- rep(NA, length = length(modFiles))
+tags <- vector(mode = "list", length = length(modelInfo))
+Classification <- Regression <- ClassProbs <- rep(NA, length = length(modelInfo))
 
-for(i in seq(along = modFiles)){
-  source(modFiles[i])
-  tags[[i]] <- modelInfo$tags
-  Classification[i] <- ifelse("Classification" %in% modelInfo$type, 1, 0)
-  Regression[i] <- ifelse("Regression" %in% modelInfo$type, 1, 0)
-  ClassProbs[i] <- ifelse(is.null(modelInfo$prob), 0, 1)
-  names(tags)[i] <- paste(modelInfo$label, 
-                          " (", gsub("\\.R", "", basename(modFiles[i])),
+for(i in seq(along = modelInfo)){
+  tags[[i]] <- modelInfo[[i]]$tags
+  Classification[i] <- ifelse("Classification" %in% modelInfo[[i]]$type, 1, 0)
+  Regression[i] <- ifelse("Regression" %in% modelInfo[[i]]$type, 1, 0)
+  ClassProbs[i] <- ifelse(is.null(modelInfo[[i]]$prob), 0, 1)
+  names(tags)[i] <- paste(modelInfo[[i]]$label, 
+                          " (", names(modelInfo)[i],
                           ")", sep = "")
-  
-  rm(modelInfo)
-  
 }
 tabs <- table(unlist(tags))
 tabs <- tabs[order(tolower(names(tabs)))]
