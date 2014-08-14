@@ -2,7 +2,7 @@ setwd("~/Code/github/caret/models/files")
 modelFiles <- list.files(pattern = "\\.R$")
 
 models <- vector(mode = "list", length = length(modelFiles))
-names(models) <- gsub("\\.R", "", modelFiles)
+names(models) <- gsub("\\.R$", "", modelFiles)
 
 for(i in seq(along = modelFiles)) {
   source(modelFiles[i])
