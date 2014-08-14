@@ -39,6 +39,7 @@ modelInfo <- list(label = "Generalized Linear Model with Stepwise Feature Select
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     if(modelFit$problemType == "Classification")
                     {
                       probs <-  predict(modelFit, newdata, type = "response")
@@ -51,6 +52,7 @@ modelInfo <- list(label = "Generalized Linear Model with Stepwise Feature Select
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     out <- predict(modelFit, newdata, type = "response")
                     out <- cbind(1-out, out)
                     ## glm models the second factor level, we treat the first as the

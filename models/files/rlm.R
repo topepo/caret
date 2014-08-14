@@ -9,14 +9,15 @@ modelInfo <- list(label = "Robust Linear Model",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    if(!is.null(wts))
-                    {
+                    if(!is.null(wts)) {
                       out <- rlm(.outcome ~ ., data = dat, weights = wts, ...)
                     } else out <- rlm(.outcome ~ ., data = dat, ...)
                     out
                   },
-                  predict = function(modelFit, newdata, submodels = NULL) 
-                    predict(modelFit, newdata),
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata)
+                    },
                   prob = NULL,
                   tags = c("Linear Regression", "Robust Model"),
                   sort = function(x) x)

@@ -25,10 +25,14 @@ modelInfo <- list(label = "C4.5-like Trees",
                     out <- do.call("J48", modelArgs) 
                     out      
                     },
-                  predict = function(modelFit, newdata, submodels = NULL) 
-                    predict(modelFit, newdata),
-                  prob = function(modelFit, newdata, submodels = NULL)
-                    predict(modelFit, newdata, type = "probability"),
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata)
+                  },
+                  prob = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata, type = "probability")
+                  },
                   predictors = function(x, ...) predictors(x$terms),
                   tags = c("Tree-Based Model", "Implicit Feature Selection"),
                   sort = function(x) x[order(x[,1]),])

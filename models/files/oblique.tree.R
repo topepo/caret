@@ -17,11 +17,13 @@ modelInfo <- list(label = "Oblique Trees",
                                  ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL){
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     newdata$.outcome <- factor(rep(modelFit$obsLevels[1], nrow(newdata)),
                                                levels = modelFit$obsLevels)
                     predict(modelFit, newdata, type = "class")
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     newdata$.outcome <- factor(rep(modelFit$obsLevels[1], nrow(newdata)),
                                                levels = modelFit$obsLevels)
                     predict(modelFit, newdata, type = "vector")

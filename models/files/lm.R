@@ -15,7 +15,10 @@ modelInfo <- list(label = "Linear Regression",
                     } else out <- lm(.outcome ~ ., data = dat, ...)
                     out
                   },
-                  predict = function(modelFit, newdata, submodels = NULL) predict(modelFit, newdata),
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata)
+                    },
                   prob = NULL,
                   predictors = function(x, ...) predictors(x$terms),
                   tags = "Linear Regression",

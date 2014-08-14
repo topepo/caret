@@ -11,8 +11,7 @@ modelInfo <- list(label = "Boosted Classification Trees",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     theDots <- list(...)
                     
-                    if(any(names(theDots) == "control"))
-                    {
+                    if(any(names(theDots) == "control")) {
                       theDots$control$maxdepth <- param$maxdepth 
                       ctl <- theDots$control
                       theDots$control <- NULL
@@ -33,9 +32,12 @@ modelInfo <- list(label = "Boosted Classification Trees",
                     
                     out     
                   },
-                  predict = function(modelFit, newdata, submodels = NULL)
-                    predict(modelFit, newdata),
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata)
+                    },
                   prob = function(modelFit, newdata, submodels = NULL){
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     out <- predict(modelFit, newdata, type = "prob")
                     colnames(out) <-  modelFit$obsLevels
                     out

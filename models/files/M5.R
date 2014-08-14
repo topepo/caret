@@ -30,8 +30,10 @@ modelInfo <- list(label = "Model Tree",
                     out <- do.call(if(param$rules == "Yes") "M5Rules" else "M5P", modelArgs) 
                     out
                   },
-                  predict = function(modelFit, newdata, submodels = NULL) 
-                    predict(modelFit, newdata),
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata)
+                  },
                   prob = NULL,
                   predictors = function(x, ...) predictors(x$terms),
                   tags = c("Rule-Based Model", "Tree-Based Model", "Linear Regression", "Implicit Feature Selection",

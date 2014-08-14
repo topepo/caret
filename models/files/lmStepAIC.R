@@ -15,8 +15,10 @@ modelInfo <- list(label = "Linear Regression with Stepwise Selection",
                     } else out <- stepAIC(lm(.outcome ~ ., data = dat), ...)
                     out     
                   },
-                  predict = function(modelFit, newdata, submodels = NULL) 
-                    predict(modelFit, newdata),
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata)
+                    },
                   prob = NULL,
                   tags = c("Linear Regression", "Feature Selection Wrapper"),
                   sort = function(x) x)

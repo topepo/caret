@@ -19,10 +19,14 @@ modelInfo <- list(label = "Single Rule Classification",
                     out <- do.call("OneR", modelArgs) 
                     out      
                     },
-                  predict = function(modelFit, newdata, submodels = NULL) 
-                    predict(modelFit, newdata),
-                  prob = function(modelFit, newdata, submodels = NULL)
-                    predict(modelFit, newdata, type = "probability"),
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata)
+                    },
+                  prob = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata, type = "probability")
+                    },
                   predictors = function(x, ...) predictors(x$terms),
                   tags = c("Rule-Based Model", "Implicit Feature Selection"),
                   sort = function(x) x)

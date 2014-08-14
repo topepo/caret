@@ -22,8 +22,8 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                     do.call(getFromNamespace("gam", "gam"), args)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(modelFit$problemType == "Classification")
-                    {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(modelFit$problemType == "Classification") {
                       probs <-  gam:::predict.gam(modelFit, newdata, type = "response")
                       out <- ifelse(probs < .5,
                                     modelFit$obsLevel[1],
@@ -34,6 +34,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     out <- gam:::predict.gam(modelFit, newdata, type = "response")
                     out <- cbind(1-out, out)
                     ## glm models the second factor level, we treat the first as the

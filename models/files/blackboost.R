@@ -9,8 +9,7 @@ modelInfo <- list(label = "Boosted Tree",
                   loop = function(grid) {     
                     loop <- ddply(grid, .(maxdepth), function(x) c(mstop = max(x$mstop)))
                     submodels <- vector(mode = "list", length = nrow(loop))
-                    for(i in seq(along = loop$mstop))
-                    {
+                    for(i in seq(along = loop$mstop))  {
                       index <- which(grid$maxdepth == loop$maxdepth[i])
                       subStops <- grid[index, "mstop"] 
                       submodels[[i]] <- data.frame(mstop = subStops[subStops != loop$mstop[i]])
@@ -20,24 +19,21 @@ modelInfo <- list(label = "Boosted Tree",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     theDots <- list(...)
                     
-                    if(any(names(theDots) == "tree_controls"))
-                    {
+                    if(any(names(theDots) == "tree_controls")) {
                       theDots$tree_controls$maxdepth <- param$maxdepth 
                       treeCtl <- theDots$tree_controls
                       theDots$tree_controls <- NULL
                       
                     } else treeCtl <- ctree_control(maxdepth = param$maxdepth)
                     
-                    if(any(names(theDots) == "control"))
-                    {
+                    if(any(names(theDots) == "control")) {
                       theDots$control$mstop <- param$mstop 
                       ctl <- theDots$control
                       theDots$control <- NULL
                       
                     } else ctl <- boost_control(mstop = param$mstop)        
                     
-                    if(!any(names(theDots) == "family"))
-                    {
+                    if(!any(names(theDots) == "family")) {
                       theDots$family <- if(is.factor(y)) Binomial() else GaussReg()              
                     }  
                     
@@ -45,7 +41,7 @@ modelInfo <- list(label = "Boosted Tree",
                     if(!is.null(wts)) theDots$weights <- wts
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
-                                        data = if(!is.data.frame(x)) as.data.frame else x,
+                                        data = if(!is.data.frame(x)) as.data.frame(x) else x,
                                         control = ctl,
                                         tree_controls = treeCtl),
                                    theDots)  
@@ -57,15 +53,14 @@ modelInfo <- list(label = "Boosted Tree",
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     predType <- ifelse(modelFit$problemType == "Classification", "class", "response")
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     out <- predict(modelFit, newdata, type = predType)
                                         
-                    if(!is.null(submodels))
-                    {
+                    if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- as.vector(out)
                       
-                      for(j in seq(along = submodels$mstop))
-                      {
+                      for(j in seq(along = submodels$mstop)) {
                         tmp[[j+1]]  <- as.vector(predict(modelFit[submodels$mstop[j]],
                                                          newdata,
                                                          type = predType))
@@ -77,17 +72,16 @@ modelInfo <- list(label = "Boosted Tree",
                     out  
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     lp <- predict(modelFit, newdata)
                     out <- cbind(binomial()$linkinv(-lp),
                                  1 - binomial()$linkinv(-lp))
                     colnames(out) <- modelFit$obsLevels
-                    if(!is.null(submodels))
-                    {
+                    if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
                       
-                      for(j in seq(along = submodels$mstop))
-                      {                           
+                      for(j in seq(along = submodels$mstop)) {                           
                         tmpProb <- predict(modelFit[submodels$mstop[j]], newdata)
                         tmpProb <- cbind(binomial()$linkinv(-tmpProb),
                                          1 - binomial()$linkinv(-tmpProb))

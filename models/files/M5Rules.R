@@ -29,8 +29,10 @@ modelInfo <- list(label = "Model Rules",
                     out <- do.call("M5Rules", modelArgs) 
                     out
                   },
-                  predict = function(modelFit, newdata, submodels = NULL) 
-                    predict(modelFit, newdata),
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata)
+                  },
                   predictors = function(x, ...) predictors(x$terms),
                   prob = NULL,
                   tags = c("Rule-Based Model", "Linear Regression", "Implicit Feature Selection",

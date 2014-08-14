@@ -12,10 +12,14 @@ modelInfo <- list(label = "Stabilized Linear Discriminant Analysis",
                     dat$.outcome <- y
                     slda(.outcome ~ ., data = dat, ...)
                   },
-                  predict = function(modelFit, newdata, submodels = NULL)
-                    predict(modelFit, newdata)$class,
-                  prob = function(modelFit, newdata, submodels = NULL)
-                    predict(modelFit, newdata)$posterior,
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata)$class
+                    },
+                  prob = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata)$posterior
+                    },
                   predictors = function(x, ...) if(hasTerms(x)) predictors(x$terms) else predictors(x$mylda),
                   tags = c("Discriminant Analysis", "Linear Classifier"),
                   sort = function(x) x)

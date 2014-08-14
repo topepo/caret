@@ -238,6 +238,7 @@ ldaBag <- list(fit = function(x, y, ...)
 
                pred = function(object, x)
                {
+                 if(!is.data.frame(x)) x <- as.data.frame(x)
                  predict(object, x)$posterior
                },
                aggregate = function(x, type = "class")
@@ -273,6 +274,7 @@ plsBag <- list(fit = function(x, y,  ...)
 
                pred = function(object, x)
                {
+                 if(!is.data.frame(x)) x <- as.data.frame(x)
                  predict(object, x, type = "prob")[,,]
                },
                aggregate = function(x, type = "class")
@@ -302,6 +304,7 @@ nbBag <- list(fit = function(x, y,  ...)
 
                pred = function(object, x)
                {
+                 if(!is.data.frame(x)) x <- as.data.frame(x)
                  as.data.frame(predict(object, x)$posterior)
                },
                aggregate = function(x, type = "class")
@@ -334,7 +337,7 @@ ctreeBag <- list(fit = function(x, y,  ...)
 
                 pred = function(object, x)
                 {
-                  
+                  if(!is.data.frame(x)) x <- as.data.frame(x)
                   obsLevels <-  levels(object@data@get("response")[,1])
                   if(!is.null(obsLevels))
                     {

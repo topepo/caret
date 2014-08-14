@@ -21,7 +21,7 @@ modelInfo <- list(label = "Penalized Logistic Regression",
                            modelFit$obsLevels[2])
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- predict(modelFit, newdata, type = "response")
+                    out <- predict(modelFit, as.matrix(newdata), type = "response")
                     out <- cbind(out, 1-out)
                     dimnames(out)[[2]] <-  modelFit$obsLevels
                     out

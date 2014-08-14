@@ -29,8 +29,8 @@ modelInfo <- list(label = "Generalized Linear Model",
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(modelFit$problemType == "Classification")
-                    {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(modelFit$problemType == "Classification") {
                       probs <-  predict(modelFit, newdata, type = "response")
                       out <- ifelse(probs < .5,
                                     modelFit$obsLevel[1],
@@ -41,6 +41,7 @@ modelInfo <- list(label = "Generalized Linear Model",
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     out <- predict(modelFit, newdata, type = "response")
                     out <- cbind(1-out, out)
                     ## glm models the second factor level, we treat the first as the

@@ -19,6 +19,7 @@ modelInfo <- list(label = "k-Nearest Neighbors",
                                kernel = as.character(param$kernel), ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     predict(modelFit, newdata)
                   },
                   tags = "Prototype Models",

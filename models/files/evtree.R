@@ -30,9 +30,13 @@ modelInfo <- list(label = "Tree Models from Genetic Algorithms",
                     out <- do.call("evtree", modelArgs)
                     out  
                   },
-                  predict = function(modelFit, newdata, submodels = NULL)
-                    predict(modelFit, newdata),
-                  prob = function(modelFit, newdata, submodels = NULL)
-                    predict(modelFit, newdata, type = "prob"),
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata)
+                    },
+                  prob = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata, type = "prob")
+                    },
                   tags = c("Tree-Based Model", "Implicit Feature Selection"),
                   sort = function(x) x[order(x[,1]),])

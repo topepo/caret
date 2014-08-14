@@ -49,6 +49,7 @@ modelInfo <- list(label = "Boosted Generalized Linear Model",
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     predType <- ifelse(modelFit$problemType == "Classification", "class", "response")
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     out <- predict(modelFit, newdata, type = predType)
                     
                     if(!is.null(submodels))
@@ -66,7 +67,7 @@ modelInfo <- list(label = "Boosted Generalized Linear Model",
                     out         
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     lp <- predict(modelFit, newdata)
                     out <- cbind( binomial()$linkinv(-lp), 1 - binomial()$linkinv(-lp))
                     colnames(out) <- modelFit$obsLevels
