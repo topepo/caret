@@ -2,8 +2,8 @@ setwd("~/tmp")
 
 ##############################################################
 
-Old <- "2014_07_28_19__6.0-30"
-New <- "2014_07_28_12__6.0-32"
+Old <- "2014_08_14_15__6.0-30"
+New <- "2014_08_14_16__6.0-34"
 
 oldResults <- list.files(file.path(getwd(), Old), pattern = "RData")
 newResults <- list.files(file.path(getwd(), New), pattern = "RData")
@@ -105,6 +105,6 @@ checkTrain <- function(Old, New = NULL) {
 }
 
 
-# checkModels(common, Old, New)
+checkModels(common, Old, New)
 
-# q("no")
+q("no")

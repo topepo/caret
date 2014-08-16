@@ -23,8 +23,7 @@ set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
                              method = "plsRglm", 
                              trControl = cctrl1,
-                             metric = "ROC", 
-                             verbose = FALSE,
+                             metric = "ROC",
                              preProc = c("center", "scale"))
 
 set.seed(849)
@@ -32,7 +31,6 @@ test_class_cv_form <- train(Class ~ ., data = training,
                             method = "plsRglm", 
                             trControl = cctrl1,
                             metric = "ROC", 
-                            verbose = FALSE,
                             preProc = c("center", "scale"))
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
@@ -45,7 +43,6 @@ test_class_loo_model <- train(trainX, trainY,
                               method = "plsRglm", 
                               trControl = cctrl2,
                               metric = "ROC", 
-                              verbose = FALSE, 
                               preProc = c("center", "scale"))
 
 set.seed(849)
@@ -54,7 +51,6 @@ test_class_none_model <- train(trainX, trainY,
                                trControl = cctrl3,
                                tuneGrid = data.frame(nt = 1, alpha.pvals.expli = 1),
                                metric = "ROC", 
-                               verbose = FALSE, 
                                preProc = c("center", "scale"))
 
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
@@ -73,7 +69,7 @@ SLC14_1 <- function(n = 100) {
     ifelse(x[16] < -1, 1, 0) + x[17]*ifelse(x[17] < -1, 1, 0) -
     2 * x[18] - x[19]*x[20]
   dat <- as.data.frame(dat)
-  colnames(dat) <- well_numbered("Var", ncol(dat))
+  colnames(dat) <- paste0("Var", 1:ncol(dat))
   dat$y <- apply(dat[, 1:20], 1, foo) + rnorm(n, sd = 3)
   dat
 }
@@ -94,7 +90,6 @@ set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
                            method = "plsRglm", 
                            trControl = rctrl1, 
-                           verbose = FALSE,
                            preProc = c("center", "scale"))
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
@@ -102,7 +97,6 @@ set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
                           method = "plsRglm", 
                           trControl = rctrl1, 
-                          verbose = FALSE,
                           preProc = c("center", "scale"))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
@@ -110,14 +104,12 @@ set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 
                             method = "plsRglm",
                             trControl = rctrl2, 
-                            verbose = FALSE,
                             preProc = c("center", "scale"))
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
                              method = "plsRglm", 
                              trControl = rctrl3, 
-                             verbose = FALSE,
                              tuneGrid = data.frame(nt = 1, alpha.pvals.expli = 1),
                              preProc = c("center", "scale"))
 test_reg_none_pred <- predict(test_reg_none_model, testX)

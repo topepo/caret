@@ -14,7 +14,7 @@ SLC14_1 <- function(n = 100) {
     ifelse(x[16] < -1, 1, 0) + x[17]*ifelse(x[17] < -1, 1, 0) -
     2 * x[18] - x[19]*x[20]
   dat <- as.data.frame(dat)
-  colnames(dat) <- well_numbered("Var", ncol(dat))
+  colnames(dat) <- paste0("Var", 1:ncol(dat))
   dat$y <- apply(dat[, 1:20], 1, foo) + rnorm(n, sd = 3)
   dat
 }
