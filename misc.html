@@ -16,7 +16,8 @@ Released   : 20120902
 -->
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-<style type="text/css">.knitr.inline {
+<style type="text/css">
+.knitr.inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
 }
@@ -75,7 +76,8 @@ Released   : 20120902
 .hl.kwd {
   color: #BC5A65;
   font-weight: bold;
-}</style>
+}
+</style>
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -143,8 +145,10 @@ Released   : 20120902
 <span class="hl com">## Save the predictors and class in different objects</span>
 <span class="hl std">sonarTrain</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[inTrain,</span> <span class="hl opt">-</span><span class="hl kwd">ncol</span><span class="hl std">(Sonar)]</span>
 <span class="hl std">sonarTest</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[</span><span class="hl opt">-</span><span class="hl std">inTrain,</span> <span class="hl opt">-</span><span class="hl kwd">ncol</span><span class="hl std">(Sonar)]</span>
+
 <span class="hl std">trainClass</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[inTrain,</span> <span class="hl str">&quot;Class&quot;</span><span class="hl std">]</span>
 <span class="hl std">testClass</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[</span><span class="hl opt">-</span><span class="hl std">inTrain,</span> <span class="hl str">&quot;Class&quot;</span><span class="hl std">]</span>
+
 <span class="hl std">centerScale</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">preProcess</span><span class="hl std">(sonarTrain)</span>
 <span class="hl std">centerScale</span>
 </pre></div>
@@ -157,6 +161,7 @@ Pre-processing: centered, scaled
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">training</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(centerScale, sonarTrain)</span>
 <span class="hl std">testing</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(centerScale, sonarTest)</span>
+
 <span class="hl std">knnFit</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">knn3</span><span class="hl std">(training, trainClass,</span> <span class="hl kwc">k</span> <span class="hl std">=</span> <span class="hl num">11</span><span class="hl std">)</span>
 <span class="hl std">knnFit</span>
 </pre></div>
@@ -344,6 +349,7 @@ matrix/data frame of class probabilities. For the linear discriminant model abov
 <div class="chunk" id="unnamed-chunk-5"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;class&quot;</span><span class="hl std">) {</span>
   <span class="hl com">## The class probabilities come in as a list of matrices</span>
   <span class="hl com">## For each class, we can pool them then average over them</span>
+
   <span class="hl com">## Pre-allocate space for the results</span>
   <span class="hl std">pooled</span> <span class="hl kwb">&lt;-</span> <span class="hl std">x[[</span><span class="hl num">1</span><span class="hl std">]]</span> <span class="hl opt">*</span> <span class="hl num">NA</span>
   <span class="hl std">n</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">nrow</span><span class="hl std">(pooled)</span>
@@ -503,7 +509,7 @@ between the new latent variable and the outcomes.
 
 
   <div id="footer">
-  <p>Created on Sat May 31 2014 using caret version 6.0-29 and R version 3.0.3 (2014-03-06).</p>
+  <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
   </div>
   <!-- end #footer -->
 </body>

@@ -15,7 +15,8 @@ Released   : 20120902
 -->
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-<style type="text/css">.knitr.inline {
+<style type="text/css">
+.knitr.inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
 }
@@ -74,7 +75,8 @@ Released   : 20120902
 .hl.kwd {
   color: #BC5A65;
   font-weight: bold;
-}</style>
+}
+</style>
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -151,8 +153,9 @@ Released   : 20120902
 
 <div class="chunk" id="SplitMaxDiss1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(mlbench)</span>
 <span class="hl kwd">data</span><span class="hl std">(BostonHousing)</span>
+
 <span class="hl std">testing</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">scale</span><span class="hl std">(BostonHousing[,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;age&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;nox&quot;</span><span class="hl std">)])</span>
-<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">11</span><span class="hl std">)</span>
+<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">5</span><span class="hl std">)</span>
 <span class="hl com">## A random sample of 5 data points</span>
 <span class="hl std">startSet</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sample</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl kwd">dim</span><span class="hl std">(testing)[</span><span class="hl num">1</span><span class="hl std">],</span> <span class="hl num">5</span><span class="hl std">)</span>
 <span class="hl std">samplePool</span> <span class="hl kwb">&lt;-</span> <span class="hl std">testing[</span><span class="hl opt">-</span><span class="hl std">startSet, ]</span>
@@ -160,16 +163,19 @@ Released   : 20120902
 <span class="hl std">newSamp</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">maxDissim</span><span class="hl std">(start, samplePool,</span> <span class="hl kwc">n</span> <span class="hl std">=</span> <span class="hl num">20</span><span class="hl std">)</span>
 <span class="hl kwd">head</span><span class="hl std">(newSamp)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1]  71 139 491 296 355 241
+<div class="output"><pre class="knitr r">[1] 461 406  49 308 469  76
 </pre></div>
 </div></div>
 
 
 
-<p>The visualization below shows the data set, the starting samples
-(show as "S") and the order in which the other 20 samples are added. </p>
 
-<p><a href="MaxDissim.gif"><img width =250 height =250 src="MaxDissim.gif"><br>(click image for larger gif)</a><br><br></p>
+    
+<p>The visualization below shows the data set (small points), the starting samples
+(larger blue points) and the order in which the other 20 samples are added. </p>
+
+
+<div class="chunk" id="Split_gif"><div class="rimage default"><img src="MaxDissim.gif" class="plot" /></div></div>
 
 
  <div id="time"></div>        
@@ -236,7 +242,7 @@ As an example, suppose we have a time series with 20 data points. We can fix <tt
   <div id="footer">
 
 
-  <p>Created on Sat May 31 2014 using caret version 6.0-29 and R version 3.0.3 (2014-03-06).</p>
+  <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
   </div>
   <!-- end #footer -->
 </body>

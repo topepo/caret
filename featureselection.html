@@ -15,7 +15,8 @@ Released   : 20120902
 -->
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-<style type="text/css">.knitr.inline {
+<style type="text/css">
+.knitr.inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
 }
@@ -74,7 +75,8 @@ Released   : 20120902
 .hl.kwd {
   color: #BC5A65;
   font-weight: bold;
-}</style>
+}
+</style>
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -257,13 +259,16 @@ As previously mentioned, to fit linear models, the <code>lmFuncs</code> set of f
 </p>
 
 <div class="chunk" id="select_load_lmProfile"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">10</span><span class="hl std">)</span>
+
 <span class="hl std">ctrl</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">rfeControl</span><span class="hl std">(</span><span class="hl kwc">functions</span> <span class="hl std">= lmFuncs,</span>
                    <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;repeatedcv&quot;</span><span class="hl std">,</span>
                    <span class="hl kwc">repeats</span> <span class="hl std">=</span> <span class="hl num">5</span><span class="hl std">,</span>
                    <span class="hl kwc">verbose</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">)</span>
+
 <span class="hl std">lmProfile</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">rfe</span><span class="hl std">(x, y,</span>
                  <span class="hl kwc">sizes</span> <span class="hl std">= subsets,</span>
                  <span class="hl kwc">rfeControl</span> <span class="hl std">= ctrl)</span>
+
 <span class="hl std">lmProfile</span>
 </pre></div>
 <div class="output"><pre class="knitr r">
@@ -556,17 +561,23 @@ This approach can produce good results for many of the tree based models, such a
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">minRMSE</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">min</span><span class="hl std">(example</span><span class="hl opt">$</span><span class="hl std">RMSE)</span>
 <span class="hl std">example</span><span class="hl opt">$</span><span class="hl std">Tolerance</span> <span class="hl kwb">&lt;-</span> <span class="hl std">(example</span><span class="hl opt">$</span><span class="hl std">RMSE</span> <span class="hl opt">-</span> <span class="hl std">minRMSE)</span><span class="hl opt">/</span><span class="hl std">minRMSE</span> <span class="hl opt">*</span> <span class="hl num">100</span>
+
 <span class="hl com">## Plot the profile and the subsets selected using the </span>
 <span class="hl com">## two different criteria</span>
+
 <span class="hl kwd">par</span><span class="hl std">(</span><span class="hl kwc">mfrow</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwc">mar</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl num">4</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">2</span><span class="hl std">))</span>
+
 <span class="hl kwd">plot</span><span class="hl std">(example</span><span class="hl opt">$</span><span class="hl std">Variables[</span><span class="hl opt">-</span><span class="hl kwd">c</span><span class="hl std">(smallest, within10Pct)],</span>
      <span class="hl std">example</span><span class="hl opt">$</span><span class="hl std">RMSE[</span><span class="hl opt">-</span><span class="hl kwd">c</span><span class="hl std">(smallest, within10Pct)],</span>
      <span class="hl kwc">ylim</span> <span class="hl std">=</span> <span class="hl kwd">extendrange</span><span class="hl std">(example</span><span class="hl opt">$</span><span class="hl std">RMSE),</span>
      <span class="hl kwc">ylab</span> <span class="hl std">=</span> <span class="hl str">&quot;RMSE&quot;</span><span class="hl std">,</span> <span class="hl kwc">xlab</span> <span class="hl std">=</span> <span class="hl str">&quot;Variables&quot;</span><span class="hl std">)</span>
+
 <span class="hl kwd">points</span><span class="hl std">(example</span><span class="hl opt">$</span><span class="hl std">Variables[smallest],</span>
        <span class="hl std">example</span><span class="hl opt">$</span><span class="hl std">RMSE[smallest],</span> <span class="hl kwc">pch</span> <span class="hl std">=</span> <span class="hl num">16</span><span class="hl std">,</span> <span class="hl kwc">cex</span><span class="hl std">=</span> <span class="hl num">1.3</span><span class="hl std">)</span>
+
 <span class="hl kwd">points</span><span class="hl std">(example</span><span class="hl opt">$</span><span class="hl std">Variables[within10Pct],</span>
        <span class="hl std">example</span><span class="hl opt">$</span><span class="hl std">RMSE[within10Pct],</span> <span class="hl kwc">pch</span> <span class="hl std">=</span> <span class="hl num">17</span><span class="hl std">,</span> <span class="hl kwc">cex</span><span class="hl std">=</span> <span class="hl num">1.3</span><span class="hl std">)</span>
+
 <span class="hl kwd">with</span><span class="hl std">(example,</span> <span class="hl kwd">plot</span><span class="hl std">(Variables, Tolerance))</span>
 <span class="hl kwd">abline</span><span class="hl std">(</span><span class="hl kwc">h</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">,</span> <span class="hl kwc">lty</span> <span class="hl std">=</span> <span class="hl num">2</span><span class="hl std">,</span> <span class="hl kwc">col</span> <span class="hl std">=</span> <span class="hl str">&quot;darkgrey&quot;</span><span class="hl std">)</span>
 </pre></div>
@@ -632,16 +643,16 @@ Outer resampling method: Cross-Validated (10 fold, repeated 5 times)
 Resampling performance over subset size:
 
  Variables RMSE Rsquared RMSESD RsquaredSD Selected
-         1 4.73    0.208  0.975      0.183         
-         2 3.87    0.397  0.664      0.225         
-         3 3.18    0.600  0.625      0.191         
-         4 2.69    0.769  0.510      0.112        *
-         5 2.94    0.729  0.561      0.129         
-        10 3.05    0.723  0.568      0.153         
-        15 3.18    0.701  0.559      0.173         
-        20 3.32    0.693  0.572      0.180         
-        25 3.34    0.689  0.568      0.186         
-        50 3.54    0.648  0.550      0.191         
+         1 4.73    0.207  0.974      0.182         
+         2 3.92    0.380  0.682      0.223         
+         3 3.20    0.598  0.621      0.194         
+         4 2.68    0.771  0.511      0.108        *
+         5 2.85    0.758  0.593      0.128         
+        10 3.09    0.701  0.581      0.165         
+        15 3.17    0.692  0.562      0.166         
+        20 3.31    0.681  0.539      0.176         
+        25 3.38    0.667  0.555      0.182         
+        50 3.54    0.646  0.563      0.196         
 
 The top 4 variables (out of 4):
    real4, real5, real2, real1
@@ -810,7 +821,7 @@ generalized additive model approach described previously.
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">10</span><span class="hl std">)</span>
 <span class="hl std">rfWithFilter</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sbf</span><span class="hl std">(x, y,</span> <span class="hl kwc">sbfControl</span> <span class="hl std">= filterCtrl)</span>
 </pre></div>
-<div class="message"><pre class="knitr r">Loaded gam 1.09
+<div class="message"><pre class="knitr r">Loaded gam 1.09.1
 </pre></div>
 </div></div>
 
@@ -888,15 +899,15 @@ Lower diagonal: p-value for H0: difference = 0
 
 RMSE 
          lmRFE    rfRFE   rfFilter
-lmRFE              0.216  -1.185  
-rfRFE    0.0625           -1.402  
-rfFilter 9.63e-11 < 2e-16         
+lmRFE              0.226  -1.186  
+rfRFE    0.0468           -1.412  
+rfFilter 9.89e-11 < 2e-16         
 
 Rsquared 
          lmRFE    rfRFE   rfFilter
-lmRFE             -0.113   0.323  
-rfRFE    1.65e-05          0.436  
-rfFilter 3.90e-10 < 2e-16         
+lmRFE             -0.115   0.324  
+rfRFE    1.32e-05          0.439  
+rfFilter 3.18e-10 < 2e-16         
 </pre></div>
 </div></div>
 
@@ -957,12 +968,7 @@ There are several plot methods for the differences:
   <div id="footer">
 
 
-  <p>Created on Sat May 31 2014 using caret version 6.0-29 and R version 3.0.3 (2014-03-06).</p>
-  </div>
-  <!-- end #footer -->
-</body>
-  </html>
-eated on Wed Feb 26 2014 using caret version 6.0-24 and R Under development (unstable) (2014-02-14 r65008).</p>
+  <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
   </div>
   <!-- end #footer -->
 </body>

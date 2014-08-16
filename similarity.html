@@ -17,7 +17,8 @@
   -->
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-<style type="text/css">.knitr.inline {
+<style type="text/css">
+.knitr.inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
 }
@@ -76,7 +77,8 @@
 .hl.kwd {
   color: #BC5A65;
   font-weight: bold;
-}</style>
+}
+</style>
 <style type="text/css">.knitr.inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
@@ -189,8 +191,8 @@
   <script src="d3.v3.min.js"></script>
 <script>
 
-var width = 800, 
-    height = 800;
+var width = 830, 
+    height = 900;
 
 var color = d3.scale.category10();
 
@@ -245,18 +247,22 @@ d3.json("model_tags.json", function(error, graph) {
 </p>
 <div class="chunk" id="dissim"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">tag</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">read.csv</span><span class="hl std">(</span><span class="hl str">&quot;tag_data.csv&quot;</span><span class="hl std">,</span> <span class="hl kwc">row.names</span> <span class="hl std">=</span> <span class="hl num">1</span><span class="hl std">)</span>
 <span class="hl std">tag</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.matrix</span><span class="hl std">(tag)</span>
+
 <span class="hl com">## Select only models for regression</span>
 <span class="hl std">regModels</span> <span class="hl kwb">&lt;-</span> <span class="hl std">tag[tag[,</span><span class="hl str">&quot;Regression&quot;</span><span class="hl std">]</span> <span class="hl opt">==</span> <span class="hl num">1</span><span class="hl std">,]</span>
+
 <span class="hl std">all</span> <span class="hl kwb">&lt;-</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl kwd">nrow</span><span class="hl std">(regModels)</span>
 <span class="hl com">## Seed the analysis with the SVM model</span>
 <span class="hl std">start</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">grep</span><span class="hl std">(</span><span class="hl str">&quot;(svmRadial)&quot;</span><span class="hl std">,</span> <span class="hl kwd">rownames</span><span class="hl std">(regModels),</span> <span class="hl kwc">fixed</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">)</span>
 <span class="hl std">pool</span> <span class="hl kwb">&lt;-</span> <span class="hl std">all[all</span> <span class="hl opt">!=</span> <span class="hl std">start]</span>
+
 <span class="hl com">## Select 4 model models by maximizing the Jaccard</span>
 <span class="hl com">## dissimilarity between sets of models</span>
 <span class="hl std">nextMods</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">maxDissim</span><span class="hl std">(regModels[start,,</span><span class="hl kwc">drop</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">],</span>
                       <span class="hl std">regModels[pool, ],</span>
                       <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;Jaccard&quot;</span><span class="hl std">,</span>
                       <span class="hl kwc">n</span> <span class="hl std">=</span> <span class="hl num">4</span><span class="hl std">)</span>
+
 <span class="hl kwd">rownames</span><span class="hl std">(regModels)[</span><span class="hl kwd">c</span><span class="hl std">(start, nextMods)]</span>
 </pre></div>
 <div class="output"><pre class="knitr r">[1] "Support Vector Machines with Radial Basis Function Kernel (svmRadial)"
@@ -309,7 +315,7 @@ d3.json("model_tags.json", function(error, graph) {
 
  
     <div id="footer">
-      <p>Created on Sat May 31 2014 using caret version 6.0-29 and R version 3.0.3 (2014-03-06).</p>
+      <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
     </div>
     <!-- end #footer -->
   </body>

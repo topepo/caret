@@ -15,7 +15,8 @@
   -->
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-<style type="text/css">.knitr.inline {
+<style type="text/css">
+.knitr.inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
 }
@@ -74,7 +75,8 @@
 .hl.kwd {
   color: #BC5A65;
   font-weight: bold;
-}</style>
+}
+</style>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -223,8 +225,8 @@ For example:
  
           Reference
 Prediction    M    R
-         M 46.4 10.1
-         R  7.1 36.4
+         M 46.9 11.1
+         R  6.6 35.4
 </pre></div>
 </div></div>
 
@@ -247,9 +249,11 @@ The <span class="mx funCall">lift</span> function can be used to evaluate probab
 <span class="hl std">trainingSim</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">twoClassSim</span><span class="hl std">(</span><span class="hl num">1000</span><span class="hl std">)</span>
 <span class="hl std">evalSim</span>     <span class="hl kwb">&lt;-</span> <span class="hl kwd">twoClassSim</span><span class="hl std">(</span><span class="hl num">1000</span><span class="hl std">)</span>
 <span class="hl std">testingSim</span>  <span class="hl kwb">&lt;-</span> <span class="hl kwd">twoClassSim</span><span class="hl std">(</span><span class="hl num">1000</span><span class="hl std">)</span>
+
 <span class="hl std">ctrl</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">trainControl</span><span class="hl std">(</span><span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;cv&quot;</span><span class="hl std">,</span>
                      <span class="hl kwc">classProbs</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">,</span>
                      <span class="hl kwc">summaryFunction</span> <span class="hl std">= twoClassSummary)</span>
+
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">1045</span><span class="hl std">)</span>
 <span class="hl std">fdaModel</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= trainingSim,</span>
                   <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;fda&quot;</span><span class="hl std">,</span>
@@ -261,6 +265,7 @@ The <span class="mx funCall">lift</span> function can be used to evaluate probab
                   <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;lda&quot;</span><span class="hl std">,</span>
                   <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;ROC&quot;</span><span class="hl std">,</span>
                   <span class="hl kwc">trControl</span> <span class="hl std">= ctrl)</span>
+
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">1045</span><span class="hl std">)</span>
 <span class="hl std">c5Model</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= trainingSim,</span>
                  <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;C5.0&quot;</span><span class="hl std">,</span>
@@ -343,11 +348,14 @@ For Affymetrix gene chip data, RMA processing (<a href="http://nar.oxfordjournal
           <p>For example:</p>
 <div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># first, let affy/expresso know that the method exists</span>
 <span class="hl std">normalize.AffyBatch.methods</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(normalize.AffyBatch.methods,</span> <span class="hl str">&quot;normalize2Reference&quot;</span><span class="hl std">)</span>
+
 <span class="hl std">RawData</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">ReadAffy</span><span class="hl std">(</span><span class="hl kwc">celfile.path</span> <span class="hl std">= FilePath)</span>
+
 <span class="hl std">Batch1Step1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">bg.correct</span><span class="hl std">(RawData,</span> <span class="hl str">&quot;rma&quot;</span><span class="hl std">)</span>
 <span class="hl std">Batch1Step2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">normalize.AffyBatch.quantiles</span><span class="hl std">(Batch1Step1)</span>
 <span class="hl std">referencePM</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">pm</span><span class="hl std">(Batch1Step2)[,</span> <span class="hl num">1</span><span class="hl std">]</span>
 <span class="hl std">Batch1Step3</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">computeExprSet</span><span class="hl std">(Batch1Step2,</span> <span class="hl str">&quot;pmonly&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;trimMean&quot;</span><span class="hl std">)</span>
+
 <span class="hl std">Batch2Step1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">bg.correct</span><span class="hl std">(RawData2,</span> <span class="hl str">&quot;rma&quot;</span><span class="hl std">)</span>
 <span class="hl std">Batch2Step2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">normalize.AffyBatch.normalize2Reference</span><span class="hl std">(Batch2Step1,</span> <span class="hl kwc">ref</span> <span class="hl std">= referencePM)</span>
 <span class="hl std">Batch2Step3</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">computeExprSet</span><span class="hl std">(Batch2Step2,</span> <span class="hl str">&quot;pmonly&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;trimMean&quot;</span><span class="hl std">)</span>
@@ -398,7 +406,7 @@ For Affymetrix gene chip data, RMA processing (<a href="http://nar.oxfordjournal
 
  
     <div id="footer">
-      <p>Created on Sun Jun 01 2014 using caret version 6.0-29 and R version 3.0.3 (2014-03-06).</p>
+      <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
     </div>
     <!-- end #footer -->
   </body>

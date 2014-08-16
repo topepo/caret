@@ -106,6 +106,11 @@ Released   : 20120902
 <div id="page">
   <div id="content">
   
+<h1>Adaptive-Network-Based Fuzzy Inference System</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'ANFIS'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">num.labels</span></code> (#Fuzzy Terms), <code><span class="mx arg">max.iter</span></code> (Max. Iterations)</p>
+
 <h1>C5.0</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'C5.0'</span></tt></p>
 <p><b>Type</b>: Classification</p>
@@ -120,6 +125,61 @@ Released   : 20120902
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'cubist'</span></tt></p>
 <p><b>Type</b>: Regression</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">committees</span></code> (#Committees), <code><span class="mx arg">neighbors</span></code> (#Instances)</p>
+
+<h1>Dynamic Evolving Neural-Fuzzy Inference System </h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'DENFIS'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">Dthr</span></code> (Threshold), <code><span class="mx arg">max.iter</span></code> (Max. Iterations)</p>
+
+<h1>Fuzzy Inference Rules by Descent Method</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'FIR.DM'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">num.labels</span></code> (#Fuzzy Terms), <code><span class="mx arg">max.iter</span></code> (Max. Iterations)</p>
+
+<h1>Fuzzy Rules Using Chi's Method</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'FRBCS.CHI'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">num.labels</span></code> (#Fuzzy Terms), <code><span class="mx arg">type.mf</span></code> (Membership Function)</p>
+
+<h1>Fuzzy Rules Using Genetic Cooperative-Competitive Learning</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'GFS.GCCL'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">num.labels</span></code> (#Fuzzy Terms), <code><span class="mx arg">popu.size</span></code> (Population Size), <code><span class="mx arg">max.gen</span></code> (Max. Generations)</p>
+
+<h1>Fuzzy Rules Using Genetic Cooperative-Competitive Learning and Pittsburgh</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'FH.GBML'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">max.num.rule</span></code> (Max. #Rules), <code><span class="mx arg">popu.size</span></code> (Population Size), <code><span class="mx arg">max.gen</span></code> (Max. Generations)</p>
+
+<h1>Fuzzy Rules Using the Structural Learning Algorithm on Vague Environment</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'SLAVE'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">num.labels</span></code> (#Fuzzy Terms), <code><span class="mx arg">max.iter</span></code> (Max. Iterations), <code><span class="mx arg">max.gen</span></code> (Max. Generations)</p>
+
+<h1>Fuzzy Rules via MOGUL</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'GFS.FR.MOGAL'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">max.gen</span></code> (Max. Generations), <code><span class="mx arg">max.iter</span></code> (Max. Iterations), <code><span class="mx arg">max.tune</span></code> (Max. Tuning Iterations)</p>
+
+<h1>Fuzzy Rules via Thrift</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'GFS.Thrift'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">popu.size</span></code> (Population Size), <code><span class="mx arg">num.labels</span></code> (# Fuzzy Labels), <code><span class="mx arg">max.gen</span></code> (Max. Generations)</p>
+
+<h1>Fuzzy Rules with Weight Factor</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'FRBCS.W'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">num.labels</span></code> (#Fuzzy Terms), <code><span class="mx arg">type.mf</span></code> (Membership Function)</p>
+
+<h1>Genetic Lateral Tuning and Rule Selection of Linguistic Fuzzy Systems</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'GFS.LT.RS'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">popu.size</span></code> (Population Size), <code><span class="mx arg">num.labels</span></code> (# Fuzzy Labels), <code><span class="mx arg">max.gen</span></code> (Max. Generations)</p>
+
+<h1>Hybrid Neural Fuzzy Inference System</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'HYFIS'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">num.labels</span></code> (#Fuzzy Terms), <code><span class="mx arg">max.iter</span></code> (Max. Iterations)</p>
 
 <h1>Model Rules</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'M5Rules'</span></tt></p>
@@ -141,6 +201,11 @@ Released   : 20120902
 <p><b>Type</b>: Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">threshold</span></code> (Confidence Threshold), <code><span class="mx arg">pruned</span></code> (Confidence Threshold)</p>
 
+<h1>Simplified TSK Fuzzy Rules</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'FS.HGD'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">num.labels</span></code> (#Fuzzy Terms), <code><span class="mx arg">max.iter</span></code> (Max. Iterations)</p>
+
 <h1>Single C5.0 Ruleset</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'C5.0Rules'</span></tt></p>
 <p><b>Type</b>: Classification</p>
@@ -150,6 +215,16 @@ Released   : 20120902
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'OneR'</span></tt></p>
 <p><b>Type</b>: Classification</p>
 <p>No Tuning Parameters</p>
+
+<h1>Subtractive Clustering and Fuzzy c-Means Rules</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'SBC'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">r.a</span></code> (Radius), <code><span class="mx arg">eps.high</span></code> (Upper Threshold), <code><span class="mx arg">eps.low</span></code> (Lower Threshold)</p>
+
+<h1>Wang and Mendel Fuzzy Rules</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'WM'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">num.labels</span></code> (#Fuzzy Terms), <code><span class="mx arg">type.mf</span></code> (Membership Function)</p>
 
 
 <div style="clear: both;">&nbsp;</div>
@@ -190,7 +265,7 @@ Released   : 20120902
 </div>
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on <Sexpr session>.</p>
+  <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
   </div>
   <!-- end #footer -->
 </body>

@@ -15,7 +15,8 @@ Released   : 20120902
 -->
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-<style type="text/css">.knitr.inline {
+<style type="text/css">
+.knitr.inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
 }
@@ -74,7 +75,8 @@ Released   : 20120902
 .hl.kwd {
   color: #BC5A65;
   font-weight: bold;
-}</style>
+}
+</style>
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -336,6 +338,7 @@ Here is something we could use for this model:
        <span class="hl kwc">prob.model</span> <span class="hl std">= classProbs,</span>
        <span class="hl std">...)</span>
  <span class="hl std">}</span>
+
 <span class="hl std">lpSVM</span><span class="hl opt">$</span><span class="hl std">fit</span> <span class="hl kwb">&lt;-</span> <span class="hl std">svmFit</span>
 </pre></div>
 </div></div>
@@ -471,16 +474,19 @@ We should now be ready to fit our model.
 </p>
 <div class="chunk" id="custom_sonar"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(mlbench)</span>
 <span class="hl kwd">data</span><span class="hl std">(Sonar)</span>
+
 <span class="hl kwd">library</span><span class="hl std">(caret)</span>
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">998</span><span class="hl std">)</span>
 <span class="hl std">inTraining</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">createDataPartition</span><span class="hl std">(Sonar</span><span class="hl opt">$</span><span class="hl std">Class,</span> <span class="hl kwc">p</span> <span class="hl std">=</span> <span class="hl num">.75</span><span class="hl std">,</span> <span class="hl kwc">list</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">)</span>
 <span class="hl std">training</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[ inTraining,]</span>
 <span class="hl std">testing</span>  <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[</span><span class="hl opt">-</span><span class="hl std">inTraining,]</span>
+
 <span class="hl std">fitControl</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">trainControl</span><span class="hl std">(</span><span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;repeatedcv&quot;</span><span class="hl std">,</span>
                            <span class="hl com">## 10-fold CV...</span>
                            <span class="hl kwc">number</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">,</span>
                            <span class="hl com">## repeated ten times</span>
                            <span class="hl kwc">repeats</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">)</span>
+
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
 <span class="hl std">Laplacian</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= training,</span>
                    <span class="hl kwc">method</span> <span class="hl std">= lpSVM,</span>
@@ -490,7 +496,7 @@ We should now be ready to fit our model.
 <span class="hl kwd">print</span><span class="hl std">(Laplacian,</span> <span class="hl kwc">digits</span> <span class="hl std">=</span> <span class="hl num">3</span><span class="hl std">)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">157 samples
- 60 predictors
+ 60 predictor
   2 classes: 'M', 'R' 
 
 Pre-processing: centered, scaled 
@@ -500,15 +506,15 @@ Summary of sample sizes: 142, 142, 140, 142, 142, 141, ...
 
 Resampling results across tuning parameters:
 
-  C     Accuracy  Kappa  Accuracy SD  Kappa SD
-  0.25  0.75      0.483  0.0909       0.191   
-  0.5   0.8       0.589  0.0848       0.175   
-  1     0.824     0.642  0.0846       0.172   
-  2     0.827     0.648  0.0895       0.182   
-  4     0.851     0.697  0.081        0.165   
-  8     0.867     0.73   0.0829       0.17    
-  16    0.868     0.731  0.0817       0.168   
-  32    0.868     0.731  0.0817       0.168   
+  C      Accuracy  Kappa  Accuracy SD  Kappa SD
+   0.25  0.750     0.483  0.0909       0.191   
+   0.50  0.800     0.589  0.0848       0.175   
+   1.00  0.824     0.642  0.0846       0.172   
+   2.00  0.827     0.648  0.0895       0.182   
+   4.00  0.851     0.697  0.0810       0.165   
+   8.00  0.867     0.730  0.0829       0.170   
+  16.00  0.868     0.731  0.0817       0.168   
+  32.00  0.868     0.731  0.0817       0.168   
 
 Tuning parameter 'sigma' was held constant at a value of 0.01234
 Accuracy was used to select the optimal model using  the largest value.
@@ -607,6 +613,7 @@ For the <span class="mx funCall">LogitBoost</span> model, some simple code to cr
 </p>
 
 <div class="chunk" id="custom_lb_loop_funcs"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">fullGrid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">nIter</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">11</span><span class="hl std">,</span> <span class="hl num">51</span><span class="hl std">,</span> <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">))</span>
+
 <span class="hl com">## Get the largest value of nIter to fit the 'full' model</span>
 <span class="hl std">loop</span> <span class="hl kwb">&lt;-</span> <span class="hl std">fullGrid[</span><span class="hl kwd">which.max</span><span class="hl std">(fullGrid</span><span class="hl opt">$</span><span class="hl std">nIter), ,</span> <span class="hl kwc">drop</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">]</span>
 <span class="hl std">loop</span>
@@ -615,6 +622,7 @@ For the <span class="mx funCall">LogitBoost</span> model, some simple code to cr
 5    51
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">submodels</span> <span class="hl kwb">&lt;-</span> <span class="hl std">fullGrid[</span><span class="hl opt">-</span><span class="hl kwd">which.max</span><span class="hl std">(fullGrid</span><span class="hl opt">$</span><span class="hl std">nIter), ,</span> <span class="hl kwc">drop</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">]</span>
+
 <span class="hl com">## This needs to be encased in a list in case there are more than one tuning</span>
 <span class="hl com">## parameter</span>
 <span class="hl std">submodels</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">list</span><span class="hl std">(submodels)</span>
@@ -635,6 +643,7 @@ For the <span class="mx funCall">LogitBoost</span> custom model object, we could
 <div class="chunk" id="custom_lb_pred"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">lbPred</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">modelFit</span><span class="hl std">,</span> <span class="hl kwc">newdata</span><span class="hl std">,</span> <span class="hl kwc">preProc</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">,</span> <span class="hl kwc">submodels</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">) {</span>
   <span class="hl com">## This model was fit with the maximum value of nIter</span>
   <span class="hl std">out</span> <span class="hl kwb">&lt;-</span> <span class="hl std">caTools::</span><span class="hl kwd">predict.LogitBoost</span><span class="hl std">(modelFit, newdata,</span> <span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;class&quot;</span><span class="hl std">)</span>
+
   <span class="hl com">## In this case, 'submodels' is a data frame with the other values of</span>
   <span class="hl com">## nIter. We loop over these to get the other predictions.</span>
   <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl opt">!</span><span class="hl kwd">is.null</span><span class="hl std">(submodels))</span>
@@ -643,6 +652,7 @@ For the <span class="mx funCall">LogitBoost</span> custom model object, we could
     <span class="hl std">tmp</span> <span class="hl kwb">&lt;-</span> <span class="hl std">out</span>
     <span class="hl std">out</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">vector</span><span class="hl std">(</span><span class="hl kwc">mode</span> <span class="hl std">=</span> <span class="hl str">&quot;list&quot;</span><span class="hl std">,</span> <span class="hl kwc">length</span> <span class="hl std">=</span> <span class="hl kwd">nrow</span><span class="hl std">(submodels)</span> <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl std">)</span>
     <span class="hl std">out[[</span><span class="hl num">1</span><span class="hl std">]]</span> <span class="hl kwb">&lt;-</span> <span class="hl std">tmp</span>
+
     <span class="hl kwa">for</span><span class="hl std">(j</span> <span class="hl kwa">in</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl kwc">along</span> <span class="hl std">= submodels</span><span class="hl opt">$</span><span class="hl std">nIter))</span>
       <span class="hl std">{</span>
       <span class="hl std">out[[j</span><span class="hl opt">+</span><span class="hl num">1</span><span class="hl std">]]</span> <span class="hl kwb">&lt;-</span> <span class="hl std">caTools::</span><span class="hl kwd">predict.LogitBoost</span><span class="hl std">(modelFit,</span>
@@ -695,13 +705,12 @@ A few more notes:
                 <span class="hl std">},</span>
                 <span class="hl kwc">predict</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">modelFit</span><span class="hl std">,</span> <span class="hl kwc">newdata</span><span class="hl std">,</span> <span class="hl kwc">preProc</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">,</span> <span class="hl kwc">submodels</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">) {</span>
                   <span class="hl std">out</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(modelFit, newdata,</span> <span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;class&quot;</span><span class="hl std">)</span>
-                  <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl opt">!</span><span class="hl kwd">is.null</span><span class="hl std">(submodels))</span>
-                  <span class="hl std">{</span>
+                  <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl opt">!</span><span class="hl kwd">is.null</span><span class="hl std">(submodels)) {</span>
                     <span class="hl std">tmp</span> <span class="hl kwb">&lt;-</span> <span class="hl std">out</span>
                     <span class="hl std">out</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">vector</span><span class="hl std">(</span><span class="hl kwc">mode</span> <span class="hl std">=</span> <span class="hl str">&quot;list&quot;</span><span class="hl std">,</span> <span class="hl kwc">length</span> <span class="hl std">=</span> <span class="hl kwd">nrow</span><span class="hl std">(submodels)</span> <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl std">)</span>
                     <span class="hl std">out[[</span><span class="hl num">1</span><span class="hl std">]]</span> <span class="hl kwb">&lt;-</span> <span class="hl std">tmp</span>
-                    <span class="hl kwa">for</span><span class="hl std">(j</span> <span class="hl kwa">in</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl kwc">along</span> <span class="hl std">= submodels</span><span class="hl opt">$</span><span class="hl std">nIter))</span>
-                    <span class="hl std">{</span>
+
+                    <span class="hl kwa">for</span><span class="hl std">(j</span> <span class="hl kwa">in</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl kwc">along</span> <span class="hl std">= submodels</span><span class="hl opt">$</span><span class="hl std">nIter)) {</span>
                       <span class="hl std">out[[j</span><span class="hl opt">+</span><span class="hl num">1</span><span class="hl std">]]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(modelFit,</span>
                                             <span class="hl std">newdata,</span>
                                             <span class="hl kwc">nIter</span> <span class="hl std">= submodels</span><span class="hl opt">$</span><span class="hl std">nIter[j])</span>
@@ -725,13 +734,14 @@ A few more notes:
 <span class="hl std">lb1</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   user  system elapsed 
- 27.314   1.489   4.946 
+ 21.554   2.489   6.213 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## Now get rid of the submodel parts</span>
 <span class="hl std">lbFuncs2</span> <span class="hl kwb">&lt;-</span> <span class="hl std">lbFuncs</span>
 <span class="hl std">lbFuncs2</span><span class="hl opt">$</span><span class="hl std">predict</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">modelFit</span><span class="hl std">,</span> <span class="hl kwc">newdata</span><span class="hl std">,</span> <span class="hl kwc">preProc</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">,</span> <span class="hl kwc">submodels</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">)</span>
   <span class="hl kwd">predict</span><span class="hl std">(modelFit, newdata,</span> <span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;class&quot;</span><span class="hl std">)</span>
 <span class="hl std">lbFuncs2</span><span class="hl opt">$</span><span class="hl std">loop</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">NULL</span>
+
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
 <span class="hl std">lb2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">system.time</span><span class="hl std">(</span><span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= training,</span>
                          <span class="hl kwc">method</span> <span class="hl std">= lbFuncs2,</span>
@@ -740,16 +750,17 @@ A few more notes:
 <span class="hl std">lb2</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   user  system elapsed 
- 16.004   1.321  11.295 
+ 20.002   2.145  15.188 
 </pre></div>
 </div></div>
 
-<p>On a data set with 157 instances and 60 predictors and a model that is tuned over only 3 parameter values, there is a 2.28-fold speed-up. If the model were more computationally taxing or the data set were larger or the number of tune parameters that were evaluated was larger, the speed-up would increase. Here is a plot of the speed-up for a few more values of <span class="mx arg">tuneLength</span>:
+<p>On a data set with 157 instances and 60 predictors and a model that is tuned over only 3 parameter values, there is a 2.44-fold speed-up. If the model were more computationally taxing or the data set were larger or the number of tune parameters that were evaluated was larger, the speed-up would increase. Here is a plot of the speed-up for a few more values of <span class="mx arg">tuneLength</span>:
 </p>
 
 <div class="chunk" id="custom_lb_times"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">bigGrid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">nIter</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">151</span><span class="hl std">,</span> <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">))</span>
 <span class="hl std">results</span> <span class="hl kwb">&lt;-</span> <span class="hl std">bigGrid</span>
 <span class="hl std">results</span><span class="hl opt">$</span><span class="hl std">SpeedUp</span> <span class="hl kwb">&lt;-</span> <span class="hl num">NA</span>
+
 <span class="hl kwa">for</span><span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl num">2</span><span class="hl opt">:</span><span class="hl kwd">nrow</span><span class="hl std">(bigGrid)){</span>
   <span class="hl kwd">rm</span><span class="hl std">(lb1, lb2)</span>
   <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
@@ -757,6 +768,7 @@ A few more notes:
                            <span class="hl kwc">method</span> <span class="hl std">= lbFuncs,</span>
                            <span class="hl kwc">tuneGrid</span> <span class="hl std">= bigGrid[</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">i,,</span><span class="hl kwc">drop</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">],</span>
                            <span class="hl kwc">trControl</span> <span class="hl std">= fitControl))</span>
+
   <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
   <span class="hl std">lb2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">system.time</span><span class="hl std">(</span><span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= training,</span>
                            <span class="hl kwc">method</span> <span class="hl std">= lbFuncs2,</span>
@@ -764,6 +776,7 @@ A few more notes:
                            <span class="hl kwc">trControl</span> <span class="hl std">= fitControl))</span>
   <span class="hl std">results</span><span class="hl opt">$</span><span class="hl std">SpeedUp[i]</span> <span class="hl kwb">&lt;-</span> <span class="hl std">lb2[</span><span class="hl num">3</span><span class="hl std">]</span><span class="hl opt">/</span><span class="hl std">lb1[</span><span class="hl num">3</span><span class="hl std">]</span>
   <span class="hl std">}</span>
+
 <span class="hl kwd">trellis.par.set</span><span class="hl std">(</span><span class="hl kwd">caretTheme</span><span class="hl std">())</span>
 <span class="hl kwd">xyplot</span><span class="hl std">(SpeedUp</span> <span class="hl opt">~</span> <span class="hl std">nIter,</span>
        <span class="hl kwc">data</span> <span class="hl std">= results,</span>
@@ -830,8 +843,10 @@ Class1 Class2
                   <span class="hl kwc">method</span> <span class="hl std">= ldaInfo,</span>
                   <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;ROC&quot;</span><span class="hl std">,</span>
                   <span class="hl kwc">trControl</span> <span class="hl std">= ldaCtrl)</span>
+
 <span class="hl std">ldaProb1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(ldaFit, imbal_test,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;prob&quot;</span><span class="hl std">)[,</span><span class="hl num">1</span><span class="hl std">]</span>
 <span class="hl std">ldaProb2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(ldaDSFit, imbal_test,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;prob&quot;</span><span class="hl std">)[,</span><span class="hl num">1</span><span class="hl std">]</span>
+
 <span class="hl kwd">roc</span><span class="hl std">(imbal_test</span><span class="hl opt">$</span><span class="hl std">Class, ldaProb1,</span> <span class="hl kwc">levels</span> <span class="hl std">=</span> <span class="hl kwd">rev</span><span class="hl std">(</span><span class="hl kwd">levels</span><span class="hl std">(imbal_test</span><span class="hl opt">$</span><span class="hl std">Class)))</span>
 </pre></div>
 <div class="output"><pre class="knitr r">
@@ -865,7 +880,9 @@ Area under the curve: 0.744
 <p>The tecator spectroscopy data are used:
 </p>
 <div class="chunk" id="custom_meats"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">data</span><span class="hl std">(tecator)</span>
+
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">930</span><span class="hl std">)</span>
+
 <span class="hl com">## We will model the protein content data</span>
 <span class="hl std">trainMeats</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">createDataPartition</span><span class="hl std">(endpoints[,</span><span class="hl num">3</span><span class="hl std">],</span> <span class="hl kwc">p</span> <span class="hl std">=</span> <span class="hl num">3</span><span class="hl opt">/</span><span class="hl num">4</span><span class="hl std">)</span>
 <span class="hl std">absorpTrain</span>  <span class="hl kwb">&lt;-</span> <span class="hl std">absorp[trainMeats[[</span><span class="hl num">1</span><span class="hl std">]], ]</span>
@@ -896,8 +913,9 @@ Area under the curve: 0.744
                  <span class="hl com">## First fit the pls model, generate the training set scores,</span>
                  <span class="hl com">## then attach what is needed to the random forest object to </span>
                  <span class="hl com">## be used later</span>
+
                  <span class="hl com">## plsr only has a formula interface so create one data frame</span>
-                 <span class="hl std">dat</span> <span class="hl kwb">&lt;-</span> <span class="hl std">x</span>
+                 <span class="hl std">dat</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl opt">!</span><span class="hl kwd">is.data.frame</span><span class="hl std">(x)) x</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.data.frame</span><span class="hl std">(x)</span>
                  <span class="hl std">dat</span><span class="hl opt">$</span><span class="hl std">y</span> <span class="hl kwb">&lt;-</span> <span class="hl std">y</span>
                  <span class="hl std">pre</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">plsr</span><span class="hl std">(y</span><span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= dat,</span> <span class="hl kwc">ncomp</span> <span class="hl std">= param</span><span class="hl opt">$</span><span class="hl std">ncomp)</span>
                  <span class="hl std">scores</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(pre, x,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;scores&quot;</span><span class="hl std">)</span>
@@ -910,6 +928,7 @@ Area under the curve: 0.744
                  <span class="hl com">## Now apply the same scaling to the new samples</span>
                  <span class="hl std">scores</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.matrix</span><span class="hl std">(newdata)</span>  <span class="hl opt">%*%</span> <span class="hl std">modelFit</span><span class="hl opt">$</span><span class="hl std">projection</span>
                  <span class="hl kwd">colnames</span><span class="hl std">(scores)</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">paste</span><span class="hl std">(</span><span class="hl str">&quot;score&quot;</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl kwd">ncol</span><span class="hl std">(scores),</span> <span class="hl kwc">sep</span> <span class="hl std">=</span> <span class="hl str">&quot;&quot;</span><span class="hl std">)</span>
+                 <span class="hl std">scores</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.data.frame</span><span class="hl std">(scores)</span>
                  <span class="hl com">## Predict the random forest model</span>
                  <span class="hl kwd">predict</span><span class="hl std">(modelFit, scores)</span>
                <span class="hl std">},</span>
@@ -923,6 +942,7 @@ Area under the curve: 0.744
 
 <p>We fit the models and look at the resampling results for the joint model:</p>
 <div class="chunk" id="custom_meat_mod1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">meatCtrl</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">trainControl</span><span class="hl std">(</span><span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;repeatedcv&quot;</span><span class="hl std">,</span> <span class="hl kwc">repeats</span> <span class="hl std">=</span> <span class="hl num">5</span><span class="hl std">)</span>
+
 <span class="hl com">## These will take a while for these data</span>
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">184</span><span class="hl std">)</span>
 <span class="hl std">plsrf</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(absorpTrain, proteinTrain,</span>
@@ -945,7 +965,7 @@ Area under the curve: 0.744
 <span class="hl kwd">getTrainPerf</span><span class="hl std">(rfOnly)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  TrainRMSE TrainRsquared method
-1     2.186        0.4953     rf
+1     2.184        0.4964     rf
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## How does random forest do on its own?</span>
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">184</span><span class="hl std">)</span>
@@ -965,12 +985,12 @@ Area under the curve: 0.744
 <div class="chunk" id="custom_meat_test"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(</span><span class="hl kwd">predict</span><span class="hl std">(plsrf, absorpTest), proteinTest)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">    RMSE Rsquared 
-  1.3801   0.8126 
+  1.3403   0.8246 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(</span><span class="hl kwd">predict</span><span class="hl std">(rfOnly, absorpTest), proteinTest)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">    RMSE Rsquared 
-  2.0236   0.5786 
+  2.0148   0.5822 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(</span><span class="hl kwd">predict</span><span class="hl std">(plsOnly, absorpTest), proteinTest)</span>
 </pre></div>
@@ -991,9 +1011,11 @@ One of the toughest problems in predictive model occurs when the classes have a 
 As a demonstration will use a simulation system <a href="http://appliedpredictivemodeling.com/blog/2013/4/11/a-classification-simulation-system">described here</a>. By default it has about a 50-50 class frequency but we can change this by altering the function argument called <tt>intercept</tt>:
 
 <div class="chunk" id="custom_thresh_data"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(caret)</span>
+
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">442</span><span class="hl std">)</span>
 <span class="hl std">trainingSet</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">twoClassSim</span><span class="hl std">(</span><span class="hl kwc">n</span> <span class="hl std">=</span> <span class="hl num">500</span><span class="hl std">,</span> <span class="hl kwc">intercept</span> <span class="hl std">=</span> <span class="hl opt">-</span><span class="hl num">16</span><span class="hl std">)</span>
 <span class="hl std">testingSet</span>  <span class="hl kwb">&lt;-</span> <span class="hl kwd">twoClassSim</span><span class="hl std">(</span><span class="hl kwc">n</span> <span class="hl std">=</span> <span class="hl num">500</span><span class="hl std">,</span> <span class="hl kwc">intercept</span> <span class="hl std">=</span> <span class="hl opt">-</span><span class="hl num">16</span><span class="hl std">)</span>
+
 <span class="hl com">## Class frequencies</span>
 <span class="hl kwd">table</span><span class="hl std">(trainingSet</span><span class="hl opt">$</span><span class="hl std">Class)</span>
 </pre></div>
@@ -1023,7 +1045,7 @@ Let's use a standard random forest model with these data using the default value
 <span class="hl kwd">getTrainPerf</span><span class="hl std">(mod0)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  TrainROC TrainSens TrainSpec method
-1   0.9577    0.9982      0.34     rf
+1   0.9566    0.9987      0.32     rf
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## Get the ROC curve</span>
 <span class="hl std">roc0</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">roc</span><span class="hl std">(testingSet</span><span class="hl opt">$</span><span class="hl std">Class,</span>
@@ -1068,6 +1090,7 @@ Alternatively the model can be tuned, using resampling, to determine any model t
 Suppose the model has one tuning parameter and we want to look at four candidate values for tuning. Suppose we also want to tune the probability cut off over 20 different thresholds. Now we have to look at 20×4=80 different models (and that is for each resample). One other feature that has been opened up his ability to use sequential parameters: these are tuning parameters that don't require a completely new model fit to produce predictions. In this case, we can fit one random forest model and get it's predicted class probabilities and evaluate the candidate probability cutoffs using these same hold-out samples. Here is what the model code looks like:
 </p>
 <div class="chunk" id="custom_thresh_code"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com">## Get the model code for the original random forest method:</span>
+
 <span class="hl std">thresh_code</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">getModelInfo</span><span class="hl std">(</span><span class="hl str">&quot;rf&quot;</span><span class="hl std">,</span> <span class="hl kwc">regex</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">)[[</span><span class="hl num">1</span><span class="hl std">]]</span>
 <span class="hl std">thresh_code</span><span class="hl opt">$</span><span class="hl std">type</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Classification&quot;</span><span class="hl std">)</span>
 <span class="hl com">## Add the threshold as another tuning parameter</span>
@@ -1081,6 +1104,7 @@ Suppose the model has one tuning parameter and we want to look at four candidate
   <span class="hl kwd">expand.grid</span><span class="hl std">(</span><span class="hl kwc">mtry</span> <span class="hl std">=</span> <span class="hl kwd">floor</span><span class="hl std">(</span><span class="hl kwd">sqrt</span><span class="hl std">(p)),</span>
               <span class="hl kwc">threshold</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">.01</span><span class="hl std">,</span> <span class="hl num">.99</span><span class="hl std">,</span> <span class="hl kwc">length</span> <span class="hl std">= len))</span>
   <span class="hl std">}</span>
+
 <span class="hl com">## Here we fit a single random forest model (with a fixed mtry)</span>
 <span class="hl com">## and loop over the threshold values to get predictions from the same</span>
 <span class="hl com">## randomForest model.</span>
@@ -1096,12 +1120,14 @@ Suppose the model has one tuning parameter and we want to look at four candidate
                  <span class="hl std">}</span>
                  <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">loop</span> <span class="hl std">= loop,</span> <span class="hl kwc">submodels</span> <span class="hl std">= submodels)</span>
                <span class="hl std">}</span>
+
 <span class="hl com">## Fit the model independent of the threshold parameter</span>
 <span class="hl std">thresh_code</span><span class="hl opt">$</span><span class="hl std">fit</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">wts</span><span class="hl std">,</span> <span class="hl kwc">param</span><span class="hl std">,</span> <span class="hl kwc">lev</span><span class="hl std">,</span> <span class="hl kwc">last</span><span class="hl std">,</span> <span class="hl kwc">classProbs</span><span class="hl std">,</span> <span class="hl kwc">...</span><span class="hl std">) {</span>
   <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl kwd">length</span><span class="hl std">(</span><span class="hl kwd">levels</span><span class="hl std">(y))</span> <span class="hl opt">!=</span> <span class="hl num">2</span><span class="hl std">)</span>
     <span class="hl kwd">stop</span><span class="hl std">(</span><span class="hl str">&quot;This works only for 2-class problems&quot;</span><span class="hl std">)</span>
   <span class="hl kwd">randomForest</span><span class="hl std">(x, y,</span> <span class="hl kwc">mtry</span> <span class="hl std">= param</span><span class="hl opt">$</span><span class="hl std">mtry, ...)</span>
   <span class="hl std">}</span>
+
 <span class="hl com">## Now get a probability prediction and use different thresholds to</span>
 <span class="hl com">## get the predicted class</span>
 <span class="hl std">thresh_code</span><span class="hl opt">$</span><span class="hl std">predict</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">modelFit</span><span class="hl std">,</span> <span class="hl kwc">newdata</span><span class="hl std">,</span> <span class="hl kwc">submodels</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">) {</span>
@@ -1114,8 +1140,7 @@ Suppose the model has one tuning parameter and we want to look at four candidate
   <span class="hl std">out</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">ifelse</span><span class="hl std">(class1Prob</span> <span class="hl opt">&gt;=</span> <span class="hl std">modelFit</span><span class="hl opt">$</span><span class="hl std">tuneValue</span><span class="hl opt">$</span><span class="hl std">threshold,</span>
                 <span class="hl std">modelFit</span><span class="hl opt">$</span><span class="hl std">obsLevels[</span><span class="hl num">1</span><span class="hl std">],</span>
                 <span class="hl std">modelFit</span><span class="hl opt">$</span><span class="hl std">obsLevels[</span><span class="hl num">2</span><span class="hl std">])</span>
-  <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl opt">!</span><span class="hl kwd">is.null</span><span class="hl std">(submodels))</span>
-    <span class="hl std">{</span>
+  <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl opt">!</span><span class="hl kwd">is.null</span><span class="hl std">(submodels)) {</span>
     <span class="hl std">tmp2</span> <span class="hl kwb">&lt;-</span> <span class="hl std">out</span>
     <span class="hl std">out</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">vector</span><span class="hl std">(</span><span class="hl kwc">mode</span> <span class="hl std">=</span> <span class="hl str">&quot;list&quot;</span><span class="hl std">,</span> <span class="hl kwc">length</span> <span class="hl std">=</span> <span class="hl kwd">length</span><span class="hl std">(submodels</span><span class="hl opt">$</span><span class="hl std">threshold))</span>
     <span class="hl std">out[[</span><span class="hl num">1</span><span class="hl std">]]</span> <span class="hl kwb">&lt;-</span> <span class="hl std">tmp2</span>
@@ -1127,13 +1152,13 @@ Suppose the model has one tuning parameter and we want to look at four candidate
     <span class="hl std">}</span>
   <span class="hl std">out</span>
   <span class="hl std">}</span>
+
 <span class="hl com">## The probabilities are always the same but we have to create</span>
 <span class="hl com">## mulitple versions of the probs to evaluate the data across</span>
 <span class="hl com">## thresholds</span>
 <span class="hl std">thresh_code</span><span class="hl opt">$</span><span class="hl std">prob</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">modelFit</span><span class="hl std">,</span> <span class="hl kwc">newdata</span><span class="hl std">,</span> <span class="hl kwc">submodels</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">) {</span>
   <span class="hl std">out</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.data.frame</span><span class="hl std">(</span><span class="hl kwd">predict</span><span class="hl std">(modelFit, newdata,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;prob&quot;</span><span class="hl std">))</span>
-  <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl opt">!</span><span class="hl kwd">is.null</span><span class="hl std">(submodels))</span>
-    <span class="hl std">{</span>
+  <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl opt">!</span><span class="hl kwd">is.null</span><span class="hl std">(submodels)) {</span>
     <span class="hl std">probs</span> <span class="hl kwb">&lt;-</span> <span class="hl std">out</span>
     <span class="hl std">out</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">vector</span><span class="hl std">(</span><span class="hl kwc">mode</span> <span class="hl std">=</span> <span class="hl str">&quot;list&quot;</span><span class="hl std">,</span> <span class="hl kwc">length</span> <span class="hl std">=</span> <span class="hl kwd">length</span><span class="hl std">(submodels</span><span class="hl opt">$</span><span class="hl std">threshold)</span><span class="hl opt">+</span><span class="hl num">1</span><span class="hl std">)</span>
     <span class="hl std">out</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">lapply</span><span class="hl std">(out,</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">) probs)</span>
@@ -1155,6 +1180,7 @@ How do we optimize this model? Normally we might look at the area under the ROC 
   <span class="hl com">## sensitivity and specificity values using the current candidate</span>
   <span class="hl com">## value of the probability threshold.</span>
   <span class="hl std">out</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl kwd">twoClassSummary</span><span class="hl std">(data,</span> <span class="hl kwc">lev</span> <span class="hl std">=</span> <span class="hl kwd">levels</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">obs),</span> <span class="hl kwc">model</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">))</span>
+
   <span class="hl com">## The best possible model has sensitivity of 1 and specificity of 1. </span>
   <span class="hl com">## How far are we from that value?</span>
   <span class="hl std">coords</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">matrix</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">, out[</span><span class="hl str">&quot;Spec&quot;</span><span class="hl std">], out[</span><span class="hl str">&quot;Sens&quot;</span><span class="hl std">]),</span>
@@ -1164,6 +1190,7 @@ How do we optimize this model? Normally we might look at the area under the ROC 
   <span class="hl kwd">rownames</span><span class="hl std">(coords)</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Best&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Current&quot;</span><span class="hl std">)</span>
   <span class="hl kwd">c</span><span class="hl std">(out,</span> <span class="hl kwc">Dist</span> <span class="hl std">=</span> <span class="hl kwd">dist</span><span class="hl std">(coords)[</span><span class="hl num">1</span><span class="hl std">])</span>
 <span class="hl std">}</span>
+
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">949</span><span class="hl std">)</span>
 <span class="hl std">mod1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= trainingSet,</span>
               <span class="hl kwc">method</span> <span class="hl std">= thresh_code,</span>
@@ -1176,6 +1203,7 @@ How do we optimize this model? Normally we might look at the area under the ROC 
                                        <span class="hl kwc">repeats</span> <span class="hl std">=</span> <span class="hl num">5</span><span class="hl std">,</span>
                                        <span class="hl kwc">classProbs</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">,</span>
                                        <span class="hl kwc">summaryFunction</span> <span class="hl std">= fourStats))</span>
+
 <span class="hl std">mod1</span>
 </pre></div>
 </div></div>
@@ -1183,7 +1211,7 @@ How do we optimize this model? Normally we might look at the area under the ROC 
 <div class="chunk" id="custom_thresh_dist_print"><div class="rcode"><div class="output"><pre class="knitr r">Random Forest 
 
 500 samples
- 15 predictors
+ 15 predictor
   2 classes: 'Class1', 'Class2' 
 
 No pre-processing
@@ -1194,26 +1222,26 @@ Summary of sample sizes: 450, 450, 450, 450, 450, 450, ...
 Resampling results across tuning parameters:
 
   threshold  ROC    Sens   Spec   Dist   ROC SD  Sens SD  Spec SD  Dist SD
-  0.01       0.958  1      0      1      0.0349  0        0        0      
-  0.0616     0.958  1      0      1      0.0349  0        0        0      
-  0.113      0.958  1      0      1      0.0349  0        0        0      
-  0.165      0.958  1      0      1      0.0349  0        0        0      
-  0.216      0.958  1      0      1      0.0349  0        0        0      
-  0.268      0.958  1      0      1      0.0349  0        0        0      
-  0.319      0.958  1      0.028  0.972  0.0349  0        0.0809   0.0809 
-  0.371      0.958  1      0.06   0.94   0.0349  0        0.116    0.116  
-  0.423      0.958  1      0.128  0.872  0.0349  0        0.16     0.16   
-  0.474      0.958  0.999  0.228  0.772  0.0349  0.00629  0.176    0.176  
-  0.526      0.958  0.997  0.416  0.584  0.0349  0.00899  0.209    0.209  
-  0.577      0.958  0.988  0.552  0.449  0.0349  0.0181   0.216    0.215  
-  0.629      0.958  0.974  0.616  0.388  0.0349  0.03     0.201    0.197  
-  0.681      0.958  0.964  0.664  0.343  0.0349  0.0345   0.196    0.189  
-  0.732      0.958  0.952  0.692  0.318  0.0349  0.0392   0.186    0.18   
-  0.784      0.958  0.931  0.728  0.291  0.0349  0.0465   0.165    0.154  
-  0.835      0.958  0.896  0.824  0.228  0.0349  0.0447   0.149    0.118  
-  0.887      0.958  0.832  0.932  0.206  0.0349  0.0506   0.119    0.0845 
-  0.938      0.958  0.682  0.996  0.32   0.0349  0.07     0.0283   0.0687 
-  0.99       0.958  0.172  1      0.828  0.0349  0.0604   0        0.0604 
+  0.0100     0.958  1.000  0.000  1.000  0.0354  0.0000   0.0000   0.0000 
+  0.0616     0.958  1.000  0.000  1.000  0.0354  0.0000   0.0000   0.0000 
+  0.1132     0.958  1.000  0.000  1.000  0.0354  0.0000   0.0000   0.0000 
+  0.1647     0.958  1.000  0.000  1.000  0.0354  0.0000   0.0000   0.0000 
+  0.2163     0.958  1.000  0.000  1.000  0.0354  0.0000   0.0000   0.0000 
+  0.2679     0.958  1.000  0.000  1.000  0.0354  0.0000   0.0000   0.0000 
+  0.3195     0.958  1.000  0.028  0.972  0.0354  0.0000   0.0701   0.0701 
+  0.3711     0.958  1.000  0.072  0.928  0.0354  0.0000   0.1196   0.1196 
+  0.4226     0.958  1.000  0.124  0.876  0.0354  0.0000   0.1611   0.1611 
+  0.4742     0.958  1.000  0.256  0.744  0.0354  0.0000   0.2062   0.2062 
+  0.5258     0.958  0.996  0.416  0.584  0.0354  0.0110   0.2014   0.2014 
+  0.5774     0.958  0.988  0.556  0.446  0.0354  0.0186   0.2072   0.2043 
+  0.6289     0.958  0.972  0.612  0.393  0.0354  0.0293   0.1955   0.1893 
+  0.6805     0.958  0.966  0.660  0.347  0.0354  0.0318   0.1990   0.1927 
+  0.7321     0.958  0.952  0.700  0.310  0.0354  0.0424   0.1773   0.1709 
+  0.7837     0.958  0.932  0.732  0.286  0.0354  0.0436   0.1647   0.1540 
+  0.8353     0.958  0.897  0.836  0.215  0.0354  0.0449   0.1439   0.1165 
+  0.8868     0.958  0.834  0.940  0.196  0.0354  0.0480   0.1010   0.0713 
+  0.9384     0.958  0.680  0.996  0.321  0.0354  0.0681   0.0283   0.0672 
+  0.9900     0.958  0.175  1.000  0.825  0.0354  0.0493   0.0000   0.0493 
 
 Tuning parameter 'mtry' was held constant at a value of 3
 Dist was used to select the optimal model using  the smallest value.
@@ -1233,6 +1261,7 @@ Using <tt><span class="hl kwd">ggplot</span><span class="hl std">(mod1)</span></
 <span class="hl std">metrics</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">melt</span><span class="hl std">(metrics,</span> <span class="hl kwc">id.vars</span> <span class="hl std">=</span> <span class="hl str">&quot;threshold&quot;</span><span class="hl std">,</span>
                 <span class="hl kwc">variable.name</span> <span class="hl std">=</span> <span class="hl str">&quot;Resampled&quot;</span><span class="hl std">,</span>
                 <span class="hl kwc">value.name</span> <span class="hl std">=</span> <span class="hl str">&quot;Data&quot;</span><span class="hl std">)</span>
+
 <span class="hl kwd">ggplot</span><span class="hl std">(metrics,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">= threshold,</span> <span class="hl kwc">y</span> <span class="hl std">= Data,</span> <span class="hl kwc">color</span> <span class="hl std">= Resampled))</span> <span class="hl opt">+</span>
   <span class="hl kwd">geom_line</span><span class="hl std">()</span> <span class="hl opt">+</span>
   <span class="hl kwd">ylab</span><span class="hl std">(</span><span class="hl str">&quot;&quot;</span><span class="hl std">)</span> <span class="hl opt">+</span> <span class="hl kwd">xlab</span><span class="hl std">(</span><span class="hl str">&quot;Probability Cutoff&quot;</span><span class="hl std">)</span> <span class="hl opt">+</span>
@@ -1293,7 +1322,7 @@ One great thing about this code is that it will automatically apply the optimize
 
 
   <div id="footer">
-  <p>Created on Sat May 31 2014 using caret version 6.0-29 and R version 3.0.3 (2014-03-06).</p>
+  <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
   </div>
   <!-- end #footer -->
 </body>

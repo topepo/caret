@@ -15,7 +15,8 @@ Released   : 20120902
 -->
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-<style type="text/css">.knitr.inline {
+<style type="text/css">
+.knitr.inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
 }
@@ -74,7 +75,8 @@ Released   : 20120902
 .hl.kwd {
   color: #BC5A65;
   font-weight: bold;
-}</style>
+}
+</style>
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -120,12 +122,14 @@ To illustrate, we will use the chemical mutagenicity data from <a href="http://p
 </p>
 <div class="chunk" id="adapt_mutagen"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(QSARdata)</span>
 <span class="hl kwd">data</span><span class="hl std">(Mutagen)</span>
+
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">4567</span><span class="hl std">)</span>
 <span class="hl std">inTraining</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">createDataPartition</span><span class="hl std">(Mutagen_Outcome,</span> <span class="hl kwc">p</span> <span class="hl std">=</span> <span class="hl num">0.75</span><span class="hl std">,</span> <span class="hl kwc">list</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">)</span>
 <span class="hl std">training_x</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Mutagen_Dragon[inTraining, ]</span>
 <span class="hl std">training_y</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Mutagen_Outcome[inTraining]</span>
 <span class="hl std">testing_x</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Mutagen_Dragon[</span><span class="hl opt">-</span><span class="hl std">inTraining, ]</span>
 <span class="hl std">testing_y</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Mutagen_Outcome[</span><span class="hl opt">-</span><span class="hl std">inTraining]</span>
+
 <span class="hl com">## Get rid of predictors that are very sparse</span>
 <span class="hl std">nzv</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">nearZeroVar</span><span class="hl std">(training_x)</span>
 <span class="hl std">training_x</span> <span class="hl kwb">&lt;-</span> <span class="hl std">training_x[,</span> <span class="hl opt">-</span><span class="hl std">nzv]</span>
@@ -144,6 +148,7 @@ Previously, we used this code to tune the model:
                            <span class="hl com">## Evaluate performance using </span>
                            <span class="hl com">## the following function</span>
                            <span class="hl kwc">summaryFunction</span> <span class="hl std">= twoClassSummary)</span>
+
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
 <span class="hl std">svmFit</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">= training_x,</span>
                 <span class="hl kwc">y</span> <span class="hl std">= training_y,</span>
@@ -179,6 +184,7 @@ The new code is:
                                             <span class="hl kwc">alpha</span> <span class="hl std">=</span> <span class="hl num">0.05</span><span class="hl std">,</span>
                                             <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;gls&quot;</span><span class="hl std">,</span>
                                             <span class="hl kwc">complete</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">))</span>
+
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
 <span class="hl std">svmFit2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">= training_x,</span>
                  <span class="hl kwc">y</span> <span class="hl std">= training_y,</span>
@@ -240,7 +246,7 @@ Remember that this methodology is experimental, so please send any questions or 
 
 
   <div id="footer">
-  <p>Created on Sun Jun 01 2014 using caret version 6.0-29 and R version 3.0.3 (2014-03-06).</p>
+  <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
   </div>
   <!-- end #footer -->
 </body>
