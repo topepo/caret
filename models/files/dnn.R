@@ -31,5 +31,5 @@ modelInfo <- list(label = "Stacked AutoEncoder Deep Neural Network",
                   },
                   varImp = NULL,
                   levels = function(x) x$classes,
-                  tags = c("Random Forest", "Ensemble Model", "Bagging", "Implicit Feature Selection"),
+                  tags = c("Neural Network"),
                   sort = function(x) x[order(x[,1]),])
