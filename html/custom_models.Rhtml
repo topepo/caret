@@ -8,6 +8,7 @@
     library(randomForest)
     library(reshape2)
     library(plyr)
+    library(pls)
     theme1 <- caretTheme()
     theme1$superpose.symbol$col = c(rgb(1, 0, 0, .4), rgb(0, 0, 1, .4), 
       rgb(0.3984375, 0.7578125,0.6445312, .6))
@@ -29,7 +30,7 @@
     knit_hooks$set(inline = function(x) {
       if (is.character(x)) highr::hi_html(x) else hook_inline(x)
       })
-    opts_chunk$set(comment=NA, digits = 4)
+    opts_chunk$set(comment=NA, digits = 4,warning=FALSE,message=FALSE)
 
     library(ellipse)
     library(mlbench)
@@ -807,6 +808,7 @@ pls_rf <- list(label = "PLS-RF",
                  ## Now apply the same scaling to the new samples
                  scores <- as.matrix(newdata)  %*% modelFit$projection
                  colnames(scores) <- paste("score", 1:ncol(scores), sep = "")
+                 scores <- as.data.frame(scores)
                  ## Predict the random forest model
                  predict(modelFit, scores)
                },
