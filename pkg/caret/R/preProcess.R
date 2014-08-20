@@ -224,7 +224,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
 
 predict.preProcess <- function(object, newdata, ...)
 {
-
+  
   dataNames <- colnames(newdata)
   ## For centering and scaling, we can be flexible if a column in the
   ## original data set is not in newdata
@@ -320,6 +320,11 @@ predict.preProcess <- function(object, newdata, ...)
   cc <- complete.cases(newdata)
   if(any(object$method == "knnImpute") && any(!cc))
     {
+
+      if(amy(is.na(object$data)))
+	       stop("There are missing values in the preprocessed dataset.
+              Please make sure all the data is numeric.")
+      
       hasMiss <- newdata[!cc,,drop = FALSE]      
 
       hasMiss <- apply(hasMiss,
