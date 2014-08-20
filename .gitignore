@@ -1,5 +1,5 @@
-
 *.o
-
 *.so
 .Rproj.user
+.Rhistory
+caret.Rproj
