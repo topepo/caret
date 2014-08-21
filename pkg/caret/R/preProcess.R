@@ -148,8 +148,6 @@ preProcess.default <- function(x, method = c("center", "scale"),
       scaleValue[which(scaleValue == 0)] <- 1
     }
 
-  cols <- if(any(method == "knnImpute")) which(apply(x, 2, function(x) any(is.na(x)))) else NULL
-
   if(any(method == "bagImpute"))
     {
       if(verbose) cat("Computing bagging models for each predictor...")
@@ -222,7 +220,6 @@ preProcess.default <- function(x, method = c("center", "scale"),
               knnSummary = knnSummary,
               bagImp = bagModels,
               median = median,
-              cols = cols,
               data = if(any(method == "knnImpute")) scale(x[complete.cases(x),,drop = FALSE]) else NULL)
   structure(out, class = "preProcess")
   
@@ -332,7 +329,6 @@ predict.preProcess <- function(object, newdata, ...)
                        1,
                        nnimp,
                        old = object$data,
-                       cols = object$cols,
                        k = object$k,
                        foo = object$knnSummary)
       hasMiss <- t(hasMiss)
@@ -456,21 +452,21 @@ print.preProcess <- function(x, ...)
 }
 
 
-nnimp <- function(new, old, cols, k, foo)
-  {
+nnimp <- function(new, old, k, foo) {
     library(RANN)
+    if(all(is.na(new)))
+      stop("cannot impute when all predictors are missing in the new data point")
     nms <- names(new)
     cols2 <- which(!is.na(new))
     new <- matrix(new, ncol = length(new))
     colnames(new) <- nms
-    cols <- sort(intersect(cols2, cols))
-    nn <- nn2(old[, cols, drop = FALSE],
-              new[, cols, drop = FALSE],
+    non_missing_cols <- cols2
+    nn <- nn2(old[, non_missing_cols, drop = FALSE],
+              new[, non_missing_cols, drop = FALSE],
               k = k)
-    tmp <- old[nn$nn.idx, -cols, drop = FALSE]
-    ##TODO deal with cases where training set has missing data
+    tmp <- old[nn$nn.idx, -non_missing_cols, drop = FALSE]
     subs <- apply(tmp, 2, foo, na.rm = TRUE)
-    new[, -cols] <- subs
+    new[, -non_missing_cols] <- subs
     new
   }
 
