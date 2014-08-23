@@ -2,7 +2,15 @@
 \title{News for Package \pkg{caret}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{Changes in version 6.0-32}{
+\section{Changes in version 6.0-35}{
+	\itemize{
+		\item A few bug fixes to \code{preProcess} were made related to KNN imputation. 
+		\item The parameter labels for polynomial SVM models were fixed
+		\item The tags for \code{dnn} models were fixed.  
+	}
+}
+
+\section{Changes in version 6.0-34}{
 \itemize{
 
 \item For the input data \code{x} to \code{train}, we now  respect the class of the input value to accommodate other data types (such as sparse matrices). There are some complications though; for pre-processing we throw a
