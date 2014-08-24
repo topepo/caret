@@ -193,3 +193,9 @@ x <- NULL
 .B <- NULL
 
 model_id <- player1 <- player2 <- playa <- win1 <- win2 <- NULL
+
+boxcox <- skewness <- simpls.fit <- nnet <- earth <- fda <- NULL
+
+bagging <- classAgreement <- mvrnorm <- nn2 <- nnet <- plsr <- NULL
+
+NaiveBayes <- fastICA <- predict.spls <- spls <- evimp <- ellipse <- NULL
