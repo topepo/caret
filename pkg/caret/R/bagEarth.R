@@ -6,7 +6,7 @@
 "bagEarth.default" <-
   function(x, y, weights = NULL, B = 50, summary = mean, keepX = TRUE, ...)
 {
-  library(earth)
+  requireNamespace("earth", quietly = TRUE)
   funcCall <- match.call(expand.dots = TRUE)
   if(!is.matrix(x)) x <- as.matrix(x)
   if(!is.factor(y))
@@ -31,7 +31,7 @@
       subX <- x[index,, drop = FALSE]
       subY <- y[index]
       subW <- weights[index]      
-      fit <- earth(subX, subY, subW, ...)
+      fit <- earth::earth(subX, subY, subW, ...)
       fit$index <- index
       fit
     }
@@ -96,7 +96,7 @@
 {
   if(!any(type %in% c("response", "class")))
     stop("type must be either response, class or prob")
-  library(earth)
+  requireNamespace("earth", quietly = TRUE)
   ## get oob predictions
   getTrainPred <- function(x)
     {
@@ -159,14 +159,14 @@ print.bagEarth <- function (x, ...)
 "summary.bagEarth" <-
   function(object, ...)
 {
-  require(earth)
+  requireNamespace("earth", quietly = TRUE)
   oobStat <- apply(object$oob, 2, function(x) quantile(x, probs = c(0, 0.025, .25, .5, .75, .975, 1)))
 
   numTerms <- unlist(lapply(object$fit, function(x) length(x$selected.terms)))
   numVar <- unlist(lapply(
                           object$fit, 
                           function(x) {
-                          imp <- rownames(evimp(x, trim = FALSE))
+                          imp <- rownames(earth::evimp(x, trim = FALSE))
                           imp <- imp[!grepl("-unused", imp)]
                           imp  
                           }))

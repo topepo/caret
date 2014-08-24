@@ -5,7 +5,8 @@ function(x, ...)
 "bagFDA.default" <-
 function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
 {
-   library(mda)
+  requireNamespace("mda", quietly = TRUE)
+  requireNamespace("earth", quietly = TRUE)
    funcCall <- match.call(expand.dots = TRUE)
    if(!is.matrix(x)) x <- as.matrix(x)
    if(!is.vector(y) & !is.factor(y)) y <- as.vector(y)   
@@ -19,7 +20,7 @@ function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
 #      subW <- weights[index]      
       tmp <- as.data.frame(subX)
       tmp$.outcome <- subY
-      fit <- fda(.outcome ~., data = tmp, method = earth, ...)
+      fit <- mda::fda(.outcome ~., data = tmp, method = earth::earth, ...)
       fit$index <- index
       fit
    }
@@ -89,7 +90,8 @@ function (x, ...)
 "predict.bagFDA" <-
 function(object, newdata = NULL, type = "class", ...)
 {
-   library(mda)
+  requireNamespace("mda", quietly = TRUE)
+  requireNamespace("earth", quietly = TRUE)
    getTrainPred <- function(x)
      {
        oobIndex <- 1:nrow(x$fit$fitted.values)

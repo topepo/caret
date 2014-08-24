@@ -54,7 +54,7 @@ avNNet.formula <- function (formula, data, weights, ...,
 
 avNNet.default <- function(x, y, repeats = 5, bag = FALSE, allowParallel = TRUE, ...)
   {
-    library(nnet)
+    requireNamespace("nnet", quietly = TRUE)
     ## check for factors
     ## this is from nnet.formula
     class.ind <- function(cl) {
@@ -89,7 +89,7 @@ avNNet.default <- function(x, y, repeats = 5, bag = FALSE, allowParallel = TRUE,
           if(theDots$trace) cat("\nFitting Repeat", i, "\n\n")
         } else cat("Fitting Repeat", i, "\n\n")
       if(bag)  ind <- sample(1:nrow(x))
-      thisMod <- if(is.null(classLev)) nnet(x[ind,,drop = FALSE], y[ind], ...) else nnet(x[ind,,drop = FALSE], y[ind,], ...)
+      thisMod <- if(is.null(classLev)) nnet::nnet(x[ind,,drop = FALSE], y[ind], ...) else nnet::nnet(x[ind,,drop = FALSE], y[ind,], ...)
       thisMod$lev <- classLev
       thisMod
     }

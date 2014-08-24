@@ -30,8 +30,8 @@ postResample <- function(pred, obs)
           out <- rep(NA, 2)
         } else {
           pred <- factor(pred, levels = levels(obs))  
-          library(e1071)   
-          out <- unlist(classAgreement(table(obs, pred)))[c("diag", "kappa")]
+          requireNamespace("e1071", quietly = TRUE)   
+          out <- unlist(e1071::classAgreement(table(obs, pred)))[c("diag", "kappa")]
         }
       names(out) <- c("Accuracy", "Kappa")         
     }

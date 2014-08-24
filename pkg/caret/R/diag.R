@@ -19,17 +19,14 @@
 ## a fast version of diag(n, .) / sparse-Diagonal() + dimnames
 ## Originally .Diag in stats:contrast.R
 
-.RDiag <- function(nms, sparse) {
-    ## no error checking here
-    n <- as.integer(length(nms))
-    d <- c(n,n)
-    dn <- list(nms, nms)
-    if(sparse) {
-	if(is.null(tryCatch(loadNamespace("Matrix"), error = function(e)NULL)))
-	    stop(gettextf("%s needs package 'Matrix' correctly installed",
-                          "contr*(.., sparse=TRUE)"),
-                 domain = NA)
-	new("ddiMatrix", diag = "U", Dim = d, Dimnames = dn)
-    } else
-	array(c(rep.int(c(1, numeric(n)), n-1L), 1), d, dn)
+.RDiag <- function (nms, sparse) {
+  n <- as.integer(length(nms))
+  d <- c(n, n)
+  dn <- list(nms, nms)
+  #   if (sparse) {
+  #     requireNamespace("Matrix", quietly = TRUE)
+  #     new("ddiMatrix", diag = "U", Dim = d, Dimnames = dn)
+  #   }
+  #   else
+  array(c(rep.int(c(1, numeric(n)), n - 1L), 1), d, dn)
 }

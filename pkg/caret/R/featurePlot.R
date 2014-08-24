@@ -31,7 +31,7 @@ function(x, y,
          ellipse =  splom(~x, groups = y,
             panel = function(x, y, groups, subscripts, ...)
             {
-               require(ellipse)
+               requireNamespace("ellipse", quietly = TRUE)
                lineInfo <-  trellis.par.get("superpose.line")   
                pointInfo <-  trellis.par.get("superpose.symbol")               
                uniqueGroups <- sort(unique(groups))
@@ -42,7 +42,7 @@ function(x, y,
                       col = pointInfo$col[i], cex = pointInfo$cex[i], ...)
                   groupVar<-var(cbind(x[id],y[id]))
                   groupMean<-cbind(mean(x[id]),mean(y[id]))
-                  groupEllipse<-ellipse(groupVar, centre = groupMean, level = 0.95)
+                  groupEllipse<-ellipse::ellipse(groupVar, centre = groupMean, level = 0.95)
                   panel.xyplot(groupEllipse[,1], groupEllipse[,2], type="l", col = lineInfo$col[i], lty = lineInfo$lty[i], ...)
                }
             },

@@ -48,7 +48,7 @@ pcaNNet.formula <- function (formula, data, weights, ...,
 
 pcaNNet.default <- function(x, y, thresh = .99, ...)
   {
-    library(nnet)
+    requireNamespace("nnet", quietly = TRUE)
 
     # check for no variance data
     isZV <- apply(x, 2,
@@ -80,7 +80,7 @@ pcaNNet.default <- function(x, y, thresh = .99, ...)
 
         
     # fit nnet
-    modelFit <- nnet(x, y, ...)
+    modelFit <- nnet::nnet(x, y, ...)
     modelFit$lev <- classLev  
     
     # return results
@@ -121,7 +121,7 @@ print.pcaNNet <- function (x, ...)
 
 predict.pcaNNet <- function(object, newdata, type = c("raw", "class"), ...)
   {
-    library(nnet)
+    requireNamespace("nnet", quietly = TRUE)
     if (!inherits(object, "pcaNNet")) 
       stop("object not of class \"pcaNNet\"")
     if (missing(newdata))

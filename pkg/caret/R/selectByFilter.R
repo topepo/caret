@@ -336,8 +336,8 @@ anovaScores <- function(x, y)
 
 gamScores <- function(x, y)
   {
-    library(gam)
-    pv <- try(anova(gam(y ~ s(x)), test = "F")[2, "Pr(F)"], silent = TRUE)
+    requireNamespace("gam", quietly = TRUE)
+    pv <- try(anova(gam::gam(y ~ s(x)), test = "F")[2, "Pr(F)"], silent = TRUE)
     if(any(class(pv) == "try-error")) pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
     if(any(class(pv) == "try-error") || is.na(pv) || is.nan(pv)) pv <- 1
     pv

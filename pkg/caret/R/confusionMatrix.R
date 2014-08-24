@@ -9,8 +9,6 @@ confusionMatrix.default <- function(data, reference,
                                     prevalence = NULL,
                                     ...)
 {
-  
-  library(e1071)
   if(!is.factor(data)) data <- factor(data)
   if(!is.factor(reference)) reference <- factor(reference)
   if(!is.character(positive) & !is.null(positive)) stop("positive argument must be character")
@@ -35,7 +33,7 @@ confusionMatrix.default <- function(data, reference,
 
 confusionMatrix.table <- function(data, positive = NULL, prevalence = NULL, ...)
 {
-  library(e1071)
+  requireNamespace("e1071", quietly = TRUE)
   
   if(length(dim(data)) != 2) stop("the table must have two dimensions")
   if(!all.equal(nrow(data), ncol(data))) stop("the table must nrow = ncol")
@@ -75,7 +73,7 @@ confusionMatrix.table <- function(data, positive = NULL, prevalence = NULL, ...)
   }
   
   overall <- c(
-    unlist(classAgreement(data))[c("diag", "kappa")],
+    unlist(e1071::classAgreement(data))[c("diag", "kappa")],
     propCI(data),
     propTest(data),
     mcnemar.test(data)$p.value)

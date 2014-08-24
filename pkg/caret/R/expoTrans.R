@@ -3,7 +3,7 @@ expoTrans <- function(y, ...) UseMethod("expoTrans")
 
 expoTrans.default <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method = "Brent", numUnique = 3, ...)
 {
-  library(e1071)
+  requireNamespace("e1071", quietly = TRUE)
   if(any(is.na(y)) & !na.rm) stop("missing data found")
   call <- match.call()
   rat <- max(y, na.rm = TRUE)/min(y, na.rm = TRUE)
@@ -16,7 +16,7 @@ expoTrans.default <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method
       out <- list(lambda = NA, est = y)
   } else out <- list(lambda = NA, est = y)
   out$n <- sum(!is.na(y))
-  out$skewness <- skewness(y, na.rm = TRUE)
+  out$skewness <- e1071::skewness(y, na.rm = TRUE)
   out$summary <- summary(y)
   out$ratio <- max(y, na.rm = TRUE)/min(y, na.rm = TRUE)
   out$class <- class
@@ -24,7 +24,28 @@ expoTrans.default <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method
   out
 }
 
-expoTrans.numeric <- expoTrans.default
+expoTrans.numeric <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method = "Brent", numUnique = 3, ...)
+{
+  requireNamespace("e1071", quietly = TRUE)
+  if(any(is.na(y)) & !na.rm) stop("missing data found")
+  call <- match.call()
+  rat <- max(y, na.rm = TRUE)/min(y, na.rm = TRUE)
+  if(length(unique(y[!is.na(y)])) >= numUnique)
+  {
+    results <- optim(init, manlyLik, x = y[!is.na(y)], neg = TRUE, method = method, 
+                     lower = lim[1], upper = lim[2]) 
+    out <- list(lambda = results$par, est = manly(y, results$par))
+    if(length(unique(out$est)) == 1 | results$convergence > 0) 
+      out <- list(lambda = NA, est = y)
+  } else out <- list(lambda = NA, est = y)
+  out$n <- sum(!is.na(y))
+  out$skewness <- e1071::skewness(y, na.rm = TRUE)
+  out$summary <- summary(y)
+  out$ratio <- max(y, na.rm = TRUE)/min(y, na.rm = TRUE)
+  out$class <- class
+  class(out) <- "expoTrans"
+  out
+}
 
 print.expoTrans <- function(x, digits = max(3L, getOption("digits") - 3L), ...) 
 {

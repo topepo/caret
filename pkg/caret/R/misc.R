@@ -127,6 +127,7 @@ prettySeq <- function(x) paste("Resample", gsub(" ", "0", format(seq(along = x))
 
 ipredStats <- function(x)
 {
+  requireNamespace("e1071", quietly = TRUE)
   ## error check
   if(is.null(x$X)) stop("to get OOB stats, keepX must be TRUE when calling the bagging function")
   
@@ -135,12 +136,12 @@ ipredStats <- function(x)
       holdY <- y[-object$bindx]
       if(is.factor(y))
         {
-          library(e1071)
+          requireNamespace("e1071", quietly = TRUE)
           tmp <- predict(object$btree, x[-object$bindx,], type = "class")
           tmp <- factor(as.character(tmp), levels = levels(y))
           out <- c(
                    mean(holdY == tmp),
-                   classAgreement(table(holdY, tmp))$kappa)
+                   e1071::classAgreement(table(holdY, tmp))$kappa)
           
         } else {
           tmp <- predict(object$btree, x[-object$bindx,])
@@ -166,10 +167,10 @@ rfStats <- function(x)
                 x$type,
                 regression =   c(sqrt(max(x$mse[length(x$mse)], 0)), x$rsq[length(x$rsq)]),
                 classification = {
-                  library(e1071)
+                  requireNamespace("e1071", quietly = TRUE)
                   c(
                     1 - x$err.rate[x$ntree, "OOB"],
-                    classAgreement(x$confusion[,-dim(x$confusion)[2]])[["kappa"]])
+                    e1071::classAgreement(x$confusion[,-dim(x$confusion)[2]])[["kappa"]])
                 })
   names(out) <- if(x$type == "regression") c("RMSE", "Rsquared") else c("Accuracy", "Kappa")
   out              

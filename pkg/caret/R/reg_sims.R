@@ -2,7 +2,7 @@
 
 make_noise <- function(n, noiseVars = 0, 
                        corrVars = 0, corrType = "AR1", corrValue = 0) {
-  
+  requireNamespace("MASS", quietly = TRUE)
   if(noiseVars > 0) {
     tmpData <- matrix(rnorm(n * noiseVars), ncol = noiseVars)
     colnames(tmpData) <- well_numbered("Noise", noiseVars)
@@ -17,7 +17,7 @@ make_noise <- function(n, noiseVars = 0,
       vcValues <- corrValue^(seq(0, corrVars - 1, by = 1))
       vc <- toeplitz(vcValues)
     }    
-    tmpData2 <- mvrnorm(n, mu = rep(0, corrVars), Sigma = vc)
+    tmpData2 <- MASS::mvrnorm(n, mu = rep(0, corrVars), Sigma = vc)
     colnames(tmpData2) <- well_numbered("Corr", corrVars)
   }  
   if(noiseVars == 0 & corrVars  > 0) out <- tmpData2

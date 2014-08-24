@@ -7,6 +7,7 @@
 		\item A few bug fixes to \code{preProcess} were made related to KNN imputation. 
 		\item The parameter labels for polynomial SVM models were fixed
 		\item The tags for \code{dnn} models were fixed.  
+		\item The following functions were removed from the package: \code{generateExprVal.method.trimMean}, \code{normalize.AffyBatch.normalize2Reference}, \code{normalize2Reference}, and \code{PLS}. The original code and the man files can be found at \href{https://github.com/topepo/caret/tree/master/deprecated}{https://github.com/topepo/caret/tree/master/deprecated}.
 	}
 }
 

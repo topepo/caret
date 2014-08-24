@@ -3,8 +3,8 @@ splsda <- function (x, ...)
 
 predict.splsda <- function(object, newdata = NULL, type = "class", ...)
 {
-  library(spls)
-  tmpPred <- predict.spls(object, newx = newdata)
+  requireNamespace("spls", quietly = TRUE)
+  tmpPred <- spls::predict.spls(object, newx = newdata)
 
   if(type == "raw") return(tmpPred)
 
@@ -20,7 +20,7 @@ predict.splsda <- function(object, newdata = NULL, type = "class", ...)
              },
              prob = t(apply(tmpPred, 1, function(data) exp(data)/sum(exp(data)))))
     } else {
-      library(klaR)
+      requireNamespace("klaR", quietly = TRUE)
       ## Bayes rule
       tmpPred <-  as.data.frame(tmpPred[,-length(object$obsLevels)])
       pred <- predict(object$probModel, tmpPred)
@@ -33,7 +33,7 @@ predict.splsda <- function(object, newdata = NULL, type = "class", ...)
 
 splsda.default <- function(x, y, probMethod = "softmax", prior = NULL, ...)
 {
-  library(spls)
+  requireNamespace("spls", quietly = TRUE)
   funcCall <- match.call(expand.dots = TRUE)
 
   if(probMethod == "softmax")
@@ -73,17 +73,17 @@ splsda.default <- function(x, y, probMethod = "softmax", prior = NULL, ...)
   tmpData$y <- y
   tmpData$x <- x
 
-  out <- spls(x, y, ...)
+  out <- spls::spls(x, y, ...)
   
   out$obsLevels <- obsLevels
   out$probMethod <- probMethod
   if(probMethod == "Bayes")
     {
 
-      library(klaR)
+      requireNamespace("klaR", quietly = TRUE)
       makeModels <- function(x, y, pri)
         {
-          probModel <- NaiveBayes(x, y, prior = pri, usekernel = TRUE)
+          probModel <- klaR::NaiveBayes(x, y, prior = pri, usekernel = TRUE)
           probModel$train <- predict(probModel)$posterior
           probModel$x <- NULL
           probModel
