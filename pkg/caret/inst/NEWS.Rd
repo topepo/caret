@@ -8,6 +8,7 @@
 		\item The parameter labels for polynomial SVM models were fixed
 		\item The tags for \code{dnn} models were fixed.  
 		\item The following functions were removed from the package: \code{generateExprVal.method.trimMean}, \code{normalize.AffyBatch.normalize2Reference}, \code{normalize2Reference}, and \code{PLS}. The original code and the man files can be found at \href{https://github.com/topepo/caret/tree/master/deprecated}{https://github.com/topepo/caret/tree/master/deprecated}.
+		\item A number of changes to comply with section 1.1.3.1 of "Writing R Extensions" were made. 
 	}
 }
 
@@ -84,7 +85,7 @@ calculation for neural network models.
 
 \section{Changes in version 6.0-25}{
 \itemize{
-\item Changes were made that stoped execution of \code{train} if there are no rows in the data (changes suggested by Andrew Ziem)
+\item Changes were made that stopped execution of \code{train} if there are no rows in the data (changes suggested by Andrew Ziem)
 
 \item Andrew Ziem also helped improve the documentation.
 }
