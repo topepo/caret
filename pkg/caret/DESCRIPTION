@@ -9,7 +9,7 @@ Description: Misc functions for training and plotting classification and regress
 Maintainer: Max Kuhn <Max.Kuhn@pfizer.com>
 Depends: R (>= 2.10), stats, lattice (>= 0.20), ggplot2
 URL: http://caret.r-forge.r-project.org/
-Imports: car, reshape2, foreach, methods, plyr, nlme, BradleyTerry2, ellipse
-Suggests: e1071, earth (>= 2.2-3), fastICA, gam, ipred, kernlab, klaR, MASS, 
-  mda, mgcv, mlbench, nnet, party (>= 0.9-99992), pls, pROC, proxy, randomForest, RANN, spls, affy
+Imports: car, reshape2, foreach, methods, plyr, nlme, BradleyTerry2
+Suggests: e1071, earth (>= 2.2-3), fastICA, gam, ipred, kernlab, klaR, MASS, ellipse,
+  mda, mgcv, mlbench, nnet, party (>= 0.9-99992), pls, pROC, proxy, randomForest, RANN, spls
 License: GPL-2
