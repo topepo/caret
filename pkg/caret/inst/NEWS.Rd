@@ -2,6 +2,12 @@
 \title{News for Package \pkg{caret}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{Changes in version 6.0-XX}{
+	\itemize{
+		\item Brenton Kenkel added ordered logistic or probit regression to \code{train} using \code{method = "polr"} from \cpkg{MASS} 
+	}
+}
+
 \section{Changes in version 6.0-35}{
 	\itemize{
 		\item A few bug fixes to \code{preProcess} were made related to KNN imputation. 
