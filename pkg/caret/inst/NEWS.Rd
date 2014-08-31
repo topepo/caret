@@ -5,6 +5,8 @@
 \section{Changes in version 6.0-XX}{
 	\itemize{
 		\item Brenton Kenkel added ordered logistic or probit regression to \code{train} using \code{method = "polr"} from \cpkg{MASS} 
+		\item \code{nearZeroVar}  was given some new options to increase the computational speed and reduce memory contributed by Michael Benesty. 
+		\item \code{LPH07_1} was modified so that all predictors, informative or otherwise, are binary. 
 	}
 }
 
