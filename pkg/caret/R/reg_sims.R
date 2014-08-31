@@ -1,7 +1,8 @@
 
 
 make_noise <- function(n, noiseVars = 0, 
-                       corrVars = 0, corrType = "AR1", corrValue = 0) {
+                       corrVars = 0, corrType = "AR1", corrValue = 0,
+                       binary = FALSE) {
   requireNamespace("MASS", quietly = TRUE)
   if(noiseVars > 0) {
     tmpData <- matrix(rnorm(n * noiseVars), ncol = noiseVars)
@@ -23,6 +24,7 @@ make_noise <- function(n, noiseVars = 0,
   if(noiseVars == 0 & corrVars  > 0) out <- tmpData2
   if(noiseVars  > 0 & corrVars == 0) out <- tmpData
   if(noiseVars  > 0 & corrVars  > 0) out <- cbind(tmpData, tmpData2)
+  if(binary) out <- ifelse(out > 0, 1, 0)
   as.data.frame(out)
 }
 
@@ -41,7 +43,7 @@ SLC14_1 <- function(n = 100, noiseVars = 0,
   
   dat <- as.data.frame(dat)
   colnames(dat) <- well_numbered("Var", ncol(dat))
-  if(noiseVars > 0 & corrVars > 0) 
+  if(noiseVars > 0 | corrVars > 0) 
     dat <- cbind(dat, make_noise(n = n, 
                                  noiseVars = noiseVars, 
                                  corrVars = corrVars, 
@@ -59,7 +61,7 @@ SLC14_2 <- function(n = 100, noiseVars = 0,
   dat <- as.data.frame(dat)
   colnames(dat) <- well_numbered("Var", ncol(dat))
   
-  if(noiseVars > 0 & corrVars > 0) 
+  if(noiseVars > 0 | corrVars > 0) 
     dat <- cbind(dat, make_noise(n = n, 
                                  noiseVars = noiseVars, 
                                  corrVars = corrVars, 
@@ -81,12 +83,13 @@ LPH07_1 <- function(n = 100, noiseVars = 0,
     5*w[6]*w[10] + 3*w[8]*w[9] + w[1]*w[2]*w[4] -
     2*w[7]*(1-w[6])*w[2]*w[9] -
     4*(1 - w[10])*w[1]*(1-w[4])
-  if(noiseVars > 0 & corrVars > 0) 
+  if(noiseVars > 0 | corrVars > 0) 
     dat <- cbind(dat, make_noise(n = n, 
                                  noiseVars = noiseVars, 
                                  corrVars = corrVars, 
                                  corrType = corrType, 
-                                 corrValue = corrValue))
+                                 corrValue = corrValue,
+                                 binary = TRUE))
   
   dat$y <- apply(dat[, 1:10], 1, foo) + rnorm(n)
   dat
@@ -101,7 +104,7 @@ LPH07_2 <- function(n = 100, noiseVars = 0,
   colnames(dat) <- well_numbered("Var", ncol(dat))
   foo <- function(x) x[1]*x[2] + x[10]^2 - x[3]*x[17] -
     x[15]*x[4] + x[9]*x[5] + x[19] - x[20]^2 + x[9]*x[8]
-  if(noiseVars > 0 & corrVars > 0) 
+  if(noiseVars > 0 | corrVars > 0) 
     dat <- cbind(dat, make_noise(n = n, 
                                  noiseVars = noiseVars, 
                                  corrVars = corrVars, 

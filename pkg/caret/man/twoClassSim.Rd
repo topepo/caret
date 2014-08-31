@@ -91,7 +91,7 @@ The remaining functions simulate regression data sets. \code{LPH07_1} and \code{
 - 4*(1 - w_10)*w_1*(1-w_4)
 }
 
-The simulated error term is a standard normal (i.e. Gaussian). The second function uses 20 independent Gaussians with mean zero and variance 16. The functional form here is:
+The simulated error term is a standard normal (i.e. Gaussian). The noise variables are simulated in the same manner as described above but are made binary based on whether the normal random variable is above or below 0.  The second function (\code{LPH07_2}) uses 20 independent Gaussians with mean zero and variance 16. The functional form here is:
 
 \preformatted{
 x_1*x_2 + x_10^2 - x_3*x_17 
