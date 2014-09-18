@@ -129,7 +129,13 @@ rfe <- function (x, ...) UseMethod("rfe")
                                                            lgocv = createDataPartition(y, rfeControl$number, rfeControl$p))
 
   if(is.null(names(rfeControl$index))) names(rfeControl$index) <- prettySeq(rfeControl$index)
-
+  if(is.null(rfeControl$indexOut)){     
+    rfeControl$indexOut <- lapply(rfeControl$index,
+                                  function(training, allSamples) allSamples[-unique(training)],
+                                  allSamples = seq(along = y))
+    names(rfeControl$indexOut) <- prettySeq(rfeControl$indexOut)
+  }
+  
   sizes <- sort(unique(sizes))
   sizes <- sizes[sizes <= ncol(x)]
 
@@ -348,6 +354,7 @@ rfeControl <- function(functions = NULL,
                        returnResamp = "final",
                        p = .75,
                        index = NULL,
+                       indexOut = NULL,
                        timingSamps = 0,
                        seeds = NA,
                        allowParallel = TRUE)
@@ -363,6 +370,7 @@ rfeControl <- function(functions = NULL,
        verbose = verbose,
        p = p,
        index = index,
+       indexOut = indexOut,
        timingSamps = timingSamps,
        seeds = seeds,
        allowParallel = allowParallel)

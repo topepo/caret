@@ -15,7 +15,8 @@ sbfControl(functions = NULL,
            verbose = FALSE, 
            returnResamp = "final", 
            p = 0.75, 
-           index = NULL, 
+           index = NULL,
+           indexOut = NULL, 
            timingSamps = 0,
            seeds = NA,
            allowParallel = TRUE)
@@ -31,6 +32,7 @@ sbfControl(functions = NULL,
   \item{returnResamp}{A character string indicating how much of the resampled summary metrics should be saved. Values can be ``final'' or ``none''}
   \item{p}{For leave-group out cross-validation: the training percentage}
   \item{index}{a list with elements for each external resampling iteration. Each list element is the sample rows used for training at that iteration.}
+  \item{indexOut}{a list (the same length as \code{index}) that dictates which sample are held-out for each resample. If \code{NULL}, then the unique set of samples not contained in \code{index} is used.}
   \item{timingSamps}{the number of training set samples that will be used to measure the time for predicting samples (zero indicates that the prediction time should not be estimated).}
     \item{seeds}{an optional set of integers that will be used to set the seed at each resampling iteration. This is useful when the models are run in parallel. A value of \code{NA} will stop the seed from being set within the worker processes while a value of \code{NULL} will set the seeds using a random set of integers. Alternatively, a vector of integers can be used. The vector should have \code{B+1} elements where \code{B} is the number of resamples. See the Examples section below. }  
   \item{allowParallel}{if a parallel backend is loaded and available, should the function use it?}

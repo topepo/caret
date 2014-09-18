@@ -59,7 +59,12 @@ sbf <- function (x, ...) UseMethod("sbf")
                                                            lgocv = createDataPartition(y, sbfControl$number, sbfControl$p))
 
   if(is.null(names(sbfControl$index))) names(sbfControl$index) <- prettySeq(sbfControl$index)
-  
+  if(is.null(sbfControl$indexOut)){     
+    sbfControl$indexOut <- lapply(sbfControl$index,
+                                  function(training, allSamples) allSamples[-unique(training)],
+                                  allSamples = seq(along = y))
+    names(sbfControl$indexOut) <- prettySeq(sbfControl$indexOut)
+  }
   ## check summary function and metric
   testOutput <- data.frame(pred = sample(y, min(10, length(y))),
                            obs = sample(y, min(10, length(y))))
@@ -304,6 +309,7 @@ sbfControl <- function(functions = NULL,
                        returnResamp = "final",
                        p = .75,
                        index = NULL,
+                       indexOut = NULL,
                        timingSamps = 0,
                        seeds = NA,
                        allowParallel = TRUE)
@@ -318,6 +324,7 @@ sbfControl <- function(functions = NULL,
        verbose = verbose,
        p = p,
        index = index,
+       indexOut = indexOut,
        timingSamps = timingSamps,
        seeds = seeds,
        allowParallel = allowParallel)
