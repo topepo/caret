@@ -19,7 +19,8 @@ sbfControl(functions = NULL,
            indexOut = NULL, 
            timingSamps = 0,
            seeds = NA,
-           allowParallel = TRUE)
+           allowParallel = TRUE,
+           multivariate = FALSE)
 }
 \arguments{
   \item{functions}{a list of functions for model fitting, prediction and variable filtering (see Details below)}
@@ -36,6 +37,7 @@ sbfControl(functions = NULL,
   \item{timingSamps}{the number of training set samples that will be used to measure the time for predicting samples (zero indicates that the prediction time should not be estimated).}
     \item{seeds}{an optional set of integers that will be used to set the seed at each resampling iteration. This is useful when the models are run in parallel. A value of \code{NA} will stop the seed from being set within the worker processes while a value of \code{NULL} will set the seeds using a random set of integers. Alternatively, a vector of integers can be used. The vector should have \code{B+1} elements where \code{B} is the number of resamples. See the Examples section below. }  
   \item{allowParallel}{if a parallel backend is loaded and available, should the function use it?}
+  \item{x}{a logical; should all the columns of \code{x} be exposed to the \code{score} function at once?}
 }
 
 \details{
@@ -62,12 +64,12 @@ The \code{pred} function returns a vector of predictions (numeric or factors) fr
             held-back samples}
 }
 
-The \code{score} function is used to return a vector of scores with names for each predictor (such as a p-value). Inputs are:
+The \code{score} function is used to return scores with names for each predictor (such as a p-value). Inputs are:
 \itemize{
-      \item{\code{x}}{ the  predictors for the training samples}
+      \item{\code{x}}{ the predictors for the training samples. If \code{sbfControl()$multivariate} is \code{TRUE}, this will be the full predictor matrix. Otherwise it is a vector for a specific predictor. }
       \item{\code{y}}{ the current training outcomes}
 }
-The function should return a vector, as previously stated. Examples are give by \code{\link{anovaScores}} for classification and  \code{\link{gamScores}} for regression.
+When \code{sbfControl()$multivariate} is \code{TRUE}, the \code{score} function should return a named vector where \code{length(scores) == ncol(x)}. Otherwise, the function's output should be a single value. Univariate examples are give by \code{\link{anovaScores}} for classification and  \code{\link{gamScores}} for regression and the example below.
 
 The \code{filter} function is used to return a logical vector with names for each predictor (\code{TRUE} indicates that the prediction should be retained). Inputs are:
 \itemize{
@@ -100,12 +102,29 @@ Max Kuhn
 data(BloodBrain)
 
 ## Use a GAM is the filter, then fit a random forest model
+set.seed(1)
 RFwithGAM <- sbf(bbbDescr, logBBB,
                  sbfControl = sbfControl(functions = rfSBF,
                                          verbose = FALSE, 
                                          seeds = sample.int(100000, 11),
                                          method = "cv"))
 RFwithGAM
+
+
+## A simple example for multivariate scoring
+rfSBF2 <- rfSBF
+rfSBF2$score <- function(x, y) apply(x, 2, rfSBF$score, y = y)
+
+set.seed(1)
+RFwithGAM2 <- sbf(bbbDescr, logBBB,
+                  sbfControl = sbfControl(functions = rfSBF2,
+                                          verbose = FALSE, 
+                                          seeds = sample.int(100000, 11),
+                                          method = "cv",
+                                          multivariate = TRUE))
+RFwithGAM2
+
+
 }}
 
 \keyword{ utilities }
