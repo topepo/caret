@@ -9,6 +9,7 @@
 		\item Both \code{rfe} and \code{sbf} get arguments for \code{indexOut} for their control functions. 
 		\item A reworked version of \code{\link{nearZerVar}} based on code from Michael Benesty was added the old version is now called \code{nzv} that uses less memory and can be used in parallel. 
 		\item The adaptive mixture discriminant model from the \cpkg{adaptDA} package was added as well as a robust mixture discriminant model from the \cpkg{robustDA} package. 
+		\item The multi-class discriminant model using binary predictors in the \cpkg{binda} package was added.
 		\item A bug using \code{gbm} with Poisson data was fixed (thanks to user eriklampa)
 		\item \code{sbfControl} now has a \code{multivariate} option where all the predictors are exposed to the scoring function at once. 
 	}
