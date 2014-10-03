@@ -11,7 +11,8 @@
 		\item The adaptive mixture discriminant model from the \cpkg{adaptDA} package was added as well as a robust mixture discriminant model from the \cpkg{robustDA} package. 
 		\item The multi-class discriminant model using binary predictors in the \cpkg{binda} package was added.
 		\item A bug using \code{gbm} with Poisson data was fixed (thanks to user eriklampa)
-		\item \code{sbfControl} now has a \code{multivariate} option where all the predictors are exposed to the scoring function at once. 
+		\item \code{sbfControl} now has a \code{multivariate} option where all the predictors are exposed to the scoring function at once.
+		\item A function \code{compare_models} was added that is a simple comparison of models via \code{diff.resamples)}. 
 	}
 }
 

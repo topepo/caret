@@ -938,4 +938,12 @@ sort.resamples <- function(x, decreasing = FALSE, metric = x$metric[1], FUN = me
   names(sort(stats, decreasing = decreasing))
 }
 
+compare_models <- function(a, b, metric = a$metric[1]) {
+  mods <- list(a, b)
+  rs <- resamples(mods)
+  diffs <- diff(rs, metric = metric[1])
+  diffs$statistics[[1]][[1]]
+}
+
+
 
