@@ -43,5 +43,9 @@ Suggests:
     randomForest,
     RANN,
     spls,
+    subselect,
+    pamr, 
+    superpc, 
+    Cubist,
     testthat
 License: GPL-2
