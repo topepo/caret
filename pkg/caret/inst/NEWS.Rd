@@ -5,8 +5,14 @@
 \section{Changes in version 6.0-XX}{
 	\itemize{
 		\item Brenton Kenkel added ordered logistic or probit regression to \code{train} using \code{method = "polr"} from \cpkg{MASS} 
-		\item \code{nearZeroVar}  was given some new options to increase the computational speed and reduce memory contributed by Michael Benesty. 
-		\item \code{LPH07_1} was modified so that all predictors, informative or otherwise, are binary. 
+		\item \code{LPH07_1} now encodes the noise variables as binary
+		\item Both \code{rfe} and \code{sbf} get arguments for \code{indexOut} for their control functions. 
+		\item A reworked version of \code{\link{nearZerVar}} based on code from Michael Benesty was added the old version is now called \code{nzv} that uses less memory and can be used in parallel. 
+		\item The adaptive mixture discriminant model from the \cpkg{adaptDA} package was added as well as a robust mixture discriminant model from the \cpkg{robustDA} package. 
+		\item The multi-class discriminant model using binary predictors in the \cpkg{binda} package was added.
+		\item A bug using \code{gbm} with Poisson data was fixed (thanks to user eriklampa)
+		\item \code{sbfControl} now has a \code{multivariate} option where all the predictors are exposed to the scoring function at once.
+		\item A function \code{compare_models} was added that is a simple comparison of models via \code{diff.resamples)}. 
 	}
 }
 
@@ -1435,7 +1441,7 @@ parallel; not all the resampling results were saved
 \section{Changes in version 4.62}{
 \itemize{ 
 
-\item Added\code{gam} from \cpkg{mgcv} (with smoothing splines and feature 
+\item Added \code{gam} from \cpkg{mgcv} (with smoothing splines and feature 
 selection) and \code{gam} from \cpkg{gam} (with basic splines and loess) 
 smoothers. For these models, a formula is derived
 from the data where "near zero variance" predictors

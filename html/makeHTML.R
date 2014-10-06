@@ -22,6 +22,7 @@ library(plyr)
 library(pls)
 library(animation)
 library(ggplot2)
+library(googleVis)
 
 setwd("/Users/kuhna03/Code/github/caret/html")
 

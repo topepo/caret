@@ -493,7 +493,10 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
   ppp <- c(ppp, ctrl$preProcOptions)
   
   resampleIndex <- ctrl$index
-  if(ctrl$method %in% c("boot632")) resampleIndex <- c(list("AllData" = rep(0, nrow(x))), resampleIndex)
+  if(ctrl$method %in% c("boot632")){
+    resampleIndex <- c(list("AllData" = rep(0, nrow(x))), resampleIndex)
+    ctrl$indexOut <- c(list("AllData" = rep(0, nrow(x))),  ctrl$indexOut)
+  }
   
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
   result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .packages = c("methods", "caret"), .errorhandling = "stop") %op%
@@ -502,10 +505,9 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
   
   library(caret)
   
-  if(names(resampleIndex)[iter] != "AllData")
-  {
+  if(names(resampleIndex)[iter] != "AllData") {
     modelIndex <- resampleIndex[[iter]]
-    holdoutIndex <- -unique(resampleIndex[[iter]])
+    holdoutIndex <- ctrl$indexOut[[iter]]
   } else {
     modelIndex <- 1:nrow(x)
     holdoutIndex <- modelIndex
@@ -604,17 +606,19 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
   ppp <- c(ppp, ctrl$preProcOptions)
   
   resampleIndex <- ctrl$index
-  if(ctrl$method %in% c("boot632")) resampleIndex <- c(list("AllData" = rep(0, nrow(x))), resampleIndex)
+  if(ctrl$method %in% c("boot632")) {
+    resampleIndex <- c(list("AllData" = rep(0, nrow(x))), resampleIndex)
+    ctrl$indexOut <- c(list("AllData" = rep(0, nrow(x))),  ctrl$indexOut)
+  }
   
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
   result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .packages = c("methods", "caret", "plyr"), .errorhandling = "stop") %op%
 {
   library(caret)
   
-  if(names(resampleIndex)[iter] != "AllData")
-  {
+  if(names(resampleIndex)[iter] != "AllData") {
     modelIndex <- resampleIndex[[iter]]
-    holdoutIndex <- -unique(resampleIndex[[iter]])
+    holdoutIndex <- ctrl$indexOut[[iter]]
   } else {
     modelIndex <- 1:nrow(x)
     holdoutIndex <- modelIndex

@@ -70,7 +70,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                                            modelFit$obsLevels[1], 
                                            modelFit$obsLevels[2])
                                   },
-                                  gaussian =, laplace =, tdist = {
+                                  gaussian =, laplace =, tdist =, poisson = {
                                     out
                                   })
                     
@@ -96,7 +96,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                                       tmp <- as.list(as.data.frame(tmp, stringsAsFactors = FALSE))
                                       c(list(out), tmp)
                                     },
-                                    gaussian =, laplace =, tdist = {
+                                    gaussian =, laplace =, tdist =,  poisson =  {
                                       ## an nxt matrix
                                       tmp <- as.list(as.data.frame(tmp))
                                       c(list(out), tmp)
@@ -123,7 +123,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                                     colnames(out) <- modelFit$obsLevels
                                     out
                                   },
-                                  gaussian =, laplace =, tdist = {
+                                  gaussian =, laplace =, tdist =,  poisson = {
                                     out
                                   })
                     

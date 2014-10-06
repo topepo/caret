@@ -134,6 +134,7 @@ train.default <- function(x, y,
       trControl$indexOut <- lapply(trControl$index,
                                    function(training, allSamples) allSamples[-unique(training)],
                                    allSamples = seq(along = y))
+      names(trControl$indexOut) <- prettySeq(trControl$indexOut)
     } else {
       trControl$indexOut <- createTimeSlices(seq(along = y),
                                              initialWindow = trControl$initialWindow,

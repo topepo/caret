@@ -583,9 +583,8 @@ called <code>filter</code>, <code>fit</code>, <code>pred</code> and <code>summar
 
 <p>
 This function takes as inputs the predictors and the outcome in
-objects called <span class="mx arg">x</span> and <span class="mx arg">y</span>, respectively. The output
-should be a named vector of scores where the names correspond to the
-column names of <span class="mx arg">x</span>. 
+objects called <span class="mx arg">x</span> and <span class="mx arg">y</span>, respectively. By default, each predictor in <span class="mx arg">x</span> is passed to the <span class="mx funCall">score</span> function individually. In this case, the function should return a single score. Alternatively, all the predictors can be exposed to the function using the <span class="mx arg">multivariate</span> argument to <span class="mx funCall">sbfControl</span>. In this case, the output should be a named vector of scores where the names correspond to the
+column names of <span class="mx arg">x</span>.  
 </p>
 
 <p>

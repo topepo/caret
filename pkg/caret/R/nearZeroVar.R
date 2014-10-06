@@ -21,22 +21,6 @@ nearZeroVar <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE,
   res
 }
 
-nearZeroVar0 <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE, allowParallel = TRUE) {
-  `%op%` <- getOper(allowParallel && getDoParWorkers() > 1)
-  res <- foreach(name = colnames(x), .combine=rbind) %op% {
-    r <- nzv(x[[name]], freqCut = freqCut, uniqueCut = uniqueCut, saveMetrics = TRUE)
-    r[,"column" ] <-  name
-    r
-  }
-  if(saveMetrics) {
-    res <- res[, c(5, 1, 2, 3, 4)]
-    rownames(res) <- as.character(res$column)
-    res$column <- NULL
-  } else res <- which(res$nzv)
-  res
-}
-
-
 nzv <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE)
 {
   if (is.vector(x)) x <- matrix(x, ncol = 1)

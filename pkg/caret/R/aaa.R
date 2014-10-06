@@ -192,4 +192,4 @@ x <- NULL
 
 .B <- NULL
 
-model_id <- player1 <- player2 <- playa <- win1 <- win2 <- NULL
+model_id <- player1 <- player2 <- playa <- win1 <- win2 <- name <- NULL
