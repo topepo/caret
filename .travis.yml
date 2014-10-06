@@ -16,6 +16,7 @@ before_install:
 
 install:
   - ./travis-tool.sh install_deps
+  - ./travis-tool.sh aptget_install texlive-science
 
 script: ./travis-tool.sh run_tests
 
