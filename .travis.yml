@@ -19,6 +19,7 @@ install:
   - sudo add-apt-repository -y ppa:texlive-backports/ppa
   - sudo apt-get -qq update
   - ./travis-tool.sh aptget_install texlive-science
+  - ./travis-tool.sh aptget_install texlive-latex-extra
 
 script: ./travis-tool.sh run_tests
 
