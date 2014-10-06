@@ -2,6 +2,12 @@
 
 language: c
 
+env:
+   global:
+     - R_BUILD_ARGS=" " 
+     - R_CHECK_ARGS="--as-cran"
+     - BOOTSTRAP_LATEX="1"
+
 before_install:
   - cd pkg/caret
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
