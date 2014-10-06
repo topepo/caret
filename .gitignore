@@ -12,3 +12,4 @@ pkg/caret/DESCRIPTION~
 *.Rcheck
 
 *.Rproj.user
+.Rproj.user
