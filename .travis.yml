@@ -20,6 +20,7 @@ install:
   - sudo apt-get -qq update
   - ./travis-tool.sh aptget_install texlive-science
   - ./travis-tool.sh aptget_install texlive-latex-extra
+  - ./travis-tool.sh aptget_install texlive-fonts-extra
 
 script: ./travis-tool.sh run_tests
 
