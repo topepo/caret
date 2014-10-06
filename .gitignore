@@ -13,9 +13,7 @@ pkg/caret_6.0-32.tar.gz
 
 pkg/caret_6.0-33.tar.gz
 
-models/files/.Rhistory
-
-pkg/caret/R/.Rhistory
+*.Rhistory
 
 pkg/caret_6.0-35.tar.gz
 
