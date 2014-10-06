@@ -16,6 +16,7 @@ before_install:
 
 install:
   - ./travis-tool.sh install_deps
+  - sudo add-apt-repository ppa:texlive-backports/ppa
   - sudo apt-get update
   - ./travis-tool.sh aptget_install texlive-science
 
