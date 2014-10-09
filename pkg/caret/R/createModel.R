@@ -58,7 +58,9 @@
                          classProbs = classProbs, ...) 
   ## for models using S4 classes, you can't easily append data, so 
   ## exclude these and we'll use other methods to get this information
-  if(!isS4(modelFit) & method$label != "Ensemble Partial Least Squares Regression")
+  if(!isS4(modelFit) & 
+       !(method$label %in% c("Ensemble Partial Least Squares Regression",
+                             "Ensemble Partial Least Squares Regression with Feature Selection")))
   {
     modelFit$xNames <- colnames(x)
     modelFit$problemType <- if(is.factor(y)) "Classification" else "Regression"
