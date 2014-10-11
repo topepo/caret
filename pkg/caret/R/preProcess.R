@@ -159,10 +159,19 @@ preProcess.default <- function(x, method = c("center", "scale"),
     if(verbose) cat(" done\n")
   } else bagModels <- NULL
   
-  if (any(method == "medianImpute")) 
+  if (any(method == "medianImpute"))
   {
     if(verbose) cat("Computing medians for each predictor...")
     medianValue <- apply(x, 2, median, na.rm=TRUE)
+    
+    if (any(is.na(medianValue)))
+    {
+	    warning(
+	    	paste(
+	    		"These variables are never filled:",
+	    		paste(names(medianValue)[is.na(medianValue)], collapse = ", ")))
+	    medianValue[is.na(medianValue)] <- 0
+		}
     if(verbose) cat(" done\n")
   } else medianValue <- NULL
   
@@ -358,7 +367,7 @@ predict.preProcess <- function(object, newdata, ...)
   
   if (any(object$method == "medianImpute") && any(!cc)) {
     missingVars <- apply(newdata, 2, function(x) any(is.na(x)))
-    missingVars <- names(missingVars)[missingVars]
+    missingVars <- if(is.null(names(missingVars))) which(missingVars) else names(missingVars)[missingVars]
     for (v in missingVars) {
       newdata[is.na(newdata[, v]), v] <- object$median[v]
     }
