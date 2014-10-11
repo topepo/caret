@@ -5,18 +5,11 @@
 
 pkg/caret/DESCRIPTION~
 
-pkg/caret_6.0-31.tar.gz
+*.tar.gz
 
-RegressionTests/.Rhistory
+*.Rhistory
 
-pkg/caret_6.0-32.tar.gz
+*.Rcheck
 
-pkg/caret_6.0-33.tar.gz
-
-models/files/.Rhistory
-
-pkg/caret/R/.Rhistory
-
-pkg/caret_6.0-35.tar.gz
-
-pkg/caret.Rcheck
+*.Rproj.user
+.Rproj.user

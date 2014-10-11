@@ -194,6 +194,7 @@ rfe <- function (x, ...) UseMethod("rfe")
       rownames(resamples) <- NULL
       externPerf <- tmp$performance
     }
+  rownames(selectedVars) <- NULL
   
   bestSubset <- rfeControl$functions$selectSize(x = externPerf,
                                                 metric = metric,
