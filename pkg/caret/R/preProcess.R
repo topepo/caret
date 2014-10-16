@@ -159,15 +159,23 @@ preProcess.default <- function(x, method = c("center", "scale"),
     if(verbose) cat(" done\n")
   } else bagModels <- NULL
   
-  x <- x[complete.cases(x),,drop = FALSE]
-  
-  if (any(method == "medianImpute")) 
+  if (any(method == "medianImpute"))
   {
     if(verbose) cat("Computing medians for each predictor...")
-    median <- sapply(x, median, na.rm=TRUE)
-    names(median) <- names(x)
+    medianValue <- apply(x, 2, median, na.rm=TRUE)
+    
+    if (any(is.na(medianValue)))
+    {
+	    warning(
+	    	paste(
+	    		"These variables are never filled:",
+	    		paste(names(medianValue)[is.na(medianValue)], collapse = ", ")))
+	    medianValue[is.na(medianValue)] <- 0
+		}
     if(verbose) cat(" done\n")
-  }
+  } else medianValue <- NULL
+  
+  x <- x[complete.cases(x),,drop = FALSE]
   
   if(any(method == "pca"))
   {
@@ -219,7 +227,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
               k = k,
               knnSummary = knnSummary,
               bagImp = bagModels,
-              median = median,
+              median = medianValue,
               data = if(any(method == "knnImpute")) scale(x[complete.cases(x),,drop = FALSE]) else NULL)
   structure(out, class = "preProcess")
   
@@ -358,15 +366,11 @@ predict.preProcess <- function(object, newdata, ...)
   }
   
   if (any(object$method == "medianImpute") && any(!cc)) {
-    hasMiss <- newdata[!cc, , drop = FALSE]
-    missingVars <- apply(hasMiss, 2, function(x) any(is.na(x)))
-    missingVars <- names(missingVars)[missingVars]
-    if (!is.data.frame(hasMiss)) 
-      hasMiss <- as.data.frame(hasMiss)
-    for (i in seq(along = missingVars)) {
-      hasMiss[is.na(hasMiss[, missingVars[i]]), missingVars[i]] <- object$median[missingVars[i]]
+    missingVars <- apply(newdata, 2, function(x) any(is.na(x)))
+    missingVars <- if(is.null(names(missingVars))) which(missingVars) else names(missingVars)[missingVars]
+    for (v in missingVars) {
+      newdata[is.na(newdata[, v]), v] <- object$median[v]
     }
-    newdata[!cc, ] <- hasMiss
   }
   
   if(any(object$method == "pca"))
