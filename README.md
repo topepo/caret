@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/zachmayer/caret.png?branch=master)](https://travis-ci.org/zachmayer/caret)
+[![Build Status](https://travis-ci.org/zachmayer/caret.png?topepo=master)](https://travis-ci.org/topepo/caret)
 
 Classification and Regression Training
 
