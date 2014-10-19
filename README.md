@@ -2,7 +2,7 @@
 
 # Classification and Regression Training
 
-Misc functions for training and plotting classification and regression models
+Misc functions for training and plotting classification and regression models.  Detailed documentation at http://topepo.github.io/caret/index.html
 
 ## Install the current release from CRAN:
 ```r
