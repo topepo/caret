@@ -90,24 +90,14 @@ bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample 
     }
   
   btSamples <- createResample(y, times = B)
-
-  hasFE <- TRUE
-  if(bagControl$allowParallel)
-    {
-      if(!hasFE) cat("Install the foreach package for parallel processing; going sequential instead")
-      bagControl$allowParallel <- FALSE
-    }
-  if(hasFE)
-    {
-      `%op%` <-  if(bagControl$allowParallel)  `%dopar%` else  `%do%`
-      btFits <- foreach(iter = seq(along = btSamples),
-                        .verbose = FALSE,
-                        .packages = "caret",
-                        .errorhandling = "stop") %op%
-                fitter(btSamples[[iter]],  x = x, y = y, ctrl = bagControl, v = vars, ...)  
-    } else btFits <- lapply(btSamples, fitter, x = x, y = y, ctrl = bagControl, v = vars, ...)
-
-
+  
+  `%op%` <-  if(bagControl$allowParallel)  `%dopar%` else  `%do%`
+  btFits <- foreach(iter = seq(along = btSamples),
+                    .verbose = FALSE,
+                    .packages = "caret",
+                    .errorhandling = "stop") %op%
+    fitter(btSamples[[iter]],  x = x, y = y, ctrl = bagControl, v = vars, ...)  
+  
   structure(
             list(fits = btFits,
                  control = bagControl,
