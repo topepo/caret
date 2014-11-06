@@ -2,7 +2,7 @@
 \title{News for Package \pkg{caret}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{Changes in version 6.0-XX}{
+\section{Changes in version 6.0-37}{
 	\itemize{
 		\item Brenton Kenkel added ordered logistic or probit regression to \code{train} using \code{method = "polr"} from \cpkg{MASS} 
 		\item \code{LPH07_1} now encodes the noise variables as binary

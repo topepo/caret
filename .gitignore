@@ -13,3 +13,5 @@ pkg/caret/DESCRIPTION~
 
 *.Rproj.user
 .Rproj.user
+
+pkg/caret/inst/NEWS.Rd~
