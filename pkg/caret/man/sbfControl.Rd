@@ -37,7 +37,7 @@ sbfControl(functions = NULL,
   \item{timingSamps}{the number of training set samples that will be used to measure the time for predicting samples (zero indicates that the prediction time should not be estimated).}
     \item{seeds}{an optional set of integers that will be used to set the seed at each resampling iteration. This is useful when the models are run in parallel. A value of \code{NA} will stop the seed from being set within the worker processes while a value of \code{NULL} will set the seeds using a random set of integers. Alternatively, a vector of integers can be used. The vector should have \code{B+1} elements where \code{B} is the number of resamples. See the Examples section below. }  
   \item{allowParallel}{if a parallel backend is loaded and available, should the function use it?}
-  \item{x}{a logical; should all the columns of \code{x} be exposed to the \code{score} function at once?}
+  \item{multivariate}{a logical; should all the columns of \code{x} be exposed to the \code{score} function at once?}
 }
 
 \details{
