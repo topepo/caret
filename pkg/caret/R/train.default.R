@@ -360,26 +360,6 @@ train.default <- function(x, y,
       } else resampledCM <- NULL
     } else resampledCM <- NULL
     
-#     if(trControl$method == "timeslice") {
-#       browser()
-#       resampleResults$ordered <- as.numeric(as.factor(resampleResults$Resample))
-#       resampleResults$ordered <- (resampleResults$ordered - min(resampleResults$ordered))/
-#         (max(resampleResults$ordered) - min(resampleResults$ordered))
-#       auc_values <- ddply(resampleResults, paramNames,
-#                           function(x) {
-#                             browser()
-#                             x <- x[order(x$ordered),]
-#                             library(flux)
-#                             vals <- apply(x[, perfNames,drop = FALSE], 2,
-#                                   function(y, x) flux::auc(x, y),
-#                                   x = x$ordered)
-# #                             names(vals) <- paste(perfNames, "AUC", sep = "_")
-#                             vals
-#                           })
-#       resampleResults$ordered <- NULL
-#       performance <- merge(auc_values, performance)
-#     }
-    
     if(trControl$verboseIter)
     {
       cat("Aggregating results\n")
