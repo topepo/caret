@@ -129,7 +129,7 @@ train.default <- function(x, y,
   }
   
   ## Create hold--out indicies
-  if(is.null(trControl$indexOut)){
+  if(is.null(trControl$indexOut) & trControl$method != "oob"){
     if(tolower(trControl$method) != "timeslice") {      
       trControl$indexOut <- lapply(trControl$index,
                                    function(training, allSamples) allSamples[-unique(training)],
