@@ -31,11 +31,11 @@ test_loo_model_class <- sbf(x = trainX_class, y = trainY_class,
                             sbfControl = cctrl2)
 
 set.seed(849)
-test_cv_model_form_class <- sbf(y ~ ., data = training_class,
+test_cv_model_form_class <- sbf(Class ~ ., data = training_class,
                                 sbfControl = cctrl1)
 
 set.seed(849)
-test_loo_model_form_class <- sbf(y ~ ., data = training_class,
+test_loo_model_form_class <- sbf(Class ~ ., data = training_class,
                                  sbfControl = cctrl2)
 
 #########################################################################

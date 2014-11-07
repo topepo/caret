@@ -33,12 +33,12 @@ test_loo_model_class <- rfe(x = trainX_class, y = trainY_class,
                             rfeControl = cctrl2)
 
 set.seed(849)
-test_cv_model_form_class <- rfe(y ~ ., data = training_class,
+test_cv_model_form_class <- rfe(Class ~ ., data = training_class,
                                 sizes = c(1, 5, 10, 15),
                                 rfeControl = cctrl1)
 
 set.seed(849)
-test_loo_model_form_class <- rfe(y ~ ., data = training_class,
+test_loo_model_form_class <- rfe(Class ~ ., data = training_class,
                                  sizes = c(1, 5, 10, 15),
                                  rfeControl = cctrl2)
 

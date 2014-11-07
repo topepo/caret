@@ -46,8 +46,8 @@ test_loo_model_form_class <- rfe(Class ~ ., data = training_class,
 
 test_cv_pred_class <- predict(test_cv_model_class, testX_class)
 test_loo_pred_class <- predict(test_loo_model_class, testX_class)
-test_cv_pred_form_class <- predict(test_cv_model_form_class, testing_class[, colnames(testing_class) != "Class"])
-test_loo_pred_form_class <- predict(test_loo_model_form_class, testing_class[, colnames(testing_class) != "Class"])
+# test_cv_pred_form_class <- predict(test_cv_model_form_class, testing_class[, colnames(testing_class) != "Class"])
+# test_loo_pred_form_class <- predict(test_loo_model_form_class, testing_class[, colnames(testing_class) != "Class"])
 
 #########################################################################
 
