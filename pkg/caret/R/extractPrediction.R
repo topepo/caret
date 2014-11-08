@@ -46,7 +46,10 @@ extractPrediction <- function(models,
         pred <- c(pred, as.character(tempTrainPred))
         obs <- c(obs, as.character(trainY))
       } else {
-        tempTrainPred <- trimPredictions(models[[i]], tempTrainPred)
+        tempTrainPred <- trimPredictions(mod_type = models[[i]]$modelType,
+                                         bounds =  models[[i]]$control$predictionBounds,
+                                         limits =  models[[i]]$yLimit,
+                                         pred = tempTrainPred)
         pred <- c(pred, tempTrainPred)
         obs <- c(obs, trainY)      
       }
@@ -72,7 +75,10 @@ extractPrediction <- function(models,
           pred <- c(pred, as.character(tempTestPred))
           obs <- c(obs, as.character(testY))    
         } else {
-          tempTestPred <- trimPredictions(models[[i]], tempTestPred)
+          tempTestPred <- trimPredictions(mod_type = models[[i]]$modelType,
+                                          bounds =  models[[i]]$control$predictionBounds,
+                                          limits =  models[[i]]$yLimit,
+                                          pred = tempTestPred)
           pred <- c(pred, tempTestPred)   
           obs <- c(obs, testY) 
         }
@@ -100,7 +106,10 @@ extractPrediction <- function(models,
         pred <- c(pred, as.character(tempUnkPred))
         obs <- c(obs, rep("", length(tempUnkPred)))    
       } else {
-        tempUnkPred <- trimPredictions(models[[i]], tempUnkPred)
+        tempUnkPred <- trimPredictions(mod_type = models[[i]]$modelType,
+                                       bounds =  models[[i]]$control$predictionBounds,
+                                       limits =  models[[i]]$yLimit,
+                                       pred = tempUnkPred)
         pred <- c(pred, tempUnkPred)   
         obs <- c(obs, rep(NA, length(tempUnkPred)))    
       }
@@ -126,23 +135,14 @@ extractPrediction <- function(models,
 }
 
 
-trimPredictions <- function(object, pred)
-{
-  if(object$modelType == "Regression" &&
-       is.logical(object$control$predictionBounds) &&
-       any(object$control$predictionBounds))
-  {
-    if(object$control$predictionBounds[1]) pred <- ifelse(pred < object$yLimit[1], object$yLimit[1], pred)
-    if(object$control$predictionBounds[2]) pred <- ifelse(pred > object$yLimit[2], object$yLimit[2], pred)         
+trimPredictions <- function(mod_type, bounds, limits, pred) {
+  if(mod_type == "Regression" && is.logical(bounds) && any(bounds)) {
+    if(bounds[1]) pred <- ifelse(pred < limits[1], limits[1], pred)
+    if(bounds[2]) pred <- ifelse(pred > limits[2], limits[2], pred)         
   }
-  if(object$modelType == "Regression" &&
-       is.numeric(object$control$predictionBounds) &&
-       any(!is.na(object$control$predictionBounds)))
-  {
-    if(!is.na(object$control$predictionBounds[1])) pred <- ifelse(pred < object$control$predictionBounds[1], object$control$predictionBounds[1], pred)
-    if(!is.na(object$control$predictionBounds[2])) pred <- ifelse(pred > object$control$predictionBounds[2], object$control$predictionBounds[2], pred)
+  if(mod_type == "Regression" && is.numeric(bounds) && any(!is.na(bounds))) {
+    if(!is.na(bounds[1])) pred <- ifelse(pred < bounds[1], bounds[1], pred)
+    if(!is.na(bounds[2])) pred <- ifelse(pred > bounds[2], bounds[2], pred)
   }
   pred
-  
 }
-
