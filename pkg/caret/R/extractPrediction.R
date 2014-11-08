@@ -135,7 +135,7 @@ extractPrediction <- function(models,
 }
 
 
-trimPredictions <- function(mod_type, bounds, limits, pred) {
+trimPredictions <- function(pred, mod_type, bounds, limits) {
   if(mod_type == "Regression" && is.logical(bounds) && any(bounds)) {
     if(bounds[1]) pred <- ifelse(pred < limits[1], limits[1], pred)
     if(bounds[2]) pred <- ifelse(pred > limits[2], limits[2], pred)         

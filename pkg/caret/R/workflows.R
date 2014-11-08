@@ -195,6 +195,35 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
   }
   
   ##################################
+  if(is.numeric(y)) {
+    if(is.logical(ctrl$predictionBounds) && any(ctrl$predictionBounds)) {
+      if(is.list(predicted)) {
+        predicted <- lapply(predicted, trimPredictions,
+                            mod_type = "Regression",
+                            bounds = ctrl$predictionBounds,
+                            limits = ctrl$yLimits)
+      } else {
+        predicted <- trimPredictions(mod_type = "Regression",
+                                     bounds =  ctrl$predictionBounds,
+                                     limits =  ctrl$yLimit,
+                                     pred = predicted)
+      }
+    } else {
+      if(is.numeric(ctrl$predictionBounds) && any(!is.na(ctrl$predictionBounds))) {
+        if(is.list(predicted)) {
+          predicted <- lapply(predicted, trimPredictions,
+                              mod_type = "Regression",
+                              bounds = ctrl$predictionBounds,
+                              limits = ctrl$yLimits)
+        } else {
+          predicted <- trimPredictions(mod_type = "Regression",
+                                       bounds =  ctrl$predictionBounds,
+                                       limits =  ctrl$yLimit,
+                                       pred = predicted)
+        }
+      }
+    } 
+  }
   
   if(!is.null(submod))
   {
@@ -271,7 +300,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                        all = TRUE)
       tmpPred$Resample <- names(resampleIndex)[iter]
     } else tmpPred <- NULL
-    
+
     ##################################
     thisResample <- ctrl$summaryFunction(tmp,
                                          lev = lev,
