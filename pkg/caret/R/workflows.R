@@ -195,6 +195,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
   }
   
   ##################################
+  
   if(is.numeric(y)) {
     if(is.logical(ctrl$predictionBounds) && any(ctrl$predictionBounds)) {
       if(is.list(predicted)) {
@@ -410,6 +411,36 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
                                       newdata = x[-ctrl$index[[iter]],, drop = FALSE],
                                       preProc = mod$preProc,
                                       param = submod)
+      
+      if(is.numeric(y)) {
+        if(is.logical(ctrl$predictionBounds) && any(ctrl$predictionBounds)) {
+          if(is.list(predicted)) {
+            predicted <- lapply(predicted, trimPredictions,
+                                mod_type = "Regression",
+                                bounds = ctrl$predictionBounds,
+                                limits = ctrl$yLimits)
+          } else {
+            predicted <- trimPredictions(mod_type = "Regression",
+                                         bounds =  ctrl$predictionBounds,
+                                         limits =  ctrl$yLimit,
+                                         pred = predicted)
+          }
+        } else {
+          if(is.numeric(ctrl$predictionBounds) && any(!is.na(ctrl$predictionBounds))) {
+            if(is.list(predicted)) {
+              predicted <- lapply(predicted, trimPredictions,
+                                  mod_type = "Regression",
+                                  bounds = ctrl$predictionBounds,
+                                  limits = ctrl$yLimits)
+            } else {
+              predicted <- trimPredictions(mod_type = "Regression",
+                                           bounds =  ctrl$predictionBounds,
+                                           limits =  ctrl$yLimit,
+                                           pred = predicted)
+            }
+          }
+        } 
+      }
       
       if(testing) print(head(predicted))
       if(ctrl$classProbs)

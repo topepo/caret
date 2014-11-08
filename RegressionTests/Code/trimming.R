@@ -46,8 +46,6 @@ test3 <- train(y ~ .,
                                         predictionBounds = c(TRUE, TRUE), 
                                         savePredictions = TRUE))
 
-
-
 set.seed(1)
 test4 <- train(y ~ ., 
                data = training,
@@ -74,18 +72,82 @@ test6 <- train(y ~ .,
                                         predictionBounds = c(TRUE, TRUE), 
                                         savePredictions = TRUE))
 
+set.seed(1)
+test7 <- train(y ~ ., 
+               data = training,
+               method = "lm",
+               preProc = c("center", "scale"),
+               trControl = trainControl(method = "LOOCV", 
+                                        savePredictions = TRUE))
+
+set.seed(1)
+test8 <- train(y ~ ., 
+               data = training,
+               method = "lm",
+               preProc = c("center", "scale"),
+               trControl = trainControl(method = "LOOCV",
+                                        predictionBounds = c(0, NA), 
+                                        savePredictions = TRUE))
+
+set.seed(1)
+test9 <- train(y ~ ., 
+               data = training,
+               method = "lm",
+               preProc = c("center", "scale"),
+               trControl = trainControl(method = "LOOCV",
+                                        predictionBounds = c(TRUE, TRUE), 
+                                        savePredictions = TRUE))
+
+set.seed(1)
+test10 <- train(y ~ ., 
+                data = training,
+                method = "lm",
+                preProc = c("center", "scale"),
+                trControl = trainControl(method = "LOOCV", 
+                                         savePredictions = TRUE))
+
+set.seed(1)
+test11 <- train(y ~ ., 
+                data = training,
+                method = "lm",
+                preProc = c("center", "scale"),
+                trControl = trainControl(method = "LOOCV",
+                                         predictionBounds = c(0, NA), 
+                                         savePredictions = TRUE))
+
+set.seed(1)
+test12 <- train(y ~ ., 
+                data = training,
+                method = "lm",
+                preProc = c("center", "scale"),
+                trControl = trainControl(method = "LOOCV",
+                                         predictionBounds = c(TRUE, TRUE), 
+                                         savePredictions = TRUE))
+
 test_ext_pred <- data.frame(p1 = predict(test1, testing),
                             p2 = predict(test2, testing),
                             p3 = predict(test3, testing),
                             p4 = predict(test4, testing),
                             p5 = predict(test5, testing),
-                            p6 = predict(test6, testing))
+                            p6 = predict(test6, testing),
+                            p7 = predict(test7, testing),
+                            p8 = predict(test8, testing),
+                            p9 = predict(test9, testing),
+                            p10 = predict(test10, testing),
+                            p11 = predict(test11, testing),
+                            p12 = predict(test12, testing))
 test_1_pred <- test1$pred
 test_2_pred <- test2$pred
 test_3_pred <- test3$pred
 test_4_pred <- test4$pred
 test_5_pred <- test5$pred
 test_6_pred <- test6$pred
+test_7_pred <- test7$pred
+test_8_pred <- test8$pred
+test_9_pred <- test9$pred
+test_10_pred <- test10$pred
+test_11_pred <- test11$pred
+test_12_pred <- test12$pred
 
 #########################################################################
 

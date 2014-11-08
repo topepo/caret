@@ -16,6 +16,7 @@
 		\item A function \code{compare_models} was added that is a simple comparison of models via \code{diff.resamples)}. 
 		\item The row names for the \code{variables} component of \code{rfe} objects were simplified.  
 		\item Philipp Bergmeir found a bug that was fixed where \code{bag} would not run in parallel. 
+		\item \code{predictionBounds} was not implemented during resampling.
 	}
 }
 
