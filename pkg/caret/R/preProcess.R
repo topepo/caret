@@ -341,7 +341,13 @@ predict.preProcess <- function(object, newdata, ...)
                      foo = object$knnSummary)
     hasMiss <- t(hasMiss)
     
-    newdata[!cc,] <- hasMiss
+    if(class(newdata)[1] == class(hasMiss)[1]) {
+      newdata[!cc,] <- hasMiss
+    } else {
+      if(is.data.frame(newdata)) {
+        newdata[!cc,] <- as.data.frame(hasMiss)
+      } else newdata[!cc,] <- as.matrix(hasMiss)
+    }
   }
   
   if(any(object$method == "bagImpute") && any(!cc))
@@ -362,7 +368,13 @@ predict.preProcess <- function(object, newdata, ...)
       hasMiss[is.na(hasMiss[,missingVars[i]]),
               missingVars[i]] <- preds[is.na(hasMiss[,missingVars[i]])]
     }
-    newdata[!cc,] <- hasMiss
+    if(class(newdata)[1] == class(hasMiss)[1]) {
+      newdata[!cc,] <- hasMiss
+    } else {
+      if(is.data.frame(newdata)) {
+        newdata[!cc,] <- as.data.frame(hasMiss)
+      } else newdata[!cc,] <- as.matrix(hasMiss)
+    }
   }
   
   if (any(object$method == "medianImpute") && any(!cc)) {
