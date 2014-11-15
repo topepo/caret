@@ -12,8 +12,8 @@
   
   averageCorr <- function(x) mean(x, na.rm = TRUE)
   tmp <- x
-  
   diag(tmp) <- NA
+  
   maxAbsCorOrder <- order(apply(tmp, 2, averageCorr), decreasing = TRUE)
   x <- x[maxAbsCorOrder, maxAbsCorOrder]
   newOrder <- originalOrder[maxAbsCorOrder]
@@ -28,15 +28,11 @@
         if (x[i, j] > cutoff) {
           if (mean(x[i, -i]) > mean(x[-j, j])) {
             deletecol[i] <- T
-            if (verbose)
-              cat("  Flagging column\t", newOrder[i],
-                  "\n")
+            if (verbose) cat("  Flagging column\t", newOrder[i], "\n")
           }
           else {
             deletecol[j] <- T
-            if (verbose)
-              cat("  Flagging column\t", newOrder[j],
-                  "\n")
+            if (verbose) cat("  Flagging column\t", newOrder[j], "\n")
           }
         }
       }
