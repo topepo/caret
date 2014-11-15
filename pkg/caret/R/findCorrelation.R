@@ -6,7 +6,10 @@
   if (varnum == 1) stop("only one variable given")
   
   x <- abs(x)
+  
+  # re-ordered columns based on max absolute correlation
   originalOrder <- 1:varnum
+  
   averageCorr <- function(x) mean(x, na.rm = TRUE)
   tmp <- x
   
