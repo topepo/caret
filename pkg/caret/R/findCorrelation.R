@@ -1,4 +1,4 @@
-.findCorrelation <- function (x, cutoff = 0.9, verbose = FALSE)
+findCorrelation <- function(x, cutoff = 0.90, verbose = FALSE)
 {
   varnum <- dim(x)[1]
   
@@ -24,7 +24,10 @@
     if (deletecol[i]) next
     for (j in (i + 1):varnum) {
       if (!deletecol[i] & !deletecol[j]) {
-        
+        if(verbose)
+          cat("Considering row\t", newOrder[i], 
+              "column\t", newOrder[j], 
+              "value\t", round(x[i,j], 3), "\n")  
         if (x[i, j] > cutoff) {
           if (mean(x[i, -i]) > mean(x[-j, j])) {
             deletecol[i] <- T
