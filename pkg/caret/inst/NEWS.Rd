@@ -4,7 +4,8 @@
 
 \section{Changes in version 6.0-XX}{
 	\itemize{
-		\item A bg was fixed related to imputation when teh formula method is used with \code{train}
+		\item A bug was fixed related to imputation when the formula method is used with \code{train}
+		\item Reynald Lescarbeau refactored \code{findCorrelation} to make it faster. 
 	}
 }
 
