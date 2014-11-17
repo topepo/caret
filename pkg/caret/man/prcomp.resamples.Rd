@@ -43,7 +43,7 @@ The principal components analysis treats the models as variables and the resampl
 The plot method uses lattice graphics. When \code{what = "scree"} or \code{what = "cumulative"}, \code{\link[lattice:xyplot]{barchart}} is used.
 When \code{what = "loadings"} or \code{what = "components"}, either \code{\link[lattice:xyplot]{xyplot}} or \code{\link[lattice:splom]{splom}} are used (the latter when \code{dims} > 2). Options can be passed to these methods using \code{...}.
 
-When  \code{what = "loadings"} or \code{what = "components"}, the plots are put on a common scale so that later components are less likely to be over-interpreted. See Geladi et al (2003) for examples of why this can be important.
+When  \code{what = "loadings"} or \code{what = "components"}, the plots are put on a common scale so that later components are less likely to be over-interpreted. See Geladi et al. (2003) for examples of why this can be important.
 
 For clustering, \code{\link[stats]{hclust}} is used to determine clusters of models based on the resampled performance values. 
 }

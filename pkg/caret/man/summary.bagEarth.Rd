@@ -15,7 +15,7 @@ The function shows a summary of the results from a bagged earth model
   \item{\dots}{optional arguments (not used)}
 }
 \details{
-The out-of-bag statistics are summarized, as well as the distribution of the number of model terms and number of variables used across all of the bootstrap samples.
+The out-of-bag statistics are summarized, as well as the distribution of the number of model terms and number of variables used across all the bootstrap samples.
 }
 \value{
 a list with elements

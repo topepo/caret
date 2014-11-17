@@ -48,7 +48,7 @@ createTimeSlices(y, initialWindow, horizon = 1, fixedWindow = TRUE)
   levels of \code{y} when \code{y} is a factor in an attempt to balance
   the class distributions within the splits. 
 
-  For numeric \code{y}, the sample  is split into groups sections based
+  For numeric \code{y}, the sample is split into groups sections based
   on percentiles and sampling is done within these subgroups. For 
   \code{createDataPartition}, the number of percentiles is set via the 
   \code{groups} argument. For \code{createFolds} and \code{createMultiFolds}, 

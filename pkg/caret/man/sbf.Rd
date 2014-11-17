@@ -27,7 +27,7 @@ sbf(x, ...)
   \item{data}{Data frame from which variables specified in \code{formula} are preferentially to be taken.}
   \item{subset}{An index vector specifying the cases to be used in the training sample. (NOTE: If given, this argument must be named.)}
   \item{na.action}{A function to specify the action to be taken if NAs are found. The default action is for the procedure to fail. An alternative is na.omit, which leads to rejection of cases with missing values on any required variable. (NOTE: If given, this argument must be named.)}
-  \item{contrasts}{a list of contrasts to be used for some or all of the factors appearing as variables in the model formula.}
+  \item{contrasts}{a list of contrasts to be used for some or all the factors appearing as variables in the model formula.}
   \item{sbfControl}{a list of values that define how this function acts. See \code{\link{sbfControl}}. (NOTE: If given, this argument must be named.)}
   \item{object}{an object of class \code{sbf}}
   \item{newdata}{a matrix or data frame of predictors. The object must have non-null column names}

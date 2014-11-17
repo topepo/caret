@@ -32,7 +32,7 @@ modelCor(x, metric = x$metric[1], ...)
   \item{\dots}{only used for \code{sort} and \code{modelCor} and captures arguments to pass to \code{sort} or \code{FUN}.}
 }
 \details{
-The ideas and methods here are based on Hothorn et al (2005) and Eugster et al (2008).
+The ideas and methods here are based on Hothorn et al. (2005) and Eugster et al. (2008).
 
 The results from  \code{\link{train}} can have more than one performance metric per resample. Each metric in the input object is saved.
 

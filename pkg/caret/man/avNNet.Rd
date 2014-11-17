@@ -5,7 +5,7 @@
 \alias{avNNet}
 \title{Neural Networks Using Model Averaging}
 \description{
-Aggregate several neural network model
+Aggregate several neural network models
 }
 \usage{
 \method{avNNet}{default}(x, y, repeats = 5, bag = FALSE, allowParallel = TRUE, ...)
@@ -30,7 +30,7 @@ matrix or data frame of target values for examples.
 \item{weights}{
 (case) weights for each example -- if missing defaults to 1.
 }
-\item{repeats}{the number of neural networks with with different random number seeds}
+\item{repeats}{the number of neural networks with different random number seeds}
 
 \item{bag}{a logical for bagging for each repeat}
 \item{allowParallel}{if a parallel backend is loaded and available, should the function use it?}
@@ -71,7 +71,7 @@ arguments passed to \code{\link[nnet]{nnet}}
 
 }
 \details{
-Following Ripley (1996), the same neural network model is fit using different random number seeds. All of the resulting models are used for prediction. For regression, the output from each network are averaged. For classification, the model scores are first averaged, then translated to predicted classes. Bagging can also be used to create the models.
+Following Ripley (1996), the same neural network model is fit using different random number seeds. All the resulting models are used for prediction. For regression, the output from each network are averaged. For classification, the model scores are first averaged, then translated to predicted classes. Bagging can also be used to create the models.
 
 If a parallel backend is registered, the \pkg{foreach} package is used to train the networks in parallel. 
 
