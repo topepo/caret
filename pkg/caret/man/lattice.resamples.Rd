@@ -41,7 +41,7 @@ Lattice functions for visualizing resampling results across models
   \item{\dots}{further arguments to pass to either \code{\link[lattice:histogram]{histogram}}, \code{\link[lattice:histogram]{densityplot}}, \code{\link[lattice:xyplot]{xyplot}}, \code{\link[lattice:xyplot]{dotplot}} or \code{\link[lattice:splom]{splom}}}
 }
 \details{
-The ideas and methods here are based on Hothorn et al (2005) and Eugster et al (2008).
+The ideas and methods here are based on Hothorn et al. (2005) and Eugster et al. (2008).
 
 \code{dotplot} plots the average performance value (with two-sided confidence limits) for each model and metric.
 

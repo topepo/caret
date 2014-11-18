@@ -27,7 +27,7 @@ compare_models(a, b, metric = a$metric[1])
   \item{\dots}{further arguments to pass to \code{test}}
 }
 \details{
-The ideas and methods here are based on Hothorn et al (2005) and Eugster et al (2008).
+The ideas and methods here are based on Hothorn et al. (2005) and Eugster et al. (2008).
 
 For each metric, all pair-wise differences are computed and tested to assess if the difference is equal to zero.
 

@@ -75,7 +75,7 @@ Most of the \code{\link[stats]{contrasts}} functions in R produce full rank para
 9           1      0      0      0      0      0      0
 } 
 
-In some situations, there may be a need for dummy variables for all of the levels of the factor. For the same example:
+In some situations, there may be a need for dummy variables for all the levels of the factor. For the same example:
 \preformatted{
   dayMon dayTue dayWed dayThu dayFri daySat daySun
 1      0      1      0      0      0      0      0

@@ -1585,8 +1585,8 @@ scatter plots are models or metrics.
 \section{Changes in version 4.50}{
 \itemize{ 
 
-\item Added \code{\link{dotplot.resamples}} plus acknowledgements to Hothorn et al 
-(2005) and Eugster et al (2008)
+\item Added \code{\link{dotplot.resamples}} plus acknowledgements to Hothorn et al.
+(2005) and Eugster et al. (2008)
 
  }
 }

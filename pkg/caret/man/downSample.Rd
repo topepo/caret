@@ -30,7 +30,7 @@ if \code{list = FALSE}, a label for the class column
 \details{
 Simple random sampling is used to down-sample for the majority class(es). Note that the minority class data are left intact and that the samples will be re-ordered in the down-sampled version.
 
-For up-sampling, all of the original data are left intact and additional samples are added to the minority classes with replacement.
+For up-sampling, all the original data are left intact and additional samples are added to the minority classes with replacement.
 }
 \value{
 Either a data frame or a list with elements \code{x} and \code{y}.

@@ -82,7 +82,7 @@ The fourth set of informative predictors are copied from one of Friedman's syste
 
 All of these effects are added up to model the log-odds. This is used to calculate the probability of a sample being in the first class and a random uniform number is used to actually make the assignment of the actual class. To mislabel the data, the probability is reversed (i.e. \code{p = 1 - p}) before the random number generation. 
 
-The remaining functions simulate regression data sets. \code{LPH07_1} and \code{LPH07_2} are from van der Laan et al (2007). The first function uses random Bernoulli variables that have a 40\% probability of being a value of 1. The true regression equation is:
+The remaining functions simulate regression data sets. \code{LPH07_1} and \code{LPH07_2} are from van der Laan et al. (2007). The first function uses random Bernoulli variables that have a 40\% probability of being a value of 1. The true regression equation is:
 
 \preformatted{
 2*w_1*w_10 + 4*w_2*w_7 + 3*w_4*w_5 
@@ -101,7 +101,7 @@ x_1*x_2 + x_10^2 - x_3*x_17
 
 The error term is also Gaussian with mean zero and variance 16.
 
-The function \code{SLC14_1} simulates a system from Sapp et al (2014). All informative predictors are independent Gaussian random variables with mean zero and a variance of 9. The prediction equation is:
+The function \code{SLC14_1} simulates a system from Sapp et al. (2014). All informative predictors are independent Gaussian random variables with mean zero and a variance of 9. The prediction equation is:
 
 \preformatted{
 x_1 + sin(x_2) + log(abs(x_3)) + x_4^2 + x_5*x_6 + 
@@ -112,7 +112,7 @@ I(x_16 < -1) + x_17*I(x_17 < -1) - 2 * x_18 - x_19*x_20
 
 The random error here is also Gaussian with mean zero and a variance of 9. 
 
-\code{SLC14_2} is also from Sapp et al (2014). Two hundred independent Gaussian variables are generated, each having mean zero and variance 16. The functional form is
+\code{SLC14_2} is also from Sapp et al. (2014). Two hundred independent Gaussian variables are generated, each having mean zero and variance 16. The functional form is
 
 \preformatted{
 -1 + log(abs(x_1)) + ... + log(abs(x_200))

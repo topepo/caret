@@ -5,7 +5,7 @@
 \alias{mdrrDescr}
 \title{Multidrug Resistance Reversal (MDRR) Agent Data}
 \description{
-Svetnik et al (2003) describe these data: "Bakken and Jurs studied a set of compounds
+Svetnik et al. (2003) describe these data: "Bakken and Jurs studied a set of compounds
 originally discussed by Klopman et al., who were interested
 in multidrug resistance reversal (MDRR) agents. The original
 response variable is a ratio measuring the ability of a

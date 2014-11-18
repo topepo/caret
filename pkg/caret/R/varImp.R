@@ -41,14 +41,14 @@ GarsonWeights <- function(object)
                       ncol = 1)
       }
 
-    ##  From Gevrey et al (2003): "For each hidden neuron i, multiply
+    ##  From Gevrey et al. (2003): "For each hidden neuron i, multiply
     ##  the absolute value of the hidden-output layer connection
     ##  weight by the absolute value of the hidden-input layer
     ##  connection weight. Do this for each input variable j. The
     ##  following products Pij are obtained"
 
 
-    ## We'll do this one response at a time. Gevrey et al (2003) do
+    ## We'll do this one response at a time. Gevrey et al. (2003) do
     ## not discuss multiple outputs, but the results are the same (at
     ## least in the case of classification).
 
