@@ -460,7 +460,7 @@ print.preProcess <- function(x, ...) {
 
 
 nnimp <- function(new, old, k, foo) {
-  requireNamespace("RANN", quietly = TRUE)
+  if (!requireNamespace("RANN", quietly = TRUE)) stop('need package RANN')
   if(all(is.na(new)))
     stop("cannot impute when all predictors are missing in the new data point")
   nms <- names(new)
