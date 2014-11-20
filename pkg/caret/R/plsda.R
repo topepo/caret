@@ -4,7 +4,7 @@ plsda <- function (x, ...)
 
 
 predict.plsda <- function(object, newdata = NULL, ncomp = NULL, type = "class", ...){
-  requireNamespace("pls", quietly = TRUE)
+  requireNamespaceQuietStop('pls')
   if(is.null(ncomp)) 
     if(!is.null(object$ncomp)) ncomp <- object$ncomp else stop("specify ncomp")
   
@@ -84,7 +84,7 @@ predict.plsda <- function(object, newdata = NULL, ncomp = NULL, type = "class", 
 
 
 plsda.default <- function(x, y, ncomp = 2, probMethod = "softmax", prior = NULL, ...) {
-  requireNamespace("pls", quietly = TRUE)
+  requireNamespaceQuietStop('pls')
   
   funcCall <- match.call(expand.dots = TRUE)
   
@@ -127,7 +127,7 @@ plsda.default <- function(x, y, ncomp = 2, probMethod = "softmax", prior = NULL,
   out$obsLevels <- obsLevels
   out$probMethod <- probMethod
   if(probMethod == "Bayes") {
-    requireNamespace("klaR", quietly = TRUE)
+    requireNamespaceQuietStop('klaR')
     makeModels <- function(x, y, pri) {
       probModel <- klaR::NaiveBayes(x, y, prior = pri, usekernel = TRUE)
       probModel$train <- predict(probModel)$posterior

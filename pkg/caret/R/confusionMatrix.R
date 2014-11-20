@@ -33,7 +33,7 @@ confusionMatrix.default <- function(data, reference,
 
 confusionMatrix.table <- function(data, positive = NULL, prevalence = NULL, ...)
 {
-  requireNamespace("e1071", quietly = TRUE)
+  requireNamespaceQuietStop("e1071")
   
   if(length(dim(data)) != 2) stop("the table must have two dimensions")
   if(!all.equal(nrow(data), ncol(data))) stop("the table must nrow = ncol")

@@ -3,7 +3,7 @@
 make_noise <- function(n, noiseVars = 0, 
                        corrVars = 0, corrType = "AR1", corrValue = 0,
                        binary = FALSE) {
-  requireNamespace("MASS", quietly = TRUE)
+  requireNamespaceQuietStop("MASS")
   if(noiseVars > 0) {
     tmpData <- matrix(rnorm(n * noiseVars), ncol = noiseVars)
     colnames(tmpData) <- well_numbered("Noise", noiseVars)

@@ -6,7 +6,7 @@
 "bagEarth.default" <-
   function(x, y, weights = NULL, B = 50, summary = mean, keepX = TRUE, ...)
 {
-  requireNamespace("earth", quietly = TRUE)
+  requireNamespaceQuietStop("earth")
   funcCall <- match.call(expand.dots = TRUE)
   if(!is.matrix(x)) x <- as.matrix(x)
   if(!is.factor(y))
@@ -96,7 +96,7 @@
 {
   if(!any(type %in% c("response", "class")))
     stop("type must be either response, class or prob")
-  requireNamespace("earth", quietly = TRUE)
+  requireNamespaceQuietStop("earth")
   ## get oob predictions
   getTrainPred <- function(x)
     {
@@ -159,7 +159,7 @@ print.bagEarth <- function (x, ...)
 "summary.bagEarth" <-
   function(object, ...)
 {
-  requireNamespace("earth", quietly = TRUE)
+  requireNamespaceQuietStop("earth")
   oobStat <- apply(object$oob, 2, function(x) quantile(x, probs = c(0, 0.025, .25, .5, .75, .975, 1)))
 
   numTerms <- unlist(lapply(object$fit, function(x) length(x$selected.terms)))

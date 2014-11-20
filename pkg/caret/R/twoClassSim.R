@@ -6,7 +6,7 @@ twoClassSim <- function(n = 100,
                         corrType = "AR1", ## Corr structure ('AR1' or 'exch')
                         corrValue = 0,    ## Corr parameter
                         mislabel = 0) {
-  requireNamespace("MASS", quietly = TRUE)
+  requireNamespaceQuietStop("MASS")
   sigma <- matrix(c(2,1.3,1.3,2),2,2)
   
   tmpData <- data.frame(MASS::mvrnorm(n=n, c(0,0), sigma))

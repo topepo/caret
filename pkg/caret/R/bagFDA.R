@@ -5,8 +5,8 @@ function(x, ...)
 "bagFDA.default" <-
 function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
 {
-  requireNamespace("mda", quietly = TRUE)
-  requireNamespace("earth", quietly = TRUE)
+  requireNamespaceQuietStop("mda")
+  requireNamespaceQuietStop("earth")
    funcCall <- match.call(expand.dots = TRUE)
    if(!is.matrix(x)) x <- as.matrix(x)
    if(!is.vector(y) & !is.factor(y)) y <- as.vector(y)   
@@ -90,8 +90,8 @@ function (x, ...)
 "predict.bagFDA" <-
 function(object, newdata = NULL, type = "class", ...)
 {
-  requireNamespace("mda", quietly = TRUE)
-  requireNamespace("earth", quietly = TRUE)
+  requireNamespaceQuietStop("mda")
+  requireNamespaceQuietStop("earth")
    getTrainPred <- function(x)
      {
        oobIndex <- 1:nrow(x$fit$fitted.values)

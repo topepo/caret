@@ -5,8 +5,8 @@ BoxCoxTrans <- function(y, ...) UseMethod("BoxCoxTrans")
 ## TODO add exclusion list to preProc?
 
 BoxCoxTrans.default <- function(y, x = rep(1, length(y)), fudge = .2, numUnique = 3,  na.rm = FALSE, ...) {
-  requireNamespace("MASS", quietly = TRUE)
-  requireNamespace("e1071", quietly = TRUE)
+  requireNamespaceQuietStop("MASS")
+  requireNamespaceQuietStop("e1071")
   if(na.rm && (any(is.na(y)) | any(is.na(x)))) {
     rmv <- is.na(y) | is.na(x)
     y <- y[!rmv]

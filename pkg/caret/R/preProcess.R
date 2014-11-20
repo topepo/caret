@@ -195,7 +195,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
   if(any(method == "ica"))
   {
     if(verbose) cat("Computing ICA loadings\n")
-    requireNamespace("fastICA", quietly = TRUE)
+    requireNamespaceQuietStop("fastICA")
     x <- sweep(x, 2, centerValue, "-")
     if(!row.norm & any(method == "scale")) x <- sweep(x, 2, scaleValue, "/")      
     tmp <- fastICA::fastICA(x, ...)
@@ -460,7 +460,7 @@ print.preProcess <- function(x, ...) {
 
 
 nnimp <- function(new, old, k, foo) {
-  if (!requireNamespace("RANN", quietly = TRUE)) stop('need package RANN')
+  requireNamespaceQuietStop("RANN")
   if(all(is.na(new)))
     stop("cannot impute when all predictors are missing in the new data point")
   nms <- names(new)
@@ -478,7 +478,7 @@ nnimp <- function(new, old, k, foo) {
 }
 
 bagImp <- function(var, x, B = 10) {
-  requireNamespace("ipred", quietly = TRUE)
+  requireNamespaceQuietStop("ipred")
   ## The formula interface is much slower than the
   ## (y, X) interface, but the latter would have to
   ## do case-wise deletion of samples from the

@@ -47,7 +47,7 @@ avNNet.formula <- function (formula, data, weights, ...,
 
 avNNet.default <- function(x, y, repeats = 5, bag = FALSE, allowParallel = TRUE, ...)
   {
-    requireNamespace("nnet", quietly = TRUE)
+    requireNamespaceQuietStop("nnet")
     ## check for factors
     ## this is from nnet.formula
 
