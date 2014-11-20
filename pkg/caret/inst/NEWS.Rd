@@ -6,6 +6,7 @@
 	\itemize{
 		\item A bug was fixed related to imputation when the formula method is used with \code{train}
 		\item Reynald Lescarbeau refactored \code{findCorrelation} to make it faster. 
+		\item The old \code{drop = FALSE} bug was fixed in \code{getTrainPerf}
 	}
 }
 
