@@ -13,7 +13,7 @@ modelInfo <- list(label = "Stacked AutoEncoder Deep Neural Network",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.matrix(x)) x <- as.matrix(x)
                     is_class <- is.factor(y)
-                    ## make y into binary
+                    if (is_class) y <- class2ind(y)
                     layers <- c(param$layer1, param$layer2, param$layer3)
                     layers <- layers[layers > 0]
                     sae.dnn.train(x, y, hidden = layers, 
@@ -22,10 +22,17 @@ modelInfo <- list(label = "Stacked AutoEncoder Deep Neural Network",
                                   visible_dropout = param$visible_dropout,
                                   ...)
                   },
-                  predict = function(modelFit, newdata, submodels = NULL) 
-                    nn.predict(modelFit, as.matrix(newdata))[,1],
-                  prob = function(modelFit, newdata, submodels = NULL)
-                    NULL,
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    pred <- nn.predict(modelFit, as.matrix(newdata))
+                    if(ncol(pred) > 1)
+                      pred <- modelFit$obsLevels[apply(pred, 1, which.max)]
+                    pred
+                  },
+                  prob = function(modelFit, newdata, submodels = NULL) {
+                    out <- exp(nn.predict(modelFit, as.matrix(newdata)))
+                    out <- apply(out, 1, function(x) x/sum(x))
+                    t(out)
+                  },
                   predictors = function(x, ...) {
                     NULL
                   },
