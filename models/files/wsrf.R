@@ -30,14 +30,21 @@ modelInfo <- list(label = "Weighted Subspace Random Forest",
                     }
                     data.frame(mtry = tuneSeq)
                   },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    wsrf(x, y, mtry = param$mtry, ...),
-                  predict = function(modelFit, newdata, submodels = NULL) 
-                    predict(modelFit, newdata),
-                  prob = function(modelFit, newdata, submodels = NULL)
-                    predict(modelFit, newdata, type = "prob"),
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat$.outcome <- y
+                    wsrf(.outcome ~ ., data = dat, mtry = param$mtry, ...)
+                    },
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata)
+                    },
+                  prob = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata, type = "prob")
+                    },
                   predictors = function(x, ...) x$xNames,
                   varImp = NULL,
-                  levels = function(x) x$classes,
+                  levels = function(x) x$obsLevels,
                   tags = c("Random Forest", "Ensemble Model", "Bagging", "Implicit Feature Selection"),
                   sort = function(x) x[order(x[,1]),])
