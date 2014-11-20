@@ -361,3 +361,16 @@ scrubCall <- function(x)
     for(i in items) if(nchar(as.character(x[i])) > 100) x[i] <- "scrubbed"
     x
   }
+
+class2ind <- function(x, drop2nd = FALSE) {
+	if(!is.factor(x)) stop("'x' should be a factor")
+	y <- model.matrix(~ x - 1) 
+	colnames(y) <- gsub("^x", "", colnames(y))
+	attributes(y)$assign <- NULL
+	attributes(y)$contrasts <- NULL
+	if(length(levels(x)) == 2 & drop2nd) {
+		y <- y[,1]
+	}
+	y
+}
+

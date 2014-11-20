@@ -10,13 +10,6 @@ avNNet.formula <- function (formula, data, weights, ...,
                             allowParallel = TRUE,
                             subset, na.action, contrasts = NULL) 
 {
-  class.ind <- function(cl) {
-    n <- length(cl)
-    x <- matrix(0, n, length(levels(cl)))
-    x[(1:n) + n * (as.vector(unclass(cl)) - 1)] <- 1
-    dimnames(x) <- list(names(cl), levels(cl))
-    x
-  }
   m <- match.call(expand.dots = FALSE)
   if (is.matrix(eval.parent(m$data))) 
     m$data <- as.data.frame(data)
@@ -57,19 +50,12 @@ avNNet.default <- function(x, y, repeats = 5, bag = FALSE, allowParallel = TRUE,
     requireNamespace("nnet", quietly = TRUE)
     ## check for factors
     ## this is from nnet.formula
-    class.ind <- function(cl) {
-      n <- length(cl)
-      x <- matrix(0, n, length(levels(cl)))
-      x[(1:n) + n * (as.vector(unclass(cl)) - 1)] <- 1
-      dimnames(x) <- list(names(cl), levels(cl))
-      x
-    }
 
     ind <- seq(along = y)
     if(is.factor(y))
       {
         classLev <- levels(y)
-        y <- class.ind(y)
+        y <- class2ind(y)
       } else classLev <- NULL
 
     if(is.matrix(y)) classLev <- colnames(y)

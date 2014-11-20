@@ -101,19 +101,11 @@ plsda.default <- function(x, y, ncomp = 2, probMethod = "softmax", prior = NULL,
     if(!is.null(prior)) warning("Priors are ignored unless probMethod = \"Bayes\"")
   }
   
-  ## from nnet.formula
-  class.ind <- function(cl) {
-    n <- length(cl)
-    x <- matrix(0, n, length(levels(cl)))
-    x[(1:n) + n * (as.vector(unclass(cl)) - 1)] <- 1
-    dimnames(x) <- list(names(cl), levels(cl))
-    x
-  }
   
   if(is.factor(y)) {
     obsLevels <- levels(y)
     oldY <- y
-    y <- class.ind(y)
+    y <- class2ind(y)
   } else {
     if(is.matrix(y)) {
       test <- apply(y, 1, sum)

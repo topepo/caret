@@ -11,13 +11,7 @@ pcaNNet.formula <- function (formula, data, weights, ...,
                              thresh = .99,
                              subset, na.action, contrasts = NULL) 
 {
-    class.ind <- function(cl) {
-        n <- length(cl)
-        x <- matrix(0, n, length(levels(cl)))
-        x[(1:n) + n * (as.vector(unclass(cl)) - 1)] <- 1
-        dimnames(x) <- list(names(cl), levels(cl))
-        x
-    }
+
     m <- match.call(expand.dots = FALSE)
     if (is.matrix(eval.parent(m$data))) 
         m$data <- as.data.frame(data)
@@ -64,18 +58,11 @@ pcaNNet.default <- function(x, y, thresh = .99, ...)
     x <- predict(pp, x)
 
     # check for factors
-    # this is from nnet.formula
-    class.ind <- function(cl) {
-        n <- length(cl)
-        x <- matrix(0, n, length(levels(cl)))
-        x[(1:n) + n * (as.vector(unclass(cl)) - 1)] <- 1
-        dimnames(x) <- list(names(cl), levels(cl))
-        x
-    }
+
     if(is.factor(y))
       {
         classLev <- levels(y)
-        y <- class.ind(y)
+        y <- class2ind(y)
       } else classLev <- NULL
 
         

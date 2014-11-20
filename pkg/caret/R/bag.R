@@ -419,15 +419,7 @@ nnetBag <- list(fit = function(x, y,  ...)
 
                   library(nnet)
                   factorY <- is.factor(y)
-                  ## class.ind form nnet library
-                  class.ind <- function(cl) {
-                    n <- length(cl)
-                    x <- matrix(0, n, length(levels(cl)))
-                    x[(1:n) + n * (as.vector(unclass(cl)) - 1)] <- 1
-                    dimnames(x) <- list(names(cl), levels(cl))
-                    x
-                  }
-                  if(factorY) y <- class.ind(y)
+                  if(factorY) y <- class2ind(y)
 
                   out <- nnet(x, y, linout = !factorY, trace = FALSE, ...)
                   out$classification <- factorY
