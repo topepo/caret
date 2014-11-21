@@ -42,7 +42,7 @@ pcaNNet.formula <- function (formula, data, weights, ...,
 
 pcaNNet.default <- function(x, y, thresh = .99, ...)
   {
-    requireNamespace("nnet", quietly = TRUE)
+    requireNamespaceQuietStop("nnet")
 
     # check for no variance data
     isZV <- apply(x, 2,
@@ -108,7 +108,7 @@ print.pcaNNet <- function (x, ...)
 
 predict.pcaNNet <- function(object, newdata, type = c("raw", "class"), ...)
   {
-    requireNamespace("nnet", quietly = TRUE)
+    requireNamespaceQuietStop("nnet")
     if (!inherits(object, "pcaNNet")) 
       stop("object not of class \"pcaNNet\"")
     if (missing(newdata))

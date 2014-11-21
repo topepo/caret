@@ -31,7 +31,7 @@ function(x, y,
          ellipse =  splom(~x, groups = y,
             panel = function(x, y, groups, subscripts, ...)
             {
-               requireNamespace("ellipse", quietly = TRUE)
+               requireNamespaceQuietStop("ellipse")
                lineInfo <-  trellis.par.get("superpose.line")   
                pointInfo <-  trellis.par.get("superpose.symbol")               
                uniqueGroups <- sort(unique(groups))

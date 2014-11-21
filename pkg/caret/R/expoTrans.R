@@ -3,7 +3,7 @@ expoTrans <- function(y, ...) UseMethod("expoTrans")
 
 expoTrans.default <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method = "Brent", numUnique = 3, ...)
 {
-  requireNamespace("e1071", quietly = TRUE)
+  requireNamespaceQuietStop("e1071")
   if(any(is.na(y)) & !na.rm) stop("missing data found")
   call <- match.call()
   rat <- max(y, na.rm = TRUE)/min(y, na.rm = TRUE)
@@ -26,7 +26,7 @@ expoTrans.default <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method
 
 expoTrans.numeric <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method = "Brent", numUnique = 3, ...)
 {
-  requireNamespace("e1071", quietly = TRUE)
+  requireNamespaceQuietStop("e1071")
   if(any(is.na(y)) & !na.rm) stop("missing data found")
   call <- match.call()
   rat <- max(y, na.rm = TRUE)/min(y, na.rm = TRUE)
