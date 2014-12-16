@@ -101,7 +101,7 @@ train.default <- function(x, y,
     }   
   }
   
-  if(trControl$method == "oob" & !(method %in% c("rf", "treebag", "cforest", "bagEarth", "bagEarthGCV", "bagFDA", "parRF")))
+  if(trControl$method == "oob" & !(method %in% c("rf", "treebag", "cforest", "bagEarth", "bagEarthGCV", "bagFDA","bagFDAGCV", "parRF")))
     stop("for oob error rates, model bust be one of: rf, cforest, bagEarth, bagFDA or treebag")
   
   ## If they don't exist, make the data partitions for the resampling iterations.
