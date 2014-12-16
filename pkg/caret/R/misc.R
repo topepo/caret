@@ -213,7 +213,7 @@ twoClassSummary <- function (data, lev = NULL, model = NULL)
   requireNamespaceQuietStop('pROC')
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
     stop("levels of observed and predicted data do not match")
-  rocObject <- try(pROC::roc(data$obs, data[, lev[1]]), silent = TRUE)
+  rocObject <- try(pROC::roc.default(data$obs, data[, lev[1]]), silent = TRUE)
   rocAUC <- if(class(rocObject)[1] == "try-error") NA else rocObject$auc
   out <- c(rocAUC,
            sensitivity(data[, "pred"], data[, "obs"], lev[1]),
@@ -374,8 +374,38 @@ class2ind <- function(x, drop2nd = FALSE) {
 	y
 }
 
-requireNamespaceQuietStop <- function(package)
-{
+requireNamespaceQuietStop <- function(package) {
     if (!requireNamespace(package, quietly = TRUE))
         stop(paste('package',package,'is required'))
 }
+
+get_resamples <- function (x, ...) UseMethod("get_resamples")
+
+get_resamples.train <- function(x) {
+  if(x$control$returnResamp == "none")
+    stop("use returnResamp == 'none' in trainControl()")
+  out <- merge(x$resample, x$bestTune)
+  out[, c(x$perfNames, "Resample")]
+}
+
+get_resamples.rfe <- function(x) {
+  if(x$control$returnResamp == "none")
+    stop("use returnResamp == 'none' in trainControl()")
+  out <- subset(x$resample, Variables == x$bestSubset) 
+  out[, c(x$perfNames, "Resample")]
+}
+
+get_resamples.sbf <- function(x) {
+  if(x$control$returnResamp == "none")
+    stop("use returnResamp == 'none' in trainControl()")
+  x$resample
+}
+
+get_resamples.safs <- function(x) {
+  if(x$control$returnResamp == "none")
+    stop("use returnResamp == 'none' in trainControl()")
+  out <- subset(x$external, Iter == x$best_iter)
+  out[, -(1:2)]
+}
+
+
