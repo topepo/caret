@@ -15,7 +15,7 @@
   modelFit <- method$fit(x = x, #if(!is.data.frame(x)) as.data.frame(x) else x, 
                          y = y, wts = wts, 
                          param  = tuneValue, lev = obsLevels, 
-                         last = FALSE, 
+                         last = last, 
                          classProbs = classProbs, ...) 
   ## for models using S4 classes, you can't easily append data, so 
   ## exclude these and we'll use other methods to get this information
@@ -54,7 +54,7 @@
   modelFit <- method$fit(x = x, #if(!is.data.frame(x)) as.data.frame(x) else x, 
                          y = y, wts = wts, 
                          param  = tuneValue, lev = obsLevels, 
-                         last = FALSE, 
+                         last = last, 
                          classProbs = classProbs, ...) 
   ## for models using S4 classes, you can't easily append data, so 
   ## exclude these and we'll use other methods to get this information
