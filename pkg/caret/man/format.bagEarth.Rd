@@ -29,7 +29,7 @@ A character representation of the bagged earth object.
 
 \examples{
 a <- bagEarth(Volume ~ ., data = trees, B= 3)
-cat(format(a))
+format(a)
 
 # yields:
 # (
