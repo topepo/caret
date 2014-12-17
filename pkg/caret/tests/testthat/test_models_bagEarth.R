@@ -1,3 +1,7 @@
+# This is an extremely basic test that would catch serious kinds of errors
+# such as the bagEarth() not returning the right kind of object, that one of
+# the functions (bagEarth, format, predict) crash during normal usage, or that
+# bagEarth cannot model a simplistic kind of linear equation.
 test_that('bagEarth simple regression', {
     data <- data.frame(X = 1:100)
     data$Y <- data$X * 2
