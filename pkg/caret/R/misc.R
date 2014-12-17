@@ -137,14 +137,14 @@ ipredStats <- function(x)
       if(is.factor(y))
         {
           requireNamespaceQuietStop("e1071")
-          tmp <- predict(object$btree, x[-object$bindx,], type = "class")
+          tmp <- predict(object$btree, x[-object$bindx,,drop = FALSE], type = "class")
           tmp <- factor(as.character(tmp), levels = levels(y))
           out <- c(
                    mean(holdY == tmp),
                    e1071::classAgreement(table(holdY, tmp))$kappa)
           
         } else {
-          tmp <- predict(object$btree, x[-object$bindx,])
+          tmp <- predict(object$btree, x[-object$bindx,,drop = FALSE])
 
           out <- c(
                    sqrt(mean((tmp - holdY)^2, na.rm = TRUE)),
