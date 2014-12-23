@@ -12,7 +12,7 @@ Return a string representing the \sQuote{bagEarth} expression.
     An \code{\link{bagEarth}} object.
     This is the only required argument.
   }
-  \item{file}{A connection, or a character string naming the file to print to. If "" (the default), the output prints to the standard output connection. See \code{link[base]{cat}}.}
+  \item{file}{A connection, or a character string naming the file to print to. If "" (the default), the output prints to the standard output connection. See \code{\link[base]{cat}}.}
 
   \item{cat}{a logical; should the equation be printed?}
 
@@ -29,7 +29,7 @@ A character representation of the bagged earth object.
 
 \examples{
 a <- bagEarth(Volume ~ ., data = trees, B= 3)
-cat(format(a))
+format(a)
 
 # yields:
 # (
