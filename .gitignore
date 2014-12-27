@@ -15,3 +15,5 @@ pkg/caret/DESCRIPTION~
 .Rproj.user
 
 pkg/caret/inst/NEWS.Rd~
+
+pkg/caret/src/symbols.rds
