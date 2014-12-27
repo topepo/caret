@@ -1,14 +1,6 @@
 
 ## In these functions, x is the data fram of performance values and tuning parameters.
 
-best <- function(x, metric, maximize)
-  {
-
-    bestIter <- if(maximize) which.max(x[,metric])
-    else which.min(x[,metric])   
-
-    bestIter
-  }
 
 oneSE <- function(x, metric, num, maximize)
   {

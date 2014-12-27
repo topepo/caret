@@ -193,3 +193,40 @@ x <- NULL
 .B <- NULL
 
 model_id <- player1 <- player2 <- playa <- win1 <- win2 <- name <- NULL
+
+object <- Iter <- lvls <- Mean <- Estimate <- NULL
+
+
+###################################################################
+##
+
+best <- function(x, metric, maximize)
+{
+  
+  bestIter <- if(maximize) which.max(x[,metric])
+  else which.min(x[,metric])   
+  
+  bestIter
+}
+
+defaultSummary <- function(data, lev = NULL, model = NULL)
+{
+  if(is.character(data$obs)) data$obs <- factor(data$obs, levels = lev)
+  postResample(data[,"pred"], data[,"obs"])
+}
+
+twoClassSummary <- function (data, lev = NULL, model = NULL) 
+{
+  requireNamespaceQuietStop('pROC')
+  if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
+    stop("levels of observed and predicted data do not match")
+  rocObject <- try(pROC::roc.default(data$obs, data[, lev[1]]), silent = TRUE)
+  rocAUC <- if(class(rocObject)[1] == "try-error") NA else rocObject$auc
+  out <- c(rocAUC,
+           sensitivity(data[, "pred"], data[, "obs"], lev[1]),
+           specificity(data[, "pred"], data[, "obs"], lev[2]))
+  names(out) <- c("ROC", "Sens", "Spec")
+  out
+}
+
+

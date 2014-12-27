@@ -201,27 +201,6 @@ R2 <- function(pred, obs, formula = "corr", na.rm = FALSE)
 
 RMSE <- function(pred, obs, na.rm = FALSE) sqrt(mean((pred - obs)^2, na.rm = na.rm))
 
-
-defaultSummary <- function(data, lev = NULL, model = NULL)
-  {
-    if(is.character(data$obs)) data$obs <- factor(data$obs, levels = lev)
-    postResample(data[,"pred"], data[,"obs"])
-  }
-
-twoClassSummary <- function (data, lev = NULL, model = NULL) 
-{
-  requireNamespaceQuietStop('pROC')
-  if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
-    stop("levels of observed and predicted data do not match")
-  rocObject <- try(pROC::roc.default(data$obs, data[, lev[1]]), silent = TRUE)
-  rocAUC <- if(class(rocObject)[1] == "try-error") NA else rocObject$auc
-  out <- c(rocAUC,
-           sensitivity(data[, "pred"], data[, "obs"], lev[1]),
-           specificity(data[, "pred"], data[, "obs"], lev[2]))
-  names(out) <- c("ROC", "Sens", "Spec")
-  out
-}
-
 partRuleSummary <- function(x)
   {
     predictors <- all.vars(x$terms)
