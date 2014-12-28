@@ -23,6 +23,7 @@ library(pls)
 library(animation)
 library(ggplot2)
 library(googleVis)
+library(desirability)
 
 setwd("/Users/kuhna03/Code/github/caret/html")
 
@@ -35,9 +36,9 @@ dPath <- paste("html_",format(Sys.time(), "%Y_%m_%d_%H_%M"), sep = "")
 dir.create(file.path(dest, dPath))
                  
 rnwFiles <- c("index", "similarity", "datasets", "misc", "preprocess", "visualizations",
-              "featureSelection", "training", "bytag", 
-              "varImp", "parallel", "splitting", "other", "adaptive", 
-              "rfe", "filters", "GA", "SA") # "custom_models",
+              "featureSelection", "training", "other", "bytag", 
+              "varImp", "parallel", "splitting", 
+              "rfe", "filters", "GA", "SA",  "custom_models", "adaptive")
 
 rnwFiles <- paste(rnwFiles, ".Rhtml", sep = "")
 file.copy(rnwFiles, file.path(dest, dPath, rnwFiles))
