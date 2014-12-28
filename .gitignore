@@ -19,3 +19,5 @@ pkg/caret/inst/NEWS.Rd~
 pkg/caret/src/symbols.rds
 
 html/featureselection.html
+
+html/makeHTML.Rout
