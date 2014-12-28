@@ -617,8 +617,7 @@ following arguments:
   <code>x</code> is chosen. 
 </p>
 <!--begin.rcode bestGBM,echo=FALSE
-printSelected <- function(x)
-  {
+printSelected <- function(x) {
     tmp <- x$bestTune
     tmp <- paste(names(tmp), "=", tmp)
     paste(tmp, collapse = ", ")

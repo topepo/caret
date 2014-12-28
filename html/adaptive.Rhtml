@@ -98,7 +98,7 @@ testing_x  <-  testing_x[, -nzv]
 <p>
 Previously, we used this code to tune the model:
 </p>
-<!--begin.rcode adapt_full,tidy=FALSE
+<!--begin.rcode adapt_full,tidy=FALSE,cache = TRUE
 fitControl <- trainControl(method = "repeatedcv",
                            number = 10,
                            repeats = 5,
@@ -128,7 +128,7 @@ svmFit <- train(x = training_x,
 <p>
 The new code is:
 </p>
-<!--begin.rcode adapt_gls,tidy=FALSE
+<!--begin.rcode adapt_gls,tidy=FALSE,cache = TRUE
 fitControl2 <- trainControl(method = "adaptive_cv",
                             number = 10,
                             repeats = 5,
