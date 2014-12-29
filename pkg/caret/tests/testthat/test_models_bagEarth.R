@@ -15,3 +15,28 @@ test_that('bagEarth simple regression', {
     mae <- mean(abs(data$resid))
     expect_equal(mae, 0)
 })
+
+test_that('bagEarth simple classification', {
+    skip_on_cran()
+    data <- twoClassSim(n=1000)
+    fit <- bagEarth(Class ~ ., data=data, B=3, glm=list(family=binomial))
+    expect_that(format(fit, cat=FALSE), is_a('character'))
+    expect_that(fit, is_a('bagEarth'))
+
+    pred_response <- predict(fit, newdata=data)
+    expect_is(pred_response, "numeric")
+    expect_equal(length(pred_response), 1000)
+    expect_true(0 <= min(pred_response))
+    expect_true(max(pred_response) <= 1)
+
+    pred_class <- predict(fit, newdata=data, type="class")
+    expect_is(pred_class, "factor")
+    expect_equal(length(pred_class), 1000)
+
+    pred_prob <- predict(fit, newdata=data, type="prob")
+    expect_is(pred_prob, "matrix")
+    expect_equal(ncol(pred_prob), 2)
+    expect_equal(nrow(pred_prob), 1000)
+    expect_true(0 <= min(pred_prob))
+    expect_true(max(pred_prob) <= 1)
+})
