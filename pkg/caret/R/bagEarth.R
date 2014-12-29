@@ -94,7 +94,7 @@
 "predict.bagEarth" <-
   function(object, newdata = NULL, type = "response", ...)
 {
-  if(!any(type %in% c("response", "class")))
+  if(!any(type %in% c("response", "class", "prob")))
     stop("type must be either response, class or prob")
   requireNamespaceQuietStop("earth")
   ## get oob predictions
