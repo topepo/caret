@@ -138,9 +138,9 @@ nodes <- nodes[order(nodes$ID),]
 	<div id="content">
 	
   
-<p>This page shows a network diagram of all the models that can be accessed by  <a href="http://cran.r-project.org/web/packages/caret/index.html"><strong>caret's</strong></a> <span class="mx funCall">train</span> function. See the <a href="http://blog.revolutionanalytics.com/">Revolutions blog</a> for details about how this visualization was made. In summary, the package annotates each model by a set of tags (e.g. "Bagging", "L1 Regularization" etc.). Using this information we can cluster models that are similar to each other. </p>
+<p>This page shows a network diagram of all the models that can be accessed by  <a href="http://cran.r-project.org/web/packages/caret/index.html"><strong>caret's</strong></a> <span class="mx funCall">train</span> function. See the <a href="http://blog.revolutionanalytics.com/2014/01/predictive-models-in-r-clustered-by-tag-similarity-1.html">Revolutions blog</a> for details about how this visualization was made (and has <a href="https://github.com/topepo/caret/blob/master/html/similarity.Rhtml"><strong>this page</strong></a> has updated code using the<a href="http://cran.r-project.org/web/packages/networkD3/index.html"><strong>networkD3</strong></a> package). In summary, the package annotates each model by a set of tags (e.g. "Bagging", "L1 Regularization" etc.). Using this information we can cluster models that are similar to each other. </p>
 
-<p>Green circles are models only used for regression, blue is classification only and orange is &ldquo;dual use&rdquo;. Hover over a circle to get the model name and the model code used by the <a href="http://cran.r-project.org/web/packages/caret/index.html"><strong>caret</strong></a> package and refreshing the screen will re-configure the layout.
+<p>Green circles are models only used for regression, blue is classification only and orange is &ldquo;dual use&rdquo;. Hover over a circle to get the model name and the model code used by the <a href="http://cran.r-project.org/web/packages/caret/index.html"><strong>caret</strong></a> package and refreshing the screen will re-configure the layout. <!--rinline length(modelInfo) - nrow(nodes) --> models without connections are not shown in the graph.
 </p>
 <br>
 
