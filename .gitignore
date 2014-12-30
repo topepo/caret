@@ -21,3 +21,7 @@ pkg/caret/src/symbols.rds
 html/featureselection.html
 
 html/makeHTML.Rout
+
+html/similarity.html
+
+html/tag_data.csv
