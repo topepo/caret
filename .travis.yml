@@ -4,9 +4,13 @@ language: c
 
 env:
    global:
-     - R_BUILD_ARGS=" " 
+     - WARNINGS_ARE_ERRORS=1
+     - R_BUILD_ARGS=" "
      - R_CHECK_ARGS="--as-cran"
      - BOOTSTRAP_LATEX="1"
+   matrix:
+     - NOT_CRAN="true"
+     - NOT_CRAN="false"
 
 before_install:
   - cd pkg/caret
