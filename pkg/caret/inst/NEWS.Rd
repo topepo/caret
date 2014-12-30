@@ -4,9 +4,16 @@
 
 \section{Changes in version 6.0-XX}{
 	\itemize{
+		\item The license was changed to GPL-3 to accommodate new code from the GA package. 
+		\item New feature selection functions \code{gafs} and \code{safs} were added, along with helper functions and objects, were added. The package HTML was updated to expand more about feature selection. 
+		\item The apparent performance values are not reported by  \code{print.train} when the bootstrap 632 estimate is used.  
 		\item A bug was fixed related to imputation when the formula method is used with \code{train}
 		\item Reynald Lescarbeau refactored \code{findCorrelation} to make it faster. 
 		\item The old \code{drop = FALSE} bug was fixed in \code{getTrainPerf}
+		\item A bug was fixed for custom models with no labels. 
+		\item A bug fix was made for bagged MARS models when predicting probabilities. 
+		\item Additional bagged FDA and MARS models were added (model codes \code{bagFDAGCV} and \code{bagEarthGCV}) were added that use the GCV statistic to prune the model. This leads to memory reductions during training. 
+		\item When a required package is missing, the code stops earlier with a more explicit error message.
 	}
 }
 
