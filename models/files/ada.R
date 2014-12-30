@@ -1,6 +1,17 @@
 modelInfo <- list(label = "Boosted Classification Trees",
                   library = "ada",
-                  loop = NULL,
+                  loop = function(grid) {     
+                    loop <- ddply(grid, c("nu", "maxdepth"),
+                                  function(x) c(iter = max(x$iter)))
+                    submodels <- vector(mode = "list", length = nrow(loop))
+                    for(i in seq(along = loop$iter)) {
+                      index <- which(grid$maxdepth == loop$maxdepth[i] & 
+                                       grid$nu == loop$nu[i])
+                      trees <- grid[index, "iter"] 
+                      submodels[[i]] <- data.frame(iter = trees[trees != loop$iter[i]])
+                    }    
+                    list(loop = loop, submodels = submodels)
+                  },
                   type = c("Classification"),
                   parameters = data.frame(parameter = c('iter', 'maxdepth', 'nu'),
                                           class = rep("numeric", 3),
@@ -16,7 +27,8 @@ modelInfo <- list(label = "Boosted Classification Trees",
                       ctl <- theDots$control
                       theDots$control <- NULL
                       
-                    } else ctl <- rpart.control(maxdepth = param$maxdepth) 
+                    } else ctl <- rpart.control(maxdepth = param$maxdepth,
+                                                cp=-1,minsplit=0,xval=0) 
                     
                     modelArgs <- c(list(x = x,
                                         y = y,
@@ -24,24 +36,44 @@ modelInfo <- list(label = "Boosted Classification Trees",
                                         nu = param$nu,              
                                         control = ctl),
                                    theDots)
-                    
-                    out <- do.call("ada", modelArgs)
-                    
-#                     out$call["x"] <- "xData"         
-#                     out$call["y"] <- "yData"  
-                    
+                    out <- do.call("ada", modelArgs)                    
                     out     
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
+                    
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-                    predict(modelFit, newdata)
-                    },
+                    out <- predict(modelFit, newdata, n.iter = modelFit$tuneValue$iter)
+                    
+                    if(!is.null(submodels)) {
+                      tmp <- vector(mode = "list", length = length(submodels$iter)+1)
+                      tmp[[1]] <- out
+                      for(i in seq(along = submodels$iter)) {
+                        tmp[[i+1]] <- predict(modelFit, newdata, n.iter = submodels$iter[[i]])
+                      }
+                      out <- lapply(tmp, as.character)
+                    }
+                    out  
+                  },
                   prob = function(modelFit, newdata, submodels = NULL){
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-                    out <- predict(modelFit, newdata, type = "prob")
-                    colnames(out) <-  modelFit$obsLevels
-                    out
+                    out <- predict(modelFit, newdata, type = "prob", 
+                                   n.iter = modelFit$tuneValue$iter)
+                    colnames(out) <- modelFit$obsLevels
+                    
+                    if(!is.null(submodels)) {
+                      tmp <- vector(mode = "list", length = length(submodels$iter)+1)
+                      tmp[[1]] <- out
+                      for(i in seq(along = submodels$iter)) {
+                        tmp[[i+1]] <- predict(modelFit, newdata, type = "prob", 
+                                              n.iter = submodels$iter[[i]])
+                        colnames(tmp[[i+1]]) <- modelFit$obsLevels
+                      }
+                      out <- lapply(tmp, as.data.frame)
+                    }
+                    out 
                   },
                   tags = c("Tree-Based Model", "Ensemble Model", "Boosting", 
                            "Implicit Feature Selection"),
                   sort = function(x) x[order(x$iter, x$maxdepth, x$nu),])
+
+
