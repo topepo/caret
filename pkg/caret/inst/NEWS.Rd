@@ -7,6 +7,7 @@
 		\item The license was changed to GPL-3 to accommodate new code from the GA package. 
 		\item New feature selection functions \code{gafs} and \code{safs} were added, along with helper functions and objects, were added. The package HTML was updated to expand more about feature selection. 
 		\item The apparent performance values are not reported by  \code{print.train} when the bootstrap 632 estimate is used.  
+		\item The model code for \code{ada} had a bug fix and the code was adapted to use the "sub-model trick" so it should train faster. 
 		\item A bug was fixed related to imputation when the formula method is used with \code{train}
 		\item Reynald Lescarbeau refactored \code{findCorrelation} to make it faster. 
 		\item The old \code{drop = FALSE} bug was fixed in \code{getTrainPerf}
