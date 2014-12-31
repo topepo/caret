@@ -13,7 +13,8 @@ print_models <- function(x) {
     cat(" with no tuning parameters\n\n\n")
   } else {
     params <- paste("\\item ", as.character(x$parameters$label), " (\\code{",
-                    as.character(x$parameters$parameter), "})", 
+                    as.character(x$parameters$parameter), "}, ",
+                    as.character(x$parameters$class), ")", 
                     sep = "")
     params <- gsub("#", "Number of ", params, fixed = TRUE)
     cat(" with tuning parameters:\n\\itemize{\n")
