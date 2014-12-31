@@ -5,9 +5,9 @@
  Print the results of a \code{\link{train}} object.
 }
 \usage{
-\method{print}{train}(x, 
-      printCall = FALSE, 
-      details = FALSE, 
+\method{print}{train}(x,
+      printCall = FALSE,
+      details = FALSE,
       selectCol = FALSE,
       ...)
 }
@@ -18,8 +18,8 @@
   final model. In some cases (such as \code{gbm}, \code{knn},
   \code{lvq}, naive Bayes and bagged tree models), no information will
   be printed even if \code{details = TRUE}}
-  \item{selectCol}{a logical to a column with a star next to the final model}
-  
+  \item{selectCol}{a logical whether to add a column with a star next to the selected parameters}
+
   \item{\ldots}{options passed to \code{\link[base]{format}}}
 }
 \details{
@@ -27,7 +27,7 @@
    flag for which rows are optimal.
 }
 \value{
-   A data frame with the complexity parameter(s) and performance (invisibly).
+   A matrix with the complexity parameters and performance (invisibly).
 }
 \author{Max Kuhn}
 \seealso{\code{\link{train}}}
