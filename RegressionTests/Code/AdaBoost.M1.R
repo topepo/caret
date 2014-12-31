@@ -79,4 +79,3 @@ save(list = c(tests, "sInfo", "timestamp"),
 
 q("no")
 
-

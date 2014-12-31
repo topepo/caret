@@ -91,7 +91,3 @@ modelInfo <- list(label = "AdaBoost.M1",
                   tags = c("Tree-Based Model", "Ensemble Model", "Boosting", 
                            "Implicit Feature Selection"),
                   sort = function(x) x[order(x$mfinal, x$maxdepth),])
-
-
-
-
