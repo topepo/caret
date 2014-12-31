@@ -27,3 +27,7 @@ for (model in models)
     })
 }
 
+=======
+        rm(pred)
+    })
+}
