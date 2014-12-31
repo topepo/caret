@@ -79,6 +79,12 @@ modelInfo <- list(label = "Bagged AdaBoost",
                     
                     out 
                   },
+                  varImp = function(object, ...){
+                    imps <- data.frame(Overall = object$importance)
+                    rownames(imps) <- names(object$importance)
+                    imps
+                  },
+                  predictors = function(x, ...) names(x$importance)[x$importance != 0],
                   tags = c("Tree-Based Model", "Ensemble Model", "Boosting", "Bagging",
                            "Implicit Feature Selection"),
                   sort = function(x) x[order(x$mfinal, x$maxdepth),])
