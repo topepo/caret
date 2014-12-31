@@ -1,7 +1,7 @@
 library(caret)
 timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
 
-model <- modelInfo
+model <- "wsrf"
 
 #########################################################################
 
@@ -21,7 +21,7 @@ cctrl3 <- trainControl(method = "none",
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
-                             method = modelInfo, 
+                             method = "wsrf", 
                              trControl = cctrl1,
                              ntree = 10,
                              metric = "ROC", 
@@ -29,7 +29,7 @@ test_class_cv_model <- train(trainX, trainY,
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = modelInfo, 
+                            method = "wsrf", 
                             trControl = cctrl1,
                             ntree = 10,
                             metric = "ROC", 
@@ -42,7 +42,7 @@ test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], t
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
-                            method = modelInfo, 
+                            method = "wsrf", 
                             trControl = cctrl2,
                             ntree = 10,
                             metric = "ROC", 
@@ -50,7 +50,7 @@ test_class_loo_model <- train(trainX, trainY,
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
-                               method = modelInfo, 
+                               method = "wsrf", 
                                trControl = cctrl3,
                                ntree = 10,
                                tuneLength = 1,
