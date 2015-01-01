@@ -2,7 +2,7 @@
 \title{News for Package \pkg{caret}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{Changes in version 6.0-XX}{
+\section{Changes in version 6.0-40}{
 	\itemize{
 		\item The license was changed to GPL-3 to accommodate new code from the GA package. 
 		\item New feature selection functions \code{gafs} and \code{safs} were added, along with helper functions and objects, were added. The package HTML was updated to expand more about feature selection. 

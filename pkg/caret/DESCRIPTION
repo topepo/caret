@@ -48,5 +48,5 @@ Suggests:
     pamr, 
     superpc, 
     Cubist,
-    testthat
+    testthat (>= 0.9.1)
 License: GPL-3
