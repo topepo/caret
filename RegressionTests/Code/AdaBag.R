@@ -11,8 +11,7 @@ testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
-grid <- expand.grid(mfinal = (1:3)*3, maxdepth = c(1, 3),
-                    coeflearn = c("Breiman", "Freund", "Zhu"))
+grid <- expand.grid(mfinal = (1:3)*3, maxdepth = c(1, 3))
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE, 
