@@ -26,8 +26,3 @@ for (model in models)
         rm(predict_)
     })
 }
-
-=======
-        rm(pred)
-    })
-}
