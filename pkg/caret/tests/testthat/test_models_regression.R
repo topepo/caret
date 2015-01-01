@@ -22,6 +22,6 @@ for (model in models)
         expect_is(predict_, 'numeric')
 
         rm(fit)
-        rm(pred)
+        rm(predict_)
     })
 }
