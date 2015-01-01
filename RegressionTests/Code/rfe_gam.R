@@ -33,45 +33,27 @@ testing$fact <- factor(sample(letters[1:3], size = nrow(testing), replace = TRUE
 
 #########################################################################
 
-gamFuncs2 <- gamFuncs
-gamFuncs2$fit <- function (x, y, first, last, ...)  {
-  loaded <- search()
-  gamLoaded <- any(loaded == "package:gam")
-  if (gamLoaded) 
-    detach(package:gam)
-  library(mgcv)
-  dat <- if (is.data.frame(x)) 
-    x
-  else as.data.frame(x)
-  dat$y <- y
-  args <- list(formula = gamFormula(x, smoother = "s", y = "y"), 
-               data = dat, family = if (!is.factor(y)) gaussian else binomial,
-               control = gam.control(epsilon=1e-2, bf.epsilon = 1e-2, maxit=300, bf.maxit = 300))
-  do.call("gam", args)
-}
-
-rctrl1 <- rfeControl(method = "cv", number = 3, returnResamp = "all", functions = gamFuncs2)
-rctrl2 <- rfeControl(method = "LOOCV", functions = gamFuncs2)
-
+rctrl1 <- rfeControl(method = "cv", number = 3, returnResamp = "all", functions = gamFuncs)
+rctrl2 <- rfeControl(method = "LOOCV", functions = gamFuncs)
 
 set.seed(849)
 test_cv_model <- rfe(x = trainX, y = trainY,
-                     sizes = c(1, 5, 10, 15),
+                     sizes = 1:3,
                      rfeControl = rctrl1)
 
 set.seed(849)
 test_loo_model <- rfe(x = trainX, y = trainY,
-                      sizes = c(1, 5, 10, 15),
+                      sizes = 1:3,
                       rfeControl = rctrl2)
 
 set.seed(849)
 test_cv_model_form <- rfe(y ~ ., data = training,
-                          sizes = c(1, 5, 10, 15),
+                          sizes = 1:3,
                           rfeControl = rctrl1)
 
 set.seed(849)
 test_loo_model_form <- rfe(y ~ ., data = training,
-                           sizes = c(1, 5, 10, 15),
+                           sizes = 1:3,
                            rfeControl = rctrl2)
 
 #########################################################################
@@ -102,17 +84,17 @@ cctrl2 <- rfeControl(method = "LOOCV", functions = gamFuncs)
 
 set.seed(849)
 test_cv_model_class <- rfe(x = trainX_class, y = trainY_class,
-                           sizes = c(1, 5, 10, 15),
+                           sizes = 1:3,
                            rfeControl = cctrl1)
 
 set.seed(849)
 test_loo_model_class <- rfe(x = trainX_class, y = trainY_class,
-                            sizes = c(1, 5, 10, 15),
+                            sizes = 1:3,
                             rfeControl = cctrl2)
 
 set.seed(849)
 test_cv_model_form_class <- rfe(Class ~ ., data = training_class,
-                                sizes = c(1, 5, 10, 15),
+                                sizes = 1:3,
                                 rfeControl = cctrl1)
 
 set.seed(849)
