@@ -89,7 +89,7 @@ set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
                            method = "rknnBel", 
                            trControl = rctrl1, 
-                           tuneLength = 2,
+                           tuneGrid = grid,
                            preProc = c("center", "scale"), 
                            seed = 135)
 test_reg_pred <- predict(test_reg_cv_model, testX)
@@ -98,7 +98,7 @@ set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
                           method = "rknnBel", 
                           trControl = rctrl1, 
-                          tuneLength = 2,
+                          tuneGrid = grid,
                           preProc = c("center", "scale"), 
                           seed = 135)
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
@@ -108,7 +108,7 @@ set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 
                             method = "rknnBel",
                             trControl = rctrl2, 
-                            tuneLength = 2,
+                            tuneGrid = grid,
                             preProc = c("center", "scale"), 
                             seed = 135)
 
