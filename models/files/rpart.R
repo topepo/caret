@@ -49,7 +49,7 @@ modelInfo <- list(label = "CART",
                     
                     out <- do.call("rpart", modelArgs)
                     
-                    if(last) out <- prune.rpart(modelFit, cp = param$cp)
+                    if(last) out <- prune.rpart(out, cp = param$cp)
                     out           
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {                  
