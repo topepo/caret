@@ -27,3 +27,5 @@ html/similarity.html
 html/tag_data.csv
 
 RegressionTests/move_files.Rout
+
+RegressionTests/.RData
