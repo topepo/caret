@@ -2,6 +2,7 @@
 # such as a traceback, change in an upstream package's API, or functions not
 # returning the right kind of object. It is fast, and it does not focus on
 # assessing predictive accuracy.
+skip_on_cran()
 data <- data.frame(X1 = 1:100, X2 = 1:100)
 data$Y <- with(data, X1 * 1.5 + X2 * 2.5)
 models <- unique(subset(modelLookup(), forReg)$model)
