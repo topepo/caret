@@ -21,7 +21,7 @@ cctrl3 <- trainControl(method = "none",
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
-                             method = modelInfo,
+                             method = "bagFDAGCV",
                              tuneGrid = data.frame(degree = 1:2), 
                              trControl = cctrl1,
                              metric = "ROC", 
@@ -30,7 +30,7 @@ test_class_cv_model <- train(trainX, trainY,
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = modelInfo,
+                            method = "bagFDAGCV",
                             tuneGrid = data.frame(degree = 1:2), 
                             trControl = cctrl1,
                             metric = "ROC", 
@@ -44,7 +44,7 @@ test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], t
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
-                              method = modelInfo,
+                              method = "bagFDAGCV",
                               tuneGrid = data.frame(degree = 1:2), 
                               trControl = cctrl2,
                               metric = "ROC", 
@@ -53,7 +53,7 @@ test_class_loo_model <- train(trainX, trainY,
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
-                               method = modelInfo, 
+                               method = "bagFDAGCV", 
                                trControl = cctrl3,
                                tuneLength = 1,
                                metric = "ROC", 

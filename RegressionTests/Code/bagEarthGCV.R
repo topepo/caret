@@ -31,7 +31,7 @@ cctrl4 <- trainControl(method = "none",
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
-                             method = modelInfo, 
+                             method = "bagEarthGCV", 
                              trControl = cctrl1,
                              tuneGrid = data.frame(degree = 1:2),
                              metric = "ROC", 
@@ -40,7 +40,7 @@ test_class_cv_model <- train(trainX, trainY,
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = modelInfo, 
+                            method = "bagEarthGCV", 
                             trControl = cctrl1,
                             tuneGrid = data.frame(degree = 1:2),
                             metric = "ROC", 
@@ -54,7 +54,7 @@ test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], t
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
-                              method = modelInfo, 
+                              method = "bagEarthGCV", 
                               trControl = cctrl2,
                               tuneGrid = data.frame(degree = 1:2),
                               metric = "ROC", 
@@ -66,14 +66,14 @@ if(!all(levels(trainY) %in% test_levels))
 
 set.seed(849)
 test_class_oob_model <- train(trainX, trainY, 
-                              method = modelInfo,
+                              method = "bagEarthGCV",
                               tuneGrid = data.frame(degree = 1:2), 
                               trControl = cctrl3,
                               B = 10)
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
-                               method = modelInfo, 
+                               method = "bagEarthGCV", 
                                trControl = cctrl4,
                                tuneLength = 1, 
                                preProc = c("center", "scale"),
@@ -118,7 +118,7 @@ rctrl4 <- trainControl(method = "none", seeds = seeds)
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
-                           method = modelInfo, 
+                           method = "bagEarthGCV", 
                            trControl = rctrl1,
                            preProc = c("center", "scale"),
                            tuneGrid = data.frame(degree = 1:2),
@@ -127,7 +127,7 @@ test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
-                          method = modelInfo, 
+                          method = "bagEarthGCV", 
                           trControl = rctrl1,
                           preProc = c("center", "scale"),
                           tuneGrid = data.frame(degree = 1:2),
@@ -136,7 +136,7 @@ test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 
-                            method = modelInfo,
+                            method = "bagEarthGCV",
                             trControl = rctrl2,
                             preProc = c("center", "scale"),
                             tuneGrid = data.frame(degree = 1:2),
@@ -144,7 +144,7 @@ test_reg_loo_model <- train(trainX, trainY,
 
 set.seed(849)
 test_reg_oob_model <- train(trainX, trainY, 
-                            method = modelInfo,
+                            method = "bagEarthGCV",
                             trControl = rctrl3,
                             preProc = c("center", "scale"),
                             tuneGrid = data.frame(degree = 1:2),
@@ -152,7 +152,7 @@ test_reg_oob_model <- train(trainX, trainY,
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
-                             method = modelInfo, 
+                             method = "bagEarthGCV", 
                              trControl = rctrl4,
                              tuneLength = 1,
                              preProc = c("center", "scale"),
