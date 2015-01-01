@@ -56,7 +56,9 @@ set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
                                method = "AdaBoost.M1", 
                                trControl = cctrl3,
-                               tuneLength = 1,
+                               tuneGrid = data.frame(mfinal = 10, 
+                                                     maxdepth = 1,
+                                                     coeflearn = "Zhu"),
                                metric = "ROC", 
                                preProc = c("center", "scale"))
 
