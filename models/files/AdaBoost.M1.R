@@ -1,5 +1,5 @@
 modelInfo <- list(label = "AdaBoost.M1",
-                  library = "adabag",
+                  library = c("adabag", "plyr"),
                   loop = function(grid) {     
                     loop <- ddply(grid, c("coeflearn", "maxdepth"),
                                   function(x) c(mfinal = max(x$mfinal)))

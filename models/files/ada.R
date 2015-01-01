@@ -1,5 +1,5 @@
 modelInfo <- list(label = "Boosted Classification Trees",
-                  library = "ada",
+                  library = c("ada", "plyr"),
                   loop = function(grid) {     
                     loop <- ddply(grid, c("nu", "maxdepth"),
                                   function(x) c(iter = max(x$iter)))

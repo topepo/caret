@@ -1,5 +1,5 @@
 modelInfo <- list(label = "Bagged AdaBoost",
-                  library = "adabag",
+                  library = c("adabag", "plyr"),
                   loop = function(grid) {     
                     loop <- ddply(grid, c("maxdepth"),
                                   function(x) c(mfinal = max(x$mfinal)))
