@@ -2,9 +2,9 @@
 \title{News for Package \pkg{caret}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{Changes in version 6.0-40}{
+\section{Changes in version 6.0-41}{
 	\itemize{
-		\item The license was changed to GPL-3 to accommodate new code from the GA package. 
+		\item The license was changed to GPL (>= 2) to accommodate new code from the GA package. 
 		\item New feature selection functions \code{gafs} and \code{safs} were added, along with helper functions and objects, were added. The package HTML was updated to expand more about feature selection. 
 		\item From the \cpkg{adabag} package, two new models were added: \code{AdaBag} and \code{AdaBoost.M1}. 
 		\item Weighted subspace random forests from the \cpkg{wsrf} package was added.

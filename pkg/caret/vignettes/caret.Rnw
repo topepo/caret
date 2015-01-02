@@ -9,8 +9,6 @@
 \usepackage{xspace}
 \usepackage{fancyvrb}
 \usepackage{fancyhdr}
-\usepackage{lastpage}
-\usepackage[boxed, linesnumbered]{algorithm2e}
 \usepackage[
          colorlinks=true,
          linkcolor=blue,
@@ -70,7 +68,7 @@
 \rhead{}
 \lfoot{}
 \cfoot{}
-\rfoot{\thepage\ of \pageref{LastPage}}
+\rfoot{\thepage}
 \renewcommand{\headrulewidth}{1pt}
 \renewcommand{\footrulewidth}{1pt}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -148,29 +146,9 @@ One of the primary tools in the package is the \code{train} function which can b
 
 More formally:
 
-\begin{algorithm}[H]
-   \label{A:tune}
-   \SetAlgoLined
-   \RestyleAlgo{plain}
-   \DontPrintSemicolon
-  Define  sets of model parameter values to evaluate \nllabel{A:grid}\;
-  \For{each parameter set}{
-
-    \For{each resampling iteration}{
-      Hold--out specific samples \nllabel{A:resample} \;
-      
-      [Optional] Pre--process the data\;
-      Fit the model on the remainder\;
-      
-      Predict the hold--out samples\;
-    }
-    Calculate the average performance across hold--out predictions \nllabel{A:perf}
-  }
-  Determine the optimal parameter set \nllabel{A:best}\;
-  
-  Fit the final model to all the training data using the optimal
-  parameter set\;  
-\end{algorithm}
+  \begin{center}  
+    \includegraphics[clip, width = .9\textwidth]{train_algo}
+  \end{center}
 
 There are options for customizing almost every step of this process (e.g. resampling technique, choosing the optimal parameters etc). To demonstrate this function, the Sonar data from the \pkg{mlbench} package will be used.
 
