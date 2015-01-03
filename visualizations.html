@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
   <!--
   Design by Free CSS Templates
@@ -126,7 +125,6 @@ Released   : 20120902
 </pre></div>
 </div></div>
 
-
 <h1>Scatterplot Matrix</h1>
 
 <div class="chunk" id="VisScatMat"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(AppliedPredictiveModeling)</span>
@@ -142,7 +140,6 @@ Released   : 20120902
 </div><div class="rimage default"><img src="figure/VisScatMat.png" title="plot of chunk VisScatMat" alt="plot of chunk VisScatMat" class="plot" /></div></div>
 
 
-
 <h1>Scatterplot Matrix with Ellipses</h1>
 
 <div class="chunk" id="VisScatMatEl"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">featurePlot</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">= iris[,</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">4</span><span class="hl std">],</span>
@@ -152,7 +149,6 @@ Released   : 20120902
             <span class="hl kwc">auto.key</span> <span class="hl std">=</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">columns</span> <span class="hl std">=</span> <span class="hl num">3</span><span class="hl std">))</span>
 </pre></div>
 </div><div class="rimage default"><img src="figure/VisScatMatEl.png" title="plot of chunk VisScatMatEl" alt="plot of chunk VisScatMatEl" class="plot" /></div></div>
-
     
 <h1>Overlayed Density Plots</h1>
 
@@ -173,7 +169,6 @@ Released   : 20120902
 
 
 
-
 <h1>Box Plots</h1>
 
 <div class="chunk" id="ViBox"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">featurePlot</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">= iris[,</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">4</span><span class="hl std">],</span>
@@ -186,7 +181,6 @@ Released   : 20120902
                   <span class="hl kwc">auto.key</span> <span class="hl std">=</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">columns</span> <span class="hl std">=</span> <span class="hl num">2</span><span class="hl std">))</span>
 </pre></div>
 </div><div class="rimage default"><img src="figure/ViBox.png" title="plot of chunk ViBox" alt="plot of chunk ViBox" class="plot" /></div></div>
-
 
 <h1>Scatter Plots</h1>
 
@@ -204,7 +198,6 @@ Released   : 20120902
 </pre></div>
 </div></div>
 
-
 <p> When the predictors are continuous, <span class="mx funCall">featurePlot</span> can
 be used to create scatter plots of each of the predictors with the
 outcome. For example: </p>
@@ -221,7 +214,6 @@ outcome. For example: </p>
             <span class="hl kwc">layout</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">))</span>
 </pre></div>
 </div><div class="rimage default"><img src="figure/VisScatter.png" title="plot of chunk VisScatter" alt="plot of chunk VisScatter" class="plot" /></div></div>
-
 
 
   
@@ -242,7 +234,6 @@ by passing in new options:</p>
 </pre></div>
 </div><div class="rimage default"><img src="figure/VisScatterSmooth.png" title="plot of chunk VisScatterSmooth" alt="plot of chunk VisScatterSmooth" class="plot" /></div></div>
 
-
             
 <p>The options <span class="mx arg">degree</span> and <span class="mx arg">span</span> control the
 smoothness of the smoother.</p>
@@ -261,25 +252,31 @@ smoothness of the smoother.</p>
   <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
   </li>
   <li>
-  <h2>Topics</h2>
-  <ul>
-      	<li><a href="index.html">Main Page</a></li>
-  		<li><a href="datasets.html">Data Sets</a></li>
-                <li><a href="visualizations.html">Visualizations</a></li>
-                <li><a href="preprocess.html">Pre-Processing</a></li>
-                <li><a href="splitting.html">Data Splitting</a></li>
-                <li><a href="misc.html">Miscellaneous Model Functions</a></li>
-                <li><a href="training.html">Model Training and Tuning</a></li>
-                <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
-                 <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
-                 <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
-                <li><a href="custom_models.html">Using Custom Models</a></li>
-                <li><a href="varimp.html">Variable Importance</a></li>
-                <li><a href="featureselection.html">Feature Selection</a></li>
-                <li><a href="other.html">Other Functions</a></li>
-                <li><a href="parallel.html">Parallel Processing</a></li>
-                <li><a href="adaptive.html">Adaptive Resampling</a></li> 
-</ul>
+    <h2>Topics</h2>
+    <ul>
+        <li><a href="index.html">Main Page</a></li>
+      <li><a href="datasets.html">Data Sets</a></li>
+        <li><a href="visualizations.html">Visualizations</a></li>
+        <li><a href="preprocess.html">Pre-Processing</a></li>
+        <li><a href="splitting.html">Data Splitting</a></li>
+        <li><a href="misc.html">Miscellaneous Model Functions</a></li>
+        <li><a href="training.html">Model Training and Tuning</a></li>
+        <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
+        <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
+        <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
+        <li><a href="custom_models.html">Using Custom Models</a></li>
+        <li><a href="varimp.html">Variable Importance</a></li>
+        <li><a href="featureselection.html">Feature Selection</a>
+        <ul>
+          <li><a href="rfe.html">RFE</a></li>
+            <li><a href="filters.html">Filters</a></li>
+            <li><a href="GA.html">GA</a></li>
+            <li><a href="SA.html">SA</a></li>
+        </ul></li>
+        <li><a href="other.html">Other Functions</a></li>
+        <li><a href="parallel.html">Parallel Processing</a></li>
+        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+  </ul>
   </li>
   </ul>
   </div>
@@ -292,8 +289,7 @@ smoothness of the smoother.</p>
   <div id="footer-content"></div>
   <div id="footer">
 
-
-  <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
+  <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
   </div>
   <!-- end #footer -->
 </body>

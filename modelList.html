@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>TableID12d6d2b3c55e1</title>
+<title>TableID9b8722a5cd1e</title>
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <style type="text/css">
 body {
@@ -17,15 +17,15 @@ body {
 </style>
 </head>
 <body>
- <!-- Table generated in R 3.2.0 by googleVis 0.5.2 package -->
-<!-- Fri Aug 15 12:36:32 2014 -->
+ <!-- Table generated in R 3.2.0 by googleVis 0.5.5 package -->
+<!-- Wed Dec 31 23:48:54 2014 -->
 
 
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataTableID12d6d2b3c55e1 () {
+function gvisDataTableID9b8722a5cd1e () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
@@ -33,8 +33,29 @@ var datajson =
  "Boosted Classification Trees",
 "ada",
 "Classification",
-"ada",
+"ada, plyr",
 "iter, maxdepth, nu" 
+],
+[
+ "Bagged AdaBoost",
+"AdaBag",
+"Classification",
+"adabag, plyr",
+"mfinal, maxdepth" 
+],
+[
+ "AdaBoost.M1",
+"AdaBoost.M1",
+"Classification",
+"adabag, plyr",
+"mfinal, maxdepth, coeflearn" 
+],
+[
+ "Adaptive Mixture Discriminant Analysis",
+"amdai",
+"Classification",
+"adaptDA",
+"model" 
 ],
 [
  "Adaptive-Network-Based Fuzzy Inference System",
@@ -65,11 +86,25 @@ var datajson =
 "nprune, degree" 
 ],
 [
+ "Bagged MARS using gCV Pruning",
+"bagEarthGCV",
+"Dual Use",
+"earth",
+"degree" 
+],
+[
  "Bagged Flexible Discriminant Analysis",
 "bagFDA",
 "Classification",
 "earth, mda",
 "degree, nprune" 
+],
+[
+ "Bagged FDA using gCV Pruning",
+"bagFDAGCV",
+"Classification",
+"earth",
+"degree" 
 ],
 [
  "Bayesian Generalized Linear Model",
@@ -84,6 +119,13 @@ var datajson =
 "Dual Use",
 "kohonen",
 "xdim, ydim, xweight, topo" 
+],
+[
+ "Binary Discriminant Analysis",
+"binda",
+"Classification",
+"binda",
+"lambda.freqs" 
 ],
 [
  "Boosted Tree",
@@ -224,6 +266,20 @@ var datajson =
 "Regression",
 "elasticnet",
 "fraction, lambda" 
+],
+[
+ "Ensemble Partial Least Squares Regression with Feature Selection",
+"enpls.fs",
+"Regression",
+"enpls",
+"maxcomp, threshold" 
+],
+[
+ "Ensemble Partial Least Squares Regression",
+"enpls",
+"Regression",
+"enpls",
+"maxcomp" 
 ],
 [
  "Tree Models from Genetic Algorithms",
@@ -374,7 +430,7 @@ var datajson =
 ],
 [
  "Fuzzy Rules via Thrift",
-"GFS.Thrift",
+"GFS.THRIFT",
 "Regression",
 "frbs",
 "popu.size, num.labels, max.gen" 
@@ -835,6 +891,13 @@ var datajson =
 "nt, alpha.pvals.expli" 
 ],
 [
+ "Ordered Logistic or Probit Regression",
+"polr",
+"Classification",
+"MASS",
+"None" 
+],
+[
  "Projection Pursuit Regression",
 "ppr",
 "Regression",
@@ -952,6 +1015,13 @@ var datajson =
 "Regression",
 "MASS",
 "None" 
+],
+[
+ "Robust Mixture Discriminant Analysis",
+"rmda",
+"Classification",
+"robustDA",
+"K, model" 
 ],
 [
  "ROC-Based Classifier",
@@ -1206,6 +1276,13 @@ var datajson =
 "num.labels, type.mf" 
 ],
 [
+ "Weighted Subspace Random Forest",
+"wsrf",
+"Classification",
+"wsrf",
+"mtry" 
+],
+[
  "Self-Organizing Maps",
 "xyf",
 "Dual Use",
@@ -1223,15 +1300,15 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartTableID12d6d2b3c55e1() {
-var data = gvisDataTableID12d6d2b3c55e1();
+function drawChartTableID9b8722a5cd1e() {
+var data = gvisDataTableID9b8722a5cd1e();
 var options = {};
 options["allowHtml"] = true;
 options["width"] = "800px";
 
 
     var chart = new google.visualization.Table(
-    document.getElementById('TableID12d6d2b3c55e1')
+    document.getElementById('TableID9b8722a5cd1e')
     );
     chart.draw(data,options);
     
@@ -1255,9 +1332,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartTableID12d6d2b3c55e1);
+callbacks.push(drawChartTableID9b8722a5cd1e);
 })();
-function displayChartTableID12d6d2b3c55e1() {
+function displayChartTableID9b8722a5cd1e() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -1281,17 +1358,17 @@ callbacks.shift()();
 </script>
  
 <!-- jsChart -->  
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID12d6d2b3c55e1"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID9b8722a5cd1e"></script>
  
 <!-- divChart -->
   
-<div id="TableID12d6d2b3c55e1"
-  style="width: 800pxpx; height: 500px;">
+<div id="TableID9b8722a5cd1e" 
+  style="width: 800px; height: automatic;">
 </div>
- <div><span>Data: modelTable &#8226; Chart ID: <a href="Chart_TableID12d6d2b3c55e1.html">TableID12d6d2b3c55e1</a> &#8226; <a href="https://github.com/mages/googleVis">googleVis-0.5.2</a></span><br /> 
+ <div><span>Data: modelTable &#8226; Chart ID: <a href="Chart_TableID9b8722a5cd1e.html">TableID9b8722a5cd1e</a> &#8226; <a href="https://github.com/mages/googleVis">googleVis-0.5.5</a></span><br /> 
 <!-- htmlFooter -->
 <span> 
-  R Under development (unstable) (2014-07-22 r66230) 
+  R Under development (unstable) (2014-12-29 r67265) 
   &#8226; <a href="https://developers.google.com/terms/">Google Terms of Use</a> &#8226; <a href="https://google-developers.appspot.com/chart/interactive/docs/gallery/table">Documentation and Data Policy</a>
 </span></div>
 </body>

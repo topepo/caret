@@ -121,6 +121,11 @@ Released   : 20120902
 <p><b>Type</b>: Regression</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">sigma</span></code> (Sigma)</p>
 
+<h1>Robust Mixture Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'rmda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">K</span></code> (#Subclasses Per Class), <code><span class="mx arg">model</span></code> (Model)</p>
+
 <h1>Support Vector Machines with Boundrange String Kernel</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'svmBoundrangeString'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
@@ -139,7 +144,7 @@ Released   : 20120902
 <h1>Support Vector Machines with Polynomial Kernel</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'svmPoly'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">degree</span></code> (Polynomial Degree), <code><span class="mx arg">scale</span></code> (Cost), <code><span class="mx arg">C</span></code> (Scale)</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">degree</span></code> (Polynomial Degree), <code><span class="mx arg">scale</span></code> (Scale), <code><span class="mx arg">C</span></code> (Cost)</p>
 
 <h1>Support Vector Machines with Radial Basis Function Kernel</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'svmRadial'</span></tt></p>
@@ -162,9 +167,10 @@ Released   : 20120902
   <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
   </li>
   <li>
-  <h2>Topics</h2>
-  <ul>
-  		<li><a href="datasets.html">Data Sets</a></li>
+    <h2>Topics</h2>
+    <ul>
+        <li><a href="index.html">Main Page</a></li>
+      <li><a href="datasets.html">Data Sets</a></li>
         <li><a href="visualizations.html">Visualizations</a></li>
         <li><a href="preprocess.html">Pre-Processing</a></li>
         <li><a href="splitting.html">Data Splitting</a></li>
@@ -175,10 +181,17 @@ Released   : 20120902
         <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
         <li><a href="custom_models.html">Using Custom Models</a></li>
         <li><a href="varimp.html">Variable Importance</a></li>
-        <li><a href="featureselection.html">Feature Selection</a></li>
+        <li><a href="featureselection.html">Feature Selection</a>
+        <ul>
+          <li><a href="rfe.html">RFE</a></li>
+            <li><a href="filters.html">Filters</a></li>
+            <li><a href="GA.html">GA</a></li>
+            <li><a href="SA.html">SA</a></li>
+        </ul></li>
         <li><a href="other.html">Other Functions</a></li>
         <li><a href="parallel.html">Parallel Processing</a></li>
-</ul>
+        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+  </ul>
   </li>
   </ul>
   </div>
@@ -190,7 +203,7 @@ Released   : 20120902
 </div>
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
+  <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
   </div>
   <!-- end #footer -->
 </body>

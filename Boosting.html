@@ -106,6 +106,16 @@ Released   : 20120902
 <div id="page">
   <div id="content">
   
+<h1>AdaBoost.M1</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'AdaBoost.M1'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">mfinal</span></code> (#Trees), <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth), <code><span class="mx arg">coeflearn</span></code> (Coefficient Type)</p>
+
+<h1>Bagged AdaBoost</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'AdaBag'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">mfinal</span></code> (#Trees), <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth)</p>
+
 <h1>Boosted Classification Trees</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'ada'</span></tt></p>
 <p><b>Type</b>: Classification</p>
@@ -177,9 +187,10 @@ Released   : 20120902
   <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
   </li>
   <li>
-  <h2>Topics</h2>
-  <ul>
-  		<li><a href="datasets.html">Data Sets</a></li>
+    <h2>Topics</h2>
+    <ul>
+        <li><a href="index.html">Main Page</a></li>
+      <li><a href="datasets.html">Data Sets</a></li>
         <li><a href="visualizations.html">Visualizations</a></li>
         <li><a href="preprocess.html">Pre-Processing</a></li>
         <li><a href="splitting.html">Data Splitting</a></li>
@@ -190,10 +201,17 @@ Released   : 20120902
         <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
         <li><a href="custom_models.html">Using Custom Models</a></li>
         <li><a href="varimp.html">Variable Importance</a></li>
-        <li><a href="featureselection.html">Feature Selection</a></li>
+        <li><a href="featureselection.html">Feature Selection</a>
+        <ul>
+          <li><a href="rfe.html">RFE</a></li>
+            <li><a href="filters.html">Filters</a></li>
+            <li><a href="GA.html">GA</a></li>
+            <li><a href="SA.html">SA</a></li>
+        </ul></li>
         <li><a href="other.html">Other Functions</a></li>
         <li><a href="parallel.html">Parallel Processing</a></li>
-</ul>
+        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+  </ul>
   </li>
   </ul>
   </div>
@@ -205,7 +223,7 @@ Released   : 20120902
 </div>
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
+  <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
   </div>
   <!-- end #footer -->
 </body>

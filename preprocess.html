@@ -1,7 +1,6 @@
 
 
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--
     Design by Free CSS Templates
@@ -153,7 +152,6 @@ For example, the <code>etitanic</code> data set in the
 6           1         0         0       1 48.0000     0     0
 </pre></div>
 </div></div>
-
 <p>
 Using <span class="mx funCall">dummyVars</span>:
 </p>
@@ -169,7 +167,6 @@ Using <span class="mx funCall">dummyVars</span>:
 6          1          0          0          0        1 48.0000     0     0
 </pre></div>
 </div></div>
-
 <p>
 Note there is no intercept and each factor has a dummy variable for each level, so this parameterization may not be useful for some model functions, such as <span class="mx funCall">lm</span>.
 </p>
@@ -193,7 +190,6 @@ Similarly, predictors might have only a handful of unique values that occur with
 </pre></div>
 </div></div>
 
-
 <p>
 The concern here that these predictors may become zero-variance predictors when the data are split into cross-validation/bootstrap sub-samples or that a few samples may have an undue influence on the model. These "near-zero-variance" predictors may need to be identified and eliminated prior to modeling.
 </p>
@@ -215,8 +211,8 @@ We would not want to falsely identify data that have low granularity but are eve
 Looking at the MDRR data, the <span class="mx funCall">nearZeroVar</span> function can be used to identify near zero-variance variables (the <span class="mx arg">saveMetrics</span> argument can be used to show the details and usually defaults to <code>FALSE</code>):
 </p>
 
-<div class="chunk" id="nzv2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">nzv</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">nearZeroVar</span><span class="hl std">(mdrrDescr,</span> <span class="hl kwc">saveMetrics</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">)</span>
-<span class="hl std">nzv[nzv</span><span class="hl opt">$</span><span class="hl std">nzv, ][</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span><span class="hl std">, ]</span>
+<div class="chunk" id="nzv2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">nzv</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">nearZeroVar</span><span class="hl std">(mdrrDescr,</span> <span class="hl kwc">saveMetrics</span><span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">)</span>
+<span class="hl std">nzv[nzv</span><span class="hl opt">$</span><span class="hl std">nzv,][</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span><span class="hl std">,]</span>
 </pre></div>
 <div class="output"><pre class="knitr r">       freqRatio percentUnique zeroVar  nzv
 nTB        23.00        0.3788   FALSE TRUE
@@ -241,7 +237,6 @@ D.Dr08    527.00        0.3788   FALSE TRUE
 <div class="output"><pre class="knitr r">[1] 528 297
 </pre></div>
 </div></div>
-
     
 <p>
 By default, <span class="mx funCall">nearZeroVar</span> will return the positions of the variables that are flagged to be problematic.
@@ -259,11 +254,10 @@ Given a correlation matrix, the <span class="mx funCall">findCorrelation</span> 
 </p>
 
 
-<div class="chunk" id="corr1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">descrCor</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">cor</span><span class="hl std">(filteredDescr)</span>
-<span class="hl std">highCorr</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sum</span><span class="hl std">(</span><span class="hl kwd">abs</span><span class="hl std">(descrCor[</span><span class="hl kwd">upper.tri</span><span class="hl std">(descrCor)])</span> <span class="hl opt">&gt;</span> <span class="hl num">0.999</span><span class="hl std">)</span>
+<div class="chunk" id="corr1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">descrCor</span> <span class="hl kwb">&lt;-</span>  <span class="hl kwd">cor</span><span class="hl std">(filteredDescr)</span>
+<span class="hl std">highCorr</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sum</span><span class="hl std">(</span><span class="hl kwd">abs</span><span class="hl std">(descrCor[</span><span class="hl kwd">upper.tri</span><span class="hl std">(descrCor)])</span> <span class="hl opt">&gt;</span> <span class="hl num">.999</span><span class="hl std">)</span>
 </pre></div>
 </div></div>
-
 
 <p>
 For the previous MDRR data, there are 65 descriptors that are almost perfectly correlated (|correlation| &gt; 0.999), such as the total information index of atomic composition (<code>IAC</code>) and the total information content index (neighborhood symmetry of 0-order) (<code>TIC0</code>) (correlation = 1). The code chunk below shows the effect of removing descriptors with absolute correlations above 0.75.
@@ -276,8 +270,8 @@ For the previous MDRR data, there are 65 descriptors that are almost perfectly c
 <div class="output"><pre class="knitr r">   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 -0.9960 -0.0537  0.2500  0.2610  0.6550  1.0000 
 </pre></div>
-<div class="source"><pre class="knitr r"><span class="hl std">highlyCorDescr</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">findCorrelation</span><span class="hl std">(descrCor,</span> <span class="hl kwc">cutoff</span> <span class="hl std">=</span> <span class="hl num">0.75</span><span class="hl std">)</span>
-<span class="hl std">filteredDescr</span> <span class="hl kwb">&lt;-</span> <span class="hl std">filteredDescr[,</span> <span class="hl opt">-</span><span class="hl std">highlyCorDescr]</span>
+<div class="source"><pre class="knitr r"><span class="hl std">highlyCorDescr</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">findCorrelation</span><span class="hl std">(descrCor,</span> <span class="hl kwc">cutoff</span> <span class="hl std">=</span> <span class="hl num">.75</span><span class="hl std">)</span>
+<span class="hl std">filteredDescr</span> <span class="hl kwb">&lt;-</span> <span class="hl std">filteredDescr[,</span><span class="hl opt">-</span><span class="hl std">highlyCorDescr]</span>
 <span class="hl std">descrCor2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">cor</span><span class="hl std">(filteredDescr)</span>
 <span class="hl kwd">summary</span><span class="hl std">(descrCor2[</span><span class="hl kwd">upper.tri</span><span class="hl std">(descrCor2)])</span>
 </pre></div>
@@ -286,7 +280,6 @@ For the previous MDRR data, there are 65 descriptors that are almost perfectly c
 </pre></div>
 </div></div>
 
-
  <div id="lindep"></div> 
 <h1>Linear Dependencies</h1>
 
@@ -294,16 +287,15 @@ For the previous MDRR data, there are 65 descriptors that are almost perfectly c
 The function <span class="mx funCall">findLinearCombos</span> uses the QR decomposition of a matrix to enumerate sets of linear combinations (if they exist). For example, consider the following matrix that is could have been produced by a less-than-full-rank parameterizations of a two-way experimental layout:
 </p>
 
-<div class="chunk" id="ld1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">ltfrDesign</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">matrix</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwc">nrow</span> <span class="hl std">=</span> <span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">ncol</span> <span class="hl std">=</span> <span class="hl num">6</span><span class="hl std">)</span>
-<span class="hl std">ltfrDesign[,</span> <span class="hl num">1</span><span class="hl std">]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">)</span>
-<span class="hl std">ltfrDesign[,</span> <span class="hl num">2</span><span class="hl std">]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">)</span>
-<span class="hl std">ltfrDesign[,</span> <span class="hl num">3</span><span class="hl std">]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">)</span>
-<span class="hl std">ltfrDesign[,</span> <span class="hl num">4</span><span class="hl std">]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">)</span>
-<span class="hl std">ltfrDesign[,</span> <span class="hl num">5</span><span class="hl std">]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">)</span>
-<span class="hl std">ltfrDesign[,</span> <span class="hl num">6</span><span class="hl std">]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">)</span>
+<div class="chunk" id="ld1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">ltfrDesign</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">matrix</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwc">nrow</span><span class="hl std">=</span><span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">ncol</span><span class="hl std">=</span><span class="hl num">6</span><span class="hl std">)</span>
+<span class="hl std">ltfrDesign[,</span><span class="hl num">1</span><span class="hl std">]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">)</span>
+<span class="hl std">ltfrDesign[,</span><span class="hl num">2</span><span class="hl std">]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">)</span>
+<span class="hl std">ltfrDesign[,</span><span class="hl num">3</span><span class="hl std">]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">)</span>
+<span class="hl std">ltfrDesign[,</span><span class="hl num">4</span><span class="hl std">]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">)</span>
+<span class="hl std">ltfrDesign[,</span><span class="hl num">5</span><span class="hl std">]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">)</span>
+<span class="hl std">ltfrDesign[,</span><span class="hl num">6</span><span class="hl std">]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">)</span>
 </pre></div>
 </div></div>
-
 
 <p>
 Note that columns two and three add up to the first column. Similarly, columns four, five and six add up the first column. <span class="mx funCall">findLinearCombos</span> will return a list that enumerates these dependencies. For each linear combination, it will incrementally remove columns from the matrix and test to see if the dependencies have been resolved. <span class="mx funCall">findLinearCombos</span> will also return a vector of column positions can be removed to eliminate the linear dependencies:
@@ -336,7 +328,6 @@ $remove
 </pre></div>
 </div></div>
 
-
 <p>
 These types of dependencies can arise when large numbers of binary chemical fingerprints are used to describe the structure of a molecule.
 </p>
@@ -355,8 +346,8 @@ In the example below, the half of the MDRR data are used to estimate the locatio
 <div class="chunk" id="cs"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">96</span><span class="hl std">)</span>
 <span class="hl std">inTrain</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sample</span><span class="hl std">(</span><span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl kwc">along</span> <span class="hl std">= mdrrClass),</span> <span class="hl kwd">length</span><span class="hl std">(mdrrClass)</span><span class="hl opt">/</span><span class="hl num">2</span><span class="hl std">)</span>
 
-<span class="hl std">training</span> <span class="hl kwb">&lt;-</span> <span class="hl std">filteredDescr[inTrain, ]</span>
-<span class="hl std">test</span> <span class="hl kwb">&lt;-</span> <span class="hl std">filteredDescr[</span><span class="hl opt">-</span><span class="hl std">inTrain, ]</span>
+<span class="hl std">training</span> <span class="hl kwb">&lt;-</span> <span class="hl std">filteredDescr[inTrain,]</span>
+<span class="hl std">test</span> <span class="hl kwb">&lt;-</span> <span class="hl std">filteredDescr[</span><span class="hl opt">-</span><span class="hl std">inTrain,]</span>
 <span class="hl std">trainMDRR</span> <span class="hl kwb">&lt;-</span> <span class="hl std">mdrrClass[inTrain]</span>
 <span class="hl std">testMDRR</span> <span class="hl kwb">&lt;-</span> <span class="hl std">mdrrClass[</span><span class="hl opt">-</span><span class="hl std">inTrain]</span>
 
@@ -366,7 +357,6 @@ In the example below, the half of the MDRR data are used to estimate the locatio
 <span class="hl std">testTransformed</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(preProcValues, test)</span>
 </pre></div>
 </div></div>
-
     
 <p>
 The <span class="mx funCall">preProcess</span> option <span class="mx arg">"ranges"</span> scales the data to the interval [0, 1].
@@ -397,10 +387,9 @@ the spatial sign transformation. The predictors should be centered and
 scaled before applying this transformation.</p>
 
 <div class="chunk" id="set1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(AppliedPredictiveModeling)</span>
-<span class="hl kwd">transparentTheme</span><span class="hl std">(</span><span class="hl kwc">trans</span> <span class="hl std">=</span> <span class="hl num">0.4</span><span class="hl std">)</span>
+<span class="hl kwd">transparentTheme</span><span class="hl std">(</span><span class="hl kwc">trans</span> <span class="hl std">=</span> <span class="hl num">.4</span><span class="hl std">)</span>
 </pre></div>
 </div></div>
-
     
 <div class="chunk" id="pp_SpatSignBefore"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">plotSubset</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwd">scale</span><span class="hl std">(mdrrDescr[,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;nC&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;X4v&quot;</span><span class="hl std">)]))</span>
 <span class="hl kwd">xyplot</span><span class="hl std">(nC</span> <span class="hl opt">~</span> <span class="hl std">X4v,</span>
@@ -409,7 +398,6 @@ scaled before applying this transformation.</p>
        <span class="hl kwc">auto.key</span> <span class="hl std">=</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">columns</span> <span class="hl std">=</span> <span class="hl num">2</span><span class="hl std">))</span>
 </pre></div>
 </div><div class="rimage default"><img src="figure/pp_SpatSignBefore.png" title="plot of chunk pp_SpatSignBefore" alt="plot of chunk pp_SpatSignBefore" class="plot" /></div></div>
-
 
 
 <p>After the spatial sign:</p>
@@ -422,7 +410,6 @@ scaled before applying this transformation.</p>
        <span class="hl kwc">auto.key</span> <span class="hl std">=</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">columns</span> <span class="hl std">=</span> <span class="hl num">2</span><span class="hl std">))</span>
 </pre></div>
 </div><div class="rimage default"><img src="figure/pp_SpatSignAfter.png" title="plot of chunk pp_SpatSignAfter" alt="plot of chunk pp_SpatSignAfter" class="plot" /></div></div>
-
 
 <p>Another option, <span class="mx arg">&quot;BoxCox&quot;</span> will estimate a Box&ndash;Cox transformation on the predictors if the data are greater than zero.</p>
 
@@ -444,7 +431,6 @@ Lambda estimates for Box-Cox transformation:
   -2.00   -0.20    0.30    0.41    1.70    2.00      19 
 </pre></div>
 </div></div>
-
 
 <p>The <code>NA</code> values correspond to the predictors that could
 not be transformed. This transformation requires the data to be greater than zero. Two similar transformations, the Yeo-Johnson and exponential transformation of Manly (1976) can also be used in <span class="mx funCall">preProcess</span>.
@@ -480,7 +466,6 @@ MESORIDAZINE         4.622         5.080
 SULFORIDAZINE        5.345         5.145
 </pre></div>
 </div></div>
-
 <p>
 This image shows a scatterplot matrix of the class distances for the held-out samples:
 </p>
@@ -493,38 +478,43 @@ This image shows a scatterplot matrix of the class distances for the held-out sa
 </pre></div>
 </div><div class="rimage default"><img src="figure/pp_splom.png" title="plot of chunk pp_splom" alt="plot of chunk pp_splom" class="plot" /></div></div>
 
-
 	  <div style="clear: both;">&nbsp;</div>
 	</div>
 	<!-- end #content -->
 	<div id="sidebar">
-	  <ul>
-	    <li>
-	      <h2>Links</h2>
-	      <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
-	    </li>
-	    <li>
-	      <h2>Topics</h2>
-	      <ul>
-        <li><a href="index.html">Main Page</a></li>     
-  		<li><a href="datasets.html">Data Sets</a></li>
-                <li><a href="visualizations.html">Visualizations</a></li>
-                <li><a href="preprocess.html">Pre-Processing</a></li>
-                <li><a href="splitting.html">Data Splitting</a></li>
-                <li><a href="misc.html">Miscellaneous Model Functions</a></li>
-                <li><a href="training.html">Model Training and Tuning</a></li>
-                <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
-                <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
-                 <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
-                <li><a href="custom_models.html">Using Custom Models</a></li>
-                <li><a href="varimp.html">Variable Importance</a></li>
-                <li><a href="featureselection.html">Feature Selection</a></li>
-                <li><a href="other.html">Other Functions</a></li>
-                <li><a href="parallel.html">Parallel Processing</a></li>
-                <li><a href="adaptive.html">Adaptive Resampling</a></li> 
-	      </ul>
-	    </li>
-	  </ul>
+  <ul>
+  <li>
+  <h2>Links</h2>
+  <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
+  </li>
+  <li>
+    <h2>Topics</h2>
+    <ul>
+        <li><a href="index.html">Main Page</a></li>
+      <li><a href="datasets.html">Data Sets</a></li>
+        <li><a href="visualizations.html">Visualizations</a></li>
+        <li><a href="preprocess.html">Pre-Processing</a></li>
+        <li><a href="splitting.html">Data Splitting</a></li>
+        <li><a href="misc.html">Miscellaneous Model Functions</a></li>
+        <li><a href="training.html">Model Training and Tuning</a></li>
+        <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
+        <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
+        <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
+        <li><a href="custom_models.html">Using Custom Models</a></li>
+        <li><a href="varimp.html">Variable Importance</a></li>
+        <li><a href="featureselection.html">Feature Selection</a>
+        <ul>
+          <li><a href="rfe.html">RFE</a></li>
+            <li><a href="filters.html">Filters</a></li>
+            <li><a href="GA.html">GA</a></li>
+            <li><a href="SA.html">SA</a></li>
+        </ul></li>
+        <li><a href="other.html">Other Functions</a></li>
+        <li><a href="parallel.html">Parallel Processing</a></li>
+        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+  </ul>
+  </li>
+  </ul>
 	</div>
 	<!-- end #sidebar -->
 	<div style="clear: both;">&nbsp;</div>
@@ -534,10 +524,9 @@ This image shows a scatterplot matrix of the class distances for the held-out sa
     </div>
     <div id="footer-content"></div>
 
-
  
     <div id="footer">
-      <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
+      <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
     </div>
     <!-- end #footer -->
   </body>

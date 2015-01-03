@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--
     Design by Free CSS Templates
@@ -139,15 +138,14 @@ the results of a classification model. This example uses objects from the webpag
 <div class="chunk" id="other_conf00"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">testPred</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(gbmFit3, testing)</span>
 </pre></div>
 </div></div>
-
 <div class="chunk" id="other_conf0"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(testPred, testing</span><span class="hl opt">$</span><span class="hl std">Class)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">Accuracy    Kappa 
-  0.8627   0.7252 
+  0.9020   0.8028 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">sensitivity</span><span class="hl std">(testPred, testing</span><span class="hl opt">$</span><span class="hl std">Class)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] 0.8519
+<div class="output"><pre class="knitr r">[1] 0.9259
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">confusionMatrix</span><span class="hl std">(testPred, testing</span><span class="hl opt">$</span><span class="hl std">Class)</span>
 </pre></div>
@@ -155,31 +153,30 @@ the results of a classification model. This example uses objects from the webpag
 
           Reference
 Prediction  M  R
-         M 23  3
-         R  4 21
+         M 25  3
+         R  2 21
                                         
-               Accuracy : 0.863         
-                 95% CI : (0.737, 0.943)
+               Accuracy : 0.902         
+                 95% CI : (0.786, 0.967)
     No Information Rate : 0.529         
-    P-Value [Acc > NIR] : 5.01e-07      
+    P-Value [Acc > NIR] : 1.21e-08      
                                         
-                  Kappa : 0.725         
+                  Kappa : 0.803         
  Mcnemar's Test P-Value : 1             
                                         
-            Sensitivity : 0.852         
+            Sensitivity : 0.926         
             Specificity : 0.875         
-         Pos Pred Value : 0.885         
-         Neg Pred Value : 0.840         
+         Pos Pred Value : 0.893         
+         Neg Pred Value : 0.913         
              Prevalence : 0.529         
-         Detection Rate : 0.451         
-   Detection Prevalence : 0.510         
-      Balanced Accuracy : 0.863         
+         Detection Rate : 0.490         
+   Detection Prevalence : 0.549         
+      Balanced Accuracy : 0.900         
                                         
        'Positive' Class : M             
                                         
 </pre></div>
 </div></div>
-
 
 <p>
 The "no--information rate" is the largest proportion of the observed
@@ -225,11 +222,10 @@ For example:
  
           Reference
 Prediction    M    R
-         M 46.9 11.1
-         R  6.6 35.4
+         M 47.2 10.8
+         R  6.3 35.7
 </pre></div>
 </div></div>
-
 
 <p>
 These values are the percentages that hold-out samples landed in the
@@ -272,14 +268,12 @@ The <span class="mx funCall">lift</span> function can be used to evaluate probab
                  <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;ROC&quot;</span><span class="hl std">,</span>
                  <span class="hl kwc">tuneLength</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">,</span>
                  <span class="hl kwc">trControl</span> <span class="hl std">= ctrl)</span>
-</pre></div>
-<div class="message"><pre class="knitr r">Loading required package: C50
-</pre></div>
-<div class="source"><pre class="knitr r"><span class="hl com">## A summary of the resampling results:</span>
+
+<span class="hl com">## A summary of the resampling results:</span>
 <span class="hl kwd">getTrainPerf</span><span class="hl std">(fdaModel)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  TrainROC TrainSens TrainSpec method
-1    0.964    0.9227    0.8596    fda
+1   0.9642    0.9227    0.8596    fda
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">getTrainPerf</span><span class="hl std">(ldaModel)</span>
 </pre></div>
@@ -292,7 +286,6 @@ The <span class="mx funCall">lift</span> function can be used to evaluate probab
 1   0.9496    0.8676    0.8531   C5.0
 </pre></div>
 </div></div>
-
 <p>
 From these models, we can predict the evaluation set and save the probabilities of being the first class:
 </p>
@@ -303,15 +296,14 @@ From these models, we can predict the evaluation set and save the probabilities 
 <span class="hl kwd">head</span><span class="hl std">(evalResults)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   Class     FDA     LDA   C5.0
-1 Class1 0.99073 0.88382 0.8446
-2 Class1 0.99166 0.75724 0.8882
-3 Class1 0.88943 0.88838 0.5732
-4 Class2 0.03117 0.01405 0.1690
-5 Class1 0.75646 0.93207 0.4824
-6 Class2 0.16122 0.05242 0.3310
+1 Class1 0.99296 0.88382 0.8446
+2 Class1 0.99224 0.75724 0.8882
+3 Class1 0.88072 0.88838 0.5732
+4 Class2 0.01604 0.01405 0.1690
+5 Class1 0.78715 0.93207 0.4824
+6 Class2 0.09899 0.05242 0.3310
 </pre></div>
 </div></div>
-
 <p>
 The <span class="mx funCall">lift</span> function does the calculations and the corresponding <span class="mx funCall">plot</span> function is used to plot the lift curve (although some call this the <i>gain</i> curve). The <span class="mx arg">value</span> argument creates reference lines.
 </p>    
@@ -322,7 +314,6 @@ The <span class="mx funCall">lift</span> function does the calculations and the 
                                             <span class="hl kwc">points</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">))</span>
 </pre></div>
 </div><div class="rimage default"><img src="figure/lift_plot.png" title="plot of chunk lift_plot" alt="plot of chunk lift_plot" class="plot" /></div></div>
-
 <p>
 From this we can see that, to find 60 percent of the hits, a little more than 30 percent of the data can be sampled (when ordered by the probability predictions). The LDA model does somewhat worse than the other two models. 
 </p>
@@ -338,7 +329,6 @@ The other function is for probability calibration. Other functions in the <a hre
                                           <span class="hl kwc">points</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">))</span>
 </pre></div>
 </div><div class="rimage default"><img src="figure/cal_plot.png" title="plot of chunk cal_plot" alt="plot of chunk cal_plot" class="plot" /></div></div>
-
     
 <div id="affy"></div>      
 <h1>Processing Affy Arrays</h1>
@@ -349,11 +339,11 @@ For Affymetrix gene chip data, RMA processing (<a href="http://nar.oxfordjournal
 <div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># first, let affy/expresso know that the method exists</span>
 <span class="hl std">normalize.AffyBatch.methods</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(normalize.AffyBatch.methods,</span> <span class="hl str">&quot;normalize2Reference&quot;</span><span class="hl std">)</span>
 
-<span class="hl std">RawData</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">ReadAffy</span><span class="hl std">(</span><span class="hl kwc">celfile.path</span> <span class="hl std">= FilePath)</span>
+<span class="hl std">RawData</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">ReadAffy</span><span class="hl std">(</span><span class="hl kwc">celfile.path</span><span class="hl std">=FilePath)</span>
 
 <span class="hl std">Batch1Step1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">bg.correct</span><span class="hl std">(RawData,</span> <span class="hl str">&quot;rma&quot;</span><span class="hl std">)</span>
 <span class="hl std">Batch1Step2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">normalize.AffyBatch.quantiles</span><span class="hl std">(Batch1Step1)</span>
-<span class="hl std">referencePM</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">pm</span><span class="hl std">(Batch1Step2)[,</span> <span class="hl num">1</span><span class="hl std">]</span>
+<span class="hl std">referencePM</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">pm</span><span class="hl std">(Batch1Step2)[,</span><span class="hl num">1</span><span class="hl std">]</span>
 <span class="hl std">Batch1Step3</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">computeExprSet</span><span class="hl std">(Batch1Step2,</span> <span class="hl str">&quot;pmonly&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;trimMean&quot;</span><span class="hl std">)</span>
 
 <span class="hl std">Batch2Step1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">bg.correct</span><span class="hl std">(RawData2,</span> <span class="hl str">&quot;rma&quot;</span><span class="hl std">)</span>
@@ -361,39 +351,44 @@ For Affymetrix gene chip data, RMA processing (<a href="http://nar.oxfordjournal
 <span class="hl std">Batch2Step3</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">computeExprSet</span><span class="hl std">(Batch2Step2,</span> <span class="hl str">&quot;pmonly&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;trimMean&quot;</span><span class="hl std">)</span>
 </pre></div>
 </div></div>
-
     
 	  <div style="clear: both;">&nbsp;</div>
 	</div>
 	<!-- end #content -->
 	<div id="sidebar">
-	  <ul>
-	    <li>
-	      <h2>Links</h2>
-	      <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
-	    </li>
-	    <li>
-	      <h2>Topics</h2>
-	      <ul>
-      	<li><a href="index.html">Main Page</a></li>
-  		<li><a href="datasets.html">Data Sets</a></li>
-                <li><a href="visualizations.html">Visualizations</a></li>
-                <li><a href="preprocess.html">Pre-Processing</a></li>
-                <li><a href="splitting.html">Data Splitting</a></li>
-                <li><a href="misc.html">Miscellaneous Model Functions</a></li>
-                <li><a href="training.html">Model Training and Tuning</a></li>
-                <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
-                <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
-                 <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
-                <li><a href="custom_models.html">Using Custom Models</a></li>
-                <li><a href="varimp.html">Variable Importance</a></li>
-                <li><a href="featureselection.html">Feature Selection</a></li>
-                <li><a href="other.html">Other Functions</a></li>
-                <li><a href="parallel.html">Parallel Processing</a></li>
-                <li><a href="adaptive.html">Adaptive Resampling</a></li> 
-	      </ul>
-	    </li>
-	  </ul>
+  <ul>
+  <li>
+  <h2>Links</h2>
+  <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
+  </li>
+  <li>
+    <h2>Topics</h2>
+    <ul>
+        <li><a href="index.html">Main Page</a></li>
+      <li><a href="datasets.html">Data Sets</a></li>
+        <li><a href="visualizations.html">Visualizations</a></li>
+        <li><a href="preprocess.html">Pre-Processing</a></li>
+        <li><a href="splitting.html">Data Splitting</a></li>
+        <li><a href="misc.html">Miscellaneous Model Functions</a></li>
+        <li><a href="training.html">Model Training and Tuning</a></li>
+        <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
+        <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
+        <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
+        <li><a href="custom_models.html">Using Custom Models</a></li>
+        <li><a href="varimp.html">Variable Importance</a></li>
+        <li><a href="featureselection.html">Feature Selection</a>
+        <ul>
+          <li><a href="rfe.html">RFE</a></li>
+            <li><a href="filters.html">Filters</a></li>
+            <li><a href="GA.html">GA</a></li>
+            <li><a href="SA.html">SA</a></li>
+        </ul></li>
+        <li><a href="other.html">Other Functions</a></li>
+        <li><a href="parallel.html">Parallel Processing</a></li>
+        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+  </ul>
+  </li>
+  </ul>
 	</div>
 	<!-- end #sidebar -->
 	<div style="clear: both;">&nbsp;</div>
@@ -403,10 +398,9 @@ For Affymetrix gene chip data, RMA processing (<a href="http://nar.oxfordjournal
     </div>
     <div id="footer-content"></div>
 
-
  
     <div id="footer">
-      <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
+      <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
     </div>
     <!-- end #footer -->
   </body>

@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--
     Design by Free CSS Templates
@@ -172,7 +171,6 @@ Using <tt><span class="hl kwd">data</span><span class="hl std">(tecator)</span><
 </pre></div>
 </div></div>
 
-
 </p><p>
 As a note, the paper states on page 32 that there are 37 unknown samples while the table on pages 33 and 34 shows that there are 34 unknowns. 
 </p>
@@ -206,7 +204,6 @@ Many of these predictors are discrete and have been expanded into several 0/1 in
 </div></div>
 
 
-
 <h2>Kelly Blue Book resale data for 2005 model year GM cars</h1>
 <p>
 <a href="http://www.amstat.org/publications/jse/v16n3/datasets.kuiper.html">Kuiper (2008)</a> collected data on Kelly Blue Book resale data for 804 GM cars (2005 model year). 
@@ -237,7 +234,6 @@ Many of these predictors are discrete and have been expanded into several 0/1 in
  $ wagon      : int  0 0 0 0 0 0 0 0 0 0 ...
 </pre></div>
 </div></div>
-
 <p></p>
 <h2>Cell Body Segmentation Data</h1>
 <p>
@@ -247,7 +243,7 @@ The outcome class is contained in a factor variable called <code>Class</code> wi
 </p>
   
 <div class="chunk" id="CS"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">data</span><span class="hl std">(segmentationData)</span>
-<span class="hl kwd">str</span><span class="hl std">(segmentationData[,</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span><span class="hl std">])</span>
+<span class="hl kwd">str</span><span class="hl std">(segmentationData[,</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span><span class="hl std">])</span>
 </pre></div>
 <div class="output"><pre class="knitr r">'data.frame':	2019 obs. of  10 variables:
  $ Cell                  : int  207827637 207932307 207932463 207932470 207932455 207827656 207827659 207827661 207932479 207932480 ...
@@ -262,38 +258,43 @@ The outcome class is contained in a factor variable called <code>Class</code> wi
  $ ConvexHullAreaRatioCh1: num  1.12 1.26 1.05 1.2 1.11 ...
 </pre></div>
 </div></div>
-
 	  <div style="clear: both;">&nbsp;</div>
 	</div>
 	<!-- end #content -->
 	<div id="sidebar">
-	  <ul>
-	    <li>
-	      <h2>Links</h2>
-	      <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
-	    </li>
-	    <li>
-	      <h2>Topics</h2>
-	      <ul>
-        <li><a href="index.html">Main Page</a></li>        
-  		<li><a href="datasets.html">Data Sets</a></li>
-                <li><a href="visualizations.html">Visualizations</a></li>
-                <li><a href="preprocess.html">Pre-Processing</a></li>
-                <li><a href="splitting.html">Data Splitting</a></li>
-                <li><a href="misc.html">Miscellaneous Model Functions</a></li>
-                <li><a href="training.html">Model Training and Tuning</a></li>
-                <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
-                <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
-                 <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
-                <li><a href="custom_models.html">Using Custom Models</a></li>
-                <li><a href="varimp.html">Variable Importance</a></li>
-                <li><a href="featureselection.html">Feature Selection</a></li>
-                <li><a href="other.html">Other Functions</a></li>
-                <li><a href="parallel.html">Parallel Processing</a></li>
-                <li><a href="adaptive.html">Adaptive Resampling</a></li> 
-	      </ul>
-	    </li>
-	  </ul>
+  <ul>
+  <li>
+  <h2>Links</h2>
+  <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
+  </li>
+  <li>
+    <h2>Topics</h2>
+    <ul>
+        <li><a href="index.html">Main Page</a></li>
+      <li><a href="datasets.html">Data Sets</a></li>
+        <li><a href="visualizations.html">Visualizations</a></li>
+        <li><a href="preprocess.html">Pre-Processing</a></li>
+        <li><a href="splitting.html">Data Splitting</a></li>
+        <li><a href="misc.html">Miscellaneous Model Functions</a></li>
+        <li><a href="training.html">Model Training and Tuning</a></li>
+        <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
+        <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
+        <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
+        <li><a href="custom_models.html">Using Custom Models</a></li>
+        <li><a href="varimp.html">Variable Importance</a></li>
+        <li><a href="featureselection.html">Feature Selection</a>
+        <ul>
+          <li><a href="rfe.html">RFE</a></li>
+            <li><a href="filters.html">Filters</a></li>
+            <li><a href="GA.html">GA</a></li>
+            <li><a href="SA.html">SA</a></li>
+        </ul></li>
+        <li><a href="other.html">Other Functions</a></li>
+        <li><a href="parallel.html">Parallel Processing</a></li>
+        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+  </ul>
+  </li>
+  </ul>
 	</div>
 	<!-- end #sidebar -->
 	<div style="clear: both;">&nbsp;</div>
@@ -303,10 +304,9 @@ The outcome class is contained in a factor variable called <code>Class</code> wi
     </div>
     <div id="footer-content"></div>
 
-
  
     <div id="footer">
-      <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
+      <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
     </div>
     <!-- end #footer -->
   </body>

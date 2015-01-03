@@ -106,6 +106,16 @@ Released   : 20120902
 <div id="page">
   <div id="content">
   
+<h1>AdaBoost.M1</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'AdaBoost.M1'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">mfinal</span></code> (#Trees), <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth), <code><span class="mx arg">coeflearn</span></code> (Coefficient Type)</p>
+
+<h1>Bagged AdaBoost</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'AdaBag'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">mfinal</span></code> (#Trees), <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth)</p>
+
 <h1>Bagged CART</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'treebag'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
@@ -125,6 +135,11 @@ Released   : 20120902
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'bagEarth'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">nprune</span></code> (#Terms), <code><span class="mx arg">degree</span></code> (Product Degree)</p>
+
+<h1>Bagged MARS using gCV Pruning</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'bagEarthGCV'</span></tt></p>
+<p><b>Type</b>: Regression, Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">degree</span></code> (Product Degree)</p>
 
 <h1>Bagged Model</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'bag'</span></tt></p>
@@ -190,6 +205,16 @@ Released   : 20120902
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'cubist'</span></tt></p>
 <p><b>Type</b>: Regression</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">committees</span></code> (#Committees), <code><span class="mx arg">neighbors</span></code> (#Instances)</p>
+
+<h1>Ensemble Partial Least Squares Regression</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'enpls'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">maxcomp</span></code> (Max. #Components)</p>
+
+<h1>Ensemble Partial Least Squares Regression with Feature Selection</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'enpls.fs'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">maxcomp</span></code> (Max. #Components), <code><span class="mx arg">threshold</span></code> (Importance Cutoff)</p>
 
 <h1>Model Averaged Neural Network</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'avNNet'</span></tt></p>
@@ -261,11 +286,6 @@ Released   : 20120902
 <p><b>Type</b>: Regression, Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">mtry</span></code> (#Randomly Selected Predictors), <code><span class="mx arg">coefReg</span></code> (Regularization Value)</p>
 
-<h1>Stacked AutoEncoder Deep Neural Network</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'dnn'</span></tt></p>
-<p><b>Type</b>: Classification, Regression</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">layer1</span></code> (Hidden Layer 1), <code><span class="mx arg">layer2</span></code> (Hidden Layer 2), <code><span class="mx arg">layer3</span></code> (Hidden Layer 3), <code><span class="mx arg">hidden_dropout</span></code> (Hidden Dropouts), <code><span class="mx arg">visible_dropout</span></code> (Visible Dropout)</p>
-
 <h1>Stochastic Gradient Boosting</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'gbm'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
@@ -275,6 +295,11 @@ Released   : 20120902
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'nodeHarvest'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">maxinter</span></code> (Maximum Interaction Depth), <code><span class="mx arg">mode</span></code> (Prediction Mode)</p>
+
+<h1>Weighted Subspace Random Forest</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'wsrf'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">mtry</span></code> (#Randomly Selected Predictors)</p>
 
 
 <div style="clear: both;">&nbsp;</div>
@@ -287,9 +312,10 @@ Released   : 20120902
   <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
   </li>
   <li>
-  <h2>Topics</h2>
-  <ul>
-  		<li><a href="datasets.html">Data Sets</a></li>
+    <h2>Topics</h2>
+    <ul>
+        <li><a href="index.html">Main Page</a></li>
+      <li><a href="datasets.html">Data Sets</a></li>
         <li><a href="visualizations.html">Visualizations</a></li>
         <li><a href="preprocess.html">Pre-Processing</a></li>
         <li><a href="splitting.html">Data Splitting</a></li>
@@ -300,10 +326,17 @@ Released   : 20120902
         <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
         <li><a href="custom_models.html">Using Custom Models</a></li>
         <li><a href="varimp.html">Variable Importance</a></li>
-        <li><a href="featureselection.html">Feature Selection</a></li>
+        <li><a href="featureselection.html">Feature Selection</a>
+        <ul>
+          <li><a href="rfe.html">RFE</a></li>
+            <li><a href="filters.html">Filters</a></li>
+            <li><a href="GA.html">GA</a></li>
+            <li><a href="SA.html">SA</a></li>
+        </ul></li>
         <li><a href="other.html">Other Functions</a></li>
         <li><a href="parallel.html">Parallel Processing</a></li>
-</ul>
+        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+  </ul>
   </li>
   </ul>
   </div>
@@ -315,7 +348,7 @@ Released   : 20120902
 </div>
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
+  <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
   </div>
   <!-- end #footer -->
 </body>

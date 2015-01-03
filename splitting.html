@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
   <!--
   Design by Free CSS Templates
@@ -141,7 +140,6 @@ Released   : 20120902
 </pre></div>
 </div></div>
 
-
 <p>The <span class="mx arg">list</span><tt> = FALSE</tt> avoids returns the data as a list. This function also has an argument, <span class="mx arg">times</span>, that can create multiple splits at once; the data indices are returned in a list of integer vectors. Similarly, <span class="mx funCall">createResample</span> can be used to make simple bootstrap samples and <span class="mx funCall">createFolds</span> can be used to generate balanced cross&ndash;validation groupings from a set of data.</p>
 
 <div id="predictors"></div> 
@@ -158,16 +156,14 @@ Released   : 20120902
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">5</span><span class="hl std">)</span>
 <span class="hl com">## A random sample of 5 data points</span>
 <span class="hl std">startSet</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sample</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl kwd">dim</span><span class="hl std">(testing)[</span><span class="hl num">1</span><span class="hl std">],</span> <span class="hl num">5</span><span class="hl std">)</span>
-<span class="hl std">samplePool</span> <span class="hl kwb">&lt;-</span> <span class="hl std">testing[</span><span class="hl opt">-</span><span class="hl std">startSet, ]</span>
-<span class="hl std">start</span> <span class="hl kwb">&lt;-</span> <span class="hl std">testing[startSet, ]</span>
+<span class="hl std">samplePool</span> <span class="hl kwb">&lt;-</span> <span class="hl std">testing[</span><span class="hl opt">-</span><span class="hl std">startSet,]</span>
+<span class="hl std">start</span> <span class="hl kwb">&lt;-</span> <span class="hl std">testing[startSet,]</span>
 <span class="hl std">newSamp</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">maxDissim</span><span class="hl std">(start, samplePool,</span> <span class="hl kwc">n</span> <span class="hl std">=</span> <span class="hl num">20</span><span class="hl std">)</span>
 <span class="hl kwd">head</span><span class="hl std">(newSamp)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">[1] 461 406  49 308 469  76
 </pre></div>
 </div></div>
-
-
 
 
     
@@ -197,7 +193,6 @@ The three parameters for this type of splitting are:
 As an example, suppose we have a time series with 20 data points. We can fix <tt><span class="hl std">initialWindow</span> <span class="hl kwb">=</span> <span class="hl num">5</span></tt> and look at different settings of the other two arguments. In the plot below, rows in each panel correspond to different data splits (i.e. resamples) and the columns correspond to different data points. Also, red indicates samples that are in included in the training set and the blue indicates samples in the test set. 
 </p>
 <div class="chunk" id="Split_time"><div class="rimage default"><img src="figure/Split_time.png" title="plot of chunk Split_time" alt="plot of chunk Split_time" class="plot" /></div></div>
-
     
     
 <div style="clear: both;">&nbsp;</div>
@@ -210,25 +205,31 @@ As an example, suppose we have a time series with 20 data points. We can fix <tt
   <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
   </li>
   <li>
-  <h2>Topics</h2>
-  <ul>
-      	<li><a href="index.html">Main Page</a></li>
-  		<li><a href="datasets.html">Data Sets</a></li>
-                <li><a href="visualizations.html">Visualizations</a></li>
-                <li><a href="preprocess.html">Pre-Processing</a></li>
-                <li><a href="splitting.html">Data Splitting</a></li>
-                <li><a href="misc.html">Miscellaneous Model Functions</a></li>
-                <li><a href="training.html">Model Training and Tuning</a></li>
-                <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
-                <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
-                 <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
-                <li><a href="custom_models.html">Using Custom Models</a></li>
-                <li><a href="varimp.html">Variable Importance</a></li>
-                <li><a href="featureselection.html">Feature Selection</a></li>
-                <li><a href="other.html">Other Functions</a></li>
-                <li><a href="parallel.html">Parallel Processing</a></li>
-                <li><a href="adaptive.html">Adaptive Resampling</a></li> 
-</ul>
+    <h2>Topics</h2>
+    <ul>
+        <li><a href="index.html">Main Page</a></li>
+      <li><a href="datasets.html">Data Sets</a></li>
+        <li><a href="visualizations.html">Visualizations</a></li>
+        <li><a href="preprocess.html">Pre-Processing</a></li>
+        <li><a href="splitting.html">Data Splitting</a></li>
+        <li><a href="misc.html">Miscellaneous Model Functions</a></li>
+        <li><a href="training.html">Model Training and Tuning</a></li>
+        <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
+        <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
+        <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
+        <li><a href="custom_models.html">Using Custom Models</a></li>
+        <li><a href="varimp.html">Variable Importance</a></li>
+        <li><a href="featureselection.html">Feature Selection</a>
+        <ul>
+          <li><a href="rfe.html">RFE</a></li>
+            <li><a href="filters.html">Filters</a></li>
+            <li><a href="GA.html">GA</a></li>
+            <li><a href="SA.html">SA</a></li>
+        </ul></li>
+        <li><a href="other.html">Other Functions</a></li>
+        <li><a href="parallel.html">Parallel Processing</a></li>
+        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+  </ul>
   </li>
   </ul>
   </div>
@@ -241,8 +242,7 @@ As an example, suppose we have a time series with 20 data points. We can fix <tt
   <div id="footer-content"></div>
   <div id="footer">
 
-
-  <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
+  <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
   </div>
   <!-- end #footer -->
 </body>

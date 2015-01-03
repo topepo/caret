@@ -1,7 +1,6 @@
 
 
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
   <!--
   Design by Free CSS Templates
@@ -127,12 +126,11 @@ Released   : 20120902
 <p><span class="mx funCall">knn3</span> is a function for <i>k</i>-nearest neighbor classification. This particular implementation is a modification of the <span class="mx funCall">knn</span> C code and returns the vote information for all of the classes (<span class="mx funCall">knn</span> only returns the probability for the winning class). There is a formula interface via</p>
   
 <div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">knn3</span><span class="hl std">(formula, data)</span>
-<span class="hl com">## or by passing the training data directly x is a matrix or data frame, y is</span>
-<span class="hl com">## a factor vector</span>
+<span class="hl com">## or by passing the training data directly</span>
+<span class="hl com">## x is a matrix or data frame, y is a factor vector</span>
 <span class="hl kwd">knn3</span><span class="hl std">(x, y)</span>
 </pre></div>
 </div></div>
-
 <p> There are also <code>print</code> and <code>predict</code> methods. </p>
 
 <p>For the Sonar data in the <a href="http://cran.r-project.org/web/packages/mlbench/index.html"><strong>mlbench</strong></a> package, we can fit an 11-nearest neighbor model:</p>
@@ -143,11 +141,11 @@ Released   : 20120902
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">808</span><span class="hl std">)</span>
 <span class="hl std">inTrain</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">createDataPartition</span><span class="hl std">(Sonar</span><span class="hl opt">$</span><span class="hl std">Class,</span> <span class="hl kwc">p</span> <span class="hl std">=</span> <span class="hl num">2</span><span class="hl opt">/</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">list</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">)</span>
 <span class="hl com">## Save the predictors and class in different objects</span>
-<span class="hl std">sonarTrain</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[inTrain,</span> <span class="hl opt">-</span><span class="hl kwd">ncol</span><span class="hl std">(Sonar)]</span>
-<span class="hl std">sonarTest</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[</span><span class="hl opt">-</span><span class="hl std">inTrain,</span> <span class="hl opt">-</span><span class="hl kwd">ncol</span><span class="hl std">(Sonar)]</span>
+<span class="hl std">sonarTrain</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[ inTrain,</span> <span class="hl opt">-</span><span class="hl kwd">ncol</span><span class="hl std">(Sonar)]</span>
+<span class="hl std">sonarTest</span>  <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[</span><span class="hl opt">-</span><span class="hl std">inTrain,</span> <span class="hl opt">-</span><span class="hl kwd">ncol</span><span class="hl std">(Sonar)]</span>
 
-<span class="hl std">trainClass</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[inTrain,</span> <span class="hl str">&quot;Class&quot;</span><span class="hl std">]</span>
-<span class="hl std">testClass</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[</span><span class="hl opt">-</span><span class="hl std">inTrain,</span> <span class="hl str">&quot;Class&quot;</span><span class="hl std">]</span>
+<span class="hl std">trainClass</span> <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[ inTrain,</span> <span class="hl str">&quot;Class&quot;</span><span class="hl std">]</span>
+<span class="hl std">testClass</span>  <span class="hl kwb">&lt;-</span> <span class="hl std">Sonar[</span><span class="hl opt">-</span><span class="hl std">inTrain,</span> <span class="hl str">&quot;Class&quot;</span><span class="hl std">]</span>
 
 <span class="hl std">centerScale</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">preProcess</span><span class="hl std">(sonarTrain)</span>
 <span class="hl std">centerScale</span>
@@ -186,7 +184,6 @@ Training set class distribution:
 [6,] 0.0000 1.0000
 </pre></div>
 </div></div>
-
  
 <p> Similarly, <a href="http://cran.r-project.org/web/packages/caret/index.html"><strong>caret</strong></a> contains a <i>k</i>-nearest neighbor regression function, <span class="mx funCall">knnreg</span>. It returns the average outcome for the neighbor.</p> 
 
@@ -257,7 +254,6 @@ plsr(formula = y ~ x, ncomp = ncomp, data = tmpData)
 </pre></div>
 </div></div>
 
-
 <p>Similar to <span class="mx funCall">plsda</span>, <a href="http://cran.r-project.org/web/packages/caret/index.html"><strong>caret</strong></a> also contains a function <span class="mx funCall">splsda</span> that allows for classification using sparse PLS. A dummy 
 matrix is created for each class and used with the <span class="mx funCall">spls</span> function in the <a href="http://cran.r-project.org/web/packages/spls/index.html"><strong>spls</strong></a> package. The same approach to estimating class probabilities is used for <span class="mx funCall">plsda</span> and <span class="mx funCall">splsda</span>.
 </p>
@@ -305,7 +301,6 @@ other objects required for prediction. A simple example for a linear discriminan
  <span class="hl std">}</span>
 </pre></div>
 </div></div>
-
 <h2>The <span class="mx funCall">pred</span> Function</h2>
 
 <p>
@@ -323,12 +318,11 @@ regression), a factor (or character) vector for classification or a
 matrix/data frame of class probabilities. For classification, it is probably better to average class probabilities instead of using the votes of the class predictions. Using the <span class="mx funCall">lda</span> example again:
 </p>
   
-<div class="chunk" id="unnamed-chunk-4"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com">## predict.lda returns the class and the class probabilities We will average</span>
-<span class="hl com">## the probabilities, so these are saved</span>
+<div class="chunk" id="unnamed-chunk-4"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com">## predict.lda returns the class and the class probabilities</span>
+<span class="hl com">## We will average the probabilities, so these are saved</span>
 <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">object</span><span class="hl std">,</span> <span class="hl kwc">x</span><span class="hl std">)</span> <span class="hl kwd">predict</span><span class="hl std">(object, x)</span><span class="hl opt">$</span><span class="hl std">posterior</span>
 </pre></div>
 </div></div>
-
     
 <h2>The <span class="mx funCall">aggregate</span> Function</h2>
 
@@ -374,7 +368,6 @@ matrix/data frame of class probabilities. For the linear discriminant model abov
 <span class="hl std">}</span>
 </pre></div>
 </div></div>
-
 <p>For example, to bag a conditional inference tree (from the <strong>party</strong> package):</p>
 
 <div class="chunk" id="unnamed-chunk-6"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(caret)</span>
@@ -389,7 +382,10 @@ matrix/data frame of class probabilities. For the linear discriminant model abov
                 <span class="hl kwc">bagControl</span> <span class="hl std">=</span> <span class="hl kwd">bagControl</span><span class="hl std">(</span><span class="hl kwc">fit</span> <span class="hl std">= ctreeBag</span><span class="hl opt">$</span><span class="hl std">fit,</span>
                                         <span class="hl kwc">predict</span> <span class="hl std">= ctreeBag</span><span class="hl opt">$</span><span class="hl std">pred,</span>
                                         <span class="hl kwc">aggregate</span> <span class="hl std">= ctreeBag</span><span class="hl opt">$</span><span class="hl std">aggregate))</span>
-<span class="hl kwd">summary</span><span class="hl std">(baggedCT)</span>
+</pre></div>
+<div class="warning"><pre class="knitr r">Warning: executing %dopar% sequentially: no parallel backend registered
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">summary</span><span class="hl std">(baggedCT)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">
 Call:
@@ -410,7 +406,6 @@ Out of bag statistics (B = 50):
 </pre></div>
 </div></div>
 
-
 <div id="avnnet"></div>  
 <h1>Model Averaged Neural Networks</h1>
 
@@ -426,7 +421,6 @@ The <span class="mx funCall">avNNet</span> fits multiple neural network models t
                    <span class="hl kwc">trace</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">)</span>
 </pre></div>
 </div></div>
-
     
 <div id="pcannet"></div>      
 <h1>Neural Networks with a Principal Component Step</h1>
@@ -477,25 +471,31 @@ between the new latent variable and the outcomes.
   <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
   </li>
   <li>
-  <h2>Topics</h2>
-  <ul>
-          <li><a href="index.html">Main Page</a></li>
-  		<li><a href="datasets.html">Data Sets</a></li>
-                <li><a href="visualizations.html">Visualizations</a></li>
-                <li><a href="preprocess.html">Pre-Processing</a></li>
-                <li><a href="splitting.html">Data Splitting</a></li>
-                <li><a href="misc.html">Miscellaneous Model Functions</a></li>
-                <li><a href="training.html">Model Training and Tuning</a></li>
-                <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
-                <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
-                 <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
-                <li><a href="custom_models.html">Using Custom Models</a></li>
-                <li><a href="varimp.html">Variable Importance</a></li>
-                <li><a href="featureselection.html">Feature Selection</a></li>
-                <li><a href="other.html">Other Functions</a></li>
-                <li><a href="parallel.html">Parallel Processing</a></li>
-                <li><a href="adaptive.html">Adaptive Resampling</a></li> 
-</ul>
+    <h2>Topics</h2>
+    <ul>
+        <li><a href="index.html">Main Page</a></li>
+      <li><a href="datasets.html">Data Sets</a></li>
+        <li><a href="visualizations.html">Visualizations</a></li>
+        <li><a href="preprocess.html">Pre-Processing</a></li>
+        <li><a href="splitting.html">Data Splitting</a></li>
+        <li><a href="misc.html">Miscellaneous Model Functions</a></li>
+        <li><a href="training.html">Model Training and Tuning</a></li>
+        <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
+        <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
+        <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
+        <li><a href="custom_models.html">Using Custom Models</a></li>
+        <li><a href="varimp.html">Variable Importance</a></li>
+        <li><a href="featureselection.html">Feature Selection</a>
+        <ul>
+          <li><a href="rfe.html">RFE</a></li>
+            <li><a href="filters.html">Filters</a></li>
+            <li><a href="GA.html">GA</a></li>
+            <li><a href="SA.html">SA</a></li>
+        </ul></li>
+        <li><a href="other.html">Other Functions</a></li>
+        <li><a href="parallel.html">Parallel Processing</a></li>
+        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+  </ul>
   </li>
   </ul>
   </div>
@@ -507,9 +507,8 @@ between the new latent variable and the outcomes.
 </div>
   <div id="footer-content"></div>
 
-
   <div id="footer">
-  <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
+  <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
   </div>
   <!-- end #footer -->
 </body>

@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
   <!--
   Design by Free CSS Templates
@@ -162,7 +161,6 @@ You can still get the benefits of the <a href="http://cran.r-project.org/web/pac
 [11] "tags"       "levels"     "sort"      
 </pre></div>
 </div></div>
-
 <p>
 To use your own model, you can pass a list of these components to <tt><span class="hl std">type</span></tt>. This page will describe those components in detail.
 </p>
@@ -238,10 +236,11 @@ Let's create a new model for a classification support vector machine using the L
 <p>
 To start, we'll create a new list:
 </p>
-<div class="chunk" id="custom_basic"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">lpSVM</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;Classification&quot;</span><span class="hl std">,</span> <span class="hl kwc">library</span> <span class="hl std">=</span> <span class="hl str">&quot;kernlab&quot;</span><span class="hl std">,</span> <span class="hl kwc">loop</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">)</span>
+<div class="chunk" id="custom_basic"><div class="rcode"><div class="source"><pre class="knitr r">    <span class="hl std">lpSVM</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;Classification&quot;</span><span class="hl std">,</span>
+                  <span class="hl kwc">library</span> <span class="hl std">=</span> <span class="hl str">&quot;kernlab&quot;</span><span class="hl std">,</span>
+                  <span class="hl kwc">loop</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">)</span>
 </pre></div>
 </div></div>
-
 <p>
 This model can also be used for regression but we will constrain things here for simplicity. For other SVM models, the type value would be <tt><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Classification&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Regression&quot;</span><span class="hl std">)</span></tt>. 
 </p>
@@ -259,14 +258,12 @@ We have to create some basic information for the parameters in the form of a dat
                   <span class="hl kwc">label</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Cost&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Sigma&quot;</span><span class="hl std">))</span>
 </pre></div>
 </div></div>
-
 <p>                      
 Now we assign it to the model list:
 </p>
-<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">lpSVM</span><span class="hl opt">$</span><span class="hl std">parameters</span> <span class="hl kwb">&lt;-</span> <span class="hl std">prm</span>
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r">    <span class="hl std">lpSVM</span><span class="hl opt">$</span><span class="hl std">parameters</span> <span class="hl kwb">&lt;-</span> <span class="hl std">prm</span>
 </pre></div>
 </div></div>
-
 <p>    
 Values of <span class="mx arg">type</span> can indicate numeric, character or logical data types. 
 </p>
@@ -288,17 +285,15 @@ The output should be a data frame of tuning parameter combinations with a column
 <span class="hl std">}</span>
 </pre></div>
 </div></div>
-
 <p> 
 Again, the user can pass their own grid via <span class="mx funCall">train</span>'s <span class="mx arg">tuneGrid</span> option or they can use this code to create a default grid. 
 </p> 
 <p> 
 We assign this function to the overall model list:
 </p> 
-<div class="chunk" id="custom_grid2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">lpSVM</span><span class="hl opt">$</span><span class="hl std">grid</span> <span class="hl kwb">&lt;-</span> <span class="hl std">svmGrid</span>
+<div class="chunk" id="custom_grid2"><div class="rcode"><div class="source"><pre class="knitr r">    <span class="hl std">lpSVM</span><span class="hl opt">$</span><span class="hl std">grid</span> <span class="hl kwb">&lt;-</span> <span class="hl std">svmGrid</span>
 </pre></div>
 </div></div>
-
 
 <h2>The fit Element</h2>
 
@@ -342,7 +337,6 @@ Here is something we could use for this model:
 <span class="hl std">lpSVM</span><span class="hl opt">$</span><span class="hl std">fit</span> <span class="hl kwb">&lt;-</span> <span class="hl std">svmFit</span>
 </pre></div>
 </div></div>
-
 <p>
 A few notes about this:
 </p>
@@ -397,7 +391,6 @@ Our function will be very simple:
 <span class="hl std">lpSVM</span><span class="hl opt">$</span><span class="hl std">predict</span> <span class="hl kwb">&lt;-</span> <span class="hl std">svmPred</span>
 </pre></div>
 </div></div>
-
 <p></p>
 
 <p>    
@@ -419,7 +412,6 @@ We can use:
 </pre></div>
 </div></div>
 
-
 <p></p>
 <p>
 If you look at some of the SVM examples in the <tt>models</tt> directory, the real functions used by <span class="mx funCall">train</span> are much more complicated so that they can deal with model failures, probabilities that do not sum to 1 etc.
@@ -435,11 +427,10 @@ This is an optional function that sorts the tuning parameters from the simplest 
 Here, we will sort by the cost value. Smaller values of <tt>C</tt> produce smoother class boundaries than larger values:
 </p>
 
-<div class="chunk" id="custom_sort"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">svmSort</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">) x[</span><span class="hl kwd">order</span><span class="hl std">(x</span><span class="hl opt">$</span><span class="hl std">C), ]</span>
-<span class="hl std">lpSVM</span><span class="hl opt">$</span><span class="hl std">sort</span> <span class="hl kwb">&lt;-</span> <span class="hl std">svmSort</span>
+<div class="chunk" id="custom_sort"><div class="rcode"><div class="source"><pre class="knitr r">    <span class="hl std">svmSort</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">) x[</span><span class="hl kwd">order</span><span class="hl std">(x</span><span class="hl opt">$</span><span class="hl std">C),]</span>
+    <span class="hl std">lpSVM</span><span class="hl opt">$</span><span class="hl std">sort</span> <span class="hl kwb">&lt;-</span> <span class="hl std">svmSort</span>
 </pre></div>
 </div></div>
-
 
 
 <h2>The levels Element</h2>
@@ -453,18 +444,16 @@ For model functions using <code>S3</code> methods, <span class="mx funCall">trai
 <p>
 For example, the <span class="mx funCall">ksvm</span> function uses <code>S4</code> methods but, unlike most model functions, has a built--in function called <span class="mx funCall">lev</span> that will extract the class levels (if any). In this case, our levels code would be:
 </p>
-<div class="chunk" id="custom_lev"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">lpSVM</span><span class="hl opt">$</span><span class="hl std">levels</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">)</span> <span class="hl kwd">lev</span><span class="hl std">(x)</span>
+<div class="chunk" id="custom_lev"><div class="rcode"><div class="source"><pre class="knitr r">    <span class="hl std">lpSVM</span><span class="hl opt">$</span><span class="hl std">levels</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">)</span> <span class="hl kwd">lev</span><span class="hl std">(x)</span>
 </pre></div>
 </div></div>
-
 <p>
 In most other cases, the levels will beed to be extracted from data contained in the fitted model object. As another example, objects created using the <span class="mx funCall">ctree</span> function in the <span class="mx funCall">party</span> package would need to use:
 </p>
 
-<div class="chunk" id="custom_lev2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">)</span> <span class="hl kwd">levels</span><span class="hl std">(x</span><span class="hl opt">@</span><span class="hl kwc">data</span><span class="hl opt">@</span><span class="hl kwc">get</span><span class="hl std">(</span><span class="hl str">&quot;response&quot;</span><span class="hl std">)[,</span> <span class="hl num">1</span><span class="hl std">])</span>
+<div class="chunk" id="custom_lev2"><div class="rcode"><div class="source"><pre class="knitr r">    <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">)</span> <span class="hl kwd">levels</span><span class="hl std">(x</span><span class="hl opt">@</span><span class="hl kwc">data</span><span class="hl opt">@</span><span class="hl kwc">get</span><span class="hl std">(</span><span class="hl str">&quot;response&quot;</span><span class="hl std">)[,</span><span class="hl num">1</span><span class="hl std">])</span>
 </pre></div>
 </div></div>
-
 <p>
 Again, this slot is only used for classification models using <code>S4</code> methods.
 </p>
@@ -522,15 +511,13 @@ The final values used for the model were C = 16 and sigma = 0.0123.
 </pre></div>
 </div></div>
 
-
 <p>
 A plot of the data shows that the model doesn't change when the cost value is above 16.
 </p>
 <div class="chunk" id="custom_trainplot, Laplacian"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">trellis.par.set</span><span class="hl std">(</span><span class="hl kwd">caretTheme</span><span class="hl std">())</span>
-<span class="hl kwd">plot</span><span class="hl std">(Laplacian,</span> <span class="hl kwc">scales</span> <span class="hl std">=</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">=</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">log</span> <span class="hl std">=</span> <span class="hl num">2</span><span class="hl std">)))</span>
+<span class="hl kwd">plot</span><span class="hl std">(Laplacian,</span>  <span class="hl kwc">scales</span> <span class="hl std">=</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">=</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">log</span> <span class="hl std">=</span> <span class="hl num">2</span><span class="hl std">)))</span>
 </pre></div>
 </div><div class="rimage default"><img src="figure/custom_trainplot, Laplacian.png" title="plot of chunk custom_trainplot, Laplacian" alt="plot of chunk custom_trainplot, Laplacian" class="plot" /></div></div>
-
 
 <div id="Illustration2"></div>
 <h1>Illustrative Example 2: Something More Complicated - LogitBoost</h1>
@@ -547,14 +534,12 @@ For example, a <span class="mx funCall">LogitBoost</span> model can be trained o
 </pre></div>
 </div></div>
 
-
 <p>
 If we were to tune the model evaluating models where the number of iterations was 11, 21, 31, 41 and 51, the grid could be
 </p>
 <div class="chunk" id="custom_lb_grid"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">lbGrid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">nIter</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">11</span><span class="hl std">,</span> <span class="hl num">51</span><span class="hl std">,</span> <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">))</span>
 </pre></div>
 </div></div>
-
 
 <p>
 During resampling, <span class="mx funCall">train</span> could loop over all five rows in <code>lbGrid</code> and fit five models. However, the <span class="mx funCall">predict.LogitBoost</span> function has an argument called <span class="mx arg">nIter</span> that can produce, in this case, predictions from <code>mod</code> for all five models. 
@@ -578,13 +563,13 @@ The <span class="mx arg">loop</span> argument for models is used to produce two 
 <p>
 Going back to the <span class="mx funCall">LogitBoost</span> example, we could have:
 </p>
-<div class="chunk" id="custom_lb_loops"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">loop</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">.nIter</span> <span class="hl std">=</span> <span class="hl num">51</span><span class="hl std">)</span>
+<div class="chunk" id="custom_lb_loops"><div class="rcode"><div class="source"><pre class="knitr r">    <span class="hl std">loop</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">.nIter</span> <span class="hl std">=</span> <span class="hl num">51</span><span class="hl std">)</span>
 <span class="hl std">loop</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  .nIter
 1     51
 </pre></div>
-<div class="source"><pre class="knitr r"><span class="hl std">submodels</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">nIter</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">11</span><span class="hl std">,</span> <span class="hl num">41</span><span class="hl std">,</span> <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">)))</span>
+<div class="source"><pre class="knitr r">    <span class="hl std">submodels</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">nIter</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">11</span><span class="hl std">,</span> <span class="hl num">41</span><span class="hl std">,</span> <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">)))</span>
 <span class="hl std">submodels</span>
 </pre></div>
 <div class="output"><pre class="knitr r">[[1]]
@@ -595,7 +580,6 @@ Going back to the <span class="mx funCall">LogitBoost</span> example, we could h
 4    41
 </pre></div>
 </div></div>
-
 <p>
 For this case, <span class="mx funCall">train</span> first fits the <span class="mx arg">nIter</span><tt> = <span class="hl num">50</span></tt> model. When the model is predicted, that code has a <span class="mx funCall">for</span> loop that iterates over the elements of <code>submodel[[1]]</code> to get the predictions for the other 4 models. 
 </p>
@@ -612,21 +596,21 @@ If the <span class="mx arg">loop</span> argument is left <code><span class="hl k
 For the <span class="mx funCall">LogitBoost</span> model, some simple code to create these objects would be:
 </p>
 
-<div class="chunk" id="custom_lb_loop_funcs"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">fullGrid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">nIter</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">11</span><span class="hl std">,</span> <span class="hl num">51</span><span class="hl std">,</span> <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">))</span>
+<div class="chunk" id="custom_lb_loop_funcs"><div class="rcode"><div class="source"><pre class="knitr r">    <span class="hl std">fullGrid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">nIter</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">11</span><span class="hl std">,</span> <span class="hl num">51</span><span class="hl std">,</span> <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">))</span>
 
-<span class="hl com">## Get the largest value of nIter to fit the 'full' model</span>
-<span class="hl std">loop</span> <span class="hl kwb">&lt;-</span> <span class="hl std">fullGrid[</span><span class="hl kwd">which.max</span><span class="hl std">(fullGrid</span><span class="hl opt">$</span><span class="hl std">nIter), ,</span> <span class="hl kwc">drop</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">]</span>
-<span class="hl std">loop</span>
+    <span class="hl com">## Get the largest value of nIter to fit the &quot;full&quot; model</span>
+    <span class="hl std">loop</span> <span class="hl kwb">&lt;-</span> <span class="hl std">fullGrid[</span><span class="hl kwd">which.max</span><span class="hl std">(fullGrid</span><span class="hl opt">$</span><span class="hl std">nIter),,</span><span class="hl kwc">drop</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">]</span>
+    <span class="hl std">loop</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  nIter
 5    51
 </pre></div>
-<div class="source"><pre class="knitr r"><span class="hl std">submodels</span> <span class="hl kwb">&lt;-</span> <span class="hl std">fullGrid[</span><span class="hl opt">-</span><span class="hl kwd">which.max</span><span class="hl std">(fullGrid</span><span class="hl opt">$</span><span class="hl std">nIter), ,</span> <span class="hl kwc">drop</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">]</span>
+<div class="source"><pre class="knitr r">    <span class="hl std">submodels</span> <span class="hl kwb">&lt;-</span> <span class="hl std">fullGrid[</span><span class="hl opt">-</span><span class="hl kwd">which.max</span><span class="hl std">(fullGrid</span><span class="hl opt">$</span><span class="hl std">nIter),,</span><span class="hl kwc">drop</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">]</span>
 
-<span class="hl com">## This needs to be encased in a list in case there are more than one tuning</span>
-<span class="hl com">## parameter</span>
-<span class="hl std">submodels</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">list</span><span class="hl std">(submodels)</span>
-<span class="hl std">submodels</span>
+    <span class="hl com">## This needs to be encased in a list in case there are more</span>
+    <span class="hl com">## than one tuning parameter</span>
+    <span class="hl std">submodels</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">list</span><span class="hl std">(submodels)</span>
+    <span class="hl std">submodels</span>
 </pre></div>
 <div class="output"><pre class="knitr r">[[1]]
   nIter
@@ -636,7 +620,6 @@ For the <span class="mx funCall">LogitBoost</span> model, some simple code to cr
 4    41
 </pre></div>
 </div></div>
-
 <p>
 For the <span class="mx funCall">LogitBoost</span> custom model object, we could use this code in the <span class="mx arg">predict</span> slot:
 <p>
@@ -664,7 +647,6 @@ For the <span class="mx funCall">LogitBoost</span> custom model object, we could
   <span class="hl std">}</span>
 </pre></div>
 </div></div>
-
 
 <p>
 A few more notes:
@@ -723,7 +705,6 @@ A few more notes:
 </pre></div>
 </div></div>
 
-
 <p>Should you care about this? Let's tune the model over the same data set used for the SVM model above and see how long it takes:
 </p>
 <div class="chunk" id="custom_lb_mod"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
@@ -734,7 +715,7 @@ A few more notes:
 <span class="hl std">lb1</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   user  system elapsed 
- 21.554   2.489   6.213 
+ 20.244   1.819   4.197 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## Now get rid of the submodel parts</span>
 <span class="hl std">lbFuncs2</span> <span class="hl kwb">&lt;-</span> <span class="hl std">lbFuncs</span>
@@ -750,11 +731,10 @@ A few more notes:
 <span class="hl std">lb2</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   user  system elapsed 
- 20.002   2.145  15.188 
+ 13.212   1.861   9.198 
 </pre></div>
 </div></div>
-
-<p>On a data set with 157 instances and 60 predictors and a model that is tuned over only 3 parameter values, there is a 2.44-fold speed-up. If the model were more computationally taxing or the data set were larger or the number of tune parameters that were evaluated was larger, the speed-up would increase. Here is a plot of the speed-up for a few more values of <span class="mx arg">tuneLength</span>:
+<p>On a data set with 157 instances and 60 predictors and a model that is tuned over only 3 parameter values, there is a 2.19-fold speed-up. If the model were more computationally taxing or the data set were larger or the number of tune parameters that were evaluated was larger, the speed-up would increase. Here is a plot of the speed-up for a few more values of <span class="mx arg">tuneLength</span>:
 </p>
 
 <div class="chunk" id="custom_lb_times"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">bigGrid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">nIter</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">151</span><span class="hl std">,</span> <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">))</span>
@@ -786,7 +766,6 @@ A few more notes:
 </pre></div>
 </div><div class="rimage default"><img src="figure/custom_lb_times.png" title="plot of chunk custom_lb_times" alt="plot of chunk custom_lb_times" class="plot" /></div></div>
 
-
 <p>
 The speed-ups show a significant decrease in training time using this method.
 </p>
@@ -815,7 +794,6 @@ To do this, we will only modify the <span class="mx arg">fit</span> function. Su
 </pre></div>
 </div></div>
 
-
 <p> We can simulate some data with a class imbalance and test this model and the usual LDA model.</p>
 
 <div class="chunk" id="custom_lda_data"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">1135</span><span class="hl std">)</span>
@@ -828,7 +806,6 @@ Class1 Class2
    270     30 
 </pre></div>
 </div></div>
-
 
 <div class="chunk" id="custom_lda_both"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">ldaCtrl</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">trainControl</span><span class="hl std">(</span><span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;repeatedcv&quot;</span><span class="hl std">,</span> <span class="hl kwc">repeats</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">,</span>
                         <span class="hl kwc">classProbs</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">,</span>
@@ -867,7 +844,6 @@ Area under the curve: 0.744
 </pre></div>
 </div></div>
 
-
 <p> For these data, SMOTE didn't seem to make much of a difference. </p>
 
 <div id="Illustration4"></div>
@@ -891,7 +867,6 @@ Area under the curve: 0.744
 <span class="hl std">proteinTest</span>  <span class="hl kwb">&lt;-</span> <span class="hl std">endpoints[</span><span class="hl opt">-</span><span class="hl std">trainMeats[[</span><span class="hl num">1</span><span class="hl std">]],</span> <span class="hl num">3</span><span class="hl std">]</span>
 </pre></div>
 </div></div>
-
 
 <p>Here is the model code:</p>
 <div class="chunk" id="custom_pls_rf"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">pls_rf</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">label</span> <span class="hl std">=</span> <span class="hl str">&quot;PLS-RF&quot;</span><span class="hl std">,</span>
@@ -939,7 +914,6 @@ Area under the curve: 0.744
                <span class="hl kwc">sort</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">) x[</span><span class="hl kwd">order</span><span class="hl std">(x[,</span><span class="hl num">1</span><span class="hl std">]),])</span>
 </pre></div>
 </div></div>
-
 <p>We fit the models and look at the resampling results for the joint model:</p>
 <div class="chunk" id="custom_meat_mod1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">meatCtrl</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">trainControl</span><span class="hl std">(</span><span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;repeatedcv&quot;</span><span class="hl std">,</span> <span class="hl kwc">repeats</span> <span class="hl std">=</span> <span class="hl num">5</span><span class="hl std">)</span>
 
@@ -954,7 +928,6 @@ Area under the curve: 0.744
 <span class="hl kwd">ggplot</span><span class="hl std">(plsrf,</span> <span class="hl kwc">plotType</span> <span class="hl std">=</span> <span class="hl str">&quot;level&quot;</span><span class="hl std">)</span>
 </pre></div>
 </div><div class="rimage default"><img src="figure/custom_meat_mod1.png" title="plot of chunk custom_meat_mod1" alt="plot of chunk custom_meat_mod1" class="plot" /></div></div>
-
 <div class="chunk" id="custom_meat_mod2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com">## How does random forest do on its own?</span>
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">184</span><span class="hl std">)</span>
 <span class="hl std">rfOnly</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(absorpTrain, proteinTrain,</span>
@@ -965,7 +938,7 @@ Area under the curve: 0.744
 <span class="hl kwd">getTrainPerf</span><span class="hl std">(rfOnly)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  TrainRMSE TrainRsquared method
-1     2.184        0.4964     rf
+1     2.181        0.4982     rf
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## How does random forest do on its own?</span>
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">184</span><span class="hl std">)</span>
@@ -980,17 +953,16 @@ Area under the curve: 0.744
 1     0.629        0.9597    pls
 </pre></div>
 </div></div>
-
 <p>The test set results indicate that these data like the linear model more than anything:</p>
 <div class="chunk" id="custom_meat_test"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(</span><span class="hl kwd">predict</span><span class="hl std">(plsrf, absorpTest), proteinTest)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">    RMSE Rsquared 
-  1.3403   0.8246 
+  1.3741   0.8205 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(</span><span class="hl kwd">predict</span><span class="hl std">(rfOnly, absorpTest), proteinTest)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">    RMSE Rsquared 
-  2.0148   0.5822 
+  1.9948   0.5942 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(</span><span class="hl kwd">predict</span><span class="hl std">(plsOnly, absorpTest), proteinTest)</span>
 </pre></div>
@@ -998,7 +970,6 @@ Area under the curve: 0.744
   0.7180   0.9438 
 </pre></div>
 </div></div>
-
 
 <div id="Illustration5"></div>
 <h1>Illustrative Example 5: Optimizing probability thresholds for class imbalances</h1>
@@ -1024,7 +995,6 @@ Class1 Class2
    450     50 
 </pre></div>
 </div></div>
-
     
 <p>
 There is almost a 9:1 imbalance in these data.
@@ -1045,7 +1015,7 @@ Let's use a standard random forest model with these data using the default value
 <span class="hl kwd">getTrainPerf</span><span class="hl std">(mod0)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  TrainROC TrainSens TrainSpec method
-1   0.9566    0.9987      0.32     rf
+1   0.9571    0.9982      0.32     rf
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## Get the ROC curve</span>
 <span class="hl std">roc0</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">roc</span><span class="hl std">(testingSet</span><span class="hl opt">$</span><span class="hl std">Class,</span>
@@ -1075,7 +1045,6 @@ Data: predict(mod0, testingSet, type = "prob")[, 1] in 34 controls (testingSet$C
 Area under the curve: 0.928
 </pre></div>
 </div></div>
-
     
 <p>
 The area under the ROC curve is very high, indicating that the model has very good predictive power for these data. The plot shows the default probability cut off value of 50%. The sensitivity and specificity values associated with this point indicate that performance is not that good when an actual call needs to be made on a sample. 
@@ -1167,7 +1136,6 @@ Suppose the model has one tuning parameter and we want to look at four candidate
   <span class="hl std">}</span>
 </pre></div>
 </div></div>
-
     
 <p>
 Basically, we define a list of model components (such as the fitting code, the prediction code, etc.) and feed this into the train function instead of using a pre-listed model string (such as <tt><span class="hl std">method</span> <span class="hl kwb">=</span> <span class="hl str">&quot;rf&quot;</span></tt>). For this model and these data, there was an 8% increase in training time to evaluate 20 additional values of the probability cut off.
@@ -1207,7 +1175,6 @@ How do we optimize this model? Normally we might look at the area under the ROC 
 <span class="hl std">mod1</span>
 </pre></div>
 </div></div>
-
 <div class="chunk" id="custom_thresh_dist_print"><div class="rcode"><div class="output"><pre class="knitr r">Random Forest 
 
 500 samples
@@ -1222,33 +1189,32 @@ Summary of sample sizes: 450, 450, 450, 450, 450, 450, ...
 Resampling results across tuning parameters:
 
   threshold  ROC    Sens   Spec   Dist   ROC SD  Sens SD  Spec SD  Dist SD
-  0.0100     0.958  1.000  0.000  1.000  0.0354  0.0000   0.0000   0.0000 
-  0.0616     0.958  1.000  0.000  1.000  0.0354  0.0000   0.0000   0.0000 
-  0.1132     0.958  1.000  0.000  1.000  0.0354  0.0000   0.0000   0.0000 
-  0.1647     0.958  1.000  0.000  1.000  0.0354  0.0000   0.0000   0.0000 
-  0.2163     0.958  1.000  0.000  1.000  0.0354  0.0000   0.0000   0.0000 
-  0.2679     0.958  1.000  0.000  1.000  0.0354  0.0000   0.0000   0.0000 
-  0.3195     0.958  1.000  0.028  0.972  0.0354  0.0000   0.0701   0.0701 
-  0.3711     0.958  1.000  0.072  0.928  0.0354  0.0000   0.1196   0.1196 
-  0.4226     0.958  1.000  0.124  0.876  0.0354  0.0000   0.1611   0.1611 
-  0.4742     0.958  1.000  0.256  0.744  0.0354  0.0000   0.2062   0.2062 
-  0.5258     0.958  0.996  0.416  0.584  0.0354  0.0110   0.2014   0.2014 
-  0.5774     0.958  0.988  0.556  0.446  0.0354  0.0186   0.2072   0.2043 
-  0.6289     0.958  0.972  0.612  0.393  0.0354  0.0293   0.1955   0.1893 
-  0.6805     0.958  0.966  0.660  0.347  0.0354  0.0318   0.1990   0.1927 
-  0.7321     0.958  0.952  0.700  0.310  0.0354  0.0424   0.1773   0.1709 
-  0.7837     0.958  0.932  0.732  0.286  0.0354  0.0436   0.1647   0.1540 
-  0.8353     0.958  0.897  0.836  0.215  0.0354  0.0449   0.1439   0.1165 
-  0.8868     0.958  0.834  0.940  0.196  0.0354  0.0480   0.1010   0.0713 
-  0.9384     0.958  0.680  0.996  0.321  0.0354  0.0681   0.0283   0.0672 
-  0.9900     0.958  0.175  1.000  0.825  0.0354  0.0493   0.0000   0.0493 
+  0.0100     0.956  1.000  0.000  1.000  0.0376  0.00000  0.0000   0.0000 
+  0.0616     0.956  1.000  0.000  1.000  0.0376  0.00000  0.0000   0.0000 
+  0.1132     0.956  1.000  0.000  1.000  0.0376  0.00000  0.0000   0.0000 
+  0.1647     0.956  1.000  0.000  1.000  0.0376  0.00000  0.0000   0.0000 
+  0.2163     0.956  1.000  0.000  1.000  0.0376  0.00000  0.0000   0.0000 
+  0.2679     0.956  1.000  0.000  1.000  0.0376  0.00000  0.0000   0.0000 
+  0.3195     0.956  1.000  0.024  0.976  0.0376  0.00000  0.0657   0.0657 
+  0.3711     0.956  1.000  0.072  0.928  0.0376  0.00000  0.1325   0.1325 
+  0.4226     0.956  1.000  0.124  0.876  0.0376  0.00000  0.1661   0.1661 
+  0.4742     0.956  1.000  0.248  0.752  0.0376  0.00000  0.1876   0.1876 
+  0.5258     0.956  0.997  0.452  0.548  0.0376  0.00899  0.2013   0.2013 
+  0.5774     0.956  0.989  0.552  0.449  0.0376  0.01810  0.2002   0.1993 
+  0.6289     0.956  0.973  0.624  0.381  0.0376  0.02885  0.2006   0.1939 
+  0.6805     0.956  0.964  0.656  0.351  0.0376  0.03299  0.1897   0.1836 
+  0.7321     0.956  0.952  0.696  0.314  0.0376  0.03854  0.1862   0.1791 
+  0.7837     0.956  0.934  0.724  0.293  0.0376  0.04523  0.1709   0.1605 
+  0.8353     0.956  0.896  0.820  0.227  0.0376  0.04679  0.1471   0.1233 
+  0.8868     0.956  0.831  0.940  0.199  0.0376  0.04979  0.1010   0.0721 
+  0.9384     0.956  0.680  0.992  0.322  0.0376  0.07512  0.0396   0.0762 
+  0.9900     0.956  0.176  1.000  0.824  0.0376  0.06401  0.0000   0.0640 
 
 Tuning parameter 'mtry' was held constant at a value of 3
 Dist was used to select the optimal model using  the smallest value.
 The final values used for the model were mtry = 3 and threshold = 0.887. 
 </pre></div>
 </div></div>
-
 
 <p>
 results
@@ -1268,7 +1234,6 @@ Using <tt><span class="hl kwd">ggplot</span><span class="hl std">(mod1)</span></
   <span class="hl kwd">theme</span><span class="hl std">(</span><span class="hl kwc">legend.position</span> <span class="hl std">=</span> <span class="hl str">&quot;top&quot;</span><span class="hl std">)</span>
 </pre></div>
 </div><div class="rimage default"><img src="figure/custom_thresh_mod1.png" title="plot of chunk custom_thresh_mod1" alt="plot of chunk custom_thresh_mod1" class="plot" /></div></div>
-
 <p>
 You can see that as we increase the probability cut off for the first class it takes more and more evidence for a sample to be predicted as the first class. As a result the sensitivity goes down when the threshold becomes very large. The upside is that we can increase specificity in the same way. The blue curve shows the distance to the perfect model. The value of 0.89 was found to be optimal. 
 </p>
@@ -1290,25 +1255,31 @@ One great thing about this code is that it will automatically apply the optimize
   <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
   </li>
   <li>
-  <h2>Topics</h2>
-  <ul>
-          <li><a href="index.html">Main Page</a></li>
+    <h2>Topics</h2>
+    <ul>
+        <li><a href="index.html">Main Page</a></li>
       <li><a href="datasets.html">Data Sets</a></li>
-                <li><a href="visualizations.html">Visualizations</a></li>
-                <li><a href="preprocess.html">Pre-Processing</a></li>
-                <li><a href="splitting.html">Data Splitting</a></li>
-                <li><a href="misc.html">Miscellaneous Model Functions</a></li>
-                <li><a href="training.html">Model Training and Tuning</a></li>
-                <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
-                <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
-                 <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
-                <li><a href="custom_models.html">Using Custom Models</a></li>
-                <li><a href="varimp.html">Variable Importance</a></li>
-                <li><a href="featureselection.html">Feature Selection</a></li>
-                <li><a href="other.html">Other Functions</a></li>
-                <li><a href="parallel.html">Parallel Processing</a></li>
-                <li><a href="adaptive.html">Adaptive Resampling</a></li>
-</ul>
+        <li><a href="visualizations.html">Visualizations</a></li>
+        <li><a href="preprocess.html">Pre-Processing</a></li>
+        <li><a href="splitting.html">Data Splitting</a></li>
+        <li><a href="misc.html">Miscellaneous Model Functions</a></li>
+        <li><a href="training.html">Model Training and Tuning</a></li>
+        <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
+        <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
+        <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
+        <li><a href="custom_models.html">Using Custom Models</a></li>
+        <li><a href="varimp.html">Variable Importance</a></li>
+        <li><a href="featureselection.html">Feature Selection</a>
+        <ul>
+          <li><a href="rfe.html">RFE</a></li>
+            <li><a href="filters.html">Filters</a></li>
+            <li><a href="GA.html">GA</a></li>
+            <li><a href="SA.html">SA</a></li>
+        </ul></li>
+        <li><a href="other.html">Other Functions</a></li>
+        <li><a href="parallel.html">Parallel Processing</a></li>
+        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+  </ul>
   </li>
   </ul>
   </div>
@@ -1320,9 +1291,8 @@ One great thing about this code is that it will automatically apply the optimize
 </div>
   <div id="footer-content"></div>
 
-
   <div id="footer">
-  <p>Created on Fri Aug 15 2014 using caret version 6.0-34 and R Under development (unstable) (2014-07-22 r66230).</p>
+  <p>Created on Thu Jan 01 2015 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
   </div>
   <!-- end #footer -->
 </body>

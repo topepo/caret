@@ -145,7 +145,7 @@ a:hover {
 
 #logo {
 	float: left;
-	width: 800px;
+	width: 1000px;
 	margin: 0;
 	padding: 0;
 	margin-bottom: 30px;
@@ -159,7 +159,6 @@ a:hover {
 #logo h1 {
 	line-height: 100px;
 	letter-spacing: -2px;
-	text-transform: lowercase;
 	font-size: 3.8em;
 }
 
