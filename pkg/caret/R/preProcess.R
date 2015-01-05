@@ -490,7 +490,6 @@ bagImp <- function(var, x, B = 10) {
                         x = FALSE, 
                         keepX = FALSE)
   list(var = var,
-       model = mod)
+       model = trim(mod))
 }
-
 

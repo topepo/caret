@@ -2,6 +2,14 @@
 \title{News for Package \pkg{caret}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+
+\section{Changes in version 6.0-xx}{
+	\itemize{
+		\item CHAID from the R-Forge package \href{http://r-forge.r-project.org/projects/chaid/}{\pkg{CHAID}}
+		\item The total object size for \code{preProces} objects that used bagged imputation was reduced almost 5-fold. 
+	}
+}
+
 \section{Changes in version 6.0-41}{
 	\itemize{
 		\item The license was changed to GPL (>= 2) to accommodate new code from the GA package. 
