@@ -486,7 +486,9 @@ bagImp <- function(var, x, B = 10) {
   if(!is.data.frame(x)) x <- as.data.frame(x)
   mod <- ipred::bagging(as.formula(paste(var, "~.")),
                         data = x,
-                        nbagg = B)
+                        nbagg = B,
+                        x = FALSE, 
+                        keepX = FALSE)
   list(var = var,
        model = mod)
 }
