@@ -1,12 +1,22 @@
+#' Install a needed package
+#'
+#' In interactive mode, the system prompts the user for permission to
+#' install.  In non-interactive mode, permission is assumed.
+#'
+#' @param pkg One more more packages as a vector of characters.
 checkInstall <- function(pkg){
+  # packages that are not 'good' need to be installed
   good <- rep(TRUE, length(pkg))
   for(i in seq(along = pkg)){
     tested <- try(find.package(pkg[i]), silent = TRUE)
     if(class(tested)[1] == "try-error") good[i] <- FALSE
   }
-  if(any(!good)){
-    pkList <- paste(pkg[!good], collapse = ", ")
-    msg <- paste(sum(!good), 
+  if(all(good)) return(invisible())
+  # one or more packages need to be installed
+  inst <- pkg[!good]
+  pkList <- paste(inst, collapse = ", ")
+  if(interactive()) {
+    msg <- paste(sum(!good),
                  ifelse(sum(!good) > 1, " packages are", " package is"),
                  " needed for this model and",
                  ifelse(sum(!good) > 1, " are", " is"),
@@ -16,25 +26,24 @@ checkInstall <- function(pkg){
                  ifelse(sum(!good) > 1, " them", " it"),
                  " now?",
                  sep = "")
-    cat(msg)    
-    if(interactive()) {
-      bioc <- c("affy", "logicFS", "gpls", "vbmp")
-      installChoice <- menu(c("yes", "no"))
-      if(installChoice == 1){
-        hasBioc <- any(pkg[!good] %in% bioc)
-        if(!hasBioc) {
-          install.packages(pkg[!good])
-        } else {
-          inst <- pkg[!good]
-          instC <- inst[!(inst %in% bioc)]
-          instB <- inst[inst %in% bioc]
-          if(length(instC) > 0) install.packages(instC)
-          biocLite <- NULL
-          source("http://bioconductor.org/biocLite.R")
-          biocLite(instB)
-        }
-      } else stop()
-    } else stop()
+    cat(msg)
+    installChoice <- menu(c("yes", "no"))
+    if(1 != installChoice) stop()
+    }
+  writeLines(paste('Installing packages: ', pkList))
+  bioc <- c("affy", "logicFS", "gpls", "vbmp")
+  hasBioc <- any(inst %in% bioc)
+  if(!hasBioc) {
+    install.packages(inst)
+  } else {
+    # the list of packages to install from CRAN
+    instC <- inst[!(inst %in% bioc)]
+    # the list of packages to install from bioconductor
+    instB <- inst[inst %in% bioc]
+    if(length(instC) > 0) install.packages(instC)
+    biocLite <- NULL
+    source("http://bioconductor.org/biocLite.R")
+    biocLite(instB)
   }
 }
 
