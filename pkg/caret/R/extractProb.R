@@ -17,9 +17,10 @@ extractProb <- function(models,
   
   obsLevels <- levels(models[[1]])
   
-  trainX <- models[[1]]$trainingData[,!(names(models[[1]]$trainingData) %in% ".outcome")]
-  trainY <- models[[1]]$trainingData$.outcome  
-  
+  if(!unkOnly) {
+    trainX <- models[[1]]$trainingData[,!(colnames(models[[1]]$trainingData) %in% ".outcome")]
+    trainY <- models[[1]]$trainingData$.outcome  
+  }
   if(verbose)
   {
     cat("Number of training samples:", length(trainY), "\n")

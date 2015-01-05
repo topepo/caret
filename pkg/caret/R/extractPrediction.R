@@ -11,9 +11,10 @@ extractPrediction <- function(models,
   objectNames <- names(models)
   if(is.null(objectNames)) objectNames <- paste("Object", 1:length(models), sep = "")
   
-  trainX <- models[[1]]$trainingData[,!(names(models[[1]]$trainingData) %in% ".outcome"), drop = FALSE]
-  trainY <- models[[1]]$trainingData$.outcome  
-  
+  if(!unkOnly) {
+    trainX <- models[[1]]$trainingData[,!(colnames(models[[1]]$trainingData) %in% ".outcome"), drop = FALSE]
+    trainY <- models[[1]]$trainingData$.outcome  
+  }
   obsLevels <- levels(models[[1]])
   
   if(verbose)
@@ -61,7 +62,7 @@ extractPrediction <- function(models,
       if(!is.null(testX) & !is.null(testY))
       {
         if(any(colnames(testX) == ".outcome")) 
-         testX <- testX[, colnames(testX) != ".outcome", drop = FALSE]
+          testX <- testX[, colnames(testX) != ".outcome", drop = FALSE]
         
         tempTestPred <- predictionFunction(models[[i]]$modelInfo,
                                            models[[i]]$finalModel, 
@@ -93,7 +94,7 @@ extractPrediction <- function(models,
     if(!is.null(unkX))
     {
       if(any(colnames(unkX) == ".outcome")) 
-         unkX <- unkX[, colnames(unkX) != ".outcome", drop = FALSE]
+        unkX <- unkX[, colnames(unkX) != ".outcome", drop = FALSE]
       tempUnkPred <- predictionFunction(models[[i]]$modelInfo,
                                         models[[i]]$finalModel, 
                                         unkX, 
