@@ -80,6 +80,9 @@ trainY <- training$y
 testX <- trainX[, -ncol(training)]
 testY <- trainX$y 
 
+training_mat <- as.matrix(training)
+testing_mat <- as.matrix(testing)
+
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
 rctrl3 <- trainControl(method = "none")
@@ -116,6 +119,14 @@ test_reg_none_model <- train(trainX, trainY,
                              preProc = c("center", "scale"),
                              trace = FALSE, linout = TRUE)
 test_reg_none_pred <- predict(test_reg_none_model, testX)
+
+set.seed(849)
+test_reg_cv_matrix <- train(y ~ ., 
+                            data = training_mat, 
+                            method = "nnet", 
+                            trControl = rctrl1,
+                            trace = FALSE, linout = TRUE)
+test_reg_pred_matrix <- predict(test_reg_cv_matrix, testing_mat)
 
 #########################################################################
 
