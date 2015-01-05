@@ -8,9 +8,9 @@ modelInfo <- list(label = "CHi-squared Automated Interaction Detection",
                                                     "Splitting former Merged Threshold", "
                                                     Splitting former Merged Threshold")),
                   grid = function(x, y, len = NULL) {
-                    data.frame(alpha2 = seq(from = 05, to = 0.01, length = len),
+                    data.frame(alpha2 = seq(from = .05, to = 0.01, length = len),
                                alpha3 = -1,
-                               alpha4 = seq(from = 05, to = 0.01, length = len))
+                               alpha4 = seq(from = .05, to = 0.01, length = len))
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
