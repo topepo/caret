@@ -11,8 +11,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                     loop <- ddply(grid, c("shrinkage", "interaction.depth"),
                                   function(x) c(n.trees = max(x$n.trees)))
                     submodels <- vector(mode = "list", length = nrow(loop))
-                    for(i in seq(along = loop$n.trees))
-                    {
+                    for(i in seq(along = loop$n.trees)) {
                       index <- which(grid$interaction.depth == loop$interaction.depth[i] & 
                                        grid$shrinkage == loop$shrinkage[i])
                       trees <- grid[index, "n.trees"] 
@@ -26,8 +25,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                     ## 'distribution' in the control file. If the user wants to over-ride this,
                     ## this next bit will allow this.
                     theDots <- list(...)
-                    if(any(names(theDots) == "distribution"))
-                    {
+                    if(any(names(theDots) == "distribution")) {
                       modDist <- theDots$distribution
                       theDots$distribution <- NULL
                     } else {
@@ -74,8 +72,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                                     out
                                   })
                     
-                    if(!is.null(submodels))
-                    {
+                    if(!is.null(submodels)) {
                       tmp <- predict(modelFit, newdata, type = "response", n.trees = submodels$n.trees)
                       out <- switch(modelFit$distribution$name,
                                     multinomial = {
@@ -85,6 +82,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                                       tmp <- apply(tmp, 3, function(x) apply(x, 1, which.max))
                                       if(is.vector(tmp)) tmp <- matrix(tmp, nrow = 1)
                                       tmp <- t(apply(tmp, 1, function(x, lvl) lvl[x], lvl = lvl))
+                                      if(nrow(tmp) == 1 & nrow(newdata) > 1) tmp <- t(tmp)
                                       tmp <- as.list(as.data.frame(tmp, stringsAsFactors = FALSE))
                                       c(list(out), tmp)
                                     },
@@ -127,8 +125,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                                     out
                                   })
                     
-                    if(!is.null(submodels))
-                    {
+                    if(!is.null(submodels)) {
                       tmp <- predict(modelFit, newdata, type = "response", n.trees = submodels$n.trees)
                       tmp <- switch(modelFit$distribution$name,
                                     multinomial = {
