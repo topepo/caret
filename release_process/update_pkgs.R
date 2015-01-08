@@ -9,6 +9,8 @@ mods <- getModelInfo()
 libs <- unlist(lapply(mods, function(x) x$library))
 libs <- unique(sort(libs))
 libs <- libs[!(libs %in% c("caret", "vbmp", "gpls", "logicFS", "SDDA"))]
+libs <- c(libs, "knitr", "Hmisc", "googleVis", "animation", "desirability", "networkD3")
+
 
 ###################################################################
 ## Check to see if any packages are not on CRAN
