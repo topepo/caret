@@ -250,13 +250,10 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                         MeanSD, 
                         exclude = gsub("^\\.", "", colnames(info$loop)))
   
-  
-  
-  
-  
   new_info <- info
   num_left <- Inf
   for(iter in ctrl$adaptive$min:length(resampleIndex)) {
+    
     if(num_left > 1) {
       modelIndex <- resampleIndex[[iter]]
       holdoutIndex <- ctrl$indexOut[[iter]]
@@ -276,7 +273,6 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                  if(is.null(new_info$submodels[[parm]]) || nrow(new_info$submodels[[parm]]) > 0) {
                                    submod <- new_info$submodels[[parm]]
                                  } else submod <- NULL
-                                 
                                  mod <- try(
                                    createModel(x = x[modelIndex,,drop = FALSE ],
                                                y = y[modelIndex],
@@ -381,9 +377,6 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                    ## merge the fixed and seq parameter values together
                                    allParam <- expandParameters(new_info$loop[parm,,drop = FALSE], 
                                                                 submod)
-                                   #                                    print(new_info$loop[parm,,drop = FALSE])
-                                   #                                    print(submod)
-                                   #                                    print(allParam)
                                    allParam <- allParam[complete.cases(allParam),, drop = FALSE]
                                    
                                    ## collate the predicitons across all the sub-models
@@ -430,7 +423,6 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                      for(ind in seq(along = cells)) thisResample[[ind]] <- c(thisResample[[ind]], cells[[ind]])
                                    }
                                    thisResample <- do.call("rbind", thisResample)    
-                                   #                                    print(thisResample)
                                    thisResample <- cbind(allParam, thisResample)
                                    
                                  } else {       
@@ -470,7 +462,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                } ## end initial loop over resamples and models
       
     } 
-    #         browser() 
+
     init_result <- c(init_result, adapt_results)
     rs <- do.call("rbind", init_result[names(init_result) == "resamples"])
 
@@ -506,7 +498,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
       filtered_mods <- current_mods
       cat("x parameter filtering failed\n")
     }
-    
+
     if(ctrl$verboseIter) {
       excluded <- unique(rs$model_id)[!(unique(rs$model_id) %in% filtered_mods)]
       if(length(excluded) > 0) {  
@@ -881,8 +873,6 @@ gls_eval <- function(x, metric, maximize, alpha = 0.05) {
     ttest <- t.test(x2$value, alternative = "greater")$p.value
     keepers <- if(!is.na(ttest) && ttest >= alpha) levs[-1] else NULL
   }
-#   tmp <- subset(x, model_id %in% unique(c(bl, keepers)))[, c("decay", "size")]
-#   print(tmp[!duplicated(tmp),])
   unique(c(bl, keepers))
 }
 
