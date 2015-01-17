@@ -449,11 +449,9 @@ splom.resamples <- function (x, data = NULL, variables = "models",
                              models = x$models,
                              metric = NULL,
                              panelRange = NULL,
-                             ...) 
-{
+                             ...)  {
   
-  if(variables == "models")
-  {
+  if(variables == "models") {
     
     if(is.null(metric)) metric <- x$metric[1]
     if(length(metric) != 1) stop("exactly one metric must be given")
@@ -466,10 +464,10 @@ splom.resamples <- function (x, data = NULL, variables = "models",
                            "",
                            names(tmpData),
                            fixed = TRUE)
+    tmpData <- tmpData[, models,drop = FALSE]
     if(is.null(panelRange)) panelRange <- extendrange(tmpData)
     splom(~tmpData,
-          panel = function(x, y)
-          {
+          panel = function(x, y) {
             panel.splom(x, y, ...)
             panel.abline(0, 1, lty = 2, col = "darkgrey")
             
@@ -478,8 +476,7 @@ splom.resamples <- function (x, data = NULL, variables = "models",
           prepanel.limits = function(x) panelRange,
           ...)
   } else{
-    if(variables == "metrics")
-    {
+    if(variables == "metrics") {
       if(is.null(metric)) metric <- x$metric
       if(length(metric) < 2) stop("There should be at least two metrics")
       plotData <- melt(x$values, id.vars = "Resample")
