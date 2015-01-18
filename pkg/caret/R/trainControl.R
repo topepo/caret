@@ -19,6 +19,7 @@ trainControl <- function(method = "boot",
                          predictionBounds = rep(FALSE, 2),
                          seeds = NA,
                          adaptive = list(min = 5, alpha = 0.05, method = "gls", complete = TRUE),
+                         trim = FALSE,
                          allowParallel = TRUE)
 {
   if(is.null(selectionFunction)) stop("null selectionFunction values not allowed")
@@ -56,6 +57,7 @@ trainControl <- function(method = "boot",
        predictionBounds = predictionBounds,
        seeds = seeds,
        adaptive = adaptive,
+       trim = trim,
        allowParallel = allowParallel)
 }
 

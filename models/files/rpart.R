@@ -146,5 +146,12 @@ modelInfo <- list(label = "CART",
                     rownames(out2) <- out$Variable
                     out2  
                   },
+                  trim = function(x) {
+                    x$call <- list(na.action = (x$call)$na.action)
+                    x$x <- NULL
+                    x$y <- NULL
+                    x$where <- NULL
+                    x
+                  },
                   tags = c("Tree-Based Model", "Implicit Feature Selection"),
                   sort = function(x) x[order(x[,1], decreasing = TRUE),])

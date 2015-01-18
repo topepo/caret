@@ -25,6 +25,7 @@ trainControl(method = "boot",
              seeds = NA,
              adaptive = list(min = 5, alpha = 0.05, 
              	               method = "gls", complete = TRUE),
+             trim = FALSE,
              allowParallel = TRUE)
 }
 \arguments{
@@ -49,7 +50,7 @@ trainControl(method = "boot",
   \item{predictionBounds}{a logical or numeric vector of length 2 (regression only). If logical, the predictions can be constrained to be within the limit of the training set outcomes. For example, a value of \code{c(TRUE, FALSE)} would only constrain the lower end of predictions. If numeric, specific bounds can be used. For example, if \code{c(10, NA)}, values below 10 would be predicted as 10 (with no constraint in the upper side).}
   \item{seeds}{an optional set of integers that will be used to set the seed at each resampling iteration. This is useful when the models are run in parallel. A value of \code{NA} will stop the seed from being set within the worker processes while a value of \code{NULL} will set the seeds using a random set of integers. Alternatively, a list can be used. The list should have \code{B+1} elements where \code{B} is the number of resamples. The first \code{B} elements of the list should be vectors of integers of length \code{M} where \code{M} is the number of models being evaluated. The last element of the list only needs to be a single integer (for the final model). See the Examples section below and the Details section. }
   \item{adaptive}{a list used when \code{method} is \code{"adaptive_cv"}, \code{"adaptive_boot"} or \code{"adaptive_LGOCV"}. See Details below. }
-
+  \item{trim}{a logical. If \code{TRUE} the final model in \code{object\$finalModel} may have some components of the object removed so reduce the size of the saved object. The \code{predict} method will still work, but some other features of the model may not work. \code{trim}ing will occur only for models where this feature has been implemented. }
   \item{allowParallel}{if a parallel backend is loaded and available, should the function use it?}
 }
 

@@ -38,6 +38,22 @@ modelInfo <- list(label = "Bagged CART",
                     rownames(out) <- meanImp$variable
                     out
                   },
+                  trim = function(x) {
+                    trim_rpart <- function(x) {
+                      x$call <- list(na.action = (x$call)$na.action)
+                      x$x <- NULL
+                      x$y <- NULL
+                      x$where <- NULL
+                      x
+                    }
+                    x$mtrees <- lapply(x$mtrees, 
+                                       function(x){
+                                         x$bindx <- NULL
+                                         x$btree <- trim_rpart(x$btree)
+                                         x
+                                       } )
+                    x
+                  },
                   tags = c("Tree-Based Model", "Ensemble Model", "Bagging"), 
                   levels = function(x) levels(x$y),
                   sort = function(x) x)
