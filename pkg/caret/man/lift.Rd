@@ -14,7 +14,8 @@ For classification models, this function creates a 'lift plot' that describes ho
 lift(x, ...)
 
 \method{lift}{formula}(x, data = NULL, class = NULL,
-     subset = TRUE, lattice.options = NULL, labels = NULL, 
+     subset = TRUE, lattice.options = NULL, 
+     cuts = NULL, labels = NULL, 
      ...)
 
 \method{xyplot}{lift}(x, data, plot = "gain", values = NULL, ...)
@@ -35,6 +36,9 @@ An expression that evaluates to a logical or integer indexing vector. It is eval
 }
   \item{lattice.options}{
 A list that could be supplied to \code{\link[lattice:lattice.options]{lattice.options}} 
+}
+  \item{cuts}{
+If a single value is given, a sequence of values between 0 and 1 are created with length \code{cuts}. If a vector, these values are used as the cuts. If \code{NULL}, each unique value of the model prediction is used. This is helpful when the data set is large.  
 }
   \item{labels}{
 A named list of labels for keys. The list should have an element for each term on the right-hand side of the formula and the names should match the names of the models.

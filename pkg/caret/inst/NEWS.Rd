@@ -10,6 +10,7 @@
 		\item A new option to \code{trainControl} called \code{trim} was added where, if implemented, will reduce the model's footprint. However, features beyond simple prediction may not work. 
 		\item A rarely occurring bug in \code{gbm} model code was fixed (thanks to Wade Cooper)
 		\item \code{splom.resamples} now respects the \code{models} argument
+		\item A new argument to \code{lift} called \code{cuts} was added to allow more control over what thresholds are used to calculat the curve.
 	}
 }
 
