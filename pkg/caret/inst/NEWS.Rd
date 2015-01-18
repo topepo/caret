@@ -11,6 +11,7 @@
 		\item A rarely occurring bug in \code{gbm} model code was fixed (thanks to Wade Cooper)
 		\item \code{splom.resamples} now respects the \code{models} argument
 		\item A new argument to \code{lift} called \code{cuts} was added to allow more control over what thresholds are used to calculat the curve.
+		\item The \code{cuts} argument of \code{calibration} now accepts a vector of cut points.
 	}
 }
 

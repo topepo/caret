@@ -34,7 +34,7 @@ For \code{calibration.formula}, a data frame (or more precisely, anything that i
 a character string for the class of interest
 }
   \item{cuts}{
-the number of splits of the data are used to create the plot. By default, it uses as many cuts as there are rows in \code{data}
+If a single number this indicates the number of splits of the data are used to create the plot. By default, it uses as many cuts as there are rows in \code{data}. If a vector, these are the actual cuts that will be used.
 }
   \item{subset}{
 An expression that evaluates to a logical or integer indexing vector. It is evaluated in \code{data}. Only the resulting rows of \code{data} are used for the plot. 
