@@ -7,7 +7,8 @@
 	\itemize{
 		\item CHAID from the R-Forge package \href{http://r-forge.r-project.org/projects/chaid/}{\pkg{CHAID}}
 		\item The total object size for \code{preProces} objects that used bagged imputation was reduced almost 5-fold. 
-		\item A rarely occuring bug in \code{gbm} model code was fixed (thanks to Wade Cooper)
+		\item A new option to \code{trainControl} called \code{trim} was added where, if implemented, will reduce the model's footprint. However, features beyond simple prediction may not work. 
+		\item A rarely occurring bug in \code{gbm} model code was fixed (thanks to Wade Cooper)
 		\item \code{splom.resamples} now respects the \code{models} argument
 	}
 }
