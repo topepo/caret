@@ -466,3 +466,6 @@ S3method(oob_pred, list)
 
 S3method(gafs, default)
 S3method(safs, default) 
+
+S3method(trim, train)
+
