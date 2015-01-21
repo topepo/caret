@@ -10,7 +10,7 @@ for(i in seq(along = modelFiles)) {
   rm(modelInfo)
 }
 
-save(models, file = "~/Code/github/caret/pkg/caret/inst/models/models.RData")
+save(models, file = "../../pkg/caret/inst/models/models.RData")
 
 # cat("\nYou can update your caret installation using the command:\n\n")
 # cat(sprintf("  cp models.RData %s/.\n", system.file("models", package="caret")))

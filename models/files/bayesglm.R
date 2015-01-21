@@ -1,4 +1,4 @@
-modelInfo <- list(label = "Bayesian Generalized Linear Model", 
+modelInfo <- list(label = "Bayesian Generalized Linear Model",
                   library = "arm",
                   loop = NULL,
                   type = c('Regression', 'Classification'),
@@ -11,15 +11,15 @@ modelInfo <- list(label = "Bayesian Generalized Linear Model",
                     dat$.outcome <- y
                     theDots <- list(...)
                     if(!any(names(theDots) == "family"))
-                      theDots$family <- if(is.factor(dat$.outcome)) binomial() else gaussian()              
-                    
+                      theDots$family <- if(is.factor(dat$.outcome)) binomial() else gaussian()
+
                     ## pass in any model weights
                     if(!is.null(wts)) theDots$weights <- wts
-                    
+
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
                                         data = dat),
                                    theDots)
-                    
+
                     out <- do.call("bayesglm", modelArgs)
                     out$call <- NULL
                     out
@@ -43,6 +43,32 @@ modelInfo <- list(label = "Bayesian Generalized Linear Model",
                     ## glm models the second factor level. See Details in ?glm
                     colnames(out) <-  modelFit$obsLevels
                     out
+                  },
+                  trim = function(x) {
+                    #Based off: http://www.win-vector.com/blog/2014/05/trimming-the-fat-from-glm-models-in-r/
+                    x$y = c()
+                    x$model = c()
+
+                    x$residuals = c()
+                    x$fitted.values = c()
+                    x$effects = c()
+                    x$qr$qr = c()
+                    x$linear.predictors = c()
+                    x$weights = c()
+                    x$prior.weights = c()
+                    x$data = c()
+
+                    x$family$variance = c()
+                    x$family$dev.resids = c()
+                    x$family$aic = c()
+                    x$family$validmu = c()
+                    x$family$simulate = c()
+                    attr(x$terms,".Environment") = c()
+                    attr(x$formula,".Environment") = c()
+                    x$R <- c() #Not in a glm
+                    x$xNames <- c()
+                    x$xlevels <- c()
+                    x
                   },
                   tags = c("Generalized Linear Model", "Logistic Regression", "Linear Classifier"),
                   sort = function(x) x)
