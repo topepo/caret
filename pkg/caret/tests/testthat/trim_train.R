@@ -10,6 +10,7 @@ test_that('train classification', {
   class_trim <- train(Class ~ ., data = tr_dat,
                       method = "rpart",
                       tuneGrid = data.frame(cp = 0.22),
+                      preProc = c("center", "bagImpute"),
                       trControl = trainControl(method = "none", 
                                                classProbs = TRUE,
                                                trim = TRUE))
@@ -19,6 +20,7 @@ test_that('train classification', {
   class_notrim <- train(Class ~ ., data = tr_dat,
                         method = "rpart",
                         tuneGrid = data.frame(cp = 0.22),
+                        preProc = c("center", "bagImpute"),
                         trControl = trainControl(method = "none", 
                                                  classProbs = TRUE,
                                                  trim = FALSE))
