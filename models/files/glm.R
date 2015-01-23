@@ -10,18 +10,18 @@ modelInfo <- list(label = "Generalized Linear Model",
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     if(length(levels(y)) > 2) stop("glm models can only use 2-class outcomes")
-                    
+
                     theDots <- list(...)
                     if(!any(names(theDots) == "family"))
                     {
-                      theDots$family <- if(is.factor(y)) binomial() else gaussian()              
+                      theDots$family <- if(is.factor(y)) binomial() else gaussian()
                     }
-                    
+
                     ## pass in any model weights
                     if(!is.null(wts)) theDots$weights <- wts
-                    
+
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."), data = dat), theDots)
-                    
+
                     out <- do.call("glm", modelArgs)
                     ## When we use do.call(), the call infformation can contain a ton of
                     ## information. Inlcuding the contenst of the data. We eliminate it.
@@ -55,9 +55,33 @@ modelInfo <- list(label = "Generalized Linear Model",
                     out <- data.frame(varImps)
                     colnames(out) <- "Overall"
                     if(!is.null(names(varImps))) rownames(out) <- names(varImps)
-                    out   
+                    out
                   },
                   predictors = function(x, ...) predictors(x$terms),
                   levels = function(x) if(any(names(x) == "obsLevels")) x$obsLevels else NULL,
+                  trim = function(x) {
+                    #Based off: http://www.win-vector.com/blog/2014/05/trimming-the-fat-from-glm-models-in-r/
+                    x$y = c()
+                    x$model = c()
+
+                    x$residuals = c()
+                    x$fitted.values = c()
+                    x$effects = c()
+                    x$qr$qr = c()
+                    x$linear.predictors = c()
+                    x$weights = c()
+                    x$prior.weights = c()
+                    x$data = c()
+
+                    x$family$variance = c()
+                    x$family$dev.resids = c()
+                    x$family$aic = c()
+                    x$family$validmu = c()
+                    x$family$simulate = c()
+                    attr(x$terms,".Environment") = c()
+                    attr(x$formula,".Environment") = c()
+
+                    x
+                  },
                   tags = c("Generalized Linear Model", "Linear Classifier"),
                   sort = function(x) x)

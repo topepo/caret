@@ -489,7 +489,8 @@ bagImp <- function(var, x, B = 10) {
                         nbagg = B,
                         x = FALSE, 
                         keepX = FALSE)
+  trim_code <- getModelInfo("treebag", FALSE)[[1]]$trim
   list(var = var,
-       model = trim(mod))
+       model = trim_code(mod))
 }
 
