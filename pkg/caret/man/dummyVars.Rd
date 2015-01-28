@@ -128,8 +128,11 @@ when <- data.frame(time = c("afternoon", "night", "afternoon",
                            "Wed", "Wed", "Fri",
                            "Sat", "Sat", "Fri"))
 
-levels(when$time) <- c("morning", "afternoon", "night")
-levels(when$day) <- c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+levels(when$time) <- list(morning="morning",
+                          afternoon="afternoon",
+                          night="night")
+levels(when$day) <- list(Mon="Mon", Tue="Tue", Wed="Wed", Thu="Thu",
+                         Fri="Fri", Sat="Sat", Sun="Sun")
 
 ## Default behavior:
 model.matrix(~day, when)
