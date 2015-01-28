@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/topepo/caret.png?topepo=master)](https://travis-ci.org/topepo/caret)
+[![Coverage Status](https://coveralls.io/repos/topepo/caret/badge.svg)](https://coveralls.io/r/topepo/caret)
 
 # Classification and Regression Training
 
