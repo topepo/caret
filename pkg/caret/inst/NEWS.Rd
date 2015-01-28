@@ -12,6 +12,7 @@
 		\item \code{splom.resamples} now respects the \code{models} argument
 		\item A new argument to \code{lift} called \code{cuts} was added to allow more control over what thresholds are used to calculat the curve.
 		\item The \code{cuts} argument of \code{calibration} now accepts a vector of cut points.
+		\item Jason Schadewald noticed and fixed a bug in the man page for \code{dummyVars}
 	}
 }
 
