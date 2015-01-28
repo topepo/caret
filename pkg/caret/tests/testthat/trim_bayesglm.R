@@ -28,7 +28,7 @@ test_that('bayesglm classification', {
   expect_equal(predict(class_trim,   te_dat, type = "prob"),
                predict(class_notrim, te_dat, type = "prob"))
 
-  expect_less_than(object.size(class_trim)-object.size(class_notrim), 10)
+  expect_less_than(object.size(class_trim)-object.size(class_notrim), 0)
 })
 
 test_that('bayesglm regression', {
@@ -52,6 +52,6 @@ test_that('bayesglm regression', {
                                                trim = FALSE))
   expect_equal(predict(reg_trim,   te_dat),
                predict(reg_notrim, te_dat))
-  expect_less_than(object.size(reg_trim)-object.size(reg_notrim), 10)
+  expect_less_than(object.size(reg_trim)-object.size(reg_notrim), 0)
 })
 
