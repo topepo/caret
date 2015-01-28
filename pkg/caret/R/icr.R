@@ -24,7 +24,6 @@ icr.formula <- function (formula, data, weights, ...,
     res <- icr.default(x, y, weights = w, thresh = thresh, ...)
     res$terms <- Terms
     res$coefnames <- colnames(x)
-    res$call <- match.call()
     res$na.action <- attr(m, "na.action")
     res$contrasts <- cons
     res$xlevels <- .getXlevels(Terms, m)
