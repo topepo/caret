@@ -134,4 +134,10 @@ modelInfo <- list(label = "glmnet",
                   tags = c("Generalized Linear Model", "Implicit Feature Selection", 
                            "L1 Regularization", "L2 Regularization", "Linear Classifier",
                            "Linear Regression"),
-                  sort = function(x) x[order(-x$lambda, x$alpha),])
+                  sort = function(x) x[order(-x$lambda, x$alpha),],
+                  trim = function(x) {
+                    x$call <- NULL
+                    x$df <- NULL
+                    x$dev.ratio <- NULL
+                    x
+                  })
