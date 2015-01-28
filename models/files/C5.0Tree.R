@@ -18,4 +18,11 @@ modelInfo <- list(label = "Single C5.0 Tree",
                   },
                   varImp = function(object, ...) C5imp(object, ...),
                   tags = c("Tree-Based Model", "Implicit Feature Selection"),
-                  sort = function(x) x[order(x[,1]),])
+                  sort = function(x) x[order(x[,1]),],
+                  trim = function(x) {
+                    x$boostResults <- NULL
+                    x$size <- NULL
+                    x$call <- NULL
+                    x$output <- NULL
+                    x
+                  })

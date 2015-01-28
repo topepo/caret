@@ -71,4 +71,11 @@ modelInfo <- list(label = "Cost-Sensitive C5.0",
                   sort = function(x){
                     x$model <- factor(as.character(x$model), levels = c("rules", "tree"))
                     x[order(x$trials, x$model, !x$winnow, x$cost),]
+                  },
+                  trim = function(x) {
+                    x$boostResults <- NULL
+                    x$size <- NULL
+                    x$call <- NULL
+                    x$output <- NULL
+                    x
                   })
