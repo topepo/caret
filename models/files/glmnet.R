@@ -4,9 +4,21 @@ modelInfo <- list(label = "glmnet",
                   parameters = data.frame(parameter = c('alpha', 'lambda'),
                                           class = c("numeric", "numeric"),
                                           label = c('Mixing Percentage', 'Regularization Parameter')),
-                  grid = function(x, y, len = NULL) 
+                  grid = function(x, y, len = NULL) {
+                    numLev <- if(is.character(y) | is.factor(y)) length(levels(y)) else NA
+                    if(!is.na(numLev)) {
+                      fam <- ifelse(numLev > 2, "multinomial", "binomial")
+                    } else fam <- "gaussian"    
+                    init <- glmnet(as.matrix(x), y, 
+                                   family = fam, 
+                                   nlambda = len+2, 
+                                   alpha = .5)
+                    lambda <- unique(init$lambda)
+                    lambda <- lambda[-c(1, length(lambda))]
+                    lambda <- lambda[1:min(length(lambda), len)]
                     expand.grid(alpha = seq(0.1, 1, length = len),
-                                lambda = seq(.1, 3, length = 3 * len)),
+                                lambda = lambda)
+                  },
                   loop = function(grid) {  
                     alph <- unique(grid$alpha)
                     loop <- data.frame(alpha = alph)
@@ -51,7 +63,7 @@ modelInfo <- list(label = "glmnet",
                       out <- predict(modelFit, newdata, s = modelFit$lambdaOpt, type = "class")
                     }
                     if(is.matrix(out)) out <- out[,1]
-                      
+                    
                     if(!is.null(submodels)) {
                       if(length(modelFit$obsLevels) < 2) {
                         tmp <- as.list(as.data.frame(predict(modelFit, newdata, s = submodels$lambda)))
