@@ -7,7 +7,7 @@ knn3.default <- function(x, ...)
 
 knn3.formula <- function (formula, data, subset, na.action, k = 5, ...) 
 {
-    cl <- match.call()
+
     if (missing(formula) ||
         (length(formula) != 3) ||
         (length(attr(terms(formula[-2], data = data), "term.labels")) < 1) ||
@@ -36,7 +36,6 @@ knn3.formula <- function (formula, data, subset, na.action, k = 5, ...)
     RET <- list(learn = list(y = y, X = x))
     RET$k <- k
     RET$terms <- Terms
-    RET$call <- match.call(expand.dots = TRUE)
     RET$contrasts <- attr(x, "contrasts")
     RET$xlevels <- xlev
     RET$theDots <- list(...)
@@ -51,8 +50,6 @@ knn3.data.frame <- function(x, y, k = 5, ...)
 {
   x <- as.matrix(x)
   out <- knn3(x, y = y, k = k, ...)
-  call <- match.call(expand.dots = TRUE)
-  out$call <- call
   out
 }
 
@@ -63,7 +60,6 @@ knn3.matrix <- function(x, y, k = 5, ...)
     RET <- list(learn = list(y = y, X = x))
     RET$k <- k
     RET$terms <- NULL
-    RET$call <- match.call(expand.dots = TRUE)
     RET$contrasts <- NULL
     RET$xlevels <- NULL
     RET$theDots <- list(...)    
@@ -74,7 +70,6 @@ knn3.matrix <- function(x, y, k = 5, ...)
 print.knn3 <- function (x, ...) 
 {
    cat(x$k, "-nearest neighbor classification model\n", sep = "")
-   printCall(x$call)
    cat("Training set class distribution:\n")
    print(table(x$learn$y))
 

@@ -74,4 +74,11 @@ modelInfo <- list(label = "C5.0",
                   sort = function(x) {
                     x$model <- factor(as.character(x$model), levels = c("rules", "tree"))
                     x[order(x$trials, x$model, !x$winnow),]
+                  },
+                  trim = function(x) {
+                    x$boostResults <- NULL
+                    x$size <- NULL
+                    x$call <- NULL
+                    x$output <- NULL
+                    x
                   })

@@ -7,7 +7,6 @@ knnreg.default <- function(x, ...)
 
 knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...) 
 {
-  cl <- match.call()
   if (missing(formula) ||
       (length(formula) != 3) ||
       (length(attr(terms(formula[-2],  data = data), "term.labels")) < 1) ||
@@ -36,7 +35,6 @@ knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...)
   RET <- list(learn = list(y = y, X = x))
   RET$k <- k
   RET$terms <- Terms
-  RET$call <- match.call(expand.dots = TRUE)
   RET$contrasts <- attr(x, "contrasts")
   RET$xlevels <- xlev
   RET$theDots <- list(...)
@@ -54,7 +52,6 @@ knnreg.matrix <- function(x, y, k = 5, ...)
   RET <- list(learn = list(y = y, X = x))
   RET$k <- k
   RET$terms <- NULL
-  RET$call <- match.call(expand.dots = TRUE)
   RET$contrasts <- NULL
   RET$theDots <- list(...)    
   class(RET) <- "knnreg"
@@ -69,7 +66,6 @@ knnreg.data.frame <- function(x, y, k = 5, ...)
   RET <- list(learn = list(y = y, X = x))
   RET$k <- k
   RET$terms <- NULL
-  RET$call <- match.call(expand.dots = TRUE)
   RET$contrasts <- NULL
   RET$theDots <- list(...)    
   class(RET) <- "knnreg"
@@ -79,7 +75,6 @@ knnreg.data.frame <- function(x, y, k = 5, ...)
 print.knnreg <- function (x, ...) 
 {
   cat(x$k, "-nearest neighbor regression model\n", sep = "")
-  printCall(x$call)
   invisible(x)
 }
 

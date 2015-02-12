@@ -7,7 +7,6 @@ function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
 {
   requireNamespaceQuietStop("mda")
   requireNamespaceQuietStop("earth")
-   funcCall <- match.call(expand.dots = TRUE)
    if(!is.matrix(x)) x <- as.matrix(x)
    if(!is.vector(y) & !is.factor(y)) y <- as.vector(y)   
    if(!is.vector(y) & !is.factor(y)) y <- factor(y[,1])
@@ -40,13 +39,12 @@ function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
    oob <- matrix(unlist(oobList), ncol = length(oobList[[1]]), byrow = TRUE)
    colnames(oob) <- names(oobList[[1]])
    if(keepX) x <- x else x <- NULL
-   structure(list(fit = btFits, B = B, oob = oob, call = funcCall, x = x, levels = levels(y), dots = list(...)), class = "bagFDA")
+   structure(list(fit = btFits, B = B, oob = oob, x = x, levels = levels(y), dots = list(...)), class = "bagFDA")
 }
 
 "bagFDA.formula" <-
 function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights, na.action = na.omit) 
 {
-   funcCall <- match.call(expand.dots = TRUE)
    
    if (!inherits(formula, "formula")) 
      stop("method is only for formula objects")
@@ -67,7 +65,6 @@ function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights, na.a
    if (xint > 0)  x <- x[, -xint, drop = FALSE]
    
    out <- bagFDA.default(x, y, w, B = B, keepX = keepX, ...)
-   out$call <- funcCall
    out
 }
 
@@ -75,7 +72,6 @@ function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights, na.a
 "print.bagFDA" <-
 function (x, ...) 
 {
-    cat("\nCall:\n", deparse(x$call), "\n\n", sep = "")
     if(!is.null(x$x))cat("Data:\n   # variables:\t", dim(x$x)[2], "\n   # samples:\t", dim(x$x)[1], "\n")
     cat(
       "\nModel:",
@@ -152,7 +148,7 @@ function(object, ...)
       }))
    modelInfo <- cbind(numTerms, numVar)
    colnames(modelInfo) <- c("Num Terms", "Num Variables")
-   out <- list(modelInfo = modelInfo, oobStat = oobStat, bagMARSCall = object$call)
+   out <- list(modelInfo = modelInfo, oobStat = oobStat)
    class(out) <- "summary.bagFDA"
    out
 }
@@ -160,8 +156,6 @@ function(object, ...)
 "print.summary.bagFDA" <-
 function(x, digits = max(3, getOption("digits") - 3), ...)
 {
-   cat("\nCall:\n", deparse(x$bagMARSCall), "\n\n", sep = "")
-
    oobStat <- apply(x$oob, 2, function(x) quantile(x, probs = c(0, 0.025, .25, .5, .75, .975, 1)))
    cat("Out of bag statistics:\n\n")
    print(x$oobStat, digits = digits)

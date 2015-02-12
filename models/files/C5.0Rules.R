@@ -18,4 +18,11 @@ modelInfo <- list(label = "Single C5.0 Ruleset",
                   },
                   varImp = function(object, ...) C5imp(object, ...),
                   tags = c("Rule-Based Model", "Implicit Feature Selection"),
+                  trim = function(x) {
+                    x$boostResults <- NULL
+                    x$size <- NULL
+                    x$call <- NULL
+                    x$output <- NULL
+                    x
+                  },
                   sort = function(x) x[order(x[,1]),])

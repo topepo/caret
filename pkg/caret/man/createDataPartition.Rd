@@ -21,7 +21,8 @@ createDataPartition(y,
 createResample(y, times = 10, list = TRUE)
 createFolds(y, k = 10, list = TRUE, returnTrain = FALSE)
 createMultiFolds(y, k = 10, times = 5)
-createTimeSlices(y, initialWindow, horizon = 1, fixedWindow = TRUE)
+createTimeSlices(y, initialWindow, horizon = 1, 
+	             fixedWindow = TRUE, skip = 0)
 }
 \arguments{
   \item{y}{a vector of outcomes. For \code{createTimeSlices}, these should be in chronological order.}
@@ -39,6 +40,7 @@ createTimeSlices(y, initialWindow, horizon = 1, fixedWindow = TRUE)
   \item{initialWindow}{The initial number of consecutive values in each training set sample}
   \item{horizon}{The number of consecutive values in test set sample}
   \item{fixedWindow}{A logical: if \code{FALSE}, the training set always start at the first sample.}
+  \item{skip}{An integer specifying how many (if any) resamples to skip to thin the total amount.}  
 }
 \details{
 
@@ -104,6 +106,10 @@ createTimeSlices(1:9, 5, 1, fixedWindow = FALSE)
 createTimeSlices(1:9, 5, 1, fixedWindow = TRUE)
 createTimeSlices(1:9, 5, 3, fixedWindow = TRUE)
 createTimeSlices(1:9, 5, 3, fixedWindow = FALSE)
+
+createTimeSlices(1:15, 5, 3)
+createTimeSlices(1:15, 5, 3, skip = 2)
+createTimeSlices(1:15, 5, 3, skip = 3)
 }
 \keyword{utilities}
 
