@@ -16,6 +16,7 @@
 		\item Call objects were remoed from the following models: \code{avNNet}, \code{bagFDA}, \code{icr}, \code{knn3}, \code{knnreg}, \code{pcaNNet}, and \code{plsda}.
 		\item An argument was added to \code{createTimeSlices} to thin the number of resamples
 		\item The RFE-related functions \code{lrFuncs}, \code{lmFuncs}, and \code{gamFuncs} were updated so that \code{rfe} accepts a matrix \code{x} argument. 
+		\item Using the default grid generation with \code{train} and \code{glmnet}, an initial \code{glmnet} fit is created with \code{alpha = 0.50} to define the \code{lambda} values. 
 
 	}
 }
