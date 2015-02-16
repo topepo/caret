@@ -15,6 +15,7 @@
 		\item Jason Schadewald noticed and fixed a bug in the man page for \code{dummyVars}
 		\item Call objects were remoed from the following models: \code{avNNet}, \code{bagFDA}, \code{icr}, \code{knn3}, \code{knnreg}, \code{pcaNNet}, and \code{plsda}.
 		\item An argument was added to \code{createTimeSlices} to thin the number of resamples
+		\item The RFE-related functions \code{lrFuncs}, \code{lmFuncs}, and \code{gamFuncs} were updated so that \code{rfe} accepts a matrix \code{x} argument. 
 
 	}
 }
