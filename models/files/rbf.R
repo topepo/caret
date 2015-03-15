@@ -1,7 +1,7 @@
 modelInfo <- list(label = "Radial Basis Function Network",
                   library = "RSNNS",
                   loop = NULL,
-                  type = c('Classification'),
+                  type = c('Classification','Regression'),
                   parameters = data.frame(parameter = c('size'),
                                           class = c('numeric'),
                                           label = c('#Hidden Units')),
