@@ -7,7 +7,6 @@ env:
      - WARNINGS_ARE_ERRORS=1
      - R_BUILD_ARGS="--no-build-vignettes --no-manual"
      - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
-     - R_CHECK_REVDEP="1" # checks reverse depends
    matrix:
      - NOT_CRAN="true"
      - NOT_CRAN="false"
