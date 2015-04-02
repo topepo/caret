@@ -16,7 +16,7 @@ function(x, top = min(20, dim(x$importance)[1]), digits = max(3, getOption("digi
       printObj <- printObj[,1,drop = FALSE]
       names(printObj) <- "Importance"
    }
-   print.data.frame(printObj, digits = digits, ...)
+   print(printObj, digits = digits, ...)
    invisible(x)
 }
 
