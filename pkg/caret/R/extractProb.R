@@ -1,4 +1,4 @@
-
+## TODO use foreach to parallelize
 
 extractProb <- function(models, 
                         testX = NULL, 
@@ -39,17 +39,15 @@ extractProb <- function(models,
   for(i in seq(along = models))
   {
     if(verbose) cat("starting ", models[[i]]$method, "\n"); flush.console()         
-    if(!unkOnly)
-    {        
-      tempTrainPred <- predictionFunction(models[[i]]$modelInfo,
-                                          models[[i]]$finalModel, 
-                                          trainX, 
-                                          models[[i]]$preProcess)    
+    if(!unkOnly) {        
       tempTrainProb <- probFunction(models[[i]]$modelInfo,
                                     models[[i]]$finalModel, 
                                     trainX, 
                                     models[[i]]$preProcess)    
-      
+      tempTrainPred <- apply(tempTrainProb, 1, which.max)
+      tempTrainPred <- colnames(tempTrainProb)[tempTrainPred]
+      tempTrainPred <- factor(tempTrainPred, 
+                              levels = models[[i]]$modelInfo$levels(models[[i]]$finalModel))
       
       if(verbose) cat(models[[i]]$method, ":", length(tempTrainPred), "training predictions were added\n"); flush.console()         
       
@@ -61,21 +59,20 @@ extractProb <- function(models,
       dataType <- c(dataType, rep("Training", length(tempTrainPred)))         
       
       # Test Data         
-      if(!is.null(testX) & !is.null(testY))
-      {
+      if(!is.null(testX) & !is.null(testY)) {
         if(!is.data.frame(testX)) testX <- as.data.frame(testX)
         tempX <- testX
         tempY <- testY
-        tempX$.outcome <- NULL
-        tempTestPred <- predictionFunction(models[[i]]$modelInfo,
-                                           models[[i]]$finalModel, 
-                                           tempX, 
-                                           models[[i]]$preProcess)    
+        tempX$.outcome <- NULL  
         tempTestProb <- probFunction(models[[i]]$modelInfo,
                                      models[[i]]$finalModel, 
                                      tempX, 
-                                     models[[i]]$preProcess)   
-        
+                                     models[[i]]$preProcess)  
+        tempTestPred <- apply(tempTestProb, 1, which.max)
+        tempTestPred <- colnames(tempTestProb)[tempTestPred]
+        tempTestPred <- factor(tempTestPred, 
+                                levels = models[[i]]$modelInfo$levels(models[[i]]$finalModel))
+
         if(verbose) cat(models[[i]]$method, ":", length(tempTestPred), "test predictions were added\n")         
         
         predProb <- if(is.null(predProb)) tempTestProb else rbind(predProb, tempTestProb)             
@@ -94,16 +91,16 @@ extractProb <- function(models,
       if(!is.data.frame(unkX)) unkX <- as.data.frame(unkX)
       tempX <- unkX
       tempX$.outcome <- NULL
-      
-      tempUnkPred <- predictionFunction(models[[i]]$modelInfo,
-                                        models[[i]]$finalModel, 
-                                        tempX, 
-                                        models[[i]]$preProcess)    
+       
       tempUnkProb <- probFunction(models[[i]]$modelInfo,
                                   models[[i]]$finalModel, 
                                   tempX, 
                                   models[[i]]$preProcess)  
-      
+      tempUnkPred <- apply(tempUnkProb, 1, which.max)
+      tempUnkPred <- colnames(tempUnkProb)[tempUnkPred]
+      tempUnkPred <- factor(tempUnkPred, 
+                            levels = models[[i]]$modelInfo$levels(models[[i]]$finalModel))
+
       if(verbose) cat(models[[i]]$method, ":", length(tempUnkPred), "unknown predictions were added\n")         
       
       predProb <- if(is.null(predProb)) tempUnkProb else rbind(predProb, tempUnkProb)      
