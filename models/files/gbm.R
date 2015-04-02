@@ -29,8 +29,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                       modDist <- theDots$distribution
                       theDots$distribution <- NULL
                     } else {
-                      if(is.numeric(y))
-                      {
+                      if(is.numeric(y)) {
                         modDist <- "gaussian"
                       } else modDist <- if(length(lev) == 2)  "bernoulli" else "multinomial"
                     }
@@ -45,6 +44,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                                     n.trees = param$n.trees,
                                     shrinkage = param$shrinkage, 
                                     distribution = modDist)
+                    if(any(names(theDots) == "family")) modArgs$distribution <- NULL
                     
                     if(length(theDots) > 0) modArgs <- c(modArgs, theDots)
                     

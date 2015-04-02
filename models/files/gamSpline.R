@@ -14,9 +14,12 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                     args$formula <- caret:::smootherFormula(x,
                                                             smoother = "s",
                                                             df = param$df)
-                    args$family <- if(is.factor(y)) binomial else gaussian
-
                     theDots <- list(...)
+                    
+                    
+                    if(!any(names(theDots) == "family")) 
+                      args$family <- if(is.factor(y)) binomial else gaussian
+                    
                     if(length(theDots) > 0) args <- c(args, theDots)
                     
                     do.call(getFromNamespace("gam", "gam"), args)

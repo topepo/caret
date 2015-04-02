@@ -10,13 +10,19 @@
 		\item A new option to \code{trainControl} called \code{trim} was added where, if implemented, will reduce the model's footprint. However, features beyond simple prediction may not work. 
 		\item A rarely occurring bug in \code{gbm} model code was fixed (thanks to Wade Cooper)
 		\item \code{splom.resamples} now respects the \code{models} argument
-		\item A new argument to \code{lift} called \code{cuts} was added to allow more control over what thresholds are used to calculat the curve.
+		\item A new argument to \code{lift} called \code{cuts} was added to allow more control over what thresholds are used to calculate the curve.
 		\item The \code{cuts} argument of \code{calibration} now accepts a vector of cut points.
 		\item Jason Schadewald noticed and fixed a bug in the man page for \code{dummyVars}
-		\item Call objects were remoed from the following models: \code{avNNet}, \code{bagFDA}, \code{icr}, \code{knn3}, \code{knnreg}, \code{pcaNNet}, and \code{plsda}.
+		\item Call objects were removed from the following models: \code{avNNet}, \code{bagFDA}, \code{icr}, \code{knn3}, \code{knnreg}, \code{pcaNNet}, and \code{plsda}.
 		\item An argument was added to \code{createTimeSlices} to thin the number of resamples
 		\item The RFE-related functions \code{lrFuncs}, \code{lmFuncs}, and \code{gamFuncs} were updated so that \code{rfe} accepts a matrix \code{x} argument. 
 		\item Using the default grid generation with \code{train} and \code{glmnet}, an initial \code{glmnet} fit is created with \code{alpha = 0.50} to define the \code{lambda} values. 
+		\item \code{train} models for \code{"gbm"}, \code{"gam"}, \code{"gamSpline"}, and \code{"gamLoess"} now allow their respective arguments for the outcome probability distribution to be passed to the underlying function.
+		\item A bug in \code{print.varImp.train} was fixed. 
+		\item \code{train} now returns an additional column called \code{rowIndex} that is exposed when calling the summary function during resampling. 
+		\item The ability to compute class probabilities was removed from the \code{rpartCost} model since they are unlikely to agree with the class predictions. 
+		\item \code{extractProb} no longer redundantly calls \code{extractPrediction} to generate the class predictions. 
+
 
 	}
 }

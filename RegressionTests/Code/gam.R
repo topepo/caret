@@ -27,6 +27,14 @@ test_class_cv_model <- train(trainX, trainY,
                              preProc = c("center", "scale"))
 
 set.seed(849)
+test_class_cv_dist <- train(trainX, trainY, 
+                            method = "gam", 
+                            trControl = cctrl1,
+                            metric = "ROC", 
+                            preProc = c("center", "scale"),
+                            family = negbin(theta = 1))
+
+set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
                             method = "gam", 
                             trControl = cctrl1,
@@ -95,10 +103,17 @@ test_reg_cv_model <- train(trainX, trainY,
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
+test_reg_cv_dist <- train(trainX, trainY, 
+                          method = "gam", 
+                          trControl = rctrl1,
+                          preProc = c("center", "scale"),
+                          family = scat())
+
+set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
-                           method = "gam", 
-                           trControl = rctrl1,
-                           preProc = c("center", "scale"))
+                          method = "gam", 
+                          trControl = rctrl1,
+                          preProc = c("center", "scale"))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
