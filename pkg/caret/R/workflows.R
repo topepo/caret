@@ -234,17 +234,19 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
     
     ## collate the predicitons across all the sub-models
     predicted <- lapply(predicted,
-                        function(x, y, wts, lv) {
+                        function(x, y, wts, lv, rows) {
                           if(!is.factor(x) & is.character(x)) x <- factor(as.character(x), levels = lv)
                           out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
                           if(!is.null(wts)) out$weights <- wts
+                          out$rowIndex <- rows
                           out
                         },
                         y = y[holdoutIndex],
                         wts = wts[holdoutIndex],
-                        lv = lev)
+                        lv = lev,
+                        rows = holdoutIndex)
     if(testing) print(head(predicted))
-    
+
     ## same for the class probabilities
     if(ctrl$classProbs)
     {
@@ -292,6 +294,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
     names(tmp)[1] <- "pred"
     if(!is.null(wts)) tmp$weights <- wts[holdoutIndex]
     if(ctrl$classProbs) tmp <- cbind(tmp, probValues)
+    tmp$rowIndex <- holdoutIndex
     
     if(ctrl$savePredictions)
     {
@@ -303,6 +306,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
     } else tmpPred <- NULL
 
     ##################################
+    
     thisResample <- ctrl$summaryFunction(tmp,
                                          lev = lev,
                                          model = method)
@@ -459,15 +463,17 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
       {
         ## collate the predictions across all the sub-models
         predicted <- lapply(predicted,
-                            function(x, y, wts, lv) {
+                            function(x, y, wts, lv, rows) {
                               if(!is.factor(x) & is.character(x)) x <- factor(as.character(x), levels = lv)
                               out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
                               if(!is.null(wts)) out$weights <- wts
+                              out$rowIndex <- rows
                               out
                             },
                             y = y[holdoutIndex],
                             wts = wts[holdoutIndex],
-                            lv = lev)
+                            lv = lev,
+                            rows = seq(along = y)[holdoutIndex])
         if(testing) print(head(predicted))
         
         ## same for the class probabilities
@@ -481,7 +487,6 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
         predicted <- cbind(predicted, allParam)
         ## if saveDetails then save and export 'predicted'
       } else {
-        
         if(is.factor(y)) predicted <- factor(as.character(predicted),
                                              levels = lev)
         predicted <-  data.frame(pred = predicted,
@@ -489,6 +494,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
                                  stringsAsFactors = FALSE)
         if(!is.null(wts)) predicted$weights <- wts[holdoutIndex]
         if(ctrl$classProbs) predicted <- cbind(predicted, probValues)
+        predicted$rowIndex <- seq(along = y)[holdoutIndex]
         predicted <- cbind(predicted, info$loop[parm,,drop = FALSE])
         
       }

@@ -87,23 +87,6 @@ modelInfo <- list(label = "Cost-Sensitive CART",
                     }
                     out
                   },
-                  prob = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-                    out <- predict(modelFit, newdata, type = "prob")
-                    
-                    if(!is.null(submodels))
-                    {
-                      tmp <- vector(mode = "list", length = nrow(submodels) + 1)
-                      tmp[[1]] <- out
-                      for(j in seq(along = submodels$cp))
-                      {
-                        prunedFit <- prune.rpart(modelFit, cp = submodels$cp[j])
-                        tmpProb <- predict(prunedFit, newdata, type = "prob")
-                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE])
-                      }
-                      out <- tmp
-                    }                              
-                    out
-                  },
+                  prob = NULL,
                   tags = c("Tree-Based Model", "Implicit Feature Selection", "Cost Sensitive Learning"),
                   sort = function(x) x[order(-x$cp, -x$Cost),])

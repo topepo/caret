@@ -1,0 +1,422 @@
+\documentclass[12 pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.196, 0.196, 0.196}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.063,0.58,0.627}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.063,0.58,0.627}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.588,0.588,0.588}{#1}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0.196,0.196,0.196}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.196,0.196,0.196}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.231,0.416,0.784}{#1}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.627,0,0.314}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0.631,0.314}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.78,0.227,0.412}{#1}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+\usepackage{beamerthemesplit} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\mode<presentation> {
+  \usetheme{Boadilla} 
+  \usecolortheme{whale}
+  \setbeamercovered{transparent}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Custom definitions
+
+\definecolor{darkgreen}{rgb}{0,0.3,0}
+\definecolor{darkred}{rgb}{0.6,0.0,0}
+
+\newcommand{\mxnum}[1]{\texttt{\hlnum{#1}}}%
+\newcommand{\mxkwc}[1]{\texttt{\hlkwc{#1}}}%
+\newcommand{\mxkwd}[1]{\texttt{\hlkwd{#1}}}%
+
+\newcommand{\pkg}[1]{{\fontseries{b}\selectfont #1}}
+\renewcommand{\pkg}[1]{{\color{darkgreen}\textsf{#1}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Nobody Knows What It's Like To Be the Bad Man}
+\author{Max Kuhn, Ph.D}
+\institute{Pfizer Global R$\&$D \linebreak Groton, CT\linebreak max.kuhn@pfizer.com }
+\date{}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\begin{frame}[plain]
+  \maketitle
+\end{frame}
+
+\title{caret}
+\author{Max Kuhn}
+\institute{Pfizer}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{Outline}
+
+\begin{itemize}
+\item What is the \pkg{caret} package?
+\item What makes it different
+\item Version control
+\item The CRAN release process
+\item Testing
+\item Documentation
+\end{itemize}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{Model Function Consistency}
+
+Since there are many modeling packages in R written by different people,
+there are some inconsistencies in how models are specified and
+predictions are created.
+
+\vspace{.15in}
+
+For example, many models have only one method of specifying the model
+(e.g. formula method only)
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{Generating Class Probabilities Using Different Packages}
+
+\begin{footnotesize}
+\begin{center}
+\begin{tabular}{rcl}
+{\bf Function} && {\bf {\tt predict} Function Syntax} \\
+\hline
+ \href{http://cran.r-project.org/web/packages/MASS/index.html}{\pkg{MASS}}\texttt{:::lda} && {\tt \hlkwd{predict}\hlstd{(obj)}} (no options needed)\\
+\pkg{stats}\texttt{:::glm} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"response"}\hlstd{)}} \\
+\href{http://cran.r-project.org/web/packages/gbm/index.html}{\pkg{gbm}}\texttt{:::gbm} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"response"}\hlstd{, n.trees)}} \\
+\href{http://cran.r-project.org/web/packages/mda/index.html}{\pkg{mda}}\texttt{:::mda} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"posterior"}\hlstd{)}} \\  
+\href{http://cran.r-project.org/web/packages/rpart/index.html}{\pkg{rpart}}\texttt{:::rpart} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"prob"}\hlstd{)}}   \\
+\href{http://cran.r-project.org/web/packages/RWeka/index.html}{\pkg{RWeka}}\texttt{:::Weka} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"probability"}\hlstd{)}}  \\    
+\href{http://cran.r-project.org/web/packages/caTools/index.html}{\pkg{caTools}}\texttt{:::LogitBoost}  && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=}  \hlstr{"raw"}\hlstd{, nIter)}} \\
+\hline \\
+\\
+\end{tabular}
+\end{center}
+\end{footnotesize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{The \pkg{caret} Package}
+
+The \href{http://cran.r-project.org/web/packages/caret/index.html}{\pkg{caret}}  package was developed to:
+  \begin{itemize}
+\item create a unified interface for modeling and prediction
+(interfaces to 180 models)
+\item streamline model tuning using resampling
+\item provide a variety of ``helper'' functions and classes for day--to--day model building tasks 
+\item increase computational efficiency using parallel processing  
+\end{itemize}
+
+\vspace{.07in}
+
+First commits within Pfizer: 6/2005, First version on CRAN: 10/2007
+
+\vspace{.06in}
+
+Website: \href{http://topepo.github.io/caret/}{http://topepo.github.io/caret/}
+
+\vspace{.06in}
+
+JSS Paper: \href{http://www.jstatsoft.org/v28/i05/paper}{http://www.jstatsoft.org/v28/i05/paper}
+
+\vspace{.06in}
+
+Model List: \href{http://topepo.github.io/caret/bytag.html}{http://topepo.github.io/caret/bytag.html}
+
+\vspace{.06in}
+
+Many computing sections in APM
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{Package Dependencies}
+
+
+
+One thing that makes \pkg{caret} different from most other packages is that is uses code from an abnormally large number (> 80) of other packages. 
+
+\vspace{.15in}
+
+Briefly, these were in the \texttt{Depends} field of the \textt{DESCRIPTION} file which cause all of them to be loaded with \pkg{caret}.
+
+\vspace{.15in}
+
+For many years, they were moved to \texttt{Suggests}, which solved that issue, 
+
+
+\vspace{.15in}
+
+However, their formal dependency in the \textt{DESCRIPTION} file required CRAN  to install hundreds of other packages to check  \pkg{caret}. They were not pleased. 
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{The Basic Release Process}
+
+\begin{enumerate}
+\item create a few dynamic man pages
+\item use {\color{darkred} \texttt{R CMD check --as-cran}} to ensure passing CRAN tests and {\color{darkred} unit tests}
+\item update all packages (and R)
+\item run {\color{darkred} regression tests} and evaluate results
+\item send to CRAN
+\item repeat
+\item repeat
+\item install passed \pkg{caret} version 
+\item generate {\color{darkred} HTML documentation} and sync github io branch
+\item profit!
+\end{enumerate}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{Required ``Optimizations''}
+
+
+For example, there is one check that produces a large number of false positive warnings. For example:
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{1, 1, 1}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{bwplot.diff.resamples} \hlkwb{<-} \hlkwa{function} \hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{data}\hlstd{,} \hlkwc{metric} \hlstd{= x}\hlopt{$}\hlstd{metric,} \hlkwc{...}\hlstd{)  \{}
+\hlstd{+ }    \hlcom{## some code}
+\hlstd{+ }    \hlstd{plotData} \hlkwb{<-} \hlkwd{subset}\hlstd{(plotData, Metric} \hlopt{%in%} \hlstd{metric)}
+\hlstd{+ }    \hlcom{## more code}
+\hlstd{+ }\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+will trigger a wanring that ``{\tt \small bwplot.diff.resamples: no visible binding for global variable 'Metric'}''.
+
+\vspace{.15in}
+
+The ``solution'' is to have a file that is sourced first in the package (e.g. \texttt{aaa.R}) with the line
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{1, 1, 1}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{Metric} \hlkwb{<-} \hlkwa{NULL}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\begin{frame}[fragile]
+\frametitle{Severity of Problems}
+
+It's hard to tell which warnings should be ignored and which should not. There is also the issue of inconsistencies related to who is ``on duty'' when you submit your package. 
+
+\vspace{.1in}
+
+For example, I recently updated the \pkg{desirability} package and received this warning:
+
+\vspace{.1in}
+
+
+
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\begin{frame}[fragile]
+\frametitle{Package Dependencies}
+
+This problem was somewhat alleviated at the end of 2013 when {\em custom methods} were introduced into the package. 
+
+\vspace{.15in}
+
+Although this functionality had already existed in the package for some time, it was refactored to be more user freindly. 
+
+\vspace{.15in}
+
+In the process, much of the modeling code was moved out of \pkg{caret}'s R files and into R objects, eliminating the formal dependencies. 
+
+\vspace{.15in}
+
+Right now, the {\em total} number of dependencies is much smaller (2 \texttt{Depends}, 7 \texttt{Imports}, and 25 \texttt{Suggests}). 
+
+\vspace{.15in}
+
+This still affects testing though (described later)
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{Regression Testing}
+
+Prior to CRAN release (or whenever required), a comprehensive set of regression tests are conducted.
+
+\vspace{.1in}
+
+All modeling packages are updated to their current CRAN versions.
+
+\vspace{.1in}
+
+For each model accessed by \mxkwd{train}, \mxkwd{rfe}, and/or \mxkwd{sbf}, a set of test cases are computed with the production version of \pkg{caret} and the devle version. 
+
+\vspace{.1in}
+
+First, test cases are evaluated to make sure that nothing has been broken by updated versions of the consistuent packages. 
+
+\vspace{.1in}
+
+Diffs of the model results are computed to assess any differences in \pkg{caret} versions.
+
+\vspace{.1in}
+
+This process takes approximately 10hrs to complete using \texttt{make -j 12} on a Mac Pro. 
+
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{Documentation}
+
+\pkg{caret} originally contained four package vignettes with in--depth descriptions of functionality with examples. 
+
+\vspace{.15in}
+
+Although this functionality had already existed in the package for some time, it was refactored to be more user freindly. 
+
+\vspace{.15in}
+
+However, this added time to \texttt{R CMD check} and was a general pain for CRAN.
+
+\vspace{.15in}
+
+Efforts to make the vingettes more computationally efficient (e.g. reducing the number of examples, resamples, etc.) diminished the effectiveness of the documentation.  
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{Documentation}
+
+The documentation was moved out of the package and to the github IO page. 
+
+\vspace{.15in}
+
+
+These pages are built using \pkg{knitr} whenever a new version is sent to CRAN. Some advantages are:
+
+\begin{itemize}
+\item longer and more relavant examples are availible
+\item update scheduile is under my control
+\item dynamic documentation (e.g. D3 network graphs, JS tables)
+\item better formatting
+\end{itemize}
+
+\vspace{.1in}
+
+These currently take about 4hr to create these (using parallel processing when possible). 
+
+\end{frame}
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+

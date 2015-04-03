@@ -535,7 +535,7 @@ gamFuncs <- list(summary = defaultSummary,
                  },
                  pred = function(object, x)
                  {
-                                        #browser()
+                   if(!is.data.frame(x)) x <- as.data.frame(x)
                    loaded <- search()
                    gamLoaded <- any(loaded == "package:gam")
                    if(gamLoaded) detach(package:gam)
@@ -625,12 +625,13 @@ rfFuncs <-  list(summary = defaultSummary,
 lmFuncs <- list(summary = defaultSummary,
                 fit = function(x, y, first, last, ...)
                 {
-                  tmp <- as.data.frame(x)
+                  tmp <- if(is.data.frame(x)) x else as.data.frame(x)
                   tmp$y <- y
                   lm(y~., data = tmp)
                 },
                 pred = function(object, x)
                 {
+                  if(!is.data.frame(x)) x <- as.data.frame(x)
                   predict(object, x)
                 },
                 rank = function(object, x, y)
@@ -688,12 +689,13 @@ nbFuncs <- list(summary = defaultSummary,
 lrFuncs <- ldaFuncs
 lrFuncs$fit <- function (x, y, first, last, ...) 
 {
-  tmp <- x
+  tmp <- if(is.data.frame(x)) x else as.data.frame(x)
   tmp$Class <- y
   glm(Class ~ ., data = tmp, family = "binomial")
 }
 lrFuncs$pred <- function (object, x) 
 {
+  if(!is.data.frame(x)) x <- as.data.frame(x)
   lvl <- levels(object$data$Class)
   tmp <- predict(object, x, type = "response")
   out <- data.frame(1-tmp, tmp)

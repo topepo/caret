@@ -27,6 +27,14 @@ test_class_cv_model <- train(trainX, trainY,
                              preProc = c("center", "scale"))
 
 set.seed(849)
+test_class_cv_dist <- train(trainX, trainY, 
+                            method = "gamSpline", 
+                            trControl = cctrl1,
+                            metric = "ROC", 
+                            preProc = c("center", "scale"),
+                            family = binomial(link = "cloglog"))
+
+set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
                             method = "gamSpline", 
                             trControl = cctrl1,
@@ -94,6 +102,13 @@ test_reg_cv_model <- train(trainX, trainY,
                            trControl = rctrl1,
                            preProc = c("center", "scale"))
 test_reg_pred <- predict(test_reg_cv_model, testX)
+
+set.seed(849)
+test_reg_cv_dist <- train(trainX, abs(trainY), 
+                          method = "gamSpline", 
+                          trControl = rctrl1,
+                          preProc = c("center", "scale"),
+                          family = Gamma)
 
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 

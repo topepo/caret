@@ -33,6 +33,17 @@ test_class_cv_model <- train(trainX, trainY,
                              verbose = FALSE)
 
 set.seed(849)
+test_class_cv_dist <- train(trainX, trainY, 
+                            method = "gbm", 
+                            trControl = cctrl1,
+                            metric = "ROC", 
+                            preProc = c("center", "scale"),
+                            tuneGrid = gbmGrid,
+                            verbose = FALSE
+                            distribution = "adaboost")
+
+
+set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
                             method = "gbm", 
                             trControl = cctrl1,
@@ -107,6 +118,15 @@ test_reg_cv_model <- train(trainX, trainY,
                            tuneGrid = gbmGrid,
                            verbose = FALSE)
 test_reg_pred <- predict(test_reg_cv_model, testX)
+
+set.seed(849)
+test_reg_cv_dist <- train(trainX, trainY, 
+                          method = "gbm", 
+                          trControl = rctrl1,
+                          preProc = c("center", "scale"),
+                          tuneGrid = gbmGrid,
+                          verbose = FALSE,
+                          distribution = "laplace")
 
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 

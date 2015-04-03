@@ -17,26 +17,22 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                       dat$.outcome <- y
                       dist <- gaussian()
                     }
-                    out <- mgcv:::gam(modForm, data = dat, family = dist, 
+                    modelArgs <- list(formula = modForm,
+                                      data = dat,
                                       select = param$select, 
-                                      method = as.character(param$method), 
-                                      ...)
-#                     if(is.null(wts)) {
-# 
-#                     } else {
-#                       out <- mgcv:::gam(modForm, data = dat, family = dist, 
-#                                         select = param$select, 
-#                                         method = as.character(param$method), 
-#                                         weights = wts,
-#                                         ...)
-#                     }
+                                      method = as.character(param$method))
+                    ## Intercept family if passed in
+                    theDots <- list(...)
+                    if(!any(names(theDots) == "family")) modelArgs$family <- dist
+                    modelArgs <- c(modelArgs, theDots)
+                    
+                    out <- do.call(getFromNamespace("gam", "mgcv"), modelArgs)
                     out
                     
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-                    if(modelFit$problemType == "Classification")
-                    {
+                    if(modelFit$problemType == "Classification") {
                       probs <-  predict(modelFit, newdata, type = "response")
                       out <- ifelse(probs < .5,
                                     modelFit$obsLevel[1],

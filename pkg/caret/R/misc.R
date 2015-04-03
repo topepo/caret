@@ -42,6 +42,7 @@ evalSummaryFunction <- function(y, wts, ctrl, lev, metric, method) {
       stop("train()'s use of ROC codes requires class probabilities. See the classProbs option of trainControl()")
   }
   if(!is.null(wts)) testOutput$weights <- sample(wts, min(10, length(wts)))
+  testOutput$rowIndex <- sample(seq(along = y), size = nrow(testOutput))
   ctrl$summaryFunction(testOutput, lev, method)
 }
 
