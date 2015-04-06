@@ -16,7 +16,7 @@ confusionMatrix.default <- function(data, reference,
   if(length(levels(data)) != length(levels(reference)))
     stop("the data and reference factors must have the same number of levels")
   
-  if(!any(levels(dat) %in% levels(ref))){
+  if(!any(levels(data) %in% levels(reference))){
     stop("the data and reference values must have exactly the same levels")
   } else if(any(levels(data) != levels(reference))) {
     warning("Levels are not in the same order. Reordering data and reference")
