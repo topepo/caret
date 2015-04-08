@@ -61,7 +61,7 @@ trainControl(method = "boot",
 \details{
 When setting the seeds manually, the number of models being evaluated is required. This may not be obvious as \code{train} does some optimizations for certain models. For example, when tuning over PLS model, the only model that is fit is the one with the largest number of components. So if the model is being tuned over \code{comp in 1:10}, the only model fit is \code{ncomp = 10}. However, if the vector of integers used in the \code{seeds} arguments is longer than actually needed, no error is thrown. 
 
-Using \code{method = "none"} and specifying model than one model in \code{\link{train}}'s \code{tuneGrid} or \code{tuneLength} arguments will result in an error. 
+Using \code{method = "none"} and specifying more than one model in \code{\link{train}}'s \code{tuneGrid} or \code{tuneLength} arguments will result in an error. 
 
 Using adaptive resampling when \code{method} is either \code{"adaptive_cv"}, \code{"adaptive_boot"} or \code{"adaptive_LGOCV"}, the full set of resamples is not run for each model. As resampling continues, a futility analysis is conducted and models with a low probability of being optimal are removed. These features are experimental. See Kuhn (2014) for more details. The options for this procedure are:
 
