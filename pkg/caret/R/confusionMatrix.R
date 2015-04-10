@@ -13,17 +13,16 @@ confusionMatrix.default <- function(data, reference,
   if(!is.factor(reference)) reference <- factor(reference)
   if(!is.character(positive) & !is.null(positive)) stop("positive argument must be character")
   
-  if(length(levels(data)) != length(levels(reference)))
-    stop("the data and reference factors must have the same number of levels")
+  if(length(levels(data)) > length(levels(reference)))
+    stop("the data cannot have more levels than the reference")
   
   if(!any(levels(data) %in% levels(reference))){
     stop("the data and reference values must have exactly the same levels")
-  } else if(any(levels(data) != levels(reference))) {
+  } else if(any(levels(reference) != levels(data))) {
     warning("Levels are not in the same order. Reordering data and reference")
-    reference <- as.character(reference)
-    reference <- factor(reference, levels = levels(data))
+    data <- as.character(data)
+    data <- factor(data, levels = levels(reference))
   }
-  
   classLevels <- levels(data)
   numLevels <- length(classLevels)
   if(numLevels < 2) 
