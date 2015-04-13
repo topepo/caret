@@ -14,7 +14,6 @@ test_that("Confusion matrix works", {
                      preProc = c("center", "scale"), 
                      tuneLength = 4, 
                      trControl = ctrl)
-  
   dat <- train$Class
   ref <- predict(fullModel)
   dat2 <- as.character(dat)
@@ -41,6 +40,6 @@ test_that("Confusion matrix works", {
   expect_error(confusionMatrix(dat5, ref1))
   expect_identical(cm1$overall, cm2$overall)
   expect_identical(cm4$overall, cm3$overall)
-  expect_false(identical(cm1, cm2))
+  expect_true(identical(cm1, cm2))
   expect_true(identical(cm3, cm4))
 })
