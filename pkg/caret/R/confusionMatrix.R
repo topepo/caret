@@ -17,9 +17,21 @@ confusionMatrix.default <- function(data, reference,
     stop("the data cannot have more levels than the reference")
   
   if(!any(levels(data) %in% levels(reference))){
-    stop("the data and reference values must have exactly the same levels")
-  } else if(any(levels(reference) != levels(data))) {
-    warning("Levels are not in the same order. Reordering data and reference")
+    stop("The data must contain some levels that overlap the reference.")
+  } 
+  
+  if(!all(levels(data) %in% levels(reference))){
+    badLevel <- levels(data)[!levels(data) %in% levels(reference)]
+    if(sum(table(data)[badLevel]) > 0){
+      stop("The data contain levels not found in the data.")
+    } else{
+      warning("The data contains levels not found in the data, but they are empty and will be dropped.")
+      data <- factor(as.character(data))
+    }
+  }
+  
+  if(any(levels(reference) != levels(data))) {
+    warning("Levels are not in the same order for reference and data. Refactoring data to match.")
     data <- as.character(data)
     data <- factor(data, levels = levels(reference))
   }
