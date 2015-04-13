@@ -71,6 +71,10 @@ a list with elements
   \item{byClass}{the sensitivity, specificity, positive predictive value, negative predictive value, prevalence, detection rate, detection prevalence and balanced accuracy for each class. For two class systems, this is calculated once using the \code{positive} argument}
 
 }
+\note{ 
+If the reference and data factors have the same levels, but in the incorrect order, 
+the function will reorder them to the order of the data and issue a warning.
+}
 \author{Max Kuhn}
 
 \references{Kuhn, M. (2008), ``Building predictive models in R using the caret package, '' \emph{Journal of Statistical Software}, (\url{http://www.jstatsoft.org/v28/i05/}).

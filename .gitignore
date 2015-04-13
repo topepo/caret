@@ -1,4 +1,3 @@
-
 *.o
 
 *.so
@@ -12,6 +11,7 @@ pkg/caret/DESCRIPTION~
 *.Rcheck
 
 *.Rproj.user
+
 .Rproj.user
 
 pkg/caret/inst/NEWS.Rd~
@@ -29,3 +29,5 @@ html/tag_data.csv
 RegressionTests/move_files.Rout
 
 RegressionTests/.RData
+
+caret.Rproj
