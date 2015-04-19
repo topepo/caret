@@ -352,6 +352,7 @@ train.default <- function(x, y,
         #colnames(resampledCM) <- gsub("^\\.", "", colnames(resampledCM))
       } else resampledCM <- NULL
     } else resampledCM <- NULL
+
     
     if(trControl$verboseIter)  {
       cat("Aggregating results\n")
@@ -360,6 +361,12 @@ train.default <- function(x, y,
     
     perfCols <- names(performance)
     perfCols <- perfCols[!(perfCols %in% paramNames)]
+    
+    if(all(is.na(performance[, metric]))) {
+      cat(paste("Something is wrong; all the", metric, "metric values are missing:\n"))
+      print(summary(performance[, perfCols[!grepl("SD$", perfCols)], drop = FALSE]))
+      stop("Stopping")
+    }    
     
     ## Sort the tuning parameters from least complex to most complex
     if(!is.null(models$sort)) performance <- models$sort(performance)
