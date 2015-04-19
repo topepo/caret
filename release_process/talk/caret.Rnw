@@ -314,6 +314,28 @@ This process takes approximately 10hrs to complete using \texttt{make -j 12} on 
 \end{frame}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{Regression Testing}
+
+\begin{verbatim}
+$ R CMD BATCH make_model_Rd.R
+$ cd ~/tmp/2015_04_19_09__6.0-41/
+$ make -j 7 -i 
+ 2015-04-19 09:13:44: Starting ada
+ 2015-04-19 09:13:44: Starting AdaBag
+ 2015-04-19 09:13:44: Starting AdaBoost.M1
+ 2015-04-19 09:13:44: Finished ada
+ 2015-04-19 09:13:44: Starting ANFIS
+                :
+make: [FH.GBML.RData] Error 1 (ignored)                
+                :
+
+\end{verbatim}
+
+\end{frame}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

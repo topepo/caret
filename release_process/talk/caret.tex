@@ -223,16 +223,16 @@ However, their formal dependency in the \textt{DESCRIPTION} file required CRAN  
 \frametitle{The Basic Release Process}
 
 \begin{enumerate}
-\item create a few dynamic man pages
-\item use {\color{darkred} \texttt{R CMD check --as-cran}} to ensure passing CRAN tests and {\color{darkred} unit tests}
-\item update all packages (and R)
-\item run {\color{darkred} regression tests} and evaluate results
-\item send to CRAN
-\item repeat
-\item repeat
-\item install passed \pkg{caret} version 
-\item generate {\color{darkred} HTML documentation} and sync github io branch
-\item profit!
+  \item create a few dynamic man pages
+  \item use {\color{darkred} \texttt{R CMD check --as-cran}} to ensure passing CRAN tests and {\color{darkred} unit tests}
+  \item update all packages (and R)
+  \item run {\color{darkred} regression tests} and evaluate results
+  \item send to CRAN
+  \item repeat
+  \item repeat
+  \item install passed \pkg{caret} version 
+  \item generate {\color{darkred} HTML documentation} and sync github io branch
+  \item profit!
 \end{enumerate}
 
 \end{frame}
@@ -351,6 +351,26 @@ This process takes approximately 10hrs to complete using \texttt{make -j 12} on 
 \end{frame}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{Regression Testing}
+
+\begin{verbatim}
+$ make -j 7 -i 
+ 2015-04-19 09:13:44: Starting ada
+ 2015-04-19 09:13:44: Starting AdaBag
+ 2015-04-19 09:13:44: Starting AdaBoost.M1
+ 2015-04-19 09:13:44: Finished ada
+ 2015-04-19 09:13:44: Starting ANFIS
+                :
+make: [FH.GBML.RData] Error 1 (ignored)                
+                :
+
+\end{verbatim}
+
+\end{frame}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -396,7 +416,7 @@ These pages are built using \pkg{knitr} whenever a new version is sent to CRAN. 
 
 \vspace{.1in}
 
-These currently take about 4hr to create these (using parallel processing when possible). 
+It currently takes about 4hr to create these (using parallel processing when possible). 
 
 \end{frame}
 
