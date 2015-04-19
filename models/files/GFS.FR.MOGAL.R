@@ -11,9 +11,9 @@ modelInfo <- list(label = "Fuzzy Rules via MOGUL",
                                 max.tune = 10*(1:len)),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    args <- list(data.train = cbind(x, y),
+                    args <- list(data.train = as.matrix(cbind(x, y)),
                                  method.type = "GFS.FR.MOGUL")
-                    args$range.data <- apply(args$data.train, 2, range)
+                    args$range.data <- apply(args$data.train, 2, extendrange)
                     
                     theDots <- list(...)
                     if(any(names(theDots) == "control")) {

@@ -14,9 +14,9 @@ modelInfo <- list(label = "Genetic Lateral Tuning and Rule Selection of Linguist
                                 max.gen = 10),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    args <- list(data.train = cbind(x, y),
+                    args <- list(data.train = as.matrix(cbind(x, y)),
                                  method.type = "GFS.LT.RS")
-                    args$range.data <- apply(args$data.train, 2, range)
+                    args$range.data <- apply(args$data.train, 2, extendrange)
                     
                     theDots <- list(...)
                     if(any(names(theDots) == "control")) {

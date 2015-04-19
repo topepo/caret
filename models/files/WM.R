@@ -9,8 +9,8 @@ modelInfo <- list(label = "Wang and Mendel Fuzzy Rules",
                                 type.mf = c("GAUSSIAN", "TRAPEZOID", "TRIANGLE")),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    args <- list(data.train = cbind(x, y))
-                    args$range.data <- apply(args$data.train, 2, range)
+                    args <- list(data.train = as.matrix(cbind(x, y)))
+                    args$range.data <- apply(args$data.train, 2, extendrange)
                     
                     theDots <- list(...)
                     if(any(names(theDots) == "control")) {

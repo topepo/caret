@@ -12,9 +12,9 @@ modelInfo <- list(label = "Subtractive Clustering and Fuzzy c-Means Rules",
                     },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    range_data <- apply(cbind(x, y), 2, range)
-                    frbs.learn(data.train = cbind(x, y),
-                               range.data = range_data,
+                    dat <- as.matrix(cbind(x, y))
+                    frbs.learn(data.train = dat,
+                               range.data = apply(dat, 2, extendrange),
                                method = "SBC",
                                control = list(r.a = param$r.a,
                                               eps.high = param$eps.high,
