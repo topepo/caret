@@ -11,9 +11,12 @@ testing <- twoClassSim(30, linearVars = 2)[, 5:8]
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
-cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
-cctrl2 <- trainControl(method = "LOOCV")
-cctrl3 <- trainControl(method = "none")
+seeds <- vector(mode = "list", length = nrow(training) + 1)
+seeds <- lapply(seeds, function(x) 1:3)
+
+cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", seed = seeds)
+cctrl2 <- trainControl(method = "LOOCV", seed = seeds)
+cctrl3 <- trainControl(method = "none", seed = seeds)
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
@@ -36,8 +39,7 @@ set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
                               method = "SLAVE", 
                               trControl = cctrl2,
-                              tuneLength = 2,
-                              preProc = c("center", "scale"))
+                              tuneLength = 2)
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
