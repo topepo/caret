@@ -40,7 +40,7 @@ test_class_cv_dist <- train(trainX, trainY,
                             metric = "ROC", 
                             preProc = c("center", "scale"),
                             tuneGrid = gbmGrid,
-                            verbose = FALSE
+                            verbose = FALSE,
                             distribution = "adaboost")
 
 
