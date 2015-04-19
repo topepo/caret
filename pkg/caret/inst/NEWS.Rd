@@ -22,6 +22,8 @@
 		\item \code{train} now returns an additional column called \code{rowIndex} that is exposed when calling the summary function during resampling. 
 		\item The ability to compute class probabilities was removed from the \code{rpartCost} model since they are unlikely to agree with the class predictions. 
 		\item \code{extractProb} no longer redundantly calls \code{extractPrediction} to generate the class predictions. 
+		\item A new function called \code{var_seq} was added that finds a sequence of integers that can be useful for some tuning parameters such as random forests \code{mtry}. Model modules were update to use the new function. 
+		\item \code{n.minobsinnode} was added as a tuning parameter to \code{gbm} models. 
 
 
 	}
