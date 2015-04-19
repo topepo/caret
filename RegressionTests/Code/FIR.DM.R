@@ -27,13 +27,19 @@ trainY <- training$y
 testX <- trainX[, -ncol(training)]
 testY <- trainX$y 
 
-rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
-rctrl2 <- trainControl(method = "LOOCV")
-rctrl3 <- trainControl(method = "none")
+grid <- expand.grid(num.labels = c(3, 5),      
+                    max.iter = 10)
+
+seeds <- vector(mode = "list", length = nrow(training) + 1)
+seeds <- lapply(seeds, function(x) 1:3)
+
+rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", seeds = seeds)
+rctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
+rctrl3 <- trainControl(method = "none", seeds = seeds)
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, method = "FIR.DM", 
-                           tuneLength = 2,
+                           tuneGrid = grid,
                            trControl = rctrl1)
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
@@ -41,13 +47,13 @@ test_reg_pred <- predict(test_reg_cv_model, testX)
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
                           method = "FIR.DM", 
-                          tuneLength = 2,
+                          tuneGrid = grid,
                           trControl = rctrl1)
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, method = "FIR.DM", 
-                            tuneLength = 2, trControl = rctrl2)
+                            tuneGrid = grid, trControl = rctrl2)
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 

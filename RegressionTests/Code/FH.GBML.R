@@ -14,9 +14,9 @@ trainY <- training$Class
 seeds <- vector(mode = "list", length = nrow(training) + 1)
 seeds <- lapply(seeds, function(x) 1:3)
 
-cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
+cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", seeds = seeds)
 cctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
-cctrl3 <- trainControl(method = "none")
+cctrl3 <- trainControl(method = "none", seeds = seeds)
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
