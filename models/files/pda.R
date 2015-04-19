@@ -31,5 +31,6 @@ modelInfo <- list(label = "Penalized Discriminant Analysis",
                     predict(modelFit, newdata),
                   prob = function(modelFit, newdata, submodels = NULL)
                     predict(modelFit, newdata, type = "posterior"),
+                  levels = function(x) x$obsLevels,
                   tags = c("Discriminant Analysis", "Polynomial Model"),
                   sort = function(x) x[order(x[,1]),])

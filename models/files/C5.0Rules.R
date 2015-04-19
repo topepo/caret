@@ -16,6 +16,7 @@ modelInfo <- list(label = "Single C5.0 Ruleset",
                     vars <- C5imp(x, metric = "splits")
                     rownames(vars)[vars$Overall > 0]
                   },
+                  levels = function(x) x$obsLevels,
                   varImp = function(object, ...) C5imp(object, ...),
                   tags = c("Rule-Based Model", "Implicit Feature Selection"),
                   trim = function(x) {

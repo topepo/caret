@@ -35,5 +35,6 @@ modelInfo <- list(label = "Multi-Layer Perceptron",
                     colnames(out) <- modelFit$obsLevels
                     out
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Neural Network"),
                   sort = function(x) x[order(x$size),])

@@ -84,6 +84,7 @@ modelInfo <- list(label = "Bagged AdaBoost",
                     rownames(imps) <- names(object$importance)
                     imps
                   },
+                  levels = function(x) x$obsLevels,
                   predictors = function(x, ...) names(x$importance)[x$importance != 0],
                   tags = c("Tree-Based Model", "Ensemble Model", "Boosting", "Bagging",
                            "Implicit Feature Selection"),

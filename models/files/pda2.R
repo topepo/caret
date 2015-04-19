@@ -27,6 +27,7 @@ modelInfo <- list(label = "Penalized Discriminant Analysis",
                     }
                     out                   
                   },
+                  levels = function(x) x$obsLevels,
                   predict = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit, newdata),
                   prob = function(modelFit, newdata, submodels = NULL)

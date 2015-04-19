@@ -17,5 +17,6 @@ modelInfo <- list(label = "High Dimensional Discriminant Analysis",
                   prob = function(modelFit, newdata, submodels = NULL) {
                     data.frame(unclass(predict(modelFit, newdata)$posterior))
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Discriminant Analysis", "Linear Classifier"),
                   sort = function(x) x[order(-x$threshold),])

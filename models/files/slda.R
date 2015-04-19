@@ -15,11 +15,12 @@ modelInfo <- list(label = "Stabilized Linear Discriminant Analysis",
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     predict(modelFit, newdata)$class
-                    },
+                  },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     predict(modelFit, newdata)$posterior
-                    },
+                  },
+                  levels = function(x) x$obsLevels,
                   predictors = function(x, ...) if(hasTerms(x)) predictors(x$terms) else predictors(x$mylda),
                   tags = c("Discriminant Analysis", "Linear Classifier"),
                   sort = function(x) x)

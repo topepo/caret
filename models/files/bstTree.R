@@ -72,6 +72,7 @@ modelInfo <- list(label = "Boosted Tree",
                     }
                     out         
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Tree-Based Model", "Ensemble Model", "Boosting"),
                   prob = NULL,
                   sort = function(x) x[order(x$mstop, x$maxdepth, x$nu),] )

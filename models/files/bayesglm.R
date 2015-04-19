@@ -44,6 +44,7 @@ modelInfo <- list(label = "Bayesian Generalized Linear Model",
                     colnames(out) <-  modelFit$obsLevels
                     out
                   },
+                  levels = function(x) x$obsLevels,
                   trim = function(x) {
                     #Based off: http://www.win-vector.com/blog/2014/05/trimming-the-fat-from-glm-models-in-r/
                     x$y = c()

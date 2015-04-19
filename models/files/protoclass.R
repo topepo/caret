@@ -17,6 +17,7 @@ modelInfo <- list(label = "Greedy Prototype Selection",
                     out$training <- x
                     out
                   },
+                  levels = function(x) x$obsLevels,
                   predict = function(modelFit, newdata, submodels = NULL) 
                     as.character(predictwithd.protoclass(modelFit, 
                                                          as.matrix(proxy:::dist(newdata, modelFit$training,

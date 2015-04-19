@@ -18,6 +18,7 @@ modelInfo <- list(label = "Bagged Model",
                     predict(modelFit, newdata, type= "prob"),
                   predictors = function(x, ...)
                     x$xNames,
+                  levels = function(x) x$obsLevels,
                   varImp = NULL,
                   tags = c("Bagging", "Ensemble Model"),
                   sort = function(x) x)

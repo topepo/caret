@@ -20,5 +20,6 @@ modelInfo <- list(label = "Shrinkage Discriminant Analysis",
                   predictors = function(x, ...) {
                     colnames(x$beta)
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Discriminant Analysis", "Regularization", "Linear Classifier"),
                   sort = function(x) x[order(x$diagonal, x$lambda),])

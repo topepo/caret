@@ -29,5 +29,6 @@ modelInfo <- list(label = "Quadratic Discriminant Analysis with Stepwise Feature
                     form[[2]] <- NULL
                     all.vars(form)
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Discriminant Analysis", "Feature Selection Wrapper", "Polynomial Model"),
                   sort = function(x) x)

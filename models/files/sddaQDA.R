@@ -13,5 +13,6 @@ modelInfo <- list(label = "Stepwise Diagonal Quadratic Discriminant Analysis",
                     predict(modelFit, as.matrix(newdata), type = "class"),
                   prob = function(modelFit, newdata, submodels = NULL)
                     predict(modelFit, as.matrix(newdata), type = "prob"),
+                  levels = function(x) x$obsLevels,
                   tags = c("Discriminant Analysis", "Feature Selection Wrapper", "Polynomial Model"),
                   sort = function(x) x)

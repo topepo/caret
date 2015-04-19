@@ -37,6 +37,7 @@ modelInfo <- list(label = "Penalized Linear Discriminant Analysis",
                     }
                     out
                   },
+                  levels = function(x) x$obsLevels,
                   prob = NULL,
                   tags = c("Discriminant Analysis", "L1 Regularization", 
                            "Implicit Feature Selection", "Linear Classifier"),

@@ -44,6 +44,7 @@ modelInfo <- list(label = "CHi-squared Automated Interaction Detection",
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     predict(modelFit, newdata, type = "prob")
                   },
+                  levels = function(x) x$obsLevels,
                   predictors = function(x, surrogate = TRUE, ...) {
                     predictors(terms(x))
                   },

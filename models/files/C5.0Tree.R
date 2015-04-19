@@ -16,6 +16,7 @@ modelInfo <- list(label = "Single C5.0 Tree",
                     vars <- C5imp(x, metric = "splits")
                     rownames(vars)[vars$Overall > 0]
                   },
+                  levels = function(x) x$obsLevels,
                   varImp = function(object, ...) C5imp(object, ...),
                   tags = c("Tree-Based Model", "Implicit Feature Selection"),
                   sort = function(x) x[order(x[,1]),],

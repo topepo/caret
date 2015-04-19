@@ -33,6 +33,7 @@ modelInfo <- list(label = "Logistic Model Trees",
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     predict(modelFit, newdata, type = "probability")
                   },
+                  levels = function(x) x$obsLevels,
                   predictors = function(x, ...) predictors(x$terms),
                   tags = c("Model Tree", "Implicit Feature Selection", "Logistic Regression", "Linear Classifier"),
                   sort = function(x) x[order(x[,1]),])

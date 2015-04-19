@@ -64,6 +64,7 @@ modelInfo <- list(label = "C5.0",
                     }
                     out
                   },
+                  levels = function(x) x$obsLevels,
                   predictors = function(x, ...) {
                     vars <- C5imp(x, metric = "splits")
                     rownames(vars)[vars$Overall > 0]

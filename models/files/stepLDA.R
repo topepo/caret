@@ -29,5 +29,6 @@ modelInfo <- list(label = "Linear Discriminant Analysis with Stepwise Feature Se
                     form[[2]] <- NULL
                     all.vars(form)
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Discriminant Analysis", "Feature Selection Wrapper", "Linear Classifier"),
                   sort = function(x) x)

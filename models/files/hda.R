@@ -25,5 +25,6 @@ modelInfo <- list(label = "Heteroscedastic Discriminant Analysis",
                     if(is.vector(tmp)) tmp <- matrix(tmp, ncol = 1)
                     as.data.frame(predict(modelFit$naivebayes, tmp, type = "raw"))
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Discriminant Analysis", "Linear Classifier", "Regularization"),
                   sort = function(x) x[order(x$newdim, -x$lambda, x$gamma),])

@@ -146,6 +146,7 @@ modelInfo <- list(label = "CART",
                     rownames(out2) <- out$Variable
                     out2  
                   },
+                  levels = function(x) x$obsLevels,
                   trim = function(x) {
                     x$call <- list(na.action = (x$call)$na.action)
                     x$x <- NULL

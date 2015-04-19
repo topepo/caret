@@ -26,10 +26,11 @@ modelInfo <- list(label = "Self-Organizing Map",
                       if(is.matrix(out)) out <- out[,1]
                     }
                     out
-                    },
+                  },
                   prob = function(modelFit, newdata, submodels = NULL){
                     preds <- predict(modelFit, as.matrix(newdata))
                     preds$unit.predictions[preds$unit.classif,,drop = FALSE]
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Self-Organising Maps"),
                   sort = function(x) x[order(x$xdim,  x$ydim),])

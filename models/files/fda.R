@@ -23,6 +23,7 @@ modelInfo <- list(label = "Flexible Discriminant Analysis",
                         degree = param$degree,
                         nprune = param$nprune, ...)
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Multivariate Adaptive Regression Splines", "Implicit Feature Selection"),
                   predict = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit , newdata),

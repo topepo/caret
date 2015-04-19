@@ -60,6 +60,7 @@ modelInfo <- list(label = "Generalized Linear Model with Stepwise Feature Select
                     dimnames(out)[[2]] <-  modelFit$obsLevels
                     out
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Generalized Linear Model", "Feature Selection Wrapper", "Linear Classifier",
                            "Implicit Feature Selection"),
                   sort = function(x) x)

@@ -27,6 +27,7 @@ modelInfo <- list(label = "Single Rule Classification",
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     predict(modelFit, newdata, type = "probability")
                     },
+                  levels = function(x) x$obsLevels,
                   predictors = function(x, ...) predictors(x$terms),
                   tags = c("Rule-Based Model", "Implicit Feature Selection"),
                   sort = function(x) x)

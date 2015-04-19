@@ -5,24 +5,9 @@ modelInfo <- list(label = "Least Angle Regression",
                                           class = "numeric",
                                           label = '#Steps'),
                   grid = function(x, y, len = NULL) {
-                    p <- ncol(x) 
-                    if(p <= len)
-                    { 
-                      tuneSeq <- floor(seq(2, to = p, length = p))
-                    } else {
-                      if(p < 500 ) tuneSeq <- floor(seq(2, to = p, length = len))
-                      else tuneSeq <- floor(2^seq(1, to = log(p, base = 2), length = len))
-                    }
-                    if(any(table(tuneSeq) > 1))
-                    {
-                      tuneSeq <- unique(tuneSeq)
-                      cat("note: only",
-                          length(tuneSeq),
-                          "unique complexity parameters in default grid.",
-                          "Truncating the grid to",
-                          length(tuneSeq), ".\n\n")      
-                    }
-                    data.frame(step = tuneSeq)
+                    data.frame(step = var_seq(p = ncol(x), 
+                                              classification = is.factor(y), 
+                                              len = len))
                   },
                   loop = function(grid) {   
                     grid <- grid[order(grid$step, decreasing = TRUE),, drop = FALSE]

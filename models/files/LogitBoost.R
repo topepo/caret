@@ -73,6 +73,7 @@ modelInfo <- list(label = "Boosted Logistic Regression",
                     
                     out
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Ensemble Model", "Boosting", "Implicit Feature Selection",
                            "Tree-Based Model", "Logistic Regression"),
                   sort = function(x) x[order(x[,1]),])

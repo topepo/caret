@@ -38,6 +38,7 @@ modelInfo <- list(label = "Rule-Based Classifier",
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     predict(modelFit, newdata, type = "probability")
                   },
+                  levels = function(x) x$obsLevels,
                   predictors = function(x, ...) predictors(x$terms),
                   tags = c("Rule-Based Model", "Implicit Feature Selection"),
                   varImp = function(object, ...) {

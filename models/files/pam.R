@@ -10,9 +10,9 @@ modelInfo <- list(label = "Nearest Shrunken Centroids",
                     y <- y[cc]
                     initialThresh <- pamr.train(list(x=t(x), y=y))$threshold
                     initialThresh <- initialThresh[-c(1, length(initialThresh))]
-                    tuneSeq <- data.frame(threshold = seq(from = min(initialThresh),
-                                                           to = max(initialThresh), 
-                                                           length = len))
+                    data.frame(threshold = seq(from = min(initialThresh),
+                                               to = max(initialThresh), 
+                                               length = len))
                   },
                   loop = function(grid) {   
                     grid <- grid[order(grid$threshold, decreasing = TRUE),, drop = FALSE]

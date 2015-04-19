@@ -33,6 +33,7 @@ modelInfo <- list(label = "C4.5-like Trees",
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     predict(modelFit, newdata, type = "probability")
                   },
+                  levels = function(x) x$obsLevels,
                   predictors = function(x, ...) predictors(x$terms),
                   tags = c("Tree-Based Model", "Implicit Feature Selection"),
                   sort = function(x) x[order(x[,1]),])

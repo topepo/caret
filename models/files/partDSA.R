@@ -73,6 +73,7 @@ modelInfo <- list(label = "partDSA",
                     tmp <- x$var.importance[,cuts]
                     names(tmp)[which(tmp != 0)]
                   },
+                  levels = function(x) x$obsLevels,
                   tags = "",
                   prob = NULL,
                   varImp = function(object, cuts = NULL, ...) {

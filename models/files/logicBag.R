@@ -42,6 +42,7 @@ modelInfo <- list(label = "Bagged Logic Regression",
                     varNums <- varNums[varNums > 0]
                     if(length(varNums) > 0) colnames(x$data)[varNums] else NA    
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Logic Regression", "Linear Classifier", "Linear Regression", "Logistic Regression",
                            "Bagging", "Ensemble Model"),
                   sort = function(x) x[order(x$ntrees, x$nleaves),])

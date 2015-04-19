@@ -65,6 +65,7 @@ modelInfo <- list(label = "Boosted Linear Model",
                     }
                     out         
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Linear Regression", "Ensemble Model", "Boosting",
                            "Implicit Feature Selection"),
                   prob = NULL,

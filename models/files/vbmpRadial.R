@@ -35,5 +35,6 @@ modelInfo <- list(label = "Variational Bayesian Multinomial Probit Regression",
                     colnames(probs) <- modelFit$obsLevels
                     probs
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Gaussian Process", "Bayesian Model", "Radial Basis Function"),
                   sort = function(x) x)

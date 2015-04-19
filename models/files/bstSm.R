@@ -65,6 +65,7 @@ modelInfo <- list(label = "Boosted Smoothing Spline",
                     }
                     out         
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Ensemble Model", "Boosting", "Implicit Feature Selection"),
                   prob = NULL,
                   sort = function(x) x[order(x$mstop, x$nu),] )

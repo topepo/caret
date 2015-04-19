@@ -22,6 +22,7 @@ modelInfo <- list(label = "k-Nearest Neighbors",
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     predict(modelFit, newdata)
                   },
+                  levels = function(x) x$obsLevels,
                   tags = "Prototype Models",
                   prob = NULL,
                   sort = function(x) x[order(-x[,1]),])

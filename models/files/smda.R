@@ -6,15 +6,9 @@ modelInfo <- list(label = "Sparse Mixture Discriminant Analysis",
                                           class = c("numeric", "numeric", "numeric"),
                                           label = c('# Predictors', 'Lambda', '# Subclasses')),
                   grid = function(x, y, len = NULL){
-                    p <- ncol(x) 
-                    if(p <= len)
-                    { 
-                      tuneSeq <- floor(seq(2, to = p, length = p))
-                    } else {
-                      if(p < 500 ) tuneSeq <- floor(seq(2, to = p, length = len))
-                      else tuneSeq <- floor(2^seq(1, to = log(p, base = 2), length = len))
-                    }
-                    expand.grid(NumVars = tuneSeq,
+                    expand.grid(NumVars = var_seq(p = ncol(x), 
+                                                  classification = is.factor(y), 
+                                                  len = len),
                                 R = (1:len) + 1,
                                 lambda = c(0, 10 ^ seq(-1, -4, length = len - 1)))
                   },
@@ -27,6 +21,7 @@ modelInfo <- list(label = "Sparse Mixture Discriminant Analysis",
                   predict = function(modelFit, newdata, submodels = NULL)
                     predict(modelFit, newdata)$class,
                   prob = NULL,
+                  levels = function(x) x$obsLevels,
                   predictors = function(x, ...) x$varNames,
                   tags = c("Discriminant Analysis", "L1 Regularization", 
                            "Implicit Feature Selection", "Mixture Model"),

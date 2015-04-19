@@ -22,5 +22,6 @@ modelInfo <- list(label = "Robust Regularized Linear Discriminant Analysis",
                     colnames(out) <- modelFit$obsLevels
                     out
                     },
+                  levels = function(x) x$obsLevels,
                   tags = c("Discriminant Analysis", "Robust Model", "Regularization", "Linear Classifier"),
                   sort = function(x) x[order(-x$lambda),])

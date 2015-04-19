@@ -26,5 +26,6 @@ modelInfo <- list(label = "Penalized Logistic Regression",
                     dimnames(out)[[2]] <-  modelFit$obsLevels
                     out
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("L2 Regularization", "Logistic Regression", "Linear Classifier"),
                   sort = function(x) x[order(-x$lambda),])

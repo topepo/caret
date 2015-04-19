@@ -28,5 +28,6 @@ modelInfo <- list(label = "Oblique Trees",
                                                levels = modelFit$obsLevels)
                     predict(modelFit, newdata, type = "vector")
                   },
+                  levels = function(x) x$obsLevels,
                   tags = c("Tree-Based Model", "Implicit Feature Selection", "Oblique Tree"),
                   sort = function(x) x[order(x$variable.selection),])

@@ -54,6 +54,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                   predictors = function(x, ...) {
                     predictors(x$terms)
                   },
+                  levels = function(x) x$obsLevels,
                   varImp = function(object, ...) {
                     smoothed <- summary(object)$s.table[, "p-value", drop = FALSE]
                     linear <- summary(object)$p.table

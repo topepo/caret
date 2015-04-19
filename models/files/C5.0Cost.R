@@ -65,6 +65,7 @@ modelInfo <- list(label = "Cost-Sensitive C5.0",
                     vars <- C5imp(x, metric = "splits")
                     rownames(vars)[vars$Overall > 0]
                   },
+                  levels = function(x) x$obsLevels,
                   varImp = function(object, ...) C5imp(object, ...),
                   tags = c("Tree-Based Model", "Rule-Based Model", "Implicit Feature Selection",
                   	       "Boosting", "Ensemble Model", "Cost Sensitive Learning"),

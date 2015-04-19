@@ -61,6 +61,7 @@ modelInfo <- list(label = "Random k-Nearest Neighbors with Feature Selection",
                     out
                   },
                   prob = NULL,
+                  levels = function(x) x$obsLevels,
                   predictors = function(x, s = NULL, ...) {
                     bestset(x$mod, criterion = "mean_accuracy")
                   },

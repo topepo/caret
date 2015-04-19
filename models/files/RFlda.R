@@ -14,6 +14,7 @@ modelInfo <- list(label = "Factor-Based Linear Discriminant Analysis",
                     out <- modelFit$obsLevels[as.numeric(out)]
                     out
                   },
+                  levels = function(x) x$obsLevels,
                   prob = NULL,
                   tags = c("Discriminant Analysis", "Linear Classifier"),
                   sort = function(x) x[order(x[,1]),])

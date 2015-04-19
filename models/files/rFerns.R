@@ -15,6 +15,7 @@ modelInfo <- list(label = "Random Ferns",
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     predict(modelFit, newdata)
                     },
+                  levels = function(x) x$obsLevels,
                   prob = NULL,
                   tags = c("Random Forest", "Ensemble Model", "Bagging", "Implicit Feature Selection"),
                   sort = function(x) x[order(x[,1]),])

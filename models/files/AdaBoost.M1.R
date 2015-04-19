@@ -82,6 +82,7 @@ modelInfo <- list(label = "AdaBoost.M1",
                     
                     out 
                   },
+                  levels = function(x) x$obsLevels,
                   varImp = function(object, ...){
                     imps <- data.frame(Overall = object$importance)
                     rownames(imps) <- names(object$importance)

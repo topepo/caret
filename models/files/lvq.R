@@ -19,6 +19,7 @@ modelInfo <- list(label = "Learning Vector Quantization",
                     lvq3(x, y, lvqinit(x, y, size = param$size, k = param$k), ...),
                   predict = function(modelFit, newdata, submodels = NULL) 
                     lvqtest(modelFit , newdata),
+                  levels = function(x) x$obsLevels,
                   prob = NULL,
                   tags = "Prototype Models",
                   sort = function(x) x[order(-x$k, -x$size),])

@@ -45,6 +45,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                     colnames(out) <-  modelFit$obsLevels
                     out
                   },
+                  levels = function(x) x$obsLevels,
                   predictors = function(x, ...) {
                     getNames <- function(x) {
                       x <- strsplit(x, "(\\()|(,)|(\\))")
