@@ -11,18 +11,16 @@ modelInfo <- list(label = "Sparse Partial Least Squares",
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    if(is.factor(y))
-                    {
+                    if(is.factor(y)) {
                       caret:::splsda(x, y, K = param$K, eta = param$eta,
                                      kappa = param$kappa, ...)
                     } else {
                       spls(x, y, K = param$K, eta = param$eta,
                            kappa = param$kappa, ...)
                     }          
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(length(modelFit$obsLevels) < 2)
-                    {
+                    if(length(modelFit$obsLevels) < 2) {
                       predict(modelFit, newdata)
                     } else {
                       as.character(caret:::predict.splsda(modelFit, newdata, type = "class"))
@@ -35,5 +33,5 @@ modelInfo <- list(label = "Sparse Partial Least Squares",
                   predictors = function(x, ...) colnames(x$x)[x$A],
                   tags = c("Partial Least Squares", "Feature Extraction", "Linear Classifier", "Linear Regression",
                            "L1 Regularization"),
-                  levels = NULL,
+                  levels = function(x) x$obsLevels,
                   sort = function(x) x[order(-x$eta, x$K),])
