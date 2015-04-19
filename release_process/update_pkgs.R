@@ -47,8 +47,8 @@ install.packages(libs, repos = "http://cran.r-project.org",
 
 source("http://www.bioconductor.org/getBioC.R")
 
-getBioC(c("vbmp", "gpls", "logicFS"), 
+biocLite(c("vbmp", "gpls", "logicFS"), 
         type = "source",
-        dependencies = c("Depends", "Suggests", "Imports"))
+        dependencies = c("Depends", "Imports"))
 
 
