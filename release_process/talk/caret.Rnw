@@ -1,6 +1,7 @@
 \documentclass[12 pt]{beamer}
 
 \usepackage{beamerthemesplit} 
+\usepackage{fancyvrb}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -15,6 +16,7 @@
 
 \definecolor{darkgreen}{rgb}{0,0.3,0}
 \definecolor{darkred}{rgb}{0.6,0.0,0}
+\definecolor{darkblue}{rgb}{0,0,0.8}
 
 \newcommand{\mxnum}[1]{\texttt{\hlnum{#1}}}%
 \newcommand{\mxkwc}[1]{\texttt{\hlkwc{#1}}}%
@@ -170,7 +172,7 @@ mod_pkgs <- unique(unlist(lapply(mods, function(x) x$library)))
 mod_pkgs <- mod_pkgs[mod_pkgs != "caret"]
 @
 
-One thing that makes \pkg{caret} different from most other packages is that is uses code from an abnormally large number (> 80) of other packages. 
+One thing that makes \pkg{caret} different from most other packages is that is uses code from an abnormally large number ($> 80$) of other packages. 
 
 \vspace{.15in}
 
@@ -265,21 +267,25 @@ For example, I recently updated the \pkg{desirability} package and received this
 
 This problem was somewhat alleviated at the end of 2013 when {\em custom methods} were introduced into the package. 
 
-\vspace{.15in}
+\vspace{.1in}
 
 Although this functionality had already existed in the package for some time, it was refactored to be more user freindly. 
 
-\vspace{.15in}
+\vspace{.1in}
 
 In the process, much of the modeling code was moved out of \pkg{caret}'s R files and into R objects, eliminating the formal dependencies. 
 
-\vspace{.15in}
+\vspace{.1in}
 
 Right now, the {\em total} number of dependencies is much smaller (2 \texttt{Depends}, 7 \texttt{Imports}, and 25 \texttt{Suggests}). 
 
-\vspace{.15in}
+\vspace{.1in}
 
-This still affects testing though (described later)
+This still affects testing though (described later). Also:
+
+\vspace{.1in}
+
+{\tt \color{darkblue} \footnotesize 1 package is needed for this model and is not installed. (gbm). Would you like to try to install it now?}
 
 \end{frame}
 
@@ -309,7 +315,7 @@ Diffs of the model results are computed to assess any differences in \pkg{caret}
 
 \vspace{.1in}
 
-This process takes approximately 10hrs to complete using \texttt{make -j 12} on a Mac Pro. 
+This process takes approximately 3hrs to complete using \texttt{make -j 12} on a Mac Pro. 
 
 \end{frame}
 
@@ -319,7 +325,7 @@ This process takes approximately 10hrs to complete using \texttt{make -j 12} on 
   \begin{frame}[fragile]
 \frametitle{Regression Testing}
 
-\begin{verbatim}
+\begin{Verbatim}[fontsize=\footnotesize]
 $ R CMD BATCH make_model_Rd.R
 $ cd ~/tmp/2015_04_19_09__6.0-41/
 $ make -j 7 -i 
@@ -331,8 +337,9 @@ $ make -j 7 -i
                 :
 make: [FH.GBML.RData] Error 1 (ignored)                
                 :
-
-\end{verbatim}
+ 2015-04-19 12:03:52: Finished WM
+ 2015-04-19 12:04:48: Finished xyf
+\end{Verbatim}
 
 \end{frame}
 
