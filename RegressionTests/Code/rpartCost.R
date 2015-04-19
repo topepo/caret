@@ -12,10 +12,9 @@ trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
-                       classProbs = TRUE, 
-                       summaryFunction = twoClassSummary)
+                       classProbs = TRUE)
 cctrl2 <- trainControl(method = "LOOCV",
-                       classProbs = TRUE, summaryFunction = twoClassSummary)
+                       classProbs = TRUE)
 cctrl3 <- trainControl(method = "none")
 
 set.seed(849)
@@ -33,9 +32,7 @@ test_class_cv_form <- train(Class ~ ., data = training,
                             preProc = c("center", "scale"))
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
-test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
-test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
