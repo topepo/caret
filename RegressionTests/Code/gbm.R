@@ -7,7 +7,8 @@ model <- "gbm"
 
 gbmGrid <- expand.grid(interaction.depth = 1:2,
                        shrinkage = .1,
-                       n.trees = c(10, 50, 100))
+                       n.trees = c(10, 50, 100),
+                       n.minobsinnode = 10)
 
 set.seed(2)
 training <- twoClassSim(100, linearVars = 2)
