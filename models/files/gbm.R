@@ -1,19 +1,23 @@
 modelInfo <- list(label = "Stochastic Gradient Boosting",
                   library = c("gbm", "plyr"),
                   type = c("Regression", "Classification"),
-                  parameters = data.frame(parameter = c('n.trees', 'interaction.depth', 'shrinkage'),
-                                          class = c("numeric", "numeric", "numeric"),
-                                          label = c('# Boosting Iterations', 'Max Tree Depth', 'Shrinkage')),
+                  parameters = data.frame(parameter = c('n.trees', 'interaction.depth', 
+                                                        'shrinkage', 'n.minobsinnode'),
+                                          class = rep("numeric", 4),
+                                          label = c('# Boosting Iterations', 'Max Tree Depth', 
+                                                    'Shrinkage', 'Min. Terminal Node Size')),
                   grid = function(x, y, len = NULL) expand.grid(interaction.depth = seq(1, len),
                                                                 n.trees = floor((1:len) * 50),
-                                                                shrinkage = .1),
+                                                                shrinkage = .1,
+                                                                n.minobsinnode = 10),
                   loop = function(grid) {     
-                    loop <- ddply(grid, c("shrinkage", "interaction.depth"),
+                    loop <- ddply(grid, c("shrinkage", "interaction.depth", "n.minobsinnode"),
                                   function(x) c(n.trees = max(x$n.trees)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$n.trees)) {
                       index <- which(grid$interaction.depth == loop$interaction.depth[i] & 
-                                       grid$shrinkage == loop$shrinkage[i])
+                                       grid$shrinkage == loop$shrinkage[i] &
+                                       grid$n.minobsinnode == loop$n.minobsinnode[i])
                       trees <- grid[index, "n.trees"] 
                       submodels[[i]] <- data.frame(n.trees = trees[trees != loop$n.trees[i]])
                     }    
@@ -43,6 +47,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                                     interaction.depth = param$interaction.depth,
                                     n.trees = param$n.trees,
                                     shrinkage = param$shrinkage, 
+                                    n.minobsinnode = param$n.minobsinnode,
                                     distribution = modDist)
                     if(any(names(theDots) == "family")) modArgs$distribution <- NULL
                     
