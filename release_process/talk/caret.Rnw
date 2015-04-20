@@ -49,7 +49,7 @@ theme_set(theme_bw())
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{Nobody Knows What It's Like To Be the Bad Man}
+\title{Nobody Knows What It's Like To Be the Bad Man \linebreak The Development Process for the {\tt caret} Package}
 \author{Max Kuhn, Ph.D}
 \institute{Pfizer Global R$\&$D \linebreak Groton, CT\linebreak max.kuhn@pfizer.com }
 \date{}
@@ -253,11 +253,7 @@ For example, I recently updated the \pkg{desirability} package and received this
 
 \vspace{.1in}
 
-
-
 \end{frame}
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -269,7 +265,7 @@ This problem was somewhat alleviated at the end of 2013 when {\em custom methods
 
 \vspace{.1in}
 
-Although this functionality had already existed in the package for some time, it was refactored to be more user freindly. 
+Although this functionality had already existed in the package for some time, it was refactored to be more user friendly. 
 
 \vspace{.1in}
 
@@ -303,7 +299,7 @@ All modeling packages are updated to their current CRAN versions.
 
 \vspace{.1in}
 
-For each model accessed by \mxkwd{train}, \mxkwd{rfe}, and/or \mxkwd{sbf}, a set of test cases are computed with the production version of \pkg{caret} and the devle version. 
+For each model accessed by \mxkwd{train}, \mxkwd{rfe}, and/or \mxkwd{sbf}, a set of test cases are computed with the production version of \pkg{caret} and the devel version. 
 
 \vspace{.1in}
 
@@ -332,7 +328,6 @@ $ make -j 7 -i
  2015-04-19 09:13:44: Starting ada
  2015-04-19 09:13:44: Starting AdaBag
  2015-04-19 09:13:44: Starting AdaBoost.M1
- 2015-04-19 09:13:44: Finished ada
  2015-04-19 09:13:44: Starting ANFIS
                 :
 make: [FH.GBML.RData] Error 1 (ignored)                
@@ -354,7 +349,7 @@ make: [FH.GBML.RData] Error 1 (ignored)
 
 \vspace{.15in}
 
-Although this functionality had already existed in the package for some time, it was refactored to be more user freindly. 
+Although this functionality had already existed in the package for some time, it was refactored to be more user friendly. 
 
 \vspace{.15in}
 
@@ -362,7 +357,7 @@ However, this added time to \texttt{R CMD check} and was a general pain for CRAN
 
 \vspace{.15in}
 
-Efforts to make the vingettes more computationally efficient (e.g. reducing the number of examples, resamples, etc.) diminished the effectiveness of the documentation.  
+Efforts to make the vignettes more computationally efficient (e.g. reducing the number of examples, resamples, etc.) diminished the effectiveness of the documentation.  
 
 
 \end{frame}
@@ -380,12 +375,12 @@ The documentation was moved out of the package and to the github IO page.
 These pages are built using \pkg{knitr} whenever a new version is sent to CRAN. Some advantages are:
 
 \begin{itemize}
-\item longer and more relavant examples are availible
-\item update scheduile is under my control
+\item longer and more relevant examples are available
+\item update schedule is under my control
 \item dynamic documentation (e.g. D3 network graphs, JS tables)
 \item better formatting
 \end{itemize}
-
+ 
 \vspace{.1in}
 
 It currently takes about 4hr to create these (using parallel processing when possible). 
@@ -393,12 +388,8 @@ It currently takes about 4hr to create these (using parallel processing when pos
 \end{frame}
 
 
-
-
-
-
-
 \end{document}
+
 
 
 
