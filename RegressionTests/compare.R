@@ -2,8 +2,8 @@ setwd("~/tmp")
 
 ##############################################################
 
-Old <- "2014_08_14_15__6.0-30"
-New <- "2014_08_14_16__6.0-34"
+Old <- "2015_04_19_22__6.0-41"
+New <- "2015_04_19_19__6.0-45"
 
 oldResults <- list.files(file.path(getwd(), Old), pattern = "RData")
 newResults <- list.files(file.path(getwd(), New), pattern = "RData")
