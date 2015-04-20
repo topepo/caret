@@ -229,4 +229,4 @@ twoClassSummary <- function (data, lev = NULL, model = NULL)
   out
 }
 
-
+oob_mods <- c("rf", "treebag", "cforest", "bagEarth", "bagEarthGCV", "bagFDA","bagFDAGCV", "parRF")

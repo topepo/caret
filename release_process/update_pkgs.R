@@ -24,6 +24,7 @@ libs <- c(libs, "knitr", "Hmisc", "googleVis", "animation",
           "reshape", "rJava", "SparseM", "sqldf", "XML", "lubridate", "dplyr", "GA",
           "aroma.affymetrix", "remMap", "cghFLasso", "RCurl", "QSARdata", "reshape2",
           "mapproj", "ggmap", "ggvis", "SuperLearner", "subsemble", "caretEnsemble")
+libs <- unique(libs)
 
 
 ###################################################################
@@ -39,7 +40,7 @@ if(length(diffs) > 0) print(diffs)
 ## Install the files. This might re-install caret so beware.
 
 install.packages(libs, repos = "http://cran.r-project.org", 
-                 type = "source",
+#                  type = "source",
                  dependencies = c("Depends", "Suggests", "Imports"))
 
 ###################################################################
@@ -50,5 +51,8 @@ source("http://www.bioconductor.org/getBioC.R")
 biocLite(c("vbmp", "gpls", "logicFS"), 
         type = "source",
         dependencies = c("Depends", "Imports"))
+
+###################################################################
+## Install orphaned packages: CHAID, rknn, SDDA
 
 

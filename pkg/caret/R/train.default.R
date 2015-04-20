@@ -95,8 +95,10 @@ train.default <- function(x, y,
     }   
   }
   
-  if(trControl$method == "oob" & !(method %in% c("rf", "treebag", "cforest", "bagEarth", "bagEarthGCV", "bagFDA","bagFDAGCV", "parRF")))
-    stop("for oob error rates, model bust be one of: rf, cforest, bagEarth, bagFDA or treebag")
+  
+  if(trControl$method == "oob" & !(method %in% oob_mods))
+    stop(paste("for oob error rates, model bust be one of:", 
+               paste(oob_mods, sep = "", collapse = ", ")))
   
   ## If they don't exist, make the data partitions for the resampling iterations.
   if(is.null(trControl$index)) {
@@ -144,7 +146,7 @@ train.default <- function(x, y,
   #   if(!is.data.frame(x)) x <- as.data.frame(x)
   
   ## Gather all the pre-processing info. We will need it to pass into the grid creation
-  ## code so that there is a concorance between the data used for modeling and grid creation
+  ## code so that there is a concordance between the data used for modeling and grid creation
   if(!is.null(preProcess)) {
     ppOpt <- list(options = preProcess)
     if(length(trControl$preProcOptions) > 0) ppOpt <- c(ppOpt,trControl$preProcOptions)
@@ -203,7 +205,7 @@ train.default <- function(x, y,
     ##     the subset of parameters that need to be fit
     ##   - A list called "submodels". If "basic", it is NULL. For "seq" models, it is a list. Each list
     ##     item is a data frame of the parameters that need to be varied for the corresponding row of
-    ##     the loop oject.
+    ##     the loop object.
     ##
     ## For example, for a gbm model, our tuning grid might be:
     ##    .interaction.depth .n.trees .shrinkage
@@ -232,14 +234,14 @@ train.default <- function(x, y,
     ## 
     ## A simplified version of predictionFunction() would have the following gbm section:
     ##
-    ##     # First get the predicitons with the value of n.trees as given in the current
+    ##     # First get the predictions with the value of n.trees as given in the current
     ##     # row of loop
     ##     out <- predict(modelFit,
     ##                    newdata,
     ##                    type = "response",
     ##                    n.trees = modelFit$tuneValue$.n.trees)
     ##
-    ##     # param is the current value of submodels. In normal predction mode (i.e
+    ##     # param is the current value of submodels. In normal prediction mode (i.e
     ##     # when using predict.train), param = NULL. When called within train()
     ##     # with this model, it will have the other values for n.trees.
     ##     # In this case, the output of the function is a list of predictions
@@ -289,10 +291,12 @@ train.default <- function(x, y,
     }
     
     
-    ## run some data thru the sumamry function and see what we get  
+    
     if(trControl$method == "oob") {
-      perfNames <- if(modelType == "Regression") c("RMSE", "Rsquared") else  c("Accuracy", "Kappa")    
+      ## delay this test until later
+      perfNames <- metric   
     } else {
+      ## run some data thru the summary function and see what we get
       testSummary <- evalSummaryFunction(y, wts = weights, ctrl = trControl, 
                                          lev = classLevels, metric = metric, 
                                          method = method)
@@ -316,6 +320,19 @@ train.default <- function(x, y,
                               info = trainInfo, method = models,
                               ppOpts = preProcess, ctrl = trControl, lev = classLevels, ...)
       performance <- tmp
+      perfNames <- colnames(performance)
+      perfNames <- perfNames[!(perfNames %in% as.character(models$parameters$parameter))]
+      if(!(metric %in% perfNames)){
+        oldMetric <- metric
+        metric <- perfNames[1]
+        warning(paste("The metric \"",
+                      oldMetric,
+                      "\" was not in ",
+                      "the result set. ",
+                      metric,
+                      " will be used instead.",
+                      sep = ""))
+      }
     } else {
       if(trControl$method == "LOOCV"){
         tmp <- looTrainWorkflow(x = x, y = y, wts = weights, 
@@ -352,7 +369,7 @@ train.default <- function(x, y,
         #colnames(resampledCM) <- gsub("^\\.", "", colnames(resampledCM))
       } else resampledCM <- NULL
     } else resampledCM <- NULL
-
+    
     
     if(trControl$verboseIter)  {
       cat("Aggregating results\n")
@@ -478,7 +495,7 @@ train.default <- function(x, y,
                               last = TRUE,
                               classProbs = trControl$classProbs,
                               ...))
-
+  
   if(trControl$trim && !is.null(models$trim)) {
     if(trControl$verboseIter) old_size <- object.size(finalModel$fit)
     finalModel$fit <- models$trim(finalModel$fit)
@@ -585,7 +602,7 @@ train.formula <- function (form, data, ..., weights, subset, na.action = na.fail
 
 summary.train <- function(object, ...) summary(object$finalModel, ...)
 residuals.train <- function(object, ...) {
-  if(object$modelType != "Regression") stop("train() only produces redisuals on numeric outcomes")
+  if(object$modelType != "Regression") stop("train() only produces residuals on numeric outcomes")
   resid <- residuals(object$finalModel, ...)
   if(is.null(resid)) {    
     if(!is.null(object$trainingData))  {
@@ -605,3 +622,4 @@ fitted.train <- function(object, ...) {
   prd
   
 }
+
