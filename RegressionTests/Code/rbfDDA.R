@@ -11,9 +11,12 @@ testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
-cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
-cctrl2 <- trainControl(method = "LOOCV")
-cctrl3 <- trainControl(method = "none")
+seeds <- vector(mode = "list", length = nrow(training) + 1)
+seeds <- lapply(seeds, function(x) 1:20)
+
+cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", seeds = seeds)
+cctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
+cctrl3 <- trainControl(method = "none", seeds = seeds)
 
 library(RSNNS)
 setSnnsRSeedValue(1)
@@ -78,9 +81,9 @@ trainY <- training$y
 testX <- trainX[, -ncol(training)]
 testY <- trainX$y 
 
-rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
-rctrl2 <- trainControl(method = "LOOCV")
-rctrl3 <- trainControl(method = "none")
+rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", seeds = seeds)
+rctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
+rctrl3 <- trainControl(method = "none", seeds = seeds)
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 

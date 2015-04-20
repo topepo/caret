@@ -11,13 +11,21 @@ testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
+seeds <- vector(mode = "list", length = nrow(training) + 1)
+seeds <- lapply(seeds, function(x) 1:20)
+
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE, 
-                       summaryFunction = twoClassSummary)
+                       summaryFunction = twoClassSummary, 
+                       seeds = seeds)
 cctrl2 <- trainControl(method = "LOOCV",
-                       classProbs = TRUE, summaryFunction = twoClassSummary)
+                       classProbs = TRUE, 
+                       summaryFunction = twoClassSummary, 
+                       seeds = seeds)
 cctrl3 <- trainControl(method = "none",
-                       classProbs = TRUE, summaryFunction = twoClassSummary)
+                       classProbs = TRUE, 
+                       summaryFunction = twoClassSummary,
+                       seeds = seeds)
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
@@ -104,10 +112,11 @@ trainY <- training$y
 testX <- trainX[, -ncol(training)]
 testY <- trainX$y 
 
-rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
-                       seed = list(a = 1:9, b = 1:9, c = 1:9, d = 10))
-rctrl2 <- trainControl(method = "LOOCV")
-rctrl3 <- trainControl(method = "none")
+rctrl1 <- trainControl(method = "cv", number = 3, 
+                       returnResamp = "all",
+                       seed = seeds)
+rctrl2 <- trainControl(method = "LOOCV", seed = seeds)
+rctrl3 <- trainControl(method = "none", seed = seeds)
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 

@@ -11,24 +11,20 @@ testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
-cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
-                       classProbs = TRUE)
-cctrl2 <- trainControl(method = "LOOCV",
-                       classProbs = TRUE)
+cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
+cctrl2 <- trainControl(method = "LOOCV")
 cctrl3 <- trainControl(method = "none")
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
                              method = "rpartCost", 
                              trControl = cctrl1,
-                             metric = "ROC", 
                              preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
                             method = "rpartCost", 
                             trControl = cctrl1,
-                            metric = "ROC", 
                             preProc = c("center", "scale"))
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
@@ -38,7 +34,6 @@ set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
                               method = "rpartCost", 
                               trControl = cctrl2,
-                              metric = "ROC", 
                               preProc = c("center", "scale"))
 
 set.seed(849)

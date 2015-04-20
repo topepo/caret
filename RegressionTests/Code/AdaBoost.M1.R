@@ -14,13 +14,21 @@ trainY <- training$Class
 grid <- expand.grid(mfinal = (1:3)*3, maxdepth = c(1, 3),
                     coeflearn = c("Breiman", "Freund", "Zhu"))
 
+seeds <- vector(mode = "list", length = nrow(training) + 1)
+seeds <- lapply(seeds, function(x) 1:20)
+
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE, 
-                       summaryFunction = twoClassSummary)
+                       summaryFunction = twoClassSummary, 
+                       seeds = seeds)
 cctrl2 <- trainControl(method = "LOOCV",
-                       classProbs = TRUE, summaryFunction = twoClassSummary)
+                       classProbs = TRUE, 
+                       summaryFunction = twoClassSummary, 
+                       seeds = seeds)
 cctrl3 <- trainControl(method = "none",
-                       classProbs = TRUE, summaryFunction = twoClassSummary)
+                       classProbs = TRUE, 
+                       summaryFunction = twoClassSummary,
+                       seeds = seeds)
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
