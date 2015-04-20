@@ -39,7 +39,7 @@ Suggests:
     nnet,
     party (>= 0.9-99992),
     pls,
-    pROC (>= 1.8),
+    pROC,
     proxy,
     randomForest,
     RANN,
