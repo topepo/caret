@@ -43,9 +43,9 @@ Automates tedious package development tasks
   - R CMD BUILD
   - R CMD CHECK
   - Release via email to CRAN
-- New release process
+- New release process: `devtools::release()`
+  - `devtools::test()`
   - `devtools::check()`
-  - `devtools::release()`
 - This is the entire release process for most packages
   - 80% of the process for caret
 
@@ -58,6 +58,7 @@ Automates the boring parts of code review
   - Travis notifies them of test failures
   - Contributer can iterate several times without your input
 - You start code review once tests pass
+  - You don't start reviewing until `R CMD CHECK` Passes
   - github supports line-by-line comments
 
 testthat
@@ -78,6 +79,7 @@ Simplified package documentation
 
 - Code and documentation are in the same file
   - No context switching
+  - All documentation takes the form of special comment blocks
 - A must have for new packages
 - Hard to convert existing packages
   - caret has 92 .Rd files
