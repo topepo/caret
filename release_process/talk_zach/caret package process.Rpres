@@ -1,9 +1,17 @@
-Building R Packages
+Building New R Packages
 ========================================================
 author: Zach Mayer
 date: 2015-04-25
 
-Building R Packages
+My relationship with caret
+========================================================
+- Fell in love with predictive modeling because of caret in 2010
+- Started submitting bugs/feature requests to Max in 2011
+- Started submitting new features to the SVN in 2013
+- Convinced Max to switch to github in 2014
+- Setup the RStudio project and automated unit testing with travis
+
+R Packages
 ========================================================
 - Context switching is bad
   - Between R and the command line
@@ -12,6 +20,9 @@ Building R Packages
   - Between .R files and .Rd files
 - Minimum context switching maximizes productivity
 - Hadley Wickham has kinldy built a package development toolkit to minimize context switching
+  - Will save you all kinds of CRAN-related trouble
+  - No excuse not to use it for new packages
+  - Very easy to move over parts of old packages
 
 Package development tools:
 ========================================================
@@ -53,6 +64,8 @@ Automates tedious package development tasks
   - Runs R CMD CHECK
 - `devtools::release()`
   - Builds package and submits it to CRAN
+- This is the entire release process for most packages
+  - 80% of the process for caret
 
 testthat
 ========================================================
@@ -100,6 +113,7 @@ Automates the boring parts of code review
   - Travis notifies them of test failures
   - Coveralls notifies to write tests for new functions
   - Iterate several times
+  - Can run unit tests that are skipped on CRAN
 - You start code review once tests pass
   - github supports line-by-line comments
   - Usually several more iterations here
