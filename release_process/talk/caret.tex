@@ -363,21 +363,26 @@ Automated unit testing via \href{http://cran.r-project.org/web/packages/testthat
   \begin{frame}[fragile]
 \frametitle{github + travis + coveralls}
 
-a little bit about travis and coveralls
+Travis and coveralls are tools for automated unit testing
+\begin{itemize}
+\item Travis reports test failutes and CRAN errors/warnings
+\item Coveralls reports \% of code covered by unit tests
+\item Both automatically comment on the PR itself
+\end{itemize}
 
 \vspace{.1in}
 
 Contributor submits code via a pull request
 
 \begin{itemize}
-\item  Travis notifies them of test failures
-\item Coveralls notifies to write tests for new functions
-\item Iterate several times
+\item Travis notifies them of test failures
+\item Coveralls notifies them to write tests for new functions
+\item Automated feedback on code quality allows rapid iteration
 \end{itemize}
 
 \vspace{.1in}
 
-You start code review once tests pass
+Code review once unit tests and R CMD CHECK pass
 \begin{itemize}
 \item github supports line-by-line comments
 \item Usually several more iterations here
