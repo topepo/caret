@@ -19,11 +19,24 @@ Building New R Packages
 Package development tools:
 ========================================================
 
+- github: source control
 - RStudio projects: development environment
 - devtools: automate boring tasks
 - testthat: automated unit testing
 - roxygen2: combine source code with documentation
-- github: source control
+
+github
+========================================================
+Version control for cool kids
+
+- "Social Network" for code
+- Non-CRAN code distribtion
+  - `devtools::install_github()`
+  - Can also use this to distribute private packages
+- Pull Requests as a mechanism for code review
+- Automated unit testing through travis-CI
+  - `devtools::use_travis()`
+  - Test converage reports through coveralls
 
 RStudio projects
 ========================================================
@@ -74,19 +87,6 @@ Simplified package documentation
 - Hard to convert existing packages
   - caret has 92 .Rd files
   - I'm not in a hury to re-write them all in roxygen2 format
-
-github
-========================================================
-Version control for cool kids
-
-- "Social Network" for code
-- Non-CRAN code distribtion
-  - `devtools::install_github()`
-  - Can also use this to distribute private packages
-- Pull Requests as a mechanism for code review
-- Automated unit testing through travis-CI
-  - `devtools::use_travis()`
-  - Test converage reports through coveralls
 
 github + travis + coveralls
 ========================================================
