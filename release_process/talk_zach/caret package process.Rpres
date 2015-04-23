@@ -34,7 +34,8 @@ github
 - Pull Requests as a mechanism for code review
 - Automated unit testing through travis-CI
   - `devtools::use_travis()`
-  - Test converage reports through coveralls
+  - Contributors submit code
+  - You don't need to review it until R CMD CHECK passes
 
 devtools
 ========================================================
@@ -48,18 +49,6 @@ Automates tedious package development tasks
   - `devtools::check()`
 - This is the entire release process for most packages
   - 80% of the process for caret
-
-github + travis
-========================================================
-Automates the boring parts of code review
-
-- Contributer submits code via a pull request
-  - Travis run R CMD CHECK
-  - Travis notifies them of test failures
-  - Contributer can iterate several times without your input
-- You start code review once tests pass
-  - You don't start reviewing until `R CMD CHECK` Passes
-  - github supports line-by-line comments
 
 testthat
 ========================================================
