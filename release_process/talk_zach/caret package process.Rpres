@@ -3,7 +3,7 @@ Building New R Packages
 author: Zach Mayer
 date: 2015-04-25
 
-R Packages
+Building New R Packages
 ========================================================
 - Context switching is bad
   - Between R and the command line
@@ -24,15 +24,6 @@ Package development tools:
 - testthat: automated unit testing
 - roxygen2: combine source code with documentation
 - github: source control
-
-Package development tools:
-========================================================
-
-- Use Hadley's toolkit to build your next package
-  - Hadley will send you any apology card if a bug in devtools causes you grief from the r-core team
-- Consider re-structuring existing packages
-  - Rstudio, devtools, and testthat are easy
-  - Roxygen is more work
 
 RStudio projects
 ========================================================
