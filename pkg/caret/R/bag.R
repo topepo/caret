@@ -222,8 +222,8 @@ print.bag <- function (x, ...)
 
 ldaBag <- list(fit = function(x, y, ...)
                {
-                 library(MASS)
-                 lda(x, y, ...)
+                 loadNamespace("MASS")
+                 MASS::lda(x, y, ...)
                },
 
                pred = function(object, x)
@@ -258,8 +258,8 @@ ldaBag <- list(fit = function(x, y, ...)
 
 plsBag <- list(fit = function(x, y,  ...)
                {
-                 library(pls)
-                 plsda(x, y, ...)
+                 loadNamespace("pls")
+                 caret::plsda(x, y, ...)
                },
 
                pred = function(object, x)
@@ -288,8 +288,8 @@ plsBag <- list(fit = function(x, y,  ...)
 
 nbBag <- list(fit = function(x, y,  ...)
                {
-                 library(klaR)
-                 NaiveBayes(x, y, usekernel = TRUE, fL = 2, ...)
+                 loadNamespace("klaR")
+                 klaR::NaiveBayes(x, y, usekernel = TRUE, fL = 2, ...)
                },
 
                pred = function(object, x)
@@ -319,10 +319,10 @@ nbBag <- list(fit = function(x, y,  ...)
 
 ctreeBag <- list(fit = function(x, y,  ...)
                 {
-                  library(party)
+                  loadNamespace("party")
                   data <- as.data.frame(x)
                   data$y <- y
-                  ctree(y~., data = data)
+                  party::ctree(y~., data = data)
                 },
 
                 pred = function(object, x)
@@ -331,12 +331,12 @@ ctreeBag <- list(fit = function(x, y,  ...)
                   obsLevels <-  levels(object@data@get("response")[,1])
                   if(!is.null(obsLevels))
                     {
-                      rawProbs <- treeresponse(object, x)
+                      rawProbs <- party::treeresponse(object, x)
                       probMatrix <- matrix(unlist(rawProbs), ncol = length(obsLevels), byrow = TRUE)
                       out <- data.frame(probMatrix)
                       colnames(out) <- obsLevels
                       rownames(out) <- NULL
-                    } else out <- unlist(treeresponse(object, x))
+                    } else out <- unlist(party::treeresponse(object, x))
                   out
                 },
                 aggregate = function(x, type = "class")
@@ -369,9 +369,9 @@ ctreeBag <- list(fit = function(x, y,  ...)
 svmBag <- list(fit = function(x, y,  ...)
                 {
 
-                  library(kernlab)
+                  loadNamespace("kernlab")
                   
-                  out <- ksvm(as.matrix(x), y, prob.model = is.factor(y), ...)
+                  out <- kernlab::ksvm(as.matrix(x), y, prob.model = is.factor(y), ...)
                   out
                 },
 
@@ -417,11 +417,11 @@ svmBag <- list(fit = function(x, y,  ...)
 nnetBag <- list(fit = function(x, y,  ...)
                 {
 
-                  library(nnet)
+                  loadNamespace("nnet")
                   factorY <- is.factor(y)
                   if(factorY) y <- class2ind(y)
 
-                  out <- nnet(x, y, linout = !factorY, trace = FALSE, ...)
+                  out <- nnet::nnet(x, y, linout = !factorY, trace = FALSE, ...)
                   out$classification <- factorY
                   out
                 },

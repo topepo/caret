@@ -5,7 +5,6 @@
 
 adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, 
                              metric, maximize, testing = FALSE, ...) {
-  library(caret)
   loadNamespace("caret")
   ppp <- list(options = ppOpts)
   ppp <- c(ppp, ctrl$preProcOptions)
@@ -37,7 +36,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
               testing <- FALSE
               if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
               
-              library(caret)
+              loadNamespace("caret")
               if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE],
                                             names(resampleIndex), iter)
               
@@ -545,7 +544,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                 testing <- FALSE
                 if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
                 
-                library(caret)
+                loadNamespace("caret")
                 if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE],
                                               names(resampleIndex), iter)
                 

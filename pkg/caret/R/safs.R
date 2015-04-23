@@ -718,8 +718,8 @@ caretSA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) train(x, y, 
                 selectIter = best)
 
 treebagSA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) {
-  library(ipred)
-  ipredbagg(y, x, ...)
+  loadNamespace("ipred")
+  ipred::ipredbagg(y, x, ...)
 },
 pred = function(object, x) {
   tmp <- predict(object, x)
@@ -738,8 +738,8 @@ prob = safs_prob,
 selectIter = best)
 
 rfSA <-  list(fit = function(x, y, lev = NULL, last = FALSE, ...) {
-  library(randomForest)
-  randomForest(x, y, ...)
+  loadNamespace("randomForest")
+  randomForest::randomForest(x, y, ...)
 },
 pred = function(object, x) {
   tmp <- predict(object, x)

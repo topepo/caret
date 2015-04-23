@@ -352,7 +352,7 @@ predict.preProcess <- function(object, newdata, ...)
   
   if(any(object$method == "bagImpute") && any(!cc))
   {
-    library(ipred)
+    loadNamespace("ipred")
     hasMiss <- newdata[!cc,,drop = FALSE]
     missingVars <- apply(hasMiss,
                          2,

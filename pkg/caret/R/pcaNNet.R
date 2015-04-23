@@ -77,21 +77,6 @@ pcaNNet.default <- function(x, y, thresh = .99, ...)
     out
   }
 
-
-#predict.pcaNNet <- function(object, newdata, ...)
-#  {
-#    library(nnet)
-#    
-#    if(is.null(newdata)) stop("provide newdata")
-#
-#    if(!is.null(object$names))
-#      {
-#        newdata <- newdata[, object$names, drop = FALSE]
-#      }
-#    x <- predict(object$pc, newdata)
-#    predict(object$model, x, ...)
-#  }
-
 print.pcaNNet <- function (x, ...) 
 {
   cat("Neural Network Model with PCA Pre-Processing\n\n")

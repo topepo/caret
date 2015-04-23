@@ -86,11 +86,13 @@ oldfilterVarImp <- function(x, y, nonpara = FALSE, ...)
 }
 
 
-rocPerCol <- function(dat, cls) pROC::roc(cls, dat)$auc
+rocPerCol <- function(dat, cls) {
+  loadNamespace("pROC")
+  pROC::roc(cls, dat)$auc
+}
 
 filterVarImp <- function(x, y, nonpara = FALSE, ...)
 {
-  require(pROC)
   {
     notNumber <- unlist(lapply(x, function(x) !is.numeric(x)))
     if(any(notNumber))

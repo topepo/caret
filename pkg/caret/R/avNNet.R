@@ -98,7 +98,7 @@ print.avNNet <- function (x, ...)
 
 predict.avNNet <- function(object, newdata, type = c("raw", "class", "prob"), ...)
   {
-    library(nnet)
+    loadNamespace("nnet")
     if (!inherits(object, "avNNet")) 
       stop("object not of class \"avNNet\"")
     if (missing(newdata))

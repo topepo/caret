@@ -1,6 +1,6 @@
 format.bagEarth <- function(x, file = "", cat = TRUE, ...) 
 {
-  library(earth)
+  requireNamespaceQuietStop("earth")
 
   eachEq <- lapply(
                    x$fit,

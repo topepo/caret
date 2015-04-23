@@ -179,7 +179,7 @@ rfStats <- function(x)
 
 cforestStats <- function(x)
 {
-  library(party)
+  loadNamespace("party")
   
   obs <- x@data@get("response")[,1]
   pred <- predict(x,  x@data@get("input"), OOB = TRUE)

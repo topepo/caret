@@ -1,6 +1,6 @@
 maxDissim <- function(a, b, n = 2, obj = minDiss, useNames = FALSE, randomFrac = 1, verbose = FALSE, ...) 
 {
-  library(proxy)
+  loadNamespace("proxy")
   if(nrow(b) < 2) stop("there must be at least 2 samples in b")
   if(ncol(a) != ncol(b)) stop("a and b must have the same number of columns")
   if(nrow(b) < n) stop("n must be less than nrow(b)")

@@ -114,7 +114,7 @@ rfe <- function (x, ...) UseMethod("rfe")
 {
   startTime <- proc.time()
   funcCall <- match.call(expand.dots = TRUE)
-  if(!("caret" %in% loadedNamespaces())) library(caret)
+  if(!("caret" %in% loadedNamespaces())) loadNamespace("caret")
 
   if(nrow(x) != length(y)) stop("there should be the same number of samples in x and y")
   numFeat <- ncol(x)
@@ -459,8 +459,8 @@ caretFuncs <- list(summary = defaultSummary,
 ldaFuncs <- list(summary = defaultSummary,
                  fit = function(x, y, first, last, ...)
                  {
-                   library(MASS)
-                   lda(x, y, ...)
+                   loadNamespace("MASS")
+                   MASS::lda(x, y, ...)
                  },
                  pred = function(object, x)
                  {
@@ -491,8 +491,8 @@ ldaFuncs <- list(summary = defaultSummary,
 treebagFuncs <- list(summary = defaultSummary,
                      fit = function(x, y, first, last, ...)
                      {
-                       library(ipred)
-                       ipredbagg(y, x, ...)
+                       loadNamespace("ipred")
+                       ipred::ipredbagg(y, x, ...)
                      },
                      pred = function(object, x)
                      {
@@ -525,7 +525,7 @@ gamFuncs <- list(summary = defaultSummary,
                    loaded <- search()
                    gamLoaded <- any(loaded == "package:gam")
                    if(gamLoaded) detach(package:gam)
-                   library(mgcv)
+                   loadNamespace("mgcv")
                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                    dat$y <- y
                    args <- list(formula = gamFormula(x, smoother = "s", y = "y"),
@@ -539,7 +539,7 @@ gamFuncs <- list(summary = defaultSummary,
                    loaded <- search()
                    gamLoaded <- any(loaded == "package:gam")
                    if(gamLoaded) detach(package:gam)
-                   library(mgcv)
+                   loadNamespace("mgcv")
                    rsp <- predict(object, newdata = x, type = "response")
                    if(object$family$family == "binomial")
                      {
@@ -560,7 +560,7 @@ gamFuncs <- list(summary = defaultSummary,
                    loaded <- search()
                    gamLoaded <- any(loaded == "package:gam")
                    if(gamLoaded) detach(package:gam)
-                   library(mgcv)
+                   loadNamespace("mgcv")
                    vimp <- varImp(object)
                    vimp$var <- rownames(vimp)
                    if(any(!(colnames(x) %in% rownames(vimp))))
@@ -579,8 +579,8 @@ gamFuncs <- list(summary = defaultSummary,
 rfFuncs <-  list(summary = defaultSummary,
                  fit = function(x, y, first, last, ...)
                  {
-                   library(randomForest)
-                   randomForest(x, y, importance = first, ...)
+                   loadNamespace("randomForest")
+                   randomForest::randomForest(x, y, importance = first, ...)
                  },
                  pred = function(object, x)
                  {
@@ -654,8 +654,8 @@ lmFuncs <- list(summary = defaultSummary,
 nbFuncs <- list(summary = defaultSummary,
                 fit = function(x, y, first, last, ...)
                 {
-                  library(klaR)
-                  NaiveBayes(x, y, usekernel = TRUE, fL = 2, ...)
+                  loadNamespace("klaR")
+                  klaR::NaiveBayes(x, y, usekernel = TRUE, fL = 2, ...)
                 },
                 pred = function(object, x)
                 {

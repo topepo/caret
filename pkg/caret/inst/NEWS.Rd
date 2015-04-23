@@ -25,8 +25,7 @@
 		\item A new function called \code{var_seq} was added that finds a sequence of integers that can be useful for some tuning parameters such as random forests \code{mtry}. Model modules were update to use the new function. 
 		\item \code{n.minobsinnode} was added as a tuning parameter to \code{gbm} models. 
 		\item For models using out-of-bag resampling, \code{train} now properly checks the \code{metric} argument against the names of the measured outcomes. 
-
-
+		\item Both \code{createDataParition} and \code{createFolds} were modified to better handle cases where one or more classs have very low numbers of data points. 
 	}
 }
 

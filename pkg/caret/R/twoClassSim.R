@@ -30,7 +30,7 @@ twoClassSim <- function(n = 100,
   }
   if(corrVars > 0)  {
     p <- ncol(tmpData)
-    library(MASS)
+    loadNamespace("MASS")
     if(corrType == "exch") {
       vc <- matrix(corrValue, ncol = corrVars,  nrow = corrVars)
       diag(vc) <- 1

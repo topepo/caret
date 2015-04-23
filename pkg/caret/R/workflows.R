@@ -43,7 +43,6 @@ expandParameters <- function(fixed, seq)
 
 nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing = FALSE, ...)
 {
-  library(caret)
   loadNamespace("caret")
   ppp <- list(options = ppOpts)
   ppp <- c(ppp, ctrl$preProcOptions)
@@ -71,7 +70,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
   testing <- FALSE
   if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
   
-  library(caret)
+  loadNamespace("caret")
   if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE],
                                 names(resampleIndex), iter)
   
@@ -372,7 +371,6 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
 
 looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing = FALSE, ...)
 {
-  library(caret)
   loadNamespace("caret")
   
   ppp <- list(options = ppOpts)
@@ -391,7 +389,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
       
       if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
       if(testing) cat("after loops\n")
-      library(caret)
+      loadNamespace("caret")
       if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE],
                                     names(ctrl$index), iter, TRUE)
       if(is.null(info$submodels[[parm]]) || nrow(info$submodels[[parm]]) > 0) {
@@ -514,7 +512,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
 
 oobTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing = FALSE, ...)
 {
-  library(caret)
+  loadNamespace("caret")
   ppp <- list(options = ppOpts)
   ppp <- c(ppp, ctrl$preProcOptions)
   printed <- format(info$loop)
@@ -524,7 +522,7 @@ oobTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
   result <- foreach(parm = 1:nrow(info$loop), .packages = pkgs, .combine = "rbind") %op%
 {
-  library(caret)
+  loadNamespace("caret")
   if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE], "", 1, TRUE)
   
   mod <- createModel(x = x,
@@ -554,7 +552,7 @@ oobTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
 
 nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
 {
-  library(caret)
+  loadNamespace("caret")
   ppp <- list(options = ppOpts)
   ppp <- c(ppp, ctrl$preProcOptions)
   
@@ -569,7 +567,7 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
 {
   if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[iter])
   
-  library(caret)
+  loadNamespace("caret")
   
   if(names(resampleIndex)[iter] != "AllData") {
     modelIndex <- resampleIndex[[iter]]
@@ -629,7 +627,7 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
 
 looSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
 {
-  library(caret)
+  loadNamespace("caret")
   ppp <- list(options = ppOpts)
   ppp <- c(ppp, ctrl$preProcOptions)
   
@@ -642,7 +640,7 @@ looSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
 {
   if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[iter])
   
-  library(caret)
+  loadNamespace("caret")
   
   modelIndex <- resampleIndex[[iter]]
   holdoutIndex <- -unique(resampleIndex[[iter]])
@@ -667,7 +665,7 @@ looSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
 
 nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
 {
-  library(caret)
+  loadNamespace("caret")
   ppp <- list(options = ppOpts)
   ppp <- c(ppp, ctrl$preProcOptions)
   
@@ -680,7 +678,7 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
   result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .packages = c("methods", "caret", "plyr"), .errorhandling = "stop") %op%
 {
-  library(caret)
+  loadNamespace("caret")
   
   if(names(resampleIndex)[iter] != "AllData") {
     modelIndex <- resampleIndex[[iter]]
@@ -758,7 +756,7 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
 
 looRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
 {
-  library(caret)
+  loadNamespace("caret")
   ppp <- list(options = ppOpts)
   ppp <- c(ppp, ctrl$preProcOptions)
   
@@ -766,7 +764,7 @@ looRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
   result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .packages = c("methods", "caret"), .errorhandling = "stop") %op%
 {
-  library(caret)
+  loadNamespace("caret")
   
   modelIndex <- resampleIndex[[iter]]
   holdoutIndex <- -unique(resampleIndex[[iter]])

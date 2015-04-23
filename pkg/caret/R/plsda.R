@@ -55,7 +55,7 @@ predict.plsda <- function(object, newdata = NULL, ncomp = NULL, type = "class", 
   } else {
     ## Bayes rule
     
-    library(klaR)
+    loadNamespace("klaR")
     tmp <- vector(mode = "list", length = length(ncomp))
     for(i in seq(along = ncomp)) {
       tmp[[i]] <- predict(object$probModel[[ ncomp[i] ]],
