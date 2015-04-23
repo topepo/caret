@@ -10,24 +10,22 @@ Building New R Packages
   - Between R and the file system
   - Between R and version control
   - Between .R files and .Rd files
-- Minimum context switching maximizes productivity
+- Minimizing context switching maximizes productivity
 - Hadley Wickham has kinldy built a package development toolkit to minimize context switching
   - Will save you all kinds of CRAN-related trouble
   - No excuse not to use it for new packages
   - Very easy to move over parts of old packages
 
-Package development tools:
+Single context package development:
 ========================================================
-
-- github: source control
-- RStudio projects: development environment
-- devtools: automate boring tasks
-- testthat: automated unit testing
-- roxygen2: combine source code with documentation
+- github for source control
+- RStudio projects for a standard development environment
+- devtools for R CMD BUILD / CHECK
+- testthat for automated unit testing
+- roxygen2 for code documentation
 
 github
 ========================================================
-Version control for cool kids
 
 - "Social Network" for code
 - Non-CRAN code distribtion
@@ -38,37 +36,36 @@ Version control for cool kids
   - `devtools::use_travis()`
   - Test converage reports through coveralls
 
-RStudio projects
-========================================================
-A clean, self contained package development environment
-
-- No more `setw('/path/to/some/folder')` in scripts
-- Keep track of project-wide standards, e.g. code formatting
-
-An RStudio project was the first thing we added after moving the caret repository to github
-
 devtools
 ========================================================
 Automates tedious package development tasks
-
-- `devtools::install()`
-  - Builds package and installs it locally
-- `devtools::check()`
-  - Builds documentation
-  - Runs unit tests
-  - Builds tarball
-  - Runs R CMD CHECK
-- `devtools::release()`
-  - Builds package and submits it to CRAN
+- Old release process
+  - R CMD BUILD
+  - R CMD CHECK
+  - Release via email to CRAN
+- New release process
+  - `devtools::check()`
+  - `devtools::release()`
 - This is the entire release process for most packages
   - 80% of the process for caret
+
+github + travis
+========================================================
+Automates the boring parts of code review
+
+- Contributer submits code via a pull request
+  - Travis run R CMD CHECK
+  - Travis notifies them of test failures
+  - Contributer can iterate several times without your input
+- You start code review once tests pass
+  - github supports line-by-line comments
 
 testthat
 ========================================================
 Automated unit testing
 
-- If you're not yet unit testing, you should be
-- `devtools::use_testhat()`
+- If you don't have unit tests, you should
+  - `devtools::use_testhat()`
 - Unit tests prevent new features from breaking old code
 - All functions should have associated tests
 - Can specify that certain tests be skipped on CRAN
@@ -79,27 +76,12 @@ roxygen2
 ========================================================
 Simplified package documentation
 
-- Automates many parts of the documentation process
-  - Special comment block above each function
-  - Name, description, arguments, etc.
-  - Code and documentation are in the same source file
+- Code and documentation are in the same file
+  - No context switching
 - A must have for new packages
 - Hard to convert existing packages
   - caret has 92 .Rd files
   - I'm not in a hury to re-write them all in roxygen2 format
-
-github + travis + coveralls
-========================================================
-Automates the boring parts of code review
-
-- Contributer submits code via a pull request
-  - Travis notifies them of test failures
-  - Coveralls notifies to write tests for new functions
-  - Iterate several times
-  - Can run unit tests that are skipped on CRAN
-- You start code review once tests pass
-  - github supports line-by-line comments
-  - Usually several more iterations here
 
 Wrapup
 ========================================================
