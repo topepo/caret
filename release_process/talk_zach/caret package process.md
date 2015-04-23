@@ -3,14 +3,6 @@ Building New R Packages
 author: Zach Mayer
 date: 2015-04-25
 
-My relationship with caret
-========================================================
-- Fell in love with predictive modeling because of caret in 2010
-- Started submitting bugs/feature requests to Max in 2011
-- Started submitting new features to the SVN in 2013
-- Convinced Max to switch to github in 2014
-- Setup the RStudio project and automated unit testing with travis
-
 R Packages
 ========================================================
 - Context switching is bad
