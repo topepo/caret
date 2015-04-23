@@ -51,6 +51,8 @@
 
 \usepackage{beamerthemesplit} 
 \usepackage{fancyvrb}
+\usepackage[usenames,dvipsnames]{xcolor}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -66,13 +68,14 @@
 \definecolor{darkgreen}{rgb}{0,0.3,0}
 \definecolor{darkred}{rgb}{0.6,0.0,0}
 \definecolor{darkblue}{rgb}{0,0,0.8}
+\definecolor{greyish}{rgb}{0.2,0.2,0.2}
 
 \newcommand{\mxnum}[1]{\texttt{\hlnum{#1}}}%
 \newcommand{\mxkwc}[1]{\texttt{\hlkwc{#1}}}%
 \newcommand{\mxkwd}[1]{\texttt{\hlkwd{#1}}}%
 
 \newcommand{\pkg}[1]{{\fontseries{b}\selectfont #1}}
-\renewcommand{\pkg}[1]{{\color{darkgreen}\textsf{#1}}}
+\renewcommand{\pkg}[1]{{\color{darkgreen}\texttt{#1}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% 
@@ -82,9 +85,27 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{Nobody Knows What It's Like To Be the Bad Man \linebreak The Development Process for the {\tt caret} Package}
-\author{Max Kuhn, Ph.D}
-\institute{Pfizer Global R$\&$D \linebreak Groton, CT\linebreak max.kuhn@pfizer.com }
+\title{Nobody Knows What It's Like To Be the Bad Man --- The Development Process for the {\tt caret} Package}
+% \author{\inst{1} Max Kuhn \and \inst{2} Zachary Deane--Mayer}
+% \institute{\inst{1} Pfizer Global R$\&$D \and \inst{2} Cognius }
+\author[Subham Kuhn \& Deane--Mayer]
+{%
+   \texorpdfstring{
+        \begin{columns}
+            \column{.45\linewidth}
+            \centering
+            Max Kuhn\\
+            Pfizer Global R$\&$D\\
+            \href{mailto:max.kuhn@pfizer.com}{max.kuhn@pfizer.com}
+            \column{.45\linewidth}
+            \centering
+            Zachary Deane--Mayer\\
+            Cognius\\
+            \href{mailto:zach.mayer@gmail.com}{zach.mayer@gmail.com}
+        \end{columns}
+   }
+   {John Doe \& Jane Doe}
+}
 \date{}
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -96,26 +117,8 @@
 \end{frame}
 
 \title{caret}
-\author{Max Kuhn}
+\author{Kuhn and Deane--Mayer}
 \institute{Pfizer}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}
-  \frametitle{Outline}
-
-\begin{itemize}
-\item What is the \pkg{caret} package?
-\item What makes it different
-\item Version control
-\item The CRAN release process
-\item Testing
-\item Documentation
-\end{itemize}
-
-\end{frame}
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   
@@ -144,13 +147,13 @@ For example, many models have only one method of specifying the model
 \begin{tabular}{rcl}
 {\bf Function} && {\bf {\tt predict} Function Syntax} \\
 \hline
- \href{http://cran.r-project.org/web/packages/MASS/index.html}{\pkg{MASS}}\texttt{:::lda} && {\tt \hlkwd{predict}\hlstd{(obj)}} (no options needed)\\
-\pkg{stats}\texttt{:::glm} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"response"}\hlstd{)}} \\
-\href{http://cran.r-project.org/web/packages/gbm/index.html}{\pkg{gbm}}\texttt{:::gbm} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"response"}\hlstd{, n.trees)}} \\
-\href{http://cran.r-project.org/web/packages/mda/index.html}{\pkg{mda}}\texttt{:::mda} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"posterior"}\hlstd{)}} \\  
-\href{http://cran.r-project.org/web/packages/rpart/index.html}{\pkg{rpart}}\texttt{:::rpart} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"prob"}\hlstd{)}}   \\
-\href{http://cran.r-project.org/web/packages/RWeka/index.html}{\pkg{RWeka}}\texttt{:::Weka} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"probability"}\hlstd{)}}  \\    
-\href{http://cran.r-project.org/web/packages/caTools/index.html}{\pkg{caTools}}\texttt{:::LogitBoost}  && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=}  \hlstr{"raw"}\hlstd{, nIter)}} \\
+ \href{http://cran.r-project.org/web/packages/MASS/index.html}{\pkg{MASS}}\texttt{::}\mxkwd{lda} && {\tt \hlkwd{predict}\hlstd{(obj)}} (no options needed)\\
+\pkg{stats}\texttt{:::}\mxkwd{glm} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"response"}\hlstd{)}} \\
+\href{http://cran.r-project.org/web/packages/gbm/index.html}{\pkg{gbm}}\texttt{::}\mxkwd{gbm} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"response"}\hlstd{, n.trees)}} \\
+\href{http://cran.r-project.org/web/packages/mda/index.html}{\pkg{mda}}\texttt{::}\mxkwd{mda} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"posterior"}\hlstd{)}} \\  
+\href{http://cran.r-project.org/web/packages/rpart/index.html}{\pkg{rpart}}\texttt{::}\mxkwd{rpart} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"prob"}\hlstd{)}}   \\
+\href{http://cran.r-project.org/web/packages/RWeka/index.html}{\pkg{RWeka}}\texttt{::}\mxkwd{Weka} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"probability"}\hlstd{)}}  \\    
+\href{http://cran.r-project.org/web/packages/caTools/index.html}{\pkg{caTools}}\texttt{::}\mxkwd{LogitBoost}  && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=}  \hlstr{"raw"}\hlstd{, nIter)}} \\
 \hline \\
 \\
 \end{tabular}
@@ -221,6 +224,36 @@ However, their formal dependency in the \textt{DESCRIPTION} file required CRAN  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   
+\begin{frame}[fragile]
+\frametitle{Package Dependencies}
+
+This problem was somewhat alleviated at the end of 2013 when {\em custom methods} were introduced into the package. 
+
+\vspace{.1in}
+
+Although this functionality had already existed in the package for some time, it was refactored to be more user friendly. 
+
+\vspace{.1in}
+
+In the process, much of the modeling code was moved out of \pkg{caret}'s R files and into R objects, eliminating the formal dependencies. 
+
+\vspace{.1in}
+
+Right now, the {\em total} number of dependencies is much smaller (2 \texttt{Depends}, 7 \texttt{Imports}, and 25 \texttt{Suggests}). 
+
+\vspace{.1in}
+
+This still affects testing though (described later). Also:
+
+\vspace{.1in}
+
+{\tt \color{darkblue} \footnotesize 1 package is needed for this model and is not installed. (gbm). Would you like to try to install it now?}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
   \begin{frame}[fragile]
 \frametitle{The Basic Release Process}
 
@@ -238,6 +271,265 @@ However, their formal dependency in the \textt{DESCRIPTION} file required CRAN  
 \end{enumerate}
 
 \end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{Toolbox}
+
+\begin{itemize}
+\item RStudio projects: a clean, self contained package development environment
+  \begin{itemize}
+  \item  No more {\tt setwd('/path/to/some/folder')} in scripts
+  \item Keep track of project-wide standards, e.g. code formatting
+  \item An RStudio project was the first thing we added after moving the \href{http://cran.r-project.org/web/packages/caret/index.html}{\pkg{caret}} repository to github
+  \end{itemize}
+\item \href{http://cran.r-project.org/web/packages/devtools/index.html}{\pkg{devtools}}: automate boring tasks
+\item \href{http://cran.r-project.org/web/packages/testthat/index.html}{\pkg{testthat}}: automated unit testing
+\item \href{http://cran.r-project.org/web/packages/roxygen2/index.html}{\pkg{roxygen2}}: combine source code with documentation
+\item github: source control 
+\end{itemize}
+
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{\href{http://cran.r-project.org/web/packages/devtools/index.html}{\pkg{devtools}}}
+
+\href{http://cran.r-project.org/web/packages/devtools/index.html}{\pkg{devtools}}{\tt ::\mxkwd{install}} builds package and installs it locally
+
+\vspace{.1in}
+
+\href{http://cran.r-project.org/web/packages/devtools/index.html}{\pkg{devtools}}{\tt ::\mxkwd{check}}:
+\begin{enumerate}
+  \item  Builds documentation
+  \item Runs unit tests
+  \item Builds tarball
+  \item Runs {\tt R CMD CHECK}
+\end{enumerate}
+
+\vspace{.1in}
+
+\href{http://cran.r-project.org/web/packages/devtools/index.html}{\pkg{devtools}}{\tt ::\mxkwd{release}} builds package and submits it to CRAN 
+
+\vspace{.1in}
+
+\href{http://cran.r-project.org/web/packages/devtools/index.html}{\pkg{devtools}}{\tt ::\mxkwd{install\_github}} enables non-CRAN code distribution or distribution of private packages
+
+\vspace{.1in}
+
+\href{http://cran.r-project.org/web/packages/devtools/index.html}{\pkg{devtools}}{\tt ::\mxkwd{use\_travis}} enables automated unit testing through travis-CI and test coverage reports through coveralls
+
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{Testing}
+
+Testing for the package occurs in a few different ways:
+\begin{itemize}
+\item units tests via \href{http://cran.r-project.org/web/packages/testthat/index.html}{\pkg{testthat}} and travis-CI
+\item regression tests for consistency
+\end{itemize}
+
+\vspace{.2in}
+
+Automated unit testing via \href{http://cran.r-project.org/web/packages/testthat/index.html}{\pkg{testthat}}
+
+\begin{itemize}
+\item \href{http://cran.r-project.org/web/packages/testthat/index.html}{\pkg{testthat}}{\tt ::\mxkwd{use\_testhat}}
+\item Unit tests prevent new features from breaking old code
+\item All functions should have associated tests
+\item Run during {\tt R CMD check --as-cran}
+\item Can specify that certain tests be skipped on CRAN
+\end{itemize}
+
+\href{http://cran.r-project.org/web/packages/caret/index.html}{\pkg{caret}} is slowly adding more \href{http://cran.r-project.org/web/packages/testthat/index.html}{\pkg{testthat}} tests
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{github + travis + coveralls}
+
+a little bit about travis and coveralls
+
+\vspace{.1in}
+
+Contributor submits code via a pull request
+
+\begin{itemize}
+\item  Travis notifies them of test failures
+\item Coveralls notifies to write tests for new functions
+\item Iterate several times
+\end{itemize}
+
+\vspace{.1in}
+
+You start code review once tests pass
+\begin{itemize}
+\item github supports line-by-line comments
+\item Usually several more iterations here
+\end{itemize}
+
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{Regression Testing}
+
+Prior to CRAN release (or whenever required), a comprehensive set of regression tests can be  conducted.
+
+\vspace{.1in}
+
+All modeling packages are updated to their current CRAN versions.
+
+\vspace{.1in}
+
+For each model accessed by \mxkwd{train}, \mxkwd{rfe}, and/or \mxkwd{sbf}, a set of test cases are computed with the production version of \pkg{caret} and the devel version. 
+
+\vspace{.1in}
+
+First, test cases are evaluated to make sure that nothing has been broken by updated versions of the consistuent packages. 
+
+\vspace{.1in}
+
+Diffs of the model results are computed to assess any differences in \pkg{caret} versions.
+
+\vspace{.1in}
+
+This process takes approximately 3hrs to complete using \texttt{make -j 12} on a Mac Pro. 
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{Regression Testing}
+
+\begin{Verbatim}[fontsize=\footnotesize]
+$ R CMD BATCH move_files.R
+$ cd ~/tmp/2015_04_19_09__6.0-41/
+$ make -j 12 -i 
+ 2015-04-19 09:13:44: Starting ada
+ 2015-04-19 09:13:44: Starting AdaBag
+ 2015-04-19 09:13:44: Starting AdaBoost.M1
+ 2015-04-19 09:13:44: Starting ANFIS
+                :
+ make: [FH.GBML.RData] Error 1 (ignored)                
+                :
+ 2015-04-19 12:03:52: Finished WM
+ 2015-04-19 12:04:48: Finished xyf
+\end{Verbatim}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{Documentation}
+
+\pkg{caret} originally contained four package vignettes with in--depth descriptions of functionality with examples. 
+
+\vspace{.15in}
+
+Although this functionality had already existed in the package for some time, it was refactored to be more user friendly. 
+
+\vspace{.15in}
+
+However, this added time to \texttt{R CMD check} and was a general pain for CRAN.
+
+\vspace{.15in}
+
+Efforts to make the vignettes more computationally efficient (e.g. reducing the number of examples, resamples, etc.) diminished the effectiveness of the documentation.  
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{Documentation}
+
+The documentation was moved out of the package and to the github IO page. 
+
+\vspace{.15in}
+
+
+These pages are built using \pkg{knitr} whenever a new version is sent to CRAN. Some advantages are:
+
+\begin{itemize}
+\item longer and more relevant examples are available
+\item update schedule is under my control
+\item dynamic documentation (e.g. D3 network graphs, JS tables)
+\item better formatting
+\end{itemize}
+ 
+\vspace{.1in}
+
+It currently takes about 4hr to create these (using parallel processing when possible). 
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\begin{frame}[plain]
+\begin{center}
+\LARGE Backup Slides
+\end{center}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  \begin{frame}[fragile]
+\frametitle{\href{http://cran.r-project.org/web/packages/roxygen2/index.html}{\pkg{roxygen2}}}
+
+Simplified package documentation
+
+\vspace{.2in}
+
+Automates many parts of the documentation process
+\begin{itemize}
+\item  Special comment block above each function
+\item Name, description, arguments, etc.
+\item Code and documentation are in the same source file
+\end{itemize} 
+
+\vspace{.2in}
+
+A must have for new packages but hard to convert existing packages
+\begin{itemize}
+\item   \href{http://cran.r-project.org/web/packages/caret/index.html}{\pkg{caret}} has 92 .Rd files
+\item I'm not in a hurry to re-write them all in \href{http://cran.r-project.org/web/packages/roxygen2/index.html}{\pkg{roxygen2}} format
+\end{itemize}
+
+
+
+
+\end{frame}
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   
@@ -280,151 +572,39 @@ The ``solution'' is to have a file that is sourced first in the package (e.g. \t
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   
 \begin{frame}[fragile]
-\frametitle{Severity of Problems}
+\frametitle{Judging the Severity of Problems}
 
 It's hard to tell which warnings should be ignored and which should not. There is also the issue of inconsistencies related to who is ``on duty'' when you submit your package. 
 
 \vspace{.1in}
 
-For example, I recently updated the \pkg{desirability} package and received this warning:
+It is hard to believe that someone took the time for this:
 
-\vspace{.1in}
+\vspace{.15in}
+\begin{footnotesize}
+Description Field: {\tt "My awesome R package"}
 
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  
-\begin{frame}[fragile]
-\frametitle{Package Dependencies}
-
-This problem was somewhat alleviated at the end of 2013 when {\em custom methods} were introduced into the package. 
-
-\vspace{.1in}
-
-Although this functionality had already existed in the package for some time, it was refactored to be more user freindly. 
-
-\vspace{.1in}
-
-In the process, much of the modeling code was moved out of \pkg{caret}'s R files and into R objects, eliminating the formal dependencies. 
-
-\vspace{.1in}
-
-Right now, the {\em total} number of dependencies is much smaller (2 \texttt{Depends}, 7 \texttt{Imports}, and 25 \texttt{Suggests}). 
-
-\vspace{.1in}
-
-This still affects testing though (described later). Also:
-
-\vspace{.1in}
-
-{\tt \color{darkblue} \footnotesize 1 package is needed for this model and is not installed. (gbm). Would you like to try to install it now?}
-
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  
-  \begin{frame}[fragile]
-\frametitle{Regression Testing}
-
-Prior to CRAN release (or whenever required), a comprehensive set of regression tests are conducted.
-
-\vspace{.1in}
-
-All modeling packages are updated to their current CRAN versions.
-
-\vspace{.1in}
-
-For each model accessed by \mxkwd{train}, \mxkwd{rfe}, and/or \mxkwd{sbf}, a set of test cases are computed with the production version of \pkg{caret} and the devle version. 
-
-\vspace{.1in}
-
-First, test cases are evaluated to make sure that nothing has been broken by updated versions of the consistuent packages. 
-
-\vspace{.1in}
-
-Diffs of the model results are computed to assess any differences in \pkg{caret} versions.
-
-\vspace{.1in}
-
-This process takes approximately 3hrs to complete using \texttt{make -j 12} on a Mac Pro. 
-
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  
-  \begin{frame}[fragile]
-\frametitle{Regression Testing}
-
-\begin{Verbatim}[fontsize=\footnotesize]
-$ R CMD BATCH make_model_Rd.R
-$ cd ~/tmp/2015_04_19_09__6.0-41/
-$ make -j 7 -i 
- 2015-04-19 09:13:44: Starting ada
- 2015-04-19 09:13:44: Starting AdaBag
- 2015-04-19 09:13:44: Starting AdaBoost.M1
- 2015-04-19 09:13:44: Starting ANFIS
-                :
-make: [FH.GBML.RData] Error 1 (ignored)                
-                :
- 2015-04-19 12:03:52: Finished WM
- 2015-04-19 12:04:48: Finished xyf
-\end{Verbatim}
-
-\end{frame}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  
-  \begin{frame}[fragile]
-\frametitle{Documentation}
-
-\pkg{caret} originally contained four package vignettes with in--depth descriptions of functionality with examples. 
+{\tt R CMD check: "{\color{red}Malformed Description field: should contain one or more complete sentences.}"}
 
 \vspace{.15in}
 
-Although this functionality had already existed in the package for some time, it was refactored to be more user freindly. 
+Description Field: {\tt "This package is awesome"}
+
+{\tt R CMD check: "{\color{red}The Description field should not start with the package name, 'This package' or similar.}"}
 
 \vspace{.15in}
 
-However, this added time to \texttt{R CMD check} and was a general pain for CRAN.
+Description Field: {\tt "Blah blah blah."} 
 
-\vspace{.15in}
-
-Efforts to make the vingettes more computationally efficient (e.g. reducing the number of examples, resamples, etc.) diminished the effectiveness of the documentation.  
-
+{\tt R CMD check: {\color{green}\bf PASS}}
+\end{footnotesize}
 
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  
-  \begin{frame}[fragile]
-\frametitle{Documentation}
 
-The documentation was moved out of the package and to the github IO page. 
-
-\vspace{.15in}
-
-
-These pages are built using \pkg{knitr} whenever a new version is sent to CRAN. Some advantages are:
-
-\begin{itemize}
-\item longer and more relavant examples are availible
-\item update scheduile is under my control
-\item dynamic documentation (e.g. D3 network graphs, JS tables)
-\item better formatting
-\end{itemize}
-
-\vspace{.1in}
-
-It currently takes about 4hr to create these (using parallel processing when possible). 
-
-\end{frame}
 
 \end{document}
+
 
 
 
