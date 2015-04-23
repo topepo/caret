@@ -52,7 +52,8 @@ theme_set(theme_bw())
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{Nobody Knows What It's Like To Be the Bad Man --- The Development Process for the {\tt caret} Package}
+\title{\large Nobody Knows What It's Like To Be the Bad Man}
+\subtitle{The Development Process for the {\tt{caret}} Package}
 % \author{\inst{1} Max Kuhn \and \inst{2} Zachary Deane--Mayer}
 % \institute{\inst{1} Pfizer Global R$\&$D \and \inst{2} Cognius }
 \author[Subham Kuhn \& Deane--Mayer]
@@ -83,9 +84,9 @@ theme_set(theme_bw())
   \maketitle
 \end{frame}
 
-\title{caret}
-\author{Kuhn and Deane--Mayer}
-\institute{Pfizer}
+\title{\tt{caret}}
+\author{Kuhn \& Deane--Mayer}
+\institute{Pfizer / Cognius}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -93,7 +94,7 @@ theme_set(theme_bw())
 \frametitle{Model Function Consistency}
 
 Since there are many modeling packages in R written by different people,
-there are some inconsistencies in how models are specified and
+there are inconsistencies in how models are specified and
 predictions are created.
 
 \vspace{.15in}
@@ -142,7 +143,7 @@ The \href{http://cran.r-project.org/web/packages/caret/index.html}{\pkg{caret}} 
 \item increase computational efficiency using parallel processing
 \end{itemize}
 
-\vspace{.07in}
+\vspace{.08in}
 
 First commits within Pfizer: 6/2005, First version on CRAN: 10/2007
 
@@ -175,20 +176,20 @@ mod_pkgs <- unique(unlist(lapply(mods, function(x) x$library)))
 mod_pkgs <- mod_pkgs[mod_pkgs != "caret"]
 @
 
-One thing that makes \pkg{caret} different from most other packages is that is uses code from an abnormally large number ($> 80$) of other packages.
+One thing that makes \pkg{caret} different from most other packages is that it uses code from an abnormally large number ($> 80$) of other packages.
 
 \vspace{.15in}
 
-Briefly, these were in the \texttt{Depends} field of the \textt{DESCRIPTION} file which cause all of them to be loaded with \pkg{caret}.
+Originally, these were in the \texttt{Depends} field of the \textt{DESCRIPTION} file which caused all of them to be loaded with \pkg{caret}.
 
 \vspace{.15in}
 
-For many years, they were moved to \texttt{Suggests}, which solved that issue,
+For many years, they were moved to \texttt{Suggests}, which solved that issue.
 
 
 \vspace{.15in}
 
-However, their formal dependency in the \textt{DESCRIPTION} file required CRAN  to install hundreds of other packages to check  \pkg{caret}. They were not pleased.
+However, their formal dependency in the \textt{DESCRIPTION} file required CRAN  to install hundreds of other packages to check  \pkg{caret}. The maintainers were not pleased.
 
 \end{frame}
 
@@ -333,21 +334,26 @@ Automated unit testing via \href{http://cran.r-project.org/web/packages/testthat
   \begin{frame}[fragile]
 \frametitle{github + travis + coveralls}
 
-a little bit about travis and coveralls
+Travis and coveralls are tools for automated unit testing
+\begin{itemize}
+\item Travis reports test failutes and CRAN errors/warnings
+\item Coveralls reports \% of code covered by unit tests
+\item Both automatically comment on the PR itself
+\end{itemize}
 
 \vspace{.1in}
 
 Contributor submits code via a pull request
 
 \begin{itemize}
-\item  Travis notifies them of test failures
-\item Coveralls notifies to write tests for new functions
-\item Iterate several times
+\item Travis notifies them of test failures
+\item Coveralls notifies them to write tests for new functions
+\item Automated feedback on code quality allows rapid iteration
 \end{itemize}
 
 \vspace{.1in}
 
-You start code review once tests pass
+Code review once unit tests and R CMD CHECK pass
 \begin{itemize}
 \item github supports line-by-line comments
 \item Usually several more iterations here
@@ -418,10 +424,6 @@ $ make -j 12 -i
 \frametitle{Documentation}
 
 \pkg{caret} originally contained four package vignettes with in--depth descriptions of functionality with examples.
-
-\vspace{.15in}
-
-Although this functionality had already existed in the package for some time, it was refactored to be more user friendly.
 
 \vspace{.15in}
 
@@ -518,7 +520,7 @@ bwplot.diff.resamples <- function (x, data, metric = x$metric, ...)  {
 }
 @
 
-will trigger a wanring that ``{\tt \small bwplot.diff.resamples: no visible binding for global variable 'Metric'}''.
+will trigger a warning that ``{\tt \small bwplot.diff.resamples: no visible binding for global variable 'Metric'}''.
 
 \vspace{.15in}
 
