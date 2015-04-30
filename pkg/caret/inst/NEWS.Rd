@@ -302,9 +302,9 @@ eliminated from the depends field. Additionally, a few were moved to exports.
 
  \item A bug was (hopefully) fixed that occurred when some type of 
  parallel processing was used with \code{train}. The problem is 
- that the \cpkg{methods} package was not being loaded in the workers. 
+ that the \code{methods} package was not being loaded in the workers. 
  While reproducible, it is unknown why this occurs and why it is 
- only for some technologies and systems. The \cpkg{methods} package 
+ only for some technologies and systems. The \code{methods} package 
  is now a formal dependency and we coerce the workers to load it 
  remotely. 
  
@@ -527,7 +527,7 @@ row from the original data that is being held-out.
 long standing warnings of the rda packages since more than half a year
 now, we set the package to ORPHANED.")
 
-\item \cpkg{C5.0} was added (model codes \code{C5.0}, \code{C5.0Tree} and
+\item \cpkg{C50} was added (model codes \code{C5.0}, \code{C5.0Tree} and
 \code{C5.0Rules}).
 
 \item Fixed a bug in \code{train} with NaiveBayes when \code{fL != 0}
@@ -2239,7 +2239,7 @@ splits.
 \item Added a new class called \code{predictors} that returns the
 names of the predictors that were used in the final model.
 
-\item Also added \code{ppr} from the \cpkg{stats} package.
+\item Also added \code{ppr} from the \code{stats} package.
 
 \item Minor update to the project web page to deal with IE issues
 

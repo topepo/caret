@@ -1,8 +1,8 @@
 ## This file is a cheat to minimize the false positives flagged during R CMD check. such as
 ## 
-##   "bwplot.diff.resamples: no visible binding for global variable ‘Metric’"
-##   "bwplot.resamples: no visible binding for global variable ‘Model’"
-##   "bwplot.resamples: no visible binding for global variable ‘Metric’"
+##   "bwplot.diff.resamples: no visible binding for global variable 'Metric'"
+##   "bwplot.resamples: no visible binding for global variable 'Model'"
+##   "bwplot.resamples: no visible binding for global variable 'Metric'"
 ## 
 ## when
 ## 
@@ -33,8 +33,8 @@ X2 <- NULL
 
 Variables <- NULL
 
-## calibCalc: no visible binding for global variable ‘obs’
-## calibCalc: no visible binding for global variable ‘bin’
+## calibCalc: no visible binding for global variable 'obs'
+## calibCalc: no visible binding for global variable 'bin'
 ## 
 ## calibCalc <- function(x, class = levels(obs)[1], cuts = 11)
 ##   {
@@ -45,7 +45,7 @@ Variables <- NULL
 obs <- bin <- NULL
 
 ##
-## checkConditionalX: no visible binding for global variable ‘.outcome’
+## checkConditionalX: no visible binding for global variable '.outcome'
 ## checkConditionalX <- function(x, y)
 ##   {
 ##     x$.outcome <- y
@@ -54,7 +54,7 @@ obs <- bin <- NULL
 
 .outcome <- NULL
 
-## classLevels.splsda: no visible global function definition for ‘ilevels’
+## classLevels.splsda: no visible global function definition for 'ilevels'
 ## 
 ## classLevels.splsda <- function(x, ...)
 ##   {
@@ -65,19 +65,19 @@ obs <- bin <- NULL
 
 ilevels <- NULL
 
-## looRfeWorkflow: no visible binding for global variable ‘iter’
-## looSbfWorkflow: no visible binding for global variable ‘iter’
-## looTrainWorkflow: no visible binding for global variable ‘parm’
-## looTrainWorkflow: no visible binding for global variable ‘iter’
-## nominalRfeWorkflow: no visible binding for global variable ‘iter’
-## nominalRfeWorkflow: no visible binding for global variable ‘method’
-## nominalRfeWorkflow: no visible binding for global variable ‘Resample’
-## nominalSbfWorkflow: no visible binding for global variable ‘dat’
-## nominalSbfWorkflow: no visible binding for global variable ‘iter’
-## nominalTrainWorkflow: no visible binding for global variable ‘parm’
-## nominalTrainWorkflow: no visible binding for global variable ‘iter’
-## nominalTrainWorkflow: no visible binding for global variable ‘Resample’
-## oobTrainWorkflow: no visible binding for global variable ‘parm’
+## looRfeWorkflow: no visible binding for global variable 'iter'
+## looSbfWorkflow: no visible binding for global variable 'iter'
+## looTrainWorkflow: no visible binding for global variable 'parm'
+## looTrainWorkflow: no visible binding for global variable 'iter'
+## nominalRfeWorkflow: no visible binding for global variable 'iter'
+## nominalRfeWorkflow: no visible binding for global variable 'method'
+## nominalRfeWorkflow: no visible binding for global variable 'Resample'
+## nominalSbfWorkflow: no visible binding for global variable 'dat'
+## nominalSbfWorkflow: no visible binding for global variable 'iter'
+## nominalTrainWorkflow: no visible binding for global variable 'parm'
+## nominalTrainWorkflow: no visible binding for global variable 'iter'
+## nominalTrainWorkflow: no visible binding for global variable 'Resample'
+## oobTrainWorkflow: no visible binding for global variable 'parm'
 ##
 ##  result <- foreach(iter = seq(along = resampleIndex),
 ##                    .combine = "c", .verbose = FALSE,
@@ -90,9 +90,9 @@ ilevels <- NULL
 
 iter <- parm <- method <- Resample <- dat <- NULL
 
-## tuneScheme: no visible binding for global variable ‘.alpha’
-## tuneScheme: no visible binding for global variable ‘.phi’
-## tuneScheme: no visible binding for global variable ‘.lambda’
+## tuneScheme: no visible binding for global variable '.alpha'
+## tuneScheme: no visible binding for global variable '.phi'
+## tuneScheme: no visible binding for global variable '.lambda'
 ##
 ##  seqParam[[i]] <- data.frame(.lambda = subset(grid,
 ##                              subset = .phi == loop$.phi[i] &
@@ -100,10 +100,10 @@ iter <- parm <- method <- Resample <- dat <- NULL
 
 .alpha <- .phi <- .lambda <- NULL
 
-##  createGrid : somDims: no visible binding for global variable ‘.xdim’
-##  createGrid : somDims: no visible binding for global variable ‘.ydim’
-##  createGrid : lvqGrid: no visible binding for global variable ‘.k’
-##  createGrid : lvqGrid: no visible binding for global variable ‘.size’
+##  createGrid : somDims: no visible binding for global variable '.xdim'
+##  createGrid : somDims: no visible binding for global variable '.ydim'
+##  createGrid : lvqGrid: no visible binding for global variable '.k'
+##  createGrid : lvqGrid: no visible binding for global variable '.size'
 ##
 ##       out <- expand.grid(.xdim = 1:x, .ydim = 2:(x+1),
 ##                         .xweight = seq(.5, .9, length = len))
@@ -115,8 +115,8 @@ iter <- parm <- method <- Resample <- dat <- NULL
 ##    tuneValue$.gamma, lambda = tuneValue$.lambda, ...): unused
 ##    argument(s) (gamma = tuneValue$.gamma, lambda = tuneValue$.lambda)
 ##  createModel: no visible global function definition for
-##    ‘randomForestNWS’
-##  createModel: no visible global function definition for ‘rfLSF’
+##    'randomForestNWS'
+##  createModel: no visible global function definition for 'rfLSF'
 ##  createModel: possible error in rvm(as.matrix(trainX), trainY, kernel =
 ##    polydot, kpar = list(degree = tuneValue$.degree, scale =
 ##    tuneValue$.scale, offset = 1), ...): unused argument(s) (kernel =
@@ -139,40 +139,40 @@ iter <- parm <- method <- Resample <- dat <- NULL
 ## $lambda
 ## [1] NA
 
-## predictionFunction: no visible binding for global variable ‘.alpha’
+## predictionFunction: no visible binding for global variable '.alpha'
 ##
 ##  delta <- subset(param, .alpha == uniqueA[i])$.delta
 ##
 
 .alpha <- NULL
 
-## predictors.gbm: no visible binding for global variable ‘rel.inf’
-## predictors.sda: no visible binding for global variable ‘varIndex’
-## predictors.smda: no visible binding for global variable ‘varIndex’
+## predictors.gbm: no visible binding for global variable 'rel.inf'
+## predictors.sda: no visible binding for global variable 'varIndex'
+## predictors.smda: no visible binding for global variable 'varIndex'
 ##
 ##    varUsed <- as.character(subset(relImp, rel.inf != 0)$var)
 
 rel.inf <- varIndex <- NULL
 
-## plotClassProbs: no visible binding for global variable ‘Observed’
+## plotClassProbs: no visible binding for global variable 'Observed'
 ##
 ## out <- densityplot(form, data = stackProbs, groups = Observed, ...)
 
 Observed <- NULL
 
-## plot.train: no visible binding for global variable ‘parameter’
+## plot.train: no visible binding for global variable 'parameter'
 ##
 ## paramLabs <- subset(modelInfo, parameter %in% params)$label
 
 parameter <- NULL
 
-## plot.rfe: no visible binding for global variable ‘Selected’
+## plot.rfe: no visible binding for global variable 'Selected'
 ##
 ## out <- xyplot(plotForm, data = results, groups = Selected, panel =  panel.profile, ...)
 
 Selected <- NULL
 
-## icr.formula: no visible binding for global variable ‘thresh’
+## icr.formula: no visible binding for global variable 'thresh'
 ##
 ## res <- icr.default(x, y, weights = w, thresh = thresh, ...)
 

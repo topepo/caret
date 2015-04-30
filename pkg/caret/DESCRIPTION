@@ -1,13 +1,13 @@
 Package: caret
-Version: 6.0-45
-Date: 2015-04-18
+Version: 6.0-46
+Date: 2015-04-30
 Title: Classification and Regression Training
 Author: Max Kuhn. Contributions from Jed Wing, Steve Weston, Andre
     Williams, Chris Keefer, Allan Engelhardt, Tony Cooper, Zachary Mayer,
     Brenton Kenkel, the R Core Team, Michael Benesty, Reynald Lescarbeau,
     Andrew Ziem, and Luca Scrucca.
 Description: Misc functions for training and plotting classification and
-    regression models
+    regression models.
 Maintainer: Max Kuhn <Max.Kuhn@pfizer.com>
 Depends:
     R (>= 2.10),

@@ -31,7 +31,7 @@ GarsonWeights <- function(object)
         ## Test case from Gevrey, M., Dimopoulos, I., & Lek,
         ## S. (2003). Review and comparison of methods to study the
         ## contribution of variables in artificial neural network
-        ## models. ecological modelling, 160(3), 249–264.
+        ## models. ecological modelling, 160(3), 249-264.
         i2h <- matrix(c(-1.67624,  3.29022,  1.32466, 
                         -0.51874, -0.22921, -0.25526,
                         -4.01764,  2.12486, -0.08168,

@@ -61,7 +61,7 @@ avNNet.default <- function(x, y, repeats = 5, bag = FALSE, allowParallel = TRUE,
     
     theDots <- list(...)
 
-    ## to avoid a "no visible binding for global variable ‘i’" warning:
+    ## to avoid a "no visible binding for global variable 'i'" warning:
     i <- NULL
     `%op%` <-  if(allowParallel)  `%dopar%` else  `%do%`
      mods <- foreach(i = 1:repeats,
