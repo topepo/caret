@@ -230,11 +230,16 @@ twoClassSummary <- function (data, lev = NULL, model = NULL)
 }
 
 mnLogLoss <- function(data, lev = NULL, model = NULL){
+  if(is.null(lev)) stop("'lev' cannot be NULL")
+  if(!all(lev %in% colnames(data)))
+    stop("'data' should have columns consistent with 'lev'")
+  if(!all(sort(lev) %in% sort(levels(data$obs))))
+    stop("'data$obs' should have levels consistent with 'lev'")
   eps <- 1e-15
   probs <- as.matrix(data[, lev, drop = FALSE])
   probs[probs > 1 - eps] <- 1 - eps
   probs[probs < eps] <- eps
-  inds <- caret:::class2ind(data$obs)[, lev, drop = FALSE]
+  inds <- getFromNamespace("class2ind", "caret")(data$obs)[, lev, drop = FALSE]
   c(logLoss = -mean(apply(inds*log(probs), 1, sum), na.rm = TRUE))
 }
 

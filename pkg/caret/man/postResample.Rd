@@ -3,6 +3,7 @@
 \alias{defaultSummary}
 \alias{twoClassSummary}
 \alias{getTrainPerf}
+\alias{mnLogLoss}
 \alias{R2}
 \alias{RMSE}
 \title{Calculates performance across resamples}
@@ -16,6 +17,8 @@ postResample(pred, obs)
 defaultSummary(data, lev = NULL, model = NULL)
 
 twoClassSummary(data, lev = NULL, model = NULL)
+
+mnLogLoss(data, lev = NULL, model = NULL)
 
 R2(pred, obs, formula = "corr", na.rm = FALSE)
 RMSE(pred, obs, na.rm = FALSE)
@@ -47,7 +50,13 @@ R^2 = 1-\frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y}_i)^2}
 
 For \code{defaultSummary} is the default function to compute performance metrics in \code{\link{train}}. It is a wrapper around \code{postResample}. 
 
-\code{twoClassSummary} computes sensitivity, specificity and the area under the ROC curve. To use this function, the  \code{classProbs} argument of \code{\link{trainControl}} should be \code{TRUE}.
+\code{twoClassSummary} computes sensitivity, specificity and the area under the ROC curve. \code{mnLogLoss} computes the minus log-likelihood of the multinomial distribution (without the constant term):
+\deqn{
+-logLoss = \frac{-1}{n}\sum_{i=1}^n \sum_{j=1}^C y_{ij} \log(p_{ij})
+}
+where the \code{y} values are binary indicators for the classes and \code{p} are the predicted class probabilities. 
+
+To use \code{twoClassSummary} and/or \code{mnLogLoss}, the  \code{classProbs} argument of \code{\link{trainControl}} should be \code{TRUE}.
 
 Other functions can be used via the \code{summaryFunction} argument of \code{\link{trainControl}}. Custom functions must have the same arguments as\code{defaultSummary}.
 
@@ -66,6 +75,19 @@ The function \code{getTrainPerf} returns a one row data frame with the resamplin
 predicted <-  matrix(rnorm(50), ncol = 5)
 observed <- rnorm(10)
 apply(predicted, 2, postResample, obs = observed)
+
+classes <- c("class1", "class2")
+set.seed(1)
+dat <- data.frame(obs =  factor(sample(classes, 50, replace = TRUE)),
+                  pred = factor(sample(classes, 50, replace = TRUE)),
+                  class1 = runif(50), class2 = runif(50))
+
+defaultSummary(dat, lev = classes)
+twoClassSummary(dat, lev = classes)
+mnLogLoss(dat, lev = classes)
+
+
+
 
 }
 \keyword{utilities}
