@@ -234,7 +234,7 @@ mnLogLoss <- function(data, lev = NULL, model = NULL){
   probs <- as.matrix(data[, lev, drop = FALSE])
   probs[probs > 1 - eps] <- 1 - eps
   probs[probs < eps] <- eps
-  inds <- caret:::class2ind(data$obs)
+  inds <- caret:::class2ind(data$obs)[, lev, drop = FALSE]
   c(logLoss = -mean(apply(inds*log(probs), 1, sum), na.rm = TRUE))
 }
 
