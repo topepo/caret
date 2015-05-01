@@ -3,9 +3,10 @@
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
 
-\section{Changes in version 6.0-xx}{
+\section{Changes in version 6.0-46}{
 	\itemize{
 		\item CHAID from the R-Forge package \href{http://r-forge.r-project.org/projects/chaid/}{\pkg{CHAID}}
+		\item Models \code{xgbTree} amd \code{xgbLinear} from the \code{xgboost} package were added. That package is not on CRAN  and can be installed from github using the \cpkg{devtools} package and \code{install_github('dmlc/xgboost',subdir='R-package')}.
 		\item The total object size for \code{preProces} objects that used bagged imputation was reduced almost 5-fold. 
 		\item A new option to \code{trainControl} called \code{trim} was added where, if implemented, will reduce the model's footprint. However, features beyond simple prediction may not work. 
 		\item A rarely occurring bug in \code{gbm} model code was fixed (thanks to Wade Cooper)
@@ -25,7 +26,7 @@
 		\item A new function called \code{var_seq} was added that finds a sequence of integers that can be useful for some tuning parameters such as random forests \code{mtry}. Model modules were update to use the new function. 
 		\item \code{n.minobsinnode} was added as a tuning parameter to \code{gbm} models. 
 		\item For models using out-of-bag resampling, \code{train} now properly checks the \code{metric} argument against the names of the measured outcomes. 
-		\item Both \code{createDataParition} and \code{createFolds} were modified to better handle cases where one or more classs have very low numbers of data points. 
+		\item Both \code{createDataParition} and \code{createFolds} were modified to better handle cases where one or more class have very low numbers of data points.  
 	}
 }
 
