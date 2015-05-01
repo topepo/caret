@@ -229,4 +229,13 @@ twoClassSummary <- function (data, lev = NULL, model = NULL)
   out
 }
 
+mnLogLoss <- function(data, lev = NULL, model = NULL){
+  eps <- 1e-15
+  probs <- as.matrix(data[, lev, drop = FALSE])
+  probs[probs > 1 - eps] <- 1 - eps
+  probs[probs < eps] <- eps
+  inds <- caret:::class2ind(data$obs)
+  c(logLoss = -mean(apply(inds*log(probs), 1, sum), na.rm = TRUE))
+}
+
 oob_mods <- c("rf", "treebag", "cforest", "bagEarth", "bagEarthGCV", "bagFDA","bagFDAGCV", "parRF")
