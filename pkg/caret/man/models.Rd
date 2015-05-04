@@ -6,7 +6,7 @@
 
 \strong{AdaBoost.M1} (\code{method = 'AdaBoost.M1'})
 
-For classification using package \pkg{adabag} with tuning parameters:
+For classification using packages \pkg{adabag} and \pkg{plyr} with tuning parameters:
 \itemize{
 \item Number of Trees (\code{mfinal}, numeric)
 \item Max Tree Depth (\code{maxdepth}, numeric)
@@ -33,7 +33,7 @@ For regression using package \pkg{frbs} with tuning parameters:
 
 \strong{Bagged AdaBoost} (\code{method = 'AdaBag'})
 
-For classification using package \pkg{adabag} with tuning parameters:
+For classification using packages \pkg{adabag} and \pkg{plyr} with tuning parameters:
 \itemize{
 \item Number of Trees (\code{mfinal}, numeric)
 \item Max Tree Depth (\code{maxdepth}, numeric)
@@ -121,7 +121,7 @@ For classification using package \pkg{binda} with tuning parameters:
 
 \strong{Boosted Classification Trees} (\code{method = 'ada'})
 
-For classification using package \pkg{ada} with tuning parameters:
+For classification using packages \pkg{ada} and \pkg{plyr} with tuning parameters:
 \itemize{
 \item Number of Trees (\code{iter}, numeric)
 \item Max Tree Depth (\code{maxdepth}, numeric)
@@ -226,6 +226,17 @@ For classification and regression using package \pkg{rpart} with tuning paramete
 }
 
 
+\strong{CHi-squared Automated Interaction Detection} (\code{method = 'chaid'})
+
+For classification using package \pkg{CHAID} with tuning parameters:
+\itemize{
+\item Merging Threshold (\code{alpha2}, numeric)
+\item Splitting former Merged Threshold (\code{alpha3}, numeric)
+\item 
+                                                    Splitting former Merged Threshold (\code{alpha4}, numeric)
+}
+
+
 \strong{Conditional Inference Random Forest} (\code{method = 'cforest'})
 
 For classification and regression using package \pkg{party} with tuning parameters:
@@ -311,6 +322,26 @@ For regression using package \pkg{enpls} with tuning parameters:
 \itemize{
 \item Max. Number of Components (\code{maxcomp}, numeric)
 \item Importance Cutoff (\code{threshold}, numeric)
+}
+
+
+\strong{eXtreme Gradient Boosting} (\code{method = 'xgbLinear'})
+
+For classification and regression using package \pkg{xgboost} with tuning parameters:
+\itemize{
+\item Number of  Boosting Iterations (\code{nrounds}, numeric)
+\item L2 Regularization (\code{lambda}, numeric)
+\item L2 Regularization (\code{alpha}, numeric)
+}
+
+
+\strong{eXtreme Gradient Boosting} (\code{method = 'xgbTree'})
+
+For classification and regression using packages \pkg{xgboost} and \pkg{plyr} with tuning parameters:
+\itemize{
+\item Number of  Boosting Iterations (\code{nrounds}, numeric)
+\item Max Tree Depth (\code{max_depth}, numeric)
+\item Shrinkage (\code{eta}, numeric)
 }
 
 
@@ -1039,7 +1070,7 @@ For regression using packages \pkg{KRLS} and \pkg{kernlab} with tuning parameter
 
 \strong{Radial Basis Function Network} (\code{method = 'rbf'})
 
-For classification using package \pkg{RSNNS} with tuning parameters:
+For classification and regression using package \pkg{RSNNS} with tuning parameters:
 \itemize{
 \item Number of Hidden Units (\code{size}, numeric)
 }
@@ -1380,6 +1411,7 @@ For classification and regression using packages \pkg{gbm} and \pkg{plyr} with t
 \item Number of  Boosting Iterations (\code{n.trees}, numeric)
 \item Max Tree Depth (\code{interaction.depth}, numeric)
 \item Shrinkage (\code{shrinkage}, numeric)
+\item Min. Terminal Node Size (\code{n.minobsinnode}, numeric)
 }
 
 
