@@ -273,6 +273,7 @@ resampName <- function(x, numbers = TRUE)
     numResamp <- length(resampleN)
     out <- switch(tolower(x$control$method),
                   none = "None",
+                  custom = paste("Custom Resampling (", numResamp, " reps)", sep = ""),
                   timeslice = paste("Rolling Forecasting Origin Resampling (",
                                     x$control$horizon, " held-out with",
                                     ifelse(x$control$fixedWindow, " a ", " no "),
@@ -294,6 +295,7 @@ resampName <- function(x, numbers = TRUE)
   } else {
     out <- switch(tolower(x$control$method),
                   none = "None", 
+                  custom = "Custom Resampling",
                   timeslice = "Rolling Forecasting Origin Resampling",
                   oob = "Out of Bag Resampling",
                   boot = "(Bootstrap)",
