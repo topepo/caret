@@ -102,6 +102,8 @@ train.default <- function(x, y,
   
   ## If they don't exist, make the data partitions for the resampling iterations.
   if(is.null(trControl$index)) {
+    if(trControl$method == "custom")
+      stop("'custom' resampling is appropriate when the `trControl` argument `index` is used")
     trControl$index <- switch(tolower(trControl$method),
                               oob = NULL,
                               none = list(seq(along = y)),
@@ -116,6 +118,15 @@ train.default <- function(x, y,
                                                            horizon = trControl$horizon,
                                                            fixedWindow = trControl$fixedWindow)$train,
                               subsemble = subsemble_index(y, V = trControl$number, J = trControl$repeats))
+  } else {
+    index_types <- unlist(lapply(trControl$index, is.integer))
+    if(!isTRUE(all(index_types)))
+      stop("`index` should be lists of integers.")
+    if(!is.null(trControl$indexOut)) {
+      index_types <- unlist(lapply(trControl$indexOut, is.integer))
+      if(!isTRUE(all(index_types)))
+        stop("`indexOut` should be lists of integers.")
+    }
   }
   
   if(trControl$method == "subsemble") {
