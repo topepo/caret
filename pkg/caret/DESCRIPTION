@@ -14,7 +14,8 @@ Depends:
     stats,
     lattice (>= 0.20),
     ggplot2
-URL: http://caret.r-forge.r-project.org/
+URL: https://github.com/topepo/caret/
+BugReports: https://github.com/topepo/caret/issues
 Imports:
     car,
     reshape2,
