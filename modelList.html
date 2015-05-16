@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>TableID9b8722a5cd1e</title>
+<title>TableID6cc7edad8d</title>
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <style type="text/css">
 body {
@@ -17,15 +17,15 @@ body {
 </style>
 </head>
 <body>
- <!-- Table generated in R 3.2.0 by googleVis 0.5.5 package -->
-<!-- Wed Dec 31 23:48:54 2014 -->
+ <!-- Table generated in R 3.3.0 by googleVis 0.5.8 package -->
+<!-- Fri May 15 15:57:32 2015 -->
 
 
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataTableID9b8722a5cd1e () {
+function gvisDataTableID6cc7edad8d () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
@@ -203,6 +203,13 @@ var datajson =
 "Dual Use",
 "party",
 "mtry" 
+],
+[
+ "CHi-squared Automated Interaction Detection",
+"chaid",
+"Classification",
+"CHAID",
+"alpha2, alpha3, alpha4" 
 ],
 [
  "SIMCA",
@@ -398,7 +405,7 @@ var datajson =
 "gbm",
 "Dual Use",
 "gbm, plyr",
-"n.trees, interaction.depth, shrinkage" 
+"n.trees, interaction.depth, shrinkage, n.minobsinnode" 
 ],
 [
  "Multivariate Adaptive Regression Splines",
@@ -942,7 +949,7 @@ var datajson =
 [
  "Radial Basis Function Network",
 "rbf",
-"Classification",
+"Dual Use",
 "RSNNS",
 "size" 
 ],
@@ -1283,6 +1290,20 @@ var datajson =
 "mtry" 
 ],
 [
+ "eXtreme Gradient Boosting",
+"xgbLinear",
+"Dual Use",
+"xgboost",
+"nrounds, lambda, alpha" 
+],
+[
+ "eXtreme Gradient Boosting",
+"xgbTree",
+"Dual Use",
+"xgboost, plyr",
+"nrounds, max_depth, eta" 
+],
+[
  "Self-Organizing Maps",
 "xyf",
 "Dual Use",
@@ -1300,15 +1321,15 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartTableID9b8722a5cd1e() {
-var data = gvisDataTableID9b8722a5cd1e();
+function drawChartTableID6cc7edad8d() {
+var data = gvisDataTableID6cc7edad8d();
 var options = {};
 options["allowHtml"] = true;
 options["width"] = "800px";
 
 
     var chart = new google.visualization.Table(
-    document.getElementById('TableID9b8722a5cd1e')
+    document.getElementById('TableID6cc7edad8d')
     );
     chart.draw(data,options);
     
@@ -1332,9 +1353,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartTableID9b8722a5cd1e);
+callbacks.push(drawChartTableID6cc7edad8d);
 })();
-function displayChartTableID9b8722a5cd1e() {
+function displayChartTableID6cc7edad8d() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -1358,17 +1379,17 @@ callbacks.shift()();
 </script>
  
 <!-- jsChart -->  
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID9b8722a5cd1e"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID6cc7edad8d"></script>
  
 <!-- divChart -->
   
-<div id="TableID9b8722a5cd1e" 
+<div id="TableID6cc7edad8d" 
   style="width: 800px; height: automatic;">
 </div>
- <div><span>Data: modelTable &#8226; Chart ID: <a href="Chart_TableID9b8722a5cd1e.html">TableID9b8722a5cd1e</a> &#8226; <a href="https://github.com/mages/googleVis">googleVis-0.5.5</a></span><br /> 
+ <div><span>Data: modelTable &#8226; Chart ID: <a href="Chart_TableID6cc7edad8d.html">TableID6cc7edad8d</a> &#8226; <a href="https://github.com/mages/googleVis">googleVis-0.5.8</a></span><br /> 
 <!-- htmlFooter -->
 <span> 
-  R Under development (unstable) (2014-12-29 r67265) 
+  R Under development (unstable) (2015-05-02 r68311) 
   &#8226; <a href="https://developers.google.com/terms/">Google Terms of Use</a> &#8226; <a href="https://google-developers.appspot.com/chart/interactive/docs/gallery/table">Documentation and Data Policy</a>
 </span></div>
 </body>

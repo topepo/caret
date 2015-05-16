@@ -16,14 +16,14 @@ Released   : 20120902
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
 <style type="text/css">
-.knitr.inline {
+.knitr .inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
 }
 .error {
 	font-weight: bold;
 	color: #FF0000;
-},
+}
 .warning {
 	font-weight: bold;
 }
@@ -31,19 +31,19 @@ Released   : 20120902
 	font-style: italic;
 }
 .source, .output, .warning, .error, .message {
-	padding: 0em 1em;
+	padding: 0 1em;
   border:solid 1px #F7F7F7;
 }
 .source {
   background-color: #f5f5f5;
 }
-.rimage.left {
+.rimage .left {
   text-align: left;
 }
-.rimage.right {
+.rimage .right {
   text-align: right;
 }
-.rimage.center {
+.rimage .center {
   text-align: center;
 }
 .hl.num {
@@ -164,10 +164,6 @@ Pre-processing: centered, scaled
 <span class="hl std">knnFit</span>
 </pre></div>
 <div class="output"><pre class="knitr r">11-nearest neighbor classification model
-
-Call:
-knn3.data.frame(x = training, y = trainClass, k = 11)
-
 Training set class distribution:
 
  M  R 
@@ -175,13 +171,13 @@ Training set class distribution:
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">predict</span><span class="hl std">(knnFit,</span> <span class="hl kwd">head</span><span class="hl std">(testing),</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;prob&quot;</span><span class="hl std">)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">          M      R
-[1,] 0.2727 0.7273
-[2,] 0.2727 0.7273
-[3,] 0.1818 0.8182
-[4,] 0.1818 0.8182
-[5,] 0.5455 0.4545
-[6,] 0.0000 1.0000
+<div class="output"><pre class="knitr r">             M         R
+[1,] 0.2727273 0.7272727
+[2,] 0.2727273 0.7272727
+[3,] 0.1818182 0.8181818
+[4,] 0.1818182 0.8181818
+[5,] 0.5454545 0.4545455
+[6,] 0.0000000 1.0000000
 </pre></div>
 </div></div>
  
@@ -214,9 +210,6 @@ From this model, there are two approaches to computing the class predictions and
 </pre></div>
 <div class="output"><pre class="knitr r">Partial least squares classification, fitted with the kernel algorithm.
 The softmax function was used to compute class probabilities.
-
-Call:
-plsr(formula = y ~ x, ncomp = ncomp, data = tmpData)
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">plsBayesFit</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">plsda</span><span class="hl std">(training, trainClass,</span> <span class="hl kwc">ncomp</span> <span class="hl std">=</span> <span class="hl num">20</span><span class="hl std">,</span>
                      <span class="hl kwc">probMethod</span> <span class="hl std">=</span> <span class="hl str">&quot;Bayes&quot;</span><span class="hl std">)</span>
@@ -224,33 +217,30 @@ plsr(formula = y ~ x, ncomp = ncomp, data = tmpData)
 </pre></div>
 <div class="output"><pre class="knitr r">Partial least squares classification, fitted with the kernel algorithm.
 Bayes rule was used to compute class probabilities.
-
-Call:
-plsr(formula = y ~ x, ncomp = ncomp, data = tmpData)
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">predict</span><span class="hl std">(plsFit,</span> <span class="hl kwd">head</span><span class="hl std">(testing),</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;prob&quot;</span><span class="hl std">)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">, , 20 comps
 
-        M      R
-4  0.6228 0.3772
-6  0.5241 0.4759
-12 0.3884 0.6116
-16 0.1925 0.8075
-17 0.1801 0.8199
-19 0.1337 0.8663
+           M         R
+4  0.6227621 0.3772379
+6  0.5240553 0.4759447
+12 0.3883679 0.6116321
+16 0.1925378 0.8074622
+17 0.1800970 0.8199030
+19 0.1336795 0.8663205
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">predict</span><span class="hl std">(plsBayesFit,</span> <span class="hl kwd">head</span><span class="hl std">(testing),</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;prob&quot;</span><span class="hl std">)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">, , ncomp20
 
-          M       R
-4  0.950775 0.04922
-6  0.585469 0.41453
-12 0.076099 0.92390
-16 0.002769 0.99723
-17 0.003715 0.99628
-19 0.023820 0.97618
+             M          R
+4  0.950775270 0.04922473
+6  0.585468690 0.41453131
+12 0.076098620 0.92390138
+16 0.002768591 0.99723141
+17 0.003715369 0.99628463
+19 0.023820018 0.97617998
 </pre></div>
 </div></div>
 
@@ -382,27 +372,24 @@ matrix/data frame of class probabilities. For the linear discriminant model abov
                 <span class="hl kwc">bagControl</span> <span class="hl std">=</span> <span class="hl kwd">bagControl</span><span class="hl std">(</span><span class="hl kwc">fit</span> <span class="hl std">= ctreeBag</span><span class="hl opt">$</span><span class="hl std">fit,</span>
                                         <span class="hl kwc">predict</span> <span class="hl std">= ctreeBag</span><span class="hl opt">$</span><span class="hl std">pred,</span>
                                         <span class="hl kwc">aggregate</span> <span class="hl std">= ctreeBag</span><span class="hl opt">$</span><span class="hl std">aggregate))</span>
-</pre></div>
-<div class="warning"><pre class="knitr r">Warning: executing %dopar% sequentially: no parallel backend registered
-</pre></div>
-<div class="source"><pre class="knitr r"><span class="hl kwd">summary</span><span class="hl std">(baggedCT)</span>
+<span class="hl kwd">summary</span><span class="hl std">(baggedCT)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">
 Call:
-bag.default(x = training[, names(training) != "Class"], y
+bag.default(x = training[, names(training) != &quot;Class&quot;], y
  = training$Class, B = 50, bagControl = bagControl(fit =
  ctreeBag$fit, predict = ctreeBag$pred, aggregate = ctreeBag$aggregate))
 
 Out of bag statistics (B = 50):
 
-       Accuracy  Kappa
-  0.0%    0.500 0.0713
-  2.5%    0.578 0.1544
- 25.0%    0.656 0.3172
- 50.0%    0.698 0.3919
- 75.0%    0.740 0.4738
- 97.5%    0.800 0.6004
-100.0%    0.867 0.7101
+       Accuracy     Kappa
+  0.0%   0.5000 -0.004065
+  2.5%   0.5357  0.014293
+ 25.0%   0.6667  0.333794
+ 50.0%   0.7027  0.397853
+ 75.0%   0.7531  0.489808
+ 97.5%   0.8009  0.573063
+100.0%   0.8226  0.641430
 </pre></div>
 </div></div>
 
@@ -508,7 +495,7 @@ between the new latent variable and the outcomes.
   <div id="footer-content"></div>
 
   <div id="footer">
-  <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
+  <p>Created on Fri May 15 2015 using caret version 6.0-47 and R Under development (unstable) (2015-05-02 r68311).</p>
   </div>
   <!-- end #footer -->
 </body>

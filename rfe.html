@@ -15,14 +15,14 @@ Released   : 20120902
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
 <style type="text/css">
-.knitr.inline {
+.knitr .inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
 }
 .error {
 	font-weight: bold;
 	color: #FF0000;
-},
+}
 .warning {
 	font-weight: bold;
 }
@@ -30,19 +30,19 @@ Released   : 20120902
 	font-style: italic;
 }
 .source, .output, .warning, .error, .message {
-	padding: 0em 1em;
+	padding: 0 1em;
   border:solid 1px #F7F7F7;
 }
 .source {
   background-color: #f5f5f5;
 }
-.rimage.left {
+.rimage .left {
   text-align: left;
 }
-.rimage.right {
+.rimage .right {
   text-align: right;
 }
-.rimage.center {
+.rimage .center {
   text-align: center;
 }
 .hl.num {
@@ -249,17 +249,17 @@ Outer resampling method: Cross-Validated (10 fold, repeated 5 times)
 
 Resampling performance over subset size:
 
- Variables RMSE Rsquared RMSESD RsquaredSD Selected
-         1 3.93    0.381  0.727      0.212         
-         2 3.57    0.489  0.579      0.203         
-         3 3.15    0.595  0.644      0.191         
-         4 2.90    0.656  0.736      0.211        *
-         5 2.99    0.644  0.763      0.207         
-        10 3.22    0.597  0.817      0.209         
-        15 3.39    0.561  0.819      0.214         
-        20 3.52    0.542  0.908      0.234         
-        25 3.72    0.504  0.915      0.237         
-        50 4.09    0.450  0.954      0.230         
+ Variables  RMSE Rsquared RMSESD RsquaredSD Selected
+         1 3.932   0.3812 0.7272     0.2116         
+         2 3.566   0.4894 0.5791     0.2029         
+         3 3.153   0.5953 0.6439     0.1905         
+         4 2.904   0.6562 0.7357     0.2107        *
+         5 2.993   0.6438 0.7627     0.2066         
+        10 3.221   0.5972 0.8173     0.2094         
+        15 3.394   0.5612 0.8189     0.2144         
+        20 3.517   0.5418 0.9081     0.2337         
+        25 3.719   0.5042 0.9147     0.2365         
+        50 4.088   0.4502 0.9538     0.2302         
 
 The top 4 variables (out of 4):
    real4, real5, real2, real1
@@ -273,7 +273,7 @@ The output shows that the  best subset size was estimated to be 4 predictors. Th
 
 <div class="chunk" id="rfe_load_lmProfile_out1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">predictors</span><span class="hl std">(lmProfile)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] "real4" "real5" "real2" "real1"
+<div class="output"><pre class="knitr r">[1] &quot;real4&quot; &quot;real5&quot; &quot;real2&quot; &quot;real1&quot;
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">lmProfile</span><span class="hl opt">$</span><span class="hl std">fit</span>
 </pre></div>
@@ -283,17 +283,17 @@ lm(formula = y ~ ., data = tmp)
 
 Coefficients:
 (Intercept)        real4        real5        real2        real1  
-      14.61         2.86         1.96         1.63         1.36  
+     14.613        2.857        1.965        1.625        1.359  
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">head</span><span class="hl std">(lmProfile</span><span class="hl opt">$</span><span class="hl std">resample)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">   Variables  RMSE Rsquared    Resample
-4          4 2.941   0.5543 Fold01.Rep1
-14         4 2.705   0.6584 Fold02.Rep1
-24         4 4.600   0.2182 Fold03.Rep1
-34         4 2.602   0.8479 Fold04.Rep1
-44         4 1.979   0.8572 Fold05.Rep1
-54         4 2.979   0.8302 Fold06.Rep1
+<div class="output"><pre class="knitr r">   Variables     RMSE  Rsquared    Resample
+4          4 2.940756 0.5542831 Fold01.Rep1
+14         4 2.704529 0.6583788 Fold02.Rep1
+24         4 4.599872 0.2181731 Fold03.Rep1
+34         4 2.601659 0.8478823 Fold04.Rep1
+44         4 1.979220 0.8571701 Fold05.Rep1
+54         4 2.978896 0.8301785 Fold06.Rep1
 </pre></div>
 </div></div>
 
@@ -304,7 +304,7 @@ There are also several plot methods to visualize the results. <tt><span class="h
 <div class="chunk" id="rfe_lmprofile"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">trellis.par.set</span><span class="hl std">(</span><span class="hl kwd">caretTheme</span><span class="hl std">())</span>
 <span class="hl kwd">plot</span><span class="hl std">(lmProfile,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;g&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;o&quot;</span><span class="hl std">))</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/rfe_lmprofile.png" title="plot of chunk rfe_lmprofile" alt="plot of chunk rfe_lmprofile" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/rfe_lmprofile-1.png" title="plot of chunk rfe_lmprofile" alt="plot of chunk rfe_lmprofile" class="plot" /></div></div>
 
 <p>
 Also the resampling results are stored in the sub-object <code>lmProfile$resample</code> and can be used with several lattice functions. Univariate lattice functions (<span class="mx funCall">densityplot</span>, <span class="mx funCall">histogram</span>) can be used to plot the resampling distribution while bivariate functions (<span class="mx funCall">xyplot</span>, <span class="mx funCall">stripplot</span>) can be used to plot the distributions for different subset sizes. In the latter case, the option <span class="mx arg">returnResamp</span><tt> = <span class="hl str">&quot;all&quot;</span></tt> in <span class="mx funCall">rfeControl</span> can be used to save all the resampling results. Example images are shown below for the random forest model.
@@ -361,10 +361,10 @@ function should reference one of the names of the output of
 <div class="output"><pre class="knitr r">function (data, lev = NULL, model = NULL) 
 {
     if (is.character(data$obs)) 
-        data$obs <- factor(data$obs, levels = lev)
-    postResample(data[, "pred"], data[, "obs"])
+        data$obs &lt;- factor(data$obs, levels = lev)
+    postResample(data[, &quot;pred&quot;], data[, &quot;obs&quot;])
 }
-<environment: namespace:caret>
+&lt;environment: namespace:caret&gt;
 </pre></div>
 </div></div>
 
@@ -455,9 +455,9 @@ For random forests, the function below uses <a href="http://cran.r-project.org/w
 <div class="chunk" id="rfe_rank"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">rfRFE</span><span class="hl opt">$</span><span class="hl std">rank</span>
 </pre></div>
 <div class="output"><pre class="knitr r">function(object, x, y) {
-                 vimp <- varImp(object)
-                 vimp <- vimp[order(vimp$Overall,decreasing = TRUE),,drop = FALSE]
-                 vimp$var <- rownames(vimp)                  
+                 vimp &lt;- varImp(object)
+                 vimp &lt;- vimp[order(vimp$Overall,decreasing = TRUE),,drop = FALSE]
+                 vimp$var &lt;- rownames(vimp)                  
                  vimp
                  }
 </pre></div>
@@ -543,7 +543,7 @@ This approach can produce good results for many of the tree based models, such a
 <span class="hl kwd">with</span><span class="hl std">(example,</span> <span class="hl kwd">plot</span><span class="hl std">(Variables, Tolerance))</span>
 <span class="hl kwd">abline</span><span class="hl std">(</span><span class="hl kwc">h</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">,</span> <span class="hl kwc">lty</span> <span class="hl std">=</span> <span class="hl num">2</span><span class="hl std">,</span> <span class="hl kwc">col</span> <span class="hl std">=</span> <span class="hl str">&quot;darkgrey&quot;</span><span class="hl std">)</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/rfe_lmdens.png" title="plot of chunk rfe_lmdens" alt="plot of chunk rfe_lmdens" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/rfe_lmdens-1.png" title="plot of chunk rfe_lmdens" alt="plot of chunk rfe_lmdens" class="plot" /></div></div>
 
 <b><p><i>The <span class="mx funCall">selectVar</span> Function</p></i></b>
 
@@ -568,14 +568,14 @@ For random forests, only the first importance calculation (line 2.5) is used sin
 </pre></div>
 <div class="output"><pre class="knitr r">function (y, size) 
 {
-    finalImp <- ddply(y[, c("Overall", "var")], .(var), function(x) mean(x$Overall, 
+    finalImp &lt;- ddply(y[, c(&quot;Overall&quot;, &quot;var&quot;)], .(var), function(x) mean(x$Overall, 
         na.rm = TRUE))
-    names(finalImp)[2] <- "Overall"
-    finalImp <- finalImp[order(finalImp$Overall, decreasing = TRUE), 
+    names(finalImp)[2] &lt;- &quot;Overall&quot;
+    finalImp &lt;- finalImp[order(finalImp$Overall, decreasing = TRUE), 
         ]
     as.character(finalImp$var[1:size])
 }
-<environment: namespace:caret>
+&lt;environment: namespace:caret&gt;
 </pre></div>
 </div></div>
 
@@ -602,17 +602,17 @@ Outer resampling method: Cross-Validated (10 fold, repeated 5 times)
 
 Resampling performance over subset size:
 
- Variables RMSE Rsquared RMSESD RsquaredSD Selected
-         1 4.73    0.207  0.973      0.179         
-         2 3.86    0.400  0.641      0.224         
-         3 3.18    0.593  0.607      0.185         
-         4 2.68    0.772  0.524      0.111        *
-         5 2.93    0.730  0.527      0.139         
-        10 3.11    0.691  0.576      0.156         
-        15 3.20    0.689  0.563      0.161         
-        20 3.32    0.680  0.601      0.179         
-        25 3.37    0.672  0.558      0.176         
-        50 3.52    0.652  0.557      0.182         
+ Variables  RMSE Rsquared RMSESD RsquaredSD Selected
+         1 4.698   0.2102 0.9568     0.1783         
+         2 3.883   0.3948 0.6578     0.2266         
+         3 3.156   0.6046 0.6206     0.1910         
+         4 2.671   0.7748 0.5172     0.1096        *
+         5 2.918   0.7383 0.5661     0.1343         
+        10 3.104   0.7119 0.5655     0.1480         
+        15 3.194   0.6942 0.5675     0.1563         
+        20 3.341   0.6774 0.6166     0.1735         
+        25 3.384   0.6676 0.5970     0.1829         
+        50 3.545   0.6441 0.5404     0.1926         
 
 The top 4 variables (out of 4):
    real4, real5, real2, real1
@@ -627,7 +627,7 @@ The top 4 variables (out of 4):
 <span class="hl kwd">print</span><span class="hl std">(plot1,</span> <span class="hl kwc">split</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">),</span> <span class="hl kwc">more</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
 <span class="hl kwd">print</span><span class="hl std">(plot2,</span> <span class="hl kwc">split</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">))</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/rfe_rf_plot1.png" title="plot of chunk rfe_rf_plot1" alt="plot of chunk rfe_rf_plot1" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/rfe_rf_plot1-1.png" title="plot of chunk rfe_rf_plot1" alt="plot of chunk rfe_rf_plot1" class="plot" /></div></div>
 
 
 <div class="chunk" id="rfe_rf_plot2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">trellis.par.set</span><span class="hl std">(theme1)</span>
@@ -643,7 +643,7 @@ The top 4 variables (out of 4):
 <span class="hl kwd">print</span><span class="hl std">(plot1,</span> <span class="hl kwc">split</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">),</span> <span class="hl kwc">more</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
 <span class="hl kwd">print</span><span class="hl std">(plot2,</span> <span class="hl kwc">split</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">))</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/rfe_rf_plot2.png" title="plot of chunk rfe_rf_plot2" alt="plot of chunk rfe_rf_plot2" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/rfe_rf_plot2-1.png" title="plot of chunk rfe_rf_plot2" alt="plot of chunk rfe_rf_plot2" class="plot" /></div></div>
 
 <!-- ------------------------ end #content------------------------ -->
 
@@ -694,7 +694,7 @@ The top 4 variables (out of 4):
   <div id="footer-content"></div>
   <div id="footer">
 
-  <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
+  <p>Created on Fri May 15 2015 using caret version 6.0-47 and R Under development (unstable) (2015-05-02 r68311).</p>
   </div>
   <!-- end #footer -->
 </body>

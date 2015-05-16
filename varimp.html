@@ -15,14 +15,14 @@ Released   : 20120902
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
 <style type="text/css">
-.knitr.inline {
+.knitr .inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
 }
 .error {
 	font-weight: bold;
 	color: #FF0000;
-},
+}
 .warning {
 	font-weight: bold;
 }
@@ -30,19 +30,19 @@ Released   : 20120902
 	font-style: italic;
 }
 .source, .output, .warning, .error, .message {
-	padding: 0em 1em;
+	padding: 0 1em;
   border:solid 1px #F7F7F7;
 }
 .source {
   background-color: #f5f5f5;
 }
-.rimage.left {
+.rimage .left {
   text-align: left;
 }
-.rimage.right {
+.rimage .right {
   text-align: right;
 }
-.rimage.center {
+.rimage .center {
   text-align: center;
 }
 .hl.num {
@@ -229,26 +229,26 @@ On the model training web, several models were fit to the example data. The boos
   only 20 most important variables shown (out of 60)
 
     Overall
-V12   24.01
-V51   14.51
-V11   10.87
-V36   10.46
-V45    6.55
-V23    6.10
-V46    5.17
-V31    5.09
-V4     4.84
-V48    4.59
-V17    4.20
-V28    4.11
-V9     3.71
-V55    3.67
-V16    3.51
-V49    3.42
-V59    3.29
-V19    3.18
-V52    3.07
-V21    2.60
+V12  20.378
+V36  11.266
+V45  10.327
+V9    9.624
+V21   8.619
+V51   7.843
+V46   6.671
+V11   5.843
+V5    4.996
+V23   4.415
+V49   3.966
+V29   3.503
+V59   3.438
+V37   3.380
+V27   3.343
+V48   3.178
+V28   3.110
+V52   2.968
+V31   2.854
+V4    2.842
 </pre></div>
 </div></div>
 
@@ -259,13 +259,13 @@ V21    2.60
 <div class="chunk" id="varImp_roc1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">RocImp</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">filterVarImp</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">= training[,</span> <span class="hl opt">-</span><span class="hl kwd">ncol</span><span class="hl std">(training)],</span> <span class="hl kwc">y</span> <span class="hl std">= training</span><span class="hl opt">$</span><span class="hl std">Class)</span>
 <span class="hl kwd">head</span><span class="hl std">(RocImp)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">        M      R
-V1 0.6274 0.6274
-V2 0.5766 0.5766
-V3 0.6000 0.6000
-V4 0.6614 0.6614
-V5 0.6521 0.6521
-V6 0.5924 0.5924
+<div class="output"><pre class="knitr r">           M         R
+V1 0.6273646 0.6273646
+V2 0.5765656 0.5765656
+V3 0.5999674 0.5999674
+V4 0.6614481 0.6614481
+V5 0.6520711 0.6520711
+V6 0.5923842 0.5923842
 </pre></div>
 </div></div>
 
@@ -280,26 +280,26 @@ V6 0.5924 0.5924
   only 20 most important variables shown (out of 60)
 
     Importance
-V11      0.777
-V12      0.756
-V10      0.727
-V9       0.725
-V46      0.709
-V51      0.705
-V49      0.701
-V13      0.698
-V47      0.697
-V36      0.689
-V48      0.682
-V21      0.674
-V52      0.669
-V45      0.667
-V4       0.661
-V5       0.652
-V37      0.651
-V35      0.649
-V20      0.641
-V44      0.636
+V11     0.7766
+V12     0.7564
+V10     0.7272
+V9      0.7252
+V46     0.7088
+V51     0.7047
+V49     0.7012
+V13     0.6984
+V47     0.6972
+V36     0.6885
+V48     0.6822
+V21     0.6742
+V52     0.6694
+V45     0.6671
+V4      0.6614
+V5      0.6521
+V37     0.6508
+V35     0.6494
+V20     0.6411
+V44     0.6360
 </pre></div>
 </div></div>
 
@@ -307,7 +307,7 @@ V44      0.636
 
 <div class="chunk" id="varImp_gbm_plot"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">plot</span><span class="hl std">(gbmImp,</span> <span class="hl kwc">top</span> <span class="hl std">=</span> <span class="hl num">20</span><span class="hl std">)</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/varImp_gbm_plot.png" title="plot of chunk varImp_gbm_plot" alt="plot of chunk varImp_gbm_plot" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/varImp_gbm_plot-1.png" title="plot of chunk varImp_gbm_plot" alt="plot of chunk varImp_gbm_plot" class="plot" /></div></div>
 
 
 <div style="clear: both;">&nbsp;</div>
@@ -357,7 +357,7 @@ V44      0.636
 
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
+  <p>Created on Fri May 15 2015 using caret version 6.0-47 and R Under development (unstable) (2015-05-02 r68311).</p>
   </div>
   <!-- end #footer -->
 </body>

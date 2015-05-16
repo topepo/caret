@@ -176,6 +176,12 @@ Released   : 20120902
 <p><b>Type</b>: Regression, Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth)</p>
 
+<h1>CHi-squared Automated Interaction Detection</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'chaid'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">alpha2</span></code> (Merging Threshold), <code><span class="mx arg">alpha3</span></code> (Splitting former Merged Threshold), <code><span class="mx arg">alpha4</span></code> (
+                                                    Splitting former Merged Threshold)</p>
+
 <h1>Conditional Inference Random Forest</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'cforest'</span></tt></p>
 <p><b>Type</b>: Classification, Regression</p>
@@ -210,6 +216,16 @@ Released   : 20120902
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'enet'</span></tt></p>
 <p><b>Type</b>: Regression</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">fraction</span></code> (Fraction of Full Solution), <code><span class="mx arg">lambda</span></code> (Weight Decay)</p>
+
+<h1>eXtreme Gradient Boosting</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'xgbLinear'</span></tt></p>
+<p><b>Type</b>: Regression, Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">nrounds</span></code> (# Boosting Iterations), <code><span class="mx arg">lambda</span></code> (L2 Regularization), <code><span class="mx arg">alpha</span></code> (L2 Regularization)</p>
+
+<h1>eXtreme Gradient Boosting</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'xgbTree'</span></tt></p>
+<p><b>Type</b>: Regression, Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">nrounds</span></code> (# Boosting Iterations), <code><span class="mx arg">max_depth</span></code> (Max Tree Depth), <code><span class="mx arg">eta</span></code> (Shrinkage)</p>
 
 <h1>Flexible Discriminant Analysis</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'fda'</span></tt></p>
@@ -379,7 +395,7 @@ Released   : 20120902
 <h1>Stochastic Gradient Boosting</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'gbm'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">n.trees</span></code> (# Boosting Iterations), <code><span class="mx arg">interaction.depth</span></code> (Max Tree Depth), <code><span class="mx arg">shrinkage</span></code> (Shrinkage)</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">n.trees</span></code> (# Boosting Iterations), <code><span class="mx arg">interaction.depth</span></code> (Max Tree Depth), <code><span class="mx arg">shrinkage</span></code> (Shrinkage), <code><span class="mx arg">n.minobsinnode</span></code> (Min. Terminal Node Size)</p>
 
 <h1>The lasso</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'lasso'</span></tt></p>
@@ -448,7 +464,7 @@ Released   : 20120902
 </div>
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
+  <p>Created on Fri May 15 2015 using caret version 6.0-47 and R Under development (unstable) (2015-05-02 r68311).</p>
   </div>
   <!-- end #footer -->
 </body>

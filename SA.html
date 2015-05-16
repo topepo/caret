@@ -15,14 +15,14 @@ Released   : 20120902
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
 <style type="text/css">
-.knitr.inline {
+.knitr .inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
 }
 .error {
 	font-weight: bold;
 	color: #FF0000;
-},
+}
 .warning {
 	font-weight: bold;
 }
@@ -30,19 +30,19 @@ Released   : 20120902
 	font-style: italic;
 }
 .source, .output, .warning, .error, .message {
-	padding: 0em 1em;
+	padding: 0 1em;
   border:solid 1px #F7F7F7;
 }
 .source {
   background-color: #f5f5f5;
 }
-.rimage.left {
+.rimage .left {
   text-align: left;
 }
-.rimage.right {
+.rimage .right {
   text-align: right;
 }
-.rimage.center {
+.rimage .center {
   text-align: center;
 }
 .hl.num {
@@ -260,8 +260,8 @@ In the final search using the entire training set:
      real1, real2, real4, real5, bogus3 ... 
    * external performance at this iteration is
 
-      RMSE   Rsquared 
-     3.233      0.692 
+       RMSE    Rsquared 
+     3.2332      0.6915 
 </pre></div>
 </div></div>
     
@@ -271,7 +271,7 @@ As with the GA, we can plot the internal and external performance over iteration
     
 <div class="chunk" id="sa_rf_profile"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">plot</span><span class="hl std">(rf_sa)</span> <span class="hl opt">+</span> <span class="hl kwd">theme_bw</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/sa_rf_profile.png" title="plot of chunk sa_rf_profile" alt="plot of chunk sa_rf_profile" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/sa_rf_profile-1.png" title="plot of chunk sa_rf_profile" alt="plot of chunk sa_rf_profile" class="plot" /></div></div>
 
 <p>
 The performance here isn't as good as the previous GA or RFE solutions. Based on these results, the iteration associated with the best external RMSE estimate was 893 with a corresponding RMSE estimate of 3.23. 
@@ -309,10 +309,10 @@ The function should return a model object that can be used to generate predictio
 </pre></div>
 <div class="output"><pre class="knitr r">function (x, y, lev = NULL, last = FALSE, ...) 
 {
-    library(randomForest)
-    randomForest(x, y, ...)
+    loadNamespace(&quot;randomForest&quot;)
+    randomForest::randomForest(x, y, ...)
 }
-<environment: namespace:caret>
+&lt;environment: namespace:caret&gt;
 </pre></div>
 </div></div>
 
@@ -337,15 +337,15 @@ For random forests, the function is a simple wrapper for the predict function:
 </pre></div>
 <div class="output"><pre class="knitr r">function (object, x) 
 {
-    tmp <- predict(object, x)
+    tmp &lt;- predict(object, x)
     if (is.factor(object$y)) {
-        out <- cbind(data.frame(pred = tmp), as.data.frame(predict(object, 
-            x, type = "prob")))
+        out &lt;- cbind(data.frame(pred = tmp), as.data.frame(predict(object, 
+            x, type = &quot;prob&quot;)))
     }
-    else out <- tmp
+    else out &lt;- tmp
     out
 }
-<environment: namespace:caret>
+&lt;environment: namespace:caret&gt;
 </pre></div>
 </div></div>
 
@@ -384,7 +384,7 @@ The example function for random forest is:
 </pre></div>
 <div class="output"><pre class="knitr r">function (object, x, y, maximize, p) 
 rfStats(object)
-<environment: namespace:caret>
+&lt;environment: namespace:caret&gt;
 </pre></div>
 </div></div>
 
@@ -414,10 +414,10 @@ The example function for random forest is:
 <div class="output"><pre class="knitr r">function (data, lev = NULL, model = NULL) 
 {
     if (is.character(data$obs)) 
-        data$obs <- factor(data$obs, levels = lev)
-    postResample(data[, "pred"], data[, "obs"])
+        data$obs &lt;- factor(data$obs, levels = lev)
+    postResample(data[, &quot;pred&quot;], data[, &quot;obs&quot;])
 }
-<environment: namespace:caret>
+&lt;environment: namespace:caret&gt;
 </pre></div>
 </div></div>
 
@@ -515,7 +515,7 @@ To demonstrate this, the plot below shows the probability profile for different 
   <span class="hl kwd">geom_line</span><span class="hl std">()</span> <span class="hl opt">+</span> <span class="hl kwd">facet_wrap</span><span class="hl std">(</span><span class="hl opt">~</span><span class="hl std">Group)</span> <span class="hl opt">+</span> <span class="hl kwd">theme_bw</span><span class="hl std">()</span> <span class="hl opt">+</span>
   <span class="hl kwd">ylab</span><span class="hl std">(</span><span class="hl str">&quot;Probability&quot;</span><span class="hl std">)</span> <span class="hl opt">+</span> <span class="hl kwd">xlab</span><span class="hl std">(</span><span class="hl str">&quot;Iteration&quot;</span><span class="hl std">)</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/sa_prob_plot.png" title="plot of chunk sa_prob_plot" alt="plot of chunk sa_prob_plot" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/sa_prob_plot-1.png" title="plot of chunk sa_prob_plot" alt="plot of chunk sa_prob_plot" class="plot" /></div></div>
 
 <p>
 While this is the default, any user-written function can be used to assign probabilities. 
@@ -572,7 +572,7 @@ While this is the default, any user-written function can be used to assign proba
   <div id="footer-content"></div>
   <div id="footer">
 
-  <p>Created on Thu Jan 01 2015 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
+  <p>Created on Fri May 15 2015 using caret version 6.0-47 and R Under development (unstable) (2015-05-02 r68311).</p>
   </div>
   <!-- end #footer -->
 </body>

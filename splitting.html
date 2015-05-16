@@ -15,14 +15,14 @@ Released   : 20120902
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
 <style type="text/css">
-.knitr.inline {
+.knitr .inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
 }
 .error {
 	font-weight: bold;
 	color: #FF0000;
-},
+}
 .warning {
 	font-weight: bold;
 }
@@ -30,19 +30,19 @@ Released   : 20120902
 	font-style: italic;
 }
 .source, .output, .warning, .error, .message {
-	padding: 0em 1em;
+	padding: 0 1em;
   border:solid 1px #F7F7F7;
 }
 .source {
   background-color: #f5f5f5;
 }
-.rimage.left {
+.rimage .left {
   text-align: left;
 }
-.rimage.right {
+.rimage .right {
   text-align: right;
 }
-.rimage.center {
+.rimage .center {
   text-align: center;
 }
 .hl.num {
@@ -165,7 +165,14 @@ Released   : 20120902
 </pre></div>
 </div></div>
 
-
+<div class="chunk" id="SplitGIF"><div class="rcode"><div class="warning"><pre class="knitr r">Warning in im.convert(img.files, output = movie.name, convert = convert, :
+Please install ImageMagick first or put its bin path into the system PATH
+variable
+</pre></div>
+<div class="warning"><pre class="knitr r">Warning in normalizePath(movie.name): path[1]=&quot;MaxDissim.gif&quot;: No such
+file or directory
+</pre></div>
+</div></div>
     
 <p>The visualization below shows the data set (small points), the starting samples
 (larger blue points) and the order in which the other 20 samples are added. </p>
@@ -192,7 +199,7 @@ The three parameters for this type of splitting are:
 <p>
 As an example, suppose we have a time series with 20 data points. We can fix <tt><span class="hl std">initialWindow</span> <span class="hl kwb">=</span> <span class="hl num">5</span></tt> and look at different settings of the other two arguments. In the plot below, rows in each panel correspond to different data splits (i.e. resamples) and the columns correspond to different data points. Also, red indicates samples that are in included in the training set and the blue indicates samples in the test set. 
 </p>
-<div class="chunk" id="Split_time"><div class="rimage default"><img src="figure/Split_time.png" title="plot of chunk Split_time" alt="plot of chunk Split_time" class="plot" /></div></div>
+<div class="chunk" id="Split_time"><div class="rimage default"><img src="figure/Split_time-1.png" title="plot of chunk Split_time" alt="plot of chunk Split_time" class="plot" /></div></div>
     
     
 <div style="clear: both;">&nbsp;</div>
@@ -242,7 +249,7 @@ As an example, suppose we have a time series with 20 data points. We can fix <tt
   <div id="footer-content"></div>
   <div id="footer">
 
-  <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
+  <p>Created on Fri May 15 2015 using caret version 6.0-47 and R Under development (unstable) (2015-05-02 r68311).</p>
   </div>
   <!-- end #footer -->
 </body>

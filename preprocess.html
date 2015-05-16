@@ -16,14 +16,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
 <style type="text/css">
-.knitr.inline {
+.knitr .inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
 }
 .error {
 	font-weight: bold;
 	color: #FF0000;
-},
+}
 .warning {
 	font-weight: bold;
 }
@@ -31,19 +31,19 @@
 	font-style: italic;
 }
 .source, .output, .warning, .error, .message {
-	padding: 0em 1em;
+	padding: 0 1em;
   border:solid 1px #F7F7F7;
 }
 .source {
   background-color: #f5f5f5;
 }
-.rimage.left {
+.rimage .left {
   text-align: left;
 }
-.rimage.right {
+.rimage .right {
   text-align: right;
 }
-.rimage.center {
+.rimage .center {
   text-align: center;
 }
 .hl.num {
@@ -215,16 +215,16 @@ Looking at the MDRR data, the <span class="mx funCall">nearZeroVar</span> functi
 <span class="hl std">nzv[nzv</span><span class="hl opt">$</span><span class="hl std">nzv,][</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span><span class="hl std">,]</span>
 </pre></div>
 <div class="output"><pre class="knitr r">       freqRatio percentUnique zeroVar  nzv
-nTB        23.00        0.3788   FALSE TRUE
-nBR       131.00        0.3788   FALSE TRUE
-nI        527.00        0.3788   FALSE TRUE
-nR03      527.00        0.3788   FALSE TRUE
-nR08      527.00        0.3788   FALSE TRUE
-nR11       21.78        0.5682   FALSE TRUE
-nR12       57.67        0.3788   FALSE TRUE
-D.Dr03    527.00        0.3788   FALSE TRUE
-D.Dr07    123.50        5.8712   FALSE TRUE
-D.Dr08    527.00        0.3788   FALSE TRUE
+nTB     23.00000     0.3787879   FALSE TRUE
+nBR    131.00000     0.3787879   FALSE TRUE
+nI     527.00000     0.3787879   FALSE TRUE
+nR03   527.00000     0.3787879   FALSE TRUE
+nR08   527.00000     0.3787879   FALSE TRUE
+nR11    21.78261     0.5681818   FALSE TRUE
+nR12    57.66667     0.3787879   FALSE TRUE
+D.Dr03 527.00000     0.3787879   FALSE TRUE
+D.Dr07 123.50000     5.8712121   FALSE TRUE
+D.Dr08 527.00000     0.3787879   FALSE TRUE
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">dim</span><span class="hl std">(mdrrDescr)</span>
 </pre></div>
@@ -267,16 +267,16 @@ For the previous MDRR data, there are 65 descriptors that are almost perfectly c
 <div class="chunk" id="corr2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">descrCor</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">cor</span><span class="hl std">(filteredDescr)</span>
 <span class="hl kwd">summary</span><span class="hl std">(descrCor[</span><span class="hl kwd">upper.tri</span><span class="hl std">(descrCor)])</span>
 </pre></div>
-<div class="output"><pre class="knitr r">   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
--0.9960 -0.0537  0.2500  0.2610  0.6550  1.0000 
+<div class="output"><pre class="knitr r">    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+-0.99610 -0.05373  0.25010  0.26080  0.65530  1.00000 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">highlyCorDescr</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">findCorrelation</span><span class="hl std">(descrCor,</span> <span class="hl kwc">cutoff</span> <span class="hl std">=</span> <span class="hl num">.75</span><span class="hl std">)</span>
 <span class="hl std">filteredDescr</span> <span class="hl kwb">&lt;-</span> <span class="hl std">filteredDescr[,</span><span class="hl opt">-</span><span class="hl std">highlyCorDescr]</span>
 <span class="hl std">descrCor2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">cor</span><span class="hl std">(filteredDescr)</span>
 <span class="hl kwd">summary</span><span class="hl std">(descrCor2[</span><span class="hl kwd">upper.tri</span><span class="hl std">(descrCor2)])</span>
 </pre></div>
-<div class="output"><pre class="knitr r">   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
--0.7070 -0.0538  0.0442  0.0669  0.1890  0.7450 
+<div class="output"><pre class="knitr r">    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+-0.70730 -0.05378  0.04418  0.06692  0.18860  0.74460 
 </pre></div>
 </div></div>
 
@@ -397,7 +397,7 @@ scaled before applying this transformation.</p>
        <span class="hl kwc">groups</span> <span class="hl std">= mdrrClass,</span>
        <span class="hl kwc">auto.key</span> <span class="hl std">=</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">columns</span> <span class="hl std">=</span> <span class="hl num">2</span><span class="hl std">))</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/pp_SpatSignBefore.png" title="plot of chunk pp_SpatSignBefore" alt="plot of chunk pp_SpatSignBefore" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/pp_SpatSignBefore-1.png" title="plot of chunk pp_SpatSignBefore" alt="plot of chunk pp_SpatSignBefore" class="plot" /></div></div>
 
 
 <p>After the spatial sign:</p>
@@ -409,7 +409,7 @@ scaled before applying this transformation.</p>
        <span class="hl kwc">groups</span> <span class="hl std">= mdrrClass,</span>
        <span class="hl kwc">auto.key</span> <span class="hl std">=</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">columns</span> <span class="hl std">=</span> <span class="hl num">2</span><span class="hl std">))</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/pp_SpatSignAfter.png" title="plot of chunk pp_SpatSignAfter" alt="plot of chunk pp_SpatSignAfter" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/pp_SpatSignAfter-1.png" title="plot of chunk pp_SpatSignAfter" alt="plot of chunk pp_SpatSignAfter" class="plot" /></div></div>
 
 <p>Another option, <span class="mx arg">&quot;BoxCox&quot;</span> will estimate a Box&ndash;Cox transformation on the predictors if the data are greater than zero.</p>
 
@@ -421,14 +421,14 @@ scaled before applying this transformation.</p>
 </pre></div>
 <div class="output"><pre class="knitr r">
 Call:
-preProcess.default(x = training, method = "BoxCox")
+preProcess.default(x = training, method = &quot;BoxCox&quot;)
 
 Created from 264 samples and 50 variables
 Pre-processing: Box-Cox transformation 
 
 Lambda estimates for Box-Cox transformation:
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
-  -2.00   -0.20    0.30    0.41    1.70    2.00      19 
+-2.0000 -0.2000  0.3000  0.4097  1.7000  2.0000      19 
 </pre></div>
 </div></div>
 
@@ -458,12 +458,12 @@ As an example, we can used the MDRR data.
 <span class="hl kwd">head</span><span class="hl std">(distances)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">               dist.Active dist.Inactive
-PROMETHAZINE         5.811         4.098
-ACEPROMETAZINE       4.272         4.169
-PYRATHIAZINE         4.570         4.224
-THIORIDAZINE         4.548         5.064
-MESORIDAZINE         4.622         5.080
-SULFORIDAZINE        5.345         5.145
+PROMETHAZINE      5.810607      4.098229
+ACEPROMETAZINE    4.272003      4.169292
+PYRATHIAZINE      4.570192      4.224053
+THIORIDAZINE      4.548315      5.064125
+MESORIDAZINE      4.621708      5.080362
+SULFORIDAZINE     5.344699      5.145311
 </pre></div>
 </div></div>
 <p>
@@ -476,7 +476,7 @@ This image shows a scatterplot matrix of the class distances for the held-out sa
        <span class="hl kwc">groups</span> <span class="hl std">= testMDRR,</span>
        <span class="hl kwc">auto.key</span> <span class="hl std">=</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">columns</span> <span class="hl std">=</span> <span class="hl num">2</span><span class="hl std">))</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/pp_splom.png" title="plot of chunk pp_splom" alt="plot of chunk pp_splom" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/pp_splom-1.png" title="plot of chunk pp_splom" alt="plot of chunk pp_splom" class="plot" /></div></div>
 
 	  <div style="clear: both;">&nbsp;</div>
 	</div>
@@ -526,7 +526,7 @@ This image shows a scatterplot matrix of the class distances for the held-out sa
 
  
     <div id="footer">
-      <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
+      <p>Created on Fri May 15 2015 using caret version 6.0-47 and R Under development (unstable) (2015-05-02 r68311).</p>
     </div>
     <!-- end #footer -->
   </body>

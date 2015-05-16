@@ -15,14 +15,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
 <style type="text/css">
-.knitr.inline {
+.knitr .inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
 }
 .error {
 	font-weight: bold;
 	color: #FF0000;
-},
+}
 .warning {
 	font-weight: bold;
 }
@@ -30,19 +30,19 @@
 	font-style: italic;
 }
 .source, .output, .warning, .error, .message {
-	padding: 0em 1em;
+	padding: 0 1em;
   border:solid 1px #F7F7F7;
 }
 .source {
   background-color: #f5f5f5;
 }
-.rimage.left {
+.rimage .left {
   text-align: left;
 }
-.rimage.right {
+.rimage .right {
   text-align: right;
 }
-.rimage.center {
+.rimage .center {
   text-align: center;
 }
 .hl.num {
@@ -140,12 +140,12 @@ the results of a classification model. This example uses objects from the webpag
 </div></div>
 <div class="chunk" id="other_conf0"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(testPred, testing</span><span class="hl opt">$</span><span class="hl std">Class)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">Accuracy    Kappa 
-  0.9020   0.8028 
+<div class="output"><pre class="knitr r"> Accuracy     Kappa 
+0.9019608 0.8027842 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">sensitivity</span><span class="hl std">(testPred, testing</span><span class="hl opt">$</span><span class="hl std">Class)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] 0.9259
+<div class="output"><pre class="knitr r">[1] 0.9259259
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">confusionMatrix</span><span class="hl std">(testPred, testing</span><span class="hl opt">$</span><span class="hl std">Class)</span>
 </pre></div>
@@ -155,26 +155,26 @@ the results of a classification model. This example uses objects from the webpag
 Prediction  M  R
          M 25  3
          R  2 21
-                                        
-               Accuracy : 0.902         
-                 95% CI : (0.786, 0.967)
-    No Information Rate : 0.529         
-    P-Value [Acc > NIR] : 1.21e-08      
-                                        
-                  Kappa : 0.803         
- Mcnemar's Test P-Value : 1             
-                                        
-            Sensitivity : 0.926         
-            Specificity : 0.875         
-         Pos Pred Value : 0.893         
-         Neg Pred Value : 0.913         
-             Prevalence : 0.529         
-         Detection Rate : 0.490         
-   Detection Prevalence : 0.549         
-      Balanced Accuracy : 0.900         
-                                        
-       'Positive' Class : M             
-                                        
+                                          
+               Accuracy : 0.902           
+                 95% CI : (0.7859, 0.9674)
+    No Information Rate : 0.5294          
+    P-Value [Acc &gt; NIR] : 1.209e-08       
+                                          
+                  Kappa : 0.8028          
+ Mcnemar's Test P-Value : 1               
+                                          
+            Sensitivity : 0.9259          
+            Specificity : 0.8750          
+         Pos Pred Value : 0.8929          
+         Neg Pred Value : 0.9130          
+             Prevalence : 0.5294          
+         Detection Rate : 0.4902          
+   Detection Prevalence : 0.5490          
+      Balanced Accuracy : 0.9005          
+                                          
+       'Positive' Class : M               
+                                          
 </pre></div>
 </div></div>
 
@@ -222,8 +222,8 @@ For example:
  
           Reference
 Prediction    M    R
-         M 47.2 10.8
-         R  6.3 35.7
+         M 47.4 11.1
+         R  6.1 35.4
 </pre></div>
 </div></div>
 
@@ -273,17 +273,17 @@ The <span class="mx funCall">lift</span> function can be used to evaluate probab
 <span class="hl kwd">getTrainPerf</span><span class="hl std">(fdaModel)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  TrainROC TrainSens TrainSpec method
-1   0.9642    0.9227    0.8596    fda
+1 0.963911 0.9320202 0.8573913    fda
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">getTrainPerf</span><span class="hl std">(ldaModel)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">  TrainROC TrainSens TrainSpec method
-1   0.9044    0.8343    0.7913    lda
+<div class="output"><pre class="knitr r">   TrainROC TrainSens TrainSpec method
+1 0.9044245 0.8342761  0.791256    lda
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">getTrainPerf</span><span class="hl std">(c5Model)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">  TrainROC TrainSens TrainSpec method
-1   0.9496    0.8676    0.8531   C5.0
+<div class="output"><pre class="knitr r">   TrainROC TrainSens TrainSpec method
+1 0.9495571 0.8676094 0.8531401   C5.0
 </pre></div>
 </div></div>
 <p>
@@ -295,13 +295,13 @@ From these models, we can predict the evaluation set and save the probabilities 
 <span class="hl std">evalResults</span><span class="hl opt">$</span><span class="hl std">C5.0</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(c5Model, evalSim,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;prob&quot;</span><span class="hl std">)[,</span><span class="hl str">&quot;Class1&quot;</span><span class="hl std">]</span>
 <span class="hl kwd">head</span><span class="hl std">(evalResults)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">   Class     FDA     LDA   C5.0
-1 Class1 0.99296 0.88382 0.8446
-2 Class1 0.99224 0.75724 0.8882
-3 Class1 0.88072 0.88838 0.5732
-4 Class2 0.01604 0.01405 0.1690
-5 Class1 0.78715 0.93207 0.4824
-6 Class2 0.09899 0.05242 0.3310
+<div class="output"><pre class="knitr r">   Class        FDA       LDA      C5.0
+1 Class1 0.99000843 0.8838205 0.8445830
+2 Class1 0.99155316 0.7572450 0.8882418
+3 Class1 0.87790201 0.8883830 0.5732098
+4 Class2 0.03972953 0.0140480 0.1690251
+5 Class1 0.74256698 0.9320695 0.4824400
+6 Class2 0.19110517 0.0524154 0.3310495
 </pre></div>
 </div></div>
 <p>
@@ -313,7 +313,7 @@ The <span class="mx funCall">lift</span> function does the calculations and the 
                                             <span class="hl kwc">lines</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">,</span>
                                             <span class="hl kwc">points</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">))</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/lift_plot.png" title="plot of chunk lift_plot" alt="plot of chunk lift_plot" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/lift_plot-1.png" title="plot of chunk lift_plot" alt="plot of chunk lift_plot" class="plot" /></div></div>
 <p>
 From this we can see that, to find 60 percent of the hits, a little more than 30 percent of the data can be sampled (when ordered by the probability predictions). The LDA model does somewhat worse than the other two models. 
 </p>
@@ -328,7 +328,7 @@ The other function is for probability calibration. Other functions in the <a hre
                                           <span class="hl kwc">lines</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">,</span>
                                           <span class="hl kwc">points</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">))</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/cal_plot.png" title="plot of chunk cal_plot" alt="plot of chunk cal_plot" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/cal_plot-1.png" title="plot of chunk cal_plot" alt="plot of chunk cal_plot" class="plot" /></div></div>
     
 <div id="affy"></div>      
 <h1>Processing Affy Arrays</h1>
@@ -400,7 +400,7 @@ For Affymetrix gene chip data, RMA processing (<a href="http://nar.oxfordjournal
 
  
     <div id="footer">
-      <p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
+      <p>Created on Fri May 15 2015 using caret version 6.0-47 and R Under development (unstable) (2015-05-02 r68311).</p>
     </div>
     <!-- end #footer -->
   </body>

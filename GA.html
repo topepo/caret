@@ -15,14 +15,14 @@ Released   : 20120902
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <style type="text/css">
-.knitr.inline {
+.knitr .inline {
   background-color: #f7f7f7;
   border:solid 1px #B0B0B0;
 }
 .error {
 	font-weight: bold;
 	color: #FF0000;
-},
+}
 .warning {
 	font-weight: bold;
 }
@@ -30,19 +30,19 @@ Released   : 20120902
 	font-style: italic;
 }
 .source, .output, .warning, .error, .message {
-	padding: 0em 1em;
+	padding: 0 1em;
   border:solid 1px #F7F7F7;
 }
 .source {
   background-color: #f5f5f5;
 }
-.rimage.left {
+.rimage .left {
   text-align: left;
 }
-.rimage.right {
+.rimage .right {
   text-align: right;
 }
-.rimage.center {
+.rimage .center {
   text-align: center;
 }
 .hl.num {
@@ -290,8 +290,8 @@ In the final search using the entire training set:
      real1, real2, real3, real4, real5 ... 
    * external performance at this iteration is
 
-      RMSE   Rsquared 
-     2.804      0.756 
+       RMSE    Rsquared 
+     2.8037      0.7564 
 </pre></div>
 </div></div>
 
@@ -304,7 +304,7 @@ The <span class="mx funCall">plot</span> function is used to monitor the average
 
 <div class="chunk" id="ga_rf_profile"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">plot</span><span class="hl std">(rf_ga)</span> <span class="hl opt">+</span> <span class="hl kwd">theme_bw</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/ga_rf_profile.png" title="plot of chunk ga_rf_profile" alt="plot of chunk ga_rf_profile" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/ga_rf_profile-1.png" title="plot of chunk ga_rf_profile" alt="plot of chunk ga_rf_profile" class="plot" /></div></div>
 
 <p>
 Based on these results, the generation associated with the best external RMSE estimate was 185 with a corresponding RMSE estimate of 2.8. 
@@ -345,10 +345,10 @@ The function should return a model object that can be used to generate predictio
 </pre></div>
 <div class="output"><pre class="knitr r">function (x, y, lev = NULL, last = FALSE, ...) 
 {
-    library(randomForest)
-    randomForest(x, y, ...)
+    loadNamespace(&quot;randomForest&quot;)
+    randomForest::randomForest(x, y, ...)
 }
-<environment: namespace:caret>
+&lt;environment: namespace:caret&gt;
 </pre></div>
 </div></div>
 
@@ -373,15 +373,15 @@ For random forests, the function is a simple wrapper for the predict function:
 </pre></div>
 <div class="output"><pre class="knitr r">function (object, x) 
 {
-    tmp <- predict(object, x)
+    tmp &lt;- predict(object, x)
     if (is.factor(object$y)) {
-        out <- cbind(data.frame(pred = tmp), as.data.frame(predict(object, 
-            x, type = "prob")))
+        out &lt;- cbind(data.frame(pred = tmp), as.data.frame(predict(object, 
+            x, type = &quot;prob&quot;)))
     }
-    else out <- tmp
+    else out &lt;- tmp
     out
 }
-<environment: namespace:caret>
+&lt;environment: namespace:caret&gt;
 </pre></div>
 </div></div>
 
@@ -420,7 +420,7 @@ The example function for random forest is:
 </pre></div>
 <div class="output"><pre class="knitr r">function (object, x, y, maximize, p) 
 rfStats(object)
-<environment: namespace:caret>
+&lt;environment: namespace:caret&gt;
 </pre></div>
 </div></div>
 
@@ -450,10 +450,10 @@ The example function for random forest is:
 <div class="output"><pre class="knitr r">function (data, lev = NULL, model = NULL) 
 {
     if (is.character(data$obs)) 
-        data$obs <- factor(data$obs, levels = lev)
-    postResample(data[, "pred"], data[, "obs"])
+        data$obs &lt;- factor(data$obs, levels = lev)
+    postResample(data[, &quot;pred&quot;], data[, &quot;obs&quot;])
 }
-<environment: namespace:caret>
+&lt;environment: namespace:caret&gt;
 </pre></div>
 </div></div>
 
@@ -501,7 +501,8 @@ The default function populates the rows randomly with subset sizes varying betwe
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">apply</span><span class="hl std">(starting,</span> <span class="hl num">1</span><span class="hl std">, mean)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] 0.1667 0.1667 0.4167 0.4167 0.4167 0.9167 0.7500 0.7500
+<div class="output"><pre class="knitr r">[1] 0.1666667 0.1666667 0.4166667 0.4166667 0.4166667 0.9166667 0.7500000
+[8] 0.7500000
 </pre></div>
 </div></div>
 
@@ -618,13 +619,13 @@ The previous GA included some of the non-informative predictors. We can cheat a 
 We can try to encourage the algorithm to choose fewer predictors, we can penalize the the RMSE estimate. Normally, a metric like the Akaike information criterion (AIC) statistic would be used. However, with a random forest model, there is no real notion of model degrees of freedom. As an alternative, we can use <a href="http://scholar.google.com/scholar?q=%22desirability+functions">desirability functions</a> to penalize the RMSE. To do this, two functions are created that translate the number of predictors and the RMSE values to a measure of "desirability". For the number of predictors, the most desirable property would be a single predictor and the worst situation would be if the model required all 50 predictors. That desirability function is visualized as:
 </p>
 
-<div class="chunk" id="ga_pred_d"><div class="rimage default"><img src="figure/ga_pred_d.png" title="plot of chunk ga_pred_d" alt="plot of chunk ga_pred_d" class="plot" /></div></div>
+<div class="chunk" id="ga_pred_d"><div class="rimage default"><img src="figure/ga_pred_d-1.png" title="plot of chunk ga_pred_d" alt="plot of chunk ga_pred_d" class="plot" /></div></div>
 
 <p>
 For the RMSE, the best case would be zero. Many poor models have values around four. To give the RMSE value more weight in the overall desirability calculation, we use a scale parameter value of 2. This desirability function is:
 </p>
 
-<div class="chunk" id="ga_rmse_d"><div class="rimage default"><img src="figure/ga_rmse_d.png" title="plot of chunk ga_rmse_d" alt="plot of chunk ga_rmse_d" class="plot" /></div></div>
+<div class="chunk" id="ga_rmse_d"><div class="rimage default"><img src="figure/ga_rmse_d-1.png" title="plot of chunk ga_rmse_d" alt="plot of chunk ga_rmse_d" class="plot" /></div></div>
 
 <p>
 To use the overall desirability to drive the feature selection, the <span class="mx funCall">internal</span> function requires replacement. We make a copy of <code>rfGA</code> and add code using the <a href="http://cran.r-project.org/package=desirability"><strong>desirability</strong></a> package and the function returns the estimated RMSE and the overall desirability. The <span class="mx funCall">gafsControl</span> function also need changes. The <span class="mx arg">metric</span> argument needs to reflect that the overall desirability score should be maximized internally but the RMSE estimate should be minimized externally. 
@@ -682,8 +683,8 @@ In the final search using the entire training set:
      real1, real2, real3, real4, real5 ... 
    * external performance at this iteration is
 
-      RMSE   Rsquared 
-     2.689      0.768 
+       RMSE    Rsquared 
+     2.6891      0.7682 
 </pre></div>
 </div></div>
 
@@ -694,7 +695,7 @@ Here are the RMSE values for this search:
 
 <div class="chunk" id="ga_rf_profile_2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">plot</span><span class="hl std">(rf_ga_d)</span> <span class="hl opt">+</span> <span class="hl kwd">theme_bw</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/ga_rf_profile_2.png" title="plot of chunk ga_rf_profile_2" alt="plot of chunk ga_rf_profile_2" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/ga_rf_profile_2-1.png" title="plot of chunk ga_rf_profile_2" alt="plot of chunk ga_rf_profile_2" class="plot" /></div></div>
 
 <p>
 The final GA is found 6 that were selected: real1, real2, real3, real4, real5, bogus26. During resampling, the average number of predictors selected was 5.2, indicating that the penalty on the number of predictors was effective. 
@@ -750,7 +751,7 @@ The final GA is found 6 that were selected: real1, real2, real3, real4, real5, b
 <div id="footer-content"></div>
 <div id="footer">
 
-<p>Created on Wed Dec 31 2014 using caret version 6.0-40 and R Under development (unstable) (2014-12-29 r67265).</p>
+<p>Created on Fri May 15 2015 using caret version 6.0-47 and R Under development (unstable) (2015-05-02 r68311).</p>
 </div>
 <!-- end #footer -->
 </body>
