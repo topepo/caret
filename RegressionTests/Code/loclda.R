@@ -21,14 +21,14 @@ cctrl3 <- trainControl(method = "none",
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
-                             method = modelInfo, 
+                             method = "loclda", 
                              trControl = cctrl1,
                              metric = "ROC", 
                              preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = modelInfo, 
+                            method = "loclda", 
                             trControl = cctrl1,
                             metric = "ROC", 
                             preProc = c("center", "scale"))
@@ -41,7 +41,7 @@ test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], t
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
-                               method = modelInfo, 
+                               method = "loclda", 
                                trControl = cctrl3,
                                tuneGrid = test_class_cv_model$bestTune,
                                metric = "ROC", 
