@@ -1,4 +1,5 @@
 library(caret)
+context('Caret model trimming works')
 
 test_that('train classification', {
   skip_on_cran()
