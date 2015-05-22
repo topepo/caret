@@ -49,5 +49,6 @@ Suggests:
     pamr,
     superpc,
     Cubist,
-    testthat (>= 0.9.1)
+    testthat (>= 0.9.1),
+    kknn
 License: GPL (>= 2)

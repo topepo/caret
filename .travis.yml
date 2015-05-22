@@ -26,6 +26,10 @@ r_packages:
   - glmnet
   - rpart
   - C50
+  - ipred
+  - plyr
+  - earth
+  - kknn
 
 r_github_packages:
   - jimhester/covr
