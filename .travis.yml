@@ -21,7 +21,7 @@ apt_packages:
   - texlive-fonts-extra
   - texlive-science
 
-r_packages
+r_packages:
   - arm
   - glmnet
   - rpart
