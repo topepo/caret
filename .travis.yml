@@ -7,31 +7,39 @@ env:
      - CRAN: http://cran.rstudio.com
      - R_BUILD_ARGS="--no-build-vignettes --no-manual"
      - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
-     - BOOTSTRAP_LATEX=""
    matrix:
      - NOT_CRAN="true"
      - NOT_CRAN="false"
 
-install:
+apt_packages:
+  - texlive-base
+  - biblatex
+  - texlive-latex-base
+  - texlive-latex-recommended
+  - texlive-latex-extra
+  - texlive-fonts-recommended
+  - texlive-fonts-extra
+  - texlive-science
+
+r_packages
+  - arm
+  - glmnet
+  - rpart
+  - bayesglm
+  - C5
+
+r_github_packages:
+  - jimhester/covr
+
+before_install:
+  - cd pkg/caret
   - sudo add-apt-repository -y ppa:texlive-backports/ppa
   - sudo apt-get -qq update
-  - ./travis-tool.sh aptget_install texlive-base
-  - ./travis-tool.sh aptget_install biblatex
-  - ./travis-tool.sh aptget_install texlive-latex-base
-  - ./travis-tool.sh aptget_install texlive-latex-recommended
-  - ./travis-tool.sh aptget_install texlive-latex-extra
-  - ./travis-tool.sh aptget_install texlive-fonts-recommended
-  - ./travis-tool.sh aptget_install texlive-fonts-extra
-  - ./travis-tool.sh aptget_install texlive-science
-  - ./travis-tool.sh github_package jimhester/covr
 
 notifications:
   email:
     on_success: change
     on_failure: change
-
-r_github_packages:
-  - jimhester/covr
 
 after_success:
   - Rscript -e 'library(covr);coveralls()'
