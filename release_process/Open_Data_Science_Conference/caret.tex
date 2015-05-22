@@ -212,9 +212,9 @@ One thing that makes \pkg{caret} different from most other packages is that it u
 A refresher:
 
 \begin{itemize}
-\item Depends: required for package to function; loaded when \pkg{caret} is loaded 
-\item Imports: required for package to function; not loaded
-\item Suggests: the package uses it sometimes; not loaded 
+\item \texttt{Depends}: required for package to function; loaded when \pkg{caret} is loaded
+\item \texttt{Imports}: required for package to function; not loaded
+\item \texttt{Suggests}: the package uses it sometimes; not loaded
 \end{itemize}
 
 \end{frame}
@@ -225,7 +225,7 @@ A refresher:
 \begin{frame}[fragile]
 \frametitle{``Simple'"'' Example (38 Nodes)}
 \vspace{-.5in}
-  \begin{center}  
+  \begin{center}
     \includegraphics[clip, width = .85\textwidth]{min_graph}
   \end{center}
 \end{frame}
@@ -258,7 +258,7 @@ However, their formal dependency in the \textt{DESCRIPTION} file required CRAN  
   \begin{frame}[fragile]
 \frametitle{Package Dependencies in \pkg{caret} Version 5.17-07}
 \vspace{-.5in}
-  \begin{center}  
+  \begin{center}
     \includegraphics[clip, width = .85\textwidth]{old_graph}
   \end{center}
 
@@ -300,7 +300,7 @@ This still affects testing though (described later). Also:
   \begin{frame}[fragile]
 \frametitle{38 Dependencies for \pkg{caret} Version 6.0-47 }
 \vspace{-.5in}
-  \begin{center}  
+  \begin{center}
     \includegraphics[clip, width = .85\textwidth]{new_graph}
   \end{center}
 
