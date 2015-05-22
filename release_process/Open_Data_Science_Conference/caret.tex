@@ -443,8 +443,30 @@ Code review once unit tests and R CMD CHECK pass
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{frame}[fragile]
+\frametitle{Writing new unit tests}
 
+\begin{itemize}
+\item Coveralls identifies un-tested code:\includegraphics[width=0.15\textwidth]{coverage_12.png}
+\item Developer chooses a file with low or no coverage
+\item Developer writes unit tests
+\end{itemize}
+\begin{Verbatim}[fontsize=\footnotesize]
+context('Test Data Splitting Functions')
+test_that('createTimeSlices', {
+  y <- 1:10
+  s1 <- createTimeSlices(y, initialWindow=5, horizon=1)
+  expect_equal(length(s1$train), 5)
+  expect_equal(s1$train$Training1, 1:5)
+  expect_equal(s1$test$Testing1, 6)
+})
+\end{Verbatim}
+\begin{itemize}
+\item while(coverage\textless 100\%)\{repeat\}
+\end{itemize}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -659,17 +681,4 @@ Description Field: {\tt "Blah blah blah."}
 
 
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
