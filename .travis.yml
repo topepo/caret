@@ -1,25 +1,18 @@
-# Sample .travis.yml for R projects from https://github.com/craigcitro/r-travis
-
-language: c
+language: r
+warnings_are_errors: false
+sudo: required
 
 env:
    global:
-     - WARNINGS_ARE_ERRORS=1
-     - R_BUILD_ARGS=" "
-     - R_CHECK_ARGS="--as-cran"
-     - BOOTSTRAP_LATEX="1"
+     - CRAN: http://cran.rstudio.com
+     - R_BUILD_ARGS="--no-build-vignettes --no-manual"
+     - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
+     - BOOTSTRAP_LATEX=""
    matrix:
      - NOT_CRAN="true"
      - NOT_CRAN="false"
 
-before_install:
-  - cd pkg/caret
-  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-  - chmod 755 ./travis-tool.sh
-  - ./travis-tool.sh bootstrap
-
 install:
-  - ./travis-tool.sh install_deps
   - sudo add-apt-repository -y ppa:texlive-backports/ppa
   - sudo apt-get -qq update
   - ./travis-tool.sh aptget_install texlive-base
@@ -32,15 +25,13 @@ install:
   - ./travis-tool.sh aptget_install texlive-science
   - ./travis-tool.sh github_package jimhester/covr
 
-script: ./travis-tool.sh run_tests
-
-on_failure:
-  - ./travis-tool.sh dump_logs
-
-after_success:
-  - Rscript -e 'library(covr);coveralls()'
-
 notifications:
   email:
     on_success: change
     on_failure: change
+
+r_github_packages:
+  - jimhester/covr
+
+after_success:
+  - Rscript -e 'library(covr);coveralls()'
