@@ -25,8 +25,7 @@ r_packages:
   - arm
   - glmnet
   - rpart
-  - bayesglm
-  - C5
+  - C50
 
 r_github_packages:
   - jimhester/covr
