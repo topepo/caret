@@ -1,4 +1,53 @@
-\documentclass[12 pt]{beamer}
+\documentclass[12 pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.196, 0.196, 0.196}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.063,0.58,0.627}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.063,0.58,0.627}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.588,0.588,0.588}{#1}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0.196,0.196,0.196}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.196,0.196,0.196}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.231,0.416,0.784}{#1}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.627,0,0.314}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0.631,0.314}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.78,0.227,0.412}{#1}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
 
 \usepackage{beamerthemesplit}
 \usepackage{fancyvrb}
@@ -31,23 +80,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 
-<<setup, results='hide', echo=FALSE,message=FALSE, warning=FALSE>>=
-library(knitr)
-library(caret)
 
-opts_chunk$set(comment=NA, digits = 3, size = 'scriptsize',
-               prompt = TRUE, background = 'white',
-               message=FALSE, warning=FALSE)
-hook_inline = knit_hooks$get('inline')
-knit_hooks$set(inline = function(x) {
-  if (is.character(x)) highr::hi_latex(x) else hook_inline(x)
-})
-
-options(width = 80)
-
-knit_theme$set("bclear")
-theme_set(theme_bw())
-@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -77,7 +110,7 @@ theme_set(theme_bw())
 \date{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
 \begin{frame}[plain]
@@ -115,13 +148,13 @@ For example, many models have only one method of specifying the model
 \begin{tabular}{rcl}
 {\bf Function} && {\bf {\tt predict} Function Syntax} \\
 \hline
- \href{http://cran.r-project.org/web/packages/MASS/index.html}{\pkg{MASS}}\texttt{::}\mxkwd{lda} && {\tt \Sexpr{'predict(obj)'}} (no options needed)\\
-\pkg{stats}\texttt{:::}\mxkwd{glm} && {\tt \Sexpr{'predict(obj, type = "response")'}} \\
-\href{http://cran.r-project.org/web/packages/gbm/index.html}{\pkg{gbm}}\texttt{::}\mxkwd{gbm} && {\tt \Sexpr{'predict(obj, type = "response", n.trees)'}} \\
-\href{http://cran.r-project.org/web/packages/mda/index.html}{\pkg{mda}}\texttt{::}\mxkwd{mda} && {\tt \Sexpr{'predict(obj, type = "posterior")'}} \\
-\href{http://cran.r-project.org/web/packages/rpart/index.html}{\pkg{rpart}}\texttt{::}\mxkwd{rpart} && {\tt \Sexpr{'predict(obj, type = "prob")'}}   \\
-\href{http://cran.r-project.org/web/packages/RWeka/index.html}{\pkg{RWeka}}\texttt{::}\mxkwd{Weka} && {\tt \Sexpr{'predict(obj, type = "probability")'}}  \\
-\href{http://cran.r-project.org/web/packages/caTools/index.html}{\pkg{caTools}}\texttt{::}\mxkwd{LogitBoost}  && {\tt \Sexpr{'predict(obj, type =  "raw", nIter)'}} \\
+ \href{http://cran.r-project.org/web/packages/MASS/index.html}{\pkg{MASS}}\texttt{::}\mxkwd{lda} && {\tt \hlkwd{predict}\hlstd{(obj)}} (no options needed)\\
+\pkg{stats}\texttt{:::}\mxkwd{glm} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"response"}\hlstd{)}} \\
+\href{http://cran.r-project.org/web/packages/gbm/index.html}{\pkg{gbm}}\texttt{::}\mxkwd{gbm} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"response"}\hlstd{, n.trees)}} \\
+\href{http://cran.r-project.org/web/packages/mda/index.html}{\pkg{mda}}\texttt{::}\mxkwd{mda} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"posterior"}\hlstd{)}} \\
+\href{http://cran.r-project.org/web/packages/rpart/index.html}{\pkg{rpart}}\texttt{::}\mxkwd{rpart} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"prob"}\hlstd{)}}   \\
+\href{http://cran.r-project.org/web/packages/RWeka/index.html}{\pkg{RWeka}}\texttt{::}\mxkwd{Weka} && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=} \hlstr{"probability"}\hlstd{)}}  \\
+\href{http://cran.r-project.org/web/packages/caTools/index.html}{\pkg{caTools}}\texttt{::}\mxkwd{LogitBoost}  && {\tt \hlkwd{predict}\hlstd{(obj,} \hlkwc{type} \hlstd{=}  \hlstr{"raw"}\hlstd{, nIter)}} \\
 \hline \\
 \\
 \end{tabular}
@@ -137,7 +170,7 @@ For example, many models have only one method of specifying the model
 The \href{http://cran.r-project.org/web/packages/caret/index.html}{\pkg{caret}}  package was developed to:
   \begin{itemize}
 \item create a unified interface for modeling and prediction
-(interfaces to \Sexpr{length(table(modelLookup()$model))} models)
+(interfaces to 183 models)
 \item streamline model tuning using resampling
 \item provide a variety of ``helper'' functions and classes for day--to--day model building tasks
 \item increase computational efficiency using parallel processing
@@ -170,11 +203,7 @@ Many computing sections in APM
   \begin{frame}[fragile]
 \frametitle{Package Dependencies}
 
-<<mod_pkgs,echo=FALSE>>=
-mods <- getModelInfo()
-mod_pkgs <- unique(unlist(lapply(mods, function(x) x$library)))
-mod_pkgs <- mod_pkgs[mod_pkgs != "caret"]
-@
+
 
 One thing that makes \pkg{caret} different from most other packages is that it uses code from an abnormally large number ($> 80$) of other packages.
 
@@ -565,13 +594,17 @@ A must have for new packages but hard to convert existing packages
 
 For example, there is one check that produces a large number of false positive warnings. For example:
 
-<<subset, eval = FALSE>>=
-bwplot.diff.resamples <- function (x, data, metric = x$metric, ...)  {
-    ## some code
-    plotData <- subset(plotData, Metric %in% metric)
-    ## more code
-}
-@
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{1, 1, 1}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{bwplot.diff.resamples} \hlkwb{<-} \hlkwa{function} \hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{data}\hlstd{,} \hlkwc{metric} \hlstd{= x}\hlopt{$}\hlstd{metric,} \hlkwc{...}\hlstd{)  \{}
+\hlstd{+ }    \hlcom{## some code}
+\hlstd{+ }    \hlstd{plotData} \hlkwb{<-} \hlkwd{subset}\hlstd{(plotData, Metric} \hlopt{%in%} \hlstd{metric)}
+\hlstd{+ }    \hlcom{## more code}
+\hlstd{+ }\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 will trigger a warning that ``{\tt \small bwplot.diff.resamples: no visible binding for global variable 'Metric'}''.
 
@@ -579,9 +612,13 @@ will trigger a warning that ``{\tt \small bwplot.diff.resamples: no visible bind
 
 The ``solution'' is to have a file that is sourced first in the package (e.g. \texttt{aaa.R}) with the line
 
-<<subset_fix, eval = FALSE>>=
-Metric <- NULL
-@
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{1, 1, 1}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{Metric} \hlkwb{<-} \hlkwa{NULL}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 \end{frame}
 
