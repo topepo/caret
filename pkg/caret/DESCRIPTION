@@ -49,7 +49,5 @@ Suggests:
     pamr,
     superpc,
     Cubist,
-    arm,
-    C50,
     testthat (>= 0.9.1)
 License: GPL (>= 2)
