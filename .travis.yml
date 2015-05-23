@@ -13,7 +13,7 @@ env:
 
 before_install:
   - cd pkg/caret
-  - sudo add-apt-repository -y ppa:texlive-backports/ppa
+  - sudo add-apt-repository ppa:texlive-backports/ppa -y
   - sudo apt-get -qq update
 
 apt_packages:

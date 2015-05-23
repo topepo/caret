@@ -1,4 +1,5 @@
 library(caret)
+library(arm)
 
 test_that('bayesglm classification', {
   skip_on_cran()
