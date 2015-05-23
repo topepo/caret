@@ -2,6 +2,7 @@ context('Base model trimming works')
 
 library(rpart)
 library(ipred)
+library(plyr)
 
 ###################################################################
 ## rpart tests
