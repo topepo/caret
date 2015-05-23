@@ -1,8 +1,8 @@
-library(caret)
-library(rpart)
 
 test_that('rpart classification', {
   skip_on_cran()
+  library(caret)
+  library(rpart)
   set.seed(1)
   tr_dat <- twoClassSim(200)
   te_dat <- twoClassSim(200)
@@ -34,6 +34,8 @@ test_that('rpart classification', {
 
 test_that('rpart regression', {
   skip_on_cran()
+  library(caret)
+  library(rpart)
   set.seed(1)
   tr_dat <- SLC14_1(200)
   te_dat <- SLC14_1(200)
@@ -59,6 +61,9 @@ test_that('rpart regression', {
 
 test_that('rpart2 classification', {
   skip_on_cran()
+  library(caret)
+  library(rpart)
+
   set.seed(1)
   tr_dat <- twoClassSim(200)
   te_dat <- twoClassSim(200)
@@ -90,6 +95,9 @@ test_that('rpart2 classification', {
 
 test_that('rpart2 regression', {
   skip_on_cran()
+  library(caret)
+  library(rpart)
+
   set.seed(1)
   tr_dat <- SLC14_1(200)
   te_dat <- SLC14_1(200)
@@ -111,6 +119,3 @@ test_that('rpart2 regression', {
                predict(reg_notrim, te_dat))
   expect_less_than(object.size(reg_trim)-object.size(reg_notrim), 0)
 })
-
-
-

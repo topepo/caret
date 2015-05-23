@@ -1,7 +1,8 @@
-library(caret)
 
 test_that('glm classification', {
   skip_on_cran()
+  library(caret)
+
   set.seed(1)
   tr_dat <- twoClassSim(200)
   te_dat <- twoClassSim(200)
@@ -33,6 +34,8 @@ test_that('glm classification', {
 
 test_that('glm regression', {
   skip_on_cran()
+  library(caret)
+
   set.seed(1)
   tr_dat <- SLC14_1(200)
   te_dat <- SLC14_1(200)

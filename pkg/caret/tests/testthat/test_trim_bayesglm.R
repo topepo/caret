@@ -1,8 +1,9 @@
-library(caret)
-library(arm)
 
 test_that('bayesglm classification', {
   skip_on_cran()
+  library(caret)
+  library(arm)
+
   set.seed(1)
   tr_dat <- twoClassSim(200)
   te_dat <- twoClassSim(200)
@@ -34,6 +35,9 @@ test_that('bayesglm classification', {
 
 test_that('bayesglm regression', {
   skip_on_cran()
+  library(caret)
+  library(arm)
+
   set.seed(1)
   tr_dat <- SLC14_1(200)
   te_dat <- SLC14_1(200)

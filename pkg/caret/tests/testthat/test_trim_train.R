@@ -1,10 +1,10 @@
-library(caret)
-library(rpart)
-library(earth)
 context('Caret model trimming works')
 
 test_that('train classification', {
   skip_on_cran()
+  library(caret)
+  library(rpart)
+  library(earth)
   set.seed(1)
   tr_dat <- twoClassSim(200)
   te_dat <- twoClassSim(200)
@@ -39,6 +39,9 @@ test_that('train classification', {
 
 test_that('train regression', {
   skip_on_cran()
+  library(caret)
+  library(rpart)
+  library(earth)
   set.seed(1)
   tr_dat <- SLC14_1(200)
   te_dat <- SLC14_1(200)

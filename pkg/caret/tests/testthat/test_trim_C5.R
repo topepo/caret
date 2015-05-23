@@ -1,8 +1,9 @@
-library(caret)
-library(C50)
 
 test_that('single tree', {
   skip_on_cran()
+  library(caret)
+  library(C50)
+
   set.seed(1)
   tr_dat <- twoClassSim(200)
   te_dat <- twoClassSim(200)
@@ -38,6 +39,9 @@ test_that('single tree', {
 
 test_that('single rule', {
   skip_on_cran()
+  library(caret)
+  library(C50)
+
   set.seed(1)
   tr_dat <- twoClassSim(200)
   te_dat <- twoClassSim(200)
@@ -73,6 +77,9 @@ test_that('single rule', {
 
 test_that('boosted tree', {
   skip_on_cran()
+  library(caret)
+  library(C50)
+
   set.seed(1)
   tr_dat <- twoClassSim(200)
   te_dat <- twoClassSim(200)
@@ -108,6 +115,9 @@ test_that('boosted tree', {
 
 test_that('boosted rule', {
   skip_on_cran()
+  library(caret)
+  library(C50)
+
   set.seed(1)
   tr_dat <- twoClassSim(200)
   te_dat <- twoClassSim(200)
@@ -140,6 +150,3 @@ test_that('boosted rule', {
 
   expect_less_than(object.size(class_trim)-object.size(class_notrim), 0)
 })
-
-
-

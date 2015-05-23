@@ -1,9 +1,9 @@
-library(caret)
-library(ipred)
-library(plyr)
 
 test_that('treebag classification', {
   skip_on_cran()
+  library(caret)
+  library(ipred)
+  library(plyr)
   set.seed(1)
   tr_dat <- twoClassSim(200)
   te_dat <- twoClassSim(200)
@@ -35,6 +35,9 @@ test_that('treebag classification', {
 
 test_that('rpart regression', {
   skip_on_cran()
+  library(caret)
+  library(ipred)
+  library(plyr)
   set.seed(1)
   tr_dat <- SLC14_1(200)
   te_dat <- SLC14_1(200)
