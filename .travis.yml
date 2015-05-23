@@ -44,5 +44,8 @@ notifications:
     on_success: change
     on_failure: change
 
+after_script:
+  - dump_logs
+
 after_success:
   - Rscript -e 'library(covr);coveralls()'
