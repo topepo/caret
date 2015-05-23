@@ -17,7 +17,12 @@ before_install:
   - sudo apt-get -qq update
 
 apt_packages:
+  - texlive-base
+  - biblatex
+  - texlive-latex-base
+  - texlive-latex-recommended
   - texlive-latex-extra
+  - texlive-fonts-recommended
   - texlive-fonts-extra
   - texlive-science
 
