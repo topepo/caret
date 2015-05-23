@@ -50,5 +50,12 @@ Suggests:
     superpc,
     Cubist,
     testthat (>= 0.9.1),
-    kknn
+    kknn,
+    arm,
+    glmnet,
+    rpart,
+    C50,
+    ipred,
+    plyr,
+    earth
 License: GPL (>= 2)
