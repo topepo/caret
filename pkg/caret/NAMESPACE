@@ -69,7 +69,7 @@ export(anovaScores,
        gafs_spCrossover,
        gafs_raMutation,
        gafs,
-       gafs.default, 
+       gafs.default,
        gafsControl,
        gamFormula,
        gamFuncs,
@@ -122,7 +122,7 @@ export(anovaScores,
        nullModel,
        nullModel.default,
        oneSE,
-       panel.calibration,       
+       panel.calibration,
        panel.lift,
        panel.lift2,
        panel.needle,
@@ -179,16 +179,16 @@ export(anovaScores,
        rfeControl,
        rfeIter,
        rfFuncs,
-       rfGA, 
+       rfGA,
        rfSA,
        rfSBF,
        rfStats,
        RMSE,
        safs_initial,
-       safs_perturb, 
+       safs_perturb,
        safs_prob,
        safs,
-       safs.default, 
+       safs.default,
        safsControl,
        sbf,
        sbf.default,
@@ -224,6 +224,7 @@ export(anovaScores,
        treebagGA,
        treebagSA,
        treebagSBF,
+       trim,
        twoClassSim,
        twoClassSummary,
        upSample,
@@ -308,7 +309,7 @@ S3method(varImp, nnet)
 S3method(varImp, glmnet)
 S3method(varImp, gam)
 S3method(varImp, gafs)
-S3method(varImp, safs) 
+S3method(varImp, safs)
 
 S3method(densityplot, train)
 S3method(histogram,   train)
@@ -346,7 +347,7 @@ S3method(plot,  prcomp.resamples)
 S3method(plot,  lift)
 S3method(plot,  calibration)
 S3method(plot,  gafs)
-S3method(plot,  safs) 
+S3method(plot,  safs)
 
 S3method(confusionMatrix,  train)
 S3method(confusionMatrix,  rfe)
@@ -387,7 +388,7 @@ S3method(print, lift)
 S3method(print, calibration)
 S3method(print, expoTrans)
 S3method(print, gafs)
-S3method(print, safs) 
+S3method(print, safs)
 
 S3method(predict, plsda)
 S3method(predict, splsda)
@@ -410,7 +411,7 @@ S3method(predict, dummyVars)
 S3method(predict, BoxCoxTrans)
 S3method(predict, expoTrans)
 S3method(predict, gafs)
-S3method(predict, safs) 
+S3method(predict, safs)
 
 S3method(summary, bagEarth)
 S3method(summary, bagFDA)
@@ -428,7 +429,7 @@ S3method(predictors, default)
 S3method(predictors, rfe)
 S3method(predictors, sbf)
 S3method(predictors, gafs)
-S3method(predictors, safs) 
+S3method(predictors, safs)
 
 S3method(confusionMatrix, table)
 
@@ -455,7 +456,7 @@ S3method(summary, diff.resamples)
 S3method(update, train)
 S3method(update, rfe)
 S3method(update, gafs)
-S3method(update, safs) 
+S3method(update, safs)
 
 S3method(fitted, train)
 S3method(residuals, train)
@@ -471,7 +472,7 @@ S3method(oob_pred, sbf)
 S3method(oob_pred, list)
 
 S3method(gafs, default)
-S3method(safs, default) 
+S3method(safs, default)
 
 S3method(trim, train)
 
