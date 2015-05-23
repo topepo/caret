@@ -32,6 +32,7 @@ install:
   - ./travis-tool.sh aptget_install texlive-fonts-extra
   - ./travis-tool.sh aptget_install texlive-science
   - ./travis-tool.sh github_package jimhester/covr
+  - "wget -q -O - http://yihui.name/xran/r-config | bash"
   - Rscript -e "install.packages('arm')"
   - Rscript -e "install.packages('glmnet')"
   - Rscript -e "install.packages('rpart')"
