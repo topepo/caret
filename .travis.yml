@@ -5,8 +5,8 @@ sudo: required
 env:
    global:
      - CRAN: http://cran.rstudio.com
-     - R_BUILD_ARGS="--no-build-vignettes --no-manual"
-     - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
+     - R_BUILD_ARGS="--no-build-vignettes --no-manual --no-examples"
+     - R_CHECK_ARGS="--no-build-vignettes --no-manuall --no-examples --as-cran"
    matrix:
      - NOT_CRAN="true"
      - NOT_CRAN="false"
