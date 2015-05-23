@@ -45,6 +45,7 @@ notifications:
     on_failure: change
 
 after_script:
+  - Rscript -e 'library(devtools);test()'
   - dump_logs
 
 after_success:
