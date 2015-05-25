@@ -73,7 +73,7 @@ avNNet.default <- function(x, y, repeats = 5, bag = FALSE, allowParallel = TRUE,
         {
           if(theDots$trace) cat("\nFitting Repeat", i, "\n\n")
         } else cat("Fitting Repeat", i, "\n\n")
-      if(bag)  ind <- sample(1:nrow(x))
+      if(bag)  ind <- sample(1:nrow(x), replace = TRUE)
       thisMod <- if(is.null(classLev)) nnet::nnet(x[ind,,drop = FALSE], y[ind], ...) else nnet::nnet(x[ind,,drop = FALSE], y[ind,], ...)
       thisMod$lev <- classLev
       thisMod
