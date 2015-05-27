@@ -7,7 +7,11 @@
 		\item A new model using the \cpkg{randomForest} and \cpkg{inTrees} packages called \code{rfRules} was added. A basic random forest model is used and then is decomposed into rules (of user-specified complexity). The \cpkg{inTrees} package is used to prune and optimize the rules. Thanks to Mirjam Jenny who suggested the workflow. 
 		\item From the \cpkg{rotationForest} package, a model of the same name was added. 
 		\item Localized linear discriminant analysis (\code{method = "loclda"}) from the \cpkg{klaR} package was added. 
+		\item From the \cpkg{nnls} package, a model of the same name was added. 
 		\item When specifying your own resampling indicies, a value of \code{method = "custom"} can be used with \code{trainControl} for better printing. 
+		\item Tim Lucas fixed a bug in \code{avNNet} when \code{bag = TRUE}
+		\item Fixed a bug found by ruggerorossi in \code{method = "dnn"} with classification.
+
 		}
 }
 
