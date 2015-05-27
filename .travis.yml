@@ -26,6 +26,16 @@ apt_packages:
   - texlive-fonts-extra
   - texlive-science
 
+r_packages:
+  - arm
+  - glmnet
+  - rpart
+  - C50
+  - ipred
+  - plyr
+  - earth
+  - kknn
+
 r_binary_packages:
   - arm
   - glmnet

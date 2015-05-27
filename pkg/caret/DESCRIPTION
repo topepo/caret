@@ -49,13 +49,5 @@ Suggests:
     pamr,
     superpc,
     Cubist,
-    testthat (>= 0.9.1),
-    kknn,
-    arm,
-    glmnet,
-    rpart,
-    C50,
-    ipred,
-    plyr,
-    earth
+    testthat (>= 0.9.1)
 License: GPL (>= 2)
