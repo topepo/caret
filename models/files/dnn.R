@@ -13,7 +13,7 @@ modelInfo <- list(label = "Stacked AutoEncoder Deep Neural Network",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.matrix(x)) x <- as.matrix(x)
                     is_class <- is.factor(y)
-                    if (is_class) y <- class2ind(y)
+                    if (is_class) y <- caret:::class2ind(y)
                     layers <- c(param$layer1, param$layer2, param$layer3)
                     layers <- layers[layers > 0]
                     sae.dnn.train(x, y, hidden = layers, 
