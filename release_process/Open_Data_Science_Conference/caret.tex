@@ -135,6 +135,21 @@ predictions are created.
 For example, many models have only one method of specifying the model
 (e.g. formula method only)
 
+\vspace{.1in}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{1, 1, 1}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlcom{## only one way here:}
+\hlstd{> }\hlkwd{rpart}\hlstd{(y} \hlopt{~} \hlstd{.,} \hlkwc{data} \hlstd{= dat)}
+\hlstd{> }
+\hlstd{> }\hlcom{## and both ways here:}
+\hlstd{> }\hlkwd{lda}\hlstd{(y} \hlopt{~} \hlstd{.,} \hlkwc{data} \hlstd{= dat)}
+\hlstd{> }
+\hlstd{> }\hlkwd{lda}\hlstd{(}\hlkwc{x} \hlstd{= predictors,} \hlkwc{y} \hlstd{= outcome)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 \end{frame}
 
@@ -194,9 +209,50 @@ Model List: \href{http://topepo.github.io/caret/bytag.html}{http://topepo.github
 
 \vspace{.06in}
 
-Many computing sections in APM
+Many computing sections in {\tt Applied Predictive Modeling}
 
 \end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \begin{frame}[fragile]
+\frametitle{Easily Switching Between Models}
+
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{1, 1, 1}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{library}\hlstd{(doMC)}
+\hlstd{> }\hlkwd{registerDoMC}\hlstd{(}\hlkwc{cores}\hlstd{=}\hlnum{10}\hlstd{)}
+\hlstd{> }
+\hlstd{> }\hlstd{ctlr} \hlkwb{<-} \hlkwd{trainControl}\hlstd{(}\hlkwc{classProbs} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{method} \hlstd{=} \hlstr{"repeatedcv"}\hlstd{)}
+\hlstd{> }\hlstd{gbm_mod} \hlkwb{<-} \hlkwd{train}\hlstd{(Class} \hlopt{~} \hlstd{.,} \hlkwc{data} \hlstd{= training,}
+\hlstd{+ }                 \hlkwc{method} \hlstd{=} \hlstr{"gbm"}\hlstd{,}
+\hlstd{+ }                 \hlkwc{trControl} \hlstd{= ctlr,}
+\hlstd{+ }                 \hlcom{## gbm argument:}
+\hlstd{+ }                 \hlkwc{verbose} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlstd{> }
+\hlstd{> }\hlstd{pls_mod} \hlkwb{<-} \hlkwd{train}\hlstd{(Class} \hlopt{~} \hlstd{.,} \hlkwc{data} \hlstd{= training,}
+\hlstd{+ }                 \hlkwc{method} \hlstd{=} \hlstr{"pls"}\hlstd{,}
+\hlstd{+ }                 \hlkwc{tuneLength} \hlstd{=} \hlnum{10}\hlstd{,}
+\hlstd{+ }                 \hlkwc{preProc} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"center"}\hlstd{,} \hlstr{"scale"}\hlstd{,} \hlstr{"spatailSign"}\hlstd{),}
+\hlstd{+ }                 \hlkwc{trControl} \hlstd{= ctlr)}
+\hlstd{> }
+\hlstd{> }\hlstd{pls_search} \hlkwb{<-} \hlkwd{gafs}\hlstd{(}\hlkwc{x} \hlstd{= training[,} \hlopt{-}\hlnum{1}\hlstd{],} \hlkwc{y} \hlstd{= training}\hlopt{$}\hlstd{Class,}
+\hlstd{+ }                   \hlkwc{gafsControl} \hlstd{=} \hlkwd{gafsControl}\hlstd{(}\hlkwc{method} \hlstd{=} \hlstr{"cv"}\hlstd{,} \hlkwc{functions} \hlstd{= rfGA),}
+\hlstd{+ }                   \hlcom{## train options:}
+\hlstd{+ }                   \hlkwc{method} \hlstd{=} \hlstr{"pls"}\hlstd{,}
+\hlstd{+ }                   \hlkwc{tuneLength} \hlstd{=} \hlnum{10}\hlstd{,}
+\hlstd{+ }                   \hlkwc{preProc} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"center"}\hlstd{,} \hlstr{"scale"}\hlstd{,} \hlstr{"spatailSign"}\hlstd{),}
+\hlstd{+ }                   \hlkwc{trControl} \hlstd{= ctlr)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -503,6 +559,30 @@ This process takes approximately 3hrs to complete using \texttt{make -j 12} on a
   \begin{frame}[fragile]
 \frametitle{Regression Testing}
 
+Typical tests include:
+\begin{itemize}
+\item tests for different resampling methods ({\bf LOOCV}!) 
+\item formula vs. non-formula interface
+\item predictions
+\item variable importance
+\item ancillary classes/functions (e.g. \mxkwd{predictors})
+\end{itemize}
+
+\vspace{.1in}
+
+In some cases, we need to correlate results between versions due to random numbers without seed control. 
+
+\vspace{.1in}
+
+I send a lot of emails/pull requests to package maintainers (e.g. class probabilities don't sum to 1, predictions fail with $n=1$, etc. )
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \begin{frame}[fragile]
+\frametitle{Regression Testing}
+
 \begin{Verbatim}[fontsize=\footnotesize]
 $ R CMD BATCH move_files.R
 $ cd ~/tmp/2015_04_19_09__6.0-41/
@@ -567,51 +647,11 @@ It currently takes about 4hr to create these (using parallel processing when pos
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[plain]
-\begin{center}
-\LARGE Backup Slides
-\end{center}
-\end{frame}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
   \begin{frame}[fragile]
-\frametitle{\href{http://cran.r-project.org/web/packages/roxygen2/index.html}{\pkg{roxygen2}}}
-
-Simplified package documentation
-
-\vspace{.2in}
-
-Automates many parts of the documentation process
-\begin{itemize}
-\item  Special comment block above each function
-\item Name, description, arguments, etc.
-\item Code and documentation are in the same source file
-\end{itemize}
-
-\vspace{.2in}
-
-A must have for new packages but hard to convert existing packages
-\begin{itemize}
-\item   \href{http://cran.r-project.org/web/packages/caret/index.html}{\pkg{caret}} has 92 .Rd files
-\item I'm not in a hurry to re-write them all in \href{http://cran.r-project.org/web/packages/roxygen2/index.html}{\pkg{roxygen2}} format
-\end{itemize}
-
-
-
-
-\end{frame}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-  \begin{frame}[fragile]
-\frametitle{Required ``Optimizations''}
+\frametitle{Required ``Optimizations'' for CRAN}
 
 
 For example, there is one check that produces a large number of false positive warnings. For example:
@@ -675,6 +715,46 @@ Description Field: {\tt "Blah blah blah."}
 
 {\tt R CMD check: {\color{green}\bf PASS}}
 \end{footnotesize}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[plain]
+\begin{center}
+\LARGE Backup Slides
+\end{center}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \begin{frame}[fragile]
+\frametitle{\href{http://cran.r-project.org/web/packages/roxygen2/index.html}{\pkg{roxygen2}}}
+
+Simplified package documentation
+
+\vspace{.2in}
+
+Automates many parts of the documentation process
+\begin{itemize}
+\item  Special comment block above each function
+\item Name, description, arguments, etc.
+\item Code and documentation are in the same source file
+\end{itemize}
+
+\vspace{.2in}
+
+A must have for new packages but hard to convert existing packages
+\begin{itemize}
+\item   \href{http://cran.r-project.org/web/packages/caret/index.html}{\pkg{caret}} has 92 .Rd files
+\item I'm not in a hurry to re-write them all in \href{http://cran.r-project.org/web/packages/roxygen2/index.html}{\pkg{roxygen2}} format
+\end{itemize}
+
+
+
 
 \end{frame}
 

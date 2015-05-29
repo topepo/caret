@@ -102,6 +102,17 @@ predictions are created.
 For example, many models have only one method of specifying the model
 (e.g. formula method only)
 
+\vspace{.1in}
+
+<<form,eval = FALSE>>=
+## only one way here:
+rpart(y ~ ., data = dat)
+
+## and both ways here:
+lda(y ~ ., data = dat)
+
+lda(x = predictors, y = outcome)
+@
 
 \end{frame}
 
@@ -161,9 +172,46 @@ Model List: \href{http://topepo.github.io/caret/bytag.html}{http://topepo.github
 
 \vspace{.06in}
 
-Many computing sections in APM
+Many computing sections in {\tt Applied Predictive Modeling}
 
 \end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \begin{frame}[fragile]
+\frametitle{Easily Switching Between Models}
+
+<<caret_ex,eval = FALSE>>=
+library(doMC)
+registerDoMC(cores=10)
+
+ctlr <- trainControl(classProbs = TRUE, method = "repeatedcv")
+gbm_mod <- train(Class ~ ., data = training,
+                 method = "gbm",
+                 trControl = ctlr,
+                 ## gbm argument:
+                 verbose = FALSE)
+
+pls_mod <- train(Class ~ ., data = training,
+                 method = "pls",
+                 tuneLength = 10,
+                 preProc = c("center", "scale", "spatailSign"),
+                 trControl = ctlr)
+
+pls_search <- gafs(x = training[, -1], y = training$Class,
+                   gafsControl = gafsControl(method = "cv", functions = rfGA),
+                   ## train options:
+                   method = "pls",
+                   tuneLength = 10,
+                   preProc = c("center", "scale", "spatailSign"),
+                   trControl = ctlr)
+@
+
+\end{frame}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -474,6 +522,30 @@ This process takes approximately 3hrs to complete using \texttt{make -j 12} on a
   \begin{frame}[fragile]
 \frametitle{Regression Testing}
 
+Typical tests include:
+\begin{itemize}
+\item tests for different resampling methods ({\bf LOOCV}!) 
+\item formula vs. non-formula interface
+\item predictions
+\item variable importance
+\item ancillary classes/functions (e.g. \mxkwd{predictors})
+\end{itemize}
+
+\vspace{.1in}
+
+In some cases, we need to correlate results between versions due to random numbers without seed control. 
+
+\vspace{.1in}
+
+I send a lot of emails/pull requests to package maintainers (e.g. class probabilities don't sum to 1, predictions fail with $n=1$, etc. )
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \begin{frame}[fragile]
+\frametitle{Regression Testing}
+
 \begin{Verbatim}[fontsize=\footnotesize]
 $ R CMD BATCH move_files.R
 $ cd ~/tmp/2015_04_19_09__6.0-41/
@@ -538,51 +610,11 @@ It currently takes about 4hr to create these (using parallel processing when pos
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[plain]
-\begin{center}
-\LARGE Backup Slides
-\end{center}
-\end{frame}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
   \begin{frame}[fragile]
-\frametitle{\href{http://cran.r-project.org/web/packages/roxygen2/index.html}{\pkg{roxygen2}}}
-
-Simplified package documentation
-
-\vspace{.2in}
-
-Automates many parts of the documentation process
-\begin{itemize}
-\item  Special comment block above each function
-\item Name, description, arguments, etc.
-\item Code and documentation are in the same source file
-\end{itemize}
-
-\vspace{.2in}
-
-A must have for new packages but hard to convert existing packages
-\begin{itemize}
-\item   \href{http://cran.r-project.org/web/packages/caret/index.html}{\pkg{caret}} has 92 .Rd files
-\item I'm not in a hurry to re-write them all in \href{http://cran.r-project.org/web/packages/roxygen2/index.html}{\pkg{roxygen2}} format
-\end{itemize}
-
-
-
-
-\end{frame}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-  \begin{frame}[fragile]
-\frametitle{Required ``Optimizations''}
+\frametitle{Required ``Optimizations'' for CRAN}
 
 
 For example, there is one check that produces a large number of false positive warnings. For example:
@@ -638,6 +670,46 @@ Description Field: {\tt "Blah blah blah."}
 
 {\tt R CMD check: {\color{green}\bf PASS}}
 \end{footnotesize}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[plain]
+\begin{center}
+\LARGE Backup Slides
+\end{center}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \begin{frame}[fragile]
+\frametitle{\href{http://cran.r-project.org/web/packages/roxygen2/index.html}{\pkg{roxygen2}}}
+
+Simplified package documentation
+
+\vspace{.2in}
+
+Automates many parts of the documentation process
+\begin{itemize}
+\item  Special comment block above each function
+\item Name, description, arguments, etc.
+\item Code and documentation are in the same source file
+\end{itemize}
+
+\vspace{.2in}
+
+A must have for new packages but hard to convert existing packages
+\begin{itemize}
+\item   \href{http://cran.r-project.org/web/packages/caret/index.html}{\pkg{caret}} has 92 .Rd files
+\item I'm not in a hurry to re-write them all in \href{http://cran.r-project.org/web/packages/roxygen2/index.html}{\pkg{roxygen2}} format
+\end{itemize}
+
+
+
 
 \end{frame}
 
