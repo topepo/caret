@@ -437,7 +437,7 @@ Automated unit testing via \href{http://cran.r-project.org/web/packages/testthat
 
 Travis and coveralls are tools for automated unit testing
 \begin{itemize}
-\item Travis reports test failures and CRAN errors/warnings
+\item Travis reports test failutes and CRAN errors/warnings
 \item Coveralls reports \% of code covered by unit tests
 \item Both automatically comment on the PR itself
 \end{itemize}
