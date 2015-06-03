@@ -416,3 +416,83 @@ var_seq <- function(p, classification = FALSE, len = 3) {
   tuneSeq
 }
 
+parse_sampling <- function(x) {
+  ## x could be 
+  ### a string to match to a existing method
+  ### a function
+  ### a list
+  
+  ## output should be a list with elements 
+  ### name
+  ### func
+  ### before_pp (logical)
+  x_class <- class(x)[1]
+  if(!(x_class %in% c("character", "function", "list"))) {
+    stop(paste("The sampling argument should be either a",
+               "string, function, or list. See",
+               "http://topepo.github.io/caret/training.html"))
+  }
+  if(x_class == "character") {
+    x <- x[1]
+    load(system.file("models", "sampling.RData", package = "caret"))
+    s_method <- names(sampling_methods)
+    if(!(x %in% s_method)) {
+      stop("That sampling scheme is not in caret's built-in library")
+    } else {
+      x <- list(name = x, 
+                func = sampling_methods[x][[1]],
+                first = TRUE)
+    }
+  } else {
+    if(x_class == "function") {
+      check_samp_func(x)
+      x <- list(name = "custom", 
+                func = x,
+                first = TRUE)
+    } else {
+      check_samp_list(x)
+    }
+  }
+  x
+}
+
+check_samp_func <- function(x) {
+  s_args <- sort(names(formals(x)))
+  if(length(s_args) != 2) {
+    stop("the 'sampling' function should have arguments 'x' and 'y'")
+  } else {
+    if(!all(s_args == c("x", "y")))
+      stop("the 'sampling' function should have arguments 'x' and 'y'")
+  }
+  invisible(NULL)
+}
+
+check_samp_list <- function(x) {
+  exp_names <- sort(c("name", "func", "first"))
+  x_names <- sort(names(x))
+  if(length(x_names) != length(exp_names)) {
+    stop(paste("the 'sampling' list should have elements",
+               paste(exp_names, sep = "", collapse = ", ")))
+  } else {
+    if(!all(exp_names == x_names))
+      stop(paste("the 'sampling' list should have elements",
+                 paste(exp_names, sep = "", collapse = ", ")))
+  }  
+  check_samp_func(x$func)
+  if(!is.logical(x$first)) 
+    stop("The element 'first' should be a logical")
+  invisible(NULL)
+}
+
+getSamplingInfo <- function(method = NULL, regex = TRUE, ...) {
+  load(system.file("models", "sampling.RData", package = "caret")) 
+  if (!is.null(method)) {
+    keepers <- if (regex)  
+      grepl(method, names(sampling_methods), ...) else 
+        which(method == names(sampling_methods))[1]
+    sampling_methods <- sampling_methods[keepers]
+  }
+  if (length(sampling_methods) == 0) 
+    stop("That sampling method is not in caret's built-in library")
+  sampling_methods
+}

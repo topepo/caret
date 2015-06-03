@@ -58,6 +58,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                             obsLevels = lev,
                             pp = ppp,
                             classProbs = ctrl$classProbs,
+                            sampling = ctrl$sampling,
                             ...),
                 silent = TRUE)
               
@@ -281,6 +282,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                                obsLevels = lev,
                                                pp = ppp,
                                                classProbs = ctrl$classProbs,
+                                               sampling = ctrl$sampling,
                                                ...),
                                    silent = TRUE)
                                  
@@ -566,6 +568,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                               obsLevels = lev,
                               pp = ppp,
                               classProbs = ctrl$classProbs,
+                              sampling = ctrl$sampling,
                               ...),
                   silent = TRUE)
                 

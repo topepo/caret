@@ -49,6 +49,12 @@ train.default <- function(x, y,
     }
   }
   
+  if(modelType != "Classification" & !is.null(trControl$sampling))
+    stop("sampling methods are only implemented for classification problems")
+  if(!is.null(trControl$sampling)) {
+    trControl$sampling <- parse_sampling(trControl$sampling)
+  }
+  
   if(any(class(x) == "data.table")) x <- as.data.frame(x)
   stopifnot(length(y) > 1)
   stopifnot(nrow(x) > 1)
@@ -505,6 +511,7 @@ train.default <- function(x, y,
                               pp = ppOpt,
                               last = TRUE,
                               classProbs = trControl$classProbs,
+                              sampling = trControl$sampling,
                               ...))
   
   if(trControl$trim && !is.null(models$trim)) {

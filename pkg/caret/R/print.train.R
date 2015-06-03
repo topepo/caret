@@ -16,7 +16,7 @@ stringFunc <- function (x)  {
            details = FALSE,
            selectCol = FALSE,
            ...) {
-  
+    
     if(!is.null(x$modelInfo$label)) cat(x$modelInfo$label, "\n\n")
     if(printCall) printCall(x$call)
     
@@ -70,14 +70,29 @@ stringFunc <- function (x)  {
       
       resampText <- resampName(x)
       
-      cat("Resampling:", resampText, "\n\n")   
+      cat("Resampling:", resampText, "\n")   
       if(x$control$method != "none") {
         outLabel <- x$metric
         
         resampleN <- as.character(resampleN)
         if(numResamp > 5) resampleN <- c(resampleN[1:6], "...")
-        cat("Summary of sample sizes:", paste(resampleN, collapse = ", "), "\n\n")
+        cat("Summary of sample sizes:", paste(resampleN, collapse = ", "), "\n")
       }
+    }
+    if(!is.null(x$control$sampling)) {
+      cat("Addtional sampling using ")
+      cat(switch(x$control$sampling$name,
+                 down = "down-sampling",
+                 up = "up-sampling",
+                 smote = "SMOTE",
+                 rose = "ROSE",
+                 custom = "a custom function"))
+      if(!is.null(x$preProc)) {
+        if(x$control$sampling$first)
+          cat(" prior to pre-processing") else 
+            cat(" after to pre-processing")
+      }
+      cat("\n\n")
     }
     
     if(x$control$method != "none") {
@@ -142,7 +157,7 @@ stringFunc <- function (x)  {
       
       theDots <- list(...)
       theDots$x <- tuneAcc
-#       if(!(any(names(theDots) == "digits"))) theDots$digits <- min(3, getOption("digits"))
+      #       if(!(any(names(theDots) == "digits"))) theDots$digits <- min(3, getOption("digits"))
       printMat <- do.call("format.data.frame", theDots)
       printMat <- as.matrix(printMat)
       rownames(printMat) <- rep("", dim(printMat)[1])

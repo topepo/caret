@@ -12,6 +12,7 @@
 		\item When specifying your own resampling indicies, a value of \code{method = "custom"} can be used with \code{trainControl} for better printing. 
 		\item Tim Lucas fixed a bug in \code{avNNet} when \code{bag = TRUE}
 		\item Fixed a bug found by ruggerorossi in \code{method = "dnn"} with classification.
+		\item A new option called \code{sampling} was added to \code{trainControl} that allows users to subsample their data in the case of a class imbalance. Another \href{http://topepo.github.io/caret/sampling.html}{help page} was added to explain the features.  
 		}
 }
 

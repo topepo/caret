@@ -98,6 +98,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                 obsLevels = lev,
                 pp = ppp,
                 classProbs = ctrl$classProbs,
+                sampling = ctrl$sampling,
                 ...),
     silent = TRUE)
   
@@ -404,6 +405,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
                          obsLevels = lev,
                          pp = ppp,
                          classProbs = ctrl$classProbs,
+                         sampling = ctrl$sampling,
                          ...)
       
       holdoutIndex <- -unique(ctrl$index[[iter]])
@@ -533,6 +535,7 @@ oobTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
                      obsLevels = lev,
                      pp = ppp,
                      classProbs = ctrl$classProbs,
+                     sampling = ctrl$sampling,
                      ...)
   
   out <- switch(class(mod$fit)[1],
