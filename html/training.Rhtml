@@ -231,16 +231,17 @@ For a gradient boosting machine (GBM) model, there are three main
 tuning parameters:
   <ul>
   <li> number of iterations, i.e. trees,  (called <span class="mx arg">n.trees</span> in the
-  <span class="mx funCall">gbm</span> function)
-  <li> complexity of the tree, called <span class="mx arg">interaction.depth</span>
+  <span class="mx funCall">gbm</span> function)</li>
+  <li> complexity of the tree, called <span class="mx arg">interaction.depth</span></li>
   <li> learning rate: how quickly the algorithm adapts, called
-  <span class="mx arg">shrinkage</span> 
+  <span class="mx arg">shrinkage</span> </li>
+  <li> the minimum number of training set samples in a node to commence splitting (<span class="mx arg">n.minobsinnode</span>)</li>
   </ul>
 </p>  
 <p>
 The default values tested for this model are shown in the first two
-columns (<span class="mx arg">shrinkage</span> is not shown beause the grid set of
-candidate models all use a value of 0.1 for this tuning parameter). 
+columns (<span class="mx arg">shrinkage</span> and <span class="mx arg">n.minobsinnode</span> are not shown beause the grid set of
+candidate models all use a single value for these tuning parameters). 
 The column labeled "<code>Accuracy</code>" is the overall agreement rate
 averaged over cross-validation iterations. The agreement standard
 deviation is also calculated from the cross-validation results. The
