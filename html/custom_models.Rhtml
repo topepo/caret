@@ -1,45 +1,49 @@
 <!--begin.rcode custom_load, results='hide', echo=FALSE, message=FALSE
-    library(caret)
-    library(kernlab)
-    library(class)
-    library(caTools)
-    library(pROC)
-    library(DMwR)
-    library(randomForest)
-    library(reshape2)
-    library(plyr)
-    library(pls)
-    theme1 <- caretTheme()
-    theme1$superpose.symbol$col = c(rgb(1, 0, 0, .4), rgb(0, 0, 1, .4), 
-      rgb(0.3984375, 0.7578125,0.6445312, .6))
-    theme1$superpose.symbol$pch = c(15, 16, 17)
-    theme1$superpose.cex = .8
-    theme1$superpose.line$col = c(rgb(1, 0, 0, .9), rgb(0, 0, 1, .9), rgb(0.3984375, 0.7578125,0.6445312, .6))
-    theme1$superpose.line$lwd <- 2
-    theme1$superpose.line$lty = 1:3
-    theme1$plot.symbol$col = c(rgb(.2, .2, .2, .4))
-    theme1$plot.symbol$pch = 16
-    theme1$plot.cex = .8
-    theme1$plot.line$col = c(rgb(1, 0, 0, .7))
-    theme1$plot.line$lwd <- 2
-    theme1$plot.line$lty = 1
+library(caret)
+library(kernlab)
+library(class)
+library(caTools)
+library(pROC)
+library(DMwR)
+library(randomForest)
+library(reshape2)
+library(plyr)
+library(pls)
+library(parallel)
+library(doMC)
+registerDoMC(cores=detectCores()-1)
 
-    i <- 1
+theme1 <- caretTheme()
+theme1$superpose.symbol$col = c(rgb(1, 0, 0, .4), rgb(0, 0, 1, .4), 
+                                rgb(0.3984375, 0.7578125,0.6445312, .6))
+theme1$superpose.symbol$pch = c(15, 16, 17)
+theme1$superpose.cex = .8
+theme1$superpose.line$col = c(rgb(1, 0, 0, .9), rgb(0, 0, 1, .9), rgb(0.3984375, 0.7578125,0.6445312, .6))
+theme1$superpose.line$lwd <- 2
+theme1$superpose.line$lty = 1:3
+theme1$plot.symbol$col = c(rgb(.2, .2, .2, .4))
+theme1$plot.symbol$pch = 16
+theme1$plot.cex = .8
+theme1$plot.line$col = c(rgb(1, 0, 0, .7))
+theme1$plot.line$lwd <- 2
+theme1$plot.line$lty = 1
 
-    hook_inline = knit_hooks$get('inline')
-    knit_hooks$set(inline = function(x) {
-      if (is.character(x)) highr::hi_html(x) else hook_inline(x)
-      })
-    opts_chunk$set(comment=NA, digits = 4,warning=FALSE,message=FALSE)
+i <- 1
 
-    library(ellipse)
-    library(mlbench)
-    data(Sonar)
-    session <- paste(format(Sys.time(), "%a %b %d %Y"),
-                     "using caret version",
-                     packageDescription("caret")$Version,
-                     "and",
-                     R.Version()$version.string)
+hook_inline = knit_hooks$get('inline')
+knit_hooks$set(inline = function(x) {
+  if (is.character(x)) highr::hi_html(x) else hook_inline(x)
+  })
+opts_chunk$set(comment=NA, digits = 4,warning=FALSE,message=FALSE)
+
+library(ellipse)
+library(mlbench)
+data(Sonar)
+session <- paste(format(Sys.time(), "%a %b %d %Y"),
+                 "using caret version",
+                 packageDescription("caret")$Version,
+                 "and",
+                 R.Version()$version.string)
 #    options(digits=2)
     end.rcode-->
 
@@ -561,15 +565,13 @@ lbPred <- function(modelFit, newdata, preProc = NULL, submodels = NULL) {
   
   ## In this case, 'submodels' is a data frame with the other values of
   ## nIter. We loop over these to get the other predictions.
-  if(!is.null(submodels))
-    {
+  if(!is.null(submodels)) {
     ## Save _all_ the predictions in a list
     tmp <- out
     out <- vector(mode = "list", length = nrow(submodels) + 1)
     out[[1]] <- tmp
     
-    for(j in seq(along = submodels$nIter))
-      {
+    for(j in seq(along = submodels$nIter)) {
       out[[j+1]] <- caTools::predict.LogitBoost(modelFit,
                                                 newdata,
                                                 nIter = submodels$nIter[j])
@@ -638,6 +640,10 @@ lbFuncs <- list(library = "caTools",
 
 <p>Should you care about this? Let's tune the model over the same data set used for the SVM model above and see how long it takes:
 </p>
+
+<!--begin.rcode custom_reset_workers1, echo=FALSE, results = 'hide'
+registerDoSEQ()
+ end.rcode-->   
 <!--begin.rcode custom_lb_mod, tidy=FALSE
 set.seed(825)
 lb1 <- system.time(train(Class ~ ., data = training, 
@@ -690,7 +696,9 @@ xyplot(SpeedUp ~ nIter,
        ylab = "Speed-Up",
        type = c("p", "g", "r"))
 end.rcode--> 
-
+<!--begin.rcode custom_reset_workers2, echo=FALSE, results = 'hide'
+registerDoMC(cores=detectCores()-1)
+ end.rcode-->  
 <p>
 The speed-ups show a significant decrease in training time using this method.
 </p>
@@ -1077,41 +1085,39 @@ One great thing about this code is that it will automatically apply the optimize
   </div>
   <!-- end #content -->
 <div id="sidebar">
-  <ul>
+<ul>
   <li>
-  <h2>Links</h2>
-  <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
-  </li>
-  <li>
-    <h2>Topics</h2>
+    <h2>General Topics</h2>
     <ul>
-        <li><a href="index.html">Main Page</a></li>
-      <li><a href="datasets.html">Data Sets</a></li>
-        <li><a href="visualizations.html">Visualizations</a></li>
-        <li><a href="preprocess.html">Pre-Processing</a></li>
-        <li><a href="splitting.html">Data Splitting</a></li>
-        <li><a href="misc.html">Miscellaneous Model Functions</a></li>
-        <li><a href="training.html">Model Training and Tuning</a></li>
-        <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
-        <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
-        <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
-        <li><a href="custom_models.html">Using Custom Models</a></li>
-        <li><a href="varimp.html">Variable Importance</a></li>
-        <li><a href="featureselection.html">Feature Selection</a>
-        <ul>
-          <li><a href="rfe.html">RFE</a></li>
-            <li><a href="filters.html">Filters</a></li>
-            <li><a href="GA.html">GA</a></li>
-            <li><a href="SA.html">SA</a></li>
-        </ul></li>
-        <li><a href="other.html">Other Functions</a></li>
-        <li><a href="parallel.html">Parallel Processing</a></li>
-        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
-  </ul>
+      <li><a href="index.html">Front Page</a></li>
+      <li><a href="visualizations.html">Visualizations</a></li>
+      <li><a href="preprocess.html">Pre-Processing</a><li>
+      <li><a href="splitting.html">Data Splitting</a></li>
+      <li><a href="varimp.html">Variable Importance</a></li>
+      <li><a href="parallel.html">Parallel Processing</a></li>
+    </ul>
+    <h2>Model Training and Tuning</h2>
+    <ul>
+      <li><a href="training.html">Basic Syntax</a></li>
+      <li><a href="modelList.html">Sortable Model List</a></li>
+      <li><a href="bytag.html">Models By Tag</a></li>
+      <li><a href="similarity.html">Models By Similarity</a></li>
+      <li><a href="custom_models.html">Using Custom Models</a></li>
+      <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+    </ul>
+    <h2>Feature Selection</h2>
+    <ul>
+      <li><a href="featureselection.html">Overview</a>
+      <li><a href="rfe.html">RFE</a></li>
+      <li><a href="filters.html">Filters</a></li>
+      <li><a href="GA.html">GA</a></li>
+      <li><a href="SA.html">SA</a></li>
+    </ul>  
   </li>
-  </ul>
-  </div>
-  <!-- end #sidebar -->
+</ul>
+</div>
+<!-- end #sidebar -->
 <div style="clear: both;">&nbsp;</div>
   </div>
   <div class="container"><img src="images/img03.png" width="1000" height="40" alt="" /></div>
