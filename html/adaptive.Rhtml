@@ -4,9 +4,8 @@ library(pROC)
 library(gbm)
 library(nlme)
 library(mlbench)
-library(parallel)
 library(doMC)
-registerDoMC(cores=detectCores()-1)
+registerDoSEQ()
 
 hook_inline = knit_hooks$get('inline')
 knit_hooks$set(inline = function(x) {
