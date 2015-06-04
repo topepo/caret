@@ -108,7 +108,7 @@ Released   : 20120902
   <a href="#Illustration2">Illustrative Example 2: Something More Complicated - LogitBoost</a>
   </li>
   <li>
-  <a href="#Illustration3">Illustrative Example 3: SMOTE During Resampling</a>  </li>
+  <a href="#Illustration3">Illustrative Example 3: Nonstandard Formulas</a>  </li>
   </li>
   <li>
   <a href="#Illustration4">Illustrative Example 4: PLS Feature Extraction Pre-Processing</a>      
@@ -704,59 +704,74 @@ The speed-ups show a significant decrease in training time using this method.
 </p>
 
 <div id="Illustration3"></div>
-<h1>Illustrative Example 3: SMOTE During Resampling</h1>
+<h1>Illustrative Example 3: Nonstandard Formulas</h1>
 
 <p>
-Other example is related to class imbalances. It might be helpful to sample the data so that  the classes have a more balanced frequency distribution in the training set. One way to do this is the <a href="http://scholar.google.com/scholar?hl=en&q=SMOTE">SMOTE algorithm</a> where the majority class is down-sampled while new instances are imputed in the minority class. To get a good sense of what the performance will be using cross-validation, we should run SMOTE within each resample (instead of once prior to the model training). 
+(Note: the previous third illustration ("SMOTE During Resampling") is no longer needed due to the inl;cudion of subsampling via <span class="mx funCall">train</span>.)
 </p>
 <p>
-To do this, we will only modify the <span class="mx arg">fit</span> function. Suppose we want to fit an LDA model. First, we get the functions, then modify them:
+One limitation of <span class="mx funCall">train</span> is that it requires the use of basic model formulas. There are several functions that use special formulas or operators on predictors that won't  (and perhaps should not) work in the top level call to <span class="mx funCall">train</span>. However, we can still fit these models. 
 </p>
-<!--begin.rcode custom_lda_mod, tidy=FALSE
-ldaInfo <- getModelInfo("lda", regex = FALSE)[[1]]
-ldaInfo$fit
-ldaInfo$fit <- function(x, y, wts, param, lev, last, classProbs, ...) {
-  library(DMwR)
-  tmp <- as.data.frame(x)
-  tmp$Class <- y
-  smoted <- SMOTE(Class ~ ., data = tmp)
-  lda(smoted[, names(smoted) != "Class"], smoted$Class, ...)
-  }
+<p>
+Here is an example using the <span class="mx funCall">mboost</span> function in the <strong>mboost</strong> package from the help page. 
+</p>
+<!--begin.rcode custom_mboost_orig, tidy=FALSE, eval = FALSE
+library(mboost)
+data("bodyfat", package = "TH.data")
+mod <- mboost(DEXfat ~ btree(age) + bols(waistcirc) + bbs(hipcirc),
+              data = bodyfat)
+mod
 end.rcode--> 
 
-<p> We can simulate some data with a class imbalance and test this model and the usual LDA model.</p>
+<p> 
+We can create a custom model that mimics this code so that we can obtain resampling estimates for this specific model:
+</p>
 
-<!--begin.rcode custom_lda_data, tidy=FALSE
-set.seed(1135)
-imbal_train <- twoClassSim(n =  300, intercept = -17)
-imbal_test  <- twoClassSim(n = 2000, intercept = -17)
-table(imbal_train$Class)
+<!--begin.rcode custom_mboost_code, tidy=FALSE
+modelInfo <- list(label = "Model-based Gradient Boosting",
+                  library = "mboost",
+                  type = "Regression",
+                  parameters = data.frame(parameter = "parameter",
+                                          class = "character",
+                                          label = "parameter"),
+                  grid = function(x, y, len = NULL) 
+                    data.frame(parameter = "none"),
+                  loop = NULL,
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {          
+                    ## mboost requires a data frame with predictors and response
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat$DEXfat <- y
+                    mod <- mboost(DEXfat ~ btree(age) + bols(waistcirc) + bbs(hipcirc),
+                                  data = dat)
+                    },
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    ## By default a matrix is returned; we convert it to a vector
+                    predict(modelFit, newdata)[,1]
+                  },
+                  prob = NULL,
+                  predictors = function(x, ...) {
+                    unique(as.vector((variable.names(x)))
+                  },
+                  tags = c("Ensemble Model", "Boosting", "Implicit Feature Selection"),
+                  levels = NULL,
+                  sort = function(x) x)
+
 end.rcode--> 
 
-<!--begin.rcode custom_lda_both, tidy=FALSE
-ldaCtrl <- trainControl(method = "repeatedcv", repeats = 10,
-                        classProbs = TRUE, 
-                        summaryFunction = twoClassSummary)
-set.seed(346)
-ldaFit <- train(Class ~ ., data = imbal_train,
-                method = "lda",
-                metric = "ROC",
-                trControl = ldaCtrl)
-set.seed(346)
-ldaDSFit <- train(Class ~ ., data = imbal_train,
-                  method = ldaInfo,
-                  metric = "ROC",
-                  trControl = ldaCtrl)
-
-ldaProb1 <- predict(ldaFit, imbal_test, type = "prob")[,1]
-ldaProb2 <- predict(ldaDSFit, imbal_test, type = "prob")[,1]
-
-roc(imbal_test$Class, ldaProb1, levels = rev(levels(imbal_test$Class)))
-roc(imbal_test$Class, ldaProb2, levels = rev(levels(imbal_test$Class)))
-
+<!--begin.rcode custom_mboost_cv, tidy=FALSE
+## Just use the basic formula method so that these predictors
+## are passed 'as-is' into the model fitting and prediction
+## functions.
+set.seed(307)
+mboost_resamp <- train(DEXfat ~ age + waistcirc + hipcirc, 
+                       data = bodyfat, 
+                       method = modelInfo,
+                       trControl = trainControl(method = "repeatedcv",
+                                                repeats = 5))
+mboost_resamp
 end.rcode--> 
 
-<p> For these data, SMOTE didn't seem to make much of a difference. </p>
 
 <div id="Illustration4"></div>
 <h1>Illustrative Example 4: PLS Feature Extraction Pre-Processing</h1>
