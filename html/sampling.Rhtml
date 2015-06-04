@@ -225,7 +225,10 @@ outside_test
     end.rcode-->
 <br>  
 <p>
-The training and test set estimates for the area under the ROC curve do not appear to correlate. Based on the resampling results, one would infer that up-sampling is nearly perfect and that ROSE does relatively poorly. In reality, all of the sampling methods do about the same (based on the test set). The statistics for the basic model fit with no sampling are fairly in-line with one another (<!--rinline I(round(getTrainPerf(orig_fit)[, "TrainROC"], 3)) --> via resampling and <!--rinline I(round(outside_test["original", "ROC"], 3))--> for the test set). 
+The training and test set estimates for the area under the ROC curve do not appear to correlate. Based on the resampling results, one would infer that up-sampling is nearly perfect and that ROSE does relatively poorly. The reason that up-sampling appears to perform so well is that the samples in the majority class are replicated and have a large potential to be in both the model building and hold-out sets. In essence, the hold-outs here are not truly independent samples.  
+</p>
+<p>
+In reality, all of the sampling methods do about the same (based on the test set). The statistics for the basic model fit with no sampling are fairly in-line with one another (<!--rinline I(round(getTrainPerf(orig_fit)[, "TrainROC"], 3)) --> via resampling and <!--rinline I(round(outside_test["original", "ROC"], 3))--> for the test set). 
 </p>
 
 <div id="resampling"></div>        
