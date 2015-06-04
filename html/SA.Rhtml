@@ -2,6 +2,11 @@
 
 library(caret)
 data(BloodBrain)
+library(parallel)
+library(doMC)
+registerDoMC(cores=detectCores()-1)
+library(randomForest)
+
 theme1 <- caretTheme()
 theme1$superpose.symbol$col = c(rgb(1, 0, 0, .4), rgb(0, 0, 1, .4), 
   rgb(0.3984375, 0.7578125,0.6445312, .6))
@@ -215,7 +220,7 @@ sa_ctrl <- safsControl(functions = rfSA,
 
 set.seed(10)
 rf_sa <- safs(x = x, y = y,
-              iters = 1000,
+              iters = 500,
               safsControl = sa_ctrl)
 rf_sa
     end.rcode--> 
