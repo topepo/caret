@@ -715,7 +715,7 @@ One limitation of <span class="mx funCall">train</span> is that it requires the 
 <p>
 Here is an example using the <span class="mx funCall">mboost</span> function in the <strong>mboost</strong> package from the help page. 
 </p>
-<!--begin.rcode custom_mboost_orig, tidy=FALSE, eval = FALSE
+<!--begin.rcode custom_mboost_orig, tidy=FALSE
 library(mboost)
 data("bodyfat", package = "TH.data")
 mod <- mboost(DEXfat ~ btree(age) + bols(waistcirc) + bbs(hipcirc),
@@ -751,7 +751,7 @@ modelInfo <- list(label = "Model-based Gradient Boosting",
                   },
                   prob = NULL,
                   predictors = function(x, ...) {
-                    unique(as.vector((variable.names(x)))
+                    unique(as.vector(variable.names(x)))
                   },
                   tags = c("Ensemble Model", "Boosting", "Implicit Feature Selection"),
                   levels = NULL,
