@@ -6,7 +6,7 @@
                                               class = c('numeric', 'numeric'),
                                               label = c('# Randomly Selected Predictors', '# Random Cuts')),
                       grid = function(x, y, len = NULL){
-                        expand.grid(mtry = var_seq(p = ncol(x), 
+                        expand.grid(mtry = caret::var_seq(p = ncol(x), 
                                                    classification = is.factor(y), 
                                                    len = len), 
                                     numRandomCuts = 1:len)

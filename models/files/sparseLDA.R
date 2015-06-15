@@ -6,7 +6,7 @@ modelInfo <- list(label = "Sparse Linear Discriminant Analysis",
                                           class = c("numeric", "numeric"),
                                           label = c('# Predictors', 'Lambda')),
                   grid = function(x, y, len = NULL){
-                    expand.grid(NumVars = var_seq(p = ncol(x), 
+                    expand.grid(NumVars = caret::var_seq(p = ncol(x), 
                                                   classification = is.factor(y), 
                                                   len = len),
                                 lambda = c(0, 10 ^ seq(-1, -4, length = len - 1)))

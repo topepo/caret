@@ -5,7 +5,7 @@ modelInfo <- list(label = "Least Angle Regression",
                                           class = "numeric",
                                           label = '#Steps'),
                   grid = function(x, y, len = NULL) {
-                    data.frame(step = var_seq(p = ncol(x), 
+                    data.frame(step = caret::var_seq(p = ncol(x), 
                                               classification = is.factor(y), 
                                               len = len))
                   },

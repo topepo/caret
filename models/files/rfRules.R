@@ -5,7 +5,7 @@ modelInfo <- list(label = "Random Forest",
                                           class = rep("numeric",2),
                                           label = c("#Randomly Selected Predictors","Maximum Rule Depth")),
                   grid = function(x, y, len = NULL) {
-                    expand.grid(mtry = var_seq(p = ncol(x), 
+                    expand.grid(mtry = caret::var_seq(p = ncol(x), 
                                                classification = is.factor(y), 
                                                len = len), 
                                 maxdepth = (1:len)+1)
