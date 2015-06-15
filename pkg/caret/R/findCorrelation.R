@@ -13,8 +13,10 @@ findCorrelation <- function(x, cutoff = .90, verbose = FALSE){
   if(verbose){
     colsFlagged <- pmin(ifelse(colsToDiscard, colsToCheck, NA),
                         ifelse(rowsToDiscard, rowsToCheck, NA), na.rm = TRUE)
+    values <- round(x[combsAboveCutoff], 3)
     cat('\n',paste('Combination row', rowsToCheck, 'and clolumn', colsToCheck,
-                   'is above the cut-off\n \t Flagging column', colsFlagged, '\n'
+                   'is above the cut-off, value =', values,
+                   '\n \t Flagging column', colsFlagged, '\n'
                    ))
   }
 
