@@ -496,3 +496,22 @@ getSamplingInfo <- function(method = NULL, regex = TRUE, ...) {
     stop("That sampling method is not in caret's built-in library")
   sampling_methods
 }
+
+get_labels <- function(mods, format = FALSE) {
+  lib <- getModelInfo()
+  lib_labs <- unlist(lapply(lib, function(x) x$label))
+  labs <- mods
+  is_match <- mods %in% names(lib)
+  if(any(is_match)) labs[is_match] <- lib_labs[mods[is_match]]
+  if(format) {
+    labs <- gsub("-", "--", labs)
+    labs <- gsub("with Polynomial Kernel", "(Polynomial)", labs)
+    labs <- gsub("with Radial Basis Function Kernel", "(RBF)", labs)    
+    labs <- gsub("with Linear Kernel", "(Linear)", labs)   
+    labs <- gsub("Linear Discriminant Analysis", "LDA", labs)       
+    labs <- gsub("Quadratic Discriminant Analysis", "QDA", labs)  
+    labs <- gsub("Multivariate Adaptive Regression Spline", "MARS", labs)     
+    labs[labs == "glmnet"] <- "\\textsf{glmnet}"
+  }
+  if(length(mods) > 1) data.frame(model = mods, label = labs) else labs[1]
+}
