@@ -181,15 +181,13 @@ preProcess.default <- function(x, method = c("center", "scale"),
   {
     if(verbose) cat("Computing PCA loadings\n")
     tmp <- prcomp(x, scale = TRUE, retx = FALSE)
-    if(is.null(pcaComp))
-    {
-      cumVar <- cumsum(tmp$sdev^2/sum(tmp$sdev^2)) 
-      numComp <- max(2, which.max(cumVar > thresh))
-    } else numComp <- pcaComp
+    trace <- cumsum(tmp$sdev^2/sum(tmp$sdev^2)) 
+    numComp <- if(is.null(pcaComp)) max(2, which.max(trace > thresh)) else pcaComp
     rot <- tmp$rotation[,1:numComp]
   } else {
     rot <- NULL
     numComp <- NULL
+    trace <- NULL
   }
   
   if(any(method == "ica"))
@@ -219,6 +217,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
               std = scaleValue,
               ranges = ranges,
               rotation = rot,
+              trace = trace,
               method = method,
               thresh = thresh,
               pcaComp = pcaComp,
