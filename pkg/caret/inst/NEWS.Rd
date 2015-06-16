@@ -14,6 +14,9 @@
 		\item Fixed a bug found by ruggerorossi in \code{method = "dnn"} with classification.
 		\item A new option called \code{sampling} was added to \code{trainControl} that allows users to subsample their data in the case of a class imbalance. Another \href{http://topepo.github.io/caret/sampling.html}{help page} was added to explain the features. 
 		\item Class probabilities can be computed for \code{extraTrees} models now.   
+		\item When PCA pre-processing is conducted, the variance trace is saved in an object called \code{trace}.
+		\item More error traps were added for common mistakes (e.g. bad factor levels in classification).
+		\item An internal function (\code{class2ind}) that can be used to make dummy variables for a single factor vector is now documented and exported.  
 		}
 }
 

@@ -4,7 +4,7 @@
 \alias{predict.dummyVars}
 \alias{contr.dummy}
 \alias{contr.ltfr}
-
+\alias{class2ind}
 
 \title{
 Create A Full Set of Dummy Variables
@@ -23,6 +23,9 @@ dummyVars(formula, ...)
 contr.dummy(n, ...) ## DEPRECATED
 
 contr.ltfr(n, contrasts = TRUE, sparse = FALSE)
+
+
+class2ind(x, drop2nd = FALSE) 
 }
 \arguments{
   \item{formula}{
@@ -58,6 +61,12 @@ A logical indicating whether contrasts should be computed.
   \item{sparse}{
 A logical indicating if the result should be sparse.
 }
+  \item{x}{
+A factor vector.
+}
+  \item{drop2nd}{
+A logical: when the factor \code{x} has two levels, should both dummy variables be returned (\code{drop2nd = FALSE} or only the dummy variable for the first level \code{drop2nd = TRUE}.
+}
   \item{...}{additional arguments to be passed to other methods}
 }
 \details{
@@ -90,6 +99,9 @@ In some situations, there may be a need for dummy variables for all the levels o
 }
 
 Given a formula and initial data set, the class \code{dummyVars} gathers all the information needed to produce a full set of dummy variables for any data set. It uses \code{contr.ltfr} as the base function to do this.
+
+
+\code{class2ind} is most useful for converting a factor outcome vector to a matrix of dummy variables. 
 
 }
 \value{
