@@ -217,6 +217,9 @@ defaultSummary <- function(data, lev = NULL, model = NULL)
 
 twoClassSummary <- function (data, lev = NULL, model = NULL) 
 {
+  if(length(levels(data$obs)) > 2)
+    stop(paste("Your outcome has", length(levels(data$obs)), 
+               "levels. The twoClassSummary() function isn't appropriate."))
   requireNamespaceQuietStop('pROC')
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
     stop("levels of observed and predicted data do not match")
