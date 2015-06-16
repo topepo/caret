@@ -49,6 +49,11 @@ train.default <- function(x, y,
     }
   }
   
+  if(modelType == "Regression" & length(unique(y)) == 2)
+    warning(paste("You are trying to do regression and your outcome only has",
+                  "two possible values Are you trying to do classification?",
+                  "If so, use a 2 level factor as your outcome column."))
+  
   if(modelType != "Classification" & !is.null(trControl$sampling))
     stop("sampling methods are only implemented for classification problems")
   if(!is.null(trControl$sampling)) {
@@ -77,10 +82,12 @@ train.default <- function(x, y,
     classLevels <- levels(y)
     
     if(trControl$classProbs && any(classLevels != make.names(classLevels))) {
-      warning(paste("At least one of the class levels are not valid R variables names;",
-                    "This may cause errors if class probabilities are generated because",
-                    "the variables names will be converted to:",
-                    paste(make.names(classLevels), collapse = ", ")))
+      step(paste("At least one of the class levels is not a valid R variable name;",
+                 "This will cause errors when class probabilities are generated because",
+                 "the variables names will be converted to ",
+                 paste(make.names(classLevels), collapse = ", "),
+                 ". Please use factor levels that can be used as valid R variable names",
+                 " (see ?make.names for help)."))
     }
     
     if(metric %in% c("RMSE", "Rsquared")) 
