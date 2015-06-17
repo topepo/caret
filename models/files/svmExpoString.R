@@ -15,7 +15,7 @@ modelInfo <- list(label = "Support Vector Machines with Exponential String Kerne
                       out <- ksvm(x = x[,1], y = y,
                                   kernel = stringdot,
                                   kpar = list(type = "exponential", 
-                                              lambda = param$length),
+                                              lambda = param$lambda),
                                   C = param$C, ...)
                     } else {
                       out <- ksvm(x = x[,1], y = y,
