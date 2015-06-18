@@ -5,7 +5,7 @@ modelInfo <- list(label = "Random Forest with Additional Feature Selection",
                                           class = c("numeric"),
                                           label = c("#Randomly Selected Predictors")),
                   grid = function(x, y, len = NULL){
-                    data.frame(mtry = var_seq(p = ncol(x), 
+                    data.frame(mtry = caret::var_seq(p = ncol(x), 
                                               classification = is.factor(y), 
                                               len = len))
                   },

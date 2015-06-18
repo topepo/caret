@@ -6,7 +6,7 @@ modelInfo <- list(label = "Ridge Regression with Variable Selection",
                                           label = c('#Variables Retained', 'L2 Penalty')),
                   grid = function(x, y, len = NULL)  {                   
                     expand.grid(lambda = 10 ^ seq(-5, -1, length = len),
-                                k = var_seq(p = ncol(x), 
+                                k = caret::var_seq(p = ncol(x), 
                                             classification = is.factor(y), 
                                             len = len))
                     },

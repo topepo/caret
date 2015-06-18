@@ -6,7 +6,7 @@ modelInfo <- list(label = "Regularized Random Forest",
                                           class = c('numeric', 'numeric'),
                                           label = c('#Randomly Selected Predictors', 'Regularization Value')),
                   grid = function(x, y, len = NULL) {
-                    expand.grid(mtry = var_seq(p = ncol(x), 
+                    expand.grid(mtry = caret::var_seq(p = ncol(x), 
                                                classification = is.factor(y), 
                                                len = len),
                                 coefReg = seq(0.01, 1, length = len))

@@ -5,7 +5,7 @@ modelInfo <- list(label = "Random k-Nearest Neighbors",
                                           class = rep("numeric", 2),
                                           label = c("#Neighbors", "#Randomly Selected Predictors")),
                   grid = function(x, y, len = NULL) {
-                    expand.grid(mtry = var_seq(p = ncol(x), 
+                    expand.grid(mtry = caret::var_seq(p = ncol(x), 
                                                classification = is.factor(y), 
                                                len = len),
                                 k = (5:((2 * len)+4))[(5:((2 * len)+4))%%2 > 0])

@@ -6,7 +6,7 @@ modelInfo <- list(label = "ROC-Based Classifier",
                                           class = c('numeric'),
                                           label = c('#Variables Retained')),
                   grid = function(x, y, len = NULL) {
-                    data.frame(xgenes = var_seq(p = ncol(x), 
+                    data.frame(xgenes = caret::var_seq(p = ncol(x), 
                                                 classification = is.factor(y), 
                                                 len = len))
                   },
