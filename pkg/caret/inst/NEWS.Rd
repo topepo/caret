@@ -17,6 +17,7 @@
 		\item When PCA pre-processing is conducted, the variance trace is saved in an object called \code{trace}.
 		\item More error traps were added for common mistakes (e.g. bad factor levels in classification).
 		\item An internal function (\code{class2ind}) that can be used to make dummy variables for a single factor vector is now documented and exported.  
+		\item A bug was fixed in the \code{xyplot.lift} where the reference line was incorrectly computed. Thanks to Einat Sitbon for finding this. 
 		}
 }
 
