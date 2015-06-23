@@ -21,15 +21,15 @@
 
 \description{Internal functions}
 \usage{
-createModel(x, y, wts, method, tuneValue, obsLevels, 
-	        pp = NULL, last = FALSE, classProbs, ...)
-predictionFunction(method, modelFit, newdata, 
+createModel(x, y, wts, method, tuneValue, obsLevels,
+	        pp = NULL, last = FALSE, sampling = NULL, classProbs, ...)
+predictionFunction(method, modelFit, newdata,
 	               preProc = NULL, param = NULL)
-probFunction(method, modelFit, newdata, 
+probFunction(method, modelFit, newdata,
 	         preProc = NULL, param = NULL)
-flatTable(pred, obs) 
-expandParameters(fixed, seq) 
-MeanSD(x, exclude = NULL) 
+flatTable(pred, obs)
+expandParameters(fixed, seq)
+MeanSD(x, exclude = NULL)
 sortImp(object, top)
 resampleWrapper(x, ind)
 caretTheme()
@@ -41,10 +41,10 @@ cforestStats(x)
 progress(x, names, iter, start = TRUE)
 hasTerms(x)
 sbfIter(x, y, testX, testY, sbfControl = sbfControl(), ...)
-gamFormula(data, smoother = "s", cut = 8, y = "y") 
-well_numbered(prefix, items) 
+gamFormula(data, smoother = "s", cut = 8, y = "y")
+well_numbered(prefix, items)
 }
 \author{Max Kuhn, but \code{caretTheme} uses an expanded grid of the "Blues" palette designed by Cynthia Brewer and Mark Harrower}
 
 
-\keyword{internal} 
+\keyword{internal}
