@@ -15,23 +15,29 @@
 ##
 ## and other examples.
 
-Metric <- Model <- NULL
+###################################################################
+## Global Variables
+###################################################################
+
+if(getRversion() >= "2.15.1"){
+
+utils::globalVariables(c('Metric', 'Model'))
 
 
 ## densityplot(~ values|Metric, data = plotData, groups = ind,
 ##             xlab = "", ...)
 
-ind <- NULL
+utils::globalVariables(c('ind'))
 
 ##   avPerf <- ddply(subset(results, Metric == metric[1] & X2 == "Estimate"),
 ##                   .(Model),
 ##                   function(x) c(Median = median(x$value, na.rm = TRUE)))
 
-X2 <- NULL
+utils::globalVariables(c('X2'))
 
 ## x[[i]]$resample <- subset(x[[i]]$resample, Variables == x[[i]]$bestSubset)
 
-Variables <- NULL
+utils::globalVariables(c('Variables'))
 
 ## calibCalc: no visible binding for global variable 'obs'
 ## calibCalc: no visible binding for global variable 'bin'
@@ -42,7 +48,7 @@ Variables <- NULL
 ##                            bin = cut(x$calibProbVar, (0:cuts)/cuts, include.lowest = TRUE),
 ##                            class = x$calibClassVar)
 
-obs <- bin <- NULL
+utils::globalVariables(c('obs', 'bin'))
 
 ##
 ## checkConditionalX: no visible binding for global variable '.outcome'
@@ -52,7 +58,7 @@ obs <- bin <- NULL
 ##     unique(unlist(dlply(x, .(.outcome), zeroVar)))
 ##   }
 
-.outcome <- NULL
+utils::globalVariables(c('.outcome'))
 
 ## classLevels.splsda: no visible global function definition for 'ilevels'
 ##
@@ -63,7 +69,7 @@ obs <- bin <- NULL
 ##     ilevels(x$y)
 ##   }
 
-ilevels <- NULL
+utils::globalVariables(c('ilevels'))
 
 ## looRfeWorkflow: no visible binding for global variable 'iter'
 ## looSbfWorkflow: no visible binding for global variable 'iter'
@@ -88,7 +94,7 @@ ilevels <- NULL
 ##    {
 ##
 
-iter <- parm <- method <- Resample <- dat <- NULL
+utils::globalVariables(c('iter', 'parm', 'method', 'Resample', 'dat'))
 
 ## tuneScheme: no visible binding for global variable '.alpha'
 ## tuneScheme: no visible binding for global variable '.phi'
@@ -98,7 +104,7 @@ iter <- parm <- method <- Resample <- dat <- NULL
 ##                              subset = .phi == loop$.phi[i] &
 ##                              .lambda < loop$.lambda[i])$.lambda)
 
-.alpha <- .phi <- .lambda <- NULL
+utils::globalVariables(c('.alpha', '.phi', '.lambda'))
 
 ##  createGrid : somDims: no visible binding for global variable '.xdim'
 ##  createGrid : somDims: no visible binding for global variable '.ydim'
@@ -109,7 +115,7 @@ iter <- parm <- method <- Resample <- dat <- NULL
 ##                         .xweight = seq(.5, .9, length = len))
 ##
 
-.xdim <- .ydim <- .k <- .size <- NULL
+utils::globalVariables(c('.xdim', '.ydim', '.k', '.size'))
 
 ##  createModel: possible error in rda(trainX, trainY, gamma =
 ##    tuneValue$.gamma, lambda = tuneValue$.lambda, ...): unused
@@ -144,7 +150,7 @@ iter <- parm <- method <- Resample <- dat <- NULL
 ##  delta <- subset(param, .alpha == uniqueA[i])$.delta
 ##
 
-.alpha <- NULL
+utils::globalVariables(c('.alpha'))
 
 ## predictors.gbm: no visible binding for global variable 'rel.inf'
 ## predictors.sda: no visible binding for global variable 'varIndex'
@@ -152,55 +158,45 @@ iter <- parm <- method <- Resample <- dat <- NULL
 ##
 ##    varUsed <- as.character(subset(relImp, rel.inf != 0)$var)
 
-rel.inf <- varIndex <- NULL
+utils::globalVariables(c('rel.inf', 'varIndex'))
 
 ## plotClassProbs: no visible binding for global variable 'Observed'
 ##
 ## out <- densityplot(form, data = stackProbs, groups = Observed, ...)
 
-Observed <- NULL
+utils::globalVariables(c('Observed'))
 
 ## plot.train: no visible binding for global variable 'parameter'
 ##
 ## paramLabs <- subset(modelInfo, parameter %in% params)$label
 
-parameter <- NULL
+utils::globalVariables(c('parameter'))
 
 ## plot.rfe: no visible binding for global variable 'Selected'
 ##
 ## out <- xyplot(plotForm, data = results, groups = Selected, panel =  panel.profile, ...)
 
-Selected <- NULL
+utils::globalVariables(c('Selected'))
 
 ## icr.formula: no visible binding for global variable 'thresh'
 ##
 ## res <- icr.default(x, y, weights = w, thresh = thresh, ...)
 
-thresh <- NULL
+utils::globalVariables(c('thresh', 'probValues', 'min_prob', 'groups', 'trainData', 'j', 'x', '.B'))
 
-probValues <- min_prob <- NULL
+utils::globalVariables(c('model_id', 'player1', 'player2', 'playa', 'win1', 'win2', 'name'))
 
-altTrainWorkflow <- function(x) x
+utils::globalVariables(c('object', 'Iter', 'lvls', 'Mean', 'Estimate'))
 
-groups <- NULL
-
-trainData <- NULL
-
-j <- NULL
-
-x <- NULL
-
-.B <- NULL
-
-model_id <- player1 <- player2 <- playa <- win1 <- win2 <- name <- NULL
-
-object <- Iter <- lvls <- Mean <- Estimate <- NULL
 
 ## parse_sampling: no visible binding for global variable 'sampling_methods'
-sampling_methods <- NULL
+utils::globalVariables(c('sampling_methods'))
+}
 
 ###################################################################
-##
+## Global Functions
+###################################################################
+altTrainWorkflow <- function(x) x
 
 best <- function(x, metric, maximize)
 {
