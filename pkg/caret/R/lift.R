@@ -187,13 +187,16 @@ plotRef <- function(x, y, v, iter = 0) {
   }
   erx <- extendrange(x)
   ery <- extendrange(y)
-  values <- approx(y, x, xout = v)
-  for(i in seq(along = values$x)) {
-    panel.segments(values$y[i], ery[1], values$y[i], values$x[i],
-                   lty = lineStyle$lty, col = lineStyle$col,
-                   alpha = lineStyle$alpha, lwd = lineStyle$lwd)
-    panel.segments(erx[1], values$x[i], values$y[i], values$x[i],
-                   lty = lineStyle$lty, col = lineStyle$col,
-                   alpha = lineStyle$alpha, lwd = lineStyle$lwd)
+  lt_v <- max(which(y <= v))
+  if(length(lt_v) > 0 & is.finite(lt_v) & lt_v < length(y) & lt_v > 0) {
+    values <- approx(y[lt_v:(lt_v+1)], x[lt_v:(lt_v+1)], xout = v)
+    for(i in seq(along = values$x)) {
+      panel.segments(values$y[i], ery[1], values$y[i], values$x[i],
+                     lty = lineStyle$lty, col = lineStyle$col,
+                     alpha = lineStyle$alpha, lwd = lineStyle$lwd)
+      panel.segments(erx[1], values$x[i], values$y[i], values$x[i],
+                     lty = lineStyle$lty, col = lineStyle$col,
+                     alpha = lineStyle$alpha, lwd = lineStyle$lwd)
+    }
   }
 }
