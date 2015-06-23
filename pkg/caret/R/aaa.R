@@ -190,8 +190,7 @@ utils::globalVariables(c('object', 'Iter', 'lvls', 'Mean', 'Estimate'))
 
 
 ## parse_sampling: no visible binding for global variable 'sampling_methods'
-utils::globalVariables(c('sampling_methods'))
-}
+sampling_methods <- NULL
 
 ###################################################################
 ## Global Functions
