@@ -1,18 +1,18 @@
 ## This file is a cheat to minimize the false positives flagged during R CMD check. such as
-## 
+##
 ##   "bwplot.diff.resamples: no visible binding for global variable 'Metric'"
 ##   "bwplot.resamples: no visible binding for global variable 'Model'"
 ##   "bwplot.resamples: no visible binding for global variable 'Metric'"
-## 
+##
 ## when
-## 
-## bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...) 
+##
+## bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...)
 ## {
 ## ...
 ##   plotData <- subset(plotData, Model %in% models & Metric  %in% metric)
-## ...                         
+## ...
 ## }
-## 
+##
 ## and other examples.
 
 Metric <- Model <- NULL
@@ -35,7 +35,7 @@ Variables <- NULL
 
 ## calibCalc: no visible binding for global variable 'obs'
 ## calibCalc: no visible binding for global variable 'bin'
-## 
+##
 ## calibCalc <- function(x, class = levels(obs)[1], cuts = 11)
 ##   {
 ##     binData <-  data.frame(prob = x$calibProbVar,
@@ -55,7 +55,7 @@ obs <- bin <- NULL
 .outcome <- NULL
 
 ## classLevels.splsda: no visible global function definition for 'ilevels'
-## 
+##
 ## classLevels.splsda <- function(x, ...)
 ##   {
 ##     ## objects from package caret and spls have the
@@ -107,7 +107,7 @@ iter <- parm <- method <- Resample <- dat <- NULL
 ##
 ##       out <- expand.grid(.xdim = 1:x, .ydim = 2:(x+1),
 ##                         .xweight = seq(.5, .9, length = len))
-## 
+##
 
 .xdim <- .ydim <- .k <- .size <- NULL
 
@@ -135,7 +135,7 @@ iter <- parm <- method <- Resample <- dat <- NULL
 ## <snip>
 ## $gamma
 ## [1] NA
-## 
+##
 ## $lambda
 ## [1] NA
 
@@ -196,16 +196,18 @@ model_id <- player1 <- player2 <- playa <- win1 <- win2 <- name <- NULL
 
 object <- Iter <- lvls <- Mean <- Estimate <- NULL
 
+## parse_sampling: no visible binding for global variable 'sampling_methods'
+sampling_methods <- NULL
 
 ###################################################################
 ##
 
 best <- function(x, metric, maximize)
 {
-  
+
   bestIter <- if(maximize) which.max(x[,metric])
-  else which.min(x[,metric])   
-  
+  else which.min(x[,metric])
+
   bestIter
 }
 
@@ -215,13 +217,13 @@ defaultSummary <- function(data, lev = NULL, model = NULL)
   postResample(data[,"pred"], data[,"obs"])
 }
 
-twoClassSummary <- function (data, lev = NULL, model = NULL) 
+twoClassSummary <- function (data, lev = NULL, model = NULL)
 {
   if(length(levels(data$obs)) > 2)
-    stop(paste("Your outcome has", length(levels(data$obs)), 
+    stop(paste("Your outcome has", length(levels(data$obs)),
                "levels. The twoClassSummary() function isn't appropriate."))
   requireNamespaceQuietStop('pROC')
-  if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
+  if (!all(levels(data[, "pred"]) == levels(data[, "obs"])))
     stop("levels of observed and predicted data do not match")
   rocObject <- try(pROC::roc(data$obs, data[, lev[1]]), silent = TRUE)
   rocAUC <- if(class(rocObject)[1] == "try-error") NA else rocObject$auc
