@@ -116,7 +116,7 @@ modelInfo <- list(label = "glmnet",
                       if(length(lambda) > 1) stop("Only one value of lambda is allowed right now")
                       if(!is.null(x$lambdaOpt)) {
                         lambda <- x$lambdaOpt
-                      } else stop("must supply a vaue of lambda")
+                      } else stop("must supply a value of lambda")
                     }
                     allVar <- if(is.list(x$beta)) rownames(x$beta[[1]]) else rownames(x$beta)
                     out <- unlist(predict(x, s = lambda, type = "nonzero"))
@@ -132,7 +132,7 @@ modelInfo <- list(label = "glmnet",
                       if(length(lambda) > 1) stop("Only one value of lambda is allowed right now")
                       if(!is.null(object$lambdaOpt)) {
                         lambda <- object$lambdaOpt
-                      } else stop("must supply a vaue of lambda")
+                      } else stop("must supply a value of lambda")
                     }
                     beta <- predict(object, s = lambda, type = "coef")
                     if(is.list(beta)) {
