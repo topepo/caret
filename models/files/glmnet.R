@@ -145,7 +145,7 @@ modelInfo <- list(label = "glmnet",
                       out <- do.call("cbind", lapply(beta, function(x) x[,1]))
                       out <- as.data.frame(out)
                     } else out <- data.frame(Overall = beta[,1])
-                    out <- out[rownames(out) != "(Intercept)",,drop = FALSE]
+                    out <- abs(out[rownames(out) != "(Intercept)",,drop = FALSE])
                     out
                   },
                   levels = function(x) if(any(names(x) == "obsLevels")) x$obsLevels else NULL,
