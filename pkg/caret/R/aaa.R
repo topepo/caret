@@ -1,48 +1,54 @@
 ## This file is a cheat to minimize the false positives flagged during R CMD check. such as
-## 
+##
 ##   "bwplot.diff.resamples: no visible binding for global variable 'Metric'"
 ##   "bwplot.resamples: no visible binding for global variable 'Model'"
 ##   "bwplot.resamples: no visible binding for global variable 'Metric'"
-## 
+##
 ## when
-## 
-## bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...) 
+##
+## bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...)
 ## {
 ## ...
 ##   plotData <- subset(plotData, Model %in% models & Metric  %in% metric)
-## ...                         
+## ...
 ## }
-## 
+##
 ## and other examples.
 
-Metric <- Model <- NULL
+###################################################################
+## Global Variables
+###################################################################
+
+if(getRversion() >= "2.15.1"){
+
+utils::globalVariables(c('Metric', 'Model'))
 
 
 ## densityplot(~ values|Metric, data = plotData, groups = ind,
 ##             xlab = "", ...)
 
-ind <- NULL
+utils::globalVariables(c('ind'))
 
 ##   avPerf <- ddply(subset(results, Metric == metric[1] & X2 == "Estimate"),
 ##                   .(Model),
 ##                   function(x) c(Median = median(x$value, na.rm = TRUE)))
 
-X2 <- NULL
+utils::globalVariables(c('X2'))
 
 ## x[[i]]$resample <- subset(x[[i]]$resample, Variables == x[[i]]$bestSubset)
 
-Variables <- NULL
+utils::globalVariables(c('Variables'))
 
 ## calibCalc: no visible binding for global variable 'obs'
 ## calibCalc: no visible binding for global variable 'bin'
-## 
+##
 ## calibCalc <- function(x, class = levels(obs)[1], cuts = 11)
 ##   {
 ##     binData <-  data.frame(prob = x$calibProbVar,
 ##                            bin = cut(x$calibProbVar, (0:cuts)/cuts, include.lowest = TRUE),
 ##                            class = x$calibClassVar)
 
-obs <- bin <- NULL
+utils::globalVariables(c('obs', 'bin'))
 
 ##
 ## checkConditionalX: no visible binding for global variable '.outcome'
@@ -52,10 +58,10 @@ obs <- bin <- NULL
 ##     unique(unlist(dlply(x, .(.outcome), zeroVar)))
 ##   }
 
-.outcome <- NULL
+utils::globalVariables(c('.outcome'))
 
 ## classLevels.splsda: no visible global function definition for 'ilevels'
-## 
+##
 ## classLevels.splsda <- function(x, ...)
 ##   {
 ##     ## objects from package caret and spls have the
@@ -63,7 +69,7 @@ obs <- bin <- NULL
 ##     ilevels(x$y)
 ##   }
 
-ilevels <- NULL
+utils::globalVariables(c('ilevels'))
 
 ## looRfeWorkflow: no visible binding for global variable 'iter'
 ## looSbfWorkflow: no visible binding for global variable 'iter'
@@ -88,7 +94,7 @@ ilevels <- NULL
 ##    {
 ##
 
-iter <- parm <- method <- Resample <- dat <- NULL
+utils::globalVariables(c('iter', 'parm', 'method', 'Resample', 'dat'))
 
 ## tuneScheme: no visible binding for global variable '.alpha'
 ## tuneScheme: no visible binding for global variable '.phi'
@@ -98,7 +104,7 @@ iter <- parm <- method <- Resample <- dat <- NULL
 ##                              subset = .phi == loop$.phi[i] &
 ##                              .lambda < loop$.lambda[i])$.lambda)
 
-.alpha <- .phi <- .lambda <- NULL
+utils::globalVariables(c('.alpha', '.phi', '.lambda'))
 
 ##  createGrid : somDims: no visible binding for global variable '.xdim'
 ##  createGrid : somDims: no visible binding for global variable '.ydim'
@@ -107,9 +113,9 @@ iter <- parm <- method <- Resample <- dat <- NULL
 ##
 ##       out <- expand.grid(.xdim = 1:x, .ydim = 2:(x+1),
 ##                         .xweight = seq(.5, .9, length = len))
-## 
+##
 
-.xdim <- .ydim <- .k <- .size <- NULL
+utils::globalVariables(c('.xdim', '.ydim', '.k', '.size'))
 
 ##  createModel: possible error in rda(trainX, trainY, gamma =
 ##    tuneValue$.gamma, lambda = tuneValue$.lambda, ...): unused
@@ -135,7 +141,7 @@ iter <- parm <- method <- Resample <- dat <- NULL
 ## <snip>
 ## $gamma
 ## [1] NA
-## 
+##
 ## $lambda
 ## [1] NA
 
@@ -144,7 +150,7 @@ iter <- parm <- method <- Resample <- dat <- NULL
 ##  delta <- subset(param, .alpha == uniqueA[i])$.delta
 ##
 
-.alpha <- NULL
+utils::globalVariables(c('.alpha'))
 
 ## predictors.gbm: no visible binding for global variable 'rel.inf'
 ## predictors.sda: no visible binding for global variable 'varIndex'
@@ -152,60 +158,52 @@ iter <- parm <- method <- Resample <- dat <- NULL
 ##
 ##    varUsed <- as.character(subset(relImp, rel.inf != 0)$var)
 
-rel.inf <- varIndex <- NULL
+utils::globalVariables(c('rel.inf', 'varIndex'))
 
 ## plotClassProbs: no visible binding for global variable 'Observed'
 ##
 ## out <- densityplot(form, data = stackProbs, groups = Observed, ...)
 
-Observed <- NULL
+utils::globalVariables(c('Observed'))
 
 ## plot.train: no visible binding for global variable 'parameter'
 ##
 ## paramLabs <- subset(modelInfo, parameter %in% params)$label
 
-parameter <- NULL
+utils::globalVariables(c('parameter'))
 
 ## plot.rfe: no visible binding for global variable 'Selected'
 ##
 ## out <- xyplot(plotForm, data = results, groups = Selected, panel =  panel.profile, ...)
 
-Selected <- NULL
+utils::globalVariables(c('Selected'))
 
 ## icr.formula: no visible binding for global variable 'thresh'
 ##
 ## res <- icr.default(x, y, weights = w, thresh = thresh, ...)
 
-thresh <- NULL
+utils::globalVariables(c('thresh', 'probValues', 'min_prob', 'groups', 'trainData', 'j', 'x', '.B'))
 
-probValues <- min_prob <- NULL
+utils::globalVariables(c('model_id', 'player1', 'player2', 'playa', 'win1', 'win2', 'name'))
 
-altTrainWorkflow <- function(x) x
+utils::globalVariables(c('object', 'Iter', 'lvls', 'Mean', 'Estimate'))
 
-groups <- NULL
 
-trainData <- NULL
-
-j <- NULL
-
-x <- NULL
-
-.B <- NULL
-
-model_id <- player1 <- player2 <- playa <- win1 <- win2 <- name <- NULL
-
-object <- Iter <- lvls <- Mean <- Estimate <- NULL
-
+## parse_sampling: no visible binding for global variable 'sampling_methods'
+utils::globalVariables(c('sampling_methods'))
+}
 
 ###################################################################
-##
+## Global Functions
+###################################################################
+altTrainWorkflow <- function(x) x
 
 best <- function(x, metric, maximize)
 {
-  
+
   bestIter <- if(maximize) which.max(x[,metric])
-  else which.min(x[,metric])   
-  
+  else which.min(x[,metric])
+
   bestIter
 }
 
@@ -215,13 +213,13 @@ defaultSummary <- function(data, lev = NULL, model = NULL)
   postResample(data[,"pred"], data[,"obs"])
 }
 
-twoClassSummary <- function (data, lev = NULL, model = NULL) 
+twoClassSummary <- function (data, lev = NULL, model = NULL)
 {
   if(length(levels(data$obs)) > 2)
-    stop(paste("Your outcome has", length(levels(data$obs)), 
+    stop(paste("Your outcome has", length(levels(data$obs)),
                "levels. The twoClassSummary() function isn't appropriate."))
   requireNamespaceQuietStop('pROC')
-  if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
+  if (!all(levels(data[, "pred"]) == levels(data[, "obs"])))
     stop("levels of observed and predicted data do not match")
   rocObject <- try(pROC::roc(data$obs, data[, lev[1]]), silent = TRUE)
   rocAUC <- if(class(rocObject)[1] == "try-error") NA else rocObject$auc
