@@ -4,8 +4,8 @@ context('Testing varImp')
 
 test_that('glmnet varImp returns non-negative values', {
   skip_on_cran()
+  skip_if_not_installed('glmnet')
   set.seed(1)
-  library(glmnet)
   dat <- SLC14_1(200)
 
   reg <- train(y ~ ., data = dat,
