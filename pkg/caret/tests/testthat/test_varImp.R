@@ -4,7 +4,7 @@ context('Testing varImp')
 
 test_that('glmnet varImp returns non-negative values', {
   skip_on_cran()
-  library(glmnet, verbose=TRUE)
+#  library(glmnet, verbose=TRUE)
   skip_if_not_installed('glmnet')
   set.seed(1)
   dat <- SLC14_1(200)
