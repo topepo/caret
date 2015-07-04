@@ -944,4 +944,23 @@ compare_models <- function(a, b, metric = a$metric[1]) {
 }
 
 
+as.matrix.resamples <- function(x, metric = x$metric[1], ...) {
+  get_cols <- grepl(paste0("~", metric[1]), colnames(x$values))
+  if(!(any(get_cols))) stop("no columns fit that metric")
+  out <- x$values[,get_cols,drop=FALSE]
+  rownames(out) <- as.character(x$values$Resample)
+  colnames(out) <- gsub(paste0("~", metric[1]), "", colnames(out))
+  as.matrix(out)
+}
+as.data.frame.resamples <- function(x, row.names = NULL, optional = FALSE, 
+                                    metric = x$metric[1], ...) {
+  get_cols <- grepl(paste0("~", metric[1]), colnames(x$values))
+  if(!(any(get_cols))) stop("no columns fit that metric")
+  out <- x$values[,get_cols,drop=FALSE]
+  out$Resample <- x$values$Resample
+  colnames(out) <- gsub(paste0("~", metric[1]), "", colnames(out))
+  out
+}
+
+
 

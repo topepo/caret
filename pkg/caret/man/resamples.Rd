@@ -3,6 +3,8 @@
 \alias{resamples}
 \alias{summary.resamples}
 \alias{sort.resamples}
+\alias{as.matrix.resamples}
+\alias{as.data.frame.resamples}
 \alias{modelCor}
 \title{
 Collation and Visualization of Resampling Results
@@ -19,6 +21,8 @@ resamples(x, ...)
 \method{summary}{resamples}(object, metric = object$metrics, ...)
 
 \method{sort}{resamples}(x, decreasing = FALSE, metric = x$metric[1], FUN = mean, ...)
+\method{as.matrix}{resamples}(x, metric = x$metric[1], ...)
+\method{as.data.frame}{resamples}(x, row.names = NULL, optional = FALSE, metric = x$metric[1], ...)
 
 modelCor(x, metric = x$metric[1], ...)
 }
@@ -29,6 +33,7 @@ modelCor(x, metric = x$metric[1], ...)
   \item{metric}{a character string for the performance measure used to sort or computing the between-model correlations}
   \item{decreasing}{logical. Should the sort be increasing or decreasing? }
   \item{FUN}{a function whose first argument is a vector and returns a scalar, to be applied to each model's performance measure.}
+  \item{row.names, optional}{not currently used but included for consistency with \code{as.data.frame}}
   \item{\dots}{only used for \code{sort} and \code{modelCor} and captures arguments to pass to \code{sort} or \code{FUN}.}
 }
 \details{
