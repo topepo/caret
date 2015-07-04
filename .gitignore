@@ -53,3 +53,7 @@ release_process/Open_Data_Science_Conference/caret.snm
 release_process/Open_Data_Science_Conference/caret.toc
 
 release_process/Open_Data_Science_Conference/caret.vrb
+
+models/files/.RData
+
+models/parseModels.Rout

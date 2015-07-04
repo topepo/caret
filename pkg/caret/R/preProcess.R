@@ -70,7 +70,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
   if(any(method == "BoxCox"))
   {
     if(verbose) cat("Estimating Box-Cox transformations for the predictors...")
-    bc <- lapply(x,
+    bc <- lapply(as.data.frame(x),
                  BoxCoxTrans,
                  fudge = fudge,
                  na.rm = na.remove,
@@ -97,7 +97,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
       out
     }
     if(verbose) cat("Estimating Yeo-Johnson transformations for the predictors...")
-    yj <- lapply(x, yjWrap, numUnique = numUnique)
+    yj <- lapply(as.data.frame(x), yjWrap, numUnique = numUnique)
     if(verbose) cat(" applying them to training data\n")
     ## Find a better way of doing this
     lam <- unlist(lapply(yj, function(x) if(class(x) == "powerTransform") x$lambda else NA))
@@ -115,7 +115,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
   if(any(method == "expoTrans"))
   {
     if(verbose) cat("Estimating exponential transformations for the predictors...")
-    et <- lapply(x, expoTrans.default, numUnique = numUnique)
+    et <- lapply(as.data.frame(x), expoTrans.default, numUnique = numUnique)
     if(verbose) cat(" applying them to training data\n")
     for(i in seq(et)) x[,i] <- predict(et[[i]], x[,i])
   } else et <- NULL  
