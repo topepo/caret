@@ -10,6 +10,7 @@
 		\item Localized linear discriminant analysis (\code{method = "loclda"}) from the \cpkg{klaR} package was added. 
 		\item From the \cpkg{nnls} package, a model of the same name was added. 
 		\item Another linear SVM model from the \cpkg{e1071} package was added using \code{method = "svmLinear2"}
+		\item From the \cpkg{rqPen} package, quantile regression models \code{rqnc} and \code{rqlasso} were added. 
 		\item When specifying your own resampling indicies, a value of \code{method = "custom"} can be used with \code{trainControl} for better printing. 
 		\item Tim Lucas fixed a bug in \code{avNNet} when \code{bag = TRUE}
 		\item Fixed a bug found by ruggerorossi in \code{method = "dnn"} with classification.
