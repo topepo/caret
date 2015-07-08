@@ -6,7 +6,8 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                           label = c('# Boosting Iterations', 'L2 Regularization', 
                                                     'L2 Regularization')),
                   grid = function(x, y, len = NULL) 
-                    expand.grid(lambda = c(0, 10 ^ seq(-1, -4, length = len - 1)),
+                    expand.grid(nrounds = floor((1:len) * 5),
+                                lambda = c(0, 10 ^ seq(-1, -4, length = len - 1)),
                                 alpha = c(0, 10 ^ seq(-1, -4, length = len - 1))),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
