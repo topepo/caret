@@ -18,14 +18,14 @@ cctrl3 <- trainControl(method = "none",
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
-                             method = modelInfo, 
+                             method = "svmLinear2", 
                              trControl = cctrl1,
                              tuneGrid = data.frame(cost = c(.25, .5, 1)),
                              preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = modelInfo, 
+                            method = "svmLinear2", 
                             trControl = cctrl1,
                             tuneGrid = data.frame(cost = c(.25, .5, 1)),
                             preProc = c("center", "scale"))
@@ -35,14 +35,14 @@ test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
-                              method = modelInfo, 
+                              method = "svmLinear2", 
                               trControl = cctrl2,
                               tuneGrid = data.frame(cost = c(.25, .5, 1)),
                               preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
-                               method = modelInfo, 
+                               method = "svmLinear2", 
                                trControl = cctrl3,
                                tuneGrid = test_class_cv_model$bestTune,
                                metric = "ROC", 
@@ -85,7 +85,7 @@ rctrl3 <- trainControl(method = "none")
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
-                           method = modelInfo, 
+                           method = "svmLinear2", 
                            trControl = rctrl1,
                            tuneGrid = data.frame(cost = c(.25, .5, 1)),
                            preProc = c("center", "scale"))
@@ -93,7 +93,7 @@ test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
-                          method = modelInfo, 
+                          method = "svmLinear2", 
                           trControl = rctrl1,
                           tuneGrid = data.frame(cost = c(.25, .5, 1)),
                           preProc = c("center", "scale"))
@@ -102,14 +102,14 @@ test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 
-                            method = modelInfo,
+                            method = "svmLinear2",
                             trControl = rctrl2,
                             tuneGrid = data.frame(cost = c(.25, .5, 1)),
                             preProc = c("center", "scale"))
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
-                             method = modelInfo, 
+                             method = "svmLinear2", 
                              trControl = rctrl3,
                              tuneGrid = test_reg_cv_model$bestTune,
                              preProc = c("center", "scale"))
