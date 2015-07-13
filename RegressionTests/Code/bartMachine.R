@@ -18,7 +18,7 @@ cctrl3 <- trainControl(method = "none",
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
-                             method = modelInfo, 
+                             method = "bartMachine", 
                              trControl = cctrl1,
                              tuneLength = 2,
                              verbose = FALSE,
@@ -27,7 +27,7 @@ test_class_cv_model <- train(trainX, trainY,
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = modelInfo, 
+                            method = "bartMachine", 
                             trControl = cctrl1,
                             tuneLength = 2,
                             verbose = FALSE,
@@ -39,7 +39,7 @@ test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
-                              method = modelInfo, 
+                              method = "bartMachine", 
                               trControl = cctrl2,
                               tuneLength = 2,
                               verbose = FALSE,
@@ -48,7 +48,7 @@ test_class_loo_model <- train(trainX, trainY,
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
-                               method = modelInfo, 
+                               method = "bartMachine", 
                                trControl = cctrl3,
                                tuneGrid = test_class_cv_model$bestTune,
                                verbose = FALSE,
@@ -93,7 +93,7 @@ rctrl3 <- trainControl(method = "none")
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
-                           method = modelInfo, 
+                           method = "bartMachine", 
                            trControl = rctrl1,
                            tuneLength = 2,
                            verbose = FALSE,
@@ -103,7 +103,7 @@ test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
-                          method = modelInfo, 
+                          method = "bartMachine", 
                           trControl = rctrl1,
                           tuneLength = 2,
                           verbose = FALSE,
@@ -114,7 +114,7 @@ test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 
-                            method = modelInfo,
+                            method = "bartMachine",
                             trControl = rctrl2,
                             tuneLength = 2,
                             verbose = FALSE,
@@ -123,7 +123,7 @@ test_reg_loo_model <- train(trainX, trainY,
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
-                             method = modelInfo, 
+                             method = "bartMachine", 
                              trControl = rctrl3,
                              seed = 1,
                              verbose = FALSE,

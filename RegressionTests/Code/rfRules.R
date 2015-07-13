@@ -26,7 +26,7 @@ grid <- expand.grid(mtry = c(1, 3), maxdepth = c(3, 7))
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
-                             method = modelInfo, 
+                             method = "rfRules", 
                              trControl = cctrl1,
                              preProc = c("center", "scale"),
                              tuneGrid = grid,
@@ -34,7 +34,7 @@ test_class_cv_model <- train(trainX, trainY,
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = modelInfo, 
+                            method = "rfRules", 
                             trControl = cctrl1,
                             preProc = c("center", "scale"),
                             tuneGrid = grid,
@@ -46,7 +46,7 @@ test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
-                              method = modelInfo, 
+                              method = "rfRules", 
                               trControl = cctrl2,
                               preProc = c("center", "scale"),
                               tuneGrid = grid,
@@ -57,7 +57,7 @@ if(!all(levels(trainY) %in% test_levels))
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
-                               method = modelInfo, 
+                               method = "rfRules", 
                                trControl = cctrl4,
                                preProc = c("center", "scale"),
                                tuneGrid = grid[2,],
@@ -95,7 +95,7 @@ rctrl4 <- trainControl(method = "none", seeds = seeds)
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
-                           method = modelInfo, 
+                           method = "rfRules", 
                            trControl = rctrl1,
                            preProc = c("center", "scale"),
                            tuneGrid = grid,
@@ -104,7 +104,7 @@ test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
-                          method = modelInfo, 
+                          method = "rfRules", 
                           trControl = rctrl1,
                           preProc = c("center", "scale"),
                           tuneGrid = grid,
@@ -113,7 +113,7 @@ test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 
-                            method = modelInfo,
+                            method = "rfRules",
                             trControl = rctrl2,
                             preProc = c("center", "scale"),
                             tuneGrid = grid,
@@ -121,7 +121,7 @@ test_reg_loo_model <- train(trainX, trainY,
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
-                             method = modelInfo, 
+                             method = "rfRules", 
                              trControl = rctrl4,
                              preProc = c("center", "scale"),
                              tuneGrid = grid[2,],
