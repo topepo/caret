@@ -5,11 +5,8 @@
 \section{Changes in version 6.0-xx}{
 	\itemize{
 		\item A new model using the \cpkg{randomForest} and \cpkg{inTrees} packages called \code{rfRules} was added. A basic random forest model is used and then is decomposed into rules (of user-specified complexity). The \cpkg{inTrees} package is used to prune and optimize the rules. Thanks to Mirjam Jenny who suggested the workflow. 
-		\item From the \cpkg{rotationForest} package, a model of the same name was added. 
-		\item Localized linear discriminant analysis (\code{method = "loclda"}) from the \cpkg{klaR} package was added. 
-		\item From the \cpkg{nnls} package, a model of the same name was added. 
-		\item Another linear SVM model from the \cpkg{e1071} package was added using \code{method = "svmLinear2"}
-		\item When specifying your own resampling indicies, a value of \code{method = "custom"} can be used with \code{trainControl} for better printing. 
+		\item Other new models (and their packages): \code{bartMachine} (\cpkg{bartMachine}), \code{rotationForest} (\cpkg{rotationForest}), \code{sdwd} (\cpkg{sdwd}), \code{loclda} (\cpkg{klaR}), \code{nnls} (\cpkg{nnls}), \code{svmLinear2} (\cpkg{e1071}), \code{rqnc} (\cpkg{rqPen}), and \code{rqlasso} (\cpkg{rqPen})
+		\item When specifying your own resampling indices, a value of \code{method = "custom"} can be used with \code{trainControl} for better printing. 
 		\item Tim Lucas fixed a bug in \code{avNNet} when \code{bag = TRUE}
 		\item Fixed a bug found by ruggerorossi in \code{method = "dnn"} with classification.
 		\item A new option called \code{sampling} was added to \code{trainControl} that allows users to subsample their data in the case of a class imbalance. Another \href{http://topepo.github.io/caret/sampling.html}{help page} was added to explain the features. 
@@ -18,7 +15,8 @@
 		\item More error traps were added for common mistakes (e.g. bad factor levels in classification).
 		\item An internal function (\code{class2ind}) that can be used to make dummy variables for a single factor vector is now documented and exported.  
 		\item A bug was fixed in the \code{xyplot.lift} where the reference line was incorrectly computed. Thanks to Einat Sitbon for finding this. 
-		}
+		\item A bug related to calculating the Box-Cox transformation found by John Johnson was fixed.  
+		} 
 }
 
 \section{Changes in version 6.0-47}{

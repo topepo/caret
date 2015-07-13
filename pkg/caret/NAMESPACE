@@ -5,6 +5,8 @@ importFrom(stats, prcomp, hclust)
 
 
 export(anovaScores,
+       as.data.frame.resamples,
+       as.matrix.resamples,       
        avNNet,
        avNNet.default,
        bag,

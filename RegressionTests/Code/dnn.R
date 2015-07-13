@@ -1,7 +1,7 @@
 library(caret)
 timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
 
-model <- "svmLinear2"
+model <- "dnn"
 
 #########################################################################
 
@@ -13,43 +13,49 @@ trainY <- training$Class
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 cctrl2 <- trainControl(method = "LOOCV")
-cctrl3 <- trainControl(method = "none",
-                       classProbs = TRUE, summaryFunction = twoClassSummary)
+cctrl3 <- trainControl(method = "none")
+
+tgrid <- expand.grid(layer1 = 1:3,
+                     layer2 = 0, layer3 = 0,
+                     hidden_dropout = c(0, .1), 
+                     visible_dropout = 0)
+
+
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
-                             method = "svmLinear2", 
+                             method = "dnn", 
                              trControl = cctrl1,
-                             tuneGrid = data.frame(cost = c(.25, .5, 1)),
+                             tuneGrid = tgrid,
                              preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = "svmLinear2", 
+                            method = "dnn", 
                             trControl = cctrl1,
-                            tuneGrid = data.frame(cost = c(.25, .5, 1)),
+                            tuneGrid = tgrid,
                             preProc = c("center", "scale"))
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
+test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
+test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
-                              method = "svmLinear2", 
+                              method = "dnn", 
                               trControl = cctrl2,
-                              tuneGrid = data.frame(cost = c(.25, .5, 1)),
+                              tuneGrid = tgrid,
                               preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
-                               method = "svmLinear2", 
+                               method = "dnn", 
                                trControl = cctrl3,
-                               tuneGrid = test_class_cv_model$bestTune,
-                               metric = "ROC", 
+                               tuneGrid = tgrid[nrow(tgrid),],
                                preProc = c("center", "scale"))
 
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
-test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
@@ -85,44 +91,44 @@ rctrl3 <- trainControl(method = "none")
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
-                           method = "svmLinear2", 
+                           method = "dnn", 
                            trControl = rctrl1,
-                           tuneGrid = data.frame(cost = c(.25, .5, 1)),
+                           tuneLength = 3,
                            preProc = c("center", "scale"))
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
-                          method = "svmLinear2", 
+                          method = "dnn", 
                           trControl = rctrl1,
-                          tuneGrid = data.frame(cost = c(.25, .5, 1)),
+                          tuneGrid = tgrid,
                           preProc = c("center", "scale"))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
-
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 
-                            method = "svmLinear2",
+                            method = "dnn",
                             trControl = rctrl2,
-                            tuneGrid = data.frame(cost = c(.25, .5, 1)),
+                            tuneGrid = tgrid,
                             preProc = c("center", "scale"))
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
-                             method = "svmLinear2", 
+                             method = "dnn", 
                              trControl = rctrl3,
-                             tuneGrid = test_reg_cv_model$bestTune,
+                             tuneGrid = tgrid[nrow(tgrid),],
                              preProc = c("center", "scale"))
 test_reg_none_pred <- predict(test_reg_none_model, testX)
-
 
 #########################################################################
 
 test_class_predictors1 <- predictors(test_class_cv_model)
 test_reg_predictors1 <- predictors(test_reg_cv_model)
 
-test_class_predictors2 <- predictors(test_class_cv_model$finalModel)
-test_reg_predictors2 <- predictors(test_reg_cv_model$finalModel)
+#########################################################################
+
+test_class_imp <- varImp(test_class_cv_model)
+test_reg_imp <- varImp(test_reg_cv_model)
 
 #########################################################################
 

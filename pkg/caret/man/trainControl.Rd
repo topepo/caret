@@ -3,10 +3,10 @@
 \title{Control parameters for train}
 \description{Control the computational nuances of the \code{\link{train}} function}
 \usage{
-trainControl(method = "boot", 
+trainControl(method = "boot",
              number = ifelse(grepl("cv", method), 10, 25),
              repeats = ifelse(grepl("cv", method), 1, number),
-             p = 0.75, 
+             p = 0.75,
              initialWindow = NULL,
              horizon = 1,
              fixedWindow = TRUE,
@@ -18,19 +18,20 @@ trainControl(method = "boot",
              summaryFunction = defaultSummary,
              selectionFunction = "best",
              preProcOptions = list(thresh = 0.95, ICAcomp = 3, k = 5),
+             sampling = NULL,
              index = NULL,
              indexOut = NULL,
              timingSamps = 0,
              predictionBounds = rep(FALSE, 2),
              seeds = NA,
-             adaptive = list(min = 5, alpha = 0.05, 
+             adaptive = list(min = 5, alpha = 0.05,
              	               method = "gls", complete = TRUE),
              trim = FALSE,
              allowParallel = TRUE)
 }
 \arguments{
   \item{method}{The resampling method: \code{boot}, \code{boot632}, \code{cv}, \code{repeatedcv},
-    \code{LOOCV},  \code{LGOCV} (for repeated training/test splits), \code{none} (only fits one model to the entire training set), 
+    \code{LOOCV},  \code{LGOCV} (for repeated training/test splits), \code{none} (only fits one model to the entire training set),
     \code{oob} (only for random forest, bagged trees, bagged earth, bagged flexible discriminant analysis, or conditional tree forest models), \code{"adaptive_cv"}, \code{"adaptive_boot"} or \code{"adaptive_LGOCV"}}
   \item{number}{Either the number of folds or number of resampling iterations}
   \item{repeats}{For repeated k-fold cross-validation only: the number of complete sets of folds to compute}
@@ -44,6 +45,7 @@ trainControl(method = "boot",
   \item{summaryFunction}{a function to compute performance metrics across resamples. The arguments to the function should be the same as those in \code{\link{defaultSummary}}.}
   \item{selectionFunction}{the function used to select the optimal tuning parameter. This can be a name of the function or the function itself. See \code{\link{best}} for details and other options.}
   \item{preProcOptions}{A list of options to pass to \code{\link{preProcess}}. The type of pre-processing (e.g. center, scaling etc) is passed in via the \code{preProc} option in \code{\link{train}}.}
+  \item{sampling}{PLACEHOLDER FOR SAMPLING DOCUMENTATION}
   \item{index}{a list with elements for each resampling iteration. Each list element is a vector of integers corresponding to the rows used for training at that iteration.}
   \item{indexOut}{a list (the same length as \code{index}) that dictates which data are held-out for each resample (as integers). If \code{NULL}, then the unique set of samples not contained in \code{index} is used.}
   \item{timingSamps}{the number of training set samples that will be used to measure the time for predicting samples (zero indicates that the prediction time should not be estimated.}
@@ -59,9 +61,9 @@ trainControl(method = "boot",
 }
 
 \details{
-When setting the seeds manually, the number of models being evaluated is required. This may not be obvious as \code{train} does some optimizations for certain models. For example, when tuning over PLS model, the only model that is fit is the one with the largest number of components. So if the model is being tuned over \code{comp in 1:10}, the only model fit is \code{ncomp = 10}. However, if the vector of integers used in the \code{seeds} arguments is longer than actually needed, no error is thrown. 
+When setting the seeds manually, the number of models being evaluated is required. This may not be obvious as \code{train} does some optimizations for certain models. For example, when tuning over PLS model, the only model that is fit is the one with the largest number of components. So if the model is being tuned over \code{comp in 1:10}, the only model fit is \code{ncomp = 10}. However, if the vector of integers used in the \code{seeds} arguments is longer than actually needed, no error is thrown.
 
-Using \code{method = "none"} and specifying more than one model in \code{\link{train}}'s \code{tuneGrid} or \code{tuneLength} arguments will result in an error. 
+Using \code{method = "none"} and specifying more than one model in \code{\link{train}}'s \code{tuneGrid} or \code{tuneLength} arguments will result in an error.
 
 Using adaptive resampling when \code{method} is either \code{"adaptive_cv"}, \code{"adaptive_boot"} or \code{"adaptive_LGOCV"}, the full set of resamples is not run for each model. As resampling continues, a futility analysis is conducted and models with a low probability of being optimal are removed. These features are experimental. See Kuhn (2014) for more details. The options for this procedure are:
 
@@ -91,25 +93,25 @@ for(i in 1:50) seeds[[i]] <- sample.int(1000, 22)
 ## For the last model:
 seeds[[51]] <- sample.int(1000, 1)
 
-ctrl <- trainControl(method = "repeatedcv", 
+ctrl <- trainControl(method = "repeatedcv",
                      repeats = 5,
                      seeds = seeds)
 
 set.seed(1)
-mod <- train(Species ~ ., data = iris, 
-             method = "knn", 
+mod <- train(Species ~ ., data = iris,
+             method = "knn",
              tuneLength = 12,
              trControl = ctrl)
 
 
-ctrl2 <- trainControl(method = "adaptive_cv", 
+ctrl2 <- trainControl(method = "adaptive_cv",
                       repeats = 5,
                       verboseIter = TRUE,
                       seeds = seeds)
 
 set.seed(1)
-mod2 <- train(Species ~ ., data = iris, 
-              method = "knn", 
+mod2 <- train(Species ~ ., data = iris,
+              method = "knn",
               tuneLength = 12,
               trControl = ctrl2)
 
