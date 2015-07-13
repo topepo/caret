@@ -5,12 +5,7 @@
 \section{Changes in version 6.0-xx}{
 	\itemize{
 		\item A new model using the \cpkg{randomForest} and \cpkg{inTrees} packages called \code{rfRules} was added. A basic random forest model is used and then is decomposed into rules (of user-specified complexity). The \cpkg{inTrees} package is used to prune and optimize the rules. Thanks to Mirjam Jenny who suggested the workflow. 
-		\item From the \cpkg{rotationForest} package, a model of the same name was added. 
-		\item From the \cpkg{sdwd} package, the model \code{sdwd} was added. 
-		\item Localized linear discriminant analysis (\code{method = "loclda"}) from the \cpkg{klaR} package was added. 
-		\item From the \cpkg{nnls} package, a model of the same name was added. 
-		\item Another linear SVM model from the \cpkg{e1071} package was added using \code{method = "svmLinear2"}
-		\item From the \cpkg{rqPen} package, quantile regression models \code{rqnc} and \code{rqlasso} were added. 
+		\item Other new models (and their packages): \code{bartMachine} (\cpkg{bartMachine}), \code{rotationForest} (\cpkg{rotationForest}), \code{sdwd} (\cpkg{sdwd}), \code{loclda} (\cpkg{klaR}), \code{nnls} (\cpkg{nnls}), \code{svmLinear2} (\cpkg{e1071}), \code{rqnc} (\cpkg{rqPen}), and \code{rqlasso} (\cpkg{rqPen})
 		\item When specifying your own resampling indicies, a value of \code{method = "custom"} can be used with \code{trainControl} for better printing. 
 		\item Tim Lucas fixed a bug in \code{avNNet} when \code{bag = TRUE}
 		\item Fixed a bug found by ruggerorossi in \code{method = "dnn"} with classification.
