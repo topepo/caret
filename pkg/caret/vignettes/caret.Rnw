@@ -91,6 +91,7 @@
 	
 	
 <<loadLibs, results = hide, echo = FALSE>>=
+library(MASS)
 library(caret)
 library(mlbench)
 data(Sonar)
