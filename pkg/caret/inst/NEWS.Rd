@@ -15,7 +15,8 @@
 		\item More error traps were added for common mistakes (e.g. bad factor levels in classification).
 		\item An internal function (\code{class2ind}) that can be used to make dummy variables for a single factor vector is now documented and exported.  
 		\item A bug was fixed in the \code{xyplot.lift} where the reference line was incorrectly computed. Thanks to Einat Sitbon for finding this. 
-		\item A bug related to calculating the Box-Cox transformation found by John Johnson was fixed.  
+		\item A bug related to calculating the Box-Cox transformation found by John Johnson was fixed. 
+		\item github user \code{EdwinTh} developed a faster version of \code{findCorrelation} and found a bug in the original code. \code{findCorrelation} has two new arguments, one of which is called \code{exact} which defaults to use the original (fixed) function. Using \code{exact = FALSE} uses the faster version. The fixed version of the "exact" code is, on average, 26-fold slower than the current version (for 250x250 matrices) although the average time for matrices of this size was only 26s. The exact version yields subsets that are, one average, 2.4 percent smaller than the other versions. This difference will be more significant for smaller matrices. The faster ("approximate") version of the code is 8-fold faster than the current version.  
 		} 
 }
 
