@@ -1,7 +1,7 @@
 library(caret)
 timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
 
-model <- "rfe_gam"
+model <- "rfe_train"
 
 #########################################################################
 
