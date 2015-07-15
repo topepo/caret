@@ -1,0 +1,211 @@
+Thoughts on survival analysis in `caret`
+===
+
+Problem type
+--
+
+Right now, we have "regression" and "classification" and this delineation serves almost as a class.
+
+For survival models, I can envision two more problem types. First, would be called something like "Censored Regression" where the goal is to predict the actual value, as we would in ordinary regression, but be able to accommodate censoring. That is where most of my applications reside. 
+
+A second problem type might be called something like "Hazard Regression" and is more focused on predicting the probability of survival a specific time point. This would encompass a lot of different models that don't directly mold (or predict) the actual outcome. Here, we would significantly leverage the [`pec`](http://www.jstatsoft.org/v50/i11/) package. 
+
+I'm not sure how the user would choose the problem type. Right now, it is set based on the class of the outcome (e.g. numeric versus factor). We use the class of the outcome to determine that the problem is not classification or regression but it doesn't help us choose between modeling the outcome or the risk. 
+
+The structural main difference in the survival model code is related to what "[modules](http://topepo.github.io/caret/custom_models.html#Components)" they have. For example, some classification models produce class probabilities and regression models are completely ignorant of this. Similarly, we might be able to differentiate "Hazard Regression" and "Censored Regression" based on what code is available for different models. For example, some modules might be:
+
+* `fit`: fits the model based on the training data
+* `pred`: predict the outcome (e.g. time). This could be `NULL` for Hazard Regression.
+* `prob`: predict the probability of survival at time point `t`. This would be `NULL` for Censored Regression. 
+
+
+**Q1** How should the user choose the problem type for survival models?
+
+Resampling
+--
+
+Operationally, how do we resample censored data? We can treat them like numbers and try to make the distributions of the data consistent between the splits. This might break down for highly censored data. Alternatively, we could based the modeling/holdout split in a way that keeps the percent censored equal. 
+
+**Q2** How should balanced data splitting occur with censored data?
+
+Measuring Performance
+--
+
+Regression and classification have default metrics (e.g. RMSE, accuracy, etc). The nature of the performance metric depends on the problem type. 
+
+* When we directly predict the outcome, [`survConcordance.fit`](http://www.inside-r.org/packages/cran/survival/docs/survConcordance) seems reasonable. 
+* With probability models, the Brier, c-index, and various ROC curve metrics are available. 
+
+Possible Models
+---
+
+```{r, load_libs,message=FALSE,warning=FALSE,echo=FALSE,results='hide'}
+library(prodlim)
+library(survival)
+library(rpart)
+library(pec)
+library(ipred)
+library(randomForestSRC)
+library(mboost)
+library(knitr)
+opts_chunk$set(comment=NA, tidy = FALSE, digits = 3, 
+               warning=FALSE, message=FALSE)
+options(width = 100)
+knit_theme$set("bclear")
+```
+
+
+First, let's simulate some data:
+```{r, simulate}
+library(prodlim)
+set.seed(43500)
+train_dat <- SimSurv(200)
+set.seed(1742)
+test_dat <- SimSurv(3)
+test_pred <- test_dat[, 4:5]
+```
+
+
+### `survival:::`[`survreg`](http://www.inside-r.org/packages/cran/survival/docs/survreg)
+
+(hazard and censored). 
+
+```{r, survreg_fit}
+library(survival)
+sr_mod <- survreg(Surv(time, status) ~ (X1+X2)^2, data = train_dat)
+```
+
+The `predict` function can generate predictions for the outcome and/or percentiles of the survival function via 
+
+```{r, survreg_pred}
+predict(sr_mod, test_pred)
+predict(sr_mod, test_pred, type='quantile', p=c(.1, .5, .9))
+```
+
+Note that the latter is in terms of the time units and are not probabilities of survival by a specified time. We would need to basically invert this (e.g. get the percentile for a given time).
+
+### `survival:::`[`coxph`](http://www.inside-r.org/packages/cran/survival/docs/coxph)
+
+```{r, cox_fit}
+cph_mod <- coxph(Surv(time, status) ~ (X1+X2)^2, data = train_dat)
+```
+
+There is no way to directly predict the outcome but we can get predictions but the `pec` package will produce survivor function probabilities:
+
+```{r, cph_prob}
+library(pec)
+predictSurvProb(cph_mod, newdata = test_pred, times = c(1, 5, 10))
+```
+
+### `rpart:::`[`rpart`](http://www.inside-r.org/packages/cran/rpart/docs/rpart)
+
+```{r, rpart_fit}
+library(rpart)
+rp_mod <- rpart(Surv(time, status) ~ X1+X2, data = train_dat)
+```
+
+The basic invocation of `predict` generates the predicted outcome:
+
+```{r, rpart_pred}
+predict(rp_mod, test_pred)
+```
+
+The `pec` package can get the survivor probabilities:
+
+```{r, rpart_prob}
+predictSurvProb(rp_mod, newdata = test_pred, 
+                train.data = train_dat, times = c(1, 5, 10))
+```
+
+### `ipred:::`[`bagging`](http://www.inside-r.org/packages/cran/ipred/docs/bagging)
+
+```{r, bag_fit}
+library(ipred)
+bag_mod <- bagging(Surv(time, status) ~ X1+X2, data = train_dat)
+```
+
+When generating predictions, `survfit` objects is returned for each data point being predicted. To get the median survival time:
+
+```{r, bag_pred}
+bag_preds <- predict(bag_mod, test_pred)
+bag_preds
+unlist(lapply(bag_preds, function(x) quantile(x, probs = .5)$quantile))
+
+## now use pec to convert this to survivor probabilities
+predictSurvProb(bag_preds[[1]], newdata = test_pred[1,], times = c(1, 5, 10))
+```
+
+### `party:::`[`ctree`](http://www.inside-r.org/packages/cran/party/docs/ctree)
+
+
+```{r, ctree_fit}
+library(party)
+ctree_mod <- ctree(Surv(time, status) ~ X1+X2, data = train_dat)
+```
+
+The basic invocation of `predict` generates the predicted outcome.
+
+```{r, ctree_pred}
+predict(ctree_mod, test_pred)
+```
+
+
+### `party:::`[`cforest`](http://www.inside-r.org/packages/cran/party/docs/cforest)
+
+```{r, cforest_fit}
+library(party)
+cforest_mod <- cforest(Surv(time, status) ~ X1+X2, data = train_dat, 
+                  control = cforest_unbiased(ntree = 100, mtry = 1))
+```
+
+The basic invocation of `predict` generates the predicted outcome although there tends to be a lot of `Inf` results. 
+
+```{r, cforest_pred}
+predict(cforest_mod, newdata = test_pred)
+```
+
+
+### `randomForestSRC:::`[`rfsrc`](http://www.inside-r.org/packages/cran/randomForestSRC/docs/rfsrc)
+
+```{r, rfsrc_fit}
+library(randomForestSRC)
+rfsrce_mod <- rfsrc(Surv(time, status) ~ X1+X2, data = train_dat, 
+                    ntree = 100)
+```
+
+The `predict` function generates an object with classes `"rfsrc"`, `"predict"`, and `"surv". It is unclear what is being predicted:
+
+```{r, rfsrc_pred}
+predict(rfsrce_mod, test_pred)$predicted
+```
+
+The `survival` slot appears to be survival probabilities for some unknown reference values:
+
+```{r, rfsrc_prob}
+round(predict(rfsrce_mod, test_pred)$survival, 2)
+```
+
+### `mboost:::`[`blackboost`](http://www.inside-r.org/packages/cran/mboost/docs/blackboost)
+
+The model can be fit using parametric assumptions and predictions can be made for the outcome:
+
+```{r, blackboost_fit}
+library(mboost)
+bb_mod <- blackboost(Surv(time, status) ~ X1+X2, data = train_dat, family = Lognormal())
+```
+
+For outcome predictions, we can predict using the basic syntax:
+
+```{r, blackboost_pred}
+predict(bb_mod, newdata = test_pred, type = "response")
+```
+
+Additional Classes/Modules/Changes
+---
+
+* For the `predict` function, an option would be added to specify the time value for generating probability estimates. This type of prediction might require some structural changes when there are multiple times being predicted.
+* Right now, the code assumes that there is a single problem type. We might want to have model than one now. 
+
+
+
+
