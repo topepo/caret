@@ -55,12 +55,12 @@ modelInfo <- list(label = "Bayesian Additive Regression Trees",
                     },
                   predictors = function(x, ...)  colnames(x$X),
                   varImp = function(object, ...){
-                    imps <- investigate_var_importance(x, plot = FALSE)
+                    imps <- investigate_var_importance(object, plot = FALSE)
                     imps <- imps$avg_var_props - 1.96*imps$sd_var_props
-                    missing_x <- !(colnames(x$X) %in% names(imps))
+                    missing_x <- !(colnames(object$X) %in% names(imps))
                     if(any(missing_x)) {
                       imps2 <- rep(0, sum(missing_x))
-                      names(imps2) <- colnames(x$X)[missing_x]
+                      names(imps2) <- colnames(object$X)[missing_x]
                       imps <- c(imps, imps2)
                     }
                     out <- data.frame(Overall = as.vector(imps))
