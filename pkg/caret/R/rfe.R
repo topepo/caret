@@ -526,6 +526,7 @@ gamFuncs <- list(summary = defaultSummary,
                    gamLoaded <- any(loaded == "package:gam")
                    if(gamLoaded) detach(package:gam)
                    loadNamespace("mgcv")
+                   gam <- get("gam", asNamespace("mgcv")) 
                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                    dat$y <- y
                    args <- list(formula = gamFormula(x, smoother = "s", y = "y"),
