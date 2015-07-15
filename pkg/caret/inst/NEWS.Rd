@@ -2,13 +2,13 @@
 \title{News for Package \pkg{caret}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{Changes in version 6.0-xx}{
+\section{Changes in version 6.0-51}{
 	\itemize{
 		\item A new model using the \cpkg{randomForest} and \cpkg{inTrees} packages called \code{rfRules} was added. A basic random forest model is used and then is decomposed into rules (of user-specified complexity). The \cpkg{inTrees} package is used to prune and optimize the rules. Thanks to Mirjam Jenny who suggested the workflow. 
 		\item Other new models (and their packages): \code{bartMachine} (\cpkg{bartMachine}), \code{rotationForest} (\cpkg{rotationForest}), \code{sdwd} (\cpkg{sdwd}), \code{loclda} (\cpkg{klaR}), \code{nnls} (\cpkg{nnls}), \code{svmLinear2} (\cpkg{e1071}), \code{rqnc} (\cpkg{rqPen}), and \code{rqlasso} (\cpkg{rqPen})
 		\item When specifying your own resampling indices, a value of \code{method = "custom"} can be used with \code{trainControl} for better printing. 
 		\item Tim Lucas fixed a bug in \code{avNNet} when \code{bag = TRUE}
-		\item Fixed a bug found by ruggerorossi in \code{method = "dnn"} with classification.
+		\item Fixed a bug found by \code{ruggerorossi} in \code{method = "dnn"} with classification.
 		\item A new option called \code{sampling} was added to \code{trainControl} that allows users to subsample their data in the case of a class imbalance. Another \href{http://topepo.github.io/caret/sampling.html}{help page} was added to explain the features. 
 		\item Class probabilities can be computed for \code{extraTrees} models now.   
 		\item When PCA pre-processing is conducted, the variance trace is saved in an object called \code{trace}.
@@ -17,6 +17,8 @@
 		\item A bug was fixed in the \code{xyplot.lift} where the reference line was incorrectly computed. Thanks to Einat Sitbon for finding this. 
 		\item A bug related to calculating the Box-Cox transformation found by John Johnson was fixed. 
 		\item github user \code{EdwinTh} developed a faster version of \code{findCorrelation} and found a bug in the original code. \code{findCorrelation} has two new arguments, one of which is called \code{exact} which defaults to use the original (fixed) function. Using \code{exact = FALSE} uses the faster version. The fixed version of the "exact" code is, on average, 26-fold slower than the current version (for 250x250 matrices) although the average time for matrices of this size was only 26s. The exact version yields subsets that are, one average, 2.4 percent smaller than the other versions. This difference will be more significant for smaller matrices. The faster ("approximate") version of the code is 8-fold faster than the current version.  
+		\item github user \code{slyuee} found a bug in the \code{gam} model fitting code. 
+		\item Chris Kennedy fixed a bug in the \code{bartMachine} variable importance code. 
 		} 
 }
 
