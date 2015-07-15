@@ -23,7 +23,11 @@ Imports:
     methods,
     plyr,
     nlme,
-    BradleyTerry2
+    BradleyTerry2,
+    stats,
+    stats4,
+    utils,
+    grDevices
 Suggests:
     e1071,
     earth (>= 2.2-3),
