@@ -11,7 +11,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     modForm <- caret:::smootherFormula(x)
                     if(is.factor(y)) {
-                      dat$.outcome <- ifelse(y == lev[1], 1, 0)
+                      dat$.outcome <- ifelse(y == lev[1], 0, 1)
                       dist <- binomial()
                     } else {
                       dat$.outcome <- y
