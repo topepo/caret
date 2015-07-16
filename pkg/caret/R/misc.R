@@ -443,6 +443,8 @@ parse_sampling <- function(x) {
                 func = sampling_methods[x][[1]],
                 first = TRUE)
     }
+    pkgs <- switch(x$name, rose = "ROSE", smote = "DMwR", "")
+    if(pkgs != "") checkInstall(pkgs)
   } else {
     if(x_class == "function") {
       check_samp_func(x)
