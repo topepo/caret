@@ -4,6 +4,7 @@ library(testthat)
 load(system.file("models", "sampling.RData", package = "caret"))  
 
 test_that('check appropriate sampling calls by name', {
+  skip_on_cran()
   arg_names <- c("up", "down", "rose", "smote")
   arg_funcs <- sampling_methods
   arg_first <- c(TRUE, FALSE)
@@ -19,6 +20,7 @@ test_that('check appropriate sampling calls by name', {
 })
 
 test_that('check appropriate sampling calls by function', {
+  skip_on_cran()
   arg_names <- c("up", "down", "rose", "smote")
   arg_funcs <- sampling_methods
   arg_first <- c(TRUE, FALSE)
@@ -34,22 +36,27 @@ test_that('check appropriate sampling calls by function', {
 })
 
 test_that('check bad sampling name', {
+  skip_on_cran()
   expect_error(caret:::parse_sampling("what?"))
 })
   
 test_that('check bad first arg', {
+  skip_on_cran()
   expect_error(caret:::parse_sampling(list(name = "yep", func = sampling_methods[["up"]], first = 2)))
 })  
 
 test_that('check bad func arg', {
+  skip_on_cran()
   expect_error(caret:::parse_sampling(list(name = "yep", func = I, first = 2)))
 })  
   
 test_that('check incomplete list', {
+  skip_on_cran()
   expect_error(caret:::parse_sampling(list(name = "yep")))
 })  
 
 test_that('check call', {
+  skip_on_cran()
   expect_error(caret:::parse_sampling(14))
 })  
 
@@ -57,10 +64,12 @@ test_that('check call', {
 ##
 
 test_that('check getting all methods', {
+  skip_on_cran()
   expect_equivalent(getSamplingInfo(), sampling_methods)
 })
 
 test_that('check getting one method', {
+  skip_on_cran()
   arg_names <- c("up", "down", "rose", "smote")
   for(i in arg_names) {
     out <- getSamplingInfo(i, regex = FALSE)
@@ -71,5 +80,6 @@ test_that('check getting one method', {
 })
 
 test_that('check missing method', {
+  skip_on_cran()
   expect_error(getSamplingInfo("plum"))
 })  

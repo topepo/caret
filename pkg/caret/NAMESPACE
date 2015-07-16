@@ -11,7 +11,7 @@ importFrom(stats, .checkMFClasses, .getXlevels, aggregate, anova,
            predict, qnorm, quantile, rbinom, reshape, resid, 
            residuals, rnorm, runif, sd, t.test, terms, 
            toeplitz, var, na.omit, p.adjust, fitted, prcomp, hclust,
-           lm, model.extract,  pt, update) 
+           lm, model.extract,  pt, update, binomial) 
 importFrom(stats4, coef) 
 importFrom(utils, capture.output, getFromNamespace, head, 
            install.packages, installed.packages, object.size, flush.console, menu, stack) 
