@@ -87,7 +87,7 @@ The elements of \code{functions} that are the same for GAs and SAs are:
   \item \code{prob}, with arguments \code{old}, \code{new}, and \code{iteration}, computes the acceptance probabilities
 }
 
-The pages \url{http://topepo.github.io/caret/GA.html#custom} and \url{http://topepo.github.io/caret/SA.html#custom} have more details about each of these functions. 
+The pages \url{http://topepo.github.io/caret/GA.html} and \url{http://topepo.github.io/caret/SA.html} have more details about each of these functions. 
 
 \code{holdout} can be used to hold out samples for computing the internal fitness value. Note that this is independent of the external resampling step. Suppose 10-fold CV is being used. Within a resampling iteration, \code{holdout} can be used to sample an additional proportion of the 90\% resampled data to use for estimating fitness. This may not be a good idea unless you have a very large training set and want to avoid an internal resampling procedure to estimate fitness. 
 
