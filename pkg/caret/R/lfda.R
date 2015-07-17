@@ -1,6 +1,4 @@
-"lfda" <-
-  function(x, ...)
-    UseMethod("lfda_calc")
+"lfda" <- function(x, ...) UseMethod("lfda")
 
 ## The followings are helper functions for implementation of lfda
 #' Matlab-Syntaxed Repmat
@@ -91,7 +89,7 @@ repmat <- function(A, N, M) {
 #' result <- lfda_calc(k,y,r,metric="plain")
 #' transformedMat <- result$Z # transformed training data
 #' metric.train <- as.data.frame(cbind(trainData[,1],transformedMat))
-#' colnames(metric.train)=colnames(trainData)
+#' colnames(metric.train) <- colnames(trainData)
 #' 
 #' ## example with dimension reduction
 #' k <- trainData[,-1]
@@ -207,10 +205,11 @@ lfda_calc <- function(x, y, r, metric = c("orthonormalized","plain","weighted"),
   function(x, y, r = 3, metric = c("orthonormalized","plain","weighted"),knn = 5, ...)
   {
     if(is.data.frame(x)) x <- as.matrix(x)
+    if(r==3){print("Reduced dimension to 3 by default. ")}
 
     metric <- match.arg(metric)
     modelArgs <- c(list(x,y,r,metric,knn))
-    out <- do.call("lfda", modelArgs)
+    out <- do.call("lfda_calc", modelArgs)
     
     out$call <- NULL
     class(out) <- "lfda"
@@ -221,9 +220,11 @@ lfda_calc <- function(x, y, r, metric = c("orthonormalized","plain","weighted"),
 function(object, newdata = NULL, type = "raw", ...)
   {
     if(is.null(newdata)){stop("You must provide data to be used for transformation. ")}
+    if(type!="raw"){stop('Types other than "raw" are currently unavailable. ')}
     if(is.data.frame(newdata)) newdata <- as.matrix(newdata)
+    
     transformMatrix <- object$T
     
     result <- newdata %*% transformMatrix
     result
-  }
+}
