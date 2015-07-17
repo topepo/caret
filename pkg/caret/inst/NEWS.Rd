@@ -2,7 +2,7 @@
 \title{News for Package \pkg{caret}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{Changes in version 6.0-51}{
+\section{Changes in version 6.0-52}{
 	\itemize{
 		\item A new model using the \cpkg{randomForest} and \cpkg{inTrees} packages called \code{rfRules} was added. A basic random forest model is used and then is decomposed into rules (of user-specified complexity). The \cpkg{inTrees} package is used to prune and optimize the rules. Thanks to Mirjam Jenny who suggested the workflow. 
 		\item Other new models (and their packages): \code{bartMachine} (\cpkg{bartMachine}), \code{rotationForest} (\cpkg{rotationForest}), \code{sdwd} (\cpkg{sdwd}), \code{loclda} (\cpkg{klaR}), \code{nnls} (\cpkg{nnls}), \code{svmLinear2} (\cpkg{e1071}), \code{rqnc} (\cpkg{rqPen}), and \code{rqlasso} (\cpkg{rqPen})
