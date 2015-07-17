@@ -34,7 +34,7 @@ train.default <- function(x, y,
   paramNames <- as.character(models$parameters$parameter)
   
   funcCall <- match.call(expand.dots = TRUE)
-  modelType <- if(is.factor(y)) "Classification"  else "Regression"
+  modelType <- get_model_type(y)
   if(!(modelType %in% models$type)) stop(paste("wrong model type for", tolower(modelType)))
   
   if(grepl("^svm", method) & grepl("String$", method)) {
@@ -61,9 +61,8 @@ train.default <- function(x, y,
   }
   
   if(any(class(x) == "data.table")) x <- as.data.frame(x)
-  stopifnot(length(y) > 1)
-  stopifnot(nrow(x) > 1)
-  stopifnot(nrow(x) == length(y))
+  check_dims(x = x, y = y)
+  n <- if(class(y)[1] == "Surv") nrow(y) else length(y)
   
   ## TODO add check method and execute here
   
@@ -118,6 +117,8 @@ train.default <- function(x, y,
     stop(paste("for oob error rates, model bust be one of:", 
                paste(oob_mods, sep = "", collapse = ", ")))
   
+  ## SURV TODO: make resampling functions classes or ifelses based on data type
+  
   ## If they don't exist, make the data partitions for the resampling iterations.
   if(is.null(trControl$index)) {
     if(trControl$method == "custom")
@@ -127,7 +128,7 @@ train.default <- function(x, y,
                               none = list(seq(along = y)),
                               alt_cv =, cv = createFolds(y, trControl$number, returnTrain = TRUE),
                               repeatedcv =, adaptive_cv = createMultiFolds(y, trControl$number, trControl$repeats),
-                              loocv = createFolds(y, length(y), returnTrain = TRUE),
+                              loocv = createFolds(y, n, returnTrain = TRUE),
                               boot =, boot632 =,  adaptive_boot = createResample(y, trControl$number),
                               test = createDataPartition(y, 1, trControl$p),
                               adaptive_lgocv =, lgocv = createDataPartition(y, trControl$number, trControl$p),
@@ -172,8 +173,6 @@ train.default <- function(x, y,
   if(trControl$method != "oob" & is.null(names(trControl$index)))    names(trControl$index)    <- prettySeq(trControl$index)
   if(trControl$method != "oob" & is.null(names(trControl$indexOut))) names(trControl$indexOut) <- prettySeq(trControl$indexOut)
   
-  #   if(!is.data.frame(x)) x <- as.data.frame(x)
-  
   ## Gather all the pre-processing info. We will need it to pass into the grid creation
   ## code so that there is a concordance between the data used for modeling and grid creation
   if(!is.null(preProcess)) {
@@ -208,10 +207,11 @@ train.default <- function(x, y,
   
   if(trControl$method == "none" && nrow(tuneGrid) != 1) 
     stop("Only one model should be specified in tuneGrid with no resampling")
+
   
   ## In case prediction bounds are used, compute the limits. For now,
   ## store these in the control object since that gets passed everywhere
-  trControl$yLimits <- if(is.numeric(y)) extendrange(y) else NULL
+  trControl$yLimits <- if(is.numeric(y)) get_range(y) else NULL
   
   
   if(trControl$method != "none") {
@@ -320,7 +320,7 @@ train.default <- function(x, y,
     }
     
     
-    
+    ## SURV TODO: modify defaultSummary for Surv objects
     if(trControl$method == "oob") {
       ## delay this test until later
       perfNames <- metric   

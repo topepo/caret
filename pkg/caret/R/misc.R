@@ -29,9 +29,18 @@ well_numbered <- function(prefix, items) {
 
 
 evalSummaryFunction <- function(y, wts, ctrl, lev, metric, method) {
+  n <- if(class(y)[1] == "Surv") nrow(y) else length(y)
+  ## sample doesn't work for Surv objects
+  if(class(y)[1] != "Surv") {
+    pred_samp <- sample(y, min(10, n))
+    obs_samp <- sample(y, min(10, n))
+  } else {
+    pred_samp <- y[sample(1:n, min(10, n)), "time"]
+    obs_samp <- y[sample(1:n, min(10, n)),]    
+  }
+
   ## get phoney performance to obtain the names of the outputs
-  testOutput <- data.frame(pred = sample(y, min(10, length(y))),
-                           obs = sample(y, min(10, length(y))))
+  testOutput <- data.frame(pred = pred_samp, obs = obs_samp)
 
   if(ctrl$classProbs)
   {
@@ -42,7 +51,7 @@ evalSummaryFunction <- function(y, wts, ctrl, lev, metric, method) {
       stop("train()'s use of ROC codes requires class probabilities. See the classProbs option of trainControl()")
   }
   if(!is.null(wts)) testOutput$weights <- sample(wts, min(10, length(wts)))
-  testOutput$rowIndex <- sample(seq(along = y), size = nrow(testOutput))
+  testOutput$rowIndex <- sample(1:n, size = nrow(testOutput))
   ctrl$summaryFunction(testOutput, lev, method)
 }
 
@@ -528,3 +537,20 @@ get_labels <- function(mods, format = FALSE) {
   }
   if(length(mods) > 1) data.frame(model = mods, label = labs) else labs[1]
 }
+
+check_dims <- function(x, y) {
+  n <- if(class(y) == "Surv") nrow(y) else length(y)
+  stopifnot(nrow(x) > 1)
+  stopifnot(nrow(x) == n)
+  invisible(NULL)
+}
+
+get_model_type <- function(y, method = NULL) {
+  type <- if(class(y)[1] %in% c("numeric", "Surv")) "Regression" else "Classification"
+  type
+}
+
+get_range <- function(y)
+  if(class(y)[1] == "numeric") extendrange(y) else extendrange(y[, "time"])
+
+
