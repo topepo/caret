@@ -156,10 +156,11 @@ train.default <- function(x, y,
   
   ## Create hold--out indicies
   if(is.null(trControl$indexOut) & trControl$method != "oob"){
-    if(tolower(trControl$method) != "timeslice") {      
+    if(tolower(trControl$method) != "timeslice") {     
+      y_index <- if(class(y)[1] == "Surv") 1:nrow(y) else seq(along = y)
       trControl$indexOut <- lapply(trControl$index,
                                    function(training, allSamples) allSamples[-unique(training)],
-                                   allSamples = seq(along = y))
+                                   allSamples = y_index)
       names(trControl$indexOut) <- prettySeq(trControl$indexOut)
     } else {
       trControl$indexOut <- createTimeSlices(seq(along = y),

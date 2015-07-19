@@ -1,6 +1,6 @@
 "createFolds" <- 
   function(y, k = 10, list = TRUE, returnTrain = FALSE) {
-    
+    if(class(y)[1] == "Surv") y <- y[,"time"]
     if(is.numeric(y)) {
       ## Group the numeric data based on their magnitudes
       ## and sample within those groups.
@@ -58,6 +58,7 @@
   }
 
 createMultiFolds <- function(y, k = 10, times = 5) {
+  if(class(y)[1] == "Surv") y <- y[,"time"]
   prettyNums <- paste("Rep", gsub(" ", "0", format(1:times)), sep = "")
   for(i in 1:times) {
     tmp <- createFolds(y, k = k, list = TRUE, returnTrain = TRUE)

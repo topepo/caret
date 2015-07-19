@@ -1,4 +1,5 @@
 createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = min(5, length(y))){
+  if(class(y)[1] == "Surv") y <- y[,"time"]
   out <- vector(mode = "list", times)
   
   if(length(y) < 2) stop("y must have at least 2 data points")
