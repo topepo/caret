@@ -31,7 +31,6 @@ install:
   - ./travis-tool.sh aptget_install texlive-fonts-extra
   - ./travis-tool.sh aptget_install texlive-science
   - ./travis-tool.sh github_package jimhester/covr
-  - ./travis-tool.sh r_install glmnet
 
 script: ./travis-tool.sh run_tests
 
