@@ -87,9 +87,25 @@ etc.
 <!--begin.rcode tags, results='asis', echo=FALSE, message=FALSE
 mods <- getModelInfo()
 
+## redundant tag names (e.g. "L1 Regularization Models" and "L1 Regularization")
+## these will get changed in the files but make a short fix for now
+
+fix_tags <- function(x) {
+  x[x == "L1 Regularization Models"] <- "L1 Regularization"
+  x[x == "L2 Regularization Models"] <- "L2 Regularization"
+  x[x == "Generalized Linear Models"] <- "Generalized Linear Model"
+  x[x == "Discriminant Analysis Models"] <- "Discriminant Analysis"
+  x[x == "Feature Extraction Models"] <- "Feature Extraction"  
+  x[x == "Linear Classifier Models"] <- "Linear Classifier"    
+  x[x == "Linear Regression Models"] <- "Linear Regression"     
+  x
+  }
+
+
 for(j in seq(along = mods)) mods[[j]]$method_value <- names(mods)[j]
 
 tags  <- lapply(mods, function(x) x$tag)
+tags <- lapply(tags, fix_tags)
 utags <- sort(unique(unlist(tags)))
 utags <- utags[utags != ""]
 fname <- paste(gsub("([[:punct:]])|([[:space:]])", "_", utags),

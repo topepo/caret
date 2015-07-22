@@ -36,22 +36,20 @@ all_pkg <- rownames(available.packages(type = "source"))
 diffs <- libs[!(libs %in% all_pkg)]
 if(length(diffs) > 0) print(diffs)
 
-
-## new pROC and xgboost
-library(devtools)
-install_github("xrobin/pROC@s3_methods_namespace")
-devtools::install_github('dmlc/xgboost',subdir='R-package')
-install_github("lala-s-riza/frbs")
-
 ###################################################################
 ## Install the files. This might re-install caret so beware.
 
+devtools::install_github('dmlc/xgboost',subdir='R-package')
+
 install.packages(libs, repos = "http://cran.r-project.org", 
-#                  type = "source",
+                 type = "source",
                  dependencies = c("Depends", "Suggests", "Imports"))
 
 ###################################################################
 ## Now get Bioconductor packages
+
+library(BiocInstaller) 
+useDevel()
 
 source("http://www.bioconductor.org/getBioC.R")
 
