@@ -186,6 +186,16 @@ Released   : 20120902
 <p><b>Type</b>: Regression</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">pruned</span></code> (Pruned), <code><span class="mx arg">smoothed</span></code> (Smoothed), <code><span class="mx arg">rules</span></code> (Rules)</p>
 
+<h1>Non-Convex Penalized Quantile Regression</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'rqnc'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda</span></code> (L1 Penalty), <code><span class="mx arg">penalty</span></code> (Penalty Type)</p>
+
+<h1>Non-Negative Least Squares</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'nnls'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p>No Tuning Parameters</p>
+
 <h1>Partial Least Squares</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'kernelpls'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
@@ -215,6 +225,11 @@ Released   : 20120902
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'pcr'</span></tt></p>
 <p><b>Type</b>: Regression</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">ncomp</span></code> (#Components)</p>
+
+<h1>Quantile Regression with LASSO penalty</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'rqlasso'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda</span></code> (L1 Penalty)</p>
 
 <h1>Relaxed Lasso</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'relaxo'</span></tt></p>
@@ -256,6 +271,11 @@ Released   : 20120902
 <p><b>Type</b>: Regression, Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">C</span></code> (Cost)</p>
 
+<h1>Support Vector Machines with Linear Kernel</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'svmLinear2'</span></tt></p>
+<p><b>Type</b>: Regression, Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">cost</span></code> (Cost)</p>
+
 <h1>The lasso</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'lasso'</span></tt></p>
 <p><b>Type</b>: Regression</p>
@@ -266,41 +286,39 @@ Released   : 20120902
   </div>
   <!-- end #content -->
 <div id="sidebar">
-  <ul>
+<ul>
   <li>
-  <h2>Links</h2>
-  <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
-  </li>
-  <li>
-    <h2>Topics</h2>
+    <h2>General Topics</h2>
     <ul>
-        <li><a href="index.html">Main Page</a></li>
-      <li><a href="datasets.html">Data Sets</a></li>
-        <li><a href="visualizations.html">Visualizations</a></li>
-        <li><a href="preprocess.html">Pre-Processing</a></li>
-        <li><a href="splitting.html">Data Splitting</a></li>
-        <li><a href="misc.html">Miscellaneous Model Functions</a></li>
-        <li><a href="training.html">Model Training and Tuning</a></li>
-        <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
-        <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
-        <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
-        <li><a href="custom_models.html">Using Custom Models</a></li>
-        <li><a href="varimp.html">Variable Importance</a></li>
-        <li><a href="featureselection.html">Feature Selection</a>
-        <ul>
-          <li><a href="rfe.html">RFE</a></li>
-            <li><a href="filters.html">Filters</a></li>
-            <li><a href="GA.html">GA</a></li>
-            <li><a href="SA.html">SA</a></li>
-        </ul></li>
-        <li><a href="other.html">Other Functions</a></li>
-        <li><a href="parallel.html">Parallel Processing</a></li>
-        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
-  </ul>
+      <li><a href="index.html">Front Page</a></li>
+      <li><a href="visualizations.html">Visualizations</a></li>
+      <li><a href="preprocess.html">Pre-Processing</a><li>
+      <li><a href="splitting.html">Data Splitting</a></li>
+      <li><a href="varimp.html">Variable Importance</a></li>
+      <li><a href="parallel.html">Parallel Processing</a></li>
+    </ul>
+    <h2>Model Training and Tuning</h2>
+    <ul>
+      <li><a href="training.html">Basic Syntax</a></li>
+      <li><a href="modelList.html">Sortable Model List</a></li>
+      <li><a href="bytag.html">Models By Tag</a></li>
+      <li><a href="similarity.html">Models By Similarity</a></li>
+      <li><a href="custom_models.html">Using Custom Models</a></li>
+      <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+    </ul>
+    <h2>Feature Selection</h2>
+    <ul>
+      <li><a href="featureselection.html">Overview</a>
+      <li><a href="rfe.html">RFE</a></li>
+      <li><a href="filters.html">Filters</a></li>
+      <li><a href="GA.html">GA</a></li>
+      <li><a href="SA.html">SA</a></li>
+    </ul>  
   </li>
-  </ul>
-  </div>
-  <!-- end #sidebar -->
+</ul>
+</div>
+<!-- end #sidebar -->
 <div style="clear: both;">&nbsp;</div>
   </div>
   <div class="container"><img src="images/img03.png" width="1000" height="40" alt="" /></div>
@@ -308,7 +326,7 @@ Released   : 20120902
 </div>
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on Fri May 15 2015 using caret version 6.0-47 and R Under development (unstable) (2015-05-02 r68311).</p>
+  <p>Created on Fri Jul 17 2015 using caret version 6.0-52 and R Under development (unstable) (2015-07-12 r68650).</p>
   </div>
   <!-- end #footer -->
 </body>

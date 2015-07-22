@@ -230,7 +230,7 @@ We'll fit a random forest model and use the out-of-bag RMSE estimate as the inte
 
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">10</span><span class="hl std">)</span>
 <span class="hl std">rf_sa</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">safs</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">= x,</span> <span class="hl kwc">y</span> <span class="hl std">= y,</span>
-              <span class="hl kwc">iters</span> <span class="hl std">=</span> <span class="hl num">1000</span><span class="hl std">,</span>
+              <span class="hl kwc">iters</span> <span class="hl std">=</span> <span class="hl num">500</span><span class="hl std">,</span>
               <span class="hl kwc">safsControl</span> <span class="hl std">= sa_ctrl)</span>
 <span class="hl std">rf_sa</span>
 </pre></div>
@@ -240,8 +240,8 @@ Simulated Annealing Feature Selection
 100 samples
 50 predictors
 
-Maximum search iterations: 1000 
-Restart after 50 iterations without improvement (15.5 restarts on average)
+Maximum search iterations: 500 
+Restart after 50 iterations without improvement (6.3 restarts on average)
 
 Internal performance values: RMSE, Rsquared
 Subset selection driven to minimize internal RMSE 
@@ -252,16 +252,16 @@ External resampling method: Cross-Validated (10 fold, repeated 5 times)
 
 During resampling:
   * the top 5 selected variables (out of a possible 50):
-    real1 (100%), real2 (100%), real4 (100%), real5 (100%), bogus17 (80%)
-  * on average, 17.1 variables were selected (min = 12, max = 24)
+    real1 (100%), real2 (100%), real4 (100%), real5 (100%), bogus17 (88%)
+  * on average, 19.2 variables were selected (min = 13, max = 30)
 
 In the final search using the entire training set:
-   * 19 features selected at iteration 893 including:
-     real1, real2, real4, real5, bogus3 ... 
+   * 30 features selected at iteration 318 including:
+     real1, real2, real4, real5, bogus1 ... 
    * external performance at this iteration is
 
        RMSE    Rsquared 
-     3.2332      0.6915 
+     3.2674      0.6785 
 </pre></div>
 </div></div>
     
@@ -274,10 +274,10 @@ As with the GA, we can plot the internal and external performance over iteration
 </div><div class="rimage default"><img src="figure/sa_rf_profile-1.png" title="plot of chunk sa_rf_profile" alt="plot of chunk sa_rf_profile" class="plot" /></div></div>
 
 <p>
-The performance here isn't as good as the previous GA or RFE solutions. Based on these results, the iteration associated with the best external RMSE estimate was 893 with a corresponding RMSE estimate of 3.23. 
+The performance here isn't as good as the previous GA or RFE solutions. Based on these results, the iteration associated with the best external RMSE estimate was 318 with a corresponding RMSE estimate of 3.27. 
 </p>
 <p>
-Using the entire training set, the final SA is conducted and, at iteration 893, there were 19 selected: real1, real2, real4, real5, bogus3, bogus7, bogus9, bogus11, bogus13, bogus15, bogus18, bogus20, bogus24, bogus26, bogus30, bogus32, bogus33, bogus36, bogus44. The random forest model with these predictors is created using the entire training set is trained and this is the model that is used when <span class="mx funCall">predict.safs</span> is executed. 
+Using the entire training set, the final SA is conducted and, at iteration 318, there were 30 selected: real1, real2, real4, real5, bogus1, bogus2, bogus6, bogus10, bogus12, bogus13, bogus16, bogus18, bogus19, bogus22, bogus24, bogus25, bogus26, bogus27, bogus29, bogus30, bogus31, bogus32, bogus34, bogus36, bogus37, bogus39, bogus42, bogus43, bogus44, bogus45. The random forest model with these predictors is created using the entire training set is trained and this is the model that is used when <span class="mx funCall">predict.safs</span> is executed. 
 </p>
  
 
@@ -529,41 +529,39 @@ While this is the default, any user-written function can be used to assign proba
   </div>
   <!-- end #content -->
 <div id="sidebar">
-  <ul>
+<ul>
   <li>
-  <h2>Links</h2>
-  <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
-  </li>
-  <li>
-    <h2>Topics</h2>
+    <h2>General Topics</h2>
     <ul>
-        <li><a href="index.html">Main Page</a></li>
-      <li><a href="datasets.html">Data Sets</a></li>
-        <li><a href="visualizations.html">Visualizations</a></li>
-        <li><a href="preprocess.html">Pre-Processing</a></li>
-        <li><a href="splitting.html">Data Splitting</a></li>
-        <li><a href="misc.html">Miscellaneous Model Functions</a></li>
-        <li><a href="training.html">Model Training and Tuning</a></li>
-        <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
-        <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
-        <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
-        <li><a href="custom_models.html">Using Custom Models</a></li>
-        <li><a href="varimp.html">Variable Importance</a></li>
-        <li><a href="featureselection.html">Feature Selection</a>
-        <ul>
-        	<li><a href="rfe.html">RFE</a></li>
-            <li><a href="filters.html">Filters</a></li>
-            <li><a href="GA.html">GA</a></li>
-            <li><a href="SA.html">SA</a></li>
-        </ul></li>
-        <li><a href="other.html">Other Functions</a></li>
-        <li><a href="parallel.html">Parallel Processing</a></li>
-        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
-	</ul>
+      <li><a href="index.html">Front Page</a></li>
+      <li><a href="visualizations.html">Visualizations</a></li>
+      <li><a href="preprocess.html">Pre-Processing</a><li>
+      <li><a href="splitting.html">Data Splitting</a></li>
+      <li><a href="varimp.html">Variable Importance</a></li>
+      <li><a href="parallel.html">Parallel Processing</a></li>
+    </ul>
+    <h2>Model Training and Tuning</h2>
+    <ul>
+      <li><a href="training.html">Basic Syntax</a></li>
+      <li><a href="modelList.html">Sortable Model List</a></li>
+      <li><a href="bytag.html">Models By Tag</a></li>
+      <li><a href="similarity.html">Models By Similarity</a></li>
+      <li><a href="custom_models.html">Using Custom Models</a></li>
+      <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+    </ul>
+    <h2>Feature Selection</h2>
+    <ul>
+      <li><a href="featureselection.html">Overview</a>
+      <li><a href="rfe.html">RFE</a></li>
+      <li><a href="filters.html">Filters</a></li>
+      <li><a href="GA.html">GA</a></li>
+      <li><a href="SA.html">SA</a></li>
+    </ul>  
   </li>
-  </ul>
-  </div>
-  <!-- end #sidebar -->
+</ul>
+</div>
+<!-- end #sidebar -->
 <div style="clear: both;">&nbsp;</div>
   </div>
   <div class="container"><img src="images/img03.png" width="1000" height="40" alt="" /></div>
@@ -572,7 +570,7 @@ While this is the default, any user-written function can be used to assign proba
   <div id="footer-content"></div>
   <div id="footer">
 
-  <p>Created on Fri May 15 2015 using caret version 6.0-47 and R Under development (unstable) (2015-05-02 r68311).</p>
+  <p>Created on Fri Jul 17 2015 using caret version 6.0-52 and R Under development (unstable) (2015-07-12 r68650).</p>
   </div>
   <!-- end #footer -->
 </body>

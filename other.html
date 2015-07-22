@@ -141,7 +141,7 @@ the results of a classification model. This example uses objects from the webpag
 <div class="chunk" id="other_conf0"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(testPred, testing</span><span class="hl opt">$</span><span class="hl std">Class)</span>
 </pre></div>
 <div class="output"><pre class="knitr r"> Accuracy     Kappa 
-0.9019608 0.8027842 
+0.9215686 0.8425926 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">sensitivity</span><span class="hl std">(testPred, testing</span><span class="hl opt">$</span><span class="hl std">Class)</span>
 </pre></div>
@@ -153,25 +153,25 @@ the results of a classification model. This example uses objects from the webpag
 
           Reference
 Prediction  M  R
-         M 25  3
-         R  2 21
+         M 25  2
+         R  2 22
                                           
-               Accuracy : 0.902           
-                 95% CI : (0.7859, 0.9674)
+               Accuracy : 0.9216          
+                 95% CI : (0.8112, 0.9782)
     No Information Rate : 0.5294          
-    P-Value [Acc &gt; NIR] : 1.209e-08       
+    P-Value [Acc &gt; NIR] : 1.407e-09       
                                           
-                  Kappa : 0.8028          
+                  Kappa : 0.8426          
  Mcnemar's Test P-Value : 1               
                                           
             Sensitivity : 0.9259          
-            Specificity : 0.8750          
-         Pos Pred Value : 0.8929          
-         Neg Pred Value : 0.9130          
+            Specificity : 0.9167          
+         Pos Pred Value : 0.9259          
+         Neg Pred Value : 0.9167          
              Prevalence : 0.5294          
          Detection Rate : 0.4902          
-   Detection Prevalence : 0.5490          
-      Balanced Accuracy : 0.9005          
+   Detection Prevalence : 0.5294          
+      Balanced Accuracy : 0.9213          
                                           
        'Positive' Class : M               
                                           
@@ -222,8 +222,8 @@ For example:
  
           Reference
 Prediction    M    R
-         M 47.4 11.1
-         R  6.1 35.4
+         M 46.5 10.7
+         R  7.0 35.8
 </pre></div>
 </div></div>
 
@@ -273,7 +273,7 @@ The <span class="mx funCall">lift</span> function can be used to evaluate probab
 <span class="hl kwd">getTrainPerf</span><span class="hl std">(fdaModel)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  TrainROC TrainSens TrainSpec method
-1 0.963911 0.9320202 0.8573913    fda
+1 0.956762 0.9041751  0.848599    fda
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">getTrainPerf</span><span class="hl std">(ldaModel)</span>
 </pre></div>
@@ -296,12 +296,12 @@ From these models, we can predict the evaluation set and save the probabilities 
 <span class="hl kwd">head</span><span class="hl std">(evalResults)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   Class        FDA       LDA      C5.0
-1 Class1 0.99000843 0.8838205 0.8445830
-2 Class1 0.99155316 0.7572450 0.8882418
-3 Class1 0.87790201 0.8883830 0.5732098
-4 Class2 0.03972953 0.0140480 0.1690251
-5 Class1 0.74256698 0.9320695 0.4824400
-6 Class2 0.19110517 0.0524154 0.3310495
+1 Class1 0.99244077 0.8838205 0.8445830
+2 Class1 0.99128497 0.7572450 0.8882418
+3 Class1 0.82142101 0.8883830 0.5732098
+4 Class2 0.04336463 0.0140480 0.1690251
+5 Class1 0.77494981 0.9320695 0.4824400
+6 Class2 0.11532541 0.0524154 0.3310495
 </pre></div>
 </div></div>
 <p>
@@ -355,42 +355,40 @@ For Affymetrix gene chip data, RMA processing (<a href="http://nar.oxfordjournal
 	  <div style="clear: both;">&nbsp;</div>
 	</div>
 	<!-- end #content -->
-	<div id="sidebar">
-  <ul>
+<div id="sidebar">
+<ul>
   <li>
-  <h2>Links</h2>
-  <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
-  </li>
-  <li>
-    <h2>Topics</h2>
+    <h2>General Topics</h2>
     <ul>
-        <li><a href="index.html">Main Page</a></li>
-      <li><a href="datasets.html">Data Sets</a></li>
-        <li><a href="visualizations.html">Visualizations</a></li>
-        <li><a href="preprocess.html">Pre-Processing</a></li>
-        <li><a href="splitting.html">Data Splitting</a></li>
-        <li><a href="misc.html">Miscellaneous Model Functions</a></li>
-        <li><a href="training.html">Model Training and Tuning</a></li>
-        <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
-        <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
-        <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
-        <li><a href="custom_models.html">Using Custom Models</a></li>
-        <li><a href="varimp.html">Variable Importance</a></li>
-        <li><a href="featureselection.html">Feature Selection</a>
-        <ul>
-          <li><a href="rfe.html">RFE</a></li>
-            <li><a href="filters.html">Filters</a></li>
-            <li><a href="GA.html">GA</a></li>
-            <li><a href="SA.html">SA</a></li>
-        </ul></li>
-        <li><a href="other.html">Other Functions</a></li>
-        <li><a href="parallel.html">Parallel Processing</a></li>
-        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
-  </ul>
+      <li><a href="index.html">Front Page</a></li>
+      <li><a href="visualizations.html">Visualizations</a></li>
+      <li><a href="preprocess.html">Pre-Processing</a><li>
+      <li><a href="splitting.html">Data Splitting</a></li>
+      <li><a href="varimp.html">Variable Importance</a></li>
+      <li><a href="parallel.html">Parallel Processing</a></li>
+    </ul>
+    <h2>Model Training and Tuning</h2>
+    <ul>
+      <li><a href="training.html">Basic Syntax</a></li>
+      <li><a href="modelList.html">Sortable Model List</a></li>
+      <li><a href="bytag.html">Models By Tag</a></li>
+      <li><a href="similarity.html">Models By Similarity</a></li>
+      <li><a href="custom_models.html">Using Custom Models</a></li>
+      <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+    </ul>
+    <h2>Feature Selection</h2>
+    <ul>
+      <li><a href="featureselection.html">Overview</a>
+      <li><a href="rfe.html">RFE</a></li>
+      <li><a href="filters.html">Filters</a></li>
+      <li><a href="GA.html">GA</a></li>
+      <li><a href="SA.html">SA</a></li>
+    </ul>  
   </li>
-  </ul>
-	</div>
-	<!-- end #sidebar -->
+</ul>
+</div>
+<!-- end #sidebar -->
 	<div style="clear: both;">&nbsp;</div>
       </div>
       <div class="container"><img src="images/img03.png" width="1000" height="40" alt="" /></div>
@@ -400,7 +398,7 @@ For Affymetrix gene chip data, RMA processing (<a href="http://nar.oxfordjournal
 
  
     <div id="footer">
-      <p>Created on Fri May 15 2015 using caret version 6.0-47 and R Under development (unstable) (2015-05-02 r68311).</p>
+      <p>Created on Fri Jul 17 2015 using caret version 6.0-52 and R Under development (unstable) (2015-07-12 r68650).</p>
     </div>
     <!-- end #footer -->
   </body>

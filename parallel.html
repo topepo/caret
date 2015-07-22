@@ -173,57 +173,56 @@ One additional "trick" that <span class="mx funCall">train</span> exploits to in
 </p>
 
 
-<div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">gbmGrid</span> <span class="hl kwb">&lt;-</span>  <span class="hl kwd">expand.grid</span><span class="hl std">(</span><span class="hl kwc">.interaction.depth</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">5</span><span class="hl std">,</span> <span class="hl num">9</span><span class="hl std">),</span>
-                        <span class="hl kwc">.n.trees</span> <span class="hl std">= (</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">15</span><span class="hl std">)</span><span class="hl opt">*</span><span class="hl num">100</span><span class="hl std">,</span>
-                        <span class="hl kwc">.shrinkage</span> <span class="hl std">=</span> <span class="hl num">0.1</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">gbmGrid</span> <span class="hl kwb">&lt;-</span>  <span class="hl kwd">expand.grid</span><span class="hl std">(</span><span class="hl kwc">interaction.depth</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">5</span><span class="hl std">,</span> <span class="hl num">9</span><span class="hl std">),</span>
+                        <span class="hl kwc">n.trees</span> <span class="hl std">= (</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">15</span><span class="hl std">)</span><span class="hl opt">*</span><span class="hl num">100</span><span class="hl std">,</span>
+                        <span class="hl kwc">shrinkage</span> <span class="hl std">=</span> <span class="hl num">0.1</span><span class="hl std">,</span>
+                        <span class="hl kwc">n.minobsinnode</span> <span class="hl std">=</span> <span class="hl num">20</span><span class="hl std">)</span>
 </pre></div>
 </div></div>
     
 
 
 <p>
-In reality, <span class="mx funCall">train</span> only created objects for 3 models and derived the other predictions from these objects. This trick is used for the following models: <code>ada</code>, <code>AdaBag</code>, <code>AdaBoost.M1</code>, <code>bagEarth</code>, <code>blackboost</code>, <code>bstLs</code>, <code>bstSm</code>, <code>bstTree</code>, <code>C5.0</code>, <code>C5.0Cost</code>, <code>cubist</code>, <code>earth</code>, <code>enet</code>, <code>foba</code>, <code>gamboost</code>, <code>gbm</code>, <code>glmboost</code>, <code>glmnet</code>, <code>kernelpls</code>, <code>lars</code>, <code>lars2</code>, <code>lasso</code>, <code>lda2</code>, <code>leapBackward</code>, <code>leapForward</code>, <code>leapSeq</code>, <code>LogitBoost</code>, <code>pam</code>, <code>partDSA</code>, <code>pcr</code>, <code>PenalizedLDA</code>, <code>pls</code>, <code>relaxo</code>, <code>rpart</code>, <code>rpart2</code>, <code>rpartCost</code>, <code>simpls</code>, <code>superpc</code>, <code>widekernelpls</code>, <code>xgbTree</code>.
+In reality, <span class="mx funCall">train</span> only created objects for 3 models and derived the other predictions from these objects. This trick is used for the following models: <code>ada</code>, <code>AdaBag</code>, <code>AdaBoost.M1</code>, <code>bagEarth</code>, <code>blackboost</code>, <code>bstLs</code>, <code>bstSm</code>, <code>bstTree</code>, <code>C5.0</code>, <code>C5.0Cost</code>, <code>cubist</code>, <code>earth</code>, <code>enet</code>, <code>foba</code>, <code>gamboost</code>, <code>gbm</code>, <code>glmboost</code>, <code>glmnet</code>, <code>kernelpls</code>, <code>lars</code>, <code>lars2</code>, <code>lasso</code>, <code>lda2</code>, <code>leapBackward</code>, <code>leapForward</code>, <code>leapSeq</code>, <code>LogitBoost</code>, <code>pam</code>, <code>partDSA</code>, <code>pcr</code>, <code>PenalizedLDA</code>, <code>pls</code>, <code>relaxo</code>, <code>rfRules</code>, <code>rotationForest</code>, <code>rpart</code>, <code>rpart2</code>, <code>rpartCost</code>, <code>simpls</code>, <code>superpc</code>, <code>widekernelpls</code>, <code>xgbTree</code>.
 </p>
 
 	  <div style="clear: both;">&nbsp;</div>
 	</div>
 	<!-- end #content -->
-	<div id="sidebar">
-  <ul>
+<div id="sidebar">
+<ul>
   <li>
-  <h2>Links</h2>
-  <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
-  </li>
-  <li>
-    <h2>Topics</h2>
+    <h2>General Topics</h2>
     <ul>
-        <li><a href="index.html">Main Page</a></li>
-      <li><a href="datasets.html">Data Sets</a></li>
-        <li><a href="visualizations.html">Visualizations</a></li>
-        <li><a href="preprocess.html">Pre-Processing</a></li>
-        <li><a href="splitting.html">Data Splitting</a></li>
-        <li><a href="misc.html">Miscellaneous Model Functions</a></li>
-        <li><a href="training.html">Model Training and Tuning</a></li>
-        <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
-        <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
-        <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
-        <li><a href="custom_models.html">Using Custom Models</a></li>
-        <li><a href="varimp.html">Variable Importance</a></li>
-        <li><a href="featureselection.html">Feature Selection</a>
-        <ul>
-          <li><a href="rfe.html">RFE</a></li>
-            <li><a href="filters.html">Filters</a></li>
-            <li><a href="GA.html">GA</a></li>
-            <li><a href="SA.html">SA</a></li>
-        </ul></li>
-        <li><a href="other.html">Other Functions</a></li>
-        <li><a href="parallel.html">Parallel Processing</a></li>
-        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
-  </ul>
+      <li><a href="index.html">Front Page</a></li>
+      <li><a href="visualizations.html">Visualizations</a></li>
+      <li><a href="preprocess.html">Pre-Processing</a><li>
+      <li><a href="splitting.html">Data Splitting</a></li>
+      <li><a href="varimp.html">Variable Importance</a></li>
+      <li><a href="parallel.html">Parallel Processing</a></li>
+    </ul>
+    <h2>Model Training and Tuning</h2>
+    <ul>
+      <li><a href="training.html">Basic Syntax</a></li>
+      <li><a href="modelList.html">Sortable Model List</a></li>
+      <li><a href="bytag.html">Models By Tag</a></li>
+      <li><a href="similarity.html">Models By Similarity</a></li>
+      <li><a href="custom_models.html">Using Custom Models</a></li>
+      <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+    </ul>
+    <h2>Feature Selection</h2>
+    <ul>
+      <li><a href="featureselection.html">Overview</a>
+      <li><a href="rfe.html">RFE</a></li>
+      <li><a href="filters.html">Filters</a></li>
+      <li><a href="GA.html">GA</a></li>
+      <li><a href="SA.html">SA</a></li>
+    </ul>  
   </li>
-  </ul>
-	</div>
-	<!-- end #sidebar -->
+</ul>
+</div>
+<!-- end #sidebar -->
 	<div style="clear: both;">&nbsp;</div>
       </div>
       <div class="container"><img src="images/img03.png" width="1000" height="40" alt="" /></div>
@@ -231,7 +230,7 @@ In reality, <span class="mx funCall">train</span> only created objects for 3 mod
     </div>
     <div id="footer-content"></div>
     <div id="footer">
-      <p>Created on Fri May 15 2015 using caret version 6.0-47 and R Under development (unstable) (2015-05-02 r68311).</p>
+      <p>Created on Fri Jul 17 2015 using caret version 6.0-52 and R Under development (unstable) (2015-07-12 r68650).</p>
     </div>
     <!-- end #footer -->
   </body>

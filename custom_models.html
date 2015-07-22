@@ -123,7 +123,7 @@ Released   : 20120902
   <a href="#Illustration2">Illustrative Example 2: Something More Complicated - LogitBoost</a>
   </li>
   <li>
-  <a href="#Illustration3">Illustrative Example 3: SMOTE During Resampling</a>  </li>
+  <a href="#Illustration3">Illustrative Example 3: Nonstandard Formulas</a>  </li>
   </li>
   <li>
   <a href="#Illustration4">Illustrative Example 4: PLS Feature Extraction Pre-Processing</a>      
@@ -490,9 +490,7 @@ We should now be ready to fit our model.
 
 Pre-processing: centered, scaled 
 Resampling: Cross-Validated (10 fold, repeated 10 times) 
-
 Summary of sample sizes: 142, 142, 140, 142, 142, 141, ... 
-
 Resampling results across tuning parameters:
 
   C      Accuracy  Kappa  Accuracy SD  Kappa SD
@@ -629,15 +627,13 @@ For the <span class="mx funCall">LogitBoost</span> custom model object, we could
 
   <span class="hl com">## In this case, 'submodels' is a data frame with the other values of</span>
   <span class="hl com">## nIter. We loop over these to get the other predictions.</span>
-  <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl opt">!</span><span class="hl kwd">is.null</span><span class="hl std">(submodels))</span>
-    <span class="hl std">{</span>
+  <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl opt">!</span><span class="hl kwd">is.null</span><span class="hl std">(submodels)) {</span>
     <span class="hl com">## Save _all_ the predictions in a list</span>
     <span class="hl std">tmp</span> <span class="hl kwb">&lt;-</span> <span class="hl std">out</span>
     <span class="hl std">out</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">vector</span><span class="hl std">(</span><span class="hl kwc">mode</span> <span class="hl std">=</span> <span class="hl str">&quot;list&quot;</span><span class="hl std">,</span> <span class="hl kwc">length</span> <span class="hl std">=</span> <span class="hl kwd">nrow</span><span class="hl std">(submodels)</span> <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl std">)</span>
     <span class="hl std">out[[</span><span class="hl num">1</span><span class="hl std">]]</span> <span class="hl kwb">&lt;-</span> <span class="hl std">tmp</span>
 
-    <span class="hl kwa">for</span><span class="hl std">(j</span> <span class="hl kwa">in</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl kwc">along</span> <span class="hl std">= submodels</span><span class="hl opt">$</span><span class="hl std">nIter))</span>
-      <span class="hl std">{</span>
+    <span class="hl kwa">for</span><span class="hl std">(j</span> <span class="hl kwa">in</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl kwc">along</span> <span class="hl std">= submodels</span><span class="hl opt">$</span><span class="hl std">nIter)) {</span>
       <span class="hl std">out[[j</span><span class="hl opt">+</span><span class="hl num">1</span><span class="hl std">]]</span> <span class="hl kwb">&lt;-</span> <span class="hl std">caTools</span><span class="hl opt">::</span><span class="hl kwd">predict.LogitBoost</span><span class="hl std">(modelFit,</span>
                                                 <span class="hl std">newdata,</span>
                                                 <span class="hl kwc">nIter</span> <span class="hl std">= submodels</span><span class="hl opt">$</span><span class="hl std">nIter[j])</span>
@@ -707,6 +703,8 @@ A few more notes:
 
 <p>Should you care about this? Let's tune the model over the same data set used for the SVM model above and see how long it takes:
 </p>
+
+
 <div class="chunk" id="custom_lb_mod"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
 <span class="hl std">lb1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">system.time</span><span class="hl std">(</span><span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= training,</span>
                          <span class="hl kwc">method</span> <span class="hl std">= lbFuncs,</span>
@@ -715,7 +713,7 @@ A few more notes:
 <span class="hl std">lb1</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   user  system elapsed 
- 10.039   3.009   2.379 
+  6.876   0.662   7.539 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## Now get rid of the submodel parts</span>
 <span class="hl std">lbFuncs2</span> <span class="hl kwb">&lt;-</span> <span class="hl std">lbFuncs</span>
@@ -731,10 +729,10 @@ A few more notes:
 <span class="hl std">lb2</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   user  system elapsed 
- 13.286   2.494   4.257 
+ 13.043   1.392  14.434 
 </pre></div>
 </div></div>
-<p>On a data set with 157 instances and 60 predictors and a model that is tuned over only 3 parameter values, there is a 1.79-fold speed-up. If the model were more computationally taxing or the data set were larger or the number of tune parameters that were evaluated was larger, the speed-up would increase. Here is a plot of the speed-up for a few more values of <span class="mx arg">tuneLength</span>:
+<p>On a data set with 157 instances and 60 predictors and a model that is tuned over only 3 parameter values, there is a 1.91-fold speed-up. If the model were more computationally taxing or the data set were larger or the number of tune parameters that were evaluated was larger, the speed-up would increase. Here is a plot of the speed-up for a few more values of <span class="mx arg">tuneLength</span>:
 </p>
 
 <div class="chunk" id="custom_lb_times"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">bigGrid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">nIter</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">151</span><span class="hl std">,</span> <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">))</span>
@@ -771,80 +769,105 @@ The speed-ups show a significant decrease in training time using this method.
 </p>
 
 <div id="Illustration3"></div>
-<h1>Illustrative Example 3: SMOTE During Resampling</h1>
+<h1>Illustrative Example 3: Nonstandard Formulas</h1>
 
 <p>
-Other example is related to class imbalances. It might be helpful to sample the data so that  the classes have a more balanced frequency distribution in the training set. One way to do this is the <a href="http://scholar.google.com/scholar?hl=en&q=SMOTE">SMOTE algorithm</a> where the majority class is down-sampled while new instances are imputed in the minority class. To get a good sense of what the performance will be using cross-validation, we should run SMOTE within each resample (instead of once prior to the model training). 
+(Note: the previous third illustration ("SMOTE During Resampling") is no longer needed due to the inclusion of subsampling via <span class="mx funCall">train</span>.)
 </p>
 <p>
-To do this, we will only modify the <span class="mx arg">fit</span> function. Suppose we want to fit an LDA model. First, we get the functions, then modify them:
+One limitation of <span class="mx funCall">train</span> is that it requires the use of basic model formulas. There are several functions that use special formulas or operators on predictors that won't  (and perhaps should not) work in the top level call to <span class="mx funCall">train</span>. However, we can still fit these models. 
 </p>
-<div class="chunk" id="custom_lda_mod"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">ldaInfo</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">getModelInfo</span><span class="hl std">(</span><span class="hl str">&quot;lda&quot;</span><span class="hl std">,</span> <span class="hl kwc">regex</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">)[[</span><span class="hl num">1</span><span class="hl std">]]</span>
-<span class="hl std">ldaInfo</span><span class="hl opt">$</span><span class="hl std">fit</span>
-</pre></div>
-<div class="output"><pre class="knitr r">function(x, y, wts, param, lev, last, classProbs, ...) lda(x, y, ...)
-</pre></div>
-<div class="source"><pre class="knitr r"><span class="hl std">ldaInfo</span><span class="hl opt">$</span><span class="hl std">fit</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">wts</span><span class="hl std">,</span> <span class="hl kwc">param</span><span class="hl std">,</span> <span class="hl kwc">lev</span><span class="hl std">,</span> <span class="hl kwc">last</span><span class="hl std">,</span> <span class="hl kwc">classProbs</span><span class="hl std">,</span> <span class="hl kwc">...</span><span class="hl std">) {</span>
-  <span class="hl kwd">library</span><span class="hl std">(DMwR)</span>
-  <span class="hl std">tmp</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.data.frame</span><span class="hl std">(x)</span>
-  <span class="hl std">tmp</span><span class="hl opt">$</span><span class="hl std">Class</span> <span class="hl kwb">&lt;-</span> <span class="hl std">y</span>
-  <span class="hl std">smoted</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">SMOTE</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= tmp)</span>
-  <span class="hl kwd">lda</span><span class="hl std">(smoted[,</span> <span class="hl kwd">names</span><span class="hl std">(smoted)</span> <span class="hl opt">!=</span> <span class="hl str">&quot;Class&quot;</span><span class="hl std">], smoted</span><span class="hl opt">$</span><span class="hl std">Class, ...)</span>
-  <span class="hl std">}</span>
-</pre></div>
-</div></div>
-
-<p> We can simulate some data with a class imbalance and test this model and the usual LDA model.</p>
-
-<div class="chunk" id="custom_lda_data"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">1135</span><span class="hl std">)</span>
-<span class="hl std">imbal_train</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">twoClassSim</span><span class="hl std">(</span><span class="hl kwc">n</span> <span class="hl std">=</span>  <span class="hl num">300</span><span class="hl std">,</span> <span class="hl kwc">intercept</span> <span class="hl std">=</span> <span class="hl opt">-</span><span class="hl num">17</span><span class="hl std">)</span>
-<span class="hl std">imbal_test</span>  <span class="hl kwb">&lt;-</span> <span class="hl kwd">twoClassSim</span><span class="hl std">(</span><span class="hl kwc">n</span> <span class="hl std">=</span> <span class="hl num">2000</span><span class="hl std">,</span> <span class="hl kwc">intercept</span> <span class="hl std">=</span> <span class="hl opt">-</span><span class="hl num">17</span><span class="hl std">)</span>
-<span class="hl kwd">table</span><span class="hl std">(imbal_train</span><span class="hl opt">$</span><span class="hl std">Class)</span>
+<p>
+Here is an example using the <span class="mx funCall">mboost</span> function in the <strong>mboost</strong> package from the help page. 
+</p>
+<div class="chunk" id="custom_mboost_orig"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(mboost)</span>
+<span class="hl kwd">data</span><span class="hl std">(</span><span class="hl str">&quot;bodyfat&quot;</span><span class="hl std">,</span> <span class="hl kwc">package</span> <span class="hl std">=</span> <span class="hl str">&quot;TH.data&quot;</span><span class="hl std">)</span>
+<span class="hl std">mod</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">mboost</span><span class="hl std">(DEXfat</span> <span class="hl opt">~</span> <span class="hl kwd">btree</span><span class="hl std">(age)</span> <span class="hl opt">+</span> <span class="hl kwd">bols</span><span class="hl std">(waistcirc)</span> <span class="hl opt">+</span> <span class="hl kwd">bbs</span><span class="hl std">(hipcirc),</span>
+              <span class="hl kwc">data</span> <span class="hl std">= bodyfat)</span>
+<span class="hl std">mod</span>
 </pre></div>
 <div class="output"><pre class="knitr r">
-Class1 Class2 
-   270     30 
-</pre></div>
-</div></div>
+	 Model-based Boosting
 
-<div class="chunk" id="custom_lda_both"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">ldaCtrl</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">trainControl</span><span class="hl std">(</span><span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;repeatedcv&quot;</span><span class="hl std">,</span> <span class="hl kwc">repeats</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">,</span>
-                        <span class="hl kwc">classProbs</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">,</span>
-                        <span class="hl kwc">summaryFunction</span> <span class="hl std">= twoClassSummary)</span>
-<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">346</span><span class="hl std">)</span>
-<span class="hl std">ldaFit</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= imbal_train,</span>
-                <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;lda&quot;</span><span class="hl std">,</span>
-                <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;ROC&quot;</span><span class="hl std">,</span>
-                <span class="hl kwc">trControl</span> <span class="hl std">= ldaCtrl)</span>
-<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">346</span><span class="hl std">)</span>
-<span class="hl std">ldaDSFit</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= imbal_train,</span>
-                  <span class="hl kwc">method</span> <span class="hl std">= ldaInfo,</span>
-                  <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;ROC&quot;</span><span class="hl std">,</span>
-                  <span class="hl kwc">trControl</span> <span class="hl std">= ldaCtrl)</span>
-
-<span class="hl std">ldaProb1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(ldaFit, imbal_test,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;prob&quot;</span><span class="hl std">)[,</span><span class="hl num">1</span><span class="hl std">]</span>
-<span class="hl std">ldaProb2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(ldaDSFit, imbal_test,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;prob&quot;</span><span class="hl std">)[,</span><span class="hl num">1</span><span class="hl std">]</span>
-
-<span class="hl kwd">roc</span><span class="hl std">(imbal_test</span><span class="hl opt">$</span><span class="hl std">Class, ldaProb1,</span> <span class="hl kwc">levels</span> <span class="hl std">=</span> <span class="hl kwd">rev</span><span class="hl std">(</span><span class="hl kwd">levels</span><span class="hl std">(imbal_test</span><span class="hl opt">$</span><span class="hl std">Class)))</span>
-</pre></div>
-<div class="output"><pre class="knitr r">
 Call:
-roc.default(response = imbal_test$Class, predictor = ldaProb1,     levels = rev(levels(imbal_test$Class)))
+mboost(formula = DEXfat ~ btree(age) + bols(waistcirc) + bbs(hipcirc),     data = bodyfat)
 
-Data: ldaProb1 in 142 controls (imbal_test$Class Class2) &lt; 1858 cases (imbal_test$Class Class1).
-Area under the curve: 0.7647
-</pre></div>
-<div class="source"><pre class="knitr r"><span class="hl kwd">roc</span><span class="hl std">(imbal_test</span><span class="hl opt">$</span><span class="hl std">Class, ldaProb2,</span> <span class="hl kwc">levels</span> <span class="hl std">=</span> <span class="hl kwd">rev</span><span class="hl std">(</span><span class="hl kwd">levels</span><span class="hl std">(imbal_test</span><span class="hl opt">$</span><span class="hl std">Class)))</span>
-</pre></div>
-<div class="output"><pre class="knitr r">
-Call:
-roc.default(response = imbal_test$Class, predictor = ldaProb2,     levels = rev(levels(imbal_test$Class)))
 
-Data: ldaProb2 in 142 controls (imbal_test$Class Class2) &lt; 1858 cases (imbal_test$Class Class1).
-Area under the curve: 0.7442
+	 Squared Error (Regression) 
+
+Loss function: (y - f)^2 
+ 
+
+Number of boosting iterations: mstop = 100 
+Step size:  0.1 
+Offset:  30.78282 
+Number of baselearners:  3 
 </pre></div>
 </div></div>
 
-<p> For these data, SMOTE didn't seem to make much of a difference. </p>
+<p> 
+We can create a custom model that mimics this code so that we can obtain resampling estimates for this specific model:
+</p>
+
+<div class="chunk" id="custom_mboost_code"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">modelInfo</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">label</span> <span class="hl std">=</span> <span class="hl str">&quot;Model-based Gradient Boosting&quot;</span><span class="hl std">,</span>
+                  <span class="hl kwc">library</span> <span class="hl std">=</span> <span class="hl str">&quot;mboost&quot;</span><span class="hl std">,</span>
+                  <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;Regression&quot;</span><span class="hl std">,</span>
+                  <span class="hl kwc">parameters</span> <span class="hl std">=</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">parameter</span> <span class="hl std">=</span> <span class="hl str">&quot;parameter&quot;</span><span class="hl std">,</span>
+                                          <span class="hl kwc">class</span> <span class="hl std">=</span> <span class="hl str">&quot;character&quot;</span><span class="hl std">,</span>
+                                          <span class="hl kwc">label</span> <span class="hl std">=</span> <span class="hl str">&quot;parameter&quot;</span><span class="hl std">),</span>
+                  <span class="hl kwc">grid</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">len</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">)</span>
+                    <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">parameter</span> <span class="hl std">=</span> <span class="hl str">&quot;none&quot;</span><span class="hl std">),</span>
+                  <span class="hl kwc">loop</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">,</span>
+                  <span class="hl kwc">fit</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">wts</span><span class="hl std">,</span> <span class="hl kwc">param</span><span class="hl std">,</span> <span class="hl kwc">lev</span><span class="hl std">,</span> <span class="hl kwc">last</span><span class="hl std">,</span> <span class="hl kwc">classProbs</span><span class="hl std">,</span> <span class="hl kwc">...</span><span class="hl std">) {</span>
+                    <span class="hl com">## mboost requires a data frame with predictors and response</span>
+                    <span class="hl std">dat</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl kwd">is.data.frame</span><span class="hl std">(x)) x</span> <span class="hl kwa">else</span> <span class="hl kwd">as.data.frame</span><span class="hl std">(x)</span>
+                    <span class="hl std">dat</span><span class="hl opt">$</span><span class="hl std">DEXfat</span> <span class="hl kwb">&lt;-</span> <span class="hl std">y</span>
+                    <span class="hl std">mod</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">mboost</span><span class="hl std">(DEXfat</span> <span class="hl opt">~</span> <span class="hl kwd">btree</span><span class="hl std">(age)</span> <span class="hl opt">+</span> <span class="hl kwd">bols</span><span class="hl std">(waistcirc)</span> <span class="hl opt">+</span> <span class="hl kwd">bbs</span><span class="hl std">(hipcirc),</span>
+                                  <span class="hl kwc">data</span> <span class="hl std">= dat)</span>
+                    <span class="hl std">},</span>
+                  <span class="hl kwc">predict</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">modelFit</span><span class="hl std">,</span> <span class="hl kwc">newdata</span><span class="hl std">,</span> <span class="hl kwc">submodels</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">) {</span>
+                    <span class="hl kwa">if</span><span class="hl std">(</span><span class="hl opt">!</span><span class="hl kwd">is.data.frame</span><span class="hl std">(newdata)) newdata</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.data.frame</span><span class="hl std">(newdata)</span>
+                    <span class="hl com">## By default a matrix is returned; we convert it to a vector</span>
+                    <span class="hl kwd">predict</span><span class="hl std">(modelFit, newdata)[,</span><span class="hl num">1</span><span class="hl std">]</span>
+                  <span class="hl std">},</span>
+                  <span class="hl kwc">prob</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">,</span>
+                  <span class="hl kwc">predictors</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">...</span><span class="hl std">) {</span>
+                    <span class="hl kwd">unique</span><span class="hl std">(</span><span class="hl kwd">as.vector</span><span class="hl std">(</span><span class="hl kwd">variable.names</span><span class="hl std">(x)))</span>
+                  <span class="hl std">},</span>
+                  <span class="hl kwc">tags</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Ensemble Model&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Boosting&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Implicit Feature Selection&quot;</span><span class="hl std">),</span>
+                  <span class="hl kwc">levels</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">,</span>
+                  <span class="hl kwc">sort</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">) x)</span>
+</pre></div>
+</div></div>
+
+<div class="chunk" id="custom_mboost_cv"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com">## Just use the basic formula method so that these predictors</span>
+<span class="hl com">## are passed 'as-is' into the model fitting and prediction</span>
+<span class="hl com">## functions.</span>
+<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">307</span><span class="hl std">)</span>
+<span class="hl std">mboost_resamp</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(DEXfat</span> <span class="hl opt">~</span> <span class="hl std">age</span> <span class="hl opt">+</span> <span class="hl std">waistcirc</span> <span class="hl opt">+</span> <span class="hl std">hipcirc,</span>
+                       <span class="hl kwc">data</span> <span class="hl std">= bodyfat,</span>
+                       <span class="hl kwc">method</span> <span class="hl std">= modelInfo,</span>
+                       <span class="hl kwc">trControl</span> <span class="hl std">=</span> <span class="hl kwd">trainControl</span><span class="hl std">(</span><span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;repeatedcv&quot;</span><span class="hl std">,</span>
+                                                <span class="hl kwc">repeats</span> <span class="hl std">=</span> <span class="hl num">5</span><span class="hl std">))</span>
+<span class="hl std">mboost_resamp</span>
+</pre></div>
+<div class="output"><pre class="knitr r">Model-based Gradient Boosting 
+
+71 samples
+ 9 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 5 times) 
+Summary of sample sizes: 63, 65, 65, 65, 63, 65, ... 
+Resampling results
+
+  RMSE      Rsquared   RMSE SD  Rsquared SD
+  3.918042  0.9123199  1.48361  0.04823965 
+
+ 
+</pre></div>
+</div></div>
+
 
 <div id="Illustration4"></div>
 <h1>Illustrative Example 4: PLS Feature Extraction Pre-Processing</h1>
@@ -938,7 +961,7 @@ Area under the curve: 0.7442
 <span class="hl kwd">getTrainPerf</span><span class="hl std">(rfOnly)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  TrainRMSE TrainRsquared method
-1  2.180532     0.4987555     rf
+1  2.184857     0.4960978     rf
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## How does random forest do on its own?</span>
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">184</span><span class="hl std">)</span>
@@ -962,7 +985,7 @@ Area under the curve: 0.7442
 <div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(</span><span class="hl kwd">predict</span><span class="hl std">(rfOnly, absorpTest), proteinTest)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">     RMSE  Rsquared 
-2.0404614 0.5666698 
+1.9929420 0.5927846 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(</span><span class="hl kwd">predict</span><span class="hl std">(plsOnly, absorpTest), proteinTest)</span>
 </pre></div>
@@ -1015,7 +1038,7 @@ Let's use a standard random forest model with these data using the default value
 <span class="hl kwd">getTrainPerf</span><span class="hl std">(mod0)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   TrainROC TrainSens TrainSpec method
-1 0.9575111 0.9991111     0.324     rf
+1 0.9571556 0.9982222     0.324     rf
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## Get the ROC curve</span>
 <span class="hl std">roc0</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">roc</span><span class="hl std">(testingSet</span><span class="hl opt">$</span><span class="hl std">Class,</span>
@@ -1056,7 +1079,7 @@ One of the most common ways to deal with this is to determine an alternate proba
 Alternatively the model can be tuned, using resampling, to determine any model tuning parameters as well as an appropriate cut off for the probabilities. 
 </p>
 <p>
-Suppose the model has one tuning parameter and we want to look at four candidate values for tuning. Suppose we also want to tune the probability cut off over 50 different thresholds. Now we have to look at 50×4=100 different models (and that is for each resample). One other feature that has been opened up his ability to use sequential parameters: these are tuning parameters that don't require a completely new model fit to produce predictions. In this case, we can fit one random forest model and get it's predicted class probabilities and evaluate the candidate probability cutoffs using these same hold-out samples. Here is what the model code looks like:
+Suppose the model has one tuning parameter and we want to look at four candidate values for tuning. Suppose we also want to tune the probability cut off over 20 different thresholds. Now we have to look at 20×4=80 different models (and that is for each resample). One other feature that has been opened up his ability to use sequential parameters: these are tuning parameters that don't require a completely new model fit to produce predictions. In this case, we can fit one random forest model and get it's predicted class probabilities and evaluate the candidate probability cutoffs using these same hold-out samples. Here is what the model code looks like:
 </p>
 <div class="chunk" id="custom_thresh_code"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com">## Get the model code for the original random forest method:</span>
 
@@ -1071,7 +1094,7 @@ Suppose the model has one tuning parameter and we want to look at four candidate
 <span class="hl std">thresh_code</span><span class="hl opt">$</span><span class="hl std">grid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">len</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">) {</span>
   <span class="hl std">p</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">ncol</span><span class="hl std">(x)</span>
   <span class="hl kwd">expand.grid</span><span class="hl std">(</span><span class="hl kwc">mtry</span> <span class="hl std">=</span> <span class="hl kwd">floor</span><span class="hl std">(</span><span class="hl kwd">sqrt</span><span class="hl std">(p)),</span>
-              <span class="hl kwc">threshold</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">.5</span><span class="hl std">,</span> <span class="hl num">.99</span><span class="hl std">,</span> <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl num">.01</span><span class="hl std">))</span>
+              <span class="hl kwc">threshold</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">.01</span><span class="hl std">,</span> <span class="hl num">.99</span><span class="hl std">,</span> <span class="hl kwc">length</span> <span class="hl std">= len))</span>
   <span class="hl std">}</span>
 
 <span class="hl com">## Here we fit a single random forest model (with a fixed mtry)</span>
@@ -1137,7 +1160,9 @@ Suppose the model has one tuning parameter and we want to look at four candidate
 </pre></div>
 </div></div>
     
-
+<p>
+Basically, we define a list of model components (such as the fitting code, the prediction code, etc.) and feed this into the train function instead of using a pre-listed model string (such as <tt><span class="hl std">method</span> <span class="hl kwb">=</span> <span class="hl str">&quot;rf&quot;</span></tt>). For this model and these data, there was an 8% increase in training time to evaluate 20 additional values of the probability cut off.
+</p>
 <p>
 How do we optimize this model? Normally we might look at the area under the ROC curve as a metric to choose our final values. In this case the ROC curve is independent of the probability threshold so we have to use something else. A common technique to evaluate a candidate threshold is see how close it is to the perfect model where sensitivity and specificity are one. Our code will use the distance between the current model's performance and the best possible performance and then have train minimize this distance when choosing it's parameters. Here is the code that we use to calculate this:
 </p>
@@ -1181,74 +1206,42 @@ How do we optimize this model? Normally we might look at the area under the ROC 
 
 No pre-processing
 Resampling: Cross-Validated (10 fold, repeated 5 times) 
-
 Summary of sample sizes: 450, 450, 450, 450, 450, 450, ... 
-
 Resampling results across tuning parameters:
 
   threshold  ROC    Sens   Spec   Dist   ROC SD  Sens SD  Spec SD  Dist SD
-  0.50       0.957  1.000  0.316  0.684  0.0351  0.00314  0.2024   0.2024 
-  0.51       0.957  0.998  0.360  0.640  0.0351  0.00809  0.2213   0.2213 
-  0.52       0.957  0.997  0.392  0.608  0.0351  0.00857  0.2355   0.2355 
-  0.53       0.957  0.997  0.436  0.564  0.0351  0.01005  0.2275   0.2274 
-  0.54       0.957  0.996  0.456  0.544  0.0351  0.01039  0.2215   0.2214 
-  0.55       0.957  0.995  0.496  0.504  0.0351  0.01150  0.1989   0.1989 
-  0.56       0.957  0.993  0.512  0.488  0.0351  0.01304  0.2067   0.2066 
-  0.57       0.957  0.990  0.540  0.461  0.0351  0.01751  0.2030   0.2028 
-  0.58       0.957  0.989  0.552  0.449  0.0351  0.01810  0.2082   0.2071 
-  0.59       0.957  0.984  0.564  0.438  0.0351  0.02155  0.2008   0.1975 
-  0.60       0.957  0.980  0.580  0.423  0.0351  0.02525  0.2070   0.2022 
-  0.61       0.957  0.977  0.592  0.412  0.0351  0.02675  0.2019   0.1962 
-  0.62       0.957  0.975  0.608  0.397  0.0351  0.02862  0.2019   0.1964 
-  0.63       0.957  0.973  0.612  0.393  0.0351  0.02875  0.2037   0.1984 
-  0.64       0.957  0.972  0.616  0.389  0.0351  0.02833  0.1973   0.1920 
-  0.65       0.957  0.970  0.628  0.377  0.0351  0.02936  0.1896   0.1834 
-  0.66       0.957  0.968  0.648  0.358  0.0351  0.02983  0.1876   0.1811 
-  0.67       0.957  0.967  0.648  0.358  0.0351  0.03086  0.1876   0.1812 
-  0.68       0.957  0.964  0.656  0.351  0.0351  0.03478  0.1897   0.1839 
-  0.69       0.957  0.962  0.656  0.351  0.0351  0.03599  0.1897   0.1834 
-  0.70       0.957  0.960  0.660  0.348  0.0351  0.03710  0.1906   0.1843 
-  0.71       0.957  0.960  0.676  0.332  0.0351  0.03702  0.1847   0.1786 
-  0.72       0.957  0.956  0.684  0.325  0.0351  0.03888  0.1811   0.1750 
-  0.73       0.957  0.954  0.688  0.322  0.0351  0.03986  0.1859   0.1793 
-  0.74       0.957  0.952  0.692  0.318  0.0351  0.04083  0.1861   0.1793 
-  0.75       0.957  0.948  0.704  0.308  0.0351  0.03959  0.1818   0.1729 
-  0.76       0.957  0.944  0.716  0.297  0.0351  0.04334  0.1670   0.1585 
-  0.77       0.957  0.937  0.728  0.288  0.0351  0.04550  0.1604   0.1499 
-  0.78       0.957  0.936  0.744  0.274  0.0351  0.04518  0.1618   0.1510 
-  0.79       0.957  0.930  0.752  0.267  0.0351  0.04467  0.1594   0.1497 
-  0.80       0.957  0.924  0.768  0.254  0.0351  0.04422  0.1421   0.1303 
-  0.81       0.957  0.919  0.792  0.237  0.0351  0.04529  0.1397   0.1220 
-  0.82       0.957  0.912  0.796  0.237  0.0351  0.04387  0.1428   0.1238 
-  0.83       0.957  0.900  0.808  0.236  0.0351  0.04405  0.1455   0.1186 
-  0.84       0.957  0.888  0.816  0.238  0.0351  0.04245  0.1503   0.1188 
-  0.85       0.957  0.880  0.840  0.224  0.0351  0.04261  0.1400   0.1058 
-  0.86       0.957  0.871  0.888  0.201  0.0351  0.04399  0.1409   0.1024 
-  0.87       0.957  0.859  0.896  0.205  0.0351  0.04636  0.1414   0.1033 
-  0.88       0.957  0.847  0.928  0.197  0.0351  0.04658  0.1325   0.0953 
-  0.89       0.957  0.830  0.960  0.193  0.0351  0.04851  0.0990   0.0731 
-  0.90       0.957  0.814  0.972  0.200  0.0351  0.05035  0.0809   0.0666 
-  0.91       0.957  0.795  0.976  0.216  0.0351  0.05090  0.0771   0.0666 
-  0.92       0.957  0.764  0.980  0.246  0.0351  0.05364  0.0728   0.0641 
-  0.93       0.957  0.725  0.992  0.277  0.0351  0.06233  0.0396   0.0634 
-  0.94       0.957  0.681  1.000  0.319  0.0351  0.07264  0.0000   0.0726 
-  0.95       0.957  0.621  1.000  0.379  0.0351  0.07638  0.0000   0.0764 
-  0.96       0.957  0.547  1.000  0.453  0.0351  0.06997  0.0000   0.0700 
-  0.97       0.957  0.456  1.000  0.544  0.0351  0.07475  0.0000   0.0747 
-  0.98       0.957  0.338  1.000  0.662  0.0351  0.07662  0.0000   0.0766 
-  0.99       0.957  0.180  1.000  0.820  0.0351  0.05851  0.0000   0.0585 
+  0.0100     0.957  1.000  0.000  1.000  0.035   0.0000   0.0000   0.0000 
+  0.0616     0.957  1.000  0.000  1.000  0.035   0.0000   0.0000   0.0000 
+  0.1132     0.957  1.000  0.000  1.000  0.035   0.0000   0.0000   0.0000 
+  0.1647     0.957  1.000  0.000  1.000  0.035   0.0000   0.0000   0.0000 
+  0.2163     0.957  1.000  0.000  1.000  0.035   0.0000   0.0000   0.0000 
+  0.2679     0.957  1.000  0.000  1.000  0.035   0.0000   0.0000   0.0000 
+  0.3195     0.957  1.000  0.032  0.968  0.035   0.0000   0.0935   0.0935 
+  0.3711     0.957  1.000  0.072  0.928  0.035   0.0000   0.1325   0.1325 
+  0.4226     0.957  1.000  0.132  0.868  0.035   0.0000   0.1491   0.1491 
+  0.4742     0.957  1.000  0.236  0.764  0.035   0.0000   0.2008   0.2008 
+  0.5258     0.957  0.996  0.416  0.584  0.035   0.0104   0.2054   0.2054 
+  0.5774     0.957  0.990  0.548  0.453  0.035   0.0175   0.2092   0.2083 
+  0.6289     0.957  0.972  0.616  0.389  0.035   0.0296   0.2014   0.1954 
+  0.6805     0.957  0.964  0.648  0.359  0.035   0.0339   0.1919   0.1857 
+  0.7321     0.957  0.952  0.696  0.314  0.035   0.0412   0.1862   0.1798 
+  0.7837     0.957  0.932  0.744  0.274  0.035   0.0440   0.1567   0.1466 
+  0.8353     0.957  0.896  0.824  0.227  0.035   0.0446   0.1598   0.1324 
+  0.8868     0.957  0.836  0.948  0.193  0.035   0.0486   0.1054   0.0770 
+  0.9384     0.957  0.682  0.996  0.320  0.035   0.0690   0.0283   0.0677 
+  0.9900     0.957  0.179  1.000  0.821  0.035   0.0591   0.0000   0.0591 
 
 Tuning parameter 'mtry' was held constant at a value of 3
 Dist was used to select the optimal model using  the smallest value.
-The final values used for the model were mtry = 3 and threshold = 0.89. 
+The final values used for the model were mtry = 3 and threshold = 0.887. 
 </pre></div>
 </div></div>
 
 <p>
-This additional optimzation increased the model training time by <code class="knitr inline">23</code>% (<code class="knitr inline">6</code> min versus <code class="knitr inline">4.8</code> min). 
+results
 </p>
 <p>
-The command <tt><span class="hl kwd">ggplot</span><span class="hl std">(mod1)</span></tt> will show the performance profile. Instead here is a plot of the sensitivity, specificity, and distance to the perfect model:
+Using <tt><span class="hl kwd">ggplot</span><span class="hl std">(mod1)</span></tt> will show the performance profile. Instead here is a plot of the sensitivity, specificity, and distance to the perfect model:
 </p>
 <div class="chunk" id="custom_thresh_mod1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(reshape2)</span>
 <span class="hl std">metrics</span> <span class="hl kwb">&lt;-</span> <span class="hl std">mod1</span><span class="hl opt">$</span><span class="hl std">results[,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl std">,</span> <span class="hl num">4</span><span class="hl opt">:</span><span class="hl num">6</span><span class="hl std">)]</span>
@@ -1277,41 +1270,39 @@ One great thing about this code is that it will automatically apply the optimize
   </div>
   <!-- end #content -->
 <div id="sidebar">
-  <ul>
+<ul>
   <li>
-  <h2>Links</h2>
-  <p><a href="modelList.html"><tt>train</tt> Model List</a></p>
-  </li>
-  <li>
-    <h2>Topics</h2>
+    <h2>General Topics</h2>
     <ul>
-        <li><a href="index.html">Main Page</a></li>
-      <li><a href="datasets.html">Data Sets</a></li>
-        <li><a href="visualizations.html">Visualizations</a></li>
-        <li><a href="preprocess.html">Pre-Processing</a></li>
-        <li><a href="splitting.html">Data Splitting</a></li>
-        <li><a href="misc.html">Miscellaneous Model Functions</a></li>
-        <li><a href="training.html">Model Training and Tuning</a></li>
-        <li><a href="modelList.html"><tt>train</tt> Model List</a></li>
-        <li><a href="bytag.html"><tt>train</tt> Models By Tag</a></li>
-        <li><a href="similarity.html"><tt>train</tt> Models By Similarity</a></li>
-        <li><a href="custom_models.html">Using Custom Models</a></li>
-        <li><a href="varimp.html">Variable Importance</a></li>
-        <li><a href="featureselection.html">Feature Selection</a>
-        <ul>
-          <li><a href="rfe.html">RFE</a></li>
-            <li><a href="filters.html">Filters</a></li>
-            <li><a href="GA.html">GA</a></li>
-            <li><a href="SA.html">SA</a></li>
-        </ul></li>
-        <li><a href="other.html">Other Functions</a></li>
-        <li><a href="parallel.html">Parallel Processing</a></li>
-        <li><a href="adaptive.html">Adaptive Resampling</a></li> 
-  </ul>
+      <li><a href="index.html">Front Page</a></li>
+      <li><a href="visualizations.html">Visualizations</a></li>
+      <li><a href="preprocess.html">Pre-Processing</a><li>
+      <li><a href="splitting.html">Data Splitting</a></li>
+      <li><a href="varimp.html">Variable Importance</a></li>
+      <li><a href="parallel.html">Parallel Processing</a></li>
+    </ul>
+    <h2>Model Training and Tuning</h2>
+    <ul>
+      <li><a href="training.html">Basic Syntax</a></li>
+      <li><a href="modelList.html">Sortable Model List</a></li>
+      <li><a href="bytag.html">Models By Tag</a></li>
+      <li><a href="similarity.html">Models By Similarity</a></li>
+      <li><a href="custom_models.html">Using Custom Models</a></li>
+      <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="adaptive.html">Adaptive Resampling</a></li> 
+    </ul>
+    <h2>Feature Selection</h2>
+    <ul>
+      <li><a href="featureselection.html">Overview</a>
+      <li><a href="rfe.html">RFE</a></li>
+      <li><a href="filters.html">Filters</a></li>
+      <li><a href="GA.html">GA</a></li>
+      <li><a href="SA.html">SA</a></li>
+    </ul>  
   </li>
-  </ul>
-  </div>
-  <!-- end #sidebar -->
+</ul>
+</div>
+<!-- end #sidebar -->
 <div style="clear: both;">&nbsp;</div>
   </div>
   <div class="container"><img src="images/img03.png" width="1000" height="40" alt="" /></div>
@@ -1320,7 +1311,7 @@ One great thing about this code is that it will automatically apply the optimize
   <div id="footer-content"></div>
 
   <div id="footer">
-  <p>Created on Sat May 16 2015 using caret version 6.0-47 and R Under development (unstable) (2015-05-02 r68311).</p>
+  <p>Created on Fri Jul 17 2015 using caret version 6.0-52 and R Under development (unstable) (2015-07-12 r68650).</p>
   </div>
   <!-- end #footer -->
 </body>
