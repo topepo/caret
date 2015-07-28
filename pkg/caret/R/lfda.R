@@ -12,8 +12,6 @@
 #' 
 #' @return matrix consisting of an N-by-M tiling copies of A
 #' 
-#' @export
-#' 
 repmat <- function(A, N, M) {
   kronecker(matrix(1, N, M), A)
 }
@@ -26,8 +24,6 @@ repmat <- function(A, N, M) {
 #' @param n the exponent
 #' 
 #' @return the matrix after negative one half power
-#' 
-#' @export
 #' 
 "%^%" <- function(x, n) {
   with(eigen(as.matrix(x)), vectors %*% (values^n * t(vectors)))
