@@ -2,6 +2,8 @@
 % Please edit documentation in R/lfda.R
 \name{lfda}
 \alias{lfda}
+\alias{predict.lfda}
+\alias{lfda.default}
 
 \title{Local Fisher Discriminant Analysis}
 
