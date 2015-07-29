@@ -21,6 +21,8 @@ n is the number of samples.}
 'plain'           --- raw eigenvectors}
 
 \item{knn}{parameter used in local scaling method (default: 5)}
+
+\item{...}{additional arguments.}
 }
 \value{
 list of the LFDA results:

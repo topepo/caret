@@ -13,6 +13,8 @@ matrix that can be used for transforming testing set}
 \item{newdata}{The data to be transformed}
 
 \item{type}{The output type, in this case it defaults to "raw" since the output is a matrix}
+
+\item{...}{additional arguments.}
 }
 \value{
 the transformed matrix
