@@ -14,7 +14,7 @@ matrix that can be used for transforming testing set}
 
 \item{type}{The output type, in this case it defaults to "raw" since the output is a matrix}
 
-\item{...}{additional arguments.}
+\item{...}{Additional arguments}
 }
 \value{
 the transformed matrix

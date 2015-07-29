@@ -22,7 +22,7 @@ n is the number of samples.}
 
 \item{knn}{parameter used in local scaling method (default: 5)}
 
-\item{...}{additional arguments.}
+\item{...}{Additional arguments}
 }
 \value{
 list of the LFDA results:
