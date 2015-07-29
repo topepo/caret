@@ -2,14 +2,88 @@
 % Please edit documentation in R/lfda.R
 \name{lfda.default}
 \alias{lfda.default}
-\title{This function trains a lfda metric, returns a transformed original matrix and transforming matrix used to
-transform other data set, usually for testing set}
+\title{Training LFDA Metric}
 \usage{
 \method{lfda}{default}(x, y, r = 3, metric = c("orthonormalized", "plain",
   "weighted"), knn = 5, ...)
+}
+\arguments{
+\item{x}{n x d matrix of original samples.
+n is the number of samples.}
+
+\item{y}{length n vector of class labels}
+
+\item{r}{dimensionality of reduced space (default: d)}
+
+\item{metric}{type of metric in the embedding space (no default)
+'weighted'        --- weighted eigenvectors
+'orthonormalized' --- orthonormalized
+'plain'           --- raw eigenvectors}
+
+\item{knn}{parameter used in local scaling method (default: 5)}
+}
+\value{
+list of the LFDA results:
+\item{T}{d x r transformation matrix (Z = x * T)}
+\item{Z}{n x r matrix of dimensionality reduced samples}
 }
 \description{
 This function trains a lfda metric, returns a transformed original matrix and transforming matrix used to
 transform other data set, usually for testing set
 }
+\examples{
+\dontrun{
+## example without dimension reduction
+k <- trainData[,-1]
+y <- trainData[,1]
+r <- 26 # dimensionality of reduced space. Here no dimension reduction is performed
+result <- lfda_calc(k,y,r,metric="plain")
+transformedMat <- result$Z # transformed training data
+metric.train <- as.data.frame(cbind(trainData[,1],transformedMat))
+colnames(metric.train) <- colnames(trainData)
+
+## example with dimension reduction
+k <- trainData[,-1]
+y <- trainData[,1]
+r <- 3 # dimensionality of reduced space
+
+result <- lfda_calc(k,y,r,metric="weighted")
+transformMat  <- result$T # transforming matrix - distance metric
+
+# transformed training data with Style
+transformedMat <- result$Z # transformed training data
+metric.train <- as.data.frame(cbind(trainData[,1],transformedMat))
+colnames(metric.train)[1] <- "Style"
+
+# transformed testing data with Style
+metric.test <- as.matrix(testData[,-1]) \%*\% transformMat
+metric.test <- as.data.frame(cbind(testData[,1],metric.test))
+colnames(metric.test)[1] <- "Style"
+}
+}
+\author{
+Yuan Tang
+
+Yuan Tang
+}
+\references{
+Sugiyama, M (2007).
+Dimensionality reduction of multimodal labeled data by
+local Fisher discriminant analysis.
+\emph{Journal of Machine Learning Research}, vol.\bold{8}, 1027--1061.
+
+Sugiyama, M (2006).
+Local Fisher discriminant analysis for supervised dimensionality reduction.
+In W. W. Cohen and A. Moore (Eds.), \emph{Proceedings of 23rd International
+Conference on Machine Learning (ICML2006)}, 905--912.
+
+#'
+}
+\keyword{discriminant}
+\keyword{fisher}
+\keyword{lfda}
+\keyword{local}
+\keyword{mahalanobis}
+\keyword{metric}
+\keyword{transformation}
 
