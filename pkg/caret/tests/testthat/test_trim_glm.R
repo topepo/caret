@@ -1,14 +1,15 @@
-library(caret)
 
-test_that('bayesglm classification', {
+test_that('glm classification', {
   skip_on_cran()
+  library(caret)
+
   set.seed(1)
   tr_dat <- twoClassSim(200)
   te_dat <- twoClassSim(200)
 
   set.seed(2)
   class_trim <- train(Class ~ ., data = tr_dat,
-                      method = "bayesglm",
+                      method = "glm",
                       tuneLength=1,
                       trControl = trainControl(method = "none",
                                                classProbs = TRUE,
@@ -16,7 +17,7 @@ test_that('bayesglm classification', {
 
   set.seed(2)
   class_notrim <- train(Class ~ ., data = tr_dat,
-                        method = "bayesglm",
+                        method = "glm",
                         tuneLength=1,
                         trControl = trainControl(method = "none",
                                                  classProbs = TRUE,
@@ -31,22 +32,24 @@ test_that('bayesglm classification', {
   expect_less_than(object.size(class_trim)-object.size(class_notrim), 0)
 })
 
-test_that('bayesglm regression', {
+test_that('glm regression', {
   skip_on_cran()
+  library(caret)
+
   set.seed(1)
   tr_dat <- SLC14_1(200)
   te_dat <- SLC14_1(200)
 
   set.seed(2)
   reg_trim <- train(y ~ ., data = tr_dat,
-                    method = "bayesglm",
+                    method = "glm",
                     tuneLength=1,
                     trControl = trainControl(method = "none",
                                              trim = TRUE))
 
   set.seed(2)
   reg_notrim <- train(y ~ ., data = tr_dat,
-                      method = "bayesglm",
+                      method = "glm",
                       tuneLength=1,
                       trControl = trainControl(method = "none",
                                                trim = FALSE))

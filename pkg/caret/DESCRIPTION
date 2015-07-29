@@ -49,8 +49,8 @@ Suggests:
     RANN,
     spls,
     subselect,
-    pamr, 
-    superpc, 
+    pamr,
+    superpc,
     Cubist,
     testthat (>= 0.9.1)
 License: GPL (>= 2)
