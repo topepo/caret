@@ -74,8 +74,6 @@ repmat <- function(A, N, M) {
 #' In W. W. Cohen and A. Moore (Eds.), \emph{Proceedings of 23rd International
 #' Conference on Machine Learning (ICML2006)}, 905--912.
 #' 
-#' @importFrom rARPACK eigs
-#' 
 #' @examples
 #' \dontrun{
 #' ## example without dimension reduction
