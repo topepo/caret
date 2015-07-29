@@ -15,7 +15,6 @@ importFrom(stats, .checkMFClasses, .getXlevels, aggregate, anova,
 importFrom(stats4, coef) 
 importFrom(utils, capture.output, getFromNamespace, head, 
            install.packages, installed.packages, object.size, flush.console, menu, stack)
-importFrom(rARPACK, eigs)
 
 export(anovaScores,
        as.data.frame.resamples,
