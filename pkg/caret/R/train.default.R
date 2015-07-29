@@ -191,9 +191,12 @@ train.default <- function(x, y,
       if("knnImpute" %in% pp$method) pp$k <- ppOpt$k   
       pp$x <- x
       ppObj <- do.call("preProcess", pp)
-      tuneGrid <- models$grid(predict(ppObj, x), y, tuneLength)
+      tuneGrid <- models$grid(x = predict(ppObj, x), 
+                              y = y, 
+                              len = tuneLength, 
+                              search = trControl$search)
       rm(ppObj, pp)
-    } else tuneGrid <- models$grid(x, y, tuneLength)
+    } else tuneGrid <- models$grid(x = x, y = y, len = tuneLength, search = trControl$search)
   }
   dotNames <- hasDots(tuneGrid, models)
   if(dotNames) colnames(tuneGrid) <- gsub("^\\.", "", colnames(tuneGrid))
@@ -297,6 +300,8 @@ train.default <- function(x, y,
       trainInfo <- models$loop(tuneGrid)
       if(!all(c("loop", "submodels") %in% names(trainInfo))) 
         stop("The 'loop' function should produce a list with elements 'loop' and 'submodels'")
+      lengths <- unlist(lapply(trainInfo$submodels, nrow))
+      if(all(lengths == 0)) trainInfo$submodels <- NULL
     } else trainInfo <- list(loop = tuneGrid)
     
     

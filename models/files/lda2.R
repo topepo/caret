@@ -10,7 +10,7 @@ modelInfo <- list(label = "Linear Discriminant Analysis",
                   parameters = data.frame(parameter = c('dimen'),
                                           class = c('numeric'),
                                           label = c('#Discriminant Functions')),
-                  grid = function(x, y, len = NULL) data.frame(dimen = 1:min(ncol(x), length(levels(y)) - 1)),
+                  grid = function(x, y, len = NULL, search = "grid") data.frame(dimen = 1:min(ncol(x), length(levels(y)) - 1)),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) lda(x, y, ...)  ,
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- as.character(predict(modelFit, newdata, dimen = modelFit$tuneValue$dimen)$class)

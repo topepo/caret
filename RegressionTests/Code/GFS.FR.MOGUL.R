@@ -1,7 +1,7 @@
 library(caret)
 timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
 
-model <- "GFS.FR.MOGAL"
+model <- "GFS.FR.MOGUL"
 
 #########################################################################
 
@@ -36,27 +36,34 @@ seeds <- lapply(seeds, function(x) 1:3)
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", seeds = seeds)
 rctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
 rctrl3 <- trainControl(method = "none", seeds = seeds)
+rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
-test_reg_cv_model <- train(trainX, trainY, method = "GFS.FR.MOGAL", 
+test_reg_cv_model <- train(trainX, trainY, method = "GFS.FR.MOGUL", 
                            tuneGrid = grid,
                            trControl = rctrl1)
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
-                          method = "GFS.FR.MOGAL", 
+                          method = "GFS.FR.MOGUL", 
                           tuneGrid = grid,
                           trControl = rctrl1)
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
-test_reg_loo_model <- train(trainX, trainY, method = "GFS.FR.MOGAL",, 
+test_reg_rand <- train(trainX, trainY, 
+                       method = "GFS.FR.MOGUL", 
+                       trControl = rctrlR,
+                       tuneLength = 4)
+
+set.seed(849)
+test_reg_loo_model <- train(trainX, trainY, method = "GFS.FR.MOGUL",, 
                             tuneGrid = grid, trControl = rctrl2)
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
-                             method = "GFS.FR.MOGAL", 
+                             method = "GFS.FR.MOGUL", 
                              trControl = rctrl3,
                              tuneGrid = test_reg_cv_model$bestTune,
                              preProc = c("center", "scale"))

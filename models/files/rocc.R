@@ -5,10 +5,15 @@ modelInfo <- list(label = "ROC-Based Classifier",
                   parameters = data.frame(parameter = c('xgenes'),
                                           class = c('numeric'),
                                           label = c('#Variables Retained')),
-                  grid = function(x, y, len = NULL) {
-                    data.frame(xgenes = caret::var_seq(p = ncol(x), 
-                                                classification = is.factor(y), 
-                                                len = len))
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(xgenes = caret::var_seq(p = ncol(x), 
+                                                                classification = is.factor(y), 
+                                                                len = len))
+                    } else {
+                      out <- data.frame(xgenes = unique(sample(1:ncol(x), size = len, replace = TRUE)))
+                    }
+                    out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     newY <- factor(ifelse(y == levels(y)[1], 1, 0), levels = c("0", "1"))

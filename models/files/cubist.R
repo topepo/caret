@@ -29,8 +29,16 @@ modelInfo <- list(label = "Cubist",
                   parameters = data.frame(parameter = c('committees', 'neighbors'),
                                           class = rep('numeric', 2),
                                           label = c('#Committees', '#Instances')),
-                  grid = function(x, y, len = NULL) expand.grid(neighbors = c(0, 5, 9),
-                                                                committees = c(1, 10, 20)),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(neighbors = c(0, 5, 9), committees = c(1, 10, 20))
+                    } else {
+                      out <- data.frame(neighbors = sample(0:9, replace = TRUE, size = len),
+                                        committees = sample(1:100, replace = TRUE, size = len))
+                    }
+                    out[!duplicated(out),]
+                    
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     out <- cubist(x, y, committees =  param$committees, ...)
                     if(last) out$tuneValue$neighbors <- param$neighbors

@@ -5,8 +5,15 @@ modelInfo <- list(label = "Shrinkage Discriminant Analysis",
                   parameters = data.frame(parameter = c('diagonal','lambda'),
                                           class = c("logical", "numeric"),
                                           label = c('Diagonalize','shrinkage')),
-                  grid = function(x, y, len = NULL) 
-                    data.frame(diagonal = FALSE, lambda = seq(0, 1, length = len)),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(diagonal = FALSE, lambda = seq(0, 1, length = len))
+                    } else {
+                      out <- data.frame(lambda = runif(len, min = 0, 1),
+                                        diagonal = sample(c(TRUE, FALSE), size = len, replace = TRUE))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...)
                     sda::sda(as.matrix(x), 
                              y, 

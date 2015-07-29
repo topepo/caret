@@ -4,7 +4,7 @@ modelInfo <- list(label = "CART",
                   parameters = data.frame(parameter = c('maxdepth'),
                                           class = c("numeric"),
                                           label = c("Max Tree Depth")),
-                  grid = function(x, y, len = NULL){
+                  grid = function(x, y, len = NULL, search = "grid"){
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     initialFit <- rpart(.outcome ~ .,
@@ -12,14 +12,20 @@ modelInfo <- list(label = "CART",
                                         control = rpart.control(cp = 0))$cptable
                     initialFit <- initialFit[order(-initialFit[,"CP"]), "nsplit", drop = FALSE]
                     initialFit <- initialFit[initialFit[,"nsplit"] > 0 & initialFit[,"nsplit"] <= 30, , drop = FALSE]
-                    if(dim(initialFit)[1] < len)
-                    {
-                      cat("note: only", nrow(initialFit),
-                        "possible values of the max tree depth from the initial fit.\n",
-                        "Truncating the grid to", nrow(initialFit), ".\n\n")
-                      tuneSeq <-  as.data.frame(initialFit)
-                    } else tuneSeq <-  as.data.frame(initialFit[1:len,])
-                    colnames(tuneSeq) <- "maxdepth"
+                    
+                    if(search == "grid") {
+                      
+                      if(dim(initialFit)[1] < len) {
+                        cat("note: only", nrow(initialFit),
+                            "possible values of the max tree depth from the initial fit.\n",
+                            "Truncating the grid to", nrow(initialFit), ".\n\n")
+                        tuneSeq <-  as.data.frame(initialFit)
+                      } else tuneSeq <-  as.data.frame(initialFit[1:len,])
+                      colnames(tuneSeq) <- "maxdepth"
+                    } else {
+                      tuneSeq <- data.frame(maxdepth = unique(sample(as.vector(initialFit[,1]), 
+                                                                     size = len, replace = TRUE)))
+                    }
                     tuneSeq
                   },
                   loop = function(grid) {
@@ -49,7 +55,7 @@ modelInfo <- list(label = "CART",
                     
                     out <- do.call("rpart", modelArgs)
                     out           
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     ## Models are indexed by Cp so approximate the Cp for
                     ## the value of maxdepth

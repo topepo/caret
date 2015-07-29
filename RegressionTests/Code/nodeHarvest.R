@@ -17,6 +17,7 @@ seeds <- lapply(seeds, function(x) 1:20)
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", seeds = seeds)
 cctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
 cctrl3 <- trainControl(method = "none", seeds = seeds)
+cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
@@ -34,6 +35,13 @@ test_class_cv_form <- train(Class ~ ., data = training,
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
+
+set.seed(849)
+test_class_rand <- train(trainX, trainY, 
+                         method = "nodeHarvest", 
+                         trControl = cctrlR,
+                         tuneLength = 4,
+                         nodes = 50, silent= TRUE)
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
@@ -83,6 +91,7 @@ testY <- trainX$y
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", seeds = seeds)
 rctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
 rctrl3 <- trainControl(method = "none", seeds = seeds)
+rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
@@ -99,6 +108,13 @@ test_reg_cv_form <- train(y ~ ., data = training,
                           preProc = c("center", "scale"),
                           nodes = 50, silent= TRUE)
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
+
+set.seed(849)
+test_reg_rand <- train(trainX, trainY, 
+                       method = "nodeHarvest", 
+                       trControl = rctrlR,
+                       tuneLength = 4,
+                       nodes = 50, silent= TRUE)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 

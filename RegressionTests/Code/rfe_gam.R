@@ -51,10 +51,10 @@ test_cv_model_form <- rfe(y ~ ., data = training,
                           sizes = 1:3,
                           rfeControl = rctrl1)
 
-set.seed(849)
-test_loo_model_form <- rfe(y ~ ., data = training,
-                           sizes = 1:3,
-                           rfeControl = rctrl2)
+# set.seed(849)
+# test_loo_model_form <- rfe(y ~ ., data = training,
+#                            sizes = 1:3,
+#                            rfeControl = rctrl2)
 
 #########################################################################
 
@@ -97,10 +97,10 @@ test_cv_model_form_class <- rfe(Class ~ ., data = training_class,
                                 sizes = 1:3,
                                 rfeControl = cctrl1)
 
-set.seed(849)
-test_loo_model_form_class <- rfe(Class ~ ., data = training_class,
-                                 sizes = c(1, 5, 10, 15),
-                                 rfeControl = cctrl2)
+# set.seed(849)
+# test_loo_model_form_class <- rfe(Class ~ ., data = training_class,
+#                                  sizes = c(1, 5, 10, 15),
+#                                  rfeControl = cctrl2)
 
 #########################################################################
 

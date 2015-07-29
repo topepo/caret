@@ -5,7 +5,7 @@ modelInfo <- list(label = "Model Rules",
                   parameters = data.frame(parameter = c('pruned', 'smoothed'),
                                           class = rep("character", 2),
                                           label = c('Pruned', 'Smoothed')),
-                  grid = function(x, y, len = NULL) expand.grid(pruned = c("Yes", "No"), 
+                  grid = function(x, y, len = NULL, search = "grid") expand.grid(pruned = c("Yes", "No"), 
                                                                 smoothed = c("Yes", "No")),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     theDots <- list(...)

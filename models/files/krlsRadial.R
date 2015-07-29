@@ -5,16 +5,30 @@ modelInfo <- list(label = "Radial Basis Function Kernel Regularized Least Square
                   parameters = data.frame(parameter = c('lambda', 'sigma'),
                                           class = c('numeric', 'numeric'),
                                           label = c('Regularization Parameter', 'Sigma')),
-                  grid = function(x, y, len = NULL) {
+                  grid = function(x, y, len = NULL, search = "grid") {
                     ## this was changed to follow what kernlab does inside of ksvm and rvm:
                     sigmaEstimate <- try(sigest(x, na.action = na.omit, scaled = TRUE),
                                          silent = TRUE)
-                    if(!(class(sigmaEstimate) == "try-error"))
-                    {
-                      out <- seq(sigmaEstimate[1], sigmaEstimate[3], length = len)
-                    } else out <- 10 ^((1:len) - 3)
-                    
-                    expand.grid(lambda = NA, sigma = 1/out)
+                    if(!(class(sigmaEstimate) == "try-error")) {
+                      if(search == "grid") {
+                        out <- expand.grid(lambda = NA, 
+                                           sigma = 1/seq(sigmaEstimate[1], sigmaEstimate[3], length = len))
+                      } else {
+                        rng <- extendrange(log(sigmaEstimate), f = .75)
+                        out <- data.frame(lambda = 10^runif(len, min = -5, 0),
+                                          sigma = 1/exp(runif(len, min = rng[1], max = rng[2])))
+                      }
+                      
+                    } else {
+                      if(search == "grid") {
+                        out <- expand.grid(lambda = NA, 
+                                           sigma = 1/(10 ^((1:len) - 3))) 
+                      } else {
+                        out <- data.frame(lambda = 10^runif(len, min = -5, 0),
+                                          sigma = 1/(10^runif(len, min = -4, max = 0)))
+                      }
+                    }
+                    out
                   }
                   ,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {

@@ -6,10 +6,21 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                                           class = rep("numeric", 4),
                                           label = c('# Boosting Iterations', 'Max Tree Depth', 
                                                     'Shrinkage', 'Min. Terminal Node Size')),
-                  grid = function(x, y, len = NULL) expand.grid(interaction.depth = seq(1, len),
-                                                                n.trees = floor((1:len) * 50),
-                                                                shrinkage = .1,
-                                                                n.minobsinnode = 10),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(interaction.depth = seq(1, len),
+                                         n.trees = floor((1:len) * 50),
+                                         shrinkage = .1,
+                                         n.minobsinnode = 10)
+                    } else {
+                      out <- data.frame(n.trees = floor(runif(len, min = 1, max = 5000)),
+                                        interaction.depth = sample(1:10, replace = TRUE, size = len),         
+                                        shrinkage = runif(len, min = .001, max = .6),
+                                        n.minobsinnode = sample(5:25, replace = TRUE, size = len) )
+                      out <- out[!duplicated(out),]
+                    }
+                    out
+                  },
                   loop = function(grid) {     
                     loop <- ddply(grid, c("shrinkage", "interaction.depth", "n.minobsinnode"),
                                   function(x) c(n.trees = max(x$n.trees)))

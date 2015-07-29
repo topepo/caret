@@ -5,10 +5,18 @@ modelInfo <- list(label = "Fuzzy Rules via MOGUL",
                                           class = rep("numeric", 3),
                                           label = c('Max. Generations', 'Max. Iterations',
                                                     'Max. Tuning Iterations')),
-                  grid = function(x, y, len = NULL)
-                    expand.grid(max.gen = 10*(1:len),      
-                                max.iter = 100,
-                                max.tune = 10*(1:len)),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- expand.grid(max.gen = 10*(1:len),      
+                                         max.iter = 10,
+                                         max.tune = 10*(1:len))
+                    } else {
+                      out <- data.frame(max.gen = sample(1:20, size = len, replace = TRUE),
+                                        max.iter = sample(1:20, replace = TRUE, size = len),
+                                        max.tune = sample(1:20, size = len, replace = TRUE))
+                    }
+                    out
+                  }, 
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     args <- list(data.train = as.matrix(cbind(x, y)),

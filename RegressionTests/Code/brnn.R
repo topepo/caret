@@ -33,6 +33,7 @@ seeds <- lapply(seeds, function(x) 1:20)
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", seeds = seeds)
 rctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
 rctrl3 <- trainControl(method = "none", seeds = seeds)
+rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_reg_cv_model <- train(trainX[, 1:3], trainY, method = "brnn", 
@@ -46,6 +47,12 @@ test_reg_cv_form <- train(y ~ ., data = training[, c(1:3, ncol(training))],
                           tuneLength = 2,
                           trControl = rctrl1, verbose =FALSE)
 test_reg_pred_form <- predict(test_reg_cv_form, testX[, 1:3])
+
+set.seed(849)
+test_reg_rand <- train(trainX, trainY, 
+                       method = "brnn", 
+                       trControl = rctrlR,
+                       tuneLength = 4)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX[, 1:3], trainY, method = "brnn", 

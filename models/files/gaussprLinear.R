@@ -4,7 +4,7 @@ modelInfo <- list(label = "Gaussian Process",
                   parameters = data.frame(parameter = c('parameter'),
                                           class = c("character"),
                                           label = c('Parameter')),
-                  grid = function(x, y, len = NULL) data.frame(parameter = "none"),
+                  grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     gausspr(x = as.matrix(x), y = y,

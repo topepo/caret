@@ -4,7 +4,7 @@ modelInfo <- list(label = "Bagged FDA using gCV Pruning",
                   parameters = data.frame(parameter = c('degree'),
                                           class = c("numeric"),
                                           label = c('Product Degree')),
-                  grid = function(x, y, len = NULL)  data.frame(degree = 1),
+                  grid = function(x, y, len = NULL, search = "grid")  data.frame(degree = 1),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)

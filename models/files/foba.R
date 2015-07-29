@@ -4,11 +4,17 @@ modelInfo <- list(label = "Ridge Regression with Variable Selection",
                   parameters = data.frame(parameter = c('k', 'lambda'),
                                           class = c("numeric", "numeric"),
                                           label = c('#Variables Retained', 'L2 Penalty')),
-                  grid = function(x, y, len = NULL)  {                   
-                    expand.grid(lambda = 10 ^ seq(-5, -1, length = len),
-                                k = caret::var_seq(p = ncol(x), 
-                                            classification = is.factor(y), 
-                                            len = len))
+                  grid = function(x, y, len = NULL, search = "grid")  {   
+                    if(search == "grid") {
+                      out <- expand.grid(lambda = 10 ^ seq(-5, -1, length = len),
+                                         k = caret::var_seq(p = ncol(x), 
+                                                            classification = is.factor(y), 
+                                                            len = len))
+                    } else {
+                      out <- data.frame(lambda = 10^runif(len, min = -5, 1),
+                                        k = sample(1:ncol(x), replace = TRUE, size = len))
+                    }
+                    out
                     },
                   loop = function(grid) {   
                     grid <- grid[order(grid$lambda, grid$k, decreasing = TRUE),, drop = FALSE]  

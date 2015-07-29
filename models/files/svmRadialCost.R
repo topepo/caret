@@ -4,7 +4,7 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                   parameters = data.frame(parameter = c('C'),
                                           class = c("numeric"),
                                           label = c("Cost")),
-                  grid = function(x, y, len = NULL) {
+                  grid = function(x, y, len = NULL, search = "grid") {
                     data.frame(C = 2 ^((1:len) - 3))
                   },
                   loop = NULL,

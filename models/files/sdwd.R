@@ -4,7 +4,7 @@ modelInfo <- list(label = "Sparse Distance Weighted Discrimination",
                   parameters = data.frame(parameter = c('lambda', 'lambda2'),
                                           class = c("numeric", "numeric"),
                                           label = c('L1 Penalty', 'L2 Penalty')),
-                  grid = function(x, y, len = NULL) {
+                  grid = function(x, y, len = NULL, search = "grid") {
                     lev <- levels(y)
                     y <- ifelse(y == lev[1], 1, -1)
                     init <- sdwd(as.matrix(x), y, 
@@ -12,9 +12,16 @@ modelInfo <- list(label = "Sparse Distance Weighted Discrimination",
                                  lambda2 = 0)
                     lambda <- unique(init$lambda)
                     lambda <- lambda[-c(1, length(lambda))]
-                    lambda <- lambda[1:min(length(lambda), len)]
-                    expand.grid(lambda = lambda,
-                                lambda2 = seq(0.1, 1, length = len))
+
+                    if(search == "grid") {
+                      lambda <- lambda[1:min(length(lambda), len)]
+                      out <- expand.grid(lambda = lambda,
+                                         lambda2 = seq(0.1, 1, length = len))
+                    } else {
+                      out <- data.frame(lambda = runif(len, min = min(lambda), max(lambda)),
+                                        lambda2 = 10^runif(len, min = -5, 0))
+                    }
+                    out
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {

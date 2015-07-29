@@ -5,8 +5,14 @@ modelInfo <- list(label = "Tree Models from Genetic Algorithms",
                   parameters = data.frame(parameter = c('alpha'),
                                           class = c('numeric'),
                                           label = c('Complexity Parameter')),
-                  grid = function(x, y, len = NULL)
-                    data.frame(alpha = seq(0, 1, length = len)),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(alpha = seq(1, 3, length = len)) 
+                    } else {
+                      out <- data.frame(alpha = runif(len, min = 1, max = 5))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y

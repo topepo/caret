@@ -4,8 +4,15 @@ modelInfo <- list(label = "Ensemble Partial Least Squares Regression with Featur
                   parameters = data.frame(parameter = c('maxcomp', 'threshold'),
                                           class = rep("numeric", 2),
                                           label = c('Max. #Components', "Importance Cutoff")),
-                  grid = function(x, y, len = NULL) data.frame(maxcomp = ncol(x), 
-                                                               threshold = 2),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(maxcomp = ncol(x), threshold = 2) 
+                    } else {
+                      out <- data.frame(maxcomp = sample(1:ncol(x), size = len, replace = TRUE),
+                                        threshold = runif(len, min = 0, max = 5))
+                    }
+                    out
+                  },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     x <- if(is.matrix(x)) x else as.matrix(x)

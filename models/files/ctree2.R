@@ -5,8 +5,13 @@ modelInfo <- list(label = "Conditional Inference Tree",
                   parameters = data.frame(parameter = c('maxdepth'),
                                           class = c('numeric'),
                                           label = c('Max Tree Depth')),
-                  grid = function(x, y, len = NULL) {
-                    data.frame(maxdepth = 1:len)
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(maxdepth = 1:len)
+                    } else {
+                      out <- data.frame(maxdepth = unique(sample(1:15, replace = TRUE, size = len)))
+                    }
+                    out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)

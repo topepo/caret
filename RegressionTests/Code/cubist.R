@@ -33,6 +33,7 @@ seeds <- lapply(seeds, function(x) 1:20)
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", seeds = seeds)
 rctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
 rctrl3 <- trainControl(method = "none", seeds = seeds)
+rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, method = "cubist", 
@@ -53,6 +54,12 @@ set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, method = "cubist", 
                             trControl = rctrl1,
                             control = cubistControl(seed = 1))
+
+set.seed(849)
+test_reg_rand <- train(trainX, trainY, 
+                       method = "cubist", 
+                       trControl = rctrlR,
+                       tuneLength = 4)
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 

@@ -4,8 +4,14 @@ modelInfo <- list(label = "Ridge Regression",
                   parameters = data.frame(parameter = c('lambda'),
                                           class = c("numeric"),
                                           label = c('Weight Decay')),
-                  grid = function(x, y, len = NULL) 
-                    expand.grid(lambda = c(0, 10 ^ seq(-1, -4, length = len - 1))),
+                  grid = function(x, y, len = NULL, search = "grid")  {
+                    if(search == "grid") {
+                      out <- expand.grid(lambda = c(0, 10 ^ seq(-1, -4, length = len - 1)))
+                    } else {
+                      out <- data.frame(lambda = 10^runif(len, min = -5, 1))
+                    }
+                    out
+                  },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     enet(as.matrix(x), y, lambda = param$lambda)  

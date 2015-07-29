@@ -5,7 +5,14 @@ modelInfo <- list(label = "Penalized Multinomial Regression",
                   parameters = data.frame(parameter = c('decay'),
                                           class = c("numeric"),
                                           label = c('Weight Decay')),
-                  grid = function(x, y, len = NULL) expand.grid(decay = c(0, 10 ^ seq(-1, -4, length = len - 1))),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- expand.grid(decay = c(0, 10 ^ seq(-1, -4, length = len - 1)))
+                    } else {
+                      out <- data.frame(decay = 10^runif(len, min = -5, 1))
+                    }
+                    out
+                  }, 
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y

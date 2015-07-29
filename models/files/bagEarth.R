@@ -4,7 +4,7 @@ modelInfo <- list(label = "Bagged MARS",
                   parameters = data.frame(parameter = c('nprune', 'degree'),
                                           class = c("numeric", "numeric"),
                                           label = c('#Terms', 'Product Degree')),
-                  grid = function(x, y, len = NULL) {
+                  grid = function(x, y, len = NULL, search = "grid") {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     
@@ -12,8 +12,14 @@ modelInfo <- list(label = "Bagged MARS",
                     maxTerms <- nrow(mod$dirs)
                     
                     maxTerms <- min(200, floor(maxTerms * .75) + 2)
-                    data.frame(nprune = unique(floor(seq(2, to = maxTerms, length = len))),
-                               degree = 1)
+                    if(search == "grid") {
+                      out <- data.frame(nprune = unique(floor(seq(2, to = maxTerms, length = len))),
+                                        degree = 1)
+                    } else {
+                      out <- data.frame(nprune = sample(2:maxTerms, size = len, replace = TRUE),
+                                        degree = sample(1:2, size = len, replace = TRUE))
+                    }
+                    out[!duplicated(out),]
                   },
                   loop = function(grid) {     
                     deg <- unique(grid$degree)
@@ -22,8 +28,7 @@ modelInfo <- list(label = "Bagged MARS",
                     loop$nprune <- NA
                     
                     submodels <- vector(mode = "list", length = length(deg))
-                    for(i in seq(along = deg))
-                    {
+                    for(i in seq(along = deg)) {
                       np <- grid[grid$degree == deg[i],"nprune"]
                       loop$nprune[loop$degree == deg[i]] <- np[which.max(np)]
                       submodels[[i]] <- data.frame(nprune = np[-which.max(np)])
@@ -45,25 +50,21 @@ modelInfo <- list(label = "Bagged MARS",
                     tmp$call["nprune"] <-  param$nprune
                     tmp$call["degree"] <-  param$degree
                     tmp 
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(modelFit$problemType == "Classification")
-                    {
+                    if(modelFit$problemType == "Classification") {
                       out <- predict(modelFit, newdata,  type = "class")
                     } else {
                       out <- predict(modelFit, newdata)
                     }
                     
-                    if(!is.null(submodels))
-                    {
+                    if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- if(is.matrix(out)) out[,1] else out
                       
-                      for(j in seq(along = submodels$nprune))
-                      {
+                      for(j in seq(along = submodels$nprune)) {
                         prunedFit <- update(modelFit, nprune = submodels$nprune[j])
-                        if(modelFit$problemType == "Classification")
-                        {
+                        if(modelFit$problemType == "Classification") {
                           tmp[[j+1]]  <-  predict(prunedFit, newdata,  type = "class")
                         } else {
                           tmp[[j+1]]  <-  predict(prunedFit, newdata)
@@ -78,13 +79,11 @@ modelInfo <- list(label = "Bagged MARS",
                     out <- predict(modelFit, newdata, type= "response")
                     out <- cbind(1-out, out)
                     colnames(out) <-  modelFit$obsLevels
-                    if(!is.null(submodels))
-                    {
+                    if(!is.null(submodels))  {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
                       
-                      for(j in seq(along = submodels$nprune))
-                      {
+                      for(j in seq(along = submodels$nprune))  {
                         prunedFit <- update(modelFit, nprune = submodels$nprune[j])
                         tmp2 <- predict(prunedFit, newdata, type= "response")
                         tmp2 <- cbind(1-tmp2, tmp2)

@@ -5,7 +5,7 @@ modelInfo <- list(label = "Quantile Regression Neural Network",
                   parameters = data.frame(parameter = c('n.hidden', 'penalty', 'bag'),
                                           class = c('numeric', 'numeric', 'logical'),
                                           label = c('#Hidden Units', ' Weight Decay', 'Bagged Models?')),
-                  grid = function(x, y, len = NULL) expand.grid(n.hidden = ((1:len) * 2) - 1, 
+                  grid = function(x, y, len = NULL, search = "grid") expand.grid(n.hidden = ((1:len) * 2) - 1, 
                                                                 penalty = c(0, 10 ^ seq(-1, -4, length = len - 1)),
                                                                 bag = FALSE),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {

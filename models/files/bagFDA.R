@@ -5,7 +5,7 @@ modelInfo <- list(label = "Bagged Flexible Discriminant Analysis",
                   parameters = data.frame(parameter = c("degree", "nprune"),
                                           class = c("numeric", "numeric"),
                                           label = c('Product Degree', '#Terms')),
-                  grid = function(x, y, len = NULL) {
+                  grid = function(x, y, len = NULL, search = "grid") {
                     dat <- if(!is.data.frame(x)) as.data.frame(x) else x
                     dat$.outcome <- y
                     
@@ -13,8 +13,14 @@ modelInfo <- list(label = "Bagged Flexible Discriminant Analysis",
                     maxTerms <- nrow(mod$fit$dirs) - 1
                     
                     maxTerms <- min(200, floor(maxTerms * .75) + 2)
-                    data.frame(nprune = unique(floor(seq(2, to = maxTerms, length = len))),
-                               degree = 1)
+                    if(search == "grid") {
+                      out <- data.frame(nprune = unique(floor(seq(2, to = maxTerms, length = len))),
+                                        degree = 1)
+                    } else {
+                      out <- data.frame(nprune = sample(2:maxTerms, size = len, replace = TRUE),
+                                        degree = sample(1:2, size = len, replace = TRUE))
+                    }
+                    out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)

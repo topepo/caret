@@ -4,9 +4,16 @@ modelInfo <- list(label = "Dynamic Evolving Neural-Fuzzy Inference System ",
                   parameters = data.frame(parameter = c('Dthr', 'max.iter'),
                                           class = c("numeric", "numeric"),
                                           label = c('Threshold', 'Max. Iterations')),
-                  grid = function(x, y, len = NULL)
-                    expand.grid(Dthr = seq(.1, .5, length = len),      
-                                max.iter = 100),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(Dthr = seq(.1, .5, length = len),      
+                                         max.iter = 100) 
+                    } else {
+                      out <- data.frame(Dthr = runif(len, min = 0, max = 1),
+                                        max.iter = sample(1:20, replace = TRUE, size = len))
+                    }
+                    out
+                  },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     args <- list(data.train = as.matrix(cbind(x, y)),
@@ -21,10 +28,11 @@ modelInfo <- list(label = "Dynamic Evolving Neural-Fuzzy Inference System ",
                                                    max.iter = param$max.iter,
                                                    step.size = 0.01, 
                                                    d = 2,
+                                                   method.type = "DENFIS",
                                                    name="sim-0")     
                     do.call("frbs.learn", c(args, theDots))
                     
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     predict(modelFit, newdata)
                   },

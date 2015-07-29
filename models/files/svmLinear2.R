@@ -4,7 +4,7 @@ modelInfo <- list(label = "Support Vector Machines with Linear Kernel",
                   parameters = data.frame(parameter = c('cost'),
                                           class = c("numeric"),
                                           label = c("Cost")),
-                  grid = function(x, y, len = NULL) data.frame(cost = 2 ^((1:len) - 3)),
+                  grid = function(x, y, len = NULL, search = "grid") data.frame(cost = 2 ^((1:len) - 3)),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(any(names(list(...)) == "probability") | is.numeric(y))

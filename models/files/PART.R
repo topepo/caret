@@ -5,7 +5,7 @@ modelInfo <- list(label = "Rule-Based Classifier",
                   parameters = data.frame(parameter = c('threshold', 'pruned'),
                                           class = c("numeric", "character"),
                                           label = "Confidence Threshold", 'Pruning'),
-                  grid = function(x, y, len = NULL) 
+                  grid = function(x, y, len = NULL, search = "grid") 
                     data.frame(threshold = 0.25, pruned = "yes"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)

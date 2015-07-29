@@ -5,7 +5,7 @@ modelInfo <- list(label = "Single C5.0 Ruleset",
                   parameters = data.frame(parameter = c('parameter'),
                                           class = c("character"),
                                           label = c('none')),
-                  grid = function(x, y, len = NULL) data.frame(parameter = "none"),
+                  grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
                     C5.0(x = x, y = y, weights = wts, rules = TRUE, ...),
                   predict = function(modelFit, newdata, submodels = NULL) 

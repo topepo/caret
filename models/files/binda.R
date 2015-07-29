@@ -5,7 +5,14 @@ modelInfo <- list(label = "Binary Discriminant Analysis",
                   parameters = data.frame(parameter = c("lambda.freqs"),
                                           class = c("numeric"),
                                           label = c('Shrinkage Intensity')),
-                  grid = function(x, y, len = NULL) data.frame(lambda.freqs = seq(0, 1, length = len)),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- data.frame(lambda.freqs = seq(0, 1, length = len))
+                    } else {
+                      out <- data.frame(lambda.freqs = runif(len, min = 0, max = 1))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     binda(as.matrix(x), y, lambda.freqs = param$lambda.freqs, ...)
                   },

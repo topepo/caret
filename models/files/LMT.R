@@ -5,7 +5,14 @@ modelInfo <- list(label = "Logistic Model Trees",
                   parameters = data.frame(parameter = "iter",
                                           class = "numeric",
                                           label = "# Iteratons"),
-                  grid = function(x, y, len = NULL) data.frame(iter = 1+(0:(len-1)) * 20),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <-  data.frame(iter = 1+(0:(len-1)) * 20)
+                    } else {
+                      out <- data.frame(iter = unique(sample(1:100, size = len, replace = TRUE)))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y

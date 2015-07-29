@@ -4,9 +4,17 @@ modelInfo <- list(label = "Penalized Linear Regression",
                   parameters = data.frame(parameter = c('lambda1', 'lambda2'),
                                           class = c('numeric', 'numeric'),
                                           label = c('L1 Penalty', 'L2 Penalty')),
-                  grid = function(x, y, len = NULL) 
-                    expand.grid(lambda1 = 2^((1:len) -1),
-                                lambda2 = 2^((1:len) -1)),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(lambda1 = 2^((1:len) -1),
+                                         lambda2 = 2^((1:len) -1))
+                    } else {
+                      out <- data.frame(lambda1 = 10^runif(len, min = -5, 1), 
+                                        lambda2 = 10^runif(len, min = -5, 1))
+                    }
+                    out
+                  },
+                    
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     penalized(y, x,

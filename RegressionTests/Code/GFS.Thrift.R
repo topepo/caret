@@ -1,7 +1,7 @@
 library(caret)
 timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
 
-model <- "GFS.Thrift"
+model <- "GFS.THRIFT"
 
 #########################################################################
 
@@ -30,27 +30,34 @@ testY <- trainX$y
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
 rctrl3 <- trainControl(method = "none")
+rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
-test_reg_cv_model <- train(trainX, trainY, method = "GFS.Thrift", 
+test_reg_cv_model <- train(trainX, trainY, method = "GFS.THRIFT", 
                            tuneLength = 2,
                            trControl = rctrl1)
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
-                          method = "GFS.Thrift", 
+                          method = "GFS.THRIFT", 
                           tuneLength = 2,
                           trControl = rctrl1)
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
-test_reg_loo_model <- train(trainX, trainY, method = "GFS.Thrift", 
+test_reg_rand <- train(trainX, trainY, 
+                       method = "GFS.THRIFT", 
+                       trControl = rctrlR,
+                       tuneLength = 4)
+
+set.seed(849)
+test_reg_loo_model <- train(trainX, trainY, method = "GFS.THRIFT", 
                             tuneLength = 2, trControl = rctrl2)
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
-                             method = "GFS.Thrift", 
+                             method = "GFS.THRIFT", 
                              trControl = rctrl3,
                              tuneGrid = test_reg_cv_model$bestTune,
                              preProc = c("center", "scale"))

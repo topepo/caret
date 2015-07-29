@@ -5,8 +5,14 @@ modelInfo <- list(label = "Random Ferns",
                   parameters = data.frame(parameter = c('depth'),
                                           class = c('numeric'),
                                           label = c('Fern Depth')),
-                  grid = function(x, y, len = NULL) 
-                    data.frame(depth = unique(floor(seq(1, 16, length = len)))),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(depth = unique(floor(seq(1, 16, length = len))))
+                    } else {
+                      out <- data.frame(depth = unique(sample(1:16, size = len, replace = TRUE)))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.data.frame(x)) newdata <- as.data.frame(x)
                     rFerns(x, y, depth = param$depth, ...)

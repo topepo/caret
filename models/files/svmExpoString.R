@@ -4,9 +4,15 @@ modelInfo <- list(label = "Support Vector Machines with Exponential String Kerne
                   parameters = data.frame(parameter = c('lambda', 'C'),
                                           class = c("numeric", "numeric"),
                                           label = c('lambda', "Cost")),
-                  grid = function(x, y, len = NULL) {
-                    expand.grid(lambda = .25 + 2 ^((1:len) - 1),
-                                C = 2 ^((1:len) - 3))
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(lambda = .25 + 2 ^((1:len) - 1),
+                                         C = 2 ^((1:len) - 3))
+                    } else {
+                      out <- data.frame(lambda = 2^runif(len, min = -5, max = 6),
+                                        C = 2^runif(len, min = -5, max = 8))
+                    }
+                    out
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 

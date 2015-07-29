@@ -4,8 +4,14 @@ modelInfo <- list(label = "The lasso",
                   parameters = data.frame(parameter = 'fraction',
                                           class = "numeric",
                                           label = 'Fraction of Full Solution'),
-                  grid = function(x, y, len = NULL)
-                    expand.grid(fraction = seq(.1, .9, length = len)),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <-  expand.grid(fraction = seq(.1, .9, length = len))
+                    } else {
+                      out <- data.frame(fraction = runif(len, min = 0, max = 1))
+                    }
+                    out
+                  },
                   loop = function(grid) {   
                     grid <- grid[order(grid$fraction, decreasing = TRUE),, drop = FALSE]
                     loop <- grid[1,,drop = FALSE]

@@ -7,6 +7,7 @@ trainControl(method = "boot",
              number = ifelse(grepl("cv", method), 10, 25),
              repeats = ifelse(grepl("cv", method), 1, number),
              p = 0.75,
+             search = "grid",
              initialWindow = NULL,
              horizon = 1,
              fixedWindow = TRUE,
@@ -40,6 +41,7 @@ trainControl(method = "boot",
   \item{returnResamp}{A character string indicating how much of the resampled summary metrics should be saved. Values can be ``final'', ``all'' or ``none''}
   \item{savePredictions}{a logical to save the hold-out predictions for each resample}
   \item{p}{For leave-group out cross-validation: the training percentage}
+  \item{search}{Either \code{"grid"} or \code{"random"}, describing how the tuning parameter grid is determined. See details below.}
   \item{initialWindow, horizon, fixedWindow}{possible arguments to \code{\link{createTimeSlices}}}
   \item{classProbs}{a logical; should class probabilities be computed for classification models (along with predicted values) in each resample?}
   \item{summaryFunction}{a function to compute performance metrics across resamples. The arguments to the function should be the same as those in \code{\link{defaultSummary}}.}
@@ -73,11 +75,18 @@ Using adaptive resampling when \code{method} is either \code{"adaptive_cv"}, \co
  \item \code{method}: either generalized least squares (\code{method = "gls"}) or a Bradley-Terry model (\code{method = "BT"})
   \item \code{complete}: if a single parameter value is found before the end of resampling, should the full set of resamples be computed for that parameter. )
 }
+
+The option \code{search = "grid"} uses the default grid search routine. When \code{search = "random"}, a random search procedure is used (Bergstra and Bengio, 2012). See \url{http://topepo.github.io/caret/random.html} for details and an example. 
 }
 
 \author{Max Kuhn}
 
-\references{Kuhn (2014), ``Futility Analysis in the Cross-Validation of Machine Learning Models'' \url{http://arxiv.org/abs/1405.6974}}
+\references{
+Bergstra and Bengio (2012), ``Random Search for Hyper-Parameter Optimization'', Journal of Machine Learning Research, 13(Feb):281-305
+
+Kuhn (2014), ``Futility Analysis in the Cross-Validation of Machine Learning Models'' \url{http://arxiv.org/abs/1405.6974},
+}
+
 
 \examples{
 \dontrun{

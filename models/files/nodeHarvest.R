@@ -5,8 +5,15 @@ modelInfo <- list(label = "Tree-Based Ensembles",
                   parameters = data.frame(parameter = c('maxinter', 'mode'),
                                           class = c('numeric', 'character'),
                                           label = c('Maximum Interaction Depth', 'Prediction Mode')),
-                  grid = function(x, y, len = NULL)
-                    expand.grid(maxinter = 1:len, mode = c("mean", "outbag")),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- expand.grid(maxinter = 1:len, mode = c("mean", "outbag"))
+                    } else {
+                      out <- data.frame(maxinter = sample(1:20, size = len, replace = TRUE), 
+                                        mode = sample(c("mean", "outbag"), size = len, replace = TRUE))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
                     if(is.numeric(y))
                     {

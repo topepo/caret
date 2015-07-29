@@ -5,9 +5,16 @@ modelInfo <- list(label = "Regularized Discriminant Analysis",
                   parameters = data.frame(parameter = c("gamma", "lambda"),
                                           class = rep("numeric", 2),
                                           label = c("Gamma", "Lambda")),
-                  grid = function(x, y, len = NULL) 
-                    expand.grid(gamma = seq(0, 1, length = len), 
-                                lambda =  seq(0, 1, length = len)),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- expand.grid(gamma = seq(0, 1, length = len), 
+                                         lambda =  seq(0, 1, length = len))
+                    } else {
+                      out <- data.frame(gamma = runif(len, min = 0, max = 1), 
+                                        lambda = runif(len, min = 0, max = 1))
+                    }
+                    out
+                  }, 
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     rda(x, y, gamma = param$gamma, param = tuneValue$lambda, ...)
                   },

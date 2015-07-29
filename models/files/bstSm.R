@@ -4,8 +4,15 @@ modelInfo <- list(label = "Boosted Smoothing Spline",
                   parameters = data.frame(parameter = c('mstop', 'nu'),
                                           class = c("numeric", "numeric"),
                                           label = c('# Boosting Iterations', 'Shrinkage')),
-                  grid = function(x, y, len = NULL) 
-                    expand.grid(mstop = floor((1:len) * 50), nu = .1),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(mstop = floor((1:len) * 50), nu = .1)
+                    } else {
+                      out <- data.frame(mstop = sample(1:500, replace = TRUE, size = len),        
+                                        nu = runif(len, min = .001, max = .6))
+                    }
+                    out
+                  },
                   loop = function(grid) {   
                     loop <- ddply(grid, .(nu), function(x) c(mstop = max(x$mstop)))
                     submodels <- vector(mode = "list", length = nrow(loop))
@@ -36,7 +43,7 @@ modelInfo <- list(label = "Boosted Smoothing Spline",
                     modArgs <- c(modArgs, theDots)
                     
                     do.call("bst", modArgs)
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(modelFit$problemType == "Classification")
                     {

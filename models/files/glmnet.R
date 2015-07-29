@@ -4,20 +4,26 @@ modelInfo <- list(label = "glmnet",
                   parameters = data.frame(parameter = c('alpha', 'lambda'),
                                           class = c("numeric", "numeric"),
                                           label = c('Mixing Percentage', 'Regularization Parameter')),
-                  grid = function(x, y, len = NULL) {
-                    numLev <- if(is.character(y) | is.factor(y)) length(levels(y)) else NA
-                    if(!is.na(numLev)) {
-                      fam <- ifelse(numLev > 2, "multinomial", "binomial")
-                    } else fam <- "gaussian"    
-                    init <- glmnet(as.matrix(x), y, 
-                                   family = fam, 
-                                   nlambda = len+2, 
-                                   alpha = .5)
-                    lambda <- unique(init$lambda)
-                    lambda <- lambda[-c(1, length(lambda))]
-                    lambda <- lambda[1:min(length(lambda), len)]
-                    expand.grid(alpha = seq(0.1, 1, length = len),
-                                lambda = lambda)
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      numLev <- if(is.character(y) | is.factor(y)) length(levels(y)) else NA
+                      if(!is.na(numLev)) {
+                        fam <- ifelse(numLev > 2, "multinomial", "binomial")
+                      } else fam <- "gaussian"    
+                      init <- glmnet(as.matrix(x), y, 
+                                     family = fam, 
+                                     nlambda = len+2, 
+                                     alpha = .5)
+                      lambda <- unique(init$lambda)
+                      lambda <- lambda[-c(1, length(lambda))]
+                      lambda <- lambda[1:min(length(lambda), len)]
+                      out <- expand.grid(alpha = seq(0.1, 1, length = len),
+                                         lambda = lambda)
+                    } else {
+                      out <- data.frame(alpha = runif(len, min = 0, 1),
+                                        lambda = 2^runif(len, min = -10, 3))
+                    }
+                    out
                   },
                   loop = function(grid) {  
                     alph <- unique(grid$alpha)

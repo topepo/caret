@@ -5,11 +5,21 @@ modelInfo <- list(label = "k-Nearest Neighbors",
                   parameters = data.frame(parameter = c('kmax', 'distance', 'kernel'),
                                           class = c('numeric', 'numeric', 'character'),
                                           label = c('Max. #Neighbors', 'Distance', 'Kernel')),
-                  grid = function(x, y, len = NULL) 
-                    data.frame(kmax = (5:((2 * len)+4))[(5:((2 * len)+4))%%2 > 0], 
-                               distance = 2, 
-                               kernel = "optimal")
-                  ,
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(kmax = (5:((2 * len)+4))[(5:((2 * len)+4))%%2 > 0], 
+                                        distance = 2, 
+                                        kernel = "optimal")
+                    } else {
+                      by_val <- if(is.factor(y)) length(levels(y)) else 1
+                      kerns <- c("rectangular", "triangular", "epanechnikov", "biweight", "triweight", 
+                                 "cos", "inv", "gaussian")
+                      out <- data.frame(kmax = sample(seq(1, floor(nrow(x)/3), by = by_val), size = len, replace = TRUE),
+                                        distance = runif(len, min = 0, max = 3),
+                                        kernel = sample(kerns, size = len, replace = TRUE))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y

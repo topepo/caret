@@ -12,6 +12,7 @@ cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 cctrl2 <- trainControl(method = "LOOCV", savePredictions = TRUE)
 cctrl3 <- trainControl(method = "none",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
+cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_class_cv_model <- train(matrix(reuters, ncol = 1), rlabels, 
@@ -19,6 +20,12 @@ test_class_cv_model <- train(matrix(reuters, ncol = 1), rlabels,
                              trControl = cctrl1)
 
 test_class_pred <- predict(test_class_cv_model, matrix(reuters, ncol = 1))
+
+set.seed(849)
+test_class_rand <- train(matrix(reuters, ncol = 1), rlabels, 
+                         method = "svmSpectrumString", 
+                         trControl = cctrlR,
+                         tuneLength = 4)
 
 set.seed(849)
 test_class_loo_model <- train(matrix(reuters, ncol = 1), rlabels, 

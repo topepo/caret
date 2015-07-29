@@ -5,9 +5,16 @@ modelInfo <- list(label = "Partial Least Squares Generalized Linear Models ",
                   parameters = data.frame(parameter = c('nt', 'alpha.pvals.expli'),
                                           class = c("numeric", "numeric"),
                                           label = c('#PLS Components', 'p-Value threshold')),
-                  grid = function(x, y, len = NULL) 
-                    expand.grid(nt = 1:len, 
-                                alpha.pvals.expli = 10^(c(-2:(len-3), 0))),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <-  expand.grid(nt = 1:len, 
+                                          alpha.pvals.expli = 10^(c(-2:(len-3), 0)))
+                    } else {
+                      out <- data.frame(nt = sample(1:ncol(x), size = len, replace = TRUE), 
+                                        alpha.pvals.expli = runif(len, min = 0, .2))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(is.factor(y)) {
                       lv <- levels(y)
@@ -59,7 +66,7 @@ modelInfo <- list(label = "Partial Least Squares Generalized Linear Models ",
                   predictors = function(x, ...) {
                     vars <- names(which(coef(x)[[2]][,1] != 0))
                     vars[vars != "Intercept"]
-                    },
+                  },
                   tags = c("Generalized Linear Models", 
                            "Partial Least Squares"),
                   levels = function(x) x$lev,

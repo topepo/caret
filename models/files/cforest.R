@@ -5,10 +5,15 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                   parameters = data.frame(parameter = 'mtry',
                                           class = 'numeric',
                                           label = "#Randomly Selected Predictors"),
-                  grid = function(x, y, len = NULL) {
-                    data.frame(mtry = caret::var_seq(p = ncol(x), 
-                                              classification = is.factor(y), 
-                                              len = len))
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- data.frame(mtry = caret::var_seq(p = ncol(x), 
+                                                              classification = is.factor(y), 
+                                                              len = len))
+                    } else {
+                      out <- data.frame(mtry = unique(sample(1:ncol(x), replace = TRUE, size = len)))
+                    }
+                    out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)

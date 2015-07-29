@@ -4,7 +4,14 @@ modelInfo <- list(label = "Ensemble Partial Least Squares Regression",
                   parameters = data.frame(parameter = c('maxcomp'),
                                           class = "numeric",
                                           label = c('Max. #Components')),
-                  grid = function(x, y, len = NULL) data.frame(maxcomp = ncol(x)),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(maxcomp = ncol(x)) 
+                    } else {
+                      out <- data.frame(maxcomp = sample(1:ncol(x), size = len, replace = TRUE))
+                    }
+                    out
+                  },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     x <- if(is.matrix(x)) x else as.matrix(x)

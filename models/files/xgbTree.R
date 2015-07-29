@@ -5,9 +5,20 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                           class = rep("numeric", 3),
                                           label = c('# Boosting Iterations', 'Max Tree Depth', 
                                                     'Shrinkage')),
-                  grid = function(x, y, len = NULL) expand.grid(max_depth = seq(1, len),
-                                                                nrounds = floor((1:len) * 50),
-                                                                eta = .3),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(max_depth = seq(1, len),
+                                         nrounds = floor((1:len) * 50),
+                                         eta = .3)
+                    } else {
+                      out <- data.frame(nrounds = sample(1:1000, size = len*10, replace = TRUE),
+                                        max_depth = sample(1:10, replace = TRUE, size = len),         
+                                        eta = runif(len, min = .001, max = .6))
+                      out$nrounds <- floor(out$nrounds)
+                      out <- out[!duplicated(out),]
+                    }
+                    out
+                  },
                   loop = function(grid) {     
                     loop <- ddply(grid, c("eta", "max_depth"),
                                   function(x) c(nrounds = max(x$nrounds)))
@@ -101,7 +112,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       colnames(out) <- modelFit$obsLevels
                     }
                     out <- as.data.frame(out)
-                             
+                    
                     if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out

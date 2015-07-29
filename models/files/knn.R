@@ -5,7 +5,15 @@ modelInfo <- list(label = "k-Nearest Neighbors",
                   parameters = data.frame(parameter = "k",
                                           class = "numeric",
                                           label = "#Neighbors"),
-                  grid = function(x, y, len = NULL) data.frame(k = (5:((2 * len)+4))[(5:((2 * len)+4))%%2 > 0]),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- data.frame(k = (5:((2 * len)+4))[(5:((2 * len)+4))%%2 > 0])
+                    } else {
+                      by_val <- if(is.factor(y)) length(levels(y)) else 1
+                      out <- data.frame(k = sample(seq(1, floor(nrow(x)/3), by = by_val), size = len, replace = TRUE))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(is.factor(y))
                     {

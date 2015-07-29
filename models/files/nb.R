@@ -5,7 +5,7 @@ modelInfo <- list(label = "Naive Bayes",
                   parameters = data.frame(parameter = c('fL', 'usekernel'),
                                           class = c('numeric', 'logical'),
                                           label = c('Laplace Correction', 'Distribution Type')),
-                  grid = function(x, y, len = NULL) 
+                  grid = function(x, y, len = NULL, search = "grid") 
                     data.frame(usekernel = c(TRUE, FALSE), fL = 0),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
                     NaiveBayes(x, y, usekernel= param$usekernel, fL = param$fL, ...),

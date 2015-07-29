@@ -5,9 +5,18 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                           class = rep("numeric", 3),
                                           label = c('# Boosting Iterations', 'L2 Regularization', 
                                                     'L2 Regularization')),
-                  grid = function(x, y, len = NULL) 
-                    expand.grid(lambda = c(0, 10 ^ seq(-1, -4, length = len - 1)),
-                                alpha = c(0, 10 ^ seq(-1, -4, length = len - 1))),
+                  grid = function(x, y, len = NULL, search = "grid")  {
+                    if(search == "grid") {
+                      out <- expand.grid(lambda = c(0, 10 ^ seq(-1, -4, length = len - 1)),
+                                         alpha = c(0, 10 ^ seq(-1, -4, length = len - 1)),
+                                         nrounds = floor((1:len) * 50))
+                    } else {
+                      out <- data.frame(lambda = 10^runif(len, min = -5, 0),
+                                        alpha = 10^runif(len, min = -5, 0),
+                                        nrounds = sample(1:100, size = len*10, replace = TRUE))
+                    }
+                    out
+                  },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     if(is.factor(y)) {

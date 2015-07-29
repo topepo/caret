@@ -4,8 +4,15 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                   parameters = data.frame(parameter = c('mstop', 'prune'),
                                           class = c("numeric", "character"),
                                           label = c('# Boosting Iterations', 'AIC Prune?')),
-                  grid = function(x, y, len = NULL) 
-                    data.frame(mstop = floor((1:len) * 50), prune = "no"),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(mstop = floor((1:len) * 50), prune = "no")
+                    } else {
+                      out <- data.frame(mstop = sample(1:1000, size = len, replace = TRUE),
+                                        prune = sample(c("yes", "no"), size = len, replace = TRUE))
+                    }
+                    out[!duplicated(out),]
+                  },
                   loop = function(grid) {   
                     grid <- grid[order(grid$mstop, decreasing = TRUE),, drop = FALSE]
                     loop <- grid[1,,drop = FALSE]

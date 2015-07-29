@@ -4,9 +4,15 @@ modelInfo <- list(label = "Support Vector Machines with Boundrange String Kernel
                   parameters = data.frame(parameter = c('length', 'C'),
                                           class = c("numeric", "numeric"),
                                           label = c('length', "Cost")),
-                  grid = function(x, y, len = NULL) {
-                    expand.grid(length = 2:(len+1),
-                                C = 2 ^((1:len) - 3))
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(length = 2:(len+1),
+                                         C = 2 ^((1:len) - 3))
+                    } else {
+                      out <- data.frame(length = sample(1:20, size = len, replace = TRUE),
+                                        C = 2^runif(len, min = -5, max = 8))
+                    }
+                    out
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 

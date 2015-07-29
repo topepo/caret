@@ -35,6 +35,7 @@ for(i in 1:189) seeds[[i]] <- i:(i+3)
 seeds[[189]] <- 1
 rctrl2 <- trainControl(method = "LOOCV", seed = seeds)
 rctrl3 <- trainControl(method = "none", seed = seeds)
+rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, method = "foba", trControl = rctrl1,
@@ -46,6 +47,13 @@ test_reg_cv_form <- train(y ~ ., data = training,
                           method = "foba", trControl = rctrl1,
                           preProc = c("center", "scale"))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
+
+set.seed(849)
+test_reg_rand <- train(trainX, trainY, 
+                       method = "foba", 
+                       trControl = rctrlR,
+                       tuneLength = 4,
+                       preProc = c("center", "scale"))
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, method = "foba", trControl = rctrl2,

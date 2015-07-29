@@ -27,6 +27,7 @@ cctrl3 <- trainControl(method = "none",
 cctrl4 <- trainControl(method = "cv", number = 3, 
                        summaryFunction = weight_test)
 cctrl5 <- trainControl(method = "LOOCV", summaryFunction = weight_test)
+cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
@@ -48,6 +49,14 @@ test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
+
+set.seed(849)
+test_class_rand <- train(trainX, trainY, 
+                         method = "multinom", 
+                         trControl = cctrlR,
+                         tuneLength = 4, 
+                         preProc = c("center", "scale"),
+                         trace = FALSE)
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 

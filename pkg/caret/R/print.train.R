@@ -98,6 +98,7 @@ stringFunc <- function (x)  {
     if(x$control$method != "none") {
       
       tuneAcc <- x$results 
+     
       tuneAcc <- tuneAcc[, names(tuneAcc) != "parameter"]
       
       cat("Resampling results")
@@ -105,6 +106,7 @@ stringFunc <- function (x)  {
       cat("\n")
       
       if(dim(tuneAcc)[1] > 1) {
+        
         numParam <- length(x$bestTune)
         
         finalTune <- x$bestTune
@@ -152,8 +154,15 @@ stringFunc <- function (x)  {
           
         } else constString <- NULL
       } else constString <- NULL
-      
+
       tuneAcc <- tuneAcc[,!grepl("Apparent$", names(tuneAcc)),drop = FALSE]
+      nms <- names(tuneAcc)[names(tuneAcc) %in% params]
+      sort_args <- vector(mode = "list", length = length(nms))
+      for(i in seq(along = nms)) {
+        sort_args[[i]] <- tuneAcc[, nms[i]]
+      }
+      tune_ord <- do.call("order", sort_args)
+      tuneAcc <- tuneAcc[tune_ord,,drop = FALSE]
       
       theDots <- list(...)
       theDots$x <- tuneAcc

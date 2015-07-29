@@ -4,8 +4,15 @@ modelInfo <- list(label = "partDSA",
                   parameters = data.frame(parameter = c('cut.off.growth', 'MPD'),
                                           class = c("numeric", "numeric"),
                                           label = c('Number of Terminal Partitions', 'Minimum Percent Difference')),
-                  grid = function(x, y, len = NULL)
-                    expand.grid(cut.off.growth = 1:len, MPD = .1),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(cut.off.growth = 1:len, MPD = .1)
+                    } else {
+                      out <- data.frame(cut.off.growth = sample(1:20, size = len, replace = TRUE),
+                                        MPD = runif(len, min = 0, max = .5))
+                    }
+                    out
+                  },
                   loop = function(grid) {   
                     grid <- grid[order(grid$MPD, grid$cut.off.growth, decreasing = TRUE),, drop = FALSE]
                     
@@ -24,13 +31,14 @@ modelInfo <- list(label = "partDSA",
                     }
                     list(loop = loop, submodels = submodels)
                   },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     partDSA(x, y,
                             control = DSA.control(
                               cut.off.growth = param$cut.off.growth,
                               MPD = param$MPD,
                               vfold = 1),
-                            ...),
+                            ...)
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.null(submodels))
                     {
@@ -52,13 +60,14 @@ modelInfo <- list(label = "partDSA",
                         out <- as.list(as.data.frame(out))
                       }
                     } else {
-                      
+                      ## There maybe less items than modelFit$cut.off.growth
+                      index <- min(modelFit$cut.off.growth, length(modelFit$test.set.risk.DSA))
                       ## use best Tune
                       if(modelFit$problemType == "Classification")
                       {
-                        out <- as.character(predict(modelFit, newdata)[[modelFit$cut.off.growth]])
+                        out <- as.character(predict(modelFit, newdata)[[index]])
                       } else {
-                        out <- predict(modelFit, newdata)[,modelFit$cut.off.growth]
+                        out <- predict(modelFit, newdata)[,index]
                       }
                     }
                     out        

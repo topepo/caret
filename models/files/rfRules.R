@@ -4,11 +4,17 @@ modelInfo <- list(label = "Random Forest",
                   parameters = data.frame(parameter = c("mtry","maxdepth"),
                                           class = rep("numeric",2),
                                           label = c("#Randomly Selected Predictors","Maximum Rule Depth")),
-                  grid = function(x, y, len = NULL) {
-                    expand.grid(mtry = caret::var_seq(p = ncol(x), 
-                                               classification = is.factor(y), 
-                                               len = len), 
-                                maxdepth = (1:len)+1)
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- data.frame(mtry = caret::var_seq(p = ncol(x), 
+                                                              classification = is.factor(y), 
+                                                              len = len), 
+                                        maxdepth = (1:len)+1)
+                    } else {
+                      out <- data.frame(mtry = sample(1:ncol(x), size = len, replace = TRUE),
+                                        maxdepth = sample(1:15, size = len, replace = TRUE))
+                    }
+                    out[!duplicated(out),]
                   },
                   loop = function(grid) {   
                     loop <- ddply(grid, c("mtry"),

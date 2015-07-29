@@ -26,6 +26,7 @@ cctrl3 <- trainControl(method = "oob",
 cctrl4 <- trainControl(method = "none",
                        classProbs = TRUE, summaryFunction = twoClassSummary,
                        seeds = seeds)
+cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
@@ -61,6 +62,13 @@ test_class_loo_model <- train(trainX, trainY,
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
   cat("wrong levels")
+
+set.seed(849)
+test_class_rand <- train(trainX, trainY, 
+                         method = "rf", 
+                         trControl = cctrlR,
+                         tuneLength = 4,
+                         ntree = 20)
 
 set.seed(849)
 test_class_oob_model <- train(trainX, trainY, 
@@ -109,6 +117,7 @@ rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", seeds = 
 rctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
 rctrl3 <- trainControl(method = "oob", seeds = seeds)
 rctrl4 <- trainControl(method = "none", seeds = seeds)
+rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
@@ -134,6 +143,13 @@ test_reg_loo_model <- train(trainX, trainY,
                             trControl = rctrl2,
                             preProc = c("center", "scale"),
                             ntree = 20)
+
+set.seed(849)
+test_reg_rand <- train(trainX, trainY, 
+                       method = "rf", 
+                       trControl = rctrlR,
+                       tuneLength = 4,
+                       ntree = 20)
 
 set.seed(849)
 test_reg_oob_model <- train(trainX, trainY, 

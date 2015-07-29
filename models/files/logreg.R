@@ -5,7 +5,7 @@ modelInfo <- list(label = "Logic Regression",
                   parameters = data.frame(parameter = c('treesize', 'ntrees'),
                                           class = c('numeric', 'numeric'),
                                           label = c('Maximum Number of Leaves', 'Number of Trees')),
-                  grid = function(x, y, len = NULL) expand.grid(ntrees = (1:3) + 1, treesize = 2^(1+(1:len))),
+                  grid = function(x, y, len = NULL, search = "grid") expand.grid(ntrees = (1:3) + 1, treesize = 2^(1+(1:len))),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
                     isReg <- is.numeric(y)
                     if(is.factor(y)) y <- ifelse(y == levels(y)[1], 1, 0)

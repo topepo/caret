@@ -5,8 +5,15 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                   parameters = data.frame(parameter = c('select', 'method'),
                                           class = c('logical', 'character'),
                                           label = c('Feature Selection', 'Method')),
-                  grid = function(x, y, len = NULL) 
-                    expand.grid(select = c(TRUE, FALSE), method = "GCV.Cp"),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(select = c(TRUE, FALSE), method = "GCV.Cp")
+                    } else {
+                      out <- data.frame(select = sample(c(TRUE, FALSE), size = len, replace = TRUE),
+                                        method = sample(c("GCV.Cp", "ML"), size = len, replace = TRUE))
+                    }
+                    out[!duplicated(out),]
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     modForm <- caret:::smootherFormula(x)

@@ -5,7 +5,7 @@ modelInfo <- list(label = "Oblique Trees",
                   parameters = data.frame(parameter = c('oblique.splits', 'variable.selection'),
                                           class = c('character', 'character'),
                                           label = c('Oblique Splits', 'Variable Selection Method')),
-                  grid = function(x, y, len = NULL)
+                  grid = function(x, y, len = NULL, search = "grid")
                     expand.grid(oblique.splits = c("only", "on", "off"),
                                 variable.selection = c("none", "model.selection.aic")),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){

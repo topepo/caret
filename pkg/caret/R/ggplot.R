@@ -46,7 +46,10 @@ ggplot.train <- function(data = NULL, metric = data$metric[1], plotType = "scatt
     numUnique <- sort(numUnique,  decreasing = TRUE)
     dat <- dat[, c(metric, names(numUnique))]
   }  
+  
   if(output == "data") return(dat)
+  if(data$control$search == "random") return(random_search_plot(data, metric = metric))
+  
   if(plotType == "scatter") {
     dnm <- names(dat)
     if(p > 1 && is.numeric(dat[, 3])) dat[, 3] <- factor(format(dat[, 3]))
@@ -132,4 +135,100 @@ ggplot.rfe <- function(data = NULL, metric = data$metric[1],
   out <- out + geom_point(data=best, aes_string(x = "Variables", y = metric),
                           size = 3, colour="blue")
   out
+}
+
+random_search_plot <- function(x, metric = x$metric[1]) {
+
+  params <- x$modelInfo$parameters
+  p_names <- as.character(params$parameter)
+
+  exclude <- NULL
+  for(i in seq(along = p_names)) {
+    if(all(is.na(x$results[, p_names[i]])))
+      exclude <- c(exclude, i)
+  }
+  if(length(exclude) > 0) p_names <- p_names[-exclude]
+  x$results <- x$results[, c(metric, p_names)]
+  res <- x$results[complete.cases(x$results),]
+  combos <- res[, p_names, drop = FALSE]
+  
+  nvals <- unlist(lapply(combos, function(x) length(unique(x))))
+  p_names <- p_names[which(nvals > 1)]
+  
+  if(nrow(combos) == 1 | length(p_names) == 0) 
+    stop("Can't plot results with a single tuning parameter combination") 
+  combos <- combos[, p_names, drop = FALSE]
+  nvals <- sort(nvals[p_names], decreasing = TRUE)
+  
+  is_num <- unlist(lapply(combos, function(x) is.numeric(x) | is.integer(x)))
+  num_cols <- names(is_num)[is_num]
+  other_cols <- names(is_num)[!is_num]
+  
+  num_num <- sum(is_num)
+  num_other <- length(p_names) - num_num
+  if(num_other == 0) {
+    if(num_num == 1) {
+      out <- ggplot(res, aes_string(x = num_cols[1], y = metric)) +
+        geom_point() + xlab(as.character(params$label[params$parameter == num_cols[1]]))
+    } else {
+      if(num_num == 2) {
+        out <- ggplot(res, aes_string(x = num_cols[1], y = num_cols[2], size = metric)) +
+          geom_point() + 
+          xlab(as.character(params$label[params$parameter == num_cols[1]])) + 
+          ylab(as.character(params$label[params$parameter == num_cols[2]]))
+      } else {
+        ## feature plot
+        vert <- melt(res[, c(metric, num_cols)], id.vars = metric, variable.name = "parameter")
+        vert <- merge(vert, params)
+        names(vert)[names(vert) == "label"] <- "Parameter"
+        out <- ggplot(vert, aes_string(x = "value", y = metric)) +
+          geom_point() + facet_wrap(~Parameter, scales = "free_x") + xlab("")
+      }
+    }
+  } else {
+    if(num_other == length(p_names)) {
+      ## do an interaction plot
+      if(num_other == 1) {
+        out <- ggplot(res, aes_string(x = other_cols[1], y = metric)) +
+          geom_point() + 
+          xlab(as.character(params$label[params$parameter == other_cols[1]]))
+      } else {
+        if(num_other == 2) {
+          out <- ggplot(res, aes_string(x = other_cols[1], shape = other_cols[2],  y = metric)) +
+            geom_point() + geom_line(aes_string(group = other_cols[2])) + 
+            xlab(as.character(params$label[params$parameter == other_cols[1]]))
+        } else {
+          if(num_other == 3) {
+            pname <- as.character(params$label[params$parameter == other_cols[3]])
+            res[,other_cols[3]] <- paste0(pname, ": ", res[,other_cols[3]])
+            out <- ggplot(res, aes_string(x = other_cols[1], shape = other_cols[2],  y = metric)) +
+              geom_point() + geom_line(aes_string(group = other_cols[2])) + 
+              facet_grid(paste0(".~", other_cols[3])) + 
+              xlab(as.character(params$label[params$parameter == other_cols[1]]))
+          } else {
+            stop(paste("There are",
+                       num_other, "non-numeric variables; I don't have code for",
+                       "that Dave"))
+          }
+        } 
+      }
+    } else {
+      ## feature plot with colors and or shapes
+      vert <- melt(res[, c(metric, num_cols, other_cols)], 
+                   id.vars = c(metric, other_cols),
+                   variable.name = "parameter")
+      vert <- merge(vert, params)
+      names(vert)[names(vert) == "label"] <- "Parameter"
+      if(num_other == 1) {
+        out <- ggplot(vert, aes_string(x = "value", y = metric, color = other_cols)) +
+          geom_point() + facet_wrap(~Parameter, scales = "free_x") + xlab("")
+      } else {
+        stop(paste("There are", num_num, "numeric tuning variables and",
+                   num_other, "non-numeric variables; I don't have code for",
+                   "that Dave"))
+      }
+    }
+  }
+  out
+  
 }

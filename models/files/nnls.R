@@ -5,7 +5,7 @@ modelInfo <- list(label = "Non-Negative Least Squares",
                   parameters = data.frame(parameter = "parameter",
                                           class = "character",
                                           label = "parameter"),
-                  grid = function(x, y, len = NULL) data.frame(parameter = "none"),
+                  grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.matrix(x)) x <- as.matrix(x)
                     out <- nnls(x, y)

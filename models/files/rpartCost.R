@@ -4,22 +4,26 @@ modelInfo <- list(label = "Cost-Sensitive CART",
                   parameters = data.frame(parameter = c('cp', 'Cost'),
                                           class = c("numeric", "numeric"),
                                           label = c("Complexity Parameter", "Cost")),
-                  grid = function(x, y, len = NULL){
+                  grid = function(x, y, len = NULL, search = "grid"){
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     initialFit <- rpart(.outcome ~ .,
                                         data = dat,
                                         control = rpart.control(cp = 0))$cptable
-                    initialFit <- initialFit[order(-initialFit[,"CP"]), , drop = FALSE]
+                    initialFit <- initialFit[order(-initialFit[,"CP"]), , drop = FALSE] 
+                    if(search == "grid") {
+                      if(nrow(initialFit) < len) {
+                        tuneSeq <- expand.grid(cp = seq(min(initialFit[, "CP"]), 
+                                                        max(initialFit[, "CP"]), 
+                                                        length = len),
+                                               Cost = 1:len)
+                      } else tuneSeq <-  data.frame(cp = initialFit[1:len,"CP"], Cost = 1:len)
+                      colnames(tuneSeq) <- c("cp", "Cost")
+                    } else {
+                      tuneSeq <- data.frame(cp = unique(sample(initialFit[, "CP"], size = len, replace = TRUE)),
+                                            Cost = runif(len, min = 1, max = 30))
+                    }
                     
-                    if(nrow(initialFit) < len)
-                    {
-                      tuneSeq <- expand.grid(cp = seq(min(initialFit[, "CP"]), 
-                                                      max(initialFit[, "CP"]), 
-                                                      length = len),
-                                             Cost = 1:len)
-                    } else tuneSeq <-  expand.grid(cp = initialFit[1:len,"CP"], Cost = 1:len)
-                    colnames(tuneSeq)[1] <- "cp"
                     tuneSeq
                   },
                   loop = function(grid) {

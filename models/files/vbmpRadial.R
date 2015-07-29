@@ -5,7 +5,7 @@ modelInfo <- list(label = "Variational Bayesian Multinomial Probit Regression",
                   parameters = data.frame(parameter = c('estimateTheta'),
                                           class = c('character'),
                                           label = c('Theta Estimated')),
-                  grid = function(x, y, len = NULL) data.frame(estimateTheta = "yes"),
+                  grid = function(x, y, len = NULL, search = "grid") data.frame(estimateTheta = "yes"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     theDots <- list(...)
                     if(any(names(theDots) == "control"))

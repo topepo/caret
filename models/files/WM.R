@@ -4,9 +4,16 @@ modelInfo <- list(label = "Wang and Mendel Fuzzy Rules",
                   parameters = data.frame(parameter = c('num.labels', 'type.mf'),
                                           class = c("numeric", "character"),
                                           label = c('#Fuzzy Terms', 'Membership Function')),
-                  grid = function(x, y, len = NULL)
-                    expand.grid(num.labels = 1+(1:len)*2,      
-                                type.mf = c("GAUSSIAN", "TRAPEZOID", "TRIANGLE")),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- expand.grid(num.labels = 1+(1:len)*2,      
+                                         type.mf = c("GAUSSIAN", "TRAPEZOID", "TRIANGLE"))
+                    } else {
+                      out <- data.frame(num.labels = sample(2:20, size = len, replace = TRUE),
+                                        type.mf = sample(c("GAUSSIAN", "TRAPEZOID", "TRIANGLE"), size = len, replace = TRUE))
+                    }
+                    out
+                  },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     args <- list(data.train = as.matrix(cbind(x, y)))

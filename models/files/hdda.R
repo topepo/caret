@@ -5,9 +5,19 @@ modelInfo <- list(label = "High Dimensional Discriminant Analysis",
                   parameters = data.frame(parameter = c('threshold', 'model'),
                                           class = c('character', 'numeric'),
                                           label = c('Threshold', 'Model Type')),
-                  grid = function(x, y, len = NULL) 
-                    expand.grid(model = c("all"), 
-                                threshold = seq(0.05, .3, length = len)),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    mods <- c("AkjBkQkDk", "AkBkQkDk", "ABkQkDk", "AkjBQkDk", "AkBQkDk", 
+                              "ABQkDk", "AkjBkQkD", "AkBkQkD", "ABkQkD", "AkjBQkD", 
+                              "AkBQkD", "ABQkD", "AjBQD", "ABQD")
+                    if(search == "grid") {
+                      out <- expand.grid(model = c("all"), 
+                                         threshold = seq(0.05, .3, length = len))
+                    } else {
+                      out <- data.frame(model = sample(mods, size = len, replace = TRUE),
+                                        threshold = runif(len, min = 0, max = 1))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     hdda(x, y, model = as.character(param$model), threshold = param$threshold, ...)
                     },

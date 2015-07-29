@@ -5,8 +5,14 @@ modelInfo <- list(label = "Radial Basis Function Network",
                   parameters = data.frame(parameter = c('size'),
                                           class = c('numeric'),
                                           label = c('#Hidden Units')),
-                  grid = function(x, y, len = NULL) 
-                    data.frame(size =  ((1:len) * 2) + 9),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- data.frame(size =  ((1:len) * 2) - 1)
+                    } else {
+                      out <- data.frame(size = unique(sample(1:20, size = len, replace = TRUE)))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     theDots <- list(...)
                     theDots <- theDots[!(names(theDots) %in% c("size", "linOut"))]
@@ -25,7 +31,7 @@ modelInfo <- list(label = "Radial Basis Function Network",
                     {
                       theDots$learnFuncParams <- c(1e-8, 0, 1e-8, 0.1, 0.8)
                     }
-                    
+                
                     if(is.factor(y)) {
                       y <- RSNNS:::decodeClassLabels(y)
                       lin <- FALSE

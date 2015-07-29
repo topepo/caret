@@ -4,8 +4,14 @@ modelInfo <- list(label = "Quantile Regression with LASSO penalty",
                   parameters = data.frame(parameter = 'lambda',
                                           class = "numeric",
                                           label = 'L1 Penalty'),
-                  grid = function(x, y, len = NULL)
-                    expand.grid(lambda = c(10 ^ seq(-1, -4, length = len))),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- expand.grid(lambda = c(10 ^ seq(-1, -4, length = len)))
+                    } else {
+                      out <- data.frame(lambda = 10^runif(len, min = -5, 1))
+                    }
+                    out
+                  },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     rq.lasso.fit(as.matrix(x), y, lambda = param$lambda, ...)

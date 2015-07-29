@@ -4,21 +4,24 @@ modelInfo <- list(label = "CART",
                   parameters = data.frame(parameter = c('cp'),
                                           class = c("numeric"),
                                           label = c("Complexity Parameter")),
-                  grid = function(x, y, len = NULL){
+                  grid = function(x, y, len = NULL, search = "grid"){
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     initialFit <- rpart(.outcome ~ .,
                                         data = dat,
                                         control = rpart.control(cp = 0))$cptable
-                    initialFit <- initialFit[order(-initialFit[,"CP"]), , drop = FALSE]
+                    initialFit <- initialFit[order(-initialFit[,"CP"]), , drop = FALSE] 
+                    if(search == "grid") {
+                      if(nrow(initialFit) < len) {
+                        tuneSeq <- data.frame(cp = seq(min(initialFit[, "CP"]), 
+                                                       max(initialFit[, "CP"]), 
+                                                       length = len))
+                      } else tuneSeq <-  data.frame(cp = initialFit[1:len,"CP"])
+                      colnames(tuneSeq) <- "cp"
+                    } else {
+                      tuneSeq <- data.frame(cp = unique(sample(initialFit[, "CP"], size = len, replace = TRUE)))
+                    }
                     
-                    if(nrow(initialFit) < len)
-                    {
-                      tuneSeq <- data.frame(cp = seq(min(initialFit[, "CP"]), 
-                                                      max(initialFit[, "CP"]), 
-                                                      length = len))
-                    } else tuneSeq <-  data.frame(cp = initialFit[1:len,"CP"])
-                    colnames(tuneSeq) <- "cp"
                     tuneSeq
                   },
                   loop = function(grid) {
@@ -51,7 +54,7 @@ modelInfo <- list(label = "CART",
                     
                     if(last) out <- prune.rpart(out, cp = param$cp)
                     out           
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {                  
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     

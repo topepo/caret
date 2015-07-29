@@ -360,6 +360,20 @@ cat(paste(text2, collapse = "\n"))
 cat("</pre>\n")
     end.rcode-->
 
+<p>
+If there are missing values in the training set, PCA and ICA models
+only use complete samples.
+</p>
+
+<p>
+Another option is to use a random sample of possible tuning parameter combinations, i.e. "random search"<a href="www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf">(pdf)</a>. This functionality is described on <a href="random.html">this page</a>. 
+</p>
+
+<p>
+To use a random search, use the option <span class="mx arg">search</span><tt> = <!--rinline '"random"' --></tt> in the call to <span class="mx funCall">trainControl</span>. In this situation, the <span class="mx arg">tuneLength</span> parameter defines the total number of parameter combinations that will be evaluated. 
+</p>
+
+
 <div id="plots"></div> 
 <h2>Plotting the Resampling Profile</h2>
 

@@ -16,9 +16,19 @@ modelInfo <- list(label = "Boosted Classification Trees",
                   parameters = data.frame(parameter = c('iter', 'maxdepth', 'nu'),
                                           class = rep("numeric", 3),
                                           label = c('#Trees', 'Max Tree Depth', 'Learning Rate')),
-                  grid = function(x, y, len = NULL) expand.grid(iter = floor((1:len) * 50),
-                                                                maxdepth = seq(1, len),         
-                                                                nu = .1),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out  = expand.grid(iter = floor((1:len) * 50),
+                                         maxdepth = seq(1, len),         
+                                         nu = .1)
+                    } else {
+                      out <- data.frame(iter =  sample(1:1000, replace = TRUE, size = len),
+                                        maxdepth = sample(1:10, replace = TRUE, size = len),         
+                                        nu = runif(len, min = .001, max = .5))
+                      out <- out[!duplicated(out),]
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     theDots <- list(...)
                     

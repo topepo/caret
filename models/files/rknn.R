@@ -4,12 +4,19 @@ modelInfo <- list(label = "Random k-Nearest Neighbors",
                   parameters = data.frame(parameter = c("k", "mtry"),
                                           class = rep("numeric", 2),
                                           label = c("#Neighbors", "#Randomly Selected Predictors")),
-                  grid = function(x, y, len = NULL) {
-                    expand.grid(mtry = caret::var_seq(p = ncol(x), 
-                                               classification = is.factor(y), 
-                                               len = len),
-                                k = (5:((2 * len)+4))[(5:((2 * len)+4))%%2 > 0])
-                  },
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- expand.grid(mtry = caret::var_seq(p = ncol(x), 
+                                                               classification = is.factor(y), 
+                                                               len = len),
+                                         k = (5:((2 * len)+4))[(5:((2 * len)+4))%%2 > 0])
+                    } else {
+                      by_val <- if(is.factor(y)) length(levels(y)) else 1
+                      out <- data.frame(mtry = sample(1:ncol(x), size = len, replace = TRUE),
+                                        k = sample(seq(1, floor(nrow(x)/3), by = by_val), size = len, replace = TRUE))
+                    }
+                    out
+                  }, 
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     out <- list(data = x, y = y, mtry = param$mtry, k = param$k)

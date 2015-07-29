@@ -4,9 +4,15 @@ modelInfo <- list(label = "Gaussian Process with Polynomial Kernel",
                   parameters = data.frame(parameter = c('degree', 'scale'),
                                           class = c("numeric", "numeric"),
                                           label = c('Polynomial Degree', 'Scale')),
-                  grid = function(x, y, len = NULL) {
-                    expand.grid(degree = seq(1, min(len, 3)),      
-                                scale = 10 ^((1:len) - 4))
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(degree = seq(1, min(len, 3)),      
+                                         scale = 10 ^((1:len) - 4))
+                    } else {
+                      out <- data.frame(degree = sample(1:3, size = len, replace = TRUE),
+                                        scale = 10^runif(len, min = -5, 0))
+                    }
+                    out
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 

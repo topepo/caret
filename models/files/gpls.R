@@ -5,7 +5,14 @@ modelInfo <- list(label = "Generalized Partial Least Squares",
                   parameters = data.frame(parameter = c('K.prov'),
                                           class = c('numeric'),
                                           label = c('#Components')),
-                  grid = function(x, y, len = NULL) data.frame(K.prov =seq(1, len)),
+                  grid = function(x, y, len = NULL, search = "grid")  {
+                    if(search == "grid") {
+                      out <- data.frame(K.prov =seq(1, len))
+                    } else {
+                      out <- data.frame(K.prov = unique(sample(1:ncol(x), size = len, replace = TRUE)))
+                    }
+                    out
+                    },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
                     gpls(x, y, K.prov = param$K.prov, ...),
                   predict = function(modelFit, newdata, submodels = NULL) 

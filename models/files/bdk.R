@@ -5,18 +5,28 @@ modelInfo <- list(label = "Self-Organizing Map",
                   parameters = data.frame(parameter = c("xdim", "ydim", "xweight", "topo"),
                                           class = c(rep("numeric", 3), "character"),
                                           label = c("Row", "Columns", "X Weight", "Topology")),
-                  grid = function(x, y, len = NULL) {
-                    out <- expand.grid(xdim = 1:len, ydim = 2:(len+1),
-                                       xweight = seq(.5, .9, length = len))
-                    out$topo <- "hexagonal"
-                    subset(out, xdim <= ydim)
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(xdim = 1:len, ydim = 2:(len+1),
+                                         xweight = seq(.5, .9, length = len),
+                                         topo = "hexagonal")
+                      out <- subset(out, xdim <= ydim)
+                    } else {
+                      out <- data.frame(xdim = sample(1:len, size = len*10, replace = TRUE),
+                                        ydim = sample(1:len, size = len*10, replace = TRUE),
+                                        topo = sample(c("rectangular", "hexagonal"), size = len*10, replace = TRUE),
+                                        xweight = runif(len*10, min = .5, max = 1))
+                      out <- subset(out, xdim <= ydim & xdim*ydim < nrow(x))
+                      out <- out[1:max(nrow(out), len),]
+                    }
+                    out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
                     bdk(as.matrix(x),
                         Y = if(is.factor(y)) classvec2classmat(y) else y,
                         xweight = param$xweight,
                         contin = !is.factor(y),
-                        grid = somgrid(param$xdim, param$ydim, param$topo),
+                        grid = somgrid(param$xdim, param$ydim, as.character(param$topo)),
                         ...),
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, as.matrix(newdata))$prediction

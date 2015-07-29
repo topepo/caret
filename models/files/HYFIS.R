@@ -4,9 +4,16 @@ modelInfo <- list(label = "Hybrid Neural Fuzzy Inference System",
                   parameters = data.frame(parameter = c('num.labels', 'max.iter'),
                                           class = c("numeric", "numeric"),
                                           label = c('#Fuzzy Terms', 'Max. Iterations')),
-                  grid = function(x, y, len = NULL)
-                    expand.grid(num.labels = 1+(1:len)*2,      
-                                max.iter = 10),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- expand.grid(num.labels = 1+(1:len)*2,      
+                                         max.iter = 10)
+                    } else {
+                      out <- data.frame(num.labels = sample(2:20, size = len, replace = TRUE),
+                                        max.iter = sample(1:20, replace = TRUE, size = len))
+                    }
+                    out
+                  }, 
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     args <- list(data.train = as.matrix(cbind(x, y)),

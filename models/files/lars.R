@@ -4,8 +4,14 @@ modelInfo <- list(label = "Least Angle Regression",
                   parameters = data.frame(parameter = 'fraction',
                                           class = "numeric",
                                           label = 'Fraction'),
-                  grid = function(x, y, len = NULL)
-                    expand.grid(fraction = seq(0.05, 1, length = len)),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <-  expand.grid(fraction = seq(0.05, 1, length = len))
+                    } else {
+                      out <- data.frame(fraction = runif(len, min = 0, max = 1))
+                    }
+                    out
+                  },
                   loop = function(grid) {   
                     grid <- grid[order(grid$fraction, decreasing = TRUE),, drop = FALSE]
                     loop <- grid[1,,drop = FALSE]

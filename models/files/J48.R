@@ -5,7 +5,7 @@ modelInfo <- list(label = "C4.5-like Trees",
                   parameters = data.frame(parameter = "C",
                                           class = "numeric",
                                           label = "Confidence Threshold"),
-                  grid = function(x, y, len = NULL) data.frame(C = 0.25),
+                  grid = function(x, y, len = NULL, search = "grid") data.frame(C = 0.25),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y

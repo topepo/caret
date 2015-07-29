@@ -5,8 +5,13 @@ modelInfo <- list(label = "Conditional Inference Tree",
                   parameters = data.frame(parameter = 'mincriterion',
                                           class = 'numeric',
                                           label = '1 - P-Value Threshold'),
-                  grid = function(x, y, len = NULL) {
-                    data.frame(mincriterion = seq(from = .99, to = 0.01, length = len))
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(mincriterion = seq(from = .99, to = 0.01, length = len))
+                    } else {
+                      out <- data.frame(mincriterion = runif(len, min = 0, max = 1))
+                    }
+                    out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)

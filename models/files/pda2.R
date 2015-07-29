@@ -5,8 +5,14 @@ modelInfo <- list(label = "Penalized Discriminant Analysis",
                   parameters = data.frame(parameter = c('df'),
                                           class = c('numeric'),
                                           label = c('Degrees of Freedom')),
-                  grid = function(x, y, len = NULL) 
-                    data.frame(df = 2* (0:(len - 1) + 1)),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(df = 2* (0:(len - 1) + 1))
+                    } else {
+                      out <- data.frame(df = runif(len, min = 1, max = 5))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y

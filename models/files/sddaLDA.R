@@ -5,7 +5,7 @@ modelInfo <- list(label = "Stepwise Diagonal Linear Discriminant Analysis",
                   parameters = data.frame(parameter = c("parameter"),
                                           class = c("character"),
                                           label = c('parameter')),
-                  grid = function(x, y, len = NULL) 
+                  grid = function(x, y, len = NULL, search = "grid") 
                     data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...)
                     sdda(as.matrix(x), y, method = "lda", ...),

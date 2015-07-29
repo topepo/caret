@@ -5,7 +5,7 @@ modelInfo <- list(label = "Single Rule Classification",
                   parameters = data.frame(parameter = c('parameter'),
                                           class = c("character"),
                                           label = "none"),
-                  grid = function(x, y, len = NULL) 
+                  grid = function(x, y, len = NULL, search = "grid") 
                     data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)

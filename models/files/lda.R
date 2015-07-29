@@ -5,7 +5,7 @@ modelInfo <- list(label = "Linear Discriminant Analysis",
                   parameters = data.frame(parameter = "parameter",
                                           class = "character",
                                           label = "parameter"),
-                  grid = function(x, y, len = NULL) data.frame(parameter = "none"),
+                  grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) lda(x, y, ...)  ,
                   predict = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit, newdata)$class,

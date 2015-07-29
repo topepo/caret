@@ -17,9 +17,16 @@ modelInfo <- list(label = "Penalized Linear Discriminant Analysis",
                   parameters = data.frame(parameter = c('lambda', 'K'),
                                           class = c('numeric', 'numeric'),
                                           label = c('L1 Penalty', '#Discriminant Functions')),
-                  grid = function(x, y, len = NULL) 
-                    data.frame(lambda = 10 ^ seq(-1, -4, length = len), 
-                               K = length(levels(y)) - 1),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- data.frame(lambda = 10 ^ seq(-1, -4, length = len), 
+                                        K = length(levels(y)) - 1)
+                    } else {
+                      out <- data.frame(lambda = 10^runif(len, min = -5, 1), 
+                                        K = sample(1:(length(levels(y)) - 1), size = len, replace = TRUE))
+                    }
+                    out
+                  }, 
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
                     penalizedLDA:::PenalizedLDA(as.matrix(x), as.numeric(y),
                                                 lambda = param$lambda,

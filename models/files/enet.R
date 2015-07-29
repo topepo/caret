@@ -4,9 +4,16 @@ modelInfo <- list(label = "Elasticnet",
                   parameters = data.frame(parameter = c('fraction', 'lambda'),
                                           class = c("numeric", "numeric"),
                                           label = c('Fraction of Full Solution', 'Weight Decay')),
-                  grid = function(x, y, len = NULL) 
-                    expand.grid(lambda = c(0, 10 ^ seq(-1, -4, length = len - 1)),
-                                fraction = seq(0.05, 1, length = len)),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(lambda = c(0, 10 ^ seq(-1, -4, length = len - 1)),
+                                         fraction = seq(0.05, 1, length = len))  
+                    } else {
+                      out <- data.frame(lambda = 10^runif(len, min = -5, 1),
+                                        fraction = runif(len, min = 0, max = 1))
+                    }
+                    out
+                  },
                   loop = function(grid) {   
                     grid <- grid[order(grid$lambda, grid$fraction, decreasing = TRUE),, drop = FALSE]
                     uniqueLambda <- unique(grid$lambda)

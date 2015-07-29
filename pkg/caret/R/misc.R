@@ -546,11 +546,11 @@ check_dims <- function(x, y) {
 }
 
 get_model_type <- function(y, method = NULL) {
-  type <- if(class(y)[1] %in% c("numeric", "Surv")) "Regression" else "Classification"
+  type <- if(class(y)[1] %in% c("numeric", "Surv", "integer")) "Regression" else "Classification"
   type
 }
 
-get_range <- function(y)
-  if(class(y)[1] == "numeric") extendrange(y) else extendrange(y[, "time"])
-
-
+get_range <- function(y) {
+  if(class(y)[1] == "factor") return(NA)
+  if(class(y)[1] %in% c("numeric", "integer")) extendrange(y) else extendrange(y[, "time"])
+}

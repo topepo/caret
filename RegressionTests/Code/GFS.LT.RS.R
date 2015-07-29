@@ -30,6 +30,7 @@ testY <- trainX$y
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
 rctrl3 <- trainControl(method = "none")
+rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, method = "GFS.LT.RS", 
@@ -43,6 +44,12 @@ test_reg_cv_form <- train(y ~ ., data = training,
                           tuneLength = 2,
                           trControl = rctrl1)
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
+
+set.seed(849)
+test_reg_rand <- train(trainX, trainY, 
+                       method = "GFS.LT.RS", 
+                       trControl = rctrlR,
+                       tuneLength = 4)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, method = "GFS.LT.RS", 

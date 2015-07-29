@@ -30,6 +30,7 @@ testY <- trainX$y
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
 rctrl3 <- trainControl(method = "none")
+rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, method = "neuralnet", trControl = rctrl1,
@@ -43,13 +44,25 @@ test_reg_cv_form <- train(y ~ ., data = training,
                           method = "neuralnet", trControl = rctrl1,
                           tuneGrid = data.frame(layer1 = 2:3, layer2 = 0, layer3 = 0),
                           rep = 3,
+                          startweights = test_reg_cv_model$finalModel$weights,
                           preProc = c("center", "scale"))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
-test_reg_loo_model <- train(trainX, trainY, method = "neuralnet", trControl = rctrl2,
+test_reg_rand <- train(trainX, trainY, 
+                       method = "neuralnet", 
+                       trControl = rctrlR,
+                       tuneLength = 4,
+                       rep = 3,
+                       preProc = c("center", "scale"))
+
+set.seed(849)
+test_reg_loo_model <- train(y ~ ., data = training, 
+                            method = "neuralnet", 
+                            trControl = rctrl2,
                             tuneGrid = data.frame(layer1 = 2:3, layer2 = 0, layer3 = 0),
                             rep = 3,
+                            startweights = test_reg_cv_model$finalModel$weights,
                             preProc = c("center", "scale"))
 
 set.seed(849)

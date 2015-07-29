@@ -5,9 +5,18 @@ modelInfo <- list(label = "Model Averaged Neural Network",
                   parameters = data.frame(parameter = c('size', 'decay', 'bag'),
                                           class = c(rep("numeric", 2), "logical"),
                                           label = c('#Hidden Units', 'Weight Decay', 'Bagging')),
-                  grid = function(x, y, len = NULL) expand.grid(size = ((1:len) * 2) - 1, 
-                                                                decay = c(0, 10 ^ seq(-1, -4, length = len - 1)),
-                                                                bag = FALSE),
+                  grid =  function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- expand.grid(size = ((1:len) * 2) - 1, 
+                                         decay = c(0, 10 ^ seq(-1, -4, length = len - 1)),
+                                         bag = FALSE)
+                    } else {
+                      out <- data.frame(size = sample(1:20, size = len, replace = TRUE), 
+                                        decay = 10^runif(len, min = -5, 1),
+                                        bag = sample(c(TRUE, FALSE), size = len, replace = TRUE))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     library(nnet)
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)

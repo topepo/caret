@@ -5,8 +5,15 @@ modelInfo <- list(label = "Generalized Additive Model using LOESS",
                   parameters = data.frame(parameter = c('span', 'degree'),
                                           class = c('numeric', 'numeric'),
                                           label = c('Span', 'Degree')),
-                  grid = function(x, y, len = NULL) 
-                    expand.grid(span = .5, degree = 1),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(span = .5, degree = 1)
+                    } else {
+                      out <- data.frame(span = runif(len, min = 0, max = 1),
+                                        degree = sample(1:2, size = len, replace = TRUE))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     args <- list(data = if(is.data.frame(x)) x else as.data.frame(x))
                     args$data$.outcome <- y

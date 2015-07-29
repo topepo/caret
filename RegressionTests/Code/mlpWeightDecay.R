@@ -17,12 +17,12 @@ seeds <- lapply(seeds, function(x) 1:20)
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", seeds = seeds)
 cctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
 cctrl3 <- trainControl(method = "none", seeds = seeds)
+cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 library(RSNNS)
 
 grid <- expand.grid(.decay = c(0, .01), .size = 1:3)
 
-setSnnsRSeedValue(1)
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
                              method = "mlpWeightDecay", 
@@ -40,7 +40,12 @@ test_class_cv_form <- train(Class ~ ., data = training,
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 
-setSnnsRSeedValue(1)
+set.seed(849)
+test_class_rand <- train(trainX, trainY, 
+                         method = "mlpWeightDecay", 
+                         trControl = cctrl5,
+                         tuneLength = 4)
+
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
                               method = "mlpWeightDecay", 
@@ -87,8 +92,8 @@ testY <- trainX$y
 
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", seeds = seeds)
 rctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
+rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
-setSnnsRSeedValue(1)
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
                            method = "mlpWeightDecay",
@@ -97,7 +102,6 @@ test_reg_cv_model <- train(trainX, trainY,
                            preProc = c("center", "scale"))
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
-setSnnsRSeedValue(1)
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
                           method = "mlpWeightDecay", 
@@ -106,7 +110,13 @@ test_reg_cv_form <- train(y ~ ., data = training,
                           preProc = c("center", "scale"))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
-setSnnsRSeedValue(1)
+set.seed(849)
+test_reg_rand <- train(trainX, trainY, 
+                       method = "mlpWeightDecay", 
+                       trControl = rctrlR,
+                       tuneLength = 4,
+                       preProc = c("center", "scale"))
+
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 
                             method = "mlpWeightDecay",

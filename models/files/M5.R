@@ -5,7 +5,7 @@ modelInfo <- list(label = "Model Tree",
                   parameters = data.frame(parameter = c('pruned', 'smoothed', 'rules'),
                                           class = rep("character", 3),
                                           label = c('Pruned', 'Smoothed', 'Rules')),
-                  grid = function(x, y, len = NULL) expand.grid(pruned = c("Yes", "No"), 
+                  grid = function(x, y, len = NULL, search = "grid") expand.grid(pruned = c("Yes", "No"), 
                                                                 smoothed = c("Yes", "No"), 
                                                                 rules = c("Yes", "No")),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {

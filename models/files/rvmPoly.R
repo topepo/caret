@@ -5,10 +5,16 @@ modelInfo <- list(label = "Relevance Vector Machines with Polynomial Kernel",
                   parameters = data.frame(parameter = c("scale", "degree"),
                                           class = c("numeric", "numeric"),
                                           label = c("Scale", "Polynomial Degree")),
-                  grid = function(x, y, len = NULL) {
-                    expand.grid(degree = seq(1, min(len, 3)),      
-                                scale = 10 ^((1:len) - 4))
-                    },
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- expand.grid(degree = seq(1, min(len, 3)),      
+                                         scale = 10 ^((1:len) - 4))
+                    } else {
+                      out <- data.frame(degree = sample(1:3, size = len, replace = TRUE),
+                                        scale = 10^runif(len, min = -5, 0))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     kernlab:::rvm(x = as.matrix(x), y = y,
                                   kernel = polydot,

@@ -4,13 +4,20 @@ modelInfo <- list(label = "Support Vector Machines with Class Weights",
                   parameters = data.frame(parameter = c('sigma', 'C', 'Weight'),
                                           class = c("numeric", "numeric", "numeric"),
                                           label = c('Sigma', "Cost", "Weight")),
-                  grid = function(x, y, len = NULL) {
+                  grid = function(x, y, len = NULL, search = "grid") {
                     library(kernlab)
-                    if(length(levels(y)) != 2) stop("This model is only available for two class problem. ")
                     sigmas <- sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)  
-                    expand.grid(sigma = mean(as.vector(sigmas[-2])),
-                                C = 2 ^((1:len) - 3),
-                                Weight = 1:len)
+                    if(search == "grid") {
+                      out <- expand.grid(sigma = mean(as.vector(sigmas[-2])),
+                                         C = 2 ^((1:len) - 3),
+                                         Weight = 1:len)
+                    } else {
+                      rng <- extendrange(log(sigmas), f = .75)
+                      out <- data.frame(sigma = exp(runif(len, min = rng[1], max = rng[2])),
+                                        C = 2^runif(len, min = -5, max = 8),
+                                        Weight = runif(len, min = 1, max = 25))
+                    }
+                    out
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 

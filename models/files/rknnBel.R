@@ -6,9 +6,15 @@ modelInfo <- list(label = "Random k-Nearest Neighbors with Feature Selection",
                                           label = c("#Neighbors", 
                                                     "#Randomly Selected Predictors",
                                                     "#Features Dropped")),
-                  grid = function(x, y, len = NULL) {
-                    grid <- expand.grid(k = (5:((2 * len)+4))[(5:((2 * len)+4))%%2 > 0], 
-                                        d = seq(.2, .8, length = len))
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      grid <- expand.grid(k = (5:((2 * len)+4))[(5:((2 * len)+4))%%2 > 0], 
+                                          d = seq(.2, .8, length = len))
+                    } else {
+                      by_val <- if(is.factor(y)) length(levels(y)) else 1
+                      grid <- data.frame(d = runif(len, min = 0, max = 1),
+                                         k = sample(seq(1, floor(nrow(x)/3), by = by_val), size = len, replace = TRUE))
+                    }
                     grid$d <- floor(grid$d*ncol(x))
                     grid$d[grid$d == 0] <- 1
                     newp <- ncol(x) - grid$d

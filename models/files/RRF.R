@@ -6,12 +6,19 @@ modelInfo <- list(label = "Regularized Random Forest",
                                           class = c('numeric', 'numeric', 'numeric'),
                                           label = c('#Randomly Selected Predictors', 'Regularization Value', 
                                                     'Importance Coefficient')),
-                  grid = function(x, y, len = NULL) {
-                    expand.grid(mtry = caret::var_seq(p = ncol(x), 
-                                               classification = is.factor(y), 
-                                               len = len),
-                                coefReg = seq(0.01, 1, length = len),
-                                coefImp = seq(0, 1, length = len))
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- data.frame(mtry = caret::var_seq(p = ncol(x), 
+                                                              classification = is.factor(y), 
+                                                              len = len),
+                                        coefReg = seq(0.01, 1, length = len),
+                                        coefImp = seq(0, 1, length = len))
+                    } else {
+                      out <- data.frame(mtry = sample(1:ncol(x), size = len, replace = TRUE),
+                                        coefReg = runif(len, min = 0, max = 1),
+                                        coefImp = runif(len, min = 0, max = 1))
+                    }
+                    out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     theDots <- list(...)

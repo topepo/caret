@@ -5,8 +5,14 @@ modelInfo <- list(label = "Penalized Discriminant Analysis",
                   parameters = data.frame(parameter = c('lambda'),
                                           class = c('numeric'),
                                           label = c('Shrinkage Penalty Coefficient')),
-                  grid = function(x, y, len = NULL) 
-                    data.frame(lambda = 1:len),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- data.frame(lambda =  c(0, 10 ^ seq(-1, -4, length = len - 1)))
+                    } else {
+                      out <- data.frame(lambda = 10^runif(len, min = -5, 1))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y

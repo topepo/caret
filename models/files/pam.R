@@ -4,15 +4,21 @@ modelInfo <- list(label = "Nearest Shrunken Centroids",
                   parameters = data.frame(parameter = 'threshold',
                                           class = "numeric",
                                           label = 'Shrinkage Threshold'),
-                  grid = function(x, y, len = NULL) {
+                  grid = function(x, y, len = NULL, search = "grid") {
                     cc <- complete.cases(x) & complete.cases(y)
                     x <- x[cc,,drop = FALSE]
                     y <- y[cc]
                     initialThresh <- pamr.train(list(x=t(x), y=y))$threshold
                     initialThresh <- initialThresh[-c(1, length(initialThresh))]
-                    data.frame(threshold = seq(from = min(initialThresh),
-                                               to = max(initialThresh), 
-                                               length = len))
+                    if(search == "grid") {
+                      out <- data.frame(threshold = seq(from = min(initialThresh),
+                                                        to = max(initialThresh), 
+                                                        length = len))
+                    } else {
+                      out <- data.frame(threshold = runif(len, min = min(initialThresh),max = max(initialThresh)))
+                    }
+                    out
+                    
                   },
                   loop = function(grid) {   
                     grid <- grid[order(grid$threshold, decreasing = TRUE),, drop = FALSE]

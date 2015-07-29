@@ -7,10 +7,17 @@ modelInfo <- list(label = "CHi-squared Automated Interaction Detection",
                                           label = c('Merging Threshold', 
                                                     "Splitting former Merged Threshold", "
                                                     Splitting former Merged Threshold")),
-                  grid = function(x, y, len = NULL) {
-                    data.frame(alpha2 = seq(from = .05, to = 0.01, length = len),
-                               alpha3 = -1,
-                               alpha4 = seq(from = .05, to = 0.01, length = len))
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(alpha2 = seq(from = .05, to = 0.01, length = len),
+                                        alpha3 = -1,
+                                        alpha4 = seq(from = .05, to = 0.01, length = len))
+                    } else {
+                      out <- data.frame(alpha2 = runif(len, min = 0.000001, max = .1),
+                                        alpha3 = runif(len, min =-.1, max = .1),
+                                        alpha4 = runif(len, min = 0.000001, max = .1))
+                    }
+                    out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)

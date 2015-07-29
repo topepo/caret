@@ -4,10 +4,17 @@ modelInfo <- list(label = "Sparse Partial Least Squares",
                   parameters = data.frame(parameter = c('K', 'eta', 'kappa'),
                                           class = c('numeric', 'numeric', 'numeric'),
                                           label = c('#Components', 'Threshold', 'Kappa')),
-                  grid = function(x, y, len = NULL) {
-                    expand.grid(K = 1:len, 
-                                eta = seq(.1, .9, length = len), 
-                                kappa = .5)
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- expand.grid(K = 1:len, 
+                                         eta = seq(.1, .9, length = len), 
+                                         kappa = .5)
+                    } else {
+                      out <- data.frame(kappa = runif(len, min = 0, max = .5),
+                                        eta  = runif(len, min = 0, max = 1),
+                                        K = sample(1:ncol(x), size = len, replace = TRUE))
+                    }
+                    out
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 

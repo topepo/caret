@@ -4,10 +4,16 @@ modelInfo <- list(label = "Gaussian Process with Radial Basis Function Kernel",
                   parameters = data.frame(parameter = c('sigma'),
                                           class = c("numeric"),
                                           label = c('Sigma')),
-                  grid = function(x, y, len = NULL) {
+                  grid = function(x, y, len = NULL, search = "grid") {
                     library(kernlab)
                     sigmas <- sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)  
-                    expand.grid(sigma = mean(sigmas[-2]))
+                    if(search == "grid") {
+                      out <- expand.grid(sigma = mean(as.vector(sigmas[-2])))
+                    } else {
+                      rng <- extendrange(log(sigmas), f = .75)
+                      out <- data.frame(sigma = exp(runif(len, min = rng[1], max = rng[2])))
+                    }
+                    out
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 

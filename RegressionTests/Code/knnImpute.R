@@ -1,3 +1,4 @@
+model <- "knnImpute"
 
 library(caret)
 
@@ -54,3 +55,10 @@ pp_6_test = preProcess(iris_miss_6, method = "knnImpute")
 set.seed(1)
 test_6_result <- try(predict(pp_6_test, iris_miss_6), silent = TRUE)
 
+
+tests <- grep("test_", ls(), fixed = TRUE, value = TRUE)
+
+sInfo <- sessionInfo()
+
+save(list = c(tests, "sInfo", "timestamp"),
+     file = file.path(getwd(), paste(model, ".RData", sep = "")))

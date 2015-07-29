@@ -16,9 +16,19 @@ modelInfo <- list(label = "AdaBoost.M1",
                   parameters = data.frame(parameter = c('mfinal', 'maxdepth', 'coeflearn'),
                                           class = c("numeric", "numeric", "character"),
                                           label = c('#Trees', 'Max Tree Depth', 'Coefficient Type')),
-                  grid = function(x, y, len = NULL) expand.grid(mfinal = floor((1:len) * 50),
-                                                                maxdepth = seq(1, len),         
-                                                                coeflearn = c("Breiman", "Freund", "Zhu")),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    types <- c("Breiman", "Freund", "Zhu")
+                    if(search == "grid") {
+                      out <- expand.grid(mfinal = floor((1:len) * 50),
+                                         maxdepth = seq(1, len),         
+                                         coeflearn = types)
+                    } else {
+                      out <- data.frame(mfinal = sample(1:1000, replace = TRUE, size = len),
+                                        maxdepth = sample(1:30, replace = TRUE, size = len),
+                                        coeflearn = sample(types, replace = TRUE, size = len))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     theDots <- list(...)
                     

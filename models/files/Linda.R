@@ -5,7 +5,7 @@ modelInfo <- list(label = "Robust Linear Discriminant Analysis",
                   parameters = data.frame(parameter = c('parameter'),
                                           class = c('character'),
                                           label = c('none')),
-                  grid = function(x, y, len = NULL) data.frame(parameter = "none"),
+                  grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) rrcov:::Linda(x, y, ...) ,
                   predict = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit, newdata)@classification,

@@ -6,9 +6,18 @@ modelInfo <- list(label = "Stacked AutoEncoder Deep Neural Network",
                                           class = rep("numeric", 5),
                                           label = c("Hidden Layer 1", "Hidden Layer 2", "Hidden Layer 3", 
                                                     "Hidden Dropouts", "Visible Dropout")),
-                  grid = function(x, y, len = NULL) {
-                    expand.grid(layer1 = 1:len, layer2 = 0:(len -1), layer3 = 0:(len -1),
-                                hidden_dropout = 0, visible_dropout = 0)
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(layer1 = 1:len, layer2 = 0:(len -1), layer3 = 0:(len -1),
+                                         hidden_dropout = 0, visible_dropout = 0)
+                    } else {
+                      out <- data.frame(layer1 = sample(1:20, replace = TRUE, size = len),
+                                        layer2 = sample(0:20, replace = TRUE, size = len),
+                                        layer3 = sample(0:20, replace = TRUE, size = len),
+                                        hidden_dropout = runif(len, min = 0, max = .1),
+                                        visible_dropout = runif(len, min = 0, max = .1))
+                    }
+                    out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.matrix(x)) x <- as.matrix(x)

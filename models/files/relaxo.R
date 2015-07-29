@@ -4,11 +4,22 @@ modelInfo <- list(label = "Relaxed Lasso",
                   parameters = data.frame(parameter = c('lambda', 'phi'),
                                           class = c('numeric', 'numeric'),
                                           label = c('Penalty Parameter', 'Relaxation Parameter')),
-                  grid = function(x, y, len = NULL) {
+                  grid = function(x, y, len = NULL, search = "grid") {
                     library(relaxo)
                     tmp <- relaxo(as.matrix(x), y)
-                    expand.grid(phi = seq(0.1, 0.9, length = len),
-                                lambda = 10^seq(log10(min(tmp$lambda)), log10(quantile(tmp$lambda, probs = .9)), length = len))
+                    lambdas <- log10(tmp$lambda)[-c(1, length(tmp$lambda))]
+
+                    if(search == "grid") {
+                      out <- expand.grid(phi = seq(0.1, 0.9, length = len),
+                                         lambda = 10^seq(min(lambdas), 
+                                                         quantile(lambdas, probs = .9), 
+                                                         length = len))
+                    } else {
+                      out <- data.frame(lambda = 10^runif(len, min = min(lambdas), max = max(lambdas)), 
+                                        phi = runif(len, min = 0, max = 1))
+                    }
+                    out
+                    
                   },
                   loop = function(grid) {
                     loop <- ddply(grid,  .(phi), function(x) c(lambda = max(x$lambda)))

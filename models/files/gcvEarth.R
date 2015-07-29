@@ -4,7 +4,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Splines",
                   parameters = data.frame(parameter = c('degree'),
                                           class = c("numeric"),
                                           label = c('Product Degree')),
-                  grid = function(x, y, len = NULL) {
+                  grid = function(x, y, len = NULL, search = "grid") {
                     data.frame(degree = 1)
                   },
                   loop = NULL,

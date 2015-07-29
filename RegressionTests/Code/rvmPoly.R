@@ -30,6 +30,7 @@ testY <- trainX$y
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
 rctrl3 <- trainControl(method = "none")
+rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 grid <- data.frame(degree = 1:2, scale = 0.100)
 
@@ -45,6 +46,13 @@ test_reg_cv_form <- train(y ~ ., data = training,
                           tuneGrid = grid,
                           preProc = c("center", "scale"))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
+
+set.seed(849)
+test_reg_rand <- train(trainX, trainY, 
+                       method = "rvmPoly", 
+                       trControl = rctrlR,
+                       tuneLength = 4,
+                       preProc = c("center", "scale"))
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, method = "rvmPoly", trControl = rctrl2,

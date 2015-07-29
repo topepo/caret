@@ -11,7 +11,7 @@ gbmGrid <- expand.grid(interaction.depth = 1:2,
                        n.minobsinnode = 10)
 
 set.seed(2)
-training <- twoClassSim(100, linearVars = 2)
+training <- twoClassSim(300, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
@@ -24,6 +24,8 @@ cctrl2 <- trainControl(method = "LOOCV",
 cctrl3 <- trainControl(method = "oob")
 cctrl4 <- trainControl(method = "none",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
+cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
+
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
                              method = "gbm", 
@@ -57,6 +59,13 @@ test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
+
+set.seed(849)
+test_class_rand <- train(trainX, trainY, 
+                         method = "gbm", 
+                         trControl = cctrlR,
+                         tuneLength = 4,
+                         verbose = FALSE)
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
@@ -110,6 +119,7 @@ rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
 rctrl3 <- trainControl(method = "oob")
 rctrl4 <- trainControl(method = "none")
+rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
@@ -137,6 +147,13 @@ test_reg_cv_form <- train(y ~ ., data = training,
                           tuneGrid = gbmGrid,
                           verbose = FALSE)
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
+
+set.seed(849)
+test_reg_rand <- train(trainX, trainY, 
+                       method = "gbm", 
+                       trControl = rctrlR,
+                       tuneLength = 4,
+                       verbose = FALSE)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 

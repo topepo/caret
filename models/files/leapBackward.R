@@ -4,7 +4,14 @@ modelInfo <- list(label = "Linear Regression with Backwards Selection",
                   parameters = data.frame(parameter = 'nvmax',
                                           class = "numeric",
                                           label = 'Maximum Number of Predictors'),
-                  grid = function(x, y, len = NULL) data.frame(nvmax = 2:(len+1)),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(nvmax = 2:(len+1))
+                    } else {
+                      out <- data.frame(nvmax = sort(unique(sample(2:(ncol(x) - 1), size = len, replace = TRUE))))
+                    }
+                    out
+                    },
                   loop = function(grid) {   
                     grid <- grid[order(grid$nvmax, decreasing = TRUE),, drop = FALSE]
                     loop <- grid[1,,drop = FALSE]

@@ -5,10 +5,18 @@ modelInfo <- list(label = "Fuzzy Rules Using Genetic Cooperative-Competitive Lea
                                           class = rep("numeric", 3),
                                           label = c('Max. #Rules', 'Population Size',
                                                     'Max. Generations')),
-                  grid = function(x, y, len = NULL)
-                    expand.grid(max.num.rule = 1+(1:len)*2,      
-                                popu.size = 10,
-                                max.gen = 10),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- expand.grid(max.num.rule = 1+(1:len)*2,      
+                                         popu.size = 10,
+                                         max.gen = 10)
+                    } else {
+                      out <- data.frame(max.gen = sample(1:20, size = len, replace = TRUE),
+                                        popu.size = sample(seq(2, 20, by = 2), size = len, replace = TRUE),
+                                        max.num.rule = sample(1:20, size = len, replace = TRUE))
+                    }
+                    out
+                  },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     args <- list(data.train = as.matrix(cbind(x, as.numeric(y))),

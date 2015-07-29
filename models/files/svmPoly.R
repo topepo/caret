@@ -4,9 +4,18 @@ modelInfo <- list(label = "Support Vector Machines with Polynomial Kernel",
                   parameters = data.frame(parameter = c('degree', 'scale', 'C'),
                                           class = c("numeric", "numeric", "numeric"),
                                           label = c('Polynomial Degree','Scale', 'Cost')),
-                  grid = function(x, y, len = NULL) expand.grid(degree = seq(1, min(len, 3)),      
-                                                                scale = 10 ^((1:len) - 4),
-                                                                C = 2 ^((1:len) - 3)),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(degree = seq(1, min(len, 3)),      
+                                         scale = 10 ^((1:len) - 4),
+                                         C = 2 ^((1:len) - 3))
+                    } else {
+                      out <- data.frame(degree = sample(1:3, size = len, replace = TRUE),
+                                        scale = 10^runif(len, min = -5, 0),
+                                        C = 2^runif(len, min = -5, max = 8))
+                    }
+                    out
+                  },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     if(any(names(list(...)) == "prob.model") | is.numeric(y))
@@ -27,7 +36,7 @@ modelInfo <- list(label = "Support Vector Machines with Polynomial Kernel",
                     }
                     
                     out            
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     svmPred <- function(obj, x)
                     {

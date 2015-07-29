@@ -15,7 +15,14 @@ modelInfo <- list(label = "Boosted Logistic Regression",
                   parameters = data.frame(parameter = 'nIter',
                                           class = 'numeric',
                                           label = '# Boosting Iterations'),
-                  grid = function(x, y, len = NULL) data.frame(nIter = 1 + ((1:len)*10)),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(nIter = 1 + ((1:len)*10))
+                    } else {
+                      out <- data.frame(nIter = unique(sample(1:100, size = len, replace = TRUE)))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     ## There is another package with a function called `LogitBoost`
                     ## so we call using the namespace

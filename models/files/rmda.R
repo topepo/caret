@@ -5,8 +5,16 @@ modelInfo <- list(label = "Robust Mixture Discriminant Analysis",
                   parameters = data.frame(parameter = c("K", "model"),
                                           class = c("numeric", "character"),
                                           label = c('#Subclasses Per Class', 'Model')),
-                  grid = function(x, y, len = NULL) expand.grid(K = (1:len) + 1, 
-                                                                model = c("VEV")),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    mods <- c("EII", "VII", "EEI", "EVI", "VEI", "VVI")
+                    if(search == "grid") {
+                      out <- expand.grid(K = (1:len) + 1,  model = c("VEV"))
+                    } else {
+                      out <- data.frame(K = sample(2:10, size = len, replace = TRUE), 
+                                        model = sample(mods, size = len, replace = TRUE))
+                    }
+                    out
+                  }, 
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     mod <- rmda(x, as.numeric(y), 
                                 K = param$K, 

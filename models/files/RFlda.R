@@ -5,8 +5,14 @@ modelInfo <- list(label = "Factor-Based Linear Discriminant Analysis",
                   parameters = data.frame(parameter = c('q'),
                                           class = c('numeric'),
                                           label = c('# Factors')),
-                  grid = function(x, y, len = NULL) 
-                    data.frame(q = 1:len),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(q = 1:len)
+                    } else {
+                      out <- data.frame(q = unique(sample(1:10, size = len, replace = TRUE)))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
                     RFlda(x, y, q = param$q, maxq = param$q, ...),
                   predict = function(modelFit, newdata, submodels = NULL) {

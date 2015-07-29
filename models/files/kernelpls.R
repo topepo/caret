@@ -4,8 +4,14 @@ modelInfo <- list(label = "Partial Least Squares",
                   parameters = data.frame(parameter = 'ncomp',
                                           class = "numeric",
                                           label = '#Components'),
-                  grid = function(x, y, len = NULL) 
-                    data.frame(ncomp = seq(1, min(ncol(x) - 1, len), by = 1)),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid") {
+                      out <- data.frame(ncomp = seq(1, min(ncol(x) - 1, len), by = 1))
+                    } else {
+                      out <- data.frame(ncomp = unique(sample(1:ncol(x), size = len, replace = TRUE)))
+                    }
+                    out
+                  },
                   loop = function(grid) {     
                     grid <- grid[order(grid$ncomp, decreasing = TRUE),, drop = FALSE]
                     loop <- grid[1,,drop = FALSE]

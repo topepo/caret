@@ -18,6 +18,8 @@ cctrl2 <- trainControl(method = "LOOCV",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
 cctrl3 <- trainControl(method = "none", classProbs = TRUE, 
                        summaryFunction = twoClassSummary)
+cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
+
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
@@ -43,6 +45,12 @@ test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
+
+set.seed(849)
+test_class_rand <- train(trainX, trainY, 
+                         method = "Boruta", 
+                         trControl = cctrlR,
+                         tuneLength = 4)
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
@@ -98,6 +106,7 @@ testY <- trainX$y
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
 rctrl3 <- trainControl(method = "none")
+rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
@@ -118,6 +127,12 @@ test_reg_cv_form <- train(y ~ ., data = training,
                           pValue = .2,
                           maxRuns = 11)
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
+
+set.seed(849)
+test_reg_rand <- train(trainX, trainY, 
+                       method = "Boruta", 
+                       trControl = rctrlR,
+                       tuneLength = 4)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 

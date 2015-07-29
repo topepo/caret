@@ -2,6 +2,7 @@ trainControl <- function(method = "boot",
                          number = ifelse(grepl("cv", method), 10, 25),
                          repeats = ifelse(grepl("cv", method), 1, number),
                          p = .75,
+                         search = "grid",
                          initialWindow = NULL,
                          horizon = 1,
                          fixedWindow = TRUE,
@@ -36,10 +37,13 @@ trainControl <- function(method = "boot",
     if(adaptive$min >= num) stop(paste("adaptive$min should be less than", num))
     if(adaptive$min <= 1) stop("adaptive$min should be greater than 1")
   }
+  if(!(search %in% c("grid", "random")))
+    stop("`search` should be either 'grid' or 'random'")
   
   list(method = method,
        number = number,
        repeats = repeats,
+       search = search,
        p = p,
        initialWindow = initialWindow,
        horizon = horizon,

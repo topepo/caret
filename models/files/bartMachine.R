@@ -9,12 +9,20 @@ modelInfo <- list(label = "Bayesian Additive Regression Trees",
                                                     "Base Terminal Node Hyperparameter",
                                                     "Power Terminal Node Hyperparameter",
                                                     "Degrees of Freedom")),
-                  grid = function(x, y, len = NULL) {
-                    out <- expand.grid(num_trees = 50,
-                                       k = (1:len)+ 1,
-                                       alpha = seq(.9, .99, length = len), 
-                                       beta = seq(1, 3, length = len),
-                                       nu =  (1:len)+ 1)
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(num_trees = 50,
+                                         k = (1:len)+ 1,
+                                         alpha = seq(.9, .99, length = len), 
+                                         beta = seq(1, 3, length = len),
+                                         nu =  (1:len)+ 1)
+                    } else {
+                      out <- data.frame(num_trees = sample(10:100, replace = TRUE, size = len),
+                                        k = runif(len, min = 0, max = 5),
+                                        alpha = runif(len, min = .9, max = 1),
+                                        beta = runif(len, min = 0, max = 4),
+                                        nu = runif(len, min = 0, max = 5))
+                    }
                     if(is.factor(y)) {
                       out$k <- NA
                       out$nu <- NA

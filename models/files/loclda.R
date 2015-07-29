@@ -5,11 +5,16 @@ modelInfo <- list(label = "Localized Linear Discriminant Analysis",
                   parameters = data.frame(parameter = "k",
                                           class = "numeric",
                                           label = "#Nearest Neighbors"),
-                  grid = function(x, y, len = NULL) {
+                  grid = function(x, y, len = NULL, search = "grid") {
                     min_p <- ncol(x)/nrow(x) + .05
                     p_seq <- seq(min_p , min(.9, min_p + 1/3), length = len)
-                    grid <- data.frame(k = floor(p_seq*nrow(x)))
-                    grid
+                    if(search == "grid") {
+                      out <- data.frame(k = floor(p_seq*nrow(x)))
+                    } else {
+                      by_val <- if(is.factor(y)) length(levels(y)) else 1
+                      out <- data.frame(k = floor(runif(len, min = nrow(x)*min_p, max = nrow(x)*min(.9, min_p + 1/3))))
+                    }
+                    out
                     },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
                     loclda(x, y, k = floor(param$k), ...)  ,

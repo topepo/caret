@@ -15,7 +15,8 @@ cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 cctrl2 <- trainControl(method = "LOOCV")
 cctrl3 <- trainControl(method = "none",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
- 
+cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
+
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
                              method = "rpart2", 
@@ -30,6 +31,12 @@ test_class_cv_form <- train(Class ~ ., data = training,
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
+
+set.seed(849)
+test_class_rand <- train(trainX, trainY, 
+                         method = "rpart2", 
+                         trControl = cctrlR,
+                         tuneLength = 4)
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
@@ -79,6 +86,7 @@ testY <- trainX$y
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
 rctrl3 <- trainControl(method = "none")
+rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
@@ -93,6 +101,12 @@ test_reg_cv_form <- train(y ~ ., data = training,
                           trControl = rctrl1,
                           preProc = c("center", "scale"))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
+
+set.seed(849)
+test_reg_rand <- train(trainX, trainY, 
+                       method = "rpart2", 
+                       trControl = rctrlR,
+                       tuneLength = 4)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 

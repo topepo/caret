@@ -5,8 +5,16 @@ modelInfo <- list(label = "Neural Network",
                   parameters = data.frame(parameter = c('layer1', 'layer2', 'layer3'),
                                           class = c('numeric', 'numeric', 'numeric'),
                                           label = c('#Hidden Units in Layer 1', '#Hidden Units in Layer 2', '#Hidden Units in Layer 3')),
-                  grid = function(x, y, len = NULL) 
-                    expand.grid(layer1 = ((1:len) * 2) - 1, layer2 = 0, layer3 = 0),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(layer1 = ((1:len) * 2) - 1, layer2 = 0, layer3 = 0)
+                    } else {
+                      out <- data.frame(layer1 = sample(2:20, replace = TRUE, size = len),
+                                        layer2 = sample(c(0, 2:20), replace = TRUE, size = len),
+                                        layer3 = sample(c(0, 2:20), replace = TRUE, size = len))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     colNames <- colnames(x)
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)

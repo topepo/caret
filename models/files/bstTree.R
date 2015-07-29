@@ -4,8 +4,18 @@ modelInfo <- list(label = "Boosted Tree",
                   parameters = data.frame(parameter = c('mstop', 'maxdepth', 'nu'),
                                           class = c("numeric", "numeric", "numeric"),
                                           label = c('# Boosting Iterations', 'Max Tree Depth', 'Shrinkage')),
-                  grid = function(x, y, len = NULL) 
-                    expand.grid(maxdepth = seq(1, len), mstop = floor((1:len) * 50), nu = .1),
+                  grid = function(x, y, len = NULL, search = "grid")  {
+                    if(search == "grid") {
+                      out <- expand.grid(mstop = floor((1:len) * 50), 
+                                         maxdepth = seq(1, len), 
+                                         nu = .1)
+                    } else {
+                      out <- data.frame(mstop = sample(1:500, replace = TRUE, size = len),        
+                                        maxdepth = sample(1:10, replace = TRUE, size = len),         
+                                        nu = runif(len, min = .001, max = .6))
+                    }
+                    out
+                  },
                   loop = function(grid) {   
                     loop <- ddply(grid, .(maxdepth, nu), function(x) c(mstop = max(x$mstop)))
                     submodels <- vector(mode = "list", length = nrow(loop))

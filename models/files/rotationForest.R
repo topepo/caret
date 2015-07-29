@@ -4,8 +4,14 @@ modelInfo <- list(label = "Rotation Forest",
                   parameters = data.frame(parameter = c("K", "L"),
                                           class = rep("numeric", 2),
                                           label = c("#Variable Subsets", "Ensemble Size")),
-                  grid = function(x, y, len = NULL) {
-                    expand.grid(K = 1:min(len, ncol(x)-1), L = (1:len)*3)                    
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(K = 1:min(len, ncol(x)-1), L = (1:len)*3) 
+                    } else {
+                      out <- data.frame(K = sample(1:min(len, ncol(x)-1), size = len, replace = TRUE), 
+                                        L = sample(1:100, size = len, replace = TRUE))
+                    }
+                    out
                   },
                   loop = function(grid) { 
                     grid <- grid[order(grid$K, -grid$L, decreasing = TRUE),, drop = FALSE]

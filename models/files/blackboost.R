@@ -4,8 +4,16 @@ modelInfo <- list(label = "Boosted Tree",
                   parameters = data.frame(parameter = c('mstop', 'maxdepth'),
                                           class = c("numeric", "numeric"),
                                           label = c('#Trees', 'Max Tree Depth')),
-                  grid = function(x, y, len = NULL) expand.grid(maxdepth  = seq(1, len),
-                                                                mstop = floor((1:len) * 50)),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(maxdepth  = seq(1, len),
+                                         mstop = floor((1:len) * 50))
+                    } else {
+                      out <- data.frame(mstop = sample(1:1000, replace = TRUE, size = len),
+                                        maxdepth = sample(1:10, replace = TRUE, size = len))
+                    }
+                    out
+                  },
                   loop = function(grid) {     
                     loop <- ddply(grid, .(maxdepth), function(x) c(mstop = max(x$mstop)))
                     submodels <- vector(mode = "list", length = nrow(loop))
@@ -50,12 +58,12 @@ modelInfo <- list(label = "Boosted Tree",
                     out <- do.call("blackboost", modelArgs)
                     out$call["data"] <- "data"  
                     out
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     predType <- ifelse(modelFit$problemType == "Classification", "class", "response")
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     out <- predict(modelFit, newdata, type = predType)
-                                        
+                    
                     if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- as.vector(out)

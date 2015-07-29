@@ -15,8 +15,16 @@ modelInfo <- list(label = "Bagged AdaBoost",
                   parameters = data.frame(parameter = c('mfinal', 'maxdepth'),
                                           class = c("numeric", "numeric"),
                                           label = c('#Trees', 'Max Tree Depth')),
-                  grid = function(x, y, len = NULL) expand.grid(mfinal = floor((1:len) * 50),
-                                                                maxdepth = seq(1, len)),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(mfinal = floor((1:len) * 50),
+                                         maxdepth = seq(1, len))
+                    } else {
+                      out <- data.frame(mfinal = sample(1:1000, replace = TRUE, size = len),
+                                        maxdepth = sample(1:30, replace = TRUE, size = len))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     theDots <- list(...)
                     

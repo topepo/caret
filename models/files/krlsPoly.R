@@ -5,8 +5,15 @@ modelInfo <- list(label ="Polynomial Kernel Regularized Least Squares",
                   parameters = data.frame(parameter = c('lambda', 'degree'),
                                           class = c('numeric', 'numeric'),
                                           label = c('Regularization Parameter', 'Polynomial Degree')),
-                  grid = function(x, y, len = NULL) 
-                    expand.grid(lambda = NA, degree = 1:3),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(lambda = NA, degree = 1:3)
+                    } else {
+                      out <- data.frame(lambda = 10^runif(len, min = -5, 0),
+                                        degree = sample(1:3, size = len, replace = TRUE))
+                    }
+                    out
+                    },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!(param$degree %in% 1:4)) stop("Degree should be either 1, 2, 3 or 4")
                     krn <- switch(param$degree,

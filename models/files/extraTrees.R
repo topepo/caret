@@ -5,11 +5,17 @@
                       parameters = data.frame(parameter = c('mtry', 'numRandomCuts'),
                                               class = c('numeric', 'numeric'),
                                               label = c('# Randomly Selected Predictors', '# Random Cuts')),
-                      grid = function(x, y, len = NULL){
-                        expand.grid(mtry = caret::var_seq(p = ncol(x), 
-                                                   classification = is.factor(y), 
-                                                   len = len), 
-                                    numRandomCuts = 1:len)
+                      grid = function(x, y, len = NULL, search = "grid"){
+                        if(search == "grid") {
+                          out <- expand.grid(mtry = caret::var_seq(p = ncol(x), 
+                                                                   classification = is.factor(y), 
+                                                                   len = len), 
+                                             numRandomCuts = 1:len)
+                        } else {
+                          out <- data.frame(mtry = sample(1:ncol(x), size = len, replace = TRUE),
+                                            numRandomCuts = sample(1:25, size = len, replace = TRUE))
+                        }
+                        out[!duplicated(out),]
                       },
                       fit = function(x, y, wts, param, lev, last, classProbs, ...) 
                         extraTrees(x, y, mtry = param$mtry, numRandomCuts = param$numRandomCuts, ...),

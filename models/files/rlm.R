@@ -5,7 +5,7 @@ modelInfo <- list(label = "Robust Linear Model",
                   parameters = data.frame(parameter = "parameter",
                                           class = "character",
                                           label = "parameter"),
-                  grid = function(x, y, len = NULL) data.frame(parameter = "none"),
+                  grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y

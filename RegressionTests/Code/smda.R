@@ -14,6 +14,7 @@ trainY <- training$Class
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 cctrl2 <- trainControl(method = "LOOCV")
 cctrl3 <- trainControl(method = "none")
+cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_class_cv_model <- train(trainX[, 1:3], trainY, 
@@ -35,6 +36,13 @@ test_class_cv_form <- train(Class ~ ., data = training[, 5:8],
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
+
+set.seed(849)
+test_class_rand <- train(trainX[, 1:3], trainY, 
+                         method = "smda", 
+                         trControl = cctrlR,
+                         tuneLength = 4, 
+                         preProc = c("center", "scale"))
 
 # 
 # set.seed(849)

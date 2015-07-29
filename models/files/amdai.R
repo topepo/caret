@@ -5,7 +5,7 @@ modelInfo <- list(label = "Adaptive Mixture Discriminant Analysis",
                   parameters = data.frame(parameter = "model",
                                           class = "character",
                                           label = "Model Type"),
-                  grid = function(x, y, len = NULL) data.frame(model = "lda"),
+                  grid = function(x, y, len = NULL, search = "grid") data.frame(model = "lda"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     mod <- amdai(x, as.numeric(y), 
                                  model = as.character(param$model), ...)

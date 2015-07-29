@@ -18,6 +18,8 @@ cctrl2 <- trainControl(method = "LOOCV",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
 cctrl3 <- trainControl(method = "none",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
+cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
+
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
                              method = "glmnet", 
@@ -38,6 +40,12 @@ test_class_cv_form <- train(Class ~ ., data = training,
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
+
+set.seed(849)
+test_class_rand <- train(trainX, trainY, 
+                         method = "glmnet", 
+                         trControl = cctrlR,
+                         tuneLength = 4)
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
@@ -114,6 +122,7 @@ cvob1=cv.glmnet(x,y)
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
 rctrl3 <- trainControl(method = "none")
+rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
 test_reg_cv_model <- train(x, y, method = "glmnet",
@@ -159,6 +168,12 @@ test_sparse_cv_model <- train(x2, y, method = "glmnet",
                               tuneGrid = expand.grid(alpha = c(.5, 1),
                                                     lambda = cvob2$lambda[-(1:5)]))
 test_sparse_pred <- predict(test_sparse_cv_model, x2)
+
+set.seed(849)
+test_reg_rand <- train(trainX, trainY, 
+                       method = "glmnet", 
+                       trControl = rctrlR,
+                       tuneLength = 4)
 
 set.seed(849)
 test_sparse_loo_model <- train(x2, y, method = "glmnet",

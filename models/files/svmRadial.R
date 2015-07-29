@@ -4,11 +4,18 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                   parameters = data.frame(parameter = c('sigma', 'C'),
                                           class = c("numeric", "numeric"),
                                           label = c('Sigma', "Cost")),
-                  grid = function(x, y, len = NULL) {
+                  grid = function(x, y, len = NULL, search = "grid") {
                     library(kernlab)
                     sigmas <- sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)  
-                    expand.grid(sigma = mean(as.vector(sigmas[-2])),
-                                C = 2 ^((1:len) - 3))
+                    if(search == "grid") {
+                      out <- expand.grid(sigma = mean(as.vector(sigmas[-2])),
+                                         C = 2 ^((1:len) - 3))
+                    } else {
+                      rng <- extendrange(log(sigmas), f = .75)
+                      out <- data.frame(sigma = exp(runif(len, min = rng[1], max = rng[2])),
+                                        C = 2^runif(len, min = -5, max = 8))
+                    }
+                    out
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
