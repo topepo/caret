@@ -2,8 +2,6 @@
 % Please edit documentation in R/lfda.R
 \name{lfda}
 \alias{lfda}
-\alias{lfda.default}
-\alias{predict.lfda}
 
 \title{Local Fisher Discriminant Analysis}
 
@@ -11,13 +9,15 @@
 LFDA is a method for linear dimensionality reduction that maximizes
 between-class scatter and minimizes within-class scatter while at the
 same time maintain the local structure of the data so that multimodal
-data can be embedded appropriately. Its limitation is that it only 
-looks for linear boundaries between clusters. In this case, a non-linear
-version called kernel LFDA will be used instead. Three metric types can
-be used if needed. (See the links in this file for related methods)
+data can be embedded appropriately. 
 }
 \usage{
-\method{lfda}(x, ...)
+lfda(x, ...)
+
+\method{predict}{lfda}(object, newdata = NULL, type = "raw", ...)
+
+\method{lfda}{default}(x, y, r = 3, metric = c("orthonormalized", "plain",
+  "weighted"), knn = 5, ...)
 }
 \arguments{
 \item{x}{The data frame to be used to train the LFDA metric.}
