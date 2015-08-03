@@ -1,5 +1,8 @@
+#' Local Fisher Discriminant Analysis
+#' 
+#' @param x The data frame to be used to train the metric
+#' @param ... Additional arguments
 "lfda" <- function(x, ...) UseMethod("lfda")
-
 ## The followings are helper functions for implementation of lfda
 #' Matlab-Syntaxed Repmat
 #' 
@@ -11,8 +14,6 @@
 #' @param M the number of columns of tiling copies of A
 #' 
 #' @return matrix consisting of an N-by-M tiling copies of A
-#' 
-#' @export
 #' 
 repmat <- function(A, N, M) {
   kronecker(matrix(1, N, M), A)
@@ -26,8 +27,6 @@ repmat <- function(A, N, M) {
 #' @param n the exponent
 #' 
 #' @return the matrix after negative one half power
-#' 
-#' @export
 #' 
 "%^%" <- function(x, n) {
   with(eigen(as.matrix(x)), vectors %*% (values^n * t(vectors)))
@@ -199,8 +198,72 @@ lfda_calc <- function(x, y, r, metric = c("orthonormalized","plain","weighted"),
   return(list("T" = Tr, "Z" = Z))
 }
 
+#' Training LFDA Metric
+#' 
 #' This function trains a lfda metric, returns a transformed original matrix and transforming matrix used to 
 #' transform other data set, usually for testing set
+#' 
+#' @param x n x d matrix of original samples.
+#'          n is the number of samples.
+#' @param y length n vector of class labels
+#' @param r dimensionality of reduced space (default: d)
+#' @param metric type of metric in the embedding space (no default)
+#'               'weighted'        --- weighted eigenvectors 
+#'               'orthonormalized' --- orthonormalized
+#'               'plain'           --- raw eigenvectors
+#' @param knn parameter used in local scaling method (default: 5)
+#' @param ... Additional arguments
+#' @return list of the LFDA results:
+#' \item{T}{d x r transformation matrix (Z = x * T)}
+#' \item{Z}{n x r matrix of dimensionality reduced samples}
+#' 
+#' @author Yuan Tang
+#' 
+#' @keywords lfda local fisher discriminant transformation mahalanobis metric 
+#' 
+#' @author Yuan Tang
+#' 
+#' @references
+#' Sugiyama, M (2007).
+#' Dimensionality reduction of multimodal labeled data by
+#' local Fisher discriminant analysis.
+#' \emph{Journal of Machine Learning Research}, vol.\bold{8}, 1027--1061.
+#' 
+#' Sugiyama, M (2006).
+#' Local Fisher discriminant analysis for supervised dimensionality reduction.
+#' In W. W. Cohen and A. Moore (Eds.), \emph{Proceedings of 23rd International
+#' Conference on Machine Learning (ICML2006)}, 905--912.
+#' 
+#' #' @examples
+#' \dontrun{
+#' ## example without dimension reduction
+#' k <- trainData[,-1]
+#' y <- trainData[,1]
+#' r <- 26 # dimensionality of reduced space. Here no dimension reduction is performed
+#' result <- lfda_calc(k,y,r,metric="plain")
+#' transformedMat <- result$Z # transformed training data
+#' metric.train <- as.data.frame(cbind(trainData[,1],transformedMat))
+#' colnames(metric.train) <- colnames(trainData)
+#' 
+#' ## example with dimension reduction
+#' k <- trainData[,-1]
+#' y <- trainData[,1]
+#' r <- 3 # dimensionality of reduced space
+#' 
+#' result <- lfda_calc(k,y,r,metric="weighted")
+#' transformMat  <- result$T # transforming matrix - distance metric
+#' 
+#' # transformed training data with Style
+#' transformedMat <- result$Z # transformed training data
+#' metric.train <- as.data.frame(cbind(trainData[,1],transformedMat)) 
+#' colnames(metric.train)[1] <- "Style"
+#' 
+#' # transformed testing data with Style
+#' metric.test <- as.matrix(testData[,-1]) %*% transformMat
+#' metric.test <- as.data.frame(cbind(testData[,1],metric.test)) 
+#' colnames(metric.test)[1] <- "Style"
+#' }
+#' 
 "lfda.default" <- 
   function(x, y, r = 3, metric = c("orthonormalized","plain","weighted"),knn = 5, ...)
   {
@@ -216,6 +279,16 @@ lfda_calc <- function(x, y, r, metric = c("orthonormalized","plain","weighted"),
     out
   }
 
+#' LFDA Transformation
+#' 
+#' This function transforms a data set, usually a testing set, using the trained LFDA metric
+#' @param object The result from lfda function, which contains a transformed data and a transforming
+#'        matrix that can be used for transforming testing set
+#' @param newdata The data to be transformed
+#' @param type The output type, in this case it defaults to "raw" since the output is a matrix
+#' @param ... Additional arguments
+#' @return the transformed matrix
+#' @author Yuan Tang
 "predict.lfda" <- # for transforming a testing set
 function(object, newdata = NULL, type = "raw", ...)
   {

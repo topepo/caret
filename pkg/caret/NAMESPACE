@@ -14,7 +14,7 @@ importFrom(stats, .checkMFClasses, .getXlevels, aggregate, anova,
            lm, model.extract,  pt, update, binomial) 
 importFrom(stats4, coef) 
 importFrom(utils, capture.output, getFromNamespace, head, 
-           install.packages, installed.packages, object.size, flush.console, menu, stack) 
+           install.packages, installed.packages, object.size, flush.console, menu, stack)
 
 export(anovaScores,
        as.data.frame.resamples,
@@ -114,6 +114,8 @@ export(anovaScores,
        ldaBag,
        ldaFuncs,
        ldaSBF,
+       lfda,
+       lfda.default,
        lift,
        lmFuncs,
        lmSBF,
@@ -171,6 +173,7 @@ export(anovaScores,
        predict.knn3,
        predict.knnreg,
        predict.list,
+       predict.lfda,
        predict.nullModel,
        predict.pcaNNet,
        predict.plsda,
@@ -272,6 +275,7 @@ S3method(posPredValue,    default)
 S3method(negPredValue,    default)
 S3method(rfe,             default)
 S3method(classDist,       default)
+S3method(lfda,            default)
 S3method(knnreg,          default)
 S3method(knnreg,          matrix)
 S3method(knnreg,          data.frame)
@@ -414,6 +418,7 @@ S3method(predict, preProcess)
 S3method(predict, pcaNNet)
 S3method(predict, avNNet)
 S3method(predict, list)
+S3method(predict, lfda)
 S3method(predict, train)
 S3method(predict, classDist)
 S3method(predict, knnreg)
