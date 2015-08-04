@@ -21,6 +21,7 @@ preProcess(x, ...)
            fudge = .2,
            numUnique = 3,
            verbose = FALSE,
+           ignore.nonnumeric = FALSE,
            ...)
 
 \method{predict}{preProcess}(object, newdata, ...)
@@ -44,7 +45,7 @@ preProcess(x, ...)
       how many unique values should \code{y} have to estimate the Box-Cox transformation?
       }
   \item{verbose}{a logical: prints a log as the computations proceed}
-
+  \item{ignore.nonnumeric}{a logical: when sets to TRUE, all nonnumeric columns will be ignored from the data (default: FALSE)}
   \item{\dots}{additional arguments to pass to \code{\link[fastICA]{fastICA}}, such as \code{n.comp}}
 }
 \details{
