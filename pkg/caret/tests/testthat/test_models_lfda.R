@@ -7,6 +7,12 @@ test_that('test lfda model training and prediction', {
   te_dat <- twoClassSim(200)
   
   lfda.model <- lfda(x=tr_dat[,-16],y=tr_dat[,16],r=3)
+  
+  transform.metric <- lfda.model$T
+  transformed.train <- lfda.model$Z
+
+  transformed.test <- predict(lfda.model, newdata=te_dat[,-16])
+
 })
 
 
