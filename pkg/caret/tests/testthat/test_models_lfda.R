@@ -1,4 +1,5 @@
 library(caret)
+library(testthat)
 
 test_that('test lfda model training and prediction', {
   skip_on_cran()
@@ -12,7 +13,12 @@ test_that('test lfda model training and prediction', {
   transformed.train <- lfda.model$Z
 
   transformed.test <- predict(lfda.model, newdata=te_dat[,-16])
-
+  
+  # check dimensions
+  expect_that(dim(transformed.train)[2], equals(3))
+  expect_that(dim(transformed.test), equals(dim(transformed.train)))
+  expect_that(dim(transform.metric)[2], equals(dim(transformed.train)[2]))
+  expect_that(dim(tr_dat)[1], equals(dim(transformed.train)[1]))
 })
 
 
