@@ -71,12 +71,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
     x <- x[, -nonnumericInds]
   }
   
-  x <- data.frame(x=c(1,2,3,4),y=c("a","b","c","d"))
-  x[,1]=as.numeric(x[,1])
-  
   theCall <- match.call(expand.dots = TRUE)
-  
-  
   
   if(any(method == "BoxCox"))
   {
