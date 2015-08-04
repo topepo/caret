@@ -13,7 +13,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
                                fudge = .2,
                                numUnique = 3,
                                verbose = FALSE,
-                               ignore.nonnumeric = TRUE,
+                               ignore.nonnumeric = FALSE,
                                ...)
 {
   
@@ -66,9 +66,13 @@ preProcess.default <- function(x, method = c("center", "scale"),
     }
   }else{
     # dealing with non-numeric values
+    warning("non-numeric columns will be ignored.")
+    nonnumericInds <- which(apply(USArrests, 2, is.numeric)==FALSE)
+    x <- x[, -nonnumericInds]
   }
   
-  
+  x <- data.frame(x=c(1,2,3,4),y=c("a","b","c","d"))
+  x[,1]=as.numeric(x[,1])
   
   theCall <- match.call(expand.dots = TRUE)
   
