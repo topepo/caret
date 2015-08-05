@@ -89,147 +89,101 @@ GarsonWeights <- function(object)
     imp
   }
 
-varImp.bagEarth <- function(object, ...){
-  code <- getModelInfo("bagEarth", regex = FALSE)[[1]]
+varImpDependencies <- function(libName){
+  code <- getModelInfo(libName, regex = FALSE)[[1]]
   checkInstall(code$library)
   for(i in seq(along = code$library))
     do.call("require", list(package = code$library[i]))
+  return(code)
+}
+
+varImp.bagEarth <- function(object, ...){
+  code <- varImpDependencies("bagEarth")
   code$varImp(object, ...)
 }
 
 varImp.bagFDA <- function(object, ...){
-  code <- getModelInfo("bagFDA", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("bagFDA")
   code$varImp(object, ...)
 }
 
 varImp.C5.0 <- function(object, ...){
-  code <- getModelInfo("C5.0", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("C5.0")
   code$varImp(object, ...)
 }
 
 varImp.cubist <- function(object, weights = c(0.5, 0.5), ...){
-  code <- getModelInfo("cubist", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("cubist")
   code$varImp(object, weights = weights, ...)
 }
 
 varImp.dsa <- function(object, cuts = NULL, ...){
-  code <- getModelInfo("partDSA", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("partDSA")
   code$varImp(object, cuts = cuts, ...)
 }
 
 varImp.glm <- function(object, ...){
-  code <- getModelInfo("glm", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("glm")
   code$varImp(object, ...)
 }
 
 varImp.glmnet <- function(object, lambda = NULL, ...){
-  code <- getModelInfo("glmnet", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("glmnet")
   code$varImp(object, lambda = lambda, ...)
 }
 
 varImp.JRip <- function(object, ...){
-  code <- getModelInfo("JRip", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("JRip")
   code$varImp(object, ...)
 }
 
 varImp.multinom <- function(object, ...){
-  code <- getModelInfo("multinom", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("multinom")
   code$varImp(object, ...)
 }
 
 varImp.nnet <- function(object, ...){
-  code <- getModelInfo("nnet", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("nnet")
   code$varImp(object, ...)
 }
 
 varImp.PART <- function(object, ...){
-  code <- getModelInfo("PART", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("PART")
   code$varImp(object, ...)
 }
 
 varImp.RRF <- function(object, ...){
-  code <- getModelInfo("RRF", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("RRF")
   code$varImp(object, ...)
 }
 
 varImp.rpart <- function(object, surrogates = FALSE, competes = TRUE, ...){
-  code <- getModelInfo("rpart", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("rpart")
   code$varImp(object, surrogates = surrogates, competes = competes, ...)
 }
 
 varImp.randomForest <- function(object, ...){
-  code <- getModelInfo("rf", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("rf")
   code$varImp(object, ...)
 }
 
 varImp.gbm <- function(object, numTrees = NULL, ...){
-  code <- getModelInfo("gbm", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("gbm")
   code$varImp(object, numTrees = numTrees, ...)
 }
 
 varImp.classbagg <- function(object, ...){
-  code <- getModelInfo("treebag", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("treebag")
   code$varImp(object, ...)
 }
 
 varImp.regbagg <- function(object, ...){
-  code <- getModelInfo("treebag", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("treebag")
   code$varImp(object, ...)
 }
 
 varImp.pamrtrained <- function(object, threshold, data, ...){
-  code <- getModelInfo("pam", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("pam")
   code$varImp(object, 
               threshold = object$bestTune$threshold, 
               data = object$finalModel$xData, 
@@ -237,58 +191,37 @@ varImp.pamrtrained <- function(object, threshold, data, ...){
 }
 
 varImp.lm <- function(object, ...){
-  code <- getModelInfo("lm", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("lm")
   code$varImp(object, ...)
 }
 
 varImp.mvr <- function(object, estimate = NULL, ...){
-  code <- getModelInfo("pls", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("pls")
   code$varImp(object, estimate = estimate, ...)
 }
 
 varImp.earth <- function(object, value = "gcv", ...){
-  code <- getModelInfo("earth", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("earth")
   code$varImp(object, value = value, ...)
 }
 
 varImp.RandomForest <- function(object, ...){
-  code <- getModelInfo("cforest", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("cforest")
   code$varImp(object, ...)
 }
 
 varImp.plsda <- function(object, ...){
-  code <- getModelInfo("pls", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("pls")
   code$varImp(object, ...)
 }
 
 varImp.fda <- function(object, value = "gcv", ...){
-  code <- getModelInfo("fda", regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies("fda")
   code$varImp(object, value = value, ...)
 }
 
 varImp.gam <- function(object, ...){
   mod <- if(any(names(object) == "optimizer")) "gam" else "gamLoess"
-  code <- getModelInfo(mod, regex = FALSE)[[1]]
-  checkInstall(code$library)
-  for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+  code <- varImpDependencies(mod)
   code$varImp(object, ...)
 }
