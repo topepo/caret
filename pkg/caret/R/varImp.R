@@ -89,6 +89,14 @@ GarsonWeights <- function(object)
     imp
   }
 
+varImpDependencies <- function(libName){
+  code <- getModelInfo(libName, regex = FALSE)[[1]]
+  checkInstall(code$library)
+  for(i in seq(along = code$library))
+    do.call("require", list(package = code$library[i]))
+  return(code)
+}
+
 varImp.bagEarth <- function(object, ...){
   code <- getModelInfo("bagEarth", regex = FALSE)[[1]]
   checkInstall(code$library)
