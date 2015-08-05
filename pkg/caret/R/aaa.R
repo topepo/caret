@@ -240,8 +240,9 @@ mnLogLoss <- function(data, lev = NULL, model = NULL){
   probs <- as.matrix(data[, lev, drop = FALSE])
   probs[probs > 1 - eps] <- 1 - eps
   probs[probs < eps] <- eps
-  inds <- getFromNamespace("class2ind", "caret")(data$obs)[, lev, drop = FALSE]
-  c(logLoss = -mean(apply(inds*log(probs), 1, sum), na.rm = TRUE))
+  inds <- match(data$obs, colnames(probs))
+  probs <- probs[cbind(seq_len(nrow(probs)), inds)]
+  c(logLoss = -mean(log(probs), na.rm = TRUE))
 }
 
 oob_mods <- c("rf", "treebag", "cforest", "bagEarth", "bagEarthGCV", "bagFDA","bagFDAGCV", "parRF")
