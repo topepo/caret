@@ -301,3 +301,16 @@ function(object, newdata = NULL, type = "raw", ...)
     result <- newdata %*% transformMatrix
     result
 }
+
+"print.lfda" <- function(x, ...){
+  cat("Results for Local Fisher Discriminant Analysis \n\n")
+  cat("The trained transforming matric is: \n")
+  print(head(x$T))
+  
+  cat("\n\n The original data set after applying this metric transformation is:  \n")
+  print(head(x$Z))
+  
+  cat("\n")
+  cat("Only partial output is shown above. Please see the model output for more details. \n")
+  invisible(x)
+}
