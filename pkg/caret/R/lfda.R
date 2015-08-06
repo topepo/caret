@@ -303,11 +303,11 @@ function(object, newdata = NULL, type = "raw", ...)
 }
 
 "print.lfda" <- function(x, ...){
-  cat("Local Fisher Discriminant Analysis \n\n")
+  cat("Results for Local Fisher Discriminant Analysis \n\n")
   cat("The trained transforming matric is: \n")
   print(head(x$T))
   
-  cat("\n\n The original data set after this metric transformation is:  \n")
+  cat("\n\n The original data set after applying this metric transformation is:  \n")
   print(head(x$Z))
   
   cat("\n")
