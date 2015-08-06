@@ -311,6 +311,6 @@ function(object, newdata = NULL, type = "raw", ...)
   print(head(x$Z))
   
   cat("\n")
-  cat("Only partial output is shown here. Please see the model output for more details. \n")
+  cat("Only partial output is shown above. Please see the model output for more details. \n")
   invisible(x)
 }
