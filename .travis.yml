@@ -1,48 +1,36 @@
 # Sample .travis.yml for R projects from https://github.com/craigcitro/r-travis
+# http://docs.travis-ci.com/user/languages/r/
 
-language: c
+language: r
+sudo: required
+warnings_are_errors: true
 
 env:
    global:
-     - WARNINGS_ARE_ERRORS=1
-     - R_BUILD_ARGS=" "
-     - R_CHECK_ARGS="--as-cran"
-     - BOOTSTRAP_LATEX="1"
+     - R_BUILD_ARGS="--no-vignettes"
+     - R_CHECK_ARGS="--as-cran --no-vignettes"
    matrix:
      - NOT_CRAN="true"
      - NOT_CRAN="false"
 
 before_install:
   - cd pkg/caret
-  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-  - chmod 755 ./travis-tool.sh
-  - ./travis-tool.sh bootstrap
-  - ./travis-tool.sh install_r ROSE
-  - ./travis-tool.sh install_r DMwR
-
-install:
-  - ./travis-tool.sh install_deps
   - sudo add-apt-repository -y ppa:texlive-backports/ppa
   - sudo apt-get -qq update
-  - ./travis-tool.sh aptget_install texlive-base
-  - ./travis-tool.sh aptget_install biblatex
-  - ./travis-tool.sh aptget_install texlive-latex-base
-  - ./travis-tool.sh aptget_install texlive-latex-recommended
-  - ./travis-tool.sh aptget_install texlive-latex-extra
-  - ./travis-tool.sh aptget_install texlive-fonts-recommended
-  - ./travis-tool.sh aptget_install texlive-fonts-extra
-  - ./travis-tool.sh aptget_install texlive-science
-  - ./travis-tool.sh github_package jimhester/covr
 
-script: ./travis-tool.sh run_tests
+apt_packages:
+  - texlive-base
+  - biblatex
+  - texlive-latex-base
+  - texlive-latex-recommended
+  - texlive-latex-extra
+  - texlive-fonts-recommended
+  - texlive-fonts-extra
+  - texlive-science
 
-on_failure:
-  - ./travis-tool.sh dump_logs
+r_packages:
+ - ROSE
+ - DMwR
 
 after_success:
   - Rscript -e 'library(covr);coveralls()'
-
-notifications:
-  email:
-    on_success: change
-    on_failure: change
