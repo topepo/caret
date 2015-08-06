@@ -7,26 +7,14 @@ warnings_are_errors: true
 
 env:
    global:
-     - R_BUILD_ARGS="--no-vignettes"
-     - R_CHECK_ARGS="--as-cran --no-vignettes"
+     - R_BUILD_ARGS="--no-build-vignettes --no-manual"
+     - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
    matrix:
      - NOT_CRAN="true"
      - NOT_CRAN="false"
 
 before_install:
   - cd pkg/caret
-  - sudo add-apt-repository -y ppa:texlive-backports/ppa
-  - sudo apt-get -qq update
-
-apt_packages:
-  - texlive-base
-  - biblatex
-  - texlive-latex-base
-  - texlive-latex-recommended
-  - texlive-latex-extra
-  - texlive-fonts-recommended
-  - texlive-fonts-extra
-  - texlive-science
 
 r_packages:
  - ROSE
