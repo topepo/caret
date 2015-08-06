@@ -14,10 +14,15 @@ env:
 
 before_install:
   - cd pkg/caret
+  - Rscript -e 'devtools::load_all(); devtools::test()'
 
 r_packages:
  - ROSE
  - DMwR
+
+r_github_packages:
+  - hadley/devtools
+  - jimhester/covr
 
 after_success:
   - Rscript -e 'library(covr);coveralls()'
