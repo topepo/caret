@@ -14,7 +14,6 @@ env:
 
 before_install:
   - cd pkg/caret
-  - Rscript -e 'devtools::load_all(); devtools::test()'
 
 r_packages:
  - ROSE
@@ -26,3 +25,6 @@ r_github_packages:
 
 after_success:
   - Rscript -e 'library(covr);coveralls()'
+
+after_failure:
+  - Rscript -e 'devtools::load_all(); devtools::test()'
