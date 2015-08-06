@@ -4,11 +4,10 @@
 language: r
 sudo: required
 warnings_are_errors: true
+r_build_args: "--no-build-vignettes --no-manual"
+r_check_args: "--no-build-vignettes --no-manual --as-cran"
 
 env:
-   global:
-     - R_BUILD_ARGS="--no-build-vignettes --no-manual"
-     - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
    matrix:
      - NOT_CRAN="true"
      - NOT_CRAN="false"
