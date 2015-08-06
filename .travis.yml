@@ -17,7 +17,8 @@ before_install:
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
-  - ./travis-tool.sh install_r ROSE DMwR
+  - ./travis-tool.sh install_r ROSE
+  - ./travis-tool.sh install_r DMwR
 
 install:
   - ./travis-tool.sh install_deps

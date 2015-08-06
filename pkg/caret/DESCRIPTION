@@ -49,9 +49,9 @@ Suggests:
     RANN,
     spls,
     subselect,
-    pamr, 
-    superpc, 
+    pamr,
+    superpc,
     Cubist,
-    testthat (>= 0.9.1), 
+    testthat (>= 0.9.1),
     rARPACK
 License: GPL (>= 2)
