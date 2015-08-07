@@ -13,6 +13,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
                                fudge = .2,
                                numUnique = 3,
                                verbose = FALSE,
+                               ignore.nonnumeric = FALSE,
                                ...)
 {
   
@@ -46,26 +47,31 @@ preProcess.default <- function(x, method = c("center", "scale"),
     if(row.norm & !(any(method == "scale"))) method  <- c(method, "scale")
   }
   
-  if(is.matrix(x)) {
-    if(!is.numeric(x)) stop("x must be numeric")
+  if(!ignore.nonnumeric) {
+    if(is.matrix(x)) {
+      if(!is.numeric(x)) stop("x must be numeric, you can set ignore.nonnumeric=TRUE")
+    }
+    if(is.data.frame(x)) {
+      isFactor <- unlist(lapply(x, is.factor))
+      isChar <- unlist(lapply(x, is.character))
+      if(any(isFactor | isChar)) stop("all columns of x must be numeric, 
+                                      you can set ignore.nonnumeric=TRUE")        
+    }
+    if(!is.matrix(x) & !is.data.frame(x)) {
+      msg <- paste("your data contains nonnumeric values, you can set ignore.nonnumeric=TRUE",
+                   "matrices and data frames; your predictors have class(es): (",
+                   paste("'", class(x), "'", sep = "", collapse = ", "),
+                   ") and errors may occur")
+      warning(msg)
+    }
+  }else{
+    # dealing with non-numeric values
+    warning("non-numeric columns will be ignored.")
+    nonnumericInds <- which(apply(USArrests, 2, is.numeric)==FALSE)
+    x <- x[, -nonnumericInds]
   }
-  if(is.data.frame(x)) {
-    isFactor <- unlist(lapply(x, is.factor))
-    isChar <- unlist(lapply(x, is.character))
-    if(any(isFactor | isChar)) stop("all columns of x must be numeric")        
-  }
-  if(!is.matrix(x) & !is.data.frame(x)) {
-    msg <- paste("preProcess is only designed for simple numeric",
-                 "matrices and data frames; your predictors have class(es): (",
-                 paste("'", class(x), "'", sep = "", collapse = ", "),
-                 ") and errors may occur")
-    warning(msg)
-  }
-  
   
   theCall <- match.call(expand.dots = TRUE)
-  
-  
   
   if(any(method == "BoxCox"))
   {
