@@ -21,13 +21,6 @@ predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.o
       stop("only classification models that produce probabilities are allowed")
   }
   
-  if(length(object$coefnames) > dim(newdata)[2]){
-    stop("the number of predictors in newdata is smaller than that in the model")
-  } else if(length(object$coefnames) < dim(newdata)[2]){
-    warning("only the predictors contained in the model will be used for prediction")
-    newdata <- newdata[, object$coefnames]
-  }
-  
   if(!is.null(newdata))
   {
     if (inherits(object, "train.formula"))
@@ -43,6 +36,14 @@ predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.o
       xint <- match("(Intercept)", colnames(newdata), nomatch = 0)
       if (xint > 0) 
         newdata <- newdata[, -xint, drop = FALSE]   
+    }
+    
+    # deal with exception when predictors in model does not match with predictors in newdata
+    if(length(object$coefnames) > dim(newdata)[2]){
+      stop("the number of predictors in newdata is smaller than that in the model")
+    } else if(length(object$coefnames) < dim(newdata)[2]){
+      warning("only the predictors contained in the model will be used for prediction")
+      newdata <- newdata[, object$coefnames]
     }
   }
   else {
