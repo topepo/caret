@@ -1,13 +1,15 @@
 library(caret)
 library(testthat)
 
-test_that('train classification', {
+test_that('train classification prediction', {
   skip_on_cran()
   set.seed(1)
   tr_dat <- twoClassSim(200)
-  newdata <- twoClassSim(200)
+  newdata1 <- twoClassSim(200)
+  newdata2 <- twoClassSim(200)
   
-  newdata$additionalCol <- newdata$Linear03
+  newdata1$additionalCol <- newdata1$Linear03
+  newdata2 <- newdata2[, -1]
   
   object <- train(Class ~ ., data = tr_dat,
                         method = "rpart",
@@ -16,6 +18,6 @@ test_that('train classification', {
                         trControl = trainControl(method = "none", 
                                                  classProbs = TRUE,
                                                  trim = FALSE))
-  expect_warning(predict(object, newdata))
-  
+  expect_warning(predict(object, newdata1))
+  expect_error(predict(object, newdata2))
 })
