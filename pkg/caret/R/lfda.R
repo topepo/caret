@@ -321,6 +321,18 @@ Cols <- function(vec){
 }
 
 "plot.lfda" <- function(x, labels, cleanText=FALSE, ...){
+  
+  if(class(x)!="lfda"){stop("x should be a lfda object. ")}
+  
+  if(is.character(labels) | is.numeric(labels) | is.integer(labels)){
+    labels <- as.factor(labels)
+  }
+  if(!is.factor(labels)){stop("labels need to be an object convertable to a factor.")}
+  
+  if(length(labels)!=dim(x$Z)[1]){stop("length of labels differs from the number of rows in x$Z.")}
+  
+  if(!is.logical(cleanText)){stop("cleanText needs to be TRUE(T) or FALSE(F)."}
+  
   transformedData <- as.data.frame(cbind(labels, x$Z))
   colnames(transformedData)[1] <- "Class"
   
