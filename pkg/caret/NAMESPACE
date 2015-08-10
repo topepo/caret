@@ -2,6 +2,7 @@ useDynLib(caret)
 import(foreach, methods, plyr, reshape2, ggplot2, lattice, nlme, BradleyTerry2)
 importFrom(car, powerTransform, yjPower)
 importFrom(grDevices, extendrange)
+importFrom(grDevices, rainbow)
 importFrom(stats, .checkMFClasses, .getXlevels, aggregate, anova, 
            approx, as.formula, binom.test, complete.cases, contrasts, 
            cor, cov, delete.response, dist, 
@@ -153,6 +154,7 @@ export(anovaScores,
        plot.gafs,
        plot.rfe,
        plot.train,
+       plot.lfda,
        plotClassProbs,
        plotObsVsPred,
        plsBag,
@@ -367,6 +369,7 @@ S3method(plot,  lift)
 S3method(plot,  calibration)
 S3method(plot,  gafs)
 S3method(plot,  safs) 
+S3method(plot,  lfda)
 
 S3method(confusionMatrix,  train)
 S3method(confusionMatrix,  rfe)
