@@ -15,9 +15,50 @@ env:
 before_install:
   - cd pkg/caret
 
-r_packages:
- - ROSE
- - DMwR
+before_script:
+  - Rscript -e "install.packages('ROSE')"
+  - Rscript -e "install.packages('DMwR')"
+
+r_binary_packages:
+  - car
+  - reshape2
+  - foreach
+  - methods
+  - plyr
+  - nlme
+  - BradleyTerry2
+  - stats
+  - stats4
+  - utils
+  - grDevices
+  - e1071
+  - earth
+  - fastICA
+  - gam
+  - ipred
+  - kernlab
+  - klaR
+  - MASS
+  - ellipse
+  - mda
+  - mgcv
+  - mlbench
+  - nnet
+  - party
+  - pls
+  - pROC
+  - proxy
+  - randomForest
+  - RANN
+  - spls
+  - subselect
+  - pamr
+  - superpc
+  - Cubist
+  - testthat
+  - rARPACK
+  - ROSE
+  - DMwR
 
 r_github_packages:
   - hadley/devtools
