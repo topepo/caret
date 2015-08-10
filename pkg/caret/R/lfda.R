@@ -314,3 +314,22 @@ function(object, newdata = NULL, type = "raw", ...)
   cat("Only partial output is shown above. Please see the model output for more details. \n")
   invisible(x)
 }
+
+Cols <- function(vec){
+  cols <- grDevices::rainbow(length(unique(vec)))
+  return(cols[as.numeric(as.factor(vec))])
+}
+
+"plot.lfda" <- function(x, labels, ...){
+  transformedData <- as.data.frame(cbind(labels, x$Z))
+  colnames(transformedData)[1] <- "Class"
+  
+  newData <- suppressWarnings( # known warnings
+    plyr::ddply(transformedData, plyr::.(Class), function(y){
+      y[-1, "Class"] <- ""
+      return(y)
+  }))
+  df <- sapply(newData[,"Class"], as.character) 
+  df[is.na(df)] <- "."
+  newData[,"Class"] <- df
+}
