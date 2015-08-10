@@ -6,7 +6,6 @@ sudo: required
 warnings_are_errors: true
 r_build_args: "--no-build-vignettes --no-manual"
 r_check_args: "--no-build-vignettes --no-manual --as-cran"
-cran: "http://cran.rstudio.com/"
 
 env:
    matrix:
