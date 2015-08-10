@@ -6,18 +6,15 @@ sudo: required
 warnings_are_errors: true
 r_build_args: "--no-build-vignettes --no-manual"
 r_check_args: "--no-build-vignettes --no-manual --as-cran"
+cran: "http://cran.rstudio.com/"
 
 env:
    matrix:
      - NOT_CRAN="true"
      - NOT_CRAN="false"
 
-before_install:
-  - cd pkg/caret
-
 before_script:
-  - Rscript -e "install.packages('ROSE')"
-  - Rscript -e "install.packages('DMwR')"
+  - cd pkg/caret
 
 r_packages:
   - ROSE
@@ -56,6 +53,9 @@ r_binary_packages:
   - Cubist
   - testthat
   - rARPACK
+  - ggplot2
+  - reshape2
+  - data.table
 
 r_github_packages:
   - hadley/devtools
