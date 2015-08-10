@@ -9,6 +9,8 @@ test_that('test lfda model training and prediction', {
   
   lfda.model <- lfda(x=tr_dat[,-16],y=tr_dat[,16],r=3)
   
+  expect_that(class(lfda.model), equals("lfda"))
+  
   transform.metric <- lfda.model$T
   transformed.train <- lfda.model$Z
 
