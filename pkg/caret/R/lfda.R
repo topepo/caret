@@ -324,6 +324,7 @@ Cols <- function(vec){
   transformedData <- as.data.frame(cbind(labels, x$Z))
   colnames(transformedData)[1] <- "Class"
   
+  ## Show The Text of Each Style Only Once ##
   newData <- suppressWarnings( # known warnings
     plyr::ddply(transformedData, plyr::.(Class), function(y){
       y[-1, "Class"] <- ""
@@ -332,4 +333,10 @@ Cols <- function(vec){
   df <- sapply(newData[,"Class"], as.character) 
   df[is.na(df)] <- "."
   newData[,"Class"] <- df
+  
+  ## Plot 3D Visualization of LFDA Result ##
+  rgl::text3d(newData[,2],newData[,3], newData[,4], col=Cols(transformedData$Class), 
+              main="3D Visualization of Metric Transformed Data", size=4, 
+              texts=newData$Class, font=1, cex=1.2)
+  rgl::axes3d()
 }
