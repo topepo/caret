@@ -27,7 +27,7 @@ preProcess(x, ...)
 }
 
 \arguments{
-  \item{x}{a matrix or data frame. All variables must be numeric.}
+  \item{x}{a matrix or data frame. Non-numeric predictors are allowed but will be ignored.}
   \item{method}{a character vector specifying the type of processing. Possible values are "BoxCox", "YeoJohnson", "expoTrans", "center", "scale", "range", "knnImpute", "bagImpute", "medianImpute", pca", "ica" and "spatialSign" (see Details below)}
   \item{thresh}{a cutoff for the cumulative percent of variance to be retained by PCA}
   \item{pcaComp}{the specific number of PCA components to keep. If specified, this over-rides \code{thresh}}
@@ -37,14 +37,9 @@ preProcess(x, ...)
   \item{k}{the number of nearest neighbors from the training set to use for imputation }
   \item{knnSummary}{function to average the neighbor values per column during imputation}
   \item{outcome}{a numeric or factor vector for the training set outcomes. This can be used to help estimate the Box-Cox transformation of the predictor variables (see Details below)}
-    \item{fudge}{
-    a tolerance value: Box-Cox transformation lambda values within +/-fudge will be coerced to 0 and within 1+/-fudge will be coerced to 1
-    }
-      \item{numUnique}{
-      how many unique values should \code{y} have to estimate the Box-Cox transformation?
-      }
+  \item{fudge}{a tolerance value: Box-Cox transformation lambda values within +/-fudge will be coerced to 0 and within 1+/-fudge will be coerced to 1.}
+  \item{numUnique}{how many unique values should \code{y} have to estimate the Box-Cox transformation?}
   \item{verbose}{a logical: prints a log as the computations proceed}
-
   \item{\dots}{additional arguments to pass to \code{\link[fastICA]{fastICA}}, such as \code{n.comp}}
 }
 \details{
@@ -60,7 +55,9 @@ k-nearest neighbor imputation is carried out by finding the k closest samples (E
 
 A warning is thrown if both PCA and ICA are requested. ICA, as implemented by the \code{\link[fastICA]{fastICA}} package automatically does a PCA decomposition prior to finding the ICA scores.
 
-The function will throw an error of any variables in \code{x} has less than two unique values. 
+The function will throw an error of any numeric variables in \code{x} has less than two unique values. 
+
+Non-numeric data will not be pre-processed and there values will be in the data frame produced by the \code{predict} function. Note that when PCA or ICA is used, the non-numeric columns may be in different positions when predicted. 
 }
 \value{
 \code{preProcess} results in a list with elements
@@ -76,6 +73,8 @@ The function will throw an error of any variables in \code{x} has less than two 
   \item{numComp}{the number of principal components required of capture the specified amount of variance}
   \item{ica}{contains values for the \code{W} and \code{K} matrix of the decomposition}
   \item{median}{a vector of medians (if median imputation was requested)}
+
+\code{predict.preProcess} will produce a data frame.  
 }
 
 \author{ Max Kuhn, median imputation by Zachary Mayer }
