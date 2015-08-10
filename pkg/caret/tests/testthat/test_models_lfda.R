@@ -28,7 +28,7 @@ test_that('test lfda model visualization function', {
 
   lfda.model <- lfda(x=tr_dat[,-16],y=tr_dat[,16],r=3)
   
-  expect_that(plot.lfda(lfda.model, tr_dat$Class), not(throws_error()))
-  expect_that(plot.lfda(lfda.model, tr_dat$Class, cleanText = TRUE), not(throws_error()))
+  expect_that(plot(lfda.model, tr_dat$Class), not(throws_error()))
+  expect_that(plot(lfda.model, tr_dat$Class, cleanText = TRUE), not(throws_error()))
 })
 
