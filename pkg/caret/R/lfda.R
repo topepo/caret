@@ -341,6 +341,6 @@ Cols <- function(vec){
   ## Plot 3D Visualization of LFDA Result ##
   rgl::text3d(newData[,2],newData[,3], newData[,4], col=Cols(transformedData$Class), 
               main="3D Visualization of Metric Transformed Data", size=4, 
-              texts=newData$Class, font=1, cex=1.2)
+              texts=newData$Class, font=1, cex=1.2, ...)
   rgl::axes3d()
 }
