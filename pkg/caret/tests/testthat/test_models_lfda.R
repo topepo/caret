@@ -21,4 +21,13 @@ test_that('test lfda model training and prediction', {
   expect_that(dim(tr_dat)[1], equals(dim(transformed.train)[1]))
 })
 
+test_that('test lfda model visualization function', {
+  skip_on_cran()
+  set.seed(1)
+  tr_dat <- twoClassSim(200)
+
+  lfda.model <- lfda(x=tr_dat[,-16],y=tr_dat[,16],r=3)
+  
+  expect_that(plot.lfda(lfda.model, tr_dat$Class), not(throws_error()))
+})
 
