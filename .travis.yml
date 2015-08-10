@@ -19,18 +19,17 @@ before_script:
   - Rscript -e "install.packages('ROSE')"
   - Rscript -e "install.packages('DMwR')"
 
+r_packages:
+  - ROSE
+  - DMwR
+
 r_binary_packages:
   - car
   - reshape2
   - foreach
-  - methods
   - plyr
   - nlme
   - BradleyTerry2
-  - stats
-  - stats4
-  - utils
-  - grDevices
   - e1071
   - earth
   - fastICA
@@ -57,8 +56,6 @@ r_binary_packages:
   - Cubist
   - testthat
   - rARPACK
-  - ROSE
-  - DMwR
 
 r_github_packages:
   - hadley/devtools
