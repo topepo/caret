@@ -57,6 +57,7 @@ r_binary_packages:
   - ggplot2
   - reshape2
   - data.table
+  - caret
 
 r_github_packages:
   - hadley/devtools
