@@ -314,3 +314,45 @@ function(object, newdata = NULL, type = "raw", ...)
   cat("Only partial output is shown above. Please see the model output for more details. \n")
   invisible(x)
 }
+
+Cols <- function(vec){
+  cols <- grDevices::rainbow(length(unique(vec)))
+  return(cols[as.numeric(as.factor(vec))])
+}
+
+"plot.lfda" <- function(x, labels, cleanText=FALSE, ...){
+  
+  if(class(x)!="lfda"){stop("x should be a lfda object. ")}
+  
+  if(is.character(labels) | is.numeric(labels) | is.integer(labels)){
+    labels <- as.factor(labels)
+  }
+  if(!is.factor(labels)){stop("labels need to be an object convertable to a factor.")}
+  
+  if(length(labels)!=dim(x$Z)[1]){stop("length of labels differs from the number of rows in x$Z.")}
+  
+  if(!is.logical(cleanText)){stop("cleanText needs to be TRUE(T) or FALSE(F)."}
+  
+  transformedData <- as.data.frame(cbind(labels, x$Z))
+  colnames(transformedData)[1] <- "Class"
+  
+  if(cleanText){
+    ## Show The Text of Each Style Only Once ##
+    newData <- suppressWarnings( # known warnings
+      plyr::ddply(transformedData, plyr::.(Class), function(y){
+        y[-1, "Class"] <- ""
+        return(y)
+      }))
+    df <- sapply(newData[,"Class"], as.character) 
+    df[is.na(df)] <- "."
+    newData[,"Class"] <- df
+  } else{
+    newData <- transformedData
+  }
+
+  ## Plot 3D Visualization of LFDA Result ##
+  rgl::text3d(newData[,2],newData[,3], newData[,4], col=Cols(transformedData$Class), 
+              main="3D Visualization of Metric Transformed Data", size=4, 
+              texts=newData$Class, font=1, cex=1.2, ...)
+  rgl::axes3d()
+}
