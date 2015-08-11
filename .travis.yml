@@ -23,7 +23,6 @@ before_install:
   - echo 'R_LIBS=/usr/lib/R/library:/usr/lib/R/site-library/' > ~/.Renviron
   - sudo chmod 2777 /usr/lib/R/library
   - ./travis-tool.sh bootstrap
-  - ./travis-tool.sh r_binary_install covr
   - ./travis-tool.sh r_binary_install car
   - ./travis-tool.sh r_binary_install reshape2
   - ./travis-tool.sh r_binary_install foreach
@@ -59,6 +58,7 @@ before_install:
   - ./travis-tool.sh r_binary_install ggplot2
   - ./travis-tool.sh r_binary_install reshape2
   - ./travis-tool.sh r_binary_install data.table
+  - ./travis-tool.sh install_github jimhester/covr
 
 install:
   - ./travis-tool.sh install_deps 
