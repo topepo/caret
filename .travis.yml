@@ -8,7 +8,8 @@ r_build_args: "--no-build-vignettes --no-manual"
 r_check_args: "--no-build-vignettes --no-manual --as-cran"
 
 env:
-   - CRAN: http://cran.rstudio.com
+   global:
+     - CRAN: http://cran.rstudio.com"
    matrix:
      - NOT_CRAN="true"
      - NOT_CRAN="false"
