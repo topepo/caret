@@ -46,7 +46,7 @@
 #' k <- trainData[,-1]
 #' y <- trainData[,1]
 #' r <- 26 # dimensionality of reduced space. Here no dimension reduction is performed
-#' result <- lfda_calc(k,y,r,metric="plain")
+#' result <- lfda(k,y,r,metric="plain")
 #' transformedMat <- result$Z # transformed training data
 #' metric.train <- as.data.frame(cbind(trainData[,1],transformedMat))
 #' colnames(metric.train) <- colnames(trainData)
@@ -56,7 +56,7 @@
 #' y <- trainData[,1]
 #' r <- 3 # dimensionality of reduced space
 #'
-#' result <- lfda_calc(k,y,r,metric="weighted")
+#' result <- lfda(k,y,r,metric="weighted")
 #' transformMat  <- result$T # transforming matrix - distance metric
 #'
 #' # transformed training data with Style
