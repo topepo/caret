@@ -97,7 +97,7 @@
 
     metric <- match.arg(metric)
     modelArgs <- c(list(x,y,r,metric,knn))
-    out <- do.call("lfda_calc", modelArgs)
+    out <- do.call("lfda", modelArgs)
 
     out$call <- NULL
     class(out) <- "lfda"
