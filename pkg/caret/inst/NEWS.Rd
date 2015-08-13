@@ -6,6 +6,7 @@
 	\itemize{
 		\item \code{preProcess} now allows (but ignores) non-numeric predictor columns. 
 		\item Models were added for optimal weighted and stabilized nearest neighbor classifiers from the \cpkg{snn} package were added with model codes \code{snn} and \code{ownn}
+		\item An additional variation of rotation forests was added (\code{rotationForest2}) that also tunes over \code{cp}. Unfortunately, the sub-model trick can't be utilized in this instance.  
 	} 
 }
 
