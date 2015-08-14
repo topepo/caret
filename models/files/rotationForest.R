@@ -31,12 +31,12 @@ modelInfo <- list(label = "Rotation Forest",
                     y <- ifelse(y == lev[1], 1, 0)
                     if(!is.data.frame(x)) x <- as.data.frame(x)
                     rotationForest(x, y, K = param$K, L = param$L, ...)
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     out <- predict(modelFit, newdata)
                     out <- ifelse(out >= .5, modelFit$obsLevels[1], modelFit$obsLevels[2])
-
+                    
                     if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
@@ -48,7 +48,7 @@ modelInfo <- list(label = "Rotation Forest",
                       out <- tmp
                     }
                     out   
-                    },
+                  },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     all_L <- predict(modelFit, newdata, all = TRUE)
@@ -70,28 +70,32 @@ modelInfo <- list(label = "Rotation Forest",
                       out <- tmp
                     }
                     out   
-                    },
+                  },
                   predictors = function(x, ...) {
                     non_zero <- function(x) {                      
-                     out <- apply(x, 1, function(x) any(x != 0))
-                     names(out)[out]
+                      out <- apply(x, 1, function(x) any(x != 0))
+                      names(out)[out]
                     }
                     sort(unique(unlist(lapply(x$loadings, non_zero))))
                   },
                   varImp = function(object, ...) {
-                    imps <- lapply(object$models, varImp, scale = FALSE)
-                    imps <- lapply(imps, 
-                                   function(x) {
-                                     x$Variable <- rownames(x)
-                                     x
-                                   })
-                    imps <- do.call("rbind", imps)
-                    imps <- aggregate(Overall ~ Variable,  data = imps, sum)
-                    imps$Overall <- imps$Overall/length(object$models)
-                    rownames(imps) <- as.character(imps$Variable)
-                    imps$Variable <- NULL
-                    imps
-                    },
+                    vis <- lapply(object$models, varImp, scale = FALSE)
+                    wgt <- vector(mode = "list", length = length(vis))
+                    for(i in seq(along = vis)) {
+                      tmp <- vis[[i]]
+                      vi1 <- tmp[,1]
+                      names(vi1) <- rownames(tmp)
+                      l1 <- object$loadings[[i]]
+                      tmp2 <- vi1 %*% abs(as.matrix(l1[names(vi1),]))
+                      tmp2 <- tmp2[,sort(colnames(tmp2))]
+                      wgt[[i]] <- tmp2
+                    }
+                    wgt <- do.call("rbind", wgt)
+                    vi <- apply(wgt, 2, mean)
+                    out <- data.frame(Overall = vi)
+                    rownames(out) <- colnames(wgt)
+                    out
+                  },
                   levels = function(x) x$obsLevels,
                   tags = c("Ensemble Model", "Implicit Feature Selection", 
                            "Feature Extraction Models", "Tree-Based Model"),

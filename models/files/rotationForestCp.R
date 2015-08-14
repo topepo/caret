@@ -89,18 +89,22 @@ modelInfo <- list(label = "Rotation Forest",
                     sort(unique(unlist(lapply(x$loadings, non_zero))))
                   },
                   varImp = function(object, ...) {
-                    imps <- lapply(object$models, varImp, scale = FALSE)
-                    imps <- lapply(imps, 
-                                   function(x) {
-                                     x$Variable <- rownames(x)
-                                     x
-                                   })
-                    imps <- do.call("rbind", imps)
-                    imps <- aggregate(Overall ~ Variable,  data = imps, sum)
-                    imps$Overall <- imps$Overall/length(object$models)
-                    rownames(imps) <- as.character(imps$Variable)
-                    imps$Variable <- NULL
-                    imps
+                    vis <- lapply(object$models, varImp, scale = FALSE)
+                    wgt <- vector(mode = "list", length = length(vis))
+                    for(i in seq(along = vis)) {
+                      tmp <- vis[[i]]
+                      vi1 <- tmp[,1]
+                      names(vi1) <- rownames(tmp)
+                      l1 <- object$loadings[[i]]
+                      tmp2 <- vi1 %*% abs(as.matrix(l1[names(vi1),]))
+                      tmp2 <- tmp2[,sort(colnames(tmp2))]
+                      wgt[[i]] <- tmp2
+                    }
+                    wgt <- do.call("rbind", wgt)
+                    vi <- apply(wgt, 2, mean)
+                    out <- data.frame(Overall = vi)
+                    rownames(out) <- colnames(wgt)
+                    out
                   },
                   levels = function(x) x$obsLevels,
                   tags = c("Ensemble Model", "Implicit Feature Selection", 
