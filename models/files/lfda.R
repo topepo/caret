@@ -1,38 +1,29 @@
 modelInfo <- list(label = "Local Fisher Discriminant Analysis",
                   library = c("lfda"),
                   type = "Classification",
-                  grid = function(x, y, len = NULL) {
-                    stop("grid is not available for lfda. ")
-                  },
-                  fit = function(x, y, r = NULL, metric = c("orthonormalized","plain","weighted"),knn = 5, ...) {
+                  grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
+                  parameters = data.frame(parameter = c("r", "metric", "knn"),
+                                          class = c("numeric", "character", "numeric"),
+                                          label = c("# Reduced Dimensions",
+                                                    "Type of Transformation Metric",
+                                                    "# of Nearest Neighbors")),
+                  fit = function(x, y, param, ...) {
                     theDots <- list(...)
 
-                    if(is.data.frame(x)) x <- as.matrix(x)
-                    if(is.null(r)){
-                      r <- 3
-                      print("Reduced dimension to 3 by default. ")
-                    }
+                    argList <- list(x = x, y = y, r = ifelse(is.null(param$r, 3, param$r)),
+                                    metric = param$metric, knn = param$knn)
+                    argList <- c(argList, theDots)
 
-                    metric <- match.arg(metric)
-                    modelArgs <- c(list(x,y,r,metric,knn))
-                    out <- do.call("lfda", modelArgs)
+                    if(is.data.frame(x)) x <- as.matrix(x)
+
+                    out <- do.call("lfda", argList)
 
                     out$call <- NULL
                     out
                   },
-                  predict = function(modelFit, newdata = NULL, type = "raw", ...) {
-                    if(is.null(newdata)){stop("You must provide data to be used for transformation. ")}
-                    if(type!="raw"){stop('Types other than "raw" are currently unavailable. ')}
-                    if(is.data.frame(newdata)) newdata <- as.matrix(newdata)
-
-                    transformMatrix <- object$T
-
-                    out <- newdata %*% transformMatrix
-                    out
-                  },
-                  prob = function(modelFit, newdata, submodels = NULL) {
-                    stop('type "prob" in predict function is not available for lfda.')
-                  },
+#                 predict = function(modelFit, newdata, submodels = NULL)
+#                   predict(modelFit, newdata),
+                  prob = NULL,
                   predictors = function(x, ...) {
                     # if dimensionality of original data is not reduced
                     if(dim(x$T)[1]==dim(x$T)[2]){
