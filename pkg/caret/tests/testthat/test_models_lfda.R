@@ -8,11 +8,10 @@ test_that('test lfda model training and prediction', {
   tr_dat <- twoClassSim(200)
   te_dat <- twoClassSim(200)
 
-#   lfda.model <- train(
-#     x=tr_dat[,-16],y=tr_dat[,16],
-#     metric = "plain",
-#     method = "lfda"
-#   )
+  lfda.model <- train(
+    x=tr_dat[,-16],y=tr_dat[,16],
+    method = "lfda"
+  )
 #
 #   # lfda.model <- lfda(x=tr_dat[,-16],y=tr_dat[,16],r=3)
 #
