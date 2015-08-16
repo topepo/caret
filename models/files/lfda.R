@@ -1,40 +1,32 @@
-modelInfo <- list(label = "Local Fisher Discriminant Analysis",
-                  library = c("lfda"),
-                  type = "Classification",
-                  grid = function(x, y, len = NULL, search = "grid") data.frame(r="none",metric="none", knn="none"),
-                  parameters = data.frame(parameter = c("r", "metric", "knn"),
-                                          class = c("numeric", "character", "numeric"),
-                                          label = c("# Reduced Dimensions",
-                                                    "Type of Transformation Metric",
-                                                    "# of Nearest Neighbors")),
-                  fit = function(x, y, param, ...) {
-                    theDots <- list(...)
-
-                    argList <- list(x = x, y = y, r = ifelse(is.null(param$r, 3, param$r)),
-                                    metric = ifelse(is.null(param$metric), "plain", param$metric),
-                                    knn = ifelse(is.null(param$knn, 5, param$knn)))
-                    argList <- c(argList, theDots)
-
-                    if(is.data.frame(x)) x <- as.matrix(x)
-
-                    out <- do.call("lfda", argList)
-
-                    out$call <- NULL
-                    out
-                  },
-#                 predict = function(modelFit, newdata, submodels = NULL)
-#                   predict(modelFit, newdata),
-                  prob = NULL,
-                  predictors = function(x, ...) {
-                    # if dimensionality of original data is not reduced
-                    if(dim(x$T)[1]==dim(x$T)[2]){
-                      return(colnames(x$Z))
-                    } else {
-                      print("predictors are not available for lfda model with dimension reduction. ")
-                      return(NULL)
-                    }
-                  },
-                  tags = c("Metric Learning", "Local Metric Learning", "Dimension Reduction",
-                           "Multimodality Preservance", "Fisher Discriminant Analysis",
-                           "Classification", "Pre-processing")
-                  )
+modelInfo <- list(
+  label = "Local Fisher Discriminant Analysis",
+  library = c("lfda"),
+  type = "Classification",
+  grid = function(x, y, len = NULL, search = "grid"){
+    if(is.null(len)) len <- 1
+    expand.grid(
+      r=3:(min(3 - 1 + len, 5)),
+      metric=c("plain", "orthonormalized", "weighted")[1:(min(len, 3))],
+      knn=25:(25 - 1 + len),
+      stringsAsFactors=FALSE)
+  },
+  parameters = data.frame(
+    parameter = c("r", "metric", "knn"),
+    class = c("numeric", "character", "numeric"),
+    label = c("# Reduced Dimensions",
+              "Type of Transformation Metric",
+              "# of Nearest Neighbors")),
+  fit = function(x, y, param, ...) {
+    lfda(x=x, y=y, r=param$r, metric=as.character(param$metric), knn=param$k, ...)
+  },
+  predict = function(modelFit, newdata, submodels = NULL){
+    out <- predict(modelFit, newdata, type='class')
+    out <- factor(out, levels=modelFit$levels)
+  },
+  prob = function(modelFit, newdata, submodels = NULL){
+    predict(modelFit, newdata, type='raw')
+  },
+  tags = c("Metric Learning", "Local Metric Learning", "Dimension Reduction",
+           "Multimodality Preservance", "Fisher Discriminant Analysis",
+           "Classification", "Pre-processing")
+)
