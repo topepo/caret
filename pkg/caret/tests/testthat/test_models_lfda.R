@@ -1,25 +1,19 @@
-library(caret)
-library(lfda)
-library(testthat)
-
-test_that('test lfda model training and prediction', {
-  skip_on_cran()
-  set.seed(1)
-  tr_dat <- twoClassSim(200)
-  te_dat <- twoClassSim(200)
-
-  lfda.model <- train(
-    x=tr_dat[,-16],y=tr_dat[,16],
-    method = "lfda"
-  )
+# library(caret)
+# library(testthat)
+# library(lfda)
 #
-#   # lfda.model <- lfda(x=tr_dat[,-16],y=tr_dat[,16],r=3)
+# test_that('test lfda model training and prediction', {
+#   skip_on_cran()
+#   set.seed(1)
+#   x <- iris[,-5]
+#   y <- iris[,5]
 #
-#   transform.metric <- lfda.model$T
-#   transformed.train <- lfda.model$Z
-
-  # transformed.test <- predict(lfda.model, newdata=te_dat[,-16])
-
-})
-
-
+#   modelInfo <- getModelInfo('lfda', regex=FALSE)[[1]]
+#   fit <- modelInfo$fit(x, y, modelInfo$grid(1))
+#   predict <- modelInfo$predict(fit, x)
+#   probs <- modelInfo$prob(fit, x)
+#
+#   lfda.model <- train(x,y,method = modelInfo)
+# })
+#
+#
