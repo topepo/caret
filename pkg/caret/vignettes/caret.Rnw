@@ -174,7 +174,7 @@ inTrain <- createDataPartition(y = Sonar$Class,
 ## that belong in the training set.
 str(inTrain)
 @
-Bt default, \code{createDataPartition} does a stratified random split of the data. To partition the data:
+By default, \code{createDataPartition} does a stratified random split of the data. To partition the data:
 
 <<SonarDatasets>>=
 training <- Sonar[ inTrain,]
