@@ -1,3 +1,5 @@
+# Note that if you are on osx running anaconda as of 31-Aug-2015 rPython has a problem linking with it
+# try normal python with sklearn and pandas installed manually
 modelInfo <- list(label = "Knn regression via sklearn.neighbors.KNeighborsRegressor",
                   library = "rPython",
                   loop = NULL,
