@@ -1,4 +1,4 @@
-setwd("/Users/kuhna03/Code/github/caret/RegressionTests")
+setwd("~/Code/github/caret/RegressionTests")
 
 #############################################################################
 

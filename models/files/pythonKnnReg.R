@@ -6,7 +6,7 @@ modelInfo <- list(label = "Knn regression via sklearn.neighbors.KNeighborsRegres
                                           class = c("numeric", "character", "character", "numeric", "character", "numeric"),
                                           label = c("n_neighbors", 'weights','algorithm', 'leaf_size', 'metric','p')),
                   grid = function(x, y, len = NULL, search = "grid") expand.grid(n_neighbors=(5:((2 * len)+4))[(5:((2 * len)+4))%%2 > 0],
-                                                                                 weights = c("uniform", "distance"), 
+                                                                                 weights = c("uniform", "distance"),
                                                                                  algorithm = c('auto'),
                                                                                  leaf_size = c(30), 
                                                                                  metric = c("minkowski"),
@@ -15,11 +15,11 @@ modelInfo <- list(label = "Knn regression via sklearn.neighbors.KNeighborsRegres
                     python.assign('X',x);python.exec('X = pd.DataFrame(X)')
                     python.assign('Y',y)                    
                     python.exec(paste0('neigh = KNeighborsRegressor(',
-                                       'n_neighbors=',param$n_neighbors,','                                       
-                                       'weights=',param$weights,','
-                                       'algorithm=',param$algorithm,','                                       
-                                       'leaf_size=',param$leaf_size,','
-                                       'metric=',param$metric,','
+                                       'n_neighbors=',param$n_neighbors,',',
+                                       'weights=',param$weights,',',
+                                       'algorithm=',param$algorithm,',',
+                                       'leaf_size=',param$leaf_size,',',
+                                       'metric=',param$metric,',',
                                        'p=',param$p,
                                        ')'))
                     python.exec('neigh.fit(X, Y)')
