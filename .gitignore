@@ -57,3 +57,5 @@ release_process/Open_Data_Science_Conference/caret.vrb
 models/files/.RData
 
 models/parseModels.Rout
+
+.DS_Store
