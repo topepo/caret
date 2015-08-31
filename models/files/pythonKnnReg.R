@@ -1,24 +1,23 @@
-pythonKnnReg <- list(label = "Knn regression via sklearn.neighbors.KNeighborsRegressor",
+modelInfo <- list(label = "Knn regression via sklearn.neighbors.KNeighborsRegressor",
                   library = "rPython",
                   loop = NULL,
                   type = "Regression",
-                  parameters = data.frame(parameter = c('n_neighbors','weights', 'leaf_size', 'metric', 'p'),
-                                          class = c("numeric", "character", "numeric","character","numeric"),
-                                          label = c("n_neighbors", 'weights', 'leaf_size', 'metric','p')),
+                  parameters = data.frame(parameter = c('n_neighbors','weights','algorithm','leaf_size','metric','p'),
+                                          class = c("numeric", "character", "character", "numeric", "character", "numeric"),
+                                          label = c("n_neighbors", 'weights','algorithm', 'leaf_size', 'metric','p')),
                   grid = function(x, y, len = NULL, search = "grid") expand.grid(n_neighbors=(5:((2 * len)+4))[(5:((2 * len)+4))%%2 > 0],
                                                                                  weights = c("uniform", "distance"), 
-                                                                                 leaf_size = c(20,30), 
+                                                                                 algorithm = c('auto'),
+                                                                                 leaf_size = c(30), 
                                                                                  metric = c("minkowski"),
                                                                                  p=2),
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {                    
-                    python.exec('import pandas as pd')  
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {                                        
                     python.assign('X',x);python.exec('X = pd.DataFrame(X)')
-                    python.assign('Y',y)
-
-                    python.exec('from sklearn.neighbors import KNeighborsRegressor')  
+                    python.assign('Y',y)                    
                     python.exec(paste0('neigh = KNeighborsRegressor(',
-                                       'n_neighbors=',param$n_neighbors,','
+                                       'n_neighbors=',param$n_neighbors,','                                       
                                        'weights=',param$weights,','
+                                       'algorithm=',param$algorithm,','                                       
                                        'leaf_size=',param$leaf_size,','
                                        'metric=',param$metric,','
                                        'p=',param$p,
