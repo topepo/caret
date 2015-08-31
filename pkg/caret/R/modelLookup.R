@@ -1,21 +1,21 @@
 checkInstall <- function(pkg){
   good <- rep(TRUE, length(pkg))
-  installedPythonLibs=T
+  installedPythonLibs=TRUE
   for(i in seq(along = pkg)){    
     tested <- try(find.package(pkg[i]), silent = TRUE)
     if(class(tested)[1] == "try-error") good[i] <- FALSE
     if (pkg[i]=="rPython" & good[i]) {      
-      testpd=try(python.exec('import pandas as pd2'),silent = TRUE) 
+      testpd=try(python.exec('import pandas as pd'),silent = TRUE)
       testsk=try(python.exec('from sklearn.neighbors import KNeighborsRegressor'),silent = TRUE) 
       if ((class(testpd)[1] == "try-error")|(class(testsk)[1] == "try-error")) {
-        installedPythonLibs<-F
+        installedPythonLibs<-FALSE
         good[i] <- FALSE
       }      
     }
   }
   if(any(!good)){
-    if (installedPythonLibs==F) {
-      msg<-"Please install sklearn and pandas for python"
+    if (installedPythonLibs==FALSE) {
+      msg<-"Please install the following python libraries: sklearn, pandas"
       cat(msg)    
       stop()
     } else {
