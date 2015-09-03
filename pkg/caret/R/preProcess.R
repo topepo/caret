@@ -82,7 +82,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
       cat("Estimating exponential transformations for", 
           length(method$expoTrans), "predictors...")
     et <- lapply(x[, method$expoTrans, drop = FALSE], 
-                 caret:::expoTrans.default, numUnique = numUnique)
+                 expoTrans.default, numUnique = numUnique)
     if(verbose) cat(" applying them to training data\n")
     omit_expo <- NULL
     for(i in names(et)) {
@@ -146,9 +146,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
     if(verbose) cat("Computing bagging models for", length(method$bagImpute), "predictors...")
     bagModels <- as.list(method$bagImpute)
     names(bagModels) <- method$bagImpute
-    bagModels <- lapply(bagModels,
-                        caret:::bagImp,
-                        x = x)
+    bagModels <- lapply(bagModels, bagImp, x = x)
     if(verbose) cat(" done\n")
   } else bagModels <- NULL
   
@@ -197,7 +195,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
       cat("Computing ICA loadings for",
           length(method$ica), 
           "predictors\n")
-    caret:::requireNamespaceQuietStop("fastICA")    
+    requireNamespaceQuietStop("fastICA")    
     tmp <- fastICA::fastICA(x[, method$ica, drop = FALSE], ...)
     ica <- list(row.norm = row.norm,
                 K = tmp$K,
@@ -303,7 +301,7 @@ predict.preProcess <- function(object, newdata, ...) {
   }
   
   if(any(names(object$method) == "bagImpute") && any(!cc)) {
-    library(ipred)
+    requireNamespaceQuietStop("ipred")
     hasMiss <- newdata[!cc,,drop = FALSE]
     missingVars <- apply(hasMiss,
                          2,
@@ -474,8 +472,8 @@ nnimp <- function(new, old, k, foo) {
   colnames(new) <- nms
   non_missing_cols <- cols2
   nn <- RANN::nn2(old[, non_missing_cols, drop = FALSE],
-                  new[, non_missing_cols, drop = FALSE],
-                  k = k)
+            new[, non_missing_cols, drop = FALSE],
+            k = k)
   tmp <- old[nn$nn.idx, -non_missing_cols, drop = FALSE]
   subs <- apply(tmp, 2, foo, na.rm = TRUE)
   new[, -non_missing_cols] <- subs
@@ -490,10 +488,10 @@ bagImp <- function(var, x, B = 10) {
   ## training set.
   if(!is.data.frame(x)) x <- as.data.frame(x)
   mod <- ipred::bagging(as.formula(paste(var, "~.")),
-                        data = x,
-                        nbagg = B,
-                        x = FALSE, 
-                        keepX = FALSE)
+                 data = x,
+                 nbagg = B,
+                 x = FALSE, 
+                 keepX = FALSE)
   trim_code <- getModelInfo("treebag", FALSE)[[1]]$trim
   list(var = var,
        model = trim_code(mod))

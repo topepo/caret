@@ -4,10 +4,10 @@ checkInstall <- function(pkg){
   for(i in seq(along = pkg)){    
     tested <- try(find.package(pkg[i]), silent = TRUE)
     if(class(tested)[1] == "try-error") good[i] <- FALSE
-    if (pkg[i]=="rPython" & good[i]) {      
-      do.call("library", list(package = pkg[i]))
-      testpd=try(python.exec('import pandas as pd'),silent = TRUE)
-      testsk=try(python.exec('from sklearn.neighbors import KNeighborsRegressor'),silent = TRUE) 
+    if (pkg[i]=="rPython" & good[i]) {   
+      requireNamespaceQuietStop(rPython)
+      testpd=try(rPython::python.exec('import pandas as pd'),silent = TRUE)
+      testsk=try(rPython::python.exec('from sklearn.neighbors import KNeighborsRegressor'),silent = TRUE) 
       if ((class(testpd)[1] == "try-error")|(class(testsk)[1] == "try-error")) {
         installedPythonLibs<-FALSE
         good[i] <- FALSE

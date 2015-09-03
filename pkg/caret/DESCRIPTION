@@ -1,6 +1,6 @@
 Package: caret
-Version: 6.0-55
-Date: 2015-08-10
+Version: 6.0-56
+Date: 2015-09-03
 Title: Classification and Regression Training
 Author: Max Kuhn. Contributions from Jed Wing, Steve Weston, Andre
     Williams, Chris Keefer, Allan Engelhardt, Tony Cooper, Zachary Mayer,
@@ -53,4 +53,5 @@ Suggests:
     superpc,
     Cubist,
     testthat (>= 0.9.1),
+    rPython
 License: GPL (>= 2)

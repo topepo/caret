@@ -419,7 +419,7 @@ caretFuncs <- list(summary = defaultSummary,
                    fit = function(x, y, first, last, ...) train(x, y, ...),
                    pred = function(object, x) {
                      tmp <- predict(object, x)
-                     if(object$modelType == "Classification" & object$$control$classProbs) {
+                     if(object$modelType == "Classification" & object$control$classProbs) {
                        out <- cbind(data.frame(pred = tmp),
                                     as.data.frame(predict(object, x, type = "prob")))
                      } else out <- tmp
