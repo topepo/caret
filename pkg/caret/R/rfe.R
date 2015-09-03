@@ -417,43 +417,29 @@ pickVars <- function(y, size)
 
 caretFuncs <- list(summary = defaultSummary,
                    fit = function(x, y, first, last, ...) train(x, y, ...),
-                   pred = function(object, x)
-                   {
+                   pred = function(object, x) {
                      tmp <- predict(object, x)
-                     if(object$modelType == "Classification" &
-                          !is.null(object$modelInfo$prob))
-                       {
-                         out <- cbind(data.frame(pred = tmp),
-                                      as.data.frame(predict(object, x, type = "prob")))
-                       } else out <- tmp
+                     if(object$modelType == "Classification" & object$$control$classProbs) {
+                       out <- cbind(data.frame(pred = tmp),
+                                    as.data.frame(predict(object, x, type = "prob")))
+                     } else out <- tmp
                      out
                    },
-                   rank = function(object, x, y)
-                   {
+                   rank = function(object, x, y) {
                      vimp <- varImp(object, scale = FALSE)$importance
-                     if(object$modelType == "Regression")
-                       {
-                         vimp <- vimp[
-                                      order(vimp[,1], decreasing = TRUE)
-                                      ,,drop = FALSE]
-                       } else {
-                         if(all(levels(y) %in% colnames(vimp)))
-                           {
-                             avImp <- apply(vimp[, levels(y), drop = TRUE],
-                                            1,
-                                            mean)
-                             vimp$Overall <- avImp
-                           } 
-                         
+                     if(object$modelType == "Regression") {
+                       vimp <- vimp[order(vimp[,1], decreasing = TRUE),,drop = FALSE]
+                     } else {
+                       if(all(levels(y) %in% colnames(vimp))) {
+                         avImp <- apply(vimp[, levels(y), drop = TRUE], 1, mean)
+                         vimp$Overall <- avImp
                        } 
+                     } 
                      vimp$var <- rownames(vimp)
                      vimp
                    },
                    selectSize = pickSizeBest,
-                   selectVar = pickVars
-                   )
-
-
+                   selectVar = pickVars)
 
 ## write a better imp sort function
 ldaFuncs <- list(summary = defaultSummary,
