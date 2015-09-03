@@ -6,28 +6,40 @@ modelInfo <- list(label = "Knn regression via sklearn.neighbors.KNeighborsRegres
                   type = "Regression",
                   parameters = data.frame(parameter = c('n_neighbors','weights','algorithm','leaf_size','metric','p'),
                                           class = c("numeric", "character", "character", "numeric", "character", "numeric"),
-                                          label = c("n_neighbors", 'weights','algorithm', 'leaf_size', 'metric','p')),
-                  grid = function(x, y, len = NULL, search = "grid") expand.grid(n_neighbors=(5:((2 * len)+4))[(5:((2 * len)+4))%%2 > 0],
-                                                                                 weights = c("uniform", "distance"),
-                                                                                 algorithm = c('auto'),
-                                                                                 leaf_size = c(30), 
-                                                                                 metric = c("minkowski"),
-                                                                                 p=2),
+                                          label = c("#Neighbors", 'Weight Function','Algorithm', 'Leaf Size', 'Distance Metric','p')),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(n_neighbors=(5:((2 * len)+4))[(5:((2 * len)+4))%%2 > 0],
+                                         weights = c("uniform", "distance"),
+                                         algorithm = c('auto'),
+                                         leaf_size = c(30), 
+                                         metric = c("minkowski"),
+                                         p=2)
+                    } else {
+                      out <- data.frame(n_neighbors = sample(1:floor(nrow(x)/3), size = len, replace = TRUE),
+                                        weights = sample(c("uniform", "distance"), size = len, replace = TRUE),
+                                        algorithm = c('auto'),
+                                        leaf_size = c(30), 
+                                        metric = c("minkowski"),
+                                        p  = sample(1:2, size = len, replace = TRUE))
+                    }
+                    out
+                  },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     mySeed=sample.int(100000, 1)
                     python.exec('import numpy as np')
                     python.assign('mySeed',mySeed)
                     python.exec('np.random.seed(mySeed)')
-
+                    
                     python.assign('X',x);python.exec('X = pd.DataFrame(X)')
                     python.assign('Y',y)
-
+                    
                     python.exec(paste0('neigh = KNeighborsRegressor(',
                                        'n_neighbors=',param$n_neighbors,',',
-                                       'weights=',param$weights,',',
-                                       'algorithm=',param$algorithm,',',
+                                       'weights=',as.character(param$weights),',',
+                                       'algorithm=',as.character(param$algorithm),',',
                                        'leaf_size=',param$leaf_size,',',
-                                       'metric=',param$metric,',',
+                                       'metric=',as.character(param$metric),',',
                                        'p=',param$p,
                                        ')'))
                     python.exec('neigh.fit(X, Y)')
@@ -39,8 +51,9 @@ modelInfo <- list(label = "Knn regression via sklearn.neighbors.KNeighborsRegres
                     python.exec('pred=neigh.predict(newdata)')
                     python.exec("pred = pred.tolist()")  
                     pred=python.get("pred")                                        
-                  },levels = function(x) x$obsLevels,
+                  },
+                  levels = function(x) x$obsLevels,
                   tags = "Prototype Models",
                   prob = NULL,
                   sort = function(x) x[order(-x[,1]),]
-                  )
+)
