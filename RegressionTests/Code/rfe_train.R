@@ -57,7 +57,7 @@ test_cv_model_form <- rfe(y ~ ., data = training,
                           sizes = c(1, 5, 10, 15),
                           method = "knn",
                           preProc = c("center", "scale"),
-                          trControl = trainControl(method = "cv"),
+                          trControl = trainControl(method = "cv", classProbs = TRUE),
                           rfeControl = rctrl1)
 
 set.seed(849)
