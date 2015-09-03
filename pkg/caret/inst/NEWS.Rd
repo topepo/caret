@@ -10,6 +10,7 @@
 		\item A bug was fixed with \code{rfe} when \code{train} was used to generate a classification model but class probabilities were not (or could not be) generated. 
 		\item Can Candan added a python model \code{sklearn.neighbors.KNeighborsRegressor} that can be accessed via \code{train} using the \cpkg{rPython} package. The python modules \code{sklearn} and \code{pandas} are required for this to run. 
 		\item Jason Aizkalns fixed a bunch of typos. 
+		\item MarwaNabil found a bug with \code{lift} and missing values. This was fixed such that missing values are removed prior to the calculations (within each model)
 	} 
 }
 

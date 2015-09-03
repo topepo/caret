@@ -104,6 +104,7 @@ xyplot.lift <- function(x, data = NULL, plot = "gain", values = NULL, ...){
 }
 
 liftCalc <- function(x, class = levels(x$liftClassVar)[1], cuts = NULL) {
+  x <- x[complete.cases(x),]
   lvl <- levels(x$liftClassVar)
   x <- x[order(x$liftProbVar, decreasing = TRUE),]
   
