@@ -132,73 +132,12 @@ flatTable <- function(pred, obs)
     cells
   }
 
-
 prettySeq <- function(x) paste("Resample", gsub(" ", "0", format(seq(along = x))), sep = "")
 
-ipredStats <- function(x)
-{
-  requireNamespaceQuietStop("e1071")
-  ## error check
-  if(is.null(x$X)) stop("to get OOB stats, keepX must be TRUE when calling the bagging function")
-
-  foo <- function(object, y, x)
-    {
-      holdY <- y[-object$bindx]
-      if(is.factor(y))
-        {
-          requireNamespaceQuietStop("e1071")
-          tmp <- predict(object$btree, x[-object$bindx,,drop = FALSE], type = "class")
-          tmp <- factor(as.character(tmp), levels = levels(y))
-          out <- c(
-                   mean(holdY == tmp),
-                   e1071::classAgreement(table(holdY, tmp))$kappa)
-
-        } else {
-          tmp <- predict(object$btree, x[-object$bindx,,drop = FALSE])
-
-          out <- c(
-                   sqrt(mean((tmp - holdY)^2, na.rm = TRUE)),
-                   cor(holdY, tmp, use = "pairwise.complete.obs")^2)
-        }
-      out
-    }
-  eachStat <- lapply(x$mtrees, foo, y = x$y, x = x$X)
-  eachStat <- matrix(unlist(eachStat), nrow = length(eachStat[[1]]))
-  out <- c(
-           apply(eachStat, 1, mean, na.rm = TRUE),
-           apply(eachStat, 1, sd, na.rm = TRUE))
-  names(out) <- if(is.factor(x$y)) c("Accuracy", "Kappa", "AccuracySD", "KappaSD") else c("RMSE", "Rsquared", "RMSESD", "RsquaredSD")
-  out
-}
-
-rfStats <- function(x)
-{
-  out <- switch(
-                x$type,
-                regression =   c(sqrt(max(x$mse[length(x$mse)], 0)), x$rsq[length(x$rsq)]),
-                classification = {
-                  requireNamespaceQuietStop("e1071")
-                  c(
-                    1 - x$err.rate[x$ntree, "OOB"],
-                    e1071::classAgreement(x$confusion[,-dim(x$confusion)[2]])[["kappa"]])
-                })
-  names(out) <- if(x$type == "regression") c("RMSE", "Rsquared") else c("Accuracy", "Kappa")
-  out
-}
-
-cforestStats <- function(x)
-{
-  loadNamespace("party")
-
-  obs <- x@data@get("response")[,1]
-  pred <- predict(x,  x@data@get("input"), OOB = TRUE)
-  postResample(pred, obs)
-
-
-}
-
-bagEarthStats <- function(x) apply(x$oob, 2, function(x) quantile(x, probs = .5))
-
+ipredStats    <- function(x) getModelInfo("treebag", regex = FALSE)[[1]]$oob(x)
+rfStats       <- function(x) getModelInfo("rf", regex = FALSE)[[1]]$oob(x)
+cforestStats  <- function(x) getModelInfo("cforest", regex = FALSE)[[1]]$oob(x)
+bagEarthStats <- function(x) getModelInfo("bagEarth", regex = FALSE)[[1]]$oob(x)
 
 R2 <- function(pred, obs, formula = "corr", na.rm = FALSE)
   {

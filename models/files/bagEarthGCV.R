@@ -51,4 +51,5 @@ modelInfo <- list(label = "Bagged MARS using gCV Pruning",
                   levels = function(x) x$levels,
                   tags = c("Multivariate Adaptive Regression Splines", "Ensemble Model", 
                            "Implicit Feature Selection", "Bagging"),
-                  sort = function(x) x[order(x$degree),])
+                  sort = function(x) x[order(x$degree),],
+                  oob = function(x) apply(x$oob, 2, function(x) quantile(x, probs = .5)))

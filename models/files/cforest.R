@@ -71,4 +71,9 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                   },
                   tags = c("Random Forest", "Ensemble Model", "Bagging", "Implicit Feature Selection"),
                   levels = function(x) levels(x@data@get("response")[,1]),
-                  sort = function(x) x[order(x[,1]),])
+                  sort = function(x) x[order(x[,1]),],
+                  oob = function(x) {
+                    obs <- x@data@get("response")[,1]
+                    pred <- predict(x,  x@data@get("input"), OOB = TRUE)
+                    postResample(pred, obs)
+                  })

@@ -538,11 +538,8 @@ oobTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
                      sampling = ctrl$sampling,
                      ...)
   
-  out <- switch(class(mod$fit)[1],
-                randomForest = rfStats(mod$fit),
-                RandomForest = cforestStats(mod$fit),
-                bagEarth =, bagFDA = bagEarthStats(mod$fit),
-                regbagg =, classbagg = ipredStats(mod$fit))
+  out <- method$oob(mod$fit)
+  
   if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE], "", 1, FALSE)
   
   cbind(as.data.frame(t(out)), info$loop[parm,,drop = FALSE])

@@ -113,9 +113,8 @@ train.default <- function(x, y,
   }
   
   
-  if(trControl$method == "oob" & !(method %in% oob_mods))
-    stop(paste("for oob error rates, model bust be one of:", 
-               paste(oob_mods, sep = "", collapse = ", ")))
+  if(trControl$method == "oob" & is.null(models$oob))
+    stop("Out of bag estimates are not implemented for this model")
   
   ## SURV TODO: make resampling functions classes or ifelses based on data type
   

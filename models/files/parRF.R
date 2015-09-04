@@ -1,5 +1,5 @@
 modelInfo <- list(label = "Parallel Random Forest",
-                  library = "randomForest",
+                  library = c("e1071", "randomForest"),
                   loop = NULL,
                   type = c("Classification", "Regression"),
                   parameters = data.frame(parameter = "mtry",
@@ -68,4 +68,12 @@ modelInfo <- list(label = "Parallel Random Forest",
                   },
                   levels = function(x) x$classes,
                   tags = c("Random Forest", "Ensemble Model", "Bagging", "Implicit Feature Selection"),
-                  sort = function(x) x[order(x[,1]),])
+                  sort = function(x) x[order(x[,1]),],
+                  oob = function(x) {
+                    out <- switch(x$type,
+                                  regression =   c(sqrt(max(x$mse[length(x$mse)], 0)), x$rsq[length(x$rsq)]),
+                                  classification =  c(1 - x$err.rate[x$ntree, "OOB"],
+                                                      e1071::classAgreement(x$confusion[,-dim(x$confusion)[2]])[["kappa"]]))
+                    names(out) <- if(x$type == "regression") c("RMSE", "Rsquared") else c("Accuracy", "Kappa")
+                    out
+                  })

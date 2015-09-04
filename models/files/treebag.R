@@ -1,5 +1,5 @@
 modelInfo <- list(label = "Bagged CART",
-                  library = c("ipred", "plyr"),
+                  library = c("ipred", "plyr", "e1071"),
                   loop = NULL,
                   type = c("Regression", "Classification"),
                   parameters = data.frame(parameter = "parameter",
@@ -56,4 +56,28 @@ modelInfo <- list(label = "Bagged CART",
                   },
                   tags = c("Tree-Based Model", "Ensemble Model", "Bagging"), 
                   levels = function(x) levels(x$y),
-                  sort = function(x) x)
+                  sort = function(x) x,
+                  oob = function(x) {
+                    if(is.null(x$X)) stop("to get OOB stats, keepX must be TRUE when calling the bagging function")
+                    foo <- function(object, y, x) {
+                      holdY <- y[-object$bindx]
+                      tmp_x <- x[-object$bindx,,drop = FALSE]
+                      if(!is.data.frame(tmp_x)) tmp_x <- as.data.frame(tmp_x)
+                      if(is.factor(y)) {
+                        tmp <- predict(object$btree, tmp_x, type = "class")
+                        tmp <- factor(as.character(tmp), levels = levels(y))
+                        out <- c(mean(holdY == tmp), e1071::classAgreement(table(holdY, tmp))$kappa)
+                      } else {
+                        tmp <- predict(object$btree, tmp_x)
+                        out <- c(sqrt(mean((tmp - holdY)^2, na.rm = TRUE)),
+                                 cor(holdY, tmp, use = "pairwise.complete.obs")^2)
+                      }
+                      out
+                    }
+                    eachStat <- lapply(x$mtrees, foo, y = x$y, x = x$X)
+                    eachStat <- matrix(unlist(eachStat), nrow = length(eachStat[[1]]))
+                    out <- c(apply(eachStat, 1, mean, na.rm = TRUE),
+                             apply(eachStat, 1, sd, na.rm = TRUE))
+                    names(out) <- if(is.factor(x$y)) c("Accuracy", "Kappa", "AccuracySD", "KappaSD") else c("RMSE", "Rsquared", "RMSESD", "RsquaredSD")
+                    out
+                  })

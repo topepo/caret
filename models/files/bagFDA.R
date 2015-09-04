@@ -55,4 +55,5 @@ modelInfo <- list(label = "Bagged Flexible Discriminant Analysis",
                     out
                   },
                   levels = function(x) x$levels,
-                  sort = function(x) x[order(x$degree, x$nprune),])
+                  sort = function(x) x[order(x$degree, x$nprune),],
+                  oob = function(x) apply(x$oob, 2, function(x) quantile(x, probs = .5)))
