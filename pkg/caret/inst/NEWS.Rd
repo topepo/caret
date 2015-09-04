@@ -6,6 +6,7 @@
 	\itemize{
 		\item \code{preProcess} now allows (but ignores) non-numeric predictor columns. 
 		\item Models were added for optimal weighted and stabilized nearest neighbor classifiers from the \cpkg{snn} package were added with model codes \code{snn} and \code{ownn}
+		\item Random forests using the excellent \cpkg{ranger} package were added (\code{method = "ranger"})
 		\item An additional variation of rotation forests was added (\code{rotationForest2}) that also tunes over \code{cp}. Unfortunately, the sub-model trick can't be utilized in this instance.  
 		\item A bug was fixed with \code{rfe} when \code{train} was used to generate a classification model but class probabilities were not (or could not be) generated. 
 		\item Can Candan added a python model \code{sklearn.neighbors.KNeighborsRegressor} that can be accessed via \code{train} using the \cpkg{rPython} package. The python modules \code{sklearn} and \code{pandas} are required for this to run. 
