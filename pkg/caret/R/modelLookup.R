@@ -5,7 +5,7 @@ checkInstall <- function(pkg){
     tested <- try(find.package(pkg[i]), silent = TRUE)
     if(class(tested)[1] == "try-error") good[i] <- FALSE
     if (pkg[i]=="rPython" & good[i]) {   
-      requireNamespaceQuietStop(rPython)
+      requireNamespaceQuietStop("rPython")
       testpd=try(rPython::python.exec('import pandas as pd'),silent = TRUE)
       testsk=try(rPython::python.exec('from sklearn.neighbors import KNeighborsRegressor'),silent = TRUE) 
       if ((class(testpd)[1] == "try-error")|(class(testsk)[1] == "try-error")) {
