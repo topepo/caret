@@ -12,20 +12,20 @@ This function simulates regression and classification data with truly important 
 }
 \usage{
 twoClassSim(n = 100, intercept = -5, linearVars = 10, 
-	        noiseVars = 0, corrVars = 0, 
+          noiseVars = 0, corrVars = 0, 
             corrType = "AR1", corrValue = 0, mislabel = 0)
 
 SLC14_1(n = 100, noiseVars = 0, corrVars = 0, 
-	    corrType = "AR1", corrValue = 0)
+      corrType = "AR1", corrValue = 0)
 
 SLC14_2(n = 100, noiseVars = 0, corrVars = 0, 
-	    corrType = "AR1", corrValue = 0)
+      corrType = "AR1", corrValue = 0)
 
 LPH07_1(n = 100, noiseVars = 0, corrVars = 0, 
-	    corrType = "AR1", corrValue = 0)
+      corrType = "AR1", corrValue = 0, factors = FALSE, class = FALSE)
 
 LPH07_2(n = 100, noiseVars = 0, corrVars = 0, 
-	    corrType = "AR1", corrValue = 0)
+      corrType = "AR1", corrValue = 0)
 }
 \arguments{
   \item{n}{
@@ -52,6 +52,12 @@ The correlation value.
   \item{mislabel}{
   The proportion of data that is possibly mislabeled. See Details below.
   }
+  \item{factors}{
+Should the binary predictors be converted to factors?
+}
+  \item{class}{
+Should the simulation produce class labels instead of numbers?
+}  
 }
 \details{
 The first function (\code{twoClassSim}) generates two class data. The data are simulated in different sets. First, two multivariate normal predictors (denoted here as \code{A} and \code{B}) are created with a correlation our about 0.65. They change the log-odds using main effects and an interaction:
@@ -91,7 +97,10 @@ The remaining functions simulate regression data sets. \code{LPH07_1} and \code{
 - 4*(1 - w_10)*w_1*(1-w_4)
 }
 
-The simulated error term is a standard normal (i.e. Gaussian). The noise variables are simulated in the same manner as described above but are made binary based on whether the normal random variable is above or below 0.  The second function (\code{LPH07_2}) uses 20 independent Gaussians with mean zero and variance 16. The functional form here is:
+The simulated error term is a standard normal (i.e. Gaussian). The noise variables are simulated in the same manner as described above but are made binary based on whether the normal random variable is above or below 0. If \code{factors = TRUE}, each of the predictors is coerced into a factor.  This simulation can also be adapted for classification using the option \code{class = TRUE}. In this case, the outcome is converted to be a factor by first computing the logit transformation of the equation above and using uniform random numbers to assign the observed class. 
+
+
+A second function (\code{LPH07_2}) uses 20 independent Gaussians with mean zero and variance 16. The functional form here is:
 
 \preformatted{
 x_1*x_2 + x_10^2 - x_3*x_17 
@@ -160,7 +169,8 @@ splom(~example[, 1:6], groups = example$Class)
 \references{
 van der Laan, M. J., & Polley Eric, C. (2007). Super learner. Statistical Applications in Genetics and Molecular Biology, 6(1), 1-23.
 
-Sapp, S., van der Laan, M. J., & Canny, J. (2014). Subsemble: an ensemble method for combining subset-specific algorithm fits. Journal of Applied Statistics, 41(6), 1247-1259.	
+Sapp, S., van der Laan, M. J., & Canny, J. (2014). Subsemble: an ensemble method for combining subset-specific algorithm fits. Journal of Applied Statistics, 41(6), 1247-1259. 
 }
 
 \keyword{models}
+ 

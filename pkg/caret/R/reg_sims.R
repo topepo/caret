@@ -74,7 +74,7 @@ SLC14_2 <- function(n = 100, noiseVars = 0,
 
 
 LPH07_1 <- function(n = 100, noiseVars = 0, 
-                    corrVars = 0, corrType = "AR1", corrValue = 0) {
+                    corrVars = 0, corrType = "AR1", corrValue = 0, factors = FALSE, class = FALSE) {
   
   dat <- matrix(rbinom(n*10, size = 1, prob = .4), ncol = 10)
   dat <- as.data.frame(dat)
@@ -91,7 +91,18 @@ LPH07_1 <- function(n = 100, noiseVars = 0,
                                  corrValue = corrValue,
                                  binary = TRUE))
   
-  dat$y <- apply(dat[, 1:10], 1, foo) + rnorm(n)
+  
+  if(factors) 
+    for(i in grep("Var", names(dat), value = TRUE))
+      dat[,i] <- factor(paste0("val", dat[,i]))
+  
+  if(class) {   
+    dat$y <- apply(dat[, 1:10], 1, foo) 
+    dat$Class <- runif(nrow(dat)) <= binomial()$linkinv(dat$y)
+    dat$Class <- factor(ifelse(dat$Class, "Class1", "Class2"))
+    dat$y <- NULL
+  } else dat$y <- apply(dat[, 1:10], 1, foo) + rnorm(n)
+  
   dat
 }
 
