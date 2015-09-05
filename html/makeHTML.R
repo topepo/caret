@@ -42,7 +42,7 @@ dir.create(file.path(dest, dPath))
                  
 rnwFiles <- c("index", "similarity", "datasets", "misc", "preprocess", "visualizations",
               "featureSelection", "training", "other", "bytag", "sampling",
-              "varImp", "parallel", "splitting", 
+              "varImp", "parallel", "splitting", "random",
               "rfe", "filters", "GA", "SA",  "custom_models", "adaptive")
 
 rnwFiles <- paste(rnwFiles, ".Rhtml", sep = "")
