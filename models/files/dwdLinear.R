@@ -50,5 +50,6 @@ modelInfo <- list(label = "Linear Distance Weighted Discrimination",
                   levels = function(x) x$obsLevels,
                   predictors = function(x, s = NULL, ...) x$xNames,
                   tags = c("Discriminant Analysis", "L2 Regularization", 
-                           "Kernel Method", "Linear Classifier"),
+                           "Kernel Method", "Linear Classifier",
+                           "Distance Weighted Discrimination"),
                   sort = function(x) x[order(x[,1]),])
