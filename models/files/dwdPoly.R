@@ -55,5 +55,6 @@ modelInfo <- list(label = "Distance Weighted Discrimination with Polynomial Kern
                   levels = function(x) x$obsLevels,
                   predictors = function(x, s = NULL, ...) x$xNames,
                   tags = c("Discriminant Analysis", "L2 Regularization", 
-                           "Kernel Method", "Polynomial Model"),
+                           "Kernel Method", "Polynomial Model",
+                           "Distance Weighted Discrimination"),
                   sort = function(x) x[order(x[,1]),])

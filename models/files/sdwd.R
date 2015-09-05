@@ -55,7 +55,8 @@ modelInfo <- list(label = "Sparse Distance Weighted Discrimination",
                   },
                   levels = function(x) if(any(names(x) == "obsLevels")) x$obsLevels else NULL,
                   tags = c("Discriminant Analysis Models", "Implicit Feature Selection", 
-                           "L1 Regularization", "L2 Regularization", "Linear Classifier"),
+                           "L1 Regularization", "L2 Regularization", "Linear Classifier",
+                           "Distance Weighted Discrimination"),
                   sort = function(x) x[order(-x$lambda, -x$lambda2),],
                   trim = function(x) {
                     x$call <- NULL

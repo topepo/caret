@@ -71,5 +71,5 @@ modelInfo <- list(label = "Bayesian Generalized Linear Model",
                     x$xlevels <- c()
                     x
                   },
-                  tags = c("Generalized Linear Model", "Logistic Regression", "Linear Classifier"),
+                  tags = c("Generalized Linear Model", "Logistic Regression", "Linear Classifier", "Bayesian Model"),
                   sort = function(x) x)

@@ -1,6 +1,8 @@
 \name{NEWS}
 \title{News for Package \pkg{caret}}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
+\newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
+
 
 \section{Changes in version 6.0-xx}{
 	\itemize{
@@ -9,10 +11,12 @@
 		\item Random forests using the excellent \cpkg{ranger} package were added (\code{method = "ranger"})
 		\item An additional variation of rotation forests was added (\code{rotationForest2}) that also tunes over \code{cp}. Unfortunately, the sub-model trick can't be utilized in this instance.  
 		\item Kernelized distance weighted discriminant analysis models from \cpkg{kerndwd} where added (\code{dwdLieanr}, \code{dwdPoly}, and \code{dwdRadial})
-		\item A bug was fixed with \code{rfe} when \code{train} was used to generate a classification model but class probabilities were not (or could not be) generated. 
+		\item A bug was fixed with \code{rfe} when \code{train} was used to generate a classification model but class probabilities were not (or could not be) generated \issue{234}. 
 		\item Can Candan added a python model \code{sklearn.neighbors.KNeighborsRegressor} that can be accessed via \code{train} using the \cpkg{rPython} package. The python modules \code{sklearn} and \code{pandas} are required for this to run. 
 		\item Jason Aizkalns fixed a bunch of typos. 
-		\item MarwaNabil found a bug with \code{lift} and missing values. This was fixed such that missing values are removed prior to the calculations (within each model)
+		\item MarwaNabil found a bug with \code{lift} and missing values \issue{225}. This was fixed such that missing values are removed prior to the calculations (within each model)
+		\item Additional options were added to \code{LPH07_1} so that two class data can also be simulated and predictors are converted to factors. 
+		\item The model-specific code for computing out-of-bag performance estimates were moved into the model code library \issue{230}.
 	} 
 }
 
