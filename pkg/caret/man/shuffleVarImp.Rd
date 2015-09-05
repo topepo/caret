@@ -2,10 +2,11 @@
 \alias{shuffleVarImp}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-%%  ~~function to do ... ~~
+Calculation of variable importance for regression and classification models using predictor shuffling
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+A generic method for calculating variable importance for objects produced by
+\code{train} by shuffling predictor columns and rescoring the predictions
 }
 \usage{
 shuffleVarImp.train(model, test_x, test_y, shuffleTimes = 100)
@@ -32,19 +33,17 @@ This function first computes the model prediction score on the given test set. C
 A data frame with variable name and importances in (0,1) ordered with respect to importance with values closer to 1 being more important. The importance is the mean number of times the score worsens.
 }
 \references{
-%% ~put references to the literature/web site here ~
 }
 \author{
-%%  ~~who you are~~
+Can Candan
 }
 \note{
-%%  ~~further notes~~
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+
 }
 \examples{
 
