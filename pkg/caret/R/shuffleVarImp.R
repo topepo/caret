@@ -3,6 +3,7 @@ calculateScore<-function(model,x,y) {
   data=data.frame(cbind(obs=y,pred=pred))
   baseScore=model$control$summaryFunction(data)
 }
+
 shuffleVarImp.train<-function(model,test_x,test_y,shuffleTimes=100) {  
   baseScore=calculateScore(model,test_x,test_y)
   

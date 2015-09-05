@@ -87,3 +87,4 @@ vimp
 svimp=shuffleVarImp(model = model,test_x = test_x,
                     test_y = test_y,shuffleTimes = 200)
 svimp
+}
