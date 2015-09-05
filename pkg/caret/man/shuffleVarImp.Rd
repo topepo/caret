@@ -9,7 +9,7 @@ A generic method for calculating variable importance for objects produced by
 \code{train} by shuffling predictor columns and rescoring the predictions
 }
 \usage{
-shuffleVarImp.train(model, test_x, test_y, shuffleTimes = 100)
+shuffleVarImp(model, test_x, test_y, shuffleTimes = 100)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
