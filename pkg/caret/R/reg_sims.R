@@ -90,18 +90,18 @@ LPH07_1 <- function(n = 100, noiseVars = 0,
                                  corrType = corrType, 
                                  corrValue = corrValue,
                                  binary = TRUE))
-  
-  
-  if(factors) 
-    for(i in grep("Var", names(dat), value = TRUE))
-      dat[,i] <- factor(paste0("val", dat[,i]))
-  
+
   if(class) {   
     dat$y <- apply(dat[, 1:10], 1, foo) 
     dat$Class <- runif(nrow(dat)) <= binomial()$linkinv(dat$y)
     dat$Class <- factor(ifelse(dat$Class, "Class1", "Class2"))
     dat$y <- NULL
   } else dat$y <- apply(dat[, 1:10], 1, foo) + rnorm(n)
+  
+  if(factors) 
+    for(i in grep("(^Var)|(^Noise)", names(dat), value = TRUE))
+      dat[,i] <- factor(paste0("val", dat[,i]))
+  
   
   dat
 }
