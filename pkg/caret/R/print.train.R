@@ -42,26 +42,8 @@ stringFunc <- function (x)  {
       cat("\n")
     }
     
-    if(!is.null(x$preProc)){
-      ## Make things look a little nicer:
-      pp <- x$preProc$method
-      pp <- gsub("BoxCox", "Box-Cox transformation", pp)  
-      pp <- gsub("YeoJohnson", "Yeo-Johnson transformation", pp)  
-      pp <- gsub("expoTrans", "exponential transformation", pp) 
-      pp <- gsub("scale", "scaled", pp)
-      pp <- gsub("center", "centered", pp)
-      pp <- gsub("pca", "principal component signal extraction", pp)
-      pp <- gsub("ica", "independent component signal extraction", pp)
-      pp <- gsub("spatialSign", "spatial sign transformation", pp)
-      pp <- gsub("knnImpute", paste(x$k, "nearest neighbor imputation"), pp)
-      pp <- gsub("bagImpute", "bagged tree imputation", pp)
-      pp <- gsub("medianImpute", "median imputation", pp)
-      pp <- gsub("range", "re-scaling to [0, 1]", pp)  
-      
-      if(length(pp) == 0) pp <- "None"
-      
-      ppText <- paste("Pre-processing:", paste(pp, collapse = ", "))
-      cat(truncateText(ppText), "\n")
+    if(is.null(x$preProc)){
+      pp_list(x$preProc$method)
     } else cat("No pre-processing\n")
     
     if(!is.null(x$control$index)) {
@@ -261,4 +243,48 @@ truncateText <- function(x){
   }
   
   paste(out, collapse = "\n")
+}
+
+
+pp_list <- function(x) {
+  if(is.list(x)) {
+    pp <- unlist(lapply(x, length))
+    pp <- pp[pp > 0]
+    if(length(pp) > 0) {
+      names(pp) <- gsub("BoxCox", "Box-Cox transformation", names(pp))  
+      names(pp) <- gsub("YeoJohnson", "Yeo-Johnson transformation", names(pp))  
+      names(pp) <- gsub("expoTrans", "exponential transformation", names(pp)) 
+      names(pp) <- gsub("scale", "scaled", names(pp))
+      names(pp) <- gsub("center", "centered", names(pp))
+      names(pp) <- gsub("pca", "principal component signal extraction", names(pp))
+      names(pp) <- gsub("ica", "independent component signal extraction", names(pp))
+      names(pp) <- gsub("spatialSign", "spatial sign transformation", names(pp))
+      names(pp) <- gsub("knnImpute", paste(x$k, "nearest neighbor imputation"), names(pp))
+      names(pp) <- gsub("bagImpute", "bagged tree imputation", names(pp))
+      names(pp) <- gsub("medianImpute", "median imputation", names(pp))
+      names(pp) <- gsub("range", "re-scaling to [0, 1]", names(pp)) 
+    } else pp <- "None"
+    ppText <- paste("Pre-processing:", paste0(names(pp),  " (", pp, ")", collapse = ", "))
+    cat(truncateText(ppText), "\n")
+  } else {
+    pp <- x
+    pp <- gsub("BoxCox", "Box-Cox transformation", pp)  
+    pp <- gsub("YeoJohnson", "Yeo-Johnson transformation", pp)  
+    pp <- gsub("expoTrans", "exponential transformation", pp) 
+    pp <- gsub("scale", "scaled", pp)
+    pp <- gsub("center", "centered", pp)
+    pp <- gsub("pca", "principal component signal extraction", pp)
+    pp <- gsub("ica", "independent component signal extraction", pp)
+    pp <- gsub("spatialSign", "spatial sign transformation", pp)
+    pp <- gsub("knnImpute", paste(x$k, "nearest neighbor imputation"), pp)
+    pp <- gsub("bagImpute", "bagged tree imputation", pp)
+    pp <- gsub("medianImpute", "median imputation", pp)
+    pp <- gsub("range", "re-scaling to [0, 1]", pp)  
+    
+    if(length(pp) == 0) pp <- "None"
+    
+    ppText <- paste("Pre-processing:", paste(pp, collapse = ", "))
+    cat(truncateText(ppText), "\n")
+  }
+  invisible(NULL)
 }
