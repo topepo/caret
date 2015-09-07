@@ -6,6 +6,7 @@
 
 \section{Changes in version 6.0-xx}{
 	\itemize{
+		\item Hyperparameter optimization via random search is now availible. See the new \href{http://topepo.github.io/caret/random.html}{help page} for examples and syntax. 
 		\item \code{preProcess} now allows (but ignores) non-numeric predictor columns. 
 		\item Models were added for optimal weighted and stabilized nearest neighbor classifiers from the \cpkg{snn} package were added with model codes \code{snn} and \code{ownn}
 		\item Random forests using the excellent \cpkg{ranger} package were added (\code{method = "ranger"})
