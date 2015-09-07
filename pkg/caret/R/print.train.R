@@ -42,7 +42,7 @@ stringFunc <- function (x)  {
       cat("\n")
     }
     
-    if(is.null(x$preProc)){
+    if(!is.null(x$preProc)){
       pp_list(x$preProc$method)
     } else cat("No pre-processing\n")
     
@@ -144,7 +144,7 @@ stringFunc <- function (x)  {
         sort_args[[i]] <- tuneAcc[, nms[i]]
       }
       tune_ord <- do.call("order", sort_args)
-      tuneAcc <- tuneAcc[tune_ord,,drop = FALSE]
+      if(!is.null(tune_ord)) tuneAcc <- tuneAcc[tune_ord,,drop = FALSE]
       
       theDots <- list(...)
       theDots$x <- tuneAcc
