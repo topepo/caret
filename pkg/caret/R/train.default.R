@@ -9,7 +9,7 @@ train.default <- function(x, y,
                           ...,
                           weights = NULL,
                           metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
-                          maximize = ifelse(metric == "RMSE", FALSE, TRUE),
+                          maximize = ifelse(metric %in% c("RMSE", "logLoss"), FALSE, TRUE),
                           trControl = trainControl(),
                           tuneGrid = NULL,
                           tuneLength = 3) {
