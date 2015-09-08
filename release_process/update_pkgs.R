@@ -23,7 +23,7 @@ libs <- c(libs, "knitr", "Hmisc", "googleVis", "animation",
           "desirability", "gsubfn", "gtools", "impute", "Matrix", "proxy", "plyr", 
           "reshape", "rJava", "SparseM", "sqldf", "XML", "lubridate", "dplyr", "GA",
           "aroma.affymetrix", "remMap", "cghFLasso", "RCurl", "QSARdata", "reshape2",
-          "mapproj", "ggmap", "ggvis", "SuperLearner", "subsemble", "caretEnsemble")
+          "mapproj", "ggmap", "ggvis", "SuperLearner", "subsemble", "caretEnsemble", "xgboost")
 libs <- unique(libs)
 
 
@@ -38,8 +38,6 @@ if(length(diffs) > 0) print(diffs)
 
 ###################################################################
 ## Install the files. This might re-install caret so beware.
-
-devtools::install_github('dmlc/xgboost',subdir='R-package')
 
 install.packages(libs, repos = "http://cran.r-project.org", 
                  type = "source",
