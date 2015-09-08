@@ -20,7 +20,6 @@
 		\item The model-specific code for computing out-of-bag performance estimates were moved into the model code library \issue{230}.
 		\item A variety of naive Bayes and tree augmented naive Bayes classifier from the \cpkg{bnclassify} package were added. Variations include simple models (methods labeled as \code{"nbDiscrete"} and \code{"tan"}), models using attribute weighting (\code{"awnb"} and \code{"awtan"}), and wrappers that use search methods to optimize the network structure (\code{"nbSearch"} and \code{"tanSearch"}). In each case, the predictors and outcomes must all be factor variables; for that reason, using the non-formula interface to \code{train} (e.g. \code{train(x, y)}) is critical to preserve the factor structure of the data.  
 	} 
-		\item \code{xgboost} package that contains models \code{xgbTree} and \code{xgbLinear} is now being installed from CRAN. 
 }
 
 
