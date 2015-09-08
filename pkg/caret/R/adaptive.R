@@ -788,6 +788,7 @@ get_id <- function(x, param) {
 }
 
 bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
+  if (!requireNamespace("BradleyTerry2")) stop("BradleyTerry2 package missing")
   se_thresh <- 100
   constant <- qnorm(1 - alpha)
   rs <- rs[order(rs$Resample, rs$model_id),]
@@ -799,12 +800,12 @@ bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
   best_mod <- if(maximize) 
     best_mod$model_id[which.max(best_mod$V1)] else 
       best_mod$model_id[which.min(best_mod$V1)]
-  btModel <- BTm(cbind(win1, win2), player1, player2, data = scores, refcat = best_mod)
-  upperBound <- BTabilities(btModel)[,1] + constant*BTabilities(btModel)[,2]
-  if(any(BTabilities(btModel)[,2] > se_thresh)) {
+  btModel <- BradleyTerry2::BTm(cbind(win1, win2), player1, player2, data = scores, refcat = best_mod)
+  upperBound <- BradleyTerry2::BTabilities(btModel)[,1] + constant*BradleyTerry2::BTabilities(btModel)[,2]
+  if(any(BradleyTerry2::BTabilities(btModel)[,2] > se_thresh)) {
     ## These players either are uniformly dominated (='dom') or dominating
-    dom1 <- BTabilities(btModel)[,2] > se_thresh 
-    dom2 <- if(maximize) BTabilities(btModel)[,1] <= 0 else BTabilities(btModel)[,1] >= 0
+    dom1 <- BradleyTerry2::BTabilities(btModel)[,2] > se_thresh 
+    dom2 <- if(maximize) BradleyTerry2::BTabilities(btModel)[,1] <= 0 else BradleyTerry2::BTabilities(btModel)[,1] >= 0
     dom <- dom1 & dom2    
   } else dom <- rep(FALSE, length(upperBound))
   bound <- upperBound >= 0
@@ -814,6 +815,7 @@ bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
 
 get_scores <- function(x, maximize = NULL, metric = NULL)
 {
+  if (!requireNamespace("BradleyTerry2")) stop("BradleyTerry2 package missing")
   delta <- outer(x[,metric], x[,metric], "-")
   tied <- ifelse(delta == 0, 1, 0)*.5
   diag(tied) <- 0
@@ -821,7 +823,7 @@ get_scores <- function(x, maximize = NULL, metric = NULL)
   binary <- binary + tied
   diag(binary) <- 0  
   rownames(binary) <- colnames(binary) <- x$model_id
-  countsToBinomial(as.table(binary))
+  BradleyTerry2::countsToBinomial(as.table(binary))
 }
 
 skunked <- function(scores, verbose = TRUE) {

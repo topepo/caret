@@ -1,5 +1,5 @@
 useDynLib(caret)
-import(foreach, methods, plyr, reshape2, ggplot2, lattice, nlme, BradleyTerry2)
+import(foreach, methods, plyr, reshape2, ggplot2, lattice, nlme)
 importFrom(car, powerTransform, yjPower)
 importFrom(grDevices, extendrange)
 importFrom(stats, .checkMFClasses, .getXlevels, aggregate, anova, 

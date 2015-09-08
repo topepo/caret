@@ -17,17 +17,17 @@ URL: https://github.com/topepo/caret/
 BugReports: https://github.com/topepo/caret/issues
 Imports:
     car,
-    reshape2,
     foreach,
     methods,
     plyr,
     nlme,
-    BradleyTerry2,
+    reshape2,
     stats,
     stats4,
     utils,
     grDevices
 Suggests:
+    BradleyTerry2,
     e1071,
     earth (>= 2.2-3),
     fastICA,
