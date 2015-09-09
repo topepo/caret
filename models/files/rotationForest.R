@@ -1,6 +1,6 @@
 modelInfo <- list(label = "Rotation Forest",
                   library = "rotationForest",
-                  type = c("Classification", "Regression"),
+                  type = c("Classification"),
                   parameters = data.frame(parameter = c("K", "L"),
                                           class = rep("numeric", 2),
                                           label = c("#Variable Subsets", "Ensemble Size")),
