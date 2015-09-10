@@ -89,7 +89,7 @@ To use random search, another option is available in <span class="mx funCall">tr
 </p>
 
 <p>
-Again, we will use the sonar data from the previous training page to demonstrate the method:
+Again, we will use the sonar data from the previous training page to demonstrate the method with a self-organizing map by looking at a total of 30 tuning parameter combinations:
 </p>
 
     
@@ -111,23 +111,23 @@ fitControl <- trainControl(method = "repeatedcv",
                            search = "random")
 
 set.seed(825)
-nnet_fit <- train(Class ~ ., data = training, 
-                  method = "nnet", 
+som_fit <- train(Class ~ ., data = training, 
+                  method = "xyf", 
                   preProc = c("center", "scale"),
                   metric = "ROC",
-                  tuneLength = 10,
-                  trace = FALSE,
-                  MaxNWts = 2000,
+                  tuneLength = 30,
                   trControl = fitControl)
-nnet_fit
+som_fit
     end.rcode--> 
     
 <p>
-There is currently only a <span class="mx funCall">ggplot</span> method (instead of a basic <span class="mx funCall">plot</span> method). The results of this function with random searching depends on the number and type of tuning parameters. In this case, it produces a scatter plot of the two parameters and sizes the points based on their resampled performance values. 
+There is currently only a <span class="mx funCall">ggplot</span> method (instead of a basic <span class="mx funCall">plot</span> method). The results of this function with random searching depends on the number and type of tuning parameters. In this case, it produces a scatter plot of the three continuous parameters and colors the points based on the topology. The lines are added in the code below. 
 </p>
    
-<!--begin.rcode random_plot, Laplacian,fig.width=6,fig.height=6.25
-ggplot(nnet_fit) + theme(legend.position = "top")
+<!--begin.rcode random_plot, Laplacian,fig.width=6,fig.height=4.25
+ggplot(som_fit) + 
+  geom_smooth(se = FALSE, span = .8, method = loess) + 
+  theme(legend.position = "top")
     end.rcode-->   
    
 <p>
@@ -147,6 +147,7 @@ Otherwise, the <span class="mx funCall">train</span> object works just as any ot
       <li><a href="preprocess.html">Pre-Processing</a><li>
       <li><a href="splitting.html">Data Splitting</a></li>
       <li><a href="varimp.html">Variable Importance</a></li>
+      <li><a href="other.html">Other Functions (Confusion Matrices etc. )</a></li>
       <li><a href="parallel.html">Parallel Processing</a></li>
     </ul>
     <h2>Model Training and Tuning</h2>
