@@ -143,7 +143,43 @@ confusionMatrix(gbmFit3)
 These values are the percentages that hold-out samples landed in the
 confusion matrix during resampling. There are several methods for
 normalizing these values. See <code>?confusionMatrix.train</code> for details.
-</p>	
+</p>  
+
+
+
+<p>
+For multi-class problems, there are additional functions that can be used to calculate performance. One, <span class="mx funCall"> mnLogLoss </span> computes the negative of the multinomial log-likelihood (smaller is better) based on the class probabilities. This can be used to optimize tuning parameters but can lead to results that are inconsistent with other measures (e.g. accuracy or the area under the ROC curve), especially when the other measures are near their best possible values. The function has similar arguments to the other functions described above:
+</p>
+
+<!--begin.rcode other_logLoss
+test_results <- predict(gbmFit3, testing, type = "prob")
+test_results$obs <- testing$Class
+head(test_results)
+mnLogLoss(test_results, lev = levels(test_results$obs))
+end.rcode--> 
+
+<p>
+Additionally, the function <span class="mx funCall"> multiClassSummary </span> computes a number of relevant metrics:
+</p>
+<ul>
+  <li>the overall accuracy and Kappa statistics using the predicted classes</li>
+  <li>the negative multinomial log loss (if class probabilities are available)</li>
+  <li>averages of the “one versus all” statistics such as sensitivity, specificity, the area under the ROC curve, etc. 
+</li>
+</ul>
+
+<p>
+For example:
+</p>
+
+<!--begin.rcode other_multiclass
+test_results$pred <- predict(gbmFit3, testing)
+multiClassSummary(test_results, lev = levels(test_results$obs))
+end.rcode--> 
+
+
+
+
 	
 <div id="lift"></div>    
 <h1>Evaluating Class Probabilities</h1>
@@ -259,6 +295,7 @@ Batch2Step3 <- computeExprSet(Batch2Step2, "pmonly", "trimMean")
       <li><a href="preprocess.html">Pre-Processing</a><li>
       <li><a href="splitting.html">Data Splitting</a></li>
       <li><a href="varimp.html">Variable Importance</a></li>
+      <li><a href="other.html">Other Functions (Confusion Matrices etc. )</a></li>
       <li><a href="parallel.html">Parallel Processing</a></li>
     </ul>
     <h2>Model Training and Tuning</h2>
