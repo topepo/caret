@@ -53,7 +53,7 @@ predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.o
                        unkOnly = TRUE,
                        ...)
     obsLevels <- levels(object)
-    out <- out[, obsLevels, drop = FALSE]
+    out <- out[, make.names(obsLevels), drop = FALSE]
   } else {
     out <- extractPrediction(list(object),
                              unkX = newdata,
