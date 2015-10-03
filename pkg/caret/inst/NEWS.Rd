@@ -4,7 +4,7 @@
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
 
-\section{Changes in version 6.0-xx}{
+\section{Changes in version 6.0-57}{
 	\itemize{
 		\item Hyperparameter optimization via random search is now availible. See the new \href{http://topepo.github.io/caret/random.html}{help page} for examples and syntax. 
 		\item \code{preProcess} now allows (but ignores) non-numeric predictor columns. 
@@ -20,6 +20,7 @@
 		\item The model-specific code for computing out-of-bag performance estimates were moved into the model code library \issue{230}.
 		\item A variety of naive Bayes and tree augmented naive Bayes classifier from the \cpkg{bnclassify} package were added. Variations include simple models (methods labeled as \code{"nbDiscrete"} and \code{"tan"}), models using attribute weighting (\code{"awnb"} and \code{"awtan"}), and wrappers that use search methods to optimize the network structure (\code{"nbSearch"} and \code{"tanSearch"}). In each case, the predictors and outcomes must all be factor variables; for that reason, using the non-formula interface to \code{train} (e.g. \code{train(x, y)}) is critical to preserve the factor structure of the data. 
 		\item A function called \code{multiClassSummary} was added to compute performance values for problems with three or more classes. It works with or without predicted class probabilities \issue{107}.   
+		\item \code{confusionMatrix} was modified to deal with name collisions between this package and \cpkg{RSNNS} \issue{256}.
 	} 
 }
 
