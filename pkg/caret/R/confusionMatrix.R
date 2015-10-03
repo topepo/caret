@@ -44,7 +44,7 @@ confusionMatrix.default <- function(data, reference,
   
   classTable <- table(data, reference, dnn = dnn, ...)
   
-  confusionMatrix(classTable, positive, prevalence = prevalence)
+  getFromNamespace("confusionMatrix.table", "caret")(classTable, positive, prevalence = prevalence)
 }
 
 confusionMatrix.table <- function(data, positive = NULL, prevalence = NULL, ...)
@@ -223,7 +223,7 @@ print.confusionMatrix.train <- function(x, digits = 1, ...)
                      byClass = "\n(entries are percentages within the reference class)\n",
                      "")
   cat(normText, "\n")
-  if(x$norm == "none" & x$B == 1) print(confusionMatrix(x$table)) else print(round(x$table, digits))
+  if(x$norm == "none" & x$B == 1) print(getFromNamespace("confusionMatrix.table", "caret")(x$table)) else print(round(x$table, digits))
   cat("\n")
   invisible(x)
 }
