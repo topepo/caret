@@ -33,13 +33,12 @@ modelInfo <- list(label = "Knn regression via sklearn.neighbors.KNeighborsRegres
                     
                     python.assign('X',x);python.exec('X = pd.DataFrame(X)')
                     python.assign('Y',y)
-                    
                     python.exec(paste0('neigh = KNeighborsRegressor(',
                                        'n_neighbors=',param$n_neighbors,',',
-                                       'weights=',as.character(param$weights),',',
-                                       'algorithm=',as.character(param$algorithm),',',
+                                       'weights=\'',as.character(param$weights),'\',',
+                                       'algorithm=\'',as.character(param$algorithm),'\',',
                                        'leaf_size=',param$leaf_size,',',
-                                       'metric=',as.character(param$metric),',',
+                                       'metric=\'',as.character(param$metric),'\',',
                                        'p=',param$p,
                                        ')'))
                     python.exec('neigh.fit(X, Y)')
