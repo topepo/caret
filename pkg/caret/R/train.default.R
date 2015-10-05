@@ -561,7 +561,10 @@ train.default <- function(x, y,
     if(class(outData)[1] == "try-error") {
       warning("The training data could not be converted to a data frame for saving")
       outData <- NULL
-    } else  outData$.outcome <- y
+    } else   {
+      outData$.outcome <- y
+      if(!is.null(weights)) outData$.weights <- weights
+    }
   } else outData <- NULL
   
   ## In the case of pam, the data will need to be saved differently

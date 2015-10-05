@@ -46,6 +46,10 @@ update.train <- function(object, param = NULL, ...)
                  pp = ppOpt,
                  last = TRUE,
                  classProbs = object$control$classProbs)
+    if(any(names(object$trainingData) == ".weights")) {
+      args$wts <- object$trainingData$.weights 
+    } else args <- c(args, list(wts = NULL))
+      
     if(length(object$dots) > 0) args <- c(args, object$dots)
     finalFinalModel <- do.call("createModel", args)
     object$finalModel <- finalFinalModel$fit
