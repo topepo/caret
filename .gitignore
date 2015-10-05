@@ -59,3 +59,5 @@ models/files/.RData
 models/parseModels.Rout
 
 .DS_Store
+
+*.history
