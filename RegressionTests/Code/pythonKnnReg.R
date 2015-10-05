@@ -59,12 +59,13 @@ test_reg_loo_model <- train(trainX, trainY,
                             method = "pythonKnnReg",
                             trControl = rctrl2,
                             preProc = c("center", "scale"))
-
+ 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
                              method = "pythonKnnReg", 
                              trControl = rctrl3,
-                             tuneLength = 1,
+                             tuneGrid = data.frame(n_neighbors = 3, weights = "uniform", algorithm = "auto", 
+                                                   leaf_size = 30, metric = "minkowski", p = 1),
                              preProc = c("center", "scale"))
 test_reg_none_pred <- predict(test_reg_none_model, testX)
 
