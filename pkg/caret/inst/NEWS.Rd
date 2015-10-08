@@ -21,6 +21,8 @@
 		\item A variety of naive Bayes and tree augmented naive Bayes classifier from the \cpkg{bnclassify} package were added. Variations include simple models (methods labeled as \code{"nbDiscrete"} and \code{"tan"}), models using attribute weighting (\code{"awnb"} and \code{"awtan"}), and wrappers that use search methods to optimize the network structure (\code{"nbSearch"} and \code{"tanSearch"}). In each case, the predictors and outcomes must all be factor variables; for that reason, using the non-formula interface to \code{train} (e.g. \code{train(x, y)}) is critical to preserve the factor structure of the data. 
 		\item A function called \code{multiClassSummary} was added to compute performance values for problems with three or more classes. It works with or without predicted class probabilities \issue{107}.   
 		\item \code{confusionMatrix} was modified to deal with name collisions between this package and \cpkg{RSNNS} \issue{256}.
+		\item A bug in how the LVQ tune grid is filtered was fixed
+		\item A bug in \code{preProcess} for ICA and PCA was fixed. 
 	} 
 }
 
