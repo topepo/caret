@@ -6,7 +6,7 @@ library(nnet)
 library(parallel)
 library(doMC)
 registerDoMC(cores=detectCores()-1)
-
+options(width = 100, digits = 4)
 theme_set(theme_bw())
 
 opts_chunk$set(comment=NA, digits = 4,warning=FALSE,message=FALSE)
@@ -36,7 +36,7 @@ Released   : 20120902
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <title>Random hyperparameter search</title>
+  <title>Random Hyperparameter Search</title>
   <link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
   <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
   </head>
@@ -45,7 +45,7 @@ Released   : 20120902
   <div id="header-wrapper" class="container">
   <div id="header" class="container">
   <div id="logo">
-  <h1><a href="#">Random hyperparameter search</a></h1>
+  <h1><a href="#">Random Hyperparameter Search</a></h1>
 </div>
 
   </div>
@@ -124,7 +124,7 @@ som_fit
 There is currently only a <span class="mx funCall">ggplot</span> method (instead of a basic <span class="mx funCall">plot</span> method). The results of this function with random searching depends on the number and type of tuning parameters. In this case, it produces a scatter plot of the three continuous parameters and colors the points based on the topology. The lines are added in the code below. 
 </p>
    
-<!--begin.rcode random_plot, Laplacian,fig.width=6,fig.height=4.25
+<!--begin.rcode random_plot,fig.width=8,fig.height=6
 ggplot(som_fit) + 
   geom_smooth(se = FALSE, span = .8, method = loess) + 
   theme(legend.position = "top")
