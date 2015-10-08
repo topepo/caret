@@ -28,9 +28,6 @@ cctrl3 <- trainControl(method = "none",
                        seeds = seeds)
 cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
-library(RSNNS)
-function(x, y, len = NULL, search = "grid")
-
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
                              method = "rbf", 

@@ -76,6 +76,7 @@ testY_class <- testing_class$Class
 
 training_class$fact <- factor(sample(letters[1:3], size = nrow(training_class), replace = TRUE))
 testing_class$fact <- factor(sample(letters[1:3], size = nrow(testing_class), replace = TRUE))
+testX_class$fact <- testing_class$fact
 
 #########################################################################
 
