@@ -36,6 +36,8 @@ set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, method = "neuralnet", trControl = rctrl1,
                            tuneGrid = data.frame(layer1 = 2:3, layer2 = 0, layer3 = 0),
                            rep = 3,
+                           threshold = 0.1,        
+                           stepmax = 1e+05,
                            preProc = c("center", "scale"))
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
@@ -44,6 +46,7 @@ test_reg_cv_form <- train(y ~ ., data = training,
                           method = "neuralnet", trControl = rctrl1,
                           tuneGrid = data.frame(layer1 = 2:3, layer2 = 0, layer3 = 0),
                           rep = 3,
+                          threshold = 0.1,
                           startweights = test_reg_cv_model$finalModel$weights,
                           preProc = c("center", "scale"))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
@@ -53,7 +56,8 @@ test_reg_rand <- train(trainX, trainY,
                        method = "neuralnet", 
                        trControl = rctrlR,
                        tuneLength = 4,
-                       rep = 3,
+                       rep = 10,
+                       threshold = 0.1,
                        preProc = c("center", "scale"))
 
 set.seed(849)
@@ -62,6 +66,7 @@ test_reg_loo_model <- train(y ~ ., data = training,
                             trControl = rctrl2,
                             tuneGrid = data.frame(layer1 = 2:3, layer2 = 0, layer3 = 0),
                             rep = 3,
+                            threshold = 0.1,
                             startweights = test_reg_cv_model$finalModel$weights,
                             preProc = c("center", "scale"))
 
@@ -71,6 +76,7 @@ test_reg_none_model <- train(trainX, trainY,
                              trControl = rctrl3,
                              tuneLength = 1,
                              rep = 3,
+                             threshold = 0.1,
                              preProc = c("center", "scale"))
 test_reg_none_pred <- predict(test_reg_none_model, testX)
 
