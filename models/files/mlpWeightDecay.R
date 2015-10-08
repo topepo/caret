@@ -11,7 +11,7 @@ modelInfo <- list(label = "Multi-Layer Perceptron",
                                          decay = c(0, 10 ^ seq(-1, -4, length = len - 1)))
                     } else {
                       out <- data.frame(size = sample(1:20, size = len, replace = TRUE), 
-                                        decay = 10^runif(len, min = -5, 1))
+                                        decay = 10^runif(len, min = -5, max = 1))
                     }
                     out
                   },
