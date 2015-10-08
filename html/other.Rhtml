@@ -65,7 +65,6 @@ session <- paste(format(Sys.time(), "%a %b %d %Y"),
 <ul>
   <li><a href="#test">Evaluating Test Sets</a></li> 
   <li><a href="#lift">Evaluating Class Probabilities</a></li>
-  <li><a href="#affy">Processing Affy Arrays</a></li> 
  </ul>   
       
 <div id="test"></div>   
@@ -259,29 +258,7 @@ plot(calData, type = "l", auto.key = list(columns = 3,
                                           lines = TRUE,
                                           points = FALSE))
     end.rcode--> 
-    
-<div id="affy"></div>      
-<h1>Processing Affy Arrays</h1>
-<p>
-For Affymetrix gene chip data, RMA processing (<a href="http://nar.oxfordjournals.org/cgi/content/abstract/31/4/e150">Irizarry, 2003</a>) is a popular method of processing gene expression data. However, for predictive modeling, it has a drawback in that the processing is batch oriented; if an additional sample is collected, the RMA processing must be repeated using all the samples. This is mainly because of two steps in the processing: the quantile normalization process and the calculation of expression. Quantile normalization normalizes the data such that the between--chip distributions have equivalent quantiles and is very effective in improving the quality of the data. It is possible to let the samples in the training set define the reference distribution for normalization. For the expression calculation, a robust method such as a trimmed mean can be used to summarize the probe level data into a single summary metric per sample.
-          </p>
-          <p>For example:</p>
-<!--begin.rcode eval=FALSE          
-# first, let affy/expresso know that the method exists
-normalize.AffyBatch.methods <- c(normalize.AffyBatch.methods, "normalize2Reference")
-
-RawData <- ReadAffy(celfile.path=FilePath)
-
-Batch1Step1 <- bg.correct(RawData, "rma")
-Batch1Step2 <- normalize.AffyBatch.quantiles(Batch1Step1)
-referencePM <- pm(Batch1Step2)[,1]
-Batch1Step3 <- computeExprSet(Batch1Step2, "pmonly", "trimMean") 
-
-Batch2Step1 <- bg.correct(RawData2, "rma")
-Batch2Step2 <- normalize.AffyBatch.normalize2Reference(Batch2Step1, ref = referencePM)
-Batch2Step3 <- computeExprSet(Batch2Step2, "pmonly", "trimMean")
-    end.rcode--> 
-    
+  
 	  <div style="clear: both;">&nbsp;</div>
 	</div>
 	<!-- end #content -->
