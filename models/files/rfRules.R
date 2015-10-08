@@ -1,4 +1,4 @@
-modelInfo <- list(label = "Random Forest",
+modelInfo <- list(label = "Random Forest Rule-Based Model",
                   library = c("randomForest", "inTrees", "plyr"),
                   type = c("Classification", "Regression"),
                   parameters = data.frame(parameter = c("mtry","maxdepth"),
