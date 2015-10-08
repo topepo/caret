@@ -45,7 +45,7 @@ modelInfo <- list(label = "Neural Networks with Feature Extraction",
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
-                    out <- predict(modelFit, newdata)
+                    out <- predict(modelFit, newdata, type = "prob")
                     if(ncol(as.data.frame(out)) == 1)
                     {
                       out <- cbind(out, 1-out)
