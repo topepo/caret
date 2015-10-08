@@ -40,10 +40,10 @@ test_class_cv_form <- train(Class ~ ., data = training,
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 
-set.seed(849)
+set.seed(81)
 test_class_rand <- train(trainX, trainY, 
                          method = "mlpWeightDecay", 
-                         trControl = cctrl5,
+                         trControl = cctrlR,
                          tuneLength = 4)
 
 set.seed(849)
