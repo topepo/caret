@@ -16,14 +16,15 @@ modelInfo <- list(label = "Learning Vector Quantization",
                       out$size <- floor(out$size)
                       out <- out[!duplicated(out),]
                     } else {
-                      out <- data.frame(size = sample(tmp:2*tmp, size = len, replace = TRUE),
-                                        k = sample(1:30, size = len, replace = TRUE))
+                      out <- data.frame(size = sample(tmp:(2*tmp), size = len, replace = TRUE),
+                                        k = sample(1:(nrow(x) - 2), size = len, replace = TRUE))
                     }
-                    out <- subset(out, k <= size & size < n)
+                    out <- subset(out, size < n & k < n)
                     out
                   }, 
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    lvq3(x, y, lvqinit(x, y, size = param$size, k = param$k), ...),
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    lvq3(x, y, lvqinit(x, y, size = param$size, k = min(param$k, nrow(x)-length(levels(y)))), ...)
+                    },
                   predict = function(modelFit, newdata, submodels = NULL) 
                     lvqtest(modelFit , newdata),
                   levels = function(x) x$obsLevels,
