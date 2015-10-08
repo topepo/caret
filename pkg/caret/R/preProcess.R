@@ -1,13 +1,13 @@
 ## Should respect the input class except when there is a conflict or always
 ## generate a data frame? 
-
+## TODO let inputs vars be regex's
 
 ppMethods <- c("BoxCox", "YeoJohnson", "expoTrans", 
                "center", "scale", "range", 
                "knnImpute", "bagImpute", "medianImpute", 
                "pca", "ica", 
                "spatialSign", 
-               "ignore", "keep")
+               "ignore", "keep", "zv", "nzv")
 
 preProcess <- function(x, ...) UseMethod("preProcess")
 
@@ -40,6 +40,8 @@ preProcess.default <- function(x, method = c("center", "scale"),
     row.norm <- if(is.null(list(...)$row.norm)) FALSE else list(...)$row.norm
   }
   
+  ## ZV and NZV;
+  ## remove eliminated vars from other processing lists 
   
   if(any(names(method) == "BoxCox")) {
     bc <- group_bc(x[, method$BoxCox, drop = FALSE],
@@ -347,7 +349,7 @@ predict.preProcess <- function(object, newdata, ...) {
     } else {
       discard <- discard[!(discard %in% object$method$keep)]
     }
-    if(length(discard) > 0) newdata <- newdata[, !(colnames(newdata) %in% discard)]
+    if(length(discard) > 0) newdata <- newdata[, !(colnames(newdata) %in% discard), drop = FALSE]
   }
   
   if(any(names(object$method) == "ica")) {
@@ -366,7 +368,7 @@ predict.preProcess <- function(object, newdata, ...) {
     } else {
       discard <- discard[!(discard %in% object$method$keep)]
     }
-    if(length(discard) > 0) newdata <- newdata[, !(colnames(newdata) %in% discard)]
+    if(length(discard) > 0) newdata <- newdata[, !(colnames(newdata) %in% discard), drop = FALSE]
   }
   
   wc <- object$wildcards
@@ -498,6 +500,7 @@ bagImp <- function(var, x, B = 10) {
 }
 
 
+## Add checks for zv and nzv and overlap
 
 pre_process_options <- function(opts, vars) {
   orig_vars <- vars
@@ -660,7 +663,8 @@ pre_process_options <- function(opts, vars) {
   if("ignore" %in% names(opts)) 
     opts$ignore <- unique(c(not_num_vars, opts$ignore)) else 
       opts$ignore <- not_num_vars
-  
+  ## TODO make sure that, if a var is in 'ignore' that it is nowhere else (and remove?)
+
   list(opts = opts, wildcards = wildcards)
 }
 
