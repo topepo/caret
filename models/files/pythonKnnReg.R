@@ -26,6 +26,7 @@ modelInfo <- list(label = "Knn regression via sklearn.neighbors.KNeighborsRegres
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    if(!is.data.frame(x)) x <- as.data.frame(x)
                     mySeed=sample.int(100000, 1)
                     python.exec('import numpy as np')
                     python.assign('mySeed',mySeed)
