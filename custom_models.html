@@ -225,6 +225,9 @@ There are some basic components of the list for custom models. A brief descripti
   <li>
   <span class="mx arg">varImp</span> is an <b>optional</b> function that calculates variable importance metrics for the model (if any).
   </li>    
+  <li>
+  <span class="mx arg">oob</span> is another <b>optional</b> function that calculates  out-of-bag performance estimates from the model object. Most models do not have this capability but some (e.g. random forests, bagged models) do. 
+  </li>    
  </ul> 
  
 <p>
@@ -270,18 +273,28 @@ Values of <span class="mx arg">type</span> can indicate numeric, character or lo
 
 <h2>The grid Element</h2>
 <p> 
-This should be a function that takes parameters: <span class="mx arg">x</span> and <span class="mx arg">y</span> (for the predictors and outcome data) as well as <span class="mx arg">len</span>. The latter is the value of <span class="mx arg">tuneLength</span> that is potentially passed in through <span class="mx funCall">train<span>. 
+This should be a function that takes parameters: <span class="mx arg">x</span> and <span class="mx arg">y</span> (for the predictors and outcome data), <span class="mx arg">len</span> (the number of values per tuning parameter)  as well as <span class="mx arg">search</span>. <span class="mx arg">len</span> is the value of <span class="mx arg">tuneLength</span> that is potentially passed in through <span class="mx funCall">train</span>. <span class="mx arg">search</span> can be either <tt><span class="hl str">&quot;grid&quot;</span></tt> or <tt><span class="hl str">&quot;random&quot;</span></tt>. This can be used to setup a grid for searching or random values for random search. 
 </p> 
 <p> 
 The output should be a data frame of tuning parameter combinations with a column for each parameter. The column names should be the parameter name (e.g. the values of <tt>prm$parameter</tt>). In our case, let's vary the cost parameter on the log 2 scale. For the sigma parameter, we can use the <tt>kernlab</tt> function <span class="mx funCall">sigest</span> to pre-estimate the value. Following <span class="mx funCall">ksvm</span> we take the average of the low and high estimates. Here is a function we could use:
 </p> 
-<div class="chunk" id="custom_grid"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">svmGrid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">len</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">) {</span>
+<div class="chunk" id="custom_grid"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">svmGrid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">len</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">,</span> <span class="hl kwc">search</span> <span class="hl std">=</span> <span class="hl str">&quot;grid&quot;</span><span class="hl std">) {</span>
   <span class="hl kwd">library</span><span class="hl std">(kernlab)</span>
   <span class="hl com">## This produces low, middle and high values for sigma </span>
   <span class="hl com">## (i.e. a vector with 3 elements). </span>
   <span class="hl std">sigmas</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">sigest</span><span class="hl std">(</span><span class="hl kwd">as.matrix</span><span class="hl std">(x),</span> <span class="hl kwc">na.action</span> <span class="hl std">= na.omit,</span> <span class="hl kwc">scaled</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">)</span>
-  <span class="hl kwd">expand.grid</span><span class="hl std">(</span><span class="hl kwc">sigma</span> <span class="hl std">=</span> <span class="hl kwd">mean</span><span class="hl std">(sigmas[</span><span class="hl opt">-</span><span class="hl num">2</span><span class="hl std">]),</span>
-              <span class="hl kwc">C</span> <span class="hl std">=</span> <span class="hl num">2</span> <span class="hl opt">^</span><span class="hl std">((</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">len)</span> <span class="hl opt">-</span> <span class="hl num">3</span><span class="hl std">))</span>
+  <span class="hl com">## To use grid search:</span>
+  <span class="hl kwa">if</span><span class="hl std">(search</span> <span class="hl opt">==</span> <span class="hl str">&quot;grid&quot;</span><span class="hl std">) {</span>
+    <span class="hl std">out</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">expand.grid</span><span class="hl std">(</span><span class="hl kwc">sigma</span> <span class="hl std">=</span> <span class="hl kwd">mean</span><span class="hl std">(</span><span class="hl kwd">as.vector</span><span class="hl std">(sigmas[</span><span class="hl opt">-</span><span class="hl num">2</span><span class="hl std">])),</span>
+                       <span class="hl kwc">C</span> <span class="hl std">=</span> <span class="hl num">2</span> <span class="hl opt">^</span><span class="hl std">((</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">len)</span> <span class="hl opt">-</span> <span class="hl num">3</span><span class="hl std">))</span>
+  <span class="hl std">}</span> <span class="hl kwa">else</span> <span class="hl std">{</span>
+    <span class="hl com">## For random search, define ranges for the parameters then</span>
+    <span class="hl com">## generate random values for them</span>
+    <span class="hl std">rng</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">extendrange</span><span class="hl std">(</span><span class="hl kwd">log</span><span class="hl std">(sigmas),</span> <span class="hl kwc">f</span> <span class="hl std">=</span> <span class="hl num">.75</span><span class="hl std">)</span>
+    <span class="hl std">out</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">sigma</span> <span class="hl std">=</span> <span class="hl kwd">exp</span><span class="hl std">(</span><span class="hl kwd">runif</span><span class="hl std">(len,</span> <span class="hl kwc">min</span> <span class="hl std">= rng[</span><span class="hl num">1</span><span class="hl std">],</span> <span class="hl kwc">max</span> <span class="hl std">= rng[</span><span class="hl num">2</span><span class="hl std">])),</span>
+                      <span class="hl kwc">C</span> <span class="hl std">=</span> <span class="hl num">2</span><span class="hl opt">^</span><span class="hl kwd">runif</span><span class="hl std">(len,</span> <span class="hl kwc">min</span> <span class="hl std">=</span> <span class="hl opt">-</span><span class="hl num">5</span><span class="hl std">,</span> <span class="hl kwc">max</span> <span class="hl std">=</span> <span class="hl num">8</span><span class="hl std">))</span>
+  <span class="hl std">}</span>
+  <span class="hl std">out</span>
 <span class="hl std">}</span>
 </pre></div>
 </div></div>
@@ -488,7 +501,7 @@ We should now be ready to fit our model.
  60 predictor
   2 classes: 'M', 'R' 
 
-Pre-processing: centered, scaled 
+Pre-processing: centered (60), scaled (60) 
 Resampling: Cross-Validated (10 fold, repeated 10 times) 
 Summary of sample sizes: 142, 142, 140, 142, 142, 141, ... 
 Resampling results across tuning parameters:
@@ -676,8 +689,12 @@ A few more notes:
                 <span class="hl kwc">parameters</span> <span class="hl std">=</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">parameter</span> <span class="hl std">=</span> <span class="hl str">'nIter'</span><span class="hl std">,</span>
                                         <span class="hl kwc">class</span> <span class="hl std">=</span> <span class="hl str">'numeric'</span><span class="hl std">,</span>
                                         <span class="hl kwc">label</span> <span class="hl std">=</span> <span class="hl str">'# Boosting Iterations'</span><span class="hl std">),</span>
-                <span class="hl kwc">grid</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">len</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">)</span>
-                  <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">nIter</span> <span class="hl std">=</span> <span class="hl num">1</span> <span class="hl opt">+</span> <span class="hl std">((</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">len)</span><span class="hl opt">*</span><span class="hl num">10</span><span class="hl std">)),</span>
+                <span class="hl kwc">grid</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">len</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">,</span> <span class="hl kwc">search</span> <span class="hl std">=</span> <span class="hl str">&quot;grid&quot;</span><span class="hl std">) {</span>
+                  <span class="hl std">out</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">if</span><span class="hl std">(search</span> <span class="hl opt">==</span> <span class="hl str">&quot;grid&quot;</span><span class="hl std">)</span>
+                    <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">nIter</span> <span class="hl std">=</span> <span class="hl num">1</span> <span class="hl opt">+</span> <span class="hl std">((</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">len)</span><span class="hl opt">*</span><span class="hl num">10</span><span class="hl std">))</span> <span class="hl kwa">else</span>
+                    <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">nIter</span> <span class="hl std">=</span> <span class="hl kwd">sample</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">500</span><span class="hl std">,</span> <span class="hl kwc">size</span> <span class="hl std">= len))</span>
+                  <span class="hl std">out</span>
+                <span class="hl std">},</span>
                 <span class="hl kwc">fit</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">wts</span><span class="hl std">,</span> <span class="hl kwc">param</span><span class="hl std">,</span> <span class="hl kwc">lev</span><span class="hl std">,</span> <span class="hl kwc">last</span><span class="hl std">,</span> <span class="hl kwc">weights</span><span class="hl std">,</span> <span class="hl kwc">classProbs</span><span class="hl std">,</span> <span class="hl kwc">...</span><span class="hl std">) {</span>
                   <span class="hl kwd">LogitBoost</span><span class="hl std">(</span><span class="hl kwd">as.matrix</span><span class="hl std">(x), y,</span> <span class="hl kwc">nIter</span> <span class="hl std">= param</span><span class="hl opt">$</span><span class="hl std">nIter)</span>
                 <span class="hl std">},</span>
@@ -713,7 +730,7 @@ A few more notes:
 <span class="hl std">lb1</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   user  system elapsed 
-  6.876   0.662   7.539 
+  6.557   0.876   7.433 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## Now get rid of the submodel parts</span>
 <span class="hl std">lbFuncs2</span> <span class="hl kwb">&lt;-</span> <span class="hl std">lbFuncs</span>
@@ -729,7 +746,7 @@ A few more notes:
 <span class="hl std">lb2</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   user  system elapsed 
- 13.043   1.392  14.434 
+ 12.532   1.673  14.205 
 </pre></div>
 </div></div>
 <p>On a data set with 157 instances and 60 predictors and a model that is tuned over only 3 parameter values, there is a 1.91-fold speed-up. If the model were more computationally taxing or the data set were larger or the number of tune parameters that were evaluated was larger, the speed-up would increase. Here is a plot of the speed-up for a few more values of <span class="mx arg">tuneLength</span>:
@@ -815,7 +832,7 @@ We can create a custom model that mimics this code so that we can obtain resampl
                   <span class="hl kwc">parameters</span> <span class="hl std">=</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">parameter</span> <span class="hl std">=</span> <span class="hl str">&quot;parameter&quot;</span><span class="hl std">,</span>
                                           <span class="hl kwc">class</span> <span class="hl std">=</span> <span class="hl str">&quot;character&quot;</span><span class="hl std">,</span>
                                           <span class="hl kwc">label</span> <span class="hl std">=</span> <span class="hl str">&quot;parameter&quot;</span><span class="hl std">),</span>
-                  <span class="hl kwc">grid</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">len</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">)</span>
+                  <span class="hl kwc">grid</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">len</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">,</span> <span class="hl kwc">search</span> <span class="hl std">=</span> <span class="hl str">&quot;grid&quot;</span><span class="hl std">)</span>
                     <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">parameter</span> <span class="hl std">=</span> <span class="hl str">&quot;none&quot;</span><span class="hl std">),</span>
                   <span class="hl kwc">loop</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">,</span>
                   <span class="hl kwc">fit</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">wts</span><span class="hl std">,</span> <span class="hl kwc">param</span><span class="hl std">,</span> <span class="hl kwc">lev</span><span class="hl std">,</span> <span class="hl kwc">last</span><span class="hl std">,</span> <span class="hl kwc">classProbs</span><span class="hl std">,</span> <span class="hl kwc">...</span><span class="hl std">) {</span>
@@ -861,8 +878,8 @@ Resampling: Cross-Validated (10 fold, repeated 5 times)
 Summary of sample sizes: 63, 65, 65, 65, 63, 65, ... 
 Resampling results
 
-  RMSE      Rsquared   RMSE SD  Rsquared SD
-  3.918042  0.9123199  1.48361  0.04823965 
+  RMSE      Rsquared   RMSE SD   Rsquared SD
+  4.001465  0.9091613  1.491702  0.05003862 
 
  
 </pre></div>
@@ -900,12 +917,17 @@ Resampling results
                                        <span class="hl kwc">class</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;numeric&quot;</span><span class="hl std">,</span> <span class="hl str">'numeric'</span><span class="hl std">),</span>
                                        <span class="hl kwc">label</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">'#Components'</span><span class="hl std">,</span>
                                                  <span class="hl str">'#Randomly Selected Predictors'</span><span class="hl std">)),</span>
-               <span class="hl kwc">grid</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">len</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">) {</span>
-                 <span class="hl std">grid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">expand.grid</span><span class="hl std">(</span><span class="hl kwc">ncomp</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwd">min</span><span class="hl std">(</span><span class="hl kwd">ncol</span><span class="hl std">(x)</span> <span class="hl opt">-</span> <span class="hl num">1</span><span class="hl std">, len),</span> <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl num">1</span><span class="hl std">),</span>
-                                     <span class="hl kwc">mtry</span> <span class="hl std">=</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">len)</span>
+               <span class="hl kwc">grid</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">len</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">,</span> <span class="hl kwc">search</span> <span class="hl std">=</span> <span class="hl str">&quot;grid&quot;</span><span class="hl std">) {</span>
+                 <span class="hl kwa">if</span><span class="hl std">(search</span> <span class="hl opt">==</span> <span class="hl str">&quot;grid&quot;</span><span class="hl std">) {</span>
+                   <span class="hl std">grid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">expand.grid</span><span class="hl std">(</span><span class="hl kwc">ncomp</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwd">min</span><span class="hl std">(</span><span class="hl kwd">ncol</span><span class="hl std">(x)</span> <span class="hl opt">-</span> <span class="hl num">1</span><span class="hl std">, len),</span> <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl num">1</span><span class="hl std">),</span>
+                                       <span class="hl kwc">mtry</span> <span class="hl std">=</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">len)</span>
+                   <span class="hl std">}</span> <span class="hl kwa">else</span> <span class="hl std">{</span>
+                     <span class="hl std">grid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">expand.grid</span><span class="hl std">(</span><span class="hl kwc">ncomp</span> <span class="hl std">=</span> <span class="hl kwd">sample</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl kwd">ncol</span><span class="hl std">(x),</span> <span class="hl kwc">size</span> <span class="hl std">= len),</span>
+                                         <span class="hl kwc">mtry</span> <span class="hl std">=</span> <span class="hl kwd">sample</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl kwd">ncol</span><span class="hl std">(x),</span> <span class="hl kwc">size</span> <span class="hl std">= len))</span>
+                     <span class="hl std">}</span>
                  <span class="hl com">## We can't have mtry &gt; ncomp</span>
                  <span class="hl std">grid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">subset</span><span class="hl std">(grid, mtry</span> <span class="hl opt">&lt;=</span> <span class="hl std">ncomp)</span>
-               <span class="hl std">},</span>
+                 <span class="hl std">},</span>
                <span class="hl kwc">loop</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">,</span>
                <span class="hl kwc">fit</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">wts</span><span class="hl std">,</span> <span class="hl kwc">param</span><span class="hl std">,</span> <span class="hl kwc">lev</span><span class="hl std">,</span> <span class="hl kwc">last</span><span class="hl std">,</span> <span class="hl kwc">classProbs</span><span class="hl std">,</span> <span class="hl kwc">...</span><span class="hl std">) {</span>
                  <span class="hl com">## First fit the pls model, generate the training set scores,</span>
@@ -921,7 +943,7 @@ Resampling results
                  <span class="hl std">mod</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">randomForest</span><span class="hl std">(scores, y,</span> <span class="hl kwc">mtry</span> <span class="hl std">= param</span><span class="hl opt">$</span><span class="hl std">mtry, ...)</span>
                  <span class="hl std">mod</span><span class="hl opt">$</span><span class="hl std">projection</span> <span class="hl kwb">&lt;-</span> <span class="hl std">pre</span><span class="hl opt">$</span><span class="hl std">projection</span>
                  <span class="hl std">mod</span>
-               <span class="hl std">},</span>
+                 <span class="hl std">},</span>
                <span class="hl kwc">predict</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">modelFit</span><span class="hl std">,</span> <span class="hl kwc">newdata</span><span class="hl std">,</span> <span class="hl kwc">submodels</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">) {</span>
                  <span class="hl com">## Now apply the same scaling to the new samples</span>
                  <span class="hl std">scores</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.matrix</span><span class="hl std">(newdata)</span>  <span class="hl opt">%*%</span> <span class="hl std">modelFit</span><span class="hl opt">$</span><span class="hl std">projection</span>
@@ -929,7 +951,7 @@ Resampling results
                  <span class="hl std">scores</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">as.data.frame</span><span class="hl std">(scores)</span>
                  <span class="hl com">## Predict the random forest model</span>
                  <span class="hl kwd">predict</span><span class="hl std">(modelFit, scores)</span>
-               <span class="hl std">},</span>
+                 <span class="hl std">},</span>
                <span class="hl kwc">prob</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">,</span>
                <span class="hl kwc">varImp</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">,</span>
                <span class="hl kwc">predictors</span> <span class="hl std">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">...</span><span class="hl std">)</span> <span class="hl kwd">rownames</span><span class="hl std">(x</span><span class="hl opt">$</span><span class="hl std">projection),</span>
@@ -961,7 +983,7 @@ Resampling results
 <span class="hl kwd">getTrainPerf</span><span class="hl std">(rfOnly)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  TrainRMSE TrainRsquared method
-1  2.184857     0.4960978     rf
+1  2.183973     0.4974515     rf
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## How does random forest do on its own?</span>
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">184</span><span class="hl std">)</span>
@@ -973,24 +995,24 @@ Resampling results
 <span class="hl kwd">getTrainPerf</span><span class="hl std">(plsOnly)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  TrainRMSE TrainRsquared method
-1 0.6290416     0.9596554    pls
+1 0.6307441     0.9593529    pls
 </pre></div>
 </div></div>
 <p>The test set results indicate that these data like the linear model more than anything:</p>
 <div class="chunk" id="custom_meat_test"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(</span><span class="hl kwd">predict</span><span class="hl std">(plsrf, absorpTest), proteinTest)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">     RMSE  Rsquared 
-1.3657750 0.8157156 
+<div class="output"><pre class="knitr r">      RMSE   Rsquared 
+2.87491292 0.08219234 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(</span><span class="hl kwd">predict</span><span class="hl std">(rfOnly, absorpTest), proteinTest)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">     RMSE  Rsquared 
-1.9929420 0.5927846 
+2.0037607 0.5905934 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(</span><span class="hl kwd">predict</span><span class="hl std">(plsOnly, absorpTest), proteinTest)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">     RMSE  Rsquared 
-0.7179949 0.9438016 
+0.7193764 0.9437918 
 </pre></div>
 </div></div>
 
@@ -1038,7 +1060,7 @@ Let's use a standard random forest model with these data using the default value
 <span class="hl kwd">getTrainPerf</span><span class="hl std">(mod0)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   TrainROC TrainSens TrainSpec method
-1 0.9571556 0.9982222     0.324     rf
+1 0.9578667 0.9991111     0.336     rf
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## Get the ROC curve</span>
 <span class="hl std">roc0</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">roc</span><span class="hl std">(testingSet</span><span class="hl opt">$</span><span class="hl std">Class,</span>
@@ -1091,27 +1113,33 @@ Suppose the model has one tuning parameter and we want to look at four candidate
                                      <span class="hl kwc">label</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;#Randomly Selected Predictors&quot;</span><span class="hl std">,</span>
                                                <span class="hl str">&quot;Probability Cutoff&quot;</span><span class="hl std">))</span>
 <span class="hl com">## The default tuning grid code:</span>
-<span class="hl std">thresh_code</span><span class="hl opt">$</span><span class="hl std">grid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">len</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">) {</span>
+<span class="hl std">thresh_code</span><span class="hl opt">$</span><span class="hl std">grid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">len</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">,</span> <span class="hl kwc">search</span> <span class="hl std">=</span> <span class="hl str">&quot;grid&quot;</span><span class="hl std">) {</span>
   <span class="hl std">p</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">ncol</span><span class="hl std">(x)</span>
-  <span class="hl kwd">expand.grid</span><span class="hl std">(</span><span class="hl kwc">mtry</span> <span class="hl std">=</span> <span class="hl kwd">floor</span><span class="hl std">(</span><span class="hl kwd">sqrt</span><span class="hl std">(p)),</span>
-              <span class="hl kwc">threshold</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">.01</span><span class="hl std">,</span> <span class="hl num">.99</span><span class="hl std">,</span> <span class="hl kwc">length</span> <span class="hl std">= len))</span>
+  <span class="hl kwa">if</span><span class="hl std">(search</span> <span class="hl opt">==</span> <span class="hl str">&quot;grid&quot;</span><span class="hl std">) {</span>
+    <span class="hl std">grid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">expand.grid</span><span class="hl std">(</span><span class="hl kwc">mtry</span> <span class="hl std">=</span> <span class="hl kwd">floor</span><span class="hl std">(</span><span class="hl kwd">sqrt</span><span class="hl std">(p)),</span>
+                        <span class="hl kwc">threshold</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">.01</span><span class="hl std">,</span> <span class="hl num">.99</span><span class="hl std">,</span> <span class="hl kwc">length</span> <span class="hl std">= len))</span>
+    <span class="hl std">}</span> <span class="hl kwa">else</span> <span class="hl std">{</span>
+      <span class="hl std">grid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">expand.grid</span><span class="hl std">(</span><span class="hl kwc">mtry</span> <span class="hl std">=</span> <span class="hl kwd">sample</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl std">p,</span> <span class="hl kwc">size</span> <span class="hl std">= len),</span>
+                          <span class="hl kwc">threshold</span> <span class="hl std">=</span> <span class="hl kwd">runif</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl kwc">size</span> <span class="hl std">= len))</span>
+      <span class="hl std">}</span>
+  <span class="hl std">grid</span>
   <span class="hl std">}</span>
 
 <span class="hl com">## Here we fit a single random forest model (with a fixed mtry)</span>
 <span class="hl com">## and loop over the threshold values to get predictions from the same</span>
 <span class="hl com">## randomForest model.</span>
 <span class="hl std">thresh_code</span><span class="hl opt">$</span><span class="hl std">loop</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">grid</span><span class="hl std">) {</span>
-                 <span class="hl kwd">library</span><span class="hl std">(plyr)</span>
-                 <span class="hl std">loop</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">ddply</span><span class="hl std">(grid,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;mtry&quot;</span><span class="hl std">),</span>
-                               <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">)</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl kwc">threshold</span> <span class="hl std">=</span> <span class="hl kwd">max</span><span class="hl std">(x</span><span class="hl opt">$</span><span class="hl std">threshold)))</span>
-                 <span class="hl std">submodels</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">vector</span><span class="hl std">(</span><span class="hl kwc">mode</span> <span class="hl std">=</span> <span class="hl str">&quot;list&quot;</span><span class="hl std">,</span> <span class="hl kwc">length</span> <span class="hl std">=</span> <span class="hl kwd">nrow</span><span class="hl std">(loop))</span>
-                 <span class="hl kwa">for</span><span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl kwc">along</span> <span class="hl std">= loop</span><span class="hl opt">$</span><span class="hl std">threshold)) {</span>
-                   <span class="hl std">index</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">which</span><span class="hl std">(grid</span><span class="hl opt">$</span><span class="hl std">mtry</span> <span class="hl opt">==</span> <span class="hl std">loop</span><span class="hl opt">$</span><span class="hl std">mtry[i])</span>
-                   <span class="hl std">cuts</span> <span class="hl kwb">&lt;-</span> <span class="hl std">grid[index,</span> <span class="hl str">&quot;threshold&quot;</span><span class="hl std">]</span>
-                   <span class="hl std">submodels[[i]]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">threshold</span> <span class="hl std">= cuts[cuts</span> <span class="hl opt">!=</span> <span class="hl std">loop</span><span class="hl opt">$</span><span class="hl std">threshold[i]])</span>
-                 <span class="hl std">}</span>
-                 <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">loop</span> <span class="hl std">= loop,</span> <span class="hl kwc">submodels</span> <span class="hl std">= submodels)</span>
-               <span class="hl std">}</span>
+  <span class="hl kwd">library</span><span class="hl std">(plyr)</span>
+  <span class="hl std">loop</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">ddply</span><span class="hl std">(grid,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;mtry&quot;</span><span class="hl std">),</span>
+                <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">)</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl kwc">threshold</span> <span class="hl std">=</span> <span class="hl kwd">max</span><span class="hl std">(x</span><span class="hl opt">$</span><span class="hl std">threshold)))</span>
+  <span class="hl std">submodels</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">vector</span><span class="hl std">(</span><span class="hl kwc">mode</span> <span class="hl std">=</span> <span class="hl str">&quot;list&quot;</span><span class="hl std">,</span> <span class="hl kwc">length</span> <span class="hl std">=</span> <span class="hl kwd">nrow</span><span class="hl std">(loop))</span>
+  <span class="hl kwa">for</span><span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl kwc">along</span> <span class="hl std">= loop</span><span class="hl opt">$</span><span class="hl std">threshold)) {</span>
+    <span class="hl std">index</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">which</span><span class="hl std">(grid</span><span class="hl opt">$</span><span class="hl std">mtry</span> <span class="hl opt">==</span> <span class="hl std">loop</span><span class="hl opt">$</span><span class="hl std">mtry[i])</span>
+    <span class="hl std">cuts</span> <span class="hl kwb">&lt;-</span> <span class="hl std">grid[index,</span> <span class="hl str">&quot;threshold&quot;</span><span class="hl std">]</span>
+    <span class="hl std">submodels[[i]]</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">threshold</span> <span class="hl std">= cuts[cuts</span> <span class="hl opt">!=</span> <span class="hl std">loop</span><span class="hl opt">$</span><span class="hl std">threshold[i]])</span>
+    <span class="hl std">}</span>
+  <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">loop</span> <span class="hl std">= loop,</span> <span class="hl kwc">submodels</span> <span class="hl std">= submodels)</span>
+  <span class="hl std">}</span>
 
 <span class="hl com">## Fit the model independent of the threshold parameter</span>
 <span class="hl std">thresh_code</span><span class="hl opt">$</span><span class="hl std">fit</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">,</span> <span class="hl kwc">wts</span><span class="hl std">,</span> <span class="hl kwc">param</span><span class="hl std">,</span> <span class="hl kwc">lev</span><span class="hl std">,</span> <span class="hl kwc">last</span><span class="hl std">,</span> <span class="hl kwc">classProbs</span><span class="hl std">,</span> <span class="hl kwc">...</span><span class="hl std">) {</span>
@@ -1210,26 +1238,26 @@ Summary of sample sizes: 450, 450, 450, 450, 450, 450, ...
 Resampling results across tuning parameters:
 
   threshold  ROC    Sens   Spec   Dist   ROC SD  Sens SD  Spec SD  Dist SD
-  0.0100     0.957  1.000  0.000  1.000  0.035   0.0000   0.0000   0.0000 
-  0.0616     0.957  1.000  0.000  1.000  0.035   0.0000   0.0000   0.0000 
-  0.1132     0.957  1.000  0.000  1.000  0.035   0.0000   0.0000   0.0000 
-  0.1647     0.957  1.000  0.000  1.000  0.035   0.0000   0.0000   0.0000 
-  0.2163     0.957  1.000  0.000  1.000  0.035   0.0000   0.0000   0.0000 
-  0.2679     0.957  1.000  0.000  1.000  0.035   0.0000   0.0000   0.0000 
-  0.3195     0.957  1.000  0.032  0.968  0.035   0.0000   0.0935   0.0935 
-  0.3711     0.957  1.000  0.072  0.928  0.035   0.0000   0.1325   0.1325 
-  0.4226     0.957  1.000  0.132  0.868  0.035   0.0000   0.1491   0.1491 
-  0.4742     0.957  1.000  0.236  0.764  0.035   0.0000   0.2008   0.2008 
-  0.5258     0.957  0.996  0.416  0.584  0.035   0.0104   0.2054   0.2054 
-  0.5774     0.957  0.990  0.548  0.453  0.035   0.0175   0.2092   0.2083 
-  0.6289     0.957  0.972  0.616  0.389  0.035   0.0296   0.2014   0.1954 
-  0.6805     0.957  0.964  0.648  0.359  0.035   0.0339   0.1919   0.1857 
-  0.7321     0.957  0.952  0.696  0.314  0.035   0.0412   0.1862   0.1798 
-  0.7837     0.957  0.932  0.744  0.274  0.035   0.0440   0.1567   0.1466 
-  0.8353     0.957  0.896  0.824  0.227  0.035   0.0446   0.1598   0.1324 
-  0.8868     0.957  0.836  0.948  0.193  0.035   0.0486   0.1054   0.0770 
-  0.9384     0.957  0.682  0.996  0.320  0.035   0.0690   0.0283   0.0677 
-  0.9900     0.957  0.179  1.000  0.821  0.035   0.0591   0.0000   0.0591 
+  0.0100     0.959  1.000  0.000  1.000  0.0324  0.00000  0.0000   0.0000 
+  0.0616     0.959  1.000  0.000  1.000  0.0324  0.00000  0.0000   0.0000 
+  0.1132     0.959  1.000  0.000  1.000  0.0324  0.00000  0.0000   0.0000 
+  0.1647     0.959  1.000  0.000  1.000  0.0324  0.00000  0.0000   0.0000 
+  0.2163     0.959  1.000  0.000  1.000  0.0324  0.00000  0.0000   0.0000 
+  0.2679     0.959  1.000  0.000  1.000  0.0324  0.00000  0.0000   0.0000 
+  0.3195     0.959  1.000  0.016  0.984  0.0324  0.00000  0.0681   0.0681 
+  0.3711     0.959  1.000  0.064  0.936  0.0324  0.00000  0.1102   0.1102 
+  0.4226     0.959  1.000  0.124  0.876  0.0324  0.00000  0.1611   0.1611 
+  0.4742     0.959  1.000  0.240  0.760  0.0324  0.00314  0.1938   0.1938 
+  0.5258     0.959  0.996  0.408  0.592  0.0324  0.01161  0.2137   0.2137 
+  0.5774     0.959  0.989  0.556  0.445  0.0324  0.01864  0.2072   0.2053 
+  0.6289     0.959  0.972  0.620  0.386  0.0324  0.03079  0.2030   0.1964 
+  0.6805     0.959  0.964  0.644  0.363  0.0324  0.03419  0.1908   0.1845 
+  0.7321     0.959  0.953  0.688  0.322  0.0324  0.03956  0.1859   0.1793 
+  0.7837     0.959  0.934  0.748  0.271  0.0324  0.04478  0.1446   0.1318 
+  0.8353     0.959  0.897  0.836  0.214  0.0324  0.04573  0.1321   0.1048 
+  0.8868     0.959  0.837  0.948  0.191  0.0324  0.04910  0.1054   0.0791 
+  0.9384     0.959  0.679  0.996  0.323  0.0324  0.07158  0.0283   0.0707 
+  0.9900     0.959  0.178  1.000  0.822  0.0324  0.05462  0.0000   0.0546 
 
 Tuning parameter 'mtry' was held constant at a value of 3
 Dist was used to select the optimal model using  the smallest value.
@@ -1279,6 +1307,7 @@ One great thing about this code is that it will automatically apply the optimize
       <li><a href="preprocess.html">Pre-Processing</a><li>
       <li><a href="splitting.html">Data Splitting</a></li>
       <li><a href="varimp.html">Variable Importance</a></li>
+      <li><a href="other.html">Model Performance</a></li>
       <li><a href="parallel.html">Parallel Processing</a></li>
     </ul>
     <h2>Model Training and Tuning</h2>
@@ -1289,6 +1318,7 @@ One great thing about this code is that it will automatically apply the optimize
       <li><a href="similarity.html">Models By Similarity</a></li>
       <li><a href="custom_models.html">Using Custom Models</a></li>
       <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="random.html">Random Search</a></li> 
       <li><a href="adaptive.html">Adaptive Resampling</a></li> 
     </ul>
     <h2>Feature Selection</h2>
@@ -1311,7 +1341,7 @@ One great thing about this code is that it will automatically apply the optimize
   <div id="footer-content"></div>
 
   <div id="footer">
-  <p>Created on Fri Jul 17 2015 using caret version 6.0-52 and R Under development (unstable) (2015-07-12 r68650).</p>
+  <p>Created on Sun Oct 11 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
   </div>
   <!-- end #footer -->
 </body>
