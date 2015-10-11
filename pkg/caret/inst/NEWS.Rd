@@ -4,6 +4,13 @@
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
 
+\section{Changes in version 6.0-xx}{
+	\itemize{
+		\item \code{train} now throws an error for classification tasks where the outcome has a factor level with no observed data \issue{260}. 
+	} 
+}
+
+
 \section{Changes in version 6.0-57}{
 	\itemize{
 		\item Hyperparameter optimization via random search is now availible. See the new \href{http://topepo.github.io/caret/random.html}{help page} for examples and syntax. 

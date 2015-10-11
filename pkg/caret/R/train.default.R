@@ -79,6 +79,11 @@ train.default <- function(x, y,
     ## important with multiclass systems where one or more classes have low sample sizes
     ## relative to the others
     classLevels <- levels(y)
+    xtab <- table(y)
+    if(any(xtab == 0)) {
+      xtab_msg <- paste("'", names(xtab)[xtab == 0], "'", collapse = ", ", sep = "")
+      stop(paste("One or more factor levels in the outcome has no data:", xtab_msg))
+    }
     
     if(trControl$classProbs && any(classLevels != make.names(classLevels))) {
       stop(paste("At least one of the class levels is not a valid R variable name;",
