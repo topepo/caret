@@ -254,19 +254,29 @@ Values of <span class="mx arg">type</span> can indicate numeric, character or lo
 
 <h2>The grid Element</h2>
 <p> 
-This should be a function that takes parameters: <span class="mx arg">x</span> and <span class="mx arg">y</span> (for the predictors and outcome data) as well as <span class="mx arg">len</span>. The latter is the value of <span class="mx arg">tuneLength</span> that is potentially passed in through <span class="mx funCall">train<span>. 
+This should be a function that takes parameters: <span class="mx arg">x</span> and <span class="mx arg">y</span> (for the predictors and outcome data), <span class="mx arg">len</span> (the number of values per tuning parameter)  as well as <span class="mx arg">search</span>. <span class="mx arg">len</span> is the value of <span class="mx arg">tuneLength</span> that is potentially passed in through <span class="mx funCall">train</span>. <span class="mx arg">search</span> can be either <tt><span class="hl str">&quot;grid&quot;</span></tt> or <tt><span class="hl str">&quot;random&quot;</span></tt>. This can be used to setup a grid for searching or random values for random search. 
 </p> 
 <p> 
 The output should be a data frame of tuning parameter combinations with a column for each parameter. The column names should be the parameter name (e.g. the values of <tt>prm$parameter</tt>). In our case, let's vary the cost parameter on the log 2 scale. For the sigma parameter, we can use the <tt>kernlab</tt> function <span class="mx funCall">sigest</span> to pre-estimate the value. Following <span class="mx funCall">ksvm</span> we take the average of the low and high estimates. Here is a function we could use:
 </p> 
 <!--begin.rcode custom_grid, tidy=FALSE
-svmGrid <- function(x, y, len = NULL) {
+svmGrid <- function(x, y, len = NULL, search = "grid") {
   library(kernlab)
   ## This produces low, middle and high values for sigma 
   ## (i.e. a vector with 3 elements). 
   sigmas <- sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)  
-  expand.grid(sigma = mean(sigmas[-2]),
-              C = 2 ^((1:len) - 3))
+  ## To use grid search:
+  if(search == "grid") {
+    out <- expand.grid(sigma = mean(as.vector(sigmas[-2])),
+                       C = 2 ^((1:len) - 3))
+  } else {
+    ## For random search, define ranges for the parameters then
+    ## generate random values for them
+    rng <- extendrange(log(sigmas), f = .75)
+    out <- data.frame(sigma = exp(runif(len, min = rng[1], max = rng[2])),
+                      C = 2^runif(len, min = -5, max = 8))
+  }
+  out
 }
    end.rcode--> 
 <p> 
@@ -617,8 +627,12 @@ lbFuncs <- list(library = "caTools",
                 parameters = data.frame(parameter = 'nIter',
                                         class = 'numeric',
                                         label = '# Boosting Iterations'),
-                grid = function(x, y, len = NULL) 
-                  data.frame(nIter = 1 + ((1:len)*10)),
+                grid = function(x, y, len = NULL, search = "grid") {
+                  out <- if(search == "grid") 
+                    data.frame(nIter = 1 + ((1:len)*10)) else 
+                    data.frame(nIter = sample(1:500, size = len))
+                  out
+                },
                 fit = function(x, y, wts, param, lev, last, weights, classProbs, ...) {
                   LogitBoost(as.matrix(x), y, nIter = param$nIter)
                 },
@@ -737,7 +751,7 @@ modelInfo <- list(label = "Model-based Gradient Boosting",
                   parameters = data.frame(parameter = "parameter",
                                           class = "character",
                                           label = "parameter"),
-                  grid = function(x, y, len = NULL) 
+                  grid = function(x, y, len = NULL, search = "grid") 
                     data.frame(parameter = "none"),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {          
@@ -808,18 +822,23 @@ pls_rf <- list(label = "PLS-RF",
                                        class = c("numeric", 'numeric'),
                                        label = c('#Components', 
                                                  '#Randomly Selected Predictors')),
-               grid = function(x, y, len = NULL) {
-                 grid <- expand.grid(ncomp = seq(1, min(ncol(x) - 1, len), by = 1),
-                                     mtry = 1:len)
+               grid = function(x, y, len = NULL, search = "grid") {
+                 if(search == "grid") {
+                   grid <- expand.grid(ncomp = seq(1, min(ncol(x) - 1, len), by = 1),
+                                       mtry = 1:len)
+                   } else {
+                     grid <- expand.grid(ncomp = sample(1:ncol(x), size = len),
+                                         mtry = sample(1:ncol(x), size = len))
+                     }
                  ## We can't have mtry > ncomp
                  grid <- subset(grid, mtry <= ncomp)
-               },
+                 },
                loop = NULL,
                fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                  ## First fit the pls model, generate the training set scores,
                  ## then attach what is needed to the random forest object to 
                  ## be used later
-
+                 
                  ## plsr only has a formula interface so create one data frame
                  dat <- if(!is.data.frame(x)) x <- as.data.frame(x)
                  dat$y <- y
@@ -829,7 +848,7 @@ pls_rf <- list(label = "PLS-RF",
                  mod <- randomForest(scores, y, mtry = param$mtry, ...)
                  mod$projection <- pre$projection
                  mod
-               },
+                 },
                predict = function(modelFit, newdata, submodels = NULL) {  
                  ## Now apply the same scaling to the new samples
                  scores <- as.matrix(newdata)  %*% modelFit$projection
@@ -837,7 +856,7 @@ pls_rf <- list(label = "PLS-RF",
                  scores <- as.data.frame(scores)
                  ## Predict the random forest model
                  predict(modelFit, scores)
-               },
+                 },
                prob = NULL,
                varImp = NULL,
                predictors = function(x, ...) rownames(x$projection),
@@ -960,27 +979,33 @@ thresh_code$parameters <- data.frame(parameter = c("mtry", "threshold"),
                                      label = c("#Randomly Selected Predictors",
                                                "Probability Cutoff"))
 ## The default tuning grid code:
-thresh_code$grid <- function(x, y, len = NULL) {
+thresh_code$grid <- function(x, y, len = NULL, search = "grid") {
   p <- ncol(x)
-  expand.grid(mtry = floor(sqrt(p)), 
-              threshold = seq(.01, .99, length = len))
+  if(search == "grid") {
+    grid <- expand.grid(mtry = floor(sqrt(p)), 
+                        threshold = seq(.01, .99, length = len))
+    } else {
+      grid <- expand.grid(mtry = sample(1:p, size = len),
+                          threshold = runif(1, 0, size = len))
+      }
+  grid
   }
 
 ## Here we fit a single random forest model (with a fixed mtry)
 ## and loop over the threshold values to get predictions from the same
 ## randomForest model.
 thresh_code$loop = function(grid) {   
-                 library(plyr)
-                 loop <- ddply(grid, c("mtry"),
-                               function(x) c(threshold = max(x$threshold)))
-                 submodels <- vector(mode = "list", length = nrow(loop))
-                 for(i in seq(along = loop$threshold)) {
-                   index <- which(grid$mtry == loop$mtry[i])
-                   cuts <- grid[index, "threshold"] 
-                   submodels[[i]] <- data.frame(threshold = cuts[cuts != loop$threshold[i]])
-                 }    
-                 list(loop = loop, submodels = submodels)
-               }
+  library(plyr)
+  loop <- ddply(grid, c("mtry"),
+                function(x) c(threshold = max(x$threshold)))
+  submodels <- vector(mode = "list", length = nrow(loop))
+  for(i in seq(along = loop$threshold)) {
+    index <- which(grid$mtry == loop$mtry[i])
+    cuts <- grid[index, "threshold"] 
+    submodels[[i]] <- data.frame(threshold = cuts[cuts != loop$threshold[i]])
+    }    
+  list(loop = loop, submodels = submodels)
+  }
 
 ## Fit the model independent of the threshold parameter
 thresh_code$fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
