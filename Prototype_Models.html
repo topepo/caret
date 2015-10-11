@@ -126,6 +126,11 @@ Released   : 20120902
 <p><b>Type</b>: Classification, Regression</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">k</span></code> (#Neighbors)</p>
 
+<h1>Knn regression via sklearn.neighbors.KNeighborsRegressor</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'pythonKnnReg'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">n_neighbors</span></code> (#Neighbors), <code><span class="mx arg">weights</span></code> (Weight Function), <code><span class="mx arg">algorithm</span></code> (Algorithm), <code><span class="mx arg">leaf_size</span></code> (Leaf Size), <code><span class="mx arg">metric</span></code> (Distance Metric), <code><span class="mx arg">p</span></code> (p)</p>
+
 <h1>Learning Vector Quantization</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'lvq'</span></tt></p>
 <p><b>Type</b>: Classification</p>
@@ -136,6 +141,11 @@ Released   : 20120902
 <p><b>Type</b>: Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">threshold</span></code> (Shrinkage Threshold)</p>
 
+<h1>Optimal Weighted Nearest Neighbor Classifier</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'ownn'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">K</span></code> (#Neighbors)</p>
+
 <h1>Random k-Nearest Neighbors</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'rknn'</span></tt></p>
 <p><b>Type</b>: Classification, Regression</p>
@@ -145,6 +155,11 @@ Released   : 20120902
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'rknnBel'</span></tt></p>
 <p><b>Type</b>: Classification, Regression</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">k</span></code> (#Neighbors), <code><span class="mx arg">mtry</span></code> (#Randomly Selected Predictors), <code><span class="mx arg">d</span></code> (#Features Dropped)</p>
+
+<h1>Stabilized Nearest Neighbor Classifier</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'snn'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda</span></code> (Stabilization Parameter)</p>
 
 
 <div style="clear: both;">&nbsp;</div>
@@ -170,6 +185,7 @@ Released   : 20120902
       <li><a href="similarity.html">Models By Similarity</a></li>
       <li><a href="custom_models.html">Using Custom Models</a></li>
       <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="random.html">Random Search</a></li> 
       <li><a href="adaptive.html">Adaptive Resampling</a></li> 
     </ul>
     <h2>Feature Selection</h2>
@@ -191,7 +207,7 @@ Released   : 20120902
 </div>
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on Fri Jul 17 2015 using caret version 6.0-52 and R Under development (unstable) (2015-07-12 r68650).</p>
+  <p>Created on Fri Oct 09 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
   </div>
   <!-- end #footer -->
 </body>

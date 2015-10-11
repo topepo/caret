@@ -150,12 +150,11 @@ Released   : 20120902
 <span class="hl std">centerScale</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">preProcess</span><span class="hl std">(sonarTrain)</span>
 <span class="hl std">centerScale</span>
 </pre></div>
-<div class="output"><pre class="knitr r">
-Call:
-preProcess.default(x = sonarTrain)
+<div class="output"><pre class="knitr r">Created from 139 samples and 60 variables
 
-Created from 139 samples and 60 variables
-Pre-processing: centered, scaled 
+Pre-processing:
+  - centered (60)
+  - scaled (60)
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">training</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(centerScale, sonarTrain)</span>
 <span class="hl std">testing</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(centerScale, sonarTest)</span>
@@ -464,6 +463,7 @@ between the new latent variable and the outcomes.
       <li><a href="preprocess.html">Pre-Processing</a><li>
       <li><a href="splitting.html">Data Splitting</a></li>
       <li><a href="varimp.html">Variable Importance</a></li>
+      <li><a href="other.html">Model Performance</a></li>
       <li><a href="parallel.html">Parallel Processing</a></li>
     </ul>
     <h2>Model Training and Tuning</h2>
@@ -474,6 +474,7 @@ between the new latent variable and the outcomes.
       <li><a href="similarity.html">Models By Similarity</a></li>
       <li><a href="custom_models.html">Using Custom Models</a></li>
       <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="random.html">Random Search</a></li> 
       <li><a href="adaptive.html">Adaptive Resampling</a></li> 
     </ul>
     <h2>Feature Selection</h2>
@@ -496,7 +497,7 @@ between the new latent variable and the outcomes.
   <div id="footer-content"></div>
 
   <div id="footer">
-  <p>Created on Fri Jul 17 2015 using caret version 6.0-52 and R Under development (unstable) (2015-07-12 r68650).</p>
+  <p>Created on Fri Oct 09 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
   </div>
   <!-- end #footer -->
 </body>

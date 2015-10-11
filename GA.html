@@ -290,8 +290,8 @@ In the final search using the entire training set:
      real1, real2, real3, real4, real5 ... 
    * external performance at this iteration is
 
-       RMSE    Rsquared 
-     2.8037      0.7564 
+      RMSE   Rsquared 
+     2.804      0.756 
 </pre></div>
 </div></div>
 
@@ -501,8 +501,7 @@ The default function populates the rows randomly with subset sizes varying betwe
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">apply</span><span class="hl std">(starting,</span> <span class="hl num">1</span><span class="hl std">, mean)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] 0.1666667 0.1666667 0.4166667 0.4166667 0.4166667 0.9166667 0.7500000
-[8] 0.7500000
+<div class="output"><pre class="knitr r">[1] 0.1667 0.1667 0.4167 0.4167 0.4167 0.9167 0.7500 0.7500
 </pre></div>
 </div></div>
 
@@ -683,8 +682,8 @@ In the final search using the entire training set:
      real1, real2, real3, real4, real5 ... 
    * external performance at this iteration is
 
-       RMSE    Rsquared 
-     2.6891      0.7682 
+      RMSE   Rsquared 
+     2.689      0.768 
 </pre></div>
 </div></div>
 
@@ -717,6 +716,7 @@ The final GA is found 6 that were selected: real1, real2, real3, real4, real5, b
       <li><a href="preprocess.html">Pre-Processing</a><li>
       <li><a href="splitting.html">Data Splitting</a></li>
       <li><a href="varimp.html">Variable Importance</a></li>
+      <li><a href="other.html">Model Performance</a></li>
       <li><a href="parallel.html">Parallel Processing</a></li>
     </ul>
     <h2>Model Training and Tuning</h2>
@@ -727,6 +727,7 @@ The final GA is found 6 that were selected: real1, real2, real3, real4, real5, b
       <li><a href="similarity.html">Models By Similarity</a></li>
       <li><a href="custom_models.html">Using Custom Models</a></li>
       <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="random.html">Random Search</a></li> 
       <li><a href="adaptive.html">Adaptive Resampling</a></li> 
     </ul>
     <h2>Feature Selection</h2>
@@ -749,7 +750,7 @@ The final GA is found 6 that were selected: real1, real2, real3, real4, real5, b
 <div id="footer-content"></div>
 <div id="footer">
 
-<p>Created on Fri Jul 17 2015 using caret version 6.0-52 and R Under development (unstable) (2015-07-12 r68650).</p>
+<p>Created on Fri Oct 09 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
 </div>
 <!-- end #footer -->
 </body>

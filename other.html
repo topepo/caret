@@ -79,7 +79,7 @@
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>Other Functions</title>
+    <title>Measuring Model Performance</title>
     <link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
     <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
   </head>
@@ -88,7 +88,7 @@
       <div id="header-wrapper" class="container">
   <div id="header" class="container">
 	  <div id="logo">
-	    <h1><a href="#">Other Functions</a></h1>
+	    <h1><a href="#">Measuring Model Performance</a></h1>
 	  </div>
           <!--
 	      <div id="menu">
@@ -112,7 +112,6 @@
 <ul>
   <li><a href="#test">Evaluating Test Sets</a></li> 
   <li><a href="#lift">Evaluating Class Probabilities</a></li>
-  <li><a href="#affy">Processing Affy Arrays</a></li> 
  </ul>   
       
 <div id="test"></div>   
@@ -222,8 +221,8 @@ For example:
  
           Reference
 Prediction    M    R
-         M 46.5 10.7
-         R  7.0 35.8
+         M 46.6 10.7
+         R  6.9 35.8
 </pre></div>
 </div></div>
 
@@ -231,7 +230,62 @@ Prediction    M    R
 These values are the percentages that hold-out samples landed in the
 confusion matrix during resampling. There are several methods for
 normalizing these values. See <code>?confusionMatrix.train</code> for details.
-</p>	
+</p>  
+
+
+
+<p>
+For multi-class problems, there are additional functions that can be used to calculate performance. One, <span class="mx funCall"> mnLogLoss </span> computes the negative of the multinomial log-likelihood (smaller is better) based on the class probabilities. This can be used to optimize tuning parameters but can lead to results that are inconsistent with other measures (e.g. accuracy or the area under the ROC curve), especially when the other measures are near their best possible values. The function has similar arguments to the other functions described above:
+</p>
+
+<div class="chunk" id="other_logLoss"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">test_results</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(gbmFit3, testing,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;prob&quot;</span><span class="hl std">)</span>
+<span class="hl std">test_results</span><span class="hl opt">$</span><span class="hl std">obs</span> <span class="hl kwb">&lt;-</span> <span class="hl std">testing</span><span class="hl opt">$</span><span class="hl std">Class</span>
+<span class="hl kwd">head</span><span class="hl std">(test_results)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">             M           R obs
+1 9.052633e-03 0.990947367   R
+2 2.063324e-03 0.997936676   R
+3 2.676105e-05 0.999973239   R
+4 4.521851e-02 0.954781489   R
+5 9.973424e-01 0.002657604   R
+6 8.575695e-01 0.142430463   R
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">mnLogLoss</span><span class="hl std">(test_results,</span> <span class="hl kwc">lev</span> <span class="hl std">=</span> <span class="hl kwd">levels</span><span class="hl std">(test_results</span><span class="hl opt">$</span><span class="hl std">obs))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  logLoss 
+0.2589767 
+</pre></div>
+</div></div>
+
+<p>
+Additionally, the function <span class="mx funCall"> multiClassSummary </span> computes a number of relevant metrics:
+</p>
+<ul>
+  <li>the overall accuracy and Kappa statistics using the predicted classes</li>
+  <li>the negative multinomial log loss (if class probabilities are available)</li>
+  <li>averages of the “one versus all” statistics such as sensitivity, specificity, the area under the ROC curve, etc. 
+</li>
+</ul>
+
+<p>
+For example:
+</p>
+
+<div class="chunk" id="other_multiclass"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">test_results</span><span class="hl opt">$</span><span class="hl std">pred</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(gbmFit3, testing)</span>
+<span class="hl kwd">multiClassSummary</span><span class="hl std">(test_results,</span> <span class="hl kwc">lev</span> <span class="hl std">=</span> <span class="hl kwd">levels</span><span class="hl std">(test_results</span><span class="hl opt">$</span><span class="hl std">obs))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">          logLoss               ROC          Accuracy             Kappa 
+        0.2589767         0.9567901         0.9215686         0.8425926 
+      Sensitivity       Specificity    Pos_Pred_Value    Neg_Pred_Value 
+        0.9259259         0.9166667         0.9259259         0.9166667 
+   Detection_Rate Balanced_Accuracy 
+        0.4901961         0.9212963 
+</pre></div>
+</div></div>
+
+
+
+
 	
 <div id="lift"></div>    
 <h1>Evaluating Class Probabilities</h1>
@@ -329,29 +383,7 @@ The other function is for probability calibration. Other functions in the <a hre
                                           <span class="hl kwc">points</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">))</span>
 </pre></div>
 </div><div class="rimage default"><img src="figure/cal_plot-1.png" title="plot of chunk cal_plot" alt="plot of chunk cal_plot" class="plot" /></div></div>
-    
-<div id="affy"></div>      
-<h1>Processing Affy Arrays</h1>
-<p>
-For Affymetrix gene chip data, RMA processing (<a href="http://nar.oxfordjournals.org/cgi/content/abstract/31/4/e150">Irizarry, 2003</a>) is a popular method of processing gene expression data. However, for predictive modeling, it has a drawback in that the processing is batch oriented; if an additional sample is collected, the RMA processing must be repeated using all the samples. This is mainly because of two steps in the processing: the quantile normalization process and the calculation of expression. Quantile normalization normalizes the data such that the between--chip distributions have equivalent quantiles and is very effective in improving the quality of the data. It is possible to let the samples in the training set define the reference distribution for normalization. For the expression calculation, a robust method such as a trimmed mean can be used to summarize the probe level data into a single summary metric per sample.
-          </p>
-          <p>For example:</p>
-<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># first, let affy/expresso know that the method exists</span>
-<span class="hl std">normalize.AffyBatch.methods</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(normalize.AffyBatch.methods,</span> <span class="hl str">&quot;normalize2Reference&quot;</span><span class="hl std">)</span>
-
-<span class="hl std">RawData</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">ReadAffy</span><span class="hl std">(</span><span class="hl kwc">celfile.path</span><span class="hl std">=FilePath)</span>
-
-<span class="hl std">Batch1Step1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">bg.correct</span><span class="hl std">(RawData,</span> <span class="hl str">&quot;rma&quot;</span><span class="hl std">)</span>
-<span class="hl std">Batch1Step2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">normalize.AffyBatch.quantiles</span><span class="hl std">(Batch1Step1)</span>
-<span class="hl std">referencePM</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">pm</span><span class="hl std">(Batch1Step2)[,</span><span class="hl num">1</span><span class="hl std">]</span>
-<span class="hl std">Batch1Step3</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">computeExprSet</span><span class="hl std">(Batch1Step2,</span> <span class="hl str">&quot;pmonly&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;trimMean&quot;</span><span class="hl std">)</span>
-
-<span class="hl std">Batch2Step1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">bg.correct</span><span class="hl std">(RawData2,</span> <span class="hl str">&quot;rma&quot;</span><span class="hl std">)</span>
-<span class="hl std">Batch2Step2</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">normalize.AffyBatch.normalize2Reference</span><span class="hl std">(Batch2Step1,</span> <span class="hl kwc">ref</span> <span class="hl std">= referencePM)</span>
-<span class="hl std">Batch2Step3</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">computeExprSet</span><span class="hl std">(Batch2Step2,</span> <span class="hl str">&quot;pmonly&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;trimMean&quot;</span><span class="hl std">)</span>
-</pre></div>
-</div></div>
-    
+  
 	  <div style="clear: both;">&nbsp;</div>
 	</div>
 	<!-- end #content -->
@@ -365,6 +397,7 @@ For Affymetrix gene chip data, RMA processing (<a href="http://nar.oxfordjournal
       <li><a href="preprocess.html">Pre-Processing</a><li>
       <li><a href="splitting.html">Data Splitting</a></li>
       <li><a href="varimp.html">Variable Importance</a></li>
+      <li><a href="other.html">Model Performance</a></li>
       <li><a href="parallel.html">Parallel Processing</a></li>
     </ul>
     <h2>Model Training and Tuning</h2>
@@ -375,6 +408,7 @@ For Affymetrix gene chip data, RMA processing (<a href="http://nar.oxfordjournal
       <li><a href="similarity.html">Models By Similarity</a></li>
       <li><a href="custom_models.html">Using Custom Models</a></li>
       <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="random.html">Random Search</a></li> 
       <li><a href="adaptive.html">Adaptive Resampling</a></li> 
     </ul>
     <h2>Feature Selection</h2>
@@ -398,7 +432,7 @@ For Affymetrix gene chip data, RMA processing (<a href="http://nar.oxfordjournal
 
  
     <div id="footer">
-      <p>Created on Fri Jul 17 2015 using caret version 6.0-52 and R Under development (unstable) (2015-07-12 r68650).</p>
+      <p>Created on Fri Oct 09 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
     </div>
     <!-- end #footer -->
   </body>

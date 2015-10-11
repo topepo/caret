@@ -249,17 +249,17 @@ Outer resampling method: Cross-Validated (10 fold, repeated 5 times)
 
 Resampling performance over subset size:
 
- Variables  RMSE Rsquared RMSESD RsquaredSD Selected
-         1 3.932   0.3812 0.7272     0.2116         
-         2 3.566   0.4894 0.5791     0.2029         
-         3 3.153   0.5953 0.6439     0.1905         
-         4 2.904   0.6562 0.7357     0.2107        *
-         5 2.993   0.6438 0.7627     0.2066         
-        10 3.221   0.5972 0.8173     0.2094         
-        15 3.394   0.5612 0.8189     0.2144         
-        20 3.517   0.5418 0.9081     0.2337         
-        25 3.719   0.5042 0.9147     0.2365         
-        50 4.088   0.4502 0.9538     0.2302         
+ Variables RMSE Rsquared RMSESD RsquaredSD Selected
+         1 3.93    0.381  0.727      0.212         
+         2 3.57    0.489  0.579      0.203         
+         3 3.15    0.595  0.644      0.191         
+         4 2.90    0.656  0.736      0.211        *
+         5 2.99    0.644  0.763      0.207         
+        10 3.22    0.597  0.817      0.209         
+        15 3.39    0.561  0.819      0.214         
+        20 3.52    0.542  0.908      0.234         
+        25 3.72    0.504  0.915      0.237         
+        50 4.09    0.450  0.954      0.230         
 
 The top 4 variables (out of 4):
    real4, real5, real2, real1
@@ -283,17 +283,17 @@ lm(formula = y ~ ., data = tmp)
 
 Coefficients:
 (Intercept)        real4        real5        real2        real1  
-     14.613        2.857        1.965        1.625        1.359  
+      14.61         2.86         1.96         1.63         1.36  
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">head</span><span class="hl std">(lmProfile</span><span class="hl opt">$</span><span class="hl std">resample)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">   Variables     RMSE  Rsquared    Resample
-4          4 2.940756 0.5542831 Fold01.Rep1
-14         4 2.704529 0.6583788 Fold02.Rep1
-24         4 4.599872 0.2181731 Fold03.Rep1
-34         4 2.601659 0.8478823 Fold04.Rep1
-44         4 1.979220 0.8571701 Fold05.Rep1
-54         4 2.978896 0.8301785 Fold06.Rep1
+<div class="output"><pre class="knitr r">   Variables  RMSE Rsquared    Resample
+4          4 2.941   0.5543 Fold01.Rep1
+14         4 2.705   0.6584 Fold02.Rep1
+24         4 4.600   0.2182 Fold03.Rep1
+34         4 2.602   0.8479 Fold04.Rep1
+44         4 1.979   0.8572 Fold05.Rep1
+54         4 2.979   0.8302 Fold06.Rep1
 </pre></div>
 </div></div>
 
@@ -602,17 +602,17 @@ Outer resampling method: Cross-Validated (10 fold, repeated 5 times)
 
 Resampling performance over subset size:
 
- Variables  RMSE Rsquared RMSESD RsquaredSD Selected
-         1 4.690   0.2110 0.9609     0.1783         
-         2 3.904   0.3856 0.6747     0.2207         
-         3 3.220   0.5886 0.5944     0.1913         
-         4 2.699   0.7654 0.5212     0.1245        *
-         5 2.908   0.7451 0.5640     0.1314         
-        10 3.085   0.7110 0.5955     0.1510         
-        15 3.212   0.6853 0.5944     0.1755         
-        20 3.335   0.6796 0.5783     0.1749         
-        25 3.381   0.6607 0.5723     0.1824         
-        50 3.523   0.6559 0.5456     0.1897         
+ Variables RMSE Rsquared RMSESD RsquaredSD Selected
+         1 4.70    0.211  0.959      0.180         
+         2 3.87    0.387  0.617      0.213         
+         3 3.19    0.596  0.606      0.200         
+         4 2.68    0.769  0.520      0.111        *
+         5 2.91    0.740  0.556      0.116         
+        10 3.06    0.715  0.611      0.168         
+        15 3.18    0.701  0.587      0.189         
+        20 3.29    0.703  0.572      0.183         
+        25 3.38    0.675  0.570      0.182         
+        50 3.53    0.642  0.554      0.189         
 
 The top 4 variables (out of 4):
    real4, real5, real2, real1
@@ -660,6 +660,7 @@ The top 4 variables (out of 4):
       <li><a href="preprocess.html">Pre-Processing</a><li>
       <li><a href="splitting.html">Data Splitting</a></li>
       <li><a href="varimp.html">Variable Importance</a></li>
+      <li><a href="other.html">Model Performance</a></li>
       <li><a href="parallel.html">Parallel Processing</a></li>
     </ul>
     <h2>Model Training and Tuning</h2>
@@ -670,6 +671,7 @@ The top 4 variables (out of 4):
       <li><a href="similarity.html">Models By Similarity</a></li>
       <li><a href="custom_models.html">Using Custom Models</a></li>
       <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="random.html">Random Search</a></li> 
       <li><a href="adaptive.html">Adaptive Resampling</a></li> 
     </ul>
     <h2>Feature Selection</h2>
@@ -692,7 +694,7 @@ The top 4 variables (out of 4):
   <div id="footer-content"></div>
   <div id="footer">
 
-  <p>Created on Fri Jul 17 2015 using caret version 6.0-52 and R Under development (unstable) (2015-07-12 r68650).</p>
+  <p>Created on Fri Oct 09 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
   </div>
   <!-- end #footer -->
 </body>

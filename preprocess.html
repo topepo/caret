@@ -419,16 +419,14 @@ scaled before applying this transformation.</p>
 <span class="hl std">testBC</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(preProcValues2, test)</span>
 <span class="hl std">preProcValues2</span>
 </pre></div>
-<div class="output"><pre class="knitr r">
-Call:
-preProcess.default(x = training, method = &quot;BoxCox&quot;)
+<div class="output"><pre class="knitr r">Created from 264 samples and 31 variables
 
-Created from 264 samples and 50 variables
-Pre-processing: Box-Cox transformation 
+Pre-processing:
+  - Box-Cox transformation (31)
 
 Lambda estimates for Box-Cox transformation:
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
--2.0000 -0.2000  0.3000  0.4097  1.7000  2.0000      19 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+-2.0000 -0.2000  0.3000  0.4097  1.7000  2.0000 
 </pre></div>
 </div></div>
 
@@ -491,6 +489,7 @@ This image shows a scatterplot matrix of the class distances for the held-out sa
       <li><a href="preprocess.html">Pre-Processing</a><li>
       <li><a href="splitting.html">Data Splitting</a></li>
       <li><a href="varimp.html">Variable Importance</a></li>
+      <li><a href="other.html">Model Performance</a></li>
       <li><a href="parallel.html">Parallel Processing</a></li>
     </ul>
     <h2>Model Training and Tuning</h2>
@@ -501,6 +500,7 @@ This image shows a scatterplot matrix of the class distances for the held-out sa
       <li><a href="similarity.html">Models By Similarity</a></li>
       <li><a href="custom_models.html">Using Custom Models</a></li>
       <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="random.html">Random Search</a></li> 
       <li><a href="adaptive.html">Adaptive Resampling</a></li> 
     </ul>
     <h2>Feature Selection</h2>
@@ -524,7 +524,7 @@ This image shows a scatterplot matrix of the class distances for the held-out sa
 
  
     <div id="footer">
-      <p>Created on Fri Jul 17 2015 using caret version 6.0-52 and R Under development (unstable) (2015-07-12 r68650).</p>
+      <p>Created on Fri Oct 09 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
     </div>
     <!-- end #footer -->
   </body>

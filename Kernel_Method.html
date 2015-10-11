@@ -106,6 +106,16 @@ Released   : 20120902
 <div id="page">
   <div id="content">
   
+<h1>Distance Weighted Discrimination with Polynomial Kernel</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'dwdPoly'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda</span></code> (Regularization Parameter), <code><span class="mx arg">qval</span></code> (q), <code><span class="mx arg">degree</span></code> (Polynomial Degree), <code><span class="mx arg">scale</span></code> (Scale)</p>
+
+<h1>Distance Weighted Discrimination with Radial Basis Function Kernel</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'dwdRadial'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda</span></code> (Regularization Parameter), <code><span class="mx arg">qval</span></code> (q), <code><span class="mx arg">sigma</span></code> (Sigma)</p>
+
 <h1>Gaussian Process</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'gaussprLinear'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
@@ -135,6 +145,11 @@ Released   : 20120902
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'lssvmRadial'</span></tt></p>
 <p><b>Type</b>: Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">sigma</span></code> (Sigma)</p>
+
+<h1>Linear Distance Weighted Discrimination</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'dwdLinear'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda</span></code> (Regularization Parameter), <code><span class="mx arg">qval</span></code> (q)</p>
 
 <h1>Oblique Random Forest</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'ORFsvm'</span></tt></p>
@@ -240,6 +255,7 @@ Released   : 20120902
       <li><a href="similarity.html">Models By Similarity</a></li>
       <li><a href="custom_models.html">Using Custom Models</a></li>
       <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="random.html">Random Search</a></li> 
       <li><a href="adaptive.html">Adaptive Resampling</a></li> 
     </ul>
     <h2>Feature Selection</h2>
@@ -261,7 +277,7 @@ Released   : 20120902
 </div>
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on Fri Jul 17 2015 using caret version 6.0-52 and R Under development (unstable) (2015-07-12 r68650).</p>
+  <p>Created on Fri Oct 09 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
   </div>
   <!-- end #footer -->
 </body>

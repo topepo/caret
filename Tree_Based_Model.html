@@ -214,8 +214,13 @@ Released   : 20120902
 
 <h1>Rotation Forest</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'rotationForest'</span></tt></p>
-<p><b>Type</b>: Classification, Regression</p>
+<p><b>Type</b>: Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">K</span></code> (#Variable Subsets), <code><span class="mx arg">L</span></code> (Ensemble Size)</p>
+
+<h1>Rotation Forest</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'rotationForestCp'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">K</span></code> (#Variable Subsets), <code><span class="mx arg">L</span></code> (Ensemble Size), <code><span class="mx arg">cp</span></code> (Complexity Parameter)</p>
 
 <h1>Single C5.0 Tree</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'C5.0Tree'</span></tt></p>
@@ -261,6 +266,7 @@ Released   : 20120902
       <li><a href="similarity.html">Models By Similarity</a></li>
       <li><a href="custom_models.html">Using Custom Models</a></li>
       <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="random.html">Random Search</a></li> 
       <li><a href="adaptive.html">Adaptive Resampling</a></li> 
     </ul>
     <h2>Feature Selection</h2>
@@ -282,7 +288,7 @@ Released   : 20120902
 </div>
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on Fri Jul 17 2015 using caret version 6.0-52 and R Under development (unstable) (2015-07-12 r68650).</p>
+  <p>Created on Fri Oct 09 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
   </div>
   <!-- end #footer -->
 </body>

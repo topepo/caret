@@ -111,6 +111,11 @@ Released   : 20120902
 <p><b>Type</b>: Classification, Regression</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">num_trees</span></code> (#Trees), <code><span class="mx arg">k</span></code> (Prior Boundary), <code><span class="mx arg">alpha</span></code> (Base Terminal Node Hyperparameter), <code><span class="mx arg">beta</span></code> (Power Terminal Node Hyperparameter), <code><span class="mx arg">nu</span></code> (Degrees of Freedom)</p>
 
+<h1>Bayesian Generalized Linear Model</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'bayesglm'</span></tt></p>
+<p><b>Type</b>: Regression, Classification</p>
+<p>No Tuning Parameters</p>
+
 <h1>Bayesian Regularized Neural Networks</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'brnn'</span></tt></p>
 <p><b>Type</b>: Regression</p>
@@ -120,6 +125,36 @@ Released   : 20120902
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'nb'</span></tt></p>
 <p><b>Type</b>: Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">fL</span></code> (Laplace Correction), <code><span class="mx arg">usekernel</span></code> (Distribution Type)</p>
+
+<h1>Naive Bayes Classifier</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'nbDiscrete'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">smooth</span></code> (Smoothing Parameter)</p>
+
+<h1>Naive Bayes Classifier with Attribute Weighting</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'awnb'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">smooth</span></code> (Smoothing Parameter)</p>
+
+<h1>Semi-Naive Structure Learner Wrapper</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'nbSearch'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">k</span></code> (#Folds), <code><span class="mx arg">epsilon</span></code> (Minimum Absolute Improvement), <code><span class="mx arg">smooth</span></code> (Smoothing Parameter), <code><span class="mx arg">final_smooth</span></code> (Final Smoothing Parameter), <code><span class="mx arg">direction</span></code> (Search Direction)</p>
+
+<h1>Tree Augmented Naive Bayes Classifier</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'tan'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">score</span></code> (Score Function), <code><span class="mx arg">smooth</span></code> (Smoothing Parameter)</p>
+
+<h1>Tree Augmented Naive Bayes Classifier Structure Learner Wrapper</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'tanSearch'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">k</span></code> (#Folds), <code><span class="mx arg">epsilon</span></code> (Minimum Absolute Improvement), <code><span class="mx arg">smooth</span></code> (Smoothing Parameter), <code><span class="mx arg">final_smooth</span></code> (Final Smoothing Parameter), <code><span class="mx arg">sp</span></code> (Super-Parent)</p>
+
+<h1>Tree Augmented Naive Bayes Classifier with Attribute Weighting</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'awtan'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">score</span></code> (Score Function), <code><span class="mx arg">smooth</span></code> (Smoothing Parameter)</p>
 
 <h1>Variational Bayesian Multinomial Probit Regression</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'vbmpRadial'</span></tt></p>
@@ -150,6 +185,7 @@ Released   : 20120902
       <li><a href="similarity.html">Models By Similarity</a></li>
       <li><a href="custom_models.html">Using Custom Models</a></li>
       <li><a href="sampling.html">Sampling for Class Imbalances</a></li> 
+      <li><a href="random.html">Random Search</a></li> 
       <li><a href="adaptive.html">Adaptive Resampling</a></li> 
     </ul>
     <h2>Feature Selection</h2>
@@ -171,7 +207,7 @@ Released   : 20120902
 </div>
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on Fri Jul 17 2015 using caret version 6.0-52 and R Under development (unstable) (2015-07-12 r68650).</p>
+  <p>Created on Fri Oct 09 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
   </div>
   <!-- end #footer -->
 </body>
