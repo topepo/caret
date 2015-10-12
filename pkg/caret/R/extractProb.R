@@ -46,8 +46,7 @@ extractProb <- function(models,
                                     models[[i]]$preProcess)    
       tempTrainPred <- apply(tempTrainProb, 1, which.max)
       tempTrainPred <- colnames(tempTrainProb)[tempTrainPred]
-      tempTrainPred <- factor(tempTrainPred, 
-                              levels = models[[i]]$modelInfo$levels(models[[i]]$finalModel))
+      tempTrainPred <- factor(tempTrainPred, levels = obsLevels)
       
       if(verbose) cat(models[[i]]$method, ":", length(tempTrainPred), "training predictions were added\n"); flush.console()         
       
@@ -70,8 +69,7 @@ extractProb <- function(models,
                                      models[[i]]$preProcess)  
         tempTestPred <- apply(tempTestProb, 1, which.max)
         tempTestPred <- colnames(tempTestProb)[tempTestPred]
-        tempTestPred <- factor(tempTestPred, 
-                                levels = models[[i]]$modelInfo$levels(models[[i]]$finalModel))
+        tempTestPred <- factor(tempTestPred, levels = obsLevels)
 
         if(verbose) cat(models[[i]]$method, ":", length(tempTestPred), "test predictions were added\n")         
         
@@ -98,8 +96,7 @@ extractProb <- function(models,
                                   models[[i]]$preProcess)  
       tempUnkPred <- apply(tempUnkProb, 1, which.max)
       tempUnkPred <- colnames(tempUnkProb)[tempUnkPred]
-      tempUnkPred <- factor(tempUnkPred, 
-                            levels = models[[i]]$modelInfo$levels(models[[i]]$finalModel))
+      tempUnkPred <- factor(tempUnkPred, levels = obsLevels)
 
       if(verbose) cat(models[[i]]$method, ":", length(tempUnkPred), "unknown predictions were added\n")         
       
