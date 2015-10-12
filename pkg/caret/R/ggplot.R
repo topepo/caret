@@ -1,5 +1,5 @@
 ggplot.train <- function(data = NULL, metric = data$metric[1], plotType = "scatter", output = "layered",
-               nameInStrip = FALSE, ...) {
+               nameInStrip = FALSE, highBestTune = FALSE, ...) {
   if(!(output %in% c("data", "layered", "ggplot"))) stop("'outout' should be either 'data', 'ggplot' or 'layered'")
   params <- data$modelInfo$parameters$parameter
   paramData <- data$modelInfo$parameters
@@ -54,12 +54,14 @@ ggplot.train <- function(data = NULL, metric = data$metric[1], plotType = "scatt
 
   if(plotType == "scatter") {
     # To highlight bestTune parameters in the plot
-    bstRes <- data$results
-    for (par in as.character(params))
-      bstRes <- bstRes[which(bstRes[, par] == data$bestTune[, par]), ]
-    if (nrow(bstRes) > 1)
-      stop("problem in extracting model$bestTune row from model$results")
-    #print("bstRes:"); print(bstRes)
+    if (highBestTune) {
+      bstRes <- data$results
+      for (par in as.character(params))
+        bstRes <- bstRes[which(bstRes[, par] == data$bestTune[, par]), ]
+      if (nrow(bstRes) > 1)
+        stop("problem in extracting model$bestTune row from model$results")
+      #print("bstRes:"); print(bstRes)
+    }
 
     dnm <- names(dat)
     if(p > 1 && is.numeric(dat[, 3])) dat[, 3] <- factor(format(dat[, 3]))
@@ -77,19 +79,21 @@ ggplot.train <- function(data = NULL, metric = data$metric[1], plotType = "scatt
       for (col in 1:(p-2)) {
         lvls <- as.character(unique(dat[, dnm[col+3]]))
         dat[, dnm[col+3]] <- factor(dat[, dnm[col+3]], levels = lvls)
-        bstRes[, dnm[col+3]] <- factor(bstRes[, dnm[col+3]], levels = lvls)
+        if (highBestTune)
+          bstRes[, dnm[col+3]] <- factor(bstRes[, dnm[col+3]], levels = lvls)
       }
 
     out <- ggplot(dat, aes_string(x = dnm[2], y = dnm[1]))
     out <- out + ylab(resampText)
-    
+
     # names(dat)[.] changed to dnm[.] to make the code more readable & (marginally) efficient
     out <- out + xlab(paramData$label[paramData$parameter == dnm[2]])
-    out <- out + geom_point(data = bstRes,
-                            x = as.numeric(bstRes[, dnm[2]]),
-                            y = as.numeric(bstRes[, dnm[1]]),
-                            colour = ifelse(p == 1, "red", "black"),
-                            size = 4, shape = 5)
+    if (highBestTune)
+      out <- out + geom_point(data = bstRes,
+                              x = as.numeric(bstRes[, dnm[2]]),
+                              y = as.numeric(bstRes[, dnm[1]]),
+                              colour = ifelse(p == 1, "red", "black"),
+                              size = 4, shape = 5)
 
     if(output == "layered") {
       if(p >= 2) {
@@ -127,9 +131,9 @@ ggplot.train <- function(data = NULL, metric = data$metric[1], plotType = "scatt
       out <- out + geom_tile()
       if(p == 3)
         out <- out + facet_wrap(as.formula(paste("~", dnm[4])))
-        
-      # incorrect facet_wrap call for p == 4 ? fixed errors for p >= 4  
-      if(p == 4) 
+
+      # incorrect facet_wrap call for p == 4 ? fixed errors for p >= 4
+      if(p == 4)
         out <- out + facet_grid(as.formula(paste(dnm[4], "~", dnm[5])))
       if(p > 4) stop("The function can only handle <= 4 tuning parameters for level plots. Use output = 'ggplot' to create your own")
 

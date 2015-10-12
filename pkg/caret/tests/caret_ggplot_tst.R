@@ -2,6 +2,7 @@ rm(list = ls())
 
 devtools::install_github('topepo/caret/pkg/caret')
 require(caret)
+require(grid)
 
 library(mlbench)
 data(BostonHousing)
@@ -10,8 +11,8 @@ set.seed(1)
 # Create models to check plots with different number of tuning parameters
 mdl.avNNet <- train(medv ~ ., data = BostonHousing, "avNNet",
                  trControl=trainControl(method = "repeatedcv"))
-mdl.bartMachine <- train(medv ~ ., data = BostonHousing, "bartMachine",
-                    trControl=trainControl(method = "repeatedcv"))
+# mdl.bartMachine <- train(medv ~ ., data = BostonHousing, "bartMachine",
+#                     trControl=trainControl(method = "repeatedcv"))
 mdl.dnn <- train(medv ~ ., data = BostonHousing, "dnn",
                     trControl=trainControl(method = "repeatedcv"),
                  tuneGrid=expand.grid(layer1=c(1, 2, 3),
@@ -49,31 +50,68 @@ print(subset(mdls.df, model %in% c("dnn")))
 source("../R/confusionMatrix.R")
 source("../R/ggplot.R")
 # nParams == 0
-ggplot(mdl.glm, plotType = "scatter")
-ggplot(mdl.glm, plotType = "level")
+#ggplot(mdl.glm, plotType = "scatter")
+#ggplot(mdl.glm, plotType = "level")
 
 # nParams == 1
-ggplot(mdl.rpart, plotType = "scatter")
-ggplot(mdl.rpart, plotType = "level")
+gp.sct.nohi.rpart <- ggplot(mdl.rpart, plotType = "scatter")
+gp.sct.yshi.rpart <- ggplot(mdl.rpart, plotType = "scatter", highBestTune = TRUE)
+#gp.lvl.rpart      <- ggplot(mdl.rpart, plotType = "level")
 
-ggplot(mdl.rf.rcv)
-ggplot(mdl.rf.oob)
+grid.newpage()
+pushViewport(viewport(layout = grid.layout(2, 2)))
+print(ggplot(mdl.rf.rcv),   vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
+print(ggplot(mdl.rf.rcv, highBestTune = TRUE),
+                            vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
+print(ggplot(mdl.rf.oob),   vp = viewport(layout.pos.row = 2, layout.pos.col = 1))
+print(ggplot(mdl.rf.oob, highBestTune = TRUE),
+                            vp = viewport(layout.pos.row = 2, layout.pos.col = 2))
 
 # nParams == 2
-ggplot(mdl.glmnet, plotType = "scatter")
-ggplot(mdl.glmnet, plotType = "level")
+gp.sct.nohi.glmnet <- ggplot(mdl.glmnet, plotType = "scatter")
+gp.sct.yshi.glmnet <- ggplot(mdl.glmnet, plotType = "scatter", highBestTune = TRUE)
+gp.lvl.glmnet      <- ggplot(mdl.glmnet, plotType = "level")
 
 # nParams == 3
-ggplot(mdl.svmPoly, plotType = "scatter")
-ggplot(mdl.svmPoly, plotType = "level")
+gp.sct.nohi.svmPoly <- ggplot(mdl.svmPoly, plotType = "scatter")
+gp.sct.yshi.svmPoly <- ggplot(mdl.svmPoly, plotType = "scatter", highBestTune = TRUE)
+gp.lvl.svmPoly      <- ggplot(mdl.svmPoly, plotType = "level")
 
 # nParams == 4
-ggplot(mdl.gbm, plotType = "scatter")
-ggplot(mdl.gbm, plotType = "level")
+gp.sct.nohi.gbm <- ggplot(mdl.gbm, plotType = "scatter")
+gp.sct.yshi.gbm <- ggplot(mdl.gbm, plotType = "scatter", highBestTune = TRUE)
+gp.lvl.gbm      <- ggplot(mdl.gbm, plotType = "level")
 
 # nParams == 5
-ggplot(mdl.dnn, plotType = "scatter")
-ggplot(mdl.dnn, plotType = "level")
+#ggplot(mdl.dnn, plotType = "scatter")
+#ggplot(mdl.dnn, plotType = "level")
+
+#png("scatter_nohighlight.png", width = 480 * 2, height = 480)
+grid.newpage()
+pushViewport(viewport(layout = grid.layout(2, 2)))
+print(gp.sct.nohi.rpart,   vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
+print(gp.sct.nohi.glmnet,  vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
+print(gp.sct.nohi.svmPoly, vp = viewport(layout.pos.row = 2, layout.pos.col = 1))
+print(gp.sct.nohi.gbm,     vp = viewport(layout.pos.row = 2, layout.pos.col = 2))
+#dev.off()
+
+#png("scatter_yshighlight.png", width = 480 * 2, height = 480)
+grid.newpage()
+pushViewport(viewport(layout = grid.layout(2, 2)))
+print(gp.sct.yshi.rpart,   vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
+print(gp.sct.yshi.glmnet,  vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
+print(gp.sct.yshi.svmPoly, vp = viewport(layout.pos.row = 2, layout.pos.col = 1))
+print(gp.sct.yshi.gbm,     vp = viewport(layout.pos.row = 2, layout.pos.col = 2))
+#dev.off()
+
+#png("level.png", width = 480 * 2, height = 480)
+grid.newpage()
+pushViewport(viewport(layout = grid.layout(2, 2)))
+#print(gp.lvl.rpart,   vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
+print(gp.lvl.glmnet,  vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
+print(gp.lvl.svmPoly, vp = viewport(layout.pos.row = 2, layout.pos.col = 1))
+print(gp.lvl.gbm,     vp = viewport(layout.pos.row = 2, layout.pos.col = 2))
+#dev.off()
 
 sessionInfo()
 
