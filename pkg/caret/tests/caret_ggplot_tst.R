@@ -1,7 +1,9 @@
 rm(list = ls())
+setwd("~/Documents/Work/PullRequests/caret/pkg/caret/tests")
 
 devtools::install_github('topepo/caret/pkg/caret')
 require(caret)
+print(packageVersion("caret"))
 require(grid)
 
 library(mlbench)
@@ -102,6 +104,8 @@ print(gp.sct.yshi.rpart,   vp = viewport(layout.pos.row = 1, layout.pos.col = 1)
 print(gp.sct.yshi.glmnet,  vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
 print(gp.sct.yshi.svmPoly, vp = viewport(layout.pos.row = 2, layout.pos.col = 1))
 print(gp.sct.yshi.gbm,     vp = viewport(layout.pos.row = 2, layout.pos.col = 2))
+
+print(gp.sct.yshi.svmPoly + scale_x_log10())
 #dev.off()
 
 #png("level.png", width = 480 * 2, height = 480)

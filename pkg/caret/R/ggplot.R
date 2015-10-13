@@ -72,28 +72,18 @@ ggplot.train <- function(data = NULL, metric = data$metric[1], plotType = "scatt
         dat[, strip_vars[i]] <- factor(paste(strip_lab[i], dat[, strip_vars[i]], sep = ": "))
     }
 
-    # If a parameter is assigned to a facet panel, it needs to be converted to a factor
-    #   otherwise, highlighting the bestTune parameters in a facet creates an extraneous panel
-    #   potentially, a bug in ggplot ?
-    if (p >= 3)
-      for (col in 1:(p-2)) {
-        lvls <- as.character(unique(dat[, dnm[col+3]]))
-        dat[, dnm[col+3]] <- factor(dat[, dnm[col+3]], levels = lvls)
-        if (highBestTune)
-          bstRes[, dnm[col+3]] <- factor(bstRes[, dnm[col+3]], levels = lvls)
-      }
-
     out <- ggplot(dat, aes_string(x = dnm[2], y = dnm[1]))
     out <- out + ylab(resampText)
 
     # names(dat)[.] changed to dnm[.] to make the code more readable & (marginally) efficient
     out <- out + xlab(paramData$label[paramData$parameter == dnm[2]])
-    if (highBestTune)
+    if (highBestTune) {
+      bstRes$.col <- ifelse(p == 1, "red", "black")
       out <- out + geom_point(data = bstRes,
-                              x = as.numeric(bstRes[, dnm[2]]),
-                              y = as.numeric(bstRes[, dnm[1]]),
-                              colour = ifelse(p == 1, "red", "black"),
+                              aes_string(x = dnm[2], y = dnm[1], color = ".col"),
                               size = 4, shape = 5)
+      out <- out + guides(color = "none")
+    }
 
     if(output == "layered") {
       if(p >= 2) {
