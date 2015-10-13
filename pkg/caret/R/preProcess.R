@@ -7,7 +7,9 @@ ppMethods <- c("BoxCox", "YeoJohnson", "expoTrans",
                "knnImpute", "bagImpute", "medianImpute", 
                "pca", "ica", 
                "spatialSign", 
-               "ignore", "keep", "zv", "nzv")
+               "ignore", "keep", 
+               "remove", 
+               "zv", "nzv")
 
 preProcess <- function(x, ...) UseMethod("preProcess")
 
@@ -40,8 +42,31 @@ preProcess.default <- function(x, method = c("center", "scale"),
     row.norm <- if(is.null(list(...)$row.norm)) FALSE else list(...)$row.norm
   }
   
-  ## ZV and NZV;
-  ## remove eliminated vars from other processing lists 
+  ## check for zero-variance predictors
+  if(any(names(method) == "zv")){
+    if(is.data.frame(x)) {
+      is_zv <- unlist(lapply(x[, !(colnames(x) %in% method$ignore), drop = FALSE], function(x) length(unique(x)) <= 1))
+    } else {
+      is_zv <- apply(x[, !(colnames(x) %in% method$ignore), drop = FALSE], 2, function(x) length(unique(x)) <= 1)
+    }
+    if(any(is_zv)) {
+      removed <- names(is_zv)[is_zv]
+      ## test to see what happens to ignored variables in the next line
+      method <- lapply(method, function(x, vars) x[!(x %in% vars)], vars = removed)
+      method$remove <- unique(c(method$remove, removed))
+    }
+    method$zv <- NULL
+  }
+  ## check for near-zero-variance predictors
+  if(any(names(method) == "nzv")){
+    is_nzv <- nearZeroVar(x[, !(colnames(x) %in% method$ignore), drop = FALSE])
+    if(length(is_nzv) > 0) {
+      removed <- colnames(x[, !(colnames(x) %in% method$ignore), drop = FALSE])[is_nzv]
+      method <- lapply(method, function(x, vars) x[!(x %in% vars)], vars = removed)
+      method$remove <- unique(c(method$remove, removed))
+    }
+    method$nzv <- NULL
+  }  
   
   if(any(names(method) == "BoxCox")) {
     bc <- group_bc(x[, method$BoxCox, drop = FALSE],
@@ -234,6 +259,13 @@ predict.preProcess <- function(object, newdata, ...) {
   dataNames <- colnames(newdata)
   oldClass <- class(newdata)
   
+  if(!is.null(object$method$remove)) {
+    if(length(object$method$remove) > 0)
+      newdata <- newdata[, !(colnames(newdata) %in% object$method$remove), drop = FALSE]
+    if(ncol(newdata) == 0)
+      stop("All predctors were removed as determined by `preProcess`")
+  }
+  
   if(!is.null(object$bc)) {
     lam <- unlist(lapply(object$bc, function(x) x$lambda))
     lamIndex <- which(!is.na(lam))
@@ -401,7 +433,6 @@ print.preProcess <- function(x, ...) {
       pp_num["spatialSign"] <- pp_num["spatialSign"] + x$numComp     
   }
   pp <- paste0("  - ", names(x$method), " (", pp_num, ")\n")  
-  if("ignore" %in% names(x$method)) pp <- pp[names(x$method) != "ignore"]
   pp <- pp[order(pp)]
   pp <- gsub("BoxCox", "Box-Cox transformation", pp)
   pp <- gsub("YeoJohnson", "Yeo-Johnson transformation", pp)    
@@ -415,6 +446,8 @@ print.preProcess <- function(x, ...) {
   pp <- gsub("bagImpute", "bagged tree imputation", pp)  
   pp <- gsub("medianImpute", "median imputation", pp)    
   pp <- gsub("range", "re-scaling to [0, 1]", pp)  
+  pp <- gsub("remove", "removed", pp)  
+  pp <- gsub("ignore", "ignored", pp)  
   
   cat("Pre-processing:\n")
   cat(pp, sep = "")
@@ -462,8 +495,6 @@ print.preProcess <- function(x, ...) {
   }
 }
 
-
-
 nnimp <- function(new, old, k, foo) {
   requireNamespaceQuietStop("RANN")
   if(all(is.na(new)))
@@ -474,8 +505,8 @@ nnimp <- function(new, old, k, foo) {
   colnames(new) <- nms
   non_missing_cols <- cols2
   nn <- RANN::nn2(old[, non_missing_cols, drop = FALSE],
-            new[, non_missing_cols, drop = FALSE],
-            k = k)
+                  new[, non_missing_cols, drop = FALSE],
+                  k = k)
   tmp <- old[nn$nn.idx, -non_missing_cols, drop = FALSE]
   subs <- apply(tmp, 2, foo, na.rm = TRUE)
   new[, -non_missing_cols] <- subs
@@ -490,10 +521,10 @@ bagImp <- function(var, x, B = 10) {
   ## training set.
   if(!is.data.frame(x)) x <- as.data.frame(x)
   mod <- ipred::bagging(as.formula(paste(var, "~.")),
-                 data = x,
-                 nbagg = B,
-                 x = FALSE, 
-                 keepX = FALSE)
+                        data = x,
+                        nbagg = B,
+                        x = FALSE, 
+                        keepX = FALSE)
   trim_code <- getModelInfo("treebag", FALSE)[[1]]$trim
   list(var = var,
        model = trim_code(mod))
@@ -554,9 +585,9 @@ pre_process_options <- function(opts, vars) {
   }
   not_num <- unique(not_num)
   if(length(not_num) > 0) {
-#     warning((paste("These fields are not numeric and will not be pre-processed:",
-#                    paste("'", not_num, "'", sep = "", collapse = ", "))),
-#             immediate. = TRUE)
+    #     warning((paste("These fields are not numeric and will not be pre-processed:",
+    #                    paste("'", not_num, "'", sep = "", collapse = ", "))),
+    #             immediate. = TRUE)
     opts$ignore <- unique(c(opts$ignore, not_num))
   }
   
@@ -664,7 +695,7 @@ pre_process_options <- function(opts, vars) {
     opts$ignore <- unique(c(not_num_vars, opts$ignore)) else 
       opts$ignore <- not_num_vars
   ## TODO make sure that, if a var is in 'ignore' that it is nowhere else (and remove?)
-
+  
   list(opts = opts, wildcards = wildcards)
 }
 

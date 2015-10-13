@@ -28,7 +28,7 @@ preProcess(x, ...)
 
 \arguments{
   \item{x}{a matrix or data frame. Non-numeric predictors are allowed but will be ignored.}
-  \item{method}{a character vector specifying the type of processing. Possible values are "BoxCox", "YeoJohnson", "expoTrans", "center", "scale", "range", "knnImpute", "bagImpute", "medianImpute", pca", "ica" and "spatialSign" (see Details below)}
+  \item{method}{a character vector specifying the type of processing. Possible values are "BoxCox", "YeoJohnson", "expoTrans", "center", "scale", "range", "knnImpute", "bagImpute", "medianImpute", "pca", "ica", "spatialSign", "zv", and "nzv" (see Details below)}
   \item{thresh}{a cutoff for the cumulative percent of variance to be retained by PCA}
   \item{pcaComp}{the specific number of PCA components to keep. If specified, this over-rides \code{thresh}}
   \item{na.remove}{a logical; should missing values be removed from the calculations?}
@@ -43,11 +43,21 @@ preProcess(x, ...)
   \item{\dots}{additional arguments to pass to \code{\link[fastICA]{fastICA}}, such as \code{n.comp}}
 }
 \details{
-The Box-Cox, Yeo-Johnson and exponential transformations have been "repurposed" here: they are being used to transform the predictor variables. The Box-Cox transformation was developed for transforming the response variable while another method, the Box-Tidwell transformation, was created to estimate transformations of predictor data. However, the Box-Cox method is simpler, more computationally efficient and is equally effective for estimating power transformations. The Yeo-Johnson transformation is similar to the Box-Cox model but can accommodate predictors with zero and/or negative values (while the predictors values for the Box-Cox transformation must be strictly positive.) The exponential transformation of Manly (1976) can also be used for positive or negative data.
+In all cases, transformations and operations are estimated using the data in \code{x} and these operations are applied to new data using these values; nothing is recomputed when using the \code{predict} function. 
+
+
+The Box-Cox (\code{method = "BoxCox"}), Yeo-Johnson (\code{method = "YeoJohnson"}), and exponential transformations (\code{method = "expoTrans"})have been "repurposed" here: they are being used to transform the predictor variables. The Box-Cox transformation was developed for transforming the response variable while another method, the Box-Tidwell transformation, was created to estimate transformations of predictor data. However, the Box-Cox method is simpler, more computationally efficient and is equally effective for estimating power transformations. The Yeo-Johnson transformation is similar to the Box-Cox model but can accommodate predictors with zero and/or negative values (while the predictors values for the Box-Cox transformation must be strictly positive.) The exponential transformation of Manly (1976) can also be used for positive or negative data.
  
+\code{method = "center"} subtracts the mean of the predictor's data (again from the data in \code{x}) from the predictor values while \code{method = "scale"} divides by the standard deviation. 
+
 The "range" transformation scales the data to be within [0, 1]. If new samples have values larger or smaller than those in the training set, values will be outside of this range.
 
-The operations are applied in this order: Box-Cox/Yeo-Johnson transformation, centering, scaling, range, imputation, PCA, ICA then spatial sign. This is a departure from versions of \pkg{caret} prior to version 4.76 (where imputation was done first) and is not backwards compatible if bagging was used for imputation.
+Predictors that are not numeric are ignored in the calculations.
+
+\code{method = "zv"} identifies numeric predictor columns with a single value (i.e. having zero variance) and excludes them from further calculations. Similarly, \code{method = "nzv"} does the same by applying \code{\link{nearZeroVar}} with the default parameters to exclude "near zero-variance" predictors. 
+
+
+The operations are applied in this order: zero-variance filter, near-zero variance filter, Box-Cox/Yeo-Johnson/exponential transformation, centering, scaling, range, imputation, PCA, ICA then spatial sign. This is a departure from versions of \pkg{caret} prior to version 4.76 (where imputation was done first) and is not backwards compatible if bagging was used for imputation.
 
 If PCA is requested but centering and scaling are not, the values will still be centered and scaled. Similarly, when ICA is requested, the data are automatically centered and scaled.
 
@@ -55,13 +65,14 @@ k-nearest neighbor imputation is carried out by finding the k closest samples (E
 
 A warning is thrown if both PCA and ICA are requested. ICA, as implemented by the \code{\link[fastICA]{fastICA}} package automatically does a PCA decomposition prior to finding the ICA scores.
 
-The function will throw an error of any numeric variables in \code{x} has less than two unique values. 
+The function will throw an error of any numeric variables in \code{x} has less than two unique values unless either \code{method = "zv"} or \code{method = "nzv"} are invoked.
 
 Non-numeric data will not be pre-processed and there values will be in the data frame produced by the \code{predict} function. Note that when PCA or ICA is used, the non-numeric columns may be in different positions when predicted. 
 }
 \value{
 \code{preProcess} results in a list with elements
   \item{call}{the function call}
+  \item{method}{a named list of operations and the variables used for each	}
   \item{dim}{the dimensions of \code{x}}
   \item{bc}{Box-Cox transformation values, see \code{\link{BoxCoxTrans}}}
   \item{mean}{a vector of means (if centering was requested)}
@@ -79,7 +90,7 @@ Non-numeric data will not be pre-processed and there values will be in the data 
 
 \author{ Max Kuhn, median imputation by Zachary Mayer }
 
-\references{
+\references{ 
 \url{http://topepo.github.io/caret/preprocess.html}
 
 Kuhn and Johnson (2013), Applied Predictive Modeling, Springer, New York (chapter 4)

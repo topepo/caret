@@ -6,7 +6,8 @@
 
 \section{Changes in version 6.0-xx}{
 	\itemize{
-		\item \code{train} now throws an error for classification tasks where the outcome has a factor level with no observed data \issue{260}. 
+	\item \code{preProcess} can now remove predictors using zero- and near zero-variance filters via (\code{method} values of \code{"zv"} and \code{"nzv"}). When used, these filters are applied to numeric predictors prior to all other pre-processing operations.    
+	\item \code{train} now throws an error for classification tasks where the outcome has a factor level with no observed data \issue{260}. 
 	} 
 }
 
