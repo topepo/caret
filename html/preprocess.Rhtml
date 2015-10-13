@@ -82,9 +82,13 @@ theme1$plot.line$lty = 1
   <li><a href="#nzv">Zero- and Near Zero-Variance Predictors</a></li>
   <li><a href="#corr">Identifying Correlated Predictors</a></li>
   <li><a href="#lindep">Linear Dependencies</a></li>
-  <li><a href="#cs">Centering and Scaling</a></li>
-  <li><a href="#impute">Imputation</a></li>
-  <li><a href="#trans">Transforming Predictors</a></li>
+  <ul>
+    <li><a href="#pp">The <span class="mx funCall">preProcess</span> Function</a></li>
+    <li><a href="#cs">Centering and Scaling</a></li>
+    <li><a href="#impute">Imputation</a></li>
+    <li><a href="#trans">Transforming Predictors</a></li>
+  </ul>
+  <li><a href="#all">Putting It All Together</a></li>  
   <li><a href="#cent">Class Distance Calculations</a></li>  
  </ul>   
   
@@ -237,12 +241,21 @@ These types of dependencies can arise when large numbers of binary chemical fing
 </p>
 
 
-<div id="cs"></div> 
-<h1>Centering and Scaling</h1>
+<div id="pp"></div> 
+<h1>The <span class="mx funCall">preProcess</span> Function</h1>
+
 
 <p>
-The <span class="mx funCall">preProcess</span> class can be used for many operations on predictors, including centering and scaling. The function <span class="mx funCall">preProcess</span> estimates the required parameters for each operation and <span class="mx funCall">predict.preProcess</span> is used to apply them to specific data sets.
+The <span class="mx funCall">preProcess</span> class can be used for many operations on predictors, including centering and scaling. The function <span class="mx funCall">preProcess</span> estimates the required parameters for each operation and <span class="mx funCall">predict.preProcess</span> is used to apply them to specific data sets. This function can also be interfaces when calling the <span class="mx funCall">train</span> function. 
 </p>
+
+<p>
+Several types of techniques are described in the next few sections and then another example is used to demonstrate how multiple methods can be used. Note that, in all cases, the <span class="mx funCall">preProcess</span>  function estimates whatever it requires from a specific data set (e.g. the training set) and then applies these transformations to <i>any</i> data set without recomputing the values
+</p>
+
+<div id="cs"></div> 
+<h2>Centering and Scaling</h2>
+
 <p>
 In the example below, the half of the MDRR data are used to estimate the location and scale of the predictors. The function <span class="mx funCall">preProcess</span> doesn't actually pre-process the data. <span class="mx funCall">predict.preProcess</span> is used to pre-process this and other data sets.
 </p>
@@ -267,14 +280,14 @@ The <span class="mx funCall">preProcess</span> option <span class="mx arg">"rang
 </p>
 
 <div id="impute"></div> 
-<h1>Imputation</h1>
+<h2>Imputation</h2>
 
 <p>
 <span class="mx funCall">preProcess</span> can be used to impute data sets based only on information in the training set. One method of doing this is with K-nearest neighbors. For an arbitrary sample, the K closest neighbors are found in the training set and the value for the  predictor is imputed using these values (e.g. using the mean). Using this approach will automatically trigger <span class="mx funCall">preProcess</span> to center and scale the data, regardless of what is in the <span class="mx arg">method</span> argument. Alternatively, bagged trees can also be used to impute. For each predictor in the data, a bagged tree is created using all of the other predictors in the training set. When a new sample has a missing predictor value, the bagged model is used to predict the value. While, in theory, this is a more powerful method of imputing, the computational costs are much higher than the nearest neighbor technique.
 </p>
 
 <div id="trans"></div> 
-<h1>Transforming Predictors</h1>
+<h2>Transforming Predictors</h2>
 
 
 <p>In some cases, there is a need to use principal component analysis (PCA) to transform the data to a smaller sub&ndash;space where the new variable are uncorrelated with one another. The <span class="mx funCall">preProcess</span> class can apply this transformation by including <code>&quot;pca&quot;</code> in the <span class="mx arg">method</span> argument. Doing this will also force scaling of the predictors. Note that when PCA is requested, <span class="mx funCall">predict.preProcess</span> changes the column names to <code>PC1</code>,  <code>PC2</code> and so on.</p>
@@ -329,7 +342,54 @@ preProcValues2
 not be transformed. This transformation requires the data to be greater than zero. Two similar transformations, the Yeo-Johnson and exponential transformation of Manly (1976) can also be used in <span class="mx funCall">preProcess</span>.
 </p>
 
+<div id="all"></div> 
+<h1>Putting It All Together</h1>
+<p>
+In <i>Applied Predictive Modeling</i> there is a case study where the execution times of jobs in a high performance computing environment are being predicted. The data are:
+</p>
 
+<!--begin.rcode hpc
+library(AppliedPredictiveModeling)
+data(schedulingData)
+str(schedulingData)
+    end.rcode-->
+
+<p>
+The data are a mix of categorical and numeric predictors. Suppose we want to use the Yeo-Johnson transformation on the continuous predictors then center and scale them. Let's also suppose that we will be running a tree-based models so we might want to keep the factors as factors (as opposed to creating dummy variables). We run the function on all the columns except the last, which is the outcome. 
+</p>    
+    
+<!--begin.rcode hpc_pp_factors
+pp_hpc <- preProcess(schedulingData[, -8], 
+                     method = c("center", "scale", "YeoJohnson"))
+pp_hpc
+transformed <- predict(pp_hpc, newdata = schedulingData[, -8])
+head(transformed)
+    end.rcode-->    
+    
+<p>
+The two predictors labeled as "ignored" in the output are the two factor predictors. These are not altered but the numeric predictors are transformed. However, the predictor for the number of pending jobs, has a very sparse and unbalanced distribution:
+</p>       
+ 
+<!--begin.rcode hpc_nzv
+mean(schedulingData$NumPending == 0)
+    end.rcode-->  
+    
+<p>
+For some other models, this might be an issue (especially if we resample or down-sample the data). We can add a filter to check for zero- or near zero-variance predictors prior to running the pre-processing calculations:
+</p>       
+  
+<!--begin.rcode hpc_pp_nzv
+pp_no_nzv <- preProcess(schedulingData[, -8], 
+                        method = c("center", "scale", "YeoJohnson", "nzv"))
+pp_no_nzv
+predict(pp_no_nzv, newdata = schedulingData[1:6, -8])
+    end.rcode-->  
+    
+<p>
+Note that one predictor is labeled as "removed" and the processed data lack the sparse predictor. 
+</p>      
+    
+    
 <div id="cent"></div> 
 <h1>Class Distance Calculations</h1>
 
