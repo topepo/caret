@@ -126,9 +126,9 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                     
                     out <- switch(modelFit$distribution$name,
                                   multinomial = {
-                                    ## The output is a 3D array that is
-                                    ## nxcx1
-                                    out[,,1]
+                                    out <- if(dim(out)[3] == 1) as.data.frame(out) else out[,,1]
+                                    colnames(out) <- modelFit$obsLevels
+                                    out
                                   },
                                   bernoulli =, adaboost =, huberized = {
                                     ## The data come back as an nx1 vector
