@@ -51,7 +51,6 @@ preProcess.default <- function(x, method = c("center", "scale"),
     }
     if(any(is_zv)) {
       removed <- names(is_zv)[is_zv]
-      ## test to see what happens to ignored variables in the next line
       method <- lapply(method, function(x, vars) x[!(x %in% vars)], vars = removed)
       method$remove <- unique(c(method$remove, removed))
     }
