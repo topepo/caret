@@ -6,8 +6,10 @@
 
 \section{Changes in version 6.0-xx}{
 	\itemize{
-	\item \code{preProcess} can now remove predictors using zero- and near zero-variance filters via (\code{method} values of \code{"zv"} and \code{"nzv"}). When used, these filters are applied to numeric predictors prior to all other pre-processing operations.    
-	\item \code{train} now throws an error for classification tasks where the outcome has a factor level with no observed data \issue{260}. 
+		\item \code{preProcess} can now remove predictors using zero- and near zero-variance filters via (\code{method} values of \code{"zv"} and \code{"nzv"}). When used, these filters are applied to numeric predictors prior to all other pre-processing operations.    
+		\item \code{train} now throws an error for classification tasks where the outcome has a factor level with no observed data \issue{260}. 
+		\item A bug was found and fixed in this package's class probability code for \code{gbm} models when a single multinomial observation is predicted \issue{274}.
+		\item A new option to \code{ggplot.train} was added that highlights the optimal tuning parameter setting in the cases where grid search is used. 
 	} 
 }
 
