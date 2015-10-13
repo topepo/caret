@@ -1,5 +1,5 @@
 ggplot.train <- function(data = NULL, metric = data$metric[1], plotType = "scatter", output = "layered",
-               nameInStrip = FALSE, highBestTune = FALSE, ...) {
+               nameInStrip = FALSE, highlight = FALSE, ...) {
   if(!(output %in% c("data", "layered", "ggplot"))) stop("'outout' should be either 'data', 'ggplot' or 'layered'")
   params <- data$modelInfo$parameters$parameter
   paramData <- data$modelInfo$parameters
@@ -54,13 +54,12 @@ ggplot.train <- function(data = NULL, metric = data$metric[1], plotType = "scatt
 
   if(plotType == "scatter") {
     # To highlight bestTune parameters in the plot
-    if (highBestTune) {
+    if (highlight) {
       bstRes <- data$results
       for (par in as.character(params))
         bstRes <- bstRes[which(bstRes[, par] == data$bestTune[, par]), ]
       if (nrow(bstRes) > 1)
         stop("problem in extracting model$bestTune row from model$results")
-      #print("bstRes:"); print(bstRes)
     }
 
     dnm <- names(dat)
@@ -79,7 +78,7 @@ ggplot.train <- function(data = NULL, metric = data$metric[1], plotType = "scatt
       for (col in 1:(p-2)) {
         lvls <- as.character(unique(dat[, dnm[col+3]]))
         dat[, dnm[col+3]] <- factor(dat[, dnm[col+3]], levels = lvls)
-        if (highBestTune)
+        if (highlight)
           bstRes[, dnm[col+3]] <- factor(bstRes[, dnm[col+3]], levels = lvls)
       }
 
@@ -88,11 +87,9 @@ ggplot.train <- function(data = NULL, metric = data$metric[1], plotType = "scatt
 
     # names(dat)[.] changed to dnm[.] to make the code more readable & (marginally) efficient
     out <- out + xlab(paramData$label[paramData$parameter == dnm[2]])
-    if (highBestTune)
+    if (highlight)
       out <- out + geom_point(data = bstRes,
-                              x = as.numeric(bstRes[, dnm[2]]),
-                              y = as.numeric(bstRes[, dnm[1]]),
-                              colour = ifelse(p == 1, "red", "black"),
+                              aes_string(x = dnm[2], y = dnm[1]),
                               size = 4, shape = 5)
 
     if(output == "layered") {
@@ -103,7 +100,7 @@ ggplot.train <- function(data = NULL, metric = data$metric[1], plotType = "scatt
         out <- out + scale_colour_discrete(name = leg_name) +
           scale_shape_discrete(name = leg_name)
       } else out <- out + geom_point() + geom_line()
-      ## TODO change legend (to blank when needed)
+
       if(p == 3)
         out <- out + facet_wrap(as.formula(paste("~", dnm[4])))
       if(p == 4)
