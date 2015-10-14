@@ -60,7 +60,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
     ctrl$indexOut <- c(list("AllData" = rep(0, nrow(x))),  ctrl$indexOut)
   }
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
-  
+  keep_pred <- isTRUE(ctrl$savePredictions) || ctrl$savePredictions %in% c("all", "final")
   pkgs <- c("methods", "caret")
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
   
@@ -253,9 +253,8 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       for(k in seq(along = predicted)) predicted[[k]] <- cbind(predicted[[k]], probValues[[k]])
     }
     
-    if(ctrl$savePredictions)
+    if(keep_pred)
     {
-      
       tmpPred <- predicted
       for(modIndex in seq(along = tmpPred))
       {
@@ -296,7 +295,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
     if(ctrl$classProbs) tmp <- cbind(tmp, probValues)
     tmp$rowIndex <- holdoutIndex
     
-    if(ctrl$savePredictions)
+    if(keep_pred)
     {
       tmpPred <- tmp
       tmpPred$rowIndex <- holdoutIndex
@@ -325,7 +324,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
 }
   
   resamples <- rbind.fill(result[names(result) == "resamples"])
-  pred <- if(ctrl$savePredictions)  rbind.fill(result[names(result) == "pred"]) else NULL
+  pred <- if(keep_pred)  rbind.fill(result[names(result) == "pred"]) else NULL
   if(ctrl$method %in% c("boot632"))
   {
     perfNames <- names(ctrl$summaryFunction(data.frame(obs = y, pred = sample(y), weights = 1),
@@ -365,7 +364,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
     }
   }
   
-  list(performance = out, resamples = resamples, predictions = if(ctrl$savePredictions) pred else NULL)
+  list(performance = out, resamples = resamples, predictions = if(keep_pred) pred else NULL)
 }
 
 

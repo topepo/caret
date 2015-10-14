@@ -158,6 +158,13 @@ train.default <- function(x, y,
     trControl$index <- trControl$index$model    
   }
   
+  if(is.logical(trControl$savePredictions)) {
+    trControl$savePredictions <- if(trControl$savePredictions) "all" else "none"
+  } else {
+    if(!(trControl$savePredictions %in% c("all", "final", "none")))
+       stop('`savePredictions` should be either logical or "all", "final" or "none"')
+  }
+  
   ## Create hold--out indicies
   if(is.null(trControl$indexOut) & trControl$method != "oob"){
     if(tolower(trControl$method) != "timeslice") {     
@@ -577,6 +584,9 @@ train.default <- function(x, y,
     finalModel$xData <- x
     finalModel$yData <- y
   }     
+  
+  if(trControl$savePredictions == "final") 
+    tmp$predictions <- merge(bestTune, tmp$predictions)
   
   endTime <- proc.time()
   times <- list(everything = endTime - startTime,

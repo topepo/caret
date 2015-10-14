@@ -10,6 +10,7 @@
 		\item \code{train} now throws an error for classification tasks where the outcome has a factor level with no observed data \issue{260}. 
 		\item A bug was found and fixed in this package's class probability code for \code{gbm} models when a single multinomial observation is predicted \issue{274}.
 		\item A new option to \code{ggplot.train} was added that highlights the optimal tuning parameter setting in the cases where grid search is used. 
+		\item In \code{trainControl}, the argument \cod{savePredictions} can now be character values (\code{"final"}, \code{"all"} or \code{"none"}). Logicals can still be used and match to  \code{"all"} or \code{"none"}. 
 	} 
 }
 

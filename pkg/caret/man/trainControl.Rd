@@ -38,8 +38,8 @@ trainControl(method = "boot",
   \item{repeats}{For repeated k-fold cross-validation only: the number of complete sets of folds to compute}
   \item{verboseIter}{A logical for printing a training log.}
   \item{returnData}{A logical for saving the data}
-  \item{returnResamp}{A character string indicating how much of the resampled summary metrics should be saved. Values can be ``final'', ``all'' or ``none''}
-  \item{savePredictions}{a logical to save the hold-out predictions for each resample}
+  \item{returnResamp}{A character string indicating how much of the resampled summary metrics should be saved. Values can be \code{"final"}, \code{"all"} or \code{"none"}}
+  \item{savePredictions}{an indicator of how much of the hold-out predictions for each resample should be saved. Values can be either \code{"all"}, \code{"final"}, or \code{"none"}. A logical value can also be used that convert to \code{"all"} (for true) or \code{"none"} (for false). \code{"final"} saves the predictions for the optimal tuning parameters. }
   \item{p}{For leave-group out cross-validation: the training percentage}
   \item{search}{Either \code{"grid"} or \code{"random"}, describing how the tuning parameter grid is determined. See details below.}
   \item{initialWindow, horizon, fixedWindow}{possible arguments to \code{\link{createTimeSlices}}}
