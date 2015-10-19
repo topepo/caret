@@ -2,15 +2,17 @@ modelInfo <- list(label = "Multi-Layer Perceptron",
                   library = "RSNNS",
                   loop = NULL,
                   type = c('Regression', 'Classification'),
-                  parameters = data.frame(parameter = c('size', 'decay'),
-                                          class = c('numeric', 'numeric'),
-                                          label = c('#Hidden Units', 'Weight Decay')),
+                  parameters = data.frame(parameter = c('layer1','layer2','layer3', 'decay'),
+                                          class = c('numeric','numeric','numeric', 'numeric'),
+                                          label = c('#Hidden Units layer1','#Hidden Units layer2','#Hidden Units layer3', 'Weight Decay')),
                   grid = function(x, y, len = NULL, search = "grid"){
                     if(search == "grid") {
-                      out <- expand.grid(size = ((1:len) * 2) - 1, 
+                      out <- expand.grid(layer1 = ((1:len) * 2) - 1, layer2 = 0, layer3 = 0, 
                                          decay = c(0, 10 ^ seq(-1, -4, length = len - 1)))
                     } else {
-                      out <- data.frame(size = sample(1:20, size = len, replace = TRUE), 
+                      out <- data.frame(layer1 = sample(2:20, replace = TRUE, size = len),
+                                        layer2 = sample(c(0, 2:20), replace = TRUE, size = len),
+                                        layer3 = sample(c(0, 2:20), replace = TRUE, size = len), 
                                         decay = 10^runif(len, min = -5, max = 1))
                     }
                     out
@@ -34,11 +36,22 @@ modelInfo <- list(label = "Multi-Layer Perceptron",
                       y <- RSNNS:::decodeClassLabels(y)
                       lin <- FALSE
                     } else lin <- TRUE
+                    
+                    if(param$layer1 == 0) stop("the first layer must have at least one hidden unit")
+                    if(param$layer2 == 0 & param$layer2 > 0) stop("the second layer must have at least one hidden unit if a third layer is specified")
+                    
+                    
+                    nodes <- c(param$layer1)
+                    if(param$layer2 > 0) {
+                      nodes <- c(nodes, param$layer2)
+                      if(param$layer3 > 0) nodes <- c(nodes, param$layer3)
+                    }
+                    
                     args <- list(x = x,
                                  y = y,
                                  learnFunc = "BackpropWeightDecay",
                                  learnFuncParams = prms,                                
-                                 size = param$size,
+                                 size = nodes,
                                  linOut = lin)
                     args <- c(args, theDots)
                     do.call("mlp", args)
@@ -58,4 +71,4 @@ modelInfo <- list(label = "Multi-Layer Perceptron",
                   },
                   levels = function(x) x$obsLevels,
                   tags = c("Neural Network","L2 Regularization"),
-                  sort = function(x) x[order(x$size, -x$decay),])
+                  sort = function(x) x[order(x$layer1, x$layer2, x$layer3, -x$decay),])
