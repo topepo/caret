@@ -4,13 +4,15 @@
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
 
-\section{Changes in version 6.0-xx}{
+\section{Changes in version 6.0-58}{
 	\itemize{
+		\item A major bug was fixed (found by Harlan Harris) where pre-processing objects created from versions of the package prior to 6.0-57 can give incorrect results when run with 6.0-57 \issue{282}.
 		\item \code{preProcess} can now remove predictors using zero- and near zero-variance filters via (\code{method} values of \code{"zv"} and \code{"nzv"}). When used, these filters are applied to numeric predictors prior to all other pre-processing operations.    
 		\item \code{train} now throws an error for classification tasks where the outcome has a factor level with no observed data \issue{260}. 
+		\item Character outcomes passed to \code{train} are not converted to factors. 
 		\item A bug was found and fixed in this package's class probability code for \code{gbm} models when a single multinomial observation is predicted \issue{274}.
-		\item A new option to \code{ggplot.train} was added that highlights the optimal tuning parameter setting in the cases where grid search is used. 
-		\item In \code{trainControl}, the argument \cod{savePredictions} can now be character values (\code{"final"}, \code{"all"} or \code{"none"}). Logicals can still be used and match to  \code{"all"} or \code{"none"}. 
+		\item A new option to \code{ggplot.train} was added that highlights the optimal tuning parameter setting in the cases where grid search is used (thanks to Balaji Iyengar (github: bdanalytics)). 
+		\item In \code{trainControl}, the argument \cod{savePredictions} can now be character values (\code{"final"}, \code{"all"} or \code{"none"}). Logicals can still be used and match to  \code{"all"} or \code{"none"}.  
 	} 
 }
 

@@ -255,6 +255,9 @@ preProcess.default <- function(x, method = c("center", "scale"),
 }
 
 predict.preProcess <- function(object, newdata, ...) {
+  if(is.vector(object$method) & !is.list(object$method))
+    object <- convert_method(object)
+  
   dataNames <- colnames(newdata)
   oldClass <- class(newdata)
   
@@ -808,3 +811,19 @@ group_yj <- function(x, numUnique, verbose) {
   yj[!is.null(yj) & !is.na(yj)]
 }
 
+convert_method <- function(x) {
+  new_method <- list()
+  if("center" %in% x$method)       new_method$center       <- names(x$mean)
+  if("scale" %in% x$method)        new_method$scale        <- names(x$std)
+  if("YeoJohnson" %in% x$method)   new_method$YeoJohnson   <- names(x$yj)  
+  if("expoTrans" %in% x$method)    new_method$expoTrans    <- names(x$et)    
+  if("BoxCox" %in% x$method)       new_method$BoxCox       <- names(x$bc)     
+  if("knnImpute" %in% x$method)    new_method$knnImpute    <- names(x$mean)
+  if("bagImpute" %in% x$method)    new_method$bagImpute    <- names(x$bagImp) 
+  if("medianImpute" %in% x$method) new_method$medianImpute <- names(x$median)   
+  if("pca" %in% x$method)          new_method$pca          <- names(x$mean)  
+  if("ica" %in% x$method)          new_method$ica          <- names(x$mean)    
+  if("spatialSign" %in% x$method)  new_method$spatialSign  <- names(x$mean)    
+  x$method <- new_method
+  x
+}
