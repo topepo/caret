@@ -12,7 +12,7 @@
 		\item Character outcomes passed to \code{train} are not converted to factors. 
 		\item A bug was found and fixed in this package's class probability code for \code{gbm} models when a single multinomial observation is predicted \issue{274}.
 		\item A new option to \code{ggplot.train} was added that highlights the optimal tuning parameter setting in the cases where grid search is used (thanks to Balaji Iyengar (github: bdanalytics)). 
-		\item In \code{trainControl}, the argument \cod{savePredictions} can now be character values (\code{"final"}, \code{"all"} or \code{"none"}). Logicals can still be used and match to  \code{"all"} or \code{"none"}.  
+		\item In \code{trainControl}, the argument \code{savePredictions} can now be character values (\code{"final"}, \code{"all"} or \code{"none"}). Logicals can still be used and match to  \code{"all"} or \code{"none"}.  
 	} 
 }
 
