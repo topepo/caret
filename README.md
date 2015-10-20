@@ -14,5 +14,5 @@ install.packages('caret')
 
 ## Install the development version from GitHub:
 ```r
-devtools::install_github('topepo/caret/pkg/caret')
+devtools::install_github('fjeze/caret/pkg/caret')
 ```
