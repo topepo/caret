@@ -15,6 +15,8 @@ train.default <- function(x, y,
                           tuneLength = 3) {
   startTime <- proc.time()
   
+  if(is.character(y)) y <- as.factor(y)
+  
   if(is.list(method)) {
     minNames <- c("library", "type", "parameters", "grid",
                   "fit", "predict", "prob")
