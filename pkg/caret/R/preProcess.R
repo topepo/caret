@@ -107,8 +107,13 @@ preProcess.default <- function(x, method = c("center", "scale"),
     if(verbose) 
       cat("Estimating exponential transformations for", 
           length(method$expoTrans), "predictors...")
-    et <- lapply(x[, method$expoTrans, drop = FALSE], 
-                 expoTrans.default, numUnique = numUnique)
+    if(is.data.frame(x)) {
+      et <- lapply(x[, method$expoTrans, drop = FALSE], 
+                   expoTrans.default, numUnique = numUnique)
+    } else {
+      et <- apply(x[, method$expoTrans, drop = FALSE], 2,
+                   expoTrans.default, numUnique = numUnique)
+    }
     if(verbose) cat(" applying them to training data\n")
     omit_expo <- NULL
     for(i in names(et)) {
