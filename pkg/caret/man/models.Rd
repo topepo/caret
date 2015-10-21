@@ -42,7 +42,7 @@ For classification using packages \pkg{adabag} and \pkg{plyr} with tuning parame
 
 \strong{Bagged CART} (\code{method = 'treebag'})
 
-For classification and regression using packages \pkg{ipred} and \pkg{plyr} with no tuning parameters
+For classification and regression using packages \pkg{ipred}, \pkg{plyr} and \pkg{e1071} with no tuning parameters
 
 
 
@@ -97,6 +97,18 @@ For classification and regression using package \pkg{caret} with tuning paramete
 }
 
 
+\strong{Bayesian Additive Regression Trees} (\code{method = 'bartMachine'})
+
+For classification and regression using package \pkg{bartMachine} with tuning parameters:
+\itemize{
+\item Number of Trees (\code{num_trees}, numeric)
+\item Prior Boundary (\code{k}, numeric)
+\item Base Terminal Node Hyperparameter (\code{alpha}, numeric)
+\item Power Terminal Node Hyperparameter (\code{beta}, numeric)
+\item Degrees of Freedom (\code{nu}, numeric)
+}
+
+
 \strong{Bayesian Generalized Linear Model} (\code{method = 'bayesglm'})
 
 For classification and regression using package \pkg{arm} with no tuning parameters
@@ -147,7 +159,7 @@ For classification and regression using package \pkg{mboost} with tuning paramet
 }
 
 
-\strong{Boosted Linear Model} (\code{method = 'bstLs'})
+\strong{Boosted Linear Model} (\code{method = 'BstLm'})
 
 For classification and regression using packages \pkg{bst} and \pkg{plyr} with tuning parameters:
 \itemize{
@@ -290,6 +302,27 @@ For regression using package \pkg{Cubist} with tuning parameters:
 }
 
 
+\strong{Distance Weighted Discrimination with Polynomial Kernel} (\code{method = 'dwdPoly'})
+
+For classification using package \pkg{kerndwd} with tuning parameters:
+\itemize{
+\item Regularization Parameter (\code{lambda}, numeric)
+\item q (\code{qval}, numeric)
+\item Polynomial Degree (\code{degree}, numeric)
+\item Scale (\code{scale}, numeric)
+}
+
+
+\strong{Distance Weighted Discrimination with Radial Basis Function Kernel} (\code{method = 'dwdRadial'})
+
+For classification using packages \pkg{kernlab} and \pkg{kerndwd} with tuning parameters:
+\itemize{
+\item Regularization Parameter (\code{lambda}, numeric)
+\item q (\code{qval}, numeric)
+\item Sigma (\code{sigma}, numeric)
+}
+
+
 \strong{Dynamic Evolving Neural-Fuzzy Inference System } (\code{method = 'DENFIS'})
 
 For regression using package \pkg{frbs} with tuning parameters:
@@ -419,7 +452,7 @@ For classification using package \pkg{frbs} with tuning parameters:
 }
 
 
-\strong{Fuzzy Rules via MOGUL} (\code{method = 'GFS.FR.MOGAL'})
+\strong{Fuzzy Rules via MOGUL} (\code{method = 'GFS.FR.MOGUL'})
 
 For regression using package \pkg{frbs} with tuning parameters:
 \itemize{
@@ -599,6 +632,19 @@ For classification and regression with tuning parameters:
 }
 
 
+\strong{Knn regression via sklearn.neighbors.KNeighborsRegressor} (\code{method = 'pythonKnnReg'})
+
+For regression using package \pkg{rPython} with tuning parameters:
+\itemize{
+\item Number of Neighbors (\code{n_neighbors}, numeric)
+\item Weight Function (\code{weights}, character)
+\item Algorithm (\code{algorithm}, character)
+\item Leaf Size (\code{leaf_size}, numeric)
+\item Distance Metric (\code{metric}, character)
+\item p (\code{p}, numeric)
+}
+
+
 \strong{Learning Vector Quantization} (\code{method = 'lvq'})
 
 For classification using package \pkg{class} with tuning parameters:
@@ -670,6 +716,15 @@ For classification using packages \pkg{klaR} and \pkg{MASS} with tuning paramete
 }
 
 
+\strong{Linear Distance Weighted Discrimination} (\code{method = 'dwdLinear'})
+
+For classification using package \pkg{kerndwd} with tuning parameters:
+\itemize{
+\item Regularization Parameter (\code{lambda}, numeric)
+\item q (\code{qval}, numeric)
+}
+
+
 \strong{Linear Regression} (\code{method = 'lm'})
 
 For regression with no tuning parameters
@@ -704,6 +759,14 @@ For regression using package \pkg{leaps} with tuning parameters:
 
 For regression using package \pkg{MASS} with no tuning parameters
 
+
+
+\strong{Localized Linear Discriminant Analysis} (\code{method = 'loclda'})
+
+For classification using package \pkg{klaR} with tuning parameters:
+\itemize{
+\item Number of Nearest Neighbors (\code{k}, numeric)
+}
 
 
 \strong{Logic Regression} (\code{method = 'logreg'})
@@ -809,6 +872,22 @@ For classification using package \pkg{klaR} with tuning parameters:
 }
 
 
+\strong{Naive Bayes Classifier} (\code{method = 'nbDiscrete'})
+
+For classification using package \pkg{bnclassify} with tuning parameters:
+\itemize{
+\item Smoothing Parameter (\code{smooth}, numeric)
+}
+
+
+\strong{Naive Bayes Classifier with Attribute Weighting} (\code{method = 'awnb'})
+
+For classification using package \pkg{bnclassify} with tuning parameters:
+\itemize{
+\item Smoothing Parameter (\code{smooth}, numeric)
+}
+
+
 \strong{Nearest Shrunken Centroids} (\code{method = 'pam'})
 
 For classification using package \pkg{pamr} with tuning parameters:
@@ -843,6 +922,21 @@ For classification and regression using package \pkg{nnet} with tuning parameter
 \item Number of Hidden Units (\code{size}, numeric)
 \item Weight Decay (\code{decay}, numeric)
 }
+
+
+\strong{Non-Convex Penalized Quantile Regression} (\code{method = 'rqnc'})
+
+For regression using package \pkg{rqPen} with tuning parameters:
+\itemize{
+\item L1 Penalty (\code{lambda}, numeric)
+\item Penalty Type (\code{penalty}, character)
+}
+
+
+\strong{Non-Negative Least Squares} (\code{method = 'nnls'})
+
+For regression using package \pkg{nnls} with no tuning parameters
+
 
 
 \strong{Oblique Random Forest} (\code{method = 'ORFlog'})
@@ -886,6 +980,14 @@ For classification using package \pkg{oblique.tree} with tuning parameters:
 }
 
 
+\strong{Optimal Weighted Nearest Neighbor Classifier} (\code{method = 'ownn'})
+
+For classification using package \pkg{snn} with tuning parameters:
+\itemize{
+\item Number of Neighbors (\code{K}, numeric)
+}
+
+
 \strong{Ordered Logistic or Probit Regression} (\code{method = 'polr'})
 
 For classification using package \pkg{MASS} with no tuning parameters
@@ -894,7 +996,7 @@ For classification using package \pkg{MASS} with no tuning parameters
 
 \strong{Parallel Random Forest} (\code{method = 'parRF'})
 
-For classification and regression using package \pkg{randomForest} with tuning parameters:
+For classification and regression using packages \pkg{e1071} and \pkg{randomForest} with tuning parameters:
 \itemize{
 \item Number of Randomly Selected Predictors (\code{mtry}, numeric)
 }
@@ -1059,6 +1161,14 @@ For regression using package \pkg{qrnn} with tuning parameters:
 }
 
 
+\strong{Quantile Regression with LASSO penalty} (\code{method = 'rqlasso'})
+
+For regression using package \pkg{rqPen} with tuning parameters:
+\itemize{
+\item L1 Penalty (\code{lambda}, numeric)
+}
+
+
 \strong{Radial Basis Function Kernel Regularized Least Squares} (\code{method = 'krlsRadial'})
 
 For regression using packages \pkg{KRLS} and \pkg{kernlab} with tuning parameters:
@@ -1092,6 +1202,14 @@ For classification using package \pkg{rFerns} with tuning parameters:
 }
 
 
+\strong{Random Forest} (\code{method = 'ranger'})
+
+For classification and regression using packages \pkg{e1071} and \pkg{ranger} with tuning parameters:
+\itemize{
+\item Number of Randomly Selected Predictors (\code{mtry}, numeric)
+}
+
+
 \strong{Random Forest} (\code{method = 'rf'})
 
 For classification and regression using package \pkg{randomForest} with tuning parameters:
@@ -1106,6 +1224,15 @@ For classification and regression using package \pkg{extraTrees} with tuning par
 \itemize{
 \item Number of  Randomly Selected Predictors (\code{mtry}, numeric)
 \item Number of  Random Cuts (\code{numRandomCuts}, numeric)
+}
+
+
+\strong{Random Forest Rule-Based Model} (\code{method = 'rfRules'})
+
+For classification and regression using packages \pkg{randomForest}, \pkg{inTrees} and \pkg{plyr} with tuning parameters:
+\itemize{
+\item Number of Randomly Selected Predictors (\code{mtry}, numeric)
+\item Maximum Rule Depth (\code{maxdepth}, numeric)
 }
 
 
@@ -1264,6 +1391,25 @@ For classification using package \pkg{rocc} with tuning parameters:
 }
 
 
+\strong{Rotation Forest} (\code{method = 'rotationForest'})
+
+For classification using package \pkg{rotationForest} with tuning parameters:
+\itemize{
+\item Number of Variable Subsets (\code{K}, numeric)
+\item Ensemble Size (\code{L}, numeric)
+}
+
+
+\strong{Rotation Forest} (\code{method = 'rotationForestCp'})
+
+For classification using packages \pkg{rpart}, \pkg{plyr} and \pkg{rotationForest} with tuning parameters:
+\itemize{
+\item Number of Variable Subsets (\code{K}, numeric)
+\item Ensemble Size (\code{L}, numeric)
+\item Complexity Parameter (\code{cp}, numeric)
+}
+
+
 \strong{Rule-Based Classifier} (\code{method = 'JRip'})
 
 For classification using package \pkg{RWeka} with tuning parameters:
@@ -1300,6 +1446,18 @@ For classification and regression using package \pkg{kohonen} with tuning parame
 \item Columns (\code{ydim}, numeric)
 \item X Weight (\code{xweight}, numeric)
 \item Topology (\code{topo}, character)
+}
+
+
+\strong{Semi-Naive Structure Learner Wrapper} (\code{method = 'nbSearch'})
+
+For classification using package \pkg{bnclassify} with tuning parameters:
+\itemize{
+\item Number of Folds (\code{k}, numeric)
+\item Minimum Absolute Improvement (\code{epsilon}, numeric)
+\item Smoothing Parameter (\code{smooth}, numeric)
+\item Final Smoothing Parameter (\code{final_smooth}, numeric)
+\item Search Direction (\code{direction}, character)
 }
 
 
@@ -1345,6 +1503,15 @@ For classification using package \pkg{RWeka} with no tuning parameters
 
 
 
+\strong{Sparse Distance Weighted Discrimination} (\code{method = 'sdwd'})
+
+For classification using package \pkg{sdwd} with tuning parameters:
+\itemize{
+\item L1 Penalty (\code{lambda}, numeric)
+\item L2 Penalty (\code{lambda2}, numeric)
+}
+
+
 \strong{Sparse Linear Discriminant Analysis} (\code{method = 'sparseLDA'})
 
 For classification using package \pkg{sparseLDA} with tuning parameters:
@@ -1378,6 +1545,14 @@ For classification and regression using package \pkg{spls} with tuning parameter
 
 For classification using package \pkg{ipred} with no tuning parameters
 
+
+
+\strong{Stabilized Nearest Neighbor Classifier} (\code{method = 'snn'})
+
+For classification using package \pkg{snn} with tuning parameters:
+\itemize{
+\item Stabilization Parameter (\code{lambda}, numeric)
+}
 
 
 \strong{Stacked AutoEncoder Deep Neural Network} (\code{method = 'dnn'})
@@ -1470,6 +1645,14 @@ For classification and regression using package \pkg{kernlab} with tuning parame
 }
 
 
+\strong{Support Vector Machines with Linear Kernel} (\code{method = 'svmLinear2'})
+
+For classification and regression using package \pkg{e1071} with tuning parameters:
+\itemize{
+\item Cost (\code{cost}, numeric)
+}
+
+
 \strong{Support Vector Machines with Polynomial Kernel} (\code{method = 'svmPoly'})
 
 For classification and regression using package \pkg{kernlab} with tuning parameters:
@@ -1511,6 +1694,36 @@ For classification and regression using package \pkg{kernlab} with tuning parame
 For regression using package \pkg{elasticnet} with tuning parameters:
 \itemize{
 \item Fraction of Full Solution (\code{fraction}, numeric)
+}
+
+
+\strong{Tree Augmented Naive Bayes Classifier} (\code{method = 'tan'})
+
+For classification using package \pkg{bnclassify} with tuning parameters:
+\itemize{
+\item Score Function (\code{score}, character)
+\item Smoothing Parameter (\code{smooth}, numeric)
+}
+
+
+\strong{Tree Augmented Naive Bayes Classifier Structure Learner Wrapper} (\code{method = 'tanSearch'})
+
+For classification using package \pkg{bnclassify} with tuning parameters:
+\itemize{
+\item Number of Folds (\code{k}, numeric)
+\item Minimum Absolute Improvement (\code{epsilon}, numeric)
+\item Smoothing Parameter (\code{smooth}, numeric)
+\item Final Smoothing Parameter (\code{final_smooth}, numeric)
+\item Super-Parent (\code{sp}, logical)
+}
+
+
+\strong{Tree Augmented Naive Bayes Classifier with Attribute Weighting} (\code{method = 'awtan'})
+
+For classification using package \pkg{bnclassify} with tuning parameters:
+\itemize{
+\item Score Function (\code{score}, character)
+\item Smoothing Parameter (\code{smooth}, numeric)
 }
 
 
