@@ -135,8 +135,8 @@ predict.pcaNNet <- function(object, newdata, type = c("raw", "class", "prob"), .
     if(!is.null(object$names)) x <- x[, object$names, drop = FALSE]
 
     x <- predict(object$pc, x)
-    if(type %in% c("raw", "class")) {
-      out <- predict(object$model, x, type = type, ...)
+    if(type[1] %in% c("raw", "class")) {
+      out <- predict(object$model, x, type = type[1], ...)
     } else {
       out <- predict(object$model, x, type = "raw", ...)
       out <- t(apply(out, 1, function(x) x/sum(x)))

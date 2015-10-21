@@ -12,7 +12,7 @@ Run PCA on a dataset, then use it in a neural network model
 \method{pcaNNet}{formula}(formula, data, weights, ..., 
         thresh = .99, subset, na.action, contrasts = NULL)
 
-\method{predict}{pcaNNet}(object, newdata, type = c("raw", "class"), ...)
+\method{predict}{pcaNNet}(object, newdata, type = c("raw", "class", "prob"), ...)
 }
 
 \arguments{
