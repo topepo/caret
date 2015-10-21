@@ -90,7 +90,7 @@ print.pcaNNet <- function (x, ...)
   invisible(x)
 }
 
-predict.pcaNNet <- function(object, newdata, type = c("raw", "class"), ...)
+predict.pcaNNet <- function(object, newdata, type = c("raw", "class", "prob"), ...)
   {
     requireNamespaceQuietStop("nnet")
     if (!inherits(object, "pcaNNet")) 
@@ -132,11 +132,15 @@ predict.pcaNNet <- function(object, newdata, type = c("raw", "class"), ...)
         }
       }
 
-    if(!is.null(object$names))
-      {
-        x <- x[, object$names, drop = FALSE]
-      }
+    if(!is.null(object$names)) x <- x[, object$names, drop = FALSE]
+
     x <- predict(object$pc, x)
-    predict(object$model, x, type = type, ...)
+    if(type %in% c("raw", "class")) {
+      out <- predict(object$model, x, type = type, ...)
+    } else {
+      out <- predict(object$model, x, type = "raw", ...)
+      out <- t(apply(out, 1, function(x) x/sum(x)))
+    }
+    out
   }
 
