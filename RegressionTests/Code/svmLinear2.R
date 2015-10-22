@@ -17,35 +17,35 @@ cctrl3 <- trainControl(method = "none",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
 
 set.seed(849)
-test_class_cv_model <- train(trainX, trainY, 
-                             method = "svmLinear2", 
+test_class_cv_model <- train(trainX, trainY,
+                             method = "svmLinear2",
                              trControl = cctrl1,
-                             tuneGrid = data.frame(cost = c(.25, .5, 1)),
+                             tuneGrid = data.frame(cost = c(.25, .5, 1), gamma = c(.01,.1,1)),
                              preProc = c("center", "scale"))
 
 set.seed(849)
-test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = "svmLinear2", 
+test_class_cv_form <- train(Class ~ ., data = training,
+                            method = "svmLinear2",
                             trControl = cctrl1,
-                            tuneGrid = data.frame(cost = c(.25, .5, 1)),
+                            tuneGrid = data.frame(cost = c(.25, .5, 1), gamma = c(.01, .1, 1)),
                             preProc = c("center", "scale"))
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 
 set.seed(849)
-test_class_loo_model <- train(trainX, trainY, 
-                              method = "svmLinear2", 
+test_class_loo_model <- train(trainX, trainY,
+                              method = "svmLinear2",
                               trControl = cctrl2,
-                              tuneGrid = data.frame(cost = c(.25, .5, 1)),
+                              tuneGrid = data.frame(cost = c(.25, .5, 1), gamma = c(.01, .1, 1)),
                               preProc = c("center", "scale"))
 
 set.seed(849)
-test_class_none_model <- train(trainX, trainY, 
-                               method = "svmLinear2", 
+test_class_none_model <- train(trainX, trainY,
+                               method = "svmLinear2",
                                trControl = cctrl3,
                                tuneGrid = test_class_cv_model$bestTune,
-                               metric = "ROC", 
+                               metric = "ROC",
                                preProc = c("center", "scale"))
 
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
@@ -59,10 +59,10 @@ if(!all(levels(trainY) %in% test_levels))
 
 SLC14_1 <- function(n = 100) {
   dat <- matrix(rnorm(n*20, sd = 3), ncol = 20)
-  foo <- function(x) x[1] + sin(x[2]) + log(abs(x[3])) + x[4]^2 + x[5]*x[6] + 
+  foo <- function(x) x[1] + sin(x[2]) + log(abs(x[3])) + x[4]^2 + x[5]*x[6] +
     ifelse(x[7]*x[8]*x[9] < 0, 1, 0) +
-    ifelse(x[10] > 0, 1, 0) + x[11]*ifelse(x[11] > 0, 1, 0) + 
-    sqrt(abs(x[12])) + cos(x[13]) + 2*x[14] + abs(x[15]) + 
+    ifelse(x[10] > 0, 1, 0) + x[11]*ifelse(x[11] > 0, 1, 0) +
+    sqrt(abs(x[12])) + cos(x[13]) + 2*x[14] + abs(x[15]) +
     ifelse(x[16] < -1, 1, 0) + x[17]*ifelse(x[17] < -1, 1, 0) -
     2 * x[18] - x[19]*x[20]
   dat <- as.data.frame(dat)
@@ -77,39 +77,39 @@ testing <- SLC14_1(100)
 trainX <- training[, -ncol(training)]
 trainY <- training$y
 testX <- trainX[, -ncol(training)]
-testY <- trainX$y 
+testY <- trainX$y
 
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
 rctrl3 <- trainControl(method = "none")
 
 set.seed(849)
-test_reg_cv_model <- train(trainX, trainY, 
-                           method = "svmLinear2", 
+test_reg_cv_model <- train(trainX, trainY,
+                           method = "svmLinear2",
                            trControl = rctrl1,
-                           tuneGrid = data.frame(cost = c(.25, .5, 1)),
+                           tuneGrid = data.frame(cost = c(.25, .5, 1), gamma = c(.01, .1, 1)),
                            preProc = c("center", "scale"))
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
-test_reg_cv_form <- train(y ~ ., data = training, 
-                          method = "svmLinear2", 
+test_reg_cv_form <- train(y ~ ., data = training,
+                          method = "svmLinear2",
                           trControl = rctrl1,
-                          tuneGrid = data.frame(cost = c(.25, .5, 1)),
+                          tuneGrid = data.frame(cost = c(.25, .5, 1), gamma = c(.01, .1, 1)),
                           preProc = c("center", "scale"))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 
 set.seed(849)
-test_reg_loo_model <- train(trainX, trainY, 
+test_reg_loo_model <- train(trainX, trainY,
                             method = "svmLinear2",
                             trControl = rctrl2,
-                            tuneGrid = data.frame(cost = c(.25, .5, 1)),
+                            tuneGrid = data.frame(cost = c(.25, .5, 1), gamma = c(.01, .1, 1)),
                             preProc = c("center", "scale"))
 
 set.seed(849)
-test_reg_none_model <- train(trainX, trainY, 
-                             method = "svmLinear2", 
+test_reg_none_model <- train(trainX, trainY,
+                             method = "svmLinear2",
                              trControl = rctrl3,
                              tuneGrid = test_reg_cv_model$bestTune,
                              preProc = c("center", "scale"))
