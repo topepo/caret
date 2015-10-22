@@ -1,4 +1,4 @@
-setwd("/Users/Vincent/Desktop/Caret fork/models/files")
+setwd("~/Code/github/caret/models/files")
 modelFiles <- list.files(pattern = "\\.R$")
 
 models <- vector(mode = "list", length = length(modelFiles))
