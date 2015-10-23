@@ -96,7 +96,7 @@ Non-numeric data will not be pre-processed and there values will be in the data 
 Kuhn and Johnson (2013), Applied Predictive Modeling, Springer, New York (chapter 4)
 
 
-Kuhn (2008), Building predictive models in R using the caret (\url{http://www.jstatsoft.org/v28/i05/})
+Kuhn (2008), Building predictive models in R using the caret (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
 
 Box, G. E. P. and Cox, D. R. (1964) An analysis of transformations (with discussion). Journal of the Royal Statistical Society B, 26, 211-252.
 

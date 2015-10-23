@@ -57,7 +57,7 @@ parameters, this plot is created inside conditioning panels/facets.
 }
 \author{Max Kuhn}
 
-\references{Kuhn (2008), ``Building Predictive Models in R Using the caret'' (\url{http://www.jstatsoft.org/v28/i05/})}
+\references{Kuhn (2008), ``Building Predictive Models in R Using the caret'' (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})}
 
 \seealso{ \code{\link{train}}, \code{\link[lattice]{levelplot}}, \code{\link[lattice]{xyplot}}, \code{\link[lattice:xyplot]{stripplot}},  \code{\link[ggplot2]{ggplot}}}
 \examples{

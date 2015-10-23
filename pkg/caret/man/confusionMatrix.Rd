@@ -77,7 +77,7 @@ the function will reorder them to the order of the data and issue a warning.
 }
 \author{Max Kuhn}
 
-\references{Kuhn, M. (2008), ``Building predictive models in R using the caret package, '' \emph{Journal of Statistical Software}, (\url{http://www.jstatsoft.org/v28/i05/}).
+\references{Kuhn, M. (2008), ``Building predictive models in R using the caret package, '' \emph{Journal of Statistical Software}, (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf}).
 
 Altman,  D.G., Bland,  J.M. (1994) ``Diagnostic tests 1: sensitivity and specificity,'' \emph{British Medical Journal}, vol 308, 1552.
 

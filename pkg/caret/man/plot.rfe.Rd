@@ -36,7 +36,7 @@ a lattice or ggplot object
 }
 \author{Max Kuhn}
 
-\references{Kuhn (2008), ``Building Predictive Models in R Using the caret'' (\url{http://www.jstatsoft.org/v28/i05/})}
+\references{Kuhn (2008), ``Building Predictive Models in R Using the caret'' (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})}
 
 \seealso{ \code{\link{rfe}}, \code{\link[lattice]{xyplot}}, \code{\link[ggplot2]{ggplot}}}
 

@@ -71,7 +71,7 @@ The two extraction functions can be used to get the predictions and observed out
 }
 \author{Max Kuhn}
 
-\references{Kuhn (2008), ``Building Predictive Models in R Using the caret'' (\url{http://www.jstatsoft.org/v28/i05/})}
+\references{Kuhn (2008), ``Building Predictive Models in R Using the caret'' (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})}
 
 \seealso{\code{\link{plotObsVsPred}}, \code{\link{plotClassProbs}}, \code{\link{trainControl}}}
 

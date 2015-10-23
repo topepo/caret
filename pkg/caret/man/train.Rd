@@ -89,7 +89,7 @@ A variety of models are currently available and are enumerated by tag (i.e. thei
 
 \references{ \url{http://topepo.github.io/caret/training.html}
 
-Kuhn (2008), ``Building Predictive Models in R Using the caret'' (\url{http://www.jstatsoft.org/v28/i05/})}
+Kuhn (2008), ``Building Predictive Models in R Using the caret'' (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})}
 
 \seealso{\code{\link{models}}, \code{\link{trainControl}}, \code{\link{update.train}},
 \code{\link{modelLookup}},
