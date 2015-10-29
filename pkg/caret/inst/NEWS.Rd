@@ -7,7 +7,8 @@
 \section{Changes in version 6.0-xx}{
 	\itemize{
 		\item From the \cpkg{randonGLM} package, a model of the same name was added.
-		\item From \cpkg{monomvn} package, models for the Bayesian lasso and ridge regression were added. In the latter case, two methods were added. \code{blasso} creates predictions using the mean of the posterior distributions but sets some parameters specifically to zero based on the tuning parameter called \code{sparsity}. For example, when \code{sparsity = .5}, only coefficients where at least half the posterior estimates are nonzero are used. The other model,  \code{blassoAveraged}, makes predictions across all of the realizations in the posterior distribution without coercing any coefficients to zero. This is more consistent with Bayesian model averaging, but is unlikely to produce very sparse solutions.  
+		\item From \cpkg{monomvn} package, models for the Bayesian lasso and ridge regression were added. In the latter case, two methods were added. \code{blasso} creates predictions using the mean of the posterior distributions but sets some parameters specifically to zero based on the tuning parameter called \code{sparsity}. For example, when \code{sparsity = .5}, only coefficients where at least half the posterior estimates are nonzero are used. The other model,  \code{blassoAveraged}, makes predictions across all of the realizations in the posterior distribution without coercing any coefficients to zero. This is more consistent with Bayesian model averaging, but is unlikely to produce very sparse solutions. 
+		\item From the \cpkg{spikeslab} package, a regression model was added that emulates the procedure used by \code{cv.spikeslab} where the tuning variable is the number of retained predictors.  
 	} 
 }
 
