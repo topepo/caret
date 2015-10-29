@@ -74,9 +74,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                           tmp[[j+1]]  <-  predict(prunedFit, newdata)
                         }
                         if(is.matrix(tmp[[j+1]])) tmp[[j+1]]  <- tmp[[j+1]][,1]
-                        cat("\n\n")
                       }
-                      
                       out <- tmp
                     }
                     out            
