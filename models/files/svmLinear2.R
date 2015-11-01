@@ -4,15 +4,8 @@ modelInfo <- list(label = "Support Vector Machines with Linear Kernel",
                   parameters = data.frame(parameter = c('cost','gamma'),
                                           class = c("numeric",'numeric'),
                                           label = c("Cost",'Gamma')),
-                  grid = function(x, y, len = NULL, search = "grid") {
-                    if(search == "grid") {
-                      out <- data.frame(cost = 2 ^((1:len) - 3), gamma = 0)
-                    } else {
-                      out <- data.frame(cost = sample(2:20, replace = TRUE, size = len),
-                                        gamma = sample(1:10, replace = TRUE, size = len))
-                    }
-                    out
-                  },
+                  grid = function(x, y, len = NULL, search = "grid") data.frame(cost = 2 ^((1:len) - 3),
+                                                                                gamma =10^((1:len) - 5)),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(any(names(list(...)) == "probability") | is.numeric(y))
@@ -30,8 +23,8 @@ modelInfo <- list(label = "Support Vector Machines with Linear Kernel",
                                  probability = classProbs,
                                  ...)
                     }
-                    
-                    out            
+
+                    out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     predict(modelFit, newdata)
