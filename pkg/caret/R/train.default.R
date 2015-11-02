@@ -211,6 +211,13 @@ train.default <- function(x, y,
       rm(ppObj, pp)
     } else tuneGrid <- models$grid(x = x, y = y, len = tuneLength, search = trControl$search)
   }
+  
+  ## Check to make sure that there are tuning parameters in some cases
+  if(grepl("adaptive", trControl$method) & nrow(tuneGrid) == 1) {
+    stop(paste("For adaptive resampling, there needs to be more than one",
+               "tuning parameter for evaluation"))
+  }
+
   dotNames <- hasDots(tuneGrid, models)
   if(dotNames) colnames(tuneGrid) <- gsub("^\\.", "", colnames(tuneGrid))
   ## Check tuning parameter names
