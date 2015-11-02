@@ -34,7 +34,7 @@ gafs(x, ...)
 }
 
 \details{
-\code{\link{gafs}} conducts a supervised binary search of the predictor space using a genetic algorithm. See XXX and Scrucca (2012) for more details on genetic algorithms. 
+\code{\link{gafs}} conducts a supervised binary search of the predictor space using a genetic algorithm. See XXX and Scrucca (2013) for more details on genetic algorithms. 
 
 This function conducts the search of the feature space repeatedly within resampling iterations. First, the training data are split be whatever resampling method was specified in the control function. For example, if 10-fold cross-validation is selected, the entire genetic algorithm is conducted 10 separate times. For the first fold, nine tenths of the data are used in the search while the remaining tenth is used to estimate the external performance since these data points were not used in the search. 
 
@@ -72,7 +72,7 @@ an object of class \code{gafs}
 \references{
 Kuhn M and Johnson K (2013), Applied Predictive Modeling, Springer, Chapter 19 \url{http://appliedpredictivemodeling.com}
 
-Scrucca L (2012). GA: A Package for Genetic Algorithms in R. Journal of Statistical Software, 53(4), 1-37. \url{www.jstatsoft.org/v53/i04}
+Scrucca L (2013). GA: A Package for Genetic Algorithms in R. Journal of Statistical Software, 53(4), 1-37. \url{www.jstatsoft.org/v53/i04}
 
 \url{http://en.wikipedia.org/wiki/Jaccard_index}
 }
