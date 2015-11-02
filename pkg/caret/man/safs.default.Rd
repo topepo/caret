@@ -22,7 +22,7 @@ safs(x, ...)
 
 \details{
 
-\code{\link{safs}} conducts a supervised binary search of the predictor space using simulated annealing (SA). See XXX for more information on this search algorithm. 
+\code{\link{safs}} conducts a supervised binary search of the predictor space using simulated annealing (SA). See Kirkpatrick et al (1983) for more information on this search algorithm. 
 
 This function conducts the search of the feature space repeatedly within resampling iterations. First, the training data are split be whatever resampling method was specified in the control function. For example, if 10-fold cross-validation is selected, the entire simulated annealing search is conducted 10 separate times. For the first fold, nine tenths of the data are used in the search while the remaining tenth is used to estimate the external performance since these data points were not used in the search. 
 
@@ -65,6 +65,8 @@ an object of class \code{safs}
 \url{http://topepo.github.io/caret/SA.html}
 
 Kuhn and Johnson (2013), Applied Predictive Modeling, Springer
+
+Kirkpatrick, S., Gelatt, C. D., and Vecchi, M. P. (1983). Optimization by simulated annealing. Science, 220(4598), 671.
 }
 
 \author{Max Kuhn}
