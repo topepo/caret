@@ -67,7 +67,7 @@ The return value depends on the function.
 
 }
 \references{
-Scrucca L (2012). GA: A Package for Genetic Algorithms in R. Journal of Statistical Software, 53(4), 1-37.
+Scrucca L (2013). GA: A Package for Genetic Algorithms in R. Journal of Statistical Software, 53(4), 1-37.
 
 \url{cran.r-project.org/web/packages/GA/}
 
