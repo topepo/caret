@@ -326,7 +326,7 @@ train.default <- function(x, y,
     
     
     ## Set or check the seeds when needed
-    if(is.null(trControl$seeds)) {
+    if(is.null(trControl$seeds) | all(is.na(trControl$seeds)))  {
       seeds <- vector(mode = "list", length = length(trControl$index))
       seeds <- lapply(seeds, function(x) sample.int(n = 1000000, size = nrow(trainInfo$loop)))
       seeds[[length(trControl$index) + 1]] <- sample.int(n = 1000000, size = 1)

@@ -8,6 +8,7 @@ avNNet.formula <- function (formula, data, weights, ...,
                             repeats = 5,
                             bag= FALSE,
                             allowParallel = TRUE,
+                            seeds = sample.int(1e5, repeats),
                             subset, na.action, contrasts = NULL) 
 {
   m <- match.call(expand.dots = FALSE)
@@ -34,6 +35,7 @@ avNNet.formula <- function (formula, data, weights, ...,
                         repeats = repeats,
                         bag = bag,
                         allowParallel = allowParallel,
+                        seeds = seeds,
                         ...)
   res$terms <- Terms
   res$coefnames <- colnames(x)
@@ -44,7 +46,9 @@ avNNet.formula <- function (formula, data, weights, ...,
   res
 }
 
-avNNet.default <- function(x, y, repeats = 5, bag = FALSE, allowParallel = TRUE, ...)
+avNNet.default <- function(x, y, repeats = 5, 
+                           bag = FALSE, allowParallel = TRUE,
+                           seeds = sample.int(1e5, repeats), ...)
   {
     requireNamespaceQuietStop("nnet")
     ## check for factors
@@ -73,6 +77,7 @@ avNNet.default <- function(x, y, repeats = 5, bag = FALSE, allowParallel = TRUE,
         {
           if(theDots$trace) cat("\nFitting Repeat", i, "\n\n")
         } else cat("Fitting Repeat", i, "\n\n")
+      set.seed(as.integer(seeds[i]))
       if(bag)  ind <- sample(1:nrow(x), replace = TRUE)
       thisMod <- if(is.null(classLev)) nnet::nnet(x[ind,,drop = FALSE], y[ind], ...) else nnet::nnet(x[ind,,drop = FALSE], y[ind,], ...)
       thisMod$lev <- classLev
@@ -83,6 +88,7 @@ avNNet.default <- function(x, y, repeats = 5, bag = FALSE, allowParallel = TRUE,
     out <- list(model = mods,
                 repeats = repeats,
                 bag = bag,
+                seeds = seeds,
                 names = colnames(x))
     class(out) <- "avNNet"
     out
