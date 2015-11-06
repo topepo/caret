@@ -21,9 +21,9 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       out <- data.frame(nrounds = sample(1:1000, size = len*10, replace = TRUE),
                                         max_depth = sample(1:10, replace = TRUE, size = len),         
                                         eta = runif(len, min = .001, max = .6),
-                                        gamma = sample(1:10, replace = TRUE, size = len),
-                                        colsample_bytree = runif(len, min = .3, max = .7),
-                                        min_child_weight = sample(0:20, size = len, replace = TRUE))
+                                        gamma = sample(0:10, replace = TRUE, size = len*10),
+                                        colsample_bytree = runif(len*5, min = .3, max = .7),
+                                        min_child_weight = sample(0:20, size = len*5, replace = TRUE))
                       out$nrounds <- floor(out$nrounds)
                       out <- out[!duplicated(out),]
                     }
