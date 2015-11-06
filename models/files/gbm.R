@@ -70,7 +70,6 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                     out <- predict(modelFit, newdata, type = "response",
                                    n.trees = modelFit$tuneValue$n.trees)
                     out[is.nan(out)] <- NA
-                    
                     out <- switch(modelFit$distribution$name,
                                   multinomial = {
                                     ## The output is a 3D array that is
@@ -84,7 +83,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                                            modelFit$obsLevels[1], 
                                            modelFit$obsLevels[2])
                                   },
-                                  gaussian =, laplace =, tdist =, poisson = {
+                                  gaussian =, laplace =, tdist =, poisson =, quantile = {
                                     out
                                   })
                     
@@ -110,7 +109,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                                       tmp <- as.list(as.data.frame(tmp, stringsAsFactors = FALSE))
                                       c(list(out), tmp)
                                     },
-                                    gaussian =, laplace =, tdist =,  poisson =  {
+                                    gaussian =, laplace =, tdist =,  poisson =, quantile=  {
                                       ## an nxt matrix
                                       tmp <- as.list(as.data.frame(tmp))
                                       c(list(out), tmp)
