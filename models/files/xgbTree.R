@@ -14,7 +14,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       out <- expand.grid(max_depth = seq(1, len),
                                          nrounds = floor((1:len) * 50),
                                          eta = c(.3, .4),
-                                         gamma = c(.2, .7),
+                                         gamma = 0,
                                          colsample_bytree = c(.6, .8),
                                          min_child_weight = c(1))
                     } else {
