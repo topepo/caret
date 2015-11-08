@@ -1,31 +1,44 @@
 modelInfo <- list(label = "eXtreme Gradient Boosting",
                   library = c("xgboost", "plyr"),
                   type = c("Regression", "Classification"),
-                  parameters = data.frame(parameter = c('nrounds', 'max_depth', 'eta'),
-                                          class = rep("numeric", 3),
+                  parameters = data.frame(parameter = c('nrounds', 'max_depth', 'eta',
+                                                        'gamma', 'colsample_bytree',
+                                                        'min_child_weight'),
+                                          class = rep("numeric", 6),
                                           label = c('# Boosting Iterations', 'Max Tree Depth', 
-                                                    'Shrinkage')),
+                                                    'Shrinkage', "Minimum Loss Reduction",
+                                                    'Subsample Ratio of Columns',
+                                                    'Minimum Sum of Instance Weight')),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
                       out <- expand.grid(max_depth = seq(1, len),
                                          nrounds = floor((1:len) * 50),
-                                         eta = .3)
+                                         eta = c(.3, .4),
+                                         gamma = 0,
+                                         colsample_bytree = c(.6, .8),
+                                         min_child_weight = c(1))
                     } else {
                       out <- data.frame(nrounds = sample(1:1000, size = len*10, replace = TRUE),
                                         max_depth = sample(1:10, replace = TRUE, size = len),         
-                                        eta = runif(len, min = .001, max = .6))
+                                        eta = runif(len, min = .001, max = .6),
+                                        gamma = runif(len*10, min = 0, max = 10),
+                                        colsample_bytree = runif(len*5, min = .3, max = .7),
+                                        min_child_weight = sample(0:20, size = len*5, replace = TRUE))
                       out$nrounds <- floor(out$nrounds)
                       out <- out[!duplicated(out),]
                     }
                     out
                   },
                   loop = function(grid) {     
-                    loop <- ddply(grid, c("eta", "max_depth"),
+                    loop <- ddply(grid, c("eta", "max_depth", "gamma", "colsample_bytree", "min_child_weight"),
                                   function(x) c(nrounds = max(x$nrounds)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$nrounds)) {
                       index <- which(grid$max_depth == loop$max_depth[i] & 
-                                       grid$eta == loop$eta[i])
+                                       grid$eta == loop$eta[i] & 
+                                       grid$gamma == loop$gamma[i] &
+                                       grid$colsample_bytree == loop$colsample_bytree[i] &
+                                       grid$min_child_weight == loop$min_child_weight[i])
                       trees <- grid[index, "nrounds"] 
                       submodels[[i]] <- data.frame(nrounds = trees[trees != loop$nrounds[i]])
                     }    
@@ -37,7 +50,10 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                         y <- ifelse(y == lev[1], 1, 0) 
                         dat <- xgb.DMatrix(as.matrix(x), label = y)
                         out <- xgb.train(list(eta = param$eta, 
-                                              max_depth = param$max_depth), 
+                                              max_depth = param$max_depth,
+                                              gamma = param$gamma,
+                                              colsample_bytree = param$colsample_bytree,
+                                              min_child_weight = param$min_child_weight), 
                                          data = dat,
                                          nrounds = param$nrounds,
                                          objective = "binary:logistic",
@@ -46,7 +62,10 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                         y <- as.numeric(y) - 1
                         dat <- xgb.DMatrix(as.matrix(x), label = y)
                         out <- xgb.train(list(eta = param$eta, 
-                                              max_depth = param$max_depth), 
+                                              max_depth = param$max_depth,
+                                              gamma = param$gamma,
+                                              colsample_bytree = param$colsample_bytree,
+                                              min_child_weight = param$min_child_weight), 
                                          data = dat,
                                          num_class = length(lev),
                                          nrounds = param$nrounds,
@@ -56,7 +75,10 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     } else {
                       dat <- xgb.DMatrix(as.matrix(x), label = y)
                       out <- xgb.train(list(eta = param$eta, 
-                                            max_depth = param$max_depth), 
+                                            max_depth = param$max_depth,
+                                            gamma = param$gamma,
+                                            colsample_bytree = param$colsample_bytree,
+                                            min_child_weight = param$min_child_weight), 
                                        data = dat,
                                        nrounds = param$nrounds,
                                        objective = "reg:linear",
@@ -149,5 +171,5 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                   sort = function(x) {
                     # This is a toss-up, but the # trees probably adds
                     # complexity faster than number of splits
-                    x[order(x$nrounds, x$max_depth, x$eta),] 
+                    x[order(x$nrounds, x$max_depth, x$eta, x$gamma, x$colsample_bytree, x$min_child_weight),] 
                   })
