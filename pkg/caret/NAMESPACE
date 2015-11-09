@@ -484,6 +484,7 @@ S3method(levels, train)
 
 S3method(ggplot, train)
 S3method(ggplot, rfe)
+S3method(ggplot, varImp.train)
 
 S3method(oob_pred, train)
 S3method(oob_pred, rfe)

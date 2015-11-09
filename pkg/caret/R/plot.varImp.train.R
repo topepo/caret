@@ -41,3 +41,37 @@ function(x, top = dim(x$importance)[1],  ...)
    }
    impPlot
 }
+
+
+ggplot.varImp.train <- function (data, top = dim(data$importance)[1], ...)  {
+  plotObj <- sortImp(data, top)
+  if (ncol(plotObj) == 2) {
+    plotObj <- plotObj[, 1, drop = FALSE]
+    names(plotObj) <- "Importance"
+  }
+  featureNames <- rownames(plotObj)
+  outcomeNames <- colnames(plotObj)
+  if (ncol(plotObj) > 1) {
+    stackedData <- stack(plotObj)
+    stackedData$Feature <- factor(rep(featureNames, length(outcomeNames)), 
+                                  levels = rev(featureNames))
+    names(stackedData) <- c("Importance", "Class", "Feature")
+    ## to avoid R CMD check warnings: 
+#     ggplot.varImp.train: no visible binding for global variable 'Feature'
+#     ggplot.varImp.train: no visible binding for global variable 'Importance'
+    Feature <- Importance <- NULL
+    out <-  ggplot(stackedData, aes(x = Feature, y = Importance))+ 
+      geom_bar(stat = "identity") + facet_wrap(~Class) + 
+      coord_flip()
+  } else {
+    stackedData <- plotObj
+    stackedData$Feature <- factor(rep(featureNames, length(outcomeNames)), 
+                                  levels = rev(featureNames))
+    names(stackedData) <- c("Importance", "Feature")
+    out <-  ggplot(stackedData, aes(x = Feature, y = Importance))+ 
+      geom_bar(stat = "identity") + 
+      coord_flip()
+  }
+  out
+}
+
