@@ -26,9 +26,6 @@ modelInfo <- list(label = "Support Vector Machines with Class Weights",
                       names(wts) <- levels(y)
                     } else wts <- NULL
                     
-                    if(classProbs) warning(paste("kernlab does not currently use class weights when",
-                                                 "estimating class probabilities"))
-                    
                     if(any(names(list(...)) == "prob.model") | is.numeric(y))
                     {
                       out <- ksvm(x = as.matrix(x), y = y,
@@ -51,7 +48,27 @@ modelInfo <- list(label = "Support Vector Machines with Class Weights",
                   predict = function(modelFit, newdata, submodels = NULL) {
                     predict(modelFit, newdata)
                   },
-                  prob = NULL,
+                  prob = function(modelFit, newdata, submodels = NULL) {
+                    out <- try(predict(modelFit, newdata, type="probabilities"),
+                               silent = TRUE)
+                    if(class(out)[1] != "try-error")
+                    {
+                      ## There are times when the SVM probability model will
+                      ## produce negative class probabilities, so we
+                      ## induce vlaues between 0 and 1
+                      if(any(out < 0))
+                      {
+                        out[out < 0] <- 0
+                        out <- t(apply(out, 1, function(x) x/sum(x)))
+                      }
+                      out <- out[, lev(modelFit), drop = FALSE]
+                    } else {
+                      warning("kernlab class probability calculations failed; returning NAs")
+                      out <- matrix(NA, nrow(newdata) * length(lev(modelFit)), ncol = length(lev(modelFit)))
+                      colnames(out) <- lev(modelFit)
+                    }
+                    out
+                  },
                   predictors = function(x, ...){
                     if(hasTerms(x) & !is.null(x@terms))
                     {
