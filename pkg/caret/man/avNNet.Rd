@@ -8,9 +8,11 @@
 Aggregate several neural network models
 }
 \usage{
-\method{avNNet}{default}(x, y, repeats = 5, bag = FALSE, allowParallel = TRUE, ...)
+\method{avNNet}{default}(x, y, repeats = 5, bag = FALSE, 
+        allowParallel = TRUE, seeds = sample.int(1e+05, repeats), ...)
 \method{avNNet}{formula}(formula, data, weights, ..., 
         repeats = 5, bag = FALSE, allowParallel = TRUE,
+        seeds = sample.int(1e+05, repeats), 
         subset, na.action, contrasts = NULL)
 
 \method{predict}{avNNet}(object, newdata, type = c("raw", "class", "prob"), ...)
@@ -33,6 +35,7 @@ matrix or data frame of target values for examples.
 \item{repeats}{the number of neural networks with different random number seeds}
 
 \item{bag}{a logical for bagging for each repeat}
+\item{seeds}{random number seeds that can be set prior to bagging (if done) and network creation. This helps maintain reproducibility when models are run in parallel.}
 \item{allowParallel}{if a parallel backend is loaded and available, should the function use it?}
 
 \item{data}{
