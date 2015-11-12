@@ -10,13 +10,14 @@ This function produces lattice and ggplot plots of objects with class "varImp.tr
 \usage{
 \method{plot}{varImp.train}(x, top = dim(x$importance)[1],  ...)
 
-\method{ggplot}{varImp.train}(data, top = dim(data$importance)[1],  ...)
+\method{ggplot}{varImp.train}(data, mapping = NULL, top = dim(data$importance)[1],  ..., environment = NULL)
 }
 
 \arguments{
   \item{x, data}{an object with class \code{varImp}. }
   \item{top}{a scalar numeric that specifies the number of variables to be displayed (in order of importance)}
   \item{\dots}{arguments to pass to the lattice plot function (\code{\link[lattice:xyplot]{dotplot}} and \code{\link{panel.needle}})}
+  \item{mapping, environment}{unused arguments to make consistent with \pkg{ggplot2} generic method}
 }
 \details{
 For models where there is only one importance value, such a regression

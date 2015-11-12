@@ -1,5 +1,5 @@
-ggplot.train <- function(data = NULL, metric = data$metric[1], plotType = "scatter", output = "layered",
-               nameInStrip = FALSE, highlight = FALSE, ...) {
+ggplot.train <- function(data = NULL, mapping = NULL, metric = data$metric[1], plotType = "scatter", output = "layered",
+               nameInStrip = FALSE, highlight = FALSE, ..., environment = NULL) {
   if(!(output %in% c("data", "layered", "ggplot"))) stop("'outout' should be either 'data', 'ggplot' or 'layered'")
   params <- data$modelInfo$parameters$parameter
   paramData <- data$modelInfo$parameters
@@ -140,8 +140,8 @@ ggplot.train <- function(data = NULL, metric = data$metric[1], plotType = "scatt
 }
 
 
-ggplot.rfe <- function(data = NULL, metric = data$metric[1],
-                       output = "layered", ...)
+ggplot.rfe <- function(data = NULL, mapping = NULL, metric = data$metric[1],
+                       output = "layered", ..., environment = NULL)
 {
   if(!(output %in% c("data", "layered", "ggplot")))
     stop("'outout' should be either 'data', 'ggplot' or 'layered'")
