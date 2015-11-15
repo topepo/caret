@@ -811,11 +811,12 @@ bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
     best_mod$model_id[which.max(best_mod$V1)] else 
       best_mod$model_id[which.min(best_mod$V1)]
   btModel <- BradleyTerry2::BTm(cbind(win1, win2), player1, player2, data = scores, refcat = best_mod)
-  upperBound <- BradleyTerry2::BTabilities(btModel)[,1] + constant*BradleyTerry2::BTabilities(btModel)[,2]
-  if(any(BradleyTerry2::BTabilities(btModel)[,2] > se_thresh)) {
+  btCoef <- summary(btModel)$coef
+  upperBound <- btCoef[, "Estimate"] + constant*btCoef[, "Std. Error"]
+  if(any(btCoef[, "Std. Error"] > se_thresh)) {
     ## These players either are uniformly dominated (='dom') or dominating
-    dom1 <- BradleyTerry2::BTabilities(btModel)[,2] > se_thresh 
-    dom2 <- if(maximize) BradleyTerry2::BTabilities(btModel)[,1] <= 0 else BradleyTerry2::BTabilities(btModel)[,1] >= 0
+    dom1 <- btCoef[, "Std. Error"] > se_thresh 
+    dom2 <- if(maximize) btCoef[, "Estimate"] <= 0 else btCoef[, "Estimate"] >= 0
     dom <- dom1 & dom2    
   } else dom <- rep(FALSE, length(upperBound))
   bound <- upperBound >= 0
