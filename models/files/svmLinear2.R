@@ -1,26 +1,30 @@
 modelInfo <- list(label = "Support Vector Machines with Linear Kernel",
                   library = "e1071",
                   type = c("Regression", "Classification"),
-                  parameters = data.frame(parameter = c('cost'),
-                                          class = c("numeric"),
-                                          label = c("Cost")),
-                  grid = function(x, y, len = NULL, search = "grid") data.frame(cost = 2 ^((1:len) - 3)),
+                  parameters = data.frame(parameter = c('cost','gamma'),
+                                          class = c("numeric",'numeric'),
+                                          label = c("Cost",'Gamma')),
+                  grid = function(x, y, len = NULL, search = "grid") data.frame(cost = 2 ^((1:len) - 3),
+                                                                                gamma =10^((1:len) - 5)),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(any(names(list(...)) == "probability") | is.numeric(y))
                     {
                       out <- svm(x = as.matrix(x), y = y,
                                  kernel = "linear",
-                                 cost = param$cost, ...)
+                                 cost = param$cost,
+                                 gamma= param$gamma,
+                                 ...)
                     } else {
                       out <- svm(x = as.matrix(x), y = y,
                                  kernel = "linear",
                                  cost = param$cost,
+                                 gamma = param$gamma,
                                  probability = classProbs,
                                  ...)
                     }
-                    
-                    out            
+
+                    out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     predict(modelFit, newdata)
