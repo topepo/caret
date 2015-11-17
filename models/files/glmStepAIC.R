@@ -18,17 +18,32 @@ modelInfo <- list(label = "Generalized Linear Model with Stepwise Feature Select
                     stepArgs <- stepArgs[!(stepArgs %in% c("object", "..."))]
                     theDots <- list(...)
                     glmArgs <- list()
-                    
-                    if(!any(names(theDots) == "family"))
-                    {
+
+                    if(!any(names(theDots) == "family")) {
                       glmArgs$family <- if(is.factor(y)) binomial() else gaussian()              
                     } else glmArgs$family <- theDots$family
-                    if(any(!(names(theDots) %in% stepArgs))) theDots <- theDots[names(theDots) %in% stepArgs]
+                    if(any(!(names(theDots) %in% stepArgs))) 
+                      theDots <- theDots[names(theDots) %in% stepArgs]
+                    
+                    if(any(names(theDots) == "direction")) {
+                      ## Assume that if you go forward, you should start from nothing
+                      if(theDots$direction == "forward") {
+                        start_form <- as.formula(".outcome ~ 1")
+                        if(!any(names(theDots) == "scope")) {
+                          theDots$scope <- list(lower = as.formula(".outcome ~ 1"),
+                                                upper = as.formula(paste0(".outcome~", paste0(colnames(x), collapse = "+"))))
+                        }
+                      } else {
+                        ## For backwards or both, start from the current model
+                        start_form <- as.formula(".outcome ~ .")
+                      }           
+                    } else start_form <- as.formula(".outcome ~ .")
+                    ##  `If the scope argument is missing the default for direction is "backward".`
                     
                     ## pass in any model weights
                     if(!is.null(wts)) glmArgs$weights <- wts
                     
-                    modelArgs <- c(list(formula = as.formula(".outcome ~ ."), data = dat),
+                    modelArgs <- c(list(formula = start_form, data = dat),
                                    glmArgs)
                     
                     mod <- do.call("glm", modelArgs)
