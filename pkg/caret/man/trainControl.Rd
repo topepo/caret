@@ -47,7 +47,7 @@ trainControl(method = "boot",
   \item{summaryFunction}{a function to compute performance metrics across resamples. The arguments to the function should be the same as those in \code{\link{defaultSummary}}.}
   \item{selectionFunction}{the function used to select the optimal tuning parameter. This can be a name of the function or the function itself. See \code{\link{best}} for details and other options.}
   \item{preProcOptions}{A list of options to pass to \code{\link{preProcess}}. The type of pre-processing (e.g. center, scaling etc) is passed in via the \code{preProc} option in \code{\link{train}}.}
-  \item{sampling}{PLACEHOLDER FOR SAMPLING DOCUMENTATION}
+  \item{sampling}{a single character value describing the type of additional sampling that is conducted after resampling (usually to resolve class imbalances). Values are \code{"none"}, \code{"down"}, \code{"up"}, \code{"smote"}, or \code{"rose"}. The latter two values require the \pkg{DMwR} and \pkg{ROSE} packages, respectively. This argument can also be a list to facilitate custom sampling and these details can be found on the \pkg{caret} package website for sampling (link below).}
   \item{index}{a list with elements for each resampling iteration. Each list element is a vector of integers corresponding to the rows used for training at that iteration.}
   \item{indexOut}{a list (the same length as \code{index}) that dictates which data are held-out for each resample (as integers). If \code{NULL}, then the unique set of samples not contained in \code{index} is used.}
   \item{timingSamps}{the number of training set samples that will be used to measure the time for predicting samples (zero indicates that the prediction time should not be estimated.}
@@ -85,6 +85,8 @@ The option \code{search = "grid"} uses the default grid search routine. When \co
 Bergstra and Bengio (2012), ``Random Search for Hyper-Parameter Optimization'', Journal of Machine Learning Research, 13(Feb):281-305
 
 Kuhn (2014), ``Futility Analysis in the Cross-Validation of Machine Learning Models'' \url{http://arxiv.org/abs/1405.6974},
+
+Package website for subsampling: \url{http://topepo.github.io/caret/sampling.html}
 }
 
 
