@@ -13,6 +13,7 @@
 		\item Yuan (Terry) Tang added more tuning parameters to \code{xgbTree} models. 
 		\item Model \code{svmRadialWeights} was updated to allow for class probabilities. Previously, \cpkg{kernlab} did not change the probability estimates when weights were used.  
 		\item A \cpkg{ggplot2} method for \code{varImp.train} was added \issue{231}
+		\item Github user \code{fjeze} added new models \code{mlpML} and \code{mlpWeightDecayML} that extend the existing \cpkg{RSNNS} models to multiple layers. \code{fjeze} also added the \code{gamma} parameter to the \code{svmLinear2} model.  
 	} 
 }
 
