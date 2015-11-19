@@ -123,6 +123,18 @@ For regression using package \pkg{brnn} with tuning parameters:
 }
 
 
+\strong{Bayesian Ridge Regression} (\code{method = 'bridge'})
+
+For regression using package \pkg{monomvn} with no tuning parameters
+
+
+
+\strong{Bayesian Ridge Regression (Model Averaged)} (\code{method = 'blassoAveraged'})
+
+For regression using package \pkg{monomvn} with no tuning parameters
+
+
+
 \strong{Binary Discriminant Analysis} (\code{method = 'binda'})
 
 For classification using package \pkg{binda} with tuning parameters:
@@ -358,6 +370,14 @@ For regression using package \pkg{enpls} with tuning parameters:
 }
 
 
+\strong{Ensembles of Generalized Lienar Models} (\code{method = 'randomGLM'})
+
+For classification and regression using package \pkg{randomGLM} with tuning parameters:
+\itemize{
+\item Interaction Order (\code{maxInteractionOrder}, numeric)
+}
+
+
 \strong{eXtreme Gradient Boosting} (\code{method = 'xgbLinear'})
 
 For classification and regression using package \pkg{xgboost} with tuning parameters:
@@ -375,6 +395,7 @@ For classification and regression using packages \pkg{xgboost} and \pkg{plyr} wi
 \item Number of  Boosting Iterations (\code{nrounds}, numeric)
 \item Max Tree Depth (\code{max_depth}, numeric)
 \item Shrinkage (\code{eta}, numeric)
+\item Minimum loss reduction (\code{gamma}, numeric)
 }
 
 
@@ -1541,6 +1562,14 @@ For classification and regression using package \pkg{spls} with tuning parameter
 }
 
 
+\strong{Spike and Slab Regression} (\code{method = 'spikeslab'})
+
+For regression using packages \pkg{spikeslab} and \pkg{plyr} with tuning parameters:
+\itemize{
+\item Variables Retained (\code{vars}, numeric)
+}
+
+
 \strong{Stabilized Linear Discriminant Analysis} (\code{method = 'slda'})
 
 For classification using package \pkg{ipred} with no tuning parameters
@@ -1686,6 +1715,14 @@ For classification and regression using package \pkg{kernlab} with tuning parame
 \itemize{
 \item length (\code{length}, numeric)
 \item Cost (\code{C}, numeric)
+}
+
+
+\strong{The Bayesian lasso} (\code{method = 'blasso'})
+
+For regression using package \pkg{monomvn} with tuning parameters:
+\itemize{
+\item Sparsity Threshold (\code{sparsity}, numeric)
 }
 
 
