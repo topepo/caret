@@ -10,10 +10,13 @@
 		\item From \cpkg{monomvn} package, models for the Bayesian lasso and ridge regression were added. In the latter case, two methods were added. \code{blasso} creates predictions using the mean of the posterior distributions but sets some parameters specifically to zero based on the tuning parameter called \code{sparsity}. For example, when \code{sparsity = .5}, only coefficients where at least half the posterior estimates are nonzero are used. The other model,  \code{blassoAveraged}, makes predictions across all of the realizations in the posterior distribution without coercing any coefficients to zero. This is more consistent with Bayesian model averaging, but is unlikely to produce very sparse solutions. 
 		\item From the \cpkg{spikeslab} package, a regression model was added that emulates the procedure used by \code{cv.spikeslab} where the tuning variable is the number of retained predictors.  
 		\item A bug was fixed in adaptive resampling (found by github user elephann) \issue{304} 
+		\item Fixed another adaptive resampling bug flagged by github user elephann related to the latest version of the \cpkg{BradleyTerry2} package. Thanks to Heather Turner for the fix \issue{310}
 		\item Yuan (Terry) Tang added more tuning parameters to \code{xgbTree} models. 
 		\item Model \code{svmRadialWeights} was updated to allow for class probabilities. Previously, \cpkg{kernlab} did not change the probability estimates when weights were used.  
 		\item A \cpkg{ggplot2} method for \code{varImp.train} was added \issue{231}
+		\item Changes were made for the package to work with the next version of \cpkg{ggplot2} \issue{317}
 		\item Github user \code{fjeze} added new models \code{mlpML} and \code{mlpWeightDecayML} that extend the existing \cpkg{RSNNS} models to multiple layers. \code{fjeze} also added the \code{gamma} parameter to the \code{svmLinear2} model.  
+
 	} 
 }
 
