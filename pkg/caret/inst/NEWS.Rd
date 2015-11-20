@@ -4,7 +4,7 @@
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
 
-\section{Changes in version 6.0-59}{
+\section{Changes in version 6.0-62}{
 	\itemize{
 		\item From the \cpkg{randomGLM} package, a model of the same name was added.
 		\item From \cpkg{monomvn} package, models for the Bayesian lasso and ridge regression were added. In the latter case, two methods were added. \code{blasso} creates predictions using the mean of the posterior distributions but sets some parameters specifically to zero based on the tuning parameter called \code{sparsity}. For example, when \code{sparsity = .5}, only coefficients where at least half the posterior estimates are nonzero are used. The other model,  \code{blassoAveraged}, makes predictions across all of the realizations in the posterior distribution without coercing any coefficients to zero. This is more consistent with Bayesian model averaging, but is unlikely to produce very sparse solutions. 
@@ -16,6 +16,7 @@
 		\item A \cpkg{ggplot2} method for \code{varImp.train} was added \issue{231}
 		\item Changes were made for the package to work with the next version of \cpkg{ggplot2} \issue{317}
 		\item Github user \code{fjeze} added new models \code{mlpML} and \code{mlpWeightDecayML} that extend the existing \cpkg{RSNNS} models to multiple layers. \code{fjeze} also added the \code{gamma} parameter to the \code{svmLinear2} model.  
+		\item A function for generating data for learning curves was added. 
 
 	} 
 }
