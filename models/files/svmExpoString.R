@@ -10,7 +10,7 @@ modelInfo <- list(label = "Support Vector Machines with Exponential String Kerne
                                          C = 2 ^((1:len) - 3))
                     } else {
                       out <- data.frame(lambda = 2^runif(len, min = -5, max = 6),
-                                        C = 2^runif(len, min = -5, max = 8))
+                                        C = 2^runif(len, min = -5, max = 10))
                     }
                     out
                   },

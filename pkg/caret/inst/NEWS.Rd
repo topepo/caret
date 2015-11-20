@@ -17,7 +17,7 @@
 		\item Changes were made for the package to work with the next version of \cpkg{ggplot2} \issue{317}
 		\item Github user \code{fjeze} added new models \code{mlpML} and \code{mlpWeightDecayML} that extend the existing \cpkg{RSNNS} models to multiple layers. \code{fjeze} also added the \code{gamma} parameter to the \code{svmLinear2} model.  
 		\item A function for generating data for learning curves was added. 
-
+		\item The range of SVM cost values explored in random search was expanded.
 	} 
 }
 

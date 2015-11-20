@@ -10,7 +10,7 @@ modelInfo <- list(label = "Support Vector Machines with Boundrange String Kernel
                                          C = 2 ^((1:len) - 3))
                     } else {
                       out <- data.frame(length = sample(1:20, size = len, replace = TRUE),
-                                        C = 2^runif(len, min = -5, max = 8))
+                                        C = 2^runif(len, min = -5, max = 10))
                     }
                     out
                   },

@@ -13,7 +13,7 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                     } else {
                       rng <- extendrange(log(sigmas), f = .75)
                       out <- data.frame(sigma = exp(runif(len, min = rng[1], max = rng[2])),
-                                        C = 2^runif(len, min = -5, max = 8))
+                                        C = 2^runif(len, min = -5, max = 10))
                     }
                     out
                   },

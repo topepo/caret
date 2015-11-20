@@ -4,7 +4,14 @@ modelInfo <- list(label = "Support Vector Machines with Linear Kernel",
                   parameters = data.frame(parameter = c('C'),
                                           class = c("numeric"),
                                           label = c("Cost")),
-                  grid = function(x, y, len = NULL, search = "grid") data.frame(C = 1),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- data.frame(C = 1)
+                    } else {
+                      out <- data.frame(C = 2^runif(len, min = -5, max = 10))
+                    }
+                    out
+                  },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     if(any(names(list(...)) == "prob.model") | is.numeric(y))
