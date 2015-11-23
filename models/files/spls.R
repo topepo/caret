@@ -6,13 +6,13 @@ modelInfo <- list(label = "Sparse Partial Least Squares",
                                           label = c('#Components', 'Threshold', 'Kappa')),
                   grid = function(x, y, len = NULL, search = "grid"){
                     if(search == "grid") {
-                      out <- expand.grid(K = 1:len, 
+                      out <- expand.grid(K = 1:min(nrow(x), ncol(x)), 
                                          eta = seq(.1, .9, length = len), 
                                          kappa = .5)
                     } else {
                       out <- data.frame(kappa = runif(len, min = 0, max = .5),
                                         eta  = runif(len, min = 0, max = 1),
-                                        K = sample(1:ncol(x), size = len, replace = TRUE))
+                                        K = sample(1:min(nrow(x), ncol(x)), size = len, replace = TRUE))
                     }
                     out
                   },

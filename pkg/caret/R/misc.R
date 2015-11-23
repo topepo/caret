@@ -478,7 +478,7 @@ get_labels <- function(mods, format = FALSE) {
 }
 
 check_dims <- function(x, y) {
-  n <- if(class(y) == "Surv") nrow(y) else length(y)
+  n <- if(class(y)[1] == "Surv") nrow(y) else length(y)
   stopifnot(nrow(x) > 1)
   stopifnot(nrow(x) == n)
   invisible(NULL)
