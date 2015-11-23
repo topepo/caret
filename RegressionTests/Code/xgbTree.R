@@ -7,7 +7,10 @@ model <- "xgbTree"
 
 xgbGrid <- expand.grid(nrounds = c(1, 10),
                        max_depth = c(1, 4),
-                       eta = c(.1, .4))
+                       eta = c(.1, .4),
+                       gamma = 0,
+                       colsample_bytree = .7,
+                       min_child_weight = 1)
 
 set.seed(2)
 training <- twoClassSim(100, linearVars = 2)
