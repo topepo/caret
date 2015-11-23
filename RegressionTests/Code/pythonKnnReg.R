@@ -40,12 +40,12 @@ test_reg_cv_model <- train(trainX, trainY,
                            preProc = c("center", "scale"))
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
-set.seed(849)
-test_reg_cv_form <- train(y ~ ., data = training, 
-                          method = "pythonKnnReg", 
-                          trControl = rctrl1,
-                          preProc = c("center", "scale"))
-test_reg_pred_form <- predict(test_reg_cv_form, testX)
+# set.seed(849)
+# test_reg_cv_form <- train(y ~ ., data = training, 
+#                           method = "pythonKnnReg", 
+#                           trControl = rctrl1,
+#                           preProc = c("center", "scale"))
+# test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
 test_reg_rand <- train(trainX, trainY, 
