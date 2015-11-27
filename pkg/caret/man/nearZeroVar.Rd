@@ -8,7 +8,7 @@
 \description{
 \code{nearZeroVar} diagnoses predictors that have one unique value (i.e. are zero variance predictors) or predictors that are have both of the following characteristics: they have very few unique values relative to the number of samples and the ratio of the frequency of the most common value to the frequency of the second most common value is large. \code{checkConditionalX} looks at the distribution of the columns of \code{x} conditioned on the levels of \code{y} and identifies columns of \code{x} that are sparse within groups of \code{y}.}
 \usage{
-nearZeroVar(x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE, 
+nearZeroVar(x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE, names = FALSE,
             foreach = FALSE, allowParallel = TRUE)
 nzv(x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE)
 
@@ -20,6 +20,7 @@ checkResamples(index, x, y)
   \item{freqCut}{the cutoff for the ratio of the most common value to the second most common value }
   \item{uniqueCut}{ the cutoff for the percentage of distinct values out of the number of total samples}
   \item{saveMetrics}{a logical. If false, the positions of the zero- or near-zero predictors is returned. If true, a data frame with predictor information is returned. }
+  \item{names}{a logical. If false, column indexes are returned. If true, column names are returned.}
   \item{y}{a factor vector with at least two levels}
   \item{index}{a list. Each element corresponds to the training set samples in \code{x} for a given resample}
   \item{foreach}{should the \pkg{foreach} package be used for the computations? If \code{TRUE}, less memory should be used.}
@@ -40,9 +41,9 @@ number of unique values divided by the total number of samples (times
 In the above example, the frequency ratio is 999 and the unique value
 percentage is 0.0001.
 
-Checking the conditional distribution of \code{x} may be needed for some models, such as naive Bayes where the conditional distributions should have at least one data point within a class.   
+Checking the conditional distribution of \code{x} may be needed for some models, such as naive Bayes where the conditional distributions should have at least one data point within a class.
 
-\code{nzv} is the original version of the function. 
+\code{nzv} is the original version of the function.
 
 }
 \value{
@@ -63,6 +64,7 @@ nearZeroVar(iris[, -5], saveMetrics = TRUE)
 
 data(BloodBrain)
 nearZeroVar(bbbDescr)
+nearZeroVar(bbbDescr, names = TRUE)
 
 
 set.seed(1)
