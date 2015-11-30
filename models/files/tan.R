@@ -34,5 +34,5 @@ modelInfo <- list(label = "Tree Augmented Naive Bayes Classifier",
                   },
                   levels = function(x) x$obsLevels,
                   predictors = function(x, s = NULL, ...) x$xNames,
-                  tags = c("Bayesian Model"),
+                  tags = c("Bayesian Model", "Categorical Predictors Only"),
                   sort = function(x) x[order(x[,1]),])
