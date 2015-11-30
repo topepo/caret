@@ -68,6 +68,6 @@ modelInfo <- list(label = "Partial Least Squares Generalized Linear Models ",
                     vars[vars != "Intercept"]
                   },
                   tags = c("Generalized Linear Models", 
-                           "Partial Least Squares"),
+                           "Partial Least Squares", "Two Class Only"),
                   levels = function(x) x$lev,
                   sort = function(x) x[order(-x$alpha.pvals.expli, x$nt),])

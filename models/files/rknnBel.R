@@ -84,6 +84,6 @@ modelInfo <- list(label = "Random k-Nearest Neighbors with Feature Selection",
                     }
                     imp
                   },
-                  tags = c("Prototype Models", "Feature Selection Wrapper"),
+                  tags = c("Prototype Models", "Feature Selection Wrapper", "Two Class Only"),
                   prob = NULL,
                   sort = function(x) x[order(x[,1]),])

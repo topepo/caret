@@ -108,5 +108,5 @@ modelInfo <- list(label = "Rotation Forest",
                   },
                   levels = function(x) x$obsLevels,
                   tags = c("Ensemble Model", "Implicit Feature Selection", 
-                           "Feature Extraction Models", "Tree-Based Model"),
+                           "Feature Extraction Models", "Tree-Based Model", "Two Class Only"),
                   sort = function(x) x[order(x[,1]),])

@@ -93,5 +93,5 @@ modelInfo <- list(label = "Cost-Sensitive CART",
                   },
                   levels = function(x) x$obsLevels,
                   prob = NULL,
-                  tags = c("Tree-Based Model", "Implicit Feature Selection", "Cost Sensitive Learning"),
+                  tags = c("Tree-Based Model", "Implicit Feature Selection", "Cost Sensitive Learning", "Two Class Only"),
                   sort = function(x) x[order(-x$cp, -x$Cost),])

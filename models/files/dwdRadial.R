@@ -56,5 +56,5 @@ modelInfo <- list(label = "Distance Weighted Discrimination with Radial Basis Fu
                   predictors = function(x, s = NULL, ...) x$xNames,
                   tags = c("Discriminant Analysis", "L2 Regularization", 
                            "Kernel Method", "Radial Basis Function",
-                           "Distance Weighted Discrimination"),
+                           "Distance Weighted Discrimination", "Two Class Only"),
                   sort = function(x) x[order(x[,1]),])

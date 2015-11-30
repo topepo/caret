@@ -83,5 +83,5 @@ modelInfo <- list(label = "Generalized Linear Model",
 
                     x
                   },
-                  tags = c("Generalized Linear Model", "Linear Classifier"),
+                  tags = c("Generalized Linear Model", "Linear Classifier", "Two Class Only"),
                   sort = function(x) x)

@@ -80,6 +80,6 @@ modelInfo <- list(label = "Support Vector Machines with Class Weights",
                     if(is.null(out)) out <-NA
                     out
                   },
-                  tags = c("Kernel Method", "Support Vector Machines", "Radial Basis Function", "Cost Sensitive Learning"),
+                  tags = c("Kernel Method", "Support Vector Machines", "Radial Basis Function", "Cost Sensitive Learning", "Two Class Only"),
                   levels = function(x) lev(x),
                   sort = function(x) x[order(x$C, -x$sigma, x$Weight),])
