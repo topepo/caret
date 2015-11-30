@@ -50,5 +50,5 @@ modelInfo <- list(label = "Tree-Based Ensembles",
                     out
                   },
                   levels = function(x) x$obsLevels,
-                  tags = c("Tree-Based Model", "Implicit Feature Selection", "Ensemble Model"),
+                  tags = c("Tree-Based Model", "Implicit Feature Selection", "Ensemble Model", "Two Class Only"),
                   sort = function(x) x[order(x$maxinter, x$mode),])
