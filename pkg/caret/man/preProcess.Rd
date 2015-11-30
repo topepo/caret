@@ -28,7 +28,7 @@ preProcess(x, ...)
 
 \arguments{
   \item{x}{a matrix or data frame. Non-numeric predictors are allowed but will be ignored.}
-  \item{method}{a character vector specifying the type of processing. Possible values are "BoxCox", "YeoJohnson", "expoTrans", "center", "scale", "range", "knnImpute", "bagImpute", "medianImpute", "pca", "ica", "spatialSign", "zv", and "nzv" (see Details below)}
+  \item{method}{a character vector specifying the type of processing. Possible values are "BoxCox", "YeoJohnson", "expoTrans", "center", "scale", "range", "knnImpute", "bagImpute", "medianImpute", "pca", "ica", "spatialSign", "zv", "nzv", and "conditionalX" (see Details below)}
   \item{thresh}{a cutoff for the cumulative percent of variance to be retained by PCA}
   \item{pcaComp}{the specific number of PCA components to keep. If specified, this over-rides \code{thresh}}
   \item{na.remove}{a logical; should missing values be removed from the calculations?}
@@ -56,6 +56,7 @@ Predictors that are not numeric are ignored in the calculations.
 
 \code{method = "zv"} identifies numeric predictor columns with a single value (i.e. having zero variance) and excludes them from further calculations. Similarly, \code{method = "nzv"} does the same by applying \code{\link{nearZeroVar}} with the default parameters to exclude "near zero-variance" predictors. 
 
+For classification, \code{method = "conditionalX"} examines the distribution of each predictor conditional on the outcome. If there is only one unique value within any class, the predictor is excluded from further calculations (see \code{\link{checkConditionalX}} for an example). When \code{outcome} is not a factor, this calculation is not executed. This operation can be time consuming when used within resampling via \code{\link{train}}.
 
 The operations are applied in this order: zero-variance filter, near-zero variance filter, Box-Cox/Yeo-Johnson/exponential transformation, centering, scaling, range, imputation, PCA, ICA then spatial sign. This is a departure from versions of \pkg{caret} prior to version 4.76 (where imputation was done first) and is not backwards compatible if bagging was used for imputation.
 
