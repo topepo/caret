@@ -37,5 +37,5 @@ modelInfo <- list(label = "Logic Regression",
                     if(length(varNums) > 0) colnames(x$binary)[varNums] else NA
                   },
                   levels = function(x) x$obsLevels,
-                  tags = c("Logic Regression", "Linear Classifier", "Linear Regression", "Logistic Regression", "Two Class Only"),
+                  tags = c("Logic Regression", "Linear Classifier", "Linear Regression", "Logistic Regression", "Two Class Only", "Binary Predictors Only"),
                   sort = function(x) x[order(x$ntrees, x$treesize),])

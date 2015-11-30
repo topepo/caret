@@ -25,5 +25,5 @@ modelInfo <- list(label = "Binary Discriminant Analysis",
                   varImp = NULL,
                   predictors = function(x, ...) rownames(x$logp0),
                   levels = function(x) if(any(names(x) == "obsLevels")) x$obsLevels else names(x$logfreqs),
-                  tags = c("Discriminant Analysis", "Two Class Only"),
+                  tags = c("Discriminant Analysis", "Two Class Only", "Binary Predictors Only"),
                   sort = function(x) x)
