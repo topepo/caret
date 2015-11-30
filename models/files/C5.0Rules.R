@@ -18,7 +18,7 @@ modelInfo <- list(label = "Single C5.0 Ruleset",
                   },
                   levels = function(x) x$obsLevels,
                   varImp = function(object, ...) C5imp(object, ...),
-                  tags = c("Rule-Based Model", "Implicit Feature Selection"),
+                  tags = c("Rule-Based Model", "Implicit Feature Selection", "Handle Missing Predictor Data"),
                   trim = function(x) {
                     x$boostResults <- NULL
                     x$size <- NULL

@@ -79,7 +79,7 @@ modelInfo <- list(label = "Cost-Sensitive C5.0",
                   levels = function(x) x$obsLevels,
                   varImp = function(object, ...) C5imp(object, ...),
                   tags = c("Tree-Based Model", "Rule-Based Model", "Implicit Feature Selection",
-                  	       "Boosting", "Ensemble Model", "Cost Sensitive Learning", "Two Class Only"),
+                  	       "Boosting", "Ensemble Model", "Cost Sensitive Learning", "Two Class Only", "Handle Missing Predictor Data"),
                   sort = function(x){
                     x$model <- factor(as.character(x$model), levels = c("rules", "tree"))
                     x[order(x$trials, x$model, !x$winnow, x$cost),]
