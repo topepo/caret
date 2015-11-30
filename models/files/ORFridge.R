@@ -23,6 +23,6 @@ modelInfo <- list(label = "Oblique Random Forest",
                     predict(modelFit, newdata, type = "prob"),
                   levels = function(x) x$obsLevels,
                   tags = c("Random Forest", "Oblique Tree", "Ridge Regression", 
-                           "Implicit Feature Selection", "Ensemble Model",
+                           "Implicit Feature Selection", "Ensemble Model", "Two Class Only",
                            "L2 Regularization"),
                   sort = function(x) x[order(x[,1]),])
