@@ -1,0 +1,115 @@
+BloodBrain              Blood Brain Barrier Data
+BoxCoxTrans.default     Box-Cox and Exponential Transformations
+GermanCredit            German Credit Data
+as.table.confusionMatrix
+                        Save Confusion Table Results
+avNNet.default          Neural Networks Using Model Averaging
+bag.default             A General Framework For Bagging
+bagEarth                Bagged Earth
+bagFDA                  Bagged FDA
+calibration             Probability Calibration Plot
+caretFuncs              Backwards Feature Selection Helper Functions
+caretSBF                Selection By Filtering (SBF) Helper Functions
+cars                    Kelly Blue Book resale data for 2005 model year
+                        GM cars
+classDist               Compute and predict the distances to class
+                        centroids
+confusionMatrix         Create a confusion matrix
+confusionMatrix.train   Estimate a Resampled Confusion Matrix
+cox2                    COX-2 Activity Data
+createDataPartition     Data Splitting functions
+dhfr                    Dihydrofolate Reductase Inhibitors Data
+diff.resamples          Inferential Assessments About Model Performance
+dotPlot                 Create a dotplot of variable importance values
+dotplot.diff.resamples
+                        Lattice Functions for Visualizing Resampling
+                        Differences
+downSample              Down- and Up-Sampling Imbalanced Data
+dummyVars               Create A Full Set of Dummy Variables
+featurePlot             Wrapper for Lattice Plotting of Predictor
+                        Variables
+filterVarImp            Calculation of filter-based variable importance
+findCorrelation         Determine highly correlated variables
+findLinearCombos        Determine linear combinations in a matrix
+format.bagEarth         Format 'bagEarth' objects
+gafs.default            Genetic algorithm feature selection
+gafs_initial            Ancillary genetic algorithm functions
+getSamplingInfo         Get sampling info from a train model
+histogram.train         Lattice functions for plotting resampling
+                        results
+icr.formula             Independent Component Regression
+index2vec               Convert indicies to a binary vector
+knn3                    k-Nearest Neighbour Classification
+knnreg                  k-Nearest Neighbour Regression
+learing_curve_dat       Create Data to Plot a Learning Curve
+lift                    Lift Plot
+maxDissim               Maximum Dissimilarity Sampling
+mdrr                    Multidrug Resistance Reversal (MDRR) Agent Data
+modelLookup             Tools for Models Available in 'train'
+nearZeroVar             Identification of near zero variance predictors
+nullModel               Fit a simple, non-informative model
+oil                     Fatty acid composition of commercial oils
+oneSE                   Selecting tuning Parameters
+panel.lift2             Lattice Panel Functions for Lift Plots
+panel.needle            Needle Plot Lattice Panel
+pcaNNet.default         Neural Networks with a Principal Component Step
+plot.gafs               Plot Method for the gafs and safs Classes
+plot.rfe                Plot RFE Performance Profiles
+plot.train              Plot Method for the train Class
+plot.varImp.train       Plotting variable importance measures
+plotClassProbs          Plot Predicted Probabilities in Classification
+                        Models
+plotObsVsPred           Plot Observed versus Predicted Results in
+                        Regression and Classification Models
+plsda                   Partial Least Squares and Sparse Partial Least
+                        Squares Discriminant Analysis
+postResample            Calculates performance across resamples
+pottery                 Pottery from Pre-Classical Sites in Italy
+prcomp.resamples        Principal Components Analysis of Resampling
+                        Results
+preProcess              Pre-Processing of Predictors
+predict.bagEarth        Predicted values based on bagged Earth and FDA
+                        models
+predict.gafs            Predict new samples
+predict.knn3            Predictions from k-Nearest Neighbors
+predict.knnreg          Predictions from k-Nearest Neighbors Regression
+                        Model
+predict.train           Extract predictions and class probabilities
+                        from train objects
+predictors              List predictors used in the model
+print.confusionMatrix   Print method for confusionMatrix
+print.train             Print Method for the train Class
+resampleHist            Plot the resampling distribution of the model
+                        statistics
+resampleSummary         Summary of resampled performance estimates
+resamples               Collation and Visualization of Resampling
+                        Results
+rfe                     Backwards Feature Selection
+rfeControl              Controlling the Feature Selection Algorithms
+safs.default            Simulated annealing feature selection
+safsControl             Control parameters for GA and SA feature
+                        selection
+safs_initial            Ancillary simulated annealing functions
+sbf                     Selection By Filtering (SBF)
+sbfControl              Control Object for Selection By Filtering (SBF)
+segmentationData        Cell Body Segmentation
+sensitivity             Calculate sensitivity, specificity and
+                        predictive values
+spatialSign             Compute the multivariate spatial sign
+summary.bagEarth        Summarize a bagged earth or FDA fit
+tecator                 Fat, Water and Protein Content of Meat Samples
+train                   Fit Predictive Models over Different Tuning
+                        Parameters
+trainControl            Control parameters for train
+train_model_list        A List of Available Models in train
+twoClassSim             Simulation Functions
+update.safs             Update or Re-fit a SA or GA Model
+update.train            Update or Re-fit a Model
+varImp                  Calculation of variable importance for
+                        regression and classification models
+varImp.gafs             Variable importances for GAs and SAs
+var_seq                 Sequences of Variables for Tuning
+xyplot.resamples        Lattice Functions for Visualizing Resampling
+                        Results
+xyplot.rfe              Lattice functions for plotting resampling
+                        results of recursive feature selection

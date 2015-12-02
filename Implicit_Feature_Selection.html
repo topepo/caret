@@ -230,7 +230,7 @@ Released   : 20120902
 <h1>eXtreme Gradient Boosting</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'xgbTree'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">nrounds</span></code> (# Boosting Iterations), <code><span class="mx arg">max_depth</span></code> (Max Tree Depth), <code><span class="mx arg">eta</span></code> (Shrinkage)</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">nrounds</span></code> (# Boosting Iterations), <code><span class="mx arg">max_depth</span></code> (Max Tree Depth), <code><span class="mx arg">eta</span></code> (Shrinkage), <code><span class="mx arg">gamma</span></code> (Minimum Loss Reduction), <code><span class="mx arg">colsample_bytree</span></code> (Subsample Ratio of Columns), <code><span class="mx arg">min_child_weight</span></code> (Minimum Sum of Instance Weight)</p>
 
 <h1>Flexible Discriminant Analysis</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'fda'</span></tt></p>
@@ -432,10 +432,20 @@ Released   : 20120902
 <p><b>Type</b>: Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">NumVars</span></code> (# Predictors), <code><span class="mx arg">lambda</span></code> (Lambda), <code><span class="mx arg">R</span></code> (# Subclasses)</p>
 
+<h1>Spike and Slab Regression</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'spikeslab'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">vars</span></code> (Variables Retained)</p>
+
 <h1>Stochastic Gradient Boosting</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'gbm'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">n.trees</span></code> (# Boosting Iterations), <code><span class="mx arg">interaction.depth</span></code> (Max Tree Depth), <code><span class="mx arg">shrinkage</span></code> (Shrinkage), <code><span class="mx arg">n.minobsinnode</span></code> (Min. Terminal Node Size)</p>
+
+<h1>The Bayesian lasso</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'blasso'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">sparsity</span></code> (Sparsity Threshold)</p>
 
 <h1>The lasso</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'lasso'</span></tt></p>
@@ -503,7 +513,7 @@ Released   : 20120902
 </div>
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on Fri Oct 09 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
+  <p>Created on Tue Dec 01 2015 using caret version 6.0-62 and R Under development (unstable) (2015-11-18 r69655).</p>
   </div>
   <!-- end #footer -->
 </body>

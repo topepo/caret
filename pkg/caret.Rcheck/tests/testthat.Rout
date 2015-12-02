@@ -1,0 +1,41 @@
+
+R version 3.2.3 beta (2015-11-29 r69717) -- "Wooden Christmas-Tree"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(testthat)
+> library(caret)
+Loading required package: lattice
+Loading required package: ggplot2
+> 
+> test_check("caret")
+Box Cox transformations : ..
+SSSSTest confusionMatrix : ............
+Minimal Tests : ....
+mnLogLoss : ...
+SSSSSSSSSSSS
+Warning messages:
+1: In confusionMatrix.default(dat2, ref2) :
+  Levels are not in the same order for reference and data. Refactoring data to match.
+2: In confusionMatrix.default(dat3, ref2) :
+  Levels are not in the same order for reference and data. Refactoring data to match.
+3: In confusionMatrix.default(dat4, ref2) :
+  The data contains levels not found in the data, but they are empty and will be dropped.
+4: In confusionMatrix.default(dat4, ref2) :
+  Levels are not in the same order for reference and data. Refactoring data to match.
+> 
+> proc.time()
+   user  system elapsed 
+  3.786   0.169   3.942 

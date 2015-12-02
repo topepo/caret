@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>TableID8cb065135d41</title>
+<title>TableIDce4f74b8de28</title>
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <style type="text/css">
 body {
@@ -18,14 +18,14 @@ body {
 </head>
 <body>
  <!-- Table generated in R 3.3.0 by googleVis 0.5.10 package -->
-<!-- Fri Oct  9 15:07:26 2015 -->
+<!-- Tue Dec  1 21:07:15 2015 -->
 
 
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataTableID8cb065135d41 () {
+function gvisDataTableIDce4f74b8de28 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
@@ -156,11 +156,32 @@ var datajson =
 "mstop, maxdepth" 
 ],
 [
+ "The Bayesian lasso",
+"blasso",
+"Regression",
+"monomvn",
+"sparsity" 
+],
+[
+ "Bayesian Ridge Regression (Model Averaged)",
+"blassoAveraged",
+"Regression",
+"monomvn",
+"None" 
+],
+[
  "Random Forest with Additional Feature Selection",
 "Boruta",
 "Dual Use",
 "Boruta, randomForest",
 "mtry" 
+],
+[
+ "Bayesian Ridge Regression",
+"bridge",
+"Regression",
+"monomvn",
+"None" 
 ],
 [
  "Bayesian Regularized Neural Networks",
@@ -772,11 +793,25 @@ var datajson =
 "size" 
 ],
 [
+ "Multi-Layer Perceptron, with multiple layers",
+"mlpML",
+"Dual Use",
+"RSNNS",
+"layer1, layer2, layer3" 
+],
+[
  "Multi-Layer Perceptron",
 "mlpWeightDecay",
 "Dual Use",
 "RSNNS",
 "size, decay" 
+],
+[
+ "Multi-Layer Perceptron, multiple layers",
+"mlpWeightDecayML",
+"Dual Use",
+"RSNNS",
+"layer1, layer2, layer3, decay" 
 ],
 [
  "Penalized Multinomial Regression",
@@ -894,7 +929,7 @@ var datajson =
  "Parallel Random Forest",
 "parRF",
 "Dual Use",
-"e1071, randomForest",
+"e1071, randomForest, foreach",
 "mtry" 
 ],
 [
@@ -1029,6 +1064,13 @@ var datajson =
 "Regression",
 "qrnn",
 "n.hidden, penalty, bag" 
+],
+[
+ "Ensembles of Generalized Lienar Models",
+"randomGLM",
+"Dual Use",
+"randomGLM",
+"maxInteractionOrder" 
 ],
 [
  "Random Forest",
@@ -1311,6 +1353,13 @@ var datajson =
 "NumVars, lambda" 
 ],
 [
+ "Spike and Slab Regression",
+"spikeslab",
+"Regression",
+"spikeslab, plyr",
+"vars" 
+],
+[
  "Sparse Partial Least Squares",
 "spls",
 "Dual Use",
@@ -1364,7 +1413,7 @@ var datajson =
 "svmLinear2",
 "Dual Use",
 "e1071",
-"cost" 
+"cost, gamma" 
 ],
 [
  "Support Vector Machines with Polynomial Kernel",
@@ -1462,7 +1511,7 @@ var datajson =
 "xgbTree",
 "Dual Use",
 "xgboost, plyr",
-"nrounds, max_depth, eta" 
+"nrounds, max_depth, eta, gamma, colsample_bytree, min_child_weight" 
 ],
 [
  "Self-Organizing Maps",
@@ -1482,15 +1531,15 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartTableID8cb065135d41() {
-var data = gvisDataTableID8cb065135d41();
+function drawChartTableIDce4f74b8de28() {
+var data = gvisDataTableIDce4f74b8de28();
 var options = {};
 options["allowHtml"] = true;
 options["width"] = "800px";
 
 
     var chart = new google.visualization.Table(
-    document.getElementById('TableID8cb065135d41')
+    document.getElementById('TableIDce4f74b8de28')
     );
     chart.draw(data,options);
     
@@ -1514,9 +1563,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartTableID8cb065135d41);
+callbacks.push(drawChartTableIDce4f74b8de28);
 })();
-function displayChartTableID8cb065135d41() {
+function displayChartTableIDce4f74b8de28() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -1540,17 +1589,17 @@ callbacks.shift()();
 </script>
  
 <!-- jsChart -->  
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID8cb065135d41"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableIDce4f74b8de28"></script>
  
 <!-- divChart -->
   
-<div id="TableID8cb065135d41" 
+<div id="TableIDce4f74b8de28" 
   style="width: 800px; height: automatic;">
 </div>
- <div><span>Data: modelTable &#8226; Chart ID: <a href="Chart_TableID8cb065135d41.html">TableID8cb065135d41</a> &#8226; <a href="https://github.com/mages/googleVis">googleVis-0.5.10</a></span><br /> 
+ <div><span>Data: modelTable &#8226; Chart ID: <a href="Chart_TableIDce4f74b8de28.html">TableIDce4f74b8de28</a> &#8226; <a href="https://github.com/mages/googleVis">googleVis-0.5.10</a></span><br /> 
 <!-- htmlFooter -->
 <span> 
-  R Under development (unstable) (2015-09-30 r69443) 
+  R Under development (unstable) (2015-11-18 r69655) 
   &#8226; <a href="https://developers.google.com/terms/">Google Terms of Use</a> &#8226; <a href="https://google-developers.appspot.com/chart/interactive/docs/gallery/table">Documentation and Data Policy</a>
 </span></div>
 </body>

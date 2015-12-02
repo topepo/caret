@@ -114,9 +114,13 @@
   <li><a href="#nzv">Zero- and Near Zero-Variance Predictors</a></li>
   <li><a href="#corr">Identifying Correlated Predictors</a></li>
   <li><a href="#lindep">Linear Dependencies</a></li>
-  <li><a href="#cs">Centering and Scaling</a></li>
-  <li><a href="#impute">Imputation</a></li>
-  <li><a href="#trans">Transforming Predictors</a></li>
+  <ul>
+    <li><a href="#pp">The <span class="mx funCall">preProcess</span> Function</a></li>
+    <li><a href="#cs">Centering and Scaling</a></li>
+    <li><a href="#impute">Imputation</a></li>
+    <li><a href="#trans">Transforming Predictors</a></li>
+  </ul>
+  <li><a href="#all">Putting It All Together</a></li>  
   <li><a href="#cent">Class Distance Calculations</a></li>  
  </ul>   
   
@@ -333,12 +337,21 @@ These types of dependencies can arise when large numbers of binary chemical fing
 </p>
 
 
-<div id="cs"></div> 
-<h1>Centering and Scaling</h1>
+<div id="pp"></div> 
+<h1>The <span class="mx funCall">preProcess</span> Function</h1>
+
 
 <p>
-The <span class="mx funCall">preProcess</span> class can be used for many operations on predictors, including centering and scaling. The function <span class="mx funCall">preProcess</span> estimates the required parameters for each operation and <span class="mx funCall">predict.preProcess</span> is used to apply them to specific data sets.
+The <span class="mx funCall">preProcess</span> class can be used for many operations on predictors, including centering and scaling. The function <span class="mx funCall">preProcess</span> estimates the required parameters for each operation and <span class="mx funCall">predict.preProcess</span> is used to apply them to specific data sets. This function can also be interfaces when calling the <span class="mx funCall">train</span> function. 
 </p>
+
+<p>
+Several types of techniques are described in the next few sections and then another example is used to demonstrate how multiple methods can be used. Note that, in all cases, the <span class="mx funCall">preProcess</span>  function estimates whatever it requires from a specific data set (e.g. the training set) and then applies these transformations to <i>any</i> data set without recomputing the values
+</p>
+
+<div id="cs"></div> 
+<h2>Centering and Scaling</h2>
+
 <p>
 In the example below, the half of the MDRR data are used to estimate the location and scale of the predictors. The function <span class="mx funCall">preProcess</span> doesn't actually pre-process the data. <span class="mx funCall">predict.preProcess</span> is used to pre-process this and other data sets.
 </p>
@@ -363,14 +376,14 @@ The <span class="mx funCall">preProcess</span> option <span class="mx arg">"rang
 </p>
 
 <div id="impute"></div> 
-<h1>Imputation</h1>
+<h2>Imputation</h2>
 
 <p>
 <span class="mx funCall">preProcess</span> can be used to impute data sets based only on information in the training set. One method of doing this is with K-nearest neighbors. For an arbitrary sample, the K closest neighbors are found in the training set and the value for the  predictor is imputed using these values (e.g. using the mean). Using this approach will automatically trigger <span class="mx funCall">preProcess</span> to center and scale the data, regardless of what is in the <span class="mx arg">method</span> argument. Alternatively, bagged trees can also be used to impute. For each predictor in the data, a bagged tree is created using all of the other predictors in the training set. When a new sample has a missing predictor value, the bagged model is used to predict the value. While, in theory, this is a more powerful method of imputing, the computational costs are much higher than the nearest neighbor technique.
 </p>
 
 <div id="trans"></div> 
-<h1>Transforming Predictors</h1>
+<h2>Transforming Predictors</h2>
 
 
 <p>In some cases, there is a need to use principal component analysis (PCA) to transform the data to a smaller sub&ndash;space where the new variable are uncorrelated with one another. The <span class="mx funCall">preProcess</span> class can apply this transformation by including <code>&quot;pca&quot;</code> in the <span class="mx arg">method</span> argument. Doing this will also force scaling of the predictors. Note that when PCA is requested, <span class="mx funCall">predict.preProcess</span> changes the column names to <code>PC1</code>,  <code>PC2</code> and so on.</p>
@@ -423,6 +436,7 @@ scaled before applying this transformation.</p>
 
 Pre-processing:
   - Box-Cox transformation (31)
+  - ignored (0)
 
 Lambda estimates for Box-Cox transformation:
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -434,7 +448,107 @@ Lambda estimates for Box-Cox transformation:
 not be transformed. This transformation requires the data to be greater than zero. Two similar transformations, the Yeo-Johnson and exponential transformation of Manly (1976) can also be used in <span class="mx funCall">preProcess</span>.
 </p>
 
+<div id="all"></div> 
+<h1>Putting It All Together</h1>
+<p>
+In <i>Applied Predictive Modeling</i> there is a case study where the execution times of jobs in a high performance computing environment are being predicted. The data are:
+</p>
 
+<div class="chunk" id="hpc"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(AppliedPredictiveModeling)</span>
+<span class="hl kwd">data</span><span class="hl std">(schedulingData)</span>
+<span class="hl kwd">str</span><span class="hl std">(schedulingData)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">'data.frame':	4331 obs. of  8 variables:
+ $ Protocol   : Factor w/ 14 levels &quot;A&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;,..: 4 4 4 4 4 4 4 4 4 4 ...
+ $ Compounds  : num  997 97 101 93 100 100 105 98 101 95 ...
+ $ InputFields: num  137 103 75 76 82 82 88 95 91 92 ...
+ $ Iterations : num  20 20 10 20 20 20 20 20 20 20 ...
+ $ NumPending : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ Hour       : num  14 13.8 13.8 10.1 10.4 ...
+ $ Day        : Factor w/ 7 levels &quot;Mon&quot;,&quot;Tue&quot;,&quot;Wed&quot;,..: 2 2 4 5 5 3 5 5 5 3 ...
+ $ Class      : Factor w/ 4 levels &quot;VF&quot;,&quot;F&quot;,&quot;M&quot;,&quot;L&quot;: 2 1 1 1 1 1 1 1 1 1 ...
+</pre></div>
+</div></div>
+
+<p>
+The data are a mix of categorical and numeric predictors. Suppose we want to use the Yeo-Johnson transformation on the continuous predictors then center and scale them. Let's also suppose that we will be running a tree-based models so we might want to keep the factors as factors (as opposed to creating dummy variables). We run the function on all the columns except the last, which is the outcome. 
+</p>    
+    
+<div class="chunk" id="hpc_pp_factors"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">pp_hpc</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">preProcess</span><span class="hl std">(schedulingData[,</span> <span class="hl opt">-</span><span class="hl num">8</span><span class="hl std">],</span>
+                     <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;center&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;scale&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;YeoJohnson&quot;</span><span class="hl std">))</span>
+<span class="hl std">pp_hpc</span>
+</pre></div>
+<div class="output"><pre class="knitr r">Created from 4331 samples and 7 variables
+
+Pre-processing:
+  - centered (5)
+  - ignored (2)
+  - scaled (5)
+  - Yeo-Johnson transformation (5)
+
+Lambda estimates for Yeo-Johnson transformation:
+-0.08, -0.03, -1.05, -1.1, 1.44
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">transformed</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">predict</span><span class="hl std">(pp_hpc,</span> <span class="hl kwc">newdata</span> <span class="hl std">= schedulingData[,</span> <span class="hl opt">-</span><span class="hl num">8</span><span class="hl std">])</span>
+<span class="hl kwd">head</span><span class="hl std">(transformed)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Protocol  Compounds InputFields  Iterations NumPending         Hour Day
+1        E  1.2289589  -0.6324538 -0.06155877  -0.554123  0.004586502 Tue
+2        E -0.6065822  -0.8120451 -0.06155877  -0.554123 -0.043733215 Tue
+3        E -0.5719530  -1.0131509 -2.78949011  -0.554123 -0.034967191 Thu
+4        E -0.6427734  -1.0047281 -0.06155877  -0.554123 -0.964170760 Fri
+5        E -0.5804710  -0.9564501 -0.06155877  -0.554123 -0.902085029 Fri
+6        E -0.5804710  -0.9564501 -0.06155877  -0.554123  0.698108779 Wed
+</pre></div>
+</div></div>
+    
+<p>
+The two predictors labeled as "ignored" in the output are the two factor predictors. These are not altered but the numeric predictors are transformed. However, the predictor for the number of pending jobs, has a very sparse and unbalanced distribution:
+</p>       
+ 
+<div class="chunk" id="hpc_nzv"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">mean</span><span class="hl std">(schedulingData</span><span class="hl opt">$</span><span class="hl std">NumPending</span> <span class="hl opt">==</span> <span class="hl num">0</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 0.7561764
+</pre></div>
+</div></div>
+    
+<p>
+For some other models, this might be an issue (especially if we resample or down-sample the data). We can add a filter to check for zero- or near zero-variance predictors prior to running the pre-processing calculations:
+</p>       
+  
+<div class="chunk" id="hpc_pp_nzv"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">pp_no_nzv</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">preProcess</span><span class="hl std">(schedulingData[,</span> <span class="hl opt">-</span><span class="hl num">8</span><span class="hl std">],</span>
+                        <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;center&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;scale&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;YeoJohnson&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;nzv&quot;</span><span class="hl std">))</span>
+<span class="hl std">pp_no_nzv</span>
+</pre></div>
+<div class="output"><pre class="knitr r">Created from 4331 samples and 7 variables
+
+Pre-processing:
+  - centered (4)
+  - ignored (2)
+  - removed (1)
+  - scaled (4)
+  - Yeo-Johnson transformation (4)
+
+Lambda estimates for Yeo-Johnson transformation:
+-0.08, -0.03, -1.05, 1.44
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">predict</span><span class="hl std">(pp_no_nzv,</span> <span class="hl kwc">newdata</span> <span class="hl std">= schedulingData[</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">6</span><span class="hl std">,</span> <span class="hl opt">-</span><span class="hl num">8</span><span class="hl std">])</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Protocol  Compounds InputFields  Iterations         Hour Day
+1        E  1.2289589  -0.6324538 -0.06155877  0.004586502 Tue
+2        E -0.6065822  -0.8120451 -0.06155877 -0.043733215 Tue
+3        E -0.5719530  -1.0131509 -2.78949011 -0.034967191 Thu
+4        E -0.6427734  -1.0047281 -0.06155877 -0.964170760 Fri
+5        E -0.5804710  -0.9564501 -0.06155877 -0.902085029 Fri
+6        E -0.5804710  -0.9564501 -0.06155877  0.698108779 Wed
+</pre></div>
+</div></div>
+    
+<p>
+Note that one predictor is labeled as "removed" and the processed data lack the sparse predictor. 
+</p>      
+    
+    
 <div id="cent"></div> 
 <h1>Class Distance Calculations</h1>
 
@@ -524,7 +638,7 @@ This image shows a scatterplot matrix of the class distances for the held-out sa
 
  
     <div id="footer">
-      <p>Created on Fri Oct 09 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
+      <p>Created on Tue Dec 01 2015 using caret version 6.0-62 and R Under development (unstable) (2015-11-18 r69655).</p>
     </div>
     <!-- end #footer -->
   </body>

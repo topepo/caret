@@ -284,20 +284,20 @@ Number of resamples: 50
 
 ROC 
            Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA's
-original 0.8699  0.9261 0.9437 0.9407  0.9564 0.9764    0
-down     0.8957  0.9169 0.9305 0.9346  0.9560 0.9717    0
-up       0.9989  1.0000 1.0000 0.9999  1.0000 1.0000    0
-SMOTE    0.9628  0.9748 0.9815 0.9794  0.9835 0.9904    0
-ROSE     0.8750  0.8899 0.8957 0.8957  0.9005 0.9157    0
+original 0.8935  0.9277 0.9419 0.9407  0.9561 0.9745    0
+down     0.8929  0.9152 0.9320 0.9324  0.9475 0.9706    0
+up       0.9995  1.0000 1.0000 0.9999  1.0000 1.0000    0
+SMOTE    0.9596  0.9763 0.9811 0.9795  0.9843 0.9931    0
+ROSE     0.8748  0.8899 0.8953 0.8957  0.9001 0.9137    0
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">outside_test</span>
 </pre></div>
 <div class="output"><pre class="knitr r">             lower       ROC     upper
-original 0.9135512 0.9250699 0.9365887
-down     0.9278800 0.9351591 0.9424382
-up       0.9340127 0.9416640 0.9493153
-SMOTE    0.9393934 0.9458409 0.9522885
-ROSE     0.9398180 0.9465055 0.9531931
+original 0.9120011 0.9241976 0.9363941
+down     0.9263635 0.9338078 0.9412521
+up       0.9305607 0.9393474 0.9481340
+SMOTE    0.9393288 0.9458161 0.9523034
+ROSE     0.9382464 0.9452415 0.9522365
 </pre></div>
 </div></div>
 <br>  
@@ -305,7 +305,7 @@ ROSE     0.9398180 0.9465055 0.9531931
 The training and test set estimates for the area under the ROC curve do not appear to correlate. Based on the resampling results, one would infer that up-sampling is nearly perfect and that ROSE does relatively poorly. The reason that up-sampling appears to perform so well is that the samples in the majority class are replicated and have a large potential to be in both the model building and hold-out sets. In essence, the hold-outs here are not truly independent samples.  
 </p>
 <p>
-In reality, all of the sampling methods do about the same (based on the test set). The statistics for the basic model fit with no sampling are fairly in-line with one another (0.941 via resampling and 0.925 for the test set). 
+In reality, all of the sampling methods do about the same (based on the test set). The statistics for the basic model fit with no sampling are fairly in-line with one another (0.941 via resampling and 0.924 for the test set). 
 </p>
 
 <div id="resampling"></div>        
@@ -397,20 +397,20 @@ Number of resamples: 50
 
 ROC 
            Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA's
-original 0.8699  0.9261 0.9437 0.9407  0.9564 0.9764    0
-down     0.9138  0.9301 0.9427 0.9412  0.9509 0.9688    0
-up       0.8774  0.9269 0.9393 0.9355  0.9453 0.9660    0
-SMOTE    0.9191  0.9475 0.9534 0.9529  0.9615 0.9742    0
-ROSE     0.9209  0.9448 0.9534 0.9526  0.9614 0.9751    0
+original 0.8935  0.9277 0.9419 0.9407  0.9561 0.9745    0
+down     0.9008  0.9378 0.9451 0.9439  0.9528 0.9662    0
+up       0.8928  0.9256 0.9396 0.9372  0.9500 0.9719    0
+SMOTE    0.9247  0.9470 0.9537 0.9523  0.9605 0.9750    0
+ROSE     0.9297  0.9468 0.9562 0.9549  0.9622 0.9721    0
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">inside_test</span>
 </pre></div>
 <div class="output"><pre class="knitr r">             lower       ROC     upper
-original 0.9135512 0.9250699 0.9365887
-down     0.9347180 0.9413815 0.9480449
-up       0.9348524 0.9429299 0.9510074
-SMOTE    0.9427916 0.9490174 0.9552431
-ROSE     0.9348246 0.9423223 0.9498199
+original 0.9120011 0.9241976 0.9363941
+down     0.9268977 0.9347976 0.9426974
+up       0.9370344 0.9444601 0.9518858
+SMOTE    0.9506470 0.9563559 0.9620647
+ROSE     0.9416604 0.9485036 0.9553468
 </pre></div>
 </div></div>
 
@@ -556,7 +556,7 @@ The control object would then be:
   <div id="footer-content"></div>
   <div id="footer">
 
-  <p>Created on Fri Oct 09 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
+  <p>Created on Tue Dec 01 2015 using caret version 6.0-62 and R Under development (unstable) (2015-11-18 r69655).</p>
   </div>
   <!-- end #footer -->
 </body>

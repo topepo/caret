@@ -516,7 +516,7 @@ Resampling results across tuning parameters:
   16.00  0.867     0.730  0.0840       0.172   
   32.00  0.867     0.730  0.0840       0.172   
 
-Tuning parameter 'sigma' was held constant at a value of 0.0115025
+Tuning parameter 'sigma' was held constant at a value of 0.0115
 Accuracy was used to select the optimal model using  the largest value.
 The final values used for the model were C = 16 and sigma = 0.0115. 
 </pre></div>
@@ -592,7 +592,7 @@ Going back to the <span class="mx funCall">LogitBoost</span> example, we could h
 </pre></div>
 </div></div>
 <p>
-For this case, <span class="mx funCall">train</span> first fits the <span class="mx arg">nIter</span><tt> = <span class="hl num">50</span></tt> model. When the model is predicted, that code has a <span class="mx funCall">for</span> loop that iterates over the elements of <code>submodel[[1]]</code> to get the predictions for the other 4 models. 
+For this case, <span class="mx funCall">train</span> first fits the <span class="mx arg">nIter</span><tt> = <span class="hl num">51</span></tt> model. When the model is predicted, that code has a <span class="mx funCall">for</span> loop that iterates over the elements of <code>submodel[[1]]</code> to get the predictions for the other 4 models. 
 </p>
 <p>
 In the end, predictions for all five models (for <span class="mx arg">nIter</span><tt> = <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">11</span><span class="hl std">,</span> <span class="hl num">51</span><span class="hl std">,</span> <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">)</span></tt>) with a single model fit. 
@@ -730,7 +730,7 @@ A few more notes:
 <span class="hl std">lb1</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   user  system elapsed 
-  6.557   0.876   7.433 
+  6.887   0.801   7.689 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## Now get rid of the submodel parts</span>
 <span class="hl std">lbFuncs2</span> <span class="hl kwb">&lt;-</span> <span class="hl std">lbFuncs</span>
@@ -746,10 +746,10 @@ A few more notes:
 <span class="hl std">lb2</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   user  system elapsed 
- 12.532   1.673  14.205 
+ 13.103   1.533  14.636 
 </pre></div>
 </div></div>
-<p>On a data set with 157 instances and 60 predictors and a model that is tuned over only 3 parameter values, there is a 1.91-fold speed-up. If the model were more computationally taxing or the data set were larger or the number of tune parameters that were evaluated was larger, the speed-up would increase. Here is a plot of the speed-up for a few more values of <span class="mx arg">tuneLength</span>:
+<p>On a data set with 157 instances and 60 predictors and a model that is tuned over only 3 parameter values, there is a 1.9-fold speed-up. If the model were more computationally taxing or the data set were larger or the number of tune parameters that were evaluated was larger, the speed-up would increase. Here is a plot of the speed-up for a few more values of <span class="mx arg">tuneLength</span>:
 </p>
 
 <div class="chunk" id="custom_lb_times"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">bigGrid</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">nIter</span> <span class="hl std">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">151</span><span class="hl std">,</span> <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">))</span>
@@ -817,7 +817,7 @@ Loss function: (y - f)^2
 
 Number of boosting iterations: mstop = 100 
 Step size:  0.1 
-Offset:  30.78282 
+Offset:  30.78 
 Number of baselearners:  3 
 </pre></div>
 </div></div>
@@ -878,8 +878,8 @@ Resampling: Cross-Validated (10 fold, repeated 5 times)
 Summary of sample sizes: 63, 65, 65, 65, 63, 65, ... 
 Resampling results
 
-  RMSE      Rsquared   RMSE SD   Rsquared SD
-  4.001465  0.9091613  1.491702  0.05003862 
+  RMSE   Rsquared  RMSE SD  Rsquared SD
+  4.001  0.9092    1.492    0.05004    
 
  
 </pre></div>
@@ -983,7 +983,7 @@ Resampling results
 <span class="hl kwd">getTrainPerf</span><span class="hl std">(rfOnly)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  TrainRMSE TrainRsquared method
-1  2.183973     0.4974515     rf
+1     2.185        0.4967     rf
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## How does random forest do on its own?</span>
 <span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">184</span><span class="hl std">)</span>
@@ -995,24 +995,24 @@ Resampling results
 <span class="hl kwd">getTrainPerf</span><span class="hl std">(plsOnly)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  TrainRMSE TrainRsquared method
-1 0.6307441     0.9593529    pls
+1    0.6307        0.9594    pls
 </pre></div>
 </div></div>
 <p>The test set results indicate that these data like the linear model more than anything:</p>
 <div class="chunk" id="custom_meat_test"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(</span><span class="hl kwd">predict</span><span class="hl std">(plsrf, absorpTest), proteinTest)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">      RMSE   Rsquared 
-2.87491292 0.08219234 
+<div class="output"><pre class="knitr r">    RMSE Rsquared 
+ 2.86726  0.08741 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(</span><span class="hl kwd">predict</span><span class="hl std">(rfOnly, absorpTest), proteinTest)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">     RMSE  Rsquared 
-2.0037607 0.5905934 
+<div class="output"><pre class="knitr r">    RMSE Rsquared 
+  1.9916   0.5956 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(</span><span class="hl kwd">predict</span><span class="hl std">(plsOnly, absorpTest), proteinTest)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">     RMSE  Rsquared 
-0.7193764 0.9437918 
+<div class="output"><pre class="knitr r">    RMSE Rsquared 
+  0.7194   0.9438 
 </pre></div>
 </div></div>
 
@@ -1059,8 +1059,8 @@ Let's use a standard random forest model with these data using the default value
                                        <span class="hl kwc">summaryFunction</span> <span class="hl std">= twoClassSummary))</span>
 <span class="hl kwd">getTrainPerf</span><span class="hl std">(mod0)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">   TrainROC TrainSens TrainSpec method
-1 0.9578667 0.9991111     0.336     rf
+<div class="output"><pre class="knitr r">  TrainROC TrainSens TrainSpec method
+1   0.9569    0.9991     0.324     rf
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## Get the ROC curve</span>
 <span class="hl std">roc0</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">roc</span><span class="hl std">(testingSet</span><span class="hl opt">$</span><span class="hl std">Class,</span>
@@ -1073,7 +1073,7 @@ Call:
 roc.default(response = testingSet$Class, predictor = predict(mod0,     testingSet, type = &quot;prob&quot;)[, 1], levels = rev(levels(testingSet$Class)))
 
 Data: predict(mod0, testingSet, type = &quot;prob&quot;)[, 1] in 34 controls (testingSet$Class Class2) &lt; 466 cases (testingSet$Class Class1).
-Area under the curve: 0.9313
+Area under the curve: 0.927
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl com">## Now plot</span>
 <span class="hl kwd">plot</span><span class="hl std">(roc0,</span> <span class="hl kwc">print.thres</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">.5</span><span class="hl std">),</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;S&quot;</span><span class="hl std">,</span>
@@ -1087,7 +1087,7 @@ Call:
 roc.default(response = testingSet$Class, predictor = predict(mod0,     testingSet, type = &quot;prob&quot;)[, 1], levels = rev(levels(testingSet$Class)))
 
 Data: predict(mod0, testingSet, type = &quot;prob&quot;)[, 1] in 34 controls (testingSet$Class Class2) &lt; 466 cases (testingSet$Class Class1).
-Area under the curve: 0.9313
+Area under the curve: 0.927
 </pre></div>
 </div></div>
     
@@ -1238,26 +1238,26 @@ Summary of sample sizes: 450, 450, 450, 450, 450, 450, ...
 Resampling results across tuning parameters:
 
   threshold  ROC    Sens   Spec   Dist   ROC SD  Sens SD  Spec SD  Dist SD
-  0.0100     0.959  1.000  0.000  1.000  0.0324  0.00000  0.0000   0.0000 
-  0.0616     0.959  1.000  0.000  1.000  0.0324  0.00000  0.0000   0.0000 
-  0.1132     0.959  1.000  0.000  1.000  0.0324  0.00000  0.0000   0.0000 
-  0.1647     0.959  1.000  0.000  1.000  0.0324  0.00000  0.0000   0.0000 
-  0.2163     0.959  1.000  0.000  1.000  0.0324  0.00000  0.0000   0.0000 
-  0.2679     0.959  1.000  0.000  1.000  0.0324  0.00000  0.0000   0.0000 
-  0.3195     0.959  1.000  0.016  0.984  0.0324  0.00000  0.0681   0.0681 
-  0.3711     0.959  1.000  0.064  0.936  0.0324  0.00000  0.1102   0.1102 
-  0.4226     0.959  1.000  0.124  0.876  0.0324  0.00000  0.1611   0.1611 
-  0.4742     0.959  1.000  0.240  0.760  0.0324  0.00314  0.1938   0.1938 
-  0.5258     0.959  0.996  0.408  0.592  0.0324  0.01161  0.2137   0.2137 
-  0.5774     0.959  0.989  0.556  0.445  0.0324  0.01864  0.2072   0.2053 
-  0.6289     0.959  0.972  0.620  0.386  0.0324  0.03079  0.2030   0.1964 
-  0.6805     0.959  0.964  0.644  0.363  0.0324  0.03419  0.1908   0.1845 
-  0.7321     0.959  0.953  0.688  0.322  0.0324  0.03956  0.1859   0.1793 
-  0.7837     0.959  0.934  0.748  0.271  0.0324  0.04478  0.1446   0.1318 
-  0.8353     0.959  0.897  0.836  0.214  0.0324  0.04573  0.1321   0.1048 
-  0.8868     0.959  0.837  0.948  0.191  0.0324  0.04910  0.1054   0.0791 
-  0.9384     0.959  0.679  0.996  0.323  0.0324  0.07158  0.0283   0.0707 
-  0.9900     0.959  0.178  1.000  0.822  0.0324  0.05462  0.0000   0.0546 
+  0.0100     0.957  1.000  0.000  1.000  0.0366  0.0000   0.0000   0.0000 
+  0.0616     0.957  1.000  0.000  1.000  0.0366  0.0000   0.0000   0.0000 
+  0.1132     0.957  1.000  0.000  1.000  0.0366  0.0000   0.0000   0.0000 
+  0.1647     0.957  1.000  0.000  1.000  0.0366  0.0000   0.0000   0.0000 
+  0.2163     0.957  1.000  0.000  1.000  0.0366  0.0000   0.0000   0.0000 
+  0.2679     0.957  1.000  0.000  1.000  0.0366  0.0000   0.0000   0.0000 
+  0.3195     0.957  1.000  0.032  0.968  0.0366  0.0000   0.0844   0.0844 
+  0.3711     0.957  1.000  0.080  0.920  0.0366  0.0000   0.1340   0.1340 
+  0.4226     0.957  1.000  0.132  0.868  0.0366  0.0000   0.1544   0.1544 
+  0.4742     0.957  1.000  0.244  0.756  0.0366  0.0000   0.1908   0.1908 
+  0.5258     0.957  0.996  0.436  0.564  0.0366  0.0107   0.2087   0.2087 
+  0.5774     0.957  0.989  0.548  0.453  0.0366  0.0192   0.2206   0.2194 
+  0.6289     0.957  0.973  0.608  0.397  0.0366  0.0291   0.1978   0.1922 
+  0.6805     0.957  0.966  0.656  0.350  0.0366  0.0312   0.1897   0.1837 
+  0.7321     0.957  0.952  0.692  0.318  0.0366  0.0389   0.1861   0.1795 
+  0.7837     0.957  0.933  0.752  0.267  0.0366  0.0450   0.1488   0.1363 
+  0.8353     0.957  0.896  0.812  0.236  0.0366  0.0463   0.1480   0.1204 
+  0.8868     0.957  0.835  0.940  0.198  0.0366  0.0494   0.1088   0.0750 
+  0.9384     0.957  0.676  0.984  0.330  0.0366  0.0712   0.0681   0.0738 
+  0.9900     0.957  0.171  1.000  0.829  0.0366  0.0593   0.0000   0.0593 
 
 Tuning parameter 'mtry' was held constant at a value of 3
 Dist was used to select the optimal model using  the smallest value.
@@ -1287,7 +1287,7 @@ Using <tt><span class="hl kwd">ggplot</span><span class="hl std">(mod1)</span></
 You can see that as we increase the probability cut off for the first class it takes more and more evidence for a sample to be predicted as the first class. As a result the sensitivity goes down when the threshold becomes very large. The upside is that we can increase specificity in the same way. The blue curve shows the distance to the perfect model. The value of 0.89 was found to be optimal. 
 </p>
 <p>
-Now we can use the test set ROC curve to validate the cut off we chose by resampling. Here the cut off closest to the perfect model is 0.87. We were able to find a good probability cut off value without setting aside another set of data for tuning the cut off.
+Now we can use the test set ROC curve to validate the cut off we chose by resampling. Here the cut off closest to the perfect model is 0.83. We were able to find a good probability cut off value without setting aside another set of data for tuning the cut off.
 </p>
 <p>
 One great thing about this code is that it will automatically apply the optimized probability threshold when predicting new samples. 
@@ -1341,7 +1341,7 @@ One great thing about this code is that it will automatically apply the optimize
   <div id="footer-content"></div>
 
   <div id="footer">
-  <p>Created on Sun Oct 11 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
+  <p>Created on Wed Dec 02 2015 using caret version 6.0-62 and R Under development (unstable) (2015-11-18 r69655).</p>
   </div>
   <!-- end #footer -->
 </body>

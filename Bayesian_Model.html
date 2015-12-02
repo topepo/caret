@@ -121,6 +121,16 @@ Released   : 20120902
 <p><b>Type</b>: Regression</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">neurons</span></code> (# Neurons)</p>
 
+<h1>Bayesian Ridge Regression</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'bridge'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p>No Tuning Parameters</p>
+
+<h1>Bayesian Ridge Regression (Model Averaged)</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'blassoAveraged'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p>No Tuning Parameters</p>
+
 <h1>Naive Bayes</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'nb'</span></tt></p>
 <p><b>Type</b>: Classification</p>
@@ -140,6 +150,16 @@ Released   : 20120902
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'nbSearch'</span></tt></p>
 <p><b>Type</b>: Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">k</span></code> (#Folds), <code><span class="mx arg">epsilon</span></code> (Minimum Absolute Improvement), <code><span class="mx arg">smooth</span></code> (Smoothing Parameter), <code><span class="mx arg">final_smooth</span></code> (Final Smoothing Parameter), <code><span class="mx arg">direction</span></code> (Search Direction)</p>
+
+<h1>Spike and Slab Regression</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'spikeslab'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">vars</span></code> (Variables Retained)</p>
+
+<h1>The Bayesian lasso</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'blasso'</span></tt></p>
+<p><b>Type</b>: Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">sparsity</span></code> (Sparsity Threshold)</p>
 
 <h1>Tree Augmented Naive Bayes Classifier</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'tan'</span></tt></p>
@@ -207,7 +227,7 @@ Released   : 20120902
 </div>
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on Fri Oct 09 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
+  <p>Created on Tue Dec 01 2015 using caret version 6.0-62 and R Under development (unstable) (2015-11-18 r69655).</p>
   </div>
   <!-- end #footer -->
 </body>

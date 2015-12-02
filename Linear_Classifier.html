@@ -121,6 +121,11 @@ Released   : 20120902
 <p><b>Type</b>: Regression, Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">mstop</span></code> (# Boosting Iterations), <code><span class="mx arg">prune</span></code> (AIC Prune?)</p>
 
+<h1>Ensembles of Generalized Lienar Models</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'randomGLM'</span></tt></p>
+<p><b>Type</b>: Regression, Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">maxInteractionOrder</span></code> (Interaction Order)</p>
+
 <h1>Factor-Based Linear Discriminant Analysis</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'RFlda'</span></tt></p>
 <p><b>Type</b>: Classification</p>
@@ -309,7 +314,7 @@ Released   : 20120902
 <h1>Support Vector Machines with Linear Kernel</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'svmLinear2'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">cost</span></code> (Cost)</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">cost</span></code> (Cost), <code><span class="mx arg">gamma</span></code> (Gamma)</p>
 
 
 <div style="clear: both;">&nbsp;</div>
@@ -357,7 +362,7 @@ Released   : 20120902
 </div>
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on Fri Oct 09 2015 using caret version 6.0-57 and R Under development (unstable) (2015-09-30 r69443).</p>
+  <p>Created on Tue Dec 01 2015 using caret version 6.0-62 and R Under development (unstable) (2015-11-18 r69655).</p>
   </div>
   <!-- end #footer -->
 </body>
