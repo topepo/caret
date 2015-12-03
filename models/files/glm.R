@@ -83,5 +83,6 @@ modelInfo <- list(label = "Generalized Linear Model",
 
                     x
                   },
-                  tags = c("Generalized Linear Model", "Linear Classifier", "Two Class Only"),
+                  tags = c("Generalized Linear Model", "Linear Classifier", 
+                           "Two Class Only", "Accepts Case Weights"),
                   sort = function(x) x)

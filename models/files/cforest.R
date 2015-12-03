@@ -69,7 +69,7 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                     out <- data.frame(Overall = variableImp)
                     out
                   },
-                  tags = c("Random Forest", "Ensemble Model", "Bagging", "Implicit Feature Selection"),
+                  tags = c("Random Forest", "Ensemble Model", "Bagging", "Implicit Feature Selection", "Accepts Case Weights"),
                   levels = function(x) levels(x@data@get("response")[,1]),
                   sort = function(x) x[order(x[,1]),],
                   oob = function(x) {

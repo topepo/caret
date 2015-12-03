@@ -106,5 +106,5 @@ modelInfo <- list(label = "Boosted Tree",
                     strsplit(variable.names(x), ", ")[[1]]
                   },
                   levels = function(x) levels(x$response),
-                  tags = c("Tree-Based Model", "Ensemble Model", "Boosting"),
+                  tags = c("Tree-Based Model", "Ensemble Model", "Boosting", "Accepts Case Weights"),
                   sort = function(x) x[order(x$mstop, x$maxdepth),])

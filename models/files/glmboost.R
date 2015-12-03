@@ -99,5 +99,6 @@ modelInfo <- list(label = "Boosted Generalized Linear Model",
                     strsplit(variable.names(x), ", ")[[1]]
                   },
                   levels = function(x) levels(x$response),
-                  tags = c("Generalized Linear Model", "Ensemble Model", "Boosting", "Linear Classifier", "Two Class Only"),
+                  tags = c("Generalized Linear Model", "Ensemble Model", "Boosting", 
+                           "Linear Classifier", "Two Class Only", "Accepts Case Weights"),
                   sort = function(x) x[order(x$mstop, x$prune),])

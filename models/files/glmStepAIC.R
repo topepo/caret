@@ -77,5 +77,5 @@ modelInfo <- list(label = "Generalized Linear Model with Stepwise Feature Select
                   },
                   levels = function(x) x$obsLevels,
                   tags = c("Generalized Linear Model", "Feature Selection Wrapper", "Linear Classifier",
-                           "Implicit Feature Selection", "Two Class Only"),
+                           "Implicit Feature Selection", "Two Class Only", "Accepts Case Weights"),
                   sort = function(x) x)

@@ -45,5 +45,5 @@ modelInfo <- list(label = "Tree Models from Genetic Algorithms",
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     predict(modelFit, newdata, type = "prob")
                     },
-                  tags = c("Tree-Based Model", "Implicit Feature Selection"),
+                  tags = c("Tree-Based Model", "Implicit Feature Selection", "Accepts Case Weights"),
                   sort = function(x) x[order(x[,1]),])

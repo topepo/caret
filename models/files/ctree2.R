@@ -68,6 +68,6 @@ modelInfo <- list(label = "Conditional Inference Tree",
                     }
                     unique(vars)
                   },
-                  tags = c('Tree-Based Model', "Implicit Feature Selection"),
+                  tags = c('Tree-Based Model', "Implicit Feature Selection", "Accepts Case Weights"),
                   levels = function(x) levels(x@data@get("response")[,1]),
                   sort = function(x) x[order(x[,1]),])

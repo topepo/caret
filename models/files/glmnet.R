@@ -151,7 +151,7 @@ modelInfo <- list(label = "glmnet",
                   levels = function(x) if(any(names(x) == "obsLevels")) x$obsLevels else NULL,
                   tags = c("Generalized Linear Model", "Implicit Feature Selection", 
                            "L1 Regularization", "L2 Regularization", "Linear Classifier",
-                           "Linear Regression"),
+                           "Linear Regression", "Accepts Case Weights"),
                   sort = function(x) x[order(-x$lambda, x$alpha),],
                   trim = function(x) {
                     x$call <- NULL

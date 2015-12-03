@@ -97,6 +97,7 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                     strsplit(variable.names(x), ", ")[[1]]
                   },
                   tags = c("Generalized Additive Model", "Ensemble Model", 
-                           "Boosting", "Implicit Feature Selection", "Two Class Only"),
+                           "Boosting", "Implicit Feature Selection", "
+                           Two Class Only", "Accepts Case Weights"),
                   levels = function(x) levels(x$response),
                   sort = function(x) x[order(x$mstop, x$prune),])

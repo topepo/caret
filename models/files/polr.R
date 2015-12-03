@@ -57,5 +57,5 @@ modelInfo <- list(
     predictors = function(x, ...) predictors(terms(x)),
     levels = function(x)
         if (any(names(x) == "obsLevels")) x$obsLevels else NULL,
-    tags = c("Logistic Regression", "Linear Classifier"),
+    tags = c("Logistic Regression", "Linear Classifier", "Accepts Case Weights"),
     sort = function(x) x)
