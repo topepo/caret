@@ -6,7 +6,7 @@
 \section{Changes in version 6.0-xx}{
 	\itemize{
 		\item \code{blackboost} was updated to work with outcomes with 3+ classes. 
-		\item Additional model tags for "Two Class Only", "Handle Missing Predictor Data", "Categorical Predictors Only", and "Binary Predictors Only" were added.
+		\item Additional model tags for "Accepts Case Weights", "Two Class Only", "Handle Missing Predictor Data", "Categorical Predictors Only", and "Binary Predictors Only" were added.
 		\item A pre-processing method called "conditionalX" was added that eliminates predictors where the conditional distribution (X|Y) for that predictor has a single value. See the \code{checkConditionalX} function for details. This is only used for classification.  
 	} 
 }
