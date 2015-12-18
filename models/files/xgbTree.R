@@ -18,11 +18,11 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                          colsample_bytree = c(.6, .8),
                                          min_child_weight = c(1))
                     } else {
-                      out <- data.frame(nrounds = sample(1:1000, size = len*10, replace = TRUE),
+                      out <- data.frame(nrounds = sample(1:1000, size = 10, replace = TRUE),
                                         max_depth = sample(1:10, replace = TRUE, size = len),         
                                         eta = runif(len, min = .001, max = .6),
-                                        gamma = runif(len*10, min = 0, max = 10),
-                                        colsample_bytree = runif(len*5, min = .3, max = .7),
+                                        gamma = runif(10, min = 0, max = 10),
+                                        colsample_bytree = runif(5, min = .3, max = .7),
                                         min_child_weight = sample(0:20, size = len*5, replace = TRUE))
                       out$nrounds <- floor(out$nrounds)
                       out <- out[!duplicated(out),]
@@ -88,9 +88,9 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     
                     
                   },
-                  predict = function(modelFit, newdata, submodels = NULL) {
+                  predict = function(modelFit, newdata, submodels = NULL, predleaf = FALSE) {
                     newdata <- xgb.DMatrix(as.matrix(newdata))
-                    out <- predict(modelFit, newdata)
+                    out <- predict(modelFit, newdata, predleaf = predleaf)
                     if(modelFit$problemType == "Classification") {
                       if(length(modelFit$obsLevels) == 2) {
                         out <- ifelse(out >= .5, 
@@ -106,7 +106,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
                       for(j in seq(along = submodels$nrounds)) {
-                        tmp_pred <- predict(modelFit, newdata, ntreelimit = submodels$nrounds[j])
+                        tmp_pred <- predict(modelFit, newdata, ntreelimit = submodels$nrounds[j], predleaf = predleaf)
                         if(modelFit$problemType == "Classification") {
                           if(length(modelFit$obsLevels) == 2) {
                             tmp_pred <- ifelse(tmp_pred >= .5, 
@@ -123,9 +123,9 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     }
                     out  
                   },
-                  prob = function(modelFit, newdata, submodels = NULL) {
+                  prob = function(modelFit, newdata, submodels = NULL, predleaf = FALSE) {
                     newdata <- xgb.DMatrix(as.matrix(newdata))
-                    out <- predict(modelFit, newdata)
+                    out <- predict(modelFit, newdata, predleaf = predleaf)
                     if(length(modelFit$obsLevels) == 2) {
                       out <- cbind(out, 1 - out)
                       colnames(out) <- modelFit$obsLevels
@@ -139,7 +139,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
                       for(j in seq(along = submodels$nrounds)) {
-                        tmp_pred <- predict(modelFit, newdata, ntreelimit = submodels$nrounds[j])
+                        tmp_pred <- predict(modelFit, newdata, ntreelimit = submodels$nrounds[j], predleaf = predleaf)
                         if(length(modelFit$obsLevels) == 2) {
                           tmp_pred <- cbind(tmp_pred, 1 - tmp_pred)
                           colnames(tmp_pred) <- modelFit$obsLevels
