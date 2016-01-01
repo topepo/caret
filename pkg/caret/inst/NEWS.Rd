@@ -9,8 +9,9 @@
 		\item A new model \code{rpart1SE} was added. This has no tuning parameters and resamples the internal \cpkg{rpart} procdure of pruning using the one standard error method. 
 		\item Another model (\code{svmRadialSigma}) tunes over the cost parameter and the RBF kernel parameter sigma. In the latter case, using \code{tuneLength} will, at most, evaluate six values of the kernel parameter. This enables a broad search over the cost parameter and a relatively narrow search over \code{sigma}.
 		\item Additional model tags for "Accepts Case Weights", "Two Class Only", "Handle Missing Predictor Data", "Categorical Predictors Only", and "Binary Predictors Only" were added. In some cases, a new model element called "notes" was added to the model code. 
-		\item A pre-processing method called "conditionalX" was added that eliminates predictors where the conditional distribution (X|Y) for that predictor has a single value. See the \code{checkConditionalX} function for details. This is only used for classification.  
-		\item A bug in the naive Bayes prediction code was found by github user pverspeelt and fixed. 
+		\item A pre-processing method called "conditionalX" was added that eliminates predictors where the conditional distribution (X|Y) for that predictor has a single value. See the \code{checkConditionalX} function for details. This is only used for classification.  \issue{334}
+		\item A bug in the naive Bayes prediction code was found by github user pverspeelt and was fixed. \issue(345)
+		\item Josh Brady (doublej2) found and fixed an issue with \code{DummyVars} \issue{344}
 	} 
 }
 

@@ -120,7 +120,7 @@ predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
       newContr["unordered"] <- "contr.ltfr"
       options(contrasts = newContr)
     }
-    m <- model.frame(Terms, newdata, na.action = na.action, xlev = object$xlevels)
+    m <- model.frame(Terms, newdata, na.action = na.action, xlev = object$lvls)
 
     x <- model.matrix(Terms, m)
     if(!object$fullRank) options(contrasts = oldContr)
