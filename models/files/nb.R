@@ -10,11 +10,13 @@ modelInfo <- list(label = "Naive Bayes",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
                     NaiveBayes(x, y, usekernel= param$usekernel, fL = param$fL, ...),
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(is.vector(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     predict(modelFit , newdata)$class
                   },
-                  prob = function(modelFit, newdata, submodels = NULL)
-                    predict(modelFit, newdata, type = "raw")$posterior,
+                  prob = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata, type = "raw")$posterior
+                    },
                   predictors = function(x, ...) if(hasTerms(x)) predictors(x$terms) else x$varnames,
                   tags = c("Bayesian Model"),
                   levels = function(x) x$levels,
