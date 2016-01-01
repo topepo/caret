@@ -88,5 +88,6 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                     }
                     gams
                   },
+                  notes = "Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.",
                   tags = c("Generalized Linear Model", "Generalized Additive Model"),
                   sort = function(x) x)
