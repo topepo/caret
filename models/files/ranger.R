@@ -21,7 +21,7 @@ modelInfo <- list(label = "Random Forest",
                     out <- ranger(.outcome ~ ., data = x, mtry = param$mtry, write.forest = TRUE, 
                                   probability = classProbs, ...)
                     ## in case the resampling method is "oob"
-                    if(!last & is.numeric(y)) out$y <- y
+                    if(!last) out$y <- y
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
@@ -60,14 +60,7 @@ modelInfo <- list(label = "Random Forest",
                     out
                   },
                   oob = function(x) {
-                    if(is.null(x$classification.table)) {
-                      out <- postResample(x$predictions, x$y)
-                    } else {
-                      out <- c(sum(diag(x$classification.table))/sum(x$classification.table),
-                               e1071::classAgreement(x$classification.table)[["kappa"]])
-                      names(out) <- c("Accuracy", "Kappa")
-                    }
-                    out
+                    postResample(x$predictions, x$y)
                   },
                   tags = c("Random Forest", "Ensemble Model", "Bagging", "Implicit Feature Selection"),
                   sort = function(x) x[order(x[,1]),])

@@ -12,6 +12,7 @@
 		\item A pre-processing method called "conditionalX" was added that eliminates predictors where the conditional distribution (X|Y) for that predictor has a single value. See the \code{checkConditionalX} function for details. This is only used for classification.  \issue{334}
 		\item A bug in the naive Bayes prediction code was found by github user pverspeelt and was fixed. \issue(345)
 		\item Josh Brady (doublej2) found and fixed an issue with \code{DummyVars} \issue{344}
+		\item A bug related to recent changes to the \cpkg{ranger} package was fixed \issue{320}
 	} 
 }
 
