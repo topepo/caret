@@ -21,133 +21,92 @@ training <- SLC14_1(30)
 testing <- SLC14_1(100)
 
 set.seed(1)
-test1 <- train(y ~ ., 
-               data = training,
-               method = "lm",
-               preProc = c("center", "scale"),
-               trControl = trainControl(method = "cv", 
-                                        savePredictions = TRUE))
+cv_no_trimming <- train(y ~ ., 
+                        data = training,
+                        method = "lm",
+                        preProc = c("center", "scale"),
+                        trControl = trainControl(method = "cv", 
+                                                 savePredictions = TRUE))
 
 set.seed(1)
-test2 <- train(y ~ ., 
-               data = training,
-               method = "lm",
-               preProc = c("center", "scale"),
-               trControl = trainControl(method = "cv",
-                                        predictionBounds = c(0, NA), 
-                                        savePredictions = TRUE))
+cv_bottom_only <- train(y ~ ., 
+                        data = training,
+                        method = "lm",
+                        preProc = c("center", "scale"),
+                        trControl = trainControl(method = "cv",
+                                                 predictionBounds = c(0, NA), 
+                                                 savePredictions = TRUE))
 
 set.seed(1)
-test3 <- train(y ~ ., 
-               data = training,
-               method = "lm",
-               preProc = c("center", "scale"),
-               trControl = trainControl(method = "cv",
-                                        predictionBounds = c(TRUE, TRUE), 
-                                        savePredictions = TRUE))
+cv_boolean <- train(y ~ ., 
+                    data = training,
+                    method = "lm",
+                    preProc = c("center", "scale"),
+                    trControl = trainControl(method = "cv",
+                                             predictionBounds = c(TRUE, TRUE), 
+                                             savePredictions = TRUE))
 
 set.seed(1)
-test4 <- train(y ~ ., 
-               data = training,
-               method = "lm",
-               preProc = c("center", "scale"),
-               trControl = trainControl(method = "cv", 
-                                        savePredictions = TRUE))
-
-set.seed(1)
-test5 <- train(y ~ ., 
-               data = training,
-               method = "lm",
-               preProc = c("center", "scale"),
-               trControl = trainControl(method = "cv",
-                                        predictionBounds = c(0, NA), 
-                                        savePredictions = TRUE))
-
-set.seed(1)
-test6 <- train(y ~ ., 
-               data = training,
-               method = "lm",
-               preProc = c("center", "scale"),
-               trControl = trainControl(method = "cv",
-                                        predictionBounds = c(TRUE, TRUE), 
-                                        savePredictions = TRUE))
-
-set.seed(1)
-test7 <- train(y ~ ., 
-               data = training,
-               method = "lm",
-               preProc = c("center", "scale"),
-               trControl = trainControl(method = "LOOCV", 
-                                        savePredictions = TRUE))
-
-set.seed(1)
-test8 <- train(y ~ ., 
-               data = training,
-               method = "lm",
-               preProc = c("center", "scale"),
-               trControl = trainControl(method = "LOOCV",
-                                        predictionBounds = c(0, NA), 
-                                        savePredictions = TRUE))
-
-set.seed(1)
-test9 <- train(y ~ ., 
-               data = training,
-               method = "lm",
-               preProc = c("center", "scale"),
-               trControl = trainControl(method = "LOOCV",
-                                        predictionBounds = c(TRUE, TRUE), 
-                                        savePredictions = TRUE))
-
-set.seed(1)
-test10 <- train(y ~ ., 
+cv_top_only <- train(y ~ ., 
                 data = training,
                 method = "lm",
                 preProc = c("center", "scale"),
-                trControl = trainControl(method = "LOOCV", 
+                trControl = trainControl(method = "cv",
+                                         predictionBounds = c(NA, 25), 
                                          savePredictions = TRUE))
 
 set.seed(1)
-test11 <- train(y ~ ., 
-                data = training,
-                method = "lm",
-                preProc = c("center", "scale"),
-                trControl = trainControl(method = "LOOCV",
-                                         predictionBounds = c(0, NA), 
-                                         savePredictions = TRUE))
+loo_no_trimming <- train(y ~ ., 
+                         data = training,
+                         method = "lm",
+                         preProc = c("center", "scale"),
+                         trControl = trainControl(method = "LOOCV", 
+                                                  savePredictions = TRUE))
 
 set.seed(1)
-test12 <- train(y ~ ., 
-                data = training,
-                method = "lm",
-                preProc = c("center", "scale"),
-                trControl = trainControl(method = "LOOCV",
-                                         predictionBounds = c(TRUE, TRUE), 
-                                         savePredictions = TRUE))
+loo_bottom_only <- train(y ~ ., 
+                         data = training,
+                         method = "lm",
+                         preProc = c("center", "scale"),
+                         trControl = trainControl(method = "LOOCV",
+                                                  predictionBounds = c(0, NA), 
+                                                  savePredictions = TRUE))
 
-test_ext_pred <- data.frame(p1 = predict(test1, testing),
-                            p2 = predict(test2, testing),
-                            p3 = predict(test3, testing),
-                            p4 = predict(test4, testing),
-                            p5 = predict(test5, testing),
-                            p6 = predict(test6, testing),
-                            p7 = predict(test7, testing),
-                            p8 = predict(test8, testing),
-                            p9 = predict(test9, testing),
-                            p10 = predict(test10, testing),
-                            p11 = predict(test11, testing),
-                            p12 = predict(test12, testing))
-test_1_pred <- test1$pred
-test_2_pred <- test2$pred
-test_3_pred <- test3$pred
-test_4_pred <- test4$pred
-test_5_pred <- test5$pred
-test_6_pred <- test6$pred
-test_7_pred <- test7$pred
-test_8_pred <- test8$pred
-test_9_pred <- test9$pred
-test_10_pred <- test10$pred
-test_11_pred <- test11$pred
-test_12_pred <- test12$pred
+set.seed(1)
+loo_boolean <- train(y ~ ., 
+                     data = training,
+                     method = "lm",
+                     preProc = c("center", "scale"),
+                     trControl = trainControl(method = "LOOCV",
+                                              predictionBounds = c(TRUE, TRUE), 
+                                              savePredictions = TRUE))
+
+set.seed(1)
+loo_top_only <- train(y ~ ., 
+                      data = training,
+                      method = "lm",
+                      preProc = c("center", "scale"),
+                      trControl = trainControl(method = "LOOCV",
+                                               predictionBounds = c(NA, 25), 
+                                               savePredictions = TRUE))
+
+test_external_cv_no_trimming  <- predict(cv_no_trimming, testing)
+test_external_cv_bottom_only  <- predict(cv_bottom_only, testing)
+test_external_cv_booleans     <- predict(cv_boolean, testing)
+test_external_cv_top_only     <- predict(cv_top_only, testing)
+test_external_loo_no_trimming <- predict(loo_no_trimming, testing)
+test_external_loo_bottom_only <- predict(loo_bottom_only, testing)
+test_external_loo_booleans    <- predict(loo_boolean, testing)
+test_external_loo_top_only    <- predict(loo_top_only, testing)
+
+test_internal_cv_no_trimming  <- cv_no_trimming$pred
+test_internal_cv_bottom_only  <- cv_bottom_only$pred
+test_internal_cv_booleans     <- cv_boolean$pred
+test_internal_cv_top_only     <- cv_top_only$pred
+test_internal_loo_no_trimming <- loo_no_trimming$pred
+test_internal_loo_bottom_only <- loo_bottom_only$pred
+test_internal_loo_booleans    <- loo_boolean$pred
+test_internal_loo_top_only    <- loo_top_only$pred
 
 #########################################################################
 
