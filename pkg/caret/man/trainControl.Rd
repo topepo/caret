@@ -31,9 +31,9 @@ trainControl(method = "boot",
              allowParallel = TRUE)
 }
 \arguments{
-  \item{method}{The resampling method: \code{boot}, \code{boot632}, \code{cv}, \code{repeatedcv},
-    \code{LOOCV},  \code{LGOCV} (for repeated training/test splits), \code{none} (only fits one model to the entire training set),
-    \code{oob} (only for random forest, bagged trees, bagged earth, bagged flexible discriminant analysis, or conditional tree forest models), \code{"adaptive_cv"}, \code{"adaptive_boot"} or \code{"adaptive_LGOCV"}}
+  \item{method}{The resampling method: \code{"boot"}, \code{"boot632"}, \code{"cv"}, \code{"repeatedcv"},
+    \code{"LOOCV"},  \code{"LGOCV"} (for repeated training/test splits), \code{"none"} (only fits one model to the entire training set),
+    \code{"oob"} (only for random forest, bagged trees, bagged earth, bagged flexible discriminant analysis, or conditional tree forest models), \code{"adaptive_cv"}, \code{"adaptive_boot"} or \code{"adaptive_LGOCV"}}
   \item{number}{Either the number of folds or number of resampling iterations}
   \item{repeats}{For repeated k-fold cross-validation only: the number of complete sets of folds to compute}
   \item{verboseIter}{A logical for printing a training log.}
