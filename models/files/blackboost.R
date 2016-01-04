@@ -43,7 +43,7 @@ modelInfo <- list(label = "Boosted Tree",
                     
                     if(!any(names(theDots) == "family")) {
                       if(is.factor(y)) {
-                        theDots$family <- if(legnth(lev) == 2) Binomial() else Multinomial()
+                        theDots$family <- if(length(lev) == 2) Binomial() else Multinomial()
                         } else theDots$family <- GaussReg()              
                     }  
                     
