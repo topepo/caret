@@ -5,6 +5,7 @@
 
 \section{Changes in version 6.0-xx}{
 	\itemize{
+		\item Model averaged naive Bayes (\code{method = "manb"}) from the \cpkg{bnclassify} package was added. 
 		\item \code{blackboost} was updated to work with outcomes with 3+ classes. 
 		\item A new model \code{rpart1SE} was added. This has no tuning parameters and resamples the internal \cpkg{rpart} procdure of pruning using the one standard error method. 
 		\item Another model (\code{svmRadialSigma}) tunes over the cost parameter and the RBF kernel parameter sigma. In the latter case, using \code{tuneLength} will, at most, evaluate six values of the kernel parameter. This enables a broad search over the cost parameter and a relatively narrow search over \code{sigma}.
