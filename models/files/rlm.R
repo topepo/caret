@@ -19,5 +19,5 @@ modelInfo <- list(label = "Robust Linear Model",
                     predict(modelFit, newdata)
                     },
                   prob = NULL,
-                  tags = c("Linear Regression", "Robust Model"),
+                  tags = c("Linear Regression", "Robust Model", "Accepts Case Weights"),
                   sort = function(x) x)

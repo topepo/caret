@@ -157,5 +157,5 @@ modelInfo <- list(label = "CART",
                     x$where <- NULL
                     x
                   },
-                  tags = c("Tree-Based Model", "Implicit Feature Selection"),
+                  tags = c("Tree-Based Model", "Implicit Feature Selection", "Handle Missing Predictor Data", "Accepts Case Weights"),
                   sort = function(x) x[order(x[,1], decreasing = TRUE),])

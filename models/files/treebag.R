@@ -54,7 +54,7 @@ modelInfo <- list(label = "Bagged CART",
                                        } )
                     x
                   },
-                  tags = c("Tree-Based Model", "Ensemble Model", "Bagging"), 
+                  tags = c("Tree-Based Model", "Ensemble Model", "Bagging", "Accepts Case Weights"), 
                   levels = function(x) levels(x$y),
                   sort = function(x) x,
                   oob = function(x) {

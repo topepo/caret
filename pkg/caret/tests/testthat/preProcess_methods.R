@@ -289,3 +289,35 @@ test_that('Yeo-Johnson trans with mising data', {
   expect_equal(yj_dat2_yj_exp, yj_dat2_yj)
 })
 
+###################################################################
+## test variable filtering
+
+test_that('filters', {
+  skip_on_cran()
+  dat <- data.frame(x1 = 1:50, 
+                    x2 = 1, 
+                    x3 = c(rep(1, 49), 0), 
+                    x4 = c(rep(0, 50), 1:50), 
+                    y = factor(rep(letters[1:2], each = 50)))
+  
+  no_zv  <- preProcess(dat, method = "zv")
+  no_nzv <- preProcess(dat, method = "nzv") 
+  no_xgy <- preProcess(dat, method = "conditionalX", outcome = dat$y)  
+  filter_mean <- preProcess(dat,
+                            method = list(conditionalX = names(dat)[1:4], center = "x1"), 
+                            outcome = dat$y)    
+  no_zv_pred  <- predict(no_zv, dat)
+  no_nzv_pred <- predict(no_nzv, dat)
+  no_xgy_pred <- predict(no_xgy, dat[, 1:4])
+  filter_mean_pred <- predict(filter_mean, dat[, 1:4])
+  
+  x1_exp <- dat$x1 - mean(dat$x1)
+  
+  expect_equal(colnames(no_zv_pred), c("x1", "x3", "x4", "y"))
+  expect_equal(colnames(no_nzv_pred), c("x1", "x4", "y"))  
+  expect_equal(colnames(no_xgy_pred), c("x1", "x3"))    
+  expect_equal(colnames(filter_mean_pred), c("x1", "x3"))    
+  expect_equal(filter_mean_pred$x1, x1_exp)  
+})
+
+

@@ -52,5 +52,5 @@ modelInfo <- list(label = "Bagged Logic Regression",
                   },
                   levels = function(x) x$obsLevels,
                   tags = c("Logic Regression", "Linear Classifier", "Linear Regression", "Logistic Regression",
-                           "Bagging", "Ensemble Model"),
+                           "Bagging", "Ensemble Model", "Two Class Only", "Binary Predictors Only"),
                   sort = function(x) x[order(x$ntrees, x$nleaves),])

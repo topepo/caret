@@ -55,5 +55,5 @@ modelInfo <- list(label = "CHi-squared Automated Interaction Detection",
                   predictors = function(x, surrogate = TRUE, ...) {
                     predictors(terms(x))
                   },
-                  tags = c('Tree-Based Model', "Implicit Feature Selection"),
+                  tags = c('Tree-Based Model', "Implicit Feature Selection", "Two Class Only", "Accepts Case Weights"),
                   sort = function(x) x[order(-x$alpha2, -x$alpha4, -x$alpha3),])

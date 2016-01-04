@@ -812,6 +812,8 @@ bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
       best_mod$model_id[which.min(best_mod$V1)]
   btModel <- BradleyTerry2::BTm(cbind(win1, win2), player1, player2, data = scores, refcat = best_mod)
   btCoef <- summary(btModel)$coef
+  ## Recent versions of the BradleyTerry2 package tag on some dots in the names
+  rownames(btCoef) <- gsub("^\\.\\.", "", rownames(btCoef))
   upperBound <- btCoef[, "Estimate"] + constant*btCoef[, "Std. Error"]
   if(any(btCoef[, "Std. Error"] > se_thresh)) {
     ## These players either are uniformly dominated (='dom') or dominating

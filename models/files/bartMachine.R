@@ -76,5 +76,5 @@ modelInfo <- list(label = "Bayesian Additive Regression Trees",
                     out
                   },
                   levels = function(x) x$y_levels,
-                  tags = c("Tree-Based Model", "Implicit Feature Selection", "Bayesian Model"),
+                  tags = c("Tree-Based Model", "Implicit Feature Selection", "Bayesian Model", "Two Class Only"),
                   sort = function(x) x[order(-x[,"num_trees"]),])

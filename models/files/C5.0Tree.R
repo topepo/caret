@@ -18,7 +18,8 @@ modelInfo <- list(label = "Single C5.0 Tree",
                   },
                   levels = function(x) x$obsLevels,
                   varImp = function(object, ...) C5imp(object, ...),
-                  tags = c("Tree-Based Model", "Implicit Feature Selection"),
+                  tags = c("Tree-Based Model", "Implicit Feature Selection", 
+                           "Handle Missing Predictor Data", "Accepts Case Weights"),
                   sort = function(x) x[order(x[,1]),],
                   trim = function(x) {
                     x$boostResults <- NULL

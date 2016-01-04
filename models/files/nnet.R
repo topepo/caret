@@ -65,6 +65,6 @@ modelInfo <- list(label = "Neural Network",
                     imp
                   },
                   predictors = function(x, ...) if(hasTerms(x)) predictors(x$terms) else NA,
-                  tags = c("Neural Network", "L2 Regularization"),
+                  tags = c("Neural Network", "L2 Regularization", "Accepts Case Weights"),
                   levels = function(x) x$lev,
                   sort = function(x) x[order(x$size, -x$decay),])

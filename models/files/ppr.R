@@ -22,5 +22,5 @@ modelInfo <- list(label = "Projection Pursuit Regression",
                   predict = function(modelFit, newdata, submodels = NULL) predict(modelFit, newdata),
                   prob = NULL,
                   predictors = function(x, ...) x$xnames,
-                  tags = "Feature Extraction",
+                  tags = c("Feature Extraction", "Accepts Case Weights"),
                   sort = function(x) x[order(x[,1]),])

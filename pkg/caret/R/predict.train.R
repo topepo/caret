@@ -1,13 +1,10 @@
-predict.list <- function(object, ...)
-{
-  
+predict.list <- function(object, ...) {
   out <- lapply(object, predict, ... = ...)
   if(!is.null(names(object))) names(out) <- names(object)
   out
 }
 
-predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.omit, ...)
-{
+predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.omit, ...) {
   if(all(names(object) != "modelInfo")) {
     object <- update(object, param = NULL)
   }
@@ -15,16 +12,13 @@ predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.o
     for(i in object$modelInfo$library) 
       do.call("require", list(package = i))
   if(!(type %in% c("raw", "prob"))) stop("type must be either \"raw\" or \"prob\"")
-  if(type == "prob")
-  {
+  if(type == "prob") {
     if (is.null(object$modelInfo$prob))
       stop("only classification models that produce probabilities are allowed")
   }
   
-  if(!is.null(newdata))
-  {
-    if (inherits(object, "train.formula"))
-    {
+  if(!is.null(newdata)) {
+    if (inherits(object, "train.formula")) {
       newdata <- as.data.frame(newdata)
       rn <- row.names(newdata)
       Terms <- delete.response(object$terms)
@@ -39,27 +33,32 @@ predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.o
     }
   }
   else {
-    if(!is.null(object$trainingData))
-    {            
+    if(!is.null(object$trainingData)) {            
       newdata <- if(object$method == "pam") object$finalModel$xData else object$trainingData
       ##newdata$.outcome <-NULL
     } else stop("please specify data via newdata")
   }
   
-  if(type == "prob")
-  {
-    out <- extractProb(list(object),
-                       unkX = newdata,
-                       unkOnly = TRUE,
-                       ...)
+  if(type == "prob") {
+    out <- probFunction(method = object$modelInfo, 
+                        modelFit = object$finalModel,
+                        newdata = newdata, 
+                        preProc = object$preProcess)
     obsLevels <- levels(object)
     out <- out[, obsLevels, drop = FALSE]
   } else {
-    out <- extractPrediction(list(object),
-                             unkX = newdata,
-                             unkOnly = TRUE,
-                             ...)$pred
+    out <- predictionFunction(method = object$modelInfo, 
+                              modelFit = object$finalModel,
+                              newdata = newdata, 
+                              preProc = object$preProcess)
+    if (object$modelType == "Regression") {
+      out <- trimPredictions(pred = out,
+                             mod_type =object$modelType, 
+                             bounds = object$control$predictionBounds, 
+                             limits = object$yLimit)
+    } else {
+      out <- factor(as.character(out), levels = levels(object))
+    }
   }
-  
   out  
 }

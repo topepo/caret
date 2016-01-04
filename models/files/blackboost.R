@@ -42,7 +42,9 @@ modelInfo <- list(label = "Boosted Tree",
                     } else ctl <- boost_control(mstop = param$mstop)        
                     
                     if(!any(names(theDots) == "family")) {
-                      theDots$family <- if(is.factor(y)) Binomial() else GaussReg()              
+                      if(is.factor(y)) {
+                        theDots$family <- if(length(lev) == 2) Binomial() else Multinomial()
+                        } else theDots$family <- GaussReg()              
                     }  
                     
                     ## pass in any model weights
@@ -104,5 +106,5 @@ modelInfo <- list(label = "Boosted Tree",
                     strsplit(variable.names(x), ", ")[[1]]
                   },
                   levels = function(x) levels(x$response),
-                  tags = c("Tree-Based Model", "Ensemble Model", "Boosting"),
+                  tags = c("Tree-Based Model", "Ensemble Model", "Boosting", "Accepts Case Weights"),
                   sort = function(x) x[order(x$mstop, x$maxdepth),])

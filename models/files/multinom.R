@@ -54,5 +54,5 @@ modelInfo <- list(label = "Penalized Multinomial Regression",
                     subset(out, rownames(out) != "(Intercept)")
                   },
                   levels = function(x) x$obsLevels,
-                  tags = c("Neural Network", "L2 Regularization", "Logistic Regression", "Linear Classifier"),
+                  tags = c("Neural Network", "L2 Regularization", "Logistic Regression", "Linear Classifier", "Accepts Case Weights"),
                   sort = function(x) x[order(-x[,1]),])

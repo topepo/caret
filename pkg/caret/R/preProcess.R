@@ -9,7 +9,7 @@ ppMethods <- c("BoxCox", "YeoJohnson", "expoTrans",
                "spatialSign", 
                "ignore", "keep", 
                "remove", 
-               "zv", "nzv")
+               "zv", "nzv", "conditionalX")
 
 preProcess <- function(x, ...) UseMethod("preProcess")
 
@@ -66,6 +66,18 @@ preProcess.default <- function(x, method = c("center", "scale"),
     }
     method$nzv <- NULL
   }  
+  ##  check the distribution of the columns of x conditioned on the levels of y and 
+  ## identifies columns of x that are sparse within groups of y
+  if(any(names(method) == "conditionalX") & is.factor(outcome)){
+    bad_pred <- checkConditionalX(x = x[, !(colnames(x) %in% method$ignore), drop = FALSE],
+                                  y = outcome)
+    if(length(bad_pred) > 0) {
+      removed <- colnames(x[, !(colnames(x) %in% method$ignore), drop = FALSE])[bad_pred]
+      method <- lapply(method, function(x, vars) x[!(x %in% vars)], vars = removed)
+      method$remove <- unique(c(method$remove, removed))
+    }
+    method$conditionalX <- NULL
+  }    
   
   if(any(names(method) == "BoxCox")) {
     bc <- group_bc(x[, method$BoxCox, drop = FALSE],

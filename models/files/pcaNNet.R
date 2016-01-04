@@ -55,5 +55,5 @@ modelInfo <- list(label = "Neural Networks with Feature Extraction",
                   },
                   predictors = function(x, ...) rownames(x$pc$rotation),
                   levels = function(x) x$model$lev,
-                  tags = c("Neural Network", "Feature Extraction", "L2 Regularization"),
+                  tags = c("Neural Network", "Feature Extraction", "L2 Regularization", "Accepts Case Weights"),
                   sort = function(x) x[order(x$size, -x$decay),])

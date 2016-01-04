@@ -285,7 +285,7 @@ resampName <- function(x, numbers = TRUE)
                                      x$control$repeats, " times)", sep = ""),
                   lgocv = paste("Repeated Train/Test Splits Estimated (", numResamp, " reps, ",
                                 round(x$control$p, 2), "%)", sep = ""),
-                  
+                  loocv = "Leave-One-Out Cross-Validation",
                   adaptive_boot = paste("Adaptively Bootstrapped (", numResamp, " reps)", sep = ""),
                   adaptive_cv = paste("Adaptively Cross-Validated (", x$control$number, " fold, repeated ",
                                      x$control$repeats, " times)", sep = ""),
@@ -302,6 +302,7 @@ resampName <- function(x, numbers = TRUE)
                   boot632 = "(Bootstrap 632 Rule)",
                   cv = "(Cross-Validation)",
                   repeatedcv = "(Repeated Cross-Validation)",
+                  loocv = "Leave-One-Out Cross-Validation",
                   lgocv = "(Repeated Train/Test Splits)")
     
   }

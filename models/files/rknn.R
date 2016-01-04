@@ -42,6 +42,6 @@ modelInfo <- list(label = "Random k-Nearest Neighbors",
                   predictors = function(x, s = NULL, ...) {
                     modelFit$xNames
                   },
-                  tags = "Prototype Models",
+                  tags = c("Prototype Models", "Two Class Only"),
                   prob = NULL,
                   sort = function(x) x[order(x[,1]),])

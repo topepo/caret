@@ -15,7 +15,7 @@ test_that("Confusion matrix works", {
                      tuneLength = 4, 
                      trControl = ctrl)
   dat <- train$Class
-  ref <- predict(fullModel)
+  ref <- predict(fullModel, newdata = train)
   dat2 <- as.character(dat)
   ref2 <- as.character(ref)
   dat2 <- factor(dat2, levels = c("Class2", "Class1"))

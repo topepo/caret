@@ -56,7 +56,7 @@ modelInfo <- list(label = "Spike and Slab Regression",
                     out        
                   },
                   predictors = function(x, s = NULL, ...) {
-                    coefs <- if(x$.model == "BMA") x$bma else x$gnet
+                    coefs <- x$gnet
                     names(coefs)[coefs != 0]
                   },
                   tags = c("Linear Regression", "Bayesian Model", 

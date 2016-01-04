@@ -1,0 +1,22 @@
+\begin{algorithm}[H]
+   \label{A:tune}
+   \SetLine
+   \restylealgo{plain}
+   \dontprintsemicolon
+    Define  sets of model parameter values to evaluate \nllabel{A:grid}\;
+    \For{each parameter set}{
+    \For{each resampling iteration}{
+      Hold--out specific samples \nllabel{A:resample} \;
+
+      [Optional] Pre--process the data\;
+      Fit the model on the remainder\;
+
+      Predict the hold--out samples\;
+    }
+    Calculate the average performance across hold--out predictions \nllabel{A:perf}
+  }
+  Determine the optimal parameter set \nllabel{A:best}\;
+
+  Fit the final model to all the training data using the optimal
+  parameter set\;  
+\end{algorithm}

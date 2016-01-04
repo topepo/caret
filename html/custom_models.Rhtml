@@ -209,6 +209,12 @@ There are some basic components of the list for custom models. A brief descripti
   <li>
   <span class="mx arg">oob</span> is another <b>optional</b> function that calculates  out-of-bag performance estimates from the model object. Most models do not have this capability but some (e.g. random forests, bagged models) do. 
   </li>    
+  <li>
+  <span class="mx arg">notes</span> is an <b>optional</b> character vector that can be used to document non-obvious aspects of the model. For example, there are two Bayesian lasso models (<a href="https://github.com/topepo/caret/blob/master/models/files/blasso.R"><tt>blasso</tt></a> and <a href="https://github.com/topepo/caret/blob/master/models/files/blassoAveraged.R"><tt>blassoAveraged</tt></a>) and this field is used to describe the differences between the two models. 
+  </li>    
+  <li>
+  <span class="mx arg">check</span> is an <b>optional</b> function that can be used to check the system/install to make sure that any atypical software requirements are available to the user. The input is <span class="mx arg">pkg</span>, which is the same character string given by the <span class="mx arg">library</span>. This function is run <i>after</i> the checking function to see if the packages specified in <span class="mx arg">library</span> are installed. As an example, the model <a href="https://github.com/topepo/caret/blob/master/models/files/pythonKnnReg.R"><tt>pythonKnnReg</tt></a> uses certain python libraries and the user should have python and these libraries installed. The <a href="https://github.com/topepo/caret/blob/master/models/files/pythonKnnReg.R">model file</a> demonstrates how to check for python libraries prior to running the R model. 
+  </li>      
  </ul> 
  
 <p>
@@ -1123,7 +1129,45 @@ Now we can use the test set ROC curve to validate the cut off we chose by resamp
 One great thing about this code is that it will automatically apply the optimized probability threshold when predicting new samples. 
 </p>
 
-    
+ 
+<div id="Illustration6"></div>
+<h1>Illustrative Example 6: Offsets in Generalized Linear Models</h1>
+
+<p>
+Like the <span class="mx funCall">mboost</span> example <a href="#Illustration3">above</a>, a custom method is required since a formula element is used to set the offset variable. Here is an example from <tt>?</tt><span class="mx funCall">glm</span>:
+</p>
+<!--begin.rcode custom_glm_offset, tidy=FALSE,echo=FALSE
+utils::data(anorexia, package = "MASS")
+
+anorex.1 <- glm(Postwt ~ Prewt + Treat + offset(Prewt), data = anorexia)
+coef(anorex.1)
+    end.rcode--> 
+<p>
+We can write a small custom method to duplicate this model. Two details of note:
+</p>
+<ul>
+  <li>
+  If we have factors in the data and do not want <span class="mx funCall">train</span> to convert them to dummy variables, the formula method for <span class="mx funCall">train</span> should be avoided. We can let <span class="mx funCall">glm</span> do that inside the custom method. This would help <span class="mx funCall">glm</span> understand that the dummy variable columns came from the same original factor. This will avoid errors in other functions used with <span class="mx funCall">glm</span> (e.g. <span class="mx funCall">anova</span>).
+  </li>
+  <li>
+  The slot for <span class="mx arg">x</span> should include any variables that are on the right-hand side of the model formula, including the offset column. 
+  </li>
+</ul>
+<p>
+Here is the custom model:
+</p>
+<!--begin.rcode custom_train_offset, tidy=FALSE,echo=FALSE
+offset_mod <- getModelInfo("glm", regex = FALSE)[[1]]
+offset_mod$fit <- function(x, y, wts, param, lev, last, classProbs, ...) {
+  dat <- if(is.data.frame(x)) x else as.data.frame(x)
+  dat$Postwt <- y
+  glm(Postwt ~ Prewt + Treat + offset(Prewt), family = gaussian, data = dat)
+}
+
+mod <- train(x = anorexia[, 1:2], y = anorexia$Postwt, method = offset_mod)
+coef(mod$finalModel)
+    end.rcode--> 
+   
 <div style="clear: both;">&nbsp;</div>
   </div>
   <!-- end #content -->

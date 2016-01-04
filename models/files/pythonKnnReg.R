@@ -2,6 +2,16 @@
 # try normal python with sklearn and pandas installed manually
 modelInfo <- list(label = "Knn regression via sklearn.neighbors.KNeighborsRegressor",
                   library = "rPython",
+                  check = function(pkg) {
+                    testpd <- try(rPython::python.exec('import pandas as pd'),silent = TRUE)
+                    if(class(testpd)[1] == "try-error")
+                      stop("Please install the `pandas` python library")
+                    
+                    testsk <- try(rPython::python.exec('from sklearn.neighbors import KNeighborsRegressor'),silent = TRUE) 
+                    if(class(testsk)[1] == "try-error")
+                      stop("Please install the `sklearn` python library")
+                    TRUE
+                  },
                   loop = NULL,
                   type = "Regression",
                   parameters = data.frame(parameter = c('n_neighbors','weights','algorithm','leaf_size','metric','p'),

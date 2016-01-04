@@ -32,6 +32,10 @@ train.default <- function(x, y,
   }
   checkInstall(models$library)
   for(i in seq(along = models$library)) do.call("require", list(package = models$library[i]))
+  if(any(names(models) == "check") && is.function(models$check)) {
+    software_check <- models$check(models$library)
+  }
+  
   
   paramNames <- as.character(models$parameters$parameter)
   

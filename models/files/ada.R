@@ -84,7 +84,7 @@ modelInfo <- list(label = "Boosted Classification Trees",
                   },
                   levels = function(x) x$obsLevels,
                   tags = c("Tree-Based Model", "Ensemble Model", "Boosting", 
-                           "Implicit Feature Selection"),
+                           "Implicit Feature Selection", "Two Class Only", "Handle Missing Predictor Data"),
                   sort = function(x) x[order(x$iter, x$maxdepth, x$nu),])
 
 

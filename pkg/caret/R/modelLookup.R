@@ -1,37 +1,21 @@
 checkInstall <- function(pkg){
   good <- rep(TRUE, length(pkg))
-  installedPythonLibs=TRUE
-  for(i in seq(along = pkg)){    
+  for(i in seq(along = pkg)){
     tested <- try(find.package(pkg[i]), silent = TRUE)
     if(class(tested)[1] == "try-error") good[i] <- FALSE
-    if (pkg[i]=="rPython" & good[i]) {   
-      requireNamespaceQuietStop("rPython")
-      testpd=try(rPython::python.exec('import pandas as pd'),silent = TRUE)
-      testsk=try(rPython::python.exec('from sklearn.neighbors import KNeighborsRegressor'),silent = TRUE) 
-      if ((class(testpd)[1] == "try-error")|(class(testsk)[1] == "try-error")) {
-        installedPythonLibs<-FALSE
-        good[i] <- FALSE
-      }      
-    }
   }
   if(any(!good)){
-    if (installedPythonLibs==FALSE) {
-      msg<-"Please install the following python libraries: sklearn, pandas"
-      cat(msg)    
-      stop()
-    } else {
-      pkList <- paste(pkg[!good], collapse = ", ")
-      msg <- paste(sum(!good), 
-                   ifelse(sum(!good) > 1, " packages are", " package is"),
-                   " needed for this model and",
-                   ifelse(sum(!good) > 1, " are", " is"),
-                   " not installed. (",
-                   pkList,
-                   "). Would you like to try to install",
-                   ifelse(sum(!good) > 1, " them", " it"),
-                   " now?",
-                   sep = "")
-    }
+    pkList <- paste(pkg[!good], collapse = ", ")
+    msg <- paste(sum(!good), 
+                 ifelse(sum(!good) > 1, " packages are", " package is"),
+                 " needed for this model and",
+                 ifelse(sum(!good) > 1, " are", " is"),
+                 " not installed. (",
+                 pkList,
+                 "). Would you like to try to install",
+                 ifelse(sum(!good) > 1, " them", " it"),
+                 " now?",
+                 sep = "")
     cat(msg)    
     if(interactive()) {
       bioc <- c("affy", "logicFS", "gpls", "vbmp")

@@ -100,5 +100,5 @@ modelInfo <- list(label = "AdaBoost.M1",
                   },
                   predictors = function(x, ...) names(x$importance)[x$importance != 0],
                   tags = c("Tree-Based Model", "Ensemble Model", "Boosting", 
-                           "Implicit Feature Selection"),
+                           "Implicit Feature Selection", "Handle Missing Predictor Data"),
                   sort = function(x) x[order(x$mfinal, x$maxdepth),])

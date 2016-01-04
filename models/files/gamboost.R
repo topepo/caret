@@ -96,7 +96,9 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                   predictors = function(x, ...) {
                     strsplit(variable.names(x), ", ")[[1]]
                   },
+                  notes = "The `prune` option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in `?mstop`. If pruning is not used, the ensemble makes predictions using the exact value of the `mstop` tuning parameter value.",
                   tags = c("Generalized Additive Model", "Ensemble Model", 
-                           "Boosting", "Implicit Feature Selection"),
+                           "Boosting", "Implicit Feature Selection", "Two Class Only", 
+                           "Accepts Case Weights"),
                   levels = function(x) levels(x$response),
                   sort = function(x) x[order(x$mstop, x$prune),])

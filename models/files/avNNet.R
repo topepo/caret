@@ -58,5 +58,5 @@ modelInfo <- list(label = "Model Averaged Neural Network",
                   },
                   predictors = function(x, ...) x$names,
                   levels = function(x) x$model[[1]]$lev,
-                  tags = c("Neural Network", "Ensemble Model", "Bagging", "L2 Regularization"),
+                  tags = c("Neural Network", "Ensemble Model", "Bagging", "L2 Regularization", "Accepts Case Weights"),
                   sort = function(x) x[order(x$size, -x$decay),])

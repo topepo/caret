@@ -20,5 +20,5 @@ modelInfo <- list(label = "Linear Regression with Stepwise Selection",
                     predict(modelFit, newdata)
                     },
                   prob = NULL,
-                  tags = c("Linear Regression", "Feature Selection Wrapper"),
+                  tags = c("Linear Regression", "Feature Selection Wrapper", "Accepts Case Weights"),
                   sort = function(x) x)
