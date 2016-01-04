@@ -52,6 +52,5 @@ Suggests:
     pamr,
     superpc,
     Cubist,
-    testthat (>= 0.9.1),
-    rPython
+    testthat (>= 0.9.1)
 License: GPL (>= 2)

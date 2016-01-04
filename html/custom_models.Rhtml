@@ -209,6 +209,12 @@ There are some basic components of the list for custom models. A brief descripti
   <li>
   <span class="mx arg">oob</span> is another <b>optional</b> function that calculates  out-of-bag performance estimates from the model object. Most models do not have this capability but some (e.g. random forests, bagged models) do. 
   </li>    
+  <li>
+  <span class="mx arg">notes</span> is an <b>optional</b> character vector that can be used to document non-obvious aspects of the model. For example, there are two Bayesian lasso models (<a href="https://github.com/topepo/caret/blob/master/models/files/blasso.R"><tt>blasso</tt></a> and <a href="https://github.com/topepo/caret/blob/master/models/files/blassoAveraged.R"><tt>blassoAveraged</tt></a>) and this field is used to describe the differences between the two models. 
+  </li>    
+  <li>
+  <span class="mx arg">check</span> is an <b>optional</b> function that can be used to check the system/install to make sure that any atypical software requirements are available to the user. The input is <span class="mx arg">pkg</span>, which is the same character string given by the <span class="mx arg">library</span>. This function is run <i>after</i> the checking function to see if the packages specified in <span class="mx arg">library</span> are installed. As an example, the model <a href="https://github.com/topepo/caret/blob/master/models/files/pythonKnnReg.R"><tt>pythonKnnReg</tt></a> uses certain python libraries and the user should have python and these libraries installed. The <a href="https://github.com/topepo/caret/blob/master/models/files/pythonKnnReg.R">model file</a> demonstrates how to check for python libraries prior to running the R model. 
+  </li>      
  </ul> 
  
 <p>
