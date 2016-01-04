@@ -6,9 +6,13 @@ modelInfo <- list(label = "Ensemble Partial Least Squares Regression with Featur
                                           label = c('Max. #Components', "Importance Cutoff")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
-                      out <- data.frame(maxcomp = ncol(x), threshold = 2) 
+                      comps <- caret::var_seq(p = ncol(x), 
+                                              classification = is.factor(y), 
+                                              len = 1)
+                      out <- expand.grid(maxcomp = comps, 
+                                         threshold = seq(0, 2, length = len)) 
                     } else {
-                      out <- data.frame(maxcomp = sample(1:ncol(x), size = len, replace = TRUE),
+                      out <- data.frame(maxcomp = sample(1:comps, size = len, replace = TRUE),
                                         threshold = runif(len, min = 0, max = 5))
                     }
                     out
@@ -25,7 +29,6 @@ modelInfo <- list(label = "Ensemble Partial Least Squares Regression with Featur
                              ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    print(enpls.en)
                     newdata <- if(is.matrix(newdata)) newdata else as.matrix(newdata)
                     keepers <- rownames(modelFit[[1]][[1]]$loadings)
                     predict(modelFit, newdata[, keepers, drop = FALSE])          
