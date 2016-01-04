@@ -18,6 +18,7 @@ modelInfo <- list(label = "Bayesian Ridge Regression (Model Averaged)",
                   predictors = function(x, s = NULL, ...) {
                     x$xNames[apply(x$beta, 2, function(x) any(x != 0))]
                   },
+                  notes = "This model makes predictions by averaging the predictions based on the posterior estimates of the regression coefficients. While it is possible that some of these posterior estimates are zero for non-informative predictors, the final predicted value may be a function of many (or even all) predictors. ",
                   tags = c("Linear Regression", "Bayesian Model", "L1 Regularization"),
                   prob = NULL,
                   sort = function(x) x)

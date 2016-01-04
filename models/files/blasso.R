@@ -48,6 +48,7 @@ modelInfo <- list(label = "The Bayesian lasso",
                   predictors = function(x, s = NULL, ...) {
                     x$xNames[x$.percent <= x$.sparsity]
                   },
+                  notes = "This model creates predictions using the mean of the posterior distributions but sets some parameters specifically to zero based on the tuning parameter `sparsity`. For example, when `sparsity = .5`, only coefficients where at least half the posterior estimates are nonzero are used.",
                   tags = c("Linear Regression", "Bayesian Model", 
                            "Implicit Feature Selection", "L1 Regularization"),
                   prob = NULL,
