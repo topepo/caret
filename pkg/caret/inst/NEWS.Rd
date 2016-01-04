@@ -14,6 +14,7 @@
 		\item A bug in the naive Bayes prediction code was found by github user pverspeelt and was fixed. \issue{345}
 		\item Josh Brady (doublej2) found and fixed an issue with \code{DummyVars} \issue{344}
 		\item A bug related to recent changes to the \cpkg{ranger} package was fixed \issue{320}
+		\item Dependencies on external software can now be checked in the model code. See \href{https://github.com/topepo/caret/blob/master/models/files/pythonKnnReg.R}{\code{pythonKnnReg}} for an example. This also removes the overall package dependency on \cpkg{rPython} \issue{328}. 
 	} 
 }
 
