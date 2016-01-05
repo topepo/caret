@@ -3,7 +3,7 @@
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
-\section{Changes in version 6.0-xx}{
+\section{Changes in version 6.0-64}{
 	\itemize{
 		\item Model averaged naive Bayes (\code{method = "manb"}) from the \cpkg{bnclassify} package was added. 
 		\item \code{blackboost} was updated to work with outcomes with 3+ classes. 
@@ -16,6 +16,9 @@
 		\item A bug related to recent changes to the \cpkg{ranger} package was fixed \issue{320}
 		\item Dependencies on external software can now be checked in the model code. See \href{https://github.com/topepo/caret/blob/master/models/files/pythonKnnReg.R}{\code{pythonKnnReg}} for an example. This also removes the overall package dependency on \cpkg{rPython} \issue{328}. 
 		\item The tuning parameter grid for \code{enpls} and \code{enpls.fs} were changed to avoid errors. 
+		\item A bug was fixed \issue{342} where the data used for prediction was inappropriately converted from its original class. 
+		\item Matt (aka washcycle) added option to return column names to \code{nearZeroVar} function
+		\item Homer Strong fixed \code{varImp} for \code{glmnet} models so that they return the absolute value of the regression coefficients \issue{173} \issue{190}
 	} 
 }
 
