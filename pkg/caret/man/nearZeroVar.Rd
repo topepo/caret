@@ -10,7 +10,7 @@
 \usage{
 nearZeroVar(x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE, names = FALSE,
             foreach = FALSE, allowParallel = TRUE)
-nzv(x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE)
+nzv(x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE, names = FALSE)
 
 checkConditionalX(x, y)
 checkResamples(index, x, y)
