@@ -1,9 +1,9 @@
-nearZeroVar <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE, foreach = FALSE, allowParallel = TRUE) {
-  
-  if(!foreach) return(nzv(x, freqCut = freqCut, uniqueCut = uniqueCut, saveMetrics = saveMetrics))
-  
+nearZeroVar <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE, names = FALSE, foreach = FALSE, allowParallel = TRUE) {
+
+  if(!foreach) return(nzv(x, freqCut = freqCut, uniqueCut = uniqueCut, saveMetrics = saveMetrics, names = names))
+
   `%op%` <- getOper(foreach && allowParallel && getDoParWorkers() > 1)
-  
+
   if(saveMetrics) {
     res <- foreach(name = colnames(x), .combine=rbind) %op% {
       r <- nzv(x[[name]], freqCut = freqCut, uniqueCut = uniqueCut, saveMetrics = TRUE)
@@ -16,17 +16,20 @@ nearZeroVar <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE,
   } else {
     res <- foreach(name = colnames(x), .combine=c) %op% {
       nzv(x[[name]], freqCut = freqCut, uniqueCut = uniqueCut, saveMetrics = FALSE)
-    } 
+    }
+    if(names){
+      res <- colnames(x)[res]
+    }
   }
   res
 }
 
-nzv <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE)
+nzv <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE, names = FALSE)
 {
   if (is.vector(x)) x <- matrix(x, ncol = 1)
   freqRatio <- apply(x, 2, function(data)
   {
-    t <- table(data[!is.na(data)]) 
+    t <- table(data[!is.na(data)])
     if (length(t) <= 1) {
       return(0);
     }
@@ -46,6 +49,9 @@ nzv <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE)
   else {
     out <- which((freqRatio > freqCut & percentUnique <= uniqueCut) | zeroVar)
     names(out) <- NULL
+    if(names){
+      out <- colnames(x)[out]
+    }
   }
   out
 }
@@ -75,28 +81,28 @@ nearZeroVarOld <- function(x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALS
 {
   if(is.vector(x)) x <- matrix(x, ncol = 1)
   freqRatio <- apply(
-    x, 
-    2, 
+    x,
+    2,
     function(data)
     {
       dataTable <- sort(table(data[!is.na(data)]), decreasing = TRUE)
-      if(length(dataTable ) >= 2) 
+      if(length(dataTable ) >= 2)
       {
         dataTable [1]/dataTable[2]
       } else 0
     })
   percentUnique <- apply(
-    x, 
-    2, 
+    x,
+    2,
     function(data) 100*length(unique(data[!is.na(data)]))/length(data))
-  
+
   zeroVar <- apply(x, 2, function(data) length(unique(data[!is.na(data)])) == 1 | all(is.na(data)))
-  
-  
+
+
   if(saveMetrics)
   {
-    out <- data.frame(freqRatio = freqRatio, 
-                      percentUnique = percentUnique, 
+    out <- data.frame(freqRatio = freqRatio,
+                      percentUnique = percentUnique,
                       zeroVar = zeroVar,
                       nzv = (freqRatio > freqCut & percentUnique <= uniqueCut) | zeroVar)
   } else {
