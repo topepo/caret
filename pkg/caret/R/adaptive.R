@@ -480,9 +480,9 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
     }  
     rs <- merge(rs, current_mods)
 
-    if(iter == ctrl$adaptive$min) {
+    if(iter == ctrl$adaptive$min+1) {
       rs <- filter_on_diff(rs, metric, 
-                           cutoff = .01, 
+                           cutoff = .001, 
                            maximize = maximize, 
                            verbose = ctrl$verboseIter)
     }
@@ -991,17 +991,20 @@ diffmat <- function(dat) {
 
 
 
-filter_on_diff <- function(dat, metric, cutoff = 0.1, maximize = TRUE, verbose = FALSE) {
+filter_on_diff <- function(dat, metric, cutoff = 0.01, maximize = TRUE, verbose = FALSE) {
   x <- long2wide(x = dat, metric = metric)
   mns <- colMeans(x[, -1])
   if(!maximize) mns <- -mns
   x <- diffmat(x[, -1])  
+  tmp <- x
+  diag(tmp) <- Inf
+  if(!any(tmp < cutoff)) return(dat)
   varnum <- dim(x)[1]
   originalOrder <- 1:varnum
-  averageCorr <- function(x) mean(x, na.rm = TRUE)
+  averageDiff <- function(x) mean(x, na.rm = TRUE)
   tmp <- x
   diag(tmp) <- NA
-  maxAbsCorOrder <- order(apply(tmp, 2, averageCorr), decreasing = TRUE)
+  maxAbsCorOrder <- order(apply(tmp, 2, averageDiff), decreasing = TRUE)
   x <- x[maxAbsCorOrder, maxAbsCorOrder]
   mns <- mns[maxAbsCorOrder]
   newOrder <- originalOrder[maxAbsCorOrder]
