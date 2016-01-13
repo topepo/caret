@@ -329,21 +329,23 @@ train.default <- function(x, y,
     } else trainInfo <- list(loop = tuneGrid)
     
     
+    num_rs <- length(trControl$index)
+    if(trControl$method == "boot632") num_rs <- num_rs + 1
     ## Set or check the seeds when needed
     if(is.null(trControl$seeds) | all(is.na(trControl$seeds)))  {
-      seeds <- vector(mode = "list", length = length(trControl$index))
+      seeds <- vector(mode = "list", length = num_rs)
       seeds <- lapply(seeds, function(x) sample.int(n = 1000000, size = nrow(trainInfo$loop)))
-      seeds[[length(trControl$index) + 1]] <- sample.int(n = 1000000, size = 1)
+      seeds[[num_rs + 1]] <- sample.int(n = 1000000, size = 1)
       trControl$seeds <- seeds     
     } else {
       if(!(length(trControl$seeds) == 1 && is.na(trControl$seeds))) {
         ## check versus number of tasks
         numSeeds <- unlist(lapply(trControl$seeds, length))
-        badSeed <- (length(trControl$seeds) < length(trControl$index) + 1) ||
+        badSeed <- (length(trControl$seeds) < num_rs + 1) ||
           (any(numSeeds[-length(numSeeds)] < nrow(trainInfo$loop)))
         if(badSeed) stop(paste("Bad seeds: the seed object should be a list of length",
-                               length(trControl$index) + 1, "with", 
-                               length(trControl$index), "integer vectors of size",
+                               num_rs + 1, "with", 
+                               num_rs, "integer vectors of size",
                                nrow(trainInfo$loop), "and the last list element having a",
                                "single integer"))      
       }

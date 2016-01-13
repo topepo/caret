@@ -3,6 +3,13 @@
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+\section{Changes in version 6.0-xx}{
+	\itemize{
+		\item An adjustment the innards of adaptive resampling was changed so that the test for linear dependencies is more stringent.  
+		\item A bug in the bootstrap 632 estimate (found by Alexis Sarda) was fixed \issue{#349}. 
+	} 
+}
+
 \section{Changes in version 6.0-64}{
 	\itemize{
 		\item Model averaged naive Bayes (\code{method = "manb"}) from the \cpkg{bnclassify} package was added. 
