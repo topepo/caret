@@ -74,6 +74,6 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                   sort = function(x) x[order(x[,1]),],
                   oob = function(x) {
                     obs <- x@data@get("response")[,1]
-                    pred <- predict(x,  x@data@get("input"), OOB = TRUE)
+                    pred <- predict(x, OOB = TRUE)
                     postResample(pred, obs)
                   })

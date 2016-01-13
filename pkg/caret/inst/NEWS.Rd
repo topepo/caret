@@ -7,6 +7,7 @@
 	\itemize{
 		\item An adjustment the innards of adaptive resampling was changed so that the test for linear dependencies is more stringent.  
 		\item A bug in the bootstrap 632 estimate (found by Alexis Sarda) was fixed \issue{#349}. 
+		\item The \code{cforest} module's \code{oob} element was modifed based on another bug found by Alexis Sarda \issue{#351}.
 	} 
 }
 
