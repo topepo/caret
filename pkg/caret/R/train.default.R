@@ -330,24 +330,27 @@ train.default <- function(x, y,
     
     
     num_rs <- length(trControl$index)
-    if(trControl$method == "boot632") num_rs <- num_rs + 1
+    if(trControl$method == "boot632") num_rs <- num_rs + 1L
     ## Set or check the seeds when needed
-    if(is.null(trControl$seeds) | all(is.na(trControl$seeds)))  {
-      seeds <- vector(mode = "list", length = num_rs)
-      seeds <- lapply(seeds, function(x) sample.int(n = 1000000, size = nrow(trainInfo$loop)))
-      seeds[[num_rs + 1]] <- sample.int(n = 1000000, size = 1)
-      trControl$seeds <- seeds     
+    if(is.null(trControl$seeds) || all(is.na(trControl$seeds)))  {
+      seeds <- sample.int(n = 1000000L, size = num_rs * nrow(trainInfo$loop) + 1L)
+      seeds <- lapply(seq(from = 1L, to = length(seeds), by = nrow(trainInfo$loop)),
+                      function(x) { seeds[x:(x+nrow(trainInfo$loop)-1L)] })
+      seeds[[num_rs + 1L]] <- seeds[[num_rs + 1L]][1L]
+      trControl$seeds <- seeds
     } else {
       if(!(length(trControl$seeds) == 1 && is.na(trControl$seeds))) {
         ## check versus number of tasks
         numSeeds <- unlist(lapply(trControl$seeds, length))
-        badSeed <- (length(trControl$seeds) < num_rs + 1) ||
-          (any(numSeeds[-length(numSeeds)] < nrow(trainInfo$loop)))
+        badSeed <- (length(trControl$seeds) < num_rs + 1L) ||
+          (any(numSeeds[-length(numSeeds)] < nrow(trainInfo$loop))) ||
+          (numSeeds[length(numSeeds)] < 1L)
         if(badSeed) stop(paste("Bad seeds: the seed object should be a list of length",
-                               num_rs + 1, "with", 
+                               num_rs + 1, "with",
                                num_rs, "integer vectors of size",
-                               nrow(trainInfo$loop), "and the last list element having a",
-                               "single integer"))      
+                               nrow(trainInfo$loop), "and the last list element having at least a",
+                               "single integer"))
+        if(any(is.na(unlist(trControl$seeds)))) stop("At least one seed is missing (NA)")
       }
     }
     
