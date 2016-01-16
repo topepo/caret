@@ -177,7 +177,7 @@ as.table.confusionMatrix <- function(x, ...)  x$table
 confusionMatrix.train <- function(data, norm = "overall", dnn = c("Prediction", "Reference"), ...)
 {
   if(data$modelType == "Regression") stop("confusion matrices are only valid for classification models")
-  if(!norm %in% c("none", "overall", "average")) stop("values for norm should be 'none', 'overall', 'byClass' or 'average'")
+  if(!norm %in% c("none", "overall", "average")) stop("values for norm should be 'none', 'overall' or 'average'")
   if(data$control$method %in% c("oob", "LOOCV", "none")) stop("cannot compute confusion matrices for leave-one-out, out-of-bag resampling or no resampling")
   if(!is.null(data$control$index))
   {
@@ -190,21 +190,27 @@ confusionMatrix.train <- function(data, norm = "overall", dnn = c("Prediction", 
   }
   
   lev <- levels(data)
+  
   ## get only best tune
   names(data$bestTune) <- gsub("^\\.", "", names(data$bestTune))
   resampledCM <- merge(data$bestTune, data$resampledCM)
   counts <- as.matrix(resampledCM[,grep("^cell", colnames(resampledCM))])
-  ## normalize by true class?
   
-  if(norm == "overall") counts <- t(apply(counts, 1, function(x)x/sum(x)))
-  if(norm == "average") counts <- counts/numResamp
-  overall <- matrix(apply(counts, 2, mean), nrow = length(lev))
-  rownames(overall) <- colnames(overall) <- lev
-  if(norm != "none") overall <- overall*100
-  names(dimnames(overall)) <- dnn
+  ## normalize?
+  if(norm == "none") 
+    counts <- matrix(apply(counts, 2, sum), nrow = length(lev))
+  else 
+    counts <- matrix(apply(counts, 2, mean), nrow = length(lev))
   
+  if(norm == "overall")
+    counts <- counts / sum(counts) * 100
   
-  out <- list(table = as.table(overall),
+  ## names
+  rownames(counts) <- colnames(counts) <- lev
+  names(dimnames(counts)) <- dnn
+  
+  ## out
+  out <- list(table = as.table(counts),
               norm = norm,
               B = length(data$control$index),
               text = paste(resampText, "Confusion Matrix"))
@@ -217,10 +223,9 @@ print.confusionMatrix.train <- function(x, digits = 1, ...)
 {
   cat(x$text, "\n")
   normText <- switch(x$norm,
-                     none = "\n(entries are un-normalized counts)\n",
-                     average = "\n(entries are cell counts per resample)\n",
-                     overall = "\n(entries are percentages of table totals)\n",
-                     byClass = "\n(entries are percentages within the reference class)\n",
+                     none = "\n(entries are un-normalized aggregated counts)\n",
+                     average = "\n(entries are average cell counts across resamples)\n",
+                     overall = "\n(entries are percentual average cell counts across resamples)\n",
                      "")
   cat(normText, "\n")
   if(x$norm == "none" & x$B == 1) print(getFromNamespace("confusionMatrix.table", "caret")(x$table)) else print(round(x$table, digits))
