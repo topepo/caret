@@ -274,7 +274,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                            model = method)
     if(testing) print(head(thisResample))
     ## for classification, add the cell counts
-    if(length(lev) > 1)
+    if(length(lev) > 1 && length(lev) <= 50)
     {
       cells <- lapply(predicted,
                       function(x) flatTable(x$pred, x$obs))
@@ -311,7 +311,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                                          model = method)
     
     ## if classification, get the confusion matrix
-    if(length(lev) > 1) thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
+    if(length(lev) > 1 && length(lev) <= 50) thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
     thisResample <- as.data.frame(t(thisResample))
     thisResample <- cbind(thisResample, info$loop[parm,,drop = FALSE])
     
