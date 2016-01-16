@@ -202,6 +202,9 @@ confusionMatrix.train <- function(data, norm = "overall", dnn = c("Prediction", 
   else 
     counts <- matrix(apply(counts, 2, mean), nrow = length(lev))
   
+  if(data$control$method == "repeatedcv" && norm == "none")
+    counts <- counts / data$control$repeats
+  
   if(norm == "overall")
     counts <- counts / sum(counts) * 100
   
