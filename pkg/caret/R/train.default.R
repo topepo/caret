@@ -329,7 +329,7 @@ train.default <- function(x, y,
     } else trainInfo <- list(loop = tuneGrid)
     
     
-    num_rs <- length(trControl$index)
+    num_rs <- if(trControl$method != "oob") length(trControl$index) else 1L
     if(trControl$method == "boot632") num_rs <- num_rs + 1L
     ## Set or check the seeds when needed
     if(is.null(trControl$seeds) || all(is.na(trControl$seeds)))  {

@@ -526,6 +526,8 @@ oobTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
   loadNamespace("caret")
   if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE], "", 1, TRUE)
   
+  if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[1L]][parm])
+  
   mod <- createModel(x = x,
                      y = y,
                      wts = wts,
