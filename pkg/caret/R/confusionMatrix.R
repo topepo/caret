@@ -194,19 +194,16 @@ confusionMatrix.train <- function(data, norm = "overall", dnn = c("Prediction", 
   ## get only best tune
   names(data$bestTune) <- gsub("^\\.", "", names(data$bestTune))
   resampledCM <- merge(data$bestTune, data$resampledCM)
-  counts <- as.matrix(resampledCM[,grep("^cell", colnames(resampledCM))])
+  counts <- as.matrix(resampledCM[, grep("^cell", colnames(resampledCM))])
   
   ## normalize?
-  if(norm == "none") 
+  if(norm == "none") {
     counts <- matrix(apply(counts, 2, sum), nrow = length(lev))
-  else 
-    counts <- matrix(apply(counts, 2, mean), nrow = length(lev))
+    #if(data$control$method == "repeatedcv") counts <- counts / data$control$repeats
+    #if(grepl("boot", data$control$method)) counts <- counts / data$control$number
+  } else counts <- matrix(apply(counts, 2, mean), nrow = length(lev))
   
-  if(data$control$method == "repeatedcv" && norm == "none")
-    counts <- counts / data$control$repeats
-  
-  if(norm == "overall")
-    counts <- counts / sum(counts) * 100
+  if(norm == "overall") counts <- counts / sum(counts) * 100
   
   ## names
   rownames(counts) <- colnames(counts) <- lev
