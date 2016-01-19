@@ -145,7 +145,7 @@ confusionMatrix.table <- function(data, positive = NULL, prevalence = NULL, ...)
     overall = overall, 
     byClass = tableStats,
     dots = list(...)), 
-            class = "confusionMatrix")
+    class = "confusionMatrix")
 }
 
 
@@ -170,17 +170,37 @@ as.matrix.confusionMatrix <- function(x, what = "xtabs", ...)
   out
 }
 
-as.table.confusionMatrix <- function(x, ...)  x$table
 
+as.table.confusionMatrix <- function(x, ...)  x$table
 
 
 confusionMatrix.train <- function(data, norm = "overall", dnn = c("Prediction", "Reference"), ...)
 {
-  if(data$modelType == "Regression") stop("confusion matrices are only valid for classification models")
-  if(!norm %in% c("none", "overall", "average")) stop("values for norm should be 'none', 'overall' or 'average'")
-  if(data$control$method %in% c("oob", "LOOCV", "none")) stop("cannot compute confusion matrices for leave-one-out, out-of-bag resampling or no resampling")
-  if(!is.null(data$control$index))
-  {
+  if (inherits(data, "train")) {
+    if(data$modelType == "Regression")
+      stop("confusion matrices are only valid for classification models")
+    if(data$control$method %in% c("oob", "LOOCV"))
+      stop("cannot compute confusion matrices for leave-one-out or out-of-bag resampling")
+    if(data$control$method == "none")
+      return(confusionMatrix(predict(data), data$trainingData$.outcome, dnn = dnn, ...))
+    
+    lev <- levels(data)
+    
+    ## get only best tune
+    names(data$bestTune) <- gsub("^\\.", "", names(data$bestTune))
+    resampledCM <- merge(data$bestTune, data$resampledCM)
+    
+  } else {
+    if(is.null(data$resampledCM))
+      stop("resampled confusion matrices are not availible")
+    if(data$control$method %in% c("oob", "LOOCV"))
+      stop("cannot compute confusion matrices for leave-one-out or out-of-bag resampling")
+    
+    lev <- data$obsLevels
+    resampledCM <- data$resampledCM
+  }
+  
+  if(!is.null(data$control$index)) {
     resampleN <- unlist(lapply(data$control$index, length))
     numResamp <- length(resampleN)
     resampText <- resampName(data)
@@ -189,19 +209,13 @@ confusionMatrix.train <- function(data, norm = "overall", dnn = c("Prediction", 
     numResamp <- 0
   }
   
-  lev <- levels(data)
-  
-  ## get only best tune
-  names(data$bestTune) <- gsub("^\\.", "", names(data$bestTune))
-  resampledCM <- merge(data$bestTune, data$resampledCM)
-  counts <- as.matrix(resampledCM[, grep("^cell", colnames(resampledCM))])
+  counts <- as.matrix(resampledCM[ , grep("^\\.?cell", colnames(resampledCM))])
   
   ## normalize?
-  if(norm == "none") {
-    counts <- matrix(apply(counts, 2, sum), nrow = length(lev))
-    #if(data$control$method == "repeatedcv") counts <- counts / data$control$repeats
-    #if(grepl("boot", data$control$method)) counts <- counts / data$control$number
-  } else counts <- matrix(apply(counts, 2, mean), nrow = length(lev))
+  norm <- match.arg(norm, c("none", "overall", "average"))
+  
+  if(norm == "none") counts <- matrix(apply(counts, 2, sum), nrow = length(lev))
+  else counts <- matrix(apply(counts, 2, mean), nrow = length(lev))
   
   if(norm == "overall") counts <- counts / sum(counts) * 100
   
@@ -214,10 +228,12 @@ confusionMatrix.train <- function(data, norm = "overall", dnn = c("Prediction", 
               norm = norm,
               B = length(data$control$index),
               text = paste(resampText, "Confusion Matrix"))
-  class(out) <- "confusionMatrix.train"
+  class(out) <- paste0("confusionMatrix.", class(data))
   out
 }
 
+confusionMatrix.rfe <- confusionMatrix.train
+confusionMatrix.sbf <- confusionMatrix.train
 
 print.confusionMatrix.train <- function(x, digits = 1, ...)
 {
@@ -228,47 +244,22 @@ print.confusionMatrix.train <- function(x, digits = 1, ...)
                      overall = "\n(entries are percentual average cell counts across resamples)\n",
                      "")
   cat(normText, "\n")
-  if(x$norm == "none" & x$B == 1) print(getFromNamespace("confusionMatrix.table", "caret")(x$table)) else print(round(x$table, digits))
-  cat("\n")
+  if(x$norm == "none" & x$B == 1) {
+    print(getFromNamespace("confusionMatrix.table", "caret")(x$table)) 
+  } else {
+    print(round(x$table, digits))
+    
+    out <- cbind("Accuracy (average)", ":", formatC(sum(diag(x$table) / sum(x$table))))
+    
+    dimnames(out) <- list(rep("", nrow(out)), rep("", ncol(out)))
+    print(out, quote = FALSE)
+    cat("\n")
+  }
   invisible(x)
 }
 
-confusionMatrix.rfe <- function(data, norm = "overall", dnn = c("Prediction", "Reference"), ...)
-{
-  if(is.null(data$resampledCM)) stop("resampled confusion matrices are not availible")
-  if(!norm %in% c("none", "overall", "average")) stop("values for norm should be 'none', 'overall', 'byClass' or 'average'")
-  if(data$control$method %in% c("oob", "LOOCV")) stop("cannot compute confusion matrices for leave-one-out and out-of-bag resampling")
-  if(!is.null(data$control$index))
-  {
-    resampleN <- unlist(lapply(data$control$index, length))
-    numResamp <- length(resampleN)
-    resampText <- resampName(data)
-  } else {
-    resampText <- ""
-    numResamp <- 0
-  }
-  
-  
-  resampledCM <- data$resampledCM
-  counts <- as.matrix(resampledCM[,grep("^\\.cell", colnames(resampledCM))])
-  ## normalize by true class?
-  
-  if(norm == "overall") counts <- t(apply(counts, 1, function(x)x/sum(x)))
-  if(norm == "average") counts <- counts/numResamp
-  overall <- matrix(apply(counts, 2, mean), nrow = length(data$obsLevels))
-  rownames(overall) <- colnames(overall) <- data$obsLevels
-  overall <- overall*100
-  names(dimnames(overall)) <- dnn
-  
-  
-  out <- list(table = overall,
-              norm = norm,
-              B = numResamp, 
-              text = paste(resampText, "Confusion Matrix"))
-  class(out) <- "confusionMatrix.rfe"
-  out
-}
-
+print.confusionMatrix.rfe <- print.confusionMatrix.train
+print.confusionMatrix.sbf <- print.confusionMatrix.train
 
 resampName <- function(x, numbers = TRUE)
 {
@@ -293,10 +284,10 @@ resampName <- function(x, numbers = TRUE)
                   loocv = "Leave-One-Out Cross-Validation",
                   adaptive_boot = paste("Adaptively Bootstrapped (", numResamp, " reps)", sep = ""),
                   adaptive_cv = paste("Adaptively Cross-Validated (", x$control$number, " fold, repeated ",
-                                     x$control$repeats, " times)", sep = ""),
+                                      x$control$repeats, " times)", sep = ""),
                   adaptive_lgocv = paste("Adaptive Repeated Train/Test Splits Estimated (", numResamp, " reps, ",
-                                round(x$control$p, 2), "%)", sep = "")
-                  )
+                                         round(x$control$p, 2), "%)", sep = "")
+    )
   } else {
     out <- switch(tolower(x$control$method),
                   none = "None", 
@@ -313,45 +304,6 @@ resampName <- function(x, numbers = TRUE)
   }
   out
 }
-
-confusionMatrix.sbf <- function(data, norm = "overall", dnn = c("Prediction", "Reference"), ...)
-{
-  if(is.null(data$resampledCM)) stop("resampled confusion matrices are not availible")
-  if(!norm %in% c("none", "overall", "average")) stop("values for norm should be 'none', 'overall', 'byClass' or 'average'")
-  if(data$control$method %in% c("oob", "LOOCV")) stop("cannot compute confusion matrices for leave-one-out and out-of-bag resampling")
-  if(!is.null(data$control$index))
-  {
-    resampleN <- unlist(lapply(data$control$index, length))
-    numResamp <- length(resampleN)
-    resampText <- resampName(data)
-  } else {
-    resampText <- ""
-    numResamp <- 0
-  }
-  
-  resampledCM <- data$resampledCM
-  counts <- as.matrix(resampledCM[,grep("^\\.cell", colnames(resampledCM))])
-  ## normalize by true class?
-  
-  if(norm == "overall") counts <- t(apply(counts, 1, function(x)x/sum(x)))
-  if(norm == "average") counts <- counts/numResamp
-  overall <- matrix(apply(counts, 2, mean), nrow = length(data$obsLevels))
-  rownames(overall) <- colnames(overall) <- data$obsLevels
-  overall <- overall*100
-  names(dimnames(overall)) <- dnn
-  
-  
-  out <- list(table = overall,
-              norm = norm,
-              B = numResamp,
-              text = paste(resampText, "Confusion Matrix"))
-  class(out) <- "confusionMatrix.sbf"
-  out
-}
-
-print.confusionMatrix.rfe <- print.confusionMatrix.train
-print.confusionMatrix.sbf <- print.confusionMatrix.train
-
 
 
 mcc <- function(tab, pos = colnames(tab)[1])
