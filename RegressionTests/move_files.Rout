@@ -1,0 +1,268 @@
+
+R Under development (unstable) (2015-11-18 r69655) -- "Unsuffered Consequences"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> setwd("~/Code/github/caret/RegressionTests")
+> 
+> #############################################################################
+> 
+> newPath <- paste(format(Sys.time(), "%Y_%m_%d_%H"), 
++                  packageDescription("caret")$Version,
++                  sep = "__")
+>                  
+> dir.create(paste0("~/tmp/", newPath))
+> 
+> testFiles <- list.files(file.path(getwd(), "Code"),
++                         full.names = TRUE)
+> 
+> ## package archived:
+> testFiles <- testFiles[!grepl("(Mlda)|(RFlda)", testFiles)]
+> 
+> newFiles <- paste0("~/tmp/", newPath, "/", basename(testFiles))
+> 
+> file.copy(testFiles, newFiles)
+  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [31] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [46] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [61] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [76] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [91] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[106] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[121] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[136] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[151] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[166] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[181] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[196] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[211] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+> 
+> frbs <- c('ANFIS', 'DENFIS', 'FH.GBML', 'FIR.DM', 'FRBCS.CHI', 'FRBCS.W', 
++           'FS.HGD', 'GFS.FR.MOGAL', 'GFS.GCCL', 'GFS.LT.RS', 'GFS.THRIFT', 
++           'HYFIS', 'SBC', 'SLAVE', 'WM')
+> frbs <- paste0(frbs, ".RData")
+> 
+> 
+> #############################################################################
+> ## write out makefile here and save to code directory prior to copy
+> 
+> rFiles <- list.files(file.path(getwd(), "Code"), pattern = "R$")
+> ## package archived:
+> rFiles <- rFiles[!grepl("(Mlda)|(RFlda)", rFiles)]
+> 
+> header <- paste(sort(rFiles), "Data: ", sort(rFiles), "\n", sep = "")
+> 
+> strt <- paste("\t@date '+ %Y-%m-%d %H:%M:%S: Starting ",
++               gsub(".R$", "", sort(rFiles)), "'\n", sep = "")
+> 
+> batch <- paste("\t@R CMD BATCH --vanilla ", sort(rFiles), "\n", sep = "")
+> 
+> fini <- paste("\t@date '+ %Y-%m-%d %H:%M:%S: Finished ",
++               gsub(".R$", "", sort(rFiles)), "'\n\n", sep = "")
+> 
+> rdata <- paste(sort(rFiles), "Data", sep = "")
+> rdata0 <- rdata[!(rdata %in% frbs)]
+> 
+> over <- length(rdata) %% 3
+> if(over > 0) rdata <- c(rdata, rep("", 3 - over))
+> deps <- matrix(rdata, nrow = 3)
+> deps <- apply(deps, 2, function(x) paste("\t", paste(x, collapse = " ")))
+> deps[1] <- gsub("\t", "all: ", deps[1])
+> deps[1:(length(deps) - 1)] <- paste(deps[1:(length(deps) - 1)], " \\\n", sep = "")
+> deps[length(deps)] <- paste(deps[length(deps)], "\n\n")
+> cat(deps, sep = "")
+all:  ada.RData AdaBag.RData AdaBoost.M1.RData \
+	 amdai.RData ANFIS.RData avNNet.RData \
+	 awnb.RData awtan.RData bag.RData \
+	 bagEarth.RData bagEarthGCV.RData bagFDA.RData \
+	 bagFDAGCV.RData bartMachine.RData bayesglm.RData \
+	 bdk.RData binda.RData blackboost.RData \
+	 blasso.RData blassoAveraged.RData Boruta.RData \
+	 bridge.RData brnn.RData bstSm.RData \
+	 bstTree.RData C5.0.RData C5.0Cost.RData \
+	 C5.0Rules.RData C5.0Tree.RData cforest.RData \
+	 CSimca.RData ctree.RData ctree2.RData \
+	 cubist.RData DENFIS.RData dnn.RData \
+	 dwdLinear.RData dwdPoly.RData dwdRadial.RData \
+	 earth.RData elm.RData enet.RData \
+	 enpls.fs.RData enpls.RData evtree.RData \
+	 extraTrees.RData fda.RData FH.GBML.RData \
+	 FIR.DM.RData foba.RData FRBCS.CHI.RData \
+	 FRBCS.W.RData FS.HGD.RData ga.RData \
+	 gam.RData gamboost.RData gamSpline.RData \
+	 gbm.RData gcvEarth.RData GFS.FR.MOGUL.RData \
+	 GFS.GCCL.RData GFS.LT.RS.RData GFS.Thrift.RData \
+	 glm.RData glmboost.RData glmnet.RData \
+	 glmStepAIC.RData gpls.RData hda.RData \
+	 hdda.RData HYFIS.RData icr.RData \
+	 J48.RData JRip.RData kernelpls.RData \
+	 kknn.RData knn.RData knnImpute.RData \
+	 krlsPoly.RData krlsRadial.RData lars.RData \
+	 lars2.RData lasso.RData lda.RData \
+	 lda2.RData leapBackward.RData leapForward.RData \
+	 leapSeq.RData Linda.RData lm.RData \
+	 lmStepAIC.RData LMT.RData loclda.RData \
+	 logicBag.RData LogitBoost.RData logreg.RData \
+	 lssvmRadial.RData lvq.RData M5.RData \
+	 M5Rules.RData mda.RData mlp.RData \
+	 mlpML.RData mlpWeightDecay.RData mlpWeightDecayML.RData \
+	 multinom.RData nb.RData nbDiscrete.RData \
+	 nbSearch.RData neuralnet.RData nnet.RData \
+	 nnls.RData nodeHarvest.RData oblique.tree.RData \
+	 OneR.RData ORFlog.RData ORFpls.RData \
+	 ORFridge.RData ORFsvm.RData ownn.RData \
+	 pam.RData PART.RData partDSA.RData \
+	 pcaNNet.RData pcr.RData pda.RData \
+	 pda2.RData penalized.RData PenalizedLDA.RData \
+	 plr.RData pls.RData plsRglm.RData \
+	 polr.RData ppr.RData preprocess_back.RData \
+	 protoclass.RData pythonKnnReg.RData qda.RData \
+	 QdaCov.RData qrf.RData qrnn.RData \
+	 randomGLM.RData ranger.RData rbf.RData \
+	 rbfDDA.RData rda.RData relaxo.RData \
+	 rf.RData rfe_gam.RData rfe_lda.RData \
+	 rfe_lm.RData rfe_lr.RData rfe_nb.RData \
+	 rfe_rf.RData rfe_train.RData rfe_treebag.RData \
+	 rFerns.RData rfRules.RData ridge.RData \
+	 rknn.RData rknnBel.RData rlm.RData \
+	 rmda.RData rocc.RData rotationForest.RData \
+	 rotationForestCp.RData rpart.RData rpart2.RData \
+	 rpartCost.RData rqlasso.RData rqnc.RData \
+	 RRFglobal.RData rrlda.RData RSimca.RData \
+	 rvmLinear.RData rvmPoly.RData rvmRadial.RData \
+	 sa.RData SBC.RData sbf_lda.RData \
+	 sbf_lm.RData sbf_nb.RData sbf_rf.RData \
+	 sbf_train.RData sbf_treebag.RData sda.RData \
+	 sddaLDA.RData sddaQDA.RData sdwd.RData \
+	 simpls.RData SLAVE.RData slda.RData \
+	 smda.RData snn.RData sparseLDA.RData \
+	 spikeslab.RData spls.RData stepLDA.RData \
+	 stepQDA.RData subsampling.RData superpc.RData \
+	 svmBoundrangeString.RData svmExpoString.RData svmLinear.RData \
+	 svmLinear2.RData svmPoly.RData svmRadial.RData \
+	 svmRadialCost.RData svmRadialWeights.RData svmSpectrumString.RData \
+	 tan.RData tanSearch.RData treebag.RData \
+	 trimming.RData widekernelpls.RData WM.RData \
+	 wsrf.RData xgbLinear.RData xgbTree.RData \
+	 xyf.RData   
+
+> 
+> 
+> over0 <- length(rdata0) %% 3
+> if(over0 > 0) rdata0 <- c(rdata0, rep("", 3 - over0))
+> deps0 <- matrix(rdata0, nrow = 3)
+> deps0 <- apply(deps0, 2, function(x) paste("\t", paste(x, collapse = " ")))
+> deps0[1] <- gsub("\t", "norules: ", deps0[1])
+> deps0[1:(length(deps0) - 2)] <- paste(deps0[1:(length(deps0) - 2)], " \\\n", sep = "")
+> deps0[length(deps0)] <- paste(deps0[length(deps0)], "\n\n")
+> cat(deps0, sep = "")
+norules:  ada.RData AdaBag.RData AdaBoost.M1.RData \
+	 amdai.RData avNNet.RData awnb.RData \
+	 awtan.RData bag.RData bagEarth.RData \
+	 bagEarthGCV.RData bagFDA.RData bagFDAGCV.RData \
+	 bartMachine.RData bayesglm.RData bdk.RData \
+	 binda.RData blackboost.RData blasso.RData \
+	 blassoAveraged.RData Boruta.RData bridge.RData \
+	 brnn.RData bstSm.RData bstTree.RData \
+	 C5.0.RData C5.0Cost.RData C5.0Rules.RData \
+	 C5.0Tree.RData cforest.RData CSimca.RData \
+	 ctree.RData ctree2.RData cubist.RData \
+	 dnn.RData dwdLinear.RData dwdPoly.RData \
+	 dwdRadial.RData earth.RData elm.RData \
+	 enet.RData enpls.fs.RData enpls.RData \
+	 evtree.RData extraTrees.RData fda.RData \
+	 foba.RData ga.RData gam.RData \
+	 gamboost.RData gamSpline.RData gbm.RData \
+	 gcvEarth.RData GFS.FR.MOGUL.RData GFS.Thrift.RData \
+	 glm.RData glmboost.RData glmnet.RData \
+	 glmStepAIC.RData gpls.RData hda.RData \
+	 hdda.RData icr.RData J48.RData \
+	 JRip.RData kernelpls.RData kknn.RData \
+	 knn.RData knnImpute.RData krlsPoly.RData \
+	 krlsRadial.RData lars.RData lars2.RData \
+	 lasso.RData lda.RData lda2.RData \
+	 leapBackward.RData leapForward.RData leapSeq.RData \
+	 Linda.RData lm.RData lmStepAIC.RData \
+	 LMT.RData loclda.RData logicBag.RData \
+	 LogitBoost.RData logreg.RData lssvmRadial.RData \
+	 lvq.RData M5.RData M5Rules.RData \
+	 mda.RData mlp.RData mlpML.RData \
+	 mlpWeightDecay.RData mlpWeightDecayML.RData multinom.RData \
+	 nb.RData nbDiscrete.RData nbSearch.RData \
+	 neuralnet.RData nnet.RData nnls.RData \
+	 nodeHarvest.RData oblique.tree.RData OneR.RData \
+	 ORFlog.RData ORFpls.RData ORFridge.RData \
+	 ORFsvm.RData ownn.RData pam.RData \
+	 PART.RData partDSA.RData pcaNNet.RData \
+	 pcr.RData pda.RData pda2.RData \
+	 penalized.RData PenalizedLDA.RData plr.RData \
+	 pls.RData plsRglm.RData polr.RData \
+	 ppr.RData preprocess_back.RData protoclass.RData \
+	 pythonKnnReg.RData qda.RData QdaCov.RData \
+	 qrf.RData qrnn.RData randomGLM.RData \
+	 ranger.RData rbf.RData rbfDDA.RData \
+	 rda.RData relaxo.RData rf.RData \
+	 rfe_gam.RData rfe_lda.RData rfe_lm.RData \
+	 rfe_lr.RData rfe_nb.RData rfe_rf.RData \
+	 rfe_train.RData rfe_treebag.RData rFerns.RData \
+	 rfRules.RData ridge.RData rknn.RData \
+	 rknnBel.RData rlm.RData rmda.RData \
+	 rocc.RData rotationForest.RData rotationForestCp.RData \
+	 rpart.RData rpart2.RData rpartCost.RData \
+	 rqlasso.RData rqnc.RData RRFglobal.RData \
+	 rrlda.RData RSimca.RData rvmLinear.RData \
+	 rvmPoly.RData rvmRadial.RData sa.RData \
+	 sbf_lda.RData sbf_lm.RData sbf_nb.RData \
+	 sbf_rf.RData sbf_train.RData sbf_treebag.RData \
+	 sda.RData sddaLDA.RData sddaQDA.RData \
+	 sdwd.RData simpls.RData slda.RData \
+	 smda.RData snn.RData sparseLDA.RData \
+	 spikeslab.RData spls.RData stepLDA.RData \
+	 stepQDA.RData subsampling.RData superpc.RData \
+	 svmBoundrangeString.RData svmExpoString.RData svmLinear.RData \
+	 svmLinear2.RData svmPoly.RData svmRadial.RData \
+	 svmRadialCost.RData svmRadialWeights.RData svmSpectrumString.RData \
+	 tan.RData tanSearch.RData treebag.RData \
+	 trimming.RData widekernelpls.RData wsrf.RData	 xgbLinear.RData xgbTree.RData xyf.RData 
+
+> 
+> mf <- c("SHELL = /bin/bash\n\n", deps, deps0,
++           paste(header, strt, batch, fini, sep = ""))
+> 
+> cat(mf, sep = "",  file = file.path("~/tmp", newPath, "makefile"))
+> 
+> #############################################################################
+> ## missing tests
+> 
+> if(FALSE){
++   library(caret)
++   
++   mods <- names(getModelInfo())
++   testfiles <- gsub(".R", "", rFiles, fixed = TRUE)
++   
++   testFiles <- list.files(file.path(getwd(), "Code"))
++   modelFiles <- list.files("/Users/kuhna03/Code/github/caret/pkg/caret/inst/models")  
++   
++   modelFiles[!(modelFiles %in% testFiles)]
++ }
+> 
+> proc.time()
+   user  system elapsed 
+  0.155   0.129   0.974 

@@ -573,7 +573,7 @@ For random forests, only the first importance calculation (line 2.5) is used sin
     names(finalImp)[2] &lt;- &quot;Overall&quot;
     finalImp &lt;- finalImp[order(finalImp$Overall, decreasing = TRUE), 
         ]
-    as.character(finalImp$var[1:size])
+    as.character((finalImp$var)[1:size])
 }
 &lt;environment: namespace:caret&gt;
 </pre></div>
@@ -603,16 +603,16 @@ Outer resampling method: Cross-Validated (10 fold, repeated 5 times)
 Resampling performance over subset size:
 
  Variables RMSE Rsquared RMSESD RsquaredSD Selected
-         1 4.73    0.207  0.978      0.182         
-         2 3.84    0.398  0.626      0.221         
-         3 3.18    0.600  0.614      0.187         
-         4 2.68    0.771  0.516      0.109        *
-         5 2.91    0.741  0.582      0.123         
-        10 3.09    0.705  0.546      0.155         
-        15 3.21    0.684  0.572      0.170         
-        20 3.32    0.687  0.576      0.178         
-        25 3.37    0.676  0.570      0.185         
-        50 3.51    0.652  0.543      0.176         
+         1 4.78    0.199  0.985      0.179         
+         2 3.91    0.382  0.661      0.218         
+         3 3.17    0.599  0.631      0.196         
+         4 2.67    0.773  0.520      0.108        *
+         5 2.85    0.760  0.525      0.134         
+        10 3.05    0.719  0.548      0.140         
+        15 3.17    0.689  0.566      0.164         
+        20 3.29    0.689  0.566      0.172         
+        25 3.36    0.666  0.579      0.185         
+        50 3.53    0.649  0.560      0.199         
 
 The top 4 variables (out of 4):
    real4, real5, real2, real1
@@ -694,7 +694,7 @@ The top 4 variables (out of 4):
   <div id="footer-content"></div>
   <div id="footer">
 
-  <p>Created on Tue Dec 01 2015 using caret version 6.0-62 and R Under development (unstable) (2015-11-18 r69655).</p>
+  <p>Created on Tue Jan 19 2016 using caret version 6.0-64 and R Under development (unstable) (2016-01-04 r69860).</p>
   </div>
   <!-- end #footer -->
 </body>

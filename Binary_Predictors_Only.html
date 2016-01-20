@@ -77,7 +77,7 @@ Released   : 20120902
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <title>Partial Least Squares Models</title>
+  <title>Binary Predictors Only Models</title>
   <link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
   <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
   </head>
@@ -86,7 +86,7 @@ Released   : 20120902
   <div id="header-wrapper" class="container">
   <div id="header" class="container">
   <div id="logo">
-  <h1><a href="#">Partial Least Squares Models</a></h1>
+  <h1><a href="#">Binary Predictors Only Models</a></h1>
 </div>
   <!--
   <div id="menu">
@@ -106,55 +106,20 @@ Released   : 20120902
 <div id="page">
   <div id="content">
   
-<h1>Ensemble Partial Least Squares Regression</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'enpls'</span></tt></p>
-<p><b>Type</b>: Regression</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">maxcomp</span></code> (Max. #Components)</p>
+<h1>Bagged Logic Regression</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'logicBag'</span></tt></p>
+<p><b>Type</b>: Regression, Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">nleaves</span></code> (Maximum Number of Leaves), <code><span class="mx arg">ntrees</span></code> (Number of Trees)</p>
 
-<h1>Ensemble Partial Least Squares Regression with Feature Selection</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'enpls.fs'</span></tt></p>
-<p><b>Type</b>: Regression</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">maxcomp</span></code> (Max. #Components), <code><span class="mx arg">threshold</span></code> (Importance Cutoff)</p>
-
-<h1>Generalized Partial Least Squares</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'gpls'</span></tt></p>
+<h1>Binary Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'binda'</span></tt></p>
 <p><b>Type</b>: Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">K.prov</span></code> (#Components)</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda.freqs</span></code> (Shrinkage Intensity)</p>
 
-<h1>Oblique Random Forest</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'ORFpls'</span></tt></p>
-<p><b>Type</b>: Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">mtry</span></code> (#Randomly Selected Predictors)</p>
-
-<h1>Partial Least Squares</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'kernelpls'</span></tt></p>
+<h1>Logic Regression</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'logreg'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">ncomp</span></code> (#Components)</p>
-
-<h1>Partial Least Squares</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'pls'</span></tt></p>
-<p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">ncomp</span></code> (#Components)</p>
-
-<h1>Partial Least Squares</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'simpls'</span></tt></p>
-<p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">ncomp</span></code> (#Components)</p>
-
-<h1>Partial Least Squares</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'widekernelpls'</span></tt></p>
-<p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">ncomp</span></code> (#Components)</p>
-
-<h1>Partial Least Squares Generalized Linear Models </h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'plsRglm'</span></tt></p>
-<p><b>Type</b>: Classification, Regression</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">nt</span></code> (#PLS Components), <code><span class="mx arg">alpha.pvals.expli</span></code> (p-Value threshold)</p>
-
-<h1>Sparse Partial Least Squares</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'spls'</span></tt></p>
-<p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">K</span></code> (#Components), <code><span class="mx arg">eta</span></code> (Threshold), <code><span class="mx arg">kappa</span></code> (Kappa)</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">treesize</span></code> (Maximum Number of Leaves), <code><span class="mx arg">ntrees</span></code> (Number of Trees)</p>
 
 
 <div style="clear: both;">&nbsp;</div>

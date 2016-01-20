@@ -77,7 +77,7 @@ Released   : 20120902
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <title>Polynomial Model</title>
+  <title>Handle Missing Predictor Data Models</title>
   <link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
   <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
   </head>
@@ -86,7 +86,7 @@ Released   : 20120902
   <div id="header-wrapper" class="container">
   <div id="header" class="container">
   <div id="logo">
-  <h1><a href="#">Polynomial Model</a></h1>
+  <h1><a href="#">Handle Missing Predictor Data Models</a></h1>
 </div>
   <!--
   <div id="menu">
@@ -106,70 +106,60 @@ Released   : 20120902
 <div id="page">
   <div id="content">
   
-<h1>Distance Weighted Discrimination with Polynomial Kernel</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'dwdPoly'</span></tt></p>
+<h1>AdaBoost.M1</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'AdaBoost.M1'</span></tt></p>
 <p><b>Type</b>: Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda</span></code> (Regularization Parameter), <code><span class="mx arg">qval</span></code> (q), <code><span class="mx arg">degree</span></code> (Polynomial Degree), <code><span class="mx arg">scale</span></code> (Scale)</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">mfinal</span></code> (#Trees), <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth), <code><span class="mx arg">coeflearn</span></code> (Coefficient Type)</p>
 
-<h1>Gaussian Process with Polynomial Kernel</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'gaussprPoly'</span></tt></p>
+<h1>Bagged AdaBoost</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'AdaBag'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">mfinal</span></code> (#Trees), <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth)</p>
+
+<h1>Boosted Classification Trees</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'ada'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">iter</span></code> (#Trees), <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth), <code><span class="mx arg">nu</span></code> (Learning Rate)</p>
+
+<h1>C5.0</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'C5.0'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">trials</span></code> (# Boosting Iterations), <code><span class="mx arg">model</span></code> (Model Type), <code><span class="mx arg">winnow</span></code> (Winnow)</p>
+
+<h1>CART</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'rpart'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">degree</span></code> (Polynomial Degree), <code><span class="mx arg">scale</span></code> (Scale)</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">cp</span></code> (Complexity Parameter)</p>
 
-<h1>Least Squares Support Vector Machine with Polynomial Kernel</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'lssvmPoly'</span></tt></p>
-<p><b>Type</b>: Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">degree</span></code> (Polynomial Degree), <code><span class="mx arg">scale</span></code> (Scale)</p>
-
-<h1>Penalized Discriminant Analysis</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'pda'</span></tt></p>
-<p><b>Type</b>: Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda</span></code> (Shrinkage Penalty Coefficient)</p>
-
-<h1>Penalized Discriminant Analysis</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'pda2'</span></tt></p>
-<p><b>Type</b>: Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">df</span></code> (Degrees of Freedom)</p>
-
-<h1>Polynomial Kernel Regularized Least Squares</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'krlsPoly'</span></tt></p>
-<p><b>Type</b>: Regression</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda</span></code> (Regularization Parameter), <code><span class="mx arg">degree</span></code> (Polynomial Degree)</p>
-
-<h1>Quadratic Discriminant Analysis</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'qda'</span></tt></p>
-<p><b>Type</b>: Classification</p>
-<p>No Tuning Parameters</p>
-
-<h1>Quadratic Discriminant Analysis with Stepwise Feature Selection</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'stepQDA'</span></tt></p>
-<p><b>Type</b>: Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">maxvar</span></code> (Maximum #Variables), <code><span class="mx arg">direction</span></code> (Search Direction)</p>
-
-<h1>Regularized Discriminant Analysis</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'rda'</span></tt></p>
-<p><b>Type</b>: Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">gamma</span></code> (Gamma), <code><span class="mx arg">lambda</span></code> (Lambda)</p>
-
-<h1>Relevance Vector Machines with Polynomial Kernel</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'rvmPoly'</span></tt></p>
-<p><b>Type</b>: Regression</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">scale</span></code> (Scale), <code><span class="mx arg">degree</span></code> (Polynomial Degree)</p>
-
-<h1>Robust Quadratic Discriminant Analysis</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'QdaCov'</span></tt></p>
-<p><b>Type</b>: Classification</p>
-<p>No Tuning Parameters</p>
-
-<h1>Stepwise Diagonal Quadratic Discriminant Analysis</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'sddaQDA'</span></tt></p>
-<p><b>Type</b>: Classification</p>
-<p>No Tuning Parameters</p>
-
-<h1>Support Vector Machines with Polynomial Kernel</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'svmPoly'</span></tt></p>
+<h1>CART</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'rpart1SE'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">degree</span></code> (Polynomial Degree), <code><span class="mx arg">scale</span></code> (Scale), <code><span class="mx arg">C</span></code> (Cost)</p>
+<p>No Tuning Parameters</p>
+
+<h1>CART</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'rpart2'</span></tt></p>
+<p><b>Type</b>: Regression, Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth)</p>
+
+<h1>Cost-Sensitive C5.0</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'C5.0Cost'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">trials</span></code> (# Boosting Iterations), <code><span class="mx arg">model</span></code> (Model Type), <code><span class="mx arg">winnow</span></code> (Winnow), <code><span class="mx arg">cost</span></code> (Cost)</p>
+
+<h1>Cost-Sensitive CART</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'rpartCost'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">cp</span></code> (Complexity Parameter), <code><span class="mx arg">Cost</span></code> (Cost)</p>
+
+<h1>Single C5.0 Ruleset</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'C5.0Rules'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p>No Tuning Parameters</p>
+
+<h1>Single C5.0 Tree</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'C5.0Tree'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p>No Tuning Parameters</p>
 
 
 <div style="clear: both;">&nbsp;</div>

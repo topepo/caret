@@ -77,7 +77,7 @@ Released   : 20120902
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <title>Tree-Based Model</title>
+  <title>Two Class Only Models</title>
   <link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
   <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
   </head>
@@ -86,7 +86,7 @@ Released   : 20120902
   <div id="header-wrapper" class="container">
   <div id="header" class="container">
   <div id="logo">
-  <h1><a href="#">Tree-Based Model</a></h1>
+  <h1><a href="#">Two Class Only Models</a></h1>
 </div>
   <!--
   <div id="menu">
@@ -106,86 +106,41 @@ Released   : 20120902
 <div id="page">
   <div id="content">
   
-<h1>AdaBoost.M1</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'AdaBoost.M1'</span></tt></p>
-<p><b>Type</b>: Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">mfinal</span></code> (#Trees), <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth), <code><span class="mx arg">coeflearn</span></code> (Coefficient Type)</p>
-
-<h1>Bagged AdaBoost</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'AdaBag'</span></tt></p>
-<p><b>Type</b>: Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">mfinal</span></code> (#Trees), <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth)</p>
-
-<h1>Bagged CART</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'treebag'</span></tt></p>
+<h1>Bagged Logic Regression</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'logicBag'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
-<p>No Tuning Parameters</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">nleaves</span></code> (Maximum Number of Leaves), <code><span class="mx arg">ntrees</span></code> (Number of Trees)</p>
 
 <h1>Bayesian Additive Regression Trees</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'bartMachine'</span></tt></p>
 <p><b>Type</b>: Classification, Regression</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">num_trees</span></code> (#Trees), <code><span class="mx arg">k</span></code> (Prior Boundary), <code><span class="mx arg">alpha</span></code> (Base Terminal Node Hyperparameter), <code><span class="mx arg">beta</span></code> (Power Terminal Node Hyperparameter), <code><span class="mx arg">nu</span></code> (Degrees of Freedom)</p>
 
+<h1>Binary Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'binda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda.freqs</span></code> (Shrinkage Intensity)</p>
+
 <h1>Boosted Classification Trees</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'ada'</span></tt></p>
 <p><b>Type</b>: Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">iter</span></code> (#Trees), <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth), <code><span class="mx arg">nu</span></code> (Learning Rate)</p>
 
-<h1>Boosted Logistic Regression</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'LogitBoost'</span></tt></p>
-<p><b>Type</b>: Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">nIter</span></code> (# Boosting Iterations)</p>
-
-<h1>Boosted Tree</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'blackboost'</span></tt></p>
+<h1>Boosted Generalized Additive Model</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'gamboost'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">mstop</span></code> (#Trees), <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth)</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">mstop</span></code> (# Boosting Iterations), <code><span class="mx arg">prune</span></code> (AIC Prune?)</p>
 
-<h1>Boosted Tree</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'bstTree'</span></tt></p>
+<h1>Boosted Generalized Linear Model</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'glmboost'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">mstop</span></code> (# Boosting Iterations), <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth), <code><span class="mx arg">nu</span></code> (Shrinkage)</p>
-
-<h1>C4.5-like Trees</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'J48'</span></tt></p>
-<p><b>Type</b>: Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">C</span></code> (Confidence Threshold)</p>
-
-<h1>C5.0</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'C5.0'</span></tt></p>
-<p><b>Type</b>: Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">trials</span></code> (# Boosting Iterations), <code><span class="mx arg">model</span></code> (Model Type), <code><span class="mx arg">winnow</span></code> (Winnow)</p>
-
-<h1>CART</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'rpart'</span></tt></p>
-<p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">cp</span></code> (Complexity Parameter)</p>
-
-<h1>CART</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'rpart1SE'</span></tt></p>
-<p><b>Type</b>: Regression, Classification</p>
-<p>No Tuning Parameters</p>
-
-<h1>CART</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'rpart2'</span></tt></p>
-<p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth)</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">mstop</span></code> (# Boosting Iterations), <code><span class="mx arg">prune</span></code> (AIC Prune?)</p>
 
 <h1>CHi-squared Automated Interaction Detection</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'chaid'</span></tt></p>
 <p><b>Type</b>: Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">alpha2</span></code> (Merging Threshold), <code><span class="mx arg">alpha3</span></code> (Splitting former Merged Threshold), <code><span class="mx arg">alpha4</span></code> (
                                                     Splitting former Merged Threshold)</p>
-
-<h1>Conditional Inference Tree</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'ctree'</span></tt></p>
-<p><b>Type</b>: Classification, Regression</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">mincriterion</span></code> (1 - P-Value Threshold)</p>
-
-<h1>Conditional Inference Tree</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'ctree2'</span></tt></p>
-<p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">maxdepth</span></code> (Max Tree Depth)</p>
 
 <h1>Cost-Sensitive C5.0</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'C5.0Cost'</span></tt></p>
@@ -197,25 +152,70 @@ Released   : 20120902
 <p><b>Type</b>: Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">cp</span></code> (Complexity Parameter), <code><span class="mx arg">Cost</span></code> (Cost)</p>
 
-<h1>eXtreme Gradient Boosting</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'xgbTree'</span></tt></p>
-<p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">nrounds</span></code> (# Boosting Iterations), <code><span class="mx arg">max_depth</span></code> (Max Tree Depth), <code><span class="mx arg">eta</span></code> (Shrinkage), <code><span class="mx arg">gamma</span></code> (Minimum Loss Reduction), <code><span class="mx arg">colsample_bytree</span></code> (Subsample Ratio of Columns), <code><span class="mx arg">min_child_weight</span></code> (Minimum Sum of Instance Weight)</p>
-
-<h1>Model Tree</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'M5'</span></tt></p>
-<p><b>Type</b>: Regression</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">pruned</span></code> (Pruned), <code><span class="mx arg">smoothed</span></code> (Smoothed), <code><span class="mx arg">rules</span></code> (Rules)</p>
-
-<h1>Oblique Trees</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'oblique.tree'</span></tt></p>
+<h1>Distance Weighted Discrimination with Polynomial Kernel</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'dwdPoly'</span></tt></p>
 <p><b>Type</b>: Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">oblique.splits</span></code> (Oblique Splits), <code><span class="mx arg">variable.selection</span></code> (Variable Selection Method)</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda</span></code> (Regularization Parameter), <code><span class="mx arg">qval</span></code> (q), <code><span class="mx arg">degree</span></code> (Polynomial Degree), <code><span class="mx arg">scale</span></code> (Scale)</p>
 
-<h1>Random Forest with Additional Feature Selection</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'Boruta'</span></tt></p>
+<h1>Distance Weighted Discrimination with Radial Basis Function Kernel</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'dwdRadial'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda</span></code> (Regularization Parameter), <code><span class="mx arg">qval</span></code> (q), <code><span class="mx arg">sigma</span></code> (Sigma)</p>
+
+<h1>Generalized Linear Model</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'glm'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
+<p>No Tuning Parameters</p>
+
+<h1>Generalized Linear Model with Stepwise Feature Selection</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'glmStepAIC'</span></tt></p>
+<p><b>Type</b>: Regression, Classification</p>
+<p>No Tuning Parameters</p>
+
+<h1>Linear Distance Weighted Discrimination</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'dwdLinear'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">lambda</span></code> (Regularization Parameter), <code><span class="mx arg">qval</span></code> (q)</p>
+
+<h1>Logic Regression</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'logreg'</span></tt></p>
+<p><b>Type</b>: Regression, Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">treesize</span></code> (Maximum Number of Leaves), <code><span class="mx arg">ntrees</span></code> (Number of Trees)</p>
+
+<h1>Oblique Random Forest</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'ORFlog'</span></tt></p>
+<p><b>Type</b>: Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">mtry</span></code> (#Randomly Selected Predictors)</p>
+
+<h1>Oblique Random Forest</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'ORFpls'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">mtry</span></code> (#Randomly Selected Predictors)</p>
+
+<h1>Oblique Random Forest</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'ORFridge'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">mtry</span></code> (#Randomly Selected Predictors)</p>
+
+<h1>Oblique Random Forest</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'ORFsvm'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">mtry</span></code> (#Randomly Selected Predictors)</p>
+
+<h1>Partial Least Squares Generalized Linear Models </h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'plsRglm'</span></tt></p>
+<p><b>Type</b>: Classification, Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">nt</span></code> (#PLS Components), <code><span class="mx arg">alpha.pvals.expli</span></code> (p-Value threshold)</p>
+
+<h1>Random k-Nearest Neighbors</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'rknn'</span></tt></p>
+<p><b>Type</b>: Classification, Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">k</span></code> (#Neighbors), <code><span class="mx arg">mtry</span></code> (#Randomly Selected Predictors)</p>
+
+<h1>Random k-Nearest Neighbors with Feature Selection</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'rknnBel'</span></tt></p>
+<p><b>Type</b>: Classification, Regression</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">k</span></code> (#Neighbors), <code><span class="mx arg">mtry</span></code> (#Randomly Selected Predictors), <code><span class="mx arg">d</span></code> (#Features Dropped)</p>
 
 <h1>Rotation Forest</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'rotationForest'</span></tt></p>
@@ -227,20 +227,10 @@ Released   : 20120902
 <p><b>Type</b>: Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">K</span></code> (#Variable Subsets), <code><span class="mx arg">L</span></code> (Ensemble Size), <code><span class="mx arg">cp</span></code> (Complexity Parameter)</p>
 
-<h1>Single C5.0 Tree</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'C5.0Tree'</span></tt></p>
+<h1>Support Vector Machines with Class Weights</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'svmRadialWeights'</span></tt></p>
 <p><b>Type</b>: Classification</p>
-<p>No Tuning Parameters</p>
-
-<h1>Stochastic Gradient Boosting</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'gbm'</span></tt></p>
-<p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">n.trees</span></code> (# Boosting Iterations), <code><span class="mx arg">interaction.depth</span></code> (Max Tree Depth), <code><span class="mx arg">shrinkage</span></code> (Shrinkage), <code><span class="mx arg">n.minobsinnode</span></code> (Min. Terminal Node Size)</p>
-
-<h1>Tree Models from Genetic Algorithms</h1>
-<p><tt><span class="mx arg">method</span> = <span class="mx str">'evtree'</span></tt></p>
-<p><b>Type</b>: Regression, Classification</p>
-<p><b>Tuning Parameters</b>: <code><span class="mx arg">alpha</span></code> (Complexity Parameter)</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">sigma</span></code> (Sigma), <code><span class="mx arg">C</span></code> (Cost), <code><span class="mx arg">Weight</span></code> (Weight)</p>
 
 <h1>Tree-Based Ensembles</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'nodeHarvest'</span></tt></p>
