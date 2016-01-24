@@ -1,6 +1,6 @@
-probFunction <- function(method, modelFit, newdata, preProc = NULL, param = NULL)
+probFunction <- function(method, modelFit, newdata = NULL, preProc = NULL, param = NULL)
 {
-  if(!is.null(preProc)) newdata <- predict(preProc, newdata)
+  if(!is.null(newdata) && !is.null(preProc)) newdata <- predict(preProc, newdata)
 
   obsLevels <- levels(modelFit)
   

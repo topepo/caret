@@ -32,7 +32,7 @@ predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.o
         newdata <- newdata[, -xint, drop = FALSE]   
     }
   }
-  else {
+  else if(object$control$method != "oob") {
     if(!is.null(object$trainingData)) {            
       newdata <- if(object$method == "pam") object$finalModel$xData else object$trainingData
       ##newdata$.outcome <-NULL
