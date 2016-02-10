@@ -16,7 +16,7 @@ modelInfo <- list(label = "Regularized Discriminant Analysis",
                     out
                   }, 
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    klaR:::rda(x, y, gamma = param$gamma, param = tuneValue$lambda, ...)
+                    klaR:::rda(x, y, gamma = param$gamma, lambda = tuneValue$lambda, ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) 
                     klaR:::predict.rda(modelFit, newdata)$class,
