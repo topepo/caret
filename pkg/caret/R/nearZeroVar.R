@@ -15,8 +15,11 @@ nearZeroVar <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE,
     res$column <- NULL
   } else {
     res <- foreach(name = colnames(x), .combine=c) %op% {
-      nzv(x[[name]], freqCut = freqCut, uniqueCut = uniqueCut, saveMetrics = FALSE)
+      r <- nzv(x[[name]], freqCut = freqCut, uniqueCut = uniqueCut, saveMetrics = FALSE)
+      ## needed because either integer() or 1, r is never 0
+      if (length(r) > 0 && r == 1) TRUE else FALSE
     }
+    res <- which(res)
     if(names){
       res <- colnames(x)[res]
     }
@@ -26,7 +29,7 @@ nearZeroVar <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE,
 
 nzv <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE, names = FALSE)
 {
-  if (is.vector(x)) x <- matrix(x, ncol = 1)
+  if (is.null(dim(x))) x <- matrix(x, ncol = 1)
   freqRatio <- apply(x, 2, function(data)
   {
     t <- table(data[!is.na(data)])
