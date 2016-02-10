@@ -39,8 +39,8 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                     out <- do.call(getFromNamespace("cforest", "party"), modelArgs)
                     out 
                   },
-                  predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                  predict = function(modelFit, newdata = NULL, submodels = NULL) {
+                    if(!is.null(newdata) && !is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     ## party builds the levels into the model object, so I'm
                     ## going to assume that all the levels will be passed to
                     ## the output
@@ -50,10 +50,10 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                     
                     out
                   },
-                  prob = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                  prob = function(modelFit, newdata = NULL, submodels = NULL) {
+                    if(!is.null(newdata) && !is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     obsLevels <- levels(modelFit@data@get("response")[,1])
-                    rawProbs <- treeresponse(modelFit, newdata)
+                    rawProbs <- treeresponse(modelFit, newdata, OOB = TRUE)
                     probMatrix <- matrix(unlist(rawProbs), ncol = length(obsLevels), byrow = TRUE)
                     out <- data.frame(probMatrix)
                     colnames(out) <- obsLevels

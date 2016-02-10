@@ -18,9 +18,9 @@ modelInfo <- list(label = "Random Forest",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
                     randomForest(x, y, mtry = param$mtry, ...),
                   predict = function(modelFit, newdata, submodels = NULL) 
-                    predict(modelFit, newdata),
+                    if(!is.null(newdata)) predict(modelFit, newdata) else predict(modelFit),
                   prob = function(modelFit, newdata, submodels = NULL)
-                    predict(modelFit, newdata, type = "prob"),
+                    if(!is.null(newdata)) predict(modelFit, newdata, type = "prob") else predict(modelFit, type = "prob"),
                   predictors = function(x, ...) {
                     ## After doing some testing, it looks like randomForest
                     ## will only try to split on plain main effects (instead
