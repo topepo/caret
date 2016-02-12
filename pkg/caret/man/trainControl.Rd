@@ -77,11 +77,15 @@ Using adaptive resampling when \code{method} is either \code{"adaptive_cv"}, \co
 }
 
 The option \code{search = "grid"} uses the default grid search routine. When \code{search = "random"}, a random search procedure is used (Bergstra and Bengio, 2012). See \url{http://topepo.github.io/caret/random.html} for details and an example.
+
+The \code{"boot632"} method uses the 0.632 estimator presented in Efron (1983), not to be confused with the 0.632+ estimator proposed later by the same author.
 }
 
 \author{Max Kuhn}
 
 \references{
+Efron (1983). ``Estimating the error rate of a prediction rule: improvement on cross-validation''. Journal of the American Statistical Association, 78(382):316-331
+
 Bergstra and Bengio (2012), ``Random Search for Hyper-Parameter Optimization'', Journal of Machine Learning Research, 13(Feb):281-305
 
 Kuhn (2014), ``Futility Analysis in the Cross-Validation of Machine Learning Models'' \url{http://arxiv.org/abs/1405.6974},
