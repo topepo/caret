@@ -364,7 +364,7 @@ predict.preProcess <- function(object, newdata, ...) {
     if(!is.data.frame(hasMiss)) hasMiss <- as.data.frame(hasMiss)
     for(i in seq(along = missingVars)) {
       preds <- predict(object$bagImp[[missingVars[i]]]$model,
-                       hasMiss[, !colnames(hasMiss) %in% missingVars[i]])
+                       hasMiss[, !colnames(hasMiss) %in% missingVars[i], drop = FALSE])
       
       hasMiss[is.na(hasMiss[,missingVars[i]]),
               missingVars[i]] <- preds[is.na(hasMiss[,missingVars[i]])]
