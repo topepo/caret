@@ -8,9 +8,10 @@
 		\item An adjustment the innards of adaptive resampling was changed so that the test for linear dependencies is more stringent.  
 		\item A bug in the bootstrap 632 estimate was found and fixed by Alexis Sarda \issue{349} \issue{353}. 
 		\item The \code{cforest} module's \code{oob} element was modifed based on another bug found by Alexis Sarda \issue{351}.
-		\item The methods for \code{bagEarth}}, \code{bagEarthGCV}}, \code{bagFDA}}, \code{bagFDAGCV}}, \code{earth}}, \code{fda}}, and \code{gcvEarth}} models have been updates so that case-weights can be used. 
+		\item The methods for \code{bagEarth}, \code{bagEarthGCV}, \code{bagFDA}, \code{bagFDAGCV}, \code{earth}, \code{fda}, and \code{gcvEarth} models have been updates so that case-weights can be used. 
 		\item The \code{rda} module contained a bug found by Eric Czech \issue{369}.
 		\item A bug was fixed for printing out the resampling details with LGOCV found by github user zsharpm \issue{366}
+		\item A new data set was added (\code{data(Sacramento)}) with sale prices of homes. 
 	} 
 }
 
