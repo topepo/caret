@@ -34,7 +34,7 @@ model_class <- train(
     method="cv", 
     number=5,
     classProbs=TRUE, 
-	summaryFunction=twoClassSummary,
+    summaryFunction=twoClassSummary,
     savePredictions="final")
 )
 print(model_class)
