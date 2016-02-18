@@ -3,7 +3,6 @@ If you are making a feature request or starting a discussion, you can ignore eve
 If you are filing a bug, make sure these boxes are checked before submitting your issue— thank you!
 
 - [ ] Start a new R session
-- [ ] Install the latest version of caretEnsemble: `devtools::install_github("zachmayer/caretEnsemble")`
 - [ ] Install the latest version of caret: `update.packages(oldPkgs="caret", ask=FALSE)`
 - [ ] [Write a minimal reproducible example](http://stackoverflow.com/a/5963610)
 - [ ] run `sessionInfo()`
@@ -13,8 +12,9 @@ Text and example code modified from [the R FAQ on stackoverflow](http://stackove
 
 #### Minimal dataset:
 ```{R}
+library(caret)
 set.seed(1)
-dat <- caret::twoClassSim(100)
+dat <- twoClassSim(100)
 X <- dat[,1:5]
 y <- dat[["Class"]]
 
@@ -27,18 +27,17 @@ If your data frame has a factor with many levels, the `dput` output can be unwie
 
 #### Minimal, runnable code:
 ```{R}
-library(caretEnsemble)
-models <- caretList(
+model_class <- train(
   X, y, 
-  methodList=c('glm', 'rpart'),
+  metric='ROC',
   trControl=trainControl(
     method="cv", 
     number=5,
     classProbs=TRUE, 
+    summaryFunction=twoClassSummary,
     savePredictions="final")
 )
-ens <- caretStack(models)
-print(ens)
+print(model_class)
 ```
 
 ### Session Info:
