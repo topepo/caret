@@ -62,7 +62,7 @@ Type of output
 }
 
 \item{\dots}{
-arguments passed to \code{\link[nnet]{nnet}}
+arguments passed to \code{\link[nnet]{nnet}}, such as \code{size}, \code{decay}, etc. 
 }
 
 }
