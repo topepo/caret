@@ -51,6 +51,27 @@ test_class_loo_model <- train(trainX, trainY,
                               preProc = c("center", "scale"))
 
 set.seed(849)
+test_class_cv_weight <- train(trainX, trainY, 
+                              weights = runif(nrow(trainX)),
+                              method = "earth", 
+                              trControl = cctrl1,
+                              tuneGrid = egrid)
+
+set.seed(849)
+test_class_cv_weight_form <- train(Class ~ ., data = training, 
+                                   weights = runif(nrow(trainX)),
+                                   method = "earth", 
+                                   trControl = cctrl1,
+                                   tuneGrid = egrid)
+
+set.seed(849)
+test_class_loo_weight <- train(trainX, trainY, 
+                               weights = runif(nrow(trainX)),
+                               method = "earth", 
+                               trControl = cctrl2,
+                               tuneGrid = egrid)
+
+set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
                                method = "earth", 
                                trControl = cctrl3,
@@ -120,6 +141,31 @@ test_reg_loo_model <- train(trainX, trainY,
                             trControl = rctrl2,
                             tuneGrid = egrid,
                             preProc = c("center", "scale"))
+
+set.seed(849)
+test_reg_cv_model_weights <- train(trainX, trainY, 
+                                   method = "earth", 
+                                   trControl = rctrl1,
+                                   weights = runif(nrow(trainX)),
+                                   tuneGrid = egrid,
+                                   preProc = c("center", "scale"))
+
+set.seed(849)
+test_reg_cv_form_weights <- train(y ~ ., data = training, 
+                                  method = "earth", 
+                                  trControl = rctrl1,
+                                  weights = runif(nrow(trainX)),
+                                  tuneGrid = egrid,
+                                  preProc = c("center", "scale"))
+
+set.seed(849)
+test_reg_loo_model_weights <- train(trainX, trainY, 
+                                    method = "earth",
+                                    trControl = rctrl2,
+                                    weights = runif(nrow(trainX)),
+                                    tuneGrid = egrid,
+                                    preProc = c("center", "scale"))
+
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
