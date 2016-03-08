@@ -12,7 +12,8 @@
 		\item The \code{rda} module contained a bug found by Eric Czech \issue{369}.
 		\item A bug was fixed for printing out the resampling details with LGOCV found by github user zsharpm \issue{366}
 		\item A new data set was added (\code{data(Sacramento)}) with sale prices of homes. 
-		\item Another adaboost algorithm (\code{method = "adaboost"} from the \cpkg{fastAdaboost} package) was added. 
+		\item Another adaboost algorithm (\code{method = "adaboost"} from the \cpkg{fastAdaboost} package) was added \issue{284}.  
+		\item Yet another boosting algorithm (\code{method = "deepboost"} from the \cpkg{deepboost} package) was added \issue{388}. 
 	} 
 }
 
