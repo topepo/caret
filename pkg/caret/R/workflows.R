@@ -322,14 +322,14 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                                 names(resampleIndex), iter, FALSE)
   list(resamples = thisResample, pred = tmpPred)
 }
-  
+
   resamples <- rbind.fill(result[names(result) == "resamples"])
   pred <- if(keep_pred)  rbind.fill(result[names(result) == "pred"]) else NULL
   if(ctrl$method %in% c("boot632"))
   {
-    perfNames <- names(ctrl$summaryFunction(data.frame(obs = y, pred = sample(y), weights = 1),
-                                            lev = lev,
-                                            model = method))
+    perfNames <- names(resamples)
+    perfNames <- perfNames[!(perfNames %in% c("Resample", as.character(method$parameters$parameter)))]
+    perfNames <- perfNames[!grepl("^\\.cell[0-9]", perfNames)]
     apparent <- subset(resamples, Resample == "AllData")
     apparent <- apparent[,!grepl("^\\.cell|Resample", colnames(apparent)),drop = FALSE]
     names(apparent)[which(names(apparent) %in% perfNames)] <- paste(names(apparent)[which(names(apparent) %in% perfNames)],
@@ -353,12 +353,10 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                gsub("^\\.", "", colnames(info$loop)),
                MeanSD, 
                exclude = gsub("^\\.", "", colnames(info$loop)))
-  
-  if(ctrl$method %in% c("boot632"))
-  {
+
+  if(ctrl$method %in% c("boot632")) {
     out <- merge(out, apparent)
-    for(p in seq(along = perfNames))
-    {
+    for(p in seq(along = perfNames)) {
       const <- 1-exp(-1)
       out[, perfNames[p]] <- (const * out[, perfNames[p]]) +  ((1-const) * out[, paste(perfNames[p],"Apparent", sep = "")])
     }
@@ -614,6 +612,7 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
                           ...)
     apparent <- ctrl$functions$summary(appResults$pred, lev = lev)
     perfNames <- names(apparent)
+    perfNames <- perfNames[perfNames != "Resample"]
     
     const <- 1-exp(-1)
     
@@ -726,9 +725,9 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
   
   if(ctrl$method %in% c("boot632"))
   {
-    perfNames <- names(ctrl$functions$summary(data.frame(obs =y, pred = sample(y)),
-                                              lev = lev,
-                                              model = method))
+    perfNames <- names(resamples)
+    perfNames <- perfNames[!(perfNames %in% c("Resample", "Variables"))]
+    perfNames <- perfNames[!grepl("^cell[0-9]", perfNames)]
     apparent <- subset(resamples, Resample == "AllData")
     apparent <- apparent[,!grepl("^\\.cell|Resample", colnames(apparent)),drop = FALSE]
     names(apparent)[which(names(apparent) %in% perfNames)] <- paste(names(apparent)[which(names(apparent) %in% perfNames)],
