@@ -9,6 +9,7 @@
       printCall = FALSE,
       details = FALSE,
       selectCol = FALSE,
+      showSD = FALSE,
       ...)
 }
 \arguments{
@@ -19,6 +20,7 @@
   \code{lvq}, naive Bayes and bagged tree models), no information will
   be printed even if \code{details = TRUE}}
   \item{selectCol}{a logical whether to add a column with a star next to the selected parameters}
+  \item{showSD}{a logical whether to show the standard deviation of the resampling results within parentheses (e.g. "4.24 (0.493)")}
 
   \item{\ldots}{options passed to \code{\link[base]{format}}}
 }
@@ -37,10 +39,13 @@ data(iris)
 TrainData <- iris[,1:4]
 TrainClasses <- iris[,5]
 
+options(digits = 3)
+
 library(klaR)
 rdaFit <- train(TrainData, TrainClasses, method = "rda",
                 control = trainControl(method = "cv"))
-print(rdaFit)
+rdaFit
+print(rdaFit, showSD = TRUE)
 }
 }
 \keyword{print}
