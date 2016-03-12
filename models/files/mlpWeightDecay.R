@@ -26,7 +26,7 @@ modelInfo <- list(label = "Multi-Layer Perceptron",
                     if(any(names(theDots) == "learnFuncParams"))
                     {
                       prms <- theDots$learnFuncParams
-                      prms[3] <-  param$decay
+                      prms[2] <-  param$decay
                       warning("Over-riding weight decay value in the 'learnFuncParams' argument you passed in. Other values are retained")
                     } else prms <- c(0.2, param$decay, 0.0, 0.0)    
                     
