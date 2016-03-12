@@ -15,6 +15,7 @@
 		\item Another adaboost algorithm (\code{method = "adaboost"} from the \cpkg{fastAdaboost} package) was added \issue{284}.  
 		\item Yet another boosting algorithm (\code{method = "deepboost"} from the \cpkg{deepboost} package) was added \issue{388}. 
 		\item Alexis Sarda made changes to the confusion matrix code for \code{train}, \code{rfe}, and \code{sbf} objects that more rationally normalizes the resampled tables \issue{355}.
+		\item A bug in how \cpkg{RSNNS} perceptron models were tuned (found by github user smlek) was fixed \issue{392}.
 	} 
 }
 
