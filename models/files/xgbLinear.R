@@ -1,19 +1,21 @@
 modelInfo <- list(label = "eXtreme Gradient Boosting",
                   library = c("xgboost"),
                   type = c("Regression", "Classification"),
-                  parameters = data.frame(parameter = c('nrounds', 'lambda', 'alpha'),
-                                          class = rep("numeric", 3),
+                  parameters = data.frame(parameter = c('nrounds', 'lambda', 'alpha', 'eta'),
+                                          class = rep("numeric", 4),
                                           label = c('# Boosting Iterations', 'L2 Regularization', 
-                                                    'L2 Regularization')),
+                                                    'L1 Regularization', 'Learning Rate')),
                   grid = function(x, y, len = NULL, search = "grid")  {
                     if(search == "grid") {
                       out <- expand.grid(lambda = c(0, 10 ^ seq(-1, -4, length = len - 1)),
                                          alpha = c(0, 10 ^ seq(-1, -4, length = len - 1)),
-                                         nrounds = floor((1:len) * 50))
+                                         nrounds = floor((1:len) * 50),
+                                         eta = 0.3)
                     } else {
                       out <- data.frame(lambda = 10^runif(len, min = -5, 0),
                                         alpha = 10^runif(len, min = -5, 0),
-                                        nrounds = sample(1:100, size = len*10, replace = TRUE))
+                                        nrounds = sample(1:100, size = len, replace = TRUE),
+                                        eta = runif(len, max = 3))
                     }
                     out
                   },
