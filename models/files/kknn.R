@@ -34,5 +34,8 @@ modelInfo <- list(label = "k-Nearest Neighbors",
                   },
                   levels = function(x) x$obsLevels,
                   tags = "Prototype Models",
-                  prob = NULL,
+                  prob = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    predict(modelFit, newdata, type = "prob")
+                  },
                   sort = function(x) x[order(-x[,1]),])
