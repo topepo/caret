@@ -2,13 +2,13 @@ modelInfo <- list(label = "Naive Bayes",
                   library = "klaR",
                   loop = NULL,
                   type = c('Classification'),
-                  parameters = data.frame(parameter = c('fL', 'usekernel'),
-                                          class = c('numeric', 'logical'),
-                                          label = c('Laplace Correction', 'Distribution Type')),
+                  parameters = data.frame(parameter = c('fL', 'usekernel', "adjust"),
+                                          class = c('numeric', 'logical', "numeric"),
+                                          label = c('Laplace Correction', 'Distribution Type', "Bandwidth Adjustment")),
                   grid = function(x, y, len = NULL, search = "grid") 
-                    data.frame(usekernel = c(TRUE, FALSE), fL = 0),
+                    expand.grid(usekernel = c(TRUE, FALSE), fL = 0, adjust = 1),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    NaiveBayes(x, y, usekernel= param$usekernel, fL = param$fL, ...),
+                    NaiveBayes(x, y, usekernel= param$usekernel, fL = param$fL, adjust = param$adjust, ...),
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     predict(modelFit , newdata)$class
