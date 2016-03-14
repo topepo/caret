@@ -38,7 +38,7 @@
 		\item A bug was fixed \issue{342} where the data used for prediction was inappropriately converted from its original class. 
 		\item Matt (aka washcycle) added option to return column names to \code{nearZeroVar} function
 		\item Homer Strong fixed \code{varImp} for \code{glmnet} models so that they return the absolute value of the regression coefficients \issue{173} \issue{190}
-		\item The basic naive Bayes method (\code{method = "nb"}) gained a tuning parameter, \code{adjust}, that adjusts the bandwidth (see \code{?density}). 
+		\item The basic naive Bayes method (\code{method = "nb"}) gained a tuning parameter, \code{adjust}, that adjusts the bandwidth (see \code{?density}). The parameter is ignored when \code{usekernel = FALSE}.
 	} 
 }
 

@@ -7,8 +7,12 @@ modelInfo <- list(label = "Naive Bayes",
                                           label = c('Laplace Correction', 'Distribution Type', "Bandwidth Adjustment")),
                   grid = function(x, y, len = NULL, search = "grid") 
                     expand.grid(usekernel = c(TRUE, FALSE), fL = 0, adjust = 1),
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    NaiveBayes(x, y, usekernel= param$usekernel, fL = param$fL, adjust = param$adjust, ...),
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                   if(param$usekernel) {
+                          out <- NaiveBayes(x, y, usekernel = TRUE,  fL = param$fL, adjust = param$adjust, ...)
+                   } else out <- NaiveBayes(x, y, usekernel = FALSE, fL = param$fL, ...)
+                   out
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     predict(modelFit , newdata)$class
