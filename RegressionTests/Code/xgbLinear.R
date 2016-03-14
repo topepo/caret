@@ -7,7 +7,8 @@ model <- "xgbLinear"
 
 xgbGrid <- expand.grid(nrounds = c(1, 10),
                        lambda = c(.01, .1),
-                       alpha = c(.01, .1))
+                       alpha = c(.01, .1),
+                       eta = .3)
 
 set.seed(2)
 training <- twoClassSim(100, linearVars = 2)
