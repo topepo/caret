@@ -1,4 +1,4 @@
-modelInfo <- list(label = "Boosted Classification Trees",
+modelInfo <- list(label = "AdaBoost Classification Trees",
                   library = c("fastAdaboost"),
                   loop = NULL,
                   type = c("Classification"),
