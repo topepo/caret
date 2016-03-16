@@ -14,8 +14,7 @@ modelInfo <- list(label = "Support Vector Machines with Linear Kernel",
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    if(any(names(list(...)) == "prob.model") | is.numeric(y))
-                    {
+                    if(any(names(list(...)) == "prob.model") | is.numeric(y)) {
                       out <- ksvm(x = as.matrix(x), y = y,
                                   kernel = vanilladot(),
                                   C = param$C, ...)
@@ -26,12 +25,10 @@ modelInfo <- list(label = "Support Vector Machines with Linear Kernel",
                                   prob.model = classProbs,
                                   ...)
                     }
-                    
                     out            
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    svmPred <- function(obj, x)
-                    {
+                    svmPred <- function(obj, x) {
                       hasPM <- !is.null(unlist(obj@prob.model))
                       if(hasPM) {
                         pred <- lev(obj)[apply(predict(obj, x, type = "probabilities"), 
@@ -40,8 +37,7 @@ modelInfo <- list(label = "Support Vector Machines with Linear Kernel",
                       pred
                     }
                     out <- try(svmPred(modelFit, newdata), silent = TRUE)
-                    if(is.character(lev(modelFit)))
-                    {
+                    if(is.character(lev(modelFit))) {
                       if(class(out)[1] == "try-error")
                       {
                         warning("kernlab class prediction calculations failed; returning NAs")
@@ -49,19 +45,18 @@ modelInfo <- list(label = "Support Vector Machines with Linear Kernel",
                         out[seq(along = out)] <- NA
                       }
                     } else {
-                      if(class(out)[1] == "try-error")
-                      {
+                      if(class(out)[1] == "try-error") {
                         warning("kernlab prediction calculations failed; returning NAs")
                         out <- rep(NA, nrow(newdata))
                       } 
                     }
+                    if(is.matrix(out)) out <- out[,1]
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     out <- try(predict(modelFit, newdata, type="probabilities"),
                                silent = TRUE)
-                    if(class(out)[1] != "try-error")
-                    {
+                    if(class(out)[1] != "try-error") {
                       ## There are times when the SVM probability model will
                       ## produce negative class probabilities, so we
                       ## induce vlaues between 0 and 1
@@ -79,8 +74,7 @@ modelInfo <- list(label = "Support Vector Machines with Linear Kernel",
                     out
                   },
                   predictors = function(x, ...){
-                    if(hasTerms(x) & !is.null(x@terms))
-                    {
+                    if(hasTerms(x) & !is.null(x@terms)) {
                       out <- predictors.terms(x@terms)
                     } else {
                       out <- colnames(attr(x, "xmatrix"))

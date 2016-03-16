@@ -26,8 +26,7 @@ modelInfo <- list(label = "Support Vector Machines with Class Weights",
                       names(wts) <- levels(y)
                     } else wts <- NULL
                     
-                    if(any(names(list(...)) == "prob.model") | is.numeric(y))
-                    {
+                    if(any(names(list(...)) == "prob.model") | is.numeric(y)) {
                       out <- ksvm(x = as.matrix(x), y = y,
                                   kernel = rbfdot,
                                   kpar = list(sigma = param$sigma),
@@ -42,22 +41,21 @@ modelInfo <- list(label = "Support Vector Machines with Class Weights",
                                   prob.model = classProbs,
                                   ...)
                     }
-                    
                     out            
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    predict(modelFit, newdata)
+                    out <- predict(modelFit, newdata)
+                    if(is.matrix(out)) out <- out[,1]
+                    out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     out <- try(predict(modelFit, newdata, type="probabilities"),
                                silent = TRUE)
-                    if(class(out)[1] != "try-error")
-                    {
+                    if(class(out)[1] != "try-error") {
                       ## There are times when the SVM probability model will
                       ## produce negative class probabilities, so we
                       ## induce vlaues between 0 and 1
-                      if(any(out < 0))
-                      {
+                      if(any(out < 0)) {
                         out[out < 0] <- 0
                         out <- t(apply(out, 1, function(x) x/sum(x)))
                       }
@@ -70,8 +68,7 @@ modelInfo <- list(label = "Support Vector Machines with Class Weights",
                     out
                   },
                   predictors = function(x, ...){
-                    if(hasTerms(x) & !is.null(x@terms))
-                    {
+                    if(hasTerms(x) & !is.null(x@terms)) {
                       out <- predictors.terms(x@terms)
                     } else {
                       out <- colnames(attr(x, "xmatrix"))

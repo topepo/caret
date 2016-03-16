@@ -16,8 +16,7 @@ modelInfo <- list(label = "Support Vector Machines with Spectrum String Kernel",
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    if(any(names(list(...)) == "prob.model") | is.numeric(y))
-                    {
+                    if(any(names(list(...)) == "prob.model") | is.numeric(y)) {
                       out <- ksvm(x = x[,1], y = y,
                                   kernel = stringdot,
                                   kpar = list(type = "spectrum", 
@@ -32,12 +31,10 @@ modelInfo <- list(label = "Support Vector Machines with Spectrum String Kernel",
                                   prob.model = classProbs,
                                   ...)
                     }
-                    
                     out            
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    svmPred <- function(obj, x)
-                    {
+                    svmPred <- function(obj, x) {
                       hasPM <- !is.null(unlist(obj@prob.model))
                       if(hasPM) {
                         pred <- lev(obj)[apply(predict(obj, x, type = "probabilities"), 
@@ -46,33 +43,29 @@ modelInfo <- list(label = "Support Vector Machines with Spectrum String Kernel",
                       pred
                     }
                     out <- try(svmPred(modelFit, newdata[,1]), silent = TRUE)
-                    if(is.character(lev(modelFit)))
-                    {
-                      if(class(out)[1] == "try-error")
-                      {
+                    if(is.character(lev(modelFit))) {
+                      if(class(out)[1] == "try-error")  {
                         warning("kernlab class prediction calculations failed; returning NAs")
                         out <- rep("", nrow(newdata))
                         out[seq(along = out)] <- NA
                       }
                     } else {
-                      if(class(out)[1] == "try-error")
-                      {
+                      if(class(out)[1] == "try-error")  {
                         warning("kernlab prediction calculations failed; returning NAs")
                         out <- rep(NA, nrow(newdata))
                       } 
                     }
+                    if(is.matrix(out)) out <- out[,1]
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     out <- try(predict(modelFit, newdata[,1], type="probabilities"),
                                silent = TRUE)
-                    if(class(out)[1] != "try-error")
-                    {
+                    if(class(out)[1] != "try-error") {
                       ## There are times when the SVM probability model will
                       ## produce negative class probabilities, so we
                       ## induce vlaues between 0 and 1
-                      if(any(out < 0))
-                      {
+                      if(any(out < 0)) {
                         out[out < 0] <- 0
                         out <- t(apply(out, 1, function(x) x/sum(x)))
                       }
@@ -85,7 +78,7 @@ modelInfo <- list(label = "Support Vector Machines with Spectrum String Kernel",
                     out
                   },
                   predictors = function(x, ...){
-                    iNA
+                    NA
                   },
                   tags = c("Kernel Method", "Support Vector Machines", "String Kernel",
                            "Robust Methods", "Text Mining"),
