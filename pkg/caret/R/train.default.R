@@ -136,6 +136,7 @@ train.default <- function(x, y,
     trControl$index <- switch(tolower(trControl$method),
                               oob = NULL,
                               none = list(seq(along = y)),
+                              apparent = list(all = seq(along = y)),
                               alt_cv =, cv = createFolds(y, trControl$number, returnTrain = TRUE),
                               repeatedcv =, adaptive_cv = createMultiFolds(y, trControl$number, trControl$repeats),
                               loocv = createFolds(y, n, returnTrain = TRUE),
@@ -158,6 +159,8 @@ train.default <- function(x, y,
     }
   }
   
+  if(trControl$method == "apparent") trControl$indexOut <- list(all = seq(along = y))
+
   if(trControl$method == "subsemble") {
     if(!trControl$savePredictions) trControl$savePredictions <- TRUE
     trControl$indexOut <- trControl$index$holdout
