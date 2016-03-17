@@ -589,7 +589,7 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
     tmpPred$rowIndex <- seq(along = y)[unique(holdoutIndex)]
   } else tmpPred <- NULL
   resamples <- ctrl$functions$summary(sbfResults$pred, lev = lev)
-  if(is.factor(y)) resamples <- c(resamples, flatTable(sbfResults$pred$pred, sbfResults$pred$obs))
+  if(is.factor(y) && length(lev) <= 50) resamples <- c(resamples, flatTable(sbfResults$pred$pred, sbfResults$pred$obs))
   resamples <- data.frame(t(resamples))
   resamples$Resample <- names(resampleIndex)[iter]
   
@@ -709,8 +709,7 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
     rfeResults$pred$rowIndex <- rep(seq(along = y)[unique(holdoutIndex)], nReps)
   }
   
-  if(is.factor(y))
-  {
+  if(is.factor(y) && length(lev) <= 50) {
     cells <- ddply(rfeResults$pred, .(Variables), function(x) flatTable(x$pred, x$obs))
     resamples <- merge(resamples, cells)
   }

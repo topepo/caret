@@ -170,36 +170,81 @@ as.matrix.confusionMatrix <- function(x, what = "xtabs", ...)
   out
 }
 
+sbf_resampledCM <- function(x) {
+  lev <- x$obsLevels
+  if("pred" %in% names(x) && !is.null(x$pred)) {
+    resampledCM <- do.call("rbind", x$pred[names(x$pred) == "predictions"])
+    resampledCM <- ddply(resampledCM, .(Resample), function(y) flatTable(pred  = y$pred, obs = y$obs))
+  } else stop(paste("When there are 50+ classes, the function does not automatically pre-compute the",
+                    "resampled confusion matrices. You can get them when the option",
+                    "`saveDetails = TRUE`."))
+  resampledCM
+}
+rfe_resampledCM <- function(x) {
+  lev <- x$obsLevels
+  if("resample" %in% names(x) && 
+     !is.null(x$resample) && 
+     sum(grepl("\\.cell[1-9]", names(x$resample))) > 3) {
+    resampledCM <- subset(x$resample, Variables == x$optsize)
+    resampledCM <- resampledCM[,grepl("\\.cell[1-9]", names(resampledCM))]
+  } else {
+    if(!is.null(x$pred)) {
+      resampledCM <- ddply(x$pred, .(Resample), function(y) flatTable(pred  = y$pred, obs = y$obs))
+    } else {
+      if(length(lev) > 50)
+        stop(paste("When there are 50+ classes, `the function does not automatically pre-compute the",
+                   "resampled confusion matrices. You can get them when the object",
+                   "has a `pred` element."))
+    }
+  }
+  resampledCM
+}
+train_resampledCM <- function(x) {
+  if(x$modelType == "Regression")
+    stop("confusion matrices are only valid for classification models")
+  
+  lev <- levels(x)
+  
+  ## For problems with large numbers of classes, `train`, `rfe`, and `sbf` do not pre-compute the 
+  ## the resampled matrices. If the predictions have been saved, we can get them from there. 
+  
+  if("resampledCM" %in% names(x) && !is.null(x$resampledCM)) {
+    ## get only best tune
+    names(x$bestTune) <- gsub("^\\.", "", names(x$bestTune))
+    resampledCM <- merge(x$bestTune, x$resampledCM)
+  } else {
+    if(!is.null(x$pred)) {
+      resampledCM <- ddply(merge(x$pred, x$bestTune), .(Resample), function(y) flatTable(pred  = y$pred, obs = y$obs))
+    } else {
+      if(length(lev) > 50)
+        stop(paste("When there are 50+ classes, `train` does not automatically pre-compute the",
+                   "resampled confusion matrices. You can get them from this function",
+                   "using a value of `savePredictions` other than FALSE."))
+    }
+  }
+  resampledCM
+}
 
 as.table.confusionMatrix <- function(x, ...)  x$table
 
-
 confusionMatrix.train <- function(data, norm = "overall", dnn = c("Prediction", "Reference"), ...)
 {
+  if(data$control$method %in% c("oob", "LOOCV", "none"))
+    stop("cannot compute confusion matrices for leave-one-out, out-of-bag resampling, or no resampling")
+  
   if (inherits(data, "train")) {
     if(data$modelType == "Regression")
       stop("confusion matrices are only valid for classification models")
-    if(data$control$method %in% c("oob", "LOOCV"))
-      stop("cannot compute confusion matrices for leave-one-out or out-of-bag resampling")
-    if(data$control$method == "none")
-      return(confusionMatrix(predict(data), data$trainingData$.outcome, dnn = dnn, ...))
-    
     lev <- levels(data)
-    
-    ## get only best tune
-    names(data$bestTune) <- gsub("^\\.", "", names(data$bestTune))
-    resampledCM <- merge(data$bestTune, data$resampledCM)
-    
-  } else {
-    if(is.null(data$resampledCM))
-      stop("resampled confusion matrices are not availible")
-    if(data$control$method %in% c("oob", "LOOCV"))
-      stop("cannot compute confusion matrices for leave-one-out or out-of-bag resampling")
-    
+    ## For problems with large numbers of classes, `train`, `rfe`, and `sbf` do not pre-compute the 
+    ## the resampled matrices. If the predictions have been saved, we can get them from there. 
+    resampledCM <- train_resampledCM(data)
+    } else {
     lev <- data$obsLevels
-    resampledCM <- data$resampledCM
+    if (inherits(data, "rfe")) resampledCM <- rfe_resampledCM(data)
+    if (inherits(data, "sbf")) resampledCM <- sbf_resampledCM(data)    
   }
-  
+
   if(!is.null(data$control$index)) {
     resampleN <- unlist(lapply(data$control$index, length))
     numResamp <- length(resampleN)
@@ -269,7 +314,7 @@ resampName <- function(x, numbers = TRUE)
     numResamp <- length(resampleN)
     out <- switch(tolower(x$control$method),
                   none = "None",
-                  apparent = "(Apparent)",
+                  apparent = "Apparent",
                   custom = paste("Custom Resampling (", numResamp, " reps)", sep = ""),
                   timeslice = paste("Rolling Forecasting Origin Resampling (",
                                     x$control$horizon, " held-out with",
@@ -322,4 +367,8 @@ mcc <- function(tab, pos = colnames(tab)[1])
   d4 <- tn + fn
   if(d1 == 0 | d2 == 0 | d3 == 0 | d4 == 0) return(0)
   ((tp * tn) - (fp * fn))/sqrt(d1*d2*d3*d4)  
+}
+
+get_sbf_rs <- function(obj) {
+  
 }
