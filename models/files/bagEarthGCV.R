@@ -10,10 +10,11 @@ modelInfo <- list(label = "Bagged MARS using gCV Pruning",
                     if(is.factor(y)){
                       mod <- bagEarth(x, y, degree = param$degree, 
                                       glm = list(family=binomial, maxit=100),
+                                      weights = wts,
                                       ...)
                     } else {
-                      mod <- bagEarth(x, y, degree = param$degree, ...)
-                    }
+                      mod <- bagEarth(x, y, degree = param$degree, weights = wts, ...)
+                    }  
                     mod
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
@@ -50,6 +51,6 @@ modelInfo <- list(label = "Bagged MARS using gCV Pruning",
                   },
                   levels = function(x) x$levels,
                   tags = c("Multivariate Adaptive Regression Splines", "Ensemble Model", 
-                           "Implicit Feature Selection", "Bagging"),
+                           "Implicit Feature Selection", "Bagging", "Accepts Case Weights"),
                   sort = function(x) x[order(x$degree),],
                   oob = function(x) apply(x$oob, 2, function(x) quantile(x, probs = .5)))

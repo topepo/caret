@@ -15,11 +15,12 @@ function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
    {
       subX <- x[index,, drop = FALSE]
       subY <- y[index]
-#'weights' are not yet supported by 'earth'      
-#      subW <- weights[index]      
       tmp <- as.data.frame(subX)
       tmp$.outcome <- subY
-      fit <- mda::fda(.outcome ~., data = tmp, method = earth::earth, ...)
+      if(!is.null(w)) subW <- w[index] 
+      fit <- if(is.null(w))
+        mda::fda(.outcome ~., data = tmp, method = earth::earth, ...) else 
+          mda::fda(.outcome ~., data = tmp, method = earth::earth, weights = subW, ...)
       fit$index <- index
       fit
    }
@@ -39,11 +40,12 @@ function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
    oob <- matrix(unlist(oobList), ncol = length(oobList[[1]]), byrow = TRUE)
    colnames(oob) <- names(oobList[[1]])
    if(keepX) x <- x else x <- NULL
-   structure(list(fit = btFits, B = B, oob = oob, x = x, levels = levels(y), dots = list(...)), class = "bagFDA")
+   structure(list(fit = btFits, B = B, oob = oob, x = x, levels = levels(y), 
+                  weights = !is.null(weights), dots = list(...)), class = "bagFDA")
 }
 
 "bagFDA.formula" <-
-function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights, na.action = na.omit) 
+function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights = NULL, na.action = na.omit) 
 {
    
    if (!inherits(formula, "formula")) 
@@ -64,7 +66,7 @@ function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights, na.a
    xint <- match("(Intercept)", colnames(x), nomatch = 0)
    if (xint > 0)  x <- x[, -xint, drop = FALSE]
    
-   out <- bagFDA.default(x, y, w, B = B, keepX = keepX, ...)
+   out <- bagFDA.default(x = x, y = y, w = weights, B = B, keepX = keepX, ...)
    out
 }
 
@@ -78,6 +80,7 @@ function (x, ...)
       "\n   B:        \t", x$B,
       "\n   dimension:\t", x$fit[[1]]$dimension,
       "\n")
+    if(x$weights) cat("case weights used\n")
      
     cat("\n")
     invisible(x)

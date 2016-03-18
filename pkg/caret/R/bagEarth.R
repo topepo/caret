@@ -30,8 +30,13 @@
     {
       subX <- x[index,, drop = FALSE]
       subY <- y[index]
-      subW <- weights[index]      
-      fit <- earth::earth(subX, subY, subW, ...)
+      
+      if(is.null(w)) {
+        fit <- earth::earth(x = subX, y = subY, ...)
+      } else {
+        subW <- weights[index]  
+        fit <- earth::earth(x = subX, y = subY, weights = subW, ...)
+      }
       fit$index <- index
       fit
     }
@@ -59,12 +64,13 @@
                  summary = summary,
                  call = funcCall,
                  levels = lev,
-                 x = x),
+                 x = x,
+                 weights = !is.null(weights)),
             class = "bagEarth")
 }
 
 "bagEarth.formula" <-
-  function (formula, data = NULL, B = 50, summary = mean, keepX = TRUE, ..., subset, weights, na.action = na.omit) 
+  function (formula, data = NULL, B = 50, summary = mean, keepX = TRUE, ..., subset, weights = NULL, na.action = na.omit) 
 {
   funcCall <- match.call(expand.dots = TRUE)
   
@@ -152,6 +158,7 @@ print.bagEarth <- function (x, ...)
 {
   cat("\nCall:\n", deparse(x$call), "\n\n", sep = "")
   if(!is.null(x$x))cat("Data:\n   # variables:\t", dim(x$x)[2], "\n   # samples:\t", dim(x$x)[1], "\n")
+  if(x$weights) cat("case weights used\n")
   cat("\nB:", x$B,"\n")
   invisible(x)
 }

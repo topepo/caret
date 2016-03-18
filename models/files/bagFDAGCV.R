@@ -11,7 +11,9 @@ modelInfo <- list(label = "Bagged FDA using gCV Pruning",
                     dat$.outcome <- y
                     bagFDA(.outcome ~ ., 
                            data = dat, 
-                           degree = param$degree, ...)
+                           degree = param$degree, 
+                           weights = wts, 
+                           ...)
                   },
                   tags = c("Multivariate Adaptive Regression Splines", "Ensemble Model", 
                            "Implicit Feature Selection", "Bagging"),
@@ -39,6 +41,6 @@ modelInfo <- list(label = "Bagged FDA using gCV Pruning",
                   },
                   levels = function(x) x$levels,
                   tags = c("Multivariate Adaptive Regression Splines", "Ensemble Model", 
-                           "Implicit Feature Selection", "Bagging"),
+                           "Implicit Feature Selection", "Bagging", "Accepts Case Weights"),
                   sort = function(x) x[order(x$degree),],
                   oob = function(x) apply(x$oob, 2, function(x) quantile(x, probs = .5)))

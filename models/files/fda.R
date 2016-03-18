@@ -25,12 +25,16 @@ modelInfo <- list(label = "Flexible Discriminant Analysis",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
+                    
                     fda(.outcome ~ ., data = dat, method = earth, 
                         degree = param$degree,
-                        nprune = param$nprune, ...)
+                        nprune = param$nprune, 
+                        weights = wts, 
+                        ...)
                   },
                   levels = function(x) x$obsLevels,
-                  tags = c("Multivariate Adaptive Regression Splines", "Implicit Feature Selection"),
+                  tags = c("Multivariate Adaptive Regression Splines", "Implicit Feature Selection",
+                           "Accepts Case Weights"),
                   predict = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit , newdata),
                   prob = function(modelFit, newdata, submodels = NULL) 

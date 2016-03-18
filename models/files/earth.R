@@ -40,6 +40,9 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                     theDots <- list(...)
                     theDots$keepxy <- TRUE 
                     
+                    ## pass in any model weights
+                    if(!is.null(wts)) theDots$weights <- wts
+                    
                     modelArgs <- c(list(x = x, y = y,
                                         degree = param$degree,
                                         nprune = param$nprune),
@@ -140,5 +143,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                     out
                   },
                   levels = function(x) x$levels,
-                  tags = c("Multivariate Adaptive Regression Splines", "Implicit Feature Selection"),
+                  tags = c("Multivariate Adaptive Regression Splines", 
+                           "Implicit Feature Selection", 
+                           "Accepts Case Weights"),
                   sort = function(x) x[order(x$degree, x$nprune),])

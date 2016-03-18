@@ -39,6 +39,9 @@ modelInfo <- list(label = "Bagged MARS",
                     theDots <- list(...)
                     theDots$keepxy <- TRUE 
                     
+                    ## pass in any model weights
+                    if(!is.null(wts)) theDots$weights <- wts
+                    
                     modelArgs <- c(list(x = x, y = y,
                                         degree = param$degree,
                                         nprune = param$nprune),
@@ -113,6 +116,6 @@ modelInfo <- list(label = "Bagged MARS",
                   },
                   levels = function(x) x$levels,
                   tags = c("Multivariate Adaptive Regression Splines", "Ensemble Model", 
-                           "Implicit Feature Selection", "Bagging"),
+                           "Implicit Feature Selection", "Bagging", "Accepts Case Weights"),
                   sort = function(x) x[order(x$degree, x$nprune),],
                   oob = function(x) apply(x$oob, 2, function(x) quantile(x, probs = .5)))

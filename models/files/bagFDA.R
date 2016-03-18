@@ -28,10 +28,12 @@ modelInfo <- list(label = "Bagged Flexible Discriminant Analysis",
                     bagFDA(.outcome ~ ., 
                            data = dat, 
                            degree = param$degree,
-                           nprune = param$nprune, ...)
+                           nprune = param$nprune, 
+                           weights = wts, 
+                           ...)
                   },
                   tags = c("Multivariate Adaptive Regression Splines", "Ensemble Model", 
-                           "Implicit Feature Selection", "Bagging"),
+                           "Implicit Feature Selection", "Bagging", "Accepts Case Weights"),
                   predict = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit , newdata),
                   prob = function(modelFit, newdata, submodels = NULL) 
