@@ -34,8 +34,17 @@ predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.o
   }
   else if(object$control$method != "oob") {
     if(!is.null(object$trainingData)) {            
-      newdata <- if(object$method == "pam") object$finalModel$xData else object$trainingData
-      ##newdata$.outcome <-NULL
+      if(object$method == "pam") {
+        newdata <- object$finalModel$xData 
+      } else {
+        newdata <- object$trainingData
+        newdata$.outcome <- NULL
+        if("train.formula" %in% class(object) && 
+           any(unlist(lapply(newdata, is.factor)))) {
+          newdata <- model.matrix(~., data = newdata)[,-1]
+          newdata <- as.data.frame(newdata)
+        }
+      }
     } else stop("please specify data via newdata")
   }
   

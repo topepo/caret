@@ -8,7 +8,7 @@
 		\item \code{print.train} no longer shows the standard deviation of the resampled values unless the new option is used (\code{print.train(, showSD = TRUE)}). When shown, they are within parentheses (e.g. "4.24 (0.493)"). 
  		\item An adjustment the innards of adaptive resampling was changed so that the test for linear dependencies is more stringent.  
 		\item A bug in the bootstrap 632 estimate was found and fixed by Alexis Sarda \issue{349} \issue{353}. 
-		\item The \code{cforest} module's \code{oob} element was modifed based on another bug found by Alexis Sarda \issue{351}.
+		\item The \code{cforest} module's \code{oob} element was modified based on another bug found by Alexis Sarda \issue{351}.
 		\item The methods for \code{bagEarth}, \code{bagEarthGCV}, \code{bagFDA}, \code{bagFDAGCV}, \code{earth}, \code{fda}, and \code{gcvEarth} models have been updates so that case-weights can be used. 
 		\item The \code{rda} module contained a bug found by Eric Czech \issue{369}.
 		\item A bug was fixed for printing out the resampling details with LGOCV found by github user zsharpm \issue{366}
@@ -19,6 +19,8 @@
 		\item A bug in how \cpkg{RSNNS} perceptron models were tuned (found by github user smlek) was fixed \issue{392}.
 		\item A bug in computing the bootstrap 632 estimate was fixed (found by Stu) \issue{382}.
 		\item John Johnson contributed an update to \code{xgbLinear} \issue{372}. 
+		\item Resampled confusion matrices are not automatically computed when there are 50 or more classes due to the storage requirements (\issue{356}). However, the relevant functions have been updated to use the out-of-sample predictions instead (when the user asks for them to be returned by the function). 
+		\item Some changes were made to \code{predict.train} to error trap (and fix) cases when predictions are requested without referencing a \code{newdata} object \issue{347}.
 	} 
 }
 
