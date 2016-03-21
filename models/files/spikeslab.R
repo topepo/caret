@@ -44,7 +44,6 @@ modelInfo <- list(label = "Spike and Slab Regression",
                       vars <- data.frame(k = c(modelFit$.size, submodels$vars))
                       vars$order <- 1:nrow(vars)
                       vars <- merge(vars, modelFit$.path, all.x = TRUE)
-                      if(any(!complete.cases(vars))) browser()
                       vars <- vars[order(vars$order),]
                       
                       out <- out[,vars$index]
