@@ -21,6 +21,7 @@
 		\item John Johnson contributed an update to \code{xgbLinear} \issue{372}. 
 		\item Resampled confusion matrices are not automatically computed when there are 50 or more classes due to the storage requirements (\issue{356}). However, the relevant functions have been updated to use the out-of-sample predictions instead (when the user asks for them to be returned by the function). 
 		\item Some changes were made to \code{predict.train} to error trap (and fix) cases when predictions are requested without referencing a \code{newdata} object \issue{347}.
+		\item Github user pverspeelt identified a bug in our model code for \code{glmboost} (and \code{gamboost}) related to the \code{mstop} function modifying the model object in memory. It was fixed \issue{396}. 
 	} 
 }
 
