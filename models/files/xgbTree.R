@@ -13,16 +13,16 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     if(search == "grid") {
                       out <- expand.grid(max_depth = seq(1, len),
                                          nrounds = floor((1:len) * 50),
-                                         eta = c(.3, .4),
+                                         eta = c(.3),
                                          gamma = 0,
-                                         colsample_bytree = c(.6, .8),
+                                         colsample_bytree = c(.6, .8, 1.),
                                          min_child_weight = c(1))
                     } else {
-                      out <- data.frame(nrounds = sample(1:1000, size = len, replace = TRUE),
+                      out <- data.frame(nrounds = sample(1:400, size = len, replace = TRUE),
                                         max_depth = sample(1:10, replace = TRUE, size = len),         
-                                        eta = runif(len, min = .001, max = .6),
+                                        eta = c(.3),
                                         gamma = runif(len, min = 0, max = 10),
-                                        colsample_bytree = runif(len, min = .3, max = .7),
+                                        colsample_bytree = runif(len, min = .3, max = 1.),
                                         min_child_weight = sample(0:20, size = len, replace = TRUE))
                       out$nrounds <- floor(out$nrounds)
                       out <- out[!duplicated(out),]
