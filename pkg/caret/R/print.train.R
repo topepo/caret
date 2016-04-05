@@ -29,9 +29,11 @@ stringFunc <- function (x)  {
         if(is.character(lev)) chDim <- c(chDim, length(lev))
       } else lev <- NULL      
       chDim <- format(chDim)
-      cat(chDim[1], 
-          " samples\n", 
-          chDim[2],
+      cat(chDim[1], " samples", sep = "")
+      if(!is.null(x$control$indexFinal)) 
+        cat(",", length(x$control$indexFinal), "used for final model\n") else 
+          cat("\n")
+      cat(chDim[2],
           " predictor", ifelse(chDim[2] > 1, "s\n", "\n"),
           sep = "")
       if(is.character(lev)){

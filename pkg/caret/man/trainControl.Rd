@@ -22,6 +22,7 @@ trainControl(method = "boot",
              sampling = NULL,
              index = NULL,
              indexOut = NULL,
+             indexFinal = NULL,
              timingSamps = 0,
              predictionBounds = rep(FALSE, 2),
              seeds = NA,
@@ -50,6 +51,7 @@ trainControl(method = "boot",
   \item{sampling}{a single character value describing the type of additional sampling that is conducted after resampling (usually to resolve class imbalances). Values are \code{"none"}, \code{"down"}, \code{"up"}, \code{"smote"}, or \code{"rose"}. The latter two values require the \pkg{DMwR} and \pkg{ROSE} packages, respectively. This argument can also be a list to facilitate custom sampling and these details can be found on the \pkg{caret} package website for sampling (link below).}
   \item{index}{a list with elements for each resampling iteration. Each list element is a vector of integers corresponding to the rows used for training at that iteration.}
   \item{indexOut}{a list (the same length as \code{index}) that dictates which data are held-out for each resample (as integers). If \code{NULL}, then the unique set of samples not contained in \code{index} is used.}
+  \item{indexFinal}{an optional vector of integers indicating which samples are used to fit the final model after resampling. If \code{NULL}, then entire data set is used.}
   \item{timingSamps}{the number of training set samples that will be used to measure the time for predicting samples (zero indicates that the prediction time should not be estimated.}
   \item{predictionBounds}{a logical or numeric vector of length 2 (regression only). If logical, the predictions can be constrained to be within the limit of the training set outcomes. For example, a value of \code{c(TRUE, FALSE)} would only constrain the lower end of predictions. If numeric, specific bounds can be used. For example, if \code{c(10, NA)}, values below 10 would be predicted as 10 (with no constraint in the upper side).}
   \item{seeds}{an optional set of integers that will be used to set the seed at each resampling iteration. This is useful when the models are run in parallel. A value of \code{NA} will stop the seed from being set within the worker processes while a value of \code{NULL} will set the seeds using a random set of integers. Alternatively, a list can be used. The list should have \code{B+1} elements where \code{B} is the number of resamples, unless \code{method} is \code{"boot632"} in which case \code{B} is the number of resamples plus 1. The first \code{B} elements of the list should be vectors of integers of length \code{M} where \code{M} is the number of models being evaluated. The last element of the list only needs to be a single integer (for the final model). See the Examples section below and the Details section. }

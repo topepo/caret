@@ -9,8 +9,8 @@ trim.train <- function(object, ...) {
   c_removals <- c('method', 'number', 'repeats', 'p', 'initialWindow', 
                   'horizon', 'fixedWindow', 'verboseIter', 'returnData', 
                   'returnResamp', 'savePredictions', 'summaryFunction', 
-                  'selectionFunction', 'index', 'indexOut', 'timingSamps', 
-                  'trim', 'yLimits')
+                  'selectionFunction', 'index', 'indexOut', 'indexFinal',
+                  'timingSamps', 'trim', 'yLimits')
   for(i in c_removals)
     if(i %in% names(object$control)) object$control[i] <- NULL  
   if(!is.null(object$modelInfo$trim))

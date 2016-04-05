@@ -552,9 +552,13 @@ train.default <- function(x, y,
   
   ## Make the final model based on the tuning results
   
+  indexFinal <- if(is.null(trControl$indexFinal)) seq(along = y) else trControl$indexFinal
+  
   if(!(length(trControl$seeds) == 1 && is.na(trControl$seeds))) set.seed(trControl$seeds[[length(trControl$seeds)]][1])
   finalTime <- system.time(
-    finalModel <- createModel(x = x, y = y, wts = weights, 
+    finalModel <- createModel(x = x[indexFinal,,drop=FALSE], 
+                              y = y[indexFinal], 
+                              wts = weights[indexFinal], 
                               method = models, 
                               tuneValue = bestTune, 
                               obsLevels = classLevels,
