@@ -66,7 +66,7 @@ function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights = NUL
    xint <- match("(Intercept)", colnames(x), nomatch = 0)
    if (xint > 0)  x <- x[, -xint, drop = FALSE]
    
-   out <- bagFDA.default(x = x, y = y, w = weights, B = B, keepX = keepX, ...)
+   out <- bagFDA.default(x = x, y = y, weights = weights, B = B, keepX = keepX, ...)
    out
 }
 
