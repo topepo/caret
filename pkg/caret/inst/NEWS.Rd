@@ -24,7 +24,8 @@
 		\item Github user pverspeelt identified a bug in our model code for \code{glmboost} (and \code{gamboost}) related to the \code{mstop} function modifying the model object in memory. It was fixed \issue{396}. 
 		\item For \issue{346}, an option to select which samples are used to fit the final model, called \code{indexFinal}, was added to \code{trainControl}.  
 		\item For issue \issue{390} found by JanLauGe, a bug was fixed in \code{dummyVars} related to the names of the resulting data set. 
-	} 
+		\item Models \code{rknn} and \code{rknnBel} were removed since their package is no longer on CRAN.
+	}  
 }
 
 \section{Changes in version 6.0-66}{
