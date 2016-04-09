@@ -3,7 +3,7 @@
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
-\section{Changes in version 6.0-xx}{
+\section{Changes in version 6.0-68}{
 	\itemize{
 		\item \code{print.train} no longer shows the standard deviation of the resampled values unless the new option is used (\code{print.train(, showSD = TRUE)}). When shown, they are within parentheses (e.g. "4.24 (0.493)"). 
  		\item An adjustment the innards of adaptive resampling was changed so that the test for linear dependencies is more stringent.  
@@ -27,7 +27,7 @@
 	} 
 }
 
-\section{Changes in version 6.0-64}{
+\section{Changes in version 6.0-66}{
 	\itemize{
 		\item Model averaged naive Bayes (\code{method = "manb"}) from the \cpkg{bnclassify} package was added. 
 		\item \code{blackboost} was updated to work with outcomes with 3+ classes. 

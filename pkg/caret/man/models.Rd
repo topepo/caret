@@ -4,6 +4,15 @@
 \title{A List of Available Models in train}
 \description{These models are included in the package via wrappers for \code{\link{train}}. Custom models can also be created. See the URL below.
 
+\strong{AdaBoost Classification Trees} (\code{method = 'adaboost'})
+
+For classification using package \pkg{fastAdaboost} with tuning parameters:
+\itemize{
+\item Number of Trees (\code{nIter}, numeric)
+\item Method (\code{method}, character)
+}
+
+
 \strong{AdaBoost.M1} (\code{method = 'AdaBoost.M1'})
 
 For classification using packages \pkg{adabag} and \pkg{plyr} with tuning parameters:
@@ -155,7 +164,7 @@ For classification using packages \pkg{ada} and \pkg{plyr} with tuning parameter
 
 \strong{Boosted Generalized Additive Model} (\code{method = 'gamboost'})
 
-For classification and regression using package \pkg{mboost} with tuning parameters:
+For classification and regression using packages \pkg{mboost} and \pkg{plyr} with tuning parameters:
 \itemize{
 \item Number of  Boosting Iterations (\code{mstop}, numeric)
 \item AIC Prune? (\code{prune}, character)
@@ -164,7 +173,7 @@ For classification and regression using package \pkg{mboost} with tuning paramet
 
 \strong{Boosted Generalized Linear Model} (\code{method = 'glmboost'})
 
-For classification and regression using package \pkg{mboost} with tuning parameters:
+For classification and regression using packages \pkg{plyr} and \pkg{mboost} with tuning parameters:
 \itemize{
 \item Number of  Boosting Iterations (\code{mstop}, numeric)
 \item AIC Prune? (\code{prune}, character)
@@ -242,6 +251,12 @@ For classification and regression using package \pkg{rpart} with tuning paramete
 }
 
 
+\strong{CART} (\code{method = 'rpart1SE'})
+
+For classification and regression using package \pkg{rpart} with no tuning parameters
+
+
+
 \strong{CART} (\code{method = 'rpart2'})
 
 For classification and regression using package \pkg{rpart} with tuning parameters:
@@ -311,6 +326,18 @@ For regression using package \pkg{Cubist} with tuning parameters:
 \itemize{
 \item Number of Committees (\code{committees}, numeric)
 \item Number of Instances (\code{neighbors}, numeric)
+}
+
+
+\strong{DeepBoost} (\code{method = 'deepboost'})
+
+For classification using package \pkg{deepboost} with tuning parameters:
+\itemize{
+\item Number of  Boosting Iterations (\code{num_iter}, numeric)
+\item Tree Depth (\code{tree_depth}, numeric)
+\item L1 Regularization (\code{beta}, numeric)
+\item Tree Depth Regularization (\code{lambda}, numeric)
+\item Loss (\code{loss_type}, character)
 }
 
 
@@ -384,7 +411,8 @@ For classification and regression using package \pkg{xgboost} with tuning parame
 \itemize{
 \item Number of  Boosting Iterations (\code{nrounds}, numeric)
 \item L2 Regularization (\code{lambda}, numeric)
-\item L2 Regularization (\code{alpha}, numeric)
+\item L1 Regularization (\code{alpha}, numeric)
+\item Learning Rate (\code{eta}, numeric)
 }
 
 
@@ -395,7 +423,9 @@ For classification and regression using packages \pkg{xgboost} and \pkg{plyr} wi
 \item Number of  Boosting Iterations (\code{nrounds}, numeric)
 \item Max Tree Depth (\code{max_depth}, numeric)
 \item Shrinkage (\code{eta}, numeric)
-\item Minimum loss reduction (\code{gamma}, numeric)
+\item Minimum Loss Reduction (\code{gamma}, numeric)
+\item Subsample Ratio of Columns (\code{colsample_bytree}, numeric)
+\item Minimum Sum of Instance Weight (\code{min_child_weight}, numeric)
 }
 
 
@@ -821,6 +851,29 @@ For classification using package \pkg{mda} with tuning parameters:
 }
 
 
+\strong{Model Averaged Naive Bayes Classifier} (\code{method = 'manb'})
+
+For classification using package \pkg{bnclassify} with tuning parameters:
+\itemize{
+\item Smoothing Parameter (\code{smooth}, numeric)
+\item Prior Probability (\code{prior}, numeric)
+}
+
+
+\strong{Model Averaged Neural Network} (\code{method = 'avMxnet'})
+
+For classification using package \pkg{mxnet} with tuning parameters:
+\itemize{
+\item Number of Hidden Units in Layer 1 (\code{layer1}, numeric)
+\item Number of Hidden Units in Layer 2 (\code{layer2}, numeric)
+\item Number of Hidden Units in Layer 3 (\code{layer3}, numeric)
+\item Learning Rate (\code{learning.rate}, numeric)
+\item Momentum (\code{momentum}, numeric)
+\item Dropout Rate (\code{dropout}, numeric)
+\item Number of Models (\code{repeats}, numeric)
+}
+
+
 \strong{Model Averaged Neural Network} (\code{method = 'avNNet'})
 
 For classification and regression using package \pkg{nnet} with tuning parameters:
@@ -867,6 +920,27 @@ For classification and regression using package \pkg{RSNNS} with tuning paramete
 }
 
 
+\strong{Multi-Layer Perceptron, multiple layers} (\code{method = 'mlpWeightDecayML'})
+
+For classification and regression using package \pkg{RSNNS} with tuning parameters:
+\itemize{
+\item Number of Hidden Units layer1 (\code{layer1}, numeric)
+\item Number of Hidden Units layer2 (\code{layer2}, numeric)
+\item Number of Hidden Units layer3 (\code{layer3}, numeric)
+\item Weight Decay (\code{decay}, numeric)
+}
+
+
+\strong{Multi-Layer Perceptron, with multiple layers} (\code{method = 'mlpML'})
+
+For classification and regression using package \pkg{RSNNS} with tuning parameters:
+\itemize{
+\item Number of Hidden Units layer1 (\code{layer1}, numeric)
+\item Number of Hidden Units layer2 (\code{layer2}, numeric)
+\item Number of Hidden Units layer3 (\code{layer3}, numeric)
+}
+
+
 \strong{Multivariate Adaptive Regression Spline} (\code{method = 'earth'})
 
 For classification and regression using package \pkg{earth} with tuning parameters:
@@ -890,6 +964,7 @@ For classification using package \pkg{klaR} with tuning parameters:
 \itemize{
 \item Laplace Correction (\code{fL}, numeric)
 \item Distribution Type (\code{usekernel}, logical)
+\item Bandwidth Adjustment (\code{adjust}, numeric)
 }
 
 
@@ -1017,7 +1092,7 @@ For classification using package \pkg{MASS} with no tuning parameters
 
 \strong{Parallel Random Forest} (\code{method = 'parRF'})
 
-For classification and regression using packages \pkg{e1071} and \pkg{randomForest} with tuning parameters:
+For classification and regression using packages \pkg{e1071}, \pkg{randomForest} and \pkg{foreach} with tuning parameters:
 \itemize{
 \item Number of Randomly Selected Predictors (\code{mtry}, numeric)
 }
@@ -1679,6 +1754,7 @@ For classification and regression using package \pkg{kernlab} with tuning parame
 For classification and regression using package \pkg{e1071} with tuning parameters:
 \itemize{
 \item Cost (\code{cost}, numeric)
+\item Gamma (\code{gamma}, numeric)
 }
 
 
@@ -1705,6 +1781,15 @@ For classification and regression using package \pkg{kernlab} with tuning parame
 
 For classification and regression using package \pkg{kernlab} with tuning parameters:
 \itemize{
+\item Cost (\code{C}, numeric)
+}
+
+
+\strong{Support Vector Machines with Radial Basis Function Kernel} (\code{method = 'svmRadialSigma'})
+
+For classification and regression using package \pkg{kernlab} with tuning parameters:
+\itemize{
+\item Sigma (\code{sigma}, numeric)
 \item Cost (\code{C}, numeric)
 }
 
