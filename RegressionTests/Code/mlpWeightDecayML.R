@@ -12,7 +12,7 @@ trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
 seeds <- vector(mode = "list", length = nrow(training) + 1)
-seeds <- lapply(seeds, function(x) 1:20)
+seeds <- lapply(seeds, function(x) 1:54)
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", seeds = seeds)
 cctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
@@ -21,7 +21,7 @@ cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search =
 
 library(RSNNS)
 
-grid <- expand.grid(.decay = c(0, .01), .layer1 = 1:3, layer2 = 1:3, .layer3 = 1:3)
+grid <- expand.grid(decay = c(0, .01), layer1 = 1:3, layer2 = 1:3, layer3 = 1:3)
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY,
