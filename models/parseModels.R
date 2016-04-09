@@ -1,6 +1,6 @@
 setwd("~/Code/github/caret/models/files")
 modelFiles <- list.files(pattern = "\\.R$")
-modelFiles <- modelFiles[!grepl("mxnet", modelFiles)]
+modelFiles <- modelFiles[!grepl("(mxnet)|(rknn)", modelFiles)]
 
 
 models <- vector(mode = "list", length = length(modelFiles))
