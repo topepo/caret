@@ -1,8 +1,21 @@
-library(caret)
+###################################################################
+## Get Bioconductor packages
+
+library(BiocInstaller) 
+useDevel()
+
+source("http://www.bioconductor.org/getBioC.R")
+
+biocLite(c("vbmp", "gpls", "logicFS", "graph", "RBGL"), 
+         type = "source",
+         dependencies = c("Depends", "Imports"))
+
 
 ###################################################################
 ## Get the names of all CRAN related packages references by caret. 
 ## Exclude orphaned and Bioconductor packages for now
+
+library(caret)
 
 mods <- getModelInfo()
 
@@ -39,23 +52,12 @@ if(length(diffs) > 0) print(diffs)
 ###################################################################
 ## Install the files. This might re-install caret so beware.
 
-devtools::install_github('dmlc/xgboost',subdir='R-package')
+# devtools::install_github('dmlc/xgboost',subdir='R-package')
 
 install.packages(libs, repos = "http://cran.r-project.org", 
                  type = "source",
                  dependencies = c("Depends", "Suggests", "Imports"))
 
-###################################################################
-## Now get Bioconductor packages
-
-library(BiocInstaller) 
-useDevel()
-
-source("http://www.bioconductor.org/getBioC.R")
-
-biocLite(c("vbmp", "gpls", "logicFS"), 
-        type = "source",
-        dependencies = c("Depends", "Imports"))
 
 ###################################################################
 ## Install orphaned packages: CHAID, rknn, SDDA
