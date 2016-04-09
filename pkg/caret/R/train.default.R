@@ -427,7 +427,7 @@ train.default <- function(x, y,
         }
       }
     }
-    
+  
     ## TODO we used to give resampled results for LOO
     if(!(trControl$method %in% c("LOOCV", "oob"))) {
       if(modelType == "Classification" && length(grep("^\\cell", colnames(resampleResults))) > 0) {
@@ -538,7 +538,7 @@ train.default <- function(x, y,
   ## Reorder rows of performance
   orderList <- list()
   for(i in seq(along = paramNames)) orderList[[i]] <- performance[,paramNames[i]]
-  names(orderList) <- paramNames
+
   performance <- performance[do.call("order", orderList),]      
   
   if(trControl$verboseIter) {
