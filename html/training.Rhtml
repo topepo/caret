@@ -94,6 +94,7 @@ Released   : 20120902
      <li><a href="#example">An Example</a></li>
   </ul>   
   <li><a href="#tune">Basic Parameter Tuning</a></li>
+  <li><a href="#repro">Notes on Reproducibility</a></li>  
   <li><a href="#custom">Customizing the Tuning Process</a></li> 
   <ul>
      <li><a href="#preproc">Pre-Processing Options</a></li>
@@ -262,6 +263,25 @@ two-dimensional space.
 for <span class="mx funCall">train</span>. There is additional functionality in <span class="mx funCall">train</span> that is described in the next section.
 </p>
 
+<div id="repro"></div> 
+<h1>Notes on Reproducibility</h1>
+
+<p>
+Many models utilize random numbers during the phase where parameters are estimated. Also, the resampling indices are chosen using random numbers. There are two main ways to control the randomness in order to assure reproducible results. 
+</p>
+
+<ul>
+  <li>
+  There are two approaches to ensuring that the same <em>resamples</em> are used between calls to <span class="mx funCall">train</span>. The first is to use <span class="mx funCall">set.seed</span> just prior to calling <span class="mx funCall">train</span>. The first use of random numbers is to create the resampling information. Alternatively, if you would like to use specific splits of the data, the <span class="mx arg">index</span> argument of the <span class="mx funCall">trainControl</span> function can be used. This is briefly discussed below.  
+  </li>
+  <li>
+  When the models are created <em>inside of resampling</em>, the seeds can also be set. While setting the seed prior to calling <span class="mx funCall">train</span> may guarantee that the same random numbers are used, this is unlikely to be the case when <a href="parallel.html">parallel processing</a> is used (depending which technology is utilized). To set the model fitting seeds, <span class="mx funCall">trainControl</span> has an additional argument called <span class="mx arg">seeds</span> that can be used. The value for this argument is a list of integer vectors that are used as seeds. The help page for <span class="mx funCall">trainControl</span> describes the appropriate format for this option. 
+  </li>
+</ul>
+<p>
+How random numbers are used is highly dependent on the package author. There are rare cases where the underlying model function does not control the random number seed, especially if the computations are conducted in C code. 
+</p>
+
 <div id="custom"></div> 
 <h1>Customizing the Tuning Process</h1>
 
@@ -353,7 +373,7 @@ gbmFit2
 <!--begin.rcode train_gbm2_print,echo=FALSE
 gbmOut <- capture.output(print(gbmFit2, digits = 2))
 text2 <- c(gbmOut[1:18],
-           "  :                   :        :         :      :            :",
+           "  :                   :        :         : ",
            gbmOut[(length(gbmOut)-10):length(gbmOut)])
 cat("<pre>\n")
 cat(paste(text2, collapse = "\n"))
@@ -570,7 +590,7 @@ gbmFit3
 <!--begin.rcode train_gbm3_print,echo=FALSE
 gbmOut <- capture.output(print(gbmFit3, digits = 2))
 text3 <- c(gbmOut[1:18],
-           "  :                   :        :     :      :     :       :        :",
+           "  :                   :        :     :      :    ",
            gbmOut[(length(gbmOut)-10):length(gbmOut)])
 cat("<pre>\n")
 cat(paste(text3, collapse = "\n"))
