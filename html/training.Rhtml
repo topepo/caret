@@ -375,9 +375,7 @@ gbmOut <- capture.output(print(gbmFit2, digits = 2))
 text2 <- c(gbmOut[1:18],
            "  :                   :        :         : ",
            gbmOut[(length(gbmOut)-10):length(gbmOut)])
-cat("<pre>\n")
 cat(paste(text2, collapse = "\n"))
-cat("</pre>\n")
     end.rcode-->
 
 <p>
@@ -592,9 +590,7 @@ gbmOut <- capture.output(print(gbmFit3, digits = 2))
 text3 <- c(gbmOut[1:18],
            "  :                   :        :     :      :    ",
            gbmOut[(length(gbmOut)-10):length(gbmOut)])
-cat("<pre>\n")
 cat(paste(text3, collapse = "\n"))
-cat("</pre>\n")
     end.rcode-->    
 <!--begin.rcode train_pred3,cache=TRUE,echo=FALSE,results='hide'
 testPred <- predict(gbmFit3, testing) ## to be used in 'other'html'
