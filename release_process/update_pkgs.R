@@ -36,7 +36,8 @@ libs <- c(libs, "knitr", "Hmisc", "googleVis", "animation",
           "desirability", "gsubfn", "gtools", "impute", "Matrix", "proxy", "plyr", 
           "reshape", "rJava", "SparseM", "sqldf", "XML", "lubridate", "dplyr", "GA",
           "aroma.affymetrix", "remMap", "cghFLasso", "RCurl", "QSARdata", "reshape2",
-          "mapproj", "ggmap", "ggvis", "SuperLearner", "subsemble", "caretEnsemble")
+          "mapproj", "ggmap", "ggvis", "SuperLearner", "subsemble", "caretEnsemble",
+          "ROSE", "DMwR")
 libs <- unique(libs)
 
 
