@@ -65,7 +65,7 @@ set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
                                method = "adaboost", 
                                trControl = cctrl3,
-                               tuneLength = 1,
+                               tuneGrid = test_class_rand$bestTune,
                                metric = "ROC", 
                                preProc = c("center", "scale"))
 
