@@ -1156,7 +1156,7 @@ We can write a small custom method to duplicate this model. Two details of note:
 <p>
 Here is the custom model:
 </p>
-<!--begin.rcode custom_train_offset, tidy=FALSE,echo=FALSE
+<!--begin.rcode custom_train_offset, tidy=FALSE
 offset_mod <- getModelInfo("glm", regex = FALSE)[[1]]
 offset_mod$fit <- function(x, y, wts, param, lev, last, classProbs, ...) {
   dat <- if(is.data.frame(x)) x else as.data.frame(x)
