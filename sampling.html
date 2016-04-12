@@ -284,20 +284,20 @@ Number of resamples: 50
 
 ROC 
            Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA's
-original 0.8935  0.9277 0.9419 0.9407  0.9561 0.9745    0
-down     0.8929  0.9152 0.9320 0.9324  0.9475 0.9706    0
+original 0.8935  0.9311 0.9407 0.9410  0.9564 0.9717    0
+down     0.8937  0.9205 0.9369 0.9347  0.9549 0.9684    0
 up       0.9995  1.0000 1.0000 0.9999  1.0000 1.0000    0
-SMOTE    0.9596  0.9763 0.9811 0.9795  0.9843 0.9931    0
-ROSE     0.8748  0.8899 0.8953 0.8957  0.9001 0.9137    0
+SMOTE    0.9622  0.9762 0.9808 0.9796  0.9840 0.9925    0
+ROSE     0.8764  0.8908 0.8953 0.8956  0.8999 0.9166    0
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">outside_test</span>
 </pre></div>
 <div class="output"><pre class="knitr r">             lower       ROC     upper
-original 0.9120011 0.9241976 0.9363941
-down     0.9263635 0.9338078 0.9412521
-up       0.9305607 0.9393474 0.9481340
-SMOTE    0.9393288 0.9458161 0.9523034
-ROSE     0.9382464 0.9452415 0.9522365
+original 0.9134895 0.9251843 0.9368791
+down     0.9238817 0.9315572 0.9392327
+up       0.9360997 0.9437082 0.9513167
+SMOTE    0.9390808 0.9457264 0.9523720
+ROSE     0.9409081 0.9474742 0.9540403
 </pre></div>
 </div></div>
 <br>  
@@ -305,7 +305,7 @@ ROSE     0.9382464 0.9452415 0.9522365
 The training and test set estimates for the area under the ROC curve do not appear to correlate. Based on the resampling results, one would infer that up-sampling is nearly perfect and that ROSE does relatively poorly. The reason that up-sampling appears to perform so well is that the samples in the majority class are replicated and have a large potential to be in both the model building and hold-out sets. In essence, the hold-outs here are not truly independent samples.  
 </p>
 <p>
-In reality, all of the sampling methods do about the same (based on the test set). The statistics for the basic model fit with no sampling are fairly in-line with one another (0.941 via resampling and 0.924 for the test set). 
+In reality, all of the sampling methods do about the same (based on the test set). The statistics for the basic model fit with no sampling are fairly in-line with one another (0.941 via resampling and 0.925 for the test set). 
 </p>
 
 <div id="resampling"></div>        
@@ -397,20 +397,20 @@ Number of resamples: 50
 
 ROC 
            Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA's
-original 0.8935  0.9277 0.9419 0.9407  0.9561 0.9745    0
-down     0.9008  0.9378 0.9451 0.9439  0.9528 0.9662    0
-up       0.8928  0.9256 0.9396 0.9372  0.9500 0.9719    0
-SMOTE    0.9247  0.9470 0.9537 0.9523  0.9605 0.9750    0
-ROSE     0.9297  0.9468 0.9562 0.9549  0.9622 0.9721    0
+original 0.8935  0.9311 0.9407 0.9410  0.9564 0.9717    0
+down     0.8902  0.9348 0.9445 0.9421  0.9507 0.9665    0
+up       0.8928  0.9211 0.9374 0.9352  0.9499 0.9637    0
+SMOTE    0.9299  0.9458 0.9528 0.9527  0.9609 0.9761    0
+ROSE     0.9189  0.9440 0.9529 0.9517  0.9597 0.9741    0
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">inside_test</span>
 </pre></div>
 <div class="output"><pre class="knitr r">             lower       ROC     upper
-original 0.9120011 0.9241976 0.9363941
-down     0.9268977 0.9347976 0.9426974
-up       0.9370344 0.9444601 0.9518858
-SMOTE    0.9506470 0.9563559 0.9620647
-ROSE     0.9416604 0.9485036 0.9553468
+original 0.9134895 0.9251843 0.9368791
+down     0.9234409 0.9308037 0.9381665
+up       0.9241506 0.9340749 0.9439992
+SMOTE    0.9455682 0.9512705 0.9569727
+ROSE     0.9413039 0.9482492 0.9551946
 </pre></div>
 </div></div>
 
@@ -556,7 +556,7 @@ The control object would then be:
   <div id="footer-content"></div>
   <div id="footer">
 
-  <p>Created on Tue Jan 19 2016 using caret version 6.0-64 and R Under development (unstable) (2016-01-04 r69860).</p>
+  <p>Created on Sun Apr 10 2016 using caret version 6.0-68 and R Under development (unstable) (2016-04-08 r70447).</p>
   </div>
   <!-- end #footer -->
 </body>

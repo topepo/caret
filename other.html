@@ -140,11 +140,11 @@ the results of a classification model. This example uses objects from the webpag
 <div class="chunk" id="other_conf0"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">postResample</span><span class="hl std">(testPred, testing</span><span class="hl opt">$</span><span class="hl std">Class)</span>
 </pre></div>
 <div class="output"><pre class="knitr r"> Accuracy     Kappa 
-0.8627451 0.7226107 
+0.9215686 0.8418605 
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">sensitivity</span><span class="hl std">(testPred, testing</span><span class="hl opt">$</span><span class="hl std">Class)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] 0.9259259
+<div class="output"><pre class="knitr r">[1] 0.962963
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">confusionMatrix</span><span class="hl std">(testPred, testing</span><span class="hl opt">$</span><span class="hl std">Class)</span>
 </pre></div>
@@ -152,28 +152,28 @@ the results of a classification model. This example uses objects from the webpag
 
           Reference
 Prediction  M  R
-         M 25  5
-         R  2 19
-                                         
-               Accuracy : 0.8627         
-                 95% CI : (0.7374, 0.943)
-    No Information Rate : 0.5294         
-    P-Value [Acc &gt; NIR] : 5.008e-07      
-                                         
-                  Kappa : 0.7226         
- Mcnemar's Test P-Value : 0.4497         
-                                         
-            Sensitivity : 0.9259         
-            Specificity : 0.7917         
-         Pos Pred Value : 0.8333         
-         Neg Pred Value : 0.9048         
-             Prevalence : 0.5294         
-         Detection Rate : 0.4902         
-   Detection Prevalence : 0.5882         
-      Balanced Accuracy : 0.8588         
-                                         
-       'Positive' Class : M              
-                                         
+         M 26  3
+         R  1 21
+                                          
+               Accuracy : 0.9216          
+                 95% CI : (0.8112, 0.9782)
+    No Information Rate : 0.5294          
+    P-Value [Acc &gt; NIR] : 1.407e-09       
+                                          
+                  Kappa : 0.8419          
+ Mcnemar's Test P-Value : 0.6171          
+                                          
+            Sensitivity : 0.9630          
+            Specificity : 0.8750          
+         Pos Pred Value : 0.8966          
+         Neg Pred Value : 0.9545          
+             Prevalence : 0.5294          
+         Detection Rate : 0.5098          
+   Detection Prevalence : 0.5686          
+      Balanced Accuracy : 0.9190          
+                                          
+       'Positive' Class : M               
+                                          
 </pre></div>
 </div></div>
 
@@ -217,12 +217,14 @@ For example:
 </pre></div>
 <div class="output"><pre class="knitr r">Cross-Validated (10 fold, repeated 10 times) Confusion Matrix 
 
-(entries are percentages of table totals)
+(entries are percentual average cell counts across resamples)
  
           Reference
 Prediction    M    R
-         M 47.2 10.8
-         R  6.3 35.7
+         M 46.4 10.8
+         R  7.1 35.7
+                           
+ Accuracy (average) : 0.821
 </pre></div>
 </div></div>
 
@@ -243,17 +245,17 @@ For multi-class problems, there are additional functions that can be used to cal
 <span class="hl kwd">head</span><span class="hl std">(test_results)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">             M            R obs
-1 1.982479e-05 9.999802e-01   R
-2 8.774626e-07 9.999991e-01   R
-3 1.789676e-11 1.000000e+00   R
-4 6.024225e-04 9.993976e-01   R
-5 9.999999e-01 1.179912e-07   R
-6 9.995127e-01 4.872602e-04   R
+1 9.799645e-04 0.9990200355   R
+2 1.825908e-04 0.9998174092   R
+3 5.373401e-08 0.9999999463   R
+4 1.693365e-03 0.9983066351   R
+5 9.999348e-01 0.0000651877   R
+6 9.862454e-01 0.0137546480   R
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl kwd">mnLogLoss</span><span class="hl std">(test_results,</span> <span class="hl kwc">lev</span> <span class="hl std">=</span> <span class="hl kwd">levels</span><span class="hl std">(test_results</span><span class="hl opt">$</span><span class="hl std">obs))</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  logLoss 
-0.6746702 
+0.4333554 
 </pre></div>
 </div></div>
 
@@ -275,11 +277,11 @@ For example:
 <span class="hl kwd">multiClassSummary</span><span class="hl std">(test_results,</span> <span class="hl kwc">lev</span> <span class="hl std">=</span> <span class="hl kwd">levels</span><span class="hl std">(test_results</span><span class="hl opt">$</span><span class="hl std">obs))</span>
 </pre></div>
 <div class="output"><pre class="knitr r">          logLoss               ROC          Accuracy             Kappa 
-        0.6746702         0.9413580         0.8627451         0.7226107 
+        0.4333554         0.9459877         0.9215686         0.8418605 
       Sensitivity       Specificity    Pos_Pred_Value    Neg_Pred_Value 
-        0.9259259         0.7916667         0.8333333         0.9047619 
+        0.9629630         0.8750000         0.8965517         0.9545455 
    Detection_Rate Balanced_Accuracy 
-        0.4901961         0.8587963 
+        0.5098039         0.9189815 
 </pre></div>
 </div></div>
 
@@ -432,7 +434,7 @@ The other function is for probability calibration. Other functions in the <a hre
 
  
     <div id="footer">
-      <p>Created on Tue Jan 19 2016 using caret version 6.0-64 and R Under development (unstable) (2016-01-04 r69860).</p>
+      <p>Created on Sun Apr 10 2016 using caret version 6.0-68 and R Under development (unstable) (2016-04-08 r70447).</p>
     </div>
     <!-- end #footer -->
   </body>

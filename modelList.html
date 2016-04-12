@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>TableID70e115df171f</title>
+<title>TableIDbf8163208fcf</title>
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <style type="text/css">
 body {
@@ -17,15 +17,15 @@ body {
 </style>
 </head>
 <body>
- <!-- Table generated in R 3.3.0 by googleVis 0.5.10 package -->
-<!-- Tue Jan 19 12:16:50 2016 -->
+ <!-- Table generated in R 3.4.0 by googleVis 0.5.10 package -->
+<!-- Sun Apr 10 19:47:21 2016 -->
 
 
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataTableID70e115df171f () {
+function gvisDataTableIDbf8163208fcf () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
@@ -51,6 +51,13 @@ var datajson =
 "mfinal, maxdepth, coeflearn" 
 ],
 [
+ "AdaBoost Classification Trees",
+"adaboost",
+"Classification",
+"fastAdaboost",
+"nIter, method" 
+],
+[
  "Adaptive Mixture Discriminant Analysis",
 "amdai",
 "Classification",
@@ -63,6 +70,13 @@ var datajson =
 "Regression",
 "frbs",
 "num.labels, max.iter" 
+],
+[
+ "Model Averaged Neural Network",
+"avMxnet",
+"Classification",
+"mxnet",
+"layer1, layer2, layer3, learning.rate, momentum, dropout, repeats" 
 ],
 [
  "Model Averaged Neural Network",
@@ -282,6 +296,13 @@ var datajson =
 "committees, neighbors" 
 ],
 [
+ "DeepBoost",
+"deepboost",
+"Classification",
+"deepboost",
+"num_iter, tree_depth, beta, lambda, loss_type" 
+],
+[
  "Dynamic Evolving Neural-Fuzzy Inference System ",
 "DENFIS",
 "Regression",
@@ -425,7 +446,7 @@ var datajson =
  "Boosted Generalized Additive Model",
 "gamboost",
 "Dual Use",
-"mboost",
+"mboost, plyr",
 "mstop, prune" 
 ],
 [
@@ -516,7 +537,7 @@ var datajson =
  "Boosted Generalized Linear Model",
 "glmboost",
 "Dual Use",
-"mboost",
+"plyr, mboost",
 "mstop, prune" 
 ],
 [
@@ -832,7 +853,7 @@ var datajson =
 "nb",
 "Classification",
 "klaR",
-"fL, usekernel" 
+"fL, usekernel, adjust" 
 ],
 [
  "Naive Bayes Classifier",
@@ -1148,20 +1169,6 @@ var datajson =
 "Regression",
 "elasticnet",
 "lambda" 
-],
-[
- "Random k-Nearest Neighbors",
-"rknn",
-"Dual Use",
-"rknn",
-"k, mtry" 
-],
-[
- "Random k-Nearest Neighbors with Feature Selection",
-"rknnBel",
-"Dual Use",
-"rknn, plyr",
-"k, mtry, d" 
 ],
 [
  "Robust Linear Model",
@@ -1525,7 +1532,7 @@ var datajson =
 "xgbLinear",
 "Dual Use",
 "xgboost",
-"nrounds, lambda, alpha" 
+"nrounds, lambda, alpha, eta" 
 ],
 [
  "eXtreme Gradient Boosting",
@@ -1552,15 +1559,15 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartTableID70e115df171f() {
-var data = gvisDataTableID70e115df171f();
+function drawChartTableIDbf8163208fcf() {
+var data = gvisDataTableIDbf8163208fcf();
 var options = {};
 options["allowHtml"] = true;
 options["width"] = "800px";
 
 
     var chart = new google.visualization.Table(
-    document.getElementById('TableID70e115df171f')
+    document.getElementById('TableIDbf8163208fcf')
     );
     chart.draw(data,options);
     
@@ -1584,9 +1591,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartTableID70e115df171f);
+callbacks.push(drawChartTableIDbf8163208fcf);
 })();
-function displayChartTableID70e115df171f() {
+function displayChartTableIDbf8163208fcf() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -1610,17 +1617,17 @@ callbacks.shift()();
 </script>
  
 <!-- jsChart -->  
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID70e115df171f"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableIDbf8163208fcf"></script>
  
 <!-- divChart -->
   
-<div id="TableID70e115df171f" 
+<div id="TableIDbf8163208fcf" 
   style="width: 800px; height: automatic;">
 </div>
- <div><span>Data: modelTable &#8226; Chart ID: <a href="Chart_TableID70e115df171f.html">TableID70e115df171f</a> &#8226; <a href="https://github.com/mages/googleVis">googleVis-0.5.10</a></span><br /> 
+ <div><span>Data: modelTable &#8226; Chart ID: <a href="Chart_TableIDbf8163208fcf.html">TableIDbf8163208fcf</a> &#8226; <a href="https://github.com/mages/googleVis">googleVis-0.5.10</a></span><br /> 
 <!-- htmlFooter -->
 <span> 
-  R Under development (unstable) (2016-01-04 r69860) 
+  R Under development (unstable) (2016-04-08 r70447) 
   &#8226; <a href="https://developers.google.com/terms/">Google Terms of Use</a> &#8226; <a href="https://google-developers.appspot.com/chart/interactive/docs/gallery/table">Documentation and Data Policy</a>
 </span></div>
 </body>

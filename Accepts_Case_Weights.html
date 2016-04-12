@@ -111,6 +111,21 @@ Released   : 20120902
 <p><b>Type</b>: Regression, Classification</p>
 <p>No Tuning Parameters</p>
 
+<h1>Bagged Flexible Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'bagFDA'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">degree</span></code> (Product Degree), <code><span class="mx arg">nprune</span></code> (#Terms)</p>
+
+<h1>Bagged MARS</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'bagEarth'</span></tt></p>
+<p><b>Type</b>: Regression, Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">nprune</span></code> (#Terms), <code><span class="mx arg">degree</span></code> (Product Degree)</p>
+
+<h1>Bagged MARS using gCV Pruning</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'bagEarthGCV'</span></tt></p>
+<p><b>Type</b>: Regression, Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">degree</span></code> (Product Degree)</p>
+
 <h1>Bayesian Generalized Linear Model</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'bayesglm'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
@@ -182,6 +197,16 @@ Released   : 20120902
 <p><b>Type</b>: Classification</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">cp</span></code> (Complexity Parameter), <code><span class="mx arg">Cost</span></code> (Cost)</p>
 
+<h1>DeepBoost</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'deepboost'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">num_iter</span></code> (# Boosting Iterations), <code><span class="mx arg">tree_depth</span></code> (Tree Depth), <code><span class="mx arg">beta</span></code> (L1 Regularization), <code><span class="mx arg">lambda</span></code> (Tree Depth Regularization), <code><span class="mx arg">loss_type</span></code> (Loss)</p>
+
+<h1>Flexible Discriminant Analysis</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'fda'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">degree</span></code> (Product Degree), <code><span class="mx arg">nprune</span></code> (#Terms)</p>
+
 <h1>Generalized Linear Model</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'glm'</span></tt></p>
 <p><b>Type</b>: Regression, Classification</p>
@@ -206,6 +231,16 @@ Released   : 20120902
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'avNNet'</span></tt></p>
 <p><b>Type</b>: Classification, Regression</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">size</span></code> (#Hidden Units), <code><span class="mx arg">decay</span></code> (Weight Decay), <code><span class="mx arg">bag</span></code> (Bagging)</p>
+
+<h1>Multivariate Adaptive Regression Spline</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'earth'</span></tt></p>
+<p><b>Type</b>: Regression, Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">nprune</span></code> (#Terms), <code><span class="mx arg">degree</span></code> (Product Degree)</p>
+
+<h1>Multivariate Adaptive Regression Splines</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'gcvEarth'</span></tt></p>
+<p><b>Type</b>: Regression, Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">degree</span></code> (Product Degree)</p>
 
 <h1>Neural Network</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'nnet'</span></tt></p>
@@ -313,7 +348,7 @@ Released   : 20120902
 </div>
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on Tue Jan 19 2016 using caret version 6.0-64 and R Under development (unstable) (2016-01-04 r69860).</p>
+  <p>Created on Sun Apr 10 2016 using caret version 6.0-68 and R Under development (unstable) (2016-04-08 r70447).</p>
   </div>
   <!-- end #footer -->
 </body>

@@ -117,6 +117,11 @@ Released   : 20120902
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">nhid</span></code> (#Hidden Units), <code><span class="mx arg">actfun</span></code> (Activation Function)</p>
 
 <h1>Model Averaged Neural Network</h1>
+<p><tt><span class="mx arg">method</span> = <span class="mx str">'avMxnet'</span></tt></p>
+<p><b>Type</b>: Classification</p>
+<p><b>Tuning Parameters</b>: <code><span class="mx arg">layer1</span></code> (#Hidden Units in Layer 1), <code><span class="mx arg">layer2</span></code> (#Hidden Units in Layer 2), <code><span class="mx arg">layer3</span></code> (#Hidden Units in Layer 3), <code><span class="mx arg">learning.rate</span></code> (Learning Rate), <code><span class="mx arg">momentum</span></code> (Momentum), <code><span class="mx arg">dropout</span></code> (Dropout Rate), <code><span class="mx arg">repeats</span></code> (#Models)</p>
+
+<h1>Model Averaged Neural Network</h1>
 <p><tt><span class="mx arg">method</span> = <span class="mx str">'avNNet'</span></tt></p>
 <p><b>Type</b>: Classification, Regression</p>
 <p><b>Tuning Parameters</b>: <code><span class="mx arg">size</span></code> (#Hidden Units), <code><span class="mx arg">decay</span></code> (Weight Decay), <code><span class="mx arg">bag</span></code> (Bagging)</p>
@@ -227,7 +232,7 @@ Released   : 20120902
 </div>
   <div id="footer-content"></div>
   <div id="footer">
-  <p>Created on Tue Jan 19 2016 using caret version 6.0-64 and R Under development (unstable) (2016-01-04 r69860).</p>
+  <p>Created on Sun Apr 10 2016 using caret version 6.0-68 and R Under development (unstable) (2016-04-08 r70447).</p>
   </div>
   <!-- end #footer -->
 </body>
