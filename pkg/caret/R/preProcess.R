@@ -334,22 +334,22 @@ predict.preProcess <- function(object, newdata, ...) {
   
   cc <- complete.cases(newdata)
   if(any(names(object$method) == "knnImpute") && any(!cc))  {
-    hasMiss <- newdata[!cc,,drop = FALSE]      
-    
+    hasMiss <- newdata[!cc,object$method$knnImpute,drop = FALSE]      
+    miss_names <- colnames(hasMiss)
     hasMiss <- apply(hasMiss,
                      1,
                      nnimp,
-                     old = object$data,
+                     old = object$data[, object$method$knnImpute, drop = FALSE],
                      k = object$k,
                      foo = object$knnSummary)
     hasMiss <- t(hasMiss)
-    
+    colnames(hasMiss) <- miss_names
     if(class(newdata)[1] == class(hasMiss)[1]) {
-      newdata[!cc,] <- hasMiss
+      newdata[!cc, object$method$knnImpute] <- hasMiss
     } else {
       if(is.data.frame(newdata)) {
-        newdata[!cc,] <- as.data.frame(hasMiss)
-      } else newdata[!cc,] <- as.matrix(hasMiss)
+        newdata[!cc, object$method$knnImpute] <- as.data.frame(hasMiss)
+      } else newdata[!cc, object$method$knnImpute] <- as.matrix(hasMiss)
     }
   }
   

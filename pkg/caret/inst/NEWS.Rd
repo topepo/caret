@@ -6,6 +6,7 @@
 \section{Changes in version 6.0-xx}{
 	\itemize{
 		\item Based on a comment by Alexis Sarda, \code{method = "ctree2"} does not fix \code{mincriterion = 0} and  tunes over this parameter . For a fixed depth, \code{mincriterion} can further prune the tree \issue{409}. 
+		\item A bug in KNN imputation was fixed (found by saviola777) that occurred when a factor predictor was in the data set \issue{404}.  
  	}  
 }
 
