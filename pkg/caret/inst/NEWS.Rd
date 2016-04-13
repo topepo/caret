@@ -3,6 +3,13 @@
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+\section{Changes in version 6.0-xx}{
+	\itemize{
+		\item Based on a comment by Alexis Sarda, \code{method = "ctree2"} does not fix \code{mincriterion = 0} and  tunes over this parameter . For a fixed depth, \code{mincriterion} can further prune the tree \issue{409}. 
+ 	}  
+}
+
+
 \section{Changes in version 6.0-68}{
 	\itemize{
 		\item \code{print.train} no longer shows the standard deviation of the resampled values unless the new option is used (\code{print.train(, showSD = TRUE)}). When shown, they are within parentheses (e.g. "4.24 (0.493)"). 
