@@ -322,7 +322,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                                 names(resampleIndex), iter, FALSE)
   list(resamples = thisResample, pred = tmpPred)
 }
-browser()
+
   resamples <- rbind.fill(result[names(result) == "resamples"])
   pred <- if(keep_pred)  rbind.fill(result[names(result) == "pred"]) else NULL
   if(ctrl$method %in% c("boot632"))
