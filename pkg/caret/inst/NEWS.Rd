@@ -8,7 +8,7 @@
 		\item Based on a comment by Alexis Sarda, \code{method = "ctree2"} does not fix \code{mincriterion = 0} and  tunes over this parameter . For a fixed depth, \code{mincriterion} can further prune the tree \issue{409}. 
 		\item A bug in KNN imputation was fixed (found by saviola777) that occurred when a factor predictor was in the data set \issue{404}.  
 		\item Infrasctructure changes were made so that \code{train} tries harder to respect the original class of the outcome. For example, if an ordered factor is used as the outcome with a modeling function that treats is as an unordered factor, the model still produces an ordered factor during prediction.  
-		\item The \code{ranger} code not allows for case weights \issue{414}. 
+		\item The \code{ranger} code now allows for case weights \issue{414}. 
  	}  
 }
 
