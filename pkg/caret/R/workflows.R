@@ -235,7 +235,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
     ## collate the predicitons across all the sub-models
     predicted <- lapply(predicted,
                         function(x, y, wts, lv, rows) {
-                          if(!is.factor(x) & is.character(x)) x <- factor(as.character(x), levels = lv)
+                          x <- outcome_conversion(x, lv = lev)
                           out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
                           if(!is.null(wts)) out$weights <- wts
                           out$rowIndex <- rows
@@ -284,7 +284,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
     thisResample <- cbind(allParam, thisResample)
     
   } else {       
-    if(is.factor(y)) predicted <- factor(as.character(predicted), levels = lev)
+    if(is.factor(y)) predicted <- outcome_conversion(predicted, lv = lev)
     tmp <-  data.frame(pred = predicted,
                        obs = y[holdoutIndex],
                        stringsAsFactors = FALSE)
@@ -322,7 +322,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                                 names(resampleIndex), iter, FALSE)
   list(resamples = thisResample, pred = tmpPred)
 }
-
+browser()
   resamples <- rbind.fill(result[names(result) == "resamples"])
   pred <- if(keep_pred)  rbind.fill(result[names(result) == "pred"]) else NULL
   if(ctrl$method %in% c("boot632"))
@@ -461,7 +461,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
         ## collate the predictions across all the sub-models
         predicted <- lapply(predicted,
                             function(x, y, wts, lv, rows) {
-                              if(!is.factor(x) & is.character(x)) x <- factor(as.character(x), levels = lv)
+                              x <- outcome_conversion(x, lv = lev)
                               out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
                               if(!is.null(wts)) out$weights <- wts
                               out$rowIndex <- rows
@@ -484,8 +484,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
         predicted <- cbind(predicted, allParam)
         ## if saveDetails then save and export 'predicted'
       } else {
-        if(is.factor(y)) predicted <- factor(as.character(predicted),
-                                             levels = lev)
+        predicted <- outcome_conversion(predicted, lv = lev)
         predicted <-  data.frame(pred = predicted,
                                  obs = y[holdoutIndex],
                                  stringsAsFactors = FALSE)

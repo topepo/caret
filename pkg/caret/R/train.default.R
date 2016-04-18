@@ -85,6 +85,7 @@ train.default <- function(x, y,
     ## important with multiclass systems where one or more classes have low sample sizes
     ## relative to the others
     classLevels <- levels(y)
+    attributes(classLevels) <- list(ordered = is.ordered(y)) 
     xtab <- table(y)
     if(any(xtab == 0)) {
       xtab_msg <- paste("'", names(xtab)[xtab == 0], "'", collapse = ", ", sep = "")
@@ -635,7 +636,8 @@ train.default <- function(x, y,
                         perfNames = perfNames,
                         maximize = maximize,
                         yLimits = trControl$yLimits,
-                        times = times), 
+                        times = times,
+                        levels = classLevels), 
                    class = "train")
   trControl$yLimits <- NULL
   

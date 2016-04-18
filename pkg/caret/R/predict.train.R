@@ -66,7 +66,7 @@ predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.o
                              bounds = object$control$predictionBounds, 
                              limits = object$yLimit)
     } else {
-      out <- factor(as.character(out), levels = levels(object))
+      out <- outcome_conversion(as.character(out), lv = object$levels)
     }
   }
   out  

@@ -493,3 +493,12 @@ get_range <- function(y) {
   if(class(y)[1] == "factor") return(NA)
   if(class(y)[1] %in% c("numeric", "integer")) extendrange(y) else extendrange(y[, "time"])
 }
+
+outcome_conversion <- function(x, lv) {
+  if(is.factor(x) | is.character(x)) {
+    if(!is.null(attributes(lv)) && any(names(attributes(lv)) == "ordered" && attr(lv, "ordered")))
+      x <- ordered(as.character(x), levels = lv) else 
+        x <- factor(as.character(x), levels = lv)
+  }
+  x
+}
