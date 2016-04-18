@@ -18,8 +18,13 @@ modelInfo <- list(label = "Random Forest",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     if(!is.data.frame(x)) x <- as.data.frame(x)
                     x$.outcome <- y
-                    out <- ranger(.outcome ~ ., data = x, mtry = param$mtry, write.forest = TRUE, 
-                                  probability = classProbs, ...)
+                    if(!is.null(wts)) {
+                      out <- ranger(.outcome ~ ., data = x, mtry = param$mtry, write.forest = TRUE, 
+                                    probability = classProbs, case.weights = wts, ...)
+                    } else {
+                      out <- ranger(.outcome ~ ., data = x, mtry = param$mtry, write.forest = TRUE, 
+                                    probability = classProbs, ...)
+                    }
                     ## in case the resampling method is "oob"
                     if(!last) out$y <- y
                     out
@@ -62,5 +67,6 @@ modelInfo <- list(label = "Random Forest",
                   oob = function(x) {
                     postResample(x$predictions, x$y)
                   },
-                  tags = c("Random Forest", "Ensemble Model", "Bagging", "Implicit Feature Selection"),
+                  tags = c("Random Forest", "Ensemble Model", "Bagging", 
+                           "Implicit Feature Selection", "Accepts Case Weights"),
                   sort = function(x) x[order(x[,1]),])
