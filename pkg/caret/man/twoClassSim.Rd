@@ -12,8 +12,10 @@ This function simulates regression and classification data with truly important 
 }
 \usage{
 twoClassSim(n = 100, intercept = -5, linearVars = 10, 
-          noiseVars = 0, corrVars = 0, 
-            corrType = "AR1", corrValue = 0, mislabel = 0)
+            noiseVars = 0, corrVars = 0, 
+            corrType = "AR1", corrValue = 0, 
+            mislabel = 0,
+            ordinal = FALSE)
 
 SLC14_1(n = 100, noiseVars = 0, corrVars = 0, 
       corrType = "AR1", corrValue = 0)
@@ -50,8 +52,11 @@ The correlation structure of the correlated irrelevant predictors. Values of "AR
 The correlation value.
 }
   \item{mislabel}{
-  The proportion of data that is possibly mislabeled. See Details below.
+  The proportion of data that is possibly mislabeled. Only used when \code{ordinal = FALSE}. See Details below.
   }
+  \item{ordinal}{
+  Should an ordered factor be returned? See Details below.
+  }  
   \item{factors}{
 Should the binary predictors be converted to factors?
 }
@@ -86,7 +91,11 @@ The fourth set of informative predictors are copied from one of Friedman's syste
 2sin(KL)
 }
 
-All of these effects are added up to model the log-odds. This is used to calculate the probability of a sample being in the first class and a random uniform number is used to actually make the assignment of the actual class. To mislabel the data, the probability is reversed (i.e. \code{p = 1 - p}) before the random number generation. 
+All of these effects are added up to model the log-odds. 
+
+When \code{ordinal = FALSE}, this is used to calculate the probability of a sample being in the first class and a random uniform number is used to actually make the assignment of the actual class. To mislabel the data, the probability is reversed (i.e. \code{p = 1 - p}) before the random number generation. 
+
+For \code{ordinal = TRUE}, random normal errors are added to the linear predictor (i.e. prior to computing the probability) and cut points (0.00, 0.20, 0.75, and 1.00) are used to bin the probabilities into classes \code{"low"}, \code{"med"}, and \code{"high"} (despite the function's name).
 
 The remaining functions simulate regression data sets. \code{LPH07_1} and \code{LPH07_2} are from van der Laan et al. (2007). The first function uses random Bernoulli variables that have a 40\% probability of being a value of 1. The true regression equation is:
 

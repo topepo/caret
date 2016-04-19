@@ -5,7 +5,8 @@ twoClassSim <- function(n = 100,
                         corrVars = 0,     ## Number of correlated x's
                         corrType = "AR1", ## Corr structure ('AR1' or 'exch')
                         corrValue = 0,    ## Corr parameter
-                        mislabel = 0) {
+                        mislabel = 0,
+                        ordinal = FALSE) {
   requireNamespaceQuietStop("MASS")
   sigma <- matrix(c(2,1.3,1.3,2),2,2)
   
@@ -56,13 +57,21 @@ twoClassSim <- function(n = 100,
     for(i in seq(along = lin)) lp <- lp + tmpData[, i+3]*lin[i]
   }
   
-  prob <- binomial()$linkinv(lp)
-  if(mislabel > 0 & mislabel < 1) {
-    shuffle <- sample(1:nrow(tmpData), floor(nrow(tmpData)*j))
-    prob[shuffle] <- 1 - prob[shuffle]
+  if(ordinal){
+    prob <- binomial()$linkinv(lp + rnorm(n,sd = 2)) 
+    tmpData$Class <- cut(prob, breaks = c(0, .2, .75, 1), 
+                         include.lowest = TRUE, 
+                         labels = c("low", "med", "high"), 
+                         ordered_result = TRUE)
+  } else {
+    prob <- binomial()$linkinv(lp)
+    if(mislabel > 0 & mislabel < 1) {
+      shuffle <- sample(1:nrow(tmpData), floor(nrow(tmpData)*j))
+      prob[shuffle] <- 1 - prob[shuffle]
+    }
+    tmpData$Class <- ifelse(prob <= runif(n), "Class1", "Class2")
+    tmpData$Class <- factor(tmpData$Class, levels = c("Class1", "Class2"))
   }
-  tmpData$Class <- ifelse(prob <= runif(n), "Class1", "Class2")
-  tmpData$Class <- factor(tmpData$Class, levels = c("Class1", "Class2"))
   
   tmpData
 }

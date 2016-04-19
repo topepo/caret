@@ -9,6 +9,7 @@
 		\item A bug in KNN imputation was fixed (found by saviola777) that occurred when a factor predictor was in the data set \issue{404}.  
 		\item Infrasctructure changes were made so that \code{train} tries harder to respect the original class of the outcome. For example, if an ordered factor is used as the outcome with a modeling function that treats is as an unordered factor, the model still produces an ordered factor during prediction.  
 		\item The \code{ranger} code now allows for case weights \issue{414}. 
+		\item \code{twoClassSim} now has an option to compute ordered factors.
  	}  
 }
 
