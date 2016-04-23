@@ -7,9 +7,13 @@
 	\itemize{
 		\item Based on a comment by Alexis Sarda, \code{method = "ctree2"} does not fix \code{mincriterion = 0} and  tunes over this parameter . For a fixed depth, \code{mincriterion} can further prune the tree \issue{409}. 
 		\item A bug in KNN imputation was fixed (found by saviola777) that occurred when a factor predictor was in the data set \issue{404}.  
-		\item Infrasctructure changes were made so that \code{train} tries harder to respect the original class of the outcome. For example, if an ordered factor is used as the outcome with a modeling function that treats is as an unordered factor, the model still produces an ordered factor during prediction.  
+		\item Infrastructure changes were made so that \code{train} tries harder to respect the original class of the outcome. For example, if an ordered factor is used as the outcome with a modeling function that treats is as an unordered factor, the model still produces an ordered factor during prediction.  
 		\item The \code{ranger} code now allows for case weights \issue{414}. 
 		\item \code{twoClassSim} now has an option to compute ordered factors.
+		\item High-dimensional regularized discriminant analysis and, regularized linear discriminant analysis, and several variants of diagonal discriminant analysis  from the \cpkg{sparsediscrim} package were added (\code{method = "hdrda"}, \code{method = "rlda"}, and \code{method = "dda"}, respectively) \issue{313}.  
+		\item A neural network regression model optimized by stochastic gradient decent from the \cpkg{FCNN4R} package was added. The model code is \code{mlpSGD}.
+		\item Two neural network classification model (also optimized by stochastic gradient decent) from the \code{mxnet} package (\url{https://github.com/antinucleon/mxnet}). There are versions for single networks (model code \code{mxnet}) and model averaged networks (\code{avMxnet}).
+		\item Several models for ordinal outcomes were added: \code{rpartScore} (from the \cpkg{rpartScore} package), \code{ordinalNet} (\cpkg{ordinalNet}), \code{vglmAdjCat} (\cpkg{VGAM}), \code{vglmContRatio} (\cpkg{VGAM}), and \code{vglmCumulative} (\cpkg{VGAM}). Note that, for models that load \cpkg{VGAM}, there is a conflict such that the \code{predictors} class code from \cpkg{caret} is masked. To use that method, you can use \code{caret:::predictors.train()} instead of \code{predictors()}.
  	}  
 }
 
