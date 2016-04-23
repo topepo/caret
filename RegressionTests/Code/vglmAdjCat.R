@@ -1,7 +1,7 @@
 library(caret)
 timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
 
-model <- "polr"
+model <- "vglmAdjCat"
 
 #########################################################################
 
@@ -29,14 +29,14 @@ cctrl5 <- trainControl(method = "LOOCV", summaryFunction = weight_test)
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
-                             method = "polr", 
+                             method = "vglmAdjCat", 
                              trControl = cctrl1,
                              metric = "Kappa", 
                              preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = "polr", 
+                            method = "vglmAdjCat", 
                             trControl = cctrl1,
                             metric = "Kappa", 
                             preProc = c("center", "scale"))
@@ -48,7 +48,7 @@ test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], t
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
-                              method = "polr", 
+                              method = "vglmAdjCat", 
                               trControl = cctrl2,
                               metric = "Kappa", 
                               preProc = c("center", "scale"))
@@ -56,7 +56,7 @@ test_class_loo_model <- train(trainX, trainY,
 set.seed(849)
 
 test_class_none_model <- train(trainX, trainY, 
-                               method = "polr", 
+                               method = "vglmAdjCat", 
                                trControl = cctrl3,
                                tuneLength = 1,
                                metric = "Kappa", 
@@ -68,7 +68,7 @@ test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)]
 set.seed(849)
 test_class_cv_weight <- train(trainX, trainY, 
                               weights = runif(nrow(trainX)),
-                              method = "polr", 
+                              method = "vglmAdjCat", 
                               trControl = cctrl4,
                               tuneLength = 1,
                               metric = "Accuracy", 
@@ -77,7 +77,7 @@ test_class_cv_weight <- train(trainX, trainY,
 set.seed(849)
 test_class_loo_weight <- train(trainX, trainY, 
                                weights = runif(nrow(trainX)),
-                               method = "polr", 
+                               method = "vglmAdjCat", 
                                trControl = cctrl5,
                                tuneLength = 1,
                                metric = "Accuracy", 
@@ -89,7 +89,7 @@ if(!all(levels(trainY) %in% test_levels))
 
 #########################################################################
 
-test_class_predictors1 <- predictors(test_class_cv_model)
+test_class_predictors1 <- caret:::predictors.train(test_class_cv_model)
 
 #########################################################################
 
