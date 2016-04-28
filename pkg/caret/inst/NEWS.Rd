@@ -14,6 +14,7 @@
 		\item A neural network regression model optimized by stochastic gradient decent from the \cpkg{FCNN4R} package was added. The model code is \code{mlpSGD}.
 		\item Two neural network classification model (also optimized by stochastic gradient decent) from the \code{mxnet} package (\url{https://github.com/antinucleon/mxnet}). There are versions for single networks (model code \code{mxnet}) and model averaged networks (\code{avMxnet}).
 		\item Several models for ordinal outcomes were added: \code{rpartScore} (from the \cpkg{rpartScore} package), \code{ordinalNet} (\cpkg{ordinalNet}), \code{vglmAdjCat} (\cpkg{VGAM}), \code{vglmContRatio} (\cpkg{VGAM}), and \code{vglmCumulative} (\cpkg{VGAM}). Note that, for models that load \cpkg{VGAM}, there is a conflict such that the \code{predictors} class code from \cpkg{caret} is masked. To use that method, you can use \code{caret:::predictors.train()} instead of \code{predictors()}.
+		\item Another high performance random forest package (\cpkg{Rborist}) was exposed through \cpkg{caret}. The model code is \code{method = "Rborist"} \issue{418}
  	}  
 }
 
