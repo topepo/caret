@@ -9,6 +9,7 @@ modelInfo <- list(label = "Random Forest",
                     out <- if(search == "grid") 
                       data.frame(predProb = seq(0, 1, length = len)) else
                       data.frame(predProb = runif(len))
+                    out$predProb[out$predProb == 0] <- .01
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
@@ -35,7 +36,7 @@ modelInfo <- list(label = "Random Forest",
                   oob = function(x) {
                     out <- switch(x$problemType ,
                                   Regression =   c(sqrt(x$validation$mse), x$validation$rsq),
-                                  Classification =  c(1 - x$err.rate[x$ntree, "OOB"],
+                                  Classification =  c(sum(diag(x$validation$confusion))/sum(x$validation$confusion),
                                                       e1071::classAgreement(x$validation$confusion)[["kappa"]]))
                     names(out) <- if(x$problemType == "Regression") c("RMSE", "Rsquared") else c("Accuracy", "Kappa")
                     out
