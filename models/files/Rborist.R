@@ -20,7 +20,7 @@ modelInfo <- list(label = "Random Forest",
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
                     out <- predict(modelFit, newdata)$census
-                    out <- apply(out, 1, function(x) x/sum(x))
+                    out <- t(apply(out, 1, function(x) x/sum(x)))
                     out
                   },
                   predictors = function(x, ...) x$xNames[x$training$info != 0],
