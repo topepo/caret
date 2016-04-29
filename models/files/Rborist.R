@@ -2,18 +2,21 @@ modelInfo <- list(label = "Random Forest",
                   library = "Rborist",
                   loop = NULL,
                   type = c("Classification", "Regression"),
-                  parameters = data.frame(parameter = "predProb",
+                  parameters = data.frame(parameter = "predFixed",
                                           class = "numeric",
-                                          label = "Probability of Selection"),
+                                          label = "#Randomly Selected Predictors"),
                   grid = function(x, y, len = NULL, search = "grid") {
-                    out <- if(search == "grid") 
-                      data.frame(predProb = seq(0, 1, length = len)) else
-                      data.frame(predProb = runif(len))
-                    out$predProb[out$predProb == 0] <- .01
+                    if(search == "grid") {
+                      out <- data.frame(predFixed = caret::var_seq(p = ncol(x), 
+                                                                   classification = is.factor(y), 
+                                                                   len = len))
+                    } else {
+                      out <- data.frame(predFixed = unique(sample(1:ncol(x), size = len, replace = TRUE)))
+                    }
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    Rborist(x, y, predProb = param$predProb, ...),
+                    Rborist(x, y, predFixed = param$predFixed, ...),
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, newdata)$yPred
                     if(modelFit$problemType == "Classification") out <- modelFit$obsLevels[out]
