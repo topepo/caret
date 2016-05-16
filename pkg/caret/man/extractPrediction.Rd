@@ -53,7 +53,7 @@ The two extraction functions can be used to get the predictions and observed out
 }
 \value{
 
-  For \code{predict.train}, a vector of predictions if \code{type =  "raw"} or a data frame of class probabilities for \code{type =  "probs"}. In the latter case, there are columns for each class.
+  For \code{predict.train}, a vector of predictions if \code{type =  "raw"} or a data frame of class probabilities for \code{type =  "prob"}. In the latter case, there are columns for each class.
 
   For \code{predict.list}, a list results. Each element is produced by \code{predict.train}.
 
