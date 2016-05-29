@@ -894,13 +894,13 @@ between models (generated using <span class="mx funCall">train</span>, <span cla
 based on the work of <a href="http://www.stat.uni-muenchen.de/~leisch/papers/Hothorn+Leisch+Zeileis-2005.pdf">Hothorn et al. (2005)</a> and <a href="http://epub.ub.uni-muenchen.de/10604/1/tr56.pdf">Eugster et al (2008)</a>.
 </p>
 <p>
-First, a support vector machine model is fit to the Sonar data. The data are centered and scaled using the <span class="mx arg">preProc</span> argument. Note that the same random number seed is set prior to the model that is identical to the seed used for the boosted tree model. This ensures that the same resampling sets are used, which will come in handy when we compare the resampling profiles between models. </p>
+First, a support vector machine model is fit to the Sonar data. The data are centered and scaled using the <span class="mx arg">preProcess</span> argument. Note that the same random number seed is set prior to the model that is identical to the seed used for the boosted tree model. This ensures that the same resampling sets are used, which will come in handy when we compare the resampling profiles between models. </p>
 </p>
 <div class="chunk" id="train_svmFit"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">825</span><span class="hl std">)</span>
 <span class="hl std">svmFit</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">train</span><span class="hl std">(Class</span> <span class="hl opt">~</span> <span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= training,</span>
                  <span class="hl kwc">method</span> <span class="hl std">=</span> <span class="hl str">&quot;svmRadial&quot;</span><span class="hl std">,</span>
                  <span class="hl kwc">trControl</span> <span class="hl std">= fitControl,</span>
-                 <span class="hl kwc">preProc</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;center&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;scale&quot;</span><span class="hl std">),</span>
+                 <span class="hl kwc">preProcess</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;center&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;scale&quot;</span><span class="hl std">),</span>
                  <span class="hl kwc">tuneLength</span> <span class="hl std">=</span> <span class="hl num">8</span><span class="hl std">,</span>
                  <span class="hl kwc">metric</span> <span class="hl std">=</span> <span class="hl str">&quot;ROC&quot;</span><span class="hl std">)</span>
 <span class="hl std">svmFit</span>
