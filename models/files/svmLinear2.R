@@ -1,16 +1,14 @@
 modelInfo <- list(label = "Support Vector Machines with Linear Kernel",
                   library = "e1071",
                   type = c("Regression", "Classification"),
-                  parameters = data.frame(parameter = c('cost','gamma'),
-                                          class = c("numeric",'numeric'),
-                                          label = c("Cost",'Gamma')),
+                  parameters = data.frame(parameter = c('cost'),
+                                          class = c("numeric"),
+                                          label = c("Cost")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
-                      out <- expand.grid(gamma = 2:(len+1),
-                                         cost = 2 ^((1:len) - 3))
+                      out <- expand.grid(cost = 2 ^((1:len) - 3))
                     } else {
-                      out <- data.frame(gamma = 10^runif(len, min = -5, max = 2),
-                                        cost = 2^runif(len, min = -5, max = 10))
+                      out <- data.frame(cost = 2^runif(len, min = -5, max = 10))
                     }
                     out
                   }, 
@@ -21,13 +19,11 @@ modelInfo <- list(label = "Support Vector Machines with Linear Kernel",
                       out <- svm(x = as.matrix(x), y = y,
                                  kernel = "linear",
                                  cost = param$cost,
-                                 gamma= param$gamma,
                                  ...)
                     } else {
                       out <- svm(x = as.matrix(x), y = y,
                                  kernel = "linear",
                                  cost = param$cost,
-                                 gamma = param$gamma,
                                  probability = classProbs,
                                  ...)
                     }
