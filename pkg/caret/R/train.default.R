@@ -642,8 +642,7 @@ train.default <- function(x, y,
   trControl$yLimits <- NULL
   
   if(trControl$timingSamps > 0) {
-    pData <- lapply(x, function(x, n) sample(x, n, replace = TRUE), n = trControl$timingSamps)
-    pData <- as.data.frame(pData)
+    pData <- x[sample(1:nrow(x), trControl$timingSamps, replace = TRUE),,drop = FALSE]
     out$times$prediction <- system.time(predict(out, pData))
   } else  out$times$prediction <- rep(NA, 3)
   out
