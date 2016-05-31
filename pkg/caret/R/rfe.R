@@ -88,10 +88,20 @@ rfeIter <- function(x, y,
                 }    
             }
         }
-
-      if(nrow(modImp) < sizeValues[k]) stop(paste("rfe is expecting", sizeValues[k], 
-                                                  "importance values but only has", nrow(modImp)))
-      if(any(!complete.cases(modImp))) stop("There were missing importance values")
+      
+      if(nrow(modImp) < sizeValues[k]) { 
+        msg1 <- paste0("rfe is expecting ", sizeValues[k], 
+                       " importance values but only has ", nrow(modImp), ". ",
+                       "This may be caused by having zero-variance predictors, ",
+                       "excessively-correlated predictors, factor predictors ",
+                       "that were expanded into dummy variables or you may have ",
+                       "failed to drop one of your dummy variables.")
+        stop(msg1)
+      }
+      if(any(!complete.cases(modImp))){
+        stop(paste("There were missing importance values.", 
+                   "There may be linear dependencies in your predictor variables")) 
+      } 
       finalVariables[[k]] <- subset(modImp, var %in% retained)
       finalVariables[[k]]$Variables <- sizeValues[[k]]
       if(k < length(sizeValues)) retained <- as.character(modImp$var)[1:sizeValues[k+1]]
