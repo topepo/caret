@@ -122,7 +122,7 @@ stringFunc <- function (x)  {
           tuneAcc <- tuneAcc[, !(names(tuneAcc) %in% rmCols)]  
         }
       } else {
-        tuneAcc <- tuneAcc[, -sdCols, drop = FALSE]
+        if(length(sdCols) > 0) tuneAcc <- tuneAcc[, -sdCols, drop = FALSE]
       }
       
       params <- names(x$bestTune)
