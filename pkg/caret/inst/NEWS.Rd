@@ -19,6 +19,8 @@
 		\item A bug in \code{print.train} was fixed when LOO CV was used \issue{435}
 		\item With RFE, a better error message drafted by mikekaminsky is printed when the number of importance measures is off \issue{424}
 		\item Another bug was fixed in estimating the prediction time when the formula method was used \issue{420}. 
+		\item A linear SVM model was added that uses class weights.
+		\item The linear SVM model using the \cpkg{e1071} package (\code{method = "svmLinear2"}) had the \code{gamma} parameter for the RBF kernel removed. 
  	}  
 }
 
