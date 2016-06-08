@@ -60,11 +60,15 @@ modelInfo <- list(
   predict = function(modelFit, newdata, preProc = NULL, submodels = NULL) {
     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
     out <- predict(modelFit, newdata = newdata, type = "response")
+    colnames(out) <- modelFit@misc$ynames
     ordered(modelFit@misc$ynames[apply(out, 1, which.max)], levels = modelFit@misc$ynames)
     },
   prob = function(modelFit, newdata, preProc = NULL, submodels = NULL){
     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-    predict(modelFit, newdata = newdata, type = "response")
+    out <- predict(modelFit, newdata = newdata, type = "response")
+    if(is.matrix(out)) out <- as.data.frame(out)
+    colnames(out) <-  modelFit@misc$ynames
+    out
   },
   varImp = NULL,
   predictors = function(x, ...) predictors(terms(x)),

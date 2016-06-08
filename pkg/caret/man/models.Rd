@@ -40,6 +40,15 @@ For regression using package \pkg{frbs} with tuning parameters:
 }
 
 
+\strong{Adjacent Categories Probability Model for Ordinal Data} (\code{method = 'vglmAdjCat'})
+
+For classification using package \pkg{VGAM} with tuning parameters:
+\itemize{
+\item Parallel Curves (\code{parallel}, logical)
+\item Link Function (\code{link}, character)
+}
+
+
 \strong{Bagged AdaBoost} (\code{method = 'AdaBag'})
 
 For classification using packages \pkg{adabag} and \pkg{plyr} with tuning parameters:
@@ -265,6 +274,16 @@ For classification and regression using package \pkg{rpart} with tuning paramete
 }
 
 
+\strong{CART or Ordinal Responses} (\code{method = 'rpartScore'})
+
+For classification using packages \pkg{rpartScore} and \pkg{plyr} with tuning parameters:
+\itemize{
+\item Complexity Parameter (\code{cp}, numeric)
+\item Split Function (\code{split}, character)
+\item Pruning Measure (\code{prune}, character)
+}
+
+
 \strong{CHi-squared Automated Interaction Detection} (\code{method = 'chaid'})
 
 For classification using package \pkg{CHAID} with tuning parameters:
@@ -297,6 +316,16 @@ For classification and regression using package \pkg{party} with tuning paramete
 For classification and regression using package \pkg{party} with tuning parameters:
 \itemize{
 \item Max Tree Depth (\code{maxdepth}, numeric)
+\item 1 - P-Value Threshold (\code{mincriterion}, numeric)
+}
+
+
+\strong{Continuation Ratio Model for Ordinal Data} (\code{method = 'vglmContRatio'})
+
+For classification using package \pkg{VGAM} with tuning parameters:
+\itemize{
+\item Parallel Curves (\code{parallel}, logical)
+\item Link Function (\code{link}, character)
 }
 
 
@@ -329,6 +358,15 @@ For regression using package \pkg{Cubist} with tuning parameters:
 }
 
 
+\strong{Cumulative Probability Model for Ordinal Data} (\code{method = 'vglmCumulative'})
+
+For classification using package \pkg{VGAM} with tuning parameters:
+\itemize{
+\item Parallel Curves (\code{parallel}, logical)
+\item Link Function (\code{link}, character)
+}
+
+
 \strong{DeepBoost} (\code{method = 'deepboost'})
 
 For classification using package \pkg{deepboost} with tuning parameters:
@@ -338,6 +376,15 @@ For classification using package \pkg{deepboost} with tuning parameters:
 \item L1 Regularization (\code{beta}, numeric)
 \item Tree Depth Regularization (\code{lambda}, numeric)
 \item Loss (\code{loss_type}, character)
+}
+
+
+\strong{Diagonal Discriminant Analysis} (\code{method = 'dda'})
+
+For classification using package \pkg{sparsediscrim} with tuning parameters:
+\itemize{
+\item Model (\code{model}, character)
+\item Shrinkage Type (\code{shrinkage}, character)
 }
 
 
@@ -648,6 +695,16 @@ For classification using package \pkg{HDclassif} with tuning parameters:
 }
 
 
+\strong{High-Dimensional Regularized Discriminant Analysis} (\code{method = 'hdrda'})
+
+For classification using package \pkg{sparsediscrim} with tuning parameters:
+\itemize{
+\item Gamma (\code{gamma}, numeric)
+\item Lambda (\code{lambda}, numeric)
+\item Shrinkage Type (\code{shrinkage_type}, character)
+}
+
+
 \strong{Hybrid Neural Fuzzy Inference System} (\code{method = 'HYFIS'})
 
 For regression using package \pkg{frbs} with tuning parameters:
@@ -812,6 +869,15 @@ For regression using package \pkg{MASS} with no tuning parameters
 
 
 
+\strong{Linear Support Vector Machines with Class Weights} (\code{method = 'svmLinearWeights'})
+
+For classification using package \pkg{e1071} with tuning parameters:
+\itemize{
+\item Cost (\code{cost}, numeric)
+\item Class Weight (\code{weight}, numeric)
+}
+
+
 \strong{Localized Linear Discriminant Analysis} (\code{method = 'loclda'})
 
 For classification using package \pkg{klaR} with tuning parameters:
@@ -941,6 +1007,21 @@ For classification and regression using package \pkg{RSNNS} with tuning paramete
 }
 
 
+\strong{Multilayer Perceptron Network by Stochastic Gradient Descent} (\code{method = 'mlpSGD'})
+
+For regression using package \pkg{FCNN4R} with tuning parameters:
+\itemize{
+\item Number of Hidden Units (\code{size}, numeric)
+\item L2 Regularization (\code{l2reg}, numeric)
+\item RMSE Gradient Scaling (\code{lambda}, numeric)
+\item Learning Rate (\code{learn_rate}, numeric)
+\item Momentum (\code{momentum}, numeric)
+\item Decay (\code{gamma}, numeric)
+\item Batch Size (\code{minibatchsz}, numeric)
+\item Number of Models (\code{repeats}, numeric)
+}
+
+
 \strong{Multivariate Adaptive Regression Spline} (\code{method = 'earth'})
 
 For classification and regression using package \pkg{earth} with tuning parameters:
@@ -989,6 +1070,19 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 For classification using package \pkg{pamr} with tuning parameters:
 \itemize{
 \item Shrinkage Threshold (\code{threshold}, numeric)
+}
+
+
+\strong{Neural Network} (\code{method = 'mxnet'})
+
+For classification using package \pkg{mxnet} with tuning parameters:
+\itemize{
+\item Number of Hidden Units in Layer 1 (\code{layer1}, numeric)
+\item Number of Hidden Units in Layer 2 (\code{layer2}, numeric)
+\item Number of Hidden Units in Layer 3 (\code{layer3}, numeric)
+\item Learning Rate (\code{learning.rate}, numeric)
+\item Momentum (\code{momentum}, numeric)
+\item Dropout Rate (\code{dropout}, numeric)
 }
 
 
@@ -1086,8 +1180,10 @@ For classification using package \pkg{snn} with tuning parameters:
 
 \strong{Ordered Logistic or Probit Regression} (\code{method = 'polr'})
 
-For classification using package \pkg{MASS} with no tuning parameters
-
+For classification using package \pkg{MASS} with tuning parameters:
+\itemize{
+\item parameter (\code{method}, character)
+}
 
 
 \strong{Parallel Random Forest} (\code{method = 'parRF'})
@@ -1199,6 +1295,16 @@ For classification using package \pkg{nnet} with tuning parameters:
 }
 
 
+\strong{Penalized Ordinal Regression} (\code{method = 'ordinalNet'})
+
+For classification and regression using packages \pkg{ordinalNet} and \pkg{plyr} with tuning parameters:
+\itemize{
+\item Mixing Percentage (\code{alpha}, numeric)
+\item Selection Criterion (\code{criteria}, character)
+\item Link Function (\code{link}, character)
+}
+
+
 \strong{Polynomial Kernel Regularized Least Squares} (\code{method = 'krlsPoly'})
 
 For regression using package \pkg{KRLS} with tuning parameters:
@@ -1306,6 +1412,14 @@ For classification and regression using packages \pkg{e1071} and \pkg{ranger} wi
 }
 
 
+\strong{Random Forest} (\code{method = 'Rborist'})
+
+For classification and regression using package \pkg{Rborist} with tuning parameters:
+\itemize{
+\item Number of Randomly Selected Predictors (\code{predFixed}, numeric)
+}
+
+
 \strong{Random Forest} (\code{method = 'rf'})
 
 For classification and regression using package \pkg{randomForest} with tuning parameters:
@@ -1340,31 +1454,20 @@ For classification and regression using packages \pkg{Boruta} and \pkg{randomFor
 }
 
 
-\strong{Random k-Nearest Neighbors} (\code{method = 'rknn'})
-
-For classification and regression using package \pkg{rknn} with tuning parameters:
-\itemize{
-\item Number of Neighbors (\code{k}, numeric)
-\item Number of Randomly Selected Predictors (\code{mtry}, numeric)
-}
-
-
-\strong{Random k-Nearest Neighbors with Feature Selection} (\code{method = 'rknnBel'})
-
-For classification and regression using packages \pkg{rknn} and \pkg{plyr} with tuning parameters:
-\itemize{
-\item Number of Neighbors (\code{k}, numeric)
-\item Number of Randomly Selected Predictors (\code{mtry}, numeric)
-\item Number of Features Dropped (\code{d}, numeric)
-}
-
-
 \strong{Regularized Discriminant Analysis} (\code{method = 'rda'})
 
 For classification using package \pkg{klaR} with tuning parameters:
 \itemize{
 \item Gamma (\code{gamma}, numeric)
 \item Lambda (\code{lambda}, numeric)
+}
+
+
+\strong{Regularized Linear Discriminant Analysis} (\code{method = 'rlda'})
+
+For classification using package \pkg{sparsediscrim} with tuning parameters:
+\itemize{
+\item Regularization Method (\code{estimator}, character)
 }
 
 
@@ -1754,7 +1857,6 @@ For classification and regression using package \pkg{kernlab} with tuning parame
 For classification and regression using package \pkg{e1071} with tuning parameters:
 \itemize{
 \item Cost (\code{cost}, numeric)
-\item Gamma (\code{gamma}, numeric)
 }
 
 
