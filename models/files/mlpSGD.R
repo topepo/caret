@@ -3,11 +3,12 @@ modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient 
                   loop = NULL,
                   type = c('Regression'),
                   parameters = data.frame(parameter = c('size', 'l2reg', 'lambda', "learn_rate", 
-                                                        "momentum", "gamma", "minibatchsz"),
-                                          class = rep('numeric', 7),
+                                                        "momentum", "gamma", "minibatchsz", "repeats"),
+                                          class = rep('numeric', 8),
                                           label = c('#Hidden Units', 'L2 Regularization', 
                                                     'RMSE Gradient Scaling', "Learning Rate", 
-                                                    "Momentum", "Weight Decay", "Batch Size")),
+                                                    "Momentum", "Decay", "Batch Size",
+                                                    "#Models")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
                       out <- expand.grid(size = ((1:len) * 2) - 1, 
@@ -15,17 +16,19 @@ modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient 
                                          lambda = 0,
                                          learn_rate = 2e-6, 
                                          momentum = 0.9, 
-                                         gamma = c(0, 10 ^ seq(-1, -4, length = len - 1)),
-                                         minibatchsz = floor(nrow(x)/3))
+                                         gamma = 10 ^ seq(-3, -1, length = len - 1),
+                                         minibatchsz = floor(nrow(x)/3),
+                                         repeats = 1)
                     } else {
                       out <- data.frame(size = sample(2:20, replace = TRUE, size = len),
                                         l2reg = 10^runif(len, min = -5, 1),
                                         lambda = runif(len, max = .4),
                                         learn_rate = runif(len),
                                         momentum = runif(len, min = .5),
-                                        gamma = 10^runif(len, min = -5, 1),
-                                        minibatchsz = floor(rbeta(len, 1.5,3)*nrow(x))+ 1)
-                      out$minibatchsz[out$minibatchsz == nrow(x)] <- floor(nrow(x))/3
+                                        gamma = 10^runif(len, min = -3, 1),
+                                        minibatchsz = sample(1:(floor(100*2/3)+ 1), 
+                                                             replace = TRUE, size = len),
+                                        repeats = sample(1:10, replace = TRUE, size = len))
                     }
                     out
                   },
@@ -36,8 +39,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient 
                     net <- mlp_net(c(ncol(x), param$size, 1))
                     net <- mlp_set_activation(net, layer = "h", activation = "sigmoid")
                     net <- mlp_set_activation(net, layer = "o", activation = "linear")
-                    net <- mlp_rnd_weights(net)
-
+                    
                     args <- list(net = net, 
                                  input = x, output = y, 
                                  learn_rate = param$learn_rate,
@@ -52,12 +54,25 @@ modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient 
                     if(!any(names(the_dots) == "max_epochs")) 
                       args$max_epochs <- 1000
                     args <- c(args, the_dots)
-                    
-                    netobj2 <- do.call("mlp_teach_sgd", args)
+                    out <- list(models = vector(mode = "list", length = param$repeats))
+                    for(i in 1:param$repeats) {
+                      args$net <- mlp_rnd_weights(args$net)
+                      out$models[[i]] <- do.call("mlp_teach_sgd", args)
+                    }
+                    out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.matrix(newdata)) newdata <- as.matrix(newdata)
-                    mlp_eval(modelFit$net, newdata)[,1]
+                    out <- lapply(modelFit$models, 
+                                  function(obj, newdata)
+                                    mlp_eval(obj$net, input = newdata), 
+                                  newdata = newdata)
+                    out <- if(length(out) == 1) 
+                      out[[1]][,1]  else {
+                        out <- do.call("rbind", out)
+                        out <- apply(out, 1, mean)
+                      }
+                    out
                   },
                   prob =  NULL,
                   tags = c("Neural Network", "L2 Regularization"),
