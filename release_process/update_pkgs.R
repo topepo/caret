@@ -55,10 +55,16 @@ if(length(diffs) > 0) print(diffs)
 
 # devtools::install_github('dmlc/xgboost',subdir='R-package')
 
-install.packages(libs, repos = "http://cran.r-project.org", 
-                 type = "source",
-                 dependencies = c("Depends", "Suggests", "Imports"))
-
+for(i in libs) {
+  
+  cat("----------------------------------------------------------------\n",
+      i, "\n\n")
+  install.packages(i, repos = "http://cran.r-project.org", 
+                   type = "source",
+                   dependencies = c("Depends", "Suggests", "Imports"))
+  
+  cat("\n\n")
+}
 
 ###################################################################
 ## Install orphaned packages: CHAID, rknn, SDDA
