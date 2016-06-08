@@ -55,7 +55,7 @@ if(length(diffs) > 0) print(diffs)
 
 # devtools::install_github('dmlc/xgboost',subdir='R-package')
 
-for(i in libs) {
+for(i in sort(libs)) {
   
   cat("----------------------------------------------------------------\n",
       i, "\n\n")
