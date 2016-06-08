@@ -27,16 +27,20 @@ cctrl4 <- trainControl(method = "cv", number = 3,
                        summaryFunction = weight_test)
 cctrl5 <- trainControl(method = "LOOCV", summaryFunction = weight_test)
 
+grid <- expand.grid(parallel = TRUE, link = c("logit", "probit"))
+
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
                              method = "vglmCumulative", 
                              trControl = cctrl1,
+                             tuneGrid = grid, 
                              metric = "Kappa", 
                              preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = "vglmCumulative", 
+                            method = "vglmCumulative",
+                            tuneGrid = grid, 
                             trControl = cctrl1,
                             metric = "Kappa", 
                             preProc = c("center", "scale"))
@@ -50,6 +54,7 @@ set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
                               method = "vglmCumulative", 
                               trControl = cctrl2,
+                              tuneGrid = grid,
                               metric = "Kappa", 
                               preProc = c("center", "scale"))
 
@@ -58,7 +63,7 @@ set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
                                method = "vglmCumulative", 
                                trControl = cctrl3,
-                               tuneLength = 1,
+                               tuneGrid = grid[1,],
                                metric = "Kappa", 
                                preProc = c("center", "scale"))
 
@@ -70,7 +75,7 @@ test_class_cv_weight <- train(trainX, trainY,
                               weights = runif(nrow(trainX)),
                               method = "vglmCumulative", 
                               trControl = cctrl4,
-                              tuneLength = 1,
+                              tuneGrid = grid,
                               metric = "Accuracy", 
                               preProc = c("center", "scale"))
 
@@ -79,7 +84,7 @@ test_class_loo_weight <- train(trainX, trainY,
                                weights = runif(nrow(trainX)),
                                method = "vglmCumulative", 
                                trControl = cctrl5,
-                               tuneLength = 1,
+                               tuneGrid = grid,
                                metric = "Accuracy", 
                                preProc = c("center", "scale"))
 

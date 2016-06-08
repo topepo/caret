@@ -16,6 +16,8 @@ weight_test <- function (data, lev = NULL, model = NULL)  {
   postResample(data[, "pred"], data[, "obs"])
 }
 
+grid <- expand.grid(parallel = TRUE, link = "loge")
+
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE)
 cctrl2 <- trainControl(method = "LOOCV",
@@ -29,14 +31,16 @@ cctrl5 <- trainControl(method = "LOOCV", summaryFunction = weight_test)
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
-                             method = "vglmAdjCat", 
+                             method = "vglmAdjCat",
+                             tuneGrid = grid, 
                              trControl = cctrl1,
                              metric = "Kappa", 
                              preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = "vglmAdjCat", 
+                            method = "vglmAdjCat",
+                            tuneGrid = grid, 
                             trControl = cctrl1,
                             metric = "Kappa", 
                             preProc = c("center", "scale"))
@@ -48,7 +52,8 @@ test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], t
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
-                              method = "vglmAdjCat", 
+                              method = "vglmAdjCat",
+                              tuneGrid = grid, 
                               trControl = cctrl2,
                               metric = "Kappa", 
                               preProc = c("center", "scale"))
@@ -58,7 +63,7 @@ set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
                                method = "vglmAdjCat", 
                                trControl = cctrl3,
-                               tuneLength = 1,
+                               tuneGrid = grid[1,],
                                metric = "Kappa", 
                                preProc = c("center", "scale"))
 
@@ -70,7 +75,7 @@ test_class_cv_weight <- train(trainX, trainY,
                               weights = runif(nrow(trainX)),
                               method = "vglmAdjCat", 
                               trControl = cctrl4,
-                              tuneLength = 1,
+                              tuneGrid = grid,
                               metric = "Accuracy", 
                               preProc = c("center", "scale"))
 
@@ -79,7 +84,7 @@ test_class_loo_weight <- train(trainX, trainY,
                                weights = runif(nrow(trainX)),
                                method = "vglmAdjCat", 
                                trControl = cctrl5,
-                               tuneLength = 1,
+                               tuneGrid = grid,
                                metric = "Accuracy", 
                                preProc = c("center", "scale"))
 
