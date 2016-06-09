@@ -53,12 +53,13 @@ test_class_rand <- train(trainX, trainY,
                          trControl = cctrlR,
                          tuneLength = 4)
 
-set.seed(849)
-test_class_loo_model <- train(trainX, trainY, 
-                              method = "hdrda", 
-                              trControl = cctrl2,
-                              metric = "ROC", 
-                              preProc = c("center", "scale"))
+## package issues: https://github.com/ramhiser/sparsediscrim/issues/34
+# set.seed(849)
+# test_class_loo_model <- train(trainX, trainY, 
+#                               method = "hdrda", 
+#                               trControl = cctrl2,
+#                               metric = "ROC", 
+#                               preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
