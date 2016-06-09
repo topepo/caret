@@ -11,6 +11,12 @@ testing <- twoClassSim(500, ordinal = TRUE)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
+
+library(MASS)
+## polr can have issues with starting values
+mod <- polr(Class ~ ., data = training)
+strt <- c(coef(mod), mod$zeta)
+
 weight_test <- function (data, lev = NULL, model = NULL)  {
   mean(data$weights)
   postResample(data[, "pred"], data[, "obs"])
@@ -32,12 +38,14 @@ test_class_cv_model <- train(trainX, trainY,
                              method = "polr", 
                              trControl = cctrl1,
                              metric = "Kappa", 
+                             start = strt,
                              preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
                             method = "polr", 
-                            trControl = cctrl1,
+                            trControl = cctrl1, 
+                            start = strt,
                             metric = "Kappa", 
                             preProc = c("center", "scale"))
 
@@ -49,6 +57,7 @@ test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], t
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
                               method = "polr", 
+                              start = strt, 
                               trControl = cctrl2,
                               metric = "Kappa", 
                               preProc = c("center", "scale"))
@@ -57,8 +66,9 @@ set.seed(849)
 
 test_class_none_model <- train(trainX, trainY, 
                                method = "polr", 
-                               trControl = cctrl3,
-                               tuneLength = 1,
+                               trControl = cctrl3, 
+                               start = strt,
+                               tuneGrid = test_class_cv_model$bestTune,
                                metric = "Kappa", 
                                preProc = c("center", "scale"))
 
@@ -69,7 +79,8 @@ set.seed(849)
 test_class_cv_weight <- train(trainX, trainY, 
                               weights = runif(nrow(trainX)),
                               method = "polr", 
-                              trControl = cctrl4,
+                              trControl = cctrl4, 
+                              start = strt,
                               tuneLength = 1,
                               metric = "Accuracy", 
                               preProc = c("center", "scale"))
@@ -79,7 +90,8 @@ test_class_loo_weight <- train(trainX, trainY,
                                weights = runif(nrow(trainX)),
                                method = "polr", 
                                trControl = cctrl5,
-                               tuneLength = 1,
+                               tuneLength = 1, 
+                               start = strt,
                                metric = "Accuracy", 
                                preProc = c("center", "scale"))
 

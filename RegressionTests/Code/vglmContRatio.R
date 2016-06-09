@@ -52,7 +52,7 @@ test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], t
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
-                              method = modelInfo, 
+                              method = "vglmContRatio", 
                               trControl = cctrl2,
                               tuneGrid = grid,
                               metric = "Kappa", 
