@@ -926,20 +926,6 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 }
 
 
-\strong{Model Averaged Neural Network} (\code{method = 'avMxnet'})
-
-For classification using package \pkg{mxnet} with tuning parameters:
-\itemize{
-\item Number of Hidden Units in Layer 1 (\code{layer1}, numeric)
-\item Number of Hidden Units in Layer 2 (\code{layer2}, numeric)
-\item Number of Hidden Units in Layer 3 (\code{layer3}, numeric)
-\item Learning Rate (\code{learning.rate}, numeric)
-\item Momentum (\code{momentum}, numeric)
-\item Dropout Rate (\code{dropout}, numeric)
-\item Number of Models (\code{repeats}, numeric)
-}
-
-
 \strong{Model Averaged Neural Network} (\code{method = 'avNNet'})
 
 For classification and regression using package \pkg{nnet} with tuning parameters:
@@ -1070,19 +1056,6 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 For classification using package \pkg{pamr} with tuning parameters:
 \itemize{
 \item Shrinkage Threshold (\code{threshold}, numeric)
-}
-
-
-\strong{Neural Network} (\code{method = 'mxnet'})
-
-For classification using package \pkg{mxnet} with tuning parameters:
-\itemize{
-\item Number of Hidden Units in Layer 1 (\code{layer1}, numeric)
-\item Number of Hidden Units in Layer 2 (\code{layer2}, numeric)
-\item Number of Hidden Units in Layer 3 (\code{layer3}, numeric)
-\item Learning Rate (\code{learning.rate}, numeric)
-\item Momentum (\code{momentum}, numeric)
-\item Dropout Rate (\code{dropout}, numeric)
 }
 
 

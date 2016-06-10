@@ -71,7 +71,7 @@ modelInfo <- list(
     out
   },
   varImp = NULL,
-  predictors = function(x, ...) predictors(terms(x)),
+  predictors = function(x, ...) caret:::predictors.terms(x@terms$terms),
   levels = function(x)
     if (any(names(x) == "obsLevels")) x$obsLevels else NULL,
   tags = c("Logistic Regression", "Linear Classifier", "Accepts Case Weights", "Ordinal Outcomes"),
