@@ -221,7 +221,7 @@ twoClassSummary <- function (data, lev = NULL, model = NULL)
   requireNamespaceQuietStop('pROC')
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"])))
     stop("levels of observed and predicted data do not match")
-  rocObject <- try(pROC::roc(data$obs, data[, lev[1]], direction = "<"), silent = TRUE)
+  rocObject <- try(pROC::roc(data$obs, data[, lev[1]], direction = ">"), silent = TRUE)
   rocAUC <- if(class(rocObject)[1] == "try-error") NA else rocObject$auc
   out <- c(rocAUC,
            sensitivity(data[, "pred"], data[, "obs"], lev[1]),
