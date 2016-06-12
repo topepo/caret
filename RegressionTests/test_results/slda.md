@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62), `ipred` (0.9-5)
- * tested on 2015-12-31 at 17:47
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68), `ipred` (0.9-5)
+ * tested on 2016-06-10 at 17:45
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64), `ipred` (0.9-5)
- * tested on 2016-01-04 at 14:32
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70), `ipred` (0.9-5)
+ * tested on 2016-06-12 at 13:25
 
 
 Results:
@@ -38,11 +38,24 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.76s (new) 0.77s
+Execution times: (old) 0.77s (new) 0.75s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences (n-o):                
+      mean 1.456
+      min  1.456
+      max  1.456
+    correlation:  NA 
+
+ parameter ROC_new ROC_old Diff Flag
+      none  0.6453   0.636  1.5    *
+
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -59,11 +72,24 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.16s (new) 1.23s
+Execution times: (old) 1.48s (new) 1.47s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences (n-o):                
+      mean 1.456
+      min  1.456
+      max  1.456
+    correlation:  NA 
+
+ parameter ROC_new ROC_old Diff Flag
+      none  0.6453   0.636  1.5    *
+
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -80,11 +106,24 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 2.24s (new) 2.25s
+Execution times: (old) 2.53s (new) 2.39s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences (n-o):                
+      mean 4.248
+      min  4.248
+      max  4.248
+    correlation:  NA 
+
+ parameter ROC_new ROC_old Diff Flag
+      none  0.5104  0.4896  4.2    *
+
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -101,7 +140,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.48s (new) 0.52s
+Execution times: (old) 0.53s (new) 0.5s
 
 Test Results:
 

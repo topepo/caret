@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `bnclassify` (0.3.2), `caret` (6.0-62)
- * tested on 2015-12-31 at 17:54
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `bnclassify` (0.3.2), `caret` (6.0-68)
+ * tested on 2016-06-10 at 17:51
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `bnclassify` (0.3.2), `caret` (6.0-64)
- * tested on 2016-01-04 at 14:39
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `bnclassify` (0.3.2), `caret` (6.0-70)
+ * tested on 2016-06-12 at 13:33
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.63s (new) 6.8s
+Execution times: (old) 5.99s (new) 6.34s
 
 Test Results:
 
@@ -50,7 +50,16 @@ Test Results:
 
 Object class(es): `varImp.train`
 
- * _Equal results_
+ * ***UNequal results***: differences (o-n):
+<pre>
+     Class1           Class2      
+ Min.   :-17.08   Min.   :-17.08  
+ 1st Qu.:-16.52   1st Qu.:-16.52  
+ Median :-16.43   Median :-16.43  
+ Mean   :  2.54   Mean   :  2.54  
+ 3rd Qu.:-16.16   3rd Qu.:-16.16  
+ Max.   :100.00   Max.   :100.00  
+</pre>
 
 **Test Case**: `class_loo_model`
 
@@ -65,11 +74,16 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.61m (new) 2.61m
+Execution times: (old) 2.29m (new) 2.43m
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences < 0.1%
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -86,7 +100,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.64s (new) 0.66s
+Execution times: (old) 0.62s (new) 0.66s
 
 Test Results:
 
@@ -137,7 +151,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.16s (new) 2.96s
+Execution times: (old) 2.58s (new) 2.81s
 
 Test Results:
 

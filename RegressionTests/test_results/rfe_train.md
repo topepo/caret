@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62), `plyr` (1.8.3)
- * tested on 2015-12-31 at 17:38
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68), `plyr` (1.8.4)
+ * tested on 2016-06-10 at 17:37
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64), `plyr` (1.8.3)
- * tested on 2016-01-04 at 14:23
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70), `plyr` (1.8.4)
+ * tested on 2016-06-12 at 13:16
 
 
 Results:
@@ -35,7 +35,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 20
 
 
-Execution times: (old) 22.84s (new) 26.67s
+Execution times: (old) 25.7s (new) 25.46s
 
 Test Results:
 
@@ -52,7 +52,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15
 
 
-Execution times: (old) 10.34s (new) 10.6s
+Execution times: (old) 11.28s (new) 11.91s
 
 Test Results:
 
@@ -69,7 +69,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 22
 
 
-Execution times: (old) 14.32s (new) 15.05s
+Execution times: (old) 15.18s (new) 16.33s
 
 Test Results:
 
@@ -86,7 +86,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 17
 
 
-Execution times: (old) 13.23s (new) 13.46s
+Execution times: (old) 14.25s (new) 14.79s
 
 Test Results:
 
@@ -103,13 +103,27 @@ Object class(es): `numeric`
 
 Object class(es): `factor`
 
- * _Equal results_
+ * ***UNequal results***:
+<pre>
+   Agreement: 64.2% (321/500)
+        newer
+older    Class1 Class2
+  Class1    222     52
+  Class2    127     99
+</pre>
 
 **Test Case**: `cv_pred_form_class`
 
 Object class(es): `factor`
 
- * _Equal results_
+ * ***UNequal results***:
+<pre>
+   Agreement: 62.2% (311/500)
+        newer
+older    Class1 Class2
+  Class1    217     57
+  Class2    132     94
+</pre>
 
 **Test Case**: `loo_model`
 
@@ -121,7 +135,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 20
 
 
-Execution times: (old) 28.8m (new) 29.78m
+Execution times: (old) 29.29m (new) 32.61m
 
 Test Results:
 
@@ -138,7 +152,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15
 
 
-Execution times: (old) 2.63m (new) 2.68m
+Execution times: (old) 2.84m (new) 2.94m
 
 Test Results:
 
@@ -155,7 +169,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 22
 
 
-Execution times: (old) 19.41m (new) 19.83m
+Execution times: (old) 21.31m (new) 22.62m
 
 Test Results:
 
@@ -172,7 +186,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 17
 
 
-Execution times: (old) 3.45m (new) 3.5m
+Execution times: (old) 3.7m (new) 3.9m
 
 Test Results:
 
@@ -195,5 +209,12 @@ Object class(es): `factor`
 
 Object class(es): `factor`
 
- * _Equal results_
+ * ***UNequal results***:
+<pre>
+   Agreement: 67.8% (339/500)
+        newer
+older    Class1 Class2
+  Class1    253     47
+  Class2    114     86
+</pre>
 

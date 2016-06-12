@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62), `doParallel` (1.0.10), `foreach` (1.4.3), `iterators` (1.0.7), `MASS` (7.3-45), `randomGLM` (1.02-1)
- * tested on 2015-12-31 at 17:35
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68), `doParallel` (1.0.10), `foreach` (1.4.3), `iterators` (1.0.8), `MASS` (7.3-45), `randomGLM` (1.02-1)
+ * tested on 2016-06-10 at 17:34
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64), `doParallel` (1.0.10), `foreach` (1.4.3), `iterators` (1.0.7), `MASS` (7.3-45), `randomGLM` (1.02-1)
- * tested on 2016-01-04 at 14:19
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70), `doParallel` (1.0.10), `foreach` (1.4.3), `iterators` (1.0.8), `MASS` (7.3-45), `randomGLM` (1.02-1)
+ * tested on 2016-06-12 at 13:12
 
 
 Results:
@@ -38,11 +38,16 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 35.74s (new) 39.63s
+Execution times: (old) 36.51s (new) 35.92s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences < 0.1%
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -59,11 +64,16 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 36.31s (new) 41.32s
+Execution times: (old) 37.53s (new) 37.1s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences < 0.1%
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -71,7 +81,16 @@ Test Results:
 
 Object class(es): `varImp.train`
 
- * _Equal results_
+ * ***UNequal results***: differences (o-n):
+<pre>
+     Class1            Class2       
+ Min.   :-7.9096   Min.   :-7.9096  
+ 1st Qu.:-2.6206   1st Qu.:-2.6206  
+ Median :-0.4288   Median :-0.4288  
+ Mean   : 4.0582   Mean   : 4.0582  
+ 3rd Qu.: 6.2500   3rd Qu.: 6.2500  
+ Max.   :25.0000   Max.   :25.0000  
+</pre>
 
 **Test Case**: `class_loo_model`
 
@@ -86,7 +105,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 3.65m (new) 4.14m
+Execution times: (old) 3.72m (new) 3.7m
 
 Test Results:
 
@@ -107,7 +126,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.74s (new) 6.51s
+Execution times: (old) 5.91s (new) 5.79s
 
 Test Results:
 
@@ -176,7 +195,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 19.84s (new) 21.27s
+Execution times: (old) 20.35s (new) 20.28s
 
 Test Results:
 
@@ -196,7 +215,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 19.76s (new) 22.3s
+Execution times: (old) 20.37s (new) 20.43s
 
 Test Results:
 
@@ -222,7 +241,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.2m (new) 1.21m
+Execution times: (old) 1.24m (new) 1.22m
 
 Test Results:
 
@@ -242,7 +261,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.52s (new) 2.66s
+Execution times: (old) 2.63s (new) 2.71s
 
 Test Results:
 

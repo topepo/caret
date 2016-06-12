@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62), `frbs` (3.1-0)
- * tested on 2015-12-31 at 17:08
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68), `frbs` (3.1-0)
+ * tested on 2016-06-10 at 17:03
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64), `frbs` (3.1-0)
- * tested on 2016-01-04 at 13:49
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70), `frbs` (3.1-0)
+ * tested on 2016-06-12 at 12:39
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.16m (new) 6.3m
+Execution times: (old) 6.17m (new) 6.04m
 
 Test Results:
 
@@ -58,7 +58,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.16m (new) 6.06m
+Execution times: (old) 6.16m (new) 5.96m
 
 Test Results:
 
@@ -84,7 +84,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1438.94h (new) 1496.53h
+Execution times: (old) 1418.38h (new) 1540.74h
 
 Test Results:
 
@@ -104,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 36.3s (new) 36.23s
+Execution times: (old) 35.79s (new) 37.53s
 
 Test Results:
 
@@ -113,19 +113,19 @@ Test Results:
 
 **Test Case**: `reg_none_pred`
 
-Object class(es): `numeric`
+Object class(es): `matrix`
 
  * _Equal results_
 
 **Test Case**: `reg_pred`
 
-Object class(es): `numeric`
+Object class(es): `matrix`
 
  * _Equal results_
 
 **Test Case**: `reg_pred_form`
 
-Object class(es): `numeric`
+Object class(es): `matrix`
 
  * _Equal results_
 
@@ -148,7 +148,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.07m (new) 3.13m
+Execution times: (old) 3.17m (new) 3.12m
 
 Test Results:
 

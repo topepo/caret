@@ -9,111 +9,113 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62)
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68)
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64)
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70)
 
 
 Results:
 ---------
 
-**Test Case**: `1_pred`
+**Test Case**: `external_cv_booleans`
+
+Object class(es): `numeric`
+
+ * _Equal results_
+
+**Test Case**: `external_cv_bottom_only`
+
+Object class(es): `numeric`
+
+ * _Equal results_
+
+**Test Case**: `external_cv_no_trimming`
+
+Object class(es): `numeric`
+
+ * _Equal results_
+
+**Test Case**: `external_cv_top_only`
+
+Object class(es): `numeric`
+
+ * _Equal results_
+
+**Test Case**: `external_loo_booleans`
+
+Object class(es): `numeric`
+
+ * _Equal results_
+
+**Test Case**: `external_loo_bottom_only`
+
+Object class(es): `numeric`
+
+ * _Equal results_
+
+**Test Case**: `external_loo_no_trimming`
+
+Object class(es): `numeric`
+
+ * _Equal results_
+
+**Test Case**: `external_loo_top_only`
+
+Object class(es): `numeric`
+
+ * _Equal results_
+
+**Test Case**: `internal_cv_booleans`
 
 Object class(es): `data.frame`
 
  * _Equal results_
 
-**Test Case**: `10_pred`
+**Test Case**: `internal_cv_bottom_only`
 
 Object class(es): `data.frame`
 
  * _Equal results_
 
-**Test Case**: `11_pred`
+**Test Case**: `internal_cv_no_trimming`
 
 Object class(es): `data.frame`
 
  * _Equal results_
 
-**Test Case**: `12_pred`
+**Test Case**: `internal_cv_top_only`
 
 Object class(es): `data.frame`
 
  * _Equal results_
 
-**Test Case**: `2_pred`
+**Test Case**: `internal_loo_booleans`
 
 Object class(es): `data.frame`
 
  * _Equal results_
 
-**Test Case**: `3_pred`
+**Test Case**: `internal_loo_bottom_only`
 
 Object class(es): `data.frame`
 
  * _Equal results_
 
-**Test Case**: `4_pred`
+**Test Case**: `internal_loo_no_trimming`
 
 Object class(es): `data.frame`
 
  * _Equal results_
 
-**Test Case**: `5_pred`
+**Test Case**: `internal_loo_top_only`
 
 Object class(es): `data.frame`
 
  * _Equal results_
-
-**Test Case**: `6_pred`
-
-Object class(es): `data.frame`
-
- * _Equal results_
-
-**Test Case**: `7_pred`
-
-Object class(es): `data.frame`
-
- * _Equal results_
-
-**Test Case**: `8_pred`
-
-Object class(es): `data.frame`
-
- * _Equal results_
-
-**Test Case**: `9_pred`
-
-Object class(es): `data.frame`
-
- * _Equal results_
-
-**Test Case**: `ext_pred`
-
-Object class(es): `data.frame`
-
- * ***UNequal results***: differences (o-n):
-<pre>
-       p1          p2          p3          p4          p5          p6   
- Min.   :0   Min.   :0   Min.   :0   Min.   :0   Min.   :0   Min.   :0  
- 1st Qu.:0   1st Qu.:0   1st Qu.:0   1st Qu.:0   1st Qu.:0   1st Qu.:0  
- Median :0   Median :0   Median :0   Median :0   Median :0   Median :0  
- Mean   :0   Mean   :0   Mean   :0   Mean   :0   Mean   :0   Mean   :0  
- 3rd Qu.:0   3rd Qu.:0   3rd Qu.:0   3rd Qu.:0   3rd Qu.:0   3rd Qu.:0  
- Max.   :0   Max.   :0   Max.   :0   Max.   :0   Max.   :0   Max.   :0  
-       p7          p8          p9         p10         p11         p12   
- Min.   :0   Min.   :0   Min.   :0   Min.   :0   Min.   :0   Min.   :0  
- 1st Qu.:0   1st Qu.:0   1st Qu.:0   1st Qu.:0   1st Qu.:0   1st Qu.:0  
- Median :0   Median :0   Median :0   Median :0   Median :0   Median :0  
- Mean   :0   Mean   :0   Mean   :0   Mean   :0   Mean   :0   Mean   :0  
- 3rd Qu.:0   3rd Qu.:0   3rd Qu.:0   3rd Qu.:0   3rd Qu.:0   3rd Qu.:0  
- Max.   :0   Max.   :0   Max.   :0   Max.   :0   Max.   :0   Max.   :0  
-</pre>
 

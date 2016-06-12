@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62), `gplots` (2.17.0), `rocc` (1.2), `ROCR` (1.0-7)
- * tested on 2015-12-31 at 17:42
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68), `gplots` (3.0.1), `rocc` (1.2), `ROCR` (1.0-7)
+ * tested on 2016-06-10 at 17:41
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64), `gplots` (2.17.0), `rocc` (1.2), `ROCR` (1.0-7)
- * tested on 2016-01-04 at 14:28
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70), `gplots` (3.0.1), `rocc` (1.2), `ROCR` (1.0-7)
+ * tested on 2016-06-12 at 13:19
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.84s (new) 0.82s
+Execution times: (old) 0.82s (new) 0.82s
 
 Test Results:
 
@@ -58,7 +58,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.32s (new) 1.33s
+Execution times: (old) 1.57s (new) 1.58s
 
 Test Results:
 
@@ -78,7 +78,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.55s (new) 4.55s
+Execution times: (old) 4.88s (new) 4.86s
 
 Test Results:
 
@@ -98,7 +98,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.48s (new) 0.46s
+Execution times: (old) 0.49s (new) 0.53s
 
 Test Results:
 
@@ -142,7 +142,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.81s (new) 0.81s
+Execution times: (old) 0.78s (new) 0.79s
 
 Test Results:
 

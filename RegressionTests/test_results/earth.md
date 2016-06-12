@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62), `earth` (4.4.3), `plotmo` (3.1.4), `plotrix` (3.5-12), `TeachingDemos` (2.9)
- * tested on 2015-12-31 at 16:58
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68), `earth` (4.4.4), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
+ * tested on 2016-06-10 at 16:54
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64), `earth` (4.4.3), `plotmo` (3.1.4), `plotrix` (3.5-12), `TeachingDemos` (2.9)
- * tested on 2016-01-04 at 13:41
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70), `earth` (4.4.4), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
+ * tested on 2016-06-12 at 12:30
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.94s (new) 1.03s
+Execution times: (old) 0.98s (new) 1.07s
 
 Test Results:
 
@@ -58,7 +58,47 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.49s (new) 1.57s
+Execution times: (old) 1.76s (new) 1.8s
+
+Test Results:
+
+ * _Equal results for Accuracy_
+ * _Equal results for Kappa_
+
+**Test Case**: `class_cv_weight`
+
+Object class(es): `train`
+
+Model Configuration:
+
+ * Non-formula method
+ * Resampling: Cross-Validated (3 fold)
+ * Grid search
+ * Pre-processing: None  
+ * 3 tuning parameter combinations were evaluated
+
+
+Execution times: (old) 1.04s (new) 1.12s
+
+Test Results:
+
+ * _Equal results for Accuracy_
+ * _Equal results for Kappa_
+
+**Test Case**: `class_cv_weight_form`
+
+Object class(es): `train` and `train.formula`
+
+Model Configuration:
+
+ * Formula method
+ * Resampling: Cross-Validated (3 fold)
+ * Grid search
+ * Pre-processing: None  
+ * 3 tuning parameter combinations were evaluated
+
+
+Execution times: (old) 0.96s (new) 1.06s
 
 Test Results:
 
@@ -84,7 +124,27 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.25s (new) 5.41s
+Execution times: (old) 5.88s (new) 5.8s
+
+Test Results:
+
+ * _Equal results for Accuracy_
+ * _Equal results for Kappa_
+
+**Test Case**: `class_loo_weight`
+
+Object class(es): `train`
+
+Model Configuration:
+
+ * Non-formula method
+ * Resampling: Leave-One-Out Cross-Validation
+ * Grid search
+ * Pre-processing: None  
+ * 3 tuning parameter combinations were evaluated
+
+
+Execution times: (old) 5.51s (new) 5.46s
 
 Test Results:
 
@@ -104,7 +164,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.51s (new) 0.51s
+Execution times: (old) 0.58s (new) 0.58s
 
 Test Results:
 
@@ -160,7 +220,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.01s (new) 1.05s
+Execution times: (old) 1.06s (new) 1.06s
 
 Test Results:
 
@@ -186,7 +246,27 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.91s (new) 0.85s
+Execution times: (old) 0.93s (new) 0.98s
+
+Test Results:
+
+ * _Equal results for RMSE_
+ * _Equal results for Rsquared_
+
+**Test Case**: `reg_cv_form_weights`
+
+Object class(es): `train` and `train.formula`
+
+Model Configuration:
+
+ * Formula method
+ * Resampling: Cross-Validated (3 fold)
+ * Grid search
+ * Pre-processing: centered (20), scaled (20)  
+ * 3 tuning parameter combinations were evaluated
+
+
+Execution times: (old) 0.99s (new) 1s
 
 Test Results:
 
@@ -206,7 +286,27 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.04s (new) 1.1s
+Execution times: (old) 1.1s (new) 1.19s
+
+Test Results:
+
+ * _Equal results for RMSE_
+ * _Equal results for Rsquared_
+
+**Test Case**: `reg_cv_model_weights`
+
+Object class(es): `train`
+
+Model Configuration:
+
+ * Non-formula method
+ * Resampling: Cross-Validated (3 fold)
+ * Grid search
+ * Pre-processing: centered (20), scaled (20)  
+ * 3 tuning parameter combinations were evaluated
+
+
+Execution times: (old) 1.16s (new) 1.23s
 
 Test Results:
 
@@ -232,7 +332,27 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.53s (new) 3.75s
+Execution times: (old) 4s (new) 4.13s
+
+Test Results:
+
+ * _Equal results for RMSE_
+ * _Equal results for Rsquared_
+
+**Test Case**: `reg_loo_model_weights`
+
+Object class(es): `train`
+
+Model Configuration:
+
+ * Non-formula method
+ * Resampling: Leave-One-Out Cross-Validation
+ * Grid search
+ * Pre-processing: centered (20), scaled (20)  
+ * 3 tuning parameter combinations were evaluated
+
+
+Execution times: (old) 4.46s (new) 4.39s
 
 Test Results:
 
@@ -252,7 +372,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.5s (new) 0.52s
+Execution times: (old) 0.56s (new) 0.58s
 
 Test Results:
 
@@ -261,19 +381,19 @@ Test Results:
 
 **Test Case**: `reg_none_pred`
 
-Object class(es): `numeric`
+Object class(es): `matrix`
 
  * _Equal results_
 
 **Test Case**: `reg_pred`
 
-Object class(es): `numeric`
+Object class(es): `matrix`
 
  * _Equal results_
 
 **Test Case**: `reg_pred_form`
 
-Object class(es): `numeric`
+Object class(es): `matrix`
 
  * _Equal results_
 
@@ -296,7 +416,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.99s (new) 1.02s
+Execution times: (old) 1.14s (new) 1.1s
 
 Test Results:
 

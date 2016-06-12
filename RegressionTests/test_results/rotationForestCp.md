@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62), `plyr` (1.8.3), `rotationForest` (0.1), `rpart` (4.1-10)
- * tested on 2015-12-31 at 17:43
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68), `plyr` (1.8.4), `rotationForest` (0.1), `rpart` (4.1-10)
+ * tested on 2016-06-10 at 17:41
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64), `plyr` (1.8.3), `rotationForest` (0.1), `rpart` (4.1-10)
- * tested on 2016-01-04 at 14:28
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70), `plyr` (1.8.4), `rotationForest` (0.1), `rpart` (4.1-10)
+ * tested on 2016-06-12 at 13:19
 
 
 Results:
@@ -38,11 +38,20 @@ Model Configuration:
  * 27 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.24s (new) 6.16s
+Execution times: (old) 6.48s (new) 6.27s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences (n-o):                 
+      mean  0.945
+      min  -1.390
+      max  11.457
+    correlation:  0.9345 
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -59,11 +68,20 @@ Model Configuration:
  * 27 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.89s (new) 7.26s
+Execution times: (old) 7.48s (new) 7.37s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences (n-o):                 
+      mean  0.945
+      min  -1.390
+      max  11.457
+    correlation:  0.9345 
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -80,7 +98,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.53s (new) 0.57s
+Execution times: (old) 0.56s (new) 0.56s
 
 Test Results:
 
@@ -137,7 +155,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 17.64s (new) 17.51s
+Execution times: (old) 18.28s (new) 17.99s
 
 Test Results:
 

@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62), `class` (7.3-14), `earth` (4.4.3), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.5-12), `TeachingDemos` (2.9)
- * tested on 2015-12-31 at 16:59
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68), `class` (7.3-14), `earth` (4.4.4), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
+ * tested on 2016-06-10 at 16:57
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64), `class` (7.3-14), `earth` (4.4.3), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.5-12), `TeachingDemos` (2.9)
- * tested on 2016-01-04 at 13:42
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70), `class` (7.3-14), `earth` (4.4.4), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
+ * tested on 2016-06-12 at 12:32
 
 
 Results:
@@ -38,11 +38,26 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.04s (new) 1.06s
+Execution times: (old) 1.08s (new) 1.07s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences (n-o):                
+      mean 1.413
+      min  0.000
+      max  4.239
+    correlation:  1 
+
+ nprune degree ROC_new ROC_old Diff Flag
+     14      1  0.8565  0.8565  0.0     
+      2      1  0.6403  0.6143  4.2    *
+      8      1  0.8565  0.8565  0.0     
+
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -59,11 +74,26 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.65s (new) 1.6s
+Execution times: (old) 2.03s (new) 1.98s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences (n-o):                
+      mean 1.413
+      min  0.000
+      max  4.239
+    correlation:  1 
+
+ nprune degree ROC_new ROC_old Diff Flag
+     14      1  0.8565  0.8565  0.0     
+      2      1  0.6403  0.6143  4.2    *
+      8      1  0.8565  0.8565  0.0     
+
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -86,7 +116,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.46s (new) 7.39s
+Execution times: (old) 8.65s (new) 8.4s
 
 Test Results:
 
@@ -107,7 +137,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.54s (new) 0.55s
+Execution times: (old) 0.57s (new) 0.61s
 
 Test Results:
 
@@ -170,7 +200,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.06s (new) 1s
+Execution times: (old) 1.01s (new) 1.18s
 
 Test Results:
 

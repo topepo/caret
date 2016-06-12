@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62), `nnet` (7.3-11)
- * tested on 2015-12-31 at 17:32
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68), `nnet` (7.3-12)
+ * tested on 2016-06-10 at 17:30
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64), `nnet` (7.3-11)
- * tested on 2016-01-04 at 14:16
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70), `nnet` (7.3-12)
+ * tested on 2016-06-12 at 13:08
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.17s (new) 1.35s
+Execution times: (old) 1.25s (new) 1.2s
 
 Test Results:
 
@@ -58,7 +58,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.81s (new) 2.04s
+Execution times: (old) 2.15s (new) 2.14s
 
 Test Results:
 
@@ -78,7 +78,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 13.46s (new) 15.68s
+Execution times: (old) 15.91s (new) 15.48s
 
 Test Results:
 
@@ -98,7 +98,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.54s (new) 0.6s
+Execution times: (old) 0.55s (new) 0.55s
 
 Test Results:
 
@@ -149,7 +149,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.11s (new) 1.24s
+Execution times: (old) 1.19s (new) 1.2s
 
 Test Results:
 
@@ -175,7 +175,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.32s (new) 1.56s
+Execution times: (old) 1.44s (new) 1.39s
 
 Test Results:
 
@@ -195,7 +195,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.27s (new) 2.31s
+Execution times: (old) 2.4s (new) 2.37s
 
 Test Results:
 
@@ -215,7 +215,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 14s (new) 15.9s
+Execution times: (old) 17.2s (new) 16.6s
 
 Test Results:
 
@@ -235,7 +235,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.51s (new) 0.57s
+Execution times: (old) 0.52s (new) 0.53s
 
 Test Results:
 
@@ -244,19 +244,19 @@ Test Results:
 
 **Test Case**: `reg_none_pred`
 
-Object class(es): `numeric`
+Object class(es): `matrix`
 
  * _Equal results_
 
 **Test Case**: `reg_pred`
 
-Object class(es): `numeric`
+Object class(es): `matrix`
 
  * _Equal results_
 
 **Test Case**: `reg_pred_form`
 
-Object class(es): `numeric`
+Object class(es): `matrix`
 
  * _Equal results_
 
@@ -279,7 +279,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.46s (new) 1.91s
+Execution times: (old) 1.72s (new) 1.72s
 
 Test Results:
 

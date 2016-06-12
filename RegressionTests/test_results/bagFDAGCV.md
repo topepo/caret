@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62), `class` (7.3-14), `earth` (4.4.3), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.5-12), `TeachingDemos` (2.9)
- * tested on 2015-12-31 at 16:53
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68), `class` (7.3-14), `earth` (4.4.4), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
+ * tested on 2016-06-10 at 16:48
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64), `class` (7.3-14), `earth` (4.4.3), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.5-12), `TeachingDemos` (2.9)
- * tested on 2016-01-04 at 13:36
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70), `class` (7.3-14), `earth` (4.4.4), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
+ * tested on 2016-06-12 at 12:23
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.57s (new) 2.88s
+Execution times: (old) 2.6s (new) 2.62s
 
 Test Results:
 
@@ -59,7 +59,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.2s (new) 3.23s
+Execution times: (old) 3.39s (new) 3.55s
 
 Test Results:
 
@@ -86,7 +86,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.05m (new) 1.07m
+Execution times: (old) 1.04m (new) 1.07m
 
 Test Results:
 
@@ -107,7 +107,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.72s (new) 0.72s
+Execution times: (old) 0.74s (new) 0.79s
 
 Test Results:
 
@@ -170,7 +170,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 5.1s (new) 4.91s
+Execution times: (old) 4.88s (new) 5.04s
 
 Test Results:
 

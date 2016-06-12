@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62), `plyr` (1.8.3), `xgboost` (0.4-2)
- * tested on 2015-12-31 at 17:58
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68), `plyr` (1.8.4), `xgboost` (0.4-3)
+ * tested on 2016-06-10 at 17:54
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64), `plyr` (1.8.3), `xgboost` (0.4-2)
- * tested on 2016-01-04 at 14:43
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70), `plyr` (1.8.4), `xgboost` (0.4-3)
+ * tested on 2016-06-12 at 13:37
 
 
 Results:
@@ -38,11 +38,31 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.96s (new) 0.91s
+Execution times: (old) 0.9s (new) 0.99s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences (n-o):                 
+      mean  7.998
+      min   0.000
+      max  38.837
+    correlation:  0.966 
+
+ eta max_depth gamma colsample_bytree min_child_weight nrounds ROC_new ROC_old Diff Flag
+ 0.1         1     0              0.7                1       1  0.5813  0.4187 38.8    *
+ 0.1         1     0              0.7                1      10  0.7667  0.7667  0.0     
+ 0.1         4     0              0.7                1       1  0.6958  0.6958  0.0     
+ 0.1         4     0              0.7                1      10  0.7684  0.7684  0.0     
+ 0.4         1     0              0.7                1       1  0.5558  0.4442 25.1    *
+ 0.4         1     0              0.7                1      10  0.8566  0.8566  0.0     
+ 0.4         4     0              0.7                1       1  0.6307  0.6307  0.0     
+ 0.4         4     0              0.7                1      10  0.8327  0.8327  0.0     
+
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -59,11 +79,31 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.64s (new) 1.66s
+Execution times: (old) 1.82s (new) 2.05s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences (n-o):                 
+      mean  7.998
+      min   0.000
+      max  38.837
+    correlation:  0.966 
+
+ eta max_depth gamma colsample_bytree min_child_weight nrounds ROC_new ROC_old Diff Flag
+ 0.1         1     0              0.7                1       1  0.5813  0.4187 38.8    *
+ 0.1         1     0              0.7                1      10  0.7667  0.7667  0.0     
+ 0.1         4     0              0.7                1       1  0.6958  0.6958  0.0     
+ 0.1         4     0              0.7                1      10  0.7684  0.7684  0.0     
+ 0.4         1     0              0.7                1       1  0.5558  0.4442 25.1    *
+ 0.4         1     0              0.7                1      10  0.8566  0.8566  0.0     
+ 0.4         4     0              0.7                1       1  0.6307  0.6307  0.0     
+ 0.4         4     0              0.7                1      10  0.8327  0.8327  0.0     
+
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -86,11 +126,16 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 12.37s (new) 12.65s
+Execution times: (old) 14.17s (new) 15.2s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences < 0.1%
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -107,7 +152,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.47s (new) 0.47s
+Execution times: (old) 0.48s (new) 0.52s
 
 Test Results:
 
@@ -167,10 +212,10 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Random search
  * Pre-processing: None  
- * 40 tuning parameter combinations were evaluated
+ * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.67s (new) 4.69s
+Execution times: (old) 1.36s (new) 1.52s
 
 Test Results:
 
@@ -196,7 +241,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.82s (new) 0.86s
+Execution times: (old) 0.84s (new) 0.89s
 
 Test Results:
 
@@ -216,7 +261,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.16s (new) 1.2s
+Execution times: (old) 1.29s (new) 1.39s
 
 Test Results:
 
@@ -242,7 +287,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 12.13s (new) 12.49s
+Execution times: (old) 14.54s (new) 15.49s
 
 Test Results:
 
@@ -262,7 +307,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.48s (new) 0.49s
+Execution times: (old) 0.5s (new) 0.5s
 
 Test Results:
 
@@ -303,10 +348,10 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Random search
  * Pre-processing: None  
- * 40 tuning parameter combinations were evaluated
+ * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 8.37s (new) 8.53s
+Execution times: (old) 1.5s (new) 1.66s
 
 Test Results:
 

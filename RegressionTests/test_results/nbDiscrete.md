@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `bnclassify` (0.3.2), `caret` (6.0-62)
- * tested on 2015-12-31 at 17:23
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `bnclassify` (0.3.2), `caret` (6.0-68)
+ * tested on 2016-06-10 at 17:20
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `bnclassify` (0.3.2), `caret` (6.0-64)
- * tested on 2016-01-04 at 14:06
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `bnclassify` (0.3.2), `caret` (6.0-70)
+ * tested on 2016-06-12 at 12:57
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.01s (new) 2.1s
+Execution times: (old) 1.95s (new) 1.92s
 
 Test Results:
 
@@ -50,7 +50,16 @@ Test Results:
 
 Object class(es): `varImp.train`
 
- * _Equal results_
+ * ***UNequal results***: differences (o-n):
+<pre>
+     Class1           Class2      
+ Min.   :-17.08   Min.   :-17.08  
+ 1st Qu.:-16.52   1st Qu.:-16.52  
+ Median :-16.43   Median :-16.43  
+ Mean   :  2.54   Mean   :  2.54  
+ 3rd Qu.:-16.16   3rd Qu.:-16.16  
+ Max.   :100.00   Max.   :100.00  
+</pre>
 
 **Test Case**: `class_loo_model`
 
@@ -65,7 +74,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 11.7s (new) 11.96s
+Execution times: (old) 11.58s (new) 11.48s
 
 Test Results:
 
@@ -86,7 +95,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.48s (new) 0.5s
+Execution times: (old) 0.5s (new) 0.54s
 
 Test Results:
 
@@ -137,7 +146,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.14s (new) 1.17s
+Execution times: (old) 1.09s (new) 1.09s
 
 Test Results:
 

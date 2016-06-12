@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62), `denpro` (0.9.2), `quantreg` (5.19), `regpro` (0.1.0), `rqPen` (1.2), `SparseM` (1.7)
- * tested on 2015-12-31 at 17:44
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68), `denpro` (0.9.2), `quantreg` (5.21), `regpro` (0.1.1), `rqPen` (1.4), `SparseM` (1.7)
+ * tested on 2016-06-10 at 17:42
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64), `denpro` (0.9.2), `quantreg` (5.19), `regpro` (0.1.0), `rqPen` (1.2), `SparseM` (1.7)
- * tested on 2016-01-04 at 14:29
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70), `denpro` (0.9.2), `quantreg` (5.21), `regpro` (0.1.1), `rqPen` (1.4), `SparseM` (1.7)
+ * tested on 2016-06-12 at 13:20
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.02s (new) 1.1s
+Execution times: (old) 1.08s (new) 1.01s
 
 Test Results:
 
@@ -58,7 +58,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.87s (new) 1.94s
+Execution times: (old) 2.34s (new) 2.17s
 
 Test Results:
 
@@ -78,7 +78,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 8.25s (new) 8.32s
+Execution times: (old) 10.11s (new) 10.03s
 
 Test Results:
 
@@ -98,7 +98,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.49s (new) 0.5s
+Execution times: (old) 0.5s (new) 0.5s
 
 Test Results:
 
@@ -142,7 +142,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.17s (new) 1.22s
+Execution times: (old) 1.34s (new) 1.32s
 
 Test Results:
 

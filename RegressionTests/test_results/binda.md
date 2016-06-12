@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `binda` (1.0.3), `caret` (6.0-62), `entropy` (1.2.1), `QSARdata` (1.3)
- * tested on 2015-12-31 at 16:54
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `binda` (1.0.3), `caret` (6.0-68), `entropy` (1.2.1), `QSARdata` (1.3)
+ * tested on 2016-06-10 at 16:49
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `binda` (1.0.3), `caret` (6.0-64), `entropy` (1.2.1), `QSARdata` (1.3)
- * tested on 2016-01-04 at 13:37
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `binda` (1.0.3), `caret` (6.0-70), `entropy` (1.2.1), `QSARdata` (1.3)
+ * tested on 2016-06-12 at 12:24
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.05s (new) 1.1s
+Execution times: (old) 0.88s (new) 0.88s
 
 Test Results:
 
@@ -59,7 +59,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.16s (new) 1.18s
+Execution times: (old) 1.52s (new) 1.57s
 
 Test Results:
 
@@ -80,7 +80,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.47s (new) 2.72s
+Execution times: (old) 2.42s (new) 2.66s
 
 Test Results:
 
@@ -101,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.46s (new) 0.55s
+Execution times: (old) 0.53s (new) 0.55s
 
 Test Results:
 
@@ -158,7 +158,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.85s (new) 0.98s
+Execution times: (old) 1.09s (new) 0.92s
 
 Test Results:
 

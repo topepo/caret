@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62), `MASS` (7.3-45), `mclust` (5.0.2), `robustDA` (1.1), `Rsolnp` (1.15), `truncnorm` (1.0-7)
- * tested on 2015-12-31 at 17:42
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68), `MASS` (7.3-45), `mclust` (5.2), `robustDA` (1.1), `Rsolnp` (1.16)
+ * tested on 2016-06-10 at 17:39
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64), `MASS` (7.3-45), `mclust` (5.0.2), `robustDA` (1.1), `Rsolnp` (1.15), `truncnorm` (1.0-7)
- * tested on 2016-01-04 at 14:27
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70), `MASS` (7.3-45), `mclust` (5.2), `robustDA` (1.1), `Rsolnp` (1.16)
+ * tested on 2016-06-12 at 13:18
 
 
 Results:
@@ -38,11 +38,16 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.8s (new) 4.77s
+Execution times: (old) 4.55s (new) 4.36s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences < 0.1%
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -59,11 +64,16 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.36s (new) 5.4s
+Execution times: (old) 5.37s (new) 5.29s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences < 0.1%
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -80,7 +90,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.25m (new) 1.24m
+Execution times: (old) 1.23m (new) 1.19m
 
 Test Results:
 
@@ -101,7 +111,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.02s (new) 0.95s
+Execution times: (old) 0.95s (new) 1.11s
 
 Test Results:
 
@@ -113,37 +123,85 @@ Test Results:
 
 Object class(es): `factor`
 
- * _Equal results_
+ * ***UNequal results***:
+<pre>
+   Agreement: 90.4% (452/500)
+        newer
+older    Class1 Class2
+  Class1    294     31
+  Class2     17    158
+</pre>
 
 **Test Case**: `class_none_prob`
 
 Object class(es): `data.frame`
 
- * _Equal results_
+ * ***UNequal results***: differences (o-n):
+<pre>
+     Class1               Class2          
+ Min.   :-0.9999942   Min.   :-0.9999944  
+ 1st Qu.: 0.0000000   1st Qu.:-0.0005471  
+ Median : 0.0000000   Median : 0.0000000  
+ Mean   : 0.0248565   Mean   :-0.0248565  
+ 3rd Qu.: 0.0005471   3rd Qu.: 0.0000000  
+ Max.   : 0.9999944   Max.   : 0.9999942  
+</pre>
 
 **Test Case**: `class_pred`
 
 Object class(es): `factor`
 
- * _Equal results_
+ * ***UNequal results***:
+<pre>
+   Agreement: 90.4% (452/500)
+        newer
+older    Class1 Class2
+  Class1    294     31
+  Class2     17    158
+</pre>
 
 **Test Case**: `class_pred_form`
 
 Object class(es): `factor`
 
- * _Equal results_
+ * ***UNequal results***:
+<pre>
+   Agreement: 90.4% (452/500)
+        newer
+older    Class1 Class2
+  Class1    294     31
+  Class2     17    158
+</pre>
 
 **Test Case**: `class_prob`
 
 Object class(es): `data.frame`
 
- * _Equal results_
+ * ***UNequal results***: differences (o-n):
+<pre>
+     Class1               Class2          
+ Min.   :-0.9999942   Min.   :-0.9999944  
+ 1st Qu.: 0.0000000   1st Qu.:-0.0005471  
+ Median : 0.0000000   Median : 0.0000000  
+ Mean   : 0.0248565   Mean   :-0.0248565  
+ 3rd Qu.: 0.0005471   3rd Qu.: 0.0000000  
+ Max.   : 0.9999944   Max.   : 0.9999942  
+</pre>
 
 **Test Case**: `class_prob_form`
 
 Object class(es): `data.frame`
 
- * _Equal results_
+ * ***UNequal results***: differences (o-n):
+<pre>
+     Class1               Class2          
+ Min.   :-0.9999942   Min.   :-0.9999944  
+ 1st Qu.: 0.0000000   1st Qu.:-0.0005471  
+ Median : 0.0000000   Median : 0.0000000  
+ Mean   : 0.0248565   Mean   :-0.0248565  
+ 3rd Qu.: 0.0005471   3rd Qu.: 0.0000000  
+ Max.   : 0.9999944   Max.   : 0.9999942  
+</pre>
 
 **Test Case**: `levels`
 

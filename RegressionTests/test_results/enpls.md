@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62), `enpls` (1.1)
- * tested on 2015-12-31 at 16:58
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68), `enpls` (1.1)
+ * tested on 2016-06-10 at 16:55
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64), `enpls` (1.1)
- * tested on 2016-01-04 at 13:41
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70), `enpls` (1.1)
+ * tested on 2016-06-12 at 12:31
 
 
 Results:
@@ -38,28 +38,12 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 25.97s (new) 35.35s
+Execution times: (old) 37.26s (new) 36.88s
 
 Test Results:
 
- * ***UNequal results for RMSE***:
-
-<pre>
-    no pairs of results without missing values
-  maxcomp RMSE_new Rsquared_new RMSE_old Rsquared_old Diff
-1       4 16.38294    0.2456603       NA           NA   NA
-2      20       NA           NA 17.58545    0.1743396   NA
-</pre>
-
- * ***UNequal results for Rsquared***:
-
-<pre>
-    no pairs of results without missing values
-  maxcomp RMSE_new Rsquared_new RMSE_old Rsquared_old Diff
-1       4 16.38294    0.2456603       NA           NA   NA
-2      20       NA           NA 17.58545    0.1743396   NA
-</pre>
-
+ * _Equal results for RMSE_
+ * _Equal results for Rsquared_
 
 **Test Case**: `reg_cv_model`
 
@@ -74,28 +58,12 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 26.4s (new) 36.05s
+Execution times: (old) 37.35s (new) 37.6s
 
 Test Results:
 
- * ***UNequal results for RMSE***:
-
-<pre>
-    no pairs of results without missing values
-  maxcomp RMSE_new Rsquared_new RMSE_old Rsquared_old Diff
-1       4 16.38294    0.2456603       NA           NA   NA
-2      20       NA           NA 17.58545    0.1743396   NA
-</pre>
-
- * ***UNequal results for Rsquared***:
-
-<pre>
-    no pairs of results without missing values
-  maxcomp RMSE_new Rsquared_new RMSE_old Rsquared_old Diff
-1       4 16.38294    0.2456603       NA           NA   NA
-2      20       NA           NA 17.58545    0.1743396   NA
-</pre>
-
+ * _Equal results for RMSE_
+ * _Equal results for Rsquared_
 
 **Test Case**: `reg_loo_model`
 
@@ -110,28 +78,12 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 6.67m (new) 4.56m
+Execution times: (old) 4.49m (new) 4.29m
 
 Test Results:
 
- * ***UNequal results for RMSE***:
-
-<pre>
-    no pairs of results without missing values
-  maxcomp RMSE_new Rsquared_new RMSE_old Rsquared_old Diff
-1       4  16.2473    0.1585766       NA           NA   NA
-2      20       NA           NA  16.3246    0.1548541   NA
-</pre>
-
- * ***UNequal results for Rsquared***:
-
-<pre>
-    no pairs of results without missing values
-  maxcomp RMSE_new Rsquared_new RMSE_old Rsquared_old Diff
-1       4  16.2473    0.1585766       NA           NA   NA
-2      20       NA           NA  16.3246    0.1548541   NA
-</pre>
-
+ * _Equal results for RMSE_
+ * _Equal results for Rsquared_
 
 **Test Case**: `reg_none_model`
 
@@ -146,7 +98,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 12.8s (new) 8.63s
+Execution times: (old) 8.7s (new) 8.48s
 
 Test Results:
 
@@ -157,40 +109,19 @@ Test Results:
 
 Object class(es): `numeric`
 
- * ***UNequal results***:
-<pre>
-    %differences (n-o):                  
-      mean  0.0349
-      min  -0.2570
-      max   0.7408
-    correlation:  1 
-</pre>
+ * _Equal results_
 
 **Test Case**: `reg_pred`
 
 Object class(es): `numeric`
 
- * ***UNequal results***:
-<pre>
-    %differences (n-o):                  
-      mean  0.0753
-      min  -0.4359
-      max   1.6546
-    correlation:  1 
-</pre>
+ * _Equal results_
 
 **Test Case**: `reg_pred_form`
 
 Object class(es): `numeric`
 
- * ***UNequal results***:
-<pre>
-    %differences (n-o):                  
-      mean  0.0753
-      min  -0.4359
-      max   1.6546
-    correlation:  1 
-</pre>
+ * _Equal results_
 
 **Test Case**: `reg_predictors1`
 

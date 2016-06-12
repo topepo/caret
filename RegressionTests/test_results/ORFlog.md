@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-62), `class` (7.3-14), `e1071` (1.6-7), `gplots` (2.17.0), `mda` (0.4-8), `obliqueRF` (0.3), `pls` (2.5-0), `ROCR` (1.0-7)
- * tested on 2015-12-31 at 17:28
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-68), `class` (7.3-14), `e1071` (1.6-7), `gplots` (3.0.1), `mda` (0.4-8), `obliqueRF` (0.3), `pls` (2.5-0), `ROCR` (1.0-7)
+ * tested on 2016-06-10 at 17:26
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2015-11-18 r69655)
- * `caret` (6.0-64), `class` (7.3-14), `e1071` (1.6-7), `gplots` (2.17.0), `mda` (0.4-8), `obliqueRF` (0.3), `pls` (2.5-0), `ROCR` (1.0-7)
- * tested on 2016-01-04 at 14:11
+ * R Under development (unstable) (2016-06-07 r70726)
+ * `caret` (6.0-70), `class` (7.3-14), `e1071` (1.6-7), `gplots` (3.0.1), `mda` (0.4-8), `obliqueRF` (0.3), `pls` (2.5-0), `ROCR` (1.0-7)
+ * tested on 2016-06-12 at 13:03
 
 
 Results:
@@ -38,11 +38,26 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 8.21s (new) 8.21s
+Execution times: (old) 8.46s (new) 8.38s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences (n-o):                 
+      mean  4.213
+      min   0.000
+      max  12.640
+    correlation:  0.8174 
+
+ mtry ROC_new ROC_old Diff Flag
+    2  0.8611  0.8611  0.0     
+    4  0.7839  0.6959 12.6    *
+    7  0.7269  0.7269  0.0     
+
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -59,11 +74,26 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 9.27s (new) 9.59s
+Execution times: (old) 9.1s (new) 9.25s
 
 Test Results:
 
- * _Equal results for ROC_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences (n-o):                 
+      mean  4.213
+      min   0.000
+      max  12.640
+    correlation:  0.8174 
+
+ mtry ROC_new ROC_old Diff Flag
+    2  0.8611  0.8611  0.0     
+    4  0.7839  0.6959 12.6    *
+    7  0.7269  0.7269  0.0     
+
+</pre>
+
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -80,7 +110,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.55m (new) 2.57m
+Execution times: (old) 2.64m (new) 2.54m
 
 Test Results:
 
@@ -101,7 +131,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.41s (new) 1.45s
+Execution times: (old) 1.51s (new) 1.46s
 
 Test Results:
 
@@ -158,7 +188,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.86s (new) 5.88s
+Execution times: (old) 6.1s (new) 6.13s
 
 Test Results:
 
