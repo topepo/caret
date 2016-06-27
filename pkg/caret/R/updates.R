@@ -1,4 +1,4 @@
-update.train <- function(object, param = NULL, forceRefit = F, ...)
+update.train <- function(object, param = NULL, forceRefit = FALSE, ...)
 {
   if(!forceRefit && is.null(param)) {
     if(all(names(object) != "modelInfo")) {
