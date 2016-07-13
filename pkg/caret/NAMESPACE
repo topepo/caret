@@ -71,6 +71,9 @@ export(anovaScores,
        expoTrans,
        extractPrediction,
        extractProb,
+       F_meas,
+       F_meas.default,
+       F_meas.table,    
        featurePlot,
        filterVarImp,
        findCorrelation,
@@ -162,6 +165,9 @@ export(anovaScores,
        posPredValue.default,
        posPredValue.table,
        postResample,
+       precision,
+       precision.default,
+       precision.table,
        predict.avNNet,
        predict.bag,
        predict.bagEarth,
@@ -186,7 +192,11 @@ export(anovaScores,
        print.train,
        probFunction,
        progress,
+       prSummary,
        R2,
+       recall,
+       recall.default,
+       recall.table,       
        resampleHist,
        resamples,
        resamples.default,
@@ -287,6 +297,9 @@ S3method(dummyVars,       default)
 S3method(BoxCoxTrans,     default)
 S3method(cluster,         default)
 S3method(expoTrans,       default)
+S3method(precision,       default)
+S3method(recall,          default)
+S3method(F_meas,          default)
 
 S3method(calibration, formula)
 S3method(lift,        formula)
@@ -452,6 +465,9 @@ S3method(confusionMatrix, table)
 
 S3method(sensitivity, table)
 S3method(specificity, table)
+S3method(precision,   table)
+S3method(recall,      table)
+S3method(F_meas,      table)
 
 S3method(posPredValue,    table)
 S3method(negPredValue,    table)
