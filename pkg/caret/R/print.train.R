@@ -108,7 +108,17 @@ stringFunc <- function (x)  {
         
         finalTune$Selected <- "*"
         
+        ## See https://stat.ethz.ch/pipermail/r-help/2016-July/440230.html
+        if(any(names(tuneAcc) %in% "method")) 
+          names(tuneAcc)[names(tuneAcc) %in% "method"] <- ".method"
+        if(any(names(finalTune) %in% "method")) 
+          names(finalTune)[names(finalTune) %in% "method"] <- ".method"
+        
         tuneAcc <- merge(tuneAcc, finalTune, all.x = TRUE)
+        
+        if(any(names(tuneAcc) %in% ".method")) 
+          names(tuneAcc)[names(tuneAcc) %in% ".method"] <- "method"
+
         tuneAcc$Selected[is.na(tuneAcc$Selected)] <- ""
         
       } else optString <- ""
