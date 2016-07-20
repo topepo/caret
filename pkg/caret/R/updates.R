@@ -1,5 +1,6 @@
-update.train <- function(object, param = NULL, ...)
+update.train <- function(object, param = NULL, forceRefit = FALSE, ...)
 {
+  if(forceRefit & is.null(param)) param <- object$bestTune
   if(is.null(param)) {
     if(all(names(object) != "modelInfo")) {
       funcs <- try(getModelInfo(object$method)[[1]], silent = TRUE)
