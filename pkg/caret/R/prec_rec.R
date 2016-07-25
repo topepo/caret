@@ -9,7 +9,7 @@ recall <- function(data, ...) UseMethod("recall")
     data <- matrix(NA, 2, 2)
     
     colnames(data) <- rownames(data) <- c("rel", "irrel")
-    irrelCol <- which(!(colnames(tmp) %in% irrelevant))
+    irrelCol <- which(!(colnames(tmp) %in% relevant))
     relCol <- which(colnames(tmp) %in% relevant)
     
     data[1, 1] <- sum(tmp[relCol, relCol])
@@ -17,10 +17,9 @@ recall <- function(data, ...) UseMethod("recall")
     data[2, 1] <- sum(tmp[irrelCol, relCol])      
     data[2, 2] <- sum(tmp[irrelCol, irrelCol])
     data <- as.table(data)
-    irrelevant <- "irrel"
     relevant <- "rel"
     rm(tmp)
-  } else irrelevant <- rownames(data)[rownames(data) != relevant]
+  }
   numer <- data[relevant, relevant]
   denom <- sum(data[, relevant])
   rec <- ifelse(denom > 0, numer / denom, NA)  

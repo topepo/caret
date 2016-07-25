@@ -3,6 +3,13 @@
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+\section{Changes in version 6.0-XX}{
+	\itemize{
+		\item Precision, recall, and F measure functions were added along with one called \code{prSummary} that is analogous to \code{twoClassSummary}. Also, \code{confusionMatrix} gains an argument called \code{mode} that dictates what output is shown. 
+
+	}
+}
+
 \section{Changes in version 6.0-70}{
 	\itemize{
 		\item Based on a comment by Alexis Sarda, \code{method = "ctree2"} does not fix \code{mincriterion = 0} and tunes over this parameter. For a fixed depth, \code{mincriterion} can further prune the tree \issue{409}. 

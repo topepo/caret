@@ -31,16 +31,16 @@
 \usage{
 recall(data, ...)
 \method{recall}{default}(data, reference, relevant = levels(reference)[1], na.rm = TRUE, ...)
-\method{recall}{table}(data, relevant = levels(reference)[1], ...)
+\method{recall}{table}(data, relevant = rownames(data)[1], ...)
 
 precision(data, ...)
 \method{precision}{default}(data, reference, relevant = levels(reference)[1], na.rm = TRUE, ...)
-\method{precision}{table}(data, relevant = levels(reference)[1], ...)
+\method{precision}{table}(data, relevant = rownames(data)[1], ...)
 
 F_meas(data, ...)
-\method{F_meas}{default}(data, reference, relevant = levels(reference)[1], 
+\method{F_meas}{default}(data, reference, relevant = levels(reference)[1], beta = 1,
              na.rm = TRUE, ...)
-\method{F_meas}{table}(data, relevant = levels(reference)[1], ...)
+\method{F_meas}{table}(data, relevant = rownames(data)[1], beta = 1, ...)
 }
 
 \arguments{
@@ -78,7 +78,7 @@ See the references for discussions of the statistics.
 \author{Max Kuhn}
 \references{Kuhn, M. (2008), ``Building predictive models in R using the caret package, '' \emph{Journal of Statistical Software}, (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf}).
 
-Buckland, M., & Gey, F. (1994). The relationship between Recall and Precision. \emph{Journal of the American Society for Information Science}, 45(1), 12–19.
+Buckland, M., & Gey, F. (1994). The relationship between Recall and Precision. \emph{Journal of the American Society for Information Science}, 45(1), 12-19.
 
 Powers, D. (2007). Evaluation: From Precision, Recall and F Factor to ROC, Informedness, Markedness and Correlation. Technical Report SIE-07-001, Flinders University
 }

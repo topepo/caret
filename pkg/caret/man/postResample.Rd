@@ -24,7 +24,6 @@ prSummary(data, lev = NULL, model = NULL)
 mnLogLoss(data, lev = NULL, model = NULL)
 multiClassSummary(data, lev = NULL, model = NULL)
 
-
 R2(pred, obs, formula = "corr", na.rm = FALSE)
 RMSE(pred, obs, na.rm = FALSE)
 

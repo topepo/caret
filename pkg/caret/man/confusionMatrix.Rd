@@ -11,17 +11,18 @@ confusionMatrix(data, ...)
 
 \method{confusionMatrix}{default}(data, reference, positive = NULL, 
                 dnn = c("Prediction", "Reference"), 
-                prevalence = NULL, ...)
+                prevalence = NULL,  mode = "sens_spec", ...)
 
-\method{confusionMatrix}{table}(data, positive = NULL, prevalence = NULL, ...)
+\method{confusionMatrix}{table}(data, positive = NULL, prevalence = NULL, mode = "sens_spec", ...)
 
 }
 \arguments{
   \item{data}{a factor of predicted classes (for the default method) or an object of class \code{\link[base]{table}}.}
   \item{reference}{a factor of classes to be used as the true results}
-  \item{positive}{an optional character string for the factor level that corresponds to a "positive" result (if that makes sense for your data). If there are only two factor levels, the first level will be used as the "positive" result.}
+  \item{positive}{an optional character string for the factor level that corresponds to a "positive" result (if that makes sense for your data). If there are only two factor levels, the first level will be used as the "positive" result. When \code{mode = "prec_recall"}, \code{positive} is the same value used for \code{relevant} for functions \code{\link{precision}}, \code{\link{recall}}, and \code{\link{F_meas.table}}.}
   \item{dnn}{a character vector of dimnames for the table}
   \item{prevalence}{a numeric value or matrix for the rate of the "positive" class of the data. When \code{data} has two levels, \code{prevalence} should be a single numeric value. Otherwise, it should be a vector of numeric values with elements for each class. The vector should have names corresponding to the classes.}
+  \item{mode}{a single character string either "sens_spec", "prec_recall", or "everything"}
   \item{\dots}{options to be passed to \code{table}. NOTE: do not include \code{dnn} here}
 }
 \details{
@@ -46,11 +47,17 @@ The formulas used here are:
 \deqn{Sensitivity = A/(A+C)}
 \deqn{Specificity = D/(B+D)}
 \deqn{Prevalence = (A+C)/(A+B+C+D)}
-\deqn{PPV = (sensitivity * Prevalence)/((sensitivity*Prevalence) + ((1-specificity)*(1-Prevalence)))}
-\deqn{NPV = (specificity * (1-Prevalence))/(((1-sensitivity)*Prevalence) + ((specificity)*(1-Prevalence)))}
+\deqn{PPV = (sensitivity * prevalence)/((sensitivity*prevalence) + ((1-specificity)*(1-prevalence)))}
+\deqn{NPV = (specificity * (1-prevalence))/(((1-sensitivity)*prevalence) + ((specificity)*(1-prevalence)))}
 \deqn{Detection Rate =  A/(A+B+C+D)}
 \deqn{Detection Prevalence =  (A+B)/(A+B+C+D)}
-\deqn{Balanced Accuracy =  (Sensitivity+Specificity)/2}
+\deqn{Balanced Accuracy =  (sensitivity+specificity)/2}
+
+\deqn{Precision = A/(A+B)}
+\deqn{Recall = A/(A+C)}
+\deqn{F1 = (1+beta^2)*precision*recall/((beta^2 * precision)+recall)}
+
+where \code{beta = 1} for this function. 
 
 See the references for discussions of the first five formulas.
 
@@ -68,7 +75,7 @@ a list with elements
   \item{table}{the results of \code{table} on \code{data} and  \code{reference}}
   \item{positive}{the positive result level}
   \item{overall}{a numeric vector with overall accuracy and Kappa statistic values}
-  \item{byClass}{the sensitivity, specificity, positive predictive value, negative predictive value, prevalence, detection rate, detection prevalence and balanced accuracy for each class. For two class systems, this is calculated once using the \code{positive} argument}
+  \item{byClass}{the sensitivity, specificity, positive predictive value, negative predictive value, precision, recall, F1, prevalence, detection rate, detection prevalence and balanced accuracy for each class. For two class systems, this is calculated once using the \code{positive} argument}
 
 }
 \note{ 
