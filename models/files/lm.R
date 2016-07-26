@@ -6,7 +6,7 @@ modelInfo <- list(label = "Linear Regression",
                                           class = "logical",
                                           label = "intercept"),
                   grid = function(x, y, len = NULL, search = "grid") 
-                    data.frame(intercept = c(TRUE, FALSE)),
+                    data.frame(intercept = TRUE),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
