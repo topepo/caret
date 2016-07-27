@@ -191,6 +191,12 @@ if(getRversion() >= "2.15.1"){
   
   ## parse_sampling: no visible binding for global variable 'sampling_methods'
   utils::globalVariables(c('sampling_methods'))
+  
+  ## ggplot.calibration: no visible binding for global variable 'midpoint'
+  ## ggplot.calibration: no visible binding for global variable 'Percent'
+  ## ggplot.calibration: no visible binding for global variable 'Lower'
+  ## ggplot.calibration: no visible binding for global variable 'Upper'
+  utils::globalVariables(c('midpoint', 'Percent', 'Lower', 'Upper'))
 }
 
 ###################################################################

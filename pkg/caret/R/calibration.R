@@ -67,8 +67,13 @@ calibCalc <- function(x, class = levels(obs)[1], cuts = 11) {
   
   dataPoints <- ddply(binData,
                       .(bin),
-                      function(x, cls) c(Percent = mean(x$class == cls)*100,
-                                         Count = sum(x$class == cls)),
+                      function(x, cls) {
+                        tmp <- binom.test(x = sum(x$class == cls), n = nrow(x))
+                        out <- c(Percent = mean(x$class == cls)*100,
+                                 Lower  = tmp$conf.int[1]*100,
+                                 Upper  = tmp$conf.int[2]*100,
+                                 Count = sum(x$class == cls))
+                      },
                       cls = class,
                       .drop = FALSE)
   dataPoints$midpoint <- NA
@@ -81,10 +86,9 @@ calibCalc <- function(x, class = levels(obs)[1], cuts = 11) {
 plot.calibration <- function(x, y = NULL, ...) 
   xyplot(x = x, data = NULL, ...)
 
-xyplot.calibration <- function(x, data = NULL, ...)
-{
+xyplot.calibration <- function(x, data = NULL, ...){
   lFormula <- "Percent ~ midpoint"
-  defaults <- c("calibModelVar", "bin", "Percent", "Count", "midpoint")
+  defaults <- c("calibModelVar", "bin", "Percent", "Count", "Lower", "Upper", "midpoint")
   extras <- names(x$data)[!(names(x$data) %in% defaults)]
   if(length(extras) > 0) lFormula <- paste(lFormula, paste(extras, collapse = "*"), sep = "|")
   
@@ -104,6 +108,26 @@ xyplot.calibration <- function(x, data = NULL, ...)
   
   args <- c(args, opts)    
   do.call("xyplot", args)    
+}
+
+
+ggplot.calibration <- function(data, ..., bwidth = 2, dwidth = 3){
+  data$data$Model <- data$data$calibModelVar
+  mods <- length(unique(data$data$Model))
+  if(mods == 1) {
+    out <- ggplot(data$data, aes(x = midpoint, y = Percent)) + 
+      geom_abline(slope = 1, intercept = 0, col = "black", lty = 2, alpha = .3) +
+      geom_point() + 
+      geom_errorbar(aes(ymin = Lower, ymax = Upper), width = bwidth)
+  } else {
+    out <- ggplot(data$data, aes(x = midpoint, y = Percent,
+                              group = Model, color = Model)) + 
+      geom_abline(slope = 1, intercept = 0, col = "black", lty = 2, alpha = .3) +
+      geom_point(position = position_dodge(width = dwidth)) + 
+      geom_errorbar(aes(ymin = Lower, ymax = Upper), width = bwidth, 
+                    position = position_dodge(width = dwidth)) 
+  }
+  out + xlab("Bin Midpoint") + ylab("Observed Event Percentage")
 }
 
 panel.calibration <- function(...)

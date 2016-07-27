@@ -3,6 +3,7 @@
 \alias{calibration.formula}
 \alias{calibration.default}
 \alias{xyplot.calibration}
+\alias{ggplot.calibration}
 \alias{panel.calibration}
 \title{
 Probability Calibration Plot
@@ -20,6 +21,7 @@ calibration(x, ...)
             lattice.options = NULL, ...)
 
 \method{xyplot}{calibration}(x, data, ...)
+\method{ggplot}{calibration}(data, ..., bwidth = 2, dwidth = 3)
 
 panel.calibration(...)
 }
@@ -28,7 +30,7 @@ panel.calibration(...)
 a \code{lattice} formula (see \code{\link[lattice:xyplot]{xyplot}} for syntax) where the left-hand side of the formula is a factor class variable of the observed outcome and the right-hand side specifies one or model columns corresponding to a numeric ranking variable for a model (e.g. class probabilities). The classification variable should have two levels. 
 }
   \item{data}{
-For \code{calibration.formula}, a data frame (or more precisely, anything that is a valid \code{envir} argument in \code{eval}, e.g., a list or an environment) containing values for any variables in the formula, as well as \code{groups} and \code{subset} if applicable. If not found in \code{data}, or if \code{data} is unspecified, the variables are looked for in the environment of the formula. This argument is not used for \code{xyplot.calibration}.
+For \code{calibration.formula}, a data frame (or more precisely, anything that is a valid \code{envir} argument in \code{eval}, e.g., a list or an environment) containing values for any variables in the formula, as well as \code{groups} and \code{subset} if applicable. If not found in \code{data}, or if \code{data} is unspecified, the variables are looked for in the environment of the formula. This argument is not used for \code{xyplot.calibration}. For {ggplot.calibration}, \code{data} should be an object of class "\code{calibration}"."
 }
   \item{class}{
 a character string for the class of interest
@@ -42,6 +44,7 @@ An expression that evaluates to a logical or integer indexing vector. It is eval
   \item{lattice.options}{
 A list that could be supplied to \code{\link[lattice:lattice.options]{lattice.options}} 
 }
+ \item{bwidth, dwidth}{a numeric value for the confidence interval bar width and dodge width, respectively. In the latter case, a dodge is only used when multiple models are specified in the formula.}  
   \item{\dots}{
 options to pass through to \code{\link[lattice:xyplot]{xyplot}} or the panel function (not used in \code{calibration.formula}).
 }
@@ -60,6 +63,8 @@ To construct the calibration plot, the following steps are used for each model:
 This implementation uses the \pkg{lattice} function \code{\link[lattice:xyplot]{xyplot}}, so plot elements can be changed via panel functions, \code{\link[lattice:trellis.par.get]{trellis.par.set}} or other means. \code{calibration} uses the panel function \code{\link{panel.calibration}} by default, but it can be changed by passing that argument into \code{xyplot.calibration}.
 
 The following elements are set by default in the plot but can be changed by passing new values into \code{xyplot.calibration}: \code{xlab = "Bin Midpoint"}, \code{ylab = "Observed Event Percentage"}, \code{type = "o"}, \code{ylim = extendrange(c(0, 100))},\code{xlim = extendrange(c(0, 100))} and \code{panel = panel.calibration}
+
+For the \code{ggplot} method, confidence intervals on the estimated proportions (from \code{\link[stats]{binom.test}}) are also shown.  
 
 }
 \value{
