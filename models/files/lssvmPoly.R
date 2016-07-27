@@ -1,22 +1,25 @@
 modelInfo <- list(label = "Least Squares Support Vector Machine with Polynomial Kernel",
                   library = "kernlab",
                   type = c("Classification"),
-                  parameters = data.frame(parameter = c('degree', 'scale'),
-                                          class = c("numeric", "numeric"),
-                                          label = c('Polynomial Degree', 'Scale')),
+                  parameters = data.frame(parameter = c('degree', 'scale', 'tau'),
+                                          class = c("numeric", "numeric", "numeric"),
+                                          label = c('Polynomial Degree', 'Scale', 'Regularization Parameter')),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
                       out <- expand.grid(degree = seq(1, min(len, 3)),      
-                                         scale = 10 ^((1:len) - 4))
+                                         scale = 10 ^((1:len) - 4),
+                                         tau = 2 ^((1:len) - 5))
                     } else {
                       out <- data.frame(degree = sample(1:3, size = len, replace = TRUE),
-                                        scale = 10^runif(len, min = -5, 0))
+                                        scale = 10^runif(len, min = -5, log10(2)),
+                                        tau = 2^runif(len, min = -5, max = 10))
                     }
                     out
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     lssvm(x = as.matrix(x), y = y,
+                          tau = param$tau,
                           kernel = polydot(degree = param$degree,
                                            scale = param$scale,
                                            offset = 1), ...)         
