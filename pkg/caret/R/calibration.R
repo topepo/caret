@@ -68,11 +68,15 @@ calibCalc <- function(x, class = levels(obs)[1], cuts = 11) {
   dataPoints <- ddply(binData,
                       .(bin),
                       function(x, cls) {
-                        tmp <- binom.test(x = sum(x$class == cls), n = nrow(x))
-                        out <- c(Percent = mean(x$class == cls)*100,
-                                 Lower  = tmp$conf.int[1]*100,
-                                 Upper  = tmp$conf.int[2]*100,
-                                 Count = sum(x$class == cls))
+                        if(nrow(x) > 0) {
+                          tmp <- binom.test(x = sum(x$class == cls), n = nrow(x))
+                          out <- c(Percent = mean(x$class == cls)*100,
+                                   Lower  = tmp$conf.int[1]*100,
+                                   Upper  = tmp$conf.int[2]*100,
+                                   Count = sum(x$class == cls))
+                        } else out <- c(Percent = NA, Lower  = NA,
+                                        Upper  = NA, Count = 0)
+                        out
                       },
                       cls = class,
                       .drop = FALSE)
@@ -121,7 +125,7 @@ ggplot.calibration <- function(data, ..., bwidth = 2, dwidth = 3){
       geom_errorbar(aes(ymin = Lower, ymax = Upper), width = bwidth)
   } else {
     out <- ggplot(data$data, aes(x = midpoint, y = Percent,
-                              group = Model, color = Model)) + 
+                                 group = Model, color = Model)) + 
       geom_abline(slope = 1, intercept = 0, col = "black", lty = 2, alpha = .3) +
       geom_point(position = position_dodge(width = dwidth)) + 
       geom_errorbar(aes(ymin = Lower, ymax = Upper), width = bwidth, 
