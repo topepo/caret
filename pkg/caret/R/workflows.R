@@ -228,13 +228,6 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         } 
       }
       
-      tr_x = x[modelIndex,,drop = FALSE ]
-      tr_y = y[modelIndex] 
-      ho_x <- x[holdoutIndex,, drop = FALSE] 
-      ho_y = y[holdoutIndex] 
-      
-save(mod, tr_x, tr_y, ho_x, ho_y, predicted, file = "~/tmp/kknn.RData")      
-      
       if(!is.null(submod))
       {
         ## merge the fixed and seq parameter values together
