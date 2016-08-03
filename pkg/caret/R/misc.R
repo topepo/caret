@@ -502,3 +502,26 @@ outcome_conversion <- function(x, lv) {
   }
   x
 }
+
+check_na_conflict <- function(call_obj) {
+  
+  ## check for na.action info:
+  if("na.action" %in% names(as.list(call_obj))) {
+    nam <- as.character(call_obj$na.action)
+  } else nam <- "na.fail" 
+  
+  ## check for preprocess info:
+  has_pp <- grepl("^preProc", names(call_obj))
+  if(any(has_pp)) {
+    pp <- as.character(call_obj[has_pp])
+    imputes <- if(any(grepl("impute", tolower(pp)))) TRUE else FALSE
+  } else imputes <- FALSE
+  
+  if(imputes & any(nam %in% c("na.omit", "na.exclude")))
+    warning(paste0("`preProcess` includes an imputation method but missing ",
+                   "data will be eliminated by the formula method using `na.action=", 
+                   nam, "`. Consider using `na.actin=na.pass` instead."))  
+  invisible(NULL)
+}
+
+

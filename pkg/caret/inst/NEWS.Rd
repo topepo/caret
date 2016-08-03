@@ -3,12 +3,15 @@
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
-\section{Changes in version 6.0-XX}{
+\section{Changes in version 6.0-71}{
 	\itemize{
 		\item Precision, recall, and F measure functions were added along with one called \code{prSummary} that is analogous to \code{twoClassSummary}. Also, \code{confusionMatrix} gains an argument called \code{mode} that dictates what output is shown. 
 		\item schistyakov added additional tuning parameters to the robust linear model code \issue{454}. Also for \code{rlm} and \code{lm} schistyakov added the ability to tune over the intercept/no intercept model. 
 		\item Generalized additive models for very large datasets (\code{bam} in \cpkg{mgcv}) was added \issue{453}
 		\item Two more linear SVM models were added from the \cpkg{LiblineaR} package with model codes \code{svmLinear3} and \code{svmLinearWeights2} (\issue{441})
+		\item The \code{tau} parameter was added to all of the least square SVM models (\issue{415})
+		\item A new data set (called \code{scat}) on animal droppings was added. 
+		\item A significant bug was fixed where the internals of how R creates a model matrix was ignoring \code{na.action} when the default was set to \code{na.fail} \issue{461}. This means that \code{train} will now immediately fail if there are any missing data. To use imputation, use \code{na.action = na.pass} and the imputation method of your choice in the \code{preProcess} argument. Also, a warning is issued if the user asks for imputation but uses the formula method and excludes missing data in \code{na.action} 
 
 	}
 }

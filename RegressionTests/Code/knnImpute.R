@@ -26,7 +26,8 @@ iris_miss_3[1,5] <- NA
 set.seed(1)
 test_3_result <- train(Sepal.Length ~ . , data = iris_miss_3, 
                        method = "lm", 
-                       preProc = "knnImpute")
+                       preProc = "knnImpute",
+                       na.action = na.pass)
 
 
 ## test for a single missing values in multiple numeric predictors

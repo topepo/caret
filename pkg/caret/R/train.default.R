@@ -651,18 +651,28 @@ train.default <- function(x, y,
 
 train.formula <- function (form, data, ..., weights, subset, na.action = na.fail, contrasts = NULL)  {
   m <- match.call(expand.dots = FALSE)
-  if (is.matrix(eval.parent(m$data))) m$data <- as.data.frame(data)
+  if (is.matrix(eval.parent(m$data)))  m$data <- as.data.frame(data)
   m$... <- m$contrasts <- NULL
-  m[[1]] <- as.name("model.frame")
+  
+  check_na_conflict(match.call(expand.dots = TRUE))
+  
+  ## Look for missing `na.action` in call. To make the default (`na.fail`) 
+  ## recognizable by `eval.parent(m)`, we need to add it to the call
+  ## object `m`
+  
+  if(!("na.action" %in% names(m))) m$na.action <- quote(na.fail)
+  
+  m[[1]] <- quote(stats::model.frame)
   m <- eval.parent(m)
   if(nrow(m) < 1) stop("Every row has at least one missing value were found")
   Terms <- attr(m, "terms")
-  x <- model.matrix(Terms, m, contrasts, na.action = na.action)
+  x <- model.matrix(Terms, m, contrasts)
   cons <- attr(x, "contrast")
-  xint <- match("(Intercept)", colnames(x), nomatch = 0)
-  if (xint > 0)  x <- x[, -xint, drop = FALSE]
-  y <- model.response(m)
+  int_flag <- grepl("(Intercept)", colnames(x))
+  if (any(int_flag)) x <- x[, !int_flag, drop = FALSE]
   w <- as.vector(model.weights(m))
+  y <- model.response(m)  
+ 
   res <- train(x, y, weights = w, ...)
   res$terms <- Terms
   res$coefnames <- colnames(x)
@@ -671,7 +681,10 @@ train.formula <- function (form, data, ..., weights, subset, na.action = na.fail
   res$contrasts <- cons
   res$xlevels <- .getXlevels(Terms, m)
   if(!is.null(res$trainingData)) {
-    res$trainingData <- data
+    ## We re-save the original data from the formula interface
+    ## since it has not been converted to dummy variables. 
+    cc <- complete.cases(data[, all.vars(Terms), drop = FALSE])
+    res$trainingData <- data[cc,all.vars(Terms), drop = FALSE]
     isY <- names(res$trainingData) %in% as.character(form[[2]])
     if(any(isY)) colnames(res$trainingData)[isY] <- ".outcome"
   }
