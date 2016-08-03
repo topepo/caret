@@ -611,6 +611,15 @@ For classification and regression using package \pkg{gam} with tuning parameters
 }
 
 
+\strong{Generalized Additive Model using Splines} (\code{method = 'bam'})
+
+For classification and regression using package \pkg{mgcv} with tuning parameters:
+\itemize{
+\item Feature Selection (\code{select}, logical)
+\item Method (\code{method}, character)
+}
+
+
 \strong{Generalized Additive Model using Splines} (\code{method = 'gam'})
 
 For classification and regression using package \pkg{mgcv} with tuning parameters:
@@ -753,6 +762,25 @@ For regression using package \pkg{rPython} with tuning parameters:
 }
 
 
+\strong{L2 Regularized Linear Support Vector Machines with Class Weights} (\code{method = 'svmLinearWeights2'})
+
+For classification using package \pkg{LiblineaR} with tuning parameters:
+\itemize{
+\item Cost (\code{cost}, numeric)
+\item Loss Function (\code{Loss}, character)
+\item Class Weight (\code{weight}, numeric)
+}
+
+
+\strong{L2 Regularized Support Vector Machine (dual) with Linear Kernel} (\code{method = 'svmLinear3'})
+
+For classification and regression using package \pkg{LiblineaR} with tuning parameters:
+\itemize{
+\item Cost (\code{cost}, numeric)
+\item Loss Function (\code{Loss}, character)
+}
+
+
 \strong{Learning Vector Quantization} (\code{method = 'lvq'})
 
 For classification using package \pkg{class} with tuning parameters:
@@ -780,8 +808,10 @@ For regression using package \pkg{lars} with tuning parameters:
 
 \strong{Least Squares Support Vector Machine} (\code{method = 'lssvmLinear'})
 
-For classification using package \pkg{kernlab} with no tuning parameters
-
+For classification using package \pkg{kernlab} with tuning parameters:
+\itemize{
+\item Regularization Parameter (\code{tau}, numeric)
+}
 
 
 \strong{Least Squares Support Vector Machine with Polynomial Kernel} (\code{method = 'lssvmPoly'})
@@ -790,6 +820,7 @@ For classification using package \pkg{kernlab} with tuning parameters:
 \itemize{
 \item Polynomial Degree (\code{degree}, numeric)
 \item Scale (\code{scale}, numeric)
+\item Regularization Parameter (\code{tau}, numeric)
 }
 
 
@@ -798,6 +829,7 @@ For classification using package \pkg{kernlab} with tuning parameters:
 For classification using package \pkg{kernlab} with tuning parameters:
 \itemize{
 \item Sigma (\code{sigma}, numeric)
+\item Regularization Parameter (\code{tau}, numeric)
 }
 
 
@@ -835,8 +867,10 @@ For classification using package \pkg{kerndwd} with tuning parameters:
 
 \strong{Linear Regression} (\code{method = 'lm'})
 
-For regression with no tuning parameters
-
+For regression with tuning parameters:
+\itemize{
+\item intercept (\code{intercept}, logical)
+}
 
 
 \strong{Linear Regression with Backwards Selection} (\code{method = 'leapBackward'})
@@ -1520,8 +1554,11 @@ For classification using package \pkg{rrcov} with no tuning parameters
 
 \strong{Robust Linear Model} (\code{method = 'rlm'})
 
-For regression using package \pkg{MASS} with no tuning parameters
-
+For regression using package \pkg{MASS} with tuning parameters:
+\itemize{
+\item intercept (\code{intercept}, logical)
+\item psi (\code{psi}, character)
+}
 
 
 \strong{Robust Mixture Discriminant Analysis} (\code{method = 'rmda'})
