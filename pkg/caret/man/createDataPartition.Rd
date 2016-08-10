@@ -68,7 +68,7 @@ createTimeSlices(y, initialWindow, horizon = 1,
  (of \code{times}). Note that this function calls \code{createFolds} with 
  \code{list = TRUE} and \code{returnTrain = TRUE}.
 
-  Hyndman and Athanasopoulos (2013)) discuss rolling forecasting origin< techniques that move the training and test sets in time. \code{createTimeSlices} can create the indices for this type of splitting. 
+  Hyndman and Athanasopoulos (2013)) discuss rolling forecasting origin techniques that move the training and test sets in time. \code{createTimeSlices} can create the indices for this type of splitting. 
 }
 \value{
    A list or matrix of row position integers corresponding to the training
