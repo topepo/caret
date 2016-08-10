@@ -17,7 +17,7 @@ modelInfo <- list(label = "Self-Organizing Maps",
                                         topo = sample(c("rectangular", "hexagonal"), size = len*10, replace = TRUE),
                                         xweight = runif(len*10, min = .5, max = 1))
                       out <- subset(out, xdim <= ydim & xdim*ydim < nrow(x))
-                      out <- out[1:max(nrow(out), len),]
+                      out <- out[1:min(nrow(out), len),]
                     }
                     out
                   }, 
