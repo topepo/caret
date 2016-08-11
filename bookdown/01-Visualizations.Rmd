@@ -1,0 +1,108 @@
+# Visualizations
+
+
+The `featurePlot` function is a wrapper for different [`lattice`](http://cran.r-project.org/web/packages/lattice/index.html) plots to visualize the data. For example, the following figures show the default plot for continuous outcomes generated using the `featurePlot` function.
+
+For classification data sets, the `iris` data are used for illustration.
+
+```{r iris}
+str(iris)
+``` 
+
+**Scatterplot Matrix**
+
+
+```{r VisScatMat,fig.width=6.5,fig.height=6.5,tidy=FALSE}
+library(AppliedPredictiveModeling)
+transparentTheme(trans = .4)
+
+library(caret)
+featurePlot(x = iris[, 1:4], 
+            y = iris$Species, 
+            plot = "pairs",
+            ## Add a key at the top
+            auto.key = list(columns = 3))
+``` 
+    
+
+**Scatterplot Matrix with Ellipses**
+
+
+```{r VisScatMatEl,fig.width=6.5,fig.height=6.5,tidy=FALSE}
+featurePlot(x = iris[, 1:4], 
+            y = iris$Species, 
+            plot = "ellipse",
+            ## Add a key at the top
+            auto.key = list(columns = 3))
+```
+
+**Overlayed Density Plots**
+
+```{r VisDens,fig.width=9,fig.height=4,tidy=FALSE}
+transparentTheme(trans = .9)
+featurePlot(x = iris[, 1:4], 
+            y = iris$Species,
+            plot = "density", 
+            ## Pass in options to xyplot() to 
+            ## make it prettier
+            scales = list(x = list(relation="free"), 
+                          y = list(relation="free")), 
+            adjust = 1.5, 
+            pch = "|", 
+            layout = c(4, 1), 
+            auto.key = list(columns = 3))
+```
+
+
+**Box Plots**
+
+```{r ViBox,fig.width=9,fig.height=4,tidy=FALSE}
+featurePlot(x = iris[, 1:4], 
+            y = iris$Species, 
+            plot = "box", 
+            ## Pass in options to bwplot() 
+            scales = list(y = list(relation="free"),
+                          x = list(rot = 90)),  
+            layout = c(4,1 ), 
+            auto.key = list(columns = 2))
+```
+    
+**Scatter Plots**
+
+For regression, the Boston Housing data is used:
+
+```{r bh}
+library(mlbench)
+data(BostonHousing)
+regVar <- c("age", "lstat", "tax")
+str(BostonHousing[, regVar])
+``` 
+    
+When the predictors are continuous, `featurePlot` can be used to create scatter plots of each of the predictors with the outcome. For example:
+
+```{r VisScatter,fig.width=9,fig.height=4,tidy=FALSE}
+theme1 <- trellis.par.get()
+theme1$plot.symbol$col = rgb(.2, .2, .2, .4)
+theme1$plot.symbol$pch = 16
+theme1$plot.line$col = rgb(1, 0, 0, .7)
+theme1$plot.line$lwd <- 2
+trellis.par.set(theme1)
+featurePlot(x = BostonHousing[, regVar], 
+            y = BostonHousing$medv, 
+            plot = "scatter", 
+            layout = c(3, 1))
+```
+    
+Note that the x-axis scales are different. The function automatically uses `scales`` = list(y = list(relation = "free"))` so you don't have to add it. We can also pass in options to the [`lattice`](http://cran.r-project.org/web/packages/lattice/index.html) function `xyplot`. For example, we can add a scatter plot smoother by passing in new options:
+
+```{r VisScatterSmooth,fig.width=9,fig.height=4,tidy=FALSE}
+featurePlot(x = BostonHousing[, regVar], 
+            y = BostonHousing$medv, 
+            plot = "scatter",
+            type = c("p", "smooth"),
+            span = .5,
+            layout = c(3, 1))
+```
+    
+The options `degree` and `span` control the smoothness of the smoother.
+
