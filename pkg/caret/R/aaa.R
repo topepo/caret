@@ -258,17 +258,15 @@ multiClassSummary <- function (data, lev = NULL, model = NULL){
   if(has_class_probs) {
     ## Overall multinomial loss
     lloss <- mnLogLoss(data = data, lev = lev, model = model)
-    requireNamespaceQuietStop("pROC")
+    requireNamespaceQuietStop("ModelMetrics")
     #Calculate custom one-vs-all ROC curves for each class
     prob_stats <- lapply(levels(data[, "pred"]),
-                         function(class){
+                         function(x){
                            #Grab one-vs-all data for the class
-                           obs  <- ifelse(data[,  "obs"] == class, 1, 0)
-                           prob <- data[,class]
-                           rocObject <- try(pROC::roc(obs, data[,class], direction = "<"), silent = TRUE)
-                           prob_stats <- if (class(rocObject)[1] == "try-error") NA else rocObject$auc
-                           names(prob_stats) <- c('ROC')
-                           return(prob_stats)
+                           obs  <- ifelse(data[,  "obs"] == x, 1, 0)
+                           prob <- data[,x]
+                           AUCs <- try(ModelMetrics::auc(obs, data[,x]), silent = TRUE)
+                           return(AUCs)
                          })
     roc_stats <- mean(unlist(prob_stats))
   }
@@ -289,9 +287,9 @@ multiClassSummary <- function (data, lev = NULL, model = NULL){
 
   # Aggregate overall stats
   overall_stats <- if(has_class_probs)
-    c(CM$overall, lloss, ROC = roc_stats) else CM$overall
+    c(CM$overall, logLoss = lloss, ROC = roc_stats) else CM$overall
   if (length(levels(data[, "pred"])) > 2)
-    names(overall_stats)[names(overall_stats) == "ROC"] <- "Mean_ROC"
+    names(overall_stats)[names(overall_stats) == "ROC"] <- "Mean_AUC"
 
 
   # Combine overall with class-wise stats and remove some stats we don't want
@@ -308,7 +306,7 @@ multiClassSummary <- function (data, lev = NULL, model = NULL){
   stat_list <- c("Accuracy", "Kappa", "Mean_Sensitivity", "Mean_Specificity",
                  "Mean_Pos_Pred_Value", "Mean_Neg_Pred_Value", "Mean_Detection_Rate",
                  "Mean_Balanced_Accuracy")
-  if(has_class_probs) stat_list <- c("logLoss", "Mean_ROC", stat_list)
+  if(has_class_probs) stat_list <- c("logLoss", "Mean_AUC", stat_list)
   if (length(levels(data[, "pred"])) == 2) stat_list <- gsub("^Mean_", "", stat_list)
 
   stats <- stats[c(stat_list)]
