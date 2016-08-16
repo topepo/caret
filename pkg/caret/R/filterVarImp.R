@@ -93,7 +93,7 @@ rocPerCol <- function(dat, cls) {
 filterVarImp <- function(x, y, nonpara = FALSE, ...)
 {
   {
-    notNumber <- unlist(lapply(x, function(x) !is.numeric(x)))
+    notNumber <- sapply(x, function(x) !is.numeric(x))
     if(any(notNumber))
       {
         for(i in which(notNumber)) x[,i] <- as.numeric(x[,i])
