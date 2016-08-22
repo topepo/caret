@@ -1,5 +1,5 @@
 modelInfo <- list(label = "glmnet",
-                  library = "glmnet",
+                  library = c("glmnet", "Matrix"),
                   type = c("Regression", "Classification"),
                   parameters = data.frame(parameter = c('alpha', 'lambda'),
                                           class = c("numeric", "numeric"),
@@ -52,7 +52,10 @@ modelInfo <- list(label = "glmnet",
                     ## pass in any model weights
                     if(!is.null(wts)) theDots$weights <- wts
                     
-                    modelArgs <- c(list(x = as.matrix(x),
+                    if(!(class(x)[1] %in% c("matrix", "sparseMatrix")))
+                      x <- as.matri(x)
+                    
+                    modelArgs <- c(list(x = x,
                                         y = y,
                                         alpha = param$alpha),
                                    theDots)
