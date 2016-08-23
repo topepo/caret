@@ -53,7 +53,7 @@ modelInfo <- list(label = "glmnet",
                     if(!is.null(wts)) theDots$weights <- wts
                     
                     if(!(class(x)[1] %in% c("matrix", "sparseMatrix")))
-                      x <- as.matri(x)
+                      x <- as.matrix(x)
                     
                     modelArgs <- c(list(x = x,
                                         y = y,
