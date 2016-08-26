@@ -2,20 +2,33 @@ modelInfo <- list(label = "Rule-Based Classifier",
                   library = "RWeka",
                   loop = NULL,
                   type = c("Classification"),
-                  parameters = data.frame(parameter = "NumOpt",
-                                          class = "numeric",
-                                          label = "# Optimizations"),
-                  grid = function(x, y, len = NULL, search = "grid") data.frame(NumOpt = 1:len),
+                  parameters = data.frame(parameter = c("NumOpt", "NumFolds", "MinWeights"),
+                                          class = c("numeric", "numeric", "numeric"),
+                                          label = c("# Optimizations", "# Folds", "Min Weights")),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    upperBound <- min(max(1, floor(nrow(x) / 2)), 50)
+                    if(search == "grid"){
+                      out <- expand.grid(NumOpt = 1:sqrt(upperBound), NumFolds = 2:4, MinWeights = 1:sqrt(upperBound))
+                    } else {
+                      out <- data.frame(NumOpt = round(exp(runif(10 * len, 0, log(len)))),
+                                        NumFolds = round(exp(runif(10 * len, 0, log(upperBound)))),
+                                        MinWeights = round(exp(runif(10 * len, 0, log(upperBound)))))
+                      out <- unique(out)
+                    }
+                    return(out[1:min(nrow(out), len), ])
+                  } ,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     theDots <- list(...)
                     
                     if(any(names(theDots) == "control")) {
-                      theDots$control$N <- param$NumOpt 
+                      theDots$control$O <- param$NumOpt
+                      theDots$control$F <- param$NumFolds
+                      theDots$control$N <- param$MinWeights
                       ctl <- theDots$control
                       theDots$control <- NULL
-                    } else ctl <- Weka_control(N = param$NumOpt) 
+                    } else ctl <- Weka_control(O = param$NumOpt, F = param$NumFolds, N = param$MinWeights) 
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
                                         data = dat,
