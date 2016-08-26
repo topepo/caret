@@ -2,10 +2,21 @@ modelInfo <- list(label = "C4.5-like Trees",
                   library = "RWeka",
                   loop = NULL,
                   type = c("Classification"),
-                  parameters = data.frame(parameter = "C",
-                                          class = "numeric",
-                                          label = "Confidence Threshold"),
-                  grid = function(x, y, len = NULL, search = "grid") data.frame(C = 0.25),
+                  parameters = data.frame(parameter = c("C", "M"),
+                                          class = c("numeric", "numeric"),
+                                          label = c("Confidence Threshold", "Minimum Instances Per Leaf")),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    upperBound <- min(max(1, floor(nrow(x) / 2)), 50)
+                    if(search == "grid"){
+                      out <- expand.grid(C = seq(0.01, 0.5, length.out = len / 2),
+                                         M = 1:upperBound)
+                    } else {
+                      out <- data.frame(C = runif(len , 0.0, 0.5),
+                                        M = round(exp(runif(len, 0, log(upperBound)))))
+                    }
+                    out <- out[1:len, ]
+                    return(out)
+                  } ,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
@@ -13,9 +24,10 @@ modelInfo <- list(label = "C4.5-like Trees",
                     
                     if(any(names(theDots) == "control")) {
                       theDots$control$C <- param$C 
+                      theDots$control$M <- param$M
                       ctl <- theDots$control
                       theDots$control <- NULL
-                    } else ctl <- Weka_control(C = param$C) 
+                    } else ctl <- Weka_control(C = param$C, M = param$M) 
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
                                         data = dat,
