@@ -4,7 +4,7 @@ modelInfo <- list(label = "Rule-Based Classifier",
                   type = c("Classification"),
                   parameters = data.frame(parameter = c('threshold', 'pruned'),
                                           class = c("numeric", "character"),
-                                          label = "Confidence Threshold", 'Pruning'),
+                                          label = c("Confidence Threshold", 'Pruning')),
                   grid = function(x, y, len = NULL, search = "grid"){
                     if(search == "grid"){
                       out <- expand.grid(threshold = seq(0.01, 0.5, length.out = len / 2), pruned = c("yes", "no"))
