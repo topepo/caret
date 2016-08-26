@@ -5,8 +5,16 @@ modelInfo <- list(label = "Rule-Based Classifier",
                   parameters = data.frame(parameter = c('threshold', 'pruned'),
                                           class = c("numeric", "character"),
                                           label = "Confidence Threshold", 'Pruning'),
-                  grid = function(x, y, len = NULL, search = "grid") 
-                    data.frame(threshold = 0.25, pruned = "yes"),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid"){
+                      out <- expand.grid(threshold = seq(0.01, 0.5, length.out = len / 2), pruned = c("yes", "no"))
+                    } else{
+                      out <- data.frame(threshold = runif(len, 0.0, 0.5), pruned = sample(c("yes", "no"), len, replace = TRUE))
+                    }
+                    out <- out[1:len, ]
+                    return(out)
+                  } 
+                    ,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
@@ -14,12 +22,12 @@ modelInfo <- list(label = "Rule-Based Classifier",
                     
                     if(any(names(theDots) == "control"))
                     {
-                      theDots$control$U <- ifelse(param$pruned == "No", TRUE, FALSE)
+                      theDots$control$U <- ifelse(tolower(param$pruned) == "no", TRUE, FALSE)
                       theDots$control$C <- param$threshold
                       ctl <- theDots$control
                       theDots$control <- NULL
                       
-                    } else ctl <- Weka_control(N = ifelse(param$pruned == "No", TRUE, FALSE),
+                    } else ctl <- Weka_control(U = ifelse(tolower(param$pruned) == "no", TRUE, FALSE),
                                                C = param$threshold) 
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
