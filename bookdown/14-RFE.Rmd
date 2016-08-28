@@ -1,0 +1,337 @@
+```{r rfe_startup,echo=FALSE,message=FALSE,warning=FALSE}
+library(knitr)
+opts_chunk$set(comment="   ", digits = 3, tidy = FALSE,background="#FFFF00")
+library(caret)
+library(mlbench)
+library(Hmisc)
+library(randomForest)
+data(BloodBrain)
+theme_set(theme_bw())
+```
+
+# Recursive Feature Elimination
+
+Contents
+
+ - [Feature Selection Using Search Algorithms](#search)
+ - [Resampling and External Validation](#resamp)
+ - [Recursive Feature Elimination via `caret`](#rfe)
+
+## Backwards Selection
+
+First, the algorithm fits the model to all predictors. Each predictor is ranked using it's importance to the model. Let *S* be a sequence of ordered numbers which are candidate values for the number of predictors to retain (*S~1~* &gt; *S~2~*, ...). At each iteration of feature selection, the *S~i~* top ranked predictors are retained, the model is refit and performance is assessed. The value of *S~i~* with the best performance is determined and the top *S~i~* predictors are used to fit the final model. Algorithm 1 has a more complete definition.
+
+The algorithm has an optional step (line 1.9) where the predictor rankings are recomputed on the model on the reduced feature set. [Svetnik *et al* (2004)](http://rd.springer.com/chapter/10.1007%2F978-3-540-25966-4_33) showed that, for random forest models, there was a decrease in performance when the rankings were re-computed at every step. However, in other cases when the initial rankings are not good (e.g. linear models with highly collinear predictors), re-calculation can slightly improve performance.
+
+\
+![](Algo1.png){width="686" height="379"}\
+\
+
+One potential issue over-fitting to the predictor set such that the wrapper procedure could focus on nuances of the training data that are not found in future samples (i.e. over-fitting to predictors and samples).
+
+For example, suppose a very large number of uninformative predictors were collected and one such predictor randomly correlated with the outcome. The RFE algorithm would give a good rank to this variable and the prediction error (on the same data set) would be lowered. It would take a different test/validation to find out that this predictor was uninformative. The was referred to as "selection bias" by [Ambroise and McLachlan (2002)](http://www.pnas.org/content/99/10/6562.short).
+
+In the current RFE algorithm, the training data is being used for at least three purposes: predictor selection, model fitting and performance evaluation. Unless the number of samples is large, especially in relation to the number of variables, one static training set may not be able to fulfill these needs.
+
+<div id="resamp"></div>
+
+## Resampling and External Validation
+
+Since feature selection is part of the model building process, resampling methods (e.g. cross-validation, the bootstrap) should factor in the variability caused by feature selection when calculating performance. For example, the RFE procedure in Algorithm 1 can estimate the model performance on line 1.7, which during the selection process. [Ambroise and McLachlan (2002)](http://www.pnas.org/content/99/10/6562.short) and [Svetnik *et al* (2004)](http://rd.springer.com/chapter/10.1007%2F978-3-540-25966-4_33) showed that improper use of resampling to measure performance will result in models that perform poorly on new samples.
+
+To get performance estimates that incorporate the variation due to feature selection, it is suggested that the steps in Algorithm 1 be encapsulated inside an outer layer of resampling (e.g. 10-fold cross-validation). Algorithm 2 shows a version of the algorithm that uses resampling.
+
+While this will provide better estimates of performance, it is more computationally burdensome. For users with access to machines with multiple processors, the first `For` loop in Algorithm 2 (line 2.1) can be easily parallelized. Another complication to using resampling is that multiple lists of the "best" predictors are generated at each iteration. At first this may seem like a disadvantage, but it does provide a more probabilistic assessment of predictor importance than a ranking based on a single fixed data set. At the end of the algorithm, a consensus ranking can be used to determine the best predictors to retain.
+
+\
+![](Algo2.png){width="684" height="477"}\
+\
+
+<div id="rfe"></div>
+
+## Recursive Feature Elimination via [`caret`](http://cran.r-project.org/web/packages/caret/index.html)
+
+
+In [`caret`](http://cran.r-project.org/web/packages/caret/index.html), Algorithm 1 is implemented by the function  `rfeIter`. The resampling-based Algorithm 2 is in the `rfe` function. Given the potential selection bias issues, this document focuses on  `rfe`. There are several arguments:
+
+ - `x`, a matrix or data frame of predictor variables
+ - `y`, a vector (numeric or factor) of outcomes
+ - `sizes`, a integer vector for the specific subset sizes that should be tested (which need not to include `ncol(x)`)
+ - `rfeControl`, a list of options that can be used to specify the model and the methods for prediction, ranking etc.
+
+For a specific model, a set of functions must be specified in `rfeControl$functions`. Sections below has descriptions of these sub-functions. There are a number of pre-defined sets of functions for several models, including: linear regression (in the object `lmFuncs`), random forests (`rfFuncs`), naive Bayes (`nbFuncs`), bagged trees (`treebagFuncs`) and functions that can be used with  [`caret`](http://cran.r-project.org/web/packages/caret/index.html)'s `train` function (`caretFuncs`). The latter is useful if the model has tuning parameters that must be determined at each iteration.
+
+<div id="example"></div>
+
+## An Example
+
+```{r rfe_load_lib}
+library(caret)
+library(mlbench)
+library(Hmisc)
+library(randomForest)
+``` 
+
+To test the algorithm, the "Friedman 1" benchmark (Friedman, 1991) was used. There are five informative variables generated by the equation
+
+![](FEq.png){width="406" height="30"}
+
+In the simulation used here:
+
+```{r rfe_load_sim}
+n <- 100
+p <- 40
+sigma <- 1
+set.seed(1)
+sim <- mlbench.friedman1(n, sd = sigma)
+colnames(sim$x) <- c(paste("real", 1:5, sep = ""),
+                     paste("bogus", 1:5, sep = ""))
+bogus <- matrix(rnorm(n * p), nrow = n)
+colnames(bogus) <- paste("bogus", 5+(1:ncol(bogus)), sep = "")
+x <- cbind(sim$x, bogus)
+y <- sim$y
+```  
+
+Of the `r I(ncol(x))` predictors, there are `r  I(ncol(x)-5)` pure noise variables: 5 are uniform on \[0, 1\] and `r I(p)` are random univariate standard normals. The predictors are centered and scaled:
+
+```{r rfe_load_pp}
+normalization <- preProcess(x)
+x <- predict(normalization, x)
+x <- as.data.frame(x)
+subsets <- c(1:5, 10, 15, 20, 25)
+```  
+
+The simulation will fit models with subset sizes of `r I(paste(sort(subsets, decreasing = TRUE), collapse = ", "))`.
+
+As previously mentioned, to fit linear models, the `lmFuncs` set of functions can be used. To do this, a control object is created with the `rfeControl` function. We also specify that repeated 10-fold cross-validation should be used in line 2.1 of Algorithm 2. The number of folds can be changed via the  `number` argument to  `rfeControl` (defaults to 10). The  `verbose` option prevents copious amounts of output from being produced.
+
+```{r rfe_load_lmProfile,cache=TRUE}
+set.seed(10)
+
+ctrl <- rfeControl(functions = lmFuncs,
+                   method = "repeatedcv",
+                   repeats = 5,
+                   verbose = FALSE)
+
+lmProfile <- rfe(x, y,
+                 sizes = subsets,
+                 rfeControl = ctrl)
+
+lmProfile
+```  
+
+The output shows that the best subset size was estimated to be `r lmProfile$bestSubset` predictors. This set includes informative variables but did not include them all. The `predictors` function can be used to get a text string of variable names that were picked in the final model. The `lmProfile` is a list of class `"rfe"` that contains an object `fit` that is the final linear model with the remaining terms. The model can be used to get predictions for future or test samples.
+
+```{r rfe_load_lmProfile_out1}
+predictors(lmProfile)
+
+lmProfile$fit
+head(lmProfile$resample)
+```  
+
+There are also several plot methods to visualize the results. `plot(lmProfile)` produces the performance profile across different subset sizes, as shown in the figure below.
+
+```{r rfe_lmprofile}
+trellis.par.set(caretTheme())
+plot(lmProfile, type = c("g", "o"))
+``` 
+
+Also the resampling results are stored in the sub-object `lmProfile$resample` and can be used with several lattice functions. Univariate lattice functions (`densityplot`,  `histogram`) can be used to plot the resampling distribution while bivariate functions (`xyplot`,  `stripplot`) can be used to plot the distributions for different subset sizes. In the latter case, the option `returnResamp`` = "all"` in  `rfeControl` can be used to save all the resampling results. Example images are shown below for the random forest model.
+
+## Helper Functions
+
+To use feature elimination for an arbitrary model, a set of functions must be passed to `rfe` for each of the steps in Algorithm 2.
+
+This section defines those functions and uses the existing random forest functions as an illustrative example. [`caret`](http://cran.r-project.org/web/packages/caret/index.html) contains a list called `rfFuncs`, but this document will use a more simple version that will be better for illustrating the ideas. A set of simplified functions used here and called `rfRFE`.
+
+```{r rfe_rfealt}
+rfRFE <-  list(summary = defaultSummary,
+               fit = function(x, y, first, last, ...){
+                 library(randomForest)
+                 randomForest(x, y, importance = first, ...)
+                 },
+               pred = function(object, x)  predict(object, x),
+               rank = function(object, x, y) {
+                 vimp <- varImp(object)
+                 vimp <- vimp[order(vimp$Overall,decreasing = TRUE),,drop = FALSE]
+                 vimp$var <- rownames(vimp)                  
+                 vimp
+                 },
+               selectSize = pickSizeBest,
+               selectVar = pickVars)
+```  
+
+### The `summary` Function
+
+The `summary` function takes the observed and predicted values and computes one or more performance metrics (see line 2.14). The input is a data frame with columns `obs` and `pred`. The output should be a named vector of numeric variables. Note that the `metric` argument of the  `rfe` function should reference one of the names of the output of `summary`. The example function is:
+
+```{r rfe_summary}
+rfRFE$summary
+``` 
+
+Two functions in [`caret`](http://cran.r-project.org/web/packages/caret/index.html) that can be used as the summary funciton are  `defaultSummary` and  `twoClassSummary` (for classification problems with two classes).
+
+### The `fit` Function
+
+This function builds the model based on the current data set (lines 2.3, 2.9 and 2.17). The arguments for the function must be:
+
+ - `x`: the current training set of predictor data with the appropriate subset of variables
+ - `y`: the current outcome data (either a numeric or factor vector)
+ - `first`: a single logical value for whether the current predictor set has all possible variables (e.g. line 2.3)
+ - `last`: similar to  `first`, but `TRUE` when the last model is fit with the final subset size and predictors. (line 2.17)
+ - `...`: optional arguments to pass to the fit function in the call to `rfe`
+
+The function should return a model object that can be used to generate predictions. For random forest, the fit function is simple:
+
+```{r rfe_fit}
+rfRFE$fit
+``` 
+
+For feature selection without re-ranking at each iteration, the random forest variable importances only need to be computed on the first iterations when all of the predictors are in the model. This can be accomplished using `importance`` = first`.
+
+### The `pred` Function
+
+This function returns a vector of predictions (numeric or factors) from the current model (lines 2.4 and 2.10). The input arguments must be
+
+ - `object`: the model generated by the `fit` function
+ - `x`: the current set of predictor set for the held-back samples
+
+For random forests, the function is a simple wrapper for the predict function:
+
+```{r rfe_pred}
+rfRFE$pred
+``` 
+
+For classification, it is probably a good idea to ensure that the resulting factor variables of predictions has the same levels as the input data.
+
+### The `rank` Function
+
+This function is used to return the predictors in the order of the most important to the least important (lines 2.5 and 2.11). Inputs are:
+
+ - `object`: the model generated by the `fit` function
+ - `x`: the current set of predictor set for the training samples
+ - `y`: the current training outcomes
+
+The function should return a data frame with a column called `var` that has the current variable names. The first row should be the most important predictor etc. Other columns can be included in the output and will be returned in the final `rfe` object.
+
+For random forests, the function below uses [`caret`](http://cran.r-project.org/web/packages/caret/index.html)'s `varImp` function to extract the random forest importances and orders them. For classification,  `randomForest` will produce a column of importances for each class. In this case, the default ranking function orders the predictors by the averages importance across the classes.
+
+```{r rfe_rank}
+rfRFE$rank
+``` 
+
+### The `selectSize` Function
+
+This function determines the optimal number of predictors based on the resampling output (line 2.15). Inputs for the function are:
+
+ - `x`: a matrix with columns for the performance metrics and the number of variables, called `Variables`
+ - `metric`: a character string of the performance measure to optimize (e.g. RMSE, Accuracy)
+ - `maximize`: a single logical for whether the metric should be maximized
+
+This function should return an integer corresponding to the optimal subset size.
+
+[`caret`](http://cran.r-project.org/web/packages/caret/index.html) comes with two examples functions for this purpose:  `pickSizeBest` and  `pickSizeTolerance`. The former simply selects the subset size that has the best value. The latter takes into account the whole profile and tries to pick a subset size that is small without sacrificing too much performance. For example, suppose we have computed the RMSE over a series of variables sizes:
+
+```{r tolerance}
+example <- data.frame(RMSE = c(3.215, 2.819, 2.414, 2.144, 
+                               2.014, 1.997, 2.025, 1.987, 
+                               1.971, 2.055, 1.935, 1.999, 
+                               2.047, 2.002, 1.895, 2.018),
+                               Variables = 1:16)
+``` 
+
+These are depicted in the figure below. The solid circle identifies the subset size with the absolute smallest RMSE. However, there are many smaller subsets that produce approximately the same performance but with fewer predictors. In this case, we might be able to accept a slightly larger error for less predictors.
+
+The `pickSizeTolerance` determines the absolute best value then the percent difference of the other points to this value. In the case of RMSE, this would be
+
+![](tol.png){width="283" height="52"}
+
+where *RMSE~{opt}~* is the absolute best error rate. These "tolerance" values are plotted in the bottom panel. The solid triangle is the smallest subset size that is within 10% of the optimal value.
+
+This approach can produce good results for many of the tree based models, such as random forest, where there is a plateau of good performance for larger subset sizes. For trees, this is usually because unimportant variables are infrequently used in splits and do not significantly affect performance.
+
+```{r rfe_lmdens}
+## Find the row with the absolute smallest RMSE
+smallest <- pickSizeBest(example, metric = "RMSE", maximize = FALSE)
+smallest
+
+## Now one that is within 10% of the smallest
+within10Pct <- pickSizeTolerance(example, metric = "RMSE", tol = 10, maximize = FALSE)
+within10Pct
+
+minRMSE <- min(example$RMSE)
+example$Tolerance <- (example$RMSE - minRMSE)/minRMSE * 100   
+
+## Plot the profile and the subsets selected using the 
+## two different criteria
+
+par(mfrow = c(2, 1), mar = c(3, 4, 1, 2))
+
+plot(example$Variables[-c(smallest, within10Pct)], 
+     example$RMSE[-c(smallest, within10Pct)],
+     ylim = extendrange(example$RMSE),
+     ylab = "RMSE", xlab = "Variables")
+
+points(example$Variables[smallest], 
+       example$RMSE[smallest], pch = 16, cex= 1.3)
+
+points(example$Variables[within10Pct], 
+       example$RMSE[within10Pct], pch = 17, cex= 1.3)
+ 
+with(example, plot(Variables, Tolerance))
+abline(h = 10, lty = 2, col = "darkgrey")
+``` 
+
+###  The `selectVar` Function
+
+After the optimal subset size is determined, this function will be used to calculate the best rankings for each variable across all the resampling iterations (line 2.16). Inputs for the function are:
+
+ - `y`: a list of variables importance for each resampling iteration and each subset size (generated by the user-defined `rank` function). In the example, each each of the cross-validation groups the output of the <span class="mx funCall">rank</span> function is saved for each of the `r length(subsets)+1` subset sizes (including the original subset). If the rankings are not recomputed at each iteration, the values will be the same within each cross-validation iteration.
+ - `size`: the integer returned by the `selectSize` function
+
+This function should return a character string of predictor names (of length `size`) in the order of most important to least important
+
+For random forests, only the first importance calculation (line 2.5) is used since these are the rankings on the full set of predictors. These importances are averaged and the top predictors are returned.
+
+```{r rfe_selectVar}
+rfRFE$selectVar
+``` 
+
+Note that if the predictor rankings are recomputed at each iteration (line 2.11) the user will need to write their own selection function to use the other ranks.
+
+## The Example
+
+For random forest, we fit the same series of model sizes as the linear model. The option to save all the resampling results across subset sizes was changed for this model and are used to show the lattice plot function capabilities in the figures below.
+
+```{r rfe_rf}
+ctrl$functions <- rfRFE
+ctrl$returnResamp <- "all"
+set.seed(10)
+rfProfile <- rfe(x, y, sizes = subsets, rfeControl = ctrl)
+rfProfile
+``` 
+
+The resampling profile can be visualized along with plots of the individual resampling results:
+
+```{r rfe_rf_plot1}
+trellis.par.set(caretTheme())
+plot1 <- plot(rfProfile, type = c("g", "o"))
+plot2 <- plot(rfProfile, type = c("g", "o"), metric = "Rsquared")
+print(plot1, split=c(1,1,1,2), more=TRUE)
+print(plot2, split=c(1,2,1,2))
+``` 
+
+
+```{r rfe_rf_plot2}
+plot1 <- xyplot(rfProfile, 
+                type = c("g", "p", "smooth"), 
+                ylab = "RMSE CV Estimates")
+plot2 <- densityplot(rfProfile, 
+                     subset = Variables < 5, 
+                     adjust = 1.25, 
+                     as.table = TRUE, 
+                     xlab = "RMSE CV Estimates", 
+                     pch = "|")
+print(plot1, split=c(1,1,1,2), more=TRUE)
+print(plot2, split=c(1,2,1,2))
+``` 

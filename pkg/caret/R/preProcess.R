@@ -292,7 +292,6 @@ predict.preProcess <- function(object, newdata, ...) {
       for(i in names(lamIndex)) {
         tt <- newdata[,i]
         tt <- tt[!is.na(tt)]
-        if(any(tt <= 0)) cat(i, "\n")
         newdata[,i] <- predict(object$bc[[i]], newdata[,i])
       }
     }
