@@ -12,10 +12,9 @@ str(iris)
 **Scatterplot Matrix**
 
 
-```{r VisScatMat,fig.width=6.5,fig.height=6.5,tidy=FALSE}
+```{r VisScatMat,fig.width=6.5,fig.height=6.5,tidy=FALSE, message=FALSE,warning=FALSE}
 library(AppliedPredictiveModeling)
 transparentTheme(trans = .4)
-
 library(caret)
 featurePlot(x = iris[, 1:4], 
             y = iris$Species, 
@@ -93,7 +92,7 @@ featurePlot(x = BostonHousing[, regVar],
             layout = c(3, 1))
 ```
     
-Note that the x-axis scales are different. The function automatically uses `scales`` = list(y = list(relation = "free"))` so you don't have to add it. We can also pass in options to the [`lattice`](http://cran.r-project.org/web/packages/lattice/index.html) function `xyplot`. For example, we can add a scatter plot smoother by passing in new options:
+Note that the x-axis scales are different. The function automatically uses `scales = list(y = list(relation = "free"))` so you don't have to add it. We can also pass in options to the [`lattice`](http://cran.r-project.org/web/packages/lattice/index.html) function `xyplot`. For example, we can add a scatter plot smoother by passing in new options:
 
 ```{r VisScatterSmooth,fig.width=9,fig.height=4,tidy=FALSE}
 featurePlot(x = BostonHousing[, regVar], 
