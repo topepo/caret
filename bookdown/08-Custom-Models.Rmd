@@ -572,6 +572,8 @@ data(tecator)
 
 set.seed(930)
 
+colnames(absorp) <- paste("x", 1:ncol(absorp))
+
 ## We will model the protein content data
 trainMeats <- createDataPartition(endpoints[,3], p = 3/4)
 absorpTrain  <- absorp[trainMeats[[1]], ]
@@ -639,7 +641,7 @@ meatCtrl <- trainControl(method = "repeatedcv", repeats = 5)
 
 ## These will take a while for these data
 set.seed(184)
-plsrf <- train(x = absorpTrain, y = proteinTrain, 
+plsrf <- train(x = as.data.frame(absorpTrain), y = proteinTrain, 
                method = pls_rf,
                preProc = c("center", "scale"),
                tuneLength = 10,

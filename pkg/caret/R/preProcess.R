@@ -719,6 +719,8 @@ pre_process_options <- function(opts, vars) {
 
 
 get_types <- function(x, coarse = TRUE) {
+  if(is.null(colnames(x)))
+    stop("`x` must have column names")
   if(is.matrix(x)) {
     out <- rep(class(x[1,1]), ncol(x))
   } else {
