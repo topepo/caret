@@ -7,6 +7,7 @@ library(parallel)
 library(doMC)
 registerDoMC(cores=detectCores()-1)
 library(randomForest)
+library(desirability)
 ```
 
 # Feature Selection using Genetic Algorithms

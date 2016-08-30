@@ -1,4 +1,4 @@
-```{r samp_load, echo = FALSE, message=FALSE, warning=FALSE}
+```{r fs_load, echo = FALSE, message=FALSE, warning=FALSE}
 library(caret)
 theme_set(theme_bw())
 
