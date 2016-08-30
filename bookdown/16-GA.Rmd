@@ -50,11 +50,11 @@ Finally, the entire data set is used in the last execution of the genetic algori
 
 The most basic usage of the function is:
 
-<!--begin.rcode ga_syntax_basic,eval=FALSE
+```{r ga_syntax_basic,eval=FALSE}
 obj <- gafs(x = predictors, 
             y = outcome,
             iters = 100)
-end.rcode--> 
+``` 
 
 where
 
@@ -66,7 +66,7 @@ This isn't very specific. All of the action is in the control function. That can
 
 Suppose that we want to fit a linear regression model. To do this, we can use `train` as an interface and pass arguments to that function through `gafs`:
 
-<!--begin.rcode ga_syntax_basic_lm,eval=FALSE
+```{r ga_syntax_basic_lm,eval=FALSE}
 ctrl <- gafsControl(functions = caretGA)
 obj <- gafs(x = predictors, 
             y = outcome,
@@ -75,7 +75,7 @@ obj <- gafs(x = predictors,
             ## Now pass options to `train`
             
             method = "lm")
-end.rcode--> 
+``` 
 
 Other options, such as `preProcess`, can be passed in as well.
 
@@ -97,7 +97,7 @@ The GA implementation in [`caret`](http://cran.r-project.org/web/packages/caret/
 
 Using the example from the [previous page](rfe.html#example) where there are five real predictors and 40 noise predictors:
 
-<!--begin.rcode ga_load_sim,echo=TRUE,message=FALSE
+```{r ga_load_sim,echo=TRUE,message=FALSE}
 library(mlbench)
 n <- 100
 p <- 40
@@ -113,11 +113,11 @@ y <- sim$y
 normalization <- preProcess(x)
 x <- predict(normalization, x)
 x <- as.data.frame(x)
-end.rcode--> 
+``` 
 
 We'll fit a random forest model and use the out-of-bag RMSE estimate as the internal performance metric and use the same repeated 10-fold cross-validation process used with the search. To do this, we'll use the built-in `rfGA` object for this purpose. The default GA operators will be used and conduct 200 generations of the algorithm.
 
-<!--begin.rcode ga_rf,cache=TRUE
+```{r ga_rf,cache=TRUE}
 ga_ctrl <- gafsControl(functions = rfGA,
                        method = "repeatedcv",
                        repeats = 5)
@@ -130,15 +130,15 @@ rf_ga <- gafs(x = x, y = y,
               iters = 200,
               gafsControl = ga_ctrl)
 rf_ga
-end.rcode--> 
+``` 
 
 With 5 repeats of 10-fold cross-validation, the GA was executed 50 times. The average external performance is calculated across resamples and these results are used to determine the optimal number of iterations for the final GA to avoid over-fitting. Across the resamples, an average of `r round(mean(unlist(lapply(rf_ga$resampled_vars, length))), 1)` predictors were selected at the end of each of the algorithms.
 
 The `plot` function is used to monitor the average of the internal out-of-bag RMSE estimates as well as the average of the external performance estimates calculated from the 50 out-of-sample predictions. By default, this function uses [`ggplot2`](http://cran.r-project.org/package=ggplot2) package. A black and white theme can be "added" to the output object:
 
-<!--begin.rcode ga_rf_profile,fig.width=8,fig.height=4
+```{r ga_rf_profile}
 plot(rf_ga) + theme_bw()
-end.rcode--> 
+``` 
 
 
 Based on these results, the generation associated with the best external RMSE estimate was  `r round(mean(subset(rf_ga$external, Iter == rf_ga$optIter)$RMSE), 2)`.
@@ -163,9 +163,9 @@ This function builds the model based on a proposed current subset. The arguments
 
 The function should return a model object that can be used to generate predictions. For random forest, the fit function is simple:
 
-<!--begin.rcode ga_fit
+```{r ga_fit}
 rfGA$fit
-    end.rcode--> 
+```
     
 ### The `pred` Function
 
@@ -176,9 +176,9 @@ This function returns a vector of predictions (numeric or factors) from the curr
 
 For random forests, the function is a simple wrapper for the predict function:
 
-<!--begin.rcode ga_pred
+```{r ga_pred}
 rfGA$pred
-    end.rcode--> 
+```
 
 For classification, it is probably a good idea to ensure that the resulting factor variables of predictions has the same levels as the input data.
 
@@ -198,9 +198,9 @@ In many cases, some resampled measure of performance is used. In the example abo
 
 The example function for random forest is:
 
-<!--begin.rcode ga_int_func
+```{r ga_int_func}
 rfGA$fitness_intern
-    end.rcode--> 
+```
 
 ### The `fitness_extern` Function
 
@@ -213,9 +213,9 @@ The output should be a **named** numeric vector of performance values.
 
 The example function for random forest is:
 
-<!--begin.rcode ga_ext_func
+```{r ga_ext_func}
 rfGA$fitness_extern
-    end.rcode--> 
+```
 
 
 Two functions in [`caret`](http://cran.r-project.org/web/packages/caret/index.html) that can be used as the summary function are  `defaultSummary` and  `twoClassSummary` (for classification problems with two classes).
@@ -232,12 +232,12 @@ The output should be a binary 0/1 matrix where there are `vars` columns correspo
 
 The default function populates the rows randomly with subset sizes varying between 10% and 90% of number of possible predictors. For example:
 
-<!--begin.rcode ga_init
+```{r ga_init}
 set.seed(128)
 starting <- rfGA$initial(vars = 12, popSize = 8)
 starting
 apply(starting, 1, mean)
-    end.rcode--> 
+```
 
 `gafs` has an argument called  `suggestions` that is similar to the one in the `ga` function where the initial population can be seeded with specific subsets.
 
@@ -306,23 +306,23 @@ The previous GA included some of the non-informative predictors. We can cheat a 
 
 We can try to encourage the algorithm to choose fewer predictors, we can penalize the the RMSE estimate. Normally, a metric like the Akaike information criterion (AIC) statistic would be used. However, with a random forest model, there is no real notion of model degrees of freedom. As an alternative, we can use [desirability functions](http://scholar.google.com/scholar?q=%22desirability+functions) to penalize the RMSE. To do this, two functions are created that translate the number of predictors and the RMSE values to a measure of "desirability". For the number of predictors, the most desirable property would be a single predictor and the worst situation would be if the model required all 50 predictors. That desirability function is visualized as:
 
-<!--begin.rcode ga_pred_d,fig.width=6,fig.height=4,echo=FALSE
+```{r ga_pred_d,echo=FALSE}
 pred_d <- data.frame(Predictors = 0: 52)
 pred_d$Desirability <- predict(dMin(1, 50), pred_d$Predictors)
 ggplot(pred_d, aes(x = Predictors, y = Desirability)) + geom_line() + theme_bw()
-end.rcode--> 
+``` 
 
 For the RMSE, the best case would be zero. Many poor models have values around four. To give the RMSE value more weight in the overall desirability calculation, we use a scale parameter value of 2. This desirability function is:
 
-<!--begin.rcode ga_rmse_d,fig.width=6,fig.height=4,echo=FALSE
+```{r ga_rmse_d,echo=FALSE}
 rmse_d <- data.frame(RMSE = seq(-.25, 4.24, length = 100))
 rmse_d$Desirability <- predict(dMin(0, 4, 2), rmse_d$RMSE)
 ggplot(rmse_d, aes(x = RMSE, y = Desirability)) + geom_line() + theme_bw()
-end.rcode--> 
+``` 
 
 To use the overall desirability to drive the feature selection, the `internal` function requires replacement. We make a copy of `rfGA` and add code using the [`desirability`](http://cran.r-project.org/package=desirability) package and the function returns the estimated RMSE and the overall desirability. The `gafsControl` function also need changes. The `metric` argument needs to reflect that the overall desirability score should be maximized internally but the RMSE estimate should be minimized externally.
 
-<!--begin.rcode ga_rf_2,cache=TRUE
+```{r ga_rf_2}
 library(desirability)
 rfGA2 <- rfGA
 rfGA2$fitness_intern <- function (object, x, y, maximize, p) {
@@ -345,13 +345,13 @@ rf_ga_d <- gafs(x = x, y = y,
                 gafsControl = ga_ctrl_d)
 
 rf_ga_d
-end.rcode--> 
+``` 
 
 Here are the RMSE values for this search:
 
-<!--begin.rcode ga_rf_profile_2,fig.width=8,fig.height=4
+```{r ga_rf_profile_2}
 plot(rf_ga_d) + theme_bw()
-end.rcode--> 
+``` 
 
 The final GA found `r I(length(rf_ga_d$optVariables))` that were selected: `r paste(rf_ga_d$optVariables,  sep = "", collapse = ", ")`. During resampling, the average number of predictors selected was `r round(mean(unlist(lapply(rf_ga_d$resampled_vars, length))), 1)`, indicating that the penalty on the number of predictors was effective.
 
