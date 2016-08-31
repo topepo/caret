@@ -610,7 +610,7 @@ pls_rf <- list(label = "PLS-RF",
                  ## be used later
                  
                  ## plsr only has a formula interface so create one data frame
-                 dat <- if(!is.data.frame(x)) x <- as.data.frame(x)
+                 dat <- x
                  dat$y <- y
                  pre <- plsr(y~ ., data = dat, ncomp = param$ncomp)
                  scores <- predict(pre, x, type = "scores")
