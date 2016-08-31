@@ -15,7 +15,11 @@ The syntax for other packages associated with [`foreach`](http://cran.r-project.
 
 Does this help reduce the time to fit models? A moderately sized data set (4331 rows and 8) was modeled multiple times with different number of workers for several models. Random forest was used with 2000 trees and tuned over 10 values of *m*~try~. Variable importance calculations were also conducted during each model fit. Linear discriminant analysis was also run, as was a cost-sensitive radial basis function support vector machine (tuned over 15 cost values). All models were tuned using five repeats of 10-fold cross-validation. The results are shown in the figure below. The y-axis corresponds to the total execution time (encompassing model tuning and the final model fit) versus the number of workers. Random forest clearly took the longest to train and the LDA models were very computationally efficient. The total time (in minutes) decreased as the number of workers increase but stabilized around seven workers. The data for this plot were generated in a randomized fashion so that there should be no bias in the run order. The bottom right panel shows the *speed-up* which is the sequential time divided by the parallel time. For example, a speed-up of three indicates that the parallel version was three times faster than the sequential version. At best, parallelization can achieve linear speed-ups; that is, for *M* workers, the parallel time is 1/*M*. For these models, the speed-up is close to linear until four or five workers are used. After this, there is a small improvement in performance. Since LDA is already computationally efficient, the speed-up levels off more rapidly than the other models. While not linear, the decrease in execution time is helpful - a nearly 10 hour model fit was decreased to about 90 minutes.
 
-![](parallel.png){width="600" height="450"}
+```{r paral_res, echo = FALSE}
+library(knitr)
+include_graphics('premade/parallel.png', dpi = NA)
+```
+
 
 Note that some models, especially those using the [`RWeka`](http://cran.r-project.org/web/packages/RWeka/index.html) package, may not be able to be run in parallel due to the underlying code structure.
 

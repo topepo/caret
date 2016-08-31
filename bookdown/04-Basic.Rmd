@@ -43,6 +43,9 @@ First, a specific model must be chosen. Currently, `r I(length(unique(modelLooku
 
 The first step in tuning the model (line 1 in the algorithm above is to choose a set of parameters to evaluate. For example, if fitting a Partial Least Squares (PLS) model, the number of PLS components to evaluate must be specified.
 
+```{r train_algo, echo = FALSE}
+include_graphics('premade/TrainAlgo.png', dpi = NA)
+```
 
 Once the model and tuning parameter values have been defined, the type of resampling should be also be specified. Currently, *k*-fold cross-validation (once or repeated), leave-one-out cross-validation and bootstrap (simple estimation or the 632 rule) resampling methods can be used by `train`. After resampling, the process produces a profile of performance measures is available to guide the user as to which tuning parameter values should be chosen. By default, the function automatically chooses the tuning parameters associated with the best value, although different algorithms can be used (see details below).
 

@@ -18,11 +18,6 @@ library(pROC)
 
 ## Measures for Regression
 
-
-
-
-
-
 <div id="class"></div>
 
 ## Measures for Predicted Classes
@@ -64,11 +59,11 @@ Note that there are a number of statistics shown here. The "no-information rate"
 
 If the prevalence of the event is different than those seen in the test set, the `prevalence` option can be used to adjust this. 
 
-Suppose a 2x2 table with notation
+Suppose a 2x2 table:
 
-The formulas used here are:
-
-
+```{r perf_form, echo = FALSE}
+include_graphics('premade/cm.jpg', dpi = 96)
+```
 
 When there are three or more classes, `confusionMatrix` will show the confusion matrix and a set of "one-versus-all" results. For example, in a three class problem, the sensitivity of the first class is calculated against all the samples in the second and third classes (and so on).
 
