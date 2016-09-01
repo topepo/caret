@@ -9,7 +9,7 @@ library(mlbench)
 theme_set(theme_bw())
 
 library(knitr)
-opts_chunk$set(comment="|", digits = 3, tidy = FALSE, background="#FFFF00")
+opts_chunk$set(digits = 3, tidy = FALSE)
 ```
 
 # Miscellaneous Model Functions
