@@ -63,3 +63,5 @@ models/parseModels.Rout
 *.history
 
 *.dll
+
+bookdown/tag_data.csv

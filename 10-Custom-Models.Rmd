@@ -1,6 +1,6 @@
 ```{r custom_startup,echo=FALSE,message=FALSE,warning=FALSE}
 library(knitr)
-opts_chunk$set(comment="   ", digits = 3, tidy = FALSE,background="#FFFF00")
+opts_chunk$set(digits = 3, tidy = FALSE)
 library(caTools)
 library(klaR)
 library(mlbench)
@@ -14,7 +14,7 @@ theme_set(theme_bw())
 library(doMC)
 ```
 
-# Using Your Own Model `in train`
+# Using Your Own Model in `train`
 
 Contents
 
