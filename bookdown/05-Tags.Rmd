@@ -1,0 +1,78 @@
+
+```{r setup, include=FALSE}
+library(caret)
+
+md_format <- function(x) {
+  method_string <- paste0("**", x$label, "**\n\n",
+                          "```r\n",
+                          "  method = '", x$method_value, "'\n",
+                          "```\n\n")
+  type_string <- paste("Type: ", paste(x$type, collapse = ", "), "\n\n")
+  
+  if(all(x$parameters$parameter == "parameter")) {
+    param_string <- "No tuning parameters for this model\n\n"
+  } else {
+    param_string <- paste0(" * `", x$parameters$parameter, "` (", x$parameters$label, ")\n", sep = "")
+    param_string <- paste0("Tuning parameters:\n\n", paste0(param_string, collapse = ""), "\n")
+    param_string <- gsub("^#", "Number of ", param_string)
+  }
+  
+  pkg_string <- if(!is.null(x$library)) 
+    paste("Required packages: ", paste0("`", x$library, "`", collapse = ", "), "\n\n") else 
+      ""
+  
+  note_string <- if(!is.null(x$notes)) paste("Notes:", x$notes) else ""
+  
+  cat(method_string, type_string, param_string, pkg_string, note_string, "\n\n", sep = "")
+}
+
+mods <- getModelInfo()
+
+## redundant tag names (e.g. "L1 Regularization Models" and "L1 Regularization")
+## these will get changed in the files but make a short fix for now
+
+fix_tags <- function(x) {
+  x[x == "L1 Regularization Models"] <- "L1 Regularization"
+  x[x == "L2 Regularization Models"] <- "L2 Regularization"
+  x[x == "Generalized Linear Models"] <- "Generalized Linear Model"
+  x[x == "Discriminant Analysis Models"] <- "Discriminant Analysis"
+  x[x == "Feature Extraction Models"] <- "Feature Extraction"  
+  x[x == "Linear Classifier Models"] <- "Linear Classifier"    
+  x[x == "Linear Regression Models"] <- "Linear Regression"     
+  x
+  }
+```
+
+# `train` Models By Tag
+
+The following is a basic list of model types or relevant characteristics. There entires in these lists are arguable. For example: random forests theoretically use feature selection but effectively may not, support vector machines use L2 regularization etc. 
+
+<div id="top"></div>
+Contents
+
+```{r, make_contents, echo = FALSE, results = "asis" }
+for(j in seq(along = mods)) mods[[j]]$method_value <- names(mods)[j]
+
+tags  <- lapply(mods, function(x) x$tag)
+tags <- lapply(tags, fix_tags)
+unique_tags <- sort(unique(unlist(tags)))
+unique_tags <- unique_tags[unique_tags != ""]
+fname <- gsub("([[:punct:]])|([[:space:]])", "_", unique_tags)
+
+contents <- paste0(" - [", unique_tags, "](#", fname, ")")
+cat(contents, sep = "\n")
+```
+
+
+```{r, make_entries, echo = FALSE, results = "asis" }
+for(j in seq(along = unique_tags)) {
+  cat('<div id="', fname[j], '"></div>\n', sep = "")
+  cat("### ", unique_tags[j], "\n\n(back to [contents](#top))\n\n")
+  
+  hasit <- unlist(lapply(mods, function(x) any(x$tag == unique_tags[j])))
+  subs <- mods[hasit]
+  subs <- subs[order(unlist(lapply(subs, function(x) x$label)))]
+  
+  for(mod in subs) md_format(mod)
+}
+```
