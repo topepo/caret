@@ -65,3 +65,16 @@ models/parseModels.Rout
 *.dll
 
 bookdown/tag_data.csv
+
+bookdown/_book/*
+
+bookdown/_bookdown_files/*
+
+bookdown/_main_cache/*
+
+bookdown/_main_files/*
+
+bookdown/_main.Rmd
+
+bookdown/.Rhistory
+
