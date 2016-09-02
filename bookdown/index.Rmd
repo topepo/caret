@@ -3,7 +3,11 @@ title: "The `caret` Package"
 author: "Max Kuhn"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
-output: bookdown::gitbook
+output: 
+  bookdown::gitbook:
+    config:
+      toc:
+        collapse: section
 documentclass: book
 github-repo: rstudio/bookdown-demo
 description: "Documentation for the `caret` package"
