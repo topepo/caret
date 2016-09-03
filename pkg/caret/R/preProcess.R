@@ -2,7 +2,7 @@
 ## generate a data frame? 
 ## TODO let inputs vars be regex's
 
-ppMethods <- c("BoxCox", "YeoJohnson", "expoTrans", 
+ppMethods <- c("BoxCox", "YeoJohnson", "expoTrans", "invHyperbolicSine",
                "center", "scale", "range", 
                "knnImpute", "bagImpute", "medianImpute", 
                "pca", "ica", 
@@ -10,6 +10,8 @@ ppMethods <- c("BoxCox", "YeoJohnson", "expoTrans",
                "ignore", "keep", 
                "remove", 
                "zv", "nzv", "conditionalX")
+
+invHyperbolicSineFunc <- function(x) log(x+sqrt(x^2+1))
 
 preProcess <- function(x, ...) UseMethod("preProcess")
 
@@ -78,6 +80,11 @@ preProcess.default <- function(x, method = c("center", "scale"),
     }
     method$conditionalX <- NULL
   }    
+  
+  if(any(names(method) == "invHyperbolicSine")) {
+    if(verbose) cat(" applying invHyperbolicSine\n")
+    for(i in method$invHyperbolicSine) x[,i] <- invHyperbolicSineFunc(x[,i])
+  } 
   
   if(any(names(method) == "BoxCox")) {
     bc <- group_bc(x[, method$BoxCox, drop = FALSE],
@@ -251,6 +258,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
               bc = bc,
               yj = yj,
               et = et,
+              invHyperbolicSine = method$invHyperbolicSine,
               mean = centerValue,
               std = scaleValue,
               ranges = ranges,
@@ -283,6 +291,12 @@ predict.preProcess <- function(object, newdata, ...) {
       newdata <- newdata[, !(colnames(newdata) %in% object$method$remove), drop = FALSE]
     if(ncol(newdata) == 0)
       stop("All predctors were removed as determined by `preProcess`")
+  }
+  
+  if(!is.null(object$invHyperbolicSine)) {
+    for(i in object$invHyperbolicSine) {
+      newdata[,i] <- invHyperbolicSineFunc(newdata[,i])
+    }
   }
   
   if(!is.null(object$bc)) {
@@ -452,7 +466,8 @@ print.preProcess <- function(x, ...) {
   }
   pp <- paste0("  - ", names(x$method), " (", pp_num, ")\n")  
   pp <- pp[order(pp)]
-  pp <- gsub("BoxCox", "Box-Cox transformation", pp)
+  pp <- gsub("invHyperbolicSine", "Inverve Hyperbolic Sine transformation", pp)
+  pp <- gsub("BoxCox", "Box-Cox transformation", pp)  
   pp <- gsub("YeoJohnson", "Yeo-Johnson transformation", pp)    
   pp <- gsub("expoTrans", "exponential transformation", pp)   
   pp <- gsub("scale", "scaled", pp)
@@ -841,7 +856,8 @@ convert_method <- function(x) {
   if("medianImpute" %in% x$method) new_method$medianImpute <- names(x$median)   
   if("pca" %in% x$method)          new_method$pca          <- names(x$mean)  
   if("ica" %in% x$method)          new_method$ica          <- names(x$mean)    
-  if("spatialSign" %in% x$method)  new_method$spatialSign  <- names(x$mean)    
+  if("spatialSign" %in% x$method)  new_method$spatialSign  <- names(x$mean)   
+  if("invHyperbolicSine" %in% x$method)  new_method$invHyperbolicSine  <- x$method$invHyperbolicSine    
   x$method <- new_method
   x
 }

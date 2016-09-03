@@ -28,7 +28,7 @@ preProcess(x, ...)
 
 \arguments{
   \item{x}{a matrix or data frame. Non-numeric predictors are allowed but will be ignored.}
-  \item{method}{a character vector specifying the type of processing. Possible values are "BoxCox", "YeoJohnson", "expoTrans", "center", "scale", "range", "knnImpute", "bagImpute", "medianImpute", "pca", "ica", "spatialSign", "zv", "nzv", and "conditionalX" (see Details below)}
+  \item{method}{a character vector specifying the type of processing. Possible values are "BoxCox", "YeoJohnson", "expoTrans", "invHyperbolicSine", "center", "scale", "range", "knnImpute", "bagImpute", "medianImpute", "pca", "ica", "spatialSign", "zv", "nzv", and "conditionalX" (see Details below)}
   \item{thresh}{a cutoff for the cumulative percent of variance to be retained by PCA}
   \item{pcaComp}{the specific number of PCA components to keep. If specified, this over-rides \code{thresh}}
   \item{na.remove}{a logical; should missing values be removed from the calculations?}
@@ -46,7 +46,7 @@ preProcess(x, ...)
 In all cases, transformations and operations are estimated using the data in \code{x} and these operations are applied to new data using these values; nothing is recomputed when using the \code{predict} function. 
 
 
-The Box-Cox (\code{method = "BoxCox"}), Yeo-Johnson (\code{method = "YeoJohnson"}), and exponential transformations (\code{method = "expoTrans"})have been "repurposed" here: they are being used to transform the predictor variables. The Box-Cox transformation was developed for transforming the response variable while another method, the Box-Tidwell transformation, was created to estimate transformations of predictor data. However, the Box-Cox method is simpler, more computationally efficient and is equally effective for estimating power transformations. The Yeo-Johnson transformation is similar to the Box-Cox model but can accommodate predictors with zero and/or negative values (while the predictors values for the Box-Cox transformation must be strictly positive.) The exponential transformation of Manly (1976) can also be used for positive or negative data.
+The Box-Cox (\code{method = "BoxCox"}), Yeo-Johnson (\code{method = "YeoJohnson"}), and exponential transformations (\code{method = "expoTrans"})have been "repurposed" here: they are being used to transform the predictor variables. The Box-Cox transformation was developed for transforming the response variable while another method, the Box-Tidwell transformation, was created to estimate transformations of predictor data. However, the Box-Cox method is simpler, more computationally efficient and is equally effective for estimating power transformations. The Yeo-Johnson transformation is similar to the Box-Cox model but can accommodate predictors with zero and/or negative values (while the predictors values for the Box-Cox transformation must be strictly positive.) The exponential transformation of Manly (1976) can also be used for positive or negative data. The inverse hyperbolic sine transformation is \code{log(x+sqrt(x^2+1))}. 
  
 \code{method = "center"} subtracts the mean of the predictor's data (again from the data in \code{x}) from the predictor values while \code{method = "scale"} divides by the standard deviation. 
 
@@ -75,9 +75,10 @@ Non-numeric data will not be pre-processed and there values will be in the data 
   \item{call}{the function call}
   \item{method}{a named list of operations and the variables used for each	}
   \item{dim}{the dimensions of \code{x}}
-  \item{bc}{Box-Cox transformation values, see \code{\link{BoxCoxTrans}}}
+  \item{bc, yj, et, invHyperbolicSine}{transformation values}
   \item{mean}{a vector of means (if centering was requested)}
   \item{std}{a vector of standard deviations (if scaling or PCA was requested)}
+  \item{ranges}{a matrix of min and max values)}  
   \item{rotation}{a matrix of eigenvectors if PCA was requested}
   \item{method}{the value of\code{method}}
   \item{thresh}{the value of\code{thresh}}
@@ -85,6 +86,7 @@ Non-numeric data will not be pre-processed and there values will be in the data 
   \item{numComp}{the number of principal components required of capture the specified amount of variance}
   \item{ica}{contains values for the \code{W} and \code{K} matrix of the decomposition}
   \item{median}{a vector of medians (if median imputation was requested)}
+  \item{data}{the data (when KNN imputation is used)}
 
 \code{predict.preProcess} will produce a data frame.  
 }
@@ -114,11 +116,10 @@ Yeo, I-K. and Johnson, R. (2000). A new family of power transformations to impro
 data(BloodBrain)
 # one variable has one unique value
 \dontrun{
-preProc <- preProcess(bbbDescr)
-
-preProc  <- preProcess(bbbDescr[1:100,-3])
-training <- predict(preProc, bbbDescr[1:100,-3])
-test     <- predict(preProc, bbbDescr[101:208,-3])
+preProc  <- preProcess(bbbDescr[1:100,], method = c("center", "scale", "zv"))
+preProc
+training <- predict(preProc, bbbDescr[1:100,])
+test     <- predict(preProc, bbbDescr[101:208,])
 }
 }
 

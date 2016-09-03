@@ -3,6 +3,13 @@
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+\section{Changes in version 6.0-xx}{
+	\itemize{
+		\item The inverse hyperbolic sine transformation was added to \code{preProcess} \issue(56)
+
+	}
+}
+
 \section{Changes in version 6.0-71}{
 	\itemize{
 		\item Precision, recall, and F measure functions were added along with one called \code{prSummary} that is analogous to \code{twoClassSummary}. Also, \code{confusionMatrix} gains an argument called \code{mode} that dictates what output is shown. 
