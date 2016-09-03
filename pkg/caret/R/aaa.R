@@ -224,11 +224,10 @@ twoClassSummary <- function (data, lev = NULL, model = NULL)
   if(length(levels(data$obs)) > 2)
     stop(paste("Your outcome has", length(levels(data$obs)),
                "levels. The twoClassSummary() function isn't appropriate."))
-  requireNamespaceQuietStop('pROC')
+  requireNamespaceQuietStop('ModelMetrics')
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"])))
     stop("levels of observed and predicted data do not match")
-  rocObject <- try(pROC::roc(data$obs, data[, lev[1]], direction = ">"), silent = TRUE)
-  rocAUC <- if(class(rocObject)[1] == "try-error") NA else rocObject$auc
+  rocAUC <- ModelMetrics::auc(data$obs, data$pred)
   out <- c(rocAUC,
            sensitivity(data[, "pred"], data[, "obs"], lev[1]),
            specificity(data[, "pred"], data[, "obs"], lev[2]))
