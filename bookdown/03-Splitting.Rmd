@@ -51,7 +51,10 @@ head(newSamp)
 
 The visualization below shows the data set (small points), the starting samples (larger blue points) and the order in which the other 20 samples are added.
 
-GIF link
+```{r split_MaxDiss_img, echo = FALSE}
+library(knitr)
+include_graphics('premade/MaxDissim.gif', dpi = NA)
+```
 
 ## Data Splitting for Time Series
 
