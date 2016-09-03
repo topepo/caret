@@ -44,7 +44,7 @@ Suggests:
     nnet,
     party (>= 0.9-99992),
     pls,
-    pROC (>= 1.8),
+    ModelMetrics (>= 1.1.0),
     proxy,
     randomForest,
     RANN,
