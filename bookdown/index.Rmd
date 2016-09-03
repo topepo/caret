@@ -61,3 +61,5 @@ Some resources:
 
 You can always email [me](mailto:max.kuhn@pfizer.com) with questions,
 comments or suggestions.
+
+These HTML pages were created using [bookdown](https://bookdown.org). 
