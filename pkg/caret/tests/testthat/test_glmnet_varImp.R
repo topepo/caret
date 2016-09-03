@@ -16,7 +16,7 @@ test_that('glmnet varImp returns non-negative values', {
 
   # this checks that some coefficients are negative
   coefs <- predict(reg$finalModel, s=0.1, type="coef")
-  expect_less_than(0, sum(0 > coefs))
+  expect_lt(0, sum(0 > coefs))
   # now check that all elements of varImp are nonnegative,
   # in spite of negative coefficients
   vis <- varImp(reg, s=0.1, scale=F)$importance
