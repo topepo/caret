@@ -221,13 +221,15 @@ defaultSummary <- function(data, lev = NULL, model = NULL)
 
 twoClassSummary <- function (data, lev = NULL, model = NULL)
 {
-  if(length(levels(data$obs)) > 2)
-    stop(paste("Your outcome has", length(levels(data$obs)),
+  lvls <- levels(data$obs)
+  if(length(lvls) > 2)
+    stop(paste("Your outcome has", length(lvls),
                "levels. The twoClassSummary() function isn't appropriate."))
   requireNamespaceQuietStop('ModelMetrics')
-  if (!all(levels(data[, "pred"]) == levels(data[, "obs"])))
+  if (!all(levels(data[, "pred"]) == lvls))
     stop("levels of observed and predicted data do not match")
-  rocAUC <- ModelMetrics::auc(data$obs, data$pred)
+  data$y = as.numeric(data$obs == lvls[2])
+  rocAUC <- ModelMetrics::auc(data$y, data$pred)
   out <- c(rocAUC,
            sensitivity(data[, "pred"], data[, "obs"], lev[1]),
            specificity(data[, "pred"], data[, "obs"], lev[2]))
