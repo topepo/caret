@@ -8,6 +8,9 @@ modelInfo <- list(label = "Rule-Based Classifier",
                   grid = function(x, y, len = NULL, search = "grid"){
                     if(search == "grid"){
                       out <- expand.grid(threshold = seq(0.01, 0.5, length.out = len / 2), pruned = c("yes", "no"))
+                      if(len == 1){
+                        out <- data.frame(threshold = 0.25, pruned = "yes")
+                      }
                     } else{
                       out <- data.frame(threshold = runif(len, 0.0, 0.5), pruned = sample(c("yes", "no"), len, replace = TRUE))
                     }
