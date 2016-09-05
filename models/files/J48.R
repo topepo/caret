@@ -10,6 +10,9 @@ modelInfo <- list(label = "C4.5-like Trees",
                     if(search == "grid"){
                       out <- expand.grid(C = seq(0.01, 0.5, length.out = len / 2),
                                          M = 1:upperBound)
+                      if(len == 1){
+                        out <- data.frame(C = 0.25, M = 2)
+                      }
                     } else {
                       out <- data.frame(C = runif(len , 0.0, 0.5),
                                         M = round(exp(runif(len, 0, log(upperBound)))))
@@ -48,4 +51,4 @@ modelInfo <- list(label = "C4.5-like Trees",
                   levels = function(x) x$obsLevels,
                   predictors = function(x, ...) predictors(x$terms),
                   tags = c("Tree-Based Model", "Implicit Feature Selection"),
-                  sort = function(x) x[order(x[,1]),])
+                  sort = function(x) x[order(x$C, x$M),])
