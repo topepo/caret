@@ -9,6 +9,9 @@ modelInfo <- list(label = "Rule-Based Classifier",
                     upperBound <- min(max(1, floor(nrow(x) / 2)), 50)
                     if(search == "grid"){
                       out <- expand.grid(NumOpt = 1:sqrt(upperBound), NumFolds = 2:4, MinWeights = 1:sqrt(upperBound))
+                      if(len == 1){
+                        out <- data.frame(NumOpt = 2, NumFolds = 3, MinWeights = 2)
+                      }
                     } else {
                       out <- data.frame(NumOpt = round(exp(runif(10 * len, 0, log(len)))),
                                         NumFolds = round(exp(runif(10 * len, 0, log(upperBound)))),
@@ -55,4 +58,4 @@ modelInfo <- list(label = "Rule-Based Classifier",
                     rownames(out) <- dat$varUsage$Var
                     out
                   },
-                  sort = function(x) x[order(x[,1], decreasing = TRUE),])
+                  sort = function(x) x[order(x$NumOpt, x$NumFolds, x$MinWeights, decreasing = TRUE),])
