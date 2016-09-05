@@ -1,6 +1,6 @@
 
 rocPerCol <- function(dat, cls){
-  ModelMetrics::auc(cls, dat)
+  auc(cls, dat)
 }
 
 asNumeric <- function(data){
