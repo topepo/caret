@@ -38,8 +38,8 @@ MathJax.Hub.Config({
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="visualizations.html">
+<link rel="prev" href="feature-selection-using-genetic-algorithms.html">
+<link rel="next" href="data-sets.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -352,42 +352,267 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">The <code>caret</code> Package</h1>
-<h4 class="author"><em>Max Kuhn</em></h4>
-<h4 class="date"><em>2016-09-03</em></h4>
-</div>
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>The <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:</p>
+<div id="feature-selection-using-simulated-annealing" class="section level1">
+<h1><span class="header-section-number">21</span> Feature Selection using Simulated Annealing</h1>
+<p>Contents</p>
 <ul>
-<li>data splitting</li>
-<li>pre-processing</li>
-<li>feature selection</li>
-<li>model tuning using resampling</li>
-<li>variable importance estimation</li>
+<li><a href="feature-selection-using-simulated-annealing.html#sa">Simulated Annealing</a></li>
+<li><a href="feature-selection-using-genetic-algorithms.html#performance">Internal and External Performance Estimates</a></li>
+<li><a href="feature-selection-using-univariate-filters.html#syntax">Basic Syntax</a></li>
+<li><a href="model-training-and-tuning.html#example">Example</a></li>
+<li><a href="model-training-and-tuning.html#custom">Customizing the Search</a></li>
 </ul>
-<p>as well as other functionality.</p>
-<p>There are many different modeling functions in R. Some have different syntax for model training and/or prediction. The package started off as a way to provide a uniform interface the functions themselves, as well as a way to standardize common tasks (such parameter tuning and variable importance).</p>
-<p>The current release version can be found on <a href="http://cran.r-project.org/web/packages/caret/">CRAN</a> and the project is hosted <a href="https://github.com/topepo/caret">on github</a>.</p>
-<p>Some resources:</p>
-<ul>
-<li>The book <em>Applied Predictive Modeling</em> features <strong>caret</strong> and over 40 other R packages. It is on sale at <a href="http://www.amazon.com/dp/1461468485">Amazon</a> or the <a href="http://www.springer.com/statistics/life+sciences%2C+medicine+%26+health/book/978-1-4614-6848-6">the publisher’s website</a>. There is a <a href="http://appliedpredictivemodeling.com/">companion website</a> too.</li>
-<li>There is also a paper on caret in the <a href="http://www.jstatsoft.org/v28/i05">Journal of Statistical Software</a>. The example data can be obtained <a href="descr.RData">here</a>(the predictors) and <a href="mutagen.RData">here</a> (the outcomes).</li>
-<li>There is a <a href="http://www.youtube.com/watch?v=7Jbb2ItbTC4">webinar</a> for the package on Youtube that was organized and recorded by Ray DiGiacomo Jr for the Orange County R User Group.</li>
-<li>At <a href="http://user2014.stat.ucla.edu">useR! 2014</a>, I was <a href="http://youtu.be/YmHyAHkjX_A">interviewed</a> and discussed the package and the book.</li>
-</ul>
-<p>You can always email <a href="mailto:max.kuhn@pfizer.com">me</a> with questions, comments or suggestions.</p>
-<p>These HTML pages were created using <a href="https://bookdown.org">bookdown</a>.</p>
+<div id="sa">
 
+</div>
+<div id="simulated-annealing" class="section level2">
+<h2><span class="header-section-number">21.1</span> Simulated Annealing</h2>
+<p>Simulated annealing (SA) is a global search method that makes small random changes (i.e. perturbations) to an initial candidate solution. If the performance value for the perturbed value is better than the previous solution, the new solution is accepted. If not, an acceptance probability is determined based on the difference between the two performance values and the current iteration of the search. From this, a sub-optimal solution can be accepted on the off-change that it may eventually produce a better solution in subsequent iterations. See <a href="http://scholar.google.com/scholar?hl=en&amp;q=%22Optimization+by+simulated+annealing">Kirkpatrick (1984)</a> or <a href="http://scholar.google.com/scholar?q=%22Simulated+annealing+algorithms%3A+An+overview">Rutenbar (1989)</a> for better descriptions.</p>
+<p>In the context of feature selection, a solution is a binary vector that describes the current subset. The subset is perturbed by randomly changing a small number of members in the subset.</p>
+<div id="performance">
+
+</div>
+</div>
+<div id="internal-and-external-performance-estimates-1" class="section level2">
+<h2><span class="header-section-number">21.2</span> Internal and External Performance Estimates</h2>
+<p>Much of the discussion on this subject in the <a href="ga.html#performance">genetic algorithm page</a> is relevant here, although SA search is less aggressive than GA search. In any case, the implementation here conducts the SA search inside the resampling loops and uses an external performance estimate to choose how many iterations of the search are appropriate.</p>
+<div id="syntax">
+
+</div>
+</div>
+<div id="basic-syntax-2" class="section level2">
+<h2><span class="header-section-number">21.3</span> Basic Syntax</h2>
+<p>The syntax of this function is very similar to the previous information for genetic algorithm searches.</p>
+<p>The most basic usage of the function is:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obj &lt;-<span class="st"> </span><span class="kw">safs</span>(<span class="dt">x =</span> predictors, 
+            <span class="dt">y =</span> outcome,
+            <span class="dt">iters =</span> <span class="dv">100</span>)</code></pre></div>
+<p>where</p>
+<ul>
+<li><code>x</code>: a data frame or matrix of predictor values</li>
+<li><code>y</code>: a factor or numeric vector of outcomes</li>
+<li><code>iters</code>: the number of iterations for the SA</li>
+</ul>
+<p>This isn’t very specific. All of the action is in the control function. That can be used to specify the model to be fit, how predictions are made and summarized as well as the genetic operations.</p>
+<p>Suppose that we want to fit a linear regression model. To do this, we can use <code>train</code> as an interface and pass arguments to that function through <code>safs</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ctrl &lt;-<span class="st"> </span><span class="kw">safsControl</span>(<span class="dt">functions =</span> caretSA)
+obj &lt;-<span class="st"> </span><span class="kw">safs</span>(<span class="dt">x =</span> predictors, 
+            <span class="dt">y =</span> outcome,
+            <span class="dt">iters =</span> <span class="dv">100</span>,
+            <span class="dt">safsControl =</span> ctrl,
+            ## Now pass options to `train`
+            
+            <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</code></pre></div>
+<p>Other options, such as <code>preProcess</code>, can be passed in as well.</p>
+<p>Some important options to <code>safsControl</code> are:</p>
+<ul>
+<li><code>method</code>, <code>number</code>, <code>repeats</code>, <code>index</code>, <code>indexOut</code>, etc: options similar to those for <a href="http://topepo.github.io/caret/training.html#control"><code>train</code></a> top control resampling.</li>
+<li><code>metric</code>: this is similar to <a href="http://topepo.github.io/caret/training.html#control"><code>train</code></a>’s option but, in this case, the value should be a named vector with values for the internal and external metrics. If none are specified, the first value returned by the summary functions (see details below) are used and a warning is issued. A similar two-element vector for the option <code>maximize</code> is also required. See the <a href="feature-selection-using-genetic-algorithms.html#example2">last example here</a> for an illustration.</li>
+<li><code>holdout</code>: this is a number between <code>[0, 1)</code> that can be used to hold out samples for computing the internal fitness value. Note that this is independent of the external resampling step. Suppose 10-fold CV is being used. Within a resampling iteration, <code>holdout</code> can be used to sample an additional proportion of the 90% resampled data to use for estimating fitness. This may not be a good idea unless you have a very large training set and want to avoid an internal resampling procedure to estimate fitness.</li>
+<li><code>improve</code>: an integer (or infinity) defining how many iterations should pass without an improvement in fitness before the current subset is reset to the last known improvement.</li>
+<li><code>allowParallel</code>: should the external resampling loop be run in parallel?.</li>
+</ul>
+<p>There are a few built-in sets of functions to use with <code>safs</code>: <code>caretSA</code>, <code>rfSA</code>, and <code>treebagSA</code>. The first is a simple interface to <code>train</code>. When using this, as shown above, arguments can be passed to <code>train</code> using the <code>...</code> structure and the resampling estimates of performance can be used as the internal fitness value. The functions provided by <code>rfSA</code> and <code>treebagSA</code> avoid using <code>train</code> and their internal estimates of fitness come from using the out-of-bag estimates generated from the model.</p>
+<div id="example">
+
+</div>
+</div>
+<div id="example-1" class="section level2">
+<h2><span class="header-section-number">21.4</span> Example</h2>
+<p>Using the example from the <a href="rfe.html#example">previous page</a> where there are five real predictors and 40 noise predictors.</p>
+<p>We’ll fit a random forest model and use the out-of-bag RMSE estimate as the internal performance metric and use the same repeated 10-fold cross-validation process used with the search. To do this, we’ll use the built-in <code>rfSA</code> object for this purpose. The default SA operators will be used with 1000 iterations of the algorithm.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sa_ctrl &lt;-<span class="st"> </span><span class="kw">safsControl</span>(<span class="dt">functions =</span> rfSA,
+                       <span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,
+                       <span class="dt">repeats =</span> <span class="dv">5</span>,
+                       <span class="dt">improve =</span> <span class="dv">50</span>)
+
+<span class="kw">set.seed</span>(<span class="dv">10</span>)
+rf_sa &lt;-<span class="st"> </span><span class="kw">safs</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y,
+              <span class="dt">iters =</span> <span class="dv">500</span>,
+              <span class="dt">safsControl =</span> sa_ctrl)
+rf_sa</code></pre></div>
+<pre><code>## 
+## Simulated Annealing Feature Selection
+## 
+## 100 samples
+## 50 predictors
+## 
+## Maximum search iterations: 500 
+## Restart after 50 iterations without improvement (6.3 restarts on average)
+## 
+## Internal performance values: RMSE, Rsquared
+## Subset selection driven to minimize internal RMSE 
+## 
+## External performance values: RMSE, Rsquared
+## Best iteration chose by minimizing external RMSE 
+## External resampling method: Cross-Validated (10 fold, repeated 5 times) 
+## 
+## During resampling:
+##   * the top 5 selected variables (out of a possible 50):
+##     real1 (100%), real2 (100%), real4 (100%), real5 (100%), bogus17 (88%)
+##   * on average, 19.2 variables were selected (min = 13, max = 30)
+## 
+## In the final search using the entire training set:
+##    * 30 features selected at iteration 318 including:
+##      real1, real2, real4, real5, bogus1 ... 
+##    * external performance at this iteration is
+## 
+##        RMSE    Rsquared 
+##      3.2674      0.6785</code></pre>
+<p>As with the GA, we can plot the internal and external performance over iterations.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rf_sa) +<span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="_main_files/figure-html/sa_rf_profile-1.png" width="672" /></p>
+<p>The performance here isn’t as good as the previous GA or RFE solutions. Based on these results, the iteration associated with the best external RMSE estimate was 318 with a corresponding RMSE estimate of 3.27.</p>
+<p>Using the entire training set, the final SA is conducted and, at iteration 318, there were 30 selected: real1, real2, real4, real5, bogus1, bogus2, bogus6, bogus10, bogus12, bogus13, bogus16, bogus18, bogus19, bogus22, bogus24, bogus25, bogus26, bogus27, bogus29, bogus30, bogus31, bogus32, bogus34, bogus36, bogus37, bogus39, bogus42, bogus43, bogus44, bogus45. The random forest model with these predictors is created using the entire training set is trained and this is the model that is used when <code>predict.safs</code> is executed.</p>
+<div id="custom">
+
+</div>
+</div>
+<div id="customizing-the-search-1" class="section level2">
+<h2><span class="header-section-number">21.5</span> Customizing the Search</h2>
+<div id="the-fit-function-4" class="section level3">
+<h3><span class="header-section-number">21.5.1</span> The <code>fit</code> Function</h3>
+<p>This function builds the model based on a proposed current subset. The arguments for the function must be:</p>
+<ul>
+<li><code>x</code>: the current training set of predictor data with the appropriate subset of variables</li>
+<li><code>y</code>: the current outcome data (either a numeric or factor vector)</li>
+<li><code>lev</code>: a character vector with the class levels (or <code>NULL</code> for regression problems)</li>
+<li><code>last</code>: a logical that is <code>TRUE</code> when the final SA search is conducted on the entire data set</li>
+<li><code>...</code>: optional arguments to pass to the fit function in the call to <code>safs</code></li>
+</ul>
+<p>The function should return a model object that can be used to generate predictions. For random forest, the fit function is simple:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfSA$fit</code></pre></div>
+<pre><code>## function (x, y, lev = NULL, last = FALSE, ...) 
+## {
+##     loadNamespace(&quot;randomForest&quot;)
+##     randomForest::randomForest(x, y, ...)
+## }
+## &lt;environment: namespace:caret&gt;</code></pre>
+</div>
+<div id="the-pred-function-3" class="section level3">
+<h3><span class="header-section-number">21.5.2</span> The <code>pred</code> Function</h3>
+<p>This function returns a vector of predictions (numeric or factors) from the current model. The input arguments must be</p>
+<ul>
+<li><code>object</code>: the model generated by the <code>fit</code> function</li>
+<li><code>x</code>: the current set of predictor set for the held-back samples</li>
+</ul>
+<p>For random forests, the function is a simple wrapper for the predict function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfSA$pred</code></pre></div>
+<pre><code>## function (object, x) 
+## {
+##     tmp &lt;- predict(object, x)
+##     if (is.factor(object$y)) {
+##         out &lt;- cbind(data.frame(pred = tmp), as.data.frame(predict(object, 
+##             x, type = &quot;prob&quot;)))
+##     }
+##     else out &lt;- tmp
+##     out
+## }
+## &lt;environment: namespace:caret&gt;</code></pre>
+<p>For classification, it is probably a good idea to ensure that the resulting factor variables of predictions has the same levels as the input data.</p>
+</div>
+<div id="the-fitness_intern-function-1" class="section level3">
+<h3><span class="header-section-number">21.5.3</span> The <code>fitness_intern</code> Function</h3>
+<p>The <code>fitness_intern</code> function takes the fitted model and computes one or more performance metrics. The inputs to this function are:</p>
+<ul>
+<li><code>object</code>: the model generated by the <code>fit</code> function</li>
+<li><code>x</code>: the current set of predictor set. If the option <code>safsControl$holdout</code> is zero, these values will be from the current resample (i.e. the same data used to fit the model). Otherwise, the predictor values are from the hold-out set created by <code>safsControl$holdout</code>.</li>
+<li><code>y</code>: outcome values. See the note for the <code>x</code> argument to understand which data are presented to the function.</li>
+<li><code>maximize</code>: a logical from <code>safsControl</code> that indicates whether the metric should be maximized or minimized</li>
+<li><code>p</code>: the total number of possible predictors</li>
+</ul>
+<p>The output should be a <strong>named</strong> numeric vector of performance values.</p>
+<p>In many cases, some resampled measure of performance is used. In the example above using random forest, the OOB error was used. In other cases, the resampled performance from <code>train</code> can be used and, if <code>safsControl$holdout</code> is not zero, a static hold-out set can be used. This depends on the data and problem at hand. If left</p>
+<p>The example function for random forest is:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfSA$fitness_intern</code></pre></div>
+<pre><code>## function (object, x, y, maximize, p) 
+## rfStats(object)
+## &lt;environment: namespace:caret&gt;</code></pre>
+</div>
+<div id="the-fitness_extern-function-1" class="section level3">
+<h3><span class="header-section-number">21.5.4</span> The <code>fitness_extern</code> Function</h3>
+<p>The <code>fitness_extern</code> function takes the observed and predicted values form the external resampling process and computes one or more performance metrics. The input arguments are:</p>
+<ul>
+<li><code>data</code>: a data frame or predictions generated by the <code>fit</code> function. For regression, the predicted values in a column called <code>pred</code>. For classification, <code>pred</code> is a factor vector. Class probabilities are usually attached as columns whose names are the class levels (see the random forest example for the <code>fit</code> function above)</li>
+<li><code>lev</code>: a character vector with the class levels (or <code>NULL</code> for regression problems)</li>
+</ul>
+<p>The output should be a <strong>named</strong> numeric vector of performance values.</p>
+<p>The example function for random forest is:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfSA$fitness_extern</code></pre></div>
+<pre><code>## function (data, lev = NULL, model = NULL) 
+## {
+##     if (is.character(data$obs)) 
+##         data$obs &lt;- factor(data$obs, levels = lev)
+##     postResample(data[, &quot;pred&quot;], data[, &quot;obs&quot;])
+## }
+## &lt;environment: namespace:caret&gt;</code></pre>
+<p>Two functions in <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> that can be used as the summary function are <code>defaultSummary</code> and <code>twoClassSummary</code> (for classification problems with two classes).</p>
+</div>
+<div id="the-initial-function-1" class="section level3">
+<h3><span class="header-section-number">21.5.5</span> The <code>initial</code> Function</h3>
+<p>This function creates an initial subset. Inputs are:</p>
+<ul>
+<li><code>vars</code>: the number of possible predictors</li>
+<li><code>prob</code>: the probability that a feature is in the subset</li>
+<li><code>...</code>: not currently used</li>
+</ul>
+<p>The output should be a vector of integers indicating which predictors are in the initial subset.</p>
+<p>Alternatively, instead of a function, a vector of integers can be used in this slot.</p>
+</div>
+<div id="the-perturb-function" class="section level3">
+<h3><span class="header-section-number">21.5.6</span> The <code>perturb</code> Function</h3>
+<p>This function perturbs the subset. Inputs are:</p>
+<ul>
+<li><code>x</code>: the integers defining the current subset</li>
+<li><code>vars</code>: the number of possible predictors</li>
+<li><code>number</code>: the number of predictors to randomly change</li>
+<li><code>...</code>: not currently used</li>
+</ul>
+<p>The output should be a vector of integers indicating which predictors are in the new subset.</p>
+</div>
+<div id="the-prob-function" class="section level3">
+<h3><span class="header-section-number">21.5.7</span> The <code>prob</code> Function</h3>
+<p>This function computes the acceptance probability. Inputs are:</p>
+<ul>
+<li><code>old</code>: the fitness value for the current subset</li>
+<li><code>new</code>: the fitness value for the new subset</li>
+<li><code>iteration</code>: the current iteration number or, if the <code>improve</code>argument of <code>safsControl</code> is used, the number of iterations since the last restart</li>
+<li><code>...</code>: not currently used</li>
+</ul>
+<p>The output should be a numeric value between zero and one.</p>
+<p>One of the biggest difficulties in using simulated annealing is the specification of the acceptance probability calculation. There are many references on different methods for doing this but the general consensus is that 1) the probability should decrease as the difference between the current and new solution increases and 2) the probability should decrease over iterations. One issue is that the difference in fitness values can be scale-dependent. In this package, the default probability calculations uses the percent difference, i.e. <code>(current - new)/current</code> to normalize the difference. The basic form of the probability simply takes the difference, multiplies by the iteration number and exponentiates this product:</p>
+<pre><code>    prob = exp[(current - new)/current*iteration]</code></pre>
+<p>To demonstrate this, the plot below shows the probability profile for different fitness values of the current subset and different (absolute) differences. For the example data that were simulated, the RMSE values ranged between values greater than 4 to just under 3. In the plot below, the red curve in the right-hand panel shows how the probability changes over time when comparing a current value of 4 with a new values of 4.5 (smaller values being better). While this difference would likely be accepted in the first few iterations, it is unlikely to be accepted after 30 or 40. Also, larger differences are uniformly disfavored relative to smaller differences.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">old =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">3.5</span>),
+                    <span class="dt">new =</span> <span class="kw">c</span>(<span class="fl">4.5</span>, <span class="dv">4</span>, <span class="fl">3.5</span>) +<span class="st"> </span><span class="dv">1</span>,
+                    <span class="dt">iter =</span> <span class="dv">1</span>:<span class="dv">40</span>)
+grid &lt;-<span class="st"> </span><span class="kw">subset</span>(grid, old &lt;<span class="st"> </span>new)
+
+grid$prob &lt;-<span class="st"> </span><span class="kw">apply</span>(grid, <span class="dv">1</span>, 
+                   function(x) 
+                     <span class="kw">safs_prob</span>(<span class="dt">new =</span> x[<span class="st">&quot;new&quot;</span>], 
+                               <span class="dt">old=</span> x[<span class="st">&quot;old&quot;</span>], 
+                               <span class="dt">iteration =</span> x[<span class="st">&quot;iter&quot;</span>]))
+
+grid$Difference &lt;-<span class="st"> </span><span class="kw">factor</span>(grid$new -<span class="st"> </span>grid$old)
+grid$Group &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">paste</span>(<span class="st">&quot;Current Value&quot;</span>, grid$old))
+
+<span class="kw">ggplot</span>(grid, <span class="kw">aes</span>(<span class="dt">x =</span> iter, <span class="dt">y =</span> prob, <span class="dt">color =</span> Difference)) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_line</span>() +<span class="st"> </span><span class="kw">facet_wrap</span>(~Group) +<span class="st"> </span><span class="kw">theme_bw</span>() +
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Probability&quot;</span>) +<span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Iteration&quot;</span>)</code></pre></div>
+<p><img src="_main_files/figure-html/sa_prob_plot-1.png" width="672" /></p>
+<p>While this is the default, any user-written function can be used to assign probabilities.</p>
+
+</div>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="visualizations.html" class="navigation navigation-next navigation-unique" aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+<a href="feature-selection-using-genetic-algorithms.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="data-sets.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>

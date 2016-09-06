@@ -38,8 +38,8 @@ MathJax.Hub.Config({
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="visualizations.html">
+<link rel="prev" href="pre-processing.html">
+<link rel="next" href="model-training-and-tuning.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -352,42 +352,80 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">The <code>caret</code> Package</h1>
-<h4 class="author"><em>Max Kuhn</em></h4>
-<h4 class="date"><em>2016-09-03</em></h4>
-</div>
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>The <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:</p>
+<div id="data-splitting" class="section level1">
+<h1><span class="header-section-number">4</span> Data Splitting</h1>
+<p>Contents</p>
 <ul>
-<li>data splitting</li>
-<li>pre-processing</li>
-<li>feature selection</li>
-<li>model tuning using resampling</li>
-<li>variable importance estimation</li>
+<li><a href="data-splitting.html#outcome">Simple Splitting Based on the Outcome</a></li>
+<li><a href="data-splitting.html#predictors">Splitting Based on the Predictors</a></li>
+<li><a href="#time">Data Splitting for Time Series</a></li>
 </ul>
-<p>as well as other functionality.</p>
-<p>There are many different modeling functions in R. Some have different syntax for model training and/or prediction. The package started off as a way to provide a uniform interface the functions themselves, as well as a way to standardize common tasks (such parameter tuning and variable importance).</p>
-<p>The current release version can be found on <a href="http://cran.r-project.org/web/packages/caret/">CRAN</a> and the project is hosted <a href="https://github.com/topepo/caret">on github</a>.</p>
-<p>Some resources:</p>
-<ul>
-<li>The book <em>Applied Predictive Modeling</em> features <strong>caret</strong> and over 40 other R packages. It is on sale at <a href="http://www.amazon.com/dp/1461468485">Amazon</a> or the <a href="http://www.springer.com/statistics/life+sciences%2C+medicine+%26+health/book/978-1-4614-6848-6">the publisher’s website</a>. There is a <a href="http://appliedpredictivemodeling.com/">companion website</a> too.</li>
-<li>There is also a paper on caret in the <a href="http://www.jstatsoft.org/v28/i05">Journal of Statistical Software</a>. The example data can be obtained <a href="descr.RData">here</a>(the predictors) and <a href="mutagen.RData">here</a> (the outcomes).</li>
-<li>There is a <a href="http://www.youtube.com/watch?v=7Jbb2ItbTC4">webinar</a> for the package on Youtube that was organized and recorded by Ray DiGiacomo Jr for the Orange County R User Group.</li>
-<li>At <a href="http://user2014.stat.ucla.edu">useR! 2014</a>, I was <a href="http://youtu.be/YmHyAHkjX_A">interviewed</a> and discussed the package and the book.</li>
-</ul>
-<p>You can always email <a href="mailto:max.kuhn@pfizer.com">me</a> with questions, comments or suggestions.</p>
-<p>These HTML pages were created using <a href="https://bookdown.org">bookdown</a>.</p>
+<div id="outcome">
 
+</div>
+<div id="simple-splitting-based-on-the-outcome" class="section level2">
+<h2><span class="header-section-number">4.1</span> Simple Splitting Based on the Outcome</h2>
+<p>The function <code>createDataPartition</code> can be used to create balanced splits of the data. If the <code>y</code> argument to this function is a factor, the random sampling occurs within each class and should preserve the overall class distribution of the data. For example, to create a single 80/20% split of the iris data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caret)
+<span class="kw">set.seed</span>(<span class="dv">3456</span>)
+trainIndex &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(iris$Species, <span class="dt">p =</span> .<span class="dv">8</span>, 
+                                  <span class="dt">list =</span> <span class="ot">FALSE</span>, 
+                                  <span class="dt">times =</span> <span class="dv">1</span>)
+<span class="kw">head</span>(trainIndex)</code></pre></div>
+<pre><code>##      Resample1
+## [1,]         1
+## [2,]         2
+## [3,]         4
+## [4,]         5
+## [5,]         6
+## [6,]         8</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">irisTrain &lt;-<span class="st"> </span>iris[ trainIndex,]
+irisTest  &lt;-<span class="st"> </span>iris[-trainIndex,]</code></pre></div>
+<p>The <code>list = FALSE</code> avoids returns the data as a list. This function also has an argument, <code>times</code>, that can create multiple splits at once; the data indices are returned in a list of integer vectors. Similarly, <code>createResample</code> can be used to make simple bootstrap samples and <code>createFolds</code> can be used to generate balanced cross–validation groupings from a set of data.</p>
+<div id="predictors">
+
+</div>
+</div>
+<div id="splitting-based-on-the-predictors" class="section level2">
+<h2><span class="header-section-number">4.2</span> Splitting Based on the Predictors</h2>
+<p>Also, the function <code>maxDissim</code> can be used to create sub–samples using a maximum dissimilarity approach (<a href="http://www.liebertonline.com/doi/abs/10.1089/106652799318382">Willett, 1999</a>). Suppose there is a data set <em>A</em> with <em>m</em> samples and a larger data set <em>B</em> with <em>n</em> samples. We may want to create a sub–sample from <em>B</em> that is diverse when compared to <em>A</em>. To do this, for each sample in <em>B</em>, the function calculates the <em>m</em> dissimilarities between each point in <em>A</em>. The most dissimilar point in <em>B</em> is added to <em>A</em> and the process continues. There are many methods in R to calculate dissimilarity. <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> uses the <a href="http://cran.r-project.org/web/packages/proxy/index.html"><code>proxy</code></a> package. See the manual for that package for a list of available measures. Also, there are many ways to calculate which sample is “most dissimilar”. The argument <code>obj</code> can be used to specify any function that returns a scalar measure. <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> includes two functions, <code>minDiss</code> and <code>sumDiss</code>, that can be used to maximize the minimum and total dissimilarities, respectfully.</p>
+<p>As an example, the figure below shows a scatter plot of two chemical descriptors for the Cox2 data. Using an initial random sample of 5 compounds, we can select 20 more compounds from the data so that the new compounds are most dissimilar from the initial 5 that were specified. The panels in the figure show the results using several combinations of distance metrics and scoring functions. For these data, the distance measure has less of an impact than the scoring method for determining which compounds are most dissimilar.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mlbench)
+<span class="kw">data</span>(BostonHousing)
+
+testing &lt;-<span class="st"> </span><span class="kw">scale</span>(BostonHousing[, <span class="kw">c</span>(<span class="st">&quot;age&quot;</span>, <span class="st">&quot;nox&quot;</span>)])
+<span class="kw">set.seed</span>(<span class="dv">5</span>)
+## A random sample of 5 data points
+startSet &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span>:<span class="kw">dim</span>(testing)[<span class="dv">1</span>], <span class="dv">5</span>)
+samplePool &lt;-<span class="st"> </span>testing[-startSet,]
+start &lt;-<span class="st"> </span>testing[startSet,]
+newSamp &lt;-<span class="st"> </span><span class="kw">maxDissim</span>(start, samplePool, <span class="dt">n =</span> <span class="dv">20</span>)
+<span class="kw">head</span>(newSamp)</code></pre></div>
+<pre><code>## [1] 461 406  49 308 469  76</code></pre>
+<p>The visualization below shows the data set (small points), the starting samples (larger blue points) and the order in which the other 20 samples are added.</p>
+<p><img src="premade/MaxDissim.gif" /><!-- --></p>
+</div>
+<div id="data-splitting-for-time-series" class="section level2">
+<h2><span class="header-section-number">4.3</span> Data Splitting for Time Series</h2>
+<p>Simple random sampling of time series is probably not the best way to resample times series data. <a href="https://www.otexts.org/fpp/2/5">Hyndman and Athanasopoulos (2013)</a> discuss <em>rolling forecasting origin</em> techniques that move the training and test sets in time. caret contains a function called <code>createTimeSlices</code> that can create the indices for this type of splitting.</p>
+<p>The three parameters for this type of splitting are:</p>
+<ul>
+<li><code>initialWindow</code>: the initial number of consecutive values in each training set sample</li>
+<li><code>horizon</code>: The number of consecutive values in test set sample</li>
+<li><code>fixedWindow</code>: A logical: if <code>FALSE</code>, the training set always start at the first sample and the training set size will vary over data splits.</li>
+</ul>
+<p>As an example, suppose we have a time series with 20 data points. We can fix <code>initialWindow = 5</code> and look at different settings of the other two arguments. In the plot below, rows in each panel correspond to different data splits (i.e. resamples) and the columns correspond to different data points. Also, red indicates samples that are in included in the training set and the blue indicates samples in the test set.</p>
+<p><img src="_main_files/figure-html/Split_time-1.png" width="864" /></p>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="visualizations.html" class="navigation navigation-next navigation-unique" aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+<a href="pre-processing.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="model-training-and-tuning.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>

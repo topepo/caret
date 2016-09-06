@@ -38,8 +38,8 @@ MathJax.Hub.Config({
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="visualizations.html">
+<link rel="prev" href="parallel-processing.html">
+<link rel="next" href="subsampling-for-class-imbalances.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -352,33 +352,85 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">The <code>caret</code> Package</h1>
-<h4 class="author"><em>Max Kuhn</em></h4>
-<h4 class="date"><em>2016-09-03</em></h4>
-</div>
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>The <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:</p>
-<ul>
-<li>data splitting</li>
-<li>pre-processing</li>
-<li>feature selection</li>
-<li>model tuning using resampling</li>
-<li>variable importance estimation</li>
-</ul>
-<p>as well as other functionality.</p>
-<p>There are many different modeling functions in R. Some have different syntax for model training and/or prediction. The package started off as a way to provide a uniform interface the functions themselves, as well as a way to standardize common tasks (such parameter tuning and variable importance).</p>
-<p>The current release version can be found on <a href="http://cran.r-project.org/web/packages/caret/">CRAN</a> and the project is hosted <a href="https://github.com/topepo/caret">on github</a>.</p>
-<p>Some resources:</p>
-<ul>
-<li>The book <em>Applied Predictive Modeling</em> features <strong>caret</strong> and over 40 other R packages. It is on sale at <a href="http://www.amazon.com/dp/1461468485">Amazon</a> or the <a href="http://www.springer.com/statistics/life+sciences%2C+medicine+%26+health/book/978-1-4614-6848-6">the publisher’s website</a>. There is a <a href="http://appliedpredictivemodeling.com/">companion website</a> too.</li>
-<li>There is also a paper on caret in the <a href="http://www.jstatsoft.org/v28/i05">Journal of Statistical Software</a>. The example data can be obtained <a href="descr.RData">here</a>(the predictors) and <a href="mutagen.RData">here</a> (the outcomes).</li>
-<li>There is a <a href="http://www.youtube.com/watch?v=7Jbb2ItbTC4">webinar</a> for the package on Youtube that was organized and recorded by Ray DiGiacomo Jr for the Orange County R User Group.</li>
-<li>At <a href="http://user2014.stat.ucla.edu">useR! 2014</a>, I was <a href="http://youtu.be/YmHyAHkjX_A">interviewed</a> and discussed the package and the book.</li>
-</ul>
-<p>You can always email <a href="mailto:max.kuhn@pfizer.com">me</a> with questions, comments or suggestions.</p>
-<p>These HTML pages were created using <a href="https://bookdown.org">bookdown</a>.</p>
+<div id="random-hyperparameter-search" class="section level1">
+<h1><span class="header-section-number">10</span> Random Hyperparameter Search</h1>
+<p>The default method for optimizing tuning parameters in <code>train</code> is to use a <a href="training.html#grids">grid search</a>. This approach is usually effective but, in cases when there are many tuning parameters, it can be inefficient. An alternative is to use a combination of <a href="adaptive.html">grid search and racing</a>. Another is to use a <a href="http://www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf">random selection of tuning parameter combinations</a> to cover the parameter space to a lesser extent.</p>
+<p>There are a number of models where this can be beneficial in finding reasonable values of the tuning parameters in a relatively short time. However, there are some models where the efficiency in a small search field can cancel out other optimizations. For example, a number of models in caret utilize the “sub-model trick” where <em>M</em> tuning parameter combinations are evaluated, potentially far fewer than M model fits are required. This approach is best leveraged when a simple grid search is used. For this reason, it may be inefficient to use random search for the following model codes: <code>ada</code>, <code>AdaBag</code>, <code>AdaBoost.M1</code>, <code>bagEarth</code>, <code>blackboost</code>, <code>blasso</code>, <code>BstLm</code>, <code>bstSm</code>, <code>bstTree</code>, <code>C5.0</code>, <code>C5.0Cost</code>, <code>cubist</code>, <code>earth</code>, <code>enet</code>, <code>foba</code>, <code>gamboost</code>, <code>gbm</code>, <code>glmboost</code>, <code>glmnet</code>, <code>kernelpls</code>, <code>lars</code>, <code>lars2</code>, <code>lasso</code>, <code>lda2</code>, <code>leapBackward</code>, <code>leapForward</code>, <code>leapSeq</code>, <code>LogitBoost</code>, <code>pam</code>, <code>partDSA</code>, <code>pcr</code>, <code>PenalizedLDA</code>, <code>pls</code>, <code>relaxo</code>, <code>rfRules</code>, <code>rotationForest</code>, <code>rotationForestCp</code>, <code>rpart</code>, <code>rpart2</code>, <code>rpartCost</code>, <code>simpls</code>, <code>spikeslab</code>, <code>superpc</code>, <code>widekernelpls</code>, <code>xgbTree</code>.</p>
+<p>Finally, many of the models wrapped by <code>train</code> have a small number of parameters. The average number of parameters is 1.8.</p>
+<p>To use random search, another option is available in <code>trainControl</code> called <code>search</code>. Possible values of this argument are <code>&quot;grid&quot;</code> and <code>&quot;random&quot;</code>. The built-in models contained in caret contain code to generate random tuning parameter combinations. The total number of unique combinations is specified by the <code>tuneLength</code> option to <code>train</code>.</p>
+<p>Again, we will use the sonar data from the previous training page to demonstrate the method with a regularized discriminant analysis by looking at a total of 30 tuning parameter combinations:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mlbench)
+<span class="kw">data</span>(Sonar)
+
+<span class="kw">library</span>(caret)
+<span class="kw">set.seed</span>(<span class="dv">998</span>)
+inTraining &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(Sonar$Class, <span class="dt">p =</span> .<span class="dv">75</span>, <span class="dt">list =</span> <span class="ot">FALSE</span>)
+training &lt;-<span class="st"> </span>Sonar[ inTraining,]
+testing  &lt;-<span class="st"> </span>Sonar[-inTraining,]
+
+fitControl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,
+                           <span class="dt">number =</span> <span class="dv">10</span>,
+                           <span class="dt">repeats =</span> <span class="dv">10</span>,
+                           <span class="dt">classProbs =</span> <span class="ot">TRUE</span>,
+                           <span class="dt">summaryFunction =</span> twoClassSummary,
+                           <span class="dt">search =</span> <span class="st">&quot;random&quot;</span>)
+
+<span class="kw">set.seed</span>(<span class="dv">825</span>)
+rda_fit &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> training, 
+                  <span class="dt">method =</span> <span class="st">&quot;rda&quot;</span>,
+                  <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
+                  <span class="dt">tuneLength =</span> <span class="dv">30</span>,
+                  <span class="dt">trControl =</span> fitControl)
+rda_fit</code></pre></div>
+<pre><code>## Regularized Discriminant Analysis 
+## 
+## 157 samples
+##  60 predictor
+##   2 classes: &#39;M&#39;, &#39;R&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold, repeated 10 times) 
+## Summary of sample sizes: 142, 142, 140, 142, 142, 141, ... 
+## Resampling results across tuning parameters:
+## 
+##   gamma       lambda      ROC        Sens       Spec     
+##   0.03989739  0.90079034  0.8876811  0.8459722  0.7667857
+##   0.04968076  0.92570716  0.8816245  0.8425000  0.7610714
+##   0.07268784  0.24747192  0.9153125  0.8893056  0.8107143
+##   0.15727695  0.92403079  0.8842262  0.8636111  0.7696429
+##   0.18095571  0.19419752  0.9138318  0.8895833  0.7907143
+##   0.25251704  0.59742978  0.9184152  0.9254167  0.7891071
+##   0.29954232  0.63759620  0.9133681  0.9169444  0.7710714
+##   0.31520463  0.96521251  0.8743998  0.8511111  0.7773214
+##   0.33009668  0.81815445  0.8950967  0.8937500  0.7746429
+##   0.36085613  0.75063821  0.8999231  0.9056944  0.7658929
+##   0.36447104  0.04755168  0.8947321  0.8726389  0.7500000
+##   0.38014796  0.81490324  0.8939087  0.8901389  0.7648214
+##   0.42198667  0.94140042  0.8776984  0.8508333  0.7801786
+##   0.42208259  0.20124965  0.9042262  0.8863889  0.7526786
+##   0.43249714  0.41644166  0.9075818  0.8958333  0.7641071
+##   0.43342775  0.24999664  0.9047173  0.8898611  0.7598214
+##   0.49307138  0.20539733  0.8989608  0.8897222  0.7503571
+##   0.50624038  0.06571280  0.8952133  0.8794444  0.7444643
+##   0.51244277  0.52918233  0.9032813  0.9000000  0.7444643
+##   0.54605138  0.44369088  0.9007292  0.8916667  0.7428571
+##   0.56784496  0.37966361  0.8992882  0.8931944  0.7419643
+##   0.58229517  0.15112209  0.8933135  0.8776389  0.7423214
+##   0.69886586  0.18057206  0.8876314  0.8825000  0.7244643
+##   0.70747426  0.02153708  0.8836111  0.8740278  0.7232143
+##   0.70986464  0.02730106  0.8839286  0.8752778  0.7217857
+##   0.71609215  0.98811552  0.8544147  0.7781944  0.7617857
+##   0.74102544  0.88861156  0.8634003  0.8097222  0.7433929
+##   0.77714849  0.94955834  0.8504812  0.7794444  0.7433929
+##   0.89569896  0.81051218  0.8287773  0.7795833  0.7067857
+##   0.93822474  0.10278451  0.8341741  0.8397222  0.6810714
+## 
+## ROC was used to select the optimal model using  the largest value.
+## The final values used for the model were gamma = 0.252517 and lambda
+##  = 0.5974298.</code></pre>
+<p>There is currently only a <code>ggplot</code> method (instead of a basic <code>plot</code> method). The results of this function with random searching depends on the number and type of tuning parameters. In this case, it produces a scatter plot of the continuous parameters.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(rda_fit) +<span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>)</code></pre></div>
+<p><img src="_main_files/figure-html/random_plot-1.png" width="768" /></p>
 
 </div>
             </section>
@@ -386,8 +438,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           </div>
         </div>
       </div>
-
-<a href="visualizations.html" class="navigation navigation-next navigation-unique" aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+<a href="parallel-processing.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="subsampling-for-class-imbalances.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>

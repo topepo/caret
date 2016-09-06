@@ -38,8 +38,8 @@ MathJax.Hub.Config({
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="visualizations.html">
+<link rel="prev" href="feature-selection-using-univariate-filters.html">
+<link rel="next" href="feature-selection-using-simulated-annealing.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -352,42 +352,386 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">The <code>caret</code> Package</h1>
-<h4 class="author"><em>Max Kuhn</em></h4>
-<h4 class="date"><em>2016-09-03</em></h4>
-</div>
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>The <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:</p>
+<div id="feature-selection-using-genetic-algorithms" class="section level1">
+<h1><span class="header-section-number">20</span> Feature Selection using Genetic Algorithms</h1>
+<p>Contents</p>
 <ul>
-<li>data splitting</li>
-<li>pre-processing</li>
-<li>feature selection</li>
-<li>model tuning using resampling</li>
-<li>variable importance estimation</li>
+<li><a href="feature-selection-using-genetic-algorithms.html#ga">Genetic Algorithms</a></li>
+<li><a href="feature-selection-using-genetic-algorithms.html#performance">Internal and External Performance Estimates</a></li>
+<li><a href="feature-selection-using-univariate-filters.html#syntax">Basic Syntax</a></li>
+<li><a href="model-training-and-tuning.html#example">Example</a></li>
+<li><a href="model-training-and-tuning.html#custom">Customizing the Search</a></li>
+<li><a href="feature-selection-using-genetic-algorithms.html#example2">The Example Revisited</a></li>
 </ul>
-<p>as well as other functionality.</p>
-<p>There are many different modeling functions in R. Some have different syntax for model training and/or prediction. The package started off as a way to provide a uniform interface the functions themselves, as well as a way to standardize common tasks (such parameter tuning and variable importance).</p>
-<p>The current release version can be found on <a href="http://cran.r-project.org/web/packages/caret/">CRAN</a> and the project is hosted <a href="https://github.com/topepo/caret">on github</a>.</p>
-<p>Some resources:</p>
-<ul>
-<li>The book <em>Applied Predictive Modeling</em> features <strong>caret</strong> and over 40 other R packages. It is on sale at <a href="http://www.amazon.com/dp/1461468485">Amazon</a> or the <a href="http://www.springer.com/statistics/life+sciences%2C+medicine+%26+health/book/978-1-4614-6848-6">the publisher’s website</a>. There is a <a href="http://appliedpredictivemodeling.com/">companion website</a> too.</li>
-<li>There is also a paper on caret in the <a href="http://www.jstatsoft.org/v28/i05">Journal of Statistical Software</a>. The example data can be obtained <a href="descr.RData">here</a>(the predictors) and <a href="mutagen.RData">here</a> (the outcomes).</li>
-<li>There is a <a href="http://www.youtube.com/watch?v=7Jbb2ItbTC4">webinar</a> for the package on Youtube that was organized and recorded by Ray DiGiacomo Jr for the Orange County R User Group.</li>
-<li>At <a href="http://user2014.stat.ucla.edu">useR! 2014</a>, I was <a href="http://youtu.be/YmHyAHkjX_A">interviewed</a> and discussed the package and the book.</li>
-</ul>
-<p>You can always email <a href="mailto:max.kuhn@pfizer.com">me</a> with questions, comments or suggestions.</p>
-<p>These HTML pages were created using <a href="https://bookdown.org">bookdown</a>.</p>
+<div id="ga">
 
+</div>
+<div id="genetic-algorithms" class="section level2">
+<h2><span class="header-section-number">20.1</span> Genetic Algorithms</h2>
+<p>Genetic algorithms (GAs) mimic Darwinian forces of natural selection to find optimal values of some function (<a href="http://mitpress.mit.edu/books/introduction-genetic-algorithms">Mitchell, 1998</a>). An initial set of candidate solutions are created and their corresponding <em>fitness</em> values are calculated (where larger values are better). This set of solutions is referred to as a population and each solution as an <em>individual</em>. The individuals with the best fitness values are combined randomly to produce offsprings which make up the next population. To do so, individual are selected and undergo cross-over (mimicking genetic reproduction) and also are subject to random mutations. This process is repeated again and again and many generations are produced (i.e. iterations of the search procedure) that should create better and better solutions.</p>
+<p>For feature selection, the individuals are subsets of predictors that are encoded as binary; a feature is either included or not in the subset. The fitness values are some measure of model performance, such as the RMSE or classification accuracy. One issue with using GAs for feature selection is that the optimization process can be very aggressive and their is potential for the GA to overfit to the predictors (much like the previous discussion for RFE).</p>
+<div id="performance">
+
+</div>
+</div>
+<div id="internal-and-external-performance-estimates" class="section level2">
+<h2><span class="header-section-number">20.2</span> Internal and External Performance Estimates</h2>
+<p>The genetic algorithm code in <a href="http://cran.r-project.org/package=caret"><code>caret</code></a> conducts the search of the feature space repeatedly within resampling iterations. First, the training data are split be whatever resampling method was specified in the control function. For example, if 10-fold cross-validation is selected, the entire genetic algorithm is conducted 10 separate times. For the first fold, nine tenths of the data are used in the search while the remaining tenth is used to estimate the external performance since these data points were not used in the search.</p>
+<p>During the genetic algorithm, a measure of fitness is needed to guide the search. This is the internal measure of performance. During the search, the data that are available are the instances selected by the top-level resampling (e.g. the nine tenths mentioned above). A common approach is to conduct another resampling procedure. Another option is to use a holdout set of samples to determine the internal estimate of performance (see the holdout argument of the control function). While this is faster, it is more likely to cause overfitting of the features and should only be used when a large amount of training data are available. Yet another idea is to use a penalized metric (such as the AIC statistic) but this may not exist for some metrics (e.g. the area under the ROC curve).</p>
+<p>The internal estimates of performance will eventually overfit the subsets to the data. However, since the external estimate is not used by the search, it is able to make better assessments of overfitting. After resampling, this function determines the optimal number of generations for the GA.</p>
+<p>Finally, the entire data set is used in the last execution of the genetic algorithm search and the final model is built on the predictor subset that is associated with the optimal number of generations determined by resampling (although the update function can be used to manually set the number of generations).</p>
+<div id="syntax">
+
+</div>
+</div>
+<div id="basic-syntax-1" class="section level2">
+<h2><span class="header-section-number">20.3</span> Basic Syntax</h2>
+<p>The most basic usage of the function is:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obj &lt;-<span class="st"> </span><span class="kw">gafs</span>(<span class="dt">x =</span> predictors, 
+            <span class="dt">y =</span> outcome,
+            <span class="dt">iters =</span> <span class="dv">100</span>)</code></pre></div>
+<p>where</p>
+<ul>
+<li><code>x</code>: a data frame or matrix of predictor values</li>
+<li><code>y</code>: a factor or numeric vector of outcomes</li>
+<li><code>iters</code>: the number of generations for the GA</li>
+</ul>
+<p>This isn’t very specific. All of the action is in the control function. That can be used to specify the model to be fit, how predictions are made and summarized as well as the genetic operations.</p>
+<p>Suppose that we want to fit a linear regression model. To do this, we can use <code>train</code> as an interface and pass arguments to that function through <code>gafs</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ctrl &lt;-<span class="st"> </span><span class="kw">gafsControl</span>(<span class="dt">functions =</span> caretGA)
+obj &lt;-<span class="st"> </span><span class="kw">gafs</span>(<span class="dt">x =</span> predictors, 
+            <span class="dt">y =</span> outcome,
+            <span class="dt">iters =</span> <span class="dv">100</span>,
+            <span class="dt">gafsControl =</span> ctrl,
+            ## Now pass options to `train`
+            
+            <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</code></pre></div>
+<p>Other options, such as <code>preProcess</code>, can be passed in as well.</p>
+<p>Some important options to <code>gafsControl</code> are:</p>
+<ul>
+<li><code>method</code>, <code>number</code>, <code>repeats</code>, <code>index</code>, <code>indexOut</code>, etc: options similar to those for <a href="http://topepo.github.io/caret/training.html#control"><code>train</code></a> top control resampling.</li>
+<li><code>metric</code>: this is similar to <a href="http://topepo.github.io/caret/training.html#control"><code>train</code></a>’s option but, in this case, the value should be a named vector with values for the internal and external metrics. If none are specified, the first value returned by the summary functions (see details below) are used and a warning is issued. A similar two-element vector for the option <code>maximize</code> is also required. See the <a href="feature-selection-using-genetic-algorithms.html#example2">last example here</a> for an illustration.</li>
+<li><code>holdout</code>: this is a number between <code>[0, 1)</code> that can be used to hold out samples for computing the internal fitness value. Note that this is independent of the external resampling step. Suppose 10-fold CV is being used. Within a resampling iteration, <code>holdout</code> can be used to sample an additional proportion of the 90% resampled data to use for estimating fitness. This may not be a good idea unless you have a very large training set and want to avoid an internal resampling procedure to estimate fitness.</li>
+<li><code>allowParallel</code> and <code>genParallel</code>: these are logicals to control where parallel processing should be used (if at all). The former will parallelize the external resampling while the latter parallelizes the fitness calculations within a generation. <code>allowParallel</code> will almost always be more advantageous.</li>
+</ul>
+<p>There are a few built-in sets of functions to use with <code>gafs</code>: <code>caretGA</code>, <code>rfGA</code>, and <code>treebagGA</code>. The first is a simple interface to <code>train</code>. When using this, as shown above, arguments can be passed to <code>train</code> using the <code>...</code> structure and the resampling estimates of performance can be used as the internal fitness value. The functions provided by <code>rfGA</code> and <code>treebagGA</code> avoid using <code>train</code> and their internal estimates of fitness come from using the out-of-bag estimates generated from the model.</p>
+<p>The GA implementation in <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> uses the underlying code from the <a href="http://cran.r-project.org/package=GA"><code>GA</code></a> package (<a href="http://www.jstatsoft.org/v53/i04/">Scrucca, 2013</a>).</p>
+<div id="example">
+
+</div>
+</div>
+<div id="example" class="section level2">
+<h2><span class="header-section-number">20.4</span> Example</h2>
+<p>Using the example from the <a href="rfe.html#example">previous page</a> where there are five real predictors and 40 noise predictors:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mlbench)
+n &lt;-<span class="st"> </span><span class="dv">100</span>
+p &lt;-<span class="st"> </span><span class="dv">40</span>
+sigma &lt;-<span class="st"> </span><span class="dv">1</span>
+<span class="kw">set.seed</span>(<span class="dv">1</span>)
+sim &lt;-<span class="st"> </span><span class="kw">mlbench.friedman1</span>(n, <span class="dt">sd =</span> sigma)
+<span class="kw">colnames</span>(sim$x) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;real&quot;</span>, <span class="dv">1</span>:<span class="dv">5</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>),
+                     <span class="kw">paste</span>(<span class="st">&quot;bogus&quot;</span>, <span class="dv">1</span>:<span class="dv">5</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>))
+bogus &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n *<span class="st"> </span>p), <span class="dt">nrow =</span> n)
+<span class="kw">colnames</span>(bogus) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;bogus&quot;</span>, <span class="dv">5</span>+(<span class="dv">1</span>:<span class="kw">ncol</span>(bogus)), <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)
+x &lt;-<span class="st"> </span><span class="kw">cbind</span>(sim$x, bogus)
+y &lt;-<span class="st"> </span>sim$y
+normalization &lt;-<span class="st"> </span><span class="kw">preProcess</span>(x)
+x &lt;-<span class="st"> </span><span class="kw">predict</span>(normalization, x)
+x &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(x)</code></pre></div>
+<p>We’ll fit a random forest model and use the out-of-bag RMSE estimate as the internal performance metric and use the same repeated 10-fold cross-validation process used with the search. To do this, we’ll use the built-in <code>rfGA</code> object for this purpose. The default GA operators will be used and conduct 200 generations of the algorithm.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ga_ctrl &lt;-<span class="st"> </span><span class="kw">gafsControl</span>(<span class="dt">functions =</span> rfGA,
+                       <span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,
+                       <span class="dt">repeats =</span> <span class="dv">5</span>)
+
+## Use the same random number seed as the RFE process
+## so that the same CV folds are used for the external
+## resampling. 
+<span class="kw">set.seed</span>(<span class="dv">10</span>)
+rf_ga &lt;-<span class="st"> </span><span class="kw">gafs</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y,
+              <span class="dt">iters =</span> <span class="dv">200</span>,
+              <span class="dt">gafsControl =</span> ga_ctrl)
+rf_ga</code></pre></div>
+<pre><code>## 
+## Genetic Algorithm Feature Selection
+## 
+## 100 samples
+## 50 predictors
+## 
+## Maximum generations: 200 
+## Population per generation: 50 
+## Crossover probability: 0.8 
+## Mutation probability: 0.1 
+## Elitism: 0 
+## 
+## Internal performance values: RMSE, Rsquared
+## Subset selection driven to minimize internal RMSE 
+## 
+## External performance values: RMSE, Rsquared
+## Best iteration chose by minimizing external RMSE 
+## External resampling method: Cross-Validated (10 fold, repeated 5 times) 
+## 
+## During resampling:
+##   * the top 5 selected variables (out of a possible 50):
+##     real1 (100%), real2 (100%), real4 (100%), real5 (100%), bogus17 (88%)
+##   * on average, 8.3 variables were selected (min = 6, max = 12)
+## 
+## In the final search using the entire training set:
+##    * 12 features selected at iteration 185 including:
+##      real1, real2, real3, real4, real5 ... 
+##    * external performance at this iteration is
+## 
+##        RMSE    Rsquared 
+##      2.8037      0.7564</code></pre>
+<p>With 5 repeats of 10-fold cross-validation, the GA was executed 50 times. The average external performance is calculated across resamples and these results are used to determine the optimal number of iterations for the final GA to avoid over-fitting. Across the resamples, an average of 8.3 predictors were selected at the end of each of the algorithms.</p>
+<p>The <code>plot</code> function is used to monitor the average of the internal out-of-bag RMSE estimates as well as the average of the external performance estimates calculated from the 50 out-of-sample predictions. By default, this function uses <a href="http://cran.r-project.org/package=ggplot2"><code>ggplot2</code></a> package. A black and white theme can be “added” to the output object:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rf_ga) +<span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="_main_files/figure-html/ga_rf_profile-1.png" width="672" /></p>
+<p>Based on these results, the generation associated with the best external RMSE estimate was 2.8.</p>
+<p>Using the entire training set, the final GA is conducted and, at generation 185, there were 12 that were selected: real1, real2, real3, real4, real5, bogus6, bogus7, bogus13, bogus14, bogus17, bogus32, bogus43. The random forest model with these predictors is created using the entire training set is trained and this is the model that is used when <code>predict.gafs</code> is executed.</p>
+<p><strong>Note:</strong> the correlation between the internal and external fitness values is somewhat atypical for most real-world problems. This is a function of the nature of the simulations (a small number of uncorrelated informative predictors) and that the OOB error estimate from random forest is a product of hundreds of trees. Your mileage may vary.</p>
+<div id="custom">
+
+</div>
+</div>
+<div id="customizing-the-search" class="section level2">
+<h2><span class="header-section-number">20.5</span> Customizing the Search</h2>
+<div id="the-fit-function-3" class="section level3">
+<h3><span class="header-section-number">20.5.1</span> The <code>fit</code> Function</h3>
+<p>This function builds the model based on a proposed current subset. The arguments for the function must be:</p>
+<ul>
+<li><code>x</code>: the current training set of predictor data with the appropriate subset of variables</li>
+<li><code>y</code>: the current outcome data (either a numeric or factor vector)</li>
+<li><code>lev</code>: a character vector with the class levels (or <code>NULL</code> for regression problems)</li>
+<li><code>last</code>: a logical that is <code>TRUE</code> when the final GA search is conducted on the entire data set</li>
+<li><code>...</code>: optional arguments to pass to the fit function in the call to <code>gafs</code></li>
+</ul>
+<p>The function should return a model object that can be used to generate predictions. For random forest, the fit function is simple:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfGA$fit</code></pre></div>
+<pre><code>## function (x, y, lev = NULL, last = FALSE, ...) 
+## {
+##     loadNamespace(&quot;randomForest&quot;)
+##     randomForest::randomForest(x, y, ...)
+## }
+## &lt;environment: namespace:caret&gt;</code></pre>
+</div>
+<div id="the-pred-function-2" class="section level3">
+<h3><span class="header-section-number">20.5.2</span> The <code>pred</code> Function</h3>
+<p>This function returns a vector of predictions (numeric or factors) from the current model . The input arguments must be</p>
+<ul>
+<li><code>object</code>: the model generated by the <code>fit</code> function</li>
+<li><code>x</code>: the current set of predictor set for the held-back samples</li>
+</ul>
+<p>For random forests, the function is a simple wrapper for the predict function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfGA$pred</code></pre></div>
+<pre><code>## function (object, x) 
+## {
+##     tmp &lt;- predict(object, x)
+##     if (is.factor(object$y)) {
+##         out &lt;- cbind(data.frame(pred = tmp), as.data.frame(predict(object, 
+##             x, type = &quot;prob&quot;)))
+##     }
+##     else out &lt;- tmp
+##     out
+## }
+## &lt;environment: namespace:caret&gt;</code></pre>
+<p>For classification, it is probably a good idea to ensure that the resulting factor variables of predictions has the same levels as the input data.</p>
+</div>
+<div id="the-fitness_intern-function" class="section level3">
+<h3><span class="header-section-number">20.5.3</span> The <code>fitness_intern</code> Function</h3>
+<p>The <code>fitness_intern</code> function takes the fitted model and computes one or more performance metrics. The inputs to this function are:</p>
+<ul>
+<li><code>object</code>: the model generated by the <code>fit</code> function</li>
+<li><code>x</code>: the current set of predictor set. If the option <code>gafsControl$holdout</code> is zero, these values will be from the current resample (i.e. the same data used to fit the model). Otherwise, the predictor values are from the hold-out set created by <code>gafsControl$holdout</code>.</li>
+<li><code>y</code>: outcome values. See the note for the <code>x</code> argument to understand which data are presented to the function.</li>
+<li><code>maximize</code>: a logical from <code>gafsControl</code> that indicates whether the metric should be maximized or minimized</li>
+<li><code>p</code>: the total number of possible predictors</li>
+</ul>
+<p>The output should be a <strong>named</strong> numeric vector of performance values.</p>
+<p>In many cases, some resampled measure of performance is used. In the example above using random forest, the OOB error was used. In other cases, the resampled performance from <code>train</code> can be used and, if <code>gafsControl$holdout</code> is not zero, a static hold-out set can be used. This depends on the data and problem at hand.</p>
+<p>The example function for random forest is:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfGA$fitness_intern</code></pre></div>
+<pre><code>## function (object, x, y, maximize, p) 
+## rfStats(object)
+## &lt;environment: namespace:caret&gt;</code></pre>
+</div>
+<div id="the-fitness_extern-function" class="section level3">
+<h3><span class="header-section-number">20.5.4</span> The <code>fitness_extern</code> Function</h3>
+<p>The <code>fitness_extern</code> function takes the observed and predicted values form the external resampling process and computes one or more performance metrics. The input arguments are:</p>
+<ul>
+<li><code>data</code>: a data frame or predictions generated by the <code>fit</code> function. For regression, the predicted values in a column called <code>pred</code>. For classification, <code>pred</code> is a factor vector. Class probabilities are usually attached as columns whose names are the class levels (see the random forest example for the <code>fit</code> function above)</li>
+<li><code>lev</code>: a character vector with the class levels (or <code>NULL</code> for regression problems)</li>
+</ul>
+<p>The output should be a <strong>named</strong> numeric vector of performance values.</p>
+<p>The example function for random forest is:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfGA$fitness_extern</code></pre></div>
+<pre><code>## function (data, lev = NULL, model = NULL) 
+## {
+##     if (is.character(data$obs)) 
+##         data$obs &lt;- factor(data$obs, levels = lev)
+##     postResample(data[, &quot;pred&quot;], data[, &quot;obs&quot;])
+## }
+## &lt;environment: namespace:caret&gt;</code></pre>
+<p>Two functions in <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> that can be used as the summary function are <code>defaultSummary</code> and <code>twoClassSummary</code> (for classification problems with two classes).</p>
+</div>
+<div id="the-initial-function" class="section level3">
+<h3><span class="header-section-number">20.5.5</span> The <code>initial</code> Function</h3>
+<p>This function creates an initial generation. Inputs are:</p>
+<ul>
+<li><code>vars</code>: the number of possible predictors</li>
+<li><code>popSize</code>: the population size for each generation</li>
+<li><code>...</code>: not currently used</li>
+</ul>
+<p>The output should be a binary 0/1 matrix where there are <code>vars</code> columns corresponding to the predictors and <code>popSize</code> rows for the individuals in the population.</p>
+<p>The default function populates the rows randomly with subset sizes varying between 10% and 90% of number of possible predictors. For example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">128</span>)
+starting &lt;-<span class="st"> </span>rfGA$<span class="kw">initial</span>(<span class="dt">vars =</span> <span class="dv">12</span>, <span class="dt">popSize =</span> <span class="dv">8</span>)
+starting</code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12]
+## [1,]    0    1    0    0    1    0    0    0    0     0     0     0
+## [2,]    0    0    0    0    0    0    1    0    0     0     1     0
+## [3,]    0    0    1    1    1    0    0    0    1     0     1     0
+## [4,]    0    1    0    0    1    0    0    1    0     1     0     1
+## [5,]    0    1    1    1    0    0    1    0    0     1     0     0
+## [6,]    1    1    1    1    1    1    0    1    1     1     1     1
+## [7,]    1    1    1    1    1    0    0    1    0     1     1     1
+## [8,]    1    0    1    1    0    1    1    1    0     1     1     1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(starting, <span class="dv">1</span>, mean)</code></pre></div>
+<pre><code>## [1] 0.1666667 0.1666667 0.4166667 0.4166667 0.4166667 0.9166667 0.7500000
+## [8] 0.7500000</code></pre>
+<p><code>gafs</code> has an argument called <code>suggestions</code> that is similar to the one in the <code>ga</code> function where the initial population can be seeded with specific subsets.</p>
+</div>
+<div id="the-selection-function" class="section level3">
+<h3><span class="header-section-number">20.5.6</span> The <code>selection</code> Function</h3>
+<p>This function conducts the genetic selection. Inputs are:</p>
+<ul>
+<li><code>population</code>: the indicators for the current population</li>
+<li><code>fitness</code>: the corresponding fitness values for the population. Note that if the internal performance value is to be minimized, these are the negatives of the actual values</li>
+<li><code>r</code>, <code>q</code>: tuning parameters for specific selection functions. See <code>gafs_lrSelection</code> and <code>gafs_nlrSelection</code></li>
+<li><code>...</code>: not currently used</li>
+</ul>
+<p>The output should be a list with named elements.</p>
+<ul>
+<li><code>population</code>: the indicators for the selected individuals</li>
+<li><code>fitness</code>: the fitness values for the selected individuals</li>
+</ul>
+<p>The default function is a version of the <a href="http://cran.r-project.org/package=GA"><code>GA</code></a> package’s ga_lrSelection function.</p>
+</div>
+<div id="the-crossover-function" class="section level3">
+<h3><span class="header-section-number">20.5.7</span> The <code>crossover</code> Function</h3>
+<p>This function conducts the genetic crossover. Inputs are:</p>
+<ul>
+<li><code>population</code>: the indicators for the current population</li>
+<li><code>fitness</code>: the corresponding fitness values for the population. Note that if the internal performance value is to be minimized, these are the negatives of the actual values</li>
+<li><code>parents</code>: a matrix with two rows containing indicators for the parent individuals.</li>
+<li><code>...</code>: not currently used</li>
+</ul>
+<p>The default function is a version of the <a href="http://cran.r-project.org/package=GA"><code>GA</code></a> package’s <code>ga_spCrossover</code> function. Another function that is a version of that package’s uniform cross-over function is also available.</p>
+<p>. The output should be a list with named elements.</p>
+<ul>
+<li><code>children</code>: from <code>?ga_spCrossover</code>: “a matrix of dimension 2 times the number of decision variables containing the generated offsprings”&quot;</li>
+<li><code>fitness</code>: “a vector of length 2 containing the fitness values for the offsprings. A value <code>NA</code> is returned if an offspring is different (which is usually the case) from the two parents.”&quot;</li>
+</ul>
+</div>
+<div id="the-mutation-function" class="section level3">
+<h3><span class="header-section-number">20.5.8</span> The <code>mutation</code> Function</h3>
+<p>This function conducts the genetic mutation. Inputs are:</p>
+<ul>
+<li><code>population</code>: the indicators for the current population</li>
+<li><code>parents</code>: a vector of indices for where the mutation should occur.</li>
+<li><code>...</code>: not currently used</li>
+</ul>
+<p>The default function is a version of the <a href="http://cran.r-project.org/package=GA"><code>GA</code></a> package’s <code>gabin_raMutation</code> function.</p>
+<p>. The output should the mutated population.</p>
+</div>
+<div id="the-selectiter-function" class="section level3">
+<h3><span class="header-section-number">20.5.9</span> The <code>selectIter</code> Function</h3>
+<p>This function determines the optimal number of generations based on the resampling output. Inputs for the function are:</p>
+<ul>
+<li><code>x</code>: a matrix with columns for the performance metrics averaged over resamples</li>
+<li><code>metric</code>: a character string of the performance measure to optimize (e.g. RMSE, Accuracy)</li>
+<li><code>maximize</code>: a single logical for whether the metric should be maximized</li>
+</ul>
+<p>This function should return an integer corresponding to the optimal subset size.</p>
+<div id="example2">
+
+</div>
+</div>
+</div>
+<div id="the-example-revisited" class="section level2">
+<h2><span class="header-section-number">20.6</span> The Example Revisited</h2>
+<p>The previous GA included some of the non-informative predictors. We can cheat a little and try to bias the search to get the right solution.</p>
+<p>We can try to encourage the algorithm to choose fewer predictors, we can penalize the the RMSE estimate. Normally, a metric like the Akaike information criterion (AIC) statistic would be used. However, with a random forest model, there is no real notion of model degrees of freedom. As an alternative, we can use <a href="http://scholar.google.com/scholar?q=%22desirability+functions">desirability functions</a> to penalize the RMSE. To do this, two functions are created that translate the number of predictors and the RMSE values to a measure of “desirability”. For the number of predictors, the most desirable property would be a single predictor and the worst situation would be if the model required all 50 predictors. That desirability function is visualized as:</p>
+<p><img src="_main_files/figure-html/ga_pred_d-1.png" width="672" /></p>
+<p>For the RMSE, the best case would be zero. Many poor models have values around four. To give the RMSE value more weight in the overall desirability calculation, we use a scale parameter value of 2. This desirability function is:</p>
+<p><img src="_main_files/figure-html/ga_rmse_d-1.png" width="672" /></p>
+<p>To use the overall desirability to drive the feature selection, the <code>internal</code> function requires replacement. We make a copy of <code>rfGA</code> and add code using the <a href="http://cran.r-project.org/package=desirability"><code>desirability</code></a> package and the function returns the estimated RMSE and the overall desirability. The <code>gafsControl</code> function also need changes. The <code>metric</code> argument needs to reflect that the overall desirability score should be maximized internally but the RMSE estimate should be minimized externally.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(desirability)
+rfGA2 &lt;-<span class="st"> </span>rfGA
+rfGA2$fitness_intern &lt;-<span class="st"> </span>function (object, x, y, maximize, p) {
+  RMSE &lt;-<span class="st"> </span><span class="kw">rfStats</span>(object)[<span class="dv">1</span>]
+  d_RMSE &lt;-<span class="st"> </span><span class="kw">dMin</span>(<span class="dv">0</span>, <span class="dv">4</span>)
+  d_Size &lt;-<span class="st"> </span><span class="kw">dMin</span>(<span class="dv">1</span>, p, <span class="dv">2</span>)
+  overall &lt;-<span class="st"> </span><span class="kw">dOverall</span>(d_RMSE, d_Size)
+  D &lt;-<span class="st"> </span><span class="kw">predict</span>(overall, <span class="kw">data.frame</span>(RMSE, <span class="kw">ncol</span>(x)))
+  <span class="kw">c</span>(<span class="dt">D =</span> D, <span class="dt">RMSE =</span> <span class="kw">as.vector</span>(RMSE))
+  }
+ga_ctrl_d &lt;-<span class="st"> </span><span class="kw">gafsControl</span>(<span class="dt">functions =</span> rfGA2,
+                         <span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,
+                         <span class="dt">repeats =</span> <span class="dv">5</span>,
+                         <span class="dt">metric =</span> <span class="kw">c</span>(<span class="dt">internal =</span> <span class="st">&quot;D&quot;</span>, <span class="dt">external =</span> <span class="st">&quot;RMSE&quot;</span>),
+                         <span class="dt">maximize =</span> <span class="kw">c</span>(<span class="dt">internal =</span> <span class="ot">TRUE</span>, <span class="dt">external =</span> <span class="ot">FALSE</span>))
+
+<span class="kw">set.seed</span>(<span class="dv">10</span>)
+rf_ga_d &lt;-<span class="st"> </span><span class="kw">gafs</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y,
+                <span class="dt">iters =</span> <span class="dv">200</span>,
+                <span class="dt">gafsControl =</span> ga_ctrl_d)
+
+rf_ga_d</code></pre></div>
+<pre><code>## 
+## Genetic Algorithm Feature Selection
+## 
+## 100 samples
+## 50 predictors
+## 
+## Maximum generations: 200 
+## Population per generation: 50 
+## Crossover probability: 0.8 
+## Mutation probability: 0.1 
+## Elitism: 0 
+## 
+## Internal performance values: D, RMSE
+## Subset selection driven to maximize internal D 
+## 
+## External performance values: RMSE, Rsquared
+## Best iteration chose by minimizing external RMSE 
+## External resampling method: Cross-Validated (10 fold, repeated 5 times) 
+## 
+## During resampling:
+##   * the top 5 selected variables (out of a possible 50):
+##     real1 (100%), real2 (100%), real4 (100%), real5 (100%), real3 (36%)
+##   * on average, 5.2 variables were selected (min = 4, max = 6)
+## 
+## In the final search using the entire training set:
+##    * 6 features selected at iteration 177 including:
+##      real1, real2, real3, real4, real5 ... 
+##    * external performance at this iteration is
+## 
+##        RMSE    Rsquared 
+##      2.6891      0.7682</code></pre>
+<p>Here are the RMSE values for this search:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rf_ga_d) +<span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="_main_files/figure-html/ga_rf_profile_2-1.png" width="672" /></p>
+<p>The final GA found 6 that were selected: real1, real2, real3, real4, real5, bogus26. During resampling, the average number of predictors selected was 5.2, indicating that the penalty on the number of predictors was effective.</p>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="visualizations.html" class="navigation navigation-next navigation-unique" aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+<a href="feature-selection-using-univariate-filters.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="feature-selection-using-simulated-annealing.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>

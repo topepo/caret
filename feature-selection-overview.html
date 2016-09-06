@@ -38,8 +38,8 @@ MathJax.Hub.Config({
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="visualizations.html">
+<link rel="prev" href="measuring-performance.html">
+<link rel="next" href="recursive-feature-elimination.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -352,42 +352,51 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">The <code>caret</code> Package</h1>
-<h4 class="author"><em>Max Kuhn</em></h4>
-<h4 class="date"><em>2016-09-03</em></h4>
-</div>
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>The <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:</p>
+<div id="feature-selection-overview" class="section level1">
+<h1><span class="header-section-number">17</span> Feature Selection Overview</h1>
+<p>Contents</p>
 <ul>
-<li>data splitting</li>
-<li>pre-processing</li>
-<li>feature selection</li>
-<li>model tuning using resampling</li>
-<li>variable importance estimation</li>
+<li><a href="feature-selection-overview.html#builtin">Models with Built-In Feature Selection</a></li>
+<li><a href="subsampling-for-class-imbalances.html#methods">Feature Selection Methods</a></li>
+<li><a href="feature-selection-overview.html#external">External Validation</a></li>
 </ul>
-<p>as well as other functionality.</p>
-<p>There are many different modeling functions in R. Some have different syntax for model training and/or prediction. The package started off as a way to provide a uniform interface the functions themselves, as well as a way to standardize common tasks (such parameter tuning and variable importance).</p>
-<p>The current release version can be found on <a href="http://cran.r-project.org/web/packages/caret/">CRAN</a> and the project is hosted <a href="https://github.com/topepo/caret">on github</a>.</p>
-<p>Some resources:</p>
-<ul>
-<li>The book <em>Applied Predictive Modeling</em> features <strong>caret</strong> and over 40 other R packages. It is on sale at <a href="http://www.amazon.com/dp/1461468485">Amazon</a> or the <a href="http://www.springer.com/statistics/life+sciences%2C+medicine+%26+health/book/978-1-4614-6848-6">the publisher’s website</a>. There is a <a href="http://appliedpredictivemodeling.com/">companion website</a> too.</li>
-<li>There is also a paper on caret in the <a href="http://www.jstatsoft.org/v28/i05">Journal of Statistical Software</a>. The example data can be obtained <a href="descr.RData">here</a>(the predictors) and <a href="mutagen.RData">here</a> (the outcomes).</li>
-<li>There is a <a href="http://www.youtube.com/watch?v=7Jbb2ItbTC4">webinar</a> for the package on Youtube that was organized and recorded by Ray DiGiacomo Jr for the Orange County R User Group.</li>
-<li>At <a href="http://user2014.stat.ucla.edu">useR! 2014</a>, I was <a href="http://youtu.be/YmHyAHkjX_A">interviewed</a> and discussed the package and the book.</li>
-</ul>
-<p>You can always email <a href="mailto:max.kuhn@pfizer.com">me</a> with questions, comments or suggestions.</p>
-<p>These HTML pages were created using <a href="https://bookdown.org">bookdown</a>.</p>
+<div id="builtin">
 
+</div>
+<div id="models-with-built-in-feature-selection" class="section level2">
+<h2><span class="header-section-number">17.1</span> Models with Built-In Feature Selection</h2>
+<p>Many models that can be accessed using <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a>’s <code>train</code> function produce prediction equations that do not necessarily use all the predictors. These models are thought to have built-in feature selection: <code>ada</code>, <code>AdaBag</code>, <code>AdaBoost.M1</code>, <code>adaboost</code>, <code>bagEarth</code>, <code>bagEarthGCV</code>, <code>bagFDA</code>, <code>bagFDAGCV</code>, <code>bartMachine</code>, <code>blasso</code>, <code>BstLm</code>, <code>bstSm</code>, <code>C5.0</code>, <code>C5.0Cost</code>, <code>C5.0Rules</code>, <code>C5.0Tree</code>, <code>cforest</code>, <code>chaid</code>, <code>ctree</code>, <code>ctree2</code>, <code>cubist</code>, <code>deepboost</code>, <code>earth</code>, <code>enet</code>, <code>evtree</code>, <code>extraTrees</code>, <code>fda</code>, <code>gamboost</code>, <code>gbm</code>, <code>gcvEarth</code>, <code>glmnet</code>, <code>glmStepAIC</code>, <code>J48</code>, <code>JRip</code>, <code>lars</code>, <code>lars2</code>, <code>lasso</code>, <code>LMT</code>, <code>LogitBoost</code>, <code>M5</code>, <code>M5Rules</code>, <code>nodeHarvest</code>, <code>oblique.tree</code>, <code>OneR</code>, <code>ordinalNet</code>, <code>ORFlog</code>, <code>ORFpls</code>, <code>ORFridge</code>, <code>ORFsvm</code>, <code>pam</code>, <code>parRF</code>, <code>PART</code>, <code>penalized</code>, <code>PenalizedLDA</code>, <code>qrf</code>, <code>ranger</code>, <code>Rborist</code>, <code>relaxo</code>, <code>rf</code>, <code>rFerns</code>, <code>rfRules</code>, <code>rotationForest</code>, <code>rotationForestCp</code>, <code>rpart</code>, <code>rpart1SE</code>, <code>rpart2</code>, <code>rpartCost</code>, <code>rpartScore</code>, <code>rqlasso</code>, <code>rqnc</code>, <code>RRF</code>, <code>RRFglobal</code>, <code>sdwd</code>, <code>smda</code>, <code>sparseLDA</code>, <code>spikeslab</code>, <code>wsrf</code>, <code>xgbLinear</code>, <code>xgbTree</code>. Many of the functions have an ancillary method called <code>predictors</code> that returns a vector indicating which predictors were used in the final model.</p>
+<p>In many cases, using these models with built-in feature selection will be more efficient than algorithms where the search routine for the right predictors is external to the model. Built-in feature selection typically couples the predictor search algorithm with the parameter estimation and are usually optimized with a single objective function (e.g. error rates or likelihood).</p>
+<div id="methods">
+
+</div>
+</div>
+<div id="feature-selection-methods" class="section level2">
+<h2><span class="header-section-number">17.2</span> Feature Selection Methods</h2>
+<p>Apart from models with built-in feature selection, most approaches for reducing the number of predictors can be placed into two main categories. Using the terminology of <a href="http://scholar.google.com/scholar?q=%22Irrelevant+Features+and+the+Subset+Selection+Problem">John, Kohavi, and Pfleger (1994)</a>:</p>
+<ul>
+<li><em>Wrapper</em> methods evaluate multiple models using procedures that add and/or remove predictors to find the optimal combination that maximizes model performance. In essence, wrapper methods are search algorithms that treat the predictors as the inputs and utilize model performance as the output to be optimized. <strong>caret</strong> has wrapper methods based on <a href="rfe.html">recursive feature elimination</a>, <a href="ga.html">genetic algorithms</a>, and <a href="sa.html">simulated annealing</a>.</li>
+<li><em>Filter</em> methods evaluate the relevance of the predictors outside of the predictive models and subsequently model only the predictors that pass some criterion. For example, for classification problems, each predictor could be individually evaluated to check if there is a plausible relationship between it and the observed classes. Only predictors with important relationships would then be included in a classification model. <a href="http://scholar.google.com/scholar?q=%22A+review+of+feature+selection+techniques+in+bioinformatics">Saeys, Inza, and Larranaga (2007)</a> surveys filter methods. <strong>caret</strong> has a general framework for using <a href="filters.html">univariate filters</a>.</li>
+</ul>
+<p>Both approaches have advantages and drawbacks. Filter methods are usually more computationally efficient than wrapper methods, but the selection criterion is not directly related to the effectiveness of the model. Also, most filter methods evaluate each predictor separately and, consequently, redundant (i.e. highly-correlated) predictors may be selected and important interactions between variables will not be able to be quantified. The downside of the wrapper method is that many models are evaluated (which may also require parameter tuning) and thus an increase in computation time. There is also an increased risk of over-fitting with wrappers.</p>
+<div id="external">
+
+</div>
+</div>
+<div id="external-validation" class="section level2">
+<h2><span class="header-section-number">17.3</span> External Validation</h2>
+<p>It is important to realize that feature selection is part of the model building process and, as such, should be externally validated. Just as parameter tuning can result in over-fitting, feature selection can over-fit to the predictors (especially when search wrappers are used). In each of the <strong>caret</strong> functions for feature selection, the selection process is included in any resampling loops. See</p>
+<p>See <a href="http://scholar.google.com/scholar?q=%22Selection+bias+in+gene+extraction+on+t%20e+basis+of+microarray+gene-expression+data">Ambroise and McLachlan (2002)</a> for a demonstration of this issue.</p>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="visualizations.html" class="navigation navigation-next navigation-unique" aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+<a href="measuring-performance.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="recursive-feature-elimination.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>

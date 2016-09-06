@@ -38,8 +38,8 @@ MathJax.Hub.Config({
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="visualizations.html">
+<link rel="prev" href="visualizations.html">
+<link rel="next" href="data-splitting.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -352,42 +352,330 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">The <code>caret</code> Package</h1>
-<h4 class="author"><em>Max Kuhn</em></h4>
-<h4 class="date"><em>2016-09-03</em></h4>
-</div>
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>The <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:</p>
+<div id="pre-processing" class="section level1">
+<h1><span class="header-section-number">3</span> Pre-Processing</h1>
 <ul>
-<li>data splitting</li>
-<li>pre-processing</li>
-<li>feature selection</li>
-<li>model tuning using resampling</li>
-<li>variable importance estimation</li>
+<li><a href="pre-processing.html#dummy">Creating Dummy Variables</a></li>
+<li><a href="pre-processing.html#nzv">Zero- and Near Zero-Variance Predictors</a></li>
+<li><a href="pre-processing.html#corr">Identifying Correlated Predictors</a></li>
+<li><a href="pre-processing.html#lindep">Linear Dependencies</a></li>
+<li><a href="pre-processing.html#pp">The <code>preProcess</code> Function</a></li>
+<li><a href="pre-processing.html#cs">Centering and Scaling</a></li>
+<li><a href="pre-processing.html#impute">Imputation</a></li>
+<li><a href="pre-processing.html#trans">Transforming Predictors</a></li>
+<li><a href="pre-processing.html#all">Putting It All Together</a></li>
+<li><a href="pre-processing.html#cent">Class Distance Calculations</a></li>
 </ul>
-<p>as well as other functionality.</p>
-<p>There are many different modeling functions in R. Some have different syntax for model training and/or prediction. The package started off as a way to provide a uniform interface the functions themselves, as well as a way to standardize common tasks (such parameter tuning and variable importance).</p>
-<p>The current release version can be found on <a href="http://cran.r-project.org/web/packages/caret/">CRAN</a> and the project is hosted <a href="https://github.com/topepo/caret">on github</a>.</p>
-<p>Some resources:</p>
-<ul>
-<li>The book <em>Applied Predictive Modeling</em> features <strong>caret</strong> and over 40 other R packages. It is on sale at <a href="http://www.amazon.com/dp/1461468485">Amazon</a> or the <a href="http://www.springer.com/statistics/life+sciences%2C+medicine+%26+health/book/978-1-4614-6848-6">the publisher’s website</a>. There is a <a href="http://appliedpredictivemodeling.com/">companion website</a> too.</li>
-<li>There is also a paper on caret in the <a href="http://www.jstatsoft.org/v28/i05">Journal of Statistical Software</a>. The example data can be obtained <a href="descr.RData">here</a>(the predictors) and <a href="mutagen.RData">here</a> (the outcomes).</li>
-<li>There is a <a href="http://www.youtube.com/watch?v=7Jbb2ItbTC4">webinar</a> for the package on Youtube that was organized and recorded by Ray DiGiacomo Jr for the Orange County R User Group.</li>
-<li>At <a href="http://user2014.stat.ucla.edu">useR! 2014</a>, I was <a href="http://youtu.be/YmHyAHkjX_A">interviewed</a> and discussed the package and the book.</li>
-</ul>
-<p>You can always email <a href="mailto:max.kuhn@pfizer.com">me</a> with questions, comments or suggestions.</p>
-<p>These HTML pages were created using <a href="https://bookdown.org">bookdown</a>.</p>
+<p><a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> includes several functions to pre-process the predictor data. It assumes that all of the data are numeric (i.e. factors have been converted to dummy variables via <code>model.matrix</code>, <code>dummyVars</code> or other means).</p>
+<div id="dummy">
 
+</div>
+<div id="creating-dummy-variables" class="section level2">
+<h2><span class="header-section-number">3.1</span> Creating Dummy Variables</h2>
+<p>The function <code>dummyVars</code> can be used to generate a complete (less than full rank parameterized) set of dummy variables from one or more factors. The function takes a formula and a data set and outputs an object that can be used to create the dummy variables using the predict method.</p>
+<p>For example, the <code>etitanic</code> data set in the <a href="http://cran.r-project.org/web/packages/earth/index.html"><code>earth</code></a> package includes two factors: 1st, 2nd, 3rd) and <code>sex</code> (with levels female, male). The base R function <code>model.matrix</code> would generate the following variables:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(earth)
+<span class="kw">data</span>(etitanic)
+<span class="kw">head</span>(<span class="kw">model.matrix</span>(survived ~<span class="st"> </span>., <span class="dt">data =</span> etitanic))</code></pre></div>
+<pre><code>##   (Intercept) pclass2nd pclass3rd sexmale     age sibsp parch
+## 1           1         0         0       0 29.0000     0     0
+## 2           1         0         0       1  0.9167     1     2
+## 3           1         0         0       0  2.0000     1     2
+## 4           1         0         0       1 30.0000     1     2
+## 5           1         0         0       0 25.0000     1     2
+## 6           1         0         0       1 48.0000     0     0</code></pre>
+<p>Using <code>dummyVars</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dummies &lt;-<span class="st"> </span><span class="kw">dummyVars</span>(survived ~<span class="st"> </span>., <span class="dt">data =</span> etitanic)
+<span class="kw">head</span>(<span class="kw">predict</span>(dummies, <span class="dt">newdata =</span> etitanic))</code></pre></div>
+<pre><code>##   pclass.1st pclass.2nd pclass.3rd sex.female sex.male     age sibsp parch
+## 1          1          0          0          1        0 29.0000     0     0
+## 2          1          0          0          0        1  0.9167     1     2
+## 3          1          0          0          1        0  2.0000     1     2
+## 4          1          0          0          0        1 30.0000     1     2
+## 5          1          0          0          1        0 25.0000     1     2
+## 6          1          0          0          0        1 48.0000     0     0</code></pre>
+<p>Note there is no intercept and each factor has a dummy variable for each level, so this parameterization may not be useful for some model functions, such as <code>lm</code>.</p>
+<div id="nzv">
+
+</div>
+</div>
+<div id="zero--and-near-zero-variance-predictors" class="section level2">
+<h2><span class="header-section-number">3.2</span> Zero- and Near Zero-Variance Predictors</h2>
+<p>In some situations, the data generating mechanism can create predictors that only have a single unique value (i.e. a “zero-variance predictor”). For many models (excluding tree-based models), this may cause the model to crash or the fit to be unstable.</p>
+<p>Similarly, predictors might have only a handful of unique values that occur with very low frequencies. For example, in the drug resistance data, the <code>nR11</code> descriptor (number of 11-membered rings) data have a few unique numeric values that are highly unbalanced:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mdrr)
+<span class="kw">data.frame</span>(<span class="kw">table</span>(mdrrDescr$nR11))</code></pre></div>
+<pre><code>##   Var1 Freq
+## 1    0  501
+## 2    1    4
+## 3    2   23</code></pre>
+<p>The concern here that these predictors may become zero-variance predictors when the data are split into cross-validation/bootstrap sub-samples or that a few samples may have an undue influence on the model. These “near-zero-variance” predictors may need to be identified and eliminated prior to modeling.</p>
+<p>To identify these types of predictors, the following two metrics can be calculated:</p>
+<ul>
+<li>the frequency of the most prevalent value over the second most frequent value (called the “frequency ratio’’), which would be near one for well-behaved predictors and very large for highly-unbalanced data and</li>
+<li>the “percent of unique values’’ is the number of unique values divided by the total number of samples (times 100) that approaches zero as the granularity of the data increases</li>
+</ul>
+<p>If the frequency ratio is greater than a pre-specified threshold and the unique value percentage is less than a threshold, we might consider a predictor to be near zero-variance.</p>
+<p>We would not want to falsely identify data that have low granularity but are evenly distributed, such as data from a discrete uniform distribution. Using both criteria should not falsely detect such predictors.</p>
+<p>Looking at the MDRR data, the <code>nearZeroVar</code> function can be used to identify near zero-variance variables (the <code>saveMetrics</code> argument can be used to show the details and usually defaults to <code>FALSE</code>):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nzv &lt;-<span class="st"> </span><span class="kw">nearZeroVar</span>(mdrrDescr, <span class="dt">saveMetrics=</span> <span class="ot">TRUE</span>)
+nzv[nzv$nzv,][<span class="dv">1</span>:<span class="dv">10</span>,]</code></pre></div>
+<pre><code>##        freqRatio percentUnique zeroVar  nzv
+## nTB     23.00000     0.3787879   FALSE TRUE
+## nBR    131.00000     0.3787879   FALSE TRUE
+## nI     527.00000     0.3787879   FALSE TRUE
+## nR03   527.00000     0.3787879   FALSE TRUE
+## nR08   527.00000     0.3787879   FALSE TRUE
+## nR11    21.78261     0.5681818   FALSE TRUE
+## nR12    57.66667     0.3787879   FALSE TRUE
+## D.Dr03 527.00000     0.3787879   FALSE TRUE
+## D.Dr07 123.50000     5.8712121   FALSE TRUE
+## D.Dr08 527.00000     0.3787879   FALSE TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(mdrrDescr)</code></pre></div>
+<pre><code>## [1] 528 342</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nzv &lt;-<span class="st"> </span><span class="kw">nearZeroVar</span>(mdrrDescr)
+filteredDescr &lt;-<span class="st"> </span>mdrrDescr[, -nzv]
+<span class="kw">dim</span>(filteredDescr)</code></pre></div>
+<pre><code>## [1] 528 297</code></pre>
+<p>By default, <code>nearZeroVar</code> will return the positions of the variables that are flagged to be problematic.</p>
+<div id="corr">
+
+</div>
+</div>
+<div id="identifying-correlated-predictors" class="section level2">
+<h2><span class="header-section-number">3.3</span> Identifying Correlated Predictors</h2>
+<p>While there are some models that thrive on correlated predictors (such as <code>pls</code>), other models may benefit from reducing the level of correlation between the predictors.</p>
+<p>Given a correlation matrix, the <code>findCorrelation</code> function uses the following algorithm to flag predictors for removal:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">descrCor &lt;-<span class="st">  </span><span class="kw">cor</span>(filteredDescr)
+highCorr &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(descrCor[<span class="kw">upper.tri</span>(descrCor)]) &gt;<span class="st"> </span>.<span class="dv">999</span>)</code></pre></div>
+<p>For the previous MDRR data, there are r<code>I(highCorr)</code> descriptors that are almost perfectly correlated (|correlation| &gt; 0.999), such as the total information index of atomic composition (<code>IAC</code>) and the total information content index (neighborhood symmetry of 0-order) (<code>TIC0</code>) (correlation = 1). The code chunk below shows the effect of removing descriptors with absolute correlations above 0.75.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">descrCor &lt;-<span class="st"> </span><span class="kw">cor</span>(filteredDescr)
+<span class="kw">summary</span>(descrCor[<span class="kw">upper.tri</span>(descrCor)])</code></pre></div>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## -0.99610 -0.05373  0.25010  0.26080  0.65530  1.00000</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">highlyCorDescr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(descrCor, <span class="dt">cutoff =</span> .<span class="dv">75</span>)
+filteredDescr &lt;-<span class="st"> </span>filteredDescr[,-highlyCorDescr]
+descrCor2 &lt;-<span class="st"> </span><span class="kw">cor</span>(filteredDescr)
+<span class="kw">summary</span>(descrCor2[<span class="kw">upper.tri</span>(descrCor2)])</code></pre></div>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## -0.70730 -0.05378  0.04418  0.06692  0.18860  0.74460</code></pre>
+<div id="lindep">
+
+</div>
+</div>
+<div id="linear-dependencies" class="section level2">
+<h2><span class="header-section-number">3.4</span> Linear Dependencies</h2>
+<p>The function <code>findLinearCombos</code> uses the QR decomposition of a matrix to enumerate sets of linear combinations (if they exist). For example, consider the following matrix that is could have been produced by a less-than-full-rank parameterizations of a two-way experimental layout:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ltfrDesign &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow=</span><span class="dv">6</span>, <span class="dt">ncol=</span><span class="dv">6</span>)
+ltfrDesign[,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)
+ltfrDesign[,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)
+ltfrDesign[,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)
+ltfrDesign[,<span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>)
+ltfrDesign[,<span class="dv">5</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)
+ltfrDesign[,<span class="dv">6</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>)</code></pre></div>
+<p>Note that columns two and three add up to the first column. Similarly, columns four, five and six add up the first column. <code>findLinearCombos</code> will return a list that enumerates these dependencies. For each linear combination, it will incrementally remove columns from the matrix and test to see if the dependencies have been resolved. <code>findLinearCombos</code> will also return a vector of column positions can be removed to eliminate the linear dependencies:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">comboInfo &lt;-<span class="st"> </span><span class="kw">findLinearCombos</span>(ltfrDesign)
+comboInfo</code></pre></div>
+<pre><code>## $linearCombos
+## $linearCombos[[1]]
+## [1] 3 1 2
+## 
+## $linearCombos[[2]]
+## [1] 6 1 4 5
+## 
+## 
+## $remove
+## [1] 3 6</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ltfrDesign[, -comboInfo$remove]</code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]    1    1    1    0
+## [2,]    1    1    0    1
+## [3,]    1    1    0    0
+## [4,]    1    0    1    0
+## [5,]    1    0    0    1
+## [6,]    1    0    0    0</code></pre>
+<p>These types of dependencies can arise when large numbers of binary chemical fingerprints are used to describe the structure of a molecule.</p>
+<div id="pp">
+
+</div>
+</div>
+<div id="the-preprocess-function" class="section level2">
+<h2><span class="header-section-number">3.5</span> The <code>preProcess</code> Function</h2>
+<p>The <code>preProcess</code> class can be used for many operations on predictors, including centering and scaling. The function <code>preProcess</code> estimates the required parameters for each operation and <code>predict.preProcess</code> is used to apply them to specific data sets. This function can also be interfaces when calling the <code>train</code> function.</p>
+<p>Several types of techniques are described in the next few sections and then another example is used to demonstrate how multiple methods can be used. Note that, in all cases, the <code>preProcess</code> function estimates whatever it requires from a specific data set (e.g. the training set) and then applies these transformations to <em>any</em> data set without recomputing the values</p>
+<div id="cs">
+
+</div>
+</div>
+<div id="centering-and-scaling" class="section level2">
+<h2><span class="header-section-number">3.6</span> Centering and Scaling</h2>
+<p>In the example below, the half of the MDRR data are used to estimate the location and scale of the predictors. The function <code>preProcess</code> doesn’t actually pre-process the data. <code>predict.preProcess</code> is used to pre-process this and other data sets.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">96</span>)
+inTrain &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">seq</span>(<span class="dt">along =</span> mdrrClass), <span class="kw">length</span>(mdrrClass)/<span class="dv">2</span>)
+
+training &lt;-<span class="st"> </span>filteredDescr[inTrain,]
+test &lt;-<span class="st"> </span>filteredDescr[-inTrain,]
+trainMDRR &lt;-<span class="st"> </span>mdrrClass[inTrain]
+testMDRR &lt;-<span class="st"> </span>mdrrClass[-inTrain]
+
+preProcValues &lt;-<span class="st"> </span><span class="kw">preProcess</span>(training, <span class="dt">method =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>))
+
+trainTransformed &lt;-<span class="st"> </span><span class="kw">predict</span>(preProcValues, training)
+testTransformed &lt;-<span class="st"> </span><span class="kw">predict</span>(preProcValues, test)</code></pre></div>
+<p>The <code>preProcess</code> option <code>&quot;ranges&quot;</code> scales the data to the interval between zero and one.</p>
+<div id="impute">
+
+</div>
+</div>
+<div id="imputation" class="section level2">
+<h2><span class="header-section-number">3.7</span> Imputation</h2>
+<p><code>preProcess</code> can be used to impute data sets based only on information in the training set. One method of doing this is with K-nearest neighbors. For an arbitrary sample, the K closest neighbors are found in the training set and the value for the predictor is imputed using these values (e.g. using the mean). Using this approach will automatically trigger <code>preProcess</code> to center and scale the data, regardless of what is in the <code>method</code> argument. Alternatively, bagged trees can also be used to impute. For each predictor in the data, a bagged tree is created using all of the other predictors in the training set. When a new sample has a missing predictor value, the bagged model is used to predict the value. While, in theory, this is a more powerful method of imputing, the computational costs are much higher than the nearest neighbor technique.</p>
+<div id="trans">
+
+</div>
+</div>
+<div id="transforming-predictors" class="section level2">
+<h2><span class="header-section-number">3.8</span> Transforming Predictors</h2>
+<p>In some cases, there is a need to use principal component analysis (PCA) to transform the data to a smaller sub–space where the new variable are uncorrelated with one another. The <code>preProcess</code> class can apply this transformation by including <code>&quot;pca&quot;</code> in the <code>method</code> argument. Doing this will also force scaling of the predictors. Note that when PCA is requested, <code>predict.preProcess</code> changes the column names to <code>PC1</code>, <code>PC2</code> and so on.</p>
+<p>Similarly, independent component analysis (ICA) can also be used to find new variables that are linear combinations of the original set such that the components are independent (as opposed to uncorrelated in PCA). The new variables will be labeled as <code>IC1</code>, <code>IC2</code> and so on.</p>
+<p>The “spatial sign” transformation (<a href="http://pubs.acs.org/cgi-bin/abstract.cgi/jcisd8/2006/46/i03/abs/ci050498u.html">Serneels et al, 2006</a>) projects the data for a predictor to the unit circle in p dimensions, where p is the number of predictors. Essentially, a vector of data is divided by its norm. The two figures below show two centered and scaled descriptors from the MDRR data before and after the spatial sign transformation. The predictors should be centered and scaled before applying this transformation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(AppliedPredictiveModeling)
+<span class="kw">transparentTheme</span>(<span class="dt">trans =</span> .<span class="dv">4</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plotSubset &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">scale</span>(mdrrDescr[, <span class="kw">c</span>(<span class="st">&quot;nC&quot;</span>, <span class="st">&quot;X4v&quot;</span>)])) 
+<span class="kw">xyplot</span>(nC ~<span class="st"> </span>X4v,
+       <span class="dt">data =</span> plotSubset,
+       <span class="dt">groups =</span> mdrrClass, 
+       <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">2</span>))  </code></pre></div>
+<p><img src="_main_files/figure-html/pp_SpatSignBefore-1.png" width="480" /></p>
+<p>After the spatial sign:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">transformed &lt;-<span class="st"> </span><span class="kw">spatialSign</span>(plotSubset)
+transformed &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(transformed)
+<span class="kw">xyplot</span>(nC ~<span class="st"> </span>X4v, 
+       <span class="dt">data =</span> transformed, 
+       <span class="dt">groups =</span> mdrrClass, 
+       <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">2</span>)) </code></pre></div>
+<p><img src="_main_files/figure-html/pp_SpatSignAfter-1.png" width="480" /></p>
+<p>Another option, <code>&quot;BoxCox&quot;</code> will estimate a Box–Cox transformation on the predictors if the data are greater than zero.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preProcValues2 &lt;-<span class="st"> </span><span class="kw">preProcess</span>(training, <span class="dt">method =</span> <span class="st">&quot;BoxCox&quot;</span>)
+trainBC &lt;-<span class="st"> </span><span class="kw">predict</span>(preProcValues2, training)
+testBC &lt;-<span class="st"> </span><span class="kw">predict</span>(preProcValues2, test)
+preProcValues2</code></pre></div>
+<pre><code>## Created from 264 samples and 31 variables
+## 
+## Pre-processing:
+##   - Box-Cox transformation (31)
+##   - ignored (0)
+## 
+## Lambda estimates for Box-Cox transformation:
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+## -2.0000 -0.2000  0.3000  0.4097  1.7000  2.0000</code></pre>
+<p>The <code>NA</code> values correspond to the predictors that could not be transformed. This transformation requires the data to be greater than zero. Two similar transformations, the Yeo-Johnson and exponential transformation of Manly (1976) can also be used in <code>preProcess</code>.</p>
+<div id="all">
+
+</div>
+</div>
+<div id="putting-it-all-together" class="section level2">
+<h2><span class="header-section-number">3.9</span> Putting It All Together</h2>
+<p>In <em>Applied Predictive Modeling</em> there is a case study where the execution times of jobs in a high performance computing environment are being predicted. The data are:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(AppliedPredictiveModeling)
+<span class="kw">data</span>(schedulingData)
+<span class="kw">str</span>(schedulingData)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    4331 obs. of  8 variables:
+##  $ Protocol   : Factor w/ 14 levels &quot;A&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;,..: 4 4 4 4 4 4 4 4 4 4 ...
+##  $ Compounds  : num  997 97 101 93 100 100 105 98 101 95 ...
+##  $ InputFields: num  137 103 75 76 82 82 88 95 91 92 ...
+##  $ Iterations : num  20 20 10 20 20 20 20 20 20 20 ...
+##  $ NumPending : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Hour       : num  14 13.8 13.8 10.1 10.4 ...
+##  $ Day        : Factor w/ 7 levels &quot;Mon&quot;,&quot;Tue&quot;,&quot;Wed&quot;,..: 2 2 4 5 5 3 5 5 5 3 ...
+##  $ Class      : Factor w/ 4 levels &quot;VF&quot;,&quot;F&quot;,&quot;M&quot;,&quot;L&quot;: 2 1 1 1 1 1 1 1 1 1 ...</code></pre>
+<p>The data are a mix of categorical and numeric predictors. Suppose we want to use the Yeo-Johnson transformation on the continuous predictors then center and scale them. Let’s also suppose that we will be running a tree-based models so we might want to keep the factors as factors (as opposed to creating dummy variables). We run the function on all the columns except the last, which is the outcome.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pp_hpc &lt;-<span class="st"> </span><span class="kw">preProcess</span>(schedulingData[, -<span class="dv">8</span>], 
+                     <span class="dt">method =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>, <span class="st">&quot;YeoJohnson&quot;</span>))
+pp_hpc</code></pre></div>
+<pre><code>## Created from 4331 samples and 7 variables
+## 
+## Pre-processing:
+##   - centered (5)
+##   - ignored (2)
+##   - scaled (5)
+##   - Yeo-Johnson transformation (5)
+## 
+## Lambda estimates for Yeo-Johnson transformation:
+## -0.08, -0.03, -1.05, -1.1, 1.44</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">transformed &lt;-<span class="st"> </span><span class="kw">predict</span>(pp_hpc, <span class="dt">newdata =</span> schedulingData[, -<span class="dv">8</span>])
+<span class="kw">head</span>(transformed)</code></pre></div>
+<pre><code>##   Protocol  Compounds InputFields  Iterations NumPending         Hour Day
+## 1        E  1.2289589  -0.6324538 -0.06155877  -0.554123  0.004586502 Tue
+## 2        E -0.6065822  -0.8120451 -0.06155877  -0.554123 -0.043733215 Tue
+## 3        E -0.5719530  -1.0131509 -2.78949011  -0.554123 -0.034967191 Thu
+## 4        E -0.6427734  -1.0047281 -0.06155877  -0.554123 -0.964170760 Fri
+## 5        E -0.5804710  -0.9564501 -0.06155877  -0.554123 -0.902085029 Fri
+## 6        E -0.5804710  -0.9564501 -0.06155877  -0.554123  0.698108779 Wed</code></pre>
+<p>The two predictors labeled as “ignored” in the output are the two factor predictors. These are not altered but the numeric predictors are transformed. However, the predictor for the number of pending jobs, has a very sparse and unbalanced distribution:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(schedulingData$NumPending ==<span class="st"> </span><span class="dv">0</span>)</code></pre></div>
+<pre><code>## [1] 0.7561764</code></pre>
+<p>For some other models, this might be an issue (especially if we resample or down-sample the data). We can add a filter to check for zero- or near zero-variance predictors prior to running the pre-processing calculations:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pp_no_nzv &lt;-<span class="st"> </span><span class="kw">preProcess</span>(schedulingData[, -<span class="dv">8</span>], 
+                        <span class="dt">method =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>, <span class="st">&quot;YeoJohnson&quot;</span>, <span class="st">&quot;nzv&quot;</span>))
+pp_no_nzv</code></pre></div>
+<pre><code>## Created from 4331 samples and 7 variables
+## 
+## Pre-processing:
+##   - centered (4)
+##   - ignored (2)
+##   - removed (1)
+##   - scaled (4)
+##   - Yeo-Johnson transformation (4)
+## 
+## Lambda estimates for Yeo-Johnson transformation:
+## -0.08, -0.03, -1.05, 1.44</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predict</span>(pp_no_nzv, <span class="dt">newdata =</span> schedulingData[<span class="dv">1</span>:<span class="dv">6</span>, -<span class="dv">8</span>])</code></pre></div>
+<pre><code>##   Protocol  Compounds InputFields  Iterations         Hour Day
+## 1        E  1.2289589  -0.6324538 -0.06155877  0.004586502 Tue
+## 2        E -0.6065822  -0.8120451 -0.06155877 -0.043733215 Tue
+## 3        E -0.5719530  -1.0131509 -2.78949011 -0.034967191 Thu
+## 4        E -0.6427734  -1.0047281 -0.06155877 -0.964170760 Fri
+## 5        E -0.5804710  -0.9564501 -0.06155877 -0.902085029 Fri
+## 6        E -0.5804710  -0.9564501 -0.06155877  0.698108779 Wed</code></pre>
+<p>Note that one predictor is labeled as “removed” and the processed data lack the sparse predictor.</p>
+<div id="cent">
+
+</div>
+</div>
+<div id="class-distance-calculations" class="section level2">
+<h2><span class="header-section-number">3.10</span> Class Distance Calculations</h2>
+<p><a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> contains functions to generate new predictors variables based on distances to class centroids (similar to how linear discriminant analysis works). For each level of a factor variable, the class centroid and covariance matrix is calculated. For new samples, the Mahalanobis distance to each of the class centroids is computed and can be used as an additional predictor. This can be helpful for non-linear models when the true decision boundary is actually linear.</p>
+<p>In cases where there are more predictors within a class than samples, the <code>classDist</code> function has arguments called <code>pca</code> and <code>keep</code> arguments that allow for principal components analysis within each class to be used to avoid issues with singular covariance matrices.</p>
+<p><code>predict.classDist</code> is then used to generate the class distances. By default, the distances are logged, but this can be changed via the <code>trans</code> argument to <code>predict.classDist</code>.</p>
+<p>As an example, we can used the MDRR data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">centroids &lt;-<span class="st"> </span><span class="kw">classDist</span>(trainBC, trainMDRR)
+distances &lt;-<span class="st"> </span><span class="kw">predict</span>(centroids, testBC)
+distances &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(distances)
+<span class="kw">head</span>(distances)</code></pre></div>
+<pre><code>##                dist.Active dist.Inactive
+## PROMETHAZINE      5.810607      4.098229
+## ACEPROMETAZINE    4.272003      4.169292
+## PYRATHIAZINE      4.570192      4.224053
+## THIORIDAZINE      4.548315      5.064125
+## MESORIDAZINE      4.621708      5.080362
+## SULFORIDAZINE     5.344699      5.145311</code></pre>
+<p>This image shows a scatterplot matrix of the class distances for the held-out samples:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xyplot</span>(dist.Active ~<span class="st"> </span>dist.Inactive,
+       <span class="dt">data =</span> distances, 
+       <span class="dt">groups =</span> testMDRR, 
+       <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">2</span>))</code></pre></div>
+<p><img src="_main_files/figure-html/pp_splom-1.png" width="480" /></p>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="visualizations.html" class="navigation navigation-next navigation-unique" aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+<a href="visualizations.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="data-splitting.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>

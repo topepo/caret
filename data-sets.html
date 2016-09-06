@@ -38,8 +38,8 @@ MathJax.Hub.Config({
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
+<link rel="prev" href="feature-selection-using-simulated-annealing.html">
 
-<link rel="next" href="visualizations.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -352,42 +352,168 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">The <code>caret</code> Package</h1>
-<h4 class="author"><em>Max Kuhn</em></h4>
-<h4 class="date"><em>2016-09-03</em></h4>
+<div id="data-sets" class="section level1">
+<h1><span class="header-section-number">22</span> Data Sets</h1>
+<p>There are a few data sets included in <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a>. The first four are computational chemistry problems where the object is to relate the molecular structure of compounds (via molecular descriptors) to some property of interest (<a href="http://www.sciencedirect.com/science/article/pii/S1359644699014518">Clark and Pickett (2000)</a>). Similar data sets can be found in the <a href="http://cran.r-project.org/web/packages/QSARdata/index.html"><code>QSARdata</code></a> R pacakge.</p>
+<p>Other R packages with data are:</p>
+<ul>
+<li><a href="http://cran.r-project.org/web/packages/mlbench/index.html"><code>mlbench</code></a>,</li>
+<li><a href="http://cran.r-project.org/web/packages/SMCRM/index.html"><code>SMCRM</code></a> and</li>
+<li><a href="http://cran.r-project.org/web/packages/AppliedPredictiveModeling/index.html"><code>AppliedPredictiveModeling</code></a>.</li>
+</ul>
+<div id="blood-brain-barrier-data" class="section level2">
+<h2><span class="header-section-number">22.1</span> Blood-Brain Barrier Data</h2>
+<p><a href="http://www.springerlink.com/content/72j377175n536768/?p=f546488cc8fa4ec7a3d491%20eb20adb3c&amp;pi=0">Mente and Lombardo (2005)</a> developed models to predict the log of the ratio of the concentration of a compound in the brain and the concentration in blood. For each compound, they computed three sets of molecular descriptors: MOE 2D, rule-of-five and Charge Polar Surface Area (CPSA). In all, 134 descriptors were calculated. Included in this package are 208 non-proprietary literature compounds. The vector <code>logBBB</code> contains the log concentration ratio and the data fame <code>bbbDescr</code> contains the descriptor values.</p>
 </div>
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>The <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:</p>
-<ul>
-<li>data splitting</li>
-<li>pre-processing</li>
-<li>feature selection</li>
-<li>model tuning using resampling</li>
-<li>variable importance estimation</li>
-</ul>
-<p>as well as other functionality.</p>
-<p>There are many different modeling functions in R. Some have different syntax for model training and/or prediction. The package started off as a way to provide a uniform interface the functions themselves, as well as a way to standardize common tasks (such parameter tuning and variable importance).</p>
-<p>The current release version can be found on <a href="http://cran.r-project.org/web/packages/caret/">CRAN</a> and the project is hosted <a href="https://github.com/topepo/caret">on github</a>.</p>
-<p>Some resources:</p>
-<ul>
-<li>The book <em>Applied Predictive Modeling</em> features <strong>caret</strong> and over 40 other R packages. It is on sale at <a href="http://www.amazon.com/dp/1461468485">Amazon</a> or the <a href="http://www.springer.com/statistics/life+sciences%2C+medicine+%26+health/book/978-1-4614-6848-6">the publisher’s website</a>. There is a <a href="http://appliedpredictivemodeling.com/">companion website</a> too.</li>
-<li>There is also a paper on caret in the <a href="http://www.jstatsoft.org/v28/i05">Journal of Statistical Software</a>. The example data can be obtained <a href="descr.RData">here</a>(the predictors) and <a href="mutagen.RData">here</a> (the outcomes).</li>
-<li>There is a <a href="http://www.youtube.com/watch?v=7Jbb2ItbTC4">webinar</a> for the package on Youtube that was organized and recorded by Ray DiGiacomo Jr for the Orange County R User Group.</li>
-<li>At <a href="http://user2014.stat.ucla.edu">useR! 2014</a>, I was <a href="http://youtu.be/YmHyAHkjX_A">interviewed</a> and discussed the package and the book.</li>
-</ul>
-<p>You can always email <a href="mailto:max.kuhn@pfizer.com">me</a> with questions, comments or suggestions.</p>
-<p>These HTML pages were created using <a href="https://bookdown.org">bookdown</a>.</p>
+<div id="cox-2-activity-data" class="section level2">
+<h2><span class="header-section-number">22.2</span> COX-2 Activity Data</h2>
+<p>From <a href="http://pubs.acs.org/cgi-bin/abstract.cgi/jmcmar/2004/47/i22/abs/jm0497141.html">Sutherland, O’Brien, and Weaver (2003)</a>: A set of 467 cyclooxygenase-2 (COX-2) inhibitors has been assembled from the published work of a single research group, with in vitro activities against human recombinant enzyme expressed as IC50 values ranging from 1 nM to &gt;100 uM (53 compounds have indeterminate IC50 values).</p>
+<p>A set of 255 descriptors (MOE2D and QikProp) were generated. To classify the data, we used a cutoff of 2^{2.5} to determine activity.</p>
+<p>Using <code>data(cox2)</code> exposes three R objects: <code>cox2Descr</code> is a data frame with the descriptor data, <code>cox2IC50</code> is a numeric vector of IC50 assay values and <code>cox2Class</code> is a factor vector with the activity results.</p>
+</div>
+<div id="dhfr-inhibition" class="section level2">
+<h2><span class="header-section-number">22.3</span> DHFR Inhibition</h2>
+<p><a href="http://www.springerlink.com/content/q5m5xp1q356p2071/">Sutherland and Weaver (2004)</a> discuss QSAR models for dihydrofolate reductase (DHFR) inhibition. This data set contains values for 325 compounds. For each compound, 228 molecular descriptors have been calculated. Additionally, each samples is designated as “active” or “inactive”.</p>
+<p>The data frame <code>dhfr</code> contains a column called <code>Y</code> with the outcome classification. The remainder of the columns are molecular descriptor values.</p>
+</div>
+<div id="tecator-nir-data" class="section level2">
+<h2><span class="header-section-number">22.4</span> Tecator NIR Data</h2>
+<p>These data can be found in the datasets section of StatLib. The data consist of 100 near infrared absorbance spectra used to predict the moisture, fat and protein values of chopped meat.</p>
+<p>From <a href="http://lib.stat.cmu.edu/datasets/tecator">StatLib</a>:</p>
+<blockquote>
+<p>These data are recorded on a Tecator Infratec Food and Feed Analyzer working in the wavelength range 850 - 1050 nm by the Near Infrared Transmission (NIT) principle. Each sample contains finely chopped pure meat with different moisture, fat and protein contents. If results from these data are used in a publication we want you to mention the instrument and company name (Tecator) in the publication. In addition, please send a preprint of your article to: Karin Thente, Tecator AB, Box 70, S-263 21 Hoganas, Sweden.</p>
+</blockquote>
+<p>One reference for these data is Borggaard and Thodberg (1992).</p>
+<p>Using <code>data(tecator)</code> loads a 215 x 100 matrix of absorbance spectra and a 215 x 3 matrix of outcomes.</p>
+</div>
+<div id="fatty-acid-composition-data" class="section level2">
+<h2><span class="header-section-number">22.5</span> Fatty Acid Composition Data</h2>
+<p><a href="http://dx.doi.org/10.1016/j.chemolab.2004.04.011">Brodnjak-Voncina et al. (2005)</a> describe a set of data where seven fatty acid compositions were used to classify commercial oils as either pumpkin (labeled <code>A</code>), sunflower (<code>B</code>), peanut (<code>C</code>), olive (<code>D</code>), soybean (<code>E</code>), rapeseed (<code>F</code>) and corn (<code>G</code>). There were 96 data points contained in their Table 1 with known results. The breakdown of the classes is given in below:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(oil)
+<span class="kw">dim</span>(fattyAcids)</code></pre></div>
+<pre><code>## [1] 96  7</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(oilType)</code></pre></div>
+<pre><code>## oilType
+##  A  B  C  D  E  F  G 
+## 37 26  3  7 11 10  2</code></pre>
+<p>As a note, the paper states on page 32 that there are 37 unknown samples while the table on pages 33 and 34 shows that there are 34 unknowns.</p>
+</div>
+<div id="german-credit-data" class="section level2">
+<h2><span class="header-section-number">22.6</span> German Credit Data</h2>
+<p>Data from Dr. Hans Hofmann of the University of Hamburg and stored at the <a href="http://archive.ics.uci.edu/ml/datasets/Statlog+%28German+Credit+Data%29">UC Irvine Machine Learning Repository</a>.</p>
+<p>These data have two classes for the credit worthiness: good or bad. There are predictors related to attributes, such as: checking account status, duration, credit history, purpose of the loan, amount of the loan, savings accounts or bonds, employment duration, Installment rate in percentage of disposable income, personal information, other debtors/guarantors, residence duration, property, age, other installment plans, housing, number of existing credits, job information, Number of people being liable to provide maintenance for, telephone, and foreign worker status.</p>
+<p>Many of these predictors are discrete and have been expanded into several 0/1 indicator variables</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caret)
+<span class="kw">data</span>(GermanCredit)
+## Show the first 10 columns
+<span class="kw">str</span>(GermanCredit[, <span class="dv">1</span>:<span class="dv">10</span>])</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    1000 obs. of  10 variables:
+##  $ status             : Factor w/ 4 levels &quot;... &lt; 100 DM&quot;,..: 1 2 4 1 1 4 4 2 4 2 ...
+##  $ duration           : num  6 48 12 42 24 36 24 36 12 30 ...
+##  $ credit_history     : Factor w/ 5 levels &quot;no credits taken/all credits paid back duly&quot;,..: 5 3 5 3 4 3 3 3 3 5 ...
+##  $ purpose            : Factor w/ 10 levels &quot;car (new)&quot;,&quot;car (used)&quot;,..: 5 5 8 4 1 8 4 2 5 1 ...
+##  $ amount             : num  1169 5951 2096 7882 4870 ...
+##  $ savings            : Factor w/ 5 levels &quot;... &lt; 100 DM&quot;,..: 5 1 1 1 1 5 3 1 4 1 ...
+##  $ employment_duration: Ord.factor w/ 5 levels &quot;unemployed&quot;&lt;&quot;... &lt; 1 year&quot;&lt;..: 5 3 4 4 3 3 5 3 4 1 ...
+##  $ installment_rate   : num  4 2 2 2 3 2 3 2 2 4 ...
+##  $ personal_status_sex: Factor w/ 5 levels &quot;male : divorced/separated&quot;,..: 3 2 3 3 3 3 3 3 1 4 ...
+##  $ other_debtors      : Factor w/ 3 levels &quot;none&quot;,&quot;co-applicant&quot;,..: 1 1 1 3 1 1 1 1 1 1 ...</code></pre>
+</div>
+<div id="kelly-blue-book" class="section level2">
+<h2><span class="header-section-number">22.7</span> Kelly Blue Book</h2>
+<p>Resale data for 2005 model year GM cars <a href="http://www.amstat.org/publications/jse/v16n3/datasets.kuiper.html">Kuiper (2008)</a> collected data on Kelly Blue Book resale data for 804 GM cars (2005 model year).</p>
+<p><code>cars</code> is data frame of the suggested retail price (column <code>Price</code>) and various characteristics of each car (columns <code>Mileage</code>, <code>Cylinder</code>, <code>Doors</code>, <code>Cruise</code>, <code>Sound</code>, <code>Leather</code>, <code>Buick</code>, <code>Cadillac</code>, <code>Chevy</code>, <code>Pontiac</code>, <code>Saab</code>, <code>Saturn</code>, <code>convertible</code>, <code>coupe</code>, <code>hatchback</code>, <code>sedan</code> and <code>wagon</code>)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(cars)
+<span class="kw">str</span>(cars)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    804 obs. of  18 variables:
+##  $ Price      : num  22661 21725 29143 30732 33359 ...
+##  $ Mileage    : int  20105 13457 31655 22479 17590 23635 17381 27558 25049 17319 ...
+##  $ Cylinder   : int  6 6 4 4 4 4 4 4 4 4 ...
+##  $ Doors      : int  4 2 2 2 2 2 2 2 2 4 ...
+##  $ Cruise     : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Sound      : int  0 1 1 0 1 0 1 0 0 0 ...
+##  $ Leather    : int  0 0 1 0 1 0 1 1 0 1 ...
+##  $ Buick      : int  1 0 0 0 0 0 0 0 0 0 ...
+##  $ Cadillac   : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Chevy      : int  0 1 0 0 0 0 0 0 0 0 ...
+##  $ Pontiac    : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Saab       : int  0 0 1 1 1 1 1 1 1 1 ...
+##  $ Saturn     : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ convertible: int  0 0 1 1 1 1 1 1 1 0 ...
+##  $ coupe      : int  0 1 0 0 0 0 0 0 0 0 ...
+##  $ hatchback  : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ sedan      : int  1 0 0 0 0 0 0 0 0 1 ...
+##  $ wagon      : int  0 0 0 0 0 0 0 0 0 0 ...</code></pre>
+</div>
+<div id="cell-body-segmentation-data" class="section level2">
+<h2><span class="header-section-number">22.8</span> Cell Body Segmentation Data</h2>
+<p><a href="http://www.biomedcentral.com/1471-2105/8/340">Hill, LaPan, Li and Haney (2007)</a> develop models to predict which cells in a high content screen were well segmented. The data consists of 119 imaging measurements on 2019. The original analysis used 1009 for training and 1010 as a test set (see the column called <code>Case</code>).</p>
+<p>The outcome class is contained in a factor variable called <code>Class</code> with levels <code>PS</code> for poorly segmented and <code>WS</code> for well segmented.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(segmentationData)
+<span class="kw">str</span>(segmentationData[,<span class="dv">1</span>:<span class="dv">10</span>])</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    2019 obs. of  10 variables:
+##  $ Cell                  : int  207827637 207932307 207932463 207932470 207932455 207827656 207827659 207827661 207932479 207932480 ...
+##  $ Case                  : Factor w/ 2 levels &quot;Test&quot;,&quot;Train&quot;: 1 2 2 2 1 1 1 1 1 1 ...
+##  $ Class                 : Factor w/ 2 levels &quot;PS&quot;,&quot;WS&quot;: 1 1 2 1 1 2 2 1 2 2 ...
+##  $ AngleCh1              : num  143.25 133.75 106.65 69.15 2.89 ...
+##  $ AreaCh1               : int  185 819 431 298 285 172 177 251 495 384 ...
+##  $ AvgIntenCh1           : num  15.7 31.9 28 19.5 24.3 ...
+##  $ AvgIntenCh2           : num  4.95 206.88 116.32 102.29 112.42 ...
+##  $ AvgIntenCh3           : num  9.55 69.92 63.94 28.22 20.47 ...
+##  $ AvgIntenCh4           : num  2.21 164.15 106.7 31.03 40.58 ...
+##  $ ConvexHullAreaRatioCh1: num  1.12 1.26 1.05 1.2 1.11 ...</code></pre>
+</div>
+<div id="sacramento-house-price-data" class="section level2">
+<h2><span class="header-section-number">22.9</span> Sacramento House Price Data</h2>
+<p>This data frame contains house and sale price data for 932 homes in Sacramento CA. The original data were obtained from the website for the <a href="https://support.spatialkey.com/spatialkey-sample-csv-data">SpatialKey software</a>. From their website: “The Sacramento real estate transactions file is a list of 985 real estate transactions in the Sacramento area reported over a five-day period, as reported by the Sacramento Bee.” Google was used to fill in missing/incorrect data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(Sacramento)
+<span class="kw">str</span>(Sacramento)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    932 obs. of  9 variables:
+##  $ city     : Factor w/ 37 levels &quot;ANTELOPE&quot;,&quot;AUBURN&quot;,..: 34 34 34 34 34 34 34 34 29 31 ...
+##  $ zip      : Factor w/ 68 levels &quot;z95603&quot;,&quot;z95608&quot;,..: 64 52 44 44 53 65 66 49 24 25 ...
+##  $ beds     : int  2 3 2 2 2 3 3 3 2 3 ...
+##  $ baths    : num  1 1 1 1 1 1 2 1 2 2 ...
+##  $ sqft     : int  836 1167 796 852 797 1122 1104 1177 941 1146 ...
+##  $ type     : Factor w/ 3 levels &quot;Condo&quot;,&quot;Multi_Family&quot;,..: 3 3 3 3 3 1 3 3 1 3 ...
+##  $ price    : int  59222 68212 68880 69307 81900 89921 90895 91002 94905 98937 ...
+##  $ latitude : num  38.6 38.5 38.6 38.6 38.5 ...
+##  $ longitude: num  -121 -121 -121 -121 -121 ...</code></pre>
+</div>
+<div id="animal-scat-data" class="section level2">
+<h2><span class="header-section-number">22.10</span> Animal Scat Data</h2>
+<p><a href="http://www.bioone.org/doi/full/10.2981/wlb.00105">Reid (2105)</a> collected data on animal feses in coastal California. The data consist of DNA verified species designations as well as fields related to the time and place of the collection and the scat itself. The data frame <code>scat_orig</code> contains while scat contains data on the three main species.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(scat)
+<span class="kw">str</span>(scat)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    110 obs. of  19 variables:
+##  $ Species  : Factor w/ 3 levels &quot;bobcat&quot;,&quot;coyote&quot;,..: 2 2 1 2 2 2 1 1 1 1 ...
+##  $ Month    : Factor w/ 9 levels &quot;April&quot;,&quot;August&quot;,..: 4 4 4 4 4 4 4 4 4 4 ...
+##  $ Year     : int  2012 2012 2012 2012 2012 2012 2012 2012 2012 2012 ...
+##  $ Site     : Factor w/ 2 levels &quot;ANNU&quot;,&quot;YOLA&quot;: 2 2 2 2 2 2 1 1 1 1 ...
+##  $ Location : Factor w/ 3 levels &quot;edge&quot;,&quot;middle&quot;,..: 1 1 2 2 1 1 3 3 3 2 ...
+##  $ Age      : int  5 3 3 5 5 5 1 3 5 5 ...
+##  $ Number   : int  2 2 2 2 4 3 5 7 2 1 ...
+##  $ Length   : num  9.5 14 9 8.5 8 9 6 5.5 11 20.5 ...
+##  $ Diameter : num  25.7 25.4 18.8 18.1 20.7 21.2 15.7 21.9 17.5 18 ...
+##  $ Taper    : num  41.9 37.1 16.5 24.7 20.1 28.5 8.2 19.3 29.1 21.4 ...
+##  $ TI       : num  1.63 1.46 0.88 1.36 0.97 1.34 0.52 0.88 1.66 1.19 ...
+##  $ Mass     : num  15.9 17.6 8.4 7.4 25.4 ...
+##  $ d13C     : num  -26.9 -29.6 -28.7 -20.1 -23.2 ...
+##  $ d15N     : num  6.94 9.87 8.52 5.79 7.01 8.28 4.2 3.89 7.34 6.06 ...
+##  $ CN       : num  8.5 11.3 8.1 11.5 10.6 9 5.4 5.6 5.8 7.7 ...
+##  $ ropey    : int  0 0 1 1 0 1 1 0 0 1 ...
+##  $ segmented: int  0 0 1 0 1 0 1 1 1 1 ...
+##  $ flat     : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ scrape   : int  0 0 1 0 0 0 1 0 0 0 ...</code></pre>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
+<a href="feature-selection-using-simulated-annealing.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="visualizations.html" class="navigation navigation-next navigation-unique" aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>

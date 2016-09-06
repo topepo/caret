@@ -38,8 +38,8 @@ MathJax.Hub.Config({
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="visualizations.html">
+<link rel="prev" href="recursive-feature-elimination.html">
+<link rel="next" href="feature-selection-using-genetic-algorithms.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -352,42 +352,103 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">The <code>caret</code> Package</h1>
-<h4 class="author"><em>Max Kuhn</em></h4>
-<h4 class="date"><em>2016-09-03</em></h4>
-</div>
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>The <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:</p>
+<div id="feature-selection-using-univariate-filters" class="section level1">
+<h1><span class="header-section-number">19</span> Feature Selection using Univariate Filters</h1>
+<p>Contents</p>
 <ul>
-<li>data splitting</li>
-<li>pre-processing</li>
-<li>feature selection</li>
-<li>model tuning using resampling</li>
-<li>variable importance estimation</li>
+<li><a href="feature-selection-using-univariate-filters.html#filter">Univariate Filters</a></li>
+<li><a href="feature-selection-using-univariate-filters.html#syntax">Basic Syntax</a></li>
+<li><a href="model-training-and-tuning.html#example">The Example</a></li>
 </ul>
-<p>as well as other functionality.</p>
-<p>There are many different modeling functions in R. Some have different syntax for model training and/or prediction. The package started off as a way to provide a uniform interface the functions themselves, as well as a way to standardize common tasks (such parameter tuning and variable importance).</p>
-<p>The current release version can be found on <a href="http://cran.r-project.org/web/packages/caret/">CRAN</a> and the project is hosted <a href="https://github.com/topepo/caret">on github</a>.</p>
-<p>Some resources:</p>
-<ul>
-<li>The book <em>Applied Predictive Modeling</em> features <strong>caret</strong> and over 40 other R packages. It is on sale at <a href="http://www.amazon.com/dp/1461468485">Amazon</a> or the <a href="http://www.springer.com/statistics/life+sciences%2C+medicine+%26+health/book/978-1-4614-6848-6">the publisher’s website</a>. There is a <a href="http://appliedpredictivemodeling.com/">companion website</a> too.</li>
-<li>There is also a paper on caret in the <a href="http://www.jstatsoft.org/v28/i05">Journal of Statistical Software</a>. The example data can be obtained <a href="descr.RData">here</a>(the predictors) and <a href="mutagen.RData">here</a> (the outcomes).</li>
-<li>There is a <a href="http://www.youtube.com/watch?v=7Jbb2ItbTC4">webinar</a> for the package on Youtube that was organized and recorded by Ray DiGiacomo Jr for the Orange County R User Group.</li>
-<li>At <a href="http://user2014.stat.ucla.edu">useR! 2014</a>, I was <a href="http://youtu.be/YmHyAHkjX_A">interviewed</a> and discussed the package and the book.</li>
-</ul>
-<p>You can always email <a href="mailto:max.kuhn@pfizer.com">me</a> with questions, comments or suggestions.</p>
-<p>These HTML pages were created using <a href="https://bookdown.org">bookdown</a>.</p>
+<div id="filter">
 
+</div>
+<div id="univariate-filters" class="section level2">
+<h2><span class="header-section-number">19.1</span> Univariate Filters</h2>
+<p>Another approach to feature selection is to pre-screen the predictors using simple univariate statistical methods then only use those that pass some criterion in the subsequent model steps. Similar to recursive selection, cross-validation of the subsequent models will be biased as the remaining predictors have already been evaluate on the data set. Proper performance estimates via resampling should include the feature selection step.</p>
+<p>As an example, it has been suggested for classification models, that predictors can be filtered by conducting some sort of <em>k</em>-sample test (where <em>k</em> is the number of classes) to see if the mean of the predictor is different between the classes. Wilcoxon tests, <em>t</em>-tests and ANOVA models are sometimes used. Predictors that have statistically significant differences between the classes are then used for modeling.</p>
+<p>The caret function <code>sbf</code> (for selection by filter) can be used to cross-validate such feature selection schemes. Similar to <code>rfe</code>, functions can be passed into <code>sbf</code> for the computational components: univariate filtering, model fitting, prediction and performance summaries (details are given below).</p>
+<p>The function is applied to the entire training set and also to different resampled versions of the data set. From this, generalizable estimates of performance can be computed that properly take into account the feature selection step. Also, the results of the predictor filters can be tracked over resamples to understand the uncertainty in the filtering.</p>
+<div id="syntax">
+
+</div>
+</div>
+<div id="basic-syntax" class="section level2">
+<h2><span class="header-section-number">19.2</span> Basic Syntax</h2>
+<p>Similar to the <code>rfe</code> function, the syntax for <code>sbf</code> is:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sbf</span>(predictors, outcome, <span class="dt">sbfControl =</span> <span class="kw">sbfControl</span>(), ...)
+## or
+<span class="kw">sbf</span>(formula, data, <span class="dt">sbfControl =</span> <span class="kw">sbfControl</span>(), ...)</code></pre></div>
+<p>In this case, the details are specificed using the <code>sbfControl</code> function. Here, the argument <code>functions</code> dictates what the different components should do. This argument should have elements called <code>filter</code>, <code>fit</code>, <code>pred</code> and <code>summary</code>.</p>
+<div id="the-score-function" class="section level3">
+<h3><span class="header-section-number">19.2.1</span> The <code>score</code> Function</h3>
+<p>This function takes as inputs the predictors and the outcome in objects called <code>x</code> and <code>y</code>, respectively. By default, each predictor in <code>x</code> is passed to the <code>score</code> function individually. In this case, the function should return a single score. Alternatively, all the predictors can be exposed to the function using the <code>multivariate</code> argument to <code>sbfControl</code>. In this case, the output should be a named vector of scores where the names correspond to the column names of <code>x</code>.</p>
+<p>There are two built-in functions called <code>anovaScores</code> and <code>gamScores</code>. <code>anovaScores</code> treats the outcome as the independent variable and the predictor as the outcome. In this way, the null hypothesis is that the mean predictor values are equal across the different classes. For regression, <code>gamScores</code> fits a smoothing spline in the predictor to the outcome using a generalized additive model and tests to see if there is any functional relationship between the two. In each function the p-value is used as the score.</p>
+</div>
+<div id="the-filter-function" class="section level3">
+<h3><span class="header-section-number">19.2.2</span> The <code>filter</code> Function</h3>
+<p>This function takes as inputs the scores coming out of the <code>score</code> function (in an argument called <code>score</code>). The function also has the training set data as inputs (arguments are called <code>x</code> and <code>y</code>). The output should be a named logical vector where the names correspond to the column names of <code>x</code>. Columns with values of <code>TRUE</code> will be used in the subsequent model.</p>
+</div>
+<div id="the-fit-function-2" class="section level3">
+<h3><span class="header-section-number">19.2.3</span> The <code>fit</code> Function</h3>
+<p>The component is very similar to the <code>rfe</code>-specific function described above. For <code>sbf</code>, there are no <code>first</code> or <code>last</code> arguments. The function should have arguments <code>x</code>, <code>y</code> and <code>...</code>. The data within <code>x</code> have been filtered using the <code>filter</code> function described above. The output of the <code>fit</code> function should be a fitted model.</p>
+<p>With some data sets, no predictors will survive the filter. In these cases, a model with predictors cannot be computed, but the lack of viable predictors should not be ignored in the final results. To account for this issue, <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> contains a model function called <code>nullModel</code> that fits a simple model that is independent of any of the predictors. For problems where the outcome is numeric, the function predicts every sample using the simple mean of the training set outcomes. For classification, the model predicts all samples using the most prevalent class in the training data.</p>
+<p>This function can be used in the <code>fit</code> component function to “error-trap” cases where no predictors are selected. For example, there are several built-in functions for some models. The object <code>rfSBF</code> is a set of functions that may be useful for fitting random forest models with filtering. The <code>fit</code> function here uses <code>nullModel</code> to check for cases with no predictors:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfSBF$fit</code></pre></div>
+<pre><code>## function (x, y, ...) 
+## {
+##     if (ncol(x) &gt; 0) {
+##         loadNamespace(&quot;randomForest&quot;)
+##         randomForest::randomForest(x, y, ...)
+##     }
+##     else nullModel(y = y)
+## }
+## &lt;environment: namespace:caret&gt;</code></pre>
+</div>
+<div id="the-summary-and-pred-functions" class="section level3">
+<h3><span class="header-section-number">19.2.4</span> The <code>summary</code> and <code>pred</code> Functions</h3>
+<p>The <code>summary</code> function is used to calculate model performance on held-out samples. The <code>pred</code> function is used to predict new samples using the current predictor set. The arguments and outputs for these two functions are identical to the previously discussed <code>summary</code> and <code>pred</code> functions in previously described sections.</p>
+<div id="example">
+
+</div>
+</div>
+</div>
+<div id="the-example-1" class="section level2">
+<h2><span class="header-section-number">19.3</span> The Example</h2>
+<p>Returning to the example from (Friedman, 1991), we can fit another random forest model with the predictors pre-filtered using the generalized additive model approach described previously.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">filterCtrl &lt;-<span class="st"> </span><span class="kw">sbfControl</span>(<span class="dt">functions =</span> rfSBF, <span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="dt">repeats =</span> <span class="dv">5</span>)
+<span class="kw">set.seed</span>(<span class="dv">10</span>)
+rfWithFilter &lt;-<span class="st"> </span><span class="kw">sbf</span>(x, y, <span class="dt">sbfControl =</span> filterCtrl)
+rfWithFilter</code></pre></div>
+<pre><code>## 
+## Selection By Filter
+## 
+## Outer resampling method: Cross-Validated (10 fold, repeated 5 times) 
+## 
+## Resampling performance:
+## 
+##   RMSE Rsquared RMSESD RsquaredSD
+##  3.444   0.5504 0.6032     0.2173
+## 
+## Using the training set, 6 variables were selected:
+##    real2, real4, real5, bogus2, bogus17...
+## 
+## During resampling, the top 5 selected variables (out of a possible 12):
+##    real2 (100%), real4 (100%), real5 (100%), bogus44 (72%), bogus2 (52%)
+## 
+## On average, 5.6 variables were selected (min = 3, max = 8)</code></pre>
+<p>In this case, the training set indicated that 6 should be used in the random forest model, but the resampling results indicate that there is some variation in this number. Some of the informative predictors are used, but a few others are erroneous retained.</p>
+<p>Similar to <code>rfe</code>, there are methods for <code>predictors</code>, <code>densityplot</code>, <code>histogram</code> and <code>varImp</code>.</p>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="visualizations.html" class="navigation navigation-next navigation-unique" aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+<a href="recursive-feature-elimination.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="feature-selection-using-genetic-algorithms.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>

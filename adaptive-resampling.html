@@ -38,8 +38,8 @@ MathJax.Hub.Config({
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="visualizations.html">
+<link rel="prev" href="using-your-own-model-in-train.html">
+<link rel="next" href="variable-importance.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -352,33 +352,75 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">The <code>caret</code> Package</h1>
-<h4 class="author"><em>Max Kuhn</em></h4>
-<h4 class="date"><em>2016-09-03</em></h4>
-</div>
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>The <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:</p>
+<div id="adaptive-resampling" class="section level1">
+<h1><span class="header-section-number">13</span> Adaptive Resampling</h1>
+<p>Models can benefit significantly from tuning but the optimal values are rarely known beforehand. <code>train</code> can be used to define a grid of possible points and resampling can be used to generate good estimates of performance for each tuning parameter combination. However, in the nominal resampling process, all the tuning parameter combinations are computed for all the resamples before a choice is made about which parameters are good and which are poor.</p>
+<p><a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> contains the ability to adaptively resample the tuning parameter grid in a way that concentrates on values that are the in the neighborhood of the optimal settings. See <a href="http://arxiv.org/abs/1405.6974">this paper</a> for the details.</p>
+<p>To illustrate, we will use the chemical mutagenicity data from <a href="http://pubs.acs.org/doi/abs/10.1021/jm040835a">Kazius et al (2005)</a>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(QSARdata)
+<span class="kw">data</span>(Mutagen)
+
+<span class="kw">set.seed</span>(<span class="dv">4567</span>)
+inTraining &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(Mutagen_Outcome, <span class="dt">p =</span> .<span class="dv">75</span>, <span class="dt">list =</span> <span class="ot">FALSE</span>)
+training_x &lt;-<span class="st"> </span>Mutagen_Dragon[ inTraining,]
+training_y &lt;-<span class="st"> </span>Mutagen_Outcome[ inTraining]
+testing_x  &lt;-<span class="st"> </span>Mutagen_Dragon[-inTraining,]
+testing_y  &lt;-<span class="st"> </span>Mutagen_Outcome[-inTraining]
+
+## Get rid of predictors that are very sparse
+nzv &lt;-<span class="st"> </span><span class="kw">nearZeroVar</span>(training_x)
+training_x &lt;-<span class="st"> </span>training_x[, -nzv]
+testing_x  &lt;-<span class="st">  </span>testing_x[, -nzv]</code></pre></div>
+<p>Previously, we used this code to tune the model:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fitControl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,
+                           <span class="dt">number =</span> <span class="dv">10</span>,
+                           <span class="dt">repeats =</span> <span class="dv">5</span>,
+                           ## Estimate class probabilities
+                           <span class="dt">classProbs =</span> <span class="ot">TRUE</span>,
+                           ## Evaluate performance using 
+                           ## the following function
+                           <span class="dt">summaryFunction =</span> twoClassSummary)
+
+<span class="kw">set.seed</span>(<span class="dv">825</span>)
+svmFit &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">x =</span> training_x,
+                <span class="dt">y =</span> training_y, 
+                <span class="dt">method =</span> <span class="st">&quot;svmRadial&quot;</span>, 
+                <span class="dt">trControl =</span> fitControl, 
+                <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>),
+                <span class="dt">tuneLength =</span> <span class="dv">8</span>,
+                <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)</code></pre></div>
+<p>Using this method, the optimal tuning parameters were a RBF kernel parameter of 810^{-4} and a cost value of 8. To use the adaptive procedure, the <code>trainControl</code> option needs some additional arguments:</p>
 <ul>
-<li>data splitting</li>
-<li>pre-processing</li>
-<li>feature selection</li>
-<li>model tuning using resampling</li>
-<li>variable importance estimation</li>
+<li><code>min</code> is the minimum number of resamples that will be used for each tuning parameter. The default value is 5 and increasing it will decrease the speed-up generated by adaptive resampling but should also increase the likelihood of finding a good model.</li>
+<li><code>alpha</code> is a confidence level that is used to remove parameter settings. To date, this value has not shown much of an effect.</li>
+<li><code>method</code> is either <code>&quot;gls&quot;</code> for a linear model or <code>&quot;BT&quot;</code> for a Bradley-Terry model. The latter may be more useful when you expect the model to do very well (e.g. an area under the ROC curve near 1) or when there are a large number of tuning parameter settings.</li>
+<li><code>complete</code> is a logical value that specifies whether <code>train</code> should generate the full resampling set if it finds an optimal solution before the end of resampling. If you want to know the optimal parameter settings and don’t care much for the estimated performance value, a value of <code>FALSE</code> would be appropriate here.</li>
 </ul>
-<p>as well as other functionality.</p>
-<p>There are many different modeling functions in R. Some have different syntax for model training and/or prediction. The package started off as a way to provide a uniform interface the functions themselves, as well as a way to standardize common tasks (such parameter tuning and variable importance).</p>
-<p>The current release version can be found on <a href="http://cran.r-project.org/web/packages/caret/">CRAN</a> and the project is hosted <a href="https://github.com/topepo/caret">on github</a>.</p>
-<p>Some resources:</p>
-<ul>
-<li>The book <em>Applied Predictive Modeling</em> features <strong>caret</strong> and over 40 other R packages. It is on sale at <a href="http://www.amazon.com/dp/1461468485">Amazon</a> or the <a href="http://www.springer.com/statistics/life+sciences%2C+medicine+%26+health/book/978-1-4614-6848-6">the publisher’s website</a>. There is a <a href="http://appliedpredictivemodeling.com/">companion website</a> too.</li>
-<li>There is also a paper on caret in the <a href="http://www.jstatsoft.org/v28/i05">Journal of Statistical Software</a>. The example data can be obtained <a href="descr.RData">here</a>(the predictors) and <a href="mutagen.RData">here</a> (the outcomes).</li>
-<li>There is a <a href="http://www.youtube.com/watch?v=7Jbb2ItbTC4">webinar</a> for the package on Youtube that was organized and recorded by Ray DiGiacomo Jr for the Orange County R User Group.</li>
-<li>At <a href="http://user2014.stat.ucla.edu">useR! 2014</a>, I was <a href="http://youtu.be/YmHyAHkjX_A">interviewed</a> and discussed the package and the book.</li>
-</ul>
-<p>You can always email <a href="mailto:max.kuhn@pfizer.com">me</a> with questions, comments or suggestions.</p>
-<p>These HTML pages were created using <a href="https://bookdown.org">bookdown</a>.</p>
+<p>The new code is:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fitControl2 &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;adaptive_cv&quot;</span>,
+                            <span class="dt">number =</span> <span class="dv">10</span>,
+                            <span class="dt">repeats =</span> <span class="dv">5</span>,
+                            ## Estimate class probabilities
+                            <span class="dt">classProbs =</span> <span class="ot">TRUE</span>,
+                            ## Evaluate performance using 
+                            ## the following function
+                            <span class="dt">summaryFunction =</span> twoClassSummary,
+                            ## Adaptive resampling information:
+                            <span class="dt">adaptive =</span> <span class="kw">list</span>(<span class="dt">min =</span> <span class="dv">10</span>, 
+                                            <span class="dt">alpha =</span> <span class="fl">0.05</span>, 
+                                            <span class="dt">method =</span> <span class="st">&quot;gls&quot;</span>,
+                                            <span class="dt">complete =</span> <span class="ot">TRUE</span>))
+
+<span class="kw">set.seed</span>(<span class="dv">825</span>)
+svmFit2 &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">x =</span> training_x,
+                 <span class="dt">y =</span> training_y,  
+                 <span class="dt">method =</span> <span class="st">&quot;svmRadial&quot;</span>, 
+                 <span class="dt">trControl =</span> fitControl2, 
+                 <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>),
+                 <span class="dt">tuneLength =</span> <span class="dv">8</span>,
+                 <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)</code></pre></div>
+<p>These computations were 2.8-fold faster than the original analysis. Here, the optimal tuning parameters were a RBF kernel parameter of 810^{-4} and a cost value of 8. These match the previous settings.</p>
+<p>Remember that this methodology is experimental, so please send any questions or bug reports to the package maintainer.</p>
 
 </div>
             </section>
@@ -386,8 +428,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           </div>
         </div>
       </div>
-
-<a href="visualizations.html" class="navigation navigation-next navigation-unique" aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+<a href="using-your-own-model-in-train.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="variable-importance.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>

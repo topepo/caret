@@ -38,8 +38,8 @@ MathJax.Hub.Config({
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="visualizations.html">
+<link rel="prev" href="miscellaneous-model-functions.html">
+<link rel="next" href="feature-selection-overview.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -352,42 +352,223 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">The <code>caret</code> Package</h1>
-<h4 class="author"><em>Max Kuhn</em></h4>
-<h4 class="date"><em>2016-09-03</em></h4>
-</div>
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>The <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:</p>
+<div id="measuring-performance" class="section level1">
+<h1><span class="header-section-number">16</span> Measuring Performance</h1>
 <ul>
-<li>data splitting</li>
-<li>pre-processing</li>
-<li>feature selection</li>
-<li>model tuning using resampling</li>
-<li>variable importance estimation</li>
+<li><a href="measuring-performance.html#reg">Measures for Regression</a></li>
+<li><a href="measuring-performance.html#class">Measures for Predicted Classes</a></li>
+<li><a href="measuring-performance.html#probs">Measures for Class Probabilities</a></li>
+<li><a href="measuring-performance.html#lift">Lift Curves</a></li>
+<li><a href="measuring-performance.html#calib">Calibration Curves</a></li>
 </ul>
-<p>as well as other functionality.</p>
-<p>There are many different modeling functions in R. Some have different syntax for model training and/or prediction. The package started off as a way to provide a uniform interface the functions themselves, as well as a way to standardize common tasks (such parameter tuning and variable importance).</p>
-<p>The current release version can be found on <a href="http://cran.r-project.org/web/packages/caret/">CRAN</a> and the project is hosted <a href="https://github.com/topepo/caret">on github</a>.</p>
-<p>Some resources:</p>
-<ul>
-<li>The book <em>Applied Predictive Modeling</em> features <strong>caret</strong> and over 40 other R packages. It is on sale at <a href="http://www.amazon.com/dp/1461468485">Amazon</a> or the <a href="http://www.springer.com/statistics/life+sciences%2C+medicine+%26+health/book/978-1-4614-6848-6">the publisher’s website</a>. There is a <a href="http://appliedpredictivemodeling.com/">companion website</a> too.</li>
-<li>There is also a paper on caret in the <a href="http://www.jstatsoft.org/v28/i05">Journal of Statistical Software</a>. The example data can be obtained <a href="descr.RData">here</a>(the predictors) and <a href="mutagen.RData">here</a> (the outcomes).</li>
-<li>There is a <a href="http://www.youtube.com/watch?v=7Jbb2ItbTC4">webinar</a> for the package on Youtube that was organized and recorded by Ray DiGiacomo Jr for the Orange County R User Group.</li>
-<li>At <a href="http://user2014.stat.ucla.edu">useR! 2014</a>, I was <a href="http://youtu.be/YmHyAHkjX_A">interviewed</a> and discussed the package and the book.</li>
-</ul>
-<p>You can always email <a href="mailto:max.kuhn@pfizer.com">me</a> with questions, comments or suggestions.</p>
-<p>These HTML pages were created using <a href="https://bookdown.org">bookdown</a>.</p>
+<div id="reg">
 
+</div>
+<div id="measures-for-regression" class="section level2">
+<h2><span class="header-section-number">16.1</span> Measures for Regression</h2>
+<div id="class">
+
+</div>
+</div>
+<div id="measures-for-predicted-classes" class="section level2">
+<h2><span class="header-section-number">16.2</span> Measures for Predicted Classes</h2>
+<p>Before proceeding, let’s make up some test set data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">144</span>)
+true_class &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">sample</span>(<span class="kw">paste0</span>(<span class="st">&quot;Class&quot;</span>, <span class="dv">1</span>:<span class="dv">2</span>), 
+                            <span class="dt">size =</span> <span class="dv">1000</span>,
+                            <span class="dt">prob =</span> <span class="kw">c</span>(.<span class="dv">2</span>, .<span class="dv">8</span>), <span class="dt">replace =</span> <span class="ot">TRUE</span>))
+true_class &lt;-<span class="st"> </span><span class="kw">sort</span>(true_class)
+class1_probs &lt;-<span class="st"> </span><span class="kw">rbeta</span>(<span class="kw">sum</span>(true_class ==<span class="st"> &quot;Class1&quot;</span>), <span class="dv">4</span>, <span class="dv">1</span>)
+class2_probs &lt;-<span class="st"> </span><span class="kw">rbeta</span>(<span class="kw">sum</span>(true_class ==<span class="st"> &quot;Class2&quot;</span>), <span class="dv">1</span>, <span class="fl">2.5</span>)
+test_set &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">obs =</span> true_class,
+                       <span class="dt">Class1 =</span> <span class="kw">c</span>(class1_probs, class2_probs))
+test_set$Class2 &lt;-<span class="st"> </span><span class="dv">1</span> -<span class="st"> </span>test_set$Class1
+test_set$pred &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">ifelse</span>(test_set$Class1 &gt;=<span class="st"> </span>.<span class="dv">5</span>, <span class="st">&quot;Class1&quot;</span>, <span class="st">&quot;Class2&quot;</span>))</code></pre></div>
+<p>We would expect that this model will do well on these data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(test_set, <span class="kw">aes</span>(<span class="dt">x =</span> Class1)) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">binwidth =</span> .<span class="dv">05</span>) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(~obs) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Probability of Class #1&quot;</span>)</code></pre></div>
+<p><img src="_main_files/figure-html/perf_test_set_plot-1.png" width="672" /></p>
+<p>Generating the predicted classes based on the typical 50% cutoff for the probabilities, we can compute the <em>confusion matrix</em>, which shows a cross-tabulation of the observed and predicted classes. The <code>confusionMatrix</code> function can be used to generate these results:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confusionMatrix</span>(<span class="dt">data =</span> test_set$pred, <span class="dt">reference =</span> test_set$obs)</code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction Class1 Class2
+##     Class1    183    141
+##     Class2     13    663
+##                                           
+##                Accuracy : 0.846           
+##                  95% CI : (0.8221, 0.8678)
+##     No Information Rate : 0.804           
+##     P-Value [Acc &gt; NIR] : 0.0003424       
+##                                           
+##                   Kappa : 0.6081          
+##  Mcnemar&#39;s Test P-Value : &lt; 2.2e-16       
+##                                           
+##             Sensitivity : 0.9337          
+##             Specificity : 0.8246          
+##          Pos Pred Value : 0.5648          
+##          Neg Pred Value : 0.9808          
+##              Prevalence : 0.1960          
+##          Detection Rate : 0.1830          
+##    Detection Prevalence : 0.3240          
+##       Balanced Accuracy : 0.8792          
+##                                           
+##        &#39;Positive&#39; Class : Class1          
+## </code></pre>
+<p>For two classes, this function assumes that the class corresponding to an event is the <em>first</em> class level (but this can be changed using the <code>positive</code> argument.</p>
+<p>Note that there are a number of statistics shown here. The “no-information rate” is the largest proportion of the observed classes (there were more class 1 than class 2 in this test set). A hypothesis test is also computed to evaluate whether the overall accuracy rate is greater than the rate of the largest class. Also, the prevalence of the “positive event” is computed from the data (unless passed in as an argument), the detection rate (the rate of true events also predicted to be events) and the detection prevalence (the prevalence of predicted events).</p>
+<p>If the prevalence of the event is different than those seen in the test set, the <code>prevalence</code> option can be used to adjust this.</p>
+<p>Suppose a 2x2 table:</p>
+<p><img src="premade/cm.jpg" width="1042" /></p>
+<p>When there are three or more classes, <code>confusionMatrix</code> will show the confusion matrix and a set of “one-versus-all” results. For example, in a three class problem, the sensitivity of the first class is calculated against all the samples in the second and third classes (and so on).</p>
+<p>The <code>confusionMatrix</code> matrix frames the errors in terms of sensitivity and specificity. In the case of information retrieval, the precision and recall might be more appropriate. In this case, the option <code>mode</code> can be used to get those statistics:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confusionMatrix</span>(<span class="dt">data =</span> test_set$pred, <span class="dt">reference =</span> test_set$obs, <span class="dt">mode =</span> <span class="st">&quot;prec_recall&quot;</span>)</code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction Class1 Class2
+##     Class1    183    141
+##     Class2     13    663
+##                                           
+##                Accuracy : 0.846           
+##                  95% CI : (0.8221, 0.8678)
+##     No Information Rate : 0.804           
+##     P-Value [Acc &gt; NIR] : 0.0003424       
+##                                           
+##                   Kappa : 0.6081          
+##  Mcnemar&#39;s Test P-Value : &lt; 2.2e-16       
+##                                           
+##               Precision : 0.5648          
+##                  Recall : 0.9337          
+##                      F1 : 0.7038          
+##              Prevalence : 0.1960          
+##          Detection Rate : 0.1830          
+##    Detection Prevalence : 0.3240          
+##       Balanced Accuracy : 0.8792          
+##                                           
+##        &#39;Positive&#39; Class : Class1          
+## </code></pre>
+<p>Again, the <code>positive</code> argument can be used to control which factor level is associated with a “found” or “important” document or sample.</p>
+<p>There are individual functions called <code>sensitivity</code>, <code>specificity</code>, <code>posPredValue</code>, <code>negPredValue</code>, <code>precision</code>, <code>recall</code>, and <code>F_meas</code>.</p>
+<p>Also, a resampled estimate of the training set can also be obtained using <code>confusionMatrix.train</code>. For each resampling iteration, a confusion matrix is created from the hold-out samples and these values can be aggregated to diagnose issues with the model fit.</p>
+<p>These values are the percentages that hold-out samples landed in the confusion matrix during resampling. There are several methods for normalizing these values. See <code>?confusionMatrix.train</code> for details.</p>
+<p>The default performance function used by <code>train</code> is <code>postResample</code>, which generates the accuracy and Kappa statistics:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">postResample</span>(<span class="dt">pred =</span> test_set$pred, <span class="dt">obs =</span> test_set$obs)</code></pre></div>
+<pre><code>##  Accuracy     Kappa 
+## 0.8460000 0.6081345</code></pre>
+<p>As shown below, another function called <code>twoClassSummary</code> can be used to get the sensitivity and specificity using the default probability cutoff. Another function, <code>multiClassSummary</code>, can do similar calculations when there are three or more classes but both require class probabilities for each class.</p>
+<div id="probs">
+
+</div>
+</div>
+<div id="measures-for-class-probabilities" class="section level2">
+<h2><span class="header-section-number">16.3</span> Measures for Class Probabilities</h2>
+<p>For data with two classes, there are specialized functions for measuring model performance. First, the <code>twoClassSummary</code> function computes the area under the ROC curve and the specificity and sensitivity under the 50% cutoff. Note that:</p>
+<ul>
+<li>this function uses the first class level to define the “event” of interest. To change this, use the <code>lev</code> option to the function</li>
+<li>there must be columns in the data for each of the class probabilities (named the same as the outcome’s class levels)</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">twoClassSummary</span>(test_set, <span class="dt">lev =</span> <span class="kw">levels</span>(test_set$obs))</code></pre></div>
+<pre><code>##       ROC      Sens      Spec 
+## 0.9560044 0.9336735 0.8246269</code></pre>
+<p>A similar function can be used to get the analugous precision-recall values and the area under the precision-recall curve:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prSummary</span>(test_set, <span class="dt">lev =</span> <span class="kw">levels</span>(test_set$obs))</code></pre></div>
+<pre><code>##       AUC Precision    Recall         F 
+## 0.8582695 0.5648148 0.9336735 0.7038462</code></pre>
+<p>This function requires that the <code>MLmetrics</code> package is unstalled.</p>
+<p>For multi-class problems, there are additional functions that can be used to calculate performance. One, <code>mnLogLoss</code> computes the negative of the multinomial log-likelihood (smaller is better) based on the class probabilities. This can be used to optimize tuning parameters but can lead to results that are inconsistent with other measures (e.g. accuracy or the area under the ROC curve), especially when the other measures are near their best possible values. The function has similar arguments to the other functions described above. Here is the two-class data from above:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mnLogLoss</span>(test_set, <span class="dt">lev =</span> <span class="kw">levels</span>(test_set$obs))</code></pre></div>
+<pre><code>##  logLoss 
+## 0.370626</code></pre>
+<p>Additionally, the function <code>multiClassSummary</code> computes a number of relevant metrics:</p>
+<ul>
+<li>the overall accuracy and Kappa statistics using the predicted classes</li>
+<li>the negative of the multinomial log loss (if class probabilities are available)</li>
+<li>averages of the “one versus all” statistics such as sensitivity, specificity, the area under the ROC curve, etc.</li>
+</ul>
+<div id="lift">
+
+</div>
+</div>
+<div id="lift-curves" class="section level2">
+<h2><span class="header-section-number">16.4</span> Lift Curves</h2>
+<p>The <code>lift</code> function can be used to evaluate probabilities thresholds that can capture a certain percentage of hits. The function requires a set of sample probability predictions (not from the training set) and the true class labels. For example, we can simulate two-class samples using the <code>twoClassSim</code> function and fit a set of models to the training set:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">2</span>)
+lift_training &lt;-<span class="st"> </span><span class="kw">twoClassSim</span>(<span class="dv">1000</span>)
+lift_testing  &lt;-<span class="st"> </span><span class="kw">twoClassSim</span>(<span class="dv">1000</span>)
+
+ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="dt">classProbs =</span> <span class="ot">TRUE</span>,
+                     <span class="dt">summaryFunction =</span> twoClassSummary)
+
+<span class="kw">set.seed</span>(<span class="dv">1045</span>)
+fda_lift &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> lift_training,
+                  <span class="dt">method =</span> <span class="st">&quot;fda&quot;</span>, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
+                  <span class="dt">tuneLength =</span> <span class="dv">20</span>,
+                  <span class="dt">trControl =</span> ctrl)
+<span class="kw">set.seed</span>(<span class="dv">1045</span>)
+lda_lift &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> lift_training,
+                  <span class="dt">method =</span> <span class="st">&quot;lda&quot;</span>, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
+                  <span class="dt">trControl =</span> ctrl)
+
+<span class="kw">set.seed</span>(<span class="dv">1045</span>)
+c5_lift &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> lift_training,
+                 <span class="dt">method =</span> <span class="st">&quot;C5.0&quot;</span>, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
+                 <span class="dt">tuneLength =</span> <span class="dv">10</span>,
+                 <span class="dt">trControl =</span> ctrl)
+
+## Generate the test set results
+lift_results &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Class =</span> lift_testing$Class)
+lift_results$FDA &lt;-<span class="st"> </span><span class="kw">predict</span>(fda_lift, lift_testing, <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)[,<span class="st">&quot;Class1&quot;</span>]
+lift_results$LDA &lt;-<span class="st"> </span><span class="kw">predict</span>(lda_lift, lift_testing, <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)[,<span class="st">&quot;Class1&quot;</span>]
+lift_results$C5<span class="fl">.0</span> &lt;-<span class="st"> </span><span class="kw">predict</span>(c5_lift, lift_testing, <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)[,<span class="st">&quot;Class1&quot;</span>]
+<span class="kw">head</span>(lift_results)</code></pre></div>
+<pre><code>##    Class        FDA       LDA      C5.0
+## 1 Class1 0.99244077 0.8838205 0.8445830
+## 2 Class1 0.99128497 0.7572450 0.8882418
+## 3 Class1 0.82142101 0.8883830 0.5732098
+## 4 Class2 0.04336463 0.0140480 0.1690251
+## 5 Class1 0.77494981 0.9320695 0.4824400
+## 6 Class2 0.11532541 0.0524154 0.3310495</code></pre>
+<p>The <code>lift</code> function does the calculations and the corresponding <code>plot</code> function is used to plot the lift curve (although some call this the <em>gain curve</em>). The value argument creates reference lines:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
+lift_obj &lt;-<span class="st"> </span><span class="kw">lift</span>(Class ~<span class="st"> </span>FDA +<span class="st"> </span>LDA +<span class="st"> </span>C5<span class="fl">.0</span>, <span class="dt">data =</span> lift_results)
+<span class="kw">plot</span>(lift_obj, <span class="dt">values =</span> <span class="dv">60</span>, <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">3</span>,
+                                            <span class="dt">lines =</span> <span class="ot">TRUE</span>,
+                                            <span class="dt">points =</span> <span class="ot">FALSE</span>))</code></pre></div>
+<p><img src="_main_files/figure-html/perf_lift_obj-1.png" width="672" /></p>
+<p>From this we can see that, to find 60 percent of the hits, a little more than 30 percent of the data can be sampled (when ordered by the probability predictions). The LDA model does somewhat worse than the other two models.</p>
+<div id="calib">
+
+</div>
+</div>
+<div id="calibration-curves" class="section level2">
+<h2><span class="header-section-number">16.5</span> Calibration Curves</h2>
+<p>Calibration curves can be used to characterisze how consistent the predicted class probabilities are with the observed event rates.</p>
+<p>Other functions in the <code>gbm</code> package, the <code>rms</code> package (and others) can also produce calibrartion curves. The format for the function is very similar to the lift function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
+cal_obj &lt;-<span class="st"> </span><span class="kw">calibration</span>(Class ~<span class="st"> </span>FDA +<span class="st"> </span>LDA +<span class="st"> </span>C5<span class="fl">.0</span>,
+                       <span class="dt">data =</span> lift_results,
+                       <span class="dt">cuts =</span> <span class="dv">13</span>)
+<span class="kw">plot</span>(cal_obj, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">3</span>,
+                                          <span class="dt">lines =</span> <span class="ot">TRUE</span>,
+                                          <span class="dt">points =</span> <span class="ot">FALSE</span>))</code></pre></div>
+<p><img src="_main_files/figure-html/perf_calib_obj-1.png" width="672" /></p>
+<p>There is also a <code>ggplot</code> method that shows the confidence intervals for the proportions inside of the subsets:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(cal_obj)</code></pre></div>
+<p><img src="_main_files/figure-html/perf_calib_gg-1.png" width="672" /></p>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="visualizations.html" class="navigation navigation-next navigation-unique" aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+<a href="miscellaneous-model-functions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="feature-selection-overview.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>

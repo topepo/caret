@@ -38,8 +38,8 @@ MathJax.Hub.Config({
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="visualizations.html">
+<link rel="prev" href="adaptive-resampling.html">
+<link rel="next" href="miscellaneous-model-functions.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -352,42 +352,116 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">The <code>caret</code> Package</h1>
-<h4 class="author"><em>Max Kuhn</em></h4>
-<h4 class="date"><em>2016-09-03</em></h4>
+<div id="variable-importance" class="section level1">
+<h1><span class="header-section-number">14</span> Variable Importance</h1>
+<p>Variable importance evaluation functions can be separated into two groups: those that use the model information and those that do not. The advantage of using a model-based approach is that is more closely tied to the model performance and that it <em>may</em> be able to incorporate the correlation structure between the predictors into the importance calculation. Regardless of how the importance is calculated:</p>
+<ul>
+<li>For most classification models, each predictor will have a separate variable importance for each class (the exceptions are classification trees, bagged trees and boosted trees).</li>
+<li>All measures of importance are scaled to have a maximum value of 100, unless the <code>scale</code> argument of <code>varImp.train</code> is set to <code>FALSE</code>.</li>
+</ul>
+<div id="model-specific-metrics" class="section level2">
+<h2><span class="header-section-number">14.1</span> Model Specific Metrics</h2>
+<p>The following methods for estimating the contribution of each variable to the model are available:</p>
+<ul>
+<li><strong>Linear Models</strong>: the absolute value of the <em>t</em>-statistic for each model parameter is used.</li>
+<li><strong>Random Forest</strong>: from the R package: “For each tree, the prediction accuracy on the out-of-bag portion of the data is recorded. Then the same is done after permuting each predictor variable. The difference between the two accuracies are then averaged over all trees, and normalized by the standard error. For regression, the MSE is computed on the out-of-bag data for each tree, and then the same computed after permuting a variable. The differences are averaged and normalized by the standard error. If the standard error is equal to 0 for a variable, the division is not done.”</li>
+<li><strong>Partial Least Squares</strong>: the variable importance measure here is based on weighted sums of the absolute regression coefficients. The weights are a function of the reduction of the sums of squares across the number of PLS components and are computed separately for each outcome. Therefore, the contribution of the coefficients are weighted proportionally to the reduction in the sums of squares.</li>
+<li><strong>Recursive Partitioning</strong>: The reduction in the loss function (e.g. mean squared error) attributed to each variable at each split is tabulated and the sum is returned. Also, since there may be candidate variables that are important but are not used in a split, the top competing variables are also tabulated at each split. This can be turned off using the <code>maxcompete</code> argument in <code>rpart.control</code>. This method does not currently provide class-specific measures of importance when the response is a factor.</li>
+<li><strong>Bagged Trees</strong>: The same methodology as a single tree is applied to all bootstrapped trees and the total importance is returned</li>
+<li><strong>Boosted Trees</strong>: This method uses the same approach as a single tree, but sums the importances over each boosting iteration (see the <a href="http://cran.r-project.org/web/packages/gbm/index.html"><code>gbm</code></a> package vignette).</li>
+<li><strong>Multivariate Adaptive Regression Splines</strong>: MARS models include a backwards elimination feature selection routine that looks at reductions in the generalized cross-validation (GCV) estimate of error. The <code>varImp</code> function tracks the changes in model statistics, such as the GCV, for each predictor and accumulates the reduction in the statistic when each predictor’s feature is added to the model. This total reduction is used as the variable importance measure. If a predictor was never used in any MARS basis function, it has an importance value of zero. There are three statistics that can be used to estimate variable importance in MARS models. Using <code>varImp(object, value = &quot;gcv&quot;)</code> tracks the reduction in the generalized cross-validation statistic as terms are added. However, there are some cases when terms are retained in the model that result in an increase in GCV. Negative variable importance values for MARS are set to zero. Terms with non-zero importance that were not included in the final, pruned model are also listed as zero. Alternatively, using <code>varImp(object, value = &quot;rss&quot;)</code> monitors the change in the residual sums of squares (RSS) as terms are added, which will never be negative. Also, the option <code>varImp(object, value = &quot;nsubsets&quot;)</code> returns the number of times that each variable is involved in a subset (in the final, pruned model). Prior to June 2008, <code>varImp</code> used an internal function to estimate importance for MARS models. Currently, it is a wrapper around the <code>evimp</code> function in the <a href="http://cran.r-project.org/web/packages/earth/index.html"><code>earth</code></a> package.</li>
+<li><strong>Nearest shrunken centroids</strong>: The difference between the class centroids and the overall centroid is used to measure the variable influence (see <code>pamr.predict</code>). The larger the difference between the class centroid and the overall center of the data, the larger the separation between the classes. The training set predictions must be supplied when an object of class <code>pamrtrained</code> is given to <code>varImp</code>.</li>
+<li><strong>Cubist</strong>: The Cubist output contains variable usage statistics. It gives the percentage of times where each variable was used in a condition and/or a linear model. Note that this output will probably be inconsistent with the rules shown in the output from <code>summary.cubist</code>. At each split of the tree, Cubist saves a linear model (after feature selection) that is allowed to have terms for each variable used in the current split or any split above it. <a href="http://sci2s.ugr.es/keel/pdf/algorithm/congreso/1992-Quinlan-AI.pdf">Quinlan (1992)</a> discusses a smoothing algorithm where each model prediction is a linear combination of the parent and child model along the tree. As such, the final prediction is a function of all the linear models from the initial node to the terminal node. The percentages shown in the Cubist output reflects all the models involved in prediction (as opposed to the terminal models shown in the output). The variable importance used here is a linear combination of the usage in the rule conditions and the model.</li>
+</ul>
 </div>
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>The <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:</p>
-<ul>
-<li>data splitting</li>
-<li>pre-processing</li>
-<li>feature selection</li>
-<li>model tuning using resampling</li>
-<li>variable importance estimation</li>
-</ul>
-<p>as well as other functionality.</p>
-<p>There are many different modeling functions in R. Some have different syntax for model training and/or prediction. The package started off as a way to provide a uniform interface the functions themselves, as well as a way to standardize common tasks (such parameter tuning and variable importance).</p>
-<p>The current release version can be found on <a href="http://cran.r-project.org/web/packages/caret/">CRAN</a> and the project is hosted <a href="https://github.com/topepo/caret">on github</a>.</p>
-<p>Some resources:</p>
-<ul>
-<li>The book <em>Applied Predictive Modeling</em> features <strong>caret</strong> and over 40 other R packages. It is on sale at <a href="http://www.amazon.com/dp/1461468485">Amazon</a> or the <a href="http://www.springer.com/statistics/life+sciences%2C+medicine+%26+health/book/978-1-4614-6848-6">the publisher’s website</a>. There is a <a href="http://appliedpredictivemodeling.com/">companion website</a> too.</li>
-<li>There is also a paper on caret in the <a href="http://www.jstatsoft.org/v28/i05">Journal of Statistical Software</a>. The example data can be obtained <a href="descr.RData">here</a>(the predictors) and <a href="mutagen.RData">here</a> (the outcomes).</li>
-<li>There is a <a href="http://www.youtube.com/watch?v=7Jbb2ItbTC4">webinar</a> for the package on Youtube that was organized and recorded by Ray DiGiacomo Jr for the Orange County R User Group.</li>
-<li>At <a href="http://user2014.stat.ucla.edu">useR! 2014</a>, I was <a href="http://youtu.be/YmHyAHkjX_A">interviewed</a> and discussed the package and the book.</li>
-</ul>
-<p>You can always email <a href="mailto:max.kuhn@pfizer.com">me</a> with questions, comments or suggestions.</p>
-<p>These HTML pages were created using <a href="https://bookdown.org">bookdown</a>.</p>
+<div id="model-independent-metrics" class="section level2">
+<h2><span class="header-section-number">14.2</span> Model Independent Metrics</h2>
+<p>If there is no model-specific way to estimate importance (or the argument <code>useModel = FALSE</code> is used in <code>varImp</code>) the importance of each predictor is evaluated individually using a “filter” approach.</p>
+<p>For classification, ROC curve analysis is conducted on each predictor. For two class problems, a series of cutoffs is applied to the predictor data to predict the class. The sensitivity and specificity are computed for each cutoff and the ROC curve is computed. The trapezoidal rule is used to compute the area under the ROC curve. This area is used as the measure of variable importance. For multi-class outcomes, the problem is decomposed into all pair-wise problems and the area under the curve is calculated for each class pair (i.e. class 1 vs. class 2, class 2 vs. class 3 etc.). For a specific class, the maximum area under the curve across the relevant pair-wise AUC’s is used as the variable importance measure.</p>
+<p>For regression, the relationship between each predictor and the outcome is evaluated. An argument, <code>nonpara</code>, is used to pick the model fitting technique. When <code>nonpara = FALSE</code>, a linear model is fit and the absolute value of the <em>t</em>-value for the slope of the predictor is used. Otherwise, a loess smoother is fit between the outcome and the predictor. The R<sup>2</sup> statistic is calculated for this model against the intercept only null model. This number is returned as a relative measure of variable importance.</p>
+</div>
+<div id="an-example-1" class="section level2">
+<h2><span class="header-section-number">14.3</span> An Example</h2>
+<p>On the model training web, several models were fit to the example data. The boosted tree model has a built-in variable importance score but neither the support vector machine or the regularized discriminant analysis model do.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gbmImp &lt;-<span class="st"> </span><span class="kw">varImp</span>(gbmFit3, <span class="dt">scale =</span> <span class="ot">FALSE</span>)
+gbmImp</code></pre></div>
+<pre><code>## gbm variable importance
+## 
+##   only 20 most important variables shown (out of 60)
+## 
+##     Overall
+## V12  19.706
+## V51  11.633
+## V36  11.162
+## V21   9.203
+## V11   8.163
+## V9    7.775
+## V45   7.546
+## V23   6.806
+## V31   6.508
+## V46   6.390
+## V4    6.088
+## V48   5.989
+## V37   4.668
+## V27   3.685
+## V39   3.149
+## V34   3.087
+## V16   2.634
+## V29   2.539
+## V43   2.346
+## V2    2.338</code></pre>
+<p>The function automatically scales the importance scores to be between 0 and 100. Using <code>scale = FALSE</code> avoids this normalization step.</p>
+<p>To get the area under the ROC curve for each predictor, the <code>filterVarImp</code> function can be used. The area under the ROC curve is computed for each class.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">roc_imp &lt;-<span class="st"> </span><span class="kw">filterVarImp</span>(<span class="dt">x =</span> training[, -<span class="kw">ncol</span>(training)], <span class="dt">y =</span> training$Class)
+<span class="kw">head</span>(roc_imp)</code></pre></div>
+<pre><code>##            M         R
+## V1 0.3726354 0.3726354
+## V2 0.4234344 0.4234344
+## V3 0.4000326 0.4000326
+## V4 0.3385519 0.3385519
+## V5 0.3479289 0.3479289
+## V6 0.4076158 0.4076158</code></pre>
+<p>Alternatively, for models where no built-in importance score is implemented (or exists), the <code>varImp</code> can still be used to get scores. For SVM classification models, the default behavior is to compute the area under the ROC curve.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">roc_imp2 &lt;-<span class="st"> </span><span class="kw">varImp</span>(svmFit, <span class="dt">scale =</span> <span class="ot">FALSE</span>)
+roc_imp2</code></pre></div>
+<pre><code>## ROC curve variable importance
+## 
+##   only 20 most important variables shown (out of 1305)
+## 
+##        Importance
+## Mor14v     0.7016
+## Mor14p     0.6973
+## J3D        0.6973
+## Mor09v     0.6909
+## Mor09p     0.6888
+## Mor14m     0.6849
+## E3u        0.6793
+## E3e        0.6788
+## Mor31v     0.6744
+## X2Av       0.6712
+## Mor13p     0.6684
+## X1Av       0.6683
+## BLI        0.6682
+## X3Av       0.6675
+## E3p        0.6656
+## Mor09m     0.6637
+## X4Av       0.6610
+## X0A        0.6598
+## Mor31p     0.6589
+## X2A        0.6587</code></pre>
+<p>For importance scores generated from <code>varImp.train</code>, a plot method can be used to visualize the results. In the plot below, the <code>top</code> option is used to make the image more readable.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(gbmImp, <span class="dt">top =</span> <span class="dv">20</span>)</code></pre></div>
+<p><img src="_main_files/figure-html/varImp_gbm_plot-1.png" width="384" /></p>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="visualizations.html" class="navigation navigation-next navigation-unique" aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+<a href="adaptive-resampling.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="miscellaneous-model-functions.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
