@@ -231,6 +231,7 @@ Lastly, the function will pick the tuning parameters associated with the best re
 
 The final model fit would then be:
 \begin{Verbatim}[fontshape=sl,formatcom=\color{darkblue},fontsize=\footnotesize,commandchars=\\\{\}]
+> > set.seed(123) 
 > ctrl <- trainControl(method = "repeatedcv",
 +                      repeats = 3,
 + \textcolor{red}{                     classProbs = TRUE},
