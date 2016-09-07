@@ -276,6 +276,7 @@ rfe <- function (x, ...) UseMethod("rfe")
     out
   }
 
+#' @export
 rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) 
 {
   m <- match.call(expand.dots = FALSE)
@@ -302,7 +303,7 @@ rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
 
 ######################################################################
 ######################################################################
-
+#' @export
 print.rfe <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 {
   
@@ -768,8 +769,10 @@ xyplot.rfe <- function(x,
 ######################################################################
 ## other functions
 
+#' @export
 predictors.rfe <- function(x, ...) x$optVariables
 
+#' @export
 varImp.rfe <- function(object, drop = FALSE, ...)
 {
   imp <- subset(object$variables, Variables == object$optsize)
@@ -782,6 +785,7 @@ varImp.rfe <- function(object, drop = FALSE, ...)
   imp[order(-imp$Overall),,drop = FALSE]
 }
 
+#' @export
 predict.rfe <- function(object, newdata, ...)
 {
   if(length(list(...)) > 0)
@@ -811,7 +815,7 @@ predict.rfe <- function(object, newdata, ...)
   object$control$functions$pred(object$fit, newdata)
 }
 
-
+#' @export
 update.rfe <- function(object, x, y, size, ...) {
   size <- size[1]
   selectedVars <- object$variables

@@ -5,6 +5,7 @@ confusionMatrix <-
     UseMethod("confusionMatrix")
   }
 
+#' @export
 confusionMatrix.default <- function(data, reference,
                                     positive = NULL,
                                     dnn = c("Prediction", "Reference"),

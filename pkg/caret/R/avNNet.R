@@ -5,6 +5,7 @@ avNNet <- function (x, ...)
 
 
 ## this is a near copy of nnet.formula
+#' @export
 avNNet.formula <- function (formula, data, weights, ...,
                             repeats = 5,
                             bag= FALSE,
@@ -96,6 +97,7 @@ avNNet.default <- function(x, y, repeats = 5,
     out
   }
 
+#' @export
 print.avNNet <- function (x, ...) 
 {
   cat("Model Averaged Neural Network with", x$repeats, "Repeats", ifelse(x$bag, "and Bagging", ""), "\n\n")

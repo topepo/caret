@@ -19,80 +19,6 @@ importFrom(utils, capture.output, getFromNamespace, head,
            modifyList, combn
            )
 
-export(
-       classDist,
-       classDist.default,
-       compare_models,       
-       
-       expandParameters,
-       
-       MeanSD,
-       
-       postResample,
-
-       predict.classDist,      
-       predict.knn3,
-       predict.knnreg,
-       predict.splsda,
-       predict.train,
-   
-       progress,
-       
-       R2,
-
-       recall.table,
-       
-       rfGA,
-       rfSA,
-
-       splsda,
-       splsda.default,
-       
-       
-       summary.bagFDA,
-       
-       train,
-       train.default,
-       train.formula,
-       trainControl,
-       
-       treebagGA,
-       treebagSA,
-       
-       twoClassSim,
-       
-       varImp,
-       varImp.bagEarth,
-       varImp.bagFDA,
-       varImp.plsda,
-       )
-
-S3method(confusionMatrix, default)
-S3method(confusionMatrix, train)
-S3method(spatialSign,     default)
-S3method(enumLC,          default)
-S3method(train,           default)
-S3method(plsda,           default)
-S3method(splsda,          default)
-S3method(bagEarth,        default)
-S3method(bagEarth,        formula)
-S3method(bagFDA,          default)
-S3method(bagFDA,          formula)
-S3method(preProcess,      default)
-S3method(pcaNNet,         default)
-S3method(avNNet,          default)
-S3method(sensitivity,     default)
-S3method(specificity,     default)
-S3method(posPredValue,    default)
-S3method(negPredValue,    default)
-S3method(rfe,             default)
-S3method(classDist,       default)
-S3method(knnreg,          default)
-S3method(knnreg,          matrix)
-S3method(knnreg,          data.frame)
-S3method(knnreg,          formula)
-S3method(sbf,             default)
-S3method(nullModel,       default)
 S3method(resamples,       default)
 S3method(icr,             default)
 S3method(bag,             default)
@@ -107,10 +33,7 @@ S3method(F_meas,          default)
 S3method(calibration, formula)
 S3method(lift,        formula)
 S3method(train,       formula)
-S3method(pcaNNet,     formula)
-S3method(avNNet,      formula)
 S3method(rfe,         formula)
-S3method(sbf,         formula)
 S3method(icr,         formula)
 
 S3method(varImp, train)
@@ -127,8 +50,6 @@ S3method(varImp, earth)
 S3method(varImp, bagEarth)
 S3method(varImp, bagFDA)
 S3method(varImp, RandomForest)
-S3method(varImp, rfe)
-S3method(varImp, sbf)
 S3method(varImp, dsa)
 S3method(varImp, plsda)
 S3method(varImp, fda)
@@ -151,13 +72,6 @@ S3method(xyplot,      train)
 S3method(xyplot,      lift)
 S3method(xyplot,      calibration)
 
-S3method(densityplot, rfe)
-S3method(histogram,   rfe)
-S3method(stripplot,   rfe)
-S3method(xyplot,      rfe)
-
-S3method(densityplot, sbf)
-S3method(histogram,   sbf)
 
 S3method(densityplot, resamples)
 S3method(bwplot,      resamples)
@@ -175,7 +89,6 @@ S3method(dotplot,     diff.resamples)
 
 S3method(plot,  train)
 S3method(plot,  varImp.train)
-S3method(plot,  rfe)
 S3method(plot,  prcomp.resamples)
 S3method(plot,  lift)
 S3method(plot,  calibration)
@@ -201,12 +114,7 @@ S3method(print, summary.bagEarth)
 S3method(print, summary.bagFDA)
 S3method(print, preProcess)
 S3method(print, pcaNNet)
-S3method(print, avNNet)
-S3method(print, rfe)
-S3method(print, classDist)
-S3method(print, knnreg)
-S3method(print, sbf)
-S3method(print, nullModel)
+
 S3method(print, resamples)
 S3method(print, summary.resamples)
 S3method(print, diff.resamples)
@@ -230,16 +138,11 @@ S3method(predict, bagEarth)
 S3method(predict, bagFDA)
 S3method(predict, preProcess)
 S3method(predict, pcaNNet)
-S3method(predict, avNNet)
 S3method(predict, list)
 S3method(predict, train)
-S3method(predict, classDist)
-S3method(predict, knnreg)
-S3method(predict, nullModel)
-S3method(predict, sbf)
 S3method(predict, icr)
 S3method(predict, bag)
-S3method(predict, rfe)
+
 S3method(predict, dummyVars)
 S3method(predict, BoxCoxTrans)
 S3method(predict, expoTrans)
@@ -259,24 +162,18 @@ S3method(predictors, terms)
 S3method(predictors, formula)
 S3method(predictors, list)
 S3method(predictors, default)
-S3method(predictors, rfe)
-S3method(predictors, sbf)
 S3method(predictors, gafs)
 S3method(predictors, safs)
 
 S3method(confusionMatrix, table)
 
-S3method(sensitivity, table)
-S3method(specificity, table)
 S3method(precision,   table)
 S3method(recall,      table)
 S3method(F_meas,      table)
 
-S3method(posPredValue,    table)
-S3method(negPredValue,    table)
 
-S3method(posPredValue,    matrix)
-S3method(negPredValue,    matrix)
+
+
 
 S3method(as.table,  confusionMatrix)
 S3method(as.matrix, confusionMatrix)
@@ -293,7 +190,6 @@ S3method(sort, resamples)
 S3method(summary, diff.resamples)
 
 S3method(update, train)
-S3method(update, rfe)
 S3method(update, gafs)
 S3method(update, safs)
 
