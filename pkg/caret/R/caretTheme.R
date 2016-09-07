@@ -1,3 +1,4 @@
+#' @export
 caretTheme <- function() 
    list(
       plot.polygon = list(alpha = 1, col = "aliceblue", border = "black",

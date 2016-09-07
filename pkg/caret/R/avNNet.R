@@ -1,4 +1,5 @@
 
+#' @export
 avNNet <- function (x, ...)
   UseMethod("avNNet")
 
@@ -46,6 +47,7 @@ avNNet.formula <- function (formula, data, weights, ...,
   res
 }
 
+#' @export 
 avNNet.default <- function(x, y, repeats = 5, 
                            bag = FALSE, allowParallel = TRUE,
                            seeds = sample.int(1e5, repeats), ...)
@@ -102,6 +104,7 @@ print.avNNet <- function (x, ...)
   invisible(x)
 }
 
+#' @export
 predict.avNNet <- function(object, newdata, type = c("raw", "class", "prob"), ...)
   {
     loadNamespace("nnet")

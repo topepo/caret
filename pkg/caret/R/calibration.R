@@ -1,3 +1,4 @@
+#' @export
 calibration <- function(x, ...) UseMethod("calibration")
 
 calibration.default <- function(x, ...) stop("'x' should be a formula")
@@ -134,6 +135,8 @@ ggplot.calibration <- function(data, ..., bwidth = 2, dwidth = 3){
   out + xlab("Bin Midpoint") + ylab("Observed Event Percentage")
 }
 
+
+#' @export
 panel.calibration <- function(...)
 {
   panel.abline(0, 1,

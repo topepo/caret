@@ -430,6 +430,7 @@ pickVars <- function(y, size)
 }
 
 
+#' @export
 caretFuncs <- list(summary = defaultSummary,
                    fit = function(x, y, first, last, ...) train(x, y, ...),
                    pred = function(object, x) {
