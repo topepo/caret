@@ -14,14 +14,16 @@ tr_dat$Class = factor(tr_dat$Class, levels = rev(levels(te_dat$Class)))
 
 set.seed(35)
 mod1 <- train(Class ~ ., data = tr_dat,
-              method = "lda",
+              method = "fda",
+              tuneLength = 10,
               metric = "ROC",
               trControl = trainControl(classProbs = TRUE,
                                        summaryFunction = twoClassSummary))
 
 set.seed(35)
 mod2 <- train(Class ~ ., data = te_dat,
-              method = "lda",
+              method = "fda",
+              tuneLength = 10,
               metric = "ROC",
               trControl = trainControl(classProbs = TRUE,
                                        summaryFunction = twoClassSummary))
