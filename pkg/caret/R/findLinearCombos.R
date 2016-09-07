@@ -1,6 +1,7 @@
 # enumerate linear combinations
 enumLC <- function(object, ...) UseMethod("enumLC")
 
+#' @export
 enumLC.default <- function(object, ...)
 {
    # there doesn't seem to be a reasonable default, so
