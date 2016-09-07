@@ -695,6 +695,7 @@ plot.safs <- function(x,
 ###################################################################
 ##
   
+#' @export
 caretSA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) train(x, y, ...),
                 pred = function(object, x) {
                   tmp <- predict(object, x)

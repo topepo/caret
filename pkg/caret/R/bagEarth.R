@@ -1,8 +1,9 @@
+#' @export
 "bagEarth" <-
   function(x, ...)
   UseMethod("bagEarth")
 
-
+#' @export
 "bagEarth.default" <-
   function(x, y, weights = NULL, B = 50, summary = mean, keepX = TRUE, ...)
 {
@@ -69,6 +70,7 @@
             class = "bagEarth")
 }
 
+#' @export
 "bagEarth.formula" <-
   function (formula, data = NULL, B = 50, summary = mean, keepX = TRUE, ..., subset, weights = NULL, na.action = na.omit) 
 {
@@ -97,6 +99,8 @@
   out
 }
 
+
+#' @export
 "predict.bagEarth" <-
   function(object, newdata = NULL, type = "response", ...)
 {
@@ -163,6 +167,8 @@ print.bagEarth <- function (x, ...)
   invisible(x)
 }
 
+
+#' @export
 "summary.bagEarth" <-
   function(object, ...)
 {

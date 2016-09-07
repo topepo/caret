@@ -204,6 +204,8 @@ if(getRversion() >= "2.15.1"){
 ###################################################################
 altTrainWorkflow <- function(x) x
 
+
+#' @export
 best <- function(x, metric, maximize)
 {
 
@@ -213,12 +215,15 @@ best <- function(x, metric, maximize)
   bestIter
 }
 
+
+#' @export
 defaultSummary <- function(data, lev = NULL, model = NULL)
 {
   if(is.character(data$obs)) data$obs <- factor(data$obs, levels = lev)
   postResample(data[,"pred"], data[,"obs"])
 }
 
+#' @export
 twoClassSummary <- function (data, lev = NULL, model = NULL)
 {
   lvls <- levels(data$obs)
@@ -237,6 +242,7 @@ twoClassSummary <- function (data, lev = NULL, model = NULL)
   out
 }
 
+#' @export
 mnLogLoss <- function(data, lev = NULL, model = NULL){
   if(is.null(lev)) stop("'lev' cannot be NULL")
   if(!all(lev %in% colnames(data)))
@@ -251,6 +257,7 @@ mnLogLoss <- function(data, lev = NULL, model = NULL){
   ModelMetrics::mlogLoss(dataComplete$obs, probs)
 }
 
+#' @export
 multiClassSummary <- function (data, lev = NULL, model = NULL){
   #Check data
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"])))

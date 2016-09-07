@@ -51,6 +51,7 @@ jack_sim <- function(a, b) {
   sum(a ==1 & b ==1)/(sum(a == 1 & b == 0)+sum(a == 0 & b == 1)+sum(a ==1 & b ==1))*100
 }
 
+#' @export
 index2vec <- function(x, vars, sign = FALSE) {
   bin <- rep(0, vars)
   bin[x] <- 1
