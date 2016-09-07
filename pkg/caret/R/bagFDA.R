@@ -137,6 +137,7 @@ function(object, newdata = NULL, type = "class", ...)
    switch(type, class = predClass, probs = out, posterior = out)
 }
 
+#' @export
 "summary.bagFDA" <-
 function(object, ...)
 {

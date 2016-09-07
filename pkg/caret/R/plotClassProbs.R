@@ -1,3 +1,4 @@
+#' @export
 plotClassProbs <- function(object,
                            plotType = "histogram",
                            useObjects = FALSE,

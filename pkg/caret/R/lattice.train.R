@@ -1,3 +1,4 @@
+#' @export
 densityplot.train <- function(x,
                               data = NULL,
                               metric = x$metric,

@@ -1,3 +1,4 @@
+#' @export
 learing_curve_dat <- function(dat, 
                               outcome = NULL,
                               proportion = (1:10)/10, 

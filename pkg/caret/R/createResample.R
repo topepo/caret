@@ -1,3 +1,5 @@
+
+#' @export
 createResample <- function(y, times = 10, list = TRUE) {
   if(class(y)[1] == "Surv") y <- y[,"time"]
   trainIndex <- matrix(0, ncol = times, nrow = length(y))   

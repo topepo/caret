@@ -1,19 +1,21 @@
 ## Should respect the input class except when there is a conflict or always
-## generate a data frame? 
+## generate a data frame?
 
 ppMethods <- c("BoxCox", "YeoJohnson", "expoTrans", "invHyperbolicSine",
-               "center", "scale", "range", 
-               "knnImpute", "bagImpute", "medianImpute", 
-               "pca", "ica", 
-               "spatialSign", 
-               "ignore", "keep", 
-               "remove", 
+               "center", "scale", "range",
+               "knnImpute", "bagImpute", "medianImpute",
+               "pca", "ica",
+               "spatialSign",
+               "ignore", "keep",
+               "remove",
                "zv", "nzv", "conditionalX")
 
 invHyperbolicSineFunc <- function(x) log(x+sqrt(x^2+1))
 
+#' @export
 preProcess <- function(x, ...) UseMethod("preProcess")
 
+#' @export
 preProcess.default <- function(x, method = c("center", "scale"),
                                thresh = 0.95,
                                pcaComp = NULL,
@@ -34,7 +36,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
     print(method)
     cat("\n")
   }
-  
+
   ## the row.norm option in fastICA states: "logical value indicating whether rows
   ## of the data matrix X should be standardized beforehand." Basically, this means that
   ## we would center *and* scale before the ICA step, so let's adjust the "scale" method too
@@ -42,7 +44,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
     theDots <- list(...)
     row.norm <- if(is.null(list(...)$row.norm)) FALSE else list(...)$row.norm
   }
-  
+
   ## check for zero-variance predictors
   if(any(names(method) == "zv")){
     if(is.data.frame(x)) {
@@ -66,8 +68,8 @@ preProcess.default <- function(x, method = c("center", "scale"),
       method$remove <- unique(c(method$remove, removed))
     }
     method$nzv <- NULL
-  }  
-  ##  check the distribution of the columns of x conditioned on the levels of y and 
+  }
+  ##  check the distribution of the columns of x conditioned on the levels of y and
   ## identifies columns of x that are sparse within groups of y
   if(any(names(method) == "conditionalX") & is.factor(outcome)){
     bad_pred <- checkConditionalX(x = x[, !(colnames(x) %in% method$ignore), drop = FALSE],
@@ -78,13 +80,13 @@ preProcess.default <- function(x, method = c("center", "scale"),
       method$remove <- unique(c(method$remove, removed))
     }
     method$conditionalX <- NULL
-  }    
-  
+  }
+
   if(any(names(method) == "invHyperbolicSine")) {
     if(verbose) cat(" applying invHyperbolicSine\n")
     for(i in method$invHyperbolicSine) x[,i] <- invHyperbolicSineFunc(x[,i])
-  } 
-  
+  }
+
   if(any(names(method) == "BoxCox")) {
     bc <- group_bc(x[, method$BoxCox, drop = FALSE],
                    fudge = fudge,
@@ -97,7 +99,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
     }
     for(i in method$BoxCox) x[,i] <- predict(bc[[i]], x[,i])
   } else bc <- NULL
-  
+
   if(any(names(method) == "YeoJohnson")) {
     yj <- group_yj(x[, method$YeoJohnson, drop = FALSE],
                    numUnique = numUnique,
@@ -120,13 +122,13 @@ preProcess.default <- function(x, method = c("center", "scale"),
       yj <- NULL
     }
   } else yj <- NULL
-  
+
   if(any(names(method) == "expoTrans")) {
-    if(verbose) 
-      cat("Estimating exponential transformations for", 
+    if(verbose)
+      cat("Estimating exponential transformations for",
           length(method$expoTrans), "predictors...")
     if(is.data.frame(x)) {
-      et <- lapply(x[, method$expoTrans, drop = FALSE], 
+      et <- lapply(x[, method$expoTrans, drop = FALSE],
                    expoTrans.default, numUnique = numUnique)
     } else {
       et <- apply(x[, method$expoTrans, drop = FALSE], 2,
@@ -147,13 +149,13 @@ preProcess.default <- function(x, method = c("center", "scale"),
               immediate. = TRUE)
       et <- et[!(names(et) %in% omit_expo)]
     }
-  } else et <- NULL  
+  } else et <- NULL
   if(any(names(method)  %in% c("center"))) {
     if(verbose) cat("Calculating", length(method$center), "means for centering\n")
-    centerValue <- apply(x[, method$center, drop = FALSE], 2, mean, na.rm = na.remove) 
+    centerValue <- apply(x[, method$center, drop = FALSE], 2, mean, na.rm = na.remove)
     x[, method$center] <- sweep(x[, method$center, drop = FALSE], 2, centerValue, "-")
   } else centerValue <- NULL
-  
+
   if(any(names(method) %in% c("scale"))) {
     if(verbose) cat("Calculating", length(method$scale), "standard deviations for scaling\n")
     scaleValue <- apply(x[, method$scale, drop = FALSE], 2, sd, na.rm = na.remove)
@@ -163,21 +165,21 @@ preProcess.default <- function(x, method = c("center", "scale"),
       warning(wrn, immediate. = TRUE)
       scaleValue[which(is.na(scaleValue))] <- 1
     }
-    
+
     if(any(scaleValue == 0)){
       wrn <- paste("These variables have zero variances:",
                    paste(names(scaleValue)[which(scaleValue == 0)], collapse = ", "))
       warning(wrn, immediate. = TRUE)
       scaleValue[which(scaleValue == 0)] <- 1
-    }    
+    }
     x[, method$scale] <- sweep(x[, method$scale, drop = FALSE], 2, scaleValue, "/")
   } else scaleValue <- NULL
-  
+
   if(any(names(method) == "range")) {
     if(verbose) cat("Calculating", length(method$range), "statistcs for scaling to a range\n")
-    ranges <- apply(x[, method$range, drop = FALSE], 
-                    2, 
-                    function(x) c(min(x, na.rm = na.remove), 
+    ranges <- apply(x[, method$range, drop = FALSE],
+                    2,
+                    function(x) c(min(x, na.rm = na.remove),
                                   max(x, na.rm = na.remove)))
     ## check for zero variance
     is_same <- apply(ranges, 2, function(x) x[1] == x[2])
@@ -190,7 +192,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
     x[, method$range] <- sweep(x[, method$range, drop = FALSE], 2, ranges[1,], "-")
     x[, method$range] <- sweep(x[, method$range, drop = FALSE], 2, ranges[2,] - ranges[1,], "/")
   } else ranges <- NULL
-  
+
   if(any(names(method) == "bagImpute")){
     if(verbose) cat("Computing bagging models for", length(method$bagImpute), "predictors...")
     bagModels <- as.list(method$bagImpute)
@@ -198,14 +200,14 @@ preProcess.default <- function(x, method = c("center", "scale"),
     bagModels <- lapply(bagModels, bagImp, x = x)
     if(verbose) cat(" done\n")
   } else bagModels <- NULL
-  
+
   if (any(names(method) == "medianImpute")) {
-    if(verbose) 
+    if(verbose)
       cat("Computing medians for",
           length(method$medianImpute), "predictors...")
-    medianValue <- apply(x[, method$medianImpute, drop = FALSE], 
+    medianValue <- apply(x[, method$medianImpute, drop = FALSE],
                          2, median, na.rm=TRUE)
-    
+
     if (any(is.na(medianValue))) {
       warning(
         paste(
@@ -216,19 +218,19 @@ preProcess.default <- function(x, method = c("center", "scale"),
     }
     if(verbose) cat(" done\n")
   } else medianValue <- NULL
-  
-  ## TODO This should be moved inside of pca or ica code 
+
+  ## TODO This should be moved inside of pca or ica code
   ## and done after centering and scaling
   x <- x[complete.cases(x),,drop = FALSE]
-  
+
   if(any(names(method) == "pca")) {
-    if(verbose) 
+    if(verbose)
       cat("Computing PCA loadings for",
-          length(method$pca), 
+          length(method$pca),
           "predictors\n")
     tmp <- prcomp(x[, method$pca, drop = FALSE], scale = TRUE, retx = FALSE)
     if(is.null(pcaComp)) {
-      cumVar <- cumsum(tmp$sdev^2/sum(tmp$sdev^2)) 
+      cumVar <- cumsum(tmp$sdev^2/sum(tmp$sdev^2))
       numComp <- max(2, which.max(cumVar > thresh))
     } else numComp <- min(pcaComp, ncol(tmp$rotation))
     rot <- tmp$rotation[,1:numComp]
@@ -236,14 +238,14 @@ preProcess.default <- function(x, method = c("center", "scale"),
     rot <- NULL
     numComp <- NULL
   }
-  
+
   if(any(names(method) == "ica")) {
-    ## TODO What if range is used? 
-    if(verbose) 
+    ## TODO What if range is used?
+    if(verbose)
       cat("Computing ICA loadings for",
-          length(method$ica), 
+          length(method$ica),
           "predictors\n")
-    requireNamespaceQuietStop("fastICA")    
+    requireNamespaceQuietStop("fastICA")
     tmp <- fastICA::fastICA(x[, method$ica, drop = FALSE], ...)
     ica <- list(row.norm = row.norm,
                 K = tmp$K,
@@ -251,7 +253,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
   } else {
     ica <- NULL
   }
-  
+
   out <- list(dim = c(nrow(x), length(unique(unlist(method)))),
               bc = bc,
               yj = yj,
@@ -271,32 +273,33 @@ preProcess.default <- function(x, method = c("center", "scale"),
               knnSummary = knnSummary,
               bagImp = bagModels,
               median = medianValue,
-              data = if(any(names(method) == "knnImpute")) 
+              data = if(any(names(method) == "knnImpute"))
                 x[complete.cases(x),method$knnImpute,drop = FALSE] else NULL)
   out <- structure(out, class = "preProcess")
   out
 }
 
+#' @export
 predict.preProcess <- function(object, newdata, ...) {
   if(is.vector(object$method) & !is.list(object$method))
     object <- convert_method(object)
-  
+
   dataNames <- colnames(newdata)
   oldClass <- class(newdata)
-  
+
   if(!is.null(object$method$remove)) {
     if(length(object$method$remove) > 0)
       newdata <- newdata[, !(colnames(newdata) %in% object$method$remove), drop = FALSE]
     if(ncol(newdata) == 0)
       stop("All predctors were removed as determined by `preProcess`")
   }
-  
+
   if(!is.null(object$invHyperbolicSine)) {
     for(i in object$invHyperbolicSine) {
       newdata[,i] <- invHyperbolicSineFunc(newdata[,i])
     }
   }
-  
+
   if(!is.null(object$bc)) {
     lam <- unlist(lapply(object$bc, function(x) x$lambda))
     lamIndex <- which(!is.na(lam))
@@ -308,7 +311,7 @@ predict.preProcess <- function(object, newdata, ...) {
       }
     }
   }
-  
+
   if(!is.null(object$yj)) {
     lam <- unlist(lapply(object$yj, function(x) if(class(x) == "powerTransform") x$lambda else NA))
     lam <- lam[!is.na(lam)]
@@ -318,34 +321,34 @@ predict.preProcess <- function(object, newdata, ...) {
         newdata[,who] <- yjPower(newdata[,who], object$yj[[who]]$lambda)
       }
     }
-  }  
-  
+  }
+
   if(!is.null(object$et)) {
     for(i in seq(along = object$et)) {
       who <-  names(object$et)[i]
       newdata[,who] <- predict(object$et[[who]], newdata[,who])
     }
-  }  
-  
+  }
+
   if(any(names(object$method) == "range")) {
-    newdata[, object$method$range] <- 
-      sweep(newdata[, object$method$range, drop = FALSE], 2, 
+    newdata[, object$method$range] <-
+      sweep(newdata[, object$method$range, drop = FALSE], 2,
             object$ranges[1,], "-")
-    newdata[, object$method$range] <- 
-      sweep(newdata[, object$method$range, drop = FALSE], 2, 
+    newdata[, object$method$range] <-
+      sweep(newdata[, object$method$range, drop = FALSE], 2,
             object$ranges[2,] - object$ranges[1,], "/")
   }
-  
-  if(any(names(object$method) == "center")) 
-    newdata[, object$method$center] <- 
+
+  if(any(names(object$method) == "center"))
+    newdata[, object$method$center] <-
     sweep(newdata[, object$method$center, drop = FALSE], 2, object$mean, "-")
-  if(any(names(object$method) %in% c("scale"))) 
-    newdata[, object$method$scale] <- 
+  if(any(names(object$method) %in% c("scale")))
+    newdata[, object$method$scale] <-
     sweep(newdata[, object$method$scale, drop = FALSE], 2, object$std, "/")
-  
+
   cc <- complete.cases(newdata)
   if(any(names(object$method) == "knnImpute") && any(!cc))  {
-    hasMiss <- newdata[!cc,object$method$knnImpute,drop = FALSE]      
+    hasMiss <- newdata[!cc,object$method$knnImpute,drop = FALSE]
     miss_names <- colnames(hasMiss)
     hasMiss <- apply(hasMiss,
                      1,
@@ -364,7 +367,7 @@ predict.preProcess <- function(object, newdata, ...) {
       } else newdata[!cc, object$method$knnImpute] <- as.matrix(hasMiss)
     }
   }
-  
+
   if(any(names(object$method) == "bagImpute") && any(!cc)) {
     requireNamespaceQuietStop("ipred")
     hasMiss <- newdata[!cc,,drop = FALSE]
@@ -377,7 +380,7 @@ predict.preProcess <- function(object, newdata, ...) {
     for(i in seq(along = missingVars)) {
       preds <- predict(object$bagImp[[missingVars[i]]]$model,
                        hasMiss[, !colnames(hasMiss) %in% missingVars[i], drop = FALSE])
-      
+
       hasMiss[is.na(hasMiss[,missingVars[i]]),
               missingVars[i]] <- preds[is.na(hasMiss[,missingVars[i]])]
     }
@@ -389,7 +392,7 @@ predict.preProcess <- function(object, newdata, ...) {
       } else newdata[!cc,] <- as.matrix(hasMiss)
     }
   }
-  
+
   if (any(names(object$method) == "medianImpute") && any(!cc)) {
     missingVars <- apply(newdata, 2, function(x) any(is.na(x)))
     missingVars <- if(is.null(names(missingVars))) which(missingVars) else names(missingVars)[missingVars]
@@ -397,7 +400,7 @@ predict.preProcess <- function(object, newdata, ...) {
       newdata[is.na(newdata[, v]), v] <- object$median[v]
     }
   }
-  
+
   if(any(names(object$method) == "pca")) {
     pca_cols <- newdata[, object$method$pca, drop = FALSE]
     pca_cols <-if(is.matrix(pca_cols)) pca_cols %*% object$rotation else as.matrix(pca_cols) %*% object$rotation
@@ -414,7 +417,7 @@ predict.preProcess <- function(object, newdata, ...) {
     }
     if(length(discard) > 0) newdata <- newdata[, !(colnames(newdata) %in% discard), drop = FALSE]
   }
-  
+
   if(any(names(object$method) == "ica")) {
     ica_cols <- newdata[, object$method$ica, drop = FALSE]
     if(!is.matrix(ica_cols)) ica_cols <- as.matrix(ica_cols)
@@ -433,58 +436,58 @@ predict.preProcess <- function(object, newdata, ...) {
     }
     if(length(discard) > 0) newdata <- newdata[, !(colnames(newdata) %in% discard), drop = FALSE]
   }
-  
+
   wc <- object$wildcards
-  if(any(names(object$method) == "spatialSign") | 
-     any(wc$PCA == "spatialSign") | 
+  if(any(names(object$method) == "spatialSign") |
+     any(wc$PCA == "spatialSign") |
      any(wc$ICA == "spatialSign")){
     ss_col_names <- object$method$spatialSign
     ## adjust for PCA/ICA column wildcards
-    if(length(wc$PCA) > 0 && any(wc$PCA == "spatialSign")) 
+    if(length(wc$PCA) > 0 && any(wc$PCA == "spatialSign"))
       ss_col_names <- c(ss_col_names, colnames(pca_cols))
-    if(length(wc$ICA) > 0 && any(wc$ICA == "spatialSign")) 
+    if(length(wc$ICA) > 0 && any(wc$ICA == "spatialSign"))
       ss_col_names <- c(ss_col_names, colnames(ica_cols))
-    
+
     newdata[, ss_col_names] <- spatialSign(newdata[, ss_col_names, drop = FALSE])
   }
-  
+
   newdata
 }
 
 print.preProcess <- function(x, ...) {
   #   printCall(x$call)
   cat("Created from", x$dim[1], "samples and", x$dim[2], "variables\n\n")
-  
-  
+
+
   pp_num <- unlist(lapply(x$method, length))
   if(any(unlist(x$wildcards) == "spatialSign")) {
     if(any(x$wildcards$PCA == "spatialSign"))
-      pp_num["spatialSign"] <- pp_num["spatialSign"] + x$pcaComp 
+      pp_num["spatialSign"] <- pp_num["spatialSign"] + x$pcaComp
     if(any(x$wildcards$ICA == "spatialSign"))
-      pp_num["spatialSign"] <- pp_num["spatialSign"] + x$numComp     
+      pp_num["spatialSign"] <- pp_num["spatialSign"] + x$numComp
   }
-  pp <- paste0("  - ", names(x$method), " (", pp_num, ")\n")  
+  pp <- paste0("  - ", names(x$method), " (", pp_num, ")\n")
   pp <- pp[order(pp)]
   pp <- gsub("invHyperbolicSine", "Inverve Hyperbolic Sine transformation", pp)
-  pp <- gsub("BoxCox", "Box-Cox transformation", pp)  
-  pp <- gsub("YeoJohnson", "Yeo-Johnson transformation", pp)    
-  pp <- gsub("expoTrans", "exponential transformation", pp)   
+  pp <- gsub("BoxCox", "Box-Cox transformation", pp)
+  pp <- gsub("YeoJohnson", "Yeo-Johnson transformation", pp)
+  pp <- gsub("expoTrans", "exponential transformation", pp)
   pp <- gsub("scale", "scaled", pp)
   pp <- gsub("center", "centered", pp)
   pp <- gsub("pca", "principal component signal extraction", pp)
   pp <- gsub("ica", "independent component signal extraction", pp)
   pp <- gsub("spatialSign", "spatial sign transformation", pp)
   pp <- gsub("knnImpute", paste(x$k, "nearest neighbor imputation"), pp)
-  pp <- gsub("bagImpute", "bagged tree imputation", pp)  
-  pp <- gsub("medianImpute", "median imputation", pp)    
-  pp <- gsub("range", "re-scaling to [0, 1]", pp)  
-  pp <- gsub("remove", "removed", pp)  
-  pp <- gsub("ignore", "ignored", pp)  
-  
+  pp <- gsub("bagImpute", "bagged tree imputation", pp)
+  pp <- gsub("medianImpute", "median imputation", pp)
+  pp <- gsub("range", "re-scaling to [0, 1]", pp)
+  pp <- gsub("remove", "removed", pp)
+  pp <- gsub("ignore", "ignored", pp)
+
   cat("Pre-processing:\n")
   cat(pp, sep = "")
   cat("\n")
-  
+
   if(any(names(x$method) == "BoxCox")) {
     cat("Lambda estimates for Box-Cox transformation:\n")
     if(length(x$bc) < 11) {
@@ -504,8 +507,8 @@ print.preProcess <- function(x, ...) {
       if(naLmbda > 0) cat(" (#NA: ", naLmbda, ")\n", sep = "")
     } else print(summary(unlist(lapply(x$yj, function(x) if(class(x) == "powerTransform") x$lambda else NA))))
     cat("\n")
-  }  
-  
+  }
+
   if(any(names(x$method) == "pca")) {
     if(is.null(x$pcaComp)) {
       cat("PCA needed", x$numComp, ifelse(x$numComp > 1, "components", "component"),
@@ -514,14 +517,14 @@ print.preProcess <- function(x, ...) {
     } else {
       cat("PCA used", x$pcaComp, ifelse(x$pcaComp > 1, "components", "component"), "as specified")
     }
-    if(length(x$wildcards$PCA) > 0) 
+    if(length(x$wildcards$PCA) > 0)
       cat(" and will be used in the spatial sign transformation")
     cat("\n")
   }
-  
+
   if(any(names(x$method) == "ica")) {
     cat("ICA used", ncol(x$ica$W), "components")
-    if(length(x$wildcards$ICA) > 0) 
+    if(length(x$wildcards$ICA) > 0)
       cat(" and will be used in the spatial sign transformation")
     cat("\n")
   }
@@ -555,7 +558,7 @@ bagImp <- function(var, x, B = 10) {
   mod <- ipred::bagging(as.formula(paste(var, "~.")),
                         data = x,
                         nbagg = B,
-                        x = FALSE, 
+                        x = FALSE,
                         keepX = FALSE)
   trim_code <- getModelInfo("treebag", FALSE)[[1]]$trim
   list(var = var,
@@ -574,28 +577,28 @@ pre_process_options <- function(opts, vars) {
   if(is.vector(opts) & !is.list(opts)) {
     op_list <- vector(mode = "list", length = length(opts))
     names(op_list) <- opts
-    op_list <- lapply(op_list, 
+    op_list <- lapply(op_list,
                       function(x, y) {
                         x <- y
                         x
                       }, y = names(vars))
     opts <- op_list
   }
-  
+
   ## check names of options
   if(!all(names(opts) %in% ppMethods)) {
     others <- names(opts)[!(names(opts) %in% ppMethods)]
     stop((paste("These pre-processing methods are unknown:",
                 paste("'", others, "'", sep = "", collapse = ", "))))
   }
-  
+
   methods <- names(opts)
-  
+
   ## find and store any PCA/ICA wildcards
   tmp <- check_for_wildcards(opts, verbose = FALSE)
   opts <- tmp$opts
   wildcards <- tmp$wildcards
-  
+
   ## check that each predictor is in the data
   all_op_vars <- unique(unlist(opts))
   if(!all(all_op_vars %in% names(vars))) {
@@ -603,7 +606,7 @@ pre_process_options <- function(opts, vars) {
     stop((paste("These fields are not in the data:",
                 paste("'", others, "'", sep = "", collapse = ", "))))
   } ## get fancy and look for dummy variables and write sensible note?
-  
+
   ## check to make sure calcs are on numbers
   num_vars <- names(vars)[vars]
   not_num <- NULL
@@ -623,7 +626,7 @@ pre_process_options <- function(opts, vars) {
     #             immediate. = TRUE)
     opts$ignore <- unique(c(opts$ignore, not_num))
   }
-  
+
   ## check for group trans on single predictors
   if("pca" %in% methods && length(opts[["pca"]]) == 1){
     warning(paste("PCA is a group transformation and only a single predictor",
@@ -631,24 +634,24 @@ pre_process_options <- function(opts, vars) {
             immediate. = TRUE)
     opts[["pca"]] <- NULL
   }
-  
-  
+
+
   if("ica" %in% methods && length(opts[["ica"]]) == 1){
     warning(paste("ICA is a group transformation and only a single predictor",
                   "is listed. This method is eliminated."),
             immediate. = TRUE)
     opts[["ica"]] <- NULL
   }
-  
-  if(all(unlist(wildcards) != "spatialSign") & 
-     "spatialSign" %in% methods & 
+
+  if(all(unlist(wildcards) != "spatialSign") &
+     "spatialSign" %in% methods &
      length(opts[["spatialSign"]]) == 1 ){
     warning(paste("Spatial sign is a group transformation and only a single predictor",
                   "is listed. This method is eliminated."),
             immediate. = TRUE)
     opts[["spatialSign"]] <- NULL
-  }  
-  
+  }
+
   methods <- names(opts)
   ## check for inconsistent options for each predictor
   if(all(c("pca", "ica") %in% methods)){
@@ -669,10 +672,10 @@ pre_process_options <- function(opts, vars) {
                   paste("'", dup_imps, "'", sep = "", collapse = ", "))))
     }
   }
-  
+
   if(any(methods %in% "range") & any(methods %in% c("center", "scale", "BoxCox")))
-    stop("Centering, scaling and/or Box-Cox transformations are inconsistent with scaling to a range of [0, 1]")  
-  
+    stop("Centering, scaling and/or Box-Cox transformations are inconsistent with scaling to a range of [0, 1]")
+
   ## coerce certain options based on others
   if("pca" %in% methods) {
     if("range" %in% methods) {
@@ -691,7 +694,7 @@ pre_process_options <- function(opts, vars) {
       opts[["center"]] <- c(opts[["center"]], opts[["ica"]])
       opts[["scale"]] <- c(opts[["scale"]], opts[["ica"]])
     }
-  }  
+  }
   if("spatialSign" %in% methods) {
     if("range" %in% methods) {
       opts[["range"]] <- c(opts[["range"]], opts[["spatialSign"]])
@@ -708,27 +711,27 @@ pre_process_options <- function(opts, vars) {
       opts[["center"]] <- num_vars
       opts[["scale"]] <- num_vars
     }
-  }  
+  }
   opts <- lapply(opts, unique)
-  
+
   ## check length of options and remove zero lengths
   opt_len <- unlist(lapply(opts, length))
   if(opt_len["spatialSign"] == 0 & any(unlist(wildcards) == "spatialSign"))
     opt_len["spatialSign"] <- 1
   if(any(opt_len < 1)) {
-    warning(paste("The following pre-processing methods were eliminated:", 
+    warning(paste("The following pre-processing methods were eliminated:",
                   paste("'", names(opts)[opt_len < 1], "'", sep = "", collapse = ", ")),
             immediate. = TRUE)
     opts <- opts[opt_len > 0]
   }
-  
+
   ## add to 'ignore'
   not_num_vars <- names(vars)[!vars]
-  if("ignore" %in% names(opts)) 
-    opts$ignore <- unique(c(not_num_vars, opts$ignore)) else 
+  if("ignore" %in% names(opts))
+    opts$ignore <- unique(c(not_num_vars, opts$ignore)) else
       opts$ignore <- not_num_vars
   ## TODO make sure that, if a var is in 'ignore' that it is nowhere else (and remove?)
-  
+
   list(opts = opts, wildcards = wildcards)
 }
 
@@ -743,7 +746,7 @@ get_types <- function(x, coarse = TRUE) {
       out <- unlist(lapply(x, function(x) class(x)[1]))
     }
   }
-  
+
   if(coarse) {
     num_classes <- c("integer", "numeric", "double")
     str_classes <- c("factor", "character")
@@ -760,7 +763,7 @@ check_for_wildcards <- function(opts, verbose = TRUE){
   pc_wc <- unlist(lapply(opts, function(x) any(x == "_PC_")))
   if(any(pc_wc)) {
     pc_wc <- names(pc_wc)[pc_wc]
-    if(verbose) cat("PCA wildcards found for:", 
+    if(verbose) cat("PCA wildcards found for:",
                     paste(pc_wc, sep = "", collapse = ", "))
     if(any(pc_wc %in% other_methods)) {
       bad_ops <- pc_wc[pc_wc %in% other_methods]
@@ -773,17 +776,17 @@ check_for_wildcards <- function(opts, verbose = TRUE){
   ic_wc <- unlist(lapply(opts, function(x) any(x == "_IC_")))
   if(any(ic_wc)) {
     ic_wc <- names(ic_wc)[ic_wc]
-    if(verbose) cat("ICA wildcards found for:", 
+    if(verbose) cat("ICA wildcards found for:",
                     paste(ic_wc, sep = "", collapse = ", "), "\n")
     if(any(ic_wc %in% other_methods)) {
       bad_ops <- ic_wc[ic_wc %in% other_methods]
       if(verbose) cat(" ...but should not be in methods:",
                       paste(bad_ops, sep = "", collapse = ", "))
       for(i in bad_ops) opts[[i]] <- opts[[i]][opts[[i]] != "_IC_"]
-    } 
+    }
     if(verbose) cat("\n")
   }
-  
+
   pc_wc <- unlist(lapply(opts, function(x) any(x == "_PC_")))
   ic_wc <- unlist(lapply(opts, function(x) any(x == "_IC_")))
   wc_list <- list(PCA = names(pc_wc)[pc_wc],
@@ -793,7 +796,7 @@ check_for_wildcards <- function(opts, verbose = TRUE){
 }
 
 
-group_bc <- function(x, outcome = NULL, 
+group_bc <- function(x, outcome = NULL,
                      fudge,
                      na.remove,
                      numUnique,
@@ -817,7 +820,7 @@ group_bc <- function(x, outcome = NULL,
     if(verbose) cat("Box-Cox failed for:",  paste(bad_lambda, sep = "", collapse = ", "))
     bc <- bc[!(names(bc) %in% bad_lambda)]
   }
-  
+
   bc[!is.null(bc) & !is.na(bc)]
 }
 
@@ -833,14 +836,14 @@ yjWrap <- function(x, numUnique = numUnique) {
 }
 
 group_yj <- function(x, numUnique, verbose) {
-  if(verbose) 
+  if(verbose)
     cat("Estimating Yeo-Johnson transformations for", ncol(x), "predictors...")
-  
+
   if(is.matrix(x)) {
-    yj <- apply(x, 2, yjWrap, numUnique = numUnique)  
+    yj <- apply(x, 2, yjWrap, numUnique = numUnique)
   } else {
-    yj <- lapply(x, yjWrap, numUnique = numUnique)  
-  }   
+    yj <- lapply(x, yjWrap, numUnique = numUnique)
+  }
   yj[!is.null(yj) & !is.na(yj)]
 }
 
@@ -848,16 +851,16 @@ convert_method <- function(x) {
   new_method <- list()
   if("center" %in% x$method)       new_method$center       <- names(x$mean)
   if("scale" %in% x$method)        new_method$scale        <- names(x$std)
-  if("YeoJohnson" %in% x$method)   new_method$YeoJohnson   <- names(x$yj)  
-  if("expoTrans" %in% x$method)    new_method$expoTrans    <- names(x$et)    
-  if("BoxCox" %in% x$method)       new_method$BoxCox       <- names(x$bc)     
+  if("YeoJohnson" %in% x$method)   new_method$YeoJohnson   <- names(x$yj)
+  if("expoTrans" %in% x$method)    new_method$expoTrans    <- names(x$et)
+  if("BoxCox" %in% x$method)       new_method$BoxCox       <- names(x$bc)
   if("knnImpute" %in% x$method)    new_method$knnImpute    <- names(x$mean)
-  if("bagImpute" %in% x$method)    new_method$bagImpute    <- names(x$bagImp) 
-  if("medianImpute" %in% x$method) new_method$medianImpute <- names(x$median)   
-  if("pca" %in% x$method)          new_method$pca          <- names(x$mean)  
-  if("ica" %in% x$method)          new_method$ica          <- names(x$mean)    
-  if("spatialSign" %in% x$method)  new_method$spatialSign  <- names(x$mean)   
-  if("invHyperbolicSine" %in% x$method)  new_method$invHyperbolicSine  <- x$method$invHyperbolicSine    
+  if("bagImpute" %in% x$method)    new_method$bagImpute    <- names(x$bagImp)
+  if("medianImpute" %in% x$method) new_method$medianImpute <- names(x$median)
+  if("pca" %in% x$method)          new_method$pca          <- names(x$mean)
+  if("ica" %in% x$method)          new_method$ica          <- names(x$mean)
+  if("spatialSign" %in% x$method)  new_method$spatialSign  <- names(x$mean)
+  if("invHyperbolicSine" %in% x$method)  new_method$invHyperbolicSine  <- x$method$invHyperbolicSine
   x$method <- new_method
   x
 }

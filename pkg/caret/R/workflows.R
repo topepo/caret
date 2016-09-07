@@ -9,6 +9,7 @@ getOper <- function(x) if(x)  `%dopar%` else  `%do%`
 getTrainOper <- function(x) if(x)  `%dopar%` else  `%do%`
 
 
+#' @export
 progress <- function(x, names, iter, start = TRUE)
 {
   text <- paste(ifelse(start, "+ ", "- "),
@@ -18,6 +19,7 @@ progress <- function(x, names, iter, start = TRUE)
   cat(text, "\n")
 }
 
+#' @export
 MeanSD <- function(x, exclude = NULL)
 {
   if(!is.null(exclude)) x <- x[, !(colnames(x) %in% exclude), drop = FALSE]
@@ -26,6 +28,7 @@ MeanSD <- function(x, exclude = NULL)
   out
 }
 
+#' @export
 expandParameters <- function(fixed, seq)
 {
   if(is.null(seq)) return(fixed)

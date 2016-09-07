@@ -1,3 +1,4 @@
+#' @export
 plotObsVsPred <- function(object, equalRanges = TRUE, ...)
 {
   

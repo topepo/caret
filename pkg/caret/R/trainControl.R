@@ -1,3 +1,5 @@
+
+#' @export
 trainControl <- function(method = "boot",
                          number = ifelse(grepl("cv", method), 10, 25),
                          repeats = ifelse(grepl("cv", method), 1, number),

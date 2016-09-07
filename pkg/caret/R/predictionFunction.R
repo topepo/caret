@@ -1,3 +1,4 @@
+#' @export
 predictionFunction <- function(method, modelFit, newdata, preProc = NULL, param = NULL)
 {
   if(!is.null(newdata) && !is.null(preProc)) newdata <- predict(preProc, newdata)

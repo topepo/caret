@@ -1,3 +1,4 @@
+#' @export
 checkInstall <- function(pkg){
   good <- rep(TRUE, length(pkg))
   for(i in seq(along = pkg)){
@@ -38,6 +39,7 @@ checkInstall <- function(pkg){
   }
 }
 
+#' @export
 getModelInfo <- function(model = NULL, regex = TRUE, ...) {
   load(system.file("models", "models.RData", package = "caret"))
   if(!is.null(model)){
@@ -49,6 +51,7 @@ getModelInfo <- function(model = NULL, regex = TRUE, ...) {
 }
 
 
+#' @export
 modelLookup <- function(model = NULL){
   load(system.file("models", "models.RData", package = "caret"))
   if(!is.null(model)){

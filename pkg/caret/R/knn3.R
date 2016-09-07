@@ -1,3 +1,4 @@
+#' @export
 "knn3" <- function(x, ...)   UseMethod("knn3")
 
 knn3.default <- function(x, ...)
@@ -5,6 +6,7 @@ knn3.default <- function(x, ...)
    if(!any(class(x) %in% "formula"))  stop("knn3 only implemented for formula objects")
 }
 
+#' @export
 knn3.formula <- function (formula, data, subset, na.action, k = 5, ...) 
 {
 
@@ -46,6 +48,7 @@ knn3.formula <- function (formula, data, subset, na.action, k = 5, ...)
     RET
 }
 
+#' @export
 knn3.data.frame <- function(x, y, k = 5, ...)
 {
   x <- as.matrix(x)
@@ -53,6 +56,7 @@ knn3.data.frame <- function(x, y, k = 5, ...)
   out
 }
 
+#' @export
 knn3.matrix <- function(x, y, k = 5, ...)
 {
     if(!is.matrix(x)) x <- as.matrix(x)
@@ -77,6 +81,7 @@ print.knn3 <- function (x, ...)
    invisible(x)
 }
 
+#' @export
 predict.knn3 <- function (object, newdata, type = c("prob", "class"), ...) 
 {
     type <- match.arg(type)
