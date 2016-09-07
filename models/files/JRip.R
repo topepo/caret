@@ -8,17 +8,18 @@ modelInfo <- list(label = "Rule-Based Classifier",
                   grid = function(x, y, len = NULL, search = "grid"){
                     upperBound <- min(max(1, floor(nrow(x) / 2)), 50)
                     if(search == "grid"){
-                      out <- expand.grid(NumOpt = 1:sqrt(upperBound), NumFolds = 2:4, MinWeights = 1:sqrt(upperBound))
+                      out <- expand.grid(NumOpt = 1:min(len, sqrt(upperBound)), NumFolds = 2:min(len + 1, upperBound), MinWeights = 1:min(len, sqrt(upperBound)))
                       if(len == 1){
                         out <- data.frame(NumOpt = 2, NumFolds = 3, MinWeights = 2)
                       }
                     } else {
-                      out <- data.frame(NumOpt = round(exp(runif(10 * len, 0, log(len)))),
-                                        NumFolds = round(exp(runif(10 * len, 0, log(upperBound)))),
-                                        MinWeights = round(exp(runif(10 * len, 0, log(upperBound)))))
+                      out <- data.frame(NumOpt = round(exp(runif(5 * len, 0, log(len)))),
+                                        NumFolds = round(exp(runif(5 * len, 0, log(upperBound)))),
+                                        MinWeights = round(exp(runif(5 * len, 0, log(upperBound)))))
                       out <- unique(out)
+                      out <- out[1:min(nrow(out), len), ]
                     }
-                    return(out[1:min(nrow(out), len), ])
+                    return(out)
                   } ,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
