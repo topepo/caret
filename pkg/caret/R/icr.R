@@ -57,7 +57,7 @@ icr.default <- function(x, y, ...)
   }
 
 
-
+#' @export
 print.icr <- function (x, digits = max(3, getOption("digits") - 3), ...) 
 {
   cat("Independent Component Regression\n\n")

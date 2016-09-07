@@ -1,8 +1,10 @@
 #' @export
 calibration <- function(x, ...) UseMethod("calibration")
 
+#' @export
 calibration.default <- function(x, ...) stop("'x' should be a formula")
 
+#' @export
 calibration.formula <- function(x, data = NULL, class = NULL, cuts = 11, subset = TRUE, lattice.options = NULL, ...)
 {
   
@@ -43,7 +45,7 @@ calibration.formula <- function(x, data = NULL, class = NULL, cuts = 11, subset 
   out
 }
 
-
+#' @export
 print.calibration <- function(x, ...)
 {
   printCall(x$call)
@@ -88,9 +90,11 @@ calibCalc <- function(x, class = levels(obs)[1], cuts = 11) {
   dataPoints
 }
 
+#' @export
 plot.calibration <- function(x, y = NULL, ...) 
   xyplot(x = x, data = NULL, ...)
 
+#' @export
 xyplot.calibration <- function(x, data = NULL, ...){
   lFormula <- "Percent ~ midpoint"
   defaults <- c("calibModelVar", "bin", "Percent", "Count", "Lower", "Upper", "midpoint")
@@ -115,7 +119,7 @@ xyplot.calibration <- function(x, data = NULL, ...){
   do.call("xyplot", args)    
 }
 
-
+#' @export
 ggplot.calibration <- function(data, ..., bwidth = 2, dwidth = 3){
   data$data$Model <- data$data$calibModelVar
   mods <- length(unique(data$data$Model))

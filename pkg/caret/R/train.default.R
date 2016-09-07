@@ -695,7 +695,10 @@ train.formula <- function (form, data, ..., weights, subset, na.action = na.fail
   res
 }
 
+#' @export
 summary.train <- function(object, ...) summary(object$finalModel, ...)
+
+#' @export
 residuals.train <- function(object, ...) {
   if(object$modelType != "Regression") stop("train() only produces residuals on numeric outcomes")
   resid <- residuals(object$finalModel, ...)
@@ -707,6 +710,7 @@ residuals.train <- function(object, ...) {
   resid
 }
 
+#' @export
 fitted.train <- function(object, ...) {
   prd <- fitted(object$finalModel)
   if(is.null(prd)) {    
