@@ -1,7 +1,9 @@
+#' @export
 "bagFDA" <-
 function(x, ...)
    UseMethod("bagFDA")
 
+#' @export
 "bagFDA.default" <-
 function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
 {
@@ -44,6 +46,7 @@ function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
                   weights = !is.null(weights), dots = list(...)), class = "bagFDA")
 }
 
+#' @export
 "bagFDA.formula" <-
 function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights = NULL, na.action = na.omit) 
 {
@@ -86,6 +89,8 @@ function (x, ...)
     invisible(x)
 }
 
+
+#' @export
 "predict.bagFDA" <-
 function(object, newdata = NULL, type = "class", ...)
 {

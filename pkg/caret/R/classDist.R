@@ -1,5 +1,7 @@
+#' @export
 classDist <- function (x, ...)  UseMethod("classDist")
 
+#' @export
 classDist.default <- function(x, y, groups = 5,
                               pca = FALSE,
                               keep = NULL,
@@ -30,6 +32,7 @@ classDist.default <- function(x, y, groups = 5,
     } else pca <- NULL
   
   x <- split(x, y)
+
   getStats <- function(u)
     {
       if(nrow(u) < ncol(u))
@@ -82,6 +85,7 @@ print.classDist <- function(x, ...)
     invisible(x)
   }
 
+#' @export
 predict.classDist <- function(object, newdata, trans = log, ...)
 {
   if(!is.null(object$pca))

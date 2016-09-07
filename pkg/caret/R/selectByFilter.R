@@ -349,6 +349,7 @@ sbfIter <- function(x, y,
 ######################################################################
 ## some built-in functions for certain models
 
+#' @export
 anovaScores <- function(x, y)
 {
   pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
@@ -365,6 +366,7 @@ gamScores <- function(x, y)
   pv
 }
 
+#' @export
 caretSBF <- list(summary = defaultSummary,
                  fit = function(x, y, ...)
                  {

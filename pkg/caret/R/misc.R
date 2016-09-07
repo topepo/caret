@@ -23,6 +23,7 @@ subsemble_index <- function(y, J = 2, V = 10){
   list(model = model_index, holdout = holdout_index)
 }
 
+#' @export
 well_numbered <- function(prefix, items) {
   paste0(prefix, gsub(" ", "0", format(1:items)))
 }
@@ -97,7 +98,7 @@ Kim2009 <- function(n)
   grid
 }
 
-
+#' @export
 gamFormula <- function(data, smoother = "s", cut = 8, y = "y")
 {
   nzv <- nearZeroVar(data)
@@ -124,6 +125,7 @@ printCall <- function(x)
     invisible(call)
   }
 
+#' @export
 flatTable <- function(pred, obs)
   {
     cells <- as.vector(table(pred, obs))
@@ -132,11 +134,19 @@ flatTable <- function(pred, obs)
     cells
   }
 
+
 prettySeq <- function(x) paste("Resample", gsub(" ", "0", format(seq(along = x))), sep = "")
 
+#' @export
 ipredStats    <- function(x) getModelInfo("treebag", regex = FALSE)[[1]]$oob(x)
+
+#' @export
 rfStats       <- function(x) getModelInfo("rf", regex = FALSE)[[1]]$oob(x)
+
+#' @export
 cforestStats  <- function(x) getModelInfo("cforest", regex = FALSE)[[1]]$oob(x)
+
+#' @export
 bagEarthStats <- function(x) getModelInfo("bagEarth", regex = FALSE)[[1]]$oob(x)
 
 R2 <- function(pred, obs, formula = "corr", na.rm = FALSE)
@@ -147,7 +157,7 @@ R2 <- function(pred, obs, formula = "corr", na.rm = FALSE)
            traditional = 1 - (sum((obs-pred)^2, na.rm = na.rm)/((n-1)*var(obs, na.rm = na.rm))))
   }
 
-
+#' @export
 RMSE <- function(pred, obs, na.rm = FALSE) sqrt(mean((pred - obs)^2, na.rm = na.rm))
 
 partRuleSummary <- function(x)
@@ -290,6 +300,7 @@ scrubCall <- function(x)
     x
   }
 
+#' @export
 class2ind <- function(x, drop2nd = FALSE) {
 	if(!is.factor(x)) stop("'x' should be a factor")
 	y <- model.matrix(~ x - 1)
@@ -340,6 +351,7 @@ get_resample_perf.gafs <- function(x) {
 }
 
 
+#' @export
 var_seq <- function(p, classification = FALSE, len = 3) {
   if(len == 1) {
     tuneSeq <- if(classification) max(floor(p/3), 1) else floor(sqrt(p))
