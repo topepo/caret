@@ -53,6 +53,7 @@ internalEnumLC <- function(qrObj, ...)
    }
 }
 
+#' @export
 findLinearCombos <- function(x)
 {
    if(!is.matrix(x)) x <- as.matrix(x)

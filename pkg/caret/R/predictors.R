@@ -1,3 +1,4 @@
+#' @export
 "predictors" <- function(x, ...){
     UseMethod("predictors")
   }
@@ -40,6 +41,7 @@ predictors.default <- function(x, ...) {
   out
 }
 
+#' @export
 hasTerms <- function(x)
   {
     objNames <- c(names(x), slotNames(x))

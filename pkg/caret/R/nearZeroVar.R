@@ -1,3 +1,4 @@
+#' @export
 nearZeroVar <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE, names = FALSE, foreach = FALSE, allowParallel = TRUE) {
 
   if(!foreach) return(nzv(x, freqCut = freqCut, uniqueCut = uniqueCut, saveMetrics = saveMetrics, names = names))
@@ -27,6 +28,7 @@ nearZeroVar <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE,
   res
 }
 
+#' @export
 nzv <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE, names = FALSE)
 {
   if (is.null(dim(x))) x <- matrix(x, ncol = 1)
@@ -65,13 +67,14 @@ zeroVar <- function(x)
   which(apply(x, 2, function(x) length(unique(x)) < 2))
 }
 
+#' @export
 checkConditionalX <- function(x, y)
 {
   x$.outcome <- y
   unique(unlist(dlply(x, .(.outcome), zeroVar)))
 }
 
-
+#' @export
 checkResamples <- function(index, x, y)
 {
   if(!is.factor(y)) stop("y must be a factor")

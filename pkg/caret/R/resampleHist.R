@@ -1,4 +1,4 @@
-
+#' @export
 resampleHist <- function(object, type = "density", ...)
 {
   if(object$control$method == "oob") stop("out-of-bag error rate was selected. This plot cannot be created")

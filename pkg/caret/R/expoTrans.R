@@ -1,4 +1,5 @@
 
+#' @export
 expoTrans <- function(y, ...) UseMethod("expoTrans")
 
 expoTrans.default <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method = "Brent", numUnique = 3, ...)

@@ -1,6 +1,8 @@
 
+#' @export
 "spatialSign" <- function(x) UseMethod("spatialSign")
 
+#' @export
 "spatialSign.default" <- function(x)
 {
    if(is.character(x) | is.factor(x)) stop("spatial sign is not defined for character or factor data")
@@ -9,6 +11,7 @@
    out
 }
 
+#' @export
 "spatialSign.matrix" <- function(x)
 {
    # check for character data
@@ -21,6 +24,7 @@
    tmp
 }
 
+#' @export
 "spatialSign.data.frame" <- function(x)
 {
    if(any(apply(x, 2, function(data) is.character(data) | is.factor(data))))

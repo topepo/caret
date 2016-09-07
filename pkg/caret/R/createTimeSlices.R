@@ -1,5 +1,6 @@
 ## From Tony Cooper <tonyc@iconz.co.nz> on 1/9/13
 
+#' @export
 createTimeSlices <- function(y, initialWindow, horizon = 1, fixedWindow = TRUE, skip = 0) {
   ## initialwindowlength = initial number of consecutive values in each training set sample
   ## horizonlength = number of consecutive values in test set sample

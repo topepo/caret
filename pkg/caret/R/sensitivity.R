@@ -1,8 +1,10 @@
+#' @export
 sensitivity <- 
   function(data, ...){
     UseMethod("sensitivity")
   }
 
+#' @export
 "sensitivity.default" <-
   function(data, reference, positive = levels(reference)[1], na.rm = TRUE, ...)
 {
@@ -27,6 +29,7 @@ sensitivity <-
   sens
 }
 
+#' @export
 "sensitivity.table" <-
   function(data, positive = rownames(data)[1], ...)
 {

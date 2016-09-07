@@ -45,6 +45,8 @@ ga_func_check <- function(x) {
   }
 }
 
+
+#' @export
 gafs_initial <- function (vars, popSize, ...)  {
   x <- matrix(NA, nrow = popSize, ncol = vars)
   probs <- seq(.9, .1, length = popSize)
@@ -62,6 +64,7 @@ gafs_initial <- function (vars, popSize, ...)  {
   x
 }
 
+#' @export
 gafs_lrSelection <-  function (population, fitness, 
                                r = NULL, 
                                q = NULL, ...) {
@@ -80,6 +83,7 @@ gafs_lrSelection <-  function (population, fitness,
   out
 }
 
+#' @export
 gafs_spCrossover <- function (population, fitness, parents, ...)  {
   fitness <- fitness[parents]
   parents <- population[parents, , drop = FALSE]
@@ -103,6 +107,7 @@ gafs_spCrossover <- function (population, fitness, parents, ...)  {
   out
 }
 
+#' @export
 gafs_raMutation <- function (population, parent, ...)  {
   mutate <- parent <- as.vector(population[parent, ])
   n <- length(parent)
@@ -122,6 +127,7 @@ gafs_nlrSelection <- function (population, fitness, q = 0.25, ...) {
   return(out)
 }
 
+#' @export
 gafs_rwSelection <- function (population, fitness, ...) {
   popSize <- nrow(population)
   prob <- abs(fitness)/sum(abs(fitness))
@@ -132,6 +138,7 @@ gafs_rwSelection <- function (population, fitness, ...) {
   return(out)
 }
 
+#' @export
 gafs_tourSelection <- function (population, fitness, k = 3, ...) {
   popSize <- nrow(population)
   sel <- rep(NA, popSize)
@@ -144,6 +151,7 @@ gafs_tourSelection <- function (population, fitness, k = 3, ...) {
   return(out)
 }
 
+#' @export
 gafs_uCrossover <- function (population, parents, ...) {
   parents <- population[parents, , drop = FALSE]
   n <- ncol(parents)
@@ -157,7 +165,7 @@ gafs_uCrossover <- function (population, parents, ...) {
 ###################################################################
 ##
 
-
+#' @export
 gafsControl <- function(functions = NULL,
                         method = "repeatedcv",
                         metric = NULL,
@@ -625,6 +633,7 @@ print.gafs <- function (x, top = 5,
   invisible(x)
 }
 
+#' @export
 predict.gafs <- function (object, newdata, ...) {
   newdata <- newdata[, object$optVariables, drop = FALSE]
   object$control$functions$pred(object$fit, newdata)  
@@ -633,8 +642,10 @@ predict.gafs <- function (object, newdata, ...) {
 ###################################################################
 ##
 
+#' @export
 gafs <- function (x, ...) UseMethod("gafs")
 
+#' @export
 "gafs.default" <-
   function(x, y,
            iters = 10,
@@ -844,6 +855,7 @@ gafs <- function (x, ...) UseMethod("gafs")
 ###################################################################
 ##
 
+#' @export
 plot.gafs <- function(x, 
                       metric = x$control$metric["external"], 
                       estimate = c("internal", "external"), 
@@ -921,6 +933,7 @@ caretGA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) train(x, y, 
                 mutation = gafs_raMutation,
                 selectIter = best)
 
+#' @export
 treebagGA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) {
   loadNamespace("ipred")
   ipred::ipredbagg(y, x, ...)
@@ -942,6 +955,7 @@ crossover = gafs_spCrossover,
 mutation = gafs_raMutation,
 selectIter = best)
 
+#' @export
 rfGA <-  list(fit = function(x, y, lev = NULL, last = FALSE, ...) {
   loadNamespace("randomForest")
   randomForest::randomForest(x, y, ...)

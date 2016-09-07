@@ -1,3 +1,4 @@
+#' @export
 resampleSummary <- function(obs, resampled, index = NULL, keepData = TRUE)
 {
    numPred <- apply(resampled, 2, function(u) sum(!is.na(u)))

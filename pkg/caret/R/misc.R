@@ -149,6 +149,7 @@ cforestStats  <- function(x) getModelInfo("cforest", regex = FALSE)[[1]]$oob(x)
 #' @export
 bagEarthStats <- function(x) getModelInfo("bagEarth", regex = FALSE)[[1]]$oob(x)
 
+#' @export
 R2 <- function(pred, obs, formula = "corr", na.rm = FALSE)
   {
     n <- sum(complete.cases(pred))

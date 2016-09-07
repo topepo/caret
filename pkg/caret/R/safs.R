@@ -161,6 +161,7 @@ predict.safs <- function (object, newdata, ...) {
   object$control$functions$pred(object$fit, newdata)  
 }
 
+#' @export
 safsControl <- function(functions = NULL,
                         method = "repeatedcv",
                         metric = NULL,
@@ -211,8 +212,10 @@ safsControl <- function(functions = NULL,
        allowParallel = allowParallel)
 }
 
+#' @export
 safs <- function (x, ...) UseMethod("safs")
 
+#' @export
 "safs.default" <-
   function(x, y,
            iters = 10,
@@ -399,10 +402,12 @@ safs <- function (x, ...) UseMethod("safs")
     res
   }
 
+#' @export
 safs_initial <- function (vars, prob = .20, ...)  {
   sort(sample.int(vars, size = floor(vars*prob)+1))
 }
 
+#' @export
 safs_perturb <- function(x, vars, number = floor(vars*.01) + 1) {
   bin <- index2vec(x, vars)
   change <- sample(seq(along = bin), size = number)
@@ -410,6 +415,7 @@ safs_perturb <- function(x, vars, number = floor(vars*.01) + 1) {
   sort(which(bin == 1))
 }
 
+#' @export
 safs_prob <- function(old, new, iteration = 1) {
   if(new < old) return(1)
   ediff <- as.vector(old - new)
@@ -718,6 +724,7 @@ caretSA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) train(x, y, 
                 prob = safs_prob,
                 selectIter = best)
 
+#' @export
 treebagSA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) {
   loadNamespace("ipred")
   ipred::ipredbagg(y, x, ...)
@@ -738,6 +745,7 @@ perturb = safs_perturb,
 prob = safs_prob,
 selectIter = best)
 
+#' @export
 rfSA <-  list(fit = function(x, y, lev = NULL, last = FALSE, ...) {
   loadNamespace("randomForest")
   randomForest::randomForest(x, y, ...)

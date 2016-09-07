@@ -1,3 +1,4 @@
+#' @export
 "varImp" <-
 function(object, ...){
    UseMethod("varImp")
@@ -97,11 +98,13 @@ varImpDependencies <- function(libName){
   return(code)
 }
 
+#' @export
 varImp.bagEarth <- function(object, ...){
   code <- varImpDependencies("bagEarth")
   code$varImp(object, ...)
 }
 
+#' @export
 varImp.bagFDA <- function(object, ...){
   code <- varImpDependencies("bagFDA")
   code$varImp(object, ...)
@@ -210,6 +213,7 @@ varImp.RandomForest <- function(object, ...){
   code$varImp(object, ...)
 }
 
+#' @export
 varImp.plsda <- function(object, ...){
   code <- varImpDependencies("pls")
   code$varImp(object, ...)
