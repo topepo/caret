@@ -1,3 +1,4 @@
+#' @export
 twoClassSim <- function(n = 100, 
                         intercept = -5,
                         linearVars = 10,

@@ -1,3 +1,4 @@
+#' @export
 resampleWrapper <- function(x, ind) 
 {
    out <- rep(NA, dim(x$data)[1])

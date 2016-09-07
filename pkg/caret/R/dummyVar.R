@@ -1,4 +1,5 @@
 
+#' @export
 contr.ltfr <- function (n, contrasts = TRUE, sparse = FALSE) 
 {
   if (is.numeric(n) && length(n) == 1L) {
@@ -17,6 +18,7 @@ contr.ltfr <- function (n, contrasts = TRUE, sparse = FALSE)
   contr
 }
 
+#' @export
 contr.dummy <- function(n, ...)
 {
   if (is.numeric(n) && length(n) == 1L) {
@@ -34,11 +36,13 @@ contr.dummy <- function(n, ...)
   out
 }
 
-
+#' @export
 "dummyVars" <-
   function(formula, ...){
     UseMethod("dummyVars")
   }
+
+#' @export
 dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, fullRank = FALSE, ...) 
 {
   formula <- as.formula(formula)
@@ -101,6 +105,7 @@ print.dummyVars <- function(x, ...)
 }
 
 
+#' @export
 predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
 {
   if(is.null(newdata)) stop("newdata must be supplied")

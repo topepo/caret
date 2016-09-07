@@ -1,9 +1,11 @@
+#' @export
 predict.list <- function(object, ...) {
   out <- lapply(object, predict, ... = ...)
   if(!is.null(names(object))) names(out) <- names(object)
   out
 }
 
+#' @export
 predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.omit, ...) {
   if(all(names(object) != "modelInfo")) {
     object <- update(object, param = NULL)

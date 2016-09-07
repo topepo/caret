@@ -1,3 +1,4 @@
+#' @export
 lift <- function(x, ...) UseMethod("lift")
 
 lift.default <- function(x, ...) stop("'x' should be a formula")
@@ -149,12 +150,13 @@ liftCalc <- function(x, class = levels(x$liftClassVar)[1], cuts = NULL) {
   tmp
 }
 
+#' @export
 panel.lift <- function(x,  y, ...) {
   panel.xyplot(x, y, ...)
   panel.abline(0, 1, col = "black")  
 }
 
-
+#' @export
 panel.lift2 <- function (x, y, pct = 0, values = NULL, ...)  { 
   polyx <- c(0, pct, 100, 0)
   polyy <- c(0, 100, 100, 0)

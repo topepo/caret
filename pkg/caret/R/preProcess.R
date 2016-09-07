@@ -11,8 +11,10 @@ ppMethods <- c("BoxCox", "YeoJohnson", "expoTrans",
                "remove", 
                "zv", "nzv", "conditionalX")
 
+#' @export
 preProcess <- function(x, ...) UseMethod("preProcess")
 
+#' @export
 preProcess.default <- function(x, method = c("center", "scale"),
                                thresh = 0.95,
                                pcaComp = NULL,
@@ -271,6 +273,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
   out
 }
 
+#' @export
 predict.preProcess <- function(object, newdata, ...) {
   if(is.vector(object$method) & !is.list(object$method))
     object <- convert_method(object)

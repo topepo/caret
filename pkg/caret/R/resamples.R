@@ -1,5 +1,7 @@
+#' @export
 "resamples" <- function(x, ...) UseMethod("resamples")
 
+#' @export
 resamples.default <- function(x, modelNames = names(x), ...) {
   
   ## Do a lot of checkin of the object types and make sure
@@ -115,10 +117,12 @@ prcomp.resamples <- function(x, metric = x$metrics[1],  ...)
 }
 
 
+#' @export
 "cluster" <- function(x, ...) UseMethod("cluster")
 
 cluster.default <- function(x, ...) stop("only implemented for resamples objects")
 
+#' @export
 cluster.resamples <- function(x, metric = x$metrics[1],  ...)
 {
   
@@ -419,6 +423,7 @@ xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, m
   out
 }
 
+#' @export
 parallelplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric[1], ...) 
 {
   if(length(metric) != 1) stop("exactly one metric must be given")
@@ -920,7 +925,7 @@ dotplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], ...)
           ...)
 }
 
-
+#' @export
 modelCor <- function(x, metric = x$metric[1], ...)
 {
   dat <- x$values[, grep(paste("~", metric[1], sep = ""), names(x$values))]
@@ -936,6 +941,7 @@ sort.resamples <- function(x, decreasing = FALSE, metric = x$metric[1], FUN = me
   names(sort(stats, decreasing = decreasing))
 }
 
+#' @export
 compare_models <- function(a, b, metric = a$metric[1]) {
   mods <- list(a, b)
   rs <- resamples(mods)

@@ -1,3 +1,4 @@
+#' @export
 sortImp <- function(object, top)
 {
 

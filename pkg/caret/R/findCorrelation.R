@@ -89,7 +89,7 @@ findCorrelation_exact <- function(x, cutoff = 0.90, verbose = FALSE)
   newOrder[which(deletecol)]
 }
 
-
+#' @export
 findCorrelation <- function(x, cutoff = 0.90, verbose = FALSE, names = FALSE, exact = ncol(x) < 100) {
   if(names & is.null(colnames(x)))
     stop("'x' must have column names when `names = TRUE`")

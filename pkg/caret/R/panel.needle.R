@@ -1,3 +1,4 @@
+#' @export
 "panel.needle" <-
   function (x, y, horizontal = TRUE, 
             pch = if (is.null(groups)) dot.symbol$pch else sup.symbol$pch, 
