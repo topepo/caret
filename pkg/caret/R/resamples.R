@@ -120,6 +120,7 @@ prcomp.resamples <- function(x, metric = x$metrics[1],  ...)
 #' @export
 "cluster" <- function(x, ...) UseMethod("cluster")
 
+#' @export
 cluster.default <- function(x, ...) stop("only implemented for resamples objects")
 
 #' @export

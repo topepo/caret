@@ -1,8 +1,10 @@
 #' @export
 lift <- function(x, ...) UseMethod("lift")
 
+#' @export
 lift.default <- function(x, ...) stop("'x' should be a formula")
 
+#' @export
 lift.formula <- function(x, data = NULL, 
                          class = NULL,
                          subset = TRUE,  
@@ -63,7 +65,7 @@ lift.formula <- function(x, data = NULL,
   out
 }
 
-
+#' @export
 print.lift <- function(x, ...) {
   printCall(x$call)
   cat("Models:", paste(unique(x$data$liftModelVar), collapse = ", "), "\n")
@@ -71,8 +73,10 @@ print.lift <- function(x, ...) {
   invisible(x)
 }
 
+#' @export
 plot.lift <- function(x, y = NULL, ...) xyplot.lift(x = x, data = NULL, ...)
 
+#' @export
 xyplot.lift <- function(x, data = NULL, plot = "gain", values = NULL, ...){
   if(!(plot %in% c("lift", "gain"))) stop(paste("'plot' should be either 'lift' or 'gain'"))
   if(plot == "gain") {

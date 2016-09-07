@@ -1,3 +1,4 @@
+#' @export
 "plot.varImp.train" <-
 function(x, top = dim(x$importance)[1],  ...)
 {  
@@ -43,6 +44,7 @@ function(x, top = dim(x$importance)[1],  ...)
 }
 
 
+#' @export
 ggplot.varImp.train <- function (data, mapping = NULL, top = dim(data$importance)[1], ..., environment = NULL)  {
   plotObj <- sortImp(data, top)
   if (ncol(plotObj) == 2) {

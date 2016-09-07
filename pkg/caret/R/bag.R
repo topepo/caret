@@ -116,7 +116,7 @@ bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample 
 
 
 
-
+#' @export
 "bag.formula" <-
   function (formula, data = NULL,..., subset, weights, na.action = na.omit) 
 {
@@ -162,6 +162,7 @@ bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample 
   
 }
 
+#' @export
 print.bag <- function (x, ...) 
 {
   printCall(x$call)
@@ -182,6 +183,7 @@ print.bag <- function (x, ...)
   invisible(x)
 }
 
+#' @export
 "summary.bag" <-
   function(object, ...)
 {
@@ -211,6 +213,7 @@ print.bag <- function (x, ...)
   out
 }
 
+#' @export
 "print.summary.bag" <-
   function(x, digits = max(3, getOption("digits") - 3), ...)
 {
