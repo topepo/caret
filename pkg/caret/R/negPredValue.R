@@ -1,8 +1,10 @@
+#' @export
 negPredValue <- 
   function(data, ...){
     UseMethod("negPredValue")
   }
 
+#' @export
 "negPredValue.default" <-
 function(data, reference, negative = levels(reference)[2], prevalence = NULL, ...)
 {
@@ -19,7 +21,7 @@ function(data, reference, negative = levels(reference)[2], prevalence = NULL, ..
    (spec * (1-prevalence))/(((1-sens)*prevalence) + ((spec)*(1-prevalence)))
 }
 
-
+#' @export
 "negPredValue.table" <-
   function(data, negative = rownames(data)[-1], prevalence = NULL, ...)
 {

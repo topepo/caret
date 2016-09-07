@@ -1,3 +1,5 @@
+
+#' @export
 dotPlot <- function (x, top = min(20, dim(x$importance)[1]), ...) 
 {
    varSubset <- sortImp(x, top)

@@ -1,4 +1,4 @@
-
+#' @export
 rfeIter <- function(x, y,
                     testX, testY, sizes,
                     rfeControl = rfeControl(),
@@ -118,8 +118,10 @@ rfeIter <- function(x, y,
 ######################################################################
 ######################################################################
 
+#' @export
 rfe <- function (x, ...) UseMethod("rfe")
 
+#' @export
 "rfe.default" <-
   function(x, y,
            sizes = 2^(2:4),
@@ -332,7 +334,7 @@ print.rfe <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 
 ######################################################################
 ######################################################################
-
+#' @export
 plot.rfe <- function (x,
                       metric = x$metric,
                       ...) {  
@@ -359,7 +361,7 @@ plot.rfe <- function (x,
 
 ######################################################################
 ######################################################################
-
+#' @export
 rfeControl <- function(functions = NULL,
                        rerank = FALSE,
                        method = "boot",
@@ -396,12 +398,14 @@ rfeControl <- function(functions = NULL,
 ######################################################################
 ## some built-in functions for certain models
 
+#' @export
 pickSizeBest <- function(x, metric, maximize)
 {
   best <- if(maximize) which.max(x[,metric]) else which.min(x[,metric])
   min(x[best, "Variables"])
 }
 
+#' @export
 pickSizeTolerance <- function(x, metric, tol = 1.5, maximize)
 {
   if(!maximize)
@@ -418,7 +422,7 @@ pickSizeTolerance <- function(x, metric, tol = 1.5, maximize)
 }
 
 
-
+#' @export
 pickVars <- function(y, size)
 {
   finalImp <- ddply(y[, c("Overall", "var")],
@@ -459,6 +463,7 @@ caretFuncs <- list(summary = defaultSummary,
                    selectVar = pickVars)
 
 ## write a better imp sort function
+#' @export
 ldaFuncs <- list(summary = defaultSummary,
                  fit = function(x, y, first, last, ...)
                  {
@@ -488,7 +493,7 @@ ldaFuncs <- list(summary = defaultSummary,
                  selectVar = pickVars
 )
 
-
+#' @export
 treebagFuncs <- list(summary = defaultSummary,
                      fit = function(x, y, first, last, ...) {
                        loadNamespace("ipred")
@@ -513,7 +518,7 @@ treebagFuncs <- list(summary = defaultSummary,
 
 
 
-
+#' @export
 gamFuncs <- list(summary = defaultSummary,
                  fit = function(x, y, first, last, ...){
                    loaded <- search()
@@ -566,7 +571,7 @@ gamFuncs <- list(summary = defaultSummary,
                  selectSize = pickSizeBest,
                  selectVar = pickVars)
 
-
+#' @export
 rfFuncs <-  list(summary = defaultSummary,
                  fit = function(x, y, first, last, ...) {
                    loadNamespace("randomForest")
@@ -598,7 +603,7 @@ rfFuncs <-  list(summary = defaultSummary,
                  selectSize = pickSizeBest,
                  selectVar = pickVars)
 
-
+#' @export
 lmFuncs <- list(summary = defaultSummary,
                 fit = function(x, y, first, last, ...) {
                   tmp <- if(is.data.frame(x)) x else as.data.frame(x)
@@ -618,7 +623,7 @@ lmFuncs <- list(summary = defaultSummary,
                 selectSize = pickSizeBest,
                 selectVar = pickVars)
 
-
+#' @export
 nbFuncs <- list(summary = defaultSummary,
                 fit = function(x, y, first, last, ...){
                   loadNamespace("klaR")
@@ -645,6 +650,7 @@ nbFuncs <- list(summary = defaultSummary,
                 selectSize = pickSizeBest,
                 selectVar = pickVars)
 
+#' @export
 lrFuncs <- ldaFuncs
 lrFuncs$fit <- function (x, y, first, last, ...)  {
   tmp <- if(is.data.frame(x)) x else as.data.frame(x)
@@ -673,7 +679,7 @@ lrFuncs$rank <- function (object, x, y) {
 ######################################################################
 ## lattice functions
 
-
+#' @export
 densityplot.rfe <- function(x,
                             data = NULL,
                             metric = x$metric,
@@ -693,6 +699,7 @@ densityplot.rfe <- function(x,
   densityplot(form, data = data, ...)
 }
 
+#' @export
 histogram.rfe <- function(x,
                           data = NULL,
                           metric = x$metric,
@@ -712,6 +719,7 @@ histogram.rfe <- function(x,
   histogram(form, data = data, ...)
 }
 
+#' @export
 stripplot.rfe <- function(x,
                           data = NULL,
                           metric = x$metric,
@@ -738,7 +746,7 @@ stripplot.rfe <- function(x,
   
 }
 
-
+#' @export
 xyplot.rfe <- function(x,
                        data = NULL,
                        metric = x$metric,

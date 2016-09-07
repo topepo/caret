@@ -1,6 +1,6 @@
 
 
-
+#' @export
 downSample <- function(x, y, list = FALSE, yname = "Class")
   {
     xc <- class(x)
@@ -31,7 +31,7 @@ downSample <- function(x, y, list = FALSE, yname = "Class")
   }
 
 
-
+#' @export
 upSample <- function(x, y, list = FALSE, yname = "Class")
   {
     xc <- class(x)

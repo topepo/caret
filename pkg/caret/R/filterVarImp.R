@@ -8,6 +8,7 @@ asNumeric <- function(data){
   modifyList(data, lapply(data[, fc], as.numeric))
 }
 
+#' @export
 filterVarImp <- function(x, y, nonpara = FALSE, ...){
   # converting factors to numeric
   notNumber <- sapply(x, function(x) !is.numeric(x))

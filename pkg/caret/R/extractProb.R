@@ -1,5 +1,6 @@
 ## TODO use foreach to parallelize
 
+#' @export
 extractProb <- function(models, 
                         testX = NULL, 
                         testY = NULL, 

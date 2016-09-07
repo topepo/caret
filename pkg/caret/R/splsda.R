@@ -1,6 +1,8 @@
+#' @export
 splsda <- function (x, ...)
   UseMethod("splsda")
 
+#' @export
 predict.splsda <- function(object, newdata = NULL, type = "class", ...)
 {
   requireNamespaceQuietStop("spls")
@@ -30,7 +32,7 @@ predict.splsda <- function(object, newdata = NULL, type = "class", ...)
   out
 }
 
-
+#' @export
 splsda.default <- function(x, y, probMethod = "softmax", prior = NULL, ...)
 {
   requireNamespaceQuietStop("spls")

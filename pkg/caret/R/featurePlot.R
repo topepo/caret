@@ -1,3 +1,5 @@
+
+#' @export
 "featurePlot" <-
 function(x, y, 
    plot = if(is.factor(y)) "strip" else "scatter", 

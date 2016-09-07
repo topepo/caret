@@ -2,6 +2,7 @@
 # check predict method with formula interface
 # how to handle variable imp?
 
+#' @export
 pcaNNet <- function (x, ...)
    UseMethod("pcaNNet")
 
@@ -39,6 +40,7 @@ pcaNNet.formula <- function (formula, data, weights, ...,
     res
 }
 
+#' @export
 pcaNNet.default <- function(x, y, thresh = .99, ...)
   {
     requireNamespaceQuietStop("nnet")
@@ -90,6 +92,7 @@ print.pcaNNet <- function (x, ...)
   invisible(x)
 }
 
+#' @export
 predict.pcaNNet <- function(object, newdata, type = c("raw", "class", "prob"), ...)
   {
     requireNamespaceQuietStop("nnet")

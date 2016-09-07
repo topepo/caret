@@ -1,3 +1,4 @@
+#' @export
 maxDissim <- function(a, b, n = 2, obj = minDiss, useNames = FALSE, randomFrac = 1, verbose = FALSE, ...) 
 {
   loadNamespace("proxy")
@@ -41,8 +42,10 @@ maxDissim <- function(a, b, n = 2, obj = minDiss, useNames = FALSE, randomFrac =
   inSubset
 }
 
+#' @export
 minDiss <- function(u) min(u, na.rm = TRUE)
 
+#' @export
 sumDiss <- function(u) sum(u, na.rm = TRUE)
 
 

@@ -1,8 +1,10 @@
+#' @export
 specificity <- 
   function(data, ...){
     UseMethod("specificity")
   }
 
+#' @export
 "specificity.default" <-
 function(data, reference, negative = levels(reference)[-1], na.rm = TRUE, ...)
 {
@@ -27,6 +29,7 @@ function(data, reference, negative = levels(reference)[-1], na.rm = TRUE, ...)
    spec
 }
 
+#' @export
 "specificity.table" <-
   function(data, negative = rownames(data)[-1], ...)
 {

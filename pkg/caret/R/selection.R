@@ -1,7 +1,7 @@
 
 ## In these functions, x is the data fram of performance values and tuning parameters.
 
-
+#' @export
 oneSE <- function(x, metric, num, maximize)
   {
     index <- 1:nrow(x)
@@ -22,6 +22,7 @@ oneSE <- function(x, metric, num, maximize)
     bestIter
   }
 
+#' @export
 tolerance <- function(x, metric, tol = 1.5, maximize)
   {
        

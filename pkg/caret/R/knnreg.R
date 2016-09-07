@@ -1,5 +1,7 @@
+#' @export
 "knnreg" <- function(x, ...)   UseMethod("knnreg")
 
+#' @export
 knnreg.default <- function(x, ...)
 {
   if(!any(class(x) %in% "formula"))  stop("knnreg only implemented for formula objects")
@@ -45,6 +47,7 @@ knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...)
   RET
 }
 
+#' @export
 knnreg.matrix <- function(x, y, k = 5, ...)
 {
   if(!is.matrix(x)) x <- as.matrix(x)
@@ -58,7 +61,7 @@ knnreg.matrix <- function(x, y, k = 5, ...)
   RET
 }
 
-
+#' @export
 knnreg.data.frame <- function(x, y, k = 5, ...)
 {
   x <- as.data.frame(x)
@@ -78,6 +81,7 @@ print.knnreg <- function (x, ...)
   invisible(x)
 }
 
+#' @export
 predict.knnreg <- function (object, newdata, ...) 
 {
   if (!inherits(object, "knnreg")) 
@@ -109,7 +113,7 @@ predict.knnreg <- function (object, newdata, ...)
   RET
 }
 
-
+#' @export
 knnregTrain <- function(train, test, y, k = 5, use.all=TRUE)
 {
   train <- as.matrix(train)

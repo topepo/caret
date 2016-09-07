@@ -1,6 +1,8 @@
 
+#' @export
 icr <- function (x, ...) UseMethod("icr")
-                                    
+
+#' @export
 icr.formula <- function (formula, data, weights, ...,              
                          subset, na.action, contrasts = NULL) 
 {
@@ -31,6 +33,7 @@ icr.formula <- function (formula, data, weights, ...,
     res
 }
 
+#' @export
 icr.default <- function(x, y, ...)
   {
     xNames <- colnames(x)
@@ -75,6 +78,7 @@ print.icr <- function (x, digits = max(3, getOption("digits") - 3), ...)
   invisible(x)
 }
 
+#' @export
 predict.icr <- function(object, newdata, ...)
   {
   loadNamespace("fastICA")

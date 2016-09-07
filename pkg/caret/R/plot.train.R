@@ -1,3 +1,4 @@
+#' @export
 "plot.train" <-  function(x,
                     plotType = "scatter",
                     metric = x$metric[1],

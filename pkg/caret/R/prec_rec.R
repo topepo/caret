@@ -1,5 +1,7 @@
+#' @export
 recall <- function(data, ...) UseMethod("recall")
 
+#' @export
 "recall.table" <- function(data, relevant = rownames(data)[1], ...){
   if(!all.equal(nrow(data), ncol(data))) stop("the table must have nrow = ncol")
   if(!all.equal(rownames(data), colnames(data))) stop("the table must the same groups in the same order")
@@ -26,6 +28,7 @@ recall <- function(data, ...) UseMethod("recall")
   rec
 }
 
+#' @export
 recall.default <- function(data, reference, relevant = levels(reference)[1], 
                            na.rm = TRUE, ...) {
   if (!is.factor(reference) | !is.factor(data)) 
@@ -43,8 +46,10 @@ recall.default <- function(data, reference, relevant = levels(reference)[1],
   recall.table(xtab, relevant = relevant)
 }
 
+#' @export
 precision <- function(data, ...) UseMethod("precision")
 
+#' @export
 precision.default <- function(data, reference, relevant = levels(reference)[1], 
                               na.rm = TRUE, ...) {
   if (!is.factor(reference) | !is.factor(data)) 
@@ -62,6 +67,7 @@ precision.default <- function(data, reference, relevant = levels(reference)[1],
   precision.table(xtab, relevant = relevant)
 }
 
+#' @export
 precision.table <- function (data, relevant = rownames(data)[1], ...) {
   if (!all.equal(nrow(data), ncol(data))) 
     stop("the table must have nrow = ncol")
@@ -88,8 +94,10 @@ precision.table <- function (data, relevant = rownames(data)[1], ...) {
   spec
 }
 
+#' @export
 F_meas <- function(data, ...) UseMethod("F_meas")
 
+#' @export
 F_meas.default <- function(data, reference, relevant = levels(reference)[1], 
                            beta = 1,  na.rm = TRUE, ...) {
   if (!is.factor(reference) | !is.factor(data)) 
@@ -107,12 +115,14 @@ F_meas.default <- function(data, reference, relevant = levels(reference)[1],
   F_meas.table(xtab, relevant = relevant, beta = beta)
 }
 
+#' @export
 F_meas.table <- function (data, relevant = rownames(data)[1], beta = 1, ...) {
   prec <- precision.table(data, relevant = relevant)
   rec <- recall.table(data, relevant = relevant)
   (1+beta^2)*prec*rec/((beta^2 * prec)+rec)
 }
 
+#' @export
 prSummary <- function (data, lev = NULL, model = NULL)  {
   
   requireNamespaceQuietStop("MLmetrics")

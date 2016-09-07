@@ -1,8 +1,10 @@
+#' @export
 "train" <-
   function(x, ...){
     UseMethod("train")
   }
 
+#' @export
 train.default <- function(x, y, 
                           method = "rf",
                           preProcess = NULL,
@@ -649,6 +651,7 @@ train.default <- function(x, y,
   
 }
 
+#' @export
 train.formula <- function (form, data, ..., weights, subset, na.action = na.fail, contrasts = NULL)  {
   m <- match.call(expand.dots = FALSE)
   if (is.matrix(eval.parent(m$data)))  m$data <- as.data.frame(data)

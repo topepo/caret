@@ -10,6 +10,7 @@ stringFunc <- function (x)  {
   out
 } 
 
+#' @export
 "print.train" <-
   function(x,
            printCall = FALSE,
