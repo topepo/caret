@@ -8,8 +8,8 @@ modelInfo <- list(label = "C4.5-like Trees",
                   grid = function(x, y, len = NULL, search = "grid"){
                     upperBound <- min(max(1, floor(nrow(x) / 2)), 50)
                     if(search == "grid"){
-                      out <- expand.grid(C = seq(0.01, 0.5, length.out = len / 2),
-                                         M = 1:upperBound)
+                      out <- expand.grid(C = seq(0.01, 0.5, length.out = len),
+                                         M = 1:min(upperBound, len))
                       if(len == 1){
                         out <- data.frame(C = 0.25, M = 2)
                       }
@@ -17,7 +17,6 @@ modelInfo <- list(label = "C4.5-like Trees",
                       out <- data.frame(C = runif(len , 0.0, 0.5),
                                         M = round(exp(runif(len, 0, log(upperBound)))))
                     }
-                    out <- out[1:len, ]
                     return(out)
                   } ,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
