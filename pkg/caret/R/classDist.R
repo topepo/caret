@@ -57,6 +57,7 @@ classDist.default <- function(x, y, groups = 5,
             class = "classDist")
 }
 
+#' @export
 print.classDist <- function(x, ...)
   {
     printCall(x$call)

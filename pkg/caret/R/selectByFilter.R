@@ -1,5 +1,4 @@
 #' @export
-
 sbfIter <- function(x, y,
                     testX, testY, 
                     sbfControl = sbfControl(), ...)
@@ -215,6 +214,7 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
 ######################################################################
 ######################################################################
 
+#' @export
 print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 {
   
@@ -285,7 +285,7 @@ print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 
 ######################################################################
 ######################################################################
-
+#' @export
 predict.sbf <- function(object, newdata = NULL, ...)
 {
   if(!all(object$optVariables %in% colnames(newdata)))
@@ -593,7 +593,7 @@ treebagSBF <- list(summary = defaultSummary,
 ######################################################################
 ## lattice functions
 
-
+#' @export
 densityplot.sbf <- function(x,
                             data = NULL,
                             metric = x$metric[1],
@@ -610,6 +610,7 @@ densityplot.sbf <- function(x,
   densityplot(form, data = data, ...)
 }
 
+#' @export
 histogram.sbf <- function(x,
                           data = NULL,
                           metric = x$metric[1],
@@ -633,9 +634,10 @@ histogram.sbf <- function(x,
 ######################################################################
 ######################################################################
 ## other functions
-
+#' @export
 predictors.sbf <- function(x, ...) x$optVariables
 
+#' @export
 varImp.sbf <- function(object, onlyFinal = TRUE, ...)
 {
   
@@ -678,6 +680,7 @@ nullModel.default <- function(x = NULL, y, ...)
     class = "nullModel")
 }
 
+#' @export
 print.nullModel <- function(x, digits = max(3, getOption("digits") - 3), ...)
 {
   cat("Null",

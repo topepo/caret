@@ -56,6 +56,7 @@ function(data, reference, negative = levels(reference)[2], prevalence = NULL, ..
 
 }
 
+#' @export
 "negPredValue.matrix" <-
   function(data, negative = rownames(data)[-1], prevalence = NULL, ...)
 {

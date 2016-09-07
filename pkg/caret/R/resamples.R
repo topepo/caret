@@ -90,7 +90,7 @@ resamples.default <- function(x, modelNames = names(x), ...) {
   out
 }
 
-
+#' @export
 prcomp.resamples <- function(x, metric = x$metrics[1],  ...)
 {
   
@@ -146,7 +146,7 @@ cluster.resamples <- function(x, metric = x$metrics[1],  ...)
   out
 }
 
-
+#' @export
 plot.prcomp.resamples <- function(x, what = "scree", dims = max(2, ncol(x$rotation)), ...)
 {
   if(length(what) > 1) stop("one plot at a time please")
@@ -214,7 +214,7 @@ components =
 })
 } 
 
-
+#' @export
 print.prcomp.resamples <- function (x, digits = max(3, getOption("digits") - 3), print.x = FALSE, ...) 
 {
   printCall(x$call)
@@ -235,6 +235,7 @@ print.prcomp.resamples <- function (x, digits = max(3, getOption("digits") - 3),
   invisible(x)
 }
 
+#' @export
 print.resamples <- function(x, ...)
 {
   printCall(x$call)
@@ -251,6 +252,7 @@ print.resamples <- function(x, ...)
   invisible(x)
 }
 
+#' @export
 summary.resamples <- function(object, metric = object$metrics, ...){
   vals <- object$values[, names(object$values) != "Resample", drop = FALSE]
   out <- vector(mode = "list", length = length(metric))
@@ -279,7 +281,7 @@ summary.resamples <- function(object, metric = object$metrics, ...){
   out
 }
 
-
+#' @export
 print.summary.resamples <- function(x, ...)
 {
   printCall(x$call)
@@ -298,7 +300,7 @@ print.summary.resamples <- function(x, ...)
 }
 
 
-
+#' @export
 xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, metric = x$metric[1], units = "min", ...) 
 {
   if(!(units %in% c("min", "sec", "hour"))) stop("units should be 'sec', 'min' or 'hour'")
@@ -450,6 +452,7 @@ parallelplot.resamples <- function (x, data = NULL, models = x$models, metric = 
   
 }
 
+#' @export
 splom.resamples <- function (x, data = NULL, variables = "models",
                              models = x$models,
                              metric = NULL,
@@ -498,7 +501,7 @@ splom.resamples <- function (x, data = NULL, variables = "models",
   
 }
 
-
+#' @export
 densityplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...) 
 {
   plotData <- melt(x$values, id.vars = "Resample")
@@ -515,7 +518,7 @@ densityplot.resamples <- function (x, data = NULL, models = x$models, metric = x
 }
 
 
-
+#' @export
 bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...) 
 {
   plotData <- melt(x$values, id.vars = "Resample")
@@ -537,7 +540,7 @@ bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metr
 }
 
 
-
+#' @export
 dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, conf.level = 0.95, ...) 
 {
   plotData <- melt(x$values, id.vars = "Resample")
@@ -613,7 +616,7 @@ dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$met
   
 }
 
-
+#' @export
 diff.resamples <- function(x,
                            models = x$models,
                            metric = x$metrics,
@@ -675,7 +678,7 @@ diff.resamples <- function(x,
   out
 }
 
-
+#' @export
 densityplot.diff.resamples <- function(x, data, metric = x$metric, ...)
 {
   plotData <- lapply(x$difs,
@@ -692,7 +695,7 @@ densityplot.diff.resamples <- function(x, data, metric = x$metric, ...)
   
 }
 
-
+#' @export
 bwplot.diff.resamples <- function(x, data, metric = x$metric, ...)
 {
   plotData <- lapply(x$difs,
@@ -711,6 +714,7 @@ bwplot.diff.resamples <- function(x, data, metric = x$metric, ...)
   
 }
 
+#' @export
 print.diff.resamples <- function(x, ...)
 {
   printCall(x$call)
@@ -721,7 +725,7 @@ print.diff.resamples <- function(x, ...)
   invisible(x)
 }
 
-
+#' @export
 summary.diff.resamples <- function(object, digits = max(3, getOption("digits") - 3), ...)
 {
   all <- vector(mode = "list", length = length(object$metric))
@@ -772,7 +776,7 @@ summary.diff.resamples <- function(object, digits = max(3, getOption("digits") -
   out
 }
 
-
+#' @export
 levelplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], what = "pvalues", ...)
 {
   comps <- ncol(x$difs[[1]])
@@ -825,7 +829,7 @@ levelplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], what 
 
 
 
-
+#' @export
 print.summary.diff.resamples <- function(x, ...)
 {
   printCall(x$call)
@@ -847,7 +851,7 @@ print.summary.diff.resamples <- function(x, ...)
   invisible(x)
 }
 
-
+#' @export
 dotplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], ...)
 {
   if(length(metric) > 1)
@@ -933,6 +937,7 @@ modelCor <- function(x, metric = x$metric[1], ...)
   cor(dat, ...)
 }
 
+#' @export
 sort.resamples <- function(x, decreasing = FALSE, metric = x$metric[1], FUN = mean, ...) 
 {
   dat <- x$values[, grep(paste("~", metric[1], sep = ""), names(x$values))]
