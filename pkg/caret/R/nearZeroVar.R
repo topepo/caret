@@ -79,38 +79,3 @@ checkResamples <- function(index, x, y)
   wrap <- function(index, x, y) checkConditionalX(x[index,,drop=FALSE], y[index])
   unique(unlist(lapply(index, wrap, x = x, y = y)))
 }
-
-nearZeroVarOld <- function(x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE)
-{
-  if(is.vector(x)) x <- matrix(x, ncol = 1)
-  freqRatio <- apply(
-    x,
-    2,
-    function(data)
-    {
-      dataTable <- sort(table(data[!is.na(data)]), decreasing = TRUE)
-      if(length(dataTable ) >= 2)
-      {
-        dataTable [1]/dataTable[2]
-      } else 0
-    })
-  percentUnique <- apply(
-    x,
-    2,
-    function(data) 100*length(unique(data[!is.na(data)]))/length(data))
-
-  zeroVar <- apply(x, 2, function(data) length(unique(data[!is.na(data)])) == 1 | all(is.na(data)))
-
-
-  if(saveMetrics)
-  {
-    out <- data.frame(freqRatio = freqRatio,
-                      percentUnique = percentUnique,
-                      zeroVar = zeroVar,
-                      nzv = (freqRatio > freqCut & percentUnique <= uniqueCut) | zeroVar)
-  } else {
-    out <- which((freqRatio > freqCut & percentUnique <= uniqueCut) | zeroVar)
-    names(out) <- NULL
-  }
-  out
-}
