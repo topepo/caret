@@ -5,7 +5,7 @@ BoxCoxTrans <- function(y, ...) UseMethod("BoxCoxTrans")
 
 ##TODO add an epsilon?
 ## TODO add exclusion list to preProc?
-
+#' @export
 BoxCoxTrans.default <- function(y, x = rep(1, length(y)), fudge = .2, numUnique = 3,  na.rm = FALSE, ...) {
   requireNamespaceQuietStop("MASS")
   requireNamespaceQuietStop("e1071")
@@ -34,6 +34,7 @@ BoxCoxTrans.default <- function(y, x = rep(1, length(y)), fudge = .2, numUnique 
   out
 } 
 
+#' @export
 print.BoxCoxTrans <- function(x, newdata, digits = 3, ...){
   cat("Box-Cox Transformation\n\n")
   
@@ -53,7 +54,7 @@ print.BoxCoxTrans <- function(x, newdata, digits = 3, ...){
   invisible(x)
 }
 
-
+#' @export
 predict.BoxCoxTrans <- function(object, newdata, ...) {
   if(!is.vector(newdata) || !is.numeric(newdata)) stop("newdata should be a numeric vector")
   if(is.na(object$lambda))  {

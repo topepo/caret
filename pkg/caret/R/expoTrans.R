@@ -2,6 +2,7 @@
 #' @export
 expoTrans <- function(y, ...) UseMethod("expoTrans")
 
+#' @export
 expoTrans.default <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method = "Brent", numUnique = 3, ...)
 {
   requireNamespaceQuietStop("e1071")
@@ -48,6 +49,7 @@ expoTrans.numeric <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method
   out
 }
 
+#' @export
 print.expoTrans <- function(x, digits = max(3L, getOption("digits") - 3L), ...) 
 {
   cat("Exponential Transformation\n\n")
@@ -65,7 +67,7 @@ print.expoTrans <- function(x, digits = max(3L, getOption("digits") - 3L), ...)
   invisible(x)
 }
   
-
+#' @export
 predict.expoTrans <- function(object, newdata, ...)
 {
   if(!is.vector(newdata) || !is.numeric(newdata)) stop("newdata should be a numeric vector")

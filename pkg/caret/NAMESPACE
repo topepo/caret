@@ -19,22 +19,10 @@ importFrom(utils, capture.output, getFromNamespace, head,
            modifyList, combn
            )
 
-S3method(resamples,       default)
-S3method(icr,             default)
-S3method(bag,             default)
-S3method(dummyVars,       default)
-S3method(BoxCoxTrans,     default)
-S3method(cluster,         default)
-S3method(expoTrans,       default)
-S3method(precision,       default)
-S3method(recall,          default)
-S3method(F_meas,          default)
 
-S3method(calibration, formula)
-S3method(lift,        formula)
 S3method(train,       formula)
 S3method(rfe,         formula)
-S3method(icr,         formula)
+
 
 S3method(varImp, train)
 S3method(varImp, rpart)
@@ -69,29 +57,9 @@ S3method(densityplot, train)
 S3method(histogram,   train)
 S3method(stripplot,   train)
 S3method(xyplot,      train)
-S3method(xyplot,      lift)
-S3method(xyplot,      calibration)
 
-
-S3method(densityplot, resamples)
-S3method(bwplot,      resamples)
-S3method(dotplot,     resamples)
-S3method(splom,       resamples)
-S3method(xyplot,      resamples)
-S3method(parallelplot,resamples)
-S3method(prcomp,      resamples)
-S3method(cluster,     resamples)
-
-S3method(densityplot, diff.resamples)
-S3method(bwplot,      diff.resamples)
-S3method(levelplot,   diff.resamples)
-S3method(dotplot,     diff.resamples)
 
 S3method(plot,  train)
-S3method(plot,  varImp.train)
-S3method(plot,  prcomp.resamples)
-S3method(plot,  lift)
-S3method(plot,  calibration)
 S3method(plot,  gafs)
 S3method(plot,  safs)
 
@@ -115,19 +83,7 @@ S3method(print, summary.bagFDA)
 S3method(print, preProcess)
 S3method(print, pcaNNet)
 
-S3method(print, resamples)
-S3method(print, summary.resamples)
-S3method(print, diff.resamples)
-S3method(print, summary.diff.resamples)
-S3method(print, icr)
-S3method(print, bag)
-S3method(print, summary.bag)
-S3method(print, prcomp.resamples)
-S3method(print, dummyVars)
-S3method(print, BoxCoxTrans)
-S3method(print, lift)
-S3method(print, calibration)
-S3method(print, expoTrans)
+
 S3method(print, gafs)
 S3method(print, safs)
 
@@ -140,20 +96,12 @@ S3method(predict, preProcess)
 S3method(predict, pcaNNet)
 S3method(predict, list)
 S3method(predict, train)
-S3method(predict, icr)
-S3method(predict, bag)
 
-S3method(predict, dummyVars)
-S3method(predict, BoxCoxTrans)
-S3method(predict, expoTrans)
 S3method(predict, gafs)
 S3method(predict, safs)
 
 S3method(summary, bagEarth)
 S3method(summary, bagFDA)
-S3method(summary, train)
-
-S3method(residuals, train)
 
 S3method(format, bagEarth)
 
@@ -167,41 +115,20 @@ S3method(predictors, safs)
 
 S3method(confusionMatrix, table)
 
-S3method(precision,   table)
-S3method(recall,      table)
-S3method(F_meas,      table)
-
-
-
 
 
 S3method(as.table,  confusionMatrix)
 S3method(as.matrix, confusionMatrix)
-S3method(as.matrix, resamples)
 
-S3method(as.data.frame, resamples)
-
-S3method(summary, resamples)
-S3method(summary, bag)
-
-S3method(diff, resamples)
-S3method(sort, resamples)
-
-S3method(summary, diff.resamples)
-
-S3method(update, train)
 S3method(update, gafs)
 S3method(update, safs)
 
-S3method(fitted, train)
-S3method(residuals, train)
 
 S3method(levels, train)
 
 S3method(ggplot, train)
 S3method(ggplot, rfe)
-S3method(ggplot, varImp.train)
-S3method(ggplot,  calibration)
+
 
 S3method(oob_pred, train)
 S3method(oob_pred, rfe)
