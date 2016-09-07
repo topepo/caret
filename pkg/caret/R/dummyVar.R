@@ -89,7 +89,7 @@ dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, ful
   
 }
 
-
+#' @export
 print.dummyVars <- function(x, ...)
 {
   cat("Dummy Variable Object\n\n")

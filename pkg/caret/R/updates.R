@@ -1,3 +1,5 @@
+
+#' @export
 update.train <- function(object, param = NULL, ...)
 {
   if(is.null(param)) {
