@@ -365,6 +365,7 @@ gamScores <- function(x, y) {
   pv
 }
 
+#' @export
 caretSBF <- list(summary = defaultSummary,
                  fit = function(x, y, ...)
                  {

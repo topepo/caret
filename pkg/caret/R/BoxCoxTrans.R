@@ -1,3 +1,5 @@
+
+#' @export
 BoxCoxTrans <- function(y, ...) UseMethod("BoxCoxTrans")
 
 

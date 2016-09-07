@@ -1,8 +1,10 @@
+
+#' @export
 "bag" <-
   function(x, ...)
   UseMethod("bag")
 
-
+#' @export
 bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample = FALSE,
                        oob = TRUE, allowParallel = TRUE)
   {
@@ -16,6 +18,7 @@ bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample 
   }
   
 
+#' @export
 "bag.default" <-
   function(x, y, B = 10, vars = ncol(x), bagControl = NULL,  ...)
 {
@@ -142,6 +145,7 @@ bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample 
   out
 }
 
+#' @export
 "predict.bag" <-
   function(object, newdata = NULL, ...)
 {
@@ -220,6 +224,7 @@ print.bag <- function (x, ...)
 }
 
 
+#' @export
 ldaBag <- list(fit = function(x, y, ...)
                {
                  loadNamespace("MASS")
@@ -256,6 +261,7 @@ ldaBag <- list(fit = function(x, y, ...)
                })
 
 
+#' @export
 plsBag <- list(fit = function(x, y,  ...)
                {
                  loadNamespace("pls")
@@ -286,6 +292,7 @@ plsBag <- list(fit = function(x, y,  ...)
                  out
                })
 
+#' @export
 nbBag <- list(fit = function(x, y,  ...)
                {
                  loadNamespace("klaR")
@@ -316,7 +323,7 @@ nbBag <- list(fit = function(x, y,  ...)
                })
 
 
-
+#' @export
 ctreeBag <- list(fit = function(x, y,  ...)
                 {
                   loadNamespace("party")
@@ -365,7 +372,7 @@ ctreeBag <- list(fit = function(x, y,  ...)
                 })
 
 
-
+#' @export
 svmBag <- list(fit = function(x, y,  ...)
                 {
 
@@ -413,7 +420,7 @@ svmBag <- list(fit = function(x, y,  ...)
 
 
 
-
+#' @export
 nnetBag <- list(fit = function(x, y,  ...)
                 {
 

@@ -1,3 +1,5 @@
+
+#' @export
 confusionMatrix <- 
   function(data, ...){
     UseMethod("confusionMatrix")
@@ -230,6 +232,7 @@ train_resampledCM <- function(x) {
 
 as.table.confusionMatrix <- function(x, ...)  x$table
 
+#' @export
 confusionMatrix.train <- function(data, norm = "overall", dnn = c("Prediction", "Reference"), ...){
   if(data$control$method %in% c("oob", "LOOCV", "none"))
     stop("cannot compute confusion matrices for leave-one-out, out-of-bag resampling, or no resampling")

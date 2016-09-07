@@ -943,7 +943,7 @@ compare_models <- function(a, b, metric = a$metric[1]) {
   diffs$statistics[[1]][[1]]
 }
 
-
+#' @export
 as.matrix.resamples <- function(x, metric = x$metric[1], ...) {
   get_cols <- grepl(paste0("~", metric[1]), colnames(x$values))
   if(!(any(get_cols))) stop("no columns fit that metric")
@@ -952,6 +952,8 @@ as.matrix.resamples <- function(x, metric = x$metric[1], ...) {
   colnames(out) <- gsub(paste0("~", metric[1]), "", colnames(out))
   as.matrix(out)
 }
+
+#' @export
 as.data.frame.resamples <- function(x, row.names = NULL, optional = FALSE, 
                                     metric = x$metric[1], ...) {
   get_cols <- grepl(paste0("~", metric[1]), colnames(x$values))
