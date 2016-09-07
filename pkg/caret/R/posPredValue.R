@@ -57,6 +57,7 @@ posPredValue <-
 
 }
 
+#' @export
 "posPredValue.matrix" <-
   function(data, positive = rownames(data)[1], prevalence = NULL, ...)
 {

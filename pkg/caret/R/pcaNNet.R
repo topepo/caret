@@ -8,6 +8,7 @@ pcaNNet <- function (x, ...)
 
 
 # this is a near copy of nnet.formula
+#' @export
 pcaNNet.formula <- function (formula, data, weights, ...,
                              thresh = .99,
                              subset, na.action, contrasts = NULL) 

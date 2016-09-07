@@ -7,6 +7,7 @@ knnreg.default <- function(x, ...)
   if(!any(class(x) %in% "formula"))  stop("knnreg only implemented for formula objects")
 }
 
+#' @export
 knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...) 
 {
   if (missing(formula) ||
@@ -75,6 +76,7 @@ knnreg.data.frame <- function(x, y, k = 5, ...)
   RET
 }
 
+#' @export
 print.knnreg <- function (x, ...) 
 {
   cat(x$k, "-nearest neighbor regression model\n", sep = "")
