@@ -6,6 +6,9 @@
 \section{Changes in version 6.0-xx}{
 	\itemize{
 		\item The inverse hyperbolic sine transformation was added to \code{preProcess} \issue(56)
+		\item Tyler Hunt moved the ROC code from the \cpkg{pROC} package to the \cpkg{ModelMetrics} package which should make the computations more efficient \issue{482}. 
+		\item \code{train} does a better job of respecting the original format of the input data \issue{474}
+		\item A bug in \code{bdk} and \code{xyf} models was fixed where the appropriate number of parameter combinations are tested during random search.  
 
 	}
 }
