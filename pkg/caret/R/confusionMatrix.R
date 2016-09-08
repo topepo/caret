@@ -352,19 +352,3 @@ resampName <- function(x, numbers = TRUE){
   out
 }
 
-
-mcc <- function(tab, pos = colnames(tab)[1]){
-  if(nrow(tab) != 2 | ncol(tab) != 2) stop("A 2x2 table is needed")
-  neg <- colnames(tab)[colnames(tab) != pos]
-  tp <- tab[pos, pos]
-  tn <- tab[neg, neg]
-  fp <- tab[pos,neg]
-  fn <- tab[neg, pos]
-  d1 <- tp + fp
-  d2 <- tp + fn
-  d3 <- tn + fp
-  d4 <- tn + fn
-  if(d1 == 0 | d2 == 0 | d3 == 0 | d4 == 0) return(0)
-  ((tp * tn) - (fp * fn))/sqrt(d1*d2*d3*d4)  
-}
-

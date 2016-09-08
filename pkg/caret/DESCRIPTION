@@ -5,7 +5,7 @@ Title: Classification and Regression Training
 Author: Max Kuhn. Contributions from Jed Wing, Steve Weston, Andre
     Williams, Chris Keefer, Allan Engelhardt, Tony Cooper, Zachary Mayer,
     Brenton Kenkel, the R Core Team, Michael Benesty, Reynald Lescarbeau,
-    Andrew Ziem, Luca Scrucca, Yuan Tang, and Can Candan.
+    Andrew Ziem, Luca Scrucca, Yuan Tang, Can Candan, and Tyler Hunt.
 Description: Misc functions for training and plotting classification and
     regression models.
 Maintainer: Max Kuhn <Max.Kuhn@pfizer.com>
@@ -20,6 +20,7 @@ Imports:
     foreach,
     methods,
     plyr,
+    ModelMetrics (>= 1.1.0),
     nlme,
     reshape2,
     stats,
@@ -44,7 +45,6 @@ Suggests:
     nnet,
     party (>= 0.9-99992),
     pls,
-    pROC (>= 1.8),
     proxy,
     randomForest,
     RANN,
