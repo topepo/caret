@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `class` (7.3-14), `e1071` (1.6-7), `gplots` (3.0.1), `mda` (0.4-8), `obliqueRF` (0.3), `pls` (2.5-0), `ROCR` (1.0-7)
- * tested on 2016-06-10 at 17:28
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `class` (7.3-14), `e1071` (1.6-7), `gplots` (3.0.1), `mda` (0.4-8), `obliqueRF` (0.3), `pls` (2.5-0), `ROCR` (1.0-7)
+ * tested on 2016-09-06 at 11:44
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `class` (7.3-14), `e1071` (1.6-7), `gplots` (3.0.1), `mda` (0.4-8), `obliqueRF` (0.3), `pls` (2.5-0), `ROCR` (1.0-7)
- * tested on 2016-06-12 at 13:04
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `class` (7.3-14), `e1071` (1.6-7), `gplots` (3.0.1), `mda` (0.4-8), `obliqueRF` (0.3), `pls` (2.5-0), `ROCR` (1.0-7)
+ * tested on 2016-09-08 at 10:44
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 17.31s (new) 16.71s
+Execution times: (old) 18.51s (new) 18.05s
 
 Test Results:
 
@@ -59,7 +59,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 18.49s (new) 17.73s
+Execution times: (old) 18.97s (new) 18.29s
 
 Test Results:
 
@@ -80,7 +80,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.52m (new) 5.35m
+Execution times: (old) 5.75m (new) 5.72m
 
 Test Results:
 
@@ -101,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.93s (new) 0.91s
+Execution times: (old) 0.95s (new) 0.93s
 
 Test Results:
 
@@ -158,7 +158,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.06s (new) 2.94s
+Execution times: (old) 3.06s (new) 3.02s
 
 Test Results:
 

@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `gpls` (1.44.0)
- * tested on 2016-06-10 at 17:08
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `gpls` (1.45.0)
+ * tested on 2016-09-06 at 11:23
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `gpls` (1.44.0)
- * tested on 2016-06-12 at 12:43
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `gpls` (1.45.0)
+ * tested on 2016-09-08 at 10:22
 
 
 Results:
@@ -38,16 +38,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.64s (new) 1.71s
+Execution times: (old) 2.76s (new) 1.87s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -64,16 +59,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.36s (new) 2.5s
+Execution times: (old) 3.54s (new) 2.28s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -90,16 +80,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 20.49s (new) 20.07s
+Execution times: (old) 31.86s (new) 21.51s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -116,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.68s (new) 0.68s
+Execution times: (old) 1.07s (new) 0.71s
 
 Test Results:
 
@@ -140,27 +125,13 @@ Object class(es): `data.frame`
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 86.2% (431/500)
-        newer
-older    Class1 Class2
-  Class1    206     46
-  Class2     23    225
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_pred_form`
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 86.2% (431/500)
-        newer
-older    Class1 Class2
-  Class1    206     46
-  Class2     23    225
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_predictors1`
 

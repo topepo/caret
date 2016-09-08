@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68)
- * tested on 2016-06-10 at 17:13
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71)
+ * tested on 2016-09-06 at 11:28
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70)
- * tested on 2016-06-12 at 12:48
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72)
+ * tested on 2016-09-08 at 10:26
 
 
 Results:
@@ -38,26 +38,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.8s (new) 0.8s
+Execution times: (old) 0.92s (new) 0.81s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean  7.08
-      min   0.00
-      max  12.23
-    correlation:  0.9712 
-
- k ROC_new ROC_old Diff Flag
- 5  0.6797  0.6056 12.2    *
- 7  0.6722  0.6166  9.0    *
- 9  0.7185  0.7185  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -74,26 +59,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.48s (new) 1.45s
+Execution times: (old) 1.4s (new) 1.24s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean  7.08
-      min   0.00
-      max  12.23
-    correlation:  0.9712 
-
- k ROC_new ROC_old Diff Flag
- 5  0.6797  0.6056 12.2    *
- 7  0.6722  0.6166  9.0    *
- 9  0.7185  0.7185  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -110,7 +80,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.99s (new) 4.86s
+Execution times: (old) 5.34s (new) 4.88s
 
 Test Results:
 
@@ -131,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.53s (new) 0.48s
+Execution times: (old) 0.53s (new) 0.52s
 
 Test Results:
 
@@ -194,7 +164,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.02s (new) 1.04s
+Execution times: (old) 1.11s (new) 1.02s
 
 Test Results:
 
@@ -220,7 +190,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.77s (new) 0.76s
+Execution times: (old) 0.87s (new) 0.81s
 
 Test Results:
 
@@ -240,7 +210,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.11s (new) 1.1s
+Execution times: (old) 1.25s (new) 1.12s
 
 Test Results:
 
@@ -260,7 +230,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.37s (new) 4.3s
+Execution times: (old) 4.67s (new) 4.29s
 
 Test Results:
 
@@ -280,7 +250,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.49s (new) 0.5s
+Execution times: (old) 0.55s (new) 0.52s
 
 Test Results:
 
@@ -324,7 +294,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.24s (new) 1.21s
+Execution times: (old) 1.35s (new) 1.23s
 
 Test Results:
 

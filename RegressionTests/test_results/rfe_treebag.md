@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `e1071` (1.6-7), `ipred` (0.9-5), `plyr` (1.8.4), `rpart` (4.1-10)
- * tested on 2016-06-10 at 17:37
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `e1071` (1.6-7), `ipred` (0.9-5), `plyr` (1.8.4), `rpart` (4.1-10)
+ * tested on 2016-09-06 at 11:54
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `e1071` (1.6-7), `ipred` (0.9-5), `plyr` (1.8.4), `rpart` (4.1-10)
- * tested on 2016-06-12 at 13:16
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `e1071` (1.6-7), `ipred` (0.9-5), `plyr` (1.8.4), `rpart` (4.1-10)
+ * tested on 2016-09-08 at 10:56
 
 
 Results:
@@ -35,7 +35,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 20
 
 
-Execution times: (old) 34.1s (new) 32.47s
+Execution times: (old) 33.65s (new) 32.61s
 
 Test Results:
 
@@ -52,7 +52,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15
 
 
-Execution times: (old) 23.09s (new) 32.48s
+Execution times: (old) 31.8s (new) 31.57s
 
 Test Results:
 
@@ -69,7 +69,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 22
 
 
-Execution times: (old) 32.57s (new) 31.68s
+Execution times: (old) 32.59s (new) 31.64s
 
 Test Results:
 
@@ -86,7 +86,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 17
 
 
-Execution times: (old) 21.2s (new) 23.27s
+Execution times: (old) 21.39s (new) 21.57s
 
 Test Results:
 
@@ -121,7 +121,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 20
 
 
-Execution times: (old) 9.07m (new) 8.65m
+Execution times: (old) 8.94m (new) 8.7m
 
 Test Results:
 
@@ -138,7 +138,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15
 
 
-Execution times: (old) 5.78m (new) 7.37m
+Execution times: (old) 6.1m (new) 6.41m
 
 Test Results:
 
@@ -155,7 +155,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 22
 
 
-Execution times: (old) 8.73m (new) 8.75m
+Execution times: (old) 8.96m (new) 8.89m
 
 Test Results:
 
@@ -172,7 +172,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 17
 
 
-Execution times: (old) 5.06m (new) 5.87m
+Execution times: (old) 5.52m (new) 5.6m
 
 Test Results:
 

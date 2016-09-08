@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `frbs` (3.1-0)
- * tested on 2016-06-10 at 16:57
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `frbs` (3.1-0)
+ * tested on 2016-09-06 at 11:14
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `frbs` (3.1-0)
- * tested on 2016-06-12 at 12:33
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `frbs` (3.1-0)
+ * tested on 2016-09-08 at 10:09
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.38s (new) 3.38s
+Execution times: (old) 3.39s (new) 4.8s
 
 Test Results:
 
@@ -58,7 +58,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.28s (new) 4.35s
+Execution times: (old) 3.98s (new) 5.28s
 
 Test Results:
 
@@ -78,7 +78,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 14.76s (new) 14.98s
+Execution times: (old) 13.47s (new) 19.23s
 
 Test Results:
 
@@ -98,7 +98,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.58s (new) 0.57s
+Execution times: (old) 0.57s (new) 0.63s
 
 Test Results:
 
@@ -136,7 +136,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.4s (new) 3.23s
+Execution times: (old) 3.04s (new) 4.28s
 
 Test Results:
 

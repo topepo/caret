@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `fastAdaboost` (1.0.0)
- * tested on 2016-06-10 at 16:46
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `fastAdaboost` (1.0.0)
+ * tested on 2016-09-06 at 09:55
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `fastAdaboost` (1.0.0)
- * tested on 2016-06-12 at 12:22
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `fastAdaboost` (1.0.0)
+ * tested on 2016-09-08 at 09:56
 
 
 Results:
@@ -38,29 +38,11 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 23.27s (new) 23.27s
+Execution times: (old) 19.25s (new) 22.17s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                  
-      mean  -2.060
-      min  -11.480
-      max    3.579
-    correlation:  0.99 
-
- nIter        method ROC_new ROC_old  Diff Flag
-   100   Adaboost.M1  0.9300  0.9300   0.0     
-   100 Real adaboost  0.6030  0.5822   3.6    *
-   150   Adaboost.M1  0.9485  0.9485   0.0     
-   150 Real adaboost  0.5087  0.5747 -11.5    *
-    50   Adaboost.M1  0.9537  0.9537   0.0     
-    50 Real adaboost  0.6696  0.7008  -4.5    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -77,29 +59,11 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 24.18s (new) 24.77s
+Execution times: (old) 21.34s (new) 23.36s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                  
-      mean  -2.060
-      min  -11.480
-      max    3.579
-    correlation:  0.99 
-
- nIter        method ROC_new ROC_old  Diff Flag
-   100   Adaboost.M1  0.9300  0.9300   0.0     
-   100 Real adaboost  0.6030  0.5822   3.6    *
-   150   Adaboost.M1  0.9485  0.9485   0.0     
-   150 Real adaboost  0.5087  0.5747 -11.5    *
-    50   Adaboost.M1  0.9537  0.9537   0.0     
-    50 Real adaboost  0.6696  0.7008  -4.5    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -116,7 +80,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.68m (new) 7.8m
+Execution times: (old) 3.8m (new) 7.98m
 
 Test Results:
 
@@ -137,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.86s (new) 1.95s
+Execution times: (old) 1.06s (new) 2.33s
 
 Test Results:
 
@@ -194,7 +158,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.08m (new) 1.11m
+Execution times: (old) 45.99s (new) 1.06m
 
 Test Results:
 

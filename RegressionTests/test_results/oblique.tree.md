@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-6), `oblique.tree` (1.1.1), `tree` (1.0-37)
- * tested on 2016-06-10 at 17:26
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-6), `oblique.tree` (1.1.1), `tree` (1.0-37)
+ * tested on 2016-09-06 at 11:39
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-6), `oblique.tree` (1.1.1), `tree` (1.0-37)
- * tested on 2016-06-12 at 13:01
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-6), `oblique.tree` (1.1.1), `tree` (1.0-37)
+ * tested on 2016-09-08 at 10:41
 
 
 Results:
@@ -38,29 +38,11 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.72s (new) 3.69s
+Execution times: (old) 3.61s (new) 3.5s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                 
-      mean  6.933
-      min   0.000
-      max  20.799
-    correlation:  0.9295 
-
- oblique.splits  variable.selection ROC_new ROC_old Diff Flag
-            off model.selection.aic  0.7375  0.6105 20.8    *
-            off                none  0.7375  0.6105 20.8    *
-             on model.selection.aic  0.8086  0.8086  0.0     
-             on                none  0.8245  0.8245  0.0     
-           only model.selection.aic  0.7742  0.7742  0.0     
-           only                none  0.7742  0.7742  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -77,29 +59,11 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.68s (new) 4.65s
+Execution times: (old) 3.99s (new) 4.02s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                 
-      mean  6.933
-      min   0.000
-      max  20.799
-    correlation:  0.9295 
-
- oblique.splits  variable.selection ROC_new ROC_old Diff Flag
-            off model.selection.aic  0.7375  0.6105 20.8    *
-            off                none  0.7375  0.6105 20.8    *
-             on model.selection.aic  0.8086  0.8086  0.0     
-             on                none  0.8245  0.8245  0.0     
-           only model.selection.aic  0.7742  0.7742  0.0     
-           only                none  0.7742  0.7742  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -116,7 +80,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.47m (new) 1.46m
+Execution times: (old) 1.25m (new) 1.23m
 
 Test Results:
 
@@ -137,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.81s (new) 0.72s
+Execution times: (old) 0.75s (new) 0.71s
 
 Test Results:
 
@@ -194,7 +158,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.18s (new) 3.14s
+Execution times: (old) 2.84s (new) 2.78s
 
 Test Results:
 

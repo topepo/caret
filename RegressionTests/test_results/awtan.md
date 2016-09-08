@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `bnclassify` (0.3.2), `caret` (6.0-68)
- * tested on 2016-06-10 at 16:46
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `bnclassify` (0.3.2), `caret` (6.0-71)
+ * tested on 2016-09-06 at 09:55
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `bnclassify` (0.3.2), `caret` (6.0-70)
- * tested on 2016-06-12 at 12:22
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `bnclassify` (0.3.2), `caret` (6.0-72)
+ * tested on 2016-09-08 at 09:56
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.79s (new) 6.98s
+Execution times: (old) 6.69s (new) 6.38s
 
 Test Results:
 
@@ -50,16 +50,7 @@ Test Results:
 
 Object class(es): `varImp.train`
 
- * ***UNequal results***: differences (o-n):
-<pre>
-     Class1           Class2      
- Min.   :-17.08   Min.   :-17.08  
- 1st Qu.:-16.52   1st Qu.:-16.52  
- Median :-16.43   Median :-16.43  
- Mean   :  2.54   Mean   :  2.54  
- 3rd Qu.:-16.16   3rd Qu.:-16.16  
- Max.   :100.00   Max.   :100.00  
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_loo_model`
 
@@ -74,16 +65,11 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.54m (new) 2.66m
+Execution times: (old) 1.76m (new) 2.41m
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -100,7 +86,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.8s (new) 0.78s
+Execution times: (old) 0.53s (new) 0.81s
 
 Test Results:
 
@@ -151,7 +137,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.33s (new) 5.4s
+Execution times: (old) 4.46s (new) 5.17s
 
 Test Results:
 

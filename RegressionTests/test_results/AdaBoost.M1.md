@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `adabag` (4.1), `caret` (6.0-68), `mlbench` (2.1-1), `plyr` (1.8.4), `rpart` (4.1-10)
- * tested on 2016-06-10 at 16:46
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `adabag` (4.1), `caret` (6.0-71), `mlbench` (2.1-1), `plyr` (1.8.4), `rpart` (4.1-10)
+ * tested on 2016-09-06 at 09:55
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `adabag` (4.1), `caret` (6.0-70), `mlbench` (2.1-1), `plyr` (1.8.4), `rpart` (4.1-10)
- * tested on 2016-06-12 at 12:22
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `adabag` (4.1), `caret` (6.0-72), `mlbench` (2.1-1), `plyr` (1.8.4), `rpart` (4.1-10)
+ * tested on 2016-09-08 at 09:56
 
 
 Results:
@@ -38,20 +38,11 @@ Model Configuration:
  * 18 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.2m (new) 1.67m
+Execution times: (old) 51.22s (new) 1.19m
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                  
-      mean   2.494
-      min  -25.256
-      max   39.450
-    correlation:  0.5126 
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -68,20 +59,11 @@ Model Configuration:
  * 18 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.24m (new) 1.59m
+Execution times: (old) 1.03m (new) 1.22m
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                  
-      mean   2.494
-      min  -25.256
-      max   39.450
-    correlation:  0.5126 
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -98,7 +80,7 @@ Model Configuration:
  * 18 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 18.72m (new) 18.79m
+Execution times: (old) 10.95m (new) 19.28m
 
 Test Results:
 
@@ -119,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.36s (new) 4.15s
+Execution times: (old) 2.48s (new) 4.44s
 
 Test Results:
 
@@ -143,57 +125,25 @@ Object class(es): `data.frame`
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 56.2% (281/500)
-        newer
-older    Class1 Class2
-  Class1    133    130
-  Class2     89    148
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_pred_form`
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 56.2% (281/500)
-        newer
-older    Class1 Class2
-  Class1    133    130
-  Class2     89    148
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_prob`
 
 Object class(es): `data.frame`
 
- * ***UNequal results***: differences (o-n):
-<pre>
-     Class1             Class2        
- Min.   :-1.00000   Min.   :-1.00000  
- 1st Qu.:-0.13296   1st Qu.:-0.31812  
- Median : 0.10396   Median :-0.10396  
- Mean   : 0.09788   Mean   :-0.09788  
- 3rd Qu.: 0.31812   3rd Qu.: 0.13296  
- Max.   : 1.00000   Max.   : 1.00000  
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_prob_form`
 
 Object class(es): `data.frame`
 
- * ***UNequal results***: differences (o-n):
-<pre>
-     Class1             Class2        
- Min.   :-1.00000   Min.   :-1.00000  
- 1st Qu.:-0.13296   1st Qu.:-0.31812  
- Median : 0.10396   Median :-0.10396  
- Mean   : 0.09788   Mean   :-0.09788  
- 3rd Qu.: 0.31812   3rd Qu.: 0.13296  
- Max.   : 1.00000   Max.   : 1.00000  
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_rand`
 
@@ -208,7 +158,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 42.52m (new) 42.77m
+Execution times: (old) 25.79m (new) 48.71m
 
 Test Results:
 

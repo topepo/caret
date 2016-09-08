@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `class` (7.3-14), `earth` (4.4.4), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
- * tested on 2016-06-10 at 16:57
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `class` (7.3-14), `earth` (4.4.4), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
+ * tested on 2016-09-06 at 11:13
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `class` (7.3-14), `earth` (4.4.4), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
- * tested on 2016-06-12 at 12:32
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `class` (7.3-14), `earth` (4.4.4), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
+ * tested on 2016-09-08 at 10:09
 
 
 Results:
@@ -38,26 +38,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.08s (new) 1.07s
+Execution times: (old) 1.25s (new) 1.7s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean 1.413
-      min  0.000
-      max  4.239
-    correlation:  1 
-
- nprune degree ROC_new ROC_old Diff Flag
-     14      1  0.8565  0.8565  0.0     
-      2      1  0.6403  0.6143  4.2    *
-      8      1  0.8565  0.8565  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -74,26 +59,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.03s (new) 1.98s
+Execution times: (old) 1.63s (new) 2.13s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean 1.413
-      min  0.000
-      max  4.239
-    correlation:  1 
-
- nprune degree ROC_new ROC_old Diff Flag
-     14      1  0.8565  0.8565  0.0     
-      2      1  0.6403  0.6143  4.2    *
-      8      1  0.8565  0.8565  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -116,7 +86,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 8.65s (new) 8.4s
+Execution times: (old) 7.54s (new) 10.62s
 
 Test Results:
 
@@ -137,7 +107,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.57s (new) 0.61s
+Execution times: (old) 0.57s (new) 0.84s
 
 Test Results:
 
@@ -200,7 +170,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.01s (new) 1.18s
+Execution times: (old) 0.94s (new) 1.51s
 
 Test Results:
 

@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `bnclassify` (0.3.2), `caret` (6.0-68)
- * tested on 2016-06-10 at 17:18
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `bnclassify` (0.3.2), `caret` (6.0-71)
+ * tested on 2016-09-06 at 11:30
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `bnclassify` (0.3.2), `caret` (6.0-70)
- * tested on 2016-06-12 at 12:53
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `bnclassify` (0.3.2), `caret` (6.0-72)
+ * tested on 2016-09-08 at 10:31
 
 
 Results:
@@ -38,32 +38,11 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.06s (new) 3.01s
+Execution times: (old) 2.87s (new) 2.81s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                 
-      mean  5.239
-      min   0.000
-      max  12.064
-    correlation:  0.7209 
-
- smooth prior ROC_new ROC_old Diff Flag
-   0.05   0.1  0.6363  0.5697 11.7    *
-   0.05   0.5  0.6351  0.5685 11.7    *
-   0.05   0.9  0.6337  0.6337  0.0     
-   1.00   0.1  0.6387  0.5720 11.7    *
-   1.00   0.5  0.6409  0.6409  0.0     
-   1.00   0.9  0.6626  0.6626  0.0     
-   2.00   0.1  0.6422  0.5731 12.1    *
-   2.00   0.5  0.6492  0.6492  0.0     
-   2.00   0.9  0.6638  0.6638  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -71,16 +50,7 @@ Test Results:
 
 Object class(es): `varImp.train`
 
- * ***UNequal results***: differences (o-n):
-<pre>
-     Class1           Class2      
- Min.   :-17.08   Min.   :-17.08  
- 1st Qu.:-16.52   1st Qu.:-16.52  
- Median :-16.43   Median :-16.43  
- Mean   :  2.54   Mean   :  2.54  
- 3rd Qu.:-16.16   3rd Qu.:-16.16  
- Max.   :100.00   Max.   :100.00  
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_loo_model`
 
@@ -95,7 +65,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 44.61s (new) 44.2s
+Execution times: (old) 43.03s (new) 43.14s
 
 Test Results:
 
@@ -116,7 +86,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.45s (new) 0.52s
+Execution times: (old) 0.53s (new) 0.55s
 
 Test Results:
 
@@ -167,7 +137,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.29s (new) 1.22s
+Execution times: (old) 1.27s (new) 1.29s
 
 Test Results:
 

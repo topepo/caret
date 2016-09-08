@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `RJSONIO` (1.3-0), `rPython` (0.0-6)
- * tested on 2016-06-10 at 17:34
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `RJSONIO` (1.3-0), `rPython` (0.0-6)
+ * tested on 2016-09-06 at 11:50
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `RJSONIO` (1.3-0), `rPython` (0.0-6)
- * tested on 2016-06-12 at 13:12
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `RJSONIO` (1.3-0), `rPython` (0.0-6)
+ * tested on 2016-09-08 at 10:52
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.71s (new) 4.15s
+Execution times: (old) 4.01s (new) 3.48s
 
 Test Results:
 
@@ -58,7 +58,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 12.26s (new) 12.2s
+Execution times: (old) 12.27s (new) 11.91s
 
 Test Results:
 
@@ -78,7 +78,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.57s (new) 0.53s
+Execution times: (old) 0.53s (new) 0.51s
 
 Test Results:
 
@@ -110,7 +110,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.56s (new) 1.51s
+Execution times: (old) 1.76s (new) 1.76s
 
 Test Results:
 

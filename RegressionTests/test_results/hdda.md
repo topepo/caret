@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `HDclassif` (1.3), `MASS` (7.3-45)
- * tested on 2016-06-10 at 17:11
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `HDclassif` (2.0), `MASS` (7.3-45)
+ * tested on 2016-09-06 at 11:24
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `HDclassif` (1.3), `MASS` (7.3-45)
- * tested on 2016-06-12 at 12:46
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `HDclassif` (2.0), `MASS` (7.3-45)
+ * tested on 2016-09-08 at 10:24
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.86s (new) 0.93s
+Execution times: (old) 1.77s (new) 1.13s
 
 Test Results:
 
@@ -59,7 +59,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.6s (new) 1.55s
+Execution times: (old) 1.9s (new) 1.43s
 
 Test Results:
 
@@ -80,7 +80,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.36s (new) 6.21s
+Execution times: (old) 9.74s (new) 6.85s
 
 Test Results:
 
@@ -101,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.5s (new) 0.52s
+Execution times: (old) 0.84s (new) 0.51s
 
 Test Results:
 
@@ -158,7 +158,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.82s (new) 0.86s
+Execution times: (old) 1.44s (new) 0.85s
 
 Test Results:
 

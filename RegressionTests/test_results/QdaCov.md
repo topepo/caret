@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `robustbase` (0.92-5), `rrcov` (1.3-11)
- * tested on 2016-06-10 at 17:34
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `robustbase` (0.92-5), `rrcov` (1.3-11)
+ * tested on 2016-09-06 at 11:51
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `robustbase` (0.92-5), `rrcov` (1.3-11)
- * tested on 2016-06-12 at 13:12
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `robustbase` (0.92-5), `rrcov` (1.3-11)
+ * tested on 2016-09-08 at 10:52
 
 
 Results:
@@ -38,16 +38,11 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.98s (new) 0.85s
+Execution times: (old) 0.89s (new) 1.11s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -64,16 +59,11 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.68s (new) 1.63s
+Execution times: (old) 1.49s (new) 1.45s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -90,7 +80,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 3.93s (new) 3.88s
+Execution times: (old) 3.9s (new) 3.83s
 
 Test Results:
 
@@ -111,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.56s (new) 0.52s
+Execution times: (old) 0.53s (new) 0.58s
 
 Test Results:
 

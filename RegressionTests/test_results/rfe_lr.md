@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `plyr` (1.8.4)
- * tested on 2016-06-10 at 17:37
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `plyr` (1.8.4)
+ * tested on 2016-09-06 at 11:53
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `plyr` (1.8.4)
- * tested on 2016-06-12 at 13:15
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `plyr` (1.8.4)
+ * tested on 2016-09-08 at 10:55
 
 
 Results:
@@ -35,7 +35,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15
 
 
-Execution times: (old) 1.76s (new) 1.95s
+Execution times: (old) 2.22s (new) 1.96s
 
 Test Results:
 
@@ -52,7 +52,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 17
 
 
-Execution times: (old) 1.4s (new) 1.34s
+Execution times: (old) 1.57s (new) 1.37s
 
 Test Results:
 
@@ -75,7 +75,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15
 
 
-Execution times: (old) 20.29s (new) 19.65s
+Execution times: (old) 23.54s (new) 19.68s
 
 Test Results:
 
@@ -92,7 +92,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 17
 
 
-Execution times: (old) 20.2s (new) 20.42s
+Execution times: (old) 23.79s (new) 20.03s
 
 Test Results:
 

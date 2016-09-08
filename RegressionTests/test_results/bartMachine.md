@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `bartMachine` (1.2.3), `bartMachineJARs` (1.0), `car` (2.1-2), `caret` (6.0-68), `foreach` (1.4.3), `iterators` (1.0.8), `itertools` (0.1-3), `missForest` (1.4), `randomForest` (4.6-12), `rJava` (0.9-8)
- * tested on 2016-06-10 at 16:49
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `bartMachine` (1.2.3), `bartMachineJARs` (1.0), `car` (2.1-2), `caret` (6.0-71), `foreach` (1.4.3), `iterators` (1.0.8), `itertools` (0.1-3), `missForest` (1.4), `randomForest` (4.6-12), `rJava` (0.9-8)
+ * tested on 2016-09-06 at 11:09
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `bartMachine` (1.2.3), `bartMachineJARs` (1.0), `car` (2.1-2), `caret` (6.0-70), `foreach` (1.4.3), `iterators` (1.0.8), `itertools` (0.1-3), `missForest` (1.4), `randomForest` (4.6-12), `rJava` (0.9-8)
- * tested on 2016-06-12 at 12:24
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `bartMachine` (1.2.3), `bartMachineJARs` (1.0), `car` (2.1-2), `caret` (6.0-72), `foreach` (1.4.3), `iterators` (1.0.8), `itertools` (0.1-3), `missForest` (1.4), `randomForest` (4.6-12), `rJava` (0.9-8)
+ * tested on 2016-09-08 at 09:58
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 10.84s (new) 10.71s
+Execution times: (old) 11.52s (new) 11.36s
 
 Test Results:
 
@@ -58,7 +58,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 13.12s (new) 13.04s
+Execution times: (old) 13.77s (new) 13.33s
 
 Test Results:
 
@@ -78,7 +78,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.13m (new) 3.08m
+Execution times: (old) 3.14m (new) 3.14m
 
 Test Results:
 
@@ -98,7 +98,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.2s (new) 1.26s
+Execution times: (old) 1.24s (new) 1.23s
 
 Test Results:
 
@@ -155,7 +155,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 14.43s (new) 15.24s
+Execution times: (old) 16.62s (new) 15.4s
 
 Test Results:
 
@@ -181,7 +181,7 @@ Model Configuration:
  * 16 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 30.41s (new) 30.65s
+Execution times: (old) 34.78s (new) 33.97s
 
 Test Results:
 
@@ -201,7 +201,7 @@ Model Configuration:
  * 16 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 32.13s (new) 32.49s
+Execution times: (old) 35.9s (new) 34.84s
 
 Test Results:
 
@@ -221,7 +221,7 @@ Model Configuration:
  * 16 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.75m (new) 5.78m
+Execution times: (old) 13.02m (new) 12.53m
 
 Test Results:
 
@@ -241,7 +241,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.18s (new) 1.24s
+Execution times: (old) 2.86s (new) 3.05s
 
 Test Results:
 
@@ -291,7 +291,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 8.68s (new) 8.63s
+Execution times: (old) 11.3s (new) 10.76s
 
 Test Results:
 

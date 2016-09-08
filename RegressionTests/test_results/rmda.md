@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `MASS` (7.3-45), `mclust` (5.2), `robustDA` (1.1), `Rsolnp` (1.16)
- * tested on 2016-06-10 at 17:39
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `MASS` (7.3-45), `mclust` (5.2), `robustDA` (1.1), `Rsolnp` (1.16)
+ * tested on 2016-09-06 at 11:55
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `MASS` (7.3-45), `mclust` (5.2), `robustDA` (1.1), `Rsolnp` (1.16)
- * tested on 2016-06-12 at 13:18
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `MASS` (7.3-45), `mclust` (5.2), `robustDA` (1.1), `Rsolnp` (1.16)
+ * tested on 2016-09-08 at 10:58
 
 
 Results:
@@ -38,16 +38,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.55s (new) 4.36s
+Execution times: (old) 5.1s (new) 4.83s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -64,16 +59,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.37s (new) 5.29s
+Execution times: (old) 5.45s (new) 5.14s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -90,7 +80,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.23m (new) 1.19m
+Execution times: (old) 1.28m (new) 1.23m
 
 Test Results:
 
@@ -111,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.95s (new) 1.11s
+Execution times: (old) 0.98s (new) 0.96s
 
 Test Results:
 
@@ -123,85 +113,37 @@ Test Results:
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 90.4% (452/500)
-        newer
-older    Class1 Class2
-  Class1    294     31
-  Class2     17    158
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_none_prob`
 
 Object class(es): `data.frame`
 
- * ***UNequal results***: differences (o-n):
-<pre>
-     Class1               Class2          
- Min.   :-0.9999942   Min.   :-0.9999944  
- 1st Qu.: 0.0000000   1st Qu.:-0.0005471  
- Median : 0.0000000   Median : 0.0000000  
- Mean   : 0.0248565   Mean   :-0.0248565  
- 3rd Qu.: 0.0005471   3rd Qu.: 0.0000000  
- Max.   : 0.9999944   Max.   : 0.9999942  
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_pred`
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 90.4% (452/500)
-        newer
-older    Class1 Class2
-  Class1    294     31
-  Class2     17    158
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_pred_form`
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 90.4% (452/500)
-        newer
-older    Class1 Class2
-  Class1    294     31
-  Class2     17    158
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_prob`
 
 Object class(es): `data.frame`
 
- * ***UNequal results***: differences (o-n):
-<pre>
-     Class1               Class2          
- Min.   :-0.9999942   Min.   :-0.9999944  
- 1st Qu.: 0.0000000   1st Qu.:-0.0005471  
- Median : 0.0000000   Median : 0.0000000  
- Mean   : 0.0248565   Mean   :-0.0248565  
- 3rd Qu.: 0.0005471   3rd Qu.: 0.0000000  
- Max.   : 0.9999944   Max.   : 0.9999942  
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_prob_form`
 
 Object class(es): `data.frame`
 
- * ***UNequal results***: differences (o-n):
-<pre>
-     Class1               Class2          
- Min.   :-0.9999942   Min.   :-0.9999944  
- 1st Qu.: 0.0000000   1st Qu.:-0.0005471  
- Median : 0.0000000   Median : 0.0000000  
- Mean   : 0.0248565   Mean   :-0.0248565  
- 3rd Qu.: 0.0005471   3rd Qu.: 0.0000000  
- Max.   : 0.9999944   Max.   : 0.9999942  
-</pre>
+ * _Equal results_
 
 **Test Case**: `levels`
 

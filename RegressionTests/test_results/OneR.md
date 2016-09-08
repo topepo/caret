@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `RWeka` (0.4-24)
- * tested on 2016-06-10 at 17:26
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `RWeka` (0.4-29)
+ * tested on 2016-09-06 at 11:40
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `RWeka` (0.4-24)
- * tested on 2016-06-12 at 13:01
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `RWeka` (0.4-29)
+ * tested on 2016-09-08 at 10:43
 
 
 Results:
@@ -38,24 +38,11 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.98s (new) 0.96s
+Execution times: (old) 1.24s (new) 1.3s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean 14.41
-      min  14.41
-      max  14.41
-    correlation:  NA 
-
- parameter ROC_new ROC_old Diff Flag
-      none   0.588  0.5139 14.4    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -72,24 +59,11 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 2.2s (new) 2.18s
+Execution times: (old) 2.09s (new) 2.44s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean 14.41
-      min  14.41
-      max  14.41
-    correlation:  NA 
-
- parameter ROC_new ROC_old Diff Flag
-      none   0.588  0.5139 14.4    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -106,16 +80,11 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 5.51s (new) 5.44s
+Execution times: (old) 5.71s (new) 6.37s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -132,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.5s (new) 0.54s
+Execution times: (old) 0.55s (new) 0.55s
 
 Test Results:
 

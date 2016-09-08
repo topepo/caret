@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `kernlab` (0.9-24)
- * tested on 2016-06-10 at 17:15
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `kernlab` (0.9-24)
+ * tested on 2016-09-06 at 11:30
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `kernlab` (0.9-24)
- * tested on 2016-06-12 at 12:50
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `kernlab` (0.9-24)
+ * tested on 2016-09-08 at 10:27
 
 
 Results:
@@ -35,10 +35,10 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Grid search
  * Pre-processing: centered (7), scaled (7)  
- * 1 tuning parameter combination was evaluated
+ * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.14s (new) 3.14s
+Execution times: (old) 16.4s (new) 15.79s
 
 Test Results:
 
@@ -55,10 +55,10 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Grid search
  * Pre-processing: centered (7), scaled (7)  
- * 1 tuning parameter combination was evaluated
+ * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.17s (new) 4.01s
+Execution times: (old) 17.93s (new) 17.25s
 
 Test Results:
 
@@ -75,10 +75,10 @@ Model Configuration:
  * Resampling: Leave-One-Out Cross-Validation
  * Grid search
  * Pre-processing: centered (7), scaled (7)  
- * 1 tuning parameter combination was evaluated
+ * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.46m (new) 1.41m
+Execution times: (old) 13.15m (new) 13.01m
 
 Test Results:
 
@@ -98,7 +98,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.31s (new) 1.34s
+Execution times: (old) 1.36s (new) 1.47s
 
 Test Results:
 
@@ -148,7 +148,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 8.14s (new) 7.98s
+Execution times: (old) 8.46s (new) 8.3s
 
 Test Results:
 

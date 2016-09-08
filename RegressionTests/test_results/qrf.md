@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `quantregForest` (1.3-5), `randomForest` (4.6-12), `RColorBrewer` (1.1-2)
- * tested on 2016-06-10 at 17:34
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `quantregForest` (1.3-5), `randomForest` (4.6-12), `RColorBrewer` (1.1-2)
+ * tested on 2016-09-06 at 11:51
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `quantregForest` (1.3-5), `randomForest` (4.6-12), `RColorBrewer` (1.1-2)
- * tested on 2016-06-12 at 13:12
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `quantregForest` (1.3-5), `randomForest` (4.6-12), `RColorBrewer` (1.1-2)
+ * tested on 2016-09-08 at 10:52
 
 
 Results:
@@ -38,7 +38,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.92s (new) 1.01s
+Execution times: (old) 1.17s (new) 1.14s
 
 Test Results:
 
@@ -58,7 +58,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.85s (new) 1.79s
+Execution times: (old) 1.62s (new) 1.52s
 
 Test Results:
 
@@ -78,7 +78,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.97s (new) 5.57s
+Execution times: (old) 6.02s (new) 5.84s
 
 Test Results:
 
@@ -98,7 +98,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.48s (new) 0.51s
+Execution times: (old) 0.53s (new) 0.51s
 
 Test Results:
 
@@ -136,7 +136,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.96s (new) 1.12s
+Execution times: (old) 1s (new) 0.97s
 
 Test Results:
 

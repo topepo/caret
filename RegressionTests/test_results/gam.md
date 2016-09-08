@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `mgcv` (1.8-12), `nlme` (3.1-127)
- * tested on 2016-06-10 at 16:59
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `mgcv` (1.8-13), `nlme` (3.1-128)
+ * tested on 2016-09-06 at 11:14
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `mgcv` (1.8-12), `nlme` (3.1-127)
- * tested on 2016-06-12 at 12:35
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `mgcv` (1.8-13), `nlme` (3.1-128)
+ * tested on 2016-09-08 at 10:10
 
 
 Results:
@@ -38,16 +38,11 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.73s (new) 1.57s
+Execution times: (old) 1.7s (new) 2.3s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -64,16 +59,11 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.98s (new) 1.83s
+Execution times: (old) 2.06s (new) 3.09s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -90,16 +80,11 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.86s (new) 2.41s
+Execution times: (old) 2.43s (new) 3.11s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -122,7 +107,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 37.32s (new) 35.32s
+Execution times: (old) 45.13s (new) 53.53s
 
 Test Results:
 
@@ -143,7 +128,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.88s (new) 0.88s
+Execution times: (old) 1.26s (new) 1.1s
 
 Test Results:
 
@@ -206,7 +191,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.47s (new) 1.48s
+Execution times: (old) 1.42s (new) 2.07s
 
 Test Results:
 
@@ -232,7 +217,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 14.27s (new) 14.09s
+Execution times: (old) 20.8s (new) 21.64s
 
 Test Results:
 
@@ -252,7 +237,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.66s (new) 1.74s
+Execution times: (old) 2.36s (new) 2.4s
 
 Test Results:
 
@@ -272,7 +257,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.77s (new) 1.81s
+Execution times: (old) 2.47s (new) 2.43s
 
 Test Results:
 
@@ -298,7 +283,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.77s (new) 7.67s
+Execution times: (old) 11.08s (new) 11.38s
 
 Test Results:
 
@@ -318,7 +303,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.57s (new) 0.55s
+Execution times: (old) 0.73s (new) 0.79s
 
 Test Results:
 
@@ -362,7 +347,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.59s (new) 1.55s
+Execution times: (old) 2.43s (new) 2.27s
 
 Test Results:
 

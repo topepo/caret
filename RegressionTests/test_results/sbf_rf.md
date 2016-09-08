@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68)
- * tested on 2016-06-10 at 17:43
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71)
+ * tested on 2016-09-06 at 12:00
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70)
- * tested on 2016-06-12 at 13:24
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72)
+ * tested on 2016-09-08 at 11:04
 
 
 Results:
@@ -35,7 +35,7 @@ Model Configuration:
  * Non-formula method
 
 
-Execution times: (old) 0.9s (new) 0.87s
+Execution times: (old) 0.72s (new) 0.67s
 
 Test Results:
 
@@ -52,7 +52,7 @@ Model Configuration:
  * Non-formula method
 
 
-Execution times: (old) 0.55s (new) 0.49s
+Execution times: (old) 0.54s (new) 0.47s
 
 Test Results:
 
@@ -69,7 +69,7 @@ Model Configuration:
  * Formula method
 
 
-Execution times: (old) 0.68s (new) 0.67s
+Execution times: (old) 0.7s (new) 0.6s
 
 Test Results:
 
@@ -86,7 +86,7 @@ Model Configuration:
  * Formula method
 
 
-Execution times: (old) 0.56s (new) 0.59s
+Execution times: (old) 0.6s (new) 0.52s
 
 Test Results:
 
@@ -121,7 +121,7 @@ Model Configuration:
  * Non-formula method
 
 
-Execution times: (old) 5.93s (new) 5.65s
+Execution times: (old) 5.61s (new) 5.3s
 
 Test Results:
 
@@ -138,7 +138,7 @@ Model Configuration:
  * Non-formula method
 
 
-Execution times: (old) 3.92s (new) 3.91s
+Execution times: (old) 3.9s (new) 3.92s
 
 Test Results:
 
@@ -155,7 +155,7 @@ Model Configuration:
  * Formula method
 
 
-Execution times: (old) 7.91s (new) 7.65s
+Execution times: (old) 7.48s (new) 7.14s
 
 Test Results:
 
@@ -172,7 +172,7 @@ Model Configuration:
  * Formula method
 
 
-Execution times: (old) 4.5s (new) 4.37s
+Execution times: (old) 4.22s (new) 4s
 
 Test Results:
 

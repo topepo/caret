@@ -9,17 +9,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `plyr` (1.8.4), `randomForest` (4.6-12)
- * tested on 2016-06-10 at 17:37
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71), `plyr` (1.8.4), `randomForest` (4.6-12)
+ * tested on 2016-09-06 at 11:53
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `plyr` (1.8.4), `randomForest` (4.6-12)
- * tested on 2016-06-12 at 13:15
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72), `plyr` (1.8.4), `randomForest` (4.6-12)
+ * tested on 2016-09-08 at 10:56
 
 
 Results:
@@ -35,7 +35,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 20
 
 
-Execution times: (old) 1.72s (new) 1.92s
+Execution times: (old) 1.83s (new) 1.67s
 
 Test Results:
 
@@ -52,7 +52,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15
 
 
-Execution times: (old) 1.32s (new) 1.29s
+Execution times: (old) 1.38s (new) 1.31s
 
 Test Results:
 
@@ -69,7 +69,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 22
 
 
-Execution times: (old) 1.28s (new) 1.24s
+Execution times: (old) 1.31s (new) 1.23s
 
 Test Results:
 
@@ -86,7 +86,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 17
 
 
-Execution times: (old) 1.34s (new) 1.3s
+Execution times: (old) 1.39s (new) 1.3s
 
 Test Results:
 
@@ -121,7 +121,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 20
 
 
-Execution times: (old) 20.01s (new) 19.44s
+Execution times: (old) 21.11s (new) 19.49s
 
 Test Results:
 
@@ -138,7 +138,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15
 
 
-Execution times: (old) 20.03s (new) 19.3s
+Execution times: (old) 21.23s (new) 19.63s
 
 Test Results:
 
@@ -155,7 +155,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 22
 
 
-Execution times: (old) 30.32s (new) 30.55s
+Execution times: (old) 31.88s (new) 30.39s
 
 Test Results:
 
@@ -172,7 +172,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 17
 
 
-Execution times: (old) 20.49s (new) 19.97s
+Execution times: (old) 19.46s (new) 18.14s
 
 Test Results:
 

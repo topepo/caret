@@ -9,15 +9,15 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68)
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-71)
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70)
+ * R Under development (unstable) (2016-07-31 r71015)
+ * `caret` (6.0-72)
 
 
 Results:
