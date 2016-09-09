@@ -1,4 +1,3 @@
-
 subsemble_index <- function(y, J = 2, V = 10){
   dat <- data.frame(y = y, index = seq(along = y))
   outer_index <- sample(1:J, size = nrow(dat), replace = TRUE)
@@ -360,7 +359,32 @@ get_resample_perf.gafs <- function(x) {
 }
 
 
-#' @export
+
+
+#' Sequences of Variables for Tuning
+#' 
+#' This function generates a sequence of \code{mtry} values for random forests.
+#' 
+#' If the number of predictors is less than 500, a simple sequence of values of
+#' length \code{len} is generated between 2 and \code{p}. For larger numbers of
+#' predictors, the sequence is created using \code{log2} steps.
+#' 
+#' If \code{len = 1}, the defaults from the \code{randomForest} package are
+#' used.
+#' 
+#' @param p The number of predictors
+#' @param classification Is the outcome a factor (\code{classification = TRUE}
+#' or numeric?)
+#' @param len The number of \code{mtry} values to generate.
+#' @return a numeric vector
+#' @author Max Kuhn
+#' @keywords models
+#' @examples
+#' 
+#' var_seq(p = 100, len = 10)
+#' var_seq(p = 600, len = 10)
+#' 
+#' @export var_seq
 var_seq <- function(p, classification = FALSE, len = 3) {
   if(len == 1) {
     tuneSeq <- if(classification) max(floor(p/3), 1) else floor(sqrt(p))
@@ -455,17 +479,19 @@ check_samp_list <- function(x) {
   invisible(NULL)
 }
 
-#' @title Get sampling info from a train model
-#'
-#' @description Placeholder.
-#'
-#' @details Placeholder.
-#'
+
+
+#' Get sampling info from a train model
+#' 
+#' Placeholder.
+#' 
+#' Placeholder.
+#' 
 #' @param method Modeling method.
 #' @param regex Whether to use regex matching.
 #' @param ... additional arguments to passed to grepl.
 #' @return A list
-#' @export
+#' @export getSamplingInfo
 getSamplingInfo <- function(method = NULL, regex = TRUE, ...) {
   load(system.file("models", "sampling.RData", package = "caret"))
   if (!is.null(method)) {
