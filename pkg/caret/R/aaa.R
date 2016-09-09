@@ -18,6 +18,26 @@
 
 #' @useDynLib caret
 #' @import methods plyr reshape2 ggplot2 lattice nlme
+NULL
+
+
+#' Blood Brain Barrier Data
+#' @name BloodBrain
+#' @docType data
+#' @aliases BloodBrain bbbDescr logBBB
+#' @description Mente and Lombardo (2005) develop models to predict the log of the ratio of the concentration of a compound in the brain and the concentration in blood. For each compound, they computed three sets of molecular descriptors: MOE 2D, rule-of-five and Charge Polar Surface Area (CPSA). In all, 134 descriptors were calculated. Included in this package are 208 non-proprietary literature compounds. The vector \code{logBBB} contains the concentration ratio and the data fame \code{bbbDescr} contains the descriptor values.
+#' @usage data(BloodBrain)
+#'
+#' @return
+#' \item{bbbDescr}{data frame of chemical descriptors}
+#' \item{logBBB}{vector of assay results}
+#'
+#' @references Mente, S.R. and Lombardo, F. (2005). A recursive-partitioning model for blood-brain barrier permeation,
+#' \emph{Journal of Computer-Aided Molecular Design}, Vol. 19, pg. 465--481.
+#'
+#' @keywords datasets
+NULL
+
 
 ###################################################################
 ## Global Variables
