@@ -53,7 +53,26 @@ jack_sim <- function(a, b) {
   sum(a ==1 & b ==1)/(sum(a == 1 & b == 0)+sum(a == 0 & b == 1)+sum(a ==1 & b ==1))*100
 }
 
-#' @export
+
+
+#' Convert indicies to a binary vector
+#' 
+#' The function performs the opposite of \code{which} converting a set of
+#' integers to a binary vector
+#' 
+#' 
+#' @param x a vector of integers
+#' @param vars the number of possible locations
+#' @param sign a lgical; when true the data are encoded as -1/+1, and 0/1
+#' otherwise
+#' @return a numeric vector
+#' @author Max Kuhn
+#' @examples
+#' 
+#' index2vec(x = 1:2, vars = 5)
+#' index2vec(x = 1:2, vars = 5, sign = TRUE)
+#' 
+#' @export index2vec
 index2vec <- function(x, vars, sign = FALSE) {
   bin <- rep(0, vars)
   bin[x] <- 1

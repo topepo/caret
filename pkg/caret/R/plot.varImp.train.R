@@ -1,6 +1,28 @@
-#' @importFrom stats as.formula
-#' @importFrom utils stack
-#' @export
+#' Plotting variable importance measures
+#' 
+#' This function produces lattice and ggplot plots of objects with class
+#' "varImp.train". More info will be forthcoming.
+#' 
+#' For models where there is only one importance value, such a regression
+#' models, a "Pareto-type" plot is produced where the variables are ranked by
+#' their importance and a needle-plot is used to show the top variables.
+#' Horizontal bar charts are used for \code{ggplot}.
+#' 
+#' When there is more than one importance value per predictor, the same plot is
+#' produced within conditioning panels for each class. The top predictors are
+#' sorted by their average importance.
+#' 
+#' @aliases plot.varImp.train ggplot.varImp.train
+#' @param x,data an object with class \code{varImp}.
+#' @param top a scalar numeric that specifies the number of variables to be
+#' displayed (in order of importance)
+#' @param \dots arguments to pass to the lattice plot function
+#' (\code{\link[lattice:xyplot]{dotplot}} and \code{\link{panel.needle}})
+#' @param mapping,environment unused arguments to make consistent with
+#' \pkg{ggplot2} generic method
+#' @return a lattice plot object
+#' @author Max Kuhn
+#' @keywords hplot
 "plot.varImp.train" <-
 function(x, top = dim(x$importance)[1],  ...)
 {  

@@ -46,7 +46,91 @@ ga_func_check <- function(x) {
 }
 
 
-#' @export
+
+
+#' Ancillary genetic algorithm functions
+#' 
+#' Built-in functions related to genetic algorithms
+#' 
+#' These functions are used with the \code{functions} argument of the
+#' \code{\link{gafsControl}} function. More information on the details of these
+#' functions are at \url{http://topepo.github.io/caret/GA.html}.
+#' 
+#' Most of the \code{gafs_*} functions are based on those from the GA package
+#' by Luca Scrucca. These functions here are small re-writes to work outside of
+#' the GA package.
+#' 
+#' The objects \code{caretGA}, \code{rfGA} and \code{treebagGA} are example
+#' lists that can be used with the \code{functions} argument of
+#' \code{\link{gafsControl}}.
+#' 
+#' In the case of \code{caretGA}, the \code{...} structure of
+#' \code{\link{gafs}} passes through to the model fitting routine. As a
+#' consequence, the \code{\link{train}} function can easily be accessed by
+#' passing important arguments belonging to \code{\link{train}} to
+#' \code{\link{gafs}}. See the examples below. By default, using \code{caretGA}
+#' will used the resampled performance estimates produced by
+#' \code{\link{train}} as the internal estimate of fitness.
+#' 
+#' For \code{rfGA} and \code{treebagGA}, the \code{randomForest} and
+#' \code{bagging} functions are used directly (i.e. \code{\link{train}} is not
+#' used). Arguments to either of these functions can also be passed to them
+#' though the \code{\link{gafs}} call (see examples below). For these two
+#' functions, the internal fitness is estimated using the out-of-bag estimates
+#' naturally produced by those functions. While faster, this limits the user to
+#' accuracy or Kappa (for classification) and RMSE and R-squared (for
+#' regression).
+#' 
+#' @aliases gafs_initial gafs_lrSelection gafs_rwSelection gafs_tourSelection
+#' gafs_uCrossover gafs_spCrossover gafs_raMutation caretGA rfGA treebagGA
+#' @param vars number of possible predictors
+#' @param popSize the population size passed into \code{\link{gafs}}
+#' @param population a binary matrix of the current subsets with predictors in
+#' columns and individuals in rows
+#' @param fitness a vector of fitness values
+#' @param parent,parents integer(s) for which chromosomes are altered
+#' @param r,q,k tuning parameters for the specific selection operator
+#' @param \dots not currently used
+#' @return The return value depends on the function.
+#' @author Luca Scrucca, \code{gafs_initial}, \code{caretGA}, \code{rfGA} and
+#' \code{treebagGA} by Max Kuhn
+#' @seealso \code{\link{gafs}}, \code{\link{gafsControl}}
+#' @references Scrucca L (2013). GA: A Package for Genetic Algorithms in R.
+#' Journal of Statistical Software, 53(4), 1-37.
+#' 
+#' \url{cran.r-project.org/web/packages/GA/}
+#' 
+#' \url{http://topepo.github.io/caret/GA.html}
+#' @examples
+#' 
+#' pop <- gafs_initial(vars = 10, popSize = 10)
+#' pop
+#' 
+#' gafs_lrSelection(population = pop, fitness = 1:10)
+#' 
+#' gafs_spCrossover(population = pop, fitness = 1:10, parents = 1:2)
+#' 
+#' 
+#' \dontrun{
+#' ## Hypothetical examples
+#' lda_ga <- gafs(x = predictors,
+#'                y = classes,
+#'                gafsControl = gafsControl(functions = caretGA),
+#'                ## now pass arguments to `train`
+#'                method = "lda",
+#'                metric = "Accuracy"
+#'                trControl = trainControl(method = "cv", classProbs = TRUE))
+#' 
+#' rf_ga <- gafs(x = predictors,
+#'               y = classes,
+#'               gafsControl = gafsControl(functions = rfGA),
+#'               ## these are arguments to `randomForest`
+#'               ntree = 1000,
+#'               importance = TRUE)
+#' 	}
+#' 
+#' 
+#' @export gafs_initial
 gafs_initial <- function (vars, popSize, ...)  {
   x <- matrix(NA, nrow = popSize, ncol = vars)
   probs <- seq(.9, .1, length = popSize)
@@ -638,7 +722,47 @@ print.gafs <- function (x, top = 5,
   invisible(x)
 }
 
-#' @export
+
+
+#' Predict new samples
+#' 
+#' Predict new samples using \code{\link{safs}} and \code{\link{gafs}} objects.
+#' 
+#' Only the predictors listed in \code{object$optVariables} are required.
+#' 
+#' @aliases predict.gafs predict.safs
+#' @param object an object of class \code{\link{safs}} or \code{\link{gafs}}
+#' @param newdata a data frame or matrix of predictors.
+#' @param \dots not currently used
+#' @return The type of result depends on what was specified in
+#' \code{object$control$functions$predict}.
+#' @author Max Kuhn
+#' @seealso \code{\link{safs}}, \code{\link{gafs}}
+#' @keywords multivariate
+#' @examples
+#' 
+#' \dontrun{
+#' 
+#' set.seed(1)
+#' train_data <- twoClassSim(100, noiseVars = 10)
+#' test_data  <- twoClassSim(10,  noiseVars = 10)
+#' 
+#' ## A short example 
+#' ctrl <- safsControl(functions = rfSA, 
+#'                     method = "cv",
+#'                     number = 3)
+#' 
+#' rf_search <- safs(x = train_data[, -ncol(train_data)],
+#'                   y = train_data$Class,
+#'                   iters = 3,
+#'                   safsControl = ctrl)
+#' 
+#' rf_search
+#' 
+#' predict(rf_search, train_data)  
+#' }
+#' 
+#' @export predict.gafs
 predict.gafs <- function (object, newdata, ...) {
   newdata <- newdata[, object$optVariables, drop = FALSE]
   object$control$functions$pred(object$fit, newdata)  
@@ -650,9 +774,132 @@ predict.gafs <- function (object, newdata, ...) {
 #' @export
 gafs <- function (x, ...) UseMethod("gafs")
 
-#' @importFrom utils getFromNamespace
-#' @importFrom stats runif
-#' @export
+
+
+#' Genetic algorithm feature selection
+#' 
+#' Supervised feature selection using genetic algorithms
+#' 
+#' \code{\link{gafs}} conducts a supervised binary search of the predictor
+#' space using a genetic algorithm. See Mitchell (1996) and Scrucca (2013) for
+#' more details on genetic algorithms.
+#' 
+#' This function conducts the search of the feature space repeatedly within
+#' resampling iterations. First, the training data are split be whatever
+#' resampling method was specified in the control function. For example, if
+#' 10-fold cross-validation is selected, the entire genetic algorithm is
+#' conducted 10 separate times. For the first fold, nine tenths of the data are
+#' used in the search while the remaining tenth is used to estimate the
+#' external performance since these data points were not used in the search.
+#' 
+#' During the genetic algorithm, a measure of fitness is needed to guide the
+#' search. This is the internal measure of performance. During the search, the
+#' data that are available are the instances selected by the top-level
+#' resampling (e.g. the nine tenths mentioned above). A common approach is to
+#' conduct another resampling procedure. Another option is to use a holdout set
+#' of samples to determine the internal estimate of performance (see the
+#' holdout argument of the control function). While this is faster, it is more
+#' likely to cause overfitting of the features and should only be used when a
+#' large amount of training data are available. Yet another idea is to use a
+#' penalized metric (such as the AIC statistic) but this may not exist for some
+#' metrics (e.g. the area under the ROC curve).
+#' 
+#' The internal estimates of performance will eventually overfit the subsets to
+#' the data. However, since the external estimate is not used by the search, it
+#' is able to make better assessments of overfitting. After resampling, this
+#' function determines the optimal number of generations for the GA.
+#' 
+#' Finally, the entire data set is used in the last execution of the genetic
+#' algorithm search and the final model is built on the predictor subset that
+#' is associated with the optimal number of generations determined by
+#' resampling (although the update function can be used to manually set the
+#' number of generations).
+#' 
+#' This is an example of the output produced when \code{gafsControl(verbose =
+#' TRUE)} is used:
+#' 
+#' \preformatted{Fold2 1 0.715 (13) Fold2 2 0.715->0.737 (13->17, 30.4%) *
+#' Fold2 3 0.737->0.732 (17->14, 24.0%) Fold2 4 0.737->0.769 (17->23, 25.0%) *}
+#' 
+#' For the second resample (e.g. fold 2), the best subset across all
+#' individuals tested in the first generation contained 13 predictors and was
+#' associated with a fitness value of 0.715. The second generation produced a
+#' better subset containing 17 samples with an associated fitness values of
+#' 0.737 (and improvement is symbolized by the \code{*}. The percentage listed
+#' is the Jaccard similarity between the previous best individual (with 13
+#' predictors) and the new best. The third generation did not produce a better
+#' fitness value but the fourth generation did.
+#' 
+#' The search algorithm can be parallelized in several places: \enumerate{
+#' \item each externally resampled GA can be run independently (controlled by
+#' the \code{allowParallel} option of \code{\link{gafsControl}}) \item within a
+#' GA, the fitness calculations at a particular generation can be run in
+#' parallel over the current set of individuals (see the \code{genParallel}
+#' option in \code{\link{gafsControl}}) \item if inner resampling is used,
+#' these can be run in parallel (controls depend on the function used. See, for
+#' example, \code{\link[caret]{trainControl}}) \item any parallelization of the
+#' individual model fits. This is also specific to the modeling function.  }
+#' 
+#' It is probably best to pick one of these areas for parallelization and the
+#' first is likely to produces the largest decrease in run-time since it is the
+#' least likely to incur multiple re-starting of the worker processes. Keep in
+#' mind that if multiple levels of parallelization occur, this can effect the
+#' number of workers and the amount of memory required exponentially.
+#' 
+#' @aliases gafs.default gafs
+#' @param x an object where samples are in rows and features are in columns.
+#' This could be a simple matrix, data frame or other type (e.g. sparse
+#' matrix). See Details below
+#' @param y a numeric or factor vector containing the outcome for each sample
+#' @param iters number of search iterations
+#' @param popSize number of subsets evaluated at each iteration
+#' @param pcrossover the crossover probability
+#' @param pmutation the mutation probability
+#' @param elite the number of best subsets to survive at each generation
+#' @param suggestions a binary matrix of subsets strings to be included in the
+#' initial population. If provided the number of columns must match the number
+#' of columns in \code{x}
+#' @param differences a logical: should the difference in fitness values with
+#' and without each predictor be calculated?
+#' @param gafsControl a list of values that define how this function acts. See
+#' \code{\link{gafsControl}} and URL.
+#' @param list() arguments passed to the classification or regression routine
+#' specified in the function \code{gafsControl$functions$fit}
+#' @return an object of class \code{gafs}
+#' @author Max Kuhn, Luca Scrucca (for GA internals)
+#' @seealso \code{\link{gafsControl}}, \code{\link{predict.gafs}},
+#' \code{\link{caretGA}}, \code{\link{rfGA}} \code{\link{treebagGA}}
+#' @references Kuhn M and Johnson K (2013), Applied Predictive Modeling,
+#' Springer, Chapter 19 \url{http://appliedpredictivemodeling.com}
+#' 
+#' Scrucca L (2013). GA: A Package for Genetic Algorithms in R. Journal of
+#' Statistical Software, 53(4), 1-37. \url{www.jstatsoft.org/v53/i04}
+#' 
+#' Mitchell M (1996), An Introduction to Genetic Algorithms, MIT Press.
+#' 
+#' \url{http://en.wikipedia.org/wiki/Jaccard_index}
+#' @keywords models
+#' @examples
+#' 
+#' \dontrun{
+#' set.seed(1)
+#' train_data <- twoClassSim(100, noiseVars = 10)
+#' test_data  <- twoClassSim(10,  noiseVars = 10)
+#' 
+#' ## A short example 
+#' ctrl <- gafsControl(functions = rfGA, 
+#'                     method = "cv",
+#'                     number = 3)
+#' 
+#' rf_search <- gafs(x = train_data[, -ncol(train_data)],
+#'                   y = train_data$Class,
+#'                   iters = 3,
+#'                   gafsControl = ctrl)
+#' 
+#' rf_search  
+#'   }
+#' 
+#' @export gafs.default
 "gafs.default" <-
   function(x, y,
            iters = 10,
@@ -861,8 +1108,56 @@ gafs <- function (x, ...) UseMethod("gafs")
 
 ###################################################################
 ##
-#' @importFrom stats update
-#' @export
+
+
+#' Plot Method for the gafs and safs Classes
+#' 
+#' Plot the performance values versus search iteration
+#' 
+#' The mean (averaged over the resamples) is plotted against the search
+#' iteration using a scatter plot.
+#' 
+#' When \code{output = "data"}, the unaveraged data are returned with columns
+#' for all the performance metrics and the resample indicator.
+#' 
+#' @aliases plot.safs plot.gafs
+#' @param x an object of class \code{\link{gafs}} or \code{\link{safs}}
+#' @param metric the measure of performance to plot (e.g. RMSE, accuracy, etc)
+#' @param estimate the type of estimate: either "internal" or "external"
+#' @param output either "data", "ggplot" or "lattice"
+#' @param \dots options passed to \code{\link[lattice]{xyplot}}
+#' @return Either a data frame, ggplot object or lattice object
+#' @author Max Kuhn
+#' @seealso \code{\link{gafs}}, \code{\link{safs}},
+#' \code{\link[ggplot2]{ggplot}}, \code{\link[lattice]{xyplot}}
+#' @keywords hplot
+#' @examples
+#' 
+#' \dontrun{
+#' set.seed(1)
+#' train_data <- twoClassSim(100, noiseVars = 10)
+#' test_data  <- twoClassSim(10,  noiseVars = 10)
+#' 
+#' ## A short example 
+#' ctrl <- safsControl(functions = rfSA, 
+#'                     method = "cv",
+#'                     number = 3)
+#' 
+#' rf_search <- safs(x = train_data[, -ncol(train_data)],
+#'                   y = train_data$Class,
+#'                   iters = 50,
+#'                   safsControl = ctrl)
+#' 
+#' plot(rf_search)
+#' plot(rf_search, 
+#' 	 output = "lattice", 
+#' 	 auto.key = list(columns = 2))
+#' 
+#' plot_data <- plot(rf_search, output = "data")   
+#' summary(plot_data)                 
+#'     }
+#' 
+#' @export plot.gafs
 plot.gafs <- function(x, 
                       metric = x$control$metric["external"], 
                       estimate = c("internal", "external"), 
@@ -1005,7 +1300,38 @@ update.gafs <- function(object, iter, x, y, ...) {
   object  
 }
 
-#' @export
+
+
+#' Variable importances for GAs and SAs
+#' 
+#' Variable importance scores for \code{\link{safs}} and \code{\link{gafs}}
+#' objects.
+#' 
+#' A crude measure of importance is computed for thee two search procedures. At
+#' the end of a search process, the difference in the fitness values is
+#' computed for models with and without each feature (based on the search
+#' history). If a predictor has at least two subsets that include and did not
+#' include the predictor, a t-statistic is computed (otherwise a value of
+#' \code{NA} is assigned to the predictor).
+#' 
+#' This computation is done separately for each resample and the t-statistics
+#' are averaged (\code{NA} values are ignored) and this average is reported as
+#' the importance. If the fitness value should be minimized, the negative value
+#' of the t-statistic is used in the average.
+#' 
+#' As such, the importance score reflects the standardized increase in fitness
+#' that occurs when the predict is included in the subset. Values near zero (or
+#' negative) indicate that the predictor may not be important to the model.
+#' 
+#' @aliases varImp.gafs varImp.safs
+#' @param object an \code{\link{safs}} or \code{\link{gafs}} object
+#' @param metric a metric to compute importance (see Details below)
+#' @param maximize are larger values of the metric better?
+#' @param \dots not currently uses
+#' @return a data frame where the rownames are the predictor names and the
+#' column is the average t-statistic
+#' @author Max Kuhn
+#' @seealso \code{\link{safs}}, \code{\link{gafs}}
 "varImp.gafs" <- function(object, 
                           metric = object$control$metric["external"], 
                           maximize = object$control$maximize["external"],
