@@ -5,6 +5,8 @@
     UseMethod("train")
   }
 
+#' @importFrom stats predict
+#' @importFrom utils object.size flush.console
 #' @export
 train.default <- function(x, y, 
                           method = "rf",
@@ -652,7 +654,7 @@ train.default <- function(x, y,
   
 }
 
-#' @importFrom stats .getXlevels complete.cases contrasts
+#' @importFrom stats .getXlevels complete.cases contrasts model.frame model.matrix model.response model.weights na.fail
 #' @export
 train.formula <- function (form, data, ..., weights, subset, na.action = na.fail, contrasts = NULL)  {
   m <- match.call(expand.dots = FALSE)
@@ -667,6 +669,7 @@ train.formula <- function (form, data, ..., weights, subset, na.action = na.fail
   
   if(!("na.action" %in% names(m))) m$na.action <- quote(na.fail)
   
+  # do we need the double colon here?
   m[[1]] <- quote(stats::model.frame)
   m <- eval.parent(m)
   if(nrow(m) < 1) stop("Every row has at least one missing value were found")
@@ -700,6 +703,7 @@ train.formula <- function (form, data, ..., weights, subset, na.action = na.fail
 #' @export
 summary.train <- function(object, ...) summary(object$finalModel, ...)
 
+#' @importFrom stats predict residuals
 #' @export
 residuals.train <- function(object, ...) {
   if(object$modelType != "Regression") stop("train() only produces residuals on numeric outcomes")
@@ -712,6 +716,7 @@ residuals.train <- function(object, ...) {
   resid
 }
 
+#' @importFrom stats predict fitted
 #' @export
 fitted.train <- function(object, ...) {
   prd <- fitted(object$finalModel)

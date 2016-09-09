@@ -14,7 +14,7 @@ ppMethods <- c("BoxCox", "YeoJohnson", "expoTrans",
 #' @export
 preProcess <- function(x, ...) UseMethod("preProcess")
 
-#' @importFrom stats complete.cases
+#' @importFrom stats complete.cases median sd prcomp
 #' @importFrom car powerTransform ylpower
 #' @export
 preProcess.default <- function(x, method = c("center", "scale"),

@@ -19,6 +19,7 @@ progress <- function(x, names, iter, start = TRUE)
   cat(text, "\n")
 }
 
+#' @importFrom stats sd
 #' @export
 MeanSD <- function(x, exclude = NULL)
 {
@@ -44,6 +45,7 @@ expandParameters <- function(fixed, seq)
   out
 }
 
+#' @importFrom utils head
 #' @importFrom stats complete.cases
 #' @import foreach
 nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing = FALSE, ...)

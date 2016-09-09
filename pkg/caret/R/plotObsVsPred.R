@@ -1,4 +1,5 @@
 #' @importFrom grDevices extendrange
+#' @importFrom utils stack
 #' @export
 plotObsVsPred <- function(object, equalRanges = TRUE, ...)
 {

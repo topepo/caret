@@ -1,3 +1,4 @@
+#' @importFrom stats sd
 #' @export
 resampleSummary <- function(obs, resampled, index = NULL, keepData = TRUE)
 {

@@ -1,4 +1,5 @@
 #' @importFrom stats complete.cases
+#' @importFrom utils flush.console
 #' @export
 rfeIter <- function(x, y,
                     testX, testY, sizes,
@@ -117,6 +118,7 @@ rfeIter <- function(x, y,
 #' @export
 rfe <- function (x, ...) UseMethod("rfe")
 
+#' @importFrom stats predict runif
 #' @export
 "rfe.default" <-
   function(x, y,
@@ -272,7 +274,7 @@ rfe <- function (x, ...) UseMethod("rfe")
   out
 }
 
-#' @importFrom stats .getXlevels contrasts
+#' @importFrom stats .getXlevels contrasts model.matrix model.response
 #' @export
 rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) 
 {
@@ -433,6 +435,7 @@ pickVars <- function(y, size)
   }
 
 
+#' @importFrom stats predict
 #' @export
 caretFuncs <- list(summary = defaultSummary,
                    fit = function(x, y, first, last, ...) train(x, y, ...),
@@ -461,6 +464,7 @@ caretFuncs <- list(summary = defaultSummary,
                    selectVar = pickVars)
 
 ## write a better imp sort function
+#' @importFrom stats predict
 #' @export
 ldaFuncs <- list(summary = defaultSummary,
                  fit = function(x, y, first, last, ...)
@@ -493,6 +497,7 @@ ldaFuncs <- list(summary = defaultSummary,
                  selectVar = pickVars
                  )
 
+#' @importFrom stats predict
 #' @export
 treebagFuncs <- list(summary = defaultSummary,
                      fit = function(x, y, first, last, ...)
@@ -523,7 +528,7 @@ treebagFuncs <- list(summary = defaultSummary,
                      selectVar = pickVars)
 
 
-
+#' @importFrom stats predict
 #' @export
 gamFuncs <- list(summary = defaultSummary,
                  fit = function(x, y, first, last, ...)
@@ -582,6 +587,7 @@ gamFuncs <- list(summary = defaultSummary,
                  selectSize = pickSizeBest,
                  selectVar = pickVars)
 
+#' @importFrom stats predict
 #' @export
 rfFuncs <-  list(summary = defaultSummary,
                  fit = function(x, y, first, last, ...)
@@ -628,6 +634,7 @@ rfFuncs <-  list(summary = defaultSummary,
                  selectSize = pickSizeBest,
                  selectVar = pickVars)
 
+#' @importFrom stats predict lm
 #' @export
 lmFuncs <- list(summary = defaultSummary,
                 fit = function(x, y, first, last, ...)
@@ -657,6 +664,7 @@ lmFuncs <- list(summary = defaultSummary,
                 selectSize = pickSizeBest,
                 selectVar = pickVars)
 
+#' @importFrom stats predict
 #' @export
 nbFuncs <- list(summary = defaultSummary,
                 fit = function(x, y, first, last, ...)
@@ -693,6 +701,8 @@ nbFuncs <- list(summary = defaultSummary,
                 selectSize = pickSizeBest,
                 selectVar = pickVars)
 
+
+#' @importFrom stats predict glm
 #' @export
 lrFuncs <- ldaFuncs
 lrFuncs$fit <- function (x, y, first, last, ...) 
@@ -834,7 +844,7 @@ varImp.rfe <- function(object, drop = FALSE, ...)
     imp[order(-imp$Overall),,drop = FALSE]
   }
 
-#' @importFrom stats .checkMFClasses
+#' @importFrom stats .checkMFClasses delete.response model.frame model.matrix na.omit
 #' @export
 predict.rfe <- function(object, newdata, ...)
   {
