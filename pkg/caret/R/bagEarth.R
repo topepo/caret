@@ -163,8 +163,51 @@
   out
 }
 
-#' @importFrom stats predict
-#' @export
+
+
+#' Predicted values based on bagged Earth and FDA models
+#' 
+#' Predicted values based on bagged Earth and FDA models
+#' 
+#' 
+#' @aliases predict.bagEarth predict.bagFDA
+#' @param object Object of class inheriting from \code{bagEarth}
+#' @param newdata An optional data frame or matrix in which to look for
+#' variables with which to predict.  If omitted, the fitted values are used
+#' (see note below).
+#' @param type The type of prediction. For bagged \code{\link[earth]{earth}}
+#' regression model, \code{type = "response"} will produce a numeric vector of
+#' the usual model predictions. \code{\link[earth]{earth}} also allows the user
+#' to fit generalized linear models. In this case, \code{type = "response"}
+#' produces the inverse link results as a vector. In the case of a binomial
+#' generalized linear model, \code{type = "response"} produces a vector of
+#' probabilities, \code{type = "class"} generates a factor vector and
+#' \code{type = "prob"} produces a two-column matrix with probabilities for
+#' both classes (averaged across the individual models). Similarly, for bagged
+#' \code{\link[mda]{fda}} models, \code{type = "class"} generates a factor
+#' vector and \code{type = "probs"} outputs a matrix of class probabilities.
+#' @param \dots not used
+#' @return a vector of predictions
+#' @note If the predictions for the original training set are needed, there are
+#' two ways to calculate them. First, the original data set can be predicted by
+#' each bagged earth model. Secondly, the predictions from each bootstrap
+#' sample could be used (but are more likely to overfit). If the original call
+#' to \code{bagEarth} or \code{bagFDA} had \code{keepX = TRUE}, the first
+#' method is used, otherwise the values are calculated via the second method.
+#' @author Max Kuhn
+#' @seealso \code{\link{bagEarth}}
+#' @keywords regression
+#' @examples
+#' 
+#' \dontrun{
+#' data(trees)
+#' ## out of bag predictions vs just re-predicting the training set
+#' fit1 <- bagEarth(Volume ~ ., data = trees, keepX = TRUE)
+#' fit2 <- bagEarth(Volume ~ ., data = trees, keepX = FALSE)
+#' hist(predict(fit1) - predict(fit2))
+#' }
+#' 
+#' @export predict.bagEarth
 "predict.bagEarth" <-
   function(object, newdata = NULL, type = "response", ...)
 {
@@ -232,8 +275,33 @@ print.bagEarth <- function (x, ...)
 }
 
 
-#' @importFrom stats quantile
-#' @export
+
+
+#' Summarize a bagged earth or FDA fit
+#' 
+#' The function shows a summary of the results from a bagged earth model
+#' 
+#' The out-of-bag statistics are summarized, as well as the distribution of the
+#' number of model terms and number of variables used across all the bootstrap
+#' samples.
+#' 
+#' @aliases summary.bagEarth summary.bagFDA
+#' @param object an object of class "bagEarth" or "bagFDA"
+#' @param \dots optional arguments (not used)
+#' @return a list with elements \item{modelInfo}{a matrix with the number of
+#' model terms and variables used} \item{oobStat }{a summary of the out-of-bag
+#' statistics} \item{bmarsCall }{the original call to \code{bagEarth}}
+#' @author Max Kuhn
+#' @keywords manip
+#' @examples
+#' 
+#' \dontrun{
+#' data(trees)
+#' fit <- bagEarth(trees[,-3], trees[3])
+#' summary(fit)
+#' }
+#' 
+#' @export summary.bagEarth
 "summary.bagEarth" <-
   function(object, ...)
 {
