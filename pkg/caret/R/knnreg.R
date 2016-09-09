@@ -83,6 +83,7 @@ print.knnreg <- function (x, ...)
   invisible(x)
 }
 
+#' @importFrom stats as.formula
 #' @export
 predict.knnreg <- function (object, newdata, ...) 
 {

@@ -1,3 +1,4 @@
+#' @importFrom stats as.formula
 #' @export
 "plot.train" <-  function(x,
                     plotType = "scatter",

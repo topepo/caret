@@ -186,6 +186,7 @@ sbf <- function (x, ...) UseMethod("sbf")
     out
   }
 
+#' @importFrom stats .getXlevels contrasts
 #' @export
 sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) 
 {
@@ -285,6 +286,7 @@ print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 
 ######################################################################
 ######################################################################
+#' @importFrom stats .checkMFClasses
 #' @export
 predict.sbf <- function(object, newdata = NULL, ...)
 {
@@ -353,6 +355,7 @@ sbfControl <- function(functions = NULL,
 ######################################################################
 ## some built-in functions for certain models
 
+#' @importFrom stats anova
 #' @export
 anovaScores <- function(x, y)
 {
@@ -361,6 +364,7 @@ anovaScores <- function(x, y)
   pv
 }
 
+#' @importFrom stats anova
 #' @export
 gamScores <- function(x, y)
 {
@@ -593,6 +597,7 @@ treebagSBF <- list(summary = defaultSummary,
 ######################################################################
 ## lattice functions
 
+#' @importFrom stats as.formula
 #' @export
 densityplot.sbf <- function(x,
                             data = NULL,
@@ -610,6 +615,7 @@ densityplot.sbf <- function(x,
   densityplot(form, data = data, ...)
 }
 
+#' @importFrom stats as.formula
 #' @export
 histogram.sbf <- function(x,
                           data = NULL,

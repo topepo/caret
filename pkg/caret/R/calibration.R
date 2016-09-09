@@ -55,7 +55,7 @@ print.calibration <- function(x, ...)
   invisible(x)
 }
 
-
+#' @importFrom stats binom.test
 calibCalc <- function(x, class = levels(obs)[1], cuts = 11) {
   if(length(cuts) == 1) {
     num_cuts <- cuts
@@ -94,6 +94,8 @@ calibCalc <- function(x, class = levels(obs)[1], cuts = 11) {
 plot.calibration <- function(x, y = NULL, ...) 
   xyplot(x = x, data = NULL, ...)
 
+#' @importFrom stats as.formula
+#' @importFrom grDevices extendrange
 #' @export
 xyplot.calibration <- function(x, data = NULL, ...){
   lFormula <- "Percent ~ midpoint"

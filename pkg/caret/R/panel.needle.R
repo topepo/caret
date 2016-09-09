@@ -1,3 +1,4 @@
+#' @importFrom grDevices extendrange
 #' @export
 "panel.needle" <-
   function (x, y, horizontal = TRUE, 
