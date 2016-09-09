@@ -55,3 +55,4 @@ Suggests:
     Cubist,
     testthat (>= 0.9.1)
 License: GPL (>= 2)
+RoxygenNote: 5.0.1
