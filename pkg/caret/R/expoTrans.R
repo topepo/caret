@@ -2,6 +2,7 @@
 #' @export
 expoTrans <- function(y, ...) UseMethod("expoTrans")
 
+#' @importFrom stats optim
 #' @export
 expoTrans.default <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method = "Brent", numUnique = 3, ...)
 {
@@ -26,6 +27,7 @@ expoTrans.default <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method
   out
 }
 
+#' @importFrom stats optim
 expoTrans.numeric <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method = "Brent", numUnique = 3, ...)
 {
   requireNamespaceQuietStop("e1071")
@@ -82,6 +84,7 @@ predict.expoTrans <- function(object, newdata, ...)
 manly <- function(x, lambda) 
   if(lambda == 0) x else (exp(lambda*x) - 1)/lambda
 
+#' @importFrom stats var
 manlyLik <- function(lambda, x, neg = FALSE)
 {
   y <- manly(x, lambda)

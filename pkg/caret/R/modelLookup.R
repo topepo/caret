@@ -1,3 +1,4 @@
+#' @importFrom utils install.packages menu
 #' @export
 checkInstall <- function(pkg){
   good <- rep(TRUE, length(pkg))
@@ -76,6 +77,7 @@ modelLookup <- function(model = NULL){
 }
 
 
+#' @importFrom utils installed.packages
 missing_packages <- function(mods = getModelInfo()) {
   libs <- unique(unlist(lapply(mods, function(x) x$library)))
   here <- rownames(installed.packages())

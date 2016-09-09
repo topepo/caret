@@ -1,3 +1,4 @@
+#' @importFrom stats rnorm runif toeplitz binomial
 #' @export
 twoClassSim <- function(n = 100, 
                         intercept = -5,

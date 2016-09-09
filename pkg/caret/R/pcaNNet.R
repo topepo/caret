@@ -8,7 +8,7 @@ pcaNNet <- function (x, ...)
 
 
 # this is a near copy of nnet.formula
-#' @importFrom stats .getXlevels contrasts
+#' @importFrom stats .getXlevels contrasts model.matrix model.response model.weights
 #' @export
 pcaNNet.formula <- function (formula, data, weights, ...,
                              thresh = .99,
@@ -42,6 +42,7 @@ pcaNNet.formula <- function (formula, data, weights, ...,
     res
 }
 
+#' @importFrom stats predict
 #' @export
 pcaNNet.default <- function(x, y, thresh = .99, ...)
   {
@@ -95,7 +96,7 @@ print.pcaNNet <- function (x, ...)
   invisible(x)
 }
 
-#' @importFrom stats .checkMFClasses
+#' @importFrom stats .checkMFClasses delete.response model.frame model.matrix predict na.omit fitted
 #' @export
 predict.pcaNNet <- function(object, newdata, type = c("raw", "class", "prob"), ...)
   {

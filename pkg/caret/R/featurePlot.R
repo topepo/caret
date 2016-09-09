@@ -1,4 +1,6 @@
 
+#' @importFrom stats var
+#' @importFrom utils stack
 #' @export
 "featurePlot" <-
 function(x, y, 

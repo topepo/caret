@@ -1,4 +1,5 @@
 
+#' @importFrom stats predict
 #' @export
 "createModel" <-function(x, y, wts, method, tuneValue, obsLevels, pp = NULL, last = FALSE, sampling = NULL, classProbs, ...) {
   

@@ -1,3 +1,4 @@
+#' @importFrom stats cor
 postResample <- function(pred, obs)
 {
 

@@ -3,6 +3,7 @@ plsda <- function (x, ...)
   UseMethod("plsda")
 
 
+#' @importFrom stats predict
 #' @export
 predict.plsda <- function(object, newdata = NULL, ncomp = NULL, type = "class", ...){
   requireNamespaceQuietStop('pls')
@@ -83,6 +84,7 @@ predict.plsda <- function(object, newdata = NULL, ncomp = NULL, type = "class", 
   out
 }
 
+#' @importFrom stats predict
 #' @export
 plsda.default <- function(x, y, ncomp = 2, probMethod = "softmax", prior = NULL, ...) {
   requireNamespaceQuietStop('pls')

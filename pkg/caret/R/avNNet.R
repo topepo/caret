@@ -5,7 +5,7 @@ avNNet <- function (x, ...)
 
 
 ## this is a near copy of nnet.formula
-#' @importFrom stats .getXlevels contrasts
+#' @importFrom stats .getXlevels contrasts model.matrix model.response model.weights
 #' @export
 avNNet.formula <- function (formula, data, weights, ...,
                             repeats = 5,
@@ -108,7 +108,7 @@ print.avNNet <- function (x, ...)
   invisible(x)
 }
 
-#' @importFrom stats .checkMFClasses
+#' @importFrom stats .checkMFClasses delete.response fitted.values model.frame model.matrix predict na.omit
 #' @export
 predict.avNNet <- function(object, newdata, type = c("raw", "class", "prob"), ...)
   {

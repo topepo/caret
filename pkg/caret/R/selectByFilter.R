@@ -45,6 +45,7 @@ sbfIter <- function(x, y,
 #' @export
 sbf <- function (x, ...) UseMethod("sbf")
   
+#' @importFrom stats predict runif
 #' @export
 "sbf.default" <-
   function(x, y,
@@ -186,7 +187,7 @@ sbf <- function (x, ...) UseMethod("sbf")
     out
   }
 
-#' @importFrom stats .getXlevels contrasts
+#' @importFrom stats .getXlevels contrasts model.matrix model.response
 #' @export
 sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) 
 {
@@ -286,7 +287,7 @@ print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 
 ######################################################################
 ######################################################################
-#' @importFrom stats .checkMFClasses
+#' @importFrom stats .checkMFClasses delete.response model.frame model.matrix na.omit
 #' @export
 predict.sbf <- function(object, newdata = NULL, ...)
 {
@@ -355,7 +356,7 @@ sbfControl <- function(functions = NULL,
 ######################################################################
 ## some built-in functions for certain models
 
-#' @importFrom stats anova
+#' @importFrom stats anova lm
 #' @export
 anovaScores <- function(x, y) {
   if(is.factor(x)) stop("The predictors should be numeric")
@@ -364,7 +365,7 @@ anovaScores <- function(x, y) {
   pv
 }
 
-#' @importFrom stats anova
+#' @importFrom stats anova lm
 #' @export
 gamScores <- function(x, y) {
   if(is.factor(x)) stop("The predictors should be numeric")
@@ -375,6 +376,7 @@ gamScores <- function(x, y) {
   pv
 }
 
+#' @importFrom stats predict
 #' @export
 caretSBF <- list(summary = defaultSummary,
                  fit = function(x, y, ...)
@@ -413,6 +415,7 @@ caretSBF <- list(summary = defaultSummary,
                  filter = function(score, x, y) score <= 0.05
 )
 
+#' @importFrom stats predict
 #' @export
 rfSBF <- list(summary = defaultSummary,
               fit = function(x, y, ...)
@@ -452,6 +455,7 @@ rfSBF <- list(summary = defaultSummary,
               filter = function(score, x, y) score <= 0.05
 )
 
+#' @importFrom stats predict lm
 #' @export
 lmSBF <- list(summary = defaultSummary,
               fit = function(x, y, ...)
@@ -474,6 +478,7 @@ lmSBF <- list(summary = defaultSummary,
               filter = function(score, x, y) score <= 0.05
 )
 
+#' @importFrom stats predict
 #' @export
 ldaSBF <- list(summary = defaultSummary,
                fit = function(x, y, ...)
@@ -509,6 +514,7 @@ ldaSBF <- list(summary = defaultSummary,
                filter = function(score, x, y) score <= 0.05
 )
 
+#' @importFrom stats predict
 #' @export
 nbSBF <- list(summary = defaultSummary,
               fit = function(x, y, ...)
@@ -550,7 +556,7 @@ nbSBF <- list(summary = defaultSummary,
               filter = function(score, x, y) score <= 0.05
 )
 
-
+#' @importFrom stats predict
 #' @export
 treebagSBF <- list(summary = defaultSummary,
                    fit = function(x, y, ...)

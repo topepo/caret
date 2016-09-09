@@ -21,6 +21,7 @@ enumLC.lm <- function(object, ...)
    internalEnumLC(object$qr)
 }
 
+#' @importFrom stats lm
 enumLC.formula <- function(object, ...)
 {
    # create an lm fit object from the formula, and then call

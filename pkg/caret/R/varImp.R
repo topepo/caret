@@ -4,6 +4,7 @@ function(object, ...){
    UseMethod("varImp")
 }
 
+#' @importFrom stats4 coef
 GarsonWeights <- function(object)
   {
     beta <- coef(object)

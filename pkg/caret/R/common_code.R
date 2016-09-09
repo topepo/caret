@@ -1,3 +1,4 @@
+#' @importFrom stats t.test
 get_fitness_differences <- function(pnames, subsets, fitness, label) {
   signs <- lapply(subsets, index2vec, vars = length(pnames))
   signs <- do.call("rbind", signs)
@@ -15,6 +16,7 @@ get_fitness_differences <- function(pnames, subsets, fitness, label) {
   melt(apply(signs, 2, snr, y = fitness))
 }
 
+#' @importFrom stats reshape
 process_diffs <- function(x, pnames) {
   x <- x[!is.null(x)]
   x <- do.call("rbind", x)
