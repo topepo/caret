@@ -1,5 +1,8 @@
 #' @importFrom ModelMetrics auc
 
+
+#' @importFrom ModelMetrics auc
+
 rocPerCol <- function(dat, cls){
   auc(cls, dat)
 }
