@@ -5,6 +5,7 @@ confusionMatrix <-
     UseMethod("confusionMatrix")
   }
 
+#' @importFrom utils getFromNamespace
 #' @export
 confusionMatrix.default <- function(data, reference,
                                     positive = NULL,
@@ -52,7 +53,7 @@ confusionMatrix.default <- function(data, reference,
   getFromNamespace("confusionMatrix.table", "caret")(classTable, positive, prevalence = prevalence, mode = mode)
 }
 
-#' @importFrom stats binom.test
+#' @importFrom stats binom.test mcnemar.test
 #' @export
 confusionMatrix.table <- function(data, positive = NULL, 
                                   prevalence = NULL, mode = "sens_spec", ...){
@@ -292,6 +293,7 @@ confusionMatrix.rfe <- confusionMatrix.train
 #' @export
 confusionMatrix.sbf <- confusionMatrix.train
 
+#' @importFrom utils getFromNamespace
 #' @export
 print.confusionMatrix.train <- function(x, digits = 1, ...){
   cat(x$text, "\n")

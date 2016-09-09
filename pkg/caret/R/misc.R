@@ -29,6 +29,7 @@ well_numbered <- function(prefix, items) {
 }
 
 
+#' @importFrom stats runif
 evalSummaryFunction <- function(y, wts, ctrl, lev, metric, method) {
   n <- if(class(y)[1] == "Surv") nrow(y) else length(y)
   ## sample doesn't work for Surv objects
@@ -84,7 +85,7 @@ model2method <- function(x)
          x)
 }
 
-
+#' @importFrom stats runif binomial
 Kim2009 <- function(n)
 {
   grid <- matrix(runif(n*10), ncol = 10)
@@ -150,7 +151,7 @@ cforestStats  <- function(x) getModelInfo("cforest", regex = FALSE)[[1]]$oob(x)
 #' @export
 bagEarthStats <- function(x) getModelInfo("bagEarth", regex = FALSE)[[1]]$oob(x)
 
-#' @importFrom stats complete.cases
+#' @importFrom stats complete.cases cor
 #' @export
 R2 <- function(pred, obs, formula = "corr", na.rm = FALSE)
   {
@@ -163,6 +164,7 @@ R2 <- function(pred, obs, formula = "corr", na.rm = FALSE)
 #' @export
 RMSE <- function(pred, obs, na.rm = FALSE) sqrt(mean((pred - obs)^2, na.rm = na.rm))
 
+#' @importFrom utils capture.output
 partRuleSummary <- function(x)
   {
     predictors <- all.vars(x$terms)
@@ -187,6 +189,7 @@ partRuleSummary <- function(x)
 
   }
 
+#' @importFrom utils capture.output
 ripperRuleSummary <- function(x)
   {
     predictors <- all.vars(x$terms)
@@ -305,6 +308,7 @@ scrubCall <- function(x)
     x
   }
 
+#' @importFrom stats model.matrix
 #' @export
 class2ind <- function(x, drop2nd = FALSE) {
 	if(!is.factor(x)) stop("'x' should be a factor")

@@ -3,6 +3,7 @@
   function(x, ...)
   UseMethod("bagEarth")
 
+#' @importFrom stats predict
 #' @export
 "bagEarth.default" <-
   function(x, y, weights = NULL, B = 50, summary = mean, keepX = TRUE, ...)
@@ -70,7 +71,7 @@
             class = "bagEarth")
 }
 
-#' @importFrom stats contrasts
+#' @importFrom stats contrasts model.matrix model.response model.weights na.omit
 #' @export
 "bagEarth.formula" <-
   function (formula, data = NULL, B = 50, summary = mean, keepX = TRUE, ..., subset, weights = NULL, na.action = na.omit) 
@@ -100,7 +101,7 @@
   out
 }
 
-
+#' @importFrom stats predict
 #' @export
 "predict.bagEarth" <-
   function(object, newdata = NULL, type = "response", ...)
@@ -169,6 +170,7 @@ print.bagEarth <- function (x, ...)
 }
 
 
+#' @importFrom stats quantile
 #' @export
 "summary.bagEarth" <-
   function(object, ...)
@@ -191,6 +193,7 @@ print.bagEarth <- function (x, ...)
   out
 }
 
+#' @importFrom stats quantile
 #' @export
 "print.summary.bagEarth" <-
   function(x, digits = max(3, getOption("digits") - 3), ...)

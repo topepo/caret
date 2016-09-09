@@ -1,4 +1,5 @@
 
+#' @importFrom stats quantile
 #' @export
 "createFolds" <- 
   function(y, k = 10, list = TRUE, returnTrain = FALSE) {

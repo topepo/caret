@@ -6,6 +6,7 @@ knn3.default <- function(x, ...)
    if(!any(class(x) %in% "formula"))  stop("knn3 only implemented for formula objects")
 }
 
+#' @importFrom stats model.matrix terms model.extract
 #' @export
 knn3.formula <- function (formula, data, subset, na.action, k = 5, ...) 
 {
@@ -82,7 +83,7 @@ print.knn3 <- function (x, ...)
    invisible(x)
 }
 
-#' @importFrom stats as.formula
+#' @importFrom stats as.formula delete.response model.frame model.matrix
 #' @export
 predict.knn3 <- function (object, newdata, type = c("prob", "class"), ...) 
 {

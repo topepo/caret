@@ -1,6 +1,7 @@
 #' @export
 classDist <- function (x, ...)  UseMethod("classDist")
 
+#' @importFrom stats cov predict quantile prcomp
 #' @export
 classDist.default <- function(x, y, groups = 5,
                               pca = FALSE,
@@ -86,6 +87,7 @@ print.classDist <- function(x, ...)
     invisible(x)
   }
 
+#' @importFrom stats mahalanobis predict
 #' @export
 predict.classDist <- function(object, newdata, trans = log, ...)
 {

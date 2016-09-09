@@ -1,4 +1,5 @@
 
+#' @importFrom utils stack
 #' @export
 dotPlot <- function (x, top = min(20, dim(x$importance)[1]), ...) 
 {

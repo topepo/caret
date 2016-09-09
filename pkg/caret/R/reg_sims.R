@@ -1,5 +1,5 @@
 
-
+#' @importFrom stats rnorm toeplitz
 make_noise <- function(n, noiseVars = 0, 
                        corrVars = 0, corrType = "AR1", corrValue = 0,
                        binary = FALSE) {
@@ -28,6 +28,7 @@ make_noise <- function(n, noiseVars = 0,
   as.data.frame(out)
 }
 
+#' @importFrom stats rnorm
 #' @export
 SLC14_1 <- function(n = 100, noiseVars = 0, 
                     corrVars = 0, corrType = "AR1", corrValue = 0) {
@@ -54,6 +55,7 @@ SLC14_1 <- function(n = 100, noiseVars = 0,
   dat
 }
 
+#' @importFrom stats rnorm
 #' @export
 SLC14_2 <- function(n = 100, noiseVars = 0, 
                     corrVars = 0, corrType = "AR1", corrValue = 0) {
@@ -73,6 +75,7 @@ SLC14_2 <- function(n = 100, noiseVars = 0,
   dat
 }
 
+#' @importFrom stats rbinom rnorm runif binomial
 #' @export
 LPH07_1 <- function(n = 100, noiseVars = 0, 
                     corrVars = 0, corrType = "AR1", corrValue = 0, factors = FALSE, class = FALSE) {
@@ -107,6 +110,7 @@ LPH07_1 <- function(n = 100, noiseVars = 0,
   dat
 }
 
+#' @importFrom stats rnorm
 #' @export
 LPH07_2 <- function(n = 100, noiseVars = 0, 
                     corrVars = 0, corrType = "AR1", corrValue = 0) {

@@ -52,6 +52,7 @@ sa_bl_correct0 <- function(x) {
 
 sa_bl_correct <- function(x) ddply(x, .(Resample), sa_bl_correct0 )
 
+#' @importFrom utils getFromNamespace
 #' @export
 print.safs <- function (x, top = 5, 
                         digits = max(3, getOption("digits") - 3), 
@@ -218,6 +219,8 @@ safsControl <- function(functions = NULL,
 safs <- function (x, ...) UseMethod("safs")
 
 
+#' @importFrom stats runif
+#' @importFrom utils getFromNamespace
 #' @import foreach
 #' @export
 "safs.default" <-
@@ -456,6 +459,7 @@ sa_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY, sa_me
 ###################################################################
 ##
 
+#' @importFrom stats runif
 sa_select <- function(x, y,  
                       ## testX, testY: optional holdout data for computing
                       ## the fitness function
@@ -652,6 +656,7 @@ sa_select <- function(x, y,
 ###################################################################
 ##
 
+#' @importFrom stats update
 #' @export
 plot.safs <- function(x, 
                       metric = x$control$metric["external"], 
@@ -706,6 +711,7 @@ plot.safs <- function(x,
 ###################################################################
 ##
   
+#' @importFrom stats predict
 #' @export
 caretSA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) train(x, y, ...),
                 pred = function(object, x) {

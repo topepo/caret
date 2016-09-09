@@ -3,6 +3,7 @@
 function(x, ...)
    UseMethod("bagFDA")
 
+#' @importFrom stats predict
 #' @export
 "bagFDA.default" <-
 function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
@@ -46,7 +47,7 @@ function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
                   weights = !is.null(weights), dots = list(...)), class = "bagFDA")
 }
 
-#' @importFrom stats contrasts
+#' @importFrom stats contrasts model.matrix model.response model.weights na.omit
 #' @export
 "bagFDA.formula" <-
 function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights = NULL, na.action = na.omit) 
@@ -90,7 +91,7 @@ function (x, ...)
     invisible(x)
 }
 
-
+#' @importFrom stats predict
 #' @export
 "predict.bagFDA" <-
 function(object, newdata = NULL, type = "class", ...)
@@ -138,6 +139,7 @@ function(object, newdata = NULL, type = "class", ...)
    switch(type, class = predClass, probs = out, posterior = out)
 }
 
+#' @importFrom stats quantile
 #' @export
 "summary.bagFDA" <-
 function(object, ...)
