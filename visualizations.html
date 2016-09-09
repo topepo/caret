@@ -372,14 +372,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <span class="dt">plot =</span> <span class="st">&quot;pairs&quot;</span>,
             ## Add a key at the top
             <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">3</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/VisScatMat-1.png" width="624" /></p>
+<p><img src="main_files/figure-html/VisScatMat-1.png" width="624" /></p>
 <p><strong>Scatterplot Matrix with Ellipses</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">featurePlot</span>(<span class="dt">x =</span> iris[, <span class="dv">1</span>:<span class="dv">4</span>], 
             <span class="dt">y =</span> iris$Species, 
             <span class="dt">plot =</span> <span class="st">&quot;ellipse&quot;</span>,
             ## Add a key at the top
             <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">3</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/VisScatMatEl-1.png" width="624" /></p>
+<p><img src="main_files/figure-html/VisScatMatEl-1.png" width="624" /></p>
 <p><strong>Overlayed Density Plots</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">transparentTheme</span>(<span class="dt">trans =</span> .<span class="dv">9</span>)
 <span class="kw">featurePlot</span>(<span class="dt">x =</span> iris[, <span class="dv">1</span>:<span class="dv">4</span>], 
@@ -393,7 +393,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <span class="dt">pch =</span> <span class="st">&quot;|&quot;</span>, 
             <span class="dt">layout =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">1</span>), 
             <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">3</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/VisDens-1.png" width="864" /></p>
+<p><img src="main_files/figure-html/VisDens-1.png" width="864" /></p>
 <p><strong>Box Plots</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">featurePlot</span>(<span class="dt">x =</span> iris[, <span class="dv">1</span>:<span class="dv">4</span>], 
             <span class="dt">y =</span> iris$Species, 
@@ -403,7 +403,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
                           <span class="dt">x =</span> <span class="kw">list</span>(<span class="dt">rot =</span> <span class="dv">90</span>)),  
             <span class="dt">layout =</span> <span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">1</span> ), 
             <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">2</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/ViBox-1.png" width="864" /></p>
+<p><img src="main_files/figure-html/ViBox-1.png" width="864" /></p>
 <p><strong>Scatter Plots</strong></p>
 <p>For regression, the Boston Housing data is used:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mlbench)
@@ -425,7 +425,7 @@ theme1$plot.line$lwd &lt;-<span class="st"> </span><span class="dv">2</span>
             <span class="dt">y =</span> BostonHousing$medv, 
             <span class="dt">plot =</span> <span class="st">&quot;scatter&quot;</span>, 
             <span class="dt">layout =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/VisScatter-1.png" width="864" /></p>
+<p><img src="main_files/figure-html/VisScatter-1.png" width="864" /></p>
 <p>Note that the x-axis scales are different. The function automatically uses <code>scales = list(y = list(relation = &quot;free&quot;))</code> so you don’t have to add it. We can also pass in options to the <a href="http://cran.r-project.org/web/packages/lattice/index.html"><code>lattice</code></a> function <code>xyplot</code>. For example, we can add a scatter plot smoother by passing in new options:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">featurePlot</span>(<span class="dt">x =</span> BostonHousing[, regVar], 
             <span class="dt">y =</span> BostonHousing$medv, 
@@ -433,7 +433,7 @@ theme1$plot.line$lwd &lt;-<span class="st"> </span><span class="dv">2</span>
             <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;p&quot;</span>, <span class="st">&quot;smooth&quot;</span>),
             <span class="dt">span =</span> .<span class="dv">5</span>,
             <span class="dt">layout =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/VisScatterSmooth-1.png" width="864" /></p>
+<p><img src="main_files/figure-html/VisScatterSmooth-1.png" width="864" /></p>
 <p>The options <code>degree</code> and <code>span</code> control the smoothness of the smoother.</p>
 
 </div>

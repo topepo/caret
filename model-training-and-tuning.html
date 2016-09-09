@@ -573,19 +573,19 @@ gbmFit2</code></pre></div>
 <p>The <code>plot</code> function can be used to examine the relationship between the estimates of performance and the tuning parameters. For example, a simple invokation of the function shows the results for the first performance measure:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
 <span class="kw">plot</span>(gbmFit2)  </code></pre></div>
-<p><img src="_main_files/figure-html/train_plot1-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/train_plot1-1.png" width="672" /></p>
 <p>Other performance metrics can be shown using the <code>metric</code> option:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
 <span class="kw">plot</span>(gbmFit2, <span class="dt">metric =</span> <span class="st">&quot;Kappa&quot;</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/train_plot2-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/train_plot2-1.png" width="672" /></p>
 <p>Other types of plot are also available. See <code>?plot.train</code> for more details. The code below shows a heatmap of the results:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
 <span class="kw">plot</span>(gbmFit2, <span class="dt">metric =</span> <span class="st">&quot;Kappa&quot;</span>, <span class="dt">plotType =</span> <span class="st">&quot;level&quot;</span>,
      <span class="dt">scales =</span> <span class="kw">list</span>(<span class="dt">x =</span> <span class="kw">list</span>(<span class="dt">rot =</span> <span class="dv">90</span>)))</code></pre></div>
-<p><img src="_main_files/figure-html/train_plot3-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/train_plot3-1.png" width="672" /></p>
 <p>A <code>ggplot</code> method can also be used:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(gbmFit2)  </code></pre></div>
-<p><img src="_main_files/figure-html/train_ggplot1-1.png" width="816" /></p>
+<p><img src="main_files/figure-html/train_ggplot1-1.png" width="816" /></p>
 <p>There are also plot functions that show more detailed representations of the resampled estimates. See <code>?xyplot.train</code> for more details.</p>
 <p>From these plots, a different set of tuning parameters may be desired. To change the final values without starting the whole process again, the <code>update.train</code> can be used to refit the final model. See <code>?update.train</code></p>
 <div id="control">
@@ -748,7 +748,7 @@ gbmFit3</code></pre></div>
 <li><code>histogram</code> and <code>densityplot</code> can also be used to look at distributions of the tuning parameters across tuning parameters.</li>
 </ul>
 <p>For example, the following statements create a density plot:</p>
-<p><img src="_main_files/figure-html/4-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/4-1.png" width="672" /></p>
 <p>Note that if you are interested in plotting the resampling results across multiple tuning parameters, the option <code>resamples = &quot;all&quot;</code> should be used in the control object.</p>
 <div id="between">
 
@@ -872,15 +872,15 @@ resamps</code></pre></div>
 <p>There are several lattice plot methods that can be used to visualize the resampling distributions: density plots, box-whisker plots, scatterplot matrices and scatterplots of summary statistics. For example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(theme1)
 <span class="kw">bwplot</span>(resamps, <span class="dt">layout =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/train_resample_box-1.png" width="864" /></p>
+<p><img src="main_files/figure-html/train_resample_box-1.png" width="864" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
 <span class="kw">dotplot</span>(resamps, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/train_resample_ci-1.png" width="576" /></p>
+<p><img src="main_files/figure-html/train_resample_ci-1.png" width="576" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(theme1)
 <span class="kw">xyplot</span>(resamps, <span class="dt">what =</span> <span class="st">&quot;BlandAltman&quot;</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/train_resample_ba-1.png" width="576" /></p>
+<p><img src="main_files/figure-html/train_resample_ba-1.png" width="576" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">splom</span>(resamps)</code></pre></div>
-<p><img src="_main_files/figure-html/train_resample_scatmat-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/train_resample_scatmat-1.png" width="672" /></p>
 <p>Other visualizations are availible in <code>densityplot.resamples</code> and <code>parallel.resamples</code></p>
 <p>Since models are fit on the same versions of the training data, it makes sense to make inferences on the differences between models. In this way we reduce the within-resample correlation that may exist. We can compute the differences, then use a simple <em>t</em>-test to evaluate the null hypothesis that there is no difference between models.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">difValues &lt;-<span class="st"> </span><span class="kw">diff</span>(resamps)
@@ -921,10 +921,10 @@ difValues</code></pre></div>
 ## RDA 1.00000 0.13861</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(theme1)
 <span class="kw">bwplot</span>(difValues, <span class="dt">layout =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/train_diff_box-1.png" width="864" /></p>
+<p><img src="main_files/figure-html/train_diff_box-1.png" width="864" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
 <span class="kw">dotplot</span>(difValues)</code></pre></div>
-<p><img src="_main_files/figure-html/train_diff_ci-1.png" width="576" /></p>
+<p><img src="main_files/figure-html/train_diff_ci-1.png" width="576" /></p>
 <div id="notune">
 
 </div>

@@ -546,7 +546,7 @@ testTransformed &lt;-<span class="st"> </span><span class="kw">predict</span>(pr
        <span class="dt">data =</span> plotSubset,
        <span class="dt">groups =</span> mdrrClass, 
        <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">2</span>))  </code></pre></div>
-<p><img src="_main_files/figure-html/pp_SpatSignBefore-1.png" width="480" /></p>
+<p><img src="main_files/figure-html/pp_SpatSignBefore-1.png" width="480" /></p>
 <p>After the spatial sign:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">transformed &lt;-<span class="st"> </span><span class="kw">spatialSign</span>(plotSubset)
 transformed &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(transformed)
@@ -554,7 +554,7 @@ transformed &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(
        <span class="dt">data =</span> transformed, 
        <span class="dt">groups =</span> mdrrClass, 
        <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">2</span>)) </code></pre></div>
-<p><img src="_main_files/figure-html/pp_SpatSignAfter-1.png" width="480" /></p>
+<p><img src="main_files/figure-html/pp_SpatSignAfter-1.png" width="480" /></p>
 <p>Another option, <code>&quot;BoxCox&quot;</code> will estimate a Box–Cox transformation on the predictors if the data are greater than zero.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preProcValues2 &lt;-<span class="st"> </span><span class="kw">preProcess</span>(training, <span class="dt">method =</span> <span class="st">&quot;BoxCox&quot;</span>)
 trainBC &lt;-<span class="st"> </span><span class="kw">predict</span>(preProcValues2, training)
@@ -665,7 +665,7 @@ distances &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(di
        <span class="dt">data =</span> distances, 
        <span class="dt">groups =</span> testMDRR, 
        <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">2</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/pp_splom-1.png" width="480" /></p>
+<p><img src="main_files/figure-html/pp_splom-1.png" width="480" /></p>
 
 </div>
 </div>

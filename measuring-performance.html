@@ -389,7 +389,7 @@ test_set$pred &lt;-<span class="st"> </span><span class="kw">factor</span>(<span
 <span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">binwidth =</span> .<span class="dv">05</span>) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">facet_wrap</span>(~obs) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Probability of Class #1&quot;</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/perf_test_set_plot-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/perf_test_set_plot-1.png" width="672" /></p>
 <p>Generating the predicted classes based on the typical 50% cutoff for the probabilities, we can compute the <em>confusion matrix</em>, which shows a cross-tabulation of the observed and predicted classes. The <code>confusionMatrix</code> function can be used to generate these results:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confusionMatrix</span>(<span class="dt">data =</span> test_set$pred, <span class="dt">reference =</span> test_set$obs)</code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
@@ -538,7 +538,7 @@ lift_obj &lt;-<span class="st"> </span><span class="kw">lift</span>(Class ~<span
 <span class="kw">plot</span>(lift_obj, <span class="dt">values =</span> <span class="dv">60</span>, <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">3</span>,
                                             <span class="dt">lines =</span> <span class="ot">TRUE</span>,
                                             <span class="dt">points =</span> <span class="ot">FALSE</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/perf_lift_obj-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/perf_lift_obj-1.png" width="672" /></p>
 <p>From this we can see that, to find 60 percent of the hits, a little more than 30 percent of the data can be sampled (when ordered by the probability predictions). The LDA model does somewhat worse than the other two models.</p>
 <div id="calib">
 
@@ -555,10 +555,10 @@ cal_obj &lt;-<span class="st"> </span><span class="kw">calibration</span>(Class 
 <span class="kw">plot</span>(cal_obj, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">3</span>,
                                           <span class="dt">lines =</span> <span class="ot">TRUE</span>,
                                           <span class="dt">points =</span> <span class="ot">FALSE</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/perf_calib_obj-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/perf_calib_obj-1.png" width="672" /></p>
 <p>There is also a <code>ggplot</code> method that shows the confidence intervals for the proportions inside of the subsets:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(cal_obj)</code></pre></div>
-<p><img src="_main_files/figure-html/perf_calib_gg-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/perf_calib_gg-1.png" width="672" /></p>
 
 </div>
 </div>

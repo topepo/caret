@@ -478,7 +478,7 @@ lmProfile</code></pre></div>
 <p>There are also several plot methods to visualize the results. <code>plot(lmProfile)</code> produces the performance profile across different subset sizes, as shown in the figure below.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
 <span class="kw">plot</span>(lmProfile, <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;g&quot;</span>, <span class="st">&quot;o&quot;</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/rfe_lmprofile-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/rfe_lmprofile-1.png" width="672" /></p>
 <p>Also the resampling results are stored in the sub-object <code>lmProfile$resample</code> and can be used with several lattice functions. Univariate lattice functions (<code>densityplot</code>, <code>histogram</code>) can be used to plot the resampling distribution while bivariate functions (<code>xyplot</code>, <code>stripplot</code>) can be used to plot the distributions for different subset sizes. In the latter case, the option <code>returnResamp`` = &quot;all&quot;</code> in <code>rfeControl</code> can be used to save all the resampling results. Example images are shown below for the random forest model.</p>
 </div>
 <div id="helper-functions" class="section level2">
@@ -609,7 +609,7 @@ example$Tolerance &lt;-<span class="st"> </span>(example$RMSE -<span class="st">
  
 <span class="kw">with</span>(example, <span class="kw">plot</span>(Variables, Tolerance))
 <span class="kw">abline</span>(<span class="dt">h =</span> <span class="dv">10</span>, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;darkgrey&quot;</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/rfe_lmdens-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/rfe_lmdens-1.png" width="672" /></p>
 </div>
 <div id="the-selectvar-function" class="section level3">
 <h3><span class="header-section-number">18.5.6</span> The <code>selectVar</code> Function</h3>
@@ -669,7 +669,7 @@ plot1 &lt;-<span class="st"> </span><span class="kw">plot</span>(rfProfile, <spa
 plot2 &lt;-<span class="st"> </span><span class="kw">plot</span>(rfProfile, <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;g&quot;</span>, <span class="st">&quot;o&quot;</span>), <span class="dt">metric =</span> <span class="st">&quot;Rsquared&quot;</span>)
 <span class="kw">print</span>(plot1, <span class="dt">split=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">more=</span><span class="ot">TRUE</span>)
 <span class="kw">print</span>(plot2, <span class="dt">split=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">2</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/rfe_rf_plot1-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/rfe_rf_plot1-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plot1 &lt;-<span class="st"> </span><span class="kw">xyplot</span>(rfProfile, 
                 <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;g&quot;</span>, <span class="st">&quot;p&quot;</span>, <span class="st">&quot;smooth&quot;</span>), 
                 <span class="dt">ylab =</span> <span class="st">&quot;RMSE CV Estimates&quot;</span>)
@@ -681,7 +681,7 @@ plot2 &lt;-<span class="st"> </span><span class="kw">densityplot</span>(rfProfil
                      <span class="dt">pch =</span> <span class="st">&quot;|&quot;</span>)
 <span class="kw">print</span>(plot1, <span class="dt">split=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">more=</span><span class="ot">TRUE</span>)
 <span class="kw">print</span>(plot2, <span class="dt">split=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">2</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/rfe_rf_plot2-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/rfe_rf_plot2-1.png" width="672" /></p>
 
 </div>
 </div>

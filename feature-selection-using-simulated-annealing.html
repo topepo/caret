@@ -461,7 +461,7 @@ rf_sa</code></pre></div>
 ##      3.2674      0.6785</code></pre>
 <p>As with the GA, we can plot the internal and external performance over iterations.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rf_sa) +<span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
-<p><img src="_main_files/figure-html/sa_rf_profile-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/sa_rf_profile-1.png" width="672" /></p>
 <p>The performance here isn’t as good as the previous GA or RFE solutions. Based on these results, the iteration associated with the best external RMSE estimate was 318 with a corresponding RMSE estimate of 3.27.</p>
 <p>Using the entire training set, the final SA is conducted and, at iteration 318, there were 30 selected: real1, real2, real4, real5, bogus1, bogus2, bogus6, bogus10, bogus12, bogus13, bogus16, bogus18, bogus19, bogus22, bogus24, bogus25, bogus26, bogus27, bogus29, bogus30, bogus31, bogus32, bogus34, bogus36, bogus37, bogus39, bogus42, bogus43, bogus44, bogus45. The random forest model with these predictors is created using the entire training set is trained and this is the model that is used when <code>predict.safs</code> is executed.</p>
 <div id="custom">
@@ -600,7 +600,7 @@ grid$Group &lt;-<span class="st"> </span><span class="kw">factor</span>(<span cl
 <span class="kw">ggplot</span>(grid, <span class="kw">aes</span>(<span class="dt">x =</span> iter, <span class="dt">y =</span> prob, <span class="dt">color =</span> Difference)) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_line</span>() +<span class="st"> </span><span class="kw">facet_wrap</span>(~Group) +<span class="st"> </span><span class="kw">theme_bw</span>() +
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Probability&quot;</span>) +<span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Iteration&quot;</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/sa_prob_plot-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/sa_prob_plot-1.png" width="672" /></p>
 <p>While this is the default, any user-written function can be used to assign probabilities.</p>
 
 </div>
