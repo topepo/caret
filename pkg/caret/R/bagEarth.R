@@ -1,4 +1,66 @@
+#' Bagged Earth
+#'
+#' @aliases bagEarth print.bagEarth bagEarth.default bagEarth.formula
+#' @description A bagging wrapper for multivariate adaptive regression
+#' splines (MARS) via the \code{earth} function
+#'
+#' @usage
+#' \method{bagEarth}{formula}(formula, data = NULL, B = 50,
+#'          summary = mean, keepX = TRUE,
+#'          ..., subset, weights, na.action = na.omit)
+#' \method{bagEarth}{default}(x, y, weights = NULL, B = 50,
+#'          summary = mean, keepX = TRUE, ...)
+#'
+#' @param formula A formula of the form \code{y ~ x1 + x2 + ...
+#' @param x matrix or data frame of 'x' values for examples.
+#' @param y matrix or data frame of numeric values outcomes.
+#' @param weights (case) weights for each example - if missing defaults to 1.}
+#' @param data Data frame from which variables specified in  'formula' are
+#'         preferentially to be taken.
+#' @param subset An index vector specifying the cases to be used in the
+#'         training sample.  (NOTE: If given, this argument must be
+#'         named.)
+#' @param na.action A function to specify the action to be taken if 'NA's are
+#'         found. The default action is for the procedure to fail.  An
+#'         alternative is na.omit, which leads to rejection of cases
+#'         with missing values on any required variable.  (NOTE: If
+#'         given, this argument must be named.)
+#'
+#' @param B the number of bootstrap samples
+#' @param summary a function with a single argument specifying how the bagged predictions should be summarized
+#' @param keepX a logical: should the original training data be kept?
+#' @param \dots arguments passed to the \code{earth} function
+#'
+#' @details The function computes a Earth model for each bootstap sample.
+#'
+#' @return
+#' A list with elements
+#' \item{fit }{a list of \code{B} Earth fits}
+#' \item{B }{the number of bootstrap samples}
+#' \item{call }{the function call}
+#' \item{x }{either \code{NULL} or the value of \code{x}, depending on the
+#'   value of \code{keepX}}
+#' \item{oob}{a matrix of performance estimates for each bootstrap sample}
+#'
+#' @references J. Friedman, ``Multivariate Adaptive Regression Splines'' (with
+#' discussion) (1991).  Annals of Statistics, 19/1, 1-141.
+#'
+#' @author Max Kuhn (\code{bagEarth.formula} is based on Ripley's \code{nnet.formula})
+#'
+#' @seealso \code{\link[earth]{earth}}, \code{\link{predict.bagEarth}}
+#'
+#' @examples \dontrun{
+#' library(mda)
+#' library(earth)
+#' data(trees)
+#' fit1 <- earth(trees[,-3], trees[,3])
+#' fit2 <- bagEarth(trees[,-3], trees[,3], B = 10)
+#' }
+#'
+#' @keywords regression
+#'
 #' @export
+
 "bagEarth" <-
   function(x, ...)
   UseMethod("bagEarth")
@@ -13,7 +75,7 @@
   if(!is.matrix(x)) x <- as.matrix(x)
   if(!is.factor(y))
     {
-      if(!is.vector(y)) y <- as.vector(y)   
+      if(!is.vector(y)) y <- as.vector(y)
       if(!is.vector(y)) y <- y[,1]
     }
   if(is.null(weights)) weights <- rep(1, dim(x)[1])
@@ -32,17 +94,17 @@
     {
       subX <- x[index,, drop = FALSE]
       subY <- y[index]
-      
+
       if(is.null(w)) {
         fit <- earth::earth(x = subX, y = subY, ...)
       } else {
-        subW <- weights[index]  
+        subW <- weights[index]
         fit <- earth::earth(x = subX, y = subY, weights = subW, ...)
       }
       fit$index <- index
       fit
     }
-  
+
   oobFoo <- function(fit, x, y, lev)
     {
       index <- fit$index
@@ -50,9 +112,9 @@
       subY <- y[-index]
       ## todo
       predY <- if(is.null(fit$levels)) predict(fit, subX) else predict(fit, subX, type = "class")
-      postResample(predY, subY)   
+      postResample(predY, subY)
     }
-  
+
   btSamples <- createResample(y, times = B)
   btFits <- lapply(btSamples, foo, x = x, y = y, w = weights, ...)
   oobList <- lapply(btFits, oobFoo, x = x, y = y, lev = lev)
@@ -74,13 +136,13 @@
 #' @importFrom stats contrasts model.matrix model.response model.weights na.omit
 #' @export
 "bagEarth.formula" <-
-  function (formula, data = NULL, B = 50, summary = mean, keepX = TRUE, ..., subset, weights = NULL, na.action = na.omit) 
+  function (formula, data = NULL, B = 50, summary = mean, keepX = TRUE, ..., subset, weights = NULL, na.action = na.omit)
 {
   funcCall <- match.call(expand.dots = TRUE)
-  
-  if (!inherits(formula, "formula")) 
+
+  if (!inherits(formula, "formula"))
     stop("method is only for formula objects")
-  m <- match.call(expand.dots = FALSE)  
+  m <- match.call(expand.dots = FALSE)
   mIndex <- match(c("formula", "data", "subset", "weights", "na.action"), names(m), 0)
   m <- m[c(1, mIndex)]
   m$... <- NULL
@@ -95,7 +157,7 @@
   cons <- attr(x, "contrast")
   xint <- match("(Intercept)", colnames(x), nomatch = 0)
   if (xint > 0)  x <- x[, -xint, drop = FALSE]
-  
+
   out <- bagEarth.default(x, y, w, B = B, summary = summary, keepX = keepX, ...)
   out$call <- funcCall
   out
@@ -160,7 +222,7 @@
 }
 
 #' @export
-print.bagEarth <- function (x, ...) 
+print.bagEarth <- function (x, ...)
 {
   cat("\nCall:\n", deparse(x$call), "\n\n", sep = "")
   if(!is.null(x$x))cat("Data:\n   # variables:\t", dim(x$x)[2], "\n   # samples:\t", dim(x$x)[1], "\n")
@@ -180,11 +242,11 @@ print.bagEarth <- function (x, ...)
 
   numTerms <- unlist(lapply(object$fit, function(x) length(x$selected.terms)))
   numVar <- unlist(lapply(
-                          object$fit, 
+                          object$fit,
                           function(x) {
                           imp <- rownames(earth::evimp(x, trim = FALSE))
                           imp <- imp[!grepl("-unused", imp)]
-                          imp  
+                          imp
                           }))
   modelInfo <- cbind(numTerms, numVar)
   colnames(modelInfo) <- c("Num Terms", "Num Variables")
