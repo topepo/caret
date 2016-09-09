@@ -31,5 +31,6 @@ The models below are available in `train`. The code behind these protocols can b
 ```{r list_table, echo = FALSE}
 datatable(model_info, rownames = FALSE, style = "bootstrap", 
           colnames = c("Model", "`method` Value", "Type", "Libraries", "Tuning Parameters"),
-          options = list(lengthMenu = c(nrow(model_info), 5, 10, 15, 20)))
+          options = list(lengthMenu = c(nrow(model_info), 5, 10, 15, 20), 
+                         scrollX = TRUE))
 ```
