@@ -19,6 +19,7 @@
 
 oob_pred <- function (x, ...) UseMethod("oob_pred")
 
+#' @export
 oob_pred.train <- function(x, best = TRUE, average = TRUE) {
 
   if(is.null(x$pred)) 
@@ -44,6 +45,7 @@ oob_pred.train <- function(x, best = TRUE, average = TRUE) {
   prd
 }
 
+#' @export
 oob_pred.rfe <- function(x, best = TRUE, average = TRUE) {
 
   if(is.null(x$pred)) 
@@ -69,6 +71,7 @@ oob_pred.rfe <- function(x, best = TRUE, average = TRUE) {
   prd
 }
 
+#' @export
 oob_pred.sbf <- function(x, average = TRUE) {
 
   if(is.null(x$pred)) 
@@ -87,6 +90,7 @@ oob_pred.sbf <- function(x, average = TRUE) {
   prd
 }
 
+#' @export
 oob_pred.list <- function(x, direction = "wide", what = "both", ...) {
   num <- length(x)
   oob <- lapply(x, oob_pred, ...)
@@ -134,6 +138,7 @@ oob_pred.list <- function(x, direction = "wide", what = "both", ...) {
 
 get_averages <- function (x, ...) UseMethod("get_averages")
 
+#' @importFrom stats complete.cases
 get_averages.train <- function(x, prd, bycol = "rowIndex") {
   if("Regression" %in% x$modelType) {
     out <- ddply(prd, bycol,
@@ -155,6 +160,7 @@ get_averages.train <- function(x, prd, bycol = "rowIndex") {
   out
 }
 
+#' @importFrom stats complete.cases
 get_averages.rfe <- function(x, prd, bycol = "rowIndex") {
   if(is.null(x$obsLevels)) {
     out <- ddply(prd, bycol,
@@ -176,7 +182,7 @@ get_averages.rfe <- function(x, prd, bycol = "rowIndex") {
   out
 }
 
-
+#' @importFrom stats complete.cases
 get_averages.sbf <- function(x, prd, bycol = "rowIndex") {
   if(is.null(x$obsLevels)) {
     out <- ddply(prd, bycol,
@@ -201,6 +207,7 @@ get_averages.sbf <- function(x, prd, bycol = "rowIndex") {
 ###################################################################
 ##
 
+#' @importFrom stats complete.cases
 char_mode <- function(x, random = TRUE, na.rm = FALSE) {
   if(na.rm) x <- x[complete.cases(x)]
   tab <- table(x)

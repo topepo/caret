@@ -3,6 +3,7 @@
     UseMethod("predictors")
   }
 
+#' @export
 predictors.train <- function(x, ...) {
   if(is.null(x$modelInfo)) {
     code <- getModelInfo(x$method, regex = FALSE)[[1]]
@@ -20,6 +21,7 @@ predictors.train <- function(x, ...) {
   out
   }
 
+#' @export
 predictors.default <- function(x, ...) {
   cls <- model2method(class(x)[1])
   if(cls == "gam")  cls <- if(any(names(x) == "optimizer")) "gam" else "gamLoess"
@@ -66,6 +68,7 @@ basicVars <- function(x, y)
     x[hasVar] 
   }
 
+#' @export
 predictors.terms <- function(x, ...)
   {
     if(is.null(x)) return(NA)
@@ -74,6 +77,7 @@ predictors.terms <- function(x, ...)
     everything[!(everything %in% yName)]
   }
 
+#' @export
 predictors.formula <- function(x, ...)
   {
     everything <- all.vars(x)
@@ -81,6 +85,7 @@ predictors.formula <- function(x, ...)
     everything[!(everything %in% yName)]
   }
 
+#' @export
 predictors.list <- function(x, ...)
   {
     out <- lapply(x, predictors)

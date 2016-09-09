@@ -150,6 +150,7 @@ plsda.default <- function(x, y, ncomp = 2, probMethod = "softmax", prior = NULL,
   out
 }
 
+#' @export
 print.plsda <- function (x, ...) {
   ## minor change to print.mvr
   switch(x$method,

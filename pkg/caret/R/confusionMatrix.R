@@ -52,6 +52,8 @@ confusionMatrix.default <- function(data, reference,
   getFromNamespace("confusionMatrix.table", "caret")(classTable, positive, prevalence = prevalence, mode = mode)
 }
 
+#' @importFrom stats binom.test
+#' @export
 confusionMatrix.table <- function(data, positive = NULL, 
                                   prevalence = NULL, mode = "sens_spec", ...){
   requireNamespaceQuietStop("e1071")
@@ -157,7 +159,7 @@ confusionMatrix.table <- function(data, positive = NULL,
     class = "confusionMatrix")
 }
 
-
+#' @export
 as.matrix.confusionMatrix <- function(x, what = "xtabs", ...){
   if(!(what %in% c("xtabs", "overall", "classes")))
     stop("what must be either xtabs, overall or classes")
@@ -231,6 +233,7 @@ train_resampledCM <- function(x) {
   resampledCM
 }
 
+#' @export
 as.table.confusionMatrix <- function(x, ...)  x$table
 
 #' @export
@@ -283,9 +286,13 @@ confusionMatrix.train <- function(data, norm = "overall", dnn = c("Prediction", 
   out
 }
 
+#' @export
 confusionMatrix.rfe <- confusionMatrix.train
+
+#' @export
 confusionMatrix.sbf <- confusionMatrix.train
 
+#' @export
 print.confusionMatrix.train <- function(x, digits = 1, ...){
   cat(x$text, "\n")
   normText <- switch(x$norm,
@@ -308,7 +315,10 @@ print.confusionMatrix.train <- function(x, digits = 1, ...){
   invisible(x)
 }
 
+#' @export
 print.confusionMatrix.rfe <- print.confusionMatrix.train
+
+#' @export
 print.confusionMatrix.sbf <- print.confusionMatrix.train
 
 resampName <- function(x, numbers = TRUE){

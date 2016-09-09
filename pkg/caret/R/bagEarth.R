@@ -70,6 +70,7 @@
             class = "bagEarth")
 }
 
+#' @importFrom stats contrasts
 #' @export
 "bagEarth.formula" <-
   function (formula, data = NULL, B = 50, summary = mean, keepX = TRUE, ..., subset, weights = NULL, na.action = na.omit) 
@@ -157,7 +158,7 @@
 
 }
 
-
+#' @export
 print.bagEarth <- function (x, ...) 
 {
   cat("\nCall:\n", deparse(x$call), "\n\n", sep = "")
@@ -190,6 +191,7 @@ print.bagEarth <- function (x, ...)
   out
 }
 
+#' @export
 "print.summary.bagEarth" <-
   function(x, digits = max(3, getOption("digits") - 3), ...)
 {

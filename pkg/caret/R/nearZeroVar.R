@@ -1,3 +1,4 @@
+#' @import foreach
 #' @export
 nearZeroVar <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE, names = FALSE, foreach = FALSE, allowParallel = TRUE) {
 

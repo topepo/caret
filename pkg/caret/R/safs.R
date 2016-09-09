@@ -52,6 +52,7 @@ sa_bl_correct0 <- function(x) {
 
 sa_bl_correct <- function(x) ddply(x, .(Resample), sa_bl_correct0 )
 
+#' @export
 print.safs <- function (x, top = 5, 
                         digits = max(3, getOption("digits") - 3), 
                         ...) {
@@ -156,6 +157,7 @@ print.safs <- function (x, top = 5,
   invisible(x)
 }
 
+#' @export
 predict.safs <- function (object, newdata, ...) {
   newdata <- newdata[, object$optVariables, drop = FALSE]
   object$control$functions$pred(object$fit, newdata)  
@@ -215,6 +217,8 @@ safsControl <- function(functions = NULL,
 #' @export
 safs <- function (x, ...) UseMethod("safs")
 
+
+#' @import foreach
 #' @export
 "safs.default" <-
   function(x, y,
@@ -648,6 +652,7 @@ sa_select <- function(x, y,
 ###################################################################
 ##
 
+#' @export
 plot.safs <- function(x, 
                       metric = x$control$metric["external"], 
                       estimate = c("internal", "external"), 
@@ -766,6 +771,7 @@ prob = safs_prob,
 selectIter = best)
 
 
+#' @export
 update.safs <- function(object, iter, x, y, ...) {
   iter <- iter[1]
   if(iter > length(object$sa$subsets))
@@ -785,6 +791,7 @@ update.safs <- function(object, iter, x, y, ...) {
   object  
 }
 
+#' @export
 "varImp.safs" <- function(object, 
                           metric = object$control$metric["external"], 
                           maximize = object$control$maximize["external"],

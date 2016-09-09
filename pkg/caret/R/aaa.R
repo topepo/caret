@@ -15,6 +15,10 @@
 ##
 ## and other examples.
 
+
+#' @useDynLib caret
+#' @import methods plyr reshape2 ggplot2 lattice nlme
+
 ###################################################################
 ## Global Variables
 ###################################################################
@@ -223,6 +227,8 @@ defaultSummary <- function(data, lev = NULL, model = NULL)
   postResample(data[,"pred"], data[,"obs"])
 }
 
+
+#' @importFrom ModelMetrics auc
 #' @export
 twoClassSummary <- function (data, lev = NULL, model = NULL)
 {
@@ -242,6 +248,7 @@ twoClassSummary <- function (data, lev = NULL, model = NULL)
   out
 }
 
+#' @importFrom stats complete.cases
 #' @export
 mnLogLoss <- function(data, lev = NULL, model = NULL){
   if(is.null(lev)) stop("'lev' cannot be NULL")

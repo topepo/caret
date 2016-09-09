@@ -5,6 +5,7 @@ predict.list <- function(object, ...) {
   out
 }
 
+#' @importFrom stats .checkMFClasses
 #' @export
 predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.omit, ...) {
   if(all(names(object) != "modelInfo")) {

@@ -1,3 +1,4 @@
+#' @export
 print.confusionMatrix <- function(x, mode = x$mode, digits = max(3, getOption("digits") - 3), printStats = TRUE, ...){
   if(is.null(mode)) mode <- "sens_spec"
   if(!(mode %in% c("sens_spec", "prec_recall", "everything")))

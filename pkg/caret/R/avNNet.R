@@ -5,6 +5,7 @@ avNNet <- function (x, ...)
 
 
 ## this is a near copy of nnet.formula
+#' @importFrom stats .getXlevels contrasts
 #' @export
 avNNet.formula <- function (formula, data, weights, ...,
                             repeats = 5,
@@ -48,6 +49,7 @@ avNNet.formula <- function (formula, data, weights, ...,
   res
 }
 
+#' @import foreach
 #' @export 
 avNNet.default <- function(x, y, repeats = 5, 
                            bag = FALSE, allowParallel = TRUE,
@@ -106,6 +108,7 @@ print.avNNet <- function (x, ...)
   invisible(x)
 }
 
+#' @importFrom stats .checkMFClasses
 #' @export
 predict.avNNet <- function(object, newdata, type = c("raw", "class", "prob"), ...)
   {
