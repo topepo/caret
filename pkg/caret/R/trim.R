@@ -1,5 +1,6 @@
 trim <- function(object, ...) UseMethod("trim")
 
+#' @export
 trim.train <- function(object, ...) {
   removals <- c("results", "pred", "bestTune", "call", "dots",
                 "metric", "trainingData", "resample", "resampledCM",

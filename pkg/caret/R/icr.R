@@ -2,6 +2,7 @@
 #' @export
 icr <- function (x, ...) UseMethod("icr")
 
+#' @importFrom stats .getXlevels contrasts
 #' @export
 icr.formula <- function (formula, data, weights, ...,              
                          subset, na.action, contrasts = NULL) 
@@ -78,6 +79,7 @@ print.icr <- function (x, digits = max(3, getOption("digits") - 3), ...)
   invisible(x)
 }
 
+#' @importFrom stats .checkMFClasses
 #' @export
 predict.icr <- function(object, newdata, ...)
   {

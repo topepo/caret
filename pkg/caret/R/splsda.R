@@ -93,6 +93,7 @@ splsda.default <- function(x, y, probMethod = "softmax", prior = NULL, ...)
   out
 }
 
+#' @export
 print.splsda <- function (x, ...) 
 {
     xmat <- x$x

@@ -78,10 +78,12 @@ change_text <- function(old, new, p, show_diff = TRUE) {
   num_text
 }
 
+#' @export
 predictors.gafs <- function(x, ...) {
  x$best_vars
 }
 
+#' @export
 predictors.safs <- function(x, ...) {
   x$best_vars
 }

@@ -71,6 +71,7 @@ knn3.matrix <- function(x, y, k = 5, ...)
     RET
 }
 
+#' @export
 print.knn3 <- function (x, ...) 
 {
    cat(x$k, "-nearest neighbor classification model\n", sep = "")
@@ -81,6 +82,7 @@ print.knn3 <- function (x, ...)
    invisible(x)
 }
 
+#' @importFrom stats as.formula
 #' @export
 predict.knn3 <- function (object, newdata, type = c("prob", "class"), ...) 
 {

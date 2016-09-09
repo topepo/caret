@@ -2,7 +2,8 @@
 ##       add na.action to all eval functions
 ##       change multiplier and alpha to confidence
 
-
+#' @importFrom stats complete.cases
+#' @import foreach
 adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, 
                              metric, maximize, testing = FALSE, ...) {
   loadNamespace("caret")

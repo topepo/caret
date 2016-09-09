@@ -15,6 +15,8 @@ invHyperbolicSineFunc <- function(x) log(x+sqrt(x^2+1))
 #' @export
 preProcess <- function(x, ...) UseMethod("preProcess")
 
+#' @importFrom stats complete.cases
+#' @importFrom car powerTransform ylpower
 #' @export
 preProcess.default <- function(x, method = c("center", "scale"),
                                thresh = 0.95,
@@ -279,6 +281,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
   out
 }
 
+#' @importFrom stats complete.cases
 #' @export
 predict.preProcess <- function(object, newdata, ...) {
   if(is.vector(object$method) & !is.list(object$method))
@@ -454,6 +457,7 @@ predict.preProcess <- function(object, newdata, ...) {
   newdata
 }
 
+#' @export
 print.preProcess <- function(x, ...) {
   #   printCall(x$call)
   cat("Created from", x$dim[1], "samples and", x$dim[2], "variables\n\n")
@@ -548,6 +552,7 @@ nnimp <- function(new, old, k, foo) {
   new
 }
 
+#' @importFrom stats as.formula
 bagImp <- function(var, x, B = 10) {
   requireNamespaceQuietStop("ipred")
   ## The formula interface is much slower than the

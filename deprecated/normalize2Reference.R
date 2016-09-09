@@ -1,3 +1,4 @@
+#' @importFrom stats approx
 "normalize2Reference" <-
   function (data, refData = NULL, ties = TRUE) 
 {

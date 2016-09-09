@@ -1,3 +1,5 @@
+
+#' @export
 format.bagEarth <- function(x, file = "", cat = TRUE, ...) 
 {
   requireNamespaceQuietStop("earth")

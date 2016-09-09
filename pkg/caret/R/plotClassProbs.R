@@ -1,3 +1,4 @@
+#' @importFrom stats as.formula
 #' @export
 plotClassProbs <- function(object,
                            plotType = "histogram",

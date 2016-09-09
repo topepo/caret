@@ -1,3 +1,4 @@
+#' @importFrom stats complete.cases
 #' @export
 rfeIter <- function(x, y,
                     testX, testY, sizes,
@@ -271,6 +272,7 @@ rfe <- function (x, ...) UseMethod("rfe")
   out
 }
 
+#' @importFrom stats .getXlevels contrasts
 #' @export
 rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) 
 {
@@ -330,6 +332,7 @@ print.rfe <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 
 ######################################################################
 ######################################################################
+#' @importFrom stats as.formula
 #' @export
 plot.rfe <- function (x,
                       metric = x$metric,
@@ -722,6 +725,7 @@ lrFuncs$rank <- function (object, x, y)
 ######################################################################
 ## lattice functions
 
+#' @importFrom stats as.formula
 #' @export
 densityplot.rfe <- function(x,
                             data = NULL,
@@ -742,6 +746,7 @@ densityplot.rfe <- function(x,
     densityplot(form, data = data, ...)
   }
 
+#' @importFrom stats as.formula
 #' @export
 histogram.rfe <- function(x,
                           data = NULL,
@@ -762,6 +767,7 @@ histogram.rfe <- function(x,
     histogram(form, data = data, ...)
   }
 
+#' @importFrom stats as.formula
 #' @export
 stripplot.rfe <- function(x,
                           data = NULL,
@@ -789,6 +795,7 @@ stripplot.rfe <- function(x,
     
   }
 
+#' @importFrom stats as.formula
 #' @export
 xyplot.rfe <- function(x,
                        data = NULL,
@@ -827,6 +834,7 @@ varImp.rfe <- function(object, drop = FALSE, ...)
     imp[order(-imp$Overall),,drop = FALSE]
   }
 
+#' @importFrom stats .checkMFClasses
 #' @export
 predict.rfe <- function(object, newdata, ...)
   {

@@ -4,6 +4,7 @@ specificity <-
     UseMethod("specificity")
   }
 
+#' @importFrom stats complete.cases
 #' @export
 "specificity.default" <-
 function(data, reference, negative = levels(reference)[-1], na.rm = TRUE, ...)

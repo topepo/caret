@@ -8,6 +8,7 @@ pcaNNet <- function (x, ...)
 
 
 # this is a near copy of nnet.formula
+#' @importFrom stats .getXlevels contrasts
 #' @export
 pcaNNet.formula <- function (formula, data, weights, ...,
                              thresh = .99,
@@ -80,6 +81,7 @@ pcaNNet.default <- function(x, y, thresh = .99, ...)
     out
   }
 
+#' @export
 print.pcaNNet <- function (x, ...) 
 {
   cat("Neural Network Model with PCA Pre-Processing\n\n")
@@ -93,6 +95,7 @@ print.pcaNNet <- function (x, ...)
   invisible(x)
 }
 
+#' @importFrom stats .checkMFClasses
 #' @export
 predict.pcaNNet <- function(object, newdata, type = c("raw", "class", "prob"), ...)
   {
