@@ -1,5 +1,6 @@
-## TODO use foreach to parallelize
+ ## TODO use foreach to parallelize
 
+#' @importFrom utils flush.console
 #' @export
 extractProb <- function(models, 
                         testX = NULL, 

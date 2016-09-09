@@ -7,6 +7,7 @@ knnreg.default <- function(x, ...)
   if(!any(class(x) %in% "formula"))  stop("knnreg only implemented for formula objects")
 }
 
+#' @importFrom stats model.matrix terms model.extract
 #' @export
 knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...) 
 {
@@ -83,7 +84,7 @@ print.knnreg <- function (x, ...)
   invisible(x)
 }
 
-#' @importFrom stats as.formula
+#' @importFrom stats as.formula delete.response model.frame model.matrix
 #' @export
 predict.knnreg <- function (object, newdata, ...) 
 {

@@ -1,3 +1,4 @@
+#' @importFrom stats predict
 #' @export
 predict.list <- function(object, ...) {
   out <- lapply(object, predict, ... = ...)
@@ -5,7 +6,7 @@ predict.list <- function(object, ...) {
   out
 }
 
-#' @importFrom stats .checkMFClasses
+#' @importFrom stats .checkMFClasses delete.response model.frame model.matrix na.omit update
 #' @export
 predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.omit, ...) {
   if(all(names(object) != "modelInfo")) {

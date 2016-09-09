@@ -2,6 +2,7 @@
 splsda <- function (x, ...)
   UseMethod("splsda")
 
+#' @importFrom stats predict
 #' @export
 predict.splsda <- function(object, newdata = NULL, type = "class", ...)
 {
@@ -32,6 +33,7 @@ predict.splsda <- function(object, newdata = NULL, type = "class", ...)
   out
 }
 
+#' @importFrom stats predict
 #' @export
 splsda.default <- function(x, y, probMethod = "softmax", prior = NULL, ...)
 {

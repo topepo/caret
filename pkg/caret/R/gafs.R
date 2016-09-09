@@ -151,6 +151,7 @@ gafs_tourSelection <- function (population, fitness, k = 3, ...) {
   return(out)
 }
 
+#' @importFrom stats runif
 #' @export
 gafs_uCrossover <- function (population, parents, ...) {
   parents <- population[parents, , drop = FALSE]
@@ -248,6 +249,7 @@ ga_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY,
 ##
 
 
+#' @importFrom stats runif
 #' @import foreach
 ga_select <- function(x, y,  
                       
@@ -528,6 +530,7 @@ ga_select <- function(x, y,
 ###################################################################
 ##
 
+#' @importFrom utils getFromNamespace
 #' @export
 print.gafs <- function (x, top = 5, 
                         digits = max(3, getOption("digits") - 3), 
@@ -647,6 +650,8 @@ predict.gafs <- function (object, newdata, ...) {
 #' @export
 gafs <- function (x, ...) UseMethod("gafs")
 
+#' @importFrom utils getFromNamespace
+#' @importFrom stats runif
 #' @export
 "gafs.default" <-
   function(x, y,
@@ -856,7 +861,7 @@ gafs <- function (x, ...) UseMethod("gafs")
 
 ###################################################################
 ##
-
+#' @importFrom stats update
 #' @export
 plot.gafs <- function(x, 
                       metric = x$control$metric["external"], 
@@ -911,6 +916,7 @@ plot.gafs <- function(x,
 ###################################################################
 ##
 
+#' @importFrom stats predict
 #' @export
 caretGA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) train(x, y, ...),
                 pred = function(object, x) {
@@ -935,6 +941,7 @@ caretGA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) train(x, y, 
                 mutation = gafs_raMutation,
                 selectIter = best)
 
+#' @importFrom stats predict
 #' @export
 treebagGA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) {
   loadNamespace("ipred")

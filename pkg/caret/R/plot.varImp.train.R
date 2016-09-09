@@ -1,4 +1,5 @@
 #' @importFrom stats as.formula
+#' @importFrom utils stack
 #' @export
 "plot.varImp.train" <-
 function(x, top = dim(x$importance)[1],  ...)
@@ -44,7 +45,7 @@ function(x, top = dim(x$importance)[1],  ...)
    impPlot
 }
 
-
+#' @importFrom utils stack
 #' @export
 ggplot.varImp.train <- function (data, mapping = NULL, top = dim(data$importance)[1], ..., environment = NULL)  {
   plotObj <- sortImp(data, top)

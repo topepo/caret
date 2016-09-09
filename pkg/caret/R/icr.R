@@ -2,7 +2,7 @@
 #' @export
 icr <- function (x, ...) UseMethod("icr")
 
-#' @importFrom stats .getXlevels contrasts
+#' @importFrom stats .getXlevels contrasts model.matrix model.response model.weights
 #' @export
 icr.formula <- function (formula, data, weights, ...,              
                          subset, na.action, contrasts = NULL) 
@@ -34,6 +34,7 @@ icr.formula <- function (formula, data, weights, ...,
     res
 }
 
+#' @importFrom stats predict lm
 #' @export
 icr.default <- function(x, y, ...)
   {
@@ -58,6 +59,7 @@ icr.default <- function(x, y, ...)
   }
 
 
+#' @importFrom stats4 coef
 #' @export
 print.icr <- function (x, digits = max(3, getOption("digits") - 3), ...) 
 {
@@ -79,7 +81,7 @@ print.icr <- function (x, digits = max(3, getOption("digits") - 3), ...)
   invisible(x)
 }
 
-#' @importFrom stats .checkMFClasses
+#' @importFrom stats .checkMFClasses delete.response model.frame model.matrix predict na.omit fitted
 #' @export
 predict.icr <- function(object, newdata, ...)
   {

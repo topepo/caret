@@ -42,7 +42,7 @@ contr.dummy <- function(n, ...)
     UseMethod("dummyVars")
   }
 
-#' @importFrom stats as.formula
+#' @importFrom stats as.formula model.frame
 #' @export
 dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, fullRank = FALSE, ...) 
 {
@@ -105,7 +105,7 @@ print.dummyVars <- function(x, ...)
   invisible(x)
 }
 
-
+#' @importFrom stats delete.response model.frame model.matrix na.pass
 #' @export
 predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
 {

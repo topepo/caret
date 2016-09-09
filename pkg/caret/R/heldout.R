@@ -90,6 +90,7 @@ oob_pred.sbf <- function(x, average = TRUE) {
   prd
 }
 
+#' @importFrom stats reshape
 #' @export
 oob_pred.list <- function(x, direction = "wide", what = "both", ...) {
   num <- length(x)
@@ -228,6 +229,7 @@ train_lev <- function(x) {
 }
 
 
+#' @importFrom stats cor
 corr_mat <- function (object, metric = object$metrics, 
                        ...) {
   dat <- object$values[, grepl(paste0("~", metric[1]), 

@@ -115,7 +115,7 @@ bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample 
 
 
 
-#' @importFrom stats contrasts
+#' @importFrom stats contrasts model.matrix model.response model.weights na.omit
 #' @export
 "bag.formula" <-
   function (formula, data = NULL,..., subset, weights, na.action = na.omit) 
@@ -145,6 +145,7 @@ bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample 
   out
 }
 
+#' @importFrom stats predict
 #' @export
 "predict.bag" <-
   function(object, newdata = NULL, ...)
@@ -183,6 +184,7 @@ print.bag <- function (x, ...)
   invisible(x)
 }
 
+#' @importFrom stats quantile
 #' @export
 "summary.bag" <-
   function(object, ...)
@@ -226,7 +228,7 @@ print.bag <- function (x, ...)
   cat("\n")
 }
 
-
+#' @importFrom stats median predict
 #' @export
 ldaBag <- list(fit = function(x, y, ...)
                {
@@ -263,7 +265,7 @@ ldaBag <- list(fit = function(x, y, ...)
                  out
                })
 
-
+#' @importFrom stats median predict
 #' @export
 plsBag <- list(fit = function(x, y,  ...)
                {
@@ -295,6 +297,7 @@ plsBag <- list(fit = function(x, y,  ...)
                  out
                })
 
+#' @importFrom stats median predict
 #' @export
 nbBag <- list(fit = function(x, y,  ...)
                {
@@ -326,6 +329,7 @@ nbBag <- list(fit = function(x, y,  ...)
                })
 
 
+#' @importFrom stats median
 #' @export
 ctreeBag <- list(fit = function(x, y,  ...)
                 {
@@ -374,7 +378,7 @@ ctreeBag <- list(fit = function(x, y,  ...)
                    out
                 })
 
-
+#' @importFrom stats median predict
 #' @export
 svmBag <- list(fit = function(x, y,  ...)
                 {
@@ -422,7 +426,7 @@ svmBag <- list(fit = function(x, y,  ...)
                 })
 
 
-
+#' @importFrom stats median predict
 #' @export
 nnetBag <- list(fit = function(x, y,  ...)
                 {

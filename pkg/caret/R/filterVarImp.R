@@ -6,11 +6,15 @@ rocPerCol <- function(dat, cls){
   auc(cls, dat)
 }
 
+#' @importFrom utils modifyList
 asNumeric <- function(data){
   fc <- sapply(data, is.factor)
   modifyList(data, lapply(data[, fc], as.numeric))
 }
 
+#' @importFrom stats loess resid na.omit lm
+#' @importFrom stats4 coef
+#' @importFrom utils combn
 #' @export
 filterVarImp <- function(x, y, nonpara = FALSE, ...){
   # converting factors to numeric
