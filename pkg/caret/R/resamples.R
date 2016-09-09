@@ -147,6 +147,7 @@ cluster.resamples <- function(x, metric = x$metrics[1],  ...)
   out
 }
 
+#' @importFrom grDevices extendrange
 #' @export
 plot.prcomp.resamples <- function(x, what = "scree", dims = max(2, ncol(x$rotation)), ...)
 {
@@ -300,7 +301,7 @@ print.summary.resamples <- function(x, ...)
   invisible(x)
 }
 
-
+#' @importFrom grDevices extendrange
 #' @export
 xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, metric = x$metric[1], units = "min", ...) 
 {
@@ -453,6 +454,7 @@ parallelplot.resamples <- function (x, data = NULL, models = x$models, metric = 
   
 }
 
+#' @importFrom grDevices extendrange
 #' @export
 splom.resamples <- function (x, data = NULL, variables = "models",
                              models = x$models,
@@ -502,6 +504,7 @@ splom.resamples <- function (x, data = NULL, variables = "models",
   
 }
 
+#' @importFrom stats as.formula
 #' @export
 densityplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...) 
 {
@@ -519,6 +522,7 @@ densityplot.resamples <- function (x, data = NULL, models = x$models, metric = x
 }
 
 
+#' @importFrom stats as.formula
 #' @export
 bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...) 
 {
@@ -540,7 +544,7 @@ bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metr
   
 }
 
-
+#' @importFrom stats aggregate as.formula
 #' @export
 dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, conf.level = 0.95, ...) 
 {
@@ -679,6 +683,7 @@ diff.resamples <- function(x,
   out
 }
 
+#' @importFrom stats as.formula
 #' @export
 densityplot.diff.resamples <- function(x, data, metric = x$metric, ...)
 {
@@ -696,6 +701,7 @@ densityplot.diff.resamples <- function(x, data, metric = x$metric, ...)
   
 }
 
+#' @importFrom stats as.formula
 #' @export
 bwplot.diff.resamples <- function(x, data, metric = x$metric, ...)
 {
@@ -777,6 +783,7 @@ summary.diff.resamples <- function(object, digits = max(3, getOption("digits") -
   out
 }
 
+#' @importFrom stats complete.cases
 #' @export
 levelplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], what = "pvalues", ...)
 {
@@ -852,6 +859,7 @@ print.summary.diff.resamples <- function(x, ...)
   invisible(x)
 }
 
+#' @importFrom stats aggregate
 #' @export
 dotplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], ...)
 {

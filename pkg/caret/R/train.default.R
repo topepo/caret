@@ -1,3 +1,4 @@
+
 #' @export
 "train" <-
   function(x, ...){
@@ -651,6 +652,7 @@ train.default <- function(x, y,
   
 }
 
+#' @importFrom stats .getXlevels complete.cases contrasts
 #' @export
 train.formula <- function (form, data, ..., weights, subset, na.action = na.fail, contrasts = NULL)  {
   m <- match.call(expand.dots = FALSE)

@@ -115,7 +115,7 @@ bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample 
 
 
 
-
+#' @importFrom stats contrasts
 #' @export
 "bag.formula" <-
   function (formula, data = NULL,..., subset, weights, na.action = na.omit) 

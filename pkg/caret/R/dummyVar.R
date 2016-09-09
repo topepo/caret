@@ -42,6 +42,7 @@ contr.dummy <- function(n, ...)
     UseMethod("dummyVars")
   }
 
+#' @importFrom stats as.formula
 #' @export
 dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, fullRank = FALSE, ...) 
 {

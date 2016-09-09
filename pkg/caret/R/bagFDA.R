@@ -46,6 +46,7 @@ function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
                   weights = !is.null(weights), dots = list(...)), class = "bagFDA")
 }
 
+#' @importFrom stats contrasts
 #' @export
 "bagFDA.formula" <-
 function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights = NULL, na.action = na.omit) 
@@ -73,7 +74,7 @@ function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights = NUL
    out
 }
 
-
+#' @export
 "print.bagFDA" <-
 function (x, ...) 
 {
@@ -162,6 +163,7 @@ function(object, ...)
    out
 }
 
+#' @export
 "print.summary.bagFDA" <-
 function(x, digits = max(3, getOption("digits") - 3), ...)
 {

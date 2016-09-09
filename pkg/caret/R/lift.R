@@ -76,6 +76,8 @@ print.lift <- function(x, ...) {
 #' @export
 plot.lift <- function(x, y = NULL, ...) xyplot.lift(x = x, data = NULL, ...)
 
+#' @importFrom stats as.formula
+#' @importFrom grDevices extendrange
 #' @export
 xyplot.lift <- function(x, data = NULL, plot = "gain", values = NULL, ...){
   if(!(plot %in% c("lift", "gain"))) stop(paste("'plot' should be either 'lift' or 'gain'"))
@@ -108,6 +110,7 @@ xyplot.lift <- function(x, data = NULL, plot = "gain", values = NULL, ...){
   do.call("xyplot", args)    
 }
 
+#' @importFrom stats complete.cases
 liftCalc <- function(x, class = levels(x$liftClassVar)[1], cuts = NULL) {
   x <- x[complete.cases(x),]
   lvl <- levels(x$liftClassVar)
@@ -185,6 +188,7 @@ panel.lift2 <- function (x, y, pct = 0, values = NULL, ...)  {
   }
 }
 
+#' @importFrom stats approx
 plotRef <- function(x, y, v, iter = 0) {
   if(iter == 0) {
     lineStyle <- trellis.par.get("plot.line")

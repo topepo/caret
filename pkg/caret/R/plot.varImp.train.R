@@ -1,3 +1,4 @@
+#' @importFrom stats as.formula
 #' @export
 "plot.varImp.train" <-
 function(x, top = dim(x$importance)[1],  ...)

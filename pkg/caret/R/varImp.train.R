@@ -1,3 +1,4 @@
+#' @export
 "varImp.train" <-
   function(object, useModel = TRUE, nonpara = TRUE, scale = TRUE, ...)
 {
@@ -57,6 +58,7 @@
 }
 
 
+#' @export
 "varImp.train" <- function(object, useModel = TRUE, nonpara = TRUE, scale = TRUE, ...) {
   code <- object$modelInfo
   if(is.null(code$varImp)) useModel <- FALSE

@@ -98,6 +98,7 @@ Kim2009 <- function(n)
   grid
 }
 
+#' @importFrom stats as.formula
 #' @export
 gamFormula <- function(data, smoother = "s", cut = 8, y = "y")
 {
@@ -149,6 +150,7 @@ cforestStats  <- function(x) getModelInfo("cforest", regex = FALSE)[[1]]$oob(x)
 #' @export
 bagEarthStats <- function(x) getModelInfo("bagEarth", regex = FALSE)[[1]]$oob(x)
 
+#' @importFrom stats complete.cases
 #' @export
 R2 <- function(pred, obs, formula = "corr", na.rm = FALSE)
   {
@@ -239,6 +241,7 @@ useMathSymbols <- function(x)
     x
   }
 
+#' @importFrom stats approx
 depth2cp <- function(x, depth)
   {
     out <- approx(x[,"nsplit"], x[,"CP"], depth)$y
@@ -246,6 +249,7 @@ depth2cp <- function(x, depth)
     out
   }
 
+#' @importFrom stats as.formula
 smootherFormula <- function(data, smoother = "s", cut = 10, df = 0, span = .5, degree = 1, y = ".outcome")
   {
     nzv <- nearZeroVar(data)
@@ -502,6 +506,7 @@ get_model_type <- function(y, method = NULL) {
   type
 }
 
+#' @importFrom grDevices extendrange
 get_range <- function(y) {
   if(class(y)[1] == "factor") return(NA)
   if(class(y)[1] %in% c("numeric", "integer")) extendrange(y) else extendrange(y[, "time"])

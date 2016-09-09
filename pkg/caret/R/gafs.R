@@ -248,6 +248,7 @@ ga_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY,
 ##
 
 
+#' @import foreach
 ga_select <- function(x, y,  
                       
                       testX = NULL, testY = NULL, 
@@ -527,6 +528,7 @@ ga_select <- function(x, y,
 ###################################################################
 ##
 
+#' @export
 print.gafs <- function (x, top = 5, 
                         digits = max(3, getOption("digits") - 3), 
                         ...) {
@@ -976,6 +978,7 @@ crossover = gafs_spCrossover,
 mutation = gafs_raMutation,
 selectIter = best)
 
+#' @export
 update.gafs <- function(object, iter, x, y, ...) {
   iter <- iter[1]
   if(iter > length(object$ga$subsets))
@@ -995,6 +998,7 @@ update.gafs <- function(object, iter, x, y, ...) {
   object  
 }
 
+#' @export
 "varImp.gafs" <- function(object, 
                           metric = object$control$metric["external"], 
                           maximize = object$control$maximize["external"],

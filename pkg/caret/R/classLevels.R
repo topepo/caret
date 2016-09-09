@@ -1,4 +1,5 @@
 
+#' @export
 levels.train <- function(x, ...) {
   if(any(names(x) == "levels")) {
     out <- x$levels
