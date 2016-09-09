@@ -1,6 +1,5 @@
 ## Should respect the input class except when there is a conflict or always
 ## generate a data frame? 
-## TODO let inputs vars be regex's
 
 ppMethods <- c("BoxCox", "YeoJohnson", "expoTrans", "invHyperbolicSine",
                "center", "scale", "range", 
@@ -227,12 +226,11 @@ preProcess.default <- function(x, method = c("center", "scale"),
       cat("Computing PCA loadings for",
           length(method$pca), 
           "predictors\n")
-    ## TODO What if range is used? Should we center and scale?
     tmp <- prcomp(x[, method$pca, drop = FALSE], scale = TRUE, retx = FALSE)
     if(is.null(pcaComp)) {
       cumVar <- cumsum(tmp$sdev^2/sum(tmp$sdev^2)) 
       numComp <- max(2, which.max(cumVar > thresh))
-    } else numComp <- pcaComp
+    } else numComp <- min(pcaComp, ncol(tmp$rotation))
     rot <- tmp$rotation[,1:numComp]
   } else {
     rot <- NULL
@@ -352,6 +350,7 @@ predict.preProcess <- function(object, newdata, ...) {
     hasMiss <- apply(hasMiss,
                      1,
                      nnimp,
+                     ## todo: should prob us all vars in the next line
                      old = object$data[, object$method$knnImpute, drop = FALSE],
                      k = object$k,
                      foo = object$knnSummary)
@@ -565,6 +564,7 @@ bagImp <- function(var, x, B = 10) {
 
 
 ## Add checks for zv and nzv and overlap
+## allow categorical variables in zv, nzv, and bagImpute
 
 pre_process_options <- function(opts, vars) {
   orig_vars <- vars
