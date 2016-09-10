@@ -1,18 +1,444 @@
 #' @export
 sbfIter <- function(x, y,
-                    testX, testY, 
+                    testX, testY,
+                    sbfControl = sbfControl(), ...)
+{
+  if(is.null(colnames(x))) stop("x must have column names")
+
+  if(is.null(testX) | is.null(testY)) stop("a test set must be specified")
+
+  if(sbfControl$multivariate) {
+    scores <- sbfControl$functions$score(x, y)
+    if(length(scores) != ncol(x))
+      stop(paste("when control$multivariate == TRUE, 'scores'",
+                 "should return a vector with", ncol(x), "numeric values"))
+    } else  {
+      scores <- apply(x, 2, sbfControl$functions$score, y = y)
+    }
+
+    retained <- sbfControl$functions$filter(scores, x, y)
+    ## deal with zero length results
+
+    testX <- testX[, which(retained), drop = FALSE]
+
+    fitObject <- sbfControl$functions$fit(x[, which(retained), drop = FALSE],
+                                          y,
+                                          ...)
+
+    modelPred <- sbfControl$functions$pred(fitObject, testX)
+    if(is.data.frame(modelPred) | is.matrix(modelPred))
+    {
+      if(is.matrix(modelPred)) modelPred <- as.data.frame(modelPred)
+      modelPred$obs <- testY
+    } else modelPred <- data.frame(pred = modelPred, obs = testY)
 
 
-#' Control Object for Selection By Filtering (SBF)
-#' 
-#' Controls the execution of models with simple filters for feature selection
-#' 
+    list(variables = names(retained)[which(retained)],
+         pred = modelPred)
+
+  }
+
+
+  ######################################################################
+  ######################################################################
+
+
+
+#' Selection By Filtering (SBF)
+#'
+#' Model fitting after applying univariate filters
+#'
 #' More details on this function can be found at
 #' \url{http://topepo.github.io/caret/featureselection.html#filter}.
-#' 
+#'
+#' This function can be used to get resampling estimates for models when
+#' simple, filter-based feature selection is applied to the training data.
+#'
+#' For each iteration of resampling, the predictor variables are univariately
+#' filtered prior to modeling. Performance of this approach is estimated using
+#' resampling. The same filter and model are then applied to the entire
+#' training set and the final model (and final features) are saved.
+#'
+#' \code{sbf} can be used with "explicit parallelism", where different
+#' resamples (e.g. cross-validation group) can be split up and run on multiple
+#' machines or processors. By default, \code{sbf} will use a single processor
+#' on the host machine. As of version 4.99 of this package, the framework used
+#' for parallel processing uses the \pkg{foreach} package. To run the resamples
+#' in parallel, the code for \code{sbf} does not change; prior to the call to
+#' \code{sbf}, a parallel backend is registered with \pkg{foreach} (see the
+#' examples below).
+#'
+#' The modeling and filtering techniques are specified in
+#' \code{\link{sbfControl}}. Example functions are given in
+#' \code{\link{lmSBF}}.
+#'
+#' @aliases sbf sbf.default sbf.formula predict.sbf
+#' @param x a data frame containing training data where samples are in rows and
+#' features are in columns.
+#' @param y a numeric or factor vector containing the outcome for each sample.
+#' @param form A formula of the form \code{y ~ x1 + x2 + ...}
+#' @param data Data frame from which variables specified in \code{formula} are
+#' preferentially to be taken.
+#' @param subset An index vector specifying the cases to be used in the
+#' training sample. (NOTE: If given, this argument must be named.)
+#' @param na.action A function to specify the action to be taken if NAs are
+#' found. The default action is for the procedure to fail. An alternative is
+#' na.omit, which leads to rejection of cases with missing values on any
+#' required variable. (NOTE: If given, this argument must be named.)
+#' @param contrasts a list of contrasts to be used for some or all the factors
+#' appearing as variables in the model formula.
+#' @param sbfControl a list of values that define how this function acts. See
+#' \code{\link{sbfControl}}. (NOTE: If given, this argument must be named.)
+#' @param object an object of class \code{sbf}
+#' @param newdata a matrix or data frame of predictors. The object must have
+#' non-null column names
+#' @param list() for \code{sbf}: arguments passed to the classification or
+#' regression routine (such as \code{\link[randomForest]{randomForest}}). For
+#' \code{predict.sbf}: augments cannot be passed to the prediction function
+#' using \code{predict.sbf} as it uses the function originally specified for
+#' prediction.
+#' @return for \code{sbf}, an object of class \code{sbf} with elements:
+#' \item{pred}{if \code{sbfControl$saveDetails} is \code{TRUE}, this is a list
+#' of predictions for the hold-out samples at each resampling iteration.
+#' Otherwise it is \code{NULL}} \item{variables}{a list of variable names that
+#' survived the filter at each resampling iteration} \item{results}{a data
+#' frame of results aggregated over the resamples} \item{fit}{the final model
+#' fit with only the filtered variables} \item{optVariables}{the names of the
+#' variables that survived the filter using the training set} \item{ call}{the
+#' function call} \item{control}{the control object} \item{resample}{if
+#' \code{sbfControl$returnResamp} is "all", a data frame of the resampled
+#' performance measures. Otherwise, \code{NULL}} \item{metrics}{a character
+#' vector of names of the performance measures} \item{dots}{a list of optional
+#' arguments that were passed in}
+#'
+#' For \code{predict.sbf}, a vector of predictions.
+#' @author Max Kuhn
+#' @seealso \code{\link{sbfControl}}
+#' @keywords models
+#' @examples
+#'
+#' \dontrun{
+#' data(BloodBrain)
+#'
+#' ## Use a GAM is the filter, then fit a random forest model
+#' RFwithGAM <- sbf(bbbDescr, logBBB,
+#'                  sbfControl = sbfControl(functions = rfSBF,
+#'                                          verbose = FALSE,
+#'                                          method = "cv"))
+#' RFwithGAM
+#'
+#' predict(RFwithGAM, bbbDescr[1:10,])
+#'
+#' ## classification example with parallel processing
+#'
+#' ## library(doMC)
+#'
+#' ## Note: if the underlying model also uses foreach, the
+#' ## number of cores specified above will double (along with
+#' ## the memory requirements)
+#' ## registerDoMC(cores = 2)
+#'
+#' data(mdrr)
+#' mdrrDescr <- mdrrDescr[,-nearZeroVar(mdrrDescr)]
+#' mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .8)]
+#'
+#' set.seed(1)
+#' filteredNB <- sbf(mdrrDescr, mdrrClass,
+#'                  sbfControl = sbfControl(functions = nbSBF,
+#'                                          verbose = FALSE,
+#'                                          method = "repeatedcv",
+#'                                          repeats = 5))
+#' confusionMatrix(filteredNB)
+#' }
+#'
+#'
+#' @export sbf
+sbf <- function (x, ...) UseMethod("sbf")
+
+#' @importFrom stats predict runif
+#' @export
+"sbf.default" <-
+  function(x, y,
+           sbfControl = sbfControl(), ...)
+  {
+    startTime <- proc.time()
+    funcCall <- match.call(expand.dots = TRUE)
+
+    numFeat <- ncol(x)
+    classLevels <- levels(y)
+
+    if(sbfControl$method == "oob") stop("out-of-bag resampling cannot be used with this function")
+
+    if(is.null(sbfControl$index)) sbfControl$index <- switch(
+      tolower(sbfControl$method),
+      cv = createFolds(y, sbfControl$number, returnTrain = TRUE),
+      repeatedcv = createMultiFolds(y, sbfControl$number, sbfControl$repeats),
+      loocv = createFolds(y, length(y), returnTrain = TRUE),
+      boot =, boot632 = createResample(y, sbfControl$number),
+      test = createDataPartition(y, 1, sbfControl$p),
+      lgocv = createDataPartition(y, sbfControl$number, sbfControl$p))
+
+    if(is.null(names(sbfControl$index))) names(sbfControl$index) <- prettySeq(sbfControl$index)
+    if(is.null(sbfControl$indexOut)){
+      sbfControl$indexOut <- lapply(sbfControl$index,
+                                    function(training, allSamples) allSamples[-unique(training)],
+                                    allSamples = seq(along = y))
+      names(sbfControl$indexOut) <- prettySeq(sbfControl$indexOut)
+    }
+    ## check summary function and metric
+    testOutput <- data.frame(pred = sample(y, min(10, length(y))),
+                             obs = sample(y, min(10, length(y))))
+
+    if(is.factor(y))
+    {
+      for(i in seq(along = classLevels)) testOutput[, classLevels[i]] <- runif(nrow(testOutput))
+    }
+
+    test <- sbfControl$functions$summary(testOutput, lev = classLevels)
+    perfNames <- names(test)
+
+    ## Set or check the seeds when needed
+    if(is.null(sbfControl$seeds))
+    {
+      sbfControl$seeds <- sample.int(n = 1000000, size = length(sbfControl$index) + 1)
+    } else {
+      if(!(length(sbfControl$seeds) == 1 && is.na(sbfControl$seeds)))
+      {
+        if(length(sbfControl$seeds) != length(sbfControl$index) + 1)
+          stop(paste("Bad seeds: the seed object should be an integer vector of length",
+                     length(sbfControl$index) + 1))
+      }
+    }
+
+
+
+    #########################################################################
+
+
+    if(sbfControl$method == "LOOCV")
+    {
+      tmp <- looSbfWorkflow(x = x, y = y, ppOpts = preProcess,
+                            ctrl = sbfControl, lev = classLevels, ...)
+      resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "pred"])
+      rownames(resamples) <- 1:nrow(resamples)
+      selectedVars <- tmp$everything[names(tmp$everything) == "variables"]
+      performance <- tmp$performance
+    } else {
+      tmp <- nominalSbfWorkflow(x = x, y = y, ppOpts = preProcess,
+                                ctrl = sbfControl, lev = classLevels, ...)
+      resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "resamples"])
+      rownames(resamples) <- 1:nrow(resamples)
+      selectedVars <- tmp$everything[names(tmp$everything) == "selectedVars"]
+      performance <- tmp$performance
+    }
+
+    #########################################################################
+
+    varList <- unique(unlist(selectedVars))
+    if(sbfControl$multivariate) {
+      scores <- sbfControl$functions$score(x, y)
+      if(length(scores) != ncol(x))
+        stop(paste("when control$multivariate == TRUE, 'scores'",
+                   "should return a vector with", ncol(x), "numeric values"))
+    } else  {
+      scores <- apply(x, 2, sbfControl$functions$score, y = y)
+    }
+    retained <- sbfControl$functions$filter(scores, x, y)
+
+    finalTime <- system.time(
+      fit <- sbfControl$functions$fit(x[, retained, drop = FALSE],
+                                      y,
+                                      ...))
+
+
+
+    performance <- data.frame(t(performance))
+    performance <- performance[,!grepl("\\.cell|Resample", colnames(performance))]
+
+    if(is.factor(y) & any(names(resamples) == ".cell1"))
+    {
+      keepers <- c("Resample", grep("\\.cell", names(resamples), value = TRUE))
+      resampledCM <- resamples[,keepers]
+      resamples <- resamples[, -grep("\\.cell", names(resamples))]
+    } else resampledCM <- NULL
+
+    resamples <- switch(sbfControl$returnResamp,
+                        none = NULL,
+                        all =, final = resamples)
+
+    endTime <- proc.time()
+    times <- list(everything = endTime - startTime,
+                  final = finalTime)
+
+    #########################################################################
+    ## Now, based on probability or static ranking, figure out the best vars
+    ## and the best subset size and fit final model
+
+    out <- structure(
+      list(
+        pred = if(sbfControl$saveDetails) tmp else NULL,
+        variables = selectedVars,
+        results = performance,
+        fit = fit,
+        optVariables = names(retained)[retained],
+        call = funcCall,
+        control = sbfControl,
+        resample = resamples,
+        metrics = perfNames,
+        times = times,
+        resampledCM = resampledCM,
+        obsLevels = classLevels,
+        dots = list(...)),
+      class = "sbf")
+    if(sbfControl$timingSamps > 0)
+    {
+      out$times$prediction <- system.time(predict(out, x[1:min(nrow(x), sbfControl$timingSamps),,drop = FALSE]))
+    } else  out$times$prediction <- rep(NA, 3)
+    out
+  }
+
+#' @importFrom stats .getXlevels contrasts model.matrix model.response
+#' @export
+sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
+{
+  m <- match.call(expand.dots = FALSE)
+  if (is.matrix(eval.parent(m$data))) m$data <- as.data.frame(data)
+  m$... <- m$contrasts <- NULL
+  m[[1]] <- as.name("model.frame")
+  m <- eval.parent(m)
+  Terms <- attr(m, "terms")
+  x <- model.matrix(Terms, m, contrasts)
+  cons <- attr(x, "contrast")
+  xint <- match("(Intercept)", colnames(x), nomatch = 0)
+  if (xint > 0)  x <- x[, -xint, drop = FALSE]
+  y <- model.response(m)
+  res <- sbf(as.data.frame(x), y, ...)
+  res$terms <- Terms
+  res$coefnames <- colnames(x)
+  res$call <- match.call()
+  res$na.action <- attr(m, "na.action")
+  res$contrasts <- cons
+  res$xlevels <- .getXlevels(Terms, m)
+  class(res) <- c("sbf", "sbf.formula")
+  res
+}
+
+######################################################################
+######################################################################
+
+#' @export
+print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
+{
+
+  cat("\nSelection By Filter\n\n")
+
+  resampleN <- unlist(lapply(x$control$index, length))
+  numResamp <- length(resampleN)
+
+  resampText <- resampName(x)
+  cat("Outer resampling method:", resampText, "\n")
+
+  cat("\nResampling performance:\n\n")
+  print(format(x$results, digits = digits), row.names = FALSE)
+  cat("\n")
+
+  if(length(x$optVariables) > 0)
+  {
+    cat("Using the training set, ",
+        length(x$optVariables),
+        ifelse(length(x$optVariables) > 1,
+               " variables were selected:\n   ",
+               " variable was selected:\n   "),
+        paste(x$optVariables[1:min(top, length(x$optVariables))],
+              collapse = ", "),
+        ifelse(length(x$optVariables) > top, "..", ""),
+        ".\n\n",
+        sep = "")
+  } else cat("No variables were selected from the training set.\n\n")
+
+
+  vars <- sort(table(unlist(x$variables)), decreasing = TRUE)
+
+  top <- min(top, length(vars))
+
+  smallVars <- vars[1:top]
+  smallVars <- round(smallVars/length(x$control$index)*100, 1)
+
+  varText <- paste(names(smallVars), " (",
+                   smallVars, "%)", sep = "")
+  varText <- paste(varText, collapse = ", ")
+
+  if(!all(is.na(smallVars)))
+  {
+    cat("During resampling, the top ",
+        top,
+        " selected variables (out of a possible ",
+        length(vars),
+        "):\n   ",
+        varText,
+        "\n\n",
+        sep = "")
+    cat("On average, ",
+        round(mean(unlist(lapply(x$variables, length))), 1),
+        " variables were selected (min = ",
+        round(min(unlist(lapply(x$variables, length))), 1),
+        ", max = ",
+        round(max(unlist(lapply(x$variables, length))), 1),
+        ")\n",
+        sep = "")
+  } else {
+    cat("During resampling, no variables were selected.\n\n")
+  }
+
+
+
+  invisible(x)
+}
+
+######################################################################
+######################################################################
+#' @importFrom stats .checkMFClasses delete.response model.frame model.matrix na.omit
+#' @export
+predict.sbf <- function(object, newdata = NULL, ...)
+{
+  if(!all(object$optVariables %in% colnames(newdata)))
+    stop("required columns in newdata are missing")
+  if(!is.null(newdata))
+  {
+    if (inherits(object, "sbf.formula"))
+    {
+      newdata <- as.data.frame(newdata)
+      rn <- row.names(newdata)
+      Terms <- delete.response(object$terms)
+      m <- model.frame(Terms, newdata, na.action = na.omit,
+                       xlev = object$xlevels)
+      if (!is.null(cl <- attr(Terms, "dataClasses"))) .checkMFClasses(cl, m)
+      keep <- match(row.names(m), rn)
+      newdata <- model.matrix(Terms, m, contrasts = object$contrasts)
+      xint <- match("(Intercept)", colnames(newdata), nomatch = 0)
+      if (xint > 0) newdata <- newdata[, -xint, drop = FALSE]
+    }
+    newdata <- newdata[, object$optVariables, drop = FALSE]
+    out <- object$control$functions$pred(object$fit, newdata)
+  } else {
+    out <- object$control$functions$pred(object$fit)
+  }
+  out
+}
+
+######################################################################
+######################################################################
+
+#' Control Object for Selection By Filtering (SBF)
+#'
+#' Controls the execution of models with simple filters for feature selection
+#'
+#' More details on this function can be found at
+#' \url{http://topepo.github.io/caret/featureselection.html#filter}.
+#'
 #' Simple filter-based feature selection requires function to be specified for
 #' some operations.
-#' 
+#'
 #' The \code{fit} function builds the model based on the current data set. The
 #' arguments for the function must be: \itemize{ \item\code{x} the current
 #' training set of predictor data with the appropriate subset of variables
@@ -20,12 +446,12 @@ sbfIter <- function(x, y,
 #' numeric or factor vector) \item\code{...} optional arguments to pass to the
 #' fit function in the call to \code{sbf} } The function should return a model
 #' object that can be used to generate predictions.
-#' 
+#'
 #' The \code{pred} function returns a vector of predictions (numeric or
 #' factors) from the current model. The arguments are: \itemize{
 #' \item\code{object} the model generated by the \code{fit} function
 #' \item\code{x} the current set of predictor set for the held-back samples }
-#' 
+#'
 #' The \code{score} function is used to return scores with names for each
 #' predictor (such as a p-value). Inputs are: \itemize{ \item\code{x} the
 #' predictors for the training samples. If \code{sbfControl()$multivariate} is
@@ -37,21 +463,21 @@ sbfIter <- function(x, y,
 #' a single value. Univariate examples are give by \code{\link{anovaScores}}
 #' for classification and \code{\link{gamScores}} for regression and the
 #' example below.
-#' 
+#'
 #' The \code{filter} function is used to return a logical vector with names for
 #' each predictor (\code{TRUE} indicates that the prediction should be
 #' retained). Inputs are: \itemize{ \item\code{score} the output of the
 #' \code{score} function \item\code{x} the predictors for the training samples
 #' \item\code{y} the current training outcomes } The function should return a
 #' named logical vector.
-#' 
+#'
 #' Examples of these functions are included in the package:
 #' \code{\link{caretSBF}}, \code{\link{lmSBF}}, \code{\link{rfSBF}},
 #' \code{\link{treebagSBF}}, \code{\link{ldaSBF}} and \code{\link{nbSBF}}.
-#' 
+#'
 #' The web page \url{http://topepo.github.io/caret/} has more details and
 #' examples related to this function.
-#' 
+#'
 #' @param functions a list of functions for model fitting, prediction and
 #' variable filtering (see Details below)
 #' @param method The external resampling method: \code{boot}, \code{cv},
@@ -92,465 +518,36 @@ sbfIter <- function(x, y,
 #' \code{\link{nbSBF}}
 #' @keywords utilities
 #' @examples
-#' 
+#'
 #' \dontrun{
 #' data(BloodBrain)
-#' 
+#'
 #' ## Use a GAM is the filter, then fit a random forest model
 #' set.seed(1)
 #' RFwithGAM <- sbf(bbbDescr, logBBB,
 #'                  sbfControl = sbfControl(functions = rfSBF,
-#'                                          verbose = FALSE, 
+#'                                          verbose = FALSE,
 #'                                          seeds = sample.int(100000, 11),
 #'                                          method = "cv"))
 #' RFwithGAM
-#' 
-#' 
+#'
+#'
 #' ## A simple example for multivariate scoring
 #' rfSBF2 <- rfSBF
 #' rfSBF2$score <- function(x, y) apply(x, 2, rfSBF$score, y = y)
-#' 
+#'
 #' set.seed(1)
 #' RFwithGAM2 <- sbf(bbbDescr, logBBB,
 #'                   sbfControl = sbfControl(functions = rfSBF2,
-#'                                           verbose = FALSE, 
+#'                                           verbose = FALSE,
 #'                                           seeds = sample.int(100000, 11),
 #'                                           method = "cv",
 #'                                           multivariate = TRUE))
 #' RFwithGAM2
-#' 
-#' 
+#'
+#'
 #' }
 #' @export sbfControl
-                    sbfControl = sbfControl(), ...)
-{
-  if(is.null(colnames(x))) stop("x must have column names")
-  
-  if(is.null(testX) | is.null(testY)) stop("a test set must be specified")
-  
-  if(sbfControl$multivariate) {
-    scores <- sbfControl$functions$score(x, y) 
-    if(length(scores) != ncol(x)) 
-      stop(paste("when control$multivariate == TRUE, 'scores'",
-                 "should return a vector with", ncol(x), "numeric values"))
-    } else  {
-      scores <- apply(x, 2, sbfControl$functions$score, y = y)
-    }
-    
-    retained <- sbfControl$functions$filter(scores, x, y)  
-    ## deal with zero length results
-    
-    testX <- testX[, which(retained), drop = FALSE]
-    
-    fitObject <- sbfControl$functions$fit(x[, which(retained), drop = FALSE],
-                                          y,
-                                          ...)  
-    
-    modelPred <- sbfControl$functions$pred(fitObject, testX)
-    if(is.data.frame(modelPred) | is.matrix(modelPred))
-    {
-      if(is.matrix(modelPred)) modelPred <- as.data.frame(modelPred)
-      modelPred$obs <- testY
-    } else modelPred <- data.frame(pred = modelPred, obs = testY)
-    
-    
-    list(variables = names(retained)[which(retained)],
-         pred = modelPred)
-    
-  }
-  
-  
-  ######################################################################
-  ######################################################################
-  
-
-
-#' Selection By Filtering (SBF)
-#' 
-#' Model fitting after applying univariate filters
-#' 
-#' More details on this function can be found at
-#' \url{http://topepo.github.io/caret/featureselection.html#filter}.
-#' 
-#' This function can be used to get resampling estimates for models when
-#' simple, filter-based feature selection is applied to the training data.
-#' 
-#' For each iteration of resampling, the predictor variables are univariately
-#' filtered prior to modeling. Performance of this approach is estimated using
-#' resampling. The same filter and model are then applied to the entire
-#' training set and the final model (and final features) are saved.
-#' 
-#' \code{sbf} can be used with "explicit parallelism", where different
-#' resamples (e.g. cross-validation group) can be split up and run on multiple
-#' machines or processors. By default, \code{sbf} will use a single processor
-#' on the host machine. As of version 4.99 of this package, the framework used
-#' for parallel processing uses the \pkg{foreach} package. To run the resamples
-#' in parallel, the code for \code{sbf} does not change; prior to the call to
-#' \code{sbf}, a parallel backend is registered with \pkg{foreach} (see the
-#' examples below).
-#' 
-#' The modeling and filtering techniques are specified in
-#' \code{\link{sbfControl}}. Example functions are given in
-#' \code{\link{lmSBF}}.
-#' 
-#' @aliases sbf sbf.default sbf.formula predict.sbf
-#' @param x a data frame containing training data where samples are in rows and
-#' features are in columns.
-#' @param y a numeric or factor vector containing the outcome for each sample.
-#' @param form A formula of the form \code{y ~ x1 + x2 + ...}
-#' @param data Data frame from which variables specified in \code{formula} are
-#' preferentially to be taken.
-#' @param subset An index vector specifying the cases to be used in the
-#' training sample. (NOTE: If given, this argument must be named.)
-#' @param na.action A function to specify the action to be taken if NAs are
-#' found. The default action is for the procedure to fail. An alternative is
-#' na.omit, which leads to rejection of cases with missing values on any
-#' required variable. (NOTE: If given, this argument must be named.)
-#' @param contrasts a list of contrasts to be used for some or all the factors
-#' appearing as variables in the model formula.
-#' @param sbfControl a list of values that define how this function acts. See
-#' \code{\link{sbfControl}}. (NOTE: If given, this argument must be named.)
-#' @param object an object of class \code{sbf}
-#' @param newdata a matrix or data frame of predictors. The object must have
-#' non-null column names
-#' @param list() for \code{sbf}: arguments passed to the classification or
-#' regression routine (such as \code{\link[randomForest]{randomForest}}). For
-#' \code{predict.sbf}: augments cannot be passed to the prediction function
-#' using \code{predict.sbf} as it uses the function originally specified for
-#' prediction.
-#' @return for \code{sbf}, an object of class \code{sbf} with elements:
-#' \item{pred}{if \code{sbfControl$saveDetails} is \code{TRUE}, this is a list
-#' of predictions for the hold-out samples at each resampling iteration.
-#' Otherwise it is \code{NULL}} \item{variables}{a list of variable names that
-#' survived the filter at each resampling iteration} \item{results}{a data
-#' frame of results aggregated over the resamples} \item{fit}{the final model
-#' fit with only the filtered variables} \item{optVariables}{the names of the
-#' variables that survived the filter using the training set} \item{ call}{the
-#' function call} \item{control}{the control object} \item{resample}{if
-#' \code{sbfControl$returnResamp} is "all", a data frame of the resampled
-#' performance measures. Otherwise, \code{NULL}} \item{metrics}{a character
-#' vector of names of the performance measures} \item{dots}{a list of optional
-#' arguments that were passed in}
-#' 
-#' For \code{predict.sbf}, a vector of predictions.
-#' @author Max Kuhn
-#' @seealso \code{\link{sbfControl}}
-#' @keywords models
-#' @examples
-#' 
-#' \dontrun{
-#' data(BloodBrain)
-#' 
-#' ## Use a GAM is the filter, then fit a random forest model
-#' RFwithGAM <- sbf(bbbDescr, logBBB,
-#'                  sbfControl = sbfControl(functions = rfSBF,
-#'                                          verbose = FALSE, 
-#'                                          method = "cv"))
-#' RFwithGAM
-#' 
-#' predict(RFwithGAM, bbbDescr[1:10,])
-#' 
-#' ## classification example with parallel processing
-#' 
-#' ## library(doMC)
-#' 
-#' ## Note: if the underlying model also uses foreach, the
-#' ## number of cores specified above will double (along with
-#' ## the memory requirements)
-#' ## registerDoMC(cores = 2)
-#' 
-#' data(mdrr)
-#' mdrrDescr <- mdrrDescr[,-nearZeroVar(mdrrDescr)]
-#' mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .8)]
-#' 
-#' set.seed(1)
-#' filteredNB <- sbf(mdrrDescr, mdrrClass,
-#'                  sbfControl = sbfControl(functions = nbSBF,
-#'                                          verbose = FALSE, 
-#'                                          method = "repeatedcv",
-#'                                          repeats = 5))
-#' confusionMatrix(filteredNB)
-#' }
-#' 
-#' 
-#' @export sbf
-sbf <- function (x, ...) UseMethod("sbf")
-  
-#' @importFrom stats predict runif
-#' @export
-"sbf.default" <-
-  function(x, y,
-           sbfControl = sbfControl(), ...)
-  {
-    startTime <- proc.time()
-    funcCall <- match.call(expand.dots = TRUE)
-    
-    numFeat <- ncol(x)
-    classLevels <- levels(y)
-    
-    if(sbfControl$method == "oob") stop("out-of-bag resampling cannot be used with this function")
-    
-    if(is.null(sbfControl$index)) sbfControl$index <- switch(
-      tolower(sbfControl$method),
-      cv = createFolds(y, sbfControl$number, returnTrain = TRUE),
-      repeatedcv = createMultiFolds(y, sbfControl$number, sbfControl$repeats),
-      loocv = createFolds(y, length(y), returnTrain = TRUE),
-      boot =, boot632 = createResample(y, sbfControl$number),
-      test = createDataPartition(y, 1, sbfControl$p),
-      lgocv = createDataPartition(y, sbfControl$number, sbfControl$p))
-    
-    if(is.null(names(sbfControl$index))) names(sbfControl$index) <- prettySeq(sbfControl$index)
-    if(is.null(sbfControl$indexOut)){     
-      sbfControl$indexOut <- lapply(sbfControl$index,
-                                    function(training, allSamples) allSamples[-unique(training)],
-                                    allSamples = seq(along = y))
-      names(sbfControl$indexOut) <- prettySeq(sbfControl$indexOut)
-    }
-    ## check summary function and metric
-    testOutput <- data.frame(pred = sample(y, min(10, length(y))),
-                             obs = sample(y, min(10, length(y))))
-    
-    if(is.factor(y))
-    {
-      for(i in seq(along = classLevels)) testOutput[, classLevels[i]] <- runif(nrow(testOutput))
-    }
-    
-    test <- sbfControl$functions$summary(testOutput, lev = classLevels)
-    perfNames <- names(test)
-    
-    ## Set or check the seeds when needed
-    if(is.null(sbfControl$seeds))
-    {
-      sbfControl$seeds <- sample.int(n = 1000000, size = length(sbfControl$index) + 1)
-    } else {
-      if(!(length(sbfControl$seeds) == 1 && is.na(sbfControl$seeds)))
-      {
-        if(length(sbfControl$seeds) != length(sbfControl$index) + 1)
-          stop(paste("Bad seeds: the seed object should be an integer vector of length",
-                     length(sbfControl$index) + 1))      
-      }
-    }
-    
-    
-    
-    #########################################################################
-    
-    
-    if(sbfControl$method == "LOOCV")
-    {
-      tmp <- looSbfWorkflow(x = x, y = y, ppOpts = preProcess,
-                            ctrl = sbfControl, lev = classLevels, ...)
-      resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "pred"])
-      rownames(resamples) <- 1:nrow(resamples)
-      selectedVars <- tmp$everything[names(tmp$everything) == "variables"]
-      performance <- tmp$performance
-    } else {
-      tmp <- nominalSbfWorkflow(x = x, y = y, ppOpts = preProcess,
-                                ctrl = sbfControl, lev = classLevels, ...)
-      resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "resamples"])
-      rownames(resamples) <- 1:nrow(resamples)
-      selectedVars <- tmp$everything[names(tmp$everything) == "selectedVars"]
-      performance <- tmp$performance
-    }
-    
-    #########################################################################
-    
-    varList <- unique(unlist(selectedVars))
-    if(sbfControl$multivariate) {
-      scores <- sbfControl$functions$score(x, y) 
-      if(length(scores) != ncol(x)) 
-        stop(paste("when control$multivariate == TRUE, 'scores'",
-                   "should return a vector with", ncol(x), "numeric values"))
-    } else  {
-      scores <- apply(x, 2, sbfControl$functions$score, y = y)
-    }
-    retained <- sbfControl$functions$filter(scores, x, y)
-    
-    finalTime <- system.time(
-      fit <- sbfControl$functions$fit(x[, retained, drop = FALSE],
-                                      y,
-                                      ...))
-    
-    
-    
-    performance <- data.frame(t(performance))
-    performance <- performance[,!grepl("\\.cell|Resample", colnames(performance))]
-    
-    if(is.factor(y) & any(names(resamples) == ".cell1"))
-    {
-      keepers <- c("Resample", grep("\\.cell", names(resamples), value = TRUE))      
-      resampledCM <- resamples[,keepers]
-      resamples <- resamples[, -grep("\\.cell", names(resamples))]
-    } else resampledCM <- NULL  
-    
-    resamples <- switch(sbfControl$returnResamp,
-                        none = NULL, 
-                        all =, final = resamples)
-    
-    endTime <- proc.time()
-    times <- list(everything = endTime - startTime,
-                  final = finalTime)
-    
-    #########################################################################
-    ## Now, based on probability or static ranking, figure out the best vars
-    ## and the best subset size and fit final model
-    
-    out <- structure(
-      list(
-        pred = if(sbfControl$saveDetails) tmp else NULL,
-        variables = selectedVars,
-        results = performance,
-        fit = fit,
-        optVariables = names(retained)[retained],
-        call = funcCall,
-        control = sbfControl,
-        resample = resamples,
-        metrics = perfNames,
-        times = times,
-        resampledCM = resampledCM,
-        obsLevels = classLevels,
-        dots = list(...)),
-      class = "sbf")
-    if(sbfControl$timingSamps > 0)
-    {
-      out$times$prediction <- system.time(predict(out, x[1:min(nrow(x), sbfControl$timingSamps),,drop = FALSE]))
-    } else  out$times$prediction <- rep(NA, 3)
-    out
-  }
-
-#' @importFrom stats .getXlevels contrasts model.matrix model.response
-#' @export
-sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) 
-{
-  m <- match.call(expand.dots = FALSE)
-  if (is.matrix(eval.parent(m$data))) m$data <- as.data.frame(data)
-  m$... <- m$contrasts <- NULL
-  m[[1]] <- as.name("model.frame")
-  m <- eval.parent(m)
-  Terms <- attr(m, "terms")
-  x <- model.matrix(Terms, m, contrasts)
-  cons <- attr(x, "contrast")
-  xint <- match("(Intercept)", colnames(x), nomatch = 0)
-  if (xint > 0)  x <- x[, -xint, drop = FALSE]
-  y <- model.response(m)
-  res <- sbf(as.data.frame(x), y, ...)
-  res$terms <- Terms
-  res$coefnames <- colnames(x)
-  res$call <- match.call()
-  res$na.action <- attr(m, "na.action")
-  res$contrasts <- cons
-  res$xlevels <- .getXlevels(Terms, m)
-  class(res) <- c("sbf", "sbf.formula")
-  res
-}
-  
-######################################################################
-######################################################################
-
-#' @export
-print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
-{
-  
-  cat("\nSelection By Filter\n\n")
-  
-  resampleN <- unlist(lapply(x$control$index, length))
-  numResamp <- length(resampleN)
-  
-  resampText <- resampName(x)
-  cat("Outer resampling method:", resampText, "\n")     
-  
-  cat("\nResampling performance:\n\n")
-  print(format(x$results, digits = digits), row.names = FALSE)
-  cat("\n")
-  
-  if(length(x$optVariables) > 0)
-  {
-    cat("Using the training set, ",
-        length(x$optVariables),
-        ifelse(length(x$optVariables) > 1,
-               " variables were selected:\n   ",
-               " variable was selected:\n   "),
-        paste(x$optVariables[1:min(top, length(x$optVariables))],
-              collapse = ", "),
-        ifelse(length(x$optVariables) > top, "..", ""),
-        ".\n\n",
-        sep = "")
-  } else cat("No variables were selected from the training set.\n\n")
-  
-  
-  vars <- sort(table(unlist(x$variables)), decreasing = TRUE)
-  
-  top <- min(top, length(vars))
-  
-  smallVars <- vars[1:top]
-  smallVars <- round(smallVars/length(x$control$index)*100, 1)
-  
-  varText <- paste(names(smallVars), " (",
-                   smallVars, "%)", sep = "")
-  varText <- paste(varText, collapse = ", ")
-  
-  if(!all(is.na(smallVars)))
-  {
-    cat("During resampling, the top ",
-        top,
-        " selected variables (out of a possible ",
-        length(vars),
-        "):\n   ",
-        varText,
-        "\n\n",
-        sep = "")
-    cat("On average, ",
-        round(mean(unlist(lapply(x$variables, length))), 1),
-        " variables were selected (min = ",
-        round(min(unlist(lapply(x$variables, length))), 1),
-        ", max = ",
-        round(max(unlist(lapply(x$variables, length))), 1),
-        ")\n",
-        sep = "")
-  } else {
-    cat("During resampling, no variables were selected.\n\n")
-  }
-  
-  
-  
-  invisible(x)
-}
-
-######################################################################
-######################################################################
-#' @importFrom stats .checkMFClasses delete.response model.frame model.matrix na.omit
-#' @export
-predict.sbf <- function(object, newdata = NULL, ...)
-{
-  if(!all(object$optVariables %in% colnames(newdata)))
-    stop("required columns in newdata are missing")
-  if(!is.null(newdata))
-  {
-    if (inherits(object, "sbf.formula"))
-    {
-      newdata <- as.data.frame(newdata)
-      rn <- row.names(newdata)
-      Terms <- delete.response(object$terms)
-      m <- model.frame(Terms, newdata, na.action = na.omit, 
-                       xlev = object$xlevels)
-      if (!is.null(cl <- attr(Terms, "dataClasses"))) .checkMFClasses(cl, m)
-      keep <- match(row.names(m), rn)
-      newdata <- model.matrix(Terms, m, contrasts = object$contrasts)
-      xint <- match("(Intercept)", colnames(newdata), nomatch = 0)
-      if (xint > 0) newdata <- newdata[, -xint, drop = FALSE]   
-    }
-    newdata <- newdata[, object$optVariables, drop = FALSE]
-    out <- object$control$functions$pred(object$fit, newdata)
-  } else {
-    out <- object$control$functions$pred(object$fit)
-  }
-  out  
-}
-
-######################################################################
-######################################################################
-
-#' @export
 sbfControl <- function(functions = NULL,
                        method = "boot",
                        saveDetails = FALSE,
@@ -610,19 +607,19 @@ gamScores <- function(x, y)
 
 
 #' Selection By Filtering (SBF) Helper Functions
-#' 
+#'
 #' Ancillary functions for univariate feature selection
-#' 
+#'
 #' More details on these functions can be found at
 #' \url{http://topepo.github.io/caret/featureselection.html#filter}.
-#' 
+#'
 #' This page documents the functions that are used in selection by filtering
 #' (SBF). The functions described here are passed to the algorithm via the
 #' \code{functions} argument of \code{\link{sbfControl}}.
-#' 
+#'
 #' See \code{\link{sbfControl}} for details on how these functions should be
 #' defined.
-#' 
+#'
 #' \code{anovaScores} and \code{gamScores} are two examples of univariate
 #' filtering functions. \code{anovaScores} fits a simple linear model between a
 #' single feature and the outcome, then the p-value for the whole model F-test
@@ -630,10 +627,10 @@ gamScores <- function(x, y)
 #' single predictor and the outcome using a smoothing spline basis function. A
 #' p-value is generated using the whole model test from
 #' \code{\link[gam]{summary.gam}} and is returned.
-#' 
+#'
 #' If a particular model fails for \code{lm} or \code{gam}, a p-value of 1 is
 #' returned.
-#' 
+#'
 #' @aliases caretSBF lmSBF rfSBF treebagSBF ldaSBF nbSBF gamScores anovaScores
 #' @param x a matrix or data frame of numeric predictors
 #' @param y a numeric or factor vector of outcomes
@@ -648,7 +645,7 @@ caretSBF <- list(summary = defaultSummary,
                    if(ncol(x) > 0)
                    {
                      train(x, y, ...)
-                   } else nullModel(y = y)                                      
+                   } else nullModel(y = y)
                  },
                  pred = function(object, x)
                  {
@@ -667,7 +664,7 @@ caretSBF <- list(summary = defaultSummary,
                      {
                        out <- cbind(data.frame(pred = tmp),
                                     as.data.frame(predict(object, x, type = "prob")))
-                     } else out <- tmp 
+                     } else out <- tmp
                    }
                    out
                  },
@@ -699,7 +696,7 @@ rfSBF <- list(summary = defaultSummary,
                   {
                     out <- cbind(data.frame(pred = tmp),
                                  as.data.frame(predict(object, x, type = "prob")))
-                  } else out <- tmp                           
+                  } else out <- tmp
                 } else {
                   tmp <- predict(object, x)
                   if(is.factor(object$y))
@@ -707,8 +704,8 @@ rfSBF <- list(summary = defaultSummary,
                     out <- cbind(data.frame(pred = tmp),
                                  as.data.frame(predict(object, x, type = "prob")))
                   } else out <- tmp
-                }                
-                
+                }
+
                 out
               },
               score = function(x, y)
@@ -729,7 +726,7 @@ lmSBF <- list(summary = defaultSummary,
                   tmp <- as.data.frame(x)
                   tmp$y <- y
                   lm(y~., data = tmp)
-                } else nullModel(y = y)                
+                } else nullModel(y = y)
               },
               pred = function(object, x)
               {
@@ -762,11 +759,11 @@ ldaSBF <- list(summary = defaultSummary,
                                 as.data.frame(
                                   predict(object,
                                           x,
-                                          type = "prob"))) 
+                                          type = "prob")))
                  } else {
                    tmp <- predict(object, x)
                    out <- cbind(data.frame(pred = tmp$class),
-                                as.data.frame(tmp$posterior)) 
+                                as.data.frame(tmp$posterior))
                  }
                  out
                },
@@ -787,7 +784,7 @@ nbSBF <- list(summary = defaultSummary,
                 {
                   loadNamespace("klaR")
                   klaR::NaiveBayes(x, y, usekernel = TRUE, fL = 2, ...)
-                  
+
                 } else nullModel(y = y)
               },
               pred = function(object, x)
@@ -799,15 +796,15 @@ nbSBF <- list(summary = defaultSummary,
                                as.data.frame(
                                  predict(object,
                                          x,
-                                         type = "prob"))) 
+                                         type = "prob")))
                 } else {
                   tmp <- predict(object, x)
                   out <- cbind(data.frame(pred = tmp$class),
-                               as.data.frame(tmp$posterior)) 
+                               as.data.frame(tmp$posterior))
                 }
                 out
-              },              
-              
+              },
+
               pred = function(object, x)
               {
                 predict(object, x)$class
@@ -831,7 +828,7 @@ treebagSBF <- list(summary = defaultSummary,
                        ipred::ipredbagg(y, x, ...)
                      } else nullModel(y = y)
                    },
-                   
+
                    pred = function(object, x)
                    {
                      if(class(object) == "nullModel")
@@ -841,7 +838,7 @@ treebagSBF <- list(summary = defaultSummary,
                        {
                          out <- cbind(data.frame(pred = tmp),
                                       as.data.frame(predict(object, x, type = "prob")))
-                       } else out <- tmp                           
+                       } else out <- tmp
                      } else {
                        tmp <- predict(object, x)
                        if(is.factor(object$y))
@@ -876,10 +873,10 @@ densityplot.sbf <- function(x,
 {
   if (!is.null(match.call()$data))
     warning("explicit 'data' specification ignored")
-  
+
   if(x$control$method %in%  c("oob", "LOOCV"))
     stop("Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling")
-  
+
   data <- as.data.frame(x$resample)
   form <- as.formula(paste("~", metric))
   densityplot(form, data = data, ...)
@@ -894,12 +891,12 @@ histogram.sbf <- function(x,
 {
   if (!is.null(match.call()$data))
     warning("explicit 'data' specification ignored")
-  
+
   if(x$control$method %in%  c("oob", "LOOCV"))
     stop("Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling")
-  
+
   data <- as.data.frame(x$resample)
-  
+
   form <- as.formula(paste("~", metric))
   histogram(form, data = data, ...)
 }
@@ -916,15 +913,15 @@ predictors.sbf <- function(x, ...) x$optVariables
 #' @export
 varImp.sbf <- function(object, onlyFinal = TRUE, ...)
 {
-  
+
   vars <- sort(table(unlist(object$variables)), decreasing = TRUE)/length(object$control$index)
-  
-  
+
+
   out <- as.data.frame(vars)
   names(out) <- "Overall"
   if(onlyFinal) out <- subset(out, rownames(out) %in% object$optVariables)
   out[order(-out$Overall),,drop = FALSE]
-  
+
 }
 
 ######################################################################
@@ -932,15 +929,15 @@ varImp.sbf <- function(object, onlyFinal = TRUE, ...)
 
 
 #' Fit a simple, non-informative model
-#' 
+#'
 #' Fit a single mean or largest class model
-#' 
+#'
 #' \code{nullModel} emulates other model building functions, but returns the
 #' simplest model possible given a training set: a single mean for numeric
 #' outcomes and the most prevalent class for factor outcomes. When class
 #' probabilities are requested, the percentage of the training set samples with
 #' the most prevalent class is returned.
-#' 
+#'
 #' @aliases nullModel nullModel.default predict.nullModel
 #' @param x An optional matrix or data frame of predictors. These values are
 #' not used in the model fit
@@ -960,28 +957,28 @@ varImp.sbf <- function(object, onlyFinal = TRUE, ...)
 #' otherwise). The column for the most prevalent class has the proportion of
 #' the training samples with that class (the other columns are zero). } \item{n
 #' }{the number of elements in \code{y}}
-#' 
+#'
 #' \code{predict.nullModel} returns a either a factor or numeric vector
 #' depending on the class of \code{y}. All predictions are always the same.
 #' @keywords models
 #' @examples
-#' 
-#' outcome <- factor(sample(letters[1:2], 
-#'                          size = 100, 
-#'                          prob = c(.1, .9), 
+#'
+#' outcome <- factor(sample(letters[1:2],
+#'                          size = 100,
+#'                          prob = c(.1, .9),
 #'                          replace = TRUE))
 #' useless <- nullModel(y = outcome)
 #' useless
 #' predict(useless, matrix(NA, nrow = 10))
-#' 
-#' 
+#'
+#'
 #' @export nullModel
 nullModel <- function (x, ...) UseMethod("nullModel")
 
 #' @export
 nullModel.default <- function(x = NULL, y, ...)
 {
-  
+
   if(is.factor(y))
   {
     lvls <- levels(y)
@@ -1009,7 +1006,7 @@ print.nullModel <- function(x, digits = max(3, getOption("digits") - 3), ...)
       ifelse(is.null(x$levels), "Classification", "Regression"),
       "Model\n")
   printCall(x$call)
-  
+
   cat("Predicted Value:",
       ifelse(is.null(x$levels), format(x$value, digitis = digits), x$value),
       "\n")
@@ -1022,7 +1019,7 @@ predict.nullModel <- function (object, newdata = NULL, type  = NULL, ...)
   {
     type <- if(is.null(object$levels)) "raw" else "class"
   }
-  
+
   n <- if(is.null(newdata)) object$n else nrow(newdata)
   if(!is.null(object$levels))
   {

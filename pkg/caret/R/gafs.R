@@ -1,3 +1,4 @@
+
 ga_internal_names <- c('Iter','Size','Similarity','Similarity_M','Resample')
 ga_external_names <- c('Iter','Resample')
 
@@ -6,24 +7,24 @@ check_ga_pop <- function(x) {
   if(any(no_vars)) {
     for(i in which(no_vars)) {
       here <- sample(1:ncol(x), 1)
-      x[i,here] <- 1 
+      x[i,here] <- 1
     }
   }
   x
 }
 
 ga_func_check <- function(x) {
-  fnames <- names(x) 
-  required <- c('fit', 'fitness_intern', 'pred', 'fitness_extern', 
-                'initial', 'selection', 'crossover', 'mutation', 
+  fnames <- names(x)
+  required <- c('fit', 'fitness_intern', 'pred', 'fitness_extern',
+                'initial', 'selection', 'crossover', 'mutation',
                 'selectIter')
   missing <- !(required %in% fnames)
-  if(any(missing)) 
+  if(any(missing))
     stop(paste("The following functions are missing from the 'func' argument:",
                paste(required[missing], sep = "", collapse = ",")))
   invisible(x)
   args <- lapply(x, function(x) names(formals(x)))
-  expected <- list(fit = c('x', 'y', 'lev', 'last', '...'),                   
+  expected <- list(fit = c('x', 'y', 'lev', 'last', '...'),
                    fitness_intern = c('object', 'x', 'y', 'maximize', 'p'),
                    pred = c('object', 'x'),
                    fitness_extern = c('data', 'lev', 'model'),
@@ -32,7 +33,7 @@ ga_func_check <- function(x) {
                    crossover = c('population', 'fitness', 'parents', '...'),
                    mutation = c('population', 'parent', '...'),
                    selectIter = c('x', 'metric', 'maximize'))
-  
+
   for(i in names(x)) {
     .args <- names(formals(x[[i]]))
     .check <- same_args(.args, expected[[i]])
@@ -49,21 +50,22 @@ ga_func_check <- function(x) {
 
 
 #' Ancillary genetic algorithm functions
-#' 
+#'
+#' @description
 #' Built-in functions related to genetic algorithms
-#' 
+#'
 #' These functions are used with the \code{functions} argument of the
 #' \code{\link{gafsControl}} function. More information on the details of these
 #' functions are at \url{http://topepo.github.io/caret/GA.html}.
-#' 
+#'
 #' Most of the \code{gafs_*} functions are based on those from the GA package
 #' by Luca Scrucca. These functions here are small re-writes to work outside of
 #' the GA package.
-#' 
+#'
 #' The objects \code{caretGA}, \code{rfGA} and \code{treebagGA} are example
 #' lists that can be used with the \code{functions} argument of
 #' \code{\link{gafsControl}}.
-#' 
+#'
 #' In the case of \code{caretGA}, the \code{...} structure of
 #' \code{\link{gafs}} passes through to the model fitting routine. As a
 #' consequence, the \code{\link{train}} function can easily be accessed by
@@ -71,7 +73,7 @@ ga_func_check <- function(x) {
 #' \code{\link{gafs}}. See the examples below. By default, using \code{caretGA}
 #' will used the resampled performance estimates produced by
 #' \code{\link{train}} as the internal estimate of fitness.
-#' 
+#'
 #' For \code{rfGA} and \code{treebagGA}, the \code{randomForest} and
 #' \code{bagging} functions are used directly (i.e. \code{\link{train}} is not
 #' used). Arguments to either of these functions can also be passed to them
@@ -80,7 +82,7 @@ ga_func_check <- function(x) {
 #' naturally produced by those functions. While faster, this limits the user to
 #' accuracy or Kappa (for classification) and RMSE and R-squared (for
 #' regression).
-#' 
+#'
 #' @aliases gafs_initial gafs_lrSelection gafs_rwSelection gafs_tourSelection
 #' gafs_uCrossover gafs_spCrossover gafs_raMutation caretGA rfGA treebagGA
 #' @param vars number of possible predictors
@@ -97,20 +99,20 @@ ga_func_check <- function(x) {
 #' @seealso \code{\link{gafs}}, \code{\link{gafsControl}}
 #' @references Scrucca L (2013). GA: A Package for Genetic Algorithms in R.
 #' Journal of Statistical Software, 53(4), 1-37.
-#' 
+#'
 #' \url{cran.r-project.org/web/packages/GA/}
-#' 
+#'
 #' \url{http://topepo.github.io/caret/GA.html}
 #' @examples
-#' 
+#'
 #' pop <- gafs_initial(vars = 10, popSize = 10)
 #' pop
-#' 
+#'
 #' gafs_lrSelection(population = pop, fitness = 1:10)
-#' 
+#'
 #' gafs_spCrossover(population = pop, fitness = 1:10, parents = 1:2)
-#' 
-#' 
+#'
+#'
 #' \dontrun{
 #' ## Hypothetical examples
 #' lda_ga <- gafs(x = predictors,
@@ -120,7 +122,7 @@ ga_func_check <- function(x) {
 #'                method = "lda",
 #'                metric = "Accuracy"
 #'                trControl = trainControl(method = "cv", classProbs = TRUE))
-#' 
+#'
 #' rf_ga <- gafs(x = predictors,
 #'               y = classes,
 #'               gafsControl = gafsControl(functions = rfGA),
@@ -128,15 +130,15 @@ ga_func_check <- function(x) {
 #'               ntree = 1000,
 #'               importance = TRUE)
 #' 	}
-#' 
-#' 
+#'
+#'
 #' @export gafs_initial
 gafs_initial <- function (vars, popSize, ...)  {
   x <- matrix(NA, nrow = popSize, ncol = vars)
   probs <- seq(.9, .1, length = popSize)
   for(i in 1:popSize){
-    x[i,] <- sample(0:1, replace = TRUE, 
-                    size = vars, 
+    x[i,] <- sample(0:1, replace = TRUE,
+                    size = vars,
                     prob = c(probs[i], 1-probs[i]))
   }
   var_count <- apply(x, 1, sum)
@@ -149,20 +151,20 @@ gafs_initial <- function (vars, popSize, ...)  {
 }
 
 #' @export
-gafs_lrSelection <-  function (population, fitness, 
-                               r = NULL, 
+gafs_lrSelection <-  function (population, fitness,
+                               r = NULL,
                                q = NULL, ...) {
   popSize = nrow(population)
-  
+
   if(is.null(r)) r <- 2/(popSize * (popSize - 1))
   if(is.null(q)) q <- 2/popSize
   rank <- (popSize + 1) - rank(fitness, ties.method = "random")
   prob <- q - (rank - 1) * r
-  sel <- sample(1:popSize, 
-                size = popSize, 
-                prob = pmin(pmax(0, prob), 1, na.rm = TRUE), 
+  sel <- sample(1:popSize,
+                size = popSize,
+                prob = pmin(pmax(0, prob), 1, na.rm = TRUE),
                 replace = TRUE)
-  out <- list(population = population[sel, , drop = FALSE], 
+  out <- list(population = population[sel, , drop = FALSE],
               fitness = fitness[sel])
   out
 }
@@ -204,9 +206,9 @@ gafs_nlrSelection <- function (population, fitness, q = 0.25, ...) {
   popSize <- nrow(population)
   rank <- (popSize + 1) - rank(fitness, ties.method = "random")
   prob <- q * (1 - q)^(rank - 1)
-  sel <- sample(1:popSize, size = popSize, 
+  sel <- sample(1:popSize, size = popSize,
                 prob = pmin(pmax(0, prob), 1, na.rm = TRUE), replace = TRUE)
-  out <- list(population = population[sel, , drop = FALSE], 
+  out <- list(population = population[sel, , drop = FALSE],
               fitness = fitness[sel])
   return(out)
 }
@@ -215,9 +217,9 @@ gafs_nlrSelection <- function (population, fitness, q = 0.25, ...) {
 gafs_rwSelection <- function (population, fitness, ...) {
   popSize <- nrow(population)
   prob <- abs(fitness)/sum(abs(fitness))
-  sel <- sample(1:popSize, size = popSize, 
+  sel <- sample(1:popSize, size = popSize,
                 prob = pmin(pmax(0, prob), 1, na.rm = TRUE), replace = TRUE)
-  out <- list(population = population[sel, , drop = FALSE], 
+  out <- list(population = population[sel, , drop = FALSE],
               fitness = fitness[sel])
   return(out)
 }
@@ -230,7 +232,7 @@ gafs_tourSelection <- function (population, fitness, k = 3, ...) {
     s <- sample(1:popSize, size = k)
     sel[i] <- s[which.max(fitness[s])]
   }
-  out <- list(population = population[sel, , drop = FALSE], 
+  out <- list(population = population[sel, , drop = FALSE],
               fitness = fitness[sel])
   return(out)
 }
@@ -269,7 +271,7 @@ gafsControl <- function(functions = NULL,
   if(!(method %in% c("cv", "boot", "repeatedcv", "LGOCV", "LOOCV")))
     stop('method should be one of: "cv", "boot", "repeatedcv", "LGOCV" or "LOOCV"')
   if(holdout < 0 | holdout >= 1) stop("'holdout' should be in [0, 1)")
-  
+
   if(!is.null(metric)) {
     if(length(metric)  != 2)
       stop("'metric' should be a two-element named vector. See ?gafsControl")
@@ -281,8 +283,8 @@ gafsControl <- function(functions = NULL,
       stop("'maximize' should be a two-element named vector. See ?gafsControl")
     if(is.null(names(maximize)) || any(sort(names(maximize)) != c("external", "internal")))
       stop("'maximize' should have names 'internal' and 'external' See ?gafsControl")
-  }  
-  
+  }
+
   list(functions = if(is.null(functions)) caretFuncs else functions,
        method = method,
        metric = metric,
@@ -303,12 +305,12 @@ gafsControl <- function(functions = NULL,
 ###################################################################
 ##
 
-ga_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY, 
+ga_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY,
                        ga_metric, ga_maximize, lvl = lvl, last = FALSE, indiv = 0, ...) {
   mod <- funcs$fit(x[, ind, drop=FALSE], y, lev = lvl, last = last,...)
-  internal <- funcs$fitness_intern(mod, 
-                                   x = if(!is.null(holdoutX)) holdoutX[, ind, drop=FALSE] else x[, ind, drop=FALSE], 
-                                   y = if(!is.null(holdoutY)) holdoutY else y, 
+  internal <- funcs$fitness_intern(mod,
+                                   x = if(!is.null(holdoutX)) holdoutX[, ind, drop=FALSE] else x[, ind, drop=FALSE],
+                                   y = if(!is.null(holdoutY)) holdoutY else y,
                                    p = ncol(x))
   if(!is.null(testX)) {
     modelPred <- funcs$pred(mod, testX[, ind, drop=FALSE])
@@ -317,14 +319,14 @@ ga_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY,
       modelPred$obs <- testY
       modelPred$Size <- length(ind)
     } else modelPred <- data.frame(pred = modelPred, obs = testY, Size = sum(ind == 1))
-    external <- funcs$fitness_extern(modelPred, lev = levels(testY))  
+    external <- funcs$fitness_extern(modelPred, lev = levels(testY))
     if(is.null(names(external))) {
       names(external) <- paste0("external", 1:length(external))
     }
   } else external <- NULL
-  
+
   if(!ga_maximize["internal"]) internal[ga_metric["internal"]] <- -internal[ga_metric["internal"]]
-  
+
   list(internal = c(internal, .indiv = indiv),
        external = c(external, .indiv = indiv))
 }
@@ -335,26 +337,26 @@ ga_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY,
 
 #' @importFrom stats runif
 #' @import foreach
-ga_select <- function(x, y,  
-                      
-                      testX = NULL, testY = NULL, 
-                      
+ga_select <- function(x, y,
+
+                      testX = NULL, testY = NULL,
+
                       iters = 20,
-                      funcs = NULL, 
+                      funcs = NULL,
                       ga_metric = NULL,
-                      ga_maximize = TRUE, 
-                      ga_verbose = TRUE, 
-                      
+                      ga_maximize = TRUE,
+                      ga_verbose = TRUE,
+
                       holdout = 0,
                       ga_seed = NULL,
                       lvl = NULL,
-                      
-                      popSize = 50, 
-                      pcrossover = 0.8, 
-                      pmutation = 0.1, 
-                      elite = base::max(1, round(popSize*0.05)), 
+
+                      popSize = 50,
+                      pcrossover = 0.8,
+                      pmutation = 0.1,
+                      elite = base::max(1, round(popSize*0.05)),
                       maxfitness = Inf,
-                      suggestions = NULL, 
+                      suggestions = NULL,
                       genParallel = FALSE,
                       Resample = "",
                       ...) {
@@ -362,23 +364,23 @@ ga_select <- function(x, y,
   nvars <- ncol(x)
   if(!is.null(ga_seed)) set.seed(ga_seed[1])
   dig <- options()$digits
-  
+
   if(holdout > 0) {
-    in_holdout <- createDataPartition(y, 
-                                      p = holdout, 
+    in_holdout <- createDataPartition(y,
+                                      p = holdout,
                                       list = FALSE)
     holdout_x <- x[in_holdout,,drop = FALSE]
     holdout_y <- y[in_holdout]
     x <- x[-in_holdout,,drop = FALSE]
-    y <- y[-in_holdout]    
+    y <- y[-in_holdout]
   } else {
     holdout_x <- NULL
     holdout_y <- NULL
-  }  
-  
+  }
+
   ###################################################################
   ##
-  
+
   subsets <- vector(mode = "list", length = iters)
   internal <- data.frame(Iter = 1:(iters),
                          Size = rep(0*NA, iters),
@@ -386,66 +388,66 @@ ga_select <- function(x, y,
                          Similarity_M= rep(0*NA, iters),
                          stringsAsFactors = FALSE)
   external <- if(!is.null(testX)) data.frame(Iter = 1:(iters)) else NULL
-  
+
   ## add GA package warnings
-  
+
   ###################################################################
   ## From GA package:
-  
+
   ## TODO make input a vector of indicies
-  
-  if(is.null(suggestions)) { 
-    suggestions <- matrix(nrow = 0, ncol = nvars) 
-  } else { 
-    if(is.vector(suggestions)) { 
+
+  if(is.null(suggestions)) {
+    suggestions <- matrix(nrow = 0, ncol = nvars)
+  } else {
+    if(is.vector(suggestions)) {
       if(nvars > 1) suggestions <- matrix(suggestions, nrow = 1)
-      else suggestions <- matrix(suggestions, ncol = 1) 
-    } else suggestions <- as.matrix(suggestions) 
+      else suggestions <- matrix(suggestions, ncol = 1)
+    } else suggestions <- as.matrix(suggestions)
     if(nvars != ncol(suggestions))
       stop("Provided suggestions (ncol) matrix do not match number of variables of the problem!")
   }
-  
+
   ###################################################################
   ## From GA package:
-  
+
   Pop <- matrix(as.double(NA), nrow = popSize, ncol = nvars)
   ng <- min(nrow(suggestions), popSize)
   if(ng > 0)  { # use suggestion if provided
-    Pop[1:ng,] <- suggestions 
+    Pop[1:ng,] <- suggestions
   }
   # fill the rest with a random population
-  if(popSize > ng) { 
-    Pop[(ng+1):popSize,] <- funcs$initial(vars = nvars, popSize = popSize)[1:(popSize-ng),] 
+  if(popSize > ng) {
+    Pop[(ng+1):popSize,] <- funcs$initial(vars = nvars, popSize = popSize)[1:(popSize-ng),]
   }
   colnames(Pop) <- colnames(x)
-  
+
   .Pop <- Pop
   .Fit <- rep(NA, nrow(Pop))
-  
+
   ###################################################################
   ##
-  
+
   `%op%` <- getOper(genParallel && getDoParWorkers() > 1)
-  
+
   for(generation in 1:iters) {
     Pop <- check_ga_pop(Pop)
-    currennt_results <- foreach(i = seq_len(popSize), 
-                                .combine = "c", 
-                                .verbose = FALSE, 
-                                .errorhandling = "stop") %op% { 
-                                  ga_wrapper(ind = which(Pop[i,] == 1), 
-                                             x = x, y = y, 
-                                             funcs, 
+    currennt_results <- foreach(i = seq_len(popSize),
+                                .combine = "c",
+                                .verbose = FALSE,
+                                .errorhandling = "stop") %op% {
+                                  ga_wrapper(ind = which(Pop[i,] == 1),
+                                             x = x, y = y,
+                                             funcs,
                                              holdoutX = holdout_x, holdoutY = holdout_y,
-                                             testX = testX, testY = testY, 
+                                             testX = testX, testY = testY,
                                              ga_metric = ga_metric,
-                                             ga_maximize = ga_maximize, 
+                                             ga_maximize = ga_maximize,
                                              lvl = lvl,
                                              last = Resample == "",
                                              indiv = i,
-                                             ...) 
+                                             ...)
                                 } ## loop over chromosomes
-    
+
     ## TODO save only the parts you need inside of loop
     if(!is.null(testX)) {
       current_ext <- currennt_results[names(currennt_results) == "external"]
@@ -460,27 +462,27 @@ ga_select <- function(x, y,
     current_int <- current_int[, -ncol(current_int), drop = FALSE]
     rownames(current_int) <- NULL
     rm(currennt_results)
-    
+
     Fitness <- if(is.matrix(current_int)) current_int[,ga_metric["internal"]]
     best_index <- which.max(Fitness)
     best_internal <- current_int[best_index,]
     if(!is.null(testX)) best_external <- current_ext[best_index,]
     subsets[[generation]] <- which(Pop[best_index,] == 1)
     internal$Size[generation] <- sum(Pop[best_index,] == 1)
-    
+
     if(generation > 1) {
       hist_best <- which.max(internal[1:(generation-1), ga_metric["internal"]])
-      internal$Similarity[generation] <- jack_sim(index2vec(subsets[[hist_best]], ncol(Pop)), 
+      internal$Similarity[generation] <- jack_sim(index2vec(subsets[[hist_best]], ncol(Pop)),
                                                   index2vec(subsets[[generation]], ncol(Pop)))
       tmp_sim <- apply(Pop, 1, function(x, y) jack_sim(x, y),
-                       y = index2vec(subsets[[hist_best]], ncol(Pop))) 
-      
+                       y = index2vec(subsets[[hist_best]], ncol(Pop)))
+
       internal$Similarity_M[generation] <- mean(tmp_sim, na.rm = TRUE)
     }
-    
+
     .Pop <- Pop
     .Fit <- Fitness
-    
+
     if(generation == 1) {
       k <- length(best_internal)
       perf_names <- names(best_internal)
@@ -495,75 +497,75 @@ ga_select <- function(x, y,
       internal[generation, (nr-k+1):nr] <- best_internal
       if(!is.null(testX)) external[generation, -1] <- best_external
     }
-    
+
     if(ga_verbose){
       if(generation > 1) {
         imp <- internal[hist_best, ga_metric["internal"]] < max(Fitness)
         cat(Resample, " ", format(1:iters)[generation], " ",
-            if(ga_maximize["internal"]) 
-              signif( internal[hist_best, ga_metric["internal"]], digits = dig) else 
+            if(ga_maximize["internal"])
+              signif( internal[hist_best, ga_metric["internal"]], digits = dig) else
                 signif(-internal[hist_best, ga_metric["internal"]], digits = dig),
-            "->" , 
-            if(ga_maximize["internal"]) 
-              signif(max(Fitness), digits = dig) else 
-                signif( min(-Fitness), digits = dig), 
-            change_text(subsets[[hist_best]], subsets[[generation]], nvars, show_diff = FALSE), 
+            "->" ,
+            if(ga_maximize["internal"])
+              signif(max(Fitness), digits = dig) else
+                signif( min(-Fitness), digits = dig),
+            change_text(subsets[[hist_best]], subsets[[generation]], nvars, show_diff = FALSE),
             if(imp) " *" else "",
             "\n",
-            sep = "") 
+            sep = "")
       } else {
         cat(Resample, " ", format(1:iters)[generation], " ",
-            if(ga_maximize["internal"]) 
-              signif(internal[1, ga_metric["internal"]], digits = dig) else 
+            if(ga_maximize["internal"])
+              signif(internal[1, ga_metric["internal"]], digits = dig) else
                signif(-internal[1, ga_metric["internal"]], digits = dig),
             " (", length(subsets[[1]]), ")\n",
-            sep = "") 
+            sep = "")
       }
     }
-    
+
     ###################################################################
     ## From GA package
-    
+
     ord <- order(Fitness, decreasing = TRUE)
     PopSorted <- Pop[ord,,drop = FALSE]
     FitnessSorted <- Fitness[ord]
-    
+
     # selection
-    if(is.function(funcs$selection)) { 
+    if(is.function(funcs$selection)) {
       sel <- funcs$selection(population = .Pop, fitness = .Fit)
       Pop <- sel$population
       Fitness <- sel$fitness
-    } else { 
+    } else {
       sel <- sample(1:popSize, size = popSize, replace = TRUE)
       Pop <- .Pop[sel,]
       Fitness <- .Fit[sel]
     }
     .Pop <- Pop
     .Fit <- Fitness
-    
+
     # crossover
-    if(is.function(funcs$crossover) & pcrossover > 0) { 
+    if(is.function(funcs$crossover) & pcrossover > 0) {
       nmating <- floor(popSize/2)
       mating <- matrix(sample(1:(2*nmating), size = (2*nmating)), ncol = 2)
-      for(i in seq_len(nmating)) { 
-        if(pcrossover > runif(1)){ 
+      for(i in seq_len(nmating)) {
+        if(pcrossover > runif(1)){
           parents <- mating[i,]
-          Crossover <- funcs$crossover(population = .Pop, 
-                                       fitness = .Fit, 
+          Crossover <- funcs$crossover(population = .Pop,
+                                       fitness = .Fit,
                                        parents = parents)
           Pop[parents,] <- Crossover$children
           Fitness[parents] <- Crossover$fitness
         }
-      }             
+      }
       .Pop <- Pop
       .Fit <- Fitness
     }
-    
+
     # mutation
     pm <- if(is.function(pmutation)) pmutation(object) else pmutation
-    if(is.function(funcs$mutation) & pm > 0) { 
-      for(i in seq_len(popSize))  { 
-        if(pm > runif(1)) { 
+    if(is.function(funcs$mutation) & pm > 0) {
+      for(i in seq_len(popSize))  {
+        if(pm > runif(1)) {
           Mutation <- funcs$mutation(population = .Pop, parent = i)
           Pop[i,] <- Mutation
           Fitness[i] <- NA
@@ -572,39 +574,39 @@ ga_select <- function(x, y,
       .Pop <- Pop
       .Fit <- Fitness
     }
-    
+
     # elite
-    if(elite > 0)  { 
+    if(elite > 0)  {
       ord <- order(.Fit, na.last = TRUE)
       u <- which(!duplicated(PopSorted, margin = 1))
       Pop[ord[1:elite],] <- PopSorted[u[1:elite],]
       Fitness[ord[1:elite]] <- FitnessSorted[u[1:elite]]
       .Pop <- Pop
       .Fit <- Fitness
-    } 
-    
+    }
+
   } ## search iterations
-  
-  
+
+
   best_index <- which.max(internal[, ga_metric["internal"]])
   best_subset <- colnames(x)[subsets[[best_index]]]
-  
-  
+
+
   if(!ga_maximize["internal"]) {
     internal[, ga_metric["internal"]] <- -internal[, ga_metric["internal"]]
   }
   mod <- funcs$fit(x[, best_subset, drop=FALSE], y, lev = lvl, last = TRUE, ...)
   if(Resample != "") internal$Resample <- Resample
   if(Resample != "" && !is.null(testX)) external$Resample <- Resample
-  
-  diffs <- try(get_fitness_differences(colnames(x), 
-                                       subsets, 
+
+  diffs <- try(get_fitness_differences(colnames(x),
+                                       subsets,
                                        external[, !(names(external) %in% ga_external_names), drop = FALSE]),
                silent = TRUE)
   if(class(diffs)[1] == "try-error") diffs <- NULL
-  
+
   list(internal = internal,
-       subsets = subsets, 
+       subsets = subsets,
        external = external,
        final = best_subset,
        fit = mod,
@@ -616,47 +618,47 @@ ga_select <- function(x, y,
 
 #' @importFrom utils getFromNamespace
 #' @export
-print.gafs <- function (x, top = 5, 
-                        digits = max(3, getOption("digits") - 3), 
+print.gafs <- function (x, top = 5,
+                        digits = max(3, getOption("digits") - 3),
                         ...) {
   cat("\nGenetic Algorithm Feature Selection\n\n")
-  
-  cat(x$dims[1], 
-      " samples\n", 
+
+  cat(x$dims[1],
+      " samples\n",
       x$dims[2],
       " predictor", ifelse(x$dims[2] > 1, "s\n", "\n"),
       sep = "")
   if(!is.null(x$levels)){
-    cat(length(x$levels), 
+    cat(length(x$levels),
         "classes:",
         paste("'", x$levels, "'", sep = "", collapse = ", "),
         "\n")
   }
   cat("\n")
-  
+
   cat("Maximum generations:", max(x$iters), "\n")
   cat("Population per generation:", x$ga_param$popSize, "\n")
   cat("Crossover probability:", x$ga_param$pcrossover, "\n")
   if(is.function(x$ga_param$pmutation)) {
-    cat("Mutation probability: variable\n")    
-  } else     cat("Mutation probability:", x$ga_param$pmutation, "\n")    
+    cat("Mutation probability: variable\n")
+  } else     cat("Mutation probability:", x$ga_param$pmutation, "\n")
   cat("Elitism:", x$ga_param$elite, "\n\n")
-  
+
   inames <- names(x$internal)
   inames <- inames[!(inames %in% ga_internal_names)]
   enames <- names(x$external)
   enames <- enames[!(enames %in% ga_external_names)]
   cat("Internal performance value", ifelse(length(inames) > 1, "s: ", ": "),
       paste(inames, sep = "", collapse = ", "), "\n", sep = "")
-  cat("Subset selection driven to", 
-      if(x$control$maximize["internal"]) "maximize internal" else "minimize internal", 
-      x$control$metric["internal"],  "\n")  
+  cat("Subset selection driven to",
+      if(x$control$maximize["internal"]) "maximize internal" else "minimize internal",
+      x$control$metric["internal"],  "\n")
   cat("\n")
   cat("External performance value", ifelse(length(enames) > 1, "s: ", ": "),
-      paste(enames, sep = "", collapse = ", "), "\n", sep = "")  
+      paste(enames, sep = "", collapse = ", "), "\n", sep = "")
   if(x$auto) {
-  cat("Best iteration chose by", 
-      if(x$control$maximize["external"]) "maximizing external" else "minimizing external", 
+  cat("Best iteration chose by",
+      if(x$control$maximize["external"]) "maximizing external" else "minimizing external",
       x$control$metric["external"],  "\n")
   } else {
     cat("Best iteration chosen manually\n")
@@ -665,23 +667,23 @@ print.gafs <- function (x, top = 5,
   numResamp <- length(resampleN)
   resampText <- getFromNamespace("resampName", "caret")(x)
   cat("External resampling method:", resampText, "\n")
-  
+
   if(x$control$holdout > 0)
-    cat("Subsampling for internal fitness calculation: ", 
+    cat("Subsampling for internal fitness calculation: ",
         round(x$control$holdout*100, digits), "%\n", sep = "")
-  
+
   cat("\n")
-  
+
   vars <- sort(table(unlist(x$resampled_vars)), decreasing = TRUE)
-  
+
   top <- min(top, length(vars))
-  
+
   smallVars <- vars[1:top]
   smallVars <- round(smallVars/length(x$control$index)*100, 1)
-  
+
   varText <- paste0(names(smallVars), " (", smallVars, "%)")
   varText <- paste(varText, collapse = ", ")
-  
+
   if(!all(is.na(smallVars))) {
     cat("During resampling:\n  * the top ",
         top,
@@ -702,13 +704,13 @@ print.gafs <- function (x, top = 5,
   } else {
     cat("During resampling, no variables were selected.\n\n")
   }
-  
+
   cat("In the final search using the entire training set:\n",
       "  *", length(x$optVariables), "features selected at iteration",
       x$optIter, "including:\n    ",
-      paste(x$optVariables[1:min(length(x$optVariables), top)], 
+      paste(x$optVariables[1:min(length(x$optVariables), top)],
             sep = "", collapse = ", "),
-      if(length(x$optVariables) > top) "..." else "", 
+      if(length(x$optVariables) > top) "..." else "",
       "\n")
   perf_dat <- subset(x$external, Iter == x$optIter)
   perf_dat <- perf_dat[!(names(perf_dat) %in% c("Iter", "Resample"))]
@@ -717,19 +719,19 @@ print.gafs <- function (x, top = 5,
   ch_perf  <- format(perf, digits = digits, row.names = FALSE)
   ch_perf[1] <- paste("    ", ch_perf[1])
   print(ch_perf, quote = FALSE)
-  cat("\n")  
-  
+  cat("\n")
+
   invisible(x)
 }
 
 
 
 #' Predict new samples
-#' 
+#'
 #' Predict new samples using \code{\link{safs}} and \code{\link{gafs}} objects.
-#' 
+#'
 #' Only the predictors listed in \code{object$optVariables} are required.
-#' 
+#'
 #' @aliases predict.gafs predict.safs
 #' @param object an object of class \code{\link{safs}} or \code{\link{gafs}}
 #' @param newdata a data frame or matrix of predictors.
@@ -740,32 +742,32 @@ print.gafs <- function (x, top = 5,
 #' @seealso \code{\link{safs}}, \code{\link{gafs}}
 #' @keywords multivariate
 #' @examples
-#' 
+#'
 #' \dontrun{
-#' 
+#'
 #' set.seed(1)
 #' train_data <- twoClassSim(100, noiseVars = 10)
 #' test_data  <- twoClassSim(10,  noiseVars = 10)
-#' 
-#' ## A short example 
-#' ctrl <- safsControl(functions = rfSA, 
+#'
+#' ## A short example
+#' ctrl <- safsControl(functions = rfSA,
 #'                     method = "cv",
 #'                     number = 3)
-#' 
+#'
 #' rf_search <- safs(x = train_data[, -ncol(train_data)],
 #'                   y = train_data$Class,
 #'                   iters = 3,
 #'                   safsControl = ctrl)
-#' 
+#'
 #' rf_search
-#' 
-#' predict(rf_search, train_data)  
+#'
+#' predict(rf_search, train_data)
 #' }
-#' 
+#'
 #' @export predict.gafs
 predict.gafs <- function (object, newdata, ...) {
   newdata <- newdata[, object$optVariables, drop = FALSE]
-  object$control$functions$pred(object$fit, newdata)  
+  object$control$functions$pred(object$fit, newdata)
 }
 
 ###################################################################
@@ -777,13 +779,13 @@ gafs <- function (x, ...) UseMethod("gafs")
 
 
 #' Genetic algorithm feature selection
-#' 
+#'
 #' Supervised feature selection using genetic algorithms
-#' 
+#'
 #' \code{\link{gafs}} conducts a supervised binary search of the predictor
 #' space using a genetic algorithm. See Mitchell (1996) and Scrucca (2013) for
 #' more details on genetic algorithms.
-#' 
+#'
 #' This function conducts the search of the feature space repeatedly within
 #' resampling iterations. First, the training data are split be whatever
 #' resampling method was specified in the control function. For example, if
@@ -791,7 +793,7 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' conducted 10 separate times. For the first fold, nine tenths of the data are
 #' used in the search while the remaining tenth is used to estimate the
 #' external performance since these data points were not used in the search.
-#' 
+#'
 #' During the genetic algorithm, a measure of fitness is needed to guide the
 #' search. This is the internal measure of performance. During the search, the
 #' data that are available are the instances selected by the top-level
@@ -803,24 +805,24 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' large amount of training data are available. Yet another idea is to use a
 #' penalized metric (such as the AIC statistic) but this may not exist for some
 #' metrics (e.g. the area under the ROC curve).
-#' 
+#'
 #' The internal estimates of performance will eventually overfit the subsets to
 #' the data. However, since the external estimate is not used by the search, it
 #' is able to make better assessments of overfitting. After resampling, this
 #' function determines the optimal number of generations for the GA.
-#' 
+#'
 #' Finally, the entire data set is used in the last execution of the genetic
 #' algorithm search and the final model is built on the predictor subset that
 #' is associated with the optimal number of generations determined by
 #' resampling (although the update function can be used to manually set the
 #' number of generations).
-#' 
+#'
 #' This is an example of the output produced when \code{gafsControl(verbose =
 #' TRUE)} is used:
-#' 
-#' \preformatted{Fold2 1 0.715 (13) Fold2 2 0.715->0.737 (13->17, 30.4%) *
-#' Fold2 3 0.737->0.732 (17->14, 24.0%) Fold2 4 0.737->0.769 (17->23, 25.0%) *}
-#' 
+#'
+#' \preformatted{Fold2 1 0.715 (13) Fold2 2 0.715->0.737 (13->17, 30.4\%) *
+#' Fold2 3 0.737->0.732 (17->14, 24.0\%) Fold2 4 0.737->0.769 (17->23, 25.0\%) *}
+#'
 #' For the second resample (e.g. fold 2), the best subset across all
 #' individuals tested in the first generation contained 13 predictors and was
 #' associated with a fitness value of 0.715. The second generation produced a
@@ -829,7 +831,7 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' is the Jaccard similarity between the previous best individual (with 13
 #' predictors) and the new best. The third generation did not produce a better
 #' fitness value but the fourth generation did.
-#' 
+#'
 #' The search algorithm can be parallelized in several places: \enumerate{
 #' \item each externally resampled GA can be run independently (controlled by
 #' the \code{allowParallel} option of \code{\link{gafsControl}}) \item within a
@@ -839,13 +841,13 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' these can be run in parallel (controls depend on the function used. See, for
 #' example, \code{\link[caret]{trainControl}}) \item any parallelization of the
 #' individual model fits. This is also specific to the modeling function.  }
-#' 
+#'
 #' It is probably best to pick one of these areas for parallelization and the
 #' first is likely to produces the largest decrease in run-time since it is the
 #' least likely to incur multiple re-starting of the worker processes. Keep in
 #' mind that if multiple levels of parallelization occur, this can effect the
 #' number of workers and the amount of memory required exponentially.
-#' 
+#'
 #' @aliases gafs.default gafs
 #' @param x an object where samples are in rows and features are in columns.
 #' This could be a simple matrix, data frame or other type (e.g. sparse
@@ -871,63 +873,63 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' \code{\link{caretGA}}, \code{\link{rfGA}} \code{\link{treebagGA}}
 #' @references Kuhn M and Johnson K (2013), Applied Predictive Modeling,
 #' Springer, Chapter 19 \url{http://appliedpredictivemodeling.com}
-#' 
+#'
 #' Scrucca L (2013). GA: A Package for Genetic Algorithms in R. Journal of
 #' Statistical Software, 53(4), 1-37. \url{www.jstatsoft.org/v53/i04}
-#' 
+#'
 #' Mitchell M (1996), An Introduction to Genetic Algorithms, MIT Press.
-#' 
+#'
 #' \url{http://en.wikipedia.org/wiki/Jaccard_index}
 #' @keywords models
 #' @examples
-#' 
+#'
 #' \dontrun{
 #' set.seed(1)
 #' train_data <- twoClassSim(100, noiseVars = 10)
 #' test_data  <- twoClassSim(10,  noiseVars = 10)
-#' 
-#' ## A short example 
-#' ctrl <- gafsControl(functions = rfGA, 
+#'
+#' ## A short example
+#' ctrl <- gafsControl(functions = rfGA,
 #'                     method = "cv",
 #'                     number = 3)
-#' 
+#'
 #' rf_search <- gafs(x = train_data[, -ncol(train_data)],
 #'                   y = train_data$Class,
 #'                   iters = 3,
 #'                   gafsControl = ctrl)
-#' 
-#' rf_search  
+#'
+#' rf_search
 #'   }
-#' 
+#'
 #' @export gafs.default
 "gafs.default" <-
   function(x, y,
            iters = 10,
-           popSize = 50, 
-           pcrossover = 0.8, 
-           pmutation = 0.1, 
-           elite = 0, 
-           suggestions = NULL, 
+           popSize = 50,
+           pcrossover = 0.8,
+           pmutation = 0.1,
+           elite = 0,
+           suggestions = NULL,
            differences = TRUE,
-           gafsControl = gafsControl(), 
+           gafsControl = gafsControl(),
            ...) {
     startTime <- proc.time()
     funcCall <- match.call(expand.dots = TRUE)
-    
-    if(is.null(gafsControl$metric)) 
+
+    if(is.null(gafsControl$metric))
       gafsControl$metric <- rep(ifelse(is.factor(y), "Accuracy", "RMSE"), 2)
-    if(is.null(gafsControl$maximize)) 
+    if(is.null(gafsControl$maximize))
       gafsControl$maximize <- rep(ifelse(gafsControl$metric == "RMSE", FALSE, TRUE), 2)
     if(is.null(names(gafsControl$metric)))
       names(gafsControl$metric) <- c("internal", "external")
     if(is.null(names(gafsControl$maximize)))
       names(gafsControl$maximize) <- c("internal", "external")
-    
+
     if(nrow(x) != length(y)) stop("there should be the same number of samples in x and y")
     numFeat <- ncol(x)
     classLevels <- levels(y)
-    
-    if(is.null(gafsControl$index)) 
+
+    if(is.null(gafsControl$index))
       gafsControl$index <- switch(tolower(gafsControl$method),
                                   cv = createFolds(y, gafsControl$number, returnTrain = TRUE),
                                   repeatedcv = createMultiFolds(y, gafsControl$number, gafsControl$repeats),
@@ -935,10 +937,10 @@ gafs <- function (x, ...) UseMethod("gafs")
                                   boot =, boot632 = createResample(y, gafsControl$number),
                                   test = createDataPartition(y, 1, gafsControl$p),
                                   lgocv = createDataPartition(y, gafsControl$number, gafsControl$p))
-    
-    if(is.null(names(gafsControl$index))) 
+
+    if(is.null(names(gafsControl$index)))
       names(gafsControl$index) <- getFromNamespace("prettySeq", "caret")(gafsControl$index)
-    
+
     ## Create hold--out indicies
     if(is.null(gafsControl$indexOut)){
       gafsControl$indexOut <- lapply(gafsControl$index,
@@ -946,26 +948,26 @@ gafs <- function (x, ...) UseMethod("gafs")
                                      allSamples = seq(along = y))
       names(gafsControl$indexOut) <- getFromNamespace("prettySeq", "caret")(gafsControl$indexOut)
     }
-    
+
     if(!is.null(gafsControl$seeds)) {
       if(length(gafsControl$seeds) < length(gafsControl$index) + 1)
-        stop(paste("There must be at least", 
+        stop(paste("There must be at least",
                    length(gafsControl$index) + 1,
                    "random number seeds passed to gafsControl"))
     } else {
       gafsControl$seeds <- sample.int(100000, length(gafsControl$index) + 1)
     }
-    
+
     ## check summary function and metric
     testOutput <- data.frame(pred = sample(y, min(10, length(y))),
                              obs = sample(y, min(10, length(y))))
-    
+
     if(is.factor(y))
-      for(i in seq(along = classLevels)) 
+      for(i in seq(along = classLevels))
         testOutput[, classLevels[i]] <- runif(nrow(testOutput))
-    
+
     test <- gafsControl$functions$fitness_extern(testOutput, lev = classLevels)
-    
+
     perfNames <- names(test)
     if(is.null(perfNames)) {
       warning(paste("The external fitness results should be a *named* vector;",
@@ -975,26 +977,26 @@ gafs <- function (x, ...) UseMethod("gafs")
       perfNames <- paste0("external", 1:length(test))
     }
     if(!(gafsControl$metric["external"] %in% perfNames)) {
-      warning(paste("The metric '", gafsControl$metric["external"], 
+      warning(paste("The metric '", gafsControl$metric["external"],
                     "' is not created by the summary function; '",
                     perfNames[1], "' will be used instead", sep = ""))
       gafsControl$metric["external"] <- perfNames[1]
     }
-    
+
     `%op%` <- getOper(gafsControl$allowParallel && getDoParWorkers() > 1)
-    
-    result <- foreach(i = seq(along = gafsControl$index), .combine = "c", .verbose = FALSE, .errorhandling = "stop") %op% {   
-      ga_select(x[gafsControl$index[[i]],,drop=FALSE], 
-                y[gafsControl$index[[i]]], 
+
+    result <- foreach(i = seq(along = gafsControl$index), .combine = "c", .verbose = FALSE, .errorhandling = "stop") %op% {
+      ga_select(x[gafsControl$index[[i]],,drop=FALSE],
+                y[gafsControl$index[[i]]],
                 funcs = gafsControl$functions,
                 ga_maximize = gafsControl$maximize,
                 ga_metric = gafsControl$metric,
                 iters = iters,
-                popSize = popSize, 
-                pcrossover = pcrossover, 
-                pmutation = pmutation, 
-                elite = elite, 
-                suggestions = suggestions, 
+                popSize = popSize,
+                pcrossover = pcrossover,
+                pmutation = pmutation,
+                elite = elite,
+                suggestions = suggestions,
                 ga_verbose = gafsControl$verbose,
                 testX = x[gafsControl$indexOut[[i]],,drop=FALSE],
                 testY = y[gafsControl$indexOut[[i]]],
@@ -1014,7 +1016,7 @@ gafs <- function (x, ...) UseMethod("gafs")
     rownames(internal) <- NULL
     selected_vars <- result[names(result) == "final"]
     names(selected_vars) <- names(gafsControl$index)
-    
+
     if(differences) {
       diffs <- try(process_diffs(result[names(result) == "diffs"],
                                  colnames(x)),
@@ -1025,29 +1027,29 @@ gafs <- function (x, ...) UseMethod("gafs")
       }
     } else diffs <- NULL
     rm(result)
-    
+
     if(gafsControl$verbose) cat("+ final GA\n")
-    
+
     if(gafsControl$holdout > 0) {
-      in_holdout <- createDataPartition(y, 
-                                        p = gafsControl$holdout, 
+      in_holdout <- createDataPartition(y,
+                                        p = gafsControl$holdout,
                                         list = FALSE)
       in_model <- seq(along = y)[-unique(in_holdout)]
     } else {
       in_model <- seq(along = y)
       in_holdout <- NULL
     }
-    final_ga <- ga_select(x[in_model,,drop=FALSE], 
-                          y[in_model], 
+    final_ga <- ga_select(x[in_model,,drop=FALSE],
+                          y[in_model],
                           funcs = gafsControl$functions,
                           ga_maximize = gafsControl$maximize,
                           ga_metric = gafsControl$metric,
                           iters = iters,
-                          popSize = popSize, 
-                          pcrossover = pcrossover, 
-                          pmutation = pmutation, 
-                          elite = elite, 
-                          suggestions = suggestions, 
+                          popSize = popSize,
+                          pcrossover = pcrossover,
+                          pmutation = pmutation,
+                          elite = elite,
+                          suggestions = suggestions,
                           ga_verbose = gafsControl$verbose,
                           testX = if(!is.null(in_holdout)) x[in_holdout,,drop=FALSE] else NULL,
                           testY = if(!is.null(in_holdout)) y[in_holdout] else NULL,
@@ -1055,35 +1057,35 @@ gafs <- function (x, ...) UseMethod("gafs")
                           lvl = classLevels,
                           genParallel = gafsControl$genParallel,
                           ...)
-    averages <- ddply(external, .(Iter), 
+    averages <- ddply(external, .(Iter),
                       function(x, nms) {
                         apply(x[, perfNames, drop = FALSE], 2, mean)
                       },
                       nms = perfNames)
     if(!is.null(gafsControl$functions$selectIter)) {
-      best_index <- gafsControl$functions$selectIter(averages, 
-                                                     metric = gafsControl$metric["external"], 
+      best_index <- gafsControl$functions$selectIter(averages,
+                                                     metric = gafsControl$metric["external"],
                                                      maximize = gafsControl$maximize["external"])
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_ga$subsets[[best_index]]]
-    } else { 
-      best_index <- if(gafsControl$maximize["external"]) 
-        which.max(averages[,gafsControl$metric["external"]]) else 
+    } else {
+      best_index <- if(gafsControl$maximize["external"])
+        which.max(averages[,gafsControl$metric["external"]]) else
           which.min(averages[,gafsControl$metric["external"]])
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_ga$subsets[[best_index]]]
     }
     if(gafsControl$verbose) cat("+ final model\n")
-    
+
     fit <- gafsControl$functions$fit(x[, best_vars, drop=FALSE], y, lev = lvls, last = TRUE, ...)
     endTime <- proc.time()
     res <- list(fit = fit,
                 ga = final_ga,
-                ga_param = list(popSize = popSize, 
-                                pcrossover = pcrossover, 
-                                pmutation = pmutation, 
+                ga_param = list(popSize = popSize,
+                                pcrossover = pcrossover,
+                                pmutation = pmutation,
                                 elite = elite),
-                external = external, 
+                external = external,
                 internal = internal,
                 resampled_vars = selected_vars,
                 averages = averages,
@@ -1099,7 +1101,7 @@ gafs <- function (x, ...) UseMethod("gafs")
                 call = funcCall,
                 times = list(everything = endTime - startTime),
                 levels = if(is.factor(y)) classLevels else NULL)
-    
+
     ## now do analysis for whole dataset, plus make update method
     class(res) <- "gafs"
     res
@@ -1111,15 +1113,15 @@ gafs <- function (x, ...) UseMethod("gafs")
 
 
 #' Plot Method for the gafs and safs Classes
-#' 
+#'
 #' Plot the performance values versus search iteration
-#' 
+#'
 #' The mean (averaged over the resamples) is plotted against the search
 #' iteration using a scatter plot.
-#' 
+#'
 #' When \code{output = "data"}, the unaveraged data are returned with columns
 #' for all the performance metrics and the resample indicator.
-#' 
+#'
 #' @aliases plot.safs plot.gafs
 #' @param x an object of class \code{\link{gafs}} or \code{\link{safs}}
 #' @param metric the measure of performance to plot (e.g. RMSE, accuracy, etc)
@@ -1132,42 +1134,42 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' \code{\link[ggplot2]{ggplot}}, \code{\link[lattice]{xyplot}}
 #' @keywords hplot
 #' @examples
-#' 
+#'
 #' \dontrun{
 #' set.seed(1)
 #' train_data <- twoClassSim(100, noiseVars = 10)
 #' test_data  <- twoClassSim(10,  noiseVars = 10)
-#' 
-#' ## A short example 
-#' ctrl <- safsControl(functions = rfSA, 
+#'
+#' ## A short example
+#' ctrl <- safsControl(functions = rfSA,
 #'                     method = "cv",
 #'                     number = 3)
-#' 
+#'
 #' rf_search <- safs(x = train_data[, -ncol(train_data)],
 #'                   y = train_data$Class,
 #'                   iters = 50,
 #'                   safsControl = ctrl)
-#' 
+#'
 #' plot(rf_search)
-#' plot(rf_search, 
-#' 	 output = "lattice", 
+#' plot(rf_search,
+#' 	 output = "lattice",
 #' 	 auto.key = list(columns = 2))
-#' 
-#' plot_data <- plot(rf_search, output = "data")   
-#' summary(plot_data)                 
+#'
+#' plot_data <- plot(rf_search, output = "data")
+#' summary(plot_data)
 #'     }
-#' 
+#'
 #' @export plot.gafs
-plot.gafs <- function(x, 
-                      metric = x$control$metric["external"], 
-                      estimate = c("internal", "external"), 
+plot.gafs <- function(x,
+                      metric = x$control$metric["external"],
+                      estimate = c("internal", "external"),
                       output = "ggplot",
                       ...) {
   int_names <- names(x$internal)[!(names(x$internal) %in% ga_internal_names)]
   ext_names <- names(x$external)[!(names(x$external) %in% ga_external_names)]
   common <- intersect(int_names, ext_names)
   both_estimates <- length(estimate) == 2  && all(sort(estimate) == c("external", "internal"))
-  
+
   if(both_estimates){
     if(!metric %in% common) stop(paste("'", metric, "' not computed in both estimates"))
     tmp_e <- x$external[, c("Iter", "Resample", common)]
@@ -1186,22 +1188,22 @@ plot.gafs <- function(x,
     }
   }
   if(output == "data") out <- plot_dat
-  plot_dat <- if(both_estimates) 
+  plot_dat <- if(both_estimates)
     ddply(plot_dat, c("Iter", "Estimate"),
-          function(x) c(Mean = mean(x[, metric]))) else 
+          function(x) c(Mean = mean(x[, metric]))) else
             ddply(plot_dat, c("Iter"),
-                  function(x) c(Mean = mean(x[, metric])))                  
-  
+                  function(x) c(Mean = mean(x[, metric])))
+
   if(output == "ggplot") {
-    out <- if(both_estimates) 
-      ggplot(plot_dat, aes(x = Iter, y = Mean, color = Estimate)) + geom_point() else 
-        ggplot(plot_dat, aes(x = Iter, y = Mean)) + geom_point() 
+    out <- if(both_estimates)
+      ggplot(plot_dat, aes(x = Iter, y = Mean, color = Estimate)) + geom_point() else
+        ggplot(plot_dat, aes(x = Iter, y = Mean)) + geom_point()
     out <- out + xlab("Generation")
-    
-  } 
+
+  }
   if(output == "lattice") {
-    out <- if(both_estimates) 
-      xyplot(Mean ~ Iter, data = plot_dat, groups = Estimate, ...) else 
+    out <- if(both_estimates)
+      xyplot(Mean ~ Iter, data = plot_dat, groups = Estimate, ...) else
         xyplot(Mean ~ Iter, data = plot_dat, ...)
     out <- update(out, xlab = "Generation")
   }
@@ -1287,7 +1289,7 @@ update.gafs <- function(object, iter, x, y, ...) {
     stop(paste("iter must be less than", length(object$ga$subsets)))
   if(is.null(x) | is.null(y))
     stop("the original training data is needed to refit the model")
-  args <- list(x = x[, object$ga$subsets[[iter]], drop=FALSE], 
+  args <- list(x = x[, object$ga$subsets[[iter]], drop=FALSE],
                y = y, lev = object$levels, last = TRUE)
   if(length(object$the_dots) > 0) args <- c(args, object$the_dots)
   if(object$control$verbose)
@@ -1297,32 +1299,32 @@ update.gafs <- function(object, iter, x, y, ...) {
   object$auto <- FALSE
   object$optVariables <- colnames(x)[object$ga$subsets[[iter]]]
   object$optIter <- iter
-  object  
+  object
 }
 
 
 
 #' Variable importances for GAs and SAs
-#' 
+#'
 #' Variable importance scores for \code{\link{safs}} and \code{\link{gafs}}
 #' objects.
-#' 
+#'
 #' A crude measure of importance is computed for thee two search procedures. At
 #' the end of a search process, the difference in the fitness values is
 #' computed for models with and without each feature (based on the search
 #' history). If a predictor has at least two subsets that include and did not
 #' include the predictor, a t-statistic is computed (otherwise a value of
 #' \code{NA} is assigned to the predictor).
-#' 
+#'
 #' This computation is done separately for each resample and the t-statistics
 #' are averaged (\code{NA} values are ignored) and this average is reported as
 #' the importance. If the fitness value should be minimized, the negative value
 #' of the t-statistic is used in the average.
-#' 
+#'
 #' As such, the importance score reflects the standardized increase in fitness
 #' that occurs when the predict is included in the subset. Values near zero (or
 #' negative) indicate that the predictor may not be important to the model.
-#' 
+#'
 #' @aliases varImp.gafs varImp.safs
 #' @param object an \code{\link{safs}} or \code{\link{gafs}} object
 #' @param metric a metric to compute importance (see Details below)
@@ -1332,12 +1334,12 @@ update.gafs <- function(object, iter, x, y, ...) {
 #' column is the average t-statistic
 #' @author Max Kuhn
 #' @seealso \code{\link{safs}}, \code{\link{gafs}}
-"varImp.gafs" <- function(object, 
-                          metric = object$control$metric["external"], 
+"varImp.gafs" <- function(object,
+                          metric = object$control$metric["external"],
                           maximize = object$control$maximize["external"],
                           ...) {
-  
-  if(is.null(object$differences)) 
+
+  if(is.null(object$differences))
     stop("must have used `differences = TRUE`")
   out <- object$differences[,metric, drop = FALSE]
   rownames(out) <- as.character(object$differences$Variable)

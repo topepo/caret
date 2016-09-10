@@ -18,7 +18,7 @@
 #' @param object an object of class \code{classDist}
 #' @param newdata a matrix or data frame. If \code{vars} was previously specified, these columns should be in \code{newdata}
 #' @param trans an optional function that can be applied to each class distance. \code{trans = NULL} will not apply a function
-#' @param \dots {optional arguments to pass (not currently used)
+#' @param \dots optional arguments to pass (not currently used)
 #'
 #' @details
 #' For factor outcomes, the data are split into groups for each class

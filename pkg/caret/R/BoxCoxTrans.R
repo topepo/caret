@@ -21,8 +21,8 @@
 #' @param x an optional dependent variable to be used in a linear model.
 #' @param fudge a tolerance value: lambda values within +/-fudge will be coerced to 0 and within 1+/-fudge will be coerced to #' 1.
 #' @param numUnique how many unique values should \code{y} have to estimate the transformation?
-#' @param na.rm a logical value indicating whether \code{NA} values should be stripped from \code{y} and \code{x} before the #' computation proceeds.}
-#' @param init, lim, method}{initial values, limits and optimization method for \code{\link{optim}}.}
+#' @param na.rm a logical value indicating whether \code{NA} values should be stripped from \code{y} and \code{x} before the #' computation proceeds.
+#' @param init, lim, method}{initial values, limits and optimization method for \code{\link{optim}}.
 #' @param \dots for \code{BoxCoxTrans}: options to pass to \code{\link[MASS]{boxcox}}. \code{plotit} should not be passed #' through. For \code{predict.BoxCoxTrans}, additional arguments are ignored.
 #' @param object an object of class \code{BoxCoxTrans} or \code{expoTrans}.
 #' @param newdata a numeric vector of values to transform.

@@ -1,22 +1,22 @@
 #' Create a confusion matrix
-#' 
+#'
 #' Calculates a cross-tabulation of observed and predicted classes with
 #' associated statistics.
-#' 
+#'
 #' The functions requires that the factors have exactly the same levels.
-#' 
+#'
 #' For two class problems, the sensitivity, specificity, positive predictive
 #' value and negative predictive value is calculated using the \code{positive}
 #' argument. Also, the prevalence of the "event" is computed from the data
 #' (unless passed in as an argument), the detection rate (the rate of true
 #' events also predicted to be events) and the detection prevalence (the
 #' prevalence of predicted events).
-#' 
+#'
 #' Suppose a 2x2 table with notation
-#' 
+#'
 #' \tabular{rcc}{ \tab Reference \tab \cr Predicted \tab Event \tab No Event
 #' \cr Event \tab A \tab B \cr No Event \tab C \tab D \cr }
-#' 
+#'
 #' The formulas used here are: \deqn{Sensitivity = A/(A+C)} \deqn{Specificity =
 #' D/(B+D)} \deqn{Prevalence = (A+C)/(A+B+C+D)} \deqn{PPV = (sensitivity *
 #' prevalence)/((sensitivity*prevalence) + ((1-specificity)*(1-prevalence)))}
@@ -24,27 +24,27 @@
 #' ((specificity)*(1-prevalence)))} \deqn{Detection Rate = A/(A+B+C+D)}
 #' \deqn{Detection Prevalence = (A+B)/(A+B+C+D)} \deqn{Balanced Accuracy =
 #' (sensitivity+specificity)/2}
-#' 
+#'
 #' \deqn{Precision = A/(A+B)} \deqn{Recall = A/(A+C)} \deqn{F1 =
 #' (1+beta^2)*precision*recall/((beta^2 * precision)+recall)}
-#' 
+#'
 #' where \code{beta = 1} for this function.
-#' 
+#'
 #' See the references for discussions of the first five formulas.
-#' 
+#'
 #' For more than two classes, these results are calculated comparing each
 #' factor level to the remaining levels (i.e. a "one versus all" approach).
-#' 
+#'
 #' The overall accuracy and unweighted Kappa statistic are calculated. A
 #' p-value from McNemar's test is also computed using
 #' \code{\link[stats]{mcnemar.test}} (which can produce \code{NA} values with
 #' sparse tables).
-#' 
+#'
 #' The overall accuracy rate is computed along with a 95 percent confidence
 #' interval for this rate (using \code{\link[stats]{binom.test}}) and a
 #' one-sided test to see if the accuracy is better than the "no information
 #' rate," which is taken to be the largest class percentage in the data.
-#' 
+#'
 #' @aliases confusionMatrix.table confusionMatrix.default confusionMatrix
 #' @param data a factor of predicted classes (for the default method) or an
 #' object of class \code{\link[base]{table}}.
@@ -85,48 +85,48 @@
 #' @references Kuhn, M. (2008), ``Building predictive models in R using the
 #' caret package, '' \emph{Journal of Statistical Software},
 #' (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf}).
-#' 
+#'
 #' Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 1: sensitivity and
 #' specificity,'' \emph{British Medical Journal}, vol 308, 1552.
-#' 
+#'
 #' Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 2: predictive values,''
 #' \emph{British Medical Journal}, vol 309, 102.
-#' 
+#'
 #' Velez, D.R., et. al. (2008) ``A balanced accuracy function for epistasis
 #' modeling in imbalanced datasets using multifactor dimensionality
 #' reduction.,'' \emph{Genetic Epidemiology}, vol 4, 306.
 #' @keywords utilities
 #' @examples
-#' 
+#'
 #' ###################
 #' ## 2 class example
-#' 
+#'
 #' lvs <- c("normal", "abnormal")
 #' truth <- factor(rep(lvs, times = c(86, 258)),
 #'                 levels = rev(lvs))
 #' pred <- factor(
 #'                c(
 #'                  rep(lvs, times = c(54, 32)),
-#'                  rep(lvs, times = c(27, 231))),               
+#'                  rep(lvs, times = c(27, 231))),
 #'                levels = rev(lvs))
-#' 
+#'
 #' xtab <- table(pred, truth)
-#' 
+#'
 #' confusionMatrix(xtab)
 #' confusionMatrix(pred, truth)
-#' confusionMatrix(xtab, prevalence = 0.25)   
-#' 
+#' confusionMatrix(xtab, prevalence = 0.25)
+#'
 #' ###################
 #' ## 3 class example
-#' 
+#'
 #' confusionMatrix(iris$Species, sample(iris$Species))
-#' 
+#'
 #' newPrior <- c(.05, .8, .15)
 #' names(newPrior) <- levels(iris$Species)
-#' 
+#'
 #' confusionMatrix(iris$Species, sample(iris$Species))
-#' 
-#' 
+#'
+#'
 #' @export confusionMatrix
 confusionMatrix <-
   function(data, ...){
@@ -362,9 +362,9 @@ train_resampledCM <- function(x) {
   resampledCM
 }
 
+#' Confusion matrix as a table
 #' @name as.table.confusionMatrix
 #' @aliases as.matrix.confusionMatrix
-#' @aliases as.table.confusionMatrix
 #' @description Conversion functions for class \code{confusionMatrix}
 #'
 #' @param x an object of class \code{\link{confusionMatrix}}
@@ -412,24 +412,24 @@ as.table.confusionMatrix <- function(x, ...)  x$table
 
 
 #' Estimate a Resampled Confusion Matrix
-#' 
+#'
 #' Using a \code{\link{train}}, \code{\link{rfe}}, \code{\link{sbf}} object,
 #' determine a confusion matrix based on the resampling procedure
-#' 
+#'
 #' When \code{\link{train}} is used for tuning a model, it tracks the confusion
 #' matrix cell entries for the hold-out samples. These can be aggregated and
 #' used for diagnostic purposes. For \code{\link{train}}, the matrix is
 #' estimated for the final model tuning parameters determined by
 #' \code{\link{train}}. For \code{\link{rfe}}, the matrix is associated with
 #' the optimal number of variables.
-#' 
+#'
 #' There are several ways to show the table entries. Using \code{norm = "none"}
 #' will show the aggregated counts of samples on each of the cells (across all
 #' resamples). For \code{norm = "average"}, the average number of cell counts
 #' across resamples is computed (this can help evaluate how many holdout
 #' samples there were on average). The default is \code{norm = "overall"},
 #' which is equivalento to \code{"average"} but in percentages.
-#' 
+#'
 #' @aliases confusionMatrix.train confusionMatrix.rfe confusionMatrix.sbf
 #' @param data An object of class \code{\link{train}}, \code{\link{rfe}},
 #' \code{\link{sbf}} that did not use out-of-bag resampling or leave-one-out
@@ -448,12 +448,12 @@ as.table.confusionMatrix <- function(x, ...)  x$table
 #' \code{\link{rfe}}, \code{\link{sbf}}, \code{\link{trainControl}}
 #' @keywords utilities
 #' @examples
-#' 
-#' 
+#'
+#'
 #' data(iris)
 #' TrainData <- iris[,1:4]
 #' TrainClasses <- iris[,5]
-#' 
+#'
 #' knnFit <- train(TrainData, TrainClasses,
 #'                 method = "knn",
 #'                 preProcess = c("center", "scale"),
@@ -462,8 +462,8 @@ as.table.confusionMatrix <- function(x, ...)  x$table
 #' confusionMatrix(knnFit)
 #' confusionMatrix(knnFit, "average")
 #' confusionMatrix(knnFit, "none")
-#' 
-#' 
+#'
+#'
 #' @export confusionMatrix.train
 confusionMatrix.train <- function(data, norm = "overall", dnn = c("Prediction", "Reference"), ...){
   if(data$control$method %in% c("oob", "LOOCV", "none"))
