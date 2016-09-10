@@ -55,7 +55,7 @@
 #' modelFit
 #'
 #' predict(modelFit, bbbDescr)
-#'
+#' }
 #' @keywords neural
 #' @aliases avNNet.default predict.avNNet avNNet.formula avNNet
 #' @export

@@ -11,10 +11,10 @@
 #' \method{bagEarth}{default}(x, y, weights = NULL, B = 50,
 #'          summary = mean, keepX = TRUE, ...)
 #'
-#' @param formula A formula of the form \code{y ~ x1 + x2 + ...
+#' @param formula A formula of the form \code{y ~ x1 + x2 + ...}
 #' @param x matrix or data frame of 'x' values for examples.
 #' @param y matrix or data frame of numeric values outcomes.
-#' @param weights (case) weights for each example - if missing defaults to 1.}
+#' @param weights (case) weights for each example - if missing defaults to 1.
 #' @param data Data frame from which variables specified in  'formula' are
 #'         preferentially to be taken.
 #' @param subset An index vector specifying the cases to be used in the
@@ -166,10 +166,10 @@
 
 
 #' Predicted values based on bagged Earth and FDA models
-#' 
+#'
 #' Predicted values based on bagged Earth and FDA models
-#' 
-#' 
+#'
+#'
 #' @aliases predict.bagEarth predict.bagFDA
 #' @param object Object of class inheriting from \code{bagEarth}
 #' @param newdata An optional data frame or matrix in which to look for
@@ -198,7 +198,7 @@
 #' @seealso \code{\link{bagEarth}}
 #' @keywords regression
 #' @examples
-#' 
+#'
 #' \dontrun{
 #' data(trees)
 #' ## out of bag predictions vs just re-predicting the training set
@@ -206,7 +206,7 @@
 #' fit2 <- bagEarth(Volume ~ ., data = trees, keepX = FALSE)
 #' hist(predict(fit1) - predict(fit2))
 #' }
-#' 
+#'
 #' @export predict.bagEarth
 "predict.bagEarth" <-
   function(object, newdata = NULL, type = "response", ...)
@@ -278,13 +278,13 @@ print.bagEarth <- function (x, ...)
 
 
 #' Summarize a bagged earth or FDA fit
-#' 
+#'
 #' The function shows a summary of the results from a bagged earth model
-#' 
+#'
 #' The out-of-bag statistics are summarized, as well as the distribution of the
 #' number of model terms and number of variables used across all the bootstrap
 #' samples.
-#' 
+#'
 #' @aliases summary.bagEarth summary.bagFDA
 #' @param object an object of class "bagEarth" or "bagFDA"
 #' @param \dots optional arguments (not used)
@@ -294,13 +294,13 @@ print.bagEarth <- function (x, ...)
 #' @author Max Kuhn
 #' @keywords manip
 #' @examples
-#' 
+#'
 #' \dontrun{
 #' data(trees)
 #' fit <- bagEarth(trees[,-3], trees[3])
 #' summary(fit)
 #' }
-#' 
+#'
 #' @export summary.bagEarth
 "summary.bagEarth" <-
   function(object, ...)
