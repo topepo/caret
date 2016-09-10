@@ -21,40 +21,6 @@
 NULL
 
 
-#' Blood Brain Barrier Data
-#' @name BloodBrain
-#' @docType data
-#' @aliases BloodBrain bbbDescr logBBB
-#' @description Mente and Lombardo (2005) develop models to predict the log of the ratio of the concentration of a compound in the brain and the concentration in blood. For each compound, they computed three sets of molecular descriptors: MOE 2D, rule-of-five and Charge Polar Surface Area (CPSA). In all, 134 descriptors were calculated. Included in this package are 208 non-proprietary literature compounds. The vector \code{logBBB} contains the concentration ratio and the data fame \code{bbbDescr} contains the descriptor values.
-#' @usage data(BloodBrain)
-#'
-#' @return
-#' \item{bbbDescr}{data frame of chemical descriptors}
-#' \item{logBBB}{vector of assay results}
-#'
-#' @references Mente, S.R. and Lombardo, F. (2005). A recursive-partitioning model for blood-brain barrier permeation,
-#' \emph{Journal of Computer-Aided Molecular Design}, Vol. 19, pg. 465--481.
-#'
-#' @keywords datasets
-NULL
-
-
-
-#' Kelly Blue Book resale data for 2005 model year GM cars
-#' @docType data
-#' @aliases cars
-#'
-#' @name cars
-#'
-#' @description Kuiper (2008) collected data on Kelly Blue Book resale data for 804 GM cars (2005 model year).
-#'
-#' @return   \item{cars}{data frame of the suggested retail price (column \code{Price}) and various characteristics of each car (columns \code{Mileage}, \code{Cylinder}, \code{Doors}, \code{Cruise}, \code{Sound}, \code{Leather}, \code{Buick}, \code{Cadillac}, \code{Chevy}, \code{Pontiac}, \code{Saab}, \code{Saturn}, \code{convertible}, \code{coupe}, \code{hatchback}, \code{sedan} and \code{wagon})}
-#'
-#' @source Kuiper, S. (2008). Introduction to Multiple Regression: How Much Is Your Car Worth?, \emph{Journal of Statistics Education}, Vol. 16, \url{www.amstat.org/publications/jse/v16n3/datasets.kuiper.html
-#'
-#' @keywords datasets
-NULL
-
 ###################################################################
 ## Global Variables
 ###################################################################

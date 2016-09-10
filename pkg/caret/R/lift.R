@@ -1,14 +1,14 @@
 #' Lift Plot
-#' 
+#'
 #' For classification models, this function creates a 'lift plot' that
 #' describes how well a model ranks samples for one class
-#' 
+#'
 #' \code{lift.formula} is used to process the data and \code{xyplot.lift} is
 #' used to create the plot.
-#' 
+#'
 #' To construct data for the the lift and gain plots, the following steps are
 #' used for each model:
-#' 
+#'
 #' \enumerate{ \item The data are ordered by the numeric model prediction used
 #' on the right-hand side of the model formula \item Each unique value of the
 #' score is treated as a cut point \item The number of samples with true
@@ -18,7 +18,7 @@
 #' with \code{plot = "gain"} produces a plot of the cumulative lift values by
 #' the percentage of samples evaluated while \code{plot = "lift"} shows the cut
 #' point value versus the lift statistic.
-#' 
+#'
 #' This implementation uses the \pkg{lattice} function
 #' \code{\link[lattice:xyplot]{xyplot}}, so plot elements can be changed via
 #' panel functions, \code{\link[lattice:trellis.par.get]{trellis.par.set}} or
@@ -26,12 +26,12 @@
 #' by default, but it can be changes using
 #' \code{\link[lattice:update.trellis]{update.trellis}} (see the examples in
 #' \code{\link{panel.lift2}}).
-#' 
+#'
 #' The following elements are set by default in the plot but can be changed by
-#' passing new values into \code{xyplot.lift}: \code{xlab = "% Samples
-#' Tested"}, \code{ylab = "% Samples Found"}, \code{type = "S"}, \code{ylim =
+#' passing new values into \code{xyplot.lift}: \code{xlab = "\% Samples
+#' Tested"}, \code{ylab = "\% Samples Found"}, \code{type = "S"}, \code{ylim =
 #' extendrange(c(0, 100))} and \code{xlim = extendrange(c(0, 100))}.
-#' 
+#'
 #' @aliases lift lift.formula lift.default xyplot.lift
 #' @param x a \code{lattice} formula (see \code{\link[lattice:xyplot]{xyplot}}
 #' for syntax) where the left-hand side of the formula is a factor class
@@ -75,7 +75,7 @@
 #' data used for plotting} \item{cuts}{the number of cuts} \item{class}{the
 #' event class} \item{probNames}{the names of the model probabilities}
 #' \item{pct}{the baseline event rate}
-#' 
+#'
 #' \code{xyplot.lift} returns a \pkg{lattice} object
 #' @author Max Kuhn, some \pkg{lattice} code and documentation by Deepayan
 #' Sarkar
@@ -83,24 +83,24 @@
 #' \code{\link[lattice:trellis.par.get]{trellis.par.set}}
 #' @keywords hplot
 #' @examples
-#' 
+#'
 #' set.seed(1)
 #' simulated <- data.frame(obs = factor(rep(letters[1:2], each = 100)),
 #'                         perfect = sort(runif(200), decreasing = TRUE),
 #'                         random = runif(200))
-#' 
+#'
 #' lift1 <- lift(obs ~ random, data = simulated)
 #' lift1
 #' xyplot(lift1)
-#' 
+#'
 #' lift2 <- lift(obs ~ random + perfect, data = simulated)
 #' lift2
 #' xyplot(lift2, auto.key = list(columns = 2))
-#' 
+#'
 #' xyplot(lift2, auto.key = list(columns = 2), value = c(10, 30))
-#' 
+#'
 #' xyplot(lift2, plot = "lift", auto.key = list(columns = 2))
-#' 
+#'
 #' @export lift
 lift <- function(x, ...) UseMethod("lift")
 
@@ -108,51 +108,51 @@ lift <- function(x, ...) UseMethod("lift")
 lift.default <- function(x, ...) stop("'x' should be a formula")
 
 #' @export
-lift.formula <- function(x, data = NULL, 
+lift.formula <- function(x, data = NULL,
                          class = NULL,
-                         subset = TRUE,  
-                         lattice.options = NULL, 
+                         subset = TRUE,
+                         lattice.options = NULL,
                          cuts = NULL,
                          labels = NULL, ...)
 {
-  
+
   if (!is.null(lattice.options)) {
     oopt <- lattice.options(lattice.options)
     on.exit(lattice.options(oopt), add = TRUE)
   }
-  
+
   formula <- x
   groups  <- NULL
   subset <- eval(substitute(subset), data, environment(x))
-  
-  form <- latticeParseFormula(formula, data, subset = subset, 
-                              groups = groups, multiple = TRUE, outer = TRUE, 
+
+  form <- latticeParseFormula(formula, data, subset = subset,
+                              groups = groups, multiple = TRUE, outer = TRUE,
                               subscripts = TRUE, drop = TRUE)
   liftData <- data.frame(prob = form$y)
   probNames <- strsplit(form$right.name, " + ", fixed = TRUE)[[1]]
-  
+
   if(!is.null(labels)) {
-    if(length(labels) != length(probNames)) 
+    if(length(labels) != length(probNames))
       stop("labels should have an element for each term on the rhs of the formula")
-    if(!all(probNames %in% names(labels))) 
+    if(!all(probNames %in% names(labels)))
       stop(paste("labels should be a named vector or list with names:",
                  paste(probNames, collapse = ", ")))
   }
-  
+
   liftData <- data.frame(liftClassVar = rep(form$left, length(probNames)),
                          liftProbVar = form$right)
   liftData$liftModelVar <- if(length(probNames) > 1) form$condition[[length(form$condition)]] else probNames
-  
+
   if(length(form$condition) > 0 && any(names(form$condition) != "")) {
     ind <- sum(names(form$condition) != "")
     tmp <- as.data.frame(form$condition[1:ind])
     liftData <- cbind(liftData, tmp)
   }
-  if(!is.factor(liftData$liftClassVar)) 
+  if(!is.factor(liftData$liftClassVar))
     stop("the left-hand side of the formula must be a factor of classes")
-  
+
   splitVars <- names(liftData)[!(names(liftData) %in% c("liftClassVar", "liftProbVar"))]
-  
+
   if(is.null(class)) class <- levels(liftData$liftClassVar)[1]
   plotData <- ddply(liftData, splitVars, liftCalc, class = class, cuts = cuts)
   if(!is.null(labels)) {
@@ -172,7 +172,7 @@ lift.formula <- function(x, data = NULL,
 print.lift <- function(x, ...) {
   printCall(x$call)
   cat("Models:", paste(unique(x$data$liftModelVar), collapse = ", "), "\n")
-  cat("Event: ", x$class, " (", round( x$pct, 1), "%)\n", sep = "")      
+  cat("Event: ", x$class, " (", round( x$pct, 1), "%)\n", sep = "")
   invisible(x)
 }
 
@@ -191,7 +191,7 @@ xyplot.lift <- function(x, data = NULL, plot = "gain", values = NULL, ...){
     if(!any(names(opts) == "xlab")) opts$xlab <- "% Samples Tested"
     if(!any(names(opts) == "ylab")) opts$ylab <- "% Samples Found"
     if(!any(names(opts) == "type")) opts$type <- "l"
-    if(!any(names(opts) == "ylim")) opts$ylim <- rng   
+    if(!any(names(opts) == "ylim")) opts$ylim <- rng
     if(!any(names(opts) == "xlim")) opts$xlim <- rng
     if(!any(names(opts) == "panel")) opts$panel <- panel.lift2
   } else {
@@ -208,9 +208,9 @@ xyplot.lift <- function(x, data = NULL, plot = "gain", values = NULL, ...){
                pct = x$pc,
                values = values)
   if(length(x$probNames) > 1) args$groups <- x$data$liftModelVar
-  
-  args <- c(args, opts)    
-  do.call("xyplot", args)    
+
+  args <- c(args, opts)
+  do.call("xyplot", args)
 }
 
 #' @importFrom stats complete.cases
@@ -218,7 +218,7 @@ liftCalc <- function(x, class = levels(x$liftClassVar)[1], cuts = NULL) {
   x <- x[complete.cases(x),]
   lvl <- levels(x$liftClassVar)
   x <- x[order(x$liftProbVar, decreasing = TRUE),]
-  
+
   nEvents <- sum(x$liftClassVar == class)
   baseline <- mean(x$liftClassVar == class)
   if(!is.null(cuts)) {
@@ -231,7 +231,7 @@ liftCalc <- function(x, class = levels(x$liftClassVar)[1], cuts = NULL) {
     cuts <- sort(unique(x$liftProbVar), decreasing = TRUE)
     cuts <- unique(c(1, sort(cuts, decreasing = TRUE), 0))
   }
-  
+
   class2 <- levels(x$liftClassVar)
   class2 <- class2[class2 != class]
   tmp <- data.frame(cuts = cuts,
@@ -250,9 +250,9 @@ liftCalc <- function(x, class = levels(x$liftClassVar)[1], cuts = NULL) {
                              positive = class)
     tmp$Sp[i] <- specificity(prd,
                              x$liftClassVar,
-                             negative = class2)        
+                             negative = class2)
   }
-  
+
   tmp$EventPct <- ifelse(tmp$n > 0, tmp$events/tmp$n*100, 0)
   tmp$CumEventPct <- tmp$events/nEvents*100
   tmp$lift <- tmp$events/tmp$n/baseline
@@ -263,23 +263,23 @@ liftCalc <- function(x, class = levels(x$liftClassVar)[1], cuts = NULL) {
 #' @export
 panel.lift <- function(x,  y, ...) {
   panel.xyplot(x, y, ...)
-  panel.abline(0, 1, col = "black")  
+  panel.abline(0, 1, col = "black")
 }
 
 
 
 #' Lattice Panel Functions for Lift Plots
-#' 
+#'
 #' Two panel functions that be used in conjunction with \code{\link{lift}}.
-#' 
+#'
 #' \code{panel.lift} plots the data with a simple (black) 45 degree reference
 #' line.
-#' 
+#'
 #' \code{panel.lift2} is the default for \code{\link{lift}} and plots the data
 #' points with a shaded region encompassing the space between to the random
 #' model and perfect model trajectories. The color of the region is determined
 #' by the lattice \code{reference.line} information (see example below).
-#' 
+#'
 #' @aliases panel.lift panel.lift2
 #' @param x the percentage of searched to be plotted in the scatterplot
 #' @param y the percentage of events found to be plotted in the scatterplot
@@ -300,29 +300,29 @@ panel.lift <- function(x,  y, ...) {
 #' \link[lattice:trellis.par.get]{trellis.par.set}
 #' @keywords hplot
 #' @examples
-#' 
+#'
 #' set.seed(1)
 #' simulated <- data.frame(obs = factor(rep(letters[1:2], each = 100)),
 #'                         perfect = sort(runif(200), decreasing = TRUE),
 #'                         random = runif(200))
-#' 
+#'
 #' regionInfo <- trellis.par.get("reference.line")
 #' regionInfo$col <- "lightblue"
 #' trellis.par.set("reference.line", regionInfo)
-#' 
+#'
 #' lift2 <- lift(obs ~ random + perfect, data = simulated)
 #' lift2
 #' xyplot(lift2, auto.key = list(columns = 2))
-#' 
+#'
 #' ## use a different panel function
 #' xyplot(lift2, panel = panel.lift)
-#' 
+#'
 #' @export panel.lift2
-panel.lift2 <- function (x, y, pct = 0, values = NULL, ...)  { 
+panel.lift2 <- function (x, y, pct = 0, values = NULL, ...)  {
   polyx <- c(0, pct, 100, 0)
   polyy <- c(0, 100, 100, 0)
   regionStyle <- trellis.par.get("reference.line")
-  
+
   panel.polygon(polyx, polyy,
                 col = regionStyle$col,
                 border = regionStyle$col)
@@ -336,9 +336,9 @@ panel.lift2 <- function (x, y, pct = 0, values = NULL, ...)  {
         dat0 <- subset(dat, groups == ung[i])
         plotRef(dat0$x, dat0$y, values, iter = i)
       }
-      
+
     } else plotRef(x, y, values)
-    
+
   }
 }
 

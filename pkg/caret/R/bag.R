@@ -33,9 +33,9 @@
 #' @param predict a function that generates predictions for each sub-model. The function should have #' arguments \code{object} and \code{x}. The output of the function can be any type of object (see the #' example below where posterior probabilities are generated. Example functions are found in \code{ldaBag}#' , \code{plsBag}, \code{nbBag}, \code{svmBag} and \code{nnetBag}.)
 #' @param aggregate a function with arguments \code{x} and \code{type}. The function that takes the output #' of the \code{predict} function and reduces the bagged predictions to a single prediction per sample. #' the \code{type} argument can be used to switch between predicting classes or class probabilities for #' classification models. Example functions are found in \code{ldaBag}, \code{plsBag}, \code{nbBag}, #' \code{svmBag} and \code{nnetBag}.
 #' @param downSample logical: for classification, should the data set be randomly sampled so that each #' class has the same number of samples as the smallest class?
-#' @param oob logical: should out-of-bag statistics be computed and the predictions retained?}
-#' @param allowParallel a parallel backend is loaded and available, should the function use it?}
-#' @param vars an integer. If this argument is not \code{NULL}, a random sample of size \code{vars} is #' taken of the predictors in each bagging iteration. If \code{NULL}, all predictors are used.
+#' @param oob logical: should out-of-bag statistics be computed and the predictions retained?
+#' @param allowParallel a parallel backend is loaded and available, should the function use it?
+#' @param vars an integer. If this argument is not \code{NULL}, a random sample of size \code{vars} is taken of the predictors in each bagging iteration. If \code{NULL}, all predictors are used.
 #' @param object an object of class \code{bag}.
 #' @param newdata a matrix or data frame of samples for prediction. Note that this argument must have a non-null value
 #'
@@ -96,50 +96,16 @@
   function(x, ...)
   UseMethod("bag")
 
+
 #' @export
-bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample = FALSE,
+bagControl <- function(
+  fit = NULL, predict = NULL, aggregate = NULL, downSample = FALSE,
                        oob = TRUE, allowParallel = TRUE)
   {
 
     list(fit = fit,
          predict = predict,
          aggregate = aggregate,
-
-
-#' Down- and Up-Sampling Imbalanced Data
-#' 
-#' \code{downSample} will randomly sample a data set so that all classes have
-#' the same frequency as the minority class. \code{upSample} samples with
-#' replacement to make the class distributions equal
-#' 
-#' Simple random sampling is used to down-sample for the majority class(es).
-#' Note that the minority class data are left intact and that the samples will
-#' be re-ordered in the down-sampled version.
-#' 
-#' For up-sampling, all the original data are left intact and additional
-#' samples are added to the minority classes with replacement.
-#' 
-#' @aliases downSample upSample
-#' @param x a matrix or data frame of predictor variables
-#' @param y a factor variable with the class memberships
-#' @param list should the function return \code{list(x, y)} or bind \code{x}
-#' and \code{y} together? If \code{TRUE}, the output will be coerced to a data
-#' frame.
-#' @param yname if \code{list = FALSE}, a label for the class column
-#' @return Either a data frame or a list with elements \code{x} and \code{y}.
-#' @author Max Kuhn
-#' @keywords utilities
-#' @examples
-#' 
-#' ## A ridiculous example...
-#' data(oil)
-#' table(oilType)
-#' downSample(fattyAcids, oilType)
-#' 
-#' upSample(fattyAcids, oilType)
-#' 
-#' 
-#' @export downSample
          downSample = downSample,
          oob = oob,
          allowParallel = allowParallel)

@@ -3,18 +3,584 @@
 #' @export
 rfeIter <- function(x, y,
                     testX, testY, sizes,
+                    rfeControl = rfeControl(),
+                    label = "",
+                    seeds = NA,
+                    ...)
+{
+  if(is.null(colnames(x))) stop("x must have column names")
+
+  if(is.null(testX) | is.null(testY)) stop("a test set must be specified")
+  if(is.null(sizes)) stop("please specify the number of features")
+
+  predictionMatrix <- matrix(NA, nrow = length(testY), ncol = length(sizes))
+  p <- ncol(x)
+
+  retained <- colnames(x)
+  sizeValues <- sort(unique(c(sizes, ncol(x))), decreasing = TRUE)
+  sizeText <- format(sizeValues)
+
+  finalVariables <- vector(length(sizeValues), mode = "list")
+  for(k in seq(along = sizeValues))
+    {
+      if(!any(is.na(seeds))) set.seed(seeds[k])
+      if(rfeControl$verbose)
+        {
+          cat("+(rfe) fit",
+              ifelse(label != "",
+                     label, ""),
+              "size:",  sizeText[k], "\n")
+        }
+      flush.console()
+      fitObject <- rfeControl$functions$fit(x[,retained,drop = FALSE], y,
+                                            first = p == ncol(x[,retained,drop = FALSE]),
+                                            last = FALSE,
+                                            ...)
+      if(rfeControl$verbose)
+        {
+          cat("-(rfe) fit",
+              ifelse(label != "",
+                     label, ""),
+              "size:",  sizeText[k], "\n")
+        }
+      modelPred <- rfeControl$functions$pred(fitObject, testX[,retained,drop = FALSE])
+      if(is.data.frame(modelPred) | is.matrix(modelPred))
+        {
+          if(is.matrix(modelPred)) modelPred <- as.data.frame(modelPred)
+          modelPred$obs <- testY
+          modelPred$Variables <- sizeValues[k]
+        } else modelPred <- data.frame(pred = modelPred, obs = testY, Variables = sizeValues[k])
+
+      ## save as a vector and rbind at end
+      rfePred <- if(k == 1) modelPred else rbind(rfePred, modelPred)
 
 
+      if(!exists("modImp")) ##todo: get away from this since it finds object in other spaces
+        {
+          if(rfeControl$verbose)
+            {
+              cat("+(rfe) imp",
+                  ifelse(label != "",
+                         label, ""), "\n")
+            }
+          modImp <- rfeControl$functions$rank(fitObject, x[,retained,drop = FALSE], y)
+          if(rfeControl$verbose)
+            {
+              cat("-(rfe) imp",
+                  ifelse(label != "",
+                         label, ""), "\n")
+            }
+        } else {
+          if(rfeControl$rerank)
+            {
+              if(rfeControl$verbose)
+                {
+                  cat("+(rfe) imp",
+                      ifelse(label != "",
+                             label, ""),
+                      "size:",  sizeText[k], "\n")
+                }
+              modImp <- rfeControl$functions$rank(fitObject, x[,retained,drop = FALSE], y)
+              if(rfeControl$verbose)
+                {
+                  cat("-(rfe) imp",
+                      ifelse(label != "",
+                             label, ""),
+                      "size:",  sizeText[k], "\n")
+                }
+            }
+        }
+
+      if(nrow(modImp) < sizeValues[k]) {
+        msg1 <- paste0("rfe is expecting ", sizeValues[k],
+                       " importance values but only has ", nrow(modImp), ". ",
+                       "This may be caused by having zero-variance predictors, ",
+                       "excessively-correlated predictors, factor predictors ",
+                       "that were expanded into dummy variables or you may have ",
+                       "failed to drop one of your dummy variables.")
+        stop(msg1)
+      }
+      if(any(!complete.cases(modImp))){
+        stop(paste("There were missing importance values.",
+                   "There may be linear dependencies in your predictor variables"))
+      }
+      finalVariables[[k]] <- subset(modImp, var %in% retained)
+      finalVariables[[k]]$Variables <- sizeValues[[k]]
+      if(k < length(sizeValues)) retained <- as.character(modImp$var)[1:sizeValues[k+1]]
+    }
+  list(finalVariables = finalVariables, pred = rfePred)
+
+}
+
+######################################################################
+######################################################################
+
+
+
+#' Backwards Feature Selection
+#'
+#' A simple backwards selection, a.k.a. recursive feature selection (RFE),
+#' algorithm
+#'
+#' More details on this function can be found at
+#' \url{http://topepo.github.io/caret/featureselection.html}.
+#'
+#' This function implements backwards selection of predictors based on
+#' predictor importance ranking. The predictors are ranked and the less
+#' important ones are sequentially eliminated prior to modeling. The goal is to
+#' find a subset of predictors that can be used to produce an accurate model.
+#' The web page \url{http://topepo.github.io/caret/featureselection.html#rfe}
+#' has more details and examples related to this function.
+#'
+#' \code{rfe} can be used with "explicit parallelism", where different
+#' resamples (e.g. cross-validation group) can be split up and run on multiple
+#' machines or processors. By default, \code{rfe} will use a single processor
+#' on the host machine. As of version 4.99 of this package, the framework used
+#' for parallel processing uses the \pkg{foreach} package. To run the resamples
+#' in parallel, the code for \code{rfe} does not change; prior to the call to
+#' \code{rfe}, a parallel backend is registered with \pkg{foreach} (see the
+#' examples below).
+#'
+#' \code{rfeIter} is the basic algorithm while \code{rfe} wraps these
+#' operations inside of resampling. To avoid selection bias, it is better to
+#' use the function \code{rfe} than \code{rfeIter}.
+#'
+#' When updating a model, if the entire set of resamples were not saved using
+#' \code{rfeControl(returnResamp = "final")}, the existing resamples are
+#' removed with a warning.
+#'
+#' @aliases rfe rfe.default rfeIter predict.rfe update.rfe
+#' @param x a matrix or data frame of predictors for model training. This
+#' object must have unique column names.
+#' @param y a vector of training set outcomes (either numeric or factor)
+#' @param testX a matrix or data frame of test set predictors. This must have
+#' the same column names as \code{x}
+#' @param testY a vector of test set outcomes
+#' @param sizes a numeric vector of integers corresponding to the number of
+#' features that should be retained
+#' @param metric a string that specifies what summary metric will be used to
+#' select the optimal model. By default, possible values are "RMSE" and
+#' "Rsquared" for regression and "Accuracy" and "Kappa" for classification. If
+#' custom performance metrics are used (via the \code{functions} argument in
+#' \code{\link{rfeControl}}, the value of \code{metric} should match one of the
+#' arguments.
+#' @param maximize a logical: should the metric be maximized or minimized?
+#' @param rfeControl a list of options, including functions for fitting and
+#' prediction. The web page
+#' \url{http://topepo.github.io/caret/featureselection.html#rfe} has more
+#' details and examples related to this function.
+#' @param object an object of class \code{rfe}
+#' @param size a single integers corresponding to the number of features that
+#' should be retained in the updated model
+#' @param newdata a matrix or data frame of new samples for prediction
+#' @param label an optional character string to be printed when in verbose
+#' mode.
+#' @param seeds an optional vector of integers for the size. The vector should
+#' have length of \code{length(sizes)+1}
+#' @param \dots options to pass to the model fitting function (ignored in
+#' \code{predict.rfe})
+#' @return A list with elements \item{finalVariables}{a list of size
+#' \code{length(sizes) + 1} containing the column names of the ``surviving''
+#' predictors at each stage of selection. The first element corresponds to all
+#' the predictors (i.e. \code{size = ncol(x)})} \item{pred }{a data frame with
+#' columns for the test set outcome, the predicted outcome and the subset
+#' size.}
+#' @author Max Kuhn
+#' @seealso \code{\link{rfeControl}}
+#' @keywords models
+#' @examples
+#'
+#' \dontrun{
+#' data(BloodBrain)
+#'
+#' x <- scale(bbbDescr[,-nearZeroVar(bbbDescr)])
+#' x <- x[, -findCorrelation(cor(x), .8)]
+#' x <- as.data.frame(x)
+#'
+#' set.seed(1)
+#' lmProfile <- rfe(x, logBBB,
+#'                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
+#'                  rfeControl = rfeControl(functions = lmFuncs,
+#'                                          number = 200))
+#' set.seed(1)
+#' lmProfile2 <- rfe(x, logBBB,
+#'                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
+#'                  rfeControl = rfeControl(functions = lmFuncs,
+#'                                          rerank = TRUE,
+#'                                          number = 200))
+#'
+#' xyplot(lmProfile$results$RMSE + lmProfile2$results$RMSE  ~
+#'        lmProfile$results$Variables,
+#'        type = c("g", "p", "l"),
+#'        auto.key = TRUE)
+#'
+#' rfProfile <- rfe(x, logBBB,
+#'                  sizes = c(2, 5, 10, 20),
+#'                  rfeControl = rfeControl(functions = rfFuncs))
+#'
+#' bagProfile <- rfe(x, logBBB,
+#'                   sizes = c(2, 5, 10, 20),
+#'                   rfeControl = rfeControl(functions = treebagFuncs))
+#'
+#' set.seed(1)
+#' svmProfile <- rfe(x, logBBB,
+#'                   sizes = c(2, 5, 10, 20),
+#'                   rfeControl = rfeControl(functions = caretFuncs,
+#'                                           number = 200),
+#'                   ## pass options to train()
+#'                   method = "svmRadial")
+#'
+#' ## classification
+#'
+#' data(mdrr)
+#' mdrrDescr <- mdrrDescr[,-nearZeroVar(mdrrDescr)]
+#' mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .8)]
+#'
+#' set.seed(1)
+#' inTrain <- createDataPartition(mdrrClass, p = .75, list = FALSE)[,1]
+#'
+#' train <- mdrrDescr[ inTrain, ]
+#' test  <- mdrrDescr[-inTrain, ]
+#' trainClass <- mdrrClass[ inTrain]
+#' testClass  <- mdrrClass[-inTrain]
+#'
+#' set.seed(2)
+#' ldaProfile <- rfe(train, trainClass,
+#'                   sizes = c(1:10, 15, 30),
+#'                   rfeControl = rfeControl(functions = ldaFuncs, method = "cv"))
+#' plot(ldaProfile, type = c("o", "g"))
+#'
+#' postResample(predict(ldaProfile, test), testClass)
+#'
+#' }
+#'
+#' #######################################
+#' ## Parallel Processing Example via multicore
+#'
+#' \dontrun{
+#' library(doMC)
+#'
+#' ## Note: if the underlying model also uses foreach, the
+#' ## number of cores specified above will double (along with
+#' ## the memory requirements)
+#' registerDoMC(cores = 2)
+#'
+#' set.seed(1)
+#' lmProfile <- rfe(x, logBBB,
+#'                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
+#'                  rfeControl = rfeControl(functions = lmFuncs,
+#'                                          number = 200))
+#'
+#'
+#' }
+#'
+#'
+#' @export rfe
+rfe <- function (x, ...) UseMethod("rfe")
+
+#' @importFrom stats predict runif
+#' @export
+"rfe.default" <-
+  function(x, y,
+           sizes = 2^(2:4),
+           metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
+           maximize = ifelse(metric == "RMSE", FALSE, TRUE),
+           rfeControl = rfeControl(), ...)
+{
+  startTime <- proc.time()
+  funcCall <- match.call(expand.dots = TRUE)
+  if(!("caret" %in% loadedNamespaces())) loadNamespace("caret")
+
+  if(nrow(x) != length(y)) stop("there should be the same number of samples in x and y")
+  numFeat <- ncol(x)
+  classLevels <- levels(y)
+
+  if(is.null(rfeControl$index)) rfeControl$index <- switch(tolower(rfeControl$method),
+                                                           cv = createFolds(y, rfeControl$number, returnTrain = TRUE),
+                                                           repeatedcv = createMultiFolds(y, rfeControl$number, rfeControl$repeats),
+                                                           loocv = createFolds(y, length(y), returnTrain = TRUE),
+                                                           boot =, boot632 = createResample(y, rfeControl$number),
+                                                           test = createDataPartition(y, 1, rfeControl$p),
+                                                           lgocv = createDataPartition(y, rfeControl$number, rfeControl$p))
+
+  if(is.null(names(rfeControl$index))) names(rfeControl$index) <- prettySeq(rfeControl$index)
+  if(is.null(rfeControl$indexOut)){
+    rfeControl$indexOut <- lapply(rfeControl$index,
+                                  function(training, allSamples) allSamples[-unique(training)],
+                                  allSamples = seq(along = y))
+    names(rfeControl$indexOut) <- prettySeq(rfeControl$indexOut)
+  }
+
+  sizes <- sort(unique(sizes))
+  sizes <- sizes[sizes <= ncol(x)]
+
+  ## check summary function and metric
+  testOutput <- data.frame(pred = sample(y, min(10, length(y))),
+                           obs = sample(y, min(10, length(y))))
+
+  if(is.factor(y))
+    {
+      for(i in seq(along = classLevels)) testOutput[, classLevels[i]] <- runif(nrow(testOutput))
+    }
+
+  test <- rfeControl$functions$summary(testOutput, lev = classLevels)
+  perfNames <- names(test)
+
+  if(!(metric %in% perfNames))
+    {
+      warning(paste("Metric '", metric, "' is not created by the summary function; '",
+                    perfNames[1], "' will be used instead", sep = ""))
+      metric <- perfNames[1]
+    }
+
+  ## Set or check the seeds when needed
+  totalSize <- if(any(sizes == ncol(x))) length(sizes) else length(sizes) + 1
+  if(is.null(rfeControl$seeds))
+  {
+    seeds <- vector(mode = "list", length = length(rfeControl$index))
+    seeds <- lapply(seeds, function(x) sample.int(n = 1000000, size = totalSize))
+    seeds[[length(rfeControl$index) + 1]] <- sample.int(n = 1000000, size = 1)
+    rfeControl$seeds <- seeds
+  } else {
+    if(!(length(rfeControl$seeds) == 1 && is.na(rfeControl$seeds)))
+    {
+      ## check versus number of tasks
+      numSeeds <- unlist(lapply(rfeControl$seeds, length))
+      badSeed <- (length(rfeControl$seeds) < length(rfeControl$index) + 1) ||
+        (any(numSeeds[-length(numSeeds)] < totalSize))
+      if(badSeed) stop(paste("Bad seeds: the seed object should be a list of length",
+                             length(rfeControl$index) + 1, "with",
+                             length(rfeControl$index), "integer vectors of size",
+                             totalSize, "and the last list element having a",
+                             "single integer"))
+    }
+  }
+
+  if(rfeControl$method == "LOOCV")
+    {
+      tmp <- looRfeWorkflow(x, y, sizes, ppOpts = NULL, ctrl = rfeControl, lev = classLevels, ...)
+      selectedVars <- do.call("c", tmp$everything[names(tmp$everything) == "finalVariables"])
+      selectedVars <- do.call("rbind", selectedVars)
+      externPerf <- tmp$performance
+    } else {
+      tmp <- nominalRfeWorkflow(x, y, sizes, ppOpts = NULL, ctrl = rfeControl, lev = classLevels, ...)
+      selectedVars <- do.call("rbind", tmp$everything[names(tmp$everything) == "selectedVars"])
+      resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "resamples"])
+      rownames(resamples) <- NULL
+      externPerf <- tmp$performance
+    }
+  rownames(selectedVars) <- NULL
+
+  bestSubset <- rfeControl$functions$selectSize(x = externPerf,
+                                                metric = metric,
+                                                maximize = maximize)
+
+  bestVar <- rfeControl$functions$selectVar(selectedVars, bestSubset)
+
+  finalTime <- system.time(
+                           fit <- rfeControl$functions$fit(x[, bestVar, drop = FALSE],
+                                                           y,
+                                                           first = FALSE,
+                                                           last = TRUE,
+                                                           ...))
+
+
+  if(is.factor(y) & any(names(tmp$performance) == ".cell1"))
+    {
+      keepers <- c("Resample", "Variables", grep("\\.cell", names(tmp$performance), value = TRUE))
+      resampledCM <- subset(tmp$performance, Variables == bestSubset)
+      tmp$performance <- tmp$performance[, -grep("\\.cell", names(tmp$performance))]
+    } else resampledCM <- NULL
+
+  if(!(rfeControl$method %in% c("LOOCV"))) {
+    resamples <- switch(rfeControl$returnResamp,
+                        none = NULL,
+                        all = resamples,
+                        final = subset(resamples, Variables == bestSubset))
+    } else resamples <- NULL
+
+  endTime <- proc.time()
+  times <- list(everything = endTime - startTime,
+                final = finalTime)
+
+#########################################################################
+  ## Now, based on probability or static ranking, figure out the best vars
+  ## and the best subset size and fit final model
+
+  out <- structure(
+                   list(
+                        pred = if(rfeControl$saveDetails) do.call("rbind", tmp$everything[names(tmp$everything) == "predictions"]) else NULL,
+                        variables = selectedVars,
+                        results = as.data.frame(externPerf),
+                        bestSubset = bestSubset,
+                        fit = fit,
+                        optVariables = bestVar,
+                        optsize = bestSubset,
+                        call = funcCall,
+                        control = rfeControl,
+                        resample = resamples,
+                        metric = metric,
+                        maximize = maximize,
+                        perfNames = perfNames,
+                        times = times,
+                        resampledCM = resampledCM,
+                        obsLevels = classLevels,
+                        dots = list(...)),
+                   class = "rfe")
+  if(rfeControl$timingSamps > 0)
+    {
+      out$times$prediction <- system.time(predict(out, x[1:min(nrow(x), rfeControl$timingSamps),,drop = FALSE]))
+    } else  out$times$prediction <- rep(NA, 3)
+  out
+}
+
+#' @importFrom stats .getXlevels contrasts model.matrix model.response
+#' @export
+rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
+{
+  m <- match.call(expand.dots = FALSE)
+  if (is.matrix(eval.parent(m$data))) m$data <- as.data.frame(data)
+  m$... <- m$contrasts <- NULL
+  m[[1]] <- as.name("model.frame")
+  m <- eval.parent(m)
+  Terms <- attr(m, "terms")
+  x <- model.matrix(Terms, m, contrasts)
+  cons <- attr(x, "contrast")
+  xint <- match("(Intercept)", colnames(x), nomatch = 0)
+  if (xint > 0)  x <- x[, -xint, drop = FALSE]
+  y <- model.response(m)
+  res <- rfe(as.data.frame(x), y, ...)
+  res$terms <- Terms
+  res$coefnames <- colnames(x)
+  res$call <- match.call()
+  res$na.action <- attr(m, "na.action")
+  res$contrasts <- cons
+  res$xlevels <- .getXlevels(Terms, m)
+  class(res) <- c("rfe", "rfe.formula")
+  res
+}
+
+######################################################################
+######################################################################
+#' @export
+print.rfe <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
+{
+
+  cat("\nRecursive feature selection\n\n")
+
+  resampleN <- unlist(lapply(x$control$index, length))
+  numResamp <- length(resampleN)
+
+  resampText <- resampName(x)
+  cat("Outer resampling method:", resampText, "\n")
+
+  cat("\nResampling performance over subset size:\n\n")
+  x$results$Selected <- ""
+  x$results$Selected[x$results$Variables == x$bestSubset] <- "*"
+  print(format(x$results, digits = digits), row.names = FALSE)
+  cat("\n")
+
+  cat("The top ",
+      min(top, x$bestSubset),
+      " variables (out of ",
+      x$bestSubset,
+      "):\n   ",
+      paste(x$optVariables[1:min(top, x$bestSubset)], collapse = ", "),
+      "\n\n",
+      sep = "")
+
+  invisible(x)
+}
+
+######################################################################
+######################################################################
+
+
+#' Plot RFE Performance Profiles
+#'
+#' These functions plot the resampling results for the candidate subset sizes
+#' evaluated during the recursive feature elimination (RFE) process
+#'
+#' These plots show the average performance versus the subset sizes.
+#'
+#' @aliases plot.rfe ggplot.rfe
+#' @param x an object of class \code{\link{rfe}}.
+#' @param metric What measure of performance to plot. Examples of possible
+#' values are "RMSE", "Rsquared", "Accuracy" or "Kappa". Other values can be
+#' used depending on what metrics have been calculated.
+#' @param \dots \code{plot} only: specifications to be passed to
+#' \code{\link[lattice]{xyplot}}. The function automatically sets some
+#' arguments (e.g. axis labels) but passing in values here will over-ride the
+#' defaults.
+#' @param data an object of class \code{\link{rfe}}.
+#' @param output either "data", "ggplot" or "layered". The first returns a data
+#' frame while the second returns a simple \code{ggplot} object with no layers.
+#' The third value returns a plot with a set of layers.
+#' @param mapping,environment unused arguments to make consistent with
+#' \pkg{ggplot2} generic method
+#' @return a lattice or ggplot object
+#' @author Max Kuhn
+#' @seealso \code{\link{rfe}}, \code{\link[lattice]{xyplot}},
+#' \code{\link[ggplot2]{ggplot}}
+#' @references Kuhn (2008), ``Building Predictive Models in R Using the caret''
+#' (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
+#' @keywords hplot
+#' @examples
+#'
+#' \dontrun{
+#' data(BloodBrain)
+#'
+#' x <- scale(bbbDescr[,-nearZeroVar(bbbDescr)])
+#' x <- x[, -findCorrelation(cor(x), .8)]
+#' x <- as.data.frame(x)
+#'
+#' set.seed(1)
+#' lmProfile <- rfe(x, logBBB,
+#'                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
+#'                  rfeControl = rfeControl(functions = lmFuncs,
+#'                                          number = 200))
+#' plot(lmProfile)
+#' plot(lmProfile, metric = "Rsquared")
+#' ggplot(lmProfile)
+#' }
+#'
+#' @export plot.rfe
+plot.rfe <- function (x,
+                      metric = x$metric,
+                      ...) {
+  x$results$Selected <- ""
+  x$results$Selected[x$results$Variables == x$bestSubset] <- "*"
+
+  results <- x$results[, colnames(x$results) %in% c("Variables", "Selected", metric)]
+  metric <- metric[which(metric %in% colnames(results))]
+
+  plotForm <- as.formula(paste(metric, "~ Variables"))
+  panel.profile <- function(x, y, groups, ...)
+  {
+    panel.xyplot(x, y, ...)
+    panel.xyplot(x[groups == "*"], y[groups == "*"], pch = 16)
+  }
+  resampText <- resampName(x, FALSE)
+  resampText <- paste(metric, resampText)
+  out <- xyplot(plotForm, data = results, groups = Selected, panel =  panel.profile,
+                ylab = resampText,
+                ...)
+
+  out
+}
+
+######################################################################
+######################################################################
 #' Controlling the Feature Selection Algorithms
-#' 
+#'
 #' This function generates a control object that can be used to specify the
 #' details of the feature selection algorithms used in this package.
-#' 
+#'
 #' More details on this function can be found at
 #' \url{http://topepo.github.io/caret/featureselection.html#rfe}.
-#' 
+#'
 #' Backwards selection requires function to be specified for some operations.
-#' 
+#'
 #' The \code{fit} function builds the model based on the current data set. The
 #' arguments for the function must be: \itemize{ \item\code{x} the current
 #' training set of predictor data with the appropriate subset of variables
@@ -25,12 +591,12 @@ rfeIter <- function(x, y,
 #' predictors.  \item\code{...}optional arguments to pass to the fit function
 #' in the call to \code{rfe} } The function should return a model object that
 #' can be used to generate predictions.
-#' 
+#'
 #' The \code{pred} function returns a vector of predictions (numeric or
 #' factors) from the current model. The arguments are: \itemize{
 #' \item\code{object} the model generated by the \code{fit} function
 #' \item\code{x} the current set of predictor set for the held-back samples }
-#' 
+#'
 #' The \code{rank} function is used to return the predictors in the order of
 #' the most important to the least important. Inputs are: \itemize{
 #' \item\code{object} the model generated by the \code{fit} function
@@ -40,7 +606,7 @@ rfeIter <- function(x, y,
 #' names. The first row should be the most important predictor etc. Other
 #' columns can be included in the output and will be returned in the final
 #' \code{rfe} object.
-#' 
+#'
 #' The \code{selectSize} function determines the optimal number of predictors
 #' based on the resampling output. Inputs for the function are: \itemize{
 #' \item\code{x}a matrix with columns for the performance metrics and the
@@ -51,7 +617,7 @@ rfeIter <- function(x, y,
 #' corresponding to the optimal subset size. \pkg{caret} comes with two
 #' examples functions for this purpose: \code{\link{pickSizeBest}} and
 #' \code{\link{pickSizeTolerance}}.
-#' 
+#'
 #' After the optimal subset size is determined, the \code{selectVar} function
 #' will be used to calculate the best rankings for each variable across all the
 #' resampling iterations. Inputs for the function are: \itemize{ \item\code{y}
@@ -64,14 +630,14 @@ rfeIter <- function(x, y,
 #' the integer returned by the \code{selectSize} function } This function
 #' should return a character string of predictor names (of length \code{size})
 #' in the order of most important to least important
-#' 
+#'
 #' Examples of these functions are included in the package:
 #' \code{\link{lmFuncs}}, \code{\link{rfFuncs}}, \code{\link{treebagFuncs}} and
 #' \code{\link{nbFuncs}}.
-#' 
+#'
 #' Model details about these functions, including examples, are at
 #' \url{http://topepo.github.io/caret/featureselection.html}. .
-#' 
+#'
 #' @param functions a list of functions for model fitting, prediction and
 #' variable importance (see Details below)
 #' @param rerank a logical: should variable importance be re-calculated each
@@ -116,592 +682,23 @@ rfeIter <- function(x, y,
 #' \code{\link{pickSizeBest}}, \code{\link{pickSizeTolerance}}
 #' @keywords utilities
 #' @examples
-#' 
+#'
 #'   \dontrun{
 #' subsetSizes <- c(2, 4, 6, 8)
 #' set.seed(123)
 #' seeds <- vector(mode = "list", length = 51)
 #' for(i in 1:50) seeds[[i]] <- sample.int(1000, length(subsetSizes) + 1)
 #' seeds[[51]] <- sample.int(1000, 1)
-#' 
+#'
 #' set.seed(1)
 #' rfMod <- rfe(bbbDescr, logBBB,
 #'              sizes = subsetSizes,
-#'              rfeControl = rfeControl(functions = rfFuncs, 
+#'              rfeControl = rfeControl(functions = rfFuncs,
 #'                                      seeds = seeds,
 #'                                      number = 50))
 #'   }
-#' 
+#'
 #' @export rfeControl
-                    rfeControl = rfeControl(),
-                    label = "", 
-                    seeds = NA,
-                    ...)
-{
-  if(is.null(colnames(x))) stop("x must have column names")
-
-  if(is.null(testX) | is.null(testY)) stop("a test set must be specified")
-  if(is.null(sizes)) stop("please specify the number of features")
-
-  predictionMatrix <- matrix(NA, nrow = length(testY), ncol = length(sizes))
-  p <- ncol(x)
-
-  retained <- colnames(x)
-  sizeValues <- sort(unique(c(sizes, ncol(x))), decreasing = TRUE)
-  sizeText <- format(sizeValues)
-  
-  finalVariables <- vector(length(sizeValues), mode = "list")
-  for(k in seq(along = sizeValues))
-    {
-      if(!any(is.na(seeds))) set.seed(seeds[k])
-      if(rfeControl$verbose)
-        {
-          cat("+(rfe) fit",
-              ifelse(label != "",
-                     label, ""),
-              "size:",  sizeText[k], "\n")
-        }
-      flush.console()
-      fitObject <- rfeControl$functions$fit(x[,retained,drop = FALSE], y,
-                                            first = p == ncol(x[,retained,drop = FALSE]),
-                                            last = FALSE,
-                                            ...)  
-      if(rfeControl$verbose)
-        {
-          cat("-(rfe) fit",
-              ifelse(label != "",
-                     label, ""),
-              "size:",  sizeText[k], "\n")
-        }
-      modelPred <- rfeControl$functions$pred(fitObject, testX[,retained,drop = FALSE])
-      if(is.data.frame(modelPred) | is.matrix(modelPred))
-        {
-          if(is.matrix(modelPred)) modelPred <- as.data.frame(modelPred)
-          modelPred$obs <- testY
-          modelPred$Variables <- sizeValues[k]
-        } else modelPred <- data.frame(pred = modelPred, obs = testY, Variables = sizeValues[k])
-
-      ## save as a vector and rbind at end
-      rfePred <- if(k == 1) modelPred else rbind(rfePred, modelPred)
-
-
-      if(!exists("modImp")) ##todo: get away from this since it finds object in other spaces
-        {
-          if(rfeControl$verbose)
-            {
-              cat("+(rfe) imp",
-                  ifelse(label != "",
-                         label, ""), "\n")
-            }
-          modImp <- rfeControl$functions$rank(fitObject, x[,retained,drop = FALSE], y)
-          if(rfeControl$verbose)
-            {
-              cat("-(rfe) imp",
-                  ifelse(label != "",
-                         label, ""), "\n")
-            }          
-        } else {
-          if(rfeControl$rerank)
-            {
-              if(rfeControl$verbose)
-                {
-                  cat("+(rfe) imp",
-                      ifelse(label != "",
-                             label, ""),
-                      "size:",  sizeText[k], "\n")
-                }            
-              modImp <- rfeControl$functions$rank(fitObject, x[,retained,drop = FALSE], y)
-              if(rfeControl$verbose)
-                {
-                  cat("-(rfe) imp",
-                      ifelse(label != "",
-                             label, ""),
-                      "size:",  sizeText[k], "\n")
-                }    
-            }
-        }
-      
-      if(nrow(modImp) < sizeValues[k]) { 
-        msg1 <- paste0("rfe is expecting ", sizeValues[k], 
-                       " importance values but only has ", nrow(modImp), ". ",
-                       "This may be caused by having zero-variance predictors, ",
-                       "excessively-correlated predictors, factor predictors ",
-                       "that were expanded into dummy variables or you may have ",
-                       "failed to drop one of your dummy variables.")
-        stop(msg1)
-      }
-      if(any(!complete.cases(modImp))){
-        stop(paste("There were missing importance values.", 
-                   "There may be linear dependencies in your predictor variables")) 
-      } 
-      finalVariables[[k]] <- subset(modImp, var %in% retained)
-      finalVariables[[k]]$Variables <- sizeValues[[k]]
-      if(k < length(sizeValues)) retained <- as.character(modImp$var)[1:sizeValues[k+1]]
-    }
-  list(finalVariables = finalVariables, pred = rfePred)
-
-}
-
-######################################################################
-######################################################################
-
-
-
-#' Backwards Feature Selection
-#' 
-#' A simple backwards selection, a.k.a. recursive feature selection (RFE),
-#' algorithm
-#' 
-#' More details on this function can be found at
-#' \url{http://topepo.github.io/caret/featureselection.html}.
-#' 
-#' This function implements backwards selection of predictors based on
-#' predictor importance ranking. The predictors are ranked and the less
-#' important ones are sequentially eliminated prior to modeling. The goal is to
-#' find a subset of predictors that can be used to produce an accurate model.
-#' The web page \url{http://topepo.github.io/caret/featureselection.html#rfe}
-#' has more details and examples related to this function.
-#' 
-#' \code{rfe} can be used with "explicit parallelism", where different
-#' resamples (e.g. cross-validation group) can be split up and run on multiple
-#' machines or processors. By default, \code{rfe} will use a single processor
-#' on the host machine. As of version 4.99 of this package, the framework used
-#' for parallel processing uses the \pkg{foreach} package. To run the resamples
-#' in parallel, the code for \code{rfe} does not change; prior to the call to
-#' \code{rfe}, a parallel backend is registered with \pkg{foreach} (see the
-#' examples below).
-#' 
-#' \code{rfeIter} is the basic algorithm while \code{rfe} wraps these
-#' operations inside of resampling. To avoid selection bias, it is better to
-#' use the function \code{rfe} than \code{rfeIter}.
-#' 
-#' When updating a model, if the entire set of resamples were not saved using
-#' \code{rfeControl(returnResamp = "final")}, the existing resamples are
-#' removed with a warning.
-#' 
-#' @aliases rfe rfe.default rfeIter predict.rfe update.rfe
-#' @param x a matrix or data frame of predictors for model training. This
-#' object must have unique column names.
-#' @param y a vector of training set outcomes (either numeric or factor)
-#' @param testX a matrix or data frame of test set predictors. This must have
-#' the same column names as \code{x}
-#' @param testY a vector of test set outcomes
-#' @param sizes a numeric vector of integers corresponding to the number of
-#' features that should be retained
-#' @param metric a string that specifies what summary metric will be used to
-#' select the optimal model. By default, possible values are "RMSE" and
-#' "Rsquared" for regression and "Accuracy" and "Kappa" for classification. If
-#' custom performance metrics are used (via the \code{functions} argument in
-#' \code{\link{rfeControl}}, the value of \code{metric} should match one of the
-#' arguments.
-#' @param maximize a logical: should the metric be maximized or minimized?
-#' @param rfeControl a list of options, including functions for fitting and
-#' prediction. The web page
-#' \url{http://topepo.github.io/caret/featureselection.html#rfe} has more
-#' details and examples related to this function.
-#' @param object an object of class \code{rfe}
-#' @param size a single integers corresponding to the number of features that
-#' should be retained in the updated model
-#' @param newdata a matrix or data frame of new samples for prediction
-#' @param label an optional character string to be printed when in verbose
-#' mode.
-#' @param seeds an optional vector of integers for the size. The vector should
-#' have length of \code{length(sizes)+1}
-#' @param \dots options to pass to the model fitting function (ignored in
-#' \code{predict.rfe})
-#' @return A list with elements \item{finalVariables}{a list of size
-#' \code{length(sizes) + 1} containing the column names of the ``surviving''
-#' predictors at each stage of selection. The first element corresponds to all
-#' the predictors (i.e. \code{size = ncol(x)})} \item{pred }{a data frame with
-#' columns for the test set outcome, the predicted outcome and the subset
-#' size.}
-#' @author Max Kuhn
-#' @seealso \code{\link{rfeControl}}
-#' @keywords models
-#' @examples
-#' 
-#' \dontrun{
-#' data(BloodBrain)
-#' 
-#' x <- scale(bbbDescr[,-nearZeroVar(bbbDescr)])
-#' x <- x[, -findCorrelation(cor(x), .8)]
-#' x <- as.data.frame(x)
-#' 
-#' set.seed(1)
-#' lmProfile <- rfe(x, logBBB,
-#'                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-#'                  rfeControl = rfeControl(functions = lmFuncs, 
-#'                                          number = 200))
-#' set.seed(1)
-#' lmProfile2 <- rfe(x, logBBB,
-#'                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-#'                  rfeControl = rfeControl(functions = lmFuncs, 
-#'                                          rerank = TRUE, 
-#'                                          number = 200))
-#' 
-#' xyplot(lmProfile$results$RMSE + lmProfile2$results$RMSE  ~ 
-#'        lmProfile$results$Variables, 
-#'        type = c("g", "p", "l"), 
-#'        auto.key = TRUE)
-#' 
-#' rfProfile <- rfe(x, logBBB,
-#'                  sizes = c(2, 5, 10, 20),
-#'                  rfeControl = rfeControl(functions = rfFuncs))
-#' 
-#' bagProfile <- rfe(x, logBBB,
-#'                   sizes = c(2, 5, 10, 20),
-#'                   rfeControl = rfeControl(functions = treebagFuncs))
-#' 
-#' set.seed(1)
-#' svmProfile <- rfe(x, logBBB,
-#'                   sizes = c(2, 5, 10, 20),
-#'                   rfeControl = rfeControl(functions = caretFuncs, 
-#'                                           number = 200),
-#'                   ## pass options to train()
-#'                   method = "svmRadial")
-#' 
-#' ## classification 
-#' 
-#' data(mdrr)
-#' mdrrDescr <- mdrrDescr[,-nearZeroVar(mdrrDescr)]
-#' mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .8)]
-#' 
-#' set.seed(1)
-#' inTrain <- createDataPartition(mdrrClass, p = .75, list = FALSE)[,1]
-#' 
-#' train <- mdrrDescr[ inTrain, ]
-#' test  <- mdrrDescr[-inTrain, ]
-#' trainClass <- mdrrClass[ inTrain]
-#' testClass  <- mdrrClass[-inTrain]
-#' 
-#' set.seed(2)
-#' ldaProfile <- rfe(train, trainClass,
-#'                   sizes = c(1:10, 15, 30),
-#'                   rfeControl = rfeControl(functions = ldaFuncs, method = "cv"))
-#' plot(ldaProfile, type = c("o", "g"))
-#' 
-#' postResample(predict(ldaProfile, test), testClass)
-#' 
-#' }
-#' 
-#' #######################################
-#' ## Parallel Processing Example via multicore
-#' 
-#' \dontrun{
-#' library(doMC)
-#' 
-#' ## Note: if the underlying model also uses foreach, the
-#' ## number of cores specified above will double (along with
-#' ## the memory requirements)
-#' registerDoMC(cores = 2)
-#' 
-#' set.seed(1)
-#' lmProfile <- rfe(x, logBBB,
-#'                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-#'                  rfeControl = rfeControl(functions = lmFuncs, 
-#'                                          number = 200))
-#' 
-#' 
-#' }
-#' 
-#' 
-#' @export rfe
-rfe <- function (x, ...) UseMethod("rfe")
-
-#' @importFrom stats predict runif
-#' @export
-"rfe.default" <-
-  function(x, y,
-           sizes = 2^(2:4),
-           metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
-           maximize = ifelse(metric == "RMSE", FALSE, TRUE),
-           rfeControl = rfeControl(), ...)
-{
-  startTime <- proc.time()
-  funcCall <- match.call(expand.dots = TRUE)
-  if(!("caret" %in% loadedNamespaces())) loadNamespace("caret")
-
-  if(nrow(x) != length(y)) stop("there should be the same number of samples in x and y")
-  numFeat <- ncol(x)
-  classLevels <- levels(y)
-
-  if(is.null(rfeControl$index)) rfeControl$index <- switch(tolower(rfeControl$method),
-                                                           cv = createFolds(y, rfeControl$number, returnTrain = TRUE),
-                                                           repeatedcv = createMultiFolds(y, rfeControl$number, rfeControl$repeats),
-                                                           loocv = createFolds(y, length(y), returnTrain = TRUE),
-                                                           boot =, boot632 = createResample(y, rfeControl$number),
-                                                           test = createDataPartition(y, 1, rfeControl$p),
-                                                           lgocv = createDataPartition(y, rfeControl$number, rfeControl$p))
-
-  if(is.null(names(rfeControl$index))) names(rfeControl$index) <- prettySeq(rfeControl$index)
-  if(is.null(rfeControl$indexOut)){     
-    rfeControl$indexOut <- lapply(rfeControl$index,
-                                  function(training, allSamples) allSamples[-unique(training)],
-                                  allSamples = seq(along = y))
-    names(rfeControl$indexOut) <- prettySeq(rfeControl$indexOut)
-  }
-  
-  sizes <- sort(unique(sizes))
-  sizes <- sizes[sizes <= ncol(x)]
-
-  ## check summary function and metric
-  testOutput <- data.frame(pred = sample(y, min(10, length(y))),
-                           obs = sample(y, min(10, length(y))))
-
-  if(is.factor(y))
-    {
-      for(i in seq(along = classLevels)) testOutput[, classLevels[i]] <- runif(nrow(testOutput))
-    }
-  
-  test <- rfeControl$functions$summary(testOutput, lev = classLevels)
-  perfNames <- names(test)
-
-  if(!(metric %in% perfNames))
-    {
-      warning(paste("Metric '", metric, "' is not created by the summary function; '",
-                    perfNames[1], "' will be used instead", sep = ""))
-      metric <- perfNames[1]
-    }
-
-  ## Set or check the seeds when needed
-  totalSize <- if(any(sizes == ncol(x))) length(sizes) else length(sizes) + 1
-  if(is.null(rfeControl$seeds))
-  {
-    seeds <- vector(mode = "list", length = length(rfeControl$index))
-    seeds <- lapply(seeds, function(x) sample.int(n = 1000000, size = totalSize))
-    seeds[[length(rfeControl$index) + 1]] <- sample.int(n = 1000000, size = 1)
-    rfeControl$seeds <- seeds     
-  } else {
-    if(!(length(rfeControl$seeds) == 1 && is.na(rfeControl$seeds)))
-    {
-      ## check versus number of tasks
-      numSeeds <- unlist(lapply(rfeControl$seeds, length))
-      badSeed <- (length(rfeControl$seeds) < length(rfeControl$index) + 1) ||
-        (any(numSeeds[-length(numSeeds)] < totalSize))
-      if(badSeed) stop(paste("Bad seeds: the seed object should be a list of length",
-                             length(rfeControl$index) + 1, "with", 
-                             length(rfeControl$index), "integer vectors of size",
-                             totalSize, "and the last list element having a",
-                             "single integer"))      
-    }
-  }
-
-  if(rfeControl$method == "LOOCV")
-    {
-      tmp <- looRfeWorkflow(x, y, sizes, ppOpts = NULL, ctrl = rfeControl, lev = classLevels, ...)
-      selectedVars <- do.call("c", tmp$everything[names(tmp$everything) == "finalVariables"])
-      selectedVars <- do.call("rbind", selectedVars)
-      externPerf <- tmp$performance
-    } else {
-      tmp <- nominalRfeWorkflow(x, y, sizes, ppOpts = NULL, ctrl = rfeControl, lev = classLevels, ...)
-      selectedVars <- do.call("rbind", tmp$everything[names(tmp$everything) == "selectedVars"])
-      resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "resamples"])
-      rownames(resamples) <- NULL
-      externPerf <- tmp$performance
-    }
-  rownames(selectedVars) <- NULL
-  
-  bestSubset <- rfeControl$functions$selectSize(x = externPerf,
-                                                metric = metric,
-                                                maximize = maximize)
-
-  bestVar <- rfeControl$functions$selectVar(selectedVars, bestSubset)  
-
-  finalTime <- system.time(
-                           fit <- rfeControl$functions$fit(x[, bestVar, drop = FALSE],
-                                                           y,
-                                                           first = FALSE,
-                                                           last = TRUE,
-                                                           ...))
-
-
-  if(is.factor(y) & any(names(tmp$performance) == ".cell1"))
-    {
-      keepers <- c("Resample", "Variables", grep("\\.cell", names(tmp$performance), value = TRUE))      
-      resampledCM <- subset(tmp$performance, Variables == bestSubset)
-      tmp$performance <- tmp$performance[, -grep("\\.cell", names(tmp$performance))]
-    } else resampledCM <- NULL
-
-  if(!(rfeControl$method %in% c("LOOCV"))) {
-    resamples <- switch(rfeControl$returnResamp,
-                        none = NULL, 
-                        all = resamples,
-                        final = subset(resamples, Variables == bestSubset))
-    } else resamples <- NULL
-
-  endTime <- proc.time()
-  times <- list(everything = endTime - startTime,
-                final = finalTime)
-
-#########################################################################
-  ## Now, based on probability or static ranking, figure out the best vars
-  ## and the best subset size and fit final model
-  
-  out <- structure(
-                   list(
-                        pred = if(rfeControl$saveDetails) do.call("rbind", tmp$everything[names(tmp$everything) == "predictions"]) else NULL,
-                        variables = selectedVars,
-                        results = as.data.frame(externPerf),
-                        bestSubset = bestSubset,
-                        fit = fit,
-                        optVariables = bestVar,
-                        optsize = bestSubset,
-                        call = funcCall,
-                        control = rfeControl,
-                        resample = resamples,
-                        metric = metric,
-                        maximize = maximize,
-                        perfNames = perfNames,
-                        times = times,
-                        resampledCM = resampledCM,
-                        obsLevels = classLevels,
-                        dots = list(...)),
-                   class = "rfe")
-  if(rfeControl$timingSamps > 0)
-    {
-      out$times$prediction <- system.time(predict(out, x[1:min(nrow(x), rfeControl$timingSamps),,drop = FALSE]))
-    } else  out$times$prediction <- rep(NA, 3)
-  out
-}
-
-#' @importFrom stats .getXlevels contrasts model.matrix model.response
-#' @export
-rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) 
-{
-  m <- match.call(expand.dots = FALSE)
-  if (is.matrix(eval.parent(m$data))) m$data <- as.data.frame(data)
-  m$... <- m$contrasts <- NULL
-  m[[1]] <- as.name("model.frame")
-  m <- eval.parent(m)
-  Terms <- attr(m, "terms")
-  x <- model.matrix(Terms, m, contrasts)
-  cons <- attr(x, "contrast")
-  xint <- match("(Intercept)", colnames(x), nomatch = 0)
-  if (xint > 0)  x <- x[, -xint, drop = FALSE]
-  y <- model.response(m)
-  res <- rfe(as.data.frame(x), y, ...)
-  res$terms <- Terms
-  res$coefnames <- colnames(x)
-  res$call <- match.call()
-  res$na.action <- attr(m, "na.action")
-  res$contrasts <- cons
-  res$xlevels <- .getXlevels(Terms, m)
-  class(res) <- c("rfe", "rfe.formula")
-  res
-}
-
-######################################################################
-######################################################################
-#' @export
-print.rfe <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
-{
-
-  cat("\nRecursive feature selection\n\n")
-
-  resampleN <- unlist(lapply(x$control$index, length))
-  numResamp <- length(resampleN)
-  
-  resampText <- resampName(x)
-  cat("Outer resampling method:", resampText, "\n")      
-
-  cat("\nResampling performance over subset size:\n\n")
-  x$results$Selected <- ""
-  x$results$Selected[x$results$Variables == x$bestSubset] <- "*"
-  print(format(x$results, digits = digits), row.names = FALSE)
-  cat("\n")
-
-  cat("The top ",
-      min(top, x$bestSubset),
-      " variables (out of ",
-      x$bestSubset,
-      "):\n   ",
-      paste(x$optVariables[1:min(top, x$bestSubset)], collapse = ", "),
-      "\n\n",
-      sep = "")
-
-  invisible(x)
-}
-
-######################################################################
-######################################################################
-
-
-#' Plot RFE Performance Profiles
-#' 
-#' These functions plot the resampling results for the candidate subset sizes
-#' evaluated during the recursive feature elimination (RFE) process
-#' 
-#' These plots show the average performance versus the subset sizes.
-#' 
-#' @aliases plot.rfe ggplot.rfe
-#' @param x an object of class \code{\link{rfe}}.
-#' @param metric What measure of performance to plot. Examples of possible
-#' values are "RMSE", "Rsquared", "Accuracy" or "Kappa". Other values can be
-#' used depending on what metrics have been calculated.
-#' @param \dots \code{plot} only: specifications to be passed to
-#' \code{\link[lattice]{xyplot}}. The function automatically sets some
-#' arguments (e.g. axis labels) but passing in values here will over-ride the
-#' defaults.
-#' @param data an object of class \code{\link{rfe}}.
-#' @param output either "data", "ggplot" or "layered". The first returns a data
-#' frame while the second returns a simple \code{ggplot} object with no layers.
-#' The third value returns a plot with a set of layers.
-#' @param mapping,environment unused arguments to make consistent with
-#' \pkg{ggplot2} generic method
-#' @return a lattice or ggplot object
-#' @author Max Kuhn
-#' @seealso \code{\link{rfe}}, \code{\link[lattice]{xyplot}},
-#' \code{\link[ggplot2]{ggplot}}
-#' @references Kuhn (2008), ``Building Predictive Models in R Using the caret''
-#' (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
-#' @keywords hplot
-#' @examples
-#' 
-#' \dontrun{
-#' data(BloodBrain)
-#' 
-#' x <- scale(bbbDescr[,-nearZeroVar(bbbDescr)])
-#' x <- x[, -findCorrelation(cor(x), .8)]
-#' x <- as.data.frame(x)
-#' 
-#' set.seed(1)
-#' lmProfile <- rfe(x, logBBB,
-#'                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-#'                  rfeControl = rfeControl(functions = lmFuncs, 
-#'                                          number = 200))
-#' plot(lmProfile)
-#' plot(lmProfile, metric = "Rsquared")
-#' ggplot(lmProfile)
-#' }
-#' 
-#' @export plot.rfe
-plot.rfe <- function (x,
-                      metric = x$metric,
-                      ...) {  
-  x$results$Selected <- ""
-  x$results$Selected[x$results$Variables == x$bestSubset] <- "*"
-  
-  results <- x$results[, colnames(x$results) %in% c("Variables", "Selected", metric)]
-  metric <- metric[which(metric %in% colnames(results))]
-  
-  plotForm <- as.formula(paste(metric, "~ Variables"))
-  panel.profile <- function(x, y, groups, ...)
-  {
-    panel.xyplot(x, y, ...)
-    panel.xyplot(x[groups == "*"], y[groups == "*"], pch = 16)
-  }
-  resampText <- resampName(x, FALSE)
-  resampText <- paste(metric, resampText)
-  out <- xyplot(plotForm, data = results, groups = Selected, panel =  panel.profile, 
-                ylab = resampText,
-                ...)
-  
-  out
-}
-
-######################################################################
-######################################################################
-#' @export
 rfeControl <- function(functions = NULL,
                        rerank = FALSE,
                        method = "boot",
@@ -750,7 +747,7 @@ pickSizeTolerance <- function(x, metric, tol = 1.5, maximize)
   {
     if(!maximize)
       {
-        best <- min(x[,metric])  
+        best <- min(x[,metric])
         perf <- (x[,metric] - best)/best * 100
         flag <- perf <= tol
       } else {
@@ -777,21 +774,21 @@ pickVars <- function(y, size)
 
 
 #' Backwards Feature Selection Helper Functions
-#' 
+#'
 #' Ancillary functions for backwards selection
-#' 
+#'
 #' This page describes the functions that are used in backwards selection (aka
 #' recursive feature elimination). The functions described here are passed to
 #' the algorithm via the \code{functions} argument of \code{\link{rfeControl}}.
-#' 
+#'
 #' See \code{\link{rfeControl}} for details on how these functions should be
 #' defined.
-#' 
+#'
 #' The 'pick' functions are used to find the appropriate subset size for
 #' different situations. \code{pickBest} will find the position associated with
 #' the numerically best value (see the \code{maximize} argument to help define
 #' this).
-#' 
+#'
 #' \code{pickSizeTolerance} picks the lowest position (i.e. the smallest subset
 #' size) that has no more of an X percent loss in performances. When
 #' maximizing, it calculates (O-X)/O*100, where X is the set of performance
@@ -799,10 +796,10 @@ pickVars <- function(y, size)
 #' it uses (X-O)/O*100 (so that values greater than X have a positive "loss").
 #' The function finds the smallest subset size that has a percent loss less
 #' than \code{tol}.
-#' 
+#'
 #' Both of the 'pick' functions assume that the data are sorted from smallest
 #' subset size to largest.
-#' 
+#'
 #' @aliases caretFuncs lmFuncs rfFuncs gamFuncs treebagFuncs ldaFuncs nbFuncs
 #' lrFuncs pickSizeBest pickSizeTolerance pickVars
 #' @param x a matrix or data frame with the performance metric of interest
@@ -817,20 +814,20 @@ pickVars <- function(y, size)
 #' @seealso \code{\link{rfeControl}}, \code{\link{rfe}}
 #' @keywords models
 #' @examples
-#' 
+#'
 #' ## For picking subset sizes:
 #' ## Minimize the RMSE
 #' example <- data.frame(RMSE = c(1.2, 1.1, 1.05, 1.01, 1.01, 1.03, 1.00),
 #'                       Variables = 1:7)
 #' ## Percent Loss in performance (positive)
 #' example$PctLoss <- (example$RMSE - min(example$RMSE))/min(example$RMSE)*100
-#' 
+#'
 #' xyplot(RMSE ~ Variables, data= example)
 #' xyplot(PctLoss ~ Variables, data= example)
-#' 
+#'
 #' absoluteBest <- pickSizeBest(example, metric = "RMSE", maximize = FALSE)
 #' within5Pct <- pickSizeTolerance(example, metric = "RMSE", maximize = FALSE)
-#' 
+#'
 #' cat("numerically optimal:",
 #'     example$RMSE[absoluteBest],
 #'     "RMSE in position",
@@ -839,19 +836,19 @@ pickVars <- function(y, size)
 #'     example$RMSE[within5Pct],
 #'     "RMSE in position",
 #'     within5Pct, "\n")
-#' 
+#'
 #' ## Example where we would like to maximize
 #' example2 <- data.frame(Rsquared = c(0.4, 0.6, 0.94, 0.95, 0.95, 0.95, 0.95),
 #'                       Variables = 1:7)
 #' ## Percent Loss in performance (positive)
 #' example2$PctLoss <- (max(example2$Rsquared) - example2$Rsquared)/max(example2$Rsquared)*100
-#' 
+#'
 #' xyplot(Rsquared ~ Variables, data= example2)
 #' xyplot(PctLoss ~ Variables, data= example2)
-#' 
+#'
 #' absoluteBest2 <- pickSizeBest(example2, metric = "Rsquared", maximize = TRUE)
 #' within5Pct2 <- pickSizeTolerance(example2, metric = "Rsquared", maximize = TRUE)
-#' 
+#'
 #' cat("numerically optimal:",
 #'     example2$Rsquared[absoluteBest2],
 #'     "R^2 in position",
@@ -860,7 +857,7 @@ pickVars <- function(y, size)
 #'     example2$Rsquared[within5Pct2],
 #'     "R^2 in position",
 #'     within5Pct2, "\n")
-#' 
+#'
 #' @export caretFuncs
 caretFuncs <- list(summary = defaultSummary,
                    fit = function(x, y, first, last, ...) train(x, y, ...),
@@ -880,8 +877,8 @@ caretFuncs <- list(summary = defaultSummary,
                        if(all(levels(y) %in% colnames(vimp))) {
                          avImp <- apply(vimp[, levels(y), drop = TRUE], 1, mean)
                          vimp$Overall <- avImp
-                       } 
-                     } 
+                       }
+                     }
                      vimp$var <- rownames(vimp)
                      vimp
                    },
@@ -907,16 +904,16 @@ ldaFuncs <- list(summary = defaultSummary,
                  rank = function(object, x, y)
                  {
                    vimp <- filterVarImp(x, y, TRUE)
-                   
+
                    vimp$Overall <- apply(vimp, 1, mean)
                    vimp <- vimp[
                                 order(vimp$Overall, decreasing = TRUE)
                                 ,]
-                   
+
                    vimp <- as.data.frame(vimp)[, "Overall",drop = FALSE]
                    vimp$var <- rownames(vimp)
                    vimp
-                   
+
                  },
                  selectSize = pickSizeBest,
                  selectVar = pickVars
@@ -962,7 +959,7 @@ gamFuncs <- list(summary = defaultSummary,
                    gamLoaded <- any(loaded == "package:gam")
                    if(gamLoaded) detach(package:gam)
                    loadNamespace("mgcv")
-                   gam <- get("gam", asNamespace("mgcv")) 
+                   gam <- get("gam", asNamespace("mgcv"))
                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                    dat$y <- y
                    args <- list(formula = gamFormula(x, smoother = "s", y = "y"),
@@ -989,7 +986,7 @@ gamFuncs <- list(summary = defaultSummary,
                        out
                      } else out <- data.frame(pred = rsp)
                    out
-                   
+
                  },
                  rank = function(object, x, y)
                  {
@@ -1045,15 +1042,15 @@ rfFuncs <-  list(summary = defaultSummary,
                          }
 
                      }
-                   
+
                    vimp <- vimp[
                                 order(
                                       vimp$Overall,
                                       decreasing = TRUE)
                                 ,,
                                 drop = FALSE]
-                   
-                   vimp$var <- rownames(vimp)                  
+
+                   vimp$var <- rownames(vimp)
                    vimp
                  },
                  selectSize = pickSizeBest,
@@ -1075,8 +1072,8 @@ lmFuncs <- list(summary = defaultSummary,
                 },
                 rank = function(object, x, y)
                 {
-                  
-                  vimp <- varImp(object, scale = FALSE)        
+
+                  vimp <- varImp(object, scale = FALSE)
                   vimp <- vimp[
                                order(
                                      vimp$Overall,
@@ -1112,15 +1109,15 @@ nbFuncs <- list(summary = defaultSummary,
                       avImp <- apply(vimp, 1, mean)
                       vimp$Overall <- avImp
                     }
-                  
+
                   vimp <- vimp[
                                order(
                                      vimp$Overall,
                                      decreasing = TRUE)
                                ,,
                                drop = FALSE]
-                  
-                  vimp$var <- rownames(vimp)                  
+
+                  vimp$var <- rownames(vimp)
                   vimp
                 },
                 selectSize = pickSizeBest,
@@ -1130,13 +1127,13 @@ nbFuncs <- list(summary = defaultSummary,
 #' @importFrom stats predict glm
 #' @export
 lrFuncs <- ldaFuncs
-lrFuncs$fit <- function (x, y, first, last, ...) 
+lrFuncs$fit <- function (x, y, first, last, ...)
 {
   tmp <- if(is.data.frame(x)) x else as.data.frame(x)
   tmp$Class <- y
   glm(Class ~ ., data = tmp, family = "binomial")
 }
-lrFuncs$pred <- function (object, x) 
+lrFuncs$pred <- function (object, x)
 {
   if(!is.data.frame(x)) x <- as.data.frame(x)
   lvl <- levels(object$data$Class)
@@ -1148,7 +1145,7 @@ lrFuncs$pred <- function (object, x)
   out
 }
 
-lrFuncs$rank <- function (object, x, y) 
+lrFuncs$rank <- function (object, x, y)
 {
     vimp <- varImp(object, scale = FALSE)
     vimp <- vimp[order(vimp$Overall, decreasing = TRUE),, drop = FALSE]
@@ -1160,6 +1157,71 @@ lrFuncs$rank <- function (object, x, y)
 ######################################################################
 ## lattice functions
 
+#' Lattice functions for plotting resampling results of recursive feature
+#' selection
+#' 
+#' A set of lattice functions are provided to plot the resampled performance
+#' estimates (e.g. classification accuracy, RMSE) over different subset sizes.
+#' 
+#' By default, only the resampling results for the optimal model are saved in
+#' the \code{rfe} object. The function \code{\link{rfeControl}} can be used to
+#' save all the results using the \code{returnResamp} argument.
+#' 
+#' If leave-one-out or out-of-bag resampling was specified, plots cannot be
+#' produced (see the \code{method} argument of \code{\link{rfeControl}})
+#' 
+#' @aliases xyplot.rfe stripplot.rfe densityplot.rfe histogram.rfe
+#' @param x An object produced by \code{\link{rfe}}
+#' @param data This argument is not used
+#' @param metric A character string specifying the single performance metric
+#' that will be plotted
+#' @param \dots arguments to pass to either
+#' \code{\link[lattice:histogram]{histogram}},
+#' \code{\link[lattice:histogram]{densityplot}},
+#' \code{\link[lattice:xyplot]{xyplot}} or
+#' \code{\link[lattice:xyplot]{stripplot}}
+#' @return A lattice plot object
+#' @author Max Kuhn
+#' @seealso \code{\link{rfe}}, \code{\link{rfeControl}},
+#' \code{\link[lattice:histogram]{histogram}},
+#' \code{\link[lattice:histogram]{densityplot}},
+#' \code{\link[lattice:xyplot]{xyplot}},
+#' \code{\link[lattice:xyplot]{stripplot}}
+#' @keywords hplot
+#' @examples
+#' 
+#' \dontrun{
+#' library(mlbench)
+#' n <- 100
+#' p <- 40
+#' sigma <- 1
+#' set.seed(1)
+#' sim <- mlbench.friedman1(n, sd = sigma)
+#' x <- cbind(sim$x,  matrix(rnorm(n * p), nrow = n))
+#' y <- sim$y
+#' colnames(x) <- paste("var", 1:ncol(x), sep = "")
+#' 
+#' normalization <- preProcess(x)
+#' x <- predict(normalization, x)
+#' x <- as.data.frame(x)
+#' subsets <- c(10, 15, 20, 25)
+#' 
+#' ctrl <- rfeControl(
+#'                    functions = lmFuncs,
+#'                    method = "cv",
+#'                    verbose = FALSE,
+#'                    returnResamp = "all")
+#' 
+#' lmProfile <- rfe(x, y,
+#'                  sizes = subsets,
+#'                  rfeControl = ctrl)
+#' xyplot(lmProfile)
+#' stripplot(lmProfile)
+#' 
+#' histogram(lmProfile)
+#' densityplot(lmProfile)
+#' }
+#' 
 #' @importFrom stats as.formula
 #' @export
 densityplot.rfe <- function(x,
@@ -1225,9 +1287,9 @@ stripplot.rfe <- function(x,
       } else  formText <- paste("Variable ~", metric)
 
     form <- as.formula(formText)
-    
+
     stripplot(form, data = data, ...)
-    
+
   }
 
 #' @importFrom stats as.formula
@@ -1281,21 +1343,21 @@ predict.rfe <- function(object, newdata, ...)
         newdata <- as.data.frame(newdata)
         rn <- row.names(newdata)
         Terms <- delete.response(object$terms)
-        m <- model.frame(Terms, newdata, na.action = na.omit, 
+        m <- model.frame(Terms, newdata, na.action = na.omit,
                          xlev = object$xlevels)
-        if (!is.null(cl <- attr(Terms, "dataClasses"))) 
+        if (!is.null(cl <- attr(Terms, "dataClasses")))
           .checkMFClasses(cl, m)
         keep <- match(row.names(m), rn)
         newdata <- model.matrix(Terms, m, contrasts = object$contrasts)
         xint <- match("(Intercept)", colnames(newdata), nomatch = 0)
-        if (xint > 0)  newdata <- newdata[, -xint, drop = FALSE]   
+        if (xint > 0)  newdata <- newdata[, -xint, drop = FALSE]
       }
 
-    checkCols <- object$optVar %in% colnames(newdata) 
+    checkCols <- object$optVar %in% colnames(newdata)
     if(!all(checkCols))
       stop(paste("missing columns from newdata:",
                  paste(object$optVar[!checkCols], collapse = ", ")))
-    
+
     newdata <- newdata[, object$optVar, drop = FALSE]
     object$control$functions$pred(object$fit, newdata)
   }
@@ -1304,7 +1366,7 @@ predict.rfe <- function(object, newdata, ...)
 update.rfe <- function(object, x, y, size, ...) {
   size <- size[1]
   selectedVars <- object$variables
-  bestVar <- object$control$functions$selectVar(selectedVars, size)  
+  bestVar <- object$control$functions$selectVar(selectedVars, size)
   object$fit <- object$control$functions$fit(x[, bestVar, drop = FALSE],
                                              y,
                                              first = FALSE,
@@ -1312,7 +1374,7 @@ update.rfe <- function(object, x, y, size, ...) {
                                              ...)
   object$bestSubset <- size
   object$bestVar <- bestVar
-  
+
   if(object$control$returnResamp == "final") {
     warning("The saved resamples are no longer appropriate and were removed")
     object$resampledCM <- object$resample <- NULL
