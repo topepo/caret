@@ -956,7 +956,7 @@ gamFuncs <- list(summary = defaultSummary,
                    gamLoaded <- any(loaded == "package:gam")
                    if(gamLoaded) detach(package:gam)
                    loadNamespace("mgcv")
-                   gam <- get("gam", asNamespace("mgcv"))
+                   gam <- get("gam", asNamespace("mgcv")) 
                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
                    dat$y <- y
                    args <- list(formula = gamFormula(x, smoother = "s", y = "y"),
@@ -981,7 +981,7 @@ gamFuncs <- list(summary = defaultSummary,
                      out
                    } else out <- data.frame(pred = rsp)
                    out
-
+                   
                  },
                  rank = function(object, x, y) {
                    
@@ -1056,6 +1056,8 @@ lmFuncs <- list(summary = defaultSummary,
                 selectSize = pickSizeBest,
                 selectVar = pickVars)
 
+
+
 #' @importFrom stats predict
 #' @export
 nbFuncs <- list(summary = defaultSummary,
@@ -1085,6 +1087,7 @@ nbFuncs <- list(summary = defaultSummary,
                 selectVar = pickVars)
 
 
+
 #' @importFrom stats predict glm
 #' @export
 lrFuncs <- ldaFuncs
@@ -1110,7 +1113,6 @@ lrFuncs$rank <- function (object, x, y) {
   vimp$var <- rownames(vimp)
   vimp
 }
-
 
 ######################################################################
 ######################################################################
@@ -1311,7 +1313,6 @@ predict.rfe <- function(object, newdata, ...)
     xint <- match("(Intercept)", colnames(newdata), nomatch = 0)
     if (xint > 0)  newdata <- newdata[, -xint, drop = FALSE]   
   }
-  
   checkCols <- object$optVar %in% colnames(newdata) 
   if(!all(checkCols))
     stop(paste("missing columns from newdata:",
