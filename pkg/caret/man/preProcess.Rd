@@ -9,42 +9,16 @@
 preProcess(x, ...)
 }
 \arguments{
-<<<<<<< 8067a1def7b3f151a2beb78ef4a07d563f3ef14c
-  \item{x}{a matrix or data frame. Non-numeric predictors are allowed but will be ignored.}
-  \item{method}{a character vector specifying the type of processing. Possible values are "BoxCox", "YeoJohnson", "expoTrans", "invHyperbolicSine", "center", "scale", "range", "knnImpute", "bagImpute", "medianImpute", "pca", "ica", "spatialSign", "zv", "nzv", and "conditionalX" (see Details below)}
-  \item{thresh}{a cutoff for the cumulative percent of variance to be retained by PCA}
-  \item{pcaComp}{the specific number of PCA components to keep. If specified, this over-rides \code{thresh}}
-  \item{na.remove}{a logical; should missing values be removed from the calculations?}
-  \item{object}{an object of class \code{preProcess}}
-  \item{newdata}{a matrix or data frame of new data to be pre-processed}
-  \item{k}{the number of nearest neighbors from the training set to use for imputation }
-  \item{knnSummary}{function to average the neighbor values per column during imputation}
-  \item{outcome}{a numeric or factor vector for the training set outcomes. This can be used to help estimate the Box-Cox transformation of the predictor variables (see Details below)}
-  \item{fudge}{a tolerance value: Box-Cox transformation lambda values within +/-fudge will be coerced to 0 and within 1+/-fudge will be coerced to 1.}
-  \item{numUnique}{how many unique values should \code{y} have to estimate the Box-Cox transformation?}
-  \item{verbose}{a logical: prints a log as the computations proceed}
-  \item{\dots}{additional arguments to pass to \code{\link[fastICA]{fastICA}}, such as \code{n.comp}}
-}
-\details{
-In all cases, transformations and operations are estimated using the data in \code{x} and these operations are applied to new data using these values; nothing is recomputed when using the \code{predict} function. 
-=======
 \item{x}{a matrix or data frame. Non-numeric predictors are allowed but will
 be ignored.}
->>>>>>> running roxygen :)
 
 \item{method}{a character vector specifying the type of processing. Possible
 values are "BoxCox", "YeoJohnson", "expoTrans", "center", "scale", "range",
 "knnImpute", "bagImpute", "medianImpute", "pca", "ica", "spatialSign", "zv",
 "nzv", and "conditionalX" (see Details below)}
 
-<<<<<<< 8067a1def7b3f151a2beb78ef4a07d563f3ef14c
-The Box-Cox (\code{method = "BoxCox"}), Yeo-Johnson (\code{method = "YeoJohnson"}), and exponential transformations (\code{method = "expoTrans"})have been "repurposed" here: they are being used to transform the predictor variables. The Box-Cox transformation was developed for transforming the response variable while another method, the Box-Tidwell transformation, was created to estimate transformations of predictor data. However, the Box-Cox method is simpler, more computationally efficient and is equally effective for estimating power transformations. The Yeo-Johnson transformation is similar to the Box-Cox model but can accommodate predictors with zero and/or negative values (while the predictors values for the Box-Cox transformation must be strictly positive.) The exponential transformation of Manly (1976) can also be used for positive or negative data. The inverse hyperbolic sine transformation is \code{log(x+sqrt(x^2+1))}. 
- 
-\code{method = "center"} subtracts the mean of the predictor's data (again from the data in \code{x}) from the predictor values while \code{method = "scale"} divides by the standard deviation. 
-=======
 \item{thresh}{a cutoff for the cumulative percent of variance to be retained
 by PCA}
->>>>>>> running roxygen :)
 
 \item{pcaComp}{the specific number of PCA components to keep. If specified,
 this over-rides \code{thresh}}
@@ -78,26 +52,6 @@ Box-Cox transformation?}
 such as \code{n.comp}}
 }
 \value{
-<<<<<<< 8067a1def7b3f151a2beb78ef4a07d563f3ef14c
-\code{preProcess} results in a list with elements
-  \item{call}{the function call}
-  \item{method}{a named list of operations and the variables used for each	}
-  \item{dim}{the dimensions of \code{x}}
-  \item{bc, yj, et, invHyperbolicSine}{transformation values}
-  \item{mean}{a vector of means (if centering was requested)}
-  \item{std}{a vector of standard deviations (if scaling or PCA was requested)}
-  \item{ranges}{a matrix of min and max values)}  
-  \item{rotation}{a matrix of eigenvectors if PCA was requested}
-  \item{method}{the value of\code{method}}
-  \item{thresh}{the value of\code{thresh}}
-  \item{ranges}{a matrix of min and max values for each predictor when \code{method} includes "range" (and \code{NULL} otherwise)}
-  \item{numComp}{the number of principal components required of capture the specified amount of variance}
-  \item{ica}{contains values for the \code{W} and \code{K} matrix of the decomposition}
-  \item{median}{a vector of medians (if median imputation was requested)}
-  \item{data}{the data (when KNN imputation is used)}
-
-\code{predict.preProcess} will produce a data frame.  
-=======
 \code{preProcess} results in a list with elements \item{call}{the
 function call} \item{method}{a named list of operations and the variables
 used for each } \item{dim}{the dimensions of \code{x}} \item{bc}{Box-Cox
@@ -113,7 +67,6 @@ values for the \code{W} and \code{K} matrix of the decomposition}
 \item{median}{a vector of medians (if median imputation was requested)}
 
 \code{predict.preProcess} will produce a data frame.
->>>>>>> running roxygen :)
 }
 \description{
 Pre-processing transformation (centering, scaling etc.) can be estimated
@@ -199,10 +152,11 @@ predicted.
 data(BloodBrain)
 # one variable has one unique value
 \dontrun{
-preProc  <- preProcess(bbbDescr[1:100,], method = c("center", "scale", "zv"))
-preProc
-training <- predict(preProc, bbbDescr[1:100,])
-test     <- predict(preProc, bbbDescr[101:208,])
+preProc <- preProcess(bbbDescr)
+
+preProc  <- preProcess(bbbDescr[1:100,-3])
+training <- predict(preProc, bbbDescr[1:100,-3])
+test     <- predict(preProc, bbbDescr[101:208,-3])
 }
 
 }
