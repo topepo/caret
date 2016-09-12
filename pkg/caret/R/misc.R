@@ -362,16 +362,16 @@ get_resample_perf.gafs <- function(x) {
 
 
 #' Sequences of Variables for Tuning
-#'
+#' 
 #' This function generates a sequence of \code{mtry} values for random forests.
-#'
+#' 
 #' If the number of predictors is less than 500, a simple sequence of values of
 #' length \code{len} is generated between 2 and \code{p}. For larger numbers of
 #' predictors, the sequence is created using \code{log2} steps.
-#'
+#' 
 #' If \code{len = 1}, the defaults from the \code{randomForest} package are
 #' used.
-#'
+#' 
 #' @param p The number of predictors
 #' @param classification Is the outcome a factor (\code{classification = TRUE}
 #' or numeric?)
@@ -380,10 +380,10 @@ get_resample_perf.gafs <- function(x) {
 #' @author Max Kuhn
 #' @keywords models
 #' @examples
-#'
+#' 
 #' var_seq(p = 100, len = 10)
 #' var_seq(p = 600, len = 10)
-#'
+#' 
 #' @export var_seq
 var_seq <- function(p, classification = FALSE, len = 3) {
   if(len == 1) {
@@ -482,8 +482,6 @@ check_samp_list <- function(x) {
 
 
 #' Get sampling info from a train model
-#'
-#' Placeholder.
 #'
 #' Placeholder.
 #'

@@ -56,11 +56,9 @@ jack_sim <- function(a, b) {
 
 
 #' Convert indicies to a binary vector
-#'
+#' 
 #' The function performs the opposite of \code{which} converting a set of
 #' integers to a binary vector
-#'
-#'
 #' @param x a vector of integers
 #' @param vars the number of possible locations
 #' @param sign a lgical; when true the data are encoded as -1/+1, and 0/1
@@ -72,6 +70,10 @@ jack_sim <- function(a, b) {
 #' index2vec(x = 1:2, vars = 5)
 #' index2vec(x = 1:2, vars = 5, sign = TRUE)
 #'
+#' 
+#' index2vec(x = 1:2, vars = 5)
+#' index2vec(x = 1:2, vars = 5, sign = TRUE)
+#' 
 #' @export index2vec
 index2vec <- function(x, vars, sign = FALSE) {
   bin <- rep(0, vars)

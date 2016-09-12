@@ -10,6 +10,7 @@ ppMethods <- c("BoxCox", "YeoJohnson", "expoTrans", "invHyperbolicSine",
                "remove",
                "zv", "nzv", "conditionalX")
 
+
 invHyperbolicSineFunc <- function(x) log(x+sqrt(x^2+1))
 
 #' Pre-Processing of Predictors
