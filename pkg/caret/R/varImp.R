@@ -87,7 +87,38 @@ GarsonWeights <- function(object)
     colnames(imp) <- if(!is.null(colnames(object$residuals))) colnames(object$residuals) else paste("Y", 1:object$n[3], sep = "")
     rownames(imp) <- if(!is.null(object$coefnames)) object$coefnames else  paste("X", 1:object$n[1], sep = "")
     imp
+}
+
+
+GarsonWeights_FCNN4R <- function (object, xnames = NULL, ynames = NULL) {
+  beta <- abs(mlp_get_weights(object$net))
+  dims <- object$net@m_layers
+  
+  index <- (dims[1]+1)*dims[2]
+  i2h <- t(matrix(beta[1:index], ncol = dims[2]))
+  i2h <- i2h[, -1,drop = FALSE]
+  
+  h2o <- matrix(beta[(index+1):length(beta)], ncol = dims[3])
+  h2o <- h2o[-1,,drop = FALSE]
+
+  imp <- matrix(NA, nrow = dims[1], ncol = dims[3])
+  for (output in 1:dims[3]) {
+    Pij <- i2h * NA
+    for (hidden in 1:dims[2]) Pij[hidden, ] <- i2h[hidden,] * h2o[hidden, output]
+    Qij <- Pij * NA
+    for (hidden in 1:dims[2]) Qij[hidden, ] <- Pij[hidden,]/sum(Pij[hidden, ])
+    Sj <- apply(Qij, 2, sum)
+    imp[, output] <- Sj/sum(Sj) * 100
+    rm(Pij, Qij, Sj)
   }
+  rownames(imp) <- if(is.null(xnames))
+    paste("X", 1:dims[1], sep = "") else
+      xnames
+  colnames(imp) <- if(is.null(ynames))
+    paste("Y", 1:dims[3], sep = "") else
+      ynames 
+  imp
+}
 
 varImpDependencies <- function(libName){
   code <- getModelInfo(libName, regex = FALSE)[[1]]

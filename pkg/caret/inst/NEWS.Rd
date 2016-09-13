@@ -9,6 +9,8 @@
 		\item Tyler Hunt moved the ROC code from the \cpkg{pROC} package to the \cpkg{ModelMetrics} package which should make the computations more efficient \issue{482}. 
 		\item \code{train} does a better job of respecting the original format of the input data \issue{474}
 		\item A bug in \code{bdk} and \code{xyf} models was fixed where the appropriate number of parameter combinations are tested during random search.  
+		\item A bug in \code{rfe} was fixed related to neural networks found by david-machinelearning \issue{485}
+		\item Neural networks vis stochastic gradient descent (\code{method = "mlpSGD"}) was adapted for classification and a variable importance calculation was added.  
 
 	}
 }

@@ -64,7 +64,96 @@ test_reg_none_pred <- predict(test_reg_none_model, testX)
 
 #########################################################################
 
+set.seed(2)
+training <- twoClassSim(100, linearVars = 2)
+testing <- twoClassSim(500, linearVars = 2)
+trainX <- training[, -ncol(training)]
+trainY <- training$Class
+
+seeds <- vector(mode = "list", length = nrow(training) + 1)
+seeds <- lapply(seeds, function(x) 1:20)
+
+cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
+                       classProbs = TRUE, 
+                       summaryFunction = twoClassSummary, 
+                       seeds = seeds)
+cctrl2 <- trainControl(method = "LOOCV",
+                       classProbs = TRUE, 
+                       summaryFunction = twoClassSummary, 
+                       seeds = seeds)
+cctrl3 <- trainControl(method = "none",
+                       classProbs = TRUE, 
+                       summaryFunction = twoClassSummary,
+                       seeds = seeds)
+cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
+
+set.seed(849)
+test_class_cv_model <- train(trainX, trainY, 
+                             method = "mlpSGD", 
+                             trControl = cctrl1,
+                             tuneLength = 2,
+                             metric = "ROC", 
+                             tol_level = .15,
+                             preProc = c("center", "scale"))
+
+set.seed(849)
+test_class_cv_form <- train(Class ~ ., data = training, 
+                            method = "mlpSGD",
+                            tuneLength = 2, 
+                            trControl = cctrl1, 
+                            tol_level = .15,
+                            metric = "ROC", 
+                            preProc = c("center", "scale"))
+
+test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
+test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
+test_class_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
+test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
+
+set.seed(849)
+test_class_rand <- train(trainX, trainY, 
+                         method = "mlpSGD", 
+                         trControl = cctrlR, 
+                         tol_level = .15,
+                         tuneLength = 4,
+                         preProc = c("center", "scale"))
+
+set.seed(849)
+test_class_loo_model <- train(trainX, trainY, 
+                              method = "mlpSGD", 
+                              trControl = cctrl2, 
+                              tol_level = .15,
+                              tuneLength = 2,
+                              metric = "ROC", 
+                              preProc = c("center", "scale"))
+
+set.seed(849)
+test_class_none_model <- train(trainX, trainY, 
+                               method = "mlpSGD", 
+                               trControl = cctrl3,
+                               tuneGrid = test_class_cv_model$bestTune, 
+                               tol_level = .15,
+                               metric = "ROC", 
+                               preProc = c("center", "scale"))
+
+test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
+test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
+
+
+test_levels <- levels(test_class_cv_model)
+if(!all(levels(trainY) %in% test_levels))
+  cat("wrong levels")
+
+
+#########################################################################
+
 test_reg_predictors1 <- predictors(test_reg_cv_model)
+test_class_predictors1 <- predictors(test_class_cv_model)
+
+test_reg_varimp   <- varImp(test_reg_cv_model)
+test_class_varimp1 <- varImp(test_class_cv_model)
+test_class_varimp2 <- varImp(test_class_rand)
+
 
 #########################################################################
 

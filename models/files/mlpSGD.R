@@ -1,7 +1,7 @@
 modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient Descent",
-                  library = "FCNN4R",
+                  library = c("FCNN4R", "plyr"),
                   loop = NULL,
-                  type = c('Regression'),
+                  type = c('Regression', "Classification"),
                   parameters = data.frame(parameter = c('size', 'l2reg', 'lambda', "learn_rate", 
                                                         "momentum", "gamma", "minibatchsz", "repeats"),
                                           class = rep('numeric', 8),
@@ -34,11 +34,18 @@ modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient 
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.matrix(x)) x <- as.matrix(x)
-                    y <- matrix(y, ncol = 1)
-                    obj <- function(net) return(mlp_mse(net, inp, outp))
-                    net <- mlp_net(c(ncol(x), param$size, 1))
-                    net <- mlp_set_activation(net, layer = "h", activation = "sigmoid")
-                    net <- mlp_set_activation(net, layer = "o", activation = "linear")
+                    if(is.factor(y)) {
+                      y <- class2ind(y)
+                      net <- mlp_net(c(ncol(x), param$size, ncol(y)))
+                      net <- mlp_set_activation(net, layer = "h", activation = "sigmoid")
+                      net <- mlp_set_activation(net, layer = "o", activation = "sigmoid")
+                      
+                    } else {
+                      y <- matrix(y, ncol = 1)
+                      net <- mlp_net(c(ncol(x), param$size, 1))
+                      net <- mlp_set_activation(net, layer = "h", activation = "sigmoid")
+                      net <- mlp_set_activation(net, layer = "o", activation = "linear")
+                    }
                     
                     args <- list(net = net, 
                                  input = x, output = y, 
@@ -49,8 +56,12 @@ modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient 
                                  gamma = param$gamma,
                                  momentum = param$momentum)
                     the_dots <- list(...) 
-                    if(!any(names(the_dots) == "tol_level")) 
-                      args$tol_level <- sd(y[,1])/sqrt(nrow(y))
+                    if(!any(names(the_dots) == "tol_level")) {
+                      if(ncol(y) == 1) 
+                        args$tol_level <- sd(y[,1])/sqrt(nrow(y)) else
+                          args$tol_level <- .001
+                    } 
+                    
                     if(!any(names(the_dots) == "max_epochs")) 
                       args$max_epochs <- 1000
                     args <- c(args, the_dots)
@@ -67,13 +78,42 @@ modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient 
                                   function(obj, newdata)
                                     mlp_eval(obj$net, input = newdata), 
                                   newdata = newdata)
-                    out <- if(length(out) == 1) 
-                      out[[1]][,1]  else {
-                        out <- do.call("rbind", out)
-                        out <- apply(out, 1, mean)
-                      }
+                    if(modelFit$problemType == "Classification") {
+                      out <- as.data.frame(do.call("rbind", out))
+                      out$sample <- rep(1:nrow(newdata), length(modelFit$models))
+                      out <- ddply(out, .(sample), function(x) colMeans(x[, -ncol(x)]))[, -1]
+                      out <- modelFit$obsLevels[apply(out, 1, which.max)]
+                    } else {
+                      out <- if(length(out) == 1) 
+                        out[[1]][,1]  else {
+                          out <- do.call("rbind", out)
+                          out <- apply(out, 1, mean)
+                        }
+                    }
                     out
                   },
-                  prob =  NULL,
+                  prob =  function(modelFit, newdata, submodels = NULL) {
+                    if(!is.matrix(newdata)) newdata <- as.matrix(newdata)
+                    out <- lapply(modelFit$models, 
+                                  function(obj, newdata)
+                                    mlp_eval(obj$net, input = newdata), 
+                                  newdata = newdata)
+                    out <- as.data.frame(do.call("rbind", out))
+                    out$sample <- rep(1:nrow(newdata), length(modelFit$models))
+                    out <- ddply(out, .(sample), function(x) colMeans(x[, -ncol(x)]))[, -1]
+                    out <- t(apply(out, 1, function(x) exp(x)/sum(exp(x))))
+                    colnames(out) <- modelFit$obsLevels
+                    as.data.frame(out)
+                  },
+                  varImp = function(object, ...) {
+                    imps <- lapply(object$models, caret:::GarsonWeights_FCNN4R, xnames = object$xNames)
+                    imps <- do.call("rbind", imps)
+                    imps <- apply(imps, 1, mean, na.rm = TRUE)
+                    imps <- data.frame(var = names(imps), imp = imps)
+                    imps <- ddply(imps, .(var), function(x) c(Overall = mean(x$imp)))
+                    rownames(imps) <- as.character(imps$var)
+                    imps$var <- NULL
+                    imps[object$xNames,,drop = FALSE]
+                  },
                   tags = c("Neural Network", "L2 Regularization"),
                   sort = function(x) x[order(x$size, -x$l2reg, -x$gamma),])
