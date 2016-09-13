@@ -349,15 +349,15 @@ sbfIter <- function(x, y,
 ######################################################################
 ## some built-in functions for certain models
 
-anovaScores <- function(x, y)
-{
+anovaScores <- function(x, y) {
+  if(is.factor(x)) stop("The predictors should be numeric")
   pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
   if(any(class(pv) == "try-error") || is.na(pv) || is.nan(pv)) pv <- 1
   pv
 }
 
-gamScores <- function(x, y)
-{
+gamScores <- function(x, y) {
+  if(is.factor(x)) stop("The predictors should be numeric")
   requireNamespaceQuietStop("gam")
   pv <- try(anova(gam::gam(y ~ s(x)), test = "F")[2, "Pr(F)"], silent = TRUE)
   if(any(class(pv) == "try-error")) pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
