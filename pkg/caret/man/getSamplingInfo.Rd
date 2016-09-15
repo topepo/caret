@@ -19,4 +19,7 @@ A list
 \description{
 Placeholder.
 }
+\details{
+Placeholder.
+}
 

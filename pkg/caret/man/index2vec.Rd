@@ -26,10 +26,6 @@ integers to a binary vector
 index2vec(x = 1:2, vars = 5)
 index2vec(x = 1:2, vars = 5, sign = TRUE)
 
-
-index2vec(x = 1:2, vars = 5)
-index2vec(x = 1:2, vars = 5, sign = TRUE)
-
 }
 \author{
 Max Kuhn
