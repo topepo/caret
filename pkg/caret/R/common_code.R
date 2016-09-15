@@ -73,6 +73,7 @@ jack_sim <- function(a, b) {
 #' index2vec(x = 1:2, vars = 5, sign = TRUE)
 #' 
 #' @export index2vec
+
 index2vec <- function(x, vars, sign = FALSE) {
   bin <- rep(0, vars)
   bin[x] <- 1
