@@ -2,7 +2,9 @@
 ##       add na.action to all eval functions
 ##       change multiplier and alpha to confidence
 
-
+#' @importFrom stats complete.cases
+#' @importFrom utils head
+#' @import foreach
 adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, 
                              metric, maximize, testing = FALSE, ...) {
   loadNamespace("caret")
@@ -775,6 +777,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
   list(performance = out, resamples = resamples, predictions = if(keep_pred) pred else NULL)
 } 
 
+#' @importFrom stats reshape
 long2wide <- function(x, metric) {
   x2 <- reshape(x[, c(metric, "model_id", "Resample")],
                 idvar = "Resample",
@@ -793,6 +796,7 @@ get_id <- function(x, param) {
   params
 }
 
+#' @importFrom stats qnorm
 bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
   if (!requireNamespace("BradleyTerry2")) stop("BradleyTerry2 package missing")
   se_thresh <- 100
@@ -860,6 +864,7 @@ skunked <- function(scores, verbose = TRUE) {
   scores
 }
 
+#' @importFrom stats cor t.test na.omit
 gls_eval <- function(x, metric, maximize, alpha = 0.05) {
   means <- ddply(x[, c(metric, "model_id")], 
                  .(model_id), 
@@ -894,7 +899,8 @@ gls_eval <- function(x, metric, maximize, alpha = 0.05) {
   unique(c(bl, keepers))
 }
 
-
+#' @importFrom stats4 coef
+#' @importFrom stats t.test lm pt
 seq_eval <- function(x, metric, maximize, alpha = 0.05) {
   means <- ddply(x[, c(metric, "model_id")], 
                  .(model_id), 
@@ -963,6 +969,8 @@ cccmat <- function(dat) {
   colnames(out) <- rownames(out) <- colnames(dat)
   out
 }
+
+#' @importFrom stats cov
 ccc <- function(x, y) {
   covm <- cov(cbind(x, y), use = "pairwise.complete.obs")
   mnx <- mean(x, na.rm = TRUE)
@@ -970,7 +978,7 @@ ccc <- function(x, y) {
   2*covm[1,2]/(covm[1,1] + covm[2,2] + (mnx - mny)^2)  
 }
 
-
+#' @importFrom stats sd
 diffmat <- function(dat) {
   p <- ncol(dat)
   out <- matrix(NA, ncol = p, nrow = p)

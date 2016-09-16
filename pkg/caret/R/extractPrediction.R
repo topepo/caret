@@ -1,5 +1,5 @@
 
-
+#' @export
 extractPrediction <- function(models, 
                               testX = NULL, 
                               testY = NULL, 

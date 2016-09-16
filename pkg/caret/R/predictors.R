@@ -1,7 +1,36 @@
+#' List predictors used in the model
+#' 
+#' This class uses a model fit to determine which predictors were used in the
+#' final model.
+#' 
+#' For \code{\link[randomForest]{randomForest}}, \code{\link[party]{cforest}},
+#' \code{\link[party]{ctree}}, \code{\link[rpart]{rpart}},
+#' \code{\link[ipred:bagging]{ipredbagg}}, \code{\link[ipred]{bagging}},
+#' \code{\link[earth]{earth}}, \code{\link[mda]{fda}},
+#' \code{\link[pamr]{pamr.train}}, \code{\link[superpc]{superpc.train}},
+#' \code{\link{bagEarth}} and \code{\link{bagFDA}}, an attempt was made to
+#' report the predictors that were actually used in the final model.
+#' 
+#' The \code{predictors} function can be called on the model object (as opposed
+#' to the \code{\link{train}}) object) and the package will try to find the
+#' appropriate coed (if it exists).
+#' 
+#' In cases where the predictors cannot be determined, \code{NA} is returned.
+#' For example, \code{\link[nnet]{nnet}} may return missing values from
+#' \code{predictors}.
+#' 
+#' @aliases predictors predictors.formula predictors.terms predictors.train
+#' predictors.default predictors.list predictors.rfe predictors.sbf
+#' @param x a model object, list or terms
+#' @param \dots not currently used
+#' @return a character string of predictors or \code{NA}.
+#' @keywords models
+#' @export predictors
 "predictors" <- function(x, ...){
     UseMethod("predictors")
   }
 
+#' @export
 predictors.train <- function(x, ...) {
   if(is.null(x$modelInfo)) {
     code <- getModelInfo(x$method, regex = FALSE)[[1]]
@@ -19,6 +48,7 @@ predictors.train <- function(x, ...) {
   out
   }
 
+#' @export
 predictors.default <- function(x, ...) {
   cls <- model2method(class(x)[1])
   if(cls == "gam")  cls <- if(any(names(x) == "optimizer")) "gam" else "gamLoess"
@@ -40,6 +70,7 @@ predictors.default <- function(x, ...) {
   out
 }
 
+#' @export
 hasTerms <- function(x)
   {
     objNames <- c(names(x), slotNames(x))
@@ -64,6 +95,7 @@ basicVars <- function(x, y)
     x[hasVar] 
   }
 
+#' @export
 predictors.terms <- function(x, ...)
   {
     if(is.null(x)) return(NA)
@@ -72,6 +104,7 @@ predictors.terms <- function(x, ...)
     everything[!(everything %in% yName)]
   }
 
+#' @export
 predictors.formula <- function(x, ...)
   {
     everything <- all.vars(x)
@@ -79,6 +112,7 @@ predictors.formula <- function(x, ...)
     everything[!(everything %in% yName)]
   }
 
+#' @export
 predictors.list <- function(x, ...)
   {
     out <- lapply(x, predictors)

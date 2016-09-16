@@ -1,3 +1,19 @@
+#' Print method for confusionMatrix
+#' 
+#' a print method for \code{confusionMatrix}
+#' 
+#' 
+#' @param x an object of class \code{confusionMatrix}
+#' @param mode a single character string either "sens_spec", "prec_recall", or
+#' "everything"
+#' @param digits number of significant digits when printed
+#' @param printStats a logical: if \code{TRUE} then table statistics are also
+#' printed
+#' @param \dots optional arguments to pass to \code{print.table}
+#' @return \code{x} is invisibly returned
+#' @author Max Kuhn
+#' @seealso \code{\link{confusionMatrix}}
+#' @keywords utilities
 print.confusionMatrix <- function(x, mode = x$mode, digits = max(3, getOption("digits") - 3), printStats = TRUE, ...){
   if(is.null(mode)) mode <- "sens_spec"
   if(!(mode %in% c("sens_spec", "prec_recall", "everything")))

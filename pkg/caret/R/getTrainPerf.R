@@ -1,3 +1,4 @@
+#' @export
 getTrainPerf <- function(x) {
   bestPerf <- x$bestTune
   colnames(bestPerf) <- gsub("^\\.", "", colnames(bestPerf))

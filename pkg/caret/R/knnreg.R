@@ -1,10 +1,67 @@
+#' k-Nearest Neighbour Regression
+#' 
+#' $k$-nearest neighbour regression that can return the average value for the
+#' neighbours.
+#' 
+#' \code{knnreg} is similar to \code{\link[ipred]{ipredknn}} and
+#' \code{knnregTrain} is a modification of \code{\link[class]{knn}}. The
+#' underlying C code from the \code{class} package has been modified to return
+#' average outcome.
+#' 
+#' @aliases knnreg knnregTrain knnreg.formula knnreg.default knnreg.matrix
+#' knnreg.data.frame knnreg
+#' @param formula a formula of the form \code{lhs ~ rhs} where \code{lhs} is
+#' the response variable and \code{rhs} a set of predictors.
+#' @param data optional data frame containing the variables in the model
+#' formula.
+#' @param subset optional vector specifying a subset of observations to be
+#' used.
+#' @param na.action function which indicates what should happen when the data
+#' contain \code{NA}s.
+#' @param k number of neighbours considered.
+#' @param x a matrix or data frame of training set predictors.
+#' @param y a numeric vector of outcomes.
+#' @param ... additional parameters to pass to \code{knnregTrain}.
+#' @param train matrix or data frame of training set cases.
+#' @param test matrix or data frame of test set cases. A vector will be
+#' interpreted as a row vector for a single case.
+#' @param use.all controls handling of ties. If true, all distances equal to
+#' the \code{k}th largest are included. If false, a random selection of
+#' distances equal to the \code{k}th is chosen to use exactly \code{k}
+#' neighbours.
+#' @return An object of class \code{knnreg}. See \code{\link{predict.knnreg}}.
+#' @author \code{\link[class]{knn}} by W. N. Venables and B. D. Ripley and
+#' \code{\link[ipred]{ipredknn}} by Torsten.Hothorn
+#' <Torsten.Hothorn@@rzmail.uni-erlangen.de>, modifications by Max Kuhn and
+#' Chris Keefer
+#' @keywords multivariate
+#' @examples
+#' 
+#' data(BloodBrain)
+#' 
+#' inTrain <- createDataPartition(logBBB, p = .8)[[1]]
+#' 
+#' trainX <- bbbDescr[inTrain,]
+#' trainY <- logBBB[inTrain]
+#' 
+#' testX <- bbbDescr[-inTrain,]
+#' testY <- logBBB[-inTrain]
+#' 
+#' fit <- knnreg(trainX, trainY, k = 3)
+#' 
+#' plot(testY, predict(fit, testX))   
+#' 
+#' @export knnreg
 "knnreg" <- function(x, ...)   UseMethod("knnreg")
 
+#' @export
 knnreg.default <- function(x, ...)
 {
   if(!any(class(x) %in% "formula"))  stop("knnreg only implemented for formula objects")
 }
 
+#' @importFrom stats model.matrix terms model.extract
+#' @export
 knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...) 
 {
   if (missing(formula) ||
@@ -45,6 +102,7 @@ knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...)
   RET
 }
 
+#' @export
 knnreg.matrix <- function(x, y, k = 5, ...)
 {
   if(!is.matrix(x)) x <- as.matrix(x)
@@ -58,7 +116,7 @@ knnreg.matrix <- function(x, y, k = 5, ...)
   RET
 }
 
-
+#' @export
 knnreg.data.frame <- function(x, y, k = 5, ...)
 {
   x <- as.data.frame(x)
@@ -72,12 +130,31 @@ knnreg.data.frame <- function(x, y, k = 5, ...)
   RET
 }
 
+#' @export
 print.knnreg <- function (x, ...) 
 {
   cat(x$k, "-nearest neighbor regression model\n", sep = "")
   invisible(x)
 }
 
+
+
+#' Predictions from k-Nearest Neighbors Regression Model
+#' 
+#' Predict the outcome of a new observation based on k-NN.
+#' 
+#' This function is a method for the generic function \code{\link{predict}} for
+#' class \code{knnreg}. For the details see \code{\link{knnreg}}. This is
+#' essentially a copy of \code{\link[ipred]{predict.ipredknn}}.
+#' 
+#' @param object object of class \code{knnreg}.
+#' @param newdata a data frame or matrix of new observations.
+#' @param ... additional arguments.
+#' @return a numeric vector
+#' @author Max Kuhn, Chris Keefer, adapted from \code{\link[class]{knn}} and
+#' \code{\link[ipred]{predict.ipredknn}}
+#' @keywords multivariate
+#' @export predict.knnreg
 predict.knnreg <- function (object, newdata, ...) 
 {
   if (!inherits(object, "knnreg")) 
@@ -109,7 +186,7 @@ predict.knnreg <- function (object, newdata, ...)
   RET
 }
 
-
+#' @export
 knnregTrain <- function(train, test, y, k = 5, use.all=TRUE)
 {
   train <- as.matrix(train)

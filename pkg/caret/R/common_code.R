@@ -1,3 +1,4 @@
+#' @importFrom stats t.test
 get_fitness_differences <- function(pnames, subsets, fitness, label) {
   signs <- lapply(subsets, index2vec, vars = length(pnames))
   signs <- do.call("rbind", signs)
@@ -15,6 +16,7 @@ get_fitness_differences <- function(pnames, subsets, fitness, label) {
   melt(apply(signs, 2, snr, y = fitness))
 }
 
+#' @importFrom stats reshape
 process_diffs <- function(x, pnames) {
   x <- x[!is.null(x)]
   x <- do.call("rbind", x)
@@ -51,6 +53,27 @@ jack_sim <- function(a, b) {
   sum(a ==1 & b ==1)/(sum(a == 1 & b == 0)+sum(a == 0 & b == 1)+sum(a ==1 & b ==1))*100
 }
 
+
+
+#' Convert indicies to a binary vector
+#' 
+#' The function performs the opposite of \code{which} converting a set of
+#' integers to a binary vector
+#' 
+#' 
+#' @param x a vector of integers
+#' @param vars the number of possible locations
+#' @param sign a lgical; when true the data are encoded as -1/+1, and 0/1
+#' otherwise
+#' @return a numeric vector
+#' @author Max Kuhn
+#' @examples
+#' 
+#' index2vec(x = 1:2, vars = 5)
+#' index2vec(x = 1:2, vars = 5, sign = TRUE)
+#' 
+#' @export index2vec
+
 index2vec <- function(x, vars, sign = FALSE) {
   bin <- rep(0, vars)
   bin[x] <- 1
@@ -77,10 +100,12 @@ change_text <- function(old, new, p, show_diff = TRUE) {
   num_text
 }
 
+#' @export
 predictors.gafs <- function(x, ...) {
  x$best_vars
 }
 
+#' @export
 predictors.safs <- function(x, ...) {
   x$best_vars
 }

@@ -1,3 +1,6 @@
+
+#' @importFrom stats quantile
+#' @export
 "createFolds" <- 
   function(y, k = 10, list = TRUE, returnTrain = FALSE) {
     if(class(y)[1] == "Surv") y <- y[,"time"]
@@ -57,6 +60,8 @@
     out
   }
 
+
+#' @export
 createMultiFolds <- function(y, k = 10, times = 5) {
   if(class(y)[1] == "Surv") y <- y[,"time"]
   prettyNums <- paste("Rep", gsub(" ", "0", format(1:times)), sep = "")

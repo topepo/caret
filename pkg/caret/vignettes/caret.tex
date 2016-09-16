@@ -1,0 +1,119 @@
+% \VignetteIndexEntry{ A Short Introduction to the caret Package}
+% \VignetteDepends{caret}
+% \VignettePackage{caret}
+\documentclass[12pt]{article}
+\usepackage{colortbl}
+\usepackage{amsmath}
+\usepackage[pdftex]{graphicx}
+\usepackage{color}
+\usepackage{xspace}
+\usepackage{fancyvrb}
+\usepackage{fancyhdr}
+\usepackage[
+         colorlinks=true,
+         linkcolor=blue,
+         citecolor=blue,
+         urlcolor=blue]
+         {hyperref}
+
+\usepackage{Sweave}
+\SweaveOpts{keep.source=TRUE}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% define new colors for use
+\definecolor{darkgreen}{rgb}{0,0.6,0}
+\definecolor{darkred}{rgb}{0.6,0.0,0}
+\definecolor{lightbrown}{rgb}{1,0.9,0.8}
+\definecolor{brown}{rgb}{0.6,0.3,0.3}
+\definecolor{darkblue}{rgb}{0,0,0.8}
+\definecolor{darkmagenta}{rgb}{0.5,0,0.5}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\bld}[1]{\mbox{\boldmath $#1$}}
+\newcommand{\shell}[1]{\mbox{$#1$}}
+\renewcommand{\vec}[1]{\mbox{\bf {#1}}}
+ \newcommand{\codeheading}[1]{\mbox{\color{darkblue}\texttt{#1}}}
+\newcommand{\code}[1]{\mbox{\footnotesize\color{darkblue}\texttt{#1}}}
+\newcommand{\pkg}[1]{{\fontseries{b}\selectfont #1}}
+\renewcommand{\pkg}[1]{{\textsf{#1}}}
+
+\newcommand{\ReallySmallSpacing}{\renewcommand{\baselinestretch}{.6}\Large\normalsize}
+\newcommand{\SmallSpacing}{\renewcommand{\baselinestretch}{1.1}\Large\normalsize}
+
+\providecommand{\SetAlgoLined}{\SetLine}
+
+\newcommand{\halfs}{\frac{1}{2}}
+
+\setlength{\oddsidemargin}{-.25 truein}
+\setlength{\evensidemargin}{0truein}
+\setlength{\topmargin}{-0.2truein}
+\setlength{\textwidth}{7 truein}
+\setlength{\textheight}{8.5 truein}
+\setlength{\parindent}{0truein}
+\setlength{\parskip}{0.10truein}
+
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontshape=sl,formatcom=\color{darkblue}}
+\fvset{listparameters={\setlength{\topsep}{0pt}}}
+\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+
+\fvset{fontsize=\footnotesize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancy}
+\lhead{}
+\chead{The {\tt caret} Package}
+\rhead{}
+\lfoot{}
+\cfoot{}
+\rfoot{\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{A Short Introduction to the \pkg{caret} Package}
+\author{Max Kuhn \\ max.kuhn@pfizer.com}
+
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\maketitle
+
+\thispagestyle{empty}
+
+\vspace{.2in}
+
+\renewcommand{\baselinestretch}{1}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

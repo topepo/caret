@@ -1,4 +1,6 @@
 
+#' @export
+
 knn3Train <- function(train, test, cl, k=1, l=0, prob = TRUE, use.all=TRUE)
 {
 	train <- as.matrix(train)

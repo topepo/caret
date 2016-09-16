@@ -1,4 +1,4 @@
-
+#' @importFrom stats complete.cases
 findCorrelation_fast <- function(x, cutoff = .90, verbose = FALSE){
   if(any(!complete.cases(x)))
     stop("The correlation matrix has some missing values.")
@@ -90,6 +90,73 @@ findCorrelation_exact <- function(x, cutoff = 0.90, verbose = FALSE)
 }
 
 
+
+#' Determine highly correlated variables
+#' 
+#' This function searches through a correlation matrix and returns a vector of
+#' integers corresponding to columns to remove to reduce pair-wise
+#' correlations.
+#' 
+#' The absolute values of pair-wise correlations are considered. If two
+#' variables have a high correlation, the function looks at the mean absolute
+#' correlation of each variable and removes the variable with the largest mean
+#' absolute correlation.
+#' 
+#' Using \code{exact = TRUE} will cause the function to re-evaluate the average
+#' correlations at each step while \code{exact = FALSE} uses all the
+#' correlations regardless of whether they have been eliminated or not. The
+#' exact calculations will remove a smaller number of predictors but can be
+#' much slower when the problem dimensions are "big".
+#' 
+#' There are several function in the \pkg{subselect} package
+#' (\code{\link[subselect:eleaps]{leaps}},
+#' \code{\link[subselect:genetic]{genetic}},
+#' \code{\link[subselect:anneal]{anneal}}) that can also be used to accomplish
+#' the same goal but tend to retain more predictors.
+#' 
+#' @param x A correlation matrix
+#' @param cutoff A numeric value for the pair-wise absolute correlation cutoff
+#' @param verbose A boolean for printing the details
+#' @param names a logical; should the column names be returned (\code{TRUE}) or
+#' the column index (\code{FALSE})?
+#' @param exact a logical; should the average correlations be recomputed at
+#' each step? See Details below.
+#' @return A vector of indices denoting the columns to remove (when \code{names
+#' = TRUE}) otherwise a vector of column names. If no correlations meet the
+#' criteria, \code{integer(0)} is returned.
+#' @author Original R code by Dong Li, modified by Max Kuhn
+#' @seealso \code{\link[subselect:eleaps]{leaps}},
+#' \code{\link[subselect:genetic]{genetic}},
+#' \code{\link[subselect:anneal]{anneal}}, \code{\link{findLinearCombos}}
+#' @keywords manip
+#' @examples
+#' 
+#' R1 <- structure(c(1, 0.86, 0.56, 0.32, 0.85, 0.86, 1, 0.01, 0.74, 0.32, 
+#'                   0.56, 0.01, 1, 0.65, 0.91, 0.32, 0.74, 0.65, 1, 0.36,
+#'                   0.85, 0.32, 0.91, 0.36, 1), 
+#'                 .Dim = c(5L, 5L))
+#' colnames(R1) <- rownames(R1) <- paste0("x", 1:ncol(R1))
+#' R1
+#' 
+#' findCorrelation(R1, cutoff = .6, exact = FALSE)
+#' findCorrelation(R1, cutoff = .6, exact = TRUE)
+#' findCorrelation(R1, cutoff = .6, exact = TRUE, names = FALSE)
+#' 
+#' 
+#' R2 <- diag(rep(1, 5))
+#' R2[2, 3] <- R2[3, 2] <- .7
+#' R2[5, 3] <- R2[3, 5] <- -.7
+#' R2[4, 1] <- R2[1, 4] <- -.67
+#' 
+#' corrDF <- expand.grid(row = 1:5, col = 1:5)
+#' corrDF$correlation <- as.vector(R2)
+#' levelplot(correlation ~ row + col, corrDF)
+#' 
+#' findCorrelation(R2, cutoff = .65, verbose = TRUE)
+#' 
+#' findCorrelation(R2, cutoff = .99, verbose = TRUE)
+#' 
+#' @export findCorrelation
 findCorrelation <- function(x, cutoff = 0.90, verbose = FALSE, names = FALSE, exact = ncol(x) < 100) {
   if(names & is.null(colnames(x)))
     stop("'x' must have column names when `names = TRUE`")
