@@ -10,7 +10,8 @@
 		\item \code{train} does a better job of respecting the original format of the input data \issue{474}
 		\item A bug in \code{bdk} and \code{xyf} models was fixed where the appropriate number of parameter combinations are tested during random search.  
 		\item A bug in \code{rfe} was fixed related to neural networks found by david-machinelearning \issue{485}
-		\item Neural networks vis stochastic gradient descent (\code{method = "mlpSGD"}) was adapted for classification and a variable importance calculation was added.  
+		\item Neural networks vis stochastic gradient descent (\code{method = "mlpSGD"}) was adapted for classification and a variable importance calculation was added. 
+		\item \href{http://www.h2o.ai/}{h2o} verisons of glmnet and gradient boosting machines were added with methods \code{"glmnet_h2o"} and \code{"gbm_h2o"} 
 
 	}
 }
