@@ -6,7 +6,7 @@ modelInfo <- list(label = "glmnet",
                                           label = c('Mixing Percentage', 'Regularization Parameter')),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
-                      out <- data.frame(alpha = seq(0, 1, length = len),
+                      out <- expand.grid(alpha = seq(0, 1, length = len),
                                         lambda = c(0, 10 ^ seq(-1, -4, length = len - 1)))
                     } else {
                       out <- data.frame(alpha = runif(len, min = 0, 1),
@@ -19,7 +19,7 @@ modelInfo <- list(label = "glmnet",
                     dat <- if(!is.data.frame(x)) as.data.frame(x) else x
                     dat$.outcome <- y
                     p <- ncol(dat)
-                    frame_name <- paste0("tmp_train_dat_",sample.int(10000, 1))
+                    frame_name <- paste0("tmp_glmnet_dat_",sample.int(100000, 1))
                     tmp_train_dat = as.h2o(dat, destination_frame = frame_name)
                     out <- h2o.glm(x = colnames(x), y = ".outcome",
                                    training_frame = tmp_train_dat,
@@ -28,21 +28,34 @@ modelInfo <- list(label = "glmnet",
                     h2o.getModel(out@model_id) 
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    frame_name <- paste0("new_dat_",sample.int(10000, 1))
+                    frame_name <- paste0("new_glmnet_dat_",sample.int(100000, 1))
                     newdata <- as.h2o(newdata, destination_frame = frame_name)
                     as.data.frame(predict(modelFit, newdata))[,1]
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    frame_name <- paste0("new_dat_",sample.int(10000, 1))
+                    frame_name <- paste0("new_glmnet_dat_",sample.int(100000, 1))
                     newdata <- as.h2o(newdata, destination_frame = frame_name)
                     as.data.frame(predict(modelFit, newdata))[,-1]
                   },
-                  predictors = NULL,
-                  varImp = function(object, numTrees = NULL, ...) {
+                  predictors = function(object, ...) {
                     out <- as.data.frame(h2o.varimp(object))
-                    colnames(out)[colnames(out) == "relative_importance"] <- "Overall"
-                    rownames(out) <- out$variable
-                    out[, c("Overall"), drop = FALSE]   
+                    colnames(out)[colnames(out) == "coefficients"] <- "Overall"
+                    out <- out[!is.na(out$Overall),]   
+                    out$names
+                  },
+                  varImp = function(object, ...) {
+                    out <- as.data.frame(h2o.varimp(object))
+                    colnames(out)[colnames(out) == "coefficients"] <- "Overall"
+                    rownames(out) <- out$names
+                    out <- out[!is.na(out$Overall), c("Overall"), drop = FALSE]   
+                    all_var <- object@allparameters$x
+                    if(any(!(all_var %in% rownames(out)))) {
+                      missing <- all_var[!(all_var %in% rownames(out))]
+                      tmp <- data.frame(OVerall = rep(0, length(missing)))
+                      rownames(tmp) <- missing
+                      out <- rbind(out, tmp)
+                    }
+                    out
                   },
                   levels = NULL,
                   tags = c("Generalized Linear Model", "Implicit Feature Selection", 

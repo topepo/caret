@@ -5,7 +5,7 @@ model <- "glmnet_h2o"
 
 library(h2o)
 h2o.init()
-
+h2o.no_progress()
 
 #########################################################################
 
@@ -77,51 +77,10 @@ if(!all(levels(trainY) %in% test_levels))
 
 #########################################################################
 
-cctrl4 <- trainControl(method = "cv", number = 3, classProbs = TRUE)
-cctrl5 <- trainControl(method = "LOOCV", classProbs = TRUE)
-cctrl6 <- trainControl(method = "none", classProbs = TRUE)
+set.seed(45)
+reg_dat_tr <- SLC14_1(100)
+reg_dat_te <- SLC14_1(100)
 
-set.seed(849)
-test_class_cv_3_model <- train(Species ~ ., data = iris, 
-                               method = "glmnet_h2o", 
-                               trControl = cctrl4,
-                               preProc = c("center", "scale"),
-                               tuneGrid = expand.grid(alpha = c(0, .5, 1),
-                                                      lambda = c(.1, 1)))
-
-test_class_pred <- predict(test_class_cv_3_model, iris[, 1:4])
-
-set.seed(849)
-test_class_loo_3_model <- train(Species ~ ., data = iris[sample(1:150, 20),], 
-                                method = "glmnet_h2o", 
-                                trControl = cctrl5,
-                                preProc = c("center", "scale"),
-                                tuneGrid = expand.grid(alpha = c(0, .5, 1),
-                                                       lambda = c(.1, 1)))
-
-set.seed(849)
-test_class_none_3_model <- train(Species ~ ., data = iris, 
-                                 method = "glmnet_h2o", 
-                                 trControl = cctrl6,
-                                 preProc = c("center", "scale"),
-                                 tuneGrid = test_class_cv_3_model$bestTune)
-
-test_class_none_pred <- predict(test_class_none_3_model, iris[, 1:4])
-
-#########################################################################
-
-library(glmnet)
-## From ?cv.glmnet 
-set.seed(1010)
-n=1000;p=30
-nzc=trunc(p/10)
-x=matrix(rnorm(n*p),n,p)
-beta=rnorm(nzc)
-fx= x[,seq(nzc)] %*% beta
-eps=rnorm(n)*5
-y=drop(fx+eps)
-set.seed(1011)
-cvob1=cv.glmnet(x,y)
 
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
@@ -129,73 +88,34 @@ rctrl3 <- trainControl(method = "none")
 rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
-test_reg_cv_model <- train(x, y, method = "glmnet_h2o",
+test_reg_cv_model <- train(reg_dat_tr[, -ncol(reg_dat_tr)], reg_dat_tr$y, method = "glmnet_h2o",
                            preProc = c("center", "scale"),
                            trControl = rctrl1,
-                           tuneGrid = expand.grid(alpha = c(.5, 1),
-                                                 lambda = cvob1$lambda))
-test_reg_pred <- predict(test_reg_cv_model, x)
+                           tuneLength = 2)
+test_reg_pred <- predict(test_reg_cv_model, reg_dat_te[, -ncol(reg_dat_te)])
 
 set.seed(849)
-test_reg_loo_model <- train(x, y, method = "glmnet_h2o",
+test_reg_loo_model <- train(reg_dat_tr[, -ncol(reg_dat_tr)], reg_dat_tr$y, method = "glmnet_h2o",
                             preProc = c("center", "scale"),
                             trControl = rctrl2,
-                            tuneGrid = expand.grid(alpha = c(.5, 1),
-                                                  lambda = cvob1$lambda))
+                            tuneLength = 2)
 
 set.seed(849)
-test_reg_none_model <- train(x, y, 
+test_reg_none_model <- train(reg_dat_tr[, -ncol(reg_dat_tr)], reg_dat_tr$y, 
                              method = "glmnet_h2o", 
                              trControl = rctrl3,
                              tuneGrid = test_reg_cv_model$bestTune,
                              preProc = c("center", "scale"))
-test_reg_none_pred <- predict(test_reg_none_model, x)
-
-#########################################################################
-
-library(Matrix)
-
-rctrl1$returnData <- FALSE
-rctrl2$returnData <- FALSE
-rctrl3$returnData <- FALSE
-
-x2 <- Matrix(matrix(sample(0:1, 
-                           size = p*nrow(x),
-                           replace = TRUE),
-                    ncol = p), sparse = TRUE)
-
-cvob2=cv.glmnet(x2,y)
-
-set.seed(849)
-test_sparse_cv_model <- train(x2, y, method = "glmnet_h2o",
-                              trControl = rctrl1,
-                              tuneGrid = expand.grid(alpha = c(.5, 1),
-                                                    lambda = cvob2$lambda[-(1:5)]))
-test_sparse_pred <- predict(test_sparse_cv_model, x2)
-
-set.seed(849)
-test_reg_rand <- train(trainX, trainY, 
-                       method = "glmnet_h2o", 
-                       trControl = rctrlR,
-                       tuneLength = 4)
-
-set.seed(849)
-test_sparse_loo_model <- train(x2, y, method = "glmnet_h2o",
-                               trControl = rctrl2,
-                               tuneGrid = expand.grid(alpha = c(.5, 1),
-                                                     lambda = cvob2$lambda[-(1:5)]))
-
-set.seed(849)
-test_sparse_none_model <- train(x2, y, 
-                                method = "glmnet_h2o", 
-                                trControl = rctrl3,
-                                tuneGrid = test_sparse_cv_model$bestTune)
-test_sparse_none_pred <- predict(test_sparse_none_model, x2)
+test_reg_none_pred <- predict(test_reg_none_model, reg_dat_te[, -ncol(reg_dat_te)])
 
 #########################################################################
 
 test_class_predictors1 <- predictors(test_class_cv_model)
 test_reg_predictors1 <- predictors(test_reg_cv_model)
+
+test_class_imp1 <- varImp(test_class_cv_model)
+test_reg_imp1 <- varImp(test_reg_cv_model)
+
 
 #########################################################################
 

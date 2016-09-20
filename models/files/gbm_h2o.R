@@ -33,7 +33,7 @@ modelInfo <- list(label = "glmnet",
                     
                     dat <- if(!is.data.frame(x)) as.data.frame(x) else x
                     dat$.outcome <- y
-                    frame_name <- paste0("tmp_train_dat_",sample.int(10000, 1))
+                    frame_name <- paste0("tmp_gbm_dat_",sample.int(100000, 1))
                     tmp_train_dat = as.h2o(dat, destination_frame = frame_name)
                     
                     out <- h2o.gbm(x = colnames(x), y = ".outcome",
@@ -46,23 +46,27 @@ modelInfo <- list(label = "glmnet",
                     h2o.getModel(out@model_id) 
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    frame_name <- paste0("new_dat_",sample.int(10000, 1))
+                    frame_name <- paste0("new_gbm_dat_",sample.int(100000, 1))
                     newdata <- as.h2o(newdata, destination_frame = frame_name)
                     as.data.frame(predict(modelFit, newdata))[,1]
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    frame_name <- paste0("new_dat_",sample.int(10000, 1))
+                    frame_name <- paste0("new_gbm_dat_",sample.int(100000, 1))
                     newdata <- as.h2o(newdata, destination_frame = frame_name)
                     as.data.frame(predict(modelFit, newdata))[,-1]
                   },
-                  predictors = NULL,
-                  varImp = function(object, numTrees = NULL, ...) {
+                  predictors = function(x, ...) {
+                    out <- as.data.frame(h2o.varimp(x))
+                    out <- subset(out, relative_importance > 0)
+                    as.character(out$variable)
+                  },
+                  varImp = function(object, ...) {
                     out <- as.data.frame(h2o.varimp(object))
                     colnames(out)[colnames(out) == "relative_importance"] <- "Overall"
                     rownames(out) <- out$variable
                     out[, c("Overall"), drop = FALSE]   
                   },
-                  levels = NULL,
+                  levels = function(x) x@model$training_metrics@metrics$domain,
                   tags = c("Tree-Based Model", "Boosting", 
                            "Ensemble Model", "Implicit Feature Selection"),
                   sort = function(x) x[order(x$ntrees, x$max_depth, x$learn_rate),],

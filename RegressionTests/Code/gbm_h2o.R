@@ -5,10 +5,11 @@ model <- "gbm_h2o"
 
 library(h2o)
 h2o.init()
+h2o.no_progress()
 
 #########################################################################
 
-gbmGrid <- expand.grid(max_depth = 1:2,
+gbmGrid <- expand.grid(max_depth = 11,
                        learn_rate = .1,
                        ntrees = c(10, 50, 100),
                        min_rows = 10, 
@@ -81,20 +82,6 @@ if(!all(levels(trainY) %in% test_levels))
 
 #########################################################################
 
-SLC14_1 <- function(n = 100) {
-  dat <- matrix(rnorm(n*20, sd = 3), ncol = 20)
-  foo <- function(x) x[1] + sin(x[2]) + log(abs(x[3])) + x[4]^2 + x[5]*x[6] + 
-    ifelse(x[7]*x[8]*x[9] < 0, 1, 0) +
-    ifelse(x[10] > 0, 1, 0) + x[11]*ifelse(x[11] > 0, 1, 0) + 
-    sqrt(abs(x[12])) + cos(x[13]) + 2*x[14] + abs(x[15]) + 
-    ifelse(x[16] < -1, 1, 0) + x[17]*ifelse(x[17] < -1, 1, 0) -
-    2 * x[18] - x[19]*x[20]
-  dat <- as.data.frame(dat)
-  colnames(dat) <- paste0("Var", 1:ncol(dat))
-  dat$y <- apply(dat[, 1:20], 1, foo) + rnorm(n, sd = 3)
-  dat
-}
-
 set.seed(1)
 training <- SLC14_1(75)
 testing <- SLC14_1(100)
@@ -116,15 +103,6 @@ test_reg_cv_model <- train(trainX, trainY,
                            preProc = c("center", "scale"),
                            tuneGrid = gbmGrid)
 test_reg_pred <- predict(test_reg_cv_model, testX)
-
-set.seed(849)
-test_reg_cv_dist <- train(trainX, trainY, 
-                          method = "gbm_h2o", 
-                          trControl = rctrl1,
-                          preProc = c("center", "scale"),
-                          tuneGrid = gbmGrid,
-                          verbose = FALSE,
-                          distribution = "laplace")
 
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
