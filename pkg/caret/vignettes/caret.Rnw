@@ -148,7 +148,8 @@ One of the primary tools in the package is the \code{train} function which can b
 More formally:
 
   \begin{center}  
-    \includegraphics[clip, width = .9\textwidth]{train_algo}
+    \includegraphics[clip, width = .9\textwidth]
+    \label{A:tune}
   \end{center}
 
 There are options for customizing almost every step of this process (e.g. resampling technique, choosing the optimal parameters etc). To demonstrate this function, the Sonar data from the \pkg{mlbench} package will be used.
