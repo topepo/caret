@@ -68,7 +68,7 @@ Using this method, the optimal tuning parameters were a RBF kernel parameter of 
 
 The new code is:
 
-```{r adapt_adapt_mod, cache = TRUE}
+```{r adapt_mod, cache = TRUE}
 fitControl2 <- trainControl(method = "adaptive_cv",
                             number = 10,
                             repeats = 5,
@@ -92,7 +92,10 @@ svmFit2 <- train(x = training_x,
                  tuneLength = 8,
                  metric = "ROC")
 ```
-
+```{r adapt_check, include = FALSE}
+if(!all(svmFit$bestTune == svmFit2$bestTune))
+  stop("models do not agree")
+```
 These computations were `r I(round(svmFit$times$everything[3]/svmFit2$times$everything[3], 1))`-fold faster than the original analysis. Here, the optimal tuning parameters were a RBF kernel parameter of `r I(round(svmFit2$bestTune$sigma, 4))` and a cost value of `r I(svmFit2$bestTune$C)`. These match the previous settings.
 
 Remember that this methodology is experimental, so please send any questions or bug reports to the package maintainer.

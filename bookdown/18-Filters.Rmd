@@ -1,6 +1,6 @@
 ```{r select_startup,echo=FALSE,message=FALSE,warning=FALSE}
 library(knitr)
-opts_chunk$set(digits = 3, tidy = FALSE)
+opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'filters/')
 library(caret)
 library(mlbench)
 library(Hmisc)

@@ -13,7 +13,7 @@ registerDoMC(cores=detectCores()-1)
 theme_set(theme_bw())
 
 library(knitr)
-opts_chunk$set(digits = 3, tidy = FALSE)
+opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'sampling/')
 library(pROC)
 ```
 

@@ -78,3 +78,36 @@ bookdown/_main.Rmd
 
 bookdown/.Rhistory
 
+bookdown/basic/*
+
+bookdown/performance/*
+
+bookdown/preprocess/*
+
+bookdown/random/*
+
+bookdown/splitting/*
+
+bookdown/visualizations/*
+
+bookdown/sampling/*
+
+bookdown/custom/*
+
+bookdown/varimp/*
+
+bookdown/misc/*
+
+bookdown/rfe/*
+
+bookdown/filters/*
+
+bookdown/ga/*
+
+bookdown/sa/*
+
+
+
+
+
+

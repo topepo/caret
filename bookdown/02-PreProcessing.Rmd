@@ -1,5 +1,13 @@
 # Pre-Processing
 
+```{r pp_startup,echo=FALSE,message=FALSE,warning=FALSE}
+library(caret)
+library(knitr)
+opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'preprocess/')
+library(lattice)
+library(ggplot2)
+```
+
  - [Creating Dummy Variables](#dummy)
  - [Zero- and Near Zero-Variance Predictors](#nzv)
  - [Identifying Correlated Predictors](#corr)

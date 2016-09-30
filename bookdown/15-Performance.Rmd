@@ -2,7 +2,7 @@
 library(caret)
 theme_set(theme_bw())
 library(knitr)
-opts_chunk$set(digits = 3, tidy = FALSE)
+opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'performance/')
 library(pROC)
 ```
 
@@ -109,7 +109,7 @@ A similar function can be used to get the analugous precision-recall values and 
 prSummary(test_set, lev = levels(test_set$obs))
 ``` 
 
-This function requires that the `MLmetrics` package is unstalled. 
+This function requires that the `MLmetrics` package is installed. 
 
 For multi-class problems, there are additional functions that can be used to calculate performance. One, `mnLogLoss` computes the negative of the multinomial log-likelihood (smaller is better) based on the class probabilities. This can be used to optimize tuning parameters but can lead to results that are inconsistent with other measures (e.g. accuracy or the area under the ROC curve), especially when the other measures are near their best possible values. The function has similar arguments to the other functions described above. Here is the two-class data from above: 
 
@@ -153,7 +153,8 @@ set.seed(1045)
 c5_lift <- train(Class ~ ., data = lift_training,
                  method = "C5.0", metric = "ROC",
                  tuneLength = 10,
-                 trControl = ctrl)
+                 trControl = ctrl,
+                 control = C5.0Control(earlyStopping = FALSE))
 
 ## Generate the test set results
 lift_results <- data.frame(Class = lift_testing$Class)

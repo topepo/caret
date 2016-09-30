@@ -1,5 +1,15 @@
 # Data Splitting
 
+```{r split_startup,echo=FALSE,message=FALSE,warning=FALSE}
+library(caret)
+library(knitr)
+opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'splitting/')
+library(lattice)
+library(ggplot2)
+library(mlbench)
+```
+
+
 Contents
 
  - [Simple Splitting Based on the Outcome](#outcome)

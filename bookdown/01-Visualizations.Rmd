@@ -1,5 +1,13 @@
 # Visualizations
 
+```{r vis_startup,echo=FALSE,message=FALSE,warning=FALSE}
+library(caret)
+library(knitr)
+opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'visualizations/')
+library(lattice)
+library(ggplot2)
+```
+
 
 The `featurePlot` function is a wrapper for different [`lattice`](http://cran.r-project.org/web/packages/lattice/index.html) plots to visualize the data. For example, the following figures show the default plot for continuous outcomes generated using the `featurePlot` function.
 

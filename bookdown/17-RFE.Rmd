@@ -1,6 +1,6 @@
 ```{r rfe_startup,echo=FALSE,message=FALSE,warning=FALSE}
 library(knitr)
-opts_chunk$set(digits = 3, tidy = FALSE)
+opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'rfe/')
 library(caret)
 library(mlbench)
 library(Hmisc)
