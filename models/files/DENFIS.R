@@ -18,7 +18,6 @@ modelInfo <- list(label = "Dynamic Evolving Neural-Fuzzy Inference System ",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     args <- list(data.train = as.matrix(cbind(x, y)),
                                  method.type = "DENFIS")
-                    args$range.data <- apply(args$data.train, 2, extendrange)
                     
                     theDots <- list(...)
                     if(any(names(theDots) == "control")) {
@@ -29,12 +28,15 @@ modelInfo <- list(label = "Dynamic Evolving Neural-Fuzzy Inference System ",
                                                    step.size = 0.01, 
                                                    d = 2,
                                                    method.type = "DENFIS",
-                                                   name="sim-0")     
+                                                   name="sim-0")   
+                    if(!(any(names(theDots) == "range.data"))) {
+                      args$range.data <- apply(args$data.train, 2, extendrange)
+                    }
                     do.call("frbs.learn", c(args, theDots))
                     
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    predict(modelFit, newdata)
+                    predict(modelFit, newdata)[, 1]
                   },
                   prob = NULL,
                   predictors = function(x, ...){

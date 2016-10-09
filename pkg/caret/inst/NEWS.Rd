@@ -1,9 +1,9 @@
 \name{NEWS}
 \title{News for Package \pkg{caret}}
-\newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
+\newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
-\section{Changes in version 6.0-xx}{
+\section{Changes in version 6.0-72}{
 	\itemize{
 		\item The inverse hyperbolic sine transformation was added to \code{preProcess} \issue(56)
 		\item Tyler Hunt moved the ROC code from the \cpkg{pROC} package to the \cpkg{ModelMetrics} package which should make the computations more efficient \issue{482}. 
@@ -12,6 +12,7 @@
 		\item A bug in \code{rfe} was fixed related to neural networks found by david-machinelearning \issue{485}
 		\item Neural networks via stochastic gradient descent (\code{method = "mlpSGD"}) was adapted for classification and a variable importance calculation was added. 
 		\item \href{http://www.h2o.ai/}{h2o} versions of glmnet and gradient boosting machines were added with methods \code{"glmnet_h2o"} and \code{"gbm_h2o"} \issue{283}
+		\item The fuzzy rule-based models (\code{WM}, \code{SLAVE}, \code{SBC}, \code{HYFIS}, \code{GFS.THRIFT}, \code{GFS.LT.RS}, \code{GFS.GCCL}, \code{GFS.FR.MOGUL}, \code{FS.HGD}, \code{FRBCS.W}, \code{FRBCS.CHI}, \code{FIR.DM}, \code{FH.GBML}, \code{DENFIS}, and \code{ANFIS}) were modified so that the user can pass in the predictor ranges using the \code{range.data} argument to those functions. \issue{498}
 
 	}
 }

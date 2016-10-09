@@ -21,7 +21,6 @@ modelInfo <- list(label = "Fuzzy Rules Using the Structural Learning Algorithm o
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     args <- list(data.train = as.matrix(cbind(x, as.numeric(y))),
                                  method.type = "SLAVE")
-                    args$range.data <- apply(x, 2, extendrange)
                     theDots <- list(...)
                     if(any(names(theDots) == "control")) {
                       theDots$control$num.labels <- param$num.labels                  
@@ -36,10 +35,12 @@ modelInfo <- list(label = "Fuzzy Rules Using the Structural Learning Algorithm o
                                                    k.upper = 0.75, 
                                                    epsilon = 0.1,
                                                    num.class = length(unique(y)),
-                                                   name="sim-0")     
-                    mod <- try(do.call("frbs.learn", c(args, theDots)), silent = TRUE)
-                    mod
-                    },
+                                                   name="sim-0") 
+                    if(!(any(names(theDots) == "range.data"))) {
+                      args$range.data <- apply(args$data.train, 2, extendrange)
+                    }
+                    do.call("frbs.learn", c(args, theDots))
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     modelFit$obsLevels[predict(modelFit, newdata)[,1]]
                   },

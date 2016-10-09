@@ -21,7 +21,6 @@ modelInfo <- list(label = "Fuzzy Rules Using Genetic Cooperative-Competitive Lea
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     args <- list(data.train = as.matrix(cbind(x, as.numeric(y))),
                                  method.type = "GFS.GCCL")
-                    args$range.data <- apply(x, 2, extendrange)
                     theDots <- list(...)
                     if(any(names(theDots) == "control")) {
                       theDots$control$num.labels <- param$num.labels                  
@@ -33,10 +32,13 @@ modelInfo <- list(label = "Fuzzy Rules Using Genetic Cooperative-Competitive Lea
                                                    persen_cross = 0.6,
                                                    persen_mutant = 0.3,
                                                    num.class = length(unique(y)),
-                                                   name="sim-0")     
+                                                   name="sim-0") 
+                    if(!(any(names(theDots) == "range.data"))) {
+                      args$range.data <- apply(args$data.train, 2, extendrange)
+                    }
                     do.call("frbs.learn", c(args, theDots))
                     
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     modelFit$obsLevels[predict(modelFit, newdata)[,1]]
                   },

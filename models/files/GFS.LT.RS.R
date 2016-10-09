@@ -15,7 +15,7 @@ modelInfo <- list(label = "Genetic Lateral Tuning and Rule Selection of Linguist
                                          max.gen = 10)
                     } else {
                       out <- data.frame(max.gen = sample(1:20, size = len, replace = TRUE),
-                                        popu.size = sample(seq(2, 20, by = 2), size = len, replace = TRUE),
+                                        popu.size = sample(seq(10, 50, by = 2), size = len, replace = TRUE),
                                         num.labels = sample(2:20, size = len, replace = TRUE))
                     }
                     out
@@ -24,7 +24,6 @@ modelInfo <- list(label = "Genetic Lateral Tuning and Rule Selection of Linguist
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     args <- list(data.train = as.matrix(cbind(x, y)),
                                  method.type = "GFS.LT.RS")
-                    args$range.data <- apply(args$data.train, 2, extendrange)
                     
                     theDots <- list(...)
                     if(any(names(theDots) == "control")) {
@@ -42,12 +41,15 @@ modelInfo <- list(label = "Genetic Lateral Tuning and Rule Selection of Linguist
                                                    type.implication.func = "ZADEH",
                                                    type.defuz = "WAM", 
                                                    rule.selection = FALSE,
-                                                   name="sim-0")     
+                                                   name="sim-0")  
+                    if(!(any(names(theDots) == "range.data"))) {
+                      args$range.data <- apply(args$data.train, 2, extendrange)
+                    }
                     do.call("frbs.learn", c(args, theDots))
                     
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    predict(modelFit, newdata)
+                    predict(modelFit, newdata)[, 1]
                   },
                   prob = NULL,
                   predictors = function(x, ...){

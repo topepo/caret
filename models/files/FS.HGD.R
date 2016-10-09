@@ -18,7 +18,6 @@ modelInfo <- list(label = "Simplified TSK Fuzzy Rules",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     args <- list(data.train = as.matrix(cbind(x, y)),
                                  method.type = "FS.HGD")
-                    args$range.data <- apply(args$data.train, 2, extendrange)
                     
                     theDots <- list(...)
                     if(any(names(theDots) == "control")) {
@@ -31,12 +30,16 @@ modelInfo <- list(label = "Simplified TSK Fuzzy Rules",
                                                    type.tnorm = "MIN", 
                                                    type.snorm = "MAX",
                                                    type.implication.func = "ZADEH",
-                                                   name="sim-0")     
+                                                   name="sim-0")   
+                    if(!(any(names(theDots) == "range.data"))) {
+                      args$range.data <- apply(args$data.train, 2, extendrange)
+                    }
+                    
                     do.call("frbs.learn", c(args, theDots))
                     
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    predict(modelFit, newdata)
+                    predict(modelFit, newdata)[, 1]
                   },
                   prob = NULL,
                   predictors = function(x, ...){
