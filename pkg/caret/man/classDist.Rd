@@ -8,7 +8,8 @@
 \usage{
 classDist(x, ...)
 
-\method{classDist}{default}(x, y, groups = 5, pca = FALSE, keep = NULL, ...)
+\method{classDist}{default}(x, y, groups = 5, pca = FALSE, keep = NULL,
+  ...)
 
 \method{predict}{classDist}(object, newdata, trans = log, ...)
 }

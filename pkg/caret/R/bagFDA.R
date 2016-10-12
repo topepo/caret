@@ -3,11 +3,6 @@
 #'
 #' @description A bagging wrapper for flexible discriminant analysis (FDA) using multivariate adaptive regression splines (MARS) basis functions
 #'
-#' @usage
-#' bagFDA(x, ...)
-#' \method{bagFDA}{formula}(formula, data = NULL, B = 50, keepX = TRUE,
-#'        ..., subset, weights, na.action = na.omit)
-#' \method{bagFDA}{default}(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
 #'
 #' @param formula A formula of the form \code{y ~ x1 + x2 + ...}
 #' @param x matrix or data frame of 'x' values for examples.
@@ -70,6 +65,8 @@
 function(x, ...)
    UseMethod("bagFDA")
 
+#' @rdname bagFDA
+#' @method bagFDA default
 #' @importFrom stats predict
 #' @export
 "bagFDA.default" <-
@@ -114,6 +111,8 @@ function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
                   weights = !is.null(weights), dots = list(...)), class = "bagFDA")
 }
 
+#' @rdname bagFDA
+#' @method bagFDA formula
 #' @importFrom stats contrasts model.matrix model.response model.weights na.omit
 #' @export
 "bagFDA.formula" <-
@@ -142,6 +141,8 @@ function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights = NUL
    out
 }
 
+#' @rdname bagFDA
+#' @method print bagFDA
 #' @export
 "print.bagFDA" <-
 function (x, ...)

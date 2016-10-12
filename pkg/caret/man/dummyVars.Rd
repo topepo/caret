@@ -10,6 +10,11 @@
 \title{Create A Full Set of Dummy Variables}
 \usage{
 dummyVars(formula, ...)
+
+\method{dummyVars}{default}(formula, data, sep = ".", levelsOnly = FALSE,
+  fullRank = FALSE, ...)
+
+\method{predict}{dummyVars}(object, newdata, na.action = na.pass, ...)
 }
 \arguments{
 \item{formula}{An appropriate R model formula, see References}

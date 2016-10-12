@@ -568,6 +568,7 @@ print.summary.resamples <- function(x, ...)
 #' 
 #' }
 #' 
+#' @export
 xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, metric = x$metric[1], units = "min", ...) 
 {
   if(!(units %in% c("min", "sec", "hour"))) stop("units should be 'sec', 'min' or 'hour'")
@@ -970,6 +971,7 @@ dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$met
 #' compare_models(rpartFit, ctreeFit)
 #' }
 #' 
+#' @export
 diff.resamples <- function(x,
                            models = x$models,
                            metric = x$metrics,

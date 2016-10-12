@@ -22,27 +22,8 @@
 \alias{well_numbered}
 \title{Internal Functions}
 \usage{
-createModel(x, y, wts, method, tuneValue, obsLevels,
-	        pp = NULL, last = FALSE, sampling = NULL, classProbs, ...)
-predictionFunction(method, modelFit, newdata,
-	               preProc = NULL, param = NULL)
-probFunction(method, modelFit, newdata,
-	         preProc = NULL, param = NULL)
-flatTable(pred, obs)
-expandParameters(fixed, seq)
-MeanSD(x, exclude = NULL)
-sortImp(object, top)
-resampleWrapper(x, ind)
-caretTheme()
-ipredStats(x)
-rfStats(x)
-bagEarthStats(x)
-cforestStats(x)
-progress(x, names, iter, start = TRUE)
-hasTerms(x)
-sbfIter(x, y, testX, testY, sbfControl = sbfControl(), ...)
-gamFormula(data, smoother = "s", cut = 8, y = "y")
-well_numbered(prefix, items)
+createModel(x, y, wts, method, tuneValue, obsLevels, pp = NULL,
+  last = FALSE, sampling = NULL, classProbs, ...)
 }
 \description{
 Internal functions

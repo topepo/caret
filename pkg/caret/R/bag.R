@@ -3,26 +3,6 @@
 #'
 #' @description \code{bag} provides a framework for bagging classification or regression models. The user can provide their own functions for model building, prediction and aggregation of predictions (see Details below).
 #'
-#' @usage
-#' bag(x, ...)
-#'
-#' \method{bag}{default}(x, y, B = 10, vars = ncol(x), bagControl = NULL, ...)
-#'
-#' bagControl(fit = NULL,
-#'            predict = NULL,
-#'            aggregate = NULL,
-#'            downSample = FALSE,
-#'            oob = TRUE,
-#'            allowParallel = TRUE)
-#'
-#' ldaBag
-#' plsBag
-#' nbBag
-#' ctreeBag
-#' svmBag
-#' nnetBag
-#'
-#' \method{predict}{bag}(object, newdata = NULL, ...)
 #'
 #' @param x a matrix or data frame of predictors
 #' @param y a vector of outcomes
@@ -38,6 +18,7 @@
 #' @param vars an integer. If this argument is not \code{NULL}, a random sample of size \code{vars} is taken of the predictors in each bagging iteration. If \code{NULL}, all predictors are used.
 #' @param object an object of class \code{bag}.
 #' @param newdata a matrix or data frame of samples for prediction. Note that this argument must have a non-null value
+#' @param digits minimal number of \emph{significant digits}.
 #'
 #' @details The function is basically a framework where users can plug in any model in to assess
 #' the effect of bagging. Examples functions can be found in \code{ldaBag}, \code{plsBag}
@@ -97,6 +78,7 @@
   UseMethod("bag")
 
 
+#' @rdname bag
 #' @export
 bagControl <- function(
   fit = NULL, predict = NULL, aggregate = NULL, downSample = FALSE,
@@ -112,6 +94,8 @@ bagControl <- function(
   }
 
 
+#' @rdname bag
+#' @method bag default
 #' @export
 "bag.default" <-
   function(x, y, B = 10, vars = ncol(x), bagControl = NULL,  ...)
@@ -208,7 +192,6 @@ bagControl <- function(
 }
 
 
-
 #' @importFrom stats contrasts model.matrix model.response model.weights na.omit
 #' @export
 "bag.formula" <-
@@ -239,6 +222,8 @@ bagControl <- function(
   out
 }
 
+#' @rdname bag
+#' @method predict bag
 #' @importFrom stats predict
 #' @export
 "predict.bag" <-
@@ -257,6 +242,8 @@ bagControl <- function(
 
 }
 
+#' @rdname bag
+#' @method print bag
 #' @export
 print.bag <- function (x, ...)
 {
@@ -278,6 +265,8 @@ print.bag <- function (x, ...)
   invisible(x)
 }
 
+#' @rdname bag
+#' @method summary bag
 #' @importFrom stats quantile
 #' @export
 "summary.bag" <-
@@ -309,6 +298,8 @@ print.bag <- function (x, ...)
   out
 }
 
+#' @rdname bag
+#' @method print summary.bag
 #' @export
 "print.summary.bag" <-
   function(x, digits = max(3, getOption("digits") - 3), ...)
@@ -322,6 +313,7 @@ print.bag <- function (x, ...)
   cat("\n")
 }
 
+#' @rdname bag
 #' @importFrom stats median predict
 #' @export
 ldaBag <- list(fit = function(x, y, ...)
@@ -359,6 +351,7 @@ ldaBag <- list(fit = function(x, y, ...)
                  out
                })
 
+#' @rdname bag
 #' @importFrom stats median predict
 #' @export
 plsBag <- list(fit = function(x, y,  ...)
@@ -391,6 +384,7 @@ plsBag <- list(fit = function(x, y,  ...)
                  out
                })
 
+#' @rdname bag
 #' @importFrom stats median predict
 #' @export
 nbBag <- list(fit = function(x, y,  ...)
@@ -423,6 +417,7 @@ nbBag <- list(fit = function(x, y,  ...)
                })
 
 
+#' @rdname bag
 #' @importFrom stats median
 #' @export
 ctreeBag <- list(fit = function(x, y,  ...)
@@ -472,6 +467,7 @@ ctreeBag <- list(fit = function(x, y,  ...)
                    out
                 })
 
+#' @rdname bag
 #' @importFrom stats median predict
 #' @export
 svmBag <- list(fit = function(x, y,  ...)
@@ -520,6 +516,7 @@ svmBag <- list(fit = function(x, y,  ...)
                 })
 
 
+#' @rdname bag
 #' @importFrom stats median predict
 #' @export
 nnetBag <- list(fit = function(x, y,  ...)

@@ -5,18 +5,6 @@
 #'
 #' @description For classification models, this function creates a 'calibration plot' that describes how consistent model probabilities are with observed event rates.
 #'
-#' @usage
-#' calibration(x, ...)
-#'
-#' \method{calibration}{formula}(x, data = NULL,
-#'             class = NULL,
-#'             cuts = 11, subset = TRUE,
-#'             lattice.options = NULL, ...)
-#'
-#' \method{xyplot}{calibration}(x, data, ...)
-#' \method{ggplot}{calibration}(data, ..., bwidth = 2, dwidth = 3)
-#'
-#' panel.calibration(...)
 #' @param x a \code{lattice} formula (see \code{\link[lattice:xyplot]{xyplot}} for syntax) where the left#' -hand side of the formula is a factor class variable of the observed outcome and the right-hand side #' specifies one or model columns corresponding to a numeric ranking variable for a model (e.g. class #' probabilities). The classification variable should have two levels.
 #'
 #' @param data For \code{calibration.formula}, a data frame (or more precisely, anything that is a valid #' \code{envir} argument in \code{eval}, e.g., a list or an environment) containing values for any #' variables in the formula, as well as \code{groups} and \code{subset} if applicable. If not found in #' \code{data}, or if \code{data} is unspecified, the variables are looked for in the environment of the #' formula. This argument is not used for \code{xyplot.calibration}. For {ggplot.calibration}, \code{data} #' should be an object of class "\code{calibration}"."
@@ -97,9 +85,13 @@
 #' @export
 calibration <- function(x, ...) UseMethod("calibration")
 
+#' @rdname calibration
+#' @method calibration default
 #' @export
 calibration.default <- function(x, ...) stop("'x' should be a formula")
 
+#' @rdname calibration
+#' @method calibration formula
 #' @export
 calibration.formula <- function(x, data = NULL, class = NULL, cuts = 11, subset = TRUE, lattice.options = NULL, ...)
 {
@@ -141,6 +133,8 @@ calibration.formula <- function(x, data = NULL, class = NULL, cuts = 11, subset 
   out
 }
 
+#' @rdname calibration
+#' @method print calibration
 #' @export
 print.calibration <- function(x, ...)
 {
@@ -190,6 +184,9 @@ calibCalc <- function(x, class = levels(obs)[1], cuts = 11) {
 plot.calibration <- function(x, y = NULL, ...)
   xyplot(x = x, data = NULL, ...)
 
+
+#' @rdname calibration
+#' @method xyplot calibration
 #' @importFrom stats as.formula
 #' @importFrom grDevices extendrange
 #' @export
@@ -217,6 +214,8 @@ xyplot.calibration <- function(x, data = NULL, ...){
   do.call("xyplot", args)
 }
 
+#' @rdname calibration
+#' @method ggplot calibration
 #' @export
 ggplot.calibration <- function(data, ..., bwidth = 2, dwidth = 3){
   data$data$Model <- data$data$calibModelVar
@@ -236,7 +235,6 @@ ggplot.calibration <- function(data, ..., bwidth = 2, dwidth = 3){
   }
   out + xlab("Bin Midpoint") + ylab("Observed Event Percentage")
 }
-
 
 #' @export
 panel.calibration <- function(...)
