@@ -10,6 +10,11 @@
 \usage{
 createDataPartition(y, times = 1, p = 0.5, list = TRUE, groups = min(5,
   length(y)))
+
+createFolds(y, k = 10, list = TRUE, returnTrain = FALSE)
+
+createTimeSlices(y, initialWindow, horizon = 1, fixedWindow = TRUE,
+  skip = 0)
 }
 \arguments{
 \item{y}{a vector of outcomes. For \code{createTimeSlices}, these should be
@@ -81,8 +86,6 @@ cross-validation set (of \code{times}). Note that this function calls
 Hyndman and Athanasopoulos (2013)) discuss rolling forecasting origin
 techniques that move the training and test sets in time.
 \code{createTimeSlices} can create the indices for this type of splitting.
-
-Note that these functions may not provide consistent results under different system locales. 
 }
 \examples{
 

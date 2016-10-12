@@ -133,6 +133,8 @@ confusionMatrix <-
     UseMethod("confusionMatrix")
   }
 
+#' @rdname confusionMatrix
+#' @method confusionMatrix default
 #' @importFrom utils getFromNamespace
 #' @export
 confusionMatrix.default <- function(data, reference,
@@ -181,6 +183,8 @@ confusionMatrix.default <- function(data, reference,
   getFromNamespace("confusionMatrix.table", "caret")(classTable, positive, prevalence = prevalence, mode = mode)
 }
 
+#' @rdname confusionMatrix
+#' @method confusionMatrix table
 #' @importFrom stats binom.test mcnemar.test
 #' @export
 confusionMatrix.table <- function(data, positive = NULL,
@@ -288,6 +292,50 @@ confusionMatrix.table <- function(data, positive = NULL,
     class = "confusionMatrix")
 }
 
+#' Confusion matrix as a table
+#' @name as.matrix.confusionMatrix
+#' @aliases as.table.confusionMatrix
+#' @description Conversion functions for class \code{confusionMatrix}
+#'
+#' @param x an object of class \code{\link{confusionMatrix}}
+#' @param what data to convert to matrix. Either \code{"xtabs"}, \code{"overall"} or  \code{"classes"}
+#' @param \dots not currently used
+#'
+#' @details For \code{as.table}, the cross-tabulations are saved. For \code{as.matrix}, the three object types are saved in matrix format.
+#'
+#' @return A matrix or table
+#'
+#' @author Max Kuhn
+#'
+#' @examples
+#' ###################
+#' ## 2 class example
+#'
+#' lvs <- c("normal", "abnormal")
+#' truth <- factor(rep(lvs, times = c(86, 258)),
+#'                 levels = rev(lvs))
+#' pred <- factor(
+#'                c(
+#'                  rep(lvs, times = c(54, 32)),
+#'                  rep(lvs, times = c(27, 231))),
+#'                levels = rev(lvs))
+#'
+#' xtab <- table(pred, truth)
+#'
+#' results <- confusionMatrix(xtab)
+#' as.table(results)
+#' as.matrix(results)
+#' as.matrix(results, what = "overall")
+#' as.matrix(results, what = "classes")
+#'
+#' ###################
+#' ## 3 class example
+#'
+#' xtab <- confusionMatrix(iris$Species, sample(iris$Species))
+#' as.matrix(xtab)
+#'
+#' @keywords utilities
+#'
 #' @export
 as.matrix.confusionMatrix <- function(x, what = "xtabs", ...){
   if(!(what %in% c("xtabs", "overall", "classes")))
@@ -362,50 +410,7 @@ train_resampledCM <- function(x) {
   resampledCM
 }
 
-#' Confusion matrix as a table
-#' @name as.table.confusionMatrix
-#' @aliases as.matrix.confusionMatrix
-#' @description Conversion functions for class \code{confusionMatrix}
-#'
-#' @param x an object of class \code{\link{confusionMatrix}}
-#' @param what data to convert to matrix. Either \code{"xtabs"}, \code{"overall"} or  \code{"classes"}
-#' @param \dots not currently used
-#'
-#' @details For \code{as.table}, the cross-tabulations are saved. For \code{as.matrix}, the three object types are saved in matrix format.
-#'
-#' @return A matrix or table
-#'
-#' @author Max Kuhn
-#'
-#' @examples
-#' ###################
-#' ## 2 class example
-#'
-#' lvs <- c("normal", "abnormal")
-#' truth <- factor(rep(lvs, times = c(86, 258)),
-#'                 levels = rev(lvs))
-#' pred <- factor(
-#'                c(
-#'                  rep(lvs, times = c(54, 32)),
-#'                  rep(lvs, times = c(27, 231))),
-#'                levels = rev(lvs))
-#'
-#' xtab <- table(pred, truth)
-#'
-#' results <- confusionMatrix(xtab)
-#' as.table(results)
-#' as.matrix(results)
-#' as.matrix(results, what = "overall")
-#' as.matrix(results, what = "classes")
-#'
-#' ###################
-#' ## 3 class example
-#'
-#' xtab <- confusionMatrix(iris$Species, sample(iris$Species))
-#' as.matrix(xtab)
-#'
-#' @keywords utilities
-#'
+
 #' @export
 as.table.confusionMatrix <- function(x, ...)  x$table
 

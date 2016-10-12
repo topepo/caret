@@ -1,38 +1,28 @@
 #' Box-Cox and Exponential Transformations
 #'
-#' @name BoxCoxTrans.default
+#' @name BoxCoxTrans
 #' @aliases BoxCoxTrans.default BoxCoxTrans predict.BoxCoxTrans expoTrans.default expoTrans predict.expoTrans
 #'
 #' @description These classes can be used to estimate transformations and apply them to existing and future data
 #'
-#' @usage BoxCoxTrans(y, ...)
-#' expoTrans(y, ...)
-#'
-#' \method{BoxCoxTrans}{default}(y, x = rep(1, length(y)),
-#'             fudge = 0.2, numUnique = 3, na.rm = FALSE, ...)
-#' \method{expoTrans}{default}(y, na.rm  = TRUE, init = 0,
-#'      lim = c(-4, 4), method = "Brent",
-#'      numUnique = 3, ...)
-#'
-#' \method{predict}{BoxCoxTrans}(object, newdata, ...)
-#' \method{predict}{expoTrans}(object, newdata, ...)
-#'
 #' @param y a numeric vector of data to be transformed. For \code{BoxCoxTrans}, the data must be strictly positive.
 #' @param x an optional dependent variable to be used in a linear model.
-#' @param fudge a tolerance value: lambda values within +/-fudge will be coerced to 0 and within 1+/-fudge will be coerced to #' 1.
+#' @param fudge a tolerance value: lambda values within +/-fudge will be coerced to 0 and within 1+/-fudge will be coerced to 1.
 #' @param numUnique how many unique values should \code{y} have to estimate the transformation?
-#' @param na.rm a logical value indicating whether \code{NA} values should be stripped from \code{y} and \code{x} before the #' computation proceeds.
-#' @param init, lim, method}{initial values, limits and optimization method for \code{\link{optim}}.
-#' @param \dots for \code{BoxCoxTrans}: options to pass to \code{\link[MASS]{boxcox}}. \code{plotit} should not be passed #' through. For \code{predict.BoxCoxTrans}, additional arguments are ignored.
-#' @param object an object of class \code{BoxCoxTrans} or \code{expoTrans}.
+#' @param na.rm a logical value indicating whether \code{NA} values should be stripped from \code{y} and \code{x} before the computation proceeds.
 #' @param newdata a numeric vector of values to transform.
+#' @param digits minimal number of \emph{significant digits}.
+#' @param object an object of class \code{BoxCoxTrans} or \code{expoTrans}.
+#' @param \dots for \code{BoxCoxTrans}: options to pass to \code{\link[MASS]{boxcox}}. \code{plotit} should not be passed through. For \code{predict.BoxCoxTrans}, additional arguments are ignored.
 #'
 #' @details
 #' \code{BoxCoxTrans} function is basically a wrapper for the \code{\link[MASS]{boxcox}} function in the MASS library. It can be used to estimate the transformation and apply it to new data.
 #'
-#' \code{expoTrans} estimates the exponential transformation of Manly (1976) but assumes a common mean for #' the data. The transformation parameter is estimated by directly maximizing the likelihood.
+#' \code{expoTrans} estimates the exponential transformation of Manly (1976) but assumes a common mean for
+#' the data. The transformation parameter is estimated by directly maximizing the likelihood.
 #'
-#' If \code{any(y <= 0)} or  if \code{length(unique(y)) < numUnique}, lambda is not estimated and no #' transformation is applied.
+#' If \code{any(y <= 0)} or  if \code{length(unique(y)) < numUnique}, lambda is not estimated and no
+#' transformation is applied.
 #'
 #' @return
 #' Both functions returns a list of class of either \code{BoxCoxTrans} or \code{expoTrans} with
@@ -78,6 +68,7 @@ BoxCoxTrans <- function(y, ...) UseMethod("BoxCoxTrans")
 
 ##TODO add an epsilon?
 ## TODO add exclusion list to preProc?
+#' @rdname BoxCoxTrans
 #' @export
 BoxCoxTrans.default <- function(y, x = rep(1, length(y)), fudge = .2, numUnique = 3,  na.rm = FALSE, ...) {
   requireNamespaceQuietStop("MASS")
@@ -107,6 +98,9 @@ BoxCoxTrans.default <- function(y, x = rep(1, length(y)), fudge = .2, numUnique 
   out
 }
 
+
+#' @rdname BoxCoxTrans
+#' @method print BoxCoxTrans
 #' @export
 print.BoxCoxTrans <- function(x, newdata, digits = 3, ...){
   cat("Box-Cox Transformation\n\n")
@@ -127,6 +121,9 @@ print.BoxCoxTrans <- function(x, newdata, digits = 3, ...){
   invisible(x)
 }
 
+
+#' @rdname BoxCoxTrans
+#' @method predict BoxCoxTrans
 #' @export
 predict.BoxCoxTrans <- function(object, newdata, ...) {
   if(!is.vector(newdata) || !is.numeric(newdata)) stop("newdata should be a numeric vector")

@@ -4,12 +4,6 @@
 #' @description A bagging wrapper for multivariate adaptive regression
 #' splines (MARS) via the \code{earth} function
 #'
-#' @usage
-#' \method{bagEarth}{formula}(formula, data = NULL, B = 50,
-#'          summary = mean, keepX = TRUE,
-#'          ..., subset, weights, na.action = na.omit)
-#' \method{bagEarth}{default}(x, y, weights = NULL, B = 50,
-#'          summary = mean, keepX = TRUE, ...)
 #'
 #' @param formula A formula of the form \code{y ~ x1 + x2 + ...}
 #' @param x matrix or data frame of 'x' values for examples.
@@ -65,6 +59,8 @@
   function(x, ...)
   UseMethod("bagEarth")
 
+#' @rdname bagEarth
+#' @method bagEarth default
 #' @importFrom stats predict
 #' @export
 "bagEarth.default" <-
@@ -133,6 +129,8 @@
             class = "bagEarth")
 }
 
+#' @rdname bagEarth
+#' @method bagEarth formula
 #' @importFrom stats contrasts model.matrix model.response model.weights na.omit
 #' @export
 "bagEarth.formula" <-
@@ -167,10 +165,8 @@
 
 #' Predicted values based on bagged Earth and FDA models
 #'
-#' Predicted values based on bagged Earth and FDA models
 #'
-#'
-#' @aliases predict.bagEarth predict.bagFDA
+#' @aliases predict.bagEarth
 #' @param object Object of class inheriting from \code{bagEarth}
 #' @param newdata An optional data frame or matrix in which to look for
 #' variables with which to predict.  If omitted, the fitted values are used
@@ -264,6 +260,7 @@
 
 }
 
+#' @rdname bagEarth
 #' @export
 print.bagEarth <- function (x, ...)
 {

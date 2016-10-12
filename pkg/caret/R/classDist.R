@@ -3,12 +3,6 @@
 #' @aliases classDist.default classDist predict.classDist
 #' @description This function computes the class centroids and covariance matrix for a training set for determining Mahalanobis distances of samples to each class centroid.
 #'
-#' @usage
-#' classDist(x, ...)
-#'
-#' \method{classDist}{default}(x, y, groups = 5, pca = FALSE, keep = NULL, ...)
-#'
-#' \method{predict}{classDist}(object, newdata, trans = log, ...)
 #'
 #' @param x a matrix or data frame of predictor variables
 #' @param y a numeric or factor vector of class labels
@@ -69,6 +63,8 @@
 #' @export
 classDist <- function (x, ...)  UseMethod("classDist")
 
+#' @rdname classDist
+#' @method classDist default
 #' @importFrom stats cov predict quantile prcomp
 #' @export
 classDist.default <- function(x, y, groups = 5,
@@ -155,6 +151,8 @@ print.classDist <- function(x, ...)
     invisible(x)
   }
 
+#' @rdname classDist
+#' @method predict classDist
 #' @importFrom stats mahalanobis predict
 #' @export
 predict.classDist <- function(object, newdata, trans = log, ...)

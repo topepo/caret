@@ -1,16 +1,7 @@
 #' @title Neural Networks Using Model Averaging
-#' @name avNNet.default
+#' @name avNNet
 #' @description Aggregate several neural network models
 #'
-#' @usage
-#' \method{avNNet}{default}(x, y, repeats = 5, bag = FALSE,
-#'         allowParallel = TRUE, seeds = sample.int(1e+05, repeats), ...)
-#' \method{avNNet}{formula}(formula, data, weights, ...,
-#'         repeats = 5, bag = FALSE, allowParallel = TRUE,
-#'         seeds = sample.int(1e+05, repeats),
-#'         subset, na.action, contrasts = NULL)
-#'
-#' \method{predict}{avNNet}(object, newdata, type = c("raw", "class", "prob"), ...)
 #'
 #' @param formula A formula of the form \code{class ~ x1 + x2 + \dots}
 #' @param x matrix or data frame of \code{x} values for examples.
@@ -65,6 +56,8 @@ avNNet <- function (x, ...)
 
 ## this is a near copy of nnet.formula
 #' @importFrom stats .getXlevels contrasts model.matrix model.response model.weights
+#' @rdname avNNet
+#' @method avNNet formula
 #' @export
 avNNet.formula <- function (formula, data, weights, ...,
                             repeats = 5,
@@ -109,6 +102,8 @@ avNNet.formula <- function (formula, data, weights, ...,
 }
 
 #' @import foreach
+#' @rdname avNNet
+#' @method avNNet default
 #' @export
 avNNet.default <- function(x, y, repeats = 5,
                            bag = FALSE, allowParallel = TRUE,
@@ -158,6 +153,8 @@ avNNet.default <- function(x, y, repeats = 5,
     out
   }
 
+#' @rdname avNNet
+#' @method print avNNet
 #' @export
 print.avNNet <- function (x, ...)
 {
@@ -168,6 +165,8 @@ print.avNNet <- function (x, ...)
 }
 
 #' @importFrom stats .checkMFClasses delete.response fitted.values model.frame model.matrix predict na.omit
+#' @rdname avNNet
+#' @method predict avNNet
 #' @export
 predict.avNNet <- function(object, newdata, type = c("raw", "class", "prob"), ...)
   {

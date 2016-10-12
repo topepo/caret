@@ -2,7 +2,6 @@
 % Please edit documentation in R/bagEarth.R
 \name{predict.bagEarth}
 \alias{predict.bagEarth}
-\alias{predict.bagFDA}
 \title{Predicted values based on bagged Earth and FDA models}
 \usage{
 \method{predict}{bagEarth}(object, newdata = NULL, type = "response", ...)

@@ -8,18 +8,26 @@
 \title{Bagged FDA}
 \usage{
 bagFDA(x, ...)
-\method{bagFDA}{formula}(formula, data = NULL, B = 50, keepX = TRUE,
-       ..., subset, weights, na.action = na.omit)
+
 \method{bagFDA}{default}(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
+
+\method{bagFDA}{formula}(formula, data = NULL, B = 50, keepX = TRUE, ...,
+  subset, weights = NULL, na.action = na.omit)
+
+\method{print}{bagFDA}(x, ...)
 }
 \arguments{
 \item{x}{matrix or data frame of 'x' values for examples.}
 
-\item{formula}{A formula of the form \code{y ~ x1 + x2 + ...}}
-
 \item{y}{matrix or data frame of numeric values outcomes.}
 
 \item{weights}{(case) weights for each example - if missing defaults to 1.}
+
+\item{B}{the number of bootstrap samples}
+
+\item{keepX}{a logical: should the original training data be kept?}
+
+\item{formula}{A formula of the form \code{y ~ x1 + x2 + ...}}
 
 \item{data}{Data frame from which variables specified in  'formula' are
 preferentially to be taken.}
@@ -33,10 +41,6 @@ found. The default action is for the procedure to fail.  An
 alternative is na.omit, which leads to rejection of cases
 with missing values on any required variable.  (NOTE: If
 given, this argument must be named.)}
-
-\item{B}{the number of bootstrap samples}
-
-\item{keepX}{a logical: should the original training data be kept?}
 
 \item{\dots}{arguments passed to the \code{mars} function}
 }

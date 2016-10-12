@@ -6,20 +6,22 @@
 \alias{calibration.formula}
 \alias{ggplot.calibration}
 \alias{panel.calibration}
+\alias{print.calibration}
 \alias{xyplot.calibration}
 \title{Probability Calibration Plot}
 \usage{
 calibration(x, ...)
 
-\method{calibration}{formula}(x, data = NULL,
-            class = NULL,
-            cuts = 11, subset = TRUE,
-            lattice.options = NULL, ...)
+\method{calibration}{default}(x, ...)
 
-\method{xyplot}{calibration}(x, data, ...)
+\method{calibration}{formula}(x, data = NULL, class = NULL, cuts = 11,
+  subset = TRUE, lattice.options = NULL, ...)
+
+\method{print}{calibration}(x, ...)
+
+\method{xyplot}{calibration}(x, data = NULL, ...)
+
 \method{ggplot}{calibration}(data, ..., bwidth = 2, dwidth = 3)
-
-panel.calibration(...)
 }
 \arguments{
 \item{x}{a \code{lattice} formula (see \code{\link[lattice:xyplot]{xyplot}} for syntax) where the left#' -hand side of the formula is a factor class variable of the observed outcome and the right-hand side #' specifies one or model columns corresponding to a numeric ranking variable for a model (e.g. class #' probabilities). The classification variable should have two levels.}

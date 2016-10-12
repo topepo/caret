@@ -1,8 +1,8 @@
 #' @export
-contr.ltfr <- function (n, contrasts = TRUE, sparse = FALSE) 
+contr.ltfr <- function (n, contrasts = TRUE, sparse = FALSE)
 {
   if (is.numeric(n) && length(n) == 1L) {
-    if (n > 1L) 
+    if (n > 1L)
       levels <- as.character(seq_len(n))
     else stop("not enough degrees of freedom to define contrasts")
   }
@@ -21,7 +21,7 @@ contr.ltfr <- function (n, contrasts = TRUE, sparse = FALSE)
 contr.dummy <- function(n, ...)
 {
   if (is.numeric(n) && length(n) == 1L) {
-    if (n > 1L) 
+    if (n > 1L)
       levels <- as.character(seq_len(n))
     else stop("not enough degrees of freedom to define contrasts")
   }
@@ -38,10 +38,10 @@ contr.dummy <- function(n, ...)
 
 
 #' Create A Full Set of Dummy Variables
-#' 
+#'
 #' \code{dummyVars} creates a full set of dummy variables (i.e. less than full
 #' rank parameterization)
-#' 
+#'
 #' Most of the \code{\link[stats]{contrasts}} functions in R produce full rank
 #' parameterizations of the predictor data. For example,
 #' \code{\link[stats]{contr.treatment}} creates a reference cell in the data
@@ -53,20 +53,20 @@ contr.dummy <- function(n, ...)
 #' \preformatted{ (Intercept) dayTue dayWed dayThu dayFri daySat daySun 1 1 1 0
 #' 0 0 0 0 2 1 1 0 0 0 0 0 3 1 1 0 0 0 0 0 4 1 0 0 1 0 0 0 5 1 0 0 1 0 0 0 6 1
 #' 0 0 0 0 0 0 7 1 0 1 0 0 0 0 8 1 0 1 0 0 0 0 9 1 0 0 0 0 0 0 }
-#' 
+#'
 #' In some situations, there may be a need for dummy variables for all the
 #' levels of the factor. For the same example: \preformatted{ dayMon dayTue
 #' dayWed dayThu dayFri daySat daySun 1 0 1 0 0 0 0 0 2 0 1 0 0 0 0 0 3 0 1 0 0
 #' 0 0 0 4 0 0 0 1 0 0 0 5 0 0 0 1 0 0 0 6 1 0 0 0 0 0 0 7 0 0 1 0 0 0 0 8 0 0
 #' 1 0 0 0 0 9 1 0 0 0 0 0 0 }
-#' 
+#'
 #' Given a formula and initial data set, the class \code{dummyVars} gathers all
 #' the information needed to produce a full set of dummy variables for any data
 #' set. It uses \code{contr.ltfr} as the base function to do this.
-#' 
+#'
 #' \code{class2ind} is most useful for converting a factor outcome vector to a
 #' matrix of dummy variables.
-#' 
+#'
 #' @aliases dummyVars dummyVars.default predict.dummyVars contr.dummy
 #' contr.ltfr class2ind
 #' @param formula An appropriate R model formula, see References
@@ -99,9 +99,9 @@ contr.dummy <- function(n, ...)
 #' variables} \item{sep }{\code{NULL} or a character separator} \item{terms
 #' }{the \code{\link[stats]{terms.formula}} object} \item{levelsOnly }{a
 #' logical}
-#' 
+#'
 #' The \code{predict} function produces a data frame.
-#' 
+#'
 #' \code{contr.ltfr} generates a design matrix.
 #' @author \code{contr.ltfr} is a small modification of
 #' \code{\link[stats]{contr.treatment}} by Max Kuhn
@@ -111,57 +111,59 @@ contr.dummy <- function(n, ...)
 #' \url{http://cran.r-project.org/doc/manuals/R-intro.html#Formulae-for-statistical-models}
 #' @keywords models
 #' @examples
-#' 
-#' 
+#'
+#'
 #' when <- data.frame(time = c("afternoon", "night", "afternoon",
 #'                             "morning", "morning", "morning",
 #'                             "morning", "afternoon", "afternoon"),
 #'                    day = c("Mon", "Mon", "Mon",
 #'                            "Wed", "Wed", "Fri",
 #'                            "Sat", "Sat", "Fri"))
-#' 
+#'
 #' levels(when$time) <- list(morning="morning",
 #'                           afternoon="afternoon",
 #'                           night="night")
 #' levels(when$day) <- list(Mon="Mon", Tue="Tue", Wed="Wed", Thu="Thu",
 #'                          Fri="Fri", Sat="Sat", Sun="Sun")
-#' 
+#'
 #' ## Default behavior:
 #' model.matrix(~day, when)
-#' 
+#'
 #' mainEffects <- dummyVars(~ day + time, data = when)
 #' mainEffects
 #' predict(mainEffects, when[1:3,])
-#' 
+#'
 #' when2 <- when
 #' when2[1, 1] <- NA
 #' predict(mainEffects, when2[1:3,])
 #' predict(mainEffects, when2[1:3,], na.action = na.omit)
-#' 
-#' 
+#'
+#'
 #' interactionModel <- dummyVars(~ day + time + day:time,
 #'                               data = when,
 #'                               sep = ".")
 #' predict(interactionModel, when[1:3,])
-#' 
+#'
 #' noNames <- dummyVars(~ day + time + day:time,
 #'                      data = when,
 #'                      levelsOnly = TRUE)
 #' predict(noNames, when)
-#' 
+#'
 #' @export dummyVars
 "dummyVars" <-
   function(formula, ...){
     UseMethod("dummyVars")
   }
 
+#' @rdname dummyVars
+#' @method dummyVars default
 #' @importFrom stats as.formula model.frame
 #' @export
-dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, fullRank = FALSE, ...) 
+dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, fullRank = FALSE, ...)
 {
   formula <- as.formula(formula)
   if(!is.data.frame(data)) data <- as.data.frame(data)
-  
+
   vars <- all.vars(formula)
   if(any(vars == "."))
   {
@@ -171,7 +173,7 @@ dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, ful
   isFac <- unlist(lapply(data[,vars,drop = FALSE], is.factor))
   if(sum(isFac) > 0)
   {
-    facVars <- vars[isFac] 
+    facVars <- vars[isFac]
     lvls <- lapply(data[,facVars,drop = FALSE], levels)
     if(levelsOnly)
     {
@@ -200,7 +202,7 @@ dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, ful
               fullRank = fullRank)
   class(out) <- "dummyVars"
   out
-  
+
 }
 
 #' @export
@@ -213,11 +215,13 @@ print.dummyVars <- function(x, ...)
   if(!is.null(x$sep) & !x$levelsOnly) cat("Variables and levels will be separated by '",
                                           x$sep, "'\n", sep = "")
   if(x$levelsOnly) cat("Factor variable names will be removed\n")
-  if(x$fullRank) cat("A full rank encoding is used") else cat("A less than full rank encoding is used") 
+  if(x$fullRank) cat("A full rank encoding is used") else cat("A less than full rank encoding is used")
   cat("\n")
   invisible(x)
 }
 
+#' @rdname dummyVars
+#' @method predict dummyVars
 #' @importFrom stats delete.response model.frame model.matrix na.pass
 #' @export
 predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
@@ -240,28 +244,28 @@ predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
     options(contrasts = newContr)
   }
   m <- model.frame(Terms, newdata, na.action = na.action, xlev = object$lvls)
-  
+
   x <- model.matrix(Terms, m)
   if(!object$fullRank) options(contrasts = oldContr)
-  
+
   if(object$levelsOnly) {
     for(i in object$facVars) {
       for(j in object$lvls[[i]]) {
         from_text <- paste0(i, j)
-        colnames(x) <- gsub(from_text, j, colnames(x), fixed = TRUE) 
+        colnames(x) <- gsub(from_text, j, colnames(x), fixed = TRUE)
       }
     }
   }
   if(!is.null(object$sep) & !object$levelsOnly) {
     for(i in object$facVars[order(-nchar(object$facVars))]) {
-      ## the default output form model.matrix is NAMElevel with no separator. 
+      ## the default output form model.matrix is NAMElevel with no separator.
       for(j in object$lvls[[i]]) {
         from_text <- paste0(i, j)
         to_text <- paste(i, j, sep = object$sep)
         colnames(x) <- gsub(from_text, to_text, colnames(x), fixed = TRUE)
        }
     }
-  }  
+  }
   x[, colnames(x) != "(Intercept)", drop = FALSE]
 }
 
