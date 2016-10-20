@@ -120,6 +120,21 @@ modelInfo <- list(label = "Boosted Generalized Linear Model",
                   predictors = function(x, ...) {
                     strsplit(variable.names(x), ", ")[[1]]
                   },
+                  varImp = function(object, ...) {
+                    betas <- abs(coef(object))
+                    betas <- betas[names(betas) != "(Intercept)"]
+                    bnames <- names(betas)
+                    name_check <- object$xName %in% bnames
+                    if(any(!(name_check))) {
+                      missing <- object$xName[!name_check]
+                      beta_miss <- rep(0, length(missing))
+                      names(beta_miss) <- missing
+                      betas <- c(betas, beta_miss)
+                    }
+                    out <- data.frame(Overall = betas)
+                    rownames(out) <- names(betas)
+                    out
+                  },
                   levels = function(x) levels(x$response),
                   notes = "The `prune` option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in `?mstop`. If pruning is not used, the ensemble makes predictions using the exact value of the `mstop` tuning parameter value.",
                   tags = c("Generalized Linear Model", "Ensemble Model", "Boosting", 

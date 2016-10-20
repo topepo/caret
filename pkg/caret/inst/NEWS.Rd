@@ -13,6 +13,7 @@
 		\item Neural networks via stochastic gradient descent (\code{method = "mlpSGD"}) was adapted for classification and a variable importance calculation was added. 
 		\item \href{http://www.h2o.ai/}{h2o} versions of glmnet and gradient boosting machines were added with methods \code{"glmnet\_h2o"} and \code{"gbm\_h2o"} \issue{283}
 		\item The fuzzy rule-based models (\code{WM}, \code{SLAVE}, \code{SBC}, \code{HYFIS}, \code{GFS.THRIFT}, \code{GFS.LT.RS}, \code{GFS.GCCL}, \code{GFS.FR.MOGUL}, \code{FS.HGD}, \code{FRBCS.W}, \code{FRBCS.CHI}, \code{FIR.DM}, \code{FH.GBML}, \code{DENFIS}, and \code{ANFIS}) were modified so that the user can pass in the predictor ranges using the \code{range.data} argument to those functions. \issue{498}
+		\item A variable importance method was added for boosted generalized linear models \issue{493}
 	}
 }
 
