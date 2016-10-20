@@ -33,16 +33,21 @@ evalSummaryFunction <- function(y, wts, ctrl, lev, metric, method) {
   n <- if(class(y)[1] == "Surv") nrow(y) else length(y)
   ## sample doesn't work for Surv objects
   if(class(y)[1] != "Surv") {
-    pred_samp <- sample(y, min(10, n))
-    obs_samp <- sample(y, min(10, n))
+    if(is.factor(y)) {
+      pred_samp <- sample(levels(y), min(10, n), replace = TRUE)
+      obs_samp <- sample(levels(y), min(10, n), replace = TRUE)
+    } else {
+      pred_samp <- sample(y, min(10, n))
+      obs_samp <- sample(y, min(10, n))
+    }
   } else {
     pred_samp <- y[sample(1:n, min(10, n)), "time"]
     obs_samp <- y[sample(1:n, min(10, n)),]    
   }
-
+  
   ## get phoney performance to obtain the names of the outputs
   testOutput <- data.frame(pred = pred_samp, obs = obs_samp)
-
+  
   if(ctrl$classProbs)
   {
     for(i in seq(along = lev)) testOutput[, lev[i]] <- runif(nrow(testOutput))
