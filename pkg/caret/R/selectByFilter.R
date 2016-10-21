@@ -584,28 +584,6 @@ sbfControl <- function(functions = NULL,
 ######################################################################
 ## some built-in functions for certain models
 
-#' @importFrom stats anova lm
-#' @export
-anovaScores <- function(x, y) {
-  if(is.factor(x)) stop("The predictors should be numeric")
-  pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
-  if(any(class(pv) == "try-error") || is.na(pv) || is.nan(pv)) pv <- 1
-  pv
-}
-
-#' @importFrom stats anova lm
-#' @export
-gamScores <- function(x, y) {
-  if(is.factor(x)) stop("The predictors should be numeric")
-  requireNamespaceQuietStop("gam")
-  pv <- try(anova(gam::gam(y ~ s(x)), test = "F")[2, "Pr(F)"], silent = TRUE)
-  if(any(class(pv) == "try-error")) pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
-  if(any(class(pv) == "try-error") || is.na(pv) || is.nan(pv)) pv <- 1
-  pv
-}
-
-
-
 #' Selection By Filtering (SBF) Helper Functions
 #'
 #' Ancillary functions for univariate feature selection
@@ -857,6 +835,28 @@ treebagSBF <- list(summary = defaultSummary,
                    filter = function(score, x, y) score <= 0.05
 )
 
+
+#' @rdname caretSBF
+#' @importFrom stats anova lm
+#' @export
+anovaScores <- function(x, y) {
+  if(is.factor(x)) stop("The predictors should be numeric")
+  pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
+  if(any(class(pv) == "try-error") || is.na(pv) || is.nan(pv)) pv <- 1
+  pv
+}
+
+#' @rdname caretSBF
+#' @importFrom stats anova lm
+#' @export
+gamScores <- function(x, y) {
+  if(is.factor(x)) stop("The predictors should be numeric")
+  requireNamespaceQuietStop("gam")
+  pv <- try(anova(gam::gam(y ~ s(x)), test = "F")[2, "Pr(F)"], silent = TRUE)
+  if(any(class(pv) == "try-error")) pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
+  if(any(class(pv) == "try-error") || is.na(pv) || is.nan(pv)) pv <- 1
+  pv
+}
 
 
 
