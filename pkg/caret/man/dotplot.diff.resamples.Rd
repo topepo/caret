@@ -18,9 +18,6 @@
 \code{dotplot} and \code{levelplot} require exactly two models whereas the
 other methods can plot more than two.}
 
-\item{what}{\code{levelplot} only: display either the \code{"pvalues"} or
-\code{"differences"}}
-
 \item{\dots}{further arguments to pass to either
 \code{\link[lattice:histogram]{densityplot}},
 \code{\link[lattice:dotplot]{dotplot}} or

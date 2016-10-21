@@ -36,8 +36,7 @@ and without each predictor be calculated?}
 \item{gafsControl}{a list of values that define how this function acts. See
 \code{\link{gafsControl}} and URL.}
 
-\item{list()}{arguments passed to the classification or regression routine
-specified in the function \code{gafsControl$functions$fit}}
+\item{...}{additional arguments to be passed to other methods}
 }
 \value{
 an object of class \code{gafs}

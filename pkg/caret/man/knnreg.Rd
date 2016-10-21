@@ -7,9 +7,22 @@
 \alias{knnreg.formula}
 \alias{knnreg.matrix}
 \alias{knnregTrain}
+\alias{print.knnreg}
 \title{k-Nearest Neighbour Regression}
 \usage{
 knnreg(x, ...)
+
+\method{knnreg}{default}(x, ...)
+
+\method{knnreg}{formula}(formula, data, subset, na.action, k = 5, ...)
+
+\method{knnreg}{matrix}(x, y, k = 5, ...)
+
+\method{knnreg}{data.frame}(x, y, k = 5, ...)
+
+\method{print}{knnreg}(x, ...)
+
+knnregTrain(train, test, y, k = 5, use.all = TRUE)
 }
 \arguments{
 \item{x}{a matrix or data frame of training set predictors.}

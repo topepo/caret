@@ -150,6 +150,7 @@ gafs_initial <- function (vars, popSize, ...)  {
   x
 }
 
+#' @rdname gafs_initial
 #' @export
 gafs_lrSelection <-  function (population, fitness,
                                r = NULL,
@@ -169,6 +170,7 @@ gafs_lrSelection <-  function (population, fitness,
   out
 }
 
+#' @rdname gafs_initial
 #' @export
 gafs_spCrossover <- function (population, fitness, parents, ...)  {
   fitness <- fitness[parents]
@@ -193,6 +195,7 @@ gafs_spCrossover <- function (population, fitness, parents, ...)  {
   out
 }
 
+#' @rdname gafs_initial
 #' @export
 gafs_raMutation <- function (population, parent, ...)  {
   mutate <- parent <- as.vector(population[parent, ])
@@ -202,6 +205,7 @@ gafs_raMutation <- function (population, parent, ...)  {
   mutate
 }
 
+#' @rdname gafs_initial
 gafs_nlrSelection <- function (population, fitness, q = 0.25, ...) {
   popSize <- nrow(population)
   rank <- (popSize + 1) - rank(fitness, ties.method = "random")
@@ -213,6 +217,7 @@ gafs_nlrSelection <- function (population, fitness, q = 0.25, ...) {
   return(out)
 }
 
+#' @rdname gafs_initial
 #' @export
 gafs_rwSelection <- function (population, fitness, ...) {
   popSize <- nrow(population)
@@ -224,6 +229,7 @@ gafs_rwSelection <- function (population, fitness, ...) {
   return(out)
 }
 
+#' @rdname gafs_initial
 #' @export
 gafs_tourSelection <- function (population, fitness, k = 3, ...) {
   popSize <- nrow(population)
@@ -237,6 +243,7 @@ gafs_tourSelection <- function (population, fitness, k = 3, ...) {
   return(out)
 }
 
+#' @rdname gafs_initial
 #' @importFrom stats runif
 #' @export
 gafs_uCrossover <- function (population, parents, ...) {
@@ -865,8 +872,7 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' and without each predictor be calculated?
 #' @param gafsControl a list of values that define how this function acts. See
 #' \code{\link{gafsControl}} and URL.
-#' @param list() arguments passed to the classification or regression routine
-#' specified in the function \code{gafsControl$functions$fit}
+#' @param ... additional arguments to be passed to other methods
 #' @return an object of class \code{gafs}
 #' @author Max Kuhn, Luca Scrucca (for GA internals)
 #' @seealso \code{\link{gafsControl}}, \code{\link{predict.gafs}},

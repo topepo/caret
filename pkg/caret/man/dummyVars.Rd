@@ -7,6 +7,7 @@
 \alias{dummyVars}
 \alias{dummyVars.default}
 \alias{predict.dummyVars}
+\alias{print.dummyVars}
 \title{Create A Full Set of Dummy Variables}
 \usage{
 dummyVars(formula, ...)
@@ -14,7 +15,11 @@ dummyVars(formula, ...)
 \method{dummyVars}{default}(formula, data, sep = ".", levelsOnly = FALSE,
   fullRank = FALSE, ...)
 
+\method{predict}{dummyVars}(x, ...)
+
 \method{predict}{dummyVars}(object, newdata, na.action = na.pass, ...)
+
+contr.ltfr(n, contrasts = TRUE, sparse = FALSE)
 }
 \arguments{
 \item{formula}{An appropriate R model formula, see References}
@@ -35,6 +40,8 @@ parameterization be used? If \code{TRUE}, factors are encoded to be
 consistent with \code{\link[stats]{model.matrix}} and the resulting there
 are no linear dependencies induced between the columns.}
 
+\item{x}{A factor vector.}
+
 \item{object}{An object of class \code{dummyVars}}
 
 \item{newdata}{A data frame with the required columns}
@@ -47,12 +54,6 @@ values in \code{newdata}. The default is to predict \code{NA}.}
 \item{contrasts}{A logical indicating whether contrasts should be computed.}
 
 \item{sparse}{A logical indicating if the result should be sparse.}
-
-\item{x}{A factor vector.}
-
-\item{drop2nd}{A logical: when the factor \code{x} has two levels, should
-both dummy variables be returned (\code{drop2nd = FALSE} or only the dummy
-variable for the first level \code{drop2nd = TRUE}.}
 }
 \value{
 The output of \code{dummyVars} is a list of class 'dummyVars' with
