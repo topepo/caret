@@ -10,15 +10,29 @@
 \title{Partial Least Squares and Sparse Partial Least Squares Discriminant Analysis}
 \usage{
 plsda(x, ...)
+
+\method{predict}{plsda}(object, newdata = NULL, ncomp = NULL,
+  type = "class", ...)
+
+\method{plsda}{default}(x, y, ncomp = 2, probMethod = "softmax",
+  prior = NULL, ...)
 }
 \arguments{
 \item{x}{a matrix or data frame of predictors}
 
-\item{y}{a factor or indicator matrix for the discrete outcome. If a matrix,
-the entries must be either 0 or 1 and rows must sum to one}
+\item{object}{an object produced by \code{plsda}}
+
+\item{newdata}{a matrix or data frame of predictors}
 
 \item{ncomp}{the number of components to include in the model. Predictions
 can be made for models with values less than \code{ncomp}.}
+
+\item{type}{either \code{"class"}, \code{"prob"} or \code{"raw"} to produce
+the predicted class, class probabilities or the raw model scores,
+respectively.}
+
+\item{y}{a factor or indicator matrix for the discrete outcome. If a matrix,
+the entries must be either 0 or 1 and rows must sum to one}
 
 \item{probMethod}{either "softmax" or "Bayes" (see Details)}
 
@@ -28,14 +42,6 @@ can be made for models with values less than \code{ncomp}.}
 \item{\dots}{arguments to pass to \code{\link[pls:mvr]{plsr}} or
 \code{\link[spls]{spls}}. For \code{splsda}, this is the method for passing
 tuning parameters specifications (e.g. \code{K}, \code{eta} or \code{kappa})}
-
-\item{object}{an object produced by \code{plsda}}
-
-\item{newdata}{a matrix or data frame of predictors}
-
-\item{type}{either \code{"class"}, \code{"prob"} or \code{"raw"} to produce
-the predicted class, class probabilities or the raw model scores,
-respectively.}
 }
 \value{
 For \code{plsda}, an object of class "plsda" and "mvr". For

@@ -1,3 +1,4 @@
+#' @rdname caret-internal
 #' @export
 resampleWrapper <- function(x, ind) 
 {

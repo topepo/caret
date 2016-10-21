@@ -8,6 +8,9 @@
 \title{Principal Components Analysis of Resampling Results}
 \usage{
 \method{prcomp}{resamples}(x, metric = x$metrics[1], ...)
+
+plot.prcomp.resamples(x, what = "scree", dims = max(2, ncol(x$rotation)),
+  ...)
 }
 \arguments{
 \item{x}{For \code{prcomp}, an object of class \code{\link{resamples}} and

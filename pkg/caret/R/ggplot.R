@@ -1,3 +1,5 @@
+#' @rdname plot.train
+#' @method ggplot train
 #' @importFrom stats as.formula
 #' @export
 ggplot.train <- function(data = NULL, mapping = NULL, metric = data$metric[1], plotType = "scatter", output = "layered",
@@ -141,6 +143,7 @@ ggplot.train <- function(data = NULL, mapping = NULL, metric = data$metric[1], p
   out
 }
 
+#' @rdname plot.rfe
 #' @export
 ggplot.rfe <- function(data = NULL, mapping = NULL, metric = data$metric[1],
                        output = "layered", ..., environment = NULL)

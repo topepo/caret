@@ -22,6 +22,7 @@ subsemble_index <- function(y, J = 2, V = 10){
   list(model = model_index, holdout = holdout_index)
 }
 
+#' @rdname caret-internal
 #' @export
 well_numbered <- function(prefix, items) {
   paste0(prefix, gsub(" ", "0", format(1:items)))
@@ -98,6 +99,7 @@ Kim2009 <- function(n)
   grid
 }
 
+#' @rdname caret-internal
 #' @importFrom stats as.formula
 #' @export
 gamFormula <- function(data, smoother = "s", cut = 8, y = "y")
@@ -126,6 +128,7 @@ printCall <- function(x)
     invisible(call)
   }
 
+#' @rdname caret-internal
 #' @export
 flatTable <- function(pred, obs)
   {
@@ -138,30 +141,22 @@ flatTable <- function(pred, obs)
 
 prettySeq <- function(x) paste("Resample", gsub(" ", "0", format(seq(along = x))), sep = "")
 
+#' @rdname caret-internal
 #' @export
 ipredStats    <- function(x) getModelInfo("treebag", regex = FALSE)[[1]]$oob(x)
 
+#' @rdname caret-internal
 #' @export
 rfStats       <- function(x) getModelInfo("rf", regex = FALSE)[[1]]$oob(x)
 
+#' @rdname caret-internal
 #' @export
 cforestStats  <- function(x) getModelInfo("cforest", regex = FALSE)[[1]]$oob(x)
 
+#' @rdname caret-internal
 #' @export
 bagEarthStats <- function(x) getModelInfo("bagEarth", regex = FALSE)[[1]]$oob(x)
 
-#' @importFrom stats complete.cases cor
-#' @export
-R2 <- function(pred, obs, formula = "corr", na.rm = FALSE)
-  {
-    n <- sum(complete.cases(pred))
-    switch(formula,
-           corr = cor(obs, pred, use = ifelse(na.rm, "complete.obs", "everything"))^2,
-           traditional = 1 - (sum((obs-pred)^2, na.rm = na.rm)/((n-1)*var(obs, na.rm = na.rm))))
-  }
-
-#' @export
-RMSE <- function(pred, obs, na.rm = FALSE) sqrt(mean((pred - obs)^2, na.rm = na.rm))
 
 #' @importFrom utils capture.output
 partRuleSummary <- function(x)

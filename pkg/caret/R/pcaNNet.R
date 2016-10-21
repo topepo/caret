@@ -2,47 +2,6 @@
 # check predict method with formula interface
 # how to handle variable imp?
 
-#' @export
-pcaNNet <- function (x, ...)
-   UseMethod("pcaNNet")
-
-
-# this is a near copy of nnet.formula
-#' @importFrom stats .getXlevels contrasts model.matrix model.response model.weights
-#' @export
-pcaNNet.formula <- function (formula, data, weights, ...,
-                             thresh = .99,
-                             subset, na.action, contrasts = NULL) 
-{
-
-    m <- match.call(expand.dots = FALSE)
-    if (is.matrix(eval.parent(m$data))) 
-        m$data <- as.data.frame(data)
-    m$... <- m$contrasts <- NULL
-    m[[1]] <- as.name("model.frame")
-    m <- eval.parent(m)
-    Terms <- attr(m, "terms")
-    x <- model.matrix(Terms, m, contrasts)
-    cons <- attr(x, "contrast")
-    xint <- match("(Intercept)", colnames(x), nomatch = 0)
-    if (xint > 0) 
-        x <- x[, -xint, drop = FALSE]
-    w <- model.weights(m)
-    if (length(w) == 0) 
-        w <- rep(1, nrow(x))
-    y <- model.response(m)
-
-    res <- pcaNNet.default(x, y, weights = w, thresh = thresh, ...)
-    res$terms <- Terms
-    res$coefnames <- colnames(x)
-    res$na.action <- attr(m, "na.action")
-    res$contrasts <- cons
-    res$xlevels <- .getXlevels(Terms, m)
-    class(res) <- c("pcaNNet.formula", "pcaNNet")
-    res
-}
-
-
 
 #' Neural Networks with a Principal Component Step
 #' 
@@ -64,7 +23,7 @@ pcaNNet.formula <- function (formula, data, weights, ...,
 #' distinct values. If a predictor has one unique value, it is removed prior to
 #' the analysis.
 #' 
-#' @aliases pcaNNet.default predict.pcaNNet pcaNNet.formula pcaNNet
+#' @aliases pcaNNet pcaNNet.default predict.pcaNNet pcaNNet.formula
 #' @param formula A formula of the form \code{class ~ x1 + x2 + \dots{}}
 #' @param x matrix or data frame of \code{x} values for examples.
 #' @param y matrix or data frame of target values for examples.
@@ -108,6 +67,50 @@ pcaNNet.formula <- function (formula, data, weights, ...,
 #' 
 #' predict(modelFit, bbbDescr[, 1:10])
 #' 
+#' @export
+pcaNNet <- function (x, ...)
+   UseMethod("pcaNNet")
+
+
+# this is a near copy of nnet.formula
+#' @rdname pcaNNet
+#' @method pcaNNet formula
+#' @importFrom stats .getXlevels contrasts model.matrix model.response model.weights
+#' @export
+pcaNNet.formula <- function (formula, data, weights, ...,
+                             thresh = .99,
+                             subset, na.action, contrasts = NULL) 
+{
+
+    m <- match.call(expand.dots = FALSE)
+    if (is.matrix(eval.parent(m$data))) 
+        m$data <- as.data.frame(data)
+    m$... <- m$contrasts <- NULL
+    m[[1]] <- as.name("model.frame")
+    m <- eval.parent(m)
+    Terms <- attr(m, "terms")
+    x <- model.matrix(Terms, m, contrasts)
+    cons <- attr(x, "contrast")
+    xint <- match("(Intercept)", colnames(x), nomatch = 0)
+    if (xint > 0) 
+        x <- x[, -xint, drop = FALSE]
+    w <- model.weights(m)
+    if (length(w) == 0) 
+        w <- rep(1, nrow(x))
+    y <- model.response(m)
+
+    res <- pcaNNet.default(x, y, weights = w, thresh = thresh, ...)
+    res$terms <- Terms
+    res$coefnames <- colnames(x)
+    res$na.action <- attr(m, "na.action")
+    res$contrasts <- cons
+    res$xlevels <- .getXlevels(Terms, m)
+    class(res) <- c("pcaNNet.formula", "pcaNNet")
+    res
+}
+
+#' @rdname pcaNNet
+#' @method pcaNNet default
 #' @export pcaNNet.default
 pcaNNet.default <- function(x, y, thresh = .99, ...)
   {
@@ -147,6 +150,8 @@ pcaNNet.default <- function(x, y, thresh = .99, ...)
     out
   }
 
+#' @rdname pcaNNet
+#' @method print pcaNNet
 #' @export
 print.pcaNNet <- function (x, ...) 
 {
@@ -161,6 +166,8 @@ print.pcaNNet <- function (x, ...)
   invisible(x)
 }
 
+#' @rdname pcaNNet
+#' @method predict pcaNNet
 #' @importFrom stats .checkMFClasses delete.response model.frame model.matrix predict na.omit fitted
 #' @export
 predict.pcaNNet <- function(object, newdata, type = c("raw", "class", "prob"), ...)

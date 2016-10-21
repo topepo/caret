@@ -112,7 +112,7 @@
 plsda <- function (x, ...)
   UseMethod("plsda")
 
-
+#' @rdname plsda
 #' @importFrom stats predict
 #' @export
 predict.plsda <- function(object, newdata = NULL, ncomp = NULL, type = "class", ...){
@@ -194,6 +194,7 @@ predict.plsda <- function(object, newdata = NULL, ncomp = NULL, type = "class", 
   out
 }
 
+#' @rdname plsda
 #' @importFrom stats predict
 #' @export
 plsda.default <- function(x, y, ncomp = 2, probMethod = "softmax", prior = NULL, ...) {

@@ -1,3 +1,4 @@
+#' @rdname caret-internal
 #' @export
 sbfIter <- function(x, y,
                     testX, testY,
@@ -975,6 +976,7 @@ varImp.sbf <- function(object, onlyFinal = TRUE, ...)
 #' @export nullModel
 nullModel <- function (x, ...) UseMethod("nullModel")
 
+#' @rdname nullModel
 #' @export
 nullModel.default <- function(x = NULL, y, ...)
 {
@@ -1012,6 +1014,7 @@ print.nullModel <- function(x, digits = max(3, getOption("digits") - 3), ...)
       "\n")
 }
 
+#' @rdname nullModel
 #' @export
 predict.nullModel <- function (object, newdata = NULL, type  = NULL, ...)
 {

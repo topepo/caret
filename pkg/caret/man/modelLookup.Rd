@@ -7,17 +7,21 @@
 \title{Tools for Models Available in \code{train}}
 \usage{
 modelLookup(model = NULL)
+
+checkInstall(pkg)
+
+getModelInfo(model = NULL, regex = TRUE, ...)
 }
 \arguments{
 \item{model}{a character string associated with the \code{method} argument
 of \code{\link{train}}. If no value is passed, all models are returned. For
 \code{getModelInfo}, regular expressions can be used.}
 
+\item{pkg}{a character string of package names.}
+
 \item{regex}{a logical: should a regular expressions be used? If
 \code{FALSE}, a simple match is conducted against the whole name of the
 model.}
-
-\item{pkg}{a character string of package names.}
 
 \item{...}{options to pass to \code{\link[base]{grepl}}}
 }

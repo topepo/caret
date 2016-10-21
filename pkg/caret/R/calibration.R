@@ -17,7 +17,7 @@
 #'
 #' @param lattice.options A list that could be supplied to \code{\link[lattice:lattice.options]{lattice#' .options}}
 #'
-#' @param bwidth, dwidth a numeric value for the confidence interval bar width and dodge width, respective#' ly. In the latter case, a dodge is only used when multiple models are specified in the formula.
+#' @param bwidth,dwidth a numeric value for the confidence interval bar width and dodge width, respective#' ly. In the latter case, a dodge is only used when multiple models are specified in the formula.
 #' @param \dots options to pass through to \code{\link[lattice:xyplot]{xyplot}} or the panel function (not #' used in \code{calibration.formula}).
 #'
 #' @details

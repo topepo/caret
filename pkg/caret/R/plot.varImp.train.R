@@ -67,6 +67,7 @@ function(x, top = dim(x$importance)[1],  ...)
    impPlot
 }
 
+#' @rdname plot.varImp.train
 #' @importFrom utils stack
 #' @export
 ggplot.varImp.train <- function (data, mapping = NULL, top = dim(data$importance)[1], ..., environment = NULL)  {

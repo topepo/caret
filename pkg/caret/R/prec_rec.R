@@ -212,6 +212,7 @@ F_meas.table <- function (data, relevant = rownames(data)[1], beta = 1, ...) {
   (1+beta^2)*prec*rec/((beta^2 * prec)+rec)
 }
 
+#' @rdname postResample
 #' @export
 prSummary <- function (data, lev = NULL, model = NULL)  {
   

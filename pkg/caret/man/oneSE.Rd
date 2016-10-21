@@ -7,6 +7,8 @@
 \title{Selecting tuning Parameters}
 \usage{
 oneSE(x, metric, num, maximize)
+
+tolerance(x, metric, tol = 1.5, maximize)
 }
 \arguments{
 \item{x}{a data frame of tuning parameters and model results, sorted from
