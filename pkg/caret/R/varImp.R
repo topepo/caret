@@ -287,108 +287,126 @@ varImpDependencies <- function(libName){
   return(code)
 }
 
+#' @rdname varImp
 #' @export
 varImp.bagEarth <- function(object, ...){
   code <- varImpDependencies("bagEarth")
   code$varImp(object, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.bagFDA <- function(object, ...){
   code <- varImpDependencies("bagFDA")
   code$varImp(object, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.C5.0 <- function(object, ...){
   code <- varImpDependencies("C5.0")
   code$varImp(object, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.cubist <- function(object, weights = c(0.5, 0.5), ...){
   code <- varImpDependencies("cubist")
   code$varImp(object, weights = weights, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.dsa <- function(object, cuts = NULL, ...){
   code <- varImpDependencies("partDSA")
   code$varImp(object, cuts = cuts, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.glm <- function(object, ...){
   code <- varImpDependencies("glm")
   code$varImp(object, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.glmnet <- function(object, lambda = NULL, ...){
   code <- varImpDependencies("glmnet")
   code$varImp(object, lambda = lambda, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.JRip <- function(object, ...){
   code <- varImpDependencies("JRip")
   code$varImp(object, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.multinom <- function(object, ...){
   code <- varImpDependencies("multinom")
   code$varImp(object, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.nnet <- function(object, ...){
   code <- varImpDependencies("nnet")
   code$varImp(object, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.PART <- function(object, ...){
   code <- varImpDependencies("PART")
   code$varImp(object, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.RRF <- function(object, ...){
   code <- varImpDependencies("RRF")
   code$varImp(object, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.rpart <- function(object, surrogates = FALSE, competes = TRUE, ...){
   code <- varImpDependencies("rpart")
   code$varImp(object, surrogates = surrogates, competes = competes, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.randomForest <- function(object, ...){
   code <- varImpDependencies("rf")
   code$varImp(object, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.gbm <- function(object, numTrees = NULL, ...){
   code <- varImpDependencies("gbm")
   code$varImp(object, numTrees = numTrees, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.classbagg <- function(object, ...){
   code <- varImpDependencies("treebag")
   code$varImp(object, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.regbagg <- function(object, ...){
   code <- varImpDependencies("treebag")
   code$varImp(object, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.pamrtrained <- function(object, threshold, data, ...){
   code <- varImpDependencies("pam")
@@ -398,42 +416,49 @@ varImp.pamrtrained <- function(object, threshold, data, ...){
               ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.lm <- function(object, ...){
   code <- varImpDependencies("lm")
   code$varImp(object, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.mvr <- function(object, estimate = NULL, ...){
   code <- varImpDependencies("pls")
   code$varImp(object, estimate = estimate, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.earth <- function(object, value = "gcv", ...){
   code <- varImpDependencies("earth")
   code$varImp(object, value = value, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.RandomForest <- function(object, ...){
   code <- varImpDependencies("cforest")
   code$varImp(object, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.plsda <- function(object, ...){
   code <- varImpDependencies("pls")
   code$varImp(object, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.fda <- function(object, value = "gcv", ...){
   code <- varImpDependencies("fda")
   code$varImp(object, value = value, ...)
 }
 
+#' @rdname varImp
 #' @export
 varImp.gam <- function(object, ...){
   mod <- if(any(names(object) == "optimizer")) "gam" else "gamLoess"

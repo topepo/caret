@@ -4,6 +4,7 @@
 \alias{caretGA}
 \alias{gafs_initial}
 \alias{gafs_lrSelection}
+\alias{gafs_nlrSelection}
 \alias{gafs_raMutation}
 \alias{gafs_rwSelection}
 \alias{gafs_spCrossover}
@@ -14,6 +15,20 @@
 \title{Ancillary genetic algorithm functions}
 \usage{
 gafs_initial(vars, popSize, ...)
+
+gafs_lrSelection(population, fitness, r = NULL, q = NULL, ...)
+
+gafs_spCrossover(population, fitness, parents, ...)
+
+gafs_raMutation(population, parent, ...)
+
+gafs_nlrSelection(population, fitness, q = 0.25, ...)
+
+gafs_rwSelection(population, fitness, ...)
+
+gafs_tourSelection(population, fitness, k = 3, ...)
+
+gafs_uCrossover(population, parents, ...)
 }
 \arguments{
 \item{vars}{number of possible predictors}
@@ -25,9 +40,9 @@ columns and individuals in rows}
 
 \item{fitness}{a vector of fitness values}
 
-\item{parent, parents}{integer(s) for which chromosomes are altered}
-
 \item{r, q, k}{tuning parameters for the specific selection operator}
+
+\item{parent, parents}{integer(s) for which chromosomes are altered}
 
 \item{\dots}{not currently used}
 }

@@ -70,6 +70,7 @@ predictors.default <- function(x, ...) {
   out
 }
 
+#' @rdname caret-internal
 #' @export
 hasTerms <- function(x)
   {

@@ -14,6 +14,10 @@
 \format{An object of class \code{list} of length 5.}
 \usage{
 caretSBF
+
+anovaScores(x, y)
+
+gamScores(x, y)
 }
 \arguments{
 \item{x}{a matrix or data frame of numeric predictors}

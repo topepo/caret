@@ -298,6 +298,7 @@ print.bagEarth <- function (x, ...)
 #' summary(fit)
 #' }
 #'
+#' @method summary bagEarth
 #' @export summary.bagEarth
 "summary.bagEarth" <-
   function(object, ...)

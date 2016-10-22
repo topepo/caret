@@ -135,6 +135,7 @@ sensitivity <-
     UseMethod("sensitivity")
   }
 
+#' @rdname sensitivity
 #' @importFrom stats complete.cases
 #' @export
 "sensitivity.default" <-
@@ -161,6 +162,7 @@ sensitivity <-
   sens
 }
 
+#' @rdname sensitivity
 #' @export
 "sensitivity.table" <-
   function(data, positive = rownames(data)[1], ...)
@@ -193,6 +195,7 @@ sensitivity <-
   sens
 }
 
+#' @rdname sensitivity
 "sensitivity.matrix" <-
   function(data, positive = rownames(data)[1], ...)
 {

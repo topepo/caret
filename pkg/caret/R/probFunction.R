@@ -1,3 +1,4 @@
+#' @rdname caret-internal
 #' @export
 probFunction <- function(method, modelFit, newdata = NULL, preProc = NULL, param = NULL)
 {

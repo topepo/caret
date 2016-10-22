@@ -1,3 +1,4 @@
+#' @rdname caret-internal
 #' @importFrom stats predict
 #' @export
 predictionFunction <- function(method, modelFit, newdata, preProc = NULL, param = NULL)

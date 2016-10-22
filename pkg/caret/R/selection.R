@@ -132,6 +132,7 @@ oneSE <- function(x, metric, num, maximize)
     bestIter
   }
 
+#' @rdname oneSE
 #' @export
 tolerance <- function(x, metric, tol = 1.5, maximize)
   {

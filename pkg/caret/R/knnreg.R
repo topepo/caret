@@ -54,12 +54,16 @@
 #' @export knnreg
 "knnreg" <- function(x, ...)   UseMethod("knnreg")
 
+#' @rdname knnreg
+#' @method knnreg default
 #' @export
 knnreg.default <- function(x, ...)
 {
   if(!any(class(x) %in% "formula"))  stop("knnreg only implemented for formula objects")
 }
 
+#' @rdname knnreg
+#' @method knnreg formula
 #' @importFrom stats model.matrix terms model.extract
 #' @export
 knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...) 
@@ -102,6 +106,8 @@ knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...)
   RET
 }
 
+#' @rdname knnreg
+#' @method knnreg matrix
 #' @export
 knnreg.matrix <- function(x, y, k = 5, ...)
 {
@@ -116,6 +122,8 @@ knnreg.matrix <- function(x, y, k = 5, ...)
   RET
 }
 
+#' @rdname knnreg
+#' @method knnreg data.frame
 #' @export
 knnreg.data.frame <- function(x, y, k = 5, ...)
 {
@@ -130,6 +138,8 @@ knnreg.data.frame <- function(x, y, k = 5, ...)
   RET
 }
 
+#' @rdname knnreg
+#' @method print knnreg
 #' @export
 print.knnreg <- function (x, ...) 
 {
@@ -186,6 +196,7 @@ predict.knnreg <- function (object, newdata, ...)
   RET
 }
 
+#' @rdname knnreg
 #' @export
 knnregTrain <- function(train, test, y, k = 5, use.all=TRUE)
 {

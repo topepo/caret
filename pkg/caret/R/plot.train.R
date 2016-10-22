@@ -69,6 +69,7 @@
 #' 
 #' }
 #'  
+#' @method plot train
 #' @export plot.train
 "plot.train" <-  function(x,
                     plotType = "scatter",

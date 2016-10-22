@@ -1,42 +1,3 @@
-#' @export
-contr.ltfr <- function (n, contrasts = TRUE, sparse = FALSE)
-{
-  if (is.numeric(n) && length(n) == 1L) {
-    if (n > 1L)
-      levels <- as.character(seq_len(n))
-    else stop("not enough degrees of freedom to define contrasts")
-  }
-  else {
-    levels <- as.character(n)
-    n <- length(n)
-  }
-  contr <- .RDiag(levels, sparse = sparse)
-  if (contrasts) {
-    if (n < 2L) stop(gettextf("contrasts not defined for %d degrees of freedom", n - 1L), domain = NA)
-  }
-  contr
-}
-
-#' @export
-contr.dummy <- function(n, ...)
-{
-  if (is.numeric(n) && length(n) == 1L) {
-    if (n > 1L)
-      levels <- as.character(seq_len(n))
-    else stop("not enough degrees of freedom to define contrasts")
-  }
-  else {
-    levels <- as.character(n)
-    n <- length(n)
-  }
-  out <- diag(n)
-  rownames(out) <- levels
-  colnames(out) <- levels
-  out
-}
-
-
-
 #' Create A Full Set of Dummy Variables
 #'
 #' \code{dummyVars} creates a full set of dummy variables (i.e. less than full
@@ -88,9 +49,6 @@ contr.dummy <- function(n, ...)
 #' @param contrasts A logical indicating whether contrasts should be computed.
 #' @param sparse A logical indicating if the result should be sparse.
 #' @param x A factor vector.
-#' @param drop2nd A logical: when the factor \code{x} has two levels, should
-#' both dummy variables be returned (\code{drop2nd = FALSE} or only the dummy
-#' variable for the first level \code{drop2nd = TRUE}.
 #' @param ... additional arguments to be passed to other methods
 #' @return The output of \code{dummyVars} is a list of class 'dummyVars' with
 #' elements \item{call }{the function call} \item{form }{the model formula}
@@ -205,6 +163,8 @@ dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, ful
 
 }
 
+#' @rdname dummyVars
+#' @method predict dummyVars
 #' @export
 print.dummyVars <- function(x, ...)
 {
@@ -267,6 +227,44 @@ predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
     }
   }
   x[, colnames(x) != "(Intercept)", drop = FALSE]
+}
+
+#' @rdname dummyVars
+#' @export
+contr.ltfr <- function (n, contrasts = TRUE, sparse = FALSE)
+{
+  if (is.numeric(n) && length(n) == 1L) {
+    if (n > 1L)
+      levels <- as.character(seq_len(n))
+    else stop("not enough degrees of freedom to define contrasts")
+  }
+  else {
+    levels <- as.character(n)
+    n <- length(n)
+  }
+  contr <- .RDiag(levels, sparse = sparse)
+  if (contrasts) {
+    if (n < 2L) stop(gettextf("contrasts not defined for %d degrees of freedom", n - 1L), domain = NA)
+  }
+  contr
+}
+
+#' @export
+contr.dummy <- function(n, ...)
+{
+  if (is.numeric(n) && length(n) == 1L) {
+    if (n > 1L)
+      levels <- as.character(seq_len(n))
+    else stop("not enough degrees of freedom to define contrasts")
+  }
+  else {
+    levels <- as.character(n)
+    n <- length(n)
+  }
+  out <- diag(n)
+  rownames(out) <- levels
+  colnames(out) <- levels
+  out
 }
 
 

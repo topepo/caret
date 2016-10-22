@@ -1,3 +1,4 @@
+#' @rdname caret-internal
 #' @export
 sbfIter <- function(x, y,
                     testX, testY,
@@ -92,7 +93,7 @@ sbfIter <- function(x, y,
 #' @param object an object of class \code{sbf}
 #' @param newdata a matrix or data frame of predictors. The object must have
 #' non-null column names
-#' @param list() for \code{sbf}: arguments passed to the classification or
+#' @param \dots for \code{sbf}: arguments passed to the classification or
 #' regression routine (such as \code{\link[randomForest]{randomForest}}). For
 #' \code{predict.sbf}: augments cannot be passed to the prediction function
 #' using \code{predict.sbf} as it uses the function originally specified for
@@ -155,6 +156,7 @@ sbfIter <- function(x, y,
 #' @export sbf
 sbf <- function (x, ...) UseMethod("sbf")
 
+#' @rdname sbf
 #' @importFrom stats predict runif
 #' @export
 "sbf.default" <-
@@ -297,6 +299,7 @@ sbf <- function (x, ...) UseMethod("sbf")
     out
   }
 
+#' @rdname sbf
 #' @importFrom stats .getXlevels contrasts model.matrix model.response
 #' @export
 sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
@@ -397,6 +400,7 @@ print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 
 ######################################################################
 ######################################################################
+#' @rdname sbf
 #' @importFrom stats .checkMFClasses delete.response model.frame model.matrix na.omit
 #' @export
 predict.sbf <- function(object, newdata = NULL, ...)
@@ -583,28 +587,6 @@ sbfControl <- function(functions = NULL,
 ######################################################################
 ######################################################################
 ## some built-in functions for certain models
-
-#' @importFrom stats anova lm
-#' @export
-anovaScores <- function(x, y) {
-  if(is.factor(x)) stop("The predictors should be numeric")
-  pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
-  if(any(class(pv) == "try-error") || is.na(pv) || is.nan(pv)) pv <- 1
-  pv
-}
-
-#' @importFrom stats anova lm
-#' @export
-gamScores <- function(x, y) {
-  if(is.factor(x)) stop("The predictors should be numeric")
-  requireNamespaceQuietStop("gam")
-  pv <- try(anova(gam::gam(y ~ s(x)), test = "F")[2, "Pr(F)"], silent = TRUE)
-  if(any(class(pv) == "try-error")) pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
-  if(any(class(pv) == "try-error") || is.na(pv) || is.nan(pv)) pv <- 1
-  pv
-}
-
-
 
 #' Selection By Filtering (SBF) Helper Functions
 #'
@@ -858,6 +840,28 @@ treebagSBF <- list(summary = defaultSummary,
 )
 
 
+#' @rdname caretSBF
+#' @importFrom stats anova lm
+#' @export
+anovaScores <- function(x, y) {
+  if(is.factor(x)) stop("The predictors should be numeric")
+  pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
+  if(any(class(pv) == "try-error") || is.na(pv) || is.nan(pv)) pv <- 1
+  pv
+}
+
+#' @rdname caretSBF
+#' @importFrom stats anova lm
+#' @export
+gamScores <- function(x, y) {
+  if(is.factor(x)) stop("The predictors should be numeric")
+  requireNamespaceQuietStop("gam")
+  pv <- try(anova(gam::gam(y ~ s(x)), test = "F")[2, "Pr(F)"], silent = TRUE)
+  if(any(class(pv) == "try-error")) pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
+  if(any(class(pv) == "try-error") || is.na(pv) || is.nan(pv)) pv <- 1
+  pv
+}
+
 
 
 ######################################################################
@@ -975,6 +979,7 @@ varImp.sbf <- function(object, onlyFinal = TRUE, ...)
 #' @export nullModel
 nullModel <- function (x, ...) UseMethod("nullModel")
 
+#' @rdname nullModel
 #' @export
 nullModel.default <- function(x = NULL, y, ...)
 {
@@ -1012,6 +1017,7 @@ print.nullModel <- function(x, digits = max(3, getOption("digits") - 3), ...)
       "\n")
 }
 
+#' @rdname nullModel
 #' @export
 predict.nullModel <- function (object, newdata = NULL, type  = NULL, ...)
 {

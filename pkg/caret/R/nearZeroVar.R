@@ -155,6 +155,7 @@ zeroVar <- function(x)
   which(apply(x, 2, function(x) length(unique(x)) < 2))
 }
 
+#' @rdname nearZeroVar
 #' @export
 checkConditionalX <- function(x, y)
 {
@@ -162,6 +163,7 @@ checkConditionalX <- function(x, y)
   unique(unlist(dlply(x, .(.outcome), zeroVar)))
 }
 
+#' @rdname nearZeroVar
 #' @export
 checkResamples <- function(index, x, y)
 {

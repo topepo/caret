@@ -28,6 +28,7 @@ make_noise <- function(n, noiseVars = 0,
   as.data.frame(out)
 }
 
+#' @rdname twoClassSim
 #' @importFrom stats rnorm
 #' @export
 SLC14_1 <- function(n = 100, noiseVars = 0, 
@@ -55,6 +56,7 @@ SLC14_1 <- function(n = 100, noiseVars = 0,
   dat
 }
 
+#' @rdname twoClassSim
 #' @importFrom stats rnorm
 #' @export
 SLC14_2 <- function(n = 100, noiseVars = 0, 
@@ -75,6 +77,7 @@ SLC14_2 <- function(n = 100, noiseVars = 0,
   dat
 }
 
+#' @rdname twoClassSim
 #' @importFrom stats rbinom rnorm runif binomial
 #' @export
 LPH07_1 <- function(n = 100, noiseVars = 0, 
@@ -110,6 +113,7 @@ LPH07_1 <- function(n = 100, noiseVars = 0,
   dat
 }
 
+#' @rdname twoClassSim
 #' @importFrom stats rnorm
 #' @export
 LPH07_2 <- function(n = 100, noiseVars = 0, 

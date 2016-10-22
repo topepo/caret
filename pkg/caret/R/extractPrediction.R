@@ -1,4 +1,4 @@
-
+#' @rdname predict.train
 #' @export
 extractPrediction <- function(models, 
                               testX = NULL, 

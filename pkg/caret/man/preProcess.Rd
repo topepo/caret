@@ -7,6 +7,13 @@
 \title{Pre-Processing of Predictors}
 \usage{
 preProcess(x, ...)
+
+\method{preProcess}{default}(x, method = c("center", "scale"),
+  thresh = 0.95, pcaComp = NULL, na.remove = TRUE, k = 5,
+  knnSummary = mean, outcome = NULL, fudge = 0.2, numUnique = 3,
+  verbose = FALSE, ...)
+
+\method{predict}{preProcess}(object, newdata, ...)
 }
 \arguments{
 \item{x}{a matrix or data frame. Non-numeric predictors are allowed but will
@@ -26,10 +33,6 @@ this over-rides \code{thresh}}
 \item{na.remove}{a logical; should missing values be removed from the
 calculations?}
 
-\item{object}{an object of class \code{preProcess}}
-
-\item{newdata}{a matrix or data frame of new data to be pre-processed}
-
 \item{k}{the number of nearest neighbors from the training set to use for
 imputation}
 
@@ -47,6 +50,10 @@ predictor variables (see Details below)}
 Box-Cox transformation?}
 
 \item{verbose}{a logical: prints a log as the computations proceed}
+
+\item{object}{an object of class \code{preProcess}}
+
+\item{newdata}{a matrix or data frame of new data to be pre-processed}
 
 \item{\dots}{additional arguments to pass to \code{\link[fastICA]{fastICA}},
 such as \code{n.comp}}

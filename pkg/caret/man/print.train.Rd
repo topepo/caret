@@ -23,7 +23,7 @@ selected parameters}
 \item{showSD}{a logical whether to show the standard deviation of the
 resampling results within parentheses (e.g. "4.24 (0.493)")}
 
-\item{list()}{options passed to \code{\link[base]{format}}}
+\item{\dots}{options passed to \code{\link[base]{format}}}
 }
 \value{
 A matrix with the complexity parameters and performance (invisibly).

@@ -9,6 +9,10 @@
 \usage{
 \method{icr}{formula}(formula, data, weights, ..., subset, na.action,
   contrasts = NULL)
+
+\method{icr}{default}(x, y, ...)
+
+\method{predict}{icr}(object, newdata, ...)
 }
 \arguments{
 \item{formula}{A formula of the form \code{class ~ x1 + x2 + \dots{}}}
@@ -29,8 +33,6 @@ required variable.  (NOTE: If given, this argument must be named.)}
 \item{contrasts}{a list of contrasts to be used for some or all of the
 factors appearing as variables in the model formula.}
 
-\item{\dots}{arguments passed to \code{\link[fastICA]{fastICA}}}
-
 \item{x}{matrix or data frame of \code{x} values for examples.}
 
 \item{y}{matrix or data frame of target values for examples.}
@@ -38,6 +40,8 @@ factors appearing as variables in the model formula.}
 \item{object}{an object of class \code{icr} as returned by \code{icr}.}
 
 \item{newdata}{matrix or data frame of test examples.}
+
+\item{\dots}{arguments passed to \code{\link[fastICA]{fastICA}}}
 }
 \value{
 For \code{icr}, a list with elements \item{model }{the results of

@@ -221,7 +221,6 @@ best <- function(x, metric, maximize)
   bestIter
 }
 
-
 #' @export
 defaultSummary <- function(data, lev = NULL, model = NULL)
 {
@@ -229,7 +228,7 @@ defaultSummary <- function(data, lev = NULL, model = NULL)
   postResample(data[,"pred"], data[,"obs"])
 }
 
-
+#' @rdname postResample
 #' @importFrom ModelMetrics auc
 #' @export
 twoClassSummary <- function (data, lev = NULL, model = NULL)
@@ -250,6 +249,7 @@ twoClassSummary <- function (data, lev = NULL, model = NULL)
   out
 }
 
+#' @rdname postResample
 #' @importFrom stats complete.cases
 #' @export
 mnLogLoss <- function(data, lev = NULL, model = NULL){
@@ -266,6 +266,7 @@ mnLogLoss <- function(data, lev = NULL, model = NULL){
   ModelMetrics::mlogLoss(dataComplete$obs, probs)
 }
 
+#' @rdname postResample
 #' @export
 multiClassSummary <- function (data, lev = NULL, model = NULL){
   #Check data

@@ -1,3 +1,4 @@
+#' @rdname caret-internal
 #' @importFrom stats runif
 #' @export
 sortImp <- function(object, top)

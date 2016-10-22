@@ -9,6 +9,7 @@ getOper <- function(x) if(x)  `%dopar%` else  `%do%`
 getTrainOper <- function(x) if(x)  `%dopar%` else  `%do%`
 
 
+#' @rdname caret-internal
 #' @export
 progress <- function(x, names, iter, start = TRUE)
 {
@@ -19,6 +20,7 @@ progress <- function(x, names, iter, start = TRUE)
   cat(text, "\n")
 }
 
+#' @rdname caret-internal
 #' @importFrom stats sd
 #' @export
 MeanSD <- function(x, exclude = NULL)
@@ -29,6 +31,7 @@ MeanSD <- function(x, exclude = NULL)
   out
 }
 
+#' @rdname caret-internal
 #' @export
 expandParameters <- function(fixed, seq)
 {

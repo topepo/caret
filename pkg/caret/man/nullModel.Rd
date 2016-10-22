@@ -7,6 +7,10 @@
 \title{Fit a simple, non-informative model}
 \usage{
 nullModel(x, ...)
+
+\method{nullModel}{default}(x = NULL, y, ...)
+
+\method{predict}{nullModel}(object, newdata = NULL, type = NULL, ...)
 }
 \arguments{
 \item{x}{An optional matrix or data frame of predictors. These values are
@@ -15,8 +19,6 @@ not used in the model fit}
 \item{y}{A numeric vector (for regression) or factor (for classification) of
 outcomes}
 
-\item{\dots}{Optional arguments (not yet used)}
-
 \item{object}{An object of class \code{nullModel}}
 
 \item{newdata}{A matrix or data frame of predictors (only used to determine
@@ -24,6 +26,8 @@ the number of predictions to return)}
 
 \item{type}{Either "raw" (for regression), "class" or "prob" (for
 classification)}
+
+\item{\dots}{Optional arguments (not yet used)}
 }
 \value{
 The output of \code{nullModel} is a list of class \code{nullModel}

@@ -9,6 +9,10 @@
 \usage{
 nearZeroVar(x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE,
   names = FALSE, foreach = FALSE, allowParallel = TRUE)
+
+checkConditionalX(x, y)
+
+checkResamples(index, x, y)
 }
 \arguments{
 \item{x}{a numeric vector or matrix, or a data frame with all numeric data}

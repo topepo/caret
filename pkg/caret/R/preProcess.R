@@ -175,6 +175,7 @@ invHyperbolicSineFunc <- function(x) log(x+sqrt(x^2+1))
 #' @export preProcess
 preProcess <- function(x, ...) UseMethod("preProcess")
 
+#' @rdname preProcess
 #' @importFrom stats complete.cases median sd prcomp
 #' @importFrom car powerTransform yjPower
 #' @export
@@ -441,6 +442,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
   out
 }
 
+#' @rdname preProcess
 #' @importFrom stats complete.cases
 #' @export
 predict.preProcess <- function(object, newdata, ...) {

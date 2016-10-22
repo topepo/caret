@@ -8,6 +8,10 @@
 \usage{
 maxDissim(a, b, n = 2, obj = minDiss, useNames = FALSE, randomFrac = 1,
   verbose = FALSE, ...)
+
+minDiss(u)
+
+sumDiss(u)
 }
 \arguments{
 \item{a}{a matrix or data frame of samples to start}
@@ -26,9 +30,9 @@ remaining candidate values}
 
 \item{verbose}{a logical; should each step be printed?}
 
-\item{\dots}{optional arguments to pass to dist}
-
 \item{u}{a vector of dissimilarities}
+
+\item{\dots}{optional arguments to pass to dist}
 }
 \value{
 a vector of integers or row names (depending on \code{useNames})

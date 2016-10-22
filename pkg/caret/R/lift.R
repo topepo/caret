@@ -104,9 +104,13 @@
 #' @export lift
 lift <- function(x, ...) UseMethod("lift")
 
+#' @rdname lift
+#' @method lift default
 #' @export
 lift.default <- function(x, ...) stop("'x' should be a formula")
 
+#' @rdname lift
+#' @method lift formula
 #' @export
 lift.formula <- function(x, data = NULL,
                          class = NULL,
@@ -168,6 +172,8 @@ lift.formula <- function(x, data = NULL,
   out
 }
 
+#' @rdname lift
+#' @method print lift
 #' @export
 print.lift <- function(x, ...) {
   printCall(x$call)
@@ -179,6 +185,8 @@ print.lift <- function(x, ...) {
 #' @export
 plot.lift <- function(x, y = NULL, ...) xyplot.lift(x = x, data = NULL, ...)
 
+#' @rdname lift
+#' @method xyplot lift
 #' @importFrom stats as.formula
 #' @importFrom grDevices extendrange
 #' @export

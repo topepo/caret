@@ -29,7 +29,7 @@ stringFunc <- function (x)  {
 #' selected parameters
 #' @param showSD a logical whether to show the standard deviation of the
 #' resampling results within parentheses (e.g. "4.24 (0.493)")
-#' @param list() options passed to \code{\link[base]{format}}
+#' @param \dots options passed to \code{\link[base]{format}}
 #' @return A matrix with the complexity parameters and performance (invisibly).
 #' @author Max Kuhn
 #' @seealso \code{\link{train}}
