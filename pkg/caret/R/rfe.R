@@ -554,7 +554,7 @@ rfeIter <- function(x, y,
 #' plot(lmProfile, metric = "Rsquared")
 #' ggplot(lmProfile)
 #' }
-#'
+#' @method plot rfe
 #' @export plot.rfe
 plot.rfe <- function (x,
                       metric = x$metric,
@@ -1336,6 +1336,7 @@ predict.rfe <- function(object, newdata, ...)
 }
 
 #' @rdname rfe
+#' @method update rfe
 #' @export
 update.rfe <- function(object, x, y, size, ...) {
   size <- size[1]

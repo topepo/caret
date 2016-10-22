@@ -9,7 +9,7 @@
   metric = data$metric[1], plotType = "scatter", output = "layered",
   nameInStrip = FALSE, highlight = FALSE, ..., environment = NULL)
 
-plot.train(x, plotType = "scatter", metric = x$metric[1],
+\method{plot}{train}(x, plotType = "scatter", metric = x$metric[1],
   digits = getOption("digits") - 3, xTrans = NULL, nameInStrip = FALSE,
   ...)
 }

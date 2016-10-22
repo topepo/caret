@@ -401,6 +401,7 @@ cluster.resamples <- function(x, metric = x$metrics[1],  ...)
 }
 
 #' @rdname prcomp.resamples
+#' @method plot prcomp.resamples
 #' @importFrom grDevices extendrange
 #' @export
 plot.prcomp.resamples <- function(x, what = "scree", dims = max(2, ncol(x$rotation)), ...)

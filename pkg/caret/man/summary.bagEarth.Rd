@@ -5,7 +5,7 @@
 \alias{summary.bagFDA}
 \title{Summarize a bagged earth or FDA fit}
 \usage{
-summary.bagEarth(object, ...)
+\method{summary}{bagEarth}(object, ...)
 }
 \arguments{
 \item{object}{an object of class "bagEarth" or "bagFDA"}

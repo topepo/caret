@@ -8,7 +8,7 @@
 \method{ggplot}{rfe}(data = NULL, mapping = NULL, metric = data$metric[1],
   output = "layered", ..., environment = NULL)
 
-plot.rfe(x, metric = x$metric, ...)
+\method{plot}{rfe}(x, metric = x$metric, ...)
 }
 \arguments{
 \item{data}{an object of class \code{\link{rfe}}.}
@@ -59,7 +59,6 @@ plot(lmProfile)
 plot(lmProfile, metric = "Rsquared")
 ggplot(lmProfile)
 }
-
 }
 \author{
 Max Kuhn

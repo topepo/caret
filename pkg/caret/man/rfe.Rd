@@ -17,7 +17,7 @@ rfe(x, ...)
 rfeIter(x, y, testX, testY, sizes, rfeControl = rfeControl(), label = "",
   seeds = NA, ...)
 
-update.rfe(object, x, y, size, ...)
+\method{update}{rfe}(object, x, y, size, ...)
 }
 \arguments{
 \item{x}{a matrix or data frame of predictors for model training. This

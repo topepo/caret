@@ -1166,6 +1166,7 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' summary(plot_data)
 #'     }
 #'
+#' @method plot gafs
 #' @export plot.gafs
 plot.gafs <- function(x,
                       metric = x$control$metric["external"],
