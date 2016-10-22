@@ -160,7 +160,7 @@
 rfe <- function (x, ...) UseMethod("rfe")
 
 #' @rdname rfe
-#' @method rfe method
+#' @method rfe default
 #' @importFrom stats predict runif
 #' @export
 "rfe.default" <-

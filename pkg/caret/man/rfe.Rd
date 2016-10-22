@@ -12,7 +12,7 @@
 \usage{
 rfe(x, ...)
 
-\method{rfe}{method}(x, y, sizes = 2^(2:4), metric = ifelse(is.factor(y),
+\method{rfe}{default}(x, y, sizes = 2^(2:4), metric = ifelse(is.factor(y),
   "Accuracy", "RMSE"), maximize = ifelse(metric == "RMSE", FALSE, TRUE),
   rfeControl = rfeControl(), ...)
 
