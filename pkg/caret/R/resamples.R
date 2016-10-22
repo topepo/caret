@@ -745,6 +745,7 @@ xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, m
   out
 }
 
+#' @rdname xyplot.resamples
 #' @importFrom stats median
 #' @export
 parallelplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric[1], ...) 
@@ -773,6 +774,7 @@ parallelplot.resamples <- function (x, data = NULL, models = x$models, metric = 
   
 }
 
+#' @rdname xyplot.resamples
 #' @importFrom grDevices extendrange
 #' @export
 splom.resamples <- function (x, data = NULL, variables = "models",
@@ -823,6 +825,7 @@ splom.resamples <- function (x, data = NULL, variables = "models",
   
 }
 
+#' @rdname xyplot.resamples
 #' @importFrom stats as.formula
 #' @export
 densityplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...) 
@@ -840,7 +843,7 @@ densityplot.resamples <- function (x, data = NULL, models = x$models, metric = x
   
 }
 
-
+#' @rdname xyplot.resamples
 #' @importFrom stats as.formula
 #' @export
 bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...) 
@@ -863,6 +866,7 @@ bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metr
   
 }
 
+#' @rdname xyplot.resamples
 #' @importFrom stats aggregate as.formula median t.test
 #' @export
 dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, conf.level = 0.95, ...) 

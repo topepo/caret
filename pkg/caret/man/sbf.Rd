@@ -10,6 +10,10 @@
 sbf(x, ...)
 
 \method{sbf}{default}(x, y, sbfControl = sbfControl(), ...)
+
+\method{sbf}{formula}(form, data, ..., subset, na.action, contrasts = NULL)
+
+\method{predict}{sbf}(object, newdata = NULL, ...)
 }
 \arguments{
 \item{x}{a data frame containing training data where samples are in rows and

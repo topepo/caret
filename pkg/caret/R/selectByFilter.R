@@ -299,6 +299,7 @@ sbf <- function (x, ...) UseMethod("sbf")
     out
   }
 
+#' @rdname sbf
 #' @importFrom stats .getXlevels contrasts model.matrix model.response
 #' @export
 sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
@@ -399,6 +400,7 @@ print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 
 ######################################################################
 ######################################################################
+#' @rdname sbf
 #' @importFrom stats .checkMFClasses delete.response model.frame model.matrix na.omit
 #' @export
 predict.sbf <- function(object, newdata = NULL, ...)

@@ -49,7 +49,7 @@
 #' \url{http://topepo.github.io/caret/bytag.html}. A list of functions can also
 #' be passed for a custom model function. See
 #' \url{http://topepo.github.io/caret/custom_models.html} for details.
-#' @param list() arguments passed to the classification or regression routine
+#' @param \dots arguments passed to the classification or regression routine
 #' (such as \code{\link[randomForest]{randomForest}}). Errors will occur if
 #' values for tuning parameters are passed here.
 #' @param preProcess a string vector that defines a pre-processing of the
@@ -217,6 +217,7 @@
     UseMethod("train")
   }
 
+#' @rdname train
 #' @importFrom stats predict
 #' @importFrom utils object.size flush.console
 #' @export
@@ -866,6 +867,7 @@ train.default <- function(x, y,
   
 }
 
+#' @rdname train
 #' @importFrom stats .getXlevels complete.cases contrasts model.frame model.matrix model.response model.weights na.fail
 #' @export
 train.formula <- function (form, data, ..., weights, subset, na.action = na.fail, contrasts = NULL)  {

@@ -1,9 +1,11 @@
+#' @rdname sensitivity
 #' @export
 posPredValue <- 
   function(data, ...){
     UseMethod("posPredValue")
   }
 
+#' @rdname sensitivity
 #' @export
 "posPredValue.default" <-
   function(data, reference, positive = levels(reference)[1], prevalence = NULL, ...)
@@ -22,6 +24,7 @@ posPredValue <-
 
 }
 
+#' @rdname sensitivity
 #' @export
 "posPredValue.table" <-
   function(data, positive = rownames(data)[1], prevalence = NULL, ...)
@@ -57,6 +60,7 @@ posPredValue <-
 
 }
 
+#' @rdname sensitivity
 #' @export
 "posPredValue.matrix" <-
   function(data, positive = rownames(data)[1], prevalence = NULL, ...)

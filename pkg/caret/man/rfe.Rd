@@ -2,10 +2,8 @@
 % Please edit documentation in R/rfe.R
 \name{rfe}
 \alias{predict.rfe}
-\alias{print.rfe}
 \alias{rfe}
 \alias{rfe.default}
-\alias{rfe.formula}
 \alias{rfeIter}
 \alias{update.rfe}
 \title{Backwards Feature Selection}
@@ -16,13 +14,10 @@ rfe(x, ...)
   "Accuracy", "RMSE"), maximize = ifelse(metric == "RMSE", FALSE, TRUE),
   rfeControl = rfeControl(), ...)
 
-\method{rfe}{formula}(form, data, ..., subset, na.action, contrasts = NULL)
-
-\method{print}{rfe}(x, top = 5, digits = max(3, getOption("digits") - 3),
-  ...)
-
 rfeIter(x, y, testX, testY, sizes, rfeControl = rfeControl(), label = "",
   seeds = NA, ...)
+
+update.rfe(object, x, y, size, ...)
 }
 \arguments{
 \item{x}{a matrix or data frame of predictors for model training. This

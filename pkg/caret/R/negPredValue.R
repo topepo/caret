@@ -1,9 +1,11 @@
+#' @rdname sensitivity
 #' @export
 negPredValue <- 
   function(data, ...){
     UseMethod("negPredValue")
   }
 
+#' @rdname sensitivity
 #' @export
 "negPredValue.default" <-
 function(data, reference, negative = levels(reference)[2], prevalence = NULL, ...)
@@ -21,6 +23,7 @@ function(data, reference, negative = levels(reference)[2], prevalence = NULL, ..
    (spec * (1-prevalence))/(((1-sens)*prevalence) + ((spec)*(1-prevalence)))
 }
 
+#' @rdname sensitivity
 #' @export
 "negPredValue.table" <-
   function(data, negative = rownames(data)[-1], prevalence = NULL, ...)
@@ -56,6 +59,7 @@ function(data, reference, negative = levels(reference)[2], prevalence = NULL, ..
 
 }
 
+#' @rdname sensitivity
 #' @export
 "negPredValue.matrix" <-
   function(data, negative = rownames(data)[-1], prevalence = NULL, ...)

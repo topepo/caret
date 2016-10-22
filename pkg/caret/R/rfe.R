@@ -317,7 +317,6 @@ rfe <- function (x, ...) UseMethod("rfe")
     out
   }
 
-#' @rdname rfe
 #' @method rfe formula
 #' @importFrom stats .getXlevels contrasts model.matrix model.response
 #' @export
@@ -347,7 +346,6 @@ rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
 
 ######################################################################
 ######################################################################
-#' @rdname rfe
 #' @method print rfe
 #' @export
 print.rfe <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
@@ -1337,6 +1335,7 @@ predict.rfe <- function(object, newdata, ...)
   object$control$functions$pred(object$fit, newdata)
 }
 
+#' @rdname rfe
 #' @export
 update.rfe <- function(object, x, y, size, ...) {
   size <- size[1]
