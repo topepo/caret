@@ -93,7 +93,7 @@ sbfIter <- function(x, y,
 #' @param object an object of class \code{sbf}
 #' @param newdata a matrix or data frame of predictors. The object must have
 #' non-null column names
-#' @param list() for \code{sbf}: arguments passed to the classification or
+#' @param \dots for \code{sbf}: arguments passed to the classification or
 #' regression routine (such as \code{\link[randomForest]{randomForest}}). For
 #' \code{predict.sbf}: augments cannot be passed to the prediction function
 #' using \code{predict.sbf} as it uses the function originally specified for
@@ -156,6 +156,7 @@ sbfIter <- function(x, y,
 #' @export sbf
 sbf <- function (x, ...) UseMethod("sbf")
 
+#' @rdname sbf
 #' @importFrom stats predict runif
 #' @export
 "sbf.default" <-

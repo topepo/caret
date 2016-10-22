@@ -259,6 +259,7 @@ gafs_uCrossover <- function (population, parents, ...) {
 ###################################################################
 ##
 
+#' @rdname safsControl
 #' @export
 gafsControl <- function(functions = NULL,
                         method = "repeatedcv",

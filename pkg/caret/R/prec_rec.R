@@ -88,6 +88,7 @@
 #' @export recall
 recall <- function(data, ...) UseMethod("recall")
 
+#' @rdname recall
 #' @export
 "recall.table" <- function(data, relevant = rownames(data)[1], ...){
   if(!all.equal(nrow(data), ncol(data))) stop("the table must have nrow = ncol")
@@ -115,6 +116,7 @@ recall <- function(data, ...) UseMethod("recall")
   rec
 }
 
+#' @rdname recall
 #' @importFrom stats complete.cases
 #' @export
 recall.default <- function(data, reference, relevant = levels(reference)[1], 
@@ -134,9 +136,11 @@ recall.default <- function(data, reference, relevant = levels(reference)[1],
   recall.table(xtab, relevant = relevant)
 }
 
+#' @rdname recall
 #' @export
 precision <- function(data, ...) UseMethod("precision")
 
+#' @rdname recall
 #' @importFrom stats complete.cases
 #' @export
 precision.default <- function(data, reference, relevant = levels(reference)[1], 
@@ -156,6 +160,7 @@ precision.default <- function(data, reference, relevant = levels(reference)[1],
   precision.table(xtab, relevant = relevant)
 }
 
+#' @rdname recall
 #' @export
 precision.table <- function (data, relevant = rownames(data)[1], ...) {
   if (!all.equal(nrow(data), ncol(data))) 
@@ -183,9 +188,11 @@ precision.table <- function (data, relevant = rownames(data)[1], ...) {
   spec
 }
 
+#' @rdname recall
 #' @export
 F_meas <- function(data, ...) UseMethod("F_meas")
 
+#' @rdname recall
 #' @importFrom stats complete.cases
 #' @export
 F_meas.default <- function(data, reference, relevant = levels(reference)[1], 
@@ -205,6 +212,7 @@ F_meas.default <- function(data, reference, relevant = levels(reference)[1],
   F_meas.table(xtab, relevant = relevant, beta = beta)
 }
 
+#' @rdname recall
 #' @export
 F_meas.table <- function (data, relevant = rownames(data)[1], beta = 1, ...) {
   prec <- precision.table(data, relevant = relevant)

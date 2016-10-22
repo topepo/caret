@@ -8,12 +8,17 @@
 \title{Selection By Filtering (SBF)}
 \usage{
 sbf(x, ...)
+
+\method{sbf}{default}(x, y, sbfControl = sbfControl(), ...)
 }
 \arguments{
 \item{x}{a data frame containing training data where samples are in rows and
 features are in columns.}
 
 \item{y}{a numeric or factor vector containing the outcome for each sample.}
+
+\item{sbfControl}{a list of values that define how this function acts. See
+\code{\link{sbfControl}}. (NOTE: If given, this argument must be named.)}
 
 \item{form}{A formula of the form \code{y ~ x1 + x2 + ...}}
 
@@ -31,15 +36,12 @@ required variable. (NOTE: If given, this argument must be named.)}
 \item{contrasts}{a list of contrasts to be used for some or all the factors
 appearing as variables in the model formula.}
 
-\item{sbfControl}{a list of values that define how this function acts. See
-\code{\link{sbfControl}}. (NOTE: If given, this argument must be named.)}
-
 \item{object}{an object of class \code{sbf}}
 
 \item{newdata}{a matrix or data frame of predictors. The object must have
 non-null column names}
 
-\item{list()}{for \code{sbf}: arguments passed to the classification or
+\item{\dots}{for \code{sbf}: arguments passed to the classification or
 regression routine (such as \code{\link[randomForest]{randomForest}}). For
 \code{predict.sbf}: augments cannot be passed to the prediction function
 using \code{predict.sbf} as it uses the function originally specified for

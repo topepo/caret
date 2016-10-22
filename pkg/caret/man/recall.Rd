@@ -14,6 +14,25 @@
 \title{Calculate recall, precision and F values}
 \usage{
 recall(data, ...)
+
+\method{recall}{table}(data, relevant = rownames(data)[1], ...)
+
+\method{recall}{default}(data, reference, relevant = levels(reference)[1],
+  na.rm = TRUE, ...)
+
+precision(data, ...)
+
+\method{precision}{default}(data, reference, relevant = levels(reference)[1],
+  na.rm = TRUE, ...)
+
+\method{precision}{table}(data, relevant = rownames(data)[1], ...)
+
+F_meas(data, ...)
+
+\method{F_meas}{default}(data, reference, relevant = levels(reference)[1],
+  beta = 1, na.rm = TRUE, ...)
+
+\method{F_meas}{table}(data, relevant = rownames(data)[1], beta = 1, ...)
 }
 \arguments{
 \item{data}{for the default functions, a factor containing the discrete
@@ -21,18 +40,18 @@ measurements. For the \code{table} function, a table.}
 
 \item{...}{not currently used}
 
-\item{reference}{a factor containing the reference values (i.e. truth)}
-
 \item{relevant}{a character string that defines the factor level
 corresponding to the "relevant" results}
+
+\item{reference}{a factor containing the reference values (i.e. truth)}
+
+\item{na.rm}{a logical value indicating whether \code{NA} values should be
+stripped before the computation proceeds}
 
 \item{beta}{a numeric value used to weight precision and recall. A value of
 1 is traditionally used and corresponds to the harmonic mean of the two
 values but other values weight recall beta times more important than
 precision.}
-
-\item{na.rm}{a logical value indicating whether \code{NA} values should be
-stripped before the computation proceeds}
 }
 \value{
 A number between 0 and 1 (or NA).

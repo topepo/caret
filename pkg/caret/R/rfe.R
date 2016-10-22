@@ -1,127 +1,3 @@
-#' @importFrom stats complete.cases
-#' @importFrom utils flush.console
-#' @export
-rfeIter <- function(x, y,
-                    testX, testY, sizes,
-                    rfeControl = rfeControl(),
-                    label = "",
-                    seeds = NA,
-                    ...)
-{
-  if(is.null(colnames(x))) stop("x must have column names")
-
-  if(is.null(testX) | is.null(testY)) stop("a test set must be specified")
-  if(is.null(sizes)) stop("please specify the number of features")
-
-  predictionMatrix <- matrix(NA, nrow = length(testY), ncol = length(sizes))
-  p <- ncol(x)
-
-  retained <- colnames(x)
-  sizeValues <- sort(unique(c(sizes, ncol(x))), decreasing = TRUE)
-  sizeText <- format(sizeValues)
-
-  finalVariables <- vector(length(sizeValues), mode = "list")
-  for(k in seq(along = sizeValues))
-  {
-    if(!any(is.na(seeds))) set.seed(seeds[k])
-    if(rfeControl$verbose)
-    {
-      cat("+(rfe) fit",
-          ifelse(label != "",
-                 label, ""),
-          "size:",  sizeText[k], "\n")
-    }
-    flush.console()
-    fitObject <- rfeControl$functions$fit(x[,retained,drop = FALSE], y,
-                                          first = p == ncol(x[,retained,drop = FALSE]),
-                                          last = FALSE,
-                                          ...)
-    if(rfeControl$verbose)
-    {
-      cat("-(rfe) fit",
-          ifelse(label != "",
-                 label, ""),
-          "size:",  sizeText[k], "\n")
-    }
-    modelPred <- rfeControl$functions$pred(fitObject, testX[,retained,drop = FALSE])
-    if(is.data.frame(modelPred) | is.matrix(modelPred))
-    {
-      if(is.matrix(modelPred)) {
-        modelPred <- as.data.frame(modelPred)
-        ## in the case where the function returns a matrix with a single column
-        ## make sure that it is named pred
-        if(ncol(modelPred) == 1) names(modelPred) <- "pred"
-      }
-      modelPred$obs <- testY
-      modelPred$Variables <- sizeValues[k]
-    } else modelPred <- data.frame(pred = modelPred, obs = testY, Variables = sizeValues[k])
-
-    ## save as a vector and rbind at end
-    rfePred <- if(k == 1) modelPred else rbind(rfePred, modelPred)
-
-
-    if(!exists("modImp")) ##todo: get away from this since it finds object in other spaces
-    {
-      if(rfeControl$verbose)
-      {
-        cat("+(rfe) imp",
-            ifelse(label != "",
-                   label, ""), "\n")
-      }
-      modImp <- rfeControl$functions$rank(fitObject, x[,retained,drop = FALSE], y)
-      if(rfeControl$verbose)
-      {
-        cat("-(rfe) imp",
-            ifelse(label != "",
-                   label, ""), "\n")
-      }
-    } else {
-      if(rfeControl$rerank)
-      {
-        if(rfeControl$verbose)
-        {
-          cat("+(rfe) imp",
-              ifelse(label != "",
-                     label, ""),
-              "size:",  sizeText[k], "\n")
-        }
-        modImp <- rfeControl$functions$rank(fitObject, x[,retained,drop = FALSE], y)
-        if(rfeControl$verbose)
-        {
-          cat("-(rfe) imp",
-              ifelse(label != "",
-                     label, ""),
-              "size:",  sizeText[k], "\n")
-        }
-      }
-    }
-
-    if(nrow(modImp) < sizeValues[k]) {
-      msg1 <- paste0("rfe is expecting ", sizeValues[k],
-                     " importance values but only has ", nrow(modImp), ". ",
-                     "This may be caused by having zero-variance predictors, ",
-                     "excessively-correlated predictors, factor predictors ",
-                     "that were expanded into dummy variables or you may have ",
-                     "failed to drop one of your dummy variables.")
-      stop(msg1)
-    }
-    if(any(!complete.cases(modImp))){
-      stop(paste("There were missing importance values.",
-                 "There may be linear dependencies in your predictor variables"))
-    }
-    finalVariables[[k]] <- subset(modImp, var %in% retained)
-    finalVariables[[k]]$Variables <- sizeValues[[k]]
-    if(k < length(sizeValues)) retained <- as.character(modImp$var)[1:sizeValues[k+1]]
-  }
-  list(finalVariables = finalVariables, pred = rfePred)
-
-}
-
-######################################################################
-######################################################################
-
-
-
 #' Backwards Feature Selection
 #'
 #' A simple backwards selection, a.k.a. recursive feature selection (RFE),
@@ -283,6 +159,8 @@ rfeIter <- function(x, y,
 #' @export rfe
 rfe <- function (x, ...) UseMethod("rfe")
 
+#' @rdname rfe
+#' @method rfe method
 #' @importFrom stats predict runif
 #' @export
 "rfe.default" <-
@@ -439,6 +317,8 @@ rfe <- function (x, ...) UseMethod("rfe")
     out
   }
 
+#' @rdname rfe
+#' @method rfe formula
 #' @importFrom stats .getXlevels contrasts model.matrix model.response
 #' @export
 rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
@@ -467,6 +347,8 @@ rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
 
 ######################################################################
 ######################################################################
+#' @rdname rfe
+#' @method print rfe
 #' @export
 print.rfe <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 {
@@ -499,6 +381,132 @@ print.rfe <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 
 ######################################################################
 ######################################################################
+
+#' @rdname rfe
+#' @importFrom stats complete.cases
+#' @importFrom utils flush.console
+#' @export
+rfeIter <- function(x, y,
+                    testX, testY, sizes,
+                    rfeControl = rfeControl(),
+                    label = "",
+                    seeds = NA,
+                    ...)
+{
+  if(is.null(colnames(x))) stop("x must have column names")
+
+  if(is.null(testX) | is.null(testY)) stop("a test set must be specified")
+  if(is.null(sizes)) stop("please specify the number of features")
+
+  predictionMatrix <- matrix(NA, nrow = length(testY), ncol = length(sizes))
+  p <- ncol(x)
+
+  retained <- colnames(x)
+  sizeValues <- sort(unique(c(sizes, ncol(x))), decreasing = TRUE)
+  sizeText <- format(sizeValues)
+
+  finalVariables <- vector(length(sizeValues), mode = "list")
+  for(k in seq(along = sizeValues))
+  {
+    if(!any(is.na(seeds))) set.seed(seeds[k])
+    if(rfeControl$verbose)
+    {
+      cat("+(rfe) fit",
+          ifelse(label != "",
+                 label, ""),
+          "size:",  sizeText[k], "\n")
+    }
+    flush.console()
+    fitObject <- rfeControl$functions$fit(x[,retained,drop = FALSE], y,
+                                          first = p == ncol(x[,retained,drop = FALSE]),
+                                          last = FALSE,
+                                          ...)
+    if(rfeControl$verbose)
+    {
+      cat("-(rfe) fit",
+          ifelse(label != "",
+                 label, ""),
+          "size:",  sizeText[k], "\n")
+    }
+    modelPred <- rfeControl$functions$pred(fitObject, testX[,retained,drop = FALSE])
+    if(is.data.frame(modelPred) | is.matrix(modelPred))
+    {
+      if(is.matrix(modelPred)) {
+        modelPred <- as.data.frame(modelPred)
+        ## in the case where the function returns a matrix with a single column
+        ## make sure that it is named pred
+        if(ncol(modelPred) == 1) names(modelPred) <- "pred"
+      }
+      modelPred$obs <- testY
+      modelPred$Variables <- sizeValues[k]
+    } else modelPred <- data.frame(pred = modelPred, obs = testY, Variables = sizeValues[k])
+
+    ## save as a vector and rbind at end
+    rfePred <- if(k == 1) modelPred else rbind(rfePred, modelPred)
+
+
+    if(!exists("modImp")) ##todo: get away from this since it finds object in other spaces
+    {
+      if(rfeControl$verbose)
+      {
+        cat("+(rfe) imp",
+            ifelse(label != "",
+                   label, ""), "\n")
+      }
+      modImp <- rfeControl$functions$rank(fitObject, x[,retained,drop = FALSE], y)
+      if(rfeControl$verbose)
+      {
+        cat("-(rfe) imp",
+            ifelse(label != "",
+                   label, ""), "\n")
+      }
+    } else {
+      if(rfeControl$rerank)
+      {
+        if(rfeControl$verbose)
+        {
+          cat("+(rfe) imp",
+              ifelse(label != "",
+                     label, ""),
+              "size:",  sizeText[k], "\n")
+        }
+        modImp <- rfeControl$functions$rank(fitObject, x[,retained,drop = FALSE], y)
+        if(rfeControl$verbose)
+        {
+          cat("-(rfe) imp",
+              ifelse(label != "",
+                     label, ""),
+              "size:",  sizeText[k], "\n")
+        }
+      }
+    }
+
+    if(nrow(modImp) < sizeValues[k]) {
+      msg1 <- paste0("rfe is expecting ", sizeValues[k],
+                     " importance values but only has ", nrow(modImp), ". ",
+                     "This may be caused by having zero-variance predictors, ",
+                     "excessively-correlated predictors, factor predictors ",
+                     "that were expanded into dummy variables or you may have ",
+                     "failed to drop one of your dummy variables.")
+      stop(msg1)
+    }
+    if(any(!complete.cases(modImp))){
+      stop(paste("There were missing importance values.",
+                 "There may be linear dependencies in your predictor variables"))
+    }
+    finalVariables[[k]] <- subset(modImp, var %in% retained)
+    finalVariables[[k]]$Variables <- sizeValues[[k]]
+    if(k < length(sizeValues)) retained <- as.character(modImp$var)[1:sizeValues[k+1]]
+  }
+  list(finalVariables = finalVariables, pred = rfePred)
+
+}
+
+######################################################################
+######################################################################
+
+
+
 
 
 #' Plot RFE Performance Profiles

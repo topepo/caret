@@ -95,6 +95,8 @@
 #' @export resamples
 "resamples" <- function(x, ...) UseMethod("resamples")
 
+#' @rdname resamples
+#' @method resamples default
 #' @export
 resamples.default <- function(x, modelNames = names(x), ...) {
   
@@ -184,6 +186,82 @@ resamples.default <- function(x, modelNames = names(x), ...) {
   out
 }
 
+#' @rdname resamples
+#' @method sort resamples
+#' @export
+sort.resamples <- function(x, decreasing = FALSE, metric = x$metric[1], FUN = mean, ...) 
+{
+  dat <- x$values[, grep(paste("~", metric[1], sep = ""), names(x$values))]
+  colnames(dat) <- gsub(paste("~", metric[1], sep = ""), "", colnames(dat))
+  stats <- apply(dat, 2, FUN, ...)
+  names(sort(stats, decreasing = decreasing))
+}
+
+#' @rdname resamples
+#' @method summary resamples
+#' @export
+summary.resamples <- function(object, metric = object$metrics, ...){
+  vals <- object$values[, names(object$values) != "Resample", drop = FALSE]
+  out <- vector(mode = "list", length = length(metric))
+  for(i in seq(along = metric)) {
+    tmpData <- vals[, grep(paste("~", metric[i], sep = ""), names(vals), fixed = TRUE), drop = FALSE]
+    
+    out[[i]] <- do.call("rbind", lapply(tmpData, function(x) summary(x)[1:6]))
+    naSum <- matrix(unlist(lapply(tmpData, function(x) sum(is.na(x)))), ncol = 1)
+    colnames(naSum) <- "NA's"
+    out[[i]] <- cbind(out[[i]], naSum)
+    rownames(out[[i]]) <- gsub(paste("~", metric[i], sep = ""),
+                               "",
+                               rownames(out[[i]]),
+                               fixed = TRUE)
+  }
+  
+  names(out) <- metric
+  out <- structure(
+    list(values = vals,
+         call = match.call(),
+         statistics = out,
+         models = object$models,
+         metrics = metric,
+         methods = object$methods),
+    class = "summary.resamples")
+  out
+}
+
+#' @rdname resamples
+#' @method as.matrix resamples
+#' @export
+as.matrix.resamples <- function(x, metric = x$metric[1], ...) {
+  get_cols <- grepl(paste0("~", metric[1]), colnames(x$values))
+  if(!(any(get_cols))) stop("no columns fit that metric")
+  out <- x$values[,get_cols,drop=FALSE]
+  rownames(out) <- as.character(x$values$Resample)
+  colnames(out) <- gsub(paste0("~", metric[1]), "", colnames(out))
+  as.matrix(out)
+}
+
+#' @rdname resamples
+#' @method as.data.frame resamples
+#' @export
+as.data.frame.resamples <- function(x, row.names = NULL, optional = FALSE, 
+                                    metric = x$metric[1], ...) {
+  get_cols <- grepl(paste0("~", metric[1]), colnames(x$values))
+  if(!(any(get_cols))) stop("no columns fit that metric")
+  out <- x$values[,get_cols,drop=FALSE]
+  out$Resample <- x$values$Resample
+  colnames(out) <- gsub(paste0("~", metric[1]), "", colnames(out))
+  out
+}
+
+#' @rdname resamples
+#' @importFrom stats cor
+#' @export
+modelCor <- function(x, metric = x$metric[1], ...)
+{
+  dat <- x$values[, grep(paste("~", metric[1], sep = ""), names(x$values))]
+  colnames(dat) <- gsub(paste("~", metric[1], sep = ""), "", colnames(dat))
+  cor(dat, ...)
+}
 
 
 #' Principal Components Analysis of Resampling Results
@@ -413,6 +491,7 @@ print.prcomp.resamples <- function (x, digits = max(3, getOption("digits") - 3),
   invisible(x)
 }
 
+#' @rdname resamples
 #' @export
 print.resamples <- function(x, ...)
 {
@@ -430,34 +509,6 @@ print.resamples <- function(x, ...)
   invisible(x)
 }
 
-#' @export
-summary.resamples <- function(object, metric = object$metrics, ...){
-  vals <- object$values[, names(object$values) != "Resample", drop = FALSE]
-  out <- vector(mode = "list", length = length(metric))
-  for(i in seq(along = metric)) {
-    tmpData <- vals[, grep(paste("~", metric[i], sep = ""), names(vals), fixed = TRUE), drop = FALSE]
-    
-    out[[i]] <- do.call("rbind", lapply(tmpData, function(x) summary(x)[1:6]))
-    naSum <- matrix(unlist(lapply(tmpData, function(x) sum(is.na(x)))), ncol = 1)
-    colnames(naSum) <- "NA's"
-    out[[i]] <- cbind(out[[i]], naSum)
-    rownames(out[[i]]) <- gsub(paste("~", metric[i], sep = ""),
-                               "",
-                               rownames(out[[i]]),
-                               fixed = TRUE)
-  }
-  
-  names(out) <- metric
-  out <- structure(
-    list(values = vals,
-         call = match.call(),
-         statistics = out,
-         models = object$models,
-         metrics = metric,
-         methods = object$methods),
-    class = "summary.resamples")
-  out
-}
 
 #' @export
 print.summary.resamples <- function(x, ...)
@@ -1346,23 +1397,6 @@ dotplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], ...)
           ...)
 }
 
-#' @importFrom stats cor
-#' @export
-modelCor <- function(x, metric = x$metric[1], ...)
-{
-  dat <- x$values[, grep(paste("~", metric[1], sep = ""), names(x$values))]
-  colnames(dat) <- gsub(paste("~", metric[1], sep = ""), "", colnames(dat))
-  cor(dat, ...)
-}
-
-#' @export
-sort.resamples <- function(x, decreasing = FALSE, metric = x$metric[1], FUN = mean, ...) 
-{
-  dat <- x$values[, grep(paste("~", metric[1], sep = ""), names(x$values))]
-  colnames(dat) <- gsub(paste("~", metric[1], sep = ""), "", colnames(dat))
-  stats <- apply(dat, 2, FUN, ...)
-  names(sort(stats, decreasing = decreasing))
-}
 
 #' @rdname diff.resamples
 #' @export
@@ -1373,26 +1407,6 @@ compare_models <- function(a, b, metric = a$metric[1]) {
   diffs$statistics[[1]][[1]]
 }
 
-#' @export
-as.matrix.resamples <- function(x, metric = x$metric[1], ...) {
-  get_cols <- grepl(paste0("~", metric[1]), colnames(x$values))
-  if(!(any(get_cols))) stop("no columns fit that metric")
-  out <- x$values[,get_cols,drop=FALSE]
-  rownames(out) <- as.character(x$values$Resample)
-  colnames(out) <- gsub(paste0("~", metric[1]), "", colnames(out))
-  as.matrix(out)
-}
-
-#' @export
-as.data.frame.resamples <- function(x, row.names = NULL, optional = FALSE, 
-                                    metric = x$metric[1], ...) {
-  get_cols <- grepl(paste0("~", metric[1]), colnames(x$values))
-  if(!(any(get_cols))) stop("no columns fit that metric")
-  out <- x$values[,get_cols,drop=FALSE]
-  out$Resample <- x$values$Resample
-  colnames(out) <- gsub(paste0("~", metric[1]), "", colnames(out))
-  out
-}
 
 
 

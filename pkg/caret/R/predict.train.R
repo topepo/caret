@@ -52,7 +52,8 @@ predict.list <- function(object, ...) {
 #' @param unkOnly a logical to bypass training and test set predictions. This
 #' is useful if speed is needed for unknown samples.
 #' @param verbose a logical for printing messages
-#' @param list() additional arguments to be passed to other methods
+#' @param \dots only used for \code{sort} and \code{modelCor} and captures
+#' arguments to pass to \code{sort} or \code{FUN}.
 #' @return
 #' 
 #' For \code{predict.train}, a vector of predictions if \code{type = "raw"} or

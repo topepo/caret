@@ -2,24 +2,33 @@
 % Please edit documentation in R/rfe.R
 \name{rfe}
 \alias{predict.rfe}
+\alias{print.rfe}
 \alias{rfe}
 \alias{rfe.default}
+\alias{rfe.formula}
 \alias{rfeIter}
 \alias{update.rfe}
 \title{Backwards Feature Selection}
 \usage{
 rfe(x, ...)
+
+\method{rfe}{method}(x, y, sizes = 2^(2:4), metric = ifelse(is.factor(y),
+  "Accuracy", "RMSE"), maximize = ifelse(metric == "RMSE", FALSE, TRUE),
+  rfeControl = rfeControl(), ...)
+
+\method{rfe}{formula}(form, data, ..., subset, na.action, contrasts = NULL)
+
+\method{print}{rfe}(x, top = 5, digits = max(3, getOption("digits") - 3),
+  ...)
+
+rfeIter(x, y, testX, testY, sizes, rfeControl = rfeControl(), label = "",
+  seeds = NA, ...)
 }
 \arguments{
 \item{x}{a matrix or data frame of predictors for model training. This
 object must have unique column names.}
 
 \item{y}{a vector of training set outcomes (either numeric or factor)}
-
-\item{testX}{a matrix or data frame of test set predictors. This must have
-the same column names as \code{x}}
-
-\item{testY}{a vector of test set outcomes}
 
 \item{sizes}{a numeric vector of integers corresponding to the number of
 features that should be retained}
@@ -38,18 +47,23 @@ prediction. The web page
 \url{http://topepo.github.io/caret/featureselection.html#rfe} has more
 details and examples related to this function.}
 
-\item{object}{an object of class \code{rfe}}
+\item{testX}{a matrix or data frame of test set predictors. This must have
+the same column names as \code{x}}
 
-\item{size}{a single integers corresponding to the number of features that
-should be retained in the updated model}
-
-\item{newdata}{a matrix or data frame of new samples for prediction}
+\item{testY}{a vector of test set outcomes}
 
 \item{label}{an optional character string to be printed when in verbose
 mode.}
 
 \item{seeds}{an optional vector of integers for the size. The vector should
 have length of \code{length(sizes)+1}}
+
+\item{object}{an object of class \code{rfe}}
+
+\item{size}{a single integers corresponding to the number of features that
+should be retained in the updated model}
+
+\item{newdata}{a matrix or data frame of new samples for prediction}
 
 \item{\dots}{options to pass to the model fitting function (ignored in
 \code{predict.rfe})}

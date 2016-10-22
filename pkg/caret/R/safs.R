@@ -355,12 +355,6 @@ safsControl <- function(functions = NULL,
        allowParallel = allowParallel)
 }
 
-#' @export
-safs <- function (x, ...) UseMethod("safs")
-
-
-
-
 #' @title Simulated annealing feature selection
 #'
 #'
@@ -448,7 +442,7 @@ safs <- function (x, ...) UseMethod("safs")
 #' and without each predictor be calculated
 #' @param safsControl a list of values that define how this function acts. See
 #' \code{\link{safsControl}} and URL.
-#' @param list() arguments passed to the classification or regression routine
+#' @param \dots arguments passed to the classification or regression routine
 #' specified in the function \code{safsControl$functions$fit}
 #' @return an object of class \code{safs}
 #' @author Max Kuhn
@@ -483,6 +477,10 @@ safs <- function (x, ...) UseMethod("safs")
 #' rf_search
 #' }
 #'
+#' @export safs
+safs <- function (x, ...) UseMethod("safs")
+
+#' @rdname safs
 #' @export safs.default
 "safs.default" <-
   function(x, y,
@@ -793,6 +791,7 @@ safs_initial <- function (vars, prob = .20, ...)  {
   sort(sample.int(vars, size = floor(vars*prob)+1))
 }
 
+#' @rdname safs_initial
 #' @export
 safs_perturb <- function(x, vars, number = floor(vars*.01) + 1) {
   bin <- index2vec(x, vars)
@@ -801,6 +800,7 @@ safs_perturb <- function(x, vars, number = floor(vars*.01) + 1) {
   sort(which(bin == 1))
 }
 
+#' @rdname safs_initial
 #' @export
 safs_prob <- function(old, new, iteration = 1) {
   if(new < old) return(1)
@@ -1089,7 +1089,7 @@ plot.safs <- function(x,
 
 ###################################################################
 ##
-
+#' @rdname safs_initial
 #' @importFrom stats predict
 #' @export
 caretSA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) train(x, y, ...),
@@ -1114,6 +1114,7 @@ caretSA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) train(x, y, 
                 prob = safs_prob,
                 selectIter = best)
 
+#' @rdname safs_initial
 #' @export
 treebagSA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) {
   loadNamespace("ipred")
@@ -1135,6 +1136,7 @@ perturb = safs_perturb,
 prob = safs_prob,
 selectIter = best)
 
+#' @rdname safs_initial
 #' @export
 rfSA <-  list(fit = function(x, y, lev = NULL, last = FALSE, ...) {
   loadNamespace("randomForest")
