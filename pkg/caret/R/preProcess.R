@@ -101,7 +101,7 @@ invHyperbolicSineFunc <- function(x) log(x+sqrt(x^2+1))
 #' be ignored.
 #' @param method a character vector specifying the type of processing. Possible
 #' values are "BoxCox", "YeoJohnson", "expoTrans", "center", "scale", "range",
-#' "knnImpute", "bagImpute", "medianImpute", "pca", "ica", "spatialSign", "zv",
+#' "knnImpute", "bagImpute", "medianImpute", "pca", "ica", "spatialSign", "corr", "zv",
 #' "nzv", and "conditionalX" (see Details below)
 #' @param          thresh a cutoff for the cumulative percent of variance to be retained
 #' by PCA
@@ -207,12 +207,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
   tmp <- pre_process_options(method, column_types)
   method <- tmp$opts
   wildcards <- tmp$wildcards
-  # if(verbose) {
-  #   cat("final pre-processing options:\n")
-  #   print(method)
-  #   cat("\n")
-  # }
-  
+
   ## the row.norm option in fastICA states: "logical value indicating whether rows
   ## of the data matrix X should be standardized beforehand." Basically, this means that
   ## we would center *and* scale before the ICA step, so let's adjust the "scale" method too
@@ -822,9 +817,6 @@ pre_process_options <- function(opts, vars) {
   }
   not_num <- unique(not_num)
   if(length(not_num) > 0) {
-    #     warning((paste("These fields are not numeric and will not be pre-processed:",
-    #                    paste("'", not_num, "'", sep = "", collapse = ", "))),
-    #             immediate. = TRUE)
     opts$ignore <- unique(c(opts$ignore, not_num))
   }
   
