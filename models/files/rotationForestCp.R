@@ -5,12 +5,14 @@ modelInfo <- list(label = "Rotation Forest",
                                           class = rep("numeric", 3),
                                           label = c("#Variable Subsets", "Ensemble Size", "Complexity Parameter")),
                   grid = function(x, y, len = NULL, search = "grid") {
+                    feas_k <- 1:15
+                    feas_k <- feas_k[ncol(x)%%feas_k == 0]
                     if(search == "grid") {
-                      out <- expand.grid(K = 1:min(len, ncol(x)-1), 
+                      out <- expand.grid(K = feas_k[1:min(len, length(feas_k))], 
                                          L = (1:len)*3,
                                          cp = unique(seq(0, .1, length = len)))
                     } else {
-                      out <- data.frame(K = sample(1:min(len, ncol(x)-1), size = len, replace = TRUE), 
+                      out <- data.frame(K = sample(feas_k, size = len, replace = TRUE), 
                                         L = sample(10:100, size = len, replace = TRUE),
                                         cp = runif(len, 0, .1))
                     }
