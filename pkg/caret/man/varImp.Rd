@@ -152,6 +152,9 @@ Otherwise:
 \bold{Linear Models}: the absolute value of the t--statistic for each model
 parameter is used.
 
+\bold{\code{glmboost}} and \bold{\code{glmnet}}: the absolute value of the coefficients
+corresponding the the tuned model are used.
+
 \bold{Random Forest}: \code{varImp.randomForest} and
 \code{varImp.RandomForest} are wrappers around the importance functions from
 the \pkg{randomForest} and \pkg{party} packages, respectively.
