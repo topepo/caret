@@ -8,7 +8,8 @@ ppMethods <- c("BoxCox", "YeoJohnson", "expoTrans", "invHyperbolicSine",
                "spatialSign", 
                "ignore", "keep", 
                "remove", 
-               "zv", "nzv", "conditionalX")
+               "zv", "nzv", "conditionalX",
+               "corr")
 
 invHyperbolicSineFunc <- function(x) log(x+sqrt(x^2+1))
 
@@ -49,8 +50,11 @@ invHyperbolicSineFunc <- function(x) log(x+sqrt(x^2+1))
 #' \code{method = "zv"} identifies numeric predictor columns with a single
 #' value (i.e. having zero variance) and excludes them from further
 #' calculations. Similarly, \code{method = "nzv"} does the same by applying
-#' \code{\link{nearZeroVar}} with the default parameters to exclude "near
-#' zero-variance" predictors.
+#' \code{\link{nearZeroVar}} exclude "near zero-variance" predictors. The options
+#' \code{freqCut} and \code{uniqueCut} can be used to modify the filter. 
+#'
+#' \code{method = "corr"} seeks to filter out highly correlated predictors. See
+#' \code{\link{findCorrelation}}. 
 #' 
 #' For classification, \code{method = "conditionalX"} examines the distribution
 #' of each predictor conditional on the outcome. If there is only one unique
@@ -60,7 +64,7 @@ invHyperbolicSineFunc <- function(x) log(x+sqrt(x^2+1))
 #' consuming when used within resampling via \code{\link{train}}.
 #' 
 #' The operations are applied in this order: zero-variance filter, near-zero
-#' variance filter, Box-Cox/Yeo-Johnson/exponential transformation, centering,
+#' variance filter, correlation filter, Box-Cox/Yeo-Johnson/exponential transformation, centering,
 #' scaling, range, imputation, PCA, ICA then spatial sign. This is a departure
 #' from versions of \pkg{caret} prior to version 4.76 (where imputation was
 #' done first) and is not backwards compatible if bagging was used for
@@ -99,7 +103,7 @@ invHyperbolicSineFunc <- function(x) log(x+sqrt(x^2+1))
 #' values are "BoxCox", "YeoJohnson", "expoTrans", "center", "scale", "range",
 #' "knnImpute", "bagImpute", "medianImpute", "pca", "ica", "spatialSign", "zv",
 #' "nzv", and "conditionalX" (see Details below)
-#' @param thresh a cutoff for the cumulative percent of variance to be retained
+#' @param          thresh a cutoff for the cumulative percent of variance to be retained
 #' by PCA
 #' @param pcaComp the specific number of PCA components to keep. If specified,
 #' this over-rides \code{thresh}
@@ -119,6 +123,12 @@ invHyperbolicSineFunc <- function(x) log(x+sqrt(x^2+1))
 #' @param numUnique how many unique values should \code{y} have to estimate the
 #' Box-Cox transformation?
 #' @param verbose a logical: prints a log as the computations proceed
+#' @param freqCut the cutoff for the ratio of the most common value to the 
+#' second most common value. See \code{\link{nearZeroVar}}.
+#' @param uniqueCut the cutoff for the percentage of distinct values out of 
+#' the number of total samples. See \code{\link{nearZeroVar}}. 
+#' @param cutoff a numeric value for the pair-wise absolute correlation cutoff. 
+#' See \code{\link{findCorrelation}}.  
 #' @param \dots additional arguments to pass to \code{\link[fastICA]{fastICA}},
 #' such as \code{n.comp}
 #' @return \code{preProcess} results in a list with elements \item{call}{the
@@ -188,7 +198,10 @@ preProcess.default <- function(x, method = c("center", "scale"),
                                outcome = NULL,
                                fudge = .2,
                                numUnique = 3,
-                               verbose = FALSE,
+                               verbose = FALSE, 
+                               freqCut = 95/5, 
+                               uniqueCut = 10,
+                               cutoff = 0.9,
                                ...) {
   column_types <- get_types(x)
   tmp <- pre_process_options(method, column_types)
@@ -224,7 +237,8 @@ preProcess.default <- function(x, method = c("center", "scale"),
   }
   ## check for near-zero-variance predictors
   if(any(names(method) == "nzv")){
-    is_nzv <- nearZeroVar(x[, !(colnames(x) %in% method$ignore), drop = FALSE])
+    is_nzv <- nearZeroVar(x[, !(colnames(x) %in% method$ignore), drop = FALSE], 
+                          freqCut = freqCut, uniqueCut = uniqueCut)
     if(length(is_nzv) > 0) {
       removed <- colnames(x[, !(colnames(x) %in% method$ignore), drop = FALSE])[is_nzv]
       method <- lapply(method, function(x, vars) x[!(x %in% vars)], vars = removed)
@@ -244,6 +258,22 @@ preProcess.default <- function(x, method = c("center", "scale"),
     }
     method$conditionalX <- NULL
   }    
+
+  ## check for highly correlated predictors
+  if(any(names(method) == "corr")){
+    cmat <- try(cor(x[, !(colnames(x) %in% method$ignore), drop = FALSE], 
+                    use = "pairwise.complete.obs"), 
+                silent = TRUE)
+    if(class(cmat)[1] != "try-error") {
+      high_corr <- findCorrelation(cmat, cutoff = cutoff)
+      if(length(high_corr) > 0) {
+        removed <- colnames(cmat)[high_corr]
+        method$remove <- unique(c(method$remove, removed))
+        x <- x[, !(colnames(x) %in% removed)]
+      } else warning(paste("correlation matrix could not be computed:\n", cmat))
+    }
+    method$corr <- NULL
+  }
   
   if(any(names(method) == "invHyperbolicSine")) {
     if(verbose) cat(" applying invHyperbolicSine\n")

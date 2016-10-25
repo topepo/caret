@@ -11,7 +11,7 @@ preProcess(x, ...)
 \method{preProcess}{default}(x, method = c("center", "scale"),
   thresh = 0.95, pcaComp = NULL, na.remove = TRUE, k = 5,
   knnSummary = mean, outcome = NULL, fudge = 0.2, numUnique = 3,
-  verbose = FALSE, ...)
+  verbose = FALSE, freqCut = 95/5, uniqueCut = 10, cutoff = 0.9, ...)
 
 \method{predict}{preProcess}(object, newdata, ...)
 }
@@ -50,6 +50,15 @@ predictor variables (see Details below)}
 Box-Cox transformation?}
 
 \item{verbose}{a logical: prints a log as the computations proceed}
+
+\item{freqCut}{the cutoff for the ratio of the most common value to the 
+second most common value. See \code{\link{nearZeroVar}}.}
+
+\item{uniqueCut}{the cutoff for the percentage of distinct values out of 
+the number of total samples. See \code{\link{nearZeroVar}}.}
+
+\item{cutoff}{a numeric value for the pair-wise absolute correlation cutoff. 
+See \code{\link{findCorrelation}}.}
 
 \item{object}{an object of class \code{preProcess}}
 
@@ -111,8 +120,11 @@ Predictors that are not numeric are ignored in the calculations.
 \code{method = "zv"} identifies numeric predictor columns with a single
 value (i.e. having zero variance) and excludes them from further
 calculations. Similarly, \code{method = "nzv"} does the same by applying
-\code{\link{nearZeroVar}} with the default parameters to exclude "near
-zero-variance" predictors.
+\code{\link{nearZeroVar}} exclude "near zero-variance" predictors. The options
+\code{freqCut} and \code{uniqueCut} can be used to modify the filter.
+
+\code{method = "corr"} seeks to filter out highly correlated predictors. See
+\code{\link{findCorrelation}}.
 
 For classification, \code{method = "conditionalX"} examines the distribution
 of each predictor conditional on the outcome. If there is only one unique
@@ -122,7 +134,7 @@ not a factor, this calculation is not executed. This operation can be time
 consuming when used within resampling via \code{\link{train}}.
 
 The operations are applied in this order: zero-variance filter, near-zero
-variance filter, Box-Cox/Yeo-Johnson/exponential transformation, centering,
+variance filter, correlation filter, Box-Cox/Yeo-Johnson/exponential transformation, centering,
 scaling, range, imputation, PCA, ICA then spatial sign. This is a departure
 from versions of \pkg{caret} prior to version 4.76 (where imputation was
 done first) and is not backwards compatible if bagging was used for
