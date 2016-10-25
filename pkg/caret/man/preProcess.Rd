@@ -21,7 +21,7 @@ be ignored.}
 
 \item{method}{a character vector specifying the type of processing. Possible
 values are "BoxCox", "YeoJohnson", "expoTrans", "center", "scale", "range",
-"knnImpute", "bagImpute", "medianImpute", "pca", "ica", "spatialSign", "zv",
+"knnImpute", "bagImpute", "medianImpute", "pca", "ica", "spatialSign", "corr", "zv",
 "nzv", and "conditionalX" (see Details below)}
 
 \item{thresh}{a cutoff for the cumulative percent of variance to be retained
