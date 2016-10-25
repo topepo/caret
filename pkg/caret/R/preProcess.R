@@ -207,11 +207,11 @@ preProcess.default <- function(x, method = c("center", "scale"),
   tmp <- pre_process_options(method, column_types)
   method <- tmp$opts
   wildcards <- tmp$wildcards
-  if(verbose) {
-    cat("final pre-processing options:\n")
-    print(method)
-    cat("\n")
-  }
+  # if(verbose) {
+  #   cat("final pre-processing options:\n")
+  #   print(method)
+  #   cat("\n")
+  # }
   
   ## the row.norm option in fastICA states: "logical value indicating whether rows
   ## of the data matrix X should be standardized beforehand." Basically, this means that
@@ -232,6 +232,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
       removed <- names(is_zv)[is_zv]
       method <- lapply(method, function(x, vars) x[!(x %in% vars)], vars = removed)
       method$remove <- unique(c(method$remove, removed))
+      if(verbose) cat(paste(" ", length(removed), "zero variance predictors were removed.\n"))
     }
     method$zv <- NULL
   }
@@ -243,6 +244,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
       removed <- colnames(x[, !(colnames(x) %in% method$ignore), drop = FALSE])[is_nzv]
       method <- lapply(method, function(x, vars) x[!(x %in% vars)], vars = removed)
       method$remove <- unique(c(method$remove, removed))
+      if(verbose) cat(paste(" ", length(removed), "near-zero variance predictors were removed.\n"))
     }
     method$nzv <- NULL
   }  
@@ -255,6 +257,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
       removed <- colnames(x[, !(colnames(x) %in% method$ignore), drop = FALSE])[bad_pred]
       method <- lapply(method, function(x, vars) x[!(x %in% vars)], vars = removed)
       method$remove <- unique(c(method$remove, removed))
+      if(verbose) cat(paste(" ", length(removed), "conditionally zero variance predictors.\n"))
     }
     method$conditionalX <- NULL
   }    
@@ -269,6 +272,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
       if(length(high_corr) > 0) {
         removed <- colnames(cmat)[high_corr]
         method$remove <- unique(c(method$remove, removed))
+        if(verbose) cat(paste(" ", length(removed), "highly correlated predictors were removed.\n"))
         x <- x[, !(colnames(x) %in% removed)]
       } else warning(paste("correlation matrix could not be computed:\n", cmat))
     }
