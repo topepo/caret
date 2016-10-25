@@ -34,6 +34,8 @@ stringFunc <- function (x)  {
 #' @author Max Kuhn
 #' @seealso \code{\link{train}}
 #' @keywords print
+#' @method print train
+#' @export  
 #' @examples
 #'
 #' \dontrun{

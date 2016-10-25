@@ -749,6 +749,8 @@ print.gafs <- function (x, top = 5,
 #' @author Max Kuhn
 #' @seealso \code{\link{safs}}, \code{\link{gafs}}
 #' @keywords multivariate
+#' @method predict gafs
+#' @export 
 #' @examples
 #'
 #' \dontrun{
@@ -888,6 +890,8 @@ gafs <- function (x, ...) UseMethod("gafs")
 #'
 #' \url{http://en.wikipedia.org/wiki/Jaccard_index}
 #' @keywords models
+#' @method gafs default
+#' @export 
 #' @examples
 #'
 #' \dontrun{
@@ -1140,6 +1144,8 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' @seealso \code{\link{gafs}}, \code{\link{safs}},
 #' \code{\link[ggplot2]{ggplot}}, \code{\link[lattice]{xyplot}}
 #' @keywords hplot
+#' @method plot gafs
+#' @export 
 #' @examples
 #'
 #' \dontrun{

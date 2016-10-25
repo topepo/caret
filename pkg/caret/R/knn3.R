@@ -167,7 +167,8 @@ print.knn3 <- function (x, ...)
 #' @author \code{\link[ipred]{predict.ipredknn}} by Torsten.Hothorn
 #' <Torsten.Hothorn@@rzmail.uni-erlangen.de>
 #' @keywords multivariate
-#' @export predict.knn3
+#' @method predict knn3
+#' @export  
 predict.knn3 <- function (object, newdata, type = c("prob", "class"), ...) 
 {
     type <- match.arg(type)

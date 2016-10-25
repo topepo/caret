@@ -50,11 +50,8 @@ icr <- function (x, ...) UseMethod("icr")
 #' icrFit
 #' 
 #' predict(icrFit, bbbDescr[1:5,])
-#' 
-#' 
-#' 
-#' 
-#' @export icr.formula
+#' @method icr formula
+#' @export 
 icr.formula <- function (formula, data, weights, ...,              
                          subset, na.action, contrasts = NULL) 
 {

@@ -5,7 +5,7 @@
 \alias{safs.default}
 \title{Simulated annealing feature selection}
 \usage{
-safs(x, ...)
+\method{safs}{default}(x, ...)
 
 \method{safs}{default}(x, y, iters = 10, differences = TRUE,
   safsControl = safsControl(), ...)

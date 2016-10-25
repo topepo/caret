@@ -70,10 +70,6 @@ icrFit <- icr(bbbDescr, logBBB, n.comp = 5)
 icrFit
 
 predict(icrFit, bbbDescr[1:5,])
-
-
-
-
 }
 \author{
 Max Kuhn

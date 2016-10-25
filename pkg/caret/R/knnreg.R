@@ -9,7 +9,7 @@
 #' average outcome.
 #' 
 #' @aliases knnreg knnregTrain knnreg.formula knnreg.default knnreg.matrix
-#' knnreg.data.frame knnreg
+#' knnreg.data.frame knnreg 
 #' @param formula a formula of the form \code{lhs ~ rhs} where \code{lhs} is
 #' the response variable and \code{rhs} a set of predictors.
 #' @param data optional data frame containing the variables in the model
@@ -157,6 +157,7 @@ print.knnreg <- function (x, ...)
 #' class \code{knnreg}. For the details see \code{\link{knnreg}}. This is
 #' essentially a copy of \code{\link[ipred]{predict.ipredknn}}.
 #' 
+#' @aliases predict.knnreg
 #' @param object object of class \code{knnreg}.
 #' @param newdata a data frame or matrix of new observations.
 #' @param ... additional arguments.
@@ -164,7 +165,8 @@ print.knnreg <- function (x, ...)
 #' @author Max Kuhn, Chris Keefer, adapted from \code{\link[class]{knn}} and
 #' \code{\link[ipred]{predict.ipredknn}}
 #' @keywords multivariate
-#' @export predict.knnreg
+#' @method predict knnreg
+#' @export 
 predict.knnreg <- function (object, newdata, ...) 
 {
   if (!inherits(object, "knnreg")) 

@@ -456,6 +456,8 @@ safsControl <- function(functions = NULL,
 #' Kirkpatrick, S., Gelatt, C. D., and Vecchi, M. P. (1983). Optimization by
 #' simulated annealing. Science, 220(4598), 671.
 #' @keywords models
+#' @method safs default
+#' @export  
 #' @examples
 #'
 #' \dontrun{

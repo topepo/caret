@@ -59,6 +59,8 @@
 #' @references Ripley, B. D. (1996) \emph{Pattern Recognition and Neural
 #' Networks.} Cambridge.
 #' @keywords neural
+#' @method pcaNNet default
+#' @export 
 #' @examples
 #' 
 #' data(BloodBrain)

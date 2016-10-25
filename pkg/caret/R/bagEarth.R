@@ -193,6 +193,8 @@
 #' @author Max Kuhn
 #' @seealso \code{\link{bagEarth}}
 #' @keywords regression
+#' @method predict bagEarth
+#' @export  
 #' @examples
 #'
 #' \dontrun{
@@ -290,6 +292,8 @@ print.bagEarth <- function (x, ...)
 #' statistics} \item{bmarsCall }{the original call to \code{bagEarth}}
 #' @author Max Kuhn
 #' @keywords manip
+#' @method summary bagEarth
+#' @export 
 #' @examples
 #'
 #' \dontrun{

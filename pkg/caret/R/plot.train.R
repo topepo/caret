@@ -53,6 +53,8 @@
 #' @references Kuhn (2008), ``Building Predictive Models in R Using the caret''
 #' (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
 #' @keywords hplot
+#' @method plot train
+#' @export
 #' @examples
 #' 
 #' 

@@ -452,6 +452,7 @@ as.table.confusionMatrix <- function(x, ...)  x$table
 #' @seealso \code{\link{confusionMatrix}}, \code{\link{train}},
 #' \code{\link{rfe}}, \code{\link{sbf}}, \code{\link{trainControl}}
 #' @keywords utilities
+#' @export
 #' @examples
 #'
 #'
