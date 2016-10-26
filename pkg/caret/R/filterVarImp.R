@@ -66,6 +66,8 @@ asNumeric <- function(data){
 #' filterVarImp(bbbDescr[, 1:5], logBBB, nonpara = TRUE)
 #' 
 #' @export filterVarImp
+#' @importFrom stats loess resid
+#' @importFrom utils combn
 filterVarImp <- function(x, y, nonpara = FALSE, ...){
   # converting factors to numeric
   notNumber <- sapply(x, function(x) !is.numeric(x))
