@@ -15,7 +15,7 @@ dummyVars(formula, ...)
 \method{dummyVars}{default}(formula, data, sep = ".", levelsOnly = FALSE,
   fullRank = FALSE, ...)
 
-\method{predict}{dummyVars}(x, ...)
+\method{print}{dummyVars}(x, ...)
 
 \method{predict}{dummyVars}(object, newdata, na.action = na.pass, ...)
 

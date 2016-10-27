@@ -164,7 +164,7 @@ dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, ful
 }
 
 #' @rdname dummyVars
-#' @method predict dummyVars
+#' @method print dummyVars
 #' @export
 print.dummyVars <- function(x, ...)
 {
