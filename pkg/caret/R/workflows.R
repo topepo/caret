@@ -11,6 +11,7 @@ getTrainOper <- function(x) if(x)  `%dopar%` else  `%do%`
 
 #' @rdname caret-internal
 #' @export
+#' @keywords internal
 progress <- function(x, names, iter, start = TRUE)
 {
   text <- paste(ifelse(start, "+ ", "- "),

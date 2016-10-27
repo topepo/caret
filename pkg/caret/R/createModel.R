@@ -9,6 +9,7 @@
 #'
 #' @importFrom stats predict
 #' @export
+#' @keywords internal
 "createModel" <-function(x, y, wts, method, tuneValue, obsLevels, pp = NULL, last = FALSE, sampling = NULL, classProbs, ...) {
 
   ## To get of warnings "some row.names duplicated: " when resampling with replacement
