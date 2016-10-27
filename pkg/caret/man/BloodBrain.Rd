@@ -4,11 +4,12 @@
 \name{BloodBrain}
 \alias{BloodBrain}
 \alias{bbbDescr}
+\alias{logBBB}
 \title{Blood Brain Barrier Data}
 \source{
 Mente, S.R. and Lombardo, F. (2005). A recursive-partitioning model
 for blood-brain barrier permeation, \emph{Journal of Computer-Aided Molecular Design},
-Vol. 19, pg. 465–481.
+Vol. 19, pg. 465-481.
 }
 \value{
 \item{bbbDescr}{data frame of chemical descriptors} \item{logBBB}{vector of assay results}
