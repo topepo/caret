@@ -159,6 +159,10 @@ function (x, ...)
     invisible(x)
 }
 
+
+
+
+#' @rdname predict.bagEarth
 #' @importFrom stats predict
 #' @export
 "predict.bagFDA" <-
@@ -207,6 +211,7 @@ function(object, newdata = NULL, type = "class", ...)
    switch(type, class = predClass, probs = out, posterior = out)
 }
 
+#' @rdname summary.bagEarth
 #' @importFrom stats quantile
 #' @export
 "summary.bagFDA" <-
