@@ -248,7 +248,7 @@ GarsonWeights <- function(object)
 
 
 GarsonWeights_FCNN4R <- function (object, xnames = NULL, ynames = NULL) {
-  beta <- abs(mlp_get_weights(object$net))
+  beta <- abs(object$net@m_w_values[which(object$net@m_w_flags != 0L)])
   dims <- object$net@m_layers
   
   index <- (dims[1]+1)*dims[2]
