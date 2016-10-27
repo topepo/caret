@@ -53,7 +53,6 @@
 #' @param object an object of class \code{rfe}
 #' @param size a single integers corresponding to the number of features that
 #' should be retained in the updated model
-#' @param newdata a matrix or data frame of new samples for prediction
 #' @param label an optional character string to be printed when in verbose
 #' mode.
 #' @param seeds an optional vector of integers for the size. The vector should

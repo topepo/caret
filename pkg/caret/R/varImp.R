@@ -137,8 +137,6 @@
 #' calculation?
 #' @param estimate which estimate of performance should be used? See
 #' \code{\link[pls]{mvrVal}}
-#' @param drop a logical: should variables not included in the final set be
-#' calculated?
 #' @param cuts the number of rule sets to use in the model (for \code{partDSA}
 #' only)
 #' @param weights a numeric vector of length two that weighs the usage of

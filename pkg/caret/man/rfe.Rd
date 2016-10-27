@@ -58,8 +58,6 @@ have length of \code{length(sizes)+1}}
 \item{size}{a single integers corresponding to the number of features that
 should be retained in the updated model}
 
-\item{newdata}{a matrix or data frame of new samples for prediction}
-
 \item{\dots}{options to pass to the model fitting function (ignored in
 \code{predict.rfe})}
 }

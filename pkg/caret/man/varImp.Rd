@@ -131,9 +131,6 @@ relationship between the features and response (only used with
 \item{scale}{should the importance values be scaled to 0 and 100?}
 
 \item{\dots}{parameters to pass to the specific \code{varImp} methods}
-
-\item{drop}{a logical: should variables not included in the final set be
-calculated?}
 }
 \value{
 A data frame with class \code{c("varImp.train", "data.frame")} for
