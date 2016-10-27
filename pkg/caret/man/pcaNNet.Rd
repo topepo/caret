@@ -8,7 +8,7 @@
 \alias{print.pcaNNet}
 \title{Neural Networks with a Principal Component Step}
 \usage{
-\method{pcaNNet}{default}(x, ...)
+pcaNNet(x, ...)
 
 \method{pcaNNet}{formula}(formula, data, weights, ..., thresh = 0.99, subset,
   na.action, contrasts = NULL)

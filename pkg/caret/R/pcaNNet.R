@@ -59,8 +59,6 @@
 #' @references Ripley, B. D. (1996) \emph{Pattern Recognition and Neural
 #' Networks.} Cambridge.
 #' @keywords neural
-#' @method pcaNNet default
-#' @export 
 #' @examples
 #' 
 #' data(BloodBrain)
@@ -69,7 +67,7 @@
 #' 
 #' predict(modelFit, bbbDescr[, 1:10])
 #' 
-#' @export
+#' @export pcaNNet
 pcaNNet <- function (x, ...)
    UseMethod("pcaNNet")
 
@@ -113,7 +111,7 @@ pcaNNet.formula <- function (formula, data, weights, ...,
 
 #' @rdname pcaNNet
 #' @method pcaNNet default
-#' @export pcaNNet.default
+#' @export 
 pcaNNet.default <- function(x, y, thresh = .99, ...)
   {
     requireNamespaceQuietStop("nnet")
