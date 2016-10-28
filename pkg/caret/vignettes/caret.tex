@@ -482,3 +482,44 @@ There are several functions to visualize these results. For example, a Bland--Al
 \begin{Schunk}
 \begin{Sinput}
 > diffs <- diff(resamps)
+> summary(diffs)
+\end{Sinput}
+\begin{Soutput}
+Call:
+summary.diff.resamples(object = diffs)
+
+p-value adjustment: bonferroni 
+Upper diagonal: estimates of the difference
+Lower diagonal: p-value for H0: difference = 0
+
+ROC 
+    pls    rda     
+pls        -0.01469
+rda 0.2975         
+
+Sens 
+    pls   rda     
+pls       -0.02778
+rda 0.125         
+
+Spec 
+    pls    rda     
+pls        0.009524
+rda 0.7348         
+\end{Soutput}
+\end{Schunk}
+Based on this analysis, the difference between the models is -0.015 ROC units (the RDA model is slightly higher) and the two--sided $p$--value for this difference is 0.29749.
+
+
+\setkeys{Gin}{width=.65\textwidth}
+\begin{figure}
+  \begin{center}  
+\includegraphics{caret-plsPlot}
+    \caption{A Bland--Altman plot of the resampled ROC values produced using 
+      \code{xyplot(resamps, what = "BlandAltman")}.  }
+    \label{F:BA}         
+  \end{center}
+\end{figure}   
+
+
+\end{document}

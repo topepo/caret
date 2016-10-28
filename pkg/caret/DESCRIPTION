@@ -45,6 +45,7 @@ Suggests:
     nnet,
     party (>= 0.9-99992),
     pls,
+    pROC,
     proxy,
     randomForest,
     RANN,
