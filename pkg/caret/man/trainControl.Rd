@@ -7,7 +7,7 @@
 trainControl(method = "boot", number = ifelse(grepl("cv", method), 10, 25),
   repeats = ifelse(grepl("cv", method), 1, number), p = 0.75,
   search = "grid", initialWindow = NULL, horizon = 1,
-  fixedWindow = TRUE, verboseIter = FALSE, returnData = TRUE,
+  fixedWindow = TRUE, skip = 0, verboseIter = FALSE, returnData = TRUE,
   returnResamp = "final", savePredictions = FALSE, classProbs = FALSE,
   summaryFunction = defaultSummary, selectionFunction = "best",
   preProcOptions = list(thresh = 0.95, ICAcomp = 3, k = 5, freqCut = 95/5,
@@ -36,7 +36,7 @@ complete sets of folds to compute}
 \item{search}{Either \code{"grid"} or \code{"random"}, describing how the
 tuning parameter grid is determined. See details below.}
 
-\item{initialWindow, horizon, fixedWindow}{possible arguments to
+\item{initialWindow, horizon, fixedWindow, skip}{possible arguments to
 \code{\link{createTimeSlices}}}
 
 \item{verboseIter}{A logical for printing a training log.}

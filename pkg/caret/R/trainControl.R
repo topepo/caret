@@ -61,7 +61,7 @@
 #' @param p For leave-group out cross-validation: the training percentage
 #' @param search Either \code{"grid"} or \code{"random"}, describing how the
 #' tuning parameter grid is determined. See details below.
-#' @param initialWindow,horizon,fixedWindow possible arguments to
+#' @param initialWindow,horizon,fixedWindow,skip possible arguments to
 #' \code{\link{createTimeSlices}}
 #' @param classProbs a logical; should class probabilities be computed for
 #' classification models (along with predicted values) in each resample?
@@ -183,6 +183,7 @@ trainControl <- function(method = "boot",
                          initialWindow = NULL,
                          horizon = 1,
                          fixedWindow = TRUE,
+                         skip = 0,
                          verboseIter = FALSE,
                          returnData = TRUE,
                          returnResamp = "final",
@@ -228,6 +229,7 @@ trainControl <- function(method = "boot",
        initialWindow = initialWindow,
        horizon = horizon,
        fixedWindow = fixedWindow,
+       skip = skip,
        verboseIter = verboseIter,
        returnData = returnData,
        returnResamp = returnResamp,

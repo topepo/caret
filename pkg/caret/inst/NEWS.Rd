@@ -17,6 +17,7 @@
 		\item \code{preProcess} now has an option to filter out highly correlated predictors. 
 		\item \code{trainControl} now has additional options to modify the parameters of near-zero variance and correlation filters. See the \code{preProcOptions} argument. 
 		\item The \code{rotationForest} and \code{rotationForestCp} methods were revised to evaluate only \emph{feasible} values of the parameter \code{K} (the number of variable subsets). The underlying \code{rotationForest} function reduces this parameter until values of \code{K} divides evenly into the number of parameters.   
+		\item The \code{skip} option from \code{createTimeSlices} was added to \code{trainControl} \issue{491}
 	}
 }
 
