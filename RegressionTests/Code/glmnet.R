@@ -112,6 +112,7 @@ set.seed(1010)
 n=1000;p=30
 nzc=trunc(p/10)
 x=matrix(rnorm(n*p),n,p)
+colnames(x) <- paste0("x", 1:ncol(x))
 beta=rnorm(nzc)
 fx= x[,seq(nzc)] %*% beta
 eps=rnorm(n)*5
