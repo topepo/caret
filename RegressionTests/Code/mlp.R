@@ -22,16 +22,16 @@ cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search =
 library(RSNNS)
 
 set.seed(849)
-test_class_cv_model <- train(trainX, trainY, 
-                             method = "mlp", 
-                             trControl = cctrl1,
-                             preProc = c("center", "scale"))
+test_class_cv_model <- caret:::train(trainX, trainY, 
+                                     method = "mlp", 
+                                     trControl = cctrl1,
+                                     preProc = c("center", "scale"))
 
 set.seed(849)
-test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = "mlp", 
-                            trControl = cctrl1,
-                            preProc = c("center", "scale"))
+test_class_cv_form <- caret:::train(Class ~ ., data = training, 
+                                    method = "mlp", 
+                                    trControl = cctrl1,
+                                    preProc = c("center", "scale"))
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
@@ -39,24 +39,24 @@ test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
 
 set.seed(849)
-test_class_rand <- train(trainX, trainY, 
-                         method = "mlp", 
-                         trControl = cctrlR,
-                         tuneLength = 4,
-                         preProc = c("center", "scale"))
+test_class_rand <- caret:::train(trainX, trainY, 
+                                 method = "mlp", 
+                                 trControl = cctrlR,
+                                 tuneLength = 4,
+                                 preProc = c("center", "scale"))
 
 set.seed(849)
-test_class_loo_model <- train(trainX, trainY, 
-                              method = "mlp", 
-                              trControl = cctrl2,
-                              preProc = c("center", "scale"))
+test_class_loo_model <- caret:::train(trainX, trainY, 
+                                      method = "mlp", 
+                                      trControl = cctrl2,
+                                      preProc = c("center", "scale"))
 
 set.seed(849)
-test_class_none_model <- train(trainX, trainY, 
-                               method = "mlp", 
-                               trControl = cctrl3,
-                               tuneLength = 1,
-                               preProc = c("center", "scale"))
+test_class_none_model <- caret:::train(trainX, trainY, 
+                                       method = "mlp", 
+                                       trControl = cctrl3,
+                                       tuneLength = 1,
+                                       preProc = c("center", "scale"))
 
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 
@@ -93,31 +93,31 @@ rctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
 rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
-test_reg_cv_model <- train(trainX, trainY, 
-                           method = "mlp", 
-                           trControl = rctrl1,
-                           preProc = c("center", "scale"))
+test_reg_cv_model <- caret:::train(trainX, trainY, 
+                                   method = "mlp", 
+                                   trControl = rctrl1,
+                                   preProc = c("center", "scale"))
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
-test_reg_cv_form <- train(y ~ ., data = training, 
-                          method = "mlp", 
-                          trControl = rctrl1,
-                          preProc = c("center", "scale"))
+test_reg_cv_form <- caret:::train(y ~ ., data = training, 
+                                  method = "mlp", 
+                                  trControl = rctrl1,
+                                  preProc = c("center", "scale"))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
-test_reg_rand <- train(trainX, trainY, 
-                       method = "mlp", 
-                       trControl = rctrlR,
-                       tuneLength = 4,
-                       preProc = c("center", "scale"))
+test_reg_rand <- caret:::train(trainX, trainY, 
+                               method = "mlp", 
+                               trControl = rctrlR,
+                               tuneLength = 4,
+                               preProc = c("center", "scale"))
 
 set.seed(849)
-test_reg_loo_model <- train(trainX, trainY, 
-                            method = "mlp",
-                            trControl = rctrl2,
-                            preProc = c("center", "scale"))
+test_reg_loo_model <- caret:::train(trainX, trainY, 
+                                    method = "mlp",
+                                    trControl = rctrl2,
+                                    preProc = c("center", "scale"))
 
 #########################################################################
 

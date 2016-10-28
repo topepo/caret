@@ -24,41 +24,41 @@ library(RSNNS)
 grid <- expand.grid(decay = c(0, .01), layer1 = 1:3, layer2 = 1:3, layer3 = 1:3)
 
 set.seed(849)
-test_class_cv_model <- train(trainX, trainY,
-                             method = "mlpWeightDecayML",
-                             trControl = cctrl1,
-                             tuneGrid = grid,
-                             preProc = c("center", "scale"))
+test_class_cv_model <- caret:::train(trainX, trainY,
+                                     method = "mlpWeightDecayML",
+                                     trControl = cctrl1,
+                                     tuneGrid = grid,
+                                     preProc = c("center", "scale"))
 
 set.seed(849)
-test_class_cv_form <- train(Class ~ ., data = training,
-                            method = "mlpWeightDecayML",
-                            trControl = cctrl1,
-                            tuneGrid = grid,
-                            preProc = c("center", "scale"))
+test_class_cv_form <- caret:::train(Class ~ ., data = training,
+                                    method = "mlpWeightDecayML",
+                                    trControl = cctrl1,
+                                    tuneGrid = grid,
+                                    preProc = c("center", "scale"))
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 
 set.seed(81)
-test_class_rand <- train(trainX, trainY,
-                         method = "mlpWeightDecay",
-                         trControl = cctrlR,
-                         tuneLength = 4)
+test_class_rand <- caret:::train(trainX, trainY,
+                                 method = "mlpWeightDecay",
+                                 trControl = cctrlR,
+                                 tuneLength = 4)
 
 set.seed(849)
-test_class_loo_model <- train(trainX, trainY,
-                              method = "mlpWeightDecayML",
-                              trControl = cctrl2,
-                              tuneGrid = grid,
-                              preProc = c("center", "scale"))
+test_class_loo_model <- caret:::train(trainX, trainY,
+                                      method = "mlpWeightDecayML",
+                                      trControl = cctrl2,
+                                      tuneGrid = grid,
+                                      preProc = c("center", "scale"))
 
 set.seed(849)
-test_class_none_model <- train(trainX, trainY,
-                               method = "mlpWeightDecayML",
-                               trControl = cctrl3,
-                               tuneLength = 1,
-                               preProc = c("center", "scale"))
+test_class_none_model <- caret:::train(trainX, trainY,
+                                       method = "mlpWeightDecayML",
+                                       trControl = cctrl3,
+                                       tuneLength = 1,
+                                       preProc = c("center", "scale"))
 
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 
@@ -95,34 +95,34 @@ rctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
 rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
-test_reg_cv_model <- train(trainX, trainY,
-                           method = "mlpWeightDecayML",
-                           tuneGrid = grid,
-                           trControl = rctrl1,
-                           preProc = c("center", "scale"))
+test_reg_cv_model <- caret:::train(trainX, trainY,
+                                   method = "mlpWeightDecayML",
+                                   tuneGrid = grid,
+                                   trControl = rctrl1,
+                                   preProc = c("center", "scale"))
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
-test_reg_cv_form <- train(y ~ ., data = training,
-                          method = "mlpWeightDecayML",
-                          tuneGrid = grid,
-                          trControl = rctrl1,
-                          preProc = c("center", "scale"))
+test_reg_cv_form <- caret:::train(y ~ ., data = training,
+                                  method = "mlpWeightDecayML",
+                                  tuneGrid = grid,
+                                  trControl = rctrl1,
+                                  preProc = c("center", "scale"))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
-test_reg_rand <- train(trainX, trainY,
-                       method = "mlpWeightDecayML",
-                       trControl = rctrlR,
-                       tuneLength = 4,
-                       preProc = c("center", "scale"))
+test_reg_rand <- caret:::train(trainX, trainY,
+                               method = "mlpWeightDecayML",
+                               trControl = rctrlR,
+                               tuneLength = 4,
+                               preProc = c("center", "scale"))
 
 set.seed(849)
-test_reg_loo_model <- train(trainX, trainY,
-                            method = "mlpWeightDecayML",
-                            tuneGrid = grid,
-                            trControl = rctrl2,
-                            preProc = c("center", "scale"))
+test_reg_loo_model <- caret:::train(trainX, trainY,
+                                    method = "mlpWeightDecayML",
+                                    tuneGrid = grid,
+                                    trControl = rctrl2,
+                                    preProc = c("center", "scale"))
 
 #########################################################################
 

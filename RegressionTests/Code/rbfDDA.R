@@ -21,44 +21,44 @@ cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search =
 
 library(RSNNS)
 function(x, y, len = NULL, search = "grid")
+  
+  set.seed(849)
+test_class_cv_model <- caret:::train(trainX, trainY, 
+                                     method = "rbfDDA", 
+                                     trControl = cctrl1,
+                                     preProc = c("center", "scale"))
 
 set.seed(849)
-test_class_cv_model <- train(trainX, trainY, 
-                             method = "rbfDDA", 
-                             trControl = cctrl1,
-                             preProc = c("center", "scale"))
-
-set.seed(849)
-test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = "rbfDDA", 
-                            trControl = cctrl1,
-                            preProc = c("center", "scale"))
+test_class_cv_form <- caret:::train(Class ~ ., data = training, 
+                                    method = "rbfDDA", 
+                                    trControl = cctrl1,
+                                    preProc = c("center", "scale"))
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 
 function(x, y, len = NULL, search = "grid")
-set.seed(849)
-test_class_rand <- train(trainX, trainY, 
-                         method = "rbfDDA", 
-                         trControl = cctrlR,
-                         tuneLength = 4,
-                         preProc = c("center", "scale"))
+  set.seed(849)
+test_class_rand <- caret:::train(trainX, trainY, 
+                                 method = "rbfDDA", 
+                                 trControl = cctrlR,
+                                 tuneLength = 4,
+                                 preProc = c("center", "scale"))
 
 function(x, y, len = NULL, search = "grid")
-set.seed(849)
-test_class_loo_model <- train(trainX, trainY, 
-                              method = "rbfDDA", 
-                              trControl = cctrl2,
-                              preProc = c("center", "scale"))
+  set.seed(849)
+test_class_loo_model <- caret:::train(trainX, trainY, 
+                                      method = "rbfDDA", 
+                                      trControl = cctrl2,
+                                      preProc = c("center", "scale"))
 
 function(x, y, len = NULL, search = "grid")
-set.seed(849)
-test_class_none_model <- train(trainX, trainY, 
-                               method = "rbfDDA", 
-                               trControl = cctrl3,
-                               tuneGrid = test_class_cv_model$bestTune,
-                               preProc = c("center", "scale"))
+  set.seed(849)
+test_class_none_model <- caret:::train(trainX, trainY, 
+                                       method = "rbfDDA", 
+                                       trControl = cctrl3,
+                                       tuneGrid = test_class_cv_model$bestTune,
+                                       preProc = c("center", "scale"))
 
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 
@@ -96,39 +96,39 @@ rctrl3 <- trainControl(method = "none", seeds = seeds)
 rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
-test_reg_cv_model <- train(trainX, trainY, 
-                           method = "rbfDDA", 
-                           trControl = rctrl1,
-                           preProc = c("center", "scale"))
+test_reg_cv_model <- caret:::train(trainX, trainY, 
+                                   method = "rbfDDA", 
+                                   trControl = rctrl1,
+                                   preProc = c("center", "scale"))
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
-test_reg_cv_form <- train(y ~ ., data = training, 
-                          method = "rbfDDA", 
-                          trControl = rctrl1,
-                          preProc = c("center", "scale"))
+test_reg_cv_form <- caret:::train(y ~ ., data = training, 
+                                  method = "rbfDDA", 
+                                  trControl = rctrl1,
+                                  preProc = c("center", "scale"))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 function(x, y, len = NULL, search = "grid")
-set.seed(849)
-test_reg_rand <- train(trainX, trainY, 
-                       method = "rbfDDA", 
-                       trControl = rctrlR,
-                       tuneLength = 4,
-                       preProc = c("center", "scale"))
+  set.seed(849)
+test_reg_rand <- caret:::train(trainX, trainY, 
+                               method = "rbfDDA", 
+                               trControl = rctrlR,
+                               tuneLength = 4,
+                               preProc = c("center", "scale"))
 
 set.seed(849)
-test_reg_loo_model <- train(trainX, trainY, 
-                            method = "rbfDDA",
-                            trControl = rctrl2,
-                            preProc = c("center", "scale"))
+test_reg_loo_model <- caret:::train(trainX, trainY, 
+                                    method = "rbfDDA",
+                                    trControl = rctrl2,
+                                    preProc = c("center", "scale"))
 
 set.seed(849)
-test_reg_none_model <- train(trainX, trainY, 
-                             method = "rbfDDA", 
-                             trControl = rctrl3,
-                             tuneGrid = test_reg_cv_model$bestTune,
-                             preProc = c("center", "scale"))
+test_reg_none_model <- caret:::train(trainX, trainY, 
+                                     method = "rbfDDA", 
+                                     trControl = rctrl3,
+                                     tuneGrid = test_reg_cv_model$bestTune,
+                                     preProc = c("center", "scale"))
 test_reg_none_pred <- predict(test_reg_none_model, testX)
 
 #########################################################################
