@@ -111,13 +111,6 @@ test_reg_cv_model <- train(trainX, trainY,
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
-test_reg_cv_dist <- train(trainX, trainY, 
-                          method = "bam", 
-                          trControl = rctrl1,
-                          preProc = c("center", "scale"),
-                          family = scat())
-
-set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
                           method = "bam", 
                           trControl = rctrl1,
