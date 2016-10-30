@@ -16,17 +16,18 @@ modelInfo <- list(label = "Weighted Subspace Random Forest",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    browser()
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     wsrf(.outcome ~ ., data = dat, mtry = param$mtry, ...)
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-                    predict(modelFit, newdata)
+                    predict(modelFit, newdata)$Class
                     },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-                    predict(modelFit, newdata, type = "prob")
+                    predict(modelFit, newdata, type = "prob")$prob
                     },
                   predictors = function(x, ...) x$xNames,
                   varImp = NULL,
