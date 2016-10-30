@@ -16,7 +16,6 @@ modelInfo <- list(label = "Weighted Subspace Random Forest",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    browser()
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     wsrf(.outcome ~ ., data = dat, mtry = param$mtry, ...)
