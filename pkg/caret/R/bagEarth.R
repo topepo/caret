@@ -62,7 +62,7 @@
 #' @rdname bagEarth
 #' @method bagEarth default
 #' @importFrom stats predict
-#' @export
+#' @export bagEarth bagEarth.default
 "bagEarth.default" <-
   function(x, y, weights = NULL, B = 50, summary = mean, keepX = TRUE, ...)
 {
