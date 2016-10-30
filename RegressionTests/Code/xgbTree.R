@@ -10,7 +10,8 @@ xgbGrid <- expand.grid(nrounds = c(1, 10),
                        eta = c(.1, .4),
                        gamma = 0,
                        colsample_bytree = .7,
-                       min_child_weight = 1)
+                       min_child_weight = 1,
+                       subsample = c(.8, 1))
 
 set.seed(2)
 training <- twoClassSim(100, linearVars = 2)
@@ -35,7 +36,6 @@ test_class_cv_model <- train(trainX, trainY,
                              metric = "ROC", 
                              preProc = c("center", "scale"),
                              tuneGrid = xgbGrid)
-
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
