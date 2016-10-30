@@ -22,7 +22,7 @@ modelInfo <- list(label = "Weighted Subspace Random Forest",
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-                    predict(modelFit, newdata)$Class
+                    predict(modelFit, newdata)$class
                     },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
