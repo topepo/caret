@@ -47,7 +47,7 @@ set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
                              method = "rlm", 
                              trControl = rctrl3,
-                             tuneLength = 1,
+                             tuneGrid = test_reg_cv_model$bestTune,
                              preProc = c("center", "scale"))
 test_reg_none_pred <- predict(test_reg_none_model, testX)
 
