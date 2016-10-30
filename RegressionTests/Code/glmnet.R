@@ -156,10 +156,13 @@ rctrl1$returnData <- FALSE
 rctrl2$returnData <- FALSE
 rctrl3$returnData <- FALSE
 
-x2 <- Matrix(matrix(sample(0:1, 
-                           size = p*nrow(x),
-                           replace = TRUE),
-                    ncol = p), sparse = TRUE)
+mat <- matrix(sample(0:1, 
+                     size = p*nrow(x),
+                     replace = TRUE),
+              ncol = p)
+colnames(mat) <- paste0("x", 1:ncol(x))
+rownames(mat) <- paste0(1:nrow(x))
+x2 <- Matrix(mat, sparse = TRUE)
 
 cvob2=cv.glmnet(x2,y)
 
