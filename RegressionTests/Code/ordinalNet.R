@@ -58,7 +58,7 @@ set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
                                method = "ordinalNet", 
                                trControl = cctrl3,
-                               tuneLength = 1,
+                               tuneGrid = test_class_cv_model$bestTune,
                                metric = "Kappa", 
                                preProc = c("center", "scale"))
 
