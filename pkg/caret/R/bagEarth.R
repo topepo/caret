@@ -54,7 +54,6 @@
 #' @keywords regression
 #'
 #' @export
-
 "bagEarth" <-
   function(x, ...)
   UseMethod("bagEarth")
@@ -62,7 +61,7 @@
 #' @rdname bagEarth
 #' @method bagEarth default
 #' @importFrom stats predict
-#' @export bagEarth bagEarth.default
+#' @export
 "bagEarth.default" <-
   function(x, y, weights = NULL, B = 50, summary = mean, keepX = TRUE, ...)
 {
