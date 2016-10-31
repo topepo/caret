@@ -56,7 +56,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     if(is.factor(y)) {
                       if(length(lev) == 2) {
                         y <- ifelse(y == lev[1], 1, 0) 
-                        dat <- xgb.DMatrix(x, label = y)
+                        dat <- xgb.DMatrix(x, label = y, missing = NA)
                         out <- xgb.train(list(eta = param$eta, 
                                               max_depth = param$max_depth,
                                               gamma = param$gamma,
@@ -69,7 +69,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                          ...)
                       } else {
                         y <- as.numeric(y) - 1
-                        dat <- xgb.DMatrix(x, label = y)
+                        dat <- xgb.DMatrix(x, label = y, missing = NA)
                         out <- xgb.train(list(eta = param$eta, 
                                               max_depth = param$max_depth,
                                               gamma = param$gamma,
@@ -83,7 +83,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                          ...)
                       }     
                     } else {
-                      dat <- xgb.DMatrix(as.matrix(x), label = y)
+                      dat <- xgb.DMatrix(as.matrix(x), label = y, missing = NA)
                       out <- xgb.train(list(eta = param$eta, 
                                             max_depth = param$max_depth,
                                             gamma = param$gamma,
