@@ -26,13 +26,14 @@ for(mod in mods) {
   } else {
     cat("`", mod, "`", sep = "")
   }
-  cat("\n ===== \n\n", sep = "")
+  cat("\n===== \n\n", sep = "")
   
   cat(paste0("There are regression tests to compare model results between different versions ",
              "of `caret` and the individual packages. These test evaluate whether consistent ",
              "results can be obtained. The code used to generate the objects that are compared ",
              "can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/",
-             mod, ".R).\n\n"))
+             mod, ".R).\nA [history of commits](https://github.com/topepo/caret/commits/master/models/files/",
+             mod, ".R) for the model code is also available\n\n")) 
       
       try(obj_compare(file.path(op, paste0(mod, ".RData")),
                       file.path(np, paste0(mod, ".RData"))),
