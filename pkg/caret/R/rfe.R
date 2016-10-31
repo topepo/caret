@@ -889,7 +889,7 @@ caretFuncs <- list(summary = defaultSummary,
                      if(object$modelType == "Regression") {
                        vimp <- vimp[order(vimp[,1], decreasing = TRUE),,drop = FALSE]
                      } else {
-                       if(all(levels(y) %in% colnames(vimp)) & !(Overall %in% colnames(vimp))) {
+                       if(all(levels(y) %in% colnames(vimp)) & !("Overall" %in% colnames(vimp))) {
                          avImp <- apply(vimp[, levels(y), drop = TRUE], 1, mean)
                          vimp$Overall <- avImp
                        }
