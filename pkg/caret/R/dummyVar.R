@@ -66,7 +66,7 @@
 #' @seealso \code{\link[stats]{model.matrix}}, \code{\link[stats]{contrasts}},
 #' \code{\link[stats]{formula}}
 #' @references
-#' \url{http://cran.r-project.org/doc/manuals/R-intro.html#Formulae-for-statistical-models}
+#' \url{https://cran.r-project.org/doc/manuals/R-intro.html#Formulae-for-statistical-models}
 #' @keywords models
 #' @examples
 #'

@@ -143,7 +143,7 @@ predict(noNames, when)
 \code{\link[stats]{contr.treatment}} by Max Kuhn
 }
 \references{
-\url{http://cran.r-project.org/doc/manuals/R-intro.html#Formulae-for-statistical-models}
+\url{https://cran.r-project.org/doc/manuals/R-intro.html#Formulae-for-statistical-models}
 }
 \seealso{
 \code{\link[stats]{model.matrix}}, \code{\link[stats]{contrasts}},
