@@ -1,7 +1,8 @@
 Bayesian Regularized Neural Networks (`brnn`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/brnn.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/brnn.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `brnn` (0.6), `caret` (6.0-71), `Formula` (1.2-1)
- * tested on 2016-09-06 at 11:10
+ * tested on 2016-10-31 at 05:26
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `brnn` (0.6), `caret` (6.0-72), `Formula` (1.2-1)
- * tested on 2016-09-08 at 10:00
+ * tested on 2016-10-30 at 22:34
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.15s (new) 3.19s
+Execution times: (old) 3.23s (new) 3.3s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.45s (new) 3.2s
+Execution times: (old) 3.78s (new) 4.01s
 
 Test Results:
 
@@ -84,7 +85,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 17.23s (new) 17.53s
+Execution times: (old) 19.04s (new) 21.44s
 
 Test Results:
 
@@ -104,7 +105,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.03s (new) 1.01s
+Execution times: (old) 1.06s (new) 1.11s
 
 Test Results:
 
@@ -148,7 +149,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.9m (new) 1.94m
+Execution times: (old) 2.01m (new) 2.03m
 
 Test Results:
 

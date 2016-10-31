@@ -1,7 +1,8 @@
 Bayesian Additive Regression Trees (`bartMachine`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/bartMachine.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/bartMachine.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `bartMachine` (1.2.3), `bartMachineJARs` (1.0), `car` (2.1-2), `caret` (6.0-71), `foreach` (1.4.3), `iterators` (1.0.8), `itertools` (0.1-3), `missForest` (1.4), `randomForest` (4.6-12), `rJava` (0.9-8)
- * tested on 2016-09-06 at 11:09
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `bartMachine` (1.2.3), `bartMachineJARs` (1.0), `car` (2.1-3), `caret` (6.0-71), `foreach` (1.4.3), `iterators` (1.0.8), `itertools` (0.1-3), `missForest` (1.4), `randomForest` (4.6-12), `rJava` (0.9-8)
+ * tested on 2016-10-31 at 05:25
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `bartMachine` (1.2.3), `bartMachineJARs` (1.0), `car` (2.1-2), `caret` (6.0-72), `foreach` (1.4.3), `iterators` (1.0.8), `itertools` (0.1-3), `missForest` (1.4), `randomForest` (4.6-12), `rJava` (0.9-8)
- * tested on 2016-09-08 at 09:58
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `bartMachine` (1.2.3), `bartMachineJARs` (1.0), `car` (2.1-3), `caret` (6.0-72), `foreach` (1.4.3), `iterators` (1.0.8), `itertools` (0.1-3), `missForest` (1.4), `randomForest` (4.6-12), `rJava` (0.9-8)
+ * tested on 2016-10-30 at 22:32
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 11.52s (new) 11.36s
+Execution times: (old) 12.33s (new) 11.8s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 13.77s (new) 13.33s
+Execution times: (old) 13.86s (new) 14.32s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.14m (new) 3.14m
+Execution times: (old) 3.25m (new) 3.31m
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.24s (new) 1.23s
+Execution times: (old) 1.34s (new) 1.31s
 
 Test Results:
 
@@ -155,7 +156,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 16.62s (new) 15.4s
+Execution times: (old) 15.18s (new) 16.5s
 
 Test Results:
 
@@ -181,7 +182,7 @@ Model Configuration:
  * 16 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 34.78s (new) 33.97s
+Execution times: (old) 35.55s (new) 36.02s
 
 Test Results:
 
@@ -201,7 +202,7 @@ Model Configuration:
  * 16 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 35.9s (new) 34.84s
+Execution times: (old) 37.54s (new) 37.46s
 
 Test Results:
 
@@ -221,7 +222,7 @@ Model Configuration:
  * 16 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 13.02m (new) 12.53m
+Execution times: (old) 13.34m (new) 13.37m
 
 Test Results:
 
@@ -241,7 +242,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.86s (new) 3.05s
+Execution times: (old) 3.27s (new) 3.32s
 
 Test Results:
 
@@ -291,7 +292,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 11.3s (new) 10.76s
+Execution times: (old) 11.16s (new) 11.44s
 
 Test Results:
 

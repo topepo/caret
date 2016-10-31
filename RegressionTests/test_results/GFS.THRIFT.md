@@ -1,7 +1,8 @@
 Fuzzy Rules via Thrift (`GFS.THRIFT`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/GFS.THRIFT.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/GFS.THRIFT.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `frbs` (3.1-0)
- * tested on 2016-09-06 at 11:18
+ * tested on 2016-10-31 at 05:46
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `frbs` (3.1-0)
- * tested on 2016-09-08 at 10:18
+ * tested on 2016-10-30 at 22:54
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 11.35s (new) 8.22s
+Execution times: (old) 8.36s (new) 8.88s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 11.98s (new) 8.42s
+Execution times: (old) 9.11s (new) 9.36s
 
 Test Results:
 
@@ -84,7 +85,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.01m (new) 1.45m
+Execution times: (old) 1.52m (new) 1.62m
 
 Test Results:
 
@@ -104,7 +105,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.12s (new) 1.46s
+Execution times: (old) 1.45s (new) 1.57s
 
 Test Results:
 
@@ -148,7 +149,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.49m (new) 1.8m
+Execution times: (old) 1.89m (new) 1.97m
 
 Test Results:
 

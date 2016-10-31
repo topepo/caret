@@ -1,7 +1,8 @@
 Penalized Linear Regression (`penalized`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/penalized.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/penalized.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `penalized` (0.9-47), `survival` (2.39-5)
- * tested on 2016-09-06 at 11:49
+ * tested on 2016-10-31 at 06:22
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `penalized` (0.9-47), `survival` (2.39-5)
- * tested on 2016-09-08 at 10:50
+ * tested on 2016-10-30 at 23:45
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.83s (new) 1.82s
+Execution times: (old) 1.65s (new) 1.61s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.82s (new) 2.9s
+Execution times: (old) 3.23s (new) 3.74s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 18.03s (new) 17.3s
+Execution times: (old) 20s (new) 21.77s
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.52s (new) 0.55s
+Execution times: (old) 0.58s (new) 0.65s
 
 Test Results:
 
@@ -142,7 +143,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.49m (new) 1.46m
+Execution times: (old) 1.6m (new) 1.76m
 
 Test Results:
 

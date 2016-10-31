@@ -1,7 +1,8 @@
 `svmLinearWeights22`
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/svmLinearWeights22.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/svmLinearWeights22.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `LiblineaR` (1.94-2)
- * tested on 2016-09-06 at 12:08
+ * tested on 2016-10-31 at 06:46
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `LiblineaR` (1.94-2)
- * tested on 2016-09-08 at 11:12
+ * tested on 2016-10-31 at 00:10
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.19s (new) 1.13s
+Execution times: (old) 1s (new) 1.09s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.6s (new) 1.56s
+Execution times: (old) 1.88s (new) 2.21s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 10.14s (new) 9.66s
+Execution times: (old) 10.63s (new) 11.27s
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.48s (new) 0.48s
+Execution times: (old) 0.51s (new) 0.56s
 
 Test Results:
 

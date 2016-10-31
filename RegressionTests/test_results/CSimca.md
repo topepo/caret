@@ -1,7 +1,8 @@
 SIMCA (`CSimca`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/CSimca.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/CSimca.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-71), `robustbase` (0.92-5), `rrcov` (1.3-11), `rrcovHD` (0.2-4)
- * tested on 2016-09-06 at 11:12
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-71), `robustbase` (0.92-5), `rrcov` (1.4-3), `rrcovHD` (0.2-4)
+ * tested on 2016-10-31 at 05:29
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-72), `robustbase` (0.92-5), `rrcov` (1.3-11), `rrcovHD` (0.2-4)
- * tested on 2016-09-08 at 10:03
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-72), `robustbase` (0.92-5), `rrcov` (1.4-3), `rrcovHD` (0.2-4)
+ * tested on 2016-10-30 at 22:37
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.28s (new) 0.89s
+Execution times: (old) 0.93s (new) 0.89s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 2.04s (new) 1.51s
+Execution times: (old) 1.85s (new) 1.99s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 3.22s (new) 2.42s
+Execution times: (old) 2.73s (new) 2.56s
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.69s (new) 0.55s
+Execution times: (old) 0.57s (new) 0.59s
 
 Test Results:
 

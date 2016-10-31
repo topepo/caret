@@ -1,7 +1,8 @@
 Adaptive-Network-Based Fuzzy Inference System (`ANFIS`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/ANFIS.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/ANFIS.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `frbs` (3.1-0)
- * tested on 2016-09-06 at 09:55
+ * tested on 2016-10-31 at 05:22
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `frbs` (3.1-0)
- * tested on 2016-09-08 at 09:56
+ * tested on 2016-10-30 at 22:30
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 56.9s (new) 1.58m
+Execution times: (old) 1.75m (new) 1.78m
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.19m (new) 1.54m
+Execution times: (old) 1.76m (new) 1.74m
 
 Test Results:
 
@@ -84,7 +85,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 12.23m (new) 27.41m
+Execution times: (old) 29.56m (new) 30.2m
 
 Test Results:
 
@@ -104,7 +105,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 12.9s (new) 25.25s
+Execution times: (old) 27.39s (new) 28.1s
 
 Test Results:
 
@@ -148,7 +149,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.3m (new) 3.08m
+Execution times: (old) 3.35m (new) 3.35m
 
 Test Results:
 

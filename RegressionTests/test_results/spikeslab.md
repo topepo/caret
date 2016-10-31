@@ -1,7 +1,8 @@
 Spike and Slab Regression (`spikeslab`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/spikeslab.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/spikeslab.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `lars` (1.2), `plyr` (1.8.4), `randomForest` (4.6-12), `spikeslab` (1.1.5)
- * tested on 2016-09-06 at 12:03
+ * tested on 2016-10-31 at 06:42
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `lars` (1.2), `plyr` (1.8.4), `randomForest` (4.6-12), `spikeslab` (1.1.5)
- * tested on 2016-09-08 at 11:07
+ * tested on 2016-10-31 at 00:05
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.15s (new) 7.32s
+Execution times: (old) 8.02s (new) 7.87s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.45s (new) 7.54s
+Execution times: (old) 8.46s (new) 8.98s
 
 Test Results:
 
@@ -84,7 +85,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 49.44s (new) 50.32s
+Execution times: (old) 55.59s (new) 55.13s
 
 Test Results:
 
@@ -104,7 +105,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.06s (new) 2.16s
+Execution times: (old) 2.25s (new) 2.27s
 
 Test Results:
 

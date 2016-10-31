@@ -1,7 +1,8 @@
 Least Angle Regression (`lars`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/lars.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/lars.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `lars` (1.2)
- * tested on 2016-09-06 at 11:29
+ * tested on 2016-10-31 at 05:56
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `lars` (1.2)
- * tested on 2016-09-08 at 10:26
+ * tested on 2016-10-30 at 23:15
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.17s (new) 1.03s
+Execution times: (old) 0.85s (new) 1.04s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.3s (new) 1.21s
+Execution times: (old) 1.44s (new) 1.9s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.53s (new) 2.29s
+Execution times: (old) 2.5s (new) 2.6s
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.57s (new) 0.58s
+Execution times: (old) 0.53s (new) 0.58s
 
 Test Results:
 
@@ -142,7 +143,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.98s (new) 0.95s
+Execution times: (old) 1.01s (new) 1.14s
 
 Test Results:
 

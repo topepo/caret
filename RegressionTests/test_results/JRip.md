@@ -1,7 +1,8 @@
 Rule-Based Classifier (`JRip`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/JRip.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/JRip.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-71), `RWeka` (0.4-29)
- * tested on 2016-09-06 at 11:28
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-71), `RWeka` (0.4-26)
+ * tested on 2016-10-31 at 05:54
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-72), `RWeka` (0.4-29)
- * tested on 2016-09-08 at 12:04
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-72), `RWeka` (0.4-26)
+ * tested on 2016-10-30 at 23:13
 
 
 Results:
@@ -38,13 +39,40 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.21s (new) 1.09s
+Execution times: (old) 1.77s (new) 9s
 
 Test Results:
 
- * _Equal results for ROC_
- * _Equal results for Sens_
- * _Equal results for Spec_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences (n-o):                  
+      mean  -5.505
+      min  -16.139
+      max    1.935
+    correlation:  -0.1138 
+</pre>
+
+ * ***UNequal results for Sens***:
+
+<pre>
+    %differences (n-o):                  
+      mean  -4.333
+      min  -18.023
+      max    9.697
+    correlation:  -0.101 
+</pre>
+
+ * ***UNequal results for Spec***:
+
+<pre>
+    %differences (n-o):                  
+      mean  -6.287
+      min  -29.801
+      max    9.420
+    correlation:  -0.3414 
+</pre>
+
 
 **Test Case**: `class_cv_model`
 
@@ -59,13 +87,40 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.06s (new) 1.74s
+Execution times: (old) 3.15s (new) 12.75s
 
 Test Results:
 
- * _Equal results for ROC_
- * _Equal results for Sens_
- * _Equal results for Spec_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences (n-o):                  
+      mean  -5.505
+      min  -16.139
+      max    1.935
+    correlation:  -0.1138 
+</pre>
+
+ * ***UNequal results for Sens***:
+
+<pre>
+    %differences (n-o):                  
+      mean  -4.333
+      min  -18.023
+      max    9.697
+    correlation:  -0.101 
+</pre>
+
+ * ***UNequal results for Spec***:
+
+<pre>
+    %differences (n-o):                  
+      mean  -6.287
+      min  -29.801
+      max    9.420
+    correlation:  -0.3414 
+</pre>
+
 
 **Test Case**: `class_imp`
 
@@ -86,13 +141,40 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 18.97s (new) 10.13s
+Execution times: (old) 17.93s (new) 2.77m
 
 Test Results:
 
- * _Equal results for ROC_
- * _Equal results for Sens_
- * _Equal results for Spec_
+ * ***UNequal results for ROC***:
+
+<pre>
+    %differences (n-o):                 
+      mean  5.718
+      min  -6.870
+      max  29.245
+    correlation:  0.1632 
+</pre>
+
+ * ***UNequal results for Sens***:
+
+<pre>
+    %differences (n-o):                 
+      mean  -1.44
+      min  -11.11
+      max   11.11
+    correlation:  NA 
+</pre>
+
+ * ***UNequal results for Spec***:
+
+<pre>
+    %differences (n-o):                 
+      mean  3.227
+      min  -5.882
+      max  25.000
+    correlation:  0.2369 
+</pre>
+
 
 **Test Case**: `class_none_model`
 
@@ -107,7 +189,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.59s (new) 0.33s
+Execution times: (old) 0.57s (new) 0.59s
 
 Test Results:
 

@@ -1,7 +1,8 @@
 Robust Quadratic Discriminant Analysis (`QdaCov`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/QdaCov.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/QdaCov.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-71), `robustbase` (0.92-5), `rrcov` (1.3-11)
- * tested on 2016-09-06 at 11:51
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-71), `robustbase` (0.92-5), `rrcov` (1.4-3)
+ * tested on 2016-10-31 at 06:24
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-72), `robustbase` (0.92-5), `rrcov` (1.3-11)
- * tested on 2016-09-08 at 10:52
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-72), `robustbase` (0.92-5), `rrcov` (1.4-3)
+ * tested on 2016-10-30 at 23:48
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.89s (new) 1.11s
+Execution times: (old) 1.05s (new) 1.09s
 
 Test Results:
 
@@ -59,7 +60,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.49s (new) 1.45s
+Execution times: (old) 1.85s (new) 2.14s
 
 Test Results:
 
@@ -80,7 +81,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 3.9s (new) 3.83s
+Execution times: (old) 4.26s (new) 4.6s
 
 Test Results:
 
@@ -101,7 +102,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.53s (new) 0.58s
+Execution times: (old) 0.62s (new) 0.67s
 
 Test Results:
 

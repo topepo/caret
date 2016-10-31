@@ -1,7 +1,8 @@
 Projection Pursuit Regression (`ppr`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/ppr.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/ppr.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71)
- * tested on 2016-09-06 at 11:49
+ * tested on 2016-10-31 at 06:23
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72)
- * tested on 2016-09-08 at 10:51
+ * tested on 2016-10-30 at 23:47
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.08s (new) 0.99s
+Execution times: (old) 0.89s (new) 1s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.41s (new) 1.33s
+Execution times: (old) 1.72s (new) 2.12s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.59s (new) 4.31s
+Execution times: (old) 4.95s (new) 5.38s
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.51s (new) 0.5s
+Execution times: (old) 0.52s (new) 0.62s
 
 Test Results:
 
@@ -142,7 +143,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.27s (new) 1.25s
+Execution times: (old) 1.38s (new) 1.51s
 
 Test Results:
 

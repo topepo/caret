@@ -1,7 +1,8 @@
 Model Rules (`M5Rules`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/M5Rules.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/M5Rules.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-71), `RWeka` (0.4-29)
- * tested on 2016-09-06 at 11:30
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-71), `RWeka` (0.4-26)
+ * tested on 2016-10-31 at 06:00
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-72), `RWeka` (0.4-29)
- * tested on 2016-09-08 at 12:04
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-72), `RWeka` (0.4-26)
+ * tested on 2016-10-30 at 23:20
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.53s (new) 1.66s
+Execution times: (old) 2.55s (new) 2.51s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.22s (new) 2.45s
+Execution times: (old) 4.58s (new) 5.12s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 16.77s (new) 10.11s
+Execution times: (old) 18.38s (new) 19.25s
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.58s (new) 0.37s
+Execution times: (old) 0.6s (new) 0.7s
 
 Test Results:
 

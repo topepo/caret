@@ -1,8 +1,8 @@
-Conditional Inference Tree (`ctree`)
+Generalized Additive Model using Splines (`bam`)
 ===== 
 
-There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/ctree.R).
-A [history of commits](https://github.com/topepo/caret/commits/master/models/files/ctree.R) for the model code is also available
+There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/bam.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/bam.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -11,20 +11,41 @@ Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
  * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `modeltools` (0.2-21), `mvtnorm` (1.0-5), `party` (1.0-25), `sandwich` (2.3-4), `strucchange` (1.5-1), `zoo` (1.7-12)
- * tested on 2016-10-31 at 05:30
+ * `caret` (6.0-71), `mgcv` (1.8-15), `nlme` (3.1-128)
+ * tested on 2016-10-31 at 05:24
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
  * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `modeltools` (0.2-21), `mvtnorm` (1.0-5), `party` (1.0-25), `sandwich` (2.3-4), `strucchange` (1.5-1), `zoo` (1.7-12)
- * tested on 2016-10-30 at 22:37
+ * `caret` (6.0-72), `mgcv` (1.8-15), `nlme` (3.1-128)
+ * tested on 2016-10-30 at 22:31
 
 
 Results:
 ---------
+
+**Test Case**: `class_cv_dist`
+
+Object class(es): `train`
+
+Model Configuration:
+
+ * Non-formula method
+ * Resampling: Cross-Validated (3 fold)
+ * Grid search
+ * Pre-processing: centered (2), scaled (2)  
+ * 2 tuning parameter combinations were evaluated
+
+
+Execution times: (old) 29.57s (new) 28.44s
+
+Test Results:
+
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
 
 **Test Case**: `class_cv_form`
 
@@ -35,16 +56,17 @@ Model Configuration:
  * Formula method
  * Resampling: Cross-Validated (3 fold)
  * Grid search
- * Pre-processing: centered (7), scaled (7)  
- * 3 tuning parameter combinations were evaluated
+ * Pre-processing: centered (2), scaled (2)  
+ * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.1s (new) 1.15s
+Execution times: (old) 35.33s (new) 36.11s
 
 Test Results:
 
- * _Equal results for Accuracy_
- * _Equal results for Kappa_
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
 
 **Test Case**: `class_cv_model`
 
@@ -55,16 +77,23 @@ Model Configuration:
  * Non-formula method
  * Resampling: Cross-Validated (3 fold)
  * Grid search
- * Pre-processing: centered (7), scaled (7)  
- * 3 tuning parameter combinations were evaluated
+ * Pre-processing: centered (2), scaled (2)  
+ * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.45s (new) 2.8s
+Execution times: (old) 34.21s (new) 34.46s
 
 Test Results:
 
- * _Equal results for Accuracy_
- * _Equal results for Kappa_
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
+
+**Test Case**: `class_imp`
+
+Object class(es): `varImp.train`
+
+ * _Equal results_
 
 **Test Case**: `class_loo_model`
 
@@ -75,16 +104,17 @@ Model Configuration:
  * Non-formula method
  * Resampling: Leave-One-Out Cross-Validation
  * Grid search
- * Pre-processing: centered (7), scaled (7)  
- * 3 tuning parameter combinations were evaluated
+ * Pre-processing: centered (2), scaled (2)  
+ * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.96s (new) 8.68s
+Execution times: (old) 10.82m (new) 10.97m
 
 Test Results:
 
- * _Equal results for Accuracy_
- * _Equal results for Kappa_
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
 
 **Test Case**: `class_none_model`
 
@@ -95,20 +125,27 @@ Model Configuration:
  * Non-formula method
  * Resampling: None
  * Grid search
- * Pre-processing: centered (7), scaled (7)  
+ * Pre-processing: centered (2), scaled (2)  
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.57s (new) 0.59s
+Execution times: (old) 9.99s (new) 10.04s
 
 Test Results:
 
- * _Equal results for Accuracy_
- * _Equal results for Kappa_
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
 
 **Test Case**: `class_none_pred`
 
 Object class(es): `factor`
+
+ * _Equal results_
+
+**Test Case**: `class_none_prob`
+
+Object class(es): `data.frame`
 
  * _Equal results_
 
@@ -130,6 +167,18 @@ Object class(es): `character`
 
  * _Equal results_
 
+**Test Case**: `class_prob`
+
+Object class(es): `data.frame`
+
+ * _Equal results_
+
+**Test Case**: `class_prob_form`
+
+Object class(es): `data.frame`
+
+ * _Equal results_
+
 **Test Case**: `class_rand`
 
 Object class(es): `train`
@@ -140,10 +189,10 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Random search
  * Pre-processing: None  
- * 4 tuning parameter combinations were evaluated
+ * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.36s (new) 1.28s
+Execution times: (old) 1.04m (new) 50.8s
 
 Test Results:
 
@@ -165,11 +214,11 @@ Model Configuration:
  * Formula method
  * Resampling: Cross-Validated (3 fold)
  * Grid search
- * Pre-processing: centered (20), scaled (20)  
- * 3 tuning parameter combinations were evaluated
+ * Pre-processing: centered (3), scaled (3)  
+ * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.28s (new) 1.3s
+Execution times: (old) 18.37s (new) 17.6s
 
 Test Results:
 
@@ -185,16 +234,22 @@ Model Configuration:
  * Non-formula method
  * Resampling: Cross-Validated (3 fold)
  * Grid search
- * Pre-processing: centered (20), scaled (20)  
- * 3 tuning parameter combinations were evaluated
+ * Pre-processing: centered (3), scaled (3)  
+ * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.6s (new) 1.94s
+Execution times: (old) 17.91s (new) 18.22s
 
 Test Results:
 
  * _Equal results for RMSE_
  * _Equal results for Rsquared_
+
+**Test Case**: `reg_imp`
+
+Object class(es): `varImp.train`
+
+ * _Equal results_
 
 **Test Case**: `reg_loo_model`
 
@@ -205,11 +260,11 @@ Model Configuration:
  * Non-formula method
  * Resampling: Leave-One-Out Cross-Validation
  * Grid search
- * Pre-processing: centered (20), scaled (20)  
- * 3 tuning parameter combinations were evaluated
+ * Pre-processing: centered (3), scaled (3)  
+ * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 8.7s (new) 8.83s
+Execution times: (old) 4.06m (new) 4.06m
 
 Test Results:
 
@@ -225,11 +280,11 @@ Model Configuration:
  * Non-formula method
  * Resampling: None
  * Grid search
- * Pre-processing: centered (20), scaled (20)  
+ * Pre-processing: centered (3), scaled (3)  
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.57s (new) 0.66s
+Execution times: (old) 3.11s (new) 2.89s
 
 Test Results:
 
@@ -238,25 +293,25 @@ Test Results:
 
 **Test Case**: `reg_none_pred`
 
-Object class(es): `numeric`
+Object class(es): `array`
 
  * _Equal results_
 
 **Test Case**: `reg_pred`
 
-Object class(es): `numeric`
+Object class(es): `array`
 
  * _Equal results_
 
 **Test Case**: `reg_pred_form`
 
-Object class(es): `numeric`
+Object class(es): `array`
 
  * _Equal results_
 
 **Test Case**: `reg_predictors1`
 
-Object class(es): `numeric`
+Object class(es): `character`
 
  * _Equal results_
 
@@ -270,10 +325,10 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Random search
  * Pre-processing: None  
- * 4 tuning parameter combinations were evaluated
+ * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.52s (new) 1.37s
+Execution times: (old) 18.52s (new) 19.27s
 
 Test Results:
 

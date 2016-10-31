@@ -1,7 +1,8 @@
 Generalized Partial Least Squares (`gpls`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/gpls.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/gpls.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-71), `gpls` (1.45.0)
- * tested on 2016-09-06 at 11:23
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-71), `gpls` (1.46.0)
+ * tested on 2016-10-31 at 05:50
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-72), `gpls` (1.45.0)
- * tested on 2016-09-08 at 10:22
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-72), `gpls` (1.46.0)
+ * tested on 2016-10-30 at 23:08
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.76s (new) 1.87s
+Execution times: (old) 2.03s (new) 2.32s
 
 Test Results:
 
@@ -59,7 +60,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.54s (new) 2.28s
+Execution times: (old) 2.72s (new) 3.05s
 
 Test Results:
 
@@ -80,7 +81,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 31.86s (new) 21.51s
+Execution times: (old) 23.03s (new) 25.17s
 
 Test Results:
 
@@ -101,7 +102,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.07s (new) 0.71s
+Execution times: (old) 0.7s (new) 1.03s
 
 Test Results:
 

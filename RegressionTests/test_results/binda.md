@@ -1,7 +1,8 @@
 Binary Discriminant Analysis (`binda`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/binda.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/binda.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `binda` (1.0.3), `caret` (6.0-71), `entropy` (1.2.1), `QSARdata` (1.3)
- * tested on 2016-09-06 at 11:09
+ * tested on 2016-10-31 at 05:25
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `binda` (1.0.3), `caret` (6.0-72), `entropy` (1.2.1), `QSARdata` (1.3)
- * tested on 2016-09-08 at 09:59
+ * tested on 2016-10-30 at 22:33
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.87s (new) 0.89s
+Execution times: (old) 1.4s (new) 0.92s
 
 Test Results:
 
@@ -59,7 +60,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.09s (new) 1.11s
+Execution times: (old) 1.55s (new) 1.65s
 
 Test Results:
 
@@ -80,7 +81,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.85s (new) 2.68s
+Execution times: (old) 2.75s (new) 2.84s
 
 Test Results:
 
@@ -101,7 +102,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.52s (new) 0.5s
+Execution times: (old) 0.56s (new) 0.54s
 
 Test Results:
 
@@ -158,7 +159,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.15s (new) 1.04s
+Execution times: (old) 0.99s (new) 1.16s
 
 Test Results:
 

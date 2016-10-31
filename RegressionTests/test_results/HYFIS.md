@@ -1,7 +1,8 @@
 Hybrid Neural Fuzzy Inference System (`HYFIS`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/HYFIS.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/HYFIS.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `frbs` (3.1-0)
- * tested on 2016-09-06 at 11:25
+ * tested on 2016-10-31 at 05:54
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `frbs` (3.1-0)
- * tested on 2016-09-08 at 10:24
+ * tested on 2016-10-30 at 23:11
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 13.72s (new) 8.69s
+Execution times: (old) 9.36s (new) 9.82s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 14.13s (new) 8.9s
+Execution times: (old) 10.05s (new) 10.38s
 
 Test Results:
 
@@ -84,7 +85,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.61m (new) 1.77m
+Execution times: (old) 1.88m (new) 1.98m
 
 Test Results:
 
@@ -104,7 +105,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.1s (new) 1.96s
+Execution times: (old) 2.07s (new) 2.18s
 
 Test Results:
 
@@ -148,7 +149,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 27.75s (new) 17.79s
+Execution times: (old) 19.35s (new) 20.01s
 
 Test Results:
 

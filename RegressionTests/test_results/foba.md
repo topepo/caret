@@ -1,7 +1,8 @@
 Ridge Regression with Variable Selection (`foba`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/foba.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/foba.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `foba` (0.1)
- * tested on 2016-09-06 at 11:14
+ * tested on 2016-10-31 at 05:37
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `foba` (0.1)
- * tested on 2016-09-08 at 10:09
+ * tested on 2016-10-30 at 22:44
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.17s (new) 1.61s
+Execution times: (old) 1.51s (new) 1.39s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.45s (new) 1.98s
+Execution times: (old) 2.84s (new) 3.1s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.63s (new) 7.63s
+Execution times: (old) 8.25s (new) 8.56s
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.55s (new) 0.72s
+Execution times: (old) 0.96s (new) 1.08s
 
 Test Results:
 
@@ -142,7 +143,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.39s (new) 1.99s
+Execution times: (old) 2.19s (new) 2.14s
 
 Test Results:
 

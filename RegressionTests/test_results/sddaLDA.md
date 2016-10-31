@@ -1,7 +1,8 @@
 Stepwise Diagonal Linear Discriminant Analysis (`sddaLDA`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/sddaLDA.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/sddaLDA.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `MASS` (7.3-45), `SDDA` (1.0-5)
- * tested on 2016-09-06 at 12:01
+ * tested on 2016-10-31 at 06:40
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `MASS` (7.3-45), `SDDA` (1.0-5)
- * tested on 2016-09-08 at 11:05
+ * tested on 2016-10-31 at 00:04
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.98s (new) 0.96s
+Execution times: (old) 0.87s (new) 0.77s
 
 Test Results:
 
@@ -59,7 +60,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.14s (new) 1.14s
+Execution times: (old) 1.49s (new) 1.39s
 
 Test Results:
 
@@ -80,7 +81,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 2.06s (new) 1.92s
+Execution times: (old) 2.36s (new) 2.21s
 
 Test Results:
 
@@ -101,7 +102,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.5s (new) 0.52s
+Execution times: (old) 0.55s (new) 0.5s
 
 Test Results:
 

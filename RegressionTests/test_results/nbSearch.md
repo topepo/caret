@@ -1,7 +1,8 @@
 Semi-Naive Structure Learner Wrapper (`nbSearch`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/nbSearch.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/nbSearch.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `bnclassify` (0.3.2), `caret` (6.0-71)
- * tested on 2016-09-06 at 11:34
+ * tested on 2016-10-31 at 06:07
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `bnclassify` (0.3.2), `caret` (6.0-72)
- * tested on 2016-09-08 at 10:36
+ * tested on 2016-10-30 at 23:26
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 28.29s (new) 32.4s
+Execution times: (old) 29.81s (new) 32.84s
 
 Test Results:
 
@@ -65,7 +66,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 13.12m (new) 13m
+Execution times: (old) 14.02m (new) 15.2m
 
 Test Results:
 
@@ -86,7 +87,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.8s (new) 6.92s
+Execution times: (old) 7.22s (new) 7.73s
 
 Test Results:
 
@@ -137,7 +138,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 50.35s (new) 54.07s
+Execution times: (old) 52.38s (new) 57.01s
 
 Test Results:
 

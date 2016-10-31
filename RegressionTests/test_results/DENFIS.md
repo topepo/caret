@@ -1,7 +1,8 @@
 Dynamic Evolving Neural-Fuzzy Inference System  (`DENFIS`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/DENFIS.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/DENFIS.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `frbs` (3.1-0)
- * tested on 2016-09-06 at 11:12
+ * tested on 2016-10-31 at 05:31
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `frbs` (3.1-0)
- * tested on 2016-09-08 at 10:04
+ * tested on 2016-10-30 at 22:39
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 11.52s (new) 15.75s
+Execution times: (old) 17.55s (new) 17.9s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 12.21s (new) 15.94s
+Execution times: (old) 18.43s (new) 18.43s
 
 Test Results:
 
@@ -84,7 +85,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.62s (new) 2.14s
+Execution times: (old) 2.61s (new) 2.3s
 
 Test Results:
 
@@ -128,7 +129,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.17s (new) 5.68s
+Execution times: (old) 5.64s (new) 5.75s
 
 Test Results:
 

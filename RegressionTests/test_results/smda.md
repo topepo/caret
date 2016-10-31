@@ -1,7 +1,8 @@
 Sparse Mixture Discriminant Analysis (`smda`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/smda.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/smda.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-71), `sparseLDA` (0.1-7)
- * tested on 2016-09-06 at 12:02
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-71), `sparseLDA` (0.1-9)
+ * tested on 2016-10-31 at 06:40
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-72), `sparseLDA` (0.1-7)
- * tested on 2016-09-08 at 11:06
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-72), `sparseLDA` (0.1-9)
+ * tested on 2016-10-31 at 00:05
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 34.69s (new) 34.31s
+Execution times: (old) 37.94s (new) 37.51s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 36.73s (new) 36.75s
+Execution times: (old) 40.68s (new) 40.85s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.27s (new) 1.32s
+Execution times: (old) 1.39s (new) 1.41s
 
 Test Results:
 
@@ -122,7 +123,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 20.34s (new) 20.75s
+Execution times: (old) 22.6s (new) 22.5s
 
 Test Results:
 

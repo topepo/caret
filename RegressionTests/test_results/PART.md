@@ -1,7 +1,8 @@
 Rule-Based Classifier (`PART`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/PART.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/PART.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-71), `RWeka` (0.4-29)
- * tested on 2016-09-06 at 11:47
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-71), `RWeka` (0.4-26)
+ * tested on 2016-10-31 at 06:19
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-72), `RWeka` (0.4-29)
- * tested on 2016-09-08 at 12:04
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-72), `RWeka` (0.4-26)
+ * tested on 2016-10-30 at 23:43
 
 
 Results:
@@ -38,13 +39,76 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.36s (new) 0.85s
+Execution times: (old) 1.22s (new) 2.91s
 
 Test Results:
 
- * _Equal results for ROC_
- * _Equal results for Sens_
- * _Equal results for Spec_
+ * ***UNequal results for ROC***:
+
+<pre>
+    no pairs of results without missing values
+  threshold pruned   ROC_new  Sens_new  Spec_new   ROC_old  Sens_old
+1     0.010    yes 0.7042824 0.8009259 0.6388889        NA        NA
+2     0.010     no 0.7042824 0.8009259 0.6388889        NA        NA
+3     0.250    yes        NA        NA        NA 0.7042824 0.8009259
+4     0.255    yes 0.7042824 0.8009259 0.6388889        NA        NA
+5     0.255     no 0.7042824 0.8009259 0.6388889        NA        NA
+6     0.500    yes 0.7042824 0.8009259 0.6388889        NA        NA
+7     0.500     no 0.7042824 0.8009259 0.6388889        NA        NA
+   Spec_old Diff
+1        NA   NA
+2        NA   NA
+3 0.6388889   NA
+4        NA   NA
+5        NA   NA
+6        NA   NA
+7        NA   NA
+</pre>
+
+ * ***UNequal results for Sens***:
+
+<pre>
+    no pairs of results without missing values
+  threshold pruned   ROC_new  Sens_new  Spec_new   ROC_old  Sens_old
+1     0.010    yes 0.7042824 0.8009259 0.6388889        NA        NA
+2     0.010     no 0.7042824 0.8009259 0.6388889        NA        NA
+3     0.250    yes        NA        NA        NA 0.7042824 0.8009259
+4     0.255    yes 0.7042824 0.8009259 0.6388889        NA        NA
+5     0.255     no 0.7042824 0.8009259 0.6388889        NA        NA
+6     0.500    yes 0.7042824 0.8009259 0.6388889        NA        NA
+7     0.500     no 0.7042824 0.8009259 0.6388889        NA        NA
+   Spec_old Diff
+1        NA   NA
+2        NA   NA
+3 0.6388889   NA
+4        NA   NA
+5        NA   NA
+6        NA   NA
+7        NA   NA
+</pre>
+
+ * ***UNequal results for Spec***:
+
+<pre>
+    no pairs of results without missing values
+  threshold pruned   ROC_new  Sens_new  Spec_new   ROC_old  Sens_old
+1     0.010    yes 0.7042824 0.8009259 0.6388889        NA        NA
+2     0.010     no 0.7042824 0.8009259 0.6388889        NA        NA
+3     0.250    yes        NA        NA        NA 0.7042824 0.8009259
+4     0.255    yes 0.7042824 0.8009259 0.6388889        NA        NA
+5     0.255     no 0.7042824 0.8009259 0.6388889        NA        NA
+6     0.500    yes 0.7042824 0.8009259 0.6388889        NA        NA
+7     0.500     no 0.7042824 0.8009259 0.6388889        NA        NA
+   Spec_old Diff
+1        NA   NA
+2        NA   NA
+3 0.6388889   NA
+4        NA   NA
+5        NA   NA
+6        NA   NA
+7        NA   NA
+</pre>
+
 
 **Test Case**: `class_cv_model`
 
@@ -59,13 +123,76 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 2.23s (new) 1.4s
+Execution times: (old) 2.55s (new) 5.08s
 
 Test Results:
 
- * _Equal results for ROC_
- * _Equal results for Sens_
- * _Equal results for Spec_
+ * ***UNequal results for ROC***:
+
+<pre>
+    no pairs of results without missing values
+  threshold pruned   ROC_new  Sens_new  Spec_new   ROC_old  Sens_old
+1     0.010    yes 0.7042824 0.8009259 0.6388889        NA        NA
+2     0.010     no 0.7042824 0.8009259 0.6388889        NA        NA
+3     0.250    yes        NA        NA        NA 0.7042824 0.8009259
+4     0.255    yes 0.7042824 0.8009259 0.6388889        NA        NA
+5     0.255     no 0.7042824 0.8009259 0.6388889        NA        NA
+6     0.500    yes 0.7042824 0.8009259 0.6388889        NA        NA
+7     0.500     no 0.7042824 0.8009259 0.6388889        NA        NA
+   Spec_old Diff
+1        NA   NA
+2        NA   NA
+3 0.6388889   NA
+4        NA   NA
+5        NA   NA
+6        NA   NA
+7        NA   NA
+</pre>
+
+ * ***UNequal results for Sens***:
+
+<pre>
+    no pairs of results without missing values
+  threshold pruned   ROC_new  Sens_new  Spec_new   ROC_old  Sens_old
+1     0.010    yes 0.7042824 0.8009259 0.6388889        NA        NA
+2     0.010     no 0.7042824 0.8009259 0.6388889        NA        NA
+3     0.250    yes        NA        NA        NA 0.7042824 0.8009259
+4     0.255    yes 0.7042824 0.8009259 0.6388889        NA        NA
+5     0.255     no 0.7042824 0.8009259 0.6388889        NA        NA
+6     0.500    yes 0.7042824 0.8009259 0.6388889        NA        NA
+7     0.500     no 0.7042824 0.8009259 0.6388889        NA        NA
+   Spec_old Diff
+1        NA   NA
+2        NA   NA
+3 0.6388889   NA
+4        NA   NA
+5        NA   NA
+6        NA   NA
+7        NA   NA
+</pre>
+
+ * ***UNequal results for Spec***:
+
+<pre>
+    no pairs of results without missing values
+  threshold pruned   ROC_new  Sens_new  Spec_new   ROC_old  Sens_old
+1     0.010    yes 0.7042824 0.8009259 0.6388889        NA        NA
+2     0.010     no 0.7042824 0.8009259 0.6388889        NA        NA
+3     0.250    yes        NA        NA        NA 0.7042824 0.8009259
+4     0.255    yes 0.7042824 0.8009259 0.6388889        NA        NA
+5     0.255     no 0.7042824 0.8009259 0.6388889        NA        NA
+6     0.500    yes 0.7042824 0.8009259 0.6388889        NA        NA
+7     0.500     no 0.7042824 0.8009259 0.6388889        NA        NA
+   Spec_old Diff
+1        NA   NA
+2        NA   NA
+3 0.6388889   NA
+4        NA   NA
+5        NA   NA
+6        NA   NA
+7        NA   NA
+</pre>
+
 
 **Test Case**: `class_imp`
 
@@ -86,13 +213,76 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 6.83s (new) 3.91s
+Execution times: (old) 7.19s (new) 41.2s
 
 Test Results:
 
- * _Equal results for ROC_
- * _Equal results for Sens_
- * _Equal results for Spec_
+ * ***UNequal results for ROC***:
+
+<pre>
+    no pairs of results without missing values
+  threshold pruned ROC_new Sens_new Spec_new ROC_old Sens_old
+1     0.010    yes  0.6480     0.76      0.6      NA       NA
+2     0.010     no  0.6032     0.76      0.6      NA       NA
+3     0.250    yes      NA       NA       NA   0.648     0.76
+4     0.255    yes  0.6480     0.76      0.6      NA       NA
+5     0.255     no  0.6032     0.76      0.6      NA       NA
+6     0.500    yes  0.6480     0.76      0.6      NA       NA
+7     0.500     no  0.6032     0.76      0.6      NA       NA
+  Spec_old Diff
+1       NA   NA
+2       NA   NA
+3      0.6   NA
+4       NA   NA
+5       NA   NA
+6       NA   NA
+7       NA   NA
+</pre>
+
+ * ***UNequal results for Sens***:
+
+<pre>
+    no pairs of results without missing values
+  threshold pruned ROC_new Sens_new Spec_new ROC_old Sens_old
+1     0.010    yes  0.6480     0.76      0.6      NA       NA
+2     0.010     no  0.6032     0.76      0.6      NA       NA
+3     0.250    yes      NA       NA       NA   0.648     0.76
+4     0.255    yes  0.6480     0.76      0.6      NA       NA
+5     0.255     no  0.6032     0.76      0.6      NA       NA
+6     0.500    yes  0.6480     0.76      0.6      NA       NA
+7     0.500     no  0.6032     0.76      0.6      NA       NA
+  Spec_old Diff
+1       NA   NA
+2       NA   NA
+3      0.6   NA
+4       NA   NA
+5       NA   NA
+6       NA   NA
+7       NA   NA
+</pre>
+
+ * ***UNequal results for Spec***:
+
+<pre>
+    no pairs of results without missing values
+  threshold pruned ROC_new Sens_new Spec_new ROC_old Sens_old
+1     0.010    yes  0.6480     0.76      0.6      NA       NA
+2     0.010     no  0.6032     0.76      0.6      NA       NA
+3     0.250    yes      NA       NA       NA   0.648     0.76
+4     0.255    yes  0.6480     0.76      0.6      NA       NA
+5     0.255     no  0.6032     0.76      0.6      NA       NA
+6     0.500    yes  0.6480     0.76      0.6      NA       NA
+7     0.500     no  0.6032     0.76      0.6      NA       NA
+  Spec_old Diff
+1       NA   NA
+2       NA   NA
+3      0.6   NA
+4       NA   NA
+5       NA   NA
+6       NA   NA
+7       NA   NA
+</pre>
+
 
 **Test Case**: `class_none_model`
 
@@ -107,7 +297,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.56s (new) 0.38s
+Execution times: (old) 0.56s (new) 0.62s
 
 Test Results:
 

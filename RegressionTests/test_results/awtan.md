@@ -1,7 +1,8 @@
 Tree Augmented Naive Bayes Classifier with Attribute Weighting (`awtan`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/awtan.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/awtan.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `bnclassify` (0.3.2), `caret` (6.0-71)
- * tested on 2016-09-06 at 09:55
+ * tested on 2016-10-31 at 05:22
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `bnclassify` (0.3.2), `caret` (6.0-72)
- * tested on 2016-09-08 at 09:56
+ * tested on 2016-10-30 at 22:30
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.69s (new) 6.38s
+Execution times: (old) 7.36s (new) 7.36s
 
 Test Results:
 
@@ -65,7 +66,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.76m (new) 2.41m
+Execution times: (old) 2.66m (new) 2.73m
 
 Test Results:
 
@@ -86,7 +87,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.53s (new) 0.81s
+Execution times: (old) 0.75s (new) 0.89s
 
 Test Results:
 
@@ -137,7 +138,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.46s (new) 5.17s
+Execution times: (old) 5.88s (new) 5.96s
 
 Test Results:
 

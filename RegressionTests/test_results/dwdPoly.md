@@ -1,7 +1,8 @@
 Distance Weighted Discrimination with Polynomial Kernel (`dwdPoly`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/dwdPoly.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/dwdPoly.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `kerndwd` (1.1.2)
- * tested on 2016-09-06 at 11:12
+ * tested on 2016-10-31 at 05:33
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `kerndwd` (1.1.2)
- * tested on 2016-09-08 at 10:06
+ * tested on 2016-10-30 at 22:41
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 27 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.46s (new) 3.41s
+Execution times: (old) 3.53s (new) 3.04s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 27 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.21s (new) 6.09s
+Execution times: (old) 6.3s (new) 6.96s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 27 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 47.32s (new) 1.09m
+Execution times: (old) 1.17m (new) 1.16m
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.57s (new) 1.15s
+Execution times: (old) 0.96s (new) 0.78s
 
 Test Results:
 

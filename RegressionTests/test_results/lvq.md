@@ -1,7 +1,8 @@
 Learning Vector Quantization (`lvq`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/lvq.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/lvq.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `class` (7.3-14)
- * tested on 2016-09-06 at 11:30
+ * tested on 2016-10-31 at 05:59
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `class` (7.3-14)
- * tested on 2016-09-08 at 10:30
+ * tested on 2016-10-30 at 23:18
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.16s (new) 1.14s
+Execution times: (old) 1.04s (new) 1.07s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.66s (new) 1.63s
+Execution times: (old) 2.05s (new) 2.55s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 10.76s (new) 10.48s
+Execution times: (old) 11.63s (new) 12.15s
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.5s (new) 0.52s
+Execution times: (old) 0.54s (new) 0.57s
 
 Test Results:
 
@@ -136,7 +137,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1s (new) 1s
+Execution times: (old) 1.14s (new) 1.21s
 
 Test Results:
 

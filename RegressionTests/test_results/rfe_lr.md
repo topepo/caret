@@ -1,7 +1,8 @@
 `rfe_lr`
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/rfe_lr.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/rfe_lr.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `plyr` (1.8.4)
- * tested on 2016-09-06 at 11:53
+ * tested on 2016-10-31 at 06:28
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `plyr` (1.8.4)
- * tested on 2016-09-08 at 10:55
+ * tested on 2016-10-30 at 23:53
 
 
 Results:
@@ -35,7 +36,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15
 
 
-Execution times: (old) 2.22s (new) 1.96s
+Execution times: (old) 2.25s (new) 2.46s
 
 Test Results:
 
@@ -52,7 +53,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 17
 
 
-Execution times: (old) 1.57s (new) 1.37s
+Execution times: (old) 1.64s (new) 1.76s
 
 Test Results:
 
@@ -75,7 +76,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15
 
 
-Execution times: (old) 23.54s (new) 19.68s
+Execution times: (old) 29.74s (new) 31.31s
 
 Test Results:
 
@@ -92,7 +93,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 17
 
 
-Execution times: (old) 23.79s (new) 20.03s
+Execution times: (old) 22.86s (new) 22.39s
 
 Test Results:
 

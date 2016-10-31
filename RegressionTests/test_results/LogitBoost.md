@@ -1,7 +1,8 @@
 Boosted Logistic Regression (`LogitBoost`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/LogitBoost.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/LogitBoost.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `caTools` (1.17.1)
- * tested on 2016-09-06 at 11:29
+ * tested on 2016-10-31 at 05:58
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `caTools` (1.17.1)
- * tested on 2016-09-08 at 10:27
+ * tested on 2016-10-30 at 23:17
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.92s (new) 0.9s
+Execution times: (old) 0.94s (new) 1.03s
 
 Test Results:
 
@@ -59,7 +60,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.3s (new) 1.24s
+Execution times: (old) 1.46s (new) 1.65s
 
 Test Results:
 
@@ -80,7 +81,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.31s (new) 3.07s
+Execution times: (old) 3.26s (new) 3.78s
 
 Test Results:
 
@@ -101,7 +102,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.54s (new) 0.56s
+Execution times: (old) 0.55s (new) 0.63s
 
 Test Results:
 
@@ -164,7 +165,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.98s (new) 0.97s
+Execution times: (old) 1.02s (new) 1.07s
 
 Test Results:
 

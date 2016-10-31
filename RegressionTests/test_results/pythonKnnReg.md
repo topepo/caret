@@ -1,7 +1,8 @@
 Knn regression via sklearn.neighbors.KNeighborsRegressor (`pythonKnnReg`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/pythonKnnReg.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/pythonKnnReg.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `RJSONIO` (1.3-0), `rPython` (0.0-6)
- * tested on 2016-09-06 at 11:50
+ * tested on 2016-10-31 at 06:24
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `RJSONIO` (1.3-0), `rPython` (0.0-6)
- * tested on 2016-09-08 at 10:52
+ * tested on 2016-10-30 at 23:48
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.01s (new) 3.48s
+Execution times: (old) 4.14s (new) 4.85s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 12.27s (new) 11.91s
+Execution times: (old) 13.86s (new) 14.58s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.53s (new) 0.51s
+Execution times: (old) 0.54s (new) 0.57s
 
 Test Results:
 
@@ -110,7 +111,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.76s (new) 1.76s
+Execution times: (old) 1.77s (new) 1.81s
 
 Test Results:
 

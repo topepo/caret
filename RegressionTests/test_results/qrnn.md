@@ -1,7 +1,8 @@
 Quantile Regression Neural Network (`qrnn`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/qrnn.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/qrnn.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `qrnn` (1.1.3)
- * tested on 2016-09-06 at 11:51
+ * tested on 2016-10-31 at 06:24
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `qrnn` (1.1.3)
- * tested on 2016-09-08 at 10:52
+ * tested on 2016-10-30 at 23:48
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 12.84s (new) 12.53s
+Execution times: (old) 14.14s (new) 14.86s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 13.99s (new) 13.56s
+Execution times: (old) 15.58s (new) 16.8s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.77m (new) 2.69m
+Execution times: (old) 3.12m (new) 3.27m
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.23s (new) 1.23s
+Execution times: (old) 1.31s (new) 1.42s
 
 Test Results:
 
@@ -136,7 +137,7 @@ Model Configuration:
  * 16 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 21.1s (new) 20.25s
+Execution times: (old) 23.71s (new) 24.9s
 
 Test Results:
 

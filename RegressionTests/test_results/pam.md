@@ -1,7 +1,8 @@
 Nearest Shrunken Centroids (`pam`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/pam.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/pam.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-71), `cluster` (2.0.4), `pamr` (1.55), `survival` (2.39-5)
- * tested on 2016-09-06 at 11:47
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-71), `cluster` (2.0.5), `pamr` (1.55), `survival` (2.39-5)
+ * tested on 2016-10-31 at 06:18
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-72), `cluster` (2.0.4), `pamr` (1.55), `survival` (2.39-5)
- * tested on 2016-09-08 at 10:47
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-72), `cluster` (2.0.5), `pamr` (1.55), `survival` (2.39-5)
+ * tested on 2016-10-30 at 23:43
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.07s (new) 1.03s
+Execution times: (old) 0.94s (new) 0.99s
 
 Test Results:
 
@@ -59,7 +60,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.3s (new) 1.16s
+Execution times: (old) 1.91s (new) 1.85s
 
 Test Results:
 
@@ -86,7 +87,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.84s (new) 2.66s
+Execution times: (old) 3.24s (new) 3.41s
 
 Test Results:
 
@@ -107,7 +108,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.55s (new) 0.5s
+Execution times: (old) 0.57s (new) 0.63s
 
 Test Results:
 
@@ -176,7 +177,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.91s (new) 0.91s
+Execution times: (old) 1.07s (new) 1.15s
 
 Test Results:
 

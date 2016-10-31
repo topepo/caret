@@ -1,8 +1,8 @@
-Conditional Inference Tree (`ctree`)
+Random Forest (`Rborist`)
 ===== 
 
-There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/ctree.R).
-A [history of commits](https://github.com/topepo/caret/commits/master/models/files/ctree.R) for the model code is also available
+There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/Rborist.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/Rborist.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -11,16 +11,16 @@ Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
  * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `modeltools` (0.2-21), `mvtnorm` (1.0-5), `party` (1.0-25), `sandwich` (2.3-4), `strucchange` (1.5-1), `zoo` (1.7-12)
- * tested on 2016-10-31 at 05:30
+ * `caret` (6.0-71), `Rborist` (0.1-3), `Rcpp` (0.12.4)
+ * tested on 2016-10-31 at 06:25
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
  * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `modeltools` (0.2-21), `mvtnorm` (1.0-5), `party` (1.0-25), `sandwich` (2.3-4), `strucchange` (1.5-1), `zoo` (1.7-12)
- * tested on 2016-10-30 at 22:37
+ * `caret` (6.0-72), `Rborist` (0.1-3), `Rcpp` (0.12.4)
+ * tested on 2016-10-30 at 23:49
 
 
 Results:
@@ -39,12 +39,13 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.1s (new) 1.15s
+Execution times: (old) 1s (new) 1s
 
 Test Results:
 
- * _Equal results for Accuracy_
- * _Equal results for Kappa_
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
 
 **Test Case**: `class_cv_model`
 
@@ -59,12 +60,19 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.45s (new) 2.8s
+Execution times: (old) 1.76s (new) 1.92s
 
 Test Results:
 
- * _Equal results for Accuracy_
- * _Equal results for Kappa_
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
+
+**Test Case**: `class_imp`
+
+Object class(es): `varImp.train`
+
+ * _Equal results_
 
 **Test Case**: `class_loo_model`
 
@@ -79,12 +87,13 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.96s (new) 8.68s
+Execution times: (old) 6.2s (new) 6.28s
 
 Test Results:
 
- * _Equal results for Accuracy_
- * _Equal results for Kappa_
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
 
 **Test Case**: `class_none_model`
 
@@ -99,18 +108,45 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.57s (new) 0.59s
+Execution times: (old) 0.58s (new) 0.61s
 
 Test Results:
 
- * _Equal results for Accuracy_
- * _Equal results for Kappa_
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
 
 **Test Case**: `class_none_pred`
 
 Object class(es): `factor`
 
  * _Equal results_
+
+**Test Case**: `class_none_prob`
+
+Object class(es): `data.frame`
+
+ * _Equal results_
+
+**Test Case**: `class_oob_model`
+
+Object class(es): `train`
+
+Model Configuration:
+
+ * Non-formula method
+ * Resampling: Out of Bag Resampling
+ * Grid search
+ * Pre-processing: None  
+ * 3 tuning parameter combinations were evaluated
+
+
+Execution times: (old) 0.58s (new) 0.61s
+
+Test Results:
+
+ * _Equal results for Accuracy_
+ * _Equal results for Kappa_
 
 **Test Case**: `class_pred`
 
@@ -130,6 +166,18 @@ Object class(es): `character`
 
  * _Equal results_
 
+**Test Case**: `class_prob`
+
+Object class(es): `data.frame`
+
+ * _Equal results_
+
+**Test Case**: `class_prob_form`
+
+Object class(es): `data.frame`
+
+ * _Equal results_
+
 **Test Case**: `class_rand`
 
 Object class(es): `train`
@@ -140,10 +188,10 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Random search
  * Pre-processing: None  
- * 4 tuning parameter combinations were evaluated
+ * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.36s (new) 1.28s
+Execution times: (old) 0.92s (new) 0.97s
 
 Test Results:
 
@@ -169,7 +217,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.28s (new) 1.3s
+Execution times: (old) 0.97s (new) 0.99s
 
 Test Results:
 
@@ -189,12 +237,18 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.6s (new) 1.94s
+Execution times: (old) 1.35s (new) 1.41s
 
 Test Results:
 
  * _Equal results for RMSE_
  * _Equal results for Rsquared_
+
+**Test Case**: `reg_imp`
+
+Object class(es): `varImp.train`
+
+ * _Equal results_
 
 **Test Case**: `reg_loo_model`
 
@@ -209,7 +263,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 8.7s (new) 8.83s
+Execution times: (old) 5.2s (new) 5.38s
 
 Test Results:
 
@@ -229,7 +283,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.57s (new) 0.66s
+Execution times: (old) 0.59s (new) 0.6s
 
 Test Results:
 
@@ -241,6 +295,26 @@ Test Results:
 Object class(es): `numeric`
 
  * _Equal results_
+
+**Test Case**: `reg_oob_model`
+
+Object class(es): `train`
+
+Model Configuration:
+
+ * Non-formula method
+ * Resampling: Out of Bag Resampling
+ * Grid search
+ * Pre-processing: centered (20), scaled (20)  
+ * 3 tuning parameter combinations were evaluated
+
+
+Execution times: (old) 0.71s (new) 0.76s
+
+Test Results:
+
+ * _Equal results for RMSE_
+ * _Equal results for Rsquared_
 
 **Test Case**: `reg_pred`
 
@@ -256,7 +330,7 @@ Object class(es): `numeric`
 
 **Test Case**: `reg_predictors1`
 
-Object class(es): `numeric`
+Object class(es): `character`
 
  * _Equal results_
 
@@ -273,7 +347,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.52s (new) 1.37s
+Execution times: (old) 0.95s (new) 1.14s
 
 Test Results:
 

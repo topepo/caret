@@ -1,7 +1,8 @@
 Support Vector Machines with Spectrum String Kernel (`svmSpectrumString`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/svmSpectrumString.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/svmSpectrumString.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-71), `kernlab` (0.9-24)
- * tested on 2016-09-06 at 12:10
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-71), `kernlab` (0.9-25)
+ * tested on 2016-10-31 at 06:47
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-72), `kernlab` (0.9-24)
- * tested on 2016-09-08 at 11:13
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-72), `kernlab` (0.9-25)
+ * tested on 2016-10-31 at 00:12
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 14.65s (new) 14.66s
+Execution times: (old) 15.51s (new) 16.04s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.22m (new) 3.23m
+Execution times: (old) 3.39m (new) 3.39m
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.07s (new) 1.04s
+Execution times: (old) 1.07s (new) 1.09s
 
 Test Results:
 
@@ -117,7 +118,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.13s (new) 7.31s
+Execution times: (old) 7.53s (new) 7.25s
 
 Test Results:
 

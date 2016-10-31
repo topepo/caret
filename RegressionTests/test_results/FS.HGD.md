@@ -1,7 +1,8 @@
 Simplified TSK Fuzzy Rules (`FS.HGD`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/FS.HGD.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/FS.HGD.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `frbs` (3.1-0)
- * tested on 2016-08-03 at 11:41
+ * tested on 2016-10-31 at 05:37
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `frbs` (3.1-0)
- * tested on 2016-09-08 at 10:10
+ * tested on 2016-10-30 at 22:45
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.96m (new) 7.4m
+Execution times: (old) 7.84m (new) 8.24m
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.78m (new) 9.3m
+Execution times: (old) 9.86m (new) 9.9m
 
 Test Results:
 
@@ -84,7 +85,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1783.15h (new) 1723.59h
+Execution times: (old) 1923.41h (new) 2171.67h
 
 Test Results:
 
@@ -104,7 +105,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.08m (new) 1.08m
+Execution times: (old) 1.15m (new) 1.11m
 
 Test Results:
 
@@ -148,7 +149,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.53m (new) 1.44m
+Execution times: (old) 1.53m (new) 1.59m
 
 Test Results:
 

@@ -1,7 +1,8 @@
 Tree Augmented Naive Bayes Classifier Structure Learner Wrapper (`tanSearch`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/tanSearch.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/tanSearch.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `bnclassify` (0.3.2), `caret` (6.0-71)
- * tested on 2016-09-06 at 12:10
+ * tested on 2016-10-31 at 06:48
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `bnclassify` (0.3.2), `caret` (6.0-72)
- * tested on 2016-09-08 at 11:13
+ * tested on 2016-10-31 at 00:12
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 28.55s (new) 28.3s
+Execution times: (old) 30.51s (new) 30.87s
 
 Test Results:
 
@@ -65,7 +66,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 11.25m (new) 11.1m
+Execution times: (old) 12.34m (new) 14m
 
 Test Results:
 
@@ -86,7 +87,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.2s (new) 3.13s
+Execution times: (old) 3.58s (new) 3.81s
 
 Test Results:
 
@@ -137,7 +138,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 37.16s (new) 37.01s
+Execution times: (old) 39.88s (new) 40.74s
 
 Test Results:
 

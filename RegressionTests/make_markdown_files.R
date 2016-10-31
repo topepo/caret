@@ -1,8 +1,8 @@
 source("markdown_functions.R")
 
 ## File in the paths to the test results for the "old" and "new" versions
-op <- "/Volumes/kuhna03/tmp/2015_12_31_16__6.0-62/"
-np <- "/Volumes/kuhna03/tmp/2016_01_04_13__6.0-64/"
+op <- "~/tmp/2016_10_31_05__6.0-71/"
+np <- "~/tmp/2016_10_30_22__6.0-72/"
 
 mods <- match_objects(op, np)
 
@@ -19,7 +19,7 @@ caret_mods <- getModelInfo()
 
 for(mod in mods) {
   
-  sink(file = file.path("/Volumes/kuhna03/tmp/test_results", paste0(mod, ".md")))
+  sink(file = file.path("~/tmp/test_results", paste0(mod, ".md")))
   
   if(mod %in% names(caret_mods)) {
     cat(caret_mods[[mod]]$label, " (`", mod, "`)",  sep = "") 

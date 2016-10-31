@@ -1,7 +1,8 @@
 Quantile Regression with LASSO penalty (`rqlasso`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/rqlasso.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/rqlasso.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-71), `denpro` (0.9.2), `quantreg` (5.21), `regpro` (0.1.1), `rqPen` (1.4), `SparseM` (1.7)
- * tested on 2016-09-06 at 11:57
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-71), `denpro` (0.9.2), `quantreg` (5.21), `regpro` (0.1.1), `rqPen` (1.5), `SparseM` (1.72)
+ * tested on 2016-10-31 at 06:33
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-72), `denpro` (0.9.2), `quantreg` (5.21), `regpro` (0.1.1), `rqPen` (1.4), `SparseM` (1.7)
- * tested on 2016-09-08 at 11:00
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-72), `denpro` (0.9.2), `quantreg` (5.21), `regpro` (0.1.1), `rqPen` (1.5), `SparseM` (1.72)
+ * tested on 2016-10-30 at 23:59
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.04s (new) 0.99s
+Execution times: (old) 0.95s (new) 0.96s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.44s (new) 1.42s
+Execution times: (old) 1.9s (new) 1.99s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.62s (new) 4.45s
+Execution times: (old) 5.33s (new) 5.28s
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.52s (new) 0.5s
+Execution times: (old) 0.54s (new) 0.56s
 
 Test Results:
 
@@ -142,7 +143,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.29s (new) 1.24s
+Execution times: (old) 1.47s (new) 1.39s
 
 Test Results:
 

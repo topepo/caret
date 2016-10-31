@@ -1,7 +1,8 @@
 Distance Weighted Discrimination with Radial Basis Function Kernel (`dwdRadial`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/dwdRadial.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/dwdRadial.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-71), `kerndwd` (1.1.2), `kernlab` (0.9-24)
- * tested on 2016-09-06 at 11:13
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-71), `kerndwd` (1.1.2), `kernlab` (0.9-25)
+ * tested on 2016-10-31 at 05:33
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-72), `kerndwd` (1.1.2), `kernlab` (0.9-24)
- * tested on 2016-09-08 at 10:06
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-72), `kerndwd` (1.1.2), `kernlab` (0.9-25)
+ * tested on 2016-10-30 at 22:41
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.04s (new) 1.34s
+Execution times: (old) 1.37s (new) 1.4s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.72s (new) 3.81s
+Execution times: (old) 4.06s (new) 4.19s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.79s (new) 9.2s
+Execution times: (old) 10.25s (new) 10.28s
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.6s (new) 0.72s
+Execution times: (old) 0.75s (new) 0.86s
 
 Test Results:
 

@@ -1,7 +1,8 @@
 Bagged AdaBoost (`AdaBag`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/AdaBag.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/AdaBag.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `adabag` (4.1), `caret` (6.0-71), `mlbench` (2.1-1), `plyr` (1.8.4), `rpart` (4.1-10)
- * tested on 2016-09-06 at 09:55
+ * tested on 2016-10-31 at 05:22
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `adabag` (4.1), `caret` (6.0-72), `mlbench` (2.1-1), `plyr` (1.8.4), `rpart` (4.1-10)
- * tested on 2016-09-08 at 09:56
+ * tested on 2016-10-30 at 22:30
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 22.8s (new) 28.81s
+Execution times: (old) 38.43s (new) 39.44s
 
 Test Results:
 
@@ -59,7 +60,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 25.74s (new) 28.98s
+Execution times: (old) 38.38s (new) 39.24s
 
 Test Results:
 
@@ -80,7 +81,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.48m (new) 6.21m
+Execution times: (old) 7.19m (new) 7.76m
 
 Test Results:
 
@@ -101,7 +102,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 10.45s (new) 17.69s
+Execution times: (old) 21.28s (new) 22.69s
 
 Test Results:
 
@@ -158,7 +159,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 21.78m (new) 42.9m
+Execution times: (old) 47.28m (new) 49.95m
 
 Test Results:
 

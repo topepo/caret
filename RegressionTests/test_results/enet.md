@@ -1,7 +1,8 @@
 Elasticnet (`enet`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/enet.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/enet.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `elasticnet` (1.1), `lars` (1.2)
- * tested on 2016-09-06 at 11:13
+ * tested on 2016-10-31 at 05:34
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `elasticnet` (1.1), `lars` (1.2)
- * tested on 2016-09-08 at 10:08
+ * tested on 2016-10-30 at 22:42
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.19s (new) 1.71s
+Execution times: (old) 1.38s (new) 1.4s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.64s (new) 2.26s
+Execution times: (old) 3.17s (new) 3.14s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.05s (new) 8.07s
+Execution times: (old) 9.22s (new) 9.37s
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.52s (new) 0.95s
+Execution times: (old) 0.94s (new) 0.76s
 
 Test Results:
 
@@ -142,7 +143,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.02s (new) 1.49s
+Execution times: (old) 1.49s (new) 1.51s
 
 Test Results:
 

@@ -1,7 +1,8 @@
 Support Vector Machines with Linear Kernel (`svmLinear2`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/svmLinear2.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/svmLinear2.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `e1071` (1.6-7)
- * tested on 2016-09-06 at 12:07
+ * tested on 2016-10-31 at 06:45
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `e1071` (1.6-7)
- * tested on 2016-09-08 at 11:11
+ * tested on 2016-10-31 at 00:10
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.04s (new) 1.02s
+Execution times: (old) 0.89s (new) 0.97s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.24s (new) 1.21s
+Execution times: (old) 1.49s (new) 1.84s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.47s (new) 4.43s
+Execution times: (old) 5s (new) 5s
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.56s (new) 0.5s
+Execution times: (old) 0.53s (new) 0.58s
 
 Test Results:
 

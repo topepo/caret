@@ -1,7 +1,8 @@
 Regularized Discriminant Analysis (`rda`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/rda.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/rda.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `klaR` (0.6-12), `MASS` (7.3-45)
- * tested on 2016-09-06 at 11:51
+ * tested on 2016-10-31 at 06:26
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `klaR` (0.6-12), `MASS` (7.3-45)
- * tested on 2016-09-08 at 10:54
+ * tested on 2016-10-30 at 23:50
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.58s (new) 1.51s
+Execution times: (old) 1.51s (new) 1.63s
 
 Test Results:
 
@@ -59,7 +60,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.25s (new) 2.14s
+Execution times: (old) 2.69s (new) 3.01s
 
 Test Results:
 
@@ -80,7 +81,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 18.91s (new) 17.98s
+Execution times: (old) 21.17s (new) 22.89s
 
 Test Results:
 
@@ -101,7 +102,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.5s (new) 0.5s
+Execution times: (old) 0.56s (new) 0.58s
 
 Test Results:
 
@@ -164,7 +165,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.96s (new) 0.94s
+Execution times: (old) 1.15s (new) 1.24s
 
 Test Results:
 

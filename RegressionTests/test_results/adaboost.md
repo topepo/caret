@@ -1,7 +1,8 @@
 AdaBoost Classification Trees (`adaboost`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/adaboost.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/adaboost.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `fastAdaboost` (1.0.0)
- * tested on 2016-09-06 at 09:55
+ * tested on 2016-10-31 at 05:22
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `fastAdaboost` (1.0.0)
- * tested on 2016-09-08 at 09:56
+ * tested on 2016-10-30 at 22:30
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 19.25s (new) 22.17s
+Execution times: (old) 25.7s (new) 25.32s
 
 Test Results:
 
@@ -59,7 +60,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 21.34s (new) 23.36s
+Execution times: (old) 27.08s (new) 27.07s
 
 Test Results:
 
@@ -80,7 +81,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.8m (new) 7.98m
+Execution times: (old) 9.08m (new) 9.4m
 
 Test Results:
 
@@ -101,7 +102,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.06s (new) 2.33s
+Execution times: (old) 2.82s (new) 2.65s
 
 Test Results:
 
@@ -158,7 +159,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 45.99s (new) 1.06m
+Execution times: (old) 1.22m (new) 1.21m
 
 Test Results:
 

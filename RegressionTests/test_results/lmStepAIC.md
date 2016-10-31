@@ -1,7 +1,8 @@
 Linear Regression with Stepwise Selection (`lmStepAIC`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/lmStepAIC.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/lmStepAIC.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `MASS` (7.3-45)
- * tested on 2016-09-06 at 11:29
+ * tested on 2016-10-31 at 05:57
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `MASS` (7.3-45)
- * tested on 2016-09-08 at 10:27
+ * tested on 2016-10-30 at 23:16
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 2.02s (new) 1.87s
+Execution times: (old) 1.78s (new) 1.9s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 2.19s (new) 1.98s
+Execution times: (old) 2.32s (new) 2.61s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 15.64s (new) 14.57s
+Execution times: (old) 15.61s (new) 16.83s
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.77s (new) 0.78s
+Execution times: (old) 0.8s (new) 0.92s
 
 Test Results:
 

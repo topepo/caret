@@ -1,7 +1,8 @@
 Cumulative Probability Model for Ordinal Data (`vglmCumulative`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/vglmCumulative.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/vglmCumulative.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `VGAM` (1.0-2)
- * tested on 2016-09-06 at 12:13
+ * tested on 2016-10-31 at 06:50
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `VGAM` (1.0-2)
- * tested on 2016-09-08 at 11:15
+ * tested on 2016-10-31 at 00:16
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.14s (new) 1.14s
+Execution times: (old) 1.25s (new) 1.46s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.88s (new) 1.95s
+Execution times: (old) 2.24s (new) 2.4s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.28s (new) 1.3s
+Execution times: (old) 1.54s (new) 1.41s
 
 Test Results:
 
@@ -104,7 +105,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 19.31s (new) 19.24s
+Execution times: (old) 21.64s (new) 22.62s
 
 Test Results:
 
@@ -124,7 +125,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 16.66s (new) 16.45s
+Execution times: (old) 17.89s (new) 19s
 
 Test Results:
 
@@ -144,7 +145,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.57s (new) 0.58s
+Execution times: (old) 0.61s (new) 0.63s
 
 Test Results:
 

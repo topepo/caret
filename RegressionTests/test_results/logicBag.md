@@ -1,7 +1,8 @@
 Bagged Logic Regression (`logicBag`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/logicBag.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/logicBag.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-71), `logicFS` (1.43.0), `LogicReg` (1.5.8), `mcbiopi` (1.1.2), `survival` (2.39-5)
- * tested on 2016-09-06 at 11:29
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-71), `logicFS` (1.44.0), `LogicReg` (1.5.9), `mcbiopi` (1.1.2), `survival` (2.39-5)
+ * tested on 2016-10-31 at 05:57
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
- * `caret` (6.0-72), `logicFS` (1.43.0), `LogicReg` (1.5.8), `mcbiopi` (1.1.2), `survival` (2.39-5)
- * tested on 2016-09-08 at 10:27
+ * R Under development (unstable) (2016-10-26 r71594)
+ * `caret` (6.0-72), `logicFS` (1.44.0), `LogicReg` (1.5.9), `mcbiopi` (1.1.2), `survival` (2.39-5)
+ * tested on 2016-10-30 at 23:16
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 22.59s (new) 22.31s
+Execution times: (old) 23.19s (new) 24.34s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 23.3s (new) 22.69s
+Execution times: (old) 23.71s (new) 25.28s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.35m (new) 3.36m
+Execution times: (old) 3.67m (new) 3.78m
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.54s (new) 1.59s
+Execution times: (old) 1.73s (new) 1.86s
 
 Test Results:
 
@@ -142,7 +143,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.19s (new) 7.12s
+Execution times: (old) 8.31s (new) 8.17s
 
 Test Results:
 
@@ -168,7 +169,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 20.47s (new) 20.35s
+Execution times: (old) 22.09s (new) 22.65s
 
 Test Results:
 
@@ -188,7 +189,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 20.52s (new) 20.26s
+Execution times: (old) 21.93s (new) 22.57s
 
 Test Results:
 
@@ -208,7 +209,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 38.42m (new) 38.3m
+Execution times: (old) 40.97m (new) 42.56m
 
 Test Results:
 
@@ -246,10 +247,33 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.23s (new) 7.13s
+Execution times: (old) 7.68s (new) 8.1s
 
 Test Results:
 
- * _Equal results for RMSE_
- * _Equal results for Rsquared_
+ * ***UNequal results for RMSE***:
+
+<pre>
+    %differences < 0.1%
+</pre>
+
+ * ***UNequal results for Rsquared***:
+
+<pre>
+    2 missing values in old
+    2 missing values in new
+    %differences (n-o):                 
+      mean  7.557
+      min   0.000
+      max  15.115
+    correlation:  1 
+
+ ntrees nleaves Rsquared_new Rsquared_old Diff Flag
+      1       7      0.09819      0.09819  0.0     
+     10       7          NaN          NaN  NaN     
+      2       4      0.05314      0.04617 15.1    *
+      8       8          NaN          NaN  NaN     
+
+</pre>
+
 

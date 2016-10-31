@@ -1,7 +1,8 @@
 High Dimensional Discriminant Analysis (`hdda`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/hdda.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/hdda.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `HDclassif` (2.0), `MASS` (7.3-45)
- * tested on 2016-09-06 at 11:24
+ * tested on 2016-10-31 at 05:53
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `HDclassif` (2.0), `MASS` (7.3-45)
- * tested on 2016-09-08 at 10:24
+ * tested on 2016-10-30 at 23:11
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.77s (new) 1.13s
+Execution times: (old) 1.04s (new) 1.03s
 
 Test Results:
 
@@ -59,7 +60,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.9s (new) 1.43s
+Execution times: (old) 1.77s (new) 2.08s
 
 Test Results:
 
@@ -80,7 +81,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 9.74s (new) 6.85s
+Execution times: (old) 7.65s (new) 8.1s
 
 Test Results:
 
@@ -101,7 +102,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.84s (new) 0.51s
+Execution times: (old) 0.53s (new) 0.59s
 
 Test Results:
 
@@ -158,7 +159,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.44s (new) 0.85s
+Execution times: (old) 0.96s (new) 1.24s
 
 Test Results:
 

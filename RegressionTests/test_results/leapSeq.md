@@ -1,7 +1,8 @@
 Linear Regression with Stepwise Selection (`leapSeq`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/leapSeq.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/leapSeq.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-71), `leaps` (2.9)
- * tested on 2016-09-06 at 11:29
+ * tested on 2016-10-31 at 05:57
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `caret` (6.0-72), `leaps` (2.9)
- * tested on 2016-09-08 at 10:27
+ * tested on 2016-10-30 at 23:16
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.12s (new) 1.01s
+Execution times: (old) 0.84s (new) 0.91s
 
 Test Results:
 
@@ -58,7 +59,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.21s (new) 1.16s
+Execution times: (old) 1.4s (new) 1.7s
 
 Test Results:
 
@@ -78,7 +79,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.25s (new) 2.06s
+Execution times: (old) 2.21s (new) 2.39s
 
 Test Results:
 
@@ -98,7 +99,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.59s (new) 0.54s
+Execution times: (old) 0.52s (new) 0.55s
 
 Test Results:
 
@@ -136,7 +137,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.83s (new) 0.8s
+Execution times: (old) 0.84s (new) 0.89s
 
 Test Results:
 

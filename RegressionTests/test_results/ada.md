@@ -1,7 +1,8 @@
 Boosted Classification Trees (`ada`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/ada.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/ada.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,17 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `ada` (2.0-5), `caret` (6.0-71), `plyr` (1.8.4), `rpart` (4.1-10)
- * tested on 2016-09-06 at 09:55
+ * tested on 2016-10-31 at 05:22
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-07-31 r71015)
+ * R Under development (unstable) (2016-10-26 r71594)
  * `ada` (2.0-5), `caret` (6.0-72), `plyr` (1.8.4), `rpart` (4.1-10)
- * tested on 2016-09-08 at 09:56
+ * tested on 2016-10-30 at 22:30
 
 
 Results:
@@ -38,7 +39,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 22.95s (new) 27.62s
+Execution times: (old) 33.01s (new) 32.42s
 
 Test Results:
 
@@ -59,7 +60,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 25.82s (new) 29.16s
+Execution times: (old) 34.01s (new) 33.72s
 
 Test Results:
 
@@ -80,7 +81,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.36m (new) 10.21m
+Execution times: (old) 11.57m (new) 11.88m
 
 Test Results:
 
@@ -101,7 +102,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.63s (new) 1.7s
+Execution times: (old) 1.66s (new) 1.67s
 
 Test Results:
 
@@ -158,7 +159,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.02m (new) 1.45m
+Execution times: (old) 1.67m (new) 1.72m
 
 Test Results:
 
