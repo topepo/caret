@@ -39,8 +39,8 @@
                           nonpara = nonpara,
                           ...)   
       modelName <- ifelse(is.factor(object$trainingData[, -isX]),
-                          "ROC curve",
-                          ifelse(nonpara, "loess r-squared", "Linear model"))      
+                          "Univariate Area under the ROC curve",
+                          ifelse(nonpara, "Univariate loess R-squared", "Univariate linear model"))      
     }
   
   
