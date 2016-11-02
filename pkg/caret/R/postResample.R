@@ -170,7 +170,7 @@ mnLogLoss <- function(data, lev = NULL, model = NULL){
   probs <- as.matrix(dataComplete[, lev, drop = FALSE])
   
   inds <- match(dataComplete$obs, colnames(probs))
-  ModelMetrics::mlogLoss(dataComplete$obs, probs)
+  c(logLoss = ModelMetrics::mlogLoss(dataComplete$obs, probs))
 }
 
 #' @rdname postResample

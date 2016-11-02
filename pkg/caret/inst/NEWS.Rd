@@ -6,7 +6,7 @@
 \section{Changes in version 6.0-xx}{
 	\itemize{
 		\item Negative binomial generalized linear models (\code{MASS:glm.nb}) were added \issue{476}
-		\item 
+		\item \code{mnLogLoss} now returns a named vector (\issue{514}, bug found by Jay Qi)
 	}
 }
 
