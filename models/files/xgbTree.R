@@ -56,7 +56,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     if(is.factor(y)) {
                       if(length(lev) == 2) {
                         y <- ifelse(y == lev[1], 1, 0) 
-                        dat <- xgb.DMatrix(x, label = y)
+                        dat <- xgb.DMatrix(x, label = y, missing = NA)
                         out <- xgb.train(list(eta = param$eta, 
                                               max_depth = param$max_depth,
                                               gamma = param$gamma,
@@ -69,7 +69,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                          ...)
                       } else {
                         y <- as.numeric(y) - 1
-                        dat <- xgb.DMatrix(x, label = y)
+                        dat <- xgb.DMatrix(x, label = y, missing = NA)
                         out <- xgb.train(list(eta = param$eta, 
                                               max_depth = param$max_depth,
                                               gamma = param$gamma,
@@ -83,7 +83,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                          ...)
                       }     
                     } else {
-                      dat <- xgb.DMatrix(as.matrix(x), label = y)
+                      dat <- xgb.DMatrix(as.matrix(x), label = y, missing = NA)
                       out <- xgb.train(list(eta = param$eta, 
                                             max_depth = param$max_depth,
                                             gamma = param$gamma,
@@ -102,6 +102,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(class(newdata)[1] != "xgb.DMatrix") 
                       newdata <- as.matrix(newdata)
+                      newdata <- xgb.DMatrix(data=newdata, missing = NA)
                     out <- predict(modelFit, newdata)
                     if(modelFit$problemType == "Classification") {
                       if(length(modelFit$obsLevels) == 2) {
@@ -138,6 +139,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(class(newdata)[1] != "xgb.DMatrix") 
                       newdata <- as.matrix(newdata)
+                      newdata <- xgb.DMatrix(data=newdata, missing = NA)
                     out <- predict(modelFit, newdata)
                     if(length(modelFit$obsLevels) == 2) {
                       out <- cbind(out, 1 - out)
