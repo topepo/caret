@@ -5,7 +5,7 @@
 \alias{as.table.confusionMatrix}
 \title{Confusion matrix as a table}
 \usage{
-\method{as.matrix}{confusionMatrix}(x, what = "xtabs", ...)
+as.matrix.confusionMatrix(x, what = "xtabs", ...)
 }
 \arguments{
 \item{x}{an object of class \code{\link{confusionMatrix}}}

@@ -5,7 +5,7 @@
 \alias{update.safs}
 \title{Update or Re-fit a SA or GA Model}
 \usage{
-\method{update}{safs}(object, iter, x, y, ...)
+update.safs(object, iter, x, y, ...)
 }
 \arguments{
 \item{object}{An object produced by \code{\link{gafs}} or \code{\link{safs}}}

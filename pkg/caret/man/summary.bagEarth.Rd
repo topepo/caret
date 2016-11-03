@@ -7,7 +7,7 @@
 \usage{
 \method{summary}{bagEarth}(object, ...)
 
-\method{summary}{bagFDA}(object, ...)
+summary.bagFDA(object, ...)
 }
 \arguments{
 \item{object}{an object of class "bagEarth" or "bagFDA"}
