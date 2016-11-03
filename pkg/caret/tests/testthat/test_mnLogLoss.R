@@ -19,9 +19,9 @@ test_that("Multiclass logloss returns expected values", {
   test_dat3 <- test_dat3[, rev(1:5)]
   result3 <- mnLogLoss(test_dat3, classes)
 
-  expect_equal(result1, 0.424458, tolerance = .000001)
-  expect_equal(result2, 0.5093496, tolerance = .000001)
-  expect_equal(result3, 0.424458, tolerance = .000001)
+  expect_equal(result1, c(logLoss = 0.424458), tolerance = .000001)
+  expect_equal(result2, c(logLoss = 0.5093496), tolerance = .000001)
+  expect_equal(result3, c(logLoss = 0.424458), tolerance = .000001)
 
 })
 
