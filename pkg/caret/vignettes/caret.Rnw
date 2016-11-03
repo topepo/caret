@@ -148,7 +148,7 @@ One of the primary tools in the package is the \code{train} function which can b
 More formally:
 
   \begin{center}  
-    \includegraphics[clip, width = .9\textwidth]
+    \includegraphics[clip, width = .9\textwidth]{train_algo}
     \label{A:tune}
   \end{center}
 
