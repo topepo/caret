@@ -90,7 +90,6 @@ clustered <- cluster(resamps)
 plot(clustered)
 
 }
-
 }
 \author{
 Max Kuhn

@@ -212,6 +212,7 @@ function(object, newdata = NULL, type = "class", ...)
 }
 
 #' @rdname summary.bagEarth
+#' @method summary bagFDA
 #' @importFrom stats quantile
 #' @export
 "summary.bagFDA" <-

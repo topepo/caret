@@ -914,6 +914,7 @@ train.formula <- function (form, data, ..., weights, subset, na.action = na.fail
   res
 }
 
+#' @method summary train
 #' @export
 summary.train <- function(object, ...) summary(object$finalModel, ...)
 

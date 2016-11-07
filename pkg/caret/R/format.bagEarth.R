@@ -37,7 +37,7 @@
 #' #   + 0.6489774 * pmax(0, Height -     80) 
 #' # )/3
 #' 
-#' 
+#' @export
 format.bagEarth <- function(x, file = "", cat = TRUE, ...) 
 {
   requireNamespaceQuietStop("earth")

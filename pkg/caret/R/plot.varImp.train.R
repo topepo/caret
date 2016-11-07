@@ -23,6 +23,8 @@
 #' @return a lattice plot object
 #' @author Max Kuhn
 #' @keywords hplot
+#' @export
+
 "plot.varImp.train" <-
 function(x, top = dim(x$importance)[1],  ...)
 {  

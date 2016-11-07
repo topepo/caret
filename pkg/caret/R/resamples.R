@@ -342,7 +342,7 @@ modelCor <- function(x, metric = x$metric[1], ...)
 #' plot(clustered)
 #' 
 #' }
-#' 
+#' @export
 prcomp.resamples <- function(x, metric = x$metrics[1],  ...)
 {
   

@@ -55,7 +55,6 @@ rf_search2 <- update(rf_search,
                      y = train_data$Class)
 rf_search2
 }
-
 }
 \author{
 Max Kuhn

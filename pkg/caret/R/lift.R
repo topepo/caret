@@ -182,6 +182,7 @@ print.lift <- function(x, ...) {
   invisible(x)
 }
 
+#' @method plot lift
 #' @export
 plot.lift <- function(x, y = NULL, ...) xyplot.lift(x = x, data = NULL, ...)
 
