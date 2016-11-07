@@ -4,7 +4,7 @@
 \alias{format.bagEarth}
 \title{Format 'bagEarth' objects}
 \usage{
-format.bagEarth(x, file = "", cat = TRUE, ...)
+\method{format}{bagEarth}(x, file = "", cat = TRUE, ...)
 }
 \arguments{
 \item{x}{An \code{\link{bagEarth}} object.  This is the only required

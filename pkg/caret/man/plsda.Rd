@@ -11,7 +11,8 @@
 \usage{
 plsda(x, ...)
 
-predict.plsda(object, newdata = NULL, ncomp = NULL, type = "class", ...)
+\method{predict}{plsda}(object, newdata = NULL, ncomp = NULL,
+  type = "class", ...)
 
 \method{plsda}{default}(x, y, ncomp = 2, probMethod = "softmax",
   prior = NULL, ...)

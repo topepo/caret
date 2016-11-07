@@ -376,6 +376,7 @@ prcomp.resamples <- function(x, metric = x$metrics[1],  ...)
 cluster.default <- function(x, ...) stop("only implemented for resamples objects")
 
 #' @importFrom stats dist hclust
+#' @method cluster resamples
 #' @export
 cluster.resamples <- function(x, metric = x$metrics[1],  ...)
 {
@@ -471,6 +472,7 @@ components =
 })
 } 
 
+#' @method print prcomp.resamples
 #' @export
 print.prcomp.resamples <- function (x, digits = max(3, getOption("digits") - 3), print.x = FALSE, ...) 
 {
@@ -493,6 +495,7 @@ print.prcomp.resamples <- function (x, digits = max(3, getOption("digits") - 3),
 }
 
 #' @rdname resamples
+#' @method print resamples
 #' @export
 print.resamples <- function(x, ...)
 {
@@ -511,6 +514,7 @@ print.resamples <- function(x, ...)
 }
 
 
+#' @method print summary.resamples
 #' @export
 print.summary.resamples <- function(x, ...)
 {
@@ -621,6 +625,7 @@ print.summary.resamples <- function(x, ...)
 #' 
 #' }
 #' 
+#' @method xyplot resamples
 #' @export
 xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, metric = x$metric[1], units = "min", ...) 
 {
@@ -748,6 +753,7 @@ xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, m
 
 #' @rdname xyplot.resamples
 #' @importFrom stats median
+#' @method parallelplot resamples
 #' @export
 parallelplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric[1], ...) 
 {
@@ -777,6 +783,7 @@ parallelplot.resamples <- function (x, data = NULL, models = x$models, metric = 
 
 #' @rdname xyplot.resamples
 #' @importFrom grDevices extendrange
+#' @method splom resamples
 #' @export
 splom.resamples <- function (x, data = NULL, variables = "models",
                              models = x$models,
@@ -828,6 +835,7 @@ splom.resamples <- function (x, data = NULL, variables = "models",
 
 #' @rdname xyplot.resamples
 #' @importFrom stats as.formula
+#' @method densityplot resamples
 #' @export
 densityplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...) 
 {
@@ -846,6 +854,7 @@ densityplot.resamples <- function (x, data = NULL, models = x$models, metric = x
 
 #' @rdname xyplot.resamples
 #' @importFrom stats as.formula
+#' @method bwplot resamples
 #' @export
 bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...) 
 {
@@ -869,6 +878,7 @@ bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metr
 
 #' @rdname xyplot.resamples
 #' @importFrom stats aggregate as.formula median t.test
+#' @method dotplot resamples
 #' @export
 dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, conf.level = 0.95, ...) 
 {
@@ -1028,6 +1038,7 @@ dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$met
 #' compare_models(rpartFit, ctreeFit)
 #' }
 #' 
+#' @method diff resamples
 #' @export
 diff.resamples <- function(x,
                            models = x$models,
@@ -1092,6 +1103,7 @@ diff.resamples <- function(x,
 
 #' @importFrom stats as.formula
 #' @importFrom utils stack
+#' @method densityplot diff.resamples
 #' @export
 densityplot.diff.resamples <- function(x, data, metric = x$metric, ...)
 {
@@ -1111,6 +1123,7 @@ densityplot.diff.resamples <- function(x, data, metric = x$metric, ...)
 
 #' @importFrom stats as.formula
 #' @importFrom utils stack
+#' @method bwplot diff.resamples
 #' @export
 bwplot.diff.resamples <- function(x, data, metric = x$metric, ...)
 {
@@ -1130,6 +1143,7 @@ bwplot.diff.resamples <- function(x, data, metric = x$metric, ...)
   
 }
 
+#' @method print diff.resamples
 #' @export
 print.diff.resamples <- function(x, ...)
 {
@@ -1196,6 +1210,7 @@ summary.diff.resamples <- function(object, digits = max(3, getOption("digits") -
 }
 
 #' @importFrom stats complete.cases
+#' @method levelplot diff.resamples
 #' @export
 levelplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], what = "pvalues", ...)
 {
@@ -1249,6 +1264,7 @@ levelplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], what 
 
 
 
+#' @method print summary.diff.resamples
 #' @export
 print.summary.diff.resamples <- function(x, ...)
 {
@@ -1325,6 +1341,8 @@ print.summary.diff.resamples <- function(x, ...)
 #' 
 #' }
 #' 
+#' @method dotplot diff.resamples
+#' @export
 dotplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], ...)
 {
   if(length(metric) > 1)

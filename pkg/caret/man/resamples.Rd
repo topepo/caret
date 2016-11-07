@@ -27,7 +27,7 @@ resamples(x, ...)
 
 modelCor(x, metric = x$metric[1], ...)
 
-print.resamples(x, ...)
+\method{print}{resamples}(x, ...)
 }
 \arguments{
 \item{x}{a list of two or more objects of class \code{\link{train}},

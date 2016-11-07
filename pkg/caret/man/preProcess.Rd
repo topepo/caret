@@ -13,7 +13,7 @@ preProcess(x, ...)
   knnSummary = mean, outcome = NULL, fudge = 0.2, numUnique = 3,
   verbose = FALSE, freqCut = 95/5, uniqueCut = 10, cutoff = 0.9, ...)
 
-predict.preProcess(object, newdata, ...)
+\method{predict}{preProcess}(object, newdata, ...)
 }
 \arguments{
 \item{x}{a matrix or data frame. Non-numeric predictors are allowed but will

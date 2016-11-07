@@ -6,8 +6,8 @@
 \alias{summary.diff.resamples}
 \title{Inferential Assessments About Model Performance}
 \usage{
-diff.resamples(x, models = x$models, metric = x$metrics, test = t.test,
-  confLevel = 0.95, adjustment = "bonferroni", ...)
+\method{diff}{resamples}(x, models = x$models, metric = x$metrics,
+  test = t.test, confLevel = 0.95, adjustment = "bonferroni", ...)
 
 \method{summary}{diff.resamples}(object, digits = max(3, getOption("digits") -
   3), ...)
