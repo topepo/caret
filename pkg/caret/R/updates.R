@@ -39,7 +39,9 @@
 #' 
 #' update(knnFit1, list(.k = 3))
 #' }
-#' 
+#' @method update train
+#' @export
+
 update.train <- function(object, param = NULL, ...)
 {
   if(is.null(param)) {

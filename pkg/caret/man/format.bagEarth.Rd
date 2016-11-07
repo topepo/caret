@@ -48,7 +48,6 @@ format(a)
 #   + 0.6489774 * pmax(0, Height -     80) 
 # )/3
 
-
 }
 \seealso{
 \code{\link[earth]{earth}}

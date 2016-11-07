@@ -114,7 +114,8 @@ densityplot.train <- function(x,
 #'           jitter = TRUE)
 #' 
 #' }
-#' 
+#' @export
+
 histogram.train <- function(x,
                               data = NULL,
                               metric = x$metric,

@@ -50,7 +50,6 @@ knnFit1 <- train(TrainData, TrainClasses,
 
 update(knnFit1, list(.k = 3))
 }
-
 }
 \author{
 Max Kuhn

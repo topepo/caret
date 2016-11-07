@@ -74,7 +74,6 @@ stripplot(rpartFit,
           jitter = TRUE)
 
 }
-
 }
 \author{
 Max Kuhn

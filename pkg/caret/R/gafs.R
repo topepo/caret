@@ -1296,6 +1296,7 @@ crossover = gafs_spCrossover,
 mutation = gafs_raMutation,
 selectIter = best)
 
+#' @method update gafs
 #' @export
 update.gafs <- function(object, iter, x, y, ...) {
   iter <- iter[1]
@@ -1348,6 +1349,7 @@ update.gafs <- function(object, iter, x, y, ...) {
 #' column is the average t-statistic
 #' @author Max Kuhn
 #' @seealso \code{\link{safs}}, \code{\link{gafs}}
+#' @export
 "varImp.gafs" <- function(object,
                           metric = object$control$metric["external"],
                           maximize = object$control$maximize["external"],

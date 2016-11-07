@@ -1035,6 +1035,7 @@ sa_select <- function(x, y,
 ###################################################################
 ##
 
+#' @method plot safs
 #' @importFrom stats update
 #' @export
 plot.safs <- function(x,
@@ -1206,7 +1207,8 @@ selectIter = best)
 #'                      y = train_data$Class)
 #' rf_search2
 #' }
-#'
+#' @method update safs
+#' @export
 update.safs <- function(object, iter, x, y, ...) {
   iter <- iter[1]
   if(iter > length(object$sa$subsets))
