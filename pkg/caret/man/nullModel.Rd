@@ -10,7 +10,7 @@ nullModel(x, ...)
 
 \method{nullModel}{default}(x = NULL, y, ...)
 
-\method{predict}{nullModel}(object, newdata = NULL, type = NULL, ...)
+predict.nullModel(object, newdata = NULL, type = NULL, ...)
 }
 \arguments{
 \item{x}{An optional matrix or data frame of predictors. These values are

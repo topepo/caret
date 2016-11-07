@@ -4,7 +4,7 @@
 \alias{update.train}
 \title{Update or Re-fit a Model}
 \usage{
-\method{update}{train}(object, param = NULL, ...)
+update.train(object, param = NULL, ...)
 }
 \arguments{
 \item{object}{an object of class \code{\link{train}}}

@@ -15,7 +15,7 @@ bagEarth(x, ...)
 \method{bagEarth}{formula}(formula, data = NULL, B = 50, summary = mean,
   keepX = TRUE, ..., subset, weights = NULL, na.action = na.omit)
 
-\method{print}{bagEarth}(x, ...)
+print.bagEarth(x, ...)
 }
 \arguments{
 \item{x}{matrix or data frame of 'x' values for examples.}

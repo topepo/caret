@@ -7,7 +7,7 @@
 \usage{
 \method{predict}{bagEarth}(object, newdata = NULL, type = "response", ...)
 
-\method{predict}{bagFDA}(object, newdata = NULL, type = "class", ...)
+predict.bagFDA(object, newdata = NULL, type = "class", ...)
 }
 \arguments{
 \item{object}{Object of class inheriting from \code{bagEarth}}

@@ -5,7 +5,7 @@
 \alias{plot.varImp.train}
 \title{Plotting variable importance measures}
 \usage{
-\method{plot}{varImp.train}(x, top = dim(x$importance)[1], ...)
+plot.varImp.train(x, top = dim(x$importance)[1], ...)
 
 \method{ggplot}{varImp.train}(data, mapping = NULL,
   top = dim(data$importance)[1], ..., environment = NULL)
