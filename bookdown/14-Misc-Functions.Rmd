@@ -84,7 +84,7 @@ The advantage to using Bayes rule is that the full training set is used to direc
 
 For the sonar data set, we can fit two PLS models using each technique and predict the class probabilities for the test set.
 
-```{r misc_pls}
+```{r misc_pls, warning=FALSE}
 plsFit <- plsda(training, trainClass, ncomp = 20)
 plsFit
 
