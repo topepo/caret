@@ -43,12 +43,12 @@ evalSummaryFunction <- function(y, wts, ctrl, lev, metric, method) {
     }
   } else {
     pred_samp <- y[sample(1:n, min(10, n)), "time"]
-    obs_samp <- y[sample(1:n, min(10, n)),]    
+    obs_samp <- y[sample(1:n, min(10, n)),]
   }
-  
+
   ## get phoney performance to obtain the names of the outputs
   testOutput <- data.frame(pred = pred_samp, obs = obs_samp)
-  
+
   if(ctrl$classProbs)
   {
     for(i in seq(along = lev)) testOutput[, lev[i]] <- runif(nrow(testOutput))
@@ -161,6 +161,20 @@ cforestStats  <- function(x) getModelInfo("cforest", regex = FALSE)[[1]]$oob(x)
 #' @rdname caret-internal
 #' @export
 bagEarthStats <- function(x) getModelInfo("bagEarth", regex = FALSE)[[1]]$oob(x)
+
+
+#' @importFrom stats complete.cases cor
+#' @export
+R2 <- function(pred, obs, formula = "corr", na.rm = FALSE)
+  {
+    n <- sum(complete.cases(pred))
+    switch(formula,
+           corr = cor(obs, pred, use = ifelse(na.rm, "complete.obs", "everything"))^2,
+           traditional = 1 - (sum((obs-pred)^2, na.rm = na.rm)/((n-1)*var(obs, na.rm = na.rm))))
+  }
+
+#' @export
+RMSE <- function(pred, obs, na.rm = FALSE) sqrt(mean((pred - obs)^2, na.rm = na.rm))
 
 
 #' @importFrom utils capture.output
@@ -362,16 +376,16 @@ get_resample_perf.gafs <- function(x) {
 
 
 #' Sequences of Variables for Tuning
-#' 
+#'
 #' This function generates a sequence of \code{mtry} values for random forests.
-#' 
+#'
 #' If the number of predictors is less than 500, a simple sequence of values of
 #' length \code{len} is generated between 2 and \code{p}. For larger numbers of
 #' predictors, the sequence is created using \code{log2} steps.
-#' 
+#'
 #' If \code{len = 1}, the defaults from the \code{randomForest} package are
 #' used.
-#' 
+#'
 #' @param p The number of predictors
 #' @param classification Is the outcome a factor (\code{classification = TRUE}
 #' or numeric?)
@@ -380,10 +394,10 @@ get_resample_perf.gafs <- function(x) {
 #' @author Max Kuhn
 #' @keywords models
 #' @examples
-#' 
+#'
 #' var_seq(p = 100, len = 10)
 #' var_seq(p = 600, len = 10)
-#' 
+#'
 #' @export var_seq
 var_seq <- function(p, classification = FALSE, len = 3) {
   if(len == 1) {
@@ -482,11 +496,11 @@ check_samp_list <- function(x) {
 
 
 #' Get sampling info from a train model
-#' 
+#'
 #' Placeholder.
-#' 
+#'
 #' Placeholder.
-#' 
+#'
 #' @param method Modeling method.
 #' @param regex Whether to use regex matching.
 #' @param ... additional arguments to passed to grepl.
@@ -545,30 +559,30 @@ get_range <- function(y) {
 outcome_conversion <- function(x, lv) {
   if(is.factor(x) | is.character(x)) {
     if(!is.null(attributes(lv)) && any(names(attributes(lv)) == "ordered" && attr(lv, "ordered")))
-      x <- ordered(as.character(x), levels = lv) else 
+      x <- ordered(as.character(x), levels = lv) else
         x <- factor(as.character(x), levels = lv)
   }
   x
 }
 
 check_na_conflict <- function(call_obj) {
-  
+
   ## check for na.action info:
   if("na.action" %in% names(as.list(call_obj))) {
     nam <- as.character(call_obj$na.action)
-  } else nam <- "na.fail" 
-  
+  } else nam <- "na.fail"
+
   ## check for preprocess info:
   has_pp <- grepl("^preProc", names(call_obj))
   if(any(has_pp)) {
     pp <- as.character(call_obj[has_pp])
     imputes <- if(any(grepl("impute", tolower(pp)))) TRUE else FALSE
   } else imputes <- FALSE
-  
+
   if(imputes & any(nam %in% c("na.omit", "na.exclude")))
     warning(paste0("`preProcess` includes an imputation method but missing ",
-                   "data will be eliminated by the formula method using `na.action=", 
-                   nam, "`. Consider using `na.actin=na.pass` instead."))  
+                   "data will be eliminated by the formula method using `na.action=",
+                   nam, "`. Consider using `na.actin=na.pass` instead."))
   invisible(NULL)
 }
 
