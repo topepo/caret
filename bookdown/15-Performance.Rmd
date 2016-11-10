@@ -20,6 +20,28 @@ library(pROC)
 
 <div id="class"></div>
 
+The function `postResample` can be used to estimate the root mean squared error (RMSE) and simple R<sup>2</sup> for numeric outcomes. For example: 
+ 
+```{r perf_reg}
+library(mlbench)
+data(BostonHousing)
+
+set.seed(280)
+bh_index <- createDataPartition(BostonHousing$medv, p = .75, list = FALSE)
+bh_tr <- BostonHousing[ bh_index, ]
+bh_te <- BostonHousing[-bh_index, ]
+
+set.seed(7279)
+lm_fit <- train(medv ~ . + rm:lstat,
+                data = bh_tr, 
+                method = "lm")
+bh_pred <- predict(lm_fit, bh_te)
+
+lm_fit
+postResample(pred = bh_pred, obs = bh_te$medv)
+```
+
+
 ## Measures for Predicted Classes
 
 Before proceeding, let's make up some test set data: 
