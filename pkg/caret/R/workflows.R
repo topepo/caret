@@ -248,7 +248,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         ## collate the predicitons across all the sub-models
         predicted <- lapply(predicted,
                             function(x, y, wts, lv, rows) {
-                              x <- caret:::outcome_conversion(x, lv = lev)
+                              x <- getFromNamespace("outcome_conversion", "caret")(x, lv = lev)
                               out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
                               if(!is.null(wts)) out$weights <- wts
                               out$rowIndex <- rows
@@ -297,7 +297,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         thisResample <- cbind(allParam, thisResample)
         
       } else {       
-        if(is.factor(y)) predicted <- outcome_conversion(predicted, lv = lev)
+        if(is.factor(y)) predicted <- getFromNamespace("outcome_conversion", "caret")(predicted, lv = lev)
         tmp <-  data.frame(pred = predicted,
                            obs = y[holdoutIndex],
                            stringsAsFactors = FALSE)
@@ -476,7 +476,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
         ## collate the predictions across all the sub-models
         predicted <- lapply(predicted,
                             function(x, y, wts, lv, rows) {
-                              x <- outcome_conversion(x, lv = lev)
+                              x <- getFromNamespace("outcome_conversion", "caret")(x, lv = lev)
                               out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
                               if(!is.null(wts)) out$weights <- wts
                               out$rowIndex <- rows
@@ -499,7 +499,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
         predicted <- cbind(predicted, allParam)
         ## if saveDetails then save and export 'predicted'
       } else {
-        predicted <- outcome_conversion(predicted, lv = lev)
+        predicted <- getFromNamespace("outcome_conversion", "caret")(predicted, lv = lev)
         predicted <-  data.frame(pred = predicted,
                                  obs = y[holdoutIndex],
                                  stringsAsFactors = FALSE)
