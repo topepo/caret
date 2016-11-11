@@ -248,7 +248,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         ## collate the predicitons across all the sub-models
         predicted <- lapply(predicted,
                             function(x, y, wts, lv, rows) {
-                              x <- outcome_conversion(x, lv = lev)
+                              x <- caret:::outcome_conversion(x, lv = lev)
                               out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
                               if(!is.null(wts)) out$weights <- wts
                               out$rowIndex <- rows
