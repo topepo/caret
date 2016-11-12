@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-09-03">
+<meta name="date" content="2016-11-10">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -61,7 +61,7 @@ MathJax.Hub.Config({
 <link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
 <script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
 <script src="libs/d3-3.5.2/d3.min.js"></script>
-<script src="libs/forceNetwork-binding-0.2.11/forceNetwork.js"></script>
+<script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
 
 
 <style type="text/css">
@@ -335,6 +335,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="22.9" data-path="data-sets.html"><a href="data-sets.html#sacramento-house-price-data"><i class="fa fa-check"></i><b>22.9</b> Sacramento House Price Data</a></li>
 <li class="chapter" data-level="22.10" data-path="data-sets.html"><a href="data-sets.html#animal-scat-data"><i class="fa fa-check"></i><b>22.10</b> Animal Scat Data</a></li>
 </ul></li>
+<li class="chapter" data-level="23" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>23</b> Session Information</a></li>
 </ul>
 
       </nav>
@@ -369,6 +370,40 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="class">
 
 </div>
+<p>The function <code>postResample</code> can be used to estimate the root mean squared error (RMSE) and simple R<sup>2</sup> for numeric outcomes. For example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mlbench)
+<span class="kw">data</span>(BostonHousing)
+
+<span class="kw">set.seed</span>(<span class="dv">280</span>)
+bh_index &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(BostonHousing$medv, <span class="dt">p =</span> .<span class="dv">75</span>, <span class="dt">list =</span> <span class="ot">FALSE</span>)
+bh_tr &lt;-<span class="st"> </span>BostonHousing[ bh_index, ]
+bh_te &lt;-<span class="st"> </span>BostonHousing[-bh_index, ]
+
+<span class="kw">set.seed</span>(<span class="dv">7279</span>)
+lm_fit &lt;-<span class="st"> </span><span class="kw">train</span>(medv ~<span class="st"> </span>. +<span class="st"> </span>rm:lstat,
+                <span class="dt">data =</span> bh_tr, 
+                <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
+bh_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(lm_fit, bh_te)
+
+lm_fit</code></pre></div>
+<pre><code>## Linear Regression 
+## 
+## 381 samples
+##  13 predictor
+## 
+## No pre-processing
+## Resampling: Bootstrapped (25 reps) 
+## Summary of sample sizes: 381, 381, 381, 381, 381, 381, ... 
+## Resampling results:
+## 
+##   RMSE      Rsquared 
+##   4.283482  0.7894951
+## 
+## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE
+## </code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">postResample</span>(<span class="dt">pred =</span> bh_pred, <span class="dt">obs =</span> bh_te$medv)</code></pre></div>
+<pre><code>##      RMSE  Rsquared 
+## 4.4412987 0.7781877</code></pre>
 </div>
 <div id="measures-for-predicted-classes" class="section level2">
 <h2><span class="header-section-number">16.2</span> Measures for Predicted Classes</h2>
@@ -389,7 +424,7 @@ test_set$pred &lt;-<span class="st"> </span><span class="kw">factor</span>(<span
 <span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">binwidth =</span> .<span class="dv">05</span>) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">facet_wrap</span>(~obs) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Probability of Class #1&quot;</span>)</code></pre></div>
-<p><img src="main_files/figure-html/perf_test_set_plot-1.png" width="672" /></p>
+<p><img src="performance/perf_test_set_plot-1.png" width="672" /></p>
 <p>Generating the predicted classes based on the typical 50% cutoff for the probabilities, we can compute the <em>confusion matrix</em>, which shows a cross-tabulation of the observed and predicted classes. The <code>confusionMatrix</code> function can be used to generate these results:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confusionMatrix</span>(<span class="dt">data =</span> test_set$pred, <span class="dt">reference =</span> test_set$obs)</code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
@@ -478,7 +513,7 @@ test_set$pred &lt;-<span class="st"> </span><span class="kw">factor</span>(<span
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prSummary</span>(test_set, <span class="dt">lev =</span> <span class="kw">levels</span>(test_set$obs))</code></pre></div>
 <pre><code>##       AUC Precision    Recall         F 
 ## 0.8582695 0.5648148 0.9336735 0.7038462</code></pre>
-<p>This function requires that the <code>MLmetrics</code> package is unstalled.</p>
+<p>This function requires that the <code>MLmetrics</code> package is installed.</p>
 <p>For multi-class problems, there are additional functions that can be used to calculate performance. One, <code>mnLogLoss</code> computes the negative of the multinomial log-likelihood (smaller is better) based on the class probabilities. This can be used to optimize tuning parameters but can lead to results that are inconsistent with other measures (e.g. accuracy or the area under the ROC curve), especially when the other measures are near their best possible values. The function has similar arguments to the other functions described above. Here is the two-class data from above:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mnLogLoss</span>(test_set, <span class="dt">lev =</span> <span class="kw">levels</span>(test_set$obs))</code></pre></div>
 <pre><code>##  logLoss 
@@ -517,7 +552,8 @@ lda_lift &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<spa
 c5_lift &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> lift_training,
                  <span class="dt">method =</span> <span class="st">&quot;C5.0&quot;</span>, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
                  <span class="dt">tuneLength =</span> <span class="dv">10</span>,
-                 <span class="dt">trControl =</span> ctrl)
+                 <span class="dt">trControl =</span> ctrl,
+                 <span class="dt">control =</span> <span class="kw">C5.0Control</span>(<span class="dt">earlyStopping =</span> <span class="ot">FALSE</span>))
 
 ## Generate the test set results
 lift_results &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Class =</span> lift_testing$Class)
@@ -538,7 +574,7 @@ lift_obj &lt;-<span class="st"> </span><span class="kw">lift</span>(Class ~<span
 <span class="kw">plot</span>(lift_obj, <span class="dt">values =</span> <span class="dv">60</span>, <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">3</span>,
                                             <span class="dt">lines =</span> <span class="ot">TRUE</span>,
                                             <span class="dt">points =</span> <span class="ot">FALSE</span>))</code></pre></div>
-<p><img src="main_files/figure-html/perf_lift_obj-1.png" width="672" /></p>
+<p><img src="performance/perf_lift_obj-1.png" width="672" /></p>
 <p>From this we can see that, to find 60 percent of the hits, a little more than 30 percent of the data can be sampled (when ordered by the probability predictions). The LDA model does somewhat worse than the other two models.</p>
 <div id="calib">
 
@@ -555,10 +591,10 @@ cal_obj &lt;-<span class="st"> </span><span class="kw">calibration</span>(Class 
 <span class="kw">plot</span>(cal_obj, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">3</span>,
                                           <span class="dt">lines =</span> <span class="ot">TRUE</span>,
                                           <span class="dt">points =</span> <span class="ot">FALSE</span>))</code></pre></div>
-<p><img src="main_files/figure-html/perf_calib_obj-1.png" width="672" /></p>
+<p><img src="performance/perf_calib_obj-1.png" width="672" /></p>
 <p>There is also a <code>ggplot</code> method that shows the confidence intervals for the proportions inside of the subsets:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(cal_obj)</code></pre></div>
-<p><img src="main_files/figure-html/perf_calib_gg-1.png" width="672" /></p>
+<p><img src="performance/perf_calib_gg-1.png" width="672" /></p>
 
 </div>
 </div>

@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-09-03">
+<meta name="date" content="2016-11-10">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -61,7 +61,7 @@ MathJax.Hub.Config({
 <link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
 <script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
 <script src="libs/d3-3.5.2/d3.min.js"></script>
-<script src="libs/forceNetwork-binding-0.2.11/forceNetwork.js"></script>
+<script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
 
 
 <style type="text/css">
@@ -335,6 +335,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="22.9" data-path="data-sets.html"><a href="data-sets.html#sacramento-house-price-data"><i class="fa fa-check"></i><b>22.9</b> Sacramento House Price Data</a></li>
 <li class="chapter" data-level="22.10" data-path="data-sets.html"><a href="data-sets.html#animal-scat-data"><i class="fa fa-check"></i><b>22.10</b> Animal Scat Data</a></li>
 </ul></li>
+<li class="chapter" data-level="23" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>23</b> Session Information</a></li>
 </ul>
 
       </nav>
@@ -583,7 +584,7 @@ Laplacian</code></pre></div>
 ## The final values used for the model were C = 16 and sigma = 0.0115025.</code></pre>
 <p>A plot of the data shows that the model doesn’t change when the cost value is above 16.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(Laplacian) +<span class="st"> </span><span class="kw">scale_x_log10</span>()</code></pre></div>
-<p><img src="main_files/figure-html/custom_laplace_plot-1.png" width="672" /></p>
+<p><img src="custom/custom_laplace_plot-1.png" width="672" /></p>
 <div id="Illustration2">
 
 </div>
@@ -717,7 +718,7 @@ lb1 &lt;-<span class="st"> </span><span class="kw">system.time</span>(<span clas
                          <span class="dt">trControl =</span> fitControl))
 lb1</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   6.637   0.727   7.364</code></pre>
+##   6.763   0.775   7.539</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Now get rid of the submodel parts
 lbFuncs2 &lt;-<span class="st"> </span>lbFuncs
 lbFuncs2$predict &lt;-<span class="st"> </span>function(modelFit, newdata, <span class="dt">preProc =</span> <span class="ot">NULL</span>, <span class="dt">submodels =</span> <span class="ot">NULL</span>) 
@@ -731,8 +732,8 @@ lb2 &lt;-<span class="st"> </span><span class="kw">system.time</span>(<span clas
                          <span class="dt">trControl =</span> fitControl))
 lb2</code></pre></div>
 <pre><code>##    user  system elapsed 
-##  12.373   1.436  13.808</code></pre>
-<p>On a data set with 157 instances and 60 predictors and a model that is tuned over only 3 parameter values, there is a 1.88-fold speed-up. If the model were more computationally taxing or the data set were larger or the number of tune parameters that were evaluated was larger, the speed-up would increase. Here is a plot of the speed-up for a few more values of <code>tuneLength</code>:</p>
+##  12.671   1.557  14.228</code></pre>
+<p>On a data set with 157 instances and 60 predictors and a model that is tuned over only 3 parameter values, there is a 1.89-fold speed-up. If the model were more computationally taxing or the data set were larger or the number of tune parameters that were evaluated was larger, the speed-up would increase. Here is a plot of the speed-up for a few more values of <code>tuneLength</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bigGrid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">nIter =</span> <span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">151</span>, <span class="dt">by =</span> <span class="dv">10</span>))
 results &lt;-<span class="st"> </span>bigGrid
 results$SpeedUp &lt;-<span class="st"> </span><span class="ot">NA</span>
@@ -757,7 +758,7 @@ for(i in <span class="dv">2</span>:<span class="kw">nrow</span>(bigGrid)){
 <span class="st">  </span><span class="kw">geom_point</span>() +<span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;LogitBoost Iterations&quot;</span>) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Speed-Up&quot;</span>)</code></pre></div>
-<p><img src="main_files/figure-html/custom_lb_times-1.png" width="672" /></p>
+<p><img src="custom/custom_lb_times-1.png" width="672" /></p>
 <p>
 <p>The speed-ups show a significant decrease in training time using this method.</p>
 <div id="Illustration3">
@@ -929,7 +930,7 @@ plsrf &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="d
                <span class="dt">ntree =</span> <span class="dv">1000</span>,
                <span class="dt">trControl =</span> meatCtrl)
 <span class="kw">ggplot</span>(plsrf, <span class="dt">plotType =</span> <span class="st">&quot;level&quot;</span>)</code></pre></div>
-<p><img src="main_files/figure-html/custom_meat_mod1-1.png" width="672" /></p>
+<p><img src="custom/custom_meat_mod1-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## How does random forest do on its own?
 <span class="kw">set.seed</span>(<span class="dv">184</span>)
 rfOnly &lt;-<span class="st"> </span><span class="kw">train</span>(absorpTrain, proteinTrain, 
@@ -1009,7 +1010,7 @@ roc0</code></pre></div>
      <span class="dt">print.thres.pattern =</span> <span class="st">&quot;%.3f (Spec = %.2f, Sens = %.2f)&quot;</span>,
      <span class="dt">print.thres.cex =</span> .<span class="dv">8</span>, 
      <span class="dt">legacy.axes =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="main_files/figure-html/custom_thresh_mod0-1.png" width="672" /></p>
+<p><img src="custom/custom_thresh_mod0-1.png" width="672" /></p>
 <pre><code>## 
 ## Call:
 ## roc.default(response = testingSet$Class, predictor = predict(mod0,     testingSet, type = &quot;prob&quot;)[, 1], levels = rev(levels(testingSet$Class)))
@@ -1182,7 +1183,7 @@ metrics &lt;-<span class="st"> </span><span class="kw">melt</span>(metrics, <spa
 <span class="st">  </span><span class="kw">geom_line</span>() +<span class="st"> </span>
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) +<span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Probability Cutoff&quot;</span>) +
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>)</code></pre></div>
-<p><img src="main_files/figure-html/custom_thresh_mod1-1.png" width="672" /></p>
+<p><img src="custom/custom_thresh_mod1-1.png" width="672" /></p>
 <p>You can see that as we increase the probability cut off for the first class it takes more and more evidence for a sample to be predicted as the first class. As a result the sensitivity goes down when the threshold becomes very large. The upside is that we can increase specificity in the same way. The blue curve shows the distance to the perfect model. The value of 0.89 was found to be optimal.</p>
 <p>Now we can use the test set ROC curve to validate the cut off we chose by resampling. Here the cut off closest to the perfect model is 0.89. We were able to find a good probability cut off value without setting aside another set of data for tuning the cut off.</p>
 <p>One great thing about this code is that it will automatically apply the optimized probability threshold when predicting new samples.</p>

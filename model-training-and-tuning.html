@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-09-03">
+<meta name="date" content="2016-11-10">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -61,7 +61,7 @@ MathJax.Hub.Config({
 <link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
 <script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
 <script src="libs/d3-3.5.2/d3.min.js"></script>
-<script src="libs/forceNetwork-binding-0.2.11/forceNetwork.js"></script>
+<script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
 
 
 <style type="text/css">
@@ -335,6 +335,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="22.9" data-path="data-sets.html"><a href="data-sets.html#sacramento-house-price-data"><i class="fa fa-check"></i><b>22.9</b> Sacramento House Price Data</a></li>
 <li class="chapter" data-level="22.10" data-path="data-sets.html"><a href="data-sets.html#animal-scat-data"><i class="fa fa-check"></i><b>22.10</b> Animal Scat Data</a></li>
 </ul></li>
+<li class="chapter" data-level="23" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>23</b> Session Information</a></li>
 </ul>
 
       </nav>
@@ -382,7 +383,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>choose the “optimal” model across these parameters</li>
 <li>estimate model performance from a training set</li>
 </ul>
-<p>First, a specific model must be chosen. Currently, 230 are available using <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a>; see <a href="modelList.html"><code>train</code> Model List</a> or <a href="bytag.html"><code>train</code> Models By Tag</a> for details. On these pages, there are lists of tuning parameters that can potentially be optimized. <a href="custom_models.html">User-defined models</a> can also be created.</p>
+<p>First, a specific model must be chosen. Currently, 233 are available using <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a>; see <a href="modelList.html"><code>train</code> Model List</a> or <a href="bytag.html"><code>train</code> Models By Tag</a> for details. On these pages, there are lists of tuning parameters that can potentially be optimized. <a href="custom_models.html">User-defined models</a> can also be created.</p>
 <p>The first step in tuning the model (line 1 in the algorithm above is to choose a set of parameters to evaluate. For example, if fitting a Partial Least Squares (PLS) model, the number of PLS components to evaluate must be specified.</p>
 <p><img src="premade/TrainAlgo.png" /><!-- --></p>
 <p>Once the model and tuning parameter values have been defined, the type of resampling should be also be specified. Currently, <em>k</em>-fold cross-validation (once or repeated), leave-one-out cross-validation and bootstrap (simple estimation or the 632 rule) resampling methods can be used by <code>train</code>. After resampling, the process produces a profile of performance measures is available to guide the user as to which tuning parameter values should be chosen. By default, the function automatically chooses the tuning parameters associated with the best value, although different algorithms can be used (see details below).</p>
@@ -573,19 +574,19 @@ gbmFit2</code></pre></div>
 <p>The <code>plot</code> function can be used to examine the relationship between the estimates of performance and the tuning parameters. For example, a simple invokation of the function shows the results for the first performance measure:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
 <span class="kw">plot</span>(gbmFit2)  </code></pre></div>
-<p><img src="main_files/figure-html/train_plot1-1.png" width="672" /></p>
+<p><img src="basic/train_plot1-1.png" width="672" /></p>
 <p>Other performance metrics can be shown using the <code>metric</code> option:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
 <span class="kw">plot</span>(gbmFit2, <span class="dt">metric =</span> <span class="st">&quot;Kappa&quot;</span>)</code></pre></div>
-<p><img src="main_files/figure-html/train_plot2-1.png" width="672" /></p>
+<p><img src="basic/train_plot2-1.png" width="672" /></p>
 <p>Other types of plot are also available. See <code>?plot.train</code> for more details. The code below shows a heatmap of the results:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
 <span class="kw">plot</span>(gbmFit2, <span class="dt">metric =</span> <span class="st">&quot;Kappa&quot;</span>, <span class="dt">plotType =</span> <span class="st">&quot;level&quot;</span>,
      <span class="dt">scales =</span> <span class="kw">list</span>(<span class="dt">x =</span> <span class="kw">list</span>(<span class="dt">rot =</span> <span class="dv">90</span>)))</code></pre></div>
-<p><img src="main_files/figure-html/train_plot3-1.png" width="672" /></p>
+<p><img src="basic/train_plot3-1.png" width="672" /></p>
 <p>A <code>ggplot</code> method can also be used:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(gbmFit2)  </code></pre></div>
-<p><img src="main_files/figure-html/train_ggplot1-1.png" width="816" /></p>
+<p><img src="basic/train_ggplot1-1.png" width="816" /></p>
 <p>There are also plot functions that show more detailed representations of the resampled estimates. See <code>?xyplot.train</code> for more details.</p>
 <p>From these plots, a different set of tuning parameters may be desired. To change the final values without starting the whole process again, the <code>update.train</code> can be used to refit the final model. See <code>?update.train</code></p>
 <div id="control">
@@ -627,13 +628,13 @@ gbmFit2</code></pre></div>
 <p>The output to the function should be a vector of numeric summary metrics with non-null names. By default, <code>train</code> evaluate classification models in terms of the predicted classes. Optionally, class probabilities can also be used to measure performance. To obtain predicted class probabilities within the resampling process, the argument <code>classProbs</code> in <code>trainControl</code> must be set to <code>TRUE</code>. This merges columns of probabilities into the predictions generated from each resample (there is a column per class and the column names are the class names).</p>
 <p>As shown in the last section, custom functions can be used to calculate performance scores that are averaged over the resamples. Another built-in function, <code>twoClassSummary</code>, will compute the sensitivity, specificity and area under the ROC curve:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(twoClassSummary)</code></pre></div>
-<pre><code>##                                                                            
-## 1 function (data, lev = NULL, model = NULL)                                
-## 2 {                                                                        
-## 3     if (length(levels(data$obs)) &gt; 2)                                    
-## 4         stop(paste(&quot;Your outcome has&quot;, length(levels(data$obs)),         
-## 5             &quot;levels. The twoClassSummary() function isn&#39;t appropriate.&quot;))
-## 6     requireNamespaceQuietStop(&quot;pROC&quot;)</code></pre>
+<pre><code>##                                                                                                                     
+## 1 function (data, lev = NULL, model = NULL)                                                                         
+## 2 {                                                                                                                 
+## 3     lvls &lt;- levels(data$obs)                                                                                      
+## 4     if (length(lvls) &gt; 2)                                                                                         
+## 5         stop(paste(&quot;Your outcome has&quot;, length(lvls), &quot;levels. The twoClassSummary() function isn&#39;t appropriate.&quot;))
+## 6     requireNamespaceQuietStop(&quot;ModelMetrics&quot;)</code></pre>
 <p>To rebuild the boosted tree model using this criterion, we can see the relationship between the tuning parameters and the area under the ROC curve using the following code:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fitControl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,
                            <span class="dt">number =</span> <span class="dv">10</span>,
@@ -748,7 +749,7 @@ gbmFit3</code></pre></div>
 <li><code>histogram</code> and <code>densityplot</code> can also be used to look at distributions of the tuning parameters across tuning parameters.</li>
 </ul>
 <p>For example, the following statements create a density plot:</p>
-<p><img src="main_files/figure-html/4-1.png" width="672" /></p>
+<p><img src="basic/4-1.png" width="672" /></p>
 <p>Note that if you are interested in plotting the resampling results across multiple tuning parameters, the option <code>resamples = &quot;all&quot;</code> should be used in the control object.</p>
 <div id="between">
 
@@ -810,8 +811,8 @@ rdaFit                 </code></pre></div>
 ## Resampling results across tuning parameters:
 ## 
 ##   gamma      lambda     ROC        Sens       Spec     
-##   0.0000000  0.0000000  0.6956018  0.9244444  0.3951786
-##   0.0000000  0.3333333  0.8356895  0.8441667  0.7278571
+##   0.0000000  0.0000000  0.6768564  0.9244444  0.3951786
+##   0.0000000  0.3333333  0.8356200  0.8441667  0.7278571
 ##   0.0000000  0.6666667  0.8578894  0.8248611  0.7798214
 ##   0.0000000  1.0000000  0.8487103  0.7754167  0.7653571
 ##   0.3333333  0.0000000  0.8934573  0.8688889  0.7478571
@@ -852,35 +853,35 @@ resamps</code></pre></div>
 ## Number of resamples: 100 
 ## 
 ## ROC 
-##       Min. 1st Qu. Median   Mean 3rd Qu. Max. NA&#39;s
-## GBM 0.5179  0.8571 0.9048 0.8956  0.9479    1    0
-## SVM 0.6786  0.9107 0.9557 0.9445  0.9844    1    0
-## RDA 0.6032  0.8750 0.9219 0.9131  0.9643    1    0
+##          Min.   1st Qu.    Median      Mean   3rd Qu. Max. NA&#39;s
+## GBM 0.5178571 0.8571429 0.9047619 0.8955531 0.9479167    1    0
+## SVM 0.6785714 0.9107143 0.9557292 0.9445164 0.9843750    1    0
+## RDA 0.6031746 0.8750000 0.9218750 0.9130853 0.9642857    1    0
 ## 
 ## Sens 
-##      Min. 1st Qu. Median   Mean 3rd Qu. Max. NA&#39;s
-## GBM 0.625  0.7778 0.8750 0.8679       1    1    0
-## SVM 0.500  0.8750 0.8889 0.9174       1    1    0
-## RDA 0.625  0.8750 0.8889 0.8988       1    1    0
+##      Min.   1st Qu.    Median      Mean 3rd Qu. Max. NA&#39;s
+## GBM 0.625 0.7777778 0.8750000 0.8679167       1    1    0
+## SVM 0.500 0.8750000 0.8888889 0.9173611       1    1    0
+## RDA 0.625 0.8750000 0.8888889 0.8987500       1    1    0
 ## 
 ## Spec 
-##       Min. 1st Qu. Median   Mean 3rd Qu. Max. NA&#39;s
-## GBM 0.2857  0.7143 0.7500 0.7664  0.8571    1    0
-## SVM 0.2857  0.7143 0.8571 0.8127  1.0000    1    0
-## RDA 0.2857  0.7143 0.7500 0.7804  0.8571    1    0</code></pre>
+##          Min.   1st Qu.    Median      Mean   3rd Qu. Max. NA&#39;s
+## GBM 0.2857143 0.7142857 0.7500000 0.7664286 0.8571429    1    0
+## SVM 0.2857143 0.7142857 0.8571429 0.8126786 1.0000000    1    0
+## RDA 0.2857143 0.7142857 0.7500000 0.7803571 0.8571429    1    0</code></pre>
 <p>Note that, in this case, the option <code>resamples = &quot;final&quot;</code> should be user-defined in the control objects.</p>
 <p>There are several lattice plot methods that can be used to visualize the resampling distributions: density plots, box-whisker plots, scatterplot matrices and scatterplots of summary statistics. For example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(theme1)
 <span class="kw">bwplot</span>(resamps, <span class="dt">layout =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</code></pre></div>
-<p><img src="main_files/figure-html/train_resample_box-1.png" width="864" /></p>
+<p><img src="basic/train_resample_box-1.png" width="864" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
 <span class="kw">dotplot</span>(resamps, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)</code></pre></div>
-<p><img src="main_files/figure-html/train_resample_ci-1.png" width="576" /></p>
+<p><img src="basic/train_resample_ci-1.png" width="576" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(theme1)
 <span class="kw">xyplot</span>(resamps, <span class="dt">what =</span> <span class="st">&quot;BlandAltman&quot;</span>)</code></pre></div>
-<p><img src="main_files/figure-html/train_resample_ba-1.png" width="576" /></p>
+<p><img src="basic/train_resample_ba-1.png" width="576" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">splom</span>(resamps)</code></pre></div>
-<p><img src="main_files/figure-html/train_resample_scatmat-1.png" width="672" /></p>
+<p><img src="basic/train_resample_scatmat-1.png" width="672" /></p>
 <p>Other visualizations are availible in <code>densityplot.resamples</code> and <code>parallel.resamples</code></p>
 <p>Since models are fit on the same versions of the training data, it makes sense to make inferences on the differences between models. In this way we reduce the within-resample correlation that may exist. We can compute the differences, then use a simple <em>t</em>-test to evaluate the null hypothesis that there is no difference between models.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">difValues &lt;-<span class="st"> </span><span class="kw">diff</span>(resamps)
@@ -921,10 +922,10 @@ difValues</code></pre></div>
 ## RDA 1.00000 0.13861</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(theme1)
 <span class="kw">bwplot</span>(difValues, <span class="dt">layout =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</code></pre></div>
-<p><img src="main_files/figure-html/train_diff_box-1.png" width="864" /></p>
+<p><img src="basic/train_diff_box-1.png" width="864" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
 <span class="kw">dotplot</span>(difValues)</code></pre></div>
-<p><img src="main_files/figure-html/train_diff_ci-1.png" width="576" /></p>
+<p><img src="basic/train_diff_ci-1.png" width="576" /></p>
 <div id="notune">
 
 </div>

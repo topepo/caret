@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-09-03">
+<meta name="date" content="2016-11-10">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -61,7 +61,7 @@ MathJax.Hub.Config({
 <link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
 <script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
 <script src="libs/d3-3.5.2/d3.min.js"></script>
-<script src="libs/forceNetwork-binding-0.2.11/forceNetwork.js"></script>
+<script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
 
 
 <style type="text/css">
@@ -335,6 +335,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="22.9" data-path="data-sets.html"><a href="data-sets.html#sacramento-house-price-data"><i class="fa fa-check"></i><b>22.9</b> Sacramento House Price Data</a></li>
 <li class="chapter" data-level="22.10" data-path="data-sets.html"><a href="data-sets.html#animal-scat-data"><i class="fa fa-check"></i><b>22.10</b> Animal Scat Data</a></li>
 </ul></li>
+<li class="chapter" data-level="23" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>23</b> Session Information</a></li>
 </ul>
 
       </nav>
@@ -492,12 +493,12 @@ outside_test &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>
 ## Number of resamples: 50 
 ## 
 ## ROC 
-##            Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA&#39;s
-## original 0.8935  0.9311 0.9407 0.9410  0.9564 0.9717    0
-## down     0.8937  0.9205 0.9369 0.9347  0.9549 0.9684    0
-## up       0.9995  1.0000 1.0000 0.9999  1.0000 1.0000    0
-## SMOTE    0.9622  0.9762 0.9808 0.9796  0.9840 0.9925    0
-## ROSE     0.8764  0.8908 0.8953 0.8956  0.8999 0.9166    0</code></pre>
+##               Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
+## original 0.8935409 0.9310927 0.9407275 0.9410110 0.9563618 0.9717304    0
+## down     0.8937087 0.9204970 0.9369112 0.9347271 0.9549339 0.9683999    0
+## up       0.9994664 0.9999994 1.0000000 0.9999147 1.0000000 1.0000000    0
+## SMOTE    0.9621654 0.9761624 0.9807601 0.9796307 0.9839614 0.9924950    0
+## ROSE     0.8764264 0.8907803 0.8952800 0.8956124 0.8999161 0.9166320    0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">outside_test</code></pre></div>
 <pre><code>##              lower       ROC     upper
 ## original 0.9134895 0.9251843 0.9368791
@@ -582,12 +583,12 @@ inside_test &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(
 ## Number of resamples: 50 
 ## 
 ## ROC 
-##            Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA&#39;s
-## original 0.8935  0.9311 0.9407 0.9410  0.9564 0.9717    0
-## down     0.8902  0.9348 0.9445 0.9421  0.9507 0.9665    0
-## up       0.8928  0.9211 0.9374 0.9352  0.9499 0.9637    0
-## SMOTE    0.9299  0.9458 0.9528 0.9527  0.9609 0.9761    0
-## ROSE     0.9189  0.9440 0.9529 0.9517  0.9597 0.9741    0</code></pre>
+##               Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
+## original 0.8935409 0.9310927 0.9407275 0.9410110 0.9563618 0.9717304    0
+## down     0.8902358 0.9348219 0.9444537 0.9420644 0.9507128 0.9665425    0
+## up       0.8928295 0.9210659 0.9374133 0.9351687 0.9498955 0.9636521    0
+## SMOTE    0.9299339 0.9458451 0.9527729 0.9526537 0.9608647 0.9761057    0
+## ROSE     0.9189467 0.9440192 0.9528585 0.9517422 0.9597228 0.9741354    0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inside_test</code></pre></div>
 <pre><code>##              lower       ROC     upper
 ## original 0.9134895 0.9251843 0.9368791
@@ -596,7 +597,7 @@ inside_test &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(
 ## SMOTE    0.9455682 0.9512705 0.9569727
 ## ROSE     0.9413039 0.9482492 0.9551946</code></pre>
 <p>The figure below shows the difference in the area under the ROC curve and the test set results for the approaches shown here. Repeating the subsampling procedures for every resample produces results that are more consistent with the test set.</p>
-<p><img src="main_files/figure-html/samp_insode_plot-1.png" width="672" /></p>
+<p><img src="sampling/samp_insode_plot-1.png" width="672" /></p>
 </div>
 <div id="complications" class="section level2">
 <h2><span class="header-section-number">11.3</span> Complications</h2>

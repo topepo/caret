@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-09-03">
+<meta name="date" content="2016-11-10">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -61,7 +61,7 @@ MathJax.Hub.Config({
 <link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
 <script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
 <script src="libs/d3-3.5.2/d3.min.js"></script>
-<script src="libs/forceNetwork-binding-0.2.11/forceNetwork.js"></script>
+<script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
 
 
 <style type="text/css">
@@ -335,6 +335,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="22.9" data-path="data-sets.html"><a href="data-sets.html#sacramento-house-price-data"><i class="fa fa-check"></i><b>22.9</b> Sacramento House Price Data</a></li>
 <li class="chapter" data-level="22.10" data-path="data-sets.html"><a href="data-sets.html#animal-scat-data"><i class="fa fa-check"></i><b>22.10</b> Animal Scat Data</a></li>
 </ul></li>
+<li class="chapter" data-level="23" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>23</b> Session Information</a></li>
 </ul>
 
       </nav>
@@ -365,7 +366,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="models-with-built-in-feature-selection" class="section level2">
 <h2><span class="header-section-number">17.1</span> Models with Built-In Feature Selection</h2>
-<p>Many models that can be accessed using <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a>’s <code>train</code> function produce prediction equations that do not necessarily use all the predictors. These models are thought to have built-in feature selection: <code>ada</code>, <code>AdaBag</code>, <code>AdaBoost.M1</code>, <code>adaboost</code>, <code>bagEarth</code>, <code>bagEarthGCV</code>, <code>bagFDA</code>, <code>bagFDAGCV</code>, <code>bartMachine</code>, <code>blasso</code>, <code>BstLm</code>, <code>bstSm</code>, <code>C5.0</code>, <code>C5.0Cost</code>, <code>C5.0Rules</code>, <code>C5.0Tree</code>, <code>cforest</code>, <code>chaid</code>, <code>ctree</code>, <code>ctree2</code>, <code>cubist</code>, <code>deepboost</code>, <code>earth</code>, <code>enet</code>, <code>evtree</code>, <code>extraTrees</code>, <code>fda</code>, <code>gamboost</code>, <code>gbm</code>, <code>gcvEarth</code>, <code>glmnet</code>, <code>glmStepAIC</code>, <code>J48</code>, <code>JRip</code>, <code>lars</code>, <code>lars2</code>, <code>lasso</code>, <code>LMT</code>, <code>LogitBoost</code>, <code>M5</code>, <code>M5Rules</code>, <code>nodeHarvest</code>, <code>oblique.tree</code>, <code>OneR</code>, <code>ordinalNet</code>, <code>ORFlog</code>, <code>ORFpls</code>, <code>ORFridge</code>, <code>ORFsvm</code>, <code>pam</code>, <code>parRF</code>, <code>PART</code>, <code>penalized</code>, <code>PenalizedLDA</code>, <code>qrf</code>, <code>ranger</code>, <code>Rborist</code>, <code>relaxo</code>, <code>rf</code>, <code>rFerns</code>, <code>rfRules</code>, <code>rotationForest</code>, <code>rotationForestCp</code>, <code>rpart</code>, <code>rpart1SE</code>, <code>rpart2</code>, <code>rpartCost</code>, <code>rpartScore</code>, <code>rqlasso</code>, <code>rqnc</code>, <code>RRF</code>, <code>RRFglobal</code>, <code>sdwd</code>, <code>smda</code>, <code>sparseLDA</code>, <code>spikeslab</code>, <code>wsrf</code>, <code>xgbLinear</code>, <code>xgbTree</code>. Many of the functions have an ancillary method called <code>predictors</code> that returns a vector indicating which predictors were used in the final model.</p>
+<p>Many models that can be accessed using <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a>’s <code>train</code> function produce prediction equations that do not necessarily use all the predictors. These models are thought to have built-in feature selection: <code>ada</code>, <code>AdaBag</code>, <code>AdaBoost.M1</code>, <code>adaboost</code>, <code>bagEarth</code>, <code>bagEarthGCV</code>, <code>bagFDA</code>, <code>bagFDAGCV</code>, <code>bartMachine</code>, <code>blasso</code>, <code>BstLm</code>, <code>bstSm</code>, <code>C5.0</code>, <code>C5.0Cost</code>, <code>C5.0Rules</code>, <code>C5.0Tree</code>, <code>cforest</code>, <code>chaid</code>, <code>ctree</code>, <code>ctree2</code>, <code>cubist</code>, <code>deepboost</code>, <code>earth</code>, <code>enet</code>, <code>evtree</code>, <code>extraTrees</code>, <code>fda</code>, <code>gamboost</code>, <code>gbm_h2o</code>, <code>gbm</code>, <code>gcvEarth</code>, <code>glmnet_h2o</code>, <code>glmnet</code>, <code>glmStepAIC</code>, <code>J48</code>, <code>JRip</code>, <code>lars</code>, <code>lars2</code>, <code>lasso</code>, <code>LMT</code>, <code>LogitBoost</code>, <code>M5</code>, <code>M5Rules</code>, <code>nodeHarvest</code>, <code>oblique.tree</code>, <code>OneR</code>, <code>ordinalNet</code>, <code>ORFlog</code>, <code>ORFpls</code>, <code>ORFridge</code>, <code>ORFsvm</code>, <code>pam</code>, <code>parRF</code>, <code>PART</code>, <code>penalized</code>, <code>PenalizedLDA</code>, <code>qrf</code>, <code>ranger</code>, <code>Rborist</code>, <code>relaxo</code>, <code>rf</code>, <code>rFerns</code>, <code>rfRules</code>, <code>rotationForest</code>, <code>rotationForestCp</code>, <code>rpart</code>, <code>rpart1SE</code>, <code>rpart2</code>, <code>rpartCost</code>, <code>rpartScore</code>, <code>rqlasso</code>, <code>rqnc</code>, <code>RRF</code>, <code>RRFglobal</code>, <code>sdwd</code>, <code>smda</code>, <code>sparseLDA</code>, <code>spikeslab</code>, <code>wsrf</code>, <code>xgbLinear</code>, <code>xgbTree</code>. Many of the functions have an ancillary method called <code>predictors</code> that returns a vector indicating which predictors were used in the final model.</p>
 <p>In many cases, using these models with built-in feature selection will be more efficient than algorithms where the search routine for the right predictors is external to the model. Built-in feature selection typically couples the predictor search algorithm with the parameter estimation and are usually optimized with a single objective function (e.g. error rates or likelihood).</p>
 <div id="methods">
 

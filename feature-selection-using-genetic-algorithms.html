@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-09-03">
+<meta name="date" content="2016-11-10">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -61,7 +61,7 @@ MathJax.Hub.Config({
 <link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
 <script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
 <script src="libs/d3-3.5.2/d3.min.js"></script>
-<script src="libs/forceNetwork-binding-0.2.11/forceNetwork.js"></script>
+<script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
 
 
 <style type="text/css">
@@ -335,6 +335,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="22.9" data-path="data-sets.html"><a href="data-sets.html#sacramento-house-price-data"><i class="fa fa-check"></i><b>22.9</b> Sacramento House Price Data</a></li>
 <li class="chapter" data-level="22.10" data-path="data-sets.html"><a href="data-sets.html#animal-scat-data"><i class="fa fa-check"></i><b>22.10</b> Animal Scat Data</a></li>
 </ul></li>
+<li class="chapter" data-level="23" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>23</b> Session Information</a></li>
 </ul>
 
       </nav>
@@ -485,7 +486,7 @@ rf_ga</code></pre></div>
 <p>With 5 repeats of 10-fold cross-validation, the GA was executed 50 times. The average external performance is calculated across resamples and these results are used to determine the optimal number of iterations for the final GA to avoid over-fitting. Across the resamples, an average of 8.3 predictors were selected at the end of each of the algorithms.</p>
 <p>The <code>plot</code> function is used to monitor the average of the internal out-of-bag RMSE estimates as well as the average of the external performance estimates calculated from the 50 out-of-sample predictions. By default, this function uses <a href="http://cran.r-project.org/package=ggplot2"><code>ggplot2</code></a> package. A black and white theme can be “added” to the output object:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rf_ga) +<span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
-<p><img src="main_files/figure-html/ga_rf_profile-1.png" width="672" /></p>
+<p><img src="ga/ga_rf_profile-1.png" width="672" /></p>
 <p>Based on these results, the generation associated with the best external RMSE estimate was 2.8.</p>
 <p>Using the entire training set, the final GA is conducted and, at generation 185, there were 12 that were selected: real1, real2, real3, real4, real5, bogus6, bogus7, bogus13, bogus14, bogus17, bogus32, bogus43. The random forest model with these predictors is created using the entire training set is trained and this is the model that is used when <code>predict.gafs</code> is executed.</p>
 <p><strong>Note:</strong> the correlation between the internal and external fitness values is somewhat atypical for most real-world problems. This is a function of the nature of the simulations (a small number of uncorrelated informative predictors) and that the OOB error estimate from random forest is a product of hundreds of trees. Your mileage may vary.</p>
@@ -661,9 +662,9 @@ starting</code></pre></div>
 <h2><span class="header-section-number">20.6</span> The Example Revisited</h2>
 <p>The previous GA included some of the non-informative predictors. We can cheat a little and try to bias the search to get the right solution.</p>
 <p>We can try to encourage the algorithm to choose fewer predictors, we can penalize the the RMSE estimate. Normally, a metric like the Akaike information criterion (AIC) statistic would be used. However, with a random forest model, there is no real notion of model degrees of freedom. As an alternative, we can use <a href="http://scholar.google.com/scholar?q=%22desirability+functions">desirability functions</a> to penalize the RMSE. To do this, two functions are created that translate the number of predictors and the RMSE values to a measure of “desirability”. For the number of predictors, the most desirable property would be a single predictor and the worst situation would be if the model required all 50 predictors. That desirability function is visualized as:</p>
-<p><img src="main_files/figure-html/ga_pred_d-1.png" width="672" /></p>
+<p><img src="ga/ga_pred_d-1.png" width="672" /></p>
 <p>For the RMSE, the best case would be zero. Many poor models have values around four. To give the RMSE value more weight in the overall desirability calculation, we use a scale parameter value of 2. This desirability function is:</p>
-<p><img src="main_files/figure-html/ga_rmse_d-1.png" width="672" /></p>
+<p><img src="ga/ga_rmse_d-1.png" width="672" /></p>
 <p>To use the overall desirability to drive the feature selection, the <code>internal</code> function requires replacement. We make a copy of <code>rfGA</code> and add code using the <a href="http://cran.r-project.org/package=desirability"><code>desirability</code></a> package and the function returns the estimated RMSE and the overall desirability. The <code>gafsControl</code> function also need changes. The <code>metric</code> argument needs to reflect that the overall desirability score should be maximized internally but the RMSE estimate should be minimized externally.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(desirability)
 rfGA2 &lt;-<span class="st"> </span>rfGA
@@ -720,7 +721,7 @@ rf_ga_d</code></pre></div>
 ##      2.6891      0.7682</code></pre>
 <p>Here are the RMSE values for this search:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rf_ga_d) +<span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
-<p><img src="main_files/figure-html/ga_rf_profile_2-1.png" width="672" /></p>
+<p><img src="ga/ga_rf_profile_2-1.png" width="672" /></p>
 <p>The final GA found 6 that were selected: real1, real2, real3, real4, real5, bogus26. During resampling, the average number of predictors selected was 5.2, indicating that the penalty on the number of predictors was effective.</p>
 
 </div>

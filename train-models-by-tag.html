@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-09-03">
+<meta name="date" content="2016-11-10">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -61,7 +61,7 @@ MathJax.Hub.Config({
 <link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
 <script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
 <script src="libs/d3-3.5.2/d3.min.js"></script>
-<script src="libs/forceNetwork-binding-0.2.11/forceNetwork.js"></script>
+<script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
 
 
 <style type="text/css">
@@ -335,6 +335,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="22.9" data-path="data-sets.html"><a href="data-sets.html#sacramento-house-price-data"><i class="fa fa-check"></i><b>22.9</b> Sacramento House Price Data</a></li>
 <li class="chapter" data-level="22.10" data-path="data-sets.html"><a href="data-sets.html#animal-scat-data"><i class="fa fa-check"></i><b>22.10</b> Animal Scat Data</a></li>
 </ul></li>
+<li class="chapter" data-level="23" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>23</b> Session Information</a></li>
 </ul>
 
       </nav>
@@ -674,6 +675,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p><strong>Negative Binomial Generalized Linear Model</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glm.nb&#39;</span></code></pre></div>
+<p>Type: Regression</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>link</code> (Link Function)</li>
+</ul>
 <p><strong>Neural Network</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;nnet&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -1322,8 +1330,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>gamma</code> (Minimum Loss Reduction)</li>
 <li><code>colsample_bytree</code> (Subsample Ratio of Columns)</li>
 <li><code>min_child_weight</code> (Minimum Sum of Instance Weight)</li>
+<li><code>subsample</code> (Subsample Percentage)</li>
 </ul>
 <p>Required packages: <code>xgboost</code>, <code>plyr</code></p>
+<p><strong>glmnet</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm_h2o&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>ntrees</code> (# Boosting Iterations)</li>
+<li><code>max_depth</code> (Max Tree Depth)</li>
+<li><code>min_rows</code> (Min. Terminal Node Size)</li>
+<li><code>learn_rate</code> (Shrinkage)</li>
+<li><code>col_sample_rate</code> (#Randomly Selected Predictors)</li>
+</ul>
+<p>Required packages: <code>h2o</code></p>
 <p><strong>Stochastic Gradient Boosting</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2036,8 +2057,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>gamma</code> (Minimum Loss Reduction)</li>
 <li><code>colsample_bytree</code> (Subsample Ratio of Columns)</li>
 <li><code>min_child_weight</code> (Minimum Sum of Instance Weight)</li>
+<li><code>subsample</code> (Subsample Percentage)</li>
 </ul>
 <p>Required packages: <code>xgboost</code>, <code>plyr</code></p>
+<p><strong>glmnet</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm_h2o&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>ntrees</code> (# Boosting Iterations)</li>
+<li><code>max_depth</code> (Max Tree Depth)</li>
+<li><code>min_rows</code> (Min. Terminal Node Size)</li>
+<li><code>learn_rate</code> (Shrinkage)</li>
+<li><code>col_sample_rate</code> (#Randomly Selected Predictors)</li>
+</ul>
+<p>Required packages: <code>h2o</code></p>
 <p><strong>Model Averaged Neural Network</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;avNNet&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -2578,6 +2612,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>MASS</code></p>
 <p><strong>glmnet</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet_h2o&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alpha</code> (Mixing Percentage)</li>
+<li><code>lambda</code> (Regularization Parameter)</li>
+</ul>
+<p>Required packages: <code>h2o</code></p>
+<p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
@@ -2585,7 +2628,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>alpha</code> (Mixing Percentage)</li>
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
-<p>Required packages: <code>glmnet</code></p>
+<p>Required packages: <code>glmnet</code>, <code>Matrix</code></p>
+<p><strong>Negative Binomial Generalized Linear Model</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glm.nb&#39;</span></code></pre></div>
+<p>Type: Regression</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>link</code> (Link Function)</li>
+</ul>
 <p><strong>Penalized Ordinal Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ordinalNet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2829,6 +2879,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Tuning parameters:</p>
 <ul>
 <li><code>C</code> (Confidence Threshold)</li>
+<li><code>M</code> (Minimum Instances Per Leaf)</li>
 </ul>
 <p>Required packages: <code>RWeka</code></p>
 <p><strong>C5.0</strong></p>
@@ -2980,6 +3031,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>gamma</code> (Minimum Loss Reduction)</li>
 <li><code>colsample_bytree</code> (Subsample Ratio of Columns)</li>
 <li><code>min_child_weight</code> (Minimum Sum of Instance Weight)</li>
+<li><code>subsample</code> (Subsample Percentage)</li>
 </ul>
 <p>Required packages: <code>xgboost</code>, <code>plyr</code></p>
 <p><strong>Flexible Discriminant Analysis</strong></p>
@@ -2997,6 +3049,27 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>MASS</code></p>
 <p><strong>glmnet</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm_h2o&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>ntrees</code> (# Boosting Iterations)</li>
+<li><code>max_depth</code> (Max Tree Depth)</li>
+<li><code>min_rows</code> (Min. Terminal Node Size)</li>
+<li><code>learn_rate</code> (Shrinkage)</li>
+<li><code>col_sample_rate</code> (#Randomly Selected Predictors)</li>
+</ul>
+<p>Required packages: <code>h2o</code></p>
+<p><strong>glmnet</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet_h2o&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alpha</code> (Mixing Percentage)</li>
+<li><code>lambda</code> (Regularization Parameter)</li>
+</ul>
+<p>Required packages: <code>h2o</code></p>
+<p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
@@ -3004,7 +3077,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>alpha</code> (Mixing Percentage)</li>
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
-<p>Required packages: <code>glmnet</code></p>
+<p>Required packages: <code>glmnet</code>, <code>Matrix</code></p>
 <p><strong>Least Angle Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;lars&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -3278,6 +3351,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Tuning parameters:</p>
 <ul>
 <li><code>NumOpt</code> (# Optimizations)</li>
+<li><code>NumFolds</code> (# Folds)</li>
+<li><code>MinWeights</code> (Min Weights)</li>
 </ul>
 <p>Required packages: <code>RWeka</code></p>
 <p><strong>Rule-Based Classifier</strong></p>
@@ -3286,7 +3361,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Tuning parameters:</p>
 <ul>
 <li><code>threshold</code> (Confidence Threshold)</li>
-<li><code>pruned</code> (Confidence Threshold)</li>
+<li><code>pruned</code> (Pruning)</li>
 </ul>
 <p>Required packages: <code>RWeka</code></p>
 <p><strong>Single C5.0 Ruleset</strong></p>
@@ -3688,6 +3763,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>Required packages: <code>elasticnet</code></p>
 <p><strong>glmnet</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet_h2o&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alpha</code> (Mixing Percentage)</li>
+<li><code>lambda</code> (Regularization Parameter)</li>
+</ul>
+<p>Required packages: <code>h2o</code></p>
+<p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
@@ -3695,7 +3779,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>alpha</code> (Mixing Percentage)</li>
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
-<p>Required packages: <code>glmnet</code></p>
+<p>Required packages: <code>glmnet</code>, <code>Matrix</code></p>
 <p><strong>Least Angle Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;lars&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -3855,6 +3939,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>Required packages: <code>kernlab</code>, <code>kerndwd</code></p>
 <p><strong>glmnet</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet_h2o&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alpha</code> (Mixing Percentage)</li>
+<li><code>lambda</code> (Regularization Parameter)</li>
+</ul>
+<p>Required packages: <code>h2o</code></p>
+<p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
@@ -3862,7 +3955,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>alpha</code> (Mixing Percentage)</li>
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
-<p>Required packages: <code>glmnet</code></p>
+<p>Required packages: <code>glmnet</code>, <code>Matrix</code></p>
 <p><strong>Linear Distance Weighted Discrimination</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;dwdLinear&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -3904,7 +3997,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Required packages: <code>RSNNS</code></p>
 <p><strong>Multilayer Perceptron Network by Stochastic Gradient Descent</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpSGD&#39;</span></code></pre></div>
-<p>Type: Regression</p>
+<p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
 <ul>
 <li><code>size</code> (#Hidden Units)</li>
@@ -3916,7 +4009,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>minibatchsz</code> (Batch Size)</li>
 <li><code>repeats</code> (#Models)</li>
 </ul>
-<p>Required packages: <code>FCNN4R</code></p>
+<p>Required packages: <code>FCNN4R</code>, <code>plyr</code></p>
 <p><strong>Neural Network</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;nnet&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -4164,6 +4257,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>Required packages: <code>gpls</code></p>
 <p><strong>glmnet</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet_h2o&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alpha</code> (Mixing Percentage)</li>
+<li><code>lambda</code> (Regularization Parameter)</li>
+</ul>
+<p>Required packages: <code>h2o</code></p>
+<p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
@@ -4171,7 +4273,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>alpha</code> (Mixing Percentage)</li>
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
-<p>Required packages: <code>glmnet</code></p>
+<p>Required packages: <code>glmnet</code>, <code>Matrix</code></p>
 <p><strong>Heteroscedastic Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;hda&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -4537,6 +4639,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>Required packages: <code>elasticnet</code></p>
 <p><strong>glmnet</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet_h2o&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alpha</code> (Mixing Percentage)</li>
+<li><code>lambda</code> (Regularization Parameter)</li>
+</ul>
+<p>Required packages: <code>h2o</code></p>
+<p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
@@ -4544,7 +4655,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>alpha</code> (Mixing Percentage)</li>
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
-<p>Required packages: <code>glmnet</code></p>
+<p>Required packages: <code>glmnet</code>, <code>Matrix</code></p>
 <p><strong>Independent Component Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;icr&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -5180,7 +5291,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Required packages: <code>RSNNS</code></p>
 <p><strong>Multilayer Perceptron Network by Stochastic Gradient Descent</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpSGD&#39;</span></code></pre></div>
-<p>Type: Regression</p>
+<p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
 <ul>
 <li><code>size</code> (#Hidden Units)</li>
@@ -5192,7 +5303,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>minibatchsz</code> (Batch Size)</li>
 <li><code>repeats</code> (#Models)</li>
 </ul>
-<p>Required packages: <code>FCNN4R</code></p>
+<p>Required packages: <code>FCNN4R</code>, <code>plyr</code></p>
 <p><strong>Neural Network</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;neuralnet&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -6538,6 +6649,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Tuning parameters:</p>
 <ul>
 <li><code>NumOpt</code> (# Optimizations)</li>
+<li><code>NumFolds</code> (# Folds)</li>
+<li><code>MinWeights</code> (Min Weights)</li>
 </ul>
 <p>Required packages: <code>RWeka</code></p>
 <p><strong>Rule-Based Classifier</strong></p>
@@ -6546,7 +6659,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Tuning parameters:</p>
 <ul>
 <li><code>threshold</code> (Confidence Threshold)</li>
-<li><code>pruned</code> (Confidence Threshold)</li>
+<li><code>pruned</code> (Pruning)</li>
 </ul>
 <p>Required packages: <code>RWeka</code></p>
 <p><strong>Simplified TSK Fuzzy Rules</strong></p>
@@ -6931,6 +7044,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Tuning parameters:</p>
 <ul>
 <li><code>C</code> (Confidence Threshold)</li>
+<li><code>M</code> (Minimum Instances Per Leaf)</li>
 </ul>
 <p>Required packages: <code>RWeka</code></p>
 <p><strong>C5.0</strong></p>
@@ -7045,8 +7159,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>gamma</code> (Minimum Loss Reduction)</li>
 <li><code>colsample_bytree</code> (Subsample Ratio of Columns)</li>
 <li><code>min_child_weight</code> (Minimum Sum of Instance Weight)</li>
+<li><code>subsample</code> (Subsample Percentage)</li>
 </ul>
 <p>Required packages: <code>xgboost</code>, <code>plyr</code></p>
+<p><strong>glmnet</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm_h2o&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>ntrees</code> (# Boosting Iterations)</li>
+<li><code>max_depth</code> (Max Tree Depth)</li>
+<li><code>min_rows</code> (Min. Terminal Node Size)</li>
+<li><code>learn_rate</code> (Shrinkage)</li>
+<li><code>col_sample_rate</code> (#Randomly Selected Predictors)</li>
+</ul>
+<p>Required packages: <code>h2o</code></p>
 <p><strong>Model Tree</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;M5&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -7273,6 +7400,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Type: Regression, Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>MASS</code></p>
+<p><strong>glmnet</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet_h2o&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alpha</code> (Mixing Percentage)</li>
+<li><code>lambda</code> (Regularization Parameter)</li>
+</ul>
+<p>Required packages: <code>h2o</code></p>
 <p><strong>L2 Regularized Linear Support Vector Machines with Class Weights</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;svmLinearWeights2&#39;</span></code></pre></div>
 <p>Type: Classification</p>

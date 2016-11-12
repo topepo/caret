@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-09-03">
+<meta name="date" content="2016-11-10">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -61,7 +61,7 @@ MathJax.Hub.Config({
 <link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
 <script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
 <script src="libs/d3-3.5.2/d3.min.js"></script>
-<script src="libs/forceNetwork-binding-0.2.11/forceNetwork.js"></script>
+<script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
 
 
 <style type="text/css">
@@ -335,6 +335,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="22.9" data-path="data-sets.html"><a href="data-sets.html#sacramento-house-price-data"><i class="fa fa-check"></i><b>22.9</b> Sacramento House Price Data</a></li>
 <li class="chapter" data-level="22.10" data-path="data-sets.html"><a href="data-sets.html#animal-scat-data"><i class="fa fa-check"></i><b>22.10</b> Animal Scat Data</a></li>
 </ul></li>
+<li class="chapter" data-level="23" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>23</b> Session Information</a></li>
 </ul>
 
       </nav>
@@ -452,13 +453,13 @@ highCorr &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">descrCor &lt;-<span class="st"> </span><span class="kw">cor</span>(filteredDescr)
 <span class="kw">summary</span>(descrCor[<span class="kw">upper.tri</span>(descrCor)])</code></pre></div>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-## -0.99610 -0.05373  0.25010  0.26080  0.65530  1.00000</code></pre>
+## -0.99607 -0.05373  0.25006  0.26078  0.65527  1.00000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">highlyCorDescr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(descrCor, <span class="dt">cutoff =</span> .<span class="dv">75</span>)
 filteredDescr &lt;-<span class="st"> </span>filteredDescr[,-highlyCorDescr]
 descrCor2 &lt;-<span class="st"> </span><span class="kw">cor</span>(filteredDescr)
 <span class="kw">summary</span>(descrCor2[<span class="kw">upper.tri</span>(descrCor2)])</code></pre></div>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-## -0.70730 -0.05378  0.04418  0.06692  0.18860  0.74460</code></pre>
+## -0.70728 -0.05378  0.04418  0.06692  0.18858  0.74458</code></pre>
 <div id="lindep">
 
 </div>
@@ -546,7 +547,7 @@ testTransformed &lt;-<span class="st"> </span><span class="kw">predict</span>(pr
        <span class="dt">data =</span> plotSubset,
        <span class="dt">groups =</span> mdrrClass, 
        <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">2</span>))  </code></pre></div>
-<p><img src="main_files/figure-html/pp_SpatSignBefore-1.png" width="480" /></p>
+<p><img src="preprocess/pp_SpatSignBefore-1.png" width="480" /></p>
 <p>After the spatial sign:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">transformed &lt;-<span class="st"> </span><span class="kw">spatialSign</span>(plotSubset)
 transformed &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(transformed)
@@ -554,7 +555,7 @@ transformed &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(
        <span class="dt">data =</span> transformed, 
        <span class="dt">groups =</span> mdrrClass, 
        <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">2</span>)) </code></pre></div>
-<p><img src="main_files/figure-html/pp_SpatSignAfter-1.png" width="480" /></p>
+<p><img src="preprocess/pp_SpatSignAfter-1.png" width="480" /></p>
 <p>Another option, <code>&quot;BoxCox&quot;</code> will estimate a Box–Cox transformation on the predictors if the data are greater than zero.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preProcValues2 &lt;-<span class="st"> </span><span class="kw">preProcess</span>(training, <span class="dt">method =</span> <span class="st">&quot;BoxCox&quot;</span>)
 trainBC &lt;-<span class="st"> </span><span class="kw">predict</span>(preProcValues2, training)
@@ -665,7 +666,7 @@ distances &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(di
        <span class="dt">data =</span> distances, 
        <span class="dt">groups =</span> testMDRR, 
        <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">2</span>))</code></pre></div>
-<p><img src="main_files/figure-html/pp_splom-1.png" width="480" /></p>
+<p><img src="preprocess/pp_splom-1.png" width="480" /></p>
 
 </div>
 </div>
