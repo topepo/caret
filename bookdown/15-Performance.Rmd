@@ -77,7 +77,7 @@ confusionMatrix(data = test_set$pred, reference = test_set$obs)
 
 For two classes, this function assumes that the class corresponding to an event is the _first_ class level (but this can be changed using the `positive` argument. 
 
-Note that there are a number of statistics shown here. The "no-information rate" is the largest proportion of the observed classes (there were more class 1 than class 2 in this test set). A hypothesis test is also computed to evaluate whether the overall accuracy rate is greater than the rate of the largest class. Also, the prevalence of the "positive event" is computed from the data (unless passed in as an argument), the detection rate (the rate of true events also predicted to be events) and the detection prevalence (the prevalence of predicted events). 
+Note that there are a number of statistics shown here. The "no-information rate" is the largest proportion of the observed classes (there were more class 2 data than class 1 in this test set). A hypothesis test is also computed to evaluate whether the overall accuracy rate is greater than the rate of the largest class. Also, the prevalence of the "positive event" is computed from the data (unless passed in as an argument), the detection rate (the rate of true events also predicted to be events) and the detection prevalence (the prevalence of predicted events). 
 
 If the prevalence of the event is different than those seen in the test set, the `prevalence` option can be used to adjust this. 
 
