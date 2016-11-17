@@ -212,7 +212,7 @@ multiClassSummary <- function (data, lev = NULL, model = NULL){
   
   # Aggregate overall stats
   overall_stats <- if(has_class_probs)
-    c(CM$overall, logLoss = lloss, ROC = roc_stats) else CM$overall
+    c(CM$overall, logLoss = as.numeric(lloss), ROC = roc_stats) else CM$overall
   if (length(levels(data[, "pred"])) > 2)
     names(overall_stats)[names(overall_stats) == "ROC"] <- "Mean_AUC"
   
