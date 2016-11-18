@@ -17,7 +17,7 @@ trCntlListMulti  <- trainControl(method = "cv", number = 3, verboseIter = FALSE,
 expect_silent({
   enFitMulti <-
     train( x = xTrain, y = yTrain, trControl = trCntlListMulti,
-           method = "glmnet", tuneLength = 2 )
+           method = "knn", tuneLength = 2 )
 })
 
 })
