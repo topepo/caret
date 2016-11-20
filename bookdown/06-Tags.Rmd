@@ -23,7 +23,9 @@ md_format <- function(x) {
   
   note_string <- if(!is.null(x$notes)) paste("Notes:", x$notes) else ""
   
-  cat(method_string, type_string, param_string, pkg_string, note_string, "\n\n", sep = "")
+  vi_string <- if(!is.null(x$varImp)) "A model-specific variable importance metric is available. " else ""
+  
+  cat(method_string, type_string, param_string, pkg_string, vi_string, note_string, "\n\n", sep = "")
 }
 
 mods <- getModelInfo()
