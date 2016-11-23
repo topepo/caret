@@ -23,7 +23,7 @@ trainControl(method = "boot", number = ifelse(grepl("cv", method), 10, 25),
 repeated training/test splits), \code{"none"} (only fits one model to the
 entire training set), \code{"oob"} (only for random forest, bagged trees,
 bagged earth, bagged flexible discriminant analysis, or conditional tree
-forest models), \code{"adaptive_cv"}, \code{"adaptive_boot"} or
+forest models), \code{timeslice}, \code{"adaptive_cv"}, \code{"adaptive_boot"} or
 \code{"adaptive_LGOCV"}}
 
 \item{number}{Either the number of folds or number of resampling iterations}
@@ -37,7 +37,7 @@ complete sets of folds to compute}
 tuning parameter grid is determined. See details below.}
 
 \item{initialWindow, horizon, fixedWindow, skip}{possible arguments to
-\code{\link{createTimeSlices}}}
+\code{\link{createTimeSlices}} when method is \code{timeslice}.}
 
 \item{verboseIter}{A logical for printing a training log.}
 

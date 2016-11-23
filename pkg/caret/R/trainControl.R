@@ -43,7 +43,7 @@
 #' repeated training/test splits), \code{"none"} (only fits one model to the
 #' entire training set), \code{"oob"} (only for random forest, bagged trees,
 #' bagged earth, bagged flexible discriminant analysis, or conditional tree
-#' forest models), \code{"adaptive_cv"}, \code{"adaptive_boot"} or
+#' forest models), \code{timeslice}, \code{"adaptive_cv"}, \code{"adaptive_boot"} or
 #' \code{"adaptive_LGOCV"}
 #' @param number Either the number of folds or number of resampling iterations
 #' @param repeats For repeated k-fold cross-validation only: the number of
@@ -62,7 +62,7 @@
 #' @param search Either \code{"grid"} or \code{"random"}, describing how the
 #' tuning parameter grid is determined. See details below.
 #' @param initialWindow,horizon,fixedWindow,skip possible arguments to
-#' \code{\link{createTimeSlices}}
+#' \code{\link{createTimeSlices}} when method is \code{timeslice}.
 #' @param classProbs a logical; should class probabilities be computed for
 #' classification models (along with predicted values) in each resample?
 #' @param summaryFunction a function to compute performance metrics across
