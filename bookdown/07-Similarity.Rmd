@@ -10,13 +10,14 @@ opts_chunk$set(digits = 3, tidy = FALSE)
 modelInfo <- getModelInfo()
 
 tags <- vector(mode = "list", length = length(modelInfo))
-Classification <- Regression <- ClassProbs <- rep(NA, length = length(modelInfo))
+Classification <- Regression <- ClassProbs <- VarImpMethod <- rep(NA, length = length(modelInfo))
 
 for(i in seq(along = modelInfo)){
   tags[[i]] <- modelInfo[[i]]$tags
   Classification[i] <- ifelse("Classification" %in% modelInfo[[i]]$type, 1, 0)
   Regression[i] <- ifelse("Regression" %in% modelInfo[[i]]$type, 1, 0)
   ClassProbs[i] <- ifelse(is.null(modelInfo[[i]]$prob), 0, 1)
+  VarImpMethod[i] <- ifelse(is.null(modelInfo[[i]]$varImp), 0, 1)
   names(tags)[i] <- paste(modelInfo[[i]]$label, 
                           " (", names(modelInfo)[i],
                           ")", sep = "")
@@ -57,7 +58,7 @@ id_values$ID <- as.numeric(id_values$source_t) - 1
 ###################################################################
 ##
 
-cutoff <- .58
+cutoff <- .66
 a <- b <- v <- NULL
 
 for(i in 1:ncol(sim)) {
