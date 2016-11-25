@@ -25,9 +25,9 @@ matrix). See Details below.}
 
 \item{method}{a string specifying which classification or regression model
 to use. Possible values are found using \code{names(getModelInfo())}. See
-\url{http://topepo.github.io/caret/bytag.html}. A list of functions can also
+\url{http://topepo.github.io/caret/train-models-by-tag.html}. A list of functions can also
 be passed for a custom model function. See
-\url{http://topepo.github.io/caret/custom_models.html} for details.}
+\url{http://topepo.github.io/caret/using-your-own-model-in-train.html} for details.}
 
 \item{preProcess}{a string vector that defines a pre-processing of the
 predictor data. Current possibilities are "BoxCox", "YeoJohnson",
@@ -53,13 +53,13 @@ must be named.)}
 
 \item{trControl}{a list of values that define how this function acts. See
 \code{\link{trainControl}} and
-\url{http://topepo.github.io/caret/training.html#custom}. (NOTE: If given,
+\url{http://topepo.github.io/caret/using-your-own-model-in-train.html}. (NOTE: If given,
 this argument must be named.)}
 
 \item{tuneGrid}{a data frame with possible tuning values. The columns are
 named the same as the tuning parameters. Use \code{\link{getModelInfo}} to
 get a list of tuning parameters for each model or see
-\url{http://topepo.github.io/caret/modelList.html}. (NOTE: If given, this
+\url{http://topepo.github.io/caret/available-models.html}. (NOTE: If given, this
 argument must be named.)}
 
 \item{tuneLength}{an integer denoting the amount of granularity in the
@@ -137,11 +137,11 @@ may not work (e.g. pre-processing). When using string kernels, the vector of
 character strings should be converted to a matrix with a single column.
 
 More details on this function can be found at
-\url{http://topepo.github.io/caret/training.html}.
+\url{http://topepo.github.io/caret/model-training-and-tuning.html}.
 
 A variety of models are currently available and are enumerated by tag (i.e.
 their model characteristics) at
-\url{http://topepo.github.io/caret/bytag.html}.
+\url{http://topepo.github.io/caret/train-models-by-tag.html}.
 }
 \examples{
 
@@ -163,14 +163,14 @@ knnFit1 <- train(TrainData, TrainClasses,
 knnFit2 <- train(TrainData, TrainClasses,
                  method = "knn",
                  preProcess = c("center", "scale"),
-                 tuneLength = 10, 
+                 tuneLength = 10,
                  trControl = trainControl(method = "boot"))
 
 
 library(MASS)
 nnetFit <- train(TrainData, TrainClasses,
                  method = "nnet",
-                 preProcess = "range", 
+                 preProcess = "range",
                  tuneLength = 2,
                  trace = FALSE,
                  maxit = 100)
@@ -182,7 +182,7 @@ library(mlbench)
 data(BostonHousing)
 
 lmFit <- train(medv ~ . + rm:lstat,
-               data = BostonHousing, 
+               data = BostonHousing,
                method = "lm")
 
 library(rpart)
@@ -197,8 +197,8 @@ rpartFit <- train(medv ~ .,
 madSummary <- function (data,
                         lev = NULL,
                         model = NULL) {
-  out <- mad(data$obs - data$pred, 
-             na.rm = TRUE)  
+  out <- mad(data$obs - data$pred,
+             na.rm = TRUE)
   names(out) <- "MAD"
   out
 }
@@ -207,7 +207,7 @@ robustControl <- trainControl(summaryFunction = madSummary)
 marsGrid <- expand.grid(degree = 1, nprune = (1:10) * 2)
 
 earthFit <- train(medv ~ .,
-                  data = BostonHousing, 
+                  data = BostonHousing,
                   method = "earth",
                   tuneGrid = marsGrid,
                   metric = "MAD",
@@ -226,12 +226,12 @@ earthFit <- train(medv ~ .,
 ## The code for train() does not change:
 set.seed(1)
 usingMC <-  train(medv ~ .,
-                  data = BostonHousing, 
+                  data = BostonHousing,
                   method = "glmboost")
 
 ## or use:
-## library(doMPI) or 
-## library(doParallel) or 
+## library(doMPI) or
+## library(doParallel) or
 ## library(doSMP) and so on
 
 }
@@ -243,7 +243,7 @@ Max Kuhn (the guts of \code{train.formula} were based on Ripley's
 \code{nnet.formula})
 }
 \references{
-\url{http://topepo.github.io/caret/training.html}
+\url{http://topepo.github.io/caret/}
 
 Kuhn (2008), ``Building Predictive Models in R Using the caret''
 (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
