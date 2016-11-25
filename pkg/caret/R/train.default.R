@@ -365,7 +365,8 @@ train.default <- function(x, y,
                               timeslice = createTimeSlices(seq(along = y),
                                                            initialWindow = trControl$initialWindow,
                                                            horizon = trControl$horizon,
-                                                           fixedWindow = trControl$fixedWindow)$train,
+                                                           fixedWindow = trControl$fixedWindow,
+                                                           skip = trControl$skip)$train,
                               subsemble = subsemble_index(y, V = trControl$number, J = trControl$repeats))
   } else {
     index_types <- unlist(lapply(trControl$index, is.integer))
