@@ -3,6 +3,13 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+
+\section{Changes in version 6.0-xx}{
+	\itemize{
+		\item Monotone multi-mayer perceptron neural network models from the \cpkg{monmlp} package were added \issue{489}
+	}
+}
+
 \section{Changes in version 6.0-73}{
 	\itemize{
 		\item Negative binomial generalized linear models (\code{MASS:::glm.nb}) were added \issue{476}
