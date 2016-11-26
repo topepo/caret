@@ -39,7 +39,7 @@ arguments.}
 
 \item{rfeControl}{a list of options, including functions for fitting and
 prediction. The web page
-\url{http://topepo.github.io/caret/featureselection.html#rfe} has more
+\url{http://topepo.github.io/caret/recursive-feature-elimination.html#rfe} has more
 details and examples related to this function.}
 
 \item{testX}{a matrix or data frame of test set predictors. This must have
@@ -70,18 +70,18 @@ columns for the test set outcome, the predicted outcome and the subset
 size.}
 }
 \description{
-A simple backwards selection, a.k.a. recursive feature selection (RFE),
+A simple backwards selection, a.k.a. recursive feature elimination (RFE),
 algorithm
 }
 \details{
 More details on this function can be found at
-\url{http://topepo.github.io/caret/featureselection.html}.
+\url{http://topepo.github.io/caret/recursive-feature-elimination.html}.
 
 This function implements backwards selection of predictors based on
 predictor importance ranking. The predictors are ranked and the less
 important ones are sequentially eliminated prior to modeling. The goal is to
 find a subset of predictors that can be used to produce an accurate model.
-The web page \url{http://topepo.github.io/caret/featureselection.html#rfe}
+The web page \url{http://topepo.github.io/caret/recursive-feature-elimination.html#rfe}
 has more details and examples related to this function.
 
 \code{rfe} can be used with "explicit parallelism", where different

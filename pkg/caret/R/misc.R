@@ -437,7 +437,7 @@ parse_sampling <- function(x) {
   if(!(x_class %in% c("character", "function", "list"))) {
     stop(paste("The sampling argument should be either a",
                "string, function, or list. See",
-               "http://topepo.github.io/caret/training.html"))
+               "http://topepo.github.io/caret/model-training-and-tuning.html"))
   }
   if(x_class == "character") {
     x <- x[1]

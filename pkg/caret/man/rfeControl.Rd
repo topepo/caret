@@ -71,7 +71,7 @@ details of the feature selection algorithms used in this package.
 }
 \details{
 More details on this function can be found at
-\url{http://topepo.github.io/caret/featureselection.html#rfe}.
+\url{http://topepo.github.io/caret/recursive-feature-elimination.html#rfe}.
 
 Backwards selection requires function to be specified for some operations.
 
@@ -130,7 +130,7 @@ Examples of these functions are included in the package:
 \code{\link{nbFuncs}}.
 
 Model details about these functions, including examples, are at
-\url{http://topepo.github.io/caret/featureselection.html}. .
+\url{http://topepo.github.io/caret/recursive-feature-elimination.html}. .
 }
 \examples{
 

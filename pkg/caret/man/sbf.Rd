@@ -73,7 +73,7 @@ Model fitting after applying univariate filters
 }
 \details{
 More details on this function can be found at
-\url{http://topepo.github.io/caret/featureselection.html#filter}.
+\url{http://topepo.github.io/caret/feature-selection-using-univariate-filters.html}.
 
 This function can be used to get resampling estimates for models when
 simple, filter-based feature selection is applied to the training data.

@@ -54,7 +54,7 @@ Built-in functions related to genetic algorithms
 
 These functions are used with the \code{functions} argument of the
 \code{\link{gafsControl}} function. More information on the details of these
-functions are at \url{http://topepo.github.io/caret/GA.html}.
+functions are at \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}.
 
 Most of the \code{gafs_*} functions are based on those from the GA package
 by Luca Scrucca. These functions here are small re-writes to work outside of
@@ -121,7 +121,7 @@ Journal of Statistical Software, 53(4), 1-37.
 
 \url{cran.r-project.org/web/packages/GA/}
 
-\url{http://topepo.github.io/caret/GA.html}
+\url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}
 }
 \seealso{
 \code{\link{gafs}}, \code{\link{gafsControl}}

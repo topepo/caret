@@ -67,7 +67,7 @@ Controls the execution of models with simple filters for feature selection
 }
 \details{
 More details on this function can be found at
-\url{http://topepo.github.io/caret/featureselection.html#filter}.
+\url{http://topepo.github.io/caret/feature-selection-using-univariate-filters.html}.
 
 Simple filter-based feature selection requires function to be specified for
 some operations.

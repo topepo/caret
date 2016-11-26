@@ -183,7 +183,7 @@ test     <- predict(preProc, bbbDescr[101:208,-3])
 Max Kuhn, median imputation by Zachary Mayer
 }
 \references{
-\url{http://topepo.github.io/caret/preprocess.html}
+\url{http://topepo.github.io/caret/pre-processing.html}
 
 Kuhn and Johnson (2013), Applied Predictive Modeling, Springer, New York
 (chapter 4)

@@ -59,7 +59,7 @@
 #' @return A list or matrix of row position integers corresponding to the
 #' training data
 #' @author Max Kuhn, \code{createTimeSlices} by Tony Cooper
-#' @references \url{http://topepo.github.io/caret/splitting.html}
+#' @references \url{http://topepo.github.io/caret/data-splitting.html}
 #'
 #' Hyndman and Athanasopoulos (2013), Forecasting: principles and practice.
 #' \url{https://www.otexts.org/fpp}

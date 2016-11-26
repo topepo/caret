@@ -29,7 +29,7 @@ Ancillary functions for univariate feature selection
 }
 \details{
 More details on these functions can be found at
-\url{http://topepo.github.io/caret/featureselection.html#filter}.
+\url{http://topepo.github.io/caret/feature-selection-using-univariate-filters.html}.
 
 This page documents the functions that are used in selection by filtering
 (SBF). The functions described here are passed to the algorithm via the

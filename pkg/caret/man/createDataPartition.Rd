@@ -122,7 +122,7 @@ createTimeSlices(1:15, 5, 3, skip = 3)
 Max Kuhn, \code{createTimeSlices} by Tony Cooper
 }
 \references{
-\url{http://topepo.github.io/caret/splitting.html}
+\url{http://topepo.github.io/caret/data-splitting.html}
 
 Hyndman and Athanasopoulos (2013), Forecasting: principles and practice.
 \url{https://www.otexts.org/fpp}

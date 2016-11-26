@@ -131,9 +131,9 @@ rf_search
 Max Kuhn
 }
 \references{
-\url{http://topepo.github.io/caret/GA.html}
+\url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}
 
-\url{http://topepo.github.io/caret/SA.html}
+\url{http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html}
 
 Kuhn and Johnson (2013), Applied Predictive Modeling, Springer
 

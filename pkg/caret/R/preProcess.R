@@ -150,7 +150,7 @@ invHyperbolicSineFunc <- function(x) log(x+sqrt(x^2+1))
 #' @seealso \code{\link{BoxCoxTrans}}, \code{\link{expoTrans}}
 #' \code{\link[MASS]{boxcox}}, \code{\link[stats]{prcomp}},
 #' \code{\link[fastICA]{fastICA}}, \code{\link{spatialSign}}
-#' @references \url{http://topepo.github.io/caret/preprocess.html}
+#' @references \url{http://topepo.github.io/caret/pre-processing.html}
 #' 
 #' Kuhn and Johnson (2013), Applied Predictive Modeling, Springer, New York
 #' (chapter 4)
