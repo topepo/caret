@@ -406,7 +406,8 @@ train.default <- function(x, y,
       trControl$indexOut <- createTimeSlices(seq(along = y),
                                              initialWindow = trControl$initialWindow,
                                              horizon = trControl$horizon,
-                                             fixedWindow = trControl$fixedWindow)$test
+                                             fixedWindow = trControl$fixedWindow,
+                                             skip = trControl$skip)$test
     }
   }
 
