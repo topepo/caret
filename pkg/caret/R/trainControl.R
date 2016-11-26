@@ -133,7 +133,7 @@
 #' Models'' \url{http://arxiv.org/abs/1405.6974},
 #' 
 #' Package website for subsampling:
-#' \url{http://topepo.github.io/caret/sampling.html}
+#' \url{https://topepo.github.io/caret/subsampling-for-class-imbalances.html}
 #' @keywords utilities
 #' @examples
 #' 
