@@ -72,7 +72,7 @@ Built-in functions related to simulated annealing
 
 These functions are used with the \code{functions} argument of the
 \code{\link{safsControl}} function. More information on the details of these
-functions are at \url{http://topepo.github.io/caret/SA.html}.
+functions are at \url{http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html}.
 
 The \code{initial} function is used to create the first predictor subset.
 The function \code{safs_initial} randomly selects 20\% of the predictors.
@@ -148,7 +148,7 @@ rf_sa <- safs(x = predictors,
 Max Kuhn
 }
 \references{
-\url{http://topepo.github.io/caret/SA.html}
+\url{http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html}
 }
 \seealso{
 \code{\link{safs}}, \code{\link{safsControl}}

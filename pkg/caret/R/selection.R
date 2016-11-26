@@ -12,7 +12,7 @@
 #' distributions.
 #'
 #' More details on these functions can be found at
-#' \url{http://topepo.github.io/caret/training.html#custom}.
+#' \url{http://topepo.github.io/caret/model-training-and-tuning.html#custom}.
 #'
 #' By default, \code{\link{train}} uses \code{best}.
 #'

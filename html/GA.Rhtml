@@ -171,10 +171,10 @@ Some important options to <span class="mx funCall">gafsControl</span> are:
 </p>
 <ul>
   <li> <span class="mx arg">method</span>, <span class="mx arg">number</span>, <span class="mx arg">repeats</span>, <span class="mx arg">index</span>, <span class="mx arg">indexOut</span>, etc: 
-  options similar to those for <a href="http://topepo.github.io/caret/training.html#control"><span class="mx funCall">train</span></a> top control resampling.
+  options similar to those for <a href="http://topepo.github.io/caret/model-training-and-tuning.html#control"><span class="mx funCall">train</span></a> top control resampling.
   </li> 
   <li> <span class="mx arg">metric</span>: 
-  this is similar to <a href="http://topepo.github.io/caret/training.html#control"><span class="mx funCall">train</span></a>'s option but, in this case, the value should be a named vector with values for the internal and external metrics. If none are specified, the first value returned by the summary functions (see details below) are used and a warning is issued. A similar two-element vector for the option <span class="mx arg">maximize</span> is also required. See the <a href="#example2">last example here</a> for an illustration.
+  this is similar to <a href="http://topepo.github.io/caret/model-training-and-tuning.html#control"><span class="mx funCall">train</span></a>'s option but, in this case, the value should be a named vector with values for the internal and external metrics. If none are specified, the first value returned by the summary functions (see details below) are used and a warning is issued. A similar two-element vector for the option <span class="mx arg">maximize</span> is also required. See the <a href="#example2">last example here</a> for an illustration.
   </li> 
   <li> <span class="mx arg">holdout</span>: 
   this is a number between [0, 1) that can be used to hold out samples for computing the internal fitness value. Note that this is independent of the external resampling step. Suppose 10-fold CV is being used. Within a resampling iteration, <span class="mx arg">holdout</span> can be used to sample an additional proportion of the 90% resampled data to use for estimating fitness. This may not be a good idea unless you have a very large training set and want to avoid an internal resampling procedure to estimate fitness. 

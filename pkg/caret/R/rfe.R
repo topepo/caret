@@ -1,16 +1,16 @@
 #' Backwards Feature Selection
 #'
-#' A simple backwards selection, a.k.a. recursive feature selection (RFE),
+#' A simple backwards selection, a.k.a. recursive feature elimination (RFE),
 #' algorithm
 #'
 #' More details on this function can be found at
-#' \url{http://topepo.github.io/caret/featureselection.html}.
+#' \url{http://topepo.github.io/caret/recursive-feature-elimination.html}.
 #'
 #' This function implements backwards selection of predictors based on
 #' predictor importance ranking. The predictors are ranked and the less
 #' important ones are sequentially eliminated prior to modeling. The goal is to
 #' find a subset of predictors that can be used to produce an accurate model.
-#' The web page \url{http://topepo.github.io/caret/featureselection.html#rfe}
+#' The web page \url{http://topepo.github.io/caret/recursive-feature-elimination.html#rfe}
 #' has more details and examples related to this function.
 #'
 #' \code{rfe} can be used with "explicit parallelism", where different
@@ -48,7 +48,7 @@
 #' @param maximize a logical: should the metric be maximized or minimized?
 #' @param rfeControl a list of options, including functions for fitting and
 #' prediction. The web page
-#' \url{http://topepo.github.io/caret/featureselection.html#rfe} has more
+#' \url{http://topepo.github.io/caret/recursive-feature-elimination.html#rfe} has more
 #' details and examples related to this function.
 #' @param object an object of class \code{rfe}
 #' @param size a single integers corresponding to the number of features that
@@ -589,7 +589,7 @@ plot.rfe <- function (x,
 #' details of the feature selection algorithms used in this package.
 #'
 #' More details on this function can be found at
-#' \url{http://topepo.github.io/caret/featureselection.html#rfe}.
+#' \url{http://topepo.github.io/caret/recursive-feature-elimination.html#rfe}.
 #'
 #' Backwards selection requires function to be specified for some operations.
 #'
@@ -648,7 +648,7 @@ plot.rfe <- function (x,
 #' \code{\link{nbFuncs}}.
 #'
 #' Model details about these functions, including examples, are at
-#' \url{http://topepo.github.io/caret/featureselection.html}. .
+#' \url{http://topepo.github.io/caret/recursive-feature-elimination.html}. .
 #'
 #' @param functions a list of functions for model fitting, prediction and
 #' variable importance (see Details below)

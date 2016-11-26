@@ -82,8 +82,8 @@ Control the computational nuances of the \code{\link{gafs}} and
 Many of these options are the same as those described for
 \code{\link[caret]{trainControl}}. More extensive documentation and examples
 can be found on the \pkg{caret} website at
-\url{http://topepo.github.io/caret/GA.html#syntax} and
-\url{http://topepo.github.io/caret/SA.html#syntax}.
+\url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html#syntax} and
+\url{http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html#syntax}.
 
 The \code{functions} component contains the information about how the model
 should be fit and summarized. It also contains the elements needed for the
@@ -132,8 +132,8 @@ changes to the subsets.
 \code{new}, and \code{iteration}, computes the acceptance probabilities
 }
 
-The pages \url{http://topepo.github.io/caret/GA.html} and
-\url{http://topepo.github.io/caret/SA.html} have more details about each of
+The pages \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html} and
+\url{http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html} have more details about each of
 these functions.
 
 \code{holdout} can be used to hold out samples for computing the internal
@@ -166,8 +166,8 @@ number of workers and the amount of memory required exponentially.
 Max Kuhn
 }
 \references{
-\url{http://topepo.github.io/caret/GA.html},
-\url{http://topepo.github.io/caret/SA.html}
+\url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html},
+\url{http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html}
 }
 \seealso{
 \code{\link{safs}}, \code{\link{safs}}, , \code{\link{caretGA}},

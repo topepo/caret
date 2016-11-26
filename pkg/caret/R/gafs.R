@@ -56,7 +56,7 @@ ga_func_check <- function(x) {
 #'
 #' These functions are used with the \code{functions} argument of the
 #' \code{\link{gafsControl}} function. More information on the details of these
-#' functions are at \url{http://topepo.github.io/caret/GA.html}.
+#' functions are at \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}.
 #'
 #' Most of the \code{gafs_*} functions are based on those from the GA package
 #' by Luca Scrucca. These functions here are small re-writes to work outside of
@@ -102,7 +102,7 @@ ga_func_check <- function(x) {
 #'
 #' \url{cran.r-project.org/web/packages/GA/}
 #'
-#' \url{http://topepo.github.io/caret/GA.html}
+#' \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}
 #' @examples
 #'
 #' pop <- gafs_initial(vars = 10, popSize = 10)
