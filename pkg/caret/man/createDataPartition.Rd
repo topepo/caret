@@ -34,30 +34,29 @@ matrix with the number of rows equal to \code{floor(p * length(y))} and
 \item{k}{an integer for the number of folds.}
 
 \item{returnTrain}{a logical. When true, the values returned are the sample
-positions corresponding to the data used during training. This argument only
-works in conjunction with \code{list = TRUE}}
+positions corresponding to the data used during training. This argument
+only works in conjunction with \code{list = TRUE}}
 
 \item{initialWindow}{The initial number of consecutive values in each
 training set sample}
 
-\item{horizon}{The number of consecutive values in test set sample}
+\item{horizon}{the number of consecutive values in test set sample}
 
-\item{fixedWindow}{A logical: if \code{FALSE}, the training set always start
-at the first sample.}
+\item{fixedWindow}{logical, if \code{FALSE}, all training samples start at 1}
 
-\item{skip}{An integer specifying how many (if any) resamples to skip to
-thin the total amount.}
+\item{skip}{integer, how many (if any) resamples to skip to thin the total
+amount}
 }
 \value{
 A list or matrix of row position integers corresponding to the
-training data
+  training data. For \code{createTimeSlices} subsamples are named by the end
+  index of each training subsample.
 }
 \description{
 A series of test/training partitions are created using
 \code{createDataPartition} while \code{createResample} creates one or more
 bootstrap samples. \code{createFolds} splits the data into \code{k} groups
-while \code{createTimeSlices} creates cross-validation sample information to
-be used with time series data.
+while \code{createTimeSlices} creates cross-validation split for series data.
 }
 \details{
 For bootstrap samples, simple random sampling is used.
