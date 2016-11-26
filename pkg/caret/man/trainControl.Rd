@@ -160,7 +160,7 @@ parameter. ) }
 
 The option \code{search = "grid"} uses the default grid search routine. When
 \code{search = "random"}, a random search procedure is used (Bergstra and
-Bengio, 2012). See \url{http://topepo.github.io/caret/random.html} for
+Bengio, 2012). See \url{http://topepo.github.io/caret/random-hyperparameter-search.html} for
 details and an example.
 
 The \code{"boot632"} method uses the 0.632 estimator presented in Efron
