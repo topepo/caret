@@ -96,7 +96,7 @@ The GA implementation in [`caret`](http://cran.r-project.org/web/packages/caret/
 ## Example
 
 
-Using the example from the [previous page](rfe.html#example) where there are five real predictors and 40 noise predictors:
+Using the example from the [previous page](recursive-feature-elimination.html#example) where there are five real predictors and 40 noise predictors:
 
 ```{r ga_load_sim,echo=TRUE,message=FALSE}
 library(mlbench)

@@ -40,7 +40,7 @@ The `train` function can be used to
  - choose the "optimal" model across these parameters
  - estimate model performance from a training set
 
-First, a specific model must be chosen. Currently, `r I(length(unique(modelLookup()$model)))` are available using [`caret`](http://cran.r-project.org/web/packages/caret/index.html); see [`train` Model List](modelList.html) or [`train` Models By Tag](bytag.html) for details. On these pages, there are lists of tuning parameters that can potentially be optimized. [User-defined models](custom_models.html) can also be created.
+First, a specific model must be chosen. Currently, `r I(length(unique(modelLookup()$model)))` are available using [`caret`](http://cran.r-project.org/web/packages/caret/index.html); see [`train` Model List](available-models.html') or [`train` Models By Tag](train-models-by-tag.html) for details. On these pages, there are lists of tuning parameters that can potentially be optimized. [User-defined models](using-your-own-model-in-train.html) can also be created.
 
 The first step in tuning the model (line 1 in the algorithm above is to choose a set of parameters to evaluate. For example, if fitting a Partial Least Squares (PLS) model, the number of PLS components to evaluate must be specified.
 
@@ -90,7 +90,7 @@ fitControl <- trainControl(## 10-fold CV
 
 More information about `trainControl` is given in [a section below](#custom).
 
-The first two arguments to `train` are the predictor and outcome data objects, respectively. The third argument, `method`, specifies the type of model (see [`train` Model List](modelList.html) or [`train` Models By Tag](bytag.html)). To illustrate, we will fit a boosted tree model via the [`gbm`](http://cran.r-project.org/web/packages/gbm/index.html) package. The basic syntax for fitting this model using repeated cross-validation is shown below:
+The first two arguments to `train` are the predictor and outcome data objects, respectively. The third argument, `method`, specifies the type of model (see [`train` Model List](available-models.html') or [`train` Models By Tag](train-models-by-tag.html)). To illustrate, we will fit a boosted tree model via the [`gbm`](http://cran.r-project.org/web/packages/gbm/index.html) package. The basic syntax for fitting this model using repeated cross-validation is shown below:
 
 ```{r train_gbm1,cache=TRUE,tidy=FALSE}
 set.seed(825)
@@ -110,7 +110,7 @@ For a gradient boosting machine (GBM) model, there are three main tuning paramet
  - learning rate: how quickly the algorithm adapts, called `shrinkage`
  - the minimum number of training set samples in a node to commence splitting (`n.minobsinnode`)
 
-The default values tested for this model are shown in the first two columns (`shrinkage` and `n.minobsinnode` are not shown beause the grid set of candidate models all use a single value for these tuning parameters). The column labeled "`Accuracy`" is the overall agreement rate averaged over cross-validation iterations. The agreement standard deviation is also calculated from the cross-validation results. The column "`Kappa`" is Cohen's (unweighted) Kappa statistic averaged across the resampling results. `train` works with specific models (see [`train` Model List](modelList.html) or [`train` Models By Tag](bytag.html)). For these models,  `train` can automatically create a grid of tuning parameters. By default, if *p* is the number of tuning parameters, the grid size is *3\^p*. As another example, regularized discriminant analysis (RDA) models have two parameters (`gamma` and `lambda`), both of which lie between zero and one. The default training grid would produce nine combinations in this two-dimensional space.
+The default values tested for this model are shown in the first two columns (`shrinkage` and `n.minobsinnode` are not shown beause the grid set of candidate models all use a single value for these tuning parameters). The column labeled "`Accuracy`" is the overall agreement rate averaged over cross-validation iterations. The agreement standard deviation is also calculated from the cross-validation results. The column "`Kappa`" is Cohen's (unweighted) Kappa statistic averaged across the resampling results. `train` works with specific models (see [`train` Model List](available-models.html') or [`train` Models By Tag](train-models-by-tag.html)). For these models,  `train` can automatically create a grid of tuning parameters. By default, if *p* is the number of tuning parameters, the grid size is *3\^p*. As another example, regularized discriminant analysis (RDA) models have two parameters (`gamma` and `lambda`), both of which lie between zero and one. The default training grid would produce nine combinations in this two-dimensional space.
 
 There are several [notes](notes.html) regarding specific model behaviors for `train`. There is additional functionality in `train` that is described in the next section.
 
@@ -121,7 +121,7 @@ There are several [notes](notes.html) regarding specific model behaviors for `tr
 Many models utilize random numbers during the phase where parameters are estimated. Also, the resampling indices are chosen using random numbers. There are two main ways to control the randomness in order to assure reproducible results.
 
  - There are two approaches to ensuring that the same *resamples* are used between calls to `train`. The first is to use `set.seed` just prior to calling `train`. The first use of random numbers is to create the resampling information. Alternatively, if you would like to use specific splits of the data, the `index` argument of the  `trainControl` function can be used. This is briefly discussed below.
- - When the models are created *inside of resampling*, the seeds can also be set. While setting the seed prior to calling `train` may guarantee that the same random numbers are used, this is unlikely to be the case when [parallel processing](parallel.html) is used (depending which technology is utilized). To set the model fitting seeds,  `trainControl` has an additional argument called `seeds` that can be used. The value for this argument is a list of integer vectors that are used as seeds. The help page for `trainControl` describes the appropriate format for this option.
+ - When the models are created *inside of resampling*, the seeds can also be set. While setting the seed prior to calling `train` may guarantee that the same random numbers are used, this is unlikely to be the case when [parallel processing](parallel-processing.html) is used (depending which technology is utilized). To set the model fitting seeds,  `trainControl` has an additional argument called `seeds` that can be used. The value for this argument is a list of integer vectors that are used as seeds. The help page for `trainControl` describes the appropriate format for this option.
 
 How random numbers are used is highly dependent on the package author. There are rare cases where the underlying model function does not control the random number seed, especially if the computations are conducted in C code. Also, please note that [some packages load random numbers when loaded (directly or via namespace)](https://github.com/topepo/caret/issues/452) and this may effect reproducibility.
 
@@ -138,7 +138,7 @@ There are a few ways to customize the process of selecting tuning/complexity par
 
 As previously mentioned,`train` can pre-process the data in various ways prior to model fitting. The function `preProcess` is automatically used. This function can be used for centering and scaling, imputation (see details below), applying the spatial sign transformation and feature extraction via principal component analysis or independent component analysis.
 
-To specify what pre-processing should occur, the `train` function has an argument called `preProcess`. This argument takes a character string of methods that would normally be passed to the `method` argument of the [`preProcess` function](preprocess.html). Additional options to the `preProcess` function can be passed via the `trainControl` function.
+To specify what pre-processing should occur, the `train` function has an argument called `preProcess`. This argument takes a character string of methods that would normally be passed to the `method` argument of the [`preProcess` function](pre-processing.html). Additional options to the `preProcess` function can be passed via the `trainControl` function.
 
 These processing steps would be applied during any predictions generated using `predict.train`,  `extractPrediction` or `extractProbs` (see details later in this document). The pre-processing would **not** be applied to predictions that directly use the `object$finalModel` object.
 
@@ -187,7 +187,7 @@ cat(paste(text2, collapse = "\n"))
 
 If there are missing values in the training set, PCA and ICA models only use complete samples.
 
-Another option is to use a random sample of possible tuning parameter combinations, i.e. "random search"[(pdf)](www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf). This functionality is described on [this page](random.html).
+Another option is to use a random sample of possible tuning parameter combinations, i.e. "random search"[(pdf)](www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf). This functionality is described on [this page](random-hyperparameter-search.html).
 
 To use a random search, use the option `search = "random"` in the call to `trainControl`. In this situation, the `tuneLength` parameter defines the total number of parameter combinations that will be evaluated.
 
@@ -238,14 +238,14 @@ The function `trainControl` generates parameters that further control how models
  - `verboseIter`: A logical for printing a training log.
  - `returnData`: A logical for saving the data into a slot called `trainingData`.
  - `p`: For leave-group out cross-validation:  the training percentage
- - For `method = "timeslice"`, `trainControl` has options `initialWindow`, `horizon` and `fixedWindow` that govern how [cross-validation can be used for time series data.](splitting.html)
+ - For `method = "timeslice"`, `trainControl` has options `initialWindow`, `horizon` and `fixedWindow` that govern how [cross-validation can be used for time series data.](data-splitting.html)
  - `classProbs`: a logical value determining whether class probabilities should be computed for held-out samples during resample.
  - `index` and `indexOut`: optional lists with elements for each resampling iteration. Each list element is the sample rows used     for training at that iteration or should be held-out. When these  values are not specified, `train` will generate them.
  - `summaryFunction`: a function to computed alternate performance summaries. 
  - `selectionFunction`: a function to choose the optimal tuning parameters. and examples.
  - `PCAthresh`, `ICAcomp` and `k`: these are all options to pass to the `preProcess` function (when used).
  - `returnResamp`: a character string containing one of the following values: `"all"`, `"final"` or `"none"`. This specifies how much of the resampled performance  measures to save.
- - `allowParallel`: a logical that governs  whether `train` should [use parallel processing (if availible).](parallel.html)
+ - `allowParallel`: a logical that governs  whether `train` should [use parallel processing (if availible).](parallel-processing.html)
 
 There are several other options not discussed here.
 
