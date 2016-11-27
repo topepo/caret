@@ -33,7 +33,7 @@ In the context of feature selection, a solution is a binary vector that describe
 ## Internal and External Performance Estimates
 
 
-Much of the discussion on this subject in the [genetic algorithm page](ga.html#performance) is relevant here, although SA search is less aggressive than GA search. In any case, the implementation here conducts the SA search inside the resampling loops and uses an external performance estimate to choose how many iterations of the search are appropriate.
+Much of the discussion on this subject in the [genetic algorithm page](feature-selection-using-genetic-algorithms.html#performance) is relevant here, although SA search is less aggressive than GA search. In any case, the implementation here conducts the SA search inside the resampling loops and uses an external performance estimate to choose how many iterations of the search are appropriate.
 
 <div id="syntax"></div>
 
@@ -88,7 +88,7 @@ There are a few built-in sets of functions to use with  `safs`: `caretSA`, `rfSA
 ## Example
 
 
-Using the example from the [previous page](rfe.html#example) where there are five real predictors and 40 noise predictors.
+Using the example from the [previous page](recursive-feature-elimination.html#example) where there are five real predictors and 40 noise predictors.
 
 ```{r sa_load_sim,echo=FALSE,message=FALSE}
 library(mlbench)
