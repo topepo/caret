@@ -230,7 +230,7 @@ train.default <- function(x, y,
                           maximize = ifelse(metric %in% c("RMSE", "logLoss"), FALSE, TRUE),
                           trControl = trainControl(),
                           tuneGrid = NULL,
-                          tuneLength = 3) {
+                          tuneLength = ifelse(trControl$method == "none", 1, 3)) {
   startTime <- proc.time()
 
   if(is.character(y)) y <- as.factor(y)
@@ -391,7 +391,7 @@ train.default <- function(x, y,
     trControl$savePredictions <- if(trControl$savePredictions) "all" else "none"
   } else {
     if(!(trControl$savePredictions %in% c("all", "final", "none")))
-       stop('`savePredictions` should be either logical or "all", "final" or "none"')
+      stop('`savePredictions` should be either logical or "all", "final" or "none"')
   }
 
   ## Create hold--out indicies
@@ -424,7 +424,8 @@ train.default <- function(x, y,
   ## If no default training grid is specified, get one. We have to pass in the formula
   ## and data for some models (rpart, pam, etc - see manual for more details)
   if(is.null(tuneGrid)) {
-    if(!is.null(ppOpt) && length(models$parameters$parameter) > 1 && as.character(models$parameters$parameter) != "parameter") {
+    if(!is.null(ppOpt) && length(models$parameters$parameter) > 1 &&
+         as.character(models$parameters$parameter) != "parameter") {
       pp <- list(method = ppOpt$options)
       if("ica" %in% pp$method) pp$n.comp <- ppOpt$ICAcomp
       if("pca" %in% pp$method) pp$thresh <- ppOpt$thresh
@@ -436,7 +437,11 @@ train.default <- function(x, y,
                               len = tuneLength,
                               search = trControl$search)
       rm(ppObj, pp)
-    } else tuneGrid <- models$grid(x = x, y = y, len = tuneLength, search = trControl$search)
+    } else {
+      tuneGrid <- models$grid(x = x, y = y, len = tuneLength, search = trControl$search)
+      if (tuneLength < nrow(tuneGrid))
+        tuneGrid <- tuneGrid[1:tuneLength, ]
+    }
   }
 
   ## Check to make sure that there are tuning parameters in some cases
