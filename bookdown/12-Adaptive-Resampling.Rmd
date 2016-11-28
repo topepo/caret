@@ -18,45 +18,36 @@ Models can benefit significantly from tuning but the optimal values are rarely k
 
 [`caret`](http://cran.r-project.org/web/packages/caret/index.html) contains the ability to adaptively resample the tuning parameter grid in a way that concentrates on values that are the in the neighborhood of the optimal settings. See [this paper](http://arxiv.org/abs/1405.6974) for the details.
 
-To illustrate, we will use the chemical mutagenicity data from [Kazius et al (2005)](http://pubs.acs.org/doi/abs/10.1021/jm040835a):
+To illustrate, we will use the Sonar data from one of the [previous pages](https://topepo.github.io/caret/model-training-and-tuning.html#tune). 
 
-```{r adapt_data}
-library(QSARdata)
-data(Mutagen)
 
-set.seed(4567)
-inTraining <- createDataPartition(Mutagen_Outcome, p = .75, list = FALSE)
-training_x <- Mutagen_Dragon[ inTraining,]
-training_y <- Mutagen_Outcome[ inTraining]
-testing_x  <- Mutagen_Dragon[-inTraining,]
-testing_y  <- Mutagen_Outcome[-inTraining]
+chemical mutagenicity data from [Kazius et al (2005)](http://pubs.acs.org/doi/abs/10.1021/jm040835a):
 
-## Get rid of predictors that are very sparse
-nzv <- nearZeroVar(training_x)
-training_x <- training_x[, -nzv]
-testing_x  <-  testing_x[, -nzv]
+```{r adapt_data, eval = FALSE}
+library(mlbench)
+data(Sonar)
+library(caret)
+set.seed(998)
+inTraining <- createDataPartition(Sonar$Class, p = .75, list = FALSE)
+training <- Sonar[ inTraining,]
+testing  <- Sonar[-inTraining,]
 ```
 
-Previously, we used this code to tune the model:
+We will tune a support vector machine model using the same tuning strategy as before but with [random search](https://topepo.github.io/caret/random-hyperparameter-search.html): 
 
 ```{r adapt_full_mod, cache = TRUE}
-fitControl <- trainControl(method = "repeatedcv",
-                           number = 10,
-                           repeats = 5,
-                           ## Estimate class probabilities
+svmControl <- trainControl(method = "repeatedcv",
+                           number = 10, repeats = 10,
                            classProbs = TRUE,
-                           ## Evaluate performance using 
-                           ## the following function
-                           summaryFunction = twoClassSummary)
-
+                           summaryFunction = twoClassSummary,
+                           search = "random")
 set.seed(825)
-svmFit <- train(x = training_x,
-                y = training_y, 
+svmFit <- train(Class ~ ., data = training,
                 method = "svmRadial", 
                 trControl = fitControl, 
                 preProc = c("center", "scale"),
-                tuneLength = 8,
-                metric = "ROC")
+                metric = "ROC",
+                tuneLength = 15)
 ```
 
 Using this method, the optimal tuning parameters were a RBF kernel parameter of `r I(round(svmFit$bestTune$sigma, 4))` and a cost value of `r I(svmFit$bestTune$C)`. To use the adaptive procedure, the `trainControl` option needs some additional arguments:
@@ -66,36 +57,29 @@ Using this method, the optimal tuning parameters were a RBF kernel parameter of 
  - `method` is either `"gls"` for a linear model or `"BT"` for a Bradley-Terry model. The latter may be more useful when you expect the model to do very well (e.g. an area under the ROC curve near 1) or when there are a large number of tuning parameter settings.
  - `complete` is a logical value that specifies whether `train` should generate the full resampling set if it finds an optimal solution before the end of resampling. If you want to know the optimal parameter settings and don't care much for the estimated performance value, a value of `FALSE` would be appropriate here.
 
-The new code is:
+The new code is below. Recall that setting the random number seed just prior to the model fit will ensure the same resamples as well as the same random grid.
 
 ```{r adapt_mod, cache = TRUE}
-fitControl2 <- trainControl(method = "adaptive_cv",
-                            number = 10,
-                            repeats = 5,
-                            ## Estimate class probabilities
-                            classProbs = TRUE,
-                            ## Evaluate performance using 
-                            ## the following function
-                            summaryFunction = twoClassSummary,
-                            ## Adaptive resampling information:
-                            adaptive = list(min = 10, 
-                                            alpha = 0.05, 
-                                            method = "gls",
-                                            complete = TRUE))
+adaptControl <- trainControl(method = "adaptive_cv",
+                             number = 10, repeats = 10,
+                             adaptive = list(min = 5, alpha = 0.05, 
+                                             method = "gls", complete = TRUE),
+                             classProbs = TRUE,
+                             summaryFunction = twoClassSummary,
+                             search = "random")
 
 set.seed(825)
-svmFit2 <- train(x = training_x,
-                 y = training_y,  
-                 method = "svmRadial", 
-                 trControl = fitControl2, 
-                 preProc = c("center", "scale"),
-                 tuneLength = 8,
-                 metric = "ROC")
+svmAdapt <- train(Class ~ ., data = training,
+                  method = "svmRadial", 
+                  trControl = fitControl2, 
+                  preProc = c("center", "scale"),
+                  metric = "ROC",
+                  tuneLength = 15)
 ```
 ```{r adapt_check, include = FALSE}
-if(!all(svmFit$bestTune == svmFit2$bestTune))
+if(!all(svmFit$bestTune == svmAdapt$bestTune))
   stop("models do not agree")
 ```
-These computations were `r I(round(svmFit$times$everything[3]/svmFit2$times$everything[3], 1))`-fold faster than the original analysis. Here, the optimal tuning parameters were a RBF kernel parameter of `r I(round(svmFit2$bestTune$sigma, 4))` and a cost value of `r I(svmFit2$bestTune$C)`. These match the previous settings.
+The search finalized the tuning parameters on the `r max(svmAdapt$results$.B[-which.max(svmAdapt$results$.B)])`th iteration of resampling and was `r I(round(svmFit$times$everything[3]/svmAdapt$times$everything[3], 1))`-fold faster than the original analysis. Here, the optimal tuning parameters were a RBF kernel parameter of `r I(round(svmAdapt$bestTune$sigma, 4))` and a cost value of `r I(svmAdapt$bestTune$C)`. These match the previous settings even though `r length(svmFit$control$index)*nrow(svmFit$results) - sum(svmAdapt$results$.B)` fewer models were fit to the data. 
 
-Remember that this methodology is experimental, so please send any questions or bug reports to the package maintainer.
+Remember that this methodology is experimental, so please send any [questions or bug reports](https://github.com/topepo/caret/issues) to the package maintainer.
