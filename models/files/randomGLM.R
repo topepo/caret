@@ -1,4 +1,4 @@
-modelInfo <- list(label = "Ensembles of Generalized Lienar Models",
+modelInfo <- list(label = "Ensembles of Generalized Linear Models",
                   library = "randomGLM",
                   type = c("Regression", "Classification"),
                   parameters = data.frame(parameter = 'maxInteractionOrder',
