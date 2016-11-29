@@ -830,8 +830,12 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' This is an example of the output produced when \code{gafsControl(verbose =
 #' TRUE)} is used:
 #'
-#' \preformatted{Fold2 1 0.715 (13) Fold2 2 0.715->0.737 (13->17, 30.4\%) *
-#' Fold2 3 0.737->0.732 (17->14, 24.0\%) Fold2 4 0.737->0.769 (17->23, 25.0\%) *}
+#' \preformatted{
+#' Fold2 1 0.715 (13) 
+#' Fold2 2 0.715->0.737 (13->17, 30.4\%) *
+#' Fold2 3 0.737->0.732 (17->14, 24.0\%) 
+#' Fold2 4 0.737->0.769 (17->23, 25.0\%) *
+#' }
 #'
 #' For the second resample (e.g. fold 2), the best subset across all
 #' individuals tested in the first generation contained 13 predictors and was
