@@ -44,7 +44,7 @@ svmControl <- trainControl(method = "repeatedcv",
 set.seed(825)
 svmFit <- train(Class ~ ., data = training,
                 method = "svmRadial", 
-                trControl = fitControl, 
+                trControl = svmControl, 
                 preProc = c("center", "scale"),
                 metric = "ROC",
                 tuneLength = 15)
@@ -71,13 +71,13 @@ adaptControl <- trainControl(method = "adaptive_cv",
 set.seed(825)
 svmAdapt <- train(Class ~ ., data = training,
                   method = "svmRadial", 
-                  trControl = fitControl2, 
+                  trControl = adaptControl, 
                   preProc = c("center", "scale"),
                   metric = "ROC",
                   tuneLength = 15)
 ```
 ```{r adapt_check, include = FALSE}
-if(!all(svmFit$bestTune == svmAdapt$bestTune))
+if(!all.equal(svmFit$bestTune, svmAdapt$bestTune))
   stop("models do not agree")
 ```
 The search finalized the tuning parameters on the `r max(svmAdapt$results$.B[-which.max(svmAdapt$results$.B)])`th iteration of resampling and was `r I(round(svmFit$times$everything[3]/svmAdapt$times$everything[3], 1))`-fold faster than the original analysis. Here, the optimal tuning parameters were a RBF kernel parameter of `r I(round(svmAdapt$bestTune$sigma, 4))` and a cost value of `r I(svmAdapt$bestTune$C)`. These match the previous settings even though `r length(svmFit$control$index)*nrow(svmFit$results) - sum(svmAdapt$results$.B)` fewer models were fit to the data. 
