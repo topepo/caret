@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.3 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,13 +25,8 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-11-10">
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: { equationNumbers: { autoNumber: "AMS" } }
-});
-</script>
+<meta name="date" content="2016-11-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -54,14 +49,18 @@ MathJax.Hub.Config({
 
 
 
-<script src="libs/htmlwidgets-0.6/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.1/datatables.js"></script>
-<script src="libs/datatables-1.10.7/jquery.dataTables.min.js"></script>
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.css" rel="stylesheet" />
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
-<script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
-<script src="libs/d3-3.5.2/d3.min.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/d3-3.5.3/./d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
+<link href="libs/d3heatmapcore-0.0.0/heatmapcore.css" rel="stylesheet" />
+<script src="libs/d3heatmapcore-0.0.0/heatmapcore.js"></script>
+<script src="libs/d3-tip-0.6.6/index.js"></script>
+<script src="libs/d3heatmap-binding-0.6.1.1/d3heatmap.js"></script>
 
 
 <style type="text/css">
@@ -376,8 +375,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2><span class="header-section-number">17.2</span> Feature Selection Methods</h2>
 <p>Apart from models with built-in feature selection, most approaches for reducing the number of predictors can be placed into two main categories. Using the terminology of <a href="http://scholar.google.com/scholar?q=%22Irrelevant+Features+and+the+Subset+Selection+Problem">John, Kohavi, and Pfleger (1994)</a>:</p>
 <ul>
-<li><em>Wrapper</em> methods evaluate multiple models using procedures that add and/or remove predictors to find the optimal combination that maximizes model performance. In essence, wrapper methods are search algorithms that treat the predictors as the inputs and utilize model performance as the output to be optimized. <strong>caret</strong> has wrapper methods based on <a href="rfe.html">recursive feature elimination</a>, <a href="ga.html">genetic algorithms</a>, and <a href="sa.html">simulated annealing</a>.</li>
-<li><em>Filter</em> methods evaluate the relevance of the predictors outside of the predictive models and subsequently model only the predictors that pass some criterion. For example, for classification problems, each predictor could be individually evaluated to check if there is a plausible relationship between it and the observed classes. Only predictors with important relationships would then be included in a classification model. <a href="http://scholar.google.com/scholar?q=%22A+review+of+feature+selection+techniques+in+bioinformatics">Saeys, Inza, and Larranaga (2007)</a> surveys filter methods. <strong>caret</strong> has a general framework for using <a href="filters.html">univariate filters</a>.</li>
+<li><em>Wrapper</em> methods evaluate multiple models using procedures that add and/or remove predictors to find the optimal combination that maximizes model performance. In essence, wrapper methods are search algorithms that treat the predictors as the inputs and utilize model performance as the output to be optimized. <strong>caret</strong> has wrapper methods based on <a href="recursive-feature-elimination.html">recursive feature elimination</a>, <a href="feature-selection-using-genetic-algorithms.html">genetic algorithms</a>, and <a href="feature-selection-using-simulated-annealing.html">simulated annealing</a>.</li>
+<li><em>Filter</em> methods evaluate the relevance of the predictors outside of the predictive models and subsequently model only the predictors that pass some criterion. For example, for classification problems, each predictor could be individually evaluated to check if there is a plausible relationship between it and the observed classes. Only predictors with important relationships would then be included in a classification model. <a href="http://scholar.google.com/scholar?q=%22A+review+of+feature+selection+techniques+in+bioinformatics">Saeys, Inza, and Larranaga (2007)</a> surveys filter methods. <strong>caret</strong> has a general framework for using <a href="feature-selection-using-univariate-filters.html">univariate filters</a>.</li>
 </ul>
 <p>Both approaches have advantages and drawbacks. Filter methods are usually more computationally efficient than wrapper methods, but the selection criterion is not directly related to the effectiveness of the model. Also, most filter methods evaluate each predictor separately and, consequently, redundant (i.e. highly-correlated) predictors may be selected and important interactions between variables will not be able to be quantified. The downside of the wrapper method is that many models are evaluated (which may also require parameter tuning) and thus an increase in computation time. There is also an increased risk of over-fitting with wrappers.</p>
 <div id="external">
@@ -389,6 +388,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>It is important to realize that feature selection is part of the model building process and, as such, should be externally validated. Just as parameter tuning can result in over-fitting, feature selection can over-fit to the predictors (especially when search wrappers are used). In each of the <strong>caret</strong> functions for feature selection, the selection process is included in any resampling loops. See</p>
 <p>See <a href="http://scholar.google.com/scholar?q=%22Selection+bias+in+gene+extraction+on+t%20e+basis+of+microarray+gene-expression+data">Ambroise and McLachlan (2002)</a> for a demonstration of this issue.</p>
 
+<pre><code>## 
+## This data.table install has not detected OpenMP support. It will work but slower in single threaded mode.</code></pre>
 </div>
 </div>
             </section>
@@ -410,6 +411,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
+"github": false,
 "facebook": true,
 "twitter": true,
 "google": false,

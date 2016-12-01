@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.3 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,13 +25,8 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-11-10">
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: { equationNumbers: { autoNumber: "AMS" } }
-});
-</script>
+<meta name="date" content="2016-11-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -54,14 +49,18 @@ MathJax.Hub.Config({
 
 
 
-<script src="libs/htmlwidgets-0.6/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.1/datatables.js"></script>
-<script src="libs/datatables-1.10.7/jquery.dataTables.min.js"></script>
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.css" rel="stylesheet" />
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
-<script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
-<script src="libs/d3-3.5.2/d3.min.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/d3-3.5.3/./d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
+<link href="libs/d3heatmapcore-0.0.0/heatmapcore.css" rel="stylesheet" />
+<script src="libs/d3heatmapcore-0.0.0/heatmapcore.js"></script>
+<script src="libs/d3-tip-0.6.6/index.js"></script>
+<script src="libs/d3heatmap-binding-0.6.1.1/d3heatmap.js"></script>
 
 
 <style type="text/css">
@@ -376,7 +375,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="internal-and-external-performance-estimates-1" class="section level2">
 <h2><span class="header-section-number">21.2</span> Internal and External Performance Estimates</h2>
-<p>Much of the discussion on this subject in the <a href="ga.html#performance">genetic algorithm page</a> is relevant here, although SA search is less aggressive than GA search. In any case, the implementation here conducts the SA search inside the resampling loops and uses an external performance estimate to choose how many iterations of the search are appropriate.</p>
+<p>Much of the discussion on this subject in the <a href="feature-selection-using-genetic-algorithms.html#performance">genetic algorithm page</a> is relevant here, although SA search is less aggressive than GA search. In any case, the implementation here conducts the SA search inside the resampling loops and uses an external performance estimate to choose how many iterations of the search are appropriate.</p>
 <div id="syntax">
 
 </div>
@@ -407,8 +406,8 @@ obj &lt;-<span class="st"> </span><span class="kw">safs</span>(<span class="dt">
 <p>Other options, such as <code>preProcess</code>, can be passed in as well.</p>
 <p>Some important options to <code>safsControl</code> are:</p>
 <ul>
-<li><code>method</code>, <code>number</code>, <code>repeats</code>, <code>index</code>, <code>indexOut</code>, etc: options similar to those for <a href="http://topepo.github.io/caret/training.html#control"><code>train</code></a> top control resampling.</li>
-<li><code>metric</code>: this is similar to <a href="http://topepo.github.io/caret/training.html#control"><code>train</code></a>’s option but, in this case, the value should be a named vector with values for the internal and external metrics. If none are specified, the first value returned by the summary functions (see details below) are used and a warning is issued. A similar two-element vector for the option <code>maximize</code> is also required. See the <a href="feature-selection-using-genetic-algorithms.html#example2">last example here</a> for an illustration.</li>
+<li><code>method</code>, <code>number</code>, <code>repeats</code>, <code>index</code>, <code>indexOut</code>, etc: options similar to those for <a href="http://topepo.github.io/caret/model-training-and-tuning.html#control"><code>train</code></a> top control resampling.</li>
+<li><code>metric</code>: this is similar to <a href="http://topepo.github.io/caret/model-training-and-tuning.html#control"><code>train</code></a>’s option but, in this case, the value should be a named vector with values for the internal and external metrics. If none are specified, the first value returned by the summary functions (see details below) are used and a warning is issued. A similar two-element vector for the option <code>maximize</code> is also required. See the <a href="feature-selection-using-genetic-algorithms.html#example2">last example here</a> for an illustration.</li>
 <li><code>holdout</code>: this is a number between <code>[0, 1)</code> that can be used to hold out samples for computing the internal fitness value. Note that this is independent of the external resampling step. Suppose 10-fold CV is being used. Within a resampling iteration, <code>holdout</code> can be used to sample an additional proportion of the 90% resampled data to use for estimating fitness. This may not be a good idea unless you have a very large training set and want to avoid an internal resampling procedure to estimate fitness.</li>
 <li><code>improve</code>: an integer (or infinity) defining how many iterations should pass without an improvement in fitness before the current subset is reset to the last known improvement.</li>
 <li><code>allowParallel</code>: should the external resampling loop be run in parallel?.</li>
@@ -420,7 +419,7 @@ obj &lt;-<span class="st"> </span><span class="kw">safs</span>(<span class="dt">
 </div>
 <div id="example-1" class="section level2">
 <h2><span class="header-section-number">21.4</span> Example</h2>
-<p>Using the example from the <a href="rfe.html#example">previous page</a> where there are five real predictors and 40 noise predictors.</p>
+<p>Using the example from the <a href="recursive-feature-elimination.html#example">previous page</a> where there are five real predictors and 40 noise predictors.</p>
 <p>We’ll fit a random forest model and use the out-of-bag RMSE estimate as the internal performance metric and use the same repeated 10-fold cross-validation process used with the search. To do this, we’ll use the built-in <code>rfSA</code> object for this purpose. The default SA operators will be used with 1000 iterations of the algorithm.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sa_ctrl &lt;-<span class="st"> </span><span class="kw">safsControl</span>(<span class="dt">functions =</span> rfSA,
                        <span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,
@@ -626,6 +625,7 @@ grid$Group &lt;-<span class="st"> </span><span class="kw">factor</span>(<span cl
 require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
+"github": false,
 "facebook": true,
 "twitter": true,
 "google": false,

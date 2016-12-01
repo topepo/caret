@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.3 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,13 +25,8 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-11-10">
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: { equationNumbers: { autoNumber: "AMS" } }
-});
-</script>
+<meta name="date" content="2016-11-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -54,14 +49,18 @@ MathJax.Hub.Config({
 
 
 
-<script src="libs/htmlwidgets-0.6/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.1/datatables.js"></script>
-<script src="libs/datatables-1.10.7/jquery.dataTables.min.js"></script>
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.css" rel="stylesheet" />
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
-<script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
-<script src="libs/d3-3.5.2/d3.min.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/d3-3.5.3/./d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
+<link href="libs/d3heatmapcore-0.0.0/heatmapcore.css" rel="stylesheet" />
+<script src="libs/d3heatmapcore-0.0.0/heatmapcore.js"></script>
+<script src="libs/d3-tip-0.6.6/index.js"></script>
+<script src="libs/d3heatmap-binding-0.6.1.1/d3heatmap.js"></script>
 
 
 <style type="text/css">
@@ -493,12 +492,12 @@ outside_test &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>
 ## Number of resamples: 50 
 ## 
 ## ROC 
-##               Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
-## original 0.8935409 0.9310927 0.9407275 0.9410110 0.9563618 0.9717304    0
-## down     0.8937087 0.9204970 0.9369112 0.9347271 0.9549339 0.9683999    0
-## up       0.9994664 0.9999994 1.0000000 0.9999147 1.0000000 1.0000000    0
-## SMOTE    0.9621654 0.9761624 0.9807601 0.9796307 0.9839614 0.9924950    0
-## ROSE     0.8764264 0.8907803 0.8952800 0.8956124 0.8999161 0.9166320    0</code></pre>
+##            Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA&#39;s
+## original 0.8935  0.9311 0.9407 0.9410  0.9564 0.9717    0
+## down     0.8937  0.9205 0.9369 0.9347  0.9549 0.9684    0
+## up       0.9995  1.0000 1.0000 0.9999  1.0000 1.0000    0
+## SMOTE    0.9622  0.9762 0.9808 0.9796  0.9840 0.9925    0
+## ROSE     0.8764  0.8908 0.8953 0.8956  0.8999 0.9166    0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">outside_test</code></pre></div>
 <pre><code>##              lower       ROC     upper
 ## original 0.9134895 0.9251843 0.9368791
@@ -583,12 +582,12 @@ inside_test &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(
 ## Number of resamples: 50 
 ## 
 ## ROC 
-##               Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
-## original 0.8935409 0.9310927 0.9407275 0.9410110 0.9563618 0.9717304    0
-## down     0.8902358 0.9348219 0.9444537 0.9420644 0.9507128 0.9665425    0
-## up       0.8928295 0.9210659 0.9374133 0.9351687 0.9498955 0.9636521    0
-## SMOTE    0.9299339 0.9458451 0.9527729 0.9526537 0.9608647 0.9761057    0
-## ROSE     0.9189467 0.9440192 0.9528585 0.9517422 0.9597228 0.9741354    0</code></pre>
+##            Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA&#39;s
+## original 0.8935  0.9311 0.9407 0.9410  0.9564 0.9717    0
+## down     0.8902  0.9348 0.9445 0.9421  0.9507 0.9665    0
+## up       0.8928  0.9211 0.9374 0.9352  0.9499 0.9637    0
+## SMOTE    0.9299  0.9458 0.9528 0.9527  0.9609 0.9761    0
+## ROSE     0.9189  0.9440 0.9529 0.9517  0.9597 0.9741    0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inside_test</code></pre></div>
 <pre><code>##              lower       ROC     upper
 ## original 0.9134895 0.9251843 0.9368791
@@ -670,6 +669,7 @@ inside_test &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(
 require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
+"github": false,
 "facebook": true,
 "twitter": true,
 "google": false,

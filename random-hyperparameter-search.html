@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.3 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,13 +25,8 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-11-10">
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: { equationNumbers: { autoNumber: "AMS" } }
-});
-</script>
+<meta name="date" content="2016-11-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -54,14 +49,18 @@ MathJax.Hub.Config({
 
 
 
-<script src="libs/htmlwidgets-0.6/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.1/datatables.js"></script>
-<script src="libs/datatables-1.10.7/jquery.dataTables.min.js"></script>
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.css" rel="stylesheet" />
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
-<script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
-<script src="libs/d3-3.5.2/d3.min.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/d3-3.5.3/./d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
+<link href="libs/d3heatmapcore-0.0.0/heatmapcore.css" rel="stylesheet" />
+<script src="libs/d3heatmapcore-0.0.0/heatmapcore.js"></script>
+<script src="libs/d3-tip-0.6.6/index.js"></script>
+<script src="libs/d3heatmap-binding-0.6.1.1/d3heatmap.js"></script>
 
 
 <style type="text/css">
@@ -355,7 +354,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="random-hyperparameter-search" class="section level1">
 <h1><span class="header-section-number">10</span> Random Hyperparameter Search</h1>
-<p>The default method for optimizing tuning parameters in <code>train</code> is to use a <a href="training.html#grids">grid search</a>. This approach is usually effective but, in cases when there are many tuning parameters, it can be inefficient. An alternative is to use a combination of <a href="adaptive.html">grid search and racing</a>. Another is to use a <a href="http://www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf">random selection of tuning parameter combinations</a> to cover the parameter space to a lesser extent.</p>
+<p>The default method for optimizing tuning parameters in <code>train</code> is to use a <a href="model-training-and-tuning.html#grids">grid search</a>. This approach is usually effective but, in cases when there are many tuning parameters, it can be inefficient. An alternative is to use a combination of <a href="adaptive-resampling.html">grid search and racing</a>. Another is to use a <a href="http://www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf">random selection of tuning parameter combinations</a> to cover the parameter space to a lesser extent.</p>
 <p>There are a number of models where this can be beneficial in finding reasonable values of the tuning parameters in a relatively short time. However, there are some models where the efficiency in a small search field can cancel out other optimizations. For example, a number of models in caret utilize the “sub-model trick” where <em>M</em> tuning parameter combinations are evaluated, potentially far fewer than M model fits are required. This approach is best leveraged when a simple grid search is used. For this reason, it may be inefficient to use random search for the following model codes: <code>ada</code>, <code>AdaBag</code>, <code>AdaBoost.M1</code>, <code>bagEarth</code>, <code>blackboost</code>, <code>blasso</code>, <code>BstLm</code>, <code>bstSm</code>, <code>bstTree</code>, <code>C5.0</code>, <code>C5.0Cost</code>, <code>cubist</code>, <code>earth</code>, <code>enet</code>, <code>foba</code>, <code>gamboost</code>, <code>gbm</code>, <code>glmboost</code>, <code>glmnet</code>, <code>kernelpls</code>, <code>lars</code>, <code>lars2</code>, <code>lasso</code>, <code>lda2</code>, <code>leapBackward</code>, <code>leapForward</code>, <code>leapSeq</code>, <code>LogitBoost</code>, <code>pam</code>, <code>partDSA</code>, <code>pcr</code>, <code>PenalizedLDA</code>, <code>pls</code>, <code>relaxo</code>, <code>rfRules</code>, <code>rotationForest</code>, <code>rotationForestCp</code>, <code>rpart</code>, <code>rpart2</code>, <code>rpartCost</code>, <code>simpls</code>, <code>spikeslab</code>, <code>superpc</code>, <code>widekernelpls</code>, <code>xgbTree</code>.</p>
 <p>Finally, many of the models wrapped by <code>train</code> have a small number of parameters. The average number of parameters is 1.8.</p>
 <p>To use random search, another option is available in <code>trainControl</code> called <code>search</code>. Possible values of this argument are <code>&quot;grid&quot;</code> and <code>&quot;random&quot;</code>. The built-in models contained in caret contain code to generate random tuning parameter combinations. The total number of unique combinations is specified by the <code>tuneLength</code> option to <code>train</code>.</p>
@@ -453,6 +452,7 @@ rda_fit</code></pre></div>
 require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
+"github": false,
 "facebook": true,
 "twitter": true,
 "google": false,

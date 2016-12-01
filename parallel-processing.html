@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.3 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,13 +25,8 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-11-10">
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: { equationNumbers: { autoNumber: "AMS" } }
-});
-</script>
+<meta name="date" content="2016-11-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -54,14 +49,18 @@ MathJax.Hub.Config({
 
 
 
-<script src="libs/htmlwidgets-0.6/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.1/datatables.js"></script>
-<script src="libs/datatables-1.10.7/jquery.dataTables.min.js"></script>
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.css" rel="stylesheet" />
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
-<script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
-<script src="libs/d3-3.5.2/d3.min.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/d3-3.5.3/./d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
+<link href="libs/d3heatmapcore-0.0.0/heatmapcore.css" rel="stylesheet" />
+<script src="libs/d3heatmapcore-0.0.0/heatmapcore.js"></script>
+<script src="libs/d3-tip-0.6.6/index.js"></script>
+<script src="libs/d3heatmap-binding-0.6.1.1/d3heatmap.js"></script>
 
 
 <style type="text/css">
@@ -393,6 +392,7 @@ model &lt;-<span class="st"> </span><span class="kw">train</span>(y ~<span class
 require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
+"github": false,
 "facebook": true,
 "twitter": true,
 "google": false,

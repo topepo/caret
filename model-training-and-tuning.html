@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.3 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,13 +25,8 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-11-10">
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: { equationNumbers: { autoNumber: "AMS" } }
-});
-</script>
+<meta name="date" content="2016-11-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -54,14 +49,18 @@ MathJax.Hub.Config({
 
 
 
-<script src="libs/htmlwidgets-0.6/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.1/datatables.js"></script>
-<script src="libs/datatables-1.10.7/jquery.dataTables.min.js"></script>
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.css" rel="stylesheet" />
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
-<script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
-<script src="libs/d3-3.5.2/d3.min.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/d3-3.5.3/./d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
+<link href="libs/d3heatmapcore-0.0.0/heatmapcore.css" rel="stylesheet" />
+<script src="libs/d3heatmapcore-0.0.0/heatmapcore.js"></script>
+<script src="libs/d3-tip-0.6.6/index.js"></script>
+<script src="libs/d3heatmap-binding-0.6.1.1/d3heatmap.js"></script>
 
 
 <style type="text/css">
@@ -383,7 +382,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>choose the “optimal” model across these parameters</li>
 <li>estimate model performance from a training set</li>
 </ul>
-<p>First, a specific model must be chosen. Currently, 233 are available using <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a>; see <a href="modelList.html"><code>train</code> Model List</a> or <a href="bytag.html"><code>train</code> Models By Tag</a> for details. On these pages, there are lists of tuning parameters that can potentially be optimized. <a href="custom_models.html">User-defined models</a> can also be created.</p>
+<p>First, a specific model must be chosen. Currently, 233 are available using <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a>; see <a href="available-models.html&#39;"><code>train</code> Model List</a> or <a href="train-models-by-tag.html"><code>train</code> Models By Tag</a> for details. On these pages, there are lists of tuning parameters that can potentially be optimized. <a href="using-your-own-model-in-train.html">User-defined models</a> can also be created.</p>
 <p>The first step in tuning the model (line 1 in the algorithm above is to choose a set of parameters to evaluate. For example, if fitting a Partial Least Squares (PLS) model, the number of PLS components to evaluate must be specified.</p>
 <p><img src="premade/TrainAlgo.png" /><!-- --></p>
 <p>Once the model and tuning parameter values have been defined, the type of resampling should be also be specified. Currently, <em>k</em>-fold cross-validation (once or repeated), leave-one-out cross-validation and bootstrap (simple estimation or the 632 rule) resampling methods can be used by <code>train</code>. After resampling, the process produces a profile of performance measures is available to guide the user as to which tuning parameter values should be chosen. By default, the function automatically chooses the tuning parameters associated with the best value, although different algorithms can be used (see details below).</p>
@@ -428,7 +427,7 @@ testing  &lt;-<span class="st"> </span>Sonar[-inTraining,]</code></pre></div>
                            ## repeated ten times
                            <span class="dt">repeats =</span> <span class="dv">10</span>)</code></pre></div>
 <p>More information about <code>trainControl</code> is given in <a href="model-training-and-tuning.html#custom">a section below</a>.</p>
-<p>The first two arguments to <code>train</code> are the predictor and outcome data objects, respectively. The third argument, <code>method</code>, specifies the type of model (see <a href="modelList.html"><code>train</code> Model List</a> or <a href="bytag.html"><code>train</code> Models By Tag</a>). To illustrate, we will fit a boosted tree model via the <a href="http://cran.r-project.org/web/packages/gbm/index.html"><code>gbm</code></a> package. The basic syntax for fitting this model using repeated cross-validation is shown below:</p>
+<p>The first two arguments to <code>train</code> are the predictor and outcome data objects, respectively. The third argument, <code>method</code>, specifies the type of model (see <a href="available-models.html&#39;"><code>train</code> Model List</a> or <a href="train-models-by-tag.html"><code>train</code> Models By Tag</a>). To illustrate, we will fit a boosted tree model via the <a href="http://cran.r-project.org/web/packages/gbm/index.html"><code>gbm</code></a> package. The basic syntax for fitting this model using repeated cross-validation is shown below:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">825</span>)
 gbmFit1 &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> training, 
                  <span class="dt">method =</span> <span class="st">&quot;gbm&quot;</span>, 
@@ -472,7 +471,7 @@ gbmFit1</code></pre></div>
 <li>learning rate: how quickly the algorithm adapts, called <code>shrinkage</code></li>
 <li>the minimum number of training set samples in a node to commence splitting (<code>n.minobsinnode</code>)</li>
 </ul>
-<p>The default values tested for this model are shown in the first two columns (<code>shrinkage</code> and <code>n.minobsinnode</code> are not shown beause the grid set of candidate models all use a single value for these tuning parameters). The column labeled “<code>Accuracy</code>” is the overall agreement rate averaged over cross-validation iterations. The agreement standard deviation is also calculated from the cross-validation results. The column “<code>Kappa</code>” is Cohen’s (unweighted) Kappa statistic averaged across the resampling results. <code>train</code> works with specific models (see <a href="modelList.html"><code>train</code> Model List</a> or <a href="bytag.html"><code>train</code> Models By Tag</a>). For these models, <code>train</code> can automatically create a grid of tuning parameters. By default, if <em>p</em> is the number of tuning parameters, the grid size is <em>3^p</em>. As another example, regularized discriminant analysis (RDA) models have two parameters (<code>gamma</code> and <code>lambda</code>), both of which lie between zero and one. The default training grid would produce nine combinations in this two-dimensional space.</p>
+<p>The default values tested for this model are shown in the first two columns (<code>shrinkage</code> and <code>n.minobsinnode</code> are not shown beause the grid set of candidate models all use a single value for these tuning parameters). The column labeled “<code>Accuracy</code>” is the overall agreement rate averaged over cross-validation iterations. The agreement standard deviation is also calculated from the cross-validation results. The column “<code>Kappa</code>” is Cohen’s (unweighted) Kappa statistic averaged across the resampling results. <code>train</code> works with specific models (see <a href="available-models.html&#39;"><code>train</code> Model List</a> or <a href="train-models-by-tag.html"><code>train</code> Models By Tag</a>). For these models, <code>train</code> can automatically create a grid of tuning parameters. By default, if <em>p</em> is the number of tuning parameters, the grid size is <em>3^p</em>. As another example, regularized discriminant analysis (RDA) models have two parameters (<code>gamma</code> and <code>lambda</code>), both of which lie between zero and one. The default training grid would produce nine combinations in this two-dimensional space.</p>
 <p>There are several <a href="notes.html">notes</a> regarding specific model behaviors for <code>train</code>. There is additional functionality in <code>train</code> that is described in the next section.</p>
 <div id="repro">
 
@@ -483,7 +482,7 @@ gbmFit1</code></pre></div>
 <p>Many models utilize random numbers during the phase where parameters are estimated. Also, the resampling indices are chosen using random numbers. There are two main ways to control the randomness in order to assure reproducible results.</p>
 <ul>
 <li>There are two approaches to ensuring that the same <em>resamples</em> are used between calls to <code>train</code>. The first is to use <code>set.seed</code> just prior to calling <code>train</code>. The first use of random numbers is to create the resampling information. Alternatively, if you would like to use specific splits of the data, the <code>index</code> argument of the <code>trainControl</code> function can be used. This is briefly discussed below.</li>
-<li>When the models are created <em>inside of resampling</em>, the seeds can also be set. While setting the seed prior to calling <code>train</code> may guarantee that the same random numbers are used, this is unlikely to be the case when <a href="parallel.html">parallel processing</a> is used (depending which technology is utilized). To set the model fitting seeds, <code>trainControl</code> has an additional argument called <code>seeds</code> that can be used. The value for this argument is a list of integer vectors that are used as seeds. The help page for <code>trainControl</code> describes the appropriate format for this option.</li>
+<li>When the models are created <em>inside of resampling</em>, the seeds can also be set. While setting the seed prior to calling <code>train</code> may guarantee that the same random numbers are used, this is unlikely to be the case when <a href="parallel-processing.html">parallel processing</a> is used (depending which technology is utilized). To set the model fitting seeds, <code>trainControl</code> has an additional argument called <code>seeds</code> that can be used. The value for this argument is a list of integer vectors that are used as seeds. The help page for <code>trainControl</code> describes the appropriate format for this option.</li>
 </ul>
 <p>How random numbers are used is highly dependent on the package author. There are rare cases where the underlying model function does not control the random number seed, especially if the computations are conducted in C code. Also, please note that <a href="https://github.com/topepo/caret/issues/452">some packages load random numbers when loaded (directly or via namespace)</a> and this may effect reproducibility.</p>
 <div id="custom">
@@ -499,7 +498,7 @@ gbmFit1</code></pre></div>
 <div id="pre-processing-options" class="section level3">
 <h3><span class="header-section-number">5.5.1</span> Pre-Processing Options</h3>
 <p>As previously mentioned,<code>train</code> can pre-process the data in various ways prior to model fitting. The function <code>preProcess</code> is automatically used. This function can be used for centering and scaling, imputation (see details below), applying the spatial sign transformation and feature extraction via principal component analysis or independent component analysis.</p>
-<p>To specify what pre-processing should occur, the <code>train</code> function has an argument called <code>preProcess</code>. This argument takes a character string of methods that would normally be passed to the <code>method</code> argument of the <a href="preprocess.html"><code>preProcess</code> function</a>. Additional options to the <code>preProcess</code> function can be passed via the <code>trainControl</code> function.</p>
+<p>To specify what pre-processing should occur, the <code>train</code> function has an argument called <code>preProcess</code>. This argument takes a character string of methods that would normally be passed to the <code>method</code> argument of the <a href="pre-processing.html"><code>preProcess</code> function</a>. Additional options to the <code>preProcess</code> function can be passed via the <code>trainControl</code> function.</p>
 <p>These processing steps would be applied during any predictions generated using <code>predict.train</code>, <code>extractPrediction</code> or <code>extractProbs</code> (see details later in this document). The pre-processing would <strong>not</strong> be applied to predictions that directly use the <code>object$finalModel</code> object.</p>
 <p>For imputation, there are three methods currently implemented:</p>
 <ul>
@@ -563,7 +562,7 @@ gbmFit2</code></pre></div>
 ## The final values used for the model were n.trees = 1000,
 ##  interaction.depth = 5, shrinkage = 0.1 and n.minobsinnode = 20.</code></pre>
 <p>If there are missing values in the training set, PCA and ICA models only use complete samples.</p>
-<p>Another option is to use a random sample of possible tuning parameter combinations, i.e. “random search”<a href="www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf">(pdf)</a>. This functionality is described on <a href="random.html">this page</a>.</p>
+<p>Another option is to use a random sample of possible tuning parameter combinations, i.e. “random search”<a href="www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf">(pdf)</a>. This functionality is described on <a href="random-hyperparameter-search.html">this page</a>.</p>
 <p>To use a random search, use the option <code>search = &quot;random&quot;</code> in the call to <code>trainControl</code>. In this situation, the <code>tuneLength</code> parameter defines the total number of parameter combinations that will be evaluated.</p>
 <div id="plots">
 
@@ -586,6 +585,7 @@ gbmFit2</code></pre></div>
 <p><img src="basic/train_plot3-1.png" width="672" /></p>
 <p>A <code>ggplot</code> method can also be used:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(gbmFit2)  </code></pre></div>
+<pre><code>## Warning: Ignoring unknown aesthetics: shape</code></pre>
 <p><img src="basic/train_ggplot1-1.png" width="816" /></p>
 <p>There are also plot functions that show more detailed representations of the resampled estimates. See <code>?xyplot.train</code> for more details.</p>
 <p>From these plots, a different set of tuning parameters may be desired. To change the final values without starting the whole process again, the <code>update.train</code> can be used to refit the final model. See <code>?update.train</code></p>
@@ -602,14 +602,14 @@ gbmFit2</code></pre></div>
 <li><code>verboseIter</code>: A logical for printing a training log.</li>
 <li><code>returnData</code>: A logical for saving the data into a slot called <code>trainingData</code>.</li>
 <li><code>p</code>: For leave-group out cross-validation: the training percentage</li>
-<li>For <code>method = &quot;timeslice&quot;</code>, <code>trainControl</code> has options <code>initialWindow</code>, <code>horizon</code> and <code>fixedWindow</code> that govern how <a href="splitting.html">cross-validation can be used for time series data.</a></li>
+<li>For <code>method = &quot;timeslice&quot;</code>, <code>trainControl</code> has options <code>initialWindow</code>, <code>horizon</code> and <code>fixedWindow</code> that govern how <a href="data-splitting.html">cross-validation can be used for time series data.</a></li>
 <li><code>classProbs</code>: a logical value determining whether class probabilities should be computed for held-out samples during resample.</li>
 <li><code>index</code> and <code>indexOut</code>: optional lists with elements for each resampling iteration. Each list element is the sample rows used for training at that iteration or should be held-out. When these values are not specified, <code>train</code> will generate them.</li>
 <li><code>summaryFunction</code>: a function to computed alternate performance summaries.</li>
 <li><code>selectionFunction</code>: a function to choose the optimal tuning parameters. and examples.</li>
 <li><code>PCAthresh</code>, <code>ICAcomp</code> and <code>k</code>: these are all options to pass to the <code>preProcess</code> function (when used).</li>
 <li><code>returnResamp</code>: a character string containing one of the following values: <code>&quot;all&quot;</code>, <code>&quot;final&quot;</code> or <code>&quot;none&quot;</code>. This specifies how much of the resampled performance measures to save.</li>
-<li><code>allowParallel</code>: a logical that governs whether <code>train</code> should <a href="parallel.html">use parallel processing (if availible).</a></li>
+<li><code>allowParallel</code>: a logical that governs whether <code>train</code> should <a href="parallel-processing.html">use parallel processing (if availible).</a></li>
 </ul>
 <p>There are several other options not discussed here.</p>
 <div id="metrics">
@@ -853,22 +853,22 @@ resamps</code></pre></div>
 ## Number of resamples: 100 
 ## 
 ## ROC 
-##          Min.   1st Qu.    Median      Mean   3rd Qu. Max. NA&#39;s
-## GBM 0.5178571 0.8571429 0.9047619 0.8955531 0.9479167    1    0
-## SVM 0.6785714 0.9107143 0.9557292 0.9445164 0.9843750    1    0
-## RDA 0.6031746 0.8750000 0.9218750 0.9130853 0.9642857    1    0
+##       Min. 1st Qu. Median   Mean 3rd Qu. Max. NA&#39;s
+## GBM 0.5179  0.8571 0.9048 0.8956  0.9479    1    0
+## SVM 0.6786  0.9107 0.9557 0.9445  0.9844    1    0
+## RDA 0.6032  0.8750 0.9219 0.9131  0.9643    1    0
 ## 
 ## Sens 
-##      Min.   1st Qu.    Median      Mean 3rd Qu. Max. NA&#39;s
-## GBM 0.625 0.7777778 0.8750000 0.8679167       1    1    0
-## SVM 0.500 0.8750000 0.8888889 0.9173611       1    1    0
-## RDA 0.625 0.8750000 0.8888889 0.8987500       1    1    0
+##      Min. 1st Qu. Median   Mean 3rd Qu. Max. NA&#39;s
+## GBM 0.625  0.7778 0.8750 0.8679       1    1    0
+## SVM 0.500  0.8750 0.8889 0.9174       1    1    0
+## RDA 0.625  0.8750 0.8889 0.8988       1    1    0
 ## 
 ## Spec 
-##          Min.   1st Qu.    Median      Mean   3rd Qu. Max. NA&#39;s
-## GBM 0.2857143 0.7142857 0.7500000 0.7664286 0.8571429    1    0
-## SVM 0.2857143 0.7142857 0.8571429 0.8126786 1.0000000    1    0
-## RDA 0.2857143 0.7142857 0.7500000 0.7803571 0.8571429    1    0</code></pre>
+##       Min. 1st Qu. Median   Mean 3rd Qu. Max. NA&#39;s
+## GBM 0.2857  0.7143 0.7500 0.7664  0.8571    1    0
+## SVM 0.2857  0.7143 0.8571 0.8127  1.0000    1    0
+## RDA 0.2857  0.7143 0.7500 0.7804  0.8571    1    0</code></pre>
 <p>Note that, in this case, the option <code>resamples = &quot;final&quot;</code> should be user-defined in the control objects.</p>
 <p>There are several lattice plot methods that can be used to visualize the resampling distributions: density plots, box-whisker plots, scatterplot matrices and scatterplots of summary statistics. For example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(theme1)
@@ -991,6 +991,7 @@ gbmFit4</code></pre></div>
 require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
+"github": false,
 "facebook": true,
 "twitter": true,
 "google": false,

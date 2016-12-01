@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.3 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,13 +25,8 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-11-10">
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: { equationNumbers: { autoNumber: "AMS" } }
-});
-</script>
+<meta name="date" content="2016-11-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -54,14 +49,18 @@ MathJax.Hub.Config({
 
 
 
-<script src="libs/htmlwidgets-0.6/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.1/datatables.js"></script>
-<script src="libs/datatables-1.10.7/jquery.dataTables.min.js"></script>
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.css" rel="stylesheet" />
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
-<script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
-<script src="libs/d3-3.5.2/d3.min.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/d3-3.5.3/./d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
+<link href="libs/d3heatmapcore-0.0.0/heatmapcore.css" rel="stylesheet" />
+<script src="libs/d3heatmapcore-0.0.0/heatmapcore.js"></script>
+<script src="libs/d3-tip-0.6.6/index.js"></script>
+<script src="libs/d3heatmap-binding-0.6.1.1/d3heatmap.js"></script>
 
 
 <style type="text/css">
@@ -427,29 +426,29 @@ gbmImp</code></pre></div>
 roc_imp2</code></pre></div>
 <pre><code>## ROC curve variable importance
 ## 
-##   only 20 most important variables shown (out of 1305)
+##   only 20 most important variables shown (out of 60)
 ## 
-##        Importance
-## Mor14v     0.7016
-## Mor14p     0.6973
-## J3D        0.6973
-## Mor09v     0.6909
-## Mor09p     0.6888
-## Mor14m     0.6849
-## E3u        0.6793
-## E3e        0.6788
-## Mor31v     0.6744
-## X2Av       0.6712
-## Mor13p     0.6684
-## X1Av       0.6683
-## BLI        0.6682
-## X3Av       0.6675
-## E3p        0.6656
-## Mor09m     0.6637
-## X4Av       0.6610
-## X0A        0.6598
-## Mor31p     0.6589
-## X2A        0.6587</code></pre>
+##     Importance
+## V36     0.6885
+## V37     0.6508
+## V35     0.6494
+## V34     0.6032
+## V31     0.5957
+## V33     0.5814
+## V32     0.5675
+## V57     0.5398
+## V38     0.5258
+## V60     0.5148
+## V55     0.5099
+## V40     0.5093
+## V30     0.4997
+## V59     0.4926
+## V41     0.4886
+## V16     0.4862
+## V25     0.4817
+## V17     0.4816
+## V26     0.4787
+## V18     0.4742</code></pre>
 <p>For importance scores generated from <code>varImp.train</code>, a plot method can be used to visualize the results. In the plot below, the <code>top</code> option is used to make the image more readable.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(gbmImp, <span class="dt">top =</span> <span class="dv">20</span>)</code></pre></div>
 <p><img src="varimp/varImp_gbm_plot-1.png" width="384" /></p>
@@ -475,6 +474,7 @@ roc_imp2</code></pre></div>
 require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
+"github": false,
 "facebook": true,
 "twitter": true,
 "google": false,

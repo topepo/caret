@@ -1,0 +1,100 @@
+body.theme-dark {
+  background-color: #333 !important;
+}
+
+.link {
+  fill: none;
+}
+.theme-dark .link {
+}
+
+.d3heatmap {
+  position: relative;
+  width: 820px;
+  height: 700px;
+  overflow: hidden;
+}
+.d3heatmap .domain {
+  fill: none;
+  stroke: none;
+}
+.d3heatmap .axis {
+  overflow: hidden;
+}
+.d3heatmap .axis line {
+  fill: none;
+  stroke: #AAA;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+.d3heatmap .axis text, .d3heatmap-tip {
+  font-size: 15px;
+  font-family: Ubuntu Sans, Segoe UI, Lucida Grande, sans-serif;
+}
+.d3heatmap .axis rect {
+  cursor: pointer;
+}
+.inner {
+  position: relative;
+}
+.info {
+  position: absolute;
+  left: 20px;
+  top: 90px;
+  width: 160px;
+  height: 140px;
+  text-align: right;
+  font-size: 40px;
+  padding-top: 118px;
+}
+.d3heatmap text {
+  cursor: default;
+}
+.d3heatmap .brush .extent{
+  fill-opacity: 0.15;
+  stroke-width: 1px;
+}
+.colDend {
+  position: absolute;
+  overflow: hidden;
+}
+.rowDend {
+  position: absolute;
+  overflow: hidden;
+}
+.colormap {
+  position: absolute;
+  overflow: hidden;
+}
+.theme-dark text {
+  fill: #E2E2E2;
+}
+.highlighting .colormap .datapt {
+  opacity: 0.2;
+}
+.highlighting .colormap .datapt.highlight {
+  opacity: 1;
+}
+
+.highlighting .axis g.tick.faded {
+  opacity: 0.4 !important;
+}
+
+.d3heatmap-tip {
+  font-size: 13px;
+  color: white;
+  background-color: #444;
+  padding: 6px 12px;
+  box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.22);
+}
+.theme-dark .d3heatmap-tip {
+  background-color: white;
+  color: #444;
+}
+.d3heatmap-tip table {
+  border-collapse: separate;
+  border-spacing: 2px;
+}
+.d3heatmap-tip th, .d3heatmap-tip td {
+  padding: 0 1px;
+}

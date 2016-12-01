@@ -69,3 +69,10 @@ table.dataTable tbody th.dt-body-nowrap,
 table.dataTable tbody td.dt-body-nowrap {
   white-space: nowrap;
 }
+.table.dataTable tbody td.active, .table.dataTable tbody tr.active td {
+	background-color: #0075b0;
+	color: white;
+}
+.dataTables_scrollBody .dataTables_sizing {
+  visibility: hidden;
+}

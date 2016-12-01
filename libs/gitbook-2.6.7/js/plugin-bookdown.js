@@ -180,26 +180,30 @@ require(["gitbook", "lodash", "jQuery"], function(gitbook, _, $) {
     gs.set('bodyScrollTop', {
       body: bookBody.scrollTop(),
       inner: bookInner.scrollTop(),
+      focused: document.hasFocus(),
       title: bookInner.find('.page-inner').find('h1,h2').first().text()
     });
   };
   $(document).on('servr:reload', saveScrollPos);
 
-  // check if the page is loaded in the RStudio preview window
-  var inRStudio = function() {
+  // check if the page is loaded in an iframe (e.g. the RStudio preview window)
+  var inIFrame = function() {
     var inIframe = true;
     try { inIframe = window.self !== window.top; } catch (e) {}
-    if (!inIframe) return false;
-    return /^\/rmd_output\/[0-9]+\/.*$/.test(window.location.pathname);
+    return inIframe;
   };
-  if (inRStudio()) $(window).on('blur', saveScrollPos);
-  if (inRStudio()) $(window).on('unload', saveScrollPos);
+  if (inIFrame()) {
+    $(window).on('blur unload', saveScrollPos);
+  }
 
   $(function(e) {
     var pos = gs.get('bodyScrollTop');
-    if (pos && pos.title === bookInner.find('.page-inner').find('h1,h2').first().text()) {
-      if (pos.body !== 0) bookBody.scrollTop(pos.body);
-      if (pos.inner !== 0) bookInner.scrollTop(pos.inner);
+    if (pos) {
+      if (pos.title === bookInner.find('.page-inner').find('h1,h2').first().text()) {
+        if (pos.body !== 0) bookBody.scrollTop(pos.body);
+        if (pos.inner !== 0) bookInner.scrollTop(pos.inner);
+      }
+      if (pos.focused) bookInner.find('.page-wrapper').focus();
     }
     // clear book body scroll position
     gs.remove('bodyScrollTop');

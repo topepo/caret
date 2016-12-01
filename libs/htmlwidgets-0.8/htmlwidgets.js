@@ -216,7 +216,11 @@
 
   // @param tasks Array of strings (or falsy value, in which case no-op).
   //   Each element must be a valid JavaScript expression that yields a
-  //   function.
+  //   function. Or, can be an array of objects with "code" and "data"
+  //   properties; in this case, the "code" property should be a string
+  //   of JS that's an expr that yields a function, and "data" should be
+  //   an object that will be added as an additional argument when that
+  //   function is called.
   // @param target The object that will be "this" for each function
   //   execution.
   // @param args Array of arguments to be passed to the functions. (The
@@ -224,11 +228,16 @@
   function evalAndRun(tasks, target, args) {
     if (tasks) {
       forEach(tasks, function(task) {
+        var theseArgs = args;
+        if (typeof(task) === "object") {
+          theseArgs = theseArgs.concat([task.data]);
+          task = task.code;
+        }
         var taskFunc = eval("(" + task + ")");
         if (typeof(taskFunc) !== "function") {
           throw new Error("Task must be a function! Source:\n" + task);
         }
-        taskFunc.apply(target, args);
+        taskFunc.apply(target, theseArgs);
       });
     }
   }
@@ -502,10 +511,10 @@
               el.offsetHeight);
             elementData(el, "init_result", result);
           }
-          evalAndRun(data.jsHooks.render, elementData(el, "init_result"), [el, data.x]);
         }
         Shiny.renderDependencies(data.deps);
         bindingDef.renderValue(el, data.x, elementData(el, "init_result"));
+        evalAndRun(data.jsHooks.render, elementData(el, "init_result"), [el, data.x]);
       };
 
       // Only override resize if bindingDef implements it
@@ -580,8 +589,14 @@
           // call resize handlers for Shiny outputs, not for static
           // widgets, so we do it ourselves.
           if (window.jQuery) {
-            window.jQuery(document).on("shown.htmlwidgets shown.bs.tab.htmlwidgets", resizeHandler);
-            window.jQuery(document).on("hidden.htmlwidgets hidden.bs.tab.htmlwidgets", resizeHandler);
+            window.jQuery(document).on(
+              "shown.htmlwidgets shown.bs.tab.htmlwidgets shown.bs.collapse.htmlwidgets",
+              resizeHandler
+            );
+            window.jQuery(document).on(
+              "hidden.htmlwidgets hidden.bs.tab.htmlwidgets hidden.bs.collapse.htmlwidgets",
+              resizeHandler
+            );
           }
 
           // This is needed for the specific case of ioslides, which

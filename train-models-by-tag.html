@@ -8,7 +8,7 @@
   <title>The caret Package</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.3 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -25,13 +25,8 @@
 
 <meta name="author" content="Max Kuhn">
 
-<meta name="date" content="2016-11-10">
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: { equationNumbers: { autoNumber: "AMS" } }
-});
-</script>
+<meta name="date" content="2016-11-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -54,14 +49,18 @@ MathJax.Hub.Config({
 
 
 
-<script src="libs/htmlwidgets-0.6/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.1/datatables.js"></script>
-<script src="libs/datatables-1.10.7/jquery.dataTables.min.js"></script>
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.css" rel="stylesheet" />
-<link href="libs/datatables-bootstrap-1.10.7/dataTables.extra.css" rel="stylesheet" />
-<script src="libs/datatables-bootstrap-1.10.7/dataTables.bootstrap.min.js"></script>
-<script src="libs/d3-3.5.2/d3.min.js"></script>
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/d3-3.5.3/./d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
+<link href="libs/d3heatmapcore-0.0.0/heatmapcore.css" rel="stylesheet" />
+<script src="libs/d3heatmapcore-0.0.0/heatmapcore.js"></script>
+<script src="libs/d3-tip-0.6.6/index.js"></script>
+<script src="libs/d3heatmap-binding-0.6.1.1/d3heatmap.js"></script>
 
 
 <style type="text/css">
@@ -431,6 +430,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Type: Regression, Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>ipred</code>, <code>plyr</code>, <code>e1071</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged Flexible Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bagFDA&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -440,6 +440,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>nprune</code> (#Terms)</li>
 </ul>
 <p>Required packages: <code>earth</code>, <code>mda</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged MARS</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bagEarth&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -449,6 +450,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged MARS using gCV Pruning</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bagEarthGCV&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -457,6 +459,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bayesian Generalized Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bayesglm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -481,7 +484,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
 <p>Required packages: <code>plyr</code>, <code>mboost</code></p>
-<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Boosted Tree</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;blackboost&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -501,6 +504,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>winnow</code> (Winnow)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpart&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -509,12 +513,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cp</code> (Complexity Parameter)</li>
 </ul>
 <p>Required packages: <code>rpart</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpart1SE&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>rpart</code></p>
-<p>Notes: This CART model replicates the same process used by the <code>rpart</code> function where the model complexity is determined using the one-standard error method. This procedure is replicated inside of the resampling done by <code>train</code> so that an external resampling estimate can be obtained.</p>
+<p>A model-specific variable importance metric is available. Notes: This CART model replicates the same process used by the <code>rpart</code> function where the model complexity is determined using the one-standard error method. This procedure is replicated inside of the resampling done by <code>train</code> so that an external resampling estimate can be obtained.</p>
 <p><strong>CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpart2&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -523,6 +528,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>maxdepth</code> (Max Tree Depth)</li>
 </ul>
 <p>Required packages: <code>rpart</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>CART or Ordinal Responses</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpartScore&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -533,6 +539,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (Pruning Measure)</li>
 </ul>
 <p>Required packages: <code>rpartScore</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>CHi-squared Automated Interaction Detection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;chaid&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -551,6 +558,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>party</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Conditional Inference Tree</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ctree&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -588,6 +596,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cost</code> (Cost)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Cost-Sensitive CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpartCost&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -627,10 +636,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>nprune</code> (#Terms)</li>
 </ul>
 <p>Required packages: <code>earth</code>, <code>mda</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Generalized Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>No tuning parameters for this model</p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Generalized Linear Model with Stepwise Feature Selection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmStepAIC&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -643,6 +654,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li><code>intercept</code> (intercept)</li>
 </ul>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Linear Regression with Stepwise Selection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;lmStepAIC&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -667,6 +679,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Multivariate Adaptive Regression Splines</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gcvEarth&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -675,6 +688,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Negative Binomial Generalized Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glm.nb&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -682,6 +696,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li><code>link</code> (Link Function)</li>
 </ul>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Neural Network</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;nnet&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -691,6 +706,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>decay</code> (Weight Decay)</li>
 </ul>
 <p>Required packages: <code>nnet</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Neural Networks with Feature Extraction</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;pcaNNet&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -708,6 +724,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>method</code> (parameter)</li>
 </ul>
 <p>Required packages: <code>MASS</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Penalized Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;pda&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -732,6 +749,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>decay</code> (Weight Decay)</li>
 </ul>
 <p>Required packages: <code>nnet</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Projection Pursuit Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ppr&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -747,6 +765,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>e1071</code>, <code>ranger</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Robust Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rlm&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -761,11 +780,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Type: Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>C50</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Single C5.0 Tree</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;C5.0Tree&#39;</span></code></pre></div>
 <p>Type: Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>C50</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Stochastic Gradient Boosting</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -777,6 +798,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>n.minobsinnode</code> (Min. Terminal Node Size)</li>
 </ul>
 <p>Required packages: <code>gbm</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Tree Models from Genetic Algorithms</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;evtree&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -801,11 +823,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>maxdepth</code> (Max Tree Depth)</li>
 </ul>
 <p>Required packages: <code>adabag</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;treebag&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>ipred</code>, <code>plyr</code>, <code>e1071</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged Flexible Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bagFDA&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -815,6 +839,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>nprune</code> (#Terms)</li>
 </ul>
 <p>Required packages: <code>earth</code>, <code>mda</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged Logic Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;logicBag&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -833,6 +858,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged MARS using gCV Pruning</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bagEarthGCV&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -841,6 +867,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bag&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -857,6 +884,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>party</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Ensembles of Generalized Lienar Models</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;randomGLM&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -883,6 +911,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>e1071</code>, <code>randomForest</code>, <code>foreach</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Quantile Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;qrf&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -917,6 +946,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>e1071</code>, <code>ranger</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;Rborist&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -925,6 +955,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>predFixed</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>Rborist</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rf&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -933,6 +964,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>randomForest</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest by Randomization</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;extraTrees&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -951,6 +983,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>maxdepth</code> (Maximum Rule Depth)</li>
 </ul>
 <p>Required packages: <code>randomForest</code>, <code>inTrees</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Regularized Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;RRF&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -961,6 +994,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>coefImp</code> (Importance Coefficient)</li>
 </ul>
 <p>Required packages: <code>randomForest</code>, <code>RRF</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Regularized Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;RRFglobal&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -970,6 +1004,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>coefReg</code> (Regularization Value)</li>
 </ul>
 <p>Required packages: <code>RRF</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Weighted Subspace Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;wsrf&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -997,6 +1032,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>nu</code> (Degrees of Freedom)</li>
 </ul>
 <p>Required packages: <code>bartMachine</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bayesian Generalized Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bayesglm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -1182,6 +1218,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>coeflearn</code> (Coefficient Type)</li>
 </ul>
 <p>Required packages: <code>adabag</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged AdaBoost</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;AdaBag&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1191,6 +1228,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>maxdepth</code> (Max Tree Depth)</li>
 </ul>
 <p>Required packages: <code>adabag</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Boosted Classification Trees</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ada&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1220,7 +1258,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
 <p>Required packages: <code>plyr</code>, <code>mboost</code></p>
-<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Boosted Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;BstLm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -1276,6 +1314,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>winnow</code> (Winnow)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Cost-Sensitive C5.0</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;C5.0Cost&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1287,6 +1326,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cost</code> (Cost)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Cubist</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;cubist&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -1296,6 +1336,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>neighbors</code> (#Instances)</li>
 </ul>
 <p>Required packages: <code>Cubist</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>DeepBoost</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;deepboost&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1319,6 +1360,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>eta</code> (Learning Rate)</li>
 </ul>
 <p>Required packages: <code>xgboost</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>eXtreme Gradient Boosting</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;xgbTree&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -1333,6 +1375,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>subsample</code> (Subsample Percentage)</li>
 </ul>
 <p>Required packages: <code>xgboost</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm_h2o&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -1345,6 +1388,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>col_sample_rate</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>h2o</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Stochastic Gradient Boosting</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -1356,6 +1400,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>n.minobsinnode</code> (Min. Terminal Node Size)</li>
 </ul>
 <p>Required packages: <code>gbm</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <div id="Categorical_Predictors_Only">
 
 </div>
@@ -1448,6 +1493,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cost</code> (Cost)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Cost-Sensitive CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpartCost&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1802,6 +1848,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda2</code> (L2 Penalty)</li>
 </ul>
 <p>Required packages: <code>sdwd</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <div id="Ensemble_Model">
 
 </div>
@@ -1828,6 +1875,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>coeflearn</code> (Coefficient Type)</li>
 </ul>
 <p>Required packages: <code>adabag</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged AdaBoost</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;AdaBag&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1837,11 +1885,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>maxdepth</code> (Max Tree Depth)</li>
 </ul>
 <p>Required packages: <code>adabag</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;treebag&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>ipred</code>, <code>plyr</code>, <code>e1071</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged Flexible Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bagFDA&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1851,6 +1901,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>nprune</code> (#Terms)</li>
 </ul>
 <p>Required packages: <code>earth</code>, <code>mda</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged Logic Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;logicBag&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -1869,6 +1920,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged MARS using gCV Pruning</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bagEarthGCV&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -1877,6 +1929,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bag&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -1914,7 +1967,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
 <p>Required packages: <code>plyr</code>, <code>mboost</code></p>
-<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Boosted Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;BstLm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -1970,6 +2023,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>winnow</code> (Winnow)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Conditional Inference Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;cforest&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -1978,6 +2032,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>party</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Cost-Sensitive C5.0</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;C5.0Cost&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1989,6 +2044,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cost</code> (Cost)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Cubist</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;cubist&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -1998,6 +2054,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>neighbors</code> (#Instances)</li>
 </ul>
 <p>Required packages: <code>Cubist</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>DeepBoost</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;deepboost&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -2046,6 +2103,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>eta</code> (Learning Rate)</li>
 </ul>
 <p>Required packages: <code>xgboost</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>eXtreme Gradient Boosting</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;xgbTree&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2060,6 +2118,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>subsample</code> (Subsample Percentage)</li>
 </ul>
 <p>Required packages: <code>xgboost</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm_h2o&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2072,6 +2131,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>col_sample_rate</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>h2o</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Model Averaged Neural Network</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;avNNet&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -2122,6 +2182,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>e1071</code>, <code>randomForest</code>, <code>foreach</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Quantile Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;qrf&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -2156,6 +2217,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>e1071</code>, <code>ranger</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;Rborist&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -2164,6 +2226,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>predFixed</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>Rborist</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rf&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -2172,6 +2235,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>randomForest</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest by Randomization</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;extraTrees&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2190,6 +2254,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>maxdepth</code> (Maximum Rule Depth)</li>
 </ul>
 <p>Required packages: <code>randomForest</code>, <code>inTrees</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest with Additional Feature Selection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;Boruta&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2208,6 +2273,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>coefImp</code> (Importance Coefficient)</li>
 </ul>
 <p>Required packages: <code>randomForest</code>, <code>RRF</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Regularized Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;RRFglobal&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2217,6 +2283,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>coefReg</code> (Regularization Value)</li>
 </ul>
 <p>Required packages: <code>RRF</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Rotation Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rotationForest&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -2226,6 +2293,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>L</code> (Ensemble Size)</li>
 </ul>
 <p>Required packages: <code>rotationForest</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Rotation Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rotationForestCp&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -2236,6 +2304,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cp</code> (Complexity Parameter)</li>
 </ul>
 <p>Required packages: <code>rpart</code>, <code>plyr</code>, <code>rotationForest</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Stochastic Gradient Boosting</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2247,6 +2316,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>n.minobsinnode</code> (Min. Terminal Node Size)</li>
 </ul>
 <p>Required packages: <code>gbm</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Tree-Based Ensembles</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;nodeHarvest&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2296,6 +2366,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Partial Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;pls&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2304,6 +2375,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Partial Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;simpls&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2312,6 +2384,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Partial Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;widekernelpls&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2320,6 +2393,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Principal Component Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;pcr&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -2503,7 +2577,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Degree)</li>
 </ul>
 <p>Required packages: <code>gam</code></p>
-<p>Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
+<p>A model-specific variable importance metric is available. Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
 <p><strong>Generalized Additive Model using Splines</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bam&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2513,7 +2587,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>method</code> (Method)</li>
 </ul>
 <p>Required packages: <code>mgcv</code></p>
-<p>Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
+<p>A model-specific variable importance metric is available. Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
 <p><strong>Generalized Additive Model using Splines</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gam&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2523,7 +2597,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>method</code> (Method)</li>
 </ul>
 <p>Required packages: <code>mgcv</code></p>
-<p>Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
+<p>A model-specific variable importance metric is available. Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
 <p><strong>Generalized Additive Model using Splines</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gamSpline&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2532,7 +2606,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>df</code> (Degrees of Freedom)</li>
 </ul>
 <p>Required packages: <code>gam</code></p>
-<p>Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
+<p>A model-specific variable importance metric is available. Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
 <div id="Generalized_Linear_Model">
 
 </div>
@@ -2554,7 +2628,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
 <p>Required packages: <code>plyr</code>, <code>mboost</code></p>
-<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Ensembles of Generalized Lienar Models</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;randomGLM&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2572,7 +2646,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Degree)</li>
 </ul>
 <p>Required packages: <code>gam</code></p>
-<p>Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
+<p>A model-specific variable importance metric is available. Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
 <p><strong>Generalized Additive Model using Splines</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bam&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2582,7 +2656,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>method</code> (Method)</li>
 </ul>
 <p>Required packages: <code>mgcv</code></p>
-<p>Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
+<p>A model-specific variable importance metric is available. Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
 <p><strong>Generalized Additive Model using Splines</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gam&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2592,7 +2666,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>method</code> (Method)</li>
 </ul>
 <p>Required packages: <code>mgcv</code></p>
-<p>Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
+<p>A model-specific variable importance metric is available. Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
 <p><strong>Generalized Additive Model using Splines</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gamSpline&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2601,11 +2675,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>df</code> (Degrees of Freedom)</li>
 </ul>
 <p>Required packages: <code>gam</code></p>
-<p>Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
+<p>A model-specific variable importance metric is available. Notes: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.</p>
 <p><strong>Generalized Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>No tuning parameters for this model</p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Generalized Linear Model with Stepwise Feature Selection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmStepAIC&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2620,6 +2695,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
 <p>Required packages: <code>h2o</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2629,6 +2705,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
 <p>Required packages: <code>glmnet</code>, <code>Matrix</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Negative Binomial Generalized Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glm.nb&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -2636,6 +2713,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li><code>link</code> (Link Function)</li>
 </ul>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Penalized Ordinal Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ordinalNet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2646,6 +2724,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>link</code> (Link Function)</li>
 </ul>
 <p>Required packages: <code>ordinalNet</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <div id="Handle_Missing_Predictor_Data">
 
 </div>
@@ -2663,6 +2742,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>coeflearn</code> (Coefficient Type)</li>
 </ul>
 <p>Required packages: <code>adabag</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged AdaBoost</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;AdaBag&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -2672,6 +2752,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>maxdepth</code> (Max Tree Depth)</li>
 </ul>
 <p>Required packages: <code>adabag</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Boosted Classification Trees</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ada&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -2692,6 +2773,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>winnow</code> (Winnow)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpart&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2700,12 +2782,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cp</code> (Complexity Parameter)</li>
 </ul>
 <p>Required packages: <code>rpart</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpart1SE&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>rpart</code></p>
-<p>Notes: This CART model replicates the same process used by the <code>rpart</code> function where the model complexity is determined using the one-standard error method. This procedure is replicated inside of the resampling done by <code>train</code> so that an external resampling estimate can be obtained.</p>
+<p>A model-specific variable importance metric is available. Notes: This CART model replicates the same process used by the <code>rpart</code> function where the model complexity is determined using the one-standard error method. This procedure is replicated inside of the resampling done by <code>train</code> so that an external resampling estimate can be obtained.</p>
 <p><strong>CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpart2&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2714,6 +2797,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>maxdepth</code> (Max Tree Depth)</li>
 </ul>
 <p>Required packages: <code>rpart</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>CART or Ordinal Responses</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpartScore&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -2724,6 +2808,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (Pruning Measure)</li>
 </ul>
 <p>Required packages: <code>rpartScore</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Cost-Sensitive C5.0</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;C5.0Cost&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -2735,6 +2820,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cost</code> (Cost)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Cost-Sensitive CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpartCost&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -2749,11 +2835,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Type: Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>C50</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Single C5.0 Tree</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;C5.0Tree&#39;</span></code></pre></div>
 <p>Type: Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>C50</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <div id="Implicit_Feature_Selection">
 
 </div>
@@ -2780,6 +2868,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>coeflearn</code> (Coefficient Type)</li>
 </ul>
 <p>Required packages: <code>adabag</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged AdaBoost</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;AdaBag&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -2789,6 +2878,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>maxdepth</code> (Max Tree Depth)</li>
 </ul>
 <p>Required packages: <code>adabag</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged Flexible Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bagFDA&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -2798,6 +2888,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>nprune</code> (#Terms)</li>
 </ul>
 <p>Required packages: <code>earth</code>, <code>mda</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged MARS</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bagEarth&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2807,6 +2898,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged MARS using gCV Pruning</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bagEarthGCV&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2815,6 +2907,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bayesian Additive Regression Trees</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bartMachine&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -2827,6 +2920,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>nu</code> (Degrees of Freedom)</li>
 </ul>
 <p>Required packages: <code>bartMachine</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Boosted Classification Trees</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ada&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -2892,6 +2986,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>winnow</code> (Winnow)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpart&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2900,12 +2995,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cp</code> (Complexity Parameter)</li>
 </ul>
 <p>Required packages: <code>rpart</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpart1SE&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>rpart</code></p>
-<p>Notes: This CART model replicates the same process used by the <code>rpart</code> function where the model complexity is determined using the one-standard error method. This procedure is replicated inside of the resampling done by <code>train</code> so that an external resampling estimate can be obtained.</p>
+<p>A model-specific variable importance metric is available. Notes: This CART model replicates the same process used by the <code>rpart</code> function where the model complexity is determined using the one-standard error method. This procedure is replicated inside of the resampling done by <code>train</code> so that an external resampling estimate can be obtained.</p>
 <p><strong>CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpart2&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2914,6 +3010,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>maxdepth</code> (Max Tree Depth)</li>
 </ul>
 <p>Required packages: <code>rpart</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>CART or Ordinal Responses</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpartScore&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -2924,6 +3021,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (Pruning Measure)</li>
 </ul>
 <p>Required packages: <code>rpartScore</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>CHi-squared Automated Interaction Detection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;chaid&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -2942,6 +3040,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>party</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Conditional Inference Tree</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ctree&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -2970,6 +3069,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cost</code> (Cost)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Cost-Sensitive CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpartCost&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -2988,6 +3088,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>neighbors</code> (#Instances)</li>
 </ul>
 <p>Required packages: <code>Cubist</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>DeepBoost</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;deepboost&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -3020,6 +3121,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>eta</code> (Learning Rate)</li>
 </ul>
 <p>Required packages: <code>xgboost</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>eXtreme Gradient Boosting</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;xgbTree&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -3034,6 +3136,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>subsample</code> (Subsample Percentage)</li>
 </ul>
 <p>Required packages: <code>xgboost</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Flexible Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;fda&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -3043,6 +3146,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>nprune</code> (#Terms)</li>
 </ul>
 <p>Required packages: <code>earth</code>, <code>mda</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Generalized Linear Model with Stepwise Feature Selection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmStepAIC&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -3060,6 +3164,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>col_sample_rate</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>h2o</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet_h2o&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -3069,6 +3174,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
 <p>Required packages: <code>h2o</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -3078,6 +3184,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
 <p>Required packages: <code>glmnet</code>, <code>Matrix</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Least Angle Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;lars&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -3130,6 +3237,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Multivariate Adaptive Regression Splines</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gcvEarth&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -3138,6 +3246,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Nearest Shrunken Centroids</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;pam&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -3146,6 +3255,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>threshold</code> (Shrinkage Threshold)</li>
 </ul>
 <p>Required packages: <code>pamr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Non-Convex Penalized Quantile Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rqnc&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -3204,6 +3314,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>e1071</code>, <code>randomForest</code>, <code>foreach</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Penalized Linear Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;PenalizedLDA&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -3232,6 +3343,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>link</code> (Link Function)</li>
 </ul>
 <p>Required packages: <code>ordinalNet</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Quantile Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;qrf&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -3264,6 +3376,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>e1071</code>, <code>ranger</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;Rborist&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -3272,6 +3385,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>predFixed</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>Rborist</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rf&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -3280,6 +3394,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>randomForest</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest by Randomization</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;extraTrees&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -3298,6 +3413,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>maxdepth</code> (Maximum Rule Depth)</li>
 </ul>
 <p>Required packages: <code>randomForest</code>, <code>inTrees</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Regularized Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;RRF&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -3308,6 +3424,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>coefImp</code> (Importance Coefficient)</li>
 </ul>
 <p>Required packages: <code>randomForest</code>, <code>RRF</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Regularized Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;RRFglobal&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -3317,6 +3434,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>coefReg</code> (Regularization Value)</li>
 </ul>
 <p>Required packages: <code>RRF</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Relaxed Lasso</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;relaxo&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -3335,6 +3453,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>L</code> (Ensemble Size)</li>
 </ul>
 <p>Required packages: <code>rotationForest</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Rotation Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rotationForestCp&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -3345,6 +3464,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cp</code> (Complexity Parameter)</li>
 </ul>
 <p>Required packages: <code>rpart</code>, <code>plyr</code>, <code>rotationForest</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Rule-Based Classifier</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;JRip&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -3355,6 +3475,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>MinWeights</code> (Min Weights)</li>
 </ul>
 <p>Required packages: <code>RWeka</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Rule-Based Classifier</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;PART&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -3364,16 +3485,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>pruned</code> (Pruning)</li>
 </ul>
 <p>Required packages: <code>RWeka</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Single C5.0 Ruleset</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;C5.0Rules&#39;</span></code></pre></div>
 <p>Type: Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>C50</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Single C5.0 Tree</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;C5.0Tree&#39;</span></code></pre></div>
 <p>Type: Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>C50</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Single Rule Classification</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;OneR&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -3388,6 +3512,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda2</code> (L2 Penalty)</li>
 </ul>
 <p>Required packages: <code>sdwd</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Sparse Linear Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;sparseLDA&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -3426,6 +3551,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>n.minobsinnode</code> (Min. Terminal Node Size)</li>
 </ul>
 <p>Required packages: <code>gbm</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>The Bayesian lasso</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;blasso&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -3598,6 +3724,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Polynomial Kernel Regularized Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;krlsPoly&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -3771,6 +3898,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
 <p>Required packages: <code>h2o</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -3780,6 +3908,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
 <p>Required packages: <code>glmnet</code>, <code>Matrix</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Least Angle Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;lars&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -3833,6 +3962,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>link</code> (Link Function)</li>
 </ul>
 <p>Required packages: <code>ordinalNet</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Quantile Regression with LASSO penalty</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rqlasso&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -3859,6 +3989,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda2</code> (L2 Penalty)</li>
 </ul>
 <p>Required packages: <code>sdwd</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Sparse Linear Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;sparseLDA&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -3947,6 +4078,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
 <p>Required packages: <code>h2o</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -3956,6 +4088,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
 <p>Required packages: <code>glmnet</code>, <code>Matrix</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Linear Distance Weighted Discrimination</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;dwdLinear&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -4010,6 +4143,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>repeats</code> (#Models)</li>
 </ul>
 <p>Required packages: <code>FCNN4R</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Neural Network</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;nnet&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -4019,6 +4153,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>decay</code> (Weight Decay)</li>
 </ul>
 <p>Required packages: <code>nnet</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Neural Networks with Feature Extraction</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;pcaNNet&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -4062,6 +4197,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>decay</code> (Weight Decay)</li>
 </ul>
 <p>Required packages: <code>nnet</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Penalized Ordinal Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ordinalNet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4072,6 +4208,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>link</code> (Link Function)</li>
 </ul>
 <p>Required packages: <code>ordinalNet</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Polynomial Kernel Regularized Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;krlsPoly&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -4151,6 +4288,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda2</code> (L2 Penalty)</li>
 </ul>
 <p>Required packages: <code>sdwd</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <div id="Linear_Classifier">
 
 </div>
@@ -4190,7 +4328,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
 <p>Required packages: <code>plyr</code>, <code>mboost</code></p>
-<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Continuation Ratio Model for Ordinal Data</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;vglmContRatio&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -4243,6 +4381,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>No tuning parameters for this model</p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Generalized Linear Model with Stepwise Feature Selection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmStepAIC&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4265,6 +4404,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
 <p>Required packages: <code>h2o</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4274,6 +4414,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
 <p>Required packages: <code>glmnet</code>, <code>Matrix</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Heteroscedastic Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;hda&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -4408,6 +4549,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>threshold</code> (Shrinkage Threshold)</li>
 </ul>
 <p>Required packages: <code>pamr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Ordered Logistic or Probit Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;polr&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -4416,6 +4558,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>method</code> (parameter)</li>
 </ul>
 <p>Required packages: <code>MASS</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Partial Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;kernelpls&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4424,6 +4567,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Partial Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;pls&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4432,6 +4576,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Partial Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;simpls&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4440,6 +4585,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Partial Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;widekernelpls&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4448,6 +4594,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Penalized Linear Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;PenalizedLDA&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -4474,6 +4621,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>decay</code> (Weight Decay)</li>
 </ul>
 <p>Required packages: <code>nnet</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Penalized Ordinal Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ordinalNet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4484,6 +4632,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>link</code> (Link Function)</li>
 </ul>
 <p>Required packages: <code>ordinalNet</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Regularized Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rda&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -4539,6 +4688,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda2</code> (L2 Penalty)</li>
 </ul>
 <p>Required packages: <code>sdwd</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Sparse Linear Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;sparseLDA&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -4629,6 +4779,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>neighbors</code> (#Instances)</li>
 </ul>
 <p>Required packages: <code>Cubist</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Elasticnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;enet&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -4647,6 +4798,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
 <p>Required packages: <code>h2o</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4656,6 +4808,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
 <p>Required packages: <code>glmnet</code>, <code>Matrix</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Independent Component Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;icr&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -4696,6 +4849,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li><code>intercept</code> (intercept)</li>
 </ul>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Linear Regression with Backwards Selection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;leapBackward&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -4767,6 +4921,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Type: Regression</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>nnls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Partial Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;kernelpls&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4775,6 +4930,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Partial Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;pls&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4783,6 +4939,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Partial Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;simpls&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4791,6 +4948,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Partial Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;widekernelpls&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4799,6 +4957,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Penalized Linear Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;penalized&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -4818,6 +4977,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>link</code> (Link Function)</li>
 </ul>
 <p>Required packages: <code>ordinalNet</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Principal Component Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;pcr&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -5056,6 +5216,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>method</code> (parameter)</li>
 </ul>
 <p>Required packages: <code>MASS</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Penalized Logistic Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;plr&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -5073,6 +5234,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>decay</code> (Weight Decay)</li>
 </ul>
 <p>Required packages: <code>nnet</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <div id="Mixture_Model">
 
 </div>
@@ -5131,6 +5293,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>neighbors</code> (#Instances)</li>
 </ul>
 <p>Required packages: <code>Cubist</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Logistic Model Trees</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;LMT&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -5174,6 +5337,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>nprune</code> (#Terms)</li>
 </ul>
 <p>Required packages: <code>earth</code>, <code>mda</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged MARS</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bagEarth&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -5183,6 +5347,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged MARS using gCV Pruning</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bagEarthGCV&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -5191,6 +5356,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Flexible Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;fda&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -5200,6 +5366,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>nprune</code> (#Terms)</li>
 </ul>
 <p>Required packages: <code>earth</code>, <code>mda</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Multivariate Adaptive Regression Spline</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;earth&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -5209,6 +5376,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Multivariate Adaptive Regression Splines</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gcvEarth&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -5217,6 +5385,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>degree</code> (Product Degree)</li>
 </ul>
 <p>Required packages: <code>earth</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <div id="Neural_Network">
 
 </div>
@@ -5304,6 +5473,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>repeats</code> (#Models)</li>
 </ul>
 <p>Required packages: <code>FCNN4R</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Neural Network</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;neuralnet&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -5323,6 +5493,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>decay</code> (Weight Decay)</li>
 </ul>
 <p>Required packages: <code>nnet</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Neural Networks with Feature Extraction</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;pcaNNet&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -5340,6 +5511,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>decay</code> (Weight Decay)</li>
 </ul>
 <p>Required packages: <code>nnet</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Quantile Regression Neural Network</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;qrnn&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -5452,6 +5624,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (Pruning Measure)</li>
 </ul>
 <p>Required packages: <code>rpartScore</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Continuation Ratio Model for Ordinal Data</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;vglmContRatio&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -5478,6 +5651,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>method</code> (parameter)</li>
 </ul>
 <p>Required packages: <code>MASS</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <div id="Partial_Least_Squares">
 
 </div>
@@ -5526,6 +5700,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Partial Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;pls&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -5534,6 +5709,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Partial Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;simpls&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -5542,6 +5718,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Partial Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;widekernelpls&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -5550,6 +5727,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ncomp</code> (#Components)</li>
 </ul>
 <p>Required packages: <code>pls</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Partial Least Squares Generalized Linear Models </strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;plsRglm&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -5726,6 +5904,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>neighbors</code> (#Instances)</li>
 </ul>
 <p>Required packages: <code>Cubist</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Greedy Prototype Selection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;protoclass&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -5782,6 +5961,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>threshold</code> (Shrinkage Threshold)</li>
 </ul>
 <p>Required packages: <code>pamr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Optimal Weighted Nearest Neighbor Classifier</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ownn&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -5967,6 +6147,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>party</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Oblique Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ORFlog&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -6007,6 +6188,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>e1071</code>, <code>randomForest</code>, <code>foreach</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Quantile Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;qrf&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -6031,6 +6213,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>e1071</code>, <code>ranger</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;Rborist&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -6039,6 +6222,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>predFixed</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>Rborist</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rf&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -6047,6 +6231,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>randomForest</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest by Randomization</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;extraTrees&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -6065,6 +6250,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>maxdepth</code> (Maximum Rule Depth)</li>
 </ul>
 <p>Required packages: <code>randomForest</code>, <code>inTrees</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest with Additional Feature Selection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;Boruta&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -6083,6 +6269,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>coefImp</code> (Importance Coefficient)</li>
 </ul>
 <p>Required packages: <code>randomForest</code>, <code>RRF</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Regularized Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;RRFglobal&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -6092,6 +6279,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>coefReg</code> (Regularization Value)</li>
 </ul>
 <p>Required packages: <code>RRF</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Weighted Subspace Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;wsrf&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -6171,6 +6359,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>coefImp</code> (Importance Coefficient)</li>
 </ul>
 <p>Required packages: <code>randomForest</code>, <code>RRF</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Regularized Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;RRFglobal&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -6180,6 +6369,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>coefReg</code> (Regularization Value)</li>
 </ul>
 <p>Required packages: <code>RRF</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Robust Regularized Linear Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rrlda&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -6490,6 +6680,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>winnow</code> (Winnow)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Cost-Sensitive C5.0</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;C5.0Cost&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -6501,6 +6692,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cost</code> (Cost)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Cubist</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;cubist&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -6510,6 +6702,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>neighbors</code> (#Instances)</li>
 </ul>
 <p>Required packages: <code>Cubist</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Dynamic Evolving Neural-Fuzzy Inference System </strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;DENFIS&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -6643,6 +6836,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>maxdepth</code> (Maximum Rule Depth)</li>
 </ul>
 <p>Required packages: <code>randomForest</code>, <code>inTrees</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Rule-Based Classifier</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;JRip&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -6653,6 +6847,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>MinWeights</code> (Min Weights)</li>
 </ul>
 <p>Required packages: <code>RWeka</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Rule-Based Classifier</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;PART&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -6662,6 +6857,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>pruned</code> (Pruning)</li>
 </ul>
 <p>Required packages: <code>RWeka</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Simplified TSK Fuzzy Rules</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;FS.HGD&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -6676,6 +6872,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Type: Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>C50</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Single Rule Classification</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;OneR&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -6975,6 +7172,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>coeflearn</code> (Coefficient Type)</li>
 </ul>
 <p>Required packages: <code>adabag</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged AdaBoost</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;AdaBag&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -6984,11 +7182,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>maxdepth</code> (Max Tree Depth)</li>
 </ul>
 <p>Required packages: <code>adabag</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bagged CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;treebag&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>ipred</code>, <code>plyr</code>, <code>e1071</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Bayesian Additive Regression Trees</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bartMachine&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -7001,6 +7201,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>nu</code> (Degrees of Freedom)</li>
 </ul>
 <p>Required packages: <code>bartMachine</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Boosted Classification Trees</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ada&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7057,6 +7258,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>winnow</code> (Winnow)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpart&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -7065,12 +7267,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cp</code> (Complexity Parameter)</li>
 </ul>
 <p>Required packages: <code>rpart</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpart1SE&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>rpart</code></p>
-<p>Notes: This CART model replicates the same process used by the <code>rpart</code> function where the model complexity is determined using the one-standard error method. This procedure is replicated inside of the resampling done by <code>train</code> so that an external resampling estimate can be obtained.</p>
+<p>A model-specific variable importance metric is available. Notes: This CART model replicates the same process used by the <code>rpart</code> function where the model complexity is determined using the one-standard error method. This procedure is replicated inside of the resampling done by <code>train</code> so that an external resampling estimate can be obtained.</p>
 <p><strong>CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpart2&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -7079,6 +7282,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>maxdepth</code> (Max Tree Depth)</li>
 </ul>
 <p>Required packages: <code>rpart</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>CART or Ordinal Responses</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpartScore&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7089,6 +7293,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (Pruning Measure)</li>
 </ul>
 <p>Required packages: <code>rpartScore</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>CHi-squared Automated Interaction Detection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;chaid&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7127,6 +7332,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cost</code> (Cost)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Cost-Sensitive CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpartCost&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7162,6 +7368,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>subsample</code> (Subsample Percentage)</li>
 </ul>
 <p>Required packages: <code>xgboost</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm_h2o&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -7174,6 +7381,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>col_sample_rate</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>h2o</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Model Tree</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;M5&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -7210,6 +7418,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>L</code> (Ensemble Size)</li>
 </ul>
 <p>Required packages: <code>rotationForest</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Rotation Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rotationForestCp&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7220,11 +7429,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cp</code> (Complexity Parameter)</li>
 </ul>
 <p>Required packages: <code>rpart</code>, <code>plyr</code>, <code>rotationForest</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Single C5.0 Tree</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;C5.0Tree&#39;</span></code></pre></div>
 <p>Type: Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>C50</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Stochastic Gradient Boosting</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -7236,6 +7447,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>n.minobsinnode</code> (Min. Terminal Node Size)</li>
 </ul>
 <p>Required packages: <code>gbm</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Tree Models from Genetic Algorithms</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;evtree&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -7290,6 +7502,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>nu</code> (Degrees of Freedom)</li>
 </ul>
 <p>Required packages: <code>bartMachine</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Binary Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;binda&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7327,7 +7540,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
 <p>Required packages: <code>plyr</code>, <code>mboost</code></p>
-<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>CHi-squared Automated Interaction Detection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;chaid&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7349,6 +7562,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cost</code> (Cost)</li>
 </ul>
 <p>Required packages: <code>C50</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Cost-Sensitive CART</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rpartCost&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7395,6 +7609,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>No tuning parameters for this model</p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Generalized Linear Model with Stepwise Feature Selection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmStepAIC&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -7409,6 +7624,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
 <p>Required packages: <code>h2o</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>L2 Regularized Linear Support Vector Machines with Class Weights</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;svmLinearWeights2&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7496,6 +7712,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>L</code> (Ensemble Size)</li>
 </ul>
 <p>Required packages: <code>rotationForest</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Rotation Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rotationForestCp&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7506,6 +7723,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cp</code> (Complexity Parameter)</li>
 </ul>
 <p>Required packages: <code>rpart</code>, <code>plyr</code>, <code>rotationForest</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Support Vector Machines with Class Weights</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;svmRadialWeights&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7547,6 +7765,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
+"github": false,
 "facebook": true,
 "twitter": true,
 "google": false,
