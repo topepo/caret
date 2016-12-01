@@ -222,7 +222,7 @@ Kuhn (2014), ``Futility Analysis in the Cross-Validation of Machine Learning
 Models'' \url{http://arxiv.org/abs/1405.6974},
 
 Package website for subsampling:
-\url{http://topepo.github.io/caret/sampling.html}
+\url{https://topepo.github.io/caret/subsampling-for-class-imbalances.html}
 }
 \keyword{utilities}
 
