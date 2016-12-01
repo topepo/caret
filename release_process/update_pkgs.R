@@ -1,19 +1,29 @@
+options(repos = "http://cran.r-project.org")
+
 ###################################################################
 ## Get Bioconductor packages
+## try http:// if https:// URLs are not supported
+
+source("https://bioconductor.org/biocLite.R")
+biocLite("BiocInstaller")
 
 library(BiocInstaller) 
-useDevel()
-
-source("http://www.bioconductor.org/getBioC.R")
+#useDevel()
 
 biocLite(c("vbmp", "gpls", "logicFS", "graph", "RBGL"), 
-         type = "source",
+         type = "both",
          dependencies = c("Depends", "Imports"))
 
 
 ###################################################################
 ## Get the names of all CRAN related packages references by caret. 
 ## Exclude orphaned and Bioconductor packages for now
+
+if(fresh)
+  install.packages(c("caret"), 
+                   repos = "http://cran.r-project.org", 
+                   type = "both",
+                   dependencies = c("Depends", "Imports", "Suggests"))
 
 library(caret)
 
@@ -23,7 +33,7 @@ libs <- unlist(lapply(mods, function(x) x$library))
 libs <- unique(sort(libs))
 libs <- libs[!(libs %in% c("caret", "vbmp", "gpls", "logicFS", "SDDA"))]
 libs <- c(libs, "knitr", "Hmisc", "googleVis", "animation", 
-          "desirability", "networkD3", "arm", "xtable", 
+          "desirability", "networkD3", "d3heatmap", "arm", "xtable", 
           "RColorBrewer", "gplots", "iplots", "latticeExtra",
           "scatterplot3d", "vcd", "igraph", "corrplot", "ctv",
           "Cairo", "shiny", "scales", "tabplot", "tikzDevice", "odfWeave",
@@ -38,7 +48,8 @@ libs <- c(libs, "knitr", "Hmisc", "googleVis", "animation",
           "reshape", "rJava", "SparseM", "sqldf", "XML", "lubridate", "dplyr", "GA",
           "aroma.affymetrix", "remMap", "cghFLasso", "RCurl", "QSARdata", "reshape2",
           "mapproj", "ggmap", "ggvis", "SuperLearner", "subsemble", "caretEnsemble",
-          "ROSE", "DMwR")
+          "ROSE", "DMwR", "ellipse", "bookdown", "DT", "AppliedPredictiveModeling",
+          "pROC", "ggthemes")
 libs <- unique(libs)
 
 
@@ -56,15 +67,18 @@ if(length(diffs) > 0) print(diffs)
 
 # devtools::install_github('dmlc/xgboost',subdir='R-package')
 
+fresh <- TRUE ## starting from a fresh, bare version of R
+
 for(i in sort(libs)) {
-  
-  cat("----------------------------------------------------------------\n",
-      i, "\n\n")
-  install.packages(i, repos = "http://cran.r-project.org", 
-                   type = "source",
-                   dependencies = c("Depends", "Suggests", "Imports"))
-  
-  cat("\n\n")
+  if(fresh) good <- rownames(installed.packages())
+  if(fresh && !(i %in% good)) {
+    cat("----------------------------------------------------------------\n",
+        i, "\n\n")
+    install.packages(i, repos = "http://cran.r-project.org", 
+                     type = "both")
+    
+    cat("\n\n")
+  }
 }
 
 ###################################################################

@@ -4,6 +4,7 @@
 #' \code{createDataPartition} while \code{createResample} creates one or more
 #' bootstrap samples. \code{createFolds} splits the data into \code{k} groups
 #' while \code{createTimeSlices} creates cross-validation split for series data.
+#' \code{groupKFold} splits the data based on a grouping factor.
 #'
 #'
 #' For bootstrap samples, simple random sampling is used.
@@ -32,11 +33,17 @@
 #' Hyndman and Athanasopoulos (2013)) discuss rolling forecasting origin
 #' techniques that move the training and test sets in time.
 #' \code{createTimeSlices} can create the indices for this type of splitting.
+#' 
+#' For Group k-fold cross-validation, the data are split such that no group
+#' is contained in both the modeling and holdout sets. One or more group 
+#' could be left out, depending on the value of \code{k}.
 #'
 #' @aliases createDataPartition createResample createFolds createMultiFolds
-#'   createTimeSlices
+#'   createTimeSlices groupKFold
 #' @param y a vector of outcomes. For \code{createTimeSlices}, these should be
 #'   in chronological order.
+#' @param group a vector of groups whose length matches the number of rows in 
+#' the overall data set. 
 #' @param times the number of partitions to create
 #' @param p the percentage of data that goes to training
 #' @param list logical - should the results be in a list (\code{TRUE}) or a
@@ -93,6 +100,11 @@
 #' createTimeSlices(1:15, 5, 3, skip = 2)
 #' createTimeSlices(1:15, 5, 3, skip = 3)
 #'
+#' set.seed(131)
+#' groups <- sort(sample(letters[1:4], size = 20, replace = TRUE))
+#' table(groups)
+#' folds <- groupKFold(groups)
+#' lapply(folds, function(x, y) table(y[x]), y = groups)
 #' @export createDataPartition
 createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = min(5, length(y))){
   if(class(y)[1] == "Surv") y <- y[,"time"]
@@ -254,4 +266,17 @@ createTimeSlices <- function(y, initialWindow, horizon = 1, fixedWindow = TRUE, 
   out <- list(train = train, test = test)
 
   out
+}
+
+#' @rdname createDataPartition
+#' @export
+groupKFold <- function(group, k = length(unique(group))) {
+  if(k > length(unique(group)))
+    stop(paste("`k` should be less than", length(unique(group))))
+  dat <- data.frame(index = seq(along = group), group = group)
+  groups <- data.frame(group = unique(dat$group))
+  group_folds <- createFolds(groups$group, returnTrain = TRUE, k = k)
+  group_folds <- lapply(group_folds, function(x, y) y[x,,drop = FALSE], y = groups)
+  dat_folds <- lapply(group_folds, function(x, y) merge(x, y), y = dat)
+  lapply(dat_folds, function(x) sort(x$index))
 }

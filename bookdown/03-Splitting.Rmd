@@ -7,6 +7,7 @@ opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'splitting/')
 library(lattice)
 library(ggplot2)
 library(mlbench)
+library(ggthemes)
 ```
 
 
@@ -15,7 +16,8 @@ Contents
  - [Simple Splitting Based on the Outcome](#outcome)
  - [Splitting Based on the Predictors](#predictors)
  - [Data Splitting for Time Series](#time)
-
+ - [Data Splitting with Important Groups](#groups)
+ 
 <div id="outcome"></div>
 
 ## Simple Splitting Based on the Outcome
@@ -126,3 +128,42 @@ useOuterStrips(
             ylab = "Resample Number")) 
 ```  
 
+
+<div id="outcome"></div>
+
+## Simple Splitting with Important Groups
+
+In some cases there is an important qualitative factor in the data that should be considered during (re)sampling. For example: 
+
+ * in clinical trials, there may be hospital-to-hospital differences
+ * with longitudinal or repeated measures data, subjects (or general independent experimental unit) may have multiple rows in the data set, etc.
+ 
+There may be an interest in making sure that these groups are not contained in the training and testing set since this may bias the test set performance to be more optimistic. Also, when one or more specific groups are held out, the resampling might capture the "ruggedness" of the model. In the example where clinical data is recorded over multiple sites, the resampling performance estimates partly measure how extensible the model is across sites.  
+
+To split the data base don groups, `groupKFold` can be used: 
+
+```{r split_groups}
+set.seed(3527)
+subjects <- sample(1:20, size = 80, replace = TRUE)
+table(subjects)
+folds <- groupKFold(subjects, k = 15) 
+```
+
+The results in `folds` can be used as inputs into the `index` argument of the `trainControl` function. 
+
+This plot shows how each subject is partitioned between the modeling and holdout sets. Note that since `k` was less than 20 when `folds` was created, there are some holdouts with model than one subject.  
+
+```{r Split_group_plot, echo=FALSE, fig.width=9, message=FALSE,warning=FALSE}
+theme_set(theme_bw())
+in_model <- lapply(folds, function(ind, grp) grp[ind], grp = subjects)
+in_model_df <- data.frame(Subject = unlist(in_model), data = "Used for Modeling")
+in_model_df$Fold <- rep(names(in_model), times = unlist(lapply(in_model, length)))
+holdout <- lapply(folds, function(ind, grp) grp[-unique(ind)], grp = subjects)
+holdout_df <- data.frame(Subject = unlist(holdout), data = "Holdout")
+holdout_df$Fold <- rep(names(holdout), times = unlist(lapply(holdout, length)))
+both <- rbind(in_model_df, holdout_df)
+ggplot(both, aes(x = Fold, y = Subject, fill = data)) + 
+  geom_tile() + 
+  scale_fill_tableau() + 
+  theme(legend.position = "top")
+```

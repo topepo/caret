@@ -6,6 +6,7 @@
 \alias{createMultiFolds}
 \alias{createResample}
 \alias{createTimeSlices}
+\alias{groupKFold}
 \title{Data Splitting functions}
 \usage{
 createDataPartition(y, times = 1, p = 0.5, list = TRUE, groups = min(5,
@@ -15,6 +16,8 @@ createFolds(y, k = 10, list = TRUE, returnTrain = FALSE)
 
 createTimeSlices(y, initialWindow, horizon = 1, fixedWindow = TRUE,
   skip = 0)
+
+groupKFold(group, k = length(unique(group)))
 }
 \arguments{
 \item{y}{a vector of outcomes. For \code{createTimeSlices}, these should be
@@ -46,6 +49,9 @@ training set sample}
 
 \item{skip}{integer, how many (if any) resamples to skip to thin the total
 amount}
+
+\item{group}{a vector of groups whose length matches the number of rows in 
+the overall data set.}
 }
 \value{
 A list or matrix of row position integers corresponding to the
@@ -57,6 +63,7 @@ A series of test/training partitions are created using
 \code{createDataPartition} while \code{createResample} creates one or more
 bootstrap samples. \code{createFolds} splits the data into \code{k} groups
 while \code{createTimeSlices} creates cross-validation split for series data.
+\code{groupKFold} splits the data based on a grouping factor.
 }
 \details{
 For bootstrap samples, simple random sampling is used.
@@ -85,6 +92,10 @@ cross-validation set (of \code{times}). Note that this function calls
 Hyndman and Athanasopoulos (2013)) discuss rolling forecasting origin
 techniques that move the training and test sets in time.
 \code{createTimeSlices} can create the indices for this type of splitting.
+
+For Group k-fold cross-validation, the data are split such that no group
+is contained in both the modeling and holdout sets. One or more group 
+could be left out, depending on the value of \code{k}.
 }
 \examples{
 
@@ -116,6 +127,11 @@ createTimeSlices(1:15, 5, 3)
 createTimeSlices(1:15, 5, 3, skip = 2)
 createTimeSlices(1:15, 5, 3, skip = 3)
 
+set.seed(131)
+groups <- sort(sample(letters[1:4], size = 20, replace = TRUE))
+table(groups)
+folds <- groupKFold(groups)
+lapply(folds, function(x, y) table(y[x]), y = groups)
 }
 \author{
 Max Kuhn, \code{createTimeSlices} by Tony Cooper
