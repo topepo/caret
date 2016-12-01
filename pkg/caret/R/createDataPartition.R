@@ -3,8 +3,7 @@
 #' A series of test/training partitions are created using
 #' \code{createDataPartition} while \code{createResample} creates one or more
 #' bootstrap samples. \code{createFolds} splits the data into \code{k} groups
-#' while \code{createTimeSlices} creates cross-validation sample information to
-#' be used with time series data.
+#' while \code{createTimeSlices} creates cross-validation split for series data.
 #'
 #'
 #' For bootstrap samples, simple random sampling is used.
@@ -35,29 +34,29 @@
 #' \code{createTimeSlices} can create the indices for this type of splitting.
 #'
 #' @aliases createDataPartition createResample createFolds createMultiFolds
-#' createTimeSlices
+#'   createTimeSlices
 #' @param y a vector of outcomes. For \code{createTimeSlices}, these should be
-#' in chronological order.
+#'   in chronological order.
 #' @param times the number of partitions to create
 #' @param p the percentage of data that goes to training
 #' @param list logical - should the results be in a list (\code{TRUE}) or a
-#' matrix with the number of rows equal to \code{floor(p * length(y))} and
-#' \code{times} columns.
+#'   matrix with the number of rows equal to \code{floor(p * length(y))} and
+#'   \code{times} columns.
 #' @param groups for numeric \code{y}, the number of breaks in the quantiles
-#' (see below)
+#'   (see below)
 #' @param k an integer for the number of folds.
 #' @param returnTrain a logical. When true, the values returned are the sample
-#' positions corresponding to the data used during training. This argument only
-#' works in conjunction with \code{list = TRUE}
+#'   positions corresponding to the data used during training. This argument
+#'   only works in conjunction with \code{list = TRUE}
 #' @param initialWindow The initial number of consecutive values in each
-#' training set sample
-#' @param horizon The number of consecutive values in test set sample
-#' @param fixedWindow A logical: if \code{FALSE}, the training set always start
-#' at the first sample.
-#' @param skip An integer specifying how many (if any) resamples to skip to
-#' thin the total amount.
+#'   training set sample
+#' @param horizon the number of consecutive values in test set sample
+#' @param fixedWindow logical, if \code{FALSE}, all training samples start at 1
+#' @param skip integer, how many (if any) resamples to skip to thin the total
+#'   amount
 #' @return A list or matrix of row position integers corresponding to the
-#' training data
+#'   training data. For \code{createTimeSlices} subsamples are named by the end
+#'   index of each training subsample.
 #' @author Max Kuhn, \code{createTimeSlices} by Tony Cooper
 #' @references \url{http://topepo.github.io/caret/data-splitting.html}
 #'
@@ -233,12 +232,12 @@ createMultiFolds <- function(y, k = 10, times = 5) {
 #' @rdname createDataPartition
 #' @export
 createTimeSlices <- function(y, initialWindow, horizon = 1, fixedWindow = TRUE, skip = 0) {
-  ## initialwindowlength = initial number of consecutive values in each training set sample
-  ## horizonlength = number of consecutive values in test set sample
-  ## fixedwindowlength = FALSE if we use the maximum possible length for the training set
-  ## Ensure that initialwindowlength + horizonlength <= length(y)
+  ## initialwindow = initial number of consecutive values in each training set sample
+  ## horizon = number of consecutive values in test set sample
+  ## fixedwindow = FALSE if we use the maximum possible length for the training set
+  ## Ensure that initialwindow + horizon <= length(y)
 
-  stops <- (seq(along = y))[initialWindow:(length(y) - horizon)]
+  stops <- seq(initialWindow, (length(y) - horizon), by = skip + 1)
 
   if (fixedWindow) {
     starts <- stops - initialWindow + 1
@@ -248,20 +247,11 @@ createTimeSlices <- function(y, initialWindow, horizon = 1, fixedWindow = TRUE, 
 
   train <- mapply(seq, starts, stops, SIMPLIFY = FALSE)
   test <- mapply(seq, stops+1, stops+horizon, SIMPLIFY = FALSE)
-  names(train) <- paste("Training", gsub(" ", "0", format(seq(along = train))), sep = "")
-  names(test) <- paste("Testing", gsub(" ", "0", format(seq(along = test))), sep = "")
+  nums <- gsub(" ", "0", format(stops))
+  names(train) <- paste("Training", nums, sep = "")
+  names(test) <- paste("Testing", nums, sep = "")
 
-  thin <- function(x, skip = 2) {
-    n <- length(x)
-    x[seq(1, n, by = skip)]
-  }
-
-  if(skip > 0) {
-    train <- thin(train, skip = skip+1)
-    test <- thin(test, skip = skip+1)
-  }
   out <- list(train = train, test = test)
 
   out
 }
-

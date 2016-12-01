@@ -40,6 +40,8 @@ RegressionTests/.RData
 
 caret.Rproj
 
+auto/
+
 release_process/talk/caret.vrb
 
 release_process/talk/caret.nav
