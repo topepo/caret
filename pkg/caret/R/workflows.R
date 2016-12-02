@@ -65,10 +65,11 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
   ## fitting and predicting the full data set.
   
   resampleIndex <- ctrl$index
-  if(ctrl$method %in% c("boot632"))
+  if(ctrl$method %in% c("boot632", "optimism_boot", "boot_all"))
   {
     resampleIndex <- c(list("AllData" = rep(0, nrow(x))), resampleIndex)
     ctrl$indexOut <- c(list("AllData" = rep(0, nrow(x))),  ctrl$indexOut)
+    if(!is.null(ctrl$indexExtra)) ctrl$indexExtra <- c(list("AllData" = NULL), ctrl$indexExtra)
   }
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
   keep_pred <- isTRUE(ctrl$savePredictions) || ctrl$savePredictions %in% c("all", "final")
@@ -94,6 +95,8 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         holdoutIndex <- modelIndex
       }
       
+      extraIndex <- if(is.null(ctrl$indexExtra)) NULL else ctrl$indexExtra[[iter]]
+      
       if(testing) cat("pre-model\n")
 
       if(!is.null(info$submodels[[parm]]) && nrow(info$submodels[[parm]]) > 0) {
@@ -115,6 +118,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       
       if(testing) print(mod) 
       
+      predictedExtra <- NULL
       if(class(mod)[1] != "try-error")
       {
         predicted <- try(
@@ -153,6 +157,14 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
             for(i in seq(along = predicted)) predicted[[i]] <- tmp
             rm(tmp)
           }
+        } else if(!is.null(extraIndex)) {
+          predictedExtra <- lapply(extraIndex, function(idx) { 
+            try(predictionFunction(method = method,
+                                   modelFit = mod$fit,
+                                   newdata = x[idx, , drop = FALSE],
+                                   preProc = mod$preProc,
+                                   param = submod))
+          })
         }
       } else {
         wrn <- paste(colnames(printed[parm,,drop = FALSE]),
@@ -258,6 +270,21 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                             wts = wts[holdoutIndex],
                             lv = lev,
                             rows = holdoutIndex)
+        if(!is.null(predictedExtra))
+          predictedExtra <- mapply(predictedExtra, extraIndex, 
+                                   SIMPLIFY = FALSE, USE.NAMES = FALSE,
+                                   FUN = function(pred, rows) {
+                                     lapply(pred, function(x) {
+                                       y <- y[rows]
+                                       wts <- wts[rows]
+                                       
+                                       x <- outcome_conversion(x, lv = lev)
+                                       out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
+                                       if(!is.null(wts)) out$weights <- wts
+                                       out$rowIndex <- rows
+                                       out
+                                     })
+                                   })
         if(testing) print(head(predicted))
         
         ## same for the class probabilities
@@ -266,12 +293,11 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
           for(k in seq(along = predicted)) predicted[[k]] <- cbind(predicted[[k]], probValues[[k]])
         }
         
-        if(keep_pred)
+        if(keep_pred || (ctrl$method == "boot_all" && names(resampleIndex)[iter] == "AllData"))
         {
           tmpPred <- predicted
           for(modIndex in seq(along = tmpPred))
           {
-            tmpPred[[modIndex]]$rowIndex <- holdoutIndex
             tmpPred[[modIndex]] <- merge(tmpPred[[modIndex]], 
                                          allParam[modIndex,,drop = FALSE],
                                          all = TRUE)
@@ -286,6 +312,26 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                                lev = lev,
                                model = method)
         if(testing) print(head(thisResample))
+        
+        if(!is.null(predictedExtra)) {
+          thisResampleExtra <- lapply(predictedExtra, function(predicted) {
+            lapply(predicted,
+                   ctrl$summaryFunction,
+                   lev = lev,
+                   model = method)
+          })
+          thisResampleExtra[[1L]] <- lapply(thisResampleExtra[[1L]], function(res) {
+            names(res) <- paste0(names(res), "Orig")
+            res
+          })
+          thisResampleExtra[[2L]] <- lapply(thisResampleExtra[[2L]], function(res) {
+            names(res) <- paste0(names(res), "Boot")
+            res
+          })
+          thisResampleExtra <- do.call(cbind, lapply(thisResampleExtra, function(x) do.call(rbind, x)))
+          thisResampleExtra <- cbind(allParam, thisResampleExtra)
+        } else thisResampleExtra <- NULL
+        
         ## for classification, add the cell counts
         if(length(lev) > 1 && length(lev) <= 50)
         {
@@ -308,7 +354,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         if(ctrl$classProbs) tmp <- cbind(tmp, probValues)
         tmp$rowIndex <- holdoutIndex
         
-        if(keep_pred)
+        if(keep_pred || (ctrl$method == "boot_all" && names(resampleIndex)[iter] == "AllData"))
         {
           tmpPred <- tmp
           tmpPred$rowIndex <- holdoutIndex
@@ -328,6 +374,33 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         thisResample <- as.data.frame(t(thisResample))
         thisResample <- cbind(thisResample, info$loop[parm,,drop = FALSE])
         
+        ## for optimism bootstrap
+        if(!is.null(predictedExtra)) {
+          thisResampleExtra <- mapply(predictedExtra, extraIndex,
+                                      SIMPLIFY = FALSE, USE.NAMES = FALSE,
+                                      FUN = function(predicted, holdoutIndex) {
+                                        if(is.factor(y)) predicted <- outcome_conversion(predicted, lv = lev)
+                                        tmp <-  data.frame(pred = predicted,
+                                                           obs = y[holdoutIndex],
+                                                           stringsAsFactors = FALSE)
+                                        ## Sometimes the code above does not coerce the first
+                                        ## columnn to be named "pred" so force it
+                                        names(tmp)[1] <- "pred"
+                                        if(!is.null(wts)) tmp$weights <- wts[holdoutIndex]
+                                        if(ctrl$classProbs && nrow(tmp) == nrow(probValues)) tmp <- cbind(tmp, probValues)
+                                        tmp$rowIndex <- holdoutIndex
+                                        ctrl$summaryFunction(tmp, lev = lev, model = method)
+                                      })
+          
+          names(thisResampleExtra[[1L]]) <- paste0(names(thisResampleExtra[[1L]]), "Orig")
+          names(thisResampleExtra[[2L]]) <- paste0(names(thisResampleExtra[[2L]]), "Boot")
+          
+          thisResampleExtra <- unlist(thisResampleExtra, recursive = FALSE)
+          
+          thisResampleExtra <- cbind(as.data.frame(t(thisResampleExtra)), info$loop[parm, , drop = FALSE])
+          
+        } else thisResampleExtra <- NULL
+        
       }
       thisResample$Resample <- names(resampleIndex)[iter]
       
@@ -335,12 +408,13 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                                     names(resampleIndex), iter, FALSE)
       
       if(testing) print(thisResample)
-      list(resamples = thisResample, pred = tmpPred)
+      list(resamples = thisResample, pred = tmpPred, resamplesExtra = thisResampleExtra)
     }
   
   resamples <- rbind.fill(result[names(result) == "resamples"])
-  pred <- if(keep_pred)  rbind.fill(result[names(result) == "pred"]) else NULL
-  if(ctrl$method %in% c("boot632"))
+  pred <- rbind.fill(result[names(result) == "pred"])
+  resamplesExtra <- rbind.fill(result[names(result) == "resamplesExtra"])
+  if(ctrl$method %in% c("boot632", "optimism_boot", "boot_all"))
   {
     perfNames <- names(resamples)
     perfNames <- perfNames[!(perfNames %in% c("Resample", as.character(method$parameters$parameter)))]
@@ -355,6 +429,11 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       warning("There were missing values in the apparent performance measures.")
     }        
     resamples <- subset(resamples, Resample != "AllData")
+    if(!is.null(pred))
+    {
+      predHat <- subset(pred, Resample == "AllData")
+      pred <- subset(pred, Resample != "AllData")
+    }
   }
   names(resamples) <- gsub("^\\.", "", names(resamples))
   
@@ -369,12 +448,36 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                MeanSD, 
                exclude = gsub("^\\.", "", colnames(info$loop)))
   
-  if(ctrl$method %in% c("boot632")) {
+  if(ctrl$method %in% c("boot632", "boot_all")) {
     out <- merge(out, apparent)
-    for(p in seq(along = perfNames)) {
-      const <- 1-exp(-1)
-      out[, perfNames[p]] <- (const * out[, perfNames[p]]) +  ((1-const) * out[, paste(perfNames[p],"Apparent", sep = "")])
-    }
+    const <- 1 - exp(-1)
+    sapply(perfNames, function(perfName) {
+      perfOut <- if(ctrl$method == "boot_all") paste0(perfName, "_632") else perfName
+      out[, perfOut] <<- (const * out[, perfName]) +  ((1-const) * out[, paste(perfName, "Apparent", sep = "")])
+      NULL
+    })
+  }
+  
+  if(ctrl$method %in% c("optimism_boot", "boot_all")) {
+    out <- merge(out, apparent)
+    out <- merge(out, ddply(resamplesExtra[, !grepl("Resample", colnames(resamplesExtra)), drop = FALSE],
+                            colnames(info$loop),
+                            function(df, exclude) {
+                              colMeans(df[, setdiff(colnames(df), exclude), drop = FALSE])
+                            },
+                            exclude = colnames(info$loop)))
+    sapply(perfNames, function(perfName) {
+      optimism <- out[ , paste0(perfName, "Orig")] - out[ , paste0(perfName, "Boot")]
+      final_estimate <- out[ , paste0(perfName, "Apparent")] + optimism
+      ## Remove unnecessary values
+      out[ , paste0(perfName, "Orig")] <<- NULL
+      out[ , paste0(perfName, "Boot")] <<- NULL
+      perfOut <- if(ctrl$method == "boot_all") paste0(perfName, "_OptBoot") else perfName
+      ## Update estimates
+      out[ , paste0(perfName, "Optimism")] <<- optimism
+      out[ , perfOut] <<- final_estimate
+      NULL
+    })
   }
   
   list(performance = out, resamples = resamples, predictions = if(keep_pred) pred else NULL)

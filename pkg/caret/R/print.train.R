@@ -199,7 +199,7 @@ stringFunc <- function (x)  {
         } else constString <- NULL
       } else constString <- NULL
 
-      tuneAcc <- tuneAcc[,!grepl("Apparent$", names(tuneAcc)),drop = FALSE]
+      tuneAcc <- tuneAcc[,!grepl("Apparent$|Optimism$", names(tuneAcc)), drop = FALSE]
       colnames(tuneAcc)[colnames(tuneAcc) == ".B"] <- "Resamples"
       nms <- names(tuneAcc)[names(tuneAcc) %in% params]
       sort_args <- vector(mode = "list", length = length(nms))

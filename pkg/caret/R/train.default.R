@@ -89,7 +89,7 @@
 #' tuning parameters.} \item{bestTune }{a data frame with the final
 #' parameters.}
 #'
-#' \item{call }{the (matched) function call with dots expanded} \item{dots}{a
+#' \item{call}{the (matched) function call with dots expanded} \item{dots}{a
 #' list containing any ... values passed to the original call} \item{metric}{a
 #' string that specifies what summary metric will be used to select the optimal
 #' model.} \item{control}{the list of control parameters.} \item{preProcess
@@ -359,7 +359,8 @@ train.default <- function(x, y,
                               alt_cv =, cv = createFolds(y, trControl$number, returnTrain = TRUE),
                               repeatedcv =, adaptive_cv = createMultiFolds(y, trControl$number, trControl$repeats),
                               loocv = createFolds(y, n, returnTrain = TRUE),
-                              boot =, boot632 =,  adaptive_boot = createResample(y, trControl$number),
+                              boot =, boot632 =, optimism_boot =, boot_all =,
+                              adaptive_boot = createResample(y, trControl$number),
                               test = createDataPartition(y, 1, trControl$p),
                               adaptive_lgocv =, lgocv = createDataPartition(y, trControl$number, trControl$p),
                               timeslice = createTimeSlices(seq(along = y),
@@ -394,13 +395,16 @@ train.default <- function(x, y,
       stop('`savePredictions` should be either logical or "all", "final" or "none"')
   }
 
-  ## Create hold--out indicies
-  if(is.null(trControl$indexOut) & trControl$method != "oob"){
+  ## Create holdout indices
+  if(is.null(trControl$indexOut) && trControl$method != "oob"){
     if(tolower(trControl$method) != "timeslice") {
       y_index <- if(class(y)[1] == "Surv") 1:nrow(y) else seq(along = y)
-      trControl$indexOut <- lapply(trControl$index,
-                                   function(training, allSamples) allSamples[-unique(training)],
-                                   allSamples = y_index)
+      trControl$indexOut <- lapply(trControl$index, function(training) setdiff(y_index, training))
+      if(trControl$method %in% c("optimism_boot", "boot_all")) {
+        trControl$indexExtra <- lapply(trControl$index, function(training) {
+          list(origIndex = y_index, bootIndex = training)
+        })
+      }
       names(trControl$indexOut) <- prettySeq(trControl$indexOut)
     } else {
       trControl$indexOut <- createTimeSlices(seq(along = y),
@@ -559,7 +563,7 @@ train.default <- function(x, y,
 
 
     num_rs <- if(trControl$method != "oob") length(trControl$index) else 1L
-    if(trControl$method == "boot632") num_rs <- num_rs + 1L
+    if(trControl$method %in% c("boot632", "optimism_boot", "boot_all")) num_rs <- num_rs + 1L
     ## Set or check the seeds when needed
     if(is.null(trControl$seeds) || all(is.na(trControl$seeds)))  {
       seeds <- sample.int(n = 1000000L, size = num_rs * nrow(trainInfo$loop) + 1L)
@@ -653,6 +657,9 @@ train.default <- function(x, y,
         }
       }
     }
+    
+    ## Remove extra indices
+    trControl$indexExtra <- NULL
 
     ## TODO we used to give resampled results for LOO
     if(!(trControl$method %in% c("LOOCV", "oob"))) {
