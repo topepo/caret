@@ -132,7 +132,7 @@ stringFunc <- function (x)  {
 
       cat("Resampling results")
       if(dim(tuneAcc)[1] > 1) cat(" across tuning parameters")
-      if(showSD) cat(" (values above are 'mean (sd)')")
+      if(showSD) cat(" (values below are 'mean (sd)')")
       cat(":\n\n")
 
       if(dim(tuneAcc)[1] > 1) {
@@ -264,7 +264,8 @@ stringFunc <- function (x)  {
         cat(truncateText(met))
       }
 
-      cat(truncateText(optString), "\n")
+      cat(truncateText(optString))
+      if(nzchar(optString)) cat("\n")
     } else printMat <- NULL
 
     if(details) {
