@@ -6,7 +6,9 @@
 
 \section{Changes in version 6.0-xx}{
 	\itemize{
-		\item Monotone multi-mayer perceptron neural network models from the \cpkg{monmlp} package were added \issue{489}
+		\item Monotone multi-layer perceptron neural network models from the \cpkg{monmlp} package were added \issue{489}
+		\item A new resampling function (\code{groupKFold}) was added \issue(540)
+		\item The bootstrap optimism estimate was added by Alexis Sarda \issue(544)
 	}
 }
 
