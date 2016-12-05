@@ -97,7 +97,7 @@ A list is returned of class \code{train} containing: \item{method
 tuning parameters.} \item{bestTune }{a data frame with the final
 parameters.}
 
-\item{call }{the (matched) function call with dots expanded} \item{dots}{a
+\item{call}{the (matched) function call with dots expanded} \item{dots}{a
 list containing any ... values passed to the original call} \item{metric}{a
 string that specifies what summary metric will be used to select the optimal
 model.} \item{control}{the list of control parameters.} \item{preProcess

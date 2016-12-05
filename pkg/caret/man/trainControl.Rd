@@ -19,6 +19,7 @@ trainControl(method = "boot", number = ifelse(grepl("cv", method), 10, 25),
 }
 \arguments{
 \item{method}{The resampling method: \code{"boot"}, \code{"boot632"},
+\code{"optimism_boot"}, \code{"boot_all"},
 \code{"cv"}, \code{"repeatedcv"}, \code{"LOOCV"}, \code{"LGOCV"} (for
 repeated training/test splits), \code{"none"} (only fits one model to the
 entire training set), \code{"oob"} (only for random forest, bagged trees,
@@ -163,9 +164,19 @@ The option \code{search = "grid"} uses the default grid search routine. When
 Bengio, 2012). See \url{http://topepo.github.io/caret/random-hyperparameter-search.html} for
 details and an example.
 
-The \code{"boot632"} method uses the 0.632 estimator presented in Efron
-(1983), not to be confused with the 0.632+ estimator proposed later by the
-same author.
+The supported bootstrap methods are:
+
+\itemize{
+  \item \code{"boot"}: the usual bootstrap.
+  \item \code{"boot632"}: the 0.632 bootstrap estimator (Efron, 1983).
+  \item \code{"optimism_boot"}: the optimism bootstrap estimator.
+    (Efron and Tibshirani, 1994).
+  \item \code{"boot_all"}: all of the above (for efficiency, 
+    but "boot" will be used for calculations).
+}
+
+The \code{"boot632"} method should not to be confused with the 0.632+ 
+estimator proposed later by the same author.
 }
 \examples{
 
@@ -214,6 +225,9 @@ Max Kuhn
 Efron (1983). ``Estimating the error rate of a prediction rule:
 improvement on cross-validation''. Journal of the American Statistical
 Association, 78(382):316-331
+
+Efron, B., & Tibshirani, R. J. (1994). ``An introduction to the bootstrap'',
+pages 249-252. CRC press.
 
 Bergstra and Bengio (2012), ``Random Search for Hyper-Parameter
 Optimization'', Journal of Machine Learning Research, 13(Feb):281-305
