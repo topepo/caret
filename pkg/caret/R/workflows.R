@@ -158,12 +158,12 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
             rm(tmp)
           }
         } else if(!is.null(extraIndex)) {
-          predictedExtra <- lapply(extraIndex, function(idx) { 
-            try(predictionFunction(method = method,
-                                   modelFit = mod$fit,
-                                   newdata = x[idx, , drop = FALSE],
-                                   preProc = mod$preProc,
-                                   param = submod))
+          predictedExtra <- lapply(extraIndex, function(idx) {
+            predictionFunction(method = method,
+                               modelFit = mod$fit,
+                               newdata = x[idx, , drop = FALSE],
+                               preProc = mod$preProc,
+                               param = submod)
           })
         }
       } else {
@@ -196,6 +196,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       }
       
       if(testing) print(head(predicted))
+      probValuesExtra <- NULL
       if(ctrl$classProbs)
       {
         if(class(mod)[1] != "try-error")
@@ -205,18 +206,33 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                                      newdata = x[holdoutIndex,, drop = FALSE],
                                      preProc = mod$preProc,
                                      param = submod)
+          
+          if (!is.null(extraIndex))
+            probValuesExtra <- lapply(extraIndex, function(index) {
+              probFunction(method = method,
+                           modelFit = mod$fit,
+                           newdata = x[index,, drop = FALSE],
+                           preProc = mod$preProc,
+                           param = submod)
+            })
         } else {
           probValues <- as.data.frame(matrix(NA, nrow = nPred, ncol = length(lev)))
           colnames(probValues) <- lev
           if(!is.null(submod))
           {
-            tmp <- probValues
-            probValues <- vector(mode = "list", length = nrow(info$submodels[[parm]]) + 1)
-            for(i in seq(along = probValues)) probValues[[i]] <- tmp
-            rm(tmp)
+            probValues <- rep(probValues, nrow(info$submodels[[parm]]) + 1L)
           }
         }
         if(testing) print(head(probValues))
+      }
+      
+      if(is.null(probValuesExtra)) {
+        probValuesExtra <- as.data.frame(matrix(NA, nrow = nrow(x), ncol = length(lev)))
+        colnames(probValuesExtra) <- lev
+        if(!is.null(submod)) {
+          probValuesExtra <- rep(probValuesExtra, nrow(info$submodels[[parm]]) + 1L)
+          probValuesExtra <- rep(list(probValuesExtra), 2L)
+        }
       }
       
       ##################################
@@ -288,9 +304,14 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         if(testing) print(head(predicted))
         
         ## same for the class probabilities
-        if(ctrl$classProbs)
-        {
-          for(k in seq(along = predicted)) predicted[[k]] <- cbind(predicted[[k]], probValues[[k]])
+        if(ctrl$classProbs) {
+          predicted <- mapply(cbind, predicted, probValues, SIMPLIFY = FALSE)
+          if (!is.null(predictedExtra))
+            predictedExtra <- mapply(predictedExtra, probValuesExtra,
+                                     SIMPLIFY = FALSE,
+                                     FUN = function(predEx, probEx) {
+                                       mapply(cbind, predEx, probEx, SIMPLIFY = FALSE)
+                                     })
         }
         
         if(keep_pred || (ctrl$method == "boot_all" && names(resampleIndex)[iter] == "AllData"))
@@ -376,9 +397,9 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         
         ## for optimism bootstrap
         if(!is.null(predictedExtra)) {
-          thisResampleExtra <- mapply(predictedExtra, extraIndex,
+          thisResampleExtra <- mapply(predictedExtra, extraIndex, probValuesExtra,
                                       SIMPLIFY = FALSE, USE.NAMES = FALSE,
-                                      FUN = function(predicted, holdoutIndex) {
+                                      FUN = function(predicted, holdoutIndex, probValues) {
                                         if(is.factor(y)) predicted <- outcome_conversion(predicted, lv = lev)
                                         tmp <-  data.frame(pred = predicted,
                                                            obs = y[holdoutIndex],
@@ -387,7 +408,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                                         ## columnn to be named "pred" so force it
                                         names(tmp)[1] <- "pred"
                                         if(!is.null(wts)) tmp$weights <- wts[holdoutIndex]
-                                        if(ctrl$classProbs && nrow(tmp) == nrow(probValues)) tmp <- cbind(tmp, probValues)
+                                        if(ctrl$classProbs) tmp <- cbind(tmp, probValues)
                                         tmp$rowIndex <- holdoutIndex
                                         ctrl$summaryFunction(tmp, lev = lev, model = method)
                                       })
