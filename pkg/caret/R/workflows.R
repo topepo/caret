@@ -220,7 +220,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
           colnames(probValues) <- lev
           if(!is.null(submod))
           {
-            probValues <- rep(probValues, nrow(info$submodels[[parm]]) + 1L)
+            probValues <- rep(list(probValues), nrow(info$submodels[[parm]]) + 1L)
           }
         }
         if(testing) print(head(probValues))
@@ -230,9 +230,9 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         probValuesExtra <- as.data.frame(matrix(NA, nrow = nrow(x), ncol = length(lev)))
         colnames(probValuesExtra) <- lev
         if(!is.null(submod)) {
-          probValuesExtra <- rep(probValuesExtra, nrow(info$submodels[[parm]]) + 1L)
-          probValuesExtra <- rep(list(probValuesExtra), 2L)
+          probValuesExtra <- rep(list(probValuesExtra), nrow(info$submodels[[parm]]) + 1L)
         }
+        probValuesExtra <- rep(list(probValuesExtra), 2L)
       }
       
       ##################################
