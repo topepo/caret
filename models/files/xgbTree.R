@@ -140,7 +140,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     if(class(newdata)[1] != "xgb.DMatrix")
                       newdata <- as.matrix(newdata)
                       newdata <- xgb.DMatrix(data=newdata, missing = NA)
-                      if(modelFit$param$objective == 'binary:logitraw'){
+                      if( !is.null(modelFit$param$objective) && modelFit$param$objective == 'binary:logitraw'){
                         p <- predict(modelFit, newdata)
                         out <- exp(p)/(1+exp(p))
                       } else {
