@@ -13,7 +13,7 @@ library(plyr)
 
 Contents
 
- - [Model Training and Parameter Tuning](#builtin)
+ - [Model Training and Parameter Tuning](#basic)
    - [An Example](#example)
  - [Basic Parameter Tuning](#tune)
  - [Notes on Reproducibility](#repro)
