@@ -9,6 +9,7 @@
 		\item Monotone multi-layer perceptron neural network models from the \cpkg{monmlp} package were added \issue{489}
 		\item A new resampling function (\code{groupKFold}) was added \issue(540)
 		\item The bootstrap optimism estimate was added by Alexis Sarda \issue(544)
+		\item Bugs in \code{glm}, \code{glm.nb}, and \code{lm} variable importance methods that occur when a single variable is in the model \issue{543}
 	}
 }
 

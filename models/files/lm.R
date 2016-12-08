@@ -34,7 +34,7 @@ modelInfo <- list(label = "Linear Regression",
                   tags = c("Linear Regression", "Accepts Case Weights"),
                   varImp = function(object, ...) {
                     values <- summary(object)$coef
-                    varImps <-  abs(values[-1, grep("value$", colnames(values))])
+                    varImps <-  abs(values[-1, grep("value$", colnames(values)), drop = FALSE])
                     out <- data.frame(varImps)
                     colnames(out) <- "Overall"
                     if(!is.null(names(varImps))) rownames(out) <- names(varImps)
