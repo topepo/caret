@@ -21,13 +21,13 @@ modelInfo <- list(label = "Subtractive Clustering and Fuzzy c-Means Rules",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     args <- list(data.train = as.matrix(cbind(x, y)),
                                  method.type = "SBC",
-                                 r.a  = param$r.a,                  
-                                 eps.high = param$eps.high,
-                                 eps.low = param$eps.low)
+                                 control = list(r.a  = param$r.a,                  
+                                                eps.high = param$eps.high,
+                                                eps.low = param$eps.low))
                     
                     theDots <- list(...)
-                    if(!(any(names(theDots) == "range.data.ori"))) {
-                      args$range.data.ori <- apply(args$data.train, 2, extendrange)
+                    if(!(any(names(theDots) == "range.data"))) {
+                      args$range.data <- apply(args$data.train, 2, extendrange)
                     }
                     do.call("frbs.learn", c(args, theDots))
                   },
