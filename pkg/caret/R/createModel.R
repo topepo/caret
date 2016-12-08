@@ -56,6 +56,7 @@
     modelFit$problemType <- if(is.factor(y)) "Classification" else "Regression"
     modelFit$tuneValue <- tuneValue
     modelFit$obsLevels <- obsLevels
+    modelFit$params <- list(...)
   }
 
   list(fit = modelFit, preProc = ppObj)
