@@ -1,4 +1,4 @@
-setwd("~/Code/github/caret/models/files")
+setwd("~/github/caret/models/files")
 modelFiles <- list.files(pattern = "\\.R$")
 modelFiles <- modelFiles[!grepl("(rknn)|([mM]xnet)", modelFiles)]
 
