@@ -24,11 +24,18 @@ if (Sys.info()["sysname"] == "Linux") {
 ## Get the names of all CRAN related packages references by caret.
 ## Exclude orphaned and Bioconductor packages for now
 
-if(fresh)
-  install.packages(c("caret"),
-                   repos = "http://cran.r-project.org",
-                   type = "both",
-                   dependencies = c("Depends", "Imports", "Suggests"))
+if(fresh) {
+  if (Sys.info()["sysname"] == "Linux") {
+    install.packages(c("caret"),
+                     repos = "http://cran.r-project.org",
+                     dependencies = c("Depends", "Imports", "Suggests"))
+  } else {
+    install.packages(c("caret"),
+                     repos = "http://cran.r-project.org",
+                     type = "both",
+                     dependencies = c("Depends", "Imports", "Suggests"))
+  }
+}
 
 library(caret)
 
@@ -79,14 +86,16 @@ for(i in sort(libs)) {
   if(fresh && !(i %in% good)) {
     cat("----------------------------------------------------------------\n",
         i, "\n\n")
-    install.packages(i, repos = "http://cran.r-project.org",
-                     type = "both")
 
+    # some of these need to be installed with bioClite - znmeb, 20161221
+    if (Sys.info()["sysname"] == "Linux") {
+      biocLite(i)
+    } else {
+      biocLite(i, type = "both")
+    }
     cat("\n\n")
   }
 }
 
 ###################################################################
 ## Install orphaned packages: CHAID, rknn, SDDA
-
-
