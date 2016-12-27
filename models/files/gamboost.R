@@ -25,8 +25,7 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {                
                     ##check for control list and over-write mstop
                     theDots <- list(...)
-                    if(any(names(theDots) == "control"))
-                    {
+                    if(any(names(theDots) == "control")) {
                       theDots$control$mstop <- param$mstop 
                       ctl <- theDots$control
                       theDots$control <- NULL
@@ -40,7 +39,8 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                     
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    modelArgs <- c(list(formula = as.formula(".outcome ~ ."), data = dat, control = ctl), 
+                    modelArgs <- c(list(formula = as.formula(".outcome ~ ."), 
+                                        data = dat, control = ctl), 
                                    theDots)
                     
                     out <- do.call("gamboost", modelArgs)
@@ -95,8 +95,8 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-                    lp <- predict(modelFit, newdata)
-                    out <- cbind( binomial()$linkinv(-lp), 1 - binomial()$linkinv(-lp))
+                    probs <- predict(modelFit, newdata, type = "response")
+                    out <- cbind(1 - probs, probs)
                     colnames(out) <- modelFit$obsLevels
                     if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
@@ -106,9 +106,8 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                                          submodels$mstop[j] > modelFit$.org.mstop)
                           modelFit$.org.mstop else submodels$mstop[j]
                         
-                        tmpProb <- predict(modelFit[this_mstop], newdata)
-                        tmpProb <- cbind(binomial()$linkinv(-tmpProb),
-                                         1 - binomial()$linkinv(-tmpProb))
+                        tmpProb <- predict(modelFit[this_mstop], newdata, type = "response")
+                        tmpProb <- cbind(1 - tmpProb, tmpProb)
                         colnames(tmpProb) <- modelFit$obsLevels
                         tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels,drop = FALSE])           
                       }
