@@ -83,18 +83,16 @@ modelInfo <- list(label = "Boosted Tree",
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-                    lp <- predict(modelFit, newdata)
-                    out <- cbind(binomial()$linkinv(-lp),
-                                 1 - binomial()$linkinv(-lp))
+                    probs <- predict(modelFit, newdata, type = "response")
+                    out <- cbind(1 - probs, probs)
                     colnames(out) <- modelFit$obsLevels
                     if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
                       
                       for(j in seq(along = submodels$mstop)) {                           
-                        tmpProb <- predict(modelFit[submodels$mstop[j]], newdata)
-                        tmpProb <- cbind(binomial()$linkinv(-tmpProb),
-                                         1 - binomial()$linkinv(-tmpProb))
+                        tmpProb <- predict(modelFit[this_mstop], newdata, type = "response")
+                        tmpProb <- cbind(1 - tmpProb, tmpProb)
                         colnames(tmpProb) <- modelFit$obsLevels
                         tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE])           
                       }
