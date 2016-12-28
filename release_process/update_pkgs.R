@@ -7,23 +7,35 @@ options(repos = "http://cran.r-project.org")
 source("https://bioconductor.org/biocLite.R")
 biocLite("BiocInstaller")
 
-library(BiocInstaller) 
+library(BiocInstaller)
 #useDevel()
 
-biocLite(c("vbmp", "gpls", "logicFS", "graph", "RBGL"), 
-         type = "both",
-         dependencies = c("Depends", "Imports"))
+if (Sys.info()["sysname"] == "Linux") {
+  biocLite(c("vbmp", "gpls", "logicFS", "graph", "RBGL"),
+           dependencies = c("Depends", "Imports"))
+} else {
+  biocLite(c("vbmp", "gpls", "logicFS", "graph", "RBGL"),
+           type = "both",
+           dependencies = c("Depends", "Imports"))
+}
 
 
 ###################################################################
-## Get the names of all CRAN related packages references by caret. 
+## Get the names of all CRAN related packages references by caret.
 ## Exclude orphaned and Bioconductor packages for now
 
-if(fresh)
-  install.packages(c("caret"), 
-                   repos = "http://cran.r-project.org", 
-                   type = "both",
-                   dependencies = c("Depends", "Imports", "Suggests"))
+if(fresh) {
+  if (Sys.info()["sysname"] == "Linux") {
+    install.packages(c("caret"),
+                     repos = "http://cran.r-project.org",
+                     dependencies = c("Depends", "Imports", "Suggests"))
+  } else {
+    install.packages(c("caret"),
+                     repos = "http://cran.r-project.org",
+                     type = "both",
+                     dependencies = c("Depends", "Imports", "Suggests"))
+  }
+}
 
 library(caret)
 
@@ -32,19 +44,19 @@ mods <- getModelInfo()
 libs <- unlist(lapply(mods, function(x) x$library))
 libs <- unique(sort(libs))
 libs <- libs[!(libs %in% c("caret", "vbmp", "gpls", "logicFS", "SDDA"))]
-libs <- c(libs, "knitr", "Hmisc", "googleVis", "animation", 
-          "desirability", "networkD3", "d3heatmap", "arm", "xtable", 
+libs <- c(libs, "knitr", "Hmisc", "googleVis", "animation",
+          "desirability", "networkD3", "d3heatmap", "arm", "xtable",
           "RColorBrewer", "gplots", "iplots", "latticeExtra",
           "scatterplot3d", "vcd", "igraph", "corrplot", "ctv",
           "Cairo", "shiny", "scales", "tabplot", "tikzDevice", "odfWeave",
-          "multicore", "doMC", "doMPI", "doSMP", "doBy", 
-          "foreach", "doParallel", "aod", "car", "contrast", "Design", 
+          "multicore", "doMC", "doMPI", "doSMP", "doBy",
+          "foreach", "doParallel", "aod", "car", "contrast", "Design",
           "faraway",  "geepack",  "gmodels", "lme4", "tidyr", "devtools", "testthat",
-          "multcomp", "multtest", "pda", "qvalue", "ChemometricsWithR", "markdown", 
+          "multcomp", "multtest", "pda", "qvalue", "ChemometricsWithR", "markdown",
           "rmarkdown", "pscl",
           ## odds and ends
           "ape", "gdata", "boot", "bootstrap", "chron", "combinat", "concord", "cluster",
-          "desirability", "gsubfn", "gtools", "impute", "Matrix", "proxy", "plyr", 
+          "desirability", "gsubfn", "gtools", "impute", "Matrix", "proxy", "plyr",
           "reshape", "rJava", "SparseM", "sqldf", "XML", "lubridate", "dplyr", "GA",
           "aroma.affymetrix", "remMap", "cghFLasso", "RCurl", "QSARdata", "reshape2",
           "mapproj", "ggmap", "ggvis", "SuperLearner", "subsemble", "caretEnsemble",
@@ -74,14 +86,16 @@ for(i in sort(libs)) {
   if(fresh && !(i %in% good)) {
     cat("----------------------------------------------------------------\n",
         i, "\n\n")
-    install.packages(i, repos = "http://cran.r-project.org", 
-                     type = "both")
-    
+
+    # some of these need to be installed with bioClite - znmeb, 20161221
+    if (Sys.info()["sysname"] == "Linux") {
+      biocLite(i)
+    } else {
+      biocLite(i, type = "both")
+    }
     cat("\n\n")
   }
 }
 
 ###################################################################
 ## Install orphaned packages: CHAID, rknn, SDDA
-
-
