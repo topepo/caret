@@ -55,7 +55,7 @@ modelInfo <- list(label = "Generalized Linear Model",
                     vimp <- data.frame(varImps)
                     colnames(vimp) <- "Overall"
                     if(!is.null(names(varImps))) rownames(vimp) <- names(varImps)
-                    out
+                    vimp
                   },
                   predictors = function(x, ...) predictors(x$terms),
                   levels = function(x) if(any(names(x) == "obsLevels")) x$obsLevels else NULL,
