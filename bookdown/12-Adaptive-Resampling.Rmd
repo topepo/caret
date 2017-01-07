@@ -4,8 +4,6 @@ library(pROC)
 library(kernlab)
 library(nlme)
 library(QSARdata)
-library(doMC)
-registerDoSEQ()
 
 theme_set(theme_bw())
 library(knitr)

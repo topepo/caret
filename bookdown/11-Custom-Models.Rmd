@@ -11,7 +11,6 @@ library(randomForest)
 library(pls)
 library(caret)
 theme_set(theme_bw())
-library(doMC)
 ```
 
 # Using Your Own Model in `train`
@@ -434,9 +433,6 @@ lbFuncs <- list(library = "caTools",
 
 Should you care about this? Let's tune the model over the same data set used for the SVM model above and see how long it takes:
 
-```{r custom_reset_workers, echo=FALSE, results = 'hide'}
-registerDoSEQ()
-``` 
 ```{r custom_lb_mod, tidy=FALSE}
 set.seed(825)
 lb1 <- system.time(train(Class ~ ., data = training, 
@@ -487,10 +483,7 @@ ggplot(results, aes(x = nIter, y = SpeedUp)) +
   xlab("LogitBoost Iterations") + 
   ylab("Speed-Up")
 ```
-```{r custom_reset_workers2, echo=FALSE, results = 'hide'}
-registerDoMC(cores=detectCores()-1)
-``` 
-<p>
+
 
 The speed-ups show a significant decrease in training time using this method.
 
