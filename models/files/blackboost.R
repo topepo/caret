@@ -91,7 +91,7 @@ modelInfo <- list(label = "Boosted Tree",
                       tmp[[1]] <- out
                       
                       for(j in seq(along = submodels$mstop)) {                           
-                        tmpProb <- predict(modelFit[this_mstop], newdata, type = "response")
+                        tmpProb <- predict(modelFit[submodels$mstop[j]], newdata, type = "response")
                         tmpProb <- cbind(1 - tmpProb, tmpProb)
                         colnames(tmpProb) <- modelFit$obsLevels
                         tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE])           
