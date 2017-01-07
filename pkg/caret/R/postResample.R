@@ -228,7 +228,7 @@ multiClassSummary <- function (data, lev = NULL, model = NULL){
 
   # Change name ordering to place most useful first
   # May want to remove some of these eventually
-  stat_list <- c("Accuracy", "Kappa", "Mean_Sensitivity", "Mean_Specificity",
+  stat_list <- c("Accuracy", "Kappa", "Mean_F1", "Mean_Sensitivity", "Mean_Specificity",
                  "Mean_Pos_Pred_Value", "Mean_Neg_Pred_Value", "Mean_Detection_Rate",
                  "Mean_Balanced_Accuracy")
   if(has_class_probs) stat_list <- c("logLoss", "Mean_AUC", stat_list)
