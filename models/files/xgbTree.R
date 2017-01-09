@@ -184,6 +184,12 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     rownames(imp) <- as.character(imp[,1])
                     imp <- imp[,2,drop = FALSE]
                     colnames(imp) <- "Overall"
+
+                    missing <- object$xNames[!(object$xNames %in% rownames(imp))]
+                    missing_imp <- data.frame(Overall=rep(0, times=length(missing)))
+                    rownames(missing_imp) <- missing
+                    imp <- rbind(imp, missing_imp)
+
                     imp
                   },
                   levels = function(x) x$obsLevels,
