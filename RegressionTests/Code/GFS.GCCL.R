@@ -1,5 +1,5 @@
+timestamp <- Sys.time()
 library(caret)
-timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
 
 model <- "GFS.GCCL"
 
@@ -62,10 +62,11 @@ if(!all(levels(trainY) %in% test_levels))
 #########################################################################
 
 sInfo <- sessionInfo()
+timestamp_end <- Sys.time()
 
 tests <- grep("test_", ls(), fixed = TRUE, value = TRUE)
 
-save(list = c(tests, "sInfo", "timestamp"),
+save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
 q("no")

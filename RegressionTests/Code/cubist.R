@@ -1,5 +1,5 @@
+timestamp <- Sys.time()
 library(caret)
-timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
 
 model <- "cubist"
 
@@ -77,10 +77,11 @@ test_reg_imp <- varImp(test_reg_cv_model)
 #########################################################################
 
 sInfo <- sessionInfo()
+timestamp_end <- Sys.time()
 
 tests <- grep("test_", ls(), fixed = TRUE, value = TRUE)
 
-save(list = c(tests, "sInfo", "timestamp"),
+save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
 q("no")

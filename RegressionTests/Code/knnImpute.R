@@ -1,6 +1,7 @@
-model <- "knnImpute"
-
+timestamp <- Sys.time()
 library(caret)
+
+model <- "knnImpute"
 
 ## test for a single missing value in a numeric predictor
 iris_miss_1 <- iris[, -5]
@@ -60,6 +61,7 @@ test_6_result <- try(predict(pp_6_test, iris_miss_6), silent = TRUE)
 tests <- grep("test_", ls(), fixed = TRUE, value = TRUE)
 
 sInfo <- sessionInfo()
+timestamp_end <- Sys.time()
 
-save(list = c(tests, "sInfo", "timestamp"),
+save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))

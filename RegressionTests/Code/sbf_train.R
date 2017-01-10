@@ -1,5 +1,5 @@
+timestamp <- Sys.time()
 library(caret)
-timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
 
 model <- "sbf_train"
 
@@ -132,8 +132,9 @@ test_loo_pred_form_class <- predict(test_loo_model_form_class,
 tests <- grep("test_", ls(), fixed = TRUE, value = TRUE)
 
 sInfo <- sessionInfo()
+timestamp_end <- Sys.time()
 
-save(list = c(tests, "sInfo", "timestamp"),
+save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
 q("no")

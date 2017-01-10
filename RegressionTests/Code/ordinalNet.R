@@ -1,5 +1,5 @@
+timestamp <- Sys.time()
 library(caret)
-timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
 
 model <- "ordinalNet"
 
@@ -100,8 +100,9 @@ test_class_imp <- varImp(test_class_cv_model)
 tests <- grep("test_", ls(), fixed = TRUE, value = TRUE)
 
 sInfo <- sessionInfo()
+timestamp_end <- Sys.time()
 
-save(list = c(tests, "sInfo", "timestamp"),
+save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
 q("no")

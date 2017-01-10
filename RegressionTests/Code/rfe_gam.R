@@ -1,5 +1,5 @@
+timestamp <- Sys.time()
 library(caret)
-timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
 
 model <- "rfe_gam"
 
@@ -114,8 +114,9 @@ test_cv_pred_form_class <- predict(test_cv_model_form_class, testX_class)
 tests <- grep("test_", ls(), fixed = TRUE, value = TRUE)
 
 sInfo <- sessionInfo()
+timestamp_end <- Sys.time()
 
-save(list = c(tests, "sInfo", "timestamp"),
+save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
 q("no")
