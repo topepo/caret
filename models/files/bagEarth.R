@@ -48,7 +48,7 @@ modelInfo <- list(label = "Bagged MARS",
                                    theDots)
                     if(is.factor(y)) modelArgs$glm <- list(family=binomial)
                     
-                    tmp <- do.call("bagEarth", modelArgs)
+                    tmp <- do.call(getFromNamespace("bagEarth.default", "caret"), modelArgs)
                     
                     tmp$call["nprune"] <-  param$nprune
                     tmp$call["degree"] <-  param$degree
