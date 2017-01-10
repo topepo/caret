@@ -74,7 +74,7 @@ test_loo_pred_form <- predict(test_loo_model_form, testing[, colnames(testing) !
 #########################################################################
 
 set.seed(2)
-training_class <- twoClassSim(50)
+training_class <- twoClassSim(150)
 testing_class <- twoClassSim(500)
 
 trainX_class <- training_class[, -ncol(training_class)]
