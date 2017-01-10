@@ -8,6 +8,9 @@ If you are filing a bug, make sure these boxes are checked before submitting you
 - [ ] run `sessionInfo()`
 
 ### Minimal, reproducible example:
+
+__Please read this page__: [reprex = {repr}oducible {ex}ample](https://github.com/jennybc/reprex#what-is-a-reprex) 
+
 Text and example code modified from [the R FAQ on stackoverflow](http://stackoverflow.com/a/5963610)
 
 #### Minimal dataset:
