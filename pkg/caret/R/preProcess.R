@@ -273,7 +273,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
     method$corr <- NULL
   }
   
-  x <- x[, !(colnames(x) %in% method$remove)] 
+  x <- x[, !(colnames(x) %in% method$remove), drop = FALSE] 
   method = sapply(names(method), function(u) 
     if(u != 'remove'){
       method[[u]][ which(( method[[u]] %in% colnames(x)))]
