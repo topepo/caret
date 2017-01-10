@@ -1,8 +1,8 @@
 source("markdown_functions.R")
 
 ## File in the paths to the test results for the "old" and "new" versions
-op <- "~/tmp/2016_10_31_05__6.0-71/"
-np <- "~/tmp/2016_10_30_22__6.0-72/"
+op <- "~/tmp/2017_01_10_17__6.0-73/"
+np <- "~/tmp/2017_01_10_17__6.0-74/"
 
 mods <- match_objects(op, np)
 
@@ -34,14 +34,33 @@ for(mod in mods) {
              "can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/",
              mod, ".R).\nA [history of commits](https://github.com/topepo/caret/commits/master/models/files/",
              mod, ".R) for the model code is also available\n\n")) 
-      
-      try(obj_compare(file.path(op, paste0(mod, ".RData")),
-                      file.path(np, paste0(mod, ".RData"))),
-          silent = TRUE)
-      
-      sink()
+  
+  try(obj_compare(file.path(op, paste0(mod, ".RData")),
+                  file.path(np, paste0(mod, ".RData"))),
+      silent = TRUE)
+  
+  sink()
 }
 
+elapsed_time <- data.frame(test = mods, old = 0*NA, new = 0*NA)
+for(i in seq_along(mods)) {
+  elapsed_time[i, ] <- get_times(file.path(op, paste0(mods[i], ".RData")),
+                                 file.path(np, paste0(mods[i], ".RData")))
+  
+}
 
+elapsed_time <- elapsed_time[complete.cases(elapsed_time),]
+elapsed_time$Geo_Mean <- sqrt(elapsed_time$old*elapsed_time$new)
+elapsed_time$Fold_diff <- elapsed_time$old/elapsed_time$new
 
+library(ggplot2)
+png("~/tmp/test_results/_times.png")
+ggplot(elapsed_time, aes(x = Geo_Mean, y = Fold_diff)) + 
+  geom_point() + scale_y_continuous(trans = "log2") +
+  geom_smooth() + 
+  ylab("Fold Difference (O/N)") + xlab("Geo Mean") + 
+  ggtitle("Total Test Execution Time")  +
+  theme_bw()
+dev.off()
 
+exp(t.test(log(elapsed_time$Fold_diff))$conf.int)
