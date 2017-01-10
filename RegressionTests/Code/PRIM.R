@@ -12,7 +12,7 @@ trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
 seeds <- vector(mode = "list", length = nrow(training) + 1)
-seeds <- lapply(seeds, function(x) 1:20)
+seeds <- lapply(seeds, function(x) 1:207)
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE, 
