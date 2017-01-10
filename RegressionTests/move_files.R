@@ -11,8 +11,11 @@ dir.create(paste0("~/tmp/", newPath))
 testFiles <- list.files(file.path(getwd(), "Code"),
                         full.names = TRUE)
 
-## package archived:
-testFiles <- testFiles[!grepl("(Mlda)|(RFlda)", testFiles)]
+## package archived or models excluded
+exclusions <- c("rknn", "rknnBel", "[mM]xnet", "sdda", "enpls.fs", "enpls", "Boruta", "Mlda", "RFlda", "rbf")
+exclusions <- paste0("(", exclusions, "\\.R)")
+exclusions <- paste0(exclusions, collapse = "|")
+testFiles <- testFiles[-grep(exclusions, testFiles)]
 
 newFiles <- paste0("~/tmp/", newPath, "/", basename(testFiles))
 
@@ -29,19 +32,22 @@ frbs <- paste0(frbs, ".RData")
 
 rFiles <- list.files(file.path(getwd(), "Code"), pattern = "R$")
 ## package archived:
-rFiles <- rFiles[!grepl("(Mlda)|(RFlda)", rFiles)]
+rFiles <- rFiles[-grep(exclusions, rFiles)]
 
-header <- paste(sort(rFiles), "Data: ", sort(rFiles), "\n", sep = "")
+set.seed(131311)
+rFiles <- sample(rFiles)
+
+header <- paste(rFiles, "Data: ", rFiles, "\n", sep = "")
 
 strt <- paste("\t@date '+ %Y-%m-%d %H:%M:%S: Starting ",
-              gsub(".R$", "", sort(rFiles)), "'\n", sep = "")
+              gsub(".R$", "", rFiles), "'\n", sep = "")
 
-batch <- paste("\t@R CMD BATCH --vanilla ", sort(rFiles), "\n", sep = "")
+batch <- paste("\t@R CMD BATCH --vanilla ", rFiles, "\n", sep = "")
 
 fini <- paste("\t@date '+ %Y-%m-%d %H:%M:%S: Finished ",
-              gsub(".R$", "", sort(rFiles)), "'\n\n", sep = "")
+              gsub(".R$", "", rFiles), "'\n\n", sep = "")
 
-rdata <- paste(sort(rFiles), "Data", sep = "")
+rdata <- paste(rFiles, "Data", sep = "")
 rdata0 <- rdata[!(rdata %in% frbs)]
 
 over <- length(rdata) %% 3
