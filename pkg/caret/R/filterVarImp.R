@@ -1,7 +1,8 @@
 
 #' @importFrom ModelMetrics auc
 rocPerCol <- function(dat, cls){
-  auc(cls, dat)
+  roc_auc <- auc(cls, dat)
+  max(roc_auc, 1 - roc_auc)
 }
 
 #' @importFrom utils modifyList
