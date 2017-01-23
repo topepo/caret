@@ -295,7 +295,7 @@ train.default <- function(x, y,
     warning("Models using Weka will not work with parallel processing with multicore/doMC")
   flush.console()
 
-  if(!is.null(preProcess) && !(all(preProcess %in% ppMethods)))
+  if(!is.null(preProcess) && !(all(names(preProcess) %in% ppMethods)))
     stop(paste('pre-processing methods are limited to:', paste(ppMethods, collapse = ", ")))
   if(modelType == "Classification") {
     ## We should get and save the class labels to ensure that predictions are coerced
