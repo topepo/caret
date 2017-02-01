@@ -180,6 +180,10 @@ multiClassSummary <- function (data, lev = NULL, model = NULL){
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"])))
     stop("levels of observed and predicted data do not match")
   has_class_probs <- all(lev %in% colnames(data))
+  if( nlevels(data[, "pred"]) == 2){
+    warning("declared 'multiClassSummary' in binary classification task") 
+    return( twoClassSummary( data, lev = lev, model = model ) )
+  }
   if(has_class_probs) {
     ## Overall multinomial loss
     lloss <- mnLogLoss(data = data, lev = lev, model = model)
