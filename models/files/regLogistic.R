@@ -34,7 +34,9 @@ modelInfo <- list(label = "Regularized Logistic Regression",
                   predict = function(modelFit, newdata, submodels = NULL) {
                     predict(modelFit, newdata)$predictions
                   },
-                  prob = NULL,
+                  prob = function(modelFit, newdata, submodels = NULL){
+                    predict(modelFit,newdata, proba = TRUE )$probabilities
+                  },
                   predictors = function(x, ...) { 
                     out <- colnames(x$W)
                     out[out != "Bias"]
