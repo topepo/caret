@@ -1,30 +1,30 @@
 #' Calculation of variable importance for regression and classification models
-#' 
+#'
 #' A generic method for calculating variable importance for objects produced by
 #' \code{train} and method specific methods
-#' 
+#'
 #' For models that do not have corresponding \code{varImp} methods, see
 #' \code{\link{filterVarImp}}.
 #' 
 #' Otherwise:
-#' 
+#'
 #' \bold{Linear Models}: the absolute value of the t--statistic for each model
 #' parameter is used.
-#' 
+#'
 #' \bold{\code{glmboost}} and \bold{\code{glmnet}}: the absolute value of the coefficients
-#' corresponding the the tuned model are used. 
-#' 
+#' corresponding the the tuned model are used.
+#'
 #' \bold{Random Forest}: \code{varImp.randomForest} and
 #' \code{varImp.RandomForest} are wrappers around the importance functions from
 #' the \pkg{randomForest} and \pkg{party} packages, respectively.
-#' 
+#'
 #' \bold{Partial Least Squares}: the variable importance measure here is based
 #' on weighted sums of the absolute regression coefficients. The weights are a
 #' function of the reduction of the sums of squares across the number of PLS
 #' components and are computed separately for each outcome. Therefore, the
 #' contribution of the coefficients are weighted proportionally to the
 #' reduction in the sums of squares.
-#' 
+#'
 #' \bold{Recursive Partitioning}: The reduction in the loss function (e.g. mean
 #' squared error) attributed to each variable at each split is tabulated and
 #' the sum is returned. Also, since there may be candidate variables that are
@@ -32,13 +32,13 @@
 #' tabulated at each split. This can be turned off using the \code{maxcompete}
 #' argument in \code{rpart.control}. This method does not currently provide
 #' class--specific measures of importance when the response is a factor.
-#' 
+#'
 #' \bold{Bagged Trees}: The same methodology as a single tree is applied to all
 #' bootstrapped trees and the total importance is returned
-#' 
+#'
 #' \bold{Boosted Trees}: \code{varImp.gbm} is a wrapper around the function
 #' from that package (see the \pkg{gbm} package vignette)
-#' 
+#'
 #' \bold{ Multivariate Adaptive Regression Splines}: MARS models include a
 #' backwards elimination feature selection routine that looks at reductions in
 #' the generalized cross-validation (GCV) estimate of error. The \code{varImp}
@@ -60,14 +60,14 @@
 #' added, which will never be negative.  Also, the option \code{varImp(object,
 #' value =" nsubsets")}, which counts the number of subsets where the variable
 #' is used (in the final, pruned model).
-#' 
+#'
 #' \bold{Nearest shrunken centroids}: The difference between the class
 #' centroids and the overall centroid is used to measure the variable influence
 #' (see \code{pamr.predict}). The larger the difference between the class
 #' centroid and the overall center of the data, the larger the separation
 #' between the classes. The training set predictions must be supplied when an
 #' object of class \code{pamrtrained} is given to \code{varImp}.
-#' 
+#'
 #' \bold{Cubist}: The Cubist output contains variable usage statistics. It
 #' gives the percentage of times where each variable was used in a condition
 #' and/or a linear model. Note that this output will probably be inconsistent
@@ -82,10 +82,10 @@
 #' reflects all the models involved in prediction (as opposed to the terminal
 #' models shown in the output). The variable importance used here is a linear
 #' combination of the usage in the rule conditions and the model.
-#' 
+#'
 #' \bold{PART} and \bold{JRip}: For these rule-based models, the importance for
 #' a predictor is simply the number of rules that involve the predictor.
-#' 
+#'
 #' \bold{C5.0}: C5.0 measures predictor importance by determining the
 #' percentage of training set samples that fall into all the terminal nodes
 #' after the split. For example, the predictor in the first split automatically
@@ -96,21 +96,21 @@
 #' models and boosted versions of the model. The underlying function can also
 #' return the number of times each predictor was involved in a split by using
 #' the option \code{metric = "usage"}.
-#' 
+#'
 #' \bold{Neural Networks}: The method used here is based on Gevrey et al
 #' (2003), which uses combinations of the absolute values of the weights. For
 #' classification models, the class-specific importances will be the same.
-#' 
+#'
 #' \bold{Recursive Feature Elimination}: Variable importance is computed using
 #' the ranking method used for feature selection. For the final subset size,
 #' the importances for the models across all resamples are averaged to compute
 #' an overall value.
-#' 
+#'
 #' \bold{Feature Selection via Univariate Filters}, the percentage of resamples
 #' that a predictor was selected is determined. In other words, an importance
 #' of 0.50 means that the predictor survived the filter in half of the
 #' resamples.
-#' 
+#'
 #' @aliases varImp varImp.train varImp.earth varImp.rpart varImp.randomForest
 #' varImp.gbm varImp.regbagg varImp.classbagg varImp.pamrtrained varImp.lm
 #' varImp.mvr varImp.bagEarth varImp.bagFDA varImp.RandomForest varImp.rfe
@@ -149,7 +149,7 @@
 #' @references Gevrey, M., Dimopoulos, I., & Lek, S. (2003). Review and
 #' comparison of methods to study the contribution of variables in artificial
 #' neural network models. Ecological Modelling, 160(3), 249-264.
-#' 
+#'
 #' Quinlan, J. (1992). Learning with continuous classes. Proceedings of the 5th
 #' Australian Joint Conference On Artificial Intelligence, 343-348.
 #' @keywords models
@@ -181,7 +181,7 @@ GarsonWeights <- function(object)
                            sep = "")
             h2o[hidden,output] <- abeta[grep(label, nms, fixed = TRUE)]
           }
-      }    
+      }
 
     if(FALSE)
       {
@@ -189,7 +189,7 @@ GarsonWeights <- function(object)
         ## S. (2003). Review and comparison of methods to study the
         ## contribution of variables in artificial neural network
         ## models. ecological modelling, 160(3), 249-264.
-        i2h <- matrix(c(-1.67624,  3.29022,  1.32466, 
+        i2h <- matrix(c(-1.67624,  3.29022,  1.32466,
                         -0.51874, -0.22921, -0.25526,
                         -4.01764,  2.12486, -0.08168,
                         -1.75691, -1.44702,  0.58286),
@@ -210,7 +210,7 @@ GarsonWeights <- function(object)
     ## least in the case of classification).
 
     imp <- matrix(NA, nrow = object$n[1], ncol = object$n[3])
-    
+
 
     for(output in 1:object$n[3])
       {
@@ -220,10 +220,10 @@ GarsonWeights <- function(object)
         ## "For each hidden neuron, divide Pij by the sum for all the
         ## input variables to obtain Qij. For example for Hidden 1, Q11 =
         ## P11/(P11+P12+P13).
-        
+
         Qij <- Pij * NA
         for(hidden in 1:object$n[2]) Qij[hidden,] <- Pij[hidden,] / sum(Pij[hidden,])
-        
+
 
         ## "For each input neuron, sum the product Sj formed from the
         ## previous computations of Qij. For example, S1 =
@@ -240,7 +240,7 @@ GarsonWeights <- function(object)
         imp[,output] <- Sj/sum(Sj)*100
         rm(Pij, Qij, Sj)
       }
-    
+
     colnames(imp) <- if(!is.null(colnames(object$residuals))) colnames(object$residuals) else paste("Y", 1:object$n[3], sep = "")
     rownames(imp) <- if(!is.null(object$coefnames)) object$coefnames else  paste("X", 1:object$n[1], sep = "")
     imp
@@ -250,11 +250,11 @@ GarsonWeights <- function(object)
 GarsonWeights_FCNN4R <- function (object, xnames = NULL, ynames = NULL) {
   beta <- abs(object$net@m_w_values[which(object$net@m_w_flags != 0L)])
   dims <- object$net@m_layers
-  
+
   index <- (dims[1]+1)*dims[2]
   i2h <- t(matrix(beta[1:index], ncol = dims[2]))
   i2h <- i2h[, -1,drop = FALSE]
-  
+
   h2o <- matrix(beta[(index+1):length(beta)], ncol = dims[3])
   h2o <- h2o[-1,,drop = FALSE]
 
@@ -273,7 +273,7 @@ GarsonWeights_FCNN4R <- function (object, xnames = NULL, ynames = NULL) {
       xnames
   colnames(imp) <- if(is.null(ynames))
     paste("Y", 1:dims[3], sep = "") else
-      ynames 
+      ynames
   imp
 }
 
@@ -281,7 +281,7 @@ varImpDependencies <- function(libName){
   code <- getModelInfo(libName, regex = FALSE)[[1]]
   checkInstall(code$library)
   for(i in seq(along = code$library))
-    do.call("require", list(package = code$library[i]))
+    do.call("requireNamespaceQuietStop", list(package = code$library[i]))
   return(code)
 }
 
@@ -426,9 +426,9 @@ varImp.regbagg <- function(object, ...){
 #' @export
 varImp.pamrtrained <- function(object, threshold, data, ...){
   code <- varImpDependencies("pam")
-  code$varImp(object, 
-              threshold = object$bestTune$threshold, 
-              data = object$finalModel$xData, 
+  code$varImp(object,
+              threshold = object$bestTune$threshold,
+              data = object$finalModel$xData,
               ...)
 }
 

@@ -302,7 +302,7 @@ train.default <- function(x, y,
       stop(paste("Model", method, "is not in caret's built-in library"), call. = FALSE)
   }
   checkInstall(models$library)
-  for(i in seq(along = models$library)) do.call("require", list(package = models$library[i]))
+  for(i in seq(along = models$library)) do.call("requireNamespaceQuietStop", list(package = models$library[i]))
   if(any(names(models) == "check") && is.function(models$check)) {
     software_check <- models$check(models$library)
   }
@@ -651,7 +651,7 @@ train.default <- function(x, y,
         }
       }
     }
-    
+
     ## Remove extra indices
     trControl$indexExtra <- NULL
 
