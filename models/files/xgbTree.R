@@ -33,7 +33,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     out
                   },
                   loop = function(grid) {
-                    loop <- ddply(grid, c("eta", "max_depth", "gamma",
+                    loop <- plyr::ddply(grid, c("eta", "max_depth", "gamma",
                                           "colsample_bytree", "min_child_weight",
                                           "subsample"),
                                   function(x) c(nrounds = max(x$nrounds)))
@@ -59,16 +59,16 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       if(length(lev) == 2) {
                         
                         y <- ifelse(y == lev[1], 1, 0)
-                        
+
                         if(!inherits(x, "xgb.DMatrix"))
-                          x <- xgb.DMatrix(x, label = y, missing = NA) else
+                          x <- xgboost::xgb.DMatrix(x, label = y, missing = NA) else
                             setinfo(x, "label", y)
                         
                         if (!is.null(wts))
                           setinfo(x, 'weight', wts)
                         
-                        out <- xgb.train(list(eta = param$eta,
-                                              max_depth = param$max_depth,
+                        out <- xgboost::xgb.train(list(eta = param$eta,
+                                             max_depth = param$max_depth,
                                               gamma = param$gamma,
                                               colsample_bytree = param$colsample_bytree,
                                               min_child_weight = param$min_child_weight,
@@ -80,15 +80,15 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       } else {
                         
                         y <- as.numeric(y) - 1
-                        
+
                         if(!inherits(x, "xgb.DMatrix"))
-                          x <- xgb.DMatrix(x, label = y, missing = NA) else
+                          x <- xgboost::xgb.DMatrix(x, label = y, missing = NA) else
                             setinfo(x, "label", y)
                         
                         if (!is.null(wts))
                           setinfo(x, 'weight', wts)
                         
-                        out <- xgb.train(list(eta = param$eta,
+                        out <- xgboost::xgb.train(list(eta = param$eta,
                                               max_depth = param$max_depth,
                                               gamma = param$gamma,
                                               colsample_bytree = param$colsample_bytree,
@@ -101,15 +101,15 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                          ...)
                       }
                     } else {
-                      
+
                       if(!inherits(x, "xgb.DMatrix"))
-                        x <- xgb.DMatrix(x, label = y, missing = NA) else
+                        x <- xgboost::xgb.DMatrix(x, label = y, missing = NA) else
                           setinfo(x, "label", y)
                       
                       if (!is.null(wts))
                         setinfo(x, 'weight', wts)
                       
-                      out <- xgb.train(list(eta = param$eta,
+                      out <- xgboost::xgb.train(list(eta = param$eta,
                                             max_depth = param$max_depth,
                                             gamma = param$gamma,
                                             colsample_bytree = param$colsample_bytree,
@@ -127,9 +127,9 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!inherits(newdata, "xgb.DMatrix")) {
                       newdata <- as.matrix(newdata)
-                      newdata <- xgb.DMatrix(data=newdata, missing = NA)
+                      newdata <- xgboost::xgb.DMatrix(data=newdata, missing = NA)
                     }
-                    out <- predict(modelFit, newdata)
+                   out <- predict(modelFit, newdata)
                     if(modelFit$problemType == "Classification") {
                       if(length(modelFit$obsLevels) == 2) {
                         out <- ifelse(out >= .5,
@@ -165,7 +165,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(!inherits(newdata, "xgb.DMatrix")) {
                       newdata <- as.matrix(newdata)
-                      newdata <- xgb.DMatrix(data=newdata, missing = NA)
+                      newdata <- xgboost::xgb.DMatrix(data=newdata, missing = NA)
                     }
                     
                     if( !is.null(modelFit$param$objective) && modelFit$param$objective == 'binary:logitraw'){
@@ -174,7 +174,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     } else {
                       out <- predict(modelFit, newdata)
                     }
-                    if(length(modelFit$obsLevels) == 2) {
+                   if(length(modelFit$obsLevels) == 2) {
                       out <- cbind(out, 1 - out)
                       colnames(out) <- modelFit$obsLevels
                     } else {
@@ -203,11 +203,11 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     out
                   },
                   predictors = function(x, ...) {
-                    imp <- xgb.importance(x$xNames, model = x)
+                    imp <- xgboost::xgb.importance(x$xNames, model = x)
                     x$xNames[x$xNames %in% imp$Feature]
                   },
                   varImp = function(object, numTrees = NULL, ...) {
-                    imp <- xgb.importance(object$xNames, model = object)
+                    imp <- xgbost::xgb.importance(object$xNames, model = object)
                     imp <- as.data.frame(imp)[, 1:2]
                     rownames(imp) <- as.character(imp[,1])
                     imp <- imp[,2,drop = FALSE]
