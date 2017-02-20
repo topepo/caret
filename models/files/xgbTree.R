@@ -207,7 +207,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     x$xNames[x$xNames %in% imp$Feature]
                   },
                   varImp = function(object, numTrees = NULL, ...) {
-                    imp <- xgbost::xgb.importance(object$xNames, model = object)
+                    imp <- xgboost::xgb.importance(object$xNames, model = object)
                     imp <- as.data.frame(imp)[, 1:2]
                     rownames(imp) <- as.character(imp[,1])
                     imp <- imp[,2,drop = FALSE]
