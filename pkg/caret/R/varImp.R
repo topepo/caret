@@ -4,7 +4,7 @@
 #' \code{train} and method specific methods
 #' 
 #' For models that do not have corresponding \code{varImp} methods, see
-#' \code{filerVarImp}.
+#' \code{\link{filterVarImp}}.
 #' 
 #' Otherwise:
 #' 
