@@ -77,13 +77,13 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
   export <- c("optimismBoot")
   
-  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .namespaces = pkgs, .export = export) %:%
+  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .export = export) %:%
     foreach(parm = 1L:nrow(info$loop), .combine = "c", .verbose = FALSE, .packages = pkgs, .export = export)  %op%
     {
       if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
 
       loadNamespace("caret")
-
+      lapply(pkgs, requireNamespaceQuietStop)
       if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE],
                                     names(resampleIndex), iter)
       
@@ -350,11 +350,12 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
 
   result <- foreach(iter = seq(along = ctrl$index), .combine = "rbind", .verbose = FALSE, .packages = pkgs, .errorhandling = "stop") %:%
-    foreach(parm = 1:nrow(info$loop), .combine = "rbind", .verbose = FALSE, .packages = pkgs, .errorhandling = "stop") %op% {
+    foreach(parm = 1:nrow(info$loop), .combine = "rbind", .verbose = FALSE, .errorhandling = "stop") %op% {
 
       if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
       if(testing) cat("after loops\n")
       loadNamespace("caret")
+      lapply(pkgs, requireNamespaceQuietStop)
       if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE],
                                     names(ctrl$index), iter, TRUE)
       if(is.null(info$submodels[[parm]]) || nrow(info$submodels[[parm]]) > 0) {
@@ -483,9 +484,10 @@ oobTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
   pkgs <- c("methods", "caret")
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
-  result <- foreach(parm = 1:nrow(info$loop), .packages = pkgs, .combine = "rbind") %op%
+  result <- foreach(parm = 1:nrow(info$loop), .combine = "rbind") %op%
   {
     loadNamespace("caret")
+    lapply(pkgs, requireNamespaceQuietStop)
     if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE], "", 1, TRUE)
 
     if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[1L]][parm])
@@ -527,12 +529,12 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
   }
 
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
-  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .packages = c("methods", "caret"), .errorhandling = "stop") %op%
+  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .errorhandling = "stop") %op%
   {
     if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[iter])
 
     loadNamespace("caret")
-
+    requireNamespaceQuietStop("methods")
     if(names(resampleIndex)[iter] != "AllData") {
       modelIndex <- resampleIndex[[iter]]
       holdoutIndex <- ctrl$indexOut[[iter]]
@@ -601,12 +603,12 @@ looSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
   vars <- vector(mode = "list", length = length(y))
 
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
-  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .packages = c("methods", "caret"), .errorhandling = "stop") %op%
+  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .errorhandling = "stop") %op%
   {
     if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[iter])
 
     loadNamespace("caret")
-
+    requireNamespaceQuietStop("methods")
     modelIndex <- resampleIndex[[iter]]
     holdoutIndex <- -unique(resampleIndex[[iter]])
 
@@ -642,9 +644,11 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
   }
 
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
-  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .packages = c("methods", "caret", "plyr"), .errorhandling = "stop") %op%
+  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .errorhandling = "stop") %op%
   {
     loadNamespace("caret")
+    requireNamespace("plyr")
+    requireNamespace("methods")
 
     if(names(resampleIndex)[iter] != "AllData") {
       modelIndex <- resampleIndex[[iter]]
@@ -664,7 +668,7 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
                           label = names(resampleIndex)[iter],
                           seeds = seeds,
                           ...)
-    resamples <- ddply(rfeResults$pred, .(Variables), ctrl$functions$summary, lev = lev)
+    resamples <- plyr::ddply(rfeResults$pred, .(Variables), ctrl$functions$summary, lev = lev)
 
     if(ctrl$saveDetails)
     {
@@ -676,7 +680,7 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
     }
 
     if(is.factor(y) && length(lev) <= 50) {
-      cells <- ddply(rfeResults$pred, .(Variables), function(x) flatTable(x$pred, x$obs))
+      cells <- plyr::ddply(rfeResults$pred, .(Variables), function(x) flatTable(x$pred, x$obs))
       resamples <- merge(resamples, cells)
     }
 
@@ -701,7 +705,7 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
     resamples <- subset(resamples, Resample != "AllData")
   }
 
-  externPerf <- ddply(resamples[,!grepl("\\.cell|Resample", colnames(resamples)),drop = FALSE],
+  externPerf <- plyr::ddply(resamples[,!grepl("\\.cell|Resample", colnames(resamples)),drop = FALSE],
                       .(Variables),
                       MeanSD,
                       exclude = "Variables")
@@ -727,10 +731,10 @@ looRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
 
   resampleIndex <- ctrl$index
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
-  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .packages = c("methods", "caret"), .errorhandling = "stop") %op%
+  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .errorhandling = "stop") %op%
   {
     loadNamespace("caret")
-
+    requireNamespaceQuietStop("methods")
     modelIndex <- resampleIndex[[iter]]
     holdoutIndex <- -unique(resampleIndex[[iter]])
 
