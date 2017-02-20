@@ -18,17 +18,22 @@ modelInfo <- list(label = "Parallel Random Forest",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     workers <- getDoParWorkers()
                     theDots <- list(...)
-                    theDots$ntree <- if(is.null(theDots$ntree)) 250 else theDots$ntree
+                    theDots$ntree <- if(is.null(theDots$ntree)) 
+                      formals(randomForest:::randomForest.default)$ntree else 
+                        theDots$ntree
                     
                     theDots$x <- x
                     theDots$y <- y
                     theDots$mtry <- param$mtry
                     theDots$ntree <- ceiling(theDots$ntree/workers)                       
-                    
+                    iter_seeds <- sample.int(10000, size = workers)
                     out <- foreach(ntree = 1:workers, .combine = combine) %dopar% {
+                      set.seed(iter_seeds[workers])
                       library(randomForest)
                       do.call("randomForest", theDots)
                     }
+                    if(!inherits(out, "randomForest")) 
+                      out <- do.call("combine", out)
                     out$call["x"] <- "x"
                     out$call["y"] <- "y"
                     out
