@@ -14,6 +14,7 @@
 		\item \code{multiClassSummary} now reports the average F score \issue{566}
 		\item The \code{RMSE} and \code{R2} are now (re)exposed to the users \issue{563}
 		\item A \cpkg{caret} bug was discovered by Jiebiao Wang where \code{glmboost}, \code{gamboost}, and \code{blackboost} models incorrectly reported the class probabilities \issue{560}
+    \item Regularised logistic regression through Liblinear (\code{LiblineaR::LiblineaR}) using L1 or  L2 regularisation were added
 	}
 }
 
