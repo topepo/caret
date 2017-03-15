@@ -19,6 +19,8 @@ testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
+training_weight <- c(rep(0.1, 10), rep(1, 90))
+
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE, 
                        summaryFunction = twoClassSummary)
@@ -45,10 +47,33 @@ test_class_cv_form <- train(Class ~ ., data = training,
                             preProc = c("center", "scale"),
                             tuneGrid = xgbGrid)
 
+set.seed(849)
+test_class_cv_model_weight <- train(trainX, trainY,
+                                    weights = training_weight,
+                                    method = "xgbTree",
+                                    trControl = cctrl1,
+                                    metric = "ROC",
+                                    preProc = c("center", "scale"),
+                                    tuneGrid = xgbGrid)
+
+set.seed(849)
+test_class_cv_form_weight <- train(Class ~ ., data = training,
+                                   weights = training_weight,
+                                   method = "xgbTree",
+                                   trControl = cctrl1,
+                                   metric = "ROC",
+                                   preProc = c("center", "scale"),
+                                   tuneGrid = xgbGrid)
+
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
+
+test_class_pred_weight <- predict(test_class_cv_model_weight, testing[, -ncol(testing)])
+test_class_prob_weight <- predict(test_class_cv_model_weight, testing[, -ncol(testing)], type = "prob")
+test_class_pred_form_weight <- predict(test_class_cv_form_weight, testing[, -ncol(testing)])
+test_class_prob_form_weight <- predict(test_class_cv_form_weight, testing[, -ncol(testing)], type = "prob")
 
 set.seed(849)
 test_class_rand <- train(trainX, trainY, 

@@ -57,6 +57,8 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       if(length(lev) == 2) {
                         y <- ifelse(y == lev[1], 1, 0)
                         dat <- xgb.DMatrix(x, label = y, missing = NA)
+                        if (!is.null(wts))
+                          xgboost::setinfo(dat, 'weight', wts)
                         out <- xgb.train(list(eta = param$eta,
                                               max_depth = param$max_depth,
                                               gamma = param$gamma,
@@ -70,6 +72,8 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       } else {
                         y <- as.numeric(y) - 1
                         dat <- xgb.DMatrix(x, label = y, missing = NA)
+                        if (!is.null(wts))
+                          xgboost::setinfo(dat, 'weight', wts)
                         out <- xgb.train(list(eta = param$eta,
                                               max_depth = param$max_depth,
                                               gamma = param$gamma,
@@ -84,6 +88,8 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       }
                     } else {
                       dat <- xgb.DMatrix(as.matrix(x), label = y, missing = NA)
+                      if (!is.null(wts))
+                        xgboost::setinfo(dat, 'weight', wts)
                       out <- xgb.train(list(eta = param$eta,
                                             max_depth = param$max_depth,
                                             gamma = param$gamma,
@@ -193,7 +199,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     imp
                   },
                   levels = function(x) x$obsLevels,
-                  tags = c("Tree-Based Model", "Boosting", "Ensemble Model", "Implicit Feature Selection"),
+                  tags = c("Tree-Based Model", "Boosting", "Ensemble Model", "Implicit Feature Selection", "Accepts Case Weights"),
                   sort = function(x) {
                     # This is a toss-up, but the # trees probably adds
                     # complexity faster than number of splits

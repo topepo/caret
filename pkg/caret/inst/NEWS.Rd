@@ -7,13 +7,14 @@
 \section{Changes in version 6.0-74}{
 	\itemize{
 		\item Monotone multi-layer perceptron neural network models from the \cpkg{monmlp} package were added \issue{489}
-		\item A new resampling function (\code{groupKFold}) was added \issue(540)
-		\item The bootstrap optimism estimate was added by Alexis Sarda \issue(544)
+		\item A new resampling function (\code{groupKFold}) was added \issue{540}
+		\item The bootstrap optimism estimate was added by Alexis Sarda \issue{544}
 		\item Bugs in \code{glm}, \code{glm.nb}, and \code{lm} variable importance methods that occur when a single variable is in the model \issue{543}
 		\item A bug in \code{filterVarImp} was fixed where the ROC curve AUC could be much less than 0.50 because the directionality of the predictor was not taken into account. This will artificially increase the importance of some non-informative predictors. However, the bug might report the AUC for an important predictor to be 0.20 instead of 0.80. \issue{565}
 		\item \code{multiClassSummary} now reports the average F score \issue{566}
 		\item The \code{RMSE} and \code{R2} are now (re)exposed to the users \issue{563}
 		\item A \cpkg{caret} bug was discovered by Jiebiao Wang where \code{glmboost}, \code{gamboost}, and \code{blackboost} models incorrectly reported the class probabilities \issue{560}
+		\item Training data weights support was added to \code{xgbTree} model by schistyakov
     \item Regularised logistic regression through Liblinear (\code{LiblineaR::LiblineaR}) using L1 or  L2 regularisation were added
 	}
 }
