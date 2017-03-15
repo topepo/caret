@@ -11,15 +11,29 @@
 #' formula alone, \code{\link[stats]{contr.treatment}} creates columns for the
 #' intercept and all the factor levels except the first level of the factor.
 #' For the data in the Example section below, this would produce:
-#' \preformatted{ (Intercept) dayTue dayWed dayThu dayFri daySat daySun 1 1 1 0
-#' 0 0 0 0 2 1 1 0 0 0 0 0 3 1 1 0 0 0 0 0 4 1 0 0 1 0 0 0 5 1 0 0 1 0 0 0 6 1
-#' 0 0 0 0 0 0 7 1 0 1 0 0 0 0 8 1 0 1 0 0 0 0 9 1 0 0 0 0 0 0 }
+#' \preformatted{ (Intercept) dayTue dayWed dayThu dayFri daySat daySun
+#'            1      0      0      0      0      0      0
+#'            1      0      0      0      0      0      0
+#'            1      0      0      0      0      0      0
+#'            1      0      1      0      0      0      0
+#'            1      0      1      0      0      0      0
+#'            1      0      0      0      1      0      0
+#'            1      0      0      0      0      1      0
+#'            1      0      0      0      0      1      0
+#'            1      0      0      0      1      0      0}
 #'
 #' In some situations, there may be a need for dummy variables for all the
-#' levels of the factor. For the same example: \preformatted{ dayMon dayTue
-#' dayWed dayThu dayFri daySat daySun 1 0 1 0 0 0 0 0 2 0 1 0 0 0 0 0 3 0 1 0 0
-#' 0 0 0 4 0 0 0 1 0 0 0 5 0 0 0 1 0 0 0 6 1 0 0 0 0 0 0 7 0 0 1 0 0 0 0 8 0 0
-#' 1 0 0 0 0 9 1 0 0 0 0 0 0 }
+#' levels of the factor. For the same example: 
+#' \preformatted{ dayMon dayTue dayWed dayThu dayFri daySat daySun
+#'       1      0      0      0      0      0      0
+#'       1      0      0      0      0      0      0
+#'       1      0      0      0      0      0      0
+#'       0      0      1      0      0      0      0
+#'       0      0      1      0      0      0      0
+#'       0      0      0      0      1      0      0
+#'       0      0      0      0      0      1      0
+#'       0      0      0      0      0      1      0
+#'       0      0      0      0      1      0      0}
 #'
 #' Given a formula and initial data set, the class \code{dummyVars} gathers all
 #' the information needed to produce a full set of dummy variables for any data
@@ -59,6 +73,8 @@
 #' logical}
 #'
 #' The \code{predict} function produces a data frame.
+#' 
+#' \code{class2ind} returns a matrix (or a vector if \code{drop2nd = TRUE}).
 #'
 #' \code{contr.ltfr} generates a design matrix.
 #' @author \code{contr.ltfr} is a small modification of
@@ -69,8 +85,6 @@
 #' \url{https://cran.r-project.org/doc/manuals/R-intro.html#Formulae-for-statistical-models}
 #' @keywords models
 #' @examples
-#'
-#'
 #' when <- data.frame(time = c("afternoon", "night", "afternoon",
 #'                             "morning", "morning", "morning",
 #'                             "morning", "afternoon", "afternoon"),
