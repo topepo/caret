@@ -53,4 +53,3 @@ format(a)
 \code{\link[earth]{earth}}
 }
 \keyword{models}
-

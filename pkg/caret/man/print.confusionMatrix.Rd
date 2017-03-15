@@ -26,11 +26,10 @@ printed}
 \description{
 a print method for \code{confusionMatrix}
 }
-\author{
-Max Kuhn
-}
 \seealso{
 \code{\link{confusionMatrix}}
 }
+\author{
+Max Kuhn
+}
 \keyword{utilities}
-

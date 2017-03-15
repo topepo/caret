@@ -2,17 +2,27 @@
 % Please edit documentation in R/rfe.R
 \docType{data}
 \name{pickSizeBest}
-\alias{caretFuncs}
-\alias{gamFuncs}
-\alias{ldaFuncs}
-\alias{lmFuncs}
-\alias{lrFuncs}
-\alias{nbFuncs}
 \alias{pickSizeBest}
 \alias{pickSizeTolerance}
 \alias{pickVars}
+\alias{caretFuncs}
+\alias{lmFuncs}
 \alias{rfFuncs}
+\alias{gamFuncs}
 \alias{treebagFuncs}
+\alias{ldaFuncs}
+\alias{nbFuncs}
+\alias{lrFuncs}
+\alias{pickSizeBest}
+\alias{pickSizeTolerance}
+\alias{pickVars}
+\alias{ldaFuncs}
+\alias{treebagFuncs}
+\alias{gamFuncs}
+\alias{rfFuncs}
+\alias{lmFuncs}
+\alias{nbFuncs}
+\alias{lrFuncs}
 \title{Backwards Feature Selection Helper Functions}
 \format{An object of class \code{list} of length 6.}
 \usage{
@@ -126,12 +136,11 @@ cat("Accepting a 1.5 pct loss:",
     within5Pct2, "\\n")
 
 }
-\author{
-Max Kuhn
-}
 \seealso{
 \code{\link{rfeControl}}, \code{\link{rfe}}
 }
+\author{
+Max Kuhn
+}
 \keyword{datasets}
 \keyword{models}
-

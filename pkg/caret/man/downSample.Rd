@@ -49,4 +49,3 @@ upSample(fattyAcids, oilType)
 Max Kuhn
 }
 \keyword{utilities}
-

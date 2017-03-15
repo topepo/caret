@@ -59,12 +59,11 @@ summary(plot_data)
     }
 
 }
-\author{
-Max Kuhn
-}
 \seealso{
 \code{\link{gafs}}, \code{\link{safs}},
 \code{\link[ggplot2]{ggplot}}, \code{\link[lattice]{xyplot}}
 }
+\author{
+Max Kuhn
+}
 \keyword{hplot}
-

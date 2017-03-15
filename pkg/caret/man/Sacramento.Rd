@@ -34,4 +34,3 @@ testing  <- Sacramento[-in_train,]
 
 }
 \keyword{datasets}
-

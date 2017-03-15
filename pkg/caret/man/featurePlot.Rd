@@ -48,4 +48,3 @@ featurePlot(x, y, "pairs")
 Max Kuhn
 }
 \keyword{hplot}
-

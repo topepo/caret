@@ -2,12 +2,17 @@
 % Please edit documentation in R/knnreg.R
 \name{knnreg}
 \alias{knnreg}
+\alias{knnregTrain}
+\alias{knnreg.formula}
+\alias{knnreg.default}
+\alias{knnreg.matrix}
 \alias{knnreg.data.frame}
 \alias{knnreg.default}
 \alias{knnreg.formula}
 \alias{knnreg.matrix}
-\alias{knnregTrain}
+\alias{knnreg.data.frame}
 \alias{print.knnreg}
+\alias{knnregTrain}
 \title{k-Nearest Neighbour Regression}
 \usage{
 knnreg(x, ...)
@@ -92,4 +97,3 @@ plot(testY, predict(fit, testX))
 Chris Keefer
 }
 \keyword{multivariate}
-

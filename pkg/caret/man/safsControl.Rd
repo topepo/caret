@@ -3,6 +3,7 @@
 \name{gafsControl}
 \alias{gafsControl}
 \alias{safsControl}
+\alias{gafsControl}
 \title{Control parameters for GA and SA feature selection}
 \usage{
 gafsControl(functions = NULL, method = "repeatedcv", metric = NULL,
@@ -162,9 +163,6 @@ least likely to incur multiple re-starting of the worker processes. Keep in
 mind that if multiple levels of parallelization occur, this can effect the
 number of workers and the amount of memory required exponentially.
 }
-\author{
-Max Kuhn
-}
 \references{
 \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html},
 \url{http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html}
@@ -174,5 +172,7 @@ Max Kuhn
 \code{\link{rfGA}}, \code{\link{treebagGA}}, \code{\link{caretSA}},
 \code{\link{rfSA}}, \code{\link{treebagSA}}
 }
+\author{
+Max Kuhn
+}
 \keyword{utilities}
-

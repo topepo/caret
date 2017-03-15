@@ -2,13 +2,13 @@
 % Please edit documentation in R/predictors.R
 \name{predictors}
 \alias{predictors}
-\alias{predictors.default}
 \alias{predictors.formula}
+\alias{predictors.terms}
+\alias{predictors.train}
+\alias{predictors.default}
 \alias{predictors.list}
 \alias{predictors.rfe}
 \alias{predictors.sbf}
-\alias{predictors.terms}
-\alias{predictors.train}
 \title{List predictors used in the model}
 \usage{
 predictors(x, ...)
@@ -43,4 +43,3 @@ For example, \code{\link[nnet]{nnet}} may return missing values from
 \code{predictors}.
 }
 \keyword{models}
-

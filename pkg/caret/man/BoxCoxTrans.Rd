@@ -3,11 +3,13 @@
 \name{BoxCoxTrans}
 \alias{BoxCoxTrans}
 \alias{BoxCoxTrans.default}
-\alias{expoTrans}
-\alias{expoTrans.default}
 \alias{predict.BoxCoxTrans}
+\alias{expoTrans.default}
+\alias{expoTrans}
 \alias{predict.expoTrans}
+\alias{BoxCoxTrans.default}
 \alias{print.BoxCoxTrans}
+\alias{predict.BoxCoxTrans}
 \title{Box-Cox and Exponential Transformations}
 \usage{
 BoxCoxTrans(y, ...)
@@ -22,6 +24,8 @@ BoxCoxTrans(y, ...)
 \arguments{
 \item{y}{a numeric vector of data to be transformed. For \code{BoxCoxTrans}, the data must be strictly positive.}
 
+\item{\dots}{for \code{BoxCoxTrans}: options to pass to \code{\link[MASS]{boxcox}}. \code{plotit} should not be passed through. For \code{predict.BoxCoxTrans}, additional arguments are ignored.}
+
 \item{x}{an optional dependent variable to be used in a linear model.}
 
 \item{fudge}{a tolerance value: lambda values within +/-fudge will be coerced to 0 and within 1+/-fudge will be coerced to 1.}
@@ -35,8 +39,6 @@ BoxCoxTrans(y, ...)
 \item{digits}{minimal number of \emph{significant digits}.}
 
 \item{object}{an object of class \code{BoxCoxTrans} or \code{expoTrans}.}
-
-\item{\dots}{for \code{BoxCoxTrans}: options to pass to \code{\link[MASS]{boxcox}}. \code{plotit} should not be passed through. For \code{predict.BoxCoxTrans}, additional arguments are ignored.}
 }
 \value{
 Both functions returns a list of class of either \code{BoxCoxTrans} or \code{expoTrans} with
@@ -80,9 +82,6 @@ manly <- expoTrans(ratio)
 manly
 
 }
-\author{
-Max Author
-}
 \references{
 Box, G. E. P. and Cox, D. R. (1964) An analysis of transformations (with discussion). Journal of the Royal Statistical Society B, 26, 211-252.
 Manly, B. L. (1976) Exponential data transformations. The Statistician, 25, 37 - 42.
@@ -90,5 +89,7 @@ Manly, B. L. (1976) Exponential data transformations. The Statistician, 25, 37 -
 \seealso{
 \code{\link[MASS]{boxcox}}, \code{\link{preProcess}}, \code{\link{optim}}
 }
+\author{
+Max Author
+}
 \keyword{utilities}
-

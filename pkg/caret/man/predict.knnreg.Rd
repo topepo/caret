@@ -29,4 +29,3 @@ Max Kuhn, Chris Keefer, adapted from \code{\link[class]{knn}} and
 \code{\link[ipred]{predict.ipredknn}}
 }
 \keyword{multivariate}
-

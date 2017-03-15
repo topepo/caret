@@ -37,11 +37,10 @@ The mean and standard deviation of the values produced by
 resampleSummary(rnorm(10), matrix(rnorm(50), ncol = 5))
 
 }
-\author{
-Max Kuhn
-}
 \seealso{
 \code{\link{postResample}}
 }
+\author{
+Max Kuhn
+}
 \keyword{utilities}
-

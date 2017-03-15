@@ -4,9 +4,11 @@
 \alias{plsda}
 \alias{plsda.default}
 \alias{predict.plsda}
+\alias{splsda.default}
 \alias{predict.splsda}
 \alias{splsda}
-\alias{splsda.default}
+\alias{predict.plsda}
+\alias{plsda.default}
 \title{Partial Least Squares and Sparse Partial Least Squares Discriminant Analysis}
 \usage{
 plsda(x, ...)
@@ -19,6 +21,10 @@ plsda(x, ...)
 }
 \arguments{
 \item{x}{a matrix or data frame of predictors}
+
+\item{\dots}{arguments to pass to \code{\link[pls:mvr]{plsr}} or
+\code{\link[spls]{spls}}. For \code{splsda}, this is the method for passing
+tuning parameters specifications (e.g. \code{K}, \code{eta} or \code{kappa})}
 
 \item{object}{an object produced by \code{plsda}}
 
@@ -38,10 +44,6 @@ the entries must be either 0 or 1 and rows must sum to one}
 
 \item{prior}{a vector or prior probabilities for the classes (only used for
 \code{probeMethod = "Bayes"})}
-
-\item{\dots}{arguments to pass to \code{\link[pls:mvr]{plsr}} or
-\code{\link[spls]{spls}}. For \code{splsda}, this is the method for passing
-tuning parameters specifications (e.g. \code{K}, \code{eta} or \code{kappa})}
 }
 \value{
 For \code{plsda}, an object of class "plsda" and "mvr". For
@@ -140,4 +142,3 @@ confusionMatrix(caret:::predict.splsda(splsFit, testDescr),
 \code{\link[pls:mvr]{plsr}}, \code{\link[spls]{spls}}
 }
 \keyword{models}
-

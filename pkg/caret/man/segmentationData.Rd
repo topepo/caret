@@ -37,4 +37,3 @@ A binary version of the original data is at
 \url{http://topepo.github.io/caret/segmentationOriginal.RData}.
 }
 \keyword{datasets}
-

@@ -71,11 +71,10 @@ ggplot(lda_data, aes(x = Training_Size, y = ROC, color = Data)) +
  }
 
 }
-\author{
-Max Kuhn
-}
 \seealso{
 \code{\link{train}}
 }
+\author{
+Max Kuhn
+}
 \keyword{models}
-

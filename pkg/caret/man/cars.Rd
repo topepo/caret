@@ -19,4 +19,3 @@ characteristics of each car (columns \code{Mileage}, \code{Cylinder}, \code{Door
 Kuiper (2008) collected data on Kelly Blue Book resale data for 804 GM cars (2005 model year).
 }
 \keyword{datasets}
-

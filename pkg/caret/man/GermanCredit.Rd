@@ -24,4 +24,3 @@ Many of these predictors are discrete and have been expanded into several
 0/1 indicator variables
 }
 \keyword{datasets}
-

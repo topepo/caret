@@ -4,6 +4,8 @@
 \alias{nullModel}
 \alias{nullModel.default}
 \alias{predict.nullModel}
+\alias{nullModel.default}
+\alias{predict.nullModel}
 \title{Fit a simple, non-informative model}
 \usage{
 nullModel(x, ...)
@@ -16,6 +18,8 @@ nullModel(x, ...)
 \item{x}{An optional matrix or data frame of predictors. These values are
 not used in the model fit}
 
+\item{\dots}{Optional arguments (not yet used)}
+
 \item{y}{A numeric vector (for regression) or factor (for classification) of
 outcomes}
 
@@ -26,8 +30,6 @@ the number of predictions to return)}
 
 \item{type}{Either "raw" (for regression), "class" or "prob" (for
 classification)}
-
-\item{\dots}{Optional arguments (not yet used)}
 }
 \value{
 The output of \code{nullModel} is a list of class \code{nullModel}
@@ -65,4 +67,3 @@ predict(useless, matrix(NA, nrow = 10))
 
 }
 \keyword{models}
-

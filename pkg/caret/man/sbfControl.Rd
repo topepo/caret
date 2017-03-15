@@ -142,13 +142,12 @@ RFwithGAM2
 
 }
 }
-\author{
-Max Kuhn
-}
 \seealso{
 \code{\link{sbf}}, \code{\link{caretSBF}}, \code{\link{lmSBF}},
 \code{\link{rfSBF}}, \code{\link{treebagSBF}}, \code{\link{ldaSBF}} and
 \code{\link{nbSBF}}
 }
+\author{
+Max Kuhn
+}
 \keyword{utilities}
-

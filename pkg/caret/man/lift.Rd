@@ -2,6 +2,9 @@
 % Please edit documentation in R/lift.R
 \name{lift}
 \alias{lift}
+\alias{lift.formula}
+\alias{lift.default}
+\alias{xyplot.lift}
 \alias{lift.default}
 \alias{lift.formula}
 \alias{print.lift}
@@ -25,6 +28,9 @@ for syntax) where the left-hand side of the formula is a factor class
 variable of the observed outcome and the right-hand side specifies one or
 model columns corresponding to a numeric ranking variable for a model (e.g.
 class probabilities). The classification variable should have two levels.}
+
+\item{\dots}{options to pass through to \code{\link[lattice:xyplot]{xyplot}}
+or the panel function (not used in \code{lift.formula}).}
 
 \item{data}{For \code{lift.formula}, a data frame (or more precisely,
 anything that is a valid \code{envir} argument in \code{eval}, e.g., a list
@@ -64,9 +70,6 @@ found. The lines use either the \code{plot.line} or \code{superpose.line}
 component of the current lattice theme to draw the lines (depending on
 whether groups were used. These values are only used when \code{type =
 "gain"}.}
-
-\item{\dots}{options to pass through to \code{\link[lattice:xyplot]{xyplot}}
-or the panel function (not used in \code{lift.formula}).}
 }
 \value{
 \code{lift.formula} returns a list with elements: \item{data}{the
@@ -130,13 +133,12 @@ xyplot(lift2, auto.key = list(columns = 2), value = c(10, 30))
 xyplot(lift2, plot = "lift", auto.key = list(columns = 2))
 
 }
-\author{
-Max Kuhn, some \pkg{lattice} code and documentation by Deepayan
-Sarkar
-}
 \seealso{
 \code{\link[lattice:xyplot]{xyplot}},
 \code{\link[lattice:trellis.par.get]{trellis.par.set}}
 }
+\author{
+Max Kuhn, some \pkg{lattice} code and documentation by Deepayan
+Sarkar
+}
 \keyword{hplot}
-

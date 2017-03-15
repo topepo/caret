@@ -25,4 +25,3 @@ literature compounds. The vector \code{logBBB} contains the concentration
 ratio and the data fame \code{bbbDescr} contains the descriptor values.
 }
 \keyword{datasets}
-

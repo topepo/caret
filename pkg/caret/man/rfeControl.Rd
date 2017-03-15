@@ -150,13 +150,12 @@ rfMod <- rfe(bbbDescr, logBBB,
   }
 
 }
-\author{
-Max Kuhn
-}
 \seealso{
 \code{\link{rfe}}, \code{\link{lmFuncs}}, \code{\link{rfFuncs}},
 \code{\link{treebagFuncs}}, \code{\link{nbFuncs}},
 \code{\link{pickSizeBest}}, \code{\link{pickSizeTolerance}}
 }
+\author{
+Max Kuhn
+}
 \keyword{utilities}
-

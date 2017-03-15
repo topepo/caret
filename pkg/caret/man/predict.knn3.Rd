@@ -33,4 +33,3 @@ essentially a copy of \code{\link[ipred]{predict.ipredknn}}.
 <Torsten.Hothorn@rzmail.uni-erlangen.de>
 }
 \keyword{multivariate}
-

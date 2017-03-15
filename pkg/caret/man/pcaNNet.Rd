@@ -3,9 +3,12 @@
 \name{pcaNNet}
 \alias{pcaNNet}
 \alias{pcaNNet.default}
-\alias{pcaNNet.formula}
 \alias{predict.pcaNNet}
+\alias{pcaNNet.formula}
+\alias{pcaNNet.formula}
+\alias{pcaNNet.default}
 \alias{print.pcaNNet}
+\alias{predict.pcaNNet}
 \title{Neural Networks with a Principal Component Step}
 \usage{
 pcaNNet(x, ...)
@@ -22,6 +25,9 @@ pcaNNet(x, ...)
 }
 \arguments{
 \item{x}{matrix or data frame of \code{x} values for examples.}
+
+\item{\dots}{arguments passed to \code{\link[nnet]{nnet}}, such as
+\code{size}, \code{decay}, etc.}
 
 \item{formula}{A formula of the form \code{class ~ x1 + x2 + \dots{}}}
 
@@ -54,9 +60,6 @@ factors appearing as variables in the model formula.}
 to be a row vector comprising a single case.}
 
 \item{type}{Type of output}
-
-\item{\dots}{arguments passed to \code{\link[nnet]{nnet}}, such as
-\code{size}, \code{decay}, etc.}
 }
 \value{
 For \code{pcaNNet}, an object of \code{"pcaNNet"} or
@@ -95,9 +98,6 @@ modelFit
 predict(modelFit, bbbDescr[, 1:10])
 
 }
-\author{
-These are heavily based on the \code{nnet} code from Brian Ripley.
-}
 \references{
 Ripley, B. D. (1996) \emph{Pattern Recognition and Neural
 Networks.} Cambridge.
@@ -105,5 +105,7 @@ Networks.} Cambridge.
 \seealso{
 \code{\link[nnet]{nnet}}, \code{\link{preProcess}}
 }
+\author{
+These are heavily based on the \code{nnet} code from Brian Ripley.
+}
 \keyword{neural}
-

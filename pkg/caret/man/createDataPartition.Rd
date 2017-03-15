@@ -2,9 +2,12 @@
 % Please edit documentation in R/createDataPartition.R
 \name{createDataPartition}
 \alias{createDataPartition}
+\alias{createResample}
 \alias{createFolds}
 \alias{createMultiFolds}
-\alias{createResample}
+\alias{createTimeSlices}
+\alias{groupKFold}
+\alias{createFolds}
 \alias{createTimeSlices}
 \alias{groupKFold}
 \title{Data Splitting functions}
@@ -133,14 +136,13 @@ table(groups)
 folds <- groupKFold(groups)
 lapply(folds, function(x, y) table(y[x]), y = groups)
 }
-\author{
-Max Kuhn, \code{createTimeSlices} by Tony Cooper
-}
 \references{
 \url{http://topepo.github.io/caret/data-splitting.html}
 
 Hyndman and Athanasopoulos (2013), Forecasting: principles and practice.
 \url{https://www.otexts.org/fpp}
 }
+\author{
+Max Kuhn, \code{createTimeSlices} by Tony Cooper
+}
 \keyword{utilities}
-

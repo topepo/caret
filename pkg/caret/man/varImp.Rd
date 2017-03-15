@@ -2,32 +2,56 @@
 % Please edit documentation in R/varImp.R, R/varImp.train.R
 \name{varImp}
 \alias{varImp}
-\alias{varImp.C5.0}
-\alias{varImp.JRip}
-\alias{varImp.PART}
-\alias{varImp.RRF}
-\alias{varImp.RandomForest}
+\alias{varImp.train}
+\alias{varImp.earth}
+\alias{varImp.rpart}
+\alias{varImp.randomForest}
+\alias{varImp.gbm}
+\alias{varImp.regbagg}
+\alias{varImp.classbagg}
+\alias{varImp.pamrtrained}
+\alias{varImp.lm}
+\alias{varImp.mvr}
 \alias{varImp.bagEarth}
 \alias{varImp.bagFDA}
-\alias{varImp.classbagg}
+\alias{varImp.RandomForest}
+\alias{varImp.rfe}
+\alias{varImp.dsa}
+\alias{varImp.fda}
+\alias{varImp.multinom}
+\alias{varImp.cubist}
+\alias{varImp.plsda}
+\alias{varImp.JRip}
+\alias{varImp.PART}
+\alias{varImp.nnet}
+\alias{varImp.C5.0}
+\alias{varImp.glmnet}
+\alias{varImp.bagEarth}
+\alias{varImp.bagFDA}
+\alias{varImp.C5.0}
 \alias{varImp.cubist}
 \alias{varImp.dsa}
-\alias{varImp.earth}
-\alias{varImp.fda}
-\alias{varImp.gam}
-\alias{varImp.gbm}
 \alias{varImp.glm}
 \alias{varImp.glmnet}
-\alias{varImp.lm}
+\alias{varImp.JRip}
 \alias{varImp.multinom}
-\alias{varImp.mvr}
 \alias{varImp.nnet}
-\alias{varImp.pamrtrained}
-\alias{varImp.plsda}
-\alias{varImp.randomForest}
-\alias{varImp.regbagg}
-\alias{varImp.rfe}
+\alias{varImp.PART}
+\alias{varImp.RRF}
 \alias{varImp.rpart}
+\alias{varImp.randomForest}
+\alias{varImp.gbm}
+\alias{varImp.classbagg}
+\alias{varImp.regbagg}
+\alias{varImp.pamrtrained}
+\alias{varImp.lm}
+\alias{varImp.mvr}
+\alias{varImp.earth}
+\alias{varImp.RandomForest}
+\alias{varImp.plsda}
+\alias{varImp.fda}
+\alias{varImp.gam}
+\alias{varImp.train}
 \alias{varImp.train}
 \title{Calculation of variable importance for regression and classification models}
 \usage{
@@ -92,6 +116,8 @@ varImp(object, ...)
 \arguments{
 \item{object}{an object corresponding to a fitted model}
 
+\item{\dots}{parameters to pass to the specific \code{varImp} methods}
+
 \item{weights}{a numeric vector of length two that weighs the usage of
 variables in the rule conditions and the usage in the linear models (see
 details below).}
@@ -129,8 +155,6 @@ relationship between the features and response (only used with
 \code{useModel = FALSE} and only passed to \code{filterVarImp}).}
 
 \item{scale}{should the importance values be scaled to 0 and 100?}
-
-\item{\dots}{parameters to pass to the specific \code{varImp} methods}
 }
 \value{
 A data frame with class \code{c("varImp.train", "data.frame")} for
@@ -142,7 +166,7 @@ A generic method for calculating variable importance for objects produced by
 }
 \details{
 For models that do not have corresponding \code{varImp} methods, see
-\code{filerVarImp}.
+\code{\link{filterVarImp}}.
 
 Otherwise:
 
@@ -249,9 +273,6 @@ that a predictor was selected is determined. In other words, an importance
 of 0.50 means that the predictor survived the filter in half of the
 resamples.
 }
-\author{
-Max Kuhn
-}
 \references{
 Gevrey, M., Dimopoulos, I., & Lek, S. (2003). Review and
 comparison of methods to study the contribution of variables in artificial
@@ -260,5 +281,7 @@ neural network models. Ecological Modelling, 160(3), 249-264.
 Quinlan, J. (1992). Learning with continuous classes. Proceedings of the 5th
 Australian Joint Conference On Artificial Intelligence, 343-348.
 }
+\author{
+Max Kuhn
+}
 \keyword{models}
-

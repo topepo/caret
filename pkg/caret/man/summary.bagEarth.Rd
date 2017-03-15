@@ -3,6 +3,7 @@
 \name{summary.bagEarth}
 \alias{summary.bagEarth}
 \alias{summary.bagFDA}
+\alias{summary.bagFDA}
 \title{Summarize a bagged earth or FDA fit}
 \usage{
 \method{summary}{bagEarth}(object, ...)
@@ -40,4 +41,3 @@ summary(fit)
 Max Kuhn
 }
 \keyword{manip}
-

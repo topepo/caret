@@ -55,4 +55,3 @@ as.matrix(xtab)
 Max Kuhn
 }
 \keyword{utilities}
-

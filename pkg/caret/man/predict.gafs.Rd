@@ -48,11 +48,10 @@ predict(rf_search, train_data)
 }
 
 }
-\author{
-Max Kuhn
-}
 \seealso{
 \code{\link{safs}}, \code{\link{gafs}}
 }
+\author{
+Max Kuhn
+}
 \keyword{multivariate}
-

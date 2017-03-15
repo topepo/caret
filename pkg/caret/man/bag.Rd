@@ -5,16 +5,25 @@
 \alias{bag}
 \alias{bag.default}
 \alias{bagControl}
-\alias{ctreeBag}
+\alias{predict.bag}
 \alias{ldaBag}
-\alias{nbBag}
-\alias{nnetBag}
 \alias{plsBag}
+\alias{nbBag}
+\alias{ctreeBag}
+\alias{svmBag}
+\alias{nnetBag}
+\alias{bagControl}
+\alias{bag.default}
 \alias{predict.bag}
 \alias{print.bag}
-\alias{print.summary.bag}
 \alias{summary.bag}
+\alias{print.summary.bag}
+\alias{ldaBag}
+\alias{plsBag}
+\alias{nbBag}
+\alias{ctreeBag}
 \alias{svmBag}
+\alias{nnetBag}
 \title{A General Framework For Bagging}
 \format{An object of class \code{list} of length 3.}
 \usage{
@@ -49,6 +58,8 @@ nnetBag
 \arguments{
 \item{x}{a matrix or data frame of predictors}
 
+\item{\dots}{arguments to pass to the model function}
+
 \item{fit}{a function that has arguments \code{x}, \code{y} and \code{...} and produces a model object #' that can later be used for prediction. Example functions are found in \code{ldaBag}, \code{plsBag}, #' \code{nbBag}, \code{svmBag} and \code{nnetBag}.}
 
 \item{predict}{a function that generates predictions for each sub-model. The function should have #' arguments \code{object} and \code{x}. The output of the function can be any type of object (see the #' example below where posterior probabilities are generated. Example functions are found in \code{ldaBag}#' , \code{plsBag}, \code{nbBag}, \code{svmBag} and \code{nnetBag}.)}
@@ -74,8 +85,6 @@ nnetBag
 \item{newdata}{a matrix or data frame of samples for prediction. Note that this argument must have a non-null value}
 
 \item{digits}{minimal number of \emph{significant digits}.}
-
-\item{\dots}{arguments to pass to the model function}
 }
 \value{
 \code{bag} produces an object of class \code{bag} with elements
@@ -135,4 +144,3 @@ Max Kuhn
 }
 \keyword{datasets}
 \keyword{models}
-

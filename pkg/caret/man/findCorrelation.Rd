@@ -76,13 +76,12 @@ findCorrelation(R2, cutoff = .65, verbose = TRUE)
 findCorrelation(R2, cutoff = .99, verbose = TRUE)
 
 }
-\author{
-Original R code by Dong Li, modified by Max Kuhn
-}
 \seealso{
 \code{\link[subselect:eleaps]{leaps}},
 \code{\link[subselect:genetic]{genetic}},
 \code{\link[subselect:anneal]{anneal}}, \code{\link{findLinearCombos}}
 }
+\author{
+Original R code by Dong Li, modified by Max Kuhn
+}
 \keyword{manip}
-

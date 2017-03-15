@@ -2,9 +2,9 @@
 % Please edit documentation in R/caret-package.R
 \docType{data}
 \name{tecator}
+\alias{tecator}
 \alias{absorp}
 \alias{endpoints}
-\alias{tecator}
 \title{Fat, Water and Protein Content of Meat Samples}
 \value{
 \item{absorp}{absorbance data for 215 samples. The first 129 were
@@ -70,4 +70,3 @@ title("Predictor Profiles for 10 Random Samples")
 
 }
 \keyword{datasets}
-

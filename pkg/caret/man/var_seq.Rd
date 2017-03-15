@@ -38,4 +38,3 @@ var_seq(p = 600, len = 10)
 Max Kuhn
 }
 \keyword{models}
-

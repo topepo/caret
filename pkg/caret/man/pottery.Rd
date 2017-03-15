@@ -18,4 +18,3 @@ Laboratory and Chemical Plant}, pg. 261.
 Measurements of 58 pottery samples.
 }
 \keyword{datasets}
-

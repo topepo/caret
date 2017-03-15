@@ -3,6 +3,7 @@
 \name{safs}
 \alias{safs}
 \alias{safs.default}
+\alias{safs.default}
 \title{Simulated annealing feature selection}
 \usage{
 safs(x, ...)
@@ -15,6 +16,9 @@ safs(x, ...)
 This could be a simple matrix, data frame or other type (e.g. sparse
 matrix). See Details below.}
 
+\item{\dots}{arguments passed to the classification or regression routine
+specified in the function \code{safsControl$functions$fit}}
+
 \item{y}{a numeric or factor vector containing the outcome for each sample.}
 
 \item{iters}{number of search iterations}
@@ -24,9 +28,6 @@ and without each predictor be calculated}
 
 \item{safsControl}{a list of values that define how this function acts. See
 \code{\link{safsControl}} and URL.}
-
-\item{\dots}{arguments passed to the classification or regression routine
-specified in the function \code{safsControl$functions$fit}}
 }
 \value{
 an object of class \code{safs}
@@ -132,9 +133,6 @@ rf_search
 }
 
 }
-\author{
-Max Kuhn
-}
 \references{
 \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}
 
@@ -148,5 +146,7 @@ simulated annealing. Science, 220(4598), 671.
 \seealso{
 \code{\link{safsControl}}, \code{\link{predict.safs}}
 }
+\author{
+Max Kuhn
+}
 \keyword{models}
-

@@ -42,10 +42,9 @@ As such, the importance score reflects the standardized increase in fitness
 that occurs when the predict is included in the subset. Values near zero (or
 negative) indicate that the predictor may not be important to the model.
 }
-\author{
-Max Kuhn
-}
 \seealso{
 \code{\link{safs}}, \code{\link{gafs}}
 }
-
+\author{
+Max Kuhn
+}

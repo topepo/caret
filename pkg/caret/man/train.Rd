@@ -4,6 +4,8 @@
 \alias{train}
 \alias{train.default}
 \alias{train.formula}
+\alias{train.default}
+\alias{train.formula}
 \title{Fit Predictive Models over Different Tuning Parameters}
 \usage{
 train(x, ...)
@@ -21,6 +23,10 @@ train(x, ...)
 \item{x}{an object where samples are in rows and features are in columns.
 This could be a simple matrix, data frame or other type (e.g. sparse
 matrix). See Details below.}
+
+\item{\dots}{arguments passed to the classification or regression routine
+(such as \code{\link[randomForest]{randomForest}}). Errors will occur if
+values for tuning parameters are passed here.}
 
 \item{y}{a numeric or factor vector containing the outcome for each sample.}
 
@@ -85,10 +91,6 @@ required variable. (NOTE: If given, this argument must be named.)}
 
 \item{contrasts}{a list of contrasts to be used for some or all the factors
 appearing as variables in the model formula.}
-
-\item{\dots}{arguments passed to the classification or regression routine
-(such as \code{\link[randomForest]{randomForest}}). Errors will occur if
-values for tuning parameters are passed here.}
 }
 \value{
 A list is returned of class \code{train} containing: \item{method
@@ -239,10 +241,6 @@ usingMC <-  train(medv ~ .,
 
 
 }
-\author{
-Max Kuhn (the guts of \code{train.formula} were based on Ripley's
-\code{nnet.formula})
-}
 \references{
 \url{http://topepo.github.io/caret/}
 
@@ -254,5 +252,8 @@ Kuhn (2008), ``Building Predictive Models in R Using the caret''
 \code{\link{update.train}}, \code{\link{modelLookup}},
 \code{\link{createFolds}}
 }
+\author{
+Max Kuhn (the guts of \code{train.formula} were based on Ripley's
+\code{nnet.formula})
+}
 \keyword{models}
-

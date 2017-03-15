@@ -2,6 +2,9 @@
 % Please edit documentation in R/bagEarth.R
 \name{bagEarth}
 \alias{bagEarth}
+\alias{print.bagEarth}
+\alias{bagEarth.default}
+\alias{bagEarth.formula}
 \alias{bagEarth.default}
 \alias{bagEarth.formula}
 \alias{print.bagEarth}
@@ -19,6 +22,8 @@ bagEarth(x, ...)
 }
 \arguments{
 \item{x}{matrix or data frame of 'x' values for examples.}
+
+\item{\dots}{arguments passed to the \code{earth} function}
 
 \item{y}{matrix or data frame of numeric values outcomes.}
 
@@ -44,8 +49,6 @@ found. The default action is for the procedure to fail.  An
 alternative is na.omit, which leads to rejection of cases
 with missing values on any required variable.  (NOTE: If
 given, this argument must be named.)}
-
-\item{\dots}{arguments passed to the \code{earth} function}
 }
 \value{
 A list with elements
@@ -73,9 +76,6 @@ fit2 <- bagEarth(trees[,-3], trees[,3], B = 10)
 }
 
 }
-\author{
-Max Kuhn (\code{bagEarth.formula} is based on Ripley's \code{nnet.formula})
-}
 \references{
 J. Friedman, ``Multivariate Adaptive Regression Splines'' (with
 discussion) (1991).  Annals of Statistics, 19/1, 1-141.
@@ -83,5 +83,7 @@ discussion) (1991).  Annals of Statistics, 19/1, 1-141.
 \seealso{
 \code{\link[earth]{earth}}, \code{\link{predict.bagEarth}}
 }
+\author{
+Max Kuhn (\code{bagEarth.formula} is based on Ripley's \code{nnet.formula})
+}
 \keyword{regression}
-

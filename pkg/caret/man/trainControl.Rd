@@ -218,9 +218,6 @@ mod2 <- train(Species ~ ., data = iris,
 }
 
 }
-\author{
-Max Kuhn
-}
 \references{
 Efron (1983). ``Estimating the error rate of a prediction rule:
 improvement on cross-validation''. Journal of the American Statistical
@@ -238,5 +235,7 @@ Models'' \url{http://arxiv.org/abs/1405.6974},
 Package website for subsampling:
 \url{https://topepo.github.io/caret/subsampling-for-class-imbalances.html}
 }
+\author{
+Max Kuhn
+}
 \keyword{utilities}
-

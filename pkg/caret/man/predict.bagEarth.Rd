@@ -55,11 +55,10 @@ hist(predict(fit1) - predict(fit2))
 }
 
 }
-\author{
-Max Kuhn
-}
 \seealso{
 \code{\link{bagEarth}}
 }
+\author{
+Max Kuhn
+}
 \keyword{regression}
-

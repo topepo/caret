@@ -2,6 +2,8 @@
 % Please edit documentation in R/confusionMatrix.R
 \name{confusionMatrix}
 \alias{confusionMatrix}
+\alias{confusionMatrix.table}
+\alias{confusionMatrix.default}
 \alias{confusionMatrix.default}
 \alias{confusionMatrix.table}
 \title{Create a confusion matrix}
@@ -18,6 +20,9 @@ confusionMatrix(data, ...)
 \arguments{
 \item{data}{a factor of predicted classes (for the default method) or an
 object of class \code{\link[base]{table}}.}
+
+\item{\dots}{options to be passed to \code{table}. NOTE: do not include
+\code{dnn} here}
 
 \item{reference}{a factor of classes to be used as the true results}
 
@@ -38,9 +43,6 @@ corresponding to the classes.}
 
 \item{mode}{a single character string either "sens_spec", "prec_recall", or
 "everything"}
-
-\item{\dots}{options to be passed to \code{table}. NOTE: do not include
-\code{dnn} here}
 }
 \value{
 a list with elements \item{table}{the results of \code{table} on
@@ -136,9 +138,6 @@ confusionMatrix(iris$Species, sample(iris$Species))
 
 
 }
-\author{
-Max Kuhn
-}
 \references{
 Kuhn, M. (2008), ``Building predictive models in R using the
 caret package, '' \emph{Journal of Statistical Software},
@@ -161,5 +160,7 @@ reduction.,'' \emph{Genetic Epidemiology}, vol 4, 306.
 \code{\link{negPredValue}}, \code{\link{print.confusionMatrix}},
 \code{\link[stats]{binom.test}}
 }
+\author{
+Max Kuhn
+}
 \keyword{utilities}
-

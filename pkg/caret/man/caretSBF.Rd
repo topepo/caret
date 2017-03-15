@@ -2,14 +2,16 @@
 % Please edit documentation in R/selectByFilter.R
 \docType{data}
 \name{caretSBF}
-\alias{anovaScores}
 \alias{caretSBF}
-\alias{gamScores}
-\alias{ldaSBF}
 \alias{lmSBF}
-\alias{nbSBF}
 \alias{rfSBF}
 \alias{treebagSBF}
+\alias{ldaSBF}
+\alias{nbSBF}
+\alias{gamScores}
+\alias{anovaScores}
+\alias{anovaScores}
+\alias{gamScores}
 \title{Selection By Filtering (SBF) Helper Functions}
 \format{An object of class \code{list} of length 5.}
 \usage{
@@ -49,12 +51,11 @@ p-value is generated using the whole model test from
 If a particular model fails for \code{lm} or \code{gam}, a p-value of 1 is
 returned.
 }
-\author{
-Max Kuhn
-}
 \seealso{
 \code{\link{sbfControl}}, \code{\link{sbf}},
 \code{\link[gam]{summary.gam}}
 }
+\author{
+Max Kuhn
+}
 \keyword{models}
-

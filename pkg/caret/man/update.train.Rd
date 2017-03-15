@@ -51,11 +51,10 @@ knnFit1 <- train(TrainData, TrainClasses,
 update(knnFit1, list(.k = 3))
 }
 }
-\author{
-Max Kuhn
-}
 \seealso{
 \code{\link{train}}, \code{\link{trainControl}}
 }
+\author{
+Max Kuhn
+}
 \keyword{models}
-

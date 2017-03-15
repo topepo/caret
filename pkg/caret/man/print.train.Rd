@@ -52,11 +52,10 @@ print(rdaFit, showSD = TRUE)
 }
 
 }
-\author{
-Max Kuhn
-}
 \seealso{
 \code{\link{train}}
 }
+\author{
+Max Kuhn
+}
 \keyword{print}
-

@@ -36,4 +36,3 @@ original descriptors, using the DRAGON software."
 The data and R code are in the Supplemental Data file for the article.
 }
 \keyword{datasets}
-

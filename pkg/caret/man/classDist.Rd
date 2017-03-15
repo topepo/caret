@@ -4,6 +4,8 @@
 \alias{classDist}
 \alias{classDist.default}
 \alias{predict.classDist}
+\alias{classDist.default}
+\alias{predict.classDist}
 \title{Compute and predict the distances to class centroids}
 \usage{
 classDist(x, ...)
@@ -15,6 +17,8 @@ classDist(x, ...)
 }
 \arguments{
 \item{x}{a matrix or data frame of predictor variables}
+
+\item{\dots}{optional arguments to pass (not currently used)}
 
 \item{y}{a numeric or factor vector of class labels}
 
@@ -29,8 +33,6 @@ classDist(x, ...)
 \item{newdata}{a matrix or data frame. If \code{vars} was previously specified, these columns should be in \code{newdata}}
 
 \item{trans}{an optional function that can be applied to each class distance. \code{trans = NULL} will not apply a function}
-
-\item{\dots}{optional arguments to pass (not currently used)}
 }
 \value{
 for \code{classDist}, an object of class \code{classDist} with
@@ -75,14 +77,13 @@ newDist <- predict(distData,
 splom(newDist, groups = iris$Species[-trainSet])
 
 }
-\author{
-Max Kuhn
-}
 \references{
 Forina et al. CAIMAN brothers: A family of powerful classification and class modeling techniques. Chemometrics and Intelligent Laboratory Systems (2009) vol. 96 (2) pp. 239-245
 }
 \seealso{
 \code{\link[stats]{mahalanobis}}
 }
+\author{
+Max Kuhn
+}
 \keyword{manip}
-

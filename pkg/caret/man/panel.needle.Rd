@@ -36,12 +36,11 @@ the data point.
 Creates (possibly grouped) needleplot of \code{x} against \code{y} or vice
 versa
 }
+\seealso{
+\code{\link{dotplot}}
+}
 \author{
 Max Kuhn, based on \code{\link[lattice]{panel.dotplot}} by Deepayan
 Sarkar
 }
-\seealso{
-\code{\link{dotplot}}
-}
 \keyword{graphs}
-

@@ -3,9 +3,12 @@
 \name{avNNet}
 \alias{avNNet}
 \alias{avNNet.default}
-\alias{avNNet.formula}
 \alias{predict.avNNet}
+\alias{avNNet.formula}
+\alias{avNNet.formula}
+\alias{avNNet.default}
 \alias{print.avNNet}
+\alias{predict.avNNet}
 \title{Neural Networks Using Model Averaging}
 \usage{
 avNNet(x, ...)
@@ -24,6 +27,8 @@ avNNet(x, ...)
 }
 \arguments{
 \item{x}{matrix or data frame of \code{x} values for examples.}
+
+\item{\dots}{arguments passed to \code{\link[nnet]{nnet}}}
 
 \item{formula}{A formula of the form \code{class ~ x1 + x2 + \dots}}
 
@@ -57,8 +62,6 @@ the  factors  appearing as variables in the model formula.}
 a row vector comprising a single case.}
 
 \item{type}{Type of output, either: \code{raw} for the raw outputs, \code{code} for the predicted class or \code{prob} for the class probabilities.}
-
-\item{\dots}{arguments passed to \code{\link[nnet]{nnet}}}
 }
 \value{
 For \code{avNNet}, an object of  \code{"avNNet"} or \code{"avNNet.formula"}. Items of interest in #' the output are:
@@ -83,9 +86,6 @@ modelFit
 predict(modelFit, bbbDescr)
 }
 }
-\author{
-These are heavily based on the \code{nnet} code from Brian Ripley.
-}
 \references{
 Ripley, B. D. (1996)
 \emph{Pattern Recognition and Neural Networks.} Cambridge.
@@ -93,5 +93,7 @@ Ripley, B. D. (1996)
 \seealso{
 \code{\link[nnet]{nnet}},  \code{\link{preProcess}}
 }
+\author{
+These are heavily based on the \code{nnet} code from Brian Ripley.
+}
 \keyword{neural}
-

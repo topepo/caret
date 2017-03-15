@@ -2,9 +2,9 @@
 % Please edit documentation in R/caret-package.R
 \docType{data}
 \name{oil}
-\alias{fattyAcids}
 \alias{oil}
 \alias{oilType}
+\alias{fattyAcids}
 \title{Fatty acid composition of commercial oils}
 \source{
 Brodnjak-Voncina et al. (2005). Multivariate data analysis in
@@ -26,4 +26,3 @@ only the known oils are in the data set. Also, the authors state that there
 are 95 samples of known oils. However, we count 96 in Table 1 (pgs.  33-35).
 }
 \keyword{datasets}
-

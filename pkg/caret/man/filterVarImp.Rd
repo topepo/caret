@@ -68,4 +68,3 @@ filterVarImp(bbbDescr[, 1:5], logBBB, nonpara = TRUE)
 Max Kuhn
 }
 \keyword{models}
-

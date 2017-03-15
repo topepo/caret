@@ -2,12 +2,16 @@
 % Please edit documentation in R/calibration.R
 \name{calibration}
 \alias{calibration}
-\alias{calibration.default}
 \alias{calibration.formula}
+\alias{calibration.default}
+\alias{xyplot.calibration}
 \alias{ggplot.calibration}
 \alias{panel.calibration}
+\alias{calibration.default}
+\alias{calibration.formula}
 \alias{print.calibration}
 \alias{xyplot.calibration}
+\alias{ggplot.calibration}
 \title{Probability Calibration Plot}
 \usage{
 calibration(x, ...)
@@ -29,6 +33,9 @@ calibration(x, ...)
 specifies one or model columns corresponding to a numeric ranking variable for a model (e.g. class 
 probabilities). The classification variable should have two levels.}
 
+\item{\dots}{options to pass through to \code{\link[lattice:xyplot]{xyplot}} or the panel function (not 
+used in \code{calibration.formula}).}
+
 \item{data}{For \code{calibration.formula}, a data frame (or more precisely, anything that is a valid 
 \code{envir} argument in \code{eval}, e.g., a list or an environment) containing values for any 
 variables in the formula, as well as \code{groups} and \code{subset} if applicable. If not found in 
@@ -49,9 +56,6 @@ actual cuts that will be used.}
 
 \item{bwidth, dwidth}{a numeric value for the confidence interval bar width and dodge width, respectively. 
 In the latter case, a dodge is only used when multiple models are specified in the formula.}
-
-\item{\dots}{options to pass through to \code{\link[lattice:xyplot]{xyplot}} or the panel function (not 
-used in \code{calibration.formula}).}
 }
 \value{
 \code{calibration.formula} returns a list with elements:
@@ -121,11 +125,10 @@ xyplot(calPlotData, auto.key = list(columns = 2))
 }
 
 }
-\author{
-Max Kuhn, some \pkg{lattice} code and documentation by Deepayan Sarkar
-}
 \seealso{
 \code{\link[lattice:xyplot]{xyplot}}, \code{\link[lattice:trellis.par.get]{trellis.par.set}}
 }
+\author{
+Max Kuhn, some \pkg{lattice} code and documentation by Deepayan Sarkar
+}
 \keyword{hplot}
-

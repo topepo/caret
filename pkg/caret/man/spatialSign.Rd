@@ -2,9 +2,9 @@
 % Please edit documentation in R/spatialSign.R
 \name{spatialSign}
 \alias{spatialSign}
-\alias{spatialSign.data.frame}
 \alias{spatialSign.default}
 \alias{spatialSign.matrix}
+\alias{spatialSign.data.frame}
 \title{Compute the multivariate spatial sign}
 \usage{
 spatialSign(x)
@@ -37,13 +37,12 @@ featurePlot(iris[,-5], iris[,5], "pairs")
 featurePlot(spatialSign(scale(iris[,-5])), iris[,5], "pairs")
 
 }
-\author{
-Max Kuhn
-}
 \references{
 Serneels et al. Spatial sign preprocessing: a simple way to
 impart moderate robustness to multivariate estimators. J. Chem. Inf. Model
 (2006) vol. 46 (3) pp. 1402-1409
 }
+\author{
+Max Kuhn
+}
 \keyword{manip}
-

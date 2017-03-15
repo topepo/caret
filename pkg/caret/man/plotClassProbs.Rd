@@ -78,4 +78,3 @@ plotClassProbs(predProbs,
 Max Kuhn
 }
 \keyword{hplot}
-

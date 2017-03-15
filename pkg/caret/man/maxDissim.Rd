@@ -4,6 +4,8 @@
 \alias{maxDissim}
 \alias{minDiss}
 \alias{sumDiss}
+\alias{minDiss}
+\alias{sumDiss}
 \title{Maximum Dissimilarity Sampling}
 \usage{
 maxDissim(a, b, n = 2, obj = minDiss, useNames = FALSE, randomFrac = 1,
@@ -30,9 +32,9 @@ remaining candidate values}
 
 \item{verbose}{a logical; should each step be printed?}
 
-\item{u}{a vector of dissimilarities}
-
 \item{\dots}{optional arguments to pass to dist}
+
+\item{u}{a vector of dissimilarities}
 }
 \value{
 a vector of integers or row names (depending on \code{useNames})
@@ -107,9 +109,6 @@ example(.1, sumDiss)
 title("10 Pct Random Sampling, Sum Score")
 
 }
-\author{
-Max Kuhn \email{max.kuhn@pfizer.com}
-}
 \references{
 Willett, P. (1999), "Dissimilarity-Based Algorithms for
 Selecting Structurally Diverse Sets of Compounds," \emph{Journal of
@@ -118,5 +117,7 @@ Computational Biology}, 6, 447-457.
 \seealso{
 \code{\link{dist}}
 }
+\author{
+Max Kuhn \email{max.kuhn@pfizer.com}
+}
 \keyword{utilities}
-

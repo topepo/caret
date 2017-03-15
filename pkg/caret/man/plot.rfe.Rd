@@ -3,6 +3,7 @@
 \name{ggplot.rfe}
 \alias{ggplot.rfe}
 \alias{plot.rfe}
+\alias{ggplot.rfe}
 \title{Plot RFE Performance Profiles}
 \usage{
 \method{ggplot}{rfe}(data = NULL, mapping = NULL, metric = data$metric[1],
@@ -24,12 +25,12 @@ used depending on what metrics have been calculated.}
 frame while the second returns a simple \code{ggplot} object with no layers.
 The third value returns a plot with a set of layers.}
 
-\item{x}{an object of class \code{\link{rfe}}.}
-
 \item{\dots}{\code{plot} only: specifications to be passed to
 \code{\link[lattice]{xyplot}}. The function automatically sets some
 arguments (e.g. axis labels) but passing in values here will over-ride the
 defaults.}
+
+\item{x}{an object of class \code{\link{rfe}}.}
 }
 \value{
 a lattice or ggplot object
@@ -60,9 +61,6 @@ plot(lmProfile, metric = "Rsquared")
 ggplot(lmProfile)
 }
 }
-\author{
-Max Kuhn
-}
 \references{
 Kuhn (2008), ``Building Predictive Models in R Using the caret''
 (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
@@ -71,5 +69,7 @@ Kuhn (2008), ``Building Predictive Models in R Using the caret''
 \code{\link{rfe}}, \code{\link[lattice]{xyplot}},
 \code{\link[ggplot2]{ggplot}}
 }
+\author{
+Max Kuhn
+}
 \keyword{hplot}
-

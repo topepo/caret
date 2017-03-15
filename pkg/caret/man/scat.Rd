@@ -22,4 +22,3 @@ the time and place of the collection and the scat itself. The data frame
 species.
 }
 \keyword{datasets}
-

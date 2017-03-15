@@ -2,9 +2,9 @@
 % Please edit documentation in R/rfe.R
 \name{densityplot.rfe}
 \alias{densityplot.rfe}
-\alias{histogram.rfe}
-\alias{stripplot.rfe}
 \alias{xyplot.rfe}
+\alias{stripplot.rfe}
+\alias{histogram.rfe}
 \title{Lattice functions for plotting resampling results of recursive feature
 selection}
 \usage{
@@ -74,9 +74,6 @@ densityplot(lmProfile)
 }
 
 }
-\author{
-Max Kuhn
-}
 \seealso{
 \code{\link{rfe}}, \code{\link{rfeControl}},
 \code{\link[lattice:histogram]{histogram}},
@@ -84,5 +81,7 @@ Max Kuhn
 \code{\link[lattice:xyplot]{xyplot}},
 \code{\link[lattice:xyplot]{stripplot}}
 }
+\author{
+Max Kuhn
+}
 \keyword{hplot}
-

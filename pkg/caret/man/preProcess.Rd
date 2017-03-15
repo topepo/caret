@@ -4,6 +4,8 @@
 \alias{preProcess}
 \alias{preProcess.default}
 \alias{predict.preProcess}
+\alias{preProcess.default}
+\alias{predict.preProcess}
 \title{Pre-Processing of Predictors}
 \usage{
 preProcess(x, ...)
@@ -18,6 +20,9 @@ preProcess(x, ...)
 \arguments{
 \item{x}{a matrix or data frame. Non-numeric predictors are allowed but will
 be ignored.}
+
+\item{\dots}{additional arguments to pass to \code{\link[fastICA]{fastICA}},
+such as \code{n.comp}}
 
 \item{method}{a character vector specifying the type of processing. Possible
 values are "BoxCox", "YeoJohnson", "expoTrans", "center", "scale", "range",
@@ -63,9 +68,6 @@ See \code{\link{findCorrelation}}.}
 \item{object}{an object of class \code{preProcess}}
 
 \item{newdata}{a matrix or data frame of new data to be pre-processed}
-
-\item{\dots}{additional arguments to pass to \code{\link[fastICA]{fastICA}},
-such as \code{n.comp}}
 }
 \value{
 \code{preProcess} results in a list with elements \item{call}{the
@@ -179,9 +181,6 @@ test     <- predict(preProc, bbbDescr[101:208,-3])
 }
 
 }
-\author{
-Max Kuhn, median imputation by Zachary Mayer
-}
 \references{
 \url{http://topepo.github.io/caret/pre-processing.html}
 
@@ -208,5 +207,7 @@ improve normality or symmetry. Biometrika, 87, 954-959.
 \code{\link[MASS]{boxcox}}, \code{\link[stats]{prcomp}},
 \code{\link[fastICA]{fastICA}}, \code{\link{spatialSign}}
 }
+\author{
+Max Kuhn, median imputation by Zachary Mayer
+}
 \keyword{utilities}
-

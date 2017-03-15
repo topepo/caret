@@ -34,4 +34,3 @@ A set of 255 descriptors (MOE2D and QikProp) were generated. To classify the
 data, we used a cutoff of $2^2.5$ to determine activity
 }
 \keyword{datasets}
-

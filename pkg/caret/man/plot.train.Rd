@@ -3,6 +3,7 @@
 \name{ggplot.train}
 \alias{ggplot.train}
 \alias{plot.train}
+\alias{ggplot.train}
 \title{Plot Method for the train Class}
 \usage{
 \method{ggplot}{train}(data = NULL, mapping = NULL,
@@ -36,6 +37,12 @@ should the name and value be included in the panel title?}
 \item{highlight}{a logical: if \code{TRUE}, a diamond is placed around the
 optimal parameter setting for models using grid search.}
 
+\item{\dots}{\code{plot} only: specifications to be passed to
+\code{\link[lattice]{levelplot}}, \code{\link[lattice]{xyplot}},
+\code{\link[lattice:xyplot]{stripplot}} (for line plots). The function
+automatically sets some arguments (e.g. axis labels) but passing in values
+here will over-ride the defaults}
+
 \item{x}{an object of class \code{\link{train}}.}
 
 \item{digits}{an integer specifying the number of significant digits used to
@@ -43,12 +50,6 @@ label the parameter value.}
 
 \item{xTrans}{a function that will be used to scale the x-axis in scatter
 plots.}
-
-\item{\dots}{\code{plot} only: specifications to be passed to
-\code{\link[lattice]{levelplot}}, \code{\link[lattice]{xyplot}},
-\code{\link[lattice:xyplot]{stripplot}} (for line plots). The function
-automatically sets some arguments (e.g. axis labels) but passing in values
-here will over-ride the defaults}
 }
 \description{
 This function takes the output of a \code{\link{train}} object and creates a
@@ -89,9 +90,6 @@ ggplot(rdaFit) + theme_bw()
 }
  
 }
-\author{
-Max Kuhn
-}
 \references{
 Kuhn (2008), ``Building Predictive Models in R Using the caret''
 (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
@@ -101,5 +99,7 @@ Kuhn (2008), ``Building Predictive Models in R Using the caret''
 \code{\link[lattice]{xyplot}}, \code{\link[lattice:xyplot]{stripplot}},
 \code{\link[ggplot2]{ggplot}}
 }
+\author{
+Max Kuhn
+}
 \keyword{hplot}
-

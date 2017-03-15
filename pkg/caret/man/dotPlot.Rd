@@ -35,11 +35,10 @@ dotPlot(knnImp)
 
 
 }
-\author{
-Max Kuhn
-}
 \seealso{
 \code{\link{varImp}}, \code{\link[lattice:xyplot]{dotplot}}
 }
+\author{
+Max Kuhn
+}
 \keyword{hplot}
-

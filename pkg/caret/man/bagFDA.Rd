@@ -2,6 +2,9 @@
 % Please edit documentation in R/bagFDA.R
 \name{bagFDA}
 \alias{bagFDA}
+\alias{print.bagFDA}
+\alias{bagFDA.default}
+\alias{bagFDA.formula}
 \alias{bagFDA.default}
 \alias{bagFDA.formula}
 \alias{print.bagFDA}
@@ -18,6 +21,8 @@ bagFDA(x, ...)
 }
 \arguments{
 \item{x}{matrix or data frame of 'x' values for examples.}
+
+\item{\dots}{arguments passed to the \code{mars} function}
 
 \item{y}{matrix or data frame of numeric values outcomes.}
 
@@ -41,8 +46,6 @@ found. The default action is for the procedure to fail.  An
 alternative is na.omit, which leads to rejection of cases
 with missing values on any required variable.  (NOTE: If
 given, this argument must be named.)}
-
-\item{\dots}{arguments passed to the \code{mars} function}
 }
 \value{
 A list with elements
@@ -76,14 +79,13 @@ confusionMatrix(predict(baggedFit, testData[, -10]),
                 testData[, 10])
 
 }
-\author{
-Max Kuhn (\code{bagFDA.formula} is based on Ripley's \code{nnet.formula})
-}
 \references{
 J. Friedman, ``Multivariate Adaptive Regression Splines'' (with discussion) (1991).  Annals of Statistics, 19/1, 1-141.
 }
 \seealso{
 \code{\link[mda]{fda}}, \code{\link{predict.bagFDA}}
 }
+\author{
+Max Kuhn (\code{bagFDA.formula} is based on Ripley's \code{nnet.formula})
+}
 \keyword{regression}
-
