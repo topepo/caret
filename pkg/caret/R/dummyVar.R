@@ -26,7 +26,7 @@
 #' set. It uses \code{contr.ltfr} as the base function to do this.
 #'
 #' \code{class2ind} is most useful for converting a factor outcome vector to a
-#' matrix of dummy variables.
+#' matrix (or vector) of dummy variables.
 #'
 #' @aliases dummyVars dummyVars.default predict.dummyVars contr.dummy
 #' contr.ltfr class2ind
@@ -107,6 +107,11 @@
 #'                      levelsOnly = TRUE)
 #' predict(noNames, when)
 #'
+#' head(class2ind(iris$Species))
+#' 
+#' two_levels <- factor(rep(letters[1:2], each = 5))
+#' class2ind(two_levels)
+#' class2ind(two_levels, drop2nd = TRUE)
 #' @export dummyVars
 "dummyVars" <-
   function(formula, ...){
@@ -267,4 +272,18 @@ contr.dummy <- function(n, ...)
   out
 }
 
-
+#' @rdname dummyVars
+#' @importFrom stats model.matrix
+#' @export
+#' @param drop2nd A logical: if the factor has two levels, should a single binary vector be returned?  
+class2ind <- function(x, drop2nd = FALSE) {
+  if(!is.factor(x)) stop("'x' should be a factor")
+  y <- model.matrix(~ x - 1)
+  colnames(y) <- gsub("^x", "", colnames(y))
+  attributes(y)$assign <- NULL
+  attributes(y)$contrasts <- NULL
+  if(length(levels(x)) == 2 & drop2nd) {
+    y <- y[,1]
+  }
+  y
+}

@@ -11,6 +11,7 @@
 \alias{print.dummyVars}
 \alias{predict.dummyVars}
 \alias{contr.ltfr}
+\alias{class2ind}
 \title{Create A Full Set of Dummy Variables}
 \usage{
 dummyVars(formula, ...)
@@ -23,6 +24,8 @@ dummyVars(formula, ...)
 \method{predict}{dummyVars}(object, newdata, na.action = na.pass, ...)
 
 contr.ltfr(n, contrasts = TRUE, sparse = FALSE)
+
+class2ind(x, drop2nd = FALSE)
 }
 \arguments{
 \item{formula}{An appropriate R model formula, see References}
@@ -57,6 +60,8 @@ values in \code{newdata}. The default is to predict \code{NA}.}
 \item{contrasts}{A logical indicating whether contrasts should be computed.}
 
 \item{sparse}{A logical indicating if the result should be sparse.}
+
+\item{drop2nd}{A logical: if the factor has two levels, should a single binary vector be returned?}
 }
 \value{
 The output of \code{dummyVars} is a list of class 'dummyVars' with
@@ -99,7 +104,7 @@ the information needed to produce a full set of dummy variables for any data
 set. It uses \code{contr.ltfr} as the base function to do this.
 
 \code{class2ind} is most useful for converting a factor outcome vector to a
-matrix of dummy variables.
+matrix (or vector) of dummy variables.
 }
 \examples{
 
@@ -140,6 +145,11 @@ noNames <- dummyVars(~ day + time + day:time,
                      levelsOnly = TRUE)
 predict(noNames, when)
 
+head(class2ind(iris$Species))
+
+two_levels <- factor(rep(letters[1:2], each = 5))
+class2ind(two_levels)
+class2ind(two_levels, drop2nd = TRUE)
 }
 \references{
 \url{https://cran.r-project.org/doc/manuals/R-intro.html#Formulae-for-statistical-models}
