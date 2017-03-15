@@ -48,6 +48,8 @@
 #' The \code{"boot632"} method should not to be confused with the 0.632+ 
 #' estimator proposed later by the same author.
 #' 
+#' Note that if \code{index} or \code{indexOut} are specified, the label shown by \code{train} may not be accurate since these arguments supersede the \code{method} argument.
+#' 
 #' @param method The resampling method: \code{"boot"}, \code{"boot632"},
 #' \code{"optimism_boot"}, \code{"boot_all"},
 #' \code{"cv"}, \code{"repeatedcv"}, \code{"LOOCV"}, \code{"LGOCV"} (for
@@ -224,7 +226,7 @@ trainControl <- function(method = "boot",
   if(length(predictionBounds) > 0 && length(predictionBounds) != 2) stop("'predictionBounds' should be a logical or numeric vector of length 2")
   if(any(names(preProcOptions) == "method")) stop("'method' cannot be specified here")
   if(any(names(preProcOptions) == "x")) stop("'x' cannot be specified here")
-
+  
   if(!(adaptive$method %in% c("gls", "BT"))) stop("incorrect value of adaptive$method")
   if(adaptive$alpha < .0000001 | adaptive$alpha > 1) stop("incorrect value of adaptive$alpha")
   if(grepl("adapt", method)) {
@@ -263,6 +265,3 @@ trainControl <- function(method = "boot",
        trim = trim,
        allowParallel = allowParallel)
 }
-
-
-

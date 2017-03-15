@@ -177,6 +177,8 @@ The supported bootstrap methods are:
 
 The \code{"boot632"} method should not to be confused with the 0.632+ 
 estimator proposed later by the same author.
+
+Note that if \code{index} or \code{indexOut} are specified, the label shown by \code{train} may not be accurate since these arguments supersede the \code{method} argument.
 }
 \examples{
 
