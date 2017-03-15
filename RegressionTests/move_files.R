@@ -37,15 +37,20 @@ rFiles <- rFiles[-grep(exclusions, rFiles)]
 set.seed(131311)
 rFiles <- sample(rFiles)
 
+file_label <- gsub(".R$", "", rFiles)
+file_label <- paste0(format(seq_along(file_label)), "/", 
+                     length(file_label), " ",
+                     file_label)
+
 header <- paste(rFiles, "Data: ", rFiles, "\n", sep = "")
 
 strt <- paste("\t@date '+ %Y-%m-%d %H:%M:%S: Starting ",
-              gsub(".R$", "", rFiles), "'\n", sep = "")
+              file_label, "'\n", sep = "")
 
 batch <- paste("\t@R CMD BATCH --vanilla ", rFiles, "\n", sep = "")
 
 fini <- paste("\t@date '+ %Y-%m-%d %H:%M:%S: Finished ",
-              gsub(".R$", "", rFiles), "'\n\n", sep = "")
+              file_label, "'\n\n", sep = "")
 
 rdata <- paste(rFiles, "Data", sep = "")
 rdata0 <- rdata[!(rdata %in% frbs)]
