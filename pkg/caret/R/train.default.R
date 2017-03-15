@@ -444,7 +444,7 @@ train.default <- function(x, y,
       rm(ppObj, pp)
     } else {
       tuneGrid <- models$grid(x = x, y = y, len = tuneLength, search = trControl$search)
-      if (tuneLength < nrow(tuneGrid))
+      if (trControl$search != "grid" && tuneLength < nrow(tuneGrid))
         tuneGrid <- tuneGrid[1:tuneLength,,drop = FALSE]
     }
   }
