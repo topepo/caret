@@ -45,10 +45,10 @@ evalSummaryFunction <- function(y, wts, ctrl, lev, metric, method) {
     pred_samp <- y[sample(1:n, min(10, n)), "time"]
     obs_samp <- y[sample(1:n, min(10, n)),]
   }
-
+  
   ## get phoney performance to obtain the names of the outputs
   testOutput <- data.frame(pred = pred_samp, obs = obs_samp)
-
+  
   if(ctrl$classProbs)
   {
     for(i in seq(along = lev)) testOutput[, lev[i]] <- runif(nrow(testOutput))
@@ -76,7 +76,7 @@ model2method <- function(x)
 {
   ## There are some disconnecs between the object class and the
   ## method used by train.
-
+  
   switch(x,
          randomForest = "rf",
          rvm = "rvmRadial",
@@ -111,7 +111,7 @@ gamFormula <- function(data, smoother = "s", cut = 8, y = "y")
 {
   nzv <- nearZeroVar(data)
   if(length(nzv) > 0) data <- data[, -nzv, drop = FALSE]
-
+  
   numValues <- apply(data, 2, function(x) length(unique(x)))
   prefix <- rep("", ncol(data))
   prefix[numValues > cut] <- paste(smoother, "(", sep = "")
@@ -124,24 +124,24 @@ gamFormula <- function(data, smoother = "s", cut = 8, y = "y")
 }
 
 printCall <- function(x)
-  {
-    call <- paste(deparse(x), collapse = "\n")
-#     cat("\nCall:\n", call, "\n\n", sep = "")
-    ## or
-
-    cat("\nCall:\n", truncateText(deparse(x, width.cutoff = 500)), "\n\n", sep = "")
-    invisible(call)
-  }
+{
+  call <- paste(deparse(x), collapse = "\n")
+  #     cat("\nCall:\n", call, "\n\n", sep = "")
+  ## or
+  
+  cat("\nCall:\n", truncateText(deparse(x, width.cutoff = 500)), "\n\n", sep = "")
+  invisible(call)
+}
 
 #' @rdname caret-internal
 #' @export
 flatTable <- function(pred, obs)
-  {
-    cells <- as.vector(table(pred, obs))
-    if(length(cells) == 0) cells <- rep(NA, length(levels(obs))^2)
-    names(cells) <- paste(".cell", seq(along= cells), sep = "")
-    cells
-  }
+{
+  cells <- as.vector(table(pred, obs))
+  if(length(cells) == 0) cells <- rep(NA, length(levels(obs))^2)
+  names(cells) <- paste(".cell", seq(along= cells), sep = "")
+  cells
+}
 
 
 prettySeq <- function(x) paste("Resample", gsub(" ", "0", format(seq(along = x))), sep = "")
@@ -166,12 +166,12 @@ bagEarthStats <- function(x) getModelInfo("bagEarth", regex = FALSE)[[1]]$oob(x)
 #' @importFrom stats complete.cases cor
 #' @export
 R2 <- function(pred, obs, formula = "corr", na.rm = FALSE)
-  {
-    n <- sum(complete.cases(pred))
-    switch(formula,
-           corr = cor(obs, pred, use = ifelse(na.rm, "complete.obs", "everything"))^2,
-           traditional = 1 - (sum((obs-pred)^2, na.rm = na.rm)/((n-1)*var(obs, na.rm = na.rm))))
-  }
+{
+  n <- sum(complete.cases(pred))
+  switch(formula,
+         corr = cor(obs, pred, use = ifelse(na.rm, "complete.obs", "everything"))^2,
+         traditional = 1 - (sum((obs-pred)^2, na.rm = na.rm)/((n-1)*var(obs, na.rm = na.rm))))
+}
 
 #' @export
 RMSE <- function(pred, obs, na.rm = FALSE) sqrt(mean((pred - obs)^2, na.rm = na.rm))
@@ -179,54 +179,54 @@ RMSE <- function(pred, obs, na.rm = FALSE) sqrt(mean((pred - obs)^2, na.rm = na.
 
 #' @importFrom utils capture.output
 partRuleSummary <- function(x)
-  {
-    predictors <- all.vars(x$terms)
-    predictors <- predictors[predictors != as.character(x$terms[[2]])]
-    classes <- levels(x$predictions)
-    rules <- capture.output(print(x))
-    conditions <- grep("(<=|>=|<|>|=)", rules, value = TRUE)
-    classPred <- grep("\\)$", conditions, value = TRUE)
-    varUsage <- data.frame(Var = predictors,
-                           Overall = 0)
-    for(i in seq(along = predictors))
-      varUsage$Overall[i] <- sum(grepl(paste("^", predictors[i], sep = ""), conditions))
-
-    numClass <- rep(NA, length(classes))
-    names(numClass) <- classes
-    for(i in seq(along = classes))
-      numClass[i] <- sum(grepl(paste(":", classes[i], sep = " "), classPred))
-
-    list(varUsage = varUsage,
-         numCond = length(conditions),
-         classes = numClass)
-
-  }
+{
+  predictors <- all.vars(x$terms)
+  predictors <- predictors[predictors != as.character(x$terms[[2]])]
+  classes <- levels(x$predictions)
+  rules <- capture.output(print(x))
+  conditions <- grep("(<=|>=|<|>|=)", rules, value = TRUE)
+  classPred <- grep("\\)$", conditions, value = TRUE)
+  varUsage <- data.frame(Var = predictors,
+                         Overall = 0)
+  for(i in seq(along = predictors))
+    varUsage$Overall[i] <- sum(grepl(paste("^", predictors[i], sep = ""), conditions))
+  
+  numClass <- rep(NA, length(classes))
+  names(numClass) <- classes
+  for(i in seq(along = classes))
+    numClass[i] <- sum(grepl(paste(":", classes[i], sep = " "), classPred))
+  
+  list(varUsage = varUsage,
+       numCond = length(conditions),
+       classes = numClass)
+  
+}
 
 #' @importFrom utils capture.output
 ripperRuleSummary <- function(x)
-  {
-    predictors <- all.vars(x$terms)
-    predictors <- predictors[predictors != as.character(x$terms[[2]])]
-    classes <- levels(x$predictions)
-    rules <- capture.output(print(x))
-    ## remove header
-    rules <- rules[-(1:min(which(rules == "")))]
-    conditions <- grep("(<=|>=|<|>|=)", rules, value = TRUE)
-    varUsage <- data.frame(Var = predictors,
-                           Overall = 0)
-    for(i in seq(along = predictors))
-      varUsage$Overall[i] <- sum(grepl(paste("\\(", predictors[i], sep = ""), conditions))
-
-    numClass <- rep(NA, length(classes))
-    names(numClass) <- classes
-    for(i in seq(along = classes))
-      numClass[i] <- sum(grepl(paste(x$terms[[2]], "=", classes[i], sep = ""), conditions))
-
-    list(varUsage = varUsage,
-         numCond = length(conditions),
-         classes = numClass)
-
-  }
+{
+  predictors <- all.vars(x$terms)
+  predictors <- predictors[predictors != as.character(x$terms[[2]])]
+  classes <- levels(x$predictions)
+  rules <- capture.output(print(x))
+  ## remove header
+  rules <- rules[-(1:min(which(rules == "")))]
+  conditions <- grep("(<=|>=|<|>|=)", rules, value = TRUE)
+  varUsage <- data.frame(Var = predictors,
+                         Overall = 0)
+  for(i in seq(along = predictors))
+    varUsage$Overall[i] <- sum(grepl(paste("\\(", predictors[i], sep = ""), conditions))
+  
+  numClass <- rep(NA, length(classes))
+  names(numClass) <- classes
+  for(i in seq(along = classes))
+    numClass[i] <- sum(grepl(paste(x$terms[[2]], "=", classes[i], sep = ""), conditions))
+  
+  list(varUsage = varUsage,
+       numCond = length(conditions),
+       classes = numClass)
+  
+}
 
 ##########################################################################################################
 
@@ -234,110 +234,97 @@ ripperRuleSummary <- function(x)
 ## of roughly equal size. The result is an integer vector of task groups
 
 splitIndicies <- function(n, k)
-  {
-    out <- rep(1:k, n%/%k)
-    if(n %% k > 0)  out <- c(out, sample(1:k, n %% k))
-    sort(out)
-  }
+{
+  out <- rep(1:k, n%/%k)
+  if(n %% k > 0)  out <- c(out, sample(1:k, n %% k))
+  sort(out)
+}
 
 ## This makes a list of copies of another list
 
 
 repList <- function(x, times = 3, addIndex = FALSE)
-  {
-    out <- vector(mode = "list", length = times)
-    out <- lapply(out, function(a, b) b, b = x)
-    if(addIndex) for(i in seq(along = out)) out[[i]]$.index <- i
-    out
-  }
+{
+  out <- vector(mode = "list", length = times)
+  out <- lapply(out, function(a, b) b, b = x)
+  if(addIndex) for(i in seq(along = out)) out[[i]]$.index <- i
+  out
+}
 
 useMathSymbols <- function(x)
-  {
-    if(x == "Rsquared") x <- expression(R^2)
-    x
-  }
+{
+  if(x == "Rsquared") x <- expression(R^2)
+  x
+}
 
 #' @importFrom stats approx
 depth2cp <- function(x, depth)
-  {
-    out <- approx(x[,"nsplit"], x[,"CP"], depth)$y
-    out[depth > max(x[,"nsplit"])] <- min(x[,"CP"]) * .99
-    out
-  }
+{
+  out <- approx(x[,"nsplit"], x[,"CP"], depth)$y
+  out[depth > max(x[,"nsplit"])] <- min(x[,"CP"]) * .99
+  out
+}
 
 #' @importFrom stats as.formula
 smootherFormula <- function(data, smoother = "s", cut = 10, df = 0, span = .5, degree = 1, y = ".outcome")
+{
+  nzv <- nearZeroVar(data)
+  if(length(nzv) > 0) data <- data[, -nzv, drop = FALSE]
+  
+  numValues <- sort(apply(data, 2, function(x) length(unique(x))))
+  prefix <- rep("", ncol(data))
+  suffix <- rep("", ncol(data))
+  prefix[numValues > cut] <- paste(smoother, "(", sep = "")
+  if(smoother == "s")
   {
-    nzv <- nearZeroVar(data)
-    if(length(nzv) > 0) data <- data[, -nzv, drop = FALSE]
-
-    numValues <- sort(apply(data, 2, function(x) length(unique(x))))
-    prefix <- rep("", ncol(data))
-    suffix <- rep("", ncol(data))
-    prefix[numValues > cut] <- paste(smoother, "(", sep = "")
-    if(smoother == "s")
-      {
-        suffix[numValues > cut] <- if(df == 0) ")" else paste(", df=", df, ")", sep = "")
-      }
-    if(smoother == "lo")
-      {
-        suffix[numValues > cut] <- paste(", span=", span, ",degree=", degree, ")", sep = "")
-      }
-    if(smoother == "rcs")
-      {
-        suffix[numValues > cut] <- ")"
-      }
-    rhs <- paste(prefix, names(numValues), suffix, sep = "")
-    rhs <- paste(rhs, collapse = "+")
-    form <- as.formula(paste(y, rhs, sep = "~"))
-    form
+    suffix[numValues > cut] <- if(df == 0) ")" else paste(", df=", df, ")", sep = "")
   }
+  if(smoother == "lo")
+  {
+    suffix[numValues > cut] <- paste(", span=", span, ",degree=", degree, ")", sep = "")
+  }
+  if(smoother == "rcs")
+  {
+    suffix[numValues > cut] <- ")"
+  }
+  rhs <- paste(prefix, names(numValues), suffix, sep = "")
+  rhs <- paste(rhs, collapse = "+")
+  form <- as.formula(paste(y, rhs, sep = "~"))
+  form
+}
 
 varSeq <- function(x)
-  {
-    vars <- apply(summary(x)$which, 1, function(x) names(which(x)))
-    vars <- lapply(vars, function(x) x[x != "(Intercept)"])
-    vars
-  }
+{
+  vars <- apply(summary(x)$which, 1, function(x) names(which(x)))
+  vars <- lapply(vars, function(x) x[x != "(Intercept)"])
+  vars
+}
 
 cranRef <- function(x) paste("{\\tt \\href{http://cran.r-project.org/web/packages/", x, "/index.html}{", x, "}}", sep = "")
 
 makeTable <- function(x)
-  {
-    params <- paste("\\code{", as.character(x$parameter), "}", sep = "", collapse = ", ")
-    params <- ifelse(params == "\\code{parameter}", "None", params)
-
-    data.frame(method = as.character(x$model)[1],
-               Package = cranRef(as.character(x$Package)[1]),
-               Parameters = params)
-
-
-  }
-
-scrubCall <- function(x)
-  {
-    items <- c("x", "y", "data")
-    for(i in items) if(nchar(as.character(x[i])) > 100) x[i] <- "scrubbed"
-    x
-  }
-
-#' @importFrom stats model.matrix
-#' @export
-class2ind <- function(x, drop2nd = FALSE) {
-	if(!is.factor(x)) stop("'x' should be a factor")
-	y <- model.matrix(~ x - 1)
-	colnames(y) <- gsub("^x", "", colnames(y))
-	attributes(y)$assign <- NULL
-	attributes(y)$contrasts <- NULL
-	if(length(levels(x)) == 2 & drop2nd) {
-		y <- y[,1]
-	}
-	y
+{
+  params <- paste("\\code{", as.character(x$parameter), "}", sep = "", collapse = ", ")
+  params <- ifelse(params == "\\code{parameter}", "None", params)
+  
+  data.frame(method = as.character(x$model)[1],
+             Package = cranRef(as.character(x$Package)[1]),
+             Parameters = params)
+  
+  
 }
 
+scrubCall <- function(x)
+{
+  items <- c("x", "y", "data")
+  for(i in items) if(nchar(as.character(x[i])) > 100) x[i] <- "scrubbed"
+  x
+}
+
+
 requireNamespaceQuietStop <- function(package) {
-    if (!requireNamespace(package, quietly = TRUE))
-        stop(paste('package',package,'is required'))
+  if (!requireNamespace(package, quietly = TRUE))
+    stop(paste('package',package,'is required'))
 }
 
 get_resample_perf <- function (x, ...) UseMethod("get_resample_perf")
@@ -428,7 +415,7 @@ parse_sampling <- function(x) {
   ### a string to match to a existing method
   ### a function
   ### a list
-
+  
   ## output should be a list with elements
   ### name
   ### func
@@ -566,19 +553,19 @@ outcome_conversion <- function(x, lv) {
 }
 
 check_na_conflict <- function(call_obj) {
-
+  
   ## check for na.action info:
   if("na.action" %in% names(as.list(call_obj))) {
     nam <- as.character(call_obj$na.action)
   } else nam <- "na.fail"
-
+  
   ## check for preprocess info:
   has_pp <- grepl("^preProc", names(call_obj))
   if(any(has_pp)) {
     pp <- as.character(call_obj[has_pp])
     imputes <- if(any(grepl("impute", tolower(pp)))) TRUE else FALSE
   } else imputes <- FALSE
-
+  
   if(imputes & any(nam %in% c("na.omit", "na.exclude")))
     warning(paste0("`preProcess` includes an imputation method but missing ",
                    "data will be eliminated by the formula method using `na.action=",
