@@ -252,4 +252,5 @@ static const R_CMethodDef CEntries[] = {
 void R_init_caret(DllInfo *dll)
 {
 	R_registerRoutines(dll, CEntries, NULL, NULL, NULL);
+	R_useDynamicSymbols(dll, FALSE);
 }
