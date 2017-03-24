@@ -148,6 +148,8 @@ predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.o
       }
     } else stop("please specify data via newdata")
   }
+  if("xNames" %in% names(object$finalModel))
+    newdata <- newdata[, colnames(newdata) %in% object$finalModel$xNames, drop = FALSE]
   
   if(type == "prob") {
     out <- probFunction(method = object$modelInfo, 
