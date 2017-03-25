@@ -8,7 +8,10 @@ model <- "rpart"
 set.seed(2)
 training <- twoClassSim(50, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
-trainX <- training[, -ncol(training)]
+training$factor <- factor(sample(letters[1:4], size = nrow(training), replace = TRUE))
+testing$factor <- factor(sample(letters[1:4], size = nrow(testing), replace = TRUE))
+
+trainX <- training[, colnames(training) != "Class"]
 trainY <- training$Class
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
@@ -24,14 +27,14 @@ test_class_cv_model <- train(trainX, trainY,
                              preProc = c("center", "scale"))
 
 set.seed(849)
-test_class_cv_form <- train(Class ~ ., data = training, 
+test_class_cv_form <- train(Class ~ . - TwoFactor1, data = training, 
                             method = "rpart", 
                             trControl = cctrl1,
                             preProc = c("center", "scale"))
 
 
-test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
-test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
+test_class_pred <- predict(test_class_cv_model, testing[, colnames(testing) != "Class"])
+test_class_pred_form <- predict(test_class_cv_form, testing[, colnames(testing) != "Class"])
 
 set.seed(849)
 test_class_rand <- train(trainX, trainY, 
@@ -53,8 +56,8 @@ test_class_none_model <- train(trainX, trainY,
                                metric = "ROC", 
                                preProc = c("center", "scale"))
 
-test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
-test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
+test_class_none_pred <- predict(test_class_none_model, testing[, colnames(testing) != "Class"])
+test_class_none_prob <- predict(test_class_none_model, testing[, colnames(testing) != "Class"], type = "prob")
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
