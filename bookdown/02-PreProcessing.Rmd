@@ -32,7 +32,7 @@ library(earth)
 data(etitanic)
 ```
 
-For example, the `etitanic` data set in the [`earth`](http://cran.r-project.org/web/packages/earth/index.html) package includes two factors: `r I(paste(levels(etitanic$pclass),  collapse = ", "))`) and <code>sex</code> (with levels `r I(paste(levels(etitanic$sex),  sep = "", collapse = ", "))`). The base R function `model.matrix` would generate the following variables:
+For example, the `etitanic` data set in the [`earth`](http://cran.r-project.org/web/packages/earth/index.html) package includes two factors: `pclass` (passenger class, with levels `r I(paste(levels(etitanic$pclass),  collapse = ", "))`) and `sex` (with levels `r I(paste(levels(etitanic$sex),  sep = "", collapse = ", "))`). The base R function `model.matrix` would generate the following variables:
 
 ```{r pp_dummy1}
 library(earth)
@@ -99,7 +99,7 @@ descrCor <-  cor(filteredDescr)
 highCorr <- sum(abs(descrCor[upper.tri(descrCor)]) > .999)
 ```
 
-For the previous MDRR data, there are r`I(highCorr)` descriptors that are almost perfectly correlated (|correlation| &gt; 0.999), such as the total information index of atomic composition (`IAC`) and the total information content index (neighborhood symmetry of 0-order) (`TIC0`) (correlation = 1). The code chunk below shows the effect of removing descriptors with absolute correlations above 0.75.
+For the previous MDRR data, there are `r I(highCorr)` descriptors that are almost perfectly correlated (|correlation| &gt; 0.999), such as the total information index of atomic composition (`IAC`) and the total information content index (neighborhood symmetry of 0-order) (`TIC0`) (correlation = 1). The code chunk below shows the effect of removing descriptors with absolute correlations above 0.75.
 
 ```{r pp_corr2}
 descrCor <- cor(filteredDescr)
