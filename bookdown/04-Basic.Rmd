@@ -185,9 +185,7 @@ cat(paste(text2, collapse = "\n"))
 ```
 
 
-If there are missing values in the training set, PCA and ICA models only use complete samples.
-
-Another option is to use a random sample of possible tuning parameter combinations, i.e. "random search"[(pdf)](www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf). This functionality is described on [this page](random-hyperparameter-search.html).
+Another option is to use a random sample of possible tuning parameter combinations, i.e. "random search"[(pdf)](http://www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf). This functionality is described on [this page](random-hyperparameter-search.html).
 
 To use a random search, use the option `search = "random"` in the call to `trainControl`. In this situation, the `tuneLength` parameter defines the total number of parameter combinations that will be evaluated.
 
@@ -354,7 +352,7 @@ The main issue with these functions is related to ordering the models from simpl
 ## Extracting Predictions and Class Probabilities
 
 
-As previously mentioned, objects produced by the `train` function contain the "optimized" model in the `finalModel` sub-object. Predictions can be made from these objects as usual. In some cases, such as `pls` or `gbm` objects, additional parameters from the optimized fit may need to be specified. In these cases, the `train` objects uses the results of the parameter optimization to predict new samples. For example, if predictions were create using `predict.gbm`, the user would have to specify the number of trees directly (there is no default). Also, for binary classification, the predictions from this function take the form of the probability of one of the classes, so extra steps are required to convert this to a factor vector. `predict.train` automatically handles these details for this (and for other models).
+As previously mentioned, objects produced by the `train` function contain the "optimized" model in the `finalModel` sub-object. Predictions can be made from these objects as usual. In some cases, such as `pls` or `gbm` objects, additional parameters from the optimized fit may need to be specified. In these cases, the `train` objects uses the results of the parameter optimization to predict new samples. For example, if predictions were created using `predict.gbm`, the user would have to specify the number of trees directly (there is no default). Also, for binary classification, the predictions from this function take the form of the probability of one of the classes, so extra steps are required to convert this to a factor vector. `predict.train` automatically handles these details for this (and for other models).
 
 Also, there are very few standard syntaxes for model predictions in R. For example, to get class probabilities, many  `predict` methods have an argument called  `type` that is used to specify whether the classes or probabilities should be generated. Different packages use different values of `type`, such as `"prob"`, `"posterior"`, `"response"`, `"probability"` or `"raw"`. In other cases, completely different syntax is used.
 
@@ -383,7 +381,7 @@ There are several [`lattice`](http://cran.r-project.org/web/packages/lattice/ind
 
 For example, the following statements create a density plot:
 
-```{r 4,echo=FALSE,fig.width=7,fig.height=4}
+```{r 4,echo=TRUE,fig.width=7,fig.height=4}
 trellis.par.set(caretTheme())
 densityplot(gbmFit3, pch = "|")
 ```
@@ -395,7 +393,7 @@ Note that if you are interested in plotting the resampling results across multip
 ### Between-Models
 
 
-The [`caret`](http://cran.r-project.org/web/packages/caret/index.html) package also includes functions to characterize the differences between models (generated using `train`,  `sbf` or `rfe`) via their resampling distributions. These functions are based on the work of [Hothorn et al. (2005)](http://www.stat.uni-muenchen.de/~leisch/papers/Hothorn+Leisch+Zeileis-2005.pdf) and [Eugster et al (2008)](http://epub.ub.uni-muenchen.de/10604/1/tr56.pdf).
+The [`caret`](http://cran.r-project.org/web/packages/caret/index.html) package also includes functions to characterize the differences between models (generated using `train`,  `sbf` or `rfe`) via their resampling distributions. These functions are based on the work of [Hothorn et al. (2005)](https://homepage.boku.ac.at/leisch/papers/Hothorn+Leisch+Zeileis-2005.pdf) and [Eugster et al (2008)](http://epub.ub.uni-muenchen.de/10604/1/tr56.pdf).
 
 First, a support vector machine model is fit to the Sonar data. The data are centered and scaled using the `preProc` argument. Note that the same random number seed is set prior to the model that is identical to the seed used for the boosted tree model. This ensures that the same resampling sets are used, which will come in handy when we compare the resampling profiles between models.
 
