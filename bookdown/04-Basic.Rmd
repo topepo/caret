@@ -7,6 +7,7 @@ library(mlbench)
 library(kernlab)
 library(pROC)
 library(plyr)
+library(caret)
 ```
 
 # Model Training and Tuning
@@ -436,6 +437,11 @@ Note that, in this case, the option `resamples = "final"` should be user-defined
 There are several lattice plot methods that can be used to visualize the resampling distributions: density plots, box-whisker plots, scatterplot matrices and scatterplots of summary statistics. For example:
 
 ```{r train_resample_box,fig.width=9,fig.height=4}
+theme1 <- trellis.par.get()
+theme1$plot.symbol$col = rgb(.2, .2, .2, .4)
+theme1$plot.symbol$pch = 16
+theme1$plot.line$col = rgb(1, 0, 0, .7)
+theme1$plot.line$lwd <- 2
 trellis.par.set(theme1)
 bwplot(resamps, layout = c(3, 1))
 ```
