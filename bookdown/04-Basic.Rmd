@@ -43,7 +43,7 @@ The `train` function can be used to
 
 First, a specific model must be chosen. Currently, `r I(length(unique(modelLookup()$model)))` are available using [`caret`](http://cran.r-project.org/web/packages/caret/index.html); see [`train` Model List](available-models.html) or [`train` Models By Tag](train-models-by-tag.html) for details. On these pages, there are lists of tuning parameters that can potentially be optimized. [User-defined models](using-your-own-model-in-train.html) can also be created.
 
-The first step in tuning the model (line 1 in the algorithm above is to choose a set of parameters to evaluate. For example, if fitting a Partial Least Squares (PLS) model, the number of PLS components to evaluate must be specified.
+The first step in tuning the model (line 1 in the algorithm below is to choose a set of parameters to evaluate. For example, if fitting a Partial Least Squares (PLS) model, the number of PLS components to evaluate must be specified.
 
 ```{r train_algo, echo = FALSE}
 include_graphics('premade/TrainAlgo.png', dpi = NA)
