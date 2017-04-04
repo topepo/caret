@@ -27,9 +27,9 @@ test_that("Confusion matrix works", {
   dat5[200] <- "Class4"
   dat5 <- factor(dat5, levels = c("Class1", "Class4"))
   cm1 <- confusionMatrix(dat, ref)
-  cm2 <- confusionMatrix(dat2, ref2)
-  cm3 <- confusionMatrix(dat3, ref2)
-  cm4 <- confusionMatrix(dat4, ref2)
+  cm2 <- suppressWarnings(confusionMatrix(dat2, ref2))
+  cm3 <- suppressWarnings(confusionMatrix(dat3, ref2))
+  cm4 <- suppressWarnings(confusionMatrix(dat4, ref2))
   expect_true(class(cm1) == "confusionMatrix")
   expect_true(class(cm2) == "confusionMatrix")
   expect_true(class(cm3) == "confusionMatrix")
