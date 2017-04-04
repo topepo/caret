@@ -16,6 +16,7 @@
 		\item A \cpkg{caret} bug was discovered by Jiebiao Wang where \code{glmboost}, \code{gamboost}, and \code{blackboost} models incorrectly reported the class probabilities \issue{560}
 		\item Training data weights support was added to \code{xgbTree} model by schistyakov
     \item Regularised logistic regression through Liblinear (\code{LiblineaR::LiblineaR}) using L1 or  L2 regularisation were added
+    \item A bug related to the ordering of axes labels in the heatmap plot of training results was fixed by Mateusz Dziedzic in \issue{620}.
 	}
 }
 
