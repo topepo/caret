@@ -18,9 +18,6 @@ Models can benefit significantly from tuning but the optimal values are rarely k
 
 To illustrate, we will use the Sonar data from one of the [previous pages](https://topepo.github.io/caret/model-training-and-tuning.html#tune). 
 
-
-chemical mutagenicity data from [Kazius et al (2005)](http://pubs.acs.org/doi/abs/10.1021/jm040835a):
-
 ```{r adapt_data, eval = FALSE}
 library(mlbench)
 data(Sonar)
