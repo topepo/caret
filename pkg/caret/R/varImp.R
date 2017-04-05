@@ -357,6 +357,24 @@ varImp.nnet <- function(object, ...){
 
 #' @rdname varImp
 #' @export
+varImp.avNNet <- function(object, ...){
+  code <- varImpDependencies("nnet")
+  imps <- lapply(object$model, code$varImp)
+  imps <- do.call("rbind", imps)
+  imps <- aggregate(imps, by = list(vars = rownames(imps)), mean)
+  rownames(imps) <- as.character(imps$vars)
+  imps$vars <- NULL
+  imps
+}
+
+foo <- function(x) {
+  browser()
+  colMeans(x)
+}
+
+
+#' @rdname varImp
+#' @export
 varImp.PART <- function(object, ...){
   code <- varImpDependencies("PART")
   code$varImp(object, ...)
