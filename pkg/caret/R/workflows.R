@@ -104,7 +104,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       } else submod <- NULL
       
       mod <- try(
-        createModel(x = x[modelIndex,,drop = FALSE ],
+        createModel(x = subset_x(x, modelIndex),
                     y = y[modelIndex],
                     wts = wts[modelIndex],
                     method = method,
@@ -124,7 +124,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         predicted <- try(
           predictionFunction(method = method,
                              modelFit = mod$fit,
-                             newdata = x[holdoutIndex,, drop = FALSE],
+                             newdata = subset_x(x, holdoutIndex),
                              preProc = mod$preProc,
                              param = submod),
           silent = TRUE)
@@ -161,7 +161,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
           predictedExtra <- lapply(extraIndex, function(idx) {
             predictionFunction(method = method,
                                modelFit = mod$fit,
-                               newdata = x[idx, , drop = FALSE],
+                               newdata = subset_x(x, idx),
                                preProc = mod$preProc,
                                param = submod)
           })
@@ -203,7 +203,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         {
           probValues <- probFunction(method = method,
                                      modelFit = mod$fit,
-                                     newdata = x[holdoutIndex,, drop = FALSE],
+                                     newdata = subset_x(x, holdoutIndex),
                                      preProc = mod$preProc,
                                      param = submod)
           
@@ -211,7 +211,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
             probValuesExtra <- lapply(extraIndex, function(index) {
               probFunction(method = method,
                            modelFit = mod$fit,
-                           newdata = x[index,, drop = FALSE],
+                           newdata = subset_x(x, index),
                            preProc = mod$preProc,
                            param = submod)
             })
@@ -533,7 +533,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
         submod <- info$submodels[[parm]]
       } else submod <- NULL
       
-      mod <- createModel(x = x[ctrl$index[[iter]],,drop = FALSE ],
+      mod <- createModel(x = subset_x(x, ctrl$index[[iter]]),
                          y = y[ctrl$index[[iter]] ],
                          wts = wts[ctrl$index[[iter]] ],
                          method = method,
@@ -548,7 +548,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
       
       predicted <- predictionFunction(method = method,
                                       modelFit = mod$fit,
-                                      newdata = x[-ctrl$index[[iter]],, drop = FALSE],
+                                      newdata = subset_x(x, -ctrl$index[[iter]]),
                                       preProc = mod$preProc,
                                       param = submod)
       
@@ -587,7 +587,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
       {
         probValues <- probFunction(method = method,
                                    modelFit = mod$fit,
-                                   newdata = x[holdoutIndex,, drop = FALSE],
+                                   newdata = subset_x(x, holdoutIndex),
                                    preProc = mod$preProc,
                                    param = submod)
         if(testing) print(head(probValues))
@@ -716,9 +716,9 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
       holdoutIndex <- modelIndex
     }
     
-    sbfResults <- sbfIter(x[modelIndex,,drop = FALSE],
+    sbfResults <- sbfIter(subset_x(x, modelIndex),
                           y[modelIndex],
-                          x[holdoutIndex,,drop = FALSE],
+                          subset_x(x, holdoutIndex),
                           y[holdoutIndex],
                           ctrl,
                           ...)
@@ -744,9 +744,9 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
   {
     modelIndex <- 1:nrow(x)
     holdoutIndex <- modelIndex
-    appResults <- sbfIter(x[modelIndex,,drop = FALSE],
+    appResults <- sbfIter(subset_x(x, modelIndex),
                           y[modelIndex],
-                          x[holdoutIndex,,drop = FALSE],
+                          subset_x(x, holdoutIndex),
                           y[holdoutIndex],
                           ctrl,
                           ...)
@@ -785,9 +785,9 @@ looSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
     modelIndex <- resampleIndex[[iter]]
     holdoutIndex <- -unique(resampleIndex[[iter]])
     
-    sbfResults <- sbfIter(x[modelIndex,,drop = FALSE],
+    sbfResults <- sbfIter(subset_x(x, modelIndex),
                           y[modelIndex],
-                          x[holdoutIndex,,drop = FALSE],
+                          subset_x(x, holdoutIndex),
                           y[holdoutIndex],
                           ctrl,
                           ...)
@@ -830,9 +830,9 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
     }
     
     seeds <- if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) ctrl$seeds[[iter]] else NA
-    rfeResults <- rfeIter(x[modelIndex,,drop = FALSE],
+    rfeResults <- rfeIter(subset_x(x, modelIndex),
                           y[modelIndex],
-                          x[holdoutIndex,,drop = FALSE],
+                          subset_x(x, holdoutIndex),
                           y[holdoutIndex],
                           sizes,
                           ctrl,
@@ -910,9 +910,9 @@ looRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
     holdoutIndex <- -unique(resampleIndex[[iter]])
     
     seeds <- if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) ctrl$seeds[[iter]] else NA
-    rfeResults <- rfeIter(x[modelIndex,,drop = FALSE],
+    rfeResults <- rfeIter(subset_x(x, modelIndex),
                           y[modelIndex],
-                          x[holdoutIndex,,drop = FALSE],
+                          subset_x(x, holdoutIndex),
                           y[holdoutIndex],
                           sizes,
                           ctrl,

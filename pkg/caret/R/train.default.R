@@ -29,7 +29,8 @@
 #' @aliases train train.default train.formula
 #' @param x an object where samples are in rows and features are in columns.
 #' This could be a simple matrix, data frame or other type (e.g. sparse
-#' matrix). See Details below.
+#' matrix). See Details below. Preprocessing using the \code{preProcess}
+#' argument only supports matrices or data frames. 
 #' @param y a numeric or factor vector containing the outcome for each sample.
 #' @param form A formula of the form \code{y ~ x1 + x2 + ...}
 #' @param data Data frame from which variables specified in \code{formula} are
@@ -789,7 +790,7 @@ train.default <- function(x, y,
 
   if(!(length(trControl$seeds) == 1 && is.na(trControl$seeds))) set.seed(trControl$seeds[[length(trControl$seeds)]][1])
   finalTime <- system.time(
-    finalModel <- createModel(x = x[indexFinal,,drop=FALSE],
+    finalModel <- createModel(x = subset_x(x, indexFinal),
                               y = y[indexFinal],
                               wts = weights[indexFinal],
                               method = models,
@@ -828,7 +829,7 @@ train.default <- function(x, y,
 
   if(trControl$returnData) {
     outData <- if(!is.data.frame(x)) try(as.data.frame(x), silent = TRUE) else x
-    if(class(outData)[1] == "try-error") {
+    if(inherits(outData, "try-error")) {
       warning("The training data could not be converted to a data frame for saving")
       outData <- NULL
     } else   {
