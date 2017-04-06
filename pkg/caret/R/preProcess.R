@@ -203,8 +203,8 @@ preProcess.default <- function(x, method = c("center", "scale"),
                                uniqueCut = 10,
                                cutoff = 0.9,
                                ...) {
-  if(!inherits(x, "matrix") | !inherits(x, "data.frame"))
-    stop("Matrices and data frames are required for preprocessing", call. = FALSE)
+  if(!inherits(x, "matrix") & !inherits(x, "data.frame"))
+    stop("Matrices or data frames are required for preprocessing", call. = FALSE)
   column_types <- get_types(x)
   tmp <- pre_process_options(method, column_types)
   method <- tmp$opts

@@ -36,6 +36,7 @@
 \alias{varImp.JRip}
 \alias{varImp.multinom}
 \alias{varImp.nnet}
+\alias{varImp.avNNet}
 \alias{varImp.PART}
 \alias{varImp.RRF}
 \alias{varImp.rpart}
@@ -76,6 +77,8 @@ varImp(object, ...)
 \method{varImp}{multinom}(object, ...)
 
 \method{varImp}{nnet}(object, ...)
+
+\method{varImp}{avNNet}(object, ...)
 
 \method{varImp}{PART}(object, ...)
 
