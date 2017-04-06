@@ -51,64 +51,84 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    if(class(x)[1] != "xgb.DMatrix")
+                    if(!inherits(x, "xgb.DMatrix"))
                       x <- as.matrix(x)
+                    
                     if(is.factor(y)) {
+                      
                       if(length(lev) == 2) {
+                        
                         y <- ifelse(y == lev[1], 1, 0)
-                        dat <- xgb.DMatrix(x, label = y, missing = NA)
+                        
+                        if(!inherits(x, "xgb.DMatrix"))
+                          x <- xgb.DMatrix(x, label = y, missing = NA) else
+                            setinfo(x, "label", y)
+                        
                         if (!is.null(wts))
-                          xgboost::setinfo(dat, 'weight', wts)
+                          setinfo(x, 'weight', wts)
+                        
                         out <- xgb.train(list(eta = param$eta,
                                               max_depth = param$max_depth,
                                               gamma = param$gamma,
                                               colsample_bytree = param$colsample_bytree,
                                               min_child_weight = param$min_child_weight,
                                               subsample = param$subsample),
-                                         data = dat,
+                                         data = x,
                                          nrounds = param$nrounds,
                                          objective = "binary:logistic",
                                          ...)
                       } else {
+                        
                         y <- as.numeric(y) - 1
-                        dat <- xgb.DMatrix(x, label = y, missing = NA)
+                        
+                        if(!inherits(x, "xgb.DMatrix"))
+                          x <- xgb.DMatrix(x, label = y, missing = NA) else
+                            setinfo(x, "label", y)
+                        
                         if (!is.null(wts))
-                          xgboost::setinfo(dat, 'weight', wts)
+                          setinfo(x, 'weight', wts)
+                        
                         out <- xgb.train(list(eta = param$eta,
                                               max_depth = param$max_depth,
                                               gamma = param$gamma,
                                               colsample_bytree = param$colsample_bytree,
                                               min_child_weight = param$min_child_weight,
                                               subsample = param$subsample),
-                                         data = dat,
+                                         data = x,
                                          num_class = length(lev),
                                          nrounds = param$nrounds,
                                          objective = "multi:softprob",
                                          ...)
                       }
                     } else {
-                      dat <- xgb.DMatrix(as.matrix(x), label = y, missing = NA)
+                      
+                      if(!inherits(x, "xgb.DMatrix"))
+                        x <- xgb.DMatrix(x, label = y, missing = NA) else
+                          setinfo(x, "label", y)
+                      
                       if (!is.null(wts))
-                        xgboost::setinfo(dat, 'weight', wts)
+                        setinfo(x, 'weight', wts)
+                      
                       out <- xgb.train(list(eta = param$eta,
                                             max_depth = param$max_depth,
                                             gamma = param$gamma,
                                             colsample_bytree = param$colsample_bytree,
                                             min_child_weight = param$min_child_weight,
                                             subsample = param$subsample),
-                                       data = dat,
+                                       data = x,
                                        nrounds = param$nrounds,
                                        objective = "reg:linear",
                                        ...)
                     }
                     out
-
-
+                    
+                    
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(class(newdata)[1] != "xgb.DMatrix")
+                    if(!inherits(newdata, "xgb.DMatrix")) {
                       newdata <- as.matrix(newdata)
                       newdata <- xgb.DMatrix(data=newdata, missing = NA)
+                    }
                     out <- predict(modelFit, newdata)
                     if(modelFit$problemType == "Classification") {
                       if(length(modelFit$obsLevels) == 2) {
@@ -120,7 +140,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                         out <- modelFit$obsLevels[apply(out, 1, which.max)]
                       }
                     }
-
+                    
                     if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
@@ -143,15 +163,17 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    if(class(newdata)[1] != "xgb.DMatrix")
+                    if(!inherits(newdata, "xgb.DMatrix")) {
                       newdata <- as.matrix(newdata)
                       newdata <- xgb.DMatrix(data=newdata, missing = NA)
-                      if( !is.null(modelFit$param$objective) && modelFit$param$objective == 'binary:logitraw'){
-                        p <- predict(modelFit, newdata)
-                        out <- exp(p)/(1+exp(p))
-                      } else {
-                        out <- predict(modelFit, newdata)
-                      }
+                    }
+                    
+                    if( !is.null(modelFit$param$objective) && modelFit$param$objective == 'binary:logitraw'){
+                      p <- predict(modelFit, newdata)
+                      out <- exp(p)/(1+exp(p))
+                    } else {
+                      out <- predict(modelFit, newdata)
+                    }
                     if(length(modelFit$obsLevels) == 2) {
                       out <- cbind(out, 1 - out)
                       colnames(out) <- modelFit$obsLevels
@@ -160,7 +182,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       colnames(out) <- modelFit$obsLevels
                     }
                     out <- as.data.frame(out)
-
+                    
                     if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
@@ -190,12 +212,12 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     rownames(imp) <- as.character(imp[,1])
                     imp <- imp[,2,drop = FALSE]
                     colnames(imp) <- "Overall"
-
+                    
                     missing <- object$xNames[!(object$xNames %in% rownames(imp))]
                     missing_imp <- data.frame(Overall=rep(0, times=length(missing)))
                     rownames(missing_imp) <- missing
                     imp <- rbind(imp, missing_imp)
-
+                    
                     imp
                   },
                   levels = function(x) x$obsLevels,

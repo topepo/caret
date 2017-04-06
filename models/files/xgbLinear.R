@@ -21,34 +21,56 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    if(class(x)[1] != "xgb.DMatrix") 
+                    if(!inherits(x, "xgb.DMatrix"))
                       x <- as.matrix(x)
+                    
                     if(is.factor(y)) {
                       if(length(lev) == 2) {
                         y <- ifelse(y == lev[1], 1, 0) 
-                        dat <- xgb.DMatrix(x, label = y)
+                        
+                        if(!inherits(x, "xgb.DMatrix"))
+                          x <- xgb.DMatrix(x, label = y, missing = NA) else
+                            setinfo(x, "label", y)
+                        
+                        if (!is.null(wts))
+                          setinfo(x, 'weight', wts)
+                        
+                        
                         out <- xgb.train(list(lambda = param$lambda, 
                                               alpha = param$alpha), 
-                                         data = dat,
+                                         data = x,
                                          nrounds = param$nrounds,
                                          objective = "binary:logistic",
                                          ...)
                       } else {
                         y <- as.numeric(y) - 1
-                        dat <- xgb.DMatrix(x, label = y)
+                        
+                        if(!inherits(x, "xgb.DMatrix"))
+                          x <- xgb.DMatrix(x, label = y, missing = NA) else
+                            setinfo(x, "label", y)
+                        
+                        if (!is.null(wts))
+                          setinfo(x, 'weight', wts)
+                        
                         out <- xgb.train(list(lambda = param$lambda, 
                                               alpha = param$alpha), 
-                                         data = dat,
+                                         data = x,
                                          num_class = length(lev),
                                          nrounds = param$nrounds,
                                          objective = "multi:softprob",
                                          ...)
                       }     
                     } else {
-                      dat <- xgb.DMatrix(as.matrix(x), label = y)
+                      if(!inherits(x, "xgb.DMatrix"))
+                        x <- xgb.DMatrix(x, label = y, missing = NA) else
+                          setinfo(x, "label", y)
+                      
+                      if (!is.null(wts))
+                        setinfo(x, 'weight', wts)
+                      
                       out <- xgb.train(list(lambda = param$lambda, 
                                             alpha = param$alpha), 
-                                       data = dat,
+                                       data = x,
                                        nrounds = param$nrounds,
                                        objective = "reg:linear",
                                        ...)
@@ -56,8 +78,10 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(class(newdata)[1] != "xgb.DMatrix") 
+                    if(!inherits(newdata, "xgb.DMatrix")) {
                       newdata <- as.matrix(newdata)
+                      newdata <- xgb.DMatrix(data=newdata, missing = NA)
+                    }
                     out <- predict(modelFit, newdata)
                     if(modelFit$problemType == "Classification") {
                       if(length(modelFit$obsLevels) == 2) {
@@ -72,8 +96,10 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     out  
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    if(class(newdata)[1] != "xgb.DMatrix") 
+                    if(!inherits(newdata, "xgb.DMatrix")) {
                       newdata <- as.matrix(newdata)
+                      newdata <- xgb.DMatrix(data=newdata, missing = NA)
+                    }
                     out <- predict(modelFit, newdata)
                     if(length(modelFit$obsLevels) == 2) {
                       out <- cbind(out, 1 - out)
