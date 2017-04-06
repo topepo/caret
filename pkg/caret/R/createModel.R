@@ -13,7 +13,8 @@
 "createModel" <-function(x, y, wts, method, tuneValue, obsLevels, pp = NULL, last = FALSE, sampling = NULL, classProbs, ...) {
 
   ## To get of warnings "some row.names duplicated: " when resampling with replacement
-  rownames(x) <- make.names(rownames(x), unique = TRUE)
+  if(is.data.frame(x) | is.matrix(x)) 
+    rownames(x) <- make.names(rownames(x), unique = TRUE)
 
   if(!is.null(sampling) && sampling$first) {
     tmp <- sampling$func(x, y)
