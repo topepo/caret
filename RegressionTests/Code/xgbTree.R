@@ -1,5 +1,6 @@
 timestamp <- Sys.time()
 library(caret)
+library(xgboost)
 
 model <- "xgbTree"
 
@@ -18,6 +19,8 @@ training <- twoClassSim(100, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+train_sparse <- xgb.DMatrix(as.matrix(trainX))
 
 training_weight <- c(rep(0.1, 10), rep(1, 90))
 
@@ -38,6 +41,15 @@ test_class_cv_model <- train(trainX, trainY,
                              metric = "ROC", 
                              preProc = c("center", "scale"),
                              tuneGrid = xgbGrid)
+
+set.seed(849)
+test_class_cv_model_sp <- train(train_sparse, trainY, 
+                                method = "xgbTree", 
+                                trControl = cctrl1,
+                                metric = "ROC", 
+                                preProc = c("center", "scale"),
+                                tuneGrid = xgbGrid)
+
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
@@ -127,6 +139,8 @@ trainY <- training$y
 testX <- trainX[, -ncol(training)]
 testY <- trainX$y 
 
+train_sparse <- xgb.DMatrix(as.matrix(trainX))
+
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
 rctrl3 <- trainControl(method = "oob")
@@ -140,6 +154,14 @@ test_reg_cv_model <- train(trainX, trainY,
                            preProc = c("center", "scale"),
                            tuneGrid = xgbGrid)
 test_reg_pred <- predict(test_reg_cv_model, testX)
+
+set.seed(849)
+test_reg_cv_model_sp <- train(train_sparse, trainY, 
+                              method = "xgbTree", 
+                              trControl = rctrl1,
+                              tuneGrid = xgbGrid)
+test_reg_pred_sp <- predict(test_reg_cv_model_sp, testX)
+
 
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
@@ -190,6 +212,6 @@ timestamp_end <- Sys.time()
 save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
-#q("no")
+if(!interactive()) q("no")
 
 
