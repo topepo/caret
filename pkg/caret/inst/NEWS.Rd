@@ -24,6 +24,7 @@
 		\item A note was added to \code{?trainControl} about using custom resampling methods (\issue{584}). 
 		\item A bug was fixed related to SMOTE and ROSE sampling with one predictor (\issue{612}).  
 		\item Due to changes in the \cpkg{kohonen} package, the \code{bdk} model is no longer available and the code behind the \code{xyf} model has changes substantially (including the tuning parameters). Also, when using \code{xyf}, a check is conducted to make sure that a recent version of the \cpkg{kohonen} package is being used. 
+		\item Changes to \code{xgbTree} and \code{xgbLinear} to help with sparse matrix inputs for \issue{593}. Sparse matrices are not allowed when preprocessing or subsampling are used. 
 
 	}
 }
