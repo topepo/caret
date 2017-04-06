@@ -15,14 +15,15 @@
 		\item The \code{RMSE} and \code{R2} are now (re)exposed to the users \issue{563}
 		\item A \cpkg{caret} bug was discovered by Jiebiao Wang where \code{glmboost}, \code{gamboost}, and \code{blackboost} models incorrectly reported the class probabilities \issue{560}
 		\item Training data weights support was added to \code{xgbTree} model by schistyakov
-        \item Regularized logistic regression through Liblinear (\code{LiblineaR::LiblineaR}) using L1 or  L2 regularisation were added
-        \item A bug related to the ordering of axes labels in the heatmap plot of training results was fixed by Mateusz Dziedzic in \issue{620}.
-        \item A variable importance method for model averaged neural networks was added. 
-        \item More logic was added so that the \code{predict} method behaves well when a variable is subtracted from a model formula from \issue{574}.
-        \item More documentation was added for the \code{class2ind} function (\issue{592}). 
-        \item Fixed the formatting of the design matrices in the \code{dummyVars} man file.
-        \item A note was added to \code{?trainControl} about using custom resampling methods (\issue{584}). 
-        \item A bug was fixed related to SMOTE and ROSE sampling with one predictor (\issue{612}).  
+		\item Regularized logistic regression through Liblinear (\code{LiblineaR::LiblineaR}) using L1 or  L2 regularisation were added
+		\item A bug related to the ordering of axes labels in the heatmap plot of training results was fixed by Mateusz Dziedzic in \issue{620}.
+		\item A variable importance method for model averaged neural networks was added. 
+		\item More logic was added so that the \code{predict} method behaves well when a variable is subtracted from a model formula from \issue{574}.
+		\item More documentation was added for the \code{class2ind} function (\issue{592}). 
+		\item Fixed the formatting of the design matrices in the \code{dummyVars} man file.
+		\item A note was added to \code{?trainControl} about using custom resampling methods (\issue{584}). 
+		\item A bug was fixed related to SMOTE and ROSE sampling with one predictor (\issue{612}).  
+		\item Due to changes in the \cpkg{kohonen} package, the \code{bdk} model is no longer available and the code behind the \code{xyf} model has changes substantially (including the tuning parameters). Also, when using \code{xyf}, a check is conducted to make sure that a recent version of the \cpkg{kohonen} package is being used. 
 
 	}
 }
