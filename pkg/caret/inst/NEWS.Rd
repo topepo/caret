@@ -15,7 +15,7 @@
 		\item The \code{RMSE} and \code{R2} are now (re)exposed to the users \issue{563}
 		\item A \cpkg{caret} bug was discovered by Jiebiao Wang where \code{glmboost}, \code{gamboost}, and \code{blackboost} models incorrectly reported the class probabilities \issue{560}
 		\item Training data weights support was added to \code{xgbTree} model by schistyakov
-		\item Regularized logistic regression through Liblinear (\code{LiblineaR::LiblineaR}) using L1 or  L2 regularisation were added
+		\item Regularized logistic regression through Liblinear (\code{LiblineaR::LiblineaR}) using L1 or  L2 regularization were added
 		\item A bug related to the ordering of axes labels in the heatmap plot of training results was fixed by Mateusz Dziedzic in \issue{620}.
 		\item A variable importance method for model averaged neural networks was added. 
 		\item More logic was added so that the \code{predict} method behaves well when a variable is subtracted from a model formula from \issue{574}.
@@ -26,6 +26,7 @@
 		\item Due to changes in the \cpkg{kohonen} package, the \code{bdk} model is no longer available and the code behind the \code{xyf} model has changes substantially (including the tuning parameters). Also, when using \code{xyf}, a check is conducted to make sure that a recent version of the \cpkg{kohonen} package is being used. 
 		\item Changes to \code{xgbTree} and \code{xgbLinear} to help with sparse matrix inputs for \issue{593}. Sparse matrices are not allowed when preprocessing or subsampling are used. 
 		\item Several PLS models were using the classical orthogonal scores algorithm when discriminant analysis was conducted (despite using \code{simpls}, \code{widekernelpls}, or \code{kernelpls}). Now, the PLSDA model estimation method is consistent with the method requested (\issue{610}). 
+		\item Added Multi-Step Adaptive MCP-Net (\code{method = "msaenet"}) for \issue{561}. 
 
 	}
 }
