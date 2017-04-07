@@ -84,3 +84,32 @@ test_that('check missing method', {
   skip_on_cran()
   expect_error(getSamplingInfo("plum"))
 })
+
+###################################################################
+## 
+
+set.seed(2)
+training <- twoClassSim(200, intercept = -10)
+
+check_samp <- function(x, samp) {
+  with_form <- train(Class ~ Linear01, data = x,
+                     method = "lda",
+                     trControl = trainControl(method = "cv",
+                                              sampling = samp))
+  no_form <- train(x = x[, "Linear01", drop = FALSE],
+                   y = x$Class,
+                   method = "lda",
+                   trControl = trainControl(method = "cv",
+                                            sampling = samp))
+  TRUE
+}
+
+test_that('downsampling with one var for issue #612', {
+  skip_on_cran()
+  expect_true(check_samp(training, "down"))
+  expect_true(check_samp(training, "up"))  
+  expect_true(check_samp(training, "rose"))
+  expect_true(check_samp(training, "smote"))
+})
+
+
