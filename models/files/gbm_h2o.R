@@ -1,4 +1,4 @@
-modelInfo <- list(label = "glmnet",
+modelInfo <- list(label = "Gradient Boosting Machines",
                   library = "h2o",
                   type = c("Regression", "Classification"),
                   parameters = data.frame(parameter = c('ntrees', 'max_depth', 'min_rows',
