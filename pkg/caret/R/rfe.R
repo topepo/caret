@@ -1062,9 +1062,12 @@ lmFuncs <- list(summary = defaultSummary,
                   predict(object, x)
                 },
                 rank = function(object, x, y) {
-                  vimp <- varImp(object, scale = FALSE)
-                  vimp <- vimp[order(vimp$Overall,decreasing = TRUE),, drop = FALSE]
-                  vimp$var <- rownames(vimp)
+                  coefs <- abs(coef(object))
+                  coefs <- coefs[names(coefs) != "(Intercept)"]
+                  coefs[is.na(coefs)] <- 0
+                  vimp <- data.frame(Overall = unname(coefs),
+                                     var = names(coefs))
+                  rownames(vimp) <- names(coefs)
                   vimp
                 },
                 selectSize = pickSizeBest,

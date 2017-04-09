@@ -27,6 +27,7 @@
 		\item Changes to \code{xgbTree} and \code{xgbLinear} to help with sparse matrix inputs for \issue{593}. Sparse matrices are not allowed when preprocessing or subsampling are used. 
 		\item Several PLS models were using the classical orthogonal scores algorithm when discriminant analysis was conducted (despite using \code{simpls}, \code{widekernelpls}, or \code{kernelpls}). Now, the PLSDA model estimation method is consistent with the method requested (\issue{610}). 
 		\item Added Multi-Step Adaptive MCP-Net (\code{method = "msaenet"}) for \issue{561}. 
+		\item The variable importance score for linear regression was modified so that missing values in the coefficients are converted to zero.
 
 	}
 }
