@@ -58,6 +58,7 @@ before_install:
   - ./travis-tool.sh r_binary_install ggplot2
   - ./travis-tool.sh r_binary_install reshape2
   - ./travis-tool.sh r_binary_install data.table
+  - ./travis-tool.sh r_binary_install xgboost
   - ./travis-tool.sh install_github jimhester/covr
   - ./travis-tool.sh install_github terrytangyuan/lfda
 
