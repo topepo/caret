@@ -43,6 +43,7 @@
 #' @keywords utilities
 #' @examples
 #' 
+#' \dontrun{ 
 #' modelLookup()
 #' modelLookup("gbm")
 #' 
@@ -50,7 +51,6 @@
 #' getModelInfo("^pls")
 #' getModelInfo("pls", regex = FALSE)
 #' 
-#' \dontrun{
 #' checkInstall(getModelInfo("pls")$library)
 #' }
 #' 
