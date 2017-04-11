@@ -22,7 +22,7 @@ train(x, ...)
 \arguments{
 \item{x}{an object where samples are in rows and features are in columns.
 This could be a simple matrix, data frame or other type (e.g. sparse
-matrix). See Details below. Preprocessing using the \code{preProcess}
+matrix) but must have column names. See Details below. Preprocessing using the \code{preProcess}
 argument only supports matrices or data frames.}
 
 \item{\dots}{arguments passed to the classification or regression routine

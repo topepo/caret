@@ -63,6 +63,7 @@ The column \code{seq} is no longer included in the output of
 }
 \examples{
 
+\dontrun{ 
 modelLookup()
 modelLookup("gbm")
 
@@ -70,7 +71,6 @@ getModelInfo("pls")
 getModelInfo("^pls")
 getModelInfo("pls", regex = FALSE)
 
-\dontrun{
 checkInstall(getModelInfo("pls")$library)
 }
 
