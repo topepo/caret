@@ -239,6 +239,7 @@ For classification and regression using packages \pkg{bst} and \pkg{plyr} with t
 For classification using package \pkg{RWeka} with tuning parameters:
 \itemize{
 \item Confidence Threshold (\code{C}, numeric)
+\item Minimum Instances Per Leaf (\code{M}, numeric)
 }
 
 
@@ -473,6 +474,7 @@ For classification and regression using packages \pkg{xgboost} and \pkg{plyr} wi
 \item Minimum Loss Reduction (\code{gamma}, numeric)
 \item Subsample Ratio of Columns (\code{colsample_bytree}, numeric)
 \item Minimum Sum of Instance Weight (\code{min_child_weight}, numeric)
+\item Subsample Percentage (\code{subsample}, numeric)
 }
 
 
@@ -667,9 +669,30 @@ For regression using package \pkg{frbs} with tuning parameters:
 }
 
 
+\strong{glmnet} (\code{method = 'gbm_h2o'})
+
+For classification and regression using package \pkg{h2o} with tuning parameters:
+\itemize{
+\item Number of  Boosting Iterations (\code{ntrees}, numeric)
+\item Max Tree Depth (\code{max_depth}, numeric)
+\item Min. Terminal Node Size (\code{min_rows}, numeric)
+\item Shrinkage (\code{learn_rate}, numeric)
+\item Number of Randomly Selected Predictors (\code{col_sample_rate}, numeric)
+}
+
+
+\strong{glmnet} (\code{method = 'glmnet_h2o'})
+
+For classification and regression using package \pkg{h2o} with tuning parameters:
+\itemize{
+\item Mixing Percentage (\code{alpha}, numeric)
+\item Regularization Parameter (\code{lambda}, numeric)
+}
+
+
 \strong{glmnet} (\code{method = 'glmnet'})
 
-For classification and regression using package \pkg{glmnet} with tuning parameters:
+For classification and regression using packages \pkg{glmnet} and \pkg{Matrix} with tuning parameters:
 \itemize{
 \item Mixing Percentage (\code{alpha}, numeric)
 \item Regularization Parameter (\code{lambda}, numeric)
@@ -1029,7 +1052,7 @@ For classification and regression using package \pkg{RSNNS} with tuning paramete
 
 \strong{Multilayer Perceptron Network by Stochastic Gradient Descent} (\code{method = 'mlpSGD'})
 
-For regression using package \pkg{FCNN4R} with tuning parameters:
+For classification and regression using packages \pkg{FCNN4R} and \pkg{plyr} with tuning parameters:
 \itemize{
 \item Number of Hidden Units (\code{size}, numeric)
 \item L2 Regularization (\code{l2reg}, numeric)
@@ -1090,6 +1113,14 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 For classification using package \pkg{pamr} with tuning parameters:
 \itemize{
 \item Shrinkage Threshold (\code{threshold}, numeric)
+}
+
+
+\strong{Negative Binomial Generalized Linear Model} (\code{method = 'glm.nb'})
+
+For regression with tuning parameters:
+\itemize{
+\item Link Function (\code{link}, character)
 }
 
 
@@ -1624,6 +1655,8 @@ For classification using packages \pkg{rpart}, \pkg{plyr} and \pkg{rotationFores
 For classification using package \pkg{RWeka} with tuning parameters:
 \itemize{
 \item Number of  Optimizations (\code{NumOpt}, numeric)
+\item Number of  Folds (\code{NumFolds}, numeric)
+\item Min Weights (\code{MinWeights}, numeric)
 }
 
 
@@ -1632,7 +1665,7 @@ For classification using package \pkg{RWeka} with tuning parameters:
 For classification using package \pkg{RWeka} with tuning parameters:
 \itemize{
 \item Confidence Threshold (\code{threshold}, numeric)
-\item Confidence Threshold (\code{pruned}, character)
+\item Pruning (\code{pruned}, character)
 }
 
 
@@ -2004,5 +2037,5 @@ For classification using package \pkg{wsrf} with tuning parameters:
 
 
 }
-\references{``Using your own model in \code{\link{train}}'' (\url{http://caret.r-forge.r-project.org/custom_models.html})}
+\references{``Using your own model in \code{\link{train}}'' (\url{https://topepo.github.io/caret/using-your-own-model-in-train.html})}
 \keyword{models}

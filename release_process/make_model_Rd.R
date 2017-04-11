@@ -49,6 +49,6 @@ cat("\\name{train_model_list}\n",
 tt <- lapply(mods, print_models)
 cat("}\n")
 
-cat("\\references{``Using your own model in \\code{\\link{train}}'' (\\url{http://caret.r-forge.r-project.org/custom_models.html})}\n")
+cat("\\references{``Using your own model in \\code{\\link{train}}'' (\\url{https://topepo.github.io/caret/using-your-own-model-in-train.html})}\n")
 cat("\\keyword{models}\n")
 sink()
