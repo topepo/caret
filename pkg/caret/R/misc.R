@@ -577,7 +577,7 @@ check_na_conflict <- function(call_obj) {
 # in case an object (ushc as soe sparse matrices) 
 # do not use `drop` as an argument
 subset_x <- function(x, ind) {
-  if(is.matrix(x) | is.data.frame(x))
+  if(is.matrix(x) | is.data.frame(x) | inherits(x, "dgCMatrix"))
     x <- x[ind,,drop = FALSE] else
       x <- x[ind,]
     x
