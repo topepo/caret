@@ -47,7 +47,6 @@ test_class_cv_model_sp <- train(train_sparse, trainY,
                                 method = "xgbTree", 
                                 trControl = cctrl1,
                                 metric = "ROC", 
-                                preProc = c("center", "scale"),
                                 tuneGrid = xgbGrid)
 
 
