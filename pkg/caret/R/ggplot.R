@@ -122,8 +122,8 @@ ggplot.train <- function(data = NULL, mapping = NULL, metric = data$metric[1], p
       strip_lab <- as.character(subset(data$modelInfo$parameters, parameter %in% strip_vars)$label)
       for(i in seq_along(strip_vars))
         dat[, strip_vars[i]] <- factor(
-          paste(strip_lab[i], dat[, strip_vars[i]], sep = ": "),
-          levels = paste(strip_lab[i], sort(unique(dat[, strip_vars[i]])), sep = ": ")
+          paste(strip_lab[i], format(dat[, strip_vars[i]]), sep = ": "),
+          levels = paste(strip_lab[i], format(sort(unique(dat[, strip_vars[i]]))), sep = ": ")
         )
     }
     ## TODO: use factor(format(x)) to make a solid block of colors?
