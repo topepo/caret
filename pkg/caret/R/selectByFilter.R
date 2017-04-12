@@ -405,8 +405,6 @@ print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 #' @export
 predict.sbf <- function(object, newdata = NULL, ...)
 {
-  if(!all(object$optVariables %in% colnames(newdata)))
-    stop("required columns in newdata are missing")
   if(!is.null(newdata))
   {
     if (inherits(object, "sbf.formula"))
@@ -422,6 +420,8 @@ predict.sbf <- function(object, newdata = NULL, ...)
       xint <- match("(Intercept)", colnames(newdata), nomatch = 0)
       if (xint > 0) newdata <- newdata[, -xint, drop = FALSE]
     }
+    if(!all(object$optVariables %in% colnames(newdata)))
+      stop("required columns in newdata are missing", call. = FALSE)
     newdata <- newdata[, object$optVariables, drop = FALSE]
     out <- object$control$functions$pred(object$fit, newdata)
   } else {
