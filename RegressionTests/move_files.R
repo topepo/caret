@@ -12,8 +12,8 @@ testFiles <- list.files(file.path(getwd(), "Code"),
                         full.names = TRUE)
 
 ## package archived or models excluded
-exclusions <- c("rknn", "rknnBel", "[mM]xnet", "sdda", "enpls.fs", "enpls", "Boruta", "Mlda", "RFlda", "rbf")
-exclusions <- paste0("(", exclusions, "\\.R)")
+exclusions <- c("rknn", "rknnBel", "[mM]xnet", "sdda", "enpls.fs", "enpls", "Boruta", "Mlda", "RFlda", "rbf", "bdk", "SLAVE")
+exclusions <- paste0("(", exclusions, ")")
 exclusions <- paste0(exclusions, collapse = "|")
 testFiles <- testFiles[-grep(exclusions, testFiles)]
 
