@@ -37,7 +37,8 @@ test_class_cv_model <- train(trainX, trainY,
                              trControl = cctrl1,
                              metric = "ROC", 
                              preProc = c("center", "scale"),
-                             tuneGrid = gbmGrid)
+                             tuneGrid = gbmGrid,
+                             seed = 1311)
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
@@ -45,7 +46,8 @@ test_class_cv_form <- train(Class ~ ., data = training,
                             trControl = cctrl1,
                             metric = "ROC", 
                             preProc = c("center", "scale"),
-                            tuneGrid = gbmGrid)
+                            tuneGrid = gbmGrid,
+                            seed = 1311)
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
@@ -56,7 +58,8 @@ set.seed(849)
 test_class_rand <- train(trainX, trainY, 
                          method = "gbm_h2o", 
                          trControl = cctrlR,
-                         tuneLength = 4)
+                         tuneLength = 4,
+                         seed = 1311)
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
@@ -64,7 +67,8 @@ test_class_loo_model <- train(trainX, trainY,
                               trControl = cctrl2,
                               metric = "ROC", 
                               preProc = c("center", "scale"),
-                              tuneGrid = gbmGrid)
+                              tuneGrid = gbmGrid,
+                              seed = 1311)
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
@@ -72,7 +76,8 @@ test_class_none_model <- train(trainX, trainY,
                                trControl = cctrl4,
                                tuneGrid = gbmGrid[nrow(gbmGrid),],
                                metric = "ROC", 
-                               preProc = c("center", "scale"))
+                               preProc = c("center", "scale"),
+                               seed = 1311)
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
 
@@ -101,7 +106,8 @@ test_reg_cv_model <- train(trainX, trainY,
                            method = "gbm_h2o", 
                            trControl = rctrl1,
                            preProc = c("center", "scale"),
-                           tuneGrid = gbmGrid)
+                           tuneGrid = gbmGrid,
+                           seed = 1311)
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
@@ -109,28 +115,32 @@ test_reg_cv_form <- train(y ~ ., data = training,
                           method = "gbm_h2o", 
                           trControl = rctrl1,
                           preProc = c("center", "scale"),
-                          tuneGrid = gbmGrid)
+                          tuneGrid = gbmGrid,
+                          seed = 1311)
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
 test_reg_rand <- train(trainX, trainY, 
                        method = "gbm_h2o", 
                        trControl = rctrlR,
-                       tuneLength = 4)
+                       tuneLength = 4,
+                       seed = 1311)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 
                             method = "gbm_h2o",
                             trControl = rctrl2,
                             preProc = c("center", "scale"),
-                            tuneGrid = gbmGrid)
+                            tuneGrid = gbmGrid,
+                            seed = 1311)
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
                              method = "gbm_h2o", 
                              trControl = rctrl4,
                              tuneGrid = gbmGrid[nrow(gbmGrid),],
-                             preProc = c("center", "scale"))
+                             preProc = c("center", "scale"),
+                             seed = 1311)
 test_reg_none_pred <- predict(test_reg_none_model, testX)
 
 #########################################################################

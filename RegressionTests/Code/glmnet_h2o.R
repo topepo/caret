@@ -31,7 +31,8 @@ test_class_cv_model <- train(trainX, trainY,
                              metric = "ROC",
                              preProc = c("center", "scale"),
                              tuneGrid = expand.grid(alpha = c(0, .5, 1),
-                                                    lambda = c(.1, 1)))
+                                                    lambda = c(.1, 1)),
+                             seed = 1311)
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
@@ -40,7 +41,8 @@ test_class_cv_form <- train(Class ~ ., data = training,
                             metric = "ROC",
                             preProc = c("center", "scale"),
                             tuneGrid = expand.grid(alpha = c(0, .5, 1),
-                                                   lambda = c(.1, 1)))
+                                                   lambda = c(.1, 1)),
+                            seed = 1311)
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
@@ -49,7 +51,8 @@ set.seed(849)
 test_class_rand <- train(trainX, trainY, 
                          method = "glmnet_h2o", 
                          trControl = cctrlR,
-                         tuneLength = 4)
+                         tuneLength = 4,
+                         seed = 1311)
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
@@ -58,7 +61,8 @@ test_class_loo_model <- train(trainX, trainY,
                               metric = "ROC",
                               preProc = c("center", "scale"),
                               tuneGrid = expand.grid(alpha = c(0, .5, 1),
-                                                     lambda = c(.1, 1)))
+                                                     lambda = c(.1, 1)),
+                              seed = 1311)
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
@@ -67,7 +71,8 @@ test_class_none_model <- train(trainX, trainY,
                                metric = "ROC", 
                                preProc = c("center", "scale"),
                                tuneGrid = expand.grid(alpha = c(.11),
-                                                      lambda = c(.5)))
+                                                      lambda = c(.5)),
+                               seed = 1311)
 
 test_class_none_pred <- predict(test_class_none_model, testX)
 
@@ -91,21 +96,24 @@ set.seed(849)
 test_reg_cv_model <- train(reg_dat_tr[, -ncol(reg_dat_tr)], reg_dat_tr$y, method = "glmnet_h2o",
                            preProc = c("center", "scale"),
                            trControl = rctrl1,
-                           tuneLength = 2)
+                           tuneLength = 2,
+                           seed = 1311)
 test_reg_pred <- predict(test_reg_cv_model, reg_dat_te[, -ncol(reg_dat_te)])
 
 set.seed(849)
 test_reg_loo_model <- train(reg_dat_tr[, -ncol(reg_dat_tr)], reg_dat_tr$y, method = "glmnet_h2o",
                             preProc = c("center", "scale"),
                             trControl = rctrl2,
-                            tuneLength = 2)
+                            tuneLength = 2,
+                            seed = 1311)
 
 set.seed(849)
 test_reg_none_model <- train(reg_dat_tr[, -ncol(reg_dat_tr)], reg_dat_tr$y, 
                              method = "glmnet_h2o", 
                              trControl = rctrl3,
                              tuneGrid = test_reg_cv_model$bestTune,
-                             preProc = c("center", "scale"))
+                             preProc = c("center", "scale"),
+                             seed = 1311)
 test_reg_none_pred <- predict(test_reg_none_model, reg_dat_te[, -ncol(reg_dat_te)])
 
 #########################################################################
