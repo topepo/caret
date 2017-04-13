@@ -80,7 +80,8 @@
 #' classification models (along with predicted values) in each resample?
 #' @param summaryFunction a function to compute performance metrics across
 #' resamples. The arguments to the function should be the same as those in
-#' \code{\link{defaultSummary}}.
+#' \code{\link{defaultSummary}}. Note that it \code{method = "oob"} is used, 
+#' this option is ignored and a warning is issued. 
 #' @param selectionFunction the function used to select the optimal tuning
 #' parameter. This can be a name of the function or the function itself. See
 #' \code{\link{best}} for details and other options.
@@ -236,6 +237,11 @@ trainControl <- function(method = "boot",
   }
   if(!(search %in% c("grid", "random")))
     stop("`search` should be either 'grid' or 'random'")
+  if(method == "oob" & any(names(match.call()) == "summaryFunction")) {
+    warning("Custom summary measures cannot be computed for out-of-baf resampling. ",
+            "This value of `summaryFunction` will be ignored.", 
+            call. = FALSE)
+  }
   
   list(method = method,
        number = number,

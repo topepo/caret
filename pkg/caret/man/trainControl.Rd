@@ -59,7 +59,8 @@ classification models (along with predicted values) in each resample?}
 
 \item{summaryFunction}{a function to compute performance metrics across
 resamples. The arguments to the function should be the same as those in
-\code{\link{defaultSummary}}.}
+\code{\link{defaultSummary}}. Note that it \code{method = "oob"} is used, 
+this option is ignored and a warning is issued.}
 
 \item{selectionFunction}{the function used to select the optimal tuning
 parameter. This can be a name of the function or the function itself. See
