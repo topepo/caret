@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `ipred` (0.9-5)
- * tested on 2016-10-31 at 06:40
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `ipred` (0.9-6)
+ * tested on 2017-04-12 at 18:21. 
+ * total test time: 8.1s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `ipred` (0.9-5)
- * tested on 2016-10-31 at 00:05
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `ipred` (0.9-6)
+ * tested on 2017-04-11 at 21:48. 
+ * total test time: 5.8s
 
 
 Results:
@@ -39,7 +41,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.88s (new) 0.83s
+Execution times: (old) 0.8s (new) 0.49s
 
 Test Results:
 
@@ -60,7 +62,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.56s (new) 1.65s
+Execution times: (old) 1.47s (new) 0.89s
 
 Test Results:
 
@@ -81,7 +83,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 2.75s (new) 2.91s
+Execution times: (old) 2.39s (new) 1.81s
 
 Test Results:
 
@@ -102,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.52s (new) 0.55s
+Execution times: (old) 0.57s (new) 0.19s
 
 Test Results:
 

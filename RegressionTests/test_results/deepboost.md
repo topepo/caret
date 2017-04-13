@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `deepboost` (0.1.4)
- * tested on 2016-10-31 at 05:31
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `deepboost` (0.1.5)
+ * tested on 2017-04-12 at 18:22. 
+ * total test time: 224.7s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `deepboost` (0.1.4)
- * tested on 2016-10-30 at 22:38
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `deepboost` (0.1.5)
+ * tested on 2017-04-11 at 22:22. 
+ * total test time: 192.7s
 
 
 Results:
@@ -39,7 +41,7 @@ Model Configuration:
  * 81 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 10.91s (new) 10.28s
+Execution times: (old) 8.34s (new) 6.58s
 
 Test Results:
 
@@ -59,7 +61,7 @@ Model Configuration:
  * 81 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 16.69s (new) 16.69s
+Execution times: (old) 11.58s (new) 9.21s
 
 Test Results:
 
@@ -70,7 +72,16 @@ Test Results:
 
 Object class(es): `varImp.train`
 
- * _Equal results_
+ * ***UNequal results***: differences (o-n):
+<pre>
+     Class1           Class2      
+ Min.   :-85.12   Min.   :-85.12  
+ 1st Qu.:-29.11   1st Qu.:-29.11  
+ Median :  0.00   Median :  0.00  
+ Mean   : -3.60   Mean   : -3.60  
+ 3rd Qu.: 34.38   3rd Qu.: 34.38  
+ Max.   : 49.37   Max.   : 49.37  
+</pre>
 
 **Test Case**: `class_loo_model`
 
@@ -85,7 +96,7 @@ Model Configuration:
  * 81 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.81m (new) 4.81m
+Execution times: (old) 3.33m (new) 2.89m
 
 Test Results:
 
@@ -105,7 +116,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.89s (new) 0.64s
+Execution times: (old) 0.7s (new) 0.25s
 
 Test Results:
 
@@ -143,7 +154,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.81s (new) 2.14s
+Execution times: (old) 1.35s (new) 0.93s
 
 Test Results:
 

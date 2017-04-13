@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `rpart` (4.1-10)
- * tested on 2016-10-31 at 06:33
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `rpart` (4.1-10)
+ * tested on 2017-04-12 at 20:30. 
+ * total test time: 14.5s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `rpart` (4.1-10)
- * tested on 2016-10-30 at 23:58
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `rpart` (4.1-10)
+ * tested on 2017-04-11 at 21:37. 
+ * total test time: 10.2s
 
 
 Results:
@@ -35,11 +37,11 @@ Model Configuration:
  * Formula method
  * Resampling: Cross-Validated (3 fold)
  * Grid search
- * Pre-processing: centered (7), scaled (7)  
+ * Pre-processing: centered (9), scaled (9)  
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.9s (new) 0.91s
+Execution times: (old) 0.87s (new) 0.52s
 
 Test Results:
 
@@ -55,11 +57,11 @@ Model Configuration:
  * Non-formula method
  * Resampling: Cross-Validated (3 fold)
  * Grid search
- * Pre-processing: centered (7), scaled (7)  
+ * Pre-processing: centered (7), scaled (7), ignore (1)  
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.52s (new) 1.51s
+Execution times: (old) 1.33s (new) 0.79s
 
 Test Results:
 
@@ -81,11 +83,11 @@ Model Configuration:
  * Non-formula method
  * Resampling: Leave-One-Out Cross-Validation
  * Grid search
- * Pre-processing: centered (7), scaled (7)  
+ * Pre-processing: centered (7), scaled (7), ignore (1)  
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.97s (new) 2.96s
+Execution times: (old) 2.57s (new) 1.93s
 
 Test Results:
 
@@ -101,11 +103,11 @@ Model Configuration:
  * Non-formula method
  * Resampling: None
  * Grid search
- * Pre-processing: centered (7), scaled (7)  
+ * Pre-processing: centered (7), scaled (7), ignore (1)  
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.56s (new) 0.57s
+Execution times: (old) 0.58s (new) 0.2s
 
 Test Results:
 
@@ -156,7 +158,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.91s (new) 0.95s
+Execution times: (old) 0.82s (new) 0.5s
 
 Test Results:
 
@@ -182,7 +184,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.98s (new) 1.12s
+Execution times: (old) 0.84s (new) 0.66s
 
 Test Results:
 
@@ -202,7 +204,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.23s (new) 1.09s
+Execution times: (old) 0.96s (new) 0.63s
 
 Test Results:
 
@@ -228,7 +230,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.9s (new) 2.89s
+Execution times: (old) 2.32s (new) 1.72s
 
 Test Results:
 
@@ -248,7 +250,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.61s (new) 0.57s
+Execution times: (old) 0.55s (new) 0.21s
 
 Test Results:
 
@@ -292,7 +294,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.85s (new) 0.89s
+Execution times: (old) 0.79s (new) 0.47s
 
 Test Results:
 

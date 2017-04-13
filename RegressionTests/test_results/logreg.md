@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `LogicReg` (1.5.9), `survival` (2.39-5)
- * tested on 2016-10-31 at 05:58
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `LogicReg` (1.5.9), `survival` (2.40-1)
+ * tested on 2017-04-12 at 20:33. 
+ * total test time: 241.4s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `LogicReg` (1.5.9), `survival` (2.39-5)
- * tested on 2016-10-30 at 23:17
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `LogicReg` (1.5.9), `survival` (2.40-1)
+ * tested on 2017-04-11 at 20:56. 
+ * total test time: 235.9s
 
 
 Results:
@@ -39,7 +41,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 10.08s (new) 10.58s
+Execution times: (old) 10.72s (new) 11.27s
 
 Test Results:
 
@@ -59,7 +61,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 10.63s (new) 11.5s
+Execution times: (old) 11.43s (new) 11.34s
 
 Test Results:
 
@@ -79,7 +81,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.11m (new) 2.13m
+Execution times: (old) 2.17m (new) 2.28m
 
 Test Results:
 
@@ -99,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.84s (new) 0.92s
+Execution times: (old) 0.88s (new) 0.6s
 
 Test Results:
 
@@ -143,12 +145,34 @@ Model Configuration:
  * 12 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 13.88s (new) 14.57s
+Execution times: (old) 14.93s (new) 4.22s
 
 Test Results:
 
- * _Equal results for Accuracy_
- * _Equal results for Kappa_
+ * ***UNequal results for Accuracy***:
+
+<pre>
+    0 missing values in old
+    8 missing values in new
+    %differences (n-o):                 
+      mean -2.404
+      min  -9.856
+      max   9.178
+    correlation:  0.6488 
+</pre>
+
+ * ***UNequal results for Kappa***:
+
+<pre>
+    0 missing values in old
+    8 missing values in new
+    %differences (n-o):                 
+      mean -14.15
+      min  -61.73
+      max   46.54
+    correlation:  0.5513 
+</pre>
+
 
 **Test Case**: `levels`
 
@@ -169,7 +193,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.34s (new) 5.77s
+Execution times: (old) 5.43s (new) 5.53s
 
 Test Results:
 
@@ -189,7 +213,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.32s (new) 5.71s
+Execution times: (old) 5.6s (new) 5.89s
 
 Test Results:
 
@@ -209,54 +233,12 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 49.57s (new) 50.05s
+Execution times: (old) 51.42s (new) 54.44s
 
 Test Results:
 
- * ***UNequal results for RMSE***:
-
-<pre>
-    %differences (n-o):                  
-      mean  0.4749
-      min  -2.5731
-      max   7.2949
-    correlation:  0.9815 
-
- treesize ntrees RMSE_new RMSE_old Diff Flag
-       16      2    21.01    21.11 -0.4    *
-       16      3    13.91    13.91  0.0     
-       16      4    19.19    19.08  0.6    *
-        4      2    17.69    17.69  0.0     
-        4      3    22.41    22.41  0.0     
-        4      4    20.99    21.55 -2.6    *
-        8      2    21.02    20.92  0.5    *
-        8      3    21.20    19.76  7.3    *
-        8      4    15.99    16.16 -1.0    *
-
-</pre>
-
- * ***UNequal results for Rsquared***:
-
-<pre>
-    %differences (n-o):                  
-      mean  -5.006
-      min  -64.826
-      max   32.375
-    correlation:  0.995 
-
- treesize ntrees Rsquared_new Rsquared_old  Diff Flag
-       16      2     0.002391     0.002042  17.1    *
-       16      3     0.402023     0.402023   0.0     
-       16      4     0.080046     0.060469  32.4    *
-        4      2     0.155808     0.155808   0.0     
-        4      3     0.028279     0.028279   0.0     
-        4      4     0.050388     0.054240  -7.1    *
-        8      2     0.025058     0.034248 -26.8    *
-        8      3     0.017632     0.050129 -64.8    *
-        8      4     0.278847     0.267560   4.2    *
-
-</pre>
-
+ * _Equal results for RMSE_
+ * _Equal results for Rsquared_
 
 **Test Case**: `reg_pred`
 
@@ -289,10 +271,32 @@ Model Configuration:
  * 12 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 8.05s (new) 8.17s
+Execution times: (old) 8.04s (new) 2.3s
 
 Test Results:
 
- * _Equal results for RMSE_
- * _Equal results for Rsquared_
+ * ***UNequal results for RMSE***:
+
+<pre>
+    0 missing values in old
+    8 missing values in new
+    %differences (n-o):                 
+      mean  4.290
+      min  -2.993
+      max   9.521
+    correlation:  0.8894 
+</pre>
+
+ * ***UNequal results for Rsquared***:
+
+<pre>
+    0 missing values in old
+    8 missing values in new
+    %differences (n-o):                 
+      mean -24.91
+      min  -44.97
+      max   15.98
+    correlation:  0.7063 
+</pre>
+
 

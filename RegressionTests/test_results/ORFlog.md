@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `class` (7.3-14), `e1071` (1.6-7), `gplots` (3.0.1), `mda` (0.4-9), `obliqueRF` (0.3), `pls` (2.5-0), `ROCR` (1.0-7)
- * tested on 2016-10-31 at 06:14
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `class` (7.3-14), `e1071` (1.6-8), `gplots` (3.0.1), `mda` (0.4-9), `obliqueRF` (0.3), `pls` (2.6-0), `ROCR` (1.0-7)
+ * tested on 2017-04-12 at 19:01. 
+ * total test time: 162.7s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `class` (7.3-14), `e1071` (1.6-7), `gplots` (3.0.1), `mda` (0.4-9), `obliqueRF` (0.3), `pls` (2.5-0), `ROCR` (1.0-7)
- * tested on 2016-10-30 at 23:34
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `class` (7.3-14), `e1071` (1.6-8), `gplots` (3.0.1), `mda` (0.4-9), `obliqueRF` (0.3), `pls` (2.6-0), `ROCR` (1.0-7)
+ * tested on 2017-04-11 at 21:05. 
+ * total test time: 341.9s
 
 
 Results:
@@ -39,7 +41,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 9.83s (new) 11.02s
+Execution times: (old) 7.7s (new) 9.89s
 
 Test Results:
 
@@ -60,7 +62,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 11.01s (new) 12.34s
+Execution times: (old) 8.41s (new) 11.23s
 
 Test Results:
 
@@ -81,7 +83,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.12m (new) 3.42m
+Execution times: (old) 2.24m (new) 4.97m
 
 Test Results:
 
@@ -102,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.68s (new) 1.91s
+Execution times: (old) 1.38s (new) 3.18s
 
 Test Results:
 
@@ -159,7 +161,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.42s (new) 7.97s
+Execution times: (old) 5.17s (new) 10.22s
 
 Test Results:
 

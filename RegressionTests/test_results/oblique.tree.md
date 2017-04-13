@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-7.1), `oblique.tree` (1.1.1), `tree` (1.0-37)
- * tested on 2016-10-31 at 06:12
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-8), `oblique.tree` (1.1.1), `tree` (1.0-37)
+ * tested on 2017-04-12 at 19:28. 
+ * total test time: 97.3s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-7.1), `oblique.tree` (1.1.1), `tree` (1.0-37)
- * tested on 2016-10-30 at 23:32
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-8), `oblique.tree` (1.1.1), `tree` (1.0-37)
+ * tested on 2017-04-11 at 20:48. 
+ * total test time: 111.1s
 
 
 Results:
@@ -39,7 +41,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.76s (new) 3.93s
+Execution times: (old) 3.71s (new) 4.15s
 
 Test Results:
 
@@ -60,7 +62,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.58s (new) 5.15s
+Execution times: (old) 4.41s (new) 4.75s
 
 Test Results:
 
@@ -81,7 +83,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.37m (new) 1.48m
+Execution times: (old) 1.38m (new) 1.6m
 
 Test Results:
 
@@ -102,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.83s (new) 1.1s
+Execution times: (old) 0.82s (new) 0.59s
 
 Test Results:
 
@@ -159,12 +161,22 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.26s (new) 3.41s
+Execution times: (old) 3.14s (new) 2.15s
 
 Test Results:
 
- * _Equal results for Accuracy_
- * _Equal results for Kappa_
+ * ***UNequal results for Accuracy***:
+
+<pre>
+    %differences < 0.1%
+</pre>
+
+ * ***UNequal results for Kappa***:
+
+<pre>
+    %differences < 0.1%
+</pre>
+
 
 **Test Case**: `levels`
 

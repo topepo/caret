@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `bnclassify` (0.3.2), `caret` (6.0-71)
- * tested on 2016-10-31 at 05:22
+ * R version 3.3.3 (2017-03-06)
+ * `bnclassify` (0.3.2), `caret` (6.0-73)
+ * tested on 2017-04-12 at 18:54. 
+ * total test time: 147.1s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `bnclassify` (0.3.2), `caret` (6.0-72)
- * tested on 2016-10-30 at 22:30
+ * R version 3.3.3 (2017-03-06)
+ * `bnclassify` (0.3.2), `caret` (6.0-75)
+ * tested on 2017-04-11 at 21:27. 
+ * total test time: 135.5s
 
 
 Results:
@@ -39,7 +41,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.36s (new) 7.36s
+Execution times: (old) 5.8s (new) 5.22s
 
 Test Results:
 
@@ -51,7 +53,16 @@ Test Results:
 
 Object class(es): `varImp.train`
 
- * _Equal results_
+ * ***UNequal results***: differences (o-n):
+<pre>
+     Class1             Class2        
+ Min.   :-100.000   Min.   :-100.000  
+ 1st Qu.: -31.907   1st Qu.: -31.907  
+ Median :  21.826   Median :  21.826  
+ Mean   :   4.223   Mean   :   4.223  
+ 3rd Qu.:  48.816   3rd Qu.:  48.816  
+ Max.   :  57.480   Max.   :  57.480  
+</pre>
 
 **Test Case**: `class_loo_model`
 
@@ -66,7 +77,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.66m (new) 2.73m
+Execution times: (old) 2.22m (new) 2.07m
 
 Test Results:
 
@@ -87,7 +98,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.75s (new) 0.89s
+Execution times: (old) 0.72s (new) 0.39s
 
 Test Results:
 
@@ -138,12 +149,52 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.88s (new) 5.96s
+Execution times: (old) 4.76s (new) 3.19s
 
 Test Results:
 
- * _Equal results for Accuracy_
- * _Equal results for Kappa_
+ * ***UNequal results for Accuracy***:
+
+<pre>
+    0 missing values in old
+    2 missing values in new
+    %differences (n-o):                 
+      mean  1.287
+      min  -3.556
+      max   8.702
+    correlation:  0.4901 
+
+  score smooth Accuracy_new Accuracy_old Diff Flag
+ loglik      1       0.5398       0.5597 -3.6    *
+ loglik      2       0.6197       0.5701  8.7    *
+    bic      1       0.5995       0.5995  0.0     
+    bic      2           NA       0.6096   NA     
+    aic      1       0.5897       0.5897  0.0     
+    aic      2           NA       0.5998   NA     
+
+</pre>
+
+ * ***UNequal results for Kappa***:
+
+<pre>
+    0 missing values in old
+    2 missing values in new
+    %differences (n-o):                 
+      mean  10.93
+      min  -37.08
+      max   80.78
+    correlation:  0.4405 
+
+  score smooth Kappa_new Kappa_old  Diff Flag
+ loglik      1   0.07106    0.1129 -37.1    *
+ loglik      2   0.23091    0.1277  80.8    *
+    bic      1   0.19334    0.1933   0.0     
+    bic      2        NA    0.2120    NA     
+    aic      1   0.17220    0.1722   0.0     
+    aic      2        NA    0.1903    NA     
+
+</pre>
+
 
 **Test Case**: `levels`
 

@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `corpcor` (1.6.8), `entropy` (1.2.1), `fdrtool` (1.2.15), `sda` (1.3.7)
- * tested on 2016-10-31 at 06:39
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `corpcor` (1.6.8), `entropy` (1.2.1), `fdrtool` (1.2.15), `sda` (1.3.7)
+ * tested on 2017-04-12 at 19:52. 
+ * total test time: 11.2s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `corpcor` (1.6.8), `entropy` (1.2.1), `fdrtool` (1.2.15), `sda` (1.3.7)
- * tested on 2016-10-31 at 00:04
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `corpcor` (1.6.8), `entropy` (1.2.1), `fdrtool` (1.2.15), `sda` (1.3.7)
+ * tested on 2017-04-11 at 20:28. 
+ * total test time: 9s
 
 
 Results:
@@ -39,7 +41,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.98s (new) 0.88s
+Execution times: (old) 0.86s (new) 0.57s
 
 Test Results:
 
@@ -60,7 +62,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.68s (new) 1.89s
+Execution times: (old) 1.62s (new) 0.98s
 
 Test Results:
 
@@ -81,7 +83,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.14s (new) 6.07s
+Execution times: (old) 4.53s (new) 4.22s
 
 Test Results:
 
@@ -102,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.52s (new) 0.52s
+Execution times: (old) 0.52s (new) 0.22s
 
 Test Results:
 
@@ -165,7 +167,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1s (new) 0.97s
+Execution times: (old) 0.88s (new) 0.54s
 
 Test Results:
 

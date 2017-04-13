@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `RWeka` (0.4-26)
- * tested on 2016-10-31 at 05:54
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `RWeka` (0.4-33)
+ * tested on 2017-04-12 at 21:03. 
+ * total test time: 176.1s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `RWeka` (0.4-26)
- * tested on 2016-10-30 at 23:13
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `RWeka` (0.4-33)
+ * tested on 2017-04-11 at 21:34. 
+ * total test time: 151.1s
 
 
 Results:
@@ -36,43 +38,16 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Grid search
  * Pre-processing: centered (7), scaled (7)  
- * 3 tuning parameter combinations were evaluated
+ * 27 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.77s (new) 9s
+Execution times: (old) 8.23s (new) 7.1s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                  
-      mean  -5.505
-      min  -16.139
-      max    1.935
-    correlation:  -0.1138 
-</pre>
-
- * ***UNequal results for Sens***:
-
-<pre>
-    %differences (n-o):                  
-      mean  -4.333
-      min  -18.023
-      max    9.697
-    correlation:  -0.101 
-</pre>
-
- * ***UNequal results for Spec***:
-
-<pre>
-    %differences (n-o):                  
-      mean  -6.287
-      min  -29.801
-      max    9.420
-    correlation:  -0.3414 
-</pre>
-
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
 
 **Test Case**: `class_cv_model`
 
@@ -84,43 +59,16 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Grid search
  * Pre-processing: centered (7), scaled (7)  
- * 3 tuning parameter combinations were evaluated
+ * 27 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.15s (new) 12.75s
+Execution times: (old) 12.07s (new) 10s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                  
-      mean  -5.505
-      min  -16.139
-      max    1.935
-    correlation:  -0.1138 
-</pre>
-
- * ***UNequal results for Sens***:
-
-<pre>
-    %differences (n-o):                  
-      mean  -4.333
-      min  -18.023
-      max    9.697
-    correlation:  -0.101 
-</pre>
-
- * ***UNequal results for Spec***:
-
-<pre>
-    %differences (n-o):                  
-      mean  -6.287
-      min  -29.801
-      max    9.420
-    correlation:  -0.3414 
-</pre>
-
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
 
 **Test Case**: `class_imp`
 
@@ -138,43 +86,16 @@ Model Configuration:
  * Resampling: Leave-One-Out Cross-Validation
  * Grid search
  * Pre-processing: centered (7), scaled (7)  
- * 3 tuning parameter combinations were evaluated
+ * 27 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 17.93s (new) 2.77m
+Execution times: (old) 2.54m (new) 2.19m
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                 
-      mean  5.718
-      min  -6.870
-      max  29.245
-    correlation:  0.1632 
-</pre>
-
- * ***UNequal results for Sens***:
-
-<pre>
-    %differences (n-o):                 
-      mean  -1.44
-      min  -11.11
-      max   11.11
-    correlation:  NA 
-</pre>
-
- * ***UNequal results for Spec***:
-
-<pre>
-    %differences (n-o):                 
-      mean  3.227
-      min  -5.882
-      max  25.000
-    correlation:  0.2369 
-</pre>
-
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
 
 **Test Case**: `class_none_model`
 
@@ -189,7 +110,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.57s (new) 0.59s
+Execution times: (old) 0.56s (new) 0.24s
 
 Test Results:
 

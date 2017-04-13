@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `rotationForest` (0.1), `rpart` (4.1-10)
- * tested on 2016-10-31 at 06:33
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `rotationForest` (0.1), `rpart` (4.1-10)
+ * tested on 2017-04-12 at 19:53. 
+ * total test time: 14.9s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `rotationForest` (0.1), `rpart` (4.1-10)
- * tested on 2016-10-30 at 23:58
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `rotationForest` (0.1), `rpart` (4.1-10)
+ * tested on 2017-04-11 at 21:47. 
+ * total test time: 10.6s
 
 
 Results:
@@ -36,49 +38,16 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Grid search
  * Pre-processing: centered (7), scaled (7)  
- * 9 tuning parameter combinations were evaluated
+ * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.27s (new) 1.5s
+Execution times: (old) 1.39s (new) 1.01s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    3 missing values in old
-    6 missing values in new
-    %differences (n-o):                
-      mean 5.890
-      min  3.218
-      max  9.749
-    correlation:  0.4405 
-</pre>
-
- * ***UNequal results for Sens***:
-
-<pre>
-    3 missing values in old
-    9 missing values in new
-    %differences (n-o):                 
-      mean  1.851
-      min  -6.452
-      max   6.164
-    correlation:  0 
-</pre>
-
- * ***UNequal results for Spec***:
-
-<pre>
-    3 missing values in old
-    9 missing values in new
-    %differences (n-o):                  
-      mean   6.602
-      min  -15.753
-      max   21.739
-    correlation:  -0.9686 
-</pre>
-
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
 
 **Test Case**: `class_cv_model`
 
@@ -90,49 +59,16 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Grid search
  * Pre-processing: centered (7), scaled (7)  
- * 9 tuning parameter combinations were evaluated
+ * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.75s (new) 2.47s
+Execution times: (old) 2.05s (new) 1.24s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    3 missing values in old
-    6 missing values in new
-    %differences (n-o):                
-      mean 5.890
-      min  3.218
-      max  9.749
-    correlation:  0.4405 
-</pre>
-
- * ***UNequal results for Sens***:
-
-<pre>
-    3 missing values in old
-    9 missing values in new
-    %differences (n-o):                 
-      mean  1.851
-      min  -6.452
-      max   6.164
-    correlation:  0 
-</pre>
-
- * ***UNequal results for Spec***:
-
-<pre>
-    3 missing values in old
-    9 missing values in new
-    %differences (n-o):                  
-      mean   6.602
-      min  -15.753
-      max   21.739
-    correlation:  -0.9686 
-</pre>
-
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
 
 **Test Case**: `class_none_model`
 
@@ -147,7 +83,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.61s (new) 0.61s
+Execution times: (old) 0.61s (new) 0.24s
 
 Test Results:
 
@@ -204,22 +140,12 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 13.9s (new) 8.26s
+Execution times: (old) 6.46s (new) 5.4s
 
 Test Results:
 
- * ***UNequal results for Accuracy***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
- * ***UNequal results for Kappa***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for Accuracy_
+ * _Equal results for Kappa_
 
 **Test Case**: `imp`
 

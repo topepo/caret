@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `qrnn` (1.1.3)
- * tested on 2016-10-31 at 06:24
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `qrnn` (1.1.3)
+ * tested on 2017-04-12 at 19:38. 
+ * total test time: 209.6s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `qrnn` (1.1.3)
- * tested on 2016-10-30 at 23:48
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `qrnn` (1.1.3)
+ * tested on 2017-04-11 at 21:42. 
+ * total test time: 173.6s
 
 
 Results:
@@ -39,7 +41,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 14.14s (new) 14.86s
+Execution times: (old) 12.26s (new) 10.55s
 
 Test Results:
 
@@ -59,7 +61,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 15.58s (new) 16.8s
+Execution times: (old) 13.31s (new) 11.06s
 
 Test Results:
 
@@ -79,7 +81,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.12m (new) 3.27m
+Execution times: (old) 2.66m (new) 2.41m
 
 Test Results:
 
@@ -99,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.31s (new) 1.42s
+Execution times: (old) 1.24s (new) 0.74s
 
 Test Results:
 
@@ -137,10 +139,32 @@ Model Configuration:
  * 16 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 23.71s (new) 24.9s
+Execution times: (old) 20.48s (new) 4.3s
 
 Test Results:
 
- * _Equal results for RMSE_
- * _Equal results for Rsquared_
+ * ***UNequal results for RMSE***:
+
+<pre>
+    0 missing values in old
+    12 missing values in new
+    %differences (n-o):                  
+      mean -3.7788
+      min  -7.4574
+      max   0.2439
+    correlation:  0.9691 
+</pre>
+
+ * ***UNequal results for Rsquared***:
+
+<pre>
+    0 missing values in old
+    12 missing values in new
+    %differences (n-o):                 
+      mean -16.71
+      min  -49.27
+      max   38.44
+    correlation:  0.5801 
+</pre>
+
 

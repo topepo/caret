@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `glasso` (1.8), `matrixcalc` (1.0-3), `mvoutlier` (2.0.6), `pcaPP` (1.9-60), `rrlda` (1.1), `sgeostat` (1.0-27)
- * tested on 2016-10-31 at 06:34
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `glasso` (1.8), `matrixcalc` (1.0-3), `mvoutlier` (2.0.6), `pcaPP` (1.9-61), `rrlda` (1.1), `sgeostat` (1.0-27)
+ * tested on 2017-04-12 at 20:55. 
+ * total test time: 140.4s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `glasso` (1.8), `matrixcalc` (1.0-3), `mvoutlier` (2.0.6), `pcaPP` (1.9-60), `rrlda` (1.1), `sgeostat` (1.0-27)
- * tested on 2016-10-30 at 23:59
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `glasso` (1.8), `matrixcalc` (1.0-3), `mvoutlier` (2.0.6), `pcaPP` (1.9-61), `rrlda` (1.1), `sgeostat` (1.0-27)
+ * tested on 2017-04-11 at 20:50. 
+ * total test time: 160.6s
 
 
 Results:
@@ -39,7 +41,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 10.64s (new) 10.48s
+Execution times: (old) 7.21s (new) 7.89s
 
 Test Results:
 
@@ -60,7 +62,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 12.76s (new) 12.88s
+Execution times: (old) 10.63s (new) 11.61s
 
 Test Results:
 
@@ -81,7 +83,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.82m (new) 2.76m
+Execution times: (old) 1.89m (new) 2.2m
 
 Test Results:
 
@@ -102,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.99s (new) 1.02s
+Execution times: (old) 0.94s (new) 0.73s
 
 Test Results:
 
@@ -159,7 +161,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.8s (new) 6.76s
+Execution times: (old) 5.2s (new) 5.26s
 
 Test Results:
 

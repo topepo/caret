@@ -1,8 +1,8 @@
-Cumulative Probability Model for Ordinal Data (`vglmCumulative`)
+Penalized Ordinal Regression (`ordinalNet`)
 ===== 
 
-There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/vglmCumulative.R).
-A [history of commits](https://github.com/topepo/caret/commits/master/models/files/vglmCumulative.R) for the model code is also available
+There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/ordinalNet.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/ordinalNet.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -11,18 +11,18 @@ Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
  * R version 3.3.3 (2017-03-06)
- * `caret` (6.0-73), `VGAM` (1.0-3)
- * tested on 2017-04-12 at 19:57. 
- * total test time: 43.3s
+ * `caret` (6.0-73), `ordinalNet` (1.5), `plyr` (1.8.4)
+ * tested on 2017-04-12 at 20:59. 
+ * total test time: 23983.5s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
  * R version 3.3.3 (2017-03-06)
- * `caret` (6.0-75), `VGAM` (1.0-3)
- * tested on 2017-04-11 at 20:50. 
- * total test time: 46.7s
+ * `caret` (6.0-75), `ordinalNet` (1.5), `plyr` (1.8.4)
+ * tested on 2017-04-11 at 21:45. 
+ * total test time: 22958.1s
 
 
 Results:
@@ -38,10 +38,10 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Grid search
  * Pre-processing: centered (15), scaled (15)  
- * 2 tuning parameter combinations were evaluated
+ * 12 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.23s (new) 1.11s
+Execution times: (old) 9.32m (new) 10.31m
 
 Test Results:
 
@@ -58,10 +58,10 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Grid search
  * Pre-processing: centered (15), scaled (15)  
- * 2 tuning parameter combinations were evaluated
+ * 12 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.19s (new) 1.87s
+Execution times: (old) 11.71m (new) 10.35m
 
 Test Results:
 
@@ -78,10 +78,10 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Grid search
  * Pre-processing: centered (15), scaled (15)  
- * 2 tuning parameter combinations were evaluated
+ * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.32s (new) 1.14s
+Execution times: (old) 2.38m (new) 2.05m
 
 Test Results:
 
@@ -92,16 +92,7 @@ Test Results:
 
 Object class(es): `varImp.train`
 
- * ***UNequal results***: differences (o-n):
-<pre>
-      low               med              high       
- Min.   :-86.008   Min.   :-12.42   Min.   :-50.89  
- 1st Qu.: -2.026   1st Qu.:  1.67   1st Qu.:-10.90  
- Median : 25.448   Median : 14.15   Median : 26.25  
- Mean   :  8.858   Mean   : 14.66   Mean   : 10.07  
- 3rd Qu.: 32.520   3rd Qu.: 28.01   3rd Qu.: 34.66  
- Max.   : 35.200   Max.   : 36.16   Max.   : 36.86  
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_loo_model`
 
@@ -113,10 +104,10 @@ Model Configuration:
  * Resampling: Leave-One-Out Cross-Validation
  * Grid search
  * Pre-processing: centered (15), scaled (15)  
- * 2 tuning parameter combinations were evaluated
+ * 12 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 18.61s (new) 21.16s
+Execution times: (old) 5561.87h (new) 5490.98h
 
 Test Results:
 
@@ -133,10 +124,10 @@ Model Configuration:
  * Resampling: Leave-One-Out Cross-Validation
  * Grid search
  * Pre-processing: centered (15), scaled (15)  
- * 2 tuning parameter combinations were evaluated
+ * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 16.48s (new) 17.86s
+Execution times: (old) 1955.13h (new) 1699.32h
 
 Test Results:
 
@@ -156,7 +147,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.61s (new) 0.3s
+Execution times: (old) 24.86s (new) 21.59s
 
 Test Results:
 

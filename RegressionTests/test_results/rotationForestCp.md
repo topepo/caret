@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `plyr` (1.8.4), `rotationForest` (0.1), `rpart` (4.1-10)
- * tested on 2016-10-31 at 06:33
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `plyr` (1.8.4), `rotationForest` (0.1), `rpart` (4.1-10)
+ * tested on 2017-04-12 at 19:01. 
+ * total test time: 18.9s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `plyr` (1.8.4), `rotationForest` (0.1), `rpart` (4.1-10)
- * tested on 2016-10-30 at 23:58
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `plyr` (1.8.4), `rotationForest` (0.1), `rpart` (4.1-10)
+ * tested on 2017-04-11 at 21:32. 
+ * total test time: 15.4s
 
 
 Results:
@@ -36,37 +38,16 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Grid search
  * Pre-processing: centered (7), scaled (7)  
- * 27 tuning parameter combinations were evaluated
+ * 18 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.28s (new) 3.11s
+Execution times: (old) 2.32s (new) 2.04s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
- * ***UNequal results for Sens***:
-
-<pre>
-    9 missing values in old
-    27 missing values in new
-    %differences (n-o):                  
-      mean  -1.194
-      min  -15.951
-      max   15.126
-    correlation:  0.4023 
-</pre>
-
- * ***UNequal results for Spec***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
 
 **Test Case**: `class_cv_model`
 
@@ -78,37 +59,16 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Grid search
  * Pre-processing: centered (7), scaled (7)  
- * 27 tuning parameter combinations were evaluated
+ * 18 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 8.67s (new) 4.28s
+Execution times: (old) 3.1s (new) 2.51s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
- * ***UNequal results for Sens***:
-
-<pre>
-    9 missing values in old
-    27 missing values in new
-    %differences (n-o):                  
-      mean  -1.194
-      min  -15.951
-      max   15.126
-    correlation:  0.4023 
-</pre>
-
- * ***UNequal results for Spec***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
+ * _Equal results for Sens_
+ * _Equal results for Spec_
 
 **Test Case**: `class_none_model`
 
@@ -123,7 +83,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.84s (new) 0.61s
+Execution times: (old) 0.62s (new) 0.23s
 
 Test Results:
 
@@ -147,57 +107,25 @@ Object class(es): `data.frame`
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 86.4% (432/500)
-        newer
-older    Class1 Class2
-  Class1    186     58
-  Class2     10    246
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_pred_form`
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 86.4% (432/500)
-        newer
-older    Class1 Class2
-  Class1    186     58
-  Class2     10    246
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_prob`
 
 Object class(es): `data.frame`
 
- * ***UNequal results***: differences (o-n):
-<pre>
-     Class1             Class2        
- Min.   :-0.31465   Min.   :-0.36365  
- 1st Qu.:-0.07004   1st Qu.:-0.10059  
- Median : 0.02335   Median :-0.02335  
- Mean   : 0.02024   Mean   :-0.02024  
- 3rd Qu.: 0.10059   3rd Qu.: 0.07004  
- Max.   : 0.36365   Max.   : 0.31465  
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_prob_form`
 
 Object class(es): `data.frame`
 
- * ***UNequal results***: differences (o-n):
-<pre>
-     Class1             Class2        
- Min.   :-0.31465   Min.   :-0.36365  
- 1st Qu.:-0.07004   1st Qu.:-0.10059  
- Median : 0.02335   Median :-0.02335  
- Mean   : 0.02024   Mean   :-0.02024  
- 3rd Qu.: 0.10059   3rd Qu.: 0.07004  
- Max.   : 0.36365   Max.   : 0.31465  
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_rand`
 
@@ -212,37 +140,18 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 21.07s (new) 12.19s
+Execution times: (old) 8.93s (new) 7.86s
 
 Test Results:
 
- * ***UNequal results for Accuracy***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
- * ***UNequal results for Kappa***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for Accuracy_
+ * _Equal results for Kappa_
 
 **Test Case**: `imp`
 
 Object class(es): `varImp.train`
 
- * ***UNequal results***: differences (o-n):
-<pre>
-    Overall        
- Min.   :-2.91079  
- 1st Qu.:-1.60425  
- Median :-0.70849  
- Mean   :-1.06426  
- 3rd Qu.:-0.26985  
- Max.   :-0.08233  
-</pre>
+ * _Equal results_
 
 **Test Case**: `levels`
 

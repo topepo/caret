@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `frbs` (3.1-0)
- * tested on 2016-10-31 at 05:36
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `frbs` (3.1-0)
+ * tested on 2017-04-12 at 20:02. 
+ * total test time: 806.6s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `frbs` (3.1-0)
- * tested on 2016-10-30 at 22:44
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `frbs` (3.1-0)
+ * tested on 2017-04-11 at 22:49. 
+ * total test time: 677.1s
 
 
 Results:
@@ -39,31 +41,12 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.33m (new) 1.21m
+Execution times: (old) 44.77s (new) 38.07s
 
 Test Results:
 
- * ***UNequal results for Accuracy***:
-
-<pre>
-    %differences (n-o):                
-      mean 37.79
-      min  14.44
-      max  61.14
-    correlation:  -1 
-
- max.num.rule popu.size max.gen Accuracy_new Accuracy_old Diff Flag
-            3        10      10       0.5404       0.3354 61.1    *
-            5        10      10       0.5337       0.4663 14.4    *
-
-</pre>
-
- * ***UNequal results for Kappa***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for Accuracy_
+ * _Equal results for Kappa_
 
 **Test Case**: `class_cv_model`
 
@@ -78,31 +61,12 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.35m (new) 1.24m
+Execution times: (old) 45.06s (new) 38.53s
 
 Test Results:
 
- * ***UNequal results for Accuracy***:
-
-<pre>
-    %differences (n-o):                
-      mean 37.79
-      min  14.44
-      max  61.14
-    correlation:  -1 
-
- max.num.rule popu.size max.gen Accuracy_new Accuracy_old Diff Flag
-            3        10      10       0.5404       0.3354 61.1    *
-            5        10      10       0.5337       0.4663 14.4    *
-
-</pre>
-
- * ***UNequal results for Kappa***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for Accuracy_
+ * _Equal results for Kappa_
 
 **Test Case**: `class_loo_model`
 
@@ -117,31 +81,12 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 9.29m (new) 9.84m
+Execution times: (old) 8.81m (new) 7.32m
 
 Test Results:
 
- * ***UNequal results for Accuracy***:
-
-<pre>
-    %differences (n-o):                 
-      mean  1.389
-      min  -5.556
-      max   8.333
-    correlation:  1 
-
- max.num.rule popu.size max.gen Accuracy_new Accuracy_old Diff Flag
-            3        10      10       0.4333          0.4  8.3    *
-            5        10      10       0.5667          0.6 -5.6    *
-
-</pre>
-
- * ***UNequal results for Kappa***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for Accuracy_
+ * _Equal results for Kappa_
 
 **Test Case**: `class_none_model`
 
@@ -156,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 13.26s (new) 8.75s
+Execution times: (old) 7.56s (new) 6.19s
 
 Test Results:
 
@@ -167,40 +112,19 @@ Test Results:
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 46.7% (14/30)
-        newer
-older    Class1 Class2
-  Class1      4      2
-  Class2     14     10
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_pred`
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 46.7% (14/30)
-        newer
-older    Class1 Class2
-  Class1      4      2
-  Class2     14     10
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_pred_form`
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 46.7% (14/30)
-        newer
-older    Class1 Class2
-  Class1      4      2
-  Class2     14     10
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_rand`
 
@@ -215,33 +139,12 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.86m (new) 4.82m
+Execution times: (old) 2.97m (new) 2.55m
 
 Test Results:
 
- * ***UNequal results for Accuracy***:
-
-<pre>
-    %differences (n-o):                  
-      mean  -4.244
-      min  -13.560
-      max    7.645
-    correlation:  0.3412 
-
- max.gen popu.size max.num.rule Accuracy_new Accuracy_old  Diff Flag
-       1        18            5       0.4529       0.5239 -13.6    *
-       4        10            4       0.4694       0.4360   7.6    *
-       5         2           15       0.4929       0.4936  -0.1    *
-       8        20           20       0.4997       0.5609 -10.9    *
-
-</pre>
-
- * ***UNequal results for Kappa***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for Accuracy_
+ * _Equal results for Kappa_
 
 **Test Case**: `levels`
 

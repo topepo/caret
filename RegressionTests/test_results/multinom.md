@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `nnet` (7.3-12)
- * tested on 2016-10-31 at 06:06
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `nnet` (7.3-12)
+ * tested on 2017-04-12 at 20:02. 
+ * total test time: 15.9s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `nnet` (7.3-12)
- * tested on 2016-10-30 at 23:25
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `nnet` (7.3-12)
+ * tested on 2017-04-11 at 22:39. 
+ * total test time: 12.4s
 
 
 Results:
@@ -39,7 +41,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.96s (new) 1.03s
+Execution times: (old) 0.93s (new) 0.56s
 
 Test Results:
 
@@ -60,7 +62,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.66s (new) 1.99s
+Execution times: (old) 1.46s (new) 0.88s
 
 Test Results:
 
@@ -81,7 +83,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1s (new) 1.02s
+Execution times: (old) 0.93s (new) 0.6s
 
 Test Results:
 
@@ -107,7 +109,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.61s (new) 7.29s
+Execution times: (old) 5.12s (new) 4.48s
 
 Test Results:
 
@@ -128,7 +130,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.71s (new) 4.12s
+Execution times: (old) 3.06s (new) 2.41s
 
 Test Results:
 
@@ -148,7 +150,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.52s (new) 0.51s
+Execution times: (old) 0.58s (new) 0.2s
 
 Test Results:
 
@@ -211,7 +213,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.21s (new) 1.27s
+Execution times: (old) 1.08s (new) 0.73s
 
 Test Results:
 

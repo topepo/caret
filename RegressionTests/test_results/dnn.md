@@ -10,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-71), `deepnet` (0.2)
- * tested on 2016-10-31 at 05:32
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `deepnet` (0.2)
+ * tested on 2017-04-12 at 18:56. 
+ * total test time: 28.6s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-10-26 r71594)
- * `caret` (6.0-72), `deepnet` (0.2)
- * tested on 2016-10-30 at 22:40
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `deepnet` (0.2)
+ * tested on 2017-04-11 at 20:47. 
+ * total test time: 31.2s
 
 
 Results:
@@ -39,7 +41,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.48s (new) 1.5s
+Execution times: (old) 1.02s (new) 0.9s
 
 Test Results:
 
@@ -59,7 +61,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.72s (new) 3.08s
+Execution times: (old) 1.68s (new) 1.42s
 
 Test Results:
 
@@ -70,7 +72,16 @@ Test Results:
 
 Object class(es): `varImp.train`
 
- * _Equal results_
+ * ***UNequal results***: differences (o-n):
+<pre>
+     Class1           Class2      
+ Min.   :-85.12   Min.   :-85.12  
+ 1st Qu.:-29.11   1st Qu.:-29.11  
+ Median :  0.00   Median :  0.00  
+ Mean   : -3.60   Mean   : -3.60  
+ 3rd Qu.: 34.38   3rd Qu.: 34.38  
+ Max.   : 49.37   Max.   : 49.37  
+</pre>
 
 **Test Case**: `class_loo_model`
 
@@ -85,7 +96,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 14.07s (new) 13.97s
+Execution times: (old) 7.69s (new) 8.93s
 
 Test Results:
 
@@ -105,7 +116,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.77s (new) 0.92s
+Execution times: (old) 0.53s (new) 0.25s
 
 Test Results:
 
