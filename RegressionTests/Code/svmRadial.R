@@ -16,6 +16,9 @@ cctrl2 <- trainControl(method = "LOOCV")
 cctrl3 <- trainControl(method = "none",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
 cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
+cctrlB632 <- trainControl(method = "boot632", number = 10, search = "random", timingSamps = 11)
+cctrlBopt <- trainControl(method = "optimism_boot", number = 10, search = "random", savePredictions = "final")
+cctrlAdapt <- trainControl(method = "adaptive_boot", number = 15, search = "random")
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
@@ -62,6 +65,27 @@ test_class_none_model <- train(trainX, trainY,
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
 
+set.seed(849)
+test_class_b632_model <- train(trainX, trainY, 
+                               method = "svmRadial", 
+                               trControl = cctrlB632,
+                               tuneLength = 4,
+                               preProc = c("center", "scale"))
+
+set.seed(849)
+test_class_bopt_model <- train(trainX, trainY, 
+                               method = "svmRadial", 
+                               trControl = cctrlBopt,
+                               tuneLength = 4,
+                               preProc = c("center", "scale"))
+
+set.seed(849)
+test_class_adapt_model <- train(trainX, trainY, 
+                               method = "svmRadial", 
+                               trControl = cctrlAdapt,
+                               tuneLength = 4,
+                               preProc = c("center", "scale"))
+
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
   cat("wrong levels")
@@ -94,6 +118,12 @@ rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
 rctrl3 <- trainControl(method = "none")
 rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
+rctrlB632 <- trainControl(method = "boot632", number = 10, search = "random", 
+                          timingSamps = 11, predictionBounds = c(-10, 20))
+rctrlBopt <- trainControl(method = "optimism_boot", number = 10, search = "random", 
+                          savePredictions = "final", predictionBounds = c(NA, 20))
+rctrlAdapt <- trainControl(method = "adaptive_boot", number = 15, search = "random", 
+                           predictionBounds = c(TRUE, FALSE))
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
@@ -135,6 +165,29 @@ test_reg_none_model <- train(trainX, trainY,
                              tuneGrid = test_reg_cv_model$bestTune,
                              preProc = c("center", "scale"))
 test_reg_none_pred <- predict(test_reg_none_model, testX)
+
+set.seed(849)
+test_reg_b632 <- train(trainX, trainY, 
+                       method = "svmRadial", 
+                       trControl = rctrlB632,
+                       tuneLength = 4,
+                       preProc = c("center", "scale"))
+
+set.seed(849)
+test_reg_bopt <- train(trainX, trainY, 
+                       method = "svmRadial", 
+                       trControl = rctrlBopt,
+                       tuneLength = 4,
+                       preProc = c("center", "scale"))
+
+set.seed(849)
+test_reg_adapt <- train(trainX, trainY, 
+                       method = "svmRadial", 
+                       trControl = rctrlAdapt,
+                       tuneLength = 4,
+                       preProc = c("center", "scale"))
+
+
 
 
 #########################################################################
