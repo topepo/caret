@@ -1,5 +1,8 @@
 setwd("~/github/caret/RegressionTests")
 
+## Should we just test a small, diverse set of models instead of everything?
+small <- FALSE
+
 #############################################################################
 
 newPath <- paste(format(Sys.time(), "%Y_%m_%d_%H"), 
@@ -8,14 +11,26 @@ newPath <- paste(format(Sys.time(), "%Y_%m_%d_%H"),
                  
 dir.create(paste0("~/tmp/", newPath))
 
-testFiles <- list.files(file.path(getwd(), "Code"),
-                        full.names = TRUE)
-
+if(!small) {
+  testFiles <- list.files(file.path(getwd(), "Code"),
+                          full.names = TRUE)
+} else {
+  testFiles <- c(## some models with sequential parameters:
+                 "glmnet", "simpls", "rpart", "cubist",
+                 ## nonstandard input options
+                 "xgbTree", 
+                 ## basic models
+                 "ctree", "svmRadial", "WM", "bag",
+                 ## Other clases
+                 "sbf_treebag", "rfe_train")
+  testFiles <- paste0(testFiles, ".R")
+  testFiles <- paste(file.path(getwd(), "Code", testFiles))
+}
 ## package archived or models excluded
 exclusions <- c("rknn", "rknnBel", "[mM]xnet", "sdda", "enpls.fs", "enpls", "Boruta", "Mlda", "RFlda", "rbf", "bdk", "SLAVE")
 exclusions <- paste0("(", exclusions, ")")
 exclusions <- paste0(exclusions, collapse = "|")
-testFiles <- testFiles[-grep(exclusions, testFiles)]
+testFiles <- testFiles[!grepl(exclusions, testFiles)]
 
 newFiles <- paste0("~/tmp/", newPath, "/", basename(testFiles))
 
@@ -30,9 +45,7 @@ frbs <- paste0(frbs, ".RData")
 #############################################################################
 ## write out makefile here and save to code directory prior to copy
 
-rFiles <- list.files(file.path(getwd(), "Code"), pattern = "R$")
-## package archived:
-rFiles <- rFiles[-grep(exclusions, rFiles)]
+rFiles <- basename(testFiles)
 
 set.seed(131311)
 rFiles <- sample(rFiles)
@@ -78,18 +91,3 @@ mf <- c("SHELL = /bin/bash\n\n", deps, deps0,
           paste(header, strt, batch, fini, sep = ""))
 
 cat(mf, sep = "",  file = file.path("~/tmp", newPath, "makefile"))
-
-#############################################################################
-## missing tests
-
-if(FALSE){
-  library(caret)
-  
-  mods <- names(getModelInfo())
-  testfiles <- gsub(".R", "", rFiles, fixed = TRUE)
-  
-  testFiles <- list.files(file.path(getwd(), "Code"))
-  modelFiles <- list.files("/Users/kuhna03/Code/github/caret/pkg/caret/inst/models")  
-  
-  modelFiles[!(modelFiles %in% testFiles)]
-}
