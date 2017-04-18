@@ -4,7 +4,7 @@
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
 
-\section{Changes in version 6.0-75}{
+\section{Changes in version 6.0-76}{
 	\itemize{
 		\item Monotone multi-layer perceptron neural network models from the \cpkg{monmlp} package were added \issue{489}
 		\item A new resampling function (\code{groupKFold}) was added \issue{540}
