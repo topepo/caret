@@ -1,4 +1,5 @@
 options(repos = "http://cran.r-project.org")
+library(tools)
 
 ###################################################################
 ## Get Bioconductor packages
@@ -62,6 +63,7 @@ libs <- c(libs, "knitr", "Hmisc", "googleVis", "animation",
           "mapproj", "ggmap", "ggvis", "SuperLearner", "subsemble", "caretEnsemble",
           "ROSE", "DMwR", "ellipse", "bookdown", "DT", "AppliedPredictiveModeling",
           "pROC", "ggthemes")
+libs <- c(libs, package_dependencies("caret", reverse = TRUE)$caret)
 libs <- unique(libs)
 
 
