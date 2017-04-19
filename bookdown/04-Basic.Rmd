@@ -79,7 +79,7 @@ We will use these data illustrate functionality on this (and other) pages.
 
 ## Basic Parameter Tuning
 
-By default, simple bootstrap resampling is used for line 3 in the algorithm above. Others are availible, such as repeated *K*-fold cross-validation, leave-one-out etc. The function `trainControl` can be used to specifiy the type of resampling:
+By default, simple bootstrap resampling is used for line 3 in the algorithm above. Others are available, such as repeated *K*-fold cross-validation, leave-one-out etc. The function `trainControl` can be used to specifiy the type of resampling:
 
 ```{r train_control,tidy=FALSE}
 fitControl <- trainControl(## 10-fold CV
