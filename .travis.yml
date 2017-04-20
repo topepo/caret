@@ -44,8 +44,8 @@ before_install:
   - ./travis-tool.sh r_binary_install nnet
   - ./travis-tool.sh r_binary_install party
   - ./travis-tool.sh r_binary_install pls
-  - ./travis-tool.sh r_binary_install ModelMetrics
-  - ./travis-tool.sh r_binary_install MLmetrics  
+  - ./travis-tool.sh r_install ModelMetrics
+  - ./travis-tool.sh r_install MLmetrics  
   - ./travis-tool.sh r_binary_install proxy
   - ./travis-tool.sh r_binary_install randomForest
   - ./travis-tool.sh r_binary_install RANN
