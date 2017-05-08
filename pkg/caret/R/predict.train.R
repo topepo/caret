@@ -159,7 +159,7 @@ predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.o
                         newdata = newdata, 
                         preProc = object$preProcess)
     obsLevels <- levels(object)
-    out <- out[, obsLevels, drop = FALSE]
+    out <- out[, make.names(obsLevels), drop = FALSE]
   } else {
     out <- predictionFunction(method = object$modelInfo, 
                               modelFit = object$finalModel,
