@@ -29,6 +29,7 @@
     if("ica" %in% pp$method) pp$n.comp <- pp$ICAcomp
     pp$ICAcomp <- NULL
     pp$x <- x
+    pp$outcome <- y
     ppObj <- do.call("preProcess", pp)
     ppObj$call <- "scrubed"
     x <- predict(ppObj, x)
