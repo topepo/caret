@@ -6,6 +6,8 @@
 
 language: c
 sudo: required
+dist: trusty
+cache: packages
 
 env:
   global:
@@ -28,8 +30,8 @@ before_install:
   - ./travis-tool.sh r_binary_install foreach
   - ./travis-tool.sh r_binary_install plyr
   - ./travis-tool.sh r_binary_install nlme
-  - ./travis-tool.sh r_install BradleyTerry2
-  - ./travis-tool.sh r_install e1071
+  - ./travis-tool.sh r_binary_install BradleyTerry2
+  - ./travis-tool.sh r_binary_install e1071
   - ./travis-tool.sh r_binary_install earth
   - ./travis-tool.sh r_binary_install fastICA
   - ./travis-tool.sh r_binary_install gam
