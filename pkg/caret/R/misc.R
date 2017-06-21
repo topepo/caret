@@ -574,12 +574,54 @@ check_na_conflict <- function(call_obj) {
 }
 
 
-# in case an object (ushc as soe sparse matrices) 
+# in case an object is a sparse matrix or tibble
 # do not use `drop` as an argument
 subset_x <- function(x, ind) {
   if(is.matrix(x) | is.data.frame(x) | inherits(x, "dgCMatrix"))
     x <- x[ind,,drop = FALSE] else
       x <- x[ind,]
     x
+}
+
+fail_warning <- function(settings, msg, where = "model fit", iter, verb) {
+  if (!is.character(msg))
+    msg <- as.character(msg)
+  
+  wrn <- paste(colnames(settings),
+               settings,
+               sep = "=",
+               collapse = ", ")
+  wrn <- paste(where, " failed for ", iter,
+               ": ", wrn, " ", msg, sep = "")
+  if (verb) cat(wrn, "\n")
+  warning(wrn)
+  invisible(wrn)
+}
+
+fill_failed_pred <- function(index, lev, submod){
+  ## setup a dummy results with NA values for all predictions
+  nPred <- length(index)
+  if(!is.null(lev)) {
+    predicted <- rep("", nPred)
+    predicted[seq(along = predicted)] <- NA
+  } else {
+    predicted <- rep(NA, nPred)
+  }
+  if(!is.null(submod)) {
+    tmp <- predicted
+    predicted <- vector(mode = "list", length = nrow(submod) + 1)
+    for(i in seq(along = predicted)) predicted[[i]] <- tmp
+    rm(tmp)
+  }
+  predicted
+}
+
+fill_failed_prob <- function(index, lev, submod) {
+  probValues <- matrix(NA, nrow = length(index), ncol = length(lev))
+  probValues <- as.data.frame(probValues)
+  colnames(probValues) <- lev
+  if (!is.null(submod))
+    probValues <- rep(list(probValues), nrow(submod) + 1L)
+  probValues
 }
 
