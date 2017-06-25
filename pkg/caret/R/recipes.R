@@ -15,7 +15,7 @@ train.recipe <- function(recipe,
   startTime <- proc.time()
   
   if(trControl$verboseIter)  {
-    cat("Executing recipe\n")
+    cat("Preparing recipe\n")
     flush.console()
   }
   
@@ -321,7 +321,7 @@ train.recipe <- function(recipe,
                     sep = ""))
     }
     if(trControl$method == "oob"){
-      tmp <- oob_train_rec(rec = rec, dat = data,
+      tmp <- oob_train_rec(rec = recipe, dat = data,
                            info = trainInfo, method = models,
                            ctrl = trControl, lev = classLevels, ...)
       performance <- tmp
@@ -340,19 +340,19 @@ train.recipe <- function(recipe,
       }
     } else {
       if(trControl$method == "LOOCV"){
-        tmp <- loo_train_rec(rec = rec, dat = data,
+        tmp <- loo_train_rec(rec = recipe, dat = data,
                              info = trainInfo, method = models,
                              ctrl = trControl, lev = classLevels, ...)
         performance <- tmp$performance
       } else {
         if(!grepl("adapt", trControl$method)){
-          tmp <- train_rec(rec = rec, dat = data,
+          tmp <- train_rec(rec = recipe, dat = data,
                            info = trainInfo, method = models,
                            ctrl = trControl, lev = classLevels, ...)
           performance <- tmp$performance
           resampleResults <- tmp$resample
         } else {
-          tmp <- train_adapt_rec(rec = rec, dat = data,
+          tmp <- train_adapt_rec(rec = recipe, dat = data,
                                  info = trainInfo, 
                                  method = models,
                                  ctrl = trControl,
