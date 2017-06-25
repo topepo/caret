@@ -4,6 +4,12 @@
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
 
+\section{Changes in version 6.0-XX}{
+	\itemize{
+		\item The package \code{oblique.tree} was removed from CRAN so the corresponding model code was removed from the model library.  
+	}
+}
+
 \section{Changes in version 6.0-76}{
 	\itemize{
 		\item Monotone multi-layer perceptron neural network models from the \cpkg{monmlp} package were added \issue{489}
