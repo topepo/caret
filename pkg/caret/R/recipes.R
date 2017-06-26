@@ -630,7 +630,20 @@ preproc_dots <- function(...) {
   invisible(NULL)
 }
 
-## Convert the recipe to holdout data
+
+model_failed <- function(x) {
+  if(inherits(x, "try-error")) 
+    return(TRUE)
+  if(inherits(x$fit, "try-error")) 
+    return(TRUE) 
+  if(any(names(x) == "recipe"))
+    if(inherits(x$recipe, "try-error")) 
+      return(TRUE) 
+  FALSE
+}
+
+## Convert the recipe to holdout data. rename this to something like
+## get_perf_data
 holdout_rec <- function(object, dat, index) {
   ## 
   ho_data <- bake(object$recipe, 
@@ -691,9 +704,6 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
   y <- recipes::extract(trained_rec, all_outcomes())
   y <- get_vector(y)
   
-  ## Add an extra identifier for later
-  trained_rec$.numeric <- is.numeric(y)
-  
   is_weight <- summary(trained_rec)$role == "case weight"
   if(any(is_weight)) {
     if(sum(is_weight) > 1)
@@ -709,17 +719,17 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
     rm(tmp)
   }
   
-  modelFit <- method$fit(x = x,
+  modelFit <- try(method$fit(x = x,
                          y = y, wts = weights,
                          param  = tuneValue, lev = obsLevels,
                          last = last,
-                         classProbs = classProbs, ...)
+                         classProbs = classProbs, ...),
+                  silent = TRUE)
+  
   ## for models using S4 classes, you can't easily append data, so
   ## exclude these and we'll use other methods to get this information
   if(is.null(method$label)) method$label <- ""
-  if(!isS4(modelFit) &
-     !(method$label %in% c("Ensemble Partial Least Squares Regression",
-                           "Ensemble Partial Least Squares Regression with Feature Selection"))) {
+  if(!isS4(modelFit) & !model_failed(modelFit)) {
     modelFit$xNames <- colnames(x)
     modelFit$problemType <- if(is.factor(y)) "Classification" else "Regression"
     modelFit$tuneValue <- tuneValue
@@ -734,6 +744,8 @@ rec_pred <- function (method, object, newdata, param = NULL)  {
   x <- bake(object$recipe, newdata = newdata, all_predictors())
   out <- method$predict(modelFit = object$fit, newdata = x, 
                         submodels = param)
+  if(is.matrix(out) | is.data.frame(out))
+    out <- out[,1]
   out
 }
 
@@ -805,7 +817,7 @@ loo_train_rec <- function(rec, dat, info, method,
                                     newdata = subset_x(dat, holdoutIndex),
                                     param = submod)
               
-              predicted <- trim_values(predicted, ctrl, mod_rec$recipe$.numeric) 
+              predicted <- trim_values(predicted, ctrl, is_regression) 
               
               if(testing) print(head(predicted))
               if(ctrl$classProbs) {
@@ -932,9 +944,13 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
   pkgs <- c("methods", "caret", "recipes")
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
   
+  is_regression <- is.null(lev)
+
   result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .packages = pkgs, .errorhandling = "stop") %:%
     foreach(parm = 1:nrow(info$loop), .combine = "c", .verbose = FALSE, .packages = pkgs, .errorhandling = "stop")  %op% {
+
       testing <- FALSE
+      
       if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) 
         set.seed(ctrl$seeds[[iter]][parm])
       
@@ -943,7 +959,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
       if(ctrl$verboseIter) 
         progress(printed[parm,,drop = FALSE],
                  names(resampleIndex), iter)
-      
+
       if(names(resampleIndex)[iter] != "AllData") {
         modelIndex <- resampleIndex[[iter]]
         holdoutIndex <- ctrl$indexOut[[iter]]
@@ -951,7 +967,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
         modelIndex <- 1:nrow(dat)
         holdoutIndex <- modelIndex
       }
-      
+
       extraIndex <-
         if (is.null(ctrl$indexExtra))
           NULL
@@ -974,11 +990,12 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
                   sampling = ctrl$sampling,
                   ...),
         silent = TRUE)
+
       
       if(testing) print(mod_rec) 
       
       predictedExtra <- NULL
-      if(class(mod_rec)[1] != "try-error") {
+      if(!model_failed(mod_rec)) {
         predicted <- try(
           rec_pred(method = method,
                    object = mod_rec,
@@ -1010,11 +1027,11 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
         ## setup a dummy results with NA values for all predictions
         predicted <- fill_failed_pred(index = holdoutIndex, lev = lev, submod)
       }
-      
+
       if(testing) print(head(predicted))
       probValuesExtra <- NULL
       if(ctrl$classProbs) {
-        if(class(mod_rec)[1] != "try-error") {
+        if(!model_failed(mod_rec)) {
           probValues <- rec_prob(method = method,
                                  object = mod_rec,
                                  newdata = subset_x(dat, holdoutIndex),
@@ -1044,12 +1061,14 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
       
       ##################################
       
-      predicted <- trim_values(predicted, ctrl, mod_rec$recipe$.numeric) 
-      
+      predicted <- trim_values(predicted, ctrl, is_regression) 
+   
       ## We'll attach data points/columns to the object used
       ## to assess holdout performance
+
+## TODO what to do when the recipe fails?
       ho_data <- holdout_rec(mod_rec, dat, holdoutIndex)
-      
+   
       if(!is.null(submod)) {
         ## merge the fixed and seq parameter values together
         allParam <- expandParameters(info$loop[parm,,drop = FALSE], info$submodels[[parm]])
@@ -1145,7 +1164,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
         tmp <-  ho_data
         tmp$pred <- pred_val
         if(ctrl$classProbs) tmp <- cbind(tmp, probValues)
-        tmp <- cbind(tmp, info$loop[parm,,drop = FALSE])
+        tmp <- merge(tmp, info$loop[parm,,drop = FALSE], all = TRUE)
         
         ## not sure what the story is here
         if(keep_pred || (ctrl$method == "boot_all" && names(resampleIndex)[iter] == "AllData")) {
@@ -1161,7 +1180,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
         thisResample <- ctrl$summaryFunction(tmp,
                                              lev = lev,
                                              model = method)
-        
+         
         ## if classification, get the confusion matrix
         if(length(lev) > 1 && length(lev) <= 50) 
           thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
@@ -1205,7 +1224,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
       if(testing) print(thisResample)
       list(resamples = thisResample, pred = tmpPred, resamplesExtra = thisResampleExtra)
     }
-  
+
   resamples <- rbind.fill(result[names(result) == "resamples"])
   pred <- rbind.fill(result[names(result) == "pred"])
   resamplesExtra <- rbind.fill(result[names(result) == "resamplesExtra"])
