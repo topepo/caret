@@ -29,6 +29,7 @@ modelInfo <- list(label = "Rotation Forest",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    param$K <- min(param$k, floor(ncol(x)/2))
                     if(length(lev) != 2)
                       stop("rotationForest is only implemented for binary classification")
                     y <- ifelse(y == lev[1], 1, 0)
