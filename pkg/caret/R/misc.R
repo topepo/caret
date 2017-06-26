@@ -324,28 +324,28 @@ scrubCall <- function(x)
 
 requireNamespaceQuietStop <- function(package) {
   if (!requireNamespace(package, quietly = TRUE))
-    stop(paste('package',package,'is required'))
+    stop(paste('package',package,'is required'), call. = FALSE)
 }
 
 get_resample_perf <- function (x, ...) UseMethod("get_resample_perf")
 
 get_resample_perf.train <- function(x) {
   if(x$control$returnResamp == "none")
-    stop("use returnResamp == 'none' in trainControl()")
+    stop("use returnResamp == 'none' in trainControl()", call. = FALSE)
   out <- merge(x$resample, x$bestTune)
   out[, c(x$perfNames, "Resample")]
 }
 
 get_resample_perf.rfe <- function(x) {
   if(x$control$returnResamp == "none")
-    stop("use returnResamp == 'none' in trainControl()")
+    stop("use returnResamp == 'none' in trainControl()", call. = FALSE)
   out <- subset(x$resample, Variables == x$bestSubset)
   out[, c(x$perfNames, "Resample")]
 }
 
 get_resample_perf.sbf <- function(x) {
   if(x$control$returnResamp == "none")
-    stop("use returnResamp == 'none' in trainControl()")
+    stop("use returnResamp == 'none' in trainControl()", call. = FALSE)
   x$resample
 }
 
@@ -424,14 +424,16 @@ parse_sampling <- function(x) {
   if(!(x_class %in% c("character", "function", "list"))) {
     stop(paste("The sampling argument should be either a",
                "string, function, or list. See",
-               "http://topepo.github.io/caret/model-training-and-tuning.html"))
+               "http://topepo.github.io/caret/model-training-and-tuning.html"), 
+         call. = FALSE)
   }
   if(x_class == "character") {
     x <- x[1]
     load(system.file("models", "sampling.RData", package = "caret"))
     s_method <- names(sampling_methods)
     if(!(x %in% s_method)) {
-      stop("That sampling scheme is not in caret's built-in library")
+      stop("That sampling scheme is not in caret's built-in library", 
+           call. = FALSE)
     } else {
       x <- list(name = x,
                 func = sampling_methods[x][[1]],
@@ -455,10 +457,12 @@ parse_sampling <- function(x) {
 check_samp_func <- function(x) {
   s_args <- sort(names(formals(x)))
   if(length(s_args) != 2) {
-    stop("the 'sampling' function should have arguments 'x' and 'y'")
+    stop("the 'sampling' function should have arguments 'x' and 'y'", 
+         call. = FALSE)
   } else {
     if(!all(s_args == c("x", "y")))
-      stop("the 'sampling' function should have arguments 'x' and 'y'")
+      stop("the 'sampling' function should have arguments 'x' and 'y'", 
+           call. = FALSE)
   }
   invisible(NULL)
 }
@@ -468,15 +472,17 @@ check_samp_list <- function(x) {
   x_names <- sort(names(x))
   if(length(x_names) != length(exp_names)) {
     stop(paste("the 'sampling' list should have elements",
-               paste(exp_names, sep = "", collapse = ", ")))
+               paste(exp_names, sep = "", collapse = ", ")), 
+         call. = FALSE)
   } else {
     if(!all(exp_names == x_names))
       stop(paste("the 'sampling' list should have elements",
-                 paste(exp_names, sep = "", collapse = ", ")))
+                 paste(exp_names, sep = "", collapse = ", ")), 
+           call. = FALSE)
   }
   check_samp_func(x$func)
   if(!is.logical(x$first))
-    stop("The element 'first' should be a logical")
+    stop("The element 'first' should be a logical", call. = FALSE)
   invisible(NULL)
 }
 
@@ -502,7 +508,8 @@ getSamplingInfo <- function(method = NULL, regex = TRUE, ...) {
     sampling_methods <- sampling_methods[keepers]
   }
   if (length(sampling_methods) == 0)
-    stop("That sampling method is not in caret's built-in library")
+    stop("That sampling method is not in caret's built-in library",
+         call. = FALSE)
   sampling_methods
 }
 
@@ -569,7 +576,8 @@ check_na_conflict <- function(call_obj) {
   if(imputes & any(nam %in% c("na.omit", "na.exclude")))
     warning(paste0("`preProcess` includes an imputation method but missing ",
                    "data will be eliminated by the formula method using `na.action=",
-                   nam, "`. Consider using `na.actin=na.pass` instead."))
+                   nam, "`. Consider using `na.actin=na.pass` instead."),
+            call. = FALSE)
   invisible(NULL)
 }
 
@@ -594,7 +602,7 @@ fail_warning <- function(settings, msg, where = "model fit", iter, verb) {
   wrn <- paste(where, " failed for ", iter,
                ": ", wrn, " ", msg, sep = "")
   if (verb) cat(wrn, "\n")
-  warning(wrn)
+  warning(wrn, call. = FALSE)
   invisible(wrn)
 }
 
