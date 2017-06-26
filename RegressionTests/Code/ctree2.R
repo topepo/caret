@@ -63,12 +63,9 @@ set.seed(849)
 test_class_rec <- train(recipe = rec_cls,
                         data = training,
                         method = "ctree2", 
-                        trControl = cctrl1,
-                        metric = "ROC")
+                        trControl = cctrl1)
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
-test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
-                               type = "prob")
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
