@@ -93,6 +93,9 @@ reg_trainX <- reg_training[, -ncol(reg_training)]
 reg_testX <- reg_testing[, -ncol(reg_testing)]
 reg_trainY <- reg_training$y
 
+rec_reg <- recipe(y ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) 
 
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")

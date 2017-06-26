@@ -15,7 +15,7 @@ testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
-rec_reg <- recipe(Class ~ ., data = training) %>%
+rec_cls <- recipe(Class ~ ., data = training) %>%
   step_center(all_predictors()) %>%
   step_scale(all_predictors())
 
@@ -87,6 +87,10 @@ library(caret)
 library(plyr)
 library(recipes)
 library(dplyr)
+
+rec_reg <- recipe(y ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) 
 
 airq <- subset(airquality, !is.na(Ozone) & complete.cases(airquality))
 trainX <- airq[, -1]
