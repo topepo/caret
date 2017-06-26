@@ -634,8 +634,9 @@ preproc_dots <- function(...) {
 model_failed <- function(x) {
   if(inherits(x, "try-error")) 
     return(TRUE)
-  if(inherits(x$fit, "try-error")) 
-    return(TRUE) 
+  if(any(names(x) == "fit"))
+    if(inherits(x$fit, "try-error")) 
+      return(TRUE) 
   if(any(names(x) == "recipe"))
     if(inherits(x$recipe, "try-error")) 
       return(TRUE) 
@@ -736,7 +737,7 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
     modelFit$obsLevels <- obsLevels
     modelFit$param <- list(...)
   }
-  
+
   list(fit = modelFit, recipe = trained_rec)
 }
 
