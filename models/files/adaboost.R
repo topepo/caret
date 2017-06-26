@@ -16,7 +16,11 @@ modelInfo <- list(label = "AdaBoost Classification Trees",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <-
+                      if (!is.data.frame(x) | inherits(x, "tbl_df"))
+                        as.data.frame(x)
+                    else
+                      x
                     dat$.outcome <- y
                     out <- if(param$method == "Adaboost.M1") 
                       adaboost(.outcome ~ ., data = dat, nIter = param$nIter, ...) else 
@@ -24,11 +28,13 @@ modelInfo <- list(label = "AdaBoost Classification Trees",
                     out     
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
+                      newdata <- as.data.frame(newdata)
                     predict(modelFit, newdata)$class
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
+                      newdata <- as.data.frame(newdata)
                     out <- predict(modelFit, newdata)$prob
                     out <- t(apply(out, 1, function(x) ifelse(x == Inf, 1, x)))
                     out <- t(apply(out, 1, function(x) ifelse(x == -Inf, 0, x))) 
