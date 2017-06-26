@@ -16,6 +16,8 @@ modelInfo <- list(label = "Penalized Logistic Regression",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
+                    if(!is.matrix(x)) 
+                      x <- as.matrix(x)
                     y <- ifelse(y == levels(y)[1], 1, 0)
                     plr(x, y,
                         lambda = param$lambda,
