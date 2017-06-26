@@ -52,7 +52,9 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                     ## check to see if weights were passed in (and availible)
                     if(!is.null(wts)) theDots$w <- wts     
                     if(is.factor(y) && length(lev) == 2) y <- ifelse(y == lev[1], 1, 0)
-                    
+                    if(!is.data.frame(x) | inherits(x, "tbl_df")) 
+                      x <- as.data.frame(x)
+
                     modArgs <- list(x = x,
                                     y = y,
                                     interaction.depth = param$interaction.depth,
