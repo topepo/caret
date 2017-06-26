@@ -27,7 +27,7 @@ test_class_cv_model <- train(reuters, rlabels,
 test_class_pred <- predict(test_class_cv_model, reuters)
 
 set.seed(849)
-test_class_rand <- train(matrix(reuters, ncol = 1), rlabels, 
+test_class_rand <- train(reuters, rlabels, 
                          method = "svmBoundrangeString", 
                          trControl = cctrlR,
                          tuneLength = 4)

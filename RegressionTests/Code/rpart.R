@@ -18,8 +18,8 @@ trainX <- training[, colnames(training) != "Class"]
 trainY <- training$Class
 
 rec_cls <- recipe(Class ~ ., data = training) %>%
-  step_center(all_predictors()) %>%
-  step_scale(all_predictors())
+  step_center(all_predictors(), -all_nominal()) %>%
+  step_scale(all_predictors(), -all_nominal())
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 cctrl2 <- trainControl(method = "LOOCV")
