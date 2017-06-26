@@ -91,7 +91,14 @@ stringFunc <- function (x)  {
 
     if(!is.null(x$preProc)){
       pp_list(x$preProc$method)
-    } else cat("No pre-processing\n")
+    } else {
+      if(inherits(x, "train.recipe")) {
+        step_names <- function(x) gsub("^step_", "", class(x)[1])
+        steps_used <- unlist(lapply(x$recipe$steps, step_names))
+        ppText <- paste("Recipe steps:", paste(steps_used, collapse = ", "))
+        cat(truncateText(ppText), "\n")
+      } else cat("No pre-processing\n")
+    }
 
     if(!is.null(x$control$index)) {
       resampleN <- unlist(lapply(x$control$index, length))
