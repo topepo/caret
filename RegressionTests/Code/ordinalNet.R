@@ -1,5 +1,8 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "ordinalNet"
 
@@ -10,6 +13,10 @@ training <- twoClassSim(100, ordinal = TRUE)
 testing <- twoClassSim(500, ordinal = TRUE)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 weight_test <- function (data, lev = NULL, model = NULL)  {
   mean(data$weights)

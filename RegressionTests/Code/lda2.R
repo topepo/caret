@@ -1,5 +1,8 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "lda2"
 
@@ -9,6 +12,9 @@ model <- "lda2"
 set.seed(1)
 
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 library(mlbench)
 data(Glass)

@@ -1,5 +1,8 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "smda"
 
@@ -10,6 +13,10 @@ training <- twoClassSim(50, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 cctrl2 <- trainControl(method = "LOOCV")
@@ -62,6 +69,13 @@ test_class_none_model <- train(trainX[, 1:3], trainY,
                                preProc = c("center", "scale"))
 
 test_class_none_pred <- predict(test_class_none_model, testing[, 1:3])
+
+test_class_rec <- train(recipe = rec_cls,
+                        data = training,
+                        method = "smda", 
+                        trControl = cctrl1)
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))

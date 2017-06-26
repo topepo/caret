@@ -1,5 +1,8 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "svmRadial"
 
@@ -10,6 +13,10 @@ training <- twoClassSim(50, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 cctrl2 <- trainControl(method = "LOOCV")
@@ -86,31 +93,33 @@ test_class_adapt_model <- train(trainX, trainY,
                                tuneLength = 4,
                                preProc = c("center", "scale"))
 
+set.seed(849)
+test_class_rec <- train(recipe = rec_cls,
+                        data = training,
+                        method = "svmRadial", 
+                        trControl = cctrl1)
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
+
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
   cat("wrong levels")
 
 #########################################################################
 
-SLC14_1 <- function(n = 100) {
-  dat <- matrix(rnorm(n*20, sd = 3), ncol = 20)
-  foo <- function(x) x[1] + sin(x[2]) + log(abs(x[3])) + x[4]^2 + x[5]*x[6] + 
-    ifelse(x[7]*x[8]*x[9] < 0, 1, 0) +
-    ifelse(x[10] > 0, 1, 0) + x[11]*ifelse(x[11] > 0, 1, 0) + 
-    sqrt(abs(x[12])) + cos(x[13]) + 2*x[14] + abs(x[15]) + 
-    ifelse(x[16] < -1, 1, 0) + x[17]*ifelse(x[17] < -1, 1, 0) -
-    2 * x[18] - x[19]*x[20]
-  dat <- as.data.frame(dat)
-  colnames(dat) <- paste0("Var", 1:ncol(dat))
-  dat$y <- apply(dat[, 1:20], 1, foo) + rnorm(n, sd = 3)
-  dat
-}
-
+library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 set.seed(1)
 training <- SLC14_1(30)
 testing <- SLC14_1(100)
 trainX <- training[, -ncol(training)]
 trainY <- training$y
+
+rec_reg <- recipe(y ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) 
 testX <- trainX[, -ncol(training)]
 testY <- trainX$y 
 
@@ -187,8 +196,13 @@ test_reg_adapt <- train(trainX, trainY,
                        tuneLength = 4,
                        preProc = c("center", "scale"))
 
+set.seed(849)
+test_reg_rec <- train(recipe = rec_reg,
+                      data = training,
+                      method = "svmRadial", 
+                      trControl = rctrl1)
 
-
+test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 
 #########################################################################
 

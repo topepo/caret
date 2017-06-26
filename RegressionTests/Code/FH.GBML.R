@@ -1,5 +1,8 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "FH.GBML"
 
@@ -10,6 +13,10 @@ training <- twoClassSim(30)[, 13:16]
 testing <- twoClassSim(30)[, 13:16]
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 seeds <- vector(mode = "list", length = nrow(training) + 1)
 seeds <- lapply(seeds, function(x) 1:3)
@@ -57,6 +64,13 @@ test_class_none_model <- train(trainX, trainY,
                                preProc = c("center", "scale"))
 
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
+
+test_class_rec <- train(recipe = rec_cls,
+                        data = training,
+                        method = "FH.GBML", 
+                        trControl = cctrl1)
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))

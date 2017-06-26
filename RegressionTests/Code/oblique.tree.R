@@ -1,5 +1,8 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "oblique.tree"
 
@@ -10,6 +13,10 @@ training <- twoClassSim(50, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE, 

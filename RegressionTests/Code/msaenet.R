@@ -1,5 +1,8 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "msaenet"
 
@@ -11,6 +14,10 @@ testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 testX <- testing[, -ncol(testing)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
@@ -62,6 +69,17 @@ test_class_none_model <- train(trainX, trainY,
 
 test_class_none_pred <- predict(test_class_none_model, testX)
 
+set.seed(849)
+test_class_rec <- train(recipe = rec_cls,
+                        data = training,
+                        method = "msaenet", 
+                        trControl = cctrl1,
+                        metric = "ROC")
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
+test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
+                               type = "prob")
+
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
   cat("wrong levels")
@@ -108,6 +126,14 @@ test_reg_none_model <- train(reg_trainX, reg_trainY,
                              tuneGrid = test_reg_cv_model$bestTune,
                              preProc = c("center", "scale"))
 test_reg_none_pred <- predict(test_reg_none_model, reg_trainX)
+
+set.seed(849)
+test_reg_rec <- train(recipe = rec_reg,
+                      data = training,
+                      method = "msaenet", 
+                      trControl = rctrl1)
+
+test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 
 #########################################################################
 

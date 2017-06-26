@@ -1,5 +1,8 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "polr"
 
@@ -10,6 +13,10 @@ training <- twoClassSim(100, ordinal = TRUE)
 testing <- twoClassSim(500, ordinal = TRUE)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 
 library(MASS)
@@ -94,6 +101,16 @@ test_class_loo_weight <- train(trainX, trainY,
                                start = strt,
                                metric = "Accuracy", 
                                preProc = c("center", "scale"))
+
+test_class_rec <- train(recipe = rec_cls,
+                        data = training,
+                        method = "polr", 
+                        trControl = cctrl1,
+                        metric = "ROC")
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
+test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
+                               type = "prob")
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))

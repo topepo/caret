@@ -1,5 +1,8 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "rpartScore"
 
@@ -10,6 +13,10 @@ training <- twoClassSim(100, ordinal = TRUE)
 testing <- twoClassSim(500, ordinal = TRUE)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 weight_test <- function (data, lev = NULL, model = NULL)  {
   mean(data$weights)
@@ -76,6 +83,13 @@ test_class_loo_weight <- train(trainX, trainY,
                                tuneLength = 1,
                                metric = "Accuracy", 
                                preProc = c("center", "scale"))
+
+test_class_rec <- train(recipe = rec_cls,
+                        data = training,
+                        method = "rpartScore", 
+                        trControl = cctrl1)
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
