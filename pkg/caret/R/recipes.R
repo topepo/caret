@@ -576,6 +576,7 @@ train.recipe <- function(recipe,
 }
 
 
+#' @export
 predict.train.recipe <- function(object,
                                  newdata = stop("Please provide `newdata`"),
                                  type = "raw",
@@ -586,7 +587,7 @@ predict.train.recipe <- function(object,
                                         recipe = object$recipe),
                           newdata = newdata)
     names(predicted) <- NULL
-    if (!is.null(object$levels)) {
+    if (!is.null(object$levels) && !is.na(object$levels)) {
       predicted <- if (attr(object$levels, "ordered"))
         ordered(as.character(predicted), levels = object$levels)
       else
