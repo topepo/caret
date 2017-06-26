@@ -32,8 +32,9 @@ modelInfo <- list(label = "Patient Rule Induction Method",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
-                    out <- supervisedPRIM(x = dat, y = y,
+                    if(!is.data.frame(x) | inherits(x, "tbl_df")) 
+                      x <- as.data.frame(x)
+                    out <- supervisedPRIM(x = x, y = y,
                                           peel.alpha = param$peel.alpha,
                                           paste.alpha = param$paste.alpha,
                                           mass.min = param$mass.min,
@@ -41,9 +42,13 @@ modelInfo <- list(label = "Patient Rule Induction Method",
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL){
+                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
+                      newdata <- as.data.frame(newdata)
                     predict(modelFit, newdata = newdata, classProb = FALSE)
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
+                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
+                      newdata <- as.data.frame(newdata)
                     out <- predict(modelFit, newdata = newdata, classProb = TRUE)
                     out <- data.frame(out, 1 - out)
                     names(out) <- modelFit$levels[1:2]
