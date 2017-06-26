@@ -93,7 +93,7 @@ reg_trainX <- reg_training[, -ncol(reg_training)]
 reg_testX <- reg_testing[, -ncol(reg_testing)]
 reg_trainY <- reg_training$y
 
-rec_reg <- recipe(y ~ ., data = training) %>%
+rec_reg <- recipe(y ~ ., data = reg_training) %>%
   step_center(all_predictors()) %>%
   step_scale(all_predictors()) 
 
@@ -132,11 +132,11 @@ test_reg_none_pred <- predict(test_reg_none_model, reg_trainX)
 
 set.seed(849)
 test_reg_rec <- train(recipe = rec_reg,
-                      data = training,
+                      data = reg_training,
                       method = "msaenet", 
                       trControl = rctrl1)
 
-test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
+test_reg_pred_rec <- predict(test_reg_rec, reg_testing[, -ncol(reg_testing)])
 
 #########################################################################
 

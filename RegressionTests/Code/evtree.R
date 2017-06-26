@@ -88,15 +88,16 @@ library(plyr)
 library(recipes)
 library(dplyr)
 
-rec_reg <- recipe(y ~ ., data = training) %>%
-  step_center(all_predictors()) %>%
-  step_scale(all_predictors()) 
 
 airq <- subset(airquality, !is.na(Ozone) & complete.cases(airquality))
 trainX <- airq[, -1]
 trainY <- airq$Ozone
 testX <- airq[, -1]
 testY <- airq$Ozone
+
+rec_reg <- recipe(Ozone ~ ., data = airq) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) 
 
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
