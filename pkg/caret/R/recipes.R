@@ -615,7 +615,7 @@ get_vector <- function(object) {
 
 ## return a vector of names
 role_cols <- function(object, role) {
-  vars <- summary(object)
+  vars <- object$term_info
   vars$variable[vars$role %in% role]
 }
 
@@ -646,6 +646,7 @@ model_failed <- function(x) {
 
 ## Convert the recipe to holdout data. rename this to something like
 ## get_perf_data
+#' @importFrom recipes bake all_predictors all_outcomes has_role
 holdout_rec <- function(object, dat, index) {
   ## 
   ho_data <- bake(object$recipe, 
@@ -674,7 +675,7 @@ holdout_rec <- function(object, dat, index) {
   ho_data <- as.data.frame(ho_data)
 }
 
-
+#' @importFrom recipes bake prepare extract has_role
 rec_model <- function(rec, dat, method, tuneValue, obsLevels, 
                       last = FALSE, sampling = NULL, classProbs, ...) {
   
@@ -742,6 +743,7 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
   list(fit = modelFit, recipe = trained_rec)
 }
 
+#' @importFrom recipes bake all_predictors
 rec_pred <- function (method, object, newdata, param = NULL)  {
   x <- bake(object$recipe, newdata = newdata, all_predictors())
   out <- method$predict(modelFit = object$fit, newdata = x, 
@@ -751,6 +753,7 @@ rec_pred <- function (method, object, newdata, param = NULL)  {
   out
 }
 
+#' @importFrom recipes bake all_predictors
 rec_prob <- function (method, object, newdata = NULL, param = NULL)  {
   x <- bake(object$recipe, newdata = newdata, all_predictors())
   obsLevels <- levels(object$fit)

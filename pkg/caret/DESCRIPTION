@@ -25,7 +25,8 @@ Imports:
     stats,
     stats4,
     utils,
-    grDevices
+    grDevices,
+    recipes (>= 0.0.1.9004)
 Suggests:
     BradleyTerry2,
     e1071,
@@ -56,3 +57,4 @@ Suggests:
     testthat (>= 0.9.1)
 License: GPL (>= 2)
 RoxygenNote: 6.0.1
+Remotes: topepo/recipes
