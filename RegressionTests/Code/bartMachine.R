@@ -3,6 +3,9 @@ library(caret)
 library(plyr)
 library(recipes)
 library(dplyr)
+library(bartMachine)
+
+options(java.parameters = "-Xmx5g")
 
 model <- "bartMachine"
 
@@ -23,6 +26,7 @@ cctrl2 <- trainControl(method = "LOOCV")
 cctrl3 <- trainControl(method = "none",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
 cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
+
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
                              method = "bartMachine", 
@@ -49,6 +53,8 @@ test_class_rand <- train(trainX, trainY,
                          method = "bartMachine", 
                          trControl = cctrlR,
                          tuneLength = 4,
+                         verbose = FALSE,
+                         seed = 1,
                          preProc = c("center", "scale"))
 
 
@@ -135,7 +141,9 @@ set.seed(849)
 test_reg_rand <- train(trainX, trainY, 
                        method = "bartMachine", 
                        trControl = rctrlR,
-                       tuneLength = 4)
+                       tuneLength = 4,
+                       verbose = FALSE,
+                       seed = 1)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 
