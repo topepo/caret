@@ -144,11 +144,11 @@ test_reg_none_pred <- predict(test_reg_none_model, testX)
 
 set.seed(849)
 test_reg_rec <- train(recipe = rec_reg,
-                      data = training,
+                      data = airq,
                       method = "evtree", 
                       trControl = rctrl1)
 
-test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
+test_reg_pred_rec <- predict(test_reg_rec, airq[, names(airq) != "Ozone"])
 
 #########################################################################
 
