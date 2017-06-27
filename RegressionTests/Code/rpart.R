@@ -73,7 +73,7 @@ test_class_rec <- train(recipe = rec_cls,
                         method = "rpart", 
                         trControl = cctrl1)
 
-test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
+test_class_pred_rec <- predict(test_class_rec, testing[, colnames(testing) != "Class"])
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
@@ -142,7 +142,7 @@ test_reg_rec <- train(recipe = rec_reg,
                       method = "rpart", 
                       trControl = rctrl1)
 
-test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
+test_reg_pred_rec <- predict(test_reg_rec, testing[, names(testing) != "y"])
 
 #########################################################################
 
