@@ -25,7 +25,7 @@ Imports:
     stats4,
     utils,
     grDevices,
-    recipes (>= 0.0.1.9004)
+    recipes (>= 0.0.1.9005)
 Suggests:
     BradleyTerry2,
     e1071,

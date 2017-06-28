@@ -25,8 +25,8 @@ train.recipe <- function(recipe,
   trained_rec <- prepare(recipe, training = data, fresh = TRUE, 
                          retain = TRUE,
                          verbose = FALSE, stringsAsFactors = TRUE)
-  x <- recipes::extract(trained_rec, all_predictors())
-  y <- recipes::extract(trained_rec, all_outcomes())
+  x <- juice(trained_rec, all_predictors())
+  y <- juice(trained_rec, all_outcomes())
   if(ncol(y) > 1) 
     stop("`train` doesn't support multivariate outcomes")
   y <- getElement(y, names(y))
@@ -34,7 +34,7 @@ train.recipe <- function(recipe,
   if(any(is_weight)) {
     if(sum(is_weight) > 1)
       stop("Ony one column can be used as a case weight.")
-    weights <- recipes::extract(trained_rec, has_role("case weight"))
+    weights <- juice(trained_rec, has_role("case weight"))
     weights <- getElement(weights, names(weights))
   } else weights <- NULL
   
@@ -675,7 +675,7 @@ holdout_rec <- function(object, dat, index) {
   ho_data <- as.data.frame(ho_data)
 }
 
-#' @importFrom recipes bake prepare extract has_role
+#' @importFrom recipes bake prepare juice has_role
 rec_model <- function(rec, dat, method, tuneValue, obsLevels, 
                       last = FALSE, sampling = NULL, classProbs, ...) {
   
@@ -703,8 +703,8 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
   trained_rec <- prepare(rec, training = dat, fresh = TRUE, 
                          verbose = FALSE, stringsAsFactors = TRUE,
                          retain = TRUE)
-  x <- recipes::extract(trained_rec, all_predictors())
-  y <- recipes::extract(trained_rec, all_outcomes())
+  x <- juice(trained_rec, all_predictors())
+  y <- juice(trained_rec, all_outcomes())
   y <- get_vector(y)
   
   is_weight <- summary(trained_rec)$role == "case weight"
