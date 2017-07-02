@@ -35,8 +35,9 @@ evalSummaryFunction <- function(y, wts, ctrl, lev, metric, method) {
   ## sample doesn't work for Surv objects
   if(class(y)[1] != "Surv") {
     if(is.factor(y)) {
-      pred_samp <- factor(sample(levels(y), min(10, n), replace = TRUE), levels = lev)
-      obs_samp <- factor(sample(levels(y), min(10, n), replace = TRUE), levels = lev)
+      values <- rep_len(levels(y), min(10, n))
+      pred_samp <- factor(sample(values), levels = lev)
+      obs_samp  <- factor(sample(values), levels = lev)
     } else {
       pred_samp <- sample(y, min(10, n))
       obs_samp <- sample(y, min(10, n))
