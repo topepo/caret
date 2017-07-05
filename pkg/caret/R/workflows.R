@@ -375,7 +375,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         if(ctrl$classProbs) tmp <- cbind(tmp, probValues)
         tmp$rowIndex <- holdoutIndex
         
-        if(keep_pred || (ctrl$method == "boot_all" && names(resampleIndex)[iter] == "AllData"))
+        if(keep_pred)
         {
           tmpPred <- tmp
           tmpPred$rowIndex <- holdoutIndex
