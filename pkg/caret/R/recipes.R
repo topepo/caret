@@ -950,13 +950,15 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
   
   is_regression <- is.null(lev)
+  
+  export <- c("optimism_boot")
 
-  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .packages = pkgs, .errorhandling = "stop") %:%
-    foreach(parm = 1:nrow(info$loop), .combine = "c", .verbose = FALSE, .packages = pkgs, .errorhandling = "stop")  %op% {
+  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .packages = pkgs, .export = export) %:%
+    foreach(parm = 1L:nrow(info$loop), .combine = "c", .packages = pkgs, .export = export)  %op% {
 
       testing <- FALSE
       
-      if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) 
+      if(!(length(ctrl$seeds) == 1L && is.na(ctrl$seeds))) 
         set.seed(ctrl$seeds[[iter]][parm])
       
       loadNamespace("caret")
@@ -973,12 +975,6 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
         holdoutIndex <- modelIndex
       }
 
-      extraIndex <-
-        if (is.null(ctrl$indexExtra))
-          NULL
-      else
-        ctrl$indexExtra[[iter]]
-      
       if(testing) cat("pre-model\n")
       
       if(!is.null(info$submodels[[parm]]) && nrow(info$submodels[[parm]]) > 0) {
@@ -995,11 +991,8 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
                   sampling = ctrl$sampling,
                   ...),
         silent = TRUE)
-
-      
       if(testing) print(mod_rec) 
       
-      predictedExtra <- NULL
       if(!model_failed(mod_rec)) {
         predicted <- try(
           rec_pred(method = method,
@@ -1016,13 +1009,6 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
                        verb = ctrl$verboseIter)
           
           predicted <- fill_failed_pred(index = holdoutIndex, lev = lev, submod)
-        } else if(!is.null(extraIndex)) {
-          predictedExtra <- lapply(extraIndex, function(idx) {
-            rec_pred(method = method,
-                     object = mod_rec,
-                     newdata = subset_x(dat, idx),
-                     param = submod)
-          })
         }
       } else {
         fail_warning(settings = printed[parm,,drop = FALSE], 
@@ -1034,34 +1020,16 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
       }
 
       if(testing) print(head(predicted))
-      probValuesExtra <- NULL
       if(ctrl$classProbs) {
         if(!model_failed(mod_rec)) {
           probValues <- rec_prob(method = method,
                                  object = mod_rec,
                                  newdata = subset_x(dat, holdoutIndex),
                                  param = submod)
-          
-          if (!is.null(extraIndex))
-            probValuesExtra <- lapply(extraIndex, function(index) {
-              rec_prob(method = method,
-                       object = mod_rec,
-                       newdata = subset_x(dat, index),
-                       param = submod)
-            })
         } else {
           probValues <- fill_failed_prob(holdoutIndex, lev, submod)
         }
         if(testing) print(head(probValues))
-      }
-      
-      if(is.null(probValuesExtra)) {
-        probValuesExtra <- as.data.frame(matrix(NA, nrow = nrow(dat), ncol = length(lev)))
-        colnames(probValuesExtra) <- lev
-        if(!is.null(submod)) {
-          probValuesExtra <- rep(list(probValuesExtra), nrow(info$submodels[[parm]]) + 1L)
-        }
-        probValuesExtra <- rep(list(probValuesExtra), 2L)
       }
       
       ##################################
@@ -1076,7 +1044,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
    
       if(!is.null(submod)) {
         ## merge the fixed and seq parameter values together
-        allParam <- expandParameters(info$loop[parm,,drop = FALSE], info$submodels[[parm]])
+        allParam <- expandParameters(info$loop[parm,,drop = FALSE], submod)
         allParam <- allParam[complete.cases(allParam),, drop = FALSE]
         
         ## collate the predictions across all the sub-models
@@ -1088,36 +1056,12 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
                             },
                             lv = lev,
                             dat  = ho_data)
-        
-        if(!is.null(predictedExtra))
-          predictedExtra <- mapply(predictedExtra, extraIndex, 
-                                   SIMPLIFY = FALSE, USE.NAMES = FALSE,
-                                   FUN = function(pred, rows) {
-                                     lapply(pred, function(x) {
-                                       y <- y[rows]
-                                       wts <- wts[rows]
-                                       
-                                       x <- outcome_conversion(x, lv = lev)
-                                       out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
-                                       if(!is.null(wts)) out$weights <- wts
-                                       out$rowIndex <- rows
-                                       out
-                                     })
-                                   })
         if(testing) print(head(predicted))
         
         ## same for the class probabilities
-        if(ctrl$classProbs) {
-          predicted <- mapply(cbind, predicted, probValues, SIMPLIFY = FALSE)
-          if (!is.null(predictedExtra))
-            predictedExtra <- mapply(predictedExtra, probValuesExtra,
-                                     SIMPLIFY = FALSE,
-                                     FUN = function(predEx, probEx) {
-                                       mapply(cbind, predEx, probEx, SIMPLIFY = FALSE)
-                                     })
-        }
+        if(ctrl$classProbs) predicted <- mapply(cbind, predicted, probValues, SIMPLIFY = FALSE)
         
-        if(keep_pred || (ctrl$method == "boot_all" && names(resampleIndex)[iter] == "AllData")) {
+        if(keep_pred) {
           tmpPred <- predicted
           for(modIndex in seq(along = tmpPred)) {
             tmpPred[[modIndex]] <- merge(tmpPred[[modIndex]], 
@@ -1134,25 +1078,6 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
                                lev = lev,
                                model = method)
         if(testing) print(head(thisResample))
-        
-        if(!is.null(predictedExtra)) {
-          thisResampleExtra <- lapply(predictedExtra, function(predicted) {
-            lapply(predicted,
-                   ctrl$summaryFunction,
-                   lev = lev,
-                   model = method)
-          })
-          thisResampleExtra[[1L]] <- lapply(thisResampleExtra[[1L]], function(res) {
-            names(res) <- paste0(names(res), "Orig")
-            res
-          })
-          thisResampleExtra[[2L]] <- lapply(thisResampleExtra[[2L]], function(res) {
-            names(res) <- paste0(names(res), "Boot")
-            res
-          })
-          thisResampleExtra <- do.call(cbind, lapply(thisResampleExtra, function(x) do.call(rbind, x)))
-          thisResampleExtra <- cbind(allParam, thisResampleExtra)
-        } else thisResampleExtra <- NULL
         
         ## for classification, add the cell counts
         if(length(lev) > 1 && length(lev) <= 50) {
@@ -1171,8 +1096,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
         if(ctrl$classProbs) tmp <- cbind(tmp, probValues)
         tmp <- merge(tmp, info$loop[parm,,drop = FALSE], all = TRUE)
         
-        ## not sure what the story is here
-        if(keep_pred || (ctrl$method == "boot_all" && names(resampleIndex)[iter] == "AllData")) {
+        if(keep_pred) {
           tmpPred <- tmp
           tmpPred$rowIndex <- holdoutIndex
           tmpPred <- merge(tmpPred, info$loop[parm,,drop = FALSE],
@@ -1191,36 +1115,11 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
           thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
         thisResample <- as.data.frame(t(thisResample))
         thisResample <- cbind(thisResample, info$loop[parm,,drop = FALSE])
-        
-        ## for optimism bootstrap
-        if(!is.null(predictedExtra)) {
-          thisResampleExtra <- mapply(predictedExtra, extraIndex, probValuesExtra,
-                                      SIMPLIFY = FALSE, USE.NAMES = FALSE,
-                                      FUN = function(predicted, holdoutIndex, probValues) {
-                                        if(is.factor(y)) predicted <- outcome_conversion(predicted, lv = lev)
-                                        tmp <-  data.frame(pred = predicted,
-                                                           obs = y[holdoutIndex],
-                                                           stringsAsFactors = FALSE)
-                                        ## Sometimes the code above does not coerce the first
-                                        ## columnn to be named "pred" so force it
-                                        names(tmp)[1] <- "pred"
-                                        if(!is.null(wts)) tmp$weights <- wts[holdoutIndex]
-                                        if(ctrl$classProbs) tmp <- cbind(tmp, probValues)
-                                        tmp$rowIndex <- holdoutIndex
-                                        ctrl$summaryFunction(tmp, lev = lev, model = method)
-                                      })
-          
-          names(thisResampleExtra[[1L]]) <- paste0(names(thisResampleExtra[[1L]]), "Orig")
-          names(thisResampleExtra[[2L]]) <- paste0(names(thisResampleExtra[[2L]]), "Boot")
-          
-          thisResampleExtra <- unlist(thisResampleExtra, recursive = FALSE)
-          
-          thisResampleExtra <- cbind(as.data.frame(t(thisResampleExtra)), info$loop[parm, , drop = FALSE])
-          
-        } else thisResampleExtra <- NULL
-        
       }
       thisResample$Resample <- names(resampleIndex)[iter]
+      
+      thisResampleExtra <- optimism_boot(ctrl, dat, iter, lev, method, mod_rec, predicted, 
+                                         submod, info$loop[parm,, drop = FALSE])
       
       if(ctrl$verboseIter) 
         progress(printed[parm,,drop = FALSE],
@@ -1238,11 +1137,11 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
     perfNames <- perfNames[!(perfNames %in% c("Resample", as.character(method$parameters$parameter)))]
     perfNames <- perfNames[!grepl("^\\.cell[0-9]", perfNames)]
     apparent <- subset(resamples, Resample == "AllData")
-    apparent <- apparent[,!grepl("^\\.cell|Resample", colnames(apparent)),drop = FALSE]
+    apparent <- apparent[,!grepl("^\\.cell|Resample", colnames(apparent)), drop = FALSE]
     names(apparent)[which(names(apparent) %in% perfNames)] <- 
       paste(names(apparent)[which(names(apparent) %in% perfNames)], "Apparent", sep = "")
     names(apparent) <- gsub("^\\.", "", names(apparent))
-    if(any(!complete.cases(apparent[,!grepl("^cell|Resample", colnames(apparent)),drop = FALSE])))
+    if(any(!complete.cases(apparent[,!grepl("^cell|Resample", colnames(apparent)), drop = FALSE])))
       warning("There were missing values in the apparent performance measures.")
     
     resamples <- subset(resamples, Resample != "AllData")
@@ -1253,10 +1152,10 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
   }
   names(resamples) <- gsub("^\\.", "", names(resamples))
   
-  if(any(!complete.cases(resamples[,!grepl("^cell|Resample", colnames(resamples)),drop = FALSE])))
+  if(any(!complete.cases(resamples[,!grepl("^cell|Resample", colnames(resamples)), drop = FALSE])))
     warning("There were missing values in resampled performance measures.")
   
-  out <- ddply(resamples[,!grepl("^cell|Resample", colnames(resamples)),drop = FALSE],
+  out <- ddply(resamples[,!grepl("^cell|Resample", colnames(resamples)), drop = FALSE],
                ## TODO check this for seq models
                gsub("^\\.", "", colnames(info$loop)),
                MeanSD, 

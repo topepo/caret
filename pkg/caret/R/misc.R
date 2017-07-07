@@ -634,3 +634,82 @@ fill_failed_prob <- function(index, lev, submod) {
   probValues
 }
 
+optimism_boot <- function(ctrl, dat, iter, lev, method, mod_rec, predicted, submod, loop) {
+  indexExtra <- ctrl$indexExtra[[iter]]
+  
+  if(is.null(indexExtra) || model_failed(mod_rec) || inherits(predicted, "try-error"))
+    return (NULL)
+  
+  predictedExtra <- lapply(indexExtra, function(index) {
+    pred <- rec_pred(method = method,
+                     object = mod_rec,
+                     newdata = subset_x(dat, index),
+                     param = submod)
+    trim_values(pred, ctrl, is.null(lev))
+  })
+  
+  if(ctrl$classProbs)
+    probValuesExtra <- lapply(indexExtra, function(index) {
+      rec_prob(method = method,
+               object = mod_rec,
+               newdata = subset_x(dat, index),
+               param = submod)
+    })
+  else
+    probValuesExtra <- lapply(indexExtra, function(index) {
+      fill_failed_prob(index, lev, submod)
+    })
+  
+  if(!is.null(submod)) {
+    allParam <- expandParameters(loop, submod)
+    allParam <- allParam[complete.cases(allParam),, drop = FALSE]
+    
+    predictedExtra <- Map(predictedExtra, indexExtra, f = function(predicted, holdoutIndex) {
+      lapply(predicted, function(x) {
+        x <- outcome_conversion(x, lv = lev)
+        dat <- holdout_rec(mod_rec, dat, holdoutIndex)
+        dat$pred <- x
+        dat
+      })
+    })
+    
+    if(ctrl$classProbs)
+      predictedExtra <- Map(predictedExtra, probValuesExtra, f = function(predicted, probValues) {
+        Map(cbind, predicted, probValues)
+      })
+    
+    thisResampleExtra <- lapply(predictedExtra, function(predicted) {
+      lapply(predicted,
+             ctrl$summaryFunction,
+             lev = lev,
+             model = method)
+    })
+    thisResampleExtra[[1L]] <- lapply(thisResampleExtra[[1L]], function(res) {
+      names(res) <- paste0(names(res), "Orig")
+      res
+    })
+    thisResampleExtra[[2L]] <- lapply(thisResampleExtra[[2L]], function(res) {
+      names(res) <- paste0(names(res), "Boot")
+      res
+    })
+    thisResampleExtra <- do.call(cbind, lapply(thisResampleExtra, function(x) do.call(rbind, x)))
+    thisResampleExtra <- cbind(allParam, thisResampleExtra)
+    
+  } else {
+    thisResampleExtra <- Map(predictedExtra, indexExtra, probValuesExtra,
+                             f = function(predicted, holdoutIndex, probValues) {
+                               tmp <- holdout_rec(mod_rec, dat, holdoutIndex)
+                               tmp$pred <- outcome_conversion(predicted, lv = lev)
+                               if(ctrl$classProbs) tmp <- cbind(tmp, probValues)
+                               tmp <- merge(tmp, loop, all = TRUE)
+                               ctrl$summaryFunction(tmp, lev = lev, model = method)
+                             })
+    names(thisResampleExtra[[1L]]) <- paste0(names(thisResampleExtra[[1L]]), "Orig")
+    names(thisResampleExtra[[2L]]) <- paste0(names(thisResampleExtra[[2L]]), "Boot")
+    thisResampleExtra <- unlist(unname(thisResampleExtra), recursive = FALSE)
+    thisResampleExtra <- cbind(as.data.frame(t(thisResampleExtra)), loop)
+  }
+  
+  # return
+  thisResampleExtra
+}
