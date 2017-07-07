@@ -214,16 +214,24 @@ confusionMatrix.table <- function(data, positive = NULL,
     stop("with >2 classes, the prevalence vector must have names")
 
   propCI <- function(x) {
-    binom.test(sum(diag(x)), sum(x))$conf.int
+    res <- try(binom.test(sum(diag(x)), sum(x))$conf.int, silent = TRUE)
+    if(inherits(res, "try-error"))
+      res <- rep(NA, 2)
+    res
   }
 
   propTest <- function(x){
-    out <- binom.test(sum(diag(x)),
-                      sum(x),
-                      p = max(apply(x, 2, sum)/sum(x)),
-                      alternative = "greater")
-    unlist(out[c("null.value", "p.value")])
-
+    res <- try(
+      binom.test(sum(diag(x)),
+                 sum(x),
+                 p = max(apply(x, 2, sum)/sum(x)),
+                 alternative = "greater"), 
+      silent = TRUE)
+    res <- if(inherits(res, "try-error"))
+      c("null.value.probability of success" = NA, p.value = NA) 
+    else 
+      res <- unlist(res[c("null.value", "p.value")])
+    res
   }
 
   overall <- c(unlist(e1071::classAgreement(data))[c("diag", "kappa")],

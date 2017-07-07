@@ -6,6 +6,7 @@
 \section{Changes in version 6.0-77}{
   \itemize{
     \item MAE is added as output metric for regression tasks through \code{postResample}. Function is exposed to the users.
+    \item A bug in classification models with all missing predictions was fixed (found by andzandz11). \issue{684}
 
   }
 }
