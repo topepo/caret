@@ -105,7 +105,7 @@ postResample <- function(pred, obs)
     {
       if(length(obs) + length(pred) == 0)
         {
-          out <- rep(NA, 2)
+          out <- rep(NA, 3)
         } else {
           if(length(unique(pred)) < 2 || length(unique(obs)) < 2)
             {
