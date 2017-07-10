@@ -7,7 +7,7 @@
   \itemize{
     \item MAE is added as output metric for regression tasks through \code{postResample}. Function is exposed to the users.
     \item A bug in classification models with all missing predictions was fixed (found by andzandz11). \issue{684}
-
+    \item Switched to non-formula interface in ranger.
   }
 }
 
@@ -793,7 +793,7 @@ being held-out.
 created based on Gevrey, M., Dimopoulos, I., & Lek, S. (2003). Review
 and comparison of methods to study the contribution of variables in
 artificial neural network models. ecological modelling, 160(3),
-249–264.
+249???264.
 
 \item The \code{predictor} function for \code{glmnet} was update and a
 variable importance function was also added.
@@ -1919,7 +1919,7 @@ given a method value of \code{"scrda"}.  } }
   \code{"estimate"}.  In cases where the mvr model had multiple
   estimates of performance (e.g. training set, CV, etc) the user can
   now select which estimate they want to be used in the importance
-  calculation (thanks to Sophie Bréand for finding this) 
+  calculation (thanks to Sophie Br??and for finding this) 
 } 
 }
 
