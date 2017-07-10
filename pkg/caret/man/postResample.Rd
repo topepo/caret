@@ -10,6 +10,7 @@
 \alias{R2}
 \alias{RMSE}
 \alias{multiClassSummary}
+\alias{MAE}
 \alias{twoClassSummary}
 \alias{mnLogLoss}
 \alias{multiClassSummary}
@@ -62,7 +63,8 @@ mean squared error is calculated using \code{sqrt(mean((pred - obs)^2}.
 Also, \eqn{R^2} is calculated wither using as the square of the correlation
 between the observed and predicted outcomes when \code{form = "corr"}. when
 \code{form = "traditional"}, \deqn{ R^2 = 1-\frac{\sum (y_i -
-\hat{y}_i)^2}{\sum (y_i - \bar{y}_i)^2} }
+\hat{y}_i)^2}{\sum (y_i - \bar{y}_i)^2} }. Mean absolute error is calculated
+using \code{mean(abs(pred-obs))}.
 
 For \code{defaultSummary} is the default function to compute performance
 metrics in \code{\link{train}}. It is a wrapper around \code{postResample}.

@@ -177,6 +177,8 @@ R2 <- function(pred, obs, formula = "corr", na.rm = FALSE)
 #' @export
 RMSE <- function(pred, obs, na.rm = FALSE) sqrt(mean((pred - obs)^2, na.rm = na.rm))
 
+#' @export
+MAE <- function(pred, obs, na.rm = FALSE) mean(abs(pred - obs), na.rm = na.rm)  
 
 #' @importFrom utils capture.output
 partRuleSummary <- function(x)

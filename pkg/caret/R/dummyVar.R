@@ -209,7 +209,7 @@ predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
   if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
   if(!all(object$vars %in% names(newdata))) stop(
     paste("Variable(s)",
-          paste("'", object$vars[object$vars %in% names(newdata)],
+          paste("'", object$vars[!object$vars %in% names(newdata)],
                 "'", sep = "",
                 collapse = ", "),
           "are not in newdata"))

@@ -15,7 +15,8 @@
 #' Also, \eqn{R^2} is calculated wither using as the square of the correlation
 #' between the observed and predicted outcomes when \code{form = "corr"}. when
 #' \code{form = "traditional"}, \deqn{ R^2 = 1-\frac{\sum (y_i -
-#' \hat{y}_i)^2}{\sum (y_i - \bar{y}_i)^2} }
+#' \hat{y}_i)^2}{\sum (y_i - \bar{y}_i)^2} }. Mean absolute error is calculated
+#' using \code{mean(abs(pred-obs))}.
 #'
 #' For \code{defaultSummary} is the default function to compute performance
 #' metrics in \code{\link{train}}. It is a wrapper around \code{postResample}.
@@ -58,7 +59,7 @@
 #' \code{\link{trainControl}} of the same name.
 #'
 #' @aliases postResample defaultSummary twoClassSummary prSummary getTrainPerf
-#' mnLogLoss R2 RMSE multiClassSummary
+#' mnLogLoss R2 RMSE multiClassSummary MAE
 #' @param pred A vector of numeric data (could be a factor)
 #' @param obs A vector of numeric data (could be a factor)
 #' @param data a data frame or matrix with columns \code{obs} and \code{pred}
@@ -104,7 +105,7 @@ postResample <- function(pred, obs)
     {
       if(length(obs) + length(pred) == 0)
         {
-          out <- rep(NA, 2)
+          out <- rep(NA, 3)
         } else {
           if(length(unique(pred)) < 2 || length(unique(obs)) < 2)
             {
@@ -115,10 +116,11 @@ postResample <- function(pred, obs)
             }
           mse <- mean((pred - obs)^2)
           n <- length(obs)
+          mae <- mean(abs(pred - obs))
 
-          out <- c(sqrt(mse), resamplCor^2)
+          out <- c(sqrt(mse), resamplCor^2, mae)
         }
-      names(out) <- c("RMSE", "Rsquared")
+      names(out) <- c("RMSE", "Rsquared", "MAE")
     } else {
       if(length(obs) + length(pred) == 0)
         {

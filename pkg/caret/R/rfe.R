@@ -1369,15 +1369,14 @@ update.rfe <- function(object, x, y, size, ...) {
 
 
 repair_rank <- function(imp, nms, fill = -Inf) {
-  no_val <- !(nms %in% modImp$var)
-  missing_rows <- modImp[rep(1, sum(no_val)),]
+  no_val <- !(nms %in% imp$var)
+  missing_rows <- imp[rep(1, sum(no_val)),]
   missing_rows$var <- nms[no_val]
-  other_col <- colnames(modImp)[colnames(modImp) != "var"]
+  other_col <- colnames(imp)[colnames(imp) != "var"]
   for(i in other_col) missing_rows[, i] <- NA
-  out <- rbind(modImp, missing_rows)
+  out <- rbind(imp, missing_rows)
   rownames(out) <- NULL
   out
 }
-
 
 
