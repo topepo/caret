@@ -6,6 +6,8 @@
 
 language: c
 sudo: required
+dist: trusty
+cache: packages
 
 env:
   global:
@@ -23,42 +25,42 @@ before_install:
   - echo 'R_LIBS=/usr/lib/R/library:/usr/lib/R/site-library/' > ~/.Renviron
   - sudo chmod 2777 /usr/lib/R/library
   - ./travis-tool.sh bootstrap
-  - ./travis-tool.sh r_binary_install car
-  - ./travis-tool.sh r_binary_install reshape2
-  - ./travis-tool.sh r_binary_install foreach
-  - ./travis-tool.sh r_binary_install plyr
-  - ./travis-tool.sh r_binary_install nlme
-  - ./travis-tool.sh r_binary_install BradleyTerry2
-  - ./travis-tool.sh r_binary_install e1071
-  - ./travis-tool.sh r_binary_install earth
-  - ./travis-tool.sh r_binary_install fastICA
-  - ./travis-tool.sh r_binary_install gam
-  - ./travis-tool.sh r_binary_install ipred
-  - ./travis-tool.sh r_binary_install kernlab
-  - ./travis-tool.sh r_binary_install klaR
-  - ./travis-tool.sh r_binary_install MASS
-  - ./travis-tool.sh r_binary_install ellipse
-  - ./travis-tool.sh r_binary_install mda
-  - ./travis-tool.sh r_binary_install mgcv
-  - ./travis-tool.sh r_binary_install mlbench
-  - ./travis-tool.sh r_binary_install nnet
-  - ./travis-tool.sh r_binary_install party
-  - ./travis-tool.sh r_binary_install pls
+  - ./travis-tool.sh r_install car
+  - ./travis-tool.sh r_install reshape2
+  - ./travis-tool.sh r_install foreach
+  - ./travis-tool.sh r_install plyr
+  - ./travis-tool.sh r_install nlme
+  - ./travis-tool.sh r_install BradleyTerry2
+  - ./travis-tool.sh r_install e1071
+  - ./travis-tool.sh r_install earth
+  - ./travis-tool.sh r_install fastICA
+  - ./travis-tool.sh r_install gam
+  - ./travis-tool.sh r_install ipred
+  - ./travis-tool.sh r_install kernlab
+  - ./travis-tool.sh r_install klaR
+  - ./travis-tool.sh r_install MASS
+  - ./travis-tool.sh r_install ellipse
+  - ./travis-tool.sh r_install mda
+  - ./travis-tool.sh r_install mgcv
+  - ./travis-tool.sh r_install mlbench
+  - ./travis-tool.sh r_install nnet
+  - ./travis-tool.sh r_install party
+  - ./travis-tool.sh r_install pls
   - ./travis-tool.sh r_install ModelMetrics
   - ./travis-tool.sh r_install MLmetrics  
-  - ./travis-tool.sh r_binary_install proxy
-  - ./travis-tool.sh r_binary_install randomForest
-  - ./travis-tool.sh r_binary_install RANN
-  - ./travis-tool.sh r_binary_install spls
-  - ./travis-tool.sh r_binary_install subselect
-  - ./travis-tool.sh r_binary_install pamr
-  - ./travis-tool.sh r_binary_install superpc
-  - ./travis-tool.sh r_binary_install Cubist
-  - ./travis-tool.sh r_binary_install testthat
-  - ./travis-tool.sh r_binary_install rARPACK
-  - ./travis-tool.sh r_binary_install ggplot2
-  - ./travis-tool.sh r_binary_install reshape2
-  - ./travis-tool.sh r_binary_install data.table
+  - ./travis-tool.sh r_install proxy
+  - ./travis-tool.sh r_install randomForest
+  - ./travis-tool.sh r_install RANN
+  - ./travis-tool.sh r_install spls
+  - ./travis-tool.sh r_install subselect
+  - ./travis-tool.sh r_install pamr
+  - ./travis-tool.sh r_install superpc
+  - ./travis-tool.sh r_install Cubist
+  - ./travis-tool.sh r_install testthat
+  - ./travis-tool.sh r_install rARPACK
+  - ./travis-tool.sh r_install ggplot2
+  - ./travis-tool.sh r_install reshape2
+  - ./travis-tool.sh r_install data.table
   - ./travis-tool.sh r_install xgboost
   - ./travis-tool.sh install_github jimhester/covr
   - ./travis-tool.sh install_github terrytangyuan/lfda

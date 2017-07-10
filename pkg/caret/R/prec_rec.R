@@ -227,11 +227,20 @@ prSummary <- function (data, lev = NULL, model = NULL)  {
   requireNamespaceQuietStop("MLmetrics")
   if (length(levels(data$obs)) > 2) 
     stop(paste("Your outcome has", length(levels(data$obs)), 
-               "levels. The prSummary() function isn't appropriate."))
+               "levels. `prSummary`` function isn't appropriate.",
+         call. = FALSE))
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) 
-    stop("levels of observed and predicted data do not match")
-
-  c(AUC = MLmetrics::PRAUC(y_pred = data[, lev[1]], y_true = ifelse(data$obs == lev[1], 1, 0)),
+    stop("Levels of observed and predicted data do not match.",
+         call. = FALSE)
+  
+  pr_auc <- 
+    try(MLmetrics::PRAUC(y_pred = data[, lev[1]], 
+                         y_true = ifelse(data$obs == lev[1], 1, 0)),
+        silent = TRUE)
+  if(inherits(pr_auc, "try-error"))
+    pr_auc <- NA
+  
+  c(AUC = pr_auc,
     Precision = precision.default(data = data$pred, reference = data$obs, relevant = lev[1]),
     Recall = recall.default(data = data$pred, reference = data$obs, relevant = lev[1]),
     F = F_meas.default(data = data$pred, reference = data$obs, relevant = lev[1]))

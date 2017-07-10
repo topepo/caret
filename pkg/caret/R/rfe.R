@@ -177,13 +177,14 @@ rfe <- function (x, ...) UseMethod("rfe")
     numFeat <- ncol(x)
     classLevels <- levels(y)
 
-    if(is.null(rfeControl$index)) rfeControl$index <- switch(tolower(rfeControl$method),
-                                                             cv = createFolds(y, rfeControl$number, returnTrain = TRUE),
-                                                             repeatedcv = createMultiFolds(y, rfeControl$number, rfeControl$repeats),
-                                                             loocv = createFolds(y, length(y), returnTrain = TRUE),
-                                                             boot =, boot632 = createResample(y, rfeControl$number),
-                                                             test = createDataPartition(y, 1, rfeControl$p),
-                                                             lgocv = createDataPartition(y, rfeControl$number, rfeControl$p))
+    if(is.null(rfeControl$index)) 
+      rfeControl$index <- switch(tolower(rfeControl$method),
+                                 cv = createFolds(y, rfeControl$number, returnTrain = TRUE),
+                                 repeatedcv = createMultiFolds(y, rfeControl$number, rfeControl$repeats),
+                                 loocv = createFolds(y, length(y), returnTrain = TRUE),
+                                 boot =, boot632 = createResample(y, rfeControl$number),
+                                 test = createDataPartition(y, 1, rfeControl$p),
+                                 lgocv = createDataPartition(y, rfeControl$number, rfeControl$p))
 
     if(is.null(names(rfeControl$index))) names(rfeControl$index) <- prettySeq(rfeControl$index)
     if(is.null(rfeControl$indexOut)){
@@ -485,11 +486,13 @@ rfeIter <- function(x, y,
                      "excessively-correlated predictors, factor predictors ",
                      "that were expanded into dummy variables or you may have ",
                      "failed to drop one of your dummy variables.")
-      stop(msg1)
+      warning(msg1, call. = FALSE)
+      modImp <- repair_rank(modImp, colnames(x))
     }
     if(any(!complete.cases(modImp))){
-      stop(paste("There were missing importance values.",
-                 "There may be linear dependencies in your predictor variables"))
+      warning(paste("There were missing importance values.",
+                 "There may be linear dependencies in your predictor variables"),
+              call. = FALSE)
     }
     finalVariables[[k]] <- subset(modImp, var %in% retained)
     finalVariables[[k]]$Variables <- sizeValues[[k]]
@@ -894,6 +897,7 @@ caretFuncs <- list(summary = defaultSummary,
                          vimp$Overall <- avImp
                        }
                      }
+                     vimp <- vimp[order(vimp$Overall, decreasing = TRUE),, drop = FALSE]
                      vimp$var <- rownames(vimp)
                      vimp
                    },
@@ -1008,6 +1012,7 @@ gamFuncs <- list(summary = defaultSummary,
                                          Overall = rep(0, length(missing)))
                      vimp <- rbind(vimp, tmpdf)
                    }
+                   vimp <- vimp[order(vimp$Overall, decreasing = TRUE),, drop = FALSE]
                    vimp
                  },
                  selectSize = pickSizeBest,
@@ -1068,6 +1073,7 @@ lmFuncs <- list(summary = defaultSummary,
                   vimp <- data.frame(Overall = unname(coefs),
                                      var = names(coefs))
                   rownames(vimp) <- names(coefs)
+                  vimp <- vimp[order(vimp$Overall, decreasing = TRUE),, drop = FALSE]
                   vimp
                 },
                 selectSize = pickSizeBest,
@@ -1359,6 +1365,18 @@ update.rfe <- function(object, x, y, size, ...) {
     object$resampledCM <- object$resample <- NULL
   }
   object
+}
+
+
+repair_rank <- function(imp, nms, fill = -Inf) {
+  no_val <- !(nms %in% imp$var)
+  missing_rows <- imp[rep(1, sum(no_val)),]
+  missing_rows$var <- nms[no_val]
+  other_col <- colnames(imp)[colnames(imp) != "var"]
+  for(i in other_col) missing_rows[, i] <- NA
+  out <- rbind(imp, missing_rows)
+  rownames(out) <- NULL
+  out
 }
 
 
