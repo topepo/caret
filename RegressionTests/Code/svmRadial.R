@@ -23,9 +23,9 @@ cctrl2 <- trainControl(method = "LOOCV")
 cctrl3 <- trainControl(method = "none",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
 cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
-cctrlB632 <- trainControl(method = "boot632", number = 10, search = "random", timingSamps = 11)
-cctrlBopt <- trainControl(method = "optimism_boot", number = 10, search = "random", savePredictions = "final")
-cctrlAdapt <- trainControl(method = "adaptive_boot", number = 15, search = "random")
+cctrlB632 <- trainControl(method = "boot632", number = 10, search = "random", timingSamps = 11, classProbs = TRUE)
+cctrlBopt <- trainControl(method = "optimism_boot", number = 10, search = "random", savePredictions = "final", classProbs = TRUE)
+cctrlAdapt <- trainControl(method = "adaptive_boot", number = 15, search = "random", classProbs = TRUE)
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
@@ -87,17 +87,40 @@ test_class_bopt_model <- train(trainX, trainY,
                                preProc = c("center", "scale"))
 
 set.seed(849)
-test_class_adapt_model <- train(trainX, trainY, 
-                               method = "svmRadial", 
-                               trControl = cctrlAdapt,
-                               tuneLength = 4,
-                               preProc = c("center", "scale"))
-
-set.seed(849)
 test_class_rec <- train(recipe = rec_cls,
                         data = training,
                         method = "svmRadial", 
                         trControl = cctrl1)
+
+set.seed(849)
+test_class_b632_rec_model <- train(recipe = rec_cls,
+                                   data = training,
+                                   method = "svmRadial", 
+                                   trControl = cctrlB632,
+                                   tuneLength = 4)
+
+if(!isTRUE(all.equal(test_class_b632_rec_model$results, 
+                     test_class_b632_rec_model$results)))
+  stop("x/y and recipe interface have different results for B632")
+
+
+set.seed(849)
+test_class_bopt_rec_model <- train(recipe = rec_cls,
+                                   data = training,
+                                   method = "svmRadial", 
+                                   trControl = cctrlBopt,
+                                   tuneLength = 4)
+if(!isTRUE(all.equal(test_class_bopt_rec_model$results, 
+                     test_class_bopt_rec_model$results)))
+  stop("x/y and recipe interface have different results for B optim")
+
+# set.seed(849)
+# test_class_adapt_model <- train(recipe = rec_cls,
+#                                 data = training, 
+#                                 method = "svmRadial", 
+#                                 trControl = cctrlAdapt,
+#                                 tuneLength = 4,
+#                                 preProc = c("center", "scale"))
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 
@@ -191,10 +214,10 @@ test_reg_bopt <- train(trainX, trainY,
 
 set.seed(849)
 test_reg_adapt <- train(trainX, trainY, 
-                       method = "svmRadial", 
-                       trControl = rctrlAdapt,
-                       tuneLength = 4,
-                       preProc = c("center", "scale"))
+                        method = "svmRadial", 
+                        trControl = rctrlAdapt,
+                        tuneLength = 4,
+                        preProc = c("center", "scale"))
 
 set.seed(849)
 test_reg_rec <- train(recipe = rec_reg,
