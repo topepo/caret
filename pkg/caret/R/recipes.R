@@ -688,8 +688,8 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
     if(length(y_cols) > 1) 
       stop("`train` doesn't support multivariate outcomes")
     if(is.data.frame(y)) y <- getElement(y, names(y))
-    other_cols <- subset(var_info, 
-                         role %in% c("predictor", "case weight", "performance var"))
+    other_cols <- var_info[var_info$role %in% c("predictor", "case weight", "performance var"),]
+    
     other_cols <- other_cols$variable
     other_dat <- dat[, other_cols]  ## test this with data frames and tibbles
     
@@ -777,6 +777,8 @@ loo_train_rec <- function(rec, dat, info, method,
   colnames(printed) <- gsub("^\\.", "", colnames(printed))
   
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
+  
+  is_regression <- is.null(lev)
   
   pkgs <- c("methods", "caret", "recipes")
   if(!is.null(method$library)) 
@@ -894,6 +896,8 @@ oob_train_rec <- function(rec, dat, info, method,
   printed <- format(info$loop)
   colnames(printed) <- gsub("^\\.", "", colnames(printed))
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
+  
+  
   pkgs <- c("methods", "caret", "recipes")
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
   result <- foreach(
