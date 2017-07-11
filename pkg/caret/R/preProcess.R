@@ -1032,29 +1032,6 @@ group_bc <- function(x, outcome = NULL,
   bc[!is.null(bc) & !is.na(bc)]
 }
 
-yjWrap <- function(x, numUnique = numUnique) {
-  if(length(unique(x)) >= numUnique) {
-    out <- try(powerTransform(y ~ 1,
-                              data = data.frame(y = x[!is.na(x)]),
-                              family = "yjPower"),
-               silent = TRUE)
-    if(class(out)[1] == "try-error") out <- NA
-  } else out <- NA
-  out
-}
-
-group_yj <- function(x, numUnique, verbose) {
-  if(verbose) 
-    cat("Estimating Yeo-Johnson transformations for", ncol(x), "predictors...")
-  
-  if(is.matrix(x)) {
-    yj <- apply(x, 2, yjWrap, numUnique = numUnique)  
-  } else {
-    yj <- lapply(x, yjWrap, numUnique = numUnique)  
-  }   
-  yj[!is.null(yj) & !is.na(yj)]
-}
-
 convert_method <- function(x) {
   new_method <- list()
   if("center" %in% x$method)       new_method$center       <- names(x$mean)
