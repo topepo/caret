@@ -553,6 +553,8 @@ get_range <- function(y) {
   if(class(y)[1] %in% c("numeric", "integer")) extendrange(y) else extendrange(y[, "time"])
 }
 
+#' @rdname caret-internal
+#' @export
 outcome_conversion <- function(x, lv) {
   if(is.factor(x) | is.character(x)) {
     if(!is.null(attributes(lv)) && any(names(attributes(lv)) == "ordered" && attr(lv, "ordered")))

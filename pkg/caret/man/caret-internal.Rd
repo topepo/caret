@@ -29,6 +29,7 @@
 \alias{rfStats}
 \alias{cforestStats}
 \alias{bagEarthStats}
+\alias{outcome_conversion}
 \alias{predictionFunction}
 \alias{hasTerms}
 \alias{probFunction}
@@ -56,6 +57,8 @@ rfStats(x)
 cforestStats(x)
 
 bagEarthStats(x)
+
+outcome_conversion(x, lv)
 
 predictionFunction(method, modelFit, newdata, preProc = NULL, param = NULL)
 

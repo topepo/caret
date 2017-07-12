@@ -878,7 +878,7 @@ loo_train_rec <- function(rec, dat, info, method,
                 ## collate the predictions across all the sub-models
                 predicted <- lapply(predicted,
                                     function(x, lv, dat) {
-                                      x <- getFromNamespace("outcome_conversion", "caret")(x, lv = lev)
+                                      x <- outcome_conversion(x, lv = lev)
                                       dat$pred <- x
                                       dat
                                     },
@@ -896,7 +896,7 @@ loo_train_rec <- function(rec, dat, info, method,
                 predicted <- cbind(predicted, allParam)
                 ## if saveDetails then save and export 'predicted'
               } else {
-                pred_val <- getFromNamespace("outcome_conversion", "caret")(predicted, lv = lev)
+                pred_val <- outcome_conversion(predicted, lv = lev)
                 predicted <-  ho_data
                 predicted$pred <- pred_val
                 if(ctrl$classProbs) predicted <- cbind(predicted, probValues)
@@ -1083,7 +1083,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
         ## collate the predictions across all the sub-models
         predicted <- lapply(predicted,
                             function(x, lv, dat) {
-                              x <- getFromNamespace("outcome_conversion", "caret")(x, lv = lev)
+                              x <- outcome_conversion(x, lv = lev)
                               dat$pred <- x
                               dat
                             },
@@ -1123,7 +1123,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
         thisResample <- cbind(allParam, thisResample)
         
       } else {       
-        pred_val <- getFromNamespace("outcome_conversion", "caret")(predicted, lv = lev)
+        pred_val <- outcome_conversion(predicted, lv = lev)
         tmp <-  ho_data
         tmp$pred <- pred_val
         if(ctrl$classProbs) tmp <- cbind(tmp, probValues)

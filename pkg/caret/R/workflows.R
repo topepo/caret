@@ -1,9 +1,9 @@
 
-### In this file, there are a lot of functions form caret that are
-### references using the explicit namespace operator (:::). For some
-### reason, with some parallel processing technologies and foreach,
+### In this file, there are a lot of functions from packages that are
+### referenced using `getFromNamespace`. For some
+### reason, with _some_ parallel processing technologies and foreach,
 ### functions inside of caret cannot be found despite using the
-### ".packages" argument and calling the caret package via library().
+### ".packages" argument or even calling the caret package via library().
 
 getOper <- function(x) if(x)  `%dopar%` else  `%do%`
 getTrainOper <- function(x) if(x)  `%dopar%` else  `%do%`
@@ -82,6 +82,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
       
       loadNamespace("caret")
+      
       if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE],
                                     names(resampleIndex), iter)
       
@@ -202,7 +203,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         ## collate the predicitons across all the sub-models
         predicted <- lapply(predicted,
                             function(x, y, wts, lv, rows) {
-                              x <- getFromNamespace("outcome_conversion", "caret")(x, lv = lev)
+                              x <- outcome_conversion(x, lv = lev)
                               out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
                               if(!is.null(wts)) out$weights <- wts
                               out$rowIndex <- rows
@@ -288,7 +289,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         thisResample <- cbind(allParam, thisResample)
         
       } else {       
-        if(is.factor(y)) predicted <- getFromNamespace("outcome_conversion", "caret")(predicted, lv = lev)
+        if(is.factor(y)) predicted <- outcome_conversion(predicted, lv = lev)
         tmp <-  data.frame(pred = predicted,
                            obs = y[holdoutIndex],
                            stringsAsFactors = FALSE)
@@ -517,7 +518,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
         ## collate the predictions across all the sub-models
         predicted <- lapply(predicted,
                             function(x, y, wts, lv, rows) {
-                              x <- getFromNamespace("outcome_conversion", "caret")(x, lv = lev)
+                              x <- outcome_conversion(x, lv = lev)
                               out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
                               if(!is.null(wts)) out$weights <- wts
                               out$rowIndex <- rows
@@ -539,7 +540,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
         predicted <- cbind(predicted, allParam)
         ## if saveDetails then save and export 'predicted'
       } else {
-        predicted <- getFromNamespace("outcome_conversion", "caret")(predicted, lv = lev)
+        predicted <- outcome_conversion(predicted, lv = lev)
         predicted <-  data.frame(pred = predicted,
                                  obs = y[holdoutIndex],
                                  stringsAsFactors = FALSE)
