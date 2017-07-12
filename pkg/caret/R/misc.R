@@ -595,6 +595,11 @@ subset_x <- function(x, ind) {
 }
 
 fail_warning <- function(settings, msg, where = "model fit", iter, verb) {
+  if (is.list(msg)) {
+    is_fail <- vapply(msg, inherits, c(x = TRUE), what = "try-error")
+    msg <- msg[is_fail]
+  }
+
   if (!is.character(msg))
     msg <- as.character(msg)
   
@@ -604,7 +609,9 @@ fail_warning <- function(settings, msg, where = "model fit", iter, verb) {
                collapse = ", ")
   wrn <- paste(where, " failed for ", iter,
                ": ", wrn, " ", msg, sep = "")
-  if (verb) cat(wrn, "\n")
+  if (verb)  
+    cat(wrn, "\n")
+
   warning(wrn, call. = FALSE)
   invisible(wrn)
 }
