@@ -990,8 +990,6 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
 
   result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .packages = pkgs, .export = export) %:%
     foreach(parm = 1L:nrow(info$loop), .combine = "c", .packages = pkgs, .export = export)  %op% {
-
-      testing <- FALSE
       
       if(!(length(ctrl$seeds) == 1L && is.na(ctrl$seeds))) 
         set.seed(ctrl$seeds[[iter]][parm])
