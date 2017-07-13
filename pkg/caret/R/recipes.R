@@ -22,9 +22,11 @@ train.recipe <- function(recipe,
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # prep and bake recipe on entire training set
   
-  trained_rec <- prepare(recipe, training = data, fresh = TRUE, 
+  trained_rec <- prepare(recipe, training = data, 
+                         fresh = TRUE, 
                          retain = TRUE,
-                         verbose = FALSE, stringsAsFactors = TRUE)
+                         verbose = FALSE, 
+                         stringsAsFactors = TRUE)
   x <- juice(trained_rec, all_predictors())
   y <- juice(trained_rec, all_outcomes())
   if(ncol(y) > 1) 
@@ -432,7 +434,8 @@ train.recipe <- function(recipe,
       }
     }
     
-    if(is.na(bestIter) || length(bestIter) != 1) stop("final tuning parameters could not be determined", call. = FALSE)
+    if(is.na(bestIter) || length(bestIter) != 1) 
+      stop("final tuning parameters could not be determined", call. = FALSE)
     
     if(grepl("adapt", trControl$method)) {
       best_perf <- perf_check[bestIter,as.character(models$parameters$parameter),drop = FALSE]
@@ -474,8 +477,6 @@ train.recipe <- function(recipe,
   } else {
     byResample <- NULL
   }
-  
-  # names(bestTune) <- paste(".", names(bestTune), sep = "")
   
   ## Reorder rows of performance
   orderList <- list()
@@ -646,8 +647,6 @@ model_failed <- function(x) {
 
 pred_failed <- function(x)
   inherits(x, "try-error")
-
-
 
 ## Convert the recipe to holdout data. rename this to something like
 ## get_perf_data
@@ -1072,7 +1071,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
       ## We'll attach data points/columns to the object used
       ## to assess holdout performance
 
-## TODO what to do when the recipe fails?
+      ## TODO what to do when the recipe fails?
       ho_data <- holdout_rec(mod_rec, dat, holdoutIndex)
    
       if(!is.null(submod)) {
