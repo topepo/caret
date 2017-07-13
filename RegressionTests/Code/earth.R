@@ -153,11 +153,13 @@ test_reg_loo_model <- train(trainX, trainY,
                             tuneGrid = egrid,
                             preProc = c("center", "scale"))
 
+case_weights <- runif(nrow(trainX))
+
 set.seed(849)
 test_reg_cv_model_weights <- train(trainX, trainY, 
                                    method = "earth", 
                                    trControl = rctrl1,
-                                   weights = runif(nrow(trainX)),
+                                   weights = case_weights,
                                    tuneGrid = egrid,
                                    preProc = c("center", "scale"))
 
@@ -165,7 +167,7 @@ set.seed(849)
 test_reg_cv_form_weights <- train(y ~ ., data = training, 
                                   method = "earth", 
                                   trControl = rctrl1,
-                                  weights = runif(nrow(trainX)),
+                                  weights = case_weights,
                                   tuneGrid = egrid,
                                   preProc = c("center", "scale"))
 
@@ -173,7 +175,7 @@ set.seed(849)
 test_reg_loo_model_weights <- train(trainX, trainY, 
                                     method = "earth",
                                     trControl = rctrl2,
-                                    weights = runif(nrow(trainX)),
+                                    weights = case_weights,
                                     tuneGrid = egrid,
                                     preProc = c("center", "scale"))
 
@@ -191,6 +193,42 @@ test_reg_rec <- train(recipe = rec_reg,
                       data = training,
                       method = "earth", 
                       trControl = rctrl1)
+
+tmp <- training
+tmp$wts <- case_weights
+
+reg_rec <- recipe(y ~ ., data = tmp) %>%
+  add_role(wts, new_role = "case weight") %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
+
+set.seed(849)
+test_reg_cv_weight_rec <- train(reg_rec, 
+                                data = tmp,
+                                method = "earth", 
+                                trControl = rctrl1,
+                                tuneGrid = egrid)
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_weight_rec$results, 
+              test_reg_cv_form_weights$results))
+)
+  stop("CV weights not giving the same results")
+
+set.seed(849)
+test_reg_loo_weight_rec <- train(reg_rec, 
+                                 data = tmp,
+                                 method = "earth", 
+                                 trControl = rctrl2,
+                                 tuneGrid = egrid)
+if(
+  !isTRUE(
+    all.equal(test_reg_loo_weight_rec$results, 
+              test_reg_loo_model_weights$results))
+)
+  stop("CV weights not giving the same results")
+
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

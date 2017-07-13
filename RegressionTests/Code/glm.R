@@ -72,9 +72,11 @@ test_class_none_model <- train(trainX, trainY,
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
 
+case_weights <- runif(nrow(trainX))
+
 set.seed(849)
 test_class_cv_weight <- train(trainX, trainY, 
-                              weights = runif(nrow(trainX)),
+                              weights = case_weights,
                               method = "glm", 
                               trControl = cctrl4,
                               tuneLength = 1,
@@ -83,7 +85,7 @@ test_class_cv_weight <- train(trainX, trainY,
 
 set.seed(849)
 test_class_loo_weight <- train(trainX, trainY, 
-                               weights = runif(nrow(trainX)),
+                               weights = case_weights,
                                method = "glm", 
                                trControl = cctrl5,
                                tuneLength = 1,
@@ -100,6 +102,43 @@ test_class_rec <- train(recipe = rec_cls,
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
                                type = "prob")
+
+tmp <- training
+tmp$wts <- case_weights
+
+class_rec <- recipe(Class ~ ., data = tmp) %>%
+  add_role(wts, new_role = "case weight") %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
+
+set.seed(849)
+test_class_cv_weight_rec <- train(class_rec, 
+                                  data = tmp,
+                                  method = "glm", 
+                                  trControl = cctrl4,
+                                  tuneLength = 1,
+                                  metric = "Accuracy")
+if(
+  !isTRUE(
+    all.equal(test_class_cv_weight_rec$results, 
+              test_class_cv_weight$results))
+  )
+  stop("CV weights not giving the same results")
+
+set.seed(849)
+test_class_loo_weight_rec <- train(class_rec, 
+                                  data = tmp,
+                                  method = "glm", 
+                                  trControl = cctrl5,
+                                  tuneLength = 1,
+                                  metric = "Accuracy")
+if(
+  !isTRUE(
+    all.equal(test_class_loo_weight_rec$results, 
+              test_class_loo_weight$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
@@ -160,7 +199,7 @@ test_reg_none_pred <- predict(test_reg_none_model, testX)
 
 set.seed(849)
 test_reg_cv_weight <- train(trainX, trainY, 
-                            weights = runif(nrow(trainX)),
+                            weights = case_weights,
                             method = "glm", 
                             trControl = cctrl4,
                             tuneLength = 1,
@@ -168,7 +207,7 @@ test_reg_cv_weight <- train(trainX, trainY,
 
 set.seed(849)
 test_reg_loo_weight <- train(trainX, trainY, 
-                             weights = runif(nrow(trainX)),
+                             weights = case_weights,
                              method = "glm", 
                              trControl = cctrl5,
                              tuneLength = 1,

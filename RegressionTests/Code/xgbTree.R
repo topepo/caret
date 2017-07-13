@@ -128,6 +128,29 @@ test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
                                type = "prob")
 
+
+tmp <- training
+tmp$wts <- training_weight
+
+class_rec <- recipe(Class ~ ., data = tmp) %>%
+  add_role(wts, new_role = "case weight") %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
+
+set.seed(849)
+test_class_cv_model_weight_rec <- train(class_rec, 
+                                        data = tmp,
+                                        method = "xgbTree",
+                                        trControl = cctrl1,
+                                        metric = "ROC",
+                                        tuneGrid = xgbGrid)
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model_weight_rec$results, 
+              test_class_cv_model_weight$results))
+)
+  stop("CV weights not giving the same results")
+
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
   cat("wrong levels")

@@ -14,6 +14,8 @@ testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
+wts <- runif(nrow(trainX))
+
 rec_cls <- recipe(Class ~ ., data = training) %>%
   step_center(all_predictors()) %>%
   step_scale(all_predictors())
@@ -87,7 +89,7 @@ test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)]
 
 set.seed(849)
 test_class_cv_weight <- train(trainX, trainY, 
-                              weights = runif(nrow(trainX)),
+                              weights = wts,
                               method = "multinom", 
                               trControl = cctrl4,
                               tuneLength = 2,
@@ -97,7 +99,7 @@ test_class_cv_weight <- train(trainX, trainY,
 
 set.seed(849)
 test_class_loo_weight <- train(trainX, trainY, 
-                               weights = runif(nrow(trainX)), 
+                               weights = wts, 
                                method = "multinom", 
                                trControl = cctrl5,
                                tuneLength = 2,
@@ -115,6 +117,30 @@ test_class_rec <- train(recipe = rec_cls,
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
                                type = "prob")
+
+tmp <- training
+tmp$wts <- wts
+
+weight_rec <- recipe(Class ~ ., data = tmp) %>%
+  add_role(wts, new_role = "case weight") %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
+
+set.seed(849)
+test_class_cv_weight_rec <- train(weight_rec, data = tmp,
+                                  method = "multinom", 
+                                  trControl = cctrl4,
+                                  tuneLength = 2,
+                                  metric = "Accuracy",
+                                  trace = FALSE)
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_weight_rec$results, 
+              test_class_cv_weight$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
