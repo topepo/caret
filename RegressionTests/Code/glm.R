@@ -156,6 +156,8 @@ testing <- SLC14_1(100)
 trainX <- training[, -ncol(training)]
 trainY <- training$y
 
+case_weights <- runif(nrow(trainX))
+
 rec_reg <- recipe(y ~ ., data = training) %>%
   step_center(all_predictors()) %>%
   step_scale(all_predictors()) 
