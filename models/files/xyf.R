@@ -32,6 +32,8 @@ modelInfo <- list(label = "Self-Organizing Maps",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     layer_wts <- c(1 - param$user.weights, param$user.weights)
                     layer_wts <- layer_wts/sum(layer_wts)
+                    if(is.numeric(y))
+                      y <- as.matrix(y, ncol = 1)
                     supersom(list(X = as.matrix(x), Y = y),
                              user.weights = layer_wts,
                              grid = somgrid(param$xdim, param$ydim, as.character(param$topo)),
