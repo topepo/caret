@@ -9,7 +9,7 @@ model <- "xyf"
 #########################################################################
 
 set.seed(2)
-training <- twoClassSim(50, linearVars = 2)
+training <- twoClassSim(500, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
@@ -61,12 +61,12 @@ test_class_rand <- train(trainX, trainY,
                          tuneLength = 4, 
                          preProc = c("center", "scale"))
 
-set.seed(849)
-test_class_loo_model <- train(trainX, trainY, 
-                              method = "xyf", 
-                              trControl = cctrl2,
-                              metric = "ROC", 
-                              preProc = c("center", "scale"))
+# set.seed(849)
+# test_class_loo_model <- train(trainX, trainY, 
+#                               method = "xyf", 
+#                               trControl = cctrl2,
+#                               metric = "ROC", 
+#                               preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
@@ -101,7 +101,7 @@ library(plyr)
 library(recipes)
 library(dplyr)
 set.seed(1)
-training <- SLC14_1(30)
+training <- SLC14_1(300)
 testing <- SLC14_1(100)
 trainX <- training[, -ncol(training)]
 trainY <- training$y
@@ -131,11 +131,11 @@ test_reg_rand <- train(trainX, trainY,
                        tuneLength = 4, 
                        preProc = c("center", "scale"))
 
-set.seed(849)
-test_reg_loo_model <- train(trainX, trainY, 
-                            method = "xyf",
-                            trControl = rctrl2,
-                            preProc = c("center", "scale"))
+# set.seed(849)
+# test_reg_loo_model <- train(trainX, trainY, 
+#                             method = "xyf",
+#                             trControl = rctrl2,
+#                             preProc = c("center", "scale"))
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
