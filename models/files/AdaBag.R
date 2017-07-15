@@ -20,7 +20,7 @@ modelInfo <- list(label = "Bagged AdaBoost",
                       out <- expand.grid(mfinal = floor((1:len) * 50),
                                          maxdepth = seq(1, len))
                     } else {
-                      out <- data.frame(mfinal = sample(1:1000, replace = TRUE, size = len),
+                      out <- data.frame(mfinal = sample(1:100, replace = TRUE, size = len),
                                         maxdepth = sample(1:30, replace = TRUE, size = len))
                     }
                     out

@@ -23,7 +23,7 @@ modelInfo <- list(label = "AdaBoost.M1",
                                          maxdepth = seq(1, len),         
                                          coeflearn = types)
                     } else {
-                      out <- data.frame(mfinal = sample(1:1000, replace = TRUE, size = len),
+                      out <- data.frame(mfinal = sample(1:100, replace = TRUE, size = len),
                                         maxdepth = sample(1:30, replace = TRUE, size = len),
                                         coeflearn = sample(types, replace = TRUE, size = len))
                     }
