@@ -25,7 +25,6 @@ before_install:
   - echo 'R_LIBS=/usr/lib/R/library:/usr/lib/R/site-library/' > ~/.Renviron
   - sudo chmod 2777 /usr/lib/R/library
   - ./travis-tool.sh bootstrap
-  - ./travis-tool.sh r_install car
   - ./travis-tool.sh r_install reshape2
   - ./travis-tool.sh r_install foreach
   - ./travis-tool.sh r_install plyr
