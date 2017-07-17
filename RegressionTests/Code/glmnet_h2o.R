@@ -163,7 +163,7 @@ if(
   stop("CV weights not giving the same results")
 
 
-test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
+test_reg_pred_rec <- predict(test_reg_rec, reg_dat_te[, -ncol(reg_dat_te)])
 
 #########################################################################
 
