@@ -129,3 +129,5 @@ RegressionTests/package_archives/sdwd_1.0.2.tgz
 release_process/.RData
 
 release_process/make_model_Rd.Rout
+
+RegressionTests/badhess.txt

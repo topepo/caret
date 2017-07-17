@@ -36,8 +36,11 @@ modelInfo <- list(label = "Bagged AdaBoost",
                     } else ctl <- rpart.control(maxdepth = param$maxdepth,
                                                 cp=-1,minsplit=0,xval=0) 
                     
+                    if (!is.data.frame(x) | inherits(x, "tbl_df"))
+                      x <- as.data.frame(x)
+                    
                     modelArgs <- c(list(formula = as.formula(.outcome ~ .),
-                                        data = if(is.data.frame(x)) x else as.data.frame(x),
+                                        data = x,
                                         mfinal = param$mfinal,            
                                         control = ctl),
                                    theDots)
@@ -46,7 +49,8 @@ modelInfo <- list(label = "Bagged AdaBoost",
                     out     
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if (!is.data.frame(newdata) | inherits(newdata, "tbl_df"))
+                      newdata <- as.data.frame(newdata)
                     ## The predict function requires the outcome! Trick it by
                     ## adding bogus data
                     newdata$.outcome <- factor(rep(modelFit$obsLevels[1], nrow(newdata)), 
@@ -66,7 +70,8 @@ modelInfo <- list(label = "Bagged AdaBoost",
                     out  
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if (!is.data.frame(newdata) | inherits(newdata, "tbl_df"))
+                      newdata <- as.data.frame(newdata)
                     ## The predict function requires the outcome! Trick it by
                     ## adding bogus data
                     newdata$.outcome <- factor(rep(modelFit$obsLevels[1], nrow(newdata)), 
