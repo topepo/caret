@@ -6,6 +6,9 @@ library(dplyr)
 
 model <- "brnn"
 
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 
 library(caret)
@@ -18,7 +21,7 @@ testing <- SLC14_1(100)
 trainX <- training[, -ncol(training)]
 trainY <- training$y
 
-rec_reg <- recipe(y ~ ., data = training) %>%
+rec_reg <- recipe(y ~ ., data = training[, c(1:3, ncol(training))]) %>%
   step_center(all_predictors()) %>%
   step_scale(all_predictors()) 
 testX <- trainX[, -ncol(training)]
@@ -70,7 +73,17 @@ test_reg_rec <- train(recipe = rec_reg,
                       data = training,
                       method = "brnn", 
                       trControl = rctrl1, 
+                      tuneLength = 2,
                       verbose =FALSE)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results,
+              tolerance = .001))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

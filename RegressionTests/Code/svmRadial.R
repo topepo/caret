@@ -6,6 +6,12 @@ library(dplyr)
 
 model <- "svmRadial"
 
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 
 set.seed(2)
@@ -90,6 +96,8 @@ set.seed(849)
 test_class_rec <- train(recipe = rec_cls,
                         data = training,
                         method = "svmRadial", 
+                        tuneGrid = data.frame(.C = c(.25, .5, 1),
+                                              .sigma = .05), 
                         trControl = cctrl1)
 
 set.seed(849)
@@ -121,6 +129,15 @@ if(!isTRUE(all.equal(test_class_bopt_rec_model$results,
 #                                 trControl = cctrlAdapt,
 #                                 tuneLength = 4,
 #                                 preProc = c("center", "scale"))
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 
@@ -223,7 +240,17 @@ set.seed(849)
 test_reg_rec <- train(recipe = rec_reg,
                       data = training,
                       method = "svmRadial", 
+                      tuneGrid = data.frame(C = c(.25, .5, 1),
+                                            sigma = .05), 
                       trControl = rctrl1)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

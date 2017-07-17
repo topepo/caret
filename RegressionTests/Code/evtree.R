@@ -7,6 +7,9 @@ library(evtree)
 
 model <- "evtree"
 
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 
 set.seed(2)
@@ -74,6 +77,15 @@ test_class_rec <- train(recipe = rec_cls,
                         method = "evtree", 
                         trControl = cctrl1,
                         control = evc)
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 
@@ -146,6 +158,7 @@ set.seed(849)
 test_reg_rec <- train(recipe = rec_reg,
                       data = airq,
                       method = "evtree", 
+                      control = evc,
                       trControl = rctrl1)
 
 test_reg_pred_rec <- predict(test_reg_rec, airq[, names(airq) != "Ozone"])

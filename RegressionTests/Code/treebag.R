@@ -6,6 +6,13 @@ library(dplyr)
 
 model <- "treebag"
 
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+  
+
 #########################################################################
 
 set.seed(2)
@@ -94,6 +101,15 @@ test_class_rec <- train(recipe = rec_cls,
                         nbagg = 7,
                         keepX = TRUE)
 
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
                                type = "prob")
@@ -169,6 +185,14 @@ test_reg_rec <- train(recipe = rec_reg,
                       trControl = rctrl1,
                       nbagg = 7,
                       keepX = TRUE)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

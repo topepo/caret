@@ -6,6 +6,12 @@ library(dplyr)
 
 model <- "svmLinear"
 
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 
 set.seed(2)
@@ -120,7 +126,16 @@ set.seed(849)
 test_reg_rec <- train(recipe = rec_reg,
                       data = training,
                       method = "svmLinear", 
+                      tuneGrid = data.frame(.C = c(.25, .5, 1)),
                       trControl = rctrl1)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

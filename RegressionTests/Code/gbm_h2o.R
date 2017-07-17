@@ -6,6 +6,9 @@ library(dplyr)
 
 model <- "gbm_h2o"
 
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 library(h2o)
 h2o.init()
 h2o.no_progress()
@@ -94,7 +97,17 @@ test_class_rec <- train(recipe = rec_cls,
                         method = "gbm_h2o", 
                         trControl = cctrl1,
                         metric = "ROC",
+                        tuneGrid = gbmGrid,
                         seed = 1311)
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
@@ -171,7 +184,16 @@ test_reg_rec <- train(recipe = rec_reg,
                       data = training,
                       method = "gbm_h2o", 
                       trControl = rctrl1,
+                      tuneGrid = gbmGrid,
                       seed = 1311)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

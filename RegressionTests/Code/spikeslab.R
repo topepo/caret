@@ -6,6 +6,12 @@ library(dplyr)
 
 model <- "spikeslab"
 
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 
 library(caret)
@@ -24,9 +30,13 @@ rec_reg <- recipe(y ~ ., data = training) %>%
 testX <- trainX[, -ncol(training)]
 testY <- trainX$y 
 
-rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
-rctrl2 <- trainControl(method = "LOOCV")
-rctrl3 <- trainControl(method = "none")
+seeds <- vector(mode = "list", length = nrow(training) + 1)
+seeds <- lapply(seeds, function(x) 1:20)
+
+rctrl1 <- trainControl(method = "cv", number = 3, 
+                       returnResamp = "all", seeds = seeds)
+rctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
+rctrl3 <- trainControl(method = "none", seeds = seeds)
 
 
 set.seed(849)
@@ -53,6 +63,14 @@ test_reg_rec <- train(recipe = rec_reg,
                       data = training,
                       method = "spikeslab", 
                       trControl = rctrl1)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

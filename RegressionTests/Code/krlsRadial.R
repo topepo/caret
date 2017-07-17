@@ -6,6 +6,9 @@ library(dplyr)
 
 model <- "krlsRadial"
 
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 
 library(caret)
@@ -68,7 +71,16 @@ test_reg_rec <- train(recipe = rec_reg,
                       data = training,
                       method = "krlsRadial", 
                       trControl = rctrl1,
-                      print.level = 0)
+                      print.level = 0,
+                      tuneGrid = data.frame(.lambda = NA, .sigma = c(10, 20, 30)))
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

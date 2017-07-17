@@ -6,6 +6,9 @@ library(dplyr)
 
 model <- "ada"
 
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 
 set.seed(2)
@@ -79,24 +82,23 @@ test_class_none_model <- train(trainX, trainY,
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
 
+set.seed(849)
 test_class_rec <- train(recipe = rec_cls,
                         data = training,
                         method = "ada", 
                         trControl = cctrl1,
                         metric = "ROC")
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], type = "prob")
-
-test_class_rec <- train(recipe = rec_cls,
-                        data = training,
-                        method = "ada", 
-                        trControl = cctrl1,
-                        metric = "ROC")
-
-test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
-test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
-                               type = "prob")
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))

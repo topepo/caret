@@ -6,6 +6,12 @@ library(dplyr)
 
 model <- "plsRglm"
 
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 
 set.seed(2)
@@ -18,14 +24,23 @@ rec_cls <- recipe(Class ~ ., data = training) %>%
   step_center(all_predictors()) %>%
   step_scale(all_predictors())
 
+seeds <- vector(mode = "list", length = nrow(training) + 1)
+seeds <- lapply(seeds, function(x) 1:20)
+
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE, 
-                       summaryFunction = twoClassSummary)
+                       summaryFunction = twoClassSummary,
+                       seeds = seeds)
 cctrl2 <- trainControl(method = "LOOCV",
-                       classProbs = TRUE, summaryFunction = twoClassSummary)
+                       classProbs = TRUE, 
+                       summaryFunction = twoClassSummary,
+                       seeds = seeds)
 cctrl3 <- trainControl(method = "none",
-                       classProbs = TRUE, summaryFunction = twoClassSummary)
-cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
+                       classProbs = TRUE, summaryFunction = twoClassSummary,
+                       seeds = seeds)
+cctrlR <- trainControl(method = "cv", number = 3, 
+                       returnResamp = "all", search = "random",
+                       seeds = seeds)
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
@@ -84,6 +99,15 @@ test_class_rec <- train(recipe = rec_cls,
                         metric = "ROC",
                         verbose = FALSE)
 
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
                                type = "prob")
@@ -117,14 +141,16 @@ set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
                            method = "plsRglm", 
                            trControl = rctrl1, 
-                           preProc = c("center", "scale"))
+                           preProc = c("center", "scale"),
+                           verbose = FALSE)
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
                           method = "plsRglm", 
                           trControl = rctrl1, 
-                          preProc = c("center", "scale"))
+                          preProc = c("center", "scale"),
+                          verbose = FALSE)
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
@@ -132,27 +158,39 @@ test_reg_rand <- train(trainX, trainY,
                        method = "plsRglm", 
                        trControl = rctrlR,
                        tuneLength = 4, 
-                       preProc = c("center", "scale"))
+                       preProc = c("center", "scale"),
+                       verbose = FALSE)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 
                             method = "plsRglm",
                             trControl = rctrl2, 
-                            preProc = c("center", "scale"))
+                            preProc = c("center", "scale"),
+                            verbose = FALSE)
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
                              method = "plsRglm", 
                              trControl = rctrl3, 
                              tuneGrid = data.frame(nt = 1, alpha.pvals.expli = 1),
-                             preProc = c("center", "scale"))
+                             preProc = c("center", "scale"),
+                             verbose = FALSE)
 test_reg_none_pred <- predict(test_reg_none_model, testX)
 
 set.seed(849)
 test_reg_rec <- train(recipe = rec_reg,
                       data = training,
                       method = "plsRglm", 
-                      trControl = rctrl1)
+                      trControl = rctrl1,
+                      verbose = FALSE)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

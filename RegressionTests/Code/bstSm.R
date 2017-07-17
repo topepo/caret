@@ -6,6 +6,9 @@ library(dplyr)
 
 model <- "bstSm"
 
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 
 set.seed(2)
@@ -18,10 +21,13 @@ rec_cls <- recipe(Class ~ ., data = training) %>%
   step_center(all_predictors()) %>%
   step_scale(all_predictors())
 
-cctrl1 <- trainControl(method = "cv", number = 10, returnResamp = "all")
-cctrl2 <- trainControl(method = "LOOCV")
-cctrl3 <- trainControl(method = "none")
-cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
+seeds <- vector(mode = "list", length = nrow(training) + 1)
+seeds <- lapply(seeds, function(x) 1:20)
+
+cctrl1 <- trainControl(method = "cv", number = 10, returnResamp = "all", seeds = seeds)
+cctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
+cctrl3 <- trainControl(method = "none", seeds = seeds)
+cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random", seeds = seeds)
 
 
 set.seed(849)
@@ -65,6 +71,15 @@ test_class_rec <- train(recipe = rec_cls,
                         data = training,
                         method = "bstSm", 
                         trControl = cctrl1)
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 
@@ -141,6 +156,14 @@ test_reg_rec <- train(recipe = rec_reg,
                       data = training,
                       method = "bstSm", 
                       trControl = rctrl1)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

@@ -6,6 +6,9 @@ library(dplyr)
 
 model <- "FIR.DM"
 
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 
 library(caret)
@@ -71,7 +74,16 @@ set.seed(849)
 test_reg_rec <- train(recipe = rec_reg,
                       data = training,
                       method = "FIR.DM", 
+                      tuneGrid = grid,
                       trControl = rctrl1)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

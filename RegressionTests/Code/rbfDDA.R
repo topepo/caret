@@ -6,6 +6,12 @@ library(dplyr)
 
 model <- "rbfDDA"
 
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 
 set.seed(2)
@@ -28,7 +34,6 @@ cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search =
 
 library(RSNNS)
 function(x, y, len = NULL, search = "grid")
-  
   set.seed(849)
 test_class_cv_model <- caret:::train(trainX, trainY, 
                                      method = "rbfDDA", 
@@ -75,6 +80,15 @@ test_class_rec <- train(recipe = rec_cls,
                         method = "rbfDDA", 
                         trControl = cctrl1,
                         metric = "ROC")
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 
@@ -141,10 +155,19 @@ test_reg_none_model <- caret:::train(trainX, trainY,
                                      preProc = c("center", "scale"))
 test_reg_none_pred <- predict(test_reg_none_model, testX)
 
+set.seed(849)
 test_reg_rec <- caret:::train(recipe = rec_reg,
                               data = training,
                               method = "rbfDDA", 
                               trControl = rctrl1)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

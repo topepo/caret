@@ -6,6 +6,13 @@ library(dplyr)
 
 model <- "vglmContRatio"
 
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+  
+
 #########################################################################
 
 set.seed(2)
@@ -25,12 +32,15 @@ weight_test <- function (data, lev = NULL, model = NULL)  {
 
 grid <- expand.grid(parallel = TRUE, link = c("logit", "probit"))
 
+seeds <- vector(mode = "list", length = nrow(training) + 1)
+seeds <- lapply(seeds, function(x) 1:20)
+
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
-                       classProbs = TRUE)
+                       classProbs = TRUE, seeds = seeds)
 cctrl2 <- trainControl(method = "LOOCV",
-                       classProbs = TRUE)
+                       classProbs = TRUE, seeds = seeds)
 cctrl3 <- trainControl(method = "none",
-                       classProbs = TRUE)
+                       classProbs = TRUE, seeds = seeds)
 
 cctrl4 <- trainControl(method = "cv", number = 3, 
                        summaryFunction = weight_test)
@@ -95,11 +105,21 @@ test_class_loo_weight <- train(trainX, trainY,
                                metric = "Accuracy", 
                                preProc = c("center", "scale"))
 
+set.seed(849)
 test_class_rec <- train(recipe = rec_cls,
                         data = training,
                         method = "vglmContRatio", 
                         trControl = cctrl1,
-                        metric = "ROC")
+                        tuneGrid = grid)
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 

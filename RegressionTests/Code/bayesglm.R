@@ -6,6 +6,9 @@ library(dplyr)
 
 model <- "bayesglm"
 
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 
 set.seed(2)
@@ -68,6 +71,15 @@ test_class_rec <- train(recipe = rec_cls,
                         method = "bayesglm", 
                         trControl = cctrl1,
                         metric = "ROC")
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
@@ -132,6 +144,14 @@ test_reg_rec <- train(recipe = rec_reg,
                       data = training,
                       method = "bayesglm", 
                       trControl = rctrl1)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

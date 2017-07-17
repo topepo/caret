@@ -6,6 +6,12 @@ library(dplyr)
 
 model <- "randomGLM"
 
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 
 set.seed(2)
@@ -23,13 +29,21 @@ weight_test <- function (data, lev = NULL, model = NULL)  {
   postResample(data[, "pred"], data[, "obs"])
 }
 
+seeds <- vector(mode = "list", length = nrow(training) + 1)
+seeds <- lapply(seeds, function(x) 1:20)
+
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE, 
-                       summaryFunction = twoClassSummary)
+                       summaryFunction = twoClassSummary,
+                       seeds = seeds)
 cctrl2 <- trainControl(method = "LOOCV",
-                       classProbs = TRUE, summaryFunction = twoClassSummary)
+                       classProbs = TRUE, 
+                       summaryFunction = twoClassSummary,
+                       seeds = seeds)
 cctrl3 <- trainControl(method = "none",
-                       classProbs = TRUE, summaryFunction = twoClassSummary)
+                       classProbs = TRUE, 
+                       summaryFunction = twoClassSummary,
+                       seeds = seeds)
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
@@ -80,7 +94,18 @@ test_class_rec <- train(recipe = rec_cls,
                         data = training,
                         method = "randomGLM", 
                         trControl = cctrl1,
-                        metric = "ROC")
+                        metric = "ROC",
+                        tuneLength = 2, 
+                        nThreads = 1)
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
@@ -153,7 +178,16 @@ test_reg_rec <- train(recipe = rec_reg,
                       data = training,
                       method = "randomGLM", 
                       trControl = rctrl1,
+                      tuneLength = 2,
                       nThreads = 1)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

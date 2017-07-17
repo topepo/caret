@@ -6,6 +6,12 @@ library(dplyr)
 
 model <- "mlpWeightDecayML"
 
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 
 set.seed(2)
@@ -69,10 +75,21 @@ test_class_none_model <- caret:::train(trainX, trainY,
 
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 
+set.seed(849)
 test_class_rec <- caret::train(recipe = rec_cls,
                                data = training,
                                method = "mlpWeightDecayML", 
+                               tuneGrid = grid,
                                trControl = cctrl1)
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 
@@ -142,11 +159,20 @@ test_reg_loo_model <- caret:::train(trainX, trainY,
                                     tuneGrid = grid,
                                     trControl = rctrl2,
                                     preProc = c("center", "scale"))
-
+set.seed(849)
 test_reg_rec <- caret:::train(recipe = rec_reg,
                               data = training,
                               method = "mlpWeightDecayML", 
+                              tuneGrid = grid,
                               trControl = rctrl1)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

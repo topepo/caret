@@ -6,6 +6,9 @@ library(dplyr)
 
 model <- "glmnet_h2o"
 
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 library(h2o)
 h2o.init()
 h2o.no_progress()
@@ -88,7 +91,19 @@ test_class_rec <- train(recipe = rec_cls,
                         data = training,
                         method = "glmnet_h2o", 
                         trControl = cctrl1,
+                        tuneGrid = expand.grid(alpha = c(0, .5, 1),
+                                                    lambda = c(.1, 1)),
+                        seed = 1311,
                         metric = "ROC")
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
@@ -104,26 +119,24 @@ set.seed(45)
 reg_dat_tr <- SLC14_1(100)
 reg_dat_te <- SLC14_1(100)
 
+rec_reg <- recipe(y ~ ., data = reg_dat_tr) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) 
 
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
 rctrl3 <- trainControl(method = "none")
 rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
+reg_grid <- expand.grid(alpha = c(0, .5), lambda = c(.01, .001))
+
 set.seed(849)
 test_reg_cv_model <- train(reg_dat_tr[, -ncol(reg_dat_tr)], reg_dat_tr$y, method = "glmnet_h2o",
                            preProc = c("center", "scale"),
                            trControl = rctrl1,
-                           tuneLength = 2,
+                           tuneGrid = reg_grid,
                            seed = 1311)
 test_reg_pred <- predict(test_reg_cv_model, reg_dat_te[, -ncol(reg_dat_te)])
-
-set.seed(849)
-test_reg_loo_model <- train(reg_dat_tr[, -ncol(reg_dat_tr)], reg_dat_tr$y, method = "glmnet_h2o",
-                            preProc = c("center", "scale"),
-                            trControl = rctrl2,
-                            tuneLength = 2,
-                            seed = 1311)
 
 set.seed(849)
 test_reg_none_model <- train(reg_dat_tr[, -ncol(reg_dat_tr)], reg_dat_tr$y, 
@@ -136,10 +149,19 @@ test_reg_none_pred <- predict(test_reg_none_model, reg_dat_te[, -ncol(reg_dat_te
 
 set.seed(849)
 test_reg_rec <- train(recipe = rec_reg,
-                      data = training,
+                      data = reg_dat_tr,
                       method = "glmnet_h2o", 
                       trControl = rctrl1,
+                      tuneGrid = reg_grid,
                       seed = 1311)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

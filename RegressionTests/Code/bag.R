@@ -6,6 +6,12 @@ library(dplyr)
 
 model <- "bag"
 
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
+library(MASS)
+library(party)
+
 #########################################################################
 
 set.seed(2)
@@ -101,9 +107,19 @@ test_class_rec <- train(recipe = rec_cls,
                         method = "bag", 
                         trControl = cctrl1,
                         metric = "ROC",
+                        tuneGrid = data.frame(vars = seq(1, 15, by = 2)),
                         bagControl = bagControl(fit = ldaBag$fit,
                                                 predict = ldaBag$pred,
                                                 aggregate = ldaBag$aggregate))
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
@@ -203,9 +219,18 @@ test_reg_rec <- train(recipe = rec_reg,
                       data = training,
                       method = "bag", 
                       trControl = rctrl1,
+                      tuneGrid = data.frame(vars = seq(1, 15, by = 2)),
                       bagControl = bagControl(fit = ctreeBag$fit,
                                               predict = ctreeBag$pred,
                                               aggregate = ctreeBag$aggregate))
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

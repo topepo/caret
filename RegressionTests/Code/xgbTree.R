@@ -7,6 +7,13 @@ library(xgboost)
 
 model <- "xgbTree"
 
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+  
+
 #########################################################################
 
 xgbGrid <- expand.grid(nrounds = c(1, 10),
@@ -122,7 +129,17 @@ test_class_rec <- train(recipe = rec_cls,
                         data = training,
                         method = "xgbTree", 
                         trControl = cctrl1,
-                        metric = "ROC")
+                        metric = "ROC", 
+                        tuneGrid = xgbGrid)
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
@@ -230,7 +247,16 @@ set.seed(849)
 test_reg_rec <- train(recipe = rec_reg,
                       data = training,
                       method = "xgbTree", 
+                      tuneGrid = xgbGrid,
                       trControl = rctrl1)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 

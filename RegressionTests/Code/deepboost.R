@@ -6,6 +6,9 @@ library(dplyr)
 
 model <- "deepboost"
 
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 
 set.seed(2)
@@ -64,11 +67,21 @@ test_class_none_model <- train(trainX, trainY,
 
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 
+set.seed(849)
 test_class_rec <- train(recipe = rec_cls,
                         data = training,
                         method = "deepboost", 
                         trControl = cctrl1,
                         verbose = FALSE)
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 

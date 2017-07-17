@@ -6,6 +6,12 @@ library(dplyr)
 
 model <- "logicBag"
 
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+
 #########################################################################
 gobinary <- function(x){
   out <- apply(x, 2, function(x) ifelse(x > mean(x), 1, 0))
