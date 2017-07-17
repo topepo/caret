@@ -20,7 +20,7 @@ modelInfo <- list(label = "Cost-Sensitive CART",
                       } else tuneSeq <-  data.frame(cp = initialFit[1:len,"CP"], Cost = 1:len)
                       colnames(tuneSeq) <- c("cp", "Cost")
                     } else {
-                      tuneSeq <- data.frame(cp = unique(sample(initialFit[, "CP"], size = len, replace = TRUE)),
+                      tuneSeq <- data.frame(cp = 10^runif(len, min = -8, max = -1),
                                             Cost = runif(len, min = 1, max = 30))
                     }
                     
