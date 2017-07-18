@@ -155,51 +155,13 @@ train.recipe <- function(recipe,
     }
   }
   
-  
   if(trControl$method == "oob" & is.null(models$oob))
     stop("Out of bag estimates are not implemented for this model", 
          call. = FALSE)
   
   ## If they don't exist, make the data partitions for the resampling iterations.
-  if(is.null(trControl$index)) {
-    if(trControl$method == "custom")
-      stop("'custom' resampling is appropriate when the `trControl` argument `index` is used", 
-           call. = FALSE)
-    trControl$index <- switch(tolower(trControl$method),
-                              oob = NULL,
-                              none = list(seq(along = y)),
-                              apparent = list(all = seq(along = y)),
-                              alt_cv =, cv = createFolds(y, trControl$number, returnTrain = TRUE),
-                              repeatedcv =, adaptive_cv = createMultiFolds(y, trControl$number, trControl$repeats),
-                              loocv = createFolds(y, n, returnTrain = TRUE),
-                              boot =, boot632 =, optimism_boot =, boot_all =,
-                              adaptive_boot = createResample(y, trControl$number),
-                              test = createDataPartition(y, 1, trControl$p),
-                              adaptive_lgocv =, lgocv = createDataPartition(y, trControl$number, trControl$p),
-                              timeslice = createTimeSlices(seq(along = y),
-                                                           initialWindow = trControl$initialWindow,
-                                                           horizon = trControl$horizon,
-                                                           fixedWindow = trControl$fixedWindow,
-                                                           skip = trControl$skip)$train,
-                              subsemble = subsemble_index(y, V = trControl$number, J = trControl$repeats))
-  } else {
-    index_types <- unlist(lapply(trControl$index, is.integer))
-    if(!isTRUE(all(index_types)))
-      stop("`index` should be lists of integers.", call. = FALSE)
-    if(!is.null(trControl$indexOut)) {
-      index_types <- unlist(lapply(trControl$indexOut, is.integer))
-      if(!isTRUE(all(index_types)))
-        stop("`indexOut` should be lists of integers.", call. = FALSE)
-    }
-  }
-  
-  if(trControl$method == "apparent") trControl$indexOut <- list(all = seq(along = y))
-  
-  if(trControl$method == "subsemble") {
-    if(!trControl$savePredictions) trControl$savePredictions <- TRUE
-    trControl$indexOut <- trControl$index$holdout
-    trControl$index <- trControl$index$model
-  }
+  if(is.null(trControl$index)) 
+    trControl <- make_resamples(trControl, outcome = y)
   
   if(is.logical(trControl$savePredictions)) {
     trControl$savePredictions <- if(trControl$savePredictions) "all" else "none"
@@ -207,33 +169,6 @@ train.recipe <- function(recipe,
     if(!(trControl$savePredictions %in% c("all", "final", "none")))
       stop('`savePredictions` should be either logical or "all", "final" or "none"', call. = FALSE)
   }
-  
-  ## Create holdout indices
-  if(is.null(trControl$indexOut) && trControl$method != "oob"){
-    if(tolower(trControl$method) != "timeslice") {
-      y_index <- if(class(y)[1] == "Surv") 1:nrow(y) else seq(along = y)
-      trControl$indexOut <- lapply(trControl$index, function(training) setdiff(y_index, training))
-      if(trControl$method %in% c("optimism_boot", "boot_all")) {
-        trControl$indexExtra <- lapply(trControl$index, function(training) {
-          list(origIndex = y_index, bootIndex = training)
-        })
-      }
-      names(trControl$indexOut) <- prettySeq(trControl$indexOut)
-    } else {
-      trControl$indexOut <- createTimeSlices(seq(along = y),
-                                             initialWindow = trControl$initialWindow,
-                                             horizon = trControl$horizon,
-                                             fixedWindow = trControl$fixedWindow,
-                                             skip = trControl$skip)$test
-    }
-  }
-  
-  if(trControl$method != "oob" & is.null(trControl$index)) 
-    names(trControl$index) <- prettySeq(trControl$index)
-  if(trControl$method != "oob" & is.null(names(trControl$index)))    
-    names(trControl$index) <- prettySeq(trControl$index)
-  if(trControl$method != "oob" & is.null(names(trControl$indexOut))) 
-    names(trControl$indexOut) <- prettySeq(trControl$indexOut)
   
   if(is.null(tuneGrid)) {
     tuneGrid <- models$grid(x = x, y = y, len = tuneLength, search = trControl$search)
