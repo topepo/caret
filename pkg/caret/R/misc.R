@@ -596,6 +596,7 @@ subset_x <- function(x, ind) {
     x
 }
 
+
 fail_warning <- function(settings, msg, where = "model fit", iter, verb) {
   if (is.list(msg)) {
     is_fail <- vapply(msg, inherits, c(x = TRUE), what = "try-error")
@@ -645,30 +646,35 @@ fill_failed_prob <- function(index, lev, submod) {
   probValues
 }
 
-optimism_boot <- function(ctrl, dat, iter, lev, method, mod_rec, predicted, submod, loop) {
+optimismBoot <- function(ctrl, x, y, wts, iter, lev, method, mod, predicted, submod, loop) {
   indexExtra <- ctrl$indexExtra[[iter]]
   
-  if(is.null(indexExtra) || model_failed(mod_rec) || inherits(predicted, "try-error"))
+  if(is.null(indexExtra) || inherits(mod, "try-error") || inherits(predicted, "try-error"))
     return (NULL)
   
   predictedExtra <- lapply(indexExtra, function(index) {
-    pred <- rec_pred(method = method,
-                     object = mod_rec,
-                     newdata = subset_x(dat, index),
-                     param = submod)
-    trim_values(pred, ctrl, is.null(lev))
+    pred <- predictionFunction(method = method,
+                               modelFit = mod$fit,
+                               newdata = subset_x(x, index),
+                               preProc = mod$preProc,
+                               param = submod)
   })
   
   if(ctrl$classProbs)
     probValuesExtra <- lapply(indexExtra, function(index) {
-      rec_prob(method = method,
-               object = mod_rec,
-               newdata = subset_x(dat, index),
-               param = submod)
+      probFunction(method = method,
+                   modelFit = mod$fit,
+                   newdata = subset_x(x, index),
+                   preProc = mod$preProc,
+                   param = submod)
     })
   else
     probValuesExtra <- lapply(indexExtra, function(index) {
-      fill_failed_prob(index, lev, submod)
+      probValues <- matrix(NA, nrow = length(index), ncol = length(lev))
+      probValues <- as.data.frame(probValues)
+      colnames(probValues) <- lev
+      if (!is.null(submod)) probValues <- rep(list(probValues), nrow(submod) + 1L)
+      probValues
     })
   
   if(!is.null(submod)) {
@@ -677,10 +683,13 @@ optimism_boot <- function(ctrl, dat, iter, lev, method, mod_rec, predicted, subm
     
     predictedExtra <- Map(predictedExtra, indexExtra, f = function(predicted, holdoutIndex) {
       lapply(predicted, function(x) {
+        y <- y[holdoutIndex]
+        wts <- wts[holdoutIndex]
         x <- outcome_conversion(x, lv = lev)
-        dat <- holdout_rec(mod_rec, dat, holdoutIndex)
-        dat$pred <- x
-        dat
+        out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
+        if(!is.null(wts)) out$weights <- wts
+        out$rowIndex <- holdoutIndex
+        out
       })
     })
     
@@ -709,10 +718,16 @@ optimism_boot <- function(ctrl, dat, iter, lev, method, mod_rec, predicted, subm
   } else {
     thisResampleExtra <- Map(predictedExtra, indexExtra, probValuesExtra,
                              f = function(predicted, holdoutIndex, probValues) {
-                               tmp <- holdout_rec(mod_rec, dat, holdoutIndex)
-                               tmp$pred <- outcome_conversion(predicted, lv = lev)
+                               if(is.factor(y)) predicted <- outcome_conversion(predicted, lv = lev)
+                               tmp <-  data.frame(pred = predicted,
+                                                  obs = y[holdoutIndex],
+                                                  stringsAsFactors = FALSE)
+                               ## Sometimes the code above does not coerce the first
+                               ## columnn to be named "pred" so force it
+                               names(tmp)[1] <- "pred"
+                               if(!is.null(wts)) tmp$weights <- wts[holdoutIndex]
                                if(ctrl$classProbs) tmp <- cbind(tmp, probValues)
-                               tmp <- merge(tmp, loop, all = TRUE)
+                               tmp$rowIndex <- holdoutIndex
                                ctrl$summaryFunction(tmp, lev = lev, model = method)
                              })
     names(thisResampleExtra[[1L]]) <- paste0(names(thisResampleExtra[[1L]]), "Orig")

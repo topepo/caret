@@ -46,7 +46,7 @@ libs <- unlist(lapply(mods, function(x) x$library))
 libs <- unique(sort(libs))
 libs <- libs[!(libs %in% c("caret", "vbmp", "gpls", "logicFS", "SDDA"))]
 libs <- c(libs, "knitr", "Hmisc", "googleVis", "animation",
-          "desirability", "networkD3", "d3heatmap", "arm", "xtable",
+          "desirability", "networkD3", "heatmaply", "arm", "xtable",
           "RColorBrewer", "gplots", "iplots", "latticeExtra",
           "scatterplot3d", "vcd", "igraph", "corrplot", "ctv",
           "Cairo", "shiny", "scales", "tabplot", "tikzDevice", "odfWeave",
