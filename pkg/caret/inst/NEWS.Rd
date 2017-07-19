@@ -8,6 +8,7 @@
     \item MAE is added as output metric for regression tasks through \code{postResample}. Function is exposed to the users.
     \item A bug in classification models with all missing predictions was fixed (found by andzandz11). \issue{684}
     \item The model code for \code{ordinalNet} was updated for recent changes to that package. 
+    \item \code{train} now uses different random numbers to make resamples. Previously, setting the seed prior to calling \code{train} should result in getting the same resamples. However, if \code{train} loaded or imported a namespace from another package, and that startup process used random numbers, it could lead to different random numbers being used. See \issue{452} for details. Now, \code{train} gets a separate (and more reproducible) seed that will be used to generate the resamples. However, this may effect random number reproducibility between this version and previous versions. Otherwise, this change should increase the reproducibility of results. 
 
   }
 }

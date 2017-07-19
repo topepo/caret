@@ -25,7 +25,8 @@ Imports:
     stats4,
     utils,
     grDevices,
-    recipes (>= 0.0.1.9005)
+    recipes (>= 0.0.1.9005),
+    withr (>= 1.0.2)
 Suggests:
     BradleyTerry2,
     e1071,
@@ -56,4 +57,5 @@ Suggests:
     testthat (>= 0.9.1)
 License: GPL (>= 2)
 RoxygenNote: 6.0.1
-Remotes: topepo/recipes
+Remotes: topepo/recipes,
+    jimhester/withr

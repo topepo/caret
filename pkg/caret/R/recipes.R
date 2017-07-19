@@ -1,5 +1,6 @@
 
 ## Overall method for recipes
+## @importFrom withr with_seed (need gh verison bump)
 #' @export
 train.recipe <- function(recipe,
                          data,
@@ -10,35 +11,14 @@ train.recipe <- function(recipe,
                          trControl = trainControl(),
                          tuneGrid = NULL,
                          tuneLength = ifelse(trControl$method == "none", 1, 3)) {
-  preproc_dots(...)
-  
   startTime <- proc.time()
   
-  if(trControl$verboseIter)  {
-    cat("Preparing recipe\n")
-    flush.console()
-  }
+  ## get a seed before packages are loaded or recipes are processed
+  rs_seed <- sample.int(.Machine$integer.max, 1L)
   
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  # prep and bake recipe on entire training set
   
-  trained_rec <- prepare(recipe, training = data, 
-                         fresh = TRUE, 
-                         retain = TRUE,
-                         verbose = FALSE, 
-                         stringsAsFactors = TRUE)
-  x <- juice(trained_rec, all_predictors())
-  y <- juice(trained_rec, all_outcomes())
-  if(ncol(y) > 1) 
-    stop("`train` doesn't support multivariate outcomes")
-  y <- getElement(y, names(y))
-  is_weight <- summary(trained_rec)$role == "case weight"
-  if(any(is_weight)) {
-    if(sum(is_weight) > 1)
-      stop("Ony one column can be used as a case weight.")
-    weights <- juice(trained_rec, has_role("case weight"))
-    weights <- getElement(weights, names(weights))
-  } else weights <- NULL
+  preproc_dots(...)
   
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
@@ -62,6 +42,33 @@ train.recipe <- function(recipe,
   if(any(names(models) == "check") && is.function(models$check)) {
     software_check <- models$check(models$library)
   }
+  
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # prep and bake recipe on entire training set
+  if(trControl$verboseIter)  {
+    cat("Preparing recipe\n")
+    flush.console()
+  }
+  
+  trained_rec <- prepare(recipe, training = data, 
+                         fresh = TRUE, 
+                         retain = TRUE,
+                         verbose = FALSE, 
+                         stringsAsFactors = TRUE)
+  x <- juice(trained_rec, all_predictors())
+  y <- juice(trained_rec, all_outcomes())
+  if(ncol(y) > 1) 
+    stop("`train` doesn't support multivariate outcomes")
+  y <- getElement(y, names(y))
+  is_weight <- summary(trained_rec)$role == "case weight"
+  if(any(is_weight)) {
+    if(sum(is_weight) > 1)
+      stop("Ony one column can be used as a case weight.")
+    weights <- juice(trained_rec, has_role("case weight"))
+    weights <- getElement(weights, names(weights))
+  } else weights <- NULL
+  
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
   paramNames <- as.character(models$parameters$parameter)
   
@@ -161,7 +168,10 @@ train.recipe <- function(recipe,
   
   ## If they don't exist, make the data partitions for the resampling iterations.
   if(is.null(trControl$index)) 
-    trControl <- make_resamples(trControl, outcome = y)
+    trControl <- with_seed(
+      rs_seed, 
+      make_resamples(trControl, outcome = y)
+    )
   
   if(is.logical(trControl$savePredictions)) {
     trControl$savePredictions <- if(trControl$savePredictions) "all" else "none"
@@ -500,7 +510,8 @@ train.recipe <- function(recipe,
                         maximize = maximize,
                         yLimits = trControl$yLimits,
                         times = times,
-                        levels = classLevels),
+                        levels = classLevels,
+                        rs_seed = rs_seed),
                    class = c("train.recipe", "train"))
   trControl$yLimits <- NULL
   

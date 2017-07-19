@@ -234,6 +234,9 @@ train.default <- function(x, y,
                           tuneLength = ifelse(trControl$method == "none", 1, 3)) {
   startTime <- proc.time()
   
+  ## get a seed before packages are loaded or recipes are processed
+  rs_seed <- sample.int(.Machine$integer.max, 1L)
+  
   if(is.null(colnames(x)))
     stop("Please use column names for `x`", call. = FALSE)
   
@@ -351,8 +354,12 @@ train.default <- function(x, y,
   if(trControl$method == "oob" & is.null(models$oob))
     stop("Out of bag estimates are not implemented for this model", call. = FALSE)
 
+  ## If they don't exist, make the data partitions for the resampling iterations.
   if(is.null(trControl$index)) 
-    trControl <- make_resamples(trControl, outcome = y)
+    trControl <- with_seed(
+      rs_seed, 
+      make_resamples(trControl, outcome = y)
+    )
 
   if(is.logical(trControl$savePredictions)) {
     trControl$savePredictions <- if(trControl$savePredictions) "all" else "none"
