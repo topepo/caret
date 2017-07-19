@@ -6,6 +6,7 @@
 \alias{train.formula}
 \alias{train.default}
 \alias{train.formula}
+\alias{train.recipe}
 \title{Fit Predictive Models over Different Tuning Parameters}
 \usage{
 train(x, ...)
@@ -18,6 +19,12 @@ train(x, ...)
 
 \method{train}{formula}(form, data, ..., weights, subset, na.action = na.fail,
   contrasts = NULL)
+
+\method{train}{recipe}(recipe, data, method = "rf", ...,
+  metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
+  maximize = ifelse(metric \%in\% c("RMSE", "logLoss"), FALSE, TRUE),
+  trControl = trainControl(), tuneGrid = NULL,
+  tuneLength = ifelse(trControl$method == "none", 1, 3))
 }
 \arguments{
 \item{x}{an object where samples are in rows and features are in columns.
@@ -79,8 +86,8 @@ by the random search. (NOTE: If given, this argument must be named.)}
 
 \item{form}{A formula of the form \code{y ~ x1 + x2 + ...}}
 
-\item{data}{Data frame from which variables specified in \code{formula} are
-preferentially to be taken.}
+\item{data}{Data frame from which variables specified in \code{formula} or 
+\code{recipe} are preferentially to be taken.}
 
 \item{subset}{An index vector specifying the cases to be used in the
 training sample. (NOTE: If given, this argument must be named.)}
@@ -92,6 +99,13 @@ required variable. (NOTE: If given, this argument must be named.)}
 
 \item{contrasts}{a list of contrasts to be used for some or all the factors
 appearing as variables in the model formula.}
+
+\item{recipe}{An unprepared \code{\link{recipe}} object that describes the
+model terms (i.e. outcome, predictors, etc.) as well as any pre-processing
+that should be done to the data. This is an alternative approach to specifying 
+the model. Note that, when using the recipe method, any arguments passed to
+\code{preProcess} will be ignored. See the links and example below for 
+more details using recipes.}
 }
 \value{
 A list is returned of class \code{train} containing: \item{method
@@ -218,6 +232,38 @@ earthFit <- train(medv ~ .,
                   maximize = FALSE,
                   trControl = robustControl)
 
+
+#######################################
+## Example with a recipe
+
+data(cox2)
+
+cox2 <- cox2Descr
+cox2$potency <- cox2IC50
+
+library(recipes)
+
+cox_recipe <- recipe(potency ~ ., data = cox2) \%>\%
+  ## Log the outcome
+  step_log(potency, base = 10) \%>\%
+  ## Remove sparse and unbalanced predictors
+  step_nzv(all_predictors()) \%>\%
+  ## Surface area predictors are highly correlated so
+  ## conduct PCA just on these. 
+  step_pca(contains("VSA"), prefix = "surf_area_", 
+           threshold = .95) \%>\%
+  ## Remove other highly correlated predictors
+  step_corr(all_predictors(), -starts_with("surf_area_"), 
+            threshold = .90) \%>\%
+  ## Center and scale all of the non-PCA predictors
+  step_center(all_predictors(), -starts_with("surf_area_")) \%>\%
+  step_scale(all_predictors(), -starts_with("surf_area_"))
+
+set.seed(888)
+cox_lm <- train(cox_recipe, cox2,
+                method = "lm", 
+                trControl = trainControl(method = "cv"))
+
 #######################################
 ## Parallel Processing Example via multicore package
 
@@ -247,6 +293,8 @@ usingMC <-  train(medv ~ .,
 
 Kuhn (2008), ``Building Predictive Models in R Using the caret''
 (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
+
+\url{https://topepo.github.io/recipes/}
 }
 \seealso{
 \code{\link{models}}, \code{\link{trainControl}},
