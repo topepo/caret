@@ -173,7 +173,7 @@ mnLogLoss <- function(data, lev = NULL, model = NULL){
 
   inds <- match(dataComplete$obs, colnames(probs))
   if(nlevels(dataComplete$obs) == 2){
-    logLoss <- ModelMetrics::logLoss(dataComplete$obs, probs)
+    logLoss <- ModelMetrics::logLoss(dataComplete$obs == lev[2], probs[, lev[2]])
   } else {
     logLoss <- ModelMetrics::mlogLoss(dataComplete$obs, probs)
   }
