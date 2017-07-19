@@ -83,7 +83,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
       
       loadNamespace("caret")
-      
+
       if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE],
                                     names(resampleIndex), iter)
       
@@ -95,14 +95,14 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         holdoutIndex <- modelIndex
       }
       
+      is_regression <- is.null(lev) 
+      
       if(testing) cat("pre-model\n")
-
+      
       if(!is.null(info$submodels[[parm]]) && nrow(info$submodels[[parm]]) > 0) {
         submod <- info$submodels[[parm]]
       } else submod <- NULL
-     
-      is_regression <- is.null(lev) 
-
+      
       mod <- try(
         createModel(x = subset_x(x, modelIndex),
                     y = y[modelIndex],
@@ -118,7 +118,6 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       
       if(testing) print(mod) 
       
-      predictedExtra <- NULL
       if(!model_failed(mod)) {
         predicted <- try(
           predictionFunction(method = method,
@@ -135,30 +134,18 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                        iter = names(resampleIndex)[iter], 
                        verb = ctrl$verboseIter)
           
-
           predicted <- fill_failed_pred(index = holdoutIndex, lev = lev, submod)
-
-        } else if(!is.null(extraIndex)) {
-          predictedExtra <- lapply(extraIndex, function(idx) {
-            predictionFunction(method = method,
-                               modelFit = mod$fit,
-                               newdata = subset_x(x, idx),
-                               preProc = mod$preProc,
-                               param = submod)
-          })
+          
         }
       } else {
         fail_warning(settings = printed[parm,,drop = FALSE], 
                      msg  = mod, 
                      iter = names(resampleIndex)[iter], 
                      verb = ctrl$verboseIter)
-        ## setup a dummy results with NA values for all predictions
         predicted <- fill_failed_pred(index = holdoutIndex, lev = lev, submod)
       }
       
       if(testing) print(head(predicted))
-
-      probValuesExtra <- NULL
       if(ctrl$classProbs) {
         if(!model_failed(mod)) {
           probValues <- probFunction(method = method,
@@ -175,10 +162,11 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       ##################################
       
       predicted <- trim_values(predicted, ctrl, is_regression) 
-
-      ##################################      
       
-      if(!is.null(submod)) {
+      ##################################
+      
+      if(!is.null(submod))
+      {
         ## merge the fixed and seq parameter values together
         allParam <- expandParameters(info$loop[parm,,drop = FALSE], info$submodels[[parm]])
         allParam <- allParam[complete.cases(allParam),, drop = FALSE]
@@ -196,7 +184,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                             wts = wts[holdoutIndex],
                             lv = lev,
                             rows = holdoutIndex)
-
+        
         if(testing) print(head(predicted))
         
         ## same for the class probabilities
@@ -204,8 +192,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
           predicted <- mapply(cbind, predicted, probValues, SIMPLIFY = FALSE)
         }
         
-        if(keep_pred)
-        {
+        if(keep_pred) {
           tmpPred <- predicted
           for(modIndex in seq(along = tmpPred)) {
             tmpPred[[modIndex]] <- merge(tmpPred[[modIndex]], 
@@ -266,8 +253,8 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       }
       thisResample$Resample <- names(resampleIndex)[iter]
       
-      thisResampleExtra <- optimismBoot(ctrl, x, y, wts, iter, lev, method, mod, predicted, 
-                                        submod, info$loop[parm,, drop = FALSE])
+      thisResampleExtra <- optimism_xy(ctrl, x, y, wts, iter, lev, method, mod, predicted, 
+                                       submod, info$loop[parm,, drop = FALSE])
       
       if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE],
                                     names(resampleIndex), iter, FALSE)
@@ -279,7 +266,8 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
   resamples <- rbind.fill(result[names(result) == "resamples"])
   pred <- rbind.fill(result[names(result) == "pred"])
   resamplesExtra <- rbind.fill(result[names(result) == "resamplesExtra"])
-  if(ctrl$method %in% c("boot632", "optimism_boot", "boot_all")) {
+  if(ctrl$method %in% c("boot632", "optimism_boot", "boot_all"))
+  {
     perfNames <- names(resamples)
     perfNames <- perfNames[!(perfNames %in% c("Resample", as.character(method$parameters$parameter)))]
     perfNames <- perfNames[!grepl("^\\.cell[0-9]", perfNames)]
@@ -288,22 +276,26 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
     names(apparent)[which(names(apparent) %in% perfNames)] <- paste(names(apparent)[which(names(apparent) %in% perfNames)],
                                                                     "Apparent", sep = "")
     names(apparent) <- gsub("^\\.", "", names(apparent))
-    if(any(!complete.cases(apparent[,!grepl("^cell|Resample", colnames(apparent)),drop = FALSE]))) {
+    if(any(!complete.cases(apparent[,!grepl("^cell|Resample", colnames(apparent)),drop = FALSE])))
+    {
       warning("There were missing values in the apparent performance measures.")
     }        
     resamples <- subset(resamples, Resample != "AllData")
-    if(!is.null(pred)) {
+    if(!is.null(pred))
+    {
       predHat <- subset(pred, Resample == "AllData")
       pred <- subset(pred, Resample != "AllData")
     }
   }
   names(resamples) <- gsub("^\\.", "", names(resamples))
   
-  if(any(!complete.cases(resamples[,!grepl("^cell|Resample", colnames(resamples)),drop = FALSE]))) {
+  if(any(!complete.cases(resamples[,!grepl("^cell|Resample", colnames(resamples)),drop = FALSE])))
+  {
     warning("There were missing values in resampled performance measures.")
   }
   
   out <- ddply(resamples[,!grepl("^cell|Resample", colnames(resamples)),drop = FALSE],
+               ## TODO check this for seq models
                gsub("^\\.", "", colnames(info$loop)),
                MeanSD, 
                exclude = gsub("^\\.", "", colnames(info$loop)))

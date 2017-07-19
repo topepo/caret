@@ -11,7 +11,8 @@ Maintainer: Max Kuhn <mxkuhn@gmail.com>
 Depends:
     R (>= 2.10),
     lattice (>= 0.20),
-    ggplot2
+    ggplot2,
+    withr (>= 1.0.2)
 URL: https://github.com/topepo/caret/
 BugReports: https://github.com/topepo/caret/issues
 Imports:
@@ -25,8 +26,7 @@ Imports:
     stats4,
     utils,
     grDevices,
-    recipes (>= 0.0.1.9005),
-    withr (>= 1.0.2)
+    recipes (>= 0.0.1.9005)
 Suggests:
     BradleyTerry2,
     e1071,

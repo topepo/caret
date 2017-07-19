@@ -2,6 +2,13 @@
 ## Overall method for recipes
 ## @importFrom withr with_seed (need gh verison bump)
 #' @export
+#' @rdname train.default
+#' @param recipe An unprepared \code{\link{recipe}} object that describes the
+#'   model terms (i.e. outcome, predictors, etc.) as well as any pre-processing
+#'   that should be done to the data. This is an alternative approach to specifying 
+#'   the model. Note that, when using the recipe method, any arguments passed to
+#'   \code{preProcess} will be ignored. See the links below for more details using
+#'   recipes. 
 train.recipe <- function(recipe,
                          data,
                          method = "rf",
@@ -168,7 +175,7 @@ train.recipe <- function(recipe,
   
   ## If they don't exist, make the data partitions for the resampling iterations.
   if(is.null(trControl$index)) 
-    trControl <- with_seed(
+    trControl <- withr::with_seed(
       rs_seed, 
       make_resamples(trControl, outcome = y)
     )
@@ -1096,8 +1103,8 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
       }
       thisResample$Resample <- names(resampleIndex)[iter]
       
-      thisResampleExtra <- optimism_boot(ctrl, dat, iter, lev, method, mod_rec, predicted, 
-                                         submod, info$loop[parm,, drop = FALSE])
+      thisResampleExtra <- optimism_rec(ctrl, dat, iter, lev, method, mod_rec, predicted, 
+                                        submod, info$loop[parm,, drop = FALSE])
       
       if(ctrl$verboseIter) 
         progress(printed[parm,,drop = FALSE],
