@@ -548,7 +548,6 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
         tmp <-  ho_data
         tmp$pred <- pred_val
         if(ctrl$classProbs) tmp <- cbind(tmp, probValues)
-        tmp <- merge(tmp, info$loop[parm,,drop = FALSE], all = TRUE)
         
         if(keep_pred) {
           tmpPred <- tmp
