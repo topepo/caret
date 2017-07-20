@@ -30,7 +30,8 @@ well_numbered <- function(prefix, items) {
 
 
 #' @importFrom stats runif
-evalSummaryFunction <- function(y, wts, ctrl, lev, metric, method) {
+#' @importFrom dplyr bind_cols
+evalSummaryFunction <- function(y, wts = NULL, perf = NULL, ctrl, lev, metric, method) {
   n <- if(class(y)[1] == "Surv") nrow(y) else length(y)
   ## sample doesn't work for Surv objects
   if(class(y)[1] != "Surv") {
@@ -49,9 +50,14 @@ evalSummaryFunction <- function(y, wts, ctrl, lev, metric, method) {
   
   ## get phoney performance to obtain the names of the outputs
   testOutput <- data.frame(pred = pred_samp, obs = obs_samp)
+  if(!is.null(perf)) {
+    if(is.vector(perf))
+      stop("`perf` should be a data frame", call. = FALSE)
+    perf <- perf[sample(1:nrow(perf), nrow(testOutput)),, drop = FALSE]
+    testOutput <- dplyr::bind_cols(testOutput, perf)
+  }
   
-  if(ctrl$classProbs)
-  {
+  if(ctrl$classProbs) {
     for(i in seq(along = lev)) testOutput[, lev[i]] <- runif(nrow(testOutput))
     testOutput[, lev] <- t(apply(testOutput[, lev], 1, function(x) x/sum(x)))
   } else {

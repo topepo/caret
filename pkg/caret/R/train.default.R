@@ -25,6 +25,16 @@
 #' A variety of models are currently available and are enumerated by tag (i.e.
 #' their model characteristics) at
 #' \url{http://topepo.github.io/caret/train-models-by-tag.html}.
+#' 
+#' More details on using recipes can be found at
+#' \url{http://topepo.github.io/caret/recipes.html}.  
+#' Note that case weights can be passed into \code{train}
+#' using a role of \code{"case weight"} for a single variable. 
+#' Also, if there are non-predictor columns that should be used 
+#' when determining the model's performance metrics, the role
+#' of \code{"performance var"} can be used with multiple columns
+#' and these will be made available during resampling to the
+#' \code{summaryFunction} function.  
 #'
 #' @aliases train train.default train.formula
 #' @param x an object where samples are in rows and features are in columns.
@@ -722,8 +732,10 @@ train.default <- function(x, y,
     bestTune <- performance[bestIter, paramNames, drop = FALSE]
   } else {
     bestTune <- tuneGrid
-    performance <- evalSummaryFunction(y, wts = weights, ctrl = trControl,
-                                       lev = classLevels, metric = metric,
+    performance <- evalSummaryFunction(y, wts = weights, 
+                                       ctrl = trControl,
+                                       lev = classLevels, 
+                                       metric = metric,
                                        method = method)
     perfNames <- names(performance)
     performance <- as.data.frame(t(performance))
@@ -985,6 +997,11 @@ train.recipe <- function(recipe,
     weights <- getElement(weights, names(weights))
   } else weights <- NULL
   
+  is_perf <- summary(trained_rec)$role == "performance var"
+  if(any(is_perf)) {
+    perf_data <- juice(trained_rec, has_role("performance var"))
+  } else perf_data <- NULL
+  
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
   paramNames <- as.character(models$parameters$parameter)
@@ -1167,6 +1184,7 @@ train.recipe <- function(recipe,
     } else {
       ## run some data thru the summary function and see what we get
       testSummary <- evalSummaryFunction(y, 
+                                         perf = perf_data, 
                                          wts = weights, ctrl = trControl,
                                          lev = classLevels, metric = metric,
                                          method = method)
@@ -1311,8 +1329,10 @@ train.recipe <- function(recipe,
     bestTune <- performance[bestIter, paramNames, drop = FALSE]
   } else {
     bestTune <- tuneGrid
-    performance <- evalSummaryFunction(y, wts = weights, ctrl = trControl,
-                                       lev = classLevels, metric = metric,
+    performance <- evalSummaryFunction(y, wts = weights,
+                                       ctrl = trControl,
+                                       lev = classLevels, 
+                                       metric = metric,
                                        method = method)
     perfNames <- names(performance)
     performance <- as.data.frame(t(performance))
