@@ -1,0 +1,167 @@
+```{r recipes_load, echo = FALSE, message=FALSE, warning=FALSE}
+library(knitr)
+opts_chunk$set(digits = 3, tidy = FALSE)
+```
+
+
+# Using Recipes with train
+
+Modeling functions in R let you specific a model using a formula, the `x`/`y` interface, or both. Formulas are good because they will handle a lot of minutia for you (e.g. dummy variables, interactions, etc) so you don't have to get your hands dirty. They [work pretty well](https://rviews.rstudio.com/2017/02/01/the-r-formula-method-the-good-parts/) but also have [limitations too](https://rviews.rstudio.com/2017/03/01/the-r-formula-method-the-bad-parts/). Their biggest issue is that not all modeling functions have a formula interface (although `train` helps solve that). 
+
+Recipes are a third method for specifying model terms but also allow for a broad set of preprocessing options for encoding, manipulating, and transforming data. They cover a lot of techniques that formulas cannot do naturally. 
+
+Recipes can be built incrementally in a way similar to how `dplyr` or `ggplot2` are created The package [website](https://topepo.github.io/recipes/) has examples of how to use the package and lists the possible techniques (called _steps_). A recipe can then be handed to `train` _in lieu_ of a formula. 
+
+## Why Should you learn this? Here are two reasons:
+
+### More versatile tools for preprocessing data
+
+`caret`'s preprocessing tools have a lot of options but the list is not exhaustive and they will only be called in a specific order. If you would like 
+
+- a broader set of options,
+- the ability to write your own preprocessing tools, or 
+- to call them in the order that you desire
+
+then you can use a recipe to do that.  
+
+### Using additional data to measure performance
+
+In most modeling functions, including `train`, most variables are consigned to be either predictors or outcomes. For recipes, there are more options. For example, you might want to have specific columns of your data set be available when you compute how well the model is performing, such as:
+
+- if different stratification variables (e.g. patients, ZIP codes, etc) are required to do correct summaries or
+- ancillary data might be need to compute the expected profit or loss based on the model results.  
+
+To get these data properly, they need to be made available and handled the same way as all of the other data. This means they should be sub- or resampled as all of the other data. Recipes let you do that. 
+
+
+## An Example
+
+The `QSARdata` package contains several chemistry data sets. These data sets have rows for different potential drugs (called "compounds" here). For each compound, some important characteristic is measured. This illustration will use the `AquaticTox` data. The outcome is called "Activity" is a measure of how harmful the compound might be to people. We want to predict this during the drug discovery phase in R&D To do this, a set of _molecular descriptors_ are computed based on the compounds formula. There are a lot of different types of these and we will use the 2-dimensional MOE descriptor set. First, lets' load the package and get the data together:
+
+```{r recipes_ex, warning = FALSE, message = FALSE}
+library(caret)
+library(recipes)
+library(dplyr)
+library(QSARdata)
+
+data(AquaticTox)
+tox <- AquaticTox_moe2D
+ncol(tox)
+## Add the outcome variable to the data frame
+tox$Activity <- AquaticTox_Outcome$Activity
+```
+
+We will build a model on these data to predict the activity. Some notes:
+
+ - A common aspect to chemical descriptors is that they are _highly correlated_. Many descriptors often measure some variation of the same thing. For example, in these data, there are `r sum(grepl("VSA", names(AquaticTox_moe2D)))` potential predictors that measure different flavors of surface area. It might be a good idea to reduce the dimensionality of these data by pre-filtering the predictors and/or using a dimension reduction technique. 
+ - Other descriptors are counts of certain types of aspects of the molecule. For example, one predictor is the number of Bromine atoms. The vast majority of compounds lack Bromine and this leads to a near-zero variance situation discussed previously. It might be a good idea to pre-filter these. 
+
+Also, to demonstrate the utility of recipes, suppose that we could score potential drugs on the basis of how manufacturable they might be. We might want to build a model on the entire data set but only evaluate it on compounds that could be reasonably manufactured. For illustration, we'll assume that, as a compounds molecule weight increases, its manufacturability _decreases_. For this purpose, we create a new variable (`manufacturability`) that is neither an outcome or predictor but will be needed to compute performance. 
+
+```{r recipes_manufacturability}
+tox <- tox %>%
+  select(-Molecule) %>%
+  ## Suppose the easy of manufacturability is 
+  ## related to the molecular weight of the compound
+  mutate(manufacturability  = 1/moe2D_Weight) %>%
+  mutate(manufacturability = manufacturability/sum(manufacturability))
+```
+
+For this analysis, we will compute the RMSE using weights based on the manufacturability column such that a difficult compound has less impact on the RMSE. 
+
+```{r recipes_wrmse}
+wt_rmse <- function (pred, obs, wts, na.rm = TRUE) 
+  sqrt(weighted.mean((pred - obs)^2, wts, na.rm = na.rm))
+
+model_stats <- function(data, lev = NULL, model = NULL) {
+  stats <- defaultSummary(data, lev = lev, model = model)
+  res <- wt_rmse(pred = data$pred,
+                 obs = data$obs, 
+                 wts = data$manufacturability)
+  c(wRMSE = res, stats)
+}
+```
+
+There is no way to include this extra variable using the default `train` method or using `train.formula`. 
+
+Now, let's create a recipe incrementally. First, we will use the formula methods to declare the outcome and predictors but change the analysis role of the `manufacturability` variable so that it will only be available when summarizing the model fit.
+
+```{r recipes_basic}
+tox_recipe <- recipe(Activity ~ ., data = tox) %>%
+  add_role(manufacturability, new_role = "performance var")
+
+tox_recipe
+```
+
+Using this new role, the `manufacturability` column will be available when the summary function is executed and the appropriate rows of the data set will be exposed during resampling. For example, if one were to debug the `model_stats` function during execution of a model, the `data` object might look like this:
+```r
+Browse[1]> head(data)
+    obs manufacturability rowIndex     pred
+1  3.40       0.002770707        3 3.376488
+2  3.75       0.002621364       27 3.945456
+3  3.57       0.002697900       33 3.389999
+4  3.84       0.002919528       39 4.023662
+5  4.41       0.002561416       53 4.482736
+6  3.98       0.002838804       54 3.965465
+```
+More than one variable can have this role so that multiple columns can be made available. 
+
+Now let's add some steps to the recipe First, we remove sparse and unbalanced predictors: 
+
+```{r recipes_nzv}
+tox_recipe <- tox_recipe %>% step_nzv(all_predictors())
+tox_recipe
+```
+
+Note that we have only specified what _will happen once the recipe_ is executed. This is only a specification that uses a generic declaration of `all_predictors`. 
+
+As mentioned above, there are a lot of different surface area predictors and they tend to have very high correlations with one another. We'll add one or more predictors to the model in place of these predictors using principal component analysis. The step will retain the number of components required to capture 95% of the information contained in these `r sum(grepl("VSA", names(AquaticTox_moe2D)))` predictors. We'll name these new predictors `surf_area_1`, `surf_area_2` etc. 
+
+```{r recipes_pca}
+tox_recipe <- tox_recipe %>% 
+  step_pca(contains("VSA"), prefix = "surf_area_",  threshold = .95) 
+```
+
+Now, lets specific that the third step in the recipe is to reduce the number of predictors so that no pair has an absolute correlation greater than 0.90. However, we might want to keep the surface area principal components so we _exclude_ these from the filter (using the minus sign)
+
+```{r recipes_corr}
+tox_recipe <- tox_recipe %>% 
+  step_corr(all_predictors(), -starts_with("surf_area_"), threshold = .90)
+```
+
+Finally, we can center and scale all of the predictors that are available at the end of the recipe:
+
+```{r recipes_norm}
+tox_recipe <- tox_recipe %>% 
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
+tox_recipe
+```
+
+Let's use this recipe to fit a SVM model and pick the tuning parameters that minimize the weighted RMSE value:
+
+```{r recipes_model}
+tox_ctrl <- trainControl(method = "cv", summaryFunction = model_stats)
+set.seed(888)
+tox_svm <- train(tox_recipe, tox,
+                 method = "svmRadial", 
+                 metric = "wRMSE",
+                 maximize = FALSE,
+                 tuneLength = 10,
+                 trControl = tox_ctrl)
+tox_svm
+```
+
+What variables were generated by the recipe? 
+
+```{r recipes_vars}
+## originally:
+ncol(tox) - 2
+## after the recipe was executed:
+predictors(tox_svm)
+```
+The trained recipe is available in the `train` object and now shows specific variables involved in each step:
+```{r recipes_last_rec}
+tox_svm$recipe
+```
+
