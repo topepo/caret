@@ -12,7 +12,9 @@ Recipes are a third method for specifying model terms but also allow for a broad
 
 Recipes can be built incrementally in a way similar to how `dplyr` or `ggplot2` are created The package [website](https://topepo.github.io/recipes/) has examples of how to use the package and lists the possible techniques (called _steps_). A recipe can then be handed to `train` _in lieu_ of a formula. 
 
-## Why Should you learn this? Here are two reasons:
+## Why Should you learn this? 
+
+Here are two reasons:
 
 ### More versatile tools for preprocessing data
 
