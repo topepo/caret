@@ -30,7 +30,6 @@ well_numbered <- function(prefix, items) {
 
 
 #' @importFrom stats runif
-#' @importFrom dplyr bind_cols
 evalSummaryFunction <- function(y, wts = NULL, perf = NULL, ctrl, lev, metric, method) {
   n <- if(class(y)[1] == "Surv") nrow(y) else length(y)
   ## sample doesn't work for Surv objects
@@ -54,7 +53,7 @@ evalSummaryFunction <- function(y, wts = NULL, perf = NULL, ctrl, lev, metric, m
     if(is.vector(perf))
       stop("`perf` should be a data frame", call. = FALSE)
     perf <- perf[sample(1:nrow(perf), nrow(testOutput)),, drop = FALSE]
-    testOutput <- dplyr::bind_cols(testOutput, perf)
+    testOutput <-cbind(testOutput, perf)
   }
   
   if(ctrl$classProbs) {
@@ -602,7 +601,6 @@ subset_x <- function(x, ind) {
     x
 }
 
-
 fail_warning <- function(settings, msg, where = "model fit", iter, verb) {
   if (is.list(msg)) {
     is_fail <- vapply(msg, inherits, c(x = TRUE), what = "try-error")
@@ -825,3 +823,4 @@ optimism_rec <- function(ctrl, dat, iter, lev, method, mod_rec, predicted, submo
   # return
   thisResampleExtra
 }
+

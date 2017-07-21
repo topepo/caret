@@ -146,6 +146,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       }
       
       if(testing) print(head(predicted))
+
       if(ctrl$classProbs) {
         if(!model_failed(mod)) {
           probValues <- probFunction(method = method,
@@ -164,7 +165,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       predicted <- trim_values(predicted, ctrl, is_regression) 
       
       ##################################
-      
+
       if(!is.null(submod))
       {
         ## merge the fixed and seq parameter values together
@@ -184,13 +185,9 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                             wts = wts[holdoutIndex],
                             lv = lev,
                             rows = holdoutIndex)
-        
-        if(testing) print(head(predicted))
-        
-        ## same for the class probabilities
-        if(ctrl$classProbs) {
+
+        if(ctrl$classProbs) 
           predicted <- mapply(cbind, predicted, probValues, SIMPLIFY = FALSE)
-        }
         
         if(keep_pred) {
           tmpPred <- predicted
@@ -255,7 +252,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       
       thisResampleExtra <- optimism_xy(ctrl, x, y, wts, iter, lev, method, mod, predicted, 
                                        submod, info$loop[parm,, drop = FALSE])
-      
+
       if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE],
                                     names(resampleIndex), iter, FALSE)
       
