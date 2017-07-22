@@ -585,3 +585,97 @@ subset_x <- function(x, ind) {
     x
 }
 
+optimismBoot <- function(ctrl, x, y, wts, iter, lev, method, mod, predicted, submod, loop) {
+  indexExtra <- ctrl$indexExtra[[iter]]
+  
+  if(is.null(indexExtra) || inherits(mod, "try-error") || inherits(predicted, "try-error"))
+    return (NULL)
+  
+  predictedExtra <- lapply(indexExtra, function(index) {
+    pred <- predictionFunction(method = method,
+                               modelFit = mod$fit,
+                               newdata = subset_x(x, index),
+                               preProc = mod$preProc,
+                               param = submod)
+  })
+  
+  if(ctrl$classProbs)
+    probValuesExtra <- lapply(indexExtra, function(index) {
+      probFunction(method = method,
+                   modelFit = mod$fit,
+                   newdata = subset_x(x, index),
+                   preProc = mod$preProc,
+                   param = submod)
+    })
+  else
+    probValuesExtra <- lapply(indexExtra, function(index) {
+      probValues <- matrix(NA, nrow = length(index), ncol = length(lev))
+      probValues <- as.data.frame(probValues)
+      colnames(probValues) <- lev
+      if (!is.null(submod)) probValues <- rep(list(probValues), nrow(submod) + 1L)
+      probValues
+    })
+  
+  if(!is.null(submod)) {
+    allParam <- expandParameters(loop, submod)
+    allParam <- allParam[complete.cases(allParam),, drop = FALSE]
+    
+    predictedExtra <- Map(predictedExtra, indexExtra, f = function(predicted, holdoutIndex) {
+      lapply(predicted, function(x) {
+        y <- y[holdoutIndex]
+        wts <- wts[holdoutIndex]
+        x <- outcome_conversion(x, lv = lev)
+        out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
+        if(!is.null(wts)) out$weights <- wts
+        out$rowIndex <- holdoutIndex
+        out
+      })
+    })
+    
+    if(ctrl$classProbs)
+      predictedExtra <- Map(predictedExtra, probValuesExtra, f = function(predicted, probValues) {
+        Map(cbind, predicted, probValues)
+      })
+    
+    thisResampleExtra <- lapply(predictedExtra, function(predicted) {
+      lapply(predicted,
+             ctrl$summaryFunction,
+             lev = lev,
+             model = method)
+    })
+    thisResampleExtra[[1L]] <- lapply(thisResampleExtra[[1L]], function(res) {
+      names(res) <- paste0(names(res), "Orig")
+      res
+    })
+    thisResampleExtra[[2L]] <- lapply(thisResampleExtra[[2L]], function(res) {
+      names(res) <- paste0(names(res), "Boot")
+      res
+    })
+    thisResampleExtra <- do.call(cbind, lapply(thisResampleExtra, function(x) do.call(rbind, x)))
+    thisResampleExtra <- cbind(allParam, thisResampleExtra)
+    
+  } else {
+    thisResampleExtra <- Map(predictedExtra, indexExtra, probValuesExtra,
+                             f = function(predicted, holdoutIndex, probValues) {
+                               if(is.factor(y)) predicted <- outcome_conversion(predicted, lv = lev)
+                               tmp <-  data.frame(pred = predicted,
+                                                  obs = y[holdoutIndex],
+                                                  stringsAsFactors = FALSE)
+                               ## Sometimes the code above does not coerce the first
+                               ## columnn to be named "pred" so force it
+                               names(tmp)[1] <- "pred"
+                               if(!is.null(wts)) tmp$weights <- wts[holdoutIndex]
+                               if(ctrl$classProbs) tmp <- cbind(tmp, probValues)
+                               tmp$rowIndex <- holdoutIndex
+                               ctrl$summaryFunction(tmp, lev = lev, model = method)
+                             })
+    names(thisResampleExtra[[1L]]) <- paste0(names(thisResampleExtra[[1L]]), "Orig")
+    names(thisResampleExtra[[2L]]) <- paste0(names(thisResampleExtra[[2L]]), "Boot")
+    thisResampleExtra <- unlist(unname(thisResampleExtra), recursive = FALSE)
+    thisResampleExtra <- cbind(as.data.frame(t(thisResampleExtra)), loop)
+  }
+  
+  # return
+  thisResampleExtra
+}
+

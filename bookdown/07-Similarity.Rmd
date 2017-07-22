@@ -2,7 +2,7 @@
 library(caret)
 library(proxy)
 library(networkD3)
-library(d3heatmap)
+library(heatmaply)
 theme_set(theme_bw())
 library(knitr)
 opts_chunk$set(digits = 3, tidy = FALSE)
@@ -107,7 +107,6 @@ forceNetwork(Links = links,
              Target = "target", 
              Value = "value",
              Group = "Group",
-             colourScale = "d3.scale.category10()",
              NodeID = "name",
              charge = -30,
              fontSize = 16,
@@ -122,8 +121,8 @@ The data used to create this graph can be found [here](tag_data.csv).
 The plot below shows the similarity matrix. Hover over a cell to see the pair of models and their [Jaccard similarity](https://en.wikipedia.org/wiki/Jaccard_index). Darker colors indicate similar models. 
 
 
-```{r sim_mat, echo=FALSE, message=FALSE, screenshot.force = FALSE, results='asis'}
-d3heatmap(sim, symm = TRUE, cexRow = .0001, cexCol = .0001, colors = "BuPu")
+```{r sim_mat, echo=FALSE, message=FALSE, warning=FALSE, screenshot.force = FALSE, results='asis'}
+heatmaply(sim, symm = TRUE, cexRow = .0001, cexCol = .0001, colors = BuPu)
 ``` 
 
 You can also use it along with maximum _dissimilarity_ sampling to pick out a diverse set of models. Suppose you would like to use a SVM model with a radial basis function on some regression data. Based on these tags, what other four models would constitute the most diverse set?
