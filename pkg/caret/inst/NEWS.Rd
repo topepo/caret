@@ -7,6 +7,7 @@
   \itemize{
     \item MAE is added as output metric for regression tasks through \code{postResample}. Function is exposed to the users.
     \item A bug in classification models with all missing predictions was fixed (found by andzandz11). \issue{684}
+    \item Switched to non-formula interface in ranger.
     \item A simple "null model" was added. For classification, it predictors using the most prevalent level and, for regression, fits an intercept only model. \issue{694}
     \item A bug preventing preprocessing to work properly when the preprocessing transformations are related to individual columns only fixed by Mateusz Kobos in \issue{679}.
   }
