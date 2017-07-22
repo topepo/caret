@@ -1,4 +1,4 @@
-If you are making a feature request or starting a discussion, you can ignore everything below and go wild =D
+If you are making a feature request or starting a discussion, you can ignore everything below and go wild =D However, please request **new models** using the [project page](https://github.com/topepo/caret/projects/2).
 
 If you are filing a bug, make sure these boxes are checked before submitting your issue— thank you!
 
