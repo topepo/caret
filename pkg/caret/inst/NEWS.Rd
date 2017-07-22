@@ -7,7 +7,7 @@
   \itemize{
     \item MAE is added as output metric for regression tasks through \code{postResample}. Function is exposed to the users.
     \item A bug in classification models with all missing predictions was fixed (found by andzandz11). \issue{684}
-
+    \item A simple "null model" was added. For classification, it predictors using the most prevalent level and, for regression, fits an intercept only model. \issue{694}
   }
 }
 
