@@ -37,6 +37,9 @@ r_packages:
   - superpc
   - testthat
   - xgboost
+
+before_install:
+  - cd pkg/caret
  
 after_success:
   - Rscript -e 'covr::codecov()'
