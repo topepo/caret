@@ -18,6 +18,10 @@
     \item A bug was fixed in \code{rpartCost} related to how the tuning parameter grid was processed. 
     \item \code{train} now uses different random numbers to make resamples. Previously, setting the seed prior to calling \code{train} should result in getting the same resamples. However, if \code{train} loaded or imported a namespace from another package, and that startup process used random numbers, it could lead to different random numbers being used. See \issue{452} for details. Now, \code{train} gets a separate (and more reproducible) seed that will be used to generate the resamples. However, this may effect random number reproducibility between this version and previous versions. Otherwise, this change should increase the reproducibility of results. 
     \item The package website code was updated to use version 4 of the D3 JS library and now uses \cpkg{heatmaply} to make the interactive heatmap. 
+    \item Switched to non-formula interface in ranger.
+    \item A simple "null model" was added. For classification, it predictors using the most prevalent level and, for regression, fits an intercept only model. \issue{694}
+    \item A bug preventing preprocessing to work properly when the preprocessing transformations are related to individual columns only fixed by Mateusz Kobos in \issue{679}.
+
   }
 }
 
