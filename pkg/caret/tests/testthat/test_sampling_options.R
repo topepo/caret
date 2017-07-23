@@ -108,6 +108,7 @@ check_samp <- function(x, samp) {
 
 test_that('downsampling with one var for issue #612', {
   skip_on_cran()
+  skip_on_travis()
   expect_true(check_samp(training, "down"))
   expect_true(check_samp(training, "up"))  
   expect_true(check_samp(training, "rose"))
