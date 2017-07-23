@@ -59,7 +59,7 @@ id_values$ID <- as.numeric(id_values$source_t) - 1
 ###################################################################
 ##
 
-cutoff <- .66
+cutoff <- .7
 a <- b <- v <- NULL
 
 for(i in 1:ncol(sim)) {
@@ -100,7 +100,7 @@ This page shows a network diagram of all the models that can be accessed by `tra
 Green circles are models only used for regression, blue is classification only and orange is "dual use". Hover over a circle to get the model name and the model code used by the [`caret`](http://cran.r-project.org/web/packages/caret/index.html) package and refreshing the screen will re-configure the layout. You may need to move a node to the left to see the whole name. `r length(modelInfo) - nrow(nodes)` models without connections are not shown in the graph.
 
 
-```{r makeGraph, echo=FALSE, message=FALSE, screenshot.force = FALSE, results='asis'}
+```{r makeGraph, echo=FALSE, message=FALSE, screenshot.force = FALSE, results='asis', fig.align="center"}
 forceNetwork(Links = links, 
              Nodes = nodes,
              Source = "source",
@@ -108,12 +108,14 @@ forceNetwork(Links = links,
              Value = "value",
              Group = "Group",
              NodeID = "name",
-             charge = -30,
+             charge = -2,
              fontSize = 16,
              height = 600,
              width = 600,
+             zoom = TRUE,
              opacity = .8,
-             linkDistance = 25)
+             linkDistance = 20
+             )
 ``` 
 
 The data used to create this graph can be found [here](tag_data.csv). 
@@ -122,7 +124,7 @@ The plot below shows the similarity matrix. Hover over a cell to see the pair of
 
 
 ```{r sim_mat, echo=FALSE, message=FALSE, warning=FALSE, screenshot.force = FALSE, results='asis'}
-heatmaply(sim, symm = TRUE, cexRow = .0001, cexCol = .0001, colors = BuPu)
+heatmaply(sim, symm = TRUE, cexRow = .0001, cexCol = .0001, colors = BuPu, branches_lwd = .1)
 ``` 
 
 You can also use it along with maximum _dissimilarity_ sampling to pick out a diverse set of models. Suppose you would like to use a SVM model with a radial basis function on some regression data. Based on these tags, what other four models would constitute the most diverse set?
