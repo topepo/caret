@@ -1,7 +1,5 @@
 library(caret)
 library(testthat)
-library(ROSE)
-library(DMwR)
 
 context("sampling options")
 load(system.file("models", "sampling.RData", package = "caret"))
@@ -109,6 +107,10 @@ check_samp <- function(x, samp) {
 test_that('downsampling with one var for issue #612', {
   skip_on_cran()
   skip_on_travis()
+  
+  expect_true(require(ROSE))
+  expect_true(require(DMwR))
+  
   expect_true(check_samp(training, "down"))
   expect_true(check_samp(training, "up"))  
   expect_true(check_samp(training, "rose"))
