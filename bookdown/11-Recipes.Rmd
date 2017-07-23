@@ -167,3 +167,9 @@ The trained recipe is available in the `train` object and now shows specific var
 tox_svm$recipe
 ```
 
+## Case Weights
+
+For [models that accept them](https://topepo.github.io/caret/train-models-by-tag.html#Accepts_Case_Weights), case weights can be passed to the model fitting routines using a role of `"case weight"`. 
+
+
+
