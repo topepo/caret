@@ -1,5 +1,7 @@
 library(caret)
 library(testthat)
+library(ROSE)
+library(DMwR)
 
 context("sampling options")
 load(system.file("models", "sampling.RData", package = "caret"))

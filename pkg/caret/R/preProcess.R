@@ -280,7 +280,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
       method[[u]][ which(( method[[u]] %in% colnames(x)))]
     } else { 
       method[[u]]
-    }
+    }, simplify = FALSE
   )
   
   if(any(names(method) == "invHyperbolicSine")) {

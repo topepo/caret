@@ -62,14 +62,13 @@ before_install:
   - ./travis-tool.sh r_install reshape2
   - ./travis-tool.sh r_install data.table
   - ./travis-tool.sh r_install xgboost
-  - ./travis-tool.sh r_install DMwR
-  - ./travis-tool.sh r_install ROSE  
+  - ./travis-tool.sh r_install ROSE
+  - ./travis-tool.sh r_install DMwR  
   - ./travis-tool.sh install_github jimhester/covr
   - ./travis-tool.sh install_github terrytangyuan/lfda
 
 install:
   - ./travis-tool.sh install_deps
-  - ./travis-tool.sh install_r ROSE DMwR
 
 script:
   - ./travis-tool.sh run_tests
