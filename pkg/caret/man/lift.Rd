@@ -9,6 +9,7 @@
 \alias{lift.formula}
 \alias{print.lift}
 \alias{xyplot.lift}
+\alias{ggplot.lift}
 \title{Lift Plot}
 \usage{
 lift(x, ...)
@@ -21,6 +22,9 @@ lift(x, ...)
 \method{print}{lift}(x, ...)
 
 \method{xyplot}{lift}(x, data = NULL, plot = "gain", values = NULL, ...)
+
+\method{ggplot}{lift}(data = NULL, mapping = NULL, plot = "gain",
+  values = NULL, ..., environment = NULL)
 }
 \arguments{
 \item{x}{a \code{lattice} formula (see \code{\link[lattice:xyplot]{xyplot}}
@@ -38,7 +42,7 @@ or an environment) containing values for any variables in the formula, as
 well as \code{groups} and \code{subset} if applicable. If not found in
 \code{data}, or if \code{data} is unspecified, the variables are looked for
 in the environment of the formula. This argument is not used for
-\code{xyplot.lift}.}
+\code{xyplot.lift} or \code{ggplot.lift}.}
 
 \item{class}{a character string for the class of interest}
 
@@ -70,6 +74,8 @@ found. The lines use either the \code{plot.line} or \code{superpose.line}
 component of the current lattice theme to draw the lines (depending on
 whether groups were used. These values are only used when \code{type =
 "gain"}.}
+
+\item{mapping, environment}{Not used (required for \code{ggplot} consistency).}
 }
 \value{
 \code{lift.formula} returns a list with elements: \item{data}{the

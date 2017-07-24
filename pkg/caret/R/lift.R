@@ -44,7 +44,7 @@
 #' well as \code{groups} and \code{subset} if applicable. If not found in
 #' \code{data}, or if \code{data} is unspecified, the variables are looked for
 #' in the environment of the formula. This argument is not used for
-#' \code{xyplot.lift}.
+#' \code{xyplot.lift} or \code{ggplot.lift}.
 #' @param class a character string for the class of interest
 #' @param subset An expression that evaluates to a logical or integer indexing
 #' vector. It is evaluated in \code{data}. Only the resulting rows of
@@ -192,7 +192,8 @@ plot.lift <- function(x, y = NULL, ...) xyplot.lift(x = x, data = NULL, ...)
 #' @importFrom grDevices extendrange
 #' @export
 xyplot.lift <- function(x, data = NULL, plot = "gain", values = NULL, ...){
-  if(!(plot %in% c("lift", "gain"))) stop(paste("'plot' should be either 'lift' or 'gain'"))
+  if(!(plot %in% c("lift", "gain"))) 
+    stop("`plot`` should be either 'lift' or 'gain'", call. = FALSE)
   if(plot == "gain") {
     lFormula <- "CumEventPct ~ CumTestedPct"
     rng <- extendrange(c(0, 100))
@@ -359,18 +360,119 @@ plotRef <- function(x, y, v, iter = 0) {
     lineStyle <- trellis.par.get("superpose.line")
     lineStyle <- lapply(lineStyle, function(x, i) x[min(length(x), i)], i = iter)
   }
-  erx <- extendrange(x)
-  ery <- extendrange(y)
-  lt_v <- max(which(y <= v))
-  if(length(lt_v) > 0 & is.finite(lt_v) & lt_v < length(y) & lt_v > 0) {
-    values <- approx(y[lt_v:(lt_v+1)], x[lt_v:(lt_v+1)], xout = v)
-    for(i in seq(along = values$x)) {
-      panel.segments(values$y[i], ery[1], values$y[i], values$x[i],
+  tmp_dat <- data.frame(CumTestedPct = x,
+                        CumEventPct = y)
+  ref_values <- get_ref_point(tmp_dat, v = v)
+  ref_values <- ref_values[!is.na(ref_values$CumTestedPct), ]
+  if(nrow(ref_values) > 0) {
+    for(i in 1:nrow(ref_values)) {
+      panel.segments(x0 = ref_values$CumTestedPct[i], 
+                     x1 = ref_values$CumTestedPct[i],
+                     y0 = 0, 
+                     y1 = ref_values$CumEventPct[i], 
                      lty = lineStyle$lty, col = lineStyle$col,
                      alpha = lineStyle$alpha, lwd = lineStyle$lwd)
-      panel.segments(erx[1], values$x[i], values$y[i], values$x[i],
+      panel.segments(x0 = 0, 
+                     x1 = ref_values$CumTestedPct[i],
+                     y0 = ref_values$CumEventPct[i], 
+                     y1 = ref_values$CumEventPct[i], 
                      lty = lineStyle$lty, col = lineStyle$col,
                      alpha = lineStyle$alpha, lwd = lineStyle$lwd)
     }
   }
 }
+
+
+
+utils::globalVariables(c("CumEventPct", "CumTestedPct", 
+                         "cuts", "x1", "x2", "y1", "y2"))
+#' @rdname lift
+#' @param mapping,environment  Not used (required for \code{ggplot} consistency).
+#' @method ggplot lift
+#' @export
+ggplot.lift <- function (data = NULL, mapping = NULL, plot = "gain", values = NULL, ..., 
+                 environment = NULL) {
+  if(!(plot %in% c("lift", "gain"))) 
+    stop("`plot`` should be either 'lift' or 'gain'", call. = FALSE)
+  names(data$data)[names(data$data) == "liftModelVar"] <- "Model"
+  nmod <- length(unique(data$data$Model))
+  if(plot == "gain") {
+    lines1 <- data.frame(x1 = 0, x2 = 100, y1 = 0, y2 = 100)
+    lines2 <- data.frame(x1 = 0, x2 = data$pct, y1 = 0, y2 = 100)
+    lines3 <- data.frame(x1 = data$pct, x2 = 100, y1 = 100, y2 = 100)
+    rng <- extendrange(c(0, 100))
+    res <- ggplot(data$data, aes(x = CumTestedPct, y = CumEventPct)) +
+      geom_segment(data = lines1, 
+                   aes(x = x1, y = y1, xend = x2, yend = y2),
+                   alpha = .2, lty = 2) + 
+      geom_segment(data = lines2, 
+                   aes(x = x1, y = y1, xend = x2, yend = y2),
+                   alpha = .2, lty = 2) +   
+      geom_segment(data = lines3, 
+                   aes(x = x1, y = y1, xend = x2, yend = y2),
+                   alpha = .2, lty = 2) +
+      xlab("% Samples Tested") + ylab("% Samples Found") + 
+      xlim(rng) + ylim(rng)
+    res <- if(nmod == 1)
+      res + geom_line() 
+    else 
+      res + geom_line(aes(col = Model)) 
+    if(!is.null(values)) {
+      ref_values <- ddply(data$data, .(Model), get_ref_point, v = values)
+      ref_values <- ref_values[!is.na(ref_values$CumTestedPct),]
+      if(nrow(ref_values) > 0) {
+        if(nmod > 1) {
+          res <- res + 
+            geom_segment(data = ref_values, 
+                         aes(x = CumTestedPct, y = CumEventPct, 
+                             xend = CumTestedPct, yend = 0, 
+                             color = Model))+ 
+            geom_segment(data = ref_values, 
+                         aes(x = CumTestedPct, y = CumEventPct, 
+                             xend = 0, yend = CumEventPct, 
+                             color = Model))
+        } else {
+          res <- res + 
+            geom_segment(data = ref_values, 
+                         aes(x = CumTestedPct, y = CumEventPct, 
+                             xend = CumTestedPct, yend = 0)) + 
+            geom_segment(data = ref_values, 
+                         aes(x = CumTestedPct, y = CumEventPct, 
+                             xend = 0, yend = CumEventPct))           
+        }
+      }
+    }
+  } else {
+    data$data <- data$data[!is.na(data$data$lift),]
+    res <- ggplot(data$data, aes(x = cuts, y = lift)) + 
+      xlab("Cut-Off") + ylab("Lift")
+    res <- if(nmod == 1)
+      res + geom_line() 
+    else 
+      res + geom_line(aes(col = Model)) 
+  }
+  res
+}
+
+
+get_ref_point <- function(dat, v, window = 5) {
+  x <- dat$CumTestedPct
+  y <- dat$CumEventPct
+  erx <- extendrange(x)
+  ery <- extendrange(y)
+  
+  res <- data.frame(CumEventPct = v, 
+                    CumTestedPct = NA)
+  
+  for(i in seq(along = v)) {
+    nearest <- which.min((y - v[i])^2)
+    index <- max(1, nearest - window):min(length(y), nearest + window)
+    res$CumTestedPct[i] <-
+      if (length(index) > 2)
+        approx(y[index], x[index], xout = v[i])$y
+    else
+      NA
+  }
+  res
+}
+
