@@ -21,6 +21,8 @@ library(ggplot2)
 
 [`caret`](http://cran.r-project.org/web/packages/caret/index.html) includes several functions to pre-process the predictor data. It assumes that all of the data are numeric (i.e. factors have been converted to dummy variables via `model.matrix`, `dummyVars` or other means).
 
+Note that the later chapter on using [`recipes`](https://topepo.github.io/recipes/) with `train` shows how that approach can offer a more diverse and customizable interface to pre-processing in the package.  
+
 <div id="dummy"></div>
 
 ## Creating Dummy Variables

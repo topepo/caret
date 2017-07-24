@@ -2,5 +2,6 @@
 
 This documentation was created  on `r format(Sys.time(), "%a %b %d %Y")` with the following R packages
 ```{r session_info, echo = FALSE}
-sessionInfo()
+library(sessioninfo)
+session_info()
 ```

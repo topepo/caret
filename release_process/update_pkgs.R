@@ -62,7 +62,7 @@ libs <- c(libs, "knitr", "Hmisc", "googleVis", "animation",
           "aroma.affymetrix", "remMap", "cghFLasso", "RCurl", "QSARdata", "reshape2",
           "mapproj", "ggmap", "ggvis", "SuperLearner", "subsemble", "caretEnsemble",
           "ROSE", "DMwR", "ellipse", "bookdown", "DT", "AppliedPredictiveModeling",
-          "pROC", "ggthemes")
+          "pROC", "ggthemes", "sessioninfo")
 libs <- c(libs, package_dependencies("caret", reverse = TRUE)$caret)
 libs <- unique(libs)
 
