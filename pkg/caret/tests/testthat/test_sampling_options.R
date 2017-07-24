@@ -12,7 +12,7 @@ test_that('check appropriate sampling calls by name', {
 
   ## test that calling by string gives the right result
   for(i in arg_names) {
-    out <- caret:::parse_sampling(i)
+    out <- caret:::parse_sampling(i, check_install = FALSE)
     expected <- list(name = i,
                      func = sampling_methods[[i]],
                      first = TRUE)
@@ -28,7 +28,8 @@ test_that('check appropriate sampling calls by function', {
 
   ## test that calling by function gives the right result
   for(i in arg_names) {
-    out <- caret:::parse_sampling(sampling_methods[[i]])
+    out <- caret:::parse_sampling(sampling_methods[[i]], 
+                                  check_install = FALSE)
     expected <- list(name = "custom",
                      func = sampling_methods[[i]],
                      first = TRUE)
@@ -43,22 +44,30 @@ test_that('check bad sampling name', {
 
 test_that('check bad first arg', {
   skip_on_cran()
-  expect_error(caret:::parse_sampling(list(name = "yep", func = sampling_methods[["up"]], first = 2)))
+  expect_error(
+    caret:::parse_sampling(
+      list(name = "yep", func = sampling_methods[["up"]], first = 2), 
+      check_install = FALSE)
+    )
 })
 
 test_that('check bad func arg', {
   skip_on_cran()
-  expect_error(caret:::parse_sampling(list(name = "yep", func = I, first = 2)))
+  expect_error(
+    caret:::parse_sampling(
+      list(name = "yep", func = I, first = 2), 
+      check_install = FALSE)
+    )
 })
 
 test_that('check incomplete list', {
   skip_on_cran()
-  expect_error(caret:::parse_sampling(list(name = "yep")))
+  expect_error(caret:::parse_sampling(list(name = "yep"), check_install = FALSE))
 })
 
 test_that('check call', {
   skip_on_cran()
-  expect_error(caret:::parse_sampling(14))
+  expect_error(caret:::parse_sampling(14, check_install = FALSE))
 })
 
 ###################################################################
@@ -84,37 +93,4 @@ test_that('check missing method', {
   skip_on_cran()
   expect_error(getSamplingInfo("plum"))
 })
-
-###################################################################
-## 
-
-set.seed(2)
-training <- twoClassSim(200, intercept = -10)
-
-check_samp <- function(x, samp) {
-  with_form <- train(Class ~ Linear01, data = x,
-                     method = "lda",
-                     trControl = trainControl(method = "cv",
-                                              sampling = samp))
-  no_form <- train(x = x[, "Linear01", drop = FALSE],
-                   y = x$Class,
-                   method = "lda",
-                   trControl = trainControl(method = "cv",
-                                            sampling = samp))
-  TRUE
-}
-
-test_that('downsampling with one var for issue #612', {
-  skip_on_cran()
-  skip_on_travis()
-  
-  expect_true(require(ROSE))
-  expect_true(require(DMwR))
-  
-  expect_true(check_samp(training, "down"))
-  expect_true(check_samp(training, "up"))  
-  expect_true(check_samp(training, "rose"))
-  expect_true(check_samp(training, "smote"))
-})
-
 

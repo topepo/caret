@@ -418,7 +418,7 @@ var_seq <- function(p, classification = FALSE, len = 3) {
   tuneSeq
 }
 
-parse_sampling <- function(x) {
+parse_sampling <- function(x, check_install = TRUE) {
   ## x could be
   ### a string to match to a existing method
   ### a function
@@ -448,7 +448,8 @@ parse_sampling <- function(x) {
                 first = TRUE)
     }
     pkgs <- switch(x$name, rose = "ROSE", smote = "DMwR", "")
-    if(pkgs != "") checkInstall(pkgs)
+    if(pkgs != "" & check_install) 
+      checkInstall(pkgs)
   } else {
     if(x_class == "function") {
       check_samp_func(x)
