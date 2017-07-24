@@ -29,7 +29,7 @@ modelInfo <- list(label = "Negative Binomial Generalized Linear Model",
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-                    predict(modelFit, newdata)
+                    predict(modelFit, newdata, type = "response")
                   },
                   prob = NULL,
                   varImp = function(object, ...) {
