@@ -21,6 +21,7 @@
     \item Switched to non-formula interface in ranger.
     \item A simple "null model" was added. For classification, it predictors using the most prevalent level and, for regression, fits an intercept only model. \issue{694}
     \item A bug preventing preprocessing to work properly when the preprocessing transformations are related to individual columns only fixed by Mateusz Kobos in \issue{679}.
+    \item Addeda \code{ggplot} method for lift objects (and fixed a bug in the \code{lattice} version of the code) for \issue{}. 
   }
 }
 
