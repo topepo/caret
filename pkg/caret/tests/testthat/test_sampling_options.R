@@ -12,7 +12,7 @@ test_that('check appropriate sampling calls by name', {
 
   ## test that calling by string gives the right result
   for(i in arg_names) {
-    out <- caret:::parse_sampling(i)
+    out <- caret:::parse_sampling(i, check_install = FALSE)
     expected <- list(name = i,
                      func = sampling_methods[[i]],
                      first = TRUE)
@@ -28,7 +28,8 @@ test_that('check appropriate sampling calls by function', {
 
   ## test that calling by function gives the right result
   for(i in arg_names) {
-    out <- caret:::parse_sampling(sampling_methods[[i]])
+    out <- caret:::parse_sampling(sampling_methods[[i]], 
+                                  check_install = FALSE)
     expected <- list(name = "custom",
                      func = sampling_methods[[i]],
                      first = TRUE)
@@ -43,22 +44,30 @@ test_that('check bad sampling name', {
 
 test_that('check bad first arg', {
   skip_on_cran()
-  expect_error(caret:::parse_sampling(list(name = "yep", func = sampling_methods[["up"]], first = 2)))
+  expect_error(
+    caret:::parse_sampling(
+      list(name = "yep", func = sampling_methods[["up"]], first = 2), 
+      check_install = FALSE)
+    )
 })
 
 test_that('check bad func arg', {
   skip_on_cran()
-  expect_error(caret:::parse_sampling(list(name = "yep", func = I, first = 2)))
+  expect_error(
+    caret:::parse_sampling(
+      list(name = "yep", func = I, first = 2), 
+      check_install = FALSE)
+    )
 })
 
 test_that('check incomplete list', {
   skip_on_cran()
-  expect_error(caret:::parse_sampling(list(name = "yep")))
+  expect_error(caret:::parse_sampling(list(name = "yep"), check_install = FALSE))
 })
 
 test_that('check call', {
   skip_on_cran()
-  expect_error(caret:::parse_sampling(14))
+  expect_error(caret:::parse_sampling(14, check_install = FALSE))
 })
 
 ###################################################################
