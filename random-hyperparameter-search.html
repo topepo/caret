@@ -15,7 +15,7 @@
   
   
   <meta property="og:description" content="Documentation for the <code>caret</code> package" />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  <meta name="github-repo" content="<a href="https://github.com/topepo/caret" class="uri">https://github.com/topepo/caret</a>" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="The caret Package" />
@@ -26,7 +26,7 @@
 <meta name="author" content="Max Kuhn">
 
 
-<meta name="date" content="2016-11-29">
+<meta name="date" content="2017-07-23">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -55,12 +55,14 @@
 <link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
 <script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
-<script src="libs/d3-3.5.3/./d3.min.js"></script>
-<script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
-<link href="libs/d3heatmapcore-0.0.0/heatmapcore.css" rel="stylesheet" />
-<script src="libs/d3heatmapcore-0.0.0/heatmapcore.js"></script>
-<script src="libs/d3-tip-0.6.6/index.js"></script>
-<script src="libs/d3heatmap-binding-0.6.1.1/d3heatmap.js"></script>
+<script src="libs/d3-4.5.0/d3.min.js"></script>
+<script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
+<link href="libs/plotlyjs-1.26.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.26.1/plotly-latest.min.js"></script>
+<script src="libs/plotly-binding-4.6.0/plotly.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
 
 
 <style type="text/css">
@@ -130,6 +132,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.1" data-path="data-splitting.html"><a href="data-splitting.html#simple-splitting-based-on-the-outcome"><i class="fa fa-check"></i><b>4.1</b> Simple Splitting Based on the Outcome</a></li>
 <li class="chapter" data-level="4.2" data-path="data-splitting.html"><a href="data-splitting.html#splitting-based-on-the-predictors"><i class="fa fa-check"></i><b>4.2</b> Splitting Based on the Predictors</a></li>
 <li class="chapter" data-level="4.3" data-path="data-splitting.html"><a href="data-splitting.html#data-splitting-for-time-series"><i class="fa fa-check"></i><b>4.3</b> Data Splitting for Time Series</a></li>
+<li class="chapter" data-level="4.4" data-path="data-splitting.html"><a href="data-splitting.html#simple-splitting-with-important-groups"><i class="fa fa-check"></i><b>4.4</b> Simple Splitting with Important Groups</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html"><i class="fa fa-check"></i><b>5</b> Model Training and Tuning</a><ul>
 <li class="chapter" data-level="5.1" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#model-training-and-parameter-tuning"><i class="fa fa-check"></i><b>5.1</b> Model Training and Parameter Tuning</a></li>
@@ -184,24 +187,25 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="7.0.29" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#oblique-tree"><i class="fa fa-check"></i><b>7.0.29</b> Oblique Tree</a></li>
 <li class="chapter" data-level="7.0.30" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ordinal-outcomes"><i class="fa fa-check"></i><b>7.0.30</b> Ordinal Outcomes</a></li>
 <li class="chapter" data-level="7.0.31" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#partial-least-squares"><i class="fa fa-check"></i><b>7.0.31</b> Partial Least Squares</a></li>
-<li class="chapter" data-level="7.0.32" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#polynomial-model"><i class="fa fa-check"></i><b>7.0.32</b> Polynomial Model</a></li>
-<li class="chapter" data-level="7.0.33" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#prototype-models"><i class="fa fa-check"></i><b>7.0.33</b> Prototype Models</a></li>
-<li class="chapter" data-level="7.0.34" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#quantile-regression"><i class="fa fa-check"></i><b>7.0.34</b> Quantile Regression</a></li>
-<li class="chapter" data-level="7.0.35" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#radial-basis-function"><i class="fa fa-check"></i><b>7.0.35</b> Radial Basis Function</a></li>
-<li class="chapter" data-level="7.0.36" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#random-forest"><i class="fa fa-check"></i><b>7.0.36</b> Random Forest</a></li>
-<li class="chapter" data-level="7.0.37" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#regularization"><i class="fa fa-check"></i><b>7.0.37</b> Regularization</a></li>
-<li class="chapter" data-level="7.0.38" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#relevance-vector-machines"><i class="fa fa-check"></i><b>7.0.38</b> Relevance Vector Machines</a></li>
-<li class="chapter" data-level="7.0.39" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ridge-regression"><i class="fa fa-check"></i><b>7.0.39</b> Ridge Regression</a></li>
-<li class="chapter" data-level="7.0.40" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-methods"><i class="fa fa-check"></i><b>7.0.40</b> Robust Methods</a></li>
-<li class="chapter" data-level="7.0.41" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-model"><i class="fa fa-check"></i><b>7.0.41</b> Robust Model</a></li>
-<li class="chapter" data-level="7.0.42" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#roc-curves"><i class="fa fa-check"></i><b>7.0.42</b> ROC Curves</a></li>
-<li class="chapter" data-level="7.0.43" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#rule-based-model"><i class="fa fa-check"></i><b>7.0.43</b> Rule-Based Model</a></li>
-<li class="chapter" data-level="7.0.44" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.44</b> Self-Organising Maps</a></li>
-<li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.45</b> String Kernel</a></li>
-<li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.46</b> Support Vector Machines</a></li>
-<li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.47</b> Text Mining</a></li>
-<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.48</b> Tree-Based Model</a></li>
-<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.49</b> Two Class Only</a></li>
+<li class="chapter" data-level="7.0.32" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#patient-rule-induction-method"><i class="fa fa-check"></i><b>7.0.32</b> Patient Rule Induction Method</a></li>
+<li class="chapter" data-level="7.0.33" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#polynomial-model"><i class="fa fa-check"></i><b>7.0.33</b> Polynomial Model</a></li>
+<li class="chapter" data-level="7.0.34" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#prototype-models"><i class="fa fa-check"></i><b>7.0.34</b> Prototype Models</a></li>
+<li class="chapter" data-level="7.0.35" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#quantile-regression"><i class="fa fa-check"></i><b>7.0.35</b> Quantile Regression</a></li>
+<li class="chapter" data-level="7.0.36" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#radial-basis-function"><i class="fa fa-check"></i><b>7.0.36</b> Radial Basis Function</a></li>
+<li class="chapter" data-level="7.0.37" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#random-forest"><i class="fa fa-check"></i><b>7.0.37</b> Random Forest</a></li>
+<li class="chapter" data-level="7.0.38" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#regularization"><i class="fa fa-check"></i><b>7.0.38</b> Regularization</a></li>
+<li class="chapter" data-level="7.0.39" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#relevance-vector-machines"><i class="fa fa-check"></i><b>7.0.39</b> Relevance Vector Machines</a></li>
+<li class="chapter" data-level="7.0.40" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ridge-regression"><i class="fa fa-check"></i><b>7.0.40</b> Ridge Regression</a></li>
+<li class="chapter" data-level="7.0.41" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-methods"><i class="fa fa-check"></i><b>7.0.41</b> Robust Methods</a></li>
+<li class="chapter" data-level="7.0.42" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-model"><i class="fa fa-check"></i><b>7.0.42</b> Robust Model</a></li>
+<li class="chapter" data-level="7.0.43" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#roc-curves"><i class="fa fa-check"></i><b>7.0.43</b> ROC Curves</a></li>
+<li class="chapter" data-level="7.0.44" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#rule-based-model"><i class="fa fa-check"></i><b>7.0.44</b> Rule-Based Model</a></li>
+<li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.45</b> Self-Organising Maps</a></li>
+<li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.46</b> String Kernel</a></li>
+<li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.47</b> Support Vector Machines</a></li>
+<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.48</b> Text Mining</a></li>
+<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.49</b> Tree-Based Model</a></li>
+<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.50</b> Two Class Only</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="models-clustered-by-tag-similarity.html"><a href="models-clustered-by-tag-similarity.html"><i class="fa fa-check"></i><b>8</b> Models Clustered by Tag Similarity</a></li>
 <li class="chapter" data-level="9" data-path="parallel-processing.html"><a href="parallel-processing.html"><i class="fa fa-check"></i><b>9</b> Parallel Processing</a></li>
@@ -356,7 +360,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1><span class="header-section-number">10</span> Random Hyperparameter Search</h1>
 <p>The default method for optimizing tuning parameters in <code>train</code> is to use a <a href="model-training-and-tuning.html#grids">grid search</a>. This approach is usually effective but, in cases when there are many tuning parameters, it can be inefficient. An alternative is to use a combination of <a href="adaptive-resampling.html">grid search and racing</a>. Another is to use a <a href="http://www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf">random selection of tuning parameter combinations</a> to cover the parameter space to a lesser extent.</p>
 <p>There are a number of models where this can be beneficial in finding reasonable values of the tuning parameters in a relatively short time. However, there are some models where the efficiency in a small search field can cancel out other optimizations. For example, a number of models in caret utilize the “sub-model trick” where <em>M</em> tuning parameter combinations are evaluated, potentially far fewer than M model fits are required. This approach is best leveraged when a simple grid search is used. For this reason, it may be inefficient to use random search for the following model codes: <code>ada</code>, <code>AdaBag</code>, <code>AdaBoost.M1</code>, <code>bagEarth</code>, <code>blackboost</code>, <code>blasso</code>, <code>BstLm</code>, <code>bstSm</code>, <code>bstTree</code>, <code>C5.0</code>, <code>C5.0Cost</code>, <code>cubist</code>, <code>earth</code>, <code>enet</code>, <code>foba</code>, <code>gamboost</code>, <code>gbm</code>, <code>glmboost</code>, <code>glmnet</code>, <code>kernelpls</code>, <code>lars</code>, <code>lars2</code>, <code>lasso</code>, <code>lda2</code>, <code>leapBackward</code>, <code>leapForward</code>, <code>leapSeq</code>, <code>LogitBoost</code>, <code>pam</code>, <code>partDSA</code>, <code>pcr</code>, <code>PenalizedLDA</code>, <code>pls</code>, <code>relaxo</code>, <code>rfRules</code>, <code>rotationForest</code>, <code>rotationForestCp</code>, <code>rpart</code>, <code>rpart2</code>, <code>rpartCost</code>, <code>simpls</code>, <code>spikeslab</code>, <code>superpc</code>, <code>widekernelpls</code>, <code>xgbTree</code>.</p>
-<p>Finally, many of the models wrapped by <code>train</code> have a small number of parameters. The average number of parameters is 1.8.</p>
+<p>Finally, many of the models wrapped by <code>train</code> have a small number of parameters. The average number of parameters is 1.9.</p>
 <p>To use random search, another option is available in <code>trainControl</code> called <code>search</code>. Possible values of this argument are <code>&quot;grid&quot;</code> and <code>&quot;random&quot;</code>. The built-in models contained in caret contain code to generate random tuning parameter combinations. The total number of unique combinations is specified by the <code>tuneLength</code> option to <code>train</code>.</p>
 <p>Again, we will use the sonar data from the previous training page to demonstrate the method with a regularized discriminant analysis by looking at a total of 30 tuning parameter combinations:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mlbench)

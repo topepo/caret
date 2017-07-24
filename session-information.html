@@ -15,7 +15,7 @@
   
   
   <meta property="og:description" content="Documentation for the <code>caret</code> package" />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  <meta name="github-repo" content="<a href="https://github.com/topepo/caret" class="uri">https://github.com/topepo/caret</a>" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="The caret Package" />
@@ -26,7 +26,7 @@
 <meta name="author" content="Max Kuhn">
 
 
-<meta name="date" content="2016-11-29">
+<meta name="date" content="2017-07-23">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -55,12 +55,14 @@
 <link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
 <script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
-<script src="libs/d3-3.5.3/./d3.min.js"></script>
-<script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
-<link href="libs/d3heatmapcore-0.0.0/heatmapcore.css" rel="stylesheet" />
-<script src="libs/d3heatmapcore-0.0.0/heatmapcore.js"></script>
-<script src="libs/d3-tip-0.6.6/index.js"></script>
-<script src="libs/d3heatmap-binding-0.6.1.1/d3heatmap.js"></script>
+<script src="libs/d3-4.5.0/d3.min.js"></script>
+<script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
+<link href="libs/plotlyjs-1.26.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.26.1/plotly-latest.min.js"></script>
+<script src="libs/plotly-binding-4.6.0/plotly.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
 
 
 <style type="text/css">
@@ -130,6 +132,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.1" data-path="data-splitting.html"><a href="data-splitting.html#simple-splitting-based-on-the-outcome"><i class="fa fa-check"></i><b>4.1</b> Simple Splitting Based on the Outcome</a></li>
 <li class="chapter" data-level="4.2" data-path="data-splitting.html"><a href="data-splitting.html#splitting-based-on-the-predictors"><i class="fa fa-check"></i><b>4.2</b> Splitting Based on the Predictors</a></li>
 <li class="chapter" data-level="4.3" data-path="data-splitting.html"><a href="data-splitting.html#data-splitting-for-time-series"><i class="fa fa-check"></i><b>4.3</b> Data Splitting for Time Series</a></li>
+<li class="chapter" data-level="4.4" data-path="data-splitting.html"><a href="data-splitting.html#simple-splitting-with-important-groups"><i class="fa fa-check"></i><b>4.4</b> Simple Splitting with Important Groups</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html"><i class="fa fa-check"></i><b>5</b> Model Training and Tuning</a><ul>
 <li class="chapter" data-level="5.1" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#model-training-and-parameter-tuning"><i class="fa fa-check"></i><b>5.1</b> Model Training and Parameter Tuning</a></li>
@@ -184,24 +187,25 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="7.0.29" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#oblique-tree"><i class="fa fa-check"></i><b>7.0.29</b> Oblique Tree</a></li>
 <li class="chapter" data-level="7.0.30" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ordinal-outcomes"><i class="fa fa-check"></i><b>7.0.30</b> Ordinal Outcomes</a></li>
 <li class="chapter" data-level="7.0.31" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#partial-least-squares"><i class="fa fa-check"></i><b>7.0.31</b> Partial Least Squares</a></li>
-<li class="chapter" data-level="7.0.32" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#polynomial-model"><i class="fa fa-check"></i><b>7.0.32</b> Polynomial Model</a></li>
-<li class="chapter" data-level="7.0.33" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#prototype-models"><i class="fa fa-check"></i><b>7.0.33</b> Prototype Models</a></li>
-<li class="chapter" data-level="7.0.34" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#quantile-regression"><i class="fa fa-check"></i><b>7.0.34</b> Quantile Regression</a></li>
-<li class="chapter" data-level="7.0.35" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#radial-basis-function"><i class="fa fa-check"></i><b>7.0.35</b> Radial Basis Function</a></li>
-<li class="chapter" data-level="7.0.36" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#random-forest"><i class="fa fa-check"></i><b>7.0.36</b> Random Forest</a></li>
-<li class="chapter" data-level="7.0.37" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#regularization"><i class="fa fa-check"></i><b>7.0.37</b> Regularization</a></li>
-<li class="chapter" data-level="7.0.38" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#relevance-vector-machines"><i class="fa fa-check"></i><b>7.0.38</b> Relevance Vector Machines</a></li>
-<li class="chapter" data-level="7.0.39" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ridge-regression"><i class="fa fa-check"></i><b>7.0.39</b> Ridge Regression</a></li>
-<li class="chapter" data-level="7.0.40" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-methods"><i class="fa fa-check"></i><b>7.0.40</b> Robust Methods</a></li>
-<li class="chapter" data-level="7.0.41" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-model"><i class="fa fa-check"></i><b>7.0.41</b> Robust Model</a></li>
-<li class="chapter" data-level="7.0.42" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#roc-curves"><i class="fa fa-check"></i><b>7.0.42</b> ROC Curves</a></li>
-<li class="chapter" data-level="7.0.43" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#rule-based-model"><i class="fa fa-check"></i><b>7.0.43</b> Rule-Based Model</a></li>
-<li class="chapter" data-level="7.0.44" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.44</b> Self-Organising Maps</a></li>
-<li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.45</b> String Kernel</a></li>
-<li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.46</b> Support Vector Machines</a></li>
-<li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.47</b> Text Mining</a></li>
-<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.48</b> Tree-Based Model</a></li>
-<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.49</b> Two Class Only</a></li>
+<li class="chapter" data-level="7.0.32" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#patient-rule-induction-method"><i class="fa fa-check"></i><b>7.0.32</b> Patient Rule Induction Method</a></li>
+<li class="chapter" data-level="7.0.33" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#polynomial-model"><i class="fa fa-check"></i><b>7.0.33</b> Polynomial Model</a></li>
+<li class="chapter" data-level="7.0.34" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#prototype-models"><i class="fa fa-check"></i><b>7.0.34</b> Prototype Models</a></li>
+<li class="chapter" data-level="7.0.35" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#quantile-regression"><i class="fa fa-check"></i><b>7.0.35</b> Quantile Regression</a></li>
+<li class="chapter" data-level="7.0.36" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#radial-basis-function"><i class="fa fa-check"></i><b>7.0.36</b> Radial Basis Function</a></li>
+<li class="chapter" data-level="7.0.37" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#random-forest"><i class="fa fa-check"></i><b>7.0.37</b> Random Forest</a></li>
+<li class="chapter" data-level="7.0.38" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#regularization"><i class="fa fa-check"></i><b>7.0.38</b> Regularization</a></li>
+<li class="chapter" data-level="7.0.39" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#relevance-vector-machines"><i class="fa fa-check"></i><b>7.0.39</b> Relevance Vector Machines</a></li>
+<li class="chapter" data-level="7.0.40" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ridge-regression"><i class="fa fa-check"></i><b>7.0.40</b> Ridge Regression</a></li>
+<li class="chapter" data-level="7.0.41" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-methods"><i class="fa fa-check"></i><b>7.0.41</b> Robust Methods</a></li>
+<li class="chapter" data-level="7.0.42" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-model"><i class="fa fa-check"></i><b>7.0.42</b> Robust Model</a></li>
+<li class="chapter" data-level="7.0.43" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#roc-curves"><i class="fa fa-check"></i><b>7.0.43</b> ROC Curves</a></li>
+<li class="chapter" data-level="7.0.44" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#rule-based-model"><i class="fa fa-check"></i><b>7.0.44</b> Rule-Based Model</a></li>
+<li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.45</b> Self-Organising Maps</a></li>
+<li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.46</b> String Kernel</a></li>
+<li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.47</b> Support Vector Machines</a></li>
+<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.48</b> Text Mining</a></li>
+<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.49</b> Tree-Based Model</a></li>
+<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.50</b> Two Class Only</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="models-clustered-by-tag-similarity.html"><a href="models-clustered-by-tag-similarity.html"><i class="fa fa-check"></i><b>8</b> Models Clustered by Tag Similarity</a></li>
 <li class="chapter" data-level="9" data-path="parallel-processing.html"><a href="parallel-processing.html"><i class="fa fa-check"></i><b>9</b> Parallel Processing</a></li>
@@ -354,71 +358,92 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="session-information" class="section level1">
 <h1><span class="header-section-number">23</span> Session Information</h1>
-<p>This documentation was created on Wed Nov 30 2016 with the following R packages</p>
-<pre><code>## R version 3.3.2 (2016-10-31)
-## Platform: x86_64-apple-darwin13.4.0 (64-bit)
-## Running under: macOS Sierra 10.12.1
+<p>This documentation was created on Sun Jul 23 2017 with the following R packages</p>
+<pre><code>## R version 3.4.0 beta (2017-04-08 r72499)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 16.04.1 LTS
+## 
+## Matrix products: default
+## BLAS: /usr/local/lib/R/lib/libRblas.so
+## LAPACK: /usr/local/lib/R/lib/libRlapack.so
 ## 
 ## locale:
-## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
-##  [1] stats4    grid      parallel  splines   stats     graphics  grDevices
+##  [1] stats4    grid      splines   parallel  stats     graphics  grDevices
 ##  [8] utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] desirability_2.1                Hmisc_4.0-0                    
+##  [1] desirability_2.1                Hmisc_4.0-3                    
 ##  [3] Formula_1.2-1                   C50_0.1.0-24                   
 ##  [5] mda_0.4-9                       class_7.3-14                   
-##  [7] party_1.1-2                     strucchange_1.5-1              
-##  [9] sandwich_2.3-4                  zoo_1.7-13                     
-## [11] modeltools_0.2-21               mvtnorm_1.0-5                  
-## [13] QSARdata_1.3                    nlme_3.1-128                   
-## [15] reshape2_1.4.2                  pls_2.5-0                      
-## [17] mboost_2.7-0                    stabs_0.5-1                    
-## [19] caTools_1.17.1                  doMC_1.3.4                     
-## [21] iterators_1.0.8                 foreach_1.4.3                  
-## [23] e1071_1.6-7                     ipred_0.9-5                    
-## [25] randomForest_4.6-12             ROSE_0.0-3                     
-## [27] DMwR_0.4.1                      d3heatmap_0.6.1.1              
-## [29] networkD3_0.2.13                proxy_0.4-16                   
+##  [7] party_1.2-3                     strucchange_1.5-1              
+##  [9] sandwich_2.3-4                  zoo_1.8-0                      
+## [11] modeltools_0.2-21               mvtnorm_1.0-6                  
+## [13] QSARdata_1.3                    nlme_3.1-131                   
+## [15] reshape2_1.4.2                  pls_2.6-0                      
+## [17] mboost_2.8-0                    stabs_0.6-2                    
+## [19] caTools_1.17.1                  e1071_1.6-8                    
+## [21] ipred_0.9-6                     randomForest_4.6-12            
+## [23] ROSE_0.0-3                      DMwR_0.4.1                     
+## [25] heatmaply_0.10.1                viridis_0.4.0                  
+## [27] viridisLite_0.2.0               plotly_4.6.0                   
+## [29] networkD3_0.4                   proxy_0.4-17                   
 ## [31] DT_0.2                          plyr_1.8.4                     
-## [33] pROC_1.8                        kernlab_0.9-25                 
-## [35] klaR_0.6-12                     MASS_7.3-45                    
-## [37] gbm_2.1.1                       survival_2.40-1                
+## [33] pROC_1.10.0                     kernlab_0.9-25                 
+## [35] klaR_0.6-12                     MASS_7.3-47                    
+## [37] gbm_2.1.3                       survival_2.41-3                
 ## [39] latticeExtra_0.6-28             RColorBrewer_1.1-2             
-## [41] earth_4.4.7                     plotmo_3.3.1                   
-## [43] TeachingDemos_2.10              plotrix_3.6-3                  
-## [45] mlbench_2.1-1                   AppliedPredictiveModeling_1.1-6
-## [47] knitr_1.15.1                    caret_6.0-73                   
-## [49] ggplot2_2.2.0                   lattice_0.20-34                
-## [51] bookdown_0.3                   
+## [41] ggthemes_3.4.0                  earth_4.5.0                    
+## [43] plotmo_3.3.3                    TeachingDemos_2.10             
+## [45] plotrix_3.6-5                   mlbench_2.1-1                  
+## [47] AppliedPredictiveModeling_1.1-6 knitr_1.15.1                   
+## [49] caret_6.0-76                    ggplot2_2.2.1                  
+## [51] lattice_0.20-35                 doMC_1.3.4                     
+## [53] iterators_1.0.8                 foreach_1.4.3                  
+## [55] bookdown_0.3                   
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] TH.data_1.0-7      minqa_1.2.4        colorspace_1.3-1  
-##  [4] rprojroot_1.1      htmlTable_1.7      base64enc_0.1-3   
-##  [7] rstudioapi_0.6     MatrixModels_0.4-1 prodlim_1.5.7     
-## [10] coin_1.1-3         codetools_0.2-15   jsonlite_1.1      
-## [13] nloptr_1.0.4       pbkrtest_0.4-6     cluster_2.0.5     
-## [16] png_0.1-7          compiler_3.3.2     backports_1.0.4   
-## [19] assertthat_0.1     Matrix_1.2-7.1     lazyeval_0.2.0    
-## [22] acepack_1.4.1      htmltools_0.3.5    quantreg_5.29     
-## [25] tools_3.3.2        partykit_1.0-5     igraph_1.0.1      
-## [28] gtable_0.2.0       Rcpp_0.12.8        gdata_2.17.0      
-## [31] stringr_1.1.0      lme4_1.1-12        gtools_3.5.0      
-## [34] MLmetrics_1.1.1    scales_0.4.1       SparseM_1.74      
-## [37] yaml_2.1.14        quantmod_0.4-7     gridExtra_2.2.1   
-## [40] rpart_4.1-10       gam_1.14           stringi_1.1.2     
-## [43] TTR_0.23-1         lava_1.4.5         bitops_1.0-6      
-## [46] evaluate_0.10      ROCR_1.0-7         htmlwidgets_0.8   
-## [49] labeling_0.3       magrittr_1.5       CORElearn_1.48.0  
-## [52] gplots_3.0.1       nnls_1.4           multcomp_1.4-6    
-## [55] combinat_0.0-8     foreign_0.8-67     mgcv_1.8-15       
-## [58] xts_0.9-7          abind_1.4-5        nnet_7.3-12       
-## [61] tibble_1.2         car_2.1-3          KernSmooth_2.23-15
-## [64] ellipse_0.3-8      rmarkdown_1.2      jpeg_0.1-8        
-## [67] data.table_1.9.8   ModelMetrics_1.1.0 digest_0.6.10     
-## [70] munsell_0.4.3      quadprog_1.5-5</code></pre>
+##   [1] backports_1.1.0    igraph_1.0.1       lazyeval_0.2.0    
+##   [4] crosstalk_1.0.0    TH.data_1.0-8      digest_0.6.12     
+##   [7] htmltools_0.3.6    gdata_2.17.0       checkmate_1.8.2   
+##  [10] MLmetrics_1.1.1    magrittr_1.5       cluster_2.0.6     
+##  [13] ROCR_1.0-7         gclus_1.3.1        xts_0.9-7         
+##  [16] jpeg_0.1-8         colorspace_1.3-2   dplyr_0.7.2       
+##  [19] jsonlite_1.5       lme4_1.1-13        bindr_0.1         
+##  [22] glue_1.1.1         registry_0.3       gtable_0.2.0      
+##  [25] nnls_1.4           MatrixModels_0.4-1 car_2.1-5         
+##  [28] prabclus_2.2-6     quantmod_0.4-8     DEoptimR_1.0-8    
+##  [31] abind_1.4-5        SparseM_1.77       scales_0.4.1      
+##  [34] Rcpp_0.12.12       CORElearn_1.50.3   htmlTable_1.9     
+##  [37] xtable_1.8-2       foreign_0.8-67     mclust_5.2.3      
+##  [40] lava_1.5           prodlim_1.6.1      htmlwidgets_0.8   
+##  [43] httr_1.2.1         gplots_3.0.1       fpc_2.1-10        
+##  [46] acepack_1.4.1      pkgconfig_2.0.1    flexmix_2.3-14    
+##  [49] nnet_7.3-12        labeling_0.3       rlang_0.1.1.9000  
+##  [52] munsell_0.4.3      tools_3.4.0        evaluate_0.10     
+##  [55] stringr_1.2.0      yaml_2.1.14        ModelMetrics_1.1.0
+##  [58] robustbase_0.92-7  purrr_0.2.2.2      dendextend_1.5.2  
+##  [61] bindrcpp_0.2       coin_1.1-3         whisker_0.3-2     
+##  [64] mime_0.5           quantreg_5.33      gam_1.14-4        
+##  [67] compiler_3.4.0     pbkrtest_0.4-7     rstudioapi_0.6    
+##  [70] tibble_1.3.3       stringi_1.1.5      trimcluster_0.1-2 
+##  [73] Matrix_1.2-9       nloptr_1.0.4       combinat_0.0-8    
+##  [76] data.table_1.10.4  bitops_1.0-6       seriation_1.2-2   
+##  [79] httpuv_1.3.3       R6_2.2.2           TSP_1.1-5         
+##  [82] KernSmooth_2.23-15 gridExtra_2.2.1    codetools_0.2-15  
+##  [85] gtools_3.5.0       assertthat_0.2.0   rprojroot_1.2     
+##  [88] multcomp_1.4-6     diptest_0.75-7     mgcv_1.8-17       
+##  [91] quadprog_1.5-5     rpart_4.1-11       tidyr_0.6.3       
+##  [94] minqa_1.2.4        rmarkdown_1.5      TTR_0.23-1        
+##  [97] partykit_1.1-1     base64enc_0.1-3    shiny_1.0.3       
+## [100] ellipse_0.3-8</code></pre>
 
 </div>
             </section>

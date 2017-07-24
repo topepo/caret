@@ -15,7 +15,7 @@
   
   
   <meta property="og:description" content="Documentation for the <code>caret</code> package" />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  <meta name="github-repo" content="<a href="https://github.com/topepo/caret" class="uri">https://github.com/topepo/caret</a>" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="The caret Package" />
@@ -26,7 +26,7 @@
 <meta name="author" content="Max Kuhn">
 
 
-<meta name="date" content="2016-11-29">
+<meta name="date" content="2017-07-23">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -55,12 +55,14 @@
 <link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
 <script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
-<script src="libs/d3-3.5.3/./d3.min.js"></script>
-<script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
-<link href="libs/d3heatmapcore-0.0.0/heatmapcore.css" rel="stylesheet" />
-<script src="libs/d3heatmapcore-0.0.0/heatmapcore.js"></script>
-<script src="libs/d3-tip-0.6.6/index.js"></script>
-<script src="libs/d3heatmap-binding-0.6.1.1/d3heatmap.js"></script>
+<script src="libs/d3-4.5.0/d3.min.js"></script>
+<script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
+<link href="libs/plotlyjs-1.26.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.26.1/plotly-latest.min.js"></script>
+<script src="libs/plotly-binding-4.6.0/plotly.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
 
 
 <style type="text/css">
@@ -130,6 +132,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.1" data-path="data-splitting.html"><a href="data-splitting.html#simple-splitting-based-on-the-outcome"><i class="fa fa-check"></i><b>4.1</b> Simple Splitting Based on the Outcome</a></li>
 <li class="chapter" data-level="4.2" data-path="data-splitting.html"><a href="data-splitting.html#splitting-based-on-the-predictors"><i class="fa fa-check"></i><b>4.2</b> Splitting Based on the Predictors</a></li>
 <li class="chapter" data-level="4.3" data-path="data-splitting.html"><a href="data-splitting.html#data-splitting-for-time-series"><i class="fa fa-check"></i><b>4.3</b> Data Splitting for Time Series</a></li>
+<li class="chapter" data-level="4.4" data-path="data-splitting.html"><a href="data-splitting.html#simple-splitting-with-important-groups"><i class="fa fa-check"></i><b>4.4</b> Simple Splitting with Important Groups</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html"><i class="fa fa-check"></i><b>5</b> Model Training and Tuning</a><ul>
 <li class="chapter" data-level="5.1" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#model-training-and-parameter-tuning"><i class="fa fa-check"></i><b>5.1</b> Model Training and Parameter Tuning</a></li>
@@ -184,24 +187,25 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="7.0.29" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#oblique-tree"><i class="fa fa-check"></i><b>7.0.29</b> Oblique Tree</a></li>
 <li class="chapter" data-level="7.0.30" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ordinal-outcomes"><i class="fa fa-check"></i><b>7.0.30</b> Ordinal Outcomes</a></li>
 <li class="chapter" data-level="7.0.31" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#partial-least-squares"><i class="fa fa-check"></i><b>7.0.31</b> Partial Least Squares</a></li>
-<li class="chapter" data-level="7.0.32" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#polynomial-model"><i class="fa fa-check"></i><b>7.0.32</b> Polynomial Model</a></li>
-<li class="chapter" data-level="7.0.33" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#prototype-models"><i class="fa fa-check"></i><b>7.0.33</b> Prototype Models</a></li>
-<li class="chapter" data-level="7.0.34" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#quantile-regression"><i class="fa fa-check"></i><b>7.0.34</b> Quantile Regression</a></li>
-<li class="chapter" data-level="7.0.35" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#radial-basis-function"><i class="fa fa-check"></i><b>7.0.35</b> Radial Basis Function</a></li>
-<li class="chapter" data-level="7.0.36" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#random-forest"><i class="fa fa-check"></i><b>7.0.36</b> Random Forest</a></li>
-<li class="chapter" data-level="7.0.37" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#regularization"><i class="fa fa-check"></i><b>7.0.37</b> Regularization</a></li>
-<li class="chapter" data-level="7.0.38" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#relevance-vector-machines"><i class="fa fa-check"></i><b>7.0.38</b> Relevance Vector Machines</a></li>
-<li class="chapter" data-level="7.0.39" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ridge-regression"><i class="fa fa-check"></i><b>7.0.39</b> Ridge Regression</a></li>
-<li class="chapter" data-level="7.0.40" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-methods"><i class="fa fa-check"></i><b>7.0.40</b> Robust Methods</a></li>
-<li class="chapter" data-level="7.0.41" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-model"><i class="fa fa-check"></i><b>7.0.41</b> Robust Model</a></li>
-<li class="chapter" data-level="7.0.42" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#roc-curves"><i class="fa fa-check"></i><b>7.0.42</b> ROC Curves</a></li>
-<li class="chapter" data-level="7.0.43" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#rule-based-model"><i class="fa fa-check"></i><b>7.0.43</b> Rule-Based Model</a></li>
-<li class="chapter" data-level="7.0.44" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.44</b> Self-Organising Maps</a></li>
-<li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.45</b> String Kernel</a></li>
-<li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.46</b> Support Vector Machines</a></li>
-<li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.47</b> Text Mining</a></li>
-<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.48</b> Tree-Based Model</a></li>
-<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.49</b> Two Class Only</a></li>
+<li class="chapter" data-level="7.0.32" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#patient-rule-induction-method"><i class="fa fa-check"></i><b>7.0.32</b> Patient Rule Induction Method</a></li>
+<li class="chapter" data-level="7.0.33" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#polynomial-model"><i class="fa fa-check"></i><b>7.0.33</b> Polynomial Model</a></li>
+<li class="chapter" data-level="7.0.34" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#prototype-models"><i class="fa fa-check"></i><b>7.0.34</b> Prototype Models</a></li>
+<li class="chapter" data-level="7.0.35" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#quantile-regression"><i class="fa fa-check"></i><b>7.0.35</b> Quantile Regression</a></li>
+<li class="chapter" data-level="7.0.36" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#radial-basis-function"><i class="fa fa-check"></i><b>7.0.36</b> Radial Basis Function</a></li>
+<li class="chapter" data-level="7.0.37" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#random-forest"><i class="fa fa-check"></i><b>7.0.37</b> Random Forest</a></li>
+<li class="chapter" data-level="7.0.38" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#regularization"><i class="fa fa-check"></i><b>7.0.38</b> Regularization</a></li>
+<li class="chapter" data-level="7.0.39" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#relevance-vector-machines"><i class="fa fa-check"></i><b>7.0.39</b> Relevance Vector Machines</a></li>
+<li class="chapter" data-level="7.0.40" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ridge-regression"><i class="fa fa-check"></i><b>7.0.40</b> Ridge Regression</a></li>
+<li class="chapter" data-level="7.0.41" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-methods"><i class="fa fa-check"></i><b>7.0.41</b> Robust Methods</a></li>
+<li class="chapter" data-level="7.0.42" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-model"><i class="fa fa-check"></i><b>7.0.42</b> Robust Model</a></li>
+<li class="chapter" data-level="7.0.43" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#roc-curves"><i class="fa fa-check"></i><b>7.0.43</b> ROC Curves</a></li>
+<li class="chapter" data-level="7.0.44" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#rule-based-model"><i class="fa fa-check"></i><b>7.0.44</b> Rule-Based Model</a></li>
+<li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.45</b> Self-Organising Maps</a></li>
+<li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.46</b> String Kernel</a></li>
+<li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.47</b> Support Vector Machines</a></li>
+<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.48</b> Text Mining</a></li>
+<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.49</b> Tree-Based Model</a></li>
+<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.50</b> Two Class Only</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="models-clustered-by-tag-similarity.html"><a href="models-clustered-by-tag-similarity.html"><i class="fa fa-check"></i><b>8</b> Models Clustered by Tag Similarity</a></li>
 <li class="chapter" data-level="9" data-path="parallel-processing.html"><a href="parallel-processing.html"><i class="fa fa-check"></i><b>9</b> Parallel Processing</a></li>
@@ -391,6 +395,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="train-models-by-tag.html#Oblique_Tree">Oblique Tree</a></li>
 <li><a href="train-models-by-tag.html#Ordinal_Outcomes">Ordinal Outcomes</a></li>
 <li><a href="train-models-by-tag.html#Partial_Least_Squares">Partial Least Squares</a></li>
+<li><a href="train-models-by-tag.html#Patient_Rule_Induction_Method">Patient Rule Induction Method</a></li>
 <li><a href="train-models-by-tag.html#Polynomial_Model">Polynomial Model</a></li>
 <li><a href="train-models-by-tag.html#Prototype_Models">Prototype Models</a></li>
 <li><a href="train-models-by-tag.html#Quantile_Regression">Quantile Regression</a></li>
@@ -627,6 +632,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>loss_type</code> (Loss)</li>
 </ul>
 <p>Required packages: <code>deepboost</code></p>
+<p><strong>eXtreme Gradient Boosting</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;xgbTree&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>nrounds</code> (# Boosting Iterations)</li>
+<li><code>max_depth</code> (Max Tree Depth)</li>
+<li><code>eta</code> (Shrinkage)</li>
+<li><code>gamma</code> (Minimum Loss Reduction)</li>
+<li><code>colsample_bytree</code> (Subsample Ratio of Columns)</li>
+<li><code>min_child_weight</code> (Minimum Sum of Instance Weight)</li>
+<li><code>subsample</code> (Subsample Percentage)</li>
+</ul>
+<p>Required packages: <code>xgboost</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Flexible Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;fda&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -885,7 +905,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>Required packages: <code>party</code></p>
 <p>A model-specific variable importance metric is available.</p>
-<p><strong>Ensembles of Generalized Lienar Models</strong></p>
+<p><strong>Ensembles of Generalized Linear Models</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;randomGLM&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
@@ -1066,6 +1086,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prior</code> (Prior Probability)</li>
 </ul>
 <p>Required packages: <code>bnclassify</code></p>
+<p><strong>Naive Bayes</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;naive_bayes&#39;</span></code></pre></div>
+<p>Type: Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>fL</code> (Laplace Correction)</li>
+<li><code>usekernel</code> (Distribution Type)</li>
+<li><code>adjust</code> (Bandwidth Adjustment)</li>
+</ul>
+<p>Required packages: <code>naivebayes</code></p>
 <p><strong>Naive Bayes</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;nb&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1376,7 +1406,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>Required packages: <code>xgboost</code>, <code>plyr</code></p>
 <p>A model-specific variable importance metric is available.</p>
-<p><strong>glmnet</strong></p>
+<p><strong>Gradient Boosting Machines</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm_h2o&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
@@ -1792,16 +1822,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Type: Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>ipred</code></p>
-<p><strong>Stepwise Diagonal Linear Discriminant Analysis</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;sddaLDA&#39;</span></code></pre></div>
-<p>Type: Classification</p>
-<p>No tuning parameters for this model</p>
-<p>Required packages: <code>SDDA</code></p>
-<p><strong>Stepwise Diagonal Quadratic Discriminant Analysis</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;sddaQDA&#39;</span></code></pre></div>
-<p>Type: Classification</p>
-<p>No tuning parameters for this model</p>
-<p>Required packages: <code>SDDA</code></p>
 <div id="Distance_Weighted_Discrimination">
 
 </div>
@@ -2067,24 +2087,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>loss_type</code> (Loss)</li>
 </ul>
 <p>Required packages: <code>deepboost</code></p>
-<p><strong>Ensemble Partial Least Squares Regression</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;enpls&#39;</span></code></pre></div>
-<p>Type: Regression</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>maxcomp</code> (Max. #Components)</li>
-</ul>
-<p>Required packages: <code>enpls</code></p>
-<p><strong>Ensemble Partial Least Squares Regression with Feature Selection</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;enpls.fs&#39;</span></code></pre></div>
-<p>Type: Regression</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>maxcomp</code> (Max. #Components)</li>
-<li><code>threshold</code> (Importance Cutoff)</li>
-</ul>
-<p>Required packages: <code>enpls</code></p>
-<p><strong>Ensembles of Generalized Lienar Models</strong></p>
+<p><strong>Ensembles of Generalized Linear Models</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;randomGLM&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
@@ -2119,7 +2122,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>Required packages: <code>xgboost</code>, <code>plyr</code></p>
 <p>A model-specific variable importance metric is available.</p>
-<p><strong>glmnet</strong></p>
+<p><strong>Gradient Boosting Machines</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm_h2o&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
@@ -2255,14 +2258,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>Required packages: <code>randomForest</code>, <code>inTrees</code>, <code>plyr</code></p>
 <p>A model-specific variable importance metric is available.</p>
-<p><strong>Random Forest with Additional Feature Selection</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;Boruta&#39;</span></code></pre></div>
-<p>Type: Regression, Classification</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>mtry</code> (#Randomly Selected Predictors)</li>
-</ul>
-<p>Required packages: <code>Boruta</code>, <code>randomForest</code></p>
 <p><strong>Regularized Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;RRF&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2487,14 +2482,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>direction</code> (Search Direction)</li>
 </ul>
 <p>Required packages: <code>klaR</code>, <code>MASS</code></p>
-<p><strong>Random Forest with Additional Feature Selection</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;Boruta&#39;</span></code></pre></div>
-<p>Type: Regression, Classification</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>mtry</code> (#Randomly Selected Predictors)</li>
-</ul>
-<p>Required packages: <code>Boruta</code>, <code>randomForest</code></p>
 <p><strong>Ridge Regression with Variable Selection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;foba&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -2504,16 +2491,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (L2 Penalty)</li>
 </ul>
 <p>Required packages: <code>foba</code></p>
-<p><strong>Stepwise Diagonal Linear Discriminant Analysis</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;sddaLDA&#39;</span></code></pre></div>
-<p>Type: Classification</p>
-<p>No tuning parameters for this model</p>
-<p>Required packages: <code>SDDA</code></p>
-<p><strong>Stepwise Diagonal Quadratic Discriminant Analysis</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;sddaQDA&#39;</span></code></pre></div>
-<p>Type: Classification</p>
-<p>No tuning parameters for this model</p>
-<p>Required packages: <code>SDDA</code></p>
 <div id="Gaussian_Process">
 
 </div>
@@ -2629,7 +2606,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>Required packages: <code>plyr</code>, <code>mboost</code></p>
 <p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
-<p><strong>Ensembles of Generalized Lienar Models</strong></p>
+<p><strong>Ensembles of Generalized Linear Models</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;randomGLM&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
@@ -2705,6 +2682,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
 <p>Required packages: <code>glmnet</code>, <code>Matrix</code></p>
+<p>A model-specific variable importance metric is available.</p>
+<p><strong>Multi-Step Adaptive MCP-Net</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;msaenet&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alphas</code> (Alpha)</li>
+<li><code>nsteps</code> (#Adaptive Estimation Steps)</li>
+<li><code>scale</code> (Adaptive Weight Scaling Factor)</li>
+</ul>
+<p>Required packages: <code>msaenet</code></p>
 <p>A model-specific variable importance metric is available.</p>
 <p><strong>Negative Binomial Generalized Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glm.nb&#39;</span></code></pre></div>
@@ -3153,19 +3141,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>MASS</code></p>
 <p><strong>glmnet</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm_h2o&#39;</span></code></pre></div>
-<p>Type: Regression, Classification</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>ntrees</code> (# Boosting Iterations)</li>
-<li><code>max_depth</code> (Max Tree Depth)</li>
-<li><code>min_rows</code> (Min. Terminal Node Size)</li>
-<li><code>learn_rate</code> (Shrinkage)</li>
-<li><code>col_sample_rate</code> (#Randomly Selected Predictors)</li>
-</ul>
-<p>Required packages: <code>h2o</code></p>
-<p>A model-specific variable importance metric is available.</p>
-<p><strong>glmnet</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmnet_h2o&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
@@ -3184,6 +3159,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (Regularization Parameter)</li>
 </ul>
 <p>Required packages: <code>glmnet</code>, <code>Matrix</code></p>
+<p>A model-specific variable importance metric is available.</p>
+<p><strong>Gradient Boosting Machines</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm_h2o&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>ntrees</code> (# Boosting Iterations)</li>
+<li><code>max_depth</code> (Max Tree Depth)</li>
+<li><code>min_rows</code> (Min. Terminal Node Size)</li>
+<li><code>learn_rate</code> (Shrinkage)</li>
+<li><code>col_sample_rate</code> (#Randomly Selected Predictors)</li>
+</ul>
+<p>Required packages: <code>h2o</code></p>
 <p>A model-specific variable importance metric is available.</p>
 <p><strong>Least Angle Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;lars&#39;</span></code></pre></div>
@@ -3228,6 +3216,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>rules</code> (Rules)</li>
 </ul>
 <p>Required packages: <code>RWeka</code></p>
+<p><strong>Multi-Step Adaptive MCP-Net</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;msaenet&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alphas</code> (Alpha)</li>
+<li><code>nsteps</code> (#Adaptive Estimation Steps)</li>
+<li><code>scale</code> (Adaptive Weight Scaling Factor)</li>
+</ul>
+<p>Required packages: <code>msaenet</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Multivariate Adaptive Regression Spline</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;earth&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -3925,6 +3924,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>step</code> (#Steps)</li>
 </ul>
 <p>Required packages: <code>lars</code></p>
+<p><strong>Multi-Step Adaptive MCP-Net</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;msaenet&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alphas</code> (Alpha)</li>
+<li><code>nsteps</code> (#Adaptive Estimation Steps)</li>
+<li><code>scale</code> (Adaptive Weight Scaling Factor)</li>
+</ul>
+<p>Required packages: <code>msaenet</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Non-Convex Penalized Quantile Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rqnc&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -3971,6 +3981,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (L1 Penalty)</li>
 </ul>
 <p>Required packages: <code>rqPen</code></p>
+<p><strong>Regularized Logistic Regression</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;regLogistic&#39;</span></code></pre></div>
+<p>Type: Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>cost</code> (Cost)</li>
+<li><code>loss</code> (Loss Function)</li>
+<li><code>epsilon</code> (Tolerance)</li>
+</ul>
+<p>Required packages: <code>LiblineaR</code></p>
 <p><strong>Relaxed Lasso</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;relaxo&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -4128,6 +4148,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>decay</code> (Weight Decay)</li>
 </ul>
 <p>Required packages: <code>RSNNS</code></p>
+<p><strong>Multi-Step Adaptive MCP-Net</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;msaenet&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alphas</code> (Alpha)</li>
+<li><code>nsteps</code> (#Adaptive Estimation Steps)</li>
+<li><code>scale</code> (Adaptive Weight Scaling Factor)</li>
+</ul>
+<p>Required packages: <code>msaenet</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Multilayer Perceptron Network by Stochastic Gradient Descent</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpSGD&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4253,6 +4284,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>negativeThreshold</code> (Activation Limit for Conflicting Classes)</li>
 </ul>
 <p>Required packages: <code>RSNNS</code></p>
+<p><strong>Regularized Logistic Regression</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;regLogistic&#39;</span></code></pre></div>
+<p>Type: Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>cost</code> (Cost)</li>
+<li><code>loss</code> (Loss Function)</li>
+<li><code>epsilon</code> (Tolerance)</li>
+</ul>
+<p>Required packages: <code>LiblineaR</code></p>
 <p><strong>Relaxed Lasso</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;relaxo&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -4356,7 +4397,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>shrinkage</code> (Shrinkage Type)</li>
 </ul>
 <p>Required packages: <code>sparsediscrim</code></p>
-<p><strong>Ensembles of Generalized Lienar Models</strong></p>
+<p><strong>Ensembles of Generalized Linear Models</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;randomGLM&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
@@ -4541,6 +4582,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Type: Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>HiDimDA</code></p>
+<p><strong>Multi-Step Adaptive MCP-Net</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;msaenet&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alphas</code> (Alpha)</li>
+<li><code>nsteps</code> (#Adaptive Estimation Steps)</li>
+<li><code>scale</code> (Adaptive Weight Scaling Factor)</li>
+</ul>
+<p>Required packages: <code>msaenet</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Nearest Shrunken Centroids</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;pam&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -4650,6 +4702,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>estimator</code> (Regularization Method)</li>
 </ul>
 <p>Required packages: <code>sparsediscrim</code></p>
+<p><strong>Regularized Logistic Regression</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;regLogistic&#39;</span></code></pre></div>
+<p>Type: Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>cost</code> (Cost)</li>
+<li><code>loss</code> (Loss Function)</li>
+<li><code>epsilon</code> (Tolerance)</li>
+</ul>
+<p>Required packages: <code>LiblineaR</code></p>
 <p><strong>Robust Linear Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;Linda&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -4713,11 +4775,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Type: Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>ipred</code></p>
-<p><strong>Stepwise Diagonal Linear Discriminant Analysis</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;sddaLDA&#39;</span></code></pre></div>
-<p>Type: Classification</p>
-<p>No tuning parameters for this model</p>
-<p>Required packages: <code>SDDA</code></p>
 <p><strong>Support Vector Machines with Linear Kernel</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;svmLinear&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4907,6 +4964,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>rules</code> (Rules)</li>
 </ul>
 <p>Required packages: <code>RWeka</code></p>
+<p><strong>Multi-Step Adaptive MCP-Net</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;msaenet&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alphas</code> (Alpha)</li>
+<li><code>nsteps</code> (#Adaptive Estimation Steps)</li>
+<li><code>scale</code> (Adaptive Weight Scaling Factor)</li>
+</ul>
+<p>Required packages: <code>msaenet</code></p>
+<p>A model-specific variable importance metric is available.</p>
 <p><strong>Non-Convex Penalized Quantile Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rqnc&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -5420,6 +5488,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>bag</code> (Bagging)</li>
 </ul>
 <p>Required packages: <code>nnet</code></p>
+<p><strong>Monotone Multi-Layer Perceptron Neural Network</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;monmlp&#39;</span></code></pre></div>
+<p>Type: Classification, Regression</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>hidden1</code> (#Hidden Units)</li>
+<li><code>n.ensemble</code> (#Models)</li>
+</ul>
+<p>Required packages: <code>monmlp</code></p>
 <p><strong>Multi-Layer Perceptron</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlp&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -5659,23 +5736,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="partial-least-squares" class="section level3">
 <h3><span class="header-section-number">7.0.31</span> Partial Least Squares</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
-<p><strong>Ensemble Partial Least Squares Regression</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;enpls&#39;</span></code></pre></div>
-<p>Type: Regression</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>maxcomp</code> (Max. #Components)</li>
-</ul>
-<p>Required packages: <code>enpls</code></p>
-<p><strong>Ensemble Partial Least Squares Regression with Feature Selection</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;enpls.fs&#39;</span></code></pre></div>
-<p>Type: Regression</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>maxcomp</code> (Max. #Components)</li>
-<li><code>threshold</code> (Importance Cutoff)</li>
-</ul>
-<p>Required packages: <code>enpls</code></p>
 <p><strong>Generalized Partial Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gpls&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -5747,12 +5807,29 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>kappa</code> (Kappa)</li>
 </ul>
 <p>Required packages: <code>spls</code></p>
+<div id="Patient_Rule_Induction_Method">
+
+</div>
+</div>
+<div id="patient-rule-induction-method" class="section level3">
+<h3><span class="header-section-number">7.0.32</span> Patient Rule Induction Method</h3>
+<p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
+<p><strong>Patient Rule Induction Method</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;PRIM&#39;</span></code></pre></div>
+<p>Type: Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>peel.alpha</code> (peeling quantile)</li>
+<li><code>paste.alpha</code> (pasting quantile)</li>
+<li><code>mass.min</code> (minimum mass)</li>
+</ul>
+<p>Required packages: <code>supervisedPRIM</code></p>
 <div id="Polynomial_Model">
 
 </div>
 </div>
 <div id="polynomial-model" class="section level3">
-<h3><span class="header-section-number">7.0.32</span> Polynomial Model</h3>
+<h3><span class="header-section-number">7.0.33</span> Polynomial Model</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>Diagonal Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;dda&#39;</span></code></pre></div>
@@ -5873,11 +5950,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Type: Classification</p>
 <p>No tuning parameters for this model</p>
 <p>Required packages: <code>rrcov</code></p>
-<p><strong>Stepwise Diagonal Quadratic Discriminant Analysis</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;sddaQDA&#39;</span></code></pre></div>
-<p>Type: Classification</p>
-<p>No tuning parameters for this model</p>
-<p>Required packages: <code>SDDA</code></p>
 <p><strong>Support Vector Machines with Polynomial Kernel</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;svmPoly&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -5893,7 +5965,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="prototype-models" class="section level3">
-<h3><span class="header-section-number">7.0.33</span> Prototype Models</h3>
+<h3><span class="header-section-number">7.0.34</span> Prototype Models</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>Cubist</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;cubist&#39;</span></code></pre></div>
@@ -5983,7 +6055,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="quantile-regression" class="section level3">
-<h3><span class="header-section-number">7.0.34</span> Quantile Regression</h3>
+<h3><span class="header-section-number">7.0.35</span> Quantile Regression</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>Non-Convex Penalized Quantile Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rqnc&#39;</span></code></pre></div>
@@ -6025,7 +6097,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="radial-basis-function" class="section level3">
-<h3><span class="header-section-number">7.0.35</span> Radial Basis Function</h3>
+<h3><span class="header-section-number">7.0.36</span> Radial Basis Function</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>Distance Weighted Discrimination with Radial Basis Function Kernel</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;dwdRadial&#39;</span></code></pre></div>
@@ -6137,7 +6209,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="random-forest" class="section level3">
-<h3><span class="header-section-number">7.0.36</span> Random Forest</h3>
+<h3><span class="header-section-number">7.0.37</span> Random Forest</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>Conditional Inference Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;cforest&#39;</span></code></pre></div>
@@ -6251,14 +6323,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>Required packages: <code>randomForest</code>, <code>inTrees</code>, <code>plyr</code></p>
 <p>A model-specific variable importance metric is available.</p>
-<p><strong>Random Forest with Additional Feature Selection</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;Boruta&#39;</span></code></pre></div>
-<p>Type: Regression, Classification</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>mtry</code> (#Randomly Selected Predictors)</li>
-</ul>
-<p>Required packages: <code>Boruta</code>, <code>randomForest</code></p>
 <p><strong>Regularized Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;RRF&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -6293,7 +6357,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="regularization" class="section level3">
-<h3><span class="header-section-number">7.0.37</span> Regularization</h3>
+<h3><span class="header-section-number">7.0.38</span> Regularization</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>Bayesian Regularized Neural Networks</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;brnn&#39;</span></code></pre></div>
@@ -6394,7 +6458,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="relevance-vector-machines" class="section level3">
-<h3><span class="header-section-number">7.0.38</span> Relevance Vector Machines</h3>
+<h3><span class="header-section-number">7.0.39</span> Relevance Vector Machines</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>Relevance Vector Machines with Linear Kernel</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rvmLinear&#39;</span></code></pre></div>
@@ -6423,7 +6487,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="ridge-regression" class="section level3">
-<h3><span class="header-section-number">7.0.39</span> Ridge Regression</h3>
+<h3><span class="header-section-number">7.0.40</span> Ridge Regression</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>Oblique Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ORFridge&#39;</span></code></pre></div>
@@ -6447,7 +6511,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="robust-methods" class="section level3">
-<h3><span class="header-section-number">7.0.40</span> Robust Methods</h3>
+<h3><span class="header-section-number">7.0.41</span> Robust Methods</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>L2 Regularized Linear Support Vector Machines with Class Weights</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;svmLinearWeights2&#39;</span></code></pre></div>
@@ -6477,6 +6541,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>weight</code> (Class Weight)</li>
 </ul>
 <p>Required packages: <code>e1071</code></p>
+<p><strong>Regularized Logistic Regression</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;regLogistic&#39;</span></code></pre></div>
+<p>Type: Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>cost</code> (Cost)</li>
+<li><code>loss</code> (Loss Function)</li>
+<li><code>epsilon</code> (Tolerance)</li>
+</ul>
+<p>Required packages: <code>LiblineaR</code></p>
 <p><strong>Relevance Vector Machines with Linear Kernel</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rvmLinear&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -6585,7 +6659,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="robust-model" class="section level3">
-<h3><span class="header-section-number">7.0.41</span> Robust Model</h3>
+<h3><span class="header-section-number">7.0.42</span> Robust Model</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>Quantile Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;qrf&#39;</span></code></pre></div>
@@ -6644,7 +6718,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="roc-curves" class="section level3">
-<h3><span class="header-section-number">7.0.42</span> ROC Curves</h3>
+<h3><span class="header-section-number">7.0.43</span> ROC Curves</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>ROC-Based Classifier</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rocc&#39;</span></code></pre></div>
@@ -6659,7 +6733,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="rule-based-model" class="section level3">
-<h3><span class="header-section-number">7.0.43</span> Rule-Based Model</h3>
+<h3><span class="header-section-number">7.0.44</span> Rule-Based Model</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>Adaptive-Network-Based Fuzzy Inference System</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ANFIS&#39;</span></code></pre></div>
@@ -6827,6 +6901,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>rules</code> (Rules)</li>
 </ul>
 <p>Required packages: <code>RWeka</code></p>
+<p><strong>Patient Rule Induction Method</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;PRIM&#39;</span></code></pre></div>
+<p>Type: Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>peel.alpha</code> (peeling quantile)</li>
+<li><code>paste.alpha</code> (pasting quantile)</li>
+<li><code>mass.min</code> (minimum mass)</li>
+</ul>
+<p>Required packages: <code>supervisedPRIM</code></p>
 <p><strong>Random Forest Rule-Based Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rfRules&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -6902,36 +6986,26 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="self-organising-maps" class="section level3">
-<h3><span class="header-section-number">7.0.44</span> Self-Organising Maps</h3>
+<h3><span class="header-section-number">7.0.45</span> Self-Organising Maps</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
-<p><strong>Self-Organizing Map</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;bdk&#39;</span></code></pre></div>
-<p>Type: Classification, Regression</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>xdim</code> (Row)</li>
-<li><code>ydim</code> (Columns)</li>
-<li><code>xweight</code> (X Weight)</li>
-<li><code>topo</code> (Topology)</li>
-</ul>
-<p>Required packages: <code>kohonen</code></p>
 <p><strong>Self-Organizing Maps</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;xyf&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
 <p>Tuning parameters:</p>
 <ul>
-<li><code>xdim</code> (Row)</li>
+<li><code>xdim</code> (Rows)</li>
 <li><code>ydim</code> (Columns)</li>
-<li><code>xweight</code> (X Weight)</li>
+<li><code>user.weights</code> (Layer Weight)</li>
 <li><code>topo</code> (Topology)</li>
 </ul>
 <p>Required packages: <code>kohonen</code></p>
+<p>Notes: As of version 3.0.0 of the kohonen package, the argument <code>user.weights</code> replaces the old <code>alpha</code> parameter. <code>user.weights</code> is usually a vector of relative weights such as <code>c(1, 3)</code> but is parameterized here as a proportion such as <code>c(1-.75, .75)</code> where the .75 is the value of the tuning parameter passed to <code>train</code> and indicates that the outcome layer has 3 times the weight as the predictor layer.</p>
 <div id="String_Kernel">
 
 </div>
 </div>
 <div id="string-kernel" class="section level3">
-<h3><span class="header-section-number">7.0.45</span> String Kernel</h3>
+<h3><span class="header-section-number">7.0.46</span> String Kernel</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>Support Vector Machines with Boundrange String Kernel</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;svmBoundrangeString&#39;</span></code></pre></div>
@@ -6965,7 +7039,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="support-vector-machines" class="section level3">
-<h3><span class="header-section-number">7.0.46</span> Support Vector Machines</h3>
+<h3><span class="header-section-number">7.0.47</span> Support Vector Machines</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>L2 Regularized Linear Support Vector Machines with Class Weights</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;svmLinearWeights2&#39;</span></code></pre></div>
@@ -7117,7 +7191,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="text-mining" class="section level3">
-<h3><span class="header-section-number">7.0.47</span> Text Mining</h3>
+<h3><span class="header-section-number">7.0.48</span> Text Mining</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>Support Vector Machines with Boundrange String Kernel</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;svmBoundrangeString&#39;</span></code></pre></div>
@@ -7151,7 +7225,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="tree-based-model" class="section level3">
-<h3><span class="header-section-number">7.0.48</span> Tree-Based Model</h3>
+<h3><span class="header-section-number">7.0.49</span> Tree-Based Model</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>AdaBoost Classification Trees</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;adaboost&#39;</span></code></pre></div>
@@ -7369,7 +7443,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>Required packages: <code>xgboost</code>, <code>plyr</code></p>
 <p>A model-specific variable importance metric is available.</p>
-<p><strong>glmnet</strong></p>
+<p><strong>Gradient Boosting Machines</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gbm_h2o&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
 <p>Tuning parameters:</p>
@@ -7401,14 +7475,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>variable.selection</code> (Variable Selection Method)</li>
 </ul>
 <p>Required packages: <code>oblique.tree</code></p>
-<p><strong>Random Forest with Additional Feature Selection</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;Boruta&#39;</span></code></pre></div>
-<p>Type: Regression, Classification</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>mtry</code> (#Randomly Selected Predictors)</li>
-</ul>
-<p>Required packages: <code>Boruta</code>, <code>randomForest</code></p>
 <p><strong>Rotation Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rotationForest&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7470,7 +7536,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="two-class-only" class="section level3">
-<h3><span class="header-section-number">7.0.49</span> Two Class Only</h3>
+<h3><span class="header-section-number">7.0.50</span> Two Class Only</h3>
 <p>(back to <a href="train-models-by-tag.html#top">contents</a>)</p>
 <p><strong>AdaBoost Classification Trees</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;adaboost&#39;</span></code></pre></div>

@@ -15,7 +15,7 @@
   
   
   <meta property="og:description" content="Documentation for the <code>caret</code> package" />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  <meta name="github-repo" content="<a href="https://github.com/topepo/caret" class="uri">https://github.com/topepo/caret</a>" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="The caret Package" />
@@ -26,7 +26,7 @@
 <meta name="author" content="Max Kuhn">
 
 
-<meta name="date" content="2016-11-29">
+<meta name="date" content="2017-07-23">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -55,12 +55,14 @@
 <link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
 <script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
-<script src="libs/d3-3.5.3/./d3.min.js"></script>
-<script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
-<link href="libs/d3heatmapcore-0.0.0/heatmapcore.css" rel="stylesheet" />
-<script src="libs/d3heatmapcore-0.0.0/heatmapcore.js"></script>
-<script src="libs/d3-tip-0.6.6/index.js"></script>
-<script src="libs/d3heatmap-binding-0.6.1.1/d3heatmap.js"></script>
+<script src="libs/d3-4.5.0/d3.min.js"></script>
+<script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
+<link href="libs/plotlyjs-1.26.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.26.1/plotly-latest.min.js"></script>
+<script src="libs/plotly-binding-4.6.0/plotly.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
 
 
 <style type="text/css">
@@ -130,6 +132,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.1" data-path="data-splitting.html"><a href="data-splitting.html#simple-splitting-based-on-the-outcome"><i class="fa fa-check"></i><b>4.1</b> Simple Splitting Based on the Outcome</a></li>
 <li class="chapter" data-level="4.2" data-path="data-splitting.html"><a href="data-splitting.html#splitting-based-on-the-predictors"><i class="fa fa-check"></i><b>4.2</b> Splitting Based on the Predictors</a></li>
 <li class="chapter" data-level="4.3" data-path="data-splitting.html"><a href="data-splitting.html#data-splitting-for-time-series"><i class="fa fa-check"></i><b>4.3</b> Data Splitting for Time Series</a></li>
+<li class="chapter" data-level="4.4" data-path="data-splitting.html"><a href="data-splitting.html#simple-splitting-with-important-groups"><i class="fa fa-check"></i><b>4.4</b> Simple Splitting with Important Groups</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html"><i class="fa fa-check"></i><b>5</b> Model Training and Tuning</a><ul>
 <li class="chapter" data-level="5.1" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#model-training-and-parameter-tuning"><i class="fa fa-check"></i><b>5.1</b> Model Training and Parameter Tuning</a></li>
@@ -184,24 +187,25 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="7.0.29" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#oblique-tree"><i class="fa fa-check"></i><b>7.0.29</b> Oblique Tree</a></li>
 <li class="chapter" data-level="7.0.30" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ordinal-outcomes"><i class="fa fa-check"></i><b>7.0.30</b> Ordinal Outcomes</a></li>
 <li class="chapter" data-level="7.0.31" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#partial-least-squares"><i class="fa fa-check"></i><b>7.0.31</b> Partial Least Squares</a></li>
-<li class="chapter" data-level="7.0.32" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#polynomial-model"><i class="fa fa-check"></i><b>7.0.32</b> Polynomial Model</a></li>
-<li class="chapter" data-level="7.0.33" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#prototype-models"><i class="fa fa-check"></i><b>7.0.33</b> Prototype Models</a></li>
-<li class="chapter" data-level="7.0.34" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#quantile-regression"><i class="fa fa-check"></i><b>7.0.34</b> Quantile Regression</a></li>
-<li class="chapter" data-level="7.0.35" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#radial-basis-function"><i class="fa fa-check"></i><b>7.0.35</b> Radial Basis Function</a></li>
-<li class="chapter" data-level="7.0.36" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#random-forest"><i class="fa fa-check"></i><b>7.0.36</b> Random Forest</a></li>
-<li class="chapter" data-level="7.0.37" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#regularization"><i class="fa fa-check"></i><b>7.0.37</b> Regularization</a></li>
-<li class="chapter" data-level="7.0.38" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#relevance-vector-machines"><i class="fa fa-check"></i><b>7.0.38</b> Relevance Vector Machines</a></li>
-<li class="chapter" data-level="7.0.39" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ridge-regression"><i class="fa fa-check"></i><b>7.0.39</b> Ridge Regression</a></li>
-<li class="chapter" data-level="7.0.40" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-methods"><i class="fa fa-check"></i><b>7.0.40</b> Robust Methods</a></li>
-<li class="chapter" data-level="7.0.41" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-model"><i class="fa fa-check"></i><b>7.0.41</b> Robust Model</a></li>
-<li class="chapter" data-level="7.0.42" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#roc-curves"><i class="fa fa-check"></i><b>7.0.42</b> ROC Curves</a></li>
-<li class="chapter" data-level="7.0.43" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#rule-based-model"><i class="fa fa-check"></i><b>7.0.43</b> Rule-Based Model</a></li>
-<li class="chapter" data-level="7.0.44" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.44</b> Self-Organising Maps</a></li>
-<li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.45</b> String Kernel</a></li>
-<li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.46</b> Support Vector Machines</a></li>
-<li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.47</b> Text Mining</a></li>
-<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.48</b> Tree-Based Model</a></li>
-<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.49</b> Two Class Only</a></li>
+<li class="chapter" data-level="7.0.32" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#patient-rule-induction-method"><i class="fa fa-check"></i><b>7.0.32</b> Patient Rule Induction Method</a></li>
+<li class="chapter" data-level="7.0.33" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#polynomial-model"><i class="fa fa-check"></i><b>7.0.33</b> Polynomial Model</a></li>
+<li class="chapter" data-level="7.0.34" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#prototype-models"><i class="fa fa-check"></i><b>7.0.34</b> Prototype Models</a></li>
+<li class="chapter" data-level="7.0.35" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#quantile-regression"><i class="fa fa-check"></i><b>7.0.35</b> Quantile Regression</a></li>
+<li class="chapter" data-level="7.0.36" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#radial-basis-function"><i class="fa fa-check"></i><b>7.0.36</b> Radial Basis Function</a></li>
+<li class="chapter" data-level="7.0.37" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#random-forest"><i class="fa fa-check"></i><b>7.0.37</b> Random Forest</a></li>
+<li class="chapter" data-level="7.0.38" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#regularization"><i class="fa fa-check"></i><b>7.0.38</b> Regularization</a></li>
+<li class="chapter" data-level="7.0.39" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#relevance-vector-machines"><i class="fa fa-check"></i><b>7.0.39</b> Relevance Vector Machines</a></li>
+<li class="chapter" data-level="7.0.40" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ridge-regression"><i class="fa fa-check"></i><b>7.0.40</b> Ridge Regression</a></li>
+<li class="chapter" data-level="7.0.41" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-methods"><i class="fa fa-check"></i><b>7.0.41</b> Robust Methods</a></li>
+<li class="chapter" data-level="7.0.42" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-model"><i class="fa fa-check"></i><b>7.0.42</b> Robust Model</a></li>
+<li class="chapter" data-level="7.0.43" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#roc-curves"><i class="fa fa-check"></i><b>7.0.43</b> ROC Curves</a></li>
+<li class="chapter" data-level="7.0.44" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#rule-based-model"><i class="fa fa-check"></i><b>7.0.44</b> Rule-Based Model</a></li>
+<li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.45</b> Self-Organising Maps</a></li>
+<li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.46</b> String Kernel</a></li>
+<li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.47</b> Support Vector Machines</a></li>
+<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.48</b> Text Mining</a></li>
+<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.49</b> Tree-Based Model</a></li>
+<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.50</b> Two Class Only</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="models-clustered-by-tag-similarity.html"><a href="models-clustered-by-tag-similarity.html"><i class="fa fa-check"></i><b>8</b> Models Clustered by Tag Similarity</a></li>
 <li class="chapter" data-level="9" data-path="parallel-processing.html"><a href="parallel-processing.html"><i class="fa fa-check"></i><b>9</b> Parallel Processing</a></li>
@@ -373,7 +377,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="creating-dummy-variables" class="section level2">
 <h2><span class="header-section-number">3.1</span> Creating Dummy Variables</h2>
 <p>The function <code>dummyVars</code> can be used to generate a complete (less than full rank parameterized) set of dummy variables from one or more factors. The function takes a formula and a data set and outputs an object that can be used to create the dummy variables using the predict method.</p>
-<p>For example, the <code>etitanic</code> data set in the <a href="http://cran.r-project.org/web/packages/earth/index.html"><code>earth</code></a> package includes two factors: 1st, 2nd, 3rd) and <code>sex</code> (with levels female, male). The base R function <code>model.matrix</code> would generate the following variables:</p>
+<p>For example, the <code>etitanic</code> data set in the <a href="http://cran.r-project.org/web/packages/earth/index.html"><code>earth</code></a> package includes two factors: <code>pclass</code> (passenger class, with levels 1st, 2nd, 3rd) and <code>sex</code> (with levels female, male). The base R function <code>model.matrix</code> would generate the following variables:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(earth)
 <span class="kw">data</span>(etitanic)
 <span class="kw">head</span>(<span class="kw">model.matrix</span>(survived ~<span class="st"> </span>., <span class="dt">data =</span> etitanic))</code></pre></div>
@@ -448,17 +452,17 @@ filteredDescr &lt;-<span class="st"> </span>mdrrDescr[, -nzv]
 <p>Given a correlation matrix, the <code>findCorrelation</code> function uses the following algorithm to flag predictors for removal:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">descrCor &lt;-<span class="st">  </span><span class="kw">cor</span>(filteredDescr)
 highCorr &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">abs</span>(descrCor[<span class="kw">upper.tri</span>(descrCor)]) &gt;<span class="st"> </span>.<span class="dv">999</span>)</code></pre></div>
-<p>For the previous MDRR data, there are r<code>I(highCorr)</code> descriptors that are almost perfectly correlated (|correlation| &gt; 0.999), such as the total information index of atomic composition (<code>IAC</code>) and the total information content index (neighborhood symmetry of 0-order) (<code>TIC0</code>) (correlation = 1). The code chunk below shows the effect of removing descriptors with absolute correlations above 0.75.</p>
+<p>For the previous MDRR data, there are 65 descriptors that are almost perfectly correlated (|correlation| &gt; 0.999), such as the total information index of atomic composition (<code>IAC</code>) and the total information content index (neighborhood symmetry of 0-order) (<code>TIC0</code>) (correlation = 1). The code chunk below shows the effect of removing descriptors with absolute correlations above 0.75.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">descrCor &lt;-<span class="st"> </span><span class="kw">cor</span>(filteredDescr)
 <span class="kw">summary</span>(descrCor[<span class="kw">upper.tri</span>(descrCor)])</code></pre></div>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-## -0.99610 -0.05373  0.25010  0.26080  0.65530  1.00000</code></pre>
+## -0.99607 -0.05373  0.25006  0.26078  0.65527  1.00000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">highlyCorDescr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(descrCor, <span class="dt">cutoff =</span> .<span class="dv">75</span>)
 filteredDescr &lt;-<span class="st"> </span>filteredDescr[,-highlyCorDescr]
 descrCor2 &lt;-<span class="st"> </span><span class="kw">cor</span>(filteredDescr)
 <span class="kw">summary</span>(descrCor2[<span class="kw">upper.tri</span>(descrCor2)])</code></pre></div>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-## -0.70730 -0.05378  0.04418  0.06692  0.18860  0.74460</code></pre>
+## -0.70728 -0.05378  0.04418  0.06692  0.18858  0.74458</code></pre>
 <div id="lindep">
 
 </div>
@@ -546,6 +550,8 @@ testTransformed &lt;-<span class="st"> </span><span class="kw">predict</span>(pr
        <span class="dt">data =</span> plotSubset,
        <span class="dt">groups =</span> mdrrClass, 
        <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">2</span>))  </code></pre></div>
+<pre><code>## Warning in grid.Call.graphics(C_points, x$x, x$y, x$pch, x$size): semi-
+## transparency is not supported on this device: reported only once per page</code></pre>
 <p><img src="preprocess/pp_SpatSignBefore-1.png" width="480" /></p>
 <p>After the spatial sign:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">transformed &lt;-<span class="st"> </span><span class="kw">spatialSign</span>(plotSubset)
@@ -554,6 +560,8 @@ transformed &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(
        <span class="dt">data =</span> transformed, 
        <span class="dt">groups =</span> mdrrClass, 
        <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">2</span>)) </code></pre></div>
+<pre><code>## Warning in grid.Call.graphics(C_points, x$x, x$y, x$pch, x$size): semi-
+## transparency is not supported on this device: reported only once per page</code></pre>
 <p><img src="preprocess/pp_SpatSignAfter-1.png" width="480" /></p>
 <p>Another option, <code>&quot;BoxCox&quot;</code> will estimate a Box–Cox transformation on the predictors if the data are greater than zero.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preProcValues2 &lt;-<span class="st"> </span><span class="kw">preProcess</span>(training, <span class="dt">method =</span> <span class="st">&quot;BoxCox&quot;</span>)
@@ -665,6 +673,8 @@ distances &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(di
        <span class="dt">data =</span> distances, 
        <span class="dt">groups =</span> testMDRR, 
        <span class="dt">auto.key =</span> <span class="kw">list</span>(<span class="dt">columns =</span> <span class="dv">2</span>))</code></pre></div>
+<pre><code>## Warning in grid.Call.graphics(C_points, x$x, x$y, x$pch, x$size): semi-
+## transparency is not supported on this device: reported only once per page</code></pre>
 <p><img src="preprocess/pp_splom-1.png" width="480" /></p>
 
 </div>

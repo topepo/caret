@@ -15,7 +15,7 @@
   
   
   <meta property="og:description" content="Documentation for the <code>caret</code> package" />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  <meta name="github-repo" content="<a href="https://github.com/topepo/caret" class="uri">https://github.com/topepo/caret</a>" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="The caret Package" />
@@ -26,7 +26,7 @@
 <meta name="author" content="Max Kuhn">
 
 
-<meta name="date" content="2016-11-29">
+<meta name="date" content="2017-07-23">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -55,12 +55,14 @@
 <link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
 <script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
-<script src="libs/d3-3.5.3/./d3.min.js"></script>
-<script src="libs/forceNetwork-binding-0.2.13/forceNetwork.js"></script>
-<link href="libs/d3heatmapcore-0.0.0/heatmapcore.css" rel="stylesheet" />
-<script src="libs/d3heatmapcore-0.0.0/heatmapcore.js"></script>
-<script src="libs/d3-tip-0.6.6/index.js"></script>
-<script src="libs/d3heatmap-binding-0.6.1.1/d3heatmap.js"></script>
+<script src="libs/d3-4.5.0/d3.min.js"></script>
+<script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
+<link href="libs/plotlyjs-1.26.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.26.1/plotly-latest.min.js"></script>
+<script src="libs/plotly-binding-4.6.0/plotly.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
 
 
 <style type="text/css">
@@ -130,6 +132,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4.1" data-path="data-splitting.html"><a href="data-splitting.html#simple-splitting-based-on-the-outcome"><i class="fa fa-check"></i><b>4.1</b> Simple Splitting Based on the Outcome</a></li>
 <li class="chapter" data-level="4.2" data-path="data-splitting.html"><a href="data-splitting.html#splitting-based-on-the-predictors"><i class="fa fa-check"></i><b>4.2</b> Splitting Based on the Predictors</a></li>
 <li class="chapter" data-level="4.3" data-path="data-splitting.html"><a href="data-splitting.html#data-splitting-for-time-series"><i class="fa fa-check"></i><b>4.3</b> Data Splitting for Time Series</a></li>
+<li class="chapter" data-level="4.4" data-path="data-splitting.html"><a href="data-splitting.html#simple-splitting-with-important-groups"><i class="fa fa-check"></i><b>4.4</b> Simple Splitting with Important Groups</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html"><i class="fa fa-check"></i><b>5</b> Model Training and Tuning</a><ul>
 <li class="chapter" data-level="5.1" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#model-training-and-parameter-tuning"><i class="fa fa-check"></i><b>5.1</b> Model Training and Parameter Tuning</a></li>
@@ -184,24 +187,25 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="7.0.29" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#oblique-tree"><i class="fa fa-check"></i><b>7.0.29</b> Oblique Tree</a></li>
 <li class="chapter" data-level="7.0.30" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ordinal-outcomes"><i class="fa fa-check"></i><b>7.0.30</b> Ordinal Outcomes</a></li>
 <li class="chapter" data-level="7.0.31" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#partial-least-squares"><i class="fa fa-check"></i><b>7.0.31</b> Partial Least Squares</a></li>
-<li class="chapter" data-level="7.0.32" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#polynomial-model"><i class="fa fa-check"></i><b>7.0.32</b> Polynomial Model</a></li>
-<li class="chapter" data-level="7.0.33" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#prototype-models"><i class="fa fa-check"></i><b>7.0.33</b> Prototype Models</a></li>
-<li class="chapter" data-level="7.0.34" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#quantile-regression"><i class="fa fa-check"></i><b>7.0.34</b> Quantile Regression</a></li>
-<li class="chapter" data-level="7.0.35" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#radial-basis-function"><i class="fa fa-check"></i><b>7.0.35</b> Radial Basis Function</a></li>
-<li class="chapter" data-level="7.0.36" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#random-forest"><i class="fa fa-check"></i><b>7.0.36</b> Random Forest</a></li>
-<li class="chapter" data-level="7.0.37" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#regularization"><i class="fa fa-check"></i><b>7.0.37</b> Regularization</a></li>
-<li class="chapter" data-level="7.0.38" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#relevance-vector-machines"><i class="fa fa-check"></i><b>7.0.38</b> Relevance Vector Machines</a></li>
-<li class="chapter" data-level="7.0.39" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ridge-regression"><i class="fa fa-check"></i><b>7.0.39</b> Ridge Regression</a></li>
-<li class="chapter" data-level="7.0.40" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-methods"><i class="fa fa-check"></i><b>7.0.40</b> Robust Methods</a></li>
-<li class="chapter" data-level="7.0.41" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-model"><i class="fa fa-check"></i><b>7.0.41</b> Robust Model</a></li>
-<li class="chapter" data-level="7.0.42" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#roc-curves"><i class="fa fa-check"></i><b>7.0.42</b> ROC Curves</a></li>
-<li class="chapter" data-level="7.0.43" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#rule-based-model"><i class="fa fa-check"></i><b>7.0.43</b> Rule-Based Model</a></li>
-<li class="chapter" data-level="7.0.44" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.44</b> Self-Organising Maps</a></li>
-<li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.45</b> String Kernel</a></li>
-<li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.46</b> Support Vector Machines</a></li>
-<li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.47</b> Text Mining</a></li>
-<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.48</b> Tree-Based Model</a></li>
-<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.49</b> Two Class Only</a></li>
+<li class="chapter" data-level="7.0.32" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#patient-rule-induction-method"><i class="fa fa-check"></i><b>7.0.32</b> Patient Rule Induction Method</a></li>
+<li class="chapter" data-level="7.0.33" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#polynomial-model"><i class="fa fa-check"></i><b>7.0.33</b> Polynomial Model</a></li>
+<li class="chapter" data-level="7.0.34" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#prototype-models"><i class="fa fa-check"></i><b>7.0.34</b> Prototype Models</a></li>
+<li class="chapter" data-level="7.0.35" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#quantile-regression"><i class="fa fa-check"></i><b>7.0.35</b> Quantile Regression</a></li>
+<li class="chapter" data-level="7.0.36" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#radial-basis-function"><i class="fa fa-check"></i><b>7.0.36</b> Radial Basis Function</a></li>
+<li class="chapter" data-level="7.0.37" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#random-forest"><i class="fa fa-check"></i><b>7.0.37</b> Random Forest</a></li>
+<li class="chapter" data-level="7.0.38" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#regularization"><i class="fa fa-check"></i><b>7.0.38</b> Regularization</a></li>
+<li class="chapter" data-level="7.0.39" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#relevance-vector-machines"><i class="fa fa-check"></i><b>7.0.39</b> Relevance Vector Machines</a></li>
+<li class="chapter" data-level="7.0.40" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ridge-regression"><i class="fa fa-check"></i><b>7.0.40</b> Ridge Regression</a></li>
+<li class="chapter" data-level="7.0.41" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-methods"><i class="fa fa-check"></i><b>7.0.41</b> Robust Methods</a></li>
+<li class="chapter" data-level="7.0.42" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-model"><i class="fa fa-check"></i><b>7.0.42</b> Robust Model</a></li>
+<li class="chapter" data-level="7.0.43" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#roc-curves"><i class="fa fa-check"></i><b>7.0.43</b> ROC Curves</a></li>
+<li class="chapter" data-level="7.0.44" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#rule-based-model"><i class="fa fa-check"></i><b>7.0.44</b> Rule-Based Model</a></li>
+<li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.45</b> Self-Organising Maps</a></li>
+<li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.46</b> String Kernel</a></li>
+<li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.47</b> Support Vector Machines</a></li>
+<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.48</b> Text Mining</a></li>
+<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.49</b> Tree-Based Model</a></li>
+<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.50</b> Two Class Only</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="models-clustered-by-tag-similarity.html"><a href="models-clustered-by-tag-similarity.html"><i class="fa fa-check"></i><b>8</b> Models Clustered by Tag Similarity</a></li>
 <li class="chapter" data-level="9" data-path="parallel-processing.html"><a href="parallel-processing.html"><i class="fa fa-check"></i><b>9</b> Parallel Processing</a></li>
@@ -356,7 +360,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1><span class="header-section-number">5</span> Model Training and Tuning</h1>
 <p>Contents</p>
 <ul>
-<li><a href="feature-selection-overview.html#builtin">Model Training and Parameter Tuning</a></li>
+<li><a href="#basic">Model Training and Parameter Tuning</a></li>
 <li><a href="model-training-and-tuning.html#example">An Example</a></li>
 <li><a href="model-training-and-tuning.html#tune">Basic Parameter Tuning</a></li>
 <li><a href="model-training-and-tuning.html#repro">Notes on Reproducibility</a></li>
@@ -382,8 +386,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>choose the “optimal” model across these parameters</li>
 <li>estimate model performance from a training set</li>
 </ul>
-<p>First, a specific model must be chosen. Currently, 233 are available using <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a>; see <a href="available-models.html&#39;"><code>train</code> Model List</a> or <a href="train-models-by-tag.html"><code>train</code> Models By Tag</a> for details. On these pages, there are lists of tuning parameters that can potentially be optimized. <a href="using-your-own-model-in-train.html">User-defined models</a> can also be created.</p>
-<p>The first step in tuning the model (line 1 in the algorithm above is to choose a set of parameters to evaluate. For example, if fitting a Partial Least Squares (PLS) model, the number of PLS components to evaluate must be specified.</p>
+<p>First, a specific model must be chosen. Currently, 232 are available using <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a>; see <a href="available-models.html"><code>train</code> Model List</a> or <a href="train-models-by-tag.html"><code>train</code> Models By Tag</a> for details. On these pages, there are lists of tuning parameters that can potentially be optimized. <a href="using-your-own-model-in-train.html">User-defined models</a> can also be created.</p>
+<p>The first step in tuning the model (line 1 in the algorithm below is to choose a set of parameters to evaluate. For example, if fitting a Partial Least Squares (PLS) model, the number of PLS components to evaluate must be specified.</p>
 <p><img src="premade/TrainAlgo.png" /><!-- --></p>
 <p>Once the model and tuning parameter values have been defined, the type of resampling should be also be specified. Currently, <em>k</em>-fold cross-validation (once or repeated), leave-one-out cross-validation and bootstrap (simple estimation or the 632 rule) resampling methods can be used by <code>train</code>. After resampling, the process produces a profile of performance measures is available to guide the user as to which tuning parameter values should be chosen. By default, the function automatically chooses the tuning parameters associated with the best value, although different algorithms can be used (see details below).</p>
 <div id="example">
@@ -420,7 +424,7 @@ testing  &lt;-<span class="st"> </span>Sonar[-inTraining,]</code></pre></div>
 </div>
 <div id="basic-parameter-tuning" class="section level2">
 <h2><span class="header-section-number">5.3</span> Basic Parameter Tuning</h2>
-<p>By default, simple bootstrap resampling is used for line 3 in the algorithm above. Others are availible, such as repeated <em>K</em>-fold cross-validation, leave-one-out etc. The function <code>trainControl</code> can be used to specifiy the type of resampling:</p>
+<p>By default, simple bootstrap resampling is used for line 3 in the algorithm above. Others are available, such as repeated <em>K</em>-fold cross-validation, leave-one-out etc. The function <code>trainControl</code> can be used to specifiy the type of resampling:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fitControl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(## 10-fold CV
                            <span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,
                            <span class="dt">number =</span> <span class="dv">10</span>,
@@ -454,7 +458,7 @@ gbmFit1</code></pre></div>
 ##   2                   50      0.7858235  0.5667749
 ##   2                  100      0.8188897  0.6316548
 ##   2                  150      0.8194363  0.6329037
-##   3                   50      0.7895686  0.5726290
+##   3                   50      0.7889436  0.5713790
 ##   3                  100      0.8130564  0.6195719
 ##   3                  150      0.8221348  0.6383441
 ## 
@@ -559,10 +563,9 @@ gbmFit2</code></pre></div>
 ## 
 ## Tuning parameter &#39;n.minobsinnode&#39; was held constant at a value of 20
 ## Accuracy was used to select the optimal model using  the largest value.
-## The final values used for the model were n.trees = 1000,
+## The final values used for the model were n.trees = 1150,
 ##  interaction.depth = 5, shrinkage = 0.1 and n.minobsinnode = 20.</code></pre>
-<p>If there are missing values in the training set, PCA and ICA models only use complete samples.</p>
-<p>Another option is to use a random sample of possible tuning parameter combinations, i.e. “random search”<a href="www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf">(pdf)</a>. This functionality is described on <a href="random-hyperparameter-search.html">this page</a>.</p>
+<p>Another option is to use a random sample of possible tuning parameter combinations, i.e. “random search”<a href="http://www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf">(pdf)</a>. This functionality is described on <a href="random-hyperparameter-search.html">this page</a>.</p>
 <p>To use a random search, use the option <code>search = &quot;random&quot;</code> in the call to <code>trainControl</code>. In this situation, the <code>tuneLength</code> parameter defines the total number of parameter combinations that will be evaluated.</p>
 <div id="plots">
 
@@ -674,7 +677,7 @@ gbmFit3</code></pre></div>
 ##   1                   300     0.88  0.84  0.76
 ##   :                   :        :     :      :    
 ##   9                  1350     0.89  0.87  0.76
-##   9                  1400     0.89  0.87  0.77
+##   9                  1400     0.89  0.87  0.76
 ##   9                  1450     0.89  0.87  0.77
 ##   9                  1500     0.89  0.87  0.77
 ## 
@@ -718,7 +721,7 @@ gbmFit3</code></pre></div>
 </div>
 <div id="extracting-predictions-and-class-probabilities" class="section level2">
 <h2><span class="header-section-number">5.7</span> Extracting Predictions and Class Probabilities</h2>
-<p>As previously mentioned, objects produced by the <code>train</code> function contain the “optimized” model in the <code>finalModel</code> sub-object. Predictions can be made from these objects as usual. In some cases, such as <code>pls</code> or <code>gbm</code> objects, additional parameters from the optimized fit may need to be specified. In these cases, the <code>train</code> objects uses the results of the parameter optimization to predict new samples. For example, if predictions were create using <code>predict.gbm</code>, the user would have to specify the number of trees directly (there is no default). Also, for binary classification, the predictions from this function take the form of the probability of one of the classes, so extra steps are required to convert this to a factor vector. <code>predict.train</code> automatically handles these details for this (and for other models).</p>
+<p>As previously mentioned, objects produced by the <code>train</code> function contain the “optimized” model in the <code>finalModel</code> sub-object. Predictions can be made from these objects as usual. In some cases, such as <code>pls</code> or <code>gbm</code> objects, additional parameters from the optimized fit may need to be specified. In these cases, the <code>train</code> objects uses the results of the parameter optimization to predict new samples. For example, if predictions were created using <code>predict.gbm</code>, the user would have to specify the number of trees directly (there is no default). Also, for binary classification, the predictions from this function take the form of the probability of one of the classes, so extra steps are required to convert this to a factor vector. <code>predict.train</code> automatically handles these details for this (and for other models).</p>
 <p>Also, there are very few standard syntaxes for model predictions in R. For example, to get class probabilities, many <code>predict</code> methods have an argument called <code>type</code> that is used to specify whether the classes or probabilities should be generated. Different packages use different values of <code>type</code>, such as <code>&quot;prob&quot;</code>, <code>&quot;posterior&quot;</code>, <code>&quot;response&quot;</code>, <code>&quot;probability&quot;</code> or <code>&quot;raw&quot;</code>. In other cases, completely different syntax is used.</p>
 <p>For <code>predict.train</code>, the type options are standardized to be <code>&quot;class&quot;</code> and <code>&quot;prob&quot;</code> (the underlying code matches these to the appropriate choices for each model. For example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predict</span>(gbmFit3, <span class="dt">newdata =</span> <span class="kw">head</span>(testing))</code></pre></div>
@@ -749,6 +752,8 @@ gbmFit3</code></pre></div>
 <li><code>histogram</code> and <code>densityplot</code> can also be used to look at distributions of the tuning parameters across tuning parameters.</li>
 </ul>
 <p>For example, the following statements create a density plot:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
+<span class="kw">densityplot</span>(gbmFit3, <span class="dt">pch =</span> <span class="st">&quot;|&quot;</span>)</code></pre></div>
 <p><img src="basic/4-1.png" width="672" /></p>
 <p>Note that if you are interested in plotting the resampling results across multiple tuning parameters, the option <code>resamples = &quot;all&quot;</code> should be used in the control object.</p>
 <div id="between">
@@ -757,7 +762,7 @@ gbmFit3</code></pre></div>
 </div>
 <div id="between-models" class="section level3">
 <h3><span class="header-section-number">5.8.2</span> Between-Models</h3>
-<p>The <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package also includes functions to characterize the differences between models (generated using <code>train</code>, <code>sbf</code> or <code>rfe</code>) via their resampling distributions. These functions are based on the work of <a href="http://www.stat.uni-muenchen.de/~leisch/papers/Hothorn+Leisch+Zeileis-2005.pdf">Hothorn et al. (2005)</a> and <a href="http://epub.ub.uni-muenchen.de/10604/1/tr56.pdf">Eugster et al (2008)</a>.</p>
+<p>The <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package also includes functions to characterize the differences between models (generated using <code>train</code>, <code>sbf</code> or <code>rfe</code>) via their resampling distributions. These functions are based on the work of <a href="https://homepage.boku.ac.at/leisch/papers/Hothorn+Leisch+Zeileis-2005.pdf">Hothorn et al. (2005)</a> and <a href="http://epub.ub.uni-muenchen.de/10604/1/tr56.pdf">Eugster et al (2008)</a>.</p>
 <p>First, a support vector machine model is fit to the Sonar data. The data are centered and scaled using the <code>preProc</code> argument. Note that the same random number seed is set prior to the model that is identical to the seed used for the boosted tree model. This ensures that the same resampling sets are used, which will come in handy when we compare the resampling profiles between models.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">825</span>)
 svmFit &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> training, 
@@ -853,34 +858,45 @@ resamps</code></pre></div>
 ## Number of resamples: 100 
 ## 
 ## ROC 
-##       Min. 1st Qu. Median   Mean 3rd Qu. Max. NA&#39;s
-## GBM 0.5179  0.8571 0.9048 0.8956  0.9479    1    0
-## SVM 0.6786  0.9107 0.9557 0.9445  0.9844    1    0
-## RDA 0.6032  0.8750 0.9219 0.9131  0.9643    1    0
+##          Min.   1st Qu.    Median      Mean   3rd Qu. Max. NA&#39;s
+## GBM 0.5178571 0.8571429 0.9047619 0.8955109 0.9523810    1    0
+## SVM 0.6785714 0.9107143 0.9557292 0.9445164 0.9843750    1    0
+## RDA 0.6031746 0.8750000 0.9218750 0.9130853 0.9642857    1    0
 ## 
 ## Sens 
-##      Min. 1st Qu. Median   Mean 3rd Qu. Max. NA&#39;s
-## GBM 0.625  0.7778 0.8750 0.8679       1    1    0
-## SVM 0.500  0.8750 0.8889 0.9174       1    1    0
-## RDA 0.625  0.8750 0.8889 0.8988       1    1    0
+##      Min.   1st Qu.    Median      Mean 3rd Qu. Max. NA&#39;s
+## GBM 0.625 0.7777778 0.8750000 0.8715278       1    1    0
+## SVM 0.500 0.8750000 0.8888889 0.9173611       1    1    0
+## RDA 0.625 0.8750000 0.8888889 0.8987500       1    1    0
 ## 
 ## Spec 
-##       Min. 1st Qu. Median   Mean 3rd Qu. Max. NA&#39;s
-## GBM 0.2857  0.7143 0.7500 0.7664  0.8571    1    0
-## SVM 0.2857  0.7143 0.8571 0.8127  1.0000    1    0
-## RDA 0.2857  0.7143 0.7500 0.7804  0.8571    1    0</code></pre>
+##          Min.   1st Qu.    Median      Mean   3rd Qu. Max. NA&#39;s
+## GBM 0.2857143 0.7142857 0.7500000 0.7678571 0.8571429    1    0
+## SVM 0.2857143 0.7142857 0.8571429 0.8126786 1.0000000    1    0
+## RDA 0.2857143 0.7142857 0.7500000 0.7803571 0.8571429    1    0</code></pre>
 <p>Note that, in this case, the option <code>resamples = &quot;final&quot;</code> should be user-defined in the control objects.</p>
 <p>There are several lattice plot methods that can be used to visualize the resampling distributions: density plots, box-whisker plots, scatterplot matrices and scatterplots of summary statistics. For example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(theme1)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">theme1 &lt;-<span class="st"> </span><span class="kw">trellis.par.get</span>()
+theme1$plot.symbol$col =<span class="st"> </span><span class="kw">rgb</span>(.<span class="dv">2</span>, .<span class="dv">2</span>, .<span class="dv">2</span>, .<span class="dv">4</span>)
+theme1$plot.symbol$pch =<span class="st"> </span><span class="dv">16</span>
+theme1$plot.line$col =<span class="st"> </span><span class="kw">rgb</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, .<span class="dv">7</span>)
+theme1$plot.line$lwd &lt;-<span class="st"> </span><span class="dv">2</span>
+<span class="kw">trellis.par.set</span>(theme1)
 <span class="kw">bwplot</span>(resamps, <span class="dt">layout =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</code></pre></div>
+<pre><code>## Warning in grid.Call.graphics(C_points, x$x, x$y, x$pch, x$size): semi-
+## transparency is not supported on this device: reported only once per page</code></pre>
 <p><img src="basic/train_resample_box-1.png" width="864" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
 <span class="kw">dotplot</span>(resamps, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)</code></pre></div>
 <p><img src="basic/train_resample_ci-1.png" width="576" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(theme1)
 <span class="kw">xyplot</span>(resamps, <span class="dt">what =</span> <span class="st">&quot;BlandAltman&quot;</span>)</code></pre></div>
+<pre><code>## Warning in grid.Call.graphics(C_points, x$x, x$y, x$pch, x$size): semi-
+## transparency is not supported on this device: reported only once per page</code></pre>
 <p><img src="basic/train_resample_ba-1.png" width="576" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">splom</span>(resamps)</code></pre></div>
+<pre><code>## Warning in grid.Call.graphics(C_points, x$x, x$y, x$pch, x$size): semi-
+## transparency is not supported on this device: reported only once per page</code></pre>
 <p><img src="basic/train_resample_scatmat-1.png" width="672" /></p>
 <p>Other visualizations are availible in <code>densityplot.resamples</code> and <code>parallel.resamples</code></p>
 <p>Since models are fit on the same versions of the training data, it makes sense to make inferences on the differences between models. In this way we reduce the within-resample correlation that may exist. We can compute the differences, then use a simple <em>t</em>-test to evaluate the null hypothesis that there is no difference between models.</p>
@@ -905,23 +921,25 @@ difValues</code></pre></div>
 ## 
 ## ROC 
 ##     GBM       SVM       RDA     
-## GBM           -0.04896  -0.01753
-## SVM 1.168e-10            0.03143
-## RDA 0.1616    3.835e-05         
+## GBM           -0.04901  -0.01757
+## SVM 9.774e-11            0.03143
+## RDA 0.1583    3.835e-05         
 ## 
 ## Sens 
 ##     GBM       SVM       RDA     
-## GBM           -0.04944  -0.03083
-## SVM 0.0002316            0.01861
-## RDA 0.1244317 0.3697745         
+## GBM           -0.04583  -0.02722
+## SVM 0.0007641            0.01861
+## RDA 0.1988221 0.3697745         
 ## 
 ## Spec 
 ##     GBM     SVM      RDA     
-## GBM         -0.04625 -0.01393
-## SVM 0.01577           0.03232
+## GBM         -0.04482 -0.01250
+## SVM 0.02009           0.03232
 ## RDA 1.00000 0.13861</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(theme1)
 <span class="kw">bwplot</span>(difValues, <span class="dt">layout =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</code></pre></div>
+<pre><code>## Warning in grid.Call.graphics(C_points, x$x, x$y, x$pch, x$size): semi-
+## transparency is not supported on this device: reported only once per page</code></pre>
 <p><img src="basic/train_diff_box-1.png" width="864" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
 <span class="kw">dotplot</span>(difValues)</code></pre></div>
