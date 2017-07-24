@@ -13,7 +13,6 @@ r:
 r_packages: 
   - covr
   - data.table
-  - DMwR
   - ellipse
   - ggplot2
   - klaR
@@ -32,7 +31,6 @@ r_packages:
   - RANN
   - rARPACK
   - reshape2
-  - ROSE
   - spls
   - subselect
   - superpc
