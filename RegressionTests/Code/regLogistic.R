@@ -1,11 +1,16 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "regLogistic"
 
-rlGrid <- expand.grid( cost = c(200,2,0.02),
-                       loss = c("L1", "L2_dual", "L2_primal"),
-                       epsilon = c(0.001,0.01) )
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
 
 #########################################################################
 
@@ -15,6 +20,10 @@ testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
+
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE, 
                        summaryFunction = twoClassSummary)
@@ -23,6 +32,11 @@ cctrl2 <- trainControl(method = "LOOCV",
 cctrl3 <- trainControl(method = "none",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
 cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
+
+rlGrid <- expand.grid( cost = c(200,2,0.02),
+                       loss = c("L1", "L2_dual", "L2_primal"),
+                       epsilon = c(0.001,0.01) )
+
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
@@ -70,6 +84,27 @@ test_class_none_model <- train(trainX, trainY,
 
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
+
+set.seed(849)
+test_class_rec <- train(recipe = rec_cls,
+                        data = training,
+                        method = "regLogistic", 
+                        trControl = cctrl1,
+                        metric = "ROC",
+                        tuneGrid = rlGrid)
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
+test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
+                               type = "prob")
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))

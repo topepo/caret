@@ -24,11 +24,12 @@ modelInfo <- list(label = "Linear Regression with Forward Selection",
                     if(any(names(theDots) == "method")) stop("'method' should not be specified")
                     if(any(names(theDots) == "nvmax")) stop("'nvmax' should not be specified")
                   
-                    regsubsets(x, y,
+                    regsubsets(as.matrix(x), y,
                                weights = if(!is.null(wts)) wts else rep(1, length(y)),
                                nbest = 1, nvmax = param$nvmax, method = "forward", ...)
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
+                    newdata <- as.matrix(newdata)
                     foo <- function(b, x) x[,names(b),drop = FALSE] %*% b
                     
                     path <- 1:(modelFit$nvmax - 1)
@@ -57,6 +58,7 @@ modelInfo <- list(label = "Linear Regression with Forward Selection",
                       preds <- do.call("cbind", preds)
                       
                       out <- as.data.frame(cbind(out, preds))
+                      out <- as.list(out)
                     }
                     
                     out

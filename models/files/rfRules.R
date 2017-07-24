@@ -28,6 +28,8 @@ modelInfo <- list(label = "Random Forest Rule-Based Model",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    if(!is.data.frame(x) | inherits(x, "tbl_df")) 
+                      x <- as.data.frame(x)
                     RFor <- randomForest(x, y, mtry = param$mtry, ...)
                     treeList <- RF2List(RFor)  
                     exec <- extractRules(treeList,x, maxdepth=param$maxdepth, ntree = RFor$ntree) 
@@ -44,6 +46,8 @@ modelInfo <- list(label = "Random Forest Rule-Based Model",
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
+                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
+                      newdata <- as.data.frame(newdata)
                     out <- applyLearner(modelFit$model, newdata)
                     if(modelFit$problemType == "Regression") out <- as.numeric(out)
                     if(!is.null(submodels)) {

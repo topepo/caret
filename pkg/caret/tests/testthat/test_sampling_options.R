@@ -94,4 +94,3 @@ test_that('check missing method', {
   expect_error(getSamplingInfo("plum"))
 })
 
-

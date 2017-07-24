@@ -1,7 +1,16 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "stepQDA"
+
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
 
 #########################################################################
 
@@ -10,6 +19,10 @@ training <- twoClassSim(50, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 seeds <- vector(mode = "list", length = nrow(training) + 1)
 seeds <- lapply(seeds, function(x) 1:20)

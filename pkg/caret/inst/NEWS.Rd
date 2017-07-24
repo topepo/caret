@@ -5,14 +5,24 @@
 
 \section{Changes in version 6.0-77}{
   \itemize{
-    \item MAE is added as output metric for regression tasks through \code{postResample}. Function is exposed to the users.
+    \item A new method was added for \code{train} so that \code{recipes} can be used to specify the model terms and preprocessing. Alexis Sardá provided a great deal of help converting the bootstrap optimism code to the new workflows. A new chapter was added to the package website related to recipes. 
+    \item MAE is added as output metric for regression tasks through \code{postResample} and \code{defaultSummary}. The function is now exposed to the users.
     \item A bug in classification models with all missing predictions was fixed (found by andzandz11). \issue{684}
+    \item The model code for \code{ordinalNet} was updated for recent changes to that package. 
+    \item \code{oblique.tree}  was removed from the model library. 
+    \item The default gird generation for rotation forest models now provides better values of \code{K}.
+    \item The Yeo-Johnson transformation parameter estimation code was rewritten and not longer requires the \code{car} package. 
+    \item The leave-one-out cross-validation workflow for \code{train} has been harmonized with the other resampling methods in terms of fault tolerance and prediction trimming. 
+    \item A bug was fixed in Self-Organizing Maps via \code{xyf} for regression models. 
+    \item The parameter ranges for \code{AdaBag} and \code{AdaBoost.M1} were changed; the number of iterations in the default grids have been lowered. 
+    \item A bug was fixed in \code{rpartCost} related to how the tuning parameter grid was processed. 
+    \item \code{train} now uses different random numbers to make resamples. Previously, setting the seed prior to calling \code{train} should result in getting the same resamples. However, if \code{train} loaded or imported a namespace from another package, and that startup process used random numbers, it could lead to different random numbers being used. See \issue{452} for details. Now, \code{train} gets a separate (and more reproducible) seed that will be used to generate the resamples. However, this may effect random number reproducibility between this version and previous versions. Otherwise, this change should increase the reproducibility of results. 
+    \item The package website code was updated to use version 4 of the D3 JS library and now uses \cpkg{heatmaply} to make the interactive heatmap. 
     \item Switched to non-formula interface in ranger.
     \item A simple "null model" was added. For classification, it predictors using the most prevalent level and, for regression, fits an intercept only model. \issue{694}
     \item A bug preventing preprocessing to work properly when the preprocessing transformations are related to individual columns only fixed by Mateusz Kobos in \issue{679}.
   }
 }
-
 
 \section{Changes in version 6.0-76}{
 	\itemize{

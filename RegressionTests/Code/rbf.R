@@ -1,7 +1,16 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "rbf"
+
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
 
 #########################################################################
 
@@ -10,6 +19,10 @@ training <- twoClassSim(50, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 seeds <- vector(mode = "list", length = nrow(training) + 1)
 seeds <- lapply(seeds, function(x) 1:20)
@@ -73,31 +86,45 @@ test_class_none_model <- train(trainX, trainY,
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
 
+set.seed(849)
+test_class_rec <- train(recipe = rec_cls,
+                        data = training,
+                        method = "rbf", 
+                        trControl = cctrl1,
+                        metric = "ROC")
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
+test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
+                               type = "prob")
+
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
   cat("wrong levels")
 
 #########################################################################
 
-SLC14_1 <- function(n = 100) {
-  dat <- matrix(rnorm(n*20, sd = 3), ncol = 20)
-  foo <- function(x) x[1] + sin(x[2]) + log(abs(x[3])) + x[4]^2 + x[5]*x[6] + 
-    ifelse(x[7]*x[8]*x[9] < 0, 1, 0) +
-    ifelse(x[10] > 0, 1, 0) + x[11]*ifelse(x[11] > 0, 1, 0) + 
-    sqrt(abs(x[12])) + cos(x[13]) + 2*x[14] + abs(x[15]) + 
-    ifelse(x[16] < -1, 1, 0) + x[17]*ifelse(x[17] < -1, 1, 0) -
-    2 * x[18] - x[19]*x[20]
-  dat <- as.data.frame(dat)
-  colnames(dat) <- paste0("Var", 1:ncol(dat))
-  dat$y <- apply(dat[, 1:20], 1, foo) + rnorm(n, sd = 3)
-  dat
-}
-
+library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 set.seed(1)
 training <- SLC14_1(30)
 testing <- SLC14_1(100)
 trainX <- training[, -ncol(training)]
 trainY <- training$y
+
+rec_reg <- recipe(y ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) 
 testX <- trainX[, -ncol(training)]
 testY <- trainX$y 
 
@@ -141,6 +168,22 @@ test_reg_none_model <- train(trainX, trainY,
                              preProc = c("center", "scale"))
 
 test_reg_none_pred <- predict(test_reg_none_model, testX)
+
+set.seed(849)
+test_reg_rec <- train(recipe = rec_reg,
+                      data = training,
+                      method = "rbf", 
+                      trControl = rctrl1)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+
+test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 
 #########################################################################
 

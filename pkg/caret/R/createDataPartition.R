@@ -280,3 +280,81 @@ groupKFold <- function(group, k = length(unique(group))) {
   dat_folds <- lapply(group_folds, function(x, y) merge(x, y), y = dat)
   lapply(dat_folds, function(x) sort(x$index))
 }
+
+
+make_resamples <- function(ctrl_obj, outcome) {
+  n <- length(outcome)
+  if(is.null(ctrl_obj$index)) {
+    if(ctrl_obj$method == "custom")
+      stop("'custom' resampling is appropriate when the `trControl` argument `index` is used", call. = FALSE)
+    ctrl_obj$index <- 
+      switch(tolower(ctrl_obj$method),
+             oob = NULL,
+             none = list(seq(along = outcome)),
+             apparent = list(all = seq(along = outcome)),
+             alt_cv =, cv = createFolds(outcome, ctrl_obj$number, returnTrain = TRUE),
+             repeatedcv =, adaptive_cv = createMultiFolds(outcome, ctrl_obj$number, ctrl_obj$repeats),
+             loocv = createFolds(outcome, n, returnTrain = TRUE),
+             boot =, boot632 =, optimism_boot =, boot_all =,
+             adaptive_boot = createResample(outcome, ctrl_obj$number),
+             test = createDataPartition(outcome, 1, ctrl_obj$p),
+             adaptive_lgocv =, lgocv = createDataPartition(outcome, ctrl_obj$number, ctrl_obj$p),
+             timeslice = createTimeSlices(seq(along = outcome),
+                                          initialWindow = ctrl_obj$initialWindow,
+                                          horizon = ctrl_obj$horizon,
+                                          fixedWindow = ctrl_obj$fixedWindow,
+                                          skip = ctrl_obj$skip)$train,
+             stop("Not a recognized reampling method.", call. = FALSE))
+  } else {
+    index_types <- unlist(lapply(ctrl_obj$index, is.integer))
+    if(!isTRUE(all(index_types)))
+      stop("`index` should be lists of integers.", call. = FALSE)
+    if(!is.null(ctrl_obj$indexOut)) {
+      index_types <- unlist(lapply(ctrl_obj$indexOut, is.integer))
+      if(!isTRUE(all(index_types)))
+        stop("`indexOut` should be lists of integers.", call. = FALSE)
+    }
+  }
+  
+  if(ctrl_obj$method == "apparent") 
+    ctrl_obj$indexOut <- list(all = seq(along = outcome))
+  
+  ## Create holdout indices
+  if(is.null(ctrl_obj$indexOut) && ctrl_obj$method != "oob"){
+    if(tolower(ctrl_obj$method) != "timeslice") {
+      y_index <-
+        if (class(outcome)[1] == "Surv")
+          1:nrow(outcome)
+      else
+        seq(along = outcome)
+      ctrl_obj$indexOut <-
+        lapply(ctrl_obj$index, function(training)
+          setdiff(y_index, training))
+      if(ctrl_obj$method %in% c("optimism_boot", "boot_all")) {
+        ctrl_obj$indexExtra <- lapply(ctrl_obj$index, function(training) {
+          list(origIndex = y_index, bootIndex = training)
+        })
+      }
+      names(ctrl_obj$indexOut) <- prettySeq(ctrl_obj$indexOut)
+    } else {
+      ctrl_obj$indexOut <- 
+        createTimeSlices(seq(along = outcome),
+                         initialWindow = ctrl_obj$initialWindow,
+                         horizon = ctrl_obj$horizon,
+                         fixedWindow = ctrl_obj$fixedWindow,
+                         skip = ctrl_obj$skip)$test
+    }
+  }
+  
+  if(ctrl_obj$method != "oob" & is.null(ctrl_obj$index)) 
+    names(ctrl_obj$index) <- prettySeq(ctrl_obj$index)
+  if(ctrl_obj$method != "oob" & is.null(names(ctrl_obj$index)))    
+    names(ctrl_obj$index)    <- prettySeq(ctrl_obj$index)
+  if(ctrl_obj$method != "oob" & is.null(names(ctrl_obj$indexOut))) 
+    names(ctrl_obj$indexOut) <- prettySeq(ctrl_obj$indexOut)
+  ctrl_obj
+}
+
+
+
+

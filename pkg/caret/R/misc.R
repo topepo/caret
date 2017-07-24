@@ -30,13 +30,14 @@ well_numbered <- function(prefix, items) {
 
 
 #' @importFrom stats runif
-evalSummaryFunction <- function(y, wts, ctrl, lev, metric, method) {
+evalSummaryFunction <- function(y, wts = NULL, perf = NULL, ctrl, lev, metric, method) {
   n <- if(class(y)[1] == "Surv") nrow(y) else length(y)
   ## sample doesn't work for Surv objects
   if(class(y)[1] != "Surv") {
     if(is.factor(y)) {
-      pred_samp <- factor(sample(levels(y), min(10, n), replace = TRUE), levels = lev)
-      obs_samp <- factor(sample(levels(y), min(10, n), replace = TRUE), levels = lev)
+      values <- rep_len(levels(y), min(10, n))
+      pred_samp <- factor(sample(values), levels = lev)
+      obs_samp  <- factor(sample(values), levels = lev)
     } else {
       pred_samp <- sample(y, min(10, n))
       obs_samp <- sample(y, min(10, n))
@@ -48,9 +49,14 @@ evalSummaryFunction <- function(y, wts, ctrl, lev, metric, method) {
   
   ## get phoney performance to obtain the names of the outputs
   testOutput <- data.frame(pred = pred_samp, obs = obs_samp)
+  if(!is.null(perf)) {
+    if(is.vector(perf))
+      stop("`perf` should be a data frame", call. = FALSE)
+    perf <- perf[sample(1:nrow(perf), nrow(testOutput)),, drop = FALSE]
+    testOutput <-cbind(testOutput, perf)
+  }
   
-  if(ctrl$classProbs)
-  {
+  if(ctrl$classProbs) {
     for(i in seq(along = lev)) testOutput[, lev[i]] <- runif(nrow(testOutput))
     testOutput[, lev] <- t(apply(testOutput[, lev], 1, function(x) x/sum(x)))
   } else {
@@ -326,28 +332,28 @@ scrubCall <- function(x)
 
 requireNamespaceQuietStop <- function(package) {
   if (!requireNamespace(package, quietly = TRUE))
-    stop(paste('package',package,'is required'))
+    stop(paste('package',package,'is required'), call. = FALSE)
 }
 
 get_resample_perf <- function (x, ...) UseMethod("get_resample_perf")
 
 get_resample_perf.train <- function(x) {
   if(x$control$returnResamp == "none")
-    stop("use returnResamp == 'none' in trainControl()")
+    stop("use returnResamp == 'none' in trainControl()", call. = FALSE)
   out <- merge(x$resample, x$bestTune)
   out[, c(x$perfNames, "Resample")]
 }
 
 get_resample_perf.rfe <- function(x) {
   if(x$control$returnResamp == "none")
-    stop("use returnResamp == 'none' in trainControl()")
+    stop("use returnResamp == 'none' in trainControl()", call. = FALSE)
   out <- subset(x$resample, Variables == x$bestSubset)
   out[, c(x$perfNames, "Resample")]
 }
 
 get_resample_perf.sbf <- function(x) {
   if(x$control$returnResamp == "none")
-    stop("use returnResamp == 'none' in trainControl()")
+    stop("use returnResamp == 'none' in trainControl()", call. = FALSE)
   x$resample
 }
 
@@ -426,14 +432,16 @@ parse_sampling <- function(x, check_install = TRUE) {
   if(!(x_class %in% c("character", "function", "list"))) {
     stop(paste("The sampling argument should be either a",
                "string, function, or list. See",
-               "http://topepo.github.io/caret/model-training-and-tuning.html"))
+               "http://topepo.github.io/caret/model-training-and-tuning.html"), 
+         call. = FALSE)
   }
   if(x_class == "character") {
     x <- x[1]
     load(system.file("models", "sampling.RData", package = "caret"))
     s_method <- names(sampling_methods)
     if(!(x %in% s_method)) {
-      stop("That sampling scheme is not in caret's built-in library")
+      stop("That sampling scheme is not in caret's built-in library", 
+           call. = FALSE)
     } else {
       x <- list(name = x,
                 func = sampling_methods[x][[1]],
@@ -458,10 +466,12 @@ parse_sampling <- function(x, check_install = TRUE) {
 check_samp_func <- function(x) {
   s_args <- sort(names(formals(x)))
   if(length(s_args) != 2) {
-    stop("the 'sampling' function should have arguments 'x' and 'y'")
+    stop("the 'sampling' function should have arguments 'x' and 'y'", 
+         call. = FALSE)
   } else {
     if(!all(s_args == c("x", "y")))
-      stop("the 'sampling' function should have arguments 'x' and 'y'")
+      stop("the 'sampling' function should have arguments 'x' and 'y'", 
+           call. = FALSE)
   }
   invisible(NULL)
 }
@@ -471,15 +481,17 @@ check_samp_list <- function(x) {
   x_names <- sort(names(x))
   if(length(x_names) != length(exp_names)) {
     stop(paste("the 'sampling' list should have elements",
-               paste(exp_names, sep = "", collapse = ", ")))
+               paste(exp_names, sep = "", collapse = ", ")), 
+         call. = FALSE)
   } else {
     if(!all(exp_names == x_names))
       stop(paste("the 'sampling' list should have elements",
-                 paste(exp_names, sep = "", collapse = ", ")))
+                 paste(exp_names, sep = "", collapse = ", ")), 
+           call. = FALSE)
   }
   check_samp_func(x$func)
   if(!is.logical(x$first))
-    stop("The element 'first' should be a logical")
+    stop("The element 'first' should be a logical", call. = FALSE)
   invisible(NULL)
 }
 
@@ -505,7 +517,8 @@ getSamplingInfo <- function(method = NULL, regex = TRUE, ...) {
     sampling_methods <- sampling_methods[keepers]
   }
   if (length(sampling_methods) == 0)
-    stop("That sampling method is not in caret's built-in library")
+    stop("That sampling method is not in caret's built-in library",
+         call. = FALSE)
   sampling_methods
 }
 
@@ -546,6 +559,8 @@ get_range <- function(y) {
   if(class(y)[1] %in% c("numeric", "integer")) extendrange(y) else extendrange(y[, "time"])
 }
 
+#' @rdname caret-internal
+#' @export
 outcome_conversion <- function(x, lv) {
   if(is.factor(x) | is.character(x)) {
     if(!is.null(attributes(lv)) && any(names(attributes(lv)) == "ordered" && attr(lv, "ordered")))
@@ -572,12 +587,13 @@ check_na_conflict <- function(call_obj) {
   if(imputes & any(nam %in% c("na.omit", "na.exclude")))
     warning(paste0("`preProcess` includes an imputation method but missing ",
                    "data will be eliminated by the formula method using `na.action=",
-                   nam, "`. Consider using `na.actin=na.pass` instead."))
+                   nam, "`. Consider using `na.actin=na.pass` instead."),
+            call. = FALSE)
   invisible(NULL)
 }
 
 
-# in case an object (ushc as soe sparse matrices) 
+# in case an object is a sparse matrix or tibble
 # do not use `drop` as an argument
 subset_x <- function(x, ind) {
   if(is.matrix(x) | is.data.frame(x) | inherits(x, "dgCMatrix"))
@@ -586,7 +602,56 @@ subset_x <- function(x, ind) {
     x
 }
 
-optimismBoot <- function(ctrl, x, y, wts, iter, lev, method, mod, predicted, submod, loop) {
+fail_warning <- function(settings, msg, where = "model fit", iter, verb) {
+  if (is.list(msg)) {
+    is_fail <- vapply(msg, inherits, c(x = TRUE), what = "try-error")
+    msg <- msg[is_fail]
+  }
+
+  if (!is.character(msg))
+    msg <- as.character(msg)
+  
+  wrn <- paste(colnames(settings),
+               settings,
+               sep = "=",
+               collapse = ", ")
+  wrn <- paste(where, " failed for ", iter,
+               ": ", wrn, " ", msg, sep = "")
+  if (verb)  
+    cat(wrn, "\n")
+
+  warning(wrn, call. = FALSE)
+  invisible(wrn)
+}
+
+fill_failed_pred <- function(index, lev, submod){
+  ## setup a dummy results with NA values for all predictions
+  nPred <- length(index)
+  if(!is.null(lev)) {
+    predicted <- rep("", nPred)
+    predicted[seq(along = predicted)] <- NA
+  } else {
+    predicted <- rep(NA, nPred)
+  }
+  if(!is.null(submod)) {
+    tmp <- predicted
+    predicted <- vector(mode = "list", length = nrow(submod) + 1)
+    for(i in seq(along = predicted)) predicted[[i]] <- tmp
+    rm(tmp)
+  }
+  predicted
+}
+
+fill_failed_prob <- function(index, lev, submod) {
+  probValues <- matrix(NA, nrow = length(index), ncol = length(lev))
+  probValues <- as.data.frame(probValues)
+  colnames(probValues) <- lev
+  if (!is.null(submod))
+    probValues <- rep(list(probValues), nrow(submod) + 1L)
+  probValues
+}
+
+optimism_xy <- function(ctrl, x, y, wts, iter, lev, method, mod, predicted, submod, loop) {
   indexExtra <- ctrl$indexExtra[[iter]]
   
   if(is.null(indexExtra) || inherits(mod, "try-error") || inherits(predicted, "try-error"))
@@ -668,6 +733,86 @@ optimismBoot <- function(ctrl, x, y, wts, iter, lev, method, mod, predicted, sub
                                if(!is.null(wts)) tmp$weights <- wts[holdoutIndex]
                                if(ctrl$classProbs) tmp <- cbind(tmp, probValues)
                                tmp$rowIndex <- holdoutIndex
+                               ctrl$summaryFunction(tmp, lev = lev, model = method)
+                             })
+    names(thisResampleExtra[[1L]]) <- paste0(names(thisResampleExtra[[1L]]), "Orig")
+    names(thisResampleExtra[[2L]]) <- paste0(names(thisResampleExtra[[2L]]), "Boot")
+    thisResampleExtra <- unlist(unname(thisResampleExtra), recursive = FALSE)
+    thisResampleExtra <- cbind(as.data.frame(t(thisResampleExtra)), loop)
+  }
+  
+  # return
+  thisResampleExtra
+}
+
+optimism_rec <- function(ctrl, dat, iter, lev, method, mod_rec, predicted, submod, loop) {
+  indexExtra <- ctrl$indexExtra[[iter]]
+  
+  if(is.null(indexExtra) || model_failed(mod_rec) || inherits(predicted, "try-error"))
+    return (NULL)
+  
+  predictedExtra <- lapply(indexExtra, function(index) {
+    pred <- rec_pred(method = method,
+                     object = mod_rec,
+                     newdata = subset_x(dat, index),
+                     param = submod)
+    trim_values(pred, ctrl, is.null(lev))
+  })
+  
+  if(ctrl$classProbs)
+    probValuesExtra <- lapply(indexExtra, function(index) {
+      rec_prob(method = method,
+               object = mod_rec,
+               newdata = subset_x(dat, index),
+               param = submod)
+    })
+  else
+    probValuesExtra <- lapply(indexExtra, function(index) {
+      fill_failed_prob(index, lev, submod)
+    })
+  
+  if(!is.null(submod)) {
+    allParam <- expandParameters(loop, submod)
+    allParam <- allParam[complete.cases(allParam),, drop = FALSE]
+    
+    predictedExtra <- Map(predictedExtra, indexExtra, f = function(predicted, holdoutIndex) {
+      lapply(predicted, function(x) {
+        x <- outcome_conversion(x, lv = lev)
+        dat <- holdout_rec(mod_rec, dat, holdoutIndex)
+        dat$pred <- x
+        dat
+      })
+    })
+    
+    if(ctrl$classProbs)
+      predictedExtra <- Map(predictedExtra, probValuesExtra, f = function(predicted, probValues) {
+        Map(cbind, predicted, probValues)
+      })
+    
+    thisResampleExtra <- lapply(predictedExtra, function(predicted) {
+      lapply(predicted,
+             ctrl$summaryFunction,
+             lev = lev,
+             model = method)
+    })
+    thisResampleExtra[[1L]] <- lapply(thisResampleExtra[[1L]], function(res) {
+      names(res) <- paste0(names(res), "Orig")
+      res
+    })
+    thisResampleExtra[[2L]] <- lapply(thisResampleExtra[[2L]], function(res) {
+      names(res) <- paste0(names(res), "Boot")
+      res
+    })
+    thisResampleExtra <- do.call(cbind, lapply(thisResampleExtra, function(x) do.call(rbind, x)))
+    thisResampleExtra <- cbind(allParam, thisResampleExtra)
+    
+  } else {
+    thisResampleExtra <- Map(predictedExtra, indexExtra, probValuesExtra,
+                             f = function(predicted, holdoutIndex, probValues) {
+                               tmp <- holdout_rec(mod_rec, dat, holdoutIndex)
+                               tmp$pred <- outcome_conversion(predicted, lv = lev)
+                               if(ctrl$classProbs) tmp <- cbind(tmp, probValues)
+                               tmp <- merge(tmp, loop, all = TRUE)
                                ctrl$summaryFunction(tmp, lev = lev, model = method)
                              })
     names(thisResampleExtra[[1L]]) <- paste0(names(thisResampleExtra[[1L]]), "Orig")

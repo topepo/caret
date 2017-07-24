@@ -3,6 +3,8 @@ setwd("~/github/caret/RegressionTests")
 ## Should we just test a small, diverse set of models instead of everything?
 small <- FALSE
 
+fselect <- FALSE
+
 #############################################################################
 
 newPath <- paste(format(Sys.time(), "%Y_%m_%d_%H"), 
@@ -31,6 +33,11 @@ exclusions <- c("rknn", "rknnBel", "[mM]xnet", "sdda", "enpls.fs", "enpls", "Bor
 exclusions <- paste0("(", exclusions, ")")
 exclusions <- paste0(exclusions, collapse = "|")
 testFiles <- testFiles[!grepl(exclusions, testFiles)]
+
+if(!fselect) {
+  fs_excl <- grepl("(/sbf)|(/rfe)", testFiles)
+  testFiles <- testFiles[!fs_excl]
+}
 
 newFiles <- paste0("~/tmp/", newPath, "/", basename(testFiles))
 

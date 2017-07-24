@@ -71,10 +71,7 @@ svmAdapt <- train(Class ~ ., data = training,
                   metric = "ROC",
                   tuneLength = 15)
 ```
-```{r adapt_check, include = FALSE}
-if(!all.equal(svmFit$bestTune, svmAdapt$bestTune))
-  stop("models do not agree")
-```
-The search finalized the tuning parameters on the `r max(svmAdapt$results$.B[-which.max(svmAdapt$results$.B)])`th iteration of resampling and was `r I(round(svmFit$times$everything[3]/svmAdapt$times$everything[3], 1))`-fold faster than the original analysis. Here, the optimal tuning parameters were a RBF kernel parameter of `r I(round(svmAdapt$bestTune$sigma, 4))` and a cost value of `r I(svmAdapt$bestTune$C)`. These match the previous settings even though `r length(svmFit$control$index)*nrow(svmFit$results) - sum(svmAdapt$results$.B)` fewer models were fit to the data. 
+
+The search finalized the tuning parameters on the `r max(svmAdapt$results$.B[-which.max(svmAdapt$results$.B)])`th iteration of resampling and was `r I(round(svmFit$times$everything[3]/svmAdapt$times$everything[3], 1))`-fold faster than the original analysis. Here, the optimal tuning parameters were a RBF kernel parameter of `r I(round(svmAdapt$bestTune$sigma, 4))` and a cost value of `r I(svmAdapt$bestTune$C)`. These are close to the previous settings and result in a difference in the area under the ROC curve of `r round(getTrainPerf(svmFit)[1,1] - getTrainPerf(svmAdapt)[1,1], 3)` and the adaptive approach used `r length(svmFit$control$index)*nrow(svmFit$results) - sum(svmAdapt$results$.B)` fewer models.  
 
 Remember that this methodology is experimental, so please send any [questions or bug reports](https://github.com/topepo/caret/issues) to the package maintainer.

@@ -1,7 +1,16 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "mlpML"
+
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
 
 #########################################################################
 
@@ -10,6 +19,10 @@ training <- twoClassSim(50, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 seeds <- vector(mode = "list", length = nrow(training) + 1)
 seeds <- lapply(seeds, function(x) 1:20)
@@ -60,6 +73,24 @@ test_class_none_model <- caret:::train(trainX, trainY,
 
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 
+set.seed(849)
+test_class_rec <- caret::train(recipe = rec_cls,
+                               data = training,
+                               method = "mlpML", 
+                               trControl = cctrl1)
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
+
+
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
   cat("wrong levels")
@@ -85,6 +116,10 @@ training <- SLC14_1(30)
 testing <- SLC14_1(100)
 trainX <- training[, -ncol(training)]
 trainY <- training$y
+
+rec_reg <- recipe(y ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) 
 testX <- trainX[, -ncol(training)]
 testY <- trainX$y
 
@@ -118,6 +153,21 @@ test_reg_loo_model <- caret:::train(trainX, trainY,
                                     method = "mlpML",
                                     trControl = rctrl2,
                                     preProc = c("center", "scale"))
+set.seed(849)
+test_reg_rec <- caret:::train(recipe = rec_reg,
+                              data = training,
+                              method = "mlpML", 
+                              trControl = rctrl1)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+
+test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 
 #########################################################################
 

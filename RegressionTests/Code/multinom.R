@@ -1,7 +1,16 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "multinom"
+
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
 
 #########################################################################
 
@@ -10,6 +19,12 @@ training <- twoClassSim(50, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+wts <- runif(nrow(trainX))
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 weight_test <- function (data, lev = NULL, model = NULL)  {
   mean(data$weights)
@@ -80,7 +95,7 @@ test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)]
 
 set.seed(849)
 test_class_cv_weight <- train(trainX, trainY, 
-                              weights = runif(nrow(trainX)),
+                              weights = wts,
                               method = "multinom", 
                               trControl = cctrl4,
                               tuneLength = 2,
@@ -90,13 +105,57 @@ test_class_cv_weight <- train(trainX, trainY,
 
 set.seed(849)
 test_class_loo_weight <- train(trainX, trainY, 
-                               weights = runif(nrow(trainX)), 
+                               weights = wts, 
                                method = "multinom", 
                                trControl = cctrl5,
                                tuneLength = 2,
                                metric = "Accuracy", 
                                preProc = c("center", "scale"),
                                trace = FALSE)
+
+set.seed(849)
+test_class_rec <- train(recipe = rec_cls,
+                        data = training,
+                        method = "multinom", 
+                        trControl = cctrl1,
+                        metric = "ROC",
+                        trace = FALSE)
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
+test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
+                               type = "prob")
+
+tmp <- training
+tmp$wts <- wts
+
+weight_rec <- recipe(Class ~ ., data = tmp) %>%
+  add_role(wts, new_role = "case weight") %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
+
+set.seed(849)
+test_class_cv_weight_rec <- train(weight_rec, data = tmp,
+                                  method = "multinom", 
+                                  trControl = cctrl4,
+                                  tuneLength = 2,
+                                  metric = "Accuracy",
+                                  trace = FALSE)
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_weight_rec$results, 
+              test_class_cv_weight$results))
+)
+  stop("CV weights not giving the same results")
 
 
 test_levels <- levels(test_class_cv_model)

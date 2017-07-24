@@ -18,6 +18,7 @@ modelInfo <- list(label = "Sparse Partial Least Squares",
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
+                    param$K <- min(param$K, length(y))
                     if(is.factor(y)) {
                       caret:::splsda(x, y, K = param$K, eta = param$eta,
                                      kappa = param$kappa, ...)

@@ -1,7 +1,16 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "svmLinear3"
+
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
 
 #########################################################################
 
@@ -10,6 +19,10 @@ training <- twoClassSim(50, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 cctrl2 <- trainControl(method = "LOOCV")
@@ -73,6 +86,10 @@ training <- SLC14_1(30)
 testing <- SLC14_1(100)
 trainX <- training[, -ncol(training)]
 trainY <- training$y
+
+rec_reg <- recipe(y ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) 
 testX <- trainX[, -ncol(training)]
 testY <- trainX$y
 
@@ -116,6 +133,23 @@ test_reg_none_model <- train(trainX, trainY,
                              preProc = c("center", "scale"))
 test_reg_none_pred <- predict(test_reg_none_model, testX)
 
+set.seed(849)
+test_reg_rec <- train(recipe = rec_reg,
+                      data = training,
+                      method = "svmLinear3", 
+                      trControl = rctrl1,
+                      tuneLength = 3,
+                      svr_eps = .1)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+
+test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 
 #########################################################################
 

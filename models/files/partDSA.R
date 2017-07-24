@@ -23,8 +23,7 @@ modelInfo <- list(label = "partDSA",
                     
                     submodels <- vector(mode = "list", length = length(uniqueMPD))
                     
-                    for(i in seq(along = uniqueMPD))
-                    {
+                    for(i in seq(along = uniqueMPD)) {
                       subCuts <- grid[grid$MPD == uniqueMPD[i],"cut.off.growth"]
                       loop$cut.off.growth[loop$MPD == uniqueMPD[i]] <- subCuts[which.max(subCuts)]
                       submodels[[i]] <- data.frame(cut.off.growth = subCuts[-which.max(subCuts)])
@@ -32,6 +31,8 @@ modelInfo <- list(label = "partDSA",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    if(!is.data.frame(x) | inherits(x, "tbl_df")) 
+                      x <- as.data.frame(x)
                     partDSA(x, y,
                             control = DSA.control(
                               cut.off.growth = param$cut.off.growth,
@@ -40,16 +41,16 @@ modelInfo <- list(label = "partDSA",
                             ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.null(submodels))
-                    {
+                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
+                      newdata <- as.data.frame(newdata)
+                    if(!is.null(submodels)) {
                       tmp <- c(modelFit$tuneValue$cut.off.growth, submodels$cut.off.growth)
                       
                       ## There are cases where the number of models saved by the function is
                       ## less than the values in cut.off.growth (e.g. cut.off.growth = 1:10
                       ## but partDSA only has 6 partitions). We will predict the "overage" using
                       ## the largest model in the obejct (e.g. models 7:10 predicted by model 6).
-                      if(modelFit$problemType == "Classification")
-                      {
+                      if(modelFit$problemType == "Classification") {
                         out <- predict(modelFit, newdata)
                         if(max(tmp) > length(out)) tmp[tmp > length(out)] <- length(out)
                         out <- out[tmp]
@@ -63,8 +64,7 @@ modelInfo <- list(label = "partDSA",
                       ## There maybe less items than modelFit$cut.off.growth
                       index <- min(modelFit$cut.off.growth, length(modelFit$test.set.risk.DSA))
                       ## use best Tune
-                      if(modelFit$problemType == "Classification")
-                      {
+                      if(modelFit$problemType == "Classification") {
                         out <- as.character(predict(modelFit, newdata)[[index]])
                       } else {
                         out <- predict(modelFit, newdata)[,index]
@@ -73,8 +73,7 @@ modelInfo <- list(label = "partDSA",
                     out        
                   },
                   predictors = function(x, cuts = NULL, ...) {
-                    if(is.null(cuts) & !is.null(x$tuneValue))
-                    {
+                    if(is.null(cuts) & !is.null(x$tuneValue)) {
                       cuts <- x$tuneValue$cut.off.growth[1]
                     } else {
                       if(is.null(cuts)) stop("please supply a value for 'cuts'")
@@ -86,8 +85,7 @@ modelInfo <- list(label = "partDSA",
                   tags = "",
                   prob = NULL,
                   varImp = function(object, cuts = NULL, ...) {
-                    if(is.null(cuts) & !is.null(object$tuneValue))
-                    {
+                    if(is.null(cuts) & !is.null(object$tuneValue)) {
                       cuts <- object$tuneValue$cut.off.growth[1]
                     } else {
                       if(is.null(cuts)) stop("please supply a value for 'cuts'")

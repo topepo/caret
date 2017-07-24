@@ -1,7 +1,16 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "ORFridge"
+
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
 
 #########################################################################
 
@@ -10,6 +19,10 @@ training <- twoClassSim(50, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 seeds <- vector(mode = "list", length = nrow(training) + 1)
 seeds <- lapply(seeds, function(x) 1:20)
@@ -34,7 +47,8 @@ test_class_cv_model <- train(trainX, trainY,
                              trControl = cctrl1,
                              metric = "ROC", 
                              preProc = c("center", "scale"),
-                             verbose = FALSE)
+                             verbose = FALSE,
+                             ntree = 20)
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
@@ -42,7 +56,8 @@ test_class_cv_form <- train(Class ~ ., data = training,
                             trControl = cctrl1,
                             metric = "ROC", 
                             preProc = c("center", "scale"),
-                            verbose = FALSE)
+                            verbose = FALSE,
+                            ntree = 20)
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
@@ -77,6 +92,28 @@ test_class_none_model <- train(trainX, trainY,
 
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
+
+set.seed(849)
+test_class_rec <- train(recipe = rec_cls,
+                        data = training,
+                        method = "ORFridge", 
+                        trControl = cctrl1,
+                        metric = "ROC",
+                        verbose = FALSE,
+                        ntree = 20)
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
+test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
+                               type = "prob")
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))

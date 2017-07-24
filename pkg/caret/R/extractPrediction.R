@@ -147,3 +147,38 @@ trimPredictions <- function(pred, mod_type, bounds, limits) {
   }
   pred
 }
+
+## This is used in workflows
+trim_values <- function(preds, ctrl, is_num) {
+  if(is_num) {
+    if(is.logical(ctrl$predictionBounds) && any(ctrl$predictionBounds)) {
+      if(is.list(preds)) {
+        preds <- lapply(preds, trimPredictions,
+                        mod_type = "Regression",
+                        bounds = ctrl$predictionBounds,
+                        limits = ctrl$yLimits)
+      } else {
+        preds <- trimPredictions(mod_type = "Regression",
+                                 bounds =  ctrl$predictionBounds,
+                                 limits =  ctrl$yLimit,
+                                 pred = preds)
+      }
+    } else {
+      if(is.numeric(ctrl$predictionBounds) && any(!is.na(ctrl$predictionBounds))) {
+        if(is.list(preds)) {
+          preds <- lapply(preds, trimPredictions,
+                          mod_type = "Regression",
+                          bounds = ctrl$predictionBounds,
+                          limits = ctrl$yLimits)
+        } else {
+          preds <- trimPredictions(mod_type = "Regression",
+                                   bounds =  ctrl$predictionBounds,
+                                   limits =  ctrl$yLimit,
+                                   pred = preds)
+        }
+      }
+    } 
+  }
+  preds
+}
+

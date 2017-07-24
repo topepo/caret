@@ -1,7 +1,13 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "gbm"
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
 
 #########################################################################
 
@@ -16,15 +22,32 @@ testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
+
+seeds <- vector(mode = "list", length = nrow(training) + 1)
+seeds <- lapply(seeds, function(x) 1:20)
+
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE, 
-                       summaryFunction = twoClassSummary)
+                       summaryFunction = twoClassSummary, 
+                       seeds = seeds)
 cctrl2 <- trainControl(method = "LOOCV",
-                       classProbs = TRUE, summaryFunction = twoClassSummary)
-cctrl3 <- trainControl(method = "oob")
+                       classProbs = TRUE, 
+                       summaryFunction = twoClassSummary, 
+                       seeds = seeds)
+cctrl3 <- trainControl(method = "oob", seeds = seeds)
 cctrl4 <- trainControl(method = "none",
-                       classProbs = TRUE, summaryFunction = twoClassSummary)
-cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
+                       classProbs = TRUE, 
+                       summaryFunction = twoClassSummary, 
+                       seeds = seeds)
+cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random", 
+                       seeds = seeds)
+cctrlB632 <- trainControl(method = "boot632", number = 10, search = "random", timingSamps = 11, classProbs = TRUE)
+cctrlBopt <- trainControl(method = "optimism_boot", number = 10, search = "random", savePredictions = "final", classProbs = TRUE)
+cctrlAdapt <- trainControl(method = "adaptive_boot", number = 15, search = "random", classProbs = TRUE)
+
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
@@ -87,31 +110,86 @@ test_class_none_model <- train(trainX, trainY,
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
 
+set.seed(849)
+test_class_b632_model <- train(trainX, trainY, 
+                               method = "gbm", 
+                               trControl = cctrlB632,
+                               preProc = c("center", "scale"),
+                               tuneGrid = gbmGrid,
+                               verbose = FALSE)
+
+
+set.seed(849)
+test_class_bopt_model <- train(trainX, trainY, 
+                               method = "gbm", 
+                               trControl = cctrlBopt,
+                               preProc = c("center", "scale"),
+                               tuneGrid = gbmGrid,
+                               verbose = FALSE)
+
+
+set.seed(849)
+test_class_adapt_model <- train(trainX, trainY, 
+                                method = "gbm", 
+                                trControl = cctrlAdapt,
+                                preProc = c("center", "scale"),
+                                tuneGrid = gbmGrid,
+                                verbose = FALSE)
+
+set.seed(849)
+test_class_rec <- train(recipe = rec_cls,
+                        data = training,
+                        method = "gbm", 
+                        trControl = cctrl1,
+                        metric = "ROC",
+                        tuneGrid = gbmGrid,
+                        verbose = FALSE)
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
+test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
+                               type = "prob")
+
+set.seed(849)
+test_class_b632_rec_model <- train(recipe = rec_cls,
+                                   data = training, 
+                                   method = "gbm", 
+                                   trControl = cctrlB632,
+                                   tuneGrid = gbmGrid,
+                                   verbose = FALSE)
+if(!isTRUE(all.equal(test_class_b632_rec_model$results, 
+                     test_class_b632_model$results)))
+  stop("x/y and recipe interface have different results for B632")
+
+set.seed(849)
+test_class_bopt_rec_model <- train(recipe = rec_cls,
+                                   data = training, 
+                                   method = "gbm", 
+                                   trControl = cctrlBopt,
+                                   tuneGrid = gbmGrid,
+                                   verbose = FALSE)
+if(!isTRUE(all.equal(test_class_bopt_rec_model$results, 
+                     test_class_bopt_model$results)))
+  stop("x/y and recipe interface have different results for B optim")
+
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
   cat("wrong levels")
 
 #########################################################################
 
-SLC14_1 <- function(n = 100) {
-  dat <- matrix(rnorm(n*20, sd = 3), ncol = 20)
-  foo <- function(x) x[1] + sin(x[2]) + log(abs(x[3])) + x[4]^2 + x[5]*x[6] + 
-    ifelse(x[7]*x[8]*x[9] < 0, 1, 0) +
-    ifelse(x[10] > 0, 1, 0) + x[11]*ifelse(x[11] > 0, 1, 0) + 
-    sqrt(abs(x[12])) + cos(x[13]) + 2*x[14] + abs(x[15]) + 
-    ifelse(x[16] < -1, 1, 0) + x[17]*ifelse(x[17] < -1, 1, 0) -
-    2 * x[18] - x[19]*x[20]
-  dat <- as.data.frame(dat)
-  colnames(dat) <- paste0("Var", 1:ncol(dat))
-  dat$y <- apply(dat[, 1:20], 1, foo) + rnorm(n, sd = 3)
-  dat
-}
-
+library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 set.seed(1)
 training <- SLC14_1(75)
 testing <- SLC14_1(100)
 trainX <- training[, -ncol(training)]
 trainY <- training$y
+
+rec_reg <- recipe(y ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) 
 testX <- trainX[, -ncol(training)]
 testY <- trainX$y 
 
@@ -171,6 +249,24 @@ test_reg_none_model <- train(trainX, trainY,
                              verbose = FALSE,
                              preProc = c("center", "scale"))
 test_reg_none_pred <- predict(test_reg_none_model, testX)
+
+set.seed(849)
+test_reg_rec <- train(recipe = rec_reg,
+                      data = training,
+                      method = "gbm", 
+                      trControl = rctrl1,
+                      tuneGrid = gbmGrid,
+                      verbose = FALSE)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+
+test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 
 #########################################################################
 

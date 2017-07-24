@@ -187,7 +187,6 @@ preProcess <- function(x, ...) UseMethod("preProcess")
 
 #' @rdname preProcess
 #' @importFrom stats complete.cases median sd prcomp
-#' @importFrom car powerTransform yjPower
 #' @export
 preProcess.default <- function(x, method = c("center", "scale"),
                                thresh = 0.95,
@@ -302,29 +301,34 @@ preProcess.default <- function(x, method = c("center", "scale"),
     for(i in method$BoxCox) x[,i] <- predict(bc[[i]], x[,i])
   } else bc <- NULL
   
+  
   if(any(names(method) == "YeoJohnson")) {
-    yj <- group_yj(x[, method$YeoJohnson, drop = FALSE],
-                   numUnique = numUnique,
-                   verbose = verbose)
+    yj <- vapply(
+      x[, method$YeoJohnson, drop = FALSE],
+      recipes::estimate_yj,
+      c(lambda = 0),
+      limits = c(-3, 3), ## consistent with `car` defaults
+      nunique = numUnique
+    )
+    yj <- yj[!is.null(yj) & !is.na(yj)]
     if(length(yj) > 0) {
       if(verbose) cat(" applying them to training data\n")
       if(length(yj) != length(method$YeoJohnson)) {
         method$YeoJohnson <- names(yj)
       }
-      lam <- unlist(lapply(yj, function(x) if(class(x) == "powerTransform") x$lambda else NA))
-      lam <- lam[!is.na(lam)]
-      if(length(lam) > 0) {
-        for(i in seq(along = lam)) {
-          who <-  gsub("\\.Y1$", "", names(lam)[i])
-          x[,who] <- yjPower(x[,who], yj[[who]]$lambda)
+      # now apply to current data
+      if(length(yj) > 0) {
+        for(i in seq(along = yj)) {
+          who <- names(yj)[i]
+          x[,who] <- recipes::yj_trans(x[,who], yj[who])
         }
       }
     } else {
       if(verbose) cat(" all of the transformations failed\n")
       yj <- NULL
     }
-  } else yj <- NULL
-  
+  } else yj <- NULL  
+
   if(any(names(method) == "expoTrans")) {
     if(verbose) 
       cat("Estimating exponential transformations for", 
@@ -517,15 +521,15 @@ predict.preProcess <- function(object, newdata, ...) {
   }
   
   if(!is.null(object$yj)) {
-    lam <- unlist(lapply(object$yj, function(x) if(class(x) == "powerTransform") x$lambda else NA))
+    lam <- get_yj_lambda(object$yj)
     lam <- lam[!is.na(lam)]
     if(length(lam) > 0) {
       for(i in seq(along = lam)) {
-        who <-  gsub("\\.Y1$", "", names(lam)[i])
-        newdata[,who] <- yjPower(newdata[,who], object$yj[[who]]$lambda)
+        who <- names(lam)[i]
+        newdata[,who] <- recipes::yj_trans(newdata[,who], lam[who])
       }
     }
-  }  
+  } 
   
   if(!is.null(object$et)) {
     for(i in seq(along = object$et)) {
@@ -703,17 +707,18 @@ print.preProcess <- function(x, ...) {
     } else print(summary(unlist(lapply(x$bc, function(x) x$lambda))))
     cat("\n")
   }
+  
   if(any(names(x$method) == "YeoJohnson")) {
     cat("Lambda estimates for Yeo-Johnson transformation:\n")
-    if(length(x$yj) < 11) {
-      lmbda <- unlist(lapply(x$yj, function(x) if(class(x) == "powerTransform") x$lambda else NA))
+    lmbda <- get_yj_lambda(x$yj)
+    if(length(lmbda) < 11) {
       naLmbda <- sum(is.na(lmbda))
       cat(paste(round(lmbda[!is.na(lmbda)], 2), collapse = ", "))
       if(naLmbda > 0) cat(" (#NA: ", naLmbda, ")\n", sep = "")
-    } else print(summary(unlist(lapply(x$yj, function(x) if(class(x) == "powerTransform") x$lambda else NA))))
+    } else print(summary(lmbda))
     cat("\n")
   }  
-  
+
   if(any(names(x$method) == "pca")) {
     if(is.null(x$pcaComp)) {
       cat("PCA needed", x$numComp, ifelse(x$numComp > 1, "components", "component"),
@@ -1027,29 +1032,6 @@ group_bc <- function(x, outcome = NULL,
   bc[!is.null(bc) & !is.na(bc)]
 }
 
-yjWrap <- function(x, numUnique = numUnique) {
-  if(length(unique(x)) >= numUnique) {
-    out <- try(powerTransform(y ~ 1,
-                              data = data.frame(y = x[!is.na(x)]),
-                              family = "yjPower"),
-               silent = TRUE)
-    if(class(out)[1] == "try-error") out <- NA
-  } else out <- NA
-  out
-}
-
-group_yj <- function(x, numUnique, verbose) {
-  if(verbose) 
-    cat("Estimating Yeo-Johnson transformations for", ncol(x), "predictors...")
-  
-  if(is.matrix(x)) {
-    yj <- apply(x, 2, yjWrap, numUnique = numUnique)  
-  } else {
-    yj <- lapply(x, yjWrap, numUnique = numUnique)  
-  }   
-  yj[!is.null(yj) & !is.na(yj)]
-}
-
 convert_method <- function(x) {
   new_method <- list()
   if("center" %in% x$method)       new_method$center       <- names(x$mean)
@@ -1067,3 +1049,17 @@ convert_method <- function(x) {
   x$method <- new_method
   x
 }
+
+## code for using car method; extract lambdas either way and use
+## new code for predictions. Same for predict method
+get_yj_lambda <- function(x) {
+  if(inherits(x[[1]], "powerTransform")) {
+    # backwards compat with old caret objecgts that used `car`
+    res <- unlist(lapply(x, function(x) x$lambda))
+    names(res) <- gsub("\\.Y1$", "", names(res))
+  } else {
+    res <- x
+  }
+  res[!is.na(res)]
+}
+

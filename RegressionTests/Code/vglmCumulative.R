@@ -1,7 +1,17 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "vglmCumulative"
+
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
+  
 
 #########################################################################
 
@@ -10,6 +20,10 @@ training <- twoClassSim(100, ordinal = TRUE)
 testing <- twoClassSim(500, ordinal = TRUE)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 weight_test <- function (data, lev = NULL, model = NULL)  {
   mean(data$weights)
@@ -87,6 +101,27 @@ test_class_loo_weight <- train(trainX, trainY,
                                tuneGrid = grid,
                                metric = "Accuracy", 
                                preProc = c("center", "scale"))
+
+set.seed(849)
+test_class_rec <- train(recipe = rec_cls,
+                        data = training,
+                        method = "vglmCumulative", 
+                        trControl = cctrl1,
+                        tuneGrid = grid,
+                        metric = "ROC")
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
+test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
+                               type = "prob")
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))

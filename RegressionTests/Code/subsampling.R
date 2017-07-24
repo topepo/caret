@@ -1,5 +1,8 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "subsampling"
 
@@ -10,6 +13,10 @@ training <- twoClassSim(500, linearVars = 2, intercept = -15)
 testing <- twoClassSim(500, linearVars = 2, intercept = -15)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 down_ctrl <- trainControl(method = "cv", number = 3, returnResamp = "all",
                           classProbs = TRUE, 

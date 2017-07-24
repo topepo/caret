@@ -1,7 +1,16 @@
 timestamp <- Sys.time()
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "smda"
+
+## In case the package or one of its dependencies uses random numbers
+## on startup so we'll pre-load the required libraries: 
+
+for(i in getModelInfo(model)[[1]]$library)
+  do.call("require", list(package = i))
 
 #########################################################################
 
@@ -11,10 +20,21 @@ testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
 
-cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
-cctrl2 <- trainControl(method = "LOOCV")
-cctrl3 <- trainControl(method = "none")
-cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
+rec_cls <- recipe(Class ~ TwoFactor1 + TwoFactor2 + Linear1, 
+                  data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
+
+seeds <- vector(mode = "list", length = nrow(training) + 1)
+seeds <- lapply(seeds, function(x) 1:20)
+
+cctrl1 <- trainControl(method = "cv", number = 3, 
+                       returnResamp = "all", seeds = seeds)
+cctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
+cctrl3 <- trainControl(method = "none", seeds = seeds)
+cctrlR <- trainControl(method = "cv", number = 3, 
+                       returnResamp = "all", search = "random", 
+                       seeds = seeds)
 
 set.seed(849)
 test_class_cv_model <- train(trainX[, 1:3], trainY, 
@@ -62,6 +82,26 @@ test_class_none_model <- train(trainX[, 1:3], trainY,
                                preProc = c("center", "scale"))
 
 test_class_none_pred <- predict(test_class_none_model, testing[, 1:3])
+
+set.seed(849)
+test_class_rec <- train(recipe = rec_cls,
+                        data = training,
+                        method = "smda", 
+                        tuneGrid = expand.grid(NumVars = 2:3,
+                                               R = 2:3,
+                                               lambda = c(.1, .2)),
+                        trControl = cctrl1)
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
