@@ -980,11 +980,11 @@ train.recipe <- function(recipe,
     flush.console()
   }
   
-  trained_rec <- prepare(recipe, training = data, 
-                         fresh = TRUE, 
-                         retain = TRUE,
-                         verbose = FALSE, 
-                         stringsAsFactors = TRUE)
+  trained_rec <- prep(recipe, training = data, 
+                      fresh = TRUE, 
+                      retain = TRUE,
+                      verbose = FALSE, 
+                      stringsAsFactors = TRUE)
   x <- juice(trained_rec, all_predictors())
   y <- juice(trained_rec, all_outcomes())
   if(ncol(y) > 1) 

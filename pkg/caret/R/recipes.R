@@ -101,7 +101,7 @@ holdout_rec <- function(object, dat, index) {
   ho_data <- as.data.frame(ho_data)
 }
 
-#' @importFrom recipes bake prepare juice has_role
+#' @importFrom recipes bake prep juice has_role
 rec_model <- function(rec, dat, method, tuneValue, obsLevels, 
                       last = FALSE, sampling = NULL, classProbs, ...) {
   
@@ -126,9 +126,9 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
     rm(tmp, y, other_cols, other_dat, orig_dat)
   }
   
-  trained_rec <- prepare(rec, training = dat, fresh = TRUE, 
-                         verbose = FALSE, stringsAsFactors = TRUE,
-                         retain = TRUE)
+  trained_rec <- prep(rec, training = dat, fresh = TRUE, 
+                      verbose = FALSE, stringsAsFactors = TRUE,
+                      retain = TRUE)
   x <- juice(trained_rec, all_predictors())
   y <- juice(trained_rec, all_outcomes())
   y <- get_vector(y)
