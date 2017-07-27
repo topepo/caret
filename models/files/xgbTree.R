@@ -175,7 +175,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       out <- predict(modelFit, newdata)
                     }
                    if(length(modelFit$obsLevels) == 2) {
-                      out <- cbind(out, 1 - out)
+                     out <- cbind(out, 1 - out)
                       colnames(out) <- modelFit$obsLevels
                     } else {
                       out <- matrix(out, ncol = length(modelFit$obsLevels), byrow = TRUE)

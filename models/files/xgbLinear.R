@@ -22,7 +22,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     if(!inherits(x, "xgb.DMatrix"))
-                      x <- as.matrix(x)
+                     x <- as.matrix(x)
                     
                     if(is.factor(y)) {
                       if(length(lev) == 2) {

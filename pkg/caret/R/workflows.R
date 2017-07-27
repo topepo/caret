@@ -86,7 +86,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       lapply(pkgs, requireNamespaceQuietStop)
       if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE],
                                     names(resampleIndex), iter)
-      
+
       if(names(resampleIndex)[iter] != "AllData") {
 
         modelIndex <- resampleIndex[[iter]]
@@ -95,7 +95,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         modelIndex <- 1:nrow(x)
         holdoutIndex <- modelIndex
       }
-      
+
       is_regression <- is.null(lev) 
       
       if(testing) cat("pre-model\n")
@@ -116,7 +116,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                     sampling = ctrl$sampling,
                     ...),
         silent = TRUE)
-      
+
       if(testing) print(mod) 
       
       if(!model_failed(mod)) {
@@ -127,7 +127,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                              preProc = mod$preProc,
                              param = submod),
           silent = TRUE)
-        
+
         if(pred_failed(predicted)) {
           fail_warning(settings = printed[parm,,drop = FALSE], 
                        msg  = predicted, 
@@ -155,12 +155,12 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                                      newdata = subset_x(x, holdoutIndex),
                                      preProc = mod$preProc,
                                      param = submod)
-        } else {
+       } else {
           probValues <- fill_failed_prob(holdoutIndex, lev, submod)
         }
         if(testing) print(head(probValues))
       }
-      
+
       ##################################
       
       predicted <- trim_values(predicted, ctrl, is_regression) 
