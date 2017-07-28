@@ -11,7 +11,7 @@ modelInfo <- list(label = "Linear Discriminant Analysis",
                                           class = c('numeric'),
                                           label = c('#Discriminant Functions')),
                   grid = function(x, y, len = NULL, search = "grid") data.frame(dimen = 1:min(ncol(x), length(levels(y)) - 1)),
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) lda(x, y, ...)  ,
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) MASS::lda(x, y, ...)  ,
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- as.character(predict(modelFit, newdata, dimen = modelFit$tuneValue$dimen)$class)
                     if(!is.null(submodels))

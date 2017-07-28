@@ -18,7 +18,7 @@ modelInfo <- list(label = "Regularized Random Forest",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    RRF(x, y, mtry = param$mtry, coefReg = param$coefReg, ...)
+                    RRF::RRF(x, y, mtry = param$mtry, coefReg = param$coefReg, ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit, newdata),

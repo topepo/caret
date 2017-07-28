@@ -1,7 +1,7 @@
 modelInfo <- list(label = "Boosted Classification Trees",
                   library = c("ada", "plyr"),
                   loop = function(grid) {     
-                    loop <- ddply(grid, c("nu", "maxdepth"),
+                    loop <- plyr::ddply(grid, c("nu", "maxdepth"),
                                   function(x) c(iter = max(x$iter)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$iter)) {
@@ -37,7 +37,7 @@ modelInfo <- list(label = "Boosted Classification Trees",
                       ctl <- theDots$control
                       theDots$control <- NULL
                       
-                    } else ctl <- rpart.control(maxdepth = param$maxdepth,
+                    } else ctl <- rpart::rpart.control(maxdepth = param$maxdepth,
                                                 cp=-1,minsplit=0,xval=0) 
                     
                     modelArgs <- c(list(x = x,
@@ -46,7 +46,7 @@ modelInfo <- list(label = "Boosted Classification Trees",
                                         nu = param$nu,              
                                         control = ctl),
                                    theDots)
-                    out <- do.call("ada", modelArgs)                    
+                    out <- do.call(ada::ada, modelArgs)                    
                     out     
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {

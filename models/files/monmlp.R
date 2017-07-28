@@ -20,16 +20,16 @@ modelInfo <- list(label = "Monotone Multi-Layer Perceptron Neural Network",
                     y <- if(is.numeric(y) )  
                       matrix(y, ncol = 1) else
                         class2ind(y)
-                    out <- monmlp.fit(y = y, 
-                                      x = x, 
-                                      hidden1 = param$hidden1,
-                                      n.ensemble = param$n.ensemble,
-                                      ...)
+                    out <- monmlp::monmlp.fit(y = y,
+                                              x = x,
+                                              hidden1 = param$hidden1,
+                                              n.ensemble = param$n.ensemble,
+                                              ...)
                     list(model = out)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.matrix(newdata)) newdata <- as.matrix(newdata)
-                    out <- monmlp.predict(newdata, modelFit$model)
+                    out <- monmplp::monmlp.predict(newdata, modelFit$model)
                     if(modelFit$problemType == "Classification") {
                       out <- modelFit$obsLevels[apply(out, 1, which.max)]
                     } else out <- out[, 1]
@@ -37,7 +37,7 @@ modelInfo <- list(label = "Monotone Multi-Layer Perceptron Neural Network",
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(!is.matrix(newdata)) newdata <- as.matrix(newdata)
-                    out <- monmlp.predict(newdata, modelFit$model)
+                    out <- monmlp::monmlp.predict(newdata, modelFit$model)
                     out <- t(apply(out, 1, function(x) exp(x)/sum(exp(x))))
                     colnames(out) <- modelFit$obsLevels
                     out

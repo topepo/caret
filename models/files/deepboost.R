@@ -27,22 +27,22 @@ modelInfo <- list(label = "DeepBoost",
                     if(is.null(wts)) {
                       dat <- x
                       dat$.outcome <- y
-                      out <- deepboost(.outcome ~ ., data = dat,
-                                       tree_depth = param$tree_depth,
-                                       num_iter = param$num_iter,
-                                       beta = param$beta,
-                                       lambda = param$lambda,
-                                       loss_type = as.character(param$loss_type), 
-                                       ...)
+                      out <- deepboost::deepboost(.outcome ~ ., data = dat,
+                                                  tree_depth = param$tree_depth,
+                                                  num_iter = param$num_iter,
+                                                  beta = param$beta,
+                                                  lambda = param$lambda,
+                                                  loss_type = as.character(param$loss_type), 
+                                                  ...)
                     } else {
-                      out <- deepboost(.outcome ~ ., data = dat,
-                                       tree_depth = param$tree_depth,
-                                       instance_weights = wts,
-                                       num_iter = param$num_iter,
-                                       beta = param$beta,
-                                       lambda = param$lambda,
-                                       loss_type = as.character(param$loss_type), 
-                                       ...)             
+                      out <- deepboost::deepboost(.outcome ~ ., data = dat,
+                                                  tree_depth = param$tree_depth,
+                                                  instance_weights = wts,
+                                                  num_iter = param$num_iter,
+                                                  beta = param$beta,
+                                                  lambda = param$lambda,
+                                                  loss_type = as.character(param$loss_type), 
+                                                  ...)             
                     }
                     out
                   },

@@ -20,17 +20,17 @@ modelInfo <- list(label = "Neural Network",
                     dat$.outcome <- y
                     if(!is.null(wts))
                     {
-                      out <- nnet(.outcome ~ .,
-                                  data = dat,
-                                  weights = wts,                                       
-                                  size = param$size,
-                                  decay = param$decay,
-                                  ...)
-                    } else out <- nnet(.outcome ~ .,
-                                       data = dat,
-                                       size = param$size,
-                                       decay = param$decay,
-                                       ...)
+                      out <- nnet::nnet(.outcome ~ .,
+                                        data = dat,
+                                        weights = wts,
+                                        size = param$size,
+                                        decay = param$decay,
+                                        ...)
+                    } else out <- nnet::nnet(.outcome ~ .,
+                                             data = dat,
+                                             size = param$size,
+                                             decay = param$decay,
+                                             ...)
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL)

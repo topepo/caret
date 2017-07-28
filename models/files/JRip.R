@@ -32,14 +32,14 @@ modelInfo <- list(label = "Rule-Based Classifier",
                       theDots$control$N <- param$MinWeights
                       ctl <- theDots$control
                       theDots$control <- NULL
-                    } else ctl <- Weka_control(O = param$NumOpt, F = param$NumFolds, N = param$MinWeights) 
+                    } else ctl <- RWeka::Weka_control(O = param$NumOpt, F = param$NumFolds, N = param$MinWeights) 
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
                                         data = dat,
                                         control = ctl),
                                    theDots)
                     
-                    out <- do.call("JRip", modelArgs) 
+                    out <- do.call(RWeka::JRip, modelArgs) 
                     out      
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {

@@ -39,8 +39,8 @@ modelInfo <- list(label = "Cubist",
                     out[!duplicated(out),]
                     
                   },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    out <- cubist(x, y, committees =  param$committees, ...)
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    out <- Cubist::cubist(x, y, committees =  param$committees,  ...)
                     if(last) out$tuneValue$neighbors <- param$neighbors
                     out
                     },

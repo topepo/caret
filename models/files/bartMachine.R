@@ -33,19 +33,19 @@ modelInfo <- list(label = "Bayesian Additive Regression Trees",
                     if(!is.data.frame(x) | inherits(x, "tbl_df")) 
                       x <- as.data.frame(x)
                     out <- if(is.factor(y)) {
-                      bartMachine(X = x, y = y, 
-                                  num_trees = param$num_trees, 
-                                  alpha = param$alpha, 
-                                  beta = param$beta,
-                                  ...)
+                      bartMachine::bartMachine(X = x, y = y, 
+                                               num_trees = param$num_trees, 
+                                               alpha = param$alpha, 
+                                               beta = param$beta,
+                                               ...)
                     } else {
-                      bartMachine(X = x, y = y, 
-                                  num_trees = param$num_trees, 
-                                  k = param$k, 
-                                  alpha = param$alpha, 
-                                  beta = param$beta,
-                                  nu = param$nu,
-                                  ...)                     
+                      bartMachine::bartMachine(X = x, y = y, 
+                                               num_trees = param$num_trees, 
+                                               k = param$k, 
+                                               alpha = param$alpha, 
+                                               beta = param$beta,
+                                               nu = param$nu,
+                                               ...)                     
                     }
                     out
                   },

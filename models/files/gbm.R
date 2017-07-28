@@ -21,8 +21,8 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                     }
                     out
                   },
-                  loop = function(grid) {     
-                    loop <- ddply(grid, c("shrinkage", "interaction.depth", "n.minobsinnode"),
+                  loop = function(grid) {
+                    loop <- plyr::ddply(grid, c("shrinkage", "interaction.depth", "n.minobsinnode"),
                                   function(x) c(n.trees = max(x$n.trees)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$n.trees)) {
@@ -65,8 +65,8 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                     if(any(names(theDots) == "family")) modArgs$distribution <- NULL
                     
                     if(length(theDots) > 0) modArgs <- c(modArgs, theDots)
-                    
-                    do.call("gbm.fit", modArgs)
+
+                    do.call(gbm::gbm.fit, modArgs)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, newdata, type = "response",

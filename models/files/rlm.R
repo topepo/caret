@@ -11,25 +11,25 @@ modelInfo <- list(label = "Robust Linear Model",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    
-                    psi <- psi.huber # default
+
+                    psi <- MASS::psi.huber # default
                     if (param$psi == "psi.bisquare")
-                      psi <- psi.bisquare else
+                      psi <- MASS::psi.bisquare else
                     if (param$psi == "psi.hampel")
-                      psi <- psi.hampel
-                    
+                      psi <- MASS::psi.hampel
+
                     if(!is.null(wts))
                     {
                       if (param$intercept)
-                        out <- rlm(.outcome ~ ., data = dat, weights = wts, psi = psi, ...)
+                        out <- MASS::rlm(.outcome ~ ., data = dat, weights = wts, psi = psi, ...)
                       else
-                        out <- rlm(.outcome ~ 0 + ., data = dat, weights = wts, psi = psi,  ...)
-                    } else 
+                        out <- MASS::rlm(.outcome ~ 0 + ., data = dat, weights = wts, psi = psi,  ...)
+                    } else
                     {
                       if (param$intercept)
-                        out <- rlm(.outcome ~ ., data = dat, psi = psi,...)
+                        out <- MASS::rlm(.outcome ~ ., data = dat, psi = psi,...)
                       else
-                        out <- rlm(.outcome ~ 0 + ., data = dat, psi = psi, ...)
+                        out <- MASS::rlm(.outcome ~ 0 + ., data = dat, psi = psi, ...)
                     }
                     out
                   },

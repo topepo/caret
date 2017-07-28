@@ -7,9 +7,9 @@ modelInfo <- list(label = "CART or Ordinal Responses",
                   grid = function(x, y, len = NULL, search = "grid"){
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    initialFit <- rpart(.outcome ~ .,
-                                        data = dat,
-                                        control = rpart.control(cp = 0))$cptable
+                    initialFit <- rpart::rpart(.outcome ~ .,
+                                               data = dat,
+                                               control = rpart::rpart.control(cp = 0))$cptable
                     initialFit <- initialFit[order(-initialFit[,"CP"]), , drop = FALSE] 
                     if(search == "grid") {
                       if(nrow(initialFit) < len) {
@@ -50,8 +50,8 @@ modelInfo <- list(label = "CART or Ordinal Responses",
                       theDots$control$xval <- 0 
                       ctl <- theDots$control
                       theDots$control <- NULL
-                    } else ctl <- rpart.control(cp = cpValue, xval = 0)   
-                    
+                    } else ctl <- rpart::rpart.control(cp = cpValue, xval = 0)
+
                     ## check to see if weights were passed in (and availible)
                     if(!is.null(wts)) theDots$weights <- wts    
                     
@@ -62,11 +62,11 @@ modelInfo <- list(label = "CART or Ordinal Responses",
                                         control = ctl),
                                    theDots)
                     modelArgs$data$.outcome <- as.numeric(y)
-                    
-                    out <- do.call("rpartScore", modelArgs)
-                    
-                    if(last) out <- prune.rpart(out, cp = param$cp)
-                    out           
+
+                    out <- do.call(rpartScore::rpartScore, modelArgs)
+
+                    if(last) out <- rpart::prune.rpart(out, cp = param$cp)
+                    out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {    
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
@@ -76,7 +76,7 @@ modelInfo <- list(label = "CART or Ordinal Responses",
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
                       for(j in seq(along = submodels$cp)) {
-                        prunedFit <- prune.rpart(modelFit, cp = submodels$cp[j])
+                        prunedFit <- rpart::prune.rpart(modelFit, cp = submodels$cp[j])
                         tmp[[j+1]]  <- modelFit$obsLevels[predict(prunedFit, newdata)]
                       }
                       out <- tmp

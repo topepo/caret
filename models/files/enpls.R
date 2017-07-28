@@ -18,7 +18,7 @@ modelInfo <- list(label = "Ensemble Partial Least Squares Regression",
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     x <- if(is.matrix(x)) x else as.matrix(x)
-                    enpls.en(x = x, y = y, maxcomp = param$maxcomp, 
+                    enpls::enpls.en(x = x, y = y, maxcomp = param$maxcomp,
                              ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {

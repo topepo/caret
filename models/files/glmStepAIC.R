@@ -13,8 +13,8 @@ modelInfo <- list(label = "Generalized Linear Model with Stepwise Feature Select
                     
                     ## The ... could pass to stepAIC or glm, so we'll try to
                     ## parse them well
-                    
-                    stepArgs <- names(formals(stepAIC))
+
+                    stepArgs <- names(formals(MASS::stepAIC))
                     stepArgs <- stepArgs[!(stepArgs %in% c("object", "..."))]
                     theDots <- list(...)
                     glmArgs <- list()
@@ -45,11 +45,11 @@ modelInfo <- list(label = "Generalized Linear Model with Stepwise Feature Select
                     
                     modelArgs <- c(list(formula = start_form, data = dat),
                                    glmArgs)
-                    
-                    mod <- do.call("glm", modelArgs)
-                    
+
+                    mod <- do.call(glm, modelArgs)
+
                     theDots$object <- mod
-                    out <- do.call("stepAIC", theDots)
+                    out <- do.call(MASS::stepAIC, theDots)
                     out$call <- NULL
                     out
                   },

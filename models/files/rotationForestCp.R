@@ -18,8 +18,8 @@ modelInfo <- list(label = "Rotation Forest",
                     }
                     out
                   },
-                  loop = function(grid) { 
-                    loop <- ddply(grid, .(cp, K), function(x) c(L = max(x$L)))
+                  loop = function(grid) {
+                    loop <- plyr::ddply(grid, plyr::`.`(cp, K), function(x) c(L = max(x$L)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$L))  {
                       index <- which(grid$cp == loop$cp[i] & grid$K == loop$K[i])
@@ -41,9 +41,9 @@ modelInfo <- list(label = "Rotation Forest",
                       theDots$control$cp <- param$cp
                       theDots$control$xval <- 0 
                       rpctl <- theDots$control
-                    } else rpctl <- rpart.control(cp = param$cp, xval = 0)  
-                    
-                    rotationForest(x, y, K = param$K, L = param$L, control = rpctl)
+                    } else rpctl <- rpart::rpart.control(cp = param$cp, xval = 0)
+
+                    rotationForest::rotationForest(x, y, K = param$K, L = param$L, control = rpctl)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)

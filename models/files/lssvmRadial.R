@@ -5,8 +5,7 @@ modelInfo <- list(label = "Least Squares Support Vector Machine with Radial Basi
                                           class = c("numeric","numeric"),
                                           label = c('Sigma', 'Regularization Parameter')),
                   grid = function(x, y, len = NULL, search = "grid") {
-                    library(kernlab)
-                    sigmas <- sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)  
+                    sigmas <- kernlab::sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)
                     if(search == "grid") {
                       out <- expand.grid(sigma = seq(min(sigmas), max(sigmas), length = min(6, len)),
                                          tau = 2 ^((1:len) - 5))
@@ -18,11 +17,11 @@ modelInfo <- list(label = "Least Squares Support Vector Machine with Radial Basi
                     out
                   },
                   loop = NULL,
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    lssvm(x = as.matrix(x), y = y,
-                          tau = param$tau,
-                          kernel = rbfdot,
-                          kpar = list(sigma = param$sigma), ...)         
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    kernlab::lssvm(x = as.matrix(x), y = y,
+                                   tau = param$tau,
+                                   kernel = kernlab::rbfdot(),
+                                   kpar = list(sigma = param$sigma), ...)         
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {  
                     out <- predict(modelFit, as.matrix(newdata))

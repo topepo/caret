@@ -21,7 +21,7 @@ modelInfo <- list(label ="Polynomial Kernel Regularized Least Squares",
                                   '2' = "poly2",
                                   '3' = "poly3",
                                   '4' = "poly4")
-                    krls(x, y, lambda = if(is.na(param$lambda)) NULL else param$lambda,
+                    KRLS::krls(x, y, lambda = if(is.na(param$lambda)) NULL else param$lambda,
                          derivative = FALSE,
                          whichkernel = krn, ...)
                   },

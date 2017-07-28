@@ -22,13 +22,13 @@ modelInfo <- list(label = "Distance Weighted Discrimination with Polynomial Kern
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.matrix(x)) x <- as.matrix(x)
-                    kobj <- polydot(degree = param$degree, scale = param$scale, offset = 1)
-                    out <- kerndwd(x = x,
-                                   y = ifelse(y == lev[1], 1, -1),
-                                   qval = param$qval,
-                                   lambda = param$lambda,
-                                   kern = kobj,
-                                   ...)
+                    kobj <- kernlab::polydot(degree = param$degree, scale = param$scale, offset = 1)
+                    out <- kerndwd::kerndwd(x = x,
+                                            y = ifelse(y == lev[1], 1, -1),
+                                            qval = param$qval,
+                                            lambda = param$lambda,
+                                            kern = kobj,
+                                            ...)
                     out$kern <- kobj
                     out$x <- x
                     out

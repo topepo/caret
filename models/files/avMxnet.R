@@ -29,28 +29,28 @@ modelInfo <- list(label = "Model Averaged Neural Network",
                     if(!is.matrix(x)) x <- as.matrix(x)
                     if(is.numeric(y)) {
                       for(i in 1:param$repeats) {
-                        out$models[[i]] <- mx.mlp(data = x, 
+                        out$models[[i]] <- mxnet::mx.mlp(data = x, 
                                                   label = y,
                                                   hidden_node = num_units,
                                                   out_node = 1, 
                                                   out_activation = "rmse", 
                                                   learning.rate = param$learning.rate, 
                                                   momentum = param$momentum, 
-                                                  eval.metric = mx.metric.rmse, 
+                                                  eval.metric = mxnet::mx.metric.rmse, 
                                                   array.layout = "rowmajor",
                                                   ...)
                       }
                     } else {
                       y <- as.numeric(y) - 1
                       for(i in 1:param$repeats) {
-                        out$models[[i]] <- mx.mlp(data = x, 
+                        out$models[[i]] <- mxnet::mx.mlp(data = x, 
                                                   label = y,
                                                   hidden_node = num_units,
                                                   out_node = length(unique(y)), 
                                                   out_activation = "softmax",
                                                   learning.rate = param$learning.rate, 
                                                   momentum = param$momentum, 
-                                                  eval.metric = mx.metric.accuracy, 
+                                                  eval.metric = mxnet::mx.metric.accuracy, 
                                                   array.layout = "rowmajor", 
                                                   ...)
                       }

@@ -19,9 +19,9 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Splines",
                                         degree = param$degree),
                                    theDots)
                     if(is.factor(y)) modelArgs$glm <- list(family=binomial)
-                    
-                    tmp <- do.call("earth", modelArgs)
-                    
+
+                    tmp <- do.call(earth::earth, modelArgs)
+
                     tmp$call["degree"] <-  param$degree
                     tmp 
                     },
@@ -46,7 +46,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Splines",
                     if(length(notZero) > 0) rownames(vi)[notZero] else NULL
                   },
                   varImp = function(object, value = "gcv", ...) {
-                    earthImp <- evimp(object)
+                    earthImp <- earth::evimp(object)
                     if(!is.matrix(earthImp)) earthImp <- t(as.matrix(earthImp))
                     
                     # get other variable names and padd with zeros

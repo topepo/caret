@@ -36,7 +36,7 @@ modelInfo <- list(label = "Fuzzy Rules Using Genetic Cooperative-Competitive Lea
                                                    num.class = length(unique(y)),
                                                    name="sim-0")  
                     
-                    do.call("frbs.learn", c(args, theDots))
+                    do.call(frbs::frbs.learn, c(args, theDots))
                     
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {

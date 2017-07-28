@@ -6,7 +6,7 @@ modelInfo <- list(label = "Bayesian Ridge Regression",
                                           label = "parameter"),
                   grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    out <- bridge(as.matrix(x), y, ...)
+                    out <- monomvn::bridge(as.matrix(x), y, ...)
                     out
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {

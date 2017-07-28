@@ -8,7 +8,7 @@ modelInfo <- list(label = "Nearest Shrunken Centroids",
                     cc <- complete.cases(x) & complete.cases(y)
                     x <- x[cc,,drop = FALSE]
                     y <- y[cc]
-                    initialThresh <- pamr.train(list(x=t(x), y=y))$threshold
+                    initialThresh <- pamr::pamr.train(list(x=t(x), y=y))$threshold
                     initialThresh <- initialThresh[-c(1, length(initialThresh))]
                     if(search == "grid") {
                       out <- data.frame(threshold = seq(from = min(initialThresh),
@@ -26,30 +26,30 @@ modelInfo <- list(label = "Nearest Shrunken Centroids",
                     submodels <- list(grid[-1,,drop = FALSE])       
                     list(loop = loop, submodels = submodels)
                   },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    pamr.train(list(x = t(x), y = y), threshold = param$threshold, ...),
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...)
+                    pamr::pamr.train(list(x = t(x), y = y), threshold = param$threshold, ...),
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    out <- pamr.predict(modelFit,
-                                        t(newdata),
-                                        threshold = modelFit$tuneValue$threshold)
+                    out <- pamr::pamr.predict(modelFit,
+                                              t(newdata),
+                                              threshold = modelFit$tuneValue$threshold)
                     if(!is.null(submodels))
                     {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
                       for(j in seq(along = submodels$threshold))
                       {
-                        tmp[[j+1]] <- pamr.predict(modelFit,
-                                                   t(newdata),
-                                                   threshold = submodels$threshold[j])
+                        tmp[[j+1]] <- pamr::pamr.predict(modelFit,
+                                                         t(newdata),
+                                                         threshold = submodels$threshold[j])
                       }
                       out <- tmp
                     }
                     out         
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- pamr.predict(modelFit, t(newdata),
-                                        threshold = modelFit$tuneValue$threshold, 
-                                        type= "posterior")
+                    out <- pamr::pamr.predict(modelFit, t(newdata),
+                                              threshold = modelFit$tuneValue$threshold,
+                                              type= "posterior")
                     if(!is.null(submodels))
                     {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
@@ -57,9 +57,9 @@ modelInfo <- list(label = "Nearest Shrunken Centroids",
                       
                       for(j in seq(along = submodels$threshold))
                       {
-                        tmpProb <-  pamr.predict(modelFit, t(newdata),
-                                                 threshold =  submodels$threshold[j], 
-                                                 type= "posterior")
+                        tmpProb <-  pamr::pamr.predict(modelFit, t(newdata),
+                                                       threshold =  submodels$threshold[j],
+                                                       type= "posterior")
                         tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels,drop = FALSE])
                       }
                       out <- tmp
@@ -75,7 +75,7 @@ modelInfo <- list(label = "Nearest Shrunken Centroids",
                     {
                       if(!is.null(x$threshold)) threshold <- x$threshold else stop("must supply threshold") 
                     }
-                    varIndex <- pamr.predict(x, newx = newdata, threshold = threshold, type = "nonzero")
+                    varIndex <- pamr::pamr.predict(x, newx = newdata, threshold = threshold, type = "nonzero")
                     colnames(newdata)[varIndex]
                   },
                   varImp = function (object, threshold = NULL, data = NULL, ...) {
@@ -91,7 +91,7 @@ modelInfo <- list(label = "Nearest Shrunken Centroids",
                     
                     x <- t(data)
                     retainedX <- x[object$gene.subset, object$sample.subset, drop = F]
-                    centroids <- pamr.predict(object, x, threshold = threshold, type = "cent")
+                    centroids <- pamr::pamr.predict(object, x, threshold = threshold, type = "cent")
                     standCentroids <- (centroids - object$centroid.overall)/object$sd
                     rownames(standCentroids) <- featureNames
                     colnames(standCentroids) <- names(object$prior)

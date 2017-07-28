@@ -5,8 +5,7 @@ modelInfo <- list(label = "Gaussian Process with Radial Basis Function Kernel",
                                           class = c("numeric"),
                                           label = c('Sigma')),
                   grid = function(x, y, len = NULL, search = "grid") {
-                    library(kernlab)
-                    sigmas <- sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)  
+                    sigmas <- kernlab::sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)
                     if(search == "grid") {
                       out <- expand.grid(sigma = mean(as.vector(sigmas[-2])))
                     } else {
@@ -16,10 +15,10 @@ modelInfo <- list(label = "Gaussian Process with Radial Basis Function Kernel",
                     out
                   },
                   loop = NULL,
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    gausspr(x = as.matrix(x), y = y,
-                            kernel = rbfdot,
-                            kpar = list(sigma = param$sigma), ...)         
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    kernlab::gausspr(x = as.matrix(x), y = y,
+                                     kernel = kernlab::rbfdot,
+                                     kpar = list(sigma = param$sigma), ...)
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {  
                     out <- predict(modelFit, as.matrix(newdata))

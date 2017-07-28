@@ -17,7 +17,7 @@ modelInfo <- list(label = "Relevance Vector Machines with Polynomial Kernel",
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     kernlab:::rvm(x = as.matrix(x), y = y,
-                                  kernel = polydot,
+                                  kernel = kernlab::polydot(),
                                   kpar = list(degree = param$degree,
                                               scale = param$scale,
                                               offset = 1),

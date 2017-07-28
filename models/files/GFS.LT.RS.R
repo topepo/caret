@@ -45,7 +45,7 @@ modelInfo <- list(label = "Genetic Lateral Tuning and Rule Selection of Linguist
                     if(!(any(names(theDots) == "range.data"))) {
                       args$range.data <- apply(args$data.train, 2, extendrange)
                     }
-                    do.call("frbs.learn", c(args, theDots))
+                    do.call(frbs::frbs.learn, c(args, theDots))
                     
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {

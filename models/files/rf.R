@@ -15,9 +15,9 @@ modelInfo <- list(label = "Random Forest",
                     }
                     out
                   },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    randomForest(x, y, mtry = param$mtry, ...),
-                  predict = function(modelFit, newdata, submodels = NULL) 
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...)
+                    randomForest::randomForest(x, y, mtry = param$mtry, ...),
+                  predict = function(modelFit, newdata, submodels = NULL)
                     if(!is.null(newdata)) predict(modelFit, newdata) else predict(modelFit),
                   prob = function(modelFit, newdata, submodels = NULL)
                     if(!is.null(newdata)) predict(modelFit, newdata, type = "prob") else predict(modelFit, type = "prob"),

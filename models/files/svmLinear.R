@@ -16,14 +16,14 @@ modelInfo <- list(label = "Support Vector Machines with Linear Kernel",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(any(names(list(...)) == "prob.model") | is.numeric(y)) {
                       out <- kernlab::ksvm(x = as.matrix(x), y = y,
-                                  kernel = kernlab::vanilladot(),
-                                  C = param$C, ...)
+                                          kernel = kernlab::vanilladot(),
+                                          C = param$C, ...)
                     } else {
                       out <- kernlab::ksvm(x = as.matrix(x), y = y,
-                                  kernel = kernlab::vanilladot(),
-                                  C = param$C,
-                                  prob.model = classProbs,
-                                  ...)
+                                           kernel = kernlab::vanilladot(),
+                                           C = param$C,
+                                           prob.model = classProbs,
+                                           ...)
                     }
                     out
                   },

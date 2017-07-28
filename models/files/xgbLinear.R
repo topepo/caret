@@ -37,11 +37,11 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                         
                         
                         out <- xgboost::xgb.train(list(lambda = param$lambda, 
-                                              alpha = param$alpha), 
-                                         data = x,
-                                         nrounds = param$nrounds,
-                                         objective = "binary:logistic",
-                                         ...)
+                                                       alpha = param$alpha), 
+                                                  data = x,
+                                                  nrounds = param$nrounds,
+                                                  objective = "binary:logistic",
+                                                  ...)
                       } else {
                         y <- as.numeric(y) - 1
 
@@ -53,12 +53,12 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                           setinfo(x, 'weight', wts)
                         
                         out <- xgboost::xgb.train(list(lambda = param$lambda, 
-                                              alpha = param$alpha), 
-                                         data = x,
-                                         num_class = length(lev),
-                                         nrounds = param$nrounds,
-                                         objective = "multi:softprob",
-                                         ...)
+                                                       alpha = param$alpha), 
+                                                  data = x,
+                                                  num_class = length(lev),
+                                                  nrounds = param$nrounds,
+                                                  objective = "multi:softprob",
+                                                  ...)
                       }
                     } else {
                       if(!inherits(x, "xgb.DMatrix"))
@@ -69,11 +69,11 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                         setinfo(x, 'weight', wts)
                       
                       out <- xgboost::xgb.train(list(lambda = param$lambda, 
-                                            alpha = param$alpha), 
-                                       data = x,
-                                       nrounds = param$nrounds,
-                                       objective = "reg:linear",
-                                       ...)
+                                                     alpha = param$alpha), 
+                                                data = x,
+                                                nrounds = param$nrounds,
+                                                objective = "reg:linear",
+                                                ...)
                     }
                     out
                   },

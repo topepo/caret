@@ -25,19 +25,19 @@ modelInfo <- list(label = "Tree Augmented Naive Bayes Classifier Structure Learn
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     if(param$sp) {
-                      struct <- tan_hcsp(class = '.outcome', dataset = dat, 
-                                         k = param$k, 
-                                         epsilon = param$epsilon, 
-                                         smooth = param$smooth,
-                                         ...)
+                      struct <- bnclassify::tan_hcsp(class = '.outcome', dataset = dat,
+                                                     k = param$k,
+                                                     epsilon = param$epsilon,
+                                                     smooth = param$smooth,
+                                                     ...)
                     } else {
-                      struct <- tan_hc(class = '.outcome', dataset = dat, 
-                                       k = param$k, 
-                                       epsilon = param$epsilon, 
-                                       smooth = param$smooth,
-                                       ...)
+                      struct <- bnclassify::tan_hc(class = '.outcome', dataset = dat,
+                                                   k = param$k,
+                                                   epsilon = param$epsilon,
+                                                   smooth = param$smooth,
+                                                   ...)
                     }
-                    lp(struct, dat, smooth = param$final_smooth, ...)
+                    bnclassify::lp(struct, dat, smooth = param$final_smooth, ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)

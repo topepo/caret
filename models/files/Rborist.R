@@ -16,7 +16,7 @@ modelInfo <- list(label = "Random Forest",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    Rborist(x, y, predFixed = param$predFixed, ...),
+                    Rborist::Rborist(x, y, predFixed = param$predFixed, ...),
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, newdata)$yPred
                     if(modelFit$problemType == "Classification") out <- modelFit$obsLevels[out]

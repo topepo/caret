@@ -16,7 +16,7 @@ modelInfo <- list(label = "Oblique Random Forest",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    obliqueRF(as.matrix(x), y, training_method = "ridge", ...),
+                    obliqueRF::obliqueRF(as.matrix(x), y, training_method = "ridge", ...),
                   predict = function(modelFit, newdata, submodels = NULL)
                     predict(modelFit, newdata),
                   prob = function(modelFit, newdata, submodels = NULL)

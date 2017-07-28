@@ -33,12 +33,12 @@ modelInfo <- list(label = "partDSA",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.data.frame(x) | inherits(x, "tbl_df")) 
                       x <- as.data.frame(x)
-                    partDSA(x, y,
-                            control = DSA.control(
-                              cut.off.growth = param$cut.off.growth,
-                              MPD = param$MPD,
-                              vfold = 1),
-                            ...)
+                    partDSA::partDSA(x, y,
+                                     control = DSA.control(
+                                       cut.off.growth = param$cut.off.growth,
+                                       MPD = param$MPD,
+                                       vfold = 1),
+                                     ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 

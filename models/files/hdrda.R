@@ -18,7 +18,7 @@ modelInfo <- list(label = "High-Dimensional Regularized Discriminant Analysis",
                     out
                   }, 
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    hdrda(x, y, gamma = param$gamma, lambda = param$lambda, 
+                    sparsediscrim::hdrda(x, y, gamma = param$gamma, lambda = param$lambda,
                           shrinkage_type = as.character(param$shrinkage_type),
                           ...)
                   },

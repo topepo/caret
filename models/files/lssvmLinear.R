@@ -13,12 +13,12 @@ modelInfo <- list(label = "Least Squares Support Vector Machine",
                     out
                   },
                   loop = NULL,
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    lssvm(x = as.matrix(x), y = y,
-                          tau = param$tau,
-                          kernel = polydot(degree = 1,
-                                           scale = 1,
-                                           offset = 1), ...)    
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    kernlab::lssvm(x = as.matrix(x), y = y,
+                                   tau = param$tau,
+                                   kernel = kernlab::polydot(degree = 1,
+                                                             scale = 1,
+                                                             offset = 1), ...)    
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {            
                     out <- predict(modelFit, as.matrix(newdata))

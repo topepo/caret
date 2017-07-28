@@ -25,20 +25,20 @@ modelInfo <- list(label = "Stacked AutoEncoder Deep Neural Network",
                     if (is_class) y <- caret:::class2ind(y)
                     layers <- c(param$layer1, param$layer2, param$layer3)
                     layers <- layers[layers > 0]
-                    sae.dnn.train(x, y, hidden = layers, 
-                                  output = if(is_class) "sigm" else "linear",
-                                  hidden_dropout = param$hidden_dropout,
-                                  visible_dropout = param$visible_dropout,
-                                  ...)
+                    deepnet::sae.dnn.train(x, y, hidden = layers,
+                                           output = if(is_class) "sigm" else "linear",
+                                           hidden_dropout = param$hidden_dropout,
+                                           visible_dropout = param$visible_dropout,
+                                           ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    pred <- nn.predict(modelFit, as.matrix(newdata))
+                    pred <- deepnet::nn.predict(modelFit, as.matrix(newdata))
                     if(ncol(pred) > 1)
                       pred <- modelFit$obsLevels[apply(pred, 1, which.max)]
                     pred
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- exp(nn.predict(modelFit, as.matrix(newdata)))
+                    out <- exp(deepnet::nn.predict(modelFit, as.matrix(newdata)))
                     out <- apply(out, 1, function(x) x/sum(x))
                     t(out)
                   },

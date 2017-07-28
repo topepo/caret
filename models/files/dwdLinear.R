@@ -18,12 +18,12 @@ modelInfo <- list(label = "Linear Distance Weighted Discrimination",
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.matrix(x)) x <- as.matrix(x)
-                    out <- kerndwd(x = x,
-                                   y = ifelse(y == lev[1], 1, -1),
-                                   qval = param$qval,
-                                   lambda = param$lambda,
-                                   kern = vanilladot(),
-                                   ...)
+                    out <- kerndwd::kerndwd(x = x,
+                                            y = ifelse(y == lev[1], 1, -1),
+                                            qval = param$qval,
+                                            lambda = param$lambda,
+                                            kern = kernlab::vanilladot(),
+                                            ...)
                     out$kern <- vanilladot()
                     out$x <- x
                     out

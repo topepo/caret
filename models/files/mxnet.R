@@ -25,29 +25,29 @@ modelInfo <- list(label = "Neural Network",
                     num_units <- num_units[num_units > 0]
                     if(!is.matrix(x)) x <- as.matrix(x)
                     if(is.numeric(y)) {
-                      out <- mx.mlp(data = x, 
-                                    label = y,
-                                    hidden_node = num_units,
-                                    out_node = 1, 
-                                    out_activation = "rmse", 
-                                    learning.rate = param$learning.rate, 
-                                    momentum = param$momentum, 
-                                    eval.metric = mx.metric.rmse, 
-                                    array.layout = "rowmajor",
-                                    ...)
+                      out <- mxnet::mx.mlp(data = x,
+                                           label = y,
+                                           hidden_node = num_units,
+                                           out_node = 1, 
+                                           out_activation = "rmse", 
+                                           learning.rate = param$learning.rate, 
+                                           momentum = param$momentum, 
+                                           eval.metric = mx.metric.rmse, 
+                                           array.layout = "rowmajor",
+                                           ...)
                     } else {
                       y <- as.numeric(y) - 1
                       # mx.set.seed(1)
-                      out <- mx.mlp(data = x, 
-                                    label = y,
-                                    hidden_node = num_units,
-                                    out_node = length(unique(y)), 
-                                    out_activation = "softmax",
-                                    learning.rate = param$learning.rate, 
-                                    momentum = param$momentum, 
-                                    eval.metric = mx.metric.accuracy, 
-                                    array.layout = "rowmajor", 
-                                    ...)
+                      out <- mxnet::mx.mlp(data = x,
+                                           label = y,
+                                           hidden_node = num_units,
+                                           out_node = length(unique(y)), 
+                                           out_activation = "softmax",
+                                           learning.rate = param$learning.rate, 
+                                           momentum = param$momentum, 
+                                           eval.metric = mx.metric.accuracy, 
+                                           array.layout = "rowmajor", 
+                                           ...)
                     }
                     out
                   },

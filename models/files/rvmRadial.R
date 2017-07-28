@@ -7,7 +7,7 @@ modelInfo <- list(label = "Relevance Vector Machines with Radial Basis Function 
                                           label = "Sigma"),
                   grid = function(x, y, len = NULL, search = "grid"){
                     library(kernlab)
-                    sigmas <- sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)  
+                    sigmas <- kernlab::sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)
                     if(search == "grid") {
                       out <- expand.grid(sigma = mean(as.vector(sigmas[-2])))
                     } else {
@@ -18,7 +18,7 @@ modelInfo <- list(label = "Relevance Vector Machines with Radial Basis Function 
                   },
                   fit = function(x, y, wts, param, lev, last,classProbs, ...) {
                     kernlab:::rvm(x = as.matrix(x), y = y,
-                                  kernel = rbfdot,
+                                  kernel = kernlab::rbfdot(),
                                   kpar = list(sigma = param$sigma),
                                   ...)
                   },

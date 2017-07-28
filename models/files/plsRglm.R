@@ -28,20 +28,20 @@ modelInfo <- list(label = "Partial Least Squares Generalized Linear Models ",
                     ## Intercept parameters if needed
                     theDots <- list(...)
                     if(any(names(theDots) == "modele")) {
-                      mod <- plsRglm(y, x, 
-                                     nt = param$nt, 
-                                     pvals.expli = param$alpha.pvals.expli < 1,
-                                     sparse  = param$alpha.pvals.expli < 1,
-                                     alpha.pvals.expli = param$alpha.pvals.expli,
-                                     ...)
+                      mod <- plsrRglm::plsRglm(y, x, 
+                                     	       nt = param$nt, 
+                                               pvals.expli = param$alpha.pvals.expli < 1,
+                                               sparse  = param$alpha.pvals.expli < 1,
+                                               alpha.pvals.expli = param$alpha.pvals.expli,
+                                               ...)
                     } else {
-                      mod <- plsRglm(y, x, 
-                                     nt = param$nt, 
-                                     modele = dst, 
-                                     pvals.expli = param$alpha.pvals.expli < 1,
-                                     sparse  = param$alpha.pvals.expli < 1,
-                                     alpha.pvals.expli = param$alpha.pvals.expli,
-                                     ...)
+                      mod <- plsRglm::plsRglm(y, x, 
+                                              nt = param$nt, 
+                                              modele = dst, 
+                                              pvals.expli = param$alpha.pvals.expli < 1,
+                                              sparse  = param$alpha.pvals.expli < 1,
+                                              alpha.pvals.expli = param$alpha.pvals.expli,
+                                              ...)
                     }
                     mod
                   },

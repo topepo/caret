@@ -23,8 +23,8 @@ modelInfo <- list(label = "AdaBoost Classification Trees",
                       x
                     dat$.outcome <- y
                     out <- if(param$method == "Adaboost.M1") 
-                      adaboost(.outcome ~ ., data = dat, nIter = param$nIter, ...) else 
-                        real_adaboost(.outcome ~ ., data = dat, nIter = param$nIter, ...) 
+                      fastAdaboost::adaboost(.outcome ~ ., data = dat, nIter = param$nIter, ...) else 
+                      fastAdaboost::real_adaboost(.outcome ~ ., data = dat, nIter = param$nIter, ...) 
                     out     
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {

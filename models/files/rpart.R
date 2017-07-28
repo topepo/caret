@@ -8,8 +8,8 @@ modelInfo <- list(label = "CART",
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     initialFit <- rpart::rpart(.outcome ~ .,
-                                        data = dat,
-                                        control = rpart::rpart.control(cp = 0))$cptable
+                                               data = dat,
+                                               control = rpart::rpart.control(cp = 0))$cptable
                     initialFit <- initialFit[order(-initialFit[,"CP"]), , drop = FALSE]
                     if(search == "grid") {
                       if(nrow(initialFit) < len) {
@@ -104,40 +104,43 @@ modelInfo <- list(label = "CART",
                     unique(out)
                   },
                   varImp = function(object, surrogates = FALSE, competes = TRUE, ...) {
-                    tmp <- rownames(object$splits)
-                    rownames(object$splits) <- 1:nrow(object$splits)
-                    splits <- data.frame(object$splits)
-                    splits$var <- tmp
-                    splits$type <- ""
+                    if(nrow(object$splits)>0) {
+                      tmp <- rownames(object$splits)
+                      rownames(object$splits) <- 1:nrow(object$splits)
+                      splits <- data.frame(object$splits)
+                      splits$var <- tmp
+                      splits$type <- ""
 
-                    frame <- as.data.frame(object$frame)
-                    index <- 0
-                    for(i in 1:nrow(frame)) {
-                      if(frame$var[i] != "<leaf>") {
-                        index <- index + 1
-                        splits$type[index] <- "primary"
-                        if(frame$ncompete[i] > 0) {
-                          for(j in 1:frame$ncompete[i]) {
-                            index <- index + 1
-                            splits$type[index] <- "competing"
+                      frame <- as.data.frame(object$frame)
+                      index <- 0
+                      for(i in 1:nrow(frame)) {
+                        if(frame$var[i] != "<leaf>") {
+                          index <- index + 1
+                          splits$type[index] <- "primary"
+                          if(frame$ncompete[i] > 0) {
+                            for(j in 1:frame$ncompete[i]) {
+                              index <- index + 1
+                              splits$type[index] <- "competing"
+                            }
                           }
-                        }
-                        if(frame$nsurrogate[i] > 0) {
-                          for(j in 1:frame$nsurrogate[i]) {
-                            index <- index + 1
-                            splits$type[index] <- "surrogate"
+                          if(frame$nsurrogate[i] > 0) {
+                            for(j in 1:frame$nsurrogate[i]) {
+                              index <- index + 1
+                              splits$type[index] <- "surrogate"
+                            }
                           }
                         }
                       }
-                    }
-                    splits$var <- factor(as.character(splits$var))
-                    if(!surrogates) splits <- subset(splits, type != "surrogate")
-                    if(!competes) splits <- subset(splits, type != "competing")
-                    out <- aggregate(splits$improve,
-                                     list(Variable = splits$var),
-                                     sum,
-                                     na.rm = TRUE)
-
+                      splits$var <- factor(as.character(splits$var))
+                      if(!surrogates) splits <- subset(splits, type != "surrogate")
+                      if(!competes) splits <- subset(splits, type != "competing")
+                      out <- aggregate(splits$improve,
+                                       list(Variable = splits$var),
+                                       sum,
+                                       na.rm = TRUE)
+                    } else {
+		      out <- data.frame(x = numeric(), Vaiable = character())
+		    }
                     allVars <- colnames(attributes(object$terms)$factors)
                     if(!all(allVars %in% out$Variable)) {
                       missingVars <- allVars[!(allVars %in% out$Variable)]

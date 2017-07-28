@@ -25,7 +25,7 @@ modelInfo <- list(label = "Regularized Random Forest",
                     theDots$importance <- TRUE
                     args <- list(x = x, y = y, mtry = param$mtry)
                     args <- c(args, theDots)                       
-                    firstFit <- do.call("randomForest", args)
+                    firstFit <- do.call(randomForest::randomForest, args)
                     firstImp <- randomForest:::importance(firstFit)
                     if(is.factor(y))
                     {

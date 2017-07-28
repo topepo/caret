@@ -24,9 +24,9 @@ modelInfo <- list(label = "Optimal Weighted Nearest Neighbor Classifier",
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.matrix(newdata)) newdata <- as.matrix(newdata)
-                    out <- myownn(train = modelFit$dat, 
-                                 test = newdata,
-                                 K = modelFit$K)
+                    out <- snn::myownn(train = modelFit$dat,
+                                       test = newdata,
+                                       K = modelFit$K)
                     modelFit$obsLevels[out]
                   },
                   predictors = function(x, ...) x$xNames,

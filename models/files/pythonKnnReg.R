@@ -38,13 +38,14 @@ modelInfo <- list(label = "Knn regression via sklearn.neighbors.KNeighborsRegres
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.data.frame(x)) x <- as.data.frame(x)
                     mySeed=sample.int(100000, 1)
-                    python.exec('import numpy as np')
-                    python.assign('mySeed',mySeed)
-                    python.exec('np.random.seed(mySeed)')
-                    
-                    python.assign('X',x);python.exec('X = pd.DataFrame(X)')
-                    python.assign('Y',y)
-                    python.exec(paste0('neigh = KNeighborsRegressor(',
+                    rPython::python.exec('import numpy as np')
+                    rPython::python.assign('mySeed',mySeed)
+                    rPython::python.exec('np.random.seed(mySeed)')
+
+                    rPython::python.assign('X',x);
+		    rPython::python.exec('X = pd.DataFrame(X)')
+                    rPython::python.assign('Y',y)
+                    rPython::python.exec(paste0('neigh = KNeighborsRegressor(',
                                        'n_neighbors=',param$n_neighbors,',',
                                        'weights=\'',as.character(param$weights),'\',',
                                        'algorithm=\'',as.character(param$algorithm),'\',',
@@ -52,15 +53,16 @@ modelInfo <- list(label = "Knn regression via sklearn.neighbors.KNeighborsRegres
                                        'metric=\'',as.character(param$metric),'\',',
                                        'p=',param$p,
                                        ')'))
-                    python.exec('neigh.fit(X, Y)')
+                    rPython::python.exec('neigh.fit(X, Y)')
                     return (list())
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-                    python.assign('newdata',newdata);python.exec('newdata = pd.DataFrame(newdata)')
-                    python.exec('pred=neigh.predict(newdata)')
-                    python.exec("pred = pred.tolist()")  
-                    pred=python.get("pred")                                        
+                    rPython::python.assign('newdata',newdata);
+		    rPython::python.exec('newdata = pd.DataFrame(newdata)')
+                    rPython::python.exec('pred=neigh.predict(newdata)')
+                    rPython::python.exec("pred = pred.tolist()")
+                    pred = rPython::python.get("pred")
                   },
                   levels = function(x) x$obsLevels,
                   tags = "Prototype Models",

@@ -23,7 +23,7 @@ modelInfo <- list(label = "k-Nearest Neighbors",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    train.kknn(.outcome ~ ., data = dat,
+                    kknn::train.kknn(.outcome ~ ., data = dat,
                                kmax = param$kmax,
                                distance = param$distance,
                                kernel = as.character(param$kernel), ...)

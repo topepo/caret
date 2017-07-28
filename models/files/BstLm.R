@@ -14,7 +14,7 @@ modelInfo <- list(label = "Boosted Linear Model",
                     out
                   },
                   loop = function(grid) {   
-                    loop <- ddply(grid, .(nu), function(x) c(mstop = max(x$mstop)))
+                    loop <- plyr::ddply(grid, .(nu), function(x) c(mstop = max(x$mstop)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$mstop))
                     {
@@ -43,7 +43,7 @@ modelInfo <- list(label = "Boosted Linear Model",
                     modArgs <- list(x = x, y = y, family = modDist, learner = "ls")
                     modArgs <- c(modArgs, theDots)
                     
-                    out <- do.call("bst", modArgs)
+                    out <- do.call(bst::bst, modArgs)
                     out$call <- quote(redacted)
                     out
                   },

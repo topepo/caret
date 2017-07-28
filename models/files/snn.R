@@ -23,9 +23,9 @@ modelInfo <- list(label = "Stabilized Nearest Neighbor Classifier",
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.matrix(newdata)) newdata <- as.matrix(newdata)
-                    out <- mysnn(train = modelFit$dat, 
-                                 test = newdata,
-                                 lambda = modelFit$lambda)
+                    out <- snn::mysnn(train = modelFit$dat,
+                                      test = newdata,
+                                      lambda = modelFit$lambda)
                     modelFit$obsLevels[out]
                   },
                   predictors = function(x, ...) x$xNames,

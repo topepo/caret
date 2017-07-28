@@ -68,15 +68,15 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                           setinfo(x, 'weight', wts)
                         
                         out <- xgboost::xgb.train(list(eta = param$eta,
-                                             max_depth = param$max_depth,
-                                              gamma = param$gamma,
-                                              colsample_bytree = param$colsample_bytree,
-                                              min_child_weight = param$min_child_weight,
-                                              subsample = param$subsample),
-                                         data = x,
-                                         nrounds = param$nrounds,
-                                         objective = "binary:logistic",
-                                         ...)
+                                                       max_depth = param$max_depth,
+                                                       gamma = param$gamma,
+                                                       colsample_bytree = param$colsample_bytree,
+                                                       min_child_weight = param$min_child_weight,
+                                                       subsample = param$subsample),
+                                                  data = x,
+                                                  nrounds = param$nrounds,
+                                                  objective = "binary:logistic",
+                                                  ...)
                       } else {
                         
                         y <- as.numeric(y) - 1
@@ -89,16 +89,16 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                           setinfo(x, 'weight', wts)
                         
                         out <- xgboost::xgb.train(list(eta = param$eta,
-                                              max_depth = param$max_depth,
-                                              gamma = param$gamma,
-                                              colsample_bytree = param$colsample_bytree,
-                                              min_child_weight = param$min_child_weight,
-                                              subsample = param$subsample),
-                                         data = x,
-                                         num_class = length(lev),
-                                         nrounds = param$nrounds,
-                                         objective = "multi:softprob",
-                                         ...)
+                                                       max_depth = param$max_depth,
+                                                       gamma = param$gamma,
+                                                       colsample_bytree = param$colsample_bytree,
+                                                       min_child_weight = param$min_child_weight,
+                                                       subsample = param$subsample),
+                                                       data = x,
+                                                       num_class = length(lev),
+                                                       nrounds = param$nrounds,
+                                                       objective = "multi:softprob",
+                                                       ...)
                       }
                     } else {
 
@@ -110,15 +110,15 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                         setinfo(x, 'weight', wts)
                       
                       out <- xgboost::xgb.train(list(eta = param$eta,
-                                            max_depth = param$max_depth,
-                                            gamma = param$gamma,
-                                            colsample_bytree = param$colsample_bytree,
-                                            min_child_weight = param$min_child_weight,
-                                            subsample = param$subsample),
-                                       data = x,
-                                       nrounds = param$nrounds,
-                                       objective = "reg:linear",
-                                       ...)
+                                                     max_depth = param$max_depth,
+                                                     gamma = param$gamma,
+                                                     colsample_bytree = param$colsample_bytree,
+                                                     min_child_weight = param$min_child_weight,
+                                                     subsample = param$subsample),
+                                                 data = x,
+                                                 nrounds = param$nrounds,
+                                                 objective = "reg:linear",
+                                                 ...)
                     }
                     out
                     

@@ -18,15 +18,15 @@ modelInfo <- list(label = "Penalized Multinomial Regression",
                     dat$.outcome <- y
                     if(!is.null(wts))
                     {
-                      out <- multinom(.outcome ~ .,
-                                      data = dat,
-                                      weights = wts,                                       
-                                      decay = param$decay,
-                                      ...)
-                    } else out <- multinom(.outcome ~ .,
-                                           data = dat,
-                                           decay = param$decay,
-                                           ...)
+                      out <- nnet::multinom(.outcome ~ .,
+                                            data = dat,
+                                            weights = wts,                      
+                                            decay = param$decay,
+                                            ...)
+                    } else out <- nnet::multinom(.outcome ~ .,
+                                                 data = dat,
+                                                 decay = param$decay,
+                                                 ...)
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL)

@@ -23,7 +23,7 @@ modelInfo <- list(label = "Sparse Partial Least Squares",
                       caret:::splsda(x, y, K = param$K, eta = param$eta,
                                      kappa = param$kappa, ...)
                     } else {
-                      spls(x, y, K = param$K, eta = param$eta,
+                      spls::spls(x, y, K = param$K, eta = param$eta,
                            kappa = param$kappa, ...)
                     }          
                   },

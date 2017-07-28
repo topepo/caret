@@ -29,14 +29,14 @@ modelInfo <- list(label = "C4.5-like Trees",
                       theDots$control$M <- param$M
                       ctl <- theDots$control
                       theDots$control <- NULL
-                    } else ctl <- Weka_control(C = param$C, M = param$M) 
+                    } else ctl <- RWeka::Weka_control(C = param$C, M = param$M) 
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
                                         data = dat,
                                         control = ctl),
                                    theDots)
                     
-                    out <- do.call("J48", modelArgs) 
+                    out <- do.call(RWeka::J48, modelArgs) 
                     out      
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {

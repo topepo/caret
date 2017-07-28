@@ -9,15 +9,15 @@ modelInfo <- list(label = "Quantile Regression Neural Network",
                                                                 penalty = c(0, 10 ^ seq(-1, -4, length = len - 1)),
                                                                 bag = FALSE),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    qrnn.fit(as.matrix(x), matrix(y),
-                             n.hidden = param$n.hidden,
-                             print.level = 0,
-                             penalty =  param$penalty,
-                             bag= param$bag,
-                             ...)
+                    qrnn::qrnn.fit(as.matrix(x), matrix(y),
+                                   n.hidden = param$n.hidden,
+                                   print.level = 0,
+                                   penalty =  param$penalty,
+                                   bag= param$bag,
+                                   ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL)
-                    qrnn.predict(as.matrix(newdata), modelFit)[,1],
+                    qrnn::qrnn.predict(as.matrix(newdata), modelFit)[,1],
                   prob = NULL,
                   tags = c("Neural Network", "L2 Regularization", "Quantile Regression", "Bagging",
                            "Ensemble Model", "Robust Model"),

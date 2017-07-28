@@ -14,7 +14,7 @@ modelInfo <- list(label = "Quantile Regression with LASSO penalty",
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    rq.lasso.fit(as.matrix(x), y, lambda = param$lambda, ...)
+                    rqPen::rq.lasso.fit(as.matrix(x), y, lambda = param$lambda, ...)
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     predict(modelFit, newx = as.matrix(newdata))[,1]

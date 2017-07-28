@@ -6,8 +6,8 @@ modelInfo <- list(label = "Linear Discriminant Analysis",
                                           class = "character",
                                           label = "parameter"),
                   grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) lda(x, y, ...)  ,
-                  predict = function(modelFit, newdata, submodels = NULL) 
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) MASS::lda(x, y, ...)  ,
+                  predict = function(modelFit, newdata, submodels = NULL)
                     predict(modelFit, newdata)$class,
                   prob = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit, newdata)$posterior,

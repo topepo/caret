@@ -19,9 +19,9 @@ modelInfo <- list(label = "Tree Augmented Naive Bayes Classifier",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    bnc('tan_cl', class = '.outcome', dataset = dat, 
-                        smooth = param$smooth, 
-                        dag_args = list(score = as.character(param$score)),
+                    bnclassify::bnc('tan_cl', class = '.outcome', dataset = dat,
+                                    smooth = param$smooth,
+                                    dag_args = list(score = as.character(param$score)),
                         ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {

@@ -18,17 +18,17 @@ modelInfo <- list(label = "Tree-Based Ensembles",
                     if(!is.data.frame(x) | inherits(x, "tbl_df")) 
                       x <- as.data.frame(x)
                     if(is.numeric(y)) {
-                      out <- nodeHarvest(x, y,
-                                         maxinter = param$maxinter,
-                                         mode = param$mode,
-                                         ...)
+                      out <- nodeHarvest::nodeHarvest(x, y,
+                                                      maxinter = param$maxinter,
+                                                      mode = param$mode,
+                                                      ...)
                     } else {
                       if(length(lev) > 2) stop("Two Class problems only")
-                      out <- nodeHarvest(x,
-                                         ifelse(y == levels(y)[1], 1, 0),
-                                         maxinter = param$maxinter,
-                                         mode = param$mode,
-                                         ...)                          
+                      out <- nodeHarvest::nodeHarvest(x,
+                                                     ifelse(y == levels(y)[1], 1, 0),
+                                                     maxinter = param$maxinter,
+                                                     mode = param$mode,
+                                                     ...)                          
                     }
                     out   
                   },

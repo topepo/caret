@@ -34,7 +34,7 @@ modelInfo <- list(label = "Patient Rule Induction Method",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.data.frame(x) | inherits(x, "tbl_df")) 
                       x <- as.data.frame(x)
-                    out <- supervisedPRIM(x = x, y = y,
+                    out <- supervisedPRIM::supervisedPRIM(x = x, y = y,
                                           peel.alpha = param$peel.alpha,
                                           paste.alpha = param$paste.alpha,
                                           mass.min = param$mass.min,

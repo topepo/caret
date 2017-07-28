@@ -15,12 +15,12 @@ modelInfo <- list(label = "Linear Discriminant Analysis with Stepwise Feature Se
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
-                    out <- stepclass(x, y,
-                                     method = "lda",
-                                     maxvar = param$maxvar,
-                                     direction = as.character(param$direction),
-                                     ...)
-                    out$fit <- lda(x[, out$model$name, drop = FALSE], y, ...)
+                    out <- klaR::stepclass(x, y,
+                                           method = "lda",
+                                           maxvar = param$maxvar,
+                                           direction = as.character(param$direction),
+                                           ...)
+                    out$fit <- MASS::lda(x[, out$model$name, drop = FALSE], y, ...)
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {

@@ -11,9 +11,9 @@ modelInfo <- list(label = "Linear Regression with Stepwise Selection",
                     dat$.outcome <- y
                     if(!is.null(wts))
                     {
-                      out <- stepAIC(lm(.outcome ~ ., data = dat, weights = wts), ...)
-                    } else out <- stepAIC(lm(.outcome ~ ., data = dat), ...)
-                    out     
+                      out <- MASS::stepAIC(lm(.outcome ~ ., data = dat, weights = wts), ...)
+                    } else out <- MASS::stepAIC(lm(.outcome ~ ., data = dat), ...)
+                    out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)

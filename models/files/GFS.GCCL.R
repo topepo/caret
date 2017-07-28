@@ -26,6 +26,7 @@ modelInfo <- list(label = "Fuzzy Rules Using Genetic Cooperative-Competitive Lea
                       theDots$control$num.labels <- param$num.labels                  
                       theDots$control$popu.size <- param$popu.size
                       theDots$control$max.gen <- param$max.gen
+		                  theDots$control$num.class <- length(unique(y))
                     } else theDots$control <- list(num.labels = param$num.labels,                  
                                                    popu.size  = param$popu.size,
                                                    max.gen    = param$max.gen,
@@ -36,7 +37,7 @@ modelInfo <- list(label = "Fuzzy Rules Using Genetic Cooperative-Competitive Lea
                     if(!(any(names(theDots) == "range.data"))) {
                       args$range.data <- apply(args$data.train, 2, extendrange)
                     }
-                    do.call("frbs.learn", c(args, theDots))
+                    do.call(frbs::frbs.learn, c(args, theDots))
                     
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {

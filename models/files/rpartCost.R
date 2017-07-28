@@ -7,9 +7,9 @@ modelInfo <- list(label = "Cost-Sensitive CART",
                   grid = function(x, y, len = NULL, search = "grid"){
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    initialFit <- rpart(.outcome ~ .,
-                                        data = dat,
-                                        control = rpart.control(cp = 0))$cptable
+                    initialFit <- rpart::rpart(.outcome ~ .,
+                                               data = dat,
+                                               control = rpart::rpart.control(cp = 0))$cptable
                     initialFit <- initialFit[order(-initialFit[,"CP"]), , drop = FALSE] 
                     if(search == "grid") {
                       if(nrow(initialFit) < len) {
@@ -27,7 +27,7 @@ modelInfo <- list(label = "Cost-Sensitive CART",
                     tuneSeq
                   },
                   loop = function(grid) {
-                    loop <- ddply(grid,  .(Cost), function(x) c(cp = min(x$cp)))
+                    loop <- plyr::ddply(grid,  plyr::`.`(Cost), function(x) c(cp = min(x$cp)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     
                     for(i in seq(along = submodels)) {
@@ -45,7 +45,7 @@ modelInfo <- list(label = "Cost-Sensitive CART",
                       theDots$control$xval <- 0 
                       ctl <- theDots$control
                       theDots$control <- NULL
-                    } else ctl <- rpart.control(cp = param$cp, xval = 0)   
+                    } else ctl <- rpart::rpart.control(cp = param$cp, xval = 0)   
                     
                     lmat <-matrix(c(0, 1, param$Cost, 0), ncol = 2)
                     rownames(lmat) <- colnames(lmat) <- levels(y)
@@ -62,9 +62,9 @@ modelInfo <- list(label = "Cost-Sensitive CART",
                                         control = ctl),
                                    theDots)
                     modelArgs$data$.outcome <- y
-                    
-                    out <- do.call("rpart", modelArgs)
-                    out           
+
+                    out <- do.call(rpart::rpart, modelArgs)
+                    out
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)

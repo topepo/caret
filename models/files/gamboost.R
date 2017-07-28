@@ -15,25 +15,26 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                   },
                   loop = function(grid) {   
                     grid <- grid[order(-grid$mstop, grid$prune),]
-                    loop <- ddply(grid, .(prune), function(x) data.frame(mstop = max(x$mstop)))
+                    loop <- plyr::ddply(grid, plyr::`.`(prune), function(x) data.frame(mstop = max(x$mstop)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$mstop)) {
                       submodels[[i]] <- subset(grid, prune == loop$prune[i] & mstop < loop$mstop[i])
                     }     
                     list(loop = loop[, c("mstop", "prune")], submodels = submodels)
                   },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {                
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    import::from(mboost, bbs, .into = "mboost")
                     ##check for control list and over-write mstop
                     theDots <- list(...)
                     if(any(names(theDots) == "control")) {
                       theDots$control$mstop <- param$mstop 
                       ctl <- theDots$control
                       theDots$control <- NULL
-                    } else ctl <- boost_control(mstop = param$mstop)
-                    
+                    } else ctl <- mboost::boost_control(mstop = param$mstop)
+
                     if(!any(names(theDots) == "family"))
-                      theDots$family <- if(is.factor(y)) Binomial() else GaussReg()              
-                    
+                      theDots$family <- if(is.factor(y)) mboost::Binomial() else mboost::GaussReg()
+
                     ## pass in any model weights
                     if(!is.null(wts)) theDots$weights <- wts                       
                     
@@ -42,8 +43,8 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."), 
                                         data = dat, control = ctl), 
                                    theDots)
-                    
-                    out <- do.call("gamboost", modelArgs)
+
+                    out <- do.call(mboost::gamboost, modelArgs)
                     ## from `?mstop`: The [.mboost function can be used to enhance or restrict a given
                     ## boosting model to the specified boosting iteration i. Note that in both cases the 
                     ## original x will be changed to reduce the memory footprint. If the boosting model 
@@ -54,10 +55,10 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                     ## by mstop(x) <- i.
                     
                     if(param$prune == "yes") {
-                      iters <- if(is.factor(y)) 
-                        mstop(AIC(out, "classical")) else 
-                          mstop(AIC(out))
-                      if(iters < out$mstop()) out <- out[iters] 
+                      iters <- if(is.factor(y))
+                        mboost::mstop(AIC(out, "classical")) else
+                          mboost::mstop(AIC(out))
+                      if(iters < out$mstop()) out <- out[iters]
                     }
                     out$.org.mstop <- out$mstop()
                     
@@ -88,8 +89,8 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                                                          type = predType))
                       }
                       out <- tmp
-                      mstop(modelFit) <- modelFit$.org.mstop
-                    } 
+                      mboost::mstop(modelFit) <- modelFit$.org.mstop
+                    }
                     # cat(modelFit$mstop(), "!\n")
                     out         
                   },
@@ -112,8 +113,8 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                         tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels,drop = FALSE])           
                       }
                       out <- tmp
-                      mstop(modelFit) <- modelFit$.org.mstop
-                    }                        
+                      mboost::mstop(modelFit) <- modelFit$.org.mstop
+                    }
                     out
                   },
                   predictors = function(x, ...) {

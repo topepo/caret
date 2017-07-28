@@ -12,11 +12,11 @@ modelInfo <- list(label = "Regularized Linear Discriminant Analysis",
                   }, 
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(as.character(param$estimator == "Moore-Penrose Pseudo-Inverse")) {
-                      out <- lda_pseudo(x, y, ...)
+                      out <- sparsediscrim::lda_pseudo(x, y, ...)
                     } else {
                       if(as.character(param$estimator == "Schafer-Strimmer")) {
-                        out <- lda_schafer(x, y, ...)
-                      } else out <- lda_thomaz(x, y, ...)
+                        out <- sparsediscrim::lda_schafer(x, y, ...)
+                      } else out <- sparsediscrim::lda_thomaz(x, y, ...)
                     }
                     out
                   },

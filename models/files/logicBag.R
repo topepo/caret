@@ -15,7 +15,7 @@ modelInfo <- list(label = "Bagged Logic Regression",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
-                    logic.bagging(as.matrix(x), y,
+                    logicFS::logic.bagging(as.matrix(x), y,
                                   ntrees = param$ntrees,
                                   nleaves = param$nleaves,
                                   ...)

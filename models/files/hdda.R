@@ -19,7 +19,7 @@ modelInfo <- list(label = "High Dimensional Discriminant Analysis",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    hdda(x, y, model = as.character(param$model), threshold = param$threshold, ...)
+                    HDclassif::hdda(x, y, model = as.character(param$model), threshold = param$threshold, ...)
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     as.character(predict(modelFit, newdata)$class)

@@ -19,11 +19,11 @@ modelInfo <- list(label = "Random Forest",
                     if(!is.data.frame(x)) x <- as.data.frame(x)
                     x$.outcome <- y
                     if(!is.null(wts)) {
-                      out <- ranger(dependent.variable.name = ".outcome", data = x, mtry = param$mtry, write.forest = TRUE,
-                                    probability = classProbs, case.weights = wts, ...)
+                      out <- ranger::ranger(dependent.variable.name = ".outcome", data = x, mtry = param$mtry, write.forest = TRUE,
+                                            probability = classProbs, case.weights = wts, ...)
                     } else {
-                      out <- ranger(dependent.variable.name = ".outcome", data = x, mtry = param$mtry, write.forest = TRUE,
-                                    probability = classProbs, ...)
+                      out <- ranger::ranger(dependent.variable.name = ".outcome", data = x, mtry = param$mtry, write.forest = TRUE,
+                                            probability = classProbs, ...)
                     }
                     ## in case the resampling method is "oob"
                     if(!last) out$y <- y

@@ -19,7 +19,7 @@ modelInfo <- list(label = "The lasso",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    enet(as.matrix(x), y, lambda = 0, ...)
+                    elasticnet::enet(as.matrix(x), y, lambda = 0, ...)
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, 
