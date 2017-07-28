@@ -968,7 +968,7 @@ train.recipe <- function(recipe,
   }
   checkInstall(models$library)
   for(i in seq(along = models$library)) 
-    do.call("require", list(package = models$library[i]))
+    do.call("requireNamespace", list(package = models$library[i]))
   if(any(names(models) == "check") && is.function(models$check)) {
     software_check <- models$check(models$library)
   }

@@ -57,7 +57,7 @@ predictors.default <- function(x, ...) {
     if(!is.null(code$predictors)){
       checkInstall(code$library)
       for(i in seq(along = code$library))
-        do.call("requireNameSpaceQuietStop", list(package = code$library[i]))
+        do.call("requireNamespaceQuietStop", list(package = code$library[i]))
       out <- code$predictors(x, ...)
     } else {
       if(hasTerms(x)) {
