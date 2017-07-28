@@ -7,7 +7,7 @@ library(dplyr)
 model <- "gcvEarth"
 
 for(i in getModelInfo(model)[[1]]$library)
-  do.call("require", list(package = i))
+  do.call("requireNamespace", list(package = i))
 
 #########################################################################
 
