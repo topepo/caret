@@ -34,6 +34,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
     foreach(parm = 1:nrow(info$loop),
             .combine = "c",
             .verbose = FALSE,
+            .packages = pkgs,
             .errorhandling = "stop")  %op% {
               testing <- FALSE
               if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
@@ -268,8 +269,8 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
       adapt_results <- foreach(parm = 1:nrow(new_info$loop),
                                .combine = "c",
                                .verbose = FALSE,
-                               .errorhandling = "stop")  %op% {
-                                 requireNamespaceQuietStop("method")
+                               .packages = pkgs)  %op% {
+                                 requireNamespaceQuietStop("methods")
                                  requireNamespaceQuietStop("caret")
                                  if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE],
                                                                names(resampleIndex), iter, TRUE)
@@ -543,12 +544,11 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
     final_index <- seq(along = resampleIndex)[(last_iter+1):length(ctrl$index)]
     final_result <- foreach(iter = final_index,
                             .combine = "c",
-                            .verbose = FALSE,
-                            .errorhandling = "stop") %:%
+                            .verbose = FALSE) %:%
       foreach(parm = 1:nrow(new_info$loop),
               .combine = "c",
               .verbose = FALSE,
-              .errorhandling = "stop")  %op% {
+              .packages = pgs)  %op% {
                 testing <- FALSE
                 if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
 
