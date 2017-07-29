@@ -29,7 +29,7 @@ modelInfo <- list(label = "Monotone Multi-Layer Perceptron Neural Network",
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.matrix(newdata)) newdata <- as.matrix(newdata)
-                    out <- monmplp::monmlp.predict(newdata, modelFit$model)
+                    out <- monmlp::monmlp.predict(newdata, modelFit$model)
                     if(modelFit$problemType == "Classification") {
                       out <- modelFit$obsLevels[apply(out, 1, which.max)]
                     } else out <- out[, 1]
