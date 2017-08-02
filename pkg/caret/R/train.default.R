@@ -266,6 +266,7 @@
 #' @rdname train
 #' @importFrom stats predict
 #' @importFrom utils object.size flush.console
+#' @importFrom withr with_seed
 #' @export
 train.default <- function(x, y,
                           method = "rf",
@@ -344,9 +345,8 @@ train.default <- function(x, y,
   ## TODO add check method and execute here
 
   ## Some models that use RWeka start multiple threads and this conflicts with multicore:
-  if(any(search() == "package:doMC") && getDoParRegistered() && "RWeka" %in% models$library)
-    warning("Models using Weka will not work with parallel processing with multicore/doMC")
-  flush.console()
+  parallel_check("RWeka", models) 
+  parallel_check("keras", models) 
 
   if(!is.null(preProcess) && !(all(names(preProcess) %in% ppMethods)))
     stop(paste('pre-processing methods are limited to:', paste(ppMethods, collapse = ", ")), call. = FALSE)
@@ -931,6 +931,7 @@ train.formula <- function (form, data, ..., weights, subset, na.action = na.fail
 #'   the model. Note that, when using the recipe method, any arguments passed to
 #'   \code{preProcess} will be ignored. See the links and example below for 
 #'   more details using recipes. 
+#' @importFrom withr with_seed
 #' @export
 train.recipe <- function(recipe,
                          data,
@@ -1045,9 +1046,8 @@ train.recipe <- function(recipe,
   n <- if(class(y)[1] == "Surv") nrow(y) else length(y)
   
   ## Some models that use RWeka start multiple threads and this conflicts with multicore:
-  if(any(search() == "package:doMC") && getDoParRegistered() && "RWeka" %in% models$library)
-    warning("Models using Weka will not work with parallel processing with multicore/doMC")
-  flush.console()
+  parallel_check("RWeka", models) 
+  parallel_check("keras", models) 
   
   if(modelType == "Classification") {
     ## We should get and save the class labels to ensure that predictions are coerced

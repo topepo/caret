@@ -825,3 +825,11 @@ optimism_rec <- function(ctrl, dat, iter, lev, method, mod_rec, predicted, submo
   thisResampleExtra
 }
 
+parallel_check <- function(pkg, models) {
+  if(any(search() == "package:doMC") && getDoParRegistered() && pkg %in% models$library)
+    warning("Models using ", pkg, " will not work with parallel processing with multicore/doMC",
+            call. = FALSE)
+  flush.console()
+}
+
+
