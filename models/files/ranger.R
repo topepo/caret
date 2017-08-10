@@ -16,7 +16,7 @@ modelInfo <- list(label = "Random Forest",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    if(!is.data.frame(x)) x <- as.data.frame(x)
+                    if((!is.data.frame(x))||is.tbl(x)) x <- as.data.frame(x)
                     x$.outcome <- y
                     if(!is.null(wts)) {
                       out <- ranger::ranger(dependent.variable.name = ".outcome", data = x, mtry = param$mtry, write.forest = TRUE,
@@ -30,7 +30,7 @@ modelInfo <- list(label = "Random Forest",
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if((!is.data.frame(newdata))||is.tbl(newdata)) newdata <- as.data.frame(newdata)
                     out <- predict(modelFit, newdata)$predictions
                     if(!is.null(modelFit$obsLevels) & modelFit$treetype == "Probability estimation") {
                       out <- colnames(out)[apply(out, 1, which.max)]
