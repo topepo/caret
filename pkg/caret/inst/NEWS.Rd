@@ -23,7 +23,7 @@
     \item A bug preventing preprocessing to work properly when the preprocessing transformations are related to individual columns only fixed by Mateusz Kobos in \issue{679}.
     \item Added a \code{ggplot} method for lift objects (and fixed a bug in the \code{lattice} version of the code) for \issue{656}. 
     \item A prediction bug in \code{glm.nb} that was found by jpclemens0 was fixed \issue{688}.
-
+    \item A function \code{thresholder} was added to analyze the resample results for two class problems to choose an appropriate probability cutoff a la \url{https://topepo.github.io/caret/using-your-own-model-in-train.html#Illustration5} \issue{224}. 
 
   }
 }
