@@ -16,7 +16,6 @@ modelInfo <- list(label = "Neural Networks with Feature Extraction",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    library(nnet)
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     if(!is.null(wts))

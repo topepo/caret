@@ -6,7 +6,6 @@ modelInfo <- list(label = "Relevance Vector Machines with Radial Basis Function 
                                           class = "numeric",
                                           label = "Sigma"),
                   grid = function(x, y, len = NULL, search = "grid"){
-                    library(kernlab)
                     sigmas <- kernlab::sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)
                     if(search == "grid") {
                       out <- expand.grid(sigma = mean(as.vector(sigmas[-2])))
