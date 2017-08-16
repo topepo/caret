@@ -31,7 +31,7 @@ modelInfo <- list(label = "Extreme Learning Machine",
                       out$lev <- levels(y)
                       
                     } else {
-                      out <- elmnNN::elmtrain(x = x, y = y, nhid = param$nhid, actfun = param$actfun, ...)
+                      out <- elmNN::elmtrain(x = x, y = y, nhid = param$nhid, actfun = param$actfun, ...)
                     }
                     out$xNames <- colnames(x)
                     out
