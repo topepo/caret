@@ -21,12 +21,12 @@
     \item Switched to non-formula interface in ranger.
     \item A simple "null model" was added. For classification, it predictors using the most prevalent level and, for regression, fits an intercept only model. \issue{694}
     \item A bug preventing preprocessing to work properly when the preprocessing transformations are related to individual columns only fixed by Mateusz Kobos in \issue{679}.
-    \item Added a \code{ggplot} method for lift objects (and fixed a bug in the \code{lattice} version of the code) for \issue{656}. 
+    \item Added a \code{ggplot} method for lift objects (and fixed a bug in the \code{lattice} version of the code) for \issue{656}.
     \item A prediction bug in \code{glm.nb} that was found by jpclemens0 was fixed \issue{688}.
     \item A function \code{thresholder} was added to analyze the resample results for two class problems to choose an appropriate probability cutoff a la \url{https://topepo.github.io/caret/using-your-own-model-in-train.html#Illustration5} \issue{224}. 
-
+    \item Two neural network models (containing a single hidden layers) using \code{tensorflow}/\code{keras} were added.  \code{mlpKerasDecay} uses standard weight decay while \code{mlpKerasDropout} uses dropout for regularization. Both use RMSProp optimizer and have a lot of tuning parameters. Two additional models, \code{mlpKerasDecayCost} and \code{mlpKerasDropoutCost}, are classification only and perform cost-sensitive learning. Note that these models will not run in parallel using \cpkg{caret}'s parallelism and also will not give reproducible results from run-to-run (see \url{https://github.com/rstudio/keras/issues/42}). 
   }
-}
+} 
 
 \section{Changes in version 6.0-76}{
 	\itemize{
