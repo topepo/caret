@@ -1,5 +1,5 @@
 modelInfo <- list(label = "Boosted Generalized Additive Model",
-                  library = c("mboost", "plyr"),
+                  library = c("mboost", "plyr", "import"),
                   type = c("Regression", "Classification"),
                   parameters = data.frame(parameter = c('mstop', 'prune'),
                                           class = c("numeric", "character"),

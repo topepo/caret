@@ -1,5 +1,5 @@
 modelInfo <- list(label = "Parallel Random Forest",
-                  library = c("e1071", "randomForest", "foreach"),
+                  library = c("e1071", "randomForest", "foreach", "import"),
                   loop = NULL,
                   type = c("Classification", "Regression"),
                   parameters = data.frame(parameter = "mtry",
@@ -17,7 +17,7 @@ modelInfo <- list(label = "Parallel Random Forest",
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     workers <- foreach::getDoParWorkers()
-		    import::from(foreach, `%dopar%`)
+		                import::from(foreach, `%dopar%`)
                     theDots <- list(...)
                     theDots$ntree <- if(is.null(theDots$ntree)) 
                       formals(randomForest:::randomForest.default)$ntree else 
