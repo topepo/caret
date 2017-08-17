@@ -21,8 +21,7 @@ dummyVars(formula, ...)
 
 \method{print}{dummyVars}(x, ...)
 
-\method{predict}{dummyVars}(object, newdata, na.action = na.pass,
-  sparse = FALSE, ...)
+\method{predict}{dummyVars}(object, newdata, na.action = na.pass, ...)
 
 contr.ltfr(n, contrasts = TRUE, sparse = FALSE)
 
@@ -56,11 +55,11 @@ are no linear dependencies induced between the columns.}
 \item{na.action}{A function determining what should be done with missing
 values in \code{newdata}. The default is to predict \code{NA}.}
 
-\item{sparse}{A logical indicating if the result should be sparse.}
-
 \item{n}{A vector of levels for a factor, or the number of levels.}
 
 \item{contrasts}{A logical indicating whether contrasts should be computed.}
+
+\item{sparse}{A logical indicating if the result should be sparse.}
 
 \item{drop2nd}{A logical: if the factor has two levels, should a single binary vector be returned?}
 }

@@ -140,7 +140,7 @@ dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, ful
 {
   formula <- as.formula(formula)
   if(!is.data.frame(data)) data <- as.data.frame(data)
-
+  
   vars <- all.vars(formula)
   if(any(vars == "."))
   {
@@ -179,7 +179,7 @@ dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, ful
               fullRank = fullRank)
   class(out) <- "dummyVars"
   out
-
+  
 }
 
 #' @rdname dummyVars
@@ -203,7 +203,7 @@ print.dummyVars <- function(x, ...)
 #' @method predict dummyVars
 #' @importFrom stats delete.response model.frame model.matrix na.pass
 #' @export
-predict.dummyVars <- function(object, newdata, na.action = na.pass, sparse = FALSE, ...)
+predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
 {
   if(is.null(newdata)) stop("newdata must be supplied")
   if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
@@ -223,14 +223,10 @@ predict.dummyVars <- function(object, newdata, na.action = na.pass, sparse = FAL
     options(contrasts = newContr)
   }
   m <- model.frame(Terms, newdata, na.action = na.action, xlev = object$lvls)
-
-  x <- if (sparse)
-      model.matrix(Terms, m)
-  else
-    sparse.model.matrix(Terms, m)
-
+  
+  x <- model.matrix(Terms, m)
   if(!object$fullRank) options(contrasts = oldContr)
-
+  
   if(object$levelsOnly) {
     for(i in object$facVars) {
       for(j in object$lvls[[i]]) {
@@ -246,7 +242,7 @@ predict.dummyVars <- function(object, newdata, na.action = na.pass, sparse = FAL
         from_text <- paste0(i, j)
         to_text <- paste(i, j, sep = object$sep)
         colnames(x) <- gsub(from_text, to_text, colnames(x), fixed = TRUE)
-       }
+      }
     }
   }
   x[, colnames(x) != "(Intercept)", drop = FALSE]
