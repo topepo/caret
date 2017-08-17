@@ -88,7 +88,7 @@ for the posterior probability calculations.
 data(mdrr)
 set.seed(1)
 inTrain <- sample(seq(along = mdrrClass), 450)
- 
+
 nzv <- nearZeroVar(mdrrDescr)
 filteredDescr <- mdrrDescr[, -nzv]
 
@@ -96,7 +96,7 @@ training <- filteredDescr[inTrain,]
 test <- filteredDescr[-inTrain,]
 trainMDRR <- mdrrClass[inTrain]
 testMDRR <- mdrrClass[-inTrain]
- 
+
 preProcValues <- preProcess(training)
 
 trainDescr <- predict(preProcValues, training)
@@ -126,10 +126,10 @@ dim(predict(useBayes, testDescr, type = "prob", ncomp = 1:3))
 
 ## Using spls:
 ## (As of 11/09, the spls package now has a similar function with
-## the same mane. To avoid conflicts, use caret:::splsda to 
+## the same mane. To avoid conflicts, use caret:::splsda to
 ## get this version)
 
-splsFit <- caret:::splsda(trainDescr, trainMDRR, 
+splsFit <- caret:::splsda(trainDescr, trainMDRR,
                           K = 5, eta = .9,
                           probMethod = "Bayes")
 

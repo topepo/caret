@@ -100,10 +100,10 @@ can then be passes to \code{\link{plotObsVsPred}} or
 
    \dontrun{
 
-knnFit <- train(Species ~ ., data = iris, method = "knn", 
+knnFit <- train(Species ~ ., data = iris, method = "knn",
                 trControl = trainControl(method = "cv"))
 
-rdaFit <- train(Species ~ ., data = iris, method = "rda", 
+rdaFit <- train(Species ~ ., data = iris, method = "rda",
                 trControl = trainControl(method = "cv"))
 
 predict(knnFit)
