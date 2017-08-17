@@ -15,11 +15,11 @@
       x_dat <- recipes::juice(object$recipe, all_predictors())
       x_dat <- as.data.frame(x_dat)
       y_dat <- recipes::juice(object$recipe, all_outcomes())
+      y_dat <- getElement(y_dat, names(y_dat))
     } else {
       isX <- which(!(colnames(object$trainingData) %in% ".outcome"))
       x_dat <- object$trainingData[, isX,drop = FALSE]
       y_dat <- object$trainingData[, -isX]
-      y_dat <- getElement(y_dat, names(y_dat))
     }
     imp <- filterVarImp(x_dat, y_dat,
                         nonpara = nonpara,
