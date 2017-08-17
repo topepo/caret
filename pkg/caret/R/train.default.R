@@ -400,11 +400,10 @@ train.default <- function(x, y,
     stop("Out of bag estimates are not implemented for this model", call. = FALSE)
 
   ## If they don't exist, make the data partitions for the resampling iterations.
-  if(is.null(trControl$index)) 
-    trControl <- withr::with_seed(
-      rs_seed, 
-      make_resamples(trControl, outcome = y)
-    )
+  trControl <- withr::with_seed(
+    rs_seed, 
+    make_resamples(trControl, outcome = y)
+  )
 
   if(is.logical(trControl$savePredictions)) {
     trControl$savePredictions <- if(trControl$savePredictions) "all" else "none"
@@ -1102,12 +1101,10 @@ train.recipe <- function(recipe,
          call. = FALSE)
   
   ## If they don't exist, make the data partitions for the resampling iterations.
-  if(is.null(trControl$index)) 
-    trControl <- withr::with_seed(
-      rs_seed, 
-      make_resamples(trControl, outcome = y)
-    )
-  
+  trControl <- withr::with_seed(
+    rs_seed, 
+    make_resamples(trControl, outcome = y)
+    
   if(is.logical(trControl$savePredictions)) {
     trControl$savePredictions <- if(trControl$savePredictions) "all" else "none"
   } else {
