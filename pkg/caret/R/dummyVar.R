@@ -203,7 +203,7 @@ print.dummyVars <- function(x, ...)
 #' @method predict dummyVars
 #' @importFrom stats delete.response model.frame model.matrix na.pass
 #' @export
-predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
+predict.dummyVars <- function(object, newdata, na.action = na.pass, sparse = FALSE, ...)
 {
   if(is.null(newdata)) stop("newdata must be supplied")
   if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
@@ -224,7 +224,11 @@ predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
   }
   m <- model.frame(Terms, newdata, na.action = na.action, xlev = object$lvls)
 
-  x <- model.matrix(Terms, m)
+  x <- if (sparse)
+      model.matrix(Terms, m)
+  else
+    sparse.model.matrix(Terms, m)
+
   if(!object$fullRank) options(contrasts = oldContr)
 
   if(object$levelsOnly) {

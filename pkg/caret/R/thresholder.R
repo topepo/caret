@@ -59,7 +59,7 @@ thresholder <- function(x, threshold, final = TRUE) {
   if(!inherits(x, "train"))
     stop("`x` should be an object of class 'train'", 
          call. = FALSE)
-  if (!mod$control$classProbs)
+  if (!x$control$classProbs)
     stop("`classProbs` must be TRUE in `trainControl`",
          call. = FALSE)
   if (is.null(threshold))
