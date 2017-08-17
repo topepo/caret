@@ -1104,6 +1104,7 @@ train.recipe <- function(recipe,
   trControl <- withr::with_seed(
     rs_seed, 
     make_resamples(trControl, outcome = y)
+  )
     
   if(is.logical(trControl$savePredictions)) {
     trControl$savePredictions <- if(trControl$savePredictions) "all" else "none"
