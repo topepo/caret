@@ -15,7 +15,7 @@ modelInfo <- list(label = "Ensembles of Generalized Linear Models",
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.matrix(x)) x <- as.matrix(x)
-                    mod <- randomGLM(x = x, y, maxInteractionOrder = param$maxInteractionOrder, ...)
+                    mod <- randomGLM::randomGLM(x = x, y, maxInteractionOrder = param$maxInteractionOrder, ...)
                     mod
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {

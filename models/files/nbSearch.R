@@ -26,17 +26,17 @@ modelInfo <- list(label = "Semi-Naive Structure Learner Wrapper",
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     if(param$direction == "forward") {
-                      struct <- fssj(class = '.outcome', dataset = dat, 
-                                     k = param$k, 
-                                     epsilon = param$epsilon, 
-                                     smooth = param$smooth)
+                      struct <- bnclassify::fssj(class = '.outcome', dataset = dat,
+                                                 k = param$k,
+                                                 epsilon = param$epsilon,
+                                                 smooth = param$smooth)
                     } else {
-                      struct <- bsej(class = '.outcome', dataset = dat, 
-                                     k = param$k, 
-                                     epsilon = param$epsilon, 
-                                     smooth = param$smooth)
+                      struct <- bnclassify::bsej(class = '.outcome', dataset = dat,
+                                                 k = param$k,
+                                                 epsilon = param$epsilon,
+                                                 smooth = param$smooth)
                     }
-                    lp(struct, dat, smooth = param$final_smooth, ...)
+                    bnclassify::lp(struct, dat, smooth = param$final_smooth, ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)

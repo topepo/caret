@@ -34,34 +34,34 @@ modelInfo <- list(label = "Gradient Boosting Machines",
                     dat <- if(!is.data.frame(x)) as.data.frame(x) else x
                     dat$.outcome <- y
                     frame_name <- paste0("tmp_gbm_dat_",sample.int(100000, 1))
-                    tmp_train_dat = as.h2o(dat, destination_frame = frame_name)
-                    
-                    out <- h2o.gbm(x = colnames(x), y = ".outcome",
-                                   training_frame = tmp_train_dat,
-                                   distribution = fam,
-                                   ntrees = param$ntrees, max_depth = param$max_depth,
-                                   learn_rate = param$learn_rate, min_rows = param$min_rows,
-                                   col_sample_rate = param$col_sample_rate,
-                                   ...)
-                    h2o.getModel(out@model_id) 
+                    tmp_train_dat = h2o::as.h2o(dat, destination_frame = frame_name)
+
+                    out <- h2o::h2o.gbm(x = colnames(x), y = ".outcome",
+                                        training_frame = tmp_train_dat,
+                                        distribution = fam,
+                                        ntrees = param$ntrees, max_depth = param$max_depth,
+                                        learn_rate = param$learn_rate, min_rows = param$min_rows,
+                                        col_sample_rate = param$col_sample_rate,
+                                        ...)
+                    h2o::h2o.getModel(out@model_id)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     frame_name <- paste0("new_gbm_dat_",sample.int(100000, 1))
-                    newdata <- as.h2o(newdata, destination_frame = frame_name)
+                    newdata <- h2o::as.h2o(newdata, destination_frame = frame_name)
                     as.data.frame(predict(modelFit, newdata))[,1]
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     frame_name <- paste0("new_gbm_dat_",sample.int(100000, 1))
-                    newdata <- as.h2o(newdata, destination_frame = frame_name)
+                    newdata <- h2o::as.h2o(newdata, destination_frame = frame_name)
                     as.data.frame(predict(modelFit, newdata))[,-1]
                   },
                   predictors = function(x, ...) {
-                    out <- as.data.frame(h2o.varimp(x))
+                    out <- as.data.frame(h2o::h2o.varimp(x))
                     out <- subset(out, relative_importance > 0)
                     as.character(out$variable)
                   },
                   varImp = function(object, ...) {
-                    out <- as.data.frame(h2o.varimp(object))
+                    out <- as.data.frame(h2o::h2o.varimp(object))
                     colnames(out)[colnames(out) == "relative_importance"] <- "Overall"
                     rownames(out) <- out$variable
                     out[, c("Overall"), drop = FALSE]   

@@ -1,5 +1,5 @@
-modelInfo <- list(label = "Self-Organizing Map", 
-                  library = "kohonen",
+modelInfo <- list(label = "Self-Organizing Map",
+                  library = c("kohonen", "class"),
                   loop = NULL,
                   type = c("Classification", "Regression"),
                   parameters = data.frame(parameter = c("xdim", "ydim", "xweight", "topo"),
@@ -21,12 +21,12 @@ modelInfo <- list(label = "Self-Organizing Map",
                     }
                     out
                   },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    bdk(as.matrix(x),
-                        Y = if(is.factor(y)) classvec2classmat(y) else y,
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...)
+                    kohonen::bdk(as.matrix(x),
+                        Y = if(is.factor(y)) kohonen::classvec2classmat(y) else y,
                         xweight = param$xweight,
                         contin = !is.factor(y),
-                        grid = somgrid(param$xdim, param$ydim, as.character(param$topo)),
+                        grid = class::somgrid(param$xdim, param$ydim, as.character(param$topo)),
                         ...),
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, as.matrix(newdata))$prediction

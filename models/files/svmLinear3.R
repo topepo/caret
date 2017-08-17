@@ -19,11 +19,11 @@ modelInfo <- list(label = "L2 Regularized Support Vector Machine (dual) with Lin
                     if(param$Loss == "L2") {
                       model_type <- if(is.factor(y)) 3 else 13
                     } else model_type <- if(is.factor(y)) 2 else 11
-                    
-                    out <- LiblineaR(data = as.matrix(x), target = y,
-                                     cost = param$cost,
-                                     type = model_type,
-                                     ...)
+
+                    out <- LiblineaR::LiblineaR(data = as.matrix(x), target = y,
+                                                cost = param$cost,
+                                                type = model_type,
+                                                ...)
 
                     out
                   },

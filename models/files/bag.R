@@ -8,7 +8,7 @@ modelInfo <- list(label = "Bagged Model",
                   grid = function(x, y, len = NULL, search = "grid") 
                     data.frame(vars = ncol(x)),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    out <- bag(x, y, vars = param$vars, ...)
+                    out <- caret::bag(x, y, vars = param$vars, ...)
                     out$xNames <- colnames(x)
                     out
                     },

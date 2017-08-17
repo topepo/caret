@@ -23,12 +23,12 @@ modelInfo <- list(label = "L2 Regularized Linear Support Vector Machines with Cl
                       stop("Currently implemented for 2-class problems")
                     cwts <- c(1, param$weight)
                     names(cwts) <- levels(y)
-                    
-                    out <- LiblineaR(data = as.matrix(x), target = y,
-                                     cost = param$cost,
-                                     type = model_type,
-                                     wi = cwts,
-                                     ...)
+
+                    out <- LiblineaR::LiblineaR(data = as.matrix(x), target = y,
+                                                cost = param$cost,
+                                                type = model_type,
+                                                wi = cwts,
+                                                ...)
 
                     out
                   },

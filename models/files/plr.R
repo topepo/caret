@@ -19,11 +19,11 @@ modelInfo <- list(label = "Penalized Logistic Regression",
                     if(!is.matrix(x)) 
                       x <- as.matrix(x)
                     y <- ifelse(y == levels(y)[1], 1, 0)
-                    plr(x, y,
-                        lambda = param$lambda,
-                        cp = as.character(param$cp),
-                        weights = if(!is.null(wts)) wts else rep(1,length(y)), 
-                        ...)
+                    stepPlr::plr(x, y,
+                                 lambda = param$lambda,
+                                 cp = as.character(param$cp),
+                                 weights = if(!is.null(wts)) wts else rep(1,length(y)), 
+                                 ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL)  {
                     ifelse(predict(modelFit, as.matrix(newdata), type = "class") == 1,

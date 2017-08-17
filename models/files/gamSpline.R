@@ -27,8 +27,8 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                       args$family <- if(is.factor(y)) binomial else gaussian
                     
                     if(length(theDots) > 0) args <- c(args, theDots)
-                    
-                    do.call(getFromNamespace("gam", "gam"), args)
+
+                    do.call(gam::gam, args)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)

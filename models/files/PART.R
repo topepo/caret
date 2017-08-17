@@ -29,7 +29,7 @@ modelInfo <- list(label = "Rule-Based Classifier",
                       ctl <- theDots$control
                       theDots$control <- NULL
                       
-                    } else ctl <- Weka_control(U = ifelse(tolower(param$pruned) == "no", TRUE, FALSE),
+                    } else ctl <- RWeka::Weka_control(U = ifelse(tolower(param$pruned) == "no", TRUE, FALSE),
                                                C = param$threshold) 
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
@@ -37,7 +37,7 @@ modelInfo <- list(label = "Rule-Based Classifier",
                                         control = ctl),
                                    theDots)
                     
-                    out <- do.call("PART", modelArgs) 
+                    out <- do.call(RWeka::PART, modelArgs) 
                     out      
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {

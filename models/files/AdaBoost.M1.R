@@ -1,7 +1,7 @@
 modelInfo <- list(label = "AdaBoost.M1",
                   library = c("adabag", "plyr"),
                   loop = function(grid) {     
-                    loop <- ddply(grid, c("coeflearn", "maxdepth"),
+                    loop <- plyr::ddply(grid, c("coeflearn", "maxdepth"),
                                   function(x) c(mfinal = max(x$mfinal)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$mfinal)) {
@@ -37,7 +37,7 @@ modelInfo <- list(label = "AdaBoost.M1",
                       ctl <- theDots$control
                       theDots$control <- NULL
                       
-                    } else ctl <- rpart.control(maxdepth = param$maxdepth,
+                    } else ctl <- rpart::rpart.control(maxdepth = param$maxdepth,
                                                 cp=-1,minsplit=0,xval=0) 
                     
                     if (!is.data.frame(x) | inherits(x, "tbl_df"))
@@ -50,7 +50,7 @@ modelInfo <- list(label = "AdaBoost.M1",
                                         control = ctl),
                                    theDots)
                     modelArgs$data$.outcome <- y
-                    out <- do.call("boosting", modelArgs)                    
+                    out <- do.call(adabag::boosting, modelArgs)                    
                     out     
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {

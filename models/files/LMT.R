@@ -22,14 +22,14 @@ modelInfo <- list(label = "Logistic Model Trees",
                       theDots$control$I <- param$iter 
                       ctl <- theDots$control
                       theDots$control <- NULL
-                    } else ctl <- Weka_control(I = param$iter) 
+                    } else ctl <- RWeka::Weka_control(I = param$iter) 
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
                                         data = dat,
                                         control = ctl),
                                    theDots)
                     
-                    out <- do.call("LMT", modelArgs) 
+                    out <- do.call(RWeka::LMT, modelArgs) 
                     out      
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {

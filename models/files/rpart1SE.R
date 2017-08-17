@@ -12,9 +12,9 @@ modelInfo <- list(label = "CART",
                     
                     ## check to see if weights were passed in (and availible)
                     if(!is.null(wts)){
-                      out <- rpart(.outcome ~ ., data = dat, ...)
+                      out <- rpart::rpart(.outcome ~ ., data = dat, ...)
                     } else {
-                      out <- rpart(.outcome ~ ., data = dat, weights = wts, ...)
+                      out <- rpart::rpart(.outcome ~ ., data = dat, weights = wts, ...)
                     }
                     out           
                   },

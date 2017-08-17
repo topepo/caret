@@ -20,31 +20,31 @@ modelInfo <- list(label = "glmnet",
                     dat$.outcome <- y
                     p <- ncol(dat)
                     frame_name <- paste0("tmp_glmnet_dat_",sample.int(100000, 1))
-                    tmp_train_dat = as.h2o(dat, destination_frame = frame_name)
-                    out <- h2o.glm(x = colnames(x), y = ".outcome",
-                                   training_frame = tmp_train_dat,
-                                   family = if(is.factor(y)) "binomial" else "gaussian",
-                                   alpha = param$alpha, lambda = param$lambda, ...)
-                    h2o.getModel(out@model_id) 
+                    tmp_train_dat = h2o::as.h2o(dat, destination_frame = frame_name)
+                    out <- h2o::h2o.glm(x = colnames(x), y = ".outcome",
+                                       training_frame = tmp_train_dat,
+                                       family = if(is.factor(y)) "binomial" else "gaussian",
+                                       alpha = param$alpha, lambda = param$lambda, ...)
+                    h2o::h2o.getModel(out@model_id)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     frame_name <- paste0("new_glmnet_dat_",sample.int(100000, 1))
-                    newdata <- as.h2o(newdata, destination_frame = frame_name)
+                    newdata <- h2o::as.h2o(newdata, destination_frame = frame_name)
                     as.data.frame(predict(modelFit, newdata))[,1]
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     frame_name <- paste0("new_glmnet_dat_",sample.int(100000, 1))
-                    newdata <- as.h2o(newdata, destination_frame = frame_name)
+                    newdata <- h2o::as.h2o(newdata, destination_frame = frame_name)
                     as.data.frame(predict(modelFit, newdata))[,-1]
                   },
                   predictors = function(object, ...) {
-                    out <- as.data.frame(h2o.varimp(object))
+                    out <- as.data.frame(h2o::h2o.varimp(object))
                     colnames(out)[colnames(out) == "coefficients"] <- "Overall"
                     out <- out[!is.na(out$Overall),]   
                     out$names
                   },
                   varImp = function(object, ...) {
-                    out <- as.data.frame(h2o.varimp(object))
+                    out <- as.data.frame(h2o::h2o.varimp(object))
                     colnames(out)[colnames(out) == "coefficients"] <- "Overall"
                     rownames(out) <- out$names
                     out <- out[!is.na(out$Overall), c("Overall"), drop = FALSE]   

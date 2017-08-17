@@ -14,7 +14,7 @@ modelInfo <- list(label = "Ridge Regression",
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    enet(as.matrix(x), y, lambda = param$lambda)  
+                    elasticnet::enet(as.matrix(x), y, lambda = param$lambda)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     predict(modelFit, newdata, 

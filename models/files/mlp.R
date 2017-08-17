@@ -26,7 +26,7 @@ modelInfo <- list(label = "Multi-Layer Perceptron",
                                  size = param$size,
                                  linOut = lin)
                     args <- c(args, theDots)
-                    do.call("mlp", args)
+                    do.call(RSNNS::mlp, args)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, newdata)

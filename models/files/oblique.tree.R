@@ -11,10 +11,10 @@ modelInfo <- list(label = "Oblique Trees",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    oblique.tree(.outcome ~ ., data = dat,
-                                 oblique.splits = as.character(param$oblique.splits),
-                                 variable.selection = as.character(param$variable.selection),
-                                 ...)
+                    oblique.tree::oblique.tree(.outcome ~ ., data = dat,
+                                               oblique.splits = as.character(param$oblique.splits),
+                                               variable.selection = as.character(param$variable.selection),
+                                               ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL){
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)

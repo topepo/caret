@@ -7,7 +7,7 @@ modelInfo <- list(label = "Adaptive Mixture Discriminant Analysis",
                                           label = "Model Type"),
                   grid = function(x, y, len = NULL, search = "grid") data.frame(model = "lda"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    mod <- amdai(x, as.numeric(y), 
+                    mod <- adaptDA::amdai(x, as.numeric(y), 
                                  model = as.character(param$model), ...)
                     mod$levels <- levels(y)
                     mod

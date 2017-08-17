@@ -17,8 +17,8 @@ modelInfo <- list(label = "Heteroscedastic Discriminant Analysis",
                     }
                     out
                   },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    hda(x, y,
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...)
+                    hda::hda(x, y,
                         newdim = param$newdim,
                         reg.lamb = param$lambda,
                         reg.gamm = param$gamma,

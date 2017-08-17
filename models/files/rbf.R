@@ -41,7 +41,7 @@ modelInfo <- list(label = "Radial Basis Function Network",
                                  size = param$size,
                                  linOut = lin)
                     args <- c(args, theDots)
-                    do.call("rbf", args)
+                    do.call(RSNNS::rbf, args)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, newdata)

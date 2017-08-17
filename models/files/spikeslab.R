@@ -21,7 +21,7 @@ modelInfo <- list(label = "Spike and Slab Regression",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    mod <- spikeslab(x = as.matrix(x), y = y, max.var = param$vars, ...)
+                    mod <- spikeslab::spikeslab(x = as.matrix(x), y = y, max.var = param$vars, ...)
                     ## Get a key to go between the column of the path matrix and the 
                     ## number of non-zero coefficients. There can be multiple path 
                     ## values that have the same number of nonzero betas and, 
@@ -29,8 +29,8 @@ modelInfo <- list(label = "Spike and Slab Regression",
                     ## this case, we will impute using the next adjacent value. 
                     path <- data.frame(k = apply(mod$gnet.path$path, 1, function(x) sum(x != 0)))
                     path$index <- 1:nrow(path)
-                    path <- ddply(path, .(k), function(x) x[which.min(x$index),])
-                    if(all(path$k != ncol(x))) 
+                    path <- plyr::ddply(path, plyr::`.`(k), function(x) x[which.min(x$index),])
+                    if(all(path$k != ncol(x)))
                       path <- rbind(path, data.frame(k = ncol(x), index = max(path$index)))
                     mod$.path <- path
                     mod$.size <- param$vars

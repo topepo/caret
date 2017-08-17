@@ -20,7 +20,7 @@ modelInfo <- list(label = "The Bayesian lasso",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    mod <- blasso(as.matrix(x), y, ...)
+                    mod <- monomvn::blasso(as.matrix(x), y, ...)
                     mod$.percent <- apply(mod$beta, 2, function(x) mean(x != 0))
                     mod$.sparsity <- param$sparsity
                     mod$.betas <- colMeans(mod$beta)

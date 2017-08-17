@@ -10,7 +10,7 @@ modelInfo <- list(label = "Stabilized Linear Discriminant Analysis",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    slda(.outcome ~ ., data = dat, ...)
+                    ipred::slda(.outcome ~ ., data = dat, ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)

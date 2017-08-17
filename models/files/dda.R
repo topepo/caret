@@ -11,19 +11,19 @@ modelInfo <- list(label = "Diagonal Discriminant Analysis",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(param$model == "Linear") {
                       if(param$shrinkage == "None") {
-                        out <- dlda(x, y, ...)  
+                        out <- sparsediscrim::dlda(x, y, ...)
                       } else {
                         if(param$shrinkage == "Variance") {
-                          out <- sdlda(x, y, ...)  
-                        } else out <- smdlda(x, y, ...)  
+                          out <- sparsediscrim::sdlda(x, y, ...)
+                        } else out <- sparsediscrim::smdlda(x, y, ...)
                       }
                     } else {
                       if(param$shrinkage == "None") {
-                        out <- dqda(x, y, ...)  
+                        out <- sparsediscrim::dqda(x, y, ...)
                       } else {
                         if(param$shrinkage == "Variance") {
-                          out <- sdqda(x, y, ...)  
-                        } else out <- smdqda(x, y, ...)  
+                          out <- sparsediscrim::sdqda(x, y, ...)
+                        } else out <- sparsediscrim::smdqda(x, y, ...)
                       }
                     }
                     out

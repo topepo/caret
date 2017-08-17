@@ -22,12 +22,12 @@ modelInfo <- list(label = "Sparse Mixture Discriminant Analysis",
                   {
                     
                   },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    smda(x, y,
-                         Rj = param$R,
-                         lambda = param$lambda,
-                         stop = -param$NumVars,
-                         ...),
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...)
+                    sparseLDA::smda(x, y,
+                                    Rj = param$R,
+                                    lambda = param$lambda,
+                                    stop = -param$NumVars,
+                                    ...),
                   predict = function(modelFit, newdata, submodels = NULL)
                     predict(modelFit, newdata)$class,
                   prob = NULL,

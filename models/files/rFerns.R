@@ -16,7 +16,7 @@ modelInfo <- list(label = "Random Ferns",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.data.frame(x) | inherits(x, "tbl_df")) 
                       x <- as.data.frame(x)
-                    rFerns(x, y, depth = param$depth, ...)
+                    rFerns::rFerns(x, y, depth = param$depth, ...)
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 

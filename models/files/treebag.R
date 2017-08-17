@@ -10,8 +10,8 @@ modelInfo <- list(label = "Bagged CART",
                     theDots <- list(...)
                     if(!any(names(theDots) == "keepX")) theDots$keepX <- FALSE   
                     modelArgs <- c(list(X = x, y = y), theDots)
-                    if(!is.null(wts)) modelArgs$weights <- wts   
-                    do.call("ipredbagg", modelArgs)
+                    if(!is.null(wts)) modelArgs$weights <- wts
+                    do.call(ipred::ipredbagg, modelArgs)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit, newdata),
@@ -32,7 +32,7 @@ modelInfo <- list(label = "Bagged CART",
                                        x
                                      })
                     allImp <- do.call("rbind", allImp)
-                    meanImp <- ddply(allImp, .(variable), 
+                    meanImp <- plyr::ddply(allImp, plyr::`.`(variable),
                                      function(x) c(Overall = mean(x$Overall)))
                     out <- data.frame(Overall = meanImp$Overall)
                     rownames(out) <- meanImp$variable

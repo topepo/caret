@@ -8,12 +8,12 @@ modelInfo <- list(label = "Bagged MARS using gCV Pruning",
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     if(is.factor(y)){
-                      mod <- bagEarth(x, y, degree = param$degree, 
-                                      glm = list(family=binomial, maxit=100),
-                                      weights = wts,
-                                      ...)
+                      mod <- caret::bagEarth(x, y, degree = param$degree, 
+                                             glm = list(family=binomial, maxit=100),
+                                             weights = wts,
+                                             ...)
                     } else {
-                      mod <- bagEarth(x, y, degree = param$degree, weights = wts, ...)
+                      mod <- caret::bagEarth(x, y, degree = param$degree, weights = wts, ...)
                     }  
                     mod
                   },

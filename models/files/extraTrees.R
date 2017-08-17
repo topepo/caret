@@ -17,8 +17,8 @@
                         }
                         out[!duplicated(out),]
                       },
-                      fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                        extraTrees(x, y, mtry = param$mtry, numRandomCuts = param$numRandomCuts, ...),
+                      fit = function(x, y, wts, param, lev, last, classProbs, ...)
+                        extraTrees::extraTrees(x, y, mtry = param$mtry, numRandomCuts = param$numRandomCuts, ...),
                       predict = function(modelFit, newdata, submodels = NULL)
                         predict(modelFit, newdata),
                       prob = function(modelFit, newdata, submodels = NULL)

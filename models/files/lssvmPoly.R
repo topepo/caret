@@ -17,12 +17,12 @@ modelInfo <- list(label = "Least Squares Support Vector Machine with Polynomial 
                     out
                   },
                   loop = NULL,
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    lssvm(x = as.matrix(x), y = y,
-                          tau = param$tau,
-                          kernel = polydot(degree = param$degree,
-                                           scale = param$scale,
-                                           offset = 1), ...)         
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    kernlab::lssvm(x = as.matrix(x), y = y,
+                      	          tau = param$tau,
+                                  kernel = kernlab::polydot(degree = param$degree,
+                                                            scale = param$scale,
+                                                            offset = 1), ...)         
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {  
                     out <- predict(modelFit, as.matrix(newdata))

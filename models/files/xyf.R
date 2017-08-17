@@ -1,7 +1,7 @@
 modelInfo <- list(label = "Self-Organizing Maps",
                   library = "kohonen",
                   check = function(pkg) {
-                    require(kohonen)
+                    requireNamespace("kohonen")
                     current <- packageDescription("kohonen")$Version
                     expected <- "3.0.0"
                     if(compareVersion(current, expected) < 0)
@@ -34,9 +34,9 @@ modelInfo <- list(label = "Self-Organizing Maps",
                     layer_wts <- layer_wts/sum(layer_wts)
                     if(is.numeric(y))
                       y <- as.matrix(y, ncol = 1)
-                    supersom(list(X = as.matrix(x), Y = y),
+                    kohonen::supersom(list(X = as.matrix(x), Y = y),
                              user.weights = layer_wts,
-                             grid = somgrid(param$xdim, param$ydim, as.character(param$topo)),
+                             grid = kohonen::somgrid(param$xdim, param$ydim, as.character(param$topo)),
                              ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {

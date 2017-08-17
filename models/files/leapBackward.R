@@ -24,7 +24,7 @@ modelInfo <- list(label = "Linear Regression with Backwards Selection",
                     if(any(names(theDots) == "method")) stop("'method' should not be specified")
                     if(any(names(theDots) == "nvmax")) stop("'nvmax' should not be specified")
 
-                    regsubsets(as.matrix(x), y,
+                    leaps::regsubsets(as.matrix(x), y,
                                weights = if(!is.null(wts)) wts else rep(1, length(y)),
                                nbest = 1, nvmax = param$nvmax, method = "backward", ...)
                     },

@@ -16,21 +16,21 @@ modelInfo <- list(label = "Random Forest",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    if(!is.data.frame(x)) x <- as.data.frame(x)
+                    if((!is.data.frame(x))||is.tbl(x)) x <- as.data.frame(x)
                     x$.outcome <- y
                     if(!is.null(wts)) {
-                      out <- ranger(dependent.variable.name = ".outcome", data = x, mtry = param$mtry, write.forest = TRUE,
-                                    probability = classProbs, case.weights = wts, ...)
+                      out <- ranger::ranger(dependent.variable.name = ".outcome", data = x, mtry = param$mtry, write.forest = TRUE,
+                                            probability = classProbs, case.weights = wts, ...)
                     } else {
-                      out <- ranger(dependent.variable.name = ".outcome", data = x, mtry = param$mtry, write.forest = TRUE,
-                                    probability = classProbs, ...)
+                      out <- ranger::ranger(dependent.variable.name = ".outcome", data = x, mtry = param$mtry, write.forest = TRUE,
+                                            probability = classProbs, ...)
                     }
                     ## in case the resampling method is "oob"
                     if(!last) out$y <- y
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if((!is.data.frame(newdata))||is.tbl(newdata)) newdata <- as.data.frame(newdata)
                     out <- predict(modelFit, newdata)$predictions
                     if(!is.null(modelFit$obsLevels) & modelFit$treetype == "Probability estimation") {
                       out <- colnames(out)[apply(out, 1, which.max)]

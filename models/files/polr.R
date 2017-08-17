@@ -34,8 +34,8 @@ modelInfo <- list(
       modelArgs$weights <- wts
     
     ## Fit model
-    ans <- do.call("polr", modelArgs)
-    
+    ans <- do.call(MASS::polr, modelArgs)
+
     ## Strip out the call to avoid unnecessary data repetition
     ans$call <- NULL
     

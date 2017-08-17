@@ -16,16 +16,16 @@ modelInfo <- list(label = "Support Vector Machines with Linear Kernel",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(any(names(list(...)) == "probability") | is.numeric(y))
                     {
-                      out <- svm(x = as.matrix(x), y = y,
-                                 kernel = "linear",
-                                 cost = param$cost,
-                                 ...)
+                      out <- e1071::svm(x = as.matrix(x), y = y,
+                                        kernel = "linear",
+                                        cost = param$cost,
+                                        ...)
                     } else {
-                      out <- svm(x = as.matrix(x), y = y,
-                                 kernel = "linear",
-                                 cost = param$cost,
-                                 probability = classProbs,
-                                 ...)
+                      out <- e1071::svm(x = as.matrix(x), y = y,
+                                        kernel = "linear",
+                                        cost = param$cost,
+                                        probability = classProbs,
+                                        ...)
                     }
 
                     out

@@ -13,9 +13,9 @@ modelInfo <- list(label = "Generalized Partial Least Squares",
                     }
                     out
                     },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    gpls(x, y, K.prov = param$K.prov, ...),
-                  predict = function(modelFit, newdata, submodels = NULL) 
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...)
+                    gpls::gpls(x, y, K.prov = param$K.prov, ...),
+                  predict = function(modelFit, newdata, submodels = NULL)
                     predict(modelFit, newdata)$class,
                   prob = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, newdata)$predicted

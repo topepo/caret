@@ -1,7 +1,7 @@
 modelInfo <- list(label = "Penalized Ordinal Regression",
                   library = c("ordinalNet", "plyr"),
                   check = function(pkg) {
-                    require(ordinalNet)
+                    requireNamespace("ordinalNet")
                     current <- packageDescription("ordinalNet")$Version
                     expected <- "2.0"
                     if(compareVersion(current, expected) < 0)
@@ -27,9 +27,9 @@ modelInfo <- list(label = "Penalized Ordinal Regression",
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.matrix(x)) x <- as.matrix(x)
-                    out <- ordinalNet(x = x, y = y, alpha = param$alpha,
-                                      link = as.character(param$link),
-                                      ...)
+                    out <- ordinalNet::ordinalNet(x = x, y = y, alpha = param$alpha,
+                                                 link = as.character(param$link),
+                                                 ...)
                     out$.criteria <- as.character(param$criteria)
                     out
                   },

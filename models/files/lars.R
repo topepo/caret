@@ -18,8 +18,8 @@ modelInfo <- list(label = "Least Angle Regression",
                     submodels <- list(grid[-1,,drop = FALSE])     
                     list(loop = loop, submodels = submodels)
                   },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    lars(as.matrix(x), y, ...),
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...)
+                    lars::lars(as.matrix(x), y, ...),
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit,
                                    as.matrix(newdata),

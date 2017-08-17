@@ -32,8 +32,8 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                     theDots <- list(...)
                     if(!any(names(theDots) == "family")) modelArgs$family <- dist
                     modelArgs <- c(modelArgs, theDots)
-                    
-                    out <- do.call(getFromNamespace("gam", "mgcv"), modelArgs)
+
+                    out <- do.call(mgcv::gam, modelArgs)
                     out
                     
                   },

@@ -5,8 +5,7 @@ modelInfo <- list(label = "Support Vector Machines with Class Weights",
                                           class = c("numeric", "numeric", "numeric"),
                                           label = c('Sigma', "Cost", "Weight")),
                   grid = function(x, y, len = NULL, search = "grid") {
-                    library(kernlab)
-                    sigmas <- sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)  
+                    sigmas <- kernlab::sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)
                     if(search == "grid") {
                       out <- expand.grid(sigma = mean(as.vector(sigmas[-2])),
                                          C = 2 ^((1:len) - 3),
@@ -27,19 +26,19 @@ modelInfo <- list(label = "Support Vector Machines with Class Weights",
                     } else wts <- NULL
                     
                     if(any(names(list(...)) == "prob.model") | is.numeric(y)) {
-                      out <- ksvm(x = as.matrix(x), y = y,
-                                  kernel = rbfdot,
-                                  kpar = list(sigma = param$sigma),
-                                  class.weights = wts,
-                                  C = param$C, ...)
+                      out <- kernlab::ksvm(x = as.matrix(x), y = y,
+                                           kernel = kernlab::rbfdot(),
+                                           kpar = list(sigma = param$sigma),
+                                           class.weights = wts,
+                                           C = param$C, ...)
                     } else {
-                      out <- ksvm(x = as.matrix(x), y = y,
-                                  kernel = rbfdot,
-                                  kpar = list(sigma = param$sigma),
-                                  class.weights = wts,
-                                  C = param$C,
-                                  prob.model = classProbs,
-                                  ...)
+                      out <- kernlab::ksvm(x = as.matrix(x), y = y,
+                                           kernel = kernlab::rbfdot(),
+                                          kpar = list(sigma = param$sigma),
+                                          class.weights = wts,
+                                          C = param$C,
+                                          prob.model = classProbs,
+                                          ...)
                     }
                     out            
                   },
@@ -59,11 +58,11 @@ modelInfo <- list(label = "Support Vector Machines with Class Weights",
                         out[out < 0] <- 0
                         out <- t(apply(out, 1, function(x) x/sum(x)))
                       }
-                      out <- out[, lev(modelFit), drop = FALSE]
+                      out <- out[, kernlab::lev(modelFit), drop = FALSE]
                     } else {
                       warning("kernlab class probability calculations failed; returning NAs")
-                      out <- matrix(NA, nrow(newdata) * length(lev(modelFit)), ncol = length(lev(modelFit)))
-                      colnames(out) <- lev(modelFit)
+                      out <- matrix(NA, nrow(newdata) * length(kernlab::lev(modelFit)), ncol = length(kernlab::lev(modelFit)))
+                      colnames(out) <- kernlab::lev(modelFit)
                     }
                     out
                   },
@@ -78,5 +77,5 @@ modelInfo <- list(label = "Support Vector Machines with Class Weights",
                     out
                   },
                   tags = c("Kernel Method", "Support Vector Machines", "Radial Basis Function", "Cost Sensitive Learning", "Two Class Only"),
-                  levels = function(x) lev(x),
+                  levels = function(x) kernlab::lev(x),
                   sort = function(x) x[order(x$C, -x$sigma, x$Weight),])

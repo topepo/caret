@@ -31,8 +31,8 @@ modelInfo <- list(label = "Ridge Regression with Variable Selection",
                     }  
                     list(loop = loop, submodels = submodels)
                   },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    foba(as.matrix(x), y, lambda = param$lambda, ...),
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...)
+                    foba::foba(as.matrix(x), y, lambda = param$lambda, ...),
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, newdata, k = modelFit$tuneValue$k, type = "fit")$fit
                     
@@ -51,8 +51,7 @@ modelInfo <- list(label = "Ridge Regression with Variable Selection",
                     if(is.null(k)) {
                       if(!is.null(x$tuneValue)) k <- x$tuneValue$k[1]  else stop("Please specify k")
                     }
-                    library(foba)
-                    names(predict(x, k = k, type = "coefficients")$selected.variables)                    
+                    names(predict(x, k = k, type = "coefficients")$selected.variables)
                   },
                   tags = c("Linear Regression", "Ridge Regression", 
                            "L2 Regularization", "Feature Selection Wrapper"),

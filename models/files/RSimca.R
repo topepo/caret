@@ -9,7 +9,7 @@ modelInfo <- list(label = "Robust SIMCA",
                     data.frame(parameter = "none")
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    RSimca(x, y, ...),
+                    rrcovHD::RSimca(x, y, ...),
                   predict = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit, newdata)@classification,
                   prob = NULL,

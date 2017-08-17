@@ -13,8 +13,8 @@ modelInfo <- list(label = "Boosted Smoothing Spline",
                     }
                     out
                   },
-                  loop = function(grid) {   
-                    loop <- ddply(grid, .(nu), function(x) c(mstop = max(x$mstop)))
+                  loop = function(grid) {
+                    loop <- plyr::ddply(grid, plyr::`.`(nu), function(x) c(mstop = max(x$mstop)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$mstop))
                     {
@@ -37,13 +37,13 @@ modelInfo <- list(label = "Boosted Smoothing Spline",
                       theDots$ctrl$mstop <- param$mstop
                       theDots$ctrl$nu <- param$nu
                     } else {
-                      theDots$ctrl <- bst_control(mstop = param$mstop, nu = param$nu)
+                      theDots$ctrl <- bst::bst_control(mstop = param$mstop, nu = param$nu)
                     }
                     
                     modArgs <- list(x = x, y = y, family = modDist, learner = "sm")
                     modArgs <- c(modArgs, theDots)
                     
-                    out <- do.call("bst", modArgs)
+                    out <- do.call(bst::bst, modArgs)
                     out$call <- quote(redacted)
                     out
                   },

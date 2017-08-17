@@ -20,7 +20,7 @@ modelInfo <- list(label = "Bayesian Generalized Linear Model",
                                         data = dat),
                                    theDots)
 
-                    out <- do.call("bayesglm", modelArgs)
+                    out <- do.call(arm::bayesglm, modelArgs)
                     out$call <- NULL
                     out
                   },

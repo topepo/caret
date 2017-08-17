@@ -1,7 +1,7 @@
 modelInfo <- list(label = "Cost-Sensitive C5.0",
                   library = c("C50", "plyr"),
                   loop = function(grid) {     
-                    loop <- ddply(grid, c("model", "winnow", "cost"),
+                    loop <- plyr::ddply(grid, c("model", "winnow", "cost"),
                                   function(x) c(trials = max(x$trials)))                 
                     
                     submodels <- vector(mode = "list", length = nrow(loop))
@@ -42,7 +42,7 @@ modelInfo <- list(label = "Cost-Sensitive C5.0",
                     if(any(names(theDots) == "control"))
                     {                           
                       theDots$control$winnow <- param$winnow
-                    } else theDots$control <- C5.0Control(winnow = param$winnow)
+                    } else theDots$control <- C50::C5.0Control(winnow = param$winnow)
                     
                     argList <- list(x = x, y = y, weights = wts, trials = param$trials,
                                     rules = param$model == "rules")
@@ -55,7 +55,7 @@ modelInfo <- list(label = "Cost-Sensitive C5.0",
                     } else argList$costs <- cmat
                     
                     argList <- c(argList, theDots)
-                    do.call("C5.0.default", argList)
+                    do.call(C50::C5.0.default, argList)
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, newdata)
@@ -73,7 +73,7 @@ modelInfo <- list(label = "Cost-Sensitive C5.0",
                   },
                   prob = NULL,
                   predictors = function(x, ...) {
-                    vars <- C5imp(x, metric = "splits")
+                    vars <- C50::C5imp(x, metric = "splits")
                     rownames(vars)[vars$Overall > 0]
                   },
                   levels = function(x) x$obsLevels,

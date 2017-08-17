@@ -17,7 +17,7 @@ modelInfo <- list(label = "Model Rules",
                       ctl <- theDots$control
                       theDots$control <- NULL
                       
-                    } else ctl <- Weka_control(N = ifelse(param$pruned == "No", TRUE, FALSE),
+                    } else ctl <- RWeka::Weka_control(N = ifelse(param$pruned == "No", TRUE, FALSE),
                                                U = ifelse(param$smoothed == "No", TRUE, FALSE)) 
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
@@ -26,7 +26,7 @@ modelInfo <- list(label = "Model Rules",
                     modelArgs$data <- if(is.data.frame(x)) x else as.data.frame(x)
                     modelArgs$data$.outcome <- y
                     
-                    out <- do.call("M5Rules", modelArgs) 
+                    out <- do.call(RWeka::M5Rules, modelArgs) 
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {

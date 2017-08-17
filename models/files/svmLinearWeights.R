@@ -19,12 +19,12 @@ modelInfo <- list(label = "Linear Support Vector Machines with Class Weights",
                       stop("Currently implemented for 2-class problems")
                     cwts <- c(1, param$weight)
                     names(cwts) <- levels(y)
-                    out <- svm(x = as.matrix(x), y = y,
-                               kernel = "linear",
-                               cost = param$cost,
-                               probability = classProbs,
-                               class.weights = cwts,
-                               ...)
+                    out <- e1071::svm(x = as.matrix(x), y = y,
+                                      kernel = "linear",
+                                      cost = param$cost,
+                                      probability = classProbs,
+                                      class.weights = cwts,
+                                      ...)
 
                     out
                   },

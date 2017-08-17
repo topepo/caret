@@ -23,10 +23,10 @@ modelInfo <- list(label = "Learning Vector Quantization",
                     out
                   }, 
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    lvq3(x, y, lvqinit(x, y, size = param$size, k = min(param$k, nrow(x)-length(levels(y)))), ...)
+                    class::lvq3(x, y, class::lvqinit(x, y, size = param$size, k = min(param$k, nrow(x)-length(levels(y)))), ...)
                     },
-                  predict = function(modelFit, newdata, submodels = NULL) 
-                    lvqtest(modelFit , newdata),
+                  predict = function(modelFit, newdata, submodels = NULL)
+                    class::lvqtest(modelFit , newdata),
                   levels = function(x) x$obsLevels,
                   prob = NULL,
                   tags = "Prototype Models",

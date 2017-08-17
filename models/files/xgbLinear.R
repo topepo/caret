@@ -3,7 +3,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                   type = c("Regression", "Classification"),
                   parameters = data.frame(parameter = c('nrounds', 'lambda', 'alpha', 'eta'),
                                           class = rep("numeric", 4),
-                                          label = c('# Boosting Iterations', 'L2 Regularization', 
+                                          label = c('# Boosting Iterations', 'L2 Regularization',
                                                     'L1 Regularization', 'Learning Rate')),
                   grid = function(x, y, len = NULL, search = "grid")  {
                     if(search == "grid") {
@@ -22,78 +22,78 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     if(!inherits(x, "xgb.DMatrix"))
-                      x <- as.matrix(x)
+                     x <- as.matrix(x)
                     
                     if(is.factor(y)) {
                       if(length(lev) == 2) {
                         y <- ifelse(y == lev[1], 1, 0) 
                         
                         if(!inherits(x, "xgb.DMatrix"))
-                          x <- xgb.DMatrix(x, label = y, missing = NA) else
+                          x <- xgboost::xgb.DMatrix(x, label = y, missing = NA) else
                             setinfo(x, "label", y)
                         
                         if (!is.null(wts))
                           setinfo(x, 'weight', wts)
                         
                         
-                        out <- xgb.train(list(lambda = param$lambda, 
-                                              alpha = param$alpha), 
-                                         data = x,
-                                         nrounds = param$nrounds,
-                                         objective = "binary:logistic",
-                                         ...)
+                        out <- xgboost::xgb.train(list(lambda = param$lambda, 
+                                                       alpha = param$alpha), 
+                                                  data = x,
+                                                  nrounds = param$nrounds,
+                                                  objective = "binary:logistic",
+                                                  ...)
                       } else {
                         y <- as.numeric(y) - 1
-                        
+
                         if(!inherits(x, "xgb.DMatrix"))
-                          x <- xgb.DMatrix(x, label = y, missing = NA) else
+                          x <- xgboost::xgb.DMatrix(x, label = y, missing = NA) else
                             setinfo(x, "label", y)
                         
                         if (!is.null(wts))
                           setinfo(x, 'weight', wts)
                         
-                        out <- xgb.train(list(lambda = param$lambda, 
-                                              alpha = param$alpha), 
-                                         data = x,
-                                         num_class = length(lev),
-                                         nrounds = param$nrounds,
-                                         objective = "multi:softprob",
-                                         ...)
-                      }     
+                        out <- xgboost::xgb.train(list(lambda = param$lambda, 
+                                                       alpha = param$alpha), 
+                                                  data = x,
+                                                  num_class = length(lev),
+                                                  nrounds = param$nrounds,
+                                                  objective = "multi:softprob",
+                                                  ...)
+                      }
                     } else {
                       if(!inherits(x, "xgb.DMatrix"))
-                        x <- xgb.DMatrix(x, label = y, missing = NA) else
+                        x <- xgboost::xgb.DMatrix(x, label = y, missing = NA) else
                           setinfo(x, "label", y)
                       
                       if (!is.null(wts))
                         setinfo(x, 'weight', wts)
                       
-                      out <- xgb.train(list(lambda = param$lambda, 
-                                            alpha = param$alpha), 
-                                       data = x,
-                                       nrounds = param$nrounds,
-                                       objective = "reg:linear",
-                                       ...)
+                      out <- xgboost::xgb.train(list(lambda = param$lambda, 
+                                                     alpha = param$alpha), 
+                                                data = x,
+                                                nrounds = param$nrounds,
+                                                objective = "reg:linear",
+                                                ...)
                     }
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!inherits(newdata, "xgb.DMatrix")) {
                       newdata <- as.matrix(newdata)
-                      newdata <- xgb.DMatrix(data=newdata, missing = NA)
+                      newdata <- xgboost::xgb.DMatrix(data=newdata, missing = NA)
                     }
                     out <- predict(modelFit, newdata)
                     if(modelFit$problemType == "Classification") {
                       if(length(modelFit$obsLevels) == 2) {
-                        out <- ifelse(out >= .5, 
-                                      modelFit$obsLevels[1], 
+                        out <- ifelse(out >= .5,
+                                      modelFit$obsLevels[1],
                                       modelFit$obsLevels[2])
                       } else {
                         out <- matrix(out, ncol = length(modelFit$obsLevels), byrow = TRUE)
                         out <- modelFit$obsLevels[apply(out, 1, which.max)]
                       }
                     }
-                    out  
+                    out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(!inherits(newdata, "xgb.DMatrix")) {
@@ -111,11 +111,11 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     as.data.frame(out)
                   },
                   predictors = function(x, ...) {
-                    imp <- xgb.importance(x$xNames, model = x)
+                    imp <- xgboost::xgb.importance(x$xNames, model = x)
                     x$xNames[x$xNames %in% imp$Feature]
                   },
                   varImp = function(object, numTrees = NULL, ...) {
-                    imp <- xgb.importance(object$xNames, model = object)
+                    imp <- xgboost::xgb.importance(object$xNames, model = object)
                     imp <- as.data.frame(imp)[, 1:2]
                     rownames(imp) <- as.character(imp[,1])
                     imp <- imp[,2,drop = FALSE]
@@ -126,10 +126,10 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     rownames(missing_imp) <- missing
                     imp <- rbind(imp, missing_imp)
 
-                    imp   
+                    imp
                   },
                   levels = function(x) x$obsLevels,
-                  tags = c("Linear Classifier Models", 
+                  tags = c("Linear Classifier Models",
                            "Linear Regression Models",
                            "L1 Regularization Models",
                            "L2 Regularization Models",
@@ -137,5 +137,5 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                   sort = function(x) {
                     # This is a toss-up, but the # trees probably adds
                     # complexity faster than number of splits
-                    x[order(x$nrounds, x$alpha, x$lambda),] 
+                    x[order(x$nrounds, x$alpha, x$lambda),]
                   })

@@ -22,13 +22,13 @@ modelInfo <- list(label = "Distance Weighted Discrimination with Radial Basis Fu
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.matrix(x)) x <- as.matrix(x)
-                    kobj <- rbfdot(sigma = param$sigma)
-                    out <- kerndwd(x = x,
-                                   y = ifelse(y == lev[1], 1, -1),
-                                   qval = param$qval,
-                                   lambda = param$lambda,
-                                   kern = kobj,
-                                   ...)
+                    kobj <- kernlab::rbfdot(sigma = param$sigma)
+                    out <- kerndwd::kerndwd(x = x,
+                                            y = ifelse(y == lev[1], 1, -1),
+                                            qval = param$qval,
+                                            lambda = param$lambda,
+                                            kern = kobj,
+                                            ...)
                     out$kern <- kobj
                     out$x <- x
                     out

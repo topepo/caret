@@ -33,7 +33,7 @@ modelInfo <- list(label = "Rotation Forest",
                       stop("rotationForest is only implemented for binary classification")
                     y <- ifelse(y == lev[1], 1, 0)
                     if(!is.data.frame(x)) x <- as.data.frame(x)
-                    rotationForest(x, y, K = param$K, L = param$L, ...)
+                    rotationForest::rotationForest(x, y, K = param$K, L = param$L, ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
