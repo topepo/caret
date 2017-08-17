@@ -72,6 +72,8 @@ if(
 )
   stop("CV weights not giving the same results")
 
+test_reg_imp_rec <- varImp(test_reg_rec)
+
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 
