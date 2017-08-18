@@ -7,7 +7,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient 
                                           class = rep('numeric', 8),
                                           label = c('#Hidden Units', 'L2 Regularization', 
                                                     'RMSE Gradient Scaling', "Learning Rate", 
-                                                    "Momentum", "Decay", "Batch Size",
+                                                    "Momentum", "Learning Rate Decay", "Batch Size",
                                                     "#Models")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
@@ -16,7 +16,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient 
                                          lambda = 0,
                                          learn_rate = 2e-6, 
                                          momentum = 0.9, 
-                                         gamma = 10 ^ seq(-3, -1, length = len - 1),
+                                         gamma = seq(0, .9, length = len),
                                          minibatchsz = floor(nrow(x)/3),
                                          repeats = 1)
                     } else {
@@ -25,7 +25,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient 
                                         lambda = runif(len, max = .4),
                                         learn_rate = runif(len),
                                         momentum = runif(len, min = .5),
-                                        gamma = 10^runif(len, min = -3, 1),
+                                        gamma = runif(len),
                                         minibatchsz = sample(1:(floor(100*2/3)+ 1), 
                                                              replace = TRUE, size = len),
                                         repeats = sample(1:10, replace = TRUE, size = len))
