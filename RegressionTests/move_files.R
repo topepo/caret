@@ -54,7 +54,6 @@ frbs <- paste0(frbs, ".RData")
 
 rFiles <- basename(testFiles)
 
-set.seed(131311)
 rFiles <- sample(rFiles)
 
 file_label <- gsub(".R$", "", rFiles)
