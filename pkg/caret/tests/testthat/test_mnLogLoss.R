@@ -25,4 +25,28 @@ test_that("Multiclass logloss returns expected values", {
 
 })
 
+# Issue #637
 
+classes.b <- c("A", "B")
+
+test_dat1.b <- data.frame(obs  = c("A", "A", "A", "B", "B"),
+                          pred = c("A", "A", "A", "B", "B"),
+                          A = c(1, .80, .51, .1, .2),
+                          B = c(0, .20, .49, .9, .8))
+
+test_that("Twoclass logloss returns expected values", {
+  result1 <- mnLogLoss(test_dat1.b, classes.b)
+
+  test_dat2.b <- test_dat1.b
+  test_dat2.b$A[1] <- NA
+  result2 <- mnLogLoss(test_dat2.b, classes.b)
+
+  test_dat3.b <- test_dat1.b
+  test_dat3.b <- test_dat3.b[, rev(1:4)]
+  result3 <- mnLogLoss(test_dat3.b, classes.b)
+
+  expect_equal(result1, c(logLoss = 0.244998), tolerance = .000001)
+  expect_equal(result2, c(logLoss = 0.306248), tolerance = .000001)
+  expect_equal(result3, c(logLoss = 0.244998), tolerance = .000001)
+
+})
