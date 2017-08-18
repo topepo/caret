@@ -3,30 +3,35 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+
 \section{Changes in version 6.0-77}{
   \itemize{
-    \item A new method was added for \code{train} so that \code{recipes} can be used to specify the model terms and preprocessing. Alexis Sardá provided a great deal of help converting the bootstrap optimism code to the new workflows. A new chapter was added to the package website related to recipes. 
-    \item MAE is added as output metric for regression tasks through \code{postResample} and \code{defaultSummary}. The function is now exposed to the users.
-    \item A bug in classification models with all missing predictions was fixed (found by andzandz11). \issue{684}
+    \item A new method was added for \code{train} so that \cpkg{recipes} can be used to specify the model terms and preprocessing. Alexis Sardá provided a great deal of help converting the bootstrap optimism code to the new workflows. A new chapter was added to the package website related to recipes. 
+    \item The Yeo-Johnson transformation parameter estimation code was rewritten and not longer requires the \code{car} package. 
+    \item The leave-one-out cross-validation workflow for \code{train} has been harmonized with the other resampling methods in terms of fault tolerance and prediction trimming. 
+    \item \code{train} now uses different random numbers to make resamples. Previously, setting the seed prior to calling \code{train} should result in getting the same resamples. However, if \code{train} loaded or imported a namespace from another package, and that startup process used random numbers, it could lead to different random numbers being used. See \issue{452} for details. Now, \code{train} gets a separate (and more reproducible) seed that will be used to generate the resamples. However, this may effect random number reproducibility between this version and previous versions. Otherwise, this change should increase the reproducibility of results. 
+    \item Erwan Le Pennec conducted the herculean task of modifying all of the model code to call by namespace (instead of fully loading each required package). This should reduce naming conflicts \issue{701}.  
+    \item hadjipantelis added MAE as output metric for regression tasks through \code{postResample} and \code{defaultSummary}. The function is now exposed to the users. \issue{657}.
+    \item The package website code was updated to use version 4 of the D3 JS library and now uses \cpkg{heatmaply} to make the interactive heatmap. 
+    \item Added a \code{ggplot} method for lift objects (and fixed a bug in the \code{lattice} version of the code) for \issue{656}.
     \item The model code for \code{ordinalNet} was updated for recent changes to that package. 
     \item \code{oblique.tree}  was removed from the model library. 
     \item The default gird generation for rotation forest models now provides better values of \code{K}.
-    \item The Yeo-Johnson transformation parameter estimation code was rewritten and not longer requires the \code{car} package. 
-    \item The leave-one-out cross-validation workflow for \code{train} has been harmonized with the other resampling methods in terms of fault tolerance and prediction trimming. 
-    \item A bug was fixed in Self-Organizing Maps via \code{xyf} for regression models. 
     \item The parameter ranges for \code{AdaBag} and \code{AdaBoost.M1} were changed; the number of iterations in the default grids have been lowered. 
-    \item A bug was fixed in \code{rpartCost} related to how the tuning parameter grid was processed. 
-    \item \code{train} now uses different random numbers to make resamples. Previously, setting the seed prior to calling \code{train} should result in getting the same resamples. However, if \code{train} loaded or imported a namespace from another package, and that startup process used random numbers, it could lead to different random numbers being used. See \issue{452} for details. Now, \code{train} gets a separate (and more reproducible) seed that will be used to generate the resamples. However, this may effect random number reproducibility between this version and previous versions. Otherwise, this change should increase the reproducibility of results. 
-    \item The package website code was updated to use version 4 of the D3 JS library and now uses \cpkg{heatmaply} to make the interactive heatmap. 
     \item Switched to non-formula interface in ranger.
     \item A simple "null model" was added. For classification, it predictors using the most prevalent level and, for regression, fits an intercept only model. \issue{694}
-    \item A bug preventing preprocessing to work properly when the preprocessing transformations are related to individual columns only fixed by Mateusz Kobos in \issue{679}.
-    \item Added a \code{ggplot} method for lift objects (and fixed a bug in the \code{lattice} version of the code) for \issue{656}.
-    \item A prediction bug in \code{glm.nb} that was found by jpclemens0 was fixed \issue{688}.
     \item A function \code{thresholder} was added to analyze the resample results for two class problems to choose an appropriate probability cutoff a la \url{https://topepo.github.io/caret/using-your-own-model-in-train.html#Illustration5} \issue{224}. 
     \item Two neural network models (containing a single hidden layers) using \code{tensorflow}/\code{keras} were added.  \code{mlpKerasDecay} uses standard weight decay while \code{mlpKerasDropout} uses dropout for regularization. Both use RMSProp optimizer and have a lot of tuning parameters. Two additional models, \code{mlpKerasDecayCost} and \code{mlpKerasDropoutCost}, are classification only and perform cost-sensitive learning. Note that these models will not run in parallel using \cpkg{caret}'s parallelism and also will not give reproducible results from run-to-run (see \url{https://github.com/rstudio/keras/issues/42}). 
+    \item The range for one parameter (\code{gamma}) was modified in the \code{mlpSGD} model code.
+    \item A bug in classification models with all missing predictions was fixed (found by andzandz11). \issue{684}
+    \item A bug preventing preprocessing to work properly when the preprocessing transformations are related to individual columns only fixed by Mateusz Kobos in \issue{679}.
+    \item A prediction bug in \code{glm.nb} that was found by jpclemens0 was fixed \issue{688}.
+    \item A bug was fixed in Self-Organizing Maps via \code{xyf} for regression models. 
+    \item A bug was fixed in \code{rpartCost} related to how the tuning parameter grid was processed. 
+    \item A bug in negative-binomial GLM models (found by jpclemens0)  was fixed \issue{688}.
   }
 } 
+
 
 \section{Changes in version 6.0-76}{
 	\itemize{
