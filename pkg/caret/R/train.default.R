@@ -861,12 +861,6 @@ train.default <- function(x, y,
     }
   } else outData <- NULL
 
-  ## In the case of pam, the data will need to be saved differently
-  if(trControl$returnData & method == "pam") {
-    finalModel$xData <- x
-    finalModel$yData <- y
-  }
-
   if(trControl$savePredictions == "final")
     tmp$predictions <- merge(bestTune, tmp$predictions)
 
