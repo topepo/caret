@@ -171,12 +171,7 @@ mnLogLoss <- function(data, lev = NULL, model = NULL){
   dataComplete <- data[complete.cases(data),]
   probs <- as.matrix(dataComplete[, lev, drop = FALSE])
 
-  inds <- match(dataComplete$obs, colnames(probs))
-  if(nlevels(dataComplete$obs) == 2){
-    logLoss <- ModelMetrics::logLoss(dataComplete$obs == lev[2], probs[, lev[2]])
-  } else {
-    logLoss <- ModelMetrics::mlogLoss(dataComplete$obs, probs)
-  }
+  logLoss <- ModelMetrics::mlogLoss(dataComplete$obs, probs)
   c(logLoss = logLoss)
 }
 
