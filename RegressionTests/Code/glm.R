@@ -96,7 +96,7 @@ test_class_loo_weight <- train(trainX, trainY,
                                preProc = c("center", "scale"))
 
 set.seed(849)
-test_class_rec <- train(recipe = rec_cls,
+test_class_rec <- train(x = rec_cls,
                         data = training,
                         method = "glm", 
                         trControl = cctrl1,
@@ -230,7 +230,7 @@ test_reg_loo_weight <- train(trainX, trainY,
                              preProc = c("center", "scale"))
 
 set.seed(849)
-test_reg_rec <- train(recipe = rec_reg,
+test_reg_rec <- train(x = rec_reg,
                       data = training,
                       method = "glm", 
                       trControl = rctrl1)

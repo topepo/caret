@@ -69,7 +69,7 @@ set.seed(849)
 test_reg_loo_weights <- train(trainX, trainY, weights = runif(nrow(trainX)), method = "lm", trControl = rctrl5)
 
 set.seed(849)
-test_reg_rec <- train(recipe = rec_reg,
+test_reg_rec <- train(x = rec_reg,
                       data = training,
                       method = "lm", 
                       trControl = rctrl1)

@@ -78,7 +78,7 @@ test_class_none_model <- train(trainX, trainY,
 test_class_none_pred <- predict(test_class_none_model, testX)
 
 set.seed(849)
-test_class_rec <- train(recipe = rec_cls,
+test_class_rec <- train(x = rec_cls,
                         data = training,
                         method = "glmnet", 
                         trControl = cctrl1,

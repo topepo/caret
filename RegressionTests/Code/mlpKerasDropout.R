@@ -91,7 +91,7 @@ test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)]
 test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
 
 set.seed(849)
-test_class_rec <- train(recipe = rec_cls,
+test_class_rec <- train(x = rec_cls,
                         data = training,
                         method = "mlpKerasDropout", 
                         trControl = cctrl1,
@@ -190,7 +190,7 @@ test_reg_cv_matrix <- train(y ~ .,
 test_reg_pred_matrix <- predict(test_reg_cv_matrix, testing_mat)
 
 set.seed(849)
-test_reg_rec <- train(recipe = rec_reg,
+test_reg_rec <- train(x = rec_reg,
                       data = training,
                       method = "mlpKerasDropout",
                       tuneLength = 2, 

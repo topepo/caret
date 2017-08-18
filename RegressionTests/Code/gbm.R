@@ -137,7 +137,7 @@ test_class_adapt_model <- train(trainX, trainY,
                                 verbose = FALSE)
 
 set.seed(849)
-test_class_rec <- train(recipe = rec_cls,
+test_class_rec <- train(x = rec_cls,
                         data = training,
                         method = "gbm", 
                         trControl = cctrl1,
@@ -150,7 +150,7 @@ test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)],
                                type = "prob")
 
 set.seed(849)
-test_class_b632_rec_model <- train(recipe = rec_cls,
+test_class_b632_rec_model <- train(x = rec_cls,
                                    data = training, 
                                    method = "gbm", 
                                    trControl = cctrlB632,
@@ -161,7 +161,7 @@ if(!isTRUE(all.equal(test_class_b632_rec_model$results,
   stop("x/y and recipe interface have different results for B632")
 
 set.seed(849)
-test_class_bopt_rec_model <- train(recipe = rec_cls,
+test_class_bopt_rec_model <- train(x = rec_cls,
                                    data = training, 
                                    method = "gbm", 
                                    trControl = cctrlBopt,
@@ -251,7 +251,7 @@ test_reg_none_model <- train(trainX, trainY,
 test_reg_none_pred <- predict(test_reg_none_model, testX)
 
 set.seed(849)
-test_reg_rec <- train(recipe = rec_reg,
+test_reg_rec <- train(x = rec_reg,
                       data = training,
                       method = "gbm", 
                       trControl = rctrl1,

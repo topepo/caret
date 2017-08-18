@@ -87,7 +87,7 @@ test_class_none_model <- train(trainX, trainY,
 test_class_none_pred <- predict(test_class_none_model, testX)
 
 set.seed(849)
-test_class_rec <- train(recipe = rec_cls,
+test_class_rec <- train(x = rec_cls,
                         data = training,
                         method = "glmnet_h2o", 
                         trControl = cctrl1,
@@ -150,7 +150,7 @@ test_reg_none_model <- train(reg_dat_tr[, -ncol(reg_dat_tr)], reg_dat_tr$y,
 test_reg_none_pred <- predict(test_reg_none_model, reg_dat_te[, -ncol(reg_dat_te)])
 
 set.seed(849)
-test_reg_rec <- train(recipe = rec_reg,
+test_reg_rec <- train(x = rec_reg,
                       data = reg_dat_tr,
                       method = "glmnet_h2o", 
                       trControl = rctrl1,

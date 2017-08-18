@@ -65,7 +65,7 @@ test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)]
 test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
 
 set.seed(849)
-test_class_rec <- train(recipe = rec_cls,
+test_class_rec <- train(x = rec_cls,
                         data = training,
                         method = "svmLinearWeights", 
                         tuneGrid = expand.grid(cost = c(.25, .5, 1), weight = c(1, 5)),
