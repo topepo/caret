@@ -1,6 +1,8 @@
 options(repos = "http://cran.r-project.org")
 library(tools)
 
+fresh <- TRUE ## starting from a fresh, bare version of R
+
 ###################################################################
 ## Get Bioconductor packages
 ## try http:// if https:// URLs are not supported
@@ -25,18 +27,8 @@ if (Sys.info()["sysname"] == "Linux") {
 ## Get the names of all CRAN related packages references by caret.
 ## Exclude orphaned and Bioconductor packages for now
 
-if(fresh) {
-  if (Sys.info()["sysname"] == "Linux") {
-    install.packages(c("caret"),
-                     repos = "http://cran.r-project.org",
-                     dependencies = c("Depends", "Imports", "Suggests"))
-  } else {
-    install.packages(c("caret"),
-                     repos = "http://cran.r-project.org",
-                     type = "both",
-                     dependencies = c("Depends", "Imports", "Suggests"))
-  }
-}
+library(devtools)
+install_github("topepo/caret", subdir = "pkg/caret")
 
 library(caret)
 
@@ -81,7 +73,7 @@ if(length(diffs) > 0) print(diffs)
 
 # devtools::install_github('dmlc/xgboost',subdir='R-package')
 
-fresh <- TRUE ## starting from a fresh, bare version of R
+
 
 for(i in sort(libs)) {
   if(fresh) good <- rownames(installed.packages())
