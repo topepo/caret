@@ -1,17 +1,41 @@
 modelInfo <- list(label = "Random Forest",
                   library = c("e1071", "ranger"),
+                  check = function(pkg) {
+                    requireNamespace("ranger")
+                    current <- packageDescription("ranger")$Version
+                    expected <- "0.8.0"
+                    if(compareVersion(current, expected) < 0)
+                      stop("This modeling workflow requires ranger version ",
+                           expected, "or greater.", call. = FALSE)
+                  },
                   loop = NULL,
                   type = c("Classification", "Regression"),
-                  parameters = data.frame(parameter = "mtry",
-                                          class = "numeric",
-                                          label = "#Randomly Selected Predictors"),
+                  parameters = data.frame(parameter = c("mtry", "splitrule"),
+                                          class = c("numeric", "character"),
+                                          label = c("#Randomly Selected Predictors", 
+                                                    "Splitting Rule")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
-                      out <- data.frame(mtry = caret::var_seq(p = ncol(x),
-                                                              classification = is.factor(y),
-                                                              len = len))
+                      srule <-
+                        if (is.factor(y))
+                          "gini"
+                      else
+                        "variance"
+                      out <- expand.grid(mtry = 
+                                          caret::var_seq(p = ncol(x),
+                                                         classification = is.factor(y),
+                                                         len = len),
+                                        splitrule = c(srule, "extratrees"))
                     } else {
-                      out <- data.frame(mtry = unique(sample(1:ncol(x), size = len, replace = TRUE)))
+                      srules <- if (is.factor(y))
+                        c("gini", "extratrees")
+                      else
+                        c("variance", "extratrees", "maxstat")
+                      out <-
+                        data.frame(
+                          mtry = sample(1:ncol(x), size = len, replace = TRUE),
+                          splitrule = sample(srules, size = len, replace = TRUE)
+                        )
                     }
                     out
                   },
@@ -19,11 +43,22 @@ modelInfo <- list(label = "Random Forest",
                     if((!is.data.frame(x))||is.tbl(x)) x <- as.data.frame(x)
                     x$.outcome <- y
                     if(!is.null(wts)) {
-                      out <- ranger::ranger(dependent.variable.name = ".outcome", data = x, mtry = param$mtry, write.forest = TRUE,
-                                            probability = classProbs, case.weights = wts, ...)
+                      out <- ranger::ranger(dependent.variable.name = ".outcome", 
+                                            data = x, 
+                                            mtry = param$mtry, 
+                                            splitrule = as.character(param$splitrule),
+                                            write.forest = TRUE,
+                                            probability = classProbs, 
+                                            case.weights = wts, 
+                                            ...)
                     } else {
-                      out <- ranger::ranger(dependent.variable.name = ".outcome", data = x, mtry = param$mtry, write.forest = TRUE,
-                                            probability = classProbs, ...)
+                      out <- ranger::ranger(dependent.variable.name = ".outcome", 
+                                            data = x, 
+                                            mtry = param$mtry, 
+                                            splitrule = as.character(param$splitrule),
+                                            write.forest = TRUE,
+                                            probability = classProbs, 
+                                            ...)
                     }
                     ## in case the resampling method is "oob"
                     if(!last) out$y <- y
