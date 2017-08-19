@@ -12,6 +12,7 @@
     \item \code{train} now uses different random numbers to make resamples. Previously, setting the seed prior to calling \code{train} should result in getting the same resamples. However, if \code{train} loaded or imported a namespace from another package, and that startup process used random numbers, it could lead to different random numbers being used. See \issue{452} for details. Now, \code{train} gets a separate (and more reproducible) seed that will be used to generate the resamples. However, this may effect random number reproducibility between this version and previous versions. Otherwise, this change should increase the reproducibility of results. 
     \item Erwan Le Pennec conducted the herculean task of modifying all of the model code to call by namespace (instead of fully loading each required package). This should reduce naming conflicts \issue{701}.  
     \item hadjipantelis added MAE as output metric for regression tasks through \code{postResample} and \code{defaultSummary}. The function is now exposed to the users. \issue{657}.
+    \item More average precision/recall statistics were added to \code{multiClassSummary} \issue{697}. 
     \item The package website code was updated to use version 4 of the D3 JS library and now uses \cpkg{heatmaply} to make the interactive heatmap. 
     \item Added a \code{ggplot} method for lift objects (and fixed a bug in the \code{lattice} version of the code) for \issue{656}.
     \item The model code for \code{ordinalNet} was updated for recent changes to that package. 
