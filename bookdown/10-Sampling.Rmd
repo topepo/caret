@@ -24,7 +24,7 @@ Contents
  - [Subsampling Techniques](#methods)
  - [Subsampling During Resampling](#resampling)
  - [Complications](#complications)
- - [Using Custom Subsampling Techniques](#custom)
+ - [Using Custom Subsampling Techniques](#custom-subsamp)
 
 In classification problems, a disparity in the frequencies of the observed classes can have a significant negative impact on model fitting. One technique for resolving such a class imbalance is to subsample the training data in a manner that mitigates the issues. Examples of sampling methods for this purpose are:
 
@@ -289,7 +289,7 @@ The user should be aware that there are a few things that can happening when sub
  - If you use `tuneLength` to specify the search grid, understand that the data that is used to determine the grid has not been sampled. In most cases, this will not matter but if the grid creation process is affected by the sample size, you may end up using a sub-optimal tuning grid.
  - For some models that require more samples than parameters, a reduction in the sample size may prevent you from being able to fit the model.
 
-<div id="custom"> </div>
+<div id="custom-subsamp"> </div>
 
 ## Using Custom Subsampling Techniques
 
