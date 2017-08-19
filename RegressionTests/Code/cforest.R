@@ -92,7 +92,7 @@ test_class_none_model <- train(trainX, trainY,
                                controls = cforest_unbiased(ntree = 20))
 
 set.seed(849)
-test_class_rec <- train(recipe = rec_cls,
+test_class_rec <- train(x = rec_cls,
                         data = training,
                         method = "cforest", 
                         trControl = cctrl1,
@@ -187,7 +187,7 @@ test_reg_none_model <- train(trainX, trainY,
 test_reg_none_pred <- predict(test_reg_none_model, testX)
 
 set.seed(849)
-test_reg_rec <- train(recipe = rec_reg,
+test_reg_rec <- train(x = rec_reg,
                       data = training,
                       method = "cforest", 
                       trControl = rctrl1,

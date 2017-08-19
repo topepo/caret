@@ -88,7 +88,7 @@ test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)]
 test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
 
 set.seed(849)
-test_class_rec <- train(recipe = rec_cls,
+test_class_rec <- train(x = rec_cls,
                         data = training,
                         method = "rotationForest", 
                         trControl = cctrl1,

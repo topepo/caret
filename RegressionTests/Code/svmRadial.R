@@ -93,7 +93,7 @@ test_class_bopt_model <- train(trainX, trainY,
                                preProc = c("center", "scale"))
 
 set.seed(849)
-test_class_rec <- train(recipe = rec_cls,
+test_class_rec <- train(x = rec_cls,
                         data = training,
                         method = "svmRadial", 
                         tuneGrid = data.frame(.C = c(.25, .5, 1),
@@ -101,7 +101,7 @@ test_class_rec <- train(recipe = rec_cls,
                         trControl = cctrl1)
 
 set.seed(849)
-test_class_b632_rec_model <- train(recipe = rec_cls,
+test_class_b632_rec_model <- train(x = rec_cls,
                                    data = training,
                                    method = "svmRadial", 
                                    trControl = cctrlB632,
@@ -113,7 +113,7 @@ if(!isTRUE(all.equal(test_class_b632_rec_model$results,
 
 
 set.seed(849)
-test_class_bopt_rec_model <- train(recipe = rec_cls,
+test_class_bopt_rec_model <- train(x = rec_cls,
                                    data = training,
                                    method = "svmRadial", 
                                    trControl = cctrlBopt,
@@ -123,7 +123,7 @@ if(!isTRUE(all.equal(test_class_bopt_rec_model$results,
   stop("x/y and recipe interface have different results for B optim")
 
 # set.seed(849)
-# test_class_adapt_model <- train(recipe = rec_cls,
+# test_class_adapt_model <- train(x = rec_cls,
 #                                 data = training, 
 #                                 method = "svmRadial", 
 #                                 trControl = cctrlAdapt,
@@ -239,7 +239,7 @@ test_reg_adapt <- train(trainX, trainY,
                         preProc = c("center", "scale"))
 
 set.seed(849)
-test_reg_rec <- train(recipe = rec_reg,
+test_reg_rec <- train(x = rec_reg,
                       data = training,
                       method = "svmRadial", 
                       tuneGrid = data.frame(C = c(.25, .5, 1),

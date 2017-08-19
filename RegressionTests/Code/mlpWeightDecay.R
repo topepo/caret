@@ -76,7 +76,7 @@ test_class_none_model <- caret:::train(trainX, trainY,
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 
 set.seed(849)
-test_class_rec <- caret::train(recipe = rec_cls,
+test_class_rec <- caret::train(x = rec_cls,
                                data = training,
                                method = "mlpWeightDecay", 
                                tuneGrid = grid,
@@ -152,7 +152,7 @@ test_reg_loo_model <- caret:::train(trainX, trainY,
                                     trControl = rctrl2,
                                     preProc = c("center", "scale"))
 set.seed(849)
-test_reg_rec <- caret:::train(recipe = rec_reg,
+test_reg_rec <- caret:::train(x = rec_reg,
                               data = training,
                               method = "mlpWeightDecay", 
                               tuneGrid = grid,

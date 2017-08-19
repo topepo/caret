@@ -16,10 +16,22 @@ setwd(pkg_path)
 src <- build("~/github/caret/pkg/caret")
 file.copy(src, pkg_path)
 
-
 check_packages_in_dir(pkg_path, reverse = list())
 
 summarize_check_packages_in_dir_results(pkg_path)
+
+
+# For the future:
+if(FALSE) {
+  source("https://install-github.me/r-lib/revdepcheck")
+  library(revdepcheck)
+  library(parallel)
+  
+  setwd("../pkg/caret/")
+  
+  revdep_check(num_workers = detectCores() - 1)
+}
+
 
 if(!interactive()) q("no")
 

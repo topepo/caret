@@ -76,7 +76,7 @@ test_class_none_model <- train(trainX, trainY,
 test_class_none_pred <- predict(test_class_none_model, testX)
 
 set.seed(849)
-test_class_rec <- train(recipe = rec_cls,
+test_class_rec <- train(x = rec_cls,
                         data = training,
                         method = "msaenet", 
                         trControl = cctrl1,
@@ -148,7 +148,7 @@ test_reg_none_model <- train(reg_trainX, reg_trainY,
 test_reg_none_pred <- predict(test_reg_none_model, reg_trainX)
 
 set.seed(849)
-test_reg_rec <- train(recipe = rec_reg,
+test_reg_rec <- train(x = rec_reg,
                       data = reg_training,
                       method = "msaenet", 
                       trControl = rctrl1)

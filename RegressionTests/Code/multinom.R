@@ -114,7 +114,7 @@ test_class_loo_weight <- train(trainX, trainY,
                                trace = FALSE)
 
 set.seed(849)
-test_class_rec <- train(recipe = rec_cls,
+test_class_rec <- train(x = rec_cls,
                         data = training,
                         method = "multinom", 
                         trControl = cctrl1,
