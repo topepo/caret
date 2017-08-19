@@ -253,7 +253,7 @@ There are several other options not discussed here.
 ### Alternate Performance Metrics
 
 
-The user can change the metric used to determine the best settings. By default, RMSE and *R*^2^ are computed for regression while accuracy and Kappa are computed for classification. Also by default, the parameter values are chosen using RMSE and accuracy, respectively for regression and classification. The `metric` argument of the `train` function allows the user to control which the optimality criterion is used. For example, in problems where there are a low percentage of samples in one class, using  `metric = "Kappa"` can improve quality of the final model.
+The user can change the metric used to determine the best settings. By default, RMSE, *R*^2^, and the mean absolute error (MAE) are computed for regression while accuracy and Kappa are computed for classification. Also by default, the parameter values are chosen using RMSE and accuracy, respectively for regression and classification. The `metric` argument of the `train` function allows the user to control which the optimality criterion is used. For example, in problems where there are a low percentage of samples in one class, using  `metric = "Kappa"` can improve quality of the final model.
 
 If none of these parameters are satisfactory, the user can also compute custom performance metrics. The `trainControl` function has a argument called `summaryFunction` that specifies a function for computing performance. The function should have these arguments:
 
