@@ -123,8 +123,8 @@ checkInstall <- function(pkg){
           source("http://bioconductor.org/biocLite.R")
           biocLite(instB)
         }
-      } else stop()
-    } else stop()
+      } else stop("Required package is missing", call. = FALSE)
+    } else stop("Required package is missing", call. = FALSE)
   }
 }
 
