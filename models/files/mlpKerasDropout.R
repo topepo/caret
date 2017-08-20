@@ -18,7 +18,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Dropout",
                     if(search == "grid") {
                       out <- expand.grid(
                         size = ((1:len) * 2) - 1, 
-                        dropout = seq(0, .5, length = len), 
+                        dropout = seq(0, .7, length = len), 
                         batch_size = floor(nrow(x)/3),
                         lr = 2e-6,
                         rho = .9,
@@ -32,7 +32,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Dropout",
                         dropout = runif(len, max = .7), 
                         batch_size = floor(n*runif(len, min = .1)),
                         lr = runif(len),
-                        rho = runif(len, min = .5),
+                        rho = runif(len, min = .9),
                         decay = 10^runif(len, min = -5, 0),
                         activation = sample(
                           afuncs, 

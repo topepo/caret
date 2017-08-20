@@ -10,6 +10,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient 
                                                     "Momentum", "Learning Rate Decay", "Batch Size",
                                                     "#Models")),
                   grid = function(x, y, len = NULL, search = "grid") {
+                    n <- nrow(x)
                     if(search == "grid") {
                       out <- expand.grid(size = ((1:len) * 2) - 1, 
                                          l2reg = c(0, 10 ^ seq(-1, -4, length = len - 1)), 
@@ -26,8 +27,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient 
                                         learn_rate = runif(len),
                                         momentum = runif(len, min = .5),
                                         gamma = runif(len),
-                                        minibatchsz = sample(1:(floor(100*2/3)+ 1), 
-                                                             replace = TRUE, size = len),
+                                        minibatchsz = floor(n*runif(len, min = .1)),
                                         repeats = sample(1:10, replace = TRUE, size = len))
                     }
                     out

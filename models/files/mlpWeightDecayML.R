@@ -31,22 +31,22 @@ modelInfo <- list(label = "Multi-Layer Perceptron, multiple layers",
                       prms[2] <-  param$decay
                       warning("Over-riding weight decay value in the 'learnFuncParams' argument you passed in. Other values are retained")
                     } else prms <- c(0.2, param$decay, 0.0, 0.0)
-
+                    
                     if(is.factor(y)) {
                       y <- RSNNS:::decodeClassLabels(y)
                       lin <- FALSE
                     } else lin <- TRUE
-
+                    
                     if(param$layer1 == 0) stop("the first layer must have at least one hidden unit")
                     if(param$layer2 == 0 & param$layer2 > 0) stop("the second layer must have at least one hidden unit if a third layer is specified")
-
-
+                    
+                    
                     nodes <- c(param$layer1)
                     if(param$layer2 > 0) {
                       nodes <- c(nodes, param$layer2)
                       if(param$layer3 > 0) nodes <- c(nodes, param$layer3)
                     }
-
+                    
                     args <- list(x = x,
                                  y = y,
                                  learnFunc = "BackpropWeightDecay",

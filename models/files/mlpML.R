@@ -18,21 +18,21 @@ modelInfo <- list(label = "Multi-Layer Perceptron, with multiple layers",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     theDots <- list(...)
                     theDots <- theDots[!(names(theDots) %in% c("size", "linOut"))]
-
+                    
                     if(is.factor(y)) {
                       y <- RSNNS:::decodeClassLabels(y)
                       lin <- FALSE
                     } else lin <- TRUE
-
+                    
                     if(param$layer1 == 0) stop("the first layer must have at least one hidden unit")
                     if(param$layer2 == 0 & param$layer2 > 0) stop("the second layer must have at least one hidden unit if a third layer is specified")
-
+                    
                     nodes <- c(param$layer1)
                     if(param$layer2 > 0) {
                       nodes <- c(nodes, param$layer2)
                       if(param$layer3 > 0) nodes <- c(nodes, param$layer3)
                     }
-
+                    
                     args <- list(x = x,
                                  y = y,
                                  size = nodes,

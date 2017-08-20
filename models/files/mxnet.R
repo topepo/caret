@@ -9,14 +9,16 @@ modelInfo <- list(label = "Neural Network",
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
                       out <- expand.grid(layer1 = ((1:len) * 2) - 1, layer2 = 0, layer3 = 0,
-                                         learning.rate = 2e-6, momentum = 0.9, dropout = 0)
+                                         learning.rate = 2e-6, 
+                                         momentum = 0.9, 
+                                         dropout = seq(0, .7, length = len))
                     } else {
                       out <- data.frame(layer1 = sample(2:20, replace = TRUE, size = len),
                                         layer2 = 0,# sample(c(0, 2:20), replace = TRUE, size = len),
                                         layer3 = 0,#sample(c(0, 2:20), replace = TRUE, size = len),
                                         learning.rate = runif(len),
-                                        momentum = runif(len, min = .5),
-                                        dropout = runif(len, max = .5))
+                                        momentum = runif(len, min = .9),
+                                        dropout = runif(len, max = .7))
                     }
                     out
                   },
@@ -68,5 +70,7 @@ modelInfo <- list(label = "Neural Network",
                     colnames(pred) <- modelFit$obsLevels
                     pred
                   },
+                  notes = paste("The mxnet package is not yet on CRAN.",
+                                "See http://mxnet.io/ for installation instructions."),
                   tags = c("Neural Network"),
                   sort = function(x) x[order(x$layer1, x$layer2, x$layer3),])
