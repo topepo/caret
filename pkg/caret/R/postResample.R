@@ -18,8 +18,14 @@
 #' \hat{y}_i)^2}{\sum (y_i - \bar{y}_i)^2} }. Mean absolute error is calculated
 #' using \code{mean(abs(pred-obs))}.
 #'
-#' For \code{defaultSummary} is the default function to compute performance
+#' \code{defaultSummary} is the default function to compute performance
 #' metrics in \code{\link{train}}. It is a wrapper around \code{postResample}.
+#' The first argument is \code{data}, which is either a \code{data.frame} or
+#' \code{matrix} with columns named \code{obs} and \code{pred} for the observed
+#' and predicted outcome values (either numeric data for regression or character
+#' values for classification). The second argument is \code{lev}, a character
+#' string that has the outcome factor levels or NULL for a regression model.
+#' The third parameter is \code{model}, which is ignored by the function.
 #'
 #' \code{twoClassSummary} computes sensitivity, specificity and the area under
 #' the ROC curve. \code{mnLogLoss} computes the minus log-likelihood of the

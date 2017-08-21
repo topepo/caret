@@ -224,6 +224,7 @@ best <- function(x, metric, maximize)
   bestIter
 }
 
+#' @rdname postResample
 #' @export
 defaultSummary <- function(data, lev = NULL, model = NULL)
 {
