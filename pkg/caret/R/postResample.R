@@ -18,7 +18,7 @@
 #' \hat{y}_i)^2}{\sum (y_i - \bar{y}_i)^2} }. Mean absolute error is calculated
 #' using \code{mean(abs(pred-obs))}.
 #'
-#' For \code{defaultSummary} is the default function to compute performance
+#' \code{defaultSummary} is the default function to compute performance
 #' metrics in \code{\link{train}}. It is a wrapper around \code{postResample}.
 #' The first argument is \code{data}, which is either a \code{data.frame} or
 #' \code{matrix} with columns named \code{obs} and \code{pred} for the observed
