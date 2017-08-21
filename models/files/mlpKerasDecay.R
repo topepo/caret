@@ -22,7 +22,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Weight Decay",
                         lr = 2e-6,
                         rho = .9,
                         decay = 0,
-                        activation = "sigmoid"
+                        activation = "relu"
                       )
                     } else {
                       n <- nrow(x)

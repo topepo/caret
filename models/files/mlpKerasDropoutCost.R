@@ -23,7 +23,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Dropout",
                         lr = 2e-6,
                         rho = .9,
                         decay = 0,
-                        activation = "sigmoid",
+                        activation = "relu",
                         cost = 1:len
                       )
                     } else {
