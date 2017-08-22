@@ -194,7 +194,7 @@
 #' @export trainControl
 trainControl <- function(method = "boot",
                          number = ifelse(grepl("cv", method), 10, 25),
-                         repeats = ifelse(grepl("cv", method), 1, number),
+                         repeats = ifelse(grepl("[d_]cv$", method), 1, NA),
                          p = .75,
                          search = "grid",
                          initialWindow = NULL,
@@ -227,6 +227,8 @@ trainControl <- function(method = "boot",
   if(length(predictionBounds) > 0 && length(predictionBounds) != 2) stop("'predictionBounds' should be a logical or numeric vector of length 2")
   if(any(names(preProcOptions) == "method")) stop("'method' cannot be specified here")
   if(any(names(preProcOptions) == "x")) stop("'x' cannot be specified here")
+  if(!is.na(repeats) & !(method %in% c("repeatedcv", "adaptive_cv")))
+    warning("`repeats` has no meaning for this resampling method.", call. = FALSE)
   
   if(!(adaptive$method %in% c("gls", "BT"))) stop("incorrect value of adaptive$method")
   if(adaptive$alpha < .0000001 | adaptive$alpha > 1) stop("incorrect value of adaptive$alpha")

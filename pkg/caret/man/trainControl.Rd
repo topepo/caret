@@ -5,7 +5,7 @@
 \title{Control parameters for train}
 \usage{
 trainControl(method = "boot", number = ifelse(grepl("cv", method), 10, 25),
-  repeats = ifelse(grepl("cv", method), 1, number), p = 0.75,
+  repeats = ifelse(grepl("[d_]cv$", method), 1, NA), p = 0.75,
   search = "grid", initialWindow = NULL, horizon = 1,
   fixedWindow = TRUE, skip = 0, verboseIter = FALSE, returnData = TRUE,
   returnResamp = "final", savePredictions = FALSE, classProbs = FALSE,

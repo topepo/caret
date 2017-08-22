@@ -30,6 +30,7 @@
     \item A bug was fixed in Self-Organizing Maps via \code{xyf} for regression models. 
     \item A bug was fixed in \code{rpartCost} related to how the tuning parameter grid was processed. 
     \item A bug in negative-binomial GLM models (found by jpclemens0)  was fixed \issue{688}.
+    \item In \code{trainControl}, if \code{repeats} is used on methods other than \code{"repeatedcv"} or \code{"adaptive_cv"}, a warning is issued. Also, for method other than these two, a new default (\code{NA}) is given to \code{repeats}. \issue{720}. 
   }
 } 
 
