@@ -32,7 +32,7 @@ cctrl3 <- trainControl(method = "none",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
 cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
-maGrid <- expand.grid( nlayers= 1:3, nnodes=c(10,15), activation= 'relu', learningrate=1e-02, 
+maGrid <- expand.grid( layer1= 3, layer2 = c(0,5), layer3 = 0, activation= 'relu', learningrate=1e-02, 
                        beta1=0.9, beta2=0.9999, dropout=c(0.05,0.20) )
 
 set.seed(849)
@@ -63,14 +63,14 @@ test_class_rec <- train(x = rec_cls, data = training, method = modelZ,
 
 set.seed(849)
 test_class_rec2 <- train(x = rec_cls, data = training, method = modelZ, num.round = 20,
-                        trControl = cctrl1, metric = "ROC", tuneGrid = maGrid)
+                         trControl = cctrl1, metric = "ROC", tuneGrid = maGrid)
 
 if(  !isTRUE(
-    all.equal(test_class_cv_model$results, 
-              test_class_rec$results))
+  all.equal(test_class_cv_model$results, 
+            test_class_rec$results))
 )
   stop("CV weights not giving the same results")
- 
+
 
 test_class_imp_rec <- varImp(test_class_rec)
 
@@ -110,7 +110,7 @@ rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", seeds = 
 rctrl2 <- trainControl(method = "LOOCV", seeds = seeds)
 rctrl3 <- trainControl(method = "none", seeds = seeds)
 
-maGrid <- expand.grid( nlayers= 1:3, nnodes=c(10,15), activation='tanh', learningrate=1e-02, 
+maGrid <- expand.grid( layer1= 13, layer2=5, layer3 =5, activation='tanh', learningrate=1e-02, 
                        beta1=0.9, beta2=0.9999, dropout=c(0.05,0.20) )
 
 set.seed(849)

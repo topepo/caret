@@ -1,22 +1,23 @@
 modelInfo <- list(label = "Neural Network", 
                   library = "mxnet", 
                   type = c('Classification','Regression'),
-                  parameters = data.frame(parameter = c('nlayers', 'nnodes', "dropout",
+                  parameters = data.frame(parameter = c("layer1", "layer2", "layer3", "dropout",
                                                         "beta1", "beta2", "learningrate", "activation"),
-                                          class = c(rep('numeric', 6), "character"),
-                                          label = c('# of layers', '# hidden units in each layer',
+                                          class = c(rep('numeric', 7), "character"),
+                                          label = c("# of nods in layer 1", "# of nods in layer 2", "# of nods in layer 3", 
                                                     "dropout rate",  "beta1", "beta2", "learning rate", "activation function")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
-                      out <- expand.grid(nlayers = (1:len), nnodes = 25, 
+                      out <- expand.grid(layer1 = ((1:len) * 4) - 1, layer2 = 0, layer3 = 0,
                                          learningrate = 2e-6, 
                                          beta1 = 0.9, 
                                          beta2 = 0.9999,
                                          dropout = seq(0, .7, length = len), 
                                          activation = 'relu')
                     } else {
-                      out <- data.frame(nlayers = sample(2:20, replace = TRUE, size = len), 
-                                        nnodes =  sample(c(2:99), replace = TRUE, size = len), 
+                      out <- data.frame(layer1 = sample(2:20, replace = TRUE, size = len),
+                                        layer2 = 0,
+                                        layer3 = 0,
                                         learningrate = runif(len),
                                         beta1 = runif(len),
                                         beta2 = runif(len),
@@ -26,32 +27,34 @@ modelInfo <- list(label = "Neural Network",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    num_units <- param[grepl("layer[1-9]", names(param))]
+                    num_units <- num_units[num_units > 0]
                     if(!is.matrix(x)) x <- as.matrix(x)
                     if(is.numeric(y)) {
                       mx.set.seed(21)  
-                      #browser()
+                      # browser()
                       out <- mxnet::mx.mlp(data = x, label = y, out_node = 1, out_activation = "rmse", verbose= FALSE,
                                            optimizer = 'adam', eval.metric = mx.metric.rmse, array.layout = "rowmajor", 
                                            learning.rate = param$learningrate,  
                                            beta1 = param$beta1, 
                                            beta2 = param$beta2, 
                                            dropout = param$dropout,
-                                           hidden_node = rep(param$nnodes, param$nlayers),
-                                           activation = rep( as.character(param$activation), param$nlayers),
+                                           hidden_node = num_units,
+                                           activation = rep( as.character(param$activation), length(num_units)),
                                            initializer = mx.init.Xavier(factor_type = "avg", magnitude = 3, rnd_type = 'uniform'),
                                            ...)
                     } else {
                       y <- as.numeric(y) - 1 
                       mx.set.seed(21)
-                      #browser()
+                      # browser()
                       out <- mxnet::mx.mlp(data = x, label = y, out_node = length(unique(y)), out_activation = "softmax",  verbose= FALSE,
                                           optimizer = 'adam', eval.metric = mx.metric.accuracy, array.layout = "rowmajor", 
                                           learning.rate = param$learningrate, 
                                           beta1 = param$beta1, 
                                           beta2 = param$beta2, 
                                           dropout = param$dropout, 
-                                          hidden_node = rep(param$nnodes, param$nlayers),
-                                          activation = rep( as.character(param$activation), param$nlayers),
+                                          hidden_node = num_units,
+                                          activation = rep( as.character(param$activation), length(num_units)),
                                           initializer = mx.init.Xavier(factor_type = "avg", magnitude = 3, rnd_type = 'uniform'),
                                           ...)
                     }
@@ -82,4 +85,5 @@ modelInfo <- list(label = "Neural Network",
                                 "See http://mxnet.io/ for installation instructions.",
                                 "Users are strongly advised to define 'num.round' themselves."),
                   tags = c("Neural Network"),
-                  sort = function(x) x[order(x$nlayers, x$nnodes, x$beta1, x$beta2, x$learningrate,x$dropout ),])
+                  sort = function(x) x[order(x$layer1, x$layer2,x$layer3,
+                                             x$beta1, x$beta2, x$learningrate,x$dropout ),])
