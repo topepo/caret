@@ -37,5 +37,4 @@ modelInfo <- list(label = "Diagonal Discriminant Analysis",
                   predictors = function(x, ...) if(hasTerms(x)) predictors(x$terms) else colnames(x$means),
                   tags = c("Discriminant Analysis", "Linear Classifier", "Polynomial Model", "Regularization"),
                   levels = function(x) names(x$prior),
-                  sort = function(x) x,
-                  notes = "Not on CRAN but can be found on github at ramhiser/sparsediscrim.")
+                  sort = function(x) x)

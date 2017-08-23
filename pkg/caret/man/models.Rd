@@ -60,8 +60,7 @@ For classification using packages \pkg{adabag} and \pkg{plyr} with tuning parame
 
 \strong{Bagged CART} (\code{method = 'treebag'})
 
-For classification and regression using packages \pkg{ipred}, \pkg{plyr} and \pkg{e1071} with no tuning parameters
-
+For classification and regression using packages \pkg{ipred}, \pkg{plyr} and \pkg{e1071} with no tuning parameters.
 
 
 \strong{Bagged FDA using gCV Pruning} (\code{method = 'bagFDAGCV'})
@@ -129,8 +128,7 @@ For classification and regression using package \pkg{bartMachine} with tuning pa
 
 \strong{Bayesian Generalized Linear Model} (\code{method = 'bayesglm'})
 
-For classification and regression using package \pkg{arm} with no tuning parameters
-
+For classification and regression using package \pkg{arm} with no tuning parameters.
 
 
 \strong{Bayesian Regularized Neural Networks} (\code{method = 'brnn'})
@@ -143,15 +141,14 @@ For regression using package \pkg{brnn} with tuning parameters:
 
 \strong{Bayesian Ridge Regression} (\code{method = 'bridge'})
 
-For regression using package \pkg{monomvn} with no tuning parameters
-
+For regression using package \pkg{monomvn} with no tuning parameters.
 
 
 \strong{Bayesian Ridge Regression (Model Averaged)} (\code{method = 'blassoAveraged'})
 
-For regression using package \pkg{monomvn} with no tuning parameters
+For regression using package \pkg{monomvn} with no tuning parameters.
 
-
+Note: This model makes predictions by averaging the predictions based on the posterior estimates of the regression coefficients. While it is possible that some of these posterior estimates are zero for non-informative predictors, the final predicted value may be a function of many (or even all) predictors. 
 
 \strong{Binary Discriminant Analysis} (\code{method = 'binda'})
 
@@ -173,12 +170,13 @@ For classification using packages \pkg{ada} and \pkg{plyr} with tuning parameter
 
 \strong{Boosted Generalized Additive Model} (\code{method = 'gamboost'})
 
-For classification and regression using packages \pkg{mboost} and \pkg{plyr} with tuning parameters:
+For classification and regression using packages \pkg{mboost}, \pkg{plyr} and \pkg{import} with tuning parameters:
 \itemize{
 \item Number of  Boosting Iterations (\code{mstop}, numeric)
 \item AIC Prune? (\code{prune}, character)
 }
 
+Note: The \code{prune} option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in \code{?mboost::mstop}. If pruning is not used, the ensemble makes predictions using the exact value of the \code{mstop} tuning parameter value. 
 
 \strong{Boosted Generalized Linear Model} (\code{method = 'glmboost'})
 
@@ -188,6 +186,7 @@ For classification and regression using packages \pkg{plyr} and \pkg{mboost} wit
 \item AIC Prune? (\code{prune}, character)
 }
 
+Note: The \code{prune} option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in \code{?mboost::mstop}. If pruning is not used, the ensemble makes predictions using the exact value of the \code{mstop} tuning parameter value. 
 
 \strong{Boosted Linear Model} (\code{method = 'BstLm'})
 
@@ -263,9 +262,9 @@ For classification and regression using package \pkg{rpart} with tuning paramete
 
 \strong{CART} (\code{method = 'rpart1SE'})
 
-For classification and regression using package \pkg{rpart} with no tuning parameters
+For classification and regression using package \pkg{rpart} with no tuning parameters.
 
-
+Note: This CART model replicates the same process used by the \code{rpart} function where the model complexity is determined using the one-standard error method. This procedure is replicated inside of the resampling done by \code{train} so that an external resampling estimate can be obtained. 
 
 \strong{CART} (\code{method = 'rpart2'})
 
@@ -343,7 +342,7 @@ For classification using packages \pkg{C50} and \pkg{plyr} with tuning parameter
 
 \strong{Cost-Sensitive CART} (\code{method = 'rpartCost'})
 
-For classification using package \pkg{rpart} with tuning parameters:
+For classification using packages \pkg{rpart} and \pkg{plyr} with tuning parameters:
 \itemize{
 \item Complexity Parameter (\code{cp}, numeric)
 \item Cost (\code{Cost}, numeric)
@@ -428,24 +427,7 @@ For regression using package \pkg{elasticnet} with tuning parameters:
 }
 
 
-\strong{Ensemble Partial Least Squares Regression} (\code{method = 'enpls'})
-
-For regression using package \pkg{enpls} with tuning parameters:
-\itemize{
-\item Max. Number of Components (\code{maxcomp}, numeric)
-}
-
-
-\strong{Ensemble Partial Least Squares Regression with Feature Selection} (\code{method = 'enpls.fs'})
-
-For regression using package \pkg{enpls} with tuning parameters:
-\itemize{
-\item Max. Number of Components (\code{maxcomp}, numeric)
-\item Importance Cutoff (\code{threshold}, numeric)
-}
-
-
-\strong{Ensembles of Generalized Lienar Models} (\code{method = 'randomGLM'})
+\strong{Ensembles of Generalized Linear Models} (\code{method = 'randomGLM'})
 
 For classification and regression using package \pkg{randomGLM} with tuning parameters:
 \itemize{
@@ -583,8 +565,7 @@ For classification using package \pkg{frbs} with tuning parameters:
 
 \strong{Gaussian Process} (\code{method = 'gaussprLinear'})
 
-For classification and regression using package \pkg{kernlab} with no tuning parameters
-
+For classification and regression using package \pkg{kernlab} with no tuning parameters.
 
 
 \strong{Gaussian Process with Polynomial Kernel} (\code{method = 'gaussprPoly'})
@@ -612,6 +593,7 @@ For classification and regression using package \pkg{gam} with tuning parameters
 \item Degree (\code{degree}, numeric)
 }
 
+Note: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion. 
 
 \strong{Generalized Additive Model using Splines} (\code{method = 'bam'})
 
@@ -621,6 +603,7 @@ For classification and regression using package \pkg{mgcv} with tuning parameter
 \item Method (\code{method}, character)
 }
 
+Note: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion. 
 
 \strong{Generalized Additive Model using Splines} (\code{method = 'gam'})
 
@@ -630,6 +613,7 @@ For classification and regression using package \pkg{mgcv} with tuning parameter
 \item Method (\code{method}, character)
 }
 
+Note: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion. 
 
 \strong{Generalized Additive Model using Splines} (\code{method = 'gamSpline'})
 
@@ -638,17 +622,16 @@ For classification and regression using package \pkg{gam} with tuning parameters
 \item Degrees of Freedom (\code{df}, numeric)
 }
 
+Note: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion. 
 
 \strong{Generalized Linear Model} (\code{method = 'glm'})
 
-For classification and regression with no tuning parameters
-
+For classification and regression with no tuning parameters.
 
 
 \strong{Generalized Linear Model with Stepwise Feature Selection} (\code{method = 'glmStepAIC'})
 
-For classification and regression using package \pkg{MASS} with no tuning parameters
-
+For classification and regression using package \pkg{MASS} with no tuning parameters.
 
 
 \strong{Generalized Partial Least Squares} (\code{method = 'gpls'})
@@ -669,18 +652,6 @@ For regression using package \pkg{frbs} with tuning parameters:
 }
 
 
-\strong{glmnet} (\code{method = 'gbm_h2o'})
-
-For classification and regression using package \pkg{h2o} with tuning parameters:
-\itemize{
-\item Number of  Boosting Iterations (\code{ntrees}, numeric)
-\item Max Tree Depth (\code{max_depth}, numeric)
-\item Min. Terminal Node Size (\code{min_rows}, numeric)
-\item Shrinkage (\code{learn_rate}, numeric)
-\item Number of Randomly Selected Predictors (\code{col_sample_rate}, numeric)
-}
-
-
 \strong{glmnet} (\code{method = 'glmnet_h2o'})
 
 For classification and regression using package \pkg{h2o} with tuning parameters:
@@ -696,6 +667,18 @@ For classification and regression using packages \pkg{glmnet} and \pkg{Matrix} w
 \itemize{
 \item Mixing Percentage (\code{alpha}, numeric)
 \item Regularization Parameter (\code{lambda}, numeric)
+}
+
+
+\strong{Gradient Boosting Machines} (\code{method = 'gbm_h2o'})
+
+For classification and regression using package \pkg{h2o} with tuning parameters:
+\itemize{
+\item Number of  Boosting Iterations (\code{ntrees}, numeric)
+\item Max Tree Depth (\code{max_depth}, numeric)
+\item Min. Terminal Node Size (\code{min_rows}, numeric)
+\item Shrinkage (\code{learn_rate}, numeric)
+\item Number of Randomly Selected Predictors (\code{col_sample_rate}, numeric)
 }
 
 
@@ -858,8 +841,7 @@ For classification using package \pkg{kernlab} with tuning parameters:
 
 \strong{Linear Discriminant Analysis} (\code{method = 'lda'})
 
-For classification using package \pkg{MASS} with no tuning parameters
-
+For classification using package \pkg{MASS} with no tuning parameters.
 
 
 \strong{Linear Discriminant Analysis} (\code{method = 'lda2'})
@@ -922,8 +904,7 @@ For regression using package \pkg{leaps} with tuning parameters:
 
 \strong{Linear Regression with Stepwise Selection} (\code{method = 'lmStepAIC'})
 
-For regression using package \pkg{MASS} with no tuning parameters
-
+For regression using package \pkg{MASS} with no tuning parameters.
 
 
 \strong{Linear Support Vector Machines with Class Weights} (\code{method = 'svmLinearWeights'})
@@ -962,8 +943,7 @@ For classification using package \pkg{RWeka} with tuning parameters:
 
 \strong{Maximum Uncertainty Linear Discriminant Analysis} (\code{method = 'Mlda'})
 
-For classification using package \pkg{HiDimDA} with no tuning parameters
-
+For classification using package \pkg{HiDimDA} with no tuning parameters.
 
 
 \strong{Mixture Discriminant Analysis} (\code{method = 'mda'})
@@ -982,6 +962,7 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 \item Prior Probability (\code{prior}, numeric)
 }
 
+Note: Not on CRAN but can be installed from GitHub at \code{bmihaljevic/bnclassify}. 
 
 \strong{Model Averaged Neural Network} (\code{method = 'avNNet'})
 
@@ -1009,6 +990,15 @@ For regression using package \pkg{RWeka} with tuning parameters:
 \item Pruned (\code{pruned}, character)
 \item Smoothed (\code{smoothed}, character)
 \item Rules (\code{rules}, character)
+}
+
+
+\strong{Monotone Multi-Layer Perceptron Neural Network} (\code{method = 'monmlp'})
+
+For classification and regression using package \pkg{monmlp} with tuning parameters:
+\itemize{
+\item Number of Hidden Units (\code{hidden1}, numeric)
+\item Number of Models (\code{n.ensemble}, numeric)
 }
 
 
@@ -1050,6 +1040,16 @@ For classification and regression using package \pkg{RSNNS} with tuning paramete
 }
 
 
+\strong{Multi-Step Adaptive MCP-Net} (\code{method = 'msaenet'})
+
+For classification and regression using package \pkg{msaenet} with tuning parameters:
+\itemize{
+\item Alpha (\code{alphas}, numeric)
+\item Number of Adaptive Estimation Steps (\code{nsteps}, numeric)
+\item Adaptive Weight Scaling Factor (\code{scale}, numeric)
+}
+
+
 \strong{Multilayer Perceptron Network by Stochastic Gradient Descent} (\code{method = 'mlpSGD'})
 
 For classification and regression using packages \pkg{FCNN4R} and \pkg{plyr} with tuning parameters:
@@ -1059,11 +1059,73 @@ For classification and regression using packages \pkg{FCNN4R} and \pkg{plyr} wit
 \item RMSE Gradient Scaling (\code{lambda}, numeric)
 \item Learning Rate (\code{learn_rate}, numeric)
 \item Momentum (\code{momentum}, numeric)
-\item Decay (\code{gamma}, numeric)
+\item Learning Rate Decay (\code{gamma}, numeric)
 \item Batch Size (\code{minibatchsz}, numeric)
 \item Number of Models (\code{repeats}, numeric)
 }
 
+
+\strong{Multilayer Perceptron Network with Dropout} (\code{method = 'mlpKerasDropout'})
+
+For classification and regression using package \pkg{keras} with tuning parameters:
+\itemize{
+\item Number of Hidden Units (\code{size}, numeric)
+\item Dropout Rate (\code{dropout}, numeric)
+\item Batch Size (\code{batch_size}, numeric)
+\item Learning Rate (\code{lr}, numeric)
+\item Rho (\code{rho}, numeric)
+\item Learning Rate Decay (\code{decay}, numeric)
+\item Activation Function (\code{activation}, character)
+}
+
+Note: After \code{train} completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use \code{keras::unsearlize_model(object$finalModel$object)} in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. 
+
+\strong{Multilayer Perceptron Network with Dropout} (\code{method = 'mlpKerasDropoutCost'})
+
+For classification using package \pkg{keras} with tuning parameters:
+\itemize{
+\item Number of Hidden Units (\code{size}, numeric)
+\item Dropout Rate (\code{dropout}, numeric)
+\item Batch Size (\code{batch_size}, numeric)
+\item Learning Rate (\code{lr}, numeric)
+\item Rho (\code{rho}, numeric)
+\item Learning Rate Decay (\code{decay}, numeric)
+\item Cost (\code{cost}, numeric)
+\item Activation Function (\code{activation}, character)
+}
+
+Note: After \code{train} completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use \code{keras::unsearlize_model(object$finalModel$object)} in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. Finally, the cost parameter weights the first class in the outcome vector. 
+
+\strong{Multilayer Perceptron Network with Weight Decay} (\code{method = 'mlpKerasDecay'})
+
+For classification and regression using package \pkg{keras} with tuning parameters:
+\itemize{
+\item Number of Hidden Units (\code{size}, numeric)
+\item L2 Regularization (\code{lambda}, numeric)
+\item Batch Size (\code{batch_size}, numeric)
+\item Learning Rate (\code{lr}, numeric)
+\item Rho (\code{rho}, numeric)
+\item Learning Rate Decay (\code{decay}, numeric)
+\item Activation Function (\code{activation}, character)
+}
+
+Note: After \code{train} completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use \code{keras::unsearlize_model(object$finalModel$object)} in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. 
+
+\strong{Multilayer Perceptron Network with Weight Decay} (\code{method = 'mlpKerasDecayCost'})
+
+For classification using package \pkg{keras} with tuning parameters:
+\itemize{
+\item Number of Hidden Units (\code{size}, numeric)
+\item L2 Regularization (\code{lambda}, numeric)
+\item Batch Size (\code{batch_size}, numeric)
+\item Learning Rate (\code{lr}, numeric)
+\item Rho (\code{rho}, numeric)
+\item Learning Rate Decay (\code{decay}, numeric)
+\item Cost (\code{cost}, numeric)
+\item Activation Function (\code{activation}, character)
+}
+
+Note: After \code{train} completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use \code{keras::unsearlize_model(object$finalModel$object)} in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. Finally, the cost parameter weights the first class in the outcome vector. 
 
 \strong{Multivariate Adaptive Regression Spline} (\code{method = 'earth'})
 
@@ -1079,6 +1141,16 @@ For classification and regression using package \pkg{earth} with tuning paramete
 For classification and regression using package \pkg{earth} with tuning parameters:
 \itemize{
 \item Product Degree (\code{degree}, numeric)
+}
+
+
+\strong{Naive Bayes} (\code{method = 'naive_bayes'})
+
+For classification using package \pkg{naivebayes} with tuning parameters:
+\itemize{
+\item Laplace Correction (\code{fL}, numeric)
+\item Distribution Type (\code{usekernel}, logical)
+\item Bandwidth Adjustment (\code{adjust}, numeric)
 }
 
 
@@ -1099,6 +1171,7 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 \item Smoothing Parameter (\code{smooth}, numeric)
 }
 
+Note: Not on CRAN but can be installed from GitHub at \code{bmihaljevic/bnclassify}. 
 
 \strong{Naive Bayes Classifier with Attribute Weighting} (\code{method = 'awnb'})
 
@@ -1107,6 +1180,7 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 \item Smoothing Parameter (\code{smooth}, numeric)
 }
 
+Note: Not on CRAN but can be installed from GitHub at \code{bmihaljevic/bnclassify}. 
 
 \strong{Nearest Shrunken Centroids} (\code{method = 'pam'})
 
@@ -1123,6 +1197,35 @@ For regression with tuning parameters:
 \item Link Function (\code{link}, character)
 }
 
+
+\strong{Neural Network} (\code{method = 'mxnet'})
+
+For classification using package \pkg{mxnet} with tuning parameters:
+\itemize{
+\item Number of Hidden Units in Layer 1 (\code{layer1}, numeric)
+\item Number of Hidden Units in Layer 2 (\code{layer2}, numeric)
+\item Number of Hidden Units in Layer 3 (\code{layer3}, numeric)
+\item Learning Rate (\code{learning.rate}, numeric)
+\item Momentum (\code{momentum}, numeric)
+\item Dropout Rate (\code{dropout}, numeric)
+}
+
+Note: The \code{mxnet} package is not yet on CRAN. See \url{http://mxnet.io} for installation instructions. 
+
+\strong{Neural Network} (\code{method = 'mxnetAdam'})
+
+For classification and regression using package \pkg{mxnet} with tuning parameters:
+\itemize{
+\item Number of  of layers (\code{nlayers}, numeric)
+\item Number of  hidden units in each layer (\code{nnodes}, numeric)
+\item Number of  of rounds (\code{nrounds}, numeric)
+\item dropout rate (\code{dropout}, numeric)
+\item beta1 (\code{beta1}, numeric)
+\item beta2 (\code{beta2}, numeric)
+\item learning rate (\code{learningrate}, numeric)
+}
+
+Note: The \code{mxnet} package is not yet on CRAN. See \url{http://mxnet.io} for installation instructions. 
 
 \strong{Neural Network} (\code{method = 'neuralnet'})
 
@@ -1161,10 +1264,15 @@ For regression using package \pkg{rqPen} with tuning parameters:
 }
 
 
+\strong{Non-Informative Model} (\code{method = 'null'})
+
+For classification and regression with no tuning parameters.
+
+Note: Since this model always predicts the same value, R-squared values will always be estimated to be NA. 
+
 \strong{Non-Negative Least Squares} (\code{method = 'nnls'})
 
-For regression using package \pkg{nnls} with no tuning parameters
-
+For regression using package \pkg{nnls} with no tuning parameters.
 
 
 \strong{Oblique Random Forest} (\code{method = 'ORFlog'})
@@ -1199,15 +1307,6 @@ For classification using package \pkg{obliqueRF} with tuning parameters:
 }
 
 
-\strong{Oblique Trees} (\code{method = 'oblique.tree'})
-
-For classification using package \pkg{oblique.tree} with tuning parameters:
-\itemize{
-\item Oblique Splits (\code{oblique.splits}, character)
-\item Variable Selection Method (\code{variable.selection}, character)
-}
-
-
 \strong{Optimal Weighted Nearest Neighbor Classifier} (\code{method = 'ownn'})
 
 For classification using package \pkg{snn} with tuning parameters:
@@ -1226,7 +1325,7 @@ For classification using package \pkg{MASS} with tuning parameters:
 
 \strong{Parallel Random Forest} (\code{method = 'parRF'})
 
-For classification and regression using packages \pkg{e1071}, \pkg{randomForest} and \pkg{foreach} with tuning parameters:
+For classification and regression using packages \pkg{e1071}, \pkg{randomForest}, \pkg{foreach} and \pkg{import} with tuning parameters:
 \itemize{
 \item Number of Randomly Selected Predictors (\code{mtry}, numeric)
 }
@@ -1279,6 +1378,16 @@ For classification and regression using package \pkg{plsRglm} with tuning parame
 \itemize{
 \item Number of PLS Components (\code{nt}, numeric)
 \item p-Value threshold (\code{alpha.pvals.expli}, numeric)
+}
+
+
+\strong{Patient Rule Induction Method} (\code{method = 'PRIM'})
+
+For classification using package \pkg{supervisedPRIM} with tuning parameters:
+\itemize{
+\item peeling quantile (\code{peel.alpha}, numeric)
+\item pasting quantile (\code{paste.alpha}, numeric)
+\item minimum mass (\code{mass.min}, numeric)
 }
 
 
@@ -1342,6 +1451,7 @@ For classification and regression using packages \pkg{ordinalNet} and \pkg{plyr}
 \item Link Function (\code{link}, character)
 }
 
+Note: Requires ordinalNet package version >= 2.0 
 
 \strong{Polynomial Kernel Regularized Least Squares} (\code{method = 'krlsPoly'})
 
@@ -1370,8 +1480,7 @@ For regression with tuning parameters:
 
 \strong{Quadratic Discriminant Analysis} (\code{method = 'qda'})
 
-For classification using package \pkg{MASS} with no tuning parameters
-
+For classification using package \pkg{MASS} with no tuning parameters.
 
 
 \strong{Quadratic Discriminant Analysis with Stepwise Feature Selection} (\code{method = 'stepQDA'})
@@ -1444,9 +1553,10 @@ For classification using package \pkg{rFerns} with tuning parameters:
 
 \strong{Random Forest} (\code{method = 'ranger'})
 
-For classification and regression using packages \pkg{e1071} and \pkg{ranger} with tuning parameters:
+For classification and regression using packages \pkg{e1071}, \pkg{ranger} and \pkg{dplyr} with tuning parameters:
 \itemize{
 \item Number of Randomly Selected Predictors (\code{mtry}, numeric)
+\item Splitting Rule (\code{splitrule}, character)
 }
 
 
@@ -1484,14 +1594,6 @@ For classification and regression using packages \pkg{randomForest}, \pkg{inTree
 }
 
 
-\strong{Random Forest with Additional Feature Selection} (\code{method = 'Boruta'})
-
-For classification and regression using packages \pkg{Boruta} and \pkg{randomForest} with tuning parameters:
-\itemize{
-\item Number of Randomly Selected Predictors (\code{mtry}, numeric)
-}
-
-
 \strong{Regularized Discriminant Analysis} (\code{method = 'rda'})
 
 For classification using package \pkg{klaR} with tuning parameters:
@@ -1506,6 +1608,16 @@ For classification using package \pkg{klaR} with tuning parameters:
 For classification using package \pkg{sparsediscrim} with tuning parameters:
 \itemize{
 \item Regularization Method (\code{estimator}, character)
+}
+
+
+\strong{Regularized Logistic Regression} (\code{method = 'regLogistic'})
+
+For classification using package \pkg{LiblineaR} with tuning parameters:
+\itemize{
+\item Cost (\code{cost}, numeric)
+\item Loss Function (\code{loss}, character)
+\item Tolerance (\code{epsilon}, numeric)
 }
 
 
@@ -1539,8 +1651,7 @@ For regression using packages \pkg{relaxo} and \pkg{plyr} with tuning parameters
 
 \strong{Relevance Vector Machines with Linear Kernel} (\code{method = 'rvmLinear'})
 
-For regression using package \pkg{kernlab} with no tuning parameters
-
+For regression using package \pkg{kernlab} with no tuning parameters.
 
 
 \strong{Relevance Vector Machines with Polynomial Kernel} (\code{method = 'rvmPoly'})
@@ -1579,8 +1690,7 @@ For regression using package \pkg{foba} with tuning parameters:
 
 \strong{Robust Linear Discriminant Analysis} (\code{method = 'Linda'})
 
-For classification using package \pkg{rrcov} with no tuning parameters
-
+For classification using package \pkg{rrcov} with no tuning parameters.
 
 
 \strong{Robust Linear Model} (\code{method = 'rlm'})
@@ -1603,8 +1713,7 @@ For classification using package \pkg{robustDA} with tuning parameters:
 
 \strong{Robust Quadratic Discriminant Analysis} (\code{method = 'QdaCov'})
 
-For classification using package \pkg{rrcov} with no tuning parameters
-
+For classification using package \pkg{rrcov} with no tuning parameters.
 
 
 \strong{Robust Regularized Linear Discriminant Analysis} (\code{method = 'rrlda'})
@@ -1619,8 +1728,7 @@ For classification using package \pkg{rrlda} with tuning parameters:
 
 \strong{Robust SIMCA} (\code{method = 'RSimca'})
 
-For classification using package \pkg{rrcovHD} with no tuning parameters
-
+For classification using package \pkg{rrcovHD} with no tuning parameters.
 
 
 \strong{ROC-Based Classifier} (\code{method = 'rocc'})
@@ -1669,27 +1777,17 @@ For classification using package \pkg{RWeka} with tuning parameters:
 }
 
 
-\strong{Self-Organizing Map} (\code{method = 'bdk'})
-
-For classification and regression using package \pkg{kohonen} with tuning parameters:
-\itemize{
-\item Row (\code{xdim}, numeric)
-\item Columns (\code{ydim}, numeric)
-\item X Weight (\code{xweight}, numeric)
-\item Topology (\code{topo}, character)
-}
-
-
 \strong{Self-Organizing Maps} (\code{method = 'xyf'})
 
 For classification and regression using package \pkg{kohonen} with tuning parameters:
 \itemize{
-\item Row (\code{xdim}, numeric)
+\item Rows (\code{xdim}, numeric)
 \item Columns (\code{ydim}, numeric)
-\item X Weight (\code{xweight}, numeric)
+\item Layer Weight (\code{user.weights}, numeric)
 \item Topology (\code{topo}, character)
 }
 
+Note: As of version 3.0.0 of the kohonen package, the argument \code{user.weights} replaces the old \code{alpha} parameter. \code{user.weights} is usually a vector of relative weights such as \code{c(1, 3)} but is parameterized here as a proportion such as \code{c(1-.75, .75)} where the .75 is the value of the tuning parameter passed to \code{train} and indicates that the outcome layer has 3 times the weight as the predictor layer. 
 
 \strong{Semi-Naive Structure Learner Wrapper} (\code{method = 'nbSearch'})
 
@@ -1702,6 +1800,7 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 \item Search Direction (\code{direction}, character)
 }
 
+Note: Not on CRAN but can be installed from GitHub at \code{bmihaljevic/bnclassify}. 
 
 \strong{Shrinkage Discriminant Analysis} (\code{method = 'sda'})
 
@@ -1714,8 +1813,7 @@ For classification using package \pkg{sda} with tuning parameters:
 
 \strong{SIMCA} (\code{method = 'CSimca'})
 
-For classification using package \pkg{rrcovHD} with no tuning parameters
-
+For classification using packages \pkg{rrcov} and \pkg{rrcovHD} with no tuning parameters.
 
 
 \strong{Simplified TSK Fuzzy Rules} (\code{method = 'FS.HGD'})
@@ -1729,20 +1827,17 @@ For regression using package \pkg{frbs} with tuning parameters:
 
 \strong{Single C5.0 Ruleset} (\code{method = 'C5.0Rules'})
 
-For classification using package \pkg{C50} with no tuning parameters
-
+For classification using package \pkg{C50} with no tuning parameters.
 
 
 \strong{Single C5.0 Tree} (\code{method = 'C5.0Tree'})
 
-For classification using package \pkg{C50} with no tuning parameters
-
+For classification using package \pkg{C50} with no tuning parameters.
 
 
 \strong{Single Rule Classification} (\code{method = 'OneR'})
 
-For classification using package \pkg{RWeka} with no tuning parameters
-
+For classification using package \pkg{RWeka} with no tuning parameters.
 
 
 \strong{Sparse Distance Weighted Discrimination} (\code{method = 'sdwd'})
@@ -1793,8 +1888,7 @@ For regression using packages \pkg{spikeslab} and \pkg{plyr} with tuning paramet
 
 \strong{Stabilized Linear Discriminant Analysis} (\code{method = 'slda'})
 
-For classification using package \pkg{ipred} with no tuning parameters
-
+For classification using package \pkg{ipred} with no tuning parameters.
 
 
 \strong{Stabilized Nearest Neighbor Classifier} (\code{method = 'snn'})
@@ -1815,18 +1909,6 @@ For classification and regression using package \pkg{deepnet} with tuning parame
 \item Hidden Dropouts (\code{hidden_dropout}, numeric)
 \item Visible Dropout (\code{visible_dropout}, numeric)
 }
-
-
-\strong{Stepwise Diagonal Linear Discriminant Analysis} (\code{method = 'sddaLDA'})
-
-For classification using package \pkg{SDDA} with no tuning parameters
-
-
-
-\strong{Stepwise Diagonal Quadratic Discriminant Analysis} (\code{method = 'sddaQDA'})
-
-For classification using package \pkg{SDDA} with no tuning parameters
-
 
 
 \strong{Stochastic Gradient Boosting} (\code{method = 'gbm'})
@@ -1938,6 +2020,7 @@ For classification and regression using package \pkg{kernlab} with tuning parame
 \item Cost (\code{C}, numeric)
 }
 
+Note: This SVM model tunes over the cost parameter and the RBF kernel parameter sigma. In the latter case, using \code{tuneLength} will, at most, evaluate six values of the kernel parameter. This enables a broad search over the cost parameter and a relatively narrow search over \code{sigma} 
 
 \strong{Support Vector Machines with Spectrum String Kernel} (\code{method = 'svmSpectrumString'})
 
@@ -1955,6 +2038,7 @@ For regression using package \pkg{monomvn} with tuning parameters:
 \item Sparsity Threshold (\code{sparsity}, numeric)
 }
 
+Note: This model creates predictions using the mean of the posterior distributions but sets some parameters specifically to zero based on the tuning parameter \code{sparsity}. For example, when \code{sparsity = .5}, only coefficients where at least half the posterior estimates are nonzero are used. 
 
 \strong{The lasso} (\code{method = 'lasso'})
 
@@ -1972,6 +2056,7 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 \item Smoothing Parameter (\code{smooth}, numeric)
 }
 
+Note: Not on CRAN but can be installed from GitHub at \code{bmihaljevic/bnclassify}. 
 
 \strong{Tree Augmented Naive Bayes Classifier Structure Learner Wrapper} (\code{method = 'tanSearch'})
 
@@ -1984,6 +2069,7 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 \item Super-Parent (\code{sp}, logical)
 }
 
+Note: Not on CRAN but can be installed from GitHub at \code{bmihaljevic/bnclassify}. 
 
 \strong{Tree Augmented Naive Bayes Classifier with Attribute Weighting} (\code{method = 'awtan'})
 
@@ -1993,6 +2079,7 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 \item Smoothing Parameter (\code{smooth}, numeric)
 }
 
+Note: Not on CRAN but can be installed from GitHub at \code{bmihaljevic/bnclassify}. 
 
 \strong{Tree Models from Genetic Algorithms} (\code{method = 'evtree'})
 

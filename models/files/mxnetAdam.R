@@ -81,9 +81,9 @@ modelInfo <- list(label = "Neural Network",
                     colnames(pred) <- modelFit$obsLevels
                     pred
                   },
-                  notes = paste("The mxnet package is not yet on CRAN.",
-                                "See http://mxnet.io/ for installation instructions.",
-                                "Users are strongly advised to define 'num.round' themselves."),
+                  notes = paste("The `mxnet` package is not yet on CRAN.",
+                                "See [http://mxnet.io](http://mxnet.io) for installation instructions.",
+                                "Users are strongly advised to define `num.round` themselves."),
                   tags = c("Neural Network"),
                   sort = function(x) x[order(x$layer1, x$layer2,x$layer3,
                                              x$beta1, x$beta2, x$learningrate,x$dropout ),])

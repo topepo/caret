@@ -70,7 +70,7 @@ modelInfo <- list(label = "Neural Network",
                     colnames(pred) <- modelFit$obsLevels
                     pred
                   },
-                  notes = paste("The mxnet package is not yet on CRAN.",
-                                "See http://mxnet.io/ for installation instructions."),
+                  notes = paste("The `mxnet` package is not yet on CRAN.",
+                                "See [http://mxnet.io](http://mxnet.io) for installation instructions."),
                   tags = c("Neural Network"),
                   sort = function(x) x[order(x$layer1, x$layer2, x$layer3),])
