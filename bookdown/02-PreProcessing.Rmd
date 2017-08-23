@@ -169,7 +169,7 @@ trainTransformed <- predict(preProcValues, training)
 testTransformed <- predict(preProcValues, test)
 ``` 
 
-The `preProcess` option `"ranges"` scales the data to the interval between zero and one.
+The `preProcess` option `"range"` scales the data to the interval between zero and one.
 
 <div id="impute"></div>
 
