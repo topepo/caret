@@ -1,5 +1,5 @@
 modelInfo <- list(label = "Random Forest",
-                  library = c("e1071", "ranger"),
+                  library = c("e1071", "ranger", "dplyr"),
                   check = function(pkg) {
                     requireNamespace("ranger")
                     current <- packageDescription("ranger")$Version
