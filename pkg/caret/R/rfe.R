@@ -1024,7 +1024,7 @@ gamFuncs <- list(summary = defaultSummary,
 rfFuncs <-  list(summary = defaultSummary,
                  fit = function(x, y, first, last, ...) {
                    loadNamespace("randomForest")
-                   randomForest::randomForest(x, y, importance = first, ...)
+                   randomForest::randomForest(x, y, importance = (first|last), ...)
                  },
                  pred = function(object, x)  {
                    tmp <- predict(object, x)
