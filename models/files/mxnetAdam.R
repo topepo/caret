@@ -4,8 +4,8 @@ modelInfo <- list(label = "Neural Network",
                   parameters = data.frame(parameter = c("layer1", "layer2", "layer3", "dropout",
                                                         "beta1", "beta2", "learningrate", "activation"),
                                           class = c(rep('numeric', 7), "character"),
-                                          label = c("# of nods in layer 1", "# of nods in layer 2", "# of nods in layer 3", 
-                                                    "dropout rate",  "beta1", "beta2", "learning rate", "activation function")),
+                                          label = c('#Hidden Units in Layer 1', '#Hidden Units in Layer 2', '#Hidden Units in Layer 3', 
+                                                    "Dropout Rate",  "beta1", "beta2", "Learning Rate", "Activation Function")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
                       out <- expand.grid(layer1 = ((1:len) * 4) - 1, layer2 = 0, layer3 = 0,
@@ -22,7 +22,7 @@ modelInfo <- list(label = "Neural Network",
                                         beta1 = runif(len),
                                         beta2 = runif(len),
                                         dropout = runif(len, max = 0.7),
-                                        activation = sample(c('relu', 'sigmoid', 'tanh', 'softrelu'), replace= TRUE, size=1))
+                                        activation = sample(c('relu', 'sigmoid', 'tanh', 'softrelu'), replace= TRUE, size=len))
                     }
                     out
                   },
@@ -32,7 +32,6 @@ modelInfo <- list(label = "Neural Network",
                     if(!is.matrix(x)) x <- as.matrix(x)
                     if(is.numeric(y)) {
                       mx.set.seed(21)  
-                      # browser()
                       out <- mxnet::mx.mlp(data = x, label = y, out_node = 1, out_activation = "rmse", verbose= FALSE,
                                            optimizer = 'adam', eval.metric = mx.metric.rmse, array.layout = "rowmajor", 
                                            learning.rate = param$learningrate,  
@@ -46,7 +45,6 @@ modelInfo <- list(label = "Neural Network",
                     } else {
                       y <- as.numeric(y) - 1 
                       mx.set.seed(21)
-                      # browser()
                       out <- mxnet::mx.mlp(data = x, label = y, out_node = length(unique(y)), out_activation = "softmax",  verbose= FALSE,
                                           optimizer = 'adam', eval.metric = mx.metric.accuracy, array.layout = "rowmajor", 
                                           learning.rate = param$learningrate, 
