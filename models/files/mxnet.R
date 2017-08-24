@@ -1,7 +1,7 @@
 modelInfo <- list(label = "Neural Network",
                   library = "mxnet",
                   loop = NULL,
-                  type = c('Classification'),
+                  type = c('Classification', 'Regression'),
                   parameters = data.frame(parameter = c('layer1', 'layer2', 'layer3', 
                                                         "learning.rate", "momentum", "dropout", 
                                                         "activation"),
