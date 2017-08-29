@@ -32,7 +32,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Dropout",
                         dropout = runif(len, max = .7), 
                         batch_size = floor(n*runif(len, min = .1)),
                         lr = runif(len),
-                        rho = runif(len, min = .9),
+                        rho = runif(len),
                         decay = 10^runif(len, min = -5, 0),
                         activation = sample(
                           afuncs, 
