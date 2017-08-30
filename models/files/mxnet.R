@@ -23,7 +23,7 @@ modelInfo <- list(label = "Neural Network",
                                         layer2 = 0,
                                         layer3 = 0,
                                         learning.rate = runif(len),
-                                        momentum = runif(len, min = .9),
+                                        momentum = runif(len),
                                         dropout = runif(len, max = .7),
                                         activation = sample(c('relu', 'sigmoid', 'tanh', 'softrelu'), replace= TRUE, size=len))
                     }
