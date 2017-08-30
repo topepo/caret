@@ -17,7 +17,7 @@
     \item Added a \code{ggplot} method for lift objects (and fixed a bug in the \code{lattice} version of the code) for \issue{656}.
     \item The model code for \code{ordinalNet} was updated for recent changes to that package. 
     \item \code{oblique.tree}  was removed from the model library. 
-    \item The default gird generation for rotation forest models now provides better values of \code{K}.
+    \item The default grid generation for rotation forest models now provides better values of \code{K}.
     \item The parameter ranges for \code{AdaBag} and \code{AdaBoost.M1} were changed; the number of iterations in the default grids have been lowered. 
     \item Switched to non-formula interface in ranger. Also, another tuning parameter was added to ranger (\code{splitrule}) that can be used to change the splitting procedure and includes extremely randomized trees. This requires version 0.8.0 of the \cpkg{ranger} package. \issue{581}
     \item A simple "null model" was added. For classification, it predictors using the most prevalent level and, for regression, fits an intercept only model. \issue{694}
