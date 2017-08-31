@@ -235,16 +235,18 @@ predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
       }
     }
   }
+  cnames <- colnames(x)
   if(!is.null(object$sep) & !object$levelsOnly) {
     for(i in object$facVars[order(-nchar(object$facVars))]) {
       ## the default output form model.matrix is NAMElevel with no separator.
       for(j in object$lvls[[i]]) {
         from_text <- paste0(i, j)
         to_text <- paste(i, j, sep = object$sep)
-        colnames(x) <- gsub(from_text, to_text, colnames(x), fixed = TRUE)
+        cnames <- gsub(from_text, to_text, cnames, fixed = TRUE)
       }
     }
   }
+  colnames(x) <- cnames
   x[, colnames(x) != "(Intercept)", drop = FALSE]
 }
 
