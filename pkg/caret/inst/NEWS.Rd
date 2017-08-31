@@ -15,6 +15,7 @@
     \item More average precision/recall statistics were added to \code{multiClassSummary} \issue{697}. 
     \item The package website code was updated to use version 4 of the D3 JS library and now uses \cpkg{heatmaply} to make the interactive heatmap. 
     \item Added a \code{ggplot} method for lift objects (and fixed a bug in the \code{lattice} version of the code) for \issue{656}.
+    \item Vadim Khotilovich made a change to speed up \code{predict.dummyVars} \issue{727}. 
     \item The model code for \code{ordinalNet} was updated for recent changes to that package. 
     \item \code{oblique.tree}  was removed from the model library. 
     \item The default grid generation for rotation forest models now provides better values of \code{K}.
