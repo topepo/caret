@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>The caret Package</title>
+  <meta name="description" content="Documentation for the <code>caret</code> package">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="The caret Package" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Documentation for the <code>caret</code> package" />
+  <meta name="github-repo" content="<a href="https://github.com/topepo/caret" class="uri">https://github.com/topepo/caret</a>" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="The caret Package" />
+  
+  <meta name="twitter:description" content="Documentation for the <code>caret</code> package" />
+  
+
+<meta name="author" content="Max Kuhn">
+
+
+<meta name="date" content="2017-09-04">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="data-splitting.html">
+<link rel="next" href="available-models.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/d3-4.5.0/d3.min.js"></script>
+<script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
+<script src="libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="visualizations.html"><a href="visualizations.html"><i class="fa fa-check"></i><b>2</b> Visualizations</a></li>
+<li class="chapter" data-level="3" data-path="pre-processing.html"><a href="pre-processing.html"><i class="fa fa-check"></i><b>3</b> Pre-Processing</a><ul>
+<li class="chapter" data-level="3.1" data-path="pre-processing.html"><a href="pre-processing.html#creating-dummy-variables"><i class="fa fa-check"></i><b>3.1</b> Creating Dummy Variables</a></li>
+<li class="chapter" data-level="3.2" data-path="pre-processing.html"><a href="pre-processing.html#zero--and-near-zero-variance-predictors"><i class="fa fa-check"></i><b>3.2</b> Zero- and Near Zero-Variance Predictors</a></li>
+<li class="chapter" data-level="3.3" data-path="pre-processing.html"><a href="pre-processing.html#identifying-correlated-predictors"><i class="fa fa-check"></i><b>3.3</b> Identifying Correlated Predictors</a></li>
+<li class="chapter" data-level="3.4" data-path="pre-processing.html"><a href="pre-processing.html#linear-dependencies"><i class="fa fa-check"></i><b>3.4</b> Linear Dependencies</a></li>
+<li class="chapter" data-level="3.5" data-path="pre-processing.html"><a href="pre-processing.html#the-preprocess-function"><i class="fa fa-check"></i><b>3.5</b> The <code>preProcess</code> Function</a></li>
+<li class="chapter" data-level="3.6" data-path="pre-processing.html"><a href="pre-processing.html#centering-and-scaling"><i class="fa fa-check"></i><b>3.6</b> Centering and Scaling</a></li>
+<li class="chapter" data-level="3.7" data-path="pre-processing.html"><a href="pre-processing.html#imputation"><i class="fa fa-check"></i><b>3.7</b> Imputation</a></li>
+<li class="chapter" data-level="3.8" data-path="pre-processing.html"><a href="pre-processing.html#transforming-predictors"><i class="fa fa-check"></i><b>3.8</b> Transforming Predictors</a></li>
+<li class="chapter" data-level="3.9" data-path="pre-processing.html"><a href="pre-processing.html#putting-it-all-together"><i class="fa fa-check"></i><b>3.9</b> Putting It All Together</a></li>
+<li class="chapter" data-level="3.10" data-path="pre-processing.html"><a href="pre-processing.html#class-distance-calculations"><i class="fa fa-check"></i><b>3.10</b> Class Distance Calculations</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-splitting.html"><a href="data-splitting.html"><i class="fa fa-check"></i><b>4</b> Data Splitting</a><ul>
+<li class="chapter" data-level="4.1" data-path="data-splitting.html"><a href="data-splitting.html#simple-splitting-based-on-the-outcome"><i class="fa fa-check"></i><b>4.1</b> Simple Splitting Based on the Outcome</a></li>
+<li class="chapter" data-level="4.2" data-path="data-splitting.html"><a href="data-splitting.html#splitting-based-on-the-predictors"><i class="fa fa-check"></i><b>4.2</b> Splitting Based on the Predictors</a></li>
+<li class="chapter" data-level="4.3" data-path="data-splitting.html"><a href="data-splitting.html#data-splitting-for-time-series"><i class="fa fa-check"></i><b>4.3</b> Data Splitting for Time Series</a></li>
+<li class="chapter" data-level="4.4" data-path="data-splitting.html"><a href="data-splitting.html#simple-splitting-with-important-groups"><i class="fa fa-check"></i><b>4.4</b> Simple Splitting with Important Groups</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html"><i class="fa fa-check"></i><b>5</b> Model Training and Tuning</a><ul>
+<li class="chapter" data-level="5.1" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#model-training-and-parameter-tuning"><i class="fa fa-check"></i><b>5.1</b> Model Training and Parameter Tuning</a></li>
+<li class="chapter" data-level="5.2" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#an-example"><i class="fa fa-check"></i><b>5.2</b> An Example</a></li>
+<li class="chapter" data-level="5.3" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#basic-parameter-tuning"><i class="fa fa-check"></i><b>5.3</b> Basic Parameter Tuning</a></li>
+<li class="chapter" data-level="5.4" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#notes-on-reproducibility"><i class="fa fa-check"></i><b>5.4</b> Notes on Reproducibility</a></li>
+<li class="chapter" data-level="5.5" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#customizing-the-tuning-process"><i class="fa fa-check"></i><b>5.5</b> Customizing the Tuning Process</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#pre-processing-options"><i class="fa fa-check"></i><b>5.5.1</b> Pre-Processing Options</a></li>
+<li class="chapter" data-level="5.5.2" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#alternate-tuning-grids"><i class="fa fa-check"></i><b>5.5.2</b> Alternate Tuning Grids</a></li>
+<li class="chapter" data-level="5.5.3" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#plotting-the-resampling-profile"><i class="fa fa-check"></i><b>5.5.3</b> Plotting the Resampling Profile</a></li>
+<li class="chapter" data-level="5.5.4" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#the-traincontrol-function"><i class="fa fa-check"></i><b>5.5.4</b> The <code>trainControl</code> Function</a></li>
+<li class="chapter" data-level="5.5.5" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#alternate-performance-metrics"><i class="fa fa-check"></i><b>5.5.5</b> Alternate Performance Metrics</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#choosing-the-final-model"><i class="fa fa-check"></i><b>5.6</b> Choosing the Final Model</a></li>
+<li class="chapter" data-level="5.7" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#extracting-predictions-and-class-probabilities"><i class="fa fa-check"></i><b>5.7</b> Extracting Predictions and Class Probabilities</a></li>
+<li class="chapter" data-level="5.8" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#exploring-and-comparing-resampling-distributions"><i class="fa fa-check"></i><b>5.8</b> Exploring and Comparing Resampling Distributions</a><ul>
+<li class="chapter" data-level="5.8.1" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#within-model"><i class="fa fa-check"></i><b>5.8.1</b> Within-Model</a></li>
+<li class="chapter" data-level="5.8.2" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#between-models"><i class="fa fa-check"></i><b>5.8.2</b> Between-Models</a></li>
+</ul></li>
+<li class="chapter" data-level="5.9" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#fitting-models-without-parameter-tuning"><i class="fa fa-check"></i><b>5.9</b> Fitting Models Without Parameter Tuning</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="available-models.html"><a href="available-models.html"><i class="fa fa-check"></i><b>6</b> Available Models</a></li>
+<li class="chapter" data-level="7" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html"><i class="fa fa-check"></i><b>7</b> <code>train</code> Models By Tag</a><ul>
+<li class="chapter" data-level="7.0.1" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#accepts-case-weights"><i class="fa fa-check"></i><b>7.0.1</b> Accepts Case Weights</a></li>
+<li class="chapter" data-level="7.0.2" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#bagging"><i class="fa fa-check"></i><b>7.0.2</b> Bagging</a></li>
+<li class="chapter" data-level="7.0.3" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#bayesian-model"><i class="fa fa-check"></i><b>7.0.3</b> Bayesian Model</a></li>
+<li class="chapter" data-level="7.0.4" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#binary-predictors-only"><i class="fa fa-check"></i><b>7.0.4</b> Binary Predictors Only</a></li>
+<li class="chapter" data-level="7.0.5" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#boosting"><i class="fa fa-check"></i><b>7.0.5</b> Boosting</a></li>
+<li class="chapter" data-level="7.0.6" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#categorical-predictors-only"><i class="fa fa-check"></i><b>7.0.6</b> Categorical Predictors Only</a></li>
+<li class="chapter" data-level="7.0.7" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#cost-sensitive-learning"><i class="fa fa-check"></i><b>7.0.7</b> Cost Sensitive Learning</a></li>
+<li class="chapter" data-level="7.0.8" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#discriminant-analysis"><i class="fa fa-check"></i><b>7.0.8</b> Discriminant Analysis</a></li>
+<li class="chapter" data-level="7.0.9" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#distance-weighted-discrimination"><i class="fa fa-check"></i><b>7.0.9</b> Distance Weighted Discrimination</a></li>
+<li class="chapter" data-level="7.0.10" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ensemble-model"><i class="fa fa-check"></i><b>7.0.10</b> Ensemble Model</a></li>
+<li class="chapter" data-level="7.0.11" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#feature-extraction"><i class="fa fa-check"></i><b>7.0.11</b> Feature Extraction</a></li>
+<li class="chapter" data-level="7.0.12" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#feature-selection-wrapper"><i class="fa fa-check"></i><b>7.0.12</b> Feature Selection Wrapper</a></li>
+<li class="chapter" data-level="7.0.13" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#gaussian-process"><i class="fa fa-check"></i><b>7.0.13</b> Gaussian Process</a></li>
+<li class="chapter" data-level="7.0.14" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#generalized-additive-model"><i class="fa fa-check"></i><b>7.0.14</b> Generalized Additive Model</a></li>
+<li class="chapter" data-level="7.0.15" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#generalized-linear-model"><i class="fa fa-check"></i><b>7.0.15</b> Generalized Linear Model</a></li>
+<li class="chapter" data-level="7.0.16" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#handle-missing-predictor-data"><i class="fa fa-check"></i><b>7.0.16</b> Handle Missing Predictor Data</a></li>
+<li class="chapter" data-level="7.0.17" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#implicit-feature-selection"><i class="fa fa-check"></i><b>7.0.17</b> Implicit Feature Selection</a></li>
+<li class="chapter" data-level="7.0.18" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#kernel-method"><i class="fa fa-check"></i><b>7.0.18</b> Kernel Method</a></li>
+<li class="chapter" data-level="7.0.19" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#l1-regularization"><i class="fa fa-check"></i><b>7.0.19</b> L1 Regularization</a></li>
+<li class="chapter" data-level="7.0.20" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#l2-regularization"><i class="fa fa-check"></i><b>7.0.20</b> L2 Regularization</a></li>
+<li class="chapter" data-level="7.0.21" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#linear-classifier"><i class="fa fa-check"></i><b>7.0.21</b> Linear Classifier</a></li>
+<li class="chapter" data-level="7.0.22" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#linear-regression"><i class="fa fa-check"></i><b>7.0.22</b> Linear Regression</a></li>
+<li class="chapter" data-level="7.0.23" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#logic-regression"><i class="fa fa-check"></i><b>7.0.23</b> Logic Regression</a></li>
+<li class="chapter" data-level="7.0.24" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#logistic-regression"><i class="fa fa-check"></i><b>7.0.24</b> Logistic Regression</a></li>
+<li class="chapter" data-level="7.0.25" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#mixture-model"><i class="fa fa-check"></i><b>7.0.25</b> Mixture Model</a></li>
+<li class="chapter" data-level="7.0.26" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#model-tree"><i class="fa fa-check"></i><b>7.0.26</b> Model Tree</a></li>
+<li class="chapter" data-level="7.0.27" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#multivariate-adaptive-regression-splines"><i class="fa fa-check"></i><b>7.0.27</b> Multivariate Adaptive Regression Splines</a></li>
+<li class="chapter" data-level="7.0.28" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#neural-network"><i class="fa fa-check"></i><b>7.0.28</b> Neural Network</a></li>
+<li class="chapter" data-level="7.0.29" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#oblique-tree"><i class="fa fa-check"></i><b>7.0.29</b> Oblique Tree</a></li>
+<li class="chapter" data-level="7.0.30" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ordinal-outcomes"><i class="fa fa-check"></i><b>7.0.30</b> Ordinal Outcomes</a></li>
+<li class="chapter" data-level="7.0.31" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#partial-least-squares"><i class="fa fa-check"></i><b>7.0.31</b> Partial Least Squares</a></li>
+<li class="chapter" data-level="7.0.32" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#patient-rule-induction-method"><i class="fa fa-check"></i><b>7.0.32</b> Patient Rule Induction Method</a></li>
+<li class="chapter" data-level="7.0.33" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#polynomial-model"><i class="fa fa-check"></i><b>7.0.33</b> Polynomial Model</a></li>
+<li class="chapter" data-level="7.0.34" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#prototype-models"><i class="fa fa-check"></i><b>7.0.34</b> Prototype Models</a></li>
+<li class="chapter" data-level="7.0.35" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#quantile-regression"><i class="fa fa-check"></i><b>7.0.35</b> Quantile Regression</a></li>
+<li class="chapter" data-level="7.0.36" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#radial-basis-function"><i class="fa fa-check"></i><b>7.0.36</b> Radial Basis Function</a></li>
+<li class="chapter" data-level="7.0.37" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#random-forest"><i class="fa fa-check"></i><b>7.0.37</b> Random Forest</a></li>
+<li class="chapter" data-level="7.0.38" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#regularization"><i class="fa fa-check"></i><b>7.0.38</b> Regularization</a></li>
+<li class="chapter" data-level="7.0.39" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#relevance-vector-machines"><i class="fa fa-check"></i><b>7.0.39</b> Relevance Vector Machines</a></li>
+<li class="chapter" data-level="7.0.40" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ridge-regression"><i class="fa fa-check"></i><b>7.0.40</b> Ridge Regression</a></li>
+<li class="chapter" data-level="7.0.41" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-methods"><i class="fa fa-check"></i><b>7.0.41</b> Robust Methods</a></li>
+<li class="chapter" data-level="7.0.42" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-model"><i class="fa fa-check"></i><b>7.0.42</b> Robust Model</a></li>
+<li class="chapter" data-level="7.0.43" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#roc-curves"><i class="fa fa-check"></i><b>7.0.43</b> ROC Curves</a></li>
+<li class="chapter" data-level="7.0.44" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#rule-based-model"><i class="fa fa-check"></i><b>7.0.44</b> Rule-Based Model</a></li>
+<li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.45</b> Self-Organising Maps</a></li>
+<li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.46</b> String Kernel</a></li>
+<li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.47</b> Support Vector Machines</a></li>
+<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.48</b> Text Mining</a></li>
+<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.49</b> Tree-Based Model</a></li>
+<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.50</b> Two Class Only</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="models-clustered-by-tag-similarity.html"><a href="models-clustered-by-tag-similarity.html"><i class="fa fa-check"></i><b>8</b> Models Clustered by Tag Similarity</a></li>
+<li class="chapter" data-level="9" data-path="parallel-processing.html"><a href="parallel-processing.html"><i class="fa fa-check"></i><b>9</b> Parallel Processing</a></li>
+<li class="chapter" data-level="10" data-path="random-hyperparameter-search.html"><a href="random-hyperparameter-search.html"><i class="fa fa-check"></i><b>10</b> Random Hyperparameter Search</a></li>
+<li class="chapter" data-level="11" data-path="subsampling-for-class-imbalances.html"><a href="subsampling-for-class-imbalances.html"><i class="fa fa-check"></i><b>11</b> Subsampling For Class Imbalances</a><ul>
+<li class="chapter" data-level="11.1" data-path="subsampling-for-class-imbalances.html"><a href="subsampling-for-class-imbalances.html#subsampling-techniques"><i class="fa fa-check"></i><b>11.1</b> Subsampling Techniques</a></li>
+<li class="chapter" data-level="11.2" data-path="subsampling-for-class-imbalances.html"><a href="subsampling-for-class-imbalances.html#subsampling-during-resampling"><i class="fa fa-check"></i><b>11.2</b> Subsampling During Resampling</a></li>
+<li class="chapter" data-level="11.3" data-path="subsampling-for-class-imbalances.html"><a href="subsampling-for-class-imbalances.html#complications"><i class="fa fa-check"></i><b>11.3</b> Complications</a></li>
+<li class="chapter" data-level="11.4" data-path="subsampling-for-class-imbalances.html"><a href="subsampling-for-class-imbalances.html#using-custom-subsampling-techniques"><i class="fa fa-check"></i><b>11.4</b> Using Custom Subsampling Techniques</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html"><i class="fa fa-check"></i><b>12</b> Using Recipes with train</a><ul>
+<li class="chapter" data-level="12.1" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#why-should-you-learn-this"><i class="fa fa-check"></i><b>12.1</b> Why Should you learn this?</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#more-versatile-tools-for-preprocessing-data"><i class="fa fa-check"></i><b>12.1.1</b> More versatile tools for preprocessing data</a></li>
+<li class="chapter" data-level="12.1.2" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#using-additional-data-to-measure-performance"><i class="fa fa-check"></i><b>12.1.2</b> Using additional data to measure performance</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#an-example-1"><i class="fa fa-check"></i><b>12.2</b> An Example</a></li>
+<li class="chapter" data-level="12.3" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#case-weights"><i class="fa fa-check"></i><b>12.3</b> Case Weights</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html"><i class="fa fa-check"></i><b>13</b> Using Your Own Model in <code>train</code></a><ul>
+<li class="chapter" data-level="13.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#introduction-1"><i class="fa fa-check"></i><b>13.1</b> Introduction</a></li>
+<li class="chapter" data-level="13.2" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-1-svms-with-laplacian-kernels"><i class="fa fa-check"></i><b>13.2</b> Illustrative Example 1: SVMs with Laplacian Kernels</a></li>
+<li class="chapter" data-level="13.3" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#model-components"><i class="fa fa-check"></i><b>13.3</b> Model Components</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-parameters-element"><i class="fa fa-check"></i><b>13.3.1</b> The parameters Element</a></li>
+<li class="chapter" data-level="13.3.2" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-grid-element"><i class="fa fa-check"></i><b>13.3.2</b> The <code>grid</code> Element</a></li>
+<li class="chapter" data-level="13.3.3" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-fit-element"><i class="fa fa-check"></i><b>13.3.3</b> The <code>fit</code> Element</a></li>
+<li class="chapter" data-level="13.3.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-predict-element"><i class="fa fa-check"></i><b>13.3.4</b> The <code>predict</code> Element</a></li>
+<li class="chapter" data-level="13.3.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-prob-element"><i class="fa fa-check"></i><b>13.3.5</b> The <code>prob</code> Element</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-sort-element"><i class="fa fa-check"></i><b>13.4</b> The sort Element</a><ul>
+<li class="chapter" data-level="13.4.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-levels-element"><i class="fa fa-check"></i><b>13.4.1</b> The <code>levels</code> Element</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>13.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a><ul>
+<li class="chapter" data-level="13.5.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-loop-element"><i class="fa fa-check"></i><b>13.5.1</b> The loop Element</a></li>
+</ul></li>
+<li class="chapter" data-level="13.6" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-3-nonstandard-formulas"><i class="fa fa-check"></i><b>13.6</b> Illustrative Example 3: Nonstandard Formulas</a></li>
+<li class="chapter" data-level="13.7" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-4-pls-feature-extraction-pre-processing"><i class="fa fa-check"></i><b>13.7</b> Illustrative Example 4: PLS Feature Extraction Pre-Processing</a></li>
+<li class="chapter" data-level="13.8" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-5-optimizing-probability-thresholds-for-class-imbalances"><i class="fa fa-check"></i><b>13.8</b> Illustrative Example 5: Optimizing probability thresholds for class imbalances</a></li>
+<li class="chapter" data-level="13.9" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-6-offsets-in-generalized-linear-models"><i class="fa fa-check"></i><b>13.9</b> Illustrative Example 6: Offsets in Generalized Linear Models</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="adaptive-resampling.html"><a href="adaptive-resampling.html"><i class="fa fa-check"></i><b>14</b> Adaptive Resampling</a></li>
+<li class="chapter" data-level="15" data-path="variable-importance.html"><a href="variable-importance.html"><i class="fa fa-check"></i><b>15</b> Variable Importance</a><ul>
+<li class="chapter" data-level="15.1" data-path="variable-importance.html"><a href="variable-importance.html#model-specific-metrics"><i class="fa fa-check"></i><b>15.1</b> Model Specific Metrics</a></li>
+<li class="chapter" data-level="15.2" data-path="variable-importance.html"><a href="variable-importance.html#model-independent-metrics"><i class="fa fa-check"></i><b>15.2</b> Model Independent Metrics</a></li>
+<li class="chapter" data-level="15.3" data-path="variable-importance.html"><a href="variable-importance.html#an-example-2"><i class="fa fa-check"></i><b>15.3</b> An Example</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html"><i class="fa fa-check"></i><b>16</b> Miscellaneous Model Functions</a><ul>
+<li class="chapter" data-level="16.1" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#yet-another-k-nearest-neighbor-function"><i class="fa fa-check"></i><b>16.1</b> Yet Another <em>k</em>-Nearest Neighbor Function</a></li>
+<li class="chapter" data-level="16.2" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#partial-least-squares-discriminant-analysis"><i class="fa fa-check"></i><b>16.2</b> Partial Least Squares Discriminant Analysis</a></li>
+<li class="chapter" data-level="16.3" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#bagged-mars-and-fda"><i class="fa fa-check"></i><b>16.3</b> Bagged MARS and FDA</a></li>
+<li class="chapter" data-level="16.4" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#bagging-1"><i class="fa fa-check"></i><b>16.4</b> Bagging</a><ul>
+<li class="chapter" data-level="16.4.1" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-fit-function"><i class="fa fa-check"></i><b>16.4.1</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="16.4.2" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-pred-function"><i class="fa fa-check"></i><b>16.4.2</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="16.4.3" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-aggregate-function"><i class="fa fa-check"></i><b>16.4.3</b> The <code>aggregate</code> Function</a></li>
+</ul></li>
+<li class="chapter" data-level="16.5" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#model-averaged-neural-networks"><i class="fa fa-check"></i><b>16.5</b> Model Averaged Neural Networks</a></li>
+<li class="chapter" data-level="16.6" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#neural-networks-with-a-principal-component-step"><i class="fa fa-check"></i><b>16.6</b> Neural Networks with a Principal Component Step</a></li>
+<li class="chapter" data-level="16.7" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#independent-component-regression"><i class="fa fa-check"></i><b>16.7</b> Independent Component Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="measuring-performance.html"><a href="measuring-performance.html"><i class="fa fa-check"></i><b>17</b> Measuring Performance</a><ul>
+<li class="chapter" data-level="17.1" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-regression"><i class="fa fa-check"></i><b>17.1</b> Measures for Regression</a></li>
+<li class="chapter" data-level="17.2" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-predicted-classes"><i class="fa fa-check"></i><b>17.2</b> Measures for Predicted Classes</a></li>
+<li class="chapter" data-level="17.3" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-class-probabilities"><i class="fa fa-check"></i><b>17.3</b> Measures for Class Probabilities</a></li>
+<li class="chapter" data-level="17.4" data-path="measuring-performance.html"><a href="measuring-performance.html#lift-curves"><i class="fa fa-check"></i><b>17.4</b> Lift Curves</a></li>
+<li class="chapter" data-level="17.5" data-path="measuring-performance.html"><a href="measuring-performance.html#calibration-curves"><i class="fa fa-check"></i><b>17.5</b> Calibration Curves</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html"><i class="fa fa-check"></i><b>18</b> Feature Selection Overview</a><ul>
+<li class="chapter" data-level="18.1" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#models-with-built-in-feature-selection"><i class="fa fa-check"></i><b>18.1</b> Models with Built-In Feature Selection</a></li>
+<li class="chapter" data-level="18.2" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#feature-selection-methods"><i class="fa fa-check"></i><b>18.2</b> Feature Selection Methods</a></li>
+<li class="chapter" data-level="18.3" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#external-validation"><i class="fa fa-check"></i><b>18.3</b> External Validation</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html"><i class="fa fa-check"></i><b>19</b> Feature Selection using Univariate Filters</a><ul>
+<li class="chapter" data-level="19.1" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#univariate-filters"><i class="fa fa-check"></i><b>19.1</b> Univariate Filters</a></li>
+<li class="chapter" data-level="19.2" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#basic-syntax"><i class="fa fa-check"></i><b>19.2</b> Basic Syntax</a><ul>
+<li class="chapter" data-level="19.2.1" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-score-function"><i class="fa fa-check"></i><b>19.2.1</b> The <code>score</code> Function</a></li>
+<li class="chapter" data-level="19.2.2" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-filter-function"><i class="fa fa-check"></i><b>19.2.2</b> The <code>filter</code> Function</a></li>
+<li class="chapter" data-level="19.2.3" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-fit-function-1"><i class="fa fa-check"></i><b>19.2.3</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="19.2.4" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-summary-and-pred-functions"><i class="fa fa-check"></i><b>19.2.4</b> The <code>summary</code> and <code>pred</code> Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="19.3" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-example"><i class="fa fa-check"></i><b>19.3</b> The Example</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html"><i class="fa fa-check"></i><b>20</b> Recursive Feature Elimination</a><ul>
+<li class="chapter" data-level="20.1" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#backwards-selection"><i class="fa fa-check"></i><b>20.1</b> Backwards Selection</a></li>
+<li class="chapter" data-level="20.2" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#resampling-and-external-validation"><i class="fa fa-check"></i><b>20.2</b> Resampling and External Validation</a></li>
+<li class="chapter" data-level="20.3" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#recursive-feature-elimination-via-caret"><i class="fa fa-check"></i><b>20.3</b> Recursive Feature Elimination via <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a></a></li>
+<li class="chapter" data-level="20.4" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#an-example-3"><i class="fa fa-check"></i><b>20.4</b> An Example</a></li>
+<li class="chapter" data-level="20.5" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#helper-functions"><i class="fa fa-check"></i><b>20.5</b> Helper Functions</a><ul>
+<li class="chapter" data-level="20.5.1" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-summary-function"><i class="fa fa-check"></i><b>20.5.1</b> The <code>summary</code> Function</a></li>
+<li class="chapter" data-level="20.5.2" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-fit-function-2"><i class="fa fa-check"></i><b>20.5.2</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="20.5.3" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-pred-function-1"><i class="fa fa-check"></i><b>20.5.3</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="20.5.4" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-rank-function"><i class="fa fa-check"></i><b>20.5.4</b> The <code>rank</code> Function</a></li>
+<li class="chapter" data-level="20.5.5" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-selectsize-function"><i class="fa fa-check"></i><b>20.5.5</b> The <code>selectSize</code> Function</a></li>
+<li class="chapter" data-level="20.5.6" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-selectvar-function"><i class="fa fa-check"></i><b>20.5.6</b> The <code>selectVar</code> Function</a></li>
+</ul></li>
+<li class="chapter" data-level="20.6" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-example-1"><i class="fa fa-check"></i><b>20.6</b> The Example</a></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html"><i class="fa fa-check"></i><b>21</b> Feature Selection using Genetic Algorithms</a><ul>
+<li class="chapter" data-level="21.1" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#genetic-algorithms"><i class="fa fa-check"></i><b>21.1</b> Genetic Algorithms</a></li>
+<li class="chapter" data-level="21.2" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#internal-and-external-performance-estimates"><i class="fa fa-check"></i><b>21.2</b> Internal and External Performance Estimates</a></li>
+<li class="chapter" data-level="21.3" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#basic-syntax-1"><i class="fa fa-check"></i><b>21.3</b> Basic Syntax</a></li>
+<li class="chapter" data-level="21.4" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#example"><i class="fa fa-check"></i><b>21.4</b> Example</a></li>
+<li class="chapter" data-level="21.5" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#customizing-the-search"><i class="fa fa-check"></i><b>21.5</b> Customizing the Search</a><ul>
+<li class="chapter" data-level="21.5.1" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fit-function-3"><i class="fa fa-check"></i><b>21.5.1</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="21.5.2" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-pred-function-2"><i class="fa fa-check"></i><b>21.5.2</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="21.5.3" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fitness_intern-function"><i class="fa fa-check"></i><b>21.5.3</b> The <code>fitness_intern</code> Function</a></li>
+<li class="chapter" data-level="21.5.4" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fitness_extern-function"><i class="fa fa-check"></i><b>21.5.4</b> The <code>fitness_extern</code> Function</a></li>
+<li class="chapter" data-level="21.5.5" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-initial-function"><i class="fa fa-check"></i><b>21.5.5</b> The <code>initial</code> Function</a></li>
+<li class="chapter" data-level="21.5.6" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-selection-function"><i class="fa fa-check"></i><b>21.5.6</b> The <code>selection</code> Function</a></li>
+<li class="chapter" data-level="21.5.7" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-crossover-function"><i class="fa fa-check"></i><b>21.5.7</b> The <code>crossover</code> Function</a></li>
+<li class="chapter" data-level="21.5.8" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-mutation-function"><i class="fa fa-check"></i><b>21.5.8</b> The <code>mutation</code> Function</a></li>
+<li class="chapter" data-level="21.5.9" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-selectiter-function"><i class="fa fa-check"></i><b>21.5.9</b> The <code>selectIter</code> Function</a></li>
+</ul></li>
+<li class="chapter" data-level="21.6" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-example-revisited"><i class="fa fa-check"></i><b>21.6</b> The Example Revisited</a></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html"><i class="fa fa-check"></i><b>22</b> Feature Selection using Simulated Annealing</a><ul>
+<li class="chapter" data-level="22.1" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#simulated-annealing"><i class="fa fa-check"></i><b>22.1</b> Simulated Annealing</a></li>
+<li class="chapter" data-level="22.2" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#internal-and-external-performance-estimates-1"><i class="fa fa-check"></i><b>22.2</b> Internal and External Performance Estimates</a></li>
+<li class="chapter" data-level="22.3" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#basic-syntax-2"><i class="fa fa-check"></i><b>22.3</b> Basic Syntax</a></li>
+<li class="chapter" data-level="22.4" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#example-1"><i class="fa fa-check"></i><b>22.4</b> Example</a></li>
+<li class="chapter" data-level="22.5" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#customizing-the-search-1"><i class="fa fa-check"></i><b>22.5</b> Customizing the Search</a><ul>
+<li class="chapter" data-level="22.5.1" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fit-function-4"><i class="fa fa-check"></i><b>22.5.1</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="22.5.2" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-pred-function-3"><i class="fa fa-check"></i><b>22.5.2</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="22.5.3" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fitness_intern-function-1"><i class="fa fa-check"></i><b>22.5.3</b> The <code>fitness_intern</code> Function</a></li>
+<li class="chapter" data-level="22.5.4" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fitness_extern-function-1"><i class="fa fa-check"></i><b>22.5.4</b> The <code>fitness_extern</code> Function</a></li>
+<li class="chapter" data-level="22.5.5" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-initial-function-1"><i class="fa fa-check"></i><b>22.5.5</b> The <code>initial</code> Function</a></li>
+<li class="chapter" data-level="22.5.6" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-perturb-function"><i class="fa fa-check"></i><b>22.5.6</b> The <code>perturb</code> Function</a></li>
+<li class="chapter" data-level="22.5.7" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-prob-function"><i class="fa fa-check"></i><b>22.5.7</b> The <code>prob</code> Function</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="23" data-path="data-sets.html"><a href="data-sets.html"><i class="fa fa-check"></i><b>23</b> Data Sets</a><ul>
+<li class="chapter" data-level="23.1" data-path="data-sets.html"><a href="data-sets.html#blood-brain-barrier-data"><i class="fa fa-check"></i><b>23.1</b> Blood-Brain Barrier Data</a></li>
+<li class="chapter" data-level="23.2" data-path="data-sets.html"><a href="data-sets.html#cox-2-activity-data"><i class="fa fa-check"></i><b>23.2</b> COX-2 Activity Data</a></li>
+<li class="chapter" data-level="23.3" data-path="data-sets.html"><a href="data-sets.html#dhfr-inhibition"><i class="fa fa-check"></i><b>23.3</b> DHFR Inhibition</a></li>
+<li class="chapter" data-level="23.4" data-path="data-sets.html"><a href="data-sets.html#tecator-nir-data"><i class="fa fa-check"></i><b>23.4</b> Tecator NIR Data</a></li>
+<li class="chapter" data-level="23.5" data-path="data-sets.html"><a href="data-sets.html#fatty-acid-composition-data"><i class="fa fa-check"></i><b>23.5</b> Fatty Acid Composition Data</a></li>
+<li class="chapter" data-level="23.6" data-path="data-sets.html"><a href="data-sets.html#german-credit-data"><i class="fa fa-check"></i><b>23.6</b> German Credit Data</a></li>
+<li class="chapter" data-level="23.7" data-path="data-sets.html"><a href="data-sets.html#kelly-blue-book"><i class="fa fa-check"></i><b>23.7</b> Kelly Blue Book</a></li>
+<li class="chapter" data-level="23.8" data-path="data-sets.html"><a href="data-sets.html#cell-body-segmentation-data"><i class="fa fa-check"></i><b>23.8</b> Cell Body Segmentation Data</a></li>
+<li class="chapter" data-level="23.9" data-path="data-sets.html"><a href="data-sets.html#sacramento-house-price-data"><i class="fa fa-check"></i><b>23.9</b> Sacramento House Price Data</a></li>
+<li class="chapter" data-level="23.10" data-path="data-sets.html"><a href="data-sets.html#animal-scat-data"><i class="fa fa-check"></i><b>23.10</b> Animal Scat Data</a></li>
+</ul></li>
+<li class="chapter" data-level="24" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>24</b> Session Information</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The <code>caret</code> Package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="model-training-and-tuning" class="section level1">
+<h1><span class="header-section-number">5</span> Model Training and Tuning</h1>
+<p>Contents</p>
+<ul>
+<li><a href="#basic">Model Training and Parameter Tuning</a></li>
+<li><a href="model-training-and-tuning.html#example">An Example</a></li>
+<li><a href="model-training-and-tuning.html#tune">Basic Parameter Tuning</a></li>
+<li><a href="model-training-and-tuning.html#repro">Notes on Reproducibility</a></li>
+<li><a href="model-training-and-tuning.html#custom">Customizing the Tuning Process</a></li>
+<li><a href="model-training-and-tuning.html#preproc">Pre-Processing Options</a></li>
+<li><a href="model-training-and-tuning.html#grids">Alternate Tuning Grids</a></li>
+<li><a href="model-training-and-tuning.html#plots">Plotting the Resampling Profile</a></li>
+<li><a href="model-training-and-tuning.html#control">The <code>trainControl</code> Function</a></li>
+<li><a href="model-training-and-tuning.html#metrics">Alternate Performance Metrics</a></li>
+<li><a href="model-training-and-tuning.html#final">Choosing the Final Model</a></li>
+<li><a href="model-training-and-tuning.html#pred">Extracting Predictions and Class Probabilities</a></li>
+<li><a href="model-training-and-tuning.html#resamp">Exploring and Comparing Resampling Distributions</a></li>
+<li><a href="model-training-and-tuning.html#within">Within-Model</a></li>
+<li><a href="model-training-and-tuning.html#between">Between-Models</a></li>
+<li><a href="model-training-and-tuning.html#notune">Fitting Models Without Parameter Tuning</a></li>
+</ul>
+<div id="model-training-and-parameter-tuning" class="section level2">
+<h2><span class="header-section-number">5.1</span> Model Training and Parameter Tuning</h2>
+<p>The <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package has several functions that attempt to streamline the model building and evaluation process.</p>
+<p>The <code>train</code> function can be used to</p>
+<ul>
+<li>evaluate, using resampling, the effect of model tuning parameters on performance</li>
+<li>choose the “optimal” model across these parameters</li>
+<li>estimate model performance from a training set</li>
+</ul>
+<p>First, a specific model must be chosen. Currently, 238 are available using <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a>; see <a href="available-models.html"><code>train</code> Model List</a> or <a href="train-models-by-tag.html"><code>train</code> Models By Tag</a> for details. On these pages, there are lists of tuning parameters that can potentially be optimized. <a href="using-your-own-model-in-train.html">User-defined models</a> can also be created.</p>
+<p>The first step in tuning the model (line 1 in the algorithm below is to choose a set of parameters to evaluate. For example, if fitting a Partial Least Squares (PLS) model, the number of PLS components to evaluate must be specified.</p>
+<p><img src="premade/TrainAlgo.png" /><!-- --></p>
+<p>Once the model and tuning parameter values have been defined, the type of resampling should be also be specified. Currently, <em>k</em>-fold cross-validation (once or repeated), leave-one-out cross-validation and bootstrap (simple estimation or the 632 rule) resampling methods can be used by <code>train</code>. After resampling, the process produces a profile of performance measures is available to guide the user as to which tuning parameter values should be chosen. By default, the function automatically chooses the tuning parameters associated with the best value, although different algorithms can be used (see details below).</p>
+<div id="example">
+
+</div>
+</div>
+<div id="an-example" class="section level2">
+<h2><span class="header-section-number">5.2</span> An Example</h2>
+<p>The Sonar data are available in the <a href="http://cran.r-project.org/web/packages/mlbench/index.html"><code>mlbench</code></a> package. Here, we load the data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mlbench)
+<span class="kw">data</span>(Sonar)
+<span class="kw">str</span>(Sonar[, <span class="dv">1</span>:<span class="dv">10</span>])</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    208 obs. of  10 variables:
+##  $ V1 : num  0.02 0.0453 0.0262 0.01 0.0762 0.0286 0.0317 0.0519 0.0223 0.0164 ...
+##  $ V2 : num  0.0371 0.0523 0.0582 0.0171 0.0666 0.0453 0.0956 0.0548 0.0375 0.0173 ...
+##  $ V3 : num  0.0428 0.0843 0.1099 0.0623 0.0481 ...
+##  $ V4 : num  0.0207 0.0689 0.1083 0.0205 0.0394 ...
+##  $ V5 : num  0.0954 0.1183 0.0974 0.0205 0.059 ...
+##  $ V6 : num  0.0986 0.2583 0.228 0.0368 0.0649 ...
+##  $ V7 : num  0.154 0.216 0.243 0.11 0.121 ...
+##  $ V8 : num  0.16 0.348 0.377 0.128 0.247 ...
+##  $ V9 : num  0.3109 0.3337 0.5598 0.0598 0.3564 ...
+##  $ V10: num  0.211 0.287 0.619 0.126 0.446 ...</code></pre>
+<p>The function <code>createDataPartition</code> can be used to create a stratified random sample of the data into training and test sets:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caret)
+<span class="kw">set.seed</span>(<span class="dv">998</span>)
+inTraining &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(Sonar$Class, <span class="dt">p =</span> .<span class="dv">75</span>, <span class="dt">list =</span> <span class="ot">FALSE</span>)
+training &lt;-<span class="st"> </span>Sonar[ inTraining,]
+testing  &lt;-<span class="st"> </span>Sonar[-inTraining,]</code></pre></div>
+<p>We will use these data illustrate functionality on this (and other) pages.</p>
+<div id="tune">
+
+</div>
+</div>
+<div id="basic-parameter-tuning" class="section level2">
+<h2><span class="header-section-number">5.3</span> Basic Parameter Tuning</h2>
+<p>By default, simple bootstrap resampling is used for line 3 in the algorithm above. Others are available, such as repeated <em>K</em>-fold cross-validation, leave-one-out etc. The function <code>trainControl</code> can be used to specifiy the type of resampling:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fitControl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(## 10-fold CV
+                           <span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,
+                           <span class="dt">number =</span> <span class="dv">10</span>,
+                           ## repeated ten times
+                           <span class="dt">repeats =</span> <span class="dv">10</span>)</code></pre></div>
+<p>More information about <code>trainControl</code> is given in <a href="model-training-and-tuning.html#custom">a section below</a>.</p>
+<p>The first two arguments to <code>train</code> are the predictor and outcome data objects, respectively. The third argument, <code>method</code>, specifies the type of model (see <a href="available-models.html&#39;"><code>train</code> Model List</a> or <a href="train-models-by-tag.html"><code>train</code> Models By Tag</a>). To illustrate, we will fit a boosted tree model via the <a href="http://cran.r-project.org/web/packages/gbm/index.html"><code>gbm</code></a> package. The basic syntax for fitting this model using repeated cross-validation is shown below:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">825</span>)
+gbmFit1 &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> training, 
+                 <span class="dt">method =</span> <span class="st">&quot;gbm&quot;</span>, 
+                 <span class="dt">trControl =</span> fitControl,
+                 ## This last option is actually one
+                 ## for gbm() that passes through
+                 <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
+gbmFit1</code></pre></div>
+<pre><code>## Stochastic Gradient Boosting 
+## 
+## 157 samples
+##  60 predictors
+##   2 classes: &#39;M&#39;, &#39;R&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold, repeated 10 times) 
+## Summary of sample sizes: 141, 141, 142, 141, 141, 142, ... 
+## Resampling results across tuning parameters:
+## 
+##   interaction.depth  n.trees  Accuracy   Kappa    
+##   1                   50      0.7876495  0.5712306
+##   1                  100      0.7957794  0.5867732
+##   1                  150      0.8140441  0.6235694
+##   2                   50      0.8073676  0.6101031
+##   2                  100      0.8158211  0.6263183
+##   2                  150      0.8244608  0.6441406
+##   3                   50      0.8167843  0.6294107
+##   3                  100      0.8238211  0.6432910
+##   3                  150      0.8284510  0.6522968
+## 
+## Tuning parameter &#39;shrinkage&#39; was held constant at a value of 0.1
+## 
+## Tuning parameter &#39;n.minobsinnode&#39; was held constant at a value of 10
+## Accuracy was used to select the optimal model using  the largest value.
+## The final values used for the model were n.trees = 150,
+##  interaction.depth = 3, shrinkage = 0.1 and n.minobsinnode = 10.</code></pre>
+<p>For a gradient boosting machine (GBM) model, there are three main tuning parameters:</p>
+<ul>
+<li>number of iterations, i.e. trees, (called <code>n.trees</code> in the <code>gbm</code> function)</li>
+<li>complexity of the tree, called <code>interaction.depth</code></li>
+<li>learning rate: how quickly the algorithm adapts, called <code>shrinkage</code></li>
+<li>the minimum number of training set samples in a node to commence splitting (<code>n.minobsinnode</code>)</li>
+</ul>
+<p>The default values tested for this model are shown in the first two columns (<code>shrinkage</code> and <code>n.minobsinnode</code> are not shown beause the grid set of candidate models all use a single value for these tuning parameters). The column labeled “<code>Accuracy</code>” is the overall agreement rate averaged over cross-validation iterations. The agreement standard deviation is also calculated from the cross-validation results. The column “<code>Kappa</code>” is Cohen’s (unweighted) Kappa statistic averaged across the resampling results. <code>train</code> works with specific models (see <a href="available-models.html&#39;"><code>train</code> Model List</a> or <a href="train-models-by-tag.html"><code>train</code> Models By Tag</a>). For these models, <code>train</code> can automatically create a grid of tuning parameters. By default, if <em>p</em> is the number of tuning parameters, the grid size is <em>3^p</em>. As another example, regularized discriminant analysis (RDA) models have two parameters (<code>gamma</code> and <code>lambda</code>), both of which lie between zero and one. The default training grid would produce nine combinations in this two-dimensional space.</p>
+<p>There are several <a href="notes.html">notes</a> regarding specific model behaviors for <code>train</code>. There is additional functionality in <code>train</code> that is described in the next section.</p>
+<div id="repro">
+
+</div>
+</div>
+<div id="notes-on-reproducibility" class="section level2">
+<h2><span class="header-section-number">5.4</span> Notes on Reproducibility</h2>
+<p>Many models utilize random numbers during the phase where parameters are estimated. Also, the resampling indices are chosen using random numbers. There are two main ways to control the randomness in order to assure reproducible results.</p>
+<ul>
+<li>There are two approaches to ensuring that the same <em>resamples</em> are used between calls to <code>train</code>. The first is to use <code>set.seed</code> just prior to calling <code>train</code>. The first use of random numbers is to create the resampling information. Alternatively, if you would like to use specific splits of the data, the <code>index</code> argument of the <code>trainControl</code> function can be used. This is briefly discussed below.</li>
+<li>When the models are created <em>inside of resampling</em>, the seeds can also be set. While setting the seed prior to calling <code>train</code> may guarantee that the same random numbers are used, this is unlikely to be the case when <a href="parallel-processing.html">parallel processing</a> is used (depending which technology is utilized). To set the model fitting seeds, <code>trainControl</code> has an additional argument called <code>seeds</code> that can be used. The value for this argument is a list of integer vectors that are used as seeds. The help page for <code>trainControl</code> describes the appropriate format for this option.</li>
+</ul>
+<p>How random numbers are used is highly dependent on the package author. There are rare cases where the underlying model function does not control the random number seed, especially if the computations are conducted in C code. Also, please note that <a href="https://github.com/topepo/caret/issues/452">some packages load random numbers when loaded (directly or via namespace)</a> and this may effect reproducibility.</p>
+<div id="custom">
+
+</div>
+</div>
+<div id="customizing-the-tuning-process" class="section level2">
+<h2><span class="header-section-number">5.5</span> Customizing the Tuning Process</h2>
+<p>There are a few ways to customize the process of selecting tuning/complexity parameters and building the final model.</p>
+<div id="preproc">
+
+</div>
+<div id="pre-processing-options" class="section level3">
+<h3><span class="header-section-number">5.5.1</span> Pre-Processing Options</h3>
+<p>As previously mentioned,<code>train</code> can pre-process the data in various ways prior to model fitting. The function <code>preProcess</code> is automatically used. This function can be used for centering and scaling, imputation (see details below), applying the spatial sign transformation and feature extraction via principal component analysis or independent component analysis.</p>
+<p>To specify what pre-processing should occur, the <code>train</code> function has an argument called <code>preProcess</code>. This argument takes a character string of methods that would normally be passed to the <code>method</code> argument of the <a href="pre-processing.html"><code>preProcess</code> function</a>. Additional options to the <code>preProcess</code> function can be passed via the <code>trainControl</code> function.</p>
+<p>These processing steps would be applied during any predictions generated using <code>predict.train</code>, <code>extractPrediction</code> or <code>extractProbs</code> (see details later in this document). The pre-processing would <strong>not</strong> be applied to predictions that directly use the <code>object$finalModel</code> object.</p>
+<p>For imputation, there are three methods currently implemented:</p>
+<ul>
+<li><em>k</em>-nearest neighbors takes a sample with missing values and finds the <em>k</em> closest samples in the training set. The average of the <em>k</em> training set values for that predictor are used as a substitute for the original data. When calculating the distances to the training set samples, the predictors used in the calculation are the ones with no missing values for that sample and no missing values in the training set.</li>
+<li>another approach is to fit a bagged tree model for each predictor using the training set samples. This is usually a fairly accurate model and can handle missing values. When a predictor for a sample requires imputation, the values for the other predictors are fed through the bagged tree and the prediction is used as the new value. This model can have significant computational cost.</li>
+<li>the median of the predictor’s training set values can be used to estimate the missing data.</li>
+</ul>
+<p>If there are missing values in the training set, PCA and ICA models only use complete samples.</p>
+<div id="grids">
+
+</div>
+</div>
+<div id="alternate-tuning-grids" class="section level3">
+<h3><span class="header-section-number">5.5.2</span> Alternate Tuning Grids</h3>
+<p>The tuning parameter grid can be specified by the user. The argument <code>tuneGrid</code> can take a data frame with columns for each tuning parameter. The column names should be the same as the fitting function’s arguments. For the previously mentioned RDA example, the names would be <code>gamma</code> and <code>lambda</code>. <code>train</code> will tune the model over each combination of values in the rows.</p>
+<p>For the boosted tree model, we can fix the learning rate and evaluate more than three values of <code>n.trees</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gbmGrid &lt;-<span class="st">  </span><span class="kw">expand.grid</span>(<span class="dt">interaction.depth =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">9</span>), 
+                        <span class="dt">n.trees =</span> (<span class="dv">1</span>:<span class="dv">30</span>)*<span class="dv">50</span>, 
+                        <span class="dt">shrinkage =</span> <span class="fl">0.1</span>,
+                        <span class="dt">n.minobsinnode =</span> <span class="dv">20</span>)
+                        
+<span class="kw">nrow</span>(gbmGrid)
+
+<span class="kw">set.seed</span>(<span class="dv">825</span>)
+gbmFit2 &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> training, 
+                 <span class="dt">method =</span> <span class="st">&quot;gbm&quot;</span>, 
+                 <span class="dt">trControl =</span> fitControl, 
+                 <span class="dt">verbose =</span> <span class="ot">FALSE</span>, 
+                 ## Now specify the exact models 
+                 ## to evaluate:
+                 <span class="dt">tuneGrid =</span> gbmGrid)
+gbmFit2</code></pre></div>
+<pre><code>## Stochastic Gradient Boosting 
+## 
+## 157 samples
+##  60 predictors
+##   2 classes: &#39;M&#39;, &#39;R&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold, repeated 10 times) 
+## Summary of sample sizes: 141, 141, 142, 141, 141, 142, ... 
+## Resampling results across tuning parameters:
+## 
+##   interaction.depth  n.trees  Accuracy  Kappa
+##   1                    50     0.77      0.54 
+##   1                   100     0.80      0.59 
+##   1                   150     0.81      0.62 
+##   1                   200     0.82      0.64 
+##   1                   250     0.82      0.64 
+##   1                   300     0.82      0.64 
+##   :                   :        :         : 
+##   9                  1350     0.85      0.69 
+##   9                  1400     0.84      0.68 
+##   9                  1450     0.84      0.68 
+##   9                  1500     0.84      0.68 
+## 
+## Tuning parameter &#39;shrinkage&#39; was held constant at a value of 0.1
+## 
+## Tuning parameter &#39;n.minobsinnode&#39; was held constant at a value of 20
+## Accuracy was used to select the optimal model using  the largest value.
+## The final values used for the model were n.trees = 350,
+##  interaction.depth = 9, shrinkage = 0.1 and n.minobsinnode = 20.</code></pre>
+<p>Another option is to use a random sample of possible tuning parameter combinations, i.e. “random search”<a href="http://www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf">(pdf)</a>. This functionality is described on <a href="random-hyperparameter-search.html">this page</a>.</p>
+<p>To use a random search, use the option <code>search = &quot;random&quot;</code> in the call to <code>trainControl</code>. In this situation, the <code>tuneLength</code> parameter defines the total number of parameter combinations that will be evaluated.</p>
+<div id="plots">
+
+</div>
+</div>
+<div id="plotting-the-resampling-profile" class="section level3">
+<h3><span class="header-section-number">5.5.3</span> Plotting the Resampling Profile</h3>
+<p>The <code>plot</code> function can be used to examine the relationship between the estimates of performance and the tuning parameters. For example, a simple invokation of the function shows the results for the first performance measure:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
+<span class="kw">plot</span>(gbmFit2)  </code></pre></div>
+<p><img src="basic/train_plot1-1.png" width="672" /></p>
+<p>Other performance metrics can be shown using the <code>metric</code> option:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
+<span class="kw">plot</span>(gbmFit2, <span class="dt">metric =</span> <span class="st">&quot;Kappa&quot;</span>)</code></pre></div>
+<p><img src="basic/train_plot2-1.png" width="672" /></p>
+<p>Other types of plot are also available. See <code>?plot.train</code> for more details. The code below shows a heatmap of the results:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
+<span class="kw">plot</span>(gbmFit2, <span class="dt">metric =</span> <span class="st">&quot;Kappa&quot;</span>, <span class="dt">plotType =</span> <span class="st">&quot;level&quot;</span>,
+     <span class="dt">scales =</span> <span class="kw">list</span>(<span class="dt">x =</span> <span class="kw">list</span>(<span class="dt">rot =</span> <span class="dv">90</span>)))</code></pre></div>
+<p><img src="basic/train_plot3-1.png" width="672" /></p>
+<p>A <code>ggplot</code> method can also be used:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(gbmFit2)  </code></pre></div>
+<pre><code>## Warning: Ignoring unknown aesthetics: shape</code></pre>
+<p><img src="basic/train_ggplot1-1.png" width="816" /></p>
+<p>There are also plot functions that show more detailed representations of the resampled estimates. See <code>?xyplot.train</code> for more details.</p>
+<p>From these plots, a different set of tuning parameters may be desired. To change the final values without starting the whole process again, the <code>update.train</code> can be used to refit the final model. See <code>?update.train</code></p>
+<div id="control">
+
+</div>
+</div>
+<div id="the-traincontrol-function" class="section level3">
+<h3><span class="header-section-number">5.5.4</span> The <code>trainControl</code> Function</h3>
+<p>The function <code>trainControl</code> generates parameters that further control how models are created, with possible values:</p>
+<ul>
+<li><code>method</code>: The resampling method: <code>&quot;boot&quot;</code>, <code>&quot;cv&quot;</code>, <code>&quot;LOOCV&quot;</code>, <code>&quot;LGOCV&quot;</code>, <code>&quot;repeatedcv&quot;</code>, <code>&quot;timeslice&quot;</code>, <code>&quot;none&quot;</code> and <code>&quot;oob&quot;</code>. The last value, out-of-bag estimates, can only be used by random forest, bagged trees, bagged earth, bagged flexible discriminant analysis, or conditional tree forest models. GBM models are not included (the <a href="http://cran.r-project.org/web/packages/gbm/index.html"><code>gbm</code></a> package maintainer has indicated that it would not be a good idea to choose tuning parameter values based on the model OOB error estimates with boosted trees). Also, for leave-one-out cross-validation, no uncertainty estimates are given for the resampled performance measures.</li>
+<li><code>number</code> and <code>repeats</code>: <code>number</code> controls with the number of folds in <em>K</em>-fold cross-validation or number of resampling iterations for bootstrapping and leave-group-out cross-validation. <code>repeats</code> applied only to repeated <em>K</em>-fold cross-validation. Suppose that <code>method = &quot;repeatedcv&quot;</code>, <code>number = 10</code> and <code>repeats = 3</code>,then three separate 10-fold cross-validations are used as the resampling scheme.</li>
+<li><code>verboseIter</code>: A logical for printing a training log.</li>
+<li><code>returnData</code>: A logical for saving the data into a slot called <code>trainingData</code>.</li>
+<li><code>p</code>: For leave-group out cross-validation: the training percentage</li>
+<li>For <code>method = &quot;timeslice&quot;</code>, <code>trainControl</code> has options <code>initialWindow</code>, <code>horizon</code> and <code>fixedWindow</code> that govern how <a href="data-splitting.html">cross-validation can be used for time series data.</a></li>
+<li><code>classProbs</code>: a logical value determining whether class probabilities should be computed for held-out samples during resample.</li>
+<li><code>index</code> and <code>indexOut</code>: optional lists with elements for each resampling iteration. Each list element is the sample rows used for training at that iteration or should be held-out. When these values are not specified, <code>train</code> will generate them.</li>
+<li><code>summaryFunction</code>: a function to computed alternate performance summaries.</li>
+<li><code>selectionFunction</code>: a function to choose the optimal tuning parameters. and examples.</li>
+<li><code>PCAthresh</code>, <code>ICAcomp</code> and <code>k</code>: these are all options to pass to the <code>preProcess</code> function (when used).</li>
+<li><code>returnResamp</code>: a character string containing one of the following values: <code>&quot;all&quot;</code>, <code>&quot;final&quot;</code> or <code>&quot;none&quot;</code>. This specifies how much of the resampled performance measures to save.</li>
+<li><code>allowParallel</code>: a logical that governs whether <code>train</code> should <a href="parallel-processing.html">use parallel processing (if availible).</a></li>
+</ul>
+<p>There are several other options not discussed here.</p>
+<div id="metrics">
+
+</div>
+</div>
+<div id="alternate-performance-metrics" class="section level3">
+<h3><span class="header-section-number">5.5.5</span> Alternate Performance Metrics</h3>
+<p>The user can change the metric used to determine the best settings. By default, RMSE, <em>R</em><sup>2</sup>, and the mean absolute error (MAE) are computed for regression while accuracy and Kappa are computed for classification. Also by default, the parameter values are chosen using RMSE and accuracy, respectively for regression and classification. The <code>metric</code> argument of the <code>train</code> function allows the user to control which the optimality criterion is used. For example, in problems where there are a low percentage of samples in one class, using <code>metric = &quot;Kappa&quot;</code> can improve quality of the final model.</p>
+<p>If none of these parameters are satisfactory, the user can also compute custom performance metrics. The <code>trainControl</code> function has a argument called <code>summaryFunction</code> that specifies a function for computing performance. The function should have these arguments:</p>
+<ul>
+<li><code>data</code> is a reference for a data frame or matrix with columns called <code>obs</code> and <code>pred</code> for the observed and predicted outcome values (either numeric data for regression or character values for classification). Currently, class probabilities are not passed to the function. The values in data are the held-out predictions (and their associated reference values) for a single combination of tuning parameters. If the <code>classProbs</code> argument of the <code>trainControl</code> object is set to <code>TRUE</code>, additional columns in <code>data</code> will be present that contains the class probabilities. The names of these columns are the same as the class levels. Also, if <code>weights</code> were specified in the call to <code>train</code>, a column called <code>weights</code> will also be in the data set. Additionally, if the <code>recipe</code> method for <code>train</code> was used (see <a href="topepo.github.io/caret/using-recipes-with-train">this section of documentation</a>), other variables not used in the model will also be included. This can be accomplished by adding a role in the recipe of <code>&quot;performance var&quot;</code>. An example is given in the recipe section of this site.</li>
+<li><code>lev</code> is a character string that has the outcome factor levels taken from the training data. For regression, a value of <code>NULL</code> is passed into the function.</li>
+<li><code>model</code> is a character string for the model being used (i.e. the value passed to the <code>method</code> argument of <code>train</code>).</li>
+</ul>
+<p>The output to the function should be a vector of numeric summary metrics with non-null names. By default, <code>train</code> evaluate classification models in terms of the predicted classes. Optionally, class probabilities can also be used to measure performance. To obtain predicted class probabilities within the resampling process, the argument <code>classProbs</code> in <code>trainControl</code> must be set to <code>TRUE</code>. This merges columns of probabilities into the predictions generated from each resample (there is a column per class and the column names are the class names).</p>
+<p>As shown in the last section, custom functions can be used to calculate performance scores that are averaged over the resamples. Another built-in function, <code>twoClassSummary</code>, will compute the sensitivity, specificity and area under the ROC curve:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(twoClassSummary)</code></pre></div>
+<pre><code>##                                                                                                                     
+## 1 function (data, lev = NULL, model = NULL)                                                                         
+## 2 {                                                                                                                 
+## 3     lvls &lt;- levels(data$obs)                                                                                      
+## 4     if (length(lvls) &gt; 2)                                                                                         
+## 5         stop(paste(&quot;Your outcome has&quot;, length(lvls), &quot;levels. The twoClassSummary() function isn&#39;t appropriate.&quot;))
+## 6     requireNamespaceQuietStop(&quot;ModelMetrics&quot;)</code></pre>
+<p>To rebuild the boosted tree model using this criterion, we can see the relationship between the tuning parameters and the area under the ROC curve using the following code:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fitControl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,
+                           <span class="dt">number =</span> <span class="dv">10</span>,
+                           <span class="dt">repeats =</span> <span class="dv">10</span>,
+                           ## Estimate class probabilities
+                           <span class="dt">classProbs =</span> <span class="ot">TRUE</span>,
+                           ## Evaluate performance using 
+                           ## the following function
+                           <span class="dt">summaryFunction =</span> twoClassSummary)
+
+<span class="kw">set.seed</span>(<span class="dv">825</span>)
+gbmFit3 &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> training, 
+                 <span class="dt">method =</span> <span class="st">&quot;gbm&quot;</span>, 
+                 <span class="dt">trControl =</span> fitControl, 
+                 <span class="dt">verbose =</span> <span class="ot">FALSE</span>, 
+                 <span class="dt">tuneGrid =</span> gbmGrid,
+                 ## Specify which metric to optimize
+                 <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)
+gbmFit3</code></pre></div>
+<pre><code>## Stochastic Gradient Boosting 
+## 
+## 157 samples
+##  60 predictors
+##   2 classes: &#39;M&#39;, &#39;R&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold, repeated 10 times) 
+## Summary of sample sizes: 141, 141, 142, 141, 141, 142, ... 
+## Resampling results across tuning parameters:
+## 
+##   interaction.depth  n.trees  ROC   Sens  Spec
+##   1                    50     0.87  0.83  0.71
+##   1                   100     0.88  0.85  0.74
+##   1                   150     0.89  0.85  0.77
+##   1                   200     0.89  0.85  0.78
+##   1                   250     0.89  0.86  0.78
+##   1                   300     0.89  0.86  0.78
+##   :                   :        :     :      :    
+##   9                  1350     0.91  0.89  0.79
+##   9                  1400     0.91  0.89  0.79
+##   9                  1450     0.91  0.89  0.79
+##   9                  1500     0.91  0.89  0.79
+## 
+## Tuning parameter &#39;shrinkage&#39; was held constant at a value of 0.1
+## 
+## Tuning parameter &#39;n.minobsinnode&#39; was held constant at a value of 20
+## ROC was used to select the optimal model using  the largest value.
+## The final values used for the model were n.trees = 250,
+##  interaction.depth = 9, shrinkage = 0.1 and n.minobsinnode = 20.</code></pre>
+<p>In this case, the average area under the ROC curve associated with the optimal tuning parameters was 0.914 across the 100 resamples.</p>
+<div id="final">
+
+</div>
+</div>
+</div>
+<div id="choosing-the-final-model" class="section level2">
+<h2><span class="header-section-number">5.6</span> Choosing the Final Model</h2>
+<p>Another method for customizing the tuning process is to modify the algorithm that is used to select the “best” parameter values, given the performance numbers. By default, the <code>train</code> function chooses the model with the largest performance value (or smallest, for mean squared error in regression models). Other schemes for selecting model can be used. <a href="http://books.google.com/books/about/Classification_and_Regression_Trees.html?id=JwQx-WOmSyQC">Breiman et al (1984)</a> suggested the “one standard error rule” for simple tree-based models. In this case, the model with the best performance value is identified and, using resampling, we can estimate the standard error of performance. The final model used was the simplest model within one standard error of the (empirically) best model. With simple trees this makes sense, since these models will start to over-fit as they become more and more specific to the training data.</p>
+<p><code>train</code> allows the user to specify alternate rules for selecting the final model. The argument <code>selectionFunction</code> can be used to supply a function to algorithmically determine the final model. There are three existing functions in the package: <code>best</code> is chooses the largest/smallest value, <code>oneSE</code> attempts to capture the spirit of <a href="http://books.google.com/books/about/Classification_and_Regression_Trees.html?id=JwQx-WOmSyQC">Breiman et al (1984)</a> and <code>tolerance</code> selects the least complex model within some percent tolerance of the best value. See <code>?best</code> for more details.</p>
+<p>User-defined functions can be used, as long as they have the following arguments:</p>
+<ul>
+<li><code>x</code> is a data frame containing the tune parameters and their associated performance metrics. Each row corresponds to a different tuning parameter combination.</li>
+<li><code>metric</code> a character string indicating which performance metric should be optimized (this is passed in directly from the <code>metric</code> argument of <code>train</code>.</li>
+<li><code>maximize</code> is a single logical value indicating whether larger values of the performance metric are better (this is also directly passed from the call to <code>train</code>).</li>
+</ul>
+<p>The function should output a single integer indicating which row in <code>x</code> is chosen.</p>
+<p>As an example, if we chose the previous boosted tree model on the basis of overall accuracy, we would choose: n.trees = 250, interaction.depth = 9, shrinkage = 0.1, n.minobsinnode = 20. However, the scale in this plots is fairly tight, with accuracy values ranging from 0.872 to 0.914. A less complex model (e.g. fewer, more shallow trees) might also yield acceptable accuracy.</p>
+<p>The tolerance function could be used to find a less complex model based on (<em>x</em>-<em>x</em><sub>best</sub>)/<em>x</em><sub>best</sub>x 100, which is the percent difference. For example, to select parameter values based on a 2% loss of performance:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">whichTwoPct &lt;-<span class="st"> </span><span class="kw">tolerance</span>(gbmFit3$results, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>, 
+                         <span class="dt">tol =</span> <span class="dv">2</span>, <span class="dt">maximize =</span> <span class="ot">TRUE</span>)  
+<span class="kw">cat</span>(<span class="st">&quot;best model within 2 pct of best:</span><span class="ch">\n</span><span class="st">&quot;</span>)</code></pre></div>
+<pre><code>## best model within 2 pct of best:</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gbmFit3$results[whichTwoPct,<span class="dv">1</span>:<span class="dv">6</span>]</code></pre></div>
+<pre><code>##    shrinkage interaction.depth n.minobsinnode n.trees      ROC      Sens
+## 32       0.1                 5             20     100 0.901255 0.8677778</code></pre>
+<p>This indicates that we can get a less complex model with an area under the ROC curve of 0.901 (compared to the “pick the best” value of 0.914).</p>
+<p>The main issue with these functions is related to ordering the models from simplest to complex. In some cases, this is easy (e.g. simple trees, partial least squares), but in cases such as this model, the ordering of models is subjective. For example, is a boosted tree model using 100 iterations and a tree depth of 2 more complex than one with 50 iterations and a depth of 8? The package makes some choices regarding the orderings. In the case of boosted trees, the package assumes that increasing the number of iterations adds complexity at a faster rate than increasing the tree depth, so models are ordered on the number of iterations then ordered with depth. See <code>?best</code> for more examples for specific models.</p>
+<div id="pred">
+
+</div>
+</div>
+<div id="extracting-predictions-and-class-probabilities" class="section level2">
+<h2><span class="header-section-number">5.7</span> Extracting Predictions and Class Probabilities</h2>
+<p>As previously mentioned, objects produced by the <code>train</code> function contain the “optimized” model in the <code>finalModel</code> sub-object. Predictions can be made from these objects as usual. In some cases, such as <code>pls</code> or <code>gbm</code> objects, additional parameters from the optimized fit may need to be specified. In these cases, the <code>train</code> objects uses the results of the parameter optimization to predict new samples. For example, if predictions were created using <code>predict.gbm</code>, the user would have to specify the number of trees directly (there is no default). Also, for binary classification, the predictions from this function take the form of the probability of one of the classes, so extra steps are required to convert this to a factor vector. <code>predict.train</code> automatically handles these details for this (and for other models).</p>
+<p>Also, there are very few standard syntaxes for model predictions in R. For example, to get class probabilities, many <code>predict</code> methods have an argument called <code>type</code> that is used to specify whether the classes or probabilities should be generated. Different packages use different values of <code>type</code>, such as <code>&quot;prob&quot;</code>, <code>&quot;posterior&quot;</code>, <code>&quot;response&quot;</code>, <code>&quot;probability&quot;</code> or <code>&quot;raw&quot;</code>. In other cases, completely different syntax is used.</p>
+<p>For <code>predict.train</code>, the type options are standardized to be <code>&quot;class&quot;</code> and <code>&quot;prob&quot;</code> (the underlying code matches these to the appropriate choices for each model. For example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predict</span>(gbmFit3, <span class="dt">newdata =</span> <span class="kw">head</span>(testing))</code></pre></div>
+<pre><code>## [1] R R R R M M
+## Levels: M R</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predict</span>(gbmFit3, <span class="dt">newdata =</span> <span class="kw">head</span>(testing), <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)</code></pre></div>
+<pre><code>##              M          R
+## 1 0.2600273005 0.73997270
+## 2 0.0113631254 0.98863687
+## 3 0.0003797417 0.99962026
+## 4 0.1532818480 0.84671815
+## 5 0.9879809255 0.01201907
+## 6 0.6342884390 0.36571156</code></pre>
+<div id="resamp">
+
+</div>
+</div>
+<div id="exploring-and-comparing-resampling-distributions" class="section level2">
+<h2><span class="header-section-number">5.8</span> Exploring and Comparing Resampling Distributions</h2>
+<div id="within">
+
+</div>
+<div id="within-model" class="section level3">
+<h3><span class="header-section-number">5.8.1</span> Within-Model</h3>
+<p>There are several <a href="http://cran.r-project.org/web/packages/lattice/index.html"><code>lattice</code></a> functions than can be used to explore relationships between tuning parameters and the resampling results for a specific model:</p>
+<ul>
+<li><code>xyplot</code> and <code>stripplot</code> can be used to plot resampling statistics against (numeric) tuning parameters.</li>
+<li><code>histogram</code> and <code>densityplot</code> can also be used to look at distributions of the tuning parameters across tuning parameters.</li>
+</ul>
+<p>For example, the following statements create a density plot:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
+<span class="kw">densityplot</span>(gbmFit3, <span class="dt">pch =</span> <span class="st">&quot;|&quot;</span>)</code></pre></div>
+<p><img src="basic/4-1.png" width="672" /></p>
+<p>Note that if you are interested in plotting the resampling results across multiple tuning parameters, the option <code>resamples = &quot;all&quot;</code> should be used in the control object.</p>
+<div id="between">
+
+</div>
+</div>
+<div id="between-models" class="section level3">
+<h3><span class="header-section-number">5.8.2</span> Between-Models</h3>
+<p>The <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package also includes functions to characterize the differences between models (generated using <code>train</code>, <code>sbf</code> or <code>rfe</code>) via their resampling distributions. These functions are based on the work of <a href="https://homepage.boku.ac.at/leisch/papers/Hothorn+Leisch+Zeileis-2005.pdf">Hothorn et al. (2005)</a> and <a href="http://epub.ub.uni-muenchen.de/10604/1/tr56.pdf">Eugster et al (2008)</a>.</p>
+<p>First, a support vector machine model is fit to the Sonar data. The data are centered and scaled using the <code>preProc</code> argument. Note that the same random number seed is set prior to the model that is identical to the seed used for the boosted tree model. This ensures that the same resampling sets are used, which will come in handy when we compare the resampling profiles between models.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">825</span>)
+svmFit &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> training, 
+                 <span class="dt">method =</span> <span class="st">&quot;svmRadial&quot;</span>, 
+                 <span class="dt">trControl =</span> fitControl, 
+                 <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>),
+                 <span class="dt">tuneLength =</span> <span class="dv">8</span>,
+                 <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)
+svmFit                 </code></pre></div>
+<pre><code>## Support Vector Machines with Radial Basis Function Kernel 
+## 
+## 157 samples
+##  60 predictors
+##   2 classes: &#39;M&#39;, &#39;R&#39; 
+## 
+## Pre-processing: centered (60), scaled (60) 
+## Resampling: Cross-Validated (10 fold, repeated 10 times) 
+## Summary of sample sizes: 141, 141, 142, 141, 141, 142, ... 
+## Resampling results across tuning parameters:
+## 
+##   C      ROC        Sens       Spec      
+##    0.25  0.7672259  1.0000000  0.02000000
+##    0.50  0.7559040  0.9900000  0.04428571
+##    1.00  0.7437649  0.8811111  0.15857143
+##    2.00  0.8201649  1.0000000  0.04571429
+##    4.00  0.8514000  0.9900000  0.05142857
+##    8.00  0.8383457  0.9655556  0.07982143
+##   16.00  0.8342746  0.9822222  0.06125000
+##   32.00  0.8522693  1.0000000  0.04839286
+## 
+## Tuning parameter &#39;sigma&#39; was held constant at a value of 0.01334808
+## ROC was used to select the optimal model using  the largest value.
+## The final values used for the model were sigma = 0.01334808 and C = 32.</code></pre>
+<p>Also, a regularized discriminant analysis model was fit.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">825</span>)
+rdaFit &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> training, 
+                 <span class="dt">method =</span> <span class="st">&quot;rda&quot;</span>, 
+                 <span class="dt">trControl =</span> fitControl, 
+                 <span class="dt">tuneLength =</span> <span class="dv">4</span>,
+                 <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)
+rdaFit                 </code></pre></div>
+<pre><code>## Regularized Discriminant Analysis 
+## 
+## 157 samples
+##  60 predictors
+##   2 classes: &#39;M&#39;, &#39;R&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold, repeated 10 times) 
+## Summary of sample sizes: 141, 141, 142, 141, 141, 142, ... 
+## Resampling results across tuning parameters:
+## 
+##   gamma      lambda     ROC        Sens       Spec     
+##   0.0000000  0.0000000  0.6677145  0.9052778  0.3998214
+##   0.0000000  0.3333333  0.8516543  0.8425000  0.7564286
+##   0.0000000  0.6666667  0.8697941  0.8212500  0.7969643
+##   0.0000000  1.0000000  0.8560193  0.7772222  0.7898214
+##   0.3333333  0.0000000  0.9069866  0.8884722  0.7630357
+##   0.3333333  0.3333333  0.9247817  0.9201389  0.7942857
+##   0.3333333  0.6666667  0.9247148  0.9251389  0.7830357
+##   0.3333333  1.0000000  0.8782242  0.8462500  0.7817857
+##   0.6666667  0.0000000  0.9015352  0.8804167  0.7557143
+##   0.6666667  0.3333333  0.9100471  0.9044444  0.7607143
+##   0.6666667  0.6666667  0.9033209  0.9013889  0.7687500
+##   0.6666667  1.0000000  0.8704638  0.8077778  0.7883929
+##   1.0000000  0.0000000  0.7283631  0.6652778  0.6507143
+##   1.0000000  0.3333333  0.7308557  0.6676389  0.6564286
+##   1.0000000  0.6666667  0.7322222  0.6770833  0.6633929
+##   1.0000000  1.0000000  0.7342832  0.6745833  0.6607143
+## 
+## ROC was used to select the optimal model using  the largest value.
+## The final values used for the model were gamma = 0.3333333 and lambda
+##  = 0.3333333.</code></pre>
+<p>Given these models, can we make statistical statements about their performance differences? To do this, we first collect the resampling results using <code>resamples</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resamps &lt;-<span class="st"> </span><span class="kw">resamples</span>(<span class="kw">list</span>(<span class="dt">GBM =</span> gbmFit3,
+                          <span class="dt">SVM =</span> svmFit,
+                          <span class="dt">RDA =</span> rdaFit))
+resamps</code></pre></div>
+<pre><code>## 
+## Call:
+## resamples.default(x = list(GBM = gbmFit3, SVM = svmFit, RDA = rdaFit))
+## 
+## Models: GBM, SVM, RDA 
+## Number of resamples: 100 
+## Performance metrics: ROC, Sens, Spec 
+## Time estimates for: everything, final model fit</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(resamps)</code></pre></div>
+<pre><code>## 
+## Call:
+## summary.resamples(object = resamps)
+## 
+## Models: GBM, SVM, RDA 
+## Number of resamples: 100 
+## 
+## ROC 
+##          Min.   1st Qu.    Median      Mean   3rd Qu. Max. NA&#39;s
+## GBM 0.6607143 0.8745040 0.9285714 0.9141096 0.9841890    1    0
+## SVM 0.1250000 0.8183594 0.8779762 0.8522693 0.9285714    1    0
+## RDA 0.6964286 0.8901910 0.9365079 0.9247817 0.9747024    1    0
+## 
+## Sens 
+##          Min.   1st Qu.    Median      Mean 3rd Qu. Max. NA&#39;s
+## GBM 0.4444444 0.7777778 0.8888889 0.8830556       1    1    0
+## SVM 1.0000000 1.0000000 1.0000000 1.0000000       1    1    0
+## RDA 0.6250000 0.8750000 1.0000000 0.9201389       1    1    0
+## 
+## Spec 
+##          Min.   1st Qu.    Median       Mean   3rd Qu.      Max. NA&#39;s
+## GBM 0.4285714 0.7142857 0.8571429 0.79785714 0.8750000 1.0000000    0
+## SVM 0.0000000 0.0000000 0.0000000 0.04839286 0.1428571 0.4285714    0
+## RDA 0.4285714 0.7142857 0.8571429 0.79428571 0.8750000 1.0000000    0</code></pre>
+<p>Note that, in this case, the option <code>resamples = &quot;final&quot;</code> should be user-defined in the control objects.</p>
+<p>There are several lattice plot methods that can be used to visualize the resampling distributions: density plots, box-whisker plots, scatterplot matrices and scatterplots of summary statistics. For example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">theme1 &lt;-<span class="st"> </span><span class="kw">trellis.par.get</span>()
+theme1$plot.symbol$col =<span class="st"> </span><span class="kw">rgb</span>(.<span class="dv">2</span>, .<span class="dv">2</span>, .<span class="dv">2</span>, .<span class="dv">4</span>)
+theme1$plot.symbol$pch =<span class="st"> </span><span class="dv">16</span>
+theme1$plot.line$col =<span class="st"> </span><span class="kw">rgb</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, .<span class="dv">7</span>)
+theme1$plot.line$lwd &lt;-<span class="st"> </span><span class="dv">2</span>
+<span class="kw">trellis.par.set</span>(theme1)
+<span class="kw">bwplot</span>(resamps, <span class="dt">layout =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</code></pre></div>
+<p><img src="basic/train_resample_box-1.png" width="864" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
+<span class="kw">dotplot</span>(resamps, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)</code></pre></div>
+<p><img src="basic/train_resample_ci-1.png" width="576" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(theme1)
+<span class="kw">xyplot</span>(resamps, <span class="dt">what =</span> <span class="st">&quot;BlandAltman&quot;</span>)</code></pre></div>
+<p><img src="basic/train_resample_ba-1.png" width="576" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">splom</span>(resamps)</code></pre></div>
+<p><img src="basic/train_resample_scatmat-1.png" width="672" /></p>
+<p>Other visualizations are availible in <code>densityplot.resamples</code> and <code>parallel.resamples</code></p>
+<p>Since models are fit on the same versions of the training data, it makes sense to make inferences on the differences between models. In this way we reduce the within-resample correlation that may exist. We can compute the differences, then use a simple <em>t</em>-test to evaluate the null hypothesis that there is no difference between models.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">difValues &lt;-<span class="st"> </span><span class="kw">diff</span>(resamps)
+difValues</code></pre></div>
+<pre><code>## 
+## Call:
+## diff.resamples(x = resamps)
+## 
+## Models: GBM, SVM, RDA 
+## Metrics: ROC, Sens, Spec 
+## Number of differences: 3 
+## p-value adjustment: bonferroni</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(difValues)</code></pre></div>
+<pre><code>## 
+## Call:
+## summary.diff.resamples(object = difValues)
+## 
+## p-value adjustment: bonferroni 
+## Upper diagonal: estimates of the difference
+## Lower diagonal: p-value for H0: difference = 0
+## 
+## ROC 
+##     GBM       SVM       RDA     
+## GBM            0.06184  -0.01067
+## SVM 0.0001762           -0.07251
+## RDA 0.6708609 5.632e-06         
+## 
+## Sens 
+##     GBM       SVM       RDA     
+## GBM           -0.11694  -0.03708
+## SVM 5.472e-15            0.07986
+## RDA 0.03554   8.536e-12         
+## 
+## Spec 
+##     GBM    SVM       RDA      
+## GBM         0.749464  0.003571
+## SVM &lt;2e-16           -0.745893
+## RDA 1      &lt;2e-16</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(theme1)
+<span class="kw">bwplot</span>(difValues, <span class="dt">layout =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</code></pre></div>
+<p><img src="basic/train_diff_box-1.png" width="864" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
+<span class="kw">dotplot</span>(difValues)</code></pre></div>
+<p><img src="basic/train_diff_ci-1.png" width="576" /></p>
+<div id="notune">
+
+</div>
+</div>
+</div>
+<div id="fitting-models-without-parameter-tuning" class="section level2">
+<h2><span class="header-section-number">5.9</span> Fitting Models Without Parameter Tuning</h2>
+<p>In cases where the model tuning values are known, <code>train</code> can be used to fit the model to the entire training set without any resampling or parameter tuning. Using the <code>method = &quot;none&quot;</code> option in <code>trainControl</code> can be used. For example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fitControl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;none&quot;</span>, <span class="dt">classProbs =</span> <span class="ot">TRUE</span>)
+
+<span class="kw">set.seed</span>(<span class="dv">825</span>)
+gbmFit4 &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> training, 
+                 <span class="dt">method =</span> <span class="st">&quot;gbm&quot;</span>, 
+                 <span class="dt">trControl =</span> fitControl, 
+                 <span class="dt">verbose =</span> <span class="ot">FALSE</span>, 
+                 ## Only a single model can be passed to the
+                 ## function when no resampling is used:
+                 <span class="dt">tuneGrid =</span> <span class="kw">data.frame</span>(<span class="dt">interaction.depth =</span> <span class="dv">4</span>,
+                                       <span class="dt">n.trees =</span> <span class="dv">100</span>,
+                                       <span class="dt">shrinkage =</span> .<span class="dv">1</span>,
+                                       <span class="dt">n.minobsinnode =</span> <span class="dv">20</span>),
+                 <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)
+gbmFit4</code></pre></div>
+<pre><code>## Stochastic Gradient Boosting 
+## 
+## 157 samples
+##  60 predictors
+##   2 classes: &#39;M&#39;, &#39;R&#39; 
+## 
+## No pre-processing
+## Resampling: None</code></pre>
+<p>Note that <code>plot.train</code>, <code>resamples</code>, <code>confusionMatrix.train</code> and several other functions will not work with this object but <code>predict.train</code> and others will:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predict</span>(gbmFit4, <span class="dt">newdata =</span> <span class="kw">head</span>(testing))</code></pre></div>
+<pre><code>## [1] R R R R M M
+## Levels: M R</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predict</span>(gbmFit4, <span class="dt">newdata =</span> <span class="kw">head</span>(testing), <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)</code></pre></div>
+<pre><code>##             M          R
+## 1 0.129181487 0.87081851
+## 2 0.039369722 0.96063028
+## 3 0.002722481 0.99727752
+## 4 0.076762607 0.92323739
+## 5 0.959529367 0.04047063
+## 6 0.622319826 0.37768017</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-splitting.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="available-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

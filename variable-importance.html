@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>The caret Package</title>
+  <meta name="description" content="Documentation for the <code>caret</code> package">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="The caret Package" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Documentation for the <code>caret</code> package" />
+  <meta name="github-repo" content="<a href="https://github.com/topepo/caret" class="uri">https://github.com/topepo/caret</a>" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="The caret Package" />
+  
+  <meta name="twitter:description" content="Documentation for the <code>caret</code> package" />
+  
+
+<meta name="author" content="Max Kuhn">
+
+
+<meta name="date" content="2017-09-04">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="adaptive-resampling.html">
+<link rel="next" href="miscellaneous-model-functions.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/d3-4.5.0/d3.min.js"></script>
+<script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
+<script src="libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="visualizations.html"><a href="visualizations.html"><i class="fa fa-check"></i><b>2</b> Visualizations</a></li>
+<li class="chapter" data-level="3" data-path="pre-processing.html"><a href="pre-processing.html"><i class="fa fa-check"></i><b>3</b> Pre-Processing</a><ul>
+<li class="chapter" data-level="3.1" data-path="pre-processing.html"><a href="pre-processing.html#creating-dummy-variables"><i class="fa fa-check"></i><b>3.1</b> Creating Dummy Variables</a></li>
+<li class="chapter" data-level="3.2" data-path="pre-processing.html"><a href="pre-processing.html#zero--and-near-zero-variance-predictors"><i class="fa fa-check"></i><b>3.2</b> Zero- and Near Zero-Variance Predictors</a></li>
+<li class="chapter" data-level="3.3" data-path="pre-processing.html"><a href="pre-processing.html#identifying-correlated-predictors"><i class="fa fa-check"></i><b>3.3</b> Identifying Correlated Predictors</a></li>
+<li class="chapter" data-level="3.4" data-path="pre-processing.html"><a href="pre-processing.html#linear-dependencies"><i class="fa fa-check"></i><b>3.4</b> Linear Dependencies</a></li>
+<li class="chapter" data-level="3.5" data-path="pre-processing.html"><a href="pre-processing.html#the-preprocess-function"><i class="fa fa-check"></i><b>3.5</b> The <code>preProcess</code> Function</a></li>
+<li class="chapter" data-level="3.6" data-path="pre-processing.html"><a href="pre-processing.html#centering-and-scaling"><i class="fa fa-check"></i><b>3.6</b> Centering and Scaling</a></li>
+<li class="chapter" data-level="3.7" data-path="pre-processing.html"><a href="pre-processing.html#imputation"><i class="fa fa-check"></i><b>3.7</b> Imputation</a></li>
+<li class="chapter" data-level="3.8" data-path="pre-processing.html"><a href="pre-processing.html#transforming-predictors"><i class="fa fa-check"></i><b>3.8</b> Transforming Predictors</a></li>
+<li class="chapter" data-level="3.9" data-path="pre-processing.html"><a href="pre-processing.html#putting-it-all-together"><i class="fa fa-check"></i><b>3.9</b> Putting It All Together</a></li>
+<li class="chapter" data-level="3.10" data-path="pre-processing.html"><a href="pre-processing.html#class-distance-calculations"><i class="fa fa-check"></i><b>3.10</b> Class Distance Calculations</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-splitting.html"><a href="data-splitting.html"><i class="fa fa-check"></i><b>4</b> Data Splitting</a><ul>
+<li class="chapter" data-level="4.1" data-path="data-splitting.html"><a href="data-splitting.html#simple-splitting-based-on-the-outcome"><i class="fa fa-check"></i><b>4.1</b> Simple Splitting Based on the Outcome</a></li>
+<li class="chapter" data-level="4.2" data-path="data-splitting.html"><a href="data-splitting.html#splitting-based-on-the-predictors"><i class="fa fa-check"></i><b>4.2</b> Splitting Based on the Predictors</a></li>
+<li class="chapter" data-level="4.3" data-path="data-splitting.html"><a href="data-splitting.html#data-splitting-for-time-series"><i class="fa fa-check"></i><b>4.3</b> Data Splitting for Time Series</a></li>
+<li class="chapter" data-level="4.4" data-path="data-splitting.html"><a href="data-splitting.html#simple-splitting-with-important-groups"><i class="fa fa-check"></i><b>4.4</b> Simple Splitting with Important Groups</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html"><i class="fa fa-check"></i><b>5</b> Model Training and Tuning</a><ul>
+<li class="chapter" data-level="5.1" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#model-training-and-parameter-tuning"><i class="fa fa-check"></i><b>5.1</b> Model Training and Parameter Tuning</a></li>
+<li class="chapter" data-level="5.2" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#an-example"><i class="fa fa-check"></i><b>5.2</b> An Example</a></li>
+<li class="chapter" data-level="5.3" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#basic-parameter-tuning"><i class="fa fa-check"></i><b>5.3</b> Basic Parameter Tuning</a></li>
+<li class="chapter" data-level="5.4" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#notes-on-reproducibility"><i class="fa fa-check"></i><b>5.4</b> Notes on Reproducibility</a></li>
+<li class="chapter" data-level="5.5" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#customizing-the-tuning-process"><i class="fa fa-check"></i><b>5.5</b> Customizing the Tuning Process</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#pre-processing-options"><i class="fa fa-check"></i><b>5.5.1</b> Pre-Processing Options</a></li>
+<li class="chapter" data-level="5.5.2" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#alternate-tuning-grids"><i class="fa fa-check"></i><b>5.5.2</b> Alternate Tuning Grids</a></li>
+<li class="chapter" data-level="5.5.3" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#plotting-the-resampling-profile"><i class="fa fa-check"></i><b>5.5.3</b> Plotting the Resampling Profile</a></li>
+<li class="chapter" data-level="5.5.4" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#the-traincontrol-function"><i class="fa fa-check"></i><b>5.5.4</b> The <code>trainControl</code> Function</a></li>
+<li class="chapter" data-level="5.5.5" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#alternate-performance-metrics"><i class="fa fa-check"></i><b>5.5.5</b> Alternate Performance Metrics</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#choosing-the-final-model"><i class="fa fa-check"></i><b>5.6</b> Choosing the Final Model</a></li>
+<li class="chapter" data-level="5.7" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#extracting-predictions-and-class-probabilities"><i class="fa fa-check"></i><b>5.7</b> Extracting Predictions and Class Probabilities</a></li>
+<li class="chapter" data-level="5.8" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#exploring-and-comparing-resampling-distributions"><i class="fa fa-check"></i><b>5.8</b> Exploring and Comparing Resampling Distributions</a><ul>
+<li class="chapter" data-level="5.8.1" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#within-model"><i class="fa fa-check"></i><b>5.8.1</b> Within-Model</a></li>
+<li class="chapter" data-level="5.8.2" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#between-models"><i class="fa fa-check"></i><b>5.8.2</b> Between-Models</a></li>
+</ul></li>
+<li class="chapter" data-level="5.9" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#fitting-models-without-parameter-tuning"><i class="fa fa-check"></i><b>5.9</b> Fitting Models Without Parameter Tuning</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="available-models.html"><a href="available-models.html"><i class="fa fa-check"></i><b>6</b> Available Models</a></li>
+<li class="chapter" data-level="7" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html"><i class="fa fa-check"></i><b>7</b> <code>train</code> Models By Tag</a><ul>
+<li class="chapter" data-level="7.0.1" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#accepts-case-weights"><i class="fa fa-check"></i><b>7.0.1</b> Accepts Case Weights</a></li>
+<li class="chapter" data-level="7.0.2" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#bagging"><i class="fa fa-check"></i><b>7.0.2</b> Bagging</a></li>
+<li class="chapter" data-level="7.0.3" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#bayesian-model"><i class="fa fa-check"></i><b>7.0.3</b> Bayesian Model</a></li>
+<li class="chapter" data-level="7.0.4" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#binary-predictors-only"><i class="fa fa-check"></i><b>7.0.4</b> Binary Predictors Only</a></li>
+<li class="chapter" data-level="7.0.5" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#boosting"><i class="fa fa-check"></i><b>7.0.5</b> Boosting</a></li>
+<li class="chapter" data-level="7.0.6" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#categorical-predictors-only"><i class="fa fa-check"></i><b>7.0.6</b> Categorical Predictors Only</a></li>
+<li class="chapter" data-level="7.0.7" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#cost-sensitive-learning"><i class="fa fa-check"></i><b>7.0.7</b> Cost Sensitive Learning</a></li>
+<li class="chapter" data-level="7.0.8" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#discriminant-analysis"><i class="fa fa-check"></i><b>7.0.8</b> Discriminant Analysis</a></li>
+<li class="chapter" data-level="7.0.9" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#distance-weighted-discrimination"><i class="fa fa-check"></i><b>7.0.9</b> Distance Weighted Discrimination</a></li>
+<li class="chapter" data-level="7.0.10" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ensemble-model"><i class="fa fa-check"></i><b>7.0.10</b> Ensemble Model</a></li>
+<li class="chapter" data-level="7.0.11" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#feature-extraction"><i class="fa fa-check"></i><b>7.0.11</b> Feature Extraction</a></li>
+<li class="chapter" data-level="7.0.12" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#feature-selection-wrapper"><i class="fa fa-check"></i><b>7.0.12</b> Feature Selection Wrapper</a></li>
+<li class="chapter" data-level="7.0.13" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#gaussian-process"><i class="fa fa-check"></i><b>7.0.13</b> Gaussian Process</a></li>
+<li class="chapter" data-level="7.0.14" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#generalized-additive-model"><i class="fa fa-check"></i><b>7.0.14</b> Generalized Additive Model</a></li>
+<li class="chapter" data-level="7.0.15" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#generalized-linear-model"><i class="fa fa-check"></i><b>7.0.15</b> Generalized Linear Model</a></li>
+<li class="chapter" data-level="7.0.16" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#handle-missing-predictor-data"><i class="fa fa-check"></i><b>7.0.16</b> Handle Missing Predictor Data</a></li>
+<li class="chapter" data-level="7.0.17" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#implicit-feature-selection"><i class="fa fa-check"></i><b>7.0.17</b> Implicit Feature Selection</a></li>
+<li class="chapter" data-level="7.0.18" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#kernel-method"><i class="fa fa-check"></i><b>7.0.18</b> Kernel Method</a></li>
+<li class="chapter" data-level="7.0.19" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#l1-regularization"><i class="fa fa-check"></i><b>7.0.19</b> L1 Regularization</a></li>
+<li class="chapter" data-level="7.0.20" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#l2-regularization"><i class="fa fa-check"></i><b>7.0.20</b> L2 Regularization</a></li>
+<li class="chapter" data-level="7.0.21" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#linear-classifier"><i class="fa fa-check"></i><b>7.0.21</b> Linear Classifier</a></li>
+<li class="chapter" data-level="7.0.22" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#linear-regression"><i class="fa fa-check"></i><b>7.0.22</b> Linear Regression</a></li>
+<li class="chapter" data-level="7.0.23" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#logic-regression"><i class="fa fa-check"></i><b>7.0.23</b> Logic Regression</a></li>
+<li class="chapter" data-level="7.0.24" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#logistic-regression"><i class="fa fa-check"></i><b>7.0.24</b> Logistic Regression</a></li>
+<li class="chapter" data-level="7.0.25" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#mixture-model"><i class="fa fa-check"></i><b>7.0.25</b> Mixture Model</a></li>
+<li class="chapter" data-level="7.0.26" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#model-tree"><i class="fa fa-check"></i><b>7.0.26</b> Model Tree</a></li>
+<li class="chapter" data-level="7.0.27" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#multivariate-adaptive-regression-splines"><i class="fa fa-check"></i><b>7.0.27</b> Multivariate Adaptive Regression Splines</a></li>
+<li class="chapter" data-level="7.0.28" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#neural-network"><i class="fa fa-check"></i><b>7.0.28</b> Neural Network</a></li>
+<li class="chapter" data-level="7.0.29" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#oblique-tree"><i class="fa fa-check"></i><b>7.0.29</b> Oblique Tree</a></li>
+<li class="chapter" data-level="7.0.30" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ordinal-outcomes"><i class="fa fa-check"></i><b>7.0.30</b> Ordinal Outcomes</a></li>
+<li class="chapter" data-level="7.0.31" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#partial-least-squares"><i class="fa fa-check"></i><b>7.0.31</b> Partial Least Squares</a></li>
+<li class="chapter" data-level="7.0.32" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#patient-rule-induction-method"><i class="fa fa-check"></i><b>7.0.32</b> Patient Rule Induction Method</a></li>
+<li class="chapter" data-level="7.0.33" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#polynomial-model"><i class="fa fa-check"></i><b>7.0.33</b> Polynomial Model</a></li>
+<li class="chapter" data-level="7.0.34" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#prototype-models"><i class="fa fa-check"></i><b>7.0.34</b> Prototype Models</a></li>
+<li class="chapter" data-level="7.0.35" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#quantile-regression"><i class="fa fa-check"></i><b>7.0.35</b> Quantile Regression</a></li>
+<li class="chapter" data-level="7.0.36" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#radial-basis-function"><i class="fa fa-check"></i><b>7.0.36</b> Radial Basis Function</a></li>
+<li class="chapter" data-level="7.0.37" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#random-forest"><i class="fa fa-check"></i><b>7.0.37</b> Random Forest</a></li>
+<li class="chapter" data-level="7.0.38" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#regularization"><i class="fa fa-check"></i><b>7.0.38</b> Regularization</a></li>
+<li class="chapter" data-level="7.0.39" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#relevance-vector-machines"><i class="fa fa-check"></i><b>7.0.39</b> Relevance Vector Machines</a></li>
+<li class="chapter" data-level="7.0.40" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#ridge-regression"><i class="fa fa-check"></i><b>7.0.40</b> Ridge Regression</a></li>
+<li class="chapter" data-level="7.0.41" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-methods"><i class="fa fa-check"></i><b>7.0.41</b> Robust Methods</a></li>
+<li class="chapter" data-level="7.0.42" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#robust-model"><i class="fa fa-check"></i><b>7.0.42</b> Robust Model</a></li>
+<li class="chapter" data-level="7.0.43" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#roc-curves"><i class="fa fa-check"></i><b>7.0.43</b> ROC Curves</a></li>
+<li class="chapter" data-level="7.0.44" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#rule-based-model"><i class="fa fa-check"></i><b>7.0.44</b> Rule-Based Model</a></li>
+<li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.45</b> Self-Organising Maps</a></li>
+<li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.46</b> String Kernel</a></li>
+<li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.47</b> Support Vector Machines</a></li>
+<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.48</b> Text Mining</a></li>
+<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.49</b> Tree-Based Model</a></li>
+<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.50</b> Two Class Only</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="models-clustered-by-tag-similarity.html"><a href="models-clustered-by-tag-similarity.html"><i class="fa fa-check"></i><b>8</b> Models Clustered by Tag Similarity</a></li>
+<li class="chapter" data-level="9" data-path="parallel-processing.html"><a href="parallel-processing.html"><i class="fa fa-check"></i><b>9</b> Parallel Processing</a></li>
+<li class="chapter" data-level="10" data-path="random-hyperparameter-search.html"><a href="random-hyperparameter-search.html"><i class="fa fa-check"></i><b>10</b> Random Hyperparameter Search</a></li>
+<li class="chapter" data-level="11" data-path="subsampling-for-class-imbalances.html"><a href="subsampling-for-class-imbalances.html"><i class="fa fa-check"></i><b>11</b> Subsampling For Class Imbalances</a><ul>
+<li class="chapter" data-level="11.1" data-path="subsampling-for-class-imbalances.html"><a href="subsampling-for-class-imbalances.html#subsampling-techniques"><i class="fa fa-check"></i><b>11.1</b> Subsampling Techniques</a></li>
+<li class="chapter" data-level="11.2" data-path="subsampling-for-class-imbalances.html"><a href="subsampling-for-class-imbalances.html#subsampling-during-resampling"><i class="fa fa-check"></i><b>11.2</b> Subsampling During Resampling</a></li>
+<li class="chapter" data-level="11.3" data-path="subsampling-for-class-imbalances.html"><a href="subsampling-for-class-imbalances.html#complications"><i class="fa fa-check"></i><b>11.3</b> Complications</a></li>
+<li class="chapter" data-level="11.4" data-path="subsampling-for-class-imbalances.html"><a href="subsampling-for-class-imbalances.html#using-custom-subsampling-techniques"><i class="fa fa-check"></i><b>11.4</b> Using Custom Subsampling Techniques</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html"><i class="fa fa-check"></i><b>12</b> Using Recipes with train</a><ul>
+<li class="chapter" data-level="12.1" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#why-should-you-learn-this"><i class="fa fa-check"></i><b>12.1</b> Why Should you learn this?</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#more-versatile-tools-for-preprocessing-data"><i class="fa fa-check"></i><b>12.1.1</b> More versatile tools for preprocessing data</a></li>
+<li class="chapter" data-level="12.1.2" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#using-additional-data-to-measure-performance"><i class="fa fa-check"></i><b>12.1.2</b> Using additional data to measure performance</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#an-example-1"><i class="fa fa-check"></i><b>12.2</b> An Example</a></li>
+<li class="chapter" data-level="12.3" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#case-weights"><i class="fa fa-check"></i><b>12.3</b> Case Weights</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html"><i class="fa fa-check"></i><b>13</b> Using Your Own Model in <code>train</code></a><ul>
+<li class="chapter" data-level="13.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#introduction-1"><i class="fa fa-check"></i><b>13.1</b> Introduction</a></li>
+<li class="chapter" data-level="13.2" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-1-svms-with-laplacian-kernels"><i class="fa fa-check"></i><b>13.2</b> Illustrative Example 1: SVMs with Laplacian Kernels</a></li>
+<li class="chapter" data-level="13.3" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#model-components"><i class="fa fa-check"></i><b>13.3</b> Model Components</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-parameters-element"><i class="fa fa-check"></i><b>13.3.1</b> The parameters Element</a></li>
+<li class="chapter" data-level="13.3.2" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-grid-element"><i class="fa fa-check"></i><b>13.3.2</b> The <code>grid</code> Element</a></li>
+<li class="chapter" data-level="13.3.3" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-fit-element"><i class="fa fa-check"></i><b>13.3.3</b> The <code>fit</code> Element</a></li>
+<li class="chapter" data-level="13.3.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-predict-element"><i class="fa fa-check"></i><b>13.3.4</b> The <code>predict</code> Element</a></li>
+<li class="chapter" data-level="13.3.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-prob-element"><i class="fa fa-check"></i><b>13.3.5</b> The <code>prob</code> Element</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-sort-element"><i class="fa fa-check"></i><b>13.4</b> The sort Element</a><ul>
+<li class="chapter" data-level="13.4.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-levels-element"><i class="fa fa-check"></i><b>13.4.1</b> The <code>levels</code> Element</a></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>13.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a><ul>
+<li class="chapter" data-level="13.5.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-loop-element"><i class="fa fa-check"></i><b>13.5.1</b> The loop Element</a></li>
+</ul></li>
+<li class="chapter" data-level="13.6" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-3-nonstandard-formulas"><i class="fa fa-check"></i><b>13.6</b> Illustrative Example 3: Nonstandard Formulas</a></li>
+<li class="chapter" data-level="13.7" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-4-pls-feature-extraction-pre-processing"><i class="fa fa-check"></i><b>13.7</b> Illustrative Example 4: PLS Feature Extraction Pre-Processing</a></li>
+<li class="chapter" data-level="13.8" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-5-optimizing-probability-thresholds-for-class-imbalances"><i class="fa fa-check"></i><b>13.8</b> Illustrative Example 5: Optimizing probability thresholds for class imbalances</a></li>
+<li class="chapter" data-level="13.9" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-6-offsets-in-generalized-linear-models"><i class="fa fa-check"></i><b>13.9</b> Illustrative Example 6: Offsets in Generalized Linear Models</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="adaptive-resampling.html"><a href="adaptive-resampling.html"><i class="fa fa-check"></i><b>14</b> Adaptive Resampling</a></li>
+<li class="chapter" data-level="15" data-path="variable-importance.html"><a href="variable-importance.html"><i class="fa fa-check"></i><b>15</b> Variable Importance</a><ul>
+<li class="chapter" data-level="15.1" data-path="variable-importance.html"><a href="variable-importance.html#model-specific-metrics"><i class="fa fa-check"></i><b>15.1</b> Model Specific Metrics</a></li>
+<li class="chapter" data-level="15.2" data-path="variable-importance.html"><a href="variable-importance.html#model-independent-metrics"><i class="fa fa-check"></i><b>15.2</b> Model Independent Metrics</a></li>
+<li class="chapter" data-level="15.3" data-path="variable-importance.html"><a href="variable-importance.html#an-example-2"><i class="fa fa-check"></i><b>15.3</b> An Example</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html"><i class="fa fa-check"></i><b>16</b> Miscellaneous Model Functions</a><ul>
+<li class="chapter" data-level="16.1" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#yet-another-k-nearest-neighbor-function"><i class="fa fa-check"></i><b>16.1</b> Yet Another <em>k</em>-Nearest Neighbor Function</a></li>
+<li class="chapter" data-level="16.2" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#partial-least-squares-discriminant-analysis"><i class="fa fa-check"></i><b>16.2</b> Partial Least Squares Discriminant Analysis</a></li>
+<li class="chapter" data-level="16.3" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#bagged-mars-and-fda"><i class="fa fa-check"></i><b>16.3</b> Bagged MARS and FDA</a></li>
+<li class="chapter" data-level="16.4" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#bagging-1"><i class="fa fa-check"></i><b>16.4</b> Bagging</a><ul>
+<li class="chapter" data-level="16.4.1" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-fit-function"><i class="fa fa-check"></i><b>16.4.1</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="16.4.2" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-pred-function"><i class="fa fa-check"></i><b>16.4.2</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="16.4.3" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-aggregate-function"><i class="fa fa-check"></i><b>16.4.3</b> The <code>aggregate</code> Function</a></li>
+</ul></li>
+<li class="chapter" data-level="16.5" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#model-averaged-neural-networks"><i class="fa fa-check"></i><b>16.5</b> Model Averaged Neural Networks</a></li>
+<li class="chapter" data-level="16.6" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#neural-networks-with-a-principal-component-step"><i class="fa fa-check"></i><b>16.6</b> Neural Networks with a Principal Component Step</a></li>
+<li class="chapter" data-level="16.7" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#independent-component-regression"><i class="fa fa-check"></i><b>16.7</b> Independent Component Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="measuring-performance.html"><a href="measuring-performance.html"><i class="fa fa-check"></i><b>17</b> Measuring Performance</a><ul>
+<li class="chapter" data-level="17.1" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-regression"><i class="fa fa-check"></i><b>17.1</b> Measures for Regression</a></li>
+<li class="chapter" data-level="17.2" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-predicted-classes"><i class="fa fa-check"></i><b>17.2</b> Measures for Predicted Classes</a></li>
+<li class="chapter" data-level="17.3" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-class-probabilities"><i class="fa fa-check"></i><b>17.3</b> Measures for Class Probabilities</a></li>
+<li class="chapter" data-level="17.4" data-path="measuring-performance.html"><a href="measuring-performance.html#lift-curves"><i class="fa fa-check"></i><b>17.4</b> Lift Curves</a></li>
+<li class="chapter" data-level="17.5" data-path="measuring-performance.html"><a href="measuring-performance.html#calibration-curves"><i class="fa fa-check"></i><b>17.5</b> Calibration Curves</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html"><i class="fa fa-check"></i><b>18</b> Feature Selection Overview</a><ul>
+<li class="chapter" data-level="18.1" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#models-with-built-in-feature-selection"><i class="fa fa-check"></i><b>18.1</b> Models with Built-In Feature Selection</a></li>
+<li class="chapter" data-level="18.2" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#feature-selection-methods"><i class="fa fa-check"></i><b>18.2</b> Feature Selection Methods</a></li>
+<li class="chapter" data-level="18.3" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#external-validation"><i class="fa fa-check"></i><b>18.3</b> External Validation</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html"><i class="fa fa-check"></i><b>19</b> Feature Selection using Univariate Filters</a><ul>
+<li class="chapter" data-level="19.1" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#univariate-filters"><i class="fa fa-check"></i><b>19.1</b> Univariate Filters</a></li>
+<li class="chapter" data-level="19.2" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#basic-syntax"><i class="fa fa-check"></i><b>19.2</b> Basic Syntax</a><ul>
+<li class="chapter" data-level="19.2.1" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-score-function"><i class="fa fa-check"></i><b>19.2.1</b> The <code>score</code> Function</a></li>
+<li class="chapter" data-level="19.2.2" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-filter-function"><i class="fa fa-check"></i><b>19.2.2</b> The <code>filter</code> Function</a></li>
+<li class="chapter" data-level="19.2.3" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-fit-function-1"><i class="fa fa-check"></i><b>19.2.3</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="19.2.4" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-summary-and-pred-functions"><i class="fa fa-check"></i><b>19.2.4</b> The <code>summary</code> and <code>pred</code> Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="19.3" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-example"><i class="fa fa-check"></i><b>19.3</b> The Example</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html"><i class="fa fa-check"></i><b>20</b> Recursive Feature Elimination</a><ul>
+<li class="chapter" data-level="20.1" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#backwards-selection"><i class="fa fa-check"></i><b>20.1</b> Backwards Selection</a></li>
+<li class="chapter" data-level="20.2" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#resampling-and-external-validation"><i class="fa fa-check"></i><b>20.2</b> Resampling and External Validation</a></li>
+<li class="chapter" data-level="20.3" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#recursive-feature-elimination-via-caret"><i class="fa fa-check"></i><b>20.3</b> Recursive Feature Elimination via <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a></a></li>
+<li class="chapter" data-level="20.4" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#an-example-3"><i class="fa fa-check"></i><b>20.4</b> An Example</a></li>
+<li class="chapter" data-level="20.5" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#helper-functions"><i class="fa fa-check"></i><b>20.5</b> Helper Functions</a><ul>
+<li class="chapter" data-level="20.5.1" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-summary-function"><i class="fa fa-check"></i><b>20.5.1</b> The <code>summary</code> Function</a></li>
+<li class="chapter" data-level="20.5.2" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-fit-function-2"><i class="fa fa-check"></i><b>20.5.2</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="20.5.3" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-pred-function-1"><i class="fa fa-check"></i><b>20.5.3</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="20.5.4" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-rank-function"><i class="fa fa-check"></i><b>20.5.4</b> The <code>rank</code> Function</a></li>
+<li class="chapter" data-level="20.5.5" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-selectsize-function"><i class="fa fa-check"></i><b>20.5.5</b> The <code>selectSize</code> Function</a></li>
+<li class="chapter" data-level="20.5.6" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-selectvar-function"><i class="fa fa-check"></i><b>20.5.6</b> The <code>selectVar</code> Function</a></li>
+</ul></li>
+<li class="chapter" data-level="20.6" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-example-1"><i class="fa fa-check"></i><b>20.6</b> The Example</a></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html"><i class="fa fa-check"></i><b>21</b> Feature Selection using Genetic Algorithms</a><ul>
+<li class="chapter" data-level="21.1" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#genetic-algorithms"><i class="fa fa-check"></i><b>21.1</b> Genetic Algorithms</a></li>
+<li class="chapter" data-level="21.2" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#internal-and-external-performance-estimates"><i class="fa fa-check"></i><b>21.2</b> Internal and External Performance Estimates</a></li>
+<li class="chapter" data-level="21.3" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#basic-syntax-1"><i class="fa fa-check"></i><b>21.3</b> Basic Syntax</a></li>
+<li class="chapter" data-level="21.4" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#example"><i class="fa fa-check"></i><b>21.4</b> Example</a></li>
+<li class="chapter" data-level="21.5" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#customizing-the-search"><i class="fa fa-check"></i><b>21.5</b> Customizing the Search</a><ul>
+<li class="chapter" data-level="21.5.1" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fit-function-3"><i class="fa fa-check"></i><b>21.5.1</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="21.5.2" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-pred-function-2"><i class="fa fa-check"></i><b>21.5.2</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="21.5.3" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fitness_intern-function"><i class="fa fa-check"></i><b>21.5.3</b> The <code>fitness_intern</code> Function</a></li>
+<li class="chapter" data-level="21.5.4" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fitness_extern-function"><i class="fa fa-check"></i><b>21.5.4</b> The <code>fitness_extern</code> Function</a></li>
+<li class="chapter" data-level="21.5.5" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-initial-function"><i class="fa fa-check"></i><b>21.5.5</b> The <code>initial</code> Function</a></li>
+<li class="chapter" data-level="21.5.6" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-selection-function"><i class="fa fa-check"></i><b>21.5.6</b> The <code>selection</code> Function</a></li>
+<li class="chapter" data-level="21.5.7" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-crossover-function"><i class="fa fa-check"></i><b>21.5.7</b> The <code>crossover</code> Function</a></li>
+<li class="chapter" data-level="21.5.8" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-mutation-function"><i class="fa fa-check"></i><b>21.5.8</b> The <code>mutation</code> Function</a></li>
+<li class="chapter" data-level="21.5.9" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-selectiter-function"><i class="fa fa-check"></i><b>21.5.9</b> The <code>selectIter</code> Function</a></li>
+</ul></li>
+<li class="chapter" data-level="21.6" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-example-revisited"><i class="fa fa-check"></i><b>21.6</b> The Example Revisited</a></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html"><i class="fa fa-check"></i><b>22</b> Feature Selection using Simulated Annealing</a><ul>
+<li class="chapter" data-level="22.1" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#simulated-annealing"><i class="fa fa-check"></i><b>22.1</b> Simulated Annealing</a></li>
+<li class="chapter" data-level="22.2" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#internal-and-external-performance-estimates-1"><i class="fa fa-check"></i><b>22.2</b> Internal and External Performance Estimates</a></li>
+<li class="chapter" data-level="22.3" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#basic-syntax-2"><i class="fa fa-check"></i><b>22.3</b> Basic Syntax</a></li>
+<li class="chapter" data-level="22.4" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#example-1"><i class="fa fa-check"></i><b>22.4</b> Example</a></li>
+<li class="chapter" data-level="22.5" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#customizing-the-search-1"><i class="fa fa-check"></i><b>22.5</b> Customizing the Search</a><ul>
+<li class="chapter" data-level="22.5.1" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fit-function-4"><i class="fa fa-check"></i><b>22.5.1</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="22.5.2" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-pred-function-3"><i class="fa fa-check"></i><b>22.5.2</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="22.5.3" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fitness_intern-function-1"><i class="fa fa-check"></i><b>22.5.3</b> The <code>fitness_intern</code> Function</a></li>
+<li class="chapter" data-level="22.5.4" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fitness_extern-function-1"><i class="fa fa-check"></i><b>22.5.4</b> The <code>fitness_extern</code> Function</a></li>
+<li class="chapter" data-level="22.5.5" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-initial-function-1"><i class="fa fa-check"></i><b>22.5.5</b> The <code>initial</code> Function</a></li>
+<li class="chapter" data-level="22.5.6" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-perturb-function"><i class="fa fa-check"></i><b>22.5.6</b> The <code>perturb</code> Function</a></li>
+<li class="chapter" data-level="22.5.7" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-prob-function"><i class="fa fa-check"></i><b>22.5.7</b> The <code>prob</code> Function</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="23" data-path="data-sets.html"><a href="data-sets.html"><i class="fa fa-check"></i><b>23</b> Data Sets</a><ul>
+<li class="chapter" data-level="23.1" data-path="data-sets.html"><a href="data-sets.html#blood-brain-barrier-data"><i class="fa fa-check"></i><b>23.1</b> Blood-Brain Barrier Data</a></li>
+<li class="chapter" data-level="23.2" data-path="data-sets.html"><a href="data-sets.html#cox-2-activity-data"><i class="fa fa-check"></i><b>23.2</b> COX-2 Activity Data</a></li>
+<li class="chapter" data-level="23.3" data-path="data-sets.html"><a href="data-sets.html#dhfr-inhibition"><i class="fa fa-check"></i><b>23.3</b> DHFR Inhibition</a></li>
+<li class="chapter" data-level="23.4" data-path="data-sets.html"><a href="data-sets.html#tecator-nir-data"><i class="fa fa-check"></i><b>23.4</b> Tecator NIR Data</a></li>
+<li class="chapter" data-level="23.5" data-path="data-sets.html"><a href="data-sets.html#fatty-acid-composition-data"><i class="fa fa-check"></i><b>23.5</b> Fatty Acid Composition Data</a></li>
+<li class="chapter" data-level="23.6" data-path="data-sets.html"><a href="data-sets.html#german-credit-data"><i class="fa fa-check"></i><b>23.6</b> German Credit Data</a></li>
+<li class="chapter" data-level="23.7" data-path="data-sets.html"><a href="data-sets.html#kelly-blue-book"><i class="fa fa-check"></i><b>23.7</b> Kelly Blue Book</a></li>
+<li class="chapter" data-level="23.8" data-path="data-sets.html"><a href="data-sets.html#cell-body-segmentation-data"><i class="fa fa-check"></i><b>23.8</b> Cell Body Segmentation Data</a></li>
+<li class="chapter" data-level="23.9" data-path="data-sets.html"><a href="data-sets.html#sacramento-house-price-data"><i class="fa fa-check"></i><b>23.9</b> Sacramento House Price Data</a></li>
+<li class="chapter" data-level="23.10" data-path="data-sets.html"><a href="data-sets.html#animal-scat-data"><i class="fa fa-check"></i><b>23.10</b> Animal Scat Data</a></li>
+</ul></li>
+<li class="chapter" data-level="24" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>24</b> Session Information</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The <code>caret</code> Package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="variable-importance" class="section level1">
+<h1><span class="header-section-number">15</span> Variable Importance</h1>
+<p>Variable importance evaluation functions can be separated into two groups: those that use the model information and those that do not. The advantage of using a model-based approach is that is more closely tied to the model performance and that it <em>may</em> be able to incorporate the correlation structure between the predictors into the importance calculation. Regardless of how the importance is calculated:</p>
+<ul>
+<li>For most classification models, each predictor will have a separate variable importance for each class (the exceptions are classification trees, bagged trees and boosted trees).</li>
+<li>All measures of importance are scaled to have a maximum value of 100, unless the <code>scale</code> argument of <code>varImp.train</code> is set to <code>FALSE</code>.</li>
+</ul>
+<div id="model-specific-metrics" class="section level2">
+<h2><span class="header-section-number">15.1</span> Model Specific Metrics</h2>
+<p>The following methods for estimating the contribution of each variable to the model are available:</p>
+<ul>
+<li><strong>Linear Models</strong>: the absolute value of the <em>t</em>-statistic for each model parameter is used.</li>
+<li><strong>Random Forest</strong>: from the R package: “For each tree, the prediction accuracy on the out-of-bag portion of the data is recorded. Then the same is done after permuting each predictor variable. The difference between the two accuracies are then averaged over all trees, and normalized by the standard error. For regression, the MSE is computed on the out-of-bag data for each tree, and then the same computed after permuting a variable. The differences are averaged and normalized by the standard error. If the standard error is equal to 0 for a variable, the division is not done.”</li>
+<li><strong>Partial Least Squares</strong>: the variable importance measure here is based on weighted sums of the absolute regression coefficients. The weights are a function of the reduction of the sums of squares across the number of PLS components and are computed separately for each outcome. Therefore, the contribution of the coefficients are weighted proportionally to the reduction in the sums of squares.</li>
+<li><strong>Recursive Partitioning</strong>: The reduction in the loss function (e.g. mean squared error) attributed to each variable at each split is tabulated and the sum is returned. Also, since there may be candidate variables that are important but are not used in a split, the top competing variables are also tabulated at each split. This can be turned off using the <code>maxcompete</code> argument in <code>rpart.control</code>. This method does not currently provide class-specific measures of importance when the response is a factor.</li>
+<li><strong>Bagged Trees</strong>: The same methodology as a single tree is applied to all bootstrapped trees and the total importance is returned</li>
+<li><strong>Boosted Trees</strong>: This method uses the same approach as a single tree, but sums the importances over each boosting iteration (see the <a href="http://cran.r-project.org/web/packages/gbm/index.html"><code>gbm</code></a> package vignette).</li>
+<li><strong>Multivariate Adaptive Regression Splines</strong>: MARS models include a backwards elimination feature selection routine that looks at reductions in the generalized cross-validation (GCV) estimate of error. The <code>varImp</code> function tracks the changes in model statistics, such as the GCV, for each predictor and accumulates the reduction in the statistic when each predictor’s feature is added to the model. This total reduction is used as the variable importance measure. If a predictor was never used in any MARS basis function, it has an importance value of zero. There are three statistics that can be used to estimate variable importance in MARS models. Using <code>varImp(object, value = &quot;gcv&quot;)</code> tracks the reduction in the generalized cross-validation statistic as terms are added. However, there are some cases when terms are retained in the model that result in an increase in GCV. Negative variable importance values for MARS are set to zero. Terms with non-zero importance that were not included in the final, pruned model are also listed as zero. Alternatively, using <code>varImp(object, value = &quot;rss&quot;)</code> monitors the change in the residual sums of squares (RSS) as terms are added, which will never be negative. Also, the option <code>varImp(object, value = &quot;nsubsets&quot;)</code> returns the number of times that each variable is involved in a subset (in the final, pruned model). Prior to June 2008, <code>varImp</code> used an internal function to estimate importance for MARS models. Currently, it is a wrapper around the <code>evimp</code> function in the <a href="http://cran.r-project.org/web/packages/earth/index.html"><code>earth</code></a> package.</li>
+<li><strong>Nearest shrunken centroids</strong>: The difference between the class centroids and the overall centroid is used to measure the variable influence (see <code>pamr.predict</code>). The larger the difference between the class centroid and the overall center of the data, the larger the separation between the classes. The training set predictions must be supplied when an object of class <code>pamrtrained</code> is given to <code>varImp</code>.</li>
+<li><strong>Cubist</strong>: The Cubist output contains variable usage statistics. It gives the percentage of times where each variable was used in a condition and/or a linear model. Note that this output will probably be inconsistent with the rules shown in the output from <code>summary.cubist</code>. At each split of the tree, Cubist saves a linear model (after feature selection) that is allowed to have terms for each variable used in the current split or any split above it. <a href="http://sci2s.ugr.es/keel/pdf/algorithm/congreso/1992-Quinlan-AI.pdf">Quinlan (1992)</a> discusses a smoothing algorithm where each model prediction is a linear combination of the parent and child model along the tree. As such, the final prediction is a function of all the linear models from the initial node to the terminal node. The percentages shown in the Cubist output reflects all the models involved in prediction (as opposed to the terminal models shown in the output). The variable importance used here is a linear combination of the usage in the rule conditions and the model.</li>
+</ul>
+</div>
+<div id="model-independent-metrics" class="section level2">
+<h2><span class="header-section-number">15.2</span> Model Independent Metrics</h2>
+<p>If there is no model-specific way to estimate importance (or the argument <code>useModel = FALSE</code> is used in <code>varImp</code>) the importance of each predictor is evaluated individually using a “filter” approach.</p>
+<p>For classification, ROC curve analysis is conducted on each predictor. For two class problems, a series of cutoffs is applied to the predictor data to predict the class. The sensitivity and specificity are computed for each cutoff and the ROC curve is computed. The trapezoidal rule is used to compute the area under the ROC curve. This area is used as the measure of variable importance. For multi-class outcomes, the problem is decomposed into all pair-wise problems and the area under the curve is calculated for each class pair (i.e. class 1 vs. class 2, class 2 vs. class 3 etc.). For a specific class, the maximum area under the curve across the relevant pair-wise AUC’s is used as the variable importance measure.</p>
+<p>For regression, the relationship between each predictor and the outcome is evaluated. An argument, <code>nonpara</code>, is used to pick the model fitting technique. When <code>nonpara = FALSE</code>, a linear model is fit and the absolute value of the <em>t</em>-value for the slope of the predictor is used. Otherwise, a loess smoother is fit between the outcome and the predictor. The R<sup>2</sup> statistic is calculated for this model against the intercept only null model. This number is returned as a relative measure of variable importance.</p>
+</div>
+<div id="an-example-2" class="section level2">
+<h2><span class="header-section-number">15.3</span> An Example</h2>
+<p>On the model training web, several models were fit to the example data. The boosted tree model has a built-in variable importance score but neither the support vector machine or the regularized discriminant analysis model do.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gbmImp &lt;-<span class="st"> </span><span class="kw">varImp</span>(gbmFit3, <span class="dt">scale =</span> <span class="ot">FALSE</span>)
+gbmImp</code></pre></div>
+<pre><code>## gbm variable importance
+## 
+##   only 20 most important variables shown (out of 60)
+## 
+##     Overall
+## V11  17.351
+## V12  17.176
+## V36  13.683
+## V51  13.375
+## V9   11.226
+## V48   6.949
+## V21   6.642
+## V13   3.920
+## V39   3.833
+## V45   3.648
+## V46   3.586
+## V15   3.411
+## V10   3.369
+## V23   3.195
+## V27   3.102
+## V22   2.812
+## V4    2.654
+## V37   2.610
+## V31   2.510
+## V42   2.312</code></pre>
+<p>The function automatically scales the importance scores to be between 0 and 100. Using <code>scale = FALSE</code> avoids this normalization step.</p>
+<p>To get the area under the ROC curve for each predictor, the <code>filterVarImp</code> function can be used. The area under the ROC curve is computed for each class.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">roc_imp &lt;-<span class="st"> </span><span class="kw">filterVarImp</span>(<span class="dt">x =</span> training[, -<span class="kw">ncol</span>(training)], <span class="dt">y =</span> training$Class)
+<span class="kw">head</span>(roc_imp)</code></pre></div>
+<pre><code>##            M         R
+## V1 0.6273646 0.6273646
+## V2 0.5765656 0.5765656
+## V3 0.5999674 0.5999674
+## V4 0.6614481 0.6614481
+## V5 0.6520711 0.6520711
+## V6 0.5923842 0.5923842</code></pre>
+<p>Alternatively, for models where no built-in importance score is implemented (or exists), the <code>varImp</code> can still be used to get scores. For SVM classification models, the default behavior is to compute the area under the ROC curve.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">roc_imp2 &lt;-<span class="st"> </span><span class="kw">varImp</span>(svmFit, <span class="dt">scale =</span> <span class="ot">FALSE</span>)
+roc_imp2</code></pre></div>
+<pre><code>## ROC curve variable importance
+## 
+##   only 20 most important variables shown (out of 60)
+## 
+##     Importance
+## V11     0.7766
+## V12     0.7564
+## V10     0.7272
+## V9      0.7252
+## V46     0.7088
+## V51     0.7047
+## V49     0.7012
+## V13     0.6984
+## V47     0.6972
+## V36     0.6885
+## V48     0.6822
+## V21     0.6742
+## V52     0.6694
+## V45     0.6671
+## V4      0.6614
+## V5      0.6521
+## V37     0.6508
+## V35     0.6494
+## V20     0.6411
+## V44     0.6360</code></pre>
+<p>For importance scores generated from <code>varImp.train</code>, a plot method can be used to visualize the results. In the plot below, the <code>top</code> option is used to make the image more readable.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(gbmImp, <span class="dt">top =</span> <span class="dv">20</span>)</code></pre></div>
+<p><img src="varimp/varImp_gbm_plot-1.png" width="384" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="adaptive-resampling.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="miscellaneous-model-functions.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
