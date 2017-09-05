@@ -6,9 +6,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>The caret Package</title>
-  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.3 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -26,16 +25,15 @@
 <meta name="author" content="Max Kuhn">
 
 
-<meta name="date" content="2017-07-23">
+<meta name="date" content="2017-09-04">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="feature-selection-overview.html">
-<link rel="next" href="feature-selection-using-univariate-filters.html">
-
+<link rel="prev" href="feature-selection-using-univariate-filters.html">
+<link rel="next" href="feature-selection-using-genetic-algorithms.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,7 +47,7 @@
 
 
 
-<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
 <script src="libs/datatables-binding-0.2/datatables.js"></script>
 <link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
 <link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
@@ -57,12 +55,12 @@
 <script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
 <script src="libs/d3-4.5.0/d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
-<link href="libs/plotlyjs-1.26.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotlyjs-1.26.1/plotly-latest.min.js"></script>
-<script src="libs/plotly-binding-4.6.0/plotly.js"></script>
+<script src="libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
-<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -106,6 +104,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 
 <body>
+
 
 
   <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
@@ -216,129 +215,137 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="11.3" data-path="subsampling-for-class-imbalances.html"><a href="subsampling-for-class-imbalances.html#complications"><i class="fa fa-check"></i><b>11.3</b> Complications</a></li>
 <li class="chapter" data-level="11.4" data-path="subsampling-for-class-imbalances.html"><a href="subsampling-for-class-imbalances.html#using-custom-subsampling-techniques"><i class="fa fa-check"></i><b>11.4</b> Using Custom Subsampling Techniques</a></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html"><i class="fa fa-check"></i><b>12</b> Using Your Own Model in <code>train</code></a><ul>
-<li class="chapter" data-level="12.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#introduction-1"><i class="fa fa-check"></i><b>12.1</b> Introduction</a></li>
-<li class="chapter" data-level="12.2" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-1-svms-with-laplacian-kernels"><i class="fa fa-check"></i><b>12.2</b> Illustrative Example 1: SVMs with Laplacian Kernels</a></li>
-<li class="chapter" data-level="12.3" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#model-components"><i class="fa fa-check"></i><b>12.3</b> Model Components</a><ul>
-<li class="chapter" data-level="12.3.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-parameters-element"><i class="fa fa-check"></i><b>12.3.1</b> The parameters Element</a></li>
-<li class="chapter" data-level="12.3.2" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-grid-element"><i class="fa fa-check"></i><b>12.3.2</b> The <code>grid</code> Element</a></li>
-<li class="chapter" data-level="12.3.3" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-fit-element"><i class="fa fa-check"></i><b>12.3.3</b> The <code>fit</code> Element</a></li>
-<li class="chapter" data-level="12.3.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-predict-element"><i class="fa fa-check"></i><b>12.3.4</b> The <code>predict</code> Element</a></li>
-<li class="chapter" data-level="12.3.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-prob-element"><i class="fa fa-check"></i><b>12.3.5</b> The <code>prob</code> Element</a></li>
+<li class="chapter" data-level="12" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html"><i class="fa fa-check"></i><b>12</b> Using Recipes with train</a><ul>
+<li class="chapter" data-level="12.1" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#why-should-you-learn-this"><i class="fa fa-check"></i><b>12.1</b> Why Should you learn this?</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#more-versatile-tools-for-preprocessing-data"><i class="fa fa-check"></i><b>12.1.1</b> More versatile tools for preprocessing data</a></li>
+<li class="chapter" data-level="12.1.2" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#using-additional-data-to-measure-performance"><i class="fa fa-check"></i><b>12.1.2</b> Using additional data to measure performance</a></li>
 </ul></li>
-<li class="chapter" data-level="12.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-sort-element"><i class="fa fa-check"></i><b>12.4</b> The sort Element</a><ul>
-<li class="chapter" data-level="12.4.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-levels-element"><i class="fa fa-check"></i><b>12.4.1</b> The <code>levels</code> Element</a></li>
+<li class="chapter" data-level="12.2" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#an-example-1"><i class="fa fa-check"></i><b>12.2</b> An Example</a></li>
+<li class="chapter" data-level="12.3" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#case-weights"><i class="fa fa-check"></i><b>12.3</b> Case Weights</a></li>
 </ul></li>
-<li class="chapter" data-level="12.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>12.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a><ul>
-<li class="chapter" data-level="12.5.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-loop-element"><i class="fa fa-check"></i><b>12.5.1</b> The loop Element</a></li>
+<li class="chapter" data-level="13" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html"><i class="fa fa-check"></i><b>13</b> Using Your Own Model in <code>train</code></a><ul>
+<li class="chapter" data-level="13.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#introduction-1"><i class="fa fa-check"></i><b>13.1</b> Introduction</a></li>
+<li class="chapter" data-level="13.2" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-1-svms-with-laplacian-kernels"><i class="fa fa-check"></i><b>13.2</b> Illustrative Example 1: SVMs with Laplacian Kernels</a></li>
+<li class="chapter" data-level="13.3" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#model-components"><i class="fa fa-check"></i><b>13.3</b> Model Components</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-parameters-element"><i class="fa fa-check"></i><b>13.3.1</b> The parameters Element</a></li>
+<li class="chapter" data-level="13.3.2" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-grid-element"><i class="fa fa-check"></i><b>13.3.2</b> The <code>grid</code> Element</a></li>
+<li class="chapter" data-level="13.3.3" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-fit-element"><i class="fa fa-check"></i><b>13.3.3</b> The <code>fit</code> Element</a></li>
+<li class="chapter" data-level="13.3.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-predict-element"><i class="fa fa-check"></i><b>13.3.4</b> The <code>predict</code> Element</a></li>
+<li class="chapter" data-level="13.3.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-prob-element"><i class="fa fa-check"></i><b>13.3.5</b> The <code>prob</code> Element</a></li>
 </ul></li>
-<li class="chapter" data-level="12.6" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-3-nonstandard-formulas"><i class="fa fa-check"></i><b>12.6</b> Illustrative Example 3: Nonstandard Formulas</a></li>
-<li class="chapter" data-level="12.7" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-4-pls-feature-extraction-pre-processing"><i class="fa fa-check"></i><b>12.7</b> Illustrative Example 4: PLS Feature Extraction Pre-Processing</a></li>
-<li class="chapter" data-level="12.8" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-5-optimizing-probability-thresholds-for-class-imbalances"><i class="fa fa-check"></i><b>12.8</b> Illustrative Example 5: Optimizing probability thresholds for class imbalances</a></li>
-<li class="chapter" data-level="12.9" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-6-offsets-in-generalized-linear-models"><i class="fa fa-check"></i><b>12.9</b> Illustrative Example 6: Offsets in Generalized Linear Models</a></li>
+<li class="chapter" data-level="13.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-sort-element"><i class="fa fa-check"></i><b>13.4</b> The sort Element</a><ul>
+<li class="chapter" data-level="13.4.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-levels-element"><i class="fa fa-check"></i><b>13.4.1</b> The <code>levels</code> Element</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="adaptive-resampling.html"><a href="adaptive-resampling.html"><i class="fa fa-check"></i><b>13</b> Adaptive Resampling</a></li>
-<li class="chapter" data-level="14" data-path="variable-importance.html"><a href="variable-importance.html"><i class="fa fa-check"></i><b>14</b> Variable Importance</a><ul>
-<li class="chapter" data-level="14.1" data-path="variable-importance.html"><a href="variable-importance.html#model-specific-metrics"><i class="fa fa-check"></i><b>14.1</b> Model Specific Metrics</a></li>
-<li class="chapter" data-level="14.2" data-path="variable-importance.html"><a href="variable-importance.html#model-independent-metrics"><i class="fa fa-check"></i><b>14.2</b> Model Independent Metrics</a></li>
-<li class="chapter" data-level="14.3" data-path="variable-importance.html"><a href="variable-importance.html#an-example-1"><i class="fa fa-check"></i><b>14.3</b> An Example</a></li>
+<li class="chapter" data-level="13.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>13.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a><ul>
+<li class="chapter" data-level="13.5.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-loop-element"><i class="fa fa-check"></i><b>13.5.1</b> The loop Element</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html"><i class="fa fa-check"></i><b>15</b> Miscellaneous Model Functions</a><ul>
-<li class="chapter" data-level="15.1" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#yet-another-k-nearest-neighbor-function"><i class="fa fa-check"></i><b>15.1</b> Yet Another <em>k</em>-Nearest Neighbor Function</a></li>
-<li class="chapter" data-level="15.2" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#partial-least-squares-discriminant-analysis"><i class="fa fa-check"></i><b>15.2</b> Partial Least Squares Discriminant Analysis</a></li>
-<li class="chapter" data-level="15.3" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#bagged-mars-and-fda"><i class="fa fa-check"></i><b>15.3</b> Bagged MARS and FDA</a></li>
-<li class="chapter" data-level="15.4" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#bagging-1"><i class="fa fa-check"></i><b>15.4</b> Bagging</a><ul>
-<li class="chapter" data-level="15.4.1" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-fit-function"><i class="fa fa-check"></i><b>15.4.1</b> The <code>fit</code> Function</a></li>
-<li class="chapter" data-level="15.4.2" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-pred-function"><i class="fa fa-check"></i><b>15.4.2</b> The <code>pred</code> Function</a></li>
-<li class="chapter" data-level="15.4.3" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-aggregate-function"><i class="fa fa-check"></i><b>15.4.3</b> The <code>aggregate</code> Function</a></li>
+<li class="chapter" data-level="13.6" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-3-nonstandard-formulas"><i class="fa fa-check"></i><b>13.6</b> Illustrative Example 3: Nonstandard Formulas</a></li>
+<li class="chapter" data-level="13.7" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-4-pls-feature-extraction-pre-processing"><i class="fa fa-check"></i><b>13.7</b> Illustrative Example 4: PLS Feature Extraction Pre-Processing</a></li>
+<li class="chapter" data-level="13.8" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-5-optimizing-probability-thresholds-for-class-imbalances"><i class="fa fa-check"></i><b>13.8</b> Illustrative Example 5: Optimizing probability thresholds for class imbalances</a></li>
+<li class="chapter" data-level="13.9" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-6-offsets-in-generalized-linear-models"><i class="fa fa-check"></i><b>13.9</b> Illustrative Example 6: Offsets in Generalized Linear Models</a></li>
 </ul></li>
-<li class="chapter" data-level="15.5" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#model-averaged-neural-networks"><i class="fa fa-check"></i><b>15.5</b> Model Averaged Neural Networks</a></li>
-<li class="chapter" data-level="15.6" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#neural-networks-with-a-principal-component-step"><i class="fa fa-check"></i><b>15.6</b> Neural Networks with a Principal Component Step</a></li>
-<li class="chapter" data-level="15.7" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#independent-component-regression"><i class="fa fa-check"></i><b>15.7</b> Independent Component Regression</a></li>
+<li class="chapter" data-level="14" data-path="adaptive-resampling.html"><a href="adaptive-resampling.html"><i class="fa fa-check"></i><b>14</b> Adaptive Resampling</a></li>
+<li class="chapter" data-level="15" data-path="variable-importance.html"><a href="variable-importance.html"><i class="fa fa-check"></i><b>15</b> Variable Importance</a><ul>
+<li class="chapter" data-level="15.1" data-path="variable-importance.html"><a href="variable-importance.html#model-specific-metrics"><i class="fa fa-check"></i><b>15.1</b> Model Specific Metrics</a></li>
+<li class="chapter" data-level="15.2" data-path="variable-importance.html"><a href="variable-importance.html#model-independent-metrics"><i class="fa fa-check"></i><b>15.2</b> Model Independent Metrics</a></li>
+<li class="chapter" data-level="15.3" data-path="variable-importance.html"><a href="variable-importance.html#an-example-2"><i class="fa fa-check"></i><b>15.3</b> An Example</a></li>
 </ul></li>
-<li class="chapter" data-level="16" data-path="measuring-performance.html"><a href="measuring-performance.html"><i class="fa fa-check"></i><b>16</b> Measuring Performance</a><ul>
-<li class="chapter" data-level="16.1" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-regression"><i class="fa fa-check"></i><b>16.1</b> Measures for Regression</a></li>
-<li class="chapter" data-level="16.2" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-predicted-classes"><i class="fa fa-check"></i><b>16.2</b> Measures for Predicted Classes</a></li>
-<li class="chapter" data-level="16.3" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-class-probabilities"><i class="fa fa-check"></i><b>16.3</b> Measures for Class Probabilities</a></li>
-<li class="chapter" data-level="16.4" data-path="measuring-performance.html"><a href="measuring-performance.html#lift-curves"><i class="fa fa-check"></i><b>16.4</b> Lift Curves</a></li>
-<li class="chapter" data-level="16.5" data-path="measuring-performance.html"><a href="measuring-performance.html#calibration-curves"><i class="fa fa-check"></i><b>16.5</b> Calibration Curves</a></li>
+<li class="chapter" data-level="16" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html"><i class="fa fa-check"></i><b>16</b> Miscellaneous Model Functions</a><ul>
+<li class="chapter" data-level="16.1" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#yet-another-k-nearest-neighbor-function"><i class="fa fa-check"></i><b>16.1</b> Yet Another <em>k</em>-Nearest Neighbor Function</a></li>
+<li class="chapter" data-level="16.2" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#partial-least-squares-discriminant-analysis"><i class="fa fa-check"></i><b>16.2</b> Partial Least Squares Discriminant Analysis</a></li>
+<li class="chapter" data-level="16.3" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#bagged-mars-and-fda"><i class="fa fa-check"></i><b>16.3</b> Bagged MARS and FDA</a></li>
+<li class="chapter" data-level="16.4" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#bagging-1"><i class="fa fa-check"></i><b>16.4</b> Bagging</a><ul>
+<li class="chapter" data-level="16.4.1" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-fit-function"><i class="fa fa-check"></i><b>16.4.1</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="16.4.2" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-pred-function"><i class="fa fa-check"></i><b>16.4.2</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="16.4.3" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-aggregate-function"><i class="fa fa-check"></i><b>16.4.3</b> The <code>aggregate</code> Function</a></li>
 </ul></li>
-<li class="chapter" data-level="17" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html"><i class="fa fa-check"></i><b>17</b> Feature Selection Overview</a><ul>
-<li class="chapter" data-level="17.1" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#models-with-built-in-feature-selection"><i class="fa fa-check"></i><b>17.1</b> Models with Built-In Feature Selection</a></li>
-<li class="chapter" data-level="17.2" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#feature-selection-methods"><i class="fa fa-check"></i><b>17.2</b> Feature Selection Methods</a></li>
-<li class="chapter" data-level="17.3" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#external-validation"><i class="fa fa-check"></i><b>17.3</b> External Validation</a></li>
+<li class="chapter" data-level="16.5" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#model-averaged-neural-networks"><i class="fa fa-check"></i><b>16.5</b> Model Averaged Neural Networks</a></li>
+<li class="chapter" data-level="16.6" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#neural-networks-with-a-principal-component-step"><i class="fa fa-check"></i><b>16.6</b> Neural Networks with a Principal Component Step</a></li>
+<li class="chapter" data-level="16.7" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#independent-component-regression"><i class="fa fa-check"></i><b>16.7</b> Independent Component Regression</a></li>
 </ul></li>
-<li class="chapter" data-level="18" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html"><i class="fa fa-check"></i><b>18</b> Recursive Feature Elimination</a><ul>
-<li class="chapter" data-level="18.1" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#backwards-selection"><i class="fa fa-check"></i><b>18.1</b> Backwards Selection</a></li>
-<li class="chapter" data-level="18.2" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#resampling-and-external-validation"><i class="fa fa-check"></i><b>18.2</b> Resampling and External Validation</a></li>
-<li class="chapter" data-level="18.3" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#recursive-feature-elimination-via-caret"><i class="fa fa-check"></i><b>18.3</b> Recursive Feature Elimination via <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a></a></li>
-<li class="chapter" data-level="18.4" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#an-example-2"><i class="fa fa-check"></i><b>18.4</b> An Example</a></li>
-<li class="chapter" data-level="18.5" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#helper-functions"><i class="fa fa-check"></i><b>18.5</b> Helper Functions</a><ul>
-<li class="chapter" data-level="18.5.1" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-summary-function"><i class="fa fa-check"></i><b>18.5.1</b> The <code>summary</code> Function</a></li>
-<li class="chapter" data-level="18.5.2" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-fit-function-1"><i class="fa fa-check"></i><b>18.5.2</b> The <code>fit</code> Function</a></li>
-<li class="chapter" data-level="18.5.3" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-pred-function-1"><i class="fa fa-check"></i><b>18.5.3</b> The <code>pred</code> Function</a></li>
-<li class="chapter" data-level="18.5.4" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-rank-function"><i class="fa fa-check"></i><b>18.5.4</b> The <code>rank</code> Function</a></li>
-<li class="chapter" data-level="18.5.5" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-selectsize-function"><i class="fa fa-check"></i><b>18.5.5</b> The <code>selectSize</code> Function</a></li>
-<li class="chapter" data-level="18.5.6" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-selectvar-function"><i class="fa fa-check"></i><b>18.5.6</b> The <code>selectVar</code> Function</a></li>
+<li class="chapter" data-level="17" data-path="measuring-performance.html"><a href="measuring-performance.html"><i class="fa fa-check"></i><b>17</b> Measuring Performance</a><ul>
+<li class="chapter" data-level="17.1" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-regression"><i class="fa fa-check"></i><b>17.1</b> Measures for Regression</a></li>
+<li class="chapter" data-level="17.2" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-predicted-classes"><i class="fa fa-check"></i><b>17.2</b> Measures for Predicted Classes</a></li>
+<li class="chapter" data-level="17.3" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-class-probabilities"><i class="fa fa-check"></i><b>17.3</b> Measures for Class Probabilities</a></li>
+<li class="chapter" data-level="17.4" data-path="measuring-performance.html"><a href="measuring-performance.html#lift-curves"><i class="fa fa-check"></i><b>17.4</b> Lift Curves</a></li>
+<li class="chapter" data-level="17.5" data-path="measuring-performance.html"><a href="measuring-performance.html#calibration-curves"><i class="fa fa-check"></i><b>17.5</b> Calibration Curves</a></li>
 </ul></li>
-<li class="chapter" data-level="18.6" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-example"><i class="fa fa-check"></i><b>18.6</b> The Example</a></li>
+<li class="chapter" data-level="18" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html"><i class="fa fa-check"></i><b>18</b> Feature Selection Overview</a><ul>
+<li class="chapter" data-level="18.1" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#models-with-built-in-feature-selection"><i class="fa fa-check"></i><b>18.1</b> Models with Built-In Feature Selection</a></li>
+<li class="chapter" data-level="18.2" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#feature-selection-methods"><i class="fa fa-check"></i><b>18.2</b> Feature Selection Methods</a></li>
+<li class="chapter" data-level="18.3" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#external-validation"><i class="fa fa-check"></i><b>18.3</b> External Validation</a></li>
 </ul></li>
 <li class="chapter" data-level="19" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html"><i class="fa fa-check"></i><b>19</b> Feature Selection using Univariate Filters</a><ul>
 <li class="chapter" data-level="19.1" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#univariate-filters"><i class="fa fa-check"></i><b>19.1</b> Univariate Filters</a></li>
 <li class="chapter" data-level="19.2" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#basic-syntax"><i class="fa fa-check"></i><b>19.2</b> Basic Syntax</a><ul>
 <li class="chapter" data-level="19.2.1" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-score-function"><i class="fa fa-check"></i><b>19.2.1</b> The <code>score</code> Function</a></li>
 <li class="chapter" data-level="19.2.2" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-filter-function"><i class="fa fa-check"></i><b>19.2.2</b> The <code>filter</code> Function</a></li>
-<li class="chapter" data-level="19.2.3" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-fit-function-2"><i class="fa fa-check"></i><b>19.2.3</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="19.2.3" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-fit-function-1"><i class="fa fa-check"></i><b>19.2.3</b> The <code>fit</code> Function</a></li>
 <li class="chapter" data-level="19.2.4" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-summary-and-pred-functions"><i class="fa fa-check"></i><b>19.2.4</b> The <code>summary</code> and <code>pred</code> Functions</a></li>
 </ul></li>
-<li class="chapter" data-level="19.3" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-example-1"><i class="fa fa-check"></i><b>19.3</b> The Example</a></li>
+<li class="chapter" data-level="19.3" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-example"><i class="fa fa-check"></i><b>19.3</b> The Example</a></li>
 </ul></li>
-<li class="chapter" data-level="20" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html"><i class="fa fa-check"></i><b>20</b> Feature Selection using Genetic Algorithms</a><ul>
-<li class="chapter" data-level="20.1" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#genetic-algorithms"><i class="fa fa-check"></i><b>20.1</b> Genetic Algorithms</a></li>
-<li class="chapter" data-level="20.2" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#internal-and-external-performance-estimates"><i class="fa fa-check"></i><b>20.2</b> Internal and External Performance Estimates</a></li>
-<li class="chapter" data-level="20.3" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#basic-syntax-1"><i class="fa fa-check"></i><b>20.3</b> Basic Syntax</a></li>
-<li class="chapter" data-level="20.4" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#example"><i class="fa fa-check"></i><b>20.4</b> Example</a></li>
-<li class="chapter" data-level="20.5" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#customizing-the-search"><i class="fa fa-check"></i><b>20.5</b> Customizing the Search</a><ul>
-<li class="chapter" data-level="20.5.1" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fit-function-3"><i class="fa fa-check"></i><b>20.5.1</b> The <code>fit</code> Function</a></li>
-<li class="chapter" data-level="20.5.2" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-pred-function-2"><i class="fa fa-check"></i><b>20.5.2</b> The <code>pred</code> Function</a></li>
-<li class="chapter" data-level="20.5.3" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fitness_intern-function"><i class="fa fa-check"></i><b>20.5.3</b> The <code>fitness_intern</code> Function</a></li>
-<li class="chapter" data-level="20.5.4" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fitness_extern-function"><i class="fa fa-check"></i><b>20.5.4</b> The <code>fitness_extern</code> Function</a></li>
-<li class="chapter" data-level="20.5.5" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-initial-function"><i class="fa fa-check"></i><b>20.5.5</b> The <code>initial</code> Function</a></li>
-<li class="chapter" data-level="20.5.6" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-selection-function"><i class="fa fa-check"></i><b>20.5.6</b> The <code>selection</code> Function</a></li>
-<li class="chapter" data-level="20.5.7" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-crossover-function"><i class="fa fa-check"></i><b>20.5.7</b> The <code>crossover</code> Function</a></li>
-<li class="chapter" data-level="20.5.8" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-mutation-function"><i class="fa fa-check"></i><b>20.5.8</b> The <code>mutation</code> Function</a></li>
-<li class="chapter" data-level="20.5.9" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-selectiter-function"><i class="fa fa-check"></i><b>20.5.9</b> The <code>selectIter</code> Function</a></li>
+<li class="chapter" data-level="20" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html"><i class="fa fa-check"></i><b>20</b> Recursive Feature Elimination</a><ul>
+<li class="chapter" data-level="20.1" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#backwards-selection"><i class="fa fa-check"></i><b>20.1</b> Backwards Selection</a></li>
+<li class="chapter" data-level="20.2" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#resampling-and-external-validation"><i class="fa fa-check"></i><b>20.2</b> Resampling and External Validation</a></li>
+<li class="chapter" data-level="20.3" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#recursive-feature-elimination-via-caret"><i class="fa fa-check"></i><b>20.3</b> Recursive Feature Elimination via <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a></a></li>
+<li class="chapter" data-level="20.4" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#an-example-3"><i class="fa fa-check"></i><b>20.4</b> An Example</a></li>
+<li class="chapter" data-level="20.5" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#helper-functions"><i class="fa fa-check"></i><b>20.5</b> Helper Functions</a><ul>
+<li class="chapter" data-level="20.5.1" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-summary-function"><i class="fa fa-check"></i><b>20.5.1</b> The <code>summary</code> Function</a></li>
+<li class="chapter" data-level="20.5.2" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-fit-function-2"><i class="fa fa-check"></i><b>20.5.2</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="20.5.3" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-pred-function-1"><i class="fa fa-check"></i><b>20.5.3</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="20.5.4" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-rank-function"><i class="fa fa-check"></i><b>20.5.4</b> The <code>rank</code> Function</a></li>
+<li class="chapter" data-level="20.5.5" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-selectsize-function"><i class="fa fa-check"></i><b>20.5.5</b> The <code>selectSize</code> Function</a></li>
+<li class="chapter" data-level="20.5.6" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-selectvar-function"><i class="fa fa-check"></i><b>20.5.6</b> The <code>selectVar</code> Function</a></li>
 </ul></li>
-<li class="chapter" data-level="20.6" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-example-revisited"><i class="fa fa-check"></i><b>20.6</b> The Example Revisited</a></li>
+<li class="chapter" data-level="20.6" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-example-1"><i class="fa fa-check"></i><b>20.6</b> The Example</a></li>
 </ul></li>
-<li class="chapter" data-level="21" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html"><i class="fa fa-check"></i><b>21</b> Feature Selection using Simulated Annealing</a><ul>
-<li class="chapter" data-level="21.1" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#simulated-annealing"><i class="fa fa-check"></i><b>21.1</b> Simulated Annealing</a></li>
-<li class="chapter" data-level="21.2" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#internal-and-external-performance-estimates-1"><i class="fa fa-check"></i><b>21.2</b> Internal and External Performance Estimates</a></li>
-<li class="chapter" data-level="21.3" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#basic-syntax-2"><i class="fa fa-check"></i><b>21.3</b> Basic Syntax</a></li>
-<li class="chapter" data-level="21.4" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#example-1"><i class="fa fa-check"></i><b>21.4</b> Example</a></li>
-<li class="chapter" data-level="21.5" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#customizing-the-search-1"><i class="fa fa-check"></i><b>21.5</b> Customizing the Search</a><ul>
-<li class="chapter" data-level="21.5.1" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fit-function-4"><i class="fa fa-check"></i><b>21.5.1</b> The <code>fit</code> Function</a></li>
-<li class="chapter" data-level="21.5.2" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-pred-function-3"><i class="fa fa-check"></i><b>21.5.2</b> The <code>pred</code> Function</a></li>
-<li class="chapter" data-level="21.5.3" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fitness_intern-function-1"><i class="fa fa-check"></i><b>21.5.3</b> The <code>fitness_intern</code> Function</a></li>
-<li class="chapter" data-level="21.5.4" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fitness_extern-function-1"><i class="fa fa-check"></i><b>21.5.4</b> The <code>fitness_extern</code> Function</a></li>
-<li class="chapter" data-level="21.5.5" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-initial-function-1"><i class="fa fa-check"></i><b>21.5.5</b> The <code>initial</code> Function</a></li>
-<li class="chapter" data-level="21.5.6" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-perturb-function"><i class="fa fa-check"></i><b>21.5.6</b> The <code>perturb</code> Function</a></li>
-<li class="chapter" data-level="21.5.7" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-prob-function"><i class="fa fa-check"></i><b>21.5.7</b> The <code>prob</code> Function</a></li>
+<li class="chapter" data-level="21" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html"><i class="fa fa-check"></i><b>21</b> Feature Selection using Genetic Algorithms</a><ul>
+<li class="chapter" data-level="21.1" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#genetic-algorithms"><i class="fa fa-check"></i><b>21.1</b> Genetic Algorithms</a></li>
+<li class="chapter" data-level="21.2" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#internal-and-external-performance-estimates"><i class="fa fa-check"></i><b>21.2</b> Internal and External Performance Estimates</a></li>
+<li class="chapter" data-level="21.3" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#basic-syntax-1"><i class="fa fa-check"></i><b>21.3</b> Basic Syntax</a></li>
+<li class="chapter" data-level="21.4" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#example"><i class="fa fa-check"></i><b>21.4</b> Example</a></li>
+<li class="chapter" data-level="21.5" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#customizing-the-search"><i class="fa fa-check"></i><b>21.5</b> Customizing the Search</a><ul>
+<li class="chapter" data-level="21.5.1" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fit-function-3"><i class="fa fa-check"></i><b>21.5.1</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="21.5.2" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-pred-function-2"><i class="fa fa-check"></i><b>21.5.2</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="21.5.3" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fitness_intern-function"><i class="fa fa-check"></i><b>21.5.3</b> The <code>fitness_intern</code> Function</a></li>
+<li class="chapter" data-level="21.5.4" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fitness_extern-function"><i class="fa fa-check"></i><b>21.5.4</b> The <code>fitness_extern</code> Function</a></li>
+<li class="chapter" data-level="21.5.5" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-initial-function"><i class="fa fa-check"></i><b>21.5.5</b> The <code>initial</code> Function</a></li>
+<li class="chapter" data-level="21.5.6" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-selection-function"><i class="fa fa-check"></i><b>21.5.6</b> The <code>selection</code> Function</a></li>
+<li class="chapter" data-level="21.5.7" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-crossover-function"><i class="fa fa-check"></i><b>21.5.7</b> The <code>crossover</code> Function</a></li>
+<li class="chapter" data-level="21.5.8" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-mutation-function"><i class="fa fa-check"></i><b>21.5.8</b> The <code>mutation</code> Function</a></li>
+<li class="chapter" data-level="21.5.9" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-selectiter-function"><i class="fa fa-check"></i><b>21.5.9</b> The <code>selectIter</code> Function</a></li>
+</ul></li>
+<li class="chapter" data-level="21.6" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-example-revisited"><i class="fa fa-check"></i><b>21.6</b> The Example Revisited</a></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html"><i class="fa fa-check"></i><b>22</b> Feature Selection using Simulated Annealing</a><ul>
+<li class="chapter" data-level="22.1" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#simulated-annealing"><i class="fa fa-check"></i><b>22.1</b> Simulated Annealing</a></li>
+<li class="chapter" data-level="22.2" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#internal-and-external-performance-estimates-1"><i class="fa fa-check"></i><b>22.2</b> Internal and External Performance Estimates</a></li>
+<li class="chapter" data-level="22.3" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#basic-syntax-2"><i class="fa fa-check"></i><b>22.3</b> Basic Syntax</a></li>
+<li class="chapter" data-level="22.4" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#example-1"><i class="fa fa-check"></i><b>22.4</b> Example</a></li>
+<li class="chapter" data-level="22.5" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#customizing-the-search-1"><i class="fa fa-check"></i><b>22.5</b> Customizing the Search</a><ul>
+<li class="chapter" data-level="22.5.1" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fit-function-4"><i class="fa fa-check"></i><b>22.5.1</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="22.5.2" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-pred-function-3"><i class="fa fa-check"></i><b>22.5.2</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="22.5.3" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fitness_intern-function-1"><i class="fa fa-check"></i><b>22.5.3</b> The <code>fitness_intern</code> Function</a></li>
+<li class="chapter" data-level="22.5.4" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fitness_extern-function-1"><i class="fa fa-check"></i><b>22.5.4</b> The <code>fitness_extern</code> Function</a></li>
+<li class="chapter" data-level="22.5.5" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-initial-function-1"><i class="fa fa-check"></i><b>22.5.5</b> The <code>initial</code> Function</a></li>
+<li class="chapter" data-level="22.5.6" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-perturb-function"><i class="fa fa-check"></i><b>22.5.6</b> The <code>perturb</code> Function</a></li>
+<li class="chapter" data-level="22.5.7" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-prob-function"><i class="fa fa-check"></i><b>22.5.7</b> The <code>prob</code> Function</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="22" data-path="data-sets.html"><a href="data-sets.html"><i class="fa fa-check"></i><b>22</b> Data Sets</a><ul>
-<li class="chapter" data-level="22.1" data-path="data-sets.html"><a href="data-sets.html#blood-brain-barrier-data"><i class="fa fa-check"></i><b>22.1</b> Blood-Brain Barrier Data</a></li>
-<li class="chapter" data-level="22.2" data-path="data-sets.html"><a href="data-sets.html#cox-2-activity-data"><i class="fa fa-check"></i><b>22.2</b> COX-2 Activity Data</a></li>
-<li class="chapter" data-level="22.3" data-path="data-sets.html"><a href="data-sets.html#dhfr-inhibition"><i class="fa fa-check"></i><b>22.3</b> DHFR Inhibition</a></li>
-<li class="chapter" data-level="22.4" data-path="data-sets.html"><a href="data-sets.html#tecator-nir-data"><i class="fa fa-check"></i><b>22.4</b> Tecator NIR Data</a></li>
-<li class="chapter" data-level="22.5" data-path="data-sets.html"><a href="data-sets.html#fatty-acid-composition-data"><i class="fa fa-check"></i><b>22.5</b> Fatty Acid Composition Data</a></li>
-<li class="chapter" data-level="22.6" data-path="data-sets.html"><a href="data-sets.html#german-credit-data"><i class="fa fa-check"></i><b>22.6</b> German Credit Data</a></li>
-<li class="chapter" data-level="22.7" data-path="data-sets.html"><a href="data-sets.html#kelly-blue-book"><i class="fa fa-check"></i><b>22.7</b> Kelly Blue Book</a></li>
-<li class="chapter" data-level="22.8" data-path="data-sets.html"><a href="data-sets.html#cell-body-segmentation-data"><i class="fa fa-check"></i><b>22.8</b> Cell Body Segmentation Data</a></li>
-<li class="chapter" data-level="22.9" data-path="data-sets.html"><a href="data-sets.html#sacramento-house-price-data"><i class="fa fa-check"></i><b>22.9</b> Sacramento House Price Data</a></li>
-<li class="chapter" data-level="22.10" data-path="data-sets.html"><a href="data-sets.html#animal-scat-data"><i class="fa fa-check"></i><b>22.10</b> Animal Scat Data</a></li>
+<li class="chapter" data-level="23" data-path="data-sets.html"><a href="data-sets.html"><i class="fa fa-check"></i><b>23</b> Data Sets</a><ul>
+<li class="chapter" data-level="23.1" data-path="data-sets.html"><a href="data-sets.html#blood-brain-barrier-data"><i class="fa fa-check"></i><b>23.1</b> Blood-Brain Barrier Data</a></li>
+<li class="chapter" data-level="23.2" data-path="data-sets.html"><a href="data-sets.html#cox-2-activity-data"><i class="fa fa-check"></i><b>23.2</b> COX-2 Activity Data</a></li>
+<li class="chapter" data-level="23.3" data-path="data-sets.html"><a href="data-sets.html#dhfr-inhibition"><i class="fa fa-check"></i><b>23.3</b> DHFR Inhibition</a></li>
+<li class="chapter" data-level="23.4" data-path="data-sets.html"><a href="data-sets.html#tecator-nir-data"><i class="fa fa-check"></i><b>23.4</b> Tecator NIR Data</a></li>
+<li class="chapter" data-level="23.5" data-path="data-sets.html"><a href="data-sets.html#fatty-acid-composition-data"><i class="fa fa-check"></i><b>23.5</b> Fatty Acid Composition Data</a></li>
+<li class="chapter" data-level="23.6" data-path="data-sets.html"><a href="data-sets.html#german-credit-data"><i class="fa fa-check"></i><b>23.6</b> German Credit Data</a></li>
+<li class="chapter" data-level="23.7" data-path="data-sets.html"><a href="data-sets.html#kelly-blue-book"><i class="fa fa-check"></i><b>23.7</b> Kelly Blue Book</a></li>
+<li class="chapter" data-level="23.8" data-path="data-sets.html"><a href="data-sets.html#cell-body-segmentation-data"><i class="fa fa-check"></i><b>23.8</b> Cell Body Segmentation Data</a></li>
+<li class="chapter" data-level="23.9" data-path="data-sets.html"><a href="data-sets.html#sacramento-house-price-data"><i class="fa fa-check"></i><b>23.9</b> Sacramento House Price Data</a></li>
+<li class="chapter" data-level="23.10" data-path="data-sets.html"><a href="data-sets.html#animal-scat-data"><i class="fa fa-check"></i><b>23.10</b> Animal Scat Data</a></li>
 </ul></li>
-<li class="chapter" data-level="23" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>23</b> Session Information</a></li>
+<li class="chapter" data-level="24" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>24</b> Session Information</a></li>
 </ul>
 
       </nav>
@@ -357,7 +364,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
             <section class="normal" id="section-">
 <div id="recursive-feature-elimination" class="section level1">
-<h1><span class="header-section-number">18</span> Recursive Feature Elimination</h1>
+<h1><span class="header-section-number">20</span> Recursive Feature Elimination</h1>
 <p>Contents</p>
 <ul>
 <li><a href="#search">Feature Selection Using Search Algorithms</a></li>
@@ -365,7 +372,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="recursive-feature-elimination.html#rfe">Recursive Feature Elimination via <code>caret</code></a></li>
 </ul>
 <div id="backwards-selection" class="section level2">
-<h2><span class="header-section-number">18.1</span> Backwards Selection</h2>
+<h2><span class="header-section-number">20.1</span> Backwards Selection</h2>
 <p>First, the algorithm fits the model to all predictors. Each predictor is ranked using it’s importance to the model. Let <em>S</em> be a sequence of ordered numbers which are candidate values for the number of predictors to retain (<em>S<sub>1</sub></em> &gt; <em>S<sub>2</sub></em>, …). At each iteration of feature selection, the <em>S<sub>i</sub></em> top ranked predictors are retained, the model is refit and performance is assessed. The value of <em>S<sub>i</sub></em> with the best performance is determined and the top <em>S<sub>i</sub></em> predictors are used to fit the final model. Algorithm 1 has a more complete definition.</p>
 <p>The algorithm has an optional step (line 1.9) where the predictor rankings are recomputed on the model on the reduced feature set. <a href="http://rd.springer.com/chapter/10.1007%2F978-3-540-25966-4_33">Svetnik <em>et al</em> (2004)</a> showed that, for random forest models, there was a decrease in performance when the rankings were re-computed at every step. However, in other cases when the initial rankings are not good (e.g. linear models with highly collinear predictors), re-calculation can slightly improve performance.</p>
 <p><img src="premade/Algo1.png" /><!-- --></p>
@@ -377,7 +384,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="resampling-and-external-validation" class="section level2">
-<h2><span class="header-section-number">18.2</span> Resampling and External Validation</h2>
+<h2><span class="header-section-number">20.2</span> Resampling and External Validation</h2>
 <p>Since feature selection is part of the model building process, resampling methods (e.g. cross-validation, the bootstrap) should factor in the variability caused by feature selection when calculating performance. For example, the RFE procedure in Algorithm 1 can estimate the model performance on line 1.7, which during the selection process. <a href="http://www.pnas.org/content/99/10/6562.short">Ambroise and McLachlan (2002)</a> and <a href="http://rd.springer.com/chapter/10.1007%2F978-3-540-25966-4_33">Svetnik <em>et al</em> (2004)</a> showed that improper use of resampling to measure performance will result in models that perform poorly on new samples.</p>
 <p>To get performance estimates that incorporate the variation due to feature selection, it is suggested that the steps in Algorithm 1 be encapsulated inside an outer layer of resampling (e.g. 10-fold cross-validation). Algorithm 2 shows a version of the algorithm that uses resampling.</p>
 <p>While this will provide better estimates of performance, it is more computationally burdensome. For users with access to machines with multiple processors, the first <code>For</code> loop in Algorithm 2 (line 2.1) can be easily parallelized. Another complication to using resampling is that multiple lists of the “best” predictors are generated at each iteration. At first this may seem like a disadvantage, but it does provide a more probabilistic assessment of predictor importance than a ranking based on a single fixed data set. At the end of the algorithm, a consensus ranking can be used to determine the best predictors to retain.</p>
@@ -387,7 +394,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 <div id="recursive-feature-elimination-via-caret" class="section level2">
-<h2><span class="header-section-number">18.3</span> Recursive Feature Elimination via <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a></h2>
+<h2><span class="header-section-number">20.3</span> Recursive Feature Elimination via <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a></h2>
 <p>In <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a>, Algorithm 1 is implemented by the function <code>rfeIter</code>. The resampling-based Algorithm 2 is in the <code>rfe</code> function. Given the potential selection bias issues, this document focuses on <code>rfe</code>. There are several arguments:</p>
 <ul>
 <li><code>x</code>, a matrix or data frame of predictor variables</li>
@@ -400,8 +407,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 </div>
 </div>
-<div id="an-example-2" class="section level2">
-<h2><span class="header-section-number">18.4</span> An Example</h2>
+<div id="an-example-3" class="section level2">
+<h2><span class="header-section-number">20.4</span> An Example</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caret)
 <span class="kw">library</span>(mlbench)
 <span class="kw">library</span>(Hmisc)
@@ -446,23 +453,23 @@ lmProfile</code></pre></div>
 ## 
 ## Resampling performance over subset size:
 ## 
-##  Variables  RMSE Rsquared RMSESD RsquaredSD Selected
-##          1 4.676   0.1227 0.6712     0.1367         
-##          2 4.445   0.2278 0.6120     0.2008         
-##          3 4.475   0.2192 0.6293     0.1998         
-##          4 3.424   0.5228 0.7071     0.1980         
-##          5 2.797   0.6903 0.6763     0.1722        *
-##         10 2.934   0.6639 0.6902     0.1812         
-##         15 2.969   0.6583 0.6475     0.1741         
-##         20 3.101   0.6269 0.6213     0.1805         
-##         25 3.085   0.6305 0.6681     0.1715         
-##         50 4.088   0.4502 0.9538     0.2302         
+##  Variables  RMSE Rsquared   MAE RMSESD RsquaredSD  MAESD Selected
+##          1 3.932   0.3812 3.377 0.7272     0.2116 0.6179         
+##          2 3.574   0.4901 3.004 0.5890     0.2001 0.5604         
+##          3 3.081   0.6087 2.592 0.6117     0.1899 0.5498         
+##          4 2.897   0.6611 2.302 0.7147     0.1988 0.5639        *
+##          5 3.028   0.6338 2.423 0.7561     0.2051 0.5829         
+##         10 3.191   0.5977 2.583 0.7953     0.1968 0.5845         
+##         15 3.396   0.5581 2.724 0.8231     0.2193 0.6285         
+##         20 3.505   0.5410 2.806 0.9031     0.2336 0.7088         
+##         25 3.729   0.5047 2.982 0.8925     0.2327 0.7092         
+##         50 4.088   0.4502 3.322 0.9538     0.2302 0.7911         
 ## 
-## The top 5 variables (out of 5):
-##    real4, real5, real2, real1, bogus16</code></pre>
-<p>The output shows that the best subset size was estimated to be 5 predictors. This set includes informative variables but did not include them all. The <code>predictors</code> function can be used to get a text string of variable names that were picked in the final model. The <code>lmProfile</code> is a list of class <code>&quot;rfe&quot;</code> that contains an object <code>fit</code> that is the final linear model with the remaining terms. The model can be used to get predictions for future or test samples.</p>
+## The top 4 variables (out of 4):
+##    real4, real5, real2, real1</code></pre>
+<p>The output shows that the best subset size was estimated to be 4 predictors. This set includes informative variables but did not include them all. The <code>predictors</code> function can be used to get a text string of variable names that were picked in the final model. The <code>lmProfile</code> is a list of class <code>&quot;rfe&quot;</code> that contains an object <code>fit</code> that is the final linear model with the remaining terms. The model can be used to get predictions for future or test samples.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predictors</span>(lmProfile)</code></pre></div>
-<pre><code>## [1] &quot;real4&quot;   &quot;real5&quot;   &quot;real2&quot;   &quot;real1&quot;   &quot;bogus16&quot;</code></pre>
+<pre><code>## [1] &quot;real4&quot; &quot;real5&quot; &quot;real2&quot; &quot;real1&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lmProfile$fit</code></pre></div>
 <pre><code>## 
 ## Call:
@@ -470,17 +477,15 @@ lmProfile</code></pre></div>
 ## 
 ## Coefficients:
 ## (Intercept)        real4        real5        real2        real1  
-##     14.6131       2.8859       1.9711       1.6390       1.4192  
-##     bogus16  
-##     -0.4229</code></pre>
+##      14.613        2.857        1.965        1.625        1.359</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(lmProfile$resample)</code></pre></div>
-<pre><code>##    Variables     RMSE  Rsquared    Resample
-## 5          5 2.079424 0.7483282 Fold01.Rep1
-## 15         5 2.714482 0.6646196 Fold02.Rep1
-## 25         5 4.631324 0.2062899 Fold03.Rep1
-## 35         5 2.628020 0.8230015 Fold04.Rep1
-## 45         5 1.984885 0.8562010 Fold05.Rep1
-## 55         5 3.046826 0.8230819 Fold06.Rep1</code></pre>
+<pre><code>##    Variables     RMSE  Rsquared      MAE    Resample
+## 4          4 2.940756 0.5542831 2.587031 Fold01.Rep1
+## 14         4 2.704529 0.6583788 2.081745 Fold02.Rep1
+## 24         4 4.599872 0.2181731 3.580316 Fold03.Rep1
+## 34         4 2.601659 0.8478823 2.243885 Fold04.Rep1
+## 44         4 1.979220 0.8571701 1.727537 Fold05.Rep1
+## 54         4 2.978896 0.8301785 2.342059 Fold06.Rep1</code></pre>
 <p>There are also several plot methods to visualize the results. <code>plot(lmProfile)</code> produces the performance profile across different subset sizes, as shown in the figure below.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(<span class="kw">caretTheme</span>())
 <span class="kw">plot</span>(lmProfile, <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;g&quot;</span>, <span class="st">&quot;o&quot;</span>))</code></pre></div>
@@ -488,7 +493,7 @@ lmProfile</code></pre></div>
 <p>Also the resampling results are stored in the sub-object <code>lmProfile$resample</code> and can be used with several lattice functions. Univariate lattice functions (<code>densityplot</code>, <code>histogram</code>) can be used to plot the resampling distribution while bivariate functions (<code>xyplot</code>, <code>stripplot</code>) can be used to plot the distributions for different subset sizes. In the latter case, the option <code>returnResamp`` = &quot;all&quot;</code> in <code>rfeControl</code> can be used to save all the resampling results. Example images are shown below for the random forest model.</p>
 </div>
 <div id="helper-functions" class="section level2">
-<h2><span class="header-section-number">18.5</span> Helper Functions</h2>
+<h2><span class="header-section-number">20.5</span> Helper Functions</h2>
 <p>To use feature elimination for an arbitrary model, a set of functions must be passed to <code>rfe</code> for each of the steps in Algorithm 2.</p>
 <p>This section defines those functions and uses the existing random forest functions as an illustrative example. <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> contains a list called <code>rfFuncs</code>, but this document will use a more simple version that will be better for illustrating the ideas. A set of simplified functions used here and called <code>rfRFE</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfRFE &lt;-<span class="st">  </span><span class="kw">list</span>(<span class="dt">summary =</span> defaultSummary,
@@ -506,7 +511,7 @@ lmProfile</code></pre></div>
                <span class="dt">selectSize =</span> pickSizeBest,
                <span class="dt">selectVar =</span> pickVars)</code></pre></div>
 <div id="the-summary-function" class="section level3">
-<h3><span class="header-section-number">18.5.1</span> The <code>summary</code> Function</h3>
+<h3><span class="header-section-number">20.5.1</span> The <code>summary</code> Function</h3>
 <p>The <code>summary</code> function takes the observed and predicted values and computes one or more performance metrics (see line 2.14). The input is a data frame with columns <code>obs</code> and <code>pred</code>. The output should be a named vector of numeric variables. Note that the <code>metric</code> argument of the <code>rfe</code> function should reference one of the names of the output of <code>summary</code>. The example function is:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfRFE$summary</code></pre></div>
 <pre><code>## function (data, lev = NULL, model = NULL) 
@@ -518,8 +523,8 @@ lmProfile</code></pre></div>
 ## &lt;environment: namespace:caret&gt;</code></pre>
 <p>Two functions in <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> that can be used as the summary funciton are <code>defaultSummary</code> and <code>twoClassSummary</code> (for classification problems with two classes).</p>
 </div>
-<div id="the-fit-function-1" class="section level3">
-<h3><span class="header-section-number">18.5.2</span> The <code>fit</code> Function</h3>
+<div id="the-fit-function-2" class="section level3">
+<h3><span class="header-section-number">20.5.2</span> The <code>fit</code> Function</h3>
 <p>This function builds the model based on the current data set (lines 2.3, 2.9 and 2.17). The arguments for the function must be:</p>
 <ul>
 <li><code>x</code>: the current training set of predictor data with the appropriate subset of variables</li>
@@ -537,7 +542,7 @@ lmProfile</code></pre></div>
 <p>For feature selection without re-ranking at each iteration, the random forest variable importances only need to be computed on the first iterations when all of the predictors are in the model. This can be accomplished using <code>importance`` = first</code>.</p>
 </div>
 <div id="the-pred-function-1" class="section level3">
-<h3><span class="header-section-number">18.5.3</span> The <code>pred</code> Function</h3>
+<h3><span class="header-section-number">20.5.3</span> The <code>pred</code> Function</h3>
 <p>This function returns a vector of predictions (numeric or factors) from the current model (lines 2.4 and 2.10). The input arguments must be</p>
 <ul>
 <li><code>object</code>: the model generated by the <code>fit</code> function</li>
@@ -549,7 +554,7 @@ lmProfile</code></pre></div>
 <p>For classification, it is probably a good idea to ensure that the resulting factor variables of predictions has the same levels as the input data.</p>
 </div>
 <div id="the-rank-function" class="section level3">
-<h3><span class="header-section-number">18.5.4</span> The <code>rank</code> Function</h3>
+<h3><span class="header-section-number">20.5.4</span> The <code>rank</code> Function</h3>
 <p>This function is used to return the predictors in the order of the most important to the least important (lines 2.5 and 2.11). Inputs are:</p>
 <ul>
 <li><code>object</code>: the model generated by the <code>fit</code> function</li>
@@ -567,7 +572,7 @@ lmProfile</code></pre></div>
 ##                  }</code></pre>
 </div>
 <div id="the-selectsize-function" class="section level3">
-<h3><span class="header-section-number">18.5.5</span> The <code>selectSize</code> Function</h3>
+<h3><span class="header-section-number">20.5.5</span> The <code>selectSize</code> Function</h3>
 <p>This function determines the optimal number of predictors based on the resampling output (line 2.15). Inputs for the function are:</p>
 <ul>
 <li><code>x</code>: a matrix with columns for the performance metrics and the number of variables, called <code>Variables</code></li>
@@ -618,7 +623,7 @@ example$Tolerance &lt;-<span class="st"> </span>(example$RMSE -<span class="st">
 <p><img src="rfe/rfe_lmdens-1.png" width="672" /></p>
 </div>
 <div id="the-selectvar-function" class="section level3">
-<h3><span class="header-section-number">18.5.6</span> The <code>selectVar</code> Function</h3>
+<h3><span class="header-section-number">20.5.6</span> The <code>selectVar</code> Function</h3>
 <p>After the optimal subset size is determined, this function will be used to calculate the best rankings for each variable across all the resampling iterations (line 2.16). Inputs for the function are:</p>
 <ul>
 <li><code>y</code>: a list of variables importance for each resampling iteration and each subset size (generated by the user-defined <code>rank</code> function). In the example, each each of the cross-validation groups the output of the <span class="mx funCall">rank</span> function is saved for each of the 10 subset sizes (including the original subset). If the rankings are not recomputed at each iteration, the values will be the same within each cross-validation iteration.</li>
@@ -640,8 +645,8 @@ example$Tolerance &lt;-<span class="st"> </span>(example$RMSE -<span class="st">
 <p>Note that if the predictor rankings are recomputed at each iteration (line 2.11) the user will need to write their own selection function to use the other ranks.</p>
 </div>
 </div>
-<div id="the-example" class="section level2">
-<h2><span class="header-section-number">18.6</span> The Example</h2>
+<div id="the-example-1" class="section level2">
+<h2><span class="header-section-number">20.6</span> The Example</h2>
 <p>For random forest, we fit the same series of model sizes as the linear model. The option to save all the resampling results across subset sizes was changed for this model and are used to show the lattice plot function capabilities in the figures below.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ctrl$functions &lt;-<span class="st"> </span>rfRFE
 ctrl$returnResamp &lt;-<span class="st"> &quot;all&quot;</span>
@@ -655,17 +660,17 @@ rfProfile</code></pre></div>
 ## 
 ## Resampling performance over subset size:
 ## 
-##  Variables  RMSE Rsquared RMSESD RsquaredSD Selected
-##          1 4.730   0.2060 0.9695     0.1782         
-##          2 3.905   0.3874 0.6027     0.2137         
-##          3 3.138   0.6059 0.6103     0.1902         
-##          4 2.682   0.7678 0.5129     0.1123        *
-##          5 2.919   0.7420 0.5600     0.1163         
-##         10 3.051   0.7134 0.5934     0.1540         
-##         15 3.146   0.7054 0.5678     0.1549         
-##         20 3.307   0.6796 0.5666     0.1807         
-##         25 3.330   0.6775 0.5949     0.1758         
-##         50 3.534   0.6521 0.5530     0.1879         
+##  Variables  RMSE Rsquared   MAE RMSESD RsquaredSD  MAESD Selected
+##          1 4.729   0.2086 4.008 0.9816     0.1822 0.9198         
+##          2 3.815   0.4102 3.239 0.6157     0.2238 0.6540         
+##          3 3.148   0.6044 2.659 0.6204     0.1938 0.5857         
+##          4 2.697   0.7641 2.299 0.5403     0.1315 0.5004        *
+##          5 2.874   0.7507 2.417 0.5643     0.1321 0.5255         
+##         10 3.098   0.6978 2.622 0.6055     0.1586 0.5535         
+##         15 3.224   0.6750 2.733 0.5845     0.1750 0.5543         
+##         20 3.353   0.6639 2.844 0.5887     0.1845 0.5616         
+##         25 3.393   0.6567 2.889 0.5691     0.1879 0.5478         
+##         50 3.520   0.6565 3.021 0.5565     0.1961 0.5303         
 ## 
 ## The top 4 variables (out of 4):
 ##    real4, real5, real2, real1</code></pre>
@@ -696,9 +701,10 @@ plot2 &lt;-<span class="st"> </span><span class="kw">densityplot</span>(rfProfil
           </div>
         </div>
       </div>
-<a href="feature-selection-overview.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="feature-selection-using-univariate-filters.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
-
+<a href="feature-selection-using-univariate-filters.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="feature-selection-using-genetic-algorithms.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
@@ -707,7 +713,7 @@ plot2 &lt;-<span class="st"> </span><span class="kw">densityplot</span>(rfProfil
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
 <script>
-require(["gitbook"], function(gitbook) {
+gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
 "github": false,
@@ -741,7 +747,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(script.src))
       script.src  = script.src.replace(/^https?:/, '');
     document.getElementsByTagName("head")[0].appendChild(script);

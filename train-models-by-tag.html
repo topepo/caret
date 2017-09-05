@@ -6,9 +6,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>The caret Package</title>
-  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.3 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
@@ -26,7 +25,7 @@
 <meta name="author" content="Max Kuhn">
 
 
-<meta name="date" content="2017-07-23">
+<meta name="date" content="2017-09-04">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -35,7 +34,6 @@
   
 <link rel="prev" href="available-models.html">
 <link rel="next" href="models-clustered-by-tag-similarity.html">
-
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,7 +47,7 @@
 
 
 
-<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
 <script src="libs/datatables-binding-0.2/datatables.js"></script>
 <link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
 <link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
@@ -57,12 +55,12 @@
 <script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
 <script src="libs/d3-4.5.0/d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
-<link href="libs/plotlyjs-1.26.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotlyjs-1.26.1/plotly-latest.min.js"></script>
-<script src="libs/plotly-binding-4.6.0/plotly.js"></script>
+<script src="libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
-<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -106,6 +104,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 
 <body>
+
 
 
   <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
@@ -216,129 +215,137 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="11.3" data-path="subsampling-for-class-imbalances.html"><a href="subsampling-for-class-imbalances.html#complications"><i class="fa fa-check"></i><b>11.3</b> Complications</a></li>
 <li class="chapter" data-level="11.4" data-path="subsampling-for-class-imbalances.html"><a href="subsampling-for-class-imbalances.html#using-custom-subsampling-techniques"><i class="fa fa-check"></i><b>11.4</b> Using Custom Subsampling Techniques</a></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html"><i class="fa fa-check"></i><b>12</b> Using Your Own Model in <code>train</code></a><ul>
-<li class="chapter" data-level="12.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#introduction-1"><i class="fa fa-check"></i><b>12.1</b> Introduction</a></li>
-<li class="chapter" data-level="12.2" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-1-svms-with-laplacian-kernels"><i class="fa fa-check"></i><b>12.2</b> Illustrative Example 1: SVMs with Laplacian Kernels</a></li>
-<li class="chapter" data-level="12.3" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#model-components"><i class="fa fa-check"></i><b>12.3</b> Model Components</a><ul>
-<li class="chapter" data-level="12.3.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-parameters-element"><i class="fa fa-check"></i><b>12.3.1</b> The parameters Element</a></li>
-<li class="chapter" data-level="12.3.2" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-grid-element"><i class="fa fa-check"></i><b>12.3.2</b> The <code>grid</code> Element</a></li>
-<li class="chapter" data-level="12.3.3" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-fit-element"><i class="fa fa-check"></i><b>12.3.3</b> The <code>fit</code> Element</a></li>
-<li class="chapter" data-level="12.3.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-predict-element"><i class="fa fa-check"></i><b>12.3.4</b> The <code>predict</code> Element</a></li>
-<li class="chapter" data-level="12.3.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-prob-element"><i class="fa fa-check"></i><b>12.3.5</b> The <code>prob</code> Element</a></li>
+<li class="chapter" data-level="12" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html"><i class="fa fa-check"></i><b>12</b> Using Recipes with train</a><ul>
+<li class="chapter" data-level="12.1" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#why-should-you-learn-this"><i class="fa fa-check"></i><b>12.1</b> Why Should you learn this?</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#more-versatile-tools-for-preprocessing-data"><i class="fa fa-check"></i><b>12.1.1</b> More versatile tools for preprocessing data</a></li>
+<li class="chapter" data-level="12.1.2" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#using-additional-data-to-measure-performance"><i class="fa fa-check"></i><b>12.1.2</b> Using additional data to measure performance</a></li>
 </ul></li>
-<li class="chapter" data-level="12.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-sort-element"><i class="fa fa-check"></i><b>12.4</b> The sort Element</a><ul>
-<li class="chapter" data-level="12.4.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-levels-element"><i class="fa fa-check"></i><b>12.4.1</b> The <code>levels</code> Element</a></li>
+<li class="chapter" data-level="12.2" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#an-example-1"><i class="fa fa-check"></i><b>12.2</b> An Example</a></li>
+<li class="chapter" data-level="12.3" data-path="using-recipes-with-train.html"><a href="using-recipes-with-train.html#case-weights"><i class="fa fa-check"></i><b>12.3</b> Case Weights</a></li>
 </ul></li>
-<li class="chapter" data-level="12.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>12.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a><ul>
-<li class="chapter" data-level="12.5.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-loop-element"><i class="fa fa-check"></i><b>12.5.1</b> The loop Element</a></li>
+<li class="chapter" data-level="13" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html"><i class="fa fa-check"></i><b>13</b> Using Your Own Model in <code>train</code></a><ul>
+<li class="chapter" data-level="13.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#introduction-1"><i class="fa fa-check"></i><b>13.1</b> Introduction</a></li>
+<li class="chapter" data-level="13.2" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-1-svms-with-laplacian-kernels"><i class="fa fa-check"></i><b>13.2</b> Illustrative Example 1: SVMs with Laplacian Kernels</a></li>
+<li class="chapter" data-level="13.3" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#model-components"><i class="fa fa-check"></i><b>13.3</b> Model Components</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-parameters-element"><i class="fa fa-check"></i><b>13.3.1</b> The parameters Element</a></li>
+<li class="chapter" data-level="13.3.2" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-grid-element"><i class="fa fa-check"></i><b>13.3.2</b> The <code>grid</code> Element</a></li>
+<li class="chapter" data-level="13.3.3" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-fit-element"><i class="fa fa-check"></i><b>13.3.3</b> The <code>fit</code> Element</a></li>
+<li class="chapter" data-level="13.3.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-predict-element"><i class="fa fa-check"></i><b>13.3.4</b> The <code>predict</code> Element</a></li>
+<li class="chapter" data-level="13.3.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-prob-element"><i class="fa fa-check"></i><b>13.3.5</b> The <code>prob</code> Element</a></li>
 </ul></li>
-<li class="chapter" data-level="12.6" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-3-nonstandard-formulas"><i class="fa fa-check"></i><b>12.6</b> Illustrative Example 3: Nonstandard Formulas</a></li>
-<li class="chapter" data-level="12.7" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-4-pls-feature-extraction-pre-processing"><i class="fa fa-check"></i><b>12.7</b> Illustrative Example 4: PLS Feature Extraction Pre-Processing</a></li>
-<li class="chapter" data-level="12.8" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-5-optimizing-probability-thresholds-for-class-imbalances"><i class="fa fa-check"></i><b>12.8</b> Illustrative Example 5: Optimizing probability thresholds for class imbalances</a></li>
-<li class="chapter" data-level="12.9" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-6-offsets-in-generalized-linear-models"><i class="fa fa-check"></i><b>12.9</b> Illustrative Example 6: Offsets in Generalized Linear Models</a></li>
+<li class="chapter" data-level="13.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-sort-element"><i class="fa fa-check"></i><b>13.4</b> The sort Element</a><ul>
+<li class="chapter" data-level="13.4.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-levels-element"><i class="fa fa-check"></i><b>13.4.1</b> The <code>levels</code> Element</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="adaptive-resampling.html"><a href="adaptive-resampling.html"><i class="fa fa-check"></i><b>13</b> Adaptive Resampling</a></li>
-<li class="chapter" data-level="14" data-path="variable-importance.html"><a href="variable-importance.html"><i class="fa fa-check"></i><b>14</b> Variable Importance</a><ul>
-<li class="chapter" data-level="14.1" data-path="variable-importance.html"><a href="variable-importance.html#model-specific-metrics"><i class="fa fa-check"></i><b>14.1</b> Model Specific Metrics</a></li>
-<li class="chapter" data-level="14.2" data-path="variable-importance.html"><a href="variable-importance.html#model-independent-metrics"><i class="fa fa-check"></i><b>14.2</b> Model Independent Metrics</a></li>
-<li class="chapter" data-level="14.3" data-path="variable-importance.html"><a href="variable-importance.html#an-example-1"><i class="fa fa-check"></i><b>14.3</b> An Example</a></li>
+<li class="chapter" data-level="13.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>13.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a><ul>
+<li class="chapter" data-level="13.5.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-loop-element"><i class="fa fa-check"></i><b>13.5.1</b> The loop Element</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html"><i class="fa fa-check"></i><b>15</b> Miscellaneous Model Functions</a><ul>
-<li class="chapter" data-level="15.1" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#yet-another-k-nearest-neighbor-function"><i class="fa fa-check"></i><b>15.1</b> Yet Another <em>k</em>-Nearest Neighbor Function</a></li>
-<li class="chapter" data-level="15.2" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#partial-least-squares-discriminant-analysis"><i class="fa fa-check"></i><b>15.2</b> Partial Least Squares Discriminant Analysis</a></li>
-<li class="chapter" data-level="15.3" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#bagged-mars-and-fda"><i class="fa fa-check"></i><b>15.3</b> Bagged MARS and FDA</a></li>
-<li class="chapter" data-level="15.4" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#bagging-1"><i class="fa fa-check"></i><b>15.4</b> Bagging</a><ul>
-<li class="chapter" data-level="15.4.1" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-fit-function"><i class="fa fa-check"></i><b>15.4.1</b> The <code>fit</code> Function</a></li>
-<li class="chapter" data-level="15.4.2" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-pred-function"><i class="fa fa-check"></i><b>15.4.2</b> The <code>pred</code> Function</a></li>
-<li class="chapter" data-level="15.4.3" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-aggregate-function"><i class="fa fa-check"></i><b>15.4.3</b> The <code>aggregate</code> Function</a></li>
+<li class="chapter" data-level="13.6" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-3-nonstandard-formulas"><i class="fa fa-check"></i><b>13.6</b> Illustrative Example 3: Nonstandard Formulas</a></li>
+<li class="chapter" data-level="13.7" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-4-pls-feature-extraction-pre-processing"><i class="fa fa-check"></i><b>13.7</b> Illustrative Example 4: PLS Feature Extraction Pre-Processing</a></li>
+<li class="chapter" data-level="13.8" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-5-optimizing-probability-thresholds-for-class-imbalances"><i class="fa fa-check"></i><b>13.8</b> Illustrative Example 5: Optimizing probability thresholds for class imbalances</a></li>
+<li class="chapter" data-level="13.9" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-6-offsets-in-generalized-linear-models"><i class="fa fa-check"></i><b>13.9</b> Illustrative Example 6: Offsets in Generalized Linear Models</a></li>
 </ul></li>
-<li class="chapter" data-level="15.5" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#model-averaged-neural-networks"><i class="fa fa-check"></i><b>15.5</b> Model Averaged Neural Networks</a></li>
-<li class="chapter" data-level="15.6" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#neural-networks-with-a-principal-component-step"><i class="fa fa-check"></i><b>15.6</b> Neural Networks with a Principal Component Step</a></li>
-<li class="chapter" data-level="15.7" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#independent-component-regression"><i class="fa fa-check"></i><b>15.7</b> Independent Component Regression</a></li>
+<li class="chapter" data-level="14" data-path="adaptive-resampling.html"><a href="adaptive-resampling.html"><i class="fa fa-check"></i><b>14</b> Adaptive Resampling</a></li>
+<li class="chapter" data-level="15" data-path="variable-importance.html"><a href="variable-importance.html"><i class="fa fa-check"></i><b>15</b> Variable Importance</a><ul>
+<li class="chapter" data-level="15.1" data-path="variable-importance.html"><a href="variable-importance.html#model-specific-metrics"><i class="fa fa-check"></i><b>15.1</b> Model Specific Metrics</a></li>
+<li class="chapter" data-level="15.2" data-path="variable-importance.html"><a href="variable-importance.html#model-independent-metrics"><i class="fa fa-check"></i><b>15.2</b> Model Independent Metrics</a></li>
+<li class="chapter" data-level="15.3" data-path="variable-importance.html"><a href="variable-importance.html#an-example-2"><i class="fa fa-check"></i><b>15.3</b> An Example</a></li>
 </ul></li>
-<li class="chapter" data-level="16" data-path="measuring-performance.html"><a href="measuring-performance.html"><i class="fa fa-check"></i><b>16</b> Measuring Performance</a><ul>
-<li class="chapter" data-level="16.1" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-regression"><i class="fa fa-check"></i><b>16.1</b> Measures for Regression</a></li>
-<li class="chapter" data-level="16.2" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-predicted-classes"><i class="fa fa-check"></i><b>16.2</b> Measures for Predicted Classes</a></li>
-<li class="chapter" data-level="16.3" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-class-probabilities"><i class="fa fa-check"></i><b>16.3</b> Measures for Class Probabilities</a></li>
-<li class="chapter" data-level="16.4" data-path="measuring-performance.html"><a href="measuring-performance.html#lift-curves"><i class="fa fa-check"></i><b>16.4</b> Lift Curves</a></li>
-<li class="chapter" data-level="16.5" data-path="measuring-performance.html"><a href="measuring-performance.html#calibration-curves"><i class="fa fa-check"></i><b>16.5</b> Calibration Curves</a></li>
+<li class="chapter" data-level="16" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html"><i class="fa fa-check"></i><b>16</b> Miscellaneous Model Functions</a><ul>
+<li class="chapter" data-level="16.1" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#yet-another-k-nearest-neighbor-function"><i class="fa fa-check"></i><b>16.1</b> Yet Another <em>k</em>-Nearest Neighbor Function</a></li>
+<li class="chapter" data-level="16.2" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#partial-least-squares-discriminant-analysis"><i class="fa fa-check"></i><b>16.2</b> Partial Least Squares Discriminant Analysis</a></li>
+<li class="chapter" data-level="16.3" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#bagged-mars-and-fda"><i class="fa fa-check"></i><b>16.3</b> Bagged MARS and FDA</a></li>
+<li class="chapter" data-level="16.4" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#bagging-1"><i class="fa fa-check"></i><b>16.4</b> Bagging</a><ul>
+<li class="chapter" data-level="16.4.1" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-fit-function"><i class="fa fa-check"></i><b>16.4.1</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="16.4.2" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-pred-function"><i class="fa fa-check"></i><b>16.4.2</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="16.4.3" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#the-aggregate-function"><i class="fa fa-check"></i><b>16.4.3</b> The <code>aggregate</code> Function</a></li>
 </ul></li>
-<li class="chapter" data-level="17" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html"><i class="fa fa-check"></i><b>17</b> Feature Selection Overview</a><ul>
-<li class="chapter" data-level="17.1" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#models-with-built-in-feature-selection"><i class="fa fa-check"></i><b>17.1</b> Models with Built-In Feature Selection</a></li>
-<li class="chapter" data-level="17.2" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#feature-selection-methods"><i class="fa fa-check"></i><b>17.2</b> Feature Selection Methods</a></li>
-<li class="chapter" data-level="17.3" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#external-validation"><i class="fa fa-check"></i><b>17.3</b> External Validation</a></li>
+<li class="chapter" data-level="16.5" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#model-averaged-neural-networks"><i class="fa fa-check"></i><b>16.5</b> Model Averaged Neural Networks</a></li>
+<li class="chapter" data-level="16.6" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#neural-networks-with-a-principal-component-step"><i class="fa fa-check"></i><b>16.6</b> Neural Networks with a Principal Component Step</a></li>
+<li class="chapter" data-level="16.7" data-path="miscellaneous-model-functions.html"><a href="miscellaneous-model-functions.html#independent-component-regression"><i class="fa fa-check"></i><b>16.7</b> Independent Component Regression</a></li>
 </ul></li>
-<li class="chapter" data-level="18" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html"><i class="fa fa-check"></i><b>18</b> Recursive Feature Elimination</a><ul>
-<li class="chapter" data-level="18.1" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#backwards-selection"><i class="fa fa-check"></i><b>18.1</b> Backwards Selection</a></li>
-<li class="chapter" data-level="18.2" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#resampling-and-external-validation"><i class="fa fa-check"></i><b>18.2</b> Resampling and External Validation</a></li>
-<li class="chapter" data-level="18.3" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#recursive-feature-elimination-via-caret"><i class="fa fa-check"></i><b>18.3</b> Recursive Feature Elimination via <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a></a></li>
-<li class="chapter" data-level="18.4" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#an-example-2"><i class="fa fa-check"></i><b>18.4</b> An Example</a></li>
-<li class="chapter" data-level="18.5" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#helper-functions"><i class="fa fa-check"></i><b>18.5</b> Helper Functions</a><ul>
-<li class="chapter" data-level="18.5.1" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-summary-function"><i class="fa fa-check"></i><b>18.5.1</b> The <code>summary</code> Function</a></li>
-<li class="chapter" data-level="18.5.2" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-fit-function-1"><i class="fa fa-check"></i><b>18.5.2</b> The <code>fit</code> Function</a></li>
-<li class="chapter" data-level="18.5.3" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-pred-function-1"><i class="fa fa-check"></i><b>18.5.3</b> The <code>pred</code> Function</a></li>
-<li class="chapter" data-level="18.5.4" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-rank-function"><i class="fa fa-check"></i><b>18.5.4</b> The <code>rank</code> Function</a></li>
-<li class="chapter" data-level="18.5.5" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-selectsize-function"><i class="fa fa-check"></i><b>18.5.5</b> The <code>selectSize</code> Function</a></li>
-<li class="chapter" data-level="18.5.6" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-selectvar-function"><i class="fa fa-check"></i><b>18.5.6</b> The <code>selectVar</code> Function</a></li>
+<li class="chapter" data-level="17" data-path="measuring-performance.html"><a href="measuring-performance.html"><i class="fa fa-check"></i><b>17</b> Measuring Performance</a><ul>
+<li class="chapter" data-level="17.1" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-regression"><i class="fa fa-check"></i><b>17.1</b> Measures for Regression</a></li>
+<li class="chapter" data-level="17.2" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-predicted-classes"><i class="fa fa-check"></i><b>17.2</b> Measures for Predicted Classes</a></li>
+<li class="chapter" data-level="17.3" data-path="measuring-performance.html"><a href="measuring-performance.html#measures-for-class-probabilities"><i class="fa fa-check"></i><b>17.3</b> Measures for Class Probabilities</a></li>
+<li class="chapter" data-level="17.4" data-path="measuring-performance.html"><a href="measuring-performance.html#lift-curves"><i class="fa fa-check"></i><b>17.4</b> Lift Curves</a></li>
+<li class="chapter" data-level="17.5" data-path="measuring-performance.html"><a href="measuring-performance.html#calibration-curves"><i class="fa fa-check"></i><b>17.5</b> Calibration Curves</a></li>
 </ul></li>
-<li class="chapter" data-level="18.6" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-example"><i class="fa fa-check"></i><b>18.6</b> The Example</a></li>
+<li class="chapter" data-level="18" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html"><i class="fa fa-check"></i><b>18</b> Feature Selection Overview</a><ul>
+<li class="chapter" data-level="18.1" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#models-with-built-in-feature-selection"><i class="fa fa-check"></i><b>18.1</b> Models with Built-In Feature Selection</a></li>
+<li class="chapter" data-level="18.2" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#feature-selection-methods"><i class="fa fa-check"></i><b>18.2</b> Feature Selection Methods</a></li>
+<li class="chapter" data-level="18.3" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html#external-validation"><i class="fa fa-check"></i><b>18.3</b> External Validation</a></li>
 </ul></li>
 <li class="chapter" data-level="19" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html"><i class="fa fa-check"></i><b>19</b> Feature Selection using Univariate Filters</a><ul>
 <li class="chapter" data-level="19.1" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#univariate-filters"><i class="fa fa-check"></i><b>19.1</b> Univariate Filters</a></li>
 <li class="chapter" data-level="19.2" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#basic-syntax"><i class="fa fa-check"></i><b>19.2</b> Basic Syntax</a><ul>
 <li class="chapter" data-level="19.2.1" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-score-function"><i class="fa fa-check"></i><b>19.2.1</b> The <code>score</code> Function</a></li>
 <li class="chapter" data-level="19.2.2" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-filter-function"><i class="fa fa-check"></i><b>19.2.2</b> The <code>filter</code> Function</a></li>
-<li class="chapter" data-level="19.2.3" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-fit-function-2"><i class="fa fa-check"></i><b>19.2.3</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="19.2.3" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-fit-function-1"><i class="fa fa-check"></i><b>19.2.3</b> The <code>fit</code> Function</a></li>
 <li class="chapter" data-level="19.2.4" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-summary-and-pred-functions"><i class="fa fa-check"></i><b>19.2.4</b> The <code>summary</code> and <code>pred</code> Functions</a></li>
 </ul></li>
-<li class="chapter" data-level="19.3" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-example-1"><i class="fa fa-check"></i><b>19.3</b> The Example</a></li>
+<li class="chapter" data-level="19.3" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-example"><i class="fa fa-check"></i><b>19.3</b> The Example</a></li>
 </ul></li>
-<li class="chapter" data-level="20" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html"><i class="fa fa-check"></i><b>20</b> Feature Selection using Genetic Algorithms</a><ul>
-<li class="chapter" data-level="20.1" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#genetic-algorithms"><i class="fa fa-check"></i><b>20.1</b> Genetic Algorithms</a></li>
-<li class="chapter" data-level="20.2" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#internal-and-external-performance-estimates"><i class="fa fa-check"></i><b>20.2</b> Internal and External Performance Estimates</a></li>
-<li class="chapter" data-level="20.3" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#basic-syntax-1"><i class="fa fa-check"></i><b>20.3</b> Basic Syntax</a></li>
-<li class="chapter" data-level="20.4" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#example"><i class="fa fa-check"></i><b>20.4</b> Example</a></li>
-<li class="chapter" data-level="20.5" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#customizing-the-search"><i class="fa fa-check"></i><b>20.5</b> Customizing the Search</a><ul>
-<li class="chapter" data-level="20.5.1" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fit-function-3"><i class="fa fa-check"></i><b>20.5.1</b> The <code>fit</code> Function</a></li>
-<li class="chapter" data-level="20.5.2" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-pred-function-2"><i class="fa fa-check"></i><b>20.5.2</b> The <code>pred</code> Function</a></li>
-<li class="chapter" data-level="20.5.3" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fitness_intern-function"><i class="fa fa-check"></i><b>20.5.3</b> The <code>fitness_intern</code> Function</a></li>
-<li class="chapter" data-level="20.5.4" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fitness_extern-function"><i class="fa fa-check"></i><b>20.5.4</b> The <code>fitness_extern</code> Function</a></li>
-<li class="chapter" data-level="20.5.5" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-initial-function"><i class="fa fa-check"></i><b>20.5.5</b> The <code>initial</code> Function</a></li>
-<li class="chapter" data-level="20.5.6" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-selection-function"><i class="fa fa-check"></i><b>20.5.6</b> The <code>selection</code> Function</a></li>
-<li class="chapter" data-level="20.5.7" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-crossover-function"><i class="fa fa-check"></i><b>20.5.7</b> The <code>crossover</code> Function</a></li>
-<li class="chapter" data-level="20.5.8" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-mutation-function"><i class="fa fa-check"></i><b>20.5.8</b> The <code>mutation</code> Function</a></li>
-<li class="chapter" data-level="20.5.9" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-selectiter-function"><i class="fa fa-check"></i><b>20.5.9</b> The <code>selectIter</code> Function</a></li>
+<li class="chapter" data-level="20" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html"><i class="fa fa-check"></i><b>20</b> Recursive Feature Elimination</a><ul>
+<li class="chapter" data-level="20.1" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#backwards-selection"><i class="fa fa-check"></i><b>20.1</b> Backwards Selection</a></li>
+<li class="chapter" data-level="20.2" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#resampling-and-external-validation"><i class="fa fa-check"></i><b>20.2</b> Resampling and External Validation</a></li>
+<li class="chapter" data-level="20.3" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#recursive-feature-elimination-via-caret"><i class="fa fa-check"></i><b>20.3</b> Recursive Feature Elimination via <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a></a></li>
+<li class="chapter" data-level="20.4" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#an-example-3"><i class="fa fa-check"></i><b>20.4</b> An Example</a></li>
+<li class="chapter" data-level="20.5" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#helper-functions"><i class="fa fa-check"></i><b>20.5</b> Helper Functions</a><ul>
+<li class="chapter" data-level="20.5.1" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-summary-function"><i class="fa fa-check"></i><b>20.5.1</b> The <code>summary</code> Function</a></li>
+<li class="chapter" data-level="20.5.2" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-fit-function-2"><i class="fa fa-check"></i><b>20.5.2</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="20.5.3" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-pred-function-1"><i class="fa fa-check"></i><b>20.5.3</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="20.5.4" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-rank-function"><i class="fa fa-check"></i><b>20.5.4</b> The <code>rank</code> Function</a></li>
+<li class="chapter" data-level="20.5.5" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-selectsize-function"><i class="fa fa-check"></i><b>20.5.5</b> The <code>selectSize</code> Function</a></li>
+<li class="chapter" data-level="20.5.6" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-selectvar-function"><i class="fa fa-check"></i><b>20.5.6</b> The <code>selectVar</code> Function</a></li>
 </ul></li>
-<li class="chapter" data-level="20.6" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-example-revisited"><i class="fa fa-check"></i><b>20.6</b> The Example Revisited</a></li>
+<li class="chapter" data-level="20.6" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-example-1"><i class="fa fa-check"></i><b>20.6</b> The Example</a></li>
 </ul></li>
-<li class="chapter" data-level="21" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html"><i class="fa fa-check"></i><b>21</b> Feature Selection using Simulated Annealing</a><ul>
-<li class="chapter" data-level="21.1" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#simulated-annealing"><i class="fa fa-check"></i><b>21.1</b> Simulated Annealing</a></li>
-<li class="chapter" data-level="21.2" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#internal-and-external-performance-estimates-1"><i class="fa fa-check"></i><b>21.2</b> Internal and External Performance Estimates</a></li>
-<li class="chapter" data-level="21.3" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#basic-syntax-2"><i class="fa fa-check"></i><b>21.3</b> Basic Syntax</a></li>
-<li class="chapter" data-level="21.4" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#example-1"><i class="fa fa-check"></i><b>21.4</b> Example</a></li>
-<li class="chapter" data-level="21.5" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#customizing-the-search-1"><i class="fa fa-check"></i><b>21.5</b> Customizing the Search</a><ul>
-<li class="chapter" data-level="21.5.1" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fit-function-4"><i class="fa fa-check"></i><b>21.5.1</b> The <code>fit</code> Function</a></li>
-<li class="chapter" data-level="21.5.2" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-pred-function-3"><i class="fa fa-check"></i><b>21.5.2</b> The <code>pred</code> Function</a></li>
-<li class="chapter" data-level="21.5.3" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fitness_intern-function-1"><i class="fa fa-check"></i><b>21.5.3</b> The <code>fitness_intern</code> Function</a></li>
-<li class="chapter" data-level="21.5.4" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fitness_extern-function-1"><i class="fa fa-check"></i><b>21.5.4</b> The <code>fitness_extern</code> Function</a></li>
-<li class="chapter" data-level="21.5.5" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-initial-function-1"><i class="fa fa-check"></i><b>21.5.5</b> The <code>initial</code> Function</a></li>
-<li class="chapter" data-level="21.5.6" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-perturb-function"><i class="fa fa-check"></i><b>21.5.6</b> The <code>perturb</code> Function</a></li>
-<li class="chapter" data-level="21.5.7" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-prob-function"><i class="fa fa-check"></i><b>21.5.7</b> The <code>prob</code> Function</a></li>
+<li class="chapter" data-level="21" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html"><i class="fa fa-check"></i><b>21</b> Feature Selection using Genetic Algorithms</a><ul>
+<li class="chapter" data-level="21.1" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#genetic-algorithms"><i class="fa fa-check"></i><b>21.1</b> Genetic Algorithms</a></li>
+<li class="chapter" data-level="21.2" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#internal-and-external-performance-estimates"><i class="fa fa-check"></i><b>21.2</b> Internal and External Performance Estimates</a></li>
+<li class="chapter" data-level="21.3" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#basic-syntax-1"><i class="fa fa-check"></i><b>21.3</b> Basic Syntax</a></li>
+<li class="chapter" data-level="21.4" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#example"><i class="fa fa-check"></i><b>21.4</b> Example</a></li>
+<li class="chapter" data-level="21.5" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#customizing-the-search"><i class="fa fa-check"></i><b>21.5</b> Customizing the Search</a><ul>
+<li class="chapter" data-level="21.5.1" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fit-function-3"><i class="fa fa-check"></i><b>21.5.1</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="21.5.2" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-pred-function-2"><i class="fa fa-check"></i><b>21.5.2</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="21.5.3" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fitness_intern-function"><i class="fa fa-check"></i><b>21.5.3</b> The <code>fitness_intern</code> Function</a></li>
+<li class="chapter" data-level="21.5.4" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fitness_extern-function"><i class="fa fa-check"></i><b>21.5.4</b> The <code>fitness_extern</code> Function</a></li>
+<li class="chapter" data-level="21.5.5" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-initial-function"><i class="fa fa-check"></i><b>21.5.5</b> The <code>initial</code> Function</a></li>
+<li class="chapter" data-level="21.5.6" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-selection-function"><i class="fa fa-check"></i><b>21.5.6</b> The <code>selection</code> Function</a></li>
+<li class="chapter" data-level="21.5.7" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-crossover-function"><i class="fa fa-check"></i><b>21.5.7</b> The <code>crossover</code> Function</a></li>
+<li class="chapter" data-level="21.5.8" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-mutation-function"><i class="fa fa-check"></i><b>21.5.8</b> The <code>mutation</code> Function</a></li>
+<li class="chapter" data-level="21.5.9" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-selectiter-function"><i class="fa fa-check"></i><b>21.5.9</b> The <code>selectIter</code> Function</a></li>
+</ul></li>
+<li class="chapter" data-level="21.6" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-example-revisited"><i class="fa fa-check"></i><b>21.6</b> The Example Revisited</a></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html"><i class="fa fa-check"></i><b>22</b> Feature Selection using Simulated Annealing</a><ul>
+<li class="chapter" data-level="22.1" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#simulated-annealing"><i class="fa fa-check"></i><b>22.1</b> Simulated Annealing</a></li>
+<li class="chapter" data-level="22.2" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#internal-and-external-performance-estimates-1"><i class="fa fa-check"></i><b>22.2</b> Internal and External Performance Estimates</a></li>
+<li class="chapter" data-level="22.3" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#basic-syntax-2"><i class="fa fa-check"></i><b>22.3</b> Basic Syntax</a></li>
+<li class="chapter" data-level="22.4" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#example-1"><i class="fa fa-check"></i><b>22.4</b> Example</a></li>
+<li class="chapter" data-level="22.5" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#customizing-the-search-1"><i class="fa fa-check"></i><b>22.5</b> Customizing the Search</a><ul>
+<li class="chapter" data-level="22.5.1" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fit-function-4"><i class="fa fa-check"></i><b>22.5.1</b> The <code>fit</code> Function</a></li>
+<li class="chapter" data-level="22.5.2" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-pred-function-3"><i class="fa fa-check"></i><b>22.5.2</b> The <code>pred</code> Function</a></li>
+<li class="chapter" data-level="22.5.3" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fitness_intern-function-1"><i class="fa fa-check"></i><b>22.5.3</b> The <code>fitness_intern</code> Function</a></li>
+<li class="chapter" data-level="22.5.4" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fitness_extern-function-1"><i class="fa fa-check"></i><b>22.5.4</b> The <code>fitness_extern</code> Function</a></li>
+<li class="chapter" data-level="22.5.5" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-initial-function-1"><i class="fa fa-check"></i><b>22.5.5</b> The <code>initial</code> Function</a></li>
+<li class="chapter" data-level="22.5.6" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-perturb-function"><i class="fa fa-check"></i><b>22.5.6</b> The <code>perturb</code> Function</a></li>
+<li class="chapter" data-level="22.5.7" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-prob-function"><i class="fa fa-check"></i><b>22.5.7</b> The <code>prob</code> Function</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="22" data-path="data-sets.html"><a href="data-sets.html"><i class="fa fa-check"></i><b>22</b> Data Sets</a><ul>
-<li class="chapter" data-level="22.1" data-path="data-sets.html"><a href="data-sets.html#blood-brain-barrier-data"><i class="fa fa-check"></i><b>22.1</b> Blood-Brain Barrier Data</a></li>
-<li class="chapter" data-level="22.2" data-path="data-sets.html"><a href="data-sets.html#cox-2-activity-data"><i class="fa fa-check"></i><b>22.2</b> COX-2 Activity Data</a></li>
-<li class="chapter" data-level="22.3" data-path="data-sets.html"><a href="data-sets.html#dhfr-inhibition"><i class="fa fa-check"></i><b>22.3</b> DHFR Inhibition</a></li>
-<li class="chapter" data-level="22.4" data-path="data-sets.html"><a href="data-sets.html#tecator-nir-data"><i class="fa fa-check"></i><b>22.4</b> Tecator NIR Data</a></li>
-<li class="chapter" data-level="22.5" data-path="data-sets.html"><a href="data-sets.html#fatty-acid-composition-data"><i class="fa fa-check"></i><b>22.5</b> Fatty Acid Composition Data</a></li>
-<li class="chapter" data-level="22.6" data-path="data-sets.html"><a href="data-sets.html#german-credit-data"><i class="fa fa-check"></i><b>22.6</b> German Credit Data</a></li>
-<li class="chapter" data-level="22.7" data-path="data-sets.html"><a href="data-sets.html#kelly-blue-book"><i class="fa fa-check"></i><b>22.7</b> Kelly Blue Book</a></li>
-<li class="chapter" data-level="22.8" data-path="data-sets.html"><a href="data-sets.html#cell-body-segmentation-data"><i class="fa fa-check"></i><b>22.8</b> Cell Body Segmentation Data</a></li>
-<li class="chapter" data-level="22.9" data-path="data-sets.html"><a href="data-sets.html#sacramento-house-price-data"><i class="fa fa-check"></i><b>22.9</b> Sacramento House Price Data</a></li>
-<li class="chapter" data-level="22.10" data-path="data-sets.html"><a href="data-sets.html#animal-scat-data"><i class="fa fa-check"></i><b>22.10</b> Animal Scat Data</a></li>
+<li class="chapter" data-level="23" data-path="data-sets.html"><a href="data-sets.html"><i class="fa fa-check"></i><b>23</b> Data Sets</a><ul>
+<li class="chapter" data-level="23.1" data-path="data-sets.html"><a href="data-sets.html#blood-brain-barrier-data"><i class="fa fa-check"></i><b>23.1</b> Blood-Brain Barrier Data</a></li>
+<li class="chapter" data-level="23.2" data-path="data-sets.html"><a href="data-sets.html#cox-2-activity-data"><i class="fa fa-check"></i><b>23.2</b> COX-2 Activity Data</a></li>
+<li class="chapter" data-level="23.3" data-path="data-sets.html"><a href="data-sets.html#dhfr-inhibition"><i class="fa fa-check"></i><b>23.3</b> DHFR Inhibition</a></li>
+<li class="chapter" data-level="23.4" data-path="data-sets.html"><a href="data-sets.html#tecator-nir-data"><i class="fa fa-check"></i><b>23.4</b> Tecator NIR Data</a></li>
+<li class="chapter" data-level="23.5" data-path="data-sets.html"><a href="data-sets.html#fatty-acid-composition-data"><i class="fa fa-check"></i><b>23.5</b> Fatty Acid Composition Data</a></li>
+<li class="chapter" data-level="23.6" data-path="data-sets.html"><a href="data-sets.html#german-credit-data"><i class="fa fa-check"></i><b>23.6</b> German Credit Data</a></li>
+<li class="chapter" data-level="23.7" data-path="data-sets.html"><a href="data-sets.html#kelly-blue-book"><i class="fa fa-check"></i><b>23.7</b> Kelly Blue Book</a></li>
+<li class="chapter" data-level="23.8" data-path="data-sets.html"><a href="data-sets.html#cell-body-segmentation-data"><i class="fa fa-check"></i><b>23.8</b> Cell Body Segmentation Data</a></li>
+<li class="chapter" data-level="23.9" data-path="data-sets.html"><a href="data-sets.html#sacramento-house-price-data"><i class="fa fa-check"></i><b>23.9</b> Sacramento House Price Data</a></li>
+<li class="chapter" data-level="23.10" data-path="data-sets.html"><a href="data-sets.html#animal-scat-data"><i class="fa fa-check"></i><b>23.10</b> Animal Scat Data</a></li>
 </ul></li>
-<li class="chapter" data-level="23" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>23</b> Session Information</a></li>
+<li class="chapter" data-level="24" data-path="session-information.html"><a href="session-information.html"><i class="fa fa-check"></i><b>24</b> Session Information</a></li>
 </ul>
 
       </nav>
@@ -478,8 +485,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mstop</code> (# Boosting Iterations)</li>
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
-<p>Required packages: <code>mboost</code>, <code>plyr</code></p>
-<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>Required packages: <code>mboost</code>, <code>plyr</code>, <code>import</code></p>
+<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mboost::mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Boosted Generalized Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmboost&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -489,7 +496,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
 <p>Required packages: <code>plyr</code>, <code>mboost</code></p>
-<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mboost::mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Boosted Tree</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;blackboost&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -610,7 +617,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cp</code> (Complexity Parameter)</li>
 <li><code>Cost</code> (Cost)</li>
 </ul>
-<p>Required packages: <code>rpart</code></p>
+<p>Required packages: <code>rpart</code>, <code>plyr</code></p>
 <p><strong>Cumulative Probability Model for Ordinal Data</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;vglmCumulative&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -783,8 +790,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Tuning parameters:</p>
 <ul>
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
+<li><code>splitrule</code> (Splitting Rule)</li>
 </ul>
-<p>Required packages: <code>e1071</code>, <code>ranger</code></p>
+<p>Required packages: <code>e1071</code>, <code>ranger</code>, <code>dplyr</code></p>
 <p>A model-specific variable importance metric is available.</p>
 <p><strong>Robust Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rlm&#39;</span></code></pre></div>
@@ -930,7 +938,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
-<p>Required packages: <code>e1071</code>, <code>randomForest</code>, <code>foreach</code></p>
+<p>Required packages: <code>e1071</code>, <code>randomForest</code>, <code>foreach</code>, <code>import</code></p>
 <p>A model-specific variable importance metric is available.</p>
 <p><strong>Quantile Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;qrf&#39;</span></code></pre></div>
@@ -964,8 +972,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Tuning parameters:</p>
 <ul>
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
+<li><code>splitrule</code> (Splitting Rule)</li>
 </ul>
-<p>Required packages: <code>e1071</code>, <code>ranger</code></p>
+<p>Required packages: <code>e1071</code>, <code>ranger</code>, <code>dplyr</code></p>
 <p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;Rborist&#39;</span></code></pre></div>
@@ -1086,6 +1095,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prior</code> (Prior Probability)</li>
 </ul>
 <p>Required packages: <code>bnclassify</code></p>
+<p>Notes: Not on CRAN but can be installed from GitHub at <code>bmihaljevic/bnclassify</code>.</p>
 <p><strong>Naive Bayes</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;naive_bayes&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1114,6 +1124,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>smooth</code> (Smoothing Parameter)</li>
 </ul>
 <p>Required packages: <code>bnclassify</code></p>
+<p>Notes: Not on CRAN but can be installed from GitHub at <code>bmihaljevic/bnclassify</code>.</p>
 <p><strong>Naive Bayes Classifier with Attribute Weighting</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;awnb&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1122,6 +1133,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>smooth</code> (Smoothing Parameter)</li>
 </ul>
 <p>Required packages: <code>bnclassify</code></p>
+<p>Notes: Not on CRAN but can be installed from GitHub at <code>bmihaljevic/bnclassify</code>.</p>
 <p><strong>Semi-Naive Structure Learner Wrapper</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;nbSearch&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1134,6 +1146,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>direction</code> (Search Direction)</li>
 </ul>
 <p>Required packages: <code>bnclassify</code></p>
+<p>Notes: Not on CRAN but can be installed from GitHub at <code>bmihaljevic/bnclassify</code>.</p>
 <p><strong>Spike and Slab Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;spikeslab&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -1160,6 +1173,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>smooth</code> (Smoothing Parameter)</li>
 </ul>
 <p>Required packages: <code>bnclassify</code></p>
+<p>Notes: Not on CRAN but can be installed from GitHub at <code>bmihaljevic/bnclassify</code>.</p>
 <p><strong>Tree Augmented Naive Bayes Classifier Structure Learner Wrapper</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;tanSearch&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1172,6 +1186,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>sp</code> (Super-Parent)</li>
 </ul>
 <p>Required packages: <code>bnclassify</code></p>
+<p>Notes: Not on CRAN but can be installed from GitHub at <code>bmihaljevic/bnclassify</code>.</p>
 <p><strong>Tree Augmented Naive Bayes Classifier with Attribute Weighting</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;awtan&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1181,6 +1196,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>smooth</code> (Smoothing Parameter)</li>
 </ul>
 <p>Required packages: <code>bnclassify</code></p>
+<p>Notes: Not on CRAN but can be installed from GitHub at <code>bmihaljevic/bnclassify</code>.</p>
 <p><strong>Variational Bayesian Multinomial Probit Regression</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;vbmpRadial&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1277,8 +1293,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mstop</code> (# Boosting Iterations)</li>
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
-<p>Required packages: <code>mboost</code>, <code>plyr</code></p>
-<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>Required packages: <code>mboost</code>, <code>plyr</code>, <code>import</code></p>
+<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mboost::mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Boosted Generalized Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmboost&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -1288,7 +1304,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
 <p>Required packages: <code>plyr</code>, <code>mboost</code></p>
-<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mboost::mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Boosted Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;BstLm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -1447,6 +1463,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prior</code> (Prior Probability)</li>
 </ul>
 <p>Required packages: <code>bnclassify</code></p>
+<p>Notes: Not on CRAN but can be installed from GitHub at <code>bmihaljevic/bnclassify</code>.</p>
 <p><strong>Naive Bayes Classifier</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;nbDiscrete&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1455,6 +1472,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>smooth</code> (Smoothing Parameter)</li>
 </ul>
 <p>Required packages: <code>bnclassify</code></p>
+<p>Notes: Not on CRAN but can be installed from GitHub at <code>bmihaljevic/bnclassify</code>.</p>
 <p><strong>Naive Bayes Classifier with Attribute Weighting</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;awnb&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1463,6 +1481,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>smooth</code> (Smoothing Parameter)</li>
 </ul>
 <p>Required packages: <code>bnclassify</code></p>
+<p>Notes: Not on CRAN but can be installed from GitHub at <code>bmihaljevic/bnclassify</code>.</p>
 <p><strong>Semi-Naive Structure Learner Wrapper</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;nbSearch&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1475,6 +1494,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>direction</code> (Search Direction)</li>
 </ul>
 <p>Required packages: <code>bnclassify</code></p>
+<p>Notes: Not on CRAN but can be installed from GitHub at <code>bmihaljevic/bnclassify</code>.</p>
 <p><strong>Tree Augmented Naive Bayes Classifier</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;tan&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1484,6 +1504,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>smooth</code> (Smoothing Parameter)</li>
 </ul>
 <p>Required packages: <code>bnclassify</code></p>
+<p>Notes: Not on CRAN but can be installed from GitHub at <code>bmihaljevic/bnclassify</code>.</p>
 <p><strong>Tree Augmented Naive Bayes Classifier Structure Learner Wrapper</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;tanSearch&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1496,6 +1517,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>sp</code> (Super-Parent)</li>
 </ul>
 <p>Required packages: <code>bnclassify</code></p>
+<p>Notes: Not on CRAN but can be installed from GitHub at <code>bmihaljevic/bnclassify</code>.</p>
 <p><strong>Tree Augmented Naive Bayes Classifier with Attribute Weighting</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;awtan&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1505,6 +1527,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>smooth</code> (Smoothing Parameter)</li>
 </ul>
 <p>Required packages: <code>bnclassify</code></p>
+<p>Notes: Not on CRAN but can be installed from GitHub at <code>bmihaljevic/bnclassify</code>.</p>
 <div id="Cost_Sensitive_Learning">
 
 </div>
@@ -1532,7 +1555,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cp</code> (Complexity Parameter)</li>
 <li><code>Cost</code> (Cost)</li>
 </ul>
-<p>Required packages: <code>rpart</code></p>
+<p>Required packages: <code>rpart</code>, <code>plyr</code></p>
 <p><strong>L2 Regularized Linear Support Vector Machines with Class Weights</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;svmLinearWeights2&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1552,6 +1575,38 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>weight</code> (Class Weight)</li>
 </ul>
 <p>Required packages: <code>e1071</code></p>
+<p><strong>Multilayer Perceptron Network with Dropout</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpKerasDropoutCost&#39;</span></code></pre></div>
+<p>Type: Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>size</code> (#Hidden Units)</li>
+<li><code>dropout</code> (Dropout Rate)</li>
+<li><code>batch_size</code> (Batch Size)</li>
+<li><code>lr</code> (Learning Rate)</li>
+<li><code>rho</code> (Rho)</li>
+<li><code>decay</code> (Learning Rate Decay)</li>
+<li><code>cost</code> (Cost)</li>
+<li><code>activation</code> (Activation Function)</li>
+</ul>
+<p>Required packages: <code>keras</code></p>
+<p>Notes: After <code>train</code> completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use <code>keras::unsearlize_model(object$finalModel$object)</code> in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. Finally, the cost parameter weights the first class in the outcome vector.</p>
+<p><strong>Multilayer Perceptron Network with Weight Decay</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpKerasDecayCost&#39;</span></code></pre></div>
+<p>Type: Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>size</code> (#Hidden Units)</li>
+<li><code>lambda</code> (L2 Regularization)</li>
+<li><code>batch_size</code> (Batch Size)</li>
+<li><code>lr</code> (Learning Rate)</li>
+<li><code>rho</code> (Rho)</li>
+<li><code>decay</code> (Learning Rate Decay)</li>
+<li><code>cost</code> (Cost)</li>
+<li><code>activation</code> (Activation Function)</li>
+</ul>
+<p>Required packages: <code>keras</code></p>
+<p>Notes: After <code>train</code> completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use <code>keras::unsearlize_model(object$finalModel$object)</code> in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. Finally, the cost parameter weights the first class in the outcome vector.</p>
 <p><strong>Support Vector Machines with Class Weights</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;svmRadialWeights&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -1976,8 +2031,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mstop</code> (# Boosting Iterations)</li>
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
-<p>Required packages: <code>mboost</code>, <code>plyr</code></p>
-<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>Required packages: <code>mboost</code>, <code>plyr</code>, <code>import</code></p>
+<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mboost::mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Boosted Generalized Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmboost&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -1987,7 +2042,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
 <p>Required packages: <code>plyr</code>, <code>mboost</code></p>
-<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mboost::mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Boosted Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;BstLm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2184,7 +2239,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
-<p>Required packages: <code>e1071</code>, <code>randomForest</code>, <code>foreach</code></p>
+<p>Required packages: <code>e1071</code>, <code>randomForest</code>, <code>foreach</code>, <code>import</code></p>
 <p>A model-specific variable importance metric is available.</p>
 <p><strong>Quantile Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;qrf&#39;</span></code></pre></div>
@@ -2218,8 +2273,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Tuning parameters:</p>
 <ul>
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
+<li><code>splitrule</code> (Splitting Rule)</li>
 </ul>
-<p>Required packages: <code>e1071</code>, <code>ranger</code></p>
+<p>Required packages: <code>e1071</code>, <code>ranger</code>, <code>dplyr</code></p>
 <p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;Rborist&#39;</span></code></pre></div>
@@ -2543,8 +2599,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mstop</code> (# Boosting Iterations)</li>
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
-<p>Required packages: <code>mboost</code>, <code>plyr</code></p>
-<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>Required packages: <code>mboost</code>, <code>plyr</code>, <code>import</code></p>
+<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mboost::mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Generalized Additive Model using LOESS</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;gamLoess&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2605,7 +2661,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
 <p>Required packages: <code>plyr</code>, <code>mboost</code></p>
-<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mboost::mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Ensembles of Generalized Linear Models</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;randomGLM&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -2712,7 +2768,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>link</code> (Link Function)</li>
 </ul>
 <p>Required packages: <code>ordinalNet</code>, <code>plyr</code></p>
-<p>A model-specific variable importance metric is available.</p>
+<p>A model-specific variable importance metric is available. Notes: Requires ordinalNet package version &gt;= 2.0</p>
 <div id="Handle_Missing_Predictor_Data">
 
 </div>
@@ -2817,7 +2873,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cp</code> (Complexity Parameter)</li>
 <li><code>Cost</code> (Cost)</li>
 </ul>
-<p>Required packages: <code>rpart</code></p>
+<p>Required packages: <code>rpart</code>, <code>plyr</code></p>
 <p><strong>Single C5.0 Ruleset</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;C5.0Rules&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -2927,8 +2983,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mstop</code> (# Boosting Iterations)</li>
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
-<p>Required packages: <code>mboost</code>, <code>plyr</code></p>
-<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>Required packages: <code>mboost</code>, <code>plyr</code>, <code>import</code></p>
+<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mboost::mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Boosted Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;BstLm&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -3066,7 +3122,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cp</code> (Complexity Parameter)</li>
 <li><code>Cost</code> (Cost)</li>
 </ul>
-<p>Required packages: <code>rpart</code></p>
+<p>Required packages: <code>rpart</code>, <code>plyr</code></p>
 <p><strong>Cubist</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;cubist&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -3296,15 +3352,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>obliqueRF</code></p>
-<p><strong>Oblique Trees</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;oblique.tree&#39;</span></code></pre></div>
-<p>Type: Classification</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>oblique.splits</code> (Oblique Splits)</li>
-<li><code>variable.selection</code> (Variable Selection Method)</li>
-</ul>
-<p>Required packages: <code>oblique.tree</code></p>
 <p><strong>Parallel Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;parRF&#39;</span></code></pre></div>
 <p>Type: Classification, Regression</p>
@@ -3312,7 +3359,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
-<p>Required packages: <code>e1071</code>, <code>randomForest</code>, <code>foreach</code></p>
+<p>Required packages: <code>e1071</code>, <code>randomForest</code>, <code>foreach</code>, <code>import</code></p>
 <p>A model-specific variable importance metric is available.</p>
 <p><strong>Penalized Linear Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;PenalizedLDA&#39;</span></code></pre></div>
@@ -3342,7 +3389,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>link</code> (Link Function)</li>
 </ul>
 <p>Required packages: <code>ordinalNet</code>, <code>plyr</code></p>
-<p>A model-specific variable importance metric is available.</p>
+<p>A model-specific variable importance metric is available. Notes: Requires ordinalNet package version &gt;= 2.0</p>
 <p><strong>Quantile Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;qrf&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -3373,8 +3420,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Tuning parameters:</p>
 <ul>
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
+<li><code>splitrule</code> (Splitting Rule)</li>
 </ul>
-<p>Required packages: <code>e1071</code>, <code>ranger</code></p>
+<p>Required packages: <code>e1071</code>, <code>ranger</code>, <code>dplyr</code></p>
 <p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;Rborist&#39;</span></code></pre></div>
@@ -3568,14 +3616,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>fraction</code> (Fraction of Full Solution)</li>
 </ul>
 <p>Required packages: <code>elasticnet</code></p>
-<p><strong>Tree Models from Genetic Algorithms</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;evtree&#39;</span></code></pre></div>
-<p>Type: Regression, Classification</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>alpha</code> (Complexity Parameter)</li>
-</ul>
-<p>Required packages: <code>evtree</code></p>
 <p><strong>Tree-Based Ensembles</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;nodeHarvest&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -3585,6 +3625,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mode</code> (Prediction Mode)</li>
 </ul>
 <p>Required packages: <code>nodeHarvest</code></p>
+<p><strong>Tree Models from Genetic Algorithms</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;evtree&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alpha</code> (Complexity Parameter)</li>
+</ul>
+<p>Required packages: <code>evtree</code></p>
 <p><strong>Weighted Subspace Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;wsrf&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -3972,7 +4020,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>link</code> (Link Function)</li>
 </ul>
 <p>Required packages: <code>ordinalNet</code>, <code>plyr</code></p>
-<p>A model-specific variable importance metric is available.</p>
+<p>A model-specific variable importance metric is available. Notes: Requires ordinalNet package version &gt;= 2.0</p>
 <p><strong>Quantile Regression with LASSO penalty</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rqlasso&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -4148,17 +4196,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>decay</code> (Weight Decay)</li>
 </ul>
 <p>Required packages: <code>RSNNS</code></p>
-<p><strong>Multi-Step Adaptive MCP-Net</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;msaenet&#39;</span></code></pre></div>
-<p>Type: Regression, Classification</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>alphas</code> (Alpha)</li>
-<li><code>nsteps</code> (#Adaptive Estimation Steps)</li>
-<li><code>scale</code> (Adaptive Weight Scaling Factor)</li>
-</ul>
-<p>Required packages: <code>msaenet</code></p>
-<p>A model-specific variable importance metric is available.</p>
 <p><strong>Multilayer Perceptron Network by Stochastic Gradient Descent</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpSGD&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -4169,11 +4206,53 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (RMSE Gradient Scaling)</li>
 <li><code>learn_rate</code> (Learning Rate)</li>
 <li><code>momentum</code> (Momentum)</li>
-<li><code>gamma</code> (Decay)</li>
+<li><code>gamma</code> (Learning Rate Decay)</li>
 <li><code>minibatchsz</code> (Batch Size)</li>
 <li><code>repeats</code> (#Models)</li>
 </ul>
 <p>Required packages: <code>FCNN4R</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available.</p>
+<p><strong>Multilayer Perceptron Network with Weight Decay</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpKerasDecay&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>size</code> (#Hidden Units)</li>
+<li><code>lambda</code> (L2 Regularization)</li>
+<li><code>batch_size</code> (Batch Size)</li>
+<li><code>lr</code> (Learning Rate)</li>
+<li><code>rho</code> (Rho)</li>
+<li><code>decay</code> (Learning Rate Decay)</li>
+<li><code>activation</code> (Activation Function)</li>
+</ul>
+<p>Required packages: <code>keras</code></p>
+<p>Notes: After <code>train</code> completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use <code>keras::unsearlize_model(object$finalModel$object)</code> in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations.</p>
+<p><strong>Multilayer Perceptron Network with Weight Decay</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpKerasDecayCost&#39;</span></code></pre></div>
+<p>Type: Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>size</code> (#Hidden Units)</li>
+<li><code>lambda</code> (L2 Regularization)</li>
+<li><code>batch_size</code> (Batch Size)</li>
+<li><code>lr</code> (Learning Rate)</li>
+<li><code>rho</code> (Rho)</li>
+<li><code>decay</code> (Learning Rate Decay)</li>
+<li><code>cost</code> (Cost)</li>
+<li><code>activation</code> (Activation Function)</li>
+</ul>
+<p>Required packages: <code>keras</code></p>
+<p>Notes: After <code>train</code> completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use <code>keras::unsearlize_model(object$finalModel$object)</code> in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. Finally, the cost parameter weights the first class in the outcome vector.</p>
+<p><strong>Multi-Step Adaptive MCP-Net</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;msaenet&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alphas</code> (Alpha)</li>
+<li><code>nsteps</code> (#Adaptive Estimation Steps)</li>
+<li><code>scale</code> (Adaptive Weight Scaling Factor)</li>
+</ul>
+<p>Required packages: <code>msaenet</code></p>
 <p>A model-specific variable importance metric is available.</p>
 <p><strong>Neural Network</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;nnet&#39;</span></code></pre></div>
@@ -4239,7 +4318,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>link</code> (Link Function)</li>
 </ul>
 <p>Required packages: <code>ordinalNet</code>, <code>plyr</code></p>
-<p>A model-specific variable importance metric is available.</p>
+<p>A model-specific variable importance metric is available. Notes: Requires ordinalNet package version &gt;= 2.0</p>
 <p><strong>Polynomial Kernel Regularized Least Squares</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;krlsPoly&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -4369,7 +4448,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
 <p>Required packages: <code>plyr</code>, <code>mboost</code></p>
-<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mboost::mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Continuation Ratio Model for Ordinal Data</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;vglmContRatio&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -4684,7 +4763,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>link</code> (Link Function)</li>
 </ul>
 <p>Required packages: <code>ordinalNet</code>, <code>plyr</code></p>
-<p>A model-specific variable importance metric is available.</p>
+<p>A model-specific variable importance metric is available. Notes: Requires ordinalNet package version &gt;= 2.0</p>
 <p><strong>Regularized Discriminant Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rda&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -5045,7 +5124,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>link</code> (Link Function)</li>
 </ul>
 <p>Required packages: <code>ordinalNet</code>, <code>plyr</code></p>
-<p>A model-specific variable importance metric is available.</p>
+<p>A model-specific variable importance metric is available. Notes: Requires ordinalNet package version &gt;= 2.0</p>
 <p><strong>Principal Component Analysis</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;pcr&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -5525,16 +5604,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>decay</code> (Weight Decay)</li>
 </ul>
 <p>Required packages: <code>RSNNS</code></p>
-<p><strong>Multi-Layer Perceptron, with multiple layers</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpML&#39;</span></code></pre></div>
-<p>Type: Regression, Classification</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>layer1</code> (#Hidden Units layer1)</li>
-<li><code>layer2</code> (#Hidden Units layer2)</li>
-<li><code>layer3</code> (#Hidden Units layer3)</li>
-</ul>
-<p>Required packages: <code>RSNNS</code></p>
 <p><strong>Multilayer Perceptron Network by Stochastic Gradient Descent</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpSGD&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -5545,12 +5614,115 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>lambda</code> (RMSE Gradient Scaling)</li>
 <li><code>learn_rate</code> (Learning Rate)</li>
 <li><code>momentum</code> (Momentum)</li>
-<li><code>gamma</code> (Decay)</li>
+<li><code>gamma</code> (Learning Rate Decay)</li>
 <li><code>minibatchsz</code> (Batch Size)</li>
 <li><code>repeats</code> (#Models)</li>
 </ul>
 <p>Required packages: <code>FCNN4R</code>, <code>plyr</code></p>
 <p>A model-specific variable importance metric is available.</p>
+<p><strong>Multilayer Perceptron Network with Dropout</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpKerasDropout&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>size</code> (#Hidden Units)</li>
+<li><code>dropout</code> (Dropout Rate)</li>
+<li><code>batch_size</code> (Batch Size)</li>
+<li><code>lr</code> (Learning Rate)</li>
+<li><code>rho</code> (Rho)</li>
+<li><code>decay</code> (Learning Rate Decay)</li>
+<li><code>activation</code> (Activation Function)</li>
+</ul>
+<p>Required packages: <code>keras</code></p>
+<p>Notes: After <code>train</code> completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use <code>keras::unsearlize_model(object$finalModel$object)</code> in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations.</p>
+<p><strong>Multilayer Perceptron Network with Dropout</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpKerasDropoutCost&#39;</span></code></pre></div>
+<p>Type: Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>size</code> (#Hidden Units)</li>
+<li><code>dropout</code> (Dropout Rate)</li>
+<li><code>batch_size</code> (Batch Size)</li>
+<li><code>lr</code> (Learning Rate)</li>
+<li><code>rho</code> (Rho)</li>
+<li><code>decay</code> (Learning Rate Decay)</li>
+<li><code>cost</code> (Cost)</li>
+<li><code>activation</code> (Activation Function)</li>
+</ul>
+<p>Required packages: <code>keras</code></p>
+<p>Notes: After <code>train</code> completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use <code>keras::unsearlize_model(object$finalModel$object)</code> in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. Finally, the cost parameter weights the first class in the outcome vector.</p>
+<p><strong>Multilayer Perceptron Network with Weight Decay</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpKerasDecay&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>size</code> (#Hidden Units)</li>
+<li><code>lambda</code> (L2 Regularization)</li>
+<li><code>batch_size</code> (Batch Size)</li>
+<li><code>lr</code> (Learning Rate)</li>
+<li><code>rho</code> (Rho)</li>
+<li><code>decay</code> (Learning Rate Decay)</li>
+<li><code>activation</code> (Activation Function)</li>
+</ul>
+<p>Required packages: <code>keras</code></p>
+<p>Notes: After <code>train</code> completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use <code>keras::unsearlize_model(object$finalModel$object)</code> in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations.</p>
+<p><strong>Multilayer Perceptron Network with Weight Decay</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpKerasDecayCost&#39;</span></code></pre></div>
+<p>Type: Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>size</code> (#Hidden Units)</li>
+<li><code>lambda</code> (L2 Regularization)</li>
+<li><code>batch_size</code> (Batch Size)</li>
+<li><code>lr</code> (Learning Rate)</li>
+<li><code>rho</code> (Rho)</li>
+<li><code>decay</code> (Learning Rate Decay)</li>
+<li><code>cost</code> (Cost)</li>
+<li><code>activation</code> (Activation Function)</li>
+</ul>
+<p>Required packages: <code>keras</code></p>
+<p>Notes: After <code>train</code> completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use <code>keras::unsearlize_model(object$finalModel$object)</code> in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. Finally, the cost parameter weights the first class in the outcome vector.</p>
+<p><strong>Multi-Layer Perceptron, with multiple layers</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpML&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>layer1</code> (#Hidden Units layer1)</li>
+<li><code>layer2</code> (#Hidden Units layer2)</li>
+<li><code>layer3</code> (#Hidden Units layer3)</li>
+</ul>
+<p>Required packages: <code>RSNNS</code></p>
+<p><strong>Neural Network</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mxnet&#39;</span></code></pre></div>
+<p>Type: Classification, Regression</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>layer1</code> (#Hidden Units in Layer 1)</li>
+<li><code>layer2</code> (#Hidden Units in Layer 2)</li>
+<li><code>layer3</code> (#Hidden Units in Layer 3)</li>
+<li><code>learning.rate</code> (Learning Rate)</li>
+<li><code>momentum</code> (Momentum)</li>
+<li><code>dropout</code> (Dropout Rate)</li>
+<li><code>activation</code> (Activation Function)</li>
+</ul>
+<p>Required packages: <code>mxnet</code></p>
+<p>Notes: The <code>mxnet</code> package is not yet on CRAN. See <a href="http://mxnet.io" class="uri">http://mxnet.io</a> for installation instructions.</p>
+<p><strong>Neural Network</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mxnetAdam&#39;</span></code></pre></div>
+<p>Type: Classification, Regression</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>layer1</code> (#Hidden Units in Layer 1)</li>
+<li><code>layer2</code> (#Hidden Units in Layer 2)</li>
+<li><code>layer3</code> (#Hidden Units in Layer 3)</li>
+<li><code>dropout</code> (Dropout Rate)</li>
+<li><code>beta1</code> (beta1)</li>
+<li><code>beta2</code> (beta2)</li>
+<li><code>learningrate</code> (Learning Rate)</li>
+<li><code>activation</code> (Activation Function)</li>
+</ul>
+<p>Required packages: <code>mxnet</code></p>
+<p>Notes: The <code>mxnet</code> package is not yet on CRAN. See <a href="http://mxnet.io" class="uri">http://mxnet.io</a> for installation instructions. Users are strongly advised to define <code>num.round</code> themselves.</p>
 <p><strong>Neural Network</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;neuralnet&#39;</span></code></pre></div>
 <p>Type: Regression</p>
@@ -5666,15 +5838,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
 <p>Required packages: <code>obliqueRF</code></p>
-<p><strong>Oblique Trees</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;oblique.tree&#39;</span></code></pre></div>
-<p>Type: Classification</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>oblique.splits</code> (Oblique Splits)</li>
-<li><code>variable.selection</code> (Variable Selection Method)</li>
-</ul>
-<p>Required packages: <code>oblique.tree</code></p>
 <div id="Ordinal_Outcomes">
 
 </div>
@@ -5729,6 +5892,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>Required packages: <code>MASS</code></p>
 <p>A model-specific variable importance metric is available.</p>
+<p><strong>Penalized Ordinal Regression</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ordinalNet&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alpha</code> (Mixing Percentage)</li>
+<li><code>criteria</code> (Selection Criterion)</li>
+<li><code>link</code> (Link Function)</li>
+</ul>
+<p>Required packages: <code>ordinalNet</code>, <code>plyr</code></p>
+<p>A model-specific variable importance metric is available. Notes: Requires ordinalNet package version &gt;= 2.0</p>
 <div id="Partial_Least_Squares">
 
 </div>
@@ -6259,7 +6433,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
 </ul>
-<p>Required packages: <code>e1071</code>, <code>randomForest</code>, <code>foreach</code></p>
+<p>Required packages: <code>e1071</code>, <code>randomForest</code>, <code>foreach</code>, <code>import</code></p>
 <p>A model-specific variable importance metric is available.</p>
 <p><strong>Quantile Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;qrf&#39;</span></code></pre></div>
@@ -6283,8 +6457,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Tuning parameters:</p>
 <ul>
 <li><code>mtry</code> (#Randomly Selected Predictors)</li>
+<li><code>splitrule</code> (Splitting Rule)</li>
 </ul>
-<p>Required packages: <code>e1071</code>, <code>ranger</code></p>
+<p>Required packages: <code>e1071</code>, <code>ranger</code>, <code>dplyr</code></p>
 <p>A model-specific variable importance metric is available.</p>
 <p><strong>Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;Rborist&#39;</span></code></pre></div>
@@ -6712,7 +6887,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;CSimca&#39;</span></code></pre></div>
 <p>Type: Classification</p>
 <p>No tuning parameters for this model</p>
-<p>Required packages: <code>rrcovHD</code></p>
+<p>Required packages: <code>rrcov</code>, <code>rrcovHD</code></p>
 <div id="ROC_Curves">
 
 </div>
@@ -7415,7 +7590,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cp</code> (Complexity Parameter)</li>
 <li><code>Cost</code> (Cost)</li>
 </ul>
-<p>Required packages: <code>rpart</code></p>
+<p>Required packages: <code>rpart</code>, <code>plyr</code></p>
 <p><strong>DeepBoost</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;deepboost&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7466,15 +7641,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>rules</code> (Rules)</li>
 </ul>
 <p>Required packages: <code>RWeka</code></p>
-<p><strong>Oblique Trees</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;oblique.tree&#39;</span></code></pre></div>
-<p>Type: Classification</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>oblique.splits</code> (Oblique Splits)</li>
-<li><code>variable.selection</code> (Variable Selection Method)</li>
-</ul>
-<p>Required packages: <code>oblique.tree</code></p>
 <p><strong>Rotation Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;rotationForest&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7514,14 +7680,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>Required packages: <code>gbm</code>, <code>plyr</code></p>
 <p>A model-specific variable importance metric is available.</p>
-<p><strong>Tree Models from Genetic Algorithms</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;evtree&#39;</span></code></pre></div>
-<p>Type: Regression, Classification</p>
-<p>Tuning parameters:</p>
-<ul>
-<li><code>alpha</code> (Complexity Parameter)</li>
-</ul>
-<p>Required packages: <code>evtree</code></p>
 <p><strong>Tree-Based Ensembles</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;nodeHarvest&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -7531,6 +7689,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mode</code> (Prediction Mode)</li>
 </ul>
 <p>Required packages: <code>nodeHarvest</code></p>
+<p><strong>Tree Models from Genetic Algorithms</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;evtree&#39;</span></code></pre></div>
+<p>Type: Regression, Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>alpha</code> (Complexity Parameter)</li>
+</ul>
+<p>Required packages: <code>evtree</code></p>
 <div id="Two_Class_Only">
 
 </div>
@@ -7595,8 +7761,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mstop</code> (# Boosting Iterations)</li>
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
-<p>Required packages: <code>mboost</code>, <code>plyr</code></p>
-<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>Required packages: <code>mboost</code>, <code>plyr</code>, <code>import</code></p>
+<p>Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mboost::mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>Boosted Generalized Linear Model</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;glmboost&#39;</span></code></pre></div>
 <p>Type: Regression, Classification</p>
@@ -7606,7 +7772,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>prune</code> (AIC Prune?)</li>
 </ul>
 <p>Required packages: <code>plyr</code>, <code>mboost</code></p>
-<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
+<p>A model-specific variable importance metric is available. Notes: The <code>prune</code> option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in <code>?mboost::mstop</code>. If pruning is not used, the ensemble makes predictions using the exact value of the <code>mstop</code> tuning parameter value.</p>
 <p><strong>CHi-squared Automated Interaction Detection</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;chaid&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7637,7 +7803,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>cp</code> (Complexity Parameter)</li>
 <li><code>Cost</code> (Cost)</li>
 </ul>
-<p>Required packages: <code>rpart</code></p>
+<p>Required packages: <code>rpart</code>, <code>plyr</code></p>
 <p><strong>DeepBoost</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;deepboost&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7728,6 +7894,38 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>ntrees</code> (Number of Trees)</li>
 </ul>
 <p>Required packages: <code>LogicReg</code></p>
+<p><strong>Multilayer Perceptron Network with Dropout</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpKerasDropoutCost&#39;</span></code></pre></div>
+<p>Type: Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>size</code> (#Hidden Units)</li>
+<li><code>dropout</code> (Dropout Rate)</li>
+<li><code>batch_size</code> (Batch Size)</li>
+<li><code>lr</code> (Learning Rate)</li>
+<li><code>rho</code> (Rho)</li>
+<li><code>decay</code> (Learning Rate Decay)</li>
+<li><code>cost</code> (Cost)</li>
+<li><code>activation</code> (Activation Function)</li>
+</ul>
+<p>Required packages: <code>keras</code></p>
+<p>Notes: After <code>train</code> completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use <code>keras::unsearlize_model(object$finalModel$object)</code> in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. Finally, the cost parameter weights the first class in the outcome vector.</p>
+<p><strong>Multilayer Perceptron Network with Weight Decay</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;mlpKerasDecayCost&#39;</span></code></pre></div>
+<p>Type: Classification</p>
+<p>Tuning parameters:</p>
+<ul>
+<li><code>size</code> (#Hidden Units)</li>
+<li><code>lambda</code> (L2 Regularization)</li>
+<li><code>batch_size</code> (Batch Size)</li>
+<li><code>lr</code> (Learning Rate)</li>
+<li><code>rho</code> (Rho)</li>
+<li><code>decay</code> (Learning Rate Decay)</li>
+<li><code>cost</code> (Cost)</li>
+<li><code>activation</code> (Activation Function)</li>
+</ul>
+<p>Required packages: <code>keras</code></p>
+<p>Notes: After <code>train</code> completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use <code>keras::unsearlize_model(object$finalModel$object)</code> in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. Finally, the cost parameter weights the first class in the outcome vector.</p>
 <p><strong>Oblique Random Forest</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  method =<span class="st"> &#39;ORFlog&#39;</span></code></pre></div>
 <p>Type: Classification</p>
@@ -7818,8 +8016,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
         </div>
       </div>
 <a href="available-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="models-clustered-by-tag-similarity.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
-
+<a href="models-clustered-by-tag-similarity.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
@@ -7828,7 +8027,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
 <script>
-require(["gitbook"], function(gitbook) {
+gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
 "github": false,
@@ -7862,7 +8061,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(script.src))
       script.src  = script.src.replace(/^https?:/, '');
     document.getElementsByTagName("head")[0].appendChild(script);
