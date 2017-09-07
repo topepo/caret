@@ -10,10 +10,11 @@ modelInfo <- list(label = "Random Forest",
                   },
                   loop = NULL,
                   type = c("Classification", "Regression"),
-                  parameters = data.frame(parameter = c("mtry", "splitrule"),
-                                          class = c("numeric", "character"),
+                  parameters = data.frame(parameter = c("mtry", "splitrule", "min.node.size"),
+                                          class = c("numeric", "character", "numeric"),
                                           label = c("#Randomly Selected Predictors", 
-                                                    "Splitting Rule")),
+                                                    "Splitting Rule", 
+                                                    "Minimal Node Size")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
                       srule <-
@@ -25,6 +26,7 @@ modelInfo <- list(label = "Random Forest",
                                           caret::var_seq(p = ncol(x),
                                                          classification = is.factor(y),
                                                          len = len),
+                                         min.node.size = ifelse( is.factor(y), 1, 5), 
                                         splitrule = c(srule, "extratrees"))
                     } else {
                       srules <- if (is.factor(y))
@@ -33,6 +35,7 @@ modelInfo <- list(label = "Random Forest",
                         c("variance", "extratrees", "maxstat")
                       out <-
                         data.frame(
+                          min.node.size= sample(0:20, size = len, replace = TRUE), 
                           mtry = sample(1:ncol(x), size = len, replace = TRUE),
                           splitrule = sample(srules, size = len, replace = TRUE)
                         )
@@ -46,6 +49,7 @@ modelInfo <- list(label = "Random Forest",
                       out <- ranger::ranger(dependent.variable.name = ".outcome", 
                                             data = x, 
                                             mtry = param$mtry, 
+                                            min.node.size = param$min.node.size,
                                             splitrule = as.character(param$splitrule),
                                             write.forest = TRUE,
                                             probability = classProbs, 
@@ -55,6 +59,7 @@ modelInfo <- list(label = "Random Forest",
                       out <- ranger::ranger(dependent.variable.name = ".outcome", 
                                             data = x, 
                                             mtry = param$mtry, 
+                                            min.node.size = param$min.node.size,
                                             splitrule = as.character(param$splitrule),
                                             write.forest = TRUE,
                                             probability = classProbs, 
