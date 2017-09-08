@@ -140,7 +140,7 @@ In some cases there is an important qualitative factor in the data that should b
  
 There may be an interest in making sure that these groups are not contained in the training and testing set since this may bias the test set performance to be more optimistic. Also, when one or more specific groups are held out, the resampling might capture the "ruggedness" of the model. In the example where clinical data is recorded over multiple sites, the resampling performance estimates partly measure how extensible the model is across sites.  
 
-To split the data base don groups, `groupKFold` can be used: 
+To split the data based on groups, `groupKFold` can be used: 
 
 ```{r split_groups}
 set.seed(3527)
