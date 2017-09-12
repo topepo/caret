@@ -78,7 +78,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
   export <- c("optimism_xy")
 
   result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .export = export) %:%
-    foreach(parm = 1L:nrow(info$loop), .combine = "c", .verbose = FALSE, .packages = pkgs, .export = export)  %op%
+    foreach(parm = 1L:nrow(info$loop), .combine = "c", .verbose = FALSE, .export = export)  %op%
     {
       if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
 
@@ -349,7 +349,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
   pkgs <- c("methods", "caret")
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
 
-  result <- foreach(iter = seq(along = ctrl$index), .combine = "rbind", .verbose = FALSE, .packages = pkgs, .errorhandling = "stop") %:%
+  result <- foreach(iter = seq(along = ctrl$index), .combine = "rbind", .verbose = FALSE, .errorhandling = "stop") %:%
     foreach(parm = 1:nrow(info$loop), .combine = "rbind", .verbose = FALSE, .errorhandling = "stop") %op% {
 
       if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
