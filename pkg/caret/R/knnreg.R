@@ -1,15 +1,15 @@
 #' k-Nearest Neighbour Regression
-#' 
+#'
 #' $k$-nearest neighbour regression that can return the average value for the
 #' neighbours.
-#' 
+#'
 #' \code{knnreg} is similar to \code{\link[ipred]{ipredknn}} and
 #' \code{knnregTrain} is a modification of \code{\link[class]{knn}}. The
 #' underlying C code from the \code{class} package has been modified to return
 #' average outcome.
-#' 
+#'
 #' @aliases knnreg knnregTrain knnreg.formula knnreg.default knnreg.matrix
-#' knnreg.data.frame knnreg 
+#' knnreg.data.frame knnreg
 #' @param formula a formula of the form \code{lhs ~ rhs} where \code{lhs} is
 #' the response variable and \code{rhs} a set of predictors.
 #' @param data optional data frame containing the variables in the model
@@ -36,21 +36,21 @@
 #' Chris Keefer
 #' @keywords multivariate
 #' @examples
-#' 
+#'
 #' data(BloodBrain)
-#' 
+#'
 #' inTrain <- createDataPartition(logBBB, p = .8)[[1]]
-#' 
+#'
 #' trainX <- bbbDescr[inTrain,]
 #' trainY <- logBBB[inTrain]
-#' 
+#'
 #' testX <- bbbDescr[-inTrain,]
 #' testY <- logBBB[-inTrain]
-#' 
+#'
 #' fit <- knnreg(trainX, trainY, k = 3)
-#' 
-#' plot(testY, predict(fit, testX))   
-#' 
+#'
+#' plot(testY, predict(fit, testX))
+#'
 #' @export knnreg
 "knnreg" <- function(x, ...)   UseMethod("knnreg")
 
@@ -66,15 +66,15 @@ knnreg.default <- function(x, ...)
 #' @method knnreg formula
 #' @importFrom stats model.matrix terms model.extract
 #' @export
-knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...) 
+knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...)
 {
   if (missing(formula) ||
       (length(formula) != 3) ||
       (length(attr(terms(formula[-2],  data = data), "term.labels")) < 1) ||
-      (length(attr(terms(formula[-3],  data = data), "term.labels")) != 1)) 
+      (length(attr(terms(formula[-3],  data = data), "term.labels")) != 1))
     stop("formula missing or incorrect")
   m <- match.call(expand.dots = FALSE)
-  if (is.matrix(eval(m$data, parent.frame()))) 
+  if (is.matrix(eval(m$data, parent.frame())))
     m$data <- as.data.frame(data)
   m[[1]] <- as.name("model.frame")
   m$... <- NULL
@@ -84,14 +84,14 @@ knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...)
   y <- model.extract(m, "response")
   x <- model.matrix(Terms, m)
   xvars <- as.character(attr(Terms, "variables"))[-1]
-  if ((yvar <- attr(Terms, "response")) > 0) 
+  if ((yvar <- attr(Terms, "response")) > 0)
     xvars <- xvars[-yvar]
   xlev <- if (length(xvars) > 0) {
     xlev <- lapply(m[xvars], levels)
     xlev[!sapply(xlev, is.null)]
   }
   xint <- match("(Intercept)", colnames(x), nomatch = 0)
-  if (xint > 0) 
+  if (xint > 0)
     x <- x[, -xint, drop = FALSE]
   RET <- list(learn = list(y = y, X = x))
   RET$k <- k
@@ -100,9 +100,9 @@ knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...)
   RET$xlevels <- xlev
   RET$theDots <- list(...)
   attr(RET, "na.message") <- attr(m, "na.message")
-  if (!is.null(attr(m, "na.action"))) 
+  if (!is.null(attr(m, "na.action")))
     RET$na.action <- attr(m, "na.action")
-  class(RET) <- "knn3"
+  class(RET) <- "knnreg"
   RET
 }
 
@@ -117,7 +117,7 @@ knnreg.matrix <- function(x, y, k = 5, ...)
   RET$k <- k
   RET$terms <- NULL
   RET$contrasts <- NULL
-  RET$theDots <- list(...)    
+  RET$theDots <- list(...)
   class(RET) <- "knnreg"
   RET
 }
@@ -133,7 +133,7 @@ knnreg.data.frame <- function(x, y, k = 5, ...)
   RET$k <- k
   RET$terms <- NULL
   RET$contrasts <- NULL
-  RET$theDots <- list(...)    
+  RET$theDots <- list(...)
   class(RET) <- "knnreg"
   RET
 }
@@ -141,7 +141,7 @@ knnreg.data.frame <- function(x, y, k = 5, ...)
 #' @rdname knnreg
 #' @method print knnreg
 #' @export
-print.knnreg <- function (x, ...) 
+print.knnreg <- function (x, ...)
 {
   cat(x$k, "-nearest neighbor regression model\n", sep = "")
   invisible(x)
@@ -150,13 +150,13 @@ print.knnreg <- function (x, ...)
 
 
 #' Predictions from k-Nearest Neighbors Regression Model
-#' 
+#'
 #' Predict the outcome of a new observation based on k-NN.
-#' 
+#'
 #' This function is a method for the generic function \code{\link{predict}} for
 #' class \code{knnreg}. For the details see \code{\link{knnreg}}. This is
 #' essentially a copy of \code{\link[ipred]{predict.ipredknn}}.
-#' 
+#'
 #' @aliases predict.knnreg
 #' @param object object of class \code{knnreg}.
 #' @param newdata a data frame or matrix of new observations.
@@ -166,35 +166,35 @@ print.knnreg <- function (x, ...)
 #' \code{\link[ipred]{predict.ipredknn}}
 #' @keywords multivariate
 #' @method predict knnreg
-#' @export 
-predict.knnreg <- function (object, newdata, ...) 
+#' @export
+predict.knnreg <- function (object, newdata, ...)
 {
-  if (!inherits(object, "knnreg")) 
+  if (!inherits(object, "knnreg"))
     stop("object not of class knnreg")
   if (!is.null(Terms <- object$terms)) {
-    if (missing(newdata)) 
+    if (missing(newdata))
       newdata <- model.frame(object)
     else {
-      newdata <- model.frame(as.formula(delete.response(Terms)), 
+      newdata <- model.frame(as.formula(delete.response(Terms)),
                              newdata)
     }
     x <- model.matrix(delete.response(Terms), newdata, contrasts = object$contrasts)
     xint <- match("(Intercept)", colnames(x), nomatch = 0)
-    if (xint > 0) 
+    if (xint > 0)
       x <- x[, -xint, drop = FALSE]
   }
   else {
     x <- as.matrix(newdata)
   }
-  
+
   argList <- list(train = object$learn$X,
                   test = x,
                   y = object$learn$y,
                   k = object$k)
 
-  
+
   RET <- do.call("knnregTrain", argList)
-  
+
   RET
 }
 

@@ -1,14 +1,14 @@
 #' k-Nearest Neighbour Classification
-#' 
+#'
 #' $k$-nearest neighbour classification that can return class votes for all
 #' classes.
-#' 
+#'
 #' \code{knn3} is essentially the same code as \code{\link[ipred]{ipredknn}}
 #' and \code{knn3Train} is a copy of \code{\link[class]{knn}}. The underlying C
 #' code from the \code{class} package has been modified to return the vote
 #' percentages for each class (previously the percentage for the winning class
 #' was returned).
-#' 
+#'
 #' @aliases knn3 knn3.formula knn3.matrix knn3.data.frame knn3Train
 #' @param formula a formula of the form \code{lhs ~ rhs} where \code{lhs} is
 #' the response variable and \code{rhs} a set of predictors.
@@ -43,17 +43,17 @@
 #' Andre Williams
 #' @keywords multivariate
 #' @examples
-#' 
+#'
 #' irisFit1 <- knn3(Species ~ ., iris)
-#' 
+#'
 #' irisFit2 <- knn3(as.matrix(iris[, -5]), iris[,5])
-#' 
+#'
 #' data(iris3)
 #' train <- rbind(iris3[1:25,,1], iris3[1:25,,2], iris3[1:25,,3])
 #' test <- rbind(iris3[26:50,,1], iris3[26:50,,2], iris3[26:50,,3])
 #' cl <- factor(c(rep("s",25), rep("c",25), rep("v",25)))
-#' knn3Train(train, test, cl, k = 5, prob = TRUE) 
-#' 
+#' knn3Train(train, test, cl, k = 5, prob = TRUE)
+#'
 #' @export knn3
 "knn3" <- function(x, ...)   UseMethod("knn3")
 
@@ -66,16 +66,16 @@ knn3.default <- function(x, ...)
 #' @method knn3 formula
 #' @importFrom stats model.matrix terms model.extract
 #' @export
-knn3.formula <- function (formula, data, subset, na.action, k = 5, ...) 
+knn3.formula <- function (formula, data, subset, na.action, k = 5, ...)
 {
 
     if (missing(formula) ||
         (length(formula) != 3) ||
         (length(attr(terms(formula[-2], data = data), "term.labels")) < 1) ||
-        (length(attr(terms(formula[-3], data = data), "term.labels")) != 1)) 
+        (length(attr(terms(formula[-3], data = data), "term.labels")) != 1))
         stop("formula missing or incorrect")
     m <- match.call(expand.dots = FALSE)
-    if (is.matrix(eval(m$data, parent.frame()))) 
+    if (is.matrix(eval(m$data, parent.frame())))
         m$data <- as.data.frame(data)
     m[[1]] <- as.name("model.frame")
     m$... <- NULL
@@ -85,14 +85,14 @@ knn3.formula <- function (formula, data, subset, na.action, k = 5, ...)
     y <- model.extract(m, "response")
     x <- model.matrix(Terms, m)
     xvars <- as.character(attr(Terms, "variables"))[-1]
-    if ((yvar <- attr(Terms, "response")) > 0) 
+    if ((yvar <- attr(Terms, "response")) > 0)
         xvars <- xvars[-yvar]
     xlev <- if (length(xvars) > 0) {
         xlev <- lapply(m[xvars], levels)
         xlev[!sapply(xlev, is.null)]
     }
     xint <- match("(Intercept)", colnames(x), nomatch = 0)
-    if (xint > 0) 
+    if (xint > 0)
         x <- x[, -xint, drop = FALSE]
     RET <- list(learn = list(y = y, X = x))
     RET$k <- k
@@ -101,7 +101,7 @@ knn3.formula <- function (formula, data, subset, na.action, k = 5, ...)
     RET$xlevels <- xlev
     RET$theDots <- list(...)
     attr(RET, "na.message") <- attr(m, "na.message")
-    if (!is.null(attr(m, "na.action"))) 
+    if (!is.null(attr(m, "na.action")))
         RET$na.action <- attr(m, "na.action")
     class(RET) <- "knn3"
     RET
@@ -129,7 +129,7 @@ knn3.matrix <- function(x, y, k = 5, ...)
     RET$terms <- NULL
     RET$contrasts <- NULL
     RET$xlevels <- NULL
-    RET$theDots <- list(...)    
+    RET$theDots <- list(...)
      class(RET) <- "knn3"
     RET
 }
@@ -137,11 +137,13 @@ knn3.matrix <- function(x, y, k = 5, ...)
 #' @rdname knn3
 #' @method print knn3
 #' @export
-print.knn3 <- function (x, ...) 
+print.knn3 <- function (x, ...)
 {
-   cat(x$k, "-nearest neighbor classification model\n", sep = "")
-   cat("Training set class distribution:\n")
-   print(table(x$learn$y))
+   cat(x$k, "-nearest neighbor model\n", sep = "")
+   cat("Training set outcome distribution:\n")
+   if(is.factor(x$learn$y)) {
+     print(table(x$learn$y))
+   } else print(summary(x$learn$y))
 
    cat("\n")
    invisible(x)
@@ -150,13 +152,13 @@ print.knn3 <- function (x, ...)
 
 
 #' Predictions from k-Nearest Neighbors
-#' 
+#'
 #' Predict the class of a new observation based on k-NN.
-#' 
+#'
 #' This function is a method for the generic function \code{\link{predict}} for
 #' class \code{knn3}. For the details see \code{\link{knn3}}. This is
 #' essentially a copy of \code{\link[ipred]{predict.ipredknn}}.
-#' 
+#'
 #' @param object object of class \code{knn3}.
 #' @param newdata a data frame of new observations.
 #' @param type return either the predicted class or the proportion of the votes
@@ -168,28 +170,28 @@ print.knn3 <- function (x, ...)
 #' <Torsten.Hothorn@@rzmail.uni-erlangen.de>
 #' @keywords multivariate
 #' @method predict knn3
-#' @export  
-predict.knn3 <- function (object, newdata, type = c("prob", "class"), ...) 
+#' @export
+predict.knn3 <- function (object, newdata, type = c("prob", "class"), ...)
 {
     type <- match.arg(type)
-    if (!inherits(object, "knn3")) 
+    if (!inherits(object, "knn3"))
         stop("object not of class knn3")
     if (!is.null(Terms <- object$terms)) {
-        if (missing(newdata)) 
+        if (missing(newdata))
             newdata <- model.frame(object)
         else {
-            newdata <- model.frame(as.formula(delete.response(Terms)), 
+            newdata <- model.frame(as.formula(delete.response(Terms)),
                 newdata, na.action = function(x) x, xlev = object$xlevels)
         }
         x <- model.matrix(delete.response(Terms), newdata, contrasts = object$contrasts)
         xint <- match("(Intercept)", colnames(x), nomatch = 0)
-        if (xint > 0) 
+        if (xint > 0)
             x <- x[, -xint, drop = FALSE]
     }
     else {
         x <- as.matrix(newdata)
     }
-    
+
     argList <- list(
       train = object$learn$X,
       test = x,
@@ -199,12 +201,12 @@ predict.knn3 <- function (object, newdata, type = c("prob", "class"), ...)
     if(length(object$theDots) == 0) object$theDots <- list(prob = TRUE)
     if(any(names(object$theDots) == "prob")) object$theDots$prob <- TRUE
 
-    argList <- c(argList, object$theDots)  
-    
+    argList <- c(argList, object$theDots)
+
     RET <- do.call(
-      "knn3Train", 
+      "knn3Train",
       argList)
-      
+
     if (type == "prob")
     {
        return(attr(RET, "prob"))
@@ -263,7 +265,7 @@ knn3Train <- function(train, test, cl, k=1, l=0, prob = TRUE, use.all=TRUE)
       if(length(out) > 1) out <- sample(out, 1)
       out
    }
-     
+
    res <- colnames(classProbs)[apply(classProbs, 1, bestClass)]
 
    votes <- apply(classProbs * k, 1, max)
