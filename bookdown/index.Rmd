@@ -10,7 +10,7 @@ output:
         collapse: section
 documentclass: book
 github-repo: https://github.com/topepo/caret
-description: "Documentation for the `caret` package"
+description: "Documentation for the caret package."
 split_by: chapter
 ---
 
