@@ -6,6 +6,7 @@
 
 \section{Changes in version 6.0-77}{
   \itemize{
+    \item hadjipantelis added the option to control the minimum node size to models \code{ranger} and \code{Rborist}.
     \item A new method was added for \code{train} so that \cpkg{recipes} can be used to specify the model terms and preprocessing. Alexis Sardá provided a great deal of help converting the bootstrap optimism code to the new workflows. A new chapter was added to the package website related to recipes. 
     \item The Yeo-Johnson transformation parameter estimation code was rewritten and not longer requires the \code{car} package. 
     \item The leave-one-out cross-validation workflow for \code{train} has been harmonized with the other resampling methods in terms of fault tolerance and prediction trimming. 
