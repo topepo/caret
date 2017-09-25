@@ -5,13 +5,15 @@
 
 
 \section{Changes in version 6.0-77}{
-  \itemize{
+  \itemize{ 
+    \item Two neural network models (containing up to three hidden layers) using \code{mxnet} were added; \code{mxnet} (optimiser: SGD) and \code{mxnetAdam} (optimiser: ADAM).
+    \item The option to control the minimum node size to models \code{ranger} and \code{Rborist} was added by hadjipantelis.
     \item A new method was added for \code{train} so that \cpkg{recipes} can be used to specify the model terms and preprocessing. Alexis Sardá provided a great deal of help converting the bootstrap optimism code to the new workflows. A new chapter was added to the package website related to recipes. 
     \item The Yeo-Johnson transformation parameter estimation code was rewritten and not longer requires the \code{car} package. 
     \item The leave-one-out cross-validation workflow for \code{train} has been harmonized with the other resampling methods in terms of fault tolerance and prediction trimming. 
     \item \code{train} now uses different random numbers to make resamples. Previously, setting the seed prior to calling \code{train} should result in getting the same resamples. However, if \code{train} loaded or imported a namespace from another package, and that startup process used random numbers, it could lead to different random numbers being used. See \issue{452} for details. Now, \code{train} gets a separate (and more reproducible) seed that will be used to generate the resamples. However, this may effect random number reproducibility between this version and previous versions. Otherwise, this change should increase the reproducibility of results. 
     \item Erwan Le Pennec conducted the herculean task of modifying all of the model code to call by namespace (instead of fully loading each required package). This should reduce naming conflicts \issue{701}.  
-    \item hadjipantelis added MAE as output metric for regression tasks through \code{postResample} and \code{defaultSummary}. The function is now exposed to the users. \issue{657}.
+    \item MAE was added as output metric for regression tasks through \code{postResample} and \code{defaultSummary} by hadjipantelis. The function is now exposed to the users. \issue{657}.
     \item More average precision/recall statistics were added to \code{multiClassSummary} \issue{697}. 
     \item The package website code was updated to use version 4 of the D3 JS library and now uses \cpkg{heatmaply} to make the interactive heatmap. 
     \item Added a \code{ggplot} method for lift objects (and fixed a bug in the \code{lattice} version of the code) for \issue{656}.
@@ -39,16 +41,16 @@
 
 \section{Changes in version 6.0-76}{
 	\itemize{
-		\item Monotone multi-layer perceptron neural network models from the \cpkg{monmlp} package were added \issue{489}
-		\item A new resampling function (\code{groupKFold}) was added \issue{540}
-		\item The bootstrap optimism estimate was added by Alexis Sarda \issue{544}
-		\item Bugs in \code{glm}, \code{glm.nb}, and \code{lm} variable importance methods that occur when a single variable is in the model \issue{543}
-		\item A bug in \code{filterVarImp} was fixed where the ROC curve AUC could be much less than 0.50 because the directionality of the predictor was not taken into account. This will artificially increase the importance of some non-informative predictors. However, the bug might report the AUC for an important predictor to be 0.20 instead of 0.80. \issue{565}
-		\item \code{multiClassSummary} now reports the average F score \issue{566}
-		\item The \code{RMSE} and \code{R2} are now (re)exposed to the users \issue{563}
-		\item A \cpkg{caret} bug was discovered by Jiebiao Wang where \code{glmboost}, \code{gamboost}, and \code{blackboost} models incorrectly reported the class probabilities \issue{560}
-		\item Training data weights support was added to \code{xgbTree} model by schistyakov
-		\item Regularized logistic regression through Liblinear (\code{LiblineaR::LiblineaR}) using L1 or  L2 regularization were added
+		\item Monotone multi-layer perceptron neural network models from the \cpkg{monmlp} package were added \issue{489}.
+		\item A new resampling function (\code{groupKFold}) was added \issue{540}.
+		\item The bootstrap optimism estimate was added by Alexis Sarda \issue{544}.
+		\item Bugs in \code{glm}, \code{glm.nb}, and \code{lm} variable importance methods that occur when a single variable is in the model \issue{543}.
+		\item A bug in \code{filterVarImp} was fixed where the ROC curve AUC could be much less than 0.50 because the directionality of the predictor was not taken into account. This will artificially increase the importance of some non-informative predictors. However, the bug might report the AUC for an important predictor to be 0.20 instead of 0.80 \issue{565}.
+		\item \code{multiClassSummary} now reports the average F score \issue{566}.
+		\item The \code{RMSE} and \code{R2} are now (re)exposed to the users \issue{563}.
+		\item A \cpkg{caret} bug was discovered by Jiebiao Wang where \code{glmboost}, \code{gamboost}, and \code{blackboost} models incorrectly reported the class probabilities \issue{560}.
+		\item Training data weights support was added to \code{xgbTree} model by schistyakov.
+		\item Regularized logistic regression through Liblinear (\code{LiblineaR::LiblineaR}) using L1 or  L2 regularization were added by hadjipantelis.
 		\item A bug related to the ordering of axes labels in the heatmap plot of training results was fixed by Mateusz Dziedzic in \issue{620}.
 		\item A variable importance method for model averaged neural networks was added. 
 		\item More logic was added so that the \code{predict} method behaves well when a variable is subtracted from a model formula from \issue{574}.
