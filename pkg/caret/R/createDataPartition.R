@@ -304,7 +304,7 @@ make_resamples <- function(ctrl_obj, outcome) {
                                           horizon = ctrl_obj$horizon,
                                           fixedWindow = ctrl_obj$fixedWindow,
                                           skip = ctrl_obj$skip)$train,
-             stop("Not a recognized reampling method.", call. = FALSE))
+             stop("Not a recognized resampling method.", call. = FALSE))
   } else {
     index_types <- unlist(lapply(ctrl_obj$index, is.integer))
     if(!isTRUE(all(index_types)))

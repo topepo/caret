@@ -5,7 +5,7 @@ library(recipes)
 library(dplyr)
 library(xgboost)
 
-model <- "xgbDART"
+modelX <- "xgbDART"
 
 ## In case the package or one of its dependencies uses random numbers
 ## on startup so we'll pre-load the required libraries: 
@@ -17,15 +17,14 @@ for(i in getModelInfo(model)[[1]]$library)
 #########################################################################
 
 xgbGrid <- expand.grid(nrounds = c(1, 10), 
-                       eta = 0.3,
                        max_depth = 2,
-                       eta = param$eta,
-                       rate_drop = 0.1,
-                       skip_drop = 0.1,
+                       eta = 0.30,
+                       rate_drop = 0.10,
+                       skip_drop = 0.10,
+                       colsample_bytree = 0.90,
                        min_child_weight = 2,
                        subsample = 0.75,
-                       sample_type = 'uniform')
-
+                       gamma = 0.10)
 set.seed(2)
 training <- twoClassSim(100, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
@@ -50,7 +49,7 @@ cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search =
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
-                             method = "xgbDART", 
+                             method = modelX, 
                              trControl = cctrl1,
                              metric = "ROC", 
                              preProc = c("center", "scale"),
@@ -58,7 +57,7 @@ test_class_cv_model <- train(trainX, trainY,
 
 set.seed(849)
 test_class_cv_model_sp <- train(train_sparse, trainY, 
-                                method = "xgbDART", 
+                                method = modelX, 
                                 trControl = cctrl1,
                                 metric = "ROC", 
                                 tuneGrid = xgbGrid)
@@ -66,7 +65,7 @@ test_class_cv_model_sp <- train(train_sparse, trainY,
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = "xgbDART", 
+                            method = modelX, 
                             trControl = cctrl1,
                             metric = "ROC", 
                             preProc = c("center", "scale"),
@@ -79,13 +78,13 @@ test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], t
 
 set.seed(849)
 test_class_rand <- train(trainX, trainY, 
-                         method = "xgbDART", 
+                         method = modelX, 
                          trControl = cctrlR,
                          tuneLength = 4)
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
-                              method = "xgbDART", 
+                              method = modelX, 
                               trControl = cctrl2,
                               metric = "ROC", 
                               preProc = c("center", "scale"),
@@ -93,7 +92,7 @@ test_class_loo_model <- train(trainX, trainY,
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
-                               method = "xgbDART", 
+                               method = modelX, 
                                trControl = cctrl4,
                                tuneGrid = xgbGrid[nrow(xgbGrid),],
                                metric = "ROC", 
@@ -104,7 +103,7 @@ test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)]
 set.seed(849)
 test_class_rec <- train(x = rec_cls,
                         data = training,
-                        method = "xgbDART", 
+                        method = modelX, 
                         trControl = cctrl1,
                         metric = "ROC",
                         tuneGrid = xgbGrid)
@@ -156,7 +155,7 @@ rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search =
 
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, 
-                           method = "xgbDART", 
+                           method = modelX, 
                            trControl = rctrl1,
                            preProc = c("center", "scale"),
                            tuneGrid = xgbGrid)
@@ -164,7 +163,7 @@ test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
 test_reg_cv_model_sp <- train(train_sparse, trainY, 
-                              method = "xgbDART", 
+                              method = modelX, 
                               trControl = rctrl1,
                               tuneGrid = xgbGrid)
 test_reg_pred_sp <- predict(test_reg_cv_model_sp, testX)
@@ -172,7 +171,7 @@ test_reg_pred_sp <- predict(test_reg_cv_model_sp, testX)
 
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
-                          method = "xgbDART", 
+                          method = modelX, 
                           trControl = rctrl1,
                           preProc = c("center", "scale"),
                           tuneGrid = xgbGrid)
@@ -180,20 +179,20 @@ test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
 test_reg_rand <- train(trainX, trainY, 
-                       method = "xgbDART", 
+                       method = modelX, 
                        trControl = rctrlR,
                        tuneLength = 4)
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 
-                            method = "xgbDART",
+                            method = modelX,
                             trControl = rctrl2,
                             preProc = c("center", "scale"),
                             tuneGrid = xgbGrid)
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
-                             method = "xgbDART", 
+                             method = modelX, 
                              trControl = rctrl4,
                              tuneGrid = xgbGrid[nrow(xgbGrid),],
                              preProc = c("center", "scale"))
@@ -202,7 +201,7 @@ test_reg_none_pred <- predict(test_reg_none_model, testX)
 set.seed(849)
 test_reg_rec <- train(x = rec_reg,
                       data = training,
-                      method = "xgbDART", 
+                      method = modelX, 
                       trControl = rctrl1,
                       tuneGrid = xgbGrid)
 
@@ -236,7 +235,7 @@ sInfo <- sessionInfo()
 timestamp_end <- Sys.time()
 
 save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
-     file = file.path(getwd(), paste(model, ".RData", sep = "")))
+     file = file.path(getwd(), paste(modelX, ".RData", sep = "")))
 
 if(!interactive()) q("no")
 
