@@ -13,58 +13,63 @@ xgbDART <- list(label = "eXtreme Gradient Boosting",
                   parameters = data.frame(parameter = c("nrounds", 
                                                         "max_depth",
                                                         "eta",
+                                                        "gamma",
                                                         "subsample",
+                                                        "colsample_bytree",
                                                         "rate_drop",
                                                         "skip_drop", 
-                                                        "min_child_weight",
-                                                        "sample_type"),
-                                          class = c(rep("numeric", 7), 'character'),
-                                          label = c('# Boosting Iterations', 
-                                                    'Max Tree Depth',
-                                                    'Shrinkage',
-                                                    'Subsample Percentage',
+                                                        "min_child_weight"),
+                                          class = c(rep("numeric", 9)),
+                                          label = c("# Boosting Iterations", 
+                                                    "Max Tree Depth",
+                                                    "Shrinkage",
+                                                    "Minimum Loss Reduction",
+                                                    "Subsample Percentage",
+                                                    "Subsample Ratio of Columns",
                                                     "Fraction of previous trees to drop during dropout",
-                                                    'Probability of skipping dropout during an iteration',
-                                                    'Minimum Sum of Instance Weight',
-                                                    'Sampling algorithm')),
+                                                    "Probability of skipping dropout during an iteration",
+                                                    "Minimum Sum of Instance Weight")), 
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
                       out <- expand.grid(nrounds = floor((1:len) * 50),
                                          max_depth = seq(1, len),
                                          eta = c(0.3, 0.4), # "Usually" one should be the lowest possible
+                                         gamma = 0,
                                          subsample = seq(.5, 1, length = len),
-                                         rate_drop = c(0.005, 0.20),
-                                         skip_drop = c(0.005, 0.20),  
-                                         min_child_weight = c(1),
-                                         sample_type = "uniform")
+                                         colsample_bytree = c(0.6, 0.8),
+                                         rate_drop = c(0.01, 0.50),
+                                         skip_drop = c(0.05, 0.95),  
+                                         min_child_weight = c(1))
                     } else {
                       out <- data.frame(nrounds = sample(1:1000, size = len, replace = TRUE),
                                         max_depth = sample(1:10, replace = TRUE, size = len),
                                         eta = runif(len, min = 0.001, max = 0.6),
-                                        subsample = runif(len, min = .25, max = 1),
-                                        rate_drop = runif(len, min = 0.0, max = 0.25),
-                                        skip_drop = runif(len, min = 0.0, max = 0.25),
-                                        min_child_weight = sample(0:20, size = len, replace = TRUE),
-                                        sample_type = sample(c("uniform","weighted"), replace = TRUE, size = len))
+                                        gamma = runif(len, min = 0.0, max = 10.0),
+                                        subsample = runif(len, min = 0.25, max = 1.00),
+                                        colsample_bytree = runif(len, min = 0.30, max = 0.70),
+                                        rate_drop = runif(len, min = 0.01, max = 0.50),
+                                        skip_drop = runif(len, min = 0.05, max = 0.95),
+                                        min_child_weight = sample(0:20, size = len, replace = TRUE))
                       out$nrounds <- floor(out$nrounds)
                       out <- out[!duplicated(out),]
                     }
                     out
                   },
                   loop = function(grid) {
-                    loop <- plyr::ddply(grid, c( "max_depth","eta", "rate_drop",
+                    loop <- plyr::ddply(grid, c( "max_depth", "eta",            "rate_drop",
                                                  "skip_drop", "min_child_weight",
-                                                 "subsample", "sample_type"),
+                                                 "subsample", "colsample_bytree", "gamma"),
                                         function(x) c(nrounds = max(x$nrounds)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$nrounds)) {
                       index <- which(grid$max_depth == loop$max_depth[i] &
                                        grid$eta == loop$eta[i] &
+                                       grid$gamma == loop$gamma[i] &
+                                       grid$subsample == loop$subsample[i]  &
+                                       grid$colsample_bytree == loop$colsample_bytree[i]  &
                                        grid$rate_drop == loop$rate_drop[i] &
                                        grid$skip_drop == loop$skip_drop[i] &
-                                       grid$min_child_weight == loop$min_child_weight[i]&
-                                       grid$subsample == loop$subsample[i] &
-                                       grid$sample_type == loop$sample_type[i] )
+                                       grid$min_child_weight == loop$min_child_weight[i] )
                       trees <- grid[index, "nrounds"]
                       submodels[[i]] <- data.frame(nrounds = trees[trees != loop$nrounds[i]])
                     }
@@ -92,8 +97,9 @@ xgbDART <- list(label = "eXtreme Gradient Boosting",
                                                        rate_drop = param$rate_drop,
                                                        skip_drop = param$skip_drop,
                                                        min_child_weight = param$min_child_weight,
-                                                       sample_type = param$sample_type,
-                                                       subsample = param$subsample),
+                                                       gamma = param$gamma,
+                                                       subsample = param$subsample,
+                                                       colsample_bytree = param$colsample_bytree),
                                                   data = x,
                                                   nrounds = param$nrounds,
                                                   objective = "binary:logistic",
@@ -115,8 +121,9 @@ xgbDART <- list(label = "eXtreme Gradient Boosting",
                                                        rate_drop = param$rate_drop,
                                                        skip_drop = param$skip_drop,
                                                        min_child_weight = param$min_child_weight,
+                                                       gamma = param$gamma,
                                                        subsample = param$subsample,
-                                                       sample_type = param$sample_type),
+                                                       colsample_bytree = param$colsample_bytree),
                                                   data = x,
                                                   num_class = length(lev),
                                                   nrounds = param$nrounds,
@@ -139,8 +146,9 @@ xgbDART <- list(label = "eXtreme Gradient Boosting",
                                                      rate_drop = param$rate_drop,
                                                      skip_drop = param$skip_drop,
                                                      min_child_weight = param$min_child_weight,
+                                                     gamma = param$gamma,
                                                      subsample = param$subsample,
-                                                     sample_type = param$sample_type),
+                                                     colsample_bytree = param$colsample_bytree),
                                                 data = x,
                                                 nrounds = param$nrounds,
                                                 objective = "reg:linear",
@@ -148,7 +156,6 @@ xgbDART <- list(label = "eXtreme Gradient Boosting",
                                                 ...)
                     }
                     out
-                    
                     
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
@@ -250,6 +257,6 @@ xgbDART <- list(label = "eXtreme Gradient Boosting",
                   levels = function(x) x$obsLevels,
                   tags = c("Tree-Based Model", "Boosting", "Ensemble Model", "Implicit Feature Selection", "Accepts Case Weights"),
                   sort = function(x) { 
-                    x[order(x$nrounds,   x$max_depth,        x$eta,       x$rate_drop,
-                            x$skip_drop, x$min_child_weight, x$subsample, x$sample_type),]
+                    x[order(x$nrounds,          x$max_depth, x$eta,              x$rate_drop, x$skip_drop,     
+                            x$min_child_weight, x$subsample, x$colsample_bytree, x$gamma),]
                   })
