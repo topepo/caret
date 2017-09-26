@@ -257,7 +257,7 @@ stringFunc <- function (x)  {
             met <- paste(met,
                          switch(x$control$selectionFunction,
                                 best = paste(
-                                  " the",
+                                  "the",
                                   ifelse(x$maximize, "largest", "smallest"),
                                   "value.\n"),
                                 oneSE = " the one SE rule.\n",
