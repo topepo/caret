@@ -4,10 +4,10 @@ xgbDART <- list(label = "eXtreme Gradient Boosting",
                   check = function(pkg) {
                     requireNamespace("xgboost")
                     current <- packageDescription("xgboost")$Version
-                    expected <- "0.6.4.6"
+                    expected <- "0.6.4"
                     if(compareVersion(current, expected) < 0)
                       stop("This modeling workflow requires xgboost version ",
-                           expected, "or greater. Consider using the drat repo.", call. = FALSE)
+                           expected, " or greater. Consider using the drat repo.", call. = FALSE)
                   },
                   type = c("Regression", "Classification"),
                   parameters = data.frame(parameter = c("nrounds", 
