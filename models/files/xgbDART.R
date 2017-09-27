@@ -26,8 +26,8 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                                     "Minimum Loss Reduction",
                                                     "Subsample Percentage",
                                                     "Subsample Ratio of Columns",
-                                                    "Fraction of previous trees to drop during dropout",
-                                                    "Probability of skipping dropout during an iteration",
+                                                    "Fraction of Trees Dropped",
+                                                    "Prob. of Skipping Drop-out",
                                                     "Minimum Sum of Instance Weight")), 
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
@@ -204,7 +204,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     
                     if( !is.null(modelFit$param$objective) && modelFit$param$objective == 'binary:logitraw'){
                       p <- predict(modelFit, newdata)
-                      out <- exp(p)/(1+exp(p))
+                      out <- binomial()$linkinv(p) # exp(p)/(1+exp(p))
                     } else {
                       out <- predict(modelFit, newdata)
                     }

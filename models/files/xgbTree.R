@@ -170,7 +170,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     
                     if( !is.null(modelFit$param$objective) && modelFit$param$objective == 'binary:logitraw'){
                       p <- predict(modelFit, newdata)
-                      out <- exp(p)/(1+exp(p))
+                      out <-binomial()$linkinv(p) # exp(p)/(1+exp(p))
                     } else {
                       out <- predict(modelFit, newdata)
                     }
