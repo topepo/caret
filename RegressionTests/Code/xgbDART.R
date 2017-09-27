@@ -10,7 +10,7 @@ modelX <- "xgbDART"
 ## In case the package or one of its dependencies uses random numbers
 ## on startup so we'll pre-load the required libraries: 
 
-for(i in getModelInfo(model)[[1]]$library)
+for(i in getModelInfo(modelX)[[1]]$library)
   do.call("requireNamespace", list(package = i))
   
 
@@ -47,7 +47,7 @@ cctrl4 <- trainControl(method = "none",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
 cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
-set.seed(849)
+set.seed(649)
 test_class_cv_model <- train(trainX, trainY, 
                              method = modelX, 
                              trControl = cctrl1,
@@ -55,15 +55,15 @@ test_class_cv_model <- train(trainX, trainY,
                              preProc = c("center", "scale"),
                              tuneGrid = xgbGrid)
 
-set.seed(849)
+set.seed(649)
 test_class_cv_model_sp <- train(train_sparse, trainY, 
                                 method = modelX, 
                                 trControl = cctrl1,
                                 metric = "ROC", 
-                                tuneGrid = xgbGrid)
+                                tuneGrid = xgbGrid) # expect a warning here as xgb.DMatrix is used.
 
 
-set.seed(849)
+set.seed(649)
 test_class_cv_form <- train(Class ~ ., data = training, 
                             method = modelX, 
                             trControl = cctrl1,
@@ -76,13 +76,13 @@ test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type 
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
 
-set.seed(849)
+set.seed(649)
 test_class_rand <- train(trainX, trainY, 
                          method = modelX, 
                          trControl = cctrlR,
                          tuneLength = 4)
 
-set.seed(849)
+set.seed(649)
 test_class_loo_model <- train(trainX, trainY, 
                               method = modelX, 
                               trControl = cctrl2,
@@ -90,7 +90,7 @@ test_class_loo_model <- train(trainX, trainY,
                               preProc = c("center", "scale"),
                               tuneGrid = xgbGrid)
 
-set.seed(849)
+set.seed(649)
 test_class_none_model <- train(trainX, trainY, 
                                method = modelX, 
                                trControl = cctrl4,
@@ -100,7 +100,7 @@ test_class_none_model <- train(trainX, trainY,
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
 
-set.seed(849)
+set.seed(649)
 test_class_rec <- train(x = rec_cls,
                         data = training,
                         method = modelX, 
@@ -153,7 +153,7 @@ rctrl3 <- trainControl(method = "oob")
 rctrl4 <- trainControl(method = "none")
 rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
-set.seed(849)
+set.seed(649)
 test_reg_cv_model <- train(trainX, trainY, 
                            method = modelX, 
                            trControl = rctrl1,
@@ -161,15 +161,15 @@ test_reg_cv_model <- train(trainX, trainY,
                            tuneGrid = xgbGrid)
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
-set.seed(849)
+set.seed(649)
 test_reg_cv_model_sp <- train(train_sparse, trainY, 
                               method = modelX, 
                               trControl = rctrl1,
-                              tuneGrid = xgbGrid)
+                              tuneGrid = xgbGrid)  # expect a warning here as xgb.DMatrix is used.
 test_reg_pred_sp <- predict(test_reg_cv_model_sp, testX)
 
 
-set.seed(849)
+set.seed(649)
 test_reg_cv_form <- train(y ~ ., data = training, 
                           method = modelX, 
                           trControl = rctrl1,
@@ -177,20 +177,20 @@ test_reg_cv_form <- train(y ~ ., data = training,
                           tuneGrid = xgbGrid)
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
-set.seed(849)
+set.seed(649)
 test_reg_rand <- train(trainX, trainY, 
                        method = modelX, 
                        trControl = rctrlR,
                        tuneLength = 4)
 
-set.seed(849)
+set.seed(649)
 test_reg_loo_model <- train(trainX, trainY, 
                             method = modelX,
                             trControl = rctrl2,
                             preProc = c("center", "scale"),
                             tuneGrid = xgbGrid)
 
-set.seed(849)
+set.seed(649)
 test_reg_none_model <- train(trainX, trainY, 
                              method = modelX, 
                              trControl = rctrl4,
@@ -198,7 +198,7 @@ test_reg_none_model <- train(trainX, trainY,
                              preProc = c("center", "scale"))
 test_reg_none_pred <- predict(test_reg_none_model, testX)
 
-set.seed(849)
+set.seed(649)
 test_reg_rec <- train(x = rec_reg,
                       data = training,
                       method = modelX, 

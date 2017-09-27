@@ -1,5 +1,5 @@
-# modelInfo
-xgbDART <- list(label = "eXtreme Gradient Boosting",
+#xgbDART 
+modelInfo <- list(label = "eXtreme Gradient Boosting",
                   library = c("xgboost", "plyr"),
                   check = function(pkg) {
                     requireNamespace("xgboost")
