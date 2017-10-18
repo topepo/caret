@@ -46,6 +46,7 @@ modelInfo <- list(label = "Neural Network",
                                            array.layout = "rowmajor",
                                            activation = rep( as.character(param$activation), length(num_units)),
                                            initializer = mx.init.Xavier(factor_type = "avg", magnitude = 3, rnd_type = 'uniform'),
+                                           verbose= FALSE,
                                            ...)
                     } else {
                       y <- as.numeric(y) - 1
@@ -60,6 +61,7 @@ modelInfo <- list(label = "Neural Network",
                                            array.layout = "rowmajor",
                                            activation = rep( as.character(param$activation), length(num_units)),
                                            initializer = mx.init.Xavier(factor_type = "avg", magnitude = 3, rnd_type = 'uniform'), 
+                                           verbose= FALSE,
                                            ...)
                     }
                     if(last)

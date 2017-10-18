@@ -31,7 +31,7 @@ modelInfo <- list(label = "Neural Network",
                     num_units <- num_units[num_units > 0]
                     if(!is.matrix(x)) x <- as.matrix(x)
                     if(is.numeric(y)) {
-                      mx.set.seed(21)  
+                      mxnet::mx.set.seed(21)  
                       out <- mxnet::mx.mlp(data = x, label = y, out_node = 1, out_activation = "rmse", verbose= FALSE,
                                            optimizer = 'adam', eval.metric = mx.metric.rmse, array.layout = "rowmajor", 
                                            learning.rate = param$learningrate,  
@@ -44,7 +44,7 @@ modelInfo <- list(label = "Neural Network",
                                            ...)
                     } else {
                       y <- as.numeric(y) - 1 
-                      mx.set.seed(21)
+                      mxnet::mx.set.seed(21)
                       out <- mxnet::mx.mlp(data = x, label = y, out_node = length(unique(y)), out_activation = "softmax",  verbose= FALSE,
                                           optimizer = 'adam', eval.metric = mx.metric.accuracy, array.layout = "rowmajor", 
                                           learning.rate = param$learningrate, 
