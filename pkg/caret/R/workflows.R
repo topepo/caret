@@ -75,12 +75,10 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
   keep_pred <- isTRUE(ctrl$savePredictions) || ctrl$savePredictions %in% c("all", "final")
   pkgs <- c("methods", "caret")
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
-  export <- c("optimism_xy", "ctrl", "requireNamespaceQuietStop",
-              "x", "y", "wts", "info", "method", "ppOpts", "ctrl", "lev",
-              "testing","pkgs", "resampleIndex")
+  export <- c()
 
-  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .export = export) %:%
-    foreach(parm = 1L:nrow(info$loop), .combine = "c", .verbose = FALSE, .export = export)  %op%
+  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .export = export, .packages = "caret") %:%
+    foreach(parm = 1L:nrow(info$loop), .combine = "c", .verbose = FALSE, .export = export , .packages = "caret")  %op%
     {
       if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
 
