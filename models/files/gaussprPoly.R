@@ -22,12 +22,12 @@ modelInfo <- list(label = "Gaussian Process with Polynomial Kernel",
                                                        offset = 1), ...)         
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {  
-                    out <- predict(modelFit, as.matrix(newdata))
+                    out <- kernlab::predict(modelFit, as.matrix(newdata))
                     if(is.matrix(out)) out <- out[,1]
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    predict(modelFit, as.matrix(newdata), type = "probabilities")
+                    kernlab::predict(modelFit, as.matrix(newdata), type = "probabilities")
                   },
                   predictors = function(x, ...) {
                     if(hasTerms(x) & !is.null(x@terms))

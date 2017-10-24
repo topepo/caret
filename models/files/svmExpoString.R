@@ -40,9 +40,9 @@ modelInfo <- list(label = "Support Vector Machines with Exponential String Kerne
                     {
                       hasPM <- !is.null(unlist(obj@prob.model))
                       if(hasPM) {
-                        pred <- lev(obj)[apply(predict(obj, x, type = "probabilities"), 
+                        pred <- lev(obj)[apply(kernlab::predict(obj, x, type = "probabilities"), 
                                                1, which.max)]
-                      } else pred <- predict(obj, x)
+                      } else pred <- kernlab::predict(obj, x)
                       pred
                     }
                     out <- try(svmPred(modelFit, newdata[,1]), silent = TRUE)
@@ -64,7 +64,7 @@ modelInfo <- list(label = "Support Vector Machines with Exponential String Kerne
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- try(predict(modelFit, newdata[,1], type="probabilities"),
+                    out <- try(kernlab::predict(modelFit, newdata[,1], type="probabilities"),
                                silent = TRUE)
                     if(class(out)[1] != "try-error")
                     {

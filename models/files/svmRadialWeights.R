@@ -43,12 +43,12 @@ modelInfo <- list(label = "Support Vector Machines with Class Weights",
                     out            
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    out <- predict(modelFit, newdata)
+                    out <- kernlab::predict(modelFit, newdata)
                     if(is.matrix(out)) out <- out[,1]
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- try(predict(modelFit, newdata, type="probabilities"),
+                    out <- try(kernlab::predict(modelFit, newdata, type="probabilities"),
                                silent = TRUE)
                     if(class(out)[1] != "try-error") {
                       ## There are times when the SVM probability model will

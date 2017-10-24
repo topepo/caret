@@ -24,7 +24,7 @@ modelInfo <- list(label = "Relevance Vector Machines with Polynomial Kernel",
                                   ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) 
-                    predict(modelFit, newdata),
+                    kernlab::predict(modelFit, newdata),
                   prob = NULL,
                   predictors = function(x, ...) {
                     if(hasTerms(x) & !is.null(x@terms))

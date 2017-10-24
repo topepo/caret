@@ -24,7 +24,7 @@ modelInfo <- list(label = "Least Squares Support Vector Machine with Radial Basi
                                    kpar = list(sigma = param$sigma), ...)         
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {  
-                    out <- predict(modelFit, as.matrix(newdata))
+                    out <- kernlab::predict(modelFit, as.matrix(newdata))
                     if(is.matrix(out)) out <- out[,1]
                     out
                   },
