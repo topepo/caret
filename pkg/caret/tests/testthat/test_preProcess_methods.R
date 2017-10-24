@@ -318,7 +318,7 @@ test_that('Yeo-Johnson trans', {
     .Names = c("TwoFactor1", "TwoFactor2", "Linear01", "Linear02", "Linear03"), 
     row.names = c(NA, -30L), class = "data.frame")
   
-  all.equal(yj_dat2_yj_exp, yj_dat2_yj, tolerance = 0.00001)
+  expect_equal(yj_pred_exp, yj_dat2_yj, tolerance = 0.00001)
 })
 
 
@@ -403,7 +403,7 @@ test_that('Yeo-Johnson trans with mising data', {
       row.names = c(NA, -30L),
       class = "data.frame")
   
-  all.equal(yj_dat2_yj_exp, yj_dat2_yj, tolerance = 0.00001)
+  expect_equal(yj_pred_exp, yj_dat2_yj, tolerance = 0.00001)
 })
 
 ###################################################################
