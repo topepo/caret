@@ -129,9 +129,9 @@ resamples.default <- function(x, modelNames = names(x), ...) {
   getTimes <- function(x){
     out <- rep(NA, 3)
     if(all(names(x) != "times")) return(out)
-    if(any(names(x$times) == "everything")) out[1] <- x$time$everything[3]
-    if(any(names(x$times) == "final")) out[2] <- x$time$final[3]
-    if(any(names(x$times) == "prediction")) out[3] <- x$time$prediction[3]
+    if(any(names(x$times) == "everything")) out[1] <- x$times$everything[3]
+    if(any(names(x$times) == "final")) out[2] <- x$times$final[3]
+    if(any(names(x$times) == "prediction")) out[3] <- x$times$prediction[3]
     out
   }
   
