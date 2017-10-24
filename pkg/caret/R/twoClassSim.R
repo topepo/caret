@@ -216,7 +216,7 @@ twoClassSim <- function(n = 100,
   } else {
     prob <- binomial()$linkinv(lp)
     if(mislabel > 0 & mislabel < 1) {
-      shuffle <- sample(1:nrow(tmpData), floor(nrow(tmpData)*j))
+      shuffle <- sample(1:nrow(tmpData), floor(nrow(tmpData)*mislabel))
       prob[shuffle] <- 1 - prob[shuffle]
     }
     tmpData$Class <- ifelse(prob <= runif(n), "Class1", "Class2")
