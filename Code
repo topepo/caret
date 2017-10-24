@@ -1,0 +1,17 @@
+bomb <- read.csv("abc.csv")
+str(abc)
+data(abc)
+x = abc[,-12]
+y =abc$City
+set.seed(110)
+inTraining <- createDataPartition(abc$Class, p = .75, list = FALSE)
+library(caret)
+install.packages("klaR")
+install.packages("MASS")
+install.packages("caret")
+model = train(x,y',abc',trControl=trainControl(method='cv',number=10))
+model
+predict(model,x)
+table(predict(model,x))$class,y)
+naive_abc <-c NaiveBayes(abc$City ~ ., data = abc)
+plot(naive_abc)
