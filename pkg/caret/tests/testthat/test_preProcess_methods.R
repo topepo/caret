@@ -2,7 +2,6 @@ library(caret)
 library(fastICA)
 library(testthat)
 library(MASS)
-library(car)
 
 ###################################################################
 ## test centering and scaling
