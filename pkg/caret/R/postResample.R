@@ -122,7 +122,7 @@ postResample <- function(pred, obs)
   pred <- pred[!isNA]
   obs <- obs[!isNA]
 
-  if(!is.factor(obs) & is.numeric(obs))
+  if (!is.factor(obs) && is.numeric(obs))
     {
       if(length(obs) + length(pred) == 0)
         {
