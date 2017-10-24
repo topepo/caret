@@ -32,7 +32,7 @@ modelInfo <- list(label = "Neural Network",
                     if(!is.matrix(x)) x <- as.matrix(x)
                     if(is.numeric(y)) {
                       mxnet::mx.set.seed(21)  
-                      out <- mxnet::mx.mlp(data = x, label = y, out_node = 1, out_activation = "rmse", verbose= FALSE,
+                      out <- mxnet::mx.mlp(data = x, label = y, out_node = 1, out_activation = "rmse", 
                                            optimizer = 'adam', eval.metric = mx.metric.rmse, array.layout = "rowmajor", 
                                            learning.rate = param$learningrate,  
                                            beta1 = param$beta1, 
@@ -40,12 +40,13 @@ modelInfo <- list(label = "Neural Network",
                                            dropout = param$dropout,
                                            hidden_node = num_units,
                                            activation = rep( as.character(param$activation), length(num_units)),
+                                           # Consider using He/MSRA paper when available in R
                                            initializer = mx.init.Xavier(factor_type = "avg", magnitude = 3, rnd_type = 'uniform'),
                                            ...)
                     } else {
                       y <- as.numeric(y) - 1 
                       mxnet::mx.set.seed(21)
-                      out <- mxnet::mx.mlp(data = x, label = y, out_node = length(unique(y)), out_activation = "softmax",  verbose= FALSE,
+                      out <- mxnet::mx.mlp(data = x, label = y, out_node = length(unique(y)), out_activation = "softmax", 
                                           optimizer = 'adam', eval.metric = mx.metric.accuracy, array.layout = "rowmajor", 
                                           learning.rate = param$learningrate, 
                                           beta1 = param$beta1, 
