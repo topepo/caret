@@ -87,7 +87,7 @@ testY <- logBBB[-inTrain]
 
 fit <- knnreg(trainX, trainY, k = 3)
 
-plot(testY, predict(fit, testX))   
+plot(testY, predict(fit, testX))
 
 }
 \author{
