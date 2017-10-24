@@ -31,10 +31,6 @@ x <- matrix(rnorm(20, mean=10,sd=5), nrow=4)
 x[2,1] <- x[3,4] <- x[2,5] <- x[4,5] <- NA
 x[,3] <- NA
 
-test_that("median Impute works for matrix with unnamed columns", {
-	check.medianImpute(x[,3,drop=FALSE])
-})
-
 colnames(x) <- paste0("Var.",1:ncol(x))
 
 test_that("median Impute works for matrix with named columns", {
