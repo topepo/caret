@@ -57,3 +57,5 @@ Suggests:
     testthat (>= 0.9.1)
 License: GPL (>= 2)
 RoxygenNote: 6.0.1
+Remotes:
+    topepo/recipes
