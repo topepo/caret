@@ -115,7 +115,7 @@ test_that('PCA trans', {
   pca_dat2 <- twoClassSim(30)[, 1:5]
   
   pc_obj <- prcomp(pca_dat1, center = TRUE, scale. = TRUE)
-  pca_dat2_exp <- predict(pc_obj, pca_dat2)
+  pca_dat2_exp <- as.data.frame(predict(pc_obj, pca_dat2))
   
   pca_dat2_pp <- preProcess(pca_dat1, "pca")
   pca_dat2_pca <- as.data.frame(predict(pca_dat2_pp, pca_dat2))
