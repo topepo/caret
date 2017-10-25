@@ -136,7 +136,6 @@ postResample <- function(pred, obs)
               if(class(resamplCor) == "try-error") resamplCor <- NA
             }
           mse <- mean((pred - obs)^2)
-          n <- length(obs)
           mae <- mean(abs(pred - obs))
 
           out <- c(sqrt(mse), resamplCor^2, mae)
