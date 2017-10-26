@@ -8,7 +8,7 @@ modelInfo <- list(label = "Gaussian Process",
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     kernlab::gausspr(x = as.matrix(x), y = y,
-                                     kernel = kernlab::vanilladot,
+                                     kernel = kernlab::vanilladot(),
 				     kpar = list(), ...)
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {            
