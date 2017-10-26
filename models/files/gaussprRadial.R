@@ -17,7 +17,7 @@ modelInfo <- list(label = "Gaussian Process with Radial Basis Function Kernel",
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     kernlab::gausspr(x = as.matrix(x), y = y,
-                                     kernel = kernlab::rbfdot,
+                                     kernel = "rbfdot",
                                      kpar = list(sigma = param$sigma), ...)
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {  
