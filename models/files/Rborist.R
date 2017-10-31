@@ -13,7 +13,7 @@ modelInfo <- list(label = "Random Forest",
                                         minNode = ifelse(is.factor(y), 2, 3))
                     } else {
                       out <- data.frame(predFixed = sample(1:ncol(x), size = len, replace = TRUE), #removed unique
-                                        minNode = sample(1:(min(20,nrow(trainX))), size = len, replace = TRUE)) # might cause warning for very small samples < 20
+                                        minNode = sample(1:(min(20,nrow(x))), size = len, replace = TRUE)) # might cause warning for very small samples < 20
                     }
                     out
                   },

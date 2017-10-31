@@ -35,7 +35,7 @@ modelInfo <- list(label = "Random Forest",
                         c("variance", "extratrees", "maxstat")
                       out <-
                         data.frame(
-                          min.node.size= sample(0:20, size = len, replace = TRUE), 
+                          min.node.size= sample(1:(min(20,nrow(x))), size = len, replace = TRUE), 
                           mtry = sample(1:ncol(x), size = len, replace = TRUE),
                           splitrule = sample(srules, size = len, replace = TRUE)
                         )
