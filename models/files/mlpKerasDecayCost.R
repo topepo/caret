@@ -46,6 +46,8 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Weight Decay",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    K <- keras::backend()
+                    K$clear_session()
                     if(!is.matrix(x)) x <- as.matrix(x)
                     model <- keras::keras_model_sequential()
                     model %>% 
@@ -61,7 +63,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Weight Decay",
                         units = length(lev), 
                         activation = 'softmax',
                         kernel_regularizer = keras::regularizer_l2(param$lambda)
-                      ) %>% compile(
+                      ) %>% keras::compile(
                         loss = "categorical_crossentropy",
                         loss_weights = list(param$cost),
                         optimizer = keras::optimizer_rmsprop(

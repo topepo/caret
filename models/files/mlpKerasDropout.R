@@ -44,6 +44,8 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Dropout",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    K <- keras::backend()
+                    K$clear_session()
                     if(!is.matrix(x)) x <- as.matrix(x)
                     model <- keras::keras_model_sequential()
                     model %>% 
@@ -76,7 +78,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Dropout",
                           units = 1, 
                           activation = 'linear'
                         ) %>%
-                        compile(
+                        keras::compile(
                           loss = "mean_squared_error",
                           optimizer = keras::optimizer_rmsprop(
                             lr = param$lr,
