@@ -6,11 +6,7 @@ library(dplyr)
 
 model <- "rlm"
 
-## In case the package or one of its dependencies uses random numbers
-## on startup so we'll pre-load the required libraries: 
 
-for(i in getModelInfo(model)[[1]]$library)
-  do.call("requireNamespace", list(package = i))
 
 #########################################################################
 
