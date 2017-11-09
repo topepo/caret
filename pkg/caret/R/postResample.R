@@ -169,7 +169,6 @@ twoClassSummary <- function (data, lev = NULL, model = NULL)
   requireNamespaceQuietStop('ModelMetrics')
   if (!all(levels(data[, "pred"]) == lvls))
     stop("levels of observed and predicted data do not match")
-  data$y = as.numeric(data$obs == lvls[2])
   rocAUC <- ModelMetrics::auc(ifelse(data$obs == lev[2], 0, 1), data[, lvls[1]])
   out <- c(rocAUC,
            sensitivity(data[, "pred"], data[, "obs"], lev[1]),
