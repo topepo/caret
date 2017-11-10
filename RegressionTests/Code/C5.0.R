@@ -38,7 +38,7 @@ test_class_cv_model <- train(trainX, trainY,
                              method = "C5.0", 
                              trControl = cctrl1,
                              metric = "ROC", 
-                             control = C5.0Control(seed = 1),
+                             control = C50::C5.0Control(seed = 1),
                              preProc = c("center", "scale"))
 
 set.seed(849)
@@ -46,7 +46,7 @@ test_class_cv_form <- train(Class ~ ., data = training,
                             method = "C5.0", 
                             trControl = cctrl1,
                             metric = "ROC", 
-                            control = C5.0Control(seed = 1),
+                            control = C50::C5.0Control(seed = 1),
                             preProc = c("center", "scale"))
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
@@ -65,7 +65,7 @@ test_class_loo_model <- train(trainX, trainY,
                               method = "C5.0", 
                               trControl = cctrl2,
                               metric = "ROC", 
-                              control = C5.0Control(seed = 1), 
+                              control = C50::C5.0Control(seed = 1), 
                               preProc = c("center", "scale"))
 
 set.seed(849)
@@ -85,7 +85,7 @@ test_class_rec <- train(x = rec_cls,
                         method = "C5.0", 
                         trControl = cctrl1,
                         metric = "ROC", 
-                        control = C5.0Control(seed = 1))
+                        control = C50::C5.0Control(seed = 1))
 
 
 if(
