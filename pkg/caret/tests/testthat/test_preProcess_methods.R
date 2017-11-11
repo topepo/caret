@@ -3,6 +3,8 @@ library(fastICA)
 library(testthat)
 library(MASS)
 
+context('preProcess/methods')
+
 ###################################################################
 ## test centering and scaling
 
@@ -75,6 +77,7 @@ test_that('conversion to range trans', {
   rng_dat1_max <- apply(rng_dat1, 2, max, na.rm = TRUE)
   rng_dat1_rng <- rng_dat1_max - rng_dat1_min
   
+  # Default range [0, 1]:
   rng_dat2_ranged_exp <- rng_dat2
   for(i in 1:ncol(rng_dat2_ranged_exp)) 
     rng_dat2_ranged_exp[,i] <- (rng_dat2_ranged_exp[,i] - rng_dat1_min[i])/rng_dat1_rng[i]
@@ -82,6 +85,22 @@ test_that('conversion to range trans', {
   rng_dat2_pp <- preProcess(rng_dat1, "range")
   rng_dat2_ranged <- predict(rng_dat2_pp, rng_dat2)
   expect_equal(rng_dat2_ranged_exp, rng_dat2_ranged)
+
+  # Custom range:
+  rangeBounds = c(-0.7, 0.4)
+
+  rng_dat2_ranged_custom_exp <- rng_dat2_ranged_exp
+  for(i in 1:ncol(rng_dat2_ranged_custom_exp))
+    rng_dat2_ranged_custom_exp[,i] <-
+      rng_dat2_ranged_custom_exp[,i] * (rangeBounds[2] - rangeBounds[1]) + rangeBounds[1]
+
+  rng_dat2_custom_pp <- preProcess(rng_dat1, "range", rangeBounds = rangeBounds)
+  rng_dat2_ranged_custom <- predict(rng_dat2_custom_pp, rng_dat2)
+  expect_equal(rng_dat2_ranged_custom_exp, rng_dat2_ranged_custom)
+
+  expect_error(preProcess(rng_dat1, "range", rangeBounds = ""), "'rangeBounds' should be a two-element numeric vector")
+
+  expect_error(preProcess(rng_dat1, "range", rangeBounds = c(0.4, -0.7)), "'rangeBounds' interval is empty")
 })
 
 test_that('conversion to range trans with missing data', {
@@ -96,6 +115,7 @@ test_that('conversion to range trans with missing data', {
   rng_dat1_max <- apply(rng_dat1, 2, max, na.rm = TRUE)
   rng_dat1_rng <- rng_dat1_max - rng_dat1_min
   
+  # Default range [0, 1]:
   rng_dat2_ranged_exp <- rng_dat2
   for(i in 1:ncol(rng_dat2_ranged_exp)) 
     rng_dat2_ranged_exp[,i] <- (rng_dat2_ranged_exp[,i] - rng_dat1_min[i])/rng_dat1_rng[i]
@@ -103,6 +123,18 @@ test_that('conversion to range trans with missing data', {
   rng_dat2_pp <- preProcess(rng_dat1, "range")
   rng_dat2_ranged <- predict(rng_dat2_pp, rng_dat2)
   expect_equal(rng_dat2_ranged_exp, rng_dat2_ranged)
+
+  # Custom range:
+  rangeBounds = c(-0.7, 0.4)
+
+  rng_dat2_ranged_custom_exp <- rng_dat2_ranged_exp
+  for(i in 1:ncol(rng_dat2_ranged_custom_exp))
+    rng_dat2_ranged_custom_exp[,i] <-
+      rng_dat2_ranged_custom_exp[,i] * (rangeBounds[2] - rangeBounds[1]) + rangeBounds[1]
+
+  rng_dat2_custom_pp <- preProcess(rng_dat1, "range", rangeBounds = rangeBounds)
+  rng_dat2_ranged_custom <- predict(rng_dat2_custom_pp, rng_dat2)
+  expect_equal(rng_dat2_ranged_custom_exp, rng_dat2_ranged_custom)
 })
 
 ###################################################################
