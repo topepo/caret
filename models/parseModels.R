@@ -1,6 +1,7 @@
 setwd("~/github/caret/models/files")
 
-exclusions <- c("^rknn", "avMxnet", "^sdda", "^enpls", "Boruta", "bdk", "^oblique")
+exclusions <- c("^rknn", "avMxnet", "^sdda", "^enpls", "Boruta", 
+                "bdk", "^oblique", "GCCL")
 exclusions <- paste0("(", exclusions, ")")
 exclusions <- paste0(exclusions, collapse = "|")
 

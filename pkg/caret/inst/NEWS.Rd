@@ -7,6 +7,7 @@
 \section{Changes in version 6.0-78}{
   \itemize{ 
     \item The option to control the minimum node size to models \code{ranger} and \code{Rborist} was added by hadjipantelis.
+    \item The rule-based model \code{GFS.GCCL} was removed from the model library. 
     }
 }
 
