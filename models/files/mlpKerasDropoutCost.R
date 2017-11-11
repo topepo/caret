@@ -52,6 +52,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Dropout",
                       keras::layer_dense(
                         units = param$size, 
                         activation = as.character(param$activation), 
+                        kernel_initializer = keras::initializer_glorot_uniform(),
                         input_shape = ncol(x)
                       ) %>%
                       keras::layer_dropout(rate = param$dropout,

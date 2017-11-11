@@ -50,6 +50,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Weight Decay",
                         units = param$size, 
                         activation = as.character(param$activation), 
                         input_shape = ncol(x),
+                        kernel_initializer = keras::initializer_glorot_uniform(),
                         kernel_regularizer = keras::regularizer_l2(param$lambda)
                       )
                     if(is.factor(y)) {
