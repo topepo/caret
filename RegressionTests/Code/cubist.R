@@ -37,7 +37,7 @@ rctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search =
 set.seed(849)
 test_reg_cv_model <- train(trainX, trainY, method = "cubist", 
                            trControl = rctrl1,
-                           control = cubistControl(seed = 1))
+                           control = Cubist::cubistControl(seed = 1))
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 
@@ -45,14 +45,14 @@ set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
                           method = "cubist", 
                           trControl = rctrl1,
-                          control = cubistControl(seed = 1))
+                          control = Cubist::cubistControl(seed = 1))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, method = "cubist", 
                             trControl = rctrl1,
-                            control = cubistControl(seed = 1))
+                            control = Cubist::cubistControl(seed = 1))
 
 set.seed(849)
 test_reg_rand <- train(trainX, trainY, 
@@ -66,7 +66,7 @@ test_reg_none_model <- train(trainX, trainY,
                              trControl = rctrl3,
                              tuneGrid = data.frame(committees = 5, neighbors = 3),
                              preProc = c("center", "scale"),
-                             control = cubistControl(seed = 1))
+                             control = Cubist::cubistControl(seed = 1))
 test_reg_none_pred <- predict(test_reg_none_model, testX)
 
 set.seed(849)
@@ -74,7 +74,7 @@ test_reg_rec <- train(x = rec_reg,
                       data = training,
                       method = "cubist", 
                       trControl = rctrl1,
-                      control = cubistControl(seed = 1))
+                      control = Cubist::cubistControl(seed = 1))
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 
