@@ -59,12 +59,15 @@ modelInfo <- list(
   },
   predict = function(modelFit, newdata, preProc = NULL, submodels = NULL) {
     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-    out <- predict(modelFit, newdata = newdata, type = "response")
+    out <- VGAM::predictvglm(modelFit, newdata = newdata, type = "response")
     ordered(modelFit@misc$ynames[apply(out, 1, which.max)], levels = modelFit@misc$ynames)
     },
   prob = function(modelFit, newdata, preProc = NULL, submodels = NULL){
     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-      predict(modelFit, newdata = newdata, type = "response")
+    out <- VGAM::predictvglm(modelFit, newdata = newdata, type = "response")
+    out <- as.data.frame(out)
+    names(out) <- modelFit@misc$ynames
+    out
   },
   varImp = NULL,
   predictors = function(x, ...) caret:::predictors.terms(x@terms$terms),

@@ -19,6 +19,7 @@ modelInfo <- list(label = "Fuzzy Rules Using Genetic Cooperative-Competitive Lea
                   }, 
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
+                    require(frbs)
                     args <- list(data.train = as.matrix(cbind(x, as.numeric(y))),
                                  method.type = "GFS.GCCL")
                     theDots <- list(...)

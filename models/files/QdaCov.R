@@ -9,9 +9,9 @@ modelInfo <- list(label = "Robust Quadratic Discriminant Analysis",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
                     rrcov:::QdaCov(x, y, ...),
                   predict = function(modelFit, newdata, submodels = NULL) 
-                    predict(modelFit, newdata)@classification,
+                    rrcov::predict(modelFit, newdata)@classification,
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    probs <- predict(modelFit, newdata)@posterior
+                    probs <- rrcov::predict(modelFit, newdata)@posterior
                     colnames(probs) <- names(modelFit@prior)
                     probs
                   },

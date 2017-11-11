@@ -24,7 +24,7 @@ modelInfo <- list(label = "Linear Distance Weighted Discrimination",
                                             lambda = param$lambda,
                                             kern = kernlab::vanilladot(),
                                             ...)
-                    out$kern <- vanilladot()
+                    out$kern <- kernlab::vanilladot()
                     out$x <- x
                     out
                   },

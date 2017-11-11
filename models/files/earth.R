@@ -28,8 +28,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                     loop$nprune <- NA
 
                     submodels <- vector(mode = "list", length = length(deg))
-                    for(i in seq(along = deg))
-                    {
+                    for(i in seq(along = deg)) {
                       np <- grid[grid$degree == deg[i],"nprune"]
                       loop$nprune[loop$degree == deg[i]] <- np[which.max(np)]
                       submodels[[i]] <- data.frame(nprune = np[-which.max(np)])
@@ -37,6 +36,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    require(earth)
                     theDots <- list(...)
                     theDots$keepxy <- TRUE
 
@@ -51,52 +51,46 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
 
                     tmp <- do.call(earth::earth, modelArgs)
 
-                    tmp$call["nprune"] <-  param$nprune
-                    tmp$call["degree"] <-  param$degree
+                    tmp$call["nprune"] <- param$nprune
+                    tmp$call["degree"] <- param$degree
                     tmp
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(modelFit$problemType == "Classification")
-                    {
-                      out <- predict(modelFit, newdata,  type = "class")
+                    if(modelFit$problemType == "Classification") {
+                      out <- earth:::predict.earth(modelFit, newdata,  type = "class")
                     } else {
-                      out <- predict(modelFit, newdata)
+                      out <- earth:::predict.earth(modelFit, newdata)
                     }
 
-                    if(!is.null(submodels))
-                    {
+                    if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- if(is.matrix(out)) out[,1] else out
-                      for(j in seq(along = submodels$nprune))
-                      {
-                        prunedFit <- update(modelFit, nprune = submodels$nprune[j])
-                        if(modelFit$problemType == "Classification")
-                        {
-                          tmp[[j+1]]  <-  predict(prunedFit, newdata,  type = "class")
+                      for(j in seq(along = submodels$nprune)) {
+                        prunedFit <- earth:::update.earth(modelFit, nprune = submodels$nprune[j])
+                        if(modelFit$problemType == "Classification") {
+                          tmp[[j+1]] <- earth:::predict.earth(prunedFit, newdata,  type = "class")
                         } else {
-                          tmp[[j+1]]  <-  predict(prunedFit, newdata)
+                          tmp[[j+1]] <- earth:::predict.earth(prunedFit, newdata)
                         }
-                        if(is.matrix(tmp[[j+1]])) tmp[[j+1]]  <- tmp[[j+1]][,1]
+                        if(is.matrix(tmp[[j+1]])) tmp[[j+1]] <- tmp[[j+1]][,1]
                       }
                       out <- tmp
                     }
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- predict(modelFit, newdata, type= "response")
+                    out <- earth:::predict.earth(modelFit, newdata, type= "response")
                     out <- cbind(1-out, out)
-                    colnames(out) <-  modelFit$obsLevels
-                    if(!is.null(submodels))
-                    {
+                    colnames(out) <- modelFit$obsLevels
+                    if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
 
-                      for(j in seq(along = submodels$nprune))
-                      {
-                        prunedFit <- update(modelFit, nprune = submodels$nprune[j])
-                        tmp2 <- predict(prunedFit, newdata, type= "response")
+                      for(j in seq(along = submodels$nprune)) {
+                        prunedFit <- earth:::update.earth(modelFit, nprune = submodels$nprune[j])
+                        tmp2 <- earth:::predict.earth(prunedFit, newdata, type= "response")
                         tmp2 <- cbind(1-tmp2, tmp2)
-                        colnames(tmp2) <-  modelFit$obsLevels
+                        colnames(tmp2) <- modelFit$obsLevels
                         tmp[[j+1]] <- tmp2
                       }
                       out <- tmp
@@ -146,4 +140,8 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                   tags = c("Multivariate Adaptive Regression Splines",
                            "Implicit Feature Selection",
                            "Accepts Case Weights"),
+                  notes = paste(
+                    "Unlike other packages used by `train`, the `earth`",
+                    "package is fully loaded when this model is used."
+                  ),
                   sort = function(x) x[order(x$degree, x$nprune),])

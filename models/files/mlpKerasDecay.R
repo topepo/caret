@@ -92,6 +92,8 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Weight Decay",
                       batch_size = param$batch_size,
                       ...
                     )
+                    if(last)
+                      model <- keras::serialize_model(model)
                     list(object = model)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
@@ -129,7 +131,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Weight Decay",
                                 "Also, this model cannot be run in parallel due to",
                                 "the nature of how tensorflow does the computations."),
                   check = function(pkg) {
-                    testmod <- try(keras_model_sequential(),
+                    testmod <- try(keras::keras_model_sequential(),
                                    silent = TRUE)
                     if(inherits(testmod, "try-error"))
                       stop("Could not start a sequential model. ",

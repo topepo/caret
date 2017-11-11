@@ -59,15 +59,14 @@ modelInfo <- list(
   },
   predict = function(modelFit, newdata, preProc = NULL, submodels = NULL) {
     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-    out <- predict(modelFit, newdata = newdata, type = "response")
-    colnames(out) <- modelFit@misc$ynames
+    out <- VGAM::predictvglm(modelFit, newdata = newdata, type = "response")
     ordered(modelFit@misc$ynames[apply(out, 1, which.max)], levels = modelFit@misc$ynames)
     },
   prob = function(modelFit, newdata, preProc = NULL, submodels = NULL){
     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-    out <- predict(modelFit, newdata = newdata, type = "response")
-    if(is.matrix(out)) out <- as.data.frame(out)
-    colnames(out) <-  modelFit@misc$ynames
+    out <- VGAM::predictvglm(modelFit, newdata = newdata, type = "response")
+    out <- as.data.frame(out)
+    names(out) <- modelFit@misc$ynames
     out
   },
   varImp = NULL,

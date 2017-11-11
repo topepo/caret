@@ -26,12 +26,12 @@ modelInfo <- list(label = "Penalized Logistic Regression",
                                  ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL)  {
-                    ifelse(predict(modelFit, as.matrix(newdata), type = "class") == 1,
+                    ifelse(stepPlr::predict.plr(modelFit, as.matrix(newdata), type = "class") == 1,
                            modelFit$obsLevels[1],
                            modelFit$obsLevels[2])
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- predict(modelFit, as.matrix(newdata), type = "response")
+                    out <- stepPlr::predict.plr(modelFit, as.matrix(newdata), type = "response")
                     out <- cbind(out, 1-out)
                     dimnames(out)[[2]] <-  modelFit$obsLevels
                     out
