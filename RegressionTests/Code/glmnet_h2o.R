@@ -6,8 +6,7 @@ library(dplyr)
 
 model <- "glmnet_h2o"
 
-for(i in getModelInfo(model)[[1]]$library)
-  do.call("requireNamespace", list(package = i))
+
 
 library(h2o)
 h2o.init()
@@ -188,6 +187,7 @@ timestamp_end <- Sys.time()
 save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
-q("no")
+if(!interactive())
+   q("no")
 
 

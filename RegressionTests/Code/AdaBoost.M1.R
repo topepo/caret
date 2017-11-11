@@ -6,8 +6,7 @@ library(dplyr)
 
 model <- "AdaBoost.M1"
 
-for(i in getModelInfo(model)[[1]]$library)
-  do.call("requireNamespace", list(package = i))
+
 
 #########################################################################
 
@@ -127,5 +126,6 @@ tests <- grep("test_", ls(), fixed = TRUE, value = TRUE)
 save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
-q("no")
+if(!interactive())
+   q("no")
 

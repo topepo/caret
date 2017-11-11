@@ -6,8 +6,7 @@ library(dplyr)
 
 model <- "gbm_h2o"
 
-for(i in getModelInfo(model)[[1]]$library)
-  do.call("requireNamespace", list(package = i))
+
 
 library(h2o)
 h2o.init()
