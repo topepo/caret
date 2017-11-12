@@ -88,6 +88,7 @@ For classification and regression using package \pkg{logicFS} with tuning parame
 \item Number of Trees (\code{ntrees}, numeric)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{logicFS} package is fully loaded when this model is used. 
 
 \strong{Bagged MARS} (\code{method = 'bagEarth'})
 
@@ -435,6 +436,22 @@ For classification and regression using package \pkg{randomGLM} with tuning para
 }
 
 
+\strong{eXtreme Gradient Boosting} (\code{method = 'xgbDART'})
+
+For classification and regression using packages \pkg{xgboost} and \pkg{plyr} with tuning parameters:
+\itemize{
+\item Number of  Boosting Iterations (\code{nrounds}, numeric)
+\item Max Tree Depth (\code{max_depth}, numeric)
+\item Shrinkage (\code{eta}, numeric)
+\item Minimum Loss Reduction (\code{gamma}, numeric)
+\item Subsample Percentage (\code{subsample}, numeric)
+\item Subsample Ratio of Columns (\code{colsample_bytree}, numeric)
+\item Fraction of Trees Dropped (\code{rate_drop}, numeric)
+\item Prob. of Skipping Drop-out (\code{skip_drop}, numeric)
+\item Minimum Sum of Instance Weight (\code{min_child_weight}, numeric)
+}
+
+
 \strong{eXtreme Gradient Boosting} (\code{method = 'xgbLinear'})
 
 For classification and regression using package \pkg{xgboost} with tuning parameters:
@@ -501,16 +518,6 @@ For classification using package \pkg{frbs} with tuning parameters:
 \itemize{
 \item Number of Fuzzy Terms (\code{num.labels}, numeric)
 \item Membership Function (\code{type.mf}, character)
-}
-
-
-\strong{Fuzzy Rules Using Genetic Cooperative-Competitive Learning} (\code{method = 'GFS.GCCL'})
-
-For classification using package \pkg{frbs} with tuning parameters:
-\itemize{
-\item Number of Fuzzy Terms (\code{num.labels}, numeric)
-\item Population Size (\code{popu.size}, numeric)
-\item Max. Generations (\code{max.gen}, numeric)
 }
 
 
@@ -593,7 +600,7 @@ For classification and regression using package \pkg{gam} with tuning parameters
 \item Degree (\code{degree}, numeric)
 }
 
-Note: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion. 
+Note: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion. Unlike other packages used by \code{train}, the \code{gam} package is fully loaded when this model is used. 
 
 \strong{Generalized Additive Model using Splines} (\code{method = 'bam'})
 
@@ -603,7 +610,7 @@ For classification and regression using package \pkg{mgcv} with tuning parameter
 \item Method (\code{method}, character)
 }
 
-Note: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion. 
+Note: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion. Unlike other packages used by \code{train}, the \code{mgcv} package is fully loaded when this model is used. 
 
 \strong{Generalized Additive Model using Splines} (\code{method = 'gam'})
 
@@ -613,7 +620,7 @@ For classification and regression using package \pkg{mgcv} with tuning parameter
 \item Method (\code{method}, character)
 }
 
-Note: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion. 
+Note: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion. Unlike other packages used by \code{train}, the \code{mgcv} package is fully loaded when this model is used. 
 
 \strong{Generalized Additive Model using Splines} (\code{method = 'gamSpline'})
 
@@ -622,7 +629,7 @@ For classification and regression using package \pkg{gam} with tuning parameters
 \item Degrees of Freedom (\code{df}, numeric)
 }
 
-Note: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion. 
+Note: Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion. Unlike other packages used by \code{train}, the \code{gam} package is fully loaded when this model is used. 
 
 \strong{Generalized Linear Model} (\code{method = 'glm'})
 
@@ -1135,6 +1142,7 @@ For classification and regression using package \pkg{earth} with tuning paramete
 \item Product Degree (\code{degree}, numeric)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{earth} package is fully loaded when this model is used. 
 
 \strong{Multivariate Adaptive Regression Splines} (\code{method = 'gcvEarth'})
 
@@ -1200,7 +1208,7 @@ For regression with tuning parameters:
 
 \strong{Neural Network} (\code{method = 'mxnet'})
 
-For classification using package \pkg{mxnet} with tuning parameters:
+For classification and regression using package \pkg{mxnet} with tuning parameters:
 \itemize{
 \item Number of Hidden Units in Layer 1 (\code{layer1}, numeric)
 \item Number of Hidden Units in Layer 2 (\code{layer2}, numeric)
@@ -1208,6 +1216,7 @@ For classification using package \pkg{mxnet} with tuning parameters:
 \item Learning Rate (\code{learning.rate}, numeric)
 \item Momentum (\code{momentum}, numeric)
 \item Dropout Rate (\code{dropout}, numeric)
+\item Activation Function (\code{activation}, character)
 }
 
 Note: The \code{mxnet} package is not yet on CRAN. See \url{http://mxnet.io} for installation instructions. 
@@ -1216,16 +1225,17 @@ Note: The \code{mxnet} package is not yet on CRAN. See \url{http://mxnet.io} for
 
 For classification and regression using package \pkg{mxnet} with tuning parameters:
 \itemize{
-\item Number of  of layers (\code{nlayers}, numeric)
-\item Number of  hidden units in each layer (\code{nnodes}, numeric)
-\item Number of  of rounds (\code{nrounds}, numeric)
-\item dropout rate (\code{dropout}, numeric)
+\item Number of Hidden Units in Layer 1 (\code{layer1}, numeric)
+\item Number of Hidden Units in Layer 2 (\code{layer2}, numeric)
+\item Number of Hidden Units in Layer 3 (\code{layer3}, numeric)
+\item Dropout Rate (\code{dropout}, numeric)
 \item beta1 (\code{beta1}, numeric)
 \item beta2 (\code{beta2}, numeric)
-\item learning rate (\code{learningrate}, numeric)
+\item Learning Rate (\code{learningrate}, numeric)
+\item Activation Function (\code{activation}, character)
 }
 
-Note: The \code{mxnet} package is not yet on CRAN. See \url{http://mxnet.io} for installation instructions. 
+Note: The \code{mxnet} package is not yet on CRAN. See \url{http://mxnet.io} for installation instructions. Users are strongly advised to define \code{num.round} themselves. 
 
 \strong{Neural Network} (\code{method = 'neuralnet'})
 
@@ -1282,6 +1292,7 @@ For classification using package \pkg{obliqueRF} with tuning parameters:
 \item Number of Randomly Selected Predictors (\code{mtry}, numeric)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{obliqueRF} package is fully loaded when this model is used. 
 
 \strong{Oblique Random Forest} (\code{method = 'ORFpls'})
 
@@ -1290,6 +1301,7 @@ For classification using package \pkg{obliqueRF} with tuning parameters:
 \item Number of Randomly Selected Predictors (\code{mtry}, numeric)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{obliqueRF} package is fully loaded when this model is used. 
 
 \strong{Oblique Random Forest} (\code{method = 'ORFridge'})
 
@@ -1298,6 +1310,7 @@ For classification using package \pkg{obliqueRF} with tuning parameters:
 \item Number of Randomly Selected Predictors (\code{mtry}, numeric)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{obliqueRF} package is fully loaded when this model is used. 
 
 \strong{Oblique Random Forest} (\code{method = 'ORFsvm'})
 
@@ -1306,6 +1319,7 @@ For classification using package \pkg{obliqueRF} with tuning parameters:
 \item Number of Randomly Selected Predictors (\code{mtry}, numeric)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{obliqueRF} package is fully loaded when this model is used. 
 
 \strong{Optimal Weighted Nearest Neighbor Classifier} (\code{method = 'ownn'})
 
@@ -1380,6 +1394,7 @@ For classification and regression using package \pkg{plsRglm} with tuning parame
 \item p-Value threshold (\code{alpha.pvals.expli}, numeric)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{plsRglm} package is fully loaded when this model is used. 
 
 \strong{Patient Rule Induction Method} (\code{method = 'PRIM'})
 
@@ -1557,6 +1572,7 @@ For classification and regression using packages \pkg{e1071}, \pkg{ranger} and \
 \itemize{
 \item Number of Randomly Selected Predictors (\code{mtry}, numeric)
 \item Splitting Rule (\code{splitrule}, character)
+\item Minimal Node Size (\code{min.node.size}, numeric)
 }
 
 
@@ -1565,6 +1581,7 @@ For classification and regression using packages \pkg{e1071}, \pkg{ranger} and \
 For classification and regression using package \pkg{Rborist} with tuning parameters:
 \itemize{
 \item Number of Randomly Selected Predictors (\code{predFixed}, numeric)
+\item Minimal Node Size (\code{minNode}, numeric)
 }
 
 
@@ -1725,11 +1742,13 @@ For classification using package \pkg{rrlda} with tuning parameters:
 \item Penalty Type (\code{penalty}, character)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{rrlda} package is fully loaded when this model is used. 
 
 \strong{Robust SIMCA} (\code{method = 'RSimca'})
 
 For classification using package \pkg{rrcovHD} with no tuning parameters.
 
+Note: Unlike other packages used by \code{train}, the \code{rrcovHD} package is fully loaded when this model is used. 
 
 \strong{ROC-Based Classifier} (\code{method = 'rocc'})
 
@@ -1885,6 +1904,7 @@ For regression using packages \pkg{spikeslab} and \pkg{plyr} with tuning paramet
 \item Variables Retained (\code{vars}, numeric)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{spikeslab} package is fully loaded when this model is used. 
 
 \strong{Stabilized Linear Discriminant Analysis} (\code{method = 'slda'})
 
