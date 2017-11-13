@@ -33,10 +33,10 @@ modelInfo <- list(label = "Radial Basis Function Kernel Regularized Least Square
                   ,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     KRLS::krls(x, y, lambda = if(is.na(param$lambda)) NULL else param$lambda,
-                         sigma = param$sigma, ...)
+                               sigma = param$sigma, ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    predict(modelFit, newdata)$fit[,1]
+                    KRLS:::predict.krls(modelFit, newdata)$fit[,1]
                   },
                   tags = c("Kernel Method", "L2 Regularization", "Radial Basis Function"),
                   prob = NULL,
