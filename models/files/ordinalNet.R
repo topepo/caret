@@ -8,7 +8,7 @@ modelInfo <- list(label = "Penalized Ordinal Regression",
                       stop("This modeling workflow requires ordinalNet version ",
                            expected, "or greater.", call. = FALSE)
                   },
-                  type = c("Regression", "Classification"),
+                  type = "Classification",
                   parameters = data.frame(parameter = c('alpha', 'criteria', 'link'),
                                           class = c("numeric", "character", "character"),
                                           label = c('Mixing Percentage', 'Selection Criterion', "Link Function")),

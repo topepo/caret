@@ -435,6 +435,7 @@ For classification and regression using package \pkg{randomGLM} with tuning para
 \item Interaction Order (\code{maxInteractionOrder}, numeric)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{randomGLM} package is fully loaded when this model is used. 
 
 \strong{eXtreme Gradient Boosting} (\code{method = 'xgbDART'})
 
@@ -1200,7 +1201,7 @@ For classification using package \pkg{pamr} with tuning parameters:
 
 \strong{Negative Binomial Generalized Linear Model} (\code{method = 'glm.nb'})
 
-For regression with tuning parameters:
+For regression using package \pkg{MASS} with tuning parameters:
 \itemize{
 \item Link Function (\code{link}, character)
 }
@@ -1459,7 +1460,7 @@ For classification using package \pkg{nnet} with tuning parameters:
 
 \strong{Penalized Ordinal Regression} (\code{method = 'ordinalNet'})
 
-For classification and regression using packages \pkg{ordinalNet} and \pkg{plyr} with tuning parameters:
+For classification using packages \pkg{ordinalNet} and \pkg{plyr} with tuning parameters:
 \itemize{
 \item Mixing Percentage (\code{alpha}, numeric)
 \item Selection Criterion (\code{criteria}, character)

@@ -1,5 +1,5 @@
 modelInfo <- list(label = "Negative Binomial Generalized Linear Model",
-                  library = NULL,
+                  library = "MASS",
                   loop = NULL,
                   type = c("Regression"),
                   parameters = data.frame(parameter = "link",
@@ -21,7 +21,7 @@ modelInfo <- list(label = "Negative Binomial Generalized Linear Model",
                                         link = as.character(param$link)), 
                                    theDots)
 
-                    out <- do.call("glm.nb", modelArgs)
+                    out <- do.call(getFromNamespace("glm.nb", "MASS"), modelArgs)
                     ## When we use do.call(), the call infformation can contain a ton of
                     ## information. Inlcuding the contenst of the data. We eliminate it.
                     out$call <- NULL

@@ -14,7 +14,7 @@ modelInfo <- list(label = "Boosted Linear Model",
                     out
                   },
                   loop = function(grid) {   
-                    loop <- plyr::ddply(grid, .(nu), function(x) c(mstop = max(x$mstop)))
+                    loop <- plyr::ddply(grid, plyr::`.`(nu), function(x) c(mstop = max(x$mstop)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$mstop))
                     {
@@ -37,7 +37,7 @@ modelInfo <- list(label = "Boosted Linear Model",
                       theDots$ctrl$mstop <- param$mstop
                       theDots$ctrl$nu <- param$nu
                     } else {
-                      theDots$ctrl <- bst_control(mstop = param$mstop, nu = param$nu)
+                      theDots$ctrl <- bst::bst_control(mstop = param$mstop, nu = param$nu)
                     }
                     
                     modArgs <- list(x = x, y = y, family = modDist, learner = "ls")
