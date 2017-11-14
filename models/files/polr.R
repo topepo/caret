@@ -10,7 +10,7 @@ modelInfo <- list(
     if(search == "grid") {
       out <- data.frame(method = c("logistic", "probit", "loglog", "cloglog", "cauchit"))
     } else {
-      out <- data.frame(sample(c("logistic", "probit", "loglog", "cloglog", "cauchit"),
+      out <- data.frame(method = sample(c("logistic", "probit", "loglog", "cloglog", "cauchit"),
                                size = len, replace = TRUE))
     }
     out[!duplicated(out),,drop = FALSE]

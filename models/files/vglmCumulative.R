@@ -12,7 +12,7 @@ modelInfo <- list(
       out <- expand.grid(parallel = c(TRUE, FALSE), link = links)
     } else {
       out <- data.frame(parallel = sample(c(TRUE, FALSE), size = len, replace = TRUE),
-                        links = sample(links, size = len, replace = TRUE))
+                        link = sample(links, size = len, replace = TRUE))
     }
     out[!duplicated(out),,drop = FALSE]
   },

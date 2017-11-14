@@ -21,7 +21,7 @@ modelInfo <- list(label = "Penalized Ordinal Regression",
                     } else {
                       out <- data.frame(alpha = runif(len, min = 0, 1),
                                         criteria = sample(c("aic", "bic"), size = len, replace = TRUE),
-                                        links = sample(links, size = len, replace = TRUE))
+                                        link = sample(links, size = len, replace = TRUE))
                     }
                     out
                   },

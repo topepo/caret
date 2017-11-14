@@ -30,10 +30,10 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                         
                         if(!inherits(x, "xgb.DMatrix"))
                           x <- xgboost::xgb.DMatrix(x, label = y, missing = NA) else
-                            setinfo(x, "label", y)
+                            xgboost::setinfo(x, "label", y)
                         
                         if (!is.null(wts))
-                          setinfo(x, 'weight', wts)
+                          xgboost::setinfo(x, 'weight', wts)
                         
                         
                         out <- xgboost::xgb.train(list(lambda = param$lambda, 
@@ -47,10 +47,10 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
 
                         if(!inherits(x, "xgb.DMatrix"))
                           x <- xgboost::xgb.DMatrix(x, label = y, missing = NA) else
-                            setinfo(x, "label", y)
+                            xgboost::setinfo(x, "label", y)
                         
                         if (!is.null(wts))
-                          setinfo(x, 'weight', wts)
+                          xgboost::setinfo(x, 'weight', wts)
                         
                         out <- xgboost::xgb.train(list(lambda = param$lambda, 
                                                        alpha = param$alpha), 
@@ -63,10 +63,10 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     } else {
                       if(!inherits(x, "xgb.DMatrix"))
                         x <- xgboost::xgb.DMatrix(x, label = y, missing = NA) else
-                          setinfo(x, "label", y)
+                          xgboost::setinfo(x, "label", y)
                       
                       if (!is.null(wts))
-                        setinfo(x, 'weight', wts)
+                        xgboost::setinfo(x, 'weight', wts)
                       
                       out <- xgboost::xgb.train(list(lambda = param$lambda, 
                                                      alpha = param$alpha), 
@@ -98,7 +98,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(!inherits(newdata, "xgb.DMatrix")) {
                       newdata <- as.matrix(newdata)
-                      newdata <- xgb.DMatrix(data=newdata, missing = NA)
+                      newdata <- xgboost::xgb.DMatrix(data=newdata, missing = NA)
                     }
                     out <- predict(modelFit, newdata)
                     if(length(modelFit$obsLevels) == 2) {

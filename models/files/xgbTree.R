@@ -62,10 +62,10 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
 
                         if(!inherits(x, "xgb.DMatrix"))
                           x <- xgboost::xgb.DMatrix(x, label = y, missing = NA) else
-                            setinfo(x, "label", y)
+                            xgboost::setinfo(x, "label", y)
                         
                         if (!is.null(wts))
-                          setinfo(x, 'weight', wts)
+                          xgboost::setinfo(x, 'weight', wts)
                         
                         out <- xgboost::xgb.train(list(eta = param$eta,
                                                        max_depth = param$max_depth,
@@ -83,10 +83,10 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
 
                         if(!inherits(x, "xgb.DMatrix"))
                           x <- xgboost::xgb.DMatrix(x, label = y, missing = NA) else
-                            setinfo(x, "label", y)
+                            xgboost::setinfo(x, "label", y)
                         
                         if (!is.null(wts))
-                          setinfo(x, 'weight', wts)
+                          xgboost::setinfo(x, 'weight', wts)
                         
                         out <- xgboost::xgb.train(list(eta = param$eta,
                                                        max_depth = param$max_depth,
@@ -104,10 +104,10 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
 
                       if(!inherits(x, "xgb.DMatrix"))
                         x <- xgboost::xgb.DMatrix(x, label = y, missing = NA) else
-                          setinfo(x, "label", y)
+                          xgboost::setinfo(x, "label", y)
                       
                       if (!is.null(wts))
-                        setinfo(x, 'weight', wts)
+                        xgboost::setinfo(x, 'weight', wts)
                       
                       out <- xgboost::xgb.train(list(eta = param$eta,
                                                      max_depth = param$max_depth,

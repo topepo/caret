@@ -59,7 +59,7 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- try(predict(kernlab::modelFit, newdata, type="probabilities"),
+                    out <- try(kernlab::predict(modelFit, newdata, type="probabilities"),
                                silent = TRUE)
                     if(class(out)[1] != "try-error") {
                       ## There are times when the SVM probability model will

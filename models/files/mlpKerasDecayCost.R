@@ -46,6 +46,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Weight Decay",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    require(dplyr)
                     K <- keras::backend()
                     K$clear_session()
                     if(!is.matrix(x)) x <- as.matrix(x)
@@ -119,7 +120,10 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Weight Decay",
                                 "Also, this model cannot be run in parallel due to",
                                 "the nature of how tensorflow does the computations.",
                                 "Finally, the cost parameter weights the first",
-                                "class in the outcome vector."),
+                                "class in the outcome vector.",
+                                
+                                "Unlike other packages used by `train`, the `dplyr`",
+                                "package is fully loaded when this model is used."),
                   check = function(pkg) {
                     testmod <- try(keras::keras_model_sequential(),
                                    silent = TRUE)
