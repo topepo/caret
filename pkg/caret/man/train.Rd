@@ -183,14 +183,14 @@ A variety of models are currently available and are enumerated
  \url{http://topepo.github.io/caret/train-models-by-tag.html}.
 
 More details on using recipes can be found at
- \url{http://topepo.github.io/caret/recipes.html}. Note that case
- weights can be passed into \code{train} using a role of
- \code{"case weight"} for a single variable. Also, if there are
- non-predictor columns that should be used when determining the
- model's performance metrics, the role of \code{"performance
- var"} can be used with multiple columns and these will be made
- available during resampling to the \code{summaryFunction}
- function.
+ \url{http://topepo.github.io/caret/using-recipes-with-train.html}.
+ Note that case weights can be passed into \code{train} using a
+ role of \code{"case weight"} for a single variable. Also, if
+ there are non-predictor columns that should be used when
+ determining the model's performance metrics, the role of
+ \code{"performance var"} can be used with multiple columns and
+ these will be made available during resampling to the
+ \code{summaryFunction} function.
 }
 \examples{
 
