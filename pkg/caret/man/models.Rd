@@ -1086,7 +1086,7 @@ For classification and regression using package \pkg{keras} with tuning paramete
 \item Activation Function (\code{activation}, character)
 }
 
-Note: After \code{train} completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use \code{keras::unsearlize_model(object$finalModel$object)} in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. 
+Note: After \code{train} completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use \code{keras::unsearlize_model(object$finalModel$object)} in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. Unlike other packages used by \code{train}, the \code{dplyr} package is fully loaded when this model is used. 
 
 \strong{Multilayer Perceptron Network with Dropout} (\code{method = 'mlpKerasDropoutCost'})
 
@@ -1102,7 +1102,7 @@ For classification using package \pkg{keras} with tuning parameters:
 \item Activation Function (\code{activation}, character)
 }
 
-Note: After \code{train} completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use \code{keras::unsearlize_model(object$finalModel$object)} in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. Finally, the cost parameter weights the first class in the outcome vector. 
+Note: After \code{train} completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use \code{keras::unsearlize_model(object$finalModel$object)} in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. Finally, the cost parameter weights the first class in the outcome vector. Unlike other packages used by \code{train}, the \code{dplyr} package is fully loaded when this model is used. 
 
 \strong{Multilayer Perceptron Network with Weight Decay} (\code{method = 'mlpKerasDecay'})
 
@@ -1117,7 +1117,7 @@ For classification and regression using package \pkg{keras} with tuning paramete
 \item Activation Function (\code{activation}, character)
 }
 
-Note: After \code{train} completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use \code{keras::unsearlize_model(object$finalModel$object)} in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. 
+Note: After \code{train} completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use \code{keras::unsearlize_model(object$finalModel$object)} in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. Unlike other packages used by \code{train}, the \code{dplyr} package is fully loaded when this model is used. 
 
 \strong{Multilayer Perceptron Network with Weight Decay} (\code{method = 'mlpKerasDecayCost'})
 
@@ -1133,7 +1133,7 @@ For classification using package \pkg{keras} with tuning parameters:
 \item Activation Function (\code{activation}, character)
 }
 
-Note: After \code{train} completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use \code{keras::unsearlize_model(object$finalModel$object)} in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. Finally, the cost parameter weights the first class in the outcome vector. 
+Note: After \code{train} completes, the keras model object is serialized so that it can be used between R session. When predicting, the code will temporarily unsearalize the object. To make the predictions more efficient, the user might want to use \code{keras::unsearlize_model(object$finalModel$object)} in the current R session so that that operation is only done once. Also, this model cannot be run in parallel due to the nature of how tensorflow does the computations. Finally, the cost parameter weights the first class in the outcome vector. Unlike other packages used by \code{train}, the \code{dplyr} package is fully loaded when this model is used. 
 
 \strong{Multivariate Adaptive Regression Spline} (\code{method = 'earth'})
 
