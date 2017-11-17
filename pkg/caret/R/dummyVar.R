@@ -221,11 +221,11 @@ predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
     newContr <- oldContr
     newContr["unordered"] <- "contr.ltfr"
     options(contrasts = newContr)
+    on.exit(options(contrasts = oldContr))
   }
   m <- model.frame(Terms, newdata, na.action = na.action, xlev = object$lvls)
   
   x <- model.matrix(Terms, m)
-  if(!object$fullRank) options(contrasts = oldContr)
   
   if(object$levelsOnly) {
     for(i in object$facVars) {
