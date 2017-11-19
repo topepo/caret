@@ -1,9 +1,16 @@
+
+> cat("\\name{train_model_list}\n",
++     "\\alias{train_model_list}\n",
++     "\\alias{models}\n",    
++     "\\title{A List of Available Models in t ..." ... [TRUNCATED] 
 \name{train_model_list}
 \alias{train_model_list}
 \alias{models}
 \title{A List of Available Models in train}
 \description{These models are included in the package via wrappers for \code{\link{train}}. Custom models can also be created. See the URL below.
 
+
+> tt <- lapply(mods, print_models)
 \strong{AdaBoost Classification Trees} (\code{method = 'adaboost'})
 
 For classification using package \pkg{fastAdaboost} with tuning parameters:
@@ -1157,7 +1164,7 @@ For classification and regression using package \pkg{earth} with tuning paramete
 
 For classification using package \pkg{naivebayes} with tuning parameters:
 \itemize{
-\item Laplace Correction (\code{fL}, numeric)
+\item Laplace Correction (\code{laplace}, numeric)
 \item Distribution Type (\code{usekernel}, logical)
 \item Bandwidth Adjustment (\code{adjust}, numeric)
 }
@@ -2144,6 +2151,14 @@ For classification using package \pkg{wsrf} with tuning parameters:
 }
 
 
+
+> cat("}\n")
 }
+
+> cat("\\references{``Using your own model in \\code{\\link{train}}'' (\\url{https://topepo.github.io/caret/using-your-own-model-in-train.html})}\n")
 \references{``Using your own model in \code{\link{train}}'' (\url{https://topepo.github.io/caret/using-your-own-model-in-train.html})}
+
+> cat("\\keyword{models}\n")
 \keyword{models}
+
+> sink()

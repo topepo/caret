@@ -2,15 +2,15 @@ modelInfo <- list(label = "Naive Bayes",
                   library = "naivebayes",
                   loop = NULL,
                   type = c('Classification'),
-                  parameters = data.frame(parameter = c('fL', 'usekernel', "adjust"),
+                  parameters = data.frame(parameter = c('laplace', 'usekernel', "adjust"),
                                           class = c('numeric', 'logical', "numeric"),
                                           label = c('Laplace Correction', 'Distribution Type', "Bandwidth Adjustment")),
                   grid = function(x, y, len = NULL, search = "grid") 
-                    expand.grid(usekernel = c(TRUE, FALSE), fL = 0, adjust = 1),
+                    expand.grid(usekernel = c(TRUE, FALSE), laplace = 0, adjust = 1),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                    if(param$usekernel) {
-                          out <- naivebayes::naive_bayes(x, y, usekernel = TRUE,  fL = param$fL, adjust = param$adjust, ...)
-                   } else out <- naivebayes::naive_bayes(x, y, usekernel = FALSE, fL = param$fL, ...)
+                          out <- naivebayes::naive_bayes(x, y, usekernel = TRUE,  laplace = param$laplace, adjust = param$adjust, ...)
+                   } else out <- naivebayes::naive_bayes(x, y, usekernel = FALSE, laplace = param$laplace, ...)
                    out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
