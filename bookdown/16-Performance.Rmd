@@ -173,6 +173,7 @@ lda_lift <- train(Class ~ ., data = lift_training,
                   method = "lda", metric = "ROC",
                   trControl = ctrl)
 
+library(C50)
 set.seed(1045)
 c5_lift <- train(Class ~ ., data = lift_training,
                  method = "C5.0", metric = "ROC",
