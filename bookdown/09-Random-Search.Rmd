@@ -36,7 +36,7 @@ To use random search, another option is available in `trainControl` called `sear
 
 Again, we will use the sonar data from the previous training page to demonstrate the method with a regularized discriminant analysis by looking at a total of 30 tuning parameter combinations:
 
-```{r random_nnet, tidy=FALSE,cache=TRUE, message=FALSE,warning=FALSE}
+```{r random_rda, tidy=FALSE,cache=TRUE, message=FALSE,warning=FALSE}
 library(mlbench)
 data(Sonar)
 

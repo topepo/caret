@@ -16,6 +16,7 @@ modelInfo <- list(label = "Partial Least Squares Generalized Linear Models ",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    require(plsRglm)
                     if(is.factor(y)) {
                       lv <- levels(y)
                       y <- as.numeric(y)  - 1
@@ -67,6 +68,10 @@ modelInfo <- list(label = "Partial Least Squares Generalized Linear Models ",
                     vars <- names(which(coef(x)[[2]][,1] != 0))
                     vars[vars != "Intercept"]
                   },
+                  notes = paste(
+                    "Unlike other packages used by `train`, the `plsRglm`",
+                    "package is fully loaded when this model is used."
+                  ),
                   tags = c("Generalized Linear Models", 
                            "Partial Least Squares", "Two Class Only"),
                   levels = function(x) x$lev,

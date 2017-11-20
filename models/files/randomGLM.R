@@ -14,8 +14,14 @@ modelInfo <- list(label = "Ensembles of Generalized Linear Models",
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    require(randomGLM)
                     if(!is.matrix(x)) x <- as.matrix(x)
-                    mod <- randomGLM::randomGLM(x = x, y, maxInteractionOrder = param$maxInteractionOrder, ...)
+                    mod <- randomGLM::randomGLM(
+                      x = x, 
+                      y, 
+                      maxInteractionOrder = param$maxInteractionOrder, 
+                      ...
+                    )
                     mod
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
@@ -38,5 +44,9 @@ modelInfo <- list(label = "Ensembles of Generalized Linear Models",
                   },
                   tags = c("Generalized Linear Model", "Linear Classifier",
                            "Ensemble Model", "Bagging"),
+                  notes = paste(
+                    "Unlike other packages used by `train`, the `randomGLM`",
+                    "package is fully loaded when this model is used."
+                  ),                  
                   prob = NULL,
                   sort = function(x) x)

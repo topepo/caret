@@ -18,6 +18,7 @@ modelInfo <- list(label = "Robust Regularized Linear Discriminant Analysis",
                     out
                   }, 
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    require("rrlda")
                     rrlda:::rrlda(x, as.numeric(y), lambda = param$lambda,
                                   hp = param$hp, penalty = as.character(param$penalty), ...)    
                   },
@@ -31,5 +32,9 @@ modelInfo <- list(label = "Robust Regularized Linear Discriminant Analysis",
                     out
                     },
                   levels = function(x) x$obsLevels,
+                  notes = paste(
+                    "Unlike other packages used by `train`, the `rrlda`",
+                    "package is fully loaded when this model is used."
+                  ),
                   tags = c("Discriminant Analysis", "Robust Model", "Regularization", "Linear Classifier"),
                   sort = function(x) x[order(-x$lambda),])

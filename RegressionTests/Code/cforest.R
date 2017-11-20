@@ -6,8 +6,7 @@ library(dplyr)
 
 model <- "cforest"
 
-for(i in getModelInfo(model)[[1]]$library)
-  do.call("requireNamespace", list(package = i))
+
 
 #########################################################################
 
@@ -45,7 +44,7 @@ test_class_cv_model <- train(trainX, trainY,
                              trControl = cctrl1,
                              metric = "ROC", 
                              preProc = c("center", "scale"),
-                             controls = cforest_unbiased(ntree = 20))
+                             controls = party::cforest_unbiased(ntree = 20))
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
@@ -53,7 +52,7 @@ test_class_cv_form <- train(Class ~ ., data = training,
                             trControl = cctrl1,
                             metric = "ROC", 
                             preProc = c("center", "scale"),
-                            controls = cforest_unbiased(ntree = 20))
+                            controls = party::cforest_unbiased(ntree = 20))
 
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
@@ -72,7 +71,7 @@ test_class_loo_model <- train(trainX, trainY,
                               trControl = cctrl2,
                               metric = "ROC", 
                               preProc = c("center", "scale"),
-                              controls = cforest_unbiased(ntree = 20))
+                              controls = party::cforest_unbiased(ntree = 20))
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
   cat("wrong levels")
@@ -81,7 +80,7 @@ set.seed(849)
 test_class_oob_model <- train(trainX, trainY, 
                               method = "cforest", 
                               trControl = cctrl3,
-                              controls = cforest_unbiased(ntree = 20))
+                              controls = party::cforest_unbiased(ntree = 20))
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
                                method = "cforest", 
@@ -89,7 +88,7 @@ test_class_none_model <- train(trainX, trainY,
                                tuneLength = 1,
                                metric = "ROC", 
                                preProc = c("center", "scale"),
-                               controls = cforest_unbiased(ntree = 20))
+                               controls = party::cforest_unbiased(ntree = 20))
 
 set.seed(849)
 test_class_rec <- train(x = rec_cls,
@@ -97,7 +96,7 @@ test_class_rec <- train(x = rec_cls,
                         method = "cforest", 
                         trControl = cctrl1,
                         metric = "ROC",
-                        controls = cforest_unbiased(ntree = 20))
+                        controls = party::cforest_unbiased(ntree = 20))
 
 
 if(
@@ -146,7 +145,7 @@ test_reg_cv_model <- train(trainX, trainY,
                            method = "cforest", 
                            trControl = rctrl1,
                            preProc = c("center", "scale"),
-                           controls = cforest_unbiased(ntree = 20))
+                           controls = party::cforest_unbiased(ntree = 20))
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
@@ -154,7 +153,7 @@ test_reg_cv_form <- train(y ~ ., data = training,
                           method = "cforest", 
                           trControl = rctrl1,
                           preProc = c("center", "scale"),
-                          controls = cforest_unbiased(ntree = 20))
+                          controls = party::cforest_unbiased(ntree = 20))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
@@ -168,14 +167,14 @@ test_reg_loo_model <- train(trainX, trainY,
                             method = "cforest",
                             trControl = rctrl2,
                             preProc = c("center", "scale"),
-                            controls = cforest_unbiased(ntree = 20))
+                            controls = party::cforest_unbiased(ntree = 20))
 
 set.seed(849)
 test_reg_oob_model <- train(trainX, trainY, 
                             method = "cforest",
                             trControl = rctrl3,
                             preProc = c("center", "scale"),
-                            controls = cforest_unbiased(ntree = 20))
+                            controls = party::cforest_unbiased(ntree = 20))
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
@@ -183,7 +182,7 @@ test_reg_none_model <- train(trainX, trainY,
                              trControl = rctrl4,
                              tuneLength = 1,
                              preProc = c("center", "scale"),
-                             controls = cforest_unbiased(ntree = 20))
+                             controls = party::cforest_unbiased(ntree = 20))
 test_reg_none_pred <- predict(test_reg_none_model, testX)
 
 set.seed(849)
@@ -191,7 +190,7 @@ test_reg_rec <- train(x = rec_reg,
                       data = training,
                       method = "cforest", 
                       trControl = rctrl1,
-                      controls = cforest_unbiased(ntree = 20))
+                      controls = party::cforest_unbiased(ntree = 20))
 
 if(
   !isTRUE(
@@ -225,6 +224,7 @@ timestamp_end <- Sys.time()
 save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
-q("no")
+if(!interactive())
+   q("no")
 
 

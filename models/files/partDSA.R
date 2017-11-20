@@ -34,7 +34,7 @@ modelInfo <- list(label = "partDSA",
                     if(!is.data.frame(x) | inherits(x, "tbl_df")) 
                       x <- as.data.frame(x)
                     partDSA::partDSA(x, y,
-                                     control = DSA.control(
+                                     control = partDSA::DSA.control(
                                        cut.off.growth = param$cut.off.growth,
                                        MPD = param$MPD,
                                        vfold = 1),
@@ -51,11 +51,11 @@ modelInfo <- list(label = "partDSA",
                       ## but partDSA only has 6 partitions). We will predict the "overage" using
                       ## the largest model in the obejct (e.g. models 7:10 predicted by model 6).
                       if(modelFit$problemType == "Classification") {
-                        out <- predict(modelFit, newdata)
+                        out <- partDSA::predict.dsa(modelFit, newdata)
                         if(max(tmp) > length(out)) tmp[tmp > length(out)] <- length(out)
                         out <- out[tmp]
                       } else {
-                        out <- predict(modelFit, newdata)
+                        out <- partDSA::predict.dsa(modelFit, newdata)
                         if(max(tmp) > ncol(out)) tmp[tmp > ncol(out)] <- ncol(out)
                         out <- out[,tmp, drop= FALSE]
                         out <- as.list(as.data.frame(out))
@@ -65,9 +65,9 @@ modelInfo <- list(label = "partDSA",
                       index <- min(modelFit$cut.off.growth, length(modelFit$test.set.risk.DSA))
                       ## use best Tune
                       if(modelFit$problemType == "Classification") {
-                        out <- as.character(predict(modelFit, newdata)[[index]])
+                        out <- as.character(partDSA::predict.dsa(modelFit, newdata)[[index]])
                       } else {
-                        out <- predict(modelFit, newdata)[,index]
+                        out <- partDSA::predict.dsa(modelFit, newdata)[,index]
                       }
                     }
                     out        

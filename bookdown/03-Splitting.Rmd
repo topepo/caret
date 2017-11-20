@@ -68,6 +68,8 @@ library(knitr)
 include_graphics('premade/MaxDissim.gif', dpi = NA)
 ```
 
+<div id="time"></div>
+
 ## Data Splitting for Time Series
 
 Simple random sampling of time series is probably not the best way to resample times series data. [Hyndman and Athanasopoulos (2013)](https://www.otexts.org/fpp/2/5) discuss *rolling forecasting origin* techniques that move the training and test sets in time. caret contains a function called `createTimeSlices` that can create the indices for this type of splitting.
@@ -129,7 +131,7 @@ useOuterStrips(
 ```  
 
 
-<div id="outcome"></div>
+<div id="groups"></div>
 
 ## Simple Splitting with Important Groups
 

@@ -24,12 +24,12 @@ modelInfo <- list(label = "Sparse Partial Least Squares",
                                      kappa = param$kappa, ...)
                     } else {
                       spls::spls(x, y, K = param$K, eta = param$eta,
-                           kappa = param$kappa, ...)
+                                 kappa = param$kappa, ...)
                     }          
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(length(modelFit$obsLevels) < 2) {
-                      predict(modelFit, newdata)
+                      spls::predict.spls(modelFit, newdata)
                     } else {
                       as.character(caret:::predict.splsda(modelFit, newdata, type = "class"))
                     }

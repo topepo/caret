@@ -70,13 +70,13 @@ modelInfo <- list(label = "Cost-Sensitive CART",
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     
                     pType <- if(modelFit$problemType == "Classification") "class" else "vector"
-                    out  <- predict(modelFit, newdata, type=pType)
+                    out  <- predict(modelFit, newdata, type = pType)
                     
                     if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
                       for(j in seq(along = submodels$cp)) {
-                        prunedFit <- prune.rpart(modelFit, cp = submodels$cp[j])
+                        prunedFit <- rpart::prune.rpart(modelFit, cp = submodels$cp[j])
                         tmp[[j+1]]  <- predict(prunedFit, newdata, type=pType)
                       }
                       out <- tmp

@@ -44,6 +44,9 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Dropout",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    require(dplyr)
+                    K <- keras::backend()
+                    K$clear_session()
                     if(!is.matrix(x)) x <- as.matrix(x)
                     model <- keras::keras_model_sequential()
                     model %>% 
@@ -77,7 +80,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Dropout",
                           units = 1, 
                           activation = 'linear'
                         ) %>%
-                        compile(
+                        keras::compile(
                           loss = "mean_squared_error",
                           optimizer = keras::optimizer_rmsprop(
                             lr = param$lr,
@@ -130,7 +133,10 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Dropout",
                                 "`keras::unsearlize_model(object$finalModel$object)` in the current", 
                                 "R session so that that operation is only done once.",
                                 "Also, this model cannot be run in parallel due to",
-                                "the nature of how tensorflow does the computations."),
+                                "the nature of how tensorflow does the computations.",
+                                
+                                "Unlike other packages used by `train`, the `dplyr`",
+                                "package is fully loaded when this model is used."),
                   check = function(pkg) {
                     testmod <- try(keras::keras_model_sequential(),
                                    silent = TRUE)

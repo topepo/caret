@@ -24,7 +24,7 @@ modelInfo <- list(label = "Penalized Linear Regression",
                                          ...) 
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    out <- predict(modelFit, newdata)
+                    out <- penalized::predict(modelFit, newdata)
                     out <- if(is.vector(out)) out["mu"] else out[,"mu"]
                     out
                   },

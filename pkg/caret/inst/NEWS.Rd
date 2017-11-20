@@ -6,7 +6,17 @@
 
 \section{Changes in version 6.0-78}{
   \itemize{ 
-    \item The option to control the minimum node size to models \code{ranger} and \code{Rborist} was added by hadjipantelis.
+    \item A number of changes were made to the underlying model code to repair problems caused by the previous version. In essence, unless the modeling package was formally loaded, the model code would fail in some cases.  In the vast majority of cases, \code{train} will not load the package (but will load the namespace). There are some exceptions where this is not possible, including \code{bam}, \code{earth}, \code{gam}, \code{gamLoess}, \code{gamSpline}, \code{logicBag}, \code{ORFlog}, \code{ORFpls}, \code{ORFridge}, \code{ORFsvm}, \code{plsRglm}, \code{RSimca}, \code{rrlda}, \code{spikeslab}, and others. These are noted in \code{?models} and in the model code itself. The regression tests now catch these issues. 
+    \item The option to control the minimum node size to models \code{ranger} and \code{Rborist} was added by \code{hadjipantelis} \issue{732}. 
+    \item The rule-based model \code{GFS.GCCL} was removed from the model library. 
+    \item A bug was fixed affecting models using the \pkg{sparsediscrim} package (i.e. \code{dda} and \code{rlda})where the class probability values were reversed. \issue{761}.
+    \item The \code{keras} models now clear the session prior to each model fit to avoid problems. Also, on the last fit, the model is serialized so that it can be used between sessions. The \code{predict} code will automatically undo this encoding so that the user does not have to manually intervene. 
+    \item A bug in \code{twoClassSummary} was fixed that prevents failure when the class level includes "y" \issue{770}.
+    \item The \code{preProcess} function can now scale variables to a range where the user can set the high and low values \issue{730}. Thanks to Sergey Korop. 
+    \item Erwan Le Pennec fixed some issues when \code{train} was run using some parallel processing backends (e.g. \code{doFuture} and \code{doAzureParallel}) \issue{748}.
+    \item Waleed Muhanna found and fixed a bug in \code{twoClassSim} when irrelevant variables were generated. \issue{744}.
+    \item \code{hadjipantelis} added the DART model (aka "Dropouts meet Multiple Additive Regression Trees") with the model code \code{xgbDART } \issue{742}.
+    \item Vadim Khotilovich updated \code{predict.dummyVars} to run faster with large datasets with many factors \issue{727}.
     }
 }
 

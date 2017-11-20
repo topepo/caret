@@ -26,12 +26,23 @@ modelInfo <- list(label = "Extreme Learning Machine",
                         attributes(x) <- att
                         x
                       }
-                      out <- elmNN::elmtrain(x = x, y = factor2ind(y), 
-                                             nhid = param$nhid, actfun = param$actfun, ...)
+                      out <- elmNN::elmtrain.default(
+                        x = x, 
+                        y = factor2ind(y), 
+                        nhid = param$nhid, 
+                        actfun = param$actfun, 
+                        ...
+                        )
                       out$lev <- levels(y)
                       
                     } else {
-                      out <- elmNN::elmtrain(x = x, y = y, nhid = param$nhid, actfun = param$actfun, ...)
+                      out <- elmNN::elmtrain.default(
+                        x = x, 
+                        y = y, 
+                        nhid = param$nhid, 
+                        actfun = param$actfun, 
+                        ...
+                        )
                     }
                     out$xNames <- colnames(x)
                     out

@@ -17,23 +17,22 @@ modelInfo <- list(label = "Ridge Regression",
                     elasticnet::enet(as.matrix(x), y, lambda = param$lambda)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    predict(modelFit, newdata, 
-                            s = 1, 
-                            mode = "fraction")$fit
+                    elasticnet::predict.enet(
+                      modelFit, newdata, 
+                      s = 1, 
+                      mode = "fraction")$fit
                   },
                   predictors = function(x, s = NULL, ...) {
-                    if(is.null(s))
-                    {
-                      if(!is.null(x$tuneValue))
-                      {
+                    if(is.null(s)) {
+                      if(!is.null(x$tuneValue)) {
                         s <- x$tuneValue$.fraction
                       } else stop("must supply a vaue of s")
-                      out <- predict(x, s = s,
-                                     type = "coefficients",
-                                     mode = "fraction")$coefficients
-                      
+                      out <- elasticnet::predict.enet(
+                        x, s = s,
+                        type = "coefficients",
+                        mode = "fraction")$coefficients
                     } else {
-                      out <- predict(x, s = s)$coefficients
+                      out <- elasticnet::predict.enet(x, s = s)$coefficients
                       
                     }
                     names(out)[out != 0]

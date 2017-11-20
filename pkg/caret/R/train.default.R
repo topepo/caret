@@ -29,17 +29,16 @@
 #' A variety of models are currently available and are enumerated
 #'  by tag (i.e. their model characteristics) at
 #'  \url{http://topepo.github.io/caret/train-models-by-tag.html}.
-
 #' 
 #' More details on using recipes can be found at
-#'  \url{http://topepo.github.io/caret/recipes.html}. Note that case
-#'  weights can be passed into \code{train} using a role of
-#'  \code{"case weight"} for a single variable. Also, if there are
-#'  non-predictor columns that should be used when determining the
-#'  model's performance metrics, the role of \code{"performance
-#'  var"} can be used with multiple columns and these will be made
-#'  available during resampling to the \code{summaryFunction}
-#'  function.
+#'  \url{http://topepo.github.io/caret/using-recipes-with-train.html}.
+#'  Note that case weights can be passed into \code{train} using a
+#'  role of \code{"case weight"} for a single variable. Also, if
+#'  there are non-predictor columns that should be used when
+#'  determining the model's performance metrics, the role of
+#'  \code{"performance var"} can be used with multiple columns and
+#'  these will be made available during resampling to the
+#'  \code{summaryFunction} function.
 #'
 #' @aliases train train.default train.formula
 #' @param x For the default method, \code{x} is an object where
@@ -937,8 +936,7 @@ train.formula <- function (form, data, ..., weights, subset, na.action = na.fail
   if(!is.null(res$trainingData)) {
     ## We re-save the original data from the formula interface
     ## since it has not been converted to dummy variables.
-    cc <- complete.cases(data[, all.vars(Terms), drop = FALSE])
-    res$trainingData <- data[cc,all.vars(Terms), drop = FALSE]
+    res$trainingData <- data[,all.vars(Terms), drop = FALSE]
     isY <- names(res$trainingData) %in% as.character(form[[2]])
     if(any(isY)) colnames(res$trainingData)[isY] <- ".outcome"
   }

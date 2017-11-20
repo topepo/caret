@@ -19,13 +19,13 @@ modelInfo <- list(label = "Support Vector Machines with Exponential String Kerne
                     if(any(names(list(...)) == "prob.model") | is.numeric(y))
                     {
                       out <- kernlab::ksvm(x = x[,1], y = y,
-                                           kernel = kernlab::stringdot(),
-		                           kpar = list(type = "exponential", 
+                                           kernel = "stringdot",
+                                           kpar = list(type = "exponential", 
                                                        lambda = param$lambda),
                                            C = param$C, ...)
                     } else {
                       out <- kernlab::ksvm(x = x[,1], y = y,
-                                           kernel = kernlab::stringdot(),
+                                           kernel = "stringdot",
                                            kpar = list(type = "exponential", 
                                                        lambda = param$lambda),
                                            C = param$C,

@@ -29,7 +29,9 @@ if(!small) {
   testFiles <- paste(file.path(getwd(), "Code", testFiles))
 }
 ## package archived or models excluded
-exclusions <- c("rknn", "rknnBel", "[mM]xnet", "sdda", "enpls.fs", "enpls", "Boruta", "Mlda", "RFlda", "rbf", "bdk", "SLAVE")
+exclusions <- c("rknn", "rknnBel", "[mM]xnet", "sdda", "enpls.fs", 
+                "enpls", "Boruta", "Mlda", "RFlda", "rbf", "bdk", 
+                "SLAVE", "_back", "oblique\\.tree")
 exclusions <- paste0("(", exclusions, ")")
 exclusions <- paste0(exclusions, collapse = "|")
 testFiles <- testFiles[!grepl(exclusions, testFiles)]

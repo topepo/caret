@@ -118,7 +118,7 @@ sa_ctrl <- safsControl(functions = rfSA,
 
 set.seed(10)
 rf_sa <- safs(x = x, y = y,
-              iters = 500,
+              iters = 250,
               safsControl = sa_ctrl)
 rf_sa
 ``` 

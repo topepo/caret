@@ -28,12 +28,12 @@ modelInfo <- list(label = "Parallel Random Forest",
                     theDots$mtry <- param$mtry
                     theDots$ntree <- ceiling(theDots$ntree/workers)                       
                     iter_seeds <- sample.int(10000, size = workers)
-                    out <- foreach::foreach(ntree = 1:workers, .combine = combine) %dopar% {
+                    out <- foreach::foreach(ntree = 1:workers, .combine = randomForest::combine) %dopar% {
                       set.seed(iter_seeds[workers])
                       do.call(randomForest::randomForest, theDots)
                     }
                     if(!inherits(out, "randomForest")) 
-                      out <- do.call("combine", out)
+                      out <- do.call("randomForest::combine", out)
                     out$call["x"] <- "x"
                     out$call["y"] <- "y"
                     out

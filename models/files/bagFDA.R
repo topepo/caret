@@ -9,7 +9,7 @@ modelInfo <- list(label = "Bagged Flexible Discriminant Analysis",
                     dat <- if(!is.data.frame(x)) as.data.frame(x) else x
                     dat$.outcome <- y
                     
-                    mod <- mda::fda( .outcome~., data = dat, method = earth, pmethod = "none")
+                    mod <- mda::fda( .outcome~., data = dat, method = earth::earth, pmethod = "none")
                     maxTerms <- nrow(mod$fit$dirs) - 1
                     
                     maxTerms <- min(200, floor(maxTerms * .75) + 2)

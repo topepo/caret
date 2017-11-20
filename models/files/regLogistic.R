@@ -18,31 +18,36 @@ modelInfo <- list(label = "Regularized Logistic Regression",
                   }, 
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                  
-		    if( !(param$loss %in% c( "L1", "L2_dual", "L2_primal")) ) {
-                      stop("Loss function is not recognised.")
+                    
+                    if( !(param$loss %in% c( "L1", "L2_dual", "L2_primal")) ) {
+                      stop("Loss function is not recognised.", call. = FALSE)
                     }
                     if(!is.factor(y)) {
-                      stop('y is not recognised as a factor')
+                      stop('y is not recognised as a factor', call. = FALSE)
                     }
-                    model_type = ifelse( param$loss == "L1", 6, ifelse( param$loss == "L2_primal", 0, 7))
-                    out <- LiblineaR(data = as.matrix(x), target = y,
-                                     cost = param$cost, epsilon = param$epsilon,
-                                     type = model_type,
-                                     ...)
-
+                    model_type <-
+                      ifelse(param$loss == "L1", 6, ifelse(param$loss == "L2_primal", 0, 7))
+                    out <- LiblineaR::LiblineaR(
+                      data = as.matrix(x), 
+                      target = y,
+                      cost = param$cost, 
+                      epsilon = param$epsilon,
+                      type = model_type,
+                      ...
+                    )
+                    
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    predict(modelFit, newdata)$predictions
+                    LiblineaR:::predict.LiblineaR(modelFit, newdata)$predictions
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
-                    predict(modelFit,newdata, proba = TRUE)$probabilities
+                    LiblineaR:::predict.LiblineaR(modelFit,newdata, proba = TRUE)$probabilities
                   },
                   predictors = function(x, ...) { 
                     out <- colnames(x$W)
                     out[out != "Bias"]
-                    },
+                  },
                   tags = c("Linear Classifier", "Robust Methods", "L1 Regularization", "L2 Regularization"),
                   levels = function(x) x$levels,
                   sort = function(x) {

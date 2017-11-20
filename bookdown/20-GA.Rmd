@@ -342,7 +342,7 @@ ga_ctrl_d <- gafsControl(functions = rfGA2,
 
 set.seed(10)
 rf_ga_d <- gafs(x = x, y = y,
-                iters = 200,
+                iters = 150,
                 gafsControl = ga_ctrl_d)
 
 rf_ga_d

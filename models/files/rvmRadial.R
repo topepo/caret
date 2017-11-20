@@ -17,7 +17,7 @@ modelInfo <- list(label = "Relevance Vector Machines with Radial Basis Function 
                   },
                   fit = function(x, y, wts, param, lev, last,classProbs, ...) {
                     kernlab:::rvm(x = as.matrix(x), y = y,
-                                  kernel = kernlab::rbfdot(),
+                                  kernel = "rbfdot",
                                   kpar = list(sigma = param$sigma),
                                   ...)
                   },

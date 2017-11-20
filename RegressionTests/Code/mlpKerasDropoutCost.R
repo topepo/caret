@@ -6,20 +6,6 @@ library(dplyr)
 
 model <- "mlpKerasDropoutCost"
 
-## In case the package or one of its dependencies uses random numbers
-## on startup so we'll pre-load the required libraries: 
-
-for(i in getModelInfo(model)[[1]]$library)
-  do.call("require", list(package = i))
-
-testmod <- try(keras_model_sequential(),
-               silent = TRUE)
-if(inherits(testmod, "try-error"))
-  stop("Could not start a sequential model. ",
-       "`tensorflow` might not be installed. ",
-       "See `?install_tensorflow`.", 
-       call. = FALSE)
-
 #########################################################################
 
 set.seed(2)
@@ -119,6 +105,7 @@ timestamp_end <- Sys.time()
 save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
-q("no")
+if(!interactive())
+   q("no")
 
 

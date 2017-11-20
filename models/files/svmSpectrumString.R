@@ -18,13 +18,13 @@ modelInfo <- list(label = "Support Vector Machines with Spectrum String Kernel",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     if(any(names(list(...)) == "prob.model") | is.numeric(y)) {
                       out <- kernlab::ksvm(x = x[,1], y = y,
-                                           kernel = kernlab::stringdot(),
+                                           kernel = "stringdot",
                                            kpar = list(type = "spectrum",
                                                        length = param$length),
                                            C = param$C, ...)
                     } else {
                       out <- kernlab::ksvm(x = x[,1], y = y,
-                                           kernel = kernlab::stringdot(),
+                                           kernel = "stringdot",
                                            kpar = list(type = "spectrum",
                                                        length = param$length),
                                            C = param$C,

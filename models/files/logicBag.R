@@ -15,6 +15,7 @@ modelInfo <- list(label = "Bagged Logic Regression",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
+                    require(logicFS)
                     logicFS::logic.bagging(as.matrix(x), y,
                                   ntrees = param$ntrees,
                                   nleaves = param$nleaves,
@@ -51,6 +52,10 @@ modelInfo <- list(label = "Bagged Logic Regression",
                     if(length(varNums) > 0) colnames(x$data)[varNums] else NA    
                   },
                   levels = function(x) x$obsLevels,
+                  notes = paste(
+                    "Unlike other packages used by `train`, the `logicFS`",
+                    "package is fully loaded when this model is used."
+                  ),
                   tags = c("Logic Regression", "Linear Classifier", "Linear Regression", "Logistic Regression",
                            "Bagging", "Ensemble Model", "Two Class Only", "Binary Predictors Only"),
                   sort = function(x) x[order(x$ntrees, x$nleaves),])

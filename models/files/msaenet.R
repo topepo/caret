@@ -47,11 +47,11 @@ modelInfo <- list(label = "Multi-Step Adaptive MCP-Net",
                                         scale = param$scale),
                                    theDots)
                     
-                    do.call("msamnet", modelArgs) 
+                    do.call(getFromNamespace("msamnet", "msaenet"), modelArgs) 
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.matrix(newdata)) newdata <- as.matrix(newdata)
-                    out <- predict(modelFit, newdata, type = "response")
+                    out <- msaenet:::predict.msaenet(modelFit, newdata, type = "response")
                     if(modelFit$model$family == "binomial") {
                       out <- ifelse(out > .4, modelFit$obsLevels[2], modelFit$obsLevels[1])
                     }
@@ -59,19 +59,19 @@ modelInfo <- list(label = "Multi-Step Adaptive MCP-Net",
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(!is.matrix(newdata)) newdata <- as.matrix(newdata)
-                    out <- predict(modelFit, newdata, type = "response")
+                    out <- msaenet:::predict.msaenet(modelFit, newdata, type = "response")
                     out <- as.data.frame(cbind(1-out, out))
                     colnames(out) <- modelFit$obsLevels
                     out
                   },
                   predictors = function(x, ...) {
-                    coefs <- predict(x, newx = NULL, type = "coefficients")
+                    coefs <- msaenet:::predict.msaenet(x, newx = NULL, type = "coefficients")
                     coefs <- rownames(coefs)[coefs != 0]
                     coefs <- coefs[coefs != "(Intercept)"]
                     coefs
                   },
                   varImp = function(object, ...) {
-                    coefs <- predict(object, newx = NULL, type = "coefficients")
+                    coefs <- msaenet:::predict.msaenet(object, newx = NULL, type = "coefficients")
                     coefs <- abs(coefs[rownames(coefs) != "(Intercept)",,drop = FALSE])
                     colnames(coefs) <- "Overall"
                     coefs

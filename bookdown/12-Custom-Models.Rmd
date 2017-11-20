@@ -24,6 +24,7 @@ Contents
  - [Illustrative Example 3: Nonstandard Formulas](#Illustration3)
  - [Illustrative Example 4: PLS Feature Extraction Pre-Processing](#Illustration4)
  - [Illustrative Example 5: Optimizing probability thresholds for class imbalances](#Illustration5)
+ - [Illustrative Example 6: Offsets in Generalized Linear Models](#Illustration6)
 
 <div id="Introduction"> </div>
 

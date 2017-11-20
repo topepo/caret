@@ -20,12 +20,12 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     if(any(names(list(...)) == "prob.model") | is.numeric(y)) {
                       out <- kernlab::ksvm(x = as.matrix(x), y = y,
-                                           kernel = kernlab::rbfdot(),
+                                           kernel = "rbfdot",
                                            kpar = list(sigma = param$sigma),
                                            C = param$C, ...)
                     } else {
                       out <- kernlab::ksvm(x = as.matrix(x), y = y,
-                                           kernel = kernlab::rbfdot(),
+                                           kernel = "rbfdot",
                                            kpar = list(sigma = param$sigma),
                                            C = param$C,
                                            prob.model = classProbs,
@@ -59,7 +59,7 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- try(predict(kernlab::modelFit, newdata, type="probabilities"),
+                    out <- try(kernlab::predict(modelFit, newdata, type="probabilities"),
                                silent = TRUE)
                     if(class(out)[1] != "try-error") {
                       ## There are times when the SVM probability model will

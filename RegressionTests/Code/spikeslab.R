@@ -6,11 +6,7 @@ library(dplyr)
 
 model <- "spikeslab"
 
-## In case the package or one of its dependencies uses random numbers
-## on startup so we'll pre-load the required libraries: 
 
-for(i in getModelInfo(model)[[1]]$library)
-  do.call("requireNamespace", list(package = i))
 
 #########################################################################
 
@@ -40,29 +36,30 @@ rctrl3 <- trainControl(method = "none", seeds = seeds)
 
 
 set.seed(849)
-test_reg_cv_model <- train(trainX, trainY, method = "spikeslab", trControl = rctrl1)
+test_reg_cv_model <- train(trainX, trainY, method = "spikeslab", trControl = rctrl1, seed = 5849)
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
-test_reg_cv_form <- train(y ~ ., data = training, method = "spikeslab", trControl = rctrl1)
+test_reg_cv_form <- train(y ~ ., data = training, method = "spikeslab", trControl = rctrl1, seed = 5849)
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
-test_reg_loo_model <- train(trainX, trainY, method = "spikeslab", trControl = rctrl2)
+test_reg_loo_model <- train(trainX, trainY, method = "spikeslab", trControl = rctrl2, seed = 5849)
 
 set.seed(849)
 test_reg_none_model <- train(trainX, trainY, 
                              method = "spikeslab", 
                              trControl = rctrl3,
                              tuneLength = 1,
-                             preProc = c("center", "scale"))
+                             preProc = c("center", "scale"), seed = 5849)
 test_reg_none_pred <- predict(test_reg_none_model, testX)
 
 set.seed(849)
 test_reg_rec <- train(x = rec_reg,
                       data = training,
                       method = "spikeslab", 
-                      trControl = rctrl1)
+                      trControl = rctrl1, 
+                      seed = 5849)
 
 if(
   !isTRUE(
@@ -94,6 +91,7 @@ timestamp_end <- Sys.time()
 save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
-q("no")
+if(!interactive())
+   q("no")
 
 

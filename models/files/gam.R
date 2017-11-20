@@ -15,6 +15,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                     out[!duplicated(out),]
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
+                    require(mgcv)
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     modForm <- caret:::smootherFormula(x)
                     if(is.factor(y)) {
@@ -82,6 +83,16 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                     }
                     gams
                   },
-                  notes = "Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.",
+                  notes = 
+                    paste(
+                      'Which terms enter the model in a nonlinear manner is determined',
+                      'by the number of unique values for the predictor. For example,',
+                      'if a predictor only has four unique values, most basis expansion',
+                      'method will fail because there are not enough granularity in the',
+                      'data. By default, a predictor must have at least 10 unique',
+                      'values to be used in a nonlinear basis expansion.',
+                      'Unlike other packages used by `train`, the `mgcv`',
+                      'package is fully loaded when this model is used.'
+                    ),
                   tags = c("Generalized Linear Model", "Generalized Additive Model"),
                   sort = function(x) x)

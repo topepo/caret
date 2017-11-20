@@ -6,8 +6,7 @@ library(dplyr)
 
 model <- "gamSpline"
 
-for(i in getModelInfo(model)[[1]]$library)
-  do.call("requireNamespace", list(package = i))
+
 
 #########################################################################
 

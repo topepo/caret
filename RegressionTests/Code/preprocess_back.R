@@ -155,5 +155,6 @@ for(i in pred_obj) {
   }
 }
 
-q("no")
+if(!interactive())
+   q("no")
 

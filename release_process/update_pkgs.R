@@ -83,9 +83,9 @@ for(i in sort(libs)) {
 
     # some of these need to be installed with bioClite - znmeb, 20161221
     if (Sys.info()["sysname"] == "Linux") {
-      biocLite(i)
+      biocLite(i, ask = FALSE, suppressUpdates = FALSE)
     } else {
-      biocLite(i, type = "both")
+      biocLite(i, type = "both", ask = FALSE, suppressUpdates = FALSE)
     }
     cat("\n\n")
   }

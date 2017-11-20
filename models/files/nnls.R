@@ -13,7 +13,7 @@ modelInfo <- list(label = "Non-Negative Least Squares",
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.matrix(newdata)) x <- as.matrix(newdata)
+                    if(!is.matrix(newdata)) newdata <- as.matrix(newdata)
                     out <- newdata %*% modelFit$x
                     out[,1]
                     },
