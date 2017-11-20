@@ -27,13 +27,13 @@ modelInfo <- list(label = "Support Vector Machines with Class Weights",
                     
                     if(any(names(list(...)) == "prob.model") | is.numeric(y)) {
                       out <- kernlab::ksvm(x = as.matrix(x), y = y,
-                                           kernel = kernlab::rbfdot(),
+                                           kernel = "rbfdot",
                                            kpar = list(sigma = param$sigma),
                                            class.weights = wts,
                                            C = param$C, ...)
                     } else {
                       out <- kernlab::ksvm(x = as.matrix(x), y = y,
-                                           kernel = kernlab::rbfdot(),
+                                           kernel = "rbfdot",
                                           kpar = list(sigma = param$sigma),
                                           class.weights = wts,
                                           C = param$C,

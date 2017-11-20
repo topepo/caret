@@ -1,8 +1,4 @@
 
-> cat("\\name{train_model_list}\n",
-+     "\\alias{train_model_list}\n",
-+     "\\alias{models}\n",    
-+     "\\title{A List of Available Models in t ..." ... [TRUNCATED] 
 \name{train_model_list}
 \alias{train_model_list}
 \alias{models}
@@ -2150,15 +2146,6 @@ For classification using package \pkg{wsrf} with tuning parameters:
 \item Number of Randomly Selected Predictors (\code{mtry}, numeric)
 }
 
-
-
-> cat("}\n")
-}
-
-> cat("\\references{``Using your own model in \\code{\\link{train}}'' (\\url{https://topepo.github.io/caret/using-your-own-model-in-train.html})}\n")
 \references{``Using your own model in \code{\link{train}}'' (\url{https://topepo.github.io/caret/using-your-own-model-in-train.html})}
 
-> cat("\\keyword{models}\n")
 \keyword{models}
-
-> sink()

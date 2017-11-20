@@ -20,7 +20,7 @@ modelInfo <- list(label = "Least Squares Support Vector Machine with Radial Basi
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     kernlab::lssvm(x = as.matrix(x), y = y,
                                    tau = param$tau,
-                                   kernel = kernlab::rbfdot(),
+                                   kernel = "rbfdot",
                                    kpar = list(sigma = param$sigma), ...)         
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {  
