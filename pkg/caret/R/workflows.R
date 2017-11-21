@@ -8,7 +8,6 @@
 getOper <- function(x) if(x)  `%dopar%` else  `%do%`
 getTrainOper <- function(x) if(x)  `%dopar%` else  `%do%`
 
-
 #' @rdname caret-internal
 #' @export
 #' @keywords internal
@@ -51,21 +50,29 @@ expandParameters <- function(fixed, seq)
 
 #' @rdname caret-internal
 #' @export
-cprog <- function(callback=NULL, min=0, max=1){
-  if(is.null(callback)){
-    pb <- txtProgressBar(min=min, max=max, style=3)
-    count <- 0
-    function(...) {
-      count <<- count + length(list(...)) - 1
-      setTxtProgressBar(pb, count)
-      Sys.sleep(0.01)
-      flush.console()
-      c(...)
+cprog <- function(min=0, max=1, callback=NULL){
+  tryCatch({
+    if(is.null(callback)){
+      pb <- txtProgressBar(min=min, max=max, style=3)
+      count <- 0
+      function(...) {
+        count <<- count + length(list(...)) - 1
+        setTxtProgressBar(pb, count)
+        flush.console()
+        c(...)
+      }
     }
-  }
-  else{
-    callback(..., min, max)
-  }
+    else{
+      callback(min=min, max=max)
+    }
+  }, finally = function() c(...))
+}
+
+getCombineOper <- function(showProgress, progressCallback, resampleIndex) {
+  if(showProgress)
+    cprog(min=0, max=length(resampleIndex)-1, callback=progressCallback)
+  else
+    'c'
 }
 
 #' @importFrom utils head
@@ -96,7 +103,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
   export <- c()
 
-  result <- foreach(iter = seq(along = resampleIndex), .combine = cprog(min=0, max=length(resampleIndex)-1), .verbose = FALSE, .export = export, .packages = "caret") %:%
+  result <- foreach(iter = seq(along = resampleIndex), .combine = getCombineOper(ctrl$showProgress, ctrl$progressCallback, resampleIndex), .verbose = FALSE, .export = export, .packages = "caret") %:%
     foreach(parm = 1L:nrow(info$loop), .combine = "c", .verbose = FALSE, .export = export , .packages = "caret")  %op%
     {
       if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
