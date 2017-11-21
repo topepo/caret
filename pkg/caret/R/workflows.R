@@ -49,6 +49,25 @@ expandParameters <- function(fixed, seq)
   out
 }
 
+#' @rdname caret-internal
+#' @export
+cprog <- function(callback=NULL, min=0, max=1){
+  if(is.null(callback)){
+    pb <- txtProgressBar(min=min, max=max, style=3)
+    count <- 0
+    function(...) {
+      count <<- count + length(list(...)) - 1
+      setTxtProgressBar(pb, count)
+      Sys.sleep(0.01)
+      flush.console()
+      c(...)
+    }
+  }
+  else{
+    callback(..., min, max)
+  }
+}
+
 #' @importFrom utils head
 #' @importFrom stats complete.cases
 #' @import foreach
@@ -77,7 +96,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
   export <- c()
 
-  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .export = export, .packages = "caret") %:%
+  result <- foreach(iter = seq(along = resampleIndex), .combine = cprog(min=0, max=length(resampleIndex)-1), .verbose = FALSE, .export = export, .packages = "caret") %:%
     foreach(parm = 1L:nrow(info$loop), .combine = "c", .verbose = FALSE, .export = export , .packages = "caret")  %op%
     {
       if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
