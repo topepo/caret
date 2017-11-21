@@ -95,7 +95,6 @@ library(MASS)
 library(caret)
 library(mlbench)
 data(Sonar)
-library(pROC)
 library(pls)
 options(useFancyQuotes = FALSE) 
 getInfo <- function(what = "Suggests")
@@ -149,6 +148,7 @@ More formally:
 
   \begin{center}  
     \includegraphics[clip, width = .9\textwidth]{train_algo}
+    \label{A:tune}
   \end{center}
 
 There are options for customizing almost every step of this process (e.g. resampling technique, choosing the optimal parameters etc). To demonstrate this function, the Sonar data from the \pkg{mlbench} package will be used.
@@ -231,6 +231,7 @@ Lastly, the function will pick the tuning parameters associated with the best re
 
 The final model fit would then be:
 \begin{Verbatim}[fontshape=sl,formatcom=\color{darkblue},fontsize=\footnotesize,commandchars=\\\{\}]
+> set.seed(123) 
 > ctrl <- trainControl(method = "repeatedcv",
 +                      repeats = 3,
 + \textcolor{red}{                     classProbs = TRUE},

@@ -14,7 +14,7 @@ modelInfo <- list(label = "Boosted Linear Model",
                     out
                   },
                   loop = function(grid) {   
-                    loop <- ddply(grid, .(nu), function(x) c(mstop = max(x$mstop)))
+                    loop <- plyr::ddply(grid, plyr::`.`(nu), function(x) c(mstop = max(x$mstop)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$mstop))
                     {
@@ -25,43 +25,44 @@ modelInfo <- list(label = "Boosted Linear Model",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
+                    if(!is.data.frame(x) | inherits(x, "tbl_df")) 
+                      x <- as.data.frame(x)
                     
                     theDots <- list(...)
                     modDist <- if(is.factor(y)) "hinge" else "gaussian"
                     
                     y <- if(is.factor(y)) ifelse(y == lev[1], 1, -1) else y
                     
-                    if(any(names(theDots) == "ctrl"))
-                    {
+                    if(any(names(theDots) == "ctrl")) {
                       theDots$ctrl$mstop <- param$mstop
                       theDots$ctrl$nu <- param$nu
                     } else {
-                      theDots$ctrl <- bst_control(mstop = param$mstop, nu = param$nu)
+                      theDots$ctrl <- bst::bst_control(mstop = param$mstop, nu = param$nu)
                     }
                     
                     modArgs <- list(x = x, y = y, family = modDist, learner = "ls")
                     modArgs <- c(modArgs, theDots)
                     
-                    do.call("bst", modArgs)
+                    out <- do.call(bst::bst, modArgs)
+                    out$call <- quote(redacted)
+                    out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(modelFit$problemType == "Classification")
-                    {
+                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
+                      newdata <- as.data.frame(newdata)
+                    if(modelFit$problemType == "Classification") {
                       out <- predict(modelFit, newdata, type = "class", mstop = modelFit$submodels$mstop)
                       out <- ifelse(out == 1, modelFit$obsLevels[1], modelFit$obsLevels[2])
                     } else {
                       out <- predict(modelFit, newdata, type = "response", mstop = modelFit$submodels$mstop)
                     }
                     
-                    if(!is.null(submodels))
-                    {
+                    if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
                       
-                      for(j in seq(along = submodels$mstop))
-                      {
-                        if(modelFit$problemType == "Classification")
-                        {
+                      for(j in seq(along = submodels$mstop)) {
+                        if(modelFit$problemType == "Classification") {
                           bstPred <- predict(modelFit, newdata, type = "class", mstop = submodels$mstop[j])
                           tmp[[j+1]] <- ifelse(bstPred == 1, modelFit$obsLevels[1], modelFit$obsLevels[2])
                         } else {

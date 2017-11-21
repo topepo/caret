@@ -16,7 +16,7 @@ modelInfo <- list(label = "Single Rule Classification",
                                         data = dat),
                                    theDots)
                     
-                    out <- do.call("OneR", modelArgs) 
+                    out <- do.call(RWeka::OneR, modelArgs) 
                     out      
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {

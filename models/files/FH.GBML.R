@@ -21,7 +21,6 @@ modelInfo <- list(label = "Fuzzy Rules Using Genetic Cooperative-Competitive Lea
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     args <- list(data.train = as.matrix(cbind(x, as.numeric(y))),
                                  method.type = "FH.GBML")
-                    args$range.data <- apply(x, 2, extendrange)
                     theDots <- list(...)
                     if(any(names(theDots) == "control")) {
                       theDots$control$max.num.rule <- param$max.num.rule                  
@@ -35,12 +34,13 @@ modelInfo <- list(label = "Fuzzy Rules Using Genetic Cooperative-Competitive Lea
                                                    p.dcare = 0.5,
                                                    p.gccl = 0.5,
                                                    num.class = length(unique(y)),
-                                                   name="sim-0")     
-                    do.call("frbs.learn", c(args, theDots))
+                                                   name="sim-0")  
+                    
+                    do.call(frbs::frbs.learn, c(args, theDots))
                     
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    modelFit$obsLevels[predict(modelFit, newdata)[,1]]
+                    modelFit$obsLevels[predict(modelFit, newdata)]
                   },
                   prob = NULL,
                   predictors = function(x, ...){

@@ -1,14 +1,13 @@
 Package: caret
-Version: 6.0-70
-Date: 2016-06-09
+Version: 6.0-78
 Title: Classification and Regression Training
 Author: Max Kuhn. Contributions from Jed Wing, Steve Weston, Andre
     Williams, Chris Keefer, Allan Engelhardt, Tony Cooper, Zachary Mayer,
     Brenton Kenkel, the R Core Team, Michael Benesty, Reynald Lescarbeau,
-    Andrew Ziem, Luca Scrucca, Yuan Tang, and Can Candan.
+    Andrew Ziem, Luca Scrucca, Yuan Tang, Can Candan, and Tyler Hunt.
 Description: Misc functions for training and plotting classification and
     regression models.
-Maintainer: Max Kuhn <Max.Kuhn@pfizer.com>
+Maintainer: Max Kuhn <mxkuhn@gmail.com>
 Depends:
     R (>= 2.10),
     lattice (>= 0.20),
@@ -16,16 +15,18 @@ Depends:
 URL: https://github.com/topepo/caret/
 BugReports: https://github.com/topepo/caret/issues
 Imports:
-    car,
     foreach,
     methods,
     plyr,
+    ModelMetrics (>= 1.1.0),
     nlme,
     reshape2,
     stats,
     stats4,
     utils,
-    grDevices
+    grDevices,
+    recipes (>= 0.0.1),
+    withr (>= 2.0.0)
 Suggests:
     BradleyTerry2,
     e1071,
@@ -40,10 +41,11 @@ Suggests:
     mda,
     mgcv,
     mlbench,
+    MLmetrics,
     nnet,
     party (>= 0.9-99992),
     pls,
-    pROC (>= 1.8),
+    pROC,
     proxy,
     randomForest,
     RANN,
@@ -54,3 +56,5 @@ Suggests:
     Cubist,
     testthat (>= 0.9.1)
 License: GPL (>= 2)
+RoxygenNote: 6.0.1
+

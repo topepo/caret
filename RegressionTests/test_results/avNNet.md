@@ -1,7 +1,8 @@
 Model Averaged Neural Network (`avNNet`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/avNNet.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/avNNet.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `nnet` (7.3-12)
- * tested on 2016-06-10 at 16:46
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `nnet` (7.3-12)
+ * tested on 2017-04-12 at 18:59. 
+ * total test time: 55.6s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `nnet` (7.3-12)
- * tested on 2016-06-12 at 12:22
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `nnet` (7.3-12)
+ * tested on 2017-04-11 at 20:51. 
+ * total test time: 64.4s
 
 
 Results:
@@ -38,32 +41,11 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.93s (new) 1.85s
+Execution times: (old) 1.68s (new) 1.8s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                 
-      mean  1.517
-      min  -2.826
-      max  16.479
-    correlation:  0.8733 
-
- size decay   bag ROC_new ROC_old Diff Flag
-    1 0e+00 FALSE  0.6916  0.6916  0.0     
-    1 1e-01 FALSE  0.7199  0.6181 16.5    *
-    1 1e-04 FALSE  0.6939  0.6939  0.0     
-    3 0e+00 FALSE  0.6369  0.6554 -2.8    *
-    3 1e-01 FALSE  0.7894  0.7894  0.0     
-    3 1e-04 FALSE  0.7326  0.7326  0.0     
-    5 0e+00 FALSE  0.7326  0.7326  0.0     
-    5 1e-01 FALSE  0.8252  0.8252  0.0     
-    5 1e-04 FALSE  0.8218  0.8218  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -80,32 +62,11 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.15s (new) 3.21s
+Execution times: (old) 2.68s (new) 2.47s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                 
-      mean  1.517
-      min  -2.826
-      max  16.479
-    correlation:  0.8733 
-
- size decay   bag ROC_new ROC_old Diff Flag
-    1 0e+00 FALSE  0.6916  0.6916  0.0     
-    1 1e-01 FALSE  0.7199  0.6181 16.5    *
-    1 1e-04 FALSE  0.6939  0.6939  0.0     
-    3 0e+00 FALSE  0.6369  0.6554 -2.8    *
-    3 1e-01 FALSE  0.7894  0.7894  0.0     
-    3 1e-04 FALSE  0.7326  0.7326  0.0     
-    5 0e+00 FALSE  0.7326  0.7326  0.0     
-    5 1e-01 FALSE  0.8252  0.8252  0.0     
-    5 1e-04 FALSE  0.8218  0.8218  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -122,7 +83,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 27.1s (new) 27.14s
+Execution times: (old) 23.04s (new) 27.86s
 
 Test Results:
 
@@ -143,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.53s (new) 0.53s
+Execution times: (old) 0.53s (new) 0.29s
 
 Test Results:
 
@@ -206,7 +167,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.48s (new) 1.49s
+Execution times: (old) 1.48s (new) 1.41s
 
 Test Results:
 
@@ -232,7 +193,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.77s (new) 1.71s
+Execution times: (old) 1.65s (new) 1.77s
 
 Test Results:
 
@@ -252,7 +213,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.7s (new) 2.67s
+Execution times: (old) 2.41s (new) 2.64s
 
 Test Results:
 
@@ -272,7 +233,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 20.68s (new) 20.31s
+Execution times: (old) 16.72s (new) 20.26s
 
 Test Results:
 
@@ -292,7 +253,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.54s (new) 0.55s
+Execution times: (old) 0.61s (new) 0.33s
 
 Test Results:
 
@@ -336,7 +297,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.98s (new) 1.96s
+Execution times: (old) 2.01s (new) 2.23s
 
 Test Results:
 

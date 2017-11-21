@@ -7,13 +7,13 @@ modelInfo <- list(label = "Single C5.0 Ruleset",
                                           label = c('none')),
                   grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    C5.0(x = x, y = y, weights = wts, rules = TRUE, ...),
+                    C50::C5.0(x = x, y = y, weights = wts, rules = TRUE, ...),
                   predict = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit, newdata),
                   prob = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit, newdata, type= "prob"),
                   predictors = function(x, ...) {
-                    vars <- C5imp(x, metric = "splits")
+                    vars <- C50::C5imp(x, metric = "splits")
                     rownames(vars)[vars$Overall > 0]
                   },
                   levels = function(x) x$obsLevels,

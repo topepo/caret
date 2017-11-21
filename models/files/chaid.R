@@ -40,7 +40,7 @@ modelInfo <- list(label = "CHi-squared Automated Interaction Detection",
                                         data = dat,
                                         control = ctl),
                                    theDots)
-                    out <- do.call("chaid", modelArgs)
+                    out <- do.call(CHAID::chaid, modelArgs)
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {

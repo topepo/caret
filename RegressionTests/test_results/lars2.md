@@ -1,7 +1,8 @@
 Least Angle Regression (`lars2`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/lars2.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/lars2.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `lars` (1.2)
- * tested on 2016-06-10 at 17:14
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `lars` (1.2)
+ * tested on 2017-04-12 at 20:37. 
+ * total test time: 8.7s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `lars` (1.2)
- * tested on 2016-06-12 at 12:49
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `lars` (1.2)
+ * tested on 2017-04-11 at 22:21. 
+ * total test time: 6.8s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.8s (new) 0.77s
+Execution times: (old) 0.86s (new) 0.57s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.34s (new) 1.35s
+Execution times: (old) 1.38s (new) 0.85s
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.32s (new) 2.3s
+Execution times: (old) 2.12s (new) 1.75s
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.5s (new) 0.52s
+Execution times: (old) 0.58s (new) 0.22s
 
 Test Results:
 

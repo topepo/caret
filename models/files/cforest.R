@@ -25,9 +25,9 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                       theDots$controls@gtctrl@mtry <- as.integer(param$mtry) 
                       ctl <- theDots$controls
                       theDots$controls <- NULL
-                      
-                    } else ctl <- cforest_control(mtry = param$mtry)
-                    
+
+                    } else ctl <- party::cforest_control(mtry = param$mtry)
+
                     ## pass in any model weights
                     if(!is.null(wts)) theDots$weights <- wts
                     
@@ -35,9 +35,9 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                                         data = dat,
                                         controls = ctl),
                                    theDots)
-                    
-                    out <- do.call(getFromNamespace("cforest", "party"), modelArgs)
-                    out 
+
+                    out <- do.call(party::cforest, modelArgs)
+                    out
                   },
                   predict = function(modelFit, newdata = NULL, submodels = NULL) {
                     if(!is.null(newdata) && !is.data.frame(newdata)) newdata <- as.data.frame(newdata)
@@ -53,7 +53,7 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                   prob = function(modelFit, newdata = NULL, submodels = NULL) {
                     if(!is.null(newdata) && !is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     obsLevels <- levels(modelFit@data@get("response")[,1])
-                    rawProbs <- treeresponse(modelFit, newdata, OOB = TRUE)
+                    rawProbs <- party::treeresponse(modelFit, newdata, OOB = TRUE)
                     probMatrix <- matrix(unlist(rawProbs), ncol = length(obsLevels), byrow = TRUE)
                     out <- data.frame(probMatrix)
                     colnames(out) <- obsLevels

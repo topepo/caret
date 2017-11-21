@@ -1,7 +1,8 @@
 Generalized Additive Model using Splines (`gam`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/gam.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/gam.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `mgcv` (1.8-12), `nlme` (3.1-127)
- * tested on 2016-06-10 at 16:59
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `mgcv` (1.8-17), `nlme` (3.1-131)
+ * tested on 2017-04-12 at 18:22. 
+ * total test time: 69.7s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `mgcv` (1.8-12), `nlme` (3.1-127)
- * tested on 2016-06-12 at 12:35
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `mgcv` (1.8-17), `nlme` (3.1-131)
+ * tested on 2017-04-11 at 20:28. 
+ * total test time: 60s
 
 
 Results:
@@ -38,16 +41,11 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.73s (new) 1.57s
+Execution times: (old) 1.8s (new) 1.3s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -64,16 +62,11 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.98s (new) 1.83s
+Execution times: (old) 2.07s (new) 1.46s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -90,16 +83,11 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.86s (new) 2.41s
+Execution times: (old) 2.67s (new) 1.83s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -122,7 +110,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 37.32s (new) 35.32s
+Execution times: (old) 36.57s (new) 34.13s
 
 Test Results:
 
@@ -143,7 +131,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.88s (new) 0.88s
+Execution times: (old) 0.87s (new) 0.54s
 
 Test Results:
 
@@ -206,7 +194,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.47s (new) 1.48s
+Execution times: (old) 1.31s (new) 1s
 
 Test Results:
 
@@ -232,7 +220,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 14.27s (new) 14.09s
+Execution times: (old) 6.41s (new) 5.8s
 
 Test Results:
 
@@ -252,7 +240,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.66s (new) 1.74s
+Execution times: (old) 1.8s (new) 1.38s
 
 Test Results:
 
@@ -272,7 +260,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.77s (new) 1.81s
+Execution times: (old) 1.77s (new) 1.52s
 
 Test Results:
 
@@ -298,7 +286,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.77s (new) 7.67s
+Execution times: (old) 8.97s (new) 6.65s
 
 Test Results:
 
@@ -318,7 +306,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.57s (new) 0.55s
+Execution times: (old) 0.58s (new) 0.25s
 
 Test Results:
 
@@ -362,7 +350,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.59s (new) 1.55s
+Execution times: (old) 1.71s (new) 1.32s
 
 Test Results:
 

@@ -1,17 +1,27 @@
 modelInfo <- list(label = "Least Squares Support Vector Machine",
                   library = "kernlab",
                   type = c("Classification"),
-                  parameters = data.frame(parameter = c('parameter'),
-                                          class = c("character"),
-                                          label = c('Parameter')),
-                  grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
+                  parameters = data.frame(parameter = c('tau'),
+                                          class = c("numeric"),
+                                          label = c('Regularization Parameter')),
+                  grid = function(x, y, len = NULL, search = "grid") {
+                    if(search == "grid") {
+                      out <- expand.grid(tau = 2 ^((1:len) - 5))
+                    } else {
+                      out <- data.frame(tau = 2^runif(len, min = -5, max = 10))
+                    }
+                    out
+                  },
                   loop = NULL,
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    lssvm(x = as.matrix(x), y = y,
-                            kernel = vanilladot, kpar = list(), ...)         
-                    },
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    kernlab::lssvm(x = as.matrix(x), y = y,
+                                   tau = param$tau,
+                                   kernel = kernlab::polydot(degree = 1,
+                                                             scale = 1,
+                                                             offset = 1), ...)    
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {            
-                    out <- predict(modelFit, as.matrix(newdata))
+                    out <- kernlab::predict(modelFit, as.matrix(newdata))
                     if(is.matrix(out)) out <- out[,1]
                     out
                   },

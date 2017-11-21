@@ -5,8 +5,7 @@ modelInfo <- list(label = "Relaxed Lasso",
                                           class = c('numeric', 'numeric'),
                                           label = c('Penalty Parameter', 'Relaxation Parameter')),
                   grid = function(x, y, len = NULL, search = "grid") {
-                    library(relaxo)
-                    tmp <- relaxo(as.matrix(x), y)
+                    tmp <- relaxo::relaxo(as.matrix(x), y)
                     lambdas <- log10(tmp$lambda)[-c(1, length(tmp$lambda))]
 
                     if(search == "grid") {
@@ -22,8 +21,8 @@ modelInfo <- list(label = "Relaxed Lasso",
                     
                   },
                   loop = function(grid) {
-                    loop <- ddply(grid,  .(phi), function(x) c(lambda = max(x$lambda)))
-                    
+                    loop <- plyr::ddply(grid,  plyr::`.`(phi), function(x) c(lambda = max(x$lambda)))
+
                     submodels <- vector(mode = "list", length = nrow(loop))
                     
                     for(i in seq(along = submodels))
@@ -34,7 +33,7 @@ modelInfo <- list(label = "Relaxed Lasso",
                     list(loop = loop, submodels = submodels)           
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    relaxo(as.matrix(x), y, phi = param$phi, ...)
+                    relaxo::relaxo(as.matrix(x), y, phi = param$phi, ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit,

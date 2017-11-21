@@ -9,13 +9,14 @@ modelInfo <- list(label = "Stacked AutoEncoder Deep Neural Network",
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
                       out <- expand.grid(layer1 = 1:len, layer2 = 0:(len -1), layer3 = 0:(len -1),
-                                         hidden_dropout = 0, visible_dropout = 0)
+                                         hidden_dropout = seq(0, .7, length = len), 
+                                         visible_dropout = seq(0, .7, length = len))
                     } else {
-                      out <- data.frame(layer1 = sample(1:20, replace = TRUE, size = len),
-                                        layer2 = sample(0:20, replace = TRUE, size = len),
-                                        layer3 = sample(0:20, replace = TRUE, size = len),
-                                        hidden_dropout = runif(len, min = 0, max = .1),
-                                        visible_dropout = runif(len, min = 0, max = .1))
+                      out <- data.frame(layer1 = sample(2:20, replace = TRUE, size = len),
+                                        layer2 = sample(2:20, replace = TRUE, size = len),
+                                        layer3 = sample(2:20, replace = TRUE, size = len),
+                                        hidden_dropout = runif(len, min = 0, max = .7),
+                                        visible_dropout = runif(len, min = 0, max = .7))
                     }
                     out
                   },
@@ -25,20 +26,20 @@ modelInfo <- list(label = "Stacked AutoEncoder Deep Neural Network",
                     if (is_class) y <- caret:::class2ind(y)
                     layers <- c(param$layer1, param$layer2, param$layer3)
                     layers <- layers[layers > 0]
-                    sae.dnn.train(x, y, hidden = layers, 
-                                  output = if(is_class) "sigm" else "linear",
-                                  hidden_dropout = param$hidden_dropout,
-                                  visible_dropout = param$visible_dropout,
-                                  ...)
+                    deepnet::sae.dnn.train(x, y, hidden = layers,
+                                           output = if(is_class) "sigm" else "linear",
+                                           hidden_dropout = param$hidden_dropout,
+                                           visible_dropout = param$visible_dropout,
+                                           ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    pred <- nn.predict(modelFit, as.matrix(newdata))
+                    pred <- deepnet::nn.predict(modelFit, as.matrix(newdata))
                     if(ncol(pred) > 1)
                       pred <- modelFit$obsLevels[apply(pred, 1, which.max)]
                     pred
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- exp(nn.predict(modelFit, as.matrix(newdata)))
+                    out <- exp(deepnet::nn.predict(modelFit, as.matrix(newdata)))
                     out <- apply(out, 1, function(x) x/sum(x))
                     t(out)
                   },

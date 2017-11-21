@@ -1,18 +1,73 @@
-
+#' @title Neural Networks Using Model Averaging
+#' @name avNNet
+#' @description Aggregate several neural network models
+#'
+#'
+#' @param formula A formula of the form \code{class ~ x1 + x2 + \dots}
+#' @param x matrix or data frame of \code{x} values for examples.
+#' @param y matrix or data frame of target values for examples.
+#' @param weights (case) weights for each example -- if missing defaults to 1.
+#' @param repeats the number of neural networks with different random number seeds
+#' @param bag a logical for bagging for each repeat
+#' @param seeds random number seeds that can be set prior to bagging (if done) and network creation. This helps maintain reproducibility when models are run in parallel.
+#' @param allowParallel if a parallel backend is loaded and available, should the function use it?
+#' @param data Data frame from which variables specified in  \code{formula} are preferentially to be taken.
+#' @param subset An index vector specifying the cases to be used in the training sample.  (NOTE: If given, this argument must be named.)
+#' @param na.action A function to specify the action to be taken if \code{NA}s are found.
+#' The default action is for the procedure to fail.  An alternative is
+#' \code{na.omit}, which leads to rejection of cases with missing values on
+#' any required variable.  (NOTE: If given, this argument must be named.)
+#' @param contrasts a list of contrasts to be used for some or all of
+#' the  factors  appearing as variables in the model formula.
+#' @param object an object of class \code{avNNet} as  returned by \code{avNNet}.
+#' @param newdata matrix or data frame of test examples. A vector is considered to be
+#' a row vector comprising a single case.
+#' @param type Type of output, either: \code{raw} for the raw outputs, \code{code} for the predicted class or \code{prob} for the class probabilities.
+#' @param \dots arguments passed to \code{\link[nnet]{nnet}}
+#'
+#' @details Following Ripley (1996), the same neural network model is fit using different random number seeds. All the resulting models are used for prediction. For regression, the output from each network are averaged. For classification, the model scores are first averaged, then translated to predicted classes. Bagging can also be used to create the models.
+#'
+#' If a parallel backend is registered, the \pkg{foreach} package is used to train the networks in parallel.
+#'
+#' @return
+#'   For \code{avNNet}, an object of  \code{"avNNet"} or \code{"avNNet.formula"}. Items of interest in #' the output are:
+#'   \item{model }{a list of the models generated from  \code{\link[nnet]{nnet}}}
+#'   \item{repeats }{an echo of the model input}
+#'   \item{names }{if any predictors had only one distinct value, this is a character string of the #' remaining columns. Otherwise a value of \code{NULL}}
+#' @references   Ripley, B. D. (1996)
+#' \emph{Pattern Recognition and Neural Networks.} Cambridge.
+#'
+#' @author These are heavily based on the \code{nnet} code from Brian Ripley.
+#' @seealso \code{\link[nnet]{nnet}},  \code{\link{preProcess}}
+#' @examples
+#' data(BloodBrain)
+#' \dontrun{
+#' modelFit <- avNNet(bbbDescr, logBBB, size = 5, linout = TRUE, trace = FALSE)
+#' modelFit
+#'
+#' predict(modelFit, bbbDescr)
+#' }
+#' @keywords neural
+#' @aliases avNNet.default predict.avNNet avNNet.formula avNNet
+#' @export
 avNNet <- function (x, ...)
   UseMethod("avNNet")
 
 
 ## this is a near copy of nnet.formula
+#' @importFrom stats .getXlevels contrasts model.matrix model.response model.weights
+#' @rdname avNNet
+#' @method avNNet formula
+#' @export
 avNNet.formula <- function (formula, data, weights, ...,
                             repeats = 5,
                             bag= FALSE,
                             allowParallel = TRUE,
                             seeds = sample.int(1e5, repeats),
-                            subset, na.action, contrasts = NULL) 
+                            subset, na.action, contrasts = NULL)
 {
   m <- match.call(expand.dots = FALSE)
-  if (is.matrix(eval.parent(m$data))) 
+  if (is.matrix(eval.parent(m$data)))
     m$data <- as.data.frame(data)
 ##  bag <- m$bag
 ##  repeats <- m$repeats
@@ -23,13 +78,13 @@ avNNet.formula <- function (formula, data, weights, ...,
   x <- model.matrix(Terms, m, contrasts)
   cons <- attr(x, "contrast")
   xint <- match("(Intercept)", colnames(x), nomatch = 0)
-  if (xint > 0) 
+  if (xint > 0)
     x <- x[, -xint, drop = FALSE]
   w <- model.weights(m)
-  if (length(w) == 0) 
+  if (length(w) == 0)
     w <- rep(1, nrow(x))
   y <- model.response(m)
-  
+
   res <- avNNet.default(x, y,
                         weights = w,
                         repeats = repeats,
@@ -46,7 +101,11 @@ avNNet.formula <- function (formula, data, weights, ...,
   res
 }
 
-avNNet.default <- function(x, y, repeats = 5, 
+#' @import foreach
+#' @rdname avNNet
+#' @method avNNet default
+#' @export
+avNNet.default <- function(x, y, repeats = 5,
                            bag = FALSE, allowParallel = TRUE,
                            seeds = sample.int(1e5, repeats), ...)
   {
@@ -62,7 +121,7 @@ avNNet.default <- function(x, y, repeats = 5,
       } else classLev <- NULL
 
     if(is.matrix(y)) classLev <- colnames(y)
-    
+
     theDots <- list(...)
 
     ## to avoid a "no visible binding for global variable 'i'" warning:
@@ -71,7 +130,7 @@ avNNet.default <- function(x, y, repeats = 5,
      mods <- foreach(i = 1:repeats,
                      .verbose = FALSE,
                      .packages = "caret",
-                     .errorhandling = "stop") %op%  
+                     .errorhandling = "stop") %op%
     {
       if(any(names(theDots) == "trace"))
         {
@@ -83,7 +142,7 @@ avNNet.default <- function(x, y, repeats = 5,
       thisMod$lev <- classLev
       thisMod
     }
-    
+
     ## return results
     out <- list(model = mods,
                 repeats = repeats,
@@ -94,7 +153,10 @@ avNNet.default <- function(x, y, repeats = 5,
     out
   }
 
-print.avNNet <- function (x, ...) 
+#' @rdname avNNet
+#' @method print avNNet
+#' @export
+print.avNNet <- function (x, ...)
 {
   cat("Model Averaged Neural Network with", x$repeats, "Repeats", ifelse(x$bag, "and Bagging", ""), "\n\n")
   print(x$model[[1]])
@@ -102,10 +164,14 @@ print.avNNet <- function (x, ...)
   invisible(x)
 }
 
+#' @importFrom stats .checkMFClasses delete.response fitted.values model.frame model.matrix predict na.omit
+#' @rdname avNNet
+#' @method predict avNNet
+#' @export
 predict.avNNet <- function(object, newdata, type = c("raw", "class", "prob"), ...)
   {
     loadNamespace("nnet")
-    if (!inherits(object, "avNNet")) 
+    if (!inherits(object, "avNNet"))
       stop("object not of class \"avNNet\"")
     if (missing(newdata))
       {
@@ -133,21 +199,21 @@ predict.avNNet <- function(object, newdata, type = c("raw", "class", "prob"), ..
           newdata <- as.data.frame(newdata)
           rn <- row.names(newdata)
           Terms <- delete.response(object$terms)
-          m <- model.frame(Terms, newdata, na.action = na.omit, 
+          m <- model.frame(Terms, newdata, na.action = na.omit,
                            xlev = object$xlevels)
-          if (!is.null(cl <- attr(Terms, "dataClasses"))) 
+          if (!is.null(cl <- attr(Terms, "dataClasses")))
             .checkMFClasses(cl, m)
           keep <- match(row.names(m), rn)
           x <- model.matrix(Terms, m, contrasts = object$contrasts)
           xint <- match("(Intercept)", colnames(x), nomatch = 0)
-          if (xint > 0) 
+          if (xint > 0)
             x <- x[, -xint, drop = FALSE]
         }
         else {
-          if (is.null(dim(newdata))) 
+          if (is.null(dim(newdata)))
             dim(newdata) <- c(1, length(newdata))
           x <- as.matrix(newdata)
-          if (any(is.na(x))) 
+          if (any(is.na(x)))
             stop("missing values in 'x'")
           keep <- 1:nrow(x)
           rn <- rownames(x)
@@ -171,7 +237,7 @@ predict.avNNet <- function(object, newdata, type = c("raw", "class", "prob"), ..
             if(type[1]== "class")  out <- (classes)
             if(type[1]== "prob")  out <- t(apply(scores, 1, function(x) x/sum(x)))
           }
-        
+
       }
     out
 

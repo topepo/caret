@@ -1,7 +1,8 @@
 `sbf_nb`
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/sbf_nb.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/sbf_nb.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68)
- * tested on 2016-06-10 at 17:43
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73)
+ * tested on 2017-04-12 at 20:36. 
+ * total test time: 11.2s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70)
- * tested on 2016-06-12 at 13:24
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75)
+ * tested on 2017-04-11 at 20:39. 
+ * total test time: 10.3s
 
 
 Results:
@@ -35,7 +38,7 @@ Model Configuration:
  * Non-formula method
 
 
-Execution times: (old) 0.82s (new) 0.81s
+Execution times: (old) 0.72s (new) 0.83s
 
 Test Results:
 
@@ -52,7 +55,7 @@ Model Configuration:
  * Formula method
 
 
-Execution times: (old) 0.59s (new) 0.58s
+Execution times: (old) 0.5s (new) 0.43s
 
 Test Results:
 
@@ -81,7 +84,7 @@ Model Configuration:
  * Non-formula method
 
 
-Execution times: (old) 4.01s (new) 3.89s
+Execution times: (old) 3.39s (new) 3.3s
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * Formula method
 
 
-Execution times: (old) 4.49s (new) 4.32s
+Execution times: (old) 3.8s (new) 3.31s
 
 Test Results:
 

@@ -1,7 +1,8 @@
 Relevance Vector Machines with Linear Kernel (`rvmLinear`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/rvmLinear.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/rvmLinear.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `kernlab` (0.9-24)
- * tested on 2016-06-10 at 17:42
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `kernlab` (0.9-25)
+ * tested on 2017-04-12 at 18:35. 
+ * total test time: 8.8s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `kernlab` (0.9-24)
- * tested on 2016-06-12 at 13:21
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `kernlab` (0.9-25)
+ * tested on 2017-04-11 at 22:21. 
+ * total test time: 6.4s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.87s (new) 0.84s
+Execution times: (old) 0.8s (new) 0.47s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 2s (new) 1.97s
+Execution times: (old) 2.04s (new) 1.45s
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 2.69s (new) 2.61s
+Execution times: (old) 2.31s (new) 1.61s
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.55s (new) 0.51s
+Execution times: (old) 0.62s (new) 0.25s
 
 Test Results:
 

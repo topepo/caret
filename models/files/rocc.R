@@ -17,10 +17,10 @@ modelInfo <- list(label = "ROC-Based Classifier",
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     newY <- factor(ifelse(y == levels(y)[1], 1, 0), levels = c("0", "1"))
-                    tr.rocc(g = t(as.matrix(x)), out = newY, xgenes = param$xgenes)
+                    rocc::tr.rocc(g = t(as.matrix(x)), out = newY, xgenes = param$xgenes)
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    tmp <- p.rocc(modelFit, t(as.matrix(newdata)))
+                    tmp <- rocc::p.rocc(modelFit, t(as.matrix(newdata)))
                     factor(ifelse(tmp == "1",  modelFit$obsLevels[1],  modelFit$obsLevels[2]),
                            levels =  modelFit$obsLevels)
                   },

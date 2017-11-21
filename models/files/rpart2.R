@@ -7,9 +7,9 @@ modelInfo <- list(label = "CART",
                   grid = function(x, y, len = NULL, search = "grid"){
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    initialFit <- rpart(.outcome ~ .,
-                                        data = dat,
-                                        control = rpart.control(cp = 0))$cptable
+                    initialFit <- rpart::rpart(.outcome ~ .,
+                                               data = dat,
+                                               control = rpart::rpart.control(cp = 0))$cptable
                     initialFit <- initialFit[order(-initialFit[,"CP"]), "nsplit", drop = FALSE]
                     initialFit <- initialFit[initialFit[,"nsplit"] > 0 & initialFit[,"nsplit"] <= 30, , drop = FALSE]
                     
@@ -42,7 +42,7 @@ modelInfo <- list(label = "CART",
                       theDots$control$xval <- 0 
                       ctl <- theDots$control
                       theDots$control <- NULL    
-                    } else ctl <- rpart.control(maxdepth = param$maxdepth, xval = 0)  
+                    } else ctl <- rpart::rpart.control(maxdepth = param$maxdepth, xval = 0)  
                     
                     ## check to see if weights were passed in (and availible)
                     if(!is.null(wts)) theDots$weights <- wts    
@@ -52,9 +52,9 @@ modelInfo <- list(label = "CART",
                                         control = ctl),
                                    theDots)
                     modelArgs$data$.outcome <- y
-                    
-                    out <- do.call("rpart", modelArgs)
-                    out           
+
+                    out <- do.call(rpart::rpart, modelArgs)
+                    out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     ## Models are indexed by Cp so approximate the Cp for
@@ -78,7 +78,7 @@ modelInfo <- list(label = "CART",
                       cpValues <- depth2cp(modelFit$cptable, submodels$maxdepth)
                       for(j in seq(along = cpValues))
                       {
-                        prunedFit <- prune.rpart(modelFit, cp = cpValues[j])
+                        prunedFit <- rpart::prune.rpart(modelFit, cp = cpValues[j])
                         tmp[[j+1]]  <- predict(prunedFit, newdata, type=pType)
                       }
                       out <- tmp
@@ -103,7 +103,7 @@ modelInfo <- list(label = "CART",
                       
                       for(j in seq(along = cpValues))
                       {
-                        prunedFit <- prune.rpart(modelFit, cp = cpValues[j])
+                        prunedFit <- rpart::prune.rpart(modelFit, cp = cpValues[j])
                         tmpProb <- predict(prunedFit, newdata, type = "prob")
                         tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE])
                       }

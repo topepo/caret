@@ -16,8 +16,8 @@ modelInfo <- list(label = "Boosted Tree",
                     }
                     out
                   },
-                  loop = function(grid) {   
-                    loop <- ddply(grid, .(maxdepth, nu), function(x) c(mstop = max(x$mstop)))
+                  loop = function(grid) {
+                    loop <- plyr::ddply(grid, plyr::`.`(maxdepth, nu), function(x) c(mstop = max(x$mstop)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$mstop))
                     {
@@ -39,7 +39,7 @@ modelInfo <- list(label = "Boosted Tree",
                       theDots$ctrl$mstop <- param$mstop
                       theDots$ctrl$nu <- param$nu
                     } else {
-                      theDots$ctrl <- bst_control(mstop = param$mstop, nu = param$nu)
+                      theDots$ctrl <- bst::bst_control(mstop = param$mstop, nu = param$nu)
                     }
                     if(any(names(theDots) == "control.tree"))
                     {
@@ -51,8 +51,8 @@ modelInfo <- list(label = "Boosted Tree",
                     
                     modArgs <- list(x = x, y = y, family = modDist, learner = "tree")
                     modArgs <- c(modArgs, theDots)
-                    
-                    do.call("bst", modArgs)
+
+                    do.call(bst::bst, modArgs)
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(modelFit$problemType == "Classification")

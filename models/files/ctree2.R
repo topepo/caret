@@ -25,7 +25,7 @@ modelInfo <- list(label = "Conditional Inference Tree",
                       ctl <- theDots$controls
                       theDots$controls <- NULL
                       
-                    } else ctl <- do.call(getFromNamespace("ctree_control", "party"), 
+                    } else ctl <- do.call(party::ctree_control, 
                                           list(maxdepth = param$maxdepth,
                                                mincriterion = param$mincriterion))
                     ## pass in any model weights
@@ -36,7 +36,7 @@ modelInfo <- list(label = "Conditional Inference Tree",
                                         data = dat,
                                         controls = ctl),
                                    theDots)
-                    out <- do.call(getFromNamespace("ctree", "party"), modelArgs)
+                    out <- do.call(party::ctree, modelArgs)
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {

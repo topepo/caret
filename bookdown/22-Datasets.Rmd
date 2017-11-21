@@ -1,0 +1,120 @@
+```{r data_load, echo = FALSE, message=FALSE, warning=FALSE}
+library(caret)
+library(knitr)
+opts_chunk$set(digits = 3, tidy = FALSE)
+```
+
+# Data Sets
+
+There are a few data sets included in [`caret`](http://cran.r-project.org/web/packages/caret/index.html). The first four are computational chemistry problems where the object is to relate the molecular structure of compounds (via molecular descriptors) to some property of interest ([Clark and Pickett (2000)](http://www.sciencedirect.com/science/article/pii/S1359644699014518)). Similar data sets can be found in the [`QSARdata`](http://cran.r-project.org/web/packages/QSARdata/index.html) R pacakge.
+
+Other R packages with data are: 
+
+* [`mlbench`](http://cran.r-project.org/web/packages/mlbench/index.html), 
+* [`SMCRM`](http://cran.r-project.org/web/packages/SMCRM/index.html) and
+* [`AppliedPredictiveModeling`](http://cran.r-project.org/web/packages/AppliedPredictiveModeling/index.html).
+
+## Blood-Brain Barrier Data
+
+[Mente and Lombardo (2005)](http://www.springerlink.com/content/72j377175n536768/?p=f546488cc8fa4ec7a3d491 eb20adb3c&pi=0) developed models to predict the log of the ratio of the concentration of a compound in the brain and the concentration in blood. For each compound, they computed three sets of molecular descriptors: MOE 2D, rule-of-five and Charge Polar Surface Area (CPSA). In all, 134 descriptors were calculated. Included in this package are 208 non-proprietary literature compounds. The vector `logBBB` contains the log concentration ratio and the data fame `bbbDescr` contains the descriptor values.
+
+## COX-2 Activity Data
+
+From [Sutherland, O'Brien, and Weaver (2003)](http://pubs.acs.org/cgi-bin/abstract.cgi/jmcmar/2004/47/i22/abs/jm0497141.html): A set of 467 cyclooxygenase-2 (COX-2) inhibitors has been assembled from the published work of a single research group, with in vitro activities against human recombinant enzyme expressed as IC50 values ranging from 1 nM to &gt;100 uM (53 compounds have indeterminate IC50 values).
+
+A set of 255 descriptors (MOE2D and QikProp) were generated. To classify the data, we used a cutoff of 2\^{2.5} to determine activity.
+
+Using `data(cox2)` exposes three R objects: `cox2Descr` is a data frame with the descriptor data, `cox2IC50` is a numeric vector of IC50 assay values and `cox2Class` is a factor vector with the activity results.
+
+## DHFR Inhibition 
+
+[Sutherland and Weaver (2004)](http://www.springerlink.com/content/q5m5xp1q356p2071/) discuss QSAR models for dihydrofolate reductase (DHFR) inhibition. This data set contains values for 325 compounds. For each compound, 228 molecular descriptors have been calculated. Additionally, each samples is designated as "active" or "inactive".
+
+The data frame `dhfr` contains a column called `Y` with the outcome classification. The remainder of the columns are molecular descriptor values.
+
+## Tecator NIR Data 
+
+These data can be found in the datasets section of StatLib. The data consist of 100 near infrared absorbance spectra used to predict the moisture, fat and protein values of chopped meat.
+
+From [StatLib](http://lib.stat.cmu.edu/datasets/tecator):
+
+> These data are recorded on a Tecator Infratec Food and Feed Analyzer
+> working in the wavelength range 850 - 1050 nm by the Near Infrared
+> Transmission (NIT) principle. Each sample contains finely chopped pure
+> meat with different moisture, fat and protein contents. If results
+> from these data are used in a publication we want you to mention the
+> instrument and company name (Tecator) in the publication. In addition,
+> please send a preprint of your article to: Karin Thente, Tecator AB,
+> Box 70, S-263 21 Hoganas, Sweden.
+
+One reference for these data is Borggaard and Thodberg (1992).
+
+Using `data(tecator)` loads a 215 x 100 matrix of absorbance spectra and a 215 x 3 matrix of outcomes.
+
+## Fatty Acid Composition Data 
+
+[Brodnjak-Voncina et al. (2005)](http://dx.doi.org/10.1016/j.chemolab.2004.04.011) describe a set of data where seven fatty acid compositions were used to classify commercial oils as either pumpkin (labeled `A`), sunflower (`B`), peanut (`C`), olive (`D`), soybean (`E`), rapeseed (`F`) and corn (`G`). There were 96 data points contained in their Table 1 with known results. The breakdown of the classes is given in below:
+
+```{r data_oil}
+data(oil)
+dim(fattyAcids)
+table(oilType)
+```
+
+As a note, the paper states on page 32 that there are 37 unknown samples while the table on pages 33 and 34 shows that there are 34 unknowns.
+
+## German Credit Data 
+
+Data from Dr. Hans Hofmann of the University of Hamburg and stored at the [UC Irvine Machine Learning Repository](http://archive.ics.uci.edu/ml/datasets/Statlog+%28German+Credit+Data%29).
+
+These data have two classes for the credit worthiness: good or bad. There are predictors related to attributes, such as: checking account status, duration, credit history, purpose of the loan, amount of the loan, savings accounts or bonds, employment duration, Installment rate in percentage of disposable income, personal information, other debtors/guarantors, residence duration, property, age, other installment plans, housing, number of existing credits, job information, Number of people being liable to provide maintenance for, telephone, and foreign worker status.
+
+Many of these predictors are discrete and have been expanded into several 0/1 indicator variables
+
+```{r data_z_germans}
+library(caret)
+data(GermanCredit)
+## Show the first 10 columns
+str(GermanCredit[, 1:10])
+```
+
+##  Kelly Blue Book 
+
+Resale data for 2005 model year GM cars [Kuiper (2008)](http://www.amstat.org/publications/jse/v16n3/datasets.kuiper.html) collected data on Kelly Blue Book resale data for 804 GM cars (2005 model year).
+
+`cars` is data frame of the suggested retail price (column `Price`) and various characteristics of each car (columns `Mileage`, `Cylinder`, `Doors`, `Cruise`, `Sound`, `Leather`, `Buick`, `Cadillac`, `Chevy`, `Pontiac`, `Saab`, `Saturn`, `convertible`, `coupe`, `hatchback`, `sedan` and `wagon`)
+
+```{r data_cars}
+data(cars)
+str(cars)
+```
+
+## Cell Body Segmentation Data 
+
+[Hill, LaPan, Li and Haney (2007)](http://www.biomedcentral.com/1471-2105/8/340) develop models to predict which cells in a high content screen were well segmented. The data consists of 119 imaging measurements on 2019. The original analysis used 1009 for training and 1010 as a test set (see the column called `Case`).
+
+The outcome class is contained in a factor variable called `Class` with levels `PS` for poorly segmented and `WS` for well segmented.
+
+```{r data_cells}
+data(segmentationData)
+str(segmentationData[,1:10])
+```
+
+## Sacramento House Price Data
+
+This data frame contains house and sale price data for 932 homes in Sacramento CA. The original data were obtained from the website for the [SpatialKey software](https://support.spatialkey.com/spatialkey-sample-csv-data). From their website: "The Sacramento real estate transactions file is a list of 985 real estate transactions in the Sacramento area reported over a five-day period, as reported by the Sacramento Bee." Google was used to fill in missing/incorrect data.
+
+```{r data_sac}
+data(Sacramento)
+str(Sacramento)
+```
+
+
+## Animal Scat Data
+
+[Reid (2105)](http://www.bioone.org/doi/full/10.2981/wlb.00105) collected data on animal feses in coastal California. The data consist of DNA verified species designations as well as fields related to the time and place of the collection and the scat itself. The data frame `scat_orig` contains while scat contains data on the three main species.
+
+```{r data_scat}
+data(scat)
+str(scat)
+```

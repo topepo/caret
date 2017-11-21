@@ -1,75 +1,44 @@
 # .travis.yml
 #
-# See README.md for instructions, or for more configuration options,
-# see the wiki:
-#   https://github.com/craigcitro/r-travis/wiki
+# https://docs.travis-ci.com/user/languages/r/
 
-language: c
-sudo: required
+language: r
+sudo: false
+warnings_are_errors: false
+cache: packages
 
-env:
-  global:
-    - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
-    - R_BUILD_ARGS="--no-build-vignettes --no-manual"
-  matrix:
-    - NOT_CRAN="true"
-    - NOT_CRAN="false"
+r:
+  - release
+
+r_packages: 
+  - covr
+  - data.table
+  - ellipse
+  - ggplot2
+  - klaR
+  - MASS
+  - mda
+  - mgcv
+  - mlbench
+  - MLmetrics
+  - ModelMetrics
+  - nnet
+  - pamr
+  - party
+  - pls
+  - proxy
+  - randomForest
+  - RANN
+  - rARPACK
+  - reshape2
+  - spls
+  - subselect
+  - superpc
+  - testthat
+  - xgboost
 
 before_install:
   - cd pkg/caret
-  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-  - chmod 755 ./travis-tool.sh
-  - sudo mkdir -p /usr/lib/R/library
-  - echo 'R_LIBS=/usr/lib/R/library:/usr/lib/R/site-library/' > ~/.Renviron
-  - sudo chmod 2777 /usr/lib/R/library
-  - ./travis-tool.sh bootstrap
-  - ./travis-tool.sh r_binary_install car
-  - ./travis-tool.sh r_binary_install reshape2
-  - ./travis-tool.sh r_binary_install foreach
-  - ./travis-tool.sh r_binary_install plyr
-  - ./travis-tool.sh r_binary_install nlme
-  - ./travis-tool.sh r_binary_install BradleyTerry2
-  - ./travis-tool.sh r_binary_install e1071
-  - ./travis-tool.sh r_binary_install earth
-  - ./travis-tool.sh r_binary_install fastICA
-  - ./travis-tool.sh r_binary_install gam
-  - ./travis-tool.sh r_binary_install ipred
-  - ./travis-tool.sh r_binary_install kernlab
-  - ./travis-tool.sh r_binary_install klaR
-  - ./travis-tool.sh r_binary_install MASS
-  - ./travis-tool.sh r_binary_install ellipse
-  - ./travis-tool.sh r_binary_install mda
-  - ./travis-tool.sh r_binary_install mgcv
-  - ./travis-tool.sh r_binary_install mlbench
-  - ./travis-tool.sh r_binary_install nnet
-  - ./travis-tool.sh r_binary_install party
-  - ./travis-tool.sh r_binary_install pls
-  - ./travis-tool.sh r_binary_install pROC
-  - ./travis-tool.sh r_binary_install proxy
-  - ./travis-tool.sh r_binary_install randomForest
-  - ./travis-tool.sh r_binary_install RANN
-  - ./travis-tool.sh r_binary_install spls
-  - ./travis-tool.sh r_binary_install subselect
-  - ./travis-tool.sh r_binary_install pamr
-  - ./travis-tool.sh r_binary_install superpc
-  - ./travis-tool.sh r_binary_install Cubist
-  - ./travis-tool.sh r_binary_install testthat
-  - ./travis-tool.sh r_binary_install rARPACK
-  - ./travis-tool.sh r_binary_install ggplot2
-  - ./travis-tool.sh r_binary_install reshape2
-  - ./travis-tool.sh r_binary_install data.table
-  - ./travis-tool.sh install_github jimhester/covr
-  - ./travis-tool.sh install_github terrytangyuan/lfda
-
-install:
-  - ./travis-tool.sh install_deps
-  - ./travis-tool.sh install_r ROSE DMwR
-
-script:
-  - ./travis-tool.sh run_tests
-
+ 
 after_success:
-  - Rscript -e 'library(covr);coveralls()'
-
-after_failure:
-  - ./travis-tool.sh dump_logs
+  - Rscript -e 'covr::codecov()'

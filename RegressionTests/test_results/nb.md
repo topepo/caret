@@ -1,7 +1,8 @@
 Naive Bayes (`nb`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/nb.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/nb.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `klaR` (0.6-12), `MASS` (7.3-45)
- * tested on 2016-06-10 at 17:20
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `klaR` (0.6-12), `MASS` (7.3-45)
+ * tested on 2017-04-12 at 20:36. 
+ * total test time: 12s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `klaR` (0.6-12), `MASS` (7.3-45)
- * tested on 2016-06-12 at 12:56
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `klaR` (0.6-12), `MASS` (7.3-45)
+ * tested on 2017-04-11 at 22:18. 
+ * total test time: 9s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.01s (new) 1.05s
+Execution times: (old) 1.06s (new) 0.77s
 
 Test Results:
 
@@ -59,7 +62,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.68s (new) 1.68s
+Execution times: (old) 1.76s (new) 1.05s
 
 Test Results:
 
@@ -80,7 +83,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.58s (new) 4.4s
+Execution times: (old) 4.1s (new) 3.47s
 
 Test Results:
 
@@ -101,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.49s (new) 0.51s
+Execution times: (old) 0.54s (new) 0.19s
 
 Test Results:
 

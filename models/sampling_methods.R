@@ -6,7 +6,7 @@ sampling_methods <- list(down = function(x, y) downSample(x, y, list = TRUE),
                            dat <- if(is.data.frame(x)) x else as.data.frame(x)
                            dat$.y <- y
                            dat <- SMOTE(.y ~ ., data = dat)
-                           list(x = dat[, !grepl(".y", colnames(dat), fixed = TRUE)],
+                           list(x = dat[, !grepl(".y", colnames(dat), fixed = TRUE), drop = FALSE],
                                 y = dat$.y)
                          },
                          rose = function(x, y) {
@@ -15,9 +15,9 @@ sampling_methods <- list(down = function(x, y) downSample(x, y, list = TRUE),
                            dat <- if(is.data.frame(x)) x else as.data.frame(x)
                            dat$.y <- y
                            dat <- ROSE(.y ~ ., data = dat)$data
-                           list(x = dat[, !grepl(".y", colnames(dat), fixed = TRUE)],
+                           list(x = dat[, !grepl(".y", colnames(dat), fixed = TRUE), drop = FALSE],
                                 y = dat$.y)
                          })
-save(sampling_methods, file = "../../pkg/caret/inst/models/sampling.RData")
+save(sampling_methods, file = "../pkg/caret/inst/models/sampling.RData")
 
 

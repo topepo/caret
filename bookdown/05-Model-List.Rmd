@@ -1,0 +1,36 @@
+```{r list_setup, include=FALSE}
+library(DT)
+library(caret)
+mods <- getModelInfo()
+
+num_param <- unlist(lapply(mods, function(x) paste(as.character(x$param$parameter), sep = "", collapse = ", ")))
+num_param[num_param == "parameter"] <- "None"
+num_param <- data.frame(model = names(num_param), num_param = num_param)
+
+mod_type <- unlist(lapply(mods, function(x) paste(sort(x$type), sep = "", collapse = ", ")))
+mod_type <- data.frame(model = names(mod_type), type = mod_type)
+
+libs <- unlist(lapply(mods, function(x) paste(x$library, sep = "", collapse = ", ")))
+libs <- data.frame(model = names(libs), libraries = libs)
+
+mod_name <- unlist(lapply(mods, function(x) x$label))
+mod_name <- data.frame(model = names(mod_name), name = mod_name)
+
+model_info <- merge(mod_name, mod_type, all = TRUE)
+model_info <- merge(model_info, libs, all = TRUE)
+model_info <- merge(model_info, num_param, all = TRUE)
+model_info <- model_info[, c('name', 'model', 'type', 'libraries', 'num_param')]
+model_info <- model_info[order(model_info$name),]
+```
+
+# Available Models
+
+The models below are available in `train`. The code behind these protocols can be obtained using the function `getModelInfo` or by going to the [github repository](https://github.com/topepo/caret/tree/master/models/files). 
+
+ 
+```{r list_table, echo = FALSE}
+datatable(model_info, rownames = FALSE, style = "bootstrap", 
+          colnames = c("Model", "`method` Value", "Type", "Libraries", "Tuning Parameters"),
+          options = list(lengthMenu = c(nrow(model_info), 5, 10, 15, 20), 
+                         scrollX = TRUE))
+```

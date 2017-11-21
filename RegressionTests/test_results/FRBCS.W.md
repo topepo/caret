@@ -1,7 +1,8 @@
 Fuzzy Rules with Weight Factor (`FRBCS.W`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/FRBCS.W.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/FRBCS.W.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `frbs` (3.1-0)
- * tested on 2016-06-10 at 16:58
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `frbs` (3.1-0)
+ * tested on 2017-04-12 at 19:26. 
+ * total test time: 27.6s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `frbs` (3.1-0)
- * tested on 2016-06-12 at 12:33
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `frbs` (3.1-0)
+ * tested on 2017-04-11 at 21:52. 
+ * total test time: 22.9s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.36s (new) 3.35s
+Execution times: (old) 3.15s (new) 2.51s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.34s (new) 4.43s
+Execution times: (old) 3.88s (new) 3.01s
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 15.32s (new) 15.57s
+Execution times: (old) 13.03s (new) 11.36s
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.56s (new) 0.6s
+Execution times: (old) 0.57s (new) 0.2s
 
 Test Results:
 
@@ -136,7 +139,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.37s (new) 3.21s
+Execution times: (old) 2.97s (new) 2.47s
 
 Test Results:
 

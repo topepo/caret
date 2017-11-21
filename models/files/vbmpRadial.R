@@ -19,19 +19,19 @@ modelInfo <- list(label = "Variational Bayesian Multinomial Probit Regression",
                       theta <- theDots$theta
                       theDots$theta <- NULL
                     } else theta <- runif(ncol(x))
-                    
-                    vbmp(x, as.numeric(y),
-                         theta = theta,
-                         control = ctl,
-                         X.TEST = x[1,],
-                         t.class.TEST  = as.numeric(y)[1])
+
+                    vbmp::vbmp(x, as.numeric(y),
+                               theta = theta,
+                               control = ctl,
+                               X.TEST = x[1,],
+                               t.class.TEST  = as.numeric(y)[1])
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    probs <- predictCPP(modelFit, newdata)
+                    probs <- vbmp::predictCPP(modelFit, newdata)
                     modelFit$obsLevels[apply(probs, 1, which.max)]
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    probs <- predictCPP(modelFit, newdata)
+                    probs <- vbmp::predictCPP(modelFit, newdata)
                     colnames(probs) <- modelFit$obsLevels
                     probs
                   },

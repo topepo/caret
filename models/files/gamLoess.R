@@ -15,6 +15,7 @@ modelInfo <- list(label = "Generalized Additive Model using LOESS",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    require(gam)
                     args <- list(data = if(is.data.frame(x)) x else as.data.frame(x))
                     args$data$.outcome <- y
                     args$formula <- caret:::smootherFormula(x,
@@ -28,8 +29,8 @@ modelInfo <- list(label = "Generalized Additive Model using LOESS",
                       args$family <- if(is.factor(y)) binomial else gaussian
                     
                     if(length(theDots) > 0) args <- c(args, theDots)
-                    
-                    do.call(getFromNamespace("gam", "gam"), args)
+
+                    do.call(gam::gam, args)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
@@ -89,6 +90,16 @@ modelInfo <- list(label = "Generalized Additive Model using LOESS",
                     gams
                   },
                   levels = function(x) x$obsLevels,
-                  notes = "Which terms enter the model in a nonlinear manner is determined by the number of unique values for the predictor. For example, if a predictor only has four unique values, most basis expansion method will fail because there are not enough granularity in the data. By default, a predictor must have at least 10 unique values to be used in a nonlinear basis expansion.",
+                  notes = 
+                    paste(
+                      'Which terms enter the model in a nonlinear manner is determined',
+                      'by the number of unique values for the predictor. For example,',
+                      'if a predictor only has four unique values, most basis expansion',
+                      'method will fail because there are not enough granularity in the',
+                      'data. By default, a predictor must have at least 10 unique',
+                      'values to be used in a nonlinear basis expansion.',
+                      'Unlike other packages used by `train`, the `gam`',
+                      'package is fully loaded when this model is used.'
+                    ),
                   tags = c("Generalized Linear Model", "Generalized Additive Model"),
                   sort = function(x) x)

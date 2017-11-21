@@ -1,7 +1,8 @@
 Bagged FDA using gCV Pruning (`bagFDAGCV`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/bagFDAGCV.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/bagFDAGCV.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `class` (7.3-14), `earth` (4.4.4), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
- * tested on 2016-06-10 at 16:48
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `class` (7.3-14), `earth` (4.4.9.1), `mda` (0.4-9), `plotmo` (3.3.1), `plotrix` (3.6-3), `TeachingDemos` (2.10)
+ * tested on 2017-04-12 at 19:27. 
+ * total test time: 95.9s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `class` (7.3-14), `earth` (4.4.4), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
- * tested on 2016-06-12 at 12:23
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `class` (7.3-14), `earth` (4.4.9.1), `mda` (0.4-9), `plotmo` (3.3.1), `plotrix` (3.6-3), `TeachingDemos` (2.10)
+ * tested on 2017-04-11 at 21:03. 
+ * total test time: 94.9s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.6s (new) 2.62s
+Execution times: (old) 2.54s (new) 3.06s
 
 Test Results:
 
@@ -59,7 +62,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.39s (new) 3.55s
+Execution times: (old) 3.38s (new) 3.49s
 
 Test Results:
 
@@ -86,7 +89,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.04m (new) 1.07m
+Execution times: (old) 58.65s (new) 1.24m
 
 Test Results:
 
@@ -107,7 +110,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.74s (new) 0.79s
+Execution times: (old) 0.74s (new) 0.5s
 
 Test Results:
 
@@ -170,7 +173,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 4.88s (new) 5.04s
+Execution times: (old) 4.65s (new) 5.67s
 
 Test Results:
 

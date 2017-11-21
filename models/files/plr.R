@@ -16,20 +16,22 @@ modelInfo <- list(label = "Penalized Logistic Regression",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
+                    if(!is.matrix(x)) 
+                      x <- as.matrix(x)
                     y <- ifelse(y == levels(y)[1], 1, 0)
-                    plr(x, y,
-                        lambda = param$lambda,
-                        cp = as.character(param$cp),
-                        weights = if(!is.null(wts)) wts else rep(1,length(y)), 
-                        ...)
+                    stepPlr::plr(x, y,
+                                 lambda = param$lambda,
+                                 cp = as.character(param$cp),
+                                 weights = if(!is.null(wts)) wts else rep(1,length(y)), 
+                                 ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL)  {
-                    ifelse(predict(modelFit, as.matrix(newdata), type = "class") == 1,
+                    ifelse(stepPlr::predict.plr(modelFit, as.matrix(newdata), type = "class") == 1,
                            modelFit$obsLevels[1],
                            modelFit$obsLevels[2])
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- predict(modelFit, as.matrix(newdata), type = "response")
+                    out <- stepPlr::predict.plr(modelFit, as.matrix(newdata), type = "response")
                     out <- cbind(out, 1-out)
                     dimnames(out)[[2]] <-  modelFit$obsLevels
                     out

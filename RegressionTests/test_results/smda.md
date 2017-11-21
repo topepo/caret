@@ -1,7 +1,8 @@
 Sparse Mixture Discriminant Analysis (`smda`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/smda.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/smda.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `sparseLDA` (0.1-7)
- * tested on 2016-06-10 at 17:45
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `sparseLDA` (0.1-9)
+ * tested on 2017-04-12 at 19:50. 
+ * total test time: 92.9s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `sparseLDA` (0.1-7)
- * tested on 2016-06-12 at 13:26
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `sparseLDA` (0.1-9)
+ * tested on 2017-04-11 at 21:32. 
+ * total test time: 80.2s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 34.16s (new) 33.52s
+Execution times: (old) 33.35s (new) 28.93s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 36.7s (new) 35.97s
+Execution times: (old) 35.57s (new) 30.8s
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.26s (new) 1.27s
+Execution times: (old) 1.36s (new) 0.85s
 
 Test Results:
 
@@ -122,7 +125,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 20.33s (new) 20.13s
+Execution times: (old) 19.85s (new) 17.05s
 
 Test Results:
 

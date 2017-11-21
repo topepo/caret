@@ -16,8 +16,8 @@ modelInfo <- list(label = "Random Forest Rule-Based Model",
                     }
                     out[!duplicated(out),]
                   },
-                  loop = function(grid) {   
-                    loop <- ddply(grid, c("mtry"),
+                  loop = function(grid) {
+                    loop <- plyr::ddply(grid, c("mtry"),
                                   function(x) c(maxdepth = max(x$maxdepth)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$maxdepth)) {
@@ -28,13 +28,15 @@ modelInfo <- list(label = "Random Forest Rule-Based Model",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    RFor <- randomForest(x, y, mtry = param$mtry, ...)
-                    treeList <- RF2List(RFor)  
-                    exec <- extractRules(treeList,x, maxdepth=param$maxdepth, ntree = RFor$ntree) 
-                    ruleMetric <- getRuleMetric(exec,x,y) 
-                    ruleMetric <- pruneRule(ruleMetric,x,y) 
-                    ruleMetric <- selectRuleRRF(ruleMetric,x,y) 
-                    out <- list(model = buildLearner(ruleMetric,x,y)) 
+                    if(!is.data.frame(x) | inherits(x, "tbl_df")) 
+                      x <- as.data.frame(x)
+                    RFor <- randomForest::randomForest(x, y, mtry = param$mtry, ...)
+                    treeList <- inTrees::RF2List(RFor)  
+                    exec <- inTrees::extractRules(treeList,x, maxdepth=param$maxdepth, ntree = RFor$ntree) 
+                    ruleMetric <- inTrees::getRuleMetric(exec,x,y) 
+                    ruleMetric <- inTrees::pruneRule(ruleMetric,x,y) 
+                    ruleMetric <- inTrees::selectRuleRRF(ruleMetric,x,y) 
+                    out <- list(model = inTrees::buildLearner(ruleMetric,x,y)) 
                     if(!last) {
                       out$rf <- treeList
                       out$x <- x
@@ -44,21 +46,23 @@ modelInfo <- list(label = "Random Forest Rule-Based Model",
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    out <- applyLearner(modelFit$model, newdata)
+                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
+                      newdata <- as.data.frame(newdata)
+                    out <- inTrees::applyLearner(modelFit$model, newdata)
                     if(modelFit$problemType == "Regression") out <- as.numeric(out)
                     if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- if(is.matrix(out)) out[,1] else out
                       for(i in seq(along = submodels$maxdepth)) {
-                        exec <- extractRules(modelFit$rf,
-                                             modelFit$x, 
-                                             maxdepth=submodels$maxdepth[i], 
-                                             ntree = modelFit$trees) 
-                        ruleMetric <- getRuleMetric(exec,modelFit$x,modelFit$y) 
-                        ruleMetric <- pruneRule(ruleMetric,modelFit$x,modelFit$y) 
-                        ruleMetric <- selectRuleRRF(ruleMetric,modelFit$x,modelFit$y) 
-                        mod <- buildLearner(ruleMetric,modelFit$x,modelFit$y)
-                        tmp[[i+1]] <- applyLearner(mod, newdata)
+                        exec <- inTrees::extractRules(modelFit$rf,
+                                                      modelFit$x,
+                                                      maxdepth=submodels$maxdepth[i],
+                                                      ntree = modelFit$trees)
+                        ruleMetric <- inTrees::getRuleMetric(exec,modelFit$x,modelFit$y)
+                        ruleMetric <- inTrees::pruneRule(ruleMetric,modelFit$x,modelFit$y)
+                        ruleMetric <- inTrees::selectRuleRRF(ruleMetric,modelFit$x,modelFit$y)
+                        mod <- inTrees::buildLearner(ruleMetric,modelFit$x,modelFit$y)
+                        tmp[[i+1]] <- inTrees::applyLearner(mod, newdata)
                         if(modelFit$problemType == "Regression") tmp[[i+1]] <- as.numeric(tmp[[i+1]])
                       }
                       out <- tmp

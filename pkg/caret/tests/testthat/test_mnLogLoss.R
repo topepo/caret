@@ -1,7 +1,5 @@
 context('mnLogLoss')
 
-eps <- 1e-15
-
 classes <- LETTERS[1:3]
 
 test_dat1 <- data.frame(obs  = c("A", "A", "A", "B", "B", "C"),
@@ -10,24 +8,45 @@ test_dat1 <- data.frame(obs  = c("A", "A", "A", "B", "B", "C"),
                         B = c(0, .05, .29, .8, .6, .3),
                         C = c(0, .15, .20, .1, .2, .4))
 
-expected1 <- log(1-eps) + log(.8) + log(.51) + log(.8) + log(.6) + log(.4)
-expected1 <- c(logLoss = -expected1/nrow(test_dat1))
-result1 <- mnLogLoss(test_dat1, lev = classes)
+test_that("Multiclass logloss returns expected values", {
+  result1 <- mnLogLoss(test_dat1, classes)
 
-test_dat2 <- test_dat1
-test_dat2$A[1] <- NA
+  test_dat2 <- test_dat1
+  test_dat2$A[1] <- NA
+  result2 <- mnLogLoss(test_dat2, classes)
 
-expected2 <-  log(.8) + log(.51) + log(.8) + log(.6) + log(.4)
-expected2 <- c(logLoss = -expected2/sum(complete.cases(test_dat2)))
-result2 <- mnLogLoss(test_dat2, lev = classes)
+  test_dat3 <- test_dat1
+  test_dat3 <- test_dat3[, rev(1:5)]
+  result3 <- mnLogLoss(test_dat3, classes)
 
-test_dat3 <- test_dat1
-test_dat3 <- test_dat3[, rev(1:5)]
-expected3 <- expected1
-result3 <- mnLogLoss(test_dat3, lev = classes[c(2, 3, 1)])
+  expect_equal(result1, c(logLoss = 0.424458), tolerance = .000001)
+  expect_equal(result2, c(logLoss = 0.5093496), tolerance = .000001)
+  expect_equal(result3, c(logLoss = 0.424458), tolerance = .000001)
 
-expect_equal(result1, expected1)
-expect_equal(result2, expected2)
-expect_equal(result3, expected3)
+})
 
+# Issue #637
 
+classes.b <- c("A", "B")
+
+test_dat1.b <- data.frame(obs  = c("A", "A", "A", "B", "B"),
+                          pred = c("A", "A", "A", "B", "B"),
+                          A = c(1, .80, .51, .1, .2),
+                          B = c(0, .20, .49, .9, .8))
+
+test_that("Twoclass logloss returns expected values", {
+  result1 <- mnLogLoss(test_dat1.b, classes.b)
+
+  test_dat2.b <- test_dat1.b
+  test_dat2.b$A[1] <- NA
+  result2 <- mnLogLoss(test_dat2.b, classes.b)
+
+  test_dat3.b <- test_dat1.b
+  test_dat3.b <- test_dat3.b[, rev(1:4)]
+  result3 <- mnLogLoss(test_dat3.b, classes.b)
+
+  expect_equal(result1, c(logLoss = 0.244998), tolerance = .000001)
+  expect_equal(result2, c(logLoss = 0.306248), tolerance = .000001)
+  expect_equal(result3, c(logLoss = 0.244998), tolerance = .000001)
+
+})

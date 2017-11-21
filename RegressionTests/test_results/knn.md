@@ -1,7 +1,8 @@
 k-Nearest Neighbors (`knn`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/knn.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/knn.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68)
- * tested on 2016-06-10 at 17:13
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73)
+ * tested on 2017-04-12 at 19:04. 
+ * total test time: 16.9s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70)
- * tested on 2016-06-12 at 12:48
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75)
+ * tested on 2017-04-11 at 22:59. 
+ * total test time: 13.7s
 
 
 Results:
@@ -38,26 +41,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.8s (new) 0.8s
+Execution times: (old) 0.8s (new) 0.53s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean  7.08
-      min   0.00
-      max  12.23
-    correlation:  0.9712 
-
- k ROC_new ROC_old Diff Flag
- 5  0.6797  0.6056 12.2    *
- 7  0.6722  0.6166  9.0    *
- 9  0.7185  0.7185  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -74,26 +62,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.48s (new) 1.45s
+Execution times: (old) 1.26s (new) 0.8s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean  7.08
-      min   0.00
-      max  12.23
-    correlation:  0.9712 
-
- k ROC_new ROC_old Diff Flag
- 5  0.6797  0.6056 12.2    *
- 7  0.6722  0.6166  9.0    *
- 9  0.7185  0.7185  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -110,7 +83,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.99s (new) 4.86s
+Execution times: (old) 3.95s (new) 3.62s
 
 Test Results:
 
@@ -131,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.53s (new) 0.48s
+Execution times: (old) 0.53s (new) 0.19s
 
 Test Results:
 
@@ -194,7 +167,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.02s (new) 1.04s
+Execution times: (old) 0.96s (new) 0.69s
 
 Test Results:
 
@@ -220,7 +193,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.77s (new) 0.76s
+Execution times: (old) 0.75s (new) 0.53s
 
 Test Results:
 
@@ -240,7 +213,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.11s (new) 1.1s
+Execution times: (old) 0.9s (new) 0.72s
 
 Test Results:
 
@@ -260,7 +233,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.37s (new) 4.3s
+Execution times: (old) 3.44s (new) 2.93s
 
 Test Results:
 
@@ -280,7 +253,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.49s (new) 0.5s
+Execution times: (old) 0.52s (new) 0.21s
 
 Test Results:
 
@@ -324,7 +297,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.24s (new) 1.21s
+Execution times: (old) 1.09s (new) 0.81s
 
 Test Results:
 

@@ -1,7 +1,8 @@
 Semi-Naive Structure Learner Wrapper (`nbSearch`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/nbSearch.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/nbSearch.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `bnclassify` (0.3.2), `caret` (6.0-68)
- * tested on 2016-06-10 at 17:21
+ * R version 3.3.3 (2017-03-06)
+ * `bnclassify` (0.3.2), `caret` (6.0-73)
+ * tested on 2017-04-12 at 20:04. 
+ * total test time: 822.1s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `bnclassify` (0.3.2), `caret` (6.0-70)
- * tested on 2016-06-12 at 12:57
+ * R version 3.3.3 (2017-03-06)
+ * `bnclassify` (0.3.2), `caret` (6.0-75)
+ * tested on 2017-04-11 at 22:59. 
+ * total test time: 501.8s
 
 
 Results:
@@ -38,16 +41,11 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 27.97s (new) 27.21s
+Execution times: (old) 25.75s (new) 21.94s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -57,13 +55,13 @@ Object class(es): `varImp.train`
 
  * ***UNequal results***: differences (o-n):
 <pre>
-     Class1           Class2      
- Min.   :-17.08   Min.   :-17.08  
- 1st Qu.:-16.52   1st Qu.:-16.52  
- Median :-16.43   Median :-16.43  
- Mean   :  2.54   Mean   :  2.54  
- 3rd Qu.:-16.16   3rd Qu.:-16.16  
- Max.   :100.00   Max.   :100.00  
+     Class1             Class2        
+ Min.   :-100.000   Min.   :-100.000  
+ 1st Qu.: -31.907   1st Qu.: -31.907  
+ Median :  21.826   Median :  21.826  
+ Mean   :   4.223   Mean   :   4.223  
+ 3rd Qu.:  48.816   3rd Qu.:  48.816  
+ Max.   :  57.480   Max.   :  57.480  
 </pre>
 
 **Test Case**: `class_loo_model`
@@ -79,7 +77,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 13.28m (new) 12.89m
+Execution times: (old) 12.35m (new) 7.25m
 
 Test Results:
 
@@ -100,7 +98,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.13s (new) 6.92s
+Execution times: (old) 6.19s (new) 3.07s
 
 Test Results:
 
@@ -151,7 +149,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 50.04s (new) 48.42s
+Execution times: (old) 46.56s (new) 39.39s
 
 Test Results:
 

@@ -8,11 +8,11 @@ modelInfo <- list(label = "Relevance Vector Machines with Linear Kernel",
                   grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     kernlab:::rvm(x = as.matrix(x), y = y,
-                                  kernel = vanilladot(),
+                                  kernel = kernlab::vanilladot(),
                                   ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) 
-                    predict(modelFit, newdata),
+                    kernlab::predict(modelFit, newdata),
                   prob = NULL,
                   predictors = function(x, ...) {
                     if(hasTerms(x) & !is.null(x@terms))

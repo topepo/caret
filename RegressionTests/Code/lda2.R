@@ -1,5 +1,8 @@
+timestamp <- Sys.time()
 library(caret)
-timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "lda2"
 
@@ -9,6 +12,9 @@ model <- "lda2"
 set.seed(1)
 
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 library(mlbench)
 data(Glass)
@@ -77,10 +83,12 @@ test_class_predictors1 <- predictors(test_class_cv_model)
 tests <- grep("test_", ls(), fixed = TRUE, value = TRUE)
 
 sInfo <- sessionInfo()
+timestamp_end <- Sys.time()
 
-save(list = c(tests, "sInfo", "timestamp"),
+save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
-q("no")
+if(!interactive())
+   q("no")
 
 

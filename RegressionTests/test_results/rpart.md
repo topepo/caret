@@ -1,7 +1,8 @@
 CART (`rpart`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/rpart.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/rpart.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `rpart` (4.1-10)
- * tested on 2016-06-10 at 17:41
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `rpart` (4.1-10)
+ * tested on 2017-04-12 at 20:30. 
+ * total test time: 14.5s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `rpart` (4.1-10)
- * tested on 2016-06-12 at 13:19
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `rpart` (4.1-10)
+ * tested on 2017-04-11 at 21:37. 
+ * total test time: 10.2s
 
 
 Results:
@@ -34,11 +37,11 @@ Model Configuration:
  * Formula method
  * Resampling: Cross-Validated (3 fold)
  * Grid search
- * Pre-processing: centered (7), scaled (7)  
+ * Pre-processing: centered (9), scaled (9)  
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.84s (new) 0.79s
+Execution times: (old) 0.87s (new) 0.52s
 
 Test Results:
 
@@ -54,11 +57,11 @@ Model Configuration:
  * Non-formula method
  * Resampling: Cross-Validated (3 fold)
  * Grid search
- * Pre-processing: centered (7), scaled (7)  
+ * Pre-processing: centered (7), scaled (7), ignore (1)  
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.32s (new) 1.33s
+Execution times: (old) 1.33s (new) 0.79s
 
 Test Results:
 
@@ -80,11 +83,11 @@ Model Configuration:
  * Non-formula method
  * Resampling: Leave-One-Out Cross-Validation
  * Grid search
- * Pre-processing: centered (7), scaled (7)  
+ * Pre-processing: centered (7), scaled (7), ignore (1)  
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.63s (new) 2.7s
+Execution times: (old) 2.57s (new) 1.93s
 
 Test Results:
 
@@ -100,11 +103,11 @@ Model Configuration:
  * Non-formula method
  * Resampling: None
  * Grid search
- * Pre-processing: centered (7), scaled (7)  
+ * Pre-processing: centered (7), scaled (7), ignore (1)  
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.5s (new) 0.53s
+Execution times: (old) 0.58s (new) 0.2s
 
 Test Results:
 
@@ -155,7 +158,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.72s (new) 0.78s
+Execution times: (old) 0.82s (new) 0.5s
 
 Test Results:
 
@@ -181,7 +184,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.82s (new) 0.81s
+Execution times: (old) 0.84s (new) 0.66s
 
 Test Results:
 
@@ -201,7 +204,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.92s (new) 0.93s
+Execution times: (old) 0.96s (new) 0.63s
 
 Test Results:
 
@@ -227,7 +230,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.55s (new) 2.53s
+Execution times: (old) 2.32s (new) 1.72s
 
 Test Results:
 
@@ -247,7 +250,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.53s (new) 0.53s
+Execution times: (old) 0.55s (new) 0.21s
 
 Test Results:
 
@@ -291,7 +294,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.75s (new) 0.75s
+Execution times: (old) 0.79s (new) 0.47s
 
 Test Results:
 

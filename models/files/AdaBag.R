@@ -1,7 +1,7 @@
 modelInfo <- list(label = "Bagged AdaBoost",
                   library = c("adabag", "plyr"),
                   loop = function(grid) {     
-                    loop <- ddply(grid, c("maxdepth"),
+                    loop <- plyr::ddply(grid, c("maxdepth"),
                                   function(x) c(mfinal = max(x$mfinal)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$mfinal)) {
@@ -20,7 +20,7 @@ modelInfo <- list(label = "Bagged AdaBoost",
                       out <- expand.grid(mfinal = floor((1:len) * 50),
                                          maxdepth = seq(1, len))
                     } else {
-                      out <- data.frame(mfinal = sample(1:1000, replace = TRUE, size = len),
+                      out <- data.frame(mfinal = sample(1:100, replace = TRUE, size = len),
                                         maxdepth = sample(1:30, replace = TRUE, size = len))
                     }
                     out
@@ -33,20 +33,24 @@ modelInfo <- list(label = "Bagged AdaBoost",
                       ctl <- theDots$control
                       theDots$control <- NULL
                       
-                    } else ctl <- rpart.control(maxdepth = param$maxdepth,
+                    } else ctl <- rpart::rpart.control(maxdepth = param$maxdepth,
                                                 cp=-1,minsplit=0,xval=0) 
                     
+                    if (!is.data.frame(x) | inherits(x, "tbl_df"))
+                      x <- as.data.frame(x)
+                    
                     modelArgs <- c(list(formula = as.formula(.outcome ~ .),
-                                        data = if(is.data.frame(x)) x else as.data.frame(x),
+                                        data = x,
                                         mfinal = param$mfinal,            
                                         control = ctl),
                                    theDots)
                     modelArgs$data$.outcome <- y
-                    out <- do.call("bagging", modelArgs)                    
+                    out <- do.call(adabag::bagging, modelArgs)                    
                     out     
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if (!is.data.frame(newdata) | inherits(newdata, "tbl_df"))
+                      newdata <- as.data.frame(newdata)
                     ## The predict function requires the outcome! Trick it by
                     ## adding bogus data
                     newdata$.outcome <- factor(rep(modelFit$obsLevels[1], nrow(newdata)), 
@@ -66,7 +70,8 @@ modelInfo <- list(label = "Bagged AdaBoost",
                     out  
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if (!is.data.frame(newdata) | inherits(newdata, "tbl_df"))
+                      newdata <- as.data.frame(newdata)
                     ## The predict function requires the outcome! Trick it by
                     ## adding bogus data
                     newdata$.outcome <- factor(rep(modelFit$obsLevels[1], nrow(newdata)), 

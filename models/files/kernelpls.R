@@ -21,11 +21,11 @@ modelInfo <- list(label = "Partial Least Squares",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {   
                     out <- if(is.factor(y))
                     {      
-                      plsda(x, y, method = "oscorespls", ncomp = param$ncomp, ...)
+                      caret::plsda(x, y, method = "kernelpls", ncomp = param$ncomp, ...)
                     } else {
                       dat <- if(is.data.frame(x)) x else as.data.frame(x)
                       dat$.outcome <- y
-                      plsr(.outcome ~ ., data = dat, method = "kernelpls", ncomp = param$ncomp, ...)
+                      pls::plsr(.outcome ~ ., data = dat, method = "kernelpls", ncomp = param$ncomp, ...)
                     }
                     out
                   },

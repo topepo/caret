@@ -279,7 +279,7 @@ Many models utilize random numbers during the phase where parameters are estimat
   </li>
 </ul>
 <p>
-How random numbers are used is highly dependent on the package author. There are rare cases where the underlying model function does not control the random number seed, especially if the computations are conducted in C code. 
+How random numbers are used is highly dependent on the package author. There are rare cases where the underlying model function does not control the random number seed, especially if the computations are conducted in C code. Also, please note that <a href="https://github.com/topepo/caret/issues/452">some packages load random numbers when loaded (directly or via namespace)</a> and this may effect reproducibility.  
 </p>
 
 <div id="custom"></div> 

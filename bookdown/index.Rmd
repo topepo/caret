@@ -1,0 +1,44 @@
+--- 
+title: "The `caret` Package"
+author: "Max Kuhn"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: 
+  bookdown::gitbook:
+    config:
+      toc:
+        collapse: section
+documentclass: book
+github-repo: topepo/caret
+description: "Documentation for the caret package."
+split_by: chapter
+---
+
+# Introduction
+
+The [`caret`](http://cran.r-project.org/web/packages/caret/index.html) package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:
+
+-   data splitting
+-   pre-processing
+-   feature selection
+-   model tuning using resampling
+-   variable importance estimation
+
+as well as other functionality.
+
+There are many different modeling functions in R. Some have different syntax for model training and/or prediction. The package started off as a way to provide a uniform interface the functions themselves, as well as a way to standardize common tasks (such parameter tuning and variable importance).
+
+The current release version can be found on [CRAN](http://cran.r-project.org/web/packages/caret/) and the project is hosted [on github](https://github.com/topepo/caret).
+
+Some resources:
+
+-   The book *Applied Predictive Modeling* features **caret** and over 40 other R packages. It is on sale at     [Amazon](http://www.amazon.com/dp/1461468485) or the [the publisher's     website](http://www.springer.com/statistics/life+sciences%2C+medicine+%26+health/book/978-1-4614-6848-6). There is a [companion     website](http://appliedpredictivemodeling.com/) too.
+-   There is also a paper on caret in the [Journal of Statistical Software](http://www.jstatsoft.org/v28/i05). The example data can be obtained [here](descr.RData)(the predictors) and [here](mutagen.RData) (the outcomes).
+-   There is a [webinar](http://www.youtube.com/watch?v=7Jbb2ItbTC4) for the package on Youtube that was organized and recorded by Ray DiGiacomo Jr for the Orange County R User Group.
+-   At [useR! 2014](http://user2014.stat.ucla.edu), I was [interviewed](http://youtu.be/YmHyAHkjX_A) and discussed the package     and the book.
+- [DataCamp](https://www.datacamp.com) has a [beginner's tutorial on machine learning in R](https://www.datacamp.com/courses/machine-learning-toolbox) using `caret`.  
+
+
+You can always email [me](mailto:mxkuhn@gmail.com) with questions,comments or suggestions.
+
+These HTML pages were created using [bookdown](https://bookdown.org). 

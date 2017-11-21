@@ -14,8 +14,8 @@ modelInfo <- list(label = "Boosted Tree",
                     }
                     out
                   },
-                  loop = function(grid) {     
-                    loop <- ddply(grid, .(maxdepth), function(x) c(mstop = max(x$mstop)))
+                  loop = function(grid) {
+                    loop <- plyr::ddply(grid, plyr::`.`(maxdepth), function(x) c(mstop = max(x$mstop)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$mstop))  {
                       index <- which(grid$maxdepth == loop$maxdepth[i])
@@ -31,22 +31,22 @@ modelInfo <- list(label = "Boosted Tree",
                       theDots$tree_controls$maxdepth <- param$maxdepth 
                       treeCtl <- theDots$tree_controls
                       theDots$tree_controls <- NULL
-                      
-                    } else treeCtl <- ctree_control(maxdepth = param$maxdepth)
-                    
+
+                    } else treeCtl <- party::ctree_control(maxdepth = param$maxdepth)
+
                     if(any(names(theDots) == "control")) {
                       theDots$control$mstop <- param$mstop 
                       ctl <- theDots$control
                       theDots$control <- NULL
-                      
-                    } else ctl <- boost_control(mstop = param$mstop)        
-                    
+
+                    } else ctl <- mboost::boost_control(mstop = param$mstop)
+
                     if(!any(names(theDots) == "family")) {
                       if(is.factor(y)) {
-                        theDots$family <- if(length(lev) == 2) Binomial() else Multinomial()
-                        } else theDots$family <- GaussReg()              
-                    }  
-                    
+                        theDots$family <- if(length(lev) == 2) mboost::Binomial() else mboost::Multinomial()
+                        } else theDots$family <- mboost::GaussReg()
+                    }
+
                     ## pass in any model weights
                     if(!is.null(wts)) theDots$weights <- wts
                     
@@ -56,9 +56,9 @@ modelInfo <- list(label = "Boosted Tree",
                                         tree_controls = treeCtl),
                                    theDots)  
                     modelArgs$data$.outcome <- y
-                    
-                    out <- do.call("blackboost", modelArgs)
-                    out$call["data"] <- "data"  
+
+                    out <- do.call(mboost::blackboost, modelArgs)
+                    out$call["data"] <- "data"
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
@@ -83,18 +83,16 @@ modelInfo <- list(label = "Boosted Tree",
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-                    lp <- predict(modelFit, newdata)
-                    out <- cbind(binomial()$linkinv(-lp),
-                                 1 - binomial()$linkinv(-lp))
+                    probs <- predict(modelFit, newdata, type = "response")
+                    out <- cbind(1 - probs, probs)
                     colnames(out) <- modelFit$obsLevels
                     if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
                       
                       for(j in seq(along = submodels$mstop)) {                           
-                        tmpProb <- predict(modelFit[submodels$mstop[j]], newdata)
-                        tmpProb <- cbind(binomial()$linkinv(-tmpProb),
-                                         1 - binomial()$linkinv(-tmpProb))
+                        tmpProb <- predict(modelFit[submodels$mstop[j]], newdata, type = "response")
+                        tmpProb <- cbind(1 - tmpProb, tmpProb)
                         colnames(tmpProb) <- modelFit$obsLevels
                         tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE])           
                       }

@@ -1,7 +1,8 @@
 Support Vector Machines with Class Weights (`svmRadialWeights`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/svmRadialWeights.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/svmRadialWeights.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `kernlab` (0.9-24)
- * tested on 2016-06-10 at 17:51
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `kernlab` (0.9-25)
+ * tested on 2017-04-12 at 20:58. 
+ * total test time: 17.4s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `kernlab` (0.9-24)
- * tested on 2016-06-12 at 13:33
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `kernlab` (0.9-25)
+ * tested on 2017-04-11 at 20:28. 
+ * total test time: 13.8s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.98s (new) 1.04s
+Execution times: (old) 1.03s (new) 0.71s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.31s (new) 2.4s
+Execution times: (old) 2.6s (new) 1.72s
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 9.69s (new) 10.1s
+Execution times: (old) 8.8s (new) 7.83s
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.5s (new) 0.55s
+Execution times: (old) 0.6s (new) 0.24s
 
 Test Results:
 
@@ -148,7 +151,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.14s (new) 1.25s
+Execution times: (old) 1.21s (new) 0.8s
 
 Test Results:
 

@@ -1,7 +1,8 @@
 Bagged Logic Regression (`logicBag`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/logicBag.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/logicBag.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `logicFS` (1.42.0), `LogicReg` (1.5.8), `mcbiopi` (1.1.2), `survival` (2.39-2)
- * tested on 2016-06-10 at 17:15
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `logicFS` (1.44.0), `LogicReg` (1.5.9), `mcbiopi` (1.1.2), `survival` (2.40-1)
+ * tested on 2017-04-12 at 19:05. 
+ * total test time: 3274.3s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `logicFS` (1.42.0), `LogicReg` (1.5.8), `mcbiopi` (1.1.2), `survival` (2.39-2)
- * tested on 2016-06-12 at 12:50
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `logicFS` (1.44.0), `LogicReg` (1.5.9), `mcbiopi` (1.1.2), `survival` (2.40-1)
+ * tested on 2017-04-11 at 20:55. 
+ * total test time: 3129.5s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 22.14s (new) 21.82s
+Execution times: (old) 24.44s (new) 25.58s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 22.72s (new) 22.57s
+Execution times: (old) 24s (new) 25.9s
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.34m (new) 3.32m
+Execution times: (old) 3.66m (new) 3.85m
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.56s (new) 1.61s
+Execution times: (old) 1.81s (new) 1.57s
 
 Test Results:
 
@@ -142,7 +145,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.13s (new) 7.12s
+Execution times: (old) 8.09s (new) 8.13s
 
 Test Results:
 
@@ -168,7 +171,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 20.5s (new) 20.24s
+Execution times: (old) 37.08s (new) 25.87s
 
 Test Results:
 
@@ -188,7 +191,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 20.24s (new) 20.33s
+Execution times: (old) 34.84s (new) 24.89s
 
 Test Results:
 
@@ -208,7 +211,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 37.81m (new) 38.26m
+Execution times: (old) 48.47m (new) 46.24m
 
 Test Results:
 
@@ -246,7 +249,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.08s (new) 7.16s
+Execution times: (old) 13.1s (new) 8.72s
 
 Test Results:
 

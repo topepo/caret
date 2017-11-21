@@ -1,7 +1,8 @@
 Regularized Discriminant Analysis (`rda`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/rda.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/rda.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `klaR` (0.6-12), `MASS` (7.3-45)
- * tested on 2016-06-10 at 17:35
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `klaR` (0.6-12), `MASS` (7.3-45)
+ * tested on 2017-04-12 at 18:36. 
+ * total test time: 23.2s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `klaR` (0.6-12), `MASS` (7.3-45)
- * tested on 2016-06-12 at 13:13
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `klaR` (0.6-12), `MASS` (7.3-45)
+ * tested on 2017-04-11 at 21:41. 
+ * total test time: 20.4s
 
 
 Results:
@@ -38,32 +41,11 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.32s (new) 1.36s
+Execution times: (old) 1.18s (new) 1.02s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean  5.25
-      min   0.00
-      max  13.97
-    correlation:  0.9667 
-
- gamma lambda ROC_new ROC_old Diff Flag
-   0.0    0.0  0.6800  0.5966 14.0    *
-   0.0    0.5  0.7106  0.7106  0.0     
-   0.0    1.0  0.7477  0.7477  0.0     
-   0.5    0.0  0.8003  0.8003  0.0     
-   0.5    0.5  0.7517  0.7517  0.0     
-   0.5    1.0  0.6644  0.5995 10.8    *
-   1.0    0.0  0.6846  0.6383  7.3    *
-   1.0    0.5  0.6603  0.6233  5.9    *
-   1.0    1.0  0.6545  0.5990  9.3    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -80,32 +62,11 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.49s (new) 2.44s
+Execution times: (old) 2.3s (new) 1.76s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean  5.25
-      min   0.00
-      max  13.97
-    correlation:  0.9667 
-
- gamma lambda ROC_new ROC_old Diff Flag
-   0.0    0.0  0.6800  0.5966 14.0    *
-   0.0    0.5  0.7106  0.7106  0.0     
-   0.0    1.0  0.7477  0.7477  0.0     
-   0.5    0.0  0.8003  0.8003  0.0     
-   0.5    0.5  0.7517  0.7517  0.0     
-   0.5    1.0  0.6644  0.5995 10.8    *
-   1.0    0.0  0.6846  0.6383  7.3    *
-   1.0    0.5  0.6603  0.6233  5.9    *
-   1.0    1.0  0.6545  0.5990  9.3    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -122,7 +83,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 18.89s (new) 18.4s
+Execution times: (old) 15.29s (new) 14.02s
 
 Test Results:
 
@@ -143,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.48s (new) 0.53s
+Execution times: (old) 0.65s (new) 0.21s
 
 Test Results:
 
@@ -206,7 +167,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.96s (new) 0.97s
+Execution times: (old) 0.95s (new) 0.61s
 
 Test Results:
 

@@ -1,5 +1,7 @@
-## TODO use foreach to parallelize
-
+ ## TODO use foreach to parallelize
+#' @rdname predict.train
+#' @importFrom utils flush.console
+#' @export
 extractProb <- function(models, 
                         testX = NULL, 
                         testY = NULL, 

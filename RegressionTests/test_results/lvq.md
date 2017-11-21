@@ -1,7 +1,8 @@
 Learning Vector Quantization (`lvq`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/lvq.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/lvq.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `class` (7.3-14)
- * tested on 2016-06-10 at 17:17
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `class` (7.3-14)
+ * tested on 2017-04-12 at 18:21. 
+ * total test time: 15.4s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `class` (7.3-14)
- * tested on 2016-06-12 at 12:52
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `class` (7.3-14)
+ * tested on 2017-04-11 at 21:59. 
+ * total test time: 12.7s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.9s (new) 0.89s
+Execution times: (old) 0.93s (new) 0.65s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.8s (new) 1.82s
+Execution times: (old) 1.84s (new) 1.2s
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 10.54s (new) 10.27s
+Execution times: (old) 8.47s (new) 7.67s
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.47s (new) 0.51s
+Execution times: (old) 0.59s (new) 0.18s
 
 Test Results:
 
@@ -136,7 +139,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.08s (new) 0.98s
+Execution times: (old) 0.99s (new) 0.62s
 
 Test Results:
 

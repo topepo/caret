@@ -1,0 +1,14 @@
+base
+knitr
+lattice
+ggplot2
+caret
+class
+caTools
+pROC
+DMwR
+reshape2
+plyr
+foreach
+iterators
+doMC

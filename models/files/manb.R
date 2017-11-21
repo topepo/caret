@@ -18,10 +18,10 @@ modelInfo <- list(label = "Model Averaged Naive Bayes Classifier",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    struct <- nb(class = '.outcome', dataset = dat)
-                    lp(struct, dat, smooth = param$smooth, 
-                       manb_prior = param$prior, 
-                           ...)
+                    struct <- bnclassify::nb(class = '.outcome', dataset = dat)
+                    bnclassify::lp(struct, dat, smooth = param$smooth,
+                                   manb_prior = param$prior,
+                                   ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
@@ -34,4 +34,6 @@ modelInfo <- list(label = "Model Averaged Naive Bayes Classifier",
                   levels = function(x) x$obsLevels,
                   predictors = function(x, s = NULL, ...) x$xNames,
                   tags = c("Bayesian Model", "Categorical Predictors Only"),
-                  sort = function(x) x[order(x[,1]),])
+                  sort = function(x) x[order(x[,1]),],
+                  notes = paste('Not on CRAN but can be installed from',
+                                'GitHub at `bmihaljevic/bnclassify`.'))

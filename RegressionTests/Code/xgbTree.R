@@ -1,7 +1,14 @@
+timestamp <- Sys.time()
 library(caret)
-timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
+library(plyr)
+library(recipes)
+library(dplyr)
+library(xgboost)
 
 model <- "xgbTree"
+
+
+  
 
 #########################################################################
 
@@ -10,13 +17,22 @@ xgbGrid <- expand.grid(nrounds = c(1, 10),
                        eta = c(.1, .4),
                        gamma = 0,
                        colsample_bytree = .7,
-                       min_child_weight = 1)
+                       min_child_weight = 1,
+                       subsample = c(.8, 1))
 
 set.seed(2)
 training <- twoClassSim(100, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
+
+train_sparse <- xgb.DMatrix(as.matrix(trainX))
+
+training_weight <- c(rep(0.1, 10), rep(1, 90))
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE, 
@@ -36,6 +52,13 @@ test_class_cv_model <- train(trainX, trainY,
                              preProc = c("center", "scale"),
                              tuneGrid = xgbGrid)
 
+set.seed(849)
+test_class_cv_model_sp <- train(train_sparse, trainY, 
+                                method = "xgbTree", 
+                                trControl = cctrl1,
+                                metric = "ROC", 
+                                tuneGrid = xgbGrid)
+
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
@@ -45,10 +68,33 @@ test_class_cv_form <- train(Class ~ ., data = training,
                             preProc = c("center", "scale"),
                             tuneGrid = xgbGrid)
 
+set.seed(849)
+test_class_cv_model_weight <- train(trainX, trainY,
+                                    weights = training_weight,
+                                    method = "xgbTree",
+                                    trControl = cctrl1,
+                                    metric = "ROC",
+                                    preProc = c("center", "scale"),
+                                    tuneGrid = xgbGrid)
+
+set.seed(849)
+test_class_cv_form_weight <- train(Class ~ ., data = training,
+                                   weights = training_weight,
+                                   method = "xgbTree",
+                                   trControl = cctrl1,
+                                   metric = "ROC",
+                                   preProc = c("center", "scale"),
+                                   tuneGrid = xgbGrid)
+
 test_class_pred <- predict(test_class_cv_model, testing[, -ncol(testing)])
 test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type = "prob")
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
+
+test_class_pred_weight <- predict(test_class_cv_model_weight, testing[, -ncol(testing)])
+test_class_prob_weight <- predict(test_class_cv_model_weight, testing[, -ncol(testing)], type = "prob")
+test_class_pred_form_weight <- predict(test_class_cv_form_weight, testing[, -ncol(testing)])
+test_class_prob_form_weight <- predict(test_class_cv_form_weight, testing[, -ncol(testing)], type = "prob")
 
 set.seed(849)
 test_class_rand <- train(trainX, trainY, 
@@ -74,33 +120,75 @@ test_class_none_model <- train(trainX, trainY,
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
 
+set.seed(849)
+test_class_rec <- train(x = rec_cls,
+                        data = training,
+                        method = "xgbTree", 
+                        trControl = cctrl1,
+                        metric = "ROC", 
+                        tuneGrid = xgbGrid)
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+test_class_imp_rec <- varImp(test_class_rec)
+
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
+test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
+                               type = "prob")
+
+
+tmp <- training
+tmp$wts <- training_weight
+
+class_rec <- recipe(Class ~ ., data = tmp) %>%
+  add_role(wts, new_role = "case weight") %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
+
+set.seed(849)
+test_class_cv_model_weight_rec <- train(class_rec, 
+                                        data = tmp,
+                                        method = "xgbTree",
+                                        trControl = cctrl1,
+                                        metric = "ROC",
+                                        tuneGrid = xgbGrid)
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model_weight_rec$results, 
+              test_class_cv_model_weight$results))
+)
+  stop("CV weights not giving the same results")
+
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
   cat("wrong levels")
 
 #########################################################################
 
-SLC14_1 <- function(n = 100) {
-  dat <- matrix(rnorm(n*20, sd = 3), ncol = 20)
-  foo <- function(x) x[1] + sin(x[2]) + log(abs(x[3])) + x[4]^2 + x[5]*x[6] + 
-    ifelse(x[7]*x[8]*x[9] < 0, 1, 0) +
-    ifelse(x[10] > 0, 1, 0) + x[11]*ifelse(x[11] > 0, 1, 0) + 
-    sqrt(abs(x[12])) + cos(x[13]) + 2*x[14] + abs(x[15]) + 
-    ifelse(x[16] < -1, 1, 0) + x[17]*ifelse(x[17] < -1, 1, 0) -
-    2 * x[18] - x[19]*x[20]
-  dat <- as.data.frame(dat)
-  colnames(dat) <- paste0("Var", 1:ncol(dat))
-  dat$y <- apply(dat[, 1:20], 1, foo) + rnorm(n, sd = 3)
-  dat
-}
-
+library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 set.seed(1)
 training <- SLC14_1(75)
 testing <- SLC14_1(100)
 trainX <- training[, -ncol(training)]
 trainY <- training$y
+
+rec_reg <- recipe(y ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) 
 testX <- trainX[, -ncol(training)]
 testY <- trainX$y 
+
+train_sparse <- xgb.DMatrix(as.matrix(trainX))
 
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
@@ -115,6 +203,14 @@ test_reg_cv_model <- train(trainX, trainY,
                            preProc = c("center", "scale"),
                            tuneGrid = xgbGrid)
 test_reg_pred <- predict(test_reg_cv_model, testX)
+
+set.seed(849)
+test_reg_cv_model_sp <- train(train_sparse, trainY, 
+                              method = "xgbTree", 
+                              trControl = rctrl1,
+                              tuneGrid = xgbGrid)
+test_reg_pred_sp <- predict(test_reg_cv_model_sp, testX)
+
 
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
@@ -145,6 +241,25 @@ test_reg_none_model <- train(trainX, trainY,
                              preProc = c("center", "scale"))
 test_reg_none_pred <- predict(test_reg_none_model, testX)
 
+set.seed(849)
+test_reg_rec <- train(x = rec_reg,
+                      data = training,
+                      method = "xgbTree", 
+                      tuneGrid = xgbGrid,
+                      trControl = rctrl1)
+
+if(
+  !isTRUE(
+    all.equal(test_reg_cv_model$results, 
+              test_reg_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+test_reg_imp_rec <- varImp(test_reg_rec)
+
+
+test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
+
 #########################################################################
 
 test_class_predictors1 <- predictors(test_class_cv_model)
@@ -160,10 +275,11 @@ test_reg_imp <- varImp(test_reg_cv_model)
 tests <- grep("test_", ls(), fixed = TRUE, value = TRUE)
 
 sInfo <- sessionInfo()
+timestamp_end <- Sys.time()
 
-save(list = c(tests, "sInfo", "timestamp"),
+save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
-#q("no")
+if(!interactive()) q("no")
 
 

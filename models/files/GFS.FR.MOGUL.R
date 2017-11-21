@@ -21,7 +21,6 @@ modelInfo <- list(label = "Fuzzy Rules via MOGUL",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     args <- list(data.train = as.matrix(cbind(x, y)),
                                  method.type = "GFS.FR.MOGUL")
-                    args$range.data <- apply(args$data.train, 2, extendrange)
                     
                     theDots <- list(...)
                     if(any(names(theDots) == "control")) {
@@ -34,12 +33,15 @@ modelInfo <- list(label = "Fuzzy Rules via MOGUL",
                                                    persen_cross = 0.6,
                                                    persen_mutant = 0.3,
                                                    epsilon = 0.4,
-                                                   name="sim-0")     
-                    do.call("frbs.learn", c(args, theDots))
+                                                   name="sim-0")   
+                    if(!(any(names(theDots) == "range.data"))) {
+                      args$range.data <- apply(args$data.train, 2, extendrange)
+                    }
+                    do.call(frbs::frbs.learn, c(args, theDots))
                     
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    predict(modelFit, newdata)
+                    predict(modelFit, newdata)[, 1]
                   },
                   prob = NULL,
                   predictors = function(x, ...){

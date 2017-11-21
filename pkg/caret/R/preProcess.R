@@ -1,18 +1,195 @@
 ## Should respect the input class except when there is a conflict or always
 ## generate a data frame? 
-## TODO let inputs vars be regex's
 
-ppMethods <- c("BoxCox", "YeoJohnson", "expoTrans", 
+ppMethods <- c("BoxCox", "YeoJohnson", "expoTrans", "invHyperbolicSine",
                "center", "scale", "range", 
                "knnImpute", "bagImpute", "medianImpute", 
                "pca", "ica", 
                "spatialSign", 
                "ignore", "keep", 
                "remove", 
-               "zv", "nzv", "conditionalX")
+               "zv", "nzv", "conditionalX",
+               "corr")
 
+invHyperbolicSineFunc <- function(x) log(x+sqrt(x^2+1))
+
+
+#' Pre-Processing of Predictors
+#' 
+#' Pre-processing transformation (centering, scaling etc.) can be estimated
+#' from the training data and applied to any data set with the same variables.
+#' 
+#' In all cases, transformations and operations are estimated using the data in
+#' \code{x} and these operations are applied to new data using these values;
+#' nothing is recomputed when using the \code{predict} function.
+#' 
+#' The Box-Cox (\code{method = "BoxCox"}), Yeo-Johnson (\code{method =
+#' "YeoJohnson"}), and exponential transformations (\code{method =
+#' "expoTrans"})have been "repurposed" here: they are being used to transform
+#' the predictor variables. The Box-Cox transformation was developed for
+#' transforming the response variable while another method, the Box-Tidwell
+#' transformation, was created to estimate transformations of predictor data.
+#' However, the Box-Cox method is simpler, more computationally efficient and
+#' is equally effective for estimating power transformations. The Yeo-Johnson
+#' transformation is similar to the Box-Cox model but can accommodate
+#' predictors with zero and/or negative values (while the predictors values for
+#' the Box-Cox transformation must be strictly positive.) The exponential
+#' transformation of Manly (1976) can also be used for positive or negative
+#' data.
+#' 
+#' \code{method = "center"} subtracts the mean of the predictor's data (again
+#' from the data in \code{x}) from the predictor values while \code{method =
+#' "scale"} divides by the standard deviation.
+#' 
+#' The "range" transformation scales the data to be within \code{rangeBounds}. If new
+#' samples have values larger or smaller than those in the training set, values
+#' will be outside of this range.
+#' 
+#' Predictors that are not numeric are ignored in the calculations.
+#' 
+#' \code{method = "zv"} identifies numeric predictor columns with a single
+#' value (i.e. having zero variance) and excludes them from further
+#' calculations. Similarly, \code{method = "nzv"} does the same by applying
+#' \code{\link{nearZeroVar}} exclude "near zero-variance" predictors. The options
+#' \code{freqCut} and \code{uniqueCut} can be used to modify the filter. 
+#'
+#' \code{method = "corr"} seeks to filter out highly correlated predictors. See
+#' \code{\link{findCorrelation}}. 
+#' 
+#' For classification, \code{method = "conditionalX"} examines the distribution
+#' of each predictor conditional on the outcome. If there is only one unique
+#' value within any class, the predictor is excluded from further calculations
+#' (see \code{\link{checkConditionalX}} for an example). When \code{outcome} is
+#' not a factor, this calculation is not executed. This operation can be time
+#' consuming when used within resampling via \code{\link{train}}.
+#' 
+#' The operations are applied in this order: zero-variance filter, near-zero
+#' variance filter, correlation filter, Box-Cox/Yeo-Johnson/exponential transformation, centering,
+#' scaling, range, imputation, PCA, ICA then spatial sign. This is a departure
+#' from versions of \pkg{caret} prior to version 4.76 (where imputation was
+#' done first) and is not backwards compatible if bagging was used for
+#' imputation.
+#' 
+#' If PCA is requested but centering and scaling are not, the values will still
+#' be centered and scaled. Similarly, when ICA is requested, the data are
+#' automatically centered and scaled.
+#' 
+#' k-nearest neighbor imputation is carried out by finding the k closest
+#' samples (Euclidian distance) in the training set. Imputation via bagging
+#' fits a bagged tree model for each predictor (as a function of all the
+#' others). This method is simple, accurate and accepts missing values, but it
+#' has much higher computational cost. Imputation via medians takes the median
+#' of each predictor in the training set, and uses them to fill missing values.
+#' This method is simple, fast, and accepts missing values, but treats each
+#' predictor independently, and may be inaccurate.
+#' 
+#' A warning is thrown if both PCA and ICA are requested. ICA, as implemented
+#' by the \code{\link[fastICA]{fastICA}} package automatically does a PCA
+#' decomposition prior to finding the ICA scores.
+#' 
+#' The function will throw an error of any numeric variables in \code{x} has
+#' less than two unique values unless either \code{method = "zv"} or
+#' \code{method = "nzv"} are invoked.
+#' 
+#' Non-numeric data will not be pre-processed and there values will be in the
+#' data frame produced by the \code{predict} function. Note that when PCA or
+#' ICA is used, the non-numeric columns may be in different positions when
+#' predicted.
+#' 
+#' @aliases preProcess preProcess.default predict.preProcess
+#' @param x a matrix or data frame. Non-numeric predictors are allowed but will
+#' be ignored.
+#' @param method a character vector specifying the type of processing. Possible
+#' values are "BoxCox", "YeoJohnson", "expoTrans", "center", "scale", "range",
+#' "knnImpute", "bagImpute", "medianImpute", "pca", "ica", "spatialSign", "corr", "zv",
+#' "nzv", and "conditionalX" (see Details below)
+#' @param          thresh a cutoff for the cumulative percent of variance to be retained
+#' by PCA
+#' @param pcaComp the specific number of PCA components to keep. If specified,
+#' this over-rides \code{thresh}
+#' @param na.remove a logical; should missing values be removed from the
+#' calculations?
+#' @param object an object of class \code{preProcess}
+#' @param newdata a matrix or data frame of new data to be pre-processed
+#' @param k the number of nearest neighbors from the training set to use for
+#' imputation
+#' @param knnSummary function to average the neighbor values per column during
+#' imputation
+#' @param outcome a numeric or factor vector for the training set outcomes.
+#' This can be used to help estimate the Box-Cox transformation of the
+#' predictor variables (see Details below)
+#' @param fudge a tolerance value: Box-Cox transformation lambda values within
+#' +/-fudge will be coerced to 0 and within 1+/-fudge will be coerced to 1.
+#' @param numUnique how many unique values should \code{y} have to estimate the
+#' Box-Cox transformation?
+#' @param verbose a logical: prints a log as the computations proceed
+#' @param freqCut the cutoff for the ratio of the most common value to the 
+#' second most common value. See \code{\link{nearZeroVar}}.
+#' @param uniqueCut the cutoff for the percentage of distinct values out of 
+#' the number of total samples. See \code{\link{nearZeroVar}}. 
+#' @param cutoff a numeric value for the pair-wise absolute correlation cutoff. 
+#' See \code{\link{findCorrelation}}.  
+#' @param rangeBounds a two-element numeric vector specifying closed interval
+#' for range transformation
+#' @param \dots additional arguments to pass to \code{\link[fastICA]{fastICA}},
+#' such as \code{n.comp}
+#' @return \code{preProcess} results in a list with elements \item{call}{the
+#' function call} \item{method}{a named list of operations and the variables
+#' used for each } \item{dim}{the dimensions of \code{x}} \item{bc}{Box-Cox
+#' transformation values, see \code{\link{BoxCoxTrans}}} \item{mean}{a vector
+#' of means (if centering was requested)} \item{std}{a vector of standard
+#' deviations (if scaling or PCA was requested)} \item{rotation}{a matrix of
+#' eigenvectors if PCA was requested} \item{method}{the value of\code{method}}
+#' \item{thresh}{the value of\code{thresh}} \item{ranges}{a matrix of min and
+#' max values for each predictor when \code{method} includes "range" (and
+#' \code{NULL} otherwise)} \item{numComp}{the number of principal components
+#' required of capture the specified amount of variance} \item{ica}{contains
+#' values for the \code{W} and \code{K} matrix of the decomposition}
+#' \item{median}{a vector of medians (if median imputation was requested)}
+#' 
+#' \code{predict.preProcess} will produce a data frame.
+#' @author Max Kuhn, median imputation by Zachary Mayer
+#' @seealso \code{\link{BoxCoxTrans}}, \code{\link{expoTrans}}
+#' \code{\link[MASS]{boxcox}}, \code{\link[stats]{prcomp}},
+#' \code{\link[fastICA]{fastICA}}, \code{\link{spatialSign}}
+#' @references \url{http://topepo.github.io/caret/pre-processing.html}
+#' 
+#' Kuhn and Johnson (2013), Applied Predictive Modeling, Springer, New York
+#' (chapter 4)
+#' 
+#' Kuhn (2008), Building predictive models in R using the caret
+#' (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
+#' 
+#' Box, G. E. P. and Cox, D. R. (1964) An analysis of transformations (with
+#' discussion). Journal of the Royal Statistical Society B, 26, 211-252.
+#' 
+#' Box, G. E. P. and Tidwell, P. W. (1962) Transformation of the independent
+#' variables. Technometrics 4, 531-550.
+#' 
+#' Manly, B. L. (1976) Exponential data transformations. The Statistician, 25,
+#' 37 - 42.
+#' 
+#' Yeo, I-K. and Johnson, R. (2000). A new family of power transformations to
+#' improve normality or symmetry. Biometrika, 87, 954-959.
+#' @keywords utilities
+#' @examples
+#' 
+#' data(BloodBrain)
+#' # one variable has one unique value
+#' \dontrun{
+#' preProc <- preProcess(bbbDescr)
+#' 
+#' preProc  <- preProcess(bbbDescr[1:100,-3])
+#' training <- predict(preProc, bbbDescr[1:100,-3])
+#' test     <- predict(preProc, bbbDescr[101:208,-3])
+#' }
+#' 
+#' @export preProcess
 preProcess <- function(x, ...) UseMethod("preProcess")
 
+#' @rdname preProcess
+#' @importFrom stats complete.cases median sd prcomp
+#' @export
 preProcess.default <- function(x, method = c("center", "scale"),
                                thresh = 0.95,
                                pcaComp = NULL,
@@ -22,17 +199,18 @@ preProcess.default <- function(x, method = c("center", "scale"),
                                outcome = NULL,
                                fudge = .2,
                                numUnique = 3,
-                               verbose = FALSE,
+                               verbose = FALSE, 
+                               freqCut = 95/5, 
+                               uniqueCut = 10,
+                               cutoff = 0.9,
+                               rangeBounds = c(0, 1),
                                ...) {
+  if(!inherits(x, "matrix") & !inherits(x, "data.frame"))
+    stop("Matrices or data frames are required for preprocessing", call. = FALSE)
   column_types <- get_types(x)
   tmp <- pre_process_options(method, column_types)
   method <- tmp$opts
   wildcards <- tmp$wildcards
-  if(verbose) {
-    cat("final pre-processing options:\n")
-    print(method)
-    cat("\n")
-  }
   
   ## the row.norm option in fastICA states: "logical value indicating whether rows
   ## of the data matrix X should be standardized beforehand." Basically, this means that
@@ -53,16 +231,19 @@ preProcess.default <- function(x, method = c("center", "scale"),
       removed <- names(is_zv)[is_zv]
       method <- lapply(method, function(x, vars) x[!(x %in% vars)], vars = removed)
       method$remove <- unique(c(method$remove, removed))
+      if(verbose) cat(paste(" ", length(removed), "zero variance predictors were removed.\n"))
     }
     method$zv <- NULL
   }
   ## check for near-zero-variance predictors
   if(any(names(method) == "nzv")){
-    is_nzv <- nearZeroVar(x[, !(colnames(x) %in% method$ignore), drop = FALSE])
+    is_nzv <- nearZeroVar(x[, !(colnames(x) %in% method$ignore), drop = FALSE], 
+                          freqCut = freqCut, uniqueCut = uniqueCut)
     if(length(is_nzv) > 0) {
       removed <- colnames(x[, !(colnames(x) %in% method$ignore), drop = FALSE])[is_nzv]
       method <- lapply(method, function(x, vars) x[!(x %in% vars)], vars = removed)
       method$remove <- unique(c(method$remove, removed))
+      if(verbose) cat(paste(" ", length(removed), "near-zero variance predictors were removed.\n"))
     }
     method$nzv <- NULL
   }  
@@ -75,9 +256,40 @@ preProcess.default <- function(x, method = c("center", "scale"),
       removed <- colnames(x[, !(colnames(x) %in% method$ignore), drop = FALSE])[bad_pred]
       method <- lapply(method, function(x, vars) x[!(x %in% vars)], vars = removed)
       method$remove <- unique(c(method$remove, removed))
+      if(verbose) cat(paste(" ", length(removed), "conditionally zero variance predictors.\n"))
     }
     method$conditionalX <- NULL
   }    
+  
+  ## check for highly correlated predictors
+  if(any(names(method) == "corr")){
+    cmat <- try(cor(x[, !(colnames(x) %in% method$ignore), drop = FALSE], 
+                    use = "pairwise.complete.obs"), 
+                silent = TRUE)
+    if(class(cmat)[1] != "try-error") {
+      high_corr <- findCorrelation(cmat, cutoff = cutoff)
+      if(length(high_corr) > 0) {
+        removed <- colnames(cmat)[high_corr]
+        method$remove <- unique(c(method$remove, removed))
+        if(verbose) cat(paste(" ", length(removed), "highly correlated predictors were removed.\n"))
+      } else warning(paste("correlation matrix could not be computed:\n", cmat))
+    }
+    method$corr <- NULL
+  }
+  
+  x <- x[, !(colnames(x) %in% method$remove), drop = FALSE] 
+  method = sapply(names(method), function(u) 
+    if(u != 'remove'){
+      method[[u]][ which(( method[[u]] %in% colnames(x)))]
+    } else { 
+      method[[u]]
+    }, simplify = FALSE
+  )
+  
+  if(any(names(method) == "invHyperbolicSine")) {
+    if(verbose) cat(" applying invHyperbolicSine\n")
+    for(i in method$invHyperbolicSine) x[,i] <- invHyperbolicSineFunc(x[,i])
+  } 
   
   if(any(names(method) == "BoxCox")) {
     bc <- group_bc(x[, method$BoxCox, drop = FALSE],
@@ -92,29 +304,34 @@ preProcess.default <- function(x, method = c("center", "scale"),
     for(i in method$BoxCox) x[,i] <- predict(bc[[i]], x[,i])
   } else bc <- NULL
   
+  
   if(any(names(method) == "YeoJohnson")) {
-    yj <- group_yj(x[, method$YeoJohnson, drop = FALSE],
-                   numUnique = numUnique,
-                   verbose = verbose)
+    yj <- vapply(
+      x[, method$YeoJohnson, drop = FALSE],
+      recipes::estimate_yj,
+      c(lambda = 0),
+      limits = c(-3, 3), ## consistent with `car` defaults
+      nunique = numUnique
+    )
+    yj <- yj[!is.null(yj) & !is.na(yj)]
     if(length(yj) > 0) {
       if(verbose) cat(" applying them to training data\n")
       if(length(yj) != length(method$YeoJohnson)) {
         method$YeoJohnson <- names(yj)
       }
-      lam <- unlist(lapply(yj, function(x) if(class(x) == "powerTransform") x$lambda else NA))
-      lam <- lam[!is.na(lam)]
-      if(length(lam) > 0) {
-        for(i in seq(along = lam)) {
-          who <-  gsub("\\.Y1$", "", names(lam)[i])
-          x[,who] <- yjPower(x[,who], yj[[who]]$lambda)
+      # now apply to current data
+      if(length(yj) > 0) {
+        for(i in seq(along = yj)) {
+          who <- names(yj)[i]
+          x[,who] <- recipes::yj_trans(x[,who], yj[who])
         }
       }
     } else {
       if(verbose) cat(" all of the transformations failed\n")
       yj <- NULL
     }
-  } else yj <- NULL
-  
+  } else yj <- NULL  
+
   if(any(names(method) == "expoTrans")) {
     if(verbose) 
       cat("Estimating exponential transformations for", 
@@ -124,7 +341,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
                    expoTrans.default, numUnique = numUnique)
     } else {
       et <- apply(x[, method$expoTrans, drop = FALSE], 2,
-                   expoTrans.default, numUnique = numUnique)
+                  expoTrans.default, numUnique = numUnique)
     }
     if(verbose) cat(" applying them to training data\n")
     omit_expo <- NULL
@@ -169,6 +386,12 @@ preProcess.default <- function(x, method = c("center", "scale"),
   
   if(any(names(method) == "range")) {
     if(verbose) cat("Calculating", length(method$range), "statistcs for scaling to a range\n")
+    ## check rangeBounds consistency
+    if(!is.numeric(rangeBounds) || length(rangeBounds) != 2)
+      stop("'rangeBounds' should be a two-element numeric vector")
+    if(rangeBounds[1] >= rangeBounds[2])
+      stop("'rangeBounds' interval is empty")
+
     ranges <- apply(x[, method$range, drop = FALSE], 
                     2, 
                     function(x) c(min(x, na.rm = na.remove), 
@@ -182,7 +405,9 @@ preProcess.default <- function(x, method = c("center", "scale"),
       method$range <- method$range[!(method$range %in% names(is_same)[is_same])]
     }
     x[, method$range] <- sweep(x[, method$range, drop = FALSE], 2, ranges[1,], "-")
-    x[, method$range] <- sweep(x[, method$range, drop = FALSE], 2, ranges[2,] - ranges[1,], "/")
+    x[, method$range] <- sweep(x[, method$range, drop = FALSE], 2,
+                               (ranges[2,] - ranges[1,]) / (rangeBounds[2] - rangeBounds[1]), "/")
+    x[, method$range] <- sweep(x[, method$range, drop = FALSE], 2, rangeBounds[1], "+")
   } else ranges <- NULL
   
   if(any(names(method) == "bagImpute")){
@@ -220,12 +445,11 @@ preProcess.default <- function(x, method = c("center", "scale"),
       cat("Computing PCA loadings for",
           length(method$pca), 
           "predictors\n")
-    ## TODO What if range is used? Should we center and scale?
     tmp <- prcomp(x[, method$pca, drop = FALSE], scale = TRUE, retx = FALSE)
     if(is.null(pcaComp)) {
       cumVar <- cumsum(tmp$sdev^2/sum(tmp$sdev^2)) 
       numComp <- max(2, which.max(cumVar > thresh))
-    } else numComp <- pcaComp
+    } else numComp <- min(pcaComp, ncol(tmp$rotation))
     rot <- tmp$rotation[,1:numComp]
   } else {
     rot <- NULL
@@ -251,6 +475,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
               bc = bc,
               yj = yj,
               et = et,
+              invHyperbolicSine = method$invHyperbolicSine,
               mean = centerValue,
               std = scaleValue,
               ranges = ranges,
@@ -266,11 +491,15 @@ preProcess.default <- function(x, method = c("center", "scale"),
               bagImp = bagModels,
               median = medianValue,
               data = if(any(names(method) == "knnImpute")) 
-                x[complete.cases(x),method$knnImpute,drop = FALSE] else NULL)
+                x[complete.cases(x),method$knnImpute,drop = FALSE] else NULL,
+              rangeBounds = rangeBounds)
   out <- structure(out, class = "preProcess")
   out
 }
 
+#' @rdname preProcess
+#' @importFrom stats complete.cases
+#' @export
 predict.preProcess <- function(object, newdata, ...) {
   if(is.vector(object$method) & !is.list(object$method))
     object <- convert_method(object)
@@ -285,6 +514,12 @@ predict.preProcess <- function(object, newdata, ...) {
       stop("All predctors were removed as determined by `preProcess`")
   }
   
+  if(!is.null(object$invHyperbolicSine)) {
+    for(i in object$invHyperbolicSine) {
+      newdata[,i] <- invHyperbolicSineFunc(newdata[,i])
+    }
+  }
+  
   if(!is.null(object$bc)) {
     lam <- unlist(lapply(object$bc, function(x) x$lambda))
     lamIndex <- which(!is.na(lam))
@@ -292,22 +527,21 @@ predict.preProcess <- function(object, newdata, ...) {
       for(i in names(lamIndex)) {
         tt <- newdata[,i]
         tt <- tt[!is.na(tt)]
-        if(any(tt <= 0)) cat(i, "\n")
         newdata[,i] <- predict(object$bc[[i]], newdata[,i])
       }
     }
   }
   
   if(!is.null(object$yj)) {
-    lam <- unlist(lapply(object$yj, function(x) if(class(x) == "powerTransform") x$lambda else NA))
+    lam <- get_yj_lambda(object$yj)
     lam <- lam[!is.na(lam)]
     if(length(lam) > 0) {
       for(i in seq(along = lam)) {
-        who <-  gsub("\\.Y1$", "", names(lam)[i])
-        newdata[,who] <- yjPower(newdata[,who], object$yj[[who]]$lambda)
+        who <- names(lam)[i]
+        newdata[,who] <- recipes::yj_trans(newdata[,who], lam[who])
       }
     }
-  }  
+  } 
   
   if(!is.null(object$et)) {
     for(i in seq(along = object$et)) {
@@ -321,8 +555,12 @@ predict.preProcess <- function(object, newdata, ...) {
       sweep(newdata[, object$method$range, drop = FALSE], 2, 
             object$ranges[1,], "-")
     newdata[, object$method$range] <- 
-      sweep(newdata[, object$method$range, drop = FALSE], 2, 
-            object$ranges[2,] - object$ranges[1,], "/")
+      sweep(newdata[, object$method$range, drop = FALSE], 2,
+            (object$ranges[2,] - object$ranges[1,]) /
+              (object$rangeBounds[2] - object$rangeBounds[1]), "/")
+    newdata[, object$method$range] <-
+      sweep(newdata[, object$method$range, drop = FALSE], 2,
+            object$rangeBounds[1], "+")
   }
   
   if(any(names(object$method) == "center")) 
@@ -339,6 +577,7 @@ predict.preProcess <- function(object, newdata, ...) {
     hasMiss <- apply(hasMiss,
                      1,
                      nnimp,
+                     ## todo: should prob us all vars in the next line
                      old = object$data[, object$method$knnImpute, drop = FALSE],
                      k = object$k,
                      foo = object$knnSummary)
@@ -439,6 +678,7 @@ predict.preProcess <- function(object, newdata, ...) {
   newdata
 }
 
+#' @export
 print.preProcess <- function(x, ...) {
   #   printCall(x$call)
   cat("Created from", x$dim[1], "samples and", x$dim[2], "variables\n\n")
@@ -453,7 +693,8 @@ print.preProcess <- function(x, ...) {
   }
   pp <- paste0("  - ", names(x$method), " (", pp_num, ")\n")  
   pp <- pp[order(pp)]
-  pp <- gsub("BoxCox", "Box-Cox transformation", pp)
+  pp <- gsub("invHyperbolicSine", "Inverve Hyperbolic Sine transformation", pp)
+  pp <- gsub("BoxCox", "Box-Cox transformation", pp)  
   pp <- gsub("YeoJohnson", "Yeo-Johnson transformation", pp)    
   pp <- gsub("expoTrans", "exponential transformation", pp)   
   pp <- gsub("scale", "scaled", pp)
@@ -464,7 +705,7 @@ print.preProcess <- function(x, ...) {
   pp <- gsub("knnImpute", paste(x$k, "nearest neighbor imputation"), pp)
   pp <- gsub("bagImpute", "bagged tree imputation", pp)  
   pp <- gsub("medianImpute", "median imputation", pp)    
-  pp <- gsub("range", "re-scaling to [0, 1]", pp)  
+  pp <- gsub("range", paste0("re-scaling to [", x$rangeBounds[1], ", ", x$rangeBounds[2],"]"), pp)
   pp <- gsub("remove", "removed", pp)  
   pp <- gsub("ignore", "ignored", pp)  
   
@@ -482,17 +723,18 @@ print.preProcess <- function(x, ...) {
     } else print(summary(unlist(lapply(x$bc, function(x) x$lambda))))
     cat("\n")
   }
+  
   if(any(names(x$method) == "YeoJohnson")) {
     cat("Lambda estimates for Yeo-Johnson transformation:\n")
-    if(length(x$yj) < 11) {
-      lmbda <- unlist(lapply(x$yj, function(x) if(class(x) == "powerTransform") x$lambda else NA))
+    lmbda <- get_yj_lambda(x$yj)
+    if(length(lmbda) < 11) {
       naLmbda <- sum(is.na(lmbda))
       cat(paste(round(lmbda[!is.na(lmbda)], 2), collapse = ", "))
       if(naLmbda > 0) cat(" (#NA: ", naLmbda, ")\n", sep = "")
-    } else print(summary(unlist(lapply(x$yj, function(x) if(class(x) == "powerTransform") x$lambda else NA))))
+    } else print(summary(lmbda))
     cat("\n")
   }  
-  
+
   if(any(names(x$method) == "pca")) {
     if(is.null(x$pcaComp)) {
       cat("PCA needed", x$numComp, ifelse(x$numComp > 1, "components", "component"),
@@ -532,6 +774,7 @@ nnimp <- function(new, old, k, foo) {
   new
 }
 
+#' @importFrom stats as.formula
 bagImp <- function(var, x, B = 10) {
   requireNamespaceQuietStop("ipred")
   ## The formula interface is much slower than the
@@ -551,6 +794,7 @@ bagImp <- function(var, x, B = 10) {
 
 
 ## Add checks for zv and nzv and overlap
+## allow categorical variables in zv, nzv, and bagImpute
 
 pre_process_options <- function(opts, vars) {
   orig_vars <- vars
@@ -604,9 +848,6 @@ pre_process_options <- function(opts, vars) {
   }
   not_num <- unique(not_num)
   if(length(not_num) > 0) {
-    #     warning((paste("These fields are not numeric and will not be pre-processed:",
-    #                    paste("'", not_num, "'", sep = "", collapse = ", "))),
-    #             immediate. = TRUE)
     opts$ignore <- unique(c(opts$ignore, not_num))
   }
   
@@ -657,7 +898,7 @@ pre_process_options <- function(opts, vars) {
   }
   
   if(any(methods %in% "range") & any(methods %in% c("center", "scale", "BoxCox")))
-    stop("Centering, scaling and/or Box-Cox transformations are inconsistent with scaling to a range of [0, 1]")  
+    stop("Centering, scaling and/or Box-Cox transformations are inconsistent with scaling to a range")
   
   ## coerce certain options based on others
   if("pca" %in% methods) {
@@ -720,6 +961,8 @@ pre_process_options <- function(opts, vars) {
 
 
 get_types <- function(x, coarse = TRUE) {
+  if(is.null(colnames(x)))
+    stop("`x` must have column names")
   if(is.matrix(x)) {
     out <- rep(class(x[1,1]), ncol(x))
   } else {
@@ -805,29 +1048,6 @@ group_bc <- function(x, outcome = NULL,
   bc[!is.null(bc) & !is.na(bc)]
 }
 
-yjWrap <- function(x, numUnique = numUnique) {
-  if(length(unique(x)) >= numUnique) {
-    out <- try(powerTransform(y ~ 1,
-                              data = data.frame(y = x[!is.na(x)]),
-                              family = "yjPower"),
-               silent = TRUE)
-    if(class(out)[1] == "try-error") out <- NA
-  } else out <- NA
-  out
-}
-
-group_yj <- function(x, numUnique, verbose) {
-  if(verbose) 
-    cat("Estimating Yeo-Johnson transformations for", ncol(x), "predictors...")
-  
-  if(is.matrix(x)) {
-    yj <- apply(x, 2, yjWrap, numUnique = numUnique)  
-  } else {
-    yj <- lapply(x, yjWrap, numUnique = numUnique)  
-  }   
-  yj[!is.null(yj) & !is.na(yj)]
-}
-
 convert_method <- function(x) {
   new_method <- list()
   if("center" %in% x$method)       new_method$center       <- names(x$mean)
@@ -840,7 +1060,22 @@ convert_method <- function(x) {
   if("medianImpute" %in% x$method) new_method$medianImpute <- names(x$median)   
   if("pca" %in% x$method)          new_method$pca          <- names(x$mean)  
   if("ica" %in% x$method)          new_method$ica          <- names(x$mean)    
-  if("spatialSign" %in% x$method)  new_method$spatialSign  <- names(x$mean)    
+  if("spatialSign" %in% x$method)  new_method$spatialSign  <- names(x$mean)   
+  if("invHyperbolicSine" %in% x$method)  new_method$invHyperbolicSine  <- x$method$invHyperbolicSine    
   x$method <- new_method
   x
 }
+
+## code for using car method; extract lambdas either way and use
+## new code for predictions. Same for predict method
+get_yj_lambda <- function(x) {
+  if(inherits(x[[1]], "powerTransform")) {
+    # backwards compat with old caret objecgts that used `car`
+    res <- unlist(lapply(x, function(x) x$lambda))
+    names(res) <- gsub("\\.Y1$", "", names(res))
+  } else {
+    res <- x
+  }
+  res[!is.na(res)]
+}
+

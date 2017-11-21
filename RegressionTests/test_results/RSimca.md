@@ -1,7 +1,8 @@
 Robust SIMCA (`RSimca`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/RSimca.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/RSimca.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `robustbase` (0.92-5), `rrcov` (1.3-11), `rrcovHD` (0.2-4)
- * tested on 2016-06-10 at 17:42
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `robustbase` (0.92-6), `rrcov` (1.4-3), `rrcovHD` (0.2-5)
+ * tested on 2017-04-12 at 18:31. 
+ * total test time: 19.6s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `robustbase` (0.92-5), `rrcov` (1.3-11), `rrcovHD` (0.2-4)
- * tested on 2016-06-12 at 13:21
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `robustbase` (0.92-6), `rrcov` (1.4-3), `rrcovHD` (0.2-5)
+ * tested on 2017-04-11 at 20:40. 
+ * total test time: 17.2s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.52s (new) 1.5s
+Execution times: (old) 1.34s (new) 1.03s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 2.38s (new) 2.27s
+Execution times: (old) 2.36s (new) 1.63s
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 15.34s (new) 14.92s
+Execution times: (old) 12.19s (new) 11.28s
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.77s (new) 0.8s
+Execution times: (old) 0.76s (new) 0.44s
 
 Test Results:
 

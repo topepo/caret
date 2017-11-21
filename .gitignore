@@ -14,6 +14,14 @@ pkg/caret/DESCRIPTION~
 
 .Rproj.user
 
+*~
+
+*\#*\#
+
+*.\#*
+
+TAGS
+
 pkg/caret/inst/NEWS.Rd~
 
 pkg/caret/src/symbols.rds
@@ -31,6 +39,8 @@ RegressionTests/move_files.Rout
 RegressionTests/.RData
 
 caret.Rproj
+
+auto/
 
 release_process/talk/caret.vrb
 
@@ -63,3 +73,58 @@ models/parseModels.Rout
 *.history
 
 *.dll
+
+bookdown/tag_data.csv
+
+bookdown/_book/*
+
+bookdown/_bookdown_files/*
+
+bookdown/_main_cache/*
+
+bookdown/_main_files/*
+
+bookdown/_main.Rmd
+
+bookdown/.Rhistory
+
+bookdown/basic/*
+
+bookdown/performance/*
+
+bookdown/preprocess/*
+
+bookdown/random/*
+
+bookdown/splitting/*
+
+bookdown/visualizations/*
+
+bookdown/sampling/*
+
+bookdown/custom/*
+
+bookdown/varimp/*
+
+bookdown/misc/*
+
+bookdown/rfe/*
+
+bookdown/filters/*
+
+bookdown/ga/*
+
+bookdown/sa/*
+
+bookdown/make_files.Rout
+
+RegressionTests/package_archives/sdwd_1.0.2.tgz
+
+release_process/.RData
+
+release_process/make_model_Rd.Rout
+
+RegressionTests/badhess.txt
+
+pkg/caret/revdep
+

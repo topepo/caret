@@ -8,7 +8,7 @@ modelInfo <- list(label = "Maximum Uncertainty Linear Discriminant Analysis",
                   grid = function(x, y, len = NULL, search = "grid") 
                     data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    Mlda(x, y, q = param$.q, maxq = param$.q, ...),
+                    HiDimDA::Mlda(x, y, q = param$.q, maxq = param$.q, ...),
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, newdata)$class
                     out <- modelFit$obsLevels[as.numeric(out)]

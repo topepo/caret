@@ -8,12 +8,12 @@ modelInfo <- list(label = "Quadratic Discriminant Analysis with Stepwise Feature
                   grid = function(x, y, len = NULL, search = "grid") 
                     data.frame(maxvar = Inf, direction = "both"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
-                    out <- stepclass(x, y,
-                                     method = "qda",
-                                     maxvar = param$maxvar,
-                                     direction = as.character(param$direction),
-                                     ...)
-                    out$fit <- qda(x[, out$model$name, drop = FALSE], y, ...)
+                    out <- klaR::stepclass(x, y,
+                                           method = "qda",
+                                           maxvar = param$maxvar,
+                                           direction = as.character(param$direction),
+                                           ...)
+                    out$fit <- MASS::qda(x[, out$model$name, drop = FALSE], y, ...)
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {

@@ -1,7 +1,8 @@
 Flexible Discriminant Analysis (`fda`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/fda.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/fda.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `class` (7.3-14), `earth` (4.4.4), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
- * tested on 2016-06-10 at 16:57
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `class` (7.3-14), `earth` (4.4.9.1), `mda` (0.4-9), `plotmo` (3.3.1), `plotrix` (3.6-3), `TeachingDemos` (2.10)
+ * tested on 2017-04-12 at 20:36. 
+ * total test time: 15.8s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `class` (7.3-14), `earth` (4.4.4), `mda` (0.4-8), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
- * tested on 2016-06-12 at 12:32
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `class` (7.3-14), `earth` (4.4.9.1), `mda` (0.4-9), `plotmo` (3.3.1), `plotrix` (3.6-3), `TeachingDemos` (2.10)
+ * tested on 2017-04-11 at 21:37. 
+ * total test time: 11.1s
 
 
 Results:
@@ -38,26 +41,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.08s (new) 1.07s
+Execution times: (old) 1s (new) 0.69s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean 1.413
-      min  0.000
-      max  4.239
-    correlation:  1 
-
- nprune degree ROC_new ROC_old Diff Flag
-     14      1  0.8565  0.8565  0.0     
-      2      1  0.6403  0.6143  4.2    *
-      8      1  0.8565  0.8565  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -74,26 +62,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.03s (new) 1.98s
+Execution times: (old) 1.9s (new) 1.17s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean 1.413
-      min  0.000
-      max  4.239
-    correlation:  1 
-
- nprune degree ROC_new ROC_old Diff Flag
-     14      1  0.8565  0.8565  0.0     
-      2      1  0.6403  0.6143  4.2    *
-      8      1  0.8565  0.8565  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -116,7 +89,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 8.65s (new) 8.4s
+Execution times: (old) 7.09s (new) 5.78s
 
 Test Results:
 
@@ -137,7 +110,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.57s (new) 0.61s
+Execution times: (old) 0.59s (new) 0.21s
 
 Test Results:
 
@@ -200,7 +173,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.01s (new) 1.18s
+Execution times: (old) 1.06s (new) 0.62s
 
 Test Results:
 

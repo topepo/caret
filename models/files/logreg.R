@@ -9,12 +9,12 @@ modelInfo <- list(label = "Logic Regression",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
                     isReg <- is.numeric(y)
                     if(is.factor(y)) y <- ifelse(y == levels(y)[1], 1, 0)
-                    logreg(resp = y, bin = x,
-                           ntrees = param$ntrees,
-                           tree.control = logreg.tree.control(treesize = param$treesize),
-                           select = 1,
-                           type = ifelse(isReg, 2, 3),
-                           ...)
+                    LogicReg::logreg(resp = y, bin = x,
+                                     ntrees = param$ntrees,
+                                     tree.control = LogicReg::logreg.tree.control(treesize = param$treesize),
+                                     select = 1,
+                                     type = ifelse(isReg, 2, 3),
+                                     ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(modelFit$type == "logistic")

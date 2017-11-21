@@ -1,0 +1,291 @@
+# Pre-Processing
+
+```{r pp_startup,echo=FALSE,message=FALSE,warning=FALSE}
+library(caret)
+library(knitr)
+opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'preprocess/')
+library(lattice)
+library(ggplot2)
+```
+
+ - [Creating Dummy Variables](#dummy)
+ - [Zero- and Near Zero-Variance Predictors](#nzv)
+ - [Identifying Correlated Predictors](#corr)
+ - [Linear Dependencies](#lindep)
+ - [The `preProcess` Function](#pp)
+ - [Centering and Scaling](#cs)
+ - [Imputation](#impute)
+ - [Transforming Predictors](#trans)
+ - [Putting It All Together](#all)
+ - [Class Distance Calculations](#cent)
+
+[`caret`](http://cran.r-project.org/web/packages/caret/index.html) includes several functions to pre-process the predictor data. It assumes that all of the data are numeric (i.e. factors have been converted to dummy variables via `model.matrix`, `dummyVars` or other means).
+
+Note that the later chapter on using [`recipes`](https://topepo.github.io/recipes/) with `train` shows how that approach can offer a more diverse and customizable interface to pre-processing in the package.  
+
+<div id="dummy"></div>
+
+## Creating Dummy Variables
+
+The function `dummyVars` can be used to generate a complete (less than full rank parameterized) set of dummy variables from one or more factors. The function takes a formula and a data set and outputs an object that can be used to create the dummy variables using the predict method.
+
+```{r load, echo = FALSE, message=FALSE, warning=FALSE}
+library(earth)
+data(etitanic)
+```
+
+For example, the `etitanic` data set in the [`earth`](http://cran.r-project.org/web/packages/earth/index.html) package includes two factors: `pclass` (passenger class, with levels `r I(paste(levels(etitanic$pclass),  collapse = ", "))`) and `sex` (with levels `r I(paste(levels(etitanic$sex),  sep = "", collapse = ", "))`). The base R function `model.matrix` would generate the following variables:
+
+```{r pp_dummy1}
+library(earth)
+data(etitanic)
+head(model.matrix(survived ~ ., data = etitanic))
+```
+
+Using `dummyVars`:
+
+```{r pp_dummy2}
+dummies <- dummyVars(survived ~ ., data = etitanic)
+head(predict(dummies, newdata = etitanic))
+```
+
+Note there is no intercept and each factor has a dummy variable for each level, so this parameterization may not be useful for some model functions, such as `lm`.
+
+<div id="nzv"></div>
+
+## Zero- and Near Zero-Variance Predictors
+
+In some situations, the data generating mechanism can create predictors that only have a single unique value (i.e. a "zero-variance predictor"). For many models (excluding tree-based models), this may cause the model to crash or the fit to be unstable.
+
+Similarly, predictors might have only a handful of unique values that occur with very low frequencies. For example, in the drug resistance data, the `nR11` descriptor (number of 11-membered rings) data have a few unique numeric values that are highly unbalanced:
+
+```{r pp_nzv1}
+data(mdrr)
+data.frame(table(mdrrDescr$nR11))
+```
+
+The concern here that these predictors may become zero-variance predictors when the data are split into cross-validation/bootstrap sub-samples or that a few samples may have an undue influence on the model. These "near-zero-variance" predictors may need to be identified and eliminated prior to modeling.
+
+To identify these types of predictors, the following two metrics can be calculated:
+
+-   the frequency of the most prevalent value over the second most frequent value (called the "frequency ratio''), which would be near one for well-behaved predictors and very large for highly-unbalanced data and
+-   the "percent of unique values'' is the number of unique values divided by the total number of samples (times 100) that approaches zero as the granularity of the data increases
+
+If the frequency ratio is greater than a pre-specified threshold and the unique value percentage is less than a threshold, we might consider a predictor to be near zero-variance.
+
+We would not want to falsely identify data that have low granularity but are evenly distributed, such as data from a discrete uniform distribution. Using both criteria should not falsely detect such predictors.
+
+Looking at the MDRR data, the `nearZeroVar` function can be used to identify near zero-variance variables (the `saveMetrics` argument can be used to show the details and usually defaults to `FALSE`):
+
+```{r pp_nzv2}
+nzv <- nearZeroVar(mdrrDescr, saveMetrics= TRUE)
+nzv[nzv$nzv,][1:10,]
+dim(mdrrDescr)
+nzv <- nearZeroVar(mdrrDescr)
+filteredDescr <- mdrrDescr[, -nzv]
+dim(filteredDescr)
+```
+
+By default, `nearZeroVar` will return the positions of the variables that are flagged to be problematic.
+
+<div id="corr"></div>
+
+## Identifying Correlated Predictors
+
+While there are some models that thrive on correlated predictors (such as `pls`), other models may benefit from reducing the level of correlation between the predictors.
+
+Given a correlation matrix, the `findCorrelation` function uses the following algorithm to flag predictors for removal:
+
+```{r pp_corr1}
+descrCor <-  cor(filteredDescr)
+highCorr <- sum(abs(descrCor[upper.tri(descrCor)]) > .999)
+```
+
+For the previous MDRR data, there are `r I(highCorr)` descriptors that are almost perfectly correlated (|correlation| &gt; 0.999), such as the total information index of atomic composition (`IAC`) and the total information content index (neighborhood symmetry of 0-order) (`TIC0`) (correlation = 1). The code chunk below shows the effect of removing descriptors with absolute correlations above 0.75.
+
+```{r pp_corr2}
+descrCor <- cor(filteredDescr)
+summary(descrCor[upper.tri(descrCor)])
+
+highlyCorDescr <- findCorrelation(descrCor, cutoff = .75)
+filteredDescr <- filteredDescr[,-highlyCorDescr]
+descrCor2 <- cor(filteredDescr)
+summary(descrCor2[upper.tri(descrCor2)])
+```
+
+<div id="lindep"></div>
+
+## Linear Dependencies
+
+The function `findLinearCombos` uses the QR decomposition of a matrix to enumerate sets of linear combinations (if they exist). For example, consider the following matrix that is could have been produced by a less-than-full-rank parameterizations of a two-way experimental layout:
+
+```{r pp_ld1}
+ltfrDesign <- matrix(0, nrow=6, ncol=6)
+ltfrDesign[,1] <- c(1, 1, 1, 1, 1, 1)
+ltfrDesign[,2] <- c(1, 1, 1, 0, 0, 0)
+ltfrDesign[,3] <- c(0, 0, 0, 1, 1, 1)
+ltfrDesign[,4] <- c(1, 0, 0, 1, 0, 0)
+ltfrDesign[,5] <- c(0, 1, 0, 0, 1, 0)
+ltfrDesign[,6] <- c(0, 0, 1, 0, 0, 1)
+```
+
+Note that columns two and three add up to the first column. Similarly, columns four, five and six add up the first column. `findLinearCombos` will return a list that enumerates these dependencies. For each linear combination, it will incrementally remove columns from the matrix and test to see if the dependencies have been resolved. `findLinearCombos` will also return a vector of column positions can be removed to eliminate the linear dependencies:
+
+```{r pp_ld2}
+comboInfo <- findLinearCombos(ltfrDesign)
+comboInfo
+
+ltfrDesign[, -comboInfo$remove]
+``` 
+
+These types of dependencies can arise when large numbers of binary chemical fingerprints are used to describe the structure of a molecule.
+
+<div id="pp"></div>
+
+## The `preProcess` Function
+
+The `preProcess` class can be used for many operations on predictors, including centering and scaling. The function `preProcess` estimates the required parameters for each operation and `predict.preProcess` is used to apply them to specific data sets. This function can also be interfaces when calling the `train` function.
+
+Several types of techniques are described in the next few sections and then another example is used to demonstrate how multiple methods can be used. Note that, in all cases, the `preProcess` function estimates whatever it requires from a specific data set (e.g. the training set) and then applies these transformations to *any* data set without recomputing the values
+
+<div id="cs"></div>
+
+## Centering and Scaling
+
+In the example below, the half of the MDRR data are used to estimate the location and scale of the predictors. The function `preProcess` doesn't actually pre-process the data. `predict.preProcess` is used to pre-process this and other data sets.
+
+```{r pp_cs}
+set.seed(96)
+inTrain <- sample(seq(along = mdrrClass), length(mdrrClass)/2)
+
+training <- filteredDescr[inTrain,]
+test <- filteredDescr[-inTrain,]
+trainMDRR <- mdrrClass[inTrain]
+testMDRR <- mdrrClass[-inTrain]
+
+preProcValues <- preProcess(training, method = c("center", "scale"))
+
+trainTransformed <- predict(preProcValues, training)
+testTransformed <- predict(preProcValues, test)
+``` 
+
+The `preProcess` option `"range"` scales the data to the interval between zero and one.
+
+<div id="impute"></div>
+
+## Imputation
+
+`preProcess` can be used to impute data sets based only on information in the training set. One method of doing this is with K-nearest neighbors. For an arbitrary sample, the K closest neighbors are found in the training set and the value for the predictor is imputed using these values (e.g. using the mean). Using this approach will automatically trigger `preProcess` to center and scale the data, regardless of what is in the `method` argument. Alternatively, bagged trees can also be used to impute. For each predictor in the data, a bagged tree is created using all of the other predictors in the training set. When a new sample has a missing predictor value, the bagged model is used to predict the value. While, in theory, this is a more powerful method of imputing, the computational costs are much higher than the nearest neighbor technique.
+
+<div id="trans"> </div>
+
+## Transforming Predictors
+
+In some cases, there is a need to use principal component analysis (PCA) to transform the data to a smaller sub–space where the new variable are uncorrelated with one another. The `preProcess` class can apply this transformation by including `"pca"` in the `method` argument. Doing this will also force scaling of the predictors. Note that when PCA is requested, `predict.preProcess` changes the column names to `PC1`, `PC2` and so on.
+
+Similarly, independent component analysis (ICA) can also be used to find new variables that are linear combinations of the original set such that the components are independent (as opposed to uncorrelated in PCA). The new variables will be labeled as `IC1`, `IC2` and so on.
+
+The "spatial sign” transformation ([Serneels et al, 2006](http://pubs.acs.org/cgi-bin/abstract.cgi/jcisd8/2006/46/i03/abs/ci050498u.html)) projects the data for a predictor to the unit circle in p dimensions, where p is the number of predictors. Essentially, a vector of data is divided by its norm. The two figures below show two centered and scaled descriptors from the MDRR data before and after the spatial sign transformation. The predictors should be centered and scaled before applying this transformation.
+
+```{r pp_set1}
+library(AppliedPredictiveModeling)
+transparentTheme(trans = .4)
+```  
+    
+```{r pp_SpatSignBefore, tidy=FALSE, fig.height=5, fig.width=5 }
+plotSubset <- data.frame(scale(mdrrDescr[, c("nC", "X4v")])) 
+xyplot(nC ~ X4v,
+       data = plotSubset,
+       groups = mdrrClass, 
+       auto.key = list(columns = 2))  
+```  
+
+After the spatial sign:
+
+```{r pp_SpatSignAfter, tidy=FALSE, fig.height=5, fig.width=5} 
+transformed <- spatialSign(plotSubset)
+transformed <- as.data.frame(transformed)
+xyplot(nC ~ X4v, 
+       data = transformed, 
+       groups = mdrrClass, 
+       auto.key = list(columns = 2)) 
+```  
+
+Another option, `"BoxCox"` will estimate a Box–Cox transformation on the predictors if the data are greater than zero.
+
+```{r pp_bc1}
+preProcValues2 <- preProcess(training, method = "BoxCox")
+trainBC <- predict(preProcValues2, training)
+testBC <- predict(preProcValues2, test)
+preProcValues2
+```
+
+The `NA` values correspond to the predictors that could not be transformed. This transformation requires the data to be greater than zero. Two similar transformations, the Yeo-Johnson and exponential transformation of Manly (1976) can also be used in `preProcess`. 
+
+<div id="all"></div>
+
+## Putting It All Together
+
+In *Applied Predictive Modeling* there is a case study where the execution times of jobs in a high performance computing environment are being predicted. The data are:
+
+```{r pp_hpc}
+library(AppliedPredictiveModeling)
+data(schedulingData)
+str(schedulingData)
+```
+
+The data are a mix of categorical and numeric predictors. Suppose we want to use the Yeo-Johnson transformation on the continuous predictors then center and scale them. Let's also suppose that we will be running a tree-based models so we might want to keep the factors as factors (as opposed to creating dummy variables). We run the function on all the columns except the last, which is the outcome.
+
+```{r pp_hpc_pp_factors }
+pp_hpc <- preProcess(schedulingData[, -8], 
+                     method = c("center", "scale", "YeoJohnson"))
+pp_hpc
+transformed <- predict(pp_hpc, newdata = schedulingData[, -8])
+head(transformed)
+```   
+
+The two predictors labeled as "ignored" in the output are the two factor predictors. These are not altered but the numeric predictors are transformed. However, the predictor for the number of pending jobs, has a very sparse and unbalanced distribution:
+
+```{r pp_hpc_nzv}
+mean(schedulingData$NumPending == 0)
+```  
+
+For some other models, this might be an issue (especially if we resample or down-sample the data). We can add a filter to check for zero- or near zero-variance predictors prior to running the pre-processing calculations:
+
+```{r pp_hpc_pp_nzv}
+pp_no_nzv <- preProcess(schedulingData[, -8], 
+                        method = c("center", "scale", "YeoJohnson", "nzv"))
+pp_no_nzv
+predict(pp_no_nzv, newdata = schedulingData[1:6, -8])
+```  
+
+Note that one predictor is labeled as "removed" and the processed data lack the sparse predictor.
+
+<div id="cent"></div>
+
+## Class Distance Calculations
+
+[`caret`](http://cran.r-project.org/web/packages/caret/index.html) contains functions to generate new predictors variables based on
+distances to class centroids (similar to how linear discriminant analysis works). For each level of a factor variable, the class centroid and covariance matrix is calculated. For new samples, the Mahalanobis distance to each of the class centroids is computed and can be used as an additional predictor. This can be helpful for non-linear models when the true decision boundary is actually linear.
+
+In cases where there are more predictors within a class than samples, the `classDist` function has arguments called `pca` and `keep` arguments that allow for principal components analysis within each class to be used to avoid issues with singular covariance matrices.
+
+`predict.classDist` is then used to generate the class distances. By default, the distances are logged, but this can be changed via the `trans` argument to `predict.classDist`.
+
+As an example, we can used the MDRR data.
+
+```{r pp_cd1}
+centroids <- classDist(trainBC, trainMDRR)
+distances <- predict(centroids, testBC)
+distances <- as.data.frame(distances)
+head(distances)
+```
+
+This image shows a scatterplot matrix of the class distances for the held-out samples:
+
+```{r pp_splom, tidy=FALSE, fig.height=5, fig.width=5} 
+xyplot(dist.Active ~ dist.Inactive,
+       data = distances, 
+       groups = testMDRR, 
+       auto.key = list(columns = 2))
+``` 

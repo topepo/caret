@@ -8,12 +8,12 @@ modelInfo <- list(label = "Non-Negative Least Squares",
                   grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.matrix(x)) x <- as.matrix(x)
-                    out <- nnls(x, y)
+                    out <- nnls::nnls(x, y)
                     names(out$x) <- colnames(x)
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.matrix(newdata)) x <- as.matrix(newdata)
+                    if(!is.matrix(newdata)) newdata <- as.matrix(newdata)
                     out <- newdata %*% modelFit$x
                     out[,1]
                     },

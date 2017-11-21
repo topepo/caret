@@ -1,7 +1,8 @@
 Stacked AutoEncoder Deep Neural Network (`dnn`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/dnn.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/dnn.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `deepnet` (0.2)
- * tested on 2016-06-10 at 16:53
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `deepnet` (0.2)
+ * tested on 2017-04-12 at 18:56. 
+ * total test time: 28.6s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `deepnet` (0.2)
- * tested on 2016-06-12 at 12:29
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `deepnet` (0.2)
+ * tested on 2017-04-11 at 20:47. 
+ * total test time: 31.2s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1s (new) 1.13s
+Execution times: (old) 1.02s (new) 0.9s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.87s (new) 1.98s
+Execution times: (old) 1.68s (new) 1.42s
 
 Test Results:
 
@@ -71,13 +74,13 @@ Object class(es): `varImp.train`
 
  * ***UNequal results***: differences (o-n):
 <pre>
-     Class1            Class2       
- Min.   :-41.004   Min.   :-41.004  
- 1st Qu.:-26.976   1st Qu.:-26.976  
- Median :  0.000   Median :  0.000  
- Mean   :  9.323   Mean   :  9.323  
- 3rd Qu.: 36.491   3rd Qu.: 36.491  
- Max.   : 87.234   Max.   : 87.234  
+     Class1           Class2      
+ Min.   :-85.12   Min.   :-85.12  
+ 1st Qu.:-29.11   1st Qu.:-29.11  
+ Median :  0.00   Median :  0.00  
+ Mean   : -3.60   Mean   : -3.60  
+ 3rd Qu.: 34.38   3rd Qu.: 34.38  
+ Max.   : 49.37   Max.   : 49.37  
 </pre>
 
 **Test Case**: `class_loo_model`
@@ -93,7 +96,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 9.54s (new) 10s
+Execution times: (old) 7.69s (new) 8.93s
 
 Test Results:
 
@@ -113,7 +116,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.51s (new) 0.55s
+Execution times: (old) 0.53s (new) 0.25s
 
 Test Results:
 

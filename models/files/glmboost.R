@@ -15,7 +15,7 @@ modelInfo <- list(label = "Boosted Generalized Linear Model",
                   },
                   loop = function(grid) {
                     grid <- grid[order(-grid$mstop, grid$prune),]
-                    loop <- ddply(grid, .(prune), function(x) data.frame(mstop = max(x$mstop)))
+                    loop <- plyr::ddply(grid, plyr::`.`(prune), function(x) data.frame(mstop = max(x$mstop)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$mstop)) {
                       submodels[[i]] <- subset(grid, prune == loop$prune[i] & mstop < loop$mstop[i])
@@ -25,22 +25,22 @@ modelInfo <- list(label = "Boosted Generalized Linear Model",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {   
                     ##check for control list and over-write mstop
                     theDots <- list(...)
-                    if(any(names(theDots) == "control"))
-                    {
+                    if(any(names(theDots) == "control")) {
                       theDots$control$mstop <- param$mstop 
                       ctl <- theDots$control
                       theDots$control <- NULL
-                    } else ctl <- boost_control(mstop = param$mstop)
-                    
+                    } else ctl <- mboost::boost_control(mstop = param$mstop)
+
                     if(!any(names(theDots) == "family"))
-                      theDots$family <- if(is.factor(y)) Binomial() else GaussReg()              
-                    
+                      theDots$family <- if(is.factor(y)) mboost::Binomial() else mboost::GaussReg()
+
                     ## pass in any model weights
                     if(!is.null(wts)) theDots$weights <- wts                       
                     
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    modelArgs <- c(list(formula = as.formula(".outcome ~ ."), data = dat, control = ctl), 
+                    modelArgs <- c(list(formula = as.formula(".outcome ~ ."), 
+                                        data = dat, control = ctl), 
                                    theDots)
                     out <- do.call(mboost:::glmboost.formula, modelArgs)
                     
@@ -54,10 +54,10 @@ modelInfo <- list(label = "Boosted Generalized Linear Model",
                     ## by mstop(x) <- i.
                     
                     if(param$prune == "yes") {
-                      iters <- if(is.factor(y)) 
-                        mstop(AIC(out, "classical")) else 
-                          mstop(AIC(out))
-                      if(iters < out$mstop()) out <- out[iters] 
+                      iters <- if(is.factor(y))
+                        mboost::mstop(AIC(out, "classical")) else
+                          mboost::mstop(AIC(out))
+                      if(iters < out$mstop()) out <- out[iters]
                     }
                     out$.org.mstop <- out$mstop()
                     
@@ -88,15 +88,15 @@ modelInfo <- list(label = "Boosted Generalized Linear Model",
                                                          type = predType))
                       }
                       out <- tmp
-                      mstop(modelFit) <- modelFit$.org.mstop
-                    } 
+                      mboost::mstop(modelFit) <- modelFit$.org.mstop
+                    }
                     # cat(modelFit$mstop(), "!\n")
                     out         
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-                    lp <- predict(modelFit, newdata)
-                    out <- cbind( binomial()$linkinv(-lp), 1 - binomial()$linkinv(-lp))
+                    probs <- predict(modelFit, newdata, type = "response")
+                    out <- cbind(1 - probs, probs)
                     colnames(out) <- modelFit$obsLevels
                     if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
@@ -106,22 +106,36 @@ modelInfo <- list(label = "Boosted Generalized Linear Model",
                                          submodels$mstop[j] > modelFit$.org.mstop)
                           modelFit$.org.mstop else submodels$mstop[j]
                         
-                        tmpProb <- predict(modelFit[this_mstop], newdata)
-                        tmpProb <- cbind(binomial()$linkinv(-tmpProb),
-                                         1 - binomial()$linkinv(-tmpProb))
+                        tmpProb <- predict(modelFit[this_mstop], newdata, type = "response")
+                        tmpProb <- cbind(1 - tmpProb, tmpProb)
                         colnames(tmpProb) <- modelFit$obsLevels
                         tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels,drop = FALSE])           
                       }
                       out <- tmp
-                      mstop(modelFit) <- modelFit$.org.mstop
-                    }                        
+                      mboost::mstop(modelFit) <- modelFit$.org.mstop
+                    }
                     out
                   },
                   predictors = function(x, ...) {
                     strsplit(variable.names(x), ", ")[[1]]
                   },
+                  varImp = function(object, ...) {
+                    betas <- abs(coef(object))
+                    betas <- betas[names(betas) != "(Intercept)"]
+                    bnames <- names(betas)
+                    name_check <- object$xName %in% bnames
+                    if(any(!(name_check))) {
+                      missing <- object$xName[!name_check]
+                      beta_miss <- rep(0, length(missing))
+                      names(beta_miss) <- missing
+                      betas <- c(betas, beta_miss)
+                    }
+                    out <- data.frame(Overall = betas)
+                    rownames(out) <- names(betas)
+                    out
+                  },
                   levels = function(x) levels(x$response),
-                  notes = "The `prune` option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in `?mstop`. If pruning is not used, the ensemble makes predictions using the exact value of the `mstop` tuning parameter value.",
+                  notes = "The `prune` option for this model enables the number of iterations to be determined by the optimal AIC value across all iterations. See the examples in `?mboost::mstop`. If pruning is not used, the ensemble makes predictions using the exact value of the `mstop` tuning parameter value.",
                   tags = c("Generalized Linear Model", "Ensemble Model", "Boosting", 
                            "Linear Classifier", "Two Class Only", "Accepts Case Weights"),
                   sort = function(x) x[order(x$mstop, x$prune),])

@@ -31,10 +31,10 @@ modelInfo <- list(label = "Random k-Nearest Neighbors",
                     modelFit$obsLevels <- NULL
                     modelFit$newdata <- newdata
                     if(!is.factor(modelFit$y)) {
-                      out <- do.call("rknnReg", modelFit)$pred
+                      out <- do.call(rknn::rknnReg, modelFit)$pred
                     } else {
-                      out <- as.character(do.call("rknn", modelFit)$pred)
-                    } 
+                      out <- as.character(do.call(rknn::rknn, modelFit)$pred)
+                    }
                     out
                   },
                   levels = function(x) x$obsLevels,

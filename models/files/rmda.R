@@ -16,10 +16,10 @@ modelInfo <- list(label = "Robust Mixture Discriminant Analysis",
                     out
                   }, 
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    mod <- rmda(x, as.numeric(y), 
-                                K = param$K, 
-                                model = as.character(param$model), 
-                                ...)
+                    mod <- robustDA::rmda(x, as.numeric(y),
+                                          K = param$K,
+                                          model = as.character(param$model),
+                                          ...)
                     mod$levels <- levels(y)
                     mod
                   },

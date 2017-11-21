@@ -1,7 +1,8 @@
 Shrinkage Discriminant Analysis (`sda`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/sda.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/sda.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `corpcor` (1.6.8), `entropy` (1.2.1), `fdrtool` (1.2.15), `sda` (1.3.7)
- * tested on 2016-06-10 at 17:44
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `corpcor` (1.6.8), `entropy` (1.2.1), `fdrtool` (1.2.15), `sda` (1.3.7)
+ * tested on 2017-04-12 at 19:52. 
+ * total test time: 11.2s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `corpcor` (1.6.8), `entropy` (1.2.1), `fdrtool` (1.2.15), `sda` (1.3.7)
- * tested on 2016-06-12 at 13:25
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `corpcor` (1.6.8), `entropy` (1.2.1), `fdrtool` (1.2.15), `sda` (1.3.7)
+ * tested on 2017-04-11 at 20:28. 
+ * total test time: 9s
 
 
 Results:
@@ -38,26 +41,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.85s (new) 0.83s
+Execution times: (old) 0.86s (new) 0.57s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                 
-      mean  7.275
-      min   0.000
-      max  12.549
-    correlation:  0.9895 
-
- diagonal lambda ROC_new ROC_old Diff Flag
-    FALSE    0.0  0.7477  0.7477  0.0     
-    FALSE    0.5  0.6644  0.5903 12.5    *
-    FALSE    1.0  0.6545  0.5990  9.3    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -74,26 +62,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.64s (new) 1.57s
+Execution times: (old) 1.62s (new) 0.98s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                 
-      mean  7.275
-      min   0.000
-      max  12.549
-    correlation:  0.9895 
-
- diagonal lambda ROC_new ROC_old Diff Flag
-    FALSE    0.0  0.7477  0.7477  0.0     
-    FALSE    0.5  0.6644  0.5903 12.5    *
-    FALSE    1.0  0.6545  0.5990  9.3    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -110,7 +83,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.42s (new) 5.34s
+Execution times: (old) 4.53s (new) 4.22s
 
 Test Results:
 
@@ -131,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.5s (new) 0.49s
+Execution times: (old) 0.52s (new) 0.22s
 
 Test Results:
 
@@ -194,7 +167,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.88s (new) 0.82s
+Execution times: (old) 0.88s (new) 0.54s
 
 Test Results:
 

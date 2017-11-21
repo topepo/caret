@@ -5,7 +5,7 @@ modelInfo <- list(label = "Distance Weighted Discrimination with Radial Basis Fu
                                           class = rep("numeric", 3),
                                           label = c('Regularization Parameter', 'q', 'Sigma')),
                   grid = function(x, y, len = NULL, search = "grid") {
-                    sigmas <- sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)  
+                    sigmas <- kernlab::sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)  
                     if(length(levels(y)) != 2) stop("Two class problems only")
                     if(search == "grid") {
                       out <-  expand.grid(lambda = 10^seq(-5, 1, length = len),
@@ -22,13 +22,13 @@ modelInfo <- list(label = "Distance Weighted Discrimination with Radial Basis Fu
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.matrix(x)) x <- as.matrix(x)
-                    kobj <- rbfdot(sigma = param$sigma)
-                    out <- kerndwd(x = x,
-                                   y = ifelse(y == lev[1], 1, -1),
-                                   qval = param$qval,
-                                   lambda = param$lambda,
-                                   kern = kobj,
-                                   ...)
+                    kobj <- kernlab::rbfdot(sigma = param$sigma)
+                    out <- kerndwd::kerndwd(x = x,
+                                            y = ifelse(y == lev[1], 1, -1),
+                                            qval = param$qval,
+                                            lambda = param$lambda,
+                                            kern = kobj,
+                                            ...)
                     out$kern <- kobj
                     out$x <- x
                     out

@@ -9,11 +9,11 @@ modelInfo <- list(label = "Bagged FDA using gCV Pruning",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    bagFDA(.outcome ~ ., 
-                           data = dat, 
-                           degree = param$degree, 
-                           weights = wts, 
-                           ...)
+                    caret::bagFDA(.outcome ~ ., 
+                                  data = dat, 
+                                  degree = param$degree, 
+                                  weights = wts, 
+                                  ...)
                   },
                   tags = c("Multivariate Adaptive Regression Splines", "Ensemble Model", 
                            "Implicit Feature Selection", "Bagging"),

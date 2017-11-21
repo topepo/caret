@@ -2,11 +2,81 @@
 # check predict method with formula interface
 # how to handle variable imp?
 
+
+#' Neural Networks with a Principal Component Step
+#' 
+#' Run PCA on a dataset, then use it in a neural network model
+#' 
+#' The function first will run principal component analysis on the data. The
+#' cumulative percentage of variance is computed for each principal component.
+#' The function uses the \code{thresh} argument to determine how many
+#' components must be retained to capture this amount of variance in the
+#' predictors.
+#' 
+#' The principal components are then used in a neural network model.
+#' 
+#' When predicting samples, the new data are similarly transformed using the
+#' information from the PCA analysis on the training data and then predicted.
+#' 
+#' Because the variance of each predictor is used in the PCA analysis, the code
+#' does a quick check to make sure that each predictor has at least two
+#' distinct values. If a predictor has one unique value, it is removed prior to
+#' the analysis.
+#' 
+#' @aliases pcaNNet pcaNNet.default predict.pcaNNet pcaNNet.formula
+#' @param formula A formula of the form \code{class ~ x1 + x2 + \dots{}}
+#' @param x matrix or data frame of \code{x} values for examples.
+#' @param y matrix or data frame of target values for examples.
+#' @param weights (case) weights for each example -- if missing defaults to 1.
+#' @param thresh a threshold for the cumulative proportion of variance to
+#' capture from the PCA analysis. For example, to retain enough PCA components
+#' to capture 95 percent of variation, set \code{thresh = .95}
+#' @param data Data frame from which variables specified in \code{formula} are
+#' preferentially to be taken.
+#' @param subset An index vector specifying the cases to be used in the
+#' training sample.  (NOTE: If given, this argument must be named.)
+#' @param na.action A function to specify the action to be taken if \code{NA}s
+#' are found. The default action is for the procedure to fail.  An alternative
+#' is na.omit, which leads to rejection of cases with missing values on any
+#' required variable.  (NOTE: If given, this argument must be named.)
+#' @param contrasts a list of contrasts to be used for some or all of the
+#' factors appearing as variables in the model formula.
+#' @param object an object of class \code{pcaNNet} as returned by
+#' \code{pcaNNet}.
+#' @param newdata matrix or data frame of test examples. A vector is considered
+#' to be a row vector comprising a single case.
+#' @param type Type of output
+#' @param \dots arguments passed to \code{\link[nnet]{nnet}}, such as
+#' \code{size}, \code{decay}, etc.
+#' @return For \code{pcaNNet}, an object of \code{"pcaNNet"} or
+#' \code{"pcaNNet.formula"}. Items of interest in the output are: \item{pc
+#' }{the output from \code{\link{preProcess}}} \item{model }{the model
+#' generated from \code{\link[nnet]{nnet}}} \item{names }{if any predictors had
+#' only one distinct value, this is a character string of the remaining
+#' columns. Otherwise a value of \code{NULL}}
+#' @author These are heavily based on the \code{nnet} code from Brian Ripley.
+#' @seealso \code{\link[nnet]{nnet}}, \code{\link{preProcess}}
+#' @references Ripley, B. D. (1996) \emph{Pattern Recognition and Neural
+#' Networks.} Cambridge.
+#' @keywords neural
+#' @examples
+#' 
+#' data(BloodBrain)
+#' modelFit <- pcaNNet(bbbDescr[, 1:10], logBBB, size = 5, linout = TRUE, trace = FALSE)
+#' modelFit
+#' 
+#' predict(modelFit, bbbDescr[, 1:10])
+#' 
+#' @export pcaNNet
 pcaNNet <- function (x, ...)
    UseMethod("pcaNNet")
 
 
 # this is a near copy of nnet.formula
+#' @rdname pcaNNet
+#' @method pcaNNet formula
+#' @importFrom stats .getXlevels contrasts model.matrix model.response model.weights
+#' @export
 pcaNNet.formula <- function (formula, data, weights, ...,
                              thresh = .99,
                              subset, na.action, contrasts = NULL) 
@@ -39,6 +109,9 @@ pcaNNet.formula <- function (formula, data, weights, ...,
     res
 }
 
+#' @rdname pcaNNet
+#' @method pcaNNet default
+#' @export 
 pcaNNet.default <- function(x, y, thresh = .99, ...)
   {
     requireNamespaceQuietStop("nnet")
@@ -77,6 +150,9 @@ pcaNNet.default <- function(x, y, thresh = .99, ...)
     out
   }
 
+#' @rdname pcaNNet
+#' @method print pcaNNet
+#' @export
 print.pcaNNet <- function (x, ...) 
 {
   cat("Neural Network Model with PCA Pre-Processing\n\n")
@@ -90,6 +166,10 @@ print.pcaNNet <- function (x, ...)
   invisible(x)
 }
 
+#' @rdname pcaNNet
+#' @method predict pcaNNet
+#' @importFrom stats .checkMFClasses delete.response model.frame model.matrix predict na.omit fitted
+#' @export
 predict.pcaNNet <- function(object, newdata, type = c("raw", "class", "prob"), ...)
   {
     requireNamespaceQuietStop("nnet")

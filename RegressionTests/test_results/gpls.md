@@ -1,7 +1,8 @@
 Generalized Partial Least Squares (`gpls`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/gpls.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/gpls.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `gpls` (1.44.0)
- * tested on 2016-06-10 at 17:08
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `gpls` (1.46.0)
+ * tested on 2017-04-12 at 19:00. 
+ * total test time: 26.2s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `gpls` (1.44.0)
- * tested on 2016-06-12 at 12:43
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `gpls` (1.46.0)
+ * tested on 2017-04-11 at 20:43. 
+ * total test time: 25.3s
 
 
 Results:
@@ -38,16 +41,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.64s (new) 1.71s
+Execution times: (old) 1.84s (new) 1.51s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -64,16 +62,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.36s (new) 2.5s
+Execution times: (old) 2.27s (new) 1.81s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -90,16 +83,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 20.49s (new) 20.07s
+Execution times: (old) 17.8s (new) 18.25s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -116,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.68s (new) 0.68s
+Execution times: (old) 0.67s (new) 0.37s
 
 Test Results:
 
@@ -140,27 +128,13 @@ Object class(es): `data.frame`
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 86.2% (431/500)
-        newer
-older    Class1 Class2
-  Class1    206     46
-  Class2     23    225
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_pred_form`
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 86.2% (431/500)
-        newer
-older    Class1 Class2
-  Class1    206     46
-  Class2     23    225
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_predictors1`
 

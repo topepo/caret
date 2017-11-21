@@ -1,7 +1,7 @@
 modelInfo <- list(label = "Penalized Linear Discriminant Analysis",
                   library = c("penalizedLDA", "plyr"),
                   loop = function(grid) {
-                    loop <- ddply(grid, .(lambda), function(x) c(K = max(x$K)))
+                    loop <- plyr::ddply(grid, .(lambda), function(x) c(K = max(x$K)))
                     if(length(unique(loop$K)) == 1) return(list(loop = loop, submodels = NULL))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$K))
@@ -28,7 +28,7 @@ modelInfo <- list(label = "Penalized Linear Discriminant Analysis",
                     out
                   }, 
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    penalizedLDA:::PenalizedLDA(as.matrix(x), as.numeric(y),
+                    penalizedLDA::PenalizedLDA(as.matrix(x), as.numeric(y),
                                                 lambda = param$lambda,
                                                 K = param$K,
                                                 ...),

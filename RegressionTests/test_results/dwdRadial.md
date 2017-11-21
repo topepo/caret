@@ -1,7 +1,8 @@
 Distance Weighted Discrimination with Radial Basis Function Kernel (`dwdRadial`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/dwdRadial.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/dwdRadial.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `kerndwd` (1.1.2), `kernlab` (0.9-24)
- * tested on 2016-06-10 at 16:54
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `kerndwd` (1.1.2), `kernlab` (0.9-25)
+ * tested on 2017-04-12 at 18:48. 
+ * total test time: 17.3s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `kerndwd` (1.1.2), `kernlab` (0.9-24)
- * tested on 2016-06-12 at 12:30
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `kerndwd` (1.1.2), `kernlab` (0.9-25)
+ * tested on 2017-04-11 at 20:44. 
+ * total test time: 11.4s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.06s (new) 1.15s
+Execution times: (old) 1.03s (new) 0.68s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.6s (new) 2.86s
+Execution times: (old) 2.95s (new) 1.76s
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.68s (new) 7.61s
+Execution times: (old) 7.63s (new) 5.44s
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.64s (new) 0.64s
+Execution times: (old) 0.68s (new) 0.28s
 
 Test Results:
 

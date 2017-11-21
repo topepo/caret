@@ -18,18 +18,17 @@ modelInfo <- list(label = "Model Averaged Neural Network",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    library(nnet)
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     if(!is.null(wts)) {
-                      out <- avNNet(.outcome ~ .,
+                      out <- caret::avNNet(.outcome ~ .,
                                     data = dat,
                                     weights = wts,                                       
                                     size = param$size,
                                     decay = param$decay,
                                     bag = param$bag,
                                     ...)
-                    } else out <- avNNet(.outcome ~ .,
+                    } else out <- caret::avNNet(.outcome ~ .,
                                          data = dat,
                                          size = param$size,
                                          decay = param$decay,

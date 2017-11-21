@@ -1,7 +1,8 @@
 Logic Regression (`logreg`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/logreg.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/logreg.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `LogicReg` (1.5.8), `survival` (2.39-2)
- * tested on 2016-06-10 at 17:15
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `LogicReg` (1.5.9), `survival` (2.40-1)
+ * tested on 2017-04-12 at 20:33. 
+ * total test time: 241.4s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `LogicReg` (1.5.8), `survival` (2.39-2)
- * tested on 2016-06-12 at 12:50
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `LogicReg` (1.5.9), `survival` (2.40-1)
+ * tested on 2017-04-11 at 20:56. 
+ * total test time: 235.9s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 9.68s (new) 9.62s
+Execution times: (old) 10.72s (new) 11.27s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 10.15s (new) 10.15s
+Execution times: (old) 11.43s (new) 11.34s
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.94m (new) 1.94m
+Execution times: (old) 2.17m (new) 2.28m
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.77s (new) 0.88s
+Execution times: (old) 0.88s (new) 0.6s
 
 Test Results:
 
@@ -142,12 +145,34 @@ Model Configuration:
  * 12 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 13.33s (new) 13.39s
+Execution times: (old) 14.93s (new) 4.22s
 
 Test Results:
 
- * _Equal results for Accuracy_
- * _Equal results for Kappa_
+ * ***UNequal results for Accuracy***:
+
+<pre>
+    0 missing values in old
+    8 missing values in new
+    %differences (n-o):                 
+      mean -2.404
+      min  -9.856
+      max   9.178
+    correlation:  0.6488 
+</pre>
+
+ * ***UNequal results for Kappa***:
+
+<pre>
+    0 missing values in old
+    8 missing values in new
+    %differences (n-o):                 
+      mean -14.15
+      min  -61.73
+      max   46.54
+    correlation:  0.5513 
+</pre>
+
 
 **Test Case**: `levels`
 
@@ -168,7 +193,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.78s (new) 4.8s
+Execution times: (old) 5.43s (new) 5.53s
 
 Test Results:
 
@@ -188,7 +213,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.83s (new) 4.86s
+Execution times: (old) 5.6s (new) 5.89s
 
 Test Results:
 
@@ -208,7 +233,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 45.41s (new) 45.32s
+Execution times: (old) 51.42s (new) 54.44s
 
 Test Results:
 
@@ -246,10 +271,32 @@ Model Configuration:
  * 12 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.31s (new) 7.27s
+Execution times: (old) 8.04s (new) 2.3s
 
 Test Results:
 
- * _Equal results for RMSE_
- * _Equal results for Rsquared_
+ * ***UNequal results for RMSE***:
+
+<pre>
+    0 missing values in old
+    8 missing values in new
+    %differences (n-o):                 
+      mean  4.290
+      min  -2.993
+      max   9.521
+    correlation:  0.8894 
+</pre>
+
+ * ***UNequal results for Rsquared***:
+
+<pre>
+    0 missing values in old
+    8 missing values in new
+    %differences (n-o):                 
+      mean -24.91
+      min  -44.97
+      max   15.98
+    correlation:  0.7063 
+</pre>
+
 

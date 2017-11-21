@@ -1,7 +1,8 @@
 Oblique Trees (`oblique.tree`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/oblique.tree.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/oblique.tree.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-6), `oblique.tree` (1.1.1), `tree` (1.0-37)
- * tested on 2016-06-10 at 17:26
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-8), `oblique.tree` (1.1.1), `tree` (1.0-37)
+ * tested on 2017-04-12 at 19:28. 
+ * total test time: 97.3s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-6), `oblique.tree` (1.1.1), `tree` (1.0-37)
- * tested on 2016-06-12 at 13:01
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-8), `oblique.tree` (1.1.1), `tree` (1.0-37)
+ * tested on 2017-04-11 at 20:48. 
+ * total test time: 111.1s
 
 
 Results:
@@ -38,29 +41,11 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.72s (new) 3.69s
+Execution times: (old) 3.71s (new) 4.15s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                 
-      mean  6.933
-      min   0.000
-      max  20.799
-    correlation:  0.9295 
-
- oblique.splits  variable.selection ROC_new ROC_old Diff Flag
-            off model.selection.aic  0.7375  0.6105 20.8    *
-            off                none  0.7375  0.6105 20.8    *
-             on model.selection.aic  0.8086  0.8086  0.0     
-             on                none  0.8245  0.8245  0.0     
-           only model.selection.aic  0.7742  0.7742  0.0     
-           only                none  0.7742  0.7742  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -77,29 +62,11 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.68s (new) 4.65s
+Execution times: (old) 4.41s (new) 4.75s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                 
-      mean  6.933
-      min   0.000
-      max  20.799
-    correlation:  0.9295 
-
- oblique.splits  variable.selection ROC_new ROC_old Diff Flag
-            off model.selection.aic  0.7375  0.6105 20.8    *
-            off                none  0.7375  0.6105 20.8    *
-             on model.selection.aic  0.8086  0.8086  0.0     
-             on                none  0.8245  0.8245  0.0     
-           only model.selection.aic  0.7742  0.7742  0.0     
-           only                none  0.7742  0.7742  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -116,7 +83,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.47m (new) 1.46m
+Execution times: (old) 1.38m (new) 1.6m
 
 Test Results:
 
@@ -137,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.81s (new) 0.72s
+Execution times: (old) 0.82s (new) 0.59s
 
 Test Results:
 
@@ -194,12 +161,22 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.18s (new) 3.14s
+Execution times: (old) 3.14s (new) 2.15s
 
 Test Results:
 
- * _Equal results for Accuracy_
- * _Equal results for Kappa_
+ * ***UNequal results for Accuracy***:
+
+<pre>
+    %differences < 0.1%
+</pre>
+
+ * ***UNequal results for Kappa***:
+
+<pre>
+    %differences < 0.1%
+</pre>
+
 
 **Test Case**: `levels`
 

@@ -8,7 +8,7 @@ modelInfo <- list(label = "Bagged MARS",
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     
-                    mod <- earth( .outcome~., data = dat, pmethod = "none")
+                    mod <- earth::earth( .outcome~., data = dat, pmethod = "none")
                     maxTerms <- nrow(mod$dirs)
                     
                     maxTerms <- min(200, floor(maxTerms * .75) + 2)
@@ -48,7 +48,7 @@ modelInfo <- list(label = "Bagged MARS",
                                    theDots)
                     if(is.factor(y)) modelArgs$glm <- list(family=binomial)
                     
-                    tmp <- do.call("bagEarth", modelArgs)
+                    tmp <- do.call(getFromNamespace("bagEarth.default", "caret"), modelArgs)
                     
                     tmp$call["nprune"] <-  param$nprune
                     tmp$call["degree"] <-  param$degree

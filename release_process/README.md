@@ -7,7 +7,9 @@ Pre-Release Work
  0. Run `models/parseModels.R` to get new model results into package
  0. Run code to update all `caret` related packages (see `release_process/update_pkgs.R`) _outside of RStudio_. Beware that this might reinstall `caret`  
  0. Install current CRAN version of `caret` and run regression tests (via `RegressionTests/move_files.R`)
- 0. Install devel version of `caret` and run regression tests (via `move_files.R` again)
+ 0. Install devel version of `caret` 
+ 1. Run the check for reverse dependencies in `reverse_depends.R`
+ 1. Run regression tests (via `move_files.R` again)
  0. Compare results to see if any models fail or substantively change results using `RegressionTests/compare.R`
  0. Run `release_process/make_model_Rd.R` to make the models man file and move this to `pkg/caret/man`
  0. Run `R CMD build`

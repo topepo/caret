@@ -17,14 +17,14 @@ modelInfo <- list(label = "Penalized Linear Regression",
                     
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    penalized(y, x,
-                              model = "linear",
-                              lambda1 = param$lambda1,
-                              lambda2 = param$lambda2,
-                              ...) 
+                    penalized::penalized(y, x,
+                                         model = "linear",
+                                         lambda1 = param$lambda1,
+                                         lambda2 = param$lambda2,
+                                         ...) 
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    out <- predict(modelFit, newdata)
+                    out <- penalized::predict(modelFit, newdata)
                     out <- if(is.vector(out)) out["mu"] else out[,"mu"]
                     out
                   },

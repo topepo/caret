@@ -1,3 +1,5 @@
+#' @rdname caret-internal
+#' @export
 probFunction <- function(method, modelFit, newdata = NULL, preProc = NULL, param = NULL)
 {
   if(!is.null(newdata) && !is.null(preProc)) newdata <- predict(preProc, newdata)

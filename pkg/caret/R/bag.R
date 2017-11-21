@@ -1,9 +1,87 @@
+#' A General Framework For Bagging
+#' @aliases bag.default bag bagControl predict.bag ldaBag plsBag nbBag ctreeBag svmBag nnetBag
+#'
+#' @description \code{bag} provides a framework for bagging classification or regression models. The user can provide their own functions for model building, prediction and aggregation of predictions (see Details below).
+#'
+#'
+#' @param x a matrix or data frame of predictors
+#' @param y a vector of outcomes
+#' @param B the number of bootstrap samples to train over.
+#' @param bagControl a list of options.
+#' @param \dots arguments to pass to the model function
+#' @param fit a function that has arguments \code{x}, \code{y} and \code{...} and produces a model object #' that can later be used for prediction. Example functions are found in \code{ldaBag}, \code{plsBag}, #' \code{nbBag}, \code{svmBag} and \code{nnetBag}.
+#' @param predict a function that generates predictions for each sub-model. The function should have #' arguments \code{object} and \code{x}. The output of the function can be any type of object (see the #' example below where posterior probabilities are generated. Example functions are found in \code{ldaBag}#' , \code{plsBag}, \code{nbBag}, \code{svmBag} and \code{nnetBag}.)
+#' @param aggregate a function with arguments \code{x} and \code{type}. The function that takes the output #' of the \code{predict} function and reduces the bagged predictions to a single prediction per sample. #' the \code{type} argument can be used to switch between predicting classes or class probabilities for #' classification models. Example functions are found in \code{ldaBag}, \code{plsBag}, \code{nbBag}, #' \code{svmBag} and \code{nnetBag}.
+#' @param downSample logical: for classification, should the data set be randomly sampled so that each #' class has the same number of samples as the smallest class?
+#' @param oob logical: should out-of-bag statistics be computed and the predictions retained?
+#' @param allowParallel a parallel backend is loaded and available, should the function use it?
+#' @param vars an integer. If this argument is not \code{NULL}, a random sample of size \code{vars} is taken of the predictors in each bagging iteration. If \code{NULL}, all predictors are used.
+#' @param object an object of class \code{bag}.
+#' @param newdata a matrix or data frame of samples for prediction. Note that this argument must have a non-null value
+#' @param digits minimal number of \emph{significant digits}.
+#'
+#' @details The function is basically a framework where users can plug in any model in to assess
+#' the effect of bagging. Examples functions can be found in \code{ldaBag}, \code{plsBag}
+#' , \code{nbBag}, \code{svmBag} and \code{nnetBag}.
+#' Each has elements \code{fit}, \code{pred} and \code{aggregate}.
+#'
+#' One note: when \code{vars} is not \code{NULL}, the sub-setting occurs prior to the \code{fit} and #' \code{predict} functions are called. In this way, the user probably does not need to account for the #' change in predictors in their functions.
+#'
+#' When using \code{bag} with \code{\link{train}}, classification models should use \code{type = "prob"} #' inside of the \code{predict} function so that \code{predict.train(object, newdata, type = "prob")} will #' work.
+#'
+#' If a parallel backend is registered, the \pkg{foreach} package is used to train the models in parallel.
+#'
+#' @return
+#'   \code{bag} produces an object of class \code{bag} with elements
+#'   \item{fits }{a list with two sub-objects: the \code{fit} object has the actual model fit for that #' bagged samples and the \code{vars} object is either \code{NULL} or a vector of integers corresponding to which predictors were sampled for that model}
+#'   \item{control }{a mirror of the arguments passed into \code{bagControl}}
+#'   \item{call }{the call}
+#'   \item{B }{the number of bagging iterations}
+#'   \item{dims }{the dimensions of the training set}
+#'
+#' @author Max Kuhn
+#'
+#' @examples
+#' ## A simple example of bagging conditional inference regression trees:
+#' data(BloodBrain)
+#'
+#' ## treebag <- bag(bbbDescr, logBBB, B = 10,
+#' ##                bagControl = bagControl(fit = ctreeBag$fit,
+#' ##                                        predict = ctreeBag$pred,
+#' ##                                        aggregate = ctreeBag$aggregate))
+#'
+#'
+#'
+#'
+#' ## An example of pooling posterior probabilities to generate class predictions
+#' data(mdrr)
+#'
+#' ## remove some zero variance predictors and linear dependencies
+#' mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
+#' mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .95)]
+#'
+#' ## basicLDA <- train(mdrrDescr, mdrrClass, "lda")
+#'
+#' ## bagLDA2 <- train(mdrrDescr, mdrrClass,
+#' ##                  "bag",
+#' ##                  B = 10,
+#' ##                  bagControl = bagControl(fit = ldaBag$fit,
+#' ##                                          predict = ldaBag$pred,
+#' ##                                          aggregate = ldaBag$aggregate),
+#' ##                  tuneGrid = data.frame(vars = c((1:10)*10 , ncol(mdrrDescr))))
+#'
+#' @keywords models
+#'
+#' @export
 "bag" <-
   function(x, ...)
   UseMethod("bag")
 
 
-bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample = FALSE,
+#' @rdname bag
+#' @export
+bagControl <- function(
+  fit = NULL, predict = NULL, aggregate = NULL, downSample = FALSE,
                        oob = TRUE, allowParallel = TRUE)
   {
 
@@ -14,23 +92,26 @@ bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample 
          oob = oob,
          allowParallel = allowParallel)
   }
-  
 
+
+#' @rdname bag
+#' @method bag default
+#' @export
 "bag.default" <-
   function(x, y, B = 10, vars = ncol(x), bagControl = NULL,  ...)
 {
   funcCall <- match.call(expand.dots = TRUE)
 
   if(is.null(bagControl)) stop("Please specify 'bagControl' with the appropriate functions")
-    
+
    if(!is.null(vars) && vars < 1) stop("vars must be an integer > 0")
 
   if(bagControl$downSample & is.numeric(y)) {
       warning("down-sampling with regression... downSample changed to FALSE")
       bagControl$downSample <- FALSE
     }
-  
-  if(is.null(bagControl$fit) | is.null(bagControl$predict) | 
+
+  if(is.null(bagControl$fit) | is.null(bagControl$predict) |
        is.null(bagControl$aggregate)) {
     stop("The control arguments 'fit', 'predict' and 'aggregate' should have non-NULL values")
   }
@@ -40,7 +121,7 @@ bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample 
 
       subX <- x[index,, drop = FALSE]
       subY <- y[index]
-      
+
       if(!is.null(v))
         {
           if(v > ncol(x)) v <- ncol(x)
@@ -88,16 +169,16 @@ bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample 
            vars = subVars,
            oob = out)
     }
-  
+
   btSamples <- createResample(y, times = B)
-  
+
   `%op%` <-  if(bagControl$allowParallel)  `%dopar%` else  `%do%`
   btFits <- foreach(iter = seq(along = btSamples),
                     .verbose = FALSE,
                     .packages = "caret",
                     .errorhandling = "stop") %op%
-    fitter(btSamples[[iter]],  x = x, y = y, ctrl = bagControl, v = vars, ...)  
-  
+    fitter(btSamples[[iter]],  x = x, y = y, ctrl = bagControl, v = vars, ...)
+
   structure(
             list(fits = btFits,
                  control = bagControl,
@@ -111,17 +192,16 @@ bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample 
 }
 
 
-
-
-
+#' @importFrom stats contrasts model.matrix model.response model.weights na.omit
+#' @export
 "bag.formula" <-
-  function (formula, data = NULL,..., subset, weights, na.action = na.omit) 
+  function (formula, data = NULL,..., subset, weights, na.action = na.omit)
 {
   funcCall <- match.call(expand.dots = TRUE)
-  
-  if (!inherits(formula, "formula")) 
+
+  if (!inherits(formula, "formula"))
     stop("method is only for formula objects")
-  m <- match.call(expand.dots = FALSE)  
+  m <- match.call(expand.dots = FALSE)
   mIndex <- match(c("formula", "data", "subset", "weights", "na.action"), names(m), 0)
   m <- m[c(1, mIndex)]
   m$... <- m$B <- m$vars <- m$bagControl <- NULL
@@ -136,16 +216,20 @@ bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample 
   cons <- attr(x, "contrast")
   xint <- match("(Intercept)", colnames(x), nomatch = 0)
   if (xint > 0)  x <- x[, -xint, drop = FALSE]
-  
+
   out <- bag.default(x, y, ...)
   out$call <- funcCall
   out
 }
 
+#' @rdname bag
+#' @method predict bag
+#' @importFrom stats predict
+#' @export
 "predict.bag" <-
   function(object, newdata = NULL, ...)
 {
- 
+
   if(is.null(newdata)) stop("please provide a data set for prediction")
 
   predictor <- function(obj, x, ctrl)
@@ -155,10 +239,13 @@ bagControl <- function(fit = NULL, predict = NULL, aggregate = NULL, downSample 
     }
   btPred <- lapply(object$fit, predictor, x = newdata, ctrl = object$control)
   object$control$aggregate(btPred, ...)
-  
+
 }
 
-print.bag <- function (x, ...) 
+#' @rdname bag
+#' @method print bag
+#' @export
+print.bag <- function (x, ...)
 {
   printCall(x$call)
   cat("\nB:", x$B,"\n")
@@ -174,10 +261,14 @@ print.bag <- function (x, ...)
       cat("Training data was down-sampled to balance the classes to",
           x$smallClass, "samples per class\n\n")
     }
-             
+
   invisible(x)
 }
 
+#' @rdname bag
+#' @method summary bag
+#' @importFrom stats quantile
+#' @export
 "summary.bag" <-
   function(object, ...)
 {
@@ -191,9 +282,9 @@ print.bag <- function (x, ...)
       oobData <- do.call("rbind", oobData)
       oobResults <- ddply(oobData, .(key), defaultSummary)
       oobResults$key <- NULL
-      oobStat <- apply(oobResults, 2, 
-                       function(x) quantile(x, 
-                                            na.rm = TRUE, 
+      oobStat <- apply(oobResults, 2,
+                       function(x) quantile(x,
+                                            na.rm = TRUE,
                                             probs = c(0, 0.025, .25, .5, .75, .975, 1)))
       rownames(oobStat) <- paste(format(as.numeric(format(gsub("%", "", rownames(oobStat))))),
                                  "%", sep = "")
@@ -207,6 +298,9 @@ print.bag <- function (x, ...)
   out
 }
 
+#' @rdname bag
+#' @method print summary.bag
+#' @export
 "print.summary.bag" <-
   function(x, digits = max(3, getOption("digits") - 3), ...)
 {
@@ -219,7 +313,9 @@ print.bag <- function (x, ...)
   cat("\n")
 }
 
-
+#' @rdname bag
+#' @importFrom stats median predict
+#' @export
 ldaBag <- list(fit = function(x, y, ...)
                {
                  loadNamespace("MASS")
@@ -255,7 +351,9 @@ ldaBag <- list(fit = function(x, y, ...)
                  out
                })
 
-
+#' @rdname bag
+#' @importFrom stats median predict
+#' @export
 plsBag <- list(fit = function(x, y,  ...)
                {
                  loadNamespace("pls")
@@ -269,7 +367,7 @@ plsBag <- list(fit = function(x, y,  ...)
                },
                aggregate = function(x, type = "class")
                {
-                
+
                  pooled <- x[[1]] * NA
                  classes <- colnames(pooled)
                  for(i in 1:ncol(pooled))
@@ -286,6 +384,9 @@ plsBag <- list(fit = function(x, y,  ...)
                  out
                })
 
+#' @rdname bag
+#' @importFrom stats median predict
+#' @export
 nbBag <- list(fit = function(x, y,  ...)
                {
                  loadNamespace("klaR")
@@ -316,7 +417,9 @@ nbBag <- list(fit = function(x, y,  ...)
                })
 
 
-
+#' @rdname bag
+#' @importFrom stats median
+#' @export
 ctreeBag <- list(fit = function(x, y,  ...)
                 {
                   loadNamespace("party")
@@ -344,7 +447,7 @@ ctreeBag <- list(fit = function(x, y,  ...)
                    if(is.matrix(x[[1]]) | is.data.frame(x[[1]]))
                      {
                        pooled <- x[[1]] & NA
-                       
+
                        classes <- colnames(pooled)
                        for(i in 1:ncol(pooled))
                          {
@@ -364,23 +467,24 @@ ctreeBag <- list(fit = function(x, y,  ...)
                    out
                 })
 
-
-
+#' @rdname bag
+#' @importFrom stats median predict
+#' @export
 svmBag <- list(fit = function(x, y,  ...)
                 {
 
                   loadNamespace("kernlab")
-                  
+
                   out <- kernlab::ksvm(as.matrix(x), y, prob.model = is.factor(y), ...)
                   out
                 },
 
                 pred = function(object, x)
                 {
-                  
+
                   if(is.character(lev(object)))
                     {
-                      out <- predict(object, as.matrix(x), type = "probabilities")                   
+                      out <- predict(object, as.matrix(x), type = "probabilities")
                       colnames(out) <- lev(object)
                       rownames(out) <- NULL
                     } else out <-  predict(object, as.matrix(x))[,1]
@@ -391,7 +495,7 @@ svmBag <- list(fit = function(x, y,  ...)
                    if(is.matrix(x[[1]]) | is.data.frame(x[[1]]))
                      {
                        pooled <- x[[1]] & NA
-                       
+
                        classes <- colnames(pooled)
                        for(i in 1:ncol(pooled))
                          {
@@ -412,8 +516,9 @@ svmBag <- list(fit = function(x, y,  ...)
                 })
 
 
-
-
+#' @rdname bag
+#' @importFrom stats median predict
+#' @export
 nnetBag <- list(fit = function(x, y,  ...)
                 {
 
@@ -428,11 +533,11 @@ nnetBag <- list(fit = function(x, y,  ...)
 
                 pred = function(object, x)
                 {
-                  
-                  out <- predict(object, x, type= "raw")  
+
+                  out <- predict(object, x, type= "raw")
                   if(object$classification)
                     {
-                                         
+
                       colnames(out) <- colnames(object$fitted.values)
                       rownames(out) <- NULL
                     } else out <- predict(object, x, type= "raw")[,1]
@@ -443,7 +548,7 @@ nnetBag <- list(fit = function(x, y,  ...)
                    if(is.matrix(x[[1]]) | is.data.frame(x[[1]]))
                      {
                        pooled <- x[[1]] & NA
-                       
+
                        classes <- colnames(pooled)
                        for(i in 1:ncol(pooled))
                          {

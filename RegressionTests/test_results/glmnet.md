@@ -1,7 +1,8 @@
 glmnet (`glmnet`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/glmnet.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/glmnet.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-6)
- * tested on 2016-06-10 at 17:06
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-8)
+ * tested on 2017-04-12 at 18:34. 
+ * total test time: 495.8s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-6)
- * tested on 2016-06-12 at 12:41
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `foreach` (1.4.3), `glmnet` (2.0-5), `Matrix` (1.2-8)
+ * tested on 2017-04-12 at 10:07. 
+ * total test time: 258.2s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 75 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.38s (new) 6.24s
+Execution times: (old) 6.52s (new) 3.15s
 
 Test Results:
 
@@ -58,20 +61,11 @@ Model Configuration:
  * 75 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.23s (new) 3.21s
+Execution times: (old) 3.21s (new) 1.47s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                 
-      mean  3.434
-      min   0.000
-      max  17.308
-    correlation:  0.8911 
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -88,20 +82,11 @@ Model Configuration:
  * 75 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.87s (new) 4.61s
+Execution times: (old) 4.12s (new) 2.07s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                 
-      mean  3.434
-      min   0.000
-      max  17.308
-    correlation:  0.8911 
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -118,7 +103,7 @@ Model Configuration:
  * 75 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 32.36s (new) 30.97s
+Execution times: (old) 33.08s (new) 15.74s
 
 Test Results:
 
@@ -138,16 +123,11 @@ Model Configuration:
  * 75 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 51.78s (new) 50.01s
+Execution times: (old) 47.41s (new) 23.57s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -164,7 +144,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.49s (new) 0.49s
+Execution times: (old) 0.55s (new) 0.15s
 
 Test Results:
 
@@ -184,7 +164,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.48s (new) 0.49s
+Execution times: (old) 0.53s (new) 0.12s
 
 Test Results:
 
@@ -229,7 +209,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.95s (new) 0.95s
+Execution times: (old) 0.99s (new) 0.4s
 
 Test Results:
 
@@ -251,11 +231,11 @@ Model Configuration:
  * Non-formula method
  * Resampling: Cross-Validated (3 fold)
  * Grid search
- * Pre-processing:  (None)  
+ * Pre-processing: centered (30), scaled (30)  
  * 138 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.42s (new) 1.39s
+Execution times: (old) 1.6s (new) 0.73s
 
 Test Results:
 
@@ -271,11 +251,11 @@ Model Configuration:
  * Non-formula method
  * Resampling: Leave-One-Out Cross-Validation
  * Grid search
- * Pre-processing:  (None)  
+ * Pre-processing: centered (30), scaled (30)  
  * 138 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.25m (new) 3.14m
+Execution times: (old) 3.61m (new) 1.99m
 
 Test Results:
 
@@ -291,11 +271,11 @@ Model Configuration:
  * Non-formula method
  * Resampling: None
  * Grid search
- * Pre-processing:  (None)  
+ * Pre-processing: centered (30), scaled (30)  
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.52s (new) 0.53s
+Execution times: (old) 0.56s (new) 0.16s
 
 Test Results:
 
@@ -333,7 +313,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.94s (new) 0.93s
+Execution times: (old) 1.05s (new) 0.44s
 
 Test Results:
 
@@ -353,7 +333,7 @@ Model Configuration:
  * 114 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.4s (new) 1.33s
+Execution times: (old) 1.29s (new) 0.68s
 
 Test Results:
 
@@ -373,7 +353,7 @@ Model Configuration:
  * 114 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.83m (new) 2.8m
+Execution times: (old) 2.91m (new) 1.46m
 
 Test Results:
 
@@ -393,7 +373,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.54s (new) 0.52s
+Execution times: (old) 0.64s (new) 0.15s
 
 Test Results:
 

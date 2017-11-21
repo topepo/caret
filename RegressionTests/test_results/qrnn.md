@@ -1,7 +1,8 @@
 Quantile Regression Neural Network (`qrnn`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/qrnn.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/qrnn.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `qrnn` (1.1.3)
- * tested on 2016-06-10 at 17:34
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `qrnn` (1.1.3)
+ * tested on 2017-04-12 at 19:38. 
+ * total test time: 209.6s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `qrnn` (1.1.3)
- * tested on 2016-06-12 at 13:12
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `qrnn` (1.1.3)
+ * tested on 2017-04-11 at 21:42. 
+ * total test time: 173.6s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 12.89s (new) 12.44s
+Execution times: (old) 12.26s (new) 10.55s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 14.18s (new) 13.92s
+Execution times: (old) 13.31s (new) 11.06s
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.8m (new) 2.76m
+Execution times: (old) 2.66m (new) 2.41m
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.21s (new) 1.19s
+Execution times: (old) 1.24s (new) 0.74s
 
 Test Results:
 
@@ -136,10 +139,32 @@ Model Configuration:
  * 16 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 21.68s (new) 21.03s
+Execution times: (old) 20.48s (new) 4.3s
 
 Test Results:
 
- * _Equal results for RMSE_
- * _Equal results for Rsquared_
+ * ***UNequal results for RMSE***:
+
+<pre>
+    0 missing values in old
+    12 missing values in new
+    %differences (n-o):                  
+      mean -3.7788
+      min  -7.4574
+      max   0.2439
+    correlation:  0.9691 
+</pre>
+
+ * ***UNequal results for Rsquared***:
+
+<pre>
+    0 missing values in old
+    12 missing values in new
+    %differences (n-o):                 
+      mean -16.71
+      min  -49.27
+      max   38.44
+    correlation:  0.5801 
+</pre>
+
 

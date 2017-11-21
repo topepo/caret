@@ -1,7 +1,8 @@
 Ridge Regression with Variable Selection (`foba`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/foba.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/foba.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `foba` (0.1)
- * tested on 2016-06-10 at 16:57
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `foba` (0.1)
+ * tested on 2017-04-12 at 18:21. 
+ * total test time: 11.2s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `foba` (0.1)
- * tested on 2016-06-12 at 12:33
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `foba` (0.1)
+ * tested on 2017-04-11 at 20:27. 
+ * total test time: 8.7s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.03s (new) 1.03s
+Execution times: (old) 0.86s (new) 0.56s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.92s (new) 1.86s
+Execution times: (old) 1.72s (new) 1.07s
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.76s (new) 5.97s
+Execution times: (old) 4.3s (new) 3.55s
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.57s (new) 0.63s
+Execution times: (old) 0.56s (new) 0.22s
 
 Test Results:
 
@@ -142,7 +145,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.48s (new) 1.45s
+Execution times: (old) 1.15s (new) 0.92s
 
 Test Results:
 

@@ -1,3 +1,92 @@
+#' Maximum Dissimilarity Sampling
+#' 
+#' Functions to create a sub-sample by maximizing the dissimilarity between new
+#' samples and the existing subset.
+#' 
+#' Given an initial set of m samples and a larger pool of n samples, this
+#' function iteratively adds points to the smaller set by finding with of the n
+#' samples is most dissimilar to the initial set. The argument \code{obj}
+#' measures the overall dissimilarity between the initial set and a candidate
+#' point. For example, maximizing the minimum or the sum of the m
+#' dissimilarities are two common approaches.
+#' 
+#' This algorithm tends to select points on the edge of the data mainstream and
+#' will reliably select outliers. To select more samples towards the interior
+#' of the data set, set \code{randomFrac} to be small (see the examples below).
+#' 
+#' @aliases maxDissim minDiss sumDiss
+#' @param a a matrix or data frame of samples to start
+#' @param b a matrix or data frame of samples to sample from
+#' @param n the size of the sub-sample
+#' @param obj an objective function to measure overall dissimilarity
+#' @param useNames a logical: should the function return the row names (as
+#' opposed ot the row index)
+#' @param randomFrac a number in (0, 1] that can be used to sub-sample from the
+#' remaining candidate values
+#' @param verbose a logical; should each step be printed?
+#' @param \dots optional arguments to pass to dist
+#' @param u a vector of dissimilarities
+#' @return a vector of integers or row names (depending on \code{useNames})
+#' corresponding to the rows of \code{b} that comprise the sub-sample.
+#' @author Max Kuhn \email{max.kuhn@@pfizer.com}
+#' @seealso \code{\link{dist}}
+#' @references Willett, P. (1999), "Dissimilarity-Based Algorithms for
+#' Selecting Structurally Diverse Sets of Compounds," \emph{Journal of
+#' Computational Biology}, 6, 447-457.
+#' @keywords utilities
+#' @examples
+#' 
+#' 
+#' example <- function(pct = 1, obj = minDiss, ...)
+#' {
+#'   tmp <- matrix(rnorm(200 * 2), nrow = 200)
+#' 
+#'   ## start with 15 data points
+#'   start <- sample(1:dim(tmp)[1], 15)
+#'   base <- tmp[start,]
+#'   pool <- tmp[-start,]
+#'   
+#'   ## select 9 for addition
+#'   newSamp <- maxDissim(
+#'                        base, pool, 
+#'                        n = 9, 
+#'                        randomFrac = pct, obj = obj, ...)
+#'   
+#'   allSamp <- c(start, newSamp)
+#'   
+#'   plot(
+#'        tmp[-newSamp,], 
+#'        xlim = extendrange(tmp[,1]), ylim = extendrange(tmp[,2]), 
+#'        col = "darkgrey", 
+#'        xlab = "variable 1", ylab = "variable 2")
+#'   points(base, pch = 16, cex = .7)
+#'   
+#'   for(i in seq(along = newSamp))
+#'     points(
+#'            pool[newSamp[i],1], 
+#'            pool[newSamp[i],2], 
+#'            pch = paste(i), col = "darkred") 
+#' }
+#' 
+#' par(mfrow=c(2,2))
+#' 
+#' set.seed(414)
+#' example(1, minDiss)
+#' title("No Random Sampling, Min Score")
+#' 
+#' set.seed(414)
+#' example(.1, minDiss)
+#' title("10 Pct Random Sampling, Min Score")
+#' 
+#' set.seed(414)
+#' example(1, sumDiss)
+#' title("No Random Sampling, Sum Score")
+#' 
+#' set.seed(414)
+#' example(.1, sumDiss)
+#' title("10 Pct Random Sampling, Sum Score")
+#' 
+#' @export maxDissim
 maxDissim <- function(a, b, n = 2, obj = minDiss, useNames = FALSE, randomFrac = 1, verbose = FALSE, ...) 
 {
   loadNamespace("proxy")
@@ -41,8 +130,12 @@ maxDissim <- function(a, b, n = 2, obj = minDiss, useNames = FALSE, randomFrac =
   inSubset
 }
 
+#' @rdname maxDissim
+#' @export
 minDiss <- function(u) min(u, na.rm = TRUE)
 
+#' @rdname maxDissim
+#' @export
 sumDiss <- function(u) sum(u, na.rm = TRUE)
 
 

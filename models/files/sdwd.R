@@ -7,9 +7,9 @@ modelInfo <- list(label = "Sparse Distance Weighted Discrimination",
                   grid = function(x, y, len = NULL, search = "grid") {
                     lev <- levels(y)
                     y <- ifelse(y == lev[1], 1, -1)
-                    init <- sdwd(as.matrix(x), y, 
-                                 nlambda = len + 2, 
-                                 lambda2 = 0)
+                    init <- sdwd::sdwd(as.matrix(x), y,
+                                       nlambda = len + 2,
+                                       lambda2 = 0)
                     lambda <- unique(init$lambda)
                     lambda <- lambda[-c(1, length(lambda))]
 
@@ -26,10 +26,10 @@ modelInfo <- list(label = "Sparse Distance Weighted Discrimination",
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     y <- ifelse(y == lev[1], 1, -1)
-                    sdwd(as.matrix(x), y = y,
-                         lambda = param$lambda,
-                         lambda2 = param$lambda2, 
-                         ...)
+                    sdwd::sdwd(as.matrix(x), y = y,
+                               lambda = param$lambda,
+                               lambda2 = param$lambda2, 
+                               ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.matrix(newdata)) newdata <- as.matrix(newdata)

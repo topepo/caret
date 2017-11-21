@@ -18,18 +18,18 @@ modelInfo <- list(label = "Penalized Discriminant Analysis",
                     dat$.outcome <- y
                     if(!is.null(wts))
                     {
-                      out <- fda(as.formula(".outcome ~ ."),
-                                 data = dat,
-                                 method = gen.ridge,
-                                 weights = wts,
-                                 df = param$df,
-                                 ...)
+                      out <- mda::fda(as.formula(".outcome ~ ."),
+                                      data = dat,
+                                      method = mda::gen.ridge,
+                                      weights = wts,
+                                      df = param$df,
+                                      ...)
                     } else {
-                      out <- fda(as.formula(".outcome ~ ."),
-                                 data = dat,
-                                 method = gen.ridge,
-                                 df = param$df,
-                                 ...)
+                      out <- mda::fda(as.formula(".outcome ~ ."),
+                                      data = dat,
+                                      method = mda::gen.ridge,
+                                      df = param$df,
+                                      ...)
                     }
                     out                   
                   },

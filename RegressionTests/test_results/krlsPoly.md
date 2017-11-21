@@ -1,7 +1,8 @@
 Polynomial Kernel Regularized Least Squares (`krlsPoly`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/krlsPoly.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/krlsPoly.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `KRLS` (0.3-7)
- * tested on 2016-06-10 at 17:13
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `KRLS` (0.3-7)
+ * tested on 2017-04-12 at 21:07. 
+ * total test time: 10.1s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `KRLS` (0.3-7)
- * tested on 2016-06-12 at 12:49
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `KRLS` (0.3-7)
+ * tested on 2017-04-11 at 20:55. 
+ * total test time: 10s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.81s (new) 0.81s
+Execution times: (old) 0.86s (new) 0.72s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.58s (new) 1.5s
+Execution times: (old) 1.57s (new) 1.17s
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.59s (new) 3.55s
+Execution times: (old) 2.99s (new) 3.3s
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.54s (new) 0.52s
+Execution times: (old) 0.68s (new) 0.3s
 
 Test Results:
 
@@ -136,7 +139,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.37s (new) 1.28s
+Execution times: (old) 1.25s (new) 1.18s
 
 Test Results:
 

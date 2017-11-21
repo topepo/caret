@@ -1,5 +1,5 @@
 modelInfo <- list(label = "Parallel Random Forest",
-                  library = c("e1071", "randomForest", "foreach"),
+                  library = c("e1071", "randomForest", "foreach", "import"),
                   loop = NULL,
                   type = c("Classification", "Regression"),
                   parameters = data.frame(parameter = "mtry",
@@ -16,19 +16,24 @@ modelInfo <- list(label = "Parallel Random Forest",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    workers <- getDoParWorkers()
+                    workers <- foreach::getDoParWorkers()
+		                import::from(foreach, `%dopar%`)
                     theDots <- list(...)
-                    theDots$ntree <- if(is.null(theDots$ntree)) 250 else theDots$ntree
+                    theDots$ntree <- if(is.null(theDots$ntree)) 
+                      formals(randomForest:::randomForest.default)$ntree else 
+                        theDots$ntree
                     
                     theDots$x <- x
                     theDots$y <- y
                     theDots$mtry <- param$mtry
                     theDots$ntree <- ceiling(theDots$ntree/workers)                       
-                    
-                    out <- foreach(ntree = 1:workers, .combine = combine) %dopar% {
-                      library(randomForest)
-                      do.call("randomForest", theDots)
+                    iter_seeds <- sample.int(10000, size = workers)
+                    out <- foreach::foreach(ntree = 1:workers, .combine = randomForest::combine) %dopar% {
+                      set.seed(iter_seeds[workers])
+                      do.call(randomForest::randomForest, theDots)
                     }
+                    if(!inherits(out, "randomForest")) 
+                      out <- do.call("randomForest::combine", out)
                     out$call["x"] <- "x"
                     out$call["y"] <- "y"
                     out

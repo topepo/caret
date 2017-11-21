@@ -2,21 +2,24 @@ modelInfo <- list(label = "Random Forest",
                   library = "Rborist",
                   loop = NULL,
                   type = c("Classification", "Regression"),
-                  parameters = data.frame(parameter = "predFixed",
-                                          class = "numeric",
-                                          label = "#Randomly Selected Predictors"),
+                  parameters = data.frame(parameter = c("predFixed","minNode"),
+                                          class = c("numeric","numeric"),
+                                          label = c("#Randomly Selected Predictors","Minimal Node Size")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
                       out <- data.frame(predFixed = caret::var_seq(p = ncol(x), 
                                                                    classification = is.factor(y), 
-                                                                   len = len))
+                                                                   len = len),
+                                        minNode = ifelse(is.factor(y), 2, 3))
                     } else {
-                      out <- data.frame(predFixed = unique(sample(1:ncol(x), size = len, replace = TRUE)))
+                      out <- data.frame(predFixed = sample(1:ncol(x), size = len, replace = TRUE), #removed unique
+                                        minNode = sample(1:(min(20,nrow(x))), size = len, replace = TRUE)) # might cause warning for very small samples < 20
                     }
                     out
                   },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    Rborist(x, y, predFixed = param$predFixed, ...),
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...){
+                    Rborist::Rborist(x, y, predFixed = param$predFixed, minNode = param$minNode, ...)
+                  } ,
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, newdata)$yPred
                     if(modelFit$problemType == "Classification") out <- modelFit$obsLevels[out]
@@ -44,4 +47,3 @@ modelInfo <- list(label = "Random Forest",
                     names(out) <- if(x$problemType == "Regression") c("RMSE", "Rsquared") else c("Accuracy", "Kappa")
                     out
                   })
-

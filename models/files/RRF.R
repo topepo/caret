@@ -25,7 +25,7 @@ modelInfo <- list(label = "Regularized Random Forest",
                     theDots$importance <- TRUE
                     args <- list(x = x, y = y, mtry = param$mtry)
                     args <- c(args, theDots)                       
-                    firstFit <- do.call("randomForest", args)
+                    firstFit <- do.call(randomForest::randomForest, args)
                     firstImp <- randomForest:::importance(firstFit)
                     if(is.factor(y))
                     {
@@ -33,7 +33,7 @@ modelInfo <- list(label = "Regularized Random Forest",
                     } else firstImp <- firstImp[,"%IncMSE"]/max(firstImp[,"%IncMSE"])
                     firstImp <- ((1 - param$coefImp) * param$coefReg) + (param$coefImp * firstImp)
                     
-                    RRF(x, y, mtry = param$mtry, coefReg = firstImp, ...)
+                    RRF::RRF(x, y, mtry = param$mtry, coefReg = firstImp, ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit, newdata),
@@ -59,5 +59,7 @@ modelInfo <- list(label = "Regularized Random Forest",
                     out
                   },
                   levels = function(x) x$obsLevels,
-                  tags = c("Random Forest", "Ensemble Model", "Bagging", "Implicit Feature Selection", "Regularization"),
+                  tags = c("Random Forest", "Ensemble Model", 
+                           "Bagging", "Implicit Feature Selection", 
+                           "Regularization"),
                   sort = function(x) x[order(x$coefReg),])

@@ -31,11 +31,11 @@ modelInfo <- list(label = "Elasticnet",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    enet(as.matrix(x), y, lambda = param$lambda)  
+                    elasticnet::enet(as.matrix(x), y, lambda = param$lambda)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    out <- predict(modelFit, newdata, 
-                                   s = modelFit$tuneValue$fraction, 
+                    out <- elasticnet::predict.enet(modelFit, newdata,
+                                   s = modelFit$tuneValue$fraction,
                                    mode = "fraction")$fit
                     
                     if(!is.null(submodels))
@@ -46,13 +46,13 @@ modelInfo <- list(label = "Elasticnet",
                           list(if(is.matrix(out)) out[,1]  else out),
                           as.list(
                             as.data.frame(
-                              predict(modelFit,
+                              elasticnet::predict.enet(modelFit,
                                       newx = newdata,
                                       s = submodels$fraction,
                                       mode = "fraction")$fit)))
                         
                       } else {
-                        tmp <- predict(modelFit,
+                        tmp <- elasticnet::predict.enet(modelFit,
                                        newx = newdata,
                                        s = submodels$fraction,
                                        mode = "fraction")$fit
@@ -68,13 +68,13 @@ modelInfo <- list(label = "Elasticnet",
                       {
                         s <- x$tuneValue$fraction
                       } else stop("must supply a vaue of s")
-                      out <- predict(x, s = s,
+                      out <- elasticnet::predict.enet(x, s = s,
                                      type = "coefficients",
                                      mode = "fraction")$coefficients
                       
                     } else {
-                      out <- predict(x, s = s)$coefficients
-                      
+                      out <- elasticnet::predict.enet(x, s = s)$coefficients
+
                     }
                     names(out)[out != 0]
                   },

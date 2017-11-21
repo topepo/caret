@@ -1,7 +1,8 @@
 Bayesian Regularized Neural Networks (`brnn`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/brnn.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/brnn.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `brnn` (0.6), `caret` (6.0-68), `Formula` (1.2-1)
- * tested on 2016-06-10 at 16:50
+ * R version 3.3.3 (2017-03-06)
+ * `brnn` (0.6), `caret` (6.0-73), `Formula` (1.2-1)
+ * tested on 2017-04-12 at 19:53. 
+ * total test time: 130.7s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `brnn` (0.6), `caret` (6.0-70), `Formula` (1.2-1)
- * tested on 2016-06-12 at 12:25
+ * R version 3.3.3 (2017-03-06)
+ * `brnn` (0.6), `caret` (6.0-75), `Formula` (1.2-1)
+ * tested on 2017-04-11 at 20:48. 
+ * total test time: 142.5s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.07s (new) 3.27s
+Execution times: (old) 2.25s (new) 2.21s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.52s (new) 3.75s
+Execution times: (old) 2.87s (new) 2.61s
 
 Test Results:
 
@@ -84,7 +87,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 22.04s (new) 17.7s
+Execution times: (old) 16.84s (new) 18.36s
 
 Test Results:
 
@@ -104,7 +107,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.07s (new) 1.05s
+Execution times: (old) 1.14s (new) 0.82s
 
 Test Results:
 
@@ -148,7 +151,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.94m (new) 1.95m
+Execution times: (old) 1.75m (new) 1.92m
 
 Test Results:
 

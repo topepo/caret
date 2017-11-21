@@ -1,7 +1,8 @@
 Bagged Model (`bag`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/bag.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/bag.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68)
- * tested on 2016-06-10 at 16:46
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73)
+ * tested on 2017-04-12 at 20:27. 
+ * total test time: 117.1s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70)
- * tested on 2016-06-12 at 12:22
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75)
+ * tested on 2017-04-11 at 20:46. 
+ * total test time: 107s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.7s (new) 2.76s
+Execution times: (old) 2.49s (new) 1.96s
 
 Test Results:
 
@@ -59,7 +62,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.54s (new) 3.69s
+Execution times: (old) 3.24s (new) 2.25s
 
 Test Results:
 
@@ -73,13 +76,13 @@ Object class(es): `varImp.train`
 
  * ***UNequal results***: differences (o-n):
 <pre>
-     Class1            Class2       
- Min.   :-41.004   Min.   :-41.004  
- 1st Qu.:-26.976   1st Qu.:-26.976  
- Median :  0.000   Median :  0.000  
- Mean   :  9.323   Mean   :  9.323  
- 3rd Qu.: 36.491   3rd Qu.: 36.491  
- Max.   : 87.234   Max.   : 87.234  
+     Class1           Class2      
+ Min.   :-85.12   Min.   :-85.12  
+ 1st Qu.:-29.11   1st Qu.:-29.11  
+ Median :  0.00   Median :  0.00  
+ Mean   : -3.60   Mean   : -3.60  
+ 3rd Qu.: 34.38   3rd Qu.: 34.38  
+ Max.   : 49.37   Max.   : 49.37  
 </pre>
 
 **Test Case**: `class_loo_model`
@@ -95,7 +98,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 42.19s (new) 42.34s
+Execution times: (old) 36.19s (new) 31.51s
 
 Test Results:
 
@@ -116,7 +119,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.54s (new) 0.56s
+Execution times: (old) 0.59s (new) 0.24s
 
 Test Results:
 
@@ -179,7 +182,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.07s (new) 1.26s
+Execution times: (old) 1.27s (new) 0.79s
 
 Test Results:
 
@@ -205,7 +208,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.78s (new) 7.82s
+Execution times: (old) 5.84s (new) 4.82s
 
 Test Results:
 
@@ -225,7 +228,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 8.41s (new) 8.39s
+Execution times: (old) 6.51s (new) 5.65s
 
 Test Results:
 
@@ -245,7 +248,7 @@ Model Configuration:
  * 8 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.19m (new) 1.25m
+Execution times: (old) 54.62s (new) 54.69s
 
 Test Results:
 
@@ -265,7 +268,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.85s (new) 0.92s
+Execution times: (old) 0.84s (new) 0.54s
 
 Test Results:
 
@@ -309,7 +312,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 2.56s (new) 2.53s
+Execution times: (old) 1.95s (new) 1.49s
 
 Test Results:
 

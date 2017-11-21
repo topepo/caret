@@ -17,14 +17,14 @@ modelInfo <- list(label = "Relevance Vector Machines with Polynomial Kernel",
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     kernlab:::rvm(x = as.matrix(x), y = y,
-                                  kernel = polydot,
-                                  kpar = list(degree = param$degree,
-                                              scale = param$scale,
-                                              offset = 1),
+                                  kernel = kernlab::polydot(
+                                    degree = param$degree,
+                                    scale = param$scale,
+                                    offset = 1),
                                   ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) 
-                    predict(modelFit, newdata),
+                    kernlab::predict(modelFit, newdata),
                   prob = NULL,
                   predictors = function(x, ...) {
                     if(hasTerms(x) & !is.null(x@terms))

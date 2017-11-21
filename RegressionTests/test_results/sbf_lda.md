@@ -1,7 +1,8 @@
 `sbf_lda`
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/sbf_lda.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/sbf_lda.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68)
- * tested on 2016-06-10 at 17:42
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73)
+ * tested on 2017-04-12 at 20:39. 
+ * total test time: 11.9s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70)
- * tested on 2016-06-12 at 13:23
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75)
+ * tested on 2017-04-11 at 21:27. 
+ * total test time: 9.3s
 
 
 Results:
@@ -35,7 +38,7 @@ Model Configuration:
  * Non-formula method
 
 
-Execution times: (old) 0.8s (new) 0.77s
+Execution times: (old) 0.66s (new) 0.55s
 
 Test Results:
 
@@ -52,7 +55,7 @@ Model Configuration:
  * Formula method
 
 
-Execution times: (old) 0.55s (new) 0.53s
+Execution times: (old) 0.54s (new) 0.42s
 
 Test Results:
 
@@ -81,7 +84,7 @@ Model Configuration:
  * Non-formula method
 
 
-Execution times: (old) 4.17s (new) 3.96s
+Execution times: (old) 3.71s (new) 2.92s
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * Formula method
 
 
-Execution times: (old) 4.51s (new) 4.47s
+Execution times: (old) 4.1s (new) 3.12s
 
 Test Results:
 

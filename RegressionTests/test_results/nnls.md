@@ -1,7 +1,8 @@
 Non-Negative Least Squares (`nnls`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/nnls.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/nnls.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `nnls` (1.4)
- * tested on 2016-06-10 at 17:23
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `nnls` (1.4)
+ * tested on 2017-04-12 at 20:03. 
+ * total test time: 6.7s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `nnls` (1.4)
- * tested on 2016-06-12 at 12:58
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `nnls` (1.4)
+ * tested on 2017-04-11 at 20:27. 
+ * total test time: 4.6s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.71s (new) 0.72s
+Execution times: (old) 0.74s (new) 0.41s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.09s (new) 1.15s
+Execution times: (old) 1.14s (new) 0.61s
 
 Test Results:
 
@@ -84,7 +87,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.48s (new) 1.44s
+Execution times: (old) 1.56s (new) 1.01s
 
 Test Results:
 
@@ -104,7 +107,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.46s (new) 0.47s
+Execution times: (old) 0.54s (new) 0.18s
 
 Test Results:
 

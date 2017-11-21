@@ -19,7 +19,6 @@ modelInfo <- list(label = "Fuzzy Rules with Weight Factor",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     args <- list(data.train = as.matrix(cbind(x, as.numeric(y))),
                                  method.type = "FRBCS.W")
-                    args$range.data <- apply(x, 2, extendrange)
                     
                     theDots <- list(...)
                     if(any(names(theDots) == "control")) {
@@ -32,9 +31,12 @@ modelInfo <- list(label = "Fuzzy Rules with Weight Factor",
                                                    type.implication.func = "ZADEH",
                                                    num.class = length(unique(y)),
                                                    name="sim-0")     
-                    do.call("frbs.learn", c(args, theDots))
+                    if(!(any(names(theDots) == "range.data"))) {
+                      args$range.data <- apply(args$data.train, 2, extendrange)
+                    }
+                    do.call(frbs::frbs.learn, c(args, theDots))
                     
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     modelFit$obsLevels[predict(modelFit, newdata)[,1]]
                   },

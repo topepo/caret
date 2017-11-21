@@ -1,7 +1,8 @@
 Multi-Layer Perceptron (`mlpWeightDecay`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/mlpWeightDecay.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/mlpWeightDecay.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `Rcpp` (0.12.4), `RSNNS` (0.4-7)
- * tested on 2016-06-10 at 17:19
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `Rcpp` (0.12.10), `RSNNS` (0.4-9)
+ * tested on 2017-04-12 at 20:36. 
+ * total test time: 61.5s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `Rcpp` (0.12.4), `RSNNS` (0.4-7)
- * tested on 2016-06-12 at 12:55
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `Rcpp` (0.12.10), `RSNNS` (0.4-9)
+ * tested on 2017-04-11 at 21:26. 
+ * total test time: 52.9s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.28s (new) 4.23s
+Execution times: (old) 2.16s (new) 1.4s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.92s (new) 4.85s
+Execution times: (old) 2.67s (new) 1.86s
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.05m (new) 1.03m
+Execution times: (old) 23.86s (new) 20.66s
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.67s (new) 0.67s
+Execution times: (old) 0.53s (new) 0.25s
 
 Test Results:
 
@@ -136,7 +139,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.82s (new) 3.8s
+Execution times: (old) 1.94s (new) 1.58s
 
 Test Results:
 
@@ -162,7 +165,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.15s (new) 5.1s
+Execution times: (old) 2.15s (new) 1.92s
 
 Test Results:
 
@@ -182,7 +185,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.71s (new) 5.75s
+Execution times: (old) 2.64s (new) 2.2s
 
 Test Results:
 
@@ -202,7 +205,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 50.2s (new) 49.77s
+Execution times: (old) 20.18s (new) 18.49s
 
 Test Results:
 
@@ -234,7 +237,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.84s (new) 4.91s
+Execution times: (old) 2.47s (new) 1.99s
 
 Test Results:
 

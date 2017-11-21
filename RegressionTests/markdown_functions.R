@@ -85,10 +85,13 @@ obj2list <- function(path){
   tests <- vector(mode = "list", length = length(test_obj))
   for(i in seq(along = tests)) tests[[i]] <- get(test_obj[[i]])
   names(tests) <- gsub("^test_", "", test_obj)
-  time <- timestamp
+  time <- format(timestamp, "%Y_%m_%d_%H_%M")
   session <- sInfo
   if(!is.character(time)) time <- NA
-  list(tests = tests, times = time, session = session)
+  list(tests = tests, 
+       times = time, 
+       session = session,
+       elapsed = difftime(timestamp_end, timestamp, units =  "s"))
 }
 
 ## Compare all the common objects from the RData files
@@ -114,10 +117,13 @@ obj_compare <- function(old_path, new_path, verbose = TRUE) {
       " * ", old_all$session$R.version$version.string, "\n", 
       " * ", print_versions(old_all$session), "\n",
       sep = "")
-  
+
   if(!is.na(old_all$times) | !is.na(new_all$times)) {
     cat(" * tested on ", as.character(times$old), 
-        " at ", gsub("_", ":", substring(old_all$time, 12, 16)), "\n",
+        " at ", gsub("_", ":", substring(old_all$time, 12, 16)), 
+        ". \n * total test time: ", 
+        round(old_all$elapsed, 1),
+        "s\n",
         sep = "")
   }
   cat("\n\n")
@@ -131,7 +137,10 @@ obj_compare <- function(old_path, new_path, verbose = TRUE) {
   
   if(!is.na(new_all$times) | !is.na(new_all$times)) {
     cat(" * tested on ", as.character(times$new), 
-        " at ", gsub("_", ":", substring(new_all$time, 12, 16)), "\n",
+        " at ", gsub("_", ":", substring(new_all$time, 12, 16)), 
+        ". \n * total test time: ", 
+        round(new_all$elapsed, 1),
+        "s\n",
         sep = "")
   }
   cat("\n\n")
@@ -477,6 +486,18 @@ train_markdown <- function(x) {
       " evaluated\n", sep = "") 
 }
 
+get_times <- function(old_stuff, new_stuff){
+  
+  load(old_stuff)
+  res <- data.frame(test = gsub("\\.RData", "", basename(old_stuff)), 
+                    old = as.numeric(difftime(timestamp_end, timestamp, units =  "s")))
+  rm_list <- ls()
+  rm_list <- rm_list[!(rm_list %in% c("res", "rm_list", "new_stuff"))]
+  rm(list = rm_list)
+  load(new_stuff)
+  res$new <- as.numeric(difftime(timestamp_end, timestamp, units =  "s"))
+  res
+}
 
 
 

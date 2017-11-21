@@ -15,15 +15,15 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     if(any(names(list(...)) == "prob.model") | is.numeric(y)) {
-                      out <- ksvm(x = as.matrix(x), y = y,
-                                  kernel = "rbfdot",
-                                  C = param$C, ...)
+                      out <- kernlab::ksvm(x = as.matrix(x), y = y,
+                                           kernel = "rbfdot",
+                                           C = param$C, ...)
                     } else {
-                      out <- ksvm(x = as.matrix(x), y = y,
-                                  kernel = "rbfdot",
-                                  C = param$C,
-                                  prob.model = classProbs,
-                                  ...)
+                      out <- kernlab::ksvm(x = as.matrix(x), y = y,
+                                           kernel = "rbfdot",
+                                           C = param$C,
+                                           prob.model = classProbs,
+                                          ...)
                     }
                     
                     out            
@@ -32,13 +32,13 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                     svmPred <- function(obj, x) {
                       hasPM <- !is.null(unlist(obj@prob.model))
                       if(hasPM) {
-                        pred <- lev(obj)[apply(predict(obj, x, type = "probabilities"), 
+                        pred <- kernlab::lev(obj)[apply(kernlab::predict(obj, x, type = "probabilities"), 
                                                1, which.max)]
-                      } else pred <- predict(obj, x)
+                      } else pred <- kernlab::predict(obj, x)
                       pred
                     }
                     out <- try(svmPred(modelFit, newdata), silent = TRUE)
-                    if(is.character(lev(modelFit))) {
+                    if(is.character(kernlab::lev(modelFit))) {
                       if(class(out)[1] == "try-error")
                       {
                         warning("kernlab class prediction calculations failed; returning NAs")
@@ -55,7 +55,7 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- try(predict(modelFit, newdata, type="probabilities"),
+                    out <- try(kernlab::predict(modelFit, newdata, type="probabilities"),
                                silent = TRUE)
                     if(class(out)[1] != "try-error")
                     {
@@ -66,12 +66,12 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                         out[out < 0] <- 0
                         out <- t(apply(out, 1, function(x) x/sum(x)))
                       }
-                      out <- out[, lev(modelFit), drop = FALSE]
+                      out <- out[, kernlab::lev(modelFit), drop = FALSE]
                     } else {
                       warning("kernlab class probability calculations failed; returning NAs")
-                      out <- matrix(NA, nrow(newdata) * length(lev(modelFit)), 
-                                    ncol = length(lev(modelFit)))
-                      colnames(out) <- lev(modelFit)
+                      out <- matrix(NA, nrow(newdata) * length(kernlab::lev(modelFit)),
+                                    ncol = length(kernlab::lev(modelFit)))
+                      colnames(out) <- kernlab::lev(modelFit)
                     }
                     out
                   },
@@ -86,7 +86,7 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                     out
                   },
                   tags = c("Kernel Method", "Support Vector Machines", "Radial Basis Function"),
-                  levels = function(x) lev(x),
+                  levels = function(x) kernlab::lev(x),
                   sort = function(x) {
                     # If the cost is high, the decision boundary will work hard to
                     # adapt. Also, if C is fixed, smaller values of sigma yeild more

@@ -1,7 +1,12 @@
+timestamp <- Sys.time()
 library(caret)
-timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "multinom"
+
+
 
 #########################################################################
 
@@ -10,6 +15,12 @@ training <- twoClassSim(50, linearVars = 2)
 testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+wts <- runif(nrow(trainX))
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 weight_test <- function (data, lev = NULL, model = NULL)  {
   mean(data$weights)
@@ -80,7 +91,7 @@ test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)]
 
 set.seed(849)
 test_class_cv_weight <- train(trainX, trainY, 
-                              weights = runif(nrow(trainX)),
+                              weights = wts,
                               method = "multinom", 
                               trControl = cctrl4,
                               tuneLength = 2,
@@ -90,13 +101,59 @@ test_class_cv_weight <- train(trainX, trainY,
 
 set.seed(849)
 test_class_loo_weight <- train(trainX, trainY, 
-                               weights = runif(nrow(trainX)), 
+                               weights = wts, 
                                method = "multinom", 
                                trControl = cctrl5,
                                tuneLength = 2,
                                metric = "Accuracy", 
                                preProc = c("center", "scale"),
                                trace = FALSE)
+
+set.seed(849)
+test_class_rec <- train(x = rec_cls,
+                        data = training,
+                        method = "multinom", 
+                        trControl = cctrl1,
+                        metric = "ROC",
+                        trace = FALSE)
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+test_class_imp_rec <- varImp(test_class_rec)
+
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
+test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
+                               type = "prob")
+
+tmp <- training
+tmp$wts <- wts
+
+weight_rec <- recipe(Class ~ ., data = tmp) %>%
+  add_role(wts, new_role = "case weight") %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
+
+set.seed(849)
+test_class_cv_weight_rec <- train(weight_rec, data = tmp,
+                                  method = "multinom", 
+                                  trControl = cctrl4,
+                                  tuneLength = 2,
+                                  metric = "Accuracy",
+                                  trace = FALSE)
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_weight_rec$results, 
+              test_class_cv_weight$results))
+)
+  stop("CV weights not giving the same results")
 
 
 test_levels <- levels(test_class_cv_model)
@@ -116,10 +173,12 @@ test_class_imp <- varImp(test_class_cv_model)
 tests <- grep("test_", ls(), fixed = TRUE, value = TRUE)
 
 sInfo <- sessionInfo()
+timestamp_end <- Sys.time()
 
-save(list = c(tests, "sInfo", "timestamp"),
+save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
-q("no")
+if(!interactive())
+   q("no")
 
 

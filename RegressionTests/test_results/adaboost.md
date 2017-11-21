@@ -1,7 +1,8 @@
 AdaBoost Classification Trees (`adaboost`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/adaboost.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/adaboost.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `fastAdaboost` (1.0.0)
- * tested on 2016-06-10 at 16:46
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `fastAdaboost` (1.0.0)
+ * tested on 2017-04-12 at 19:42. 
+ * total test time: 462.6s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `fastAdaboost` (1.0.0)
- * tested on 2016-06-12 at 12:22
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `fastAdaboost` (1.0.0)
+ * tested on 2017-04-11 at 21:25. 
+ * total test time: 408.8s
 
 
 Results:
@@ -38,29 +41,11 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 23.27s (new) 23.27s
+Execution times: (old) 20.95s (new) 18.44s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                  
-      mean  -2.060
-      min  -11.480
-      max    3.579
-    correlation:  0.99 
-
- nIter        method ROC_new ROC_old  Diff Flag
-   100   Adaboost.M1  0.9300  0.9300   0.0     
-   100 Real adaboost  0.6030  0.5822   3.6    *
-   150   Adaboost.M1  0.9485  0.9485   0.0     
-   150 Real adaboost  0.5087  0.5747 -11.5    *
-    50   Adaboost.M1  0.9537  0.9537   0.0     
-    50 Real adaboost  0.6696  0.7008  -4.5    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -77,29 +62,11 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 24.18s (new) 24.77s
+Execution times: (old) 21.55s (new) 18.88s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                  
-      mean  -2.060
-      min  -11.480
-      max    3.579
-    correlation:  0.99 
-
- nIter        method ROC_new ROC_old  Diff Flag
-   100   Adaboost.M1  0.9300  0.9300   0.0     
-   100 Real adaboost  0.6030  0.5822   3.6    *
-   150   Adaboost.M1  0.9485  0.9485   0.0     
-   150 Real adaboost  0.5087  0.5747 -11.5    *
-    50   Adaboost.M1  0.9537  0.9537   0.0     
-    50 Real adaboost  0.6696  0.7008  -4.5    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -116,7 +83,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.68m (new) 7.8m
+Execution times: (old) 5.92m (new) 5.25m
 
 Test Results:
 
@@ -137,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.86s (new) 1.95s
+Execution times: (old) 1.7s (new) 1.2s
 
 Test Results:
 
@@ -194,7 +161,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.08m (new) 1.11m
+Execution times: (old) 58.92s (new) 51.39s
 
 Test Results:
 

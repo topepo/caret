@@ -32,7 +32,7 @@ modelInfo <- list(label = "Conditional Inference Tree",
                                         data = dat,
                                         controls = ctl),
                                    theDots)
-                    out <- do.call(getFromNamespace("ctree", "party"), modelArgs)
+                    out <- do.call(party::ctree, modelArgs)
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {

@@ -19,17 +19,20 @@ modelInfo <- list(label = "Subtractive Clustering and Fuzzy c-Means Rules",
                   }, 
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    dat <- as.matrix(cbind(x, y))
-                    frbs.learn(data.train = dat,
-                               range.data = apply(dat, 2, extendrange),
-                               method = "SBC",
-                               control = list(r.a = param$r.a,
-                                              eps.high = param$eps.high,
-                                              eps.low = param$eps.low))
+                    args <- list(data.train = as.matrix(cbind(x, y)),
+                                 method.type = "SBC",
+                                 control = list(r.a  = param$r.a,                  
+                                                eps.high = param$eps.high,
+                                                eps.low = param$eps.low))
                     
-                    },
+                    theDots <- list(...)
+                    if(!(any(names(theDots) == "range.data"))) {
+                      args$range.data <- apply(args$data.train, 2, extendrange)
+                    }
+                    do.call(frbs::frbs.learn, c(args, theDots))
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    predict(modelFit, newdata)
+                    predict(modelFit, newdata)[, 1]
                   },
                   prob = NULL,
                   predictors = function(x, ...){

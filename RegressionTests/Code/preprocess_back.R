@@ -1,4 +1,7 @@
 library(caret)
+library(plyr)
+library(recipes)
+library(dplyr)
 
 set.seed(1)
 reg_tr <- SLC14_1(200)[, 17:21]
@@ -152,5 +155,6 @@ for(i in pred_obj) {
   }
 }
 
-q("no")
+if(!interactive())
+   q("no")
 

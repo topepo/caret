@@ -10,8 +10,8 @@ modelInfo <- list(label = "Mixture Discriminant Analysis",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    mda(as.formula(".outcome ~ ."), data = dat, 
-                        subclasses = param$subclasses, ...)      
+                    mda::mda(as.formula(".outcome ~ ."), data = dat,
+                             subclasses = param$subclasses, ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit, newdata),

@@ -26,19 +26,30 @@ modelInfo <- list(label = "Extreme Learning Machine",
                         attributes(x) <- att
                         x
                       }
-                      out <- elmtrain(x = x, y = factor2ind(y), 
-                                      nhid = param$nhid, actfun = param$actfun, ...)
+                      out <- elmNN::elmtrain.default(
+                        x = x, 
+                        y = factor2ind(y), 
+                        nhid = param$nhid, 
+                        actfun = param$actfun, 
+                        ...
+                        )
                       out$lev <- levels(y)
                       
                     } else {
-                      out <- elmtrain(x = x, y = y, nhid = param$nhid, actfun = param$actfun, ...)
+                      out <- elmNN::elmtrain.default(
+                        x = x, 
+                        y = y, 
+                        nhid = param$nhid, 
+                        actfun = param$actfun, 
+                        ...
+                        )
                     }
                     out$xNames <- colnames(x)
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL)
                   {
-                    out <- predict(modelFit, newdata, type="class")
+                    out <- elmNN::predict.elmNN(modelFit, newdata)
                     if(modelFit$problemType == "Classification") {
                       out <- modelFit$lev[apply(out, 1, which.max)]
                       out <- factor(out, levels = modelFit$lev)

@@ -1,7 +1,8 @@
 `rfe_treebag`
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/rfe_treebag.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/rfe_treebag.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `e1071` (1.6-7), `ipred` (0.9-5), `plyr` (1.8.4), `rpart` (4.1-10)
- * tested on 2016-06-10 at 17:37
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `e1071` (1.6-8), `ipred` (0.9-6), `plyr` (1.8.4), `rpart` (4.1-10)
+ * tested on 2017-04-12 at 18:48. 
+ * total test time: 3681.6s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `e1071` (1.6-7), `ipred` (0.9-5), `plyr` (1.8.4), `rpart` (4.1-10)
- * tested on 2016-06-12 at 13:16
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `e1071` (1.6-8), `ipred` (0.9-6), `plyr` (1.8.4), `rpart` (4.1-10)
+ * tested on 2017-04-11 at 22:40. 
+ * total test time: 496.2s
 
 
 Results:
@@ -35,7 +38,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 20
 
 
-Execution times: (old) 34.1s (new) 32.47s
+Execution times: (old) 48.42s (new) 7.61s
 
 Test Results:
 
@@ -52,7 +55,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15
 
 
-Execution times: (old) 23.09s (new) 32.48s
+Execution times: (old) 1.33m (new) 6.68s
 
 Test Results:
 
@@ -69,7 +72,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 22
 
 
-Execution times: (old) 32.57s (new) 31.68s
+Execution times: (old) 43.39s (new) 6.94s
 
 Test Results:
 
@@ -86,7 +89,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 17
 
 
-Execution times: (old) 21.2s (new) 23.27s
+Execution times: (old) 48.37s (new) 7.65s
 
 Test Results:
 
@@ -121,7 +124,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 20
 
 
-Execution times: (old) 9.07m (new) 8.65m
+Execution times: (old) 12.46m (new) 1.91m
 
 Test Results:
 
@@ -138,7 +141,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15
 
 
-Execution times: (old) 5.78m (new) 7.37m
+Execution times: (old) 15.3m (new) 1.85m
 
 Test Results:
 
@@ -155,7 +158,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 22
 
 
-Execution times: (old) 8.73m (new) 8.75m
+Execution times: (old) 16.72m (new) 1.9m
 
 Test Results:
 
@@ -172,7 +175,7 @@ Model Configuration:
  * Subset sizes: 1, 5, 10, 15, 17
 
 
-Execution times: (old) 5.06m (new) 5.87m
+Execution times: (old) 13.15m (new) 2.08m
 
 Test Results:
 

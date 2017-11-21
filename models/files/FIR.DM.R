@@ -18,7 +18,6 @@ modelInfo <- list(label = "Fuzzy Inference Rules by Descent Method",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     args <- list(data.train = as.matrix(cbind(x, y)),
                                  method.type = "FIR.DM")
-                    args$range.data <- apply(args$data.train, 2, extendrange)
                     
                     theDots <- list(...)
                     if(any(names(theDots) == "control")) {
@@ -31,11 +30,14 @@ modelInfo <- list(label = "Fuzzy Inference Rules by Descent Method",
                                                    type.snorm = "MAX",
                                                    type.implication.func = "ZADEH",
                                                    name="sim-0")     
-                    do.call("frbs.learn", c(args, theDots))
+                    if(!(any(names(theDots) == "range.data"))) {
+                      args$range.data <- apply(args$data.train, 2, extendrange)
+                    }
+                    do.call(frbs::frbs.learn, c(args, theDots))
                     
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    predict(modelFit, newdata)
+                    predict(modelFit, newdata)[, 1]
                   },
                   prob = NULL,
                   predictors = function(x, ...){

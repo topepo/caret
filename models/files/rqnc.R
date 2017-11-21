@@ -16,9 +16,9 @@ modelInfo <- list(label = "Non-Convex Penalized Quantile Regression",
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    rq.nc.fit(as.matrix(x), y, 
-                              lambda = param$lambda, 
-                              penalty = as.character(param$penalty), ...)
+                    rqPen::rq.nc.fit(as.matrix(x), y,
+                                     lambda = param$lambda,
+                                     penalty = as.character(param$penalty), ...)
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     predict(modelFit, newx = as.matrix(newdata))[,1]

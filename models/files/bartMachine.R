@@ -30,32 +30,35 @@ modelInfo <- list(label = "Bayesian Additive Regression Trees",
                     out <- out[!duplicated(out),]
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    if(!is.data.frame(x)) x <- as.data.frame(x)
+                    if(!is.data.frame(x) | inherits(x, "tbl_df")) 
+                      x <- as.data.frame(x)
                     out <- if(is.factor(y)) {
-                      bartMachine(X = x, y = y, 
-                                  num_trees = param$num_trees, 
-                                  alpha = param$alpha, 
-                                  beta = param$beta,
-                                  ...)
+                      bartMachine::bartMachine(X = x, y = y, 
+                                               num_trees = param$num_trees, 
+                                               alpha = param$alpha, 
+                                               beta = param$beta,
+                                               ...)
                     } else {
-                      bartMachine(X = x, y = y, 
-                                  num_trees = param$num_trees, 
-                                  k = param$k, 
-                                  alpha = param$alpha, 
-                                  beta = param$beta,
-                                  nu = param$nu,
-                                  ...)                     
+                      bartMachine::bartMachine(X = x, y = y, 
+                                               num_trees = param$num_trees, 
+                                               k = param$k, 
+                                               alpha = param$alpha, 
+                                               beta = param$beta,
+                                               nu = param$nu,
+                                               ...)                     
                     }
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
+                      newdata <- as.data.frame(newdata)
                     out <- if(is.factor(modelFit$y)) 
                       predict(modelFit, newdata, type = "class") else 
                         predict(modelFit, newdata) 
                     },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
+                      newdata <- as.data.frame(newdata)
                     out <- predict(modelFit, newdata, type = "prob")
                     out <- data.frame(y1 = 1- out, y2 = out)
                     colnames(out) <- modelFit$y_levels

@@ -1,3 +1,6 @@
+#' @rdname plot.train
+#' @importFrom stats as.formula
+#' @export
 ggplot.train <- function(data = NULL, mapping = NULL, metric = data$metric[1], plotType = "scatter", output = "layered",
                nameInStrip = FALSE, highlight = FALSE, ..., environment = NULL) {
   if(!(output %in% c("data", "layered", "ggplot"))) stop("'outout' should be either 'data', 'ggplot' or 'layered'")
@@ -112,13 +115,16 @@ ggplot.train <- function(data = NULL, mapping = NULL, metric = data$metric[1], p
   if(plotType == "level") {
     if(p == 1) stop("Two tuning parameters are required for a level plot")
     dnm <- names(dat)
-    if(is.numeric(dat[,2])) dat[,2] <- factor(format(dat[,2]))
-    if(is.numeric(dat[,3])) dat[,3] <- factor(format(dat[,3]))
+    if(is.numeric(dat[,2])) dat[,2] <- factor(format(dat[,2]), levels = format(sort(unique(dat[,2]))))
+    if(is.numeric(dat[,3])) dat[,3] <- factor(format(dat[,3]), levels = format(sort(unique(dat[,3]))))
     if(p > 2 & nameInStrip) {
       strip_vars <- names(dat)[-(1:3)]
       strip_lab <- as.character(subset(data$modelInfo$parameters, parameter %in% strip_vars)$label)
       for(i in seq_along(strip_vars))
-        dat[, strip_vars[i]] <- factor(paste(strip_lab[i], dat[, strip_vars[i]], sep = ": "))
+        dat[, strip_vars[i]] <- factor(
+          paste(strip_lab[i], format(dat[, strip_vars[i]]), sep = ": "),
+          levels = paste(strip_lab[i], format(sort(unique(dat[, strip_vars[i]]))), sep = ": ")
+        )
     }
     ## TODO: use factor(format(x)) to make a solid block of colors?
     out <- ggplot(dat, aes_string(x = dnm[2], y = dnm[3], fill = metric))
@@ -139,7 +145,8 @@ ggplot.train <- function(data = NULL, mapping = NULL, metric = data$metric[1], p
   out
 }
 
-
+#' @rdname plot.rfe
+#' @export
 ggplot.rfe <- function(data = NULL, mapping = NULL, metric = data$metric[1],
                        output = "layered", ..., environment = NULL)
 {
@@ -162,6 +169,7 @@ ggplot.rfe <- function(data = NULL, mapping = NULL, metric = data$metric[1],
   out
 }
 
+#' @importFrom stats complete.cases
 random_search_plot <- function(x, metric = x$metric[1]) {
 
   params <- x$modelInfo$parameters

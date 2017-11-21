@@ -27,11 +27,11 @@ modelInfo <- list(label = "Neural Network",
                       nodes <- c(nodes, param$layer2)
                       if(param$layer3 > 0) nodes <- c(nodes, param$layer3)
                     }
-                    neuralnet(form, data = dat, hidden = nodes, ...)
+                    neuralnet::neuralnet(form, data = dat, hidden = nodes, ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     newdata <- newdata[, modelFit$model.list$variables, drop = FALSE]
-                    compute(modelFit, covariate = newdata)$net.result[,1]
+                    neuralnet::compute(modelFit, covariate = newdata)$net.result[,1]
                   },
                   prob = NULL,
                   tags = c("Neural Network"),

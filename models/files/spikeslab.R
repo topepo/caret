@@ -21,7 +21,8 @@ modelInfo <- list(label = "Spike and Slab Regression",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    mod <- spikeslab(x = as.matrix(x), y = y, max.var = param$vars, ...)
+                    require(spikeslab)
+                    mod <- spikeslab::spikeslab(x = as.matrix(x), y = y, max.var = param$vars, ...)
                     ## Get a key to go between the column of the path matrix and the 
                     ## number of non-zero coefficients. There can be multiple path 
                     ## values that have the same number of nonzero betas and, 
@@ -29,8 +30,8 @@ modelInfo <- list(label = "Spike and Slab Regression",
                     ## this case, we will impute using the next adjacent value. 
                     path <- data.frame(k = apply(mod$gnet.path$path, 1, function(x) sum(x != 0)))
                     path$index <- 1:nrow(path)
-                    path <- ddply(path, .(k), function(x) x[which.min(x$index),])
-                    if(all(path$k != ncol(x))) 
+                    path <- plyr::ddply(path, plyr::`.`(k), function(x) x[which.min(x$index),])
+                    if(all(path$k != ncol(x)))
                       path <- rbind(path, data.frame(k = ncol(x), index = max(path$index)))
                     mod$.path <- path
                     mod$.size <- param$vars
@@ -38,7 +39,7 @@ modelInfo <- list(label = "Spike and Slab Regression",
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.matrix(newdata)) newdata <- as.matrix(newdata)
-                    out <- predict(modelFit, newdata)$yhat.gnet.path
+                    out <- spikeslab::predict.spikeslab(modelFit, newdata)$yhat.gnet.path
                     if(is.vector(out)) out <- matrix(out, nrow = 1)
                     if(!is.null(submodels)) {
                       vars <- data.frame(k = c(modelFit$.size, submodels$vars))
@@ -58,6 +59,10 @@ modelInfo <- list(label = "Spike and Slab Regression",
                     coefs <- x$gnet
                     names(coefs)[coefs != 0]
                   },
+                  notes = paste(
+                    "Unlike other packages used by `train`, the `spikeslab`",
+                    "package is fully loaded when this model is used."
+                  ),
                   tags = c("Linear Regression", "Bayesian Model", 
                            "Implicit Feature Selection"),
                   prob = NULL,

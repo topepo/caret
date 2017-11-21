@@ -21,7 +21,7 @@ modelInfo <- list(label = "Principal Component Analysis",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    pcr(.outcome ~ ., data = dat, ncomp = param$ncomp, ...)
+                    pls::pcr(.outcome ~ ., data = dat, ncomp = param$ncomp, ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- as.vector(pls:::predict.mvr(modelFit, newdata, ncomp = max(modelFit$ncomp)))

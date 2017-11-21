@@ -1,7 +1,8 @@
 Linear Discriminant Analysis with Stepwise Feature Selection (`stepLDA`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/stepLDA.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/stepLDA.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `klaR` (0.6-12), `MASS` (7.3-45)
- * tested on 2016-06-10 at 17:47
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `klaR` (0.6-12), `MASS` (7.3-45)
+ * tested on 2017-04-12 at 19:33. 
+ * total test time: 101.3s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `klaR` (0.6-12), `MASS` (7.3-45)
- * tested on 2016-06-12 at 13:28
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `klaR` (0.6-12), `MASS` (7.3-45)
+ * tested on 2017-04-11 at 21:22. 
+ * total test time: 40s
 
 
 Results:
@@ -38,24 +41,11 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 4.8s (new) 5.24s
+Execution times: (old) 5.34s (new) 2.53s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean 12.79
-      min  12.79
-      max  12.79
-    correlation:  NA 
-
- maxvar direction ROC_new ROC_old Diff Flag
-    Inf      both  0.6429    0.57 12.8    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -72,24 +62,11 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 6.25s (new) 6.2s
+Execution times: (old) 6.82s (new) 3.16s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean 12.79
-      min  12.79
-      max  12.79
-    correlation:  NA 
-
- maxvar direction ROC_new ROC_old Diff Flag
-    Inf      both  0.6429    0.57 12.8    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -106,7 +83,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.08m (new) 1.13m
+Execution times: (old) 1.37m (new) 30.46s
 
 Test Results:
 
@@ -127,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.57s (new) 1.56s
+Execution times: (old) 1.5s (new) 1.02s
 
 Test Results:
 

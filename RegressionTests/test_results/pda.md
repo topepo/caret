@@ -1,7 +1,8 @@
 Penalized Discriminant Analysis (`pda`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/pda.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/pda.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `class` (7.3-14), `mda` (0.4-8)
- * tested on 2016-06-10 at 17:31
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `class` (7.3-14), `mda` (0.4-9)
+ * tested on 2017-04-12 at 18:22. 
+ * total test time: 12.2s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `class` (7.3-14), `mda` (0.4-8)
- * tested on 2016-06-12 at 13:09
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `class` (7.3-14), `mda` (0.4-9)
+ * tested on 2017-04-11 at 20:48. 
+ * total test time: 12.5s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.86s (new) 0.85s
+Execution times: (old) 0.92s (new) 0.73s
 
 Test Results:
 
@@ -59,7 +62,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.6s (new) 1.57s
+Execution times: (old) 1.46s (new) 1.23s
 
 Test Results:
 
@@ -80,7 +83,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.31s (new) 6.06s
+Execution times: (old) 5.24s (new) 6.12s
 
 Test Results:
 
@@ -101,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.49s (new) 0.49s
+Execution times: (old) 0.55s (new) 0.28s
 
 Test Results:
 
@@ -158,7 +161,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.11s (new) 1.1s
+Execution times: (old) 1.17s (new) 1.03s
 
 Test Results:
 

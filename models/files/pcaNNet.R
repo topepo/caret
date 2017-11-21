@@ -16,22 +16,21 @@ modelInfo <- list(label = "Neural Networks with Feature Extraction",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    library(nnet)
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     if(!is.null(wts))
                     {
-                      out <- pcaNNet(.outcome ~ .,
-                                     data = dat,
-                                     weights = wts,                                       
-                                     size = param$size,
-                                     decay = param$decay,
-                                     ...)
-                    } else out <- pcaNNet(.outcome ~ .,
-                                          data = dat,
+                      out <- caret::pcaNNet(.outcome ~ .,
+                                           data = dat,
+                                          weights = wts,
                                           size = param$size,
                                           decay = param$decay,
                                           ...)
+                    } else out <- caret::pcaNNet(.outcome ~ .,
+                                                data = dat,
+                                                size = param$size,
+                                                decay = param$decay,
+                                                ...)
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL)

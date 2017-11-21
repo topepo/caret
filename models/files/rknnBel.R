@@ -44,7 +44,7 @@ modelInfo <- list(label = "Random k-Nearest Neighbors with Feature Selection",
                     }
                     theDots = list(...)
                     if(length(theDots) > 0) out <- c(out, theDots)
-                    mod <- do.call("rknnBel", out)
+                    mod <- do.call(rknn::rknnBel, out)
                     out$vars <- bestset(mod, criterion = "mean_accuracy")
                     out$model <- mod
                     out
@@ -60,10 +60,10 @@ modelInfo <- list(label = "Random k-Nearest Neighbors with Feature Selection",
                     modelFit$model <- NULL
                     modelFit$d <- NULL
                     if(!is.factor(modelFit$y)) {
-                      out <- do.call("rknnReg", modelFit)$pred
+                      out <- do.call(rknn::rknnReg, modelFit)$pred
                     } else {
-                      out <- as.character(do.call("rknn", modelFit)$pred)
-                    } 
+                      out <- as.character(do.call(rknn::rknn, modelFit)$pred)
+                    }
                     out
                   },
                   prob = NULL,

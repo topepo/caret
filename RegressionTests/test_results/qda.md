@@ -1,7 +1,8 @@
 Quadratic Discriminant Analysis (`qda`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/qda.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/qda.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `MASS` (7.3-45)
- * tested on 2016-06-10 at 17:34
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `MASS` (7.3-45)
+ * tested on 2017-04-12 at 19:31. 
+ * total test time: 7.2s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `MASS` (7.3-45)
- * tested on 2016-06-12 at 13:12
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `MASS` (7.3-45)
+ * tested on 2017-04-11 at 20:43. 
+ * total test time: 5.4s
 
 
 Results:
@@ -38,24 +41,11 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.73s (new) 0.77s
+Execution times: (old) 0.79s (new) 0.5s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean 13.97
-      min  13.97
-      max  13.97
-    correlation:  NA 
-
- parameter ROC_new ROC_old Diff Flag
-      none    0.68  0.5966   14    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -72,24 +62,11 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.3s (new) 1.31s
+Execution times: (old) 1.2s (new) 0.7s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean 13.97
-      min  13.97
-      max  13.97
-    correlation:  NA 
-
- parameter ROC_new ROC_old Diff Flag
-      none    0.68  0.5966   14    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -106,7 +83,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 2.16s (new) 2.18s
+Execution times: (old) 1.98s (new) 1.51s
 
 Test Results:
 
@@ -127,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.46s (new) 0.48s
+Execution times: (old) 0.53s (new) 0.21s
 
 Test Results:
 

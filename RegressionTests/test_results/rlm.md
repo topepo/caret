@@ -1,7 +1,8 @@
 Robust Linear Model (`rlm`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/rlm.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/rlm.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `MASS` (7.3-45)
- * tested on 2016-06-10 at 17:39
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `MASS` (7.3-45)
+ * tested on 2017-04-12 at 18:58. 
+ * total test time: 7s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `MASS` (7.3-45)
- * tested on 2016-06-12 at 13:18
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `MASS` (7.3-45)
+ * tested on 2017-04-11 at 20:55. 
+ * total test time: 7.6s
 
 
 Results:
@@ -35,10 +38,10 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Grid search
  * Pre-processing: None  
- * 1 tuning parameter combination was evaluated
+ * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.73s (new) 0.72s
+Execution times: (old) 0.87s (new) 0.8s
 
 Test Results:
 
@@ -55,10 +58,10 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Grid search
  * Pre-processing: None  
- * 1 tuning parameter combination was evaluated
+ * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.14s (new) 1.18s
+Execution times: (old) 1.19s (new) 1.12s
 
 Test Results:
 
@@ -75,10 +78,10 @@ Model Configuration:
  * Resampling: Leave-One-Out Cross-Validation
  * Grid search
  * Pre-processing: None  
- * 1 tuning parameter combination was evaluated
+ * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.91s (new) 0.87s
+Execution times: (old) 1.97s (new) 2.06s
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.47s (new) 0.47s
+Execution times: (old) 0.52s (new) 0.27s
 
 Test Results:
 

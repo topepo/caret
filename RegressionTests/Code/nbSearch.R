@@ -1,7 +1,12 @@
+timestamp <- Sys.time()
 library(caret)
-timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "nbSearch"
+
+
 
 #########################################################################
 
@@ -10,6 +15,10 @@ training <- LPH07_1(100, factors = TRUE, class = TRUE)
 testing  <- LPH07_1(100, factors = TRUE, class = TRUE)
 trainX <- training[, -ncol(training)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE, 
@@ -68,10 +77,12 @@ test_class_imp <- varImp(test_class_cv_model)
 tests <- grep("test_", ls(), fixed = TRUE, value = TRUE)
 
 sInfo <- sessionInfo()
+timestamp_end <- Sys.time()
 
-save(list = c(tests, "sInfo", "timestamp"),
+save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
-q("no")
+if(!interactive())
+   q("no")
 
 

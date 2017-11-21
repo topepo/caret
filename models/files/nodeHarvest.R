@@ -15,25 +15,27 @@ modelInfo <- list(label = "Tree-Based Ensembles",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
-                    if(is.numeric(y))
-                    {
-                      out <- nodeHarvest(x, y,
-                                         maxinter = param$maxinter,
-                                         mode = param$mode,
-                                         ...)
+                    if(!is.data.frame(x) | inherits(x, "tbl_df")) 
+                      x <- as.data.frame(x)
+                    if(is.numeric(y)) {
+                      out <- nodeHarvest::nodeHarvest(x, y,
+                                                      maxinter = param$maxinter,
+                                                      mode = param$mode,
+                                                      ...)
                     } else {
-                      if(length(levels(y)) > 2) stop("Two Class problems only")
-                      out <- nodeHarvest(x,
-                                         ifelse(y == levels(y)[1], 1, 0),
-                                         maxinter = param$maxinter,
-                                         mode = param$mode,
-                                         ...)                          
+                      if(length(lev) > 2) stop("Two Class problems only")
+                      out <- nodeHarvest::nodeHarvest(x,
+                                                     ifelse(y == levels(y)[1], 1, 0),
+                                                     maxinter = param$maxinter,
+                                                     mode = param$mode,
+                                                     ...)                          
                     }
                     out   
                   },
                   predict = function(modelFit, newdata, submodels = NULL){
-                    if(modelFit$problemType == "Regression")
-                    {
+                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
+                      newdata <- as.data.frame(newdata)
+                    if(modelFit$problemType == "Regression") {
                       predict(modelFit, as.matrix(newdata), maxshow = 0)
                     } else  {
                       prbs <- predict(modelFit, as.matrix(newdata), maxshow = 0)
@@ -41,9 +43,10 @@ modelInfo <- list(label = "Tree-Based Ensembles",
                     }
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
+                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
+                      newdata <- as.data.frame(newdata)
                     out <- predict(modelFit, as.matrix(newdata), maxshow = 0)
-                    if(is.vector(out))
-                    {
+                    if(is.vector(out)) {
                       out <- cbind(out, 1 - out)
                       colnames(out) <- modelFit$obsLevels
                     }

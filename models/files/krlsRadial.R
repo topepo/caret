@@ -7,7 +7,7 @@ modelInfo <- list(label = "Radial Basis Function Kernel Regularized Least Square
                                           label = c('Regularization Parameter', 'Sigma')),
                   grid = function(x, y, len = NULL, search = "grid") {
                     ## this was changed to follow what kernlab does inside of ksvm and rvm:
-                    sigmaEstimate <- try(sigest(x, na.action = na.omit, scaled = TRUE),
+                    sigmaEstimate <- try(kernlab::sigest(x, na.action = na.omit, scaled = TRUE),
                                          silent = TRUE)
                     if(!(class(sigmaEstimate) == "try-error")) {
                       if(search == "grid") {
@@ -32,11 +32,11 @@ modelInfo <- list(label = "Radial Basis Function Kernel Regularized Least Square
                   }
                   ,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    krls(x, y, lambda = if(is.na(param$lambda)) NULL else param$lambda,
-                         sigma = param$sigma, ...)
+                    KRLS::krls(x, y, lambda = if(is.na(param$lambda)) NULL else param$lambda,
+                               sigma = param$sigma, ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    predict(modelFit, newdata)$fit[,1]
+                    KRLS:::predict.krls(modelFit, newdata)$fit[,1]
                   },
                   tags = c("Kernel Method", "L2 Regularization", "Radial Basis Function"),
                   prob = NULL,

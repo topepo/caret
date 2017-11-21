@@ -4,9 +4,19 @@ modelInfo <- list(label = "Rule-Based Classifier",
                   type = c("Classification"),
                   parameters = data.frame(parameter = c('threshold', 'pruned'),
                                           class = c("numeric", "character"),
-                                          label = "Confidence Threshold", 'Pruning'),
-                  grid = function(x, y, len = NULL, search = "grid") 
-                    data.frame(threshold = 0.25, pruned = "yes"),
+                                          label = c("Confidence Threshold", 'Pruning')),
+                  grid = function(x, y, len = NULL, search = "grid"){
+                    if(search == "grid"){
+                      out <- expand.grid(threshold = seq(0.01, 0.5, length.out = len), pruned = c("yes", "no"))
+                      if(len == 1){
+                        out <- data.frame(threshold = 0.25, pruned = "yes")
+                      }
+                    } else{
+                      out <- data.frame(threshold = runif(len, 0.0, 0.5), pruned = sample(c("yes", "no"), len, replace = TRUE))
+                      }
+                    return(out)
+                  } 
+                    ,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
@@ -14,12 +24,12 @@ modelInfo <- list(label = "Rule-Based Classifier",
                     
                     if(any(names(theDots) == "control"))
                     {
-                      theDots$control$U <- ifelse(param$pruned == "No", TRUE, FALSE)
+                      theDots$control$U <- ifelse(tolower(param$pruned) == "no", TRUE, FALSE)
                       theDots$control$C <- param$threshold
                       ctl <- theDots$control
                       theDots$control <- NULL
                       
-                    } else ctl <- Weka_control(N = ifelse(param$pruned == "No", TRUE, FALSE),
+                    } else ctl <- RWeka::Weka_control(U = ifelse(tolower(param$pruned) == "no", TRUE, FALSE),
                                                C = param$threshold) 
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
@@ -27,7 +37,7 @@ modelInfo <- list(label = "Rule-Based Classifier",
                                         control = ctl),
                                    theDots)
                     
-                    out <- do.call("PART", modelArgs) 
+                    out <- do.call(RWeka::PART, modelArgs) 
                     out      
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {

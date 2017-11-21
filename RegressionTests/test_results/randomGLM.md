@@ -1,7 +1,8 @@
 Ensembles of Generalized Lienar Models (`randomGLM`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/randomGLM.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/randomGLM.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `doParallel` (1.0.10), `foreach` (1.4.3), `iterators` (1.0.8), `MASS` (7.3-45), `randomGLM` (1.02-1)
- * tested on 2016-06-10 at 17:34
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `doParallel` (1.0.10), `foreach` (1.4.3), `iterators` (1.0.8), `MASS` (7.3-45), `randomGLM` (1.02-1)
+ * tested on 2017-04-12 at 19:31. 
+ * total test time: 410.7s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `doParallel` (1.0.10), `foreach` (1.4.3), `iterators` (1.0.8), `MASS` (7.3-45), `randomGLM` (1.02-1)
- * tested on 2016-06-12 at 13:12
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `doParallel` (1.0.10), `foreach` (1.4.3), `iterators` (1.0.8), `MASS` (7.3-45), `randomGLM` (1.02-1)
+ * tested on 2017-04-11 at 21:10. 
+ * total test time: 629.8s
 
 
 Results:
@@ -38,16 +41,11 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 36.51s (new) 35.92s
+Execution times: (old) 32.87s (new) 53.4s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -64,16 +62,11 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 37.53s (new) 37.1s
+Execution times: (old) 33.17s (new) 59.01s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -83,13 +76,13 @@ Object class(es): `varImp.train`
 
  * ***UNequal results***: differences (o-n):
 <pre>
-     Class1            Class2       
- Min.   :-7.9096   Min.   :-7.9096  
- 1st Qu.:-2.6206   1st Qu.:-2.6206  
- Median :-0.4288   Median :-0.4288  
- Mean   : 4.0582   Mean   : 4.0582  
- 3rd Qu.: 6.2500   3rd Qu.: 6.2500  
- Max.   :25.0000   Max.   :25.0000  
+     Class1             Class2        
+ Min.   :-25.0000   Min.   :-25.0000  
+ 1st Qu.: -6.2500   1st Qu.: -6.2500  
+ Median :  0.4288   Median :  0.4288  
+ Mean   : -4.0582   Mean   : -4.0582  
+ 3rd Qu.:  2.6206   3rd Qu.:  2.6206  
+ Max.   :  7.9096   Max.   :  7.9096  
 </pre>
 
 **Test Case**: `class_loo_model`
@@ -105,7 +98,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 3.72m (new) 3.7m
+Execution times: (old) 3.53m (new) 5.33m
 
 Test Results:
 
@@ -126,7 +119,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.91s (new) 5.79s
+Execution times: (old) 5.58s (new) 7.72s
 
 Test Results:
 
@@ -195,7 +188,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 20.35s (new) 20.28s
+Execution times: (old) 18.82s (new) 27.45s
 
 Test Results:
 
@@ -215,7 +208,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 20.37s (new) 20.43s
+Execution times: (old) 18.96s (new) 27.64s
 
 Test Results:
 
@@ -241,7 +234,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.24m (new) 1.22m
+Execution times: (old) 1.12m (new) 1.67m
 
 Test Results:
 
@@ -261,7 +254,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.63s (new) 2.71s
+Execution times: (old) 2.59s (new) 3.21s
 
 Test Results:
 

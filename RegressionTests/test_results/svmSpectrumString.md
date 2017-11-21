@@ -1,7 +1,8 @@
 Support Vector Machines with Spectrum String Kernel (`svmSpectrumString`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/svmSpectrumString.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/svmSpectrumString.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `kernlab` (0.9-24)
- * tested on 2016-06-10 at 17:51
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `kernlab` (0.9-25)
+ * tested on 2017-04-12 at 19:28. 
+ * total test time: 275.9s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `kernlab` (0.9-24)
- * tested on 2016-06-12 at 13:33
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `kernlab` (0.9-25)
+ * tested on 2017-04-12 at 08:33. 
+ * total test time: 134.2s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 14.42s (new) 14.91s
+Execution times: (old) 18.35s (new) 9.05s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.2m (new) 3.3m
+Execution times: (old) 4.01m (new) 1.95m
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.01s (new) 1.11s
+Execution times: (old) 1.19s (new) 0.47s
 
 Test Results:
 
@@ -117,7 +120,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.33s (new) 7.4s
+Execution times: (old) 8.61s (new) 4.07s
 
 Test Results:
 

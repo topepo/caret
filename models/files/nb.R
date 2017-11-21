@@ -9,8 +9,8 @@ modelInfo <- list(label = "Naive Bayes",
                     expand.grid(usekernel = c(TRUE, FALSE), fL = 0, adjust = 1),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                    if(param$usekernel) {
-                          out <- NaiveBayes(x, y, usekernel = TRUE,  fL = param$fL, adjust = param$adjust, ...)
-                   } else out <- NaiveBayes(x, y, usekernel = FALSE, fL = param$fL, ...)
+                          out <- klaR::NaiveBayes(x, y, usekernel = TRUE,  fL = param$fL, adjust = param$adjust, ...)
+                   } else out <- klaR::NaiveBayes(x, y, usekernel = FALSE, fL = param$fL, ...)
                    out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {

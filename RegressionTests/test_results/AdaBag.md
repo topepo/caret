@@ -1,7 +1,8 @@
 Bagged AdaBoost (`AdaBag`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/AdaBag.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/AdaBag.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `adabag` (4.1), `caret` (6.0-68), `mlbench` (2.1-1), `plyr` (1.8.4), `rpart` (4.1-10)
- * tested on 2016-06-10 at 16:46
+ * R version 3.3.3 (2017-03-06)
+ * `adabag` (4.1), `caret` (6.0-73), `mlbench` (2.1-1), `plyr` (1.8.4), `rpart` (4.1-10)
+ * tested on 2017-04-12 at 20:56. 
+ * total test time: 2670.2s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `adabag` (4.1), `caret` (6.0-70), `mlbench` (2.1-1), `plyr` (1.8.4), `rpart` (4.1-10)
- * tested on 2016-06-12 at 12:22
+ * R version 3.3.3 (2017-03-06)
+ * `adabag` (4.1), `caret` (6.0-75), `mlbench` (2.1-1), `plyr` (1.8.4), `rpart` (4.1-10)
+ * tested on 2017-04-11 at 22:42. 
+ * total test time: 483.4s
 
 
 Results:
@@ -38,29 +41,11 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 26.21s (new) 35.59s
+Execution times: (old) 40.62s (new) 5.38s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean  3.31
-      min   0.00
-      max  15.71
-    correlation:  0.9272 
-
- maxdepth mfinal ROC_new ROC_old Diff Flag
-        1      3  0.6904  0.5966 15.7    *
-        1      6  0.7358  0.7358  0.0     
-        1      9  0.6973  0.6973  0.0     
-        3      3  0.6973  0.6696  4.1    *
-        3      6  0.7948  0.7948  0.0     
-        3      9  0.8281  0.8281  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -77,29 +62,11 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 27.16s (new) 36.54s
+Execution times: (old) 41.08s (new) 5.73s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean  3.31
-      min   0.00
-      max  15.71
-    correlation:  0.9272 
-
- maxdepth mfinal ROC_new ROC_old Diff Flag
-        1      3  0.6904  0.5966 15.7    *
-        1      6  0.7358  0.7358  0.0     
-        1      9  0.6973  0.6973  0.0     
-        3      3  0.6973  0.6696  4.1    *
-        3      6  0.7948  0.7948  0.0     
-        3      9  0.8281  0.8281  0.0     
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -116,7 +83,7 @@ Model Configuration:
  * 6 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.65m (new) 5.8m
+Execution times: (old) 4.81m (new) 1.21m
 
 Test Results:
 
@@ -137,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 16.7s (new) 16.89s
+Execution times: (old) 14.28s (new) 3.31s
 
 Test Results:
 
@@ -194,7 +161,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 35.78m (new) 36.91m
+Execution times: (old) 38.03m (new) 6.56m
 
 Test Results:
 

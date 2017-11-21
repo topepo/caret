@@ -12,8 +12,8 @@ modelInfo <- list(label = "Tree Augmented Naive Bayes Classifier with Attribute 
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    struct <- tan_cl(class = '.outcome', dataset = dat, score = as.character(param$score))
-                    lpawnb(struct, dat, smooth = param$smooth, 
+                    struct <- bnclassify::tan_cl(class = '.outcome', dataset = dat, score = as.character(param$score))
+                    bnclassify::lpawnb(struct, dat, smooth = param$smooth, 
                            trees = 10, bootstrap_size = 0.5, 
                            ...)
                   },
@@ -28,4 +28,6 @@ modelInfo <- list(label = "Tree Augmented Naive Bayes Classifier with Attribute 
                   levels = function(x) x$obsLevels,
                   predictors = function(x, s = NULL, ...) x$xNames,
                   tags = c("Bayesian Model", "Categorical Predictors Only"),
-                  sort = function(x) x[order(x[,1]),])
+                  sort = function(x) x[order(x[,1]),],
+                  notes = paste('Not on CRAN but can be installed from',
+                                'GitHub at `bmihaljevic/bnclassify`.'))

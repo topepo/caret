@@ -8,7 +8,7 @@ modelInfo <- list(label = "Stepwise Diagonal Quadratic Discriminant Analysis",
                   grid = function(x, y, len = NULL, search = "grid") 
                     data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...)
-                    sdda(as.matrix(x), y, method = "qda", ...),
+                    SDDA::sdda(as.matrix(x), y, method = "qda", ...),
                   predict = function(modelFit, newdata, submodels = NULL)
                     predict(modelFit, as.matrix(newdata), type = "class"),
                   prob = function(modelFit, newdata, submodels = NULL)

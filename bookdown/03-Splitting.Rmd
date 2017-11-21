@@ -1,0 +1,171 @@
+# Data Splitting
+
+```{r split_startup,echo=FALSE,message=FALSE,warning=FALSE}
+library(caret)
+library(knitr)
+opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'splitting/')
+library(lattice)
+library(ggplot2)
+library(mlbench)
+library(ggthemes)
+```
+
+
+Contents
+
+ - [Simple Splitting Based on the Outcome](#outcome)
+ - [Splitting Based on the Predictors](#predictors)
+ - [Data Splitting for Time Series](#time)
+ - [Data Splitting with Important Groups](#groups)
+ 
+<div id="outcome"></div>
+
+## Simple Splitting Based on the Outcome
+
+
+The function `createDataPartition` can be used to create balanced splits of the data. If the `y` argument to this function is a factor, the random sampling occurs within each class and should preserve the overall class distribution of the data. For example, to create a single 80/20% split of the iris data:
+
+```{r split_iris,tidy=FALSE}
+library(caret)
+set.seed(3456)
+trainIndex <- createDataPartition(iris$Species, p = .8, 
+                                  list = FALSE, 
+                                  times = 1)
+head(trainIndex)
+
+irisTrain <- iris[ trainIndex,]
+irisTest  <- iris[-trainIndex,]
+```
+
+The `list = FALSE` avoids returns the data as a list. This function also has an argument, `times`, that can create multiple splits at once; the data indices are returned in a list of integer vectors. Similarly, `createResample` can be used to make simple bootstrap samples and `createFolds` can be used to generate balanced cross–validation groupings from a set of data.
+
+<div id="predictors"></div>
+
+## Splitting Based on the Predictors
+
+Also, the function `maxDissim` can be used to create sub–samples using a maximum dissimilarity approach ([Willett, 1999](http://www.liebertonline.com/doi/abs/10.1089/106652799318382)). Suppose there is a data set *A* with *m* samples and a larger data set *B* with *n* samples. We may want to create a sub–sample from *B* that is diverse when compared to *A*. To do this, for each sample in *B*, the function calculates the *m* dissimilarities between each point in *A*. The most dissimilar point in *B* is added to *A* and the process continues. There are many methods in R to calculate dissimilarity. [`caret`](http://cran.r-project.org/web/packages/caret/index.html) uses the [`proxy`](http://cran.r-project.org/web/packages/proxy/index.html) package. See the manual for that package for a list of available measures. Also, there are many ways to calculate which sample is "most dissimilar". The argument `obj` can be used to specify any function that returns a scalar measure. [`caret`](http://cran.r-project.org/web/packages/caret/index.html) includes two functions, `minDiss` and `sumDiss`, that can be used to maximize the minimum and total dissimilarities, respectfully. 
+
+As an example, the figure below shows a scatter plot of two chemical descriptors for the Cox2 data. Using an initial random sample of 5 compounds, we can select 20 more compounds from the data so that the new compounds are most dissimilar from the initial 5 that were specified. The panels in the figure show the results using several combinations of distance metrics and scoring functions. For these data, the distance measure has less of an impact than the scoring method for determining which compounds are most dissimilar.
+
+```{r split_MaxDiss1}
+library(mlbench)
+data(BostonHousing)
+
+testing <- scale(BostonHousing[, c("age", "nox")])
+set.seed(5)
+## A random sample of 5 data points
+startSet <- sample(1:dim(testing)[1], 5)
+samplePool <- testing[-startSet,]
+start <- testing[startSet,]
+newSamp <- maxDissim(start, samplePool, n = 20)
+head(newSamp)
+``` 
+
+The visualization below shows the data set (small points), the starting samples (larger blue points) and the order in which the other 20 samples are added.
+
+```{r split_MaxDiss_img, echo = FALSE}
+library(knitr)
+include_graphics('premade/MaxDissim.gif', dpi = NA)
+```
+
+<div id="time"></div>
+
+## Data Splitting for Time Series
+
+Simple random sampling of time series is probably not the best way to resample times series data. [Hyndman and Athanasopoulos (2013)](https://www.otexts.org/fpp/2/5) discuss *rolling forecasting origin* techniques that move the training and test sets in time. caret contains a function called `createTimeSlices` that can create the indices for this type of splitting.
+
+The three parameters for this type of splitting are:
+
+ - `initialWindow`: the initial number of consecutive values in each training set sample
+ - `horizon`: The number of consecutive values in test set sample
+ - `fixedWindow`: A logical: if `FALSE`, the training set always start at the first sample and the training set size will vary over data splits.
+
+As an example, suppose we have a time series with 20 data points. We can fix `initialWindow = 5` and look at different settings of the other two arguments. In the plot below, rows in each panel correspond to different data splits (i.e. resamples) and the columns correspond to different data points. Also, red indicates samples that are in included in the training set and the blue indicates samples in the test set.
+
+```{r Split_time, echo=FALSE, fig.width=9, message=FALSE,warning=FALSE}
+times <- 1:20
+
+case1Index <- createTimeSlices(times, initialWindow = 5, fixedWindow = FALSE)
+case1 <- expand.grid(time = times, resample = seq(along = case1Index$train))
+case1$Group <- NA
+case1$WindowSize <- "horizon = 1"
+case1$Fixed <- "fixedWindow = FALSE"
+for(i in seq(along = case1Index$train)) case1[case1$resample == i & case1$time %in% case1Index$train[[i]], "Group"] <- -1
+for(i in seq(along = case1Index$test)) case1[case1$resample == i & case1$time %in% case1Index$test[[i]], "Group"] <- 1
+
+case2Index <- createTimeSlices(times, initialWindow = 5, fixedWindow = TRUE)
+case2 <- expand.grid(time = times, resample = seq(along = case2Index$train))
+case2$Group <- NA
+case2$WindowSize <- "horizon = 1"
+case2$Fixed <- "fixedWindow = TRUE"
+for(i in seq(along = case2Index$train)) case2[case2$resample == i & case2$time %in% case2Index$train[[i]], "Group"] <- -1
+for(i in seq(along = case2Index$test)) case2[case2$resample == i & case2$time %in% case2Index$test[[i]], "Group"] <- 1
+
+
+case3Index <- createTimeSlices(times, initialWindow = 5, fixedWindow = FALSE, horizon = 5)
+case3 <- expand.grid(time = times, resample = seq(along = case3Index$train))
+case3$Group <- NA
+case3$WindowSize <- "horizon = 5"
+case3$Fixed <- "fixedWindow = FALSE"
+for(i in seq(along = case3Index$train)) case3[case3$resample == i & case3$time %in% case3Index$train[[i]], "Group"] <- -1
+for(i in seq(along = case3Index$test)) case3[case3$resample == i & case3$time %in% case3Index$test[[i]], "Group"] <- 1
+
+case4Index <- createTimeSlices(times, initialWindow = 5, fixedWindow = TRUE, horizon = 5)
+case4 <- expand.grid(time = times, resample = seq(along = case4Index$train))
+case4$Group <- NA
+case4$WindowSize <- "horizon = 5"
+case4$Fixed <- "fixedWindow = TRUE"
+for(i in seq(along = case4Index$train)) case4[case4$resample == i & case4$time %in% case4Index$train[[i]], "Group"] <- -1
+for(i in seq(along = case4Index$test)) case4[case4$resample == i & case4$time %in% case4Index$test[[i]], "Group"] <- 1
+
+plotdata <- rbind(case1, case2, case3, case4)
+
+library(latticeExtra)
+useOuterStrips(
+  levelplot(Group ~ factor(time)*factor(resample)|WindowSize*Fixed, data = plotdata,  
+          colorkey = FALSE,
+          col.regions = c("#FBB4AE", "#B3CDE3"),
+          at = c(-Inf, 0, Inf),
+            xlab = "Time Point",
+            ylab = "Resample Number")) 
+```  
+
+
+<div id="groups"></div>
+
+## Simple Splitting with Important Groups
+
+In some cases there is an important qualitative factor in the data that should be considered during (re)sampling. For example: 
+
+ * in clinical trials, there may be hospital-to-hospital differences
+ * with longitudinal or repeated measures data, subjects (or general independent experimental unit) may have multiple rows in the data set, etc.
+ 
+There may be an interest in making sure that these groups are not contained in the training and testing set since this may bias the test set performance to be more optimistic. Also, when one or more specific groups are held out, the resampling might capture the "ruggedness" of the model. In the example where clinical data is recorded over multiple sites, the resampling performance estimates partly measure how extensible the model is across sites.  
+
+To split the data based on groups, `groupKFold` can be used: 
+
+```{r split_groups}
+set.seed(3527)
+subjects <- sample(1:20, size = 80, replace = TRUE)
+table(subjects)
+folds <- groupKFold(subjects, k = 15) 
+```
+
+The results in `folds` can be used as inputs into the `index` argument of the `trainControl` function. 
+
+This plot shows how each subject is partitioned between the modeling and holdout sets. Note that since `k` was less than 20 when `folds` was created, there are some holdouts with model than one subject.  
+
+```{r Split_group_plot, echo=FALSE, fig.width=9, message=FALSE,warning=FALSE}
+theme_set(theme_bw())
+in_model <- lapply(folds, function(ind, grp) grp[ind], grp = subjects)
+in_model_df <- data.frame(Subject = unlist(in_model), data = "Used for Modeling")
+in_model_df$Fold <- rep(names(in_model), times = unlist(lapply(in_model, length)))
+holdout <- lapply(folds, function(ind, grp) grp[-unique(ind)], grp = subjects)
+holdout_df <- data.frame(Subject = unlist(holdout), data = "Holdout")
+holdout_df$Fold <- rep(names(holdout), times = unlist(lapply(holdout, length)))
+both <- rbind(in_model_df, holdout_df)
+ggplot(both, aes(x = Fold, y = Subject, fill = data)) + 
+  geom_tile() + 
+  scale_fill_tableau() + 
+  theme(legend.position = "top")
+```

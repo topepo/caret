@@ -1,7 +1,8 @@
 Partial Least Squares (`simpls`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/simpls.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/simpls.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `pls` (2.5-0)
- * tested on 2016-06-10 at 17:45
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `pls` (2.6-0)
+ * tested on 2017-04-12 at 18:21. 
+ * total test time: 14.6s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `pls` (2.5-0)
- * tested on 2016-06-12 at 13:25
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `pls` (2.6-0)
+ * tested on 2017-04-11 at 20:28. 
+ * total test time: 10.2s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.75s (new) 0.73s
+Execution times: (old) 0.81s (new) 0.56s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.29s (new) 1.32s
+Execution times: (old) 1.36s (new) 0.8s
 
 Test Results:
 
@@ -84,7 +87,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.13s (new) 2.14s
+Execution times: (old) 2.12s (new) 1.67s
 
 Test Results:
 
@@ -104,7 +107,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.52s (new) 0.5s
+Execution times: (old) 0.57s (new) 0.21s
 
 Test Results:
 
@@ -155,7 +158,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.77s (new) 0.84s
+Execution times: (old) 0.9s (new) 0.55s
 
 Test Results:
 
@@ -181,7 +184,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.76s (new) 0.76s
+Execution times: (old) 0.92s (new) 0.49s
 
 Test Results:
 
@@ -201,7 +204,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.96s (new) 0.87s
+Execution times: (old) 1s (new) 0.66s
 
 Test Results:
 
@@ -227,7 +230,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.29s (new) 2.2s
+Execution times: (old) 2.38s (new) 1.74s
 
 Test Results:
 
@@ -247,7 +250,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.5s (new) 0.54s
+Execution times: (old) 0.65s (new) 0.22s
 
 Test Results:
 
@@ -291,7 +294,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.88s (new) 0.92s
+Execution times: (old) 0.97s (new) 0.62s
 
 Test Results:
 

@@ -1,7 +1,8 @@
 Robust Mixture Discriminant Analysis (`rmda`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/rmda.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/rmda.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `MASS` (7.3-45), `mclust` (5.2), `robustDA` (1.1), `Rsolnp` (1.16)
- * tested on 2016-06-10 at 17:39
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `MASS` (7.3-45), `mclust` (5.2), `robustDA` (1.1), `Rsolnp` (1.16)
+ * tested on 2017-04-12 at 19:56. 
+ * total test time: 83.3s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `MASS` (7.3-45), `mclust` (5.2), `robustDA` (1.1), `Rsolnp` (1.16)
- * tested on 2016-06-12 at 13:18
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `MASS` (7.3-45), `mclust` (5.2), `robustDA` (1.1), `Rsolnp` (1.16)
+ * tested on 2017-04-11 at 22:19. 
+ * total test time: 77.6s
 
 
 Results:
@@ -38,16 +41,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.55s (new) 4.36s
+Execution times: (old) 4.34s (new) 4.11s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -64,16 +62,11 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.37s (new) 5.29s
+Execution times: (old) 5.11s (new) 4.51s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -90,7 +83,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.23m (new) 1.19m
+Execution times: (old) 1.17m (new) 1.1m
 
 Test Results:
 
@@ -111,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.95s (new) 1.11s
+Execution times: (old) 1.02s (new) 0.66s
 
 Test Results:
 
@@ -123,85 +116,37 @@ Test Results:
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 90.4% (452/500)
-        newer
-older    Class1 Class2
-  Class1    294     31
-  Class2     17    158
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_none_prob`
 
 Object class(es): `data.frame`
 
- * ***UNequal results***: differences (o-n):
-<pre>
-     Class1               Class2          
- Min.   :-0.9999942   Min.   :-0.9999944  
- 1st Qu.: 0.0000000   1st Qu.:-0.0005471  
- Median : 0.0000000   Median : 0.0000000  
- Mean   : 0.0248565   Mean   :-0.0248565  
- 3rd Qu.: 0.0005471   3rd Qu.: 0.0000000  
- Max.   : 0.9999944   Max.   : 0.9999942  
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_pred`
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 90.4% (452/500)
-        newer
-older    Class1 Class2
-  Class1    294     31
-  Class2     17    158
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_pred_form`
 
 Object class(es): `factor`
 
- * ***UNequal results***:
-<pre>
-   Agreement: 90.4% (452/500)
-        newer
-older    Class1 Class2
-  Class1    294     31
-  Class2     17    158
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_prob`
 
 Object class(es): `data.frame`
 
- * ***UNequal results***: differences (o-n):
-<pre>
-     Class1               Class2          
- Min.   :-0.9999942   Min.   :-0.9999944  
- 1st Qu.: 0.0000000   1st Qu.:-0.0005471  
- Median : 0.0000000   Median : 0.0000000  
- Mean   : 0.0248565   Mean   :-0.0248565  
- 3rd Qu.: 0.0005471   3rd Qu.: 0.0000000  
- Max.   : 0.9999944   Max.   : 0.9999942  
-</pre>
+ * _Equal results_
 
 **Test Case**: `class_prob_form`
 
 Object class(es): `data.frame`
 
- * ***UNequal results***: differences (o-n):
-<pre>
-     Class1               Class2          
- Min.   :-0.9999942   Min.   :-0.9999944  
- 1st Qu.: 0.0000000   1st Qu.:-0.0005471  
- Median : 0.0000000   Median : 0.0000000  
- Mean   : 0.0248565   Mean   :-0.0248565  
- 3rd Qu.: 0.0005471   3rd Qu.: 0.0000000  
- Max.   : 0.9999944   Max.   : 0.9999942  
-</pre>
+ * _Equal results_
 
 **Test Case**: `levels`
 

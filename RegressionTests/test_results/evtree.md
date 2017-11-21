@@ -1,25 +1,28 @@
 Tree Models from Genetic Algorithms (`evtree`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/evtree.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/evtree.R) for the model code is also available
 
 Testing Information:
 ---------
 
 Old:
 
- * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `evtree` (1.0-0), `partykit` (1.0-5)
- * tested on 2016-06-10 at 16:56
+ * x86_64-apple-darwin15.6.0 (64-bit)
+ * R Under development (unstable) (2017-04-10 r72501)
+ * `caret` (6.0-75), `evtree` (1.0-5), `partykit` (1.1-1)
+ * tested on 2017-04-12 at 18:44. 
+ * total test time: 67.4s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `evtree` (1.0-0), `partykit` (1.0-5)
- * tested on 2016-06-12 at 12:31
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `evtree` (1.0-5), `partykit` (1.0-5)
+ * tested on 2017-04-11 at 20:53. 
+ * total test time: 75.6s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.35s (new) 1.37s
+Execution times: (old) 1.91s (new) 1.24s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 2.08s (new) 2.15s
+Execution times: (old) 3.17s (new) 1.7s
 
 Test Results:
 
@@ -78,7 +81,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 12.92s (new) 12.97s
+Execution times: (old) 10.55s (new) 13.52s
 
 Test Results:
 
@@ -98,7 +101,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.59s (new) 0.59s
+Execution times: (old) 0.3s (new) 0.33s
 
 Test Results:
 
@@ -148,7 +151,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 10.25s (new) 10.52s
+Execution times: (old) 11.32s (new) 12.07s
 
 Test Results:
 
@@ -174,7 +177,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.37s (new) 1.3s
+Execution times: (old) 1.08s (new) 1.27s
 
 Test Results:
 
@@ -194,7 +197,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.51s (new) 1.5s
+Execution times: (old) 1.17s (new) 1.41s
 
 Test Results:
 
@@ -214,7 +217,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 26.96s (new) 26.76s
+Execution times: (old) 23.85s (new) 29.59s
 
 Test Results:
 
@@ -234,7 +237,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.57s (new) 0.62s
+Execution times: (old) 0.36s (new) 0.34s
 
 Test Results:
 
@@ -272,7 +275,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 8.83s (new) 8.91s
+Execution times: (old) 9.57s (new) 10.76s
 
 Test Results:
 

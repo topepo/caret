@@ -1,7 +1,8 @@
 Rule-Based Classifier (`JRip`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/JRip.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/JRip.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `RWeka` (0.4-24)
- * tested on 2016-06-10 at 17:12
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `RWeka` (0.4-33)
+ * tested on 2017-04-12 at 21:03. 
+ * total test time: 176.1s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `RWeka` (0.4-24)
- * tested on 2016-06-12 at 12:47
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `RWeka` (0.4-33)
+ * tested on 2017-04-11 at 21:34. 
+ * total test time: 151.1s
 
 
 Results:
@@ -35,29 +38,14 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Grid search
  * Pre-processing: centered (7), scaled (7)  
- * 3 tuning parameter combinations were evaluated
+ * 27 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.58s (new) 1.51s
+Execution times: (old) 8.23s (new) 7.1s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean 7.649
-      min  4.636
-      max  9.155
-    correlation:  1 
-
- NumOpt ROC_new ROC_old Diff Flag
-      1  0.7176  0.6574  9.2    *
-      2  0.7176  0.6574  9.2    *
-      3  0.7315  0.6991  4.6    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -71,29 +59,14 @@ Model Configuration:
  * Resampling: Cross-Validated (3 fold)
  * Grid search
  * Pre-processing: centered (7), scaled (7)  
- * 3 tuning parameter combinations were evaluated
+ * 27 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.1s (new) 3.04s
+Execution times: (old) 12.07s (new) 10s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                
-      mean 7.649
-      min  4.636
-      max  9.155
-    correlation:  1 
-
- NumOpt ROC_new ROC_old Diff Flag
-      1  0.7176  0.6574  9.2    *
-      2  0.7176  0.6574  9.2    *
-      3  0.7315  0.6991  4.6    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -113,10 +86,10 @@ Model Configuration:
  * Resampling: Leave-One-Out Cross-Validation
  * Grid search
  * Pre-processing: centered (7), scaled (7)  
- * 3 tuning parameter combinations were evaluated
+ * 27 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 16.98s (new) 16.63s
+Execution times: (old) 2.54m (new) 2.19m
 
 Test Results:
 
@@ -137,7 +110,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.53s (new) 0.55s
+Execution times: (old) 0.56s (new) 0.24s
 
 Test Results:
 

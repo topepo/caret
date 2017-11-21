@@ -1,6 +1,12 @@
-setwd("~/Code/github/caret/models/files")
+setwd("~/github/caret/models/files")
+
+exclusions <- c("^rknn", "avMxnet", "^sdda", "^enpls", "Boruta", 
+                "bdk", "^oblique", "GCCL")
+exclusions <- paste0("(", exclusions, ")")
+exclusions <- paste0(exclusions, collapse = "|")
+
 modelFiles <- list.files(pattern = "\\.R$")
-modelFiles <- modelFiles[!grepl("(rknn)|([mM]xnet)", modelFiles)]
+modelFiles <- modelFiles[-grep(exclusions, modelFiles)]
 
 
 models <- vector(mode = "list", length = length(modelFiles))

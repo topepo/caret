@@ -1,7 +1,8 @@
 Boosted Tree (`blackboost`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/blackboost.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/blackboost.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `mboost` (2.6-0), `modeltools` (0.2-21), `mvtnorm` (1.0-5), `party` (1.0-25), `plyr` (1.8.4), `sandwich` (2.3-4), `stabs` (0.5-1), `strucchange` (1.5-1), `zoo` (1.7-12)
- * tested on 2016-06-10 at 16:49
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `mboost` (2.7-0), `modeltools` (0.2-21), `mvtnorm` (1.0-5), `party` (1.2-2), `plyr` (1.8.4), `sandwich` (2.3-4), `stabs` (0.5-1), `strucchange` (1.5-1), `zoo` (1.7-13)
+ * tested on 2017-04-12 at 18:37. 
+ * total test time: 267.7s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `mboost` (2.6-0), `modeltools` (0.2-21), `mvtnorm` (1.0-5), `party` (1.0-25), `plyr` (1.8.4), `sandwich` (2.3-4), `stabs` (0.5-1), `strucchange` (1.5-1), `zoo` (1.7-12)
- * tested on 2016-06-12 at 12:25
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `mboost` (2.7-0), `modeltools` (0.2-21), `mvtnorm` (1.0-5), `party` (1.2-2), `plyr` (1.8.4), `sandwich` (2.3-4), `stabs` (0.5-1), `strucchange` (1.5-1), `zoo` (1.7-13)
+ * tested on 2017-04-11 at 22:53. 
+ * total test time: 226.6s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.48s (new) 3.66s
+Execution times: (old) 7.97s (new) 5.98s
 
 Test Results:
 
@@ -59,7 +62,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 4.42s (new) 4.72s
+Execution times: (old) 8.87s (new) 7.15s
 
 Test Results:
 
@@ -80,16 +83,11 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 49.52s (new) 51.41s
+Execution times: (old) 1.86m (new) 1.6m
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences < 0.1%
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -106,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.76s (new) 0.82s
+Execution times: (old) 0.8s (new) 0.4s
 
 Test Results:
 
@@ -169,7 +167,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.36s (new) 5.51s
+Execution times: (old) 22.5s (new) 19.22s
 
 Test Results:
 
@@ -195,7 +193,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.41s (new) 3.37s
+Execution times: (old) 7.41s (new) 6.35s
 
 Test Results:
 
@@ -215,7 +213,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.89s (new) 4.04s
+Execution times: (old) 8.07s (new) 6.52s
 
 Test Results:
 
@@ -241,7 +239,7 @@ Model Configuration:
  * 9 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 33.71s (new) 33.59s
+Execution times: (old) 1.24m (new) 1.04m
 
 Test Results:
 
@@ -261,7 +259,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.82s (new) 0.83s
+Execution times: (old) 0.87s (new) 0.45s
 
 Test Results:
 
@@ -299,7 +297,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 6.48s (new) 6.35s
+Execution times: (old) 22.1s (new) 19.49s
 
 Test Results:
 

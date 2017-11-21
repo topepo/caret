@@ -18,17 +18,18 @@ modelInfo <- list(label = "Sparse Partial Least Squares",
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
+                    param$K <- min(param$K, length(y))
                     if(is.factor(y)) {
                       caret:::splsda(x, y, K = param$K, eta = param$eta,
                                      kappa = param$kappa, ...)
                     } else {
-                      spls(x, y, K = param$K, eta = param$eta,
-                           kappa = param$kappa, ...)
+                      spls::spls(x, y, K = param$K, eta = param$eta,
+                                 kappa = param$kappa, ...)
                     }          
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(length(modelFit$obsLevels) < 2) {
-                      predict(modelFit, newdata)
+                      spls::predict.spls(modelFit, newdata)
                     } else {
                       as.character(caret:::predict.splsda(modelFit, newdata, type = "class"))
                     }

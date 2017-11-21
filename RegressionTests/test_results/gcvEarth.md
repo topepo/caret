@@ -1,7 +1,8 @@
 Multivariate Adaptive Regression Splines (`gcvEarth`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/gcvEarth.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/gcvEarth.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `earth` (4.4.4), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
- * tested on 2016-06-10 at 17:01
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `earth` (4.4.9.1), `plotmo` (3.3.1), `plotrix` (3.6-3), `TeachingDemos` (2.10)
+ * tested on 2017-04-12 at 21:02. 
+ * total test time: 16.2s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `earth` (4.4.4), `plotmo` (3.1.4), `plotrix` (3.6-1), `TeachingDemos` (2.10)
- * tested on 2016-06-12 at 12:36
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `earth` (4.4.9.1), `plotmo` (3.3.1), `plotrix` (3.6-3), `TeachingDemos` (2.10)
+ * tested on 2017-04-11 at 22:19. 
+ * total test time: 11.8s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.84s (new) 0.77s
+Execution times: (old) 1.08s (new) 0.59s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 1.44s (new) 1.38s
+Execution times: (old) 1.55s (new) 0.9s
 
 Test Results:
 
@@ -84,7 +87,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 2.92s (new) 2.79s
+Execution times: (old) 2.78s (new) 2.7s
 
 Test Results:
 
@@ -104,7 +107,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.53s (new) 0.52s
+Execution times: (old) 0.56s (new) 0.23s
 
 Test Results:
 
@@ -148,7 +151,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.81s (new) 0.78s
+Execution times: (old) 0.89s (new) 0.59s
 
 Test Results:
 
@@ -174,7 +177,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.78s (new) 0.75s
+Execution times: (old) 0.83s (new) 0.6s
 
 Test Results:
 
@@ -194,7 +197,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.9s (new) 0.92s
+Execution times: (old) 1.11s (new) 0.72s
 
 Test Results:
 
@@ -220,7 +223,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 2.58s (new) 2.43s
+Execution times: (old) 2.27s (new) 1.96s
 
 Test Results:
 
@@ -240,7 +243,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.54s (new) 0.52s
+Execution times: (old) 0.62s (new) 0.24s
 
 Test Results:
 
@@ -284,7 +287,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.77s (new) 0.76s
+Execution times: (old) 0.86s (new) 0.56s
 
 Test Results:
 

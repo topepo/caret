@@ -16,9 +16,9 @@ modelInfo <- list(label = "Localized Linear Discriminant Analysis",
                     }
                     out
                     },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    loclda(x, y, k = floor(param$k), ...)  ,
-                  predict = function(modelFit, newdata, submodels = NULL) 
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...)
+                    klaR::loclda(x, y, k = floor(param$k), ...)  ,
+                  predict = function(modelFit, newdata, submodels = NULL)
                     predict(modelFit, newdata)$class,
                   prob = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit, newdata)$posterior,

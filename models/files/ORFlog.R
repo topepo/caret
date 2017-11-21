@@ -15,13 +15,19 @@ modelInfo <- list(label = "Oblique Random Forest",
                     }
                     out
                   },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    obliqueRF(as.matrix(x), y, training_method = "log", ...),
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    require(obliqueRF)
+                    obliqueRF::obliqueRF(as.matrix(x), y, training_method = "log", ...)
+                  },
                   predict = function(modelFit, newdata, submodels = NULL)
                     predict(modelFit, newdata),
                   prob = function(modelFit, newdata, submodels = NULL)
                     predict(modelFit, newdata, type = "prob"),
                   levels = function(x) x$obsLevels,
+                  notes = paste(
+                    "Unlike other packages used by `train`, the `obliqueRF`",
+                    "package is fully loaded when this model is used."
+                  ),
                   tags = c("Random Forest", "Oblique Tree", "Logistic Regression", 
                            "Implicit Feature Selection", "Ensemble Model", "Two Class Only"),
                   sort = function(x) x[order(x[,1]),])

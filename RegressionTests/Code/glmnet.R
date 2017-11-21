@@ -1,7 +1,12 @@
+timestamp <- Sys.time()
 library(caret)
-timestamp <- format(Sys.time(), "%Y_%m_%d_%H_%M")
+library(plyr)
+library(recipes)
+library(dplyr)
 
 model <- "glmnet"
+
+
 
 #########################################################################
 
@@ -11,6 +16,10 @@ testing <- twoClassSim(500, linearVars = 2)
 trainX <- training[, -ncol(training)]
 testX <- testing[, -ncol(testing)]
 trainY <- training$Class
+
+rec_cls <- recipe(Class ~ ., data = training) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
 
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE, summaryFunction = twoClassSummary)
@@ -67,6 +76,30 @@ test_class_none_model <- train(trainX, trainY,
 
 test_class_none_pred <- predict(test_class_none_model, testX)
 
+set.seed(849)
+test_class_rec <- train(x = rec_cls,
+                        data = training,
+                        method = "glmnet", 
+                        trControl = cctrl1,
+                        metric = "ROC",
+                        tuneGrid = expand.grid(alpha = seq(.05, 1, length = 15),
+                                               lambda = c((1:5)/10)))
+
+
+if(
+  !isTRUE(
+    all.equal(test_class_cv_model$results, 
+              test_class_rec$results))
+)
+  stop("CV weights not giving the same results")
+
+test_class_imp_rec <- varImp(test_class_rec)
+
+
+test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
+test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
+                               type = "prob")
+
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
   cat("wrong levels")
@@ -112,6 +145,7 @@ set.seed(1010)
 n=1000;p=30
 nzc=trunc(p/10)
 x=matrix(rnorm(n*p),n,p)
+colnames(x) <- paste0("x", 1:ncol(x))
 beta=rnorm(nzc)
 fx= x[,seq(nzc)] %*% beta
 eps=rnorm(n)*5
@@ -155,10 +189,13 @@ rctrl1$returnData <- FALSE
 rctrl2$returnData <- FALSE
 rctrl3$returnData <- FALSE
 
-x2 <- Matrix(matrix(sample(0:1, 
-                           size = p*nrow(x),
-                           replace = TRUE),
-                    ncol = p), sparse = TRUE)
+mat <- matrix(sample(0:1, 
+                     size = p*nrow(x),
+                     replace = TRUE),
+              ncol = p)
+colnames(mat) <- paste0("x", 1:ncol(x))
+rownames(mat) <- paste0(1:nrow(x))
+x2 <- Matrix(mat, sparse = TRUE)
 
 cvob2=cv.glmnet(x2,y)
 
@@ -198,10 +235,12 @@ test_reg_predictors1 <- predictors(test_reg_cv_model)
 tests <- grep("test_", ls(), fixed = TRUE, value = TRUE)
 
 sInfo <- sessionInfo()
+timestamp_end <- Sys.time()
 
-save(list = c(tests, "sInfo", "timestamp"),
+save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
-q("no")
+if(!interactive())
+   q("no")
 
 

@@ -1,7 +1,8 @@
 Fuzzy Rules via Thrift (`GFS.THRIFT`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/GFS.THRIFT.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/GFS.THRIFT.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `frbs` (3.1-0)
- * tested on 2016-06-10 at 17:04
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-73), `frbs` (3.1-0)
+ * tested on 2017-04-12 at 20:33. 
+ * total test time: 208.7s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `frbs` (3.1-0)
- * tested on 2016-06-12 at 12:40
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `frbs` (3.1-0)
+ * tested on 2017-04-11 at 21:29. 
+ * total test time: 177.7s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 7.73s (new) 7.43s
+Execution times: (old) 7.83s (new) 6.2s
 
 Test Results:
 
@@ -58,7 +61,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 8.51s (new) 8.11s
+Execution times: (old) 8.14s (new) 6.75s
 
 Test Results:
 
@@ -84,7 +87,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.43m (new) 1.38m
+Execution times: (old) 1.4m (new) 1.19m
 
 Test Results:
 
@@ -104,7 +107,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.43s (new) 1.47s
+Execution times: (old) 1.46s (new) 0.97s
 
 Test Results:
 
@@ -113,19 +116,19 @@ Test Results:
 
 **Test Case**: `reg_none_pred`
 
-Object class(es): `matrix`
+Object class(es): `numeric`
 
  * _Equal results_
 
 **Test Case**: `reg_pred`
 
-Object class(es): `matrix`
+Object class(es): `numeric`
 
  * _Equal results_
 
 **Test Case**: `reg_pred_form`
 
-Object class(es): `matrix`
+Object class(es): `numeric`
 
  * _Equal results_
 
@@ -148,7 +151,7 @@ Model Configuration:
  * 4 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.83m (new) 1.76m
+Execution times: (old) 1.74m (new) 1.49m
 
 Test Results:
 

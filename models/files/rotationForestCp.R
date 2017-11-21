@@ -5,19 +5,21 @@ modelInfo <- list(label = "Rotation Forest",
                                           class = rep("numeric", 3),
                                           label = c("#Variable Subsets", "Ensemble Size", "Complexity Parameter")),
                   grid = function(x, y, len = NULL, search = "grid") {
+                    feas_k <- 1:15
+                    feas_k <- feas_k[ncol(x)%%feas_k == 0]
                     if(search == "grid") {
-                      out <- expand.grid(K = 1:min(len, ncol(x)-1), 
+                      out <- expand.grid(K = feas_k[1:min(len, length(feas_k))], 
                                          L = (1:len)*3,
                                          cp = unique(seq(0, .1, length = len)))
                     } else {
-                      out <- data.frame(K = sample(1:min(len, ncol(x)-1), size = len, replace = TRUE), 
+                      out <- data.frame(K = sample(feas_k, size = len, replace = TRUE), 
                                         L = sample(10:100, size = len, replace = TRUE),
                                         cp = runif(len, 0, .1))
                     }
                     out
                   },
-                  loop = function(grid) { 
-                    loop <- ddply(grid, .(cp, K), function(x) c(L = max(x$L)))
+                  loop = function(grid) {
+                    loop <- plyr::ddply(grid, plyr::`.`(cp, K), function(x) c(L = max(x$L)))
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$L))  {
                       index <- which(grid$cp == loop$cp[i] & grid$K == loop$K[i])
@@ -27,6 +29,7 @@ modelInfo <- list(label = "Rotation Forest",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    param$K <- min(param$k, floor(ncol(x)/2))
                     if(length(lev) != 2)
                       stop("rotationForest is only implemented for binary classification")
                     y <- ifelse(y == lev[1], 1, 0)
@@ -38,9 +41,9 @@ modelInfo <- list(label = "Rotation Forest",
                       theDots$control$cp <- param$cp
                       theDots$control$xval <- 0 
                       rpctl <- theDots$control
-                    } else rpctl <- rpart.control(cp = param$cp, xval = 0)  
-                    
-                    rotationForest(x, y, K = param$K, L = param$L, control = rpctl)
+                    } else rpctl <- rpart::rpart.control(cp = param$cp, xval = 0)
+
+                    rotationForest::rotationForest(x, y, K = param$K, L = param$L, control = rpctl)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)

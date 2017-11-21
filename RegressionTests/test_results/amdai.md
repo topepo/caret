@@ -1,7 +1,8 @@
 Adaptive Mixture Discriminant Analysis (`amdai`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/amdai.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/amdai.R) for the model code is also available
 
 Testing Information:
 ---------
@@ -9,17 +10,19 @@ Testing Information:
 Old:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `adaptDA` (1.0), `caret` (6.0-68), `MASS` (7.3-45)
- * tested on 2016-06-10 at 16:46
+ * R version 3.3.3 (2017-03-06)
+ * `adaptDA` (1.0), `caret` (6.0-73), `MASS` (7.3-45)
+ * tested on 2017-04-12 at 18:29. 
+ * total test time: 11s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `adaptDA` (1.0), `caret` (6.0-70), `MASS` (7.3-45)
- * tested on 2016-06-12 at 12:22
+ * R version 3.3.3 (2017-03-06)
+ * `adaptDA` (1.0), `caret` (6.0-75), `MASS` (7.3-45)
+ * tested on 2017-04-11 at 20:31. 
+ * total test time: 8.8s
 
 
 Results:
@@ -38,25 +41,11 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.76s (new) 0.79s
+Execution times: (old) 0.76s (new) 0.5s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                 
-      mean  6.984
-      min   0.000
-      max  13.967
-    correlation:  1 
-
- model ROC_new ROC_old Diff Flag
-   lda  0.7477  0.7477    0     
-   qda  0.6800  0.5966   14    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -73,25 +62,11 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 1.7s (new) 1.81s
+Execution times: (old) 1.37s (new) 0.9s
 
 Test Results:
 
- * ***UNequal results for ROC***:
-
-<pre>
-    %differences (n-o):                 
-      mean  6.984
-      min   0.000
-      max  13.967
-    correlation:  1 
-
- model ROC_new ROC_old Diff Flag
-   lda  0.7477  0.7477    0     
-   qda  0.6800  0.5966   14    *
-
-</pre>
-
+ * _Equal results for ROC_
  * _Equal results for Sens_
  * _Equal results for Spec_
 
@@ -108,7 +83,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.48s (new) 5.4s
+Execution times: (old) 4.69s (new) 3.92s
 
 Test Results:
 
@@ -129,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.46s (new) 0.5s
+Execution times: (old) 0.51s (new) 0.2s
 
 Test Results:
 
@@ -186,7 +161,7 @@ Model Configuration:
  * 1 tuning parameter combination was evaluated
 
 
-Execution times: (old) 0.8s (new) 0.89s
+Execution times: (old) 0.86s (new) 0.53s
 
 Test Results:
 

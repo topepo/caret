@@ -1,25 +1,28 @@
 Oblique Random Forest (`ORFridge`)
- ===== 
+===== 
 
 There are regression tests to compare model results between different versions of `caret` and the individual packages. These test evaluate whether consistent results can be obtained. The code used to generate the objects that are compared can be found [here](https://github.com/topepo/caret/blob/master/RegressionTests/Code/ORFridge.R).
+A [history of commits](https://github.com/topepo/caret/commits/master/models/files/ORFridge.R) for the model code is also available
 
 Testing Information:
 ---------
 
 Old:
 
- * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-68), `class` (7.3-14), `e1071` (1.6-7), `gplots` (3.0.1), `mda` (0.4-8), `obliqueRF` (0.3), `pls` (2.5-0), `ROCR` (1.0-7)
- * tested on 2016-06-10 at 17:28
+ * x86_64-apple-darwin15.6.0 (64-bit)
+ * R Under development (unstable) (2017-04-10 r72501)
+ * `caret` (6.0-75), `class` (7.3-14), `e1071` (1.6-8), `gplots` (3.0.1), `mda` (0.4-9), `obliqueRF` (0.3), `pls` (2.6-0), `ROCR` (1.0-7)
+ * tested on 2017-04-12 at 18:43. 
+ * total test time: 295.5s
 
 
 New:
 
  * x86_64-apple-darwin13.4.0 (64-bit)
- * R Under development (unstable) (2016-06-07 r70726)
- * `caret` (6.0-70), `class` (7.3-14), `e1071` (1.6-7), `gplots` (3.0.1), `mda` (0.4-8), `obliqueRF` (0.3), `pls` (2.5-0), `ROCR` (1.0-7)
- * tested on 2016-06-12 at 13:04
+ * R version 3.3.3 (2017-03-06)
+ * `caret` (6.0-75), `class` (7.3-14), `e1071` (1.6-8), `gplots` (3.0.1), `mda` (0.4-9), `obliqueRF` (0.3), `pls` (2.6-0), `ROCR` (1.0-7)
+ * tested on 2017-04-11 at 21:19. 
+ * total test time: 354s
 
 
 Results:
@@ -38,7 +41,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 17.31s (new) 16.71s
+Execution times: (old) 14s (new) 23.85s
 
 Test Results:
 
@@ -59,7 +62,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 18.49s (new) 17.73s
+Execution times: (old) 15.59s (new) 25.52s
 
 Test Results:
 
@@ -80,7 +83,7 @@ Model Configuration:
  * 3 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 5.52m (new) 5.35m
+Execution times: (old) 4.21m (new) 4.65m
 
 Test Results:
 
@@ -101,7 +104,7 @@ Model Configuration:
  * 0 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 0.93s (new) 0.91s
+Execution times: (old) 0.59s (new) 0.52s
 
 Test Results:
 
@@ -158,7 +161,7 @@ Model Configuration:
  * 2 tuning parameter combinations were evaluated
 
 
-Execution times: (old) 3.06s (new) 2.94s
+Execution times: (old) 2.72s (new) 4.12s
 
 Test Results:
 

@@ -14,7 +14,7 @@ modelInfo <- list(label = "Factor-Based Linear Discriminant Analysis",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    RFlda(x, y, q = param$q, maxq = param$q, ...),
+                    HiDimDA::RFlda(x, y, q = param$q, maxq = param$q, ...),
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, newdata)$class
                     out <- modelFit$obsLevels[as.numeric(out)]
