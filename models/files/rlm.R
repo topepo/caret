@@ -38,5 +38,14 @@ modelInfo <- list(label = "Robust Linear Model",
                     predict(modelFit, newdata)
                   },
                   prob = NULL,
+                  varImp = function(object, ...) {
+                    values <- summary(object)$coef
+                    varImps <-  abs(values[ !grepl( rownames(values), pattern = 'Intercept' ), 
+                                             grep("value$", colnames(values)), drop = FALSE])
+                    out <- data.frame(varImps)
+                    colnames(out) <- "Overall"
+                    if(!is.null(names(varImps))) rownames(out) <- names(varImps)
+                    out   
+                  },
                   tags = c("Linear Regression", "Robust Model", "Accepts Case Weights"),
                   sort = function(x) x)

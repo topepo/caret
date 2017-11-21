@@ -46,7 +46,7 @@ modelInfo <- list(label = "Neural Network",
                                            array.layout = "rowmajor",
                                            activation = rep( as.character(param$activation), length(num_units)),
                                            # Use He/MSRA when available in R 
-                                           initializer = mx.init.Xavier(factor_type = "avg", magnitude = 3, rnd_type = 'uniform'),
+                                           initializer = mxnet::mx.init.Xavier(factor_type = "avg", magnitude = 3, rnd_type = 'uniform'),
                                            ...)
                     } else {
                       y <- as.numeric(y) - 1
@@ -60,7 +60,7 @@ modelInfo <- list(label = "Neural Network",
                                            eval.metric = mx.metric.accuracy, 
                                            array.layout = "rowmajor",
                                            activation = rep( as.character(param$activation), length(num_units)),
-                                           initializer = mx.init.Xavier(factor_type = "avg", magnitude = 3, rnd_type = 'uniform'), 
+                                           initializer = mxnet::mx.init.Xavier(factor_type = "avg", magnitude = 3, rnd_type = 'uniform'), 
                                            ...)
                     }
                     if(last)
