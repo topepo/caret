@@ -13,6 +13,13 @@ ppMethods <- c("BoxCox", "YeoJohnson", "expoTrans", "invHyperbolicSine",
 
 invHyperbolicSineFunc <- function(x) log(x+sqrt(x^2+1))
 
+getRangeBounds <- function(pp) {
+ if(!is.null(pp$rangeBounds)) {
+   list(lower = pp$rangeBounds[1], upper = pp$rangeBounds[2])
+ } else {
+   list(lower = 0.0, upper = 1.0)
+ }
+}
 
 #' Pre-Processing of Predictors
 #' 
@@ -551,16 +558,17 @@ predict.preProcess <- function(object, newdata, ...) {
   }  
   
   if(any(names(object$method) == "range")) {
+    rangeBounds <- getRangeBounds(object)
     newdata[, object$method$range] <- 
       sweep(newdata[, object$method$range, drop = FALSE], 2, 
             object$ranges[1,], "-")
     newdata[, object$method$range] <- 
       sweep(newdata[, object$method$range, drop = FALSE], 2,
             (object$ranges[2,] - object$ranges[1,]) /
-              (object$rangeBounds[2] - object$rangeBounds[1]), "/")
+              (rangeBounds$upper - rangeBounds$lower), "/")
     newdata[, object$method$range] <-
       sweep(newdata[, object$method$range, drop = FALSE], 2,
-            object$rangeBounds[1], "+")
+            rangeBounds$lower, "+")
   }
   
   if(any(names(object$method) == "center")) 
@@ -705,7 +713,10 @@ print.preProcess <- function(x, ...) {
   pp <- gsub("knnImpute", paste(x$k, "nearest neighbor imputation"), pp)
   pp <- gsub("bagImpute", "bagged tree imputation", pp)  
   pp <- gsub("medianImpute", "median imputation", pp)    
-  pp <- gsub("range", paste0("re-scaling to [", x$rangeBounds[1], ", ", x$rangeBounds[2],"]"), pp)
+
+  rangeBounds <- getRangeBounds(x)
+  pp <- gsub("range", paste0("re-scaling to [", rangeBounds$lower, ", ", rangeBounds$upper, "]"), pp)
+
   pp <- gsub("remove", "removed", pp)  
   pp <- gsub("ignore", "ignored", pp)  
   
