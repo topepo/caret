@@ -140,7 +140,8 @@ classes <- c("class1", "class2")
 set.seed(1)
 dat <- data.frame(obs =  factor(sample(classes, 50, replace = TRUE)),
                   pred = factor(sample(classes, 50, replace = TRUE)),
-                  class1 = runif(50), class2 = runif(50))
+                  class1 = runif(50))
+dat$class2 <- 1 - dat$class1            
 
 defaultSummary(dat, lev = classes)
 twoClassSummary(dat, lev = classes)
