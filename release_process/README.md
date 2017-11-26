@@ -16,5 +16,6 @@ Pre-Release Work
  0. Run `R CMD check --as-cran` 
  0. Run `html/makeHTML.R` to make new HTML files for github
  0. Send to CRAN with associated email with subject `CRAN submission caret XXXXXX`. Sacrifice a virgin chicken to ensure that there are no issues. 
+ 1. Once accepted, use `git tag -a` to mark the release. 
 
  
