@@ -38,3 +38,18 @@ test_that("high level tests", {
   expect_true(all(dim(i4) == dim(iris[1:4])))
 
 })
+
+
+test_that("missing data", {
+  
+  iris[c(1, 51, 101), 1] <- NA
+  
+  i5 <- spatialSign(iris[,1:4])
+  
+  exp_res <- iris[,1:4] / 
+    apply(iris[,1:4], 1, function(x) sqrt(sum(x^2, na.rm = TRUE)))
+  
+  expect_equivalent(i5, as.matrix(exp_res))
+  
+})
+

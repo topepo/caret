@@ -5,21 +5,37 @@
 \alias{spatialSign.default}
 \alias{spatialSign.matrix}
 \alias{spatialSign.data.frame}
+\alias{spatialSign.default}
+\alias{spatialSign.matrix}
+\alias{spatialSign.data.frame}
 \title{Compute the multivariate spatial sign}
 \usage{
-spatialSign(x)
+spatialSign(x, ...)
+
+\method{spatialSign}{default}(x, na.rm = TRUE, ...)
+
+\method{spatialSign}{matrix}(x, na.rm = TRUE, ...)
+
+\method{spatialSign}{data.frame}(x, na.rm = TRUE, ...)
 }
 \arguments{
-\item{x}{an object full of numeric data (which should probably be scaled).
-Factors are not allowed. This could be a vector, matrix or data frame.}
+\item{x}{an object full of numeric data (which should probably
+be scaled). Factors are not allowed. This could be a vector,
+matrix or data frame.}
+
+\item{...}{Not currently used.}
+
+\item{na.rm}{A logical; should missing data be removed when
+computing the norm of the vector?}
 }
 \value{
-A vector, matrix or data frame with the same dim names of the
-original data.
+A vector, matrix or data frame with the same dim names
+ of the original data.
 }
 \description{
-Compute the spatial sign (a projection of a data vector to a unit length
-circle). The spatial sign of a vector \code{w} is \code{w /norm(w)}.
+Compute the spatial sign (a projection of a data vector to a
+ unit length circle). The spatial sign of a vector \code{w} is
+ \code{w /norm(w)}.
 }
 \examples{
 
@@ -38,9 +54,9 @@ featurePlot(spatialSign(scale(iris[,-5])), iris[,5], "pairs")
 
 }
 \references{
-Serneels et al. Spatial sign preprocessing: a simple way to
-impart moderate robustness to multivariate estimators. J. Chem. Inf. Model
-(2006) vol. 46 (3) pp. 1402-1409
+Serneels et al. Spatial sign preprocessing: a
+ simple way to impart moderate robustness to multivariate
+ estimators. J. Chem. Inf. Model (2006) vol. 46 (3) pp. 1402-1409
 }
 \author{
 Max Kuhn

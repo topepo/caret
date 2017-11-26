@@ -17,6 +17,7 @@
     \item Waleed Muhanna found and fixed a bug in \code{twoClassSim} when irrelevant variables were generated. \issue{744}.
     \item \code{hadjipantelis} added the DART model (aka "Dropouts meet Multiple Additive Regression Trees") with the model code \code{xgbDART } \issue{742}.
     \item Vadim Khotilovich updated \code{predict.dummyVars} to run faster with large datasets with many factors \issue{727}.
+    \item \code{spatialSign} now has the option of removing missing data prior to computing the norm \issue{789}.
     }
 }
 
