@@ -7,6 +7,7 @@ modelInfo <- list(label = "Bagged MARS using gCV Pruning",
                   grid = function(x, y, len = NULL, search = "grid")  data.frame(degree = 1),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
+                  	require(earth)
                     if(is.factor(y)){
                       mod <- caret::bagEarth(x, y, degree = param$degree, 
                                              glm = list(family=binomial, maxit=100),
@@ -52,5 +53,9 @@ modelInfo <- list(label = "Bagged MARS using gCV Pruning",
                   levels = function(x) x$levels,
                   tags = c("Multivariate Adaptive Regression Splines", "Ensemble Model", 
                            "Implicit Feature Selection", "Bagging", "Accepts Case Weights"),
+                  notes = paste(
+                    "Unlike other packages used by `train`, the `earth`",
+                    "package is fully loaded when this model is used."
+                  ),                  
                   sort = function(x) x[order(x$degree),],
                   oob = function(x) apply(x$oob, 2, function(x) quantile(x, probs = .5)))

@@ -1,12 +1,9 @@
-
 \name{train_model_list}
 \alias{train_model_list}
 \alias{models}
 \title{A List of Available Models in train}
 \description{These models are included in the package via wrappers for \code{\link{train}}. Custom models can also be created. See the URL below.
 
-
-> tt <- lapply(mods, print_models)
 \strong{AdaBoost Classification Trees} (\code{method = 'adaboost'})
 
 For classification using package \pkg{fastAdaboost} with tuning parameters:
@@ -73,6 +70,7 @@ For classification using package \pkg{earth} with tuning parameters:
 \item Product Degree (\code{degree}, numeric)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{earth} package is fully loaded when this model is used. 
 
 \strong{Bagged Flexible Discriminant Analysis} (\code{method = 'bagFDA'})
 
@@ -82,6 +80,7 @@ For classification using packages \pkg{earth} and \pkg{mda} with tuning paramete
 \item Number of Terms (\code{nprune}, numeric)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{earth} package is fully loaded when this model is used. 
 
 \strong{Bagged Logic Regression} (\code{method = 'logicBag'})
 
@@ -101,6 +100,7 @@ For classification and regression using package \pkg{earth} with tuning paramete
 \item Product Degree (\code{degree}, numeric)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{earth} package is fully loaded when this model is used. 
 
 \strong{Bagged MARS using gCV Pruning} (\code{method = 'bagEarthGCV'})
 
@@ -109,6 +109,7 @@ For classification and regression using package \pkg{earth} with tuning paramete
 \item Product Degree (\code{degree}, numeric)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{earth} package is fully loaded when this model is used. 
 
 \strong{Bagged Model} (\code{method = 'bag'})
 
@@ -506,6 +507,7 @@ For classification using packages \pkg{earth} and \pkg{mda} with tuning paramete
 \item Number of Terms (\code{nprune}, numeric)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{earth} package is fully loaded when this model is used. 
 
 \strong{Fuzzy Inference Rules by Descent Method} (\code{method = 'FIR.DM'})
 
@@ -1155,6 +1157,7 @@ For classification and regression using package \pkg{earth} with tuning paramete
 \item Product Degree (\code{degree}, numeric)
 }
 
+Note: Unlike other packages used by \code{train}, the \code{earth} package is fully loaded when this model is used. 
 
 \strong{Naive Bayes} (\code{method = 'naive_bayes'})
 
@@ -2146,6 +2149,7 @@ For classification using package \pkg{wsrf} with tuning parameters:
 \item Number of Randomly Selected Predictors (\code{mtry}, numeric)
 }
 
-\references{``Using your own model in \code{\link{train}}'' (\url{https://topepo.github.io/caret/using-your-own-model-in-train.html})}
 
+}
+\references{``Using your own model in \code{\link{train}}'' (\url{https://topepo.github.io/caret/using-your-own-model-in-train.html})}
 \keyword{models}

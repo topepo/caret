@@ -9,6 +9,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Splines",
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
+                  	require(earth)
                     theDots <- list(...)
                     theDots$keepxy <- TRUE 
                     
@@ -82,4 +83,8 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Splines",
                   levels = function(x) x$levels,
                   tags = c("Multivariate Adaptive Regression Splines", "Implicit Feature Selection", 
                            "Accepts Case Weights"),
+                  notes = paste(
+                    "Unlike other packages used by `train`, the `earth`",
+                    "package is fully loaded when this model is used."
+                  ),                  
                   sort = function(x) x[order(x$degree),])

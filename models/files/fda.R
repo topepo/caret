@@ -23,6 +23,7 @@ modelInfo <- list(label = "Flexible Discriminant Analysis",
                     out[!duplicated(out),]
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                  	require(earth)
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
 
@@ -35,6 +36,10 @@ modelInfo <- list(label = "Flexible Discriminant Analysis",
                   levels = function(x) x$obsLevels,
                   tags = c("Multivariate Adaptive Regression Splines", "Implicit Feature Selection",
                            "Accepts Case Weights"),
+                  notes = paste(
+                    "Unlike other packages used by `train`, the `earth`",
+                    "package is fully loaded when this model is used."
+                  ),                  
                   predict = function(modelFit, newdata, submodels = NULL)
                     predict(modelFit , newdata),
                   prob = function(modelFit, newdata, submodels = NULL)

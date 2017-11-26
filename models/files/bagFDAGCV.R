@@ -7,6 +7,7 @@ modelInfo <- list(label = "Bagged FDA using gCV Pruning",
                   grid = function(x, y, len = NULL, search = "grid")  data.frame(degree = 1),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                  	require(earth)
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     caret::bagFDA(.outcome ~ ., 
@@ -42,5 +43,9 @@ modelInfo <- list(label = "Bagged FDA using gCV Pruning",
                   levels = function(x) x$levels,
                   tags = c("Multivariate Adaptive Regression Splines", "Ensemble Model", 
                            "Implicit Feature Selection", "Bagging", "Accepts Case Weights"),
+                  notes = paste(
+                    "Unlike other packages used by `train`, the `earth`",
+                    "package is fully loaded when this model is used."
+                  ),                  
                   sort = function(x) x[order(x$degree),],
                   oob = function(x) apply(x$oob, 2, function(x) quantile(x, probs = .5)))

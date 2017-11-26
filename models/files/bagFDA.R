@@ -23,6 +23,7 @@ modelInfo <- list(label = "Bagged Flexible Discriminant Analysis",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                  	require(earth)
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
                     bagFDA(.outcome ~ ., 
@@ -56,6 +57,10 @@ modelInfo <- list(label = "Bagged Flexible Discriminant Analysis",
                     rownames(out) <- names(meanImp)
                     out
                   },
+                  notes = paste(
+                    "Unlike other packages used by `train`, the `earth`",
+                    "package is fully loaded when this model is used."
+                  ),                  
                   levels = function(x) x$levels,
                   sort = function(x) x[order(x$degree, x$nprune),],
                   oob = function(x) apply(x$oob, 2, function(x) quantile(x, probs = .5)))

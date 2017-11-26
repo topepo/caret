@@ -36,6 +36,7 @@ modelInfo <- list(label = "Bagged MARS",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
+                  	require(earth)
                     theDots <- list(...)
                     theDots$keepxy <- TRUE 
                     
@@ -117,5 +118,9 @@ modelInfo <- list(label = "Bagged MARS",
                   levels = function(x) x$levels,
                   tags = c("Multivariate Adaptive Regression Splines", "Ensemble Model", 
                            "Implicit Feature Selection", "Bagging", "Accepts Case Weights"),
+                  notes = paste(
+                    "Unlike other packages used by `train`, the `earth`",
+                    "package is fully loaded when this model is used."
+                  ),                  
                   sort = function(x) x[order(x$degree, x$nprune),],
                   oob = function(x) apply(x$oob, 2, function(x) quantile(x, probs = .5)))
