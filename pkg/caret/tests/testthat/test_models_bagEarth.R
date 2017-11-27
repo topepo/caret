@@ -35,7 +35,7 @@ test_that('bagEarth simple classification', {
     expect_equal(length(pred_class), 1000)
 
     pred_prob <- predict(fit, newdata=data, type="prob")
-    expect_is(pred_prob, "matrix")
+    expect_is(pred_prob, "data.frame")
     expect_equal(ncol(pred_prob), 2)
     expect_equal(nrow(pred_prob), 1000)
     expect_true(0 <= min(pred_prob))

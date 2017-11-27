@@ -47,8 +47,9 @@
 #' library(mda)
 #' library(earth)
 #' data(trees)
-#' fit1 <- earth(trees[,-3], trees[,3])
-#' fit2 <- bagEarth(trees[,-3], trees[,3], B = 10)
+#' fit1 <- earth(x = trees[,-3], y = trees[,3])
+#' set.seed(2189)
+#' fit2 <- bagEarth(x = trees[,-3], y = trees[,3], B = 10)
 #' }
 #'
 #' @keywords regression
@@ -63,70 +64,101 @@
 #' @importFrom stats predict
 #' @export
 "bagEarth.default" <-
-  function(x, y, weights = NULL, B = 50, summary = mean, keepX = TRUE, ...)
-{
-  requireNamespaceQuietStop("earth")
-  funcCall <- match.call(expand.dots = TRUE)
-  if(!is.matrix(x)) x <- as.matrix(x)
-  if(!is.factor(y))
-    {
-      if(!is.vector(y)) y <- as.vector(y)
-      if(!is.vector(y)) y <- y[,1]
+  function(x,
+           y,
+           weights = NULL,
+           B = 50,
+           summary = mean,
+           keepX = TRUE,
+           ...) {
+    requireNamespaceQuietStop("earth")
+    if (!isNamespaceLoaded("earth"))
+      attachNamespace("earth")
+    funcCall <- match.call(expand.dots = TRUE)
+    if (!is.matrix(x))
+      x <- as.matrix(x)
+    if (!is.factor(y)) {
+      if (!is.vector(y))
+        y <- as.vector(y)
+      if (!is.vector(y))
+        y <- y[, 1]
     }
-  if(is.null(weights)) weights <- rep(1, dim(x)[1])
-
-  if(is.factor(y))
-    {
+    if (is.null(weights))
+      weights <- rep(1, dim(x)[1])
+    
+    if (is.factor(y)) {
       lev <- levels(y)
       theDots <- list(...)
-      if(all(names(theDots) != "glm")) stop("must declare a binomal glm using the glm argument to earth")
-      #if(theDots$glm$family$family != "binomial") stop("must use binomial glm for factors")
+      if (all(names(theDots) != "glm"))
+        stop("must declare a binomal glm using the glm argument to earth")
     } else {
       lev <- NA
     }
-
-  foo <- function(index, x, y, w, ...)
-    {
-      subX <- x[index,, drop = FALSE]
+    
+    foo <- function(index, x, y, w, ...) {
+      subX <- x[index, , drop = FALSE]
       subY <- y[index]
-
-      if(is.null(w)) {
+      
+      if (is.null(w)) {
         fit <- earth::earth(x = subX, y = subY, ...)
       } else {
         subW <- weights[index]
-        fit <- earth::earth(x = subX, y = subY, weights = subW, ...)
+        fit <- earth::earth(x = subX,
+                            y = subY,
+                            weights = subW,
+                            ...)
       }
       fit$index <- index
       fit
     }
-
-  oobFoo <- function(fit, x, y, lev)
-    {
+    
+    oobFoo <- function(fit, x, y, lev) {
       index <- fit$index
-      subX <- x[-index,, drop = FALSE]
+      subX <- x[-index, , drop = FALSE]
       subY <- y[-index]
-      ## todo
-      predY <- if(is.null(fit$levels)) predict(fit, subX) else predict(fit, subX, type = "class")
+      predY <-
+        if (is.null(fit$levels))
+          predict(fit, subX)
+      else
+        predict(fit, subX, type = "class")
       postResample(predY, subY)
     }
-
-  btSamples <- createResample(y, times = B)
-  btFits <- lapply(btSamples, foo, x = x, y = y, w = weights, ...)
-  oobList <- lapply(btFits, oobFoo, x = x, y = y, lev = lev)
-  oob <- matrix(unlist(oobList), ncol = length(oobList[[1]]), byrow = TRUE)
-  colnames(oob) <- names(oobList[[1]])
-  if(keepX) x <- x else x <- NULL
-  structure(
-            list(fit = btFits,
-                 B = B,
-                 oob = oob,
-                 summary = summary,
-                 call = funcCall,
-                 levels = lev,
-                 x = x,
-                 weights = !is.null(weights)),
-            class = "bagEarth")
-}
+    
+    btSamples <- createResample(y, times = B)
+    btFits <- lapply(btSamples,
+                     foo,
+                     x = x,
+                     y = y,
+                     w = weights,
+                     ...)
+    oobList <- lapply(btFits,
+                      oobFoo,
+                      x = x,
+                      y = y,
+                      lev = lev)
+    oob <-
+      matrix(unlist(oobList),
+             ncol = length(oobList[[1]]),
+             byrow = TRUE)
+    colnames(oob) <- names(oobList[[1]])
+    if (keepX)
+      x <- x
+    else
+      x <- NULL
+    structure(
+      list(
+        fit = btFits,
+        B = B,
+        oob = oob,
+        summary = summary,
+        call = funcCall,
+        levels = lev,
+        x = x,
+        weights = !is.null(weights)
+      ),
+      class = "bagEarth"
+    )
+  }
 
 #' @rdname bagEarth
 #' @method bagEarth formula
@@ -182,7 +214,8 @@
 #' \code{\link[mda]{fda}} models, \code{type = "class"} generates a factor
 #' vector and \code{type = "probs"} outputs a matrix of class probabilities.
 #' @param \dots not used
-#' @return a vector of predictions
+#' @return a vector of predictions (for regression or \code{type = "class"})
+#'  or a data frame of class probabilities. 
 #' @note If the predictions for the original training set are needed, there are
 #' two ways to calculate them. First, the original data set can be predicted by
 #' each bagged earth model. Secondly, the predictions from each bootstrap
@@ -199,79 +232,72 @@
 #' \dontrun{
 #' data(trees)
 #' ## out of bag predictions vs just re-predicting the training set
+#' set.seed(655)
 #' fit1 <- bagEarth(Volume ~ ., data = trees, keepX = TRUE)
+#' set.seed(655)
 #' fit2 <- bagEarth(Volume ~ ., data = trees, keepX = FALSE)
 #' hist(predict(fit1) - predict(fit2))
 #' }
 #'
 #' @export predict.bagEarth
 "predict.bagEarth" <-
-  function(object, newdata = NULL, type = "response", ...)
-{
-  if(!any(type %in% c("response", "class", "prob")))
-    stop("type must be either response, class or prob")
-  requireNamespaceQuietStop("earth")
-  ## get oob predictions
-  getTrainPred <- function(x)
-    {
+  function(object,
+           newdata = NULL,
+           type = "response",
+           ...) {
+    if (!any(type %in% c("response", "class", "prob")))
+      stop("type must be either response, class or prob", 
+           call. = FALSE)
+    requireNamespaceQuietStop("earth")
+    ## get oob predictions
+    getTrainPred <- function(x) {
       oobIndex <- seq(along = x$fitted.values)
       oobIndex <- oobIndex[!(oobIndex %in% unique(x$index))]
       data.frame(pred = x$fitted.values[oobIndex],
                  sample = oobIndex)
     }
-
-  if(is.null(newdata) & !is.null(object$x)) newdata <- object$x
-
-  if(is.null(newdata))
-    {
+    
+    if (is.null(newdata) & !is.null(object$x))
+      newdata <- object$x
+    
+    if (is.null(newdata)) {
       pred <- lapply(object$fit, getTrainPred)
       pred <- rbind.fill(pred)
-      out <- ddply(pred, .(sample), function(x) object$summary(x$pred))$V1
+      out <-
+        ddply(pred, .(sample), function(x)
+          object$summary(x$pred))$V1
     } else {
-
       pred <- lapply(object$fit,
-                     function(x, y)
-                     {
-                       if(is.null(x$glm.list)) predict(x, newdata = y) else predict(x, newdata = y, type = "response")
+                     function(x, y) {
+                       if (is.null(x$glm.list))
+                         predict(x, newdata = y)
+                       else
+                         predict(x, newdata = y, type = "response")
                      },
-                     y = newdata
-                     )
-      out <- matrix(unlist(pred), ncol = object$B)
-      out <- apply(out, 1, object$summary, na.rm = TRUE)
+                     y = newdata)
+      out <- aggregate_pred(pred, object$levels, object$summary)
     }
-
-
-  if(!all(is.na(object$levels)))
-    {
-      if(type == "prob")
-        {
-          out <- cbind(1 - out, out)
-          colnames(out) <- object$levels
-        } else {
-          if(type == "class")
-            {
-              out <- factor(ifelse(out > .5,
-                                   object$levels[2],
-                                   object$levels[1]),
-                            levels = object$levels)
-            }
-        }
-    }
-  out
-
-}
+    
+    if (type == "class")
+      out <- object$levels[apply(out, 1, which.max)]
+    out
+  }
 
 #' @rdname bagEarth
 #' @export
-print.bagEarth <- function (x, ...)
-{
+print.bagEarth <- function (x, ...) {
   cat("\nCall:\n", deparse(x$call), "\n\n", sep = "")
-  if(!is.null(x$x))cat("Data:\n   # variables:\t", dim(x$x)[2], "\n   # samples:\t", dim(x$x)[1], "\n")
-  if(x$weights) cat("case weights used\n")
-  cat("\nB:", x$B,"\n")
+  if (!is.null(x$x))
+    cat("Data:\n   # variables:\t",
+        dim(x$x)[2],
+        "\n   # samples:\t",
+        dim(x$x)[1],
+        "\n")
+  if (x$weights)
+    cat("case weights used\n")
+  cat("\nB:", x$B, "\n")
   invisible(x)
 }
-
 
 
 
@@ -297,6 +323,7 @@ print.bagEarth <- function (x, ...)
 #'
 #' \dontrun{
 #' data(trees)
+#' set.seed(9655)
 #' fit <- bagEarth(trees[,-3], trees[3])
 #' summary(fit)
 #' }
@@ -304,8 +331,7 @@ print.bagEarth <- function (x, ...)
 #' @method summary bagEarth
 #' @export summary.bagEarth
 "summary.bagEarth" <-
-  function(object, ...)
-{
+  function(object, ...) {
   requireNamespaceQuietStop("earth")
   oobStat <- apply(object$oob, 2, function(x) quantile(x, probs = c(0, 0.025, .25, .5, .75, .975, 1)))
 
@@ -315,7 +341,7 @@ print.bagEarth <- function (x, ...)
                           function(x) {
                           imp <- rownames(earth::evimp(x, trim = FALSE))
                           imp <- imp[!grepl("-unused", imp)]
-                          imp
+                          length(imp)
                           }))
   modelInfo <- cbind(numTerms, numVar)
   colnames(modelInfo) <- c("Num Terms", "Num Variables")
@@ -327,15 +353,37 @@ print.bagEarth <- function (x, ...)
 #' @importFrom stats quantile
 #' @export
 "print.summary.bagEarth" <-
-  function(x, digits = max(3, getOption("digits") - 3), ...)
-{
-  cat("\nCall:\n", deparse(x$bagEarthCall), "\n\n", sep = "")
+  function(x, digits = max(3, getOption("digits") - 3), ...) {
+    cat("\nCall:\n", deparse(x$bagEarthCall), "\n\n", sep = "")
+    
+    oobStat <-
+      apply(x$oob, 2, function(x)
+        quantile(x, probs = c(0, 0.025, .5, .975, 1)))
+    cat("Out of bag statistics:\n\n")
+    print(x$oobStat, digits = digits)
+    cat("\nModel Selection Statistics:\n\n")
+    print(summary(x$modelInfo))
+    cat("\n")
+  }
 
-  oobStat <- apply(x$oob, 2, function(x) quantile(x, probs = c(0, 0.025, .5, .975, 1)))
-  cat("Out of bag statistics:\n\n")
-  print(x$oobStat, digits = digits)
-  cat("\nModel Selection Statistics:\n\n")
-  print(summary(x$modelInfo))
-  cat("\n")
+# Go from a list of predictions (of various forms) to a summarized
+# vector or matrix depending on prediction type
+aggregate_pred <- function(x, lvl, summ) {
+  # classification first
+  if(!all(is.na(lvl))) {
+    if(length(lvl) == 2) {
+      x <- lapply(x, function(x) cbind(x, 1 - x))
+    }
+    x <- simplify2array(x)
+    colnames(x) <- lvl
+    out <- apply(x, c(1,2), summ)
+    out <- t(apply(out, 1, function(x) x/sum(x)))
+    out <- as.data.frame(out)
+  } else {
+    # regression
+    out <- matrix(unlist(x), ncol = length(x))
+    out <- apply(out, 1, summ, na.rm = TRUE)
+    out <- as.vector(out)
+  }
+  out
 }
-

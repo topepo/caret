@@ -31,7 +31,8 @@ vector and \code{type = "probs"} outputs a matrix of class probabilities.}
 \item{\dots}{not used}
 }
 \value{
-a vector of predictions
+a vector of predictions (for regression or \code{type = "class"})
+ or a data frame of class probabilities.
 }
 \description{
 Predicted values based on bagged Earth and FDA models
@@ -49,7 +50,9 @@ method is used, otherwise the values are calculated via the second method.
 \dontrun{
 data(trees)
 ## out of bag predictions vs just re-predicting the training set
+set.seed(655)
 fit1 <- bagEarth(Volume ~ ., data = trees, keepX = TRUE)
+set.seed(655)
 fit2 <- bagEarth(Volume ~ ., data = trees, keepX = FALSE)
 hist(predict(fit1) - predict(fit2))
 }

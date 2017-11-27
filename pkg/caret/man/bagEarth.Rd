@@ -71,8 +71,9 @@ The function computes a Earth model for each bootstap sample.
 library(mda)
 library(earth)
 data(trees)
-fit1 <- earth(trees[,-3], trees[,3])
-fit2 <- bagEarth(trees[,-3], trees[,3], B = 10)
+fit1 <- earth(x = trees[,-3], y = trees[,3])
+set.seed(2189)
+fit2 <- bagEarth(x = trees[,-3], y = trees[,3], B = 10)
 }
 
 }
