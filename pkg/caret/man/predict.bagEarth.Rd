@@ -31,8 +31,11 @@ vector and \code{type = "probs"} outputs a matrix of class probabilities.}
 \item{\dots}{not used}
 }
 \value{
-a vector of predictions (for regression or \code{type = "class"})
- or a data frame of class probabilities.
+A vector of predictions (for regression or \code{type = "class"})
+ or a data frame of class probabilities. By default, when the model 
+ predicts a number, a vector of numeric predictions is returned. When
+ a classification model is used, the default prediction is a factor vector
+ of classes.
 }
 \description{
 Predicted values based on bagged Earth and FDA models

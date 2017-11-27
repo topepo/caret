@@ -214,8 +214,11 @@
 #' \code{\link[mda]{fda}} models, \code{type = "class"} generates a factor
 #' vector and \code{type = "probs"} outputs a matrix of class probabilities.
 #' @param \dots not used
-#' @return a vector of predictions (for regression or \code{type = "class"})
-#'  or a data frame of class probabilities. 
+#' @return A vector of predictions (for regression or \code{type = "class"})
+#'  or a data frame of class probabilities. By default, when the model 
+#'  predicts a number, a vector of numeric predictions is returned. When
+#'  a classification model is used, the default prediction is a factor vector
+#'  of classes. 
 #' @note If the predictions for the original training set are needed, there are
 #' two ways to calculate them. First, the original data set can be predicted by
 #' each bagged earth model. Secondly, the predictions from each bootstrap
