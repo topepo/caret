@@ -74,9 +74,10 @@ trainData <- Glass[ inTrain, ]
 testData  <- Glass[-inTrain, ]
 
 
+set.seed(3577)
 baggedFit <- bagFDA(Type ~ ., trainData)
-confusionMatrix(predict(baggedFit, testData[, -10]),
-                testData[, 10])
+confusionMatrix(data = predict(baggedFit, testData[, -10]),
+                reference = testData[, 10])
 
 }
 \references{
