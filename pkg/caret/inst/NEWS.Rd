@@ -18,6 +18,7 @@
     \item \code{hadjipantelis} added the DART model (aka "Dropouts meet Multiple Additive Regression Trees") with the model code \code{xgbDART } \issue{742}.
     \item Vadim Khotilovich updated \code{predict.dummyVars} to run faster with large datasets with many factors \issue{727}.
     \item \code{spatialSign} now has the option of removing missing data prior to computing the norm \issue{789}.
+    \item The various \cpkg{earth} models have been updated to work with recent versions of that package, including multi-class \code{glm} models \issue{779}.
     }
 }
 
