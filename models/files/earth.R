@@ -80,8 +80,14 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     out <- earth:::predict.earth(modelFit, newdata, type= "response")
-                    out <- cbind(1-out, out)
-                    colnames(out) <- modelFit$obsLevels
+                    if (ncol(out) > 1) {
+                      out <- t(apply(out, 1, function(x) x / sum(x)))
+                    } else {
+                      out <- cbind(1 - out[, 1], out[, 1])
+                      colnames(out) <- modelFit$obsLevels
+                    }
+                    out <- as.data.frame(out)
+                    
                     if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
@@ -89,8 +95,13 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                       for(j in seq(along = submodels$nprune)) {
                         prunedFit <- earth:::update.earth(modelFit, nprune = submodels$nprune[j])
                         tmp2 <- earth:::predict.earth(prunedFit, newdata, type= "response")
-                        tmp2 <- cbind(1-tmp2, tmp2)
-                        colnames(tmp2) <- modelFit$obsLevels
+                        if (ncol(tmp2) > 1) {
+                          tmp2 <- t(apply(tmp2, 1, function(x) x / sum(x)))
+                        } else {
+                          tmp2 <- cbind(1 - tmp2[, 1], tmp2[, 1])
+                          colnames(tmp2) <- modelFit$obsLevels
+                        }
+                        tmp2 <- as.data.frame(tmp2)
                         tmp[[j+1]] <- tmp2
                       }
                       out <- tmp

@@ -80,18 +80,14 @@ modelInfo <- list(label = "Bagged MARS",
                     out            
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- predict(modelFit, newdata, type= "response")
-                    out <- cbind(1-out, out)
-                    colnames(out) <-  modelFit$obsLevels
+                    out <- predict(modelFit, newdata, type= "prob")
                     if(!is.null(submodels))  {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
                       
                       for(j in seq(along = submodels$nprune))  {
                         prunedFit <- update(modelFit, nprune = submodels$nprune[j])
-                        tmp2 <- predict(prunedFit, newdata, type= "response")
-                        tmp2 <- cbind(1-tmp2, tmp2)
-                        colnames(tmp2) <-  modelFit$obsLevels
+                        tmp2 <- predict(prunedFit, newdata, type= "prob")
                         tmp[[j+1]] <- tmp2
                       }
                       out <- tmp

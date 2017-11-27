@@ -38,7 +38,9 @@ cctrl4 <- trainControl(method = "none",
                        classProbs = TRUE, summaryFunction = twoClassSummary,
                        seeds= seeds)
 cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
-
+cctrl5 <- trainControl(method = "cv",
+                       classProbs = TRUE, summaryFunction = multiClassSummary,
+                       seeds= seeds)
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
@@ -122,6 +124,20 @@ test_class_imp_rec <- varImp(test_class_rec)
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
                                type = "prob")
+
+
+set.seed(849)
+test_3class_cv_model <- train(iris[, 1:4], iris$Species, 
+                              method = "bagEarthGCV", 
+                              trControl = cctrl5,
+                              tuneGrid = data.frame(degree = 1:2),
+                              metric = "ROC", 
+                              preProc = c("center", "scale"),
+                              B = 10)
+
+test_3class_pred <- predict(test_3class_cv_model, iris[1:5, 1:4])
+test_3class_prob <- predict(test_3class_cv_model, iris[1:5, 1:4], 
+                            type = "prob")
 
 #########################################################################
 
@@ -232,6 +248,7 @@ test_reg_predictors1 <- predictors(test_reg_cv_model)
 
 test_class_imp <- varImp(test_class_cv_model)
 test_reg_imp <- varImp(test_reg_cv_model)
+test_3class_imp <- varImp(test_3class_cv_model)
 
 #########################################################################
 

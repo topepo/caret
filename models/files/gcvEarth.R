@@ -36,10 +36,14 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Splines",
                     as.vector(out)            
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- predict(modelFit, newdata, type= "response")
-                    out <- cbind(1-out, out)
-                    colnames(out) <-  modelFit$obsLevels
-                    out
+                    out <- earth:::predict.earth(modelFit, newdata, type= "response")
+                    if (ncol(out) > 1) {
+                      out <- t(apply(out, 1, function(x) x / sum(x)))
+                    } else {
+                      out <- cbind(1 - out[, 1], out[, 1])
+                      colnames(out) <- modelFit$obsLevels
+                    }
+                    as.data.frame(out)
                   },
                   predictors = function(x, ...) {
                     vi <- varImp(x)

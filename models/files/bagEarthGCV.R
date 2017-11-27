@@ -28,10 +28,7 @@ modelInfo <- list(label = "Bagged MARS using gCV Pruning",
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- predict(modelFit, newdata, type= "response")
-                    out <- cbind(1-out, out)
-                    colnames(out) <-  modelFit$obsLevels
-                    out
+                    predict(modelFit, newdata, type= "prob")
                   },
                   predictors = function(x, ...) {
                     predEarth <- function(x) {

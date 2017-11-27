@@ -6,8 +6,6 @@ library(dplyr)
 
 model <- "earth"
 
-
-
 #########################################################################
 
 set.seed(2)
@@ -20,12 +18,12 @@ rec_cls <- recipe(Class ~ ., data = training) %>%
   step_center(all_predictors()) %>%
   step_scale(all_predictors())
 
-cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
+cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all", classProbs = TRUE)
 cctrl2 <- trainControl(method = "LOOCV")
 cctrl3 <- trainControl(method = "none")
 cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
-egrid <- data.frame(.degree = 1, .nprune = (2:4)*2)
+egrid <- data.frame(degree = 1, nprune = (2:4)*2)
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
@@ -113,6 +111,19 @@ test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
   cat("wrong levels")
+
+
+set.seed(849)
+test_3class_cv_model <- train(iris[, 1:4], iris$Species, 
+                              method = "earth", 
+                              trControl = cctrl1,
+                              tuneGrid = data.frame(degree = 1,
+                                                    nprune = 2:4),
+                              preProc = c("center", "scale"))
+
+test_3class_pred <- predict(test_3class_cv_model, iris[1:5, 1:4])
+test_3class_prob <- predict(test_3class_cv_model, iris[1:5, 1:4], 
+                            type = "prob")
 
 #########################################################################
 
@@ -265,6 +276,7 @@ test_reg_predictors1 <- predictors(test_reg_cv_model)
 
 test_class_imp <- varImp(test_class_cv_model)
 test_reg_imp <- varImp(test_reg_cv_model)
+test_3class_imp <- varImp(test_3class_cv_model)
 
 #########################################################################
 

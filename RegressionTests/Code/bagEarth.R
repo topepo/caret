@@ -38,14 +38,16 @@ cctrl4 <- trainControl(method = "none",
                        classProbs = TRUE, summaryFunction = twoClassSummary,
                        seeds= seeds)
 cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
-
+cctrl5 <- trainControl(method = "cv",
+                       classProbs = TRUE, summaryFunction = multiClassSummary,
+                       seeds= seeds)
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
                              method = "bagEarth", 
                              trControl = cctrl1,
-                             tuneGrid = data.frame(.degree = 1,
-                                                   .nprune = 2:4),
+                             tuneGrid = data.frame(degree = 1,
+                                                   nprune = 2:4),
                              metric = "ROC", 
                              preProc = c("center", "scale"),
                              B = 10)
@@ -54,8 +56,8 @@ set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
                             method = "bagEarth", 
                             trControl = cctrl1,
-                            tuneGrid = data.frame(.degree = 1,
-                                                  .nprune = 2:4),
+                            tuneGrid = data.frame(degree = 1,
+                                                  nprune = 2:4),
                             metric = "ROC", 
                             preProc = c("center", "scale"),
                             B = 10)
@@ -76,8 +78,8 @@ set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 
                               method = "bagEarth", 
                               trControl = cctrl2,
-                              tuneGrid = data.frame(.degree = 1,
-                                                    .nprune = 2:4),
+                              tuneGrid = data.frame(degree = 1,
+                                                    nprune = 2:4),
                               metric = "ROC", 
                               preProc = c("center", "scale"),
                               B = 10)
@@ -88,8 +90,8 @@ if(!all(levels(trainY) %in% test_levels))
 set.seed(849)
 test_class_oob_model <- train(trainX, trainY, 
                               method = "bagEarth",
-                              tuneGrid = data.frame(.degree = 1,
-                                                    .nprune = 2:4), 
+                              tuneGrid = data.frame(degree = 1,
+                                                    nprune = 2:4), 
                               trControl = cctrl3,
                               B = 10)
 
@@ -128,6 +130,20 @@ test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
                                type = "prob")
 
+
+set.seed(849)
+test_3class_cv_model <- train(iris[, 1:4], iris$Species, 
+                              method = "bagEarth", 
+                              trControl = cctrl5,
+                              tuneGrid = data.frame(degree = 1,
+                                                    nprune = 2:4),
+                              metric = "ROC", 
+                              preProc = c("center", "scale"),
+                              B = 10)
+test_3class_pred <- predict(test_3class_cv_model, iris[1:5, 1:4])
+test_3class_prob <- predict(test_3class_cv_model, iris[1:5, 1:4], 
+                            type = "prob")
+
 #########################################################################
 
 library(caret)
@@ -164,8 +180,8 @@ test_reg_cv_model <- train(trainX, trainY,
                            method = "bagEarth", 
                            trControl = rctrl1,
                            preProc = c("center", "scale"),
-                           tuneGrid = data.frame(.degree = 1,
-                                                 .nprune = 2:4),
+                           tuneGrid = data.frame(degree = 1,
+                                                 nprune = 2:4),
                            B = 10)
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
@@ -174,8 +190,8 @@ test_reg_cv_form <- train(y ~ ., data = training,
                           method = "bagEarth", 
                           trControl = rctrl1,
                           preProc = c("center", "scale"),
-                          tuneGrid = data.frame(.degree = 1,
-                                                .nprune = 2:4),
+                          tuneGrid = data.frame(degree = 1,
+                                                nprune = 2:4),
                           B = 10)
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
@@ -190,8 +206,8 @@ test_reg_loo_model <- train(trainX, trainY,
                             method = "bagEarth",
                             trControl = rctrl2,
                             preProc = c("center", "scale"),
-                            tuneGrid = data.frame(.degree = 1,
-                                                  .nprune = 2:4),
+                            tuneGrid = data.frame(degree = 1,
+                                                  nprune = 2:4),
                             B = 10)
 
 set.seed(849)
@@ -199,8 +215,8 @@ test_reg_oob_model <- train(trainX, trainY,
                             method = "bagEarth",
                             trControl = rctrl3,
                             preProc = c("center", "scale"),
-                            tuneGrid = data.frame(.degree = 1,
-                                                  .nprune = 2:4),
+                            tuneGrid = data.frame(degree = 1,
+                                                  nprune = 2:4),
                             B = 10)
 
 set.seed(849)
@@ -217,8 +233,8 @@ test_reg_rec <- train(x = rec_reg,
                       data = training,
                       method = "bagEarth", 
                       trControl = rctrl1,
-                      tuneGrid = data.frame(.degree = 1,
-                                            .nprune = 2:4),
+                      tuneGrid = data.frame(degree = 1,
+                                            nprune = 2:4),
                       B = 10)
 
 if(
@@ -242,6 +258,7 @@ test_reg_predictors1 <- predictors(test_reg_cv_model)
 
 test_class_imp <- varImp(test_class_cv_model)
 test_reg_imp <- varImp(test_reg_cv_model)
+test_3class_imp <- varImp(test_3class_cv_model)
 
 #########################################################################
 
