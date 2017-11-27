@@ -27,6 +27,10 @@ modelInfo <- list(label = "Boosted Tree",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     theDots <- list(...)
                     
+                    if(length(levels(y)) > 2) 
+                      stop("Two-class outcomes only. See ?mboost::Multinomial",
+                           call. = FALSE)
+                    
                     if(any(names(theDots) == "tree_controls")) {
                       theDots$tree_controls$maxdepth <- param$maxdepth 
                       treeCtl <- theDots$tree_controls
