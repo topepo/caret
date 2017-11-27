@@ -243,8 +243,14 @@
 "predict.bagEarth" <-
   function(object,
            newdata = NULL,
-           type = "response",
+           type = NULL,
            ...) {
+    if(is.null(type)) {
+      type <- if (all(is.na(object$levels)))
+        "response"
+      else
+        "class"
+    }
     if (!any(type %in% c("response", "class", "prob")))
       stop("type must be either response, class or prob", 
            call. = FALSE)
@@ -278,8 +284,10 @@
       out <- aggregate_pred(pred, object$levels, object$summary)
     }
     
-    if (type == "class")
+    if (type == "class") {
       out <- object$levels[apply(out, 1, which.max)]
+      out <- factor(out, levels = object$levels)
+    }
     out
   }
 

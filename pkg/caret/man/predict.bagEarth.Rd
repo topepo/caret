@@ -5,7 +5,7 @@
 \alias{predict.bagFDA}
 \title{Predicted values based on bagged Earth and FDA models}
 \usage{
-\method{predict}{bagEarth}(object, newdata = NULL, type = "response", ...)
+\method{predict}{bagEarth}(object, newdata = NULL, type = NULL, ...)
 
 \method{predict}{bagFDA}(object, newdata = NULL, type = "class", ...)
 }
