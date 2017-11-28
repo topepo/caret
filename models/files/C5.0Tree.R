@@ -7,7 +7,7 @@ modelInfo <- list(label = "Single C5.0 Tree",
                                           label = c('none')),
                   grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) 
-                    C50::C5.0(x = x, y = y, weights = wts, ...),
+                    C50:::C5.0.default(x = x, y = y, weights = wts, ...),
                   predict = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit, newdata),
                   prob = function(modelFit, newdata, submodels = NULL) 
@@ -17,7 +17,7 @@ modelInfo <- list(label = "Single C5.0 Tree",
                     rownames(vars)[vars$Overall > 0]
                   },
                   levels = function(x) x$obsLevels,
-                  varImp = function(object, ...) C5imp(object, ...),
+                  varImp = function(object, ...) C50::C5imp(object, ...),
                   tags = c("Tree-Based Model", "Implicit Feature Selection", 
                            "Handle Missing Predictor Data", "Accepts Case Weights"),
                   sort = function(x) x[order(x[,1]),],

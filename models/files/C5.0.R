@@ -39,7 +39,7 @@ modelInfo <- list(label = "C5.0",
                     argList <- list(x = x, y = y, weights = wts, trials = param$trials,
                                     rules = param$model == "rules")
                     argList <- c(argList, theDots)
-                    do.call(C50::C5.0.default, argList)
+                    do.call(C50:::C5.0.default, argList)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, newdata)
@@ -76,7 +76,7 @@ modelInfo <- list(label = "C5.0",
                     vars <- C50::C5imp(x, metric = "splits")
                     rownames(vars)[vars$Overall > 0]
                   },
-                  varImp = function(object, ...) C5imp(object, ...),
+                  varImp = function(object, ...) C50::C5imp(object, ...),
                   tags = c("Tree-Based Model", "Rule-Based Model", "Implicit Feature Selection",
                            "Boosting", "Ensemble Model", "Handle Missing Predictor Data", "Accepts Case Weights"),
                   sort = function(x) {

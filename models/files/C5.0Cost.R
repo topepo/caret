@@ -55,7 +55,7 @@ modelInfo <- list(label = "Cost-Sensitive C5.0",
                     } else argList$costs <- cmat
                     
                     argList <- c(argList, theDots)
-                    do.call(C50::C5.0.default, argList)
+                    do.call(C50:::C5.0.default, argList)
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, newdata)
@@ -77,7 +77,7 @@ modelInfo <- list(label = "Cost-Sensitive C5.0",
                     rownames(vars)[vars$Overall > 0]
                   },
                   levels = function(x) x$obsLevels,
-                  varImp = function(object, ...) C5imp(object, ...),
+                  varImp = function(object, ...) C50::C5imp(object, ...),
                   tags = c("Tree-Based Model", "Rule-Based Model", "Implicit Feature Selection",
                   	       "Boosting", "Ensemble Model", "Cost Sensitive Learning", "Two Class Only", 
                            "Handle Missing Predictor Data", "Accepts Case Weights"),
