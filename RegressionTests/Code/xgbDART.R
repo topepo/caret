@@ -12,7 +12,6 @@ modelX <- "xgbDART"
 
 for(i in getModelInfo(modelX)[[1]]$library)
   do.call("requireNamespace", list(package = i))
-  
 
 #########################################################################
 
@@ -214,8 +213,15 @@ if(
 
 test_reg_imp_rec <- varImp(test_reg_rec)
 
-
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
+
+## Test to catch potential non-repoducibility from predict:
+
+# Repeated predictions to query
+qpreds = sapply(1:25, function(i) predict(test_reg_rec, testing[, -ncol(testing)]) )
+if( !all( apply(qpreds,1, function(x)  all(x == x[1])) ) ){
+  stop("Predict is not giving the same results for every run.")
+}
 
 #########################################################################
 
