@@ -173,6 +173,15 @@ test_that('PCA trans with missing data', {
   expect_equal(pc_obj$rotation[, 1:ncol(pca_dat2_pp$rotation)], pca_dat2_pp$rotation)
 })
 
+
+test_that('issue #825 for pca threshold choice', {
+  skip_on_cran()
+  expect_equal(preProcess(mtcars, method = "pca", thresh = 0.999)$numComp, 
+               11)
+  expect_equal(preProcess(mtcars, method = "pca", thresh = 1)$numComp, 
+               11)
+})
+
 ###################################################################
 ## test ica
 
