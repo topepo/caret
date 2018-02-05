@@ -137,7 +137,7 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
   if(any(is_weight)) {
     if(sum(is_weight) > 1)
       stop("Ony one column can be used as a case weight.")
-    weights <- bake(trained_rec, newdata = dat, has_role("case weight"))
+    weights <- juice(trained_rec, has_role("case weight"))
     weights <- get_vector(weights)
   } else weights <- NULL
 
