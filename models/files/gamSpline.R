@@ -29,12 +29,12 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                     
                     if(length(theDots) > 0) args <- c(args, theDots)
 
-                    do.call(gam::gam, args)
+                    do.call(gam::Gam, args)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     if(modelFit$problemType == "Classification") {
-                      probs <-  gam:::predict.gam(modelFit, newdata, type = "response")
+                      probs <-  gam:::predict.Gam(modelFit, newdata, type = "response")
                       out <- ifelse(probs < .5,
                                     modelFit$obsLevel[1],
                                     modelFit$obsLevel[2])
@@ -45,7 +45,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-                    out <- gam:::predict.gam(modelFit, newdata, type = "response")
+                    out <- gam:::predict.Gam(modelFit, newdata, type = "response")
                     out <- cbind(1-out, out)
                     ## glm models the second factor level, we treat the first as the
                     ## event of interest. See Details in ?glm
@@ -67,7 +67,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                       x <- lapply(x, function(x) x[!(x %in% c("s", "lo", ""))])
                       unlist(lapply(x, function(x) x[1]))
                     }
-                    gamSummary <- gam:::summary.gam(object)
+                    gamSummary <- gam:::summary.Gam(object)
                     smoothed <- gamSummary$anova
                     smoothed <- smoothed[complete.cases(smoothed), grepl("^P", colnames(smoothed)), drop = FALSE] 
                     linear <- gamSummary$parametric.anova
@@ -101,4 +101,13 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                       'package is fully loaded when this model is used.'
                     ),
                   tags = c("Generalized Linear Model", "Generalized Additive Model"),
-                  sort = function(x) x)
+                  sort = function(x) x,
+                  check = function(pkg) {
+                    requireNamespace("gam")
+                    current <- packageDescription("gam")$Version
+                    expected <- "1.15"
+                    if(compareVersion(current, expected) < 0)
+                      stop("This modeling workflow requires kohonen version ",
+                           expected, "or greater.", call. = FALSE)
+                  }
+                  )
