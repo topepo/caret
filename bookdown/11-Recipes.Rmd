@@ -10,7 +10,7 @@ Modeling functions in R let you specific a model using a formula, the `x`/`y` in
 
 Recipes are a third method for specifying model terms but also allow for a broad set of preprocessing options for encoding, manipulating, and transforming data. They cover a lot of techniques that formulas cannot do naturally. 
 
-Recipes can be built incrementally in a way similar to how `dplyr` or `ggplot2` are created The package [website](https://topepo.github.io/recipes/) has examples of how to use the package and lists the possible techniques (called _steps_). A recipe can then be handed to `train` _in lieu_ of a formula. 
+Recipes can be built incrementally in a way similar to how `dplyr` or `ggplot2` are created. The package [website](https://topepo.github.io/recipes/) has examples of how to use the package and lists the possible techniques (called _steps_). A recipe can then be handed to `train` _in lieu_ of a formula. 
 
 ## Why Should you learn this? 
 
