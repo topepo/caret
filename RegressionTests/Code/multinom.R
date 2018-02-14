@@ -38,6 +38,8 @@ cctrl3 <- trainControl(method = "none",
 cctrl4 <- trainControl(method = "cv", number = 3, 
                        summaryFunction = weight_test)
 cctrl5 <- trainControl(method = "LOOCV", summaryFunction = weight_test)
+cctrl6 <- trainControl(method = "LOOCV", classProbs = TRUE, 
+                       summaryFunction = multiClassSummary)
 cctrlR <- trainControl(method = "cv", number = 3, returnResamp = "all", search = "random")
 
 set.seed(849)
@@ -76,6 +78,17 @@ test_class_loo_model <- train(trainX, trainY,
                               metric = "ROC", 
                               preProc = c("center", "scale"),
                               trace = FALSE)
+
+set.seed(849)
+test_class_loo_3class_model <- 
+  train(Species ~ ., 
+        data = iris,
+        method = "multinom", 
+        trControl = cctrl6,
+        metric = "AUC", 
+        preProc = c("center", "scale"),
+        trace = FALSE)
+
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 

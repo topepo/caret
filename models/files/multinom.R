@@ -16,8 +16,7 @@ modelInfo <- list(label = "Penalized Multinomial Regression",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    if(!is.null(wts))
-                    {
+                    if(!is.null(wts)) {
                       out <- nnet::multinom(.outcome ~ .,
                                             data = dat,
                                             weights = wts,                      
@@ -33,18 +32,19 @@ modelInfo <- list(label = "Penalized Multinomial Regression",
                     predict(modelFit, newdata, type="class"),
                   prob = function(modelFit, newdata, submodels = NULL){
                     out <- predict(modelFit, newdata, type = "probs")
-                    if(ncol(as.data.frame(out)) == 1)
-                    {
-                      out <- cbind(out, 1-out)
-                      colnames(out) <-  rev(modelFit$obsLevels)
+                    if(nrow(newdata) == 1) {
+                      out <- as.data.frame(t(out))
+                    }
+                    if(length(modelFit$obsLevels) == 2) {
+                      out <- cbind(1 - out, out)
+                      colnames(out) <-  modelFit$obsLevels
                     }
                     out
                   },
                   predictors = function(x, ...) if(hasTerms(x)) predictors(x$terms) else NA,
                   varImp = function(object, ...) {
                     out <- abs(coef(object))
-                    if(is.vector(out))
-                    {
+                    if(is.vector(out)) {
                       out <- data.frame(Overall = out)
                       rownames(out) <- names(coef(object))
                     } else {
@@ -54,5 +54,7 @@ modelInfo <- list(label = "Penalized Multinomial Regression",
                     subset(out, rownames(out) != "(Intercept)")
                   },
                   levels = function(x) x$obsLevels,
-                  tags = c("Neural Network", "L2 Regularization", "Logistic Regression", "Linear Classifier", "Accepts Case Weights"),
+                  tags = c("Neural Network", "L2 Regularization", 
+                           "Logistic Regression", "Linear Classifier", 
+                           "Accepts Case Weights"),
                   sort = function(x) x[order(-x[,1]),])

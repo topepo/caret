@@ -53,10 +53,20 @@ The following is a basic list of model types or relevant characteristics. There 
 Contents
 
 ```{r, make_contents, echo = FALSE, results = "asis" }
-for(j in seq(along = mods)) mods[[j]]$method_value <- names(mods)[j]
+for(j in seq(along = mods)) 
+  mods[[j]]$method_value <- names(mods)[j]
+
+# Add a tag for class probabilities
+add_tag <- function(x) {
+  if(!is.null(x$prob))
+    x$tags <- c(x$tags, "Supports Class Probabilities")
+  x
+}
+mods <- lapply(mods, add_tag)
 
 tags  <- lapply(mods, function(x) x$tag)
 tags <- lapply(tags, fix_tags)
+
 unique_tags <- sort(unique(unlist(tags)))
 unique_tags <- unique_tags[unique_tags != ""]
 fname <- gsub("([[:punct:]])|([[:space:]])", "_", unique_tags)
@@ -71,10 +81,13 @@ for(j in seq(along = unique_tags)) {
   cat('<div id="', fname[j], '"></div>\n', sep = "")
   cat("### ", unique_tags[j], "\n\n(back to [contents](#top))\n\n")
   
-  hasit <- unlist(lapply(mods, function(x) any(x$tag == unique_tags[j])))
+  hasit <- unlist(lapply(mods, 
+                         function(x)
+                           any(x$tag == unique_tags[j])))
   subs <- mods[hasit]
   subs <- subs[order(unlist(lapply(subs, function(x) x$label)))]
   
-  for(mod in subs) md_format(mod)
+  for (mod in subs)
+    md_format(mod)
 }
 ```
