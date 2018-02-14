@@ -1,7 +1,8 @@
 library(bookdown)
-library(doMC)
 library(parallel)
-registerDoMC(cores = detectCores() - 1)
+library(doParallel)
+cl <- makePSOCKcluster(parallel::detectCores(logical = TRUE))
+registerDoParallel(cl)
 
 render_book("index.Rmd", "bookdown::gitbook")
 

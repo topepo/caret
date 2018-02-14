@@ -2,13 +2,20 @@
 
 In this package, resampling is primary approach for optimizing predictive models with tuning parameters. To do this, many alternate versions of the training set are used to train the model and predict a hold-out set. This process is repeated many times to get performance estimates that generalize to new data sets. Each of the resampled data sets is independent of the others, so there is no formal requirement that the models must be run sequentially. If a computer with multiple processors or cores is available, the computations could be spread across these "workers" to increase the computational efficiency.  [`caret`](http://cran.r-project.org/web/packages/caret/index.html) leverages one of the parallel processing frameworks in R to do just this. The [`foreach`](http://cran.r-project.org/web/packages/foreach/index.html) package allows R code to be run either sequentially or in parallel using several different technologies, such as the [`multicore`](http://cran.r-project.org/web/packages/multicore/index.html) or [`Rmpi`](http://cran.r-project.org/web/packages/Rmpi/index.html) packages (see [Schmidberger *et al*, 2009](http://www.jstatsoft.org/v31/i01/paper) for summaries and descriptions of the available options). There are several R packages that work with [`foreach`](http://cran.r-project.org/web/packages/foreach/index.html) to implement these techniques, such as [`doMC`](http://cran.r-project.org/web/packages/doMC/index.html) (for [`multicore`](http://cran.r-project.org/web/packages/multicore/index.html)) or [`doMPI`](http://cran.r-project.org/web/packages/doMPI/index.html) (for [`Rmpi`](http://cran.r-project.org/web/packages/Rmpi/index.html)).
 
-To tune a predictive model using multiple workers, the function syntax in the [`caret`](http://cran.r-project.org/web/packages/caret/index.html) package functions (e.g. `train`,  `rfe` or `sbf`) do not change. A separate function is used to "register" the parallel processing technique and specify the number of workers to use. For example, to use the [`multicore`](http://cran.r-project.org/web/packages/multicore/index.html)) package (not available on Windows) with five cores on the same machine, the package is loaded and them registered:
+A fairly comprehensive study of the benefits of parallel processing can be found in [this blog post](http://appliedpredictivemodeling.com/blog/2018/1/17/parallel-processing). 
+
+To tune a predictive model using multiple workers, the function syntax in the [`caret`](http://cran.r-project.org/web/packages/caret/index.html) package functions (e.g. `train`,  `rfe` or `sbf`) do not change. A separate function is used to "register" the parallel processing technique and specify the number of workers to use. For example, to use the [`doParallel`](http://cran.r-project.org/web/packages/doParallel/index.html)) package with five cores on the same machine, the package is loaded and them registered:
 
 ```{r paral, eval = FALSE}
-library(doMC)
-registerDoMC(cores = 5)
+library(doParallel)
+cl <- makePSOCKcluster(5)
+registerDoParallel(cl)
+
 ## All subsequent models are then run in parallel
 model <- train(y ~ ., data = training, method = "rf")
+
+## When you are done:
+stopCluster(cl)
 ```
 
 The syntax for other packages associated with [`foreach`](http://cran.r-project.org/web/packages/foreach/index.html) is very similar. Note that as the number of workers increases, the memory required also increase. For example, using five workers would keep a total of six versions of the data in memory. If the data are large or the computational model is demanding, performance can be affected if the amount of required memory exceeds the physical amount available. Also, for `rfe` and  `sbf`, these functions may call  `train` for some models. In this case, registering *M* workers will actually invoke *M*^2^ total processes.
