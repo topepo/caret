@@ -72,11 +72,13 @@ tox <- tox %>%
 For this analysis, we will compute the RMSE using weights based on the manufacturability column such that a difficult compound has less impact on the RMSE. 
 
 ```{r recipes_wrmse}
-wt_rmse <- function (pred, obs, wts, na.rm = TRUE) 
-  sqrt(weighted.mean((pred - obs)^2, wts, na.rm = na.rm))
-
 model_stats <- function(data, lev = NULL, model = NULL) {
+  
   stats <- defaultSummary(data, lev = lev, model = model)
+  
+  wt_rmse <- function (pred, obs, wts, na.rm = TRUE) 
+  sqrt(weighted.mean((pred - obs)^2, wts, na.rm = na.rm))
+  
   res <- wt_rmse(pred = data$pred,
                  obs = data$obs, 
                  wts = data$manufacturability)
