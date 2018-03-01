@@ -37,7 +37,7 @@ irisTrain <- iris[ trainIndex,]
 irisTest  <- iris[-trainIndex,]
 ```
 
-The `list = FALSE` avoids returns the data as a list. This function also has an argument, `times`, that can create multiple splits at once; the data indices are returned in a list of integer vectors. Similarly, `createResample` can be used to make simple bootstrap samples and `createFolds` can be used to generate balanced cross–validation groupings from a set of data.
+The `list = FALSE` avoids returning the data as a list. This function also has an argument, `times`, that can create multiple splits at once; the data indices are returned in a list of integer vectors. Similarly, `createResample` can be used to make simple bootstrap samples and `createFolds` can be used to generate balanced cross–validation groupings from a set of data.
 
 <div id="predictors"></div>
 
