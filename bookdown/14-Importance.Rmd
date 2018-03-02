@@ -2,7 +2,7 @@
 
 ```{r varImp_startup,echo=FALSE,message=FALSE,warning=FALSE}
 library(knitr)
-opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'varimp/')
+opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'varimp/', dev = 'svg', dev.args = list(bg = "transparent"))
 library(kernlab)
 library(pROC)
 library(caret)

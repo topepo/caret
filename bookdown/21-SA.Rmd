@@ -1,6 +1,6 @@
 ```{r sa_startup,echo=FALSE,message=FALSE,warning=FALSE}
 library(knitr)
-opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'sa/')
+opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'sa/', dev = 'svg', dev.args = list(bg = "transparent"))
 library(caret)
 data(BloodBrain)
 library(parallel)

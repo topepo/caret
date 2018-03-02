@@ -2,7 +2,7 @@
 library(caret)
 theme_set(theme_bw())
 library(knitr)
-opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'performance/')
+opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'performance/', dev = 'svg', dev.args = list(bg = "transparent"))
 library(pROC)
 ```
 

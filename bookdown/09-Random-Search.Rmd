@@ -1,6 +1,6 @@
 ```{r random_startup,echo=FALSE,message=FALSE,warning=FALSE}
 library(knitr)
-opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'random/')
+opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'random/', dev = 'svg', dev.args = list(bg = "transparent"))
 library(gbm)
 library(klaR)
 library(mlbench)

@@ -3,7 +3,7 @@
 ```{r pp_startup,echo=FALSE,message=FALSE,warning=FALSE}
 library(caret)
 library(knitr)
-opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'preprocess/')
+opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'preprocess/', dev = 'svg', dev.args = list(bg = "transparent"))
 library(lattice)
 library(ggplot2)
 ```
