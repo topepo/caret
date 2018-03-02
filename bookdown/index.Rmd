@@ -4,10 +4,7 @@ author: "Max Kuhn"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: 
-  bookdown::gitbook:
-    config:
-      toc:
-        collapse: section
+  bookdown::gitbook
 documentclass: book
 github-repo: topepo/caret
 description: "Documentation for the caret package."
