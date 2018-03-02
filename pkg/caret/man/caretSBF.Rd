@@ -46,14 +46,14 @@ single feature and the outcome, then the p-value for the whole model F-test
 is returned. \code{gamScores} fits a generalized additive model between a
 single predictor and the outcome using a smoothing spline basis function. A
 p-value is generated using the whole model test from
-\code{\link[gam]{summary.gam}} and is returned.
+\code{\link[gam]{summary.Gam}} and is returned.
 
 If a particular model fails for \code{lm} or \code{gam}, a p-value of 1 is
 returned.
 }
 \seealso{
 \code{\link{sbfControl}}, \code{\link{sbf}},
-\code{\link[gam]{summary.gam}}
+\code{\link[gam]{summary.Gam}}
 }
 \author{
 Max Kuhn

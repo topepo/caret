@@ -618,7 +618,7 @@ sbfControl <- function(functions = NULL,
 #' @param y a numeric or factor vector of outcomes
 #' @author Max Kuhn
 #' @seealso \code{\link{sbfControl}}, \code{\link{sbf}},
-#' \code{\link[gam]{summary.gam}}
+#' \code{\link[gam]{summary.Gam}}
 #' @keywords models
 #' @export caretSBF
 caretSBF <- list(summary = defaultSummary,
