@@ -1,6 +1,6 @@
 ```{r custom_startup,echo=FALSE,message=FALSE,warning=FALSE}
 library(knitr)
-opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'custom/')
+opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'custom/', dev = 'svg', dev.args = list(bg = "transparent"))
 library(caTools)
 library(klaR)
 library(mlbench)
@@ -97,7 +97,8 @@ lpSVM <- list(type = "Classification",
 
 This model can also be used for regression but we will constrain things here for simplicity. For other SVM models, the type value would be `c("Classification", "Regression")`.
 
-The `library` value checks to see if this package is installed and loads it whenever it is needed (e.g. before modeling or prediction).
+The `library` value checks to see if this package is installed and loads it whenever it is needed (e.g. before modeling or prediction). **Note**: `caret` will check to see if these packages are installed but will _not_ explicitly load them. As such, functions that are used from the package should be referenced by namespace. This is discussed more below when describing the `fit` function.  
+
 
 ### The parameters Element
 
@@ -128,7 +129,7 @@ svmGrid <- function(x, y, len = NULL, search = "grid") {
   library(kernlab)
   ## This produces low, middle and high values for sigma 
   ## (i.e. a vector with 3 elements). 
-  sigmas <- sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)  
+  sigmas <- kernlab::sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)  
   ## To use grid search:
   if(search == "grid") {
     out <- expand.grid(sigma = mean(as.vector(sigmas[-2])),
@@ -143,6 +144,9 @@ svmGrid <- function(x, y, len = NULL, search = "grid") {
   out
 }
 ```
+
+Why did we use `kernlab::sigest` instead of `sigest`? As previously mentioned, `caret` will not execute `library(kernlab)` unless you explicitly code it in these functions. Since it is not explicitly loaded, you have to call it _using the namespace operator_ `::`. 
+
 
 Again, the user can pass their own grid via  `train`'s `tuneGrid` option or they can use this code to create a default grid.
 
@@ -169,12 +173,14 @@ Here is something we could use for this model:
 
 ```{r custom_fit}
 svmFit <- function(x, y, wts, param, lev, last, weights, classProbs, ...) { 
-  ksvm(x = as.matrix(x), y = y,
-       kernel = rbfdot,
-       kpar = list(sigma = param$sigma),
-       C = param$C,
-       prob.model = classProbs,
-       ...)
+  kernlab::ksvm(
+    x = as.matrix(x), y = y,
+    kernel = "rbfdot",
+    kpar = list(sigma = param$sigma),
+    C = param$C,
+    prob.model = classProbs,
+    ...
+    )
  }
  
 lpSVM$fit <- svmFit
@@ -188,6 +194,7 @@ A few notes about this:
  - The probability model is fit based on the value of  `classProbs`. This value is determined by the value given in `trainControl`.
  - The three dots allow the user to pass options in from  `train` to, in this case, the  `ksvm` function. For example, if the use wanted to set the cache size for the function, they could list  `cache = 80` and this argument will be pass from `train` to  `ksvm`.
  - Any pre-processing that was requested in the call to  `train` have been done. For example, if `preProc = "center"` was originally requested, the columns of `x` seen within this function are mean centered.
+ - Again, the namespace operator `::` is used for `rbfdot` and `ksvm` to ensure that the function can be found. 
 
 ### The `predict` Element
 
@@ -205,7 +212,7 @@ Our function will be very simple:
 
 ```{r custom_pred}
 svmPred <- function(modelFit, newdata, preProc = NULL, submodels = NULL)
-   predict(modelFit, newdata)
+   kernlab::predict(modelFit, newdata)
 lpSVM$predict <- svmPred
 ```
 
@@ -220,7 +227,7 @@ We can use:
 
 ```{r custom_prob}
 svmProb <- function(modelFit, newdata, preProc = NULL, submodels = NULL)
-   predict(modelFit, newdata, type="probabilities")
+  kernlab::predict(modelFit, newdata, type = "probabilities")
 lpSVM$prob <- svmProb
 ```
 
@@ -248,7 +255,7 @@ For model functions using `S3` methods,  `train` automatically attaches a charac
 For example, the `ksvm` function uses `S4` methods but, unlike most model functions, has a built--in function called `lev` that will extract the class levels (if any). In this case, our levels code would be:
 
 ```{r custom_lev}
-lpSVM$levels <- function(x) lev(x)
+lpSVM$levels <- function(x) kernlab::lev(x)
 ```
 
 In most other cases, the levels will beed to be extracted from data contained in the fitted model object. As another example, objects created using the `ctree` function in the `party` package would need to use:
@@ -374,9 +381,11 @@ lbPred <- function(modelFit, newdata, preProc = NULL, submodels = NULL) {
     out[[1]] <- tmp
     
     for(j in seq(along = submodels$nIter)) {
-      out[[j+1]] <- caTools::predict.LogitBoost(modelFit,
-                                                newdata,
-                                                nIter = submodels$nIter[j])
+      out[[j+1]] <- caTools::predict.LogitBoost(
+        modelFit,
+        newdata,
+        nIter = submodels$nIter[j])
+      
     }
   }
   out                   
@@ -389,10 +398,11 @@ A few more notes:
  - The `prob` slot works in the same way. The only difference is that the values saved in the outgoing lists are matrices or data frames of probabilities for each class.
  - After model training (i.e. predicting new samples), the value of `submodels` is set to `NULL` and the code produces a single set of predictions.
  - If the model had one sequential parameter and one fixed parameter, the `loop` data frame would have two columns (one for each parameter). If the model is tuned over more than one value of the fixed parameter, the `submodels` list would have more than one element. If `loop` had 10 rows, then `length(submodels)` would be `10` and `loop[i,]` would be linked to `submodels[[i]]`.
+ - In this case, the prediction function was called by namespace too (i.e. `caTools::predict.LogitBoost`). This may not seem necessary but what functions are available can vary depending on what parallel processing technology is being used. For example, the nature of forking used by `doMC` and `doParallel` tends to have easier access to functions while PSOCK methods in `doParallel` do not. It may be easier to take the safe path of using the namespace operator wherever possible to avoid errors that are difficult to track down. 
 
 Here is a slimmed down version of the logitBoost code already in the package:
 
-```{r custom_lb_funcs, tidy=FALSE}
+```{r custom_lb_funcs, tidy = FALSE}
 lbFuncs <- list(library = "caTools",
                 loop = function(grid) {            
                   loop <- grid[which.max(grid$nIter),,drop = FALSE]
@@ -411,19 +421,21 @@ lbFuncs <- list(library = "caTools",
                   out
                 },
                 fit = function(x, y, wts, param, lev, last, weights, classProbs, ...) {
-                  LogitBoost(as.matrix(x), y, nIter = param$nIter)
+                  caTools::LogitBoost(as.matrix(x), y, nIter = param$nIter)
                 },
                 predict = function(modelFit, newdata, preProc = NULL, submodels = NULL) {
-                  out <- predict(modelFit, newdata, type="class")
+                  out <- caTools::predict.LogitBoost(modelFit, newdata, type="class")
                   if(!is.null(submodels)) {                   
                     tmp <- out
                     out <- vector(mode = "list", length = nrow(submodels) + 1)
                     out[[1]] <- tmp
                     
                     for(j in seq(along = submodels$nIter)) {
-                      out[[j+1]] <- predict(modelFit,
-                                            newdata,
-                                            nIter = submodels$nIter[j])
+                      out[[j+1]] <- caTools::predict.LogitBoost(
+                        modelFit,
+                        newdata,
+                        nIter = submodels$nIter[j]
+                        )
                     }
                   }
                   out                   
@@ -445,7 +457,7 @@ lb1
 ## Now get rid of the submodel parts
 lbFuncs2 <- lbFuncs
 lbFuncs2$predict <- function(modelFit, newdata, preProc = NULL, submodels = NULL) 
-  predict(modelFit, newdata, type="class")
+  caTools::predict.LogitBoost(modelFit, newdata, type = "class")
 lbFuncs2$loop <- NULL 
 
 set.seed(825)
@@ -488,6 +500,12 @@ ggplot(results, aes(x = nIter, y = SpeedUp)) +
 
 The speed-ups show a significant decrease in training time using this method.
 
+**Note:** The previous examples were run using parallel processing. The remainder in this chapter are run sequentially and, for simplicity, the namespace operator is not used in the custom code modules below. 
+
+```{r custom-stop-par, inlcude = FALSE}
+registerDoSEQ()
+```
+
 <div id="Illustration3"> </div>
 
 ## Illustrative Example 3: Nonstandard Formulas
@@ -523,8 +541,10 @@ modelInfo <- list(label = "Model-based Gradient Boosting",
                     ## mboost requires a data frame with predictors and response
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$DEXfat <- y
-                    mod <- mboost(DEXfat ~ btree(age) + bols(waistcirc) + bbs(hipcirc),
-                                  data = dat)
+                    mod <- mboost(
+                      DEXfat ~ btree(age) + bols(waistcirc) + bbs(hipcirc),
+                      data = dat
+                      )
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
@@ -901,3 +921,7 @@ offset_mod$fit <- function(x, y, wts, param, lev, last, classProbs, ...) {
 mod <- train(x = anorexia[, 1:2], y = anorexia$Postwt, method = offset_mod)
 coef(mod$finalModel)
 ``` 
+
+```{r custom-restart-par, inlcude = FALSE}
+registerDoParallel(cl)
+```
