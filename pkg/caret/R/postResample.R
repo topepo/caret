@@ -145,7 +145,7 @@ postResample <- function(pred, obs)
     } else {
     
       if ( is.logical( obs ) ){
-        stop( "logical type output variables are not presently supported.  Try converting your output variable to a factor". )
+        stop( "logical type output variables are not presently supported.  Try converting your output variable to a factor." )
       }
       if(length(obs) + length(pred) == 0)
         {
