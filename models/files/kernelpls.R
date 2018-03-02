@@ -92,6 +92,7 @@ modelInfo <- list(label = "Partial Least Squares",
                     out
                   },
                   varImp = function(object, estimate = NULL, ...) {
+                  	library(pls)
                     modelCoef <- coef(object, intercept = FALSE, comps = 1:object$ncomp)
                     perf <- MSEP(object)$val
                     

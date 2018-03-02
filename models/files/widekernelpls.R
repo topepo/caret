@@ -92,8 +92,9 @@ modelInfo <- list(label = "Partial Least Squares",
                   },
                   predictors = function(x, ...) rownames(x$projection),
                   varImp = function(object, estimate = NULL, ...) {
+                  	library(pls)
                     modelCoef <- coef(object, intercept = FALSE, comps = 1:object$ncomp)
-                    perf <- pls::MSEP(object)$val
+                    perf <- pls:::MSEP.mvr(object)$val
 
                     nms <- dimnames(perf)
                     if(length(nms$estimate) > 1) {
