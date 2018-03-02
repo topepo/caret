@@ -27,6 +27,8 @@ if (Sys.info()["sysname"] == "Linux") {
 ## Get the names of all CRAN related packages references by caret.
 ## Exclude orphaned and Bioconductor packages for now
 
+install.packages(c("devtools"), repos = "http://cran.r-project.org", type = "source")
+
 library(devtools)
 install_github("topepo/caret", subdir = "pkg/caret")
 
@@ -54,7 +56,7 @@ libs <- c(libs, "knitr", "Hmisc", "googleVis", "animation",
           "aroma.affymetrix", "remMap", "cghFLasso", "RCurl", "QSARdata", "reshape2",
           "mapproj", "ggmap", "ggvis", "SuperLearner", "subsemble", "caretEnsemble",
           "ROSE", "DMwR", "ellipse", "bookdown", "DT", "AppliedPredictiveModeling",
-          "pROC", "ggthemes", "sessioninfo")
+          "pROC", "ggthemes", "sessioninfo", "mlbench")
 libs <- c(libs, package_dependencies("caret", reverse = TRUE)$caret)
 libs <- unique(libs)
 
@@ -85,7 +87,7 @@ for(i in sort(libs)) {
     if (Sys.info()["sysname"] == "Linux") {
       biocLite(i, ask = FALSE, suppressUpdates = FALSE)
     } else {
-      biocLite(i, type = "both", ask = FALSE, suppressUpdates = FALSE)
+      biocLite(i, type = "source", ask = FALSE, suppressUpdates = FALSE)
     }
     cat("\n\n")
   }
