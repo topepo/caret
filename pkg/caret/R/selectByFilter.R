@@ -608,7 +608,7 @@ sbfControl <- function(functions = NULL,
 #' is returned. \code{gamScores} fits a generalized additive model between a
 #' single predictor and the outcome using a smoothing spline basis function. A
 #' p-value is generated using the whole model test from
-#' \code{\link[gam]{summary.gam}} and is returned.
+#' \code{\link[gam]{summary.Gam}} and is returned.
 #'
 #' If a particular model fails for \code{lm} or \code{gam}, a p-value of 1 is
 #' returned.
@@ -856,7 +856,7 @@ anovaScores <- function(x, y) {
 gamScores <- function(x, y) {
   if(is.factor(x)) stop("The predictors should be numeric")
   requireNamespaceQuietStop("gam")
-  pv <- try(anova(gam::Gam(y ~ s(x)), test = "F")[2, "Pr(F)"], silent = TRUE)
+  pv <- try(anova(gam::gam(y ~ s(x)), test = "F")[2, "Pr(F)"], silent = TRUE)
   if(any(class(pv) == "try-error")) pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
   if(any(class(pv) == "try-error") || is.na(pv) || is.nan(pv)) pv <- 1
   pv
