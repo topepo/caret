@@ -5,7 +5,7 @@
 #'
 #' For models that do not have corresponding \code{varImp} methods, see
 #' \code{\link{filterVarImp}}.
-#' 
+#'
 #' Otherwise:
 #'
 #' \bold{Linear Models}: the absolute value of the t--statistic for each model
@@ -477,7 +477,15 @@ varImp.fda <- function(object, value = "gcv", ...){
 #' @rdname varImp
 #' @export
 varImp.gam <- function(object, ...){
-  mod <- if(any(names(object) == "optimizer")) "gam" else "gamLoess"
-  code <- varImpDependencies(mod)
+  code <- varImpDependencies("gam")
   code$varImp(object, ...)
 }
+
+
+#' @rdname varImp
+#' @export
+varImp.Gam <- function(object, ...){
+  code <- varImpDependencies("gamSpline")
+  code$varImp(object, ...)
+}
+

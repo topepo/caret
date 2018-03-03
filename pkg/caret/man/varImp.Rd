@@ -52,6 +52,7 @@
 \alias{varImp.plsda}
 \alias{varImp.fda}
 \alias{varImp.gam}
+\alias{varImp.Gam}
 \alias{varImp.train}
 \title{Calculation of variable importance for regression and classification models}
 \usage{
@@ -108,6 +109,8 @@ varImp(object, ...)
 \method{varImp}{fda}(object, value = "gcv", ...)
 
 \method{varImp}{gam}(object, ...)
+
+\method{varImp}{Gam}(object, ...)
 
 \method{varImp}{train}(object, useModel = TRUE, nonpara = TRUE,
   scale = TRUE, ...)
