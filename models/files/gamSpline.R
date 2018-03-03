@@ -39,7 +39,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                                     modelFit$obsLevel[1],
                                     modelFit$obsLevel[2])
                     } else {
-                      out <- predict(modelFit, newdata, type = "response")
+                      out <- gam:::predict.Gam(modelFit, newdata, type = "response")
                     }
                     out
                   },
