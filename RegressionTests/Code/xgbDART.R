@@ -12,7 +12,7 @@ modelX <- "xgbDART"
 
 for(i in getModelInfo(modelX)[[1]]$library)
   do.call("requireNamespace", list(package = i))
-  
+
 
 #########################################################################
 
@@ -109,19 +109,23 @@ test_class_rec <- train(x = rec_cls,
                         tuneGrid = xgbGrid)
 
 
-if(
-  !isTRUE(
-    all.equal(test_class_cv_model$results, 
-              test_class_rec$results))
-)
+if(!isTRUE( all.equal(test_class_cv_model$results, test_class_rec$results))){
   stop("CV weights not giving the same results")
+}
 
 test_class_imp_rec <- varImp(test_class_rec)
 
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
-test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
-                               type = "prob")
+test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], type = "prob")
+
+
+rep_eval_of_predict_cls = sapply( 1:100, function(x) 
+  predict(test_class_rec, newdata = testing[1, -ncol(testing)], type="prob")[,1])
+if(length(unique(rep_eval_of_predict_cls))>1){
+  stop("Repeated evaluation do not return the same result (classification).")
+}
+
 
 test_levels <- levels(test_class_cv_model)
 if(!all(levels(trainY) %in% test_levels))
@@ -205,17 +209,22 @@ test_reg_rec <- train(x = rec_reg,
                       trControl = rctrl1,
                       tuneGrid = xgbGrid)
 
-if(
-  !isTRUE(
-    all.equal(test_reg_cv_model$results, 
-              test_reg_rec$results))
-)
-  stop("CV weights not giving the same results")
+if( !isTRUE( all.equal(test_reg_cv_model$results, test_reg_rec$results))){
+  stop("CV weights not giving the same optimal parameters")
+}
 
 test_reg_imp_rec <- varImp(test_reg_rec)
 
 
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
+
+#########################################################################
+
+rep_eval_of_predict_reg = sapply(1:100, function(x) 
+  predict(test_reg_rec, newdata = testing[1, -ncol(testing)]))
+if(length(unique(rep_eval_of_predict_reg))>1){
+  stop("Repeated evaluation do not return the same result (regression).")
+}
 
 #########################################################################
 

@@ -163,7 +163,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       newdata <- as.matrix(newdata)
                       newdata <- xgboost::xgb.DMatrix(data=newdata, missing = NA)
                     }
-                    out <- predict(modelFit, newdata)
+                    out <- predict(modelFit, newdata, ntreelimit = modelFit$niter)
                     if(modelFit$problemType == "Classification") {
                       if(length(modelFit$obsLevels) == 2) {
                         out <- ifelse(out >= .5,
@@ -203,10 +203,10 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                     }
                     
                     if( !is.null(modelFit$param$objective) && modelFit$param$objective == 'binary:logitraw'){
-                      p <- predict(modelFit, newdata)
+                      p <- predict(modelFit, newdata, ntreelimit = modelFit$niter)
                       out <- binomial()$linkinv(p) # exp(p)/(1+exp(p))
                     } else {
-                      out <- predict(modelFit, newdata)
+                      out <- predict(modelFit, newdata, ntreelimit = modelFit$niter)
                     }
                     if(length(modelFit$obsLevels) == 2) {
                       out <- cbind(out, 1 - out)
