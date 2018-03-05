@@ -143,7 +143,6 @@ postResample <- function(pred, obs)
         }
       names(out) <- c("RMSE", "Rsquared", "MAE")
     } else {
-    
       if(length(obs) + length(pred) == 0)
         {
           out <- rep(NA, 2)
