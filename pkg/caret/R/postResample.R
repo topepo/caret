@@ -144,9 +144,6 @@ postResample <- function(pred, obs)
       names(out) <- c("RMSE", "Rsquared", "MAE")
     } else {
     
-      if ( is.logical( obs ) ){
-        stop( "logical type output variables are not presently supported.  Try converting your output variable to a factor." )
-      }
       if(length(obs) + length(pred) == 0)
         {
           out <- rep(NA, 2)
