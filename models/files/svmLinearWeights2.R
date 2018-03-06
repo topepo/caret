@@ -18,7 +18,11 @@ modelInfo <- list(label = "L2 Regularized Linear Support Vector Machines with Cl
                   }, 
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    model_type <- if(param$Loss == "L2") 3 else 2
+                    # LiblineaR lists the following models 
+                    # 
+                    # 2 - L2-regularized L2-loss support vector classification (primal) 
+                    # 3 - L2-regularized L1-loss support vector classification (dual) 
+                    model_type <- if(param$Loss == "L2") 2 else 3
                     if(length(levels(y)) != 2)
                       stop("Currently implemented for 2-class problems")
                     cwts <- c(1, param$weight)

@@ -16,9 +16,16 @@ modelInfo <- list(label = "L2 Regularized Support Vector Machine (dual) with Lin
                   }, 
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    # LiblineaR lists the following models 
+                    # 
+                    #  2 - L2-regularized L2-loss support vector classification (primal) 
+                    #  3 - L2-regularized L1-loss support vector classification (dual) 
+                    # 12 – L2-regularized L2-loss support vector regression (dual)
+                    # 13 - L2-regularized L1-loss support vector regression (dual) 
+                    
                     if(param$Loss == "L2") {
-                      model_type <- if(is.factor(y)) 3 else 13
-                    } else model_type <- if(is.factor(y)) 2 else 11
+                      model_type <- if(is.factor(y)) 2 else 12
+                    } else model_type <- if(is.factor(y)) 3 else 13
 
                     out <- LiblineaR::LiblineaR(data = as.matrix(x), target = y,
                                                 cost = param$cost,
