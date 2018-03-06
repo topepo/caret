@@ -31,6 +31,4 @@ modelInfo <- list(label = "Naive Bayes Classifier",
                   levels = function(x) x$obsLevels,
                   predictors = function(x, s = NULL, ...) x$xNames,
                   tags = c("Bayesian Model", "Categorical Predictors Only"),
-                  sort = function(x) x[order(x[,1]),],
-                  notes = paste('Not on CRAN but can be installed from',
-                                'GitHub at `bmihaljevic/bnclassify`.'))
+                  sort = function(x) x[order(x[,1]),])

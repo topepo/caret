@@ -16,6 +16,7 @@
     \item A bug in the threshold calculation for choosing the number of PCA components was resolved \issue{825}.
     \item Models \code{mlpML} and \code{mlpWeightDecayML} now ignore layers with zero units. For example, if the number of layers was specified to be \code{c(5, 0, 3)} a warning is issued and the architecture is converted to \code{c(5, 3)} \issue{829}.
     \item \code{svmLinearWeights2} and \code{svmLinear3} may have chosen the incorrect SVM loss function. This was found by Dirk Neumann \issue{826}
+    \item \cpkg{bnclassify} models \code{awtan} and \code{awnb} were updated since they previously used deprecated functions. All \cpkg{bnclassify} models now require version 0.3.3 of that package or greater \issue{815}.
   }
 }
 

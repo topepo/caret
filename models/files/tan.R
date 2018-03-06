@@ -22,7 +22,7 @@ modelInfo <- list(label = "Tree Augmented Naive Bayes Classifier",
                     bnclassify::bnc('tan_cl', class = '.outcome', dataset = dat,
                                     smooth = param$smooth,
                                     dag_args = list(score = as.character(param$score)),
-                        ...)
+                                    ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
@@ -35,6 +35,4 @@ modelInfo <- list(label = "Tree Augmented Naive Bayes Classifier",
                   levels = function(x) x$obsLevels,
                   predictors = function(x, s = NULL, ...) x$xNames,
                   tags = c("Bayesian Model", "Categorical Predictors Only"),
-                  sort = function(x) x[order(x[,1]),],
-                  notes = paste('Not on CRAN but can be installed from',
-                                'GitHub at `bmihaljevic/bnclassify`.'))
+                  sort = function(x) x[order(x[,1]),])
