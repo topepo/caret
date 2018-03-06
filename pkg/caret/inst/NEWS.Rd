@@ -5,7 +5,7 @@
 
 \section{Changes in version 6.0-79}{
   \itemize{
-    \item \code{keras} and \code{mxnet} models have better initialization of parameters \href{https://github.com/topepo/caret/pull/765/files}{pr #765}
+    \item \code{keras} and \code{mxnet} models have better initialization of parameters \href{https://github.com/topepo/caret/pull/765/files}{pr 765}
     \item The range preprocessing method can scale the data to an arbitrary range. Thanks to Sergey Korop.
     \item The spatial sign transformation will now operation on all non-missing predictors. Thanks to Markus Peter Auer \issue{789}.
     \item A variety of small changes were made to work with the new version of the \cpkg{gam} package \issue{828}.
@@ -14,6 +14,8 @@
     \item Fixed a \code{drop = FALSE} bug that occurred when computing class probabilities \issue{849}.
     \item An issue with predicting probabilities with \code{multinom} and one observation was fixed \issue{827}.
     \item A bug in the threshold calculation for choosing the number of PCA components was resolved \issue{825}.
+    \item Models \code{mlpML} and \code{mlpWeightDecayML} now ignore layers with zero units. For example, if the number of layers was specified to be \code{c(5, 0, 3)} and warning is issued and the architecture is converted to \code{c(5, 3)} \issue{829}.
+  }
 }
 
 \section{Changes in version 6.0-78}{
@@ -195,7 +197,7 @@
 		\item A bug in the naive Bayes prediction code was found by github user pverspeelt and was fixed. \issue{345}
 		\item Josh Brady (doublej2) found and fixed an issue with \code{DummyVars} \issue{344}
 		\item A bug related to recent changes to the \cpkg{ranger} package was fixed \issue{320}
-		\item Dependencies on external software can now be checked in the model code. See \href{https://github.com/topepo/caret/blob/master/models/files/pythonKnnReg.R}{\code{pythonKnnReg}} for an example. This also removes the overall package dependency on \cpkg{rPython} \issue{328}.
+		\item Dependencies on external software can now be checked in the model code. See \href{https://github.com/topepo/caret/blob/master/models/deprecated/pythonKnnReg.R}{\code{pythonKnnReg}} for an example. This also removes the overall package dependency on \cpkg{rPython} \issue{328}.
 		\item The tuning parameter grid for \code{enpls} and \code{enpls.fs} were changed to avoid errors.
 		\item A bug was fixed \issue{342} where the data used for prediction was inappropriately converted from its original class.
 		\item Matt (aka washcycle) added option to return column names to \code{nearZeroVar} function

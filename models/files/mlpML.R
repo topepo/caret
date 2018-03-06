@@ -24,21 +24,21 @@ modelInfo <- list(label = "Multi-Layer Perceptron, with multiple layers",
                       lin <- FALSE
                     } else lin <- TRUE
                     
-                    if(param$layer1 == 0) stop("the first layer must have at least one hidden unit")
-                    if(param$layer2 == 0 & param$layer2 > 0) stop("the second layer must have at least one hidden unit if a third layer is specified")
                     
-                    nodes <- c(param$layer1)
-                    if(param$layer2 > 0) {
-                      nodes <- c(nodes, param$layer2)
-                      if(param$layer3 > 0) nodes <- c(nodes, param$layer3)
+                    nodes <- c(param$layer1, param$layer2, param$layer3)
+                    if (any(nodes == 0)) {
+                      nodes <- nodes[nodes > 0]
+                      warning(
+                        "At least one layer had zero units and ",
+                        "were removed. The new structure is ",
+                        paste0(nodes, collapse = "->"), call. = FALSE
+                      ) 
                     }
-                    
                     args <- list(x = x,
                                  y = y,
                                  size = nodes,
                                  linOut = lin)
                     args <- c(args, theDots)
-                    #mlp(x,y,size=node,linOut=lin)
                     do.call(RSNNS::mlp, args)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
