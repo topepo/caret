@@ -145,8 +145,9 @@ confusionMatrix.default <- function(data, reference,
                                     ...) {
   if(!(mode %in% c("sens_spec", "prec_recall", "everything")))
     stop("`mode` should be either 'sens_spec', 'prec_recall', or 'everything'")
-  if(!is.factor(data)) data <- factor(data)
-  if(!is.factor(reference)) reference <- factor(reference)
+  if(!is.factor(data) | !is.factor(reference)) {
+    stop("`data` and `reference` should be factors with the same levels.", call. = FALSE)
+  }
   if(!is.character(positive) & !is.null(positive)) stop("positive argument must be character")
 
   if(length(levels(data)) > length(levels(reference)))
@@ -225,11 +226,11 @@ confusionMatrix.table <- function(data, positive = NULL,
       binom.test(sum(diag(x)),
                  sum(x),
                  p = max(apply(x, 2, sum)/sum(x)),
-                 alternative = "greater"), 
+                 alternative = "greater"),
       silent = TRUE)
     res <- if(inherits(res, "try-error"))
-      c("null.value.probability of success" = NA, p.value = NA) 
-    else 
+      c("null.value.probability of success" = NA, p.value = NA)
+    else
       res <- unlist(res[c("null.value", "p.value")])
     res
   }
