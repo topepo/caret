@@ -315,7 +315,12 @@ train.default <- function(x, y,
     stop("Please use column names for `x`", call. = FALSE)
   
   if(is.character(y)) y <- as.factor(y)
-
+  
+  if( !is.numeric(y) & !is.factor(y) ){
+    #This error will often trigger if the y value is logical.  
+    stop( "Please make sure `y` is a factor or numeric value." , call. = FALSE )
+  }
+  
   if(is.list(method)) {
     minNames <- c("library", "type", "parameters", "grid",
                   "fit", "predict", "prob")
