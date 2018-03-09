@@ -6,7 +6,7 @@ modelInfo <- list(
                           class = c("character", "numeric"),
                           label = c('Score Function', "Smoothing Parameter")),
   grid = function(x, y, len = NULL, search = "grid") {
-    out <- expand.garid(score = c('loglik', 'bic', 'aic'),
+    out <- expand.grid(score = c('loglik', 'bic', 'aic'),
                         smooth = 1:2)
   },
   loop = NULL,
