@@ -1,22 +1,22 @@
 #' Collation and Visualization of Resampling Results
-#' 
+#'
 #' These functions provide methods for collection, analyzing and visualizing a
 #' set of resampling results from a common data set.
-#' 
+#'
 #' The ideas and methods here are based on Hothorn et al. (2005) and Eugster et
 #' al. (2008).
-#' 
+#'
 #' The results from \code{\link{train}} can have more than one performance
 #' metric per resample. Each metric in the input object is saved.
-#' 
+#'
 #' \code{resamples} checks that the resampling results match; that is, the
 #' indices in the object \code{trainObject$control$index} are the same. Also,
 #' the argument \code{\link{trainControl}} \code{returnResamp} should have a
 #' value of \code{"final"} for each model.
-#' 
+#'
 #' The summary function computes summary statistics across each model/metric
 #' combination.
-#' 
+#'
 #' @aliases resamples.default resamples summary.resamples sort.resamples
 #' as.matrix.resamples as.data.frame.resamples modelCor
 #' @param x a list of two or more objects of class \code{\link{train}},
@@ -50,48 +50,48 @@
 #' @references Hothorn et al. The design and analysis of benchmark experiments.
 #' Journal of Computational and Graphical Statistics (2005) vol. 14 (3) pp.
 #' 675-699
-#' 
+#'
 #' Eugster et al. Exploratory and inferential analysis of benchmark
 #' experiments. Ludwigs-Maximilians-Universitat Munchen, Department of
 #' Statistics, Tech. Rep (2008) vol. 30
 #' @keywords models
 #' @examples
-#' 
-#' 
+#'
+#'
 #' data(BloodBrain)
 #' set.seed(1)
-#' 
+#'
 #' ## tmp <- createDataPartition(logBBB,
 #' ##                            p = .8,
 #' ##                            times = 100)
-#' 
+#'
 #' ## rpartFit <- train(bbbDescr, logBBB,
-#' ##                   "rpart", 
+#' ##                   "rpart",
 #' ##                   tuneLength = 16,
 #' ##                   trControl = trainControl(
 #' ##                     method = "LGOCV", index = tmp))
-#' 
+#'
 #' ## ctreeFit <- train(bbbDescr, logBBB,
-#' ##                   "ctree", 
+#' ##                   "ctree",
 #' ##                   trControl = trainControl(
 #' ##                     method = "LGOCV", index = tmp))
-#' 
+#'
 #' ## earthFit <- train(bbbDescr, logBBB,
 #' ##                   "earth",
 #' ##                   tuneLength = 20,
 #' ##                   trControl = trainControl(
 #' ##                     method = "LGOCV", index = tmp))
-#' 
+#'
 #' ## or load pre-calculated results using:
 #' ## load(url("http://caret.r-forge.r-project.org/exampleModels.RData"))
-#' 
+#'
 #' ## resamps <- resamples(list(CART = rpartFit,
 #' ##                           CondInfTree = ctreeFit,
 #' ##                           MARS = earthFit))
-#' 
+#'
 #' ## resamps
 #' ## summary(resamps)
-#' 
+#'
 #' @export resamples
 "resamples" <- function(x, ...) UseMethod("resamples")
 
@@ -99,33 +99,33 @@
 #' @method resamples default
 #' @export
 resamples.default <- function(x, modelNames = names(x), ...) {
-  
+
   ## Do a lot of checkin of the object types and make sure
   ## that they actually used the samples samples in the resamples
   if(length(x) < 2) stop("at least two train objects are needed")
   classes <- unlist(lapply(x, function(x) class(x)[1]))
   #     if(!all(classes %in% c("sbf", "rfe", "train"))) stop("all objects in x must of class train, sbf or rfe")
-  
+
   if(is.null(modelNames)){
-    modelNames <- well_numbered("Model", length(x)) 
-    
+    modelNames <- well_numbered("Model", length(x))
+
   } else {
     if(any(modelNames == "")) {
       no_name <- which(modelNames == "")
-      modelNames[no_name] <- well_numbered("Model", length(x))[no_name] 
+      modelNames[no_name] <- well_numbered("Model", length(x))[no_name]
     }
   }
-  
+
   numResamp <- unlist(lapply(x, function(x) length(x$control$index)))
   if(length(unique(numResamp)) > 1) stop("There are different numbers of resamples in each model")
-  
-  
+
+
   for(i in 1:numResamp[1]){
     indices <- lapply(x, function(x, i) sort(x$control$index[[1]]), i = i)
     uniqueIndex <- length(table(table(unlist(indices))))
     if(length(uniqueIndex) > 1) stop("The samples indices are not equal across resamples")
   }
-  
+
   getTimes <- function(x){
     out <- rep(NA, 3)
     if(all(names(x) != "times")) return(out)
@@ -134,45 +134,45 @@ resamples.default <- function(x, modelNames = names(x), ...) {
     if(any(names(x$times) == "prediction")) out[3] <- x$times$prediction[3]
     out
   }
-  
+
   rs_values <- vector(mode = "list", length = length(x))
   for(i in seq(along = x)) {
-    if(class(x[[i]])[1] == "rfe" && x[[i]]$control$returnResamp == "all"){ 
+    if(class(x[[i]])[1] == "rfe" && x[[i]]$control$returnResamp == "all"){
       warning(paste0("'", modelNames[i], "' did not have 'returnResamp=\"final\"; the optimal subset is used"))
     }
     if(class(x[[i]])[1] == "train" && x[[i]]$control$returnResamp == "all"){
       warning(paste0("'", modelNames[i], "' did not have 'returnResamp=\"final\"; the optimal tuning parameters are used"))
-    }        
+    }
     if(class(x[[i]])[1] == "sbf" && x[[i]]$control$returnResamp == "all"){
       warning(paste0("'", modelNames[i], "' did not have 'returnResamp=\"final\"; the optimal subset is used"))
     }
-    rs_values[[i]] <- get_resample_perf(x[[i]])         
+    rs_values[[i]] <- get_resample_perf(x[[i]])
   }
   all_names <- lapply(rs_values,
                       function(x) names(x)[names(x) != "Resample"])
   all_names <- table(unlist(all_names))
-  
+
   if(length(all_names) == 0 || any(all_names == 0)) {
     warning("Could not find performance measures")
   }
-  
+
   if(any(all_names < length(x))) {
     warning(paste("Some performance measures were not computed for each model:",
                   paste(names(all_names)[all_names < length(x)], collapse = ", ")))
   }
   pNames <- names(all_names)[all_names == length(x)]
-  rs_values <- lapply(rs_values, 
-                      function(x, n) x[,n,drop = FALSE], 
+  rs_values <- lapply(rs_values,
+                      function(x, n) x[,n,drop = FALSE],
                       n = c(pNames, "Resample"))
   for(mod in seq(along = modelNames)) {
-    names(rs_values[[mod]])[names(rs_values[[mod]]) %in% pNames] <- 
+    names(rs_values[[mod]])[names(rs_values[[mod]]) %in% pNames] <-
       paste(modelNames[mod], names(rs_values[[mod]])[names(rs_values[[mod]]) %in% pNames], sep = "~")
-    out <- if(mod == 1) rs_values[[mod]] else merge(out, rs_values[[mod]])   
+    out <- if(mod == 1) rs_values[[mod]] else merge(out, rs_values[[mod]])
   }
 
   timings <- do.call("rbind", lapply(x, getTimes))
   colnames(timings) <- c("Everything", "FinalModel", "Prediction")
-    
+
   out <- structure(
     list(
       call = match.call(),
@@ -189,7 +189,7 @@ resamples.default <- function(x, modelNames = names(x), ...) {
 #' @rdname resamples
 #' @method sort resamples
 #' @export
-sort.resamples <- function(x, decreasing = FALSE, metric = x$metric[1], FUN = mean, ...) 
+sort.resamples <- function(x, decreasing = FALSE, metric = x$metric[1], FUN = mean, ...)
 {
   dat <- x$values[, grep(paste("~", metric[1], sep = ""), names(x$values))]
   colnames(dat) <- gsub(paste("~", metric[1], sep = ""), "", colnames(dat))
@@ -205,7 +205,7 @@ summary.resamples <- function(object, metric = object$metrics, ...){
   out <- vector(mode = "list", length = length(metric))
   for(i in seq(along = metric)) {
     tmpData <- vals[, grep(paste("~", metric[i], sep = ""), names(vals), fixed = TRUE), drop = FALSE]
-    
+
     out[[i]] <- do.call("rbind", lapply(tmpData, function(x) summary(x)[1:6]))
     naSum <- matrix(unlist(lapply(tmpData, function(x) sum(is.na(x)))), ncol = 1)
     colnames(naSum) <- "NA's"
@@ -215,7 +215,7 @@ summary.resamples <- function(object, metric = object$metrics, ...){
                                rownames(out[[i]]),
                                fixed = TRUE)
   }
-  
+
   names(out) <- metric
   out <- structure(
     list(values = vals,
@@ -243,7 +243,7 @@ as.matrix.resamples <- function(x, metric = x$metric[1], ...) {
 #' @rdname resamples
 #' @method as.data.frame resamples
 #' @export
-as.data.frame.resamples <- function(x, row.names = NULL, optional = FALSE, 
+as.data.frame.resamples <- function(x, row.names = NULL, optional = FALSE,
                                     metric = x$metric[1], ...) {
   get_cols <- grepl(paste0("~", metric[1]), colnames(x$values))
   if(!(any(get_cols))) stop("no columns fit that metric")
@@ -265,32 +265,32 @@ modelCor <- function(x, metric = x$metric[1], ...)
 
 
 #' Principal Components Analysis of Resampling Results
-#' 
+#'
 #' Performs a principal components analysis on an object of class
 #' \code{\link{resamples}} and returns the results as an object with classes
 #' \code{prcomp.resamples} and \code{prcomp}.
-#' 
+#'
 #' The principal components analysis treats the models as variables and the
 #' resamples are realizations of the variables. In this way, we can use PCA to
 #' "cluster" the assays and look for similarities. Most of the methods for
 #' \code{\link[stats]{prcomp}} can be used, although custom \code{print} and
 #' \code{plot} methods are used.
-#' 
+#'
 #' The plot method uses lattice graphics. When \code{what = "scree"} or
 #' \code{what = "cumulative"}, \code{\link[lattice:xyplot]{barchart}} is used.
 #' When \code{what = "loadings"} or \code{what = "components"}, either
 #' \code{\link[lattice:xyplot]{xyplot}} or \code{\link[lattice:splom]{splom}}
 #' are used (the latter when \code{dims} > 2). Options can be passed to these
 #' methods using \code{...}.
-#' 
+#'
 #' When \code{what = "loadings"} or \code{what = "components"}, the plots are
 #' put on a common scale so that later components are less likely to be
 #' over-interpreted. See Geladi et al. (2003) for examples of why this can be
 #' important.
-#' 
+#'
 #' For clustering, \code{\link[stats]{hclust}} is used to determine clusters of
 #' models based on the resampled performance values.
-#' 
+#'
 #' @aliases prcomp.resamples cluster.resamples cluster plot.prcomp.resamples
 #' @param x For \code{prcomp}, an object of class \code{\link{resamples}} and
 #' for \code{plot.prcomp.resamples}, an object of class
@@ -311,7 +311,7 @@ modelCor <- function(x, metric = x$metric[1], ...)
 #' \code{prcomp.resamples} and \code{prcomp}. This object is the same as the
 #' object produced by \code{prcomp}, but with additional elements: \item{metric
 #' }{the value for the \code{metric} argument} \item{call }{the call}
-#' 
+#'
 #' For \code{plot.prcomp.resamples}, a Lattice object (see Details above)
 #' @author Max Kuhn
 #' @seealso \code{\link{resamples}}, \code{\link[lattice:xyplot]{barchart}},
@@ -321,33 +321,33 @@ modelCor <- function(x, metric = x$metric[1], ...)
 #' plotting in multivariate data analysis," J. Chemometrics, 17: 503-511
 #' @keywords hplot
 #' @examples
-#' 
+#'
 #' \dontrun{
 #' #load(url("http://topepo.github.io/caret/exampleModels.RData"))
-#' 
+#'
 #' resamps <- resamples(list(CART = rpartFit,
 #'                           CondInfTree = ctreeFit,
 #'                           MARS = earthFit))
 #' resampPCA <- prcomp(resamps)
-#' 
+#'
 #' resampPCA
-#' 
+#'
 #' plot(resampPCA, what = "scree")
-#' 
+#'
 #' plot(resampPCA, what = "components")
-#' 
+#'
 #' plot(resampPCA, what = "components", dims = 2, auto.key = list(columns = 3))
-#' 
+#'
 #' clustered <- cluster(resamps)
 #' plot(clustered)
-#' 
+#'
 #' }
 #' @export
 prcomp.resamples <- function(x, metric = x$metrics[1],  ...)
 {
-  
+
   if(length(metric) != 1) stop("exactly one metric must be given")
-  
+
   tmpData <- x$values[, grep(paste("~", metric, sep = ""),
                              names(x$value),
                              fixed = TRUE),
@@ -356,10 +356,10 @@ prcomp.resamples <- function(x, metric = x$metrics[1],  ...)
                          "",
                          names(tmpData),
                          fixed = TRUE)
-  
+
   tmpData <- as.data.frame(t(tmpData))
-  colnames(tmpData) <- paste("Resample", 
-                             gsub(" ", "0", format(1:ncol(tmpData))), 
+  colnames(tmpData) <- paste("Resample",
+                             gsub(" ", "0", format(1:ncol(tmpData))),
                              sep = "")
   out <- prcomp(~., data = tmpData, ...)
   out$metric <- metric
@@ -380,9 +380,9 @@ cluster.default <- function(x, ...) stop("only implemented for resamples objects
 #' @export
 cluster.resamples <- function(x, metric = x$metrics[1],  ...)
 {
-  
+
   if(length(metric) != 1) stop("exactly one metric must be given")
-  
+
   tmpData <- x$values[, grep(paste("~", metric, sep = ""),
                              names(x$value),
                              fixed = TRUE),
@@ -391,7 +391,7 @@ cluster.resamples <- function(x, metric = x$metrics[1],  ...)
                          "",
                          names(tmpData),
                          fixed = TRUE)
-  
+
   tmpData <- t(tmpData)
   dt <- dist(tmpData)
   out <- hclust(dt, ...)
@@ -411,25 +411,25 @@ plot.prcomp.resamples <- function(x, what = "scree", dims = max(2, ncol(x$rotati
   switch(what,
          scree =
 {
-  barchart(x$sdev ~ paste("PC", 
-                          gsub(" ", "0", format(seq(along = x$sdev))), 
+  barchart(x$sdev ~ paste("PC",
+                          gsub(" ", "0", format(seq(along = x$sdev))),
                           sep = ""),
            ylab = "Standard Deviation", ...)
 },
 cumulative =
 {
-  barchart(cumsum(x$sdev^2)/sum(x$sdev^2) ~ paste("PC", 
-                                                  gsub(" ", "0", format(seq(along = x$sdev))), 
+  barchart(cumsum(x$sdev^2)/sum(x$sdev^2) ~ paste("PC",
+                                                  gsub(" ", "0", format(seq(along = x$sdev))),
                                                   sep = ""),
            ylab = "Culmulative Percent of Variance", ...)
 },
 loadings =
 {
-  
+
   panelRange <- extendrange(x$rotation[, 1:dims,drop = FALSE])
   if(dims > 2)
   {
-    
+
     splom(~x$rotation[, 1:dims,drop = FALSE],
           main = useMathSymbols(x$metric),
           prepanel.limits = function(x) panelRange,
@@ -443,15 +443,15 @@ loadings =
            type = c("p", "g"),
            ...)
   }
-  
+
 },
 components =
 {
-  
+
   panelRange <- extendrange(x$x[, 1:dims,drop = FALSE])
   if(dims > 2)
   {
-    
+
     splom(~x$x[, 1:dims,drop = FALSE],
           main = useMathSymbols(x$metric),
           prepanel.limits = function(x) panelRange,
@@ -463,27 +463,27 @@ components =
            main = useMathSymbols(x$metric),
            xlim = panelRange,
            ylim = panelRange,
-           
+
            groups = rownames(x$x),
            type = c("p", "g"),
            ...)
   }
-  
+
 })
-} 
+}
 
 #' @method print prcomp.resamples
 #' @export
-print.prcomp.resamples <- function (x, digits = max(3, getOption("digits") - 3), print.x = FALSE, ...) 
+print.prcomp.resamples <- function (x, digits = max(3, getOption("digits") - 3), print.x = FALSE, ...)
 {
   printCall(x$call)
   cat("Metric:", x$metric, "\n")
-  
-  
+
+
   sds <- rbind(x$sdev, cumsum(x$sdev^2)/sum(x$sdev^2))
   rownames(sds) <- c("Std. Dev. ", "Cum. Percent Var. ")
   colnames(sds) <- rep("", ncol(sds))
-  
+
   print(sds, digits = digits, ...)
   cat("\nRotation:\n")
   print(x$rotation, digits = digits, ...)
@@ -503,7 +503,7 @@ print.resamples <- function(x, ...)
   cat("Models:", paste(x$models, collapse = ", "), "\n")
   cat("Number of resamples:", nrow(x$values), "\n")
   cat("Performance metrics:",  paste(x$metrics, collapse = ", "), "\n")
-  
+
   hasTimes <- apply(x$timing, 2, function(a) !all(is.na(a)))
   if(any(hasTimes))
   {
@@ -521,9 +521,9 @@ print.summary.resamples <- function(x, ...)
   printCall(x$call)
   cat("Models:", paste(x$models, collapse = ", "), "\n")
   cat("Number of resamples:", nrow(x$values), "\n")
-  
+
   cat("\n")
-  
+
   for(i in seq(along = x$statistics))
   {
     cat(names(x$statistics)[i], "\n")
@@ -535,19 +535,19 @@ print.summary.resamples <- function(x, ...)
 
 
 #' Lattice Functions for Visualizing Resampling Results
-#' 
+#'
 #' Lattice functions for visualizing resampling results across models
-#' 
+#'
 #' The ideas and methods here are based on Hothorn et al. (2005) and Eugster et
 #' al. (2008).
-#' 
+#'
 #' \code{dotplot} plots the average performance value (with two-sided
 #' confidence limits) for each model and metric.
-#' 
+#'
 #' \code{densityplot} and \code{bwplot} display univariate visualizations of
 #' the resampling distributions while \code{splom} shows the pair-wise
 #' relationships.
-#' 
+#'
 #' @aliases xyplot.resamples densityplot.resamples bwplot.resamples
 #' splom.resamples parallelplot.resamples dotplot.resamples
 #' @param x an object generated by \code{resamples}
@@ -588,50 +588,50 @@ print.summary.resamples <- function(x, ...)
 #' @references Hothorn et al. The design and analysis of benchmark experiments.
 #' Journal of Computational and Graphical Statistics (2005) vol. 14 (3) pp.
 #' 675-699
-#' 
+#'
 #' Eugster et al. Exploratory and inferential analysis of benchmark
 #' experiments. Ludwigs-Maximilians-Universitat Munchen, Department of
 #' Statistics, Tech. Rep (2008) vol. 30
 #' @keywords hplot
 #' @examples
-#' 
+#'
 #' \dontrun{
 #' #load(url("http://topepo.github.io/caret/exampleModels.RData"))
-#' 
+#'
 #' resamps <- resamples(list(CART = rpartFit,
 #'                           CondInfTree = ctreeFit,
 #'                           MARS = earthFit))
-#' 
-#' dotplot(resamps, 
-#'         scales =list(x = list(relation = "free")), 
+#'
+#' dotplot(resamps,
+#'         scales =list(x = list(relation = "free")),
 #'         between = list(x = 2))
-#' 
+#'
 #' bwplot(resamps,
 #'        metric = "RMSE")
-#' 
+#'
 #' densityplot(resamps,
 #'             auto.key = list(columns = 3),
 #'             pch = "|")
-#' 
+#'
 #' xyplot(resamps,
 #'        models = c("CART", "MARS"),
 #'        metric = "RMSE")
-#' 
+#'
 #' splom(resamps, metric = "RMSE")
 #' splom(resamps, variables = "metrics")
-#' 
+#'
 #' parallelplot(resamps, metric = "RMSE")
-#' 
-#' 
+#'
+#'
 #' }
-#' 
+#'
 #' @method xyplot resamples
 #' @export
-xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, metric = x$metric[1], units = "min", ...) 
+xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, metric = x$metric[1], units = "min", ...)
 {
   if(!(units %in% c("min", "sec", "hour"))) stop("units should be 'sec', 'min' or 'hour'")
   if(!(what %in% c("scatter", "BlandAltman", "tTime", "mTime", "pTime"))) stop("the what arg should be 'scatter', 'BlandAltman', 'tTime', 'mTime' or 'pTime'")
-  
+
   if(is.null(models)) models <- if(what %in% c("tTime", "mTime", "pTime")) x$models else x$models[1:2]
   if(length(metric) != 1) stop("exactly one metric must be given")
   if(what == "BlandAltman" & length(models) != 2) stop("exactly two model names must be given")
@@ -650,14 +650,15 @@ xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, m
                   {
                     panel.abline(h = 0, col = "darkgrey", lty = 2)
                     panel.xyplot(x, y, ...)
-                  })
-    
+                  },
+                  ...)
+
   }
   if(what == "scatter")
   {
     tmpData <- x$values[, paste(models, metric, sep ="~")]
     colnames(tmpData) <- gsub(paste("~", metric, sep = ""), "", colnames(tmpData))
-    
+
     ylm <- extendrange(c(tmpData[,1], tmpData[,2]))
     out <- xyplot(tmpData[,1] ~ tmpData[,2],
                   ylab = colnames(tmpData)[1],
@@ -668,7 +669,8 @@ xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, m
                   {
                     panel.abline(0, 1, col = "darkgrey", lty = 2)
                     panel.xyplot(x, y, ...)
-                  })
+                  },
+                  ...)
   }
   if(what %in% c("tTime", "mTime", "pTime"))
   {
@@ -682,7 +684,7 @@ xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, m
       list(xlim = extendrange(c(x, ux, lx)),
            ylim = extendrange(y))
     }
-    
+
     panel.ci <- function(x, y, lx, ux, groups, subscripts, pch = 16, ...)
     {
       theme <- trellis.par.get()
@@ -706,7 +708,7 @@ xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, m
                      col = theme$superpose.symbol$col[i],
                      cex = theme$superpose.symbol$cex[i],
                      pch = theme$superpose.symbol$pch[i],
-                     , ...)              
+                     , ...)
       }
     }
     tmpData <- apply(x$values[,-1], 2,
@@ -716,12 +718,12 @@ xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, m
                        c(tmp$conf.int[1], tmp$estimate, tmp$conf.int[2])
                      })
     rownames(tmpData) <- c("lower", "point", "upper")
-    
+
     tmpData <- tmpData[, paste(models, metric, sep ="~")]
     colnames(tmpData) <- gsub(paste("~", metric, sep = ""), "", colnames(tmpData))
     tmpData <- data.frame(t(tmpData))
     tmpData$Model <- rownames(tmpData)
-    
+
     tm <- switch(what,
                  tTime = x$timings[,"Everything"],
                  mTime = x$timings[,"FinalModel"],
@@ -731,14 +733,14 @@ xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, m
                   mTime = "Final Model Time (",
                   pTime = "Prediction Time (")
     lab <- paste(lab, units, ")", sep = "")
-    
+
     times <- data.frame(Time = tm,
                         Model = rownames(x$timings))
     plotData <- merge(times, tmpData)
-    
+
     if(units == "min") plotData$Time <- plotData$Time/60
     if(units == "hour") plotData$Time <- plotData$Time/60/60
-    
+
     out <- with(plotData,
                 xyplot(Time ~ point,
                        lx = lower, ux = upper,
@@ -747,7 +749,7 @@ xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, m
                        prepanel = prepanel.ci,
                        panel = panel.ci, groups = Model,
                        ...))
-  }  
+  }
   out
 }
 
@@ -755,10 +757,10 @@ xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, m
 #' @importFrom stats median
 #' @method parallelplot resamples
 #' @export
-parallelplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric[1], ...) 
+parallelplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric[1], ...)
 {
   if(length(metric) != 1) stop("exactly one metric must be given")
-  
+
   tmpData <- x$values[, grep(paste("~", metric, sep = ""),
                              names(x$value),
                              fixed = TRUE),
@@ -769,16 +771,16 @@ parallelplot.resamples <- function (x, data = NULL, models = x$models, metric = 
                          fixed = TRUE)
   rng <- range(unlist(lapply(lapply(tmpData, as.numeric), range, na.rm = TRUE)))
   prng <- pretty(rng)
-  
+
   reord <- order(apply(tmpData, 2, median, na.rm = TRUE))
   tmpData <- tmpData[, reord]
-  
+
   parallelplot(~tmpData,
                common.scale = TRUE,
                scales = list(x = list(at = (prng-min(rng))/diff(rng), labels = prng)),
                xlab = useMathSymbols(metric),
                ...)
-  
+
 }
 
 #' @rdname xyplot.resamples
@@ -790,12 +792,12 @@ splom.resamples <- function (x, data = NULL, variables = "models",
                              metric = NULL,
                              panelRange = NULL,
                              ...)  {
-  
+
   if(variables == "models") {
-    
+
     if(is.null(metric)) metric <- x$metric[1]
     if(length(metric) != 1) stop("exactly one metric must be given")
-    
+
     tmpData <- x$values[, grep(paste("~", metric, sep = ""),
                                names(x$value),
                                fixed = TRUE),
@@ -810,7 +812,7 @@ splom.resamples <- function (x, data = NULL, variables = "models",
           panel = function(x, y) {
             panel.splom(x, y, ...)
             panel.abline(0, 1, lty = 2, col = "darkgrey")
-            
+
           },
           main = useMathSymbols(metric),
           prepanel.limits = function(x) panelRange,
@@ -826,37 +828,37 @@ splom.resamples <- function (x, data = NULL, variables = "models",
       plotData <- subset(plotData, Model %in% models & Metric  %in% metric)
       means <- dcast(plotData, Model ~ Metric, mean, na.rm = TRUE)
       splom(~means[, metric], groups = means$Model, ...)
-      
+
     } else stop ("'variables' should be either 'models' or 'metrics'")
-    
+
   }
-  
+
 }
 
 #' @rdname xyplot.resamples
 #' @importFrom stats as.formula
 #' @method densityplot resamples
 #' @export
-densityplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...) 
+densityplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...)
 {
   plotData <- melt(x$values, id.vars = "Resample")
   tmp <- strsplit(as.character(plotData$variable), "~", fixed = TRUE)
   plotData$Model <- unlist(lapply(tmp, function(x) x[1]))
   plotData$Metric <- unlist(lapply(tmp, function(x) x[2]))
   plotData <- subset(plotData, Model %in% models & Metric  %in% metric)
-  
+
   metricVals <- unique(plotData$Metric)
   plotForm <- if(length(metricVals) > 1) as.formula(~value|Metric) else as.formula(~value)
   densityplot(plotForm, data = plotData, groups = Model,
               xlab = if(length(unique(plotData$Metric)) > 1) "" else metricVals, ...)
-  
+
 }
 
 #' @rdname xyplot.resamples
 #' @importFrom stats as.formula
 #' @method bwplot resamples
 #' @export
-bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...) 
+bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, ...)
 {
   plotData <- melt(x$values, id.vars = "Resample")
   tmp <- strsplit(as.character(plotData$variable), "~", fixed = TRUE)
@@ -873,14 +875,14 @@ bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metr
   plotForm <- if(length(metricVals) > 1) as.formula(Model~value|Metric) else as.formula(Model~value)
   bwplot(plotForm, data = plotData,
          xlab = if(length(unique(plotData$Metric)) > 1) "" else metricVals, ...)
-  
+
 }
 
 #' @rdname xyplot.resamples
 #' @importFrom stats aggregate as.formula median t.test
 #' @method dotplot resamples
 #' @export
-dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, conf.level = 0.95, ...) 
+dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metric, conf.level = 0.95, ...)
 {
   plotData <- melt(x$values, id.vars = "Resample")
   tmp <- strsplit(as.character(plotData$variable), "~", fixed = TRUE)
@@ -888,7 +890,7 @@ dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$met
   plotData$Metric <- unlist(lapply(tmp, function(x) x[2]))
   plotData <- subset(plotData, Model %in% models & Metric  %in% metric)
   plotData$variable <- factor(as.character(plotData$variable))
-  
+
   plotData <- split(plotData, plotData$variable)
   results <- lapply(plotData,
                     function(x, cl)
@@ -927,55 +929,55 @@ dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$met
             plotTheme <- trellis.par.get()
             y <- as.numeric(y)
             vals <- aggregate(x, list(group = y), function(x) c(min = min(x), mid = median(x), max = max(x)))
-            
+
             panel.dotplot(vals$x[,"mid"], vals$group,
                           pch = plotTheme$plot.symbol$pch[1],
                           col = plotTheme$plot.symbol$col[1],
                           cex = plotTheme$plot.symbol$cex[1])
-            panel.segments(vals$x[,"min"], vals$group, 
-                           vals$x[,"max"], vals$group, 
+            panel.segments(vals$x[,"min"], vals$group,
+                           vals$x[,"max"], vals$group,
                            lty = plotTheme$plot.line$lty[1],
                            col = plotTheme$plot.line$col[1],
                            lwd = plotTheme$plot.line$lwd[1])
             len <- .03
-            panel.segments(vals$x[,"min"], vals$group+len, 
-                           vals$x[,"min"], vals$group-len, 
+            panel.segments(vals$x[,"min"], vals$group+len,
+                           vals$x[,"min"], vals$group-len,
                            lty = plotTheme$plot.line$lty[1],
                            col = plotTheme$plot.line$col[1],
                            lwd = plotTheme$plot.line$lwd[1])
-            panel.segments(vals$x[,"max"], vals$group+len, 
-                           vals$x[,"max"], vals$group-len, 
+            panel.segments(vals$x[,"max"], vals$group+len,
+                           vals$x[,"max"], vals$group-len,
                            lty = plotTheme$plot.line$lty[1],
                            col = plotTheme$plot.line$col[1],
-                           lwd = plotTheme$plot.line$lwd[1])           
-            
+                           lwd = plotTheme$plot.line$lwd[1])
+
           },
           sub = paste("Confidence Level:", conf.level),
           ...)
-  
+
 }
 
 
 
 #' Inferential Assessments About Model Performance
-#' 
+#'
 #' Methods for making inferences about differences between models
-#' 
+#'
 #' The ideas and methods here are based on Hothorn et al. (2005) and Eugster et
 #' al. (2008).
-#' 
+#'
 #' For each metric, all pair-wise differences are computed and tested to assess
 #' if the difference is equal to zero.
-#' 
+#'
 #' When a Bonferroni correction is used, the confidence level is changed from
 #' \code{confLevel} to \code{1-((1-confLevel)/p)} here \code{p} is the number
 #' of pair-wise comparisons are being made. For other correction methods, no
 #' such change is used.
-#' 
+#'
 #' \code{compare_models} is a shorthand function to compare two models using a
 #' single metric. It returns the results of \code{\link[stats]{t.test}} on the
 #' differences.
-#' 
+#'
 #' @aliases diff.resamples summary.diff.resamples compare_models
 #' @param x an object generated by \code{resamples}
 #' @param models a character string for which models to compare
@@ -999,13 +1001,13 @@ dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$met
 #' \item{adjustment}{the p-value adjustment used} \item{models}{a character
 #' string for which models were compared.} \item{metrics }{a character string
 #' of performance metrics that were used}
-#' 
+#'
 #' or...
-#' 
+#'
 #' An object of class \code{"summary.diff.resamples"} with elements: \item{call
 #' }{the call} \item{table }{a list of tables that show the differences and
 #' p-values }
-#' 
+#'
 #' ...or (for \code{compare_models}) an object of class \code{htest} resulting
 #' from \code{\link[stats]{t.test}}.
 #' @author Max Kuhn
@@ -1015,29 +1017,29 @@ dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$met
 #' @references Hothorn et al. The design and analysis of benchmark experiments.
 #' Journal of Computational and Graphical Statistics (2005) vol. 14 (3) pp.
 #' 675-699
-#' 
+#'
 #' Eugster et al. Exploratory and inferential analysis of benchmark
 #' experiments. Ludwigs-Maximilians-Universitat Munchen, Department of
 #' Statistics, Tech. Rep (2008) vol. 30
 #' @keywords models
 #' @examples
-#' 
+#'
 #' \dontrun{
 #' #load(url("http://topepo.github.io/caret/exampleModels.RData"))
-#' 
+#'
 #' resamps <- resamples(list(CART = rpartFit,
 #'                           CondInfTree = ctreeFit,
 #'                           MARS = earthFit))
-#' 
+#'
 #' difs <- diff(resamps)
-#' 
+#'
 #' difs
-#' 
+#'
 #' summary(difs)
-#' 
+#'
 #' compare_models(rpartFit, ctreeFit)
 #' }
-#' 
+#'
 #' @method diff resamples
 #' @export
 diff.resamples <- function(x,
@@ -1048,16 +1050,16 @@ diff.resamples <- function(x,
                            adjustment = "bonferroni",
                            ...)
 {
-  
+
   allDif <- vector(mode = "list", length = length(metric))
   names(allDif) <- metric
-  
+
   x$models <- x$models[x$models %in% models]
   p <- length(x$models)
   ncomp <- choose(p, 2)
   if(adjustment == "bonferroni") confLevel <- 1 - ((1 - confLevel)/ncomp)
   allStats <- allDif
-  
+
   for(h in seq(along = metric))
   {
     index <- 0
@@ -1065,7 +1067,7 @@ diff.resamples <- function(x,
                   nrow = nrow(x$values),
                   ncol = choose(length(models), 2))
     stat <- vector(mode = "list", length = choose(length(models), 2))
-    
+
     colnames(dif) <- paste("tmp", 1:ncol(dif), sep = "")
     for(i in seq(along = models))
     {
@@ -1074,7 +1076,7 @@ diff.resamples <- function(x,
         if(i < j)
         {
           index <- index + 1
-          
+
           left <- paste(models[i], metric[h], sep = "~")
           right <- paste(models[j], metric[h], sep = "~")
           dif[,index] <- x$values[,left] - x$values[,right]
@@ -1082,9 +1084,9 @@ diff.resamples <- function(x,
         }
       }
     }
-    
+
     stats <- apply(dif, 2, function(x, tst, ...) tst(x, ...), tst = test, conf.level = confLevel, ...)
-    
+
     allDif[[h]] <- dif
     allStats[[h]] <- stats
   }
@@ -1115,10 +1117,10 @@ densityplot.diff.resamples <- function(x, data, metric = x$metric, ...)
   plotData <- subset(plotData, Metric %in% metric)
   metricVals <- unique(plotData$Metric)
   plotForm <- if(length(metricVals) > 1) as.formula(~values|Metric) else as.formula(~values)
-  
+
   densityplot(plotForm, data = plotData, groups = ind,
               xlab = if(length(unique(plotData$Metric)) > 1) "" else metricVals, ...)
-  
+
 }
 
 #' @importFrom stats as.formula
@@ -1135,12 +1137,12 @@ bwplot.diff.resamples <- function(x, data, metric = x$metric, ...)
   plotData <- subset(plotData, Metric %in% metric)
   metricVals <- unique(plotData$Metric)
   plotForm <- if(length(metricVals) > 1) as.formula(ind ~ values|Metric) else as.formula(ind ~ values)
-  
+
   bwplot(plotForm,
          data = plotData,
          xlab = if(length(unique(plotData$Metric)) > 1) "" else metricVals,
          ...)
-  
+
 }
 
 #' @method print diff.resamples
@@ -1151,7 +1153,7 @@ print.diff.resamples <- function(x, ...)
   cat("Models:", paste(x$models, collapse = ", "), "\n")
   cat("Metrics:", paste(x$metric, collapse = ", "), "\n")
   cat("Number of differences:",  ncol(x$difs[[1]]), "\n")
-  cat("p-value adjustment:",  x$adjustment, "\n")    
+  cat("p-value adjustment:",  x$adjustment, "\n")
   invisible(x)
 }
 
@@ -1163,7 +1165,7 @@ summary.diff.resamples <- function(object, digits = max(3, getOption("digits") -
 {
   all <- vector(mode = "list", length = length(object$metric))
   names(all) <- object$metric
-  
+
   for(h in seq(along = object$metric))
   {
     pvals <- matrix(NA, nrow = length(object$models), ncol = length(object$models))
@@ -1177,14 +1179,14 @@ summary.diff.resamples <- function(object, digits = max(3, getOption("digits") -
         }
       }
     }
-    
+
     index <- 0
     for(i in seq(along = object$models)) {
       for(j in seq(along = object$models)) {
         if(i < j) {
           index <- index + 1
           pvals[j, i] <- object$statistics[[h]][index][[1]]$p.value
-          
+
         }
       }
     }
@@ -1198,8 +1200,8 @@ summary.diff.resamples <- function(object, digits = max(3, getOption("digits") -
     colnames(asText) <- object$models
     rownames(asText) <- object$models
     all[[h]] <- asText
-  }  
-  
+  }
+
   out <- structure(
     list(
       call = match.call(),
@@ -1216,10 +1218,10 @@ levelplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], what 
 {
   comps <- ncol(x$difs[[1]])
   if(length(metric) != 1) stop("exactly one metric must be given")
-  
+
   all <- vector(mode = "list", length = length(x$metric))
   names(all) <- x$metric
-  
+
   for(h in seq(along = x$metric))
   {
     temp <- matrix(NA, nrow = length(x$models), ncol = length( x$models))
@@ -1228,7 +1230,7 @@ levelplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], what 
     {
       for(j in seq(along = x$models))
       {
-        
+
         if(i < j)
         {
           index <- index + 1
@@ -1236,7 +1238,7 @@ levelplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], what 
           {
             x$statistics[[h]][index][[1]]$p.value
           } else x$statistics[[h]][index][[1]]$estimate
-          temp[j, i] <- temp[i, j] 
+          temp[j, i] <- temp[i, j]
         }
       }
     }
@@ -1251,7 +1253,7 @@ levelplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], what 
   names(all)[names(all) == "variable"] <- "B"
   all$A <- factor(all$A, levels = x$models)
   all$B <- factor(as.character(all$B), levels = x$models)
-  
+
   all <- all[complete.cases(all),]
   levelplot(value ~ A + B|Metric,
             data = all,
@@ -1269,15 +1271,15 @@ levelplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], what 
 print.summary.diff.resamples <- function(x, ...)
 {
   printCall(x$call)
-  
+
   if(x$adjustment != "none")
     cat("p-value adjustment:", x$adjustment, "\n")
-  
-  
+
+
   cat("Upper diagonal: estimates of the difference\n",
       "Lower diagonal: p-value for H0: difference = 0\n\n",
       sep = "")
-  
+
   for(i in seq(along = x$table))
   {
     cat(names(x$table)[i], "\n")
@@ -1290,15 +1292,15 @@ print.summary.diff.resamples <- function(x, ...)
 
 
 #' Lattice Functions for Visualizing Resampling Differences
-#' 
+#'
 #' Lattice functions for visualizing resampling result differences between
 #' models
-#' 
+#'
 #' \code{densityplot} and \code{bwplot} display univariate visualizations of
 #' the resampling distributions. \code{levelplot} displays the matrix of
 #' pair-wide comparisons. \code{dotplot} shows the differences along with their
 #' associated confidence intervals.
-#' 
+#'
 #' @aliases levelplot.diff.resamples densityplot.diff.resamples
 #' bwplot.diff.resamples dotplot.diff.resamples
 #' @param x an object generated by \code{\link{diff.resamples}}
@@ -1318,29 +1320,29 @@ print.summary.diff.resamples <- function(x, ...)
 #' \code{\link[lattice:xyplot]{xyplot}}, \code{\link[lattice:splom]{splom}}
 #' @keywords hplot
 #' @examples
-#' 
+#'
 #' \dontrun{
 #' #load(url("http://topepo.github.io/caret/exampleModels.RData"))
-#' 
+#'
 #' resamps <- resamples(list(CART = rpartFit,
 #'                           CondInfTree = ctreeFit,
 #'                           MARS = earthFit))
 #' difs <- diff(resamps)
-#' 
+#'
 #' dotplot(difs)
-#' 
+#'
 #' densityplot(difs,
 #'             metric = "RMSE",
 #'             auto.key = TRUE,
 #'             pch = "|")
-#' 
+#'
 #' bwplot(difs,
 #'        metric = "RMSE")
-#' 
+#'
 #' levelplot(difs, what = "differences")
-#' 
+#'
 #' }
-#' 
+#'
 #' @method dotplot diff.resamples
 #' @export
 dotplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], ...)
@@ -1349,7 +1351,7 @@ dotplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], ...)
   {
     metric <- metric[1]
     warning("Sorry Dave, only one value of metric is allowed right now. I'll use the first value")
-    
+
   }
   h <- which(x$metric == metric)
   plotData <- as.data.frame(matrix(NA, ncol = 3, nrow = ncol(x$difs[[metric]])))
@@ -1359,13 +1361,13 @@ dotplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], ...)
   {
     for(j in seq(along = x$models))
     {
-      
+
       if(i < j)
       {
         index <- index + 1
         plotData[index, 1] <- x$statistics[[h]][index][[1]]$estimate
         plotData[index, 2:3] <- x$statistics[[h]][index][[1]]$conf.int
-        
+
       }
     }
   }
@@ -1385,8 +1387,8 @@ dotplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], ...)
           panel = function(x, y)
           {
             plotTheme <- trellis.par.get()
-            
-            
+
+
             middle <- aggregate(x, list(mod = y), median)
             upper <- aggregate(x, list(mod = as.numeric(y)), max)
             lower <- aggregate(x, list(mod = as.numeric(y)), min)
@@ -1405,13 +1407,13 @@ dotplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], ...)
                              lwd = plotTheme$plot.line$lwd[1],
                              lty = plotTheme$plot.line$lty[1])
               len <- .03
-              panel.segments(lower$x[i], upper$mod[i]+len, 
-                             lower$x[i], lower$mod[i]-len, 
+              panel.segments(lower$x[i], upper$mod[i]+len,
+                             lower$x[i], lower$mod[i]-len,
                              lty = plotTheme$plot.line$lty[1],
                              col = plotTheme$plot.line$col[1],
                              lwd = plotTheme$plot.line$lwd[1])
-              panel.segments(upper$x[i],upper$mod[i]+len, 
-                             upper$x[i], lower$mod[i]-len, 
+              panel.segments(upper$x[i],upper$mod[i]+len,
+                             upper$x[i], lower$mod[i]-len,
                              lty = plotTheme$plot.line$lty[1],
                              col = plotTheme$plot.line$col[1],
                              lwd = plotTheme$plot.line$lwd[1])

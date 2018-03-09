@@ -98,8 +98,8 @@ resamps <- resamples(list(CART = rpartFit,
                           CondInfTree = ctreeFit,
                           MARS = earthFit))
 
-dotplot(resamps, 
-        scales =list(x = list(relation = "free")), 
+dotplot(resamps,
+        scales =list(x = list(relation = "free")),
         between = list(x = 2))
 
 bwplot(resamps,

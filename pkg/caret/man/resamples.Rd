@@ -99,13 +99,13 @@ set.seed(1)
 ##                            times = 100)
 
 ## rpartFit <- train(bbbDescr, logBBB,
-##                   "rpart", 
+##                   "rpart",
 ##                   tuneLength = 16,
 ##                   trControl = trainControl(
 ##                     method = "LGOCV", index = tmp))
 
 ## ctreeFit <- train(bbbDescr, logBBB,
-##                   "ctree", 
+##                   "ctree",
 ##                   trControl = trainControl(
 ##                     method = "LGOCV", index = tmp))
 

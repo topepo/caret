@@ -18,6 +18,7 @@
     \item \code{svmLinearWeights2} and \code{svmLinear3} may have chosen the incorrect SVM loss function. This was found by Dirk Neumann \issue{826}
     \item \cpkg{bnclassify} models \code{awtan} and \code{awnb} were updated since they previously used deprecated functions. All \cpkg{bnclassify} models now require version 0.3.3 of that package or greater \issue{815}.
     \item \code{confusionMatrix.default} not requires \code{data} and \code{reference} to be factors and will throw an error otherwise. Previously, the vectors were converted to factors but this resulted in too many bug reports and misuse.
+    \item \code{xyplot.resample} did not pass the dots to the underlying plot function \issue{853}.
   }
 }
 
