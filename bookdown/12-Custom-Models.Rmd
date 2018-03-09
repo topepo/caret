@@ -502,7 +502,7 @@ The speed-ups show a significant decrease in training time using this method.
 
 **Note:** The previous examples were run using parallel processing. The remainder in this chapter are run sequentially and, for simplicity, the namespace operator is not used in the custom code modules below. 
 
-```{r custom-stop-par, inlcude = FALSE}
+```{r custom-stop-par, include = FALSE}
 registerDoSEQ()
 ```
 
@@ -527,7 +527,7 @@ mod
 
 We can create a custom model that mimics this code so that we can obtain resampling estimates for this specific model:
 
-```{r custom_mboost_code}
+```{r custom_mboost_code, warning = FALSE, message = FALSE}
 modelInfo <- list(label = "Model-based Gradient Boosting",
                   library = "mboost",
                   type = "Regression",
@@ -712,7 +712,7 @@ table(trainingSet$Class)
 
 There is almost a 9:1 imbalance in these data. Let's use a standard random forest model with these data using the default value of `mtry`. We'll also use repeated 10-fold cross validation to get a sense of performance:
 
-```{r custom_thresh_mod0}
+```{r custom_thresh_mod0,  out.width = '80%', fig.width = 6, fig.height = 6}
 set.seed(949)
 mod0 <- train(Class ~ ., data = trainingSet,
               method = "rf",
@@ -922,7 +922,7 @@ mod <- train(x = anorexia[, 1:2], y = anorexia$Postwt, method = offset_mod)
 coef(mod$finalModel)
 ``` 
 
-```{r custom-restart-par, inlcude = FALSE}
+```{r custom-restart-par, include = FALSE}
 cl2 <- makeForkCluster(parallel::detectCores(logical = TRUE))
 registerDoParallel(cl2)
 ```
