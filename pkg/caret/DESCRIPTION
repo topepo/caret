@@ -32,7 +32,7 @@ Suggests:
     e1071,
     earth (>= 2.2-3),
     fastICA,
-    gam,
+    gam (>= 1.15),
     ipred,
     kernlab,
     knitr,
