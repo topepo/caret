@@ -768,19 +768,6 @@ For classification and regression with tuning parameters:
 }
 
 
-\strong{Knn regression via sklearn.neighbors.KNeighborsRegressor} (\code{method = 'pythonKnnReg'})
-
-For regression using package \pkg{rPython} with tuning parameters:
-\itemize{
-\item Number of Neighbors (\code{n_neighbors}, numeric)
-\item Weight Function (\code{weights}, character)
-\item Algorithm (\code{algorithm}, character)
-\item Leaf Size (\code{leaf_size}, numeric)
-\item Distance Metric (\code{metric}, character)
-\item p (\code{p}, numeric)
-}
-
-
 \strong{L2 Regularized Linear Support Vector Machines with Class Weights} (\code{method = 'svmLinearWeights2'})
 
 For classification using package \pkg{LiblineaR} with tuning parameters:
@@ -975,7 +962,6 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 \item Prior Probability (\code{prior}, numeric)
 }
 
-Note: Not on CRAN but can be installed from GitHub at \code{bmihaljevic/bnclassify}. 
 
 \strong{Model Averaged Neural Network} (\code{method = 'avNNet'})
 
@@ -1186,7 +1172,6 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 \item Smoothing Parameter (\code{smooth}, numeric)
 }
 
-Note: Not on CRAN but can be installed from GitHub at \code{bmihaljevic/bnclassify}. 
 
 \strong{Naive Bayes Classifier with Attribute Weighting} (\code{method = 'awnb'})
 
@@ -1195,7 +1180,6 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 \item Smoothing Parameter (\code{smooth}, numeric)
 }
 
-Note: Not on CRAN but can be installed from GitHub at \code{bmihaljevic/bnclassify}. 
 
 \strong{Nearest Shrunken Centroids} (\code{method = 'pam'})
 
@@ -1826,7 +1810,6 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 \item Search Direction (\code{direction}, character)
 }
 
-Note: Not on CRAN but can be installed from GitHub at \code{bmihaljevic/bnclassify}. 
 
 \strong{Shrinkage Discriminant Analysis} (\code{method = 'sda'})
 
@@ -2083,7 +2066,6 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 \item Smoothing Parameter (\code{smooth}, numeric)
 }
 
-Note: Not on CRAN but can be installed from GitHub at \code{bmihaljevic/bnclassify}. 
 
 \strong{Tree Augmented Naive Bayes Classifier Structure Learner Wrapper} (\code{method = 'tanSearch'})
 
@@ -2096,7 +2078,6 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 \item Super-Parent (\code{sp}, logical)
 }
 
-Note: Not on CRAN but can be installed from GitHub at \code{bmihaljevic/bnclassify}. 
 
 \strong{Tree Augmented Naive Bayes Classifier with Attribute Weighting} (\code{method = 'awtan'})
 
@@ -2106,7 +2087,6 @@ For classification using package \pkg{bnclassify} with tuning parameters:
 \item Smoothing Parameter (\code{smooth}, numeric)
 }
 
-Note: Not on CRAN but can be installed from GitHub at \code{bmihaljevic/bnclassify}. 
 
 \strong{Tree Models from Genetic Algorithms} (\code{method = 'evtree'})
 
