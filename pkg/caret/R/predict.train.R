@@ -80,8 +80,6 @@ predict.list <- function(object, ...) {
 #' @references Kuhn (2008), ``Building Predictive Models in R Using the caret''
 #' (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
 #' @keywords manip
-#' @method predict train
-#' @export
 #' @examples
 #'
 #'    \dontrun{
@@ -104,7 +102,9 @@ predict.list <- function(object, ...) {
 #' extractProb(bothModels, testX = iris[1:10, -5])
 #'   }
 #'
-#' @export 
+#' @method predict train
+#' @export predict.train
+#' @export
 predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.omit, ...) {
   if(all(names(object) != "modelInfo")) {
     object <- update(object, param = NULL)
@@ -149,11 +149,11 @@ predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.o
     } else stop("please specify data via newdata")
   }
 
-  if("xNames" %in% names(object$finalModel) & 
-     is.null(object$preProcess$method$pca) & 
+  if("xNames" %in% names(object$finalModel) &
+     is.null(object$preProcess$method$pca) &
      is.null(object$preProcess$method$ica))
       newdata <- newdata[, colnames(newdata) %in% object$finalModel$xNames, drop = FALSE]
-  
+
   if(type == "prob") {
     out <- probFunction(method = object$modelInfo,
                         modelFit = object$finalModel,
