@@ -18,8 +18,6 @@ library(pROC)
 
 ## Measures for Regression
 
-<div id="class"></div>
-
 The function `postResample` can be used to estimate the root mean squared error (RMSE), simple R<sup>2</sup>, and the mean absolute error (MAE) for numeric outcomes. For example: 
  
 ```{r perf_reg}
@@ -43,6 +41,7 @@ postResample(pred = bh_pred, obs = bh_te$medv)
 
 A note about how R<sup>2</sup> is calculated by `caret`: it takes the straightforward approach of computing the correlation between the observed and predicted values (i.e. R) and squaring the value. When the model is poor, this can lead to differences between this estimator and the more widely known estimate derived form linear regression models. Mostly notably, the correlation approach will not generate negative values of R<sup>2</sup> (which are theoretically invalid). A comparison of these and other estimators can be found in [Kvalseth 1985](http://amstat.tandfonline.com/doi/abs/10.1080/00031305.1985.10479448). 
 
+<div id="class"></div>
 
 ## Measures for Predicted Classes
 
