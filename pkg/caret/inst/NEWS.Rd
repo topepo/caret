@@ -3,6 +3,13 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+\section{Changes in version 6.0-80}{
+  \itemize{ 
+    \item Two bugs associated with \code{varImp} in \code{lm} \issue{858} and in \code{bartMachine} were fixed by \code{hadjipantelis}.
+  }
+}
+
+
 \section{Changes in version 6.0-79}{
   \itemize{
     \item \code{keras} and \code{mxnet} models have better initialization of parameters \href{https://github.com/topepo/caret/pull/765/files}{pr 765}
@@ -19,6 +26,7 @@
     \item \cpkg{bnclassify} models \code{awtan} and \code{awnb} were updated since they previously used deprecated functions. All \cpkg{bnclassify} models now require version 0.3.3 of that package or greater \issue{815}.
     \item \code{confusionMatrix.default} not requires \code{data} and \code{reference} to be factors and will throw an error otherwise. Previously, the vectors were converted to factors but this resulted in too many bug reports and misuse.
     \item \code{xyplot.resample} did not pass the dots to the underlying plot function \issue{853}.
+    \item A bug with model \code{xgbDART} was fixed by \code{hadjipantelis}.
   }
 }
 
@@ -33,7 +41,7 @@
     \item The \code{preProcess} function can now scale variables to a range where the user can set the high and low values \issue{730}. Thanks to Sergey Korop.
     \item Erwan Le Pennec fixed some issues when \code{train} was run using some parallel processing backends (e.g. \code{doFuture} and \code{doAzureParallel}) \issue{748}.
     \item Waleed Muhanna found and fixed a bug in \code{twoClassSim} when irrelevant variables were generated. \issue{744}.
-    \item \code{hadjipantelis} added the DART model (aka "Dropouts meet Multiple Additive Regression Trees") with the model code \code{xgbDART } \issue{742}.
+    \item \code{hadjipantelis} added the DART model (aka "Dropouts meet Multiple Additive Regression Trees") with the model code \code{xgbDART} \issue{742}.
     \item Vadim Khotilovich updated \code{predict.dummyVars} to run faster with large datasets with many factors \issue{727}.
     \item \code{spatialSign} now has the option of removing missing data prior to computing the norm \issue{789}.
     \item The various \cpkg{earth} models have been updated to work with recent versions of that package, including multi-class \code{glm} models \issue{779}.

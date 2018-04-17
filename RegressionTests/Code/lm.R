@@ -79,9 +79,19 @@ if(
 
 test_reg_imp_rec <- varImp(test_reg_rec)
 
-
 test_reg_pred_rec <- predict(test_reg_rec, testing[, -ncol(testing)])
 
+
+
+######################################################################### 
+
+mod <- train(Petal.Width~., data=iris[,1:4], method='lm',
+            tuneGrid  = expand.grid(intercept = FALSE),  
+            trControl = trainControl( number= 2))
+if( nrow(varImp(mod)$imp) != 3){
+  stop("Incorrect number of variables returned by varImp.")
+}
+ 
 #########################################################################
 
 test_reg_predictors1 <- predictors(test_reg_cv_model)

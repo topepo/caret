@@ -66,7 +66,7 @@ modelInfo <- list(label = "Bayesian Additive Regression Trees",
                     },
                   predictors = function(x, ...)  colnames(x$X),
                   varImp = function(object, ...){
-                    imps <- investigate_var_importance(object, plot = FALSE)
+                    imps <- bartMachine::investigate_var_importance(object, plot = FALSE)
                     imps <- imps$avg_var_props - 1.96*imps$sd_var_props
                     missing_x <- !(colnames(object$X) %in% names(imps))
                     if(any(missing_x)) {
