@@ -6,6 +6,7 @@
 \section{Changes in version 6.0-80}{
   \itemize{ 
     \item Two bugs associated with \code{varImp} in \code{lm} \issue{858} and in \code{bartMachine} were fixed by \code{hadjipantelis}.
+    \item SMOTE sampling now works with tibbles \issue{875}
   }
 }
 
