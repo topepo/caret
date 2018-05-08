@@ -10,7 +10,7 @@ modelInfo <- list(label = "MetaForest",
                   },
                   loop = NULL,
                   type = "Regression",
-                  parameters = data.frame(parameter = c("whichweights", "mtry", "min.node.size"), # Add random, unif, fixed
+                  parameters = data.frame(parameter = c("whichweights", "mtry", "min.node.size"),
                                           class = c("character", "numeric", "numeric"),
                                           label = c("Type of weights to use", "#Randomly Selected Predictors",
                                                     "Minimal Node Size")),
