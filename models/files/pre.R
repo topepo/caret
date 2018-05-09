@@ -1,4 +1,4 @@
-pre <- list(
+modelInfo <- list(
   library = "pre",
   type = c("Classification", "Regression"),
   parameters = data.frame(parameter = c("sampfrac", "maxdepth", 
