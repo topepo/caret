@@ -1,9 +1,6 @@
 pre <- list(
-  
   library = "pre",
-  
   type = c("Classification", "Regression"),
-  
   parameters = data.frame(parameter = c("sampfrac", "maxdepth", 
                                         "learnrate", "mtry", 
                                         "ntrees", "winsfrac", 
@@ -17,7 +14,6 @@ pre <- list(
                                     "ntrees", "winsfrac", 
                                     "use.grad", "tree.unbiased", 
                                     "type")),
-  
   grid = function(x, y, len = NULL, search = "grid", 
                   sampfrac = .5, maxdepth = Inf, learnrate = .01, 
                   mtry = Inf, ntrees = 500, winsfrac = .025, 
@@ -55,10 +51,8 @@ pre <- list(
     }
     return(out)
   },
-  
   fit = function(x, y, wts = NULL, param, lev = NULL, last = NULL, 
-                 weights = NULL, classProbs, ...) {
-    
+                 weights = NULL, classProbs, ...) { 
     list()
     data <- data.frame(cbind(x, response = y))
     formula <- response ~ .
@@ -74,7 +68,6 @@ pre <- list(
     pre_args <- c(pre_args, list(...))
     do.call(pre, pre_args)
   },
-  
   predict = function(modelFit, newdata, submodels = NULL) {
     if (modelFit$family %in% c("gaussian", "mgaussian")) {
       pre:::predict.pre(object = modelFit, newdata = as.data.frame(newdata)) # submodels can be employed to loop through penalty.par.val
@@ -84,7 +77,6 @@ pre <- list(
       factor(pre:::predict.pre(object = modelFit, newdata = as.data.frame(newdata), type = "class"))      
     }
   },
-  
   prob = function(modelFit, newdata, submodels = NULL) {
     probs <- pre:::predict.pre(object = modelFit, newdata = as.data.frame(newdata), type = "response")
     # For binary classification, create matrix:    
@@ -94,17 +86,11 @@ pre <- list(
     }
     probs
   },
-
   sort = NULL,
-  
   loop = NULL,  # something with penalty.par.val and predict.pre
-
   levels = NULL,
-  
   tag = c("Rule-Based Model", "Tree-Based Model", "L1 regularization", "Bagging", "Boosting"),
-  
   label = "Prediction Rule Ensembles",
-  
   predictors = function(x, ...) { 
     if (x$family %in% c("gaussian", "poisson", "binomial")) {
       return(importance(x, plot = FALSE, ...)$varimps$varname)
@@ -113,12 +99,8 @@ pre <- list(
       return(NULL)
     }
   },
-  
-  varImp = FALSE,
-  
+  varImp = NULL,
   oob = NULL,
-  
   notes = NULL,
-  
   check = NULL
 )
