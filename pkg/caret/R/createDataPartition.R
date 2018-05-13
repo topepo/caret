@@ -222,7 +222,7 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
     out
   }
 
-
+#' @rdname createDataPartition
 #' @export
 createMultiFolds <- function(y, k = 10, times = 5) {
   if(class(y)[1] == "Surv") y <- y[,"time"]
