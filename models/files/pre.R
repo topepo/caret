@@ -55,7 +55,7 @@ modelInfo <- list(
                  weights = NULL, classProbs, ...) { 
     list()
     data <- data.frame(cbind(x, .outcome = y))
-    formula <- .outcome ~ .
+    formula <- formula(terms(.outcome ~ ., data = data))
     if (is.null(weights)) { weights <- rep(1, times = nrow(x)) }
     pre_args <- list(formula = formula, data = data, 
                      weights = weights, sampfrac = param$sampfrac, 
