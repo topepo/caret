@@ -54,8 +54,8 @@ modelInfo <- list(
   fit = function(x, y, wts = NULL, param, lev = NULL, last = NULL, 
                  weights = NULL, classProbs, ...) { 
     list()
-    data <- data.frame(cbind(x, response = y))
-    formula <- response ~ .
+    data <- data.frame(cbind(x, .outcome = y))
+    formula <- .outcome ~ .
     if (is.null(weights)) { weights <- rep(1, times = nrow(x)) }
     pre_args <- list(formula = formula, data = data, 
                      weights = weights, sampfrac = param$sampfrac, 
