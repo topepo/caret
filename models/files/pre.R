@@ -20,12 +20,14 @@ modelInfo <- list(
                                     "Model Type",
                                     "Regularization Parameter")),
   grid = function(x, y, len = NULL, search = "grid", 
-                  sampfrac = c(.5, .75), maxdepth = 2L:4L, learnrate = .01, 
+                  sampfrac = .5, maxdepth = 3L, learnrate = .01, 
                   mtry = Inf, ntrees = 500, winsfrac = .025, 
                   use.grad = TRUE, tree.unbiased = TRUE, 
                   type = "both", penalty.par.val = "lambda.1se") {
     if (search == "grid") {
-      if (!is.null(len)) {
+      if (is.null(len)) {
+        maxdepth <- 2L:4L
+      } else {
         maxdepth <- c(3L, 4L, 2L, 5L, 1L, 6:len)[1:len] 
         if (len > 2) {
           sampfrac <- c(.5, .75, 1)
