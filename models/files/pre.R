@@ -25,6 +25,10 @@ modelInfo <- list(
                   use.grad = TRUE, tree.unbiased = TRUE, 
                   type = "both", penalty.par.val = "lambda.1se") {
     if (search == "grid") {
+      if (is.null(len)) {
+        maxdepth <- 2L:4L
+        winsfrac <- c(.5, .75)
+      }
       out <- expand.grid(sampfrac = sampfrac, maxdepth = maxdepth, 
                          learnrate = learnrate, mtry = mtry, 
                          ntrees = ntrees, winsfrac = winsfrac,
@@ -72,7 +76,7 @@ modelInfo <- list(
   },
   fit = function(x, y, wts = NULL, param, lev = NULL, last = NULL, 
                  weights = NULL, classProbs, ...) { 
-    data <- data.frame(cbind(x, .outcome = y))
+    data <- data.frame(x, .outcome = y)
     formula <- .outcome ~ .
     if (is.null(weights)) { weights <- rep(1, times = nrow(x)) }
     pre(formula = formula, data = data, weights = weights, 
