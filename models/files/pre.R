@@ -20,14 +20,19 @@ modelInfo <- list(
                                     "Model Type",
                                     "Regularization Parameter")),
   grid = function(x, y, len = NULL, search = "grid", 
-                  sampfrac = .5, maxdepth = Inf, learnrate = .01, 
+                  sampfrac = c(.5, .75), maxdepth = 2L:4L, learnrate = .01, 
                   mtry = Inf, ntrees = 500, winsfrac = .025, 
                   use.grad = TRUE, tree.unbiased = TRUE, 
                   type = "both", penalty.par.val = "lambda.1se") {
     if (search == "grid") {
-      if (is.null(len)) {
-        maxdepth <- 2L:4L
-        winsfrac <- c(.5, .75)
+      if (!is.null(len)) {
+        maxdepth <- c(3L, 4L, 2L, 5L, 1L, 6:len)[1:len] 
+        if (len > 2) {
+          sampfrac <- c(.5, .75, 1)
+        }
+        if (len > 1) {
+          penalty.par.val = c("lambda.min", "lambda.1se")
+        }
       }
       out <- expand.grid(sampfrac = sampfrac, maxdepth = maxdepth, 
                          learnrate = learnrate, mtry = mtry, 
@@ -158,7 +163,6 @@ modelInfo <- list(
                       decreasing = FALSE)
     x[ordering,]
   },
-  #loop = NULL,
   loop = function(fullGrid) {
 
    # loop should provide a grid containing models that can
