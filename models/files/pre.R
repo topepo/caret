@@ -25,9 +25,7 @@ modelInfo <- list(
                   use.grad = TRUE, tree.unbiased = TRUE, 
                   type = "both", penalty.par.val = "lambda.1se") {
     if (search == "grid") {
-      if (is.null(len)) {
-        maxdepth <- 2L:4L
-      } else {
+      if (!is.null(len)) {
         maxdepth <- c(3L, 4L, 2L, 5L, 1L, 6:len)[1:len] 
         if (len > 2) {
           sampfrac <- c(.5, .75, 1)
