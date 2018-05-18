@@ -33,7 +33,7 @@ modelInfo <- list(label = "Neural Network",
                     if(is.numeric(y)) {
                       mxnet::mx.set.seed(21)  
                       out <- mxnet::mx.mlp(data = x, label = y, out_node = 1, out_activation = "rmse", 
-                                           optimizer = 'adam', eval.metric = mx.metric.rmse, array.layout = "rowmajor", 
+                                           optimizer = 'adam', eval.metric = mxnet::mx.metric.rmse, array.layout = "rowmajor", 
                                            learning.rate = param$learningrate,  
                                            beta1 = param$beta1, 
                                            beta2 = param$beta2, 
@@ -47,7 +47,7 @@ modelInfo <- list(label = "Neural Network",
                       y <- as.numeric(y) - 1 
                       mxnet::mx.set.seed(21)
                       out <- mxnet::mx.mlp(data = x, label = y, out_node = length(unique(y)), out_activation = "softmax", 
-                                          optimizer = 'adam', eval.metric = mx.metric.accuracy, array.layout = "rowmajor", 
+                                          optimizer = 'adam', eval.metric = mxnet::mx.metric.accuracy, array.layout = "rowmajor", 
                                           learning.rate = param$learningrate, 
                                           beta1 = param$beta1, 
                                           beta2 = param$beta2, 
