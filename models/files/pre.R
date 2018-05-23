@@ -3,26 +3,21 @@ modelInfo <- list(
   type = c("Classification", "Regression"),
   parameters = data.frame(parameter = c("sampfrac", "maxdepth", 
                                         "learnrate", "mtry", 
-                                        "ntrees", "winsfrac", 
-                                        "use.grad", "tree.unbiased", 
+                                        "ntrees", "use.grad", 
                                         "type", "penalty.par.val"),
-                          class = c(rep("numeric", times = 6), 
-                                    rep("logical", times = 2), 
-                                    rep("character", times = 2)),
+                          class = c(rep("numeric", times = 5), 
+                                    "logical", rep("character", times = 2)),
                           label = c("Subsampling Fraction", 
                                     "Max Tree Depth", 
                                     "Shrinkage", 
                                     "# Randomly Selected Predictors",
-                                    "#Trees", 
-                                    "Winsorizing Fraction", 
-                                    "Gradient boost?", 
-                                    "Unbiased tree induction?", 
+                                    "# Trees", 
+                                    "Employ Gradient Boosting", 
                                     "Model Type",
                                     "Regularization Parameter")),
   grid = function(x, y, len = NULL, search = "grid", 
                   sampfrac = .5, maxdepth = 3L, learnrate = .01, 
-                  mtry = Inf, ntrees = 500, winsfrac = .025, 
-                  use.grad = TRUE, tree.unbiased = TRUE, 
+                  mtry = Inf, ntrees = 500, use.grad = TRUE, 
                   type = "both", penalty.par.val = "lambda.1se") {
     if (search == "grid") {
       if (!is.null(len)) {
@@ -36,33 +31,12 @@ modelInfo <- list(
       }
       out <- expand.grid(sampfrac = sampfrac, maxdepth = maxdepth, 
                          learnrate = learnrate, mtry = mtry, 
-                         ntrees = ntrees, winsfrac = winsfrac,
-                         use.grad = use.grad, tree.unbiased = tree.unbiased, 
+                         ntrees = ntrees, use.grad = use.grad,  
                          type = type, penalty.par.val = penalty.par.val)
-      # mtry cannot be used if tree.unbiased = FALSE:
-      inds <- which(!out$tree.unbiased & !is.infinite(out$mtry))
+      # type = "linear" makes all others redundant:
+      inds <- which(out$type == "linear")
       if (length(inds) > 0) {
         out <- out[-inds,]
-      }
-      # use.grad must be TRUE if tree.unbiased = FALSE:
-      inds <- which(!out$tree.unbiased & !out$use.grad)
-      if (length(inds) > 0) {
-        out <- out[-inds,]
-      }
-      # type = "linear" makes all but winsfrac redundant:
-      inds <- which(out$type == "linear")[-(1:length(winsfrac))]
-      if (length(inds) > 0) {
-        out <- out[-inds,]
-      }
-      out[out$type == "linear","winsfrac"] <- winsfrac
-      # type = "rules" makes winsfrac redundant:
-      type_rules <- out[out$type == "rules",]
-      inds <- which(out$type == "rules")
-      if (length(inds) > 0) {
-        out <- out[-inds,]
-        type_rules <- unique(type_rules[,-which(names(type_rules) == "winsfrac")])
-        type_rules$winsfrac <- winsfrac[1] 
-        out <- rbind(out, type_rules)
       }
     } else if (search == "random") {
       out <- data.frame(
@@ -71,9 +45,7 @@ modelInfo <- list(
         learnrate = sample(c(0.001, 0.01, 0.1), size = len, replace = TRUE),
         mtry = sample(c(ceiling(sqrt(ncol(x))), ceiling(ncol(x)/3), ncol(x)), size = len, replace = TRUE),
         ntrees = rep(500, times = len),
-        winsfrac = rep(0.025, times = len),
         use.grad = sample(c(TRUE, FALSE), size = len, replace = TRUE),
-        tree.unbiased = rep(TRUE, times = len),
         type = sample(c("both", "rules"), size = len, replace = TRUE),
         penalty.par.val = sample(c("lambda.1se", "lambda.min"), size = len, replace = TRUE))
     }
@@ -87,8 +59,7 @@ modelInfo <- list(
     pre(formula = formula, data = data, weights = weights, 
         sampfrac = param$sampfrac, maxdepth = param$maxdepth, 
         learnrate = param$learnrate, mtry = param$mtry, 
-        ntrees = param$ntrees, winsfrac = param$winsfrac, 
-        use.grad = param$use.grad, tree.unbiased = param$tree.unbiased, 
+        ntrees = param$ntrees, use.grad = param$use.grad, 
         type = param$type, ...)
   },
   predict = function(modelFit, newdata, submodels = NULL) {
@@ -153,7 +124,6 @@ modelInfo <- list(
   },
   sort = function(x) {
     ordering <- order(x$type != "linear", # linear is simplest
-                      1 - x$tree.unbiased, # TRUE is simplest
                       x$maxdepth, # lower values are simpler
                       x$use.grad, # TRUE employs ctree (vs ctree), so simplest
                       x$ntrees, # lower values are simpler
