@@ -4,21 +4,20 @@ modelInfo <- list(
   parameters = data.frame(parameter = c("sampfrac", "maxdepth", 
                                         "learnrate", "mtry", 
                                         "ntrees", "use.grad", 
-                                        "type", "penalty.par.val"),
+                                        "penalty.par.val"),
                           class = c(rep("numeric", times = 5), 
-                                    "logical", rep("character", times = 2)),
+                                    "logical", "character"),
                           label = c("Subsampling Fraction", 
                                     "Max Tree Depth", 
                                     "Shrinkage", 
                                     "# Randomly Selected Predictors",
                                     "# Trees", 
                                     "Employ Gradient Boosting", 
-                                    "Model Type",
                                     "Regularization Parameter")),
   grid = function(x, y, len = NULL, search = "grid", 
                   sampfrac = .5, maxdepth = 3L, learnrate = .01, 
                   mtry = Inf, ntrees = 500, use.grad = TRUE, 
-                  type = "both", penalty.par.val = "lambda.1se") {
+                  penalty.par.val = "lambda.1se") {
     if (search == "grid") {
       if (!is.null(len)) {
         maxdepth <- c(3L, 4L, 2L, 5L, 1L, 6:len)[1:len] 
@@ -32,12 +31,7 @@ modelInfo <- list(
       out <- expand.grid(sampfrac = sampfrac, maxdepth = maxdepth, 
                          learnrate = learnrate, mtry = mtry, 
                          ntrees = ntrees, use.grad = use.grad,  
-                         type = type, penalty.par.val = penalty.par.val)
-      # type = "linear" makes all others redundant:
-      inds <- which(out$type == "linear")
-      if (length(inds) > 0) {
-        out <- out[-inds,]
-      }
+                         penalty.par.val = penalty.par.val)
     } else if (search == "random") {
       out <- data.frame(
         sampfrac = sample(c(.5, .75, 1), size = len, replace = TRUE),
@@ -46,7 +40,6 @@ modelInfo <- list(
         mtry = sample(c(ceiling(sqrt(ncol(x))), ceiling(ncol(x)/3), ncol(x)), size = len, replace = TRUE),
         ntrees = rep(500, times = len),
         use.grad = sample(c(TRUE, FALSE), size = len, replace = TRUE),
-        type = sample(c("both", "rules"), size = len, replace = TRUE),
         penalty.par.val = sample(c("lambda.1se", "lambda.min"), size = len, replace = TRUE))
     }
     return(out)
@@ -59,8 +52,7 @@ modelInfo <- list(
     pre(formula = formula, data = data, weights = weights, 
         sampfrac = param$sampfrac, maxdepth = param$maxdepth, 
         learnrate = param$learnrate, mtry = param$mtry, 
-        ntrees = param$ntrees, use.grad = param$use.grad, 
-        type = param$type, ...)
+        ntrees = param$ntrees, use.grad = param$use.grad, ...)
   },
   predict = function(modelFit, newdata, submodels = NULL) {
     if (is.null(submodels)) {
