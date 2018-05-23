@@ -115,8 +115,7 @@ modelInfo <- list(
     probs
   },
   sort = function(x) {
-    ordering <- order(x$type != "linear", # linear is simplest
-                      x$maxdepth, # lower values are simpler
+    ordering <- order(x$maxdepth, # lower values are simpler
                       x$use.grad, # TRUE employs ctree (vs ctree), so simplest
                       x$ntrees, # lower values are simpler
                       max(x$mtry) - x$mtry, # higher values yield more similar tree, so simpler
