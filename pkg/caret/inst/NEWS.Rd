@@ -4,9 +4,12 @@
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
 \section{Changes in version 6.0-80}{
-  \itemize{ 
+  \itemize{
     \item Two bugs associated with \code{varImp} in \code{lm} \issue{858} and in \code{bartMachine} were fixed by \code{hadjipantelis}.
     \item SMOTE sampling now works with tibbles \issue{875}
+    \item \cpkg{rpart} now a dependency due to new CRAN policies.
+    \item Added a \code{ggplot} method for \code{resamples} that produces confidence intervals.
+    \itme \code{hadjipantelis} added some fixes for \code{mxnet} models \issue{887}.
   }
 }
 

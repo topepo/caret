@@ -1,5 +1,5 @@
 Package: caret
-Version: 6.0-79
+Version: 6.0-80
 Title: Classification and Regression Training
 Author: Max Kuhn. Contributions from Jed Wing, Steve Weston, Andre
     Williams, Chris Keefer, Allan Engelhardt, Tony Cooper, Zachary Mayer,
@@ -55,7 +55,8 @@ Suggests:
     pamr,
     superpc,
     Cubist,
-    testthat (>= 0.9.1)
+    testthat (>= 0.9.1),
+    rpart
 License: GPL (>= 2)
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
