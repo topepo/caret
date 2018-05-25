@@ -961,9 +961,12 @@ dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$met
 #' @rdname xyplot.resamples
 #' @method ggplot resamples
 #' @importFrom stats reorder
+#' @param mapping,environment Not used.
 #' @export
 ggplot.resamples <-
   function (data = NULL,
+            mapping = NULL,
+            environment = NULL,
             models = data$models,
             metric = data$metric[1],
             conf.level = 0.95,
@@ -1484,5 +1487,6 @@ compare_models <- function(a, b, metric = a$metric[1]) {
 }
 
 
-
+#' @importFrom utils globalVariables
+utils::globalVariables(c("LowerLimit", "UpperLimit"))
 
