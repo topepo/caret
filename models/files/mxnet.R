@@ -30,7 +30,7 @@ modelInfo <- list(label = "Neural Network",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    mx.set.seed(21)  
+                    mxnet::mx.set.seed(21)  
                     num_units <- param[grepl("layer[1-9]", names(param))]
                     num_units <- num_units[num_units > 0]
                     if(!is.matrix(x)) x <- as.matrix(x)
@@ -42,7 +42,7 @@ modelInfo <- list(label = "Neural Network",
                                            out_activation = "rmse", 
                                            learning.rate = param$learning.rate, 
                                            momentum = param$momentum, 
-                                           eval.metric = mx.metric.rmse, 
+                                           eval.metric = mxnet::mx.metric.rmse, 
                                            array.layout = "rowmajor",
                                            activation = rep( as.character(param$activation), length(num_units)),
                                            # Use He/MSRA when available in R 
@@ -57,7 +57,7 @@ modelInfo <- list(label = "Neural Network",
                                            out_activation = "softmax",
                                            learning.rate = param$learning.rate, 
                                            momentum = param$momentum, 
-                                           eval.metric = mx.metric.accuracy, 
+                                           eval.metric = mxnet::mx.metric.accuracy, 
                                            array.layout = "rowmajor",
                                            activation = rep( as.character(param$activation), length(num_units)),
                                            initializer = mxnet::mx.init.Xavier(factor_type = "avg", magnitude = 3, rnd_type = 'uniform'), 

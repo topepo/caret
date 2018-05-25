@@ -72,7 +72,7 @@ must have the same two possible outcomes and one of the outcomes must be
 thought of as a "relevant" results.
 }
 \details{
-The recall (aka specificity) is defined as the proportion of relevant
+The recall (aka sensitivity) is defined as the proportion of relevant
 results out of the number of samples which were actually relevant. When
 there are no relevant results, recall is not defined and a value of
 \code{NA} is returned.
