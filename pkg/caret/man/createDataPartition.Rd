@@ -8,6 +8,7 @@
 \alias{createTimeSlices}
 \alias{groupKFold}
 \alias{createFolds}
+\alias{createMultiFolds}
 \alias{createTimeSlices}
 \alias{groupKFold}
 \alias{createResample}
@@ -17,6 +18,8 @@ createDataPartition(y, times = 1, p = 0.5, list = TRUE, groups = min(5,
   length(y)))
 
 createFolds(y, k = 10, list = TRUE, returnTrain = FALSE)
+
+createMultiFolds(y, k = 10, times = 5)
 
 createTimeSlices(y, initialWindow, horizon = 1, fixedWindow = TRUE,
   skip = 0)
