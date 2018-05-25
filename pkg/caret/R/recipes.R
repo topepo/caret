@@ -70,8 +70,7 @@ model_failed <- function(x) {
 pred_failed <- function(x)
   inherits(x, "try-error")
 
-## Convert the recipe to holdout data. rename this to something like
-## get_perf_data
+## Convert the recipe to holdout data.
 #' @importFrom recipes bake all_predictors all_outcomes has_role
 holdout_rec <- function(object, dat, index) {
   ##
