@@ -44,7 +44,7 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                     ## party builds the levels into the model object, so I'm
                     ## going to assume that all the levels will be passed to
                     ## the output
-                    out <- predict(modelFit, newdata, OOB = TRUE)
+                    out <- party:::predict.RandomForest(modelFit, newdata = newdata, OOB = TRUE)
                     if(is.matrix(out)) out <- out[,1]
                     if(!is.null(modelFit@responses@levels$.outcome)) out <- as.character(out)
                     
@@ -53,7 +53,7 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                   prob = function(modelFit, newdata = NULL, submodels = NULL) {
                     if(!is.null(newdata) && !is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     obsLevels <- levels(modelFit@data@get("response")[,1])
-                    rawProbs <- party::treeresponse(modelFit, newdata, OOB = TRUE)
+                    rawProbs <- party::treeresponse(modelFit, newdata = newdata, OOB = TRUE)
                     probMatrix <- matrix(unlist(rawProbs), ncol = length(obsLevels), byrow = TRUE)
                     out <- data.frame(probMatrix)
                     colnames(out) <- obsLevels
@@ -61,11 +61,11 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                     out
                   },
                   predictors = function(x, ...) {
-                    vi <- varimp(x, ...)
+                    vi <- party::varimp(x, ...)
                     names(vi)[vi != 0]
                   },
                   varImp = function(object, ...) {
-                    variableImp <- varimp(object, ...)
+                    variableImp <- party::varimp(object, ...)
                     out <- data.frame(Overall = variableImp)
                     out
                   },
@@ -74,6 +74,6 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                   sort = function(x) x[order(x[,1]),],
                   oob = function(x) {
                     obs <- x@data@get("response")[,1]
-                    pred <- predict(x, OOB = TRUE)
+                    pred <- party:::predict.RandomForest(x, OOB = TRUE)
                     postResample(pred, obs)
                   })
