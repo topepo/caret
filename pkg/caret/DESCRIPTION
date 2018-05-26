@@ -56,7 +56,8 @@ Suggests:
     superpc,
     Cubist,
     testthat (>= 0.9.1),
-    rpart
+    rpart,
+    dplyr
 License: GPL (>= 2)
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr

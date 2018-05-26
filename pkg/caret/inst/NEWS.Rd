@@ -9,7 +9,7 @@
     \item SMOTE sampling now works with tibbles \issue{875}
     \item \cpkg{rpart} now a dependency due to new CRAN policies.
     \item Added a \code{ggplot} method for \code{resamples} that produces confidence intervals.
-    \itme \code{hadjipantelis} added some fixes for \code{mxnet} models \issue{887}.
+    \item \code{hadjipantelis} added some fixes for \code{mxnet} models \issue{887}.
   }
 }
 
