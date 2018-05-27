@@ -6,26 +6,26 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>The caret Package</title>
-  <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+  <meta name="description" content="Documentation for the caret package.">
+  <meta name="generator" content="bookdown 0.7.11 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Documentation for the <code>caret</code> package" />
-  <meta name="github-repo" content="<a href="https://github.com/topepo/caret" class="uri">https://github.com/topepo/caret</a>" />
+  <meta property="og:description" content="Documentation for the caret package." />
+  <meta name="github-repo" content="topepo/caret" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="The caret Package" />
   
-  <meta name="twitter:description" content="Documentation for the <code>caret</code> package" />
+  <meta name="twitter:description" content="Documentation for the caret package." />
   
 
 <meta name="author" content="Max Kuhn">
 
 
-<meta name="date" content="2017-09-04">
+<meta name="date" content="2018-05-26">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -47,58 +47,87 @@
 
 
 
-<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.2/datatables.js"></script>
-<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.4/datatables.js"></script>
+<link href="libs/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="libs/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-bootstrap-1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="libs/dt-core-bootstrap-1.10.16/js/dataTables.bootstrap.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <script src="libs/d3-4.5.0/d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
 <script src="libs/plotly-binding-4.7.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 </head>
@@ -202,9 +231,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.45</b> Self-Organising Maps</a></li>
 <li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.46</b> String Kernel</a></li>
 <li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.47</b> Support Vector Machines</a></li>
-<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.48</b> Text Mining</a></li>
-<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.49</b> Tree-Based Model</a></li>
-<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.50</b> Two Class Only</a></li>
+<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#supports-class-probabilities"><i class="fa fa-check"></i><b>7.0.48</b> Supports Class Probabilities</a></li>
+<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.49</b> Text Mining</a></li>
+<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.50</b> Tree-Based Model</a></li>
+<li class="chapter" data-level="7.0.51" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.51</b> Two Class Only</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="models-clustered-by-tag-similarity.html"><a href="models-clustered-by-tag-similarity.html"><i class="fa fa-check"></i><b>8</b> Models Clustered by Tag Similarity</a></li>
 <li class="chapter" data-level="9" data-path="parallel-processing.html"><a href="parallel-processing.html"><i class="fa fa-check"></i><b>9</b> Parallel Processing</a></li>
@@ -236,9 +266,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="13.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-sort-element"><i class="fa fa-check"></i><b>13.4</b> The sort Element</a><ul>
 <li class="chapter" data-level="13.4.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-levels-element"><i class="fa fa-check"></i><b>13.4.1</b> The <code>levels</code> Element</a></li>
 </ul></li>
-<li class="chapter" data-level="13.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>13.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a><ul>
-<li class="chapter" data-level="13.5.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-loop-element"><i class="fa fa-check"></i><b>13.5.1</b> The loop Element</a></li>
-</ul></li>
+<li class="chapter" data-level="13.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>13.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a></li>
 <li class="chapter" data-level="13.6" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-3-nonstandard-formulas"><i class="fa fa-check"></i><b>13.6</b> Illustrative Example 3: Nonstandard Formulas</a></li>
 <li class="chapter" data-level="13.7" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-4-pls-feature-extraction-pre-processing"><i class="fa fa-check"></i><b>13.7</b> Illustrative Example 4: PLS Feature Extraction Pre-Processing</a></li>
 <li class="chapter" data-level="13.8" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-5-optimizing-probability-thresholds-for-class-imbalances"><i class="fa fa-check"></i><b>13.8</b> Illustrative Example 5: Optimizing probability thresholds for class imbalances</a></li>
@@ -365,337 +393,373 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="session-information" class="section level1">
 <h1><span class="header-section-number">24</span> Session Information</h1>
-<p>This documentation was created on Mon Sep 04 2017 with the following R packages</p>
+<p>This documentation was created on Sat May 26 2018 with the following R packages</p>
 <pre><code>## ─ Session info ──────────────────────────────────────────────────────────
 ##  setting  value                       
-##  version  R version 3.4.1 (2017-06-30)
-##  os       Ubuntu 16.04.1 LTS          
-##  system   x86_64, linux-gnu           
+##  version  R version 3.5.0 (2018-04-23)
+##  os       macOS High Sierra 10.13.4   
+##  system   x86_64, darwin15.6.0        
 ##  ui       X11                         
-##  language en_US                       
+##  language (EN)                        
 ##  collate  en_US.UTF-8                 
-##  tz       posixrules                  
-##  date     2017-09-04                  
+##  tz       America/New_York            
+##  date     2018-05-26                  
 ## 
 ## ─ Packages ──────────────────────────────────────────────────────────────
-##  package                   * version  date      
-##  abind                       1.4-5    2016-07-21
-##  acepack                     1.4.1    2016-10-29
-##  AppliedPredictiveModeling * 1.1-6    2014-07-25
-##  assertthat                  0.2.0    2017-04-11
-##  backports                   1.1.0    2017-05-22
-##  base64enc                   0.1-3    2015-07-28
-##  bindr                       0.1      2016-11-13
-##  bindrcpp                  * 0.2      2017-06-17
-##  bitops                      1.0-6    2013-08-17
-##  bookdown                  * 0.5      2017-08-20
-##  C50                       * 0.1.0-24 2015-03-09
-##  caret                     * 6.0-77   2017-09-04
-##  caTools                   * 1.17.1   2014-09-10
-##  checkmate                   1.8.3    2017-07-03
-##  class                     * 7.3-14   2015-08-30
-##  clisymbols                  1.2.0    2017-05-21
-##  cluster                     2.0.6    2017-03-16
-##  codetools                   0.2-15   2016-10-05
-##  coin                        1.2-1    2017-07-17
-##  colorspace                  1.3-2    2016-12-14
-##  combinat                    0.0-8    2012-10-29
-##  CORElearn                   1.51.2   2017-08-08
-##  crosstalk                   1.0.0    2016-12-21
-##  curl                        2.8.1    2017-07-21
-##  CVST                        0.2-1    2013-12-10
-##  data.table                  1.10.4   2017-02-01
-##  ddalpha                     1.2.1    2016-10-10
-##  dendextend                  1.5.2    2017-03-28
-##  DEoptimR                    1.0-8    2016-11-19
-##  desirability              * 2.1      2016-09-22
-##  digest                      0.6.12   2017-01-27
-##  dimRed                      0.1.0    2017-05-04
-##  diptest                     0.75-7   2016-12-05
-##  DMwR                      * 0.4.1    2013-08-08
-##  doMC                      * 1.3.4    2015-10-13
-##  dplyr                     * 0.7.2    2017-07-20
-##  DRR                         0.0.2    2016-09-15
-##  DT                        * 0.2      2016-08-09
-##  e1071                     * 1.6-8    2017-02-02
-##  earth                     * 4.5.1    2017-07-28
-##  ellipse                     0.3-8    2013-04-13
-##  evaluate                    0.10.1   2017-06-24
-##  flexmix                     2.3-14   2017-04-28
-##  foreach                   * 1.4.3    2015-10-13
-##  foreign                     0.8-69   2017-06-21
-##  Formula                   * 1.2-2    2017-07-10
-##  fpc                         2.1-10   2015-08-14
-##  gam                         1.14-4   2017-04-25
-##  gbm                       * 2.1.3    2017-03-21
-##  gclus                       1.3.1    2012-06-25
-##  gdata                       2.18.0   2017-06-06
-##  ggplot2                   * 2.2.1    2016-12-30
-##  ggthemes                  * 3.4.0    2017-02-19
-##  glue                        1.1.1    2017-06-21
-##  gower                       0.1.2    2017-02-23
-##  gplots                      3.0.1    2016-03-30
-##  gridExtra                   2.2.1    2016-02-29
-##  gtable                      0.2.0    2016-02-26
-##  gtools                      3.5.0    2015-05-29
-##  heatmaply                 * 0.10.1   2017-05-27
-##  Hmisc                     * 4.0-3    2017-05-02
-##  htmlTable                   1.9      2017-01-26
-##  htmltools                   0.3.6    2017-04-28
-##  htmlwidgets                 0.9      2017-07-10
-##  httpuv                      1.3.5    2017-07-04
-##  httr                        1.3.1    2017-08-20
-##  igraph                      1.1.2    2017-07-21
-##  ipred                     * 0.9-6    2017-03-01
-##  iterators                 * 1.0.8    2015-10-13
-##  jpeg                        0.1-8    2014-01-23
-##  jsonlite                    1.5      2017-06-01
-##  kernlab                   * 0.9-25   2016-10-03
-##  KernSmooth                  2.23-15  2015-06-29
-##  klaR                      * 0.6-12   2014-08-06
-##  knitr                     * 1.17     2017-08-10
-##  labeling                    0.3      2014-08-23
-##  lattice                   * 0.20-35  2017-03-25
-##  latticeExtra              * 0.6-28   2016-02-09
-##  lava                        1.5      2017-03-16
-##  lazyeval                    0.2.0    2016-06-12
-##  lubridate                   1.6.0    2016-09-13
-##  magrittr                    1.5      2014-11-22
-##  MASS                      * 7.3-47   2017-04-21
-##  Matrix                      1.2-11   2017-08-16
-##  mboost                    * 2.8-1    2017-07-23
-##  mclust                      5.3      2017-05-21
-##  mda                       * 0.4-9    2016-08-06
-##  mime                        0.5      2016-07-07
-##  mlbench                   * 2.1-1    2012-07-10
-##  MLmetrics                   1.1.1    2016-05-13
-##  ModelMetrics                1.1.0    2016-08-26
-##  modeltools                * 0.2-21   2013-09-02
-##  multcomp                    1.4-6    2016-07-14
-##  munsell                     0.4.3    2016-02-13
-##  mvtnorm                   * 1.0-6    2017-03-02
-##  networkD3                 * 0.4      2017-03-18
-##  nlme                      * 3.1-131  2017-02-06
-##  nnet                        7.3-12   2016-02-02
-##  nnls                        1.4      2012-03-19
-##  party                     * 1.2-3    2017-04-12
-##  partykit                    1.1-1    2016-09-20
-##  pkgconfig                   2.0.1    2017-03-21
-##  plotly                    * 4.7.1    2017-07-29
-##  plotmo                    * 3.3.4    2017-07-27
-##  plotrix                   * 3.6-6    2017-08-16
-##  pls                       * 2.6-0    2016-12-18
-##  plyr                      * 1.8.4    2016-06-08
-##  prabclus                    2.2-6    2015-01-14
-##  pROC                      * 1.10.0   2017-06-10
-##  prodlim                     1.6.1    2017-03-06
-##  proxy                     * 0.4-17   2017-02-01
-##  purrr                       0.2.3    2017-08-02
-##  QSARdata                  * 1.3      2013-07-16
-##  quadprog                    1.5-5    2013-04-17
-##  quantmod                    0.4-10   2017-06-20
-##  R6                          2.2.2    2017-06-17
-##  randomForest              * 4.6-12   2015-10-07
-##  RColorBrewer              * 1.1-2    2014-12-07
-##  Rcpp                        0.12.12  2017-07-15
-##  RcppRoll                    0.2.2    2015-04-05
-##  recipes                   * 0.1.0    2017-09-02
-##  registry                    0.3      2015-07-08
-##  reshape2                  * 1.4.2    2016-10-22
-##  rlang                       0.1.2    2017-08-09
-##  rmarkdown                   1.6      2017-06-15
-##  robustbase                  0.92-7   2016-12-09
-##  ROCR                        1.0-7    2015-03-26
-##  ROSE                      * 0.0-3    2014-07-15
-##  rpart                       4.1-11   2017-04-21
-##  rprojroot                   1.2      2017-01-16
-##  rstudioapi                  0.6      2016-06-27
-##  sandwich                  * 2.4-0    2017-07-26
-##  scales                      0.5.0    2017-08-24
-##  seriation                   1.2-2    2017-05-09
-##  sessioninfo               * 1.0.0    2017-06-21
-##  shiny                       1.0.5    2017-08-23
-##  stabs                     * 0.6-3    2017-07-19
-##  stringi                     1.1.5    2017-04-07
-##  stringr                     1.2.0    2017-02-18
-##  strucchange               * 1.5-1    2015-06-06
-##  survival                  * 2.41-3   2017-04-04
-##  TeachingDemos             * 2.10     2016-02-12
-##  TH.data                     1.0-8    2017-01-23
-##  tibble                      1.3.4    2017-08-22
-##  tidyr                       0.7.1    2017-09-01
-##  tidyselect                  0.2.0    2017-08-30
-##  timeDate                    3012.100 2015-01-23
-##  trimcluster                 0.1-2    2012-10-29
-##  TSP                         1.1-5    2017-02-22
-##  TTR                         0.23-2   2017-07-11
-##  viridis                   * 0.4.0    2017-03-27
-##  viridisLite               * 0.2.0    2017-03-24
-##  whisker                     0.3-2    2013-04-28
-##  withr                       2.0.0    2017-07-28
-##  xtable                      1.8-2    2016-02-05
-##  xts                         0.10-0   2017-07-07
-##  yaml                        2.1.14   2016-11-12
-##  zoo                       * 1.8-0    2017-04-12
-##  source                         
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  local (@6.0-77)                
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@7.3-14)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@0.2-15)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@0.2-1)                  
-##  CRAN (R 3.4.1)                 
-##  cran (@1.2.1)                  
-##  CRAN (R 3.4.1)                 
-##  cran (@1.0-8)                  
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@0.1.0)                  
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@0.0.2)                  
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@1.4.3)                  
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@0.1.2)                  
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@0.9-6)                  
-##  cran (@1.0.8)                  
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@0.9-25)                 
-##  cran (@2.23-15)                
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@1.5)                    
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@1.1.0)                  
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@7.3-12)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@1.6.1)                  
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@0.2.2)                  
-##  Github (topepo/recipes@6da32d1)
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@0.92-7)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  cran (@3012.10)                
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)                 
-##  CRAN (R 3.4.1)</code></pre>
+##  package                   * version    date      
+##  abind                       1.4-5      2016-07-21
+##  acepack                     1.4.1      2016-10-29
+##  AppliedPredictiveModeling * 1.1-6      2014-07-25
+##  assertthat                  0.2.0      2017-04-11
+##  backports                   1.1.2      2017-12-13
+##  base64enc                   0.1-3      2015-07-28
+##  bindr                       0.1.1      2018-03-13
+##  bindrcpp                  * 0.2.2      2018-03-29
+##  bitops                      1.0-6      2013-08-17
+##  bookdown                  * 0.7.11     2018-05-23
+##  broom                     * 0.4.4      2018-03-29
+##  C50                       * 0.1.2      2018-05-22
+##  caret                     * 6.0-80     2018-05-26
+##  caTools                   * 1.17.1     2014-09-10
+##  checkmate                   1.8.5      2017-10-24
+##  class                       7.3-14     2015-08-30
+##  clisymbols                  1.2.0      2017-05-21
+##  cluster                     2.0.7-1    2018-04-09
+##  codetools                   0.2-15     2016-10-05
+##  coin                        1.2-2      2017-11-28
+##  colorspace                  1.3-2      2016-12-14
+##  combinat                    0.0-8      2012-10-29
+##  CORElearn                   1.52.1     2018-04-02
+##  crosstalk                   1.0.0      2016-12-21
+##  Cubist                      0.2.2      2018-05-21
+##  curl                        3.2        2018-03-28
+##  CVST                        0.2-1      2013-12-10
+##  data.table                  1.11.2     2018-05-08
+##  ddalpha                     1.3.3      2018-04-30
+##  dendextend                  1.7.0      2018-02-11
+##  DEoptimR                    1.0-8      2016-11-19
+##  desirability              * 2.1        2016-09-22
+##  digest                      0.6.15     2018-01-28
+##  dimRed                      0.1.0.9001 2018-05-24
+##  diptest                     0.75-7     2016-12-05
+##  DMwR                      * 0.4.1      2013-08-08
+##  doMC                      * 1.3.5      2017-12-12
+##  doParallel                * 1.0.11     2017-09-28
+##  dplyr                     * 0.7.5      2018-05-19
+##  DRR                         0.0.3      2018-01-06
+##  DT                        * 0.4        2018-01-30
+##  e1071                     * 1.6-8      2017-02-02
+##  earth                     * 4.6.2      2018-03-21
+##  ellipse                     0.4.1      2018-01-05
+##  evaluate                    0.10.1     2017-06-24
+##  flexmix                     2.3-14     2017-04-28
+##  foreach                   * 1.4.4      2017-12-12
+##  foreign                     0.8-70     2017-11-28
+##  Formula                   * 1.2-2      2017-07-10
+##  fpc                         2.1-11     2018-01-13
+##  gam                         1.15       2018-02-25
+##  gbm                       * 2.1.3      2017-03-21
+##  gclus                       1.3.1      2012-06-25
+##  gdata                       2.18.0     2017-06-06
+##  geometry                    0.3-6      2015-09-09
+##  ggplot2                   * 2.2.1      2016-12-30
+##  ggthemes                  * 3.4.2      2018-04-03
+##  glue                        1.2.0      2017-10-29
+##  gower                       0.1.2      2017-02-23
+##  gplots                      3.0.1      2016-03-30
+##  gridExtra                   2.3        2017-09-09
+##  gtable                      0.2.0      2016-02-26
+##  gtools                      3.5.0      2015-05-29
+##  heatmaply                 * 0.14.1     2018-02-01
+##  highr                       0.6        2016-05-09
+##  Hmisc                     * 4.1-1      2018-01-03
+##  htmlTable                   1.11.2     2018-01-20
+##  htmltools                   0.3.6      2017-04-28
+##  htmlwidgets                 1.2        2018-04-19
+##  httpuv                      1.4.1      2018-04-21
+##  httr                        1.3.1      2017-08-20
+##  igraph                      1.2.1      2018-03-10
+##  inum                        1.0-0      2017-12-12
+##  ipred                     * 0.9-6      2017-03-01
+##  iterators                 * 1.0.9      2017-12-12
+##  jpeg                        0.1-8      2014-01-23
+##  jsonlite                    1.5        2017-06-01
+##  kernlab                   * 0.9-25     2016-10-03
+##  KernSmooth                  2.23-15    2015-06-29
+##  klaR                      * 0.6-14     2018-03-19
+##  knitr                     * 1.20       2018-02-20
+##  labeling                    0.3        2014-08-23
+##  later                       0.7.1      2018-03-07
+##  lattice                   * 0.20-35    2017-03-25
+##  latticeExtra              * 0.6-28     2016-02-09
+##  lava                        1.6.1      2018-03-28
+##  lazyeval                    0.2.1      2017-10-29
+##  libcoin                     1.0-1      2017-12-13
+##  lubridate                   1.7.4      2018-04-11
+##  magic                       1.5-8      2018-01-26
+##  magrittr                    1.5        2014-11-22
+##  MASS                      * 7.3-49     2018-02-23
+##  Matrix                      1.2-14     2018-04-09
+##  mboost                    * 2.8-1      2017-07-23
+##  mclust                      5.4        2017-11-22
+##  mda                         0.4-10     2017-11-02
+##  mime                        0.5        2016-07-07
+##  miniUI                      0.1.1      2016-01-15
+##  mlbench                   * 2.1-1      2012-07-10
+##  MLmetrics                   1.1.1      2016-05-13
+##  mnormt                      1.5-5      2016-10-15
+##  ModelMetrics                1.1.0      2016-08-26
+##  modeltools                * 0.2-21     2013-09-02
+##  multcomp                    1.4-8      2017-11-08
+##  munsell                     0.4.3      2016-02-13
+##  mvtnorm                   * 1.0-7      2018-01-26
+##  networkD3                 * 0.4        2017-03-18
+##  nlme                      * 3.1-137    2018-04-07
+##  nnet                        7.3-12     2016-02-02
+##  nnls                        1.4        2012-03-19
+##  party                     * 1.3-0      2018-04-20
+##  partykit                    1.2-1      2018-04-20
+##  pillar                      1.2.1      2018-02-27
+##  pkgconfig                   2.0.1      2017-03-21
+##  plotly                    * 4.7.1      2017-07-29
+##  plotmo                    * 3.3.6      2018-03-21
+##  plotrix                   * 3.7        2017-12-07
+##  pls                       * 2.6-0      2016-12-18
+##  plyr                      * 1.8.4      2016-06-08
+##  prabclus                    2.2-6      2015-01-14
+##  pROC                      * 1.11.0     2018-03-25
+##  prodlim                     2018.04.18 2018-04-18
+##  promises                    1.0.1      2018-04-13
+##  proxy                     * 0.4-22     2018-04-08
+##  psych                       1.8.3.3    2018-03-30
+##  purrr                       0.2.4      2017-10-18
+##  QSARdata                  * 1.3        2013-07-16
+##  quadprog                    1.5-5      2013-04-17
+##  quantmod                    0.4-13     2018-04-13
+##  questionr                   0.6.2      2017-11-01
+##  R6                          2.2.2      2017-06-17
+##  randomForest              * 4.6-14     2018-03-25
+##  RColorBrewer              * 1.1-2      2014-12-07
+##  Rcpp                        0.12.17    2018-05-18
+##  RcppRoll                    0.2.2      2015-04-05
+##  recipes                   * 0.1.2.9001 2018-05-24
+##  registry                    0.5        2017-12-03
+##  reshape2                  * 1.4.3      2017-12-11
+##  rlang                       0.2.0      2018-02-20
+##  rmarkdown                   1.9        2018-03-01
+##  robustbase                  0.93-0     2018-04-24
+##  ROCR                        1.0-7      2015-03-26
+##  ROSE                      * 0.0-3      2014-07-15
+##  rpart                       4.1-13     2018-02-23
+##  rprojroot                   1.3-2      2018-01-03
+##  rstudioapi                  0.7        2017-09-07
+##  sandwich                  * 2.4-0      2017-07-26
+##  scales                      0.5.0.9000 2018-05-09
+##  seriation                   1.2-3      2018-02-05
+##  sessioninfo               * 1.0.0      2017-06-21
+##  sfsmisc                     1.1-2      2018-03-05
+##  shiny                       1.0.5      2017-08-23
+##  stabs                     * 0.6-3      2017-07-19
+##  stringi                     1.2.2      2018-05-02
+##  stringr                     1.3.0      2018-02-19
+##  strucchange               * 1.5-1      2015-06-06
+##  survival                  * 2.42-3     2018-04-16
+##  TeachingDemos             * 2.10       2016-02-12
+##  TH.data                     1.0-8      2017-01-23
+##  tibble                      1.4.2      2018-01-22
+##  tidyr                       0.8.1      2018-05-18
+##  tidyselect                  0.2.4      2018-02-26
+##  timeDate                    3043.102   2018-02-21
+##  trimcluster                 0.1-2      2012-10-29
+##  TSP                         1.1-5      2017-02-22
+##  TTR                         0.23-3     2018-01-24
+##  viridis                   * 0.5.1      2018-03-29
+##  viridisLite               * 0.3.0      2018-02-01
+##  webshot                     0.5.0      2017-11-29
+##  whisker                     0.3-2      2013-04-28
+##  withr                       2.1.2      2018-03-15
+##  xfun                        0.1        2018-01-22
+##  xtable                      1.8-2      2016-02-05
+##  xts                         0.10-2     2018-03-14
+##  yaml                        2.1.19     2018-05-01
+##  zoo                       * 1.8-1      2018-01-08
+##  source                           
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  Github (rstudio/bookdown@b2020d2)
+##  CRAN (R 3.5.0)                   
+##  local (topepo/C5.0@NA)           
+##  local (@6.0-80)                  
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  local (topepo/Cubist@NA)         
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  cran (@1.3.3)                    
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  local                            
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  cran (@0.7.5)                    
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  cran (@0.12.17)                  
+##  CRAN (R 3.5.0)                   
+##  local                            
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  Github (hadley/scales@d767915)   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  cran (@0.8.1)                    
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)                   
+##  CRAN (R 3.5.0)</code></pre>
 
 </div>
             </section>
@@ -722,10 +786,11 @@ gitbook.start({
 "facebook": true,
 "twitter": true,
 "google": false,
+"linkedin": false,
 "weibo": false,
 "instapper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -738,7 +803,7 @@ gitbook.start({
 },
 "download": null,
 "toc": {
-"collapse": "section"
+"collapse": "subsection"
 }
 });
 });
@@ -749,9 +814,11 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

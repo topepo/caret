@@ -6,26 +6,26 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>The caret Package</title>
-  <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+  <meta name="description" content="Documentation for the caret package.">
+  <meta name="generator" content="bookdown 0.7.11 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Documentation for the <code>caret</code> package" />
-  <meta name="github-repo" content="<a href="https://github.com/topepo/caret" class="uri">https://github.com/topepo/caret</a>" />
+  <meta property="og:description" content="Documentation for the caret package." />
+  <meta name="github-repo" content="topepo/caret" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="The caret Package" />
   
-  <meta name="twitter:description" content="Documentation for the <code>caret</code> package" />
+  <meta name="twitter:description" content="Documentation for the caret package." />
   
 
 <meta name="author" content="Max Kuhn">
 
 
-<meta name="date" content="2017-09-04">
+<meta name="date" content="2018-05-26">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -47,58 +47,87 @@
 
 
 
-<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.2/datatables.js"></script>
-<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.4/datatables.js"></script>
+<link href="libs/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="libs/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-bootstrap-1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="libs/dt-core-bootstrap-1.10.16/js/dataTables.bootstrap.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <script src="libs/d3-4.5.0/d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
 <script src="libs/plotly-binding-4.7.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 </head>
@@ -202,9 +231,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.45</b> Self-Organising Maps</a></li>
 <li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.46</b> String Kernel</a></li>
 <li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.47</b> Support Vector Machines</a></li>
-<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.48</b> Text Mining</a></li>
-<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.49</b> Tree-Based Model</a></li>
-<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.50</b> Two Class Only</a></li>
+<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#supports-class-probabilities"><i class="fa fa-check"></i><b>7.0.48</b> Supports Class Probabilities</a></li>
+<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.49</b> Text Mining</a></li>
+<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.50</b> Tree-Based Model</a></li>
+<li class="chapter" data-level="7.0.51" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.51</b> Two Class Only</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="models-clustered-by-tag-similarity.html"><a href="models-clustered-by-tag-similarity.html"><i class="fa fa-check"></i><b>8</b> Models Clustered by Tag Similarity</a></li>
 <li class="chapter" data-level="9" data-path="parallel-processing.html"><a href="parallel-processing.html"><i class="fa fa-check"></i><b>9</b> Parallel Processing</a></li>
@@ -236,9 +266,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="13.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-sort-element"><i class="fa fa-check"></i><b>13.4</b> The sort Element</a><ul>
 <li class="chapter" data-level="13.4.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-levels-element"><i class="fa fa-check"></i><b>13.4.1</b> The <code>levels</code> Element</a></li>
 </ul></li>
-<li class="chapter" data-level="13.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>13.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a><ul>
-<li class="chapter" data-level="13.5.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-loop-element"><i class="fa fa-check"></i><b>13.5.1</b> The loop Element</a></li>
-</ul></li>
+<li class="chapter" data-level="13.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>13.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a></li>
 <li class="chapter" data-level="13.6" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-3-nonstandard-formulas"><i class="fa fa-check"></i><b>13.6</b> Illustrative Example 3: Nonstandard Formulas</a></li>
 <li class="chapter" data-level="13.7" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-4-pls-feature-extraction-pre-processing"><i class="fa fa-check"></i><b>13.7</b> Illustrative Example 4: PLS Feature Extraction Pre-Processing</a></li>
 <li class="chapter" data-level="13.8" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-5-optimizing-probability-thresholds-for-class-imbalances"><i class="fa fa-check"></i><b>13.8</b> Illustrative Example 5: Optimizing probability thresholds for class imbalances</a></li>
@@ -374,6 +402,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="using-your-own-model-in-train.html#Illustration3">Illustrative Example 3: Nonstandard Formulas</a></li>
 <li><a href="using-your-own-model-in-train.html#Illustration4">Illustrative Example 4: PLS Feature Extraction Pre-Processing</a></li>
 <li><a href="using-your-own-model-in-train.html#Illustration5">Illustrative Example 5: Optimizing probability thresholds for class imbalances</a></li>
+<li><a href="using-your-own-model-in-train.html#Illustration6">Illustrative Example 6: Offsets in Generalized Linear Models</a></li>
 </ul>
 <div id="Introduction">
 
@@ -388,9 +417,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>You can still get the benefits of the <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> infrastructure by creating your own model.</p>
 <p>Currently, when you specify the type of model that you are interested in (e.g. <code>type = &quot;lda&quot;</code>), the <code>train</code> function runs another function called <code>getModelInfo</code> to retrieve the specifics of that model from the existing catalog. For example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ldaModelInfo &lt;-<span class="st"> </span><span class="kw">getModelInfo</span>(<span class="dt">model =</span> <span class="st">&quot;lda&quot;</span>, <span class="dt">regex =</span> <span class="ot">FALSE</span>)[[<span class="dv">1</span>]]
+<pre class="sourceCode r"><code class="sourceCode r">ldaModelInfo &lt;-<span class="st"> </span><span class="kw">getModelInfo</span>(<span class="dt">model =</span> <span class="st">&quot;lda&quot;</span>, <span class="dt">regex =</span> <span class="ot">FALSE</span>)[[<span class="dv">1</span>]]
 ## Model components
-<span class="kw">names</span>(ldaModelInfo)</code></pre></div>
+<span class="kw">names</span>(ldaModelInfo)</code></pre>
 <pre><code>##  [1] &quot;label&quot;      &quot;library&quot;    &quot;loop&quot;       &quot;type&quot;       &quot;parameters&quot;
 ##  [6] &quot;grid&quot;       &quot;fit&quot;        &quot;predict&quot;    &quot;prob&quot;       &quot;predictors&quot;
 ## [11] &quot;tags&quot;       &quot;levels&quot;     &quot;sort&quot;</code></pre>
@@ -413,7 +442,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li><code>library</code> is a character vector of package names that will be needed to fit the model or calculate predictions. <code>NULL</code> can also be used.</li>
 <li><code>type</code> is a simple character vector with values <code>&quot;Classification&quot;</code>, <code>&quot;Regression&quot;</code> or both.</li>
-<li><code>parameters</code> is a data frame with three simple attributes for each tuning parameter (if any): the argument name (e.g. <code>mtry</code>), the type of data in the parameter grid and textual labels for the parameter.</li>
+<li><code>parameters</code> is a data frame with three simple attributes for each tuning parameter (if any): the argument name (e.g. <code>mtry</code>), the type of data in
+the parameter grid and textual labels for the parameter.</li>
 <li><code>grid</code> is a function that is used to create the tuning grid (unless the user gives the exact values of the parameters via <code>tuneGrid</code>)</li>
 <li><code>fit</code> is a function that fits the model</li>
 <li><code>predict</code> is the function that creates predictions</li>
@@ -432,46 +462,47 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>In the <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package, the subdirectory <code>models</code> has all the code for each model that <code>train</code> interfaces with and these can be used as prototypes for your model.</p>
 <p>Let’s create a new model for a classification support vector machin using the Laplacian kernel function. We will use the <code>kernlab</code> package’s <code>ksvm</code> function. The kernel has two parameters: the standard cost parameter for SVMs and one kernel parameter (<code>sigma</code>).</p>
 <p>To start, we’ll create a new list:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lpSVM &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">type =</span> <span class="st">&quot;Classification&quot;</span>,
+<pre class="sourceCode r"><code class="sourceCode r">lpSVM &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">type =</span> <span class="st">&quot;Classification&quot;</span>,
               <span class="dt">library =</span> <span class="st">&quot;kernlab&quot;</span>,
-              <span class="dt">loop =</span> <span class="ot">NULL</span>) </code></pre></div>
+              <span class="dt">loop =</span> <span class="ot">NULL</span>) </code></pre>
 <p>This model can also be used for regression but we will constrain things here for simplicity. For other SVM models, the type value would be <code>c(&quot;Classification&quot;, &quot;Regression&quot;)</code>.</p>
-<p>The <code>library</code> value checks to see if this package is installed and loads it whenever it is needed (e.g. before modeling or prediction).</p>
+<p>The <code>library</code> value checks to see if this package is installed and loads it whenever it is needed (e.g. before modeling or prediction). <strong>Note</strong>: <code>caret</code> will check to see if these packages are installed but will <em>not</em> explicitly load them. As such, functions that are used from the package should be referenced by namespace. This is discussed more below when describing the <code>fit</code> function.</p>
 <div id="the-parameters-element" class="section level3">
 <h3><span class="header-section-number">13.3.1</span> The parameters Element</h3>
 <p>We have to create some basic information for the parameters in the form of a data frame. The first column is the name of the parameter. The convention is to use the argument name in the model function (e.g. the <code>ksvm</code> function here). Those values are <code>C</code> and <code>sigma</code>. Each is a number and we can give them labels of <code>&quot;Cost&quot;</code> and <code>&quot;Sigma&quot;</code>, respectively. The <code>parameters</code> element would then be:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prm &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">parameter =</span> <span class="kw">c</span>(<span class="st">&quot;C&quot;</span>, <span class="st">&quot;sigma&quot;</span>),
+<pre class="sourceCode r"><code class="sourceCode r">prm &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">parameter =</span> <span class="kw">c</span>(<span class="st">&quot;C&quot;</span>, <span class="st">&quot;sigma&quot;</span>),
                   <span class="dt">class =</span> <span class="kw">rep</span>(<span class="st">&quot;numeric&quot;</span>, <span class="dv">2</span>),
-                  <span class="dt">label =</span> <span class="kw">c</span>(<span class="st">&quot;Cost&quot;</span>, <span class="st">&quot;Sigma&quot;</span>))</code></pre></div>
+                  <span class="dt">label =</span> <span class="kw">c</span>(<span class="st">&quot;Cost&quot;</span>, <span class="st">&quot;Sigma&quot;</span>))</code></pre>
 <p>Now we assign it to the model list:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lpSVM$parameters &lt;-<span class="st"> </span>prm</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">lpSVM<span class="op">$</span>parameters &lt;-<span class="st"> </span>prm</code></pre>
 <p>Values of <code>type</code> can indicate numeric, character or logical data types.</p>
 </div>
 <div id="the-grid-element" class="section level3">
 <h3><span class="header-section-number">13.3.2</span> The <code>grid</code> Element</h3>
 <p>This should be a function that takes parameters: <code>x</code> and <code>y</code> (for the predictors and outcome data), <code>len</code> (the number of values per tuning parameter) as well as <code>search</code>. <code>len</code> is the value of <code>tuneLength</code> that is potentially passed in through <code>train</code>. <code>search</code> can be either <code>&quot;grid&quot;</code> or <code>&quot;random&quot;</code>. This can be used to setup a grid for searching or random values for random search.</p>
 <p>The output should be a data frame of tuning parameter combinations with a column for each parameter. The column names should be the parameter name (e.g. the values of <code>prm$parameter</code>). In our case, let’s vary the cost parameter on the log 2 scale. For the sigma parameter, we can use the <code>kernlab</code> function <code>sigest</code> to pre-estimate the value. Following <code>ksvm</code> we take the average of the low and high estimates. Here is a function we could use:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">svmGrid &lt;-<span class="st"> </span>function(x, y, <span class="dt">len =</span> <span class="ot">NULL</span>, <span class="dt">search =</span> <span class="st">&quot;grid&quot;</span>) {
+<pre class="sourceCode r"><code class="sourceCode r">svmGrid &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, <span class="dt">len =</span> <span class="ot">NULL</span>, <span class="dt">search =</span> <span class="st">&quot;grid&quot;</span>) {
   <span class="kw">library</span>(kernlab)
   ## This produces low, middle and high values for sigma 
   ## (i.e. a vector with 3 elements). 
-  sigmas &lt;-<span class="st"> </span><span class="kw">sigest</span>(<span class="kw">as.matrix</span>(x), <span class="dt">na.action =</span> na.omit, <span class="dt">scaled =</span> <span class="ot">TRUE</span>)  
+  sigmas &lt;-<span class="st"> </span>kernlab<span class="op">::</span><span class="kw">sigest</span>(<span class="kw">as.matrix</span>(x), <span class="dt">na.action =</span> na.omit, <span class="dt">scaled =</span> <span class="ot">TRUE</span>)  
   ## To use grid search:
-  if(search ==<span class="st"> &quot;grid&quot;</span>) {
-    out &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">sigma =</span> <span class="kw">mean</span>(<span class="kw">as.vector</span>(sigmas[-<span class="dv">2</span>])),
-                       <span class="dt">C =</span> <span class="dv">2</span> ^((<span class="dv">1</span>:len) -<span class="st"> </span><span class="dv">3</span>))
-  } else {
+  <span class="cf">if</span>(search <span class="op">==</span><span class="st"> &quot;grid&quot;</span>) {
+    out &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">sigma =</span> <span class="kw">mean</span>(<span class="kw">as.vector</span>(sigmas[<span class="op">-</span><span class="dv">2</span>])),
+                       <span class="dt">C =</span> <span class="dv">2</span> <span class="op">^</span>((<span class="dv">1</span><span class="op">:</span>len) <span class="op">-</span><span class="st"> </span><span class="dv">3</span>))
+  } <span class="cf">else</span> {
     ## For random search, define ranges for the parameters then
     ## generate random values for them
-    rng &lt;-<span class="st"> </span><span class="kw">extendrange</span>(<span class="kw">log</span>(sigmas), <span class="dt">f =</span> .<span class="dv">75</span>)
+    rng &lt;-<span class="st"> </span><span class="kw">extendrange</span>(<span class="kw">log</span>(sigmas), <span class="dt">f =</span> <span class="fl">.75</span>)
     out &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">sigma =</span> <span class="kw">exp</span>(<span class="kw">runif</span>(len, <span class="dt">min =</span> rng[<span class="dv">1</span>], <span class="dt">max =</span> rng[<span class="dv">2</span>])),
-                      <span class="dt">C =</span> <span class="dv">2</span>^<span class="kw">runif</span>(len, <span class="dt">min =</span> -<span class="dv">5</span>, <span class="dt">max =</span> <span class="dv">8</span>))
+                      <span class="dt">C =</span> <span class="dv">2</span><span class="op">^</span><span class="kw">runif</span>(len, <span class="dt">min =</span> <span class="dv">-5</span>, <span class="dt">max =</span> <span class="dv">8</span>))
   }
   out
-}</code></pre></div>
+}</code></pre>
+<p>Why did we use <code>kernlab::sigest</code> instead of <code>sigest</code>? As previously mentioned, <code>caret</code> will not execute <code>library(kernlab)</code> unless you explicitly code it in these functions. Since it is not explicitly loaded, you have to call it <em>using the namespace operator</em> <code>::</code>.</p>
 <p>Again, the user can pass their own grid via <code>train</code>’s <code>tuneGrid</code> option or they can use this code to create a default grid.</p>
 <p>We assign this function to the overall model list:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lpSVM$grid &lt;-<span class="st"> </span>svmGrid</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">lpSVM<span class="op">$</span>grid &lt;-<span class="st"> </span>svmGrid</code></pre>
 </div>
 <div id="the-fit-element" class="section level3">
 <h3><span class="header-section-number">13.3.3</span> The <code>fit</code> Element</h3>
@@ -486,16 +517,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>classProbs</code>: a logical for whether class probabilities should be computed.</li>
 </ul>
 <p>Here is something we could use for this model:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">svmFit &lt;-<span class="st"> </span>function(x, y, wts, param, lev, last, weights, classProbs, ...) { 
-  <span class="kw">ksvm</span>(<span class="dt">x =</span> <span class="kw">as.matrix</span>(x), <span class="dt">y =</span> y,
-       <span class="dt">kernel =</span> rbfdot,
-       <span class="dt">kpar =</span> <span class="kw">list</span>(<span class="dt">sigma =</span> param$sigma),
-       <span class="dt">C =</span> param$C,
-       <span class="dt">prob.model =</span> classProbs,
-       ...)
+<pre class="sourceCode r"><code class="sourceCode r">svmFit &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, wts, param, lev, last, weights, classProbs, ...) { 
+  kernlab<span class="op">::</span><span class="kw">ksvm</span>(
+    <span class="dt">x =</span> <span class="kw">as.matrix</span>(x), <span class="dt">y =</span> y,
+    <span class="dt">kernel =</span> <span class="st">&quot;rbfdot&quot;</span>,
+    <span class="dt">kpar =</span> <span class="kw">list</span>(<span class="dt">sigma =</span> param<span class="op">$</span>sigma),
+    <span class="dt">C =</span> param<span class="op">$</span>C,
+    <span class="dt">prob.model =</span> classProbs,
+    ...
+    )
  }
  
-lpSVM$fit &lt;-<span class="st"> </span>svmFit</code></pre></div>
+lpSVM<span class="op">$</span>fit &lt;-<span class="st"> </span>svmFit</code></pre>
 <p>A few notes about this:</p>
 <ul>
 <li>Notice that the package is not loaded in the code. It is loaded prior to this function being called so it won’t hurt if you load it again (but that’s not needed).</li>
@@ -504,6 +537,7 @@ lpSVM$fit &lt;-<span class="st"> </span>svmFit</code></pre></div>
 <li>The probability model is fit based on the value of <code>classProbs</code>. This value is determined by the value given in <code>trainControl</code>.</li>
 <li>The three dots allow the user to pass options in from <code>train</code> to, in this case, the <code>ksvm</code> function. For example, if the use wanted to set the cache size for the function, they could list <code>cache = 80</code> and this argument will be pass from <code>train</code> to <code>ksvm</code>.</li>
 <li>Any pre-processing that was requested in the call to <code>train</code> have been done. For example, if <code>preProc = &quot;center&quot;</code> was originally requested, the columns of <code>x</code> seen within this function are mean centered.</li>
+<li>Again, the namespace operator <code>::</code> is used for <code>rbfdot</code> and <code>ksvm</code> to ensure that the function can be found.</li>
 </ul>
 </div>
 <div id="the-predict-element" class="section level3">
@@ -517,18 +551,18 @@ lpSVM$fit &lt;-<span class="st"> </span>svmFit</code></pre></div>
 <li><code>submodels</code>: this an optional list of tuning parameters only used with the <code>loop</code> element discussed below. In most cases, it will be <code>NULL</code>.</li>
 </ul>
 <p>Our function will be very simple:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">svmPred &lt;-<span class="st"> </span>function(modelFit, newdata, <span class="dt">preProc =</span> <span class="ot">NULL</span>, <span class="dt">submodels =</span> <span class="ot">NULL</span>)
-   <span class="kw">predict</span>(modelFit, newdata)
-lpSVM$predict &lt;-<span class="st"> </span>svmPred</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">svmPred &lt;-<span class="st"> </span><span class="cf">function</span>(modelFit, newdata, <span class="dt">preProc =</span> <span class="ot">NULL</span>, <span class="dt">submodels =</span> <span class="ot">NULL</span>)
+   kernlab<span class="op">::</span><span class="kw">predict</span>(modelFit, newdata)
+lpSVM<span class="op">$</span>predict &lt;-<span class="st"> </span>svmPred</code></pre>
 <p>The function <code>predict.ksvm</code> will automatically create a factor vector as output. The function could also produce character values. Either way, the innards of <code>train</code> will make them factors and ensure that the same levels as the original data are used.</p>
 </div>
 <div id="the-prob-element" class="section level3">
 <h3><span class="header-section-number">13.3.5</span> The <code>prob</code> Element</h3>
 <p>If a regression model is being used or if the classification model does not create class probabilities a value of <code>NULL</code> can be used here instead of a function. Otherwise, the function arguments are the same as the <code>pred</code> function. The output should be a matrix or data frame of class probabilities with a column for each class. The column names should be the class levels.</p>
 <p>We can use:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">svmProb &lt;-<span class="st"> </span>function(modelFit, newdata, <span class="dt">preProc =</span> <span class="ot">NULL</span>, <span class="dt">submodels =</span> <span class="ot">NULL</span>)
-   <span class="kw">predict</span>(modelFit, newdata, <span class="dt">type=</span><span class="st">&quot;probabilities&quot;</span>)
-lpSVM$prob &lt;-<span class="st"> </span>svmProb</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">svmProb &lt;-<span class="st"> </span><span class="cf">function</span>(modelFit, newdata, <span class="dt">preProc =</span> <span class="ot">NULL</span>, <span class="dt">submodels =</span> <span class="ot">NULL</span>)
+  kernlab<span class="op">::</span><span class="kw">predict</span>(modelFit, newdata, <span class="dt">type =</span> <span class="st">&quot;probabilities&quot;</span>)
+lpSVM<span class="op">$</span>prob &lt;-<span class="st"> </span>svmProb</code></pre>
 <p>If you look at some of the SVM examples in the <code>models</code> directory, the real functions used by <code>train</code> are much more complicated so that they can deal with model failures, probabilities that do not sum to 1 etc.</p>
 </div>
 </div>
@@ -536,26 +570,26 @@ lpSVM$prob &lt;-<span class="st"> </span>svmProb</code></pre></div>
 <h2><span class="header-section-number">13.4</span> The sort Element</h2>
 <p>This is an optional function that sorts the tuning parameters from the simplest model to the most complex. There are times where this ordering is not obvious. This information is used when the performance values are tied across multiple parameters. We would probably want to choose the least complex model in those cases.</p>
 <p>Here, we will sort by the cost value. Smaller values of <code>C</code> produce smoother class boundaries than larger values:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">svmSort &lt;-<span class="st"> </span>function(x) x[<span class="kw">order</span>(x$C),]
-lpSVM$sort &lt;-<span class="st"> </span>svmSort</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">svmSort &lt;-<span class="st"> </span><span class="cf">function</span>(x) x[<span class="kw">order</span>(x<span class="op">$</span>C),]
+lpSVM<span class="op">$</span>sort &lt;-<span class="st"> </span>svmSort</code></pre>
 <div id="the-levels-element" class="section level3">
 <h3><span class="header-section-number">13.4.1</span> The <code>levels</code> Element</h3>
 <p><code>train</code> ensures that classification models always predict factors with the same levels. To do this at prediction time, the package needs to know the levels from the model object (specifically, the <code>finalModels</code> slot of the <code>train</code> object).</p>
 <p>For model functions using <code>S3</code> methods, <code>train</code> automatically attaches a character vector called <code>obsLevels</code> to the object and the package code uses this value. However, this strategy does not work for <code>S4</code> methods. In these cases, the package will use the code found in the <code>levels</code> slot of the model list.</p>
 <p>For example, the <code>ksvm</code> function uses <code>S4</code> methods but, unlike most model functions, has a built–in function called <code>lev</code> that will extract the class levels (if any). In this case, our levels code would be:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lpSVM$levels &lt;-<span class="st"> </span>function(x) <span class="kw">lev</span>(x)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">lpSVM<span class="op">$</span>levels &lt;-<span class="st"> </span><span class="cf">function</span>(x) kernlab<span class="op">::</span><span class="kw">lev</span>(x)</code></pre>
 <p>In most other cases, the levels will beed to be extracted from data contained in the fitted model object. As another example, objects created using the <code>ctree</code> function in the <code>party</code> package would need to use:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">function(x) <span class="kw">levels</span>(x@data@<span class="kw">get</span>(<span class="st">&quot;response&quot;</span>)[,<span class="dv">1</span>])</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="cf">function</span>(x) <span class="kw">levels</span>(x<span class="op">@</span>data<span class="op">@</span><span class="kw">get</span>(<span class="st">&quot;response&quot;</span>)[,<span class="dv">1</span>])</code></pre>
 <p>Again, this slot is only used for classification models using <code>S4</code> methods.</p>
 <p>We should now be ready to fit our model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mlbench)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mlbench)
 <span class="kw">data</span>(Sonar)
   
 <span class="kw">library</span>(caret)
 <span class="kw">set.seed</span>(<span class="dv">998</span>)
-inTraining &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(Sonar$Class, <span class="dt">p =</span> .<span class="dv">75</span>, <span class="dt">list =</span> <span class="ot">FALSE</span>)
+inTraining &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(Sonar<span class="op">$</span>Class, <span class="dt">p =</span> <span class="fl">.75</span>, <span class="dt">list =</span> <span class="ot">FALSE</span>)
 training &lt;-<span class="st"> </span>Sonar[ inTraining,]
-testing  &lt;-<span class="st"> </span>Sonar[-inTraining,]
+testing  &lt;-<span class="st"> </span>Sonar[<span class="op">-</span>inTraining,]
 
 fitControl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,
                            ## 10-fold CV...
@@ -564,14 +598,14 @@ fitControl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<s
                            <span class="dt">repeats =</span> <span class="dv">10</span>)
   
 <span class="kw">set.seed</span>(<span class="dv">825</span>)
-Laplacian &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> training, 
+Laplacian &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> training, 
                    <span class="dt">method =</span> lpSVM, 
                    <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>),
                    <span class="dt">tuneLength =</span> <span class="dv">8</span>,
                    <span class="dt">trControl =</span> fitControl)
-Laplacian</code></pre></div>
+Laplacian</code></pre>
 <pre><code>## 157 samples
-##  60 predictors
+##  60 predictor
 ##   2 classes: &#39;M&#39;, &#39;R&#39; 
 ## 
 ## Pre-processing: centered (60), scaled (60) 
@@ -590,11 +624,11 @@ Laplacian</code></pre></div>
 ##   32.00  0.8631324  0.7214011
 ## 
 ## Tuning parameter &#39;sigma&#39; was held constant at a value of 0.01334808
-## Accuracy was used to select the optimal model using  the largest value.
+## Accuracy was used to select the optimal model using the largest value.
 ## The final values used for the model were C = 16 and sigma = 0.01334808.</code></pre>
 <p>A plot of the data shows that the model doesn’t change when the cost value is above 16.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(Laplacian) +<span class="st"> </span><span class="kw">scale_x_log10</span>()</code></pre></div>
-<p><img src="custom/custom_laplace_plot-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(Laplacian) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_log10</span>()</code></pre>
+<p><img src="custom/custom_laplace_plot-1.svg" width="672" /></p>
 <div id="Illustration2">
 
 </div>
@@ -602,13 +636,12 @@ Laplacian</code></pre></div>
 </div>
 <div id="illustrative-example-2-something-more-complicated---logitboost" class="section level2">
 <h2><span class="header-section-number">13.5</span> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></h2>
-<div id="the-loop-element" class="section level3">
-<h3><span class="header-section-number">13.5.1</span> The loop Element</h3>
+<p>###The loop Element</p>
 <p>This function can be used to create custom loops for models to tune over. In most cases, the function can just return the existing tuning grid.</p>
 <p>For example, a <code>LogitBoost</code> model can be trained over the number of boosting iterations. In the <a href="http://cran.r-project.org/web/packages/caTools/index.html"><code>caTools</code></a> package, the <code>LogitBoost</code> function can be used to fit this model. For example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mod &lt;-<span class="st"> </span><span class="kw">LogitBoost</span>(<span class="kw">as.matrix</span>(x), y, <span class="dt">nIter =</span> <span class="dv">51</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">mod &lt;-<span class="st"> </span><span class="kw">LogitBoost</span>(<span class="kw">as.matrix</span>(x), y, <span class="dt">nIter =</span> <span class="dv">51</span>)</code></pre>
 <p>If we were to tune the model evaluating models where the number of iterations was 11, 21, 31, 41 and 51, the grid could be</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lbGrid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">nIter =</span> <span class="kw">seq</span>(<span class="dv">11</span>, <span class="dv">51</span>, <span class="dt">by =</span> <span class="dv">10</span>))  </code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">lbGrid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">nIter =</span> <span class="kw">seq</span>(<span class="dv">11</span>, <span class="dv">51</span>, <span class="dt">by =</span> <span class="dv">10</span>))  </code></pre>
 <p>During resampling, <code>train</code> could loop over all five rows in <code>lbGrid</code> and fit five models. However, the <code>predict.LogitBoost</code> function has an argument called <code>nIter</code> that can produce, in this case, predictions from <code>mod</code> for all five models.</p>
 <p>Instead of <code>train</code> fitting five models, we could fit a single model with <code>nIter</code> = class=“hl num”&gt;51<code>and derive predictions for all five models using only</code>mod`.</p>
 <p>The terminology used here is that <code>nIter</code> is a <em>sequential</em> tuning parameter (and the other parameters would be considered <em>fixed</em>).</p>
@@ -618,12 +651,12 @@ Laplacian</code></pre></div>
 <li><code>submodels</code> is a <em>list</em> that has as many elements as there are rows in <code>loop</code>. The list has all the “extra” parameter settings that can be derived for each model.</li>
 </ul>
 <p>Going back to the <code>LogitBoost</code> example, we could have:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">loop &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">.nIter =</span> <span class="dv">51</span>)
-loop</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">loop &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">.nIter =</span> <span class="dv">51</span>)
+loop</code></pre>
 <pre><code>##   .nIter
 ## 1     51</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">submodels &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">data.frame</span>(<span class="dt">nIter =</span> <span class="kw">seq</span>(<span class="dv">11</span>, <span class="dv">41</span>, <span class="dt">by =</span> <span class="dv">10</span>)))   
-submodels</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">submodels &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">data.frame</span>(<span class="dt">nIter =</span> <span class="kw">seq</span>(<span class="dv">11</span>, <span class="dv">41</span>, <span class="dt">by =</span> <span class="dv">10</span>)))   
+submodels</code></pre>
 <pre><code>## [[1]]
 ##   nIter
 ## 1    11
@@ -635,19 +668,19 @@ submodels</code></pre></div>
 <p>There are other models built-in to <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> that are used this way. There are a number of models that have multiple sequential tuning parameters.</p>
 <p>If the <code>loop</code> argument is left <code>NULL</code> the results of <code>tuneGrid</code> are used as the simple loop and is recommended for most situations. Note that the machinery that is used to “derive” the extra predictions is up to the user to create, typically in the <code>predict</code> and <code>prob</code> elements of the custom model object.</p>
 <p>For the <code>LogitBoost</code> model, some simple code to create these objects would be:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fullGrid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">nIter =</span> <span class="kw">seq</span>(<span class="dv">11</span>, <span class="dv">51</span>, <span class="dt">by =</span> <span class="dv">10</span>))
+<pre class="sourceCode r"><code class="sourceCode r">fullGrid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">nIter =</span> <span class="kw">seq</span>(<span class="dv">11</span>, <span class="dv">51</span>, <span class="dt">by =</span> <span class="dv">10</span>))
 
 ## Get the largest value of nIter to fit the &quot;full&quot; model
-loop &lt;-<span class="st"> </span>fullGrid[<span class="kw">which.max</span>(fullGrid$nIter),,drop =<span class="st"> </span><span class="ot">FALSE</span>]
-loop</code></pre></div>
+loop &lt;-<span class="st"> </span>fullGrid[<span class="kw">which.max</span>(fullGrid<span class="op">$</span>nIter),,drop =<span class="st"> </span><span class="ot">FALSE</span>]
+loop</code></pre>
 <pre><code>##   nIter
 ## 5    51</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">submodels &lt;-<span class="st"> </span>fullGrid[-<span class="kw">which.max</span>(fullGrid$nIter),,drop =<span class="st"> </span><span class="ot">FALSE</span>]
+<pre class="sourceCode r"><code class="sourceCode r">submodels &lt;-<span class="st"> </span>fullGrid[<span class="op">-</span><span class="kw">which.max</span>(fullGrid<span class="op">$</span>nIter),,drop =<span class="st"> </span><span class="ot">FALSE</span>]
 
 ## This needs to be encased in a list in case there are more
 ## than one tuning parameter
 submodels &lt;-<span class="st"> </span><span class="kw">list</span>(submodels)  
-submodels</code></pre></div>
+submodels</code></pre>
 <pre><code>## [[1]]
 ##   nIter
 ## 1    11
@@ -655,38 +688,41 @@ submodels</code></pre></div>
 ## 3    31
 ## 4    41</code></pre>
 <p>For the <code>LogitBoost</code> custom model object, we could use this code in the <code>predict</code> slot:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lbPred &lt;-<span class="st"> </span>function(modelFit, newdata, <span class="dt">preProc =</span> <span class="ot">NULL</span>, <span class="dt">submodels =</span> <span class="ot">NULL</span>) {
+<pre class="sourceCode r"><code class="sourceCode r">lbPred &lt;-<span class="st"> </span><span class="cf">function</span>(modelFit, newdata, <span class="dt">preProc =</span> <span class="ot">NULL</span>, <span class="dt">submodels =</span> <span class="ot">NULL</span>) {
   ## This model was fit with the maximum value of nIter
-  out &lt;-<span class="st"> </span>caTools::<span class="kw">predict.LogitBoost</span>(modelFit, newdata, <span class="dt">type=</span><span class="st">&quot;class&quot;</span>)
+  out &lt;-<span class="st"> </span>caTools<span class="op">::</span><span class="kw">predict.LogitBoost</span>(modelFit, newdata, <span class="dt">type=</span><span class="st">&quot;class&quot;</span>)
   
   ## In this case, &#39;submodels&#39; is a data frame with the other values of
   ## nIter. We loop over these to get the other predictions.
-  if(!<span class="kw">is.null</span>(submodels)) {
+  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(submodels)) {
     ## Save _all_ the predictions in a list
     tmp &lt;-<span class="st"> </span>out
-    out &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="dt">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="kw">nrow</span>(submodels) +<span class="st"> </span><span class="dv">1</span>)
+    out &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="dt">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="kw">nrow</span>(submodels) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)
     out[[<span class="dv">1</span>]] &lt;-<span class="st"> </span>tmp
     
-    for(j in <span class="kw">seq</span>(<span class="dt">along =</span> submodels$nIter)) {
-      out[[j<span class="dv">+1</span>]] &lt;-<span class="st"> </span>caTools::<span class="kw">predict.LogitBoost</span>(modelFit,
-                                                newdata,
-                                                <span class="dt">nIter =</span> submodels$nIter[j])
+    <span class="cf">for</span>(j <span class="cf">in</span> <span class="kw">seq</span>(<span class="dt">along =</span> submodels<span class="op">$</span>nIter)) {
+      out[[j<span class="op">+</span><span class="dv">1</span>]] &lt;-<span class="st"> </span>caTools<span class="op">::</span><span class="kw">predict.LogitBoost</span>(
+        modelFit,
+        newdata,
+        <span class="dt">nIter =</span> submodels<span class="op">$</span>nIter[j])
+      
     }
   }
   out                   
-}</code></pre></div>
+}</code></pre>
 <p>A few more notes:</p>
 <ul>
 <li>The code in the <code>fit</code> element does not have to change.</li>
 <li>The <code>prob</code> slot works in the same way. The only difference is that the values saved in the outgoing lists are matrices or data frames of probabilities for each class.</li>
 <li>After model training (i.e. predicting new samples), the value of <code>submodels</code> is set to <code>NULL</code> and the code produces a single set of predictions.</li>
 <li>If the model had one sequential parameter and one fixed parameter, the <code>loop</code> data frame would have two columns (one for each parameter). If the model is tuned over more than one value of the fixed parameter, the <code>submodels</code> list would have more than one element. If <code>loop</code> had 10 rows, then <code>length(submodels)</code> would be <code>10</code> and <code>loop[i,]</code> would be linked to <code>submodels[[i]]</code>.</li>
+<li>In this case, the prediction function was called by namespace too (i.e. <code>caTools::predict.LogitBoost</code>). This may not seem necessary but what functions are available can vary depending on what parallel processing technology is being used. For example, the nature of forking used by <code>doMC</code> and <code>doParallel</code> tends to have easier access to functions while PSOCK methods in <code>doParallel</code> do not. It may be easier to take the safe path of using the namespace operator wherever possible to avoid errors that are difficult to track down.</li>
 </ul>
 <p>Here is a slimmed down version of the logitBoost code already in the package:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lbFuncs &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">library =</span> <span class="st">&quot;caTools&quot;</span>,
-                <span class="dt">loop =</span> function(grid) {            
-                  loop &lt;-<span class="st"> </span>grid[<span class="kw">which.max</span>(grid$nIter),,drop =<span class="st"> </span><span class="ot">FALSE</span>]
-                  submodels &lt;-<span class="st"> </span>grid[-<span class="kw">which.max</span>(grid$nIter),,drop =<span class="st"> </span><span class="ot">FALSE</span>]
+<pre class="sourceCode r"><code class="sourceCode r">lbFuncs &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">library =</span> <span class="st">&quot;caTools&quot;</span>,
+                <span class="dt">loop =</span> <span class="cf">function</span>(grid) {            
+                  loop &lt;-<span class="st"> </span>grid[<span class="kw">which.max</span>(grid<span class="op">$</span>nIter),,drop =<span class="st"> </span><span class="ot">FALSE</span>]
+                  submodels &lt;-<span class="st"> </span>grid[<span class="op">-</span><span class="kw">which.max</span>(grid<span class="op">$</span>nIter),,drop =<span class="st"> </span><span class="ot">FALSE</span>]
                   submodels &lt;-<span class="st"> </span><span class="kw">list</span>(submodels)  
                   <span class="kw">list</span>(<span class="dt">loop =</span> loop, <span class="dt">submodels =</span> submodels)
                 },
@@ -694,85 +730,87 @@ submodels</code></pre></div>
                 <span class="dt">parameters =</span> <span class="kw">data.frame</span>(<span class="dt">parameter =</span> <span class="st">&#39;nIter&#39;</span>,
                                         <span class="dt">class =</span> <span class="st">&#39;numeric&#39;</span>,
                                         <span class="dt">label =</span> <span class="st">&#39;# Boosting Iterations&#39;</span>),
-                <span class="dt">grid =</span> function(x, y, <span class="dt">len =</span> <span class="ot">NULL</span>, <span class="dt">search =</span> <span class="st">&quot;grid&quot;</span>) {
-                  out &lt;-<span class="st"> </span>if(search ==<span class="st"> &quot;grid&quot;</span>) 
-                    <span class="kw">data.frame</span>(<span class="dt">nIter =</span> <span class="dv">1</span> +<span class="st"> </span>((<span class="dv">1</span>:len)*<span class="dv">10</span>)) else 
-                      <span class="kw">data.frame</span>(<span class="dt">nIter =</span> <span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">500</span>, <span class="dt">size =</span> len))
+                <span class="dt">grid =</span> <span class="cf">function</span>(x, y, <span class="dt">len =</span> <span class="ot">NULL</span>, <span class="dt">search =</span> <span class="st">&quot;grid&quot;</span>) {
+                  out &lt;-<span class="st"> </span><span class="cf">if</span>(search <span class="op">==</span><span class="st"> &quot;grid&quot;</span>) 
+                    <span class="kw">data.frame</span>(<span class="dt">nIter =</span> <span class="dv">1</span> <span class="op">+</span><span class="st"> </span>((<span class="dv">1</span><span class="op">:</span>len)<span class="op">*</span><span class="dv">10</span>)) <span class="cf">else</span> 
+                      <span class="kw">data.frame</span>(<span class="dt">nIter =</span> <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">500</span>, <span class="dt">size =</span> len))
                   out
                 },
-                <span class="dt">fit =</span> function(x, y, wts, param, lev, last, weights, classProbs, ...) {
-                  <span class="kw">LogitBoost</span>(<span class="kw">as.matrix</span>(x), y, <span class="dt">nIter =</span> param$nIter)
+                <span class="dt">fit =</span> <span class="cf">function</span>(x, y, wts, param, lev, last, weights, classProbs, ...) {
+                  caTools<span class="op">::</span><span class="kw">LogitBoost</span>(<span class="kw">as.matrix</span>(x), y, <span class="dt">nIter =</span> param<span class="op">$</span>nIter)
                 },
-                <span class="dt">predict =</span> function(modelFit, newdata, <span class="dt">preProc =</span> <span class="ot">NULL</span>, <span class="dt">submodels =</span> <span class="ot">NULL</span>) {
-                  out &lt;-<span class="st"> </span><span class="kw">predict</span>(modelFit, newdata, <span class="dt">type=</span><span class="st">&quot;class&quot;</span>)
-                  if(!<span class="kw">is.null</span>(submodels)) {                   
+                <span class="dt">predict =</span> <span class="cf">function</span>(modelFit, newdata, <span class="dt">preProc =</span> <span class="ot">NULL</span>, <span class="dt">submodels =</span> <span class="ot">NULL</span>) {
+                  out &lt;-<span class="st"> </span>caTools<span class="op">::</span><span class="kw">predict.LogitBoost</span>(modelFit, newdata, <span class="dt">type=</span><span class="st">&quot;class&quot;</span>)
+                  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(submodels)) {                   
                     tmp &lt;-<span class="st"> </span>out
-                    out &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="dt">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="kw">nrow</span>(submodels) +<span class="st"> </span><span class="dv">1</span>)
+                    out &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="dt">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="kw">nrow</span>(submodels) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)
                     out[[<span class="dv">1</span>]] &lt;-<span class="st"> </span>tmp
                     
-                    for(j in <span class="kw">seq</span>(<span class="dt">along =</span> submodels$nIter)) {
-                      out[[j<span class="dv">+1</span>]] &lt;-<span class="st"> </span><span class="kw">predict</span>(modelFit,
-                                            newdata,
-                                            <span class="dt">nIter =</span> submodels$nIter[j])
+                    <span class="cf">for</span>(j <span class="cf">in</span> <span class="kw">seq</span>(<span class="dt">along =</span> submodels<span class="op">$</span>nIter)) {
+                      out[[j<span class="op">+</span><span class="dv">1</span>]] &lt;-<span class="st"> </span>caTools<span class="op">::</span><span class="kw">predict.LogitBoost</span>(
+                        modelFit,
+                        newdata,
+                        <span class="dt">nIter =</span> submodels<span class="op">$</span>nIter[j]
+                        )
                     }
                   }
                   out                   
                 },
                 <span class="dt">prob =</span> <span class="ot">NULL</span>,
-                <span class="dt">sort =</span> function(x) x)</code></pre></div>
+                <span class="dt">sort =</span> <span class="cf">function</span>(x) x)</code></pre>
 <p>Should you care about this? Let’s tune the model over the same data set used for the SVM model above and see how long it takes:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">825</span>)
-lb1 &lt;-<span class="st"> </span><span class="kw">system.time</span>(<span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> training, 
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">825</span>)
+lb1 &lt;-<span class="st"> </span><span class="kw">system.time</span>(<span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> training, 
                          <span class="dt">method =</span> lbFuncs, 
                          <span class="dt">tuneLength =</span> <span class="dv">3</span>,
                          <span class="dt">trControl =</span> fitControl))
-lb1</code></pre></div>
+lb1</code></pre>
 <pre><code>##    user  system elapsed 
-##  12.872  31.556   1.901</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Now get rid of the submodel parts
+##   8.614   8.967   1.688</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">## Now get rid of the submodel parts
 lbFuncs2 &lt;-<span class="st"> </span>lbFuncs
-lbFuncs2$predict &lt;-<span class="st"> </span>function(modelFit, newdata, <span class="dt">preProc =</span> <span class="ot">NULL</span>, <span class="dt">submodels =</span> <span class="ot">NULL</span>) 
-  <span class="kw">predict</span>(modelFit, newdata, <span class="dt">type=</span><span class="st">&quot;class&quot;</span>)
-lbFuncs2$loop &lt;-<span class="st"> </span><span class="ot">NULL</span> 
+lbFuncs2<span class="op">$</span>predict &lt;-<span class="st"> </span><span class="cf">function</span>(modelFit, newdata, <span class="dt">preProc =</span> <span class="ot">NULL</span>, <span class="dt">submodels =</span> <span class="ot">NULL</span>) 
+  caTools<span class="op">::</span><span class="kw">predict.LogitBoost</span>(modelFit, newdata, <span class="dt">type =</span> <span class="st">&quot;class&quot;</span>)
+lbFuncs2<span class="op">$</span>loop &lt;-<span class="st"> </span><span class="ot">NULL</span> 
 
 <span class="kw">set.seed</span>(<span class="dv">825</span>)
-lb2 &lt;-<span class="st"> </span><span class="kw">system.time</span>(<span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> training, 
+lb2 &lt;-<span class="st"> </span><span class="kw">system.time</span>(<span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> training, 
                          <span class="dt">method =</span> lbFuncs2, 
                          <span class="dt">tuneLength =</span> <span class="dv">3</span>,
                          <span class="dt">trControl =</span> fitControl))
-lb2</code></pre></div>
+lb2</code></pre>
 <pre><code>##    user  system elapsed 
-##  14.096   3.236   2.688</code></pre>
-<p>On a data set with 157 instances and 60 predictors and a model that is tuned over only 3 parameter values, there is a 1.41-fold speed-up. If the model were more computationally taxing or the data set were larger or the number of tune parameters that were evaluated was larger, the speed-up would increase. Here is a plot of the speed-up for a few more values of <code>tuneLength</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bigGrid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">nIter =</span> <span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">151</span>, <span class="dt">by =</span> <span class="dv">10</span>))
+##  14.410  12.781   2.307</code></pre>
+<p>On a data set with 157 instances and 60 predictors and a model that is tuned over only 3 parameter values, there is a 1.37-fold speed-up. If the model were more computationally taxing or the data set were larger or the number of tune parameters that were evaluated was larger, the speed-up would increase. Here is a plot of the speed-up for a few more values of <code>tuneLength</code>:</p>
+<pre class="sourceCode r"><code class="sourceCode r">bigGrid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">nIter =</span> <span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">151</span>, <span class="dt">by =</span> <span class="dv">10</span>))
 results &lt;-<span class="st"> </span>bigGrid
-results$SpeedUp &lt;-<span class="st"> </span><span class="ot">NA</span>
+results<span class="op">$</span>SpeedUp &lt;-<span class="st"> </span><span class="ot">NA</span>
 
-for(i in <span class="dv">2</span>:<span class="kw">nrow</span>(bigGrid)){ 
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="kw">nrow</span>(bigGrid)){ 
   <span class="kw">rm</span>(lb1, lb2)
   <span class="kw">set.seed</span>(<span class="dv">825</span>)
-  lb1 &lt;-<span class="st"> </span><span class="kw">system.time</span>(<span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> training, 
+  lb1 &lt;-<span class="st"> </span><span class="kw">system.time</span>(<span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> training, 
                            <span class="dt">method =</span> lbFuncs, 
-                           <span class="dt">tuneGrid =</span> bigGrid[<span class="dv">1</span>:i,,<span class="dt">drop =</span> <span class="ot">FALSE</span>],
+                           <span class="dt">tuneGrid =</span> bigGrid[<span class="dv">1</span><span class="op">:</span>i,,<span class="dt">drop =</span> <span class="ot">FALSE</span>],
                            <span class="dt">trControl =</span> fitControl))
   
   <span class="kw">set.seed</span>(<span class="dv">825</span>)
-  lb2 &lt;-<span class="st"> </span><span class="kw">system.time</span>(<span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> training, 
+  lb2 &lt;-<span class="st"> </span><span class="kw">system.time</span>(<span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> training, 
                            <span class="dt">method =</span> lbFuncs2, 
-                           <span class="dt">tuneGrid =</span> bigGrid[<span class="dv">1</span>:i,,<span class="dt">drop =</span> <span class="ot">FALSE</span>],
+                           <span class="dt">tuneGrid =</span> bigGrid[<span class="dv">1</span><span class="op">:</span>i,,<span class="dt">drop =</span> <span class="ot">FALSE</span>],
                            <span class="dt">trControl =</span> fitControl))
-  results$SpeedUp[i] &lt;-<span class="st"> </span>lb2[<span class="dv">3</span>]/lb1[<span class="dv">3</span>]
+  results<span class="op">$</span>SpeedUp[i] &lt;-<span class="st"> </span>lb2[<span class="dv">3</span>]<span class="op">/</span>lb1[<span class="dv">3</span>]
   }
 
-<span class="kw">ggplot</span>(results, <span class="kw">aes</span>(<span class="dt">x =</span> nIter, <span class="dt">y =</span> SpeedUp)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>() +<span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;LogitBoost Iterations&quot;</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Speed-Up&quot;</span>)</code></pre></div>
-<p><img src="custom/custom_lb_times-1.png" width="672" /></p>
+<span class="kw">ggplot</span>(results, <span class="kw">aes</span>(<span class="dt">x =</span> nIter, <span class="dt">y =</span> SpeedUp)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;LogitBoost Iterations&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Speed-Up&quot;</span>)</code></pre>
+<p><img src="custom/custom_lb_times-1.svg" width="672" /></p>
 <p>The speed-ups show a significant decrease in training time using this method.</p>
+<p><strong>Note:</strong> The previous examples were run using parallel processing. The remainder in this chapter are run sequentially and, for simplicity, the namespace operator is not used in the custom code modules below.</p>
 <div id="Illustration3">
 
-</div>
 </div>
 </div>
 <div id="illustrative-example-3-nonstandard-formulas" class="section level2">
@@ -780,11 +818,11 @@ for(i in <span class="dv">2</span>:<span class="kw">nrow</span>(bigGrid)){
 <p>(Note: the previous third illustration (“SMOTE During Resampling”) is no longer needed due to the inclusion of subsampling via <code>train</code>.)</p>
 <p>One limitation of <code>train</code> is that it requires the use of basic model formulas. There are several functions that use special formulas or operators on predictors that won’t (and perhaps should not) work in the top level call to <code>train</code>. However, we can still fit these models.</p>
 <p>Here is an example using the <code>mboost</code> function in the <strong>mboost</strong> package from the help page.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mboost)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mboost)
 <span class="kw">data</span>(<span class="st">&quot;bodyfat&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;TH.data&quot;</span>)
-mod &lt;-<span class="st"> </span><span class="kw">mboost</span>(DEXfat ~<span class="st"> </span><span class="kw">btree</span>(age) +<span class="st"> </span><span class="kw">bols</span>(waistcirc) +<span class="st"> </span><span class="kw">bbs</span>(hipcirc),
+mod &lt;-<span class="st"> </span><span class="kw">mboost</span>(DEXfat <span class="op">~</span><span class="st"> </span><span class="kw">btree</span>(age) <span class="op">+</span><span class="st"> </span><span class="kw">bols</span>(waistcirc) <span class="op">+</span><span class="st"> </span><span class="kw">bbs</span>(hipcirc),
               <span class="dt">data =</span> bodyfat)
-mod</code></pre></div>
+mod</code></pre>
 <pre><code>## 
 ##   Model-based Boosting
 ## 
@@ -802,57 +840,59 @@ mod</code></pre></div>
 ## Offset:  30.78282 
 ## Number of baselearners:  3</code></pre>
 <p>We can create a custom model that mimics this code so that we can obtain resampling estimates for this specific model:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">modelInfo &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">label =</span> <span class="st">&quot;Model-based Gradient Boosting&quot;</span>,
+<pre class="sourceCode r"><code class="sourceCode r">modelInfo &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">label =</span> <span class="st">&quot;Model-based Gradient Boosting&quot;</span>,
                   <span class="dt">library =</span> <span class="st">&quot;mboost&quot;</span>,
                   <span class="dt">type =</span> <span class="st">&quot;Regression&quot;</span>,
                   <span class="dt">parameters =</span> <span class="kw">data.frame</span>(<span class="dt">parameter =</span> <span class="st">&quot;parameter&quot;</span>,
                                           <span class="dt">class =</span> <span class="st">&quot;character&quot;</span>,
                                           <span class="dt">label =</span> <span class="st">&quot;parameter&quot;</span>),
-                  <span class="dt">grid =</span> function(x, y, <span class="dt">len =</span> <span class="ot">NULL</span>, <span class="dt">search =</span> <span class="st">&quot;grid&quot;</span>) 
+                  <span class="dt">grid =</span> <span class="cf">function</span>(x, y, <span class="dt">len =</span> <span class="ot">NULL</span>, <span class="dt">search =</span> <span class="st">&quot;grid&quot;</span>) 
                     <span class="kw">data.frame</span>(<span class="dt">parameter =</span> <span class="st">&quot;none&quot;</span>),
                   <span class="dt">loop =</span> <span class="ot">NULL</span>,
-                  <span class="dt">fit =</span> function(x, y, wts, param, lev, last, classProbs, ...) {          
+                  <span class="dt">fit =</span> <span class="cf">function</span>(x, y, wts, param, lev, last, classProbs, ...) {          
                     ## mboost requires a data frame with predictors and response
-                    dat &lt;-<span class="st"> </span>if(<span class="kw">is.data.frame</span>(x)) x else <span class="kw">as.data.frame</span>(x)
-                    dat$DEXfat &lt;-<span class="st"> </span>y
-                    mod &lt;-<span class="st"> </span><span class="kw">mboost</span>(DEXfat ~<span class="st"> </span><span class="kw">btree</span>(age) +<span class="st"> </span><span class="kw">bols</span>(waistcirc) +<span class="st"> </span><span class="kw">bbs</span>(hipcirc),
-                                  <span class="dt">data =</span> dat)
+                    dat &lt;-<span class="st"> </span><span class="cf">if</span>(<span class="kw">is.data.frame</span>(x)) x <span class="cf">else</span> <span class="kw">as.data.frame</span>(x)
+                    dat<span class="op">$</span>DEXfat &lt;-<span class="st"> </span>y
+                    mod &lt;-<span class="st"> </span><span class="kw">mboost</span>(
+                      DEXfat <span class="op">~</span><span class="st"> </span><span class="kw">btree</span>(age) <span class="op">+</span><span class="st"> </span><span class="kw">bols</span>(waistcirc) <span class="op">+</span><span class="st"> </span><span class="kw">bbs</span>(hipcirc),
+                      <span class="dt">data =</span> dat
+                      )
                     },
-                  <span class="dt">predict =</span> function(modelFit, newdata, <span class="dt">submodels =</span> <span class="ot">NULL</span>) {
-                    if(!<span class="kw">is.data.frame</span>(newdata)) newdata &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(newdata)
+                  <span class="dt">predict =</span> <span class="cf">function</span>(modelFit, newdata, <span class="dt">submodels =</span> <span class="ot">NULL</span>) {
+                    <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.data.frame</span>(newdata)) newdata &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(newdata)
                     ## By default a matrix is returned; we convert it to a vector
                     <span class="kw">predict</span>(modelFit, newdata)[,<span class="dv">1</span>]
                   },
                   <span class="dt">prob =</span> <span class="ot">NULL</span>,
-                  <span class="dt">predictors =</span> function(x, ...) {
+                  <span class="dt">predictors =</span> <span class="cf">function</span>(x, ...) {
                     <span class="kw">unique</span>(<span class="kw">as.vector</span>(<span class="kw">variable.names</span>(x)))
                   },
                   <span class="dt">tags =</span> <span class="kw">c</span>(<span class="st">&quot;Ensemble Model&quot;</span>, <span class="st">&quot;Boosting&quot;</span>, <span class="st">&quot;Implicit Feature Selection&quot;</span>),
                   <span class="dt">levels =</span> <span class="ot">NULL</span>,
-                  <span class="dt">sort =</span> function(x) x)
+                  <span class="dt">sort =</span> <span class="cf">function</span>(x) x)
 
 ## Just use the basic formula method so that these predictors
 ## are passed &#39;as-is&#39; into the model fitting and prediction
 ## functions.
 <span class="kw">set.seed</span>(<span class="dv">307</span>)
-mboost_resamp &lt;-<span class="st"> </span><span class="kw">train</span>(DEXfat ~<span class="st"> </span>age +<span class="st"> </span>waistcirc +<span class="st"> </span>hipcirc, 
+mboost_resamp &lt;-<span class="st"> </span><span class="kw">train</span>(DEXfat <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>waistcirc <span class="op">+</span><span class="st"> </span>hipcirc, 
                        <span class="dt">data =</span> bodyfat, 
                        <span class="dt">method =</span> modelInfo,
                        <span class="dt">trControl =</span> <span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,
                                                 <span class="dt">repeats =</span> <span class="dv">5</span>))
-mboost_resamp</code></pre></div>
+mboost_resamp</code></pre>
 <pre><code>## Model-based Gradient Boosting 
 ## 
 ## 71 samples
-##  3 predictors
+##  3 predictor
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold, repeated 5 times) 
-## Summary of sample sizes: 64, 63, 65, 65, 64, 64, ... 
+## Summary of sample sizes: 64, 63, 65, 65, 64, 63, ... 
 ## Resampling results:
 ## 
 ##   RMSE      Rsquared   MAE     
-##   3.888728  0.9048281  3.127846</code></pre>
+##   3.986159  0.9079294  3.110383</code></pre>
 <div id="Illustration4">
 
 </div>
@@ -862,22 +902,22 @@ mboost_resamp</code></pre></div>
 <p>PCA is a common tool for feature extraction prior to modeling but is <em>unsupervised</em>. Partial Least Squares (PLS) is essentially a supervised version of PCA. For some data sets, there may be some benefit to using PLS to generate new features from the original data (the PLS scores) then use those as an input into a different predictive model. PLS requires parameter tuning. In the example below, we use PLS on a data set with highly correlated predictors then use the PLS scores in a random forest model.</p>
 <p>The “trick” here is to save the PLS loadings along with the random forest model fit so that the loadings can be used on future samples for prediction. Also, the PLS and random forest models are <em>jointly</em> tuned instead of an initial modeling process that finalizes the PLS model, then builds the random forest model separately. In this was we optimize both at once. Another important point is that the resampling results reflect the variability in the random forest <em>and</em> PLS models. If we did PLS up-front then resampled the random forest model, we would under-estimate the noise in the modeling process.</p>
 <p>The tecator spectroscopy data are used:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(tecator)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(tecator)
 
 <span class="kw">set.seed</span>(<span class="dv">930</span>)
 
-<span class="kw">colnames</span>(absorp) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;x&quot;</span>, <span class="dv">1</span>:<span class="kw">ncol</span>(absorp))
+<span class="kw">colnames</span>(absorp) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;x&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(absorp))
 
 ## We will model the protein content data
-trainMeats &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(endpoints[,<span class="dv">3</span>], <span class="dt">p =</span> <span class="dv">3</span>/<span class="dv">4</span>)
+trainMeats &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(endpoints[,<span class="dv">3</span>], <span class="dt">p =</span> <span class="dv">3</span><span class="op">/</span><span class="dv">4</span>)
 absorpTrain  &lt;-<span class="st"> </span>absorp[trainMeats[[<span class="dv">1</span>]], ]
 proteinTrain &lt;-<span class="st"> </span>endpoints[trainMeats[[<span class="dv">1</span>]], <span class="dv">3</span>]
-absorpTest   &lt;-<span class="st"> </span>absorp[-trainMeats[[<span class="dv">1</span>]], ]
-proteinTest  &lt;-<span class="st"> </span>endpoints[-trainMeats[[<span class="dv">1</span>]], <span class="dv">3</span>]</code></pre></div>
+absorpTest   &lt;-<span class="st"> </span>absorp[<span class="op">-</span>trainMeats[[<span class="dv">1</span>]], ]
+proteinTest  &lt;-<span class="st"> </span>endpoints[<span class="op">-</span>trainMeats[[<span class="dv">1</span>]], <span class="dv">3</span>]</code></pre>
 <p>
 Here is the model code:
 </p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pls_rf &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">label =</span> <span class="st">&quot;PLS-RF&quot;</span>,
+<pre class="sourceCode r"><code class="sourceCode r">pls_rf &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">label =</span> <span class="st">&quot;PLS-RF&quot;</span>,
                <span class="dt">library =</span> <span class="kw">c</span>(<span class="st">&quot;pls&quot;</span>, <span class="st">&quot;randomForest&quot;</span>),
                <span class="dt">type =</span> <span class="st">&quot;Regression&quot;</span>,
                ## Tune over both parameters at the same time
@@ -885,48 +925,48 @@ Here is the model code:
                                        <span class="dt">class =</span> <span class="kw">c</span>(<span class="st">&quot;numeric&quot;</span>, <span class="st">&#39;numeric&#39;</span>),
                                        <span class="dt">label =</span> <span class="kw">c</span>(<span class="st">&#39;#Components&#39;</span>, 
                                                  <span class="st">&#39;#Randomly Selected Predictors&#39;</span>)),
-               <span class="dt">grid =</span> function(x, y, <span class="dt">len =</span> <span class="ot">NULL</span>, <span class="dt">search =</span> <span class="st">&quot;grid&quot;</span>) {
-                 if(search ==<span class="st"> &quot;grid&quot;</span>) {
-                   grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">ncomp =</span> <span class="kw">seq</span>(<span class="dv">1</span>, <span class="kw">min</span>(<span class="kw">ncol</span>(x) -<span class="st"> </span><span class="dv">1</span>, len), <span class="dt">by =</span> <span class="dv">1</span>),
-                                       <span class="dt">mtry =</span> <span class="dv">1</span>:len)
-                   } else {
-                     grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">ncomp =</span> <span class="kw">sample</span>(<span class="dv">1</span>:<span class="kw">ncol</span>(x), <span class="dt">size =</span> len),
-                                         <span class="dt">mtry =</span> <span class="kw">sample</span>(<span class="dv">1</span>:<span class="kw">ncol</span>(x), <span class="dt">size =</span> len))
+               <span class="dt">grid =</span> <span class="cf">function</span>(x, y, <span class="dt">len =</span> <span class="ot">NULL</span>, <span class="dt">search =</span> <span class="st">&quot;grid&quot;</span>) {
+                 <span class="cf">if</span>(search <span class="op">==</span><span class="st"> &quot;grid&quot;</span>) {
+                   grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">ncomp =</span> <span class="kw">seq</span>(<span class="dv">1</span>, <span class="kw">min</span>(<span class="kw">ncol</span>(x) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, len), <span class="dt">by =</span> <span class="dv">1</span>),
+                                       <span class="dt">mtry =</span> <span class="dv">1</span><span class="op">:</span>len)
+                   } <span class="cf">else</span> {
+                     grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">ncomp =</span> <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(x), <span class="dt">size =</span> len),
+                                         <span class="dt">mtry =</span> <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(x), <span class="dt">size =</span> len))
                      }
                  ## We can&#39;t have mtry &gt; ncomp
-                 grid &lt;-<span class="st"> </span><span class="kw">subset</span>(grid, mtry &lt;=<span class="st"> </span>ncomp)
+                 grid &lt;-<span class="st"> </span><span class="kw">subset</span>(grid, mtry <span class="op">&lt;=</span><span class="st"> </span>ncomp)
                  },
                <span class="dt">loop =</span> <span class="ot">NULL</span>,
-               <span class="dt">fit =</span> function(x, y, wts, param, lev, last, classProbs, ...) { 
+               <span class="dt">fit =</span> <span class="cf">function</span>(x, y, wts, param, lev, last, classProbs, ...) { 
                  ## First fit the pls model, generate the training set scores,
                  ## then attach what is needed to the random forest object to 
                  ## be used later
                  
                  ## plsr only has a formula interface so create one data frame
                  dat &lt;-<span class="st"> </span>x
-                 dat$y &lt;-<span class="st"> </span>y
-                 pre &lt;-<span class="st"> </span><span class="kw">plsr</span>(y~<span class="st"> </span>., <span class="dt">data =</span> dat, <span class="dt">ncomp =</span> param$ncomp)
+                 dat<span class="op">$</span>y &lt;-<span class="st"> </span>y
+                 pre &lt;-<span class="st"> </span><span class="kw">plsr</span>(y<span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> dat, <span class="dt">ncomp =</span> param<span class="op">$</span>ncomp)
                  scores &lt;-<span class="st"> </span><span class="kw">predict</span>(pre, x, <span class="dt">type =</span> <span class="st">&quot;scores&quot;</span>)
-                 <span class="kw">colnames</span>(scores) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;score&quot;</span>, <span class="dv">1</span>:param$ncomp, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)
-                 mod &lt;-<span class="st"> </span><span class="kw">randomForest</span>(scores, y, <span class="dt">mtry =</span> param$mtry, ...)
-                 mod$projection &lt;-<span class="st"> </span>pre$projection
+                 <span class="kw">colnames</span>(scores) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;score&quot;</span>, <span class="dv">1</span><span class="op">:</span>param<span class="op">$</span>ncomp, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)
+                 mod &lt;-<span class="st"> </span><span class="kw">randomForest</span>(scores, y, <span class="dt">mtry =</span> param<span class="op">$</span>mtry, ...)
+                 mod<span class="op">$</span>projection &lt;-<span class="st"> </span>pre<span class="op">$</span>projection
                  mod
                  },
-               <span class="dt">predict =</span> function(modelFit, newdata, <span class="dt">submodels =</span> <span class="ot">NULL</span>) {  
+               <span class="dt">predict =</span> <span class="cf">function</span>(modelFit, newdata, <span class="dt">submodels =</span> <span class="ot">NULL</span>) {  
                  ## Now apply the same scaling to the new samples
-                 scores &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(newdata)  %*%<span class="st"> </span>modelFit$projection
-                 <span class="kw">colnames</span>(scores) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;score&quot;</span>, <span class="dv">1</span>:<span class="kw">ncol</span>(scores), <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)
+                 scores &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(newdata)  <span class="op">%*%</span><span class="st"> </span>modelFit<span class="op">$</span>projection
+                 <span class="kw">colnames</span>(scores) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;score&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(scores), <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)
                  scores &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(scores)
                  ## Predict the random forest model
                  <span class="kw">predict</span>(modelFit, scores)
                  },
                <span class="dt">prob =</span> <span class="ot">NULL</span>,
                <span class="dt">varImp =</span> <span class="ot">NULL</span>,
-               <span class="dt">predictors =</span> function(x, ...) <span class="kw">rownames</span>(x$projection),
-               <span class="dt">levels =</span> function(x) x$obsLevels,
-               <span class="dt">sort =</span> function(x) x[<span class="kw">order</span>(x[,<span class="dv">1</span>]),])</code></pre></div>
+               <span class="dt">predictors =</span> <span class="cf">function</span>(x, ...) <span class="kw">rownames</span>(x<span class="op">$</span>projection),
+               <span class="dt">levels =</span> <span class="cf">function</span>(x) x<span class="op">$</span>obsLevels,
+               <span class="dt">sort =</span> <span class="cf">function</span>(x) x[<span class="kw">order</span>(x[,<span class="dv">1</span>]),])</code></pre>
 <p>We fit the models and look at the resampling results for the joint model:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">meatCtrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="dt">repeats =</span> <span class="dv">5</span>)
+<pre class="sourceCode r"><code class="sourceCode r">meatCtrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="dt">repeats =</span> <span class="dv">5</span>)
 
 ## These will take a while for these data
 <span class="kw">set.seed</span>(<span class="dv">184</span>)
@@ -936,36 +976,36 @@ plsrf &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="d
                <span class="dt">tuneLength =</span> <span class="dv">10</span>,
                <span class="dt">ntree =</span> <span class="dv">1000</span>,
                <span class="dt">trControl =</span> meatCtrl)
-<span class="kw">ggplot</span>(plsrf, <span class="dt">plotType =</span> <span class="st">&quot;level&quot;</span>)</code></pre></div>
-<p><img src="custom/custom_meat_mod1-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## How does random forest do on its own?
+<span class="kw">ggplot</span>(plsrf, <span class="dt">plotType =</span> <span class="st">&quot;level&quot;</span>)</code></pre>
+<p><img src="custom/custom_meat_mod1-1.svg" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">## How does random forest do on its own?
 <span class="kw">set.seed</span>(<span class="dv">184</span>)
 rfOnly &lt;-<span class="st"> </span><span class="kw">train</span>(absorpTrain, proteinTrain, 
                 <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>,
                 <span class="dt">tuneLength =</span> <span class="dv">10</span>,
                 <span class="dt">ntree =</span> <span class="dv">1000</span>,
                 <span class="dt">trControl =</span> meatCtrl)
-<span class="kw">getTrainPerf</span>(rfOnly)</code></pre></div>
+<span class="kw">getTrainPerf</span>(rfOnly)</code></pre>
 <pre><code>##   TrainRMSE TrainRsquared TrainMAE method
-## 1  2.220903     0.4795385 1.766962     rf</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## How does random forest do on its own?
+## 1  2.215419     0.4758012 1.756008     rf</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">## How does random forest do on its own?
 <span class="kw">set.seed</span>(<span class="dv">184</span>)
 plsOnly &lt;-<span class="st"> </span><span class="kw">train</span>(absorpTrain, proteinTrain, 
                  <span class="dt">method =</span> <span class="st">&quot;pls&quot;</span>,
                  <span class="dt">tuneLength =</span> <span class="dv">20</span>,
                  <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>),
                  <span class="dt">trControl =</span> meatCtrl)
-<span class="kw">getTrainPerf</span>(plsOnly)</code></pre></div>
+<span class="kw">getTrainPerf</span>(plsOnly)</code></pre>
 <pre><code>##   TrainRMSE TrainRsquared  TrainMAE method
-## 1 0.6388762     0.9634116 0.5052483    pls</code></pre>
+## 1 0.6358013     0.9622709 0.4985127    pls</code></pre>
 <p>The test set results indicate that these data like the linear model more than anything:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">postResample</span>(<span class="kw">predict</span>(plsrf, absorpTest), proteinTest)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">postResample</span>(<span class="kw">predict</span>(plsrf, absorpTest), proteinTest)</code></pre>
 <pre><code>##      RMSE  Rsquared       MAE 
-## 1.3673990 0.8191313 1.0392774</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">postResample</span>(<span class="kw">predict</span>(rfOnly, absorpTest), proteinTest)</code></pre></div>
+## 1.3853584 0.8179413 1.0558763</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">postResample</span>(<span class="kw">predict</span>(rfOnly, absorpTest), proteinTest)</code></pre>
 <pre><code>##      RMSE  Rsquared       MAE 
-## 2.0120294 0.5840518 1.5606575</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">postResample</span>(<span class="kw">predict</span>(plsOnly, absorpTest), proteinTest)</code></pre></div>
+## 2.0220181 0.5846188 1.5914656</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">postResample</span>(<span class="kw">predict</span>(plsOnly, absorpTest), proteinTest)</code></pre>
 <pre><code>##      RMSE  Rsquared       MAE 
 ## 0.7179949 0.9438016 0.5851660</code></pre>
 <div id="Illustration5">
@@ -976,20 +1016,20 @@ plsOnly &lt;-<span class="st"> </span><span class="kw">train</span>(absorpTrain,
 <h2><span class="header-section-number">13.8</span> Illustrative Example 5: Optimizing probability thresholds for class imbalances</h2>
 <p>This description was originally posted on <a href="http://appliedpredictivemodeling.com/blog/">this blog.</a></p>
 <p>One of the toughest problems in predictive model occurs when the classes have a severe imbalance. In <a href="http://appliedpredictivemodeling.com/">our book</a>, we spend <a href="http://rd.springer.com/chapter/10.1007/978-1-4614-6849-3_16">an entire chapter</a> on this subject itself. One consequence of this is that the performance is generally very biased against the class with the smallest frequencies. For example, if the data have a majority of samples belonging to the first class and very few in the second class, most predictive models will maximize accuracy by predicting everything to be the first class. As a result there’s usually great sensitivity but poor specificity. As a demonstration will use a simulation system <a href="http://appliedpredictivemodeling.com/blog/2013/4/11/a-classification-simulation-system">described here</a>. By default it has about a 50-50 class frequency but we can change this by altering the function argument called <code>intercept</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caret)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caret)
 
 <span class="kw">set.seed</span>(<span class="dv">442</span>)
-trainingSet &lt;-<span class="st"> </span><span class="kw">twoClassSim</span>(<span class="dt">n =</span> <span class="dv">500</span>, <span class="dt">intercept =</span> -<span class="dv">16</span>)
-testingSet  &lt;-<span class="st"> </span><span class="kw">twoClassSim</span>(<span class="dt">n =</span> <span class="dv">500</span>, <span class="dt">intercept =</span> -<span class="dv">16</span>)
+trainingSet &lt;-<span class="st"> </span><span class="kw">twoClassSim</span>(<span class="dt">n =</span> <span class="dv">500</span>, <span class="dt">intercept =</span> <span class="dv">-16</span>)
+testingSet  &lt;-<span class="st"> </span><span class="kw">twoClassSim</span>(<span class="dt">n =</span> <span class="dv">500</span>, <span class="dt">intercept =</span> <span class="dv">-16</span>)
 
 ## Class frequencies
-<span class="kw">table</span>(trainingSet$Class)</code></pre></div>
+<span class="kw">table</span>(trainingSet<span class="op">$</span>Class)</code></pre>
 <pre><code>## 
 ## Class1 Class2 
 ##    450     50</code></pre>
 <p>There is almost a 9:1 imbalance in these data. Let’s use a standard random forest model with these data using the default value of <code>mtry</code>. We’ll also use repeated 10-fold cross validation to get a sense of performance:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">949</span>)
-mod0 &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> trainingSet,
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">949</span>)
+mod0 &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> trainingSet,
               <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>,
               <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
               <span class="dt">tuneGrid =</span> <span class="kw">data.frame</span>(<span class="dt">mtry =</span> <span class="dv">3</span>),
@@ -998,47 +1038,47 @@ mod0 &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span cl
                                        <span class="dt">repeats =</span> <span class="dv">5</span>,
                                        <span class="dt">classProbs =</span> <span class="ot">TRUE</span>,
                                        <span class="dt">summaryFunction =</span> twoClassSummary))
-<span class="kw">getTrainPerf</span>(mod0)</code></pre></div>
+<span class="kw">getTrainPerf</span>(mod0)</code></pre>
 <pre><code>##    TrainROC TrainSens TrainSpec method
-## 1 0.9573333 0.9968889      0.34     rf</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Get the ROC curve
-roc0 &lt;-<span class="st"> </span><span class="kw">roc</span>(testingSet$Class, 
+## 1 0.9576444 0.9982222     0.332     rf</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">## Get the ROC curve
+roc0 &lt;-<span class="st"> </span><span class="kw">roc</span>(testingSet<span class="op">$</span>Class, 
             <span class="kw">predict</span>(mod0, testingSet, <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)[,<span class="dv">1</span>], 
-            <span class="dt">levels =</span> <span class="kw">rev</span>(<span class="kw">levels</span>(testingSet$Class)))
-roc0</code></pre></div>
+            <span class="dt">levels =</span> <span class="kw">rev</span>(<span class="kw">levels</span>(testingSet<span class="op">$</span>Class)))
+roc0</code></pre>
 <pre><code>## 
 ## Call:
 ## roc.default(response = testingSet$Class, predictor = predict(mod0,     testingSet, type = &quot;prob&quot;)[, 1], levels = rev(levels(testingSet$Class)))
 ## 
 ## Data: predict(mod0, testingSet, type = &quot;prob&quot;)[, 1] in 34 controls (testingSet$Class Class2) &lt; 466 cases (testingSet$Class Class1).
-## Area under the curve: 0.9304</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Now plot
+## Area under the curve: 0.931</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">## Now plot
 <span class="kw">plot</span>(roc0, <span class="dt">print.thres =</span> <span class="kw">c</span>(.<span class="dv">5</span>), <span class="dt">type =</span> <span class="st">&quot;S&quot;</span>,
      <span class="dt">print.thres.pattern =</span> <span class="st">&quot;%.3f (Spec = %.2f, Sens = %.2f)&quot;</span>,
-     <span class="dt">print.thres.cex =</span> .<span class="dv">8</span>, 
-     <span class="dt">legacy.axes =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="custom/custom_thresh_mod0-1.png" width="672" /></p>
+     <span class="dt">print.thres.cex =</span> <span class="fl">.8</span>, 
+     <span class="dt">legacy.axes =</span> <span class="ot">TRUE</span>)</code></pre>
+<p><img src="custom/custom_thresh_mod0-1.svg" width="80%" /></p>
 <p>The area under the ROC curve is very high, indicating that the model has very good predictive power for these data. The plot shows the default probability cut off value of 50%. The sensitivity and specificity values associated with this point indicate that performance is not that good when an actual call needs to be made on a sample.</p>
 <p>One of the most common ways to deal with this is to determine an alternate probability cut off using the ROC curve. But to do this well, another set of data (not the test set) is needed to set the cut off and the test set is used to validate it. We don’t have a lot of data this is difficult since we will be spending some of our data just to get a single cut off value.</p>
 <p>Alternatively the model can be tuned, using resampling, to determine any model tuning parameters as well as an appropriate cut off for the probabilities.</p>
 <p>Suppose the model has one tuning parameter and we want to look at four candidate values for tuning. Suppose we also want to tune the probability cut off over 20 different thresholds. Now we have to look at 20×4=80 different models (and that is for each resample). One other feature that has been opened up his ability to use sequential parameters: these are tuning parameters that don’t require a completely new model fit to produce predictions. In this case, we can fit one random forest model and get it’s predicted class probabilities and evaluate the candidate probability cutoffs using these same hold-out samples. Here is what the model code looks like:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Get the model code for the original random forest method:
+<pre class="sourceCode r"><code class="sourceCode r">## Get the model code for the original random forest method:
 
 thresh_code &lt;-<span class="st"> </span><span class="kw">getModelInfo</span>(<span class="st">&quot;rf&quot;</span>, <span class="dt">regex =</span> <span class="ot">FALSE</span>)[[<span class="dv">1</span>]]
-thresh_code$type &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Classification&quot;</span>)
+thresh_code<span class="op">$</span>type &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Classification&quot;</span>)
 ## Add the threshold as another tuning parameter
-thresh_code$parameters &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">parameter =</span> <span class="kw">c</span>(<span class="st">&quot;mtry&quot;</span>, <span class="st">&quot;threshold&quot;</span>),
+thresh_code<span class="op">$</span>parameters &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">parameter =</span> <span class="kw">c</span>(<span class="st">&quot;mtry&quot;</span>, <span class="st">&quot;threshold&quot;</span>),
                                      <span class="dt">class =</span> <span class="kw">c</span>(<span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>),
                                      <span class="dt">label =</span> <span class="kw">c</span>(<span class="st">&quot;#Randomly Selected Predictors&quot;</span>,
                                                <span class="st">&quot;Probability Cutoff&quot;</span>))
 ## The default tuning grid code:
-thresh_code$grid &lt;-<span class="st"> </span>function(x, y, <span class="dt">len =</span> <span class="ot">NULL</span>, <span class="dt">search =</span> <span class="st">&quot;grid&quot;</span>) {
+thresh_code<span class="op">$</span>grid &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, <span class="dt">len =</span> <span class="ot">NULL</span>, <span class="dt">search =</span> <span class="st">&quot;grid&quot;</span>) {
   p &lt;-<span class="st"> </span><span class="kw">ncol</span>(x)
-  if(search ==<span class="st"> &quot;grid&quot;</span>) {
+  <span class="cf">if</span>(search <span class="op">==</span><span class="st"> &quot;grid&quot;</span>) {
     grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">mtry =</span> <span class="kw">floor</span>(<span class="kw">sqrt</span>(p)), 
-                        <span class="dt">threshold =</span> <span class="kw">seq</span>(.<span class="dv">01</span>, .<span class="dv">99</span>, <span class="dt">length =</span> len))
-    } else {
-      grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">mtry =</span> <span class="kw">sample</span>(<span class="dv">1</span>:p, <span class="dt">size =</span> len),
+                        <span class="dt">threshold =</span> <span class="kw">seq</span>(.<span class="dv">01</span>, <span class="fl">.99</span>, <span class="dt">length =</span> len))
+    } <span class="cf">else</span> {
+      grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">mtry =</span> <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>p, <span class="dt">size =</span> len),
                           <span class="dt">threshold =</span> <span class="kw">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dt">size =</span> len))
       }
   grid
@@ -1047,46 +1087,46 @@ thresh_code$grid &lt;-<span class="st"> </span>function(x, y, <span class="dt">l
 ## Here we fit a single random forest model (with a fixed mtry)
 ## and loop over the threshold values to get predictions from the same
 ## randomForest model.
-thresh_code$loop =<span class="st"> </span>function(grid) {   
+thresh_code<span class="op">$</span>loop =<span class="st"> </span><span class="cf">function</span>(grid) {   
   <span class="kw">library</span>(plyr)
   loop &lt;-<span class="st"> </span><span class="kw">ddply</span>(grid, <span class="kw">c</span>(<span class="st">&quot;mtry&quot;</span>),
-                function(x) <span class="kw">c</span>(<span class="dt">threshold =</span> <span class="kw">max</span>(x$threshold)))
+                <span class="cf">function</span>(x) <span class="kw">c</span>(<span class="dt">threshold =</span> <span class="kw">max</span>(x<span class="op">$</span>threshold)))
   submodels &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="dt">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="kw">nrow</span>(loop))
-  for(i in <span class="kw">seq</span>(<span class="dt">along =</span> loop$threshold)) {
-    index &lt;-<span class="st"> </span><span class="kw">which</span>(grid$mtry ==<span class="st"> </span>loop$mtry[i])
+  <span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">seq</span>(<span class="dt">along =</span> loop<span class="op">$</span>threshold)) {
+    index &lt;-<span class="st"> </span><span class="kw">which</span>(grid<span class="op">$</span>mtry <span class="op">==</span><span class="st"> </span>loop<span class="op">$</span>mtry[i])
     cuts &lt;-<span class="st"> </span>grid[index, <span class="st">&quot;threshold&quot;</span>] 
-    submodels[[i]] &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">threshold =</span> cuts[cuts !=<span class="st"> </span>loop$threshold[i]])
+    submodels[[i]] &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">threshold =</span> cuts[cuts <span class="op">!=</span><span class="st"> </span>loop<span class="op">$</span>threshold[i]])
     }    
   <span class="kw">list</span>(<span class="dt">loop =</span> loop, <span class="dt">submodels =</span> submodels)
   }
 
 ## Fit the model independent of the threshold parameter
-thresh_code$fit =<span class="st"> </span>function(x, y, wts, param, lev, last, classProbs, ...) { 
-  if(<span class="kw">length</span>(<span class="kw">levels</span>(y)) !=<span class="st"> </span><span class="dv">2</span>)
+thresh_code<span class="op">$</span>fit =<span class="st"> </span><span class="cf">function</span>(x, y, wts, param, lev, last, classProbs, ...) { 
+  <span class="cf">if</span>(<span class="kw">length</span>(<span class="kw">levels</span>(y)) <span class="op">!=</span><span class="st"> </span><span class="dv">2</span>)
     <span class="kw">stop</span>(<span class="st">&quot;This works only for 2-class problems&quot;</span>)
-  <span class="kw">randomForest</span>(x, y, <span class="dt">mtry =</span> param$mtry, ...)
+  <span class="kw">randomForest</span>(x, y, <span class="dt">mtry =</span> param<span class="op">$</span>mtry, ...)
   }
 
 ## Now get a probability prediction and use different thresholds to
 ## get the predicted class
-thresh_code$predict =<span class="st"> </span>function(modelFit, newdata, <span class="dt">submodels =</span> <span class="ot">NULL</span>) {
+thresh_code<span class="op">$</span>predict =<span class="st"> </span><span class="cf">function</span>(modelFit, newdata, <span class="dt">submodels =</span> <span class="ot">NULL</span>) {
   class1Prob &lt;-<span class="st"> </span><span class="kw">predict</span>(modelFit, 
                         newdata, 
-                        <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)[, modelFit$obsLevels[<span class="dv">1</span>]]
+                        <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)[, modelFit<span class="op">$</span>obsLevels[<span class="dv">1</span>]]
   ## Raise the threshold for class #1 and a higher level of
   ## evidence is needed to call it class 1 so it should 
   ## decrease sensitivity and increase specificity
-  out &lt;-<span class="st"> </span><span class="kw">ifelse</span>(class1Prob &gt;=<span class="st"> </span>modelFit$tuneValue$threshold,
-                modelFit$obsLevels[<span class="dv">1</span>], 
-                modelFit$obsLevels[<span class="dv">2</span>])
-  if(!<span class="kw">is.null</span>(submodels)) {
+  out &lt;-<span class="st"> </span><span class="kw">ifelse</span>(class1Prob <span class="op">&gt;=</span><span class="st"> </span>modelFit<span class="op">$</span>tuneValue<span class="op">$</span>threshold,
+                modelFit<span class="op">$</span>obsLevels[<span class="dv">1</span>], 
+                modelFit<span class="op">$</span>obsLevels[<span class="dv">2</span>])
+  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(submodels)) {
     tmp2 &lt;-<span class="st"> </span>out
-    out &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="dt">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="kw">length</span>(submodels$threshold))
+    out &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="dt">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="kw">length</span>(submodels<span class="op">$</span>threshold))
     out[[<span class="dv">1</span>]] &lt;-<span class="st"> </span>tmp2
-    for(i in <span class="kw">seq</span>(<span class="dt">along =</span> submodels$threshold)) {
-      out[[i<span class="dv">+1</span>]] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(class1Prob &gt;=<span class="st"> </span>submodels$threshold[[i]],
-                           modelFit$obsLevels[<span class="dv">1</span>], 
-                           modelFit$obsLevels[<span class="dv">2</span>])
+    <span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">seq</span>(<span class="dt">along =</span> submodels<span class="op">$</span>threshold)) {
+      out[[i<span class="op">+</span><span class="dv">1</span>]] &lt;-<span class="st"> </span><span class="kw">ifelse</span>(class1Prob <span class="op">&gt;=</span><span class="st"> </span>submodels<span class="op">$</span>threshold[[i]],
+                           modelFit<span class="op">$</span>obsLevels[<span class="dv">1</span>], 
+                           modelFit<span class="op">$</span>obsLevels[<span class="dv">2</span>])
       }
     } 
   out  
@@ -1095,22 +1135,22 @@ thresh_code$predict =<span class="st"> </span>function(modelFit, newdata, <span 
 ## The probabilities are always the same but we have to create
 ## mulitple versions of the probs to evaluate the data across
 ## thresholds
-thresh_code$prob =<span class="st"> </span>function(modelFit, newdata, <span class="dt">submodels =</span> <span class="ot">NULL</span>) {
+thresh_code<span class="op">$</span>prob =<span class="st"> </span><span class="cf">function</span>(modelFit, newdata, <span class="dt">submodels =</span> <span class="ot">NULL</span>) {
   out &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">predict</span>(modelFit, newdata, <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>))
-  if(!<span class="kw">is.null</span>(submodels)) {
+  <span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(submodels)) {
     probs &lt;-<span class="st"> </span>out
-    out &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="dt">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="kw">length</span>(submodels$threshold)+<span class="dv">1</span>)
-    out &lt;-<span class="st"> </span><span class="kw">lapply</span>(out, function(x) probs)
+    out &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="dt">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="kw">length</span>(submodels<span class="op">$</span>threshold)<span class="op">+</span><span class="dv">1</span>)
+    out &lt;-<span class="st"> </span><span class="kw">lapply</span>(out, <span class="cf">function</span>(x) probs)
     } 
   out 
-  }</code></pre></div>
+  }</code></pre>
 <p>Basically, we define a list of model components (such as the fitting code, the prediction code, etc.) and feed this into the train function instead of using a pre-listed model string (such as <code>method = &quot;rf&quot;</code>). For this model and these data, there was an 8% increase in training time to evaluate 20 additional values of the probability cut off.</p>
 <p>How do we optimize this model? Normally we might look at the area under the ROC curve as a metric to choose our final values. In this case the ROC curve is independent of the probability threshold so we have to use something else. A common technique to evaluate a candidate threshold is see how close it is to the perfect model where sensitivity and specificity are one. Our code will use the distance between the current model’s performance and the best possible performance and then have train minimize this distance when choosing it’s parameters. Here is the code that we use to calculate this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fourStats &lt;-<span class="st"> </span>function (data, <span class="dt">lev =</span> <span class="kw">levels</span>(data$obs), <span class="dt">model =</span> <span class="ot">NULL</span>) {
+<pre class="sourceCode r"><code class="sourceCode r">fourStats &lt;-<span class="st"> </span><span class="cf">function</span> (data, <span class="dt">lev =</span> <span class="kw">levels</span>(data<span class="op">$</span>obs), <span class="dt">model =</span> <span class="ot">NULL</span>) {
   ## This code will get use the area under the ROC curve and the
   ## sensitivity and specificity values using the current candidate
   ## value of the probability threshold.
-  out &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">twoClassSummary</span>(data, <span class="dt">lev =</span> <span class="kw">levels</span>(data$obs), <span class="dt">model =</span> <span class="ot">NULL</span>))
+  out &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">twoClassSummary</span>(data, <span class="dt">lev =</span> <span class="kw">levels</span>(data<span class="op">$</span>obs), <span class="dt">model =</span> <span class="ot">NULL</span>))
   
   ## The best possible model has sensitivity of 1 and specificity of 1. 
   ## How far are we from that value?
@@ -1123,7 +1163,7 @@ thresh_code$prob =<span class="st"> </span>function(modelFit, newdata, <span cla
 }
 
 <span class="kw">set.seed</span>(<span class="dv">949</span>)
-mod1 &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> trainingSet,
+mod1 &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> trainingSet,
               <span class="dt">method =</span> thresh_code,
               ## Minimize the distance to the perfect model
               <span class="dt">metric =</span> <span class="st">&quot;Dist&quot;</span>,
@@ -1135,11 +1175,11 @@ mod1 &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span cl
                                        <span class="dt">classProbs =</span> <span class="ot">TRUE</span>,
                                        <span class="dt">summaryFunction =</span> fourStats))
 
-mod1</code></pre></div>
+mod1</code></pre>
 <pre><code>## Random Forest 
 ## 
 ## 500 samples
-##  15 predictors
+##  15 predictor
 ##   2 classes: &#39;Class1&#39;, &#39;Class2&#39; 
 ## 
 ## No pre-processing
@@ -1148,45 +1188,45 @@ mod1</code></pre></div>
 ## Resampling results across tuning parameters:
 ## 
 ##   threshold   ROC        Sens       Spec   Dist     
-##   0.01000000  0.9573333  1.0000000  0.000  1.0000000
-##   0.06157895  0.9573333  1.0000000  0.000  1.0000000
-##   0.11315789  0.9573333  1.0000000  0.000  1.0000000
-##   0.16473684  0.9573333  1.0000000  0.000  1.0000000
-##   0.21631579  0.9573333  1.0000000  0.000  1.0000000
-##   0.26789474  0.9573333  1.0000000  0.000  1.0000000
-##   0.31947368  0.9573333  1.0000000  0.024  0.9760000
-##   0.37105263  0.9573333  1.0000000  0.064  0.9360000
-##   0.42263158  0.9573333  1.0000000  0.128  0.8720000
-##   0.47421053  0.9573333  0.9986667  0.244  0.7560160
-##   0.52578947  0.9573333  0.9946667  0.420  0.5803155
-##   0.57736842  0.9573333  0.9848889  0.556  0.4462091
-##   0.62894737  0.9573333  0.9764444  0.620  0.3846474
-##   0.68052632  0.9573333  0.9680000  0.660  0.3479335
-##   0.73210526  0.9573333  0.9515556  0.680  0.3338305
-##   0.78368421  0.9573333  0.9328889  0.744  0.2798314
-##   0.83526316  0.9573333  0.8960000  0.816  0.2387964
-##   0.88684211  0.9573333  0.8315556  0.928  0.2064563
-##   0.93842105  0.9573333  0.6800000  0.996  0.3211079
-##   0.99000000  0.9573333  0.1711111  1.000  0.8288889
+##   0.01000000  0.9576444  1.0000000  0.000  1.0000000
+##   0.06157895  0.9576444  1.0000000  0.000  1.0000000
+##   0.11315789  0.9576444  1.0000000  0.000  1.0000000
+##   0.16473684  0.9576444  1.0000000  0.000  1.0000000
+##   0.21631579  0.9576444  1.0000000  0.000  1.0000000
+##   0.26789474  0.9576444  1.0000000  0.000  1.0000000
+##   0.31947368  0.9576444  1.0000000  0.024  0.9760000
+##   0.37105263  0.9576444  1.0000000  0.060  0.9400000
+##   0.42263158  0.9576444  1.0000000  0.100  0.9000000
+##   0.47421053  0.9576444  0.9995556  0.248  0.7520049
+##   0.52578947  0.9576444  0.9942222  0.412  0.5883401
+##   0.57736842  0.9576444  0.9871111  0.536  0.4661012
+##   0.62894737  0.9576444  0.9755556  0.624  0.3819061
+##   0.68052632  0.9576444  0.9680000  0.668  0.3402055
+##   0.73210526  0.9576444  0.9524444  0.676  0.3376505
+##   0.78368421  0.9576444  0.9328889  0.740  0.2835815
+##   0.83526316  0.9576444  0.8933333  0.820  0.2394389
+##   0.88684211  0.9576444  0.8302222  0.928  0.2072788
+##   0.93842105  0.9576444  0.6808889  1.000  0.3191111
+##   0.99000000  0.9576444  0.1773333  1.000  0.8226667
 ## 
 ## Tuning parameter &#39;mtry&#39; was held constant at a value of 3
-## Dist was used to select the optimal model using  the smallest value.
+## Dist was used to select the optimal model using the smallest value.
 ## The final values used for the model were mtry = 3 and threshold
 ##  = 0.8868421.</code></pre>
 <p>Using <code>ggplot(mod1)</code> will show the performance profile. Instead here is a plot of the sensitivity, specificity, and distance to the perfect model:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(reshape2)
-metrics &lt;-<span class="st"> </span>mod1$results[, <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>:<span class="dv">6</span>)]
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(reshape2)
+metrics &lt;-<span class="st"> </span>mod1<span class="op">$</span>results[, <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>)]
 metrics &lt;-<span class="st"> </span><span class="kw">melt</span>(metrics, <span class="dt">id.vars =</span> <span class="st">&quot;threshold&quot;</span>, 
                 <span class="dt">variable.name =</span> <span class="st">&quot;Resampled&quot;</span>,
                 <span class="dt">value.name =</span> <span class="st">&quot;Data&quot;</span>)
 
-<span class="kw">ggplot</span>(metrics, <span class="kw">aes</span>(<span class="dt">x =</span> threshold, <span class="dt">y =</span> Data, <span class="dt">color =</span> Resampled)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_line</span>() +<span class="st"> </span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) +<span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Probability Cutoff&quot;</span>) +
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>)</code></pre></div>
-<p><img src="custom/custom_thresh_mod1-1.png" width="672" /></p>
+<span class="kw">ggplot</span>(metrics, <span class="kw">aes</span>(<span class="dt">x =</span> threshold, <span class="dt">y =</span> Data, <span class="dt">color =</span> Resampled)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Probability Cutoff&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>)</code></pre>
+<p><img src="custom/custom_thresh_mod1-1.svg" width="672" /></p>
 <p>You can see that as we increase the probability cut off for the first class it takes more and more evidence for a sample to be predicted as the first class. As a result the sensitivity goes down when the threshold becomes very large. The upside is that we can increase specificity in the same way. The blue curve shows the distance to the perfect model. The value of 0.89 was found to be optimal.</p>
-<p>Now we can use the test set ROC curve to validate the cut off we chose by resampling. Here the cut off closest to the perfect model is 0.83. We were able to find a good probability cut off value without setting aside another set of data for tuning the cut off.</p>
+<p>Now we can use the test set ROC curve to validate the cut off we chose by resampling. Here the cut off closest to the perfect model is 0.88. We were able to find a good probability cut off value without setting aside another set of data for tuning the cut off.</p>
 <p>One great thing about this code is that it will automatically apply the optimized probability threshold when predicting new samples.</p>
 <div id="Illustration6">
 
@@ -1203,15 +1243,15 @@ metrics &lt;-<span class="st"> </span><span class="kw">melt</span>(metrics, <spa
 <li>The slot for <code>x</code> should include any variables that are on the right-hand side of the model formula, including the offset column.</li>
 </ul>
 <p>Here is the custom model:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">offset_mod &lt;-<span class="st"> </span><span class="kw">getModelInfo</span>(<span class="st">&quot;glm&quot;</span>, <span class="dt">regex =</span> <span class="ot">FALSE</span>)[[<span class="dv">1</span>]]
-offset_mod$fit &lt;-<span class="st"> </span>function(x, y, wts, param, lev, last, classProbs, ...) {
-  dat &lt;-<span class="st"> </span>if(<span class="kw">is.data.frame</span>(x)) x else <span class="kw">as.data.frame</span>(x)
-  dat$Postwt &lt;-<span class="st"> </span>y
-  <span class="kw">glm</span>(Postwt ~<span class="st"> </span>Prewt +<span class="st"> </span>Treat +<span class="st"> </span><span class="kw">offset</span>(Prewt), <span class="dt">family =</span> gaussian, <span class="dt">data =</span> dat)
+<pre class="sourceCode r"><code class="sourceCode r">offset_mod &lt;-<span class="st"> </span><span class="kw">getModelInfo</span>(<span class="st">&quot;glm&quot;</span>, <span class="dt">regex =</span> <span class="ot">FALSE</span>)[[<span class="dv">1</span>]]
+offset_mod<span class="op">$</span>fit &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, wts, param, lev, last, classProbs, ...) {
+  dat &lt;-<span class="st"> </span><span class="cf">if</span>(<span class="kw">is.data.frame</span>(x)) x <span class="cf">else</span> <span class="kw">as.data.frame</span>(x)
+  dat<span class="op">$</span>Postwt &lt;-<span class="st"> </span>y
+  <span class="kw">glm</span>(Postwt <span class="op">~</span><span class="st"> </span>Prewt <span class="op">+</span><span class="st"> </span>Treat <span class="op">+</span><span class="st"> </span><span class="kw">offset</span>(Prewt), <span class="dt">family =</span> gaussian, <span class="dt">data =</span> dat)
 }
 
-mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">x =</span> anorexia[, <span class="dv">1</span>:<span class="dv">2</span>], <span class="dt">y =</span> anorexia$Postwt, <span class="dt">method =</span> offset_mod)
-<span class="kw">coef</span>(mod$finalModel)</code></pre></div>
+mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">x =</span> anorexia[, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">y =</span> anorexia<span class="op">$</span>Postwt, <span class="dt">method =</span> offset_mod)
+<span class="kw">coef</span>(mod<span class="op">$</span>finalModel)</code></pre>
 <pre><code>## (Intercept)       Prewt   TreatCont     TreatFT 
 ##  49.7711090  -0.5655388  -4.0970655   4.5630627</code></pre>
 
@@ -1241,10 +1281,11 @@ gitbook.start({
 "facebook": true,
 "twitter": true,
 "google": false,
+"linkedin": false,
 "weibo": false,
 "instapper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -1257,7 +1298,7 @@ gitbook.start({
 },
 "download": null,
 "toc": {
-"collapse": "section"
+"collapse": "subsection"
 }
 });
 });
@@ -1268,9 +1309,11 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

@@ -6,26 +6,26 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>The caret Package</title>
-  <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+  <meta name="description" content="Documentation for the caret package.">
+  <meta name="generator" content="bookdown 0.7.11 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Documentation for the <code>caret</code> package" />
-  <meta name="github-repo" content="<a href="https://github.com/topepo/caret" class="uri">https://github.com/topepo/caret</a>" />
+  <meta property="og:description" content="Documentation for the caret package." />
+  <meta name="github-repo" content="topepo/caret" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="The caret Package" />
   
-  <meta name="twitter:description" content="Documentation for the <code>caret</code> package" />
+  <meta name="twitter:description" content="Documentation for the caret package." />
   
 
 <meta name="author" content="Max Kuhn">
 
 
-<meta name="date" content="2017-09-04">
+<meta name="date" content="2018-05-26">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -47,58 +47,87 @@
 
 
 
-<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.2/datatables.js"></script>
-<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.4/datatables.js"></script>
+<link href="libs/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="libs/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-bootstrap-1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="libs/dt-core-bootstrap-1.10.16/js/dataTables.bootstrap.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <script src="libs/d3-4.5.0/d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
 <script src="libs/plotly-binding-4.7.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 </head>
@@ -202,9 +231,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.45</b> Self-Organising Maps</a></li>
 <li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.46</b> String Kernel</a></li>
 <li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.47</b> Support Vector Machines</a></li>
-<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.48</b> Text Mining</a></li>
-<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.49</b> Tree-Based Model</a></li>
-<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.50</b> Two Class Only</a></li>
+<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#supports-class-probabilities"><i class="fa fa-check"></i><b>7.0.48</b> Supports Class Probabilities</a></li>
+<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.49</b> Text Mining</a></li>
+<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.50</b> Tree-Based Model</a></li>
+<li class="chapter" data-level="7.0.51" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.51</b> Two Class Only</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="models-clustered-by-tag-similarity.html"><a href="models-clustered-by-tag-similarity.html"><i class="fa fa-check"></i><b>8</b> Models Clustered by Tag Similarity</a></li>
 <li class="chapter" data-level="9" data-path="parallel-processing.html"><a href="parallel-processing.html"><i class="fa fa-check"></i><b>9</b> Parallel Processing</a></li>
@@ -236,9 +266,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="13.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-sort-element"><i class="fa fa-check"></i><b>13.4</b> The sort Element</a><ul>
 <li class="chapter" data-level="13.4.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-levels-element"><i class="fa fa-check"></i><b>13.4.1</b> The <code>levels</code> Element</a></li>
 </ul></li>
-<li class="chapter" data-level="13.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>13.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a><ul>
-<li class="chapter" data-level="13.5.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-loop-element"><i class="fa fa-check"></i><b>13.5.1</b> The loop Element</a></li>
-</ul></li>
+<li class="chapter" data-level="13.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>13.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a></li>
 <li class="chapter" data-level="13.6" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-3-nonstandard-formulas"><i class="fa fa-check"></i><b>13.6</b> Illustrative Example 3: Nonstandard Formulas</a></li>
 <li class="chapter" data-level="13.7" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-4-pls-feature-extraction-pre-processing"><i class="fa fa-check"></i><b>13.7</b> Illustrative Example 4: PLS Feature Extraction Pre-Processing</a></li>
 <li class="chapter" data-level="13.8" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-5-optimizing-probability-thresholds-for-class-imbalances"><i class="fa fa-check"></i><b>13.8</b> Illustrative Example 5: Optimizing probability thresholds for class imbalances</a></li>
@@ -391,74 +419,74 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="subsampling-techniques" class="section level2">
 <h2><span class="header-section-number">11.1</span> Subsampling Techniques</h2>
 <p>To illustrate these methods, let’s simulate some data with a class imbalance using this method. We will simulate a training and test set where each contains 10000 samples and a minority class rate of about 5.9%:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caret)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caret)
 
 <span class="kw">set.seed</span>(<span class="dv">2969</span>)
-imbal_train &lt;-<span class="st"> </span><span class="kw">twoClassSim</span>(<span class="dv">10000</span>, <span class="dt">intercept =</span> -<span class="dv">20</span>, <span class="dt">linearVars =</span> <span class="dv">20</span>)
-imbal_test  &lt;-<span class="st"> </span><span class="kw">twoClassSim</span>(<span class="dv">10000</span>, <span class="dt">intercept =</span> -<span class="dv">20</span>, <span class="dt">linearVars =</span> <span class="dv">20</span>)
-<span class="kw">table</span>(imbal_train$Class)</code></pre></div>
+imbal_train &lt;-<span class="st"> </span><span class="kw">twoClassSim</span>(<span class="dv">10000</span>, <span class="dt">intercept =</span> <span class="dv">-20</span>, <span class="dt">linearVars =</span> <span class="dv">20</span>)
+imbal_test  &lt;-<span class="st"> </span><span class="kw">twoClassSim</span>(<span class="dv">10000</span>, <span class="dt">intercept =</span> <span class="dv">-20</span>, <span class="dt">linearVars =</span> <span class="dv">20</span>)
+<span class="kw">table</span>(imbal_train<span class="op">$</span>Class)</code></pre>
 <pre><code>## 
 ## Class1 Class2 
 ##   9411    589</code></pre>
 <p>Let’s create different versions of the training set prior to model tuning:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">9560</span>)
-down_train &lt;-<span class="st"> </span><span class="kw">downSample</span>(<span class="dt">x =</span> imbal_train[, -<span class="kw">ncol</span>(imbal_train)],
-                         <span class="dt">y =</span> imbal_train$Class)
-<span class="kw">table</span>(down_train$Class)   </code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">9560</span>)
+down_train &lt;-<span class="st"> </span><span class="kw">downSample</span>(<span class="dt">x =</span> imbal_train[, <span class="op">-</span><span class="kw">ncol</span>(imbal_train)],
+                         <span class="dt">y =</span> imbal_train<span class="op">$</span>Class)
+<span class="kw">table</span>(down_train<span class="op">$</span>Class)   </code></pre>
 <pre><code>## 
 ## Class1 Class2 
 ##    589    589</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">9560</span>)
-up_train &lt;-<span class="st"> </span><span class="kw">upSample</span>(<span class="dt">x =</span> imbal_train[, -<span class="kw">ncol</span>(imbal_train)],
-                     <span class="dt">y =</span> imbal_train$Class)                         
-<span class="kw">table</span>(up_train$Class) </code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">9560</span>)
+up_train &lt;-<span class="st"> </span><span class="kw">upSample</span>(<span class="dt">x =</span> imbal_train[, <span class="op">-</span><span class="kw">ncol</span>(imbal_train)],
+                     <span class="dt">y =</span> imbal_train<span class="op">$</span>Class)                         
+<span class="kw">table</span>(up_train<span class="op">$</span>Class) </code></pre>
 <pre><code>## 
 ## Class1 Class2 
 ##   9411   9411</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(DMwR)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(DMwR)
 
 <span class="kw">set.seed</span>(<span class="dv">9560</span>)
-smote_train &lt;-<span class="st"> </span><span class="kw">SMOTE</span>(Class ~<span class="st"> </span>., <span class="dt">data  =</span> imbal_train)                         
-<span class="kw">table</span>(smote_train$Class) </code></pre></div>
+smote_train &lt;-<span class="st"> </span><span class="kw">SMOTE</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data  =</span> imbal_train)                         
+<span class="kw">table</span>(smote_train<span class="op">$</span>Class) </code></pre>
 <pre><code>## 
 ## Class1 Class2 
 ##   2356   1767</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ROSE)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ROSE)
 
 <span class="kw">set.seed</span>(<span class="dv">9560</span>)
-rose_train &lt;-<span class="st"> </span><span class="kw">ROSE</span>(Class ~<span class="st"> </span>., <span class="dt">data  =</span> imbal_train)$data                         
-<span class="kw">table</span>(rose_train$Class) </code></pre></div>
+rose_train &lt;-<span class="st"> </span><span class="kw">ROSE</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data  =</span> imbal_train)<span class="op">$</span>data                         
+<span class="kw">table</span>(rose_train<span class="op">$</span>Class) </code></pre>
 <pre><code>## 
 ## Class1 Class2 
 ##   4939   5061</code></pre>
 <p>For these data, we’ll use a bagged classification and estimate the area under the ROC curve using five repeats of 10-fold CV.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="dt">repeats =</span> <span class="dv">5</span>,
+<pre class="sourceCode r"><code class="sourceCode r">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="dt">repeats =</span> <span class="dv">5</span>,
                      <span class="dt">classProbs =</span> <span class="ot">TRUE</span>,
                      <span class="dt">summaryFunction =</span> twoClassSummary)
 
 <span class="kw">set.seed</span>(<span class="dv">5627</span>)
-orig_fit &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> imbal_train, 
+orig_fit &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> imbal_train, 
                   <span class="dt">method =</span> <span class="st">&quot;treebag&quot;</span>,
                   <span class="dt">nbagg =</span> <span class="dv">50</span>,
                   <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
                   <span class="dt">trControl =</span> ctrl)
 
 <span class="kw">set.seed</span>(<span class="dv">5627</span>)
-down_outside &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> down_train, 
+down_outside &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> down_train, 
                       <span class="dt">method =</span> <span class="st">&quot;treebag&quot;</span>,
                       <span class="dt">nbagg =</span> <span class="dv">50</span>,
                       <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
                       <span class="dt">trControl =</span> ctrl)
 
 <span class="kw">set.seed</span>(<span class="dv">5627</span>)
-up_outside &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> up_train, 
+up_outside &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> up_train, 
                     <span class="dt">method =</span> <span class="st">&quot;treebag&quot;</span>,
                     <span class="dt">nbagg =</span> <span class="dv">50</span>,
                     <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
                     <span class="dt">trControl =</span> ctrl)
 
 <span class="kw">set.seed</span>(<span class="dv">5627</span>)
-rose_outside &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> rose_train, 
+rose_outside &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> rose_train, 
                       <span class="dt">method =</span> <span class="st">&quot;treebag&quot;</span>,
                       <span class="dt">nbagg =</span> <span class="dv">50</span>,
                       <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
@@ -466,13 +494,13 @@ rose_outside &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~
 
 
 <span class="kw">set.seed</span>(<span class="dv">5627</span>)
-smote_outside &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> smote_train, 
+smote_outside &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> smote_train, 
                        <span class="dt">method =</span> <span class="st">&quot;treebag&quot;</span>,
                        <span class="dt">nbagg =</span> <span class="dv">50</span>,
                        <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
-                       <span class="dt">trControl =</span> ctrl)</code></pre></div>
+                       <span class="dt">trControl =</span> ctrl)</code></pre>
 <p>We will collate the resampling results and create a wrapper to estimate the test set performance:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">outside_models &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">original =</span> orig_fit,
+<pre class="sourceCode r"><code class="sourceCode r">outside_models &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">original =</span> orig_fit,
                        <span class="dt">down =</span> down_outside,
                        <span class="dt">up =</span> up_outside,
                        <span class="dt">SMOTE =</span> smote_outside,
@@ -480,9 +508,9 @@ smote_outside &lt;-<span class="st"> </span><span class="kw">train</span>(Class 
 
 outside_resampling &lt;-<span class="st"> </span><span class="kw">resamples</span>(outside_models)
 
-test_roc &lt;-<span class="st"> </span>function(model, data) {
+test_roc &lt;-<span class="st"> </span><span class="cf">function</span>(model, data) {
   <span class="kw">library</span>(pROC)
-  roc_obj &lt;-<span class="st"> </span><span class="kw">roc</span>(data$Class, 
+  roc_obj &lt;-<span class="st"> </span><span class="kw">roc</span>(data<span class="op">$</span>Class, 
                  <span class="kw">predict</span>(model, data, <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)[, <span class="st">&quot;Class1&quot;</span>],
                  <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;Class2&quot;</span>, <span class="st">&quot;Class1&quot;</span>))
   <span class="kw">ci</span>(roc_obj)
@@ -494,7 +522,7 @@ outside_test &lt;-<span class="st"> </span><span class="kw">do.call</span>(<span
 <span class="kw">colnames</span>(outside_test) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;lower&quot;</span>, <span class="st">&quot;ROC&quot;</span>, <span class="st">&quot;upper&quot;</span>)
 outside_test &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(outside_test)
 
-<span class="kw">summary</span>(outside_resampling, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)</code></pre></div>
+<span class="kw">summary</span>(outside_resampling, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)</code></pre>
 <pre><code>## 
 ## Call:
 ## summary.resamples(object = outside_resampling, metric = &quot;ROC&quot;)
@@ -509,7 +537,7 @@ outside_test &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>
 ## up       0.9989373 0.9999989 1.0000000 0.9998931 1.0000000 1.0000000    0
 ## SMOTE    0.9691549 0.9753107 0.9795925 0.9795243 0.9838382 0.9912610    0
 ## ROSE     0.8760622 0.8880574 0.8961100 0.8955910 0.9008337 0.9129835    0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">outside_test</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">outside_test</code></pre>
 <pre><code>##              lower       ROC     upper
 ## original 0.9091750 0.9216889 0.9342028
 ## down     0.9275022 0.9347344 0.9419665
@@ -529,48 +557,48 @@ outside_test &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>
 <p>One complication is related to pre-processing. Should the subsampling occur before or after the pre-processing? For example, if you down-sample the data and using PCA for signal extraction, should the loadings be estimated from the entire training set? The estimate is potentially better since the entire training set is being used but the subsample may happen to capture a small potion of the PCA space. There isn’t any obvious answer.</p>
 <p>The default behavior is to subsample the data prior to pre-processing. This can be easily changed and an example is given below.</p>
 <p>Now let’s re-run our bagged tree models while sampling inside of cross-validation:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="dt">repeats =</span> <span class="dv">5</span>,
+<pre class="sourceCode r"><code class="sourceCode r">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="dt">repeats =</span> <span class="dv">5</span>,
                      <span class="dt">classProbs =</span> <span class="ot">TRUE</span>,
                      <span class="dt">summaryFunction =</span> twoClassSummary,
                      ## new option here:
                      <span class="dt">sampling =</span> <span class="st">&quot;down&quot;</span>)
 
 <span class="kw">set.seed</span>(<span class="dv">5627</span>)
-down_inside &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> imbal_train,
+down_inside &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> imbal_train,
                      <span class="dt">method =</span> <span class="st">&quot;treebag&quot;</span>,
                      <span class="dt">nbagg =</span> <span class="dv">50</span>,
                      <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
                      <span class="dt">trControl =</span> ctrl)
 
 ## now just change that option
-ctrl$sampling &lt;-<span class="st"> &quot;up&quot;</span>
+ctrl<span class="op">$</span>sampling &lt;-<span class="st"> &quot;up&quot;</span>
 
 <span class="kw">set.seed</span>(<span class="dv">5627</span>)
-up_inside &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> imbal_train,
+up_inside &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> imbal_train,
                    <span class="dt">method =</span> <span class="st">&quot;treebag&quot;</span>,
                    <span class="dt">nbagg =</span> <span class="dv">50</span>,
                    <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
                    <span class="dt">trControl =</span> ctrl)
 
-ctrl$sampling &lt;-<span class="st"> &quot;rose&quot;</span>
+ctrl<span class="op">$</span>sampling &lt;-<span class="st"> &quot;rose&quot;</span>
 
 <span class="kw">set.seed</span>(<span class="dv">5627</span>)
-rose_inside &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> imbal_train,
+rose_inside &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> imbal_train,
                      <span class="dt">method =</span> <span class="st">&quot;treebag&quot;</span>,
                      <span class="dt">nbagg =</span> <span class="dv">50</span>,
                      <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
                      <span class="dt">trControl =</span> ctrl)
 
-ctrl$sampling &lt;-<span class="st"> &quot;smote&quot;</span>
+ctrl<span class="op">$</span>sampling &lt;-<span class="st"> &quot;smote&quot;</span>
 
 <span class="kw">set.seed</span>(<span class="dv">5627</span>)
-smote_inside &lt;-<span class="st"> </span><span class="kw">train</span>(Class ~<span class="st"> </span>., <span class="dt">data =</span> imbal_train,
+smote_inside &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> imbal_train,
                       <span class="dt">method =</span> <span class="st">&quot;treebag&quot;</span>,
                       <span class="dt">nbagg =</span> <span class="dv">50</span>,
                       <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
-                      <span class="dt">trControl =</span> ctrl)</code></pre></div>
+                      <span class="dt">trControl =</span> ctrl)</code></pre>
 <p>Here are the resampling and test set results:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inside_models &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">original =</span> orig_fit,
+<pre class="sourceCode r"><code class="sourceCode r">inside_models &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">original =</span> orig_fit,
                       <span class="dt">down =</span> down_inside,
                       <span class="dt">up =</span> up_inside,
                       <span class="dt">SMOTE =</span> smote_inside,
@@ -584,7 +612,7 @@ inside_test &lt;-<span class="st"> </span><span class="kw">do.call</span>(<span 
 <span class="kw">colnames</span>(inside_test) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;lower&quot;</span>, <span class="st">&quot;ROC&quot;</span>, <span class="st">&quot;upper&quot;</span>)
 inside_test &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(inside_test)
 
-<span class="kw">summary</span>(inside_resampling, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)</code></pre></div>
+<span class="kw">summary</span>(inside_resampling, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)</code></pre>
 <pre><code>## 
 ## Call:
 ## summary.resamples(object = inside_resampling, metric = &quot;ROC&quot;)
@@ -599,7 +627,7 @@ inside_test &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(
 ## up       0.9032493 0.9209617 0.9344671 0.9359775 0.9525208 0.9739639    0
 ## SMOTE    0.9288622 0.9442195 0.9520164 0.9507115 0.9570647 0.9707938    0
 ## ROSE     0.9340046 0.9480853 0.9534964 0.9536839 0.9609863 0.9696320    0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inside_test</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">inside_test</code></pre>
 <pre><code>##              lower       ROC     upper
 ## original 0.9091750 0.9216889 0.9342028
 ## down     0.9307554 0.9376978 0.9446401
@@ -607,7 +635,10 @@ inside_test &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(
 ## SMOTE    0.9457426 0.9515517 0.9573609
 ## ROSE     0.9379662 0.9453675 0.9527689</code></pre>
 <p>The figure below shows the difference in the area under the ROC curve and the test set results for the approaches shown here. Repeating the subsampling procedures for every resample produces results that are more consistent with the test set.</p>
-<p><img src="sampling/samp_insode_plot-1.png" width="672" /></p>
+<p><img src="sampling/samp_insode_plot-1.svg" width="672" /></p>
+<div id="complications">
+
+</div>
 </div>
 <div id="complications" class="section level2">
 <h2><span class="header-section-number">11.3</span> Complications</h2>
@@ -632,7 +663,7 @@ inside_test &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(
 <li>The <code>first</code> element is a single logical value that indicates whether the subsampling should occur first relative to pre-process. A value of <code>FALSE</code> means that the subsampling function will receive the sampled versions of <code>x</code> and <code>y</code>.</li>
 </ul>
 <p>For example, here is what the list version of the <code>sampling</code> argument looks like when simple down-sampling is used:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">down_inside$control$sampling</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">down_inside<span class="op">$</span>control<span class="op">$</span>sampling</code></pre>
 <pre><code>## $name
 ## [1] &quot;down&quot;
 ## 
@@ -643,21 +674,21 @@ inside_test &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(
 ## $first
 ## [1] TRUE</code></pre>
 <p>As another example, suppose we want to use SMOTE but use 10 nearest neighbors instead of the default of 5. To do this, we can create a simple wrapper around the <code>SMOTE</code> function and call this instead:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">smotest &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">name =</span> <span class="st">&quot;SMOTE with more neighbors!&quot;</span>,
-                <span class="dt">func =</span> function (x, y) {
+<pre class="sourceCode r"><code class="sourceCode r">smotest &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">name =</span> <span class="st">&quot;SMOTE with more neighbors!&quot;</span>,
+                <span class="dt">func =</span> <span class="cf">function</span> (x, y) {
                   <span class="kw">library</span>(DMwR)
-                  dat &lt;-<span class="st"> </span>if (<span class="kw">is.data.frame</span>(x)) x else <span class="kw">as.data.frame</span>(x)
-                  dat$.y &lt;-<span class="st"> </span>y
-                  dat &lt;-<span class="st"> </span><span class="kw">SMOTE</span>(.y ~<span class="st"> </span>., <span class="dt">data =</span> dat, <span class="dt">k =</span> <span class="dv">10</span>)
-                  <span class="kw">list</span>(<span class="dt">x =</span> dat[, !<span class="kw">grepl</span>(<span class="st">&quot;.y&quot;</span>, <span class="kw">colnames</span>(dat), <span class="dt">fixed =</span> <span class="ot">TRUE</span>)], 
-                       <span class="dt">y =</span> dat$.y)
+                  dat &lt;-<span class="st"> </span><span class="cf">if</span> (<span class="kw">is.data.frame</span>(x)) x <span class="cf">else</span> <span class="kw">as.data.frame</span>(x)
+                  dat<span class="op">$</span>.y &lt;-<span class="st"> </span>y
+                  dat &lt;-<span class="st"> </span><span class="kw">SMOTE</span>(.y <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> dat, <span class="dt">k =</span> <span class="dv">10</span>)
+                  <span class="kw">list</span>(<span class="dt">x =</span> dat[, <span class="op">!</span><span class="kw">grepl</span>(<span class="st">&quot;.y&quot;</span>, <span class="kw">colnames</span>(dat), <span class="dt">fixed =</span> <span class="ot">TRUE</span>)], 
+                       <span class="dt">y =</span> dat<span class="op">$</span>.y)
                   },
-                <span class="dt">first =</span> <span class="ot">TRUE</span>)</code></pre></div>
+                <span class="dt">first =</span> <span class="ot">TRUE</span>)</code></pre>
 <p>The control object would then be:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="dt">repeats =</span> <span class="dv">5</span>,
+<pre class="sourceCode r"><code class="sourceCode r">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="dt">repeats =</span> <span class="dv">5</span>,
                      <span class="dt">classProbs =</span> <span class="ot">TRUE</span>,
                      <span class="dt">summaryFunction =</span> twoClassSummary,
-                     <span class="dt">sampling =</span> smotest)</code></pre></div>
+                     <span class="dt">sampling =</span> smotest)</code></pre>
 
 </div>
 </div>
@@ -685,10 +716,11 @@ gitbook.start({
 "facebook": true,
 "twitter": true,
 "google": false,
+"linkedin": false,
 "weibo": false,
 "instapper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -701,7 +733,7 @@ gitbook.start({
 },
 "download": null,
 "toc": {
-"collapse": "section"
+"collapse": "subsection"
 }
 });
 });
@@ -712,9 +744,11 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

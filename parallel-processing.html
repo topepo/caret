@@ -6,26 +6,26 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>The caret Package</title>
-  <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+  <meta name="description" content="Documentation for the caret package.">
+  <meta name="generator" content="bookdown 0.7.11 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Documentation for the <code>caret</code> package" />
-  <meta name="github-repo" content="<a href="https://github.com/topepo/caret" class="uri">https://github.com/topepo/caret</a>" />
+  <meta property="og:description" content="Documentation for the caret package." />
+  <meta name="github-repo" content="topepo/caret" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="The caret Package" />
   
-  <meta name="twitter:description" content="Documentation for the <code>caret</code> package" />
+  <meta name="twitter:description" content="Documentation for the caret package." />
   
 
 <meta name="author" content="Max Kuhn">
 
 
-<meta name="date" content="2017-09-04">
+<meta name="date" content="2018-05-26">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -47,58 +47,87 @@
 
 
 
-<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.2/datatables.js"></script>
-<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.4/datatables.js"></script>
+<link href="libs/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="libs/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-bootstrap-1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="libs/dt-core-bootstrap-1.10.16/js/dataTables.bootstrap.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <script src="libs/d3-4.5.0/d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
 <script src="libs/plotly-binding-4.7.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 </head>
@@ -202,9 +231,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.45</b> Self-Organising Maps</a></li>
 <li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.46</b> String Kernel</a></li>
 <li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.47</b> Support Vector Machines</a></li>
-<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.48</b> Text Mining</a></li>
-<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.49</b> Tree-Based Model</a></li>
-<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.50</b> Two Class Only</a></li>
+<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#supports-class-probabilities"><i class="fa fa-check"></i><b>7.0.48</b> Supports Class Probabilities</a></li>
+<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.49</b> Text Mining</a></li>
+<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.50</b> Tree-Based Model</a></li>
+<li class="chapter" data-level="7.0.51" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.51</b> Two Class Only</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="models-clustered-by-tag-similarity.html"><a href="models-clustered-by-tag-similarity.html"><i class="fa fa-check"></i><b>8</b> Models Clustered by Tag Similarity</a></li>
 <li class="chapter" data-level="9" data-path="parallel-processing.html"><a href="parallel-processing.html"><i class="fa fa-check"></i><b>9</b> Parallel Processing</a></li>
@@ -236,9 +266,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="13.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-sort-element"><i class="fa fa-check"></i><b>13.4</b> The sort Element</a><ul>
 <li class="chapter" data-level="13.4.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-levels-element"><i class="fa fa-check"></i><b>13.4.1</b> The <code>levels</code> Element</a></li>
 </ul></li>
-<li class="chapter" data-level="13.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>13.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a><ul>
-<li class="chapter" data-level="13.5.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-loop-element"><i class="fa fa-check"></i><b>13.5.1</b> The loop Element</a></li>
-</ul></li>
+<li class="chapter" data-level="13.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>13.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a></li>
 <li class="chapter" data-level="13.6" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-3-nonstandard-formulas"><i class="fa fa-check"></i><b>13.6</b> Illustrative Example 3: Nonstandard Formulas</a></li>
 <li class="chapter" data-level="13.7" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-4-pls-feature-extraction-pre-processing"><i class="fa fa-check"></i><b>13.7</b> Illustrative Example 4: PLS Feature Extraction Pre-Processing</a></li>
 <li class="chapter" data-level="13.8" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-5-optimizing-probability-thresholds-for-class-imbalances"><i class="fa fa-check"></i><b>13.8</b> Illustrative Example 5: Optimizing probability thresholds for class imbalances</a></li>
@@ -366,22 +394,35 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="parallel-processing" class="section level1">
 <h1><span class="header-section-number">9</span> Parallel Processing</h1>
 <p>In this package, resampling is primary approach for optimizing predictive models with tuning parameters. To do this, many alternate versions of the training set are used to train the model and predict a hold-out set. This process is repeated many times to get performance estimates that generalize to new data sets. Each of the resampled data sets is independent of the others, so there is no formal requirement that the models must be run sequentially. If a computer with multiple processors or cores is available, the computations could be spread across these “workers” to increase the computational efficiency. <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> leverages one of the parallel processing frameworks in R to do just this. The <a href="http://cran.r-project.org/web/packages/foreach/index.html"><code>foreach</code></a> package allows R code to be run either sequentially or in parallel using several different technologies, such as the <a href="http://cran.r-project.org/web/packages/multicore/index.html"><code>multicore</code></a> or <a href="http://cran.r-project.org/web/packages/Rmpi/index.html"><code>Rmpi</code></a> packages (see <a href="http://www.jstatsoft.org/v31/i01/paper">Schmidberger <em>et al</em>, 2009</a> for summaries and descriptions of the available options). There are several R packages that work with <a href="http://cran.r-project.org/web/packages/foreach/index.html"><code>foreach</code></a> to implement these techniques, such as <a href="http://cran.r-project.org/web/packages/doMC/index.html"><code>doMC</code></a> (for <a href="http://cran.r-project.org/web/packages/multicore/index.html"><code>multicore</code></a>) or <a href="http://cran.r-project.org/web/packages/doMPI/index.html"><code>doMPI</code></a> (for <a href="http://cran.r-project.org/web/packages/Rmpi/index.html"><code>Rmpi</code></a>).</p>
-<p>To tune a predictive model using multiple workers, the function syntax in the <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package functions (e.g. <code>train</code>, <code>rfe</code> or <code>sbf</code>) do not change. A separate function is used to “register” the parallel processing technique and specify the number of workers to use. For example, to use the <a href="http://cran.r-project.org/web/packages/multicore/index.html"><code>multicore</code></a>) package (not available on Windows) with five cores on the same machine, the package is loaded and them registered:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(doMC)
-<span class="kw">registerDoMC</span>(<span class="dt">cores =</span> <span class="dv">5</span>)
+<p>A fairly comprehensive study of the benefits of parallel processing can be found in <a href="http://appliedpredictivemodeling.com/blog/2018/1/17/parallel-processing">this blog post</a>.</p>
+<p>To tune a predictive model using multiple workers, the function syntax in the <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> package functions (e.g. <code>train</code>, <code>rfe</code> or <code>sbf</code>) do not change. A separate function is used to “register” the parallel processing technique and specify the number of workers to use. For example, to use the <a href="http://cran.r-project.org/web/packages/doParallel/index.html"><code>doParallel</code></a>) package with five cores on the same machine, the package is loaded and them registered:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(doParallel)
+cl &lt;-<span class="st"> </span><span class="kw">makePSOCKcluster</span>(<span class="dv">5</span>)
+<span class="kw">registerDoParallel</span>(cl)
+
 ## All subsequent models are then run in parallel
-model &lt;-<span class="st"> </span><span class="kw">train</span>(y ~<span class="st"> </span>., <span class="dt">data =</span> training, <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>)</code></pre></div>
+model &lt;-<span class="st"> </span><span class="kw">train</span>(y <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> training, <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>)
+
+## When you are done:
+<span class="kw">stopCluster</span>(cl)</code></pre>
 <p>The syntax for other packages associated with <a href="http://cran.r-project.org/web/packages/foreach/index.html"><code>foreach</code></a> is very similar. Note that as the number of workers increases, the memory required also increase. For example, using five workers would keep a total of six versions of the data in memory. If the data are large or the computational model is demanding, performance can be affected if the amount of required memory exceeds the physical amount available. Also, for <code>rfe</code> and <code>sbf</code>, these functions may call <code>train</code> for some models. In this case, registering <em>M</em> workers will actually invoke <em>M</em><sup>2</sup> total processes.</p>
 <p>Does this help reduce the time to fit models? A moderately sized data set (4331 rows and 8) was modeled multiple times with different number of workers for several models. Random forest was used with 2000 trees and tuned over 10 values of <em>m</em><sub>try</sub>. Variable importance calculations were also conducted during each model fit. Linear discriminant analysis was also run, as was a cost-sensitive radial basis function support vector machine (tuned over 15 cost values). All models were tuned using five repeats of 10-fold cross-validation. The results are shown in the figure below. The y-axis corresponds to the total execution time (encompassing model tuning and the final model fit) versus the number of workers. Random forest clearly took the longest to train and the LDA models were very computationally efficient. The total time (in minutes) decreased as the number of workers increase but stabilized around seven workers. The data for this plot were generated in a randomized fashion so that there should be no bias in the run order. The bottom right panel shows the <em>speed-up</em> which is the sequential time divided by the parallel time. For example, a speed-up of three indicates that the parallel version was three times faster than the sequential version. At best, parallelization can achieve linear speed-ups; that is, for <em>M</em> workers, the parallel time is 1/<em>M</em>. For these models, the speed-up is close to linear until four or five workers are used. After this, there is a small improvement in performance. Since LDA is already computationally efficient, the speed-up levels off more rapidly than the other models. While not linear, the decrease in execution time is helpful - a nearly 10 hour model fit was decreased to about 90 minutes.</p>
 <p><img src="premade/parallel.png" /><!-- --></p>
 <p>Note that some models, especially those using the <a href="http://cran.r-project.org/web/packages/RWeka/index.html"><code>RWeka</code></a> package, may not be able to be run in parallel due to the underlying code structure.</p>
 <p><code>train</code>, <code>rfe</code>, <code>sbf</code>, <code>bag</code> and <code>avNNet</code> were given an additional argument in their respective control files called <code>allowParallel</code> that defaults to <code>TRUE</code>. When <code>TRUE</code>, the code will be executed in parallel if a parallel backend (e.g. <strong>doMC</strong>) is registered. When <code>allowParallel = FALSE</code>, the parallel backend is always ignored. The use case is when <code>rfe</code> or <code>sbf</code> calls <code>train</code>. If a parallel backend with <em>P</em> processors is being used, the combination of these functions will create <em>P</em><sup>2</sup> processes. Since some operations benefit more from parallelization than others, the user has the ability to concentrate computing resources for specific functions.</p>
 <p>One additional “trick” that <code>train</code> exploits to increase computational efficiency is to use sub-models; a single model fit can produce predictions for multiple tuning parameters. For example, in most implementations of boosted models, a model trained on <em>B</em> boosting iterations can produce predictions for models for iterations less than <em>B</em>. Suppose a <code>gbm</code> model was tuned over the following grid:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gbmGrid &lt;-<span class="st">  </span><span class="kw">expand.grid</span>(<span class="dt">interaction.depth =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">9</span>),
-                        <span class="dt">n.trees =</span> (<span class="dv">1</span>:<span class="dv">15</span>)*<span class="dv">100</span>,
+<pre class="sourceCode r"><code class="sourceCode r">gbmGrid &lt;-<span class="st">  </span><span class="kw">expand.grid</span>(<span class="dt">interaction.depth =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">9</span>),
+                        <span class="dt">n.trees =</span> (<span class="dv">1</span><span class="op">:</span><span class="dv">15</span>)<span class="op">*</span><span class="dv">100</span>,
                         <span class="dt">shrinkage =</span> <span class="fl">0.1</span>,
-                        <span class="dt">n.minobsinnode =</span> <span class="dv">20</span>)</code></pre></div>
-<p>In reality, <code>train</code> only created objects for 3 models and derived the other predictions from these objects. This trick is used for the following models: <code>ada</code>, <code>AdaBag</code>, <code>AdaBoost.M1</code>, <code>bagEarth</code>, <code>blackboost</code>, <code>blasso</code>, <code>BstLm</code>, <code>bstSm</code>, <code>bstTree</code>, <code>C5.0</code>, <code>C5.0Cost</code>, <code>cubist</code>, <code>earth</code>, <code>enet</code>, <code>foba</code>, <code>gamboost</code>, <code>gbm</code>, <code>glmboost</code>, <code>glmnet</code>, <code>kernelpls</code>, <code>lars</code>, <code>lars2</code>, <code>lasso</code>, <code>lda2</code>, <code>leapBackward</code>, <code>leapForward</code>, <code>leapSeq</code>, <code>LogitBoost</code>, <code>pam</code>, <code>partDSA</code>, <code>pcr</code>, <code>PenalizedLDA</code>, <code>pls</code>, <code>relaxo</code>, <code>rfRules</code>, <code>rotationForest</code>, <code>rotationForestCp</code>, <code>rpart</code>, <code>rpart2</code>, <code>rpartCost</code>, <code>simpls</code>, <code>spikeslab</code>, <code>superpc</code>, <code>widekernelpls</code>, <code>xgbTree</code>.</p>
+                        <span class="dt">n.minobsinnode =</span> <span class="dv">20</span>)</code></pre>
+<p>In reality, <code>train</code> only created objects for 3 models and derived the other predictions from these objects. This trick is used for the following models: <code>ada</code>, <code>AdaBag</code>, <code>AdaBoost.M1</code>,
+<code>bagEarth</code>, <code>blackboost</code>, <code>blasso</code>, <code>BstLm</code>, <code>bstSm</code>, <code>bstTree</code>, <code>C5.0</code>,
+<code>C5.0Cost</code>, <code>cubist</code>, <code>earth</code>, <code>enet</code>, <code>foba</code>, <code>gamboost</code>, <code>gbm</code>,
+<code>glmboost</code>, <code>glmnet</code>, <code>kernelpls</code>, <code>lars</code>, <code>lars2</code>, <code>lasso</code>, <code>lda2</code>,
+<code>leapBackward</code>, <code>leapForward</code>, <code>leapSeq</code>, <code>LogitBoost</code>, <code>pam</code>,
+<code>partDSA</code>, <code>pcr</code>, <code>PenalizedLDA</code>, <code>pls</code>, <code>relaxo</code>, <code>rfRules</code>,
+<code>rotationForest</code>, <code>rotationForestCp</code>, <code>rpart</code>, <code>rpart2</code>, <code>rpartCost</code>,
+<code>simpls</code>, <code>spikeslab</code>, <code>superpc</code>, <code>widekernelpls</code>, <code>xgbTree</code>.</p>
 
 </div>
             </section>
@@ -408,10 +449,11 @@ gitbook.start({
 "facebook": true,
 "twitter": true,
 "google": false,
+"linkedin": false,
 "weibo": false,
 "instapper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -424,7 +466,7 @@ gitbook.start({
 },
 "download": null,
 "toc": {
-"collapse": "section"
+"collapse": "subsection"
 }
 });
 });
@@ -435,9 +477,11 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

@@ -6,26 +6,26 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>The caret Package</title>
-  <meta name="description" content="Documentation for the <code>caret</code> package">
-  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+  <meta name="description" content="Documentation for the caret package.">
+  <meta name="generator" content="bookdown 0.7.11 and GitBook 2.6.7">
 
   <meta property="og:title" content="The caret Package" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Documentation for the <code>caret</code> package" />
-  <meta name="github-repo" content="<a href="https://github.com/topepo/caret" class="uri">https://github.com/topepo/caret</a>" />
+  <meta property="og:description" content="Documentation for the caret package." />
+  <meta name="github-repo" content="topepo/caret" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="The caret Package" />
   
-  <meta name="twitter:description" content="Documentation for the <code>caret</code> package" />
+  <meta name="twitter:description" content="Documentation for the caret package." />
   
 
 <meta name="author" content="Max Kuhn">
 
 
-<meta name="date" content="2017-09-04">
+<meta name="date" content="2018-05-26">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -47,58 +47,87 @@
 
 
 
-<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
-<script src="libs/datatables-binding-0.2/datatables.js"></script>
-<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-<link href="libs/dt-core-bootstrap-1.10.12/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-bootstrap-1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="libs/dt-core-bootstrap-1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.4/datatables.js"></script>
+<link href="libs/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="libs/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-bootstrap-1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="libs/dt-core-bootstrap-1.10.16/js/dataTables.bootstrap.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <script src="libs/d3-4.5.0/d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
 <script src="libs/plotly-binding-4.7.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 </head>
@@ -202,9 +231,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="7.0.45" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#self-organising-maps"><i class="fa fa-check"></i><b>7.0.45</b> Self-Organising Maps</a></li>
 <li class="chapter" data-level="7.0.46" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#string-kernel"><i class="fa fa-check"></i><b>7.0.46</b> String Kernel</a></li>
 <li class="chapter" data-level="7.0.47" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#support-vector-machines"><i class="fa fa-check"></i><b>7.0.47</b> Support Vector Machines</a></li>
-<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.48</b> Text Mining</a></li>
-<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.49</b> Tree-Based Model</a></li>
-<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.50</b> Two Class Only</a></li>
+<li class="chapter" data-level="7.0.48" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#supports-class-probabilities"><i class="fa fa-check"></i><b>7.0.48</b> Supports Class Probabilities</a></li>
+<li class="chapter" data-level="7.0.49" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#text-mining"><i class="fa fa-check"></i><b>7.0.49</b> Text Mining</a></li>
+<li class="chapter" data-level="7.0.50" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#tree-based-model"><i class="fa fa-check"></i><b>7.0.50</b> Tree-Based Model</a></li>
+<li class="chapter" data-level="7.0.51" data-path="train-models-by-tag.html"><a href="train-models-by-tag.html#two-class-only"><i class="fa fa-check"></i><b>7.0.51</b> Two Class Only</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="models-clustered-by-tag-similarity.html"><a href="models-clustered-by-tag-similarity.html"><i class="fa fa-check"></i><b>8</b> Models Clustered by Tag Similarity</a></li>
 <li class="chapter" data-level="9" data-path="parallel-processing.html"><a href="parallel-processing.html"><i class="fa fa-check"></i><b>9</b> Parallel Processing</a></li>
@@ -236,9 +266,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="13.4" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-sort-element"><i class="fa fa-check"></i><b>13.4</b> The sort Element</a><ul>
 <li class="chapter" data-level="13.4.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-levels-element"><i class="fa fa-check"></i><b>13.4.1</b> The <code>levels</code> Element</a></li>
 </ul></li>
-<li class="chapter" data-level="13.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>13.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a><ul>
-<li class="chapter" data-level="13.5.1" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#the-loop-element"><i class="fa fa-check"></i><b>13.5.1</b> The loop Element</a></li>
-</ul></li>
+<li class="chapter" data-level="13.5" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-2-something-more-complicated---logitboost"><i class="fa fa-check"></i><b>13.5</b> Illustrative Example 2: Something More Complicated - <code>LogitBoost</code></a></li>
 <li class="chapter" data-level="13.6" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-3-nonstandard-formulas"><i class="fa fa-check"></i><b>13.6</b> Illustrative Example 3: Nonstandard Formulas</a></li>
 <li class="chapter" data-level="13.7" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-4-pls-feature-extraction-pre-processing"><i class="fa fa-check"></i><b>13.7</b> Illustrative Example 4: PLS Feature Extraction Pre-Processing</a></li>
 <li class="chapter" data-level="13.8" data-path="using-your-own-model-in-train.html"><a href="using-your-own-model-in-train.html#illustrative-example-5-optimizing-probability-thresholds-for-class-imbalances"><i class="fa fa-check"></i><b>13.8</b> Illustrative Example 5: Optimizing probability thresholds for class imbalances</a></li>
@@ -387,7 +415,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="internal-and-external-performance-estimates" class="section level2">
 <h2><span class="header-section-number">21.2</span> Internal and External Performance Estimates</h2>
-<p>The genetic algorithm code in <a href="http://cran.r-project.org/package=caret"><code>caret</code></a> conducts the search of the feature space repeatedly within resampling iterations. First, the training data are split be whatever resampling method was specified in the control function. For example, if 10-fold cross-validation is selected, the entire genetic algorithm is conducted 10 separate times. For the first fold, nine tenths of the data are used in the search while the remaining tenth is used to estimate the external performance since these data points were not used in the search.</p>
+<p>The genetic algorithm code in
+<a href="http://cran.r-project.org/package=caret"><code>caret</code></a> conducts the search of the feature space repeatedly within resampling iterations. First, the training data are split be whatever resampling method was specified in the control function. For example, if 10-fold cross-validation is selected, the entire genetic algorithm is conducted 10 separate times. For the first fold, nine tenths of the data are used in the search while the remaining tenth is used to estimate the external performance since these data points were not used in the search.</p>
 <p>During the genetic algorithm, a measure of fitness is needed to guide the search. This is the internal measure of performance. During the search, the data that are available are the instances selected by the top-level resampling (e.g. the nine tenths mentioned above). A common approach is to conduct another resampling procedure. Another option is to use a holdout set of samples to determine the internal estimate of performance (see the holdout argument of the control function). While this is faster, it is more likely to cause overfitting of the features and should only be used when a large amount of training data are available. Yet another idea is to use a penalized metric (such as the AIC statistic) but this may not exist for some metrics (e.g. the area under the ROC curve).</p>
 <p>The internal estimates of performance will eventually overfit the subsets to the data. However, since the external estimate is not used by the search, it is able to make better assessments of overfitting. After resampling, this function determines the optimal number of generations for the GA.</p>
 <p>Finally, the entire data set is used in the last execution of the genetic algorithm search and the final model is built on the predictor subset that is associated with the optimal number of generations determined by resampling (although the update function can be used to manually set the number of generations).</p>
@@ -398,9 +427,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="basic-syntax-1" class="section level2">
 <h2><span class="header-section-number">21.3</span> Basic Syntax</h2>
 <p>The most basic usage of the function is:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obj &lt;-<span class="st"> </span><span class="kw">gafs</span>(<span class="dt">x =</span> predictors, 
+<pre class="sourceCode r"><code class="sourceCode r">obj &lt;-<span class="st"> </span><span class="kw">gafs</span>(<span class="dt">x =</span> predictors, 
             <span class="dt">y =</span> outcome,
-            <span class="dt">iters =</span> <span class="dv">100</span>)</code></pre></div>
+            <span class="dt">iters =</span> <span class="dv">100</span>)</code></pre>
 <p>where</p>
 <ul>
 <li><code>x</code>: a data frame or matrix of predictor values</li>
@@ -409,14 +438,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>This isn’t very specific. All of the action is in the control function. That can be used to specify the model to be fit, how predictions are made and summarized as well as the genetic operations.</p>
 <p>Suppose that we want to fit a linear regression model. To do this, we can use <code>train</code> as an interface and pass arguments to that function through <code>gafs</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ctrl &lt;-<span class="st"> </span><span class="kw">gafsControl</span>(<span class="dt">functions =</span> caretGA)
+<pre class="sourceCode r"><code class="sourceCode r">ctrl &lt;-<span class="st"> </span><span class="kw">gafsControl</span>(<span class="dt">functions =</span> caretGA)
 obj &lt;-<span class="st"> </span><span class="kw">gafs</span>(<span class="dt">x =</span> predictors, 
             <span class="dt">y =</span> outcome,
             <span class="dt">iters =</span> <span class="dv">100</span>,
             <span class="dt">gafsControl =</span> ctrl,
             ## Now pass options to `train`
             
-            <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</code></pre></div>
+            <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</code></pre>
 <p>Other options, such as <code>preProcess</code>, can be passed in as well.</p>
 <p>Some important options to <code>gafsControl</code> are:</p>
 <ul>
@@ -434,23 +463,23 @@ obj &lt;-<span class="st"> </span><span class="kw">gafs</span>(<span class="dt">
 <div id="example" class="section level2">
 <h2><span class="header-section-number">21.4</span> Example</h2>
 <p>Using the example from the <a href="recursive-feature-elimination.html#example">previous page</a> where there are five real predictors and 40 noise predictors:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mlbench)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mlbench)
 n &lt;-<span class="st"> </span><span class="dv">100</span>
 p &lt;-<span class="st"> </span><span class="dv">40</span>
 sigma &lt;-<span class="st"> </span><span class="dv">1</span>
 <span class="kw">set.seed</span>(<span class="dv">1</span>)
 sim &lt;-<span class="st"> </span><span class="kw">mlbench.friedman1</span>(n, <span class="dt">sd =</span> sigma)
-<span class="kw">colnames</span>(sim$x) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;real&quot;</span>, <span class="dv">1</span>:<span class="dv">5</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>),
-                     <span class="kw">paste</span>(<span class="st">&quot;bogus&quot;</span>, <span class="dv">1</span>:<span class="dv">5</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>))
-bogus &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n *<span class="st"> </span>p), <span class="dt">nrow =</span> n)
-<span class="kw">colnames</span>(bogus) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;bogus&quot;</span>, <span class="dv">5</span>+(<span class="dv">1</span>:<span class="kw">ncol</span>(bogus)), <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)
-x &lt;-<span class="st"> </span><span class="kw">cbind</span>(sim$x, bogus)
-y &lt;-<span class="st"> </span>sim$y
+<span class="kw">colnames</span>(sim<span class="op">$</span>x) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;real&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>),
+                     <span class="kw">paste</span>(<span class="st">&quot;bogus&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>))
+bogus &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n <span class="op">*</span><span class="st"> </span>p), <span class="dt">nrow =</span> n)
+<span class="kw">colnames</span>(bogus) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;bogus&quot;</span>, <span class="dv">5</span><span class="op">+</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(bogus)), <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)
+x &lt;-<span class="st"> </span><span class="kw">cbind</span>(sim<span class="op">$</span>x, bogus)
+y &lt;-<span class="st"> </span>sim<span class="op">$</span>y
 normalization &lt;-<span class="st"> </span><span class="kw">preProcess</span>(x)
 x &lt;-<span class="st"> </span><span class="kw">predict</span>(normalization, x)
-x &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(x)</code></pre></div>
+x &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(x)</code></pre>
 <p>We’ll fit a random forest model and use the out-of-bag RMSE estimate as the internal performance metric and use the same repeated 10-fold cross-validation process used with the search. To do this, we’ll use the built-in <code>rfGA</code> object for this purpose. The default GA operators will be used and conduct 200 generations of the algorithm.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ga_ctrl &lt;-<span class="st"> </span><span class="kw">gafsControl</span>(<span class="dt">functions =</span> rfGA,
+<pre class="sourceCode r"><code class="sourceCode r">ga_ctrl &lt;-<span class="st"> </span><span class="kw">gafsControl</span>(<span class="dt">functions =</span> rfGA,
                        <span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,
                        <span class="dt">repeats =</span> <span class="dv">5</span>)
 
@@ -461,7 +490,7 @@ x &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(x)</code><
 rf_ga &lt;-<span class="st"> </span><span class="kw">gafs</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y,
               <span class="dt">iters =</span> <span class="dv">200</span>,
               <span class="dt">gafsControl =</span> ga_ctrl)
-rf_ga</code></pre></div>
+rf_ga</code></pre>
 <pre><code>## 
 ## Genetic Algorithm Feature Selection
 ## 
@@ -483,22 +512,22 @@ rf_ga</code></pre></div>
 ## 
 ## During resampling:
 ##   * the top 5 selected variables (out of a possible 50):
-##     real1 (100%), real2 (100%), real4 (100%), real5 (100%), real3 (98%)
-##   * on average, 8.7 variables were selected (min = 6, max = 15)
+##     real1 (100%), real2 (100%), real4 (100%), real5 (100%), bogus17 (90%)
+##   * on average, 8.7 variables were selected (min = 6, max = 12)
 ## 
 ## In the final search using the entire training set:
-##    * 6 features selected at iteration 197 including:
+##    * 12 features selected at iteration 162 including:
 ##      real1, real2, real3, real4, real5 ... 
 ##    * external performance at this iteration is
 ## 
 ##        RMSE    Rsquared         MAE 
-##      2.7906      0.7591      2.3521</code></pre>
+##      2.8325      0.7528      2.3959</code></pre>
 <p>With 5 repeats of 10-fold cross-validation, the GA was executed 50 times. The average external performance is calculated across resamples and these results are used to determine the optimal number of iterations for the final GA to avoid over-fitting. Across the resamples, an average of 8.7 predictors were selected at the end of each of the algorithms.</p>
 <p>The <code>plot</code> function is used to monitor the average of the internal out-of-bag RMSE estimates as well as the average of the external performance estimates calculated from the 50 out-of-sample predictions. By default, this function uses <a href="http://cran.r-project.org/package=ggplot2"><code>ggplot2</code></a> package. A black and white theme can be “added” to the output object:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rf_ga) +<span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
-<p><img src="ga/ga_rf_profile-1.png" width="672" /></p>
-<p>Based on these results, the generation associated with the best external RMSE estimate was 2.79.</p>
-<p>Using the entire training set, the final GA is conducted and, at generation 197, there were 6 that were selected: real1, real2, real3, real4, real5, bogus17. The random forest model with these predictors is created using the entire training set is trained and this is the model that is used when <code>predict.gafs</code> is executed.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rf_ga) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre>
+<p><img src="ga/ga_rf_profile-1.svg" width="672" /></p>
+<p>Based on these results, the generation associated with the best external RMSE estimate was 2.83.</p>
+<p>Using the entire training set, the final GA is conducted and, at generation 162, there were 12 that were selected: real1, real2, real3, real4, real5, bogus6, bogus7, bogus12, bogus14, bogus17, bogus20, bogus43. The random forest model with these predictors is created using the entire training set is trained and this is the model that is used when <code>predict.gafs</code> is executed.</p>
 <p><strong>Note:</strong> the correlation between the internal and external fitness values is somewhat atypical for most real-world problems. This is a function of the nature of the simulations (a small number of uncorrelated informative predictors) and that the OOB error estimate from random forest is a product of hundreds of trees. Your mileage may vary.</p>
 <div id="custom">
 
@@ -517,12 +546,13 @@ rf_ga</code></pre></div>
 <li><code>...</code>: optional arguments to pass to the fit function in the call to <code>gafs</code></li>
 </ul>
 <p>The function should return a model object that can be used to generate predictions. For random forest, the fit function is simple:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfGA$fit</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">rfGA<span class="op">$</span>fit</code></pre>
 <pre><code>## function (x, y, lev = NULL, last = FALSE, ...) 
 ## {
 ##     loadNamespace(&quot;randomForest&quot;)
 ##     randomForest::randomForest(x, y, ...)
 ## }
+## &lt;bytecode: 0x7f99f9339920&gt;
 ## &lt;environment: namespace:caret&gt;</code></pre>
 </div>
 <div id="the-pred-function-2" class="section level3">
@@ -533,7 +563,7 @@ rf_ga</code></pre></div>
 <li><code>x</code>: the current set of predictor set for the held-back samples</li>
 </ul>
 <p>For random forests, the function is a simple wrapper for the predict function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfGA$pred</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">rfGA<span class="op">$</span>pred</code></pre>
 <pre><code>## function (object, x) 
 ## {
 ##     tmp &lt;- predict(object, x)
@@ -544,6 +574,7 @@ rf_ga</code></pre></div>
 ##     else out &lt;- tmp
 ##     out
 ## }
+## &lt;bytecode: 0x7f99f9339e60&gt;
 ## &lt;environment: namespace:caret&gt;</code></pre>
 <p>For classification, it is probably a good idea to ensure that the resulting factor variables of predictions has the same levels as the input data.</p>
 </div>
@@ -560,9 +591,10 @@ rf_ga</code></pre></div>
 <p>The output should be a <strong>named</strong> numeric vector of performance values.</p>
 <p>In many cases, some resampled measure of performance is used. In the example above using random forest, the OOB error was used. In other cases, the resampled performance from <code>train</code> can be used and, if <code>gafsControl$holdout</code> is not zero, a static hold-out set can be used. This depends on the data and problem at hand.</p>
 <p>The example function for random forest is:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfGA$fitness_intern</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">rfGA<span class="op">$</span>fitness_intern</code></pre>
 <pre><code>## function (object, x, y, maximize, p) 
 ## rfStats(object)
+## &lt;bytecode: 0x7f99f9336d50&gt;
 ## &lt;environment: namespace:caret&gt;</code></pre>
 </div>
 <div id="the-fitness_extern-function" class="section level3">
@@ -574,13 +606,14 @@ rf_ga</code></pre></div>
 </ul>
 <p>The output should be a <strong>named</strong> numeric vector of performance values.</p>
 <p>The example function for random forest is:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfGA$fitness_extern</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">rfGA<span class="op">$</span>fitness_extern</code></pre>
 <pre><code>## function (data, lev = NULL, model = NULL) 
 ## {
 ##     if (is.character(data$obs)) 
 ##         data$obs &lt;- factor(data$obs, levels = lev)
 ##     postResample(data[, &quot;pred&quot;], data[, &quot;obs&quot;])
 ## }
+## &lt;bytecode: 0x7f99f9336f80&gt;
 ## &lt;environment: namespace:caret&gt;</code></pre>
 <p>Two functions in <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a> that can be used as the summary function are <code>defaultSummary</code> and <code>twoClassSummary</code> (for classification problems with two classes).</p>
 </div>
@@ -594,9 +627,9 @@ rf_ga</code></pre></div>
 </ul>
 <p>The output should be a binary 0/1 matrix where there are <code>vars</code> columns corresponding to the predictors and <code>popSize</code> rows for the individuals in the population.</p>
 <p>The default function populates the rows randomly with subset sizes varying between 10% and 90% of number of possible predictors. For example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">128</span>)
-starting &lt;-<span class="st"> </span>rfGA$<span class="kw">initial</span>(<span class="dt">vars =</span> <span class="dv">12</span>, <span class="dt">popSize =</span> <span class="dv">8</span>)
-starting</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">128</span>)
+starting &lt;-<span class="st"> </span>rfGA<span class="op">$</span><span class="kw">initial</span>(<span class="dt">vars =</span> <span class="dv">12</span>, <span class="dt">popSize =</span> <span class="dv">8</span>)
+starting</code></pre>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12]
 ## [1,]    0    1    0    0    1    0    0    0    0     0     0     0
 ## [2,]    0    0    0    0    0    0    1    0    0     0     1     0
@@ -606,7 +639,7 @@ starting</code></pre></div>
 ## [6,]    1    1    1    1    1    1    0    1    1     1     1     1
 ## [7,]    1    1    1    1    1    0    0    1    0     1     1     1
 ## [8,]    1    0    1    1    0    1    1    1    0     1     1     1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(starting, <span class="dv">1</span>, mean)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apply</span>(starting, <span class="dv">1</span>, mean)</code></pre>
 <pre><code>## [1] 0.1666667 0.1666667 0.4166667 0.4166667 0.4166667 0.9166667 0.7500000
 ## [8] 0.7500000</code></pre>
 <p><code>gafs</code> has an argument called <code>suggestions</code> that is similar to the one in the <code>ga</code> function where the initial population can be seeded with specific subsets.</p>
@@ -637,7 +670,8 @@ starting</code></pre></div>
 <li><code>...</code>: not currently used</li>
 </ul>
 <p>The default function is a version of the <a href="http://cran.r-project.org/package=GA"><code>GA</code></a> package’s <code>ga_spCrossover</code> function. Another function that is a version of that package’s uniform cross-over function is also available.</p>
-<p>. The output should be a list with named elements.</p>
+<p>.
+The output should be a list with named elements.</p>
 <ul>
 <li><code>children</code>: from <code>?ga_spCrossover</code>: “a matrix of dimension 2 times the number of decision variables containing the generated offsprings”&quot;</li>
 <li><code>fitness</code>: “a vector of length 2 containing the fitness values for the offsprings. A value <code>NA</code> is returned if an offspring is different (which is usually the case) from the two parents.”&quot;</li>
@@ -652,7 +686,8 @@ starting</code></pre></div>
 <li><code>...</code>: not currently used</li>
 </ul>
 <p>The default function is a version of the <a href="http://cran.r-project.org/package=GA"><code>GA</code></a> package’s <code>gabin_raMutation</code> function.</p>
-<p>. The output should the mutated population.</p>
+<p>.
+The output should the mutated population.</p>
 </div>
 <div id="the-selectiter-function" class="section level3">
 <h3><span class="header-section-number">21.5.9</span> The <code>selectIter</code> Function</h3>
@@ -672,13 +707,13 @@ starting</code></pre></div>
 <h2><span class="header-section-number">21.6</span> The Example Revisited</h2>
 <p>The previous GA included some of the non-informative predictors. We can cheat a little and try to bias the search to get the right solution.</p>
 <p>We can try to encourage the algorithm to choose fewer predictors, we can penalize the the RMSE estimate. Normally, a metric like the Akaike information criterion (AIC) statistic would be used. However, with a random forest model, there is no real notion of model degrees of freedom. As an alternative, we can use <a href="http://scholar.google.com/scholar?q=%22desirability+functions">desirability functions</a> to penalize the RMSE. To do this, two functions are created that translate the number of predictors and the RMSE values to a measure of “desirability”. For the number of predictors, the most desirable property would be a single predictor and the worst situation would be if the model required all 50 predictors. That desirability function is visualized as:</p>
-<p><img src="ga/ga_pred_d-1.png" width="672" /></p>
+<p><img src="ga/ga_pred_d-1.svg" width="672" /></p>
 <p>For the RMSE, the best case would be zero. Many poor models have values around four. To give the RMSE value more weight in the overall desirability calculation, we use a scale parameter value of 2. This desirability function is:</p>
-<p><img src="ga/ga_rmse_d-1.png" width="672" /></p>
+<p><img src="ga/ga_rmse_d-1.svg" width="672" /></p>
 <p>To use the overall desirability to drive the feature selection, the <code>internal</code> function requires replacement. We make a copy of <code>rfGA</code> and add code using the <a href="http://cran.r-project.org/package=desirability"><code>desirability</code></a> package and the function returns the estimated RMSE and the overall desirability. The <code>gafsControl</code> function also need changes. The <code>metric</code> argument needs to reflect that the overall desirability score should be maximized internally but the RMSE estimate should be minimized externally.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(desirability)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(desirability)
 rfGA2 &lt;-<span class="st"> </span>rfGA
-rfGA2$fitness_intern &lt;-<span class="st"> </span>function (object, x, y, maximize, p) {
+rfGA2<span class="op">$</span>fitness_intern &lt;-<span class="st"> </span><span class="cf">function</span> (object, x, y, maximize, p) {
   RMSE &lt;-<span class="st"> </span><span class="kw">rfStats</span>(object)[<span class="dv">1</span>]
   d_RMSE &lt;-<span class="st"> </span><span class="kw">dMin</span>(<span class="dv">0</span>, <span class="dv">4</span>)
   d_Size &lt;-<span class="st"> </span><span class="kw">dMin</span>(<span class="dv">1</span>, p, <span class="dv">2</span>)
@@ -694,17 +729,17 @@ ga_ctrl_d &lt;-<span class="st"> </span><span class="kw">gafsControl</span>(<spa
 
 <span class="kw">set.seed</span>(<span class="dv">10</span>)
 rf_ga_d &lt;-<span class="st"> </span><span class="kw">gafs</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y,
-                <span class="dt">iters =</span> <span class="dv">200</span>,
+                <span class="dt">iters =</span> <span class="dv">150</span>,
                 <span class="dt">gafsControl =</span> ga_ctrl_d)
 
-rf_ga_d</code></pre></div>
+rf_ga_d</code></pre>
 <pre><code>## 
 ## Genetic Algorithm Feature Selection
 ## 
 ## 100 samples
 ## 50 predictors
 ## 
-## Maximum generations: 200 
+## Maximum generations: 150 
 ## Population per generation: 50 
 ## Crossover probability: 0.8 
 ## Mutation probability: 0.1 
@@ -720,19 +755,19 @@ rf_ga_d</code></pre></div>
 ## During resampling:
 ##   * the top 5 selected variables (out of a possible 50):
 ##     real1 (100%), real2 (100%), real4 (100%), real5 (100%), bogus17 (38%)
-##   * on average, 5.1 variables were selected (min = 4, max = 9)
+##   * on average, 5.1 variables were selected (min = 4, max = 6)
 ## 
 ## In the final search using the entire training set:
-##    * 6 features selected at iteration 122 including:
-##      real1, real2, real3, real4, real5 ... 
+##    * 4 features selected at iteration 145 including:
+##      real1, real2, real4, real5  
 ##    * external performance at this iteration is
 ## 
 ##        RMSE    Rsquared         MAE 
-##      2.6704      0.7667      2.2701</code></pre>
+##      2.6813      0.7674      2.2755</code></pre>
 <p>Here are the RMSE values for this search:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rf_ga_d) +<span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
-<p><img src="ga/ga_rf_profile_2-1.png" width="672" /></p>
-<p>The final GA found 6 that were selected: real1, real2, real3, real4, real5, bogus17. During resampling, the average number of predictors selected was 5.1, indicating that the penalty on the number of predictors was effective.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rf_ga_d) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre>
+<p><img src="ga/ga_rf_profile_2-1.svg" width="672" /></p>
+<p>The final GA found 4 that were selected: real1, real2, real4, real5. During resampling, the average number of predictors selected was 5.1, indicating that the penalty on the number of predictors was effective.</p>
 
 </div>
 </div>
@@ -760,10 +795,11 @@ gitbook.start({
 "facebook": true,
 "twitter": true,
 "google": false,
+"linkedin": false,
 "weibo": false,
 "instapper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -776,7 +812,7 @@ gitbook.start({
 },
 "download": null,
 "toc": {
-"collapse": "section"
+"collapse": "subsection"
 }
 });
 });
@@ -787,9 +823,11 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
