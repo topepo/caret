@@ -141,6 +141,7 @@ modelInfo <- list(
          lambda_vals <- c(lambda_vals, as.character(fullGrid[j, "penalty.par.val"]))
        }
      }
+     lambda_vals <- lambda_vals[-which(lambda_vals == loop$penalty.par.val[i])]
      submodels[[i]] <- data.frame(penalty.par.val = lambda_vals)
    }
    list(loop = loop, submodels = submodels)
