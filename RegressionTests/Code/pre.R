@@ -154,7 +154,7 @@ test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
 test_reg_cv_form <- train(y ~ ., data = training, 
-                          method = model, , 
+                          method = model,
                           trControl = rctrl1,
                           preProc = c("center", "scale"),
                           ntrees = 5)
