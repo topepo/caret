@@ -121,30 +121,30 @@ modelInfo <- list(
     x[ordering,]
   },
   loop = function(fullGrid) {
-
-   # loop should provide a grid containing models that can
-   # be looped over for tuning penalty.par.val
-   loop_rows <- rownames(unique(fullGrid[,-which(names(fullGrid) == "penalty.par.val")]))
-   loop <- fullGrid[rownames(fullGrid) %in% loop_rows, -which(names(fullGrid) == "penalty.par.val")]
-
-   ## submodels should be a list and length(submodels == nrow(loop)
-   ## each element of submodels should be a data.frame with column penalty.par.val, with a row for every value to loop over
-   submodels <- list()
-   ## for every row of loop:
-   for (i in 1:nrow(loop)) {
-     lambda_vals <- character()
-     ## check which rows in fullGrid without $penalty.par.val are equal to
-     ## rows in loop without $penalty.par.val
-     for (j in 1:nrow(fullGrid)) {
-       if (all(loop[i, -which(colnames(loop) == "penalty.par.val")] ==
-               fullGrid[j, -which(colnames(fullGrid) == "penalty.par.val")])) {
-         lambda_vals <- c(lambda_vals, as.character(fullGrid[j, "penalty.par.val"]))
-       }
-     }
-     lambda_vals <- lambda_vals[-which(lambda_vals == loop$penalty.par.val[i])]
-     submodels[[i]] <- data.frame(penalty.par.val = lambda_vals)
-   }
-   list(loop = loop, submodels = submodels)
+  
+    # loop should provide a grid containing models that can
+    # be looped over for tuning penalty.par.val
+    loop_rows <- rownames(unique(fullGrid[,-which(names(fullGrid) == "penalty.par.val")]))
+    loop <- fullGrid[rownames(fullGrid) %in% loop_rows, ]
+  
+    ## submodels should be a list and length(submodels == nrow(loop)
+    ## each element of submodels should be a data.frame with column penalty.par.val, with a row for every value to loop over
+    submodels <- list()
+    ## for every row of loop:
+    for (i in 1:nrow(loop)) {
+      lambda_vals <- character()
+      ## check which rows in fullGrid without $penalty.par.val are equal to
+      ## rows in loop without $penalty.par.val
+      for (j in 1:nrow(fullGrid)) {
+        if (all(loop[i, -which(colnames(loop) == "penalty.par.val")] ==
+              fullGrid[j, -which(colnames(fullGrid) == "penalty.par.val")])) {
+          lambda_vals <- c(lambda_vals, as.character(fullGrid[j, "penalty.par.val"]))
+        }
+      }
+      lambda_vals <- lambda_vals[-which(lambda_vals == loop$penalty.par.val[i])]
+      submodels[[i]] <- data.frame(penalty.par.val = lambda_vals)
+    }
+    list(loop = loop, submodels = submodels)
   },
   levels = function(x) { levels(x$data[,x$y_names]) },
   tag = c("Rule-Based Model", "Tree-Based Model", "L1 regularization", "Bagging", "Boosting"),
