@@ -125,7 +125,7 @@ modelInfo <- list(
    # loop should provide a grid containing models that can
    # be looped over for tuning penalty.par.val
    loop_rows <- rownames(unique(fullGrid[,-which(names(fullGrid) == "penalty.par.val")]))
-   loop <- fullGrid[rownames(fullGrid) %in% loop_rows,]
+   loop <- fullGrid[rownames(fullGrid) %in% loop_rows, -which(names(fullGrid) == "penalty.par.val")]
 
    ## submodels should be a list and length(submodels == nrow(loop)
    ## each element of submodels should be a data.frame with column penalty.par.val, with a row for every value to loop over
