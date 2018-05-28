@@ -43,6 +43,19 @@ modelInfo <- list(
   },
   fit = function(x, y, wts = NULL, param, lev = NULL, last = NULL, 
                  weights = NULL, classProbs, ...) { 
+    
+    theDots <- list(...)
+    if(!any(names(theDots) == "family")) {
+     theDots$family <- if (is.factor(y)) {
+       if (nlevels(y) == 2L) { 
+         "binomial"
+       } else {
+         "multinomial"
+       }
+     } else {
+       "gaussian"
+    }
+      }
     data <- data.frame(x, .outcome = y)
     formula <- .outcome ~ .
     if (is.null(weights)) { weights <- rep(1, times = nrow(x)) }
