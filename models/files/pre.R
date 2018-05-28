@@ -15,8 +15,7 @@ modelInfo <- list(
                                     "Regularization Parameter")),
   grid = function(x, y, len = NULL, search = "grid", 
                   sampfrac = .5, maxdepth = 3L, learnrate = .01, 
-                  mtry = Inf, ntrees = 500, use.grad = TRUE, 
-                  penalty.par.val = "lambda.1se") {
+                  mtry = Inf, use.grad = TRUE, penalty.par.val = "lambda.1se") {
     if (search == "grid") {
       if (!is.null(len)) {
         maxdepth <- c(3L, 4L, 2L, 5L, 1L, 6:len)[1:len] 
