@@ -64,7 +64,6 @@ test_class_rand <- train(trainX, trainY,
                          preProc = c("center", "scale"),
                          ntrees = 5)
 
-### TODO: Yields error:
 set.seed(849)
 test_class_loo_model <- train(trainX[1:10,], trainY[1:10], ## remove 1:10 
                               method = model,  
