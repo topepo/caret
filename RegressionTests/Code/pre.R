@@ -162,7 +162,7 @@ test_reg_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
 test_reg_rand <- train(trainX, trainY, 
-                       method = model, , 
+                       method = model,
                        trControl = rctrlR,
                        tuneLength = 4,
                        ntrees = 5)
@@ -170,7 +170,7 @@ test_reg_rand <- train(trainX, trainY,
 
 set.seed(849)
 test_reg_loo_model <- train(trainX, trainY, 
-                            method = model, , 
+                            method = model,
                             trControl = rctrl2,
                             preProc = c("center", "scale"),
                             ntrees = 5)
