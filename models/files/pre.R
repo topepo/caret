@@ -5,7 +5,7 @@ modelInfo <- list(
                                         "learnrate", "mtry", 
                                         "use.grad", 
                                         "penalty.par.val"),
-                          class = c(rep("numeric", times = 5), 
+                          class = c(rep("numeric", times = 4), 
                                     "logical", "character"),
                           label = c("Subsampling Fraction", 
                                     "Max Tree Depth", 
