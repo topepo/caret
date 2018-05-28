@@ -3,7 +3,7 @@ modelInfo <- list(
   type = c("Classification", "Regression"),
   parameters = data.frame(parameter = c("sampfrac", "maxdepth", 
                                         "learnrate", "mtry", 
-                                        "ntrees", "use.grad", 
+                                        "use.grad", 
                                         "penalty.par.val"),
                           class = c(rep("numeric", times = 5), 
                                     "logical", "character"),
@@ -11,7 +11,6 @@ modelInfo <- list(
                                     "Max Tree Depth", 
                                     "Shrinkage", 
                                     "# Randomly Selected Predictors",
-                                    "# Trees", 
                                     "Employ Gradient Boosting", 
                                     "Regularization Parameter")),
   grid = function(x, y, len = NULL, search = "grid", 
@@ -30,7 +29,7 @@ modelInfo <- list(
       }
       out <- expand.grid(sampfrac = sampfrac, maxdepth = maxdepth, 
                          learnrate = learnrate, mtry = mtry, 
-                         ntrees = ntrees, use.grad = use.grad,  
+                         use.grad = use.grad,  
                          penalty.par.val = penalty.par.val)
     } else if (search == "random") {
       out <- data.frame(
@@ -38,7 +37,6 @@ modelInfo <- list(
         maxdepth = sample(2L:6L, size = len, replace = TRUE), 
         learnrate = sample(c(0.001, 0.01, 0.1), size = len, replace = TRUE),
         mtry = sample(c(ceiling(sqrt(ncol(x))), ceiling(ncol(x)/3), ncol(x)), size = len, replace = TRUE),
-        ntrees = rep(500, times = len),
         use.grad = sample(c(TRUE, FALSE), size = len, replace = TRUE),
         penalty.par.val = sample(c("lambda.1se", "lambda.min"), size = len, replace = TRUE))
     }
@@ -52,7 +50,7 @@ modelInfo <- list(
     pre(formula = formula, data = data, weights = weights, 
         sampfrac = param$sampfrac, maxdepth = param$maxdepth, 
         learnrate = param$learnrate, mtry = param$mtry, 
-        ntrees = param$ntrees, use.grad = param$use.grad, ...)
+        use.grad = param$use.grad, ...)
   },
   predict = function(modelFit, newdata, submodels = NULL) {
     if (is.null(submodels)) {
@@ -117,7 +115,6 @@ modelInfo <- list(
   sort = function(x) {
     ordering <- order(x$maxdepth, # lower values are simpler
                       x$use.grad, # TRUE employs ctree (vs ctree), so simplest
-                      x$ntrees, # lower values are simpler
                       max(x$mtry) - x$mtry, # higher values yield more similar tree, so simpler
                       x$sampfrac != 1L, # subsampling yields simpler trees than bootstrap sampling
                       x$learnrate, # lower learnrates yield more similar trees, so simpler
