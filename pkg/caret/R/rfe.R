@@ -177,7 +177,7 @@ rfe <- function (x, ...) UseMethod("rfe")
     numFeat <- ncol(x)
     classLevels <- levels(y)
 
-    if(is.null(rfeControl$index)) 
+    if(is.null(rfeControl$index))
       rfeControl$index <- switch(tolower(rfeControl$method),
                                  cv = createFolds(y, rfeControl$number, returnTrain = TRUE),
                                  repeatedcv = createMultiFolds(y, rfeControl$number, rfeControl$repeats),
@@ -539,7 +539,7 @@ rfeIter <- function(x, y,
 #' (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
 #' @keywords hplot
 #' @method plot rfe
-#' @export  
+#' @export
 #' @examples
 #'
 #' \dontrun{
@@ -1378,5 +1378,706 @@ repair_rank <- function(imp, nms, fill = -Inf) {
   rownames(out) <- NULL
   out
 }
+
+###################################################################
+
+rfe_rec <- function(x, y, test_x, test_y, perf_dat,
+                    sizes, rfeControl = rfeControl(),
+                    label = "", seeds = NA, ...) {
+  p <- ncol(x)
+
+  if (length(sizes) > 0 && max(sizes) > p)
+    sizes <- sizes[sizes <= p]
+
+  if (all(sizes < 2))
+    stop(
+      "After the recipe, there are less than two predictors remaining. `rfe` ",
+      "requires at least two.",
+      call. = FALSE
+    )
+
+  if (length(sizes) == 0)
+    stop(
+      "After the recipe, there are only ",
+      p,
+      " predictors remaining. ",
+      "The `sizes` values are inconsistent with this.",
+      call. = FALSE
+    )
+
+  predictionMatrix <-
+    matrix(NA, nrow = length(test_y), ncol = length(sizes))
+
+  retained <- colnames(x)
+  sizeValues <- sort(unique(c(sizes, p)), decreasing = TRUE)
+  sizeText <- format(sizeValues)
+
+  finalVariables <- vector(length(sizeValues), mode = "list")
+  for (k in seq(along = sizeValues)) {
+    if (!any(is.na(seeds)))
+      set.seed(seeds[k])
+
+    if (rfeControl$verbose) {
+      cat("+(rfe) fit",
+          ifelse(label != "",
+                 label, ""),
+          "size:",
+          sizeText[k],
+          "\n")
+    }
+    flush.console()
+    fitObject <-
+      rfeControl$functions$fit(
+        x[, retained, drop = FALSE], y,
+        first = p == ncol(x[, retained, drop = FALSE]),
+        last = FALSE,
+        ...
+      )
+    if (rfeControl$verbose) {
+      cat("-(rfe) fit",
+          ifelse(label != "",
+                 label, ""),
+          "size:",
+          sizeText[k],
+          "\n")
+    }
+    modelPred <-
+      rfeControl$functions$pred(fitObject, test_x[, retained, drop = FALSE])
+    if (is.data.frame(modelPred) | is.matrix(modelPred)) {
+      if (is.matrix(modelPred)) {
+        modelPred <- as.data.frame(modelPred)
+        ## in the case where the function returns a matrix with a single column
+        ## make sure that it is named pred
+        if (ncol(modelPred) == 1)
+          names(modelPred) <- "pred"
+      }
+      modelPred$obs <- test_y
+      modelPred$Variables <- sizeValues[k]
+    } else
+      modelPred <-
+      data.frame(pred = modelPred,
+                 obs = test_y,
+                 Variables = sizeValues[k])
+    ## save as a vector and rbind at end
+    rfePred <- if (k == 1)
+      modelPred
+    else
+      rbind(rfePred, modelPred)
+
+
+    if (!exists("modImp")) {
+      ##todo: get away from this since it finds object in other spaces
+
+      if (rfeControl$verbose){
+        cat("+(rfe) imp",
+            ifelse(label != "",
+                   label, ""), "\n")
+      }
+      modImp <-
+        rfeControl$functions$rank(fitObject, x[, retained, drop = FALSE], y)
+      if (rfeControl$verbose){
+        cat("-(rfe) imp",
+            ifelse(label != "",
+                   label, ""), "\n")
+      }
+    } else {
+      if (rfeControl$rerank){
+        if (rfeControl$verbose){
+          cat("+(rfe) imp",
+              ifelse(label != "",
+                     label, ""),
+              "size:",
+              sizeText[k],
+              "\n")
+        }
+        modImp <-
+          rfeControl$functions$rank(fitObject, x[, retained, drop = FALSE], y)
+        if (rfeControl$verbose){
+          cat("-(rfe) imp",
+              ifelse(label != "",
+                     label, ""),
+              "size:",
+              sizeText[k],
+              "\n")
+        }
+      }
+    }
+
+    if (nrow(modImp) < sizeValues[k]) {
+      msg1 <- paste0(
+        "rfe is expecting ",
+        sizeValues[k],
+        " importance values but only has ",
+        nrow(modImp),
+        ". ",
+        "This may be caused by having zero-variance predictors, ",
+        "excessively-correlated predictors, factor predictors ",
+        "that were expanded into dummy variables or you may have ",
+        "failed to drop one of your dummy variables."
+      )
+      warning(msg1, call. = FALSE)
+      modImp <- repair_rank(modImp, colnames(x))
+    }
+    if (any(!complete.cases(modImp))) {
+      warning(
+        paste(
+          "There were missing importance values.",
+          "There may be linear dependencies in your predictor variables"
+        ),
+        call. = FALSE
+      )
+    }
+    finalVariables[[k]] <- subset(modImp, var %in% retained)
+    finalVariables[[k]]$Variables <- sizeValues[[k]]
+    if (k < length(sizeValues))
+      retained <- as.character(modImp$var)[1:sizeValues[k + 1]]
+  }
+  list(finalVariables = finalVariables, pred = rfePred)
+}
+
+"rfe.recipe" <-
+  function(x,
+           data,
+           sizes = 2 ^ (2:4),
+           metric = NULL,
+           maximize = NULL,
+           rfeControl = rfeControl(),
+           ...) {
+    startTime <- proc.time()
+    funcCall <- match.call(expand.dots = TRUE)
+    if (!("caret" %in% loadedNamespaces()))
+      loadNamespace("caret")
+
+    ###################################################################
+
+    if(rfeControl$verbose)
+      cat("Preparing recipe\n")
+
+    trained_rec <- prep(x, training = data,
+                        fresh = TRUE,
+                        retain = TRUE,
+                        verbose = FALSE,
+                        stringsAsFactors = TRUE)
+    x_dat <- juice(trained_rec, all_predictors(), composition = "data.frame")
+    y_dat <- juice(trained_rec, all_outcomes(), composition = "data.frame")
+    if(ncol(y_dat) > 1)
+      stop("`rfe` doesn't support multivariate outcomes", call. = FALSE)
+    y_dat <- y_dat[[1]]
+    is_weight <- summary(trained_rec)$role == "case weight"
+    if(any(is_weight))
+      stop("`rfe` does not allow for weights.", call. = FALSE)
+
+    is_perf <- summary(trained_rec)$role == "performance var"
+    if(any(is_perf)) {
+      perf_data <- juice(trained_rec, has_role("performance var"))
+    } else perf_data <- NULL
+
+    p <- ncol(x_dat)
+    classLevels <- levels(y_dat)
+
+    # now do default metrics:
+    if (is.null(metric))
+      metric <- ifelse(is.factor(y_dat), "Accuracy", "RMSE")
+
+    maximize <-
+      ifelse(metric %in% c("RMSE", "MAE"), FALSE, TRUE) # TODO make a function
+
+
+
+    if (is.null(rfeControl$index))
+      rfeControl$index <- switch(
+        tolower(rfeControl$method),
+        cv = createFolds(y_dat, rfeControl$number, returnTrain = TRUE),
+        repeatedcv = createMultiFolds(y_dat, rfeControl$number, rfeControl$repeats),
+        loocv = createFolds(y_dat, length(y_dat), returnTrain = TRUE),
+        boot = ,
+        boot632 = createResample(y_dat, rfeControl$number),
+        test = createDataPartition(y_dat, 1, rfeControl$p),
+        lgocv = createDataPartition(y_dat, rfeControl$number, rfeControl$p)
+      )
+
+    if (is.null(names(rfeControl$index)))
+      names(rfeControl$index) <- prettySeq(rfeControl$index)
+    if (is.null(rfeControl$indexOut)) {
+      rfeControl$indexOut <- lapply(rfeControl$index,
+                                    function(training, allSamples)
+                                      allSamples[-unique(training)],
+                                    allSamples = seq(along = y_dat))
+      names(rfeControl$indexOut) <- prettySeq(rfeControl$indexOut)
+    }
+
+    sizes <- sort(unique(sizes))
+    if (any(sizes > p))
+      warning("For the training set, the recipe generated fewer predictors ",
+              "than the ", max(sizes), " expected in `sizes` and the number ",
+              "of subsets will be truncated to be <= ", p, ".",
+              call. = FALSE)
+    sizes <- sizes[sizes <= p]
+
+    ## check summary function and metric
+    testOutput <- data.frame(pred = sample(y_dat, min(10, length(y_dat))),
+                             obs = sample(y_dat, min(10, length(y_dat))))
+    if (is.factor(y_dat)) {
+      for (i in seq(along = classLevels))
+        testOutput[, classLevels[i]] <- runif(nrow(testOutput))
+    }
+    if(!is.null(perf_data))
+      testOutput <- cbind(testOutput, perf_data)
+
+
+    test <-
+      rfeControl$functions$summary(testOutput, lev = classLevels)
+    perfNames <- names(test)
+
+    if (!(metric %in% perfNames)) {
+      warning(
+        paste(
+          "Metric '",
+          metric,
+          "' is not created by the summary function; '",
+          perfNames[1],
+          "' will be used instead",
+          sep = ""
+        )
+      )
+      metric <- perfNames[1]
+    }
+
+    ## Set or check the seeds when needed
+    totalSize <-
+      if (any(sizes == p))
+        length(sizes)
+    else
+      length(sizes) + 1
+    if (is.null(rfeControl$seeds)) {
+      seeds <- vector(mode = "list", length = length(rfeControl$index))
+      seeds <-
+        lapply(seeds, function(x)
+          sample.int(n = 1000000, size = totalSize))
+      seeds[[length(rfeControl$index) + 1]] <-
+        sample.int(n = 1000000, size = 1)
+      rfeControl$seeds <- seeds
+    } else {
+      if (!(length(rfeControl$seeds) == 1 && is.na(rfeControl$seeds))) {
+        ## check versus number of tasks
+        numSeeds <- unlist(lapply(rfeControl$seeds, length))
+        badSeed <-
+          (length(rfeControl$seeds) < length(rfeControl$index) + 1) ||
+          (any(numSeeds[-length(numSeeds)] < totalSize))
+        if (badSeed)
+          stop(
+            paste(
+              "Bad seeds: the seed object should be a list of length",
+              length(rfeControl$index) + 1,
+              "with",
+              length(rfeControl$index),
+              "integer vectors of size",
+              totalSize,
+              "and the last list element having a",
+              "single integer"
+            )
+          )
+      }
+    }
+
+    if (rfeControl$method == "LOOCV") {
+      tmp <-
+        rfe_rec_loo(
+          rec = x,
+          data = data,
+          sizes = sizes,
+          ctrl = rfeControl,
+          lev = classLevels,
+          ...
+        )
+      selectedVars <-
+        do.call("c", tmp$everything[names(tmp$everything) == "finalVariables"])
+      selectedVars <- do.call("rbind", selectedVars)
+      externPerf <- tmp$performance
+    } else {
+      tmp <-
+        rfe_rec_workflow(
+          rec = x,
+          data = data,
+          sizes = sizes,
+          ctrl = rfeControl,
+          lev = classLevels,
+          ...
+        )
+
+      selectedVars <-
+        do.call("rbind", tmp$everything[names(tmp$everything) == "selectedVars"])
+      resamples <-
+        do.call("rbind", tmp$everything[names(tmp$everything) == "resamples"])
+      rownames(resamples) <- NULL
+      externPerf <- tmp$performance
+    }
+    rownames(selectedVars) <- NULL
+
+    ## There may be variables selected that are not generated by the recipe
+    ## created on the traning set.
+
+    all_var <- as.character(unique(selectedVars$var))
+    x_names <- colnames(x_dat)
+    orphans <- all_var[!(all_var %in% x_names)]
+
+    externPerf <- subset(externPerf, Variables <= length(x_names))
+
+    bestSubset <-
+      rfeControl$functions$selectSize(
+        x = externPerf,
+        metric = metric,
+        maximize = maximize
+      )
+
+    bestVar <-
+      rfeControl$functions$selectVar(subset(selectedVars, var %in% x_names), bestSubset)
+    # In case of orpahns:
+    bestVar <- bestVar[!is.na(bestVar)]
+    bestSubset <- length(bestVar)
+
+    finalTime <-
+      system.time(
+        fit <- rfeControl$functions$fit(
+          x_dat[, bestVar, drop = FALSE],
+          y_dat,
+          first = FALSE,
+          last = TRUE,
+          ...
+        )
+      )
+
+    if (is.factor(y_dat) & any(names(tmp$performance) == ".cell1")) {
+      keepers <-
+        c("Resample",
+          "Variables",
+          grep("\\.cell", names(tmp$performance), value = TRUE))
+      resampledCM <-
+        subset(tmp$performance, Variables == bestSubset)
+      tmp$performance <-
+        tmp$performance[,-grep("\\.cell", names(tmp$performance))]
+    } else
+      resampledCM <- NULL
+
+    if (!(rfeControl$method %in% c("LOOCV"))) {
+      resamples <- switch(
+        rfeControl$returnResamp,
+        none = NULL,
+        all = resamples,
+        final = subset(resamples, Variables == bestSubset)
+      )
+    } else
+      resamples <- NULL
+
+    endTime <- proc.time()
+    times <- list(everything = endTime - startTime,
+                  final = finalTime)
+
+    #########################################################################
+    ## Now, based on probability or static ranking, figure out the best vars
+    ## and the best subset size and fit final model
+
+    out <- structure(
+      list(
+        pred = if (rfeControl$saveDetails)
+          do.call("rbind", tmp$everything[names(tmp$everything) == "predictions"])
+        else
+          NULL,
+        variables = selectedVars,
+        results = as.data.frame(externPerf),
+        bestSubset = bestSubset,
+        fit = fit,
+        optVariables = bestVar,
+        optsize = bestSubset,
+        call = funcCall,
+        control = rfeControl,
+        resample = resamples,
+        metric = metric,
+        maximize = maximize,
+        perfNames = perfNames,
+        times = times,
+        resampledCM = resampledCM,
+        obsLevels = classLevels,
+        dots = list(...)
+      ),
+      class = "rfe"
+    )
+    if (rfeControl$timingSamps > 0) {
+      out$times$prediction <-
+        system.time(predict(out, x_dat[1:min(nrow(x_dat), rfeControl$timingSamps), , drop = FALSE]))
+    } else
+      out$times$prediction <- rep(NA, 3)
+    out
+  }
+
+
+rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
+  loadNamespace("caret")
+  loadNamespace("recipes")
+
+  resampleIndex <- ctrl$index
+  if (ctrl$method %in% c("boot632")) {
+    resampleIndex <- c(list("AllData" = rep(0, nrow(data))), resampleIndex)
+    ctrl$indexOut <-
+      c(list("AllData" = rep(0, nrow(data))),  ctrl$indexOut)
+  }
+
+  `%op%` <- getOper(ctrl$allowParallel && foreach::getDoParWorkers() > 1)
+  result <-
+    foreach(
+      iter = seq(along = resampleIndex),
+      .combine = "c",
+      .verbose = FALSE,
+      .errorhandling = "stop",
+      .packages = "caret"
+    ) %op% {
+      loadNamespace("caret")
+      requireNamespace("plyr")
+      requireNamespace("methods")
+      loadNamespace("recipes")
+
+      if (names(resampleIndex)[iter] != "AllData") {
+        modelIndex <- resampleIndex[[iter]]
+        holdoutIndex <- ctrl$indexOut[[iter]]
+      } else {
+        modelIndex <- 1:nrow(data)
+        holdoutIndex <- modelIndex
+      }
+
+      seeds <-
+        if (!(length(ctrl$seeds) == 1 &&
+              is.na(ctrl$seeds)))
+          ctrl$seeds[[iter]] else
+            NA
+
+      if(ctrl$verbose)
+        cat("Preparing recipe\n")
+      trained_rec <- prep(
+        rec, training = data[modelIndex,,drop = FALSE], fresh = TRUE,
+        verbose = FALSE, stringsAsFactors = TRUE,
+        retain = TRUE
+      )
+
+      x <- juice(trained_rec, all_predictors(), composition = "data.frame")
+      y <- juice(trained_rec, all_outcomes())[[1]]
+      test_x <- bake(
+        trained_rec,
+        newdata = data[-modelIndex, , drop = FALSE],
+        all_predictors(),
+        composition = "data.frame"
+      )
+      test_y <- bake(
+        trained_rec,
+        newdata = data[-modelIndex, , drop = FALSE],
+        all_outcomes()
+      )[[1]]
+
+      is_perf <- summary(trained_rec)$role == "performance var"
+      if(any(is_perf)) {
+        test_perf <- bake(
+          trained_rec,
+          newdata = data[-modelIndex, , drop = FALSE],
+          has_role("performance var"),
+          composition = "data.frame"
+        )
+      } else test_perf <- NULL
+
+      p <- ncol(x)
+
+      if(length(sizes) > 0 && max(sizes) > p)
+        sizes <- sizes[sizes <= p]
+
+      if (all(sizes < 2))
+        stop(
+          "After the recipe, there are less than two predictors remaining. `rfe` ",
+          "requires at least two.",
+          call. = FALSE
+        )
+
+      if (length(sizes) == 0)
+        stop(
+          "After the recipe, there are only ",
+          p,
+          " predictors remaining. ",
+          "The `sizes` values are inconsistent with this.",
+          call. = FALSE
+        )
+
+      rfeResults <- rfe_rec(
+        x, y,
+        test_x, test_y,
+        test_perf,
+        sizes, ctrl,
+        label = names(resampleIndex)[iter],
+        seeds = seeds,
+        ...
+      )
+      resamples <-
+        plyr::ddply(rfeResults$pred,
+                    .(Variables),
+                    ctrl$functions$summary,
+                    lev = lev)
+
+      if (ctrl$saveDetails) {
+        rfeResults$pred$Resample <- names(resampleIndex)[iter]
+        ## If the user did not have nrow(x) in 'sizes', rfeIter added it.
+        ## So, we need to find out how many set of predictions there are:
+        nReps <- length(table(rfeResults$pred$Variables))
+        rfeResults$pred$rowIndex <-
+          rep(seq(along = y)[unique(holdoutIndex)], nReps)
+      }
+
+      if (is.factor(y) && length(lev) <= 50) {
+        cells <-
+          plyr::ddply(rfeResults$pred, .(Variables), function(x)
+            flatTable(x$pred, x$obs))
+        resamples <- merge(resamples, cells)
+      }
+
+      resamples$Resample <- names(resampleIndex)[iter]
+      vars <- do.call("rbind", rfeResults$finalVariables)
+      vars$Resample <- names(resampleIndex)[iter]
+      list(
+        resamples = resamples,
+        selectedVars = vars,
+        predictions = if (ctrl$saveDetails)
+          rfeResults$pred else NULL
+      )
+    }
+
+  resamples <-
+    do.call("rbind", result[names(result) == "resamples"])
+  rownames(resamples) <- NULL
+
+  if (ctrl$method %in% c("boot632")) {
+    perfNames <- names(resamples)
+    perfNames <-
+      perfNames[!(perfNames %in% c("Resample", "Variables"))]
+    perfNames <- perfNames[!grepl("^cell[0-9]", perfNames)]
+    apparent <- subset(resamples, Resample == "AllData")
+    apparent <-
+      apparent[, !grepl("^\\.cell|Resample", colnames(apparent)), drop = FALSE]
+    names(apparent)[which(names(apparent) %in% perfNames)] <-
+      paste(names(apparent)[which(names(apparent) %in% perfNames)],
+            "Apparent", sep = "")
+    names(apparent) <- gsub("^\\.", "", names(apparent))
+    resamples <- subset(resamples, Resample != "AllData")
+  }
+
+  externPerf <-
+    plyr::ddply(resamples[, !grepl("\\.cell|Resample", colnames(resamples)), drop = FALSE],
+                .(Variables),
+                MeanSD,
+                exclude = "Variables")
+  if (ctrl$method %in% c("boot632")) {
+    externPerf <- merge(externPerf, apparent)
+    for (p in seq(along = perfNames)) {
+      const <- 1 - exp(-1)
+      externPerf[, perfNames[p]] <-
+        (const * externPerf[, perfNames[p]]) +  ((1 - const) * externPerf[, paste(perfNames[p], "Apparent", sep = "")])
+    }
+    externPerf <-
+      externPerf[,!(names(externPerf) %in% paste(perfNames, "Apparent", sep = ""))]
+  }
+  list(performance = externPerf, everything = result)
+}
+
+rfe_rec_loo <- function(rec, data, sizes, ctrl, lev, ...) {
+  loadNamespace("caret")
+  loadNamespace("recipes")
+
+  resampleIndex <- ctrl$index
+  `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
+  result <-
+    foreach(
+      iter = seq(along = resampleIndex),
+      .combine = "c",
+      .verbose = FALSE,
+      .errorhandling = "stop",
+      .packages = "caret"
+    ) %op% {
+
+      loadNamespace("caret")
+      loadNamespace("recipes")
+
+      requireNamespaceQuietStop("methods")
+
+      modelIndex <- resampleIndex[[iter]]
+      holdoutIndex <- -unique(resampleIndex[[iter]])
+
+      seeds <-
+        if (!(length(ctrl$seeds) == 1 &&
+              is.na(ctrl$seeds)))
+          ctrl$seeds[[iter]]  else NA
+      if(ctrl$verbose)
+        cat("Preparing recipe\n")
+      trained_rec <- prep(
+        rec, training = data[modelIndex,,drop = FALSE], fresh = TRUE,
+        verbose = FALSE, stringsAsFactors = TRUE,
+        retain = TRUE
+      )
+
+      x <- juice(trained_rec, all_predictors(), composition = "data.frame")
+      y <- juice(trained_rec, all_outcomes())[[1]]
+      test_x <- bake(
+        trained_rec,
+        newdata = data[-modelIndex, , drop = FALSE],
+        all_predictors(),
+        composition = "data.frame"
+      )
+      test_y <- bake(
+        trained_rec,
+        newdata = data[-modelIndex, , drop = FALSE],
+        all_outcomes()
+      )[[1]]
+
+      is_perf <- summary(trained_rec)$role == "performance var"
+      if(any(is_perf)) {
+        test_perf <- bake(
+          trained_rec,
+          newdata = data[-modelIndex, , drop = FALSE],
+          has_role("performance var"),
+          composition = "data.frame"
+        )
+      } else test_perf <- NULL
+
+      p <- ncol(x)
+
+      if(length(sizes) > 0 && max(sizes) > p)
+        sizes <- sizes[sizes <= p]
+
+      if (all(sizes < 2))
+        stop(
+          "After the recipe, there are less than two predictors remaining. `rfe` ",
+          "requires at least two.",
+          call. = FALSE
+        )
+
+      if (length(sizes) == 0)
+        stop(
+          "After the recipe, there are only ",
+          p,
+          " predictors remaining. ",
+          "The `sizes` values are inconsistent with this.",
+          call. = FALSE
+        )
+
+      rfeResults <- rfe_rec(
+        x, y,
+        test_x, test_y,
+        test_perf,
+        sizes, ctrl,
+        label = names(resampleIndex)[iter],
+        seeds = seeds,
+        ...
+      )
+      rfeResults
+    }
+  preds <- do.call("rbind", result[names(result) == "pred"])
+  resamples <-
+    ddply(preds, .(Variables), ctrl$functions$summary, lev = lev)
+  list(performance = resamples, everything = result)
+}
+
 
 
