@@ -239,6 +239,8 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
               thisResample$Resample <- names(resampleIndex)[iter]
               if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE],
                                             names(resampleIndex), iter, FALSE)
+              mod <- NULL
+              gc()
               list(resamples = thisResample, pred = tmpPred)
             } ## end initial loop over resamples and models
 

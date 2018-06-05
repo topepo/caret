@@ -257,6 +257,8 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                                     names(resampleIndex), iter, FALSE)
 
       if(testing) print(thisResample)
+      mod <- NULL
+      gc()
       list(resamples = thisResample, pred = tmpPred, resamplesExtra = thisResampleExtra)
     }
 
@@ -461,6 +463,8 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
       }
       if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE],
                                     names(ctrl$index), iter, FALSE)
+      mod <- NULL
+      gc()
       predicted
     }
 
