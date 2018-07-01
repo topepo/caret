@@ -52,11 +52,11 @@ libs <- c(libs, "knitr", "Hmisc", "googleVis", "animation",
           ## odds and ends
           "ape", "gdata", "boot", "bootstrap", "chron", "combinat", "concord", "cluster",
           "desirability", "gsubfn", "gtools", "impute", "Matrix", "proxy", "plyr",
-          "reshape", "rJava", "SparseM", "sqldf", "XML", "lubridate", "dplyr", "GA",
+          "reshape", "rJava", "SparseM", "sqldf", "XML", "lubridate", "GA",
           "aroma.affymetrix", "remMap", "cghFLasso", "RCurl", "QSARdata", "reshape2",
           "mapproj", "ggmap", "ggvis", "SuperLearner", "subsemble", "caretEnsemble",
           "ROSE", "DMwR", "ellipse", "bookdown", "DT", "AppliedPredictiveModeling",
-          "pROC", "ggthemes", "sessioninfo", "mlbench")
+          "pROC", "ggthemes", "sessioninfo", "mlbench", "tidyverse")
 libs <- c(libs, package_dependencies("caret", reverse = TRUE)$caret)
 libs <- unique(libs)
 

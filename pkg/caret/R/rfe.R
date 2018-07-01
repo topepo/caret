@@ -1535,6 +1535,8 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
   list(finalVariables = finalVariables, pred = rfePred)
 }
 
+#' @method rfe recipe
+#' @export
 "rfe.recipe" <-
   function(x,
            data,
