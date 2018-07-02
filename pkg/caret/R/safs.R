@@ -400,13 +400,13 @@ safsControl <- function(functions = NULL,
 #' TRUE)} is used:
 #'
 #' \preformatted{
-#' Fold03 1 0.401 (11) 
+#' Fold03 1 0.401 (11)
 #' Fold03 2 0.401->0.410 (11+1, 91.7\%) *
-#' Fold03 3 0.410->0.396 (12+1, 92.3\%) 0.969 A 
-#' Fold03 4 0.410->0.370 (12+2, 85.7\%) 0.881 
-#' Fold03 5 0.410->0.399 (12+2, 85.7\%) 0.954 A 
-#' Fold03 6 0.410->0.399 (12+1, 78.6\%) 0.940 A 
-#' Fold03 7 0.410->0.428 (12+2, 73.3\%) * 
+#' Fold03 3 0.410->0.396 (12+1, 92.3\%) 0.969 A
+#' Fold03 4 0.410->0.370 (12+2, 85.7\%) 0.881
+#' Fold03 5 0.410->0.399 (12+2, 85.7\%) 0.954 A
+#' Fold03 6 0.410->0.399 (12+1, 78.6\%) 0.940 A
+#' Fold03 7 0.410->0.428 (12+2, 73.3\%) *
 #' }
 #'
 #' The text "Fold03" indicates that this search is for the third
@@ -486,7 +486,7 @@ safsControl <- function(functions = NULL,
 safs <- function (x, ...) UseMethod("safs")
 
 #' @rdname safs
-#' @export 
+#' @export
 "safs.default" <-
   function(x, y,
            iters = 10,
@@ -814,12 +814,27 @@ safs_prob <- function(old, new, iteration = 1) {
   exp(ediff*iteration)
 }
 
-sa_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY, sa_metric, sa_maximize, lvl = lvl, last = FALSE, ...) {
+# perf_data
+# TODO note about perf data being in `x` for internal functions and `data` in external
+sa_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY,
+                       perf, holdoutPerf, testPerf,
+                       sa_metric, sa_maximize, lvl = lvl, last = FALSE, ...) {
   mod <- funcs$fit(x[, ind, drop=FALSE], y, lev = lvl, last = last,...)
-  internal <- funcs$fitness_intern(mod,
-                                   x = if(!is.null(holdoutX)) holdoutX[, ind, drop=FALSE] else x[, ind, drop=FALSE],
-                                   y = if(!is.null(holdoutY)) holdoutY else y,
-                                   p = ncol(x))
+  if (!is.null(holdoutX)) {
+    intern_x <- holdoutX[, ind, drop = FALSE]
+    if(!is.null(holdoutPerf))
+      intern_x <- cbind(intern_x, holdoutPerf)
+  } else {
+    intern_x <- x[, ind, drop = FALSE]
+    if(!is.null(perf))
+      intern_x <- cbind(intern_x, perf)
+  }
+  internal <- funcs$fitness_intern(
+    mod,
+    x = intern_x,
+    y = if(!is.null(holdoutY)) holdoutY else y,
+    p = ncol(x)
+    )
   if(!is.null(testX)) {
     modelPred <- funcs$pred(mod, testX[, ind, drop=FALSE])
     if(is.data.frame(modelPred) | is.matrix(modelPred)) {
@@ -827,6 +842,10 @@ sa_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY, sa_me
       modelPred$obs <- testY
       modelPred$Size <- length(ind)
     } else modelPred <- data.frame(pred = modelPred, obs = testY, Size = sum(ind == 1))
+    if(!is.null(testPerf))
+      modelPred <- cbind(modelPred, testPerf)
+    # perf_data for test set
+
     external <- funcs$fitness_extern(modelPred, lev = levels(testY))
     if(is.null(names(external))) {
       names(external) <- paste0("external", 1:length(external))
@@ -836,9 +855,10 @@ sa_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY, sa_me
   if(sa_maximize["internal"])
     internal[sa_metric["internal"]] <- -internal[sa_metric["internal"]]
 
-  list(internal = internal,
-       external = external)
+  list(internal = internal, external = external)
 }
+
+# TODO check SA initialization since all first iters have same p
 
 ###################################################################
 ##
@@ -848,6 +868,9 @@ sa_select <- function(x, y,
                       ## testX, testY: optional holdout data for computing
                       ## the fitness function
                       testX = NULL, testY = NULL,
+                      # added for recipes only
+                      perf = NULL,
+                      testPerf = NULL,
                       iters = 20,
                       funcs = NULL,
                       sa_metric = NULL,
@@ -863,17 +886,22 @@ sa_select <- function(x, y,
   if(!is.null(sa_seed)) set.seed(sa_seed[1])
   dig <- options()$digits
 
+  # perf_data here too
   if(holdout > 0) {
     in_holdout <- createDataPartition(y,
                                       p = holdout,
                                       list = FALSE)
     holdout_x <- x[in_holdout,,drop = FALSE]
     holdout_y <- y[in_holdout]
+    holdout_perf <- perf[in_holdout,,drop = FALSE]
     x <- x[-in_holdout,,drop = FALSE]
     y <- y[-in_holdout]
+    perf <- perf[-in_holdout,,drop = FALSE]
+
   } else {
     holdout_x <- NULL
     holdout_y <- NULL
+    holdout_perf <- NULL
   }
 
 
@@ -885,17 +913,19 @@ sa_select <- function(x, y,
 
   restarts <- 1
   subsets <- vector(mode = "list", length = iters)
-  internal <- data.frame(Best = rep(0*NA, iters),
-                         Note = "",
-                         Random = runif(iters),
-                         Prob = rep(1, iters),
-                         Iter = 1:(iters),
-                         Cycle = rep(0*NA, iters),
-                         SinceRestart = rep(0*NA, iters),
-                         Size = rep(0*NA, iters),
-                         Similarity = rep(0*NA, iters),
-                         Similarity_B = rep(0*NA, iters),
-                         stringsAsFactors = FALSE)
+  internal <- data.frame(
+    Best = rep(0*NA, iters),
+    Note = "",
+    Random = runif(iters),
+    Prob = rep(1, iters),
+    Iter = 1:(iters),
+    Cycle = rep(0*NA, iters),
+    SinceRestart = rep(0*NA, iters),
+    Size = rep(0*NA, iters),
+    Similarity = rep(0*NA, iters),
+    Similarity_B = rep(0*NA, iters),
+    stringsAsFactors = FALSE
+  )
   external <- if(!is.null(testX)) data.frame(Iter = 1:(iters)) else NULL
 
   for(i in 1:iters){
@@ -927,6 +957,10 @@ sa_select <- function(x, y,
                           funcs,
                           holdoutX = holdout_x, holdoutY = holdout_y,
                           testX = testX, testY = testY,
+                          # perf_data for holdout and test
+                          perf = perf,
+                          holdoutPerf = holdout_perf,
+                          testPerf = testPerf,
                           sa_metric = sa_metric,
                           sa_maximize = sa_maximize,
                           lvl = lvl,
