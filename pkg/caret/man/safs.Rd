@@ -4,11 +4,15 @@
 \alias{safs}
 \alias{safs.default}
 \alias{safs.default}
+\alias{safs.recipe}
 \title{Simulated annealing feature selection}
 \usage{
 safs(x, ...)
 
 \method{safs}{default}(x, y, iters = 10, differences = TRUE,
+  safsControl = safsControl(), ...)
+
+\method{safs}{recipe}(x, data, iters = 10, differences = TRUE,
   safsControl = safsControl(), ...)
 }
 \arguments{
@@ -74,13 +78,13 @@ This is an example of the output produced when \code{safsControl(verbose =
 TRUE)} is used:
 
 \preformatted{
-Fold03 1 0.401 (11) 
+Fold03 1 0.401 (11)
 Fold03 2 0.401->0.410 (11+1, 91.7\%) *
-Fold03 3 0.410->0.396 (12+1, 92.3\%) 0.969 A 
-Fold03 4 0.410->0.370 (12+2, 85.7\%) 0.881 
-Fold03 5 0.410->0.399 (12+2, 85.7\%) 0.954 A 
-Fold03 6 0.410->0.399 (12+1, 78.6\%) 0.940 A 
-Fold03 7 0.410->0.428 (12+2, 73.3\%) * 
+Fold03 3 0.410->0.396 (12+1, 92.3\%) 0.969 A
+Fold03 4 0.410->0.370 (12+2, 85.7\%) 0.881
+Fold03 5 0.410->0.399 (12+2, 85.7\%) 0.954 A
+Fold03 6 0.410->0.399 (12+1, 78.6\%) 0.940 A
+Fold03 7 0.410->0.428 (12+2, 73.3\%) *
 }
 
 The text "Fold03" indicates that this search is for the third
