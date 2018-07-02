@@ -581,7 +581,6 @@ safs <- function (x, ...) UseMethod("safs")
                 ...)
     }
 
-    ## TODO save only the parts you need inside of loop
     external <- result[names(result) == "external"]
     external <- do.call("rbind", external)
     rownames(external) <- NULL
@@ -815,8 +814,6 @@ safs_prob <- function(old, new, iteration = 1) {
   exp(ediff*iteration)
 }
 
-# perf_data
-# TODO note about perf data being in `x` for internal functions and `data` in external
 sa_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY,
                        perf, holdoutPerf, testPerf,
                        sa_metric, sa_maximize, lvl = lvl, last = FALSE, ...) {
@@ -858,8 +855,6 @@ sa_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY,
 
   list(internal = internal, external = external)
 }
-
-# TODO check SA initialization since all first iters have same p
 
 ###################################################################
 ##
@@ -970,7 +965,7 @@ sa_select <- function(x, y,
 
     ## Use the initial results to setup containers for
     ## the remaining iterations
-    if(i == 1) {  ##TODO check for name and modify if needed as with external
+    if(i == 1) {
       k <- length(new_obj$internal)
       perf_names <- names(new_obj$internal)
       for(new_var in perf_names) internal[,new_var] <- NA
@@ -1284,6 +1279,7 @@ update.safs <- function(object, iter, x, y, ...) {
 }
 
 #' @rdname safs
+#' @import recipes
 #' @export
 "safs.recipe" <-
   function(x, data,
@@ -1395,7 +1391,13 @@ update.safs <- function(object, iter, x, y, ...) {
 
     `%op%` <- getOper(safsControl$allowParallel && getDoParWorkers() > 1)
 
-    result <- foreach(i = seq(along = safsControl$index), .combine = "c", .verbose = FALSE, .errorhandling = "stop") %op% {
+    result <- foreach(
+      i = seq(along = safsControl$index),
+      .combine = "c",
+      .verbose = FALSE,
+      .errorhandling = "stop",
+      .packages = "recipes"
+      ) %op% {
 
       # reprocess recipe
       resampled_rec <- prep(
@@ -1422,7 +1424,10 @@ update.safs <- function(object, iter, x, y, ...) {
           newdata = data[ -safsControl$index[[i]], ],
           has_role("performance var")
         )
-      } else perf_data <- NULL
+      } else {
+        perf_tr <- NULL
+        perf_te <- NULL
+      }
 
       sa_select(
         x = x_tr,
@@ -1445,7 +1450,6 @@ update.safs <- function(object, iter, x, y, ...) {
       )
     }
 
-    ## TODO save only the parts you need inside of loop
     external <- result[names(result) == "external"]
     external <- do.call("rbind", external)
     rownames(external) <- NULL
