@@ -314,12 +314,26 @@ gafsControl <- function(functions = NULL,
 ##
 
 ga_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY,
+                       perf, holdoutPerf, testPerf,
                        ga_metric, ga_maximize, lvl = lvl, last = FALSE, indiv = 0, ...) {
   mod <- funcs$fit(x[, ind, drop=FALSE], y, lev = lvl, last = last,...)
-  internal <- funcs$fitness_intern(mod,
-                                   x = if(!is.null(holdoutX)) holdoutX[, ind, drop=FALSE] else x[, ind, drop=FALSE],
-                                   y = if(!is.null(holdoutY)) holdoutY else y,
-                                   p = ncol(x))
+
+  if (!is.null(holdoutX)) {
+    intern_x <- holdoutX[, ind, drop = FALSE]
+    if(!is.null(holdoutPerf))
+      intern_x <- cbind(intern_x, holdoutPerf)
+  } else {
+    intern_x <- x[, ind, drop = FALSE]
+    if(!is.null(perf))
+      intern_x <- cbind(intern_x, perf)
+  }
+  internal <-
+    funcs$fitness_intern(
+      mod,
+      x = intern_x,
+      y = if(!is.null(holdoutY)) holdoutY else y,
+      p = ncol(x)
+      )
   if(!is.null(testX)) {
     modelPred <- funcs$pred(mod, testX[, ind, drop=FALSE])
     if(is.data.frame(modelPred) | is.matrix(modelPred)) {
@@ -327,6 +341,9 @@ ga_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY,
       modelPred$obs <- testY
       modelPred$Size <- length(ind)
     } else modelPred <- data.frame(pred = modelPred, obs = testY, Size = sum(ind == 1))
+    if(!is.null(testPerf))
+      modelPred <- cbind(modelPred, testPerf)
+
     external <- funcs$fitness_extern(modelPred, lev = levels(testY))
     if(is.null(names(external))) {
       names(external) <- paste0("external", 1:length(external))
@@ -345,9 +362,9 @@ ga_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY,
 
 #' @importFrom stats runif
 #' @import foreach
-ga_select <- function(x, y,
+ga_select <- function(x, y, perf = NULL,
 
-                      testX = NULL, testY = NULL,
+                      testX = NULL, testY = NULL, testPerf = NULL,
 
                       iters = 20,
                       funcs = NULL,
@@ -379,11 +396,15 @@ ga_select <- function(x, y,
                                       list = FALSE)
     holdout_x <- x[in_holdout,,drop = FALSE]
     holdout_y <- y[in_holdout]
+    holdout_perf <- perf[in_holdout,,drop = FALSE]
     x <- x[-in_holdout,,drop = FALSE]
     y <- y[-in_holdout]
+    perf <- perf[-in_holdout,,drop = FALSE]
+
   } else {
     holdout_x <- NULL
     holdout_y <- NULL
+    holdout_perf <- NULL
   }
 
   ###################################################################
@@ -439,22 +460,28 @@ ga_select <- function(x, y,
 
   for(generation in 1:iters) {
     Pop <- check_ga_pop(Pop)
-    currennt_results <- foreach(i = seq_len(popSize),
-                                .combine = "c",
-                                .verbose = FALSE,
-                                .errorhandling = "stop") %op% {
-                                  ga_wrapper(ind = which(Pop[i,] == 1),
-                                             x = x, y = y,
-                                             funcs,
-                                             holdoutX = holdout_x, holdoutY = holdout_y,
-                                             testX = testX, testY = testY,
-                                             ga_metric = ga_metric,
-                                             ga_maximize = ga_maximize,
-                                             lvl = lvl,
-                                             last = Resample == "",
-                                             indiv = i,
-                                             ...)
-                                } ## loop over chromosomes
+    currennt_results <-
+      foreach(
+        i = seq_len(popSize),
+        .combine = "c",
+        .verbose = FALSE,
+        .errorhandling = "stop",
+        .packages = "recipes") %op% {
+          ga_wrapper(ind = which(Pop[i,] == 1),
+                     x = x, y = y, perf = perf,
+                     funcs,
+                     holdoutX = holdout_x, holdoutY = holdout_y,
+                     holdoutPerf = holdout_perf,
+                     testX = testX, testY = testY,
+                     testPerf = testPerf,
+                     ga_metric = ga_metric,
+                     ga_maximize = ga_maximize,
+                     lvl = lvl,
+                     last = Resample == "",
+                     indiv = i,
+                     ...
+          )
+        } ## loop over chromosomes
 
     ## TODO save only the parts you need inside of loop
     if(!is.null(testX)) {
@@ -750,7 +777,7 @@ print.gafs <- function (x, top = 5,
 #' @seealso \code{\link{safs}}, \code{\link{gafs}}
 #' @keywords multivariate
 #' @method predict gafs
-#' @export 
+#' @export
 #' @examples
 #'
 #' \dontrun{
@@ -831,9 +858,9 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' TRUE)} is used:
 #'
 #' \preformatted{
-#' Fold2 1 0.715 (13) 
+#' Fold2 1 0.715 (13)
 #' Fold2 2 0.715->0.737 (13->17, 30.4\%) *
-#' Fold2 3 0.737->0.732 (17->14, 24.0\%) 
+#' Fold2 3 0.737->0.732 (17->14, 24.0\%)
 #' Fold2 4 0.737->0.769 (17->23, 25.0\%) *
 #' }
 #'
@@ -895,7 +922,7 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' \url{http://en.wikipedia.org/wiki/Jaccard_index}
 #' @keywords models
 #' @method gafs default
-#' @export 
+#' @export
 #' @examples
 #'
 #' \dontrun{
@@ -945,23 +972,28 @@ gafs <- function (x, ...) UseMethod("gafs")
     classLevels <- levels(y)
 
     if(is.null(gafsControl$index))
-      gafsControl$index <- switch(tolower(gafsControl$method),
-                                  cv = createFolds(y, gafsControl$number, returnTrain = TRUE),
-                                  repeatedcv = createMultiFolds(y, gafsControl$number, gafsControl$repeats),
-                                  loocv = createFolds(y, length(y), returnTrain = TRUE),
-                                  boot =, boot632 = createResample(y, gafsControl$number),
-                                  test = createDataPartition(y, 1, gafsControl$p),
-                                  lgocv = createDataPartition(y, gafsControl$number, gafsControl$p))
+      gafsControl$index <- switch(
+        tolower(gafsControl$method),
+        cv = createFolds(y, gafsControl$number, returnTrain = TRUE),
+        repeatedcv = createMultiFolds(y, gafsControl$number, gafsControl$repeats),
+        loocv = createFolds(y, length(y), returnTrain = TRUE),
+        boot =, boot632 = createResample(y, gafsControl$number),
+        test = createDataPartition(y, 1, gafsControl$p),
+        lgocv = createDataPartition(y, gafsControl$number, gafsControl$p)
+        )
 
     if(is.null(names(gafsControl$index)))
       names(gafsControl$index) <- getFromNamespace("prettySeq", "caret")(gafsControl$index)
 
     ## Create hold--out indicies
     if(is.null(gafsControl$indexOut)){
-      gafsControl$indexOut <- lapply(gafsControl$index,
-                                     function(training, allSamples) allSamples[-unique(training)],
-                                     allSamples = seq(along = y))
-      names(gafsControl$indexOut) <- getFromNamespace("prettySeq", "caret")(gafsControl$indexOut)
+      gafsControl$indexOut <-
+        lapply(gafsControl$index,
+               function(training, allSamples) allSamples[-unique(training)],
+               allSamples = seq(along = y)
+               )
+      names(gafsControl$indexOut) <-
+        getFromNamespace("prettySeq", "caret")(gafsControl$indexOut)
     }
 
     if(!is.null(gafsControl$seeds)) {
@@ -1000,27 +1032,33 @@ gafs <- function (x, ...) UseMethod("gafs")
 
     `%op%` <- getOper(gafsControl$allowParallel && getDoParWorkers() > 1)
 
-    result <- foreach(i = seq(along = gafsControl$index), .combine = "c", .verbose = FALSE, .errorhandling = "stop") %op% {
-      ga_select(x[gafsControl$index[[i]],,drop=FALSE],
-                y[gafsControl$index[[i]]],
-                funcs = gafsControl$functions,
-                ga_maximize = gafsControl$maximize,
-                ga_metric = gafsControl$metric,
-                iters = iters,
-                popSize = popSize,
-                pcrossover = pcrossover,
-                pmutation = pmutation,
-                elite = elite,
-                suggestions = suggestions,
-                ga_verbose = gafsControl$verbose,
-                testX = x[gafsControl$indexOut[[i]],,drop=FALSE],
-                testY = y[gafsControl$indexOut[[i]]],
-                ga_seed = gafsControl$seeds[i],
-                Resample = names(gafsControl$index)[i],
-                holdout = gafsControl$holdout,
-                lvl = classLevels,
-                genParallel = gafsControl$genParallel,
-                ...)
+    result <-
+      foreach(
+        i = seq(along = gafsControl$index),
+        .combine = "c", .verbose = FALSE,
+        .errorhandling = "stop") %op% {
+      ga_select(
+        x[gafsControl$index[[i]],,drop=FALSE],
+        y[gafsControl$index[[i]]],
+        funcs = gafsControl$functions,
+        ga_maximize = gafsControl$maximize,
+        ga_metric = gafsControl$metric,
+        iters = iters,
+        popSize = popSize,
+        pcrossover = pcrossover,
+        pmutation = pmutation,
+        elite = elite,
+        suggestions = suggestions,
+        ga_verbose = gafsControl$verbose,
+        testX = x[gafsControl$indexOut[[i]],,drop=FALSE],
+        testY = y[gafsControl$indexOut[[i]]],
+        ga_seed = gafsControl$seeds[i],
+        Resample = names(gafsControl$index)[i],
+        holdout = gafsControl$holdout,
+        lvl = classLevels,
+        genParallel = gafsControl$genParallel,
+        ...
+        )
     }
     ## TODO save only the parts you need inside of loop
     external <- result[names(result) == "external"]
@@ -1054,33 +1092,38 @@ gafs <- function (x, ...) UseMethod("gafs")
       in_model <- seq(along = y)
       in_holdout <- NULL
     }
-    final_ga <- ga_select(x[in_model,,drop=FALSE],
-                          y[in_model],
-                          funcs = gafsControl$functions,
-                          ga_maximize = gafsControl$maximize,
-                          ga_metric = gafsControl$metric,
-                          iters = iters,
-                          popSize = popSize,
-                          pcrossover = pcrossover,
-                          pmutation = pmutation,
-                          elite = elite,
-                          suggestions = suggestions,
-                          ga_verbose = gafsControl$verbose,
-                          testX = if(!is.null(in_holdout)) x[in_holdout,,drop=FALSE] else NULL,
-                          testY = if(!is.null(in_holdout)) y[in_holdout] else NULL,
-                          ga_seed = gafsControl$seeds[length(gafsControl$seeds)],
-                          lvl = classLevels,
-                          genParallel = gafsControl$genParallel,
-                          ...)
+    final_ga <- ga_select(
+      x[in_model,,drop=FALSE],
+      y[in_model],
+      funcs = gafsControl$functions,
+      ga_maximize = gafsControl$maximize,
+      ga_metric = gafsControl$metric,
+      iters = iters,
+      popSize = popSize,
+      pcrossover = pcrossover,
+      pmutation = pmutation,
+      elite = elite,
+      suggestions = suggestions,
+      ga_verbose = gafsControl$verbose,
+      testX = if(!is.null(in_holdout)) x[in_holdout,,drop=FALSE] else NULL,
+      testY = if(!is.null(in_holdout)) y[in_holdout] else NULL,
+      ga_seed = gafsControl$seeds[length(gafsControl$seeds)],
+      lvl = classLevels,
+      genParallel = gafsControl$genParallel,
+      ...
+      )
     averages <- ddply(external, .(Iter),
                       function(x, nms) {
                         apply(x[, perfNames, drop = FALSE], 2, mean)
                       },
                       nms = perfNames)
     if(!is.null(gafsControl$functions$selectIter)) {
-      best_index <- gafsControl$functions$selectIter(averages,
-                                                     metric = gafsControl$metric["external"],
-                                                     maximize = gafsControl$maximize["external"])
+      best_index <-
+        gafsControl$functions$selectIter(
+          averages,
+          metric = gafsControl$metric["external"],
+          maximize = gafsControl$maximize["external"]
+        )
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_ga$subsets[[best_index]]]
     } else {
@@ -1149,7 +1192,7 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' \code{\link[ggplot2]{ggplot}}, \code{\link[lattice]{xyplot}}
 #' @keywords hplot
 #' @method plot gafs
-#' @export 
+#' @export
 #' @examples
 #'
 #' \dontrun{

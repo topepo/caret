@@ -882,7 +882,6 @@ sa_select <- function(x, y,
   if(!is.null(sa_seed)) set.seed(sa_seed[1])
   dig <- options()$digits
 
-  # perf_data here too
   if(holdout > 0) {
     in_holdout <- createDataPartition(y,
                                       p = holdout,
