@@ -1412,5 +1412,262 @@ update.gafs <- function(object, iter, x, y, ...) {
 }
 
 
+#' @export
+"gafs.recipe" <-
+  function(x, data,
+           iters = 10,
+           popSize = 50,
+           pcrossover = 0.8,
+           pmutation = 0.1,
+           elite = 0,
+           suggestions = NULL,
+           differences = TRUE,
+           gafsControl = gafsControl(),
+           ...) {
+    startTime <- proc.time()
+    funcCall <- match.call(expand.dots = TRUE)
+
+    if(gafsControl$verbose)
+      cat("Preparing recipe\n")
+
+    orig_rec <- x
+    trained_rec <- prep(
+      x, training = data,
+      fresh = TRUE,
+      retain = TRUE,
+      verbose = FALSE,
+      stringsAsFactors = TRUE
+    )
+    x <- juice(trained_rec, all_predictors(), composition = "data.frame")
+    y <- juice(trained_rec, all_outcomes(), composition = "data.frame")
+    if(ncol(y) > 1)
+      stop("`safs` doesn't support multivariate outcomes", call. = FALSE)
+    y <- y[[1]]
+    is_weight <- summary(trained_rec)$role == "case weight"
+    if(any(is_weight))
+      stop("`safs` does not allow for weights.", call. = FALSE)
+
+    is_perf <- summary(trained_rec)$role == "performance var"
+    if(any(is_perf)) {
+      perf_data <- juice(trained_rec, has_role("performance var"))
+    } else perf_data <- NULL
+
+    if(is.null(gafsControl$metric))
+      gafsControl$metric <- rep(ifelse(is.factor(y), "Accuracy", "RMSE"), 2)
+    if(is.null(gafsControl$maximize))
+      gafsControl$maximize <- rep(ifelse(gafsControl$metric == "RMSE", FALSE, TRUE), 2)
+    if(is.null(names(gafsControl$metric)))
+      names(gafsControl$metric) <- c("internal", "external")
+    if(is.null(names(gafsControl$maximize)))
+      names(gafsControl$maximize) <- c("internal", "external")
+
+    if(nrow(x) != length(y)) stop("there should be the same number of samples in x and y")
+    numFeat <- ncol(x)
+    classLevels <- levels(y)
+
+    if(is.null(gafsControl$index))
+      gafsControl$index <- switch(
+        tolower(gafsControl$method),
+        cv = createFolds(y, gafsControl$number, returnTrain = TRUE),
+        repeatedcv = createMultiFolds(y, gafsControl$number, gafsControl$repeats),
+        loocv = createFolds(y, length(y), returnTrain = TRUE),
+        boot =, boot632 = createResample(y, gafsControl$number),
+        test = createDataPartition(y, 1, gafsControl$p),
+        lgocv = createDataPartition(y, gafsControl$number, gafsControl$p)
+      )
+
+    if(is.null(names(gafsControl$index)))
+      names(gafsControl$index) <- getFromNamespace("prettySeq", "caret")(gafsControl$index)
+
+    ## Create hold--out indicies
+    if(is.null(gafsControl$indexOut)){
+      gafsControl$indexOut <-
+        lapply(gafsControl$index,
+               function(training, allSamples) allSamples[-unique(training)],
+               allSamples = seq(along = y)
+        )
+      names(gafsControl$indexOut) <-
+        getFromNamespace("prettySeq", "caret")(gafsControl$indexOut)
+    }
+
+    if(!is.null(gafsControl$seeds)) {
+      if(length(gafsControl$seeds) < length(gafsControl$index) + 1)
+        stop(paste("There must be at least",
+                   length(gafsControl$index) + 1,
+                   "random number seeds passed to gafsControl"))
+    } else {
+      gafsControl$seeds <- sample.int(100000, length(gafsControl$index) + 1)
+    }
+
+    ## check summary function and metric
+    testOutput <- data.frame(pred = sample(y, min(10, length(y))),
+                             obs = sample(y, min(10, length(y))))
+
+    if(is.factor(y))
+      for(i in seq(along = classLevels))
+        testOutput[, classLevels[i]] <- runif(nrow(testOutput))
+    if(!is.null(perf_data))
+      testOutput <- cbind(
+        testOutput,
+        perf_data[sample(1:nrow(perf_data), nrow(testOutput)),, drop = FALSE]
+      )
+
+    test <- gafsControl$functions$fitness_extern(testOutput, lev = classLevels)
+
+    perfNames <- names(test)
+    if(is.null(perfNames)) {
+      warning(paste("The external fitness results should be a *named* vector;",
+                    "new name(s) are",
+                    paste(paste0("external", 1:length(test)), sep = "", collapse = ", ")),
+              immediate. = TRUE)
+      perfNames <- paste0("external", 1:length(test))
+    }
+    if(!(gafsControl$metric["external"] %in% perfNames)) {
+      warning(paste("The metric '", gafsControl$metric["external"],
+                    "' is not created by the summary function; '",
+                    perfNames[1], "' will be used instead", sep = ""))
+      gafsControl$metric["external"] <- perfNames[1]
+    }
+
+    `%op%` <- getOper(gafsControl$allowParallel && getDoParWorkers() > 1)
+
+    result <-
+      foreach(
+        i = seq(along = gafsControl$index),
+        .combine = "c", .verbose = FALSE,
+        .errorhandling = "stop") %op% {
+          ga_select(
+            x = x[gafsControl$index[[i]], , drop=FALSE],
+            y = y[gafsControl$index[[i]]],
+            perf = perf_data[gafsControl$index[[i]], , drop=FALSE],
+            funcs = gafsControl$functions,
+            ga_maximize = gafsControl$maximize,
+            ga_metric = gafsControl$metric,
+            iters = iters,
+            popSize = popSize,
+            pcrossover = pcrossover,
+            pmutation = pmutation,
+            elite = elite,
+            suggestions = suggestions,
+            ga_verbose = gafsControl$verbose,
+            testX = x[ gafsControl$indexOut[[i]], , drop=FALSE],
+            testY = y[ gafsControl$indexOut[[i]] ],
+            testPef = perf_data[ gafsControl$indexOut[[i]], , drop=FALSE],
+            ga_seed = gafsControl$seeds[i],
+            Resample = names(gafsControl$index)[i],
+            holdout = gafsControl$holdout,
+            lvl = classLevels,
+            genParallel = gafsControl$genParallel,
+            ...
+          )
+        }
+    ## TODO save only the parts you need inside of loop
+    external <- result[names(result) == "external"]
+    external <- do.call("rbind", external)
+    rownames(external) <- NULL
+    internal <- result[names(result) == "internal"]
+    internal <- do.call("rbind", internal)
+    rownames(internal) <- NULL
+    selected_vars <- result[names(result) == "final"]
+    names(selected_vars) <- names(gafsControl$index)
+
+    if(differences) {
+      diffs <- try(process_diffs(result[names(result) == "diffs"],
+                                 colnames(x)),
+                   silent = TRUE)
+      if(class(diffs)[1] == "try-error") {
+        diffs <- NULL
+        # warning("An error occured when computing the variable differences")
+      }
+    } else diffs <- NULL
+    rm(result)
+
+    if(gafsControl$verbose) cat("+ final GA\n")
+
+    if(gafsControl$holdout > 0) {
+      in_holdout <- createDataPartition(y,
+                                        p = gafsControl$holdout,
+                                        list = FALSE)
+      in_model <- seq(along = y)[-unique(in_holdout)]
+    } else {
+      in_model <- seq(along = y)
+      in_holdout <- NULL
+    }
+    final_ga <- ga_select(
+      x = x[in_model, , drop=FALSE],
+      y = y[in_model],
+      perf = perf_data[in_model, , drop=FALSE],
+      funcs = gafsControl$functions,
+      ga_maximize = gafsControl$maximize,
+      ga_metric = gafsControl$metric,
+      iters = iters,
+      popSize = popSize,
+      pcrossover = pcrossover,
+      pmutation = pmutation,
+      elite = elite,
+      suggestions = suggestions,
+      ga_verbose = gafsControl$verbose,
+      testX = if(!is.null(in_holdout)) x[in_holdout,,drop=FALSE] else NULL,
+      testY = if(!is.null(in_holdout)) y[in_holdout] else NULL,
+      testPerf = if(!is.null(in_holdout)) perf_data[in_holdout,,drop=FALSE] else NULL,
+      ga_seed = gafsControl$seeds[length(gafsControl$seeds)],
+      lvl = classLevels,
+      genParallel = gafsControl$genParallel,
+      ...
+    )
+    averages <- ddply(external, .(Iter),
+                      function(x, nms) {
+                        apply(x[, perfNames, drop = FALSE], 2, mean)
+                      },
+                      nms = perfNames)
+    if(!is.null(gafsControl$functions$selectIter)) {
+      best_index <-
+        gafsControl$functions$selectIter(
+          averages,
+          metric = gafsControl$metric["external"],
+          maximize = gafsControl$maximize["external"]
+        )
+      best_iter <- averages$Iter[best_index]
+      best_vars <- colnames(x)[final_ga$subsets[[best_index]]]
+    } else {
+      best_index <- if(gafsControl$maximize["external"])
+        which.max(averages[,gafsControl$metric["external"]]) else
+          which.min(averages[,gafsControl$metric["external"]])
+      best_iter <- averages$Iter[best_index]
+      best_vars <- colnames(x)[final_ga$subsets[[best_index]]]
+    }
+    if(gafsControl$verbose) cat("+ final model\n")
+
+    fit <- gafsControl$functions$fit(x[, best_vars, drop=FALSE], y, lev = lvls, last = TRUE, ...)
+    endTime <- proc.time()
+    res <- list(fit = fit,
+                ga = final_ga,
+                ga_param = list(popSize = popSize,
+                                pcrossover = pcrossover,
+                                pmutation = pmutation,
+                                elite = elite),
+                external = external,
+                internal = internal,
+                resampled_vars = selected_vars,
+                averages = averages,
+                iters = iters,
+                optVariables = best_vars,
+                optIter = best_iter,
+                control = gafsControl,
+                dims = dim(x),
+                differences = diffs,
+                perfNames = perfNames,
+                auto = TRUE,
+                the_dots = list(...),
+                recipe = trained_rec,
+                call = funcCall,
+                times = list(everything = endTime - startTime),
+                levels = if(is.factor(y)) classLevels else NULL)
+
+    ## now do analysis for whole dataset, plus make update method
+    class(res) <- "gafs"
+    res
+  }
+
 
 
