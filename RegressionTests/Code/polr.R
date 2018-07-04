@@ -115,12 +115,12 @@ test_class_rec <- train(x = rec_cls,
                         start = strt) # This will return warnings
 
 
-if(
-  !isTRUE(
-    all.equal(test_class_cv_model$results, 
-              test_class_none_model$results))
-)
+if(  !isTRUE(
+  all.equal(test_class_cv_model$results[,'Accuracy'], 
+            test_class_rec$results[,'Accuracy'])) ){
   stop("CV weights not giving the same results")
+  
+}
 
 test_class_imp_rec <- varImp(test_class_rec)
 

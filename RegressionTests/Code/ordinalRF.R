@@ -30,7 +30,7 @@ cctrl2 <- trainControl(method = "LOOCV",
                        classProbs = TRUE)
 cctrl3 <- trainControl(method = "none",
                        classProbs = TRUE)
-cctrl6 <- trainControl(method = "cv", number = 2,
+cctrl6 <- trainControl(method = "cv", number = 3,
                        classProbs = TRUE, summaryFunction = multiClassSummary)
 
 set.seed(849)
@@ -38,6 +38,7 @@ test_class_cv_model <- train(trainX, trainY,
                              method = themethod, 
                              trControl = cctrl1,
                              metric = "Kappa",  
+                             tuneLength = 2,
                              preProc = c("center", "scale"))
 
 set.seed(849)
@@ -52,13 +53,13 @@ test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type 
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
 
-set.seed(849)
-test_class_loo_model <- train(trainX, trainY, 
-                              method = themethod,
-                              trControl = cctrl2,
-                              metric = "Kappa",
-                              tuneLength = 2,
-                              preProc = c("center", "scale"))
+# set.seed(849)
+# test_class_loo_model <- train(trainX, trainY, 
+#                               method = themethod,
+#                               trControl = cctrl2,
+#                               metric = "Kappa",
+#                               tuneLength = 2,
+#                               preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
@@ -71,7 +72,7 @@ test_class_none_model <- train(trainX, trainY,
 
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
- 
+
 
 set.seed(849)
 test_class_rec <- train(x = rec_cls,
@@ -80,13 +81,13 @@ test_class_rec <- train(x = rec_cls,
                         trControl = cctrl6,
                         tuneLength = 2,
                         metric = "AUC" ) # This will return warnings
- 
-if(
-  !isTRUE(
-    all.equal(test_class_cv_model$results, 
-              test_class_none_model$results))
-)
+
+if(  !isTRUE(
+  all.equal(test_class_cv_model$results[,'Accuracy'], 
+            test_class_rec$results[,'Accuracy'])) ){
   stop("CV weights not giving the same results")
+  
+}
 
 test_class_imp_rec <- varImp(test_class_rec) 
 
@@ -117,6 +118,6 @@ save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
 if(!interactive())
-   q("no")
+  q("no")
 
 
