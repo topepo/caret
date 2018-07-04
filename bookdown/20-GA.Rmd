@@ -415,9 +415,7 @@ If this were executed on the training set, it would produce `r ames_rec %>% prep
 Let's tune some linear models with `gafs` and, for the sake of computational time, only use 10 generations of the algorithm:
 
 ```{r ga-ames-lm, warning = FALSE, message = FALSE}
-lm_ga_ctrl <- gafsControl(functions = caretGA,
-                          method = "cv",
-                          number = 10)
+lm_ga_ctrl <- gafsControl(functions = caretGA, method = "cv", number = 10)
 
 set.seed(23555)
 lm_ga_search <- gafs(
@@ -431,4 +429,3 @@ lm_ga_search <- gafs(
 ) 
 lm_ga_search
 ```
-

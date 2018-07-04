@@ -283,18 +283,9 @@ While this is the default, any user-written function can be used to assign proba
 
 ## Using Recipes
 
-Like the other feature selection routines, `safs` can take a data recipe as an input. This is advantageous when your data needs preprocessing before the model, such as:
+Similar to the previous section on genetic algorothms, recipes can be used with `safs`. Using the same data as before:
 
- * creation of dummy variables from factors
- * specification of interactions
- * missing data imputation
- * more complex feature engineering methods 
- 
-Like `train`, the recipe's preprocessing steps are calculated within each resample. This makes sure that the resampling statistics capture the variation and effect that the preprocessing has on the model. 
-
-As an example, the Ames housing data is used. These data contain a number of categorical predictors that require conversion to indicators as well as other variables that require processing. To load (and split) the data:
-
-```{r sa-ames-start}
+```{r sa-ames-start, inlcude = FALSE}
 library(AmesHousing)
 library(rsample)
 
@@ -315,11 +306,7 @@ data_split <- initial_split(ames, strata = "Sale_Price", prop = 3/4)
 
 ames_train <- training(data_split) %>% as.data.frame()
 ames_test  <- testing(data_split) %>% as.data.frame()
-```
 
-Here is a recipe that does differetn types of preprocssing on the predictor set:
-
-```{r sa-ames-rec}
 library(recipes)
 
 ames_rec <- recipe(Sale_Price ~ ., data = ames_train) %>% 
@@ -331,9 +318,7 @@ ames_rec <- recipe(Sale_Price ~ ., data = ames_train) %>%
   step_bs(Longitude, Latitude, options = list(df = 5))
 ```
 
-If this were executed on the training set, it would produce `r ames_rec %>% prep(training = ames, retain = TRUE) %>% juice(all_predictors()) %>% ncol()` predictor columns out of the original `r ncol(ames) - 1`. 
-
-Let's fit some linear models with the function:
+Let's again use linear models with the function:
 
 ```{r sa-ames-lm, warning = FALSE, message = FALSE}
 lm_sa_ctrl <- safsControl(functions = caretSA,
@@ -352,8 +337,3 @@ lm_sa_search <- safs(
 ) 
 lm_sa_search
 ```
-
-Some notes on using recipes:
-
- * performance data and note about where it comes in
- * variable number of columns in seach resample
