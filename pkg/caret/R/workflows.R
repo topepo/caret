@@ -516,8 +516,7 @@ oobTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
 ################################################################################################
 
 #' @import foreach
-nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
-{
+nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...) {
   loadNamespace("caret")
   ppp <- list(options = ppOpts)
   ppp <- c(ppp, ctrl$preProcOptions)
@@ -529,9 +528,14 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
   }
 
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
-  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .errorhandling = "stop", .packages = "caret") %op%
-  {
-    if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[iter])
+  result <- foreach(
+    iter = seq(along = resampleIndex),
+    .combine = "c",
+    .verbose = FALSE,
+    .errorhandling = "stop",
+    .packages = c("caret")) %op% {
+      if (!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds)))
+        set.seed(ctrl$seeds[iter])
 
     loadNamespace("caret")
     requireNamespaceQuietStop("methods")
@@ -549,14 +553,14 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
                           testY = y[holdoutIndex],
                           sbfControl = ctrl,
                           ...)
-    if(ctrl$saveDetails)
-    {
+    if(ctrl$saveDetails) {
       tmpPred <- sbfResults$pred
       tmpPred$Resample <- names(resampleIndex)[iter]
       tmpPred$rowIndex <- seq(along = y)[unique(holdoutIndex)]
     } else tmpPred <- NULL
     resamples <- ctrl$functions$summary(sbfResults$pred, lev = lev)
-    if(is.factor(y) && length(lev) <= 50) resamples <- c(resamples, flatTable(sbfResults$pred$pred, sbfResults$pred$obs))
+    if(is.factor(y) && length(lev) <= 50)
+      resamples <- c(resamples, flatTable(sbfResults$pred$pred, sbfResults$pred$obs))
     resamples <- data.frame(t(resamples))
     resamples$Resample <- names(resampleIndex)[iter]
 
@@ -567,8 +571,7 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
   pred <- if(ctrl$saveDetails) rbind.fill(result[names(result) == "pred"]) else NULL
   performance <- MeanSD(resamples[,!grepl("Resample", colnames(resamples)),drop = FALSE])
 
-  if(ctrl$method %in% c("boot632"))
-  {
+  if(ctrl$method %in% c("boot632")) {
     modelIndex <- 1:nrow(x)
     holdoutIndex <- modelIndex
     appResults <- sbfIter(subset_x(x, modelIndex),
@@ -584,16 +587,22 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
     const <- 1-exp(-1)
 
     for(p in seq(along = perfNames))
-      performance[perfNames[p]] <- (const * performance[perfNames[p]]) +  ((1-const) * apparent[perfNames[p]])
-
+      performance[perfNames[p]] <-
+      (const * performance[perfNames[p]]) +  ((1-const) * apparent[perfNames[p]])
   }
 
-  list(performance = performance, everything = result, predictions = if(ctrl$saveDetails) pred else NULL)
+  list(
+    performance = performance,
+    everything = result,
+    predictions = if (ctrl$saveDetails)
+      pred
+    else
+      NULL
+  )
 }
 
 #' @import foreach
-looSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
-{
+looSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...) {
   loadNamespace("caret")
   ppp <- list(options = ppOpts)
   ppp <- c(ppp, ctrl$preProcOptions)
@@ -603,9 +612,15 @@ looSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
   vars <- vector(mode = "list", length = length(y))
 
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
-  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .verbose = FALSE, .errorhandling = "stop", .packages = "caret") %op%
-  {
-    if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[iter])
+  result <- foreach(
+    iter = seq(along = resampleIndex),
+    .combine = "c",
+    .verbose = FALSE,
+    .errorhandling = "stop",
+    .packages = "caret") %op% {
+
+    if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds)))
+      set.seed(ctrl$seeds[iter])
 
     loadNamespace("caret")
     requireNamespaceQuietStop("methods")
@@ -624,7 +639,14 @@ looSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
   resamples <- do.call("rbind", result[names(result) == "pred"])
   performance <- ctrl$functions$summary(resamples, lev = lev)
 
-  list(performance = performance, everything = result, predictions = if(ctrl$saveDetails) resamples else NULL)
+  list(
+    performance = performance,
+    everything = result,
+    predictions = if (ctrl$saveDetails)
+      resamples
+    else
+      NULL
+  )
 }
 
 
