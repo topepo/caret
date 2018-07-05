@@ -1,42 +1,53 @@
 #' @rdname caret-internal
 #' @export
-sbfIter <- function(x, y,
-                    testX, testY,
-                    sbfControl = sbfControl(), ...)
-{
-  if(is.null(colnames(x))) stop("x must have column names")
+sbfIter <- function(x, y, testX, testY, testPerf = NULL,
+                    sbfControl = sbfControl(), ...) {
+  if (is.null(colnames(x)))
+    stop("x must have column names")
 
-  if(is.null(testX) | is.null(testY)) stop("a test set must be specified")
+  if (is.null(testX) |
+      is.null(testY))
+    stop("a test set must be specified")
 
-  if(sbfControl$multivariate) {
+  if (sbfControl$multivariate) {
     scores <- sbfControl$functions$score(x, y)
-    if(length(scores) != ncol(x))
-      stop(paste("when control$multivariate == TRUE, 'scores'",
-                 "should return a vector with", ncol(x), "numeric values"))
-    } else  {
-      scores <- apply(x, 2, sbfControl$functions$score, y = y)
-    }
+    if (length(scores) != ncol(x))
+      stop(
+        paste(
+          "when control$multivariate == TRUE, 'scores'",
+          "should return a vector with",
+          ncol(x),
+          "numeric values"
+        )
+      )
+  } else  {
+    scores <- vapply(x, sbfControl$functions$score, double(1), y = y)
+  }
 
     retained <- sbfControl$functions$filter(scores, x, y)
     ## deal with zero length results
 
     testX <- testX[, which(retained), drop = FALSE]
 
-    fitObject <- sbfControl$functions$fit(x[, which(retained), drop = FALSE],
-                                          y,
-                                          ...)
+    fitObject <-
+      sbfControl$functions$fit(
+        x = x[, which(retained), drop = FALSE],
+        y = y,
+        ...
+      )
 
     modelPred <- sbfControl$functions$pred(fitObject, testX)
-    if(is.data.frame(modelPred) | is.matrix(modelPred))
-    {
-      if(is.matrix(modelPred)) modelPred <- as.data.frame(modelPred)
+    if (is.data.frame(modelPred) | is.matrix(modelPred)) {
+      if (is.matrix(modelPred))
+        modelPred <- as.data.frame(modelPred)
       modelPred$obs <- testY
-    } else modelPred <- data.frame(pred = modelPred, obs = testY)
-
+    } else
+      modelPred <- data.frame(pred = modelPred, obs = testY)
+    if (!is.null(testPerf))
+      modelPred <- cbind(modelPred, testPerf)
 
     list(variables = names(retained)[which(retained)],
          pred = modelPred)
-
   }
 
 
@@ -161,15 +172,15 @@ sbf <- function (x, ...) UseMethod("sbf")
 #' @export
 "sbf.default" <-
   function(x, y,
-           sbfControl = sbfControl(), ...)
-  {
+           sbfControl = sbfControl(), ...) {
     startTime <- proc.time()
     funcCall <- match.call(expand.dots = TRUE)
 
     numFeat <- ncol(x)
     classLevels <- levels(y)
 
-    if(sbfControl$method == "oob") stop("out-of-bag resampling cannot be used with this function")
+    if (sbfControl$method == "oob")
+      stop("out-of-bag resampling cannot be used with this function")
 
     if(is.null(sbfControl$index)) sbfControl$index <- switch(
       tolower(sbfControl$method),
@@ -180,7 +191,8 @@ sbf <- function (x, ...) UseMethod("sbf")
       test = createDataPartition(y, 1, sbfControl$p),
       lgocv = createDataPartition(y, sbfControl$number, sbfControl$p))
 
-    if(is.null(names(sbfControl$index))) names(sbfControl$index) <- prettySeq(sbfControl$index)
+    if(is.null(names(sbfControl$index)))
+      names(sbfControl$index) <- prettySeq(sbfControl$index)
     if(is.null(sbfControl$indexOut)){
       sbfControl$indexOut <- lapply(sbfControl$index,
                                     function(training, allSamples) allSamples[-unique(training)],
@@ -192,20 +204,18 @@ sbf <- function (x, ...) UseMethod("sbf")
                              obs = sample(y, min(10, length(y))))
 
     if(is.factor(y))
-    {
-      for(i in seq(along = classLevels)) testOutput[, classLevels[i]] <- runif(nrow(testOutput))
-    }
+      for(i in seq(along = classLevels))
+        testOutput[, classLevels[i]] <- runif(nrow(testOutput))
+
 
     test <- sbfControl$functions$summary(testOutput, lev = classLevels)
     perfNames <- names(test)
 
     ## Set or check the seeds when needed
-    if(is.null(sbfControl$seeds))
-    {
+    if(is.null(sbfControl$seeds)) {
       sbfControl$seeds <- sample.int(n = 1000000, size = length(sbfControl$index) + 1)
     } else {
-      if(!(length(sbfControl$seeds) == 1 && is.na(sbfControl$seeds)))
-      {
+      if(!(length(sbfControl$seeds) == 1 && is.na(sbfControl$seeds))) {
         if(length(sbfControl$seeds) != length(sbfControl$index) + 1)
           stop(paste("Bad seeds: the seed object should be an integer vector of length",
                      length(sbfControl$index) + 1))
@@ -216,9 +226,7 @@ sbf <- function (x, ...) UseMethod("sbf")
 
     #########################################################################
 
-
-    if(sbfControl$method == "LOOCV")
-    {
+    if(sbfControl$method == "LOOCV") {
       tmp <- looSbfWorkflow(x = x, y = y, ppOpts = preProcess,
                             ctrl = sbfControl, lev = classLevels, ...)
       resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "pred"])
@@ -248,17 +256,18 @@ sbf <- function (x, ...) UseMethod("sbf")
     retained <- sbfControl$functions$filter(scores, x, y)
 
     finalTime <- system.time(
-      fit <- sbfControl$functions$fit(x[, retained, drop = FALSE],
-                                      y,
-                                      ...))
-
-
+      fit <-
+        sbfControl$functions$fit(
+          x[, retained, drop = FALSE],
+          y,
+          ...
+        )
+    )
 
     performance <- data.frame(t(performance))
     performance <- performance[,!grepl("\\.cell|Resample", colnames(performance))]
 
-    if(is.factor(y) & any(names(resamples) == ".cell1"))
-    {
+    if(is.factor(y) & any(names(resamples) == ".cell1")) {
       keepers <- c("Resample", grep("\\.cell", names(resamples), value = TRUE))
       resampledCM <- resamples[,keepers]
       resamples <- resamples[, -grep("\\.cell", names(resamples))]
@@ -292,9 +301,11 @@ sbf <- function (x, ...) UseMethod("sbf")
         obsLevels = classLevels,
         dots = list(...)),
       class = "sbf")
-    if(sbfControl$timingSamps > 0)
-    {
-      out$times$prediction <- system.time(predict(out, x[1:min(nrow(x), sbfControl$timingSamps),,drop = FALSE]))
+    if(sbfControl$timingSamps > 0) {
+      out$times$prediction <-
+        system.time(
+          predict(out, x[1:min(nrow(x), sbfControl$timingSamps),,drop = FALSE])
+        )
     } else  out$times$prediction <- rep(NA, 3)
     out
   }
@@ -302,8 +313,7 @@ sbf <- function (x, ...) UseMethod("sbf")
 #' @rdname sbf
 #' @importFrom stats .getXlevels contrasts model.matrix model.response
 #' @export
-sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
-{
+sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
   m <- match.call(expand.dots = FALSE)
   if (is.matrix(eval.parent(m$data))) m$data <- as.data.frame(data)
   m$... <- m$contrasts <- NULL
@@ -330,8 +340,7 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
 ######################################################################
 
 #' @export
-print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
-{
+print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...) {
 
   cat("\nSelection By Filter\n\n")
 
@@ -345,8 +354,7 @@ print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
   print(format(x$results, digits = digits), row.names = FALSE)
   cat("\n")
 
-  if(length(x$optVariables) > 0)
-  {
+  if(length(x$optVariables) > 0) {
     cat("Using the training set, ",
         length(x$optVariables),
         ifelse(length(x$optVariables) > 1,
@@ -371,29 +379,30 @@ print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
                    smallVars, "%)", sep = "")
   varText <- paste(varText, collapse = ", ")
 
-  if(!all(is.na(smallVars)))
-  {
-    cat("During resampling, the top ",
-        top,
-        " selected variables (out of a possible ",
-        length(vars),
-        "):\n   ",
-        varText,
-        "\n\n",
-        sep = "")
-    cat("On average, ",
-        round(mean(unlist(lapply(x$variables, length))), 1),
-        " variables were selected (min = ",
-        round(min(unlist(lapply(x$variables, length))), 1),
-        ", max = ",
-        round(max(unlist(lapply(x$variables, length))), 1),
-        ")\n",
-        sep = "")
+  if(!all(is.na(smallVars))) {
+    cat(
+      "During resampling, the top ",
+      top,
+      " selected variables (out of a possible ",
+      length(vars),
+      "):\n   ",
+      varText,
+      "\n\n",
+      sep = ""
+    )
+    cat(
+      "On average, ",
+      round(mean(unlist(lapply(x$variables, length))), 1),
+      " variables were selected (min = ",
+      round(min(unlist(lapply(x$variables, length))), 1),
+      ", max = ",
+      round(max(unlist(lapply(x$variables, length))), 1),
+      ")\n",
+      sep = ""
+    )
   } else {
     cat("During resampling, no variables were selected.\n\n")
   }
-
-
 
   invisible(x)
 }

@@ -543,11 +543,11 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...)
       holdoutIndex <- modelIndex
     }
 
-    sbfResults <- sbfIter(subset_x(x, modelIndex),
-                          y[modelIndex],
-                          subset_x(x, holdoutIndex),
-                          y[holdoutIndex],
-                          ctrl,
+    sbfResults <- sbfIter(x = subset_x(x, modelIndex),
+                          y = y[modelIndex],
+                          testX = subset_x(x, holdoutIndex),
+                          testY = y[holdoutIndex],
+                          sbfControl = ctrl,
                           ...)
     if(ctrl$saveDetails)
     {
