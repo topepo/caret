@@ -1800,7 +1800,8 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
         times = times,
         resampledCM = resampledCM,
         obsLevels = classLevels,
-        dots = list(...)
+        dots = list(...),
+        recipe = trained_rec
       ),
       class = "rfe"
     )
