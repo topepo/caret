@@ -960,7 +960,8 @@ train.recipe <- function(x,
                          maximize = ifelse(metric %in% c("RMSE", "logLoss", "MAE"), FALSE, TRUE),
                          trControl = trainControl(),
                          tuneGrid = NULL,
-                         tuneLength = ifelse(trControl$method == "none", 1, 3)) {
+                         tuneLength = ifelse(trControl$method == "none", 1, 3),
+                         stringsAsFactors = TRUE) {
   startTime <- proc.time()
   
   ## get a seed before packages are loaded or recipes are processed
@@ -1004,7 +1005,7 @@ train.recipe <- function(x,
                       fresh = TRUE, 
                       retain = TRUE,
                       verbose = FALSE, 
-                      stringsAsFactors = TRUE)
+                      stringsAsFactors = stringsAsFactors)
   x_dat <- juice(trained_rec, all_predictors())
   y_dat <- juice(trained_rec, all_outcomes())
   if(ncol(y_dat) > 1) 
