@@ -10,9 +10,9 @@
   gafsControl = gafsControl(), ...)
 }
 \arguments{
-\item{x}{an object where samples are in rows and features are in columns.
+\item{x}{An object where samples are in rows and features are in columns.
 This could be a simple matrix, data frame or other type (e.g. sparse
-matrix). See Details below}
+matrix). For the recipes method, \code{x} is a recipe object. See Details below}
 
 \item{y}{a numeric or factor vector containing the outcome for each sample}
 

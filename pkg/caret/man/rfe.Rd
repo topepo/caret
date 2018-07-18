@@ -23,8 +23,9 @@ rfeIter(x, y, testX, testY, sizes, rfeControl = rfeControl(), label = "",
 \method{update}{rfe}(object, x, y, size, ...)
 }
 \arguments{
-\item{x}{a matrix or data frame of predictors for model training. This
-object must have unique column names.}
+\item{x}{A matrix or data frame of predictors for model training. This
+object must have unique column names. For the recipes method, \code{x} 
+is a recipe object.}
 
 \item{\dots}{options to pass to the model fitting function (ignored in
 \code{predict.rfe})}

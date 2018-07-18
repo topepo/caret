@@ -16,9 +16,9 @@ safs(x, ...)
   safsControl = safsControl(), ...)
 }
 \arguments{
-\item{x}{an object where samples are in rows and features are in columns.
+\item{x}{An object where samples are in rows and features are in columns.
 This could be a simple matrix, data frame or other type (e.g. sparse
-matrix). See Details below.}
+matrix). For the recipes method, \code{x} is a recipe object.  See Details below.}
 
 \item{\dots}{arguments passed to the classification or regression routine
 specified in the function \code{safsControl$functions$fit}}

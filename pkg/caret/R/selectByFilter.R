@@ -86,7 +86,7 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
 #'
 #' @aliases sbf sbf.default sbf.formula predict.sbf
 #' @param x a data frame containing training data where samples are in rows and
-#' features are in columns.
+#' features are in columns. For the recipes method, \code{x} is a recipe object. 
 #' @param y a numeric or factor vector containing the outcome for each sample.
 #' @param form A formula of the form \code{y ~ x1 + x2 + ...}
 #' @param data Data frame from which variables specified in \code{formula} are
@@ -1053,6 +1053,7 @@ predict.nullModel <- function (object, newdata = NULL, type  = NULL, ...)
   out
 }
 
+#' @rdname sbf
 #' @export
 "sbf.recipe" <-
   function(x, data,

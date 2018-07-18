@@ -890,9 +890,9 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' number of workers and the amount of memory required exponentially.
 #'
 #' @aliases gafs.default gafs
-#' @param x an object where samples are in rows and features are in columns.
+#' @param x An object where samples are in rows and features are in columns.
 #' This could be a simple matrix, data frame or other type (e.g. sparse
-#' matrix). See Details below
+#' matrix). For the recipes method, \code{x} is a recipe object. See Details below
 #' @param y a numeric or factor vector containing the outcome for each sample
 #' @param iters number of search iterations
 #' @param popSize number of subsets evaluated at each iteration

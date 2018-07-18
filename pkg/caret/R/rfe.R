@@ -31,8 +31,9 @@
 #' removed with a warning.
 #'
 #' @aliases rfe rfe.default rfeIter predict.rfe update.rfe
-#' @param x a matrix or data frame of predictors for model training. This
-#' object must have unique column names.
+#' @param x A matrix or data frame of predictors for model training. This
+#' object must have unique column names. For the recipes method, \code{x} 
+#' is a recipe object. 
 #' @param y a vector of training set outcomes (either numeric or factor)
 #' @param testX a matrix or data frame of test set predictors. This must have
 #' the same column names as \code{x}
