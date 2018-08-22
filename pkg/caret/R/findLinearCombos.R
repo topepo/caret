@@ -119,7 +119,7 @@ findLinearCombos <- function(x)
          tmp <- unlist(lapply(lcList, function(x) x[1]))   
          tmp <- unique(tmp[!is.na(tmp)])
          badList <- unique(c(tmp, badList))
-         lcList <- enumLC(x[,-badList])
+         lcList <- enumLC(x[,-badList, drop = FALSE])
          continue <- (length(lcList) > 0)
       }
    } else badList <- NULL
