@@ -4,7 +4,7 @@
 \alias{thresholder}
 \title{Generate Data to Choose a Probability Threshold}
 \usage{
-thresholder(x, threshold, final = TRUE)
+thresholder(x, threshold, final = TRUE, statistics = "all")
 }
 \arguments{
 \item{x}{A \code{\link{train}} object where the values of
@@ -20,21 +20,48 @@ is classified as that level.}
 \item{final}{A logical: should only the final tuning parameters
 chosen by \code{\link{train}} be used when 
 \code{savePredictions = 'all'}?}
+
+\item{statistics}{A character vector indicating which statistics to
+calculate. See details below for possible choices; the default value
+\code{"all"} computes all of these.}
 }
 \value{
 A data frame with columns for each of the tuning parameters
  from the model along with an additional column called
  \code{prob_threshold} for the probability threshold. There are
  also columns for summary statistics averaged over resamples with
- column names \code{Sensitivity}, \code{Specificity}, \code{J},
- \code{Dist}. The last two correspond to Youden's J statistic 
- and the distance to the best possible cutoff (i.e. perfect
- sensitivity and specificity).
+ column names corresponding to the input argument \code{statistics}.
 }
 \description{
 This function uses the resampling results from a \code{\link{train}}
  object to generate performance statistics over a set of probability
  thresholds for two-class problems.
+}
+\details{
+The argument \code{statistics} designates the statistics to compute
+ for each probability threshold. One or more of the following statistics can
+ be selected:
+ \itemize{
+ \item Sensitivity
+ \item Specificity
+ \item Pos Pred Value
+ \item Neg Pred Value
+ \item Precision
+ \item Recall
+ \item F1
+ \item Prevalence
+ \item Detection Rate
+ \item Detection Prevalence
+ \item Balanced Accuracy
+ \item Accuracy
+ \item Kappa
+ \item J
+ \item Dist
+}
+For a description of these statistics (except the last two), see the
+documentation of \code{\link{confusionMatrix}}. The last two statistics
+are Youden's J statistic and the distance to the best possible cutoff (i.e.
+perfect sensitivity and specificity.
 }
 \examples{
 \dontrun{
