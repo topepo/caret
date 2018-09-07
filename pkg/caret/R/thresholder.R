@@ -111,7 +111,7 @@ thresholder <- function(x, threshold, final = TRUE, statistics = "all") {
     stop("`statistics` should be either 'all', or one or more of '",
          paste0(names(res), collapse="', '"), "'.")
 
-  if (statistics == "all")
+  if (length(statistics) == 1 && statistics == "all")
     statistics <- stat_names
   
   disc <- c("pred", "rowIndex", x$levels[-1])
