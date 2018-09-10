@@ -172,10 +172,11 @@ stats <- function(dat) {
 
 summ_stats <- function(x, cols) {
   na_cols <- apply(x, 2, function(x) any(is.na(x)))
-  if (any(na_cols))
+  na_col_names <- colnames(x)[na_cols]
+  relevant_col_names <- intersect(na_col_names, cols)
+  if (length(relevant_col_names) > 0)
     warning("The following columns have missing values (NA), which have been ",
-            "removed: '", paste0(names(na_cols)[na_cols], collapse = "', '"),
+            "removed: '", paste0(relevant_col_names, collapse = "', '"),
             "'.")
-  print(x)
   colMeans(x[, cols, drop = FALSE], na.rm = TRUE)
 }
