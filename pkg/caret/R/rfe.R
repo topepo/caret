@@ -1854,8 +1854,10 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
           ctrl$seeds[[iter]] else
             NA
 
-      if(ctrl$verbose)
-        cat("Preparing recipe\n")
+      if (ctrl$verbose)
+        cat("+(rfe) recipe",
+            names(resampleIndex)[iter],
+            "\n")
       trained_rec <- prep(
         rec, training = data[modelIndex,,drop = FALSE], fresh = TRUE,
         verbose = FALSE, stringsAsFactors = TRUE,
@@ -1906,7 +1908,12 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
           "The `sizes` values are inconsistent with this.",
           call. = FALSE
         )
-
+      
+      if (ctrl$verbose)
+        cat("-(rfe) recipe",
+            names(resampleIndex)[iter],
+            "\n")
+      
       rfeResults <- rfe_rec(
         x, y,
         test_x, test_y,
