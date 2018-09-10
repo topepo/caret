@@ -177,6 +177,6 @@ summ_stats <- function(x, cols) {
   if (length(relevant_col_names) > 0)
     warning("The following columns have missing values (NA), which have been ",
             "removed: '", paste0(relevant_col_names, collapse = "', '"),
-            "'.")
+            "'.\n")
   colMeans(x[, cols, drop = FALSE], na.rm = TRUE)
 }
