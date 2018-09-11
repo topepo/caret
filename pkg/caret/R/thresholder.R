@@ -109,7 +109,7 @@ thresholder <- function(x, threshold, final = TRUE, statistics = "all") {
   if (!any(statistics %in% c("all", stat_names)) ||
       ("all" %in% statistics && length(statistics) > 1))
     stop("`statistics` should be either 'all', or one or more of '",
-         paste0(names(res), collapse="', '"), "'.")
+         paste0(stat_names, collapse="', '"), "'.")
 
   if (length(statistics) == 1 && statistics == "all")
     statistics <- stat_names
