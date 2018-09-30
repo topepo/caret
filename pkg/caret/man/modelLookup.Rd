@@ -4,8 +4,6 @@
 \alias{modelLookup}
 \alias{getModelInfo}
 \alias{checkInstall}
-\alias{checkInstall}
-\alias{getModelInfo}
 \title{Tools for Models Available in \code{train}}
 \usage{
 modelLookup(model = NULL)

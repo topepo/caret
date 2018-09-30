@@ -7,8 +7,6 @@
 \alias{splsda.default}
 \alias{predict.splsda}
 \alias{splsda}
-\alias{predict.plsda}
-\alias{plsda.default}
 \title{Partial Least Squares and Sparse Partial Least Squares Discriminant Analysis}
 \usage{
 plsda(x, ...)

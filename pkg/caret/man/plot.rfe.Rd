@@ -3,11 +3,11 @@
 \name{ggplot.rfe}
 \alias{ggplot.rfe}
 \alias{plot.rfe}
-\alias{ggplot.rfe}
 \title{Plot RFE Performance Profiles}
 \usage{
-\method{ggplot}{rfe}(data = NULL, mapping = NULL, metric = data$metric[1],
-  output = "layered", ..., environment = NULL)
+\method{ggplot}{rfe}(data = NULL, mapping = NULL,
+  metric = data$metric[1], output = "layered", ...,
+  environment = NULL)
 
 \method{plot}{rfe}(x, metric = x$metric, ...)
 }
@@ -41,6 +41,11 @@ evaluated during the recursive feature elimination (RFE) process
 }
 \details{
 These plots show the average performance versus the subset sizes.
+}
+\note{
+We using a recipe as an input, there may be some subset sizes that are
+ not well-replicated over resamples. The `ggplot` method will only show
+ subset sizes where at least half of the resamples have associated results.
 }
 \examples{
 

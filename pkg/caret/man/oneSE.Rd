@@ -4,7 +4,6 @@
 \alias{oneSE}
 \alias{best}
 \alias{tolerance}
-\alias{tolerance}
 \title{Selecting tuning Parameters}
 \usage{
 oneSE(x, metric, num, maximize)

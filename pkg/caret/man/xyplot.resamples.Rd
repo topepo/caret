@@ -8,12 +8,6 @@
 \alias{parallelplot.resamples}
 \alias{dotplot.resamples}
 \alias{ggplot.resamples}
-\alias{parallelplot.resamples}
-\alias{splom.resamples}
-\alias{densityplot.resamples}
-\alias{bwplot.resamples}
-\alias{dotplot.resamples}
-\alias{ggplot.resamples}
 \title{Lattice Functions for Visualizing Resampling Results}
 \usage{
 \method{xyplot}{resamples}(x, data = NULL, what = "scatter",

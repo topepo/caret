@@ -442,6 +442,7 @@ safsControl <- function(functions = NULL,
 #' This could be a simple matrix, data frame or other type (e.g. sparse
 #' matrix). For the recipes method, \code{x} is a recipe object.  See Details below.
 #' @param y a numeric or factor vector containing the outcome for each sample.
+#' @param data an object of class \code{\link{rfe}}.
 #' @param iters number of search iterations
 #' @param differences a logical: should the difference in fitness values with
 #' and without each predictor be calculated

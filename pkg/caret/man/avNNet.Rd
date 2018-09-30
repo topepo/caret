@@ -5,25 +5,22 @@
 \alias{avNNet.default}
 \alias{predict.avNNet}
 \alias{avNNet.formula}
-\alias{avNNet.formula}
-\alias{avNNet.default}
 \alias{print.avNNet}
-\alias{predict.avNNet}
 \title{Neural Networks Using Model Averaging}
 \usage{
 avNNet(x, ...)
 
 \method{avNNet}{formula}(formula, data, weights, ..., repeats = 5,
-  bag = FALSE, allowParallel = TRUE, seeds = sample.int(1e+05, repeats),
-  subset, na.action, contrasts = NULL)
+  bag = FALSE, allowParallel = TRUE, seeds = sample.int(1e+05,
+  repeats), subset, na.action, contrasts = NULL)
 
 \method{avNNet}{default}(x, y, repeats = 5, bag = FALSE,
   allowParallel = TRUE, seeds = sample.int(1e+05, repeats), ...)
 
 \method{print}{avNNet}(x, ...)
 
-\method{predict}{avNNet}(object, newdata, type = c("raw", "class", "prob"),
-  ...)
+\method{predict}{avNNet}(object, newdata, type = c("raw", "class",
+  "prob"), ...)
 }
 \arguments{
 \item{x}{matrix or data frame of \code{x} values for examples.}

@@ -4,8 +4,6 @@
 \alias{nullModel}
 \alias{nullModel.default}
 \alias{predict.nullModel}
-\alias{nullModel.default}
-\alias{predict.nullModel}
 \title{Fit a simple, non-informative model}
 \usage{
 nullModel(x, ...)

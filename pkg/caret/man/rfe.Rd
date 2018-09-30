@@ -6,19 +6,17 @@
 \alias{rfeIter}
 \alias{predict.rfe}
 \alias{update.rfe}
-\alias{rfe.default}
-\alias{rfeIter}
-\alias{update.rfe}
 \title{Backwards Feature Selection}
 \usage{
 rfe(x, ...)
 
-\method{rfe}{default}(x, y, sizes = 2^(2:4), metric = ifelse(is.factor(y),
-  "Accuracy", "RMSE"), maximize = ifelse(metric == "RMSE", FALSE, TRUE),
+\method{rfe}{default}(x, y, sizes = 2^(2:4),
+  metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
+  maximize = ifelse(metric == "RMSE", FALSE, TRUE),
   rfeControl = rfeControl(), ...)
 
-rfeIter(x, y, testX, testY, sizes, rfeControl = rfeControl(), label = "",
-  seeds = NA, ...)
+rfeIter(x, y, testX, testY, sizes, rfeControl = rfeControl(),
+  label = "", seeds = NA, ...)
 
 \method{update}{rfe}(object, x, y, size, ...)
 }
@@ -104,6 +102,13 @@ use the function \code{rfe} than \code{rfeIter}.
 When updating a model, if the entire set of resamples were not saved using
 \code{rfeControl(returnResamp = "final")}, the existing resamples are
 removed with a warning.
+}
+\note{
+We using a recipe as an input, there may be some subset
+ sizes that are not well-replicated over resamples. `rfe` method
+ will only consider subset sizes where at least half of the
+ resamples have associated results in the search for an optimal
+ subset size.
 }
 \examples{
 

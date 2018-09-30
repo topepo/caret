@@ -4,14 +4,12 @@
 \alias{classDist}
 \alias{classDist.default}
 \alias{predict.classDist}
-\alias{classDist.default}
-\alias{predict.classDist}
 \title{Compute and predict the distances to class centroids}
 \usage{
 classDist(x, ...)
 
-\method{classDist}{default}(x, y, groups = 5, pca = FALSE, keep = NULL,
-  ...)
+\method{classDist}{default}(x, y, groups = 5, pca = FALSE,
+  keep = NULL, ...)
 
 \method{predict}{classDist}(object, newdata, trans = log, ...)
 }

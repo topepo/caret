@@ -3,7 +3,6 @@
 \name{safs}
 \alias{safs}
 \alias{safs.default}
-\alias{safs.default}
 \alias{safs.recipe}
 \title{Simulated annealing feature selection}
 \usage{
@@ -32,6 +31,8 @@ and without each predictor be calculated}
 
 \item{safsControl}{a list of values that define how this function acts. See
 \code{\link{safsControl}} and URL.}
+
+\item{data}{an object of class \code{\link{rfe}}.}
 }
 \value{
 an object of class \code{safs}

@@ -4,8 +4,6 @@
 \alias{train}
 \alias{train.default}
 \alias{train.formula}
-\alias{train.default}
-\alias{train.formula}
 \alias{train.recipe}
 \title{Fit Predictive Models over Different Tuning Parameters}
 \usage{
@@ -13,17 +11,17 @@ train(x, ...)
 
 \method{train}{default}(x, y, method = "rf", preProcess = NULL, ...,
   weights = NULL, metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
-  maximize = ifelse(metric \%in\% c("RMSE", "logLoss", "MAE"), FALSE, TRUE),
-  trControl = trainControl(), tuneGrid = NULL,
+  maximize = ifelse(metric \%in\% c("RMSE", "logLoss", "MAE"), FALSE,
+  TRUE), trControl = trainControl(), tuneGrid = NULL,
   tuneLength = ifelse(trControl$method == "none", 1, 3))
 
-\method{train}{formula}(form, data, ..., weights, subset, na.action = na.fail,
-  contrasts = NULL)
+\method{train}{formula}(form, data, ..., weights, subset,
+  na.action = na.fail, contrasts = NULL)
 
 \method{train}{recipe}(x, data, method = "rf", ...,
   metric = ifelse(is.factor(y_dat), "Accuracy", "RMSE"),
-  maximize = ifelse(metric \%in\% c("RMSE", "logLoss", "MAE"), FALSE, TRUE),
-  trControl = trainControl(), tuneGrid = NULL,
+  maximize = ifelse(metric \%in\% c("RMSE", "logLoss", "MAE"), FALSE,
+  TRUE), trControl = trainControl(), tuneGrid = NULL,
   tuneLength = ifelse(trControl$method == "none", 1, 3))
 }
 \arguments{

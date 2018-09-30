@@ -13,16 +13,6 @@
 \alias{ldaFuncs}
 \alias{nbFuncs}
 \alias{lrFuncs}
-\alias{pickSizeBest}
-\alias{pickSizeTolerance}
-\alias{pickVars}
-\alias{ldaFuncs}
-\alias{treebagFuncs}
-\alias{gamFuncs}
-\alias{rfFuncs}
-\alias{lmFuncs}
-\alias{nbFuncs}
-\alias{lrFuncs}
 \title{Backwards Feature Selection Helper Functions}
 \format{An object of class \code{list} of length 6.}
 \usage{

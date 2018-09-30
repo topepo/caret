@@ -4,8 +4,6 @@
 \alias{preProcess}
 \alias{preProcess.default}
 \alias{predict.preProcess}
-\alias{preProcess.default}
-\alias{predict.preProcess}
 \title{Pre-Processing of Predictors}
 \usage{
 preProcess(x, ...)

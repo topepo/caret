@@ -6,10 +6,6 @@
 \alias{LPH07_1}
 \alias{LPH07_2}
 \alias{twoClassSim}
-\alias{SLC14_1}
-\alias{SLC14_2}
-\alias{LPH07_1}
-\alias{LPH07_2}
 \title{Simulation Functions}
 \usage{
 SLC14_1(n = 100, noiseVars = 0, corrVars = 0, corrType = "AR1",
@@ -24,9 +20,9 @@ LPH07_1(n = 100, noiseVars = 0, corrVars = 0, corrType = "AR1",
 LPH07_2(n = 100, noiseVars = 0, corrVars = 0, corrType = "AR1",
   corrValue = 0)
 
-twoClassSim(n = 100, intercept = -5, linearVars = 10, noiseVars = 0,
-  corrVars = 0, corrType = "AR1", corrValue = 0, mislabel = 0,
-  ordinal = FALSE)
+twoClassSim(n = 100, intercept = -5, linearVars = 10,
+  noiseVars = 0, corrVars = 0, corrType = "AR1", corrValue = 0,
+  mislabel = 0, ordinal = FALSE)
 }
 \arguments{
 \item{n}{The number of simulated data points}
