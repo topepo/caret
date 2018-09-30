@@ -66,6 +66,11 @@
 #' the predictors (i.e. \code{size = ncol(x)})} \item{pred }{a data frame with
 #' columns for the test set outcome, the predicted outcome and the subset
 #' size.}
+#' @note We using a recipe as an input, there may be some subset
+#'  sizes that are not well-replicated over resamples. `rfe` method
+#'  will only consider subset sizes where at least half of the
+#'  resamples have associated results in the search for an optimal
+#'  subset size.
 #' @author Max Kuhn
 #' @seealso \code{\link{rfeControl}}
 #' @keywords models
@@ -533,6 +538,9 @@ rfeIter <- function(x, y,
 #' @param mapping,environment unused arguments to make consistent with
 #' \pkg{ggplot2} generic method
 #' @return a lattice or ggplot object
+#' @note We using a recipe as an input, there may be some subset sizes that are
+#'  not well-replicated over resamples. The `ggplot` method will only show
+#'  subset sizes where at least half of the resamples have associated results. 
 #' @author Max Kuhn
 #' @seealso \code{\link{rfe}}, \code{\link[lattice]{xyplot}},
 #' \code{\link[ggplot2]{ggplot}}
@@ -1726,9 +1734,10 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
 
     externPerf <- subset(externPerf, Variables <= length(x_names))
 
+    numResamples <- length(rfeControl$index)
     bestSubset <-
       rfeControl$functions$selectSize(
-        x = externPerf,
+        x = subset(externPerf, Num_Resamples >= floor(.5*numResamples)),
         metric = metric,
         maximize = maximize
       )
@@ -1855,9 +1864,11 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
             NA
 
       if (ctrl$verbose)
-        cat("+(rfe) recipe",
+        cat("+(rfe)",
             names(resampleIndex)[iter],
+            "recipe", 
             "\n")
+      
       trained_rec <- prep(
         rec, training = data[modelIndex,,drop = FALSE], fresh = TRUE,
         verbose = FALSE, stringsAsFactors = TRUE,
@@ -1910,8 +1921,9 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
         )
       
       if (ctrl$verbose)
-        cat("-(rfe) recipe",
+        cat("-(rfe)",
             names(resampleIndex)[iter],
+            "recipe", 
             "\n")
       
       rfeResults <- rfe_rec(
@@ -1980,6 +1992,14 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
                 .(Variables),
                 MeanSD,
                 exclude = "Variables")
+  numVars <-
+    plyr::ddply(resamples[, !grepl("\\.cell|Resample", colnames(resamples)), drop = FALSE],
+                .(Variables),
+                function(x) c(Num_Resamples = nrow(x)))
+  
+  externPerf <- merge(externPerf, numVars, by = "Variables", all = TRUE)
+  externPerf <- externPerf[order(externPerf$Variables),, drop = FALSE]
+  
   if (ctrl$method %in% c("boot632")) {
     externPerf <- merge(externPerf, apparent)
     for (p in seq(along = perfNames)) {
