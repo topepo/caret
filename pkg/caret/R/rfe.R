@@ -1326,13 +1326,11 @@ varImp.rfe <- function(object, drop = FALSE, ...)
 
 #' @importFrom stats .checkMFClasses delete.response model.frame model.matrix na.omit
 #' @export
-predict.rfe <- function(object, newdata, ...)
-{
+predict.rfe <- function(object, newdata, ...) {
   if(length(list(...)) > 0)
     warning("... are ignored for predict.rfe")
 
-  if(inherits(object, "rfe.formula"))
-  {
+  if(inherits(object, "rfe.formula")) {
     newdata <- as.data.frame(newdata)
     rn <- row.names(newdata)
     Terms <- delete.response(object$terms)
@@ -1344,6 +1342,11 @@ predict.rfe <- function(object, newdata, ...)
     newdata <- model.matrix(Terms, m, contrasts = object$contrasts)
     xint <- match("(Intercept)", colnames(newdata), nomatch = 0)
     if (xint > 0)  newdata <- newdata[, -xint, drop = FALSE]
+  } else {
+    if (any(names(object) == "recipe")) {
+      newdata <- 
+        bake(object$recipe, newdata, all_predictors(), composition = "data.frame")
+    }
   }
   checkCols <- object$optVar %in% colnames(newdata)
   if(!all(checkCols))
