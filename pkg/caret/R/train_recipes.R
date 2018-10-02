@@ -408,13 +408,14 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
   pkgs <- c("methods", "caret", "recipes")
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
 
-  is_regression <- is.null(lev)
 
   export <- c()
 
   result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .packages = pkgs, .export = export) %:%
     foreach(parm = 1L:nrow(info$loop), .combine = "c", .packages = pkgs, .export = export)  %op% {
-
+      
+      is_regression <- is.null(lev)
+      
       if(!(length(ctrl$seeds) == 1L && is.na(ctrl$seeds)))
         set.seed(ctrl$seeds[[iter]][parm])
 
@@ -871,6 +872,8 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                 .packages = c("methods", "caret"),
                 .errorhandling = "stop")  %op%  {
 
+                  is_regression <- is.null(lev)
+                  
                   if(ctrl$verboseIter)
                     progress(printed[parm,,drop = FALSE],
                              names(resampleIndex), iter, TRUE)
@@ -1269,6 +1272,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
               } ## end final loop to finish cleanup resamples and models
     init_result <- c(init_result, final_result)
   }
+
   resamples <- rbind.fill(init_result[names(init_result) == "resamples"])
   pred <- if(keep_pred)  rbind.fill(init_result[names(init_result) == "pred"]) else NULL
   names(resamples) <- gsub("^\\.", "", names(resamples))
@@ -1282,7 +1286,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                exclude = gsub("^\\.", "", colnames(info$loop)))
   num_resamp <- ddply(resamples,
                       gsub("^\\.", "", colnames(info$loop)),
-                      function(x) c(.B = nrow(x)))
+                      function(x) c(Num_Resamples = nrow(x)))
   out <- merge(out, num_resamp)
 
   list(performance = out, resamples = resamples, predictions = if(keep_pred) pred else NULL)
