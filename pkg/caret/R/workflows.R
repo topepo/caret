@@ -96,8 +96,6 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         holdoutIndex <- modelIndex
       }
 
-      is_regression <- is.null(lev)
-
       if(testing) cat("pre-model\n")
 
       if(!is.null(info$submodels[[parm]]) && nrow(info$submodels[[parm]]) > 0) {
@@ -163,7 +161,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
 
       ##################################
 
-      predicted <- trim_values(predicted, ctrl, is_regression)
+      predicted <- trim_values(predicted, ctrl, is.null(lev))
 
       ##################################
 
@@ -362,8 +360,6 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
         submod <- info$submodels[[parm]]
       } else submod <- NULL
 
-      is_regression <- is.null(lev)
-
       mod <- try(
         createModel(x = subset_x(x, ctrl$index[[iter]]),
                     y = y[ctrl$index[[iter]] ],
@@ -419,7 +415,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
         if(testing) print(head(probValues))
       }
 
-      predicted <- trim_values(predicted, ctrl, is_regression)
+      predicted <- trim_values(predicted, ctrl, is.null(lev))
 
       ##################################
 

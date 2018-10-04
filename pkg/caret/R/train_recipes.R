@@ -207,8 +207,6 @@ loo_train_rec <- function(rec, dat, info, method,
 
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
 
-  is_regression <- is.null(lev)
-
   pkgs <- c("methods", "caret", "recipes")
   if(!is.null(method$library))
     pkgs <- c(pkgs, method$library)
@@ -289,7 +287,7 @@ loo_train_rec <- function(rec, dat, info, method,
                 if(testing) print(head(probValues))
               }
 
-              predicted <- trim_values(predicted, ctrl, is_regression)
+              predicted <- trim_values(predicted, ctrl, is.null(lev))
 
               ##################################
 
@@ -414,8 +412,6 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
   result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .packages = pkgs, .export = export) %:%
     foreach(parm = 1L:nrow(info$loop), .combine = "c", .packages = pkgs, .export = export)  %op% {
       
-      is_regression <- is.null(lev)
-      
       if(!(length(ctrl$seeds) == 1L && is.na(ctrl$seeds)))
         set.seed(ctrl$seeds[[iter]][parm])
 
@@ -492,7 +488,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
 
       ##################################
 
-      predicted <- trim_values(predicted, ctrl, is_regression)
+      predicted <- trim_values(predicted, ctrl, is.null(lev))
 
       ## We'll attach data points/columns to the object used
       ## to assess holdout performance
@@ -696,8 +692,6 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
               modelIndex <- resampleIndex[[iter]]
               holdoutIndex <- ctrl$indexOut[[iter]]
 
-              is_regression <- is.null(lev)
-
               if(testing) cat("pre-model\n")
 
               if(is.null(info$submodels[[parm]]) || nrow(info$submodels[[parm]]) > 0) {
@@ -756,7 +750,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
 
               ##################################
 
-              predicted <- trim_values(predicted, ctrl, is_regression)
+              predicted <- trim_values(predicted, ctrl, is.null(lev))
 
               ##################################
 
@@ -872,7 +866,6 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                 .packages = c("methods", "caret"),
                 .errorhandling = "stop")  %op%  {
 
-                  is_regression <- is.null(lev)
                   
                   if(ctrl$verboseIter)
                     progress(printed[parm,,drop = FALSE],
@@ -934,7 +927,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
 
                   ##################################
 
-                  predicted <- trim_values(predicted, ctrl, is_regression)
+                  predicted <- trim_values(predicted, ctrl, is.null(lev))
 
                   ##################################
 
@@ -1180,7 +1173,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                 }
                 ##################################
 
-                predicted <- trim_values(predicted, ctrl, is_regression)
+                predicted <- trim_values(predicted, ctrl, is.null(lev))
 
                 ##################################
 
