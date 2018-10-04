@@ -3,6 +3,11 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+\section{Changes in version 6.0-81}{
+  \itemize{
+    \item A bug was fixed in simulated annealing feature selection where the number of variables perturbed was based on the total number of variables instead of the more appropriate number of variables in the current subset. 
+}
+
 \section{Changes in version 6.0-80}{
   \itemize{
     \item Two bugs associated with \code{varImp} in \code{lm} \issue{858} and in \code{bartMachine} were fixed by \code{hadjipantelis}.

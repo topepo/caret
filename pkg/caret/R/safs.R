@@ -799,7 +799,7 @@ safs_initial <- function (vars, prob = .20, ...)  {
 
 #' @rdname safs_initial
 #' @export
-safs_perturb <- function(x, vars, number = floor(vars*.01) + 1) {
+safs_perturb <- function(x, vars, number = floor(length(x)*.01) + 1) {
   bin <- index2vec(x, vars)
   change <- sample(seq(along = bin), size = number)
   bin[change] <- ifelse(bin[change] == 1, 0, 1)
