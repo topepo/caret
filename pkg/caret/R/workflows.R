@@ -83,7 +83,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
 
       loadNamespace("caret")
-      lapply(pkgs, requireNamespaceQuietStop)
+      lapply(pkgs, caret:::requireNamespaceQuietStop)
       if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE],
                                     names(resampleIndex), iter)
 
@@ -286,14 +286,28 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
   }
   names(resamples) <- gsub("^\\.", "", names(resamples))
 
-  if(any(!complete.cases(resamples[,!grepl("^cell|Resample", colnames(resamples)),drop = FALSE])))
+  if(any(!complete.cases(resamples[,!(grepl("^cell|Resample", colnames(resamples)) | colnames(resamples) %in% method$parameters$parameter),drop = FALSE])))
   {
     warning("There were missing values in resampled performance measures.")
   }
-
-  out <- ddply(resamples[,!grepl("^cell|Resample", colnames(resamples)),drop = FALSE],
+  
+  tmp <- resamples[,!grepl("^cell|Resample", colnames(resamples)),drop = FALSE]
+  tmp_fix <- replace_non_atomic_values(tmp)
+  tmp <- tmp_fix$result
+#  non_atomic_columns <- colnames(resamples)[!sapply(tmp, is.atomic)]
+#  replacement <- list()
+#  for(column_name in non_atomic_columns){
+#	  replacement_values <- as.list(unique(tmp[, column_name]))
+#	  # Some magic to replace every value by its index
+#	  tmp[, column_name] <- sapply(tmp[, column_name], 
+#			  function(x, replacement_values){
+#				  which(sapply(replacement_values, function(x, y){identical(x, y)}, x = x))}, replacement_values = replacement_values)
+#	  replacement[[column_name]] <- replacement_values
+#  }
+    
+  out <- ddply(tmp[,!grepl("^cell|Resample", colnames(tmp)),drop = FALSE],
                ## TODO check this for seq models
-               gsub("^\\.", "", colnames(info$loop)),
+			   gsub("^\\.", "", colnames(info$loop)),
                MeanSD,
                exclude = gsub("^\\.", "", colnames(info$loop)))
 
@@ -328,6 +342,15 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       NULL
     })
   }
+
+#  for(column_name in non_atomic_columns){
+#	  # Roll back the changes we made (we do seem to lose some class types, but I think that is acceptable
+#	  tmp_column <- out[, column_name, drop = FALSE]
+#	  out[, column_name] <- NULL
+#	  # Yuck, eval, but for some reason this works, and out[, column_name] not...
+#	  eval(parse(text = paste0("out$", column_name, " <- apply(tmp_column, 1, function(x, replacement_values){replacement_values[[x]]}, replacement_values = replacement[[column_name]])")))
+#  }
+  out <- restore_non_atomic_values(out, tmp_fix$replacement)
 
   list(performance = out, resamples = resamples, predictions = if(keep_pred) pred else NULL)
 }

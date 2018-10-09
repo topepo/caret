@@ -28,6 +28,8 @@ ggplot.train <- function(data = NULL, mapping = NULL, metric = data$metric[1], p
     ## Check to see which tuning parameters were varied
     #       params is a factor, so just using params does not work properly when model metric is not the first column in dat
     #           e.g. oob resampling
+    res <- replace_non_atomic_values(dat)
+    dat <- res$result
     paramValues <- apply(dat[,as.character(params),drop = FALSE],
                          2,
                          function(x) length(unique(x)))

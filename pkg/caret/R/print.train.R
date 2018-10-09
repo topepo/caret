@@ -164,8 +164,13 @@ stringFunc <- function (x)  {
           names(tuneAcc)[names(tuneAcc) %in% "method"] <- ".method"
         if(any(names(finalTune) %in% "method"))
           names(finalTune)[names(finalTune) %in% "method"] <- ".method"
-
+        
+        res <- replace_non_atomic_values(tuneAcc)
+        tuneAcc <- res$result
+        res <- replace_non_atomic_values(finalTune)
+        finalTune <- res$result
         tuneAcc <- merge(tuneAcc, finalTune, all.x = TRUE)
+        tuneAcc <- restore_non_atomic_values(res$result, res$replacement)
 
         if(any(names(tuneAcc) %in% ".method"))
           names(tuneAcc)[names(tuneAcc) %in% ".method"] <- "method"

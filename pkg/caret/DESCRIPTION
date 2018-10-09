@@ -26,7 +26,8 @@ Imports:
     utils,
     grDevices,
     recipes (>= 0.0.1),
-    withr (>= 2.0.0)
+    withr (>= 2.0.0),
+    data.table
 Suggests:
     BradleyTerry2,
     e1071,
@@ -57,7 +58,9 @@ Suggests:
     Cubist,
     testthat (>= 0.9.1),
     rpart,
-    dplyr
+    dplyr,
+    prophet,
+    timeDate
 License: GPL (>= 2)
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr

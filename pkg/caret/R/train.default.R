@@ -798,9 +798,12 @@ train.default <- function(x, y,
 
   ## Reorder rows of performance
   orderList <- list()
+  res <- replace_non_atomic_values(performance)
+  performance <- res$result
   for(i in seq(along = paramNames)) orderList[[i]] <- performance[,paramNames[i]]
-
+  
   performance <- performance[do.call("order", orderList),]
+  performance <- restore_non_atomic_values(res$result, res$replacement)
 
   if(trControl$verboseIter) {
     bestText <- paste(paste(names(bestTune), "=",
