@@ -26,6 +26,7 @@ r_packages:
   - pamr
   - party
   - pls
+  - prophet
   - proxy
   - randomForest
   - RANN
@@ -35,6 +36,7 @@ r_packages:
   - subselect
   - superpc
   - testthat
+  - timeDate
   - xgboost
 
 before_install:
