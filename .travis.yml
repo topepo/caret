@@ -18,7 +18,6 @@ r_packages:
   - ellipse
   - extraDistr
   - ggplot2
-  - grid
   - klaR
   - knitr
   - MASS
@@ -42,7 +41,6 @@ r_packages:
   - rstan
   - scales
   - spls
-  - stats
   - subselect
   - superpc
   - testthat
