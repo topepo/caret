@@ -13,9 +13,14 @@ r:
 r_packages: 
   - covr
   - data.table
+  - dplyr
+  - dygraphs
   - ellipse
+  - extraDistr
   - ggplot2
+  - grid
   - klaR
+  - knitr
   - MASS
   - mda
   - mgcv
@@ -31,13 +36,20 @@ r_packages:
   - randomForest
   - RANN
   - rARPACK
+  - Rcpp
+  - readr
   - reshape2
+  - rstan
+  - scales
   - spls
+  - stats
   - subselect
   - superpc
   - testthat
+  - tidyr
   - timeDate
   - xgboost
+  - xts
 
 before_install:
   - cd pkg/caret
