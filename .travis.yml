@@ -13,28 +13,8 @@ r:
 r_packages: 
   - covr
   - data.table
-  - ellipse
   - ggplot2
-  - klaR
-  - MASS
-  - mda
-  - mgcv
-  - mlbench
-  - MLmetrics
-  - ModelMetrics
-  - nnet
-  - pamr
-  - party
-  - pls
-  - proxy
-  - randomForest
-  - RANN
   - rARPACK
-  - reshape2
-  - spls
-  - subselect
-  - superpc
-  - testthat
   - xgboost
 
 before_install:
