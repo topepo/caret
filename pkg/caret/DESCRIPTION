@@ -58,6 +58,8 @@ Suggests:
     testthat (>= 0.9.1),
     rpart,
     dplyr
+Remotes:
+    tidymodels/recipes
 License: GPL (>= 2)
 RoxygenNote: 6.1.0.9000
 VignetteBuilder: knitr
