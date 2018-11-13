@@ -18,17 +18,6 @@
 \alias{specificity.default}
 \alias{specificity.table}
 \alias{specificity.matrix}
-\alias{posPredValue}
-\alias{posPredValue.default}
-\alias{posPredValue.table}
-\alias{posPredValue.matrix}
-\alias{negPredValue}
-\alias{negPredValue.default}
-\alias{negPredValue.table}
-\alias{negPredValue.matrix}
-\alias{sensitivity.default}
-\alias{sensitivity.table}
-\alias{sensitivity.matrix}
 \title{Calculate sensitivity, specificity and predictive values}
 \usage{
 negPredValue(data, ...)

@@ -3,7 +3,6 @@
 \name{defaultSummary}
 \alias{defaultSummary}
 \alias{postResample}
-\alias{defaultSummary}
 \alias{twoClassSummary}
 \alias{prSummary}
 \alias{getTrainPerf}
@@ -12,10 +11,6 @@
 \alias{RMSE}
 \alias{multiClassSummary}
 \alias{MAE}
-\alias{twoClassSummary}
-\alias{mnLogLoss}
-\alias{multiClassSummary}
-\alias{prSummary}
 \title{Calculates performance across resamples}
 \usage{
 defaultSummary(data, lev = NULL, model = NULL)

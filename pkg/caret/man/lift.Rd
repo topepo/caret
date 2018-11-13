@@ -5,10 +5,7 @@
 \alias{lift.formula}
 \alias{lift.default}
 \alias{xyplot.lift}
-\alias{lift.default}
-\alias{lift.formula}
 \alias{print.lift}
-\alias{xyplot.lift}
 \alias{ggplot.lift}
 \title{Lift Plot}
 \usage{
@@ -21,7 +18,8 @@ lift(x, ...)
 
 \method{print}{lift}(x, ...)
 
-\method{xyplot}{lift}(x, data = NULL, plot = "gain", values = NULL, ...)
+\method{xyplot}{lift}(x, data = NULL, plot = "gain", values = NULL,
+  ...)
 
 \method{ggplot}{lift}(data = NULL, mapping = NULL, plot = "gain",
   values = NULL, ..., environment = NULL)

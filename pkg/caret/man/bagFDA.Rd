@@ -5,17 +5,15 @@
 \alias{print.bagFDA}
 \alias{bagFDA.default}
 \alias{bagFDA.formula}
-\alias{bagFDA.default}
-\alias{bagFDA.formula}
-\alias{print.bagFDA}
 \title{Bagged FDA}
 \usage{
 bagFDA(x, ...)
 
-\method{bagFDA}{default}(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
+\method{bagFDA}{default}(x, y, weights = NULL, B = 50, keepX = TRUE,
+  ...)
 
-\method{bagFDA}{formula}(formula, data = NULL, B = 50, keepX = TRUE, ...,
-  subset, weights = NULL, na.action = na.omit)
+\method{bagFDA}{formula}(formula, data = NULL, B = 50, keepX = TRUE,
+  ..., subset, weights = NULL, na.action = na.omit)
 
 \method{print}{bagFDA}(x, ...)
 }

@@ -6,11 +6,7 @@
 \alias{knn3.matrix}
 \alias{knn3.data.frame}
 \alias{knn3Train}
-\alias{knn3.formula}
-\alias{knn3.data.frame}
-\alias{knn3.matrix}
 \alias{print.knn3}
-\alias{knn3Train}
 \title{k-Nearest Neighbour Classification}
 \usage{
 knn3(x, ...)
@@ -23,7 +19,8 @@ knn3(x, ...)
 
 \method{print}{knn3}(x, ...)
 
-knn3Train(train, test, cl, k = 1, l = 0, prob = TRUE, use.all = TRUE)
+knn3Train(train, test, cl, k = 1, l = 0, prob = TRUE,
+  use.all = TRUE)
 }
 \arguments{
 \item{x}{a matrix of training set predictors}

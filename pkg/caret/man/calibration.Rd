@@ -7,19 +7,15 @@
 \alias{xyplot.calibration}
 \alias{ggplot.calibration}
 \alias{panel.calibration}
-\alias{calibration.default}
-\alias{calibration.formula}
 \alias{print.calibration}
-\alias{xyplot.calibration}
-\alias{ggplot.calibration}
 \title{Probability Calibration Plot}
 \usage{
 calibration(x, ...)
 
 \method{calibration}{default}(x, ...)
 
-\method{calibration}{formula}(x, data = NULL, class = NULL, cuts = 11,
-  subset = TRUE, lattice.options = NULL, ...)
+\method{calibration}{formula}(x, data = NULL, class = NULL,
+  cuts = 11, subset = TRUE, lattice.options = NULL, ...)
 
 \method{print}{calibration}(x, ...)
 

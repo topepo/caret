@@ -1004,7 +1004,7 @@ train.recipe <- function(x,
                       fresh = TRUE, 
                       retain = TRUE,
                       verbose = FALSE, 
-                      stringsAsFactors = TRUE)
+                      strings_as_factors = TRUE)
   x_dat <- juice(trained_rec, all_predictors())
   y_dat <- juice(trained_rec, all_outcomes())
   if(ncol(y_dat) > 1) 

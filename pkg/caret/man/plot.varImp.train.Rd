@@ -3,7 +3,6 @@
 \name{plot.varImp.train}
 \alias{plot.varImp.train}
 \alias{ggplot.varImp.train}
-\alias{ggplot.varImp.train}
 \title{Plotting variable importance measures}
 \usage{
 \method{plot}{varImp.train}(x, top = dim(x$importance)[1], ...)

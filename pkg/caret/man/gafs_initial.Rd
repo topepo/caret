@@ -11,13 +11,7 @@
 \alias{caretGA}
 \alias{rfGA}
 \alias{treebagGA}
-\alias{gafs_lrSelection}
-\alias{gafs_spCrossover}
-\alias{gafs_raMutation}
 \alias{gafs_nlrSelection}
-\alias{gafs_rwSelection}
-\alias{gafs_tourSelection}
-\alias{gafs_uCrossover}
 \title{Ancillary genetic algorithm functions}
 \usage{
 gafs_initial(vars, popSize, ...)

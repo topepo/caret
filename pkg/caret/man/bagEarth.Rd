@@ -5,18 +5,16 @@
 \alias{print.bagEarth}
 \alias{bagEarth.default}
 \alias{bagEarth.formula}
-\alias{bagEarth.default}
-\alias{bagEarth.formula}
-\alias{print.bagEarth}
 \title{Bagged Earth}
 \usage{
 bagEarth(x, ...)
 
-\method{bagEarth}{default}(x, y, weights = NULL, B = 50, summary = mean,
-  keepX = TRUE, ...)
+\method{bagEarth}{default}(x, y, weights = NULL, B = 50,
+  summary = mean, keepX = TRUE, ...)
 
-\method{bagEarth}{formula}(formula, data = NULL, B = 50, summary = mean,
-  keepX = TRUE, ..., subset, weights = NULL, na.action = na.omit)
+\method{bagEarth}{formula}(formula, data = NULL, B = 50,
+  summary = mean, keepX = TRUE, ..., subset, weights = NULL,
+  na.action = na.omit)
 
 \method{print}{bagEarth}(x, ...)
 }

@@ -5,7 +5,6 @@
 \alias{cluster.resamples}
 \alias{cluster}
 \alias{plot.prcomp.resamples}
-\alias{plot.prcomp.resamples}
 \title{Principal Components Analysis of Resampling Results}
 \usage{
 \method{prcomp}{resamples}(x, metric = x$metrics[1], ...)

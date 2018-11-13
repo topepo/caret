@@ -6,8 +6,6 @@
 \alias{extractProb}
 \alias{predict.train}
 \alias{predict.list}
-\alias{extractPrediction}
-\alias{extractProb}
 \title{Extract predictions and class probabilities from train objects}
 \usage{
 extractPrediction(models, testX = NULL, testY = NULL, unkX = NULL,

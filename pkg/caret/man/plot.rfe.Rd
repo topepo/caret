@@ -3,11 +3,11 @@
 \name{ggplot.rfe}
 \alias{ggplot.rfe}
 \alias{plot.rfe}
-\alias{ggplot.rfe}
 \title{Plot RFE Performance Profiles}
 \usage{
-\method{ggplot}{rfe}(data = NULL, mapping = NULL, metric = data$metric[1],
-  output = "layered", ..., environment = NULL)
+\method{ggplot}{rfe}(data = NULL, mapping = NULL,
+  metric = data$metric[1], output = "layered", ...,
+  environment = NULL)
 
 \method{plot}{rfe}(x, metric = x$metric, ...)
 }

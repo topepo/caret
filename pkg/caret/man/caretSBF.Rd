@@ -10,8 +10,6 @@
 \alias{nbSBF}
 \alias{gamScores}
 \alias{anovaScores}
-\alias{anovaScores}
-\alias{gamScores}
 \title{Selection By Filtering (SBF) Helper Functions}
 \format{An object of class \code{list} of length 5.}
 \usage{

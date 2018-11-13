@@ -5,8 +5,6 @@
 \alias{icr.default}
 \alias{icr}
 \alias{predict.icr}
-\alias{icr.default}
-\alias{predict.icr}
 \title{Independent Component Regression}
 \usage{
 \method{icr}{formula}(formula, data, weights, ..., subset, na.action,

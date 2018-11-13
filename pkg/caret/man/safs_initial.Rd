@@ -8,11 +8,6 @@
 \alias{caretSA}
 \alias{rfSA}
 \alias{treebagSA}
-\alias{safs_perturb}
-\alias{safs_prob}
-\alias{caretSA}
-\alias{treebagSA}
-\alias{rfSA}
 \title{Ancillary simulated annealing functions}
 \format{An object of class \code{list} of length 8.}
 \usage{

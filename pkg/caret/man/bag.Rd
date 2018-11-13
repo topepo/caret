@@ -12,18 +12,9 @@
 \alias{ctreeBag}
 \alias{svmBag}
 \alias{nnetBag}
-\alias{bagControl}
-\alias{bag.default}
-\alias{predict.bag}
 \alias{print.bag}
 \alias{summary.bag}
 \alias{print.summary.bag}
-\alias{ldaBag}
-\alias{plsBag}
-\alias{nbBag}
-\alias{ctreeBag}
-\alias{svmBag}
-\alias{nnetBag}
 \title{A General Framework For Bagging}
 \format{An object of class \code{list} of length 3.}
 \usage{
@@ -32,8 +23,8 @@ bag(x, ...)
 bagControl(fit = NULL, predict = NULL, aggregate = NULL,
   downSample = FALSE, oob = TRUE, allowParallel = TRUE)
 
-\method{bag}{default}(x, y, B = 10, vars = ncol(x), bagControl = NULL,
-  ...)
+\method{bag}{default}(x, y, B = 10, vars = ncol(x),
+  bagControl = NULL, ...)
 
 \method{predict}{bag}(object, newdata = NULL, ...)
 
@@ -41,7 +32,8 @@ bagControl(fit = NULL, predict = NULL, aggregate = NULL,
 
 \method{summary}{bag}(object, ...)
 
-\method{print}{summary.bag}(x, digits = max(3, getOption("digits") - 3), ...)
+\method{print}{summary.bag}(x, digits = max(3, getOption("digits") - 3),
+  ...)
 
 ldaBag
 

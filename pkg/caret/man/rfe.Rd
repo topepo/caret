@@ -6,19 +6,17 @@
 \alias{rfeIter}
 \alias{predict.rfe}
 \alias{update.rfe}
-\alias{rfe.default}
-\alias{rfeIter}
-\alias{update.rfe}
 \title{Backwards Feature Selection}
 \usage{
 rfe(x, ...)
 
-\method{rfe}{default}(x, y, sizes = 2^(2:4), metric = ifelse(is.factor(y),
-  "Accuracy", "RMSE"), maximize = ifelse(metric == "RMSE", FALSE, TRUE),
+\method{rfe}{default}(x, y, sizes = 2^(2:4),
+  metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
+  maximize = ifelse(metric == "RMSE", FALSE, TRUE),
   rfeControl = rfeControl(), ...)
 
-rfeIter(x, y, testX, testY, sizes, rfeControl = rfeControl(), label = "",
-  seeds = NA, ...)
+rfeIter(x, y, testX, testY, sizes, rfeControl = rfeControl(),
+  label = "", seeds = NA, ...)
 
 \method{update}{rfe}(object, x, y, size, ...)
 }
