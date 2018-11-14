@@ -270,7 +270,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
   
   ## check for highly correlated predictors
   if(any(names(method) == "corr")){
-    cmat <- try(cor(x[, !(colnames(x) %in% method$ignore | colnames(x) %in% method$remove), drop = FALSE], 
+    cmat <- try(cor(x[, !(colnames(x) %in% c(method$ignore, method$remove)), drop = FALSE], 
                     use = "pairwise.complete.obs"), 
                 silent = TRUE)
     if(class(cmat)[1] != "try-error") {
