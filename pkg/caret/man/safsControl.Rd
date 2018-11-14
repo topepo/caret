@@ -3,14 +3,14 @@
 \name{gafsControl}
 \alias{gafsControl}
 \alias{safsControl}
-\alias{gafsControl}
 \title{Control parameters for GA and SA feature selection}
 \usage{
 gafsControl(functions = NULL, method = "repeatedcv", metric = NULL,
   maximize = NULL, number = ifelse(grepl("cv", method), 10, 25),
   repeats = ifelse(grepl("cv", method), 1, 5), verbose = FALSE,
   returnResamp = "final", p = 0.75, index = NULL, indexOut = NULL,
-  seeds = NULL, holdout = 0, genParallel = FALSE, allowParallel = TRUE)
+  seeds = NULL, holdout = 0, genParallel = FALSE,
+  allowParallel = TRUE)
 
 safsControl(functions = NULL, method = "repeatedcv", metric = NULL,
   maximize = NULL, number = ifelse(grepl("cv", method), 10, 25),

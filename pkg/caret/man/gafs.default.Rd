@@ -5,9 +5,9 @@
 \alias{gafs}
 \title{Genetic algorithm feature selection}
 \usage{
-\method{gafs}{default}(x, y, iters = 10, popSize = 50, pcrossover = 0.8,
-  pmutation = 0.1, elite = 0, suggestions = NULL, differences = TRUE,
-  gafsControl = gafsControl(), ...)
+\method{gafs}{default}(x, y, iters = 10, popSize = 50,
+  pcrossover = 0.8, pmutation = 0.1, elite = 0, suggestions = NULL,
+  differences = TRUE, gafsControl = gafsControl(), ...)
 }
 \arguments{
 \item{x}{an object where samples are in rows and features are in columns.

@@ -26,34 +26,11 @@
 \alias{varImp.nnet}
 \alias{varImp.C5.0}
 \alias{varImp.glmnet}
-\alias{varImp.bagEarth}
-\alias{varImp.bagFDA}
-\alias{varImp.C5.0}
-\alias{varImp.cubist}
-\alias{varImp.dsa}
 \alias{varImp.glm}
-\alias{varImp.glmnet}
-\alias{varImp.JRip}
-\alias{varImp.multinom}
-\alias{varImp.nnet}
 \alias{varImp.avNNet}
-\alias{varImp.PART}
 \alias{varImp.RRF}
-\alias{varImp.rpart}
-\alias{varImp.randomForest}
-\alias{varImp.gbm}
-\alias{varImp.classbagg}
-\alias{varImp.regbagg}
-\alias{varImp.pamrtrained}
-\alias{varImp.lm}
-\alias{varImp.mvr}
-\alias{varImp.earth}
-\alias{varImp.RandomForest}
-\alias{varImp.plsda}
-\alias{varImp.fda}
 \alias{varImp.gam}
 \alias{varImp.Gam}
-\alias{varImp.train}
 \title{Calculation of variable importance for regression and classification models}
 \usage{
 varImp(object, ...)
@@ -84,7 +61,8 @@ varImp(object, ...)
 
 \method{varImp}{RRF}(object, ...)
 
-\method{varImp}{rpart}(object, surrogates = FALSE, competes = TRUE, ...)
+\method{varImp}{rpart}(object, surrogates = FALSE, competes = TRUE,
+  ...)
 
 \method{varImp}{randomForest}(object, ...)
 

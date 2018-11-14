@@ -4,8 +4,6 @@
 \alias{preProcess}
 \alias{preProcess.default}
 \alias{predict.preProcess}
-\alias{preProcess.default}
-\alias{predict.preProcess}
 \title{Pre-Processing of Predictors}
 \usage{
 preProcess(x, ...)
@@ -80,8 +78,8 @@ used for each } \item{dim}{the dimensions of \code{x}} \item{bc}{Box-Cox
 transformation values, see \code{\link{BoxCoxTrans}}} \item{mean}{a vector
 of means (if centering was requested)} \item{std}{a vector of standard
 deviations (if scaling or PCA was requested)} \item{rotation}{a matrix of
-eigenvectors if PCA was requested} \item{method}{the value of\code{method}}
-\item{thresh}{the value of\code{thresh}} \item{ranges}{a matrix of min and
+eigenvectors if PCA was requested} \item{method}{the value of \code{method}}
+\item{thresh}{the value of \code{thresh}} \item{ranges}{a matrix of min and
 max values for each predictor when \code{method} includes "range" (and
 \code{NULL} otherwise)} \item{numComp}{the number of principal components
 required of capture the specified amount of variance} \item{ica}{contains

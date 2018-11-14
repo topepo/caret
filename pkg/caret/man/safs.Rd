@@ -3,7 +3,6 @@
 \name{safs}
 \alias{safs}
 \alias{safs.default}
-\alias{safs.default}
 \title{Simulated annealing feature selection}
 \usage{
 safs(x, ...)

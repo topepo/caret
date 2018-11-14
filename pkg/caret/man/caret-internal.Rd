@@ -22,23 +22,7 @@
 \alias{ipredStats}
 \alias{rfStats}
 \alias{well_numbered}
-\alias{well_numbered}
-\alias{gamFormula}
-\alias{flatTable}
-\alias{ipredStats}
-\alias{rfStats}
-\alias{cforestStats}
-\alias{bagEarthStats}
 \alias{outcome_conversion}
-\alias{predictionFunction}
-\alias{hasTerms}
-\alias{probFunction}
-\alias{resampleWrapper}
-\alias{sbfIter}
-\alias{sortImp}
-\alias{progress}
-\alias{MeanSD}
-\alias{expandParameters}
 \title{Internal Functions}
 \usage{
 createModel(x, y, wts, method, tuneValue, obsLevels, pp = NULL,
@@ -60,7 +44,8 @@ bagEarthStats(x)
 
 outcome_conversion(x, lv)
 
-predictionFunction(method, modelFit, newdata, preProc = NULL, param = NULL)
+predictionFunction(method, modelFit, newdata, preProc = NULL,
+  param = NULL)
 
 hasTerms(x)
 

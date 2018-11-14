@@ -7,9 +7,7 @@
 \alias{expoTrans.default}
 \alias{expoTrans}
 \alias{predict.expoTrans}
-\alias{BoxCoxTrans.default}
 \alias{print.BoxCoxTrans}
-\alias{predict.BoxCoxTrans}
 \title{Box-Cox and Exponential Transformations}
 \usage{
 BoxCoxTrans(y, ...)

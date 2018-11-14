@@ -318,7 +318,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
       recipes::estimate_yj,
       c(lambda = 0),
       limits = c(-3, 3), ## consistent with `car` defaults
-      nunique = numUnique
+      num_unique = numUnique
     )
     yj <- yj[!is.null(yj) & !is.na(yj)]
     if(length(yj) > 0) {

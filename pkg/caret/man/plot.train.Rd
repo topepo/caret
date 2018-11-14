@@ -3,7 +3,6 @@
 \name{ggplot.train}
 \alias{ggplot.train}
 \alias{plot.train}
-\alias{ggplot.train}
 \title{Plot Method for the train Class}
 \usage{
 \method{ggplot}{train}(data = NULL, mapping = NULL,
@@ -11,8 +10,8 @@
   nameInStrip = FALSE, highlight = FALSE, ..., environment = NULL)
 
 \method{plot}{train}(x, plotType = "scatter", metric = x$metric[1],
-  digits = getOption("digits") - 3, xTrans = NULL, nameInStrip = FALSE,
-  ...)
+  digits = getOption("digits") - 3, xTrans = NULL,
+  nameInStrip = FALSE, ...)
 }
 \arguments{
 \item{data}{an object of class \code{\link{train}}.}

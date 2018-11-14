@@ -5,16 +5,14 @@
 \alias{sbf.default}
 \alias{sbf.formula}
 \alias{predict.sbf}
-\alias{sbf.default}
-\alias{sbf.formula}
-\alias{predict.sbf}
 \title{Selection By Filtering (SBF)}
 \usage{
 sbf(x, ...)
 
 \method{sbf}{default}(x, y, sbfControl = sbfControl(), ...)
 
-\method{sbf}{formula}(form, data, ..., subset, na.action, contrasts = NULL)
+\method{sbf}{formula}(form, data, ..., subset, na.action,
+  contrasts = NULL)
 
 \method{predict}{sbf}(object, newdata = NULL, ...)
 }

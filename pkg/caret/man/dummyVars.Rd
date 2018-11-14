@@ -7,17 +7,13 @@
 \alias{contr.dummy}
 \alias{contr.ltfr}
 \alias{class2ind}
-\alias{dummyVars.default}
 \alias{print.dummyVars}
-\alias{predict.dummyVars}
-\alias{contr.ltfr}
-\alias{class2ind}
 \title{Create A Full Set of Dummy Variables}
 \usage{
 dummyVars(formula, ...)
 
-\method{dummyVars}{default}(formula, data, sep = ".", levelsOnly = FALSE,
-  fullRank = FALSE, ...)
+\method{dummyVars}{default}(formula, data, sep = ".",
+  levelsOnly = FALSE, fullRank = FALSE, ...)
 
 \method{print}{dummyVars}(x, ...)
 
