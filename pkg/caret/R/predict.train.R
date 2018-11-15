@@ -37,7 +37,8 @@ predict.list <- function(object, ...) {
 #' \code{\link{train}}. For \code{predict.list}, a list of objects of class
 #' \code{\link{train}}.
 #' @param newdata an optional set of data to predict on. If \code{NULL}, then
-#' the original training data are used
+#' the original training data are used but, if the \code{train} model used a
+#' recipe, an error will occur. 
 #' @param type either "raw" or "prob", for the number/class predictions or
 #' class probabilities, respectively. Class probabilities are not available for
 #' all classification models
