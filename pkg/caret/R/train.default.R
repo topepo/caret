@@ -29,7 +29,7 @@
 #' A variety of models are currently available and are enumerated
 #'  by tag (i.e. their model characteristics) at
 #'  \url{http://topepo.github.io/caret/train-models-by-tag.html}.
-#' 
+#'
 #' More details on using recipes can be found at
 #'  \url{http://topepo.github.io/caret/using-recipes-with-train.html}.
 #'  Note that case weights can be passed into \code{train} using a
@@ -155,7 +155,7 @@
 #'
 #' Kuhn (2008), ``Building Predictive Models in R Using the caret''
 #' (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
-#' 
+#'
 #' \url{https://topepo.github.io/recipes/}
 #' @keywords models
 #' @examples
@@ -232,36 +232,36 @@
 #'
 #' #######################################
 #' ## Example with a recipe
-#' 
+#'
 #' data(cox2)
-#' 
+#'
 #' cox2 <- cox2Descr
 #' cox2$potency <- cox2IC50
-#' 
+#'
 #' library(recipes)
-#' 
+#'
 #' cox2_recipe <- recipe(potency ~ ., data = cox2) %>%
 #'   ## Log the outcome
 #'   step_log(potency, base = 10) %>%
 #'   ## Remove sparse and unbalanced predictors
 #'   step_nzv(all_predictors()) %>%
 #'   ## Surface area predictors are highly correlated so
-#'   ## conduct PCA just on these. 
-#'   step_pca(contains("VSA"), prefix = "surf_area_", 
+#'   ## conduct PCA just on these.
+#'   step_pca(contains("VSA"), prefix = "surf_area_",
 #'            threshold = .95) %>%
 #'   ## Remove other highly correlated predictors
-#'   step_corr(all_predictors(), -starts_with("surf_area_"), 
+#'   step_corr(all_predictors(), -starts_with("surf_area_"),
 #'             threshold = .90) %>%
 #'   ## Center and scale all of the non-PCA predictors
 #'   step_center(all_predictors(), -starts_with("surf_area_")) %>%
 #'   step_scale(all_predictors(), -starts_with("surf_area_"))
-#' 
+#'
 #' set.seed(888)
-#' cox2_lm <- train(cox2_recipe, 
+#' cox2_lm <- train(cox2_recipe,
 #'                  data = cox2,
-#'                  method = "lm", 
+#'                  method = "lm",
 #'                  trControl = trainControl(method = "cv"))
-#' 
+#'
 #' #######################################
 #' ## Parallel Processing Example via multicore package
 #'
@@ -307,26 +307,26 @@ train.default <- function(x, y,
                           tuneGrid = NULL,
                           tuneLength = ifelse(trControl$method == "none", 1, 3)) {
   startTime <- proc.time()
-  
+
   ## get a seed before packages are loaded or recipes are processed
   rs_seed <- sample.int(.Machine$integer.max, 1L)
-  
+
   if(is.null(colnames(x)))
     stop("Please use column names for `x`", call. = FALSE)
-  
+
   if(is.character(y)) y <- as.factor(y)
-  
+
   if( !is.numeric(y) & !is.factor(y) ){
-    #This error will often trigger if the y value is logical.  
+    #This error will often trigger if the y value is logical.
     stop( "Please make sure `y` is a factor or numeric value." , call. = FALSE )
   }
-  
+
   if(is.list(method)) {
     minNames <- c("library", "type", "parameters", "grid",
                   "fit", "predict", "prob")
     nameCheck <- minNames %in% names(method)
     if(!all(nameCheck)) stop(paste("some required components are missing:",
-                                   paste(minNames[!nameCheck], collapse = ", ")), 
+                                   paste(minNames[!nameCheck], collapse = ", ")),
                              call. = FALSE)
     models <- method
     method <- "custom"
@@ -378,8 +378,8 @@ train.default <- function(x, y,
   ## TODO add check method and execute here
 
   ## Some models that use RWeka start multiple threads and this conflicts with multicore:
-  parallel_check("RWeka", models) 
-  parallel_check("keras", models) 
+  parallel_check("RWeka", models)
+  parallel_check("keras", models)
 
   if(!is.null(preProcess) && !(all(names(preProcess) %in% ppMethods)))
     stop(paste('pre-processing methods are limited to:', paste(ppMethods, collapse = ", ")), call. = FALSE)
@@ -434,7 +434,7 @@ train.default <- function(x, y,
 
   ## If they don't exist, make the data partitions for the resampling iterations.
   trControl <- withr::with_seed(
-    rs_seed, 
+    rs_seed,
     make_resamples(trControl, outcome = y)
   )
 
@@ -444,7 +444,7 @@ train.default <- function(x, y,
     if(!(trControl$savePredictions %in% c("all", "final", "none")))
       stop('`savePredictions` should be either logical or "all", "final" or "none"', call. = FALSE)
   }
-  
+
   ## Gather all the pre-processing info. We will need it to pass into the grid creation
   ## code so that there is a concordance between the data used for modeling and grid creation
   if(!is.null(preProcess)) {
@@ -765,9 +765,9 @@ train.default <- function(x, y,
     bestTune <- performance[bestIter, paramNames, drop = FALSE]
   } else {
     bestTune <- tuneGrid
-    performance <- evalSummaryFunction(y, wts = weights, 
+    performance <- evalSummaryFunction(y, wts = weights,
                                        ctrl = trControl,
-                                       lev = classLevels, 
+                                       lev = classLevels,
                                        metric = metric,
                                        method = method)
     perfNames <- names(performance)
@@ -962,22 +962,22 @@ train.recipe <- function(x,
                          tuneGrid = NULL,
                          tuneLength = ifelse(trControl$method == "none", 1, 3)) {
   startTime <- proc.time()
-  
+
   ## get a seed before packages are loaded or recipes are processed
   rs_seed <- sample.int(.Machine$integer.max, 1L)
-  
+
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
   preproc_dots(...)
-  
+
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
   if(is.list(method)) {
     minNames <- c("library", "type", "parameters", "grid",
                   "fit", "predict", "prob")
     nameCheck <- minNames %in% names(method)
     if(!all(nameCheck)) stop(paste("some required components are missing:",
-                                   paste(minNames[!nameCheck], collapse = ", ")), 
+                                   paste(minNames[!nameCheck], collapse = ", ")),
                              call. = FALSE)
     models <- method
     method <- "custom"
@@ -987,27 +987,27 @@ train.recipe <- function(x,
       stop(paste("Model", method, "is not in caret's built-in library"), call. = FALSE)
   }
   checkInstall(models$library)
-  for(i in seq(along = models$library)) 
+  for(i in seq(along = models$library))
     do.call("requireNamespace", list(package = models$library[i]))
   if(any(names(models) == "check") && is.function(models$check)) {
     software_check <- models$check(models$library)
   }
-  
+
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # prep and bake recipe on entire training set
   if(trControl$verboseIter)  {
     cat("Preparing recipe\n")
     flush.console()
   }
-  
-  trained_rec <- prep(x, training = data, 
-                      fresh = TRUE, 
+
+  trained_rec <- prep(x, training = data,
+                      fresh = TRUE,
                       retain = TRUE,
-                      verbose = FALSE, 
+                      verbose = FALSE,
                       strings_as_factors = TRUE)
   x_dat <- juice(trained_rec, all_predictors())
   y_dat <- juice(trained_rec, all_outcomes())
-  if(ncol(y_dat) > 1) 
+  if(ncol(y_dat) > 1)
     stop("`train` doesn't support multivariate outcomes")
   y_dat <- getElement(y_dat, names(y_dat))
   is_weight <- summary(trained_rec)$role == "case weight"
@@ -1017,57 +1017,57 @@ train.recipe <- function(x,
     weights <- juice(trained_rec, has_role("case weight"))
     weights <- getElement(weights, names(weights))
   } else weights <- NULL
-  
+
   is_perf <- summary(trained_rec)$role == "performance var"
   if(any(is_perf)) {
     perf_data <- juice(trained_rec, has_role("performance var"))
   } else perf_data <- NULL
-  
+
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
   paramNames <- as.character(models$parameters$parameter)
-  
+
   funcCall <- match.call(expand.dots = TRUE)
   modelType <- get_model_type(y_dat)
-  if(!(modelType %in% models$type)) 
+  if(!(modelType %in% models$type))
     stop(paste("wrong model type for", tolower(modelType)), call. = FALSE)
-  
+
   ## RECIPE the rec might produce character `x_dat` so convert if these
   ## models are used? These need to be re-though since no matrix results
   if(grepl("^svm", method) & grepl("String$", method)) {
     if(is.vector(x_dat) && is.character(x_dat)) {
-      stop("'x_dat' should be a character matrix with a single column for string kernel methods", 
+      stop("'x_dat' should be a character matrix with a single column for string kernel methods",
            call. = FALSE)
     }
     if(is.matrix(x_dat) && is.numeric(x_dat)) {
-      stop("'x_dat' should be a character matrix with a single column for string kernel methods", 
+      stop("'x_dat' should be a character matrix with a single column for string kernel methods",
            call. = FALSE)
     }
     if(is.data.frame(x_dat)) {
-      stop("'x_dat' should be a character matrix with a single column for string kernel methods", 
+      stop("'x_dat' should be a character matrix with a single column for string kernel methods",
            call. = FALSE)
     }
   }
-  
+
   if(modelType == "Regression" & length(unique(y_dat)) == 2)
     warning(paste("You are trying to do regression and your outcome only has",
                   "two possible values Are you trying to do classification?",
                   "If so, use a 2 level factor as your outcome column."))
-  
+
   if(modelType != "Classification" & !is.null(trControl$sampling))
-    stop("sampling methods are only implemented for classification problems", 
+    stop("sampling methods are only implemented for classification problems",
          call. = FALSE)
   if(!is.null(trControl$sampling)) {
     trControl$sampling <- parse_sampling(trControl$sampling)
   }
-  
+
   check_dims(x = x_dat, y = y_dat)
   n <- if(class(y_dat)[1] == "Surv") nrow(y_dat) else length(y_dat)
-  
+
   ## Some models that use RWeka start multiple threads and this conflicts with multicore:
-  parallel_check("RWeka", models) 
-  parallel_check("keras", models) 
-  
+  parallel_check("RWeka", models)
+  parallel_check("keras", models)
+
   if(modelType == "Classification") {
     ## We should get and save the class labels to ensure that predictions are coerced
     ## to factors that have the same levels as the original data. This is especially
@@ -1078,10 +1078,10 @@ train.recipe <- function(x,
     xtab <- table(y_dat)
     if(any(xtab == 0)) {
       xtab_msg <- paste("'", names(xtab)[xtab == 0], "'", collapse = ", ", sep = "")
-      stop(paste("One or more factor levels in the outcome has no data:", xtab_msg), 
+      stop(paste("One or more factor levels in the outcome has no data:", xtab_msg),
            call. = FALSE)
     }
-    
+
     if(trControl$classProbs && any(classLevels != make.names(classLevels))) {
       stop(paste("At least one of the class levels is not a valid R variable name;",
                  "This will cause errors when class probabilities are generated because",
@@ -1090,15 +1090,15 @@ train.recipe <- function(x,
                  ". Please use factor levels that can be used as valid R variable names",
                  " (see ?make.names for help)."), call. = FALSE)
     }
-    
+
     if(metric %in% c("RMSE", "Rsquared"))
-      stop(paste("Metric", metric, "not applicable for classification models"), 
+      stop(paste("Metric", metric, "not applicable for classification models"),
            call. = FALSE)
     if(!trControl$classProbs && metric == "ROC")
       stop(paste("Class probabilities are needed to score models using the",
                  "area under the ROC curve. Set `classProbs = TRUE`",
                  "in the trainControl() function."), call. = FALSE)
-    
+
     if(trControl$classProbs) {
       if(!is.function(models$prob)) {
         warning("Class probabilities were requested for a model that does not implement them")
@@ -1107,7 +1107,7 @@ train.recipe <- function(x,
     }
   } else {
     if(metric %in% c("Accuracy", "Kappa"))
-      stop(paste("Metric", metric, "not applicable for regression models"), 
+      stop(paste("Metric", metric, "not applicable for regression models"),
            call. = FALSE)
     classLevels <- NA
     if(trControl$classProbs) {
@@ -1115,56 +1115,56 @@ train.recipe <- function(x,
       trControl$classProbs <- FALSE
     }
   }
-  
+
   if(trControl$method == "oob" & is.null(models$oob))
-    stop("Out of bag estimates are not implemented for this model", 
+    stop("Out of bag estimates are not implemented for this model",
          call. = FALSE)
-  
+
   ## If they don't exist, make the data partitions for the resampling iterations.
   trControl <- withr::with_seed(
-    rs_seed, 
+    rs_seed,
     make_resamples(trControl, outcome = y_dat)
   )
-    
+
   if(is.logical(trControl$savePredictions)) {
     trControl$savePredictions <- if(trControl$savePredictions) "all" else "none"
   } else {
     if(!(trControl$savePredictions %in% c("all", "final", "none")))
       stop('`savePredictions` should be either logical or "all", "final" or "none"', call. = FALSE)
   }
-  
+
   if(is.null(tuneGrid)) {
     tuneGrid <- models$grid(x = x_dat, y = y_dat, len = tuneLength, search = trControl$search)
     if (trControl$search != "grid" && tuneLength < nrow(tuneGrid))
       tuneGrid <- tuneGrid[1:tuneLength,,drop = FALSE]
   }
-  
+
   ## Check to make sure that there are tuning parameters in some cases
   if(grepl("adaptive", trControl$method) & nrow(tuneGrid) == 1) {
     stop(paste("For adaptive resampling, there needs to be more than one",
                "tuning parameter for evaluation"), call. = FALSE)
   }
-  
+
   dotNames <- hasDots(tuneGrid, models)
   if(dotNames) colnames(tuneGrid) <- gsub("^\\.", "", colnames(tuneGrid))
   ## Check tuning parameter names
   tuneNames <- as.character(models$parameters$parameter)
   goodNames <- all.equal(sort(tuneNames), sort(names(tuneGrid)))
-  
+
   if(!is.logical(goodNames) || !goodNames) {
     stop(paste("The tuning parameter grid should have columns",
                paste(tuneNames, collapse = ", ", sep = "")), call. = FALSE)
   }
-  
+
   if(trControl$method == "none" && nrow(tuneGrid) != 1)
     stop("Only one model should be specified in tuneGrid with no resampling", call. = FALSE)
-  
+
   ## In case prediction bounds are used, compute the limits. For now,
   ## store these in the control object since that gets passed everywhere
-  trControl$yLimits <- if(is.numeric(y_dat)) get_range(y_dat) else NULL  
-  
+  trControl$yLimits <- if(is.numeric(y_dat)) get_range(y_dat) else NULL
+
   if(trControl$method != "none") {
-    
+
     if(is.function(models$loop) && nrow(tuneGrid) > 1){
       trainInfo <- models$loop(tuneGrid)
       if(!all(c("loop", "submodels") %in% names(trainInfo)))
@@ -1172,7 +1172,7 @@ train.recipe <- function(x,
       lengths <- unlist(lapply(trainInfo$submodels, nrow))
       if(all(lengths == 0)) trainInfo$submodels <- NULL
     } else trainInfo <- list(loop = tuneGrid)
-    
+
     num_rs <- if(trControl$method != "oob") length(trControl$index) else 1L
     if(trControl$method %in% c("boot632", "optimism_boot", "boot_all")) num_rs <- num_rs + 1L
     ## Set or check the seeds when needed
@@ -1202,14 +1202,14 @@ train.recipe <- function(x,
       perfNames <- metric
     } else {
       ## run some data thru the summary function and see what we get
-      testSummary <- evalSummaryFunction(y_dat, 
-                                         perf = perf_data, 
+      testSummary <- evalSummaryFunction(y_dat,
+                                         perf = perf_data,
                                          wts = weights, ctrl = trControl,
                                          lev = classLevels, metric = metric,
                                          method = method)
       perfNames <- names(testSummary)
     }
-    
+
     if(!(metric %in% perfNames)){
       oldMetric <- metric
       metric <- perfNames[1]
@@ -1254,7 +1254,7 @@ train.recipe <- function(x,
           resampleResults <- tmp$resample
         } else {
           tmp <- train_adapt_rec(rec = x, dat = data,
-                                 info = trainInfo, 
+                                 info = trainInfo,
                                  method = models,
                                  ctrl = trControl,
                                  lev = classLevels,
@@ -1266,10 +1266,10 @@ train.recipe <- function(x,
         }
       }
     }
-    
+
     ## Remove extra indices
     trControl$indexExtra <- NULL
-    
+
     if(!(trControl$method %in% c("LOOCV", "oob"))) {
       if(modelType == "Classification" && length(grep("^\\cell", colnames(resampleResults))) > 0) {
         resampledCM <- resampleResults[, !(names(resampleResults) %in% perfNames)]
@@ -1277,42 +1277,42 @@ train.recipe <- function(x,
         #colnames(resampledCM) <- gsub("^\\.", "", colnames(resampledCM))
       } else resampledCM <- NULL
     } else resampledCM <- NULL
-    
-    
+
+
     if(trControl$verboseIter)  {
       cat("Aggregating results\n")
       flush.console()
     }
-    
+
     perfCols <- names(performance)
     perfCols <- perfCols[!(perfCols %in% paramNames)]
-    
+
     if(all(is.na(performance[, metric]))) {
       cat(paste("Something is wrong; all the", metric, "metric values are missing:\n"))
       print(summary(performance[, perfCols[!grepl("SD$", perfCols)], drop = FALSE]))
       stop("Stopping", call. = FALSE)
     }
-    
+
     ## Sort the tuning parameters from least complex to most complex
     if(!is.null(models$sort)) performance <- models$sort(performance)
-    
+
     if(any(is.na(performance[, metric])))
       warning("missing values found in aggregated results")
-    
-    
+
+
     if(trControl$verboseIter && nrow(performance) > 1) {
       cat("Selecting tuning parameters\n")
       flush.console()
     }
-    
+
     ## select the optimal set
     selectClass <- class(trControl$selectionFunction)[1]
-    
+
     ## Select the "optimal" tuning parameter.
     if(grepl("adapt", trControl$method)) {
       perf_check <- subset(performance, .B == max(performance$.B))
     } else perf_check <- performance
-    
+
     ## Make adaptive only look at parameters with B = max(B)
     if(selectClass == "function") {
       bestIter <- trControl$selectionFunction(x = perf_check,
@@ -1332,35 +1332,35 @@ train.recipe <- function(x,
                                  maximize = maximize))
       }
     }
-    
-    if(is.na(bestIter) || length(bestIter) != 1) 
+
+    if(is.na(bestIter) || length(bestIter) != 1)
       stop("final tuning parameters could not be determined", call. = FALSE)
-    
+
     if(grepl("adapt", trControl$method)) {
       best_perf <- perf_check[bestIter,as.character(models$parameters$parameter),drop = FALSE]
       performance$order <- 1:nrow(performance)
       bestIter <- merge(performance, best_perf)$order
       performance$order <- NULL
     }
-    
-    
+
+
     ## Based on the optimality criterion, select the tuning parameter(s)
     bestTune <- performance[bestIter, paramNames, drop = FALSE]
   } else {
     bestTune <- tuneGrid
     performance <- evalSummaryFunction(y_dat, wts = weights,
                                        ctrl = trControl,
-                                       lev = classLevels, 
+                                       lev = classLevels,
                                        metric = metric,
                                        method = method)
     perfNames <- names(performance)
     performance <- as.data.frame(t(performance))
     performance <- cbind(performance, tuneGrid)
     performance <- performance[-1,,drop = FALSE]
-    tmp <- resampledCM <- NULL    
-    
+    tmp <- resampledCM <- NULL
+
   } # end(trControl$method != "none")
-  
+
   ## Save some or all of the resampling summary metrics
   if(!(trControl$method %in% c("LOOCV", "oob", "none"))) {
     byResample <- switch(trControl$returnResamp,
@@ -1378,13 +1378,13 @@ train.recipe <- function(x,
   } else {
     byResample <- NULL
   }
-  
+
   ## Reorder rows of performance
   orderList <- list()
   for(i in seq(along = paramNames)) orderList[[i]] <- performance[,paramNames[i]]
-  
+
   performance <- performance[do.call("order", orderList),]
-  
+
   if(trControl$verboseIter) {
     bestText <- paste(paste(names(bestTune), "=",
                             format(bestTune, digits = 3)),
@@ -1393,16 +1393,15 @@ train.recipe <- function(x,
     cat("Fitting", bestText, "on full training set\n")
     flush.console()
   }
-  
+
   ## Make the final model based on the tuning results
-  
-  indexFinal <- if(is.null(trControl$indexFinal)) 
+  indexFinal <- if(is.null(trControl$indexFinal))
     seq(along = y_dat) else trControl$indexFinal
-  
-  if(!(length(trControl$seeds) == 1 && is.na(trControl$seeds))) 
+
+  if(!(length(trControl$seeds) == 1 && is.na(trControl$seeds)))
     set.seed(trControl$seeds[[length(trControl$seeds)]][1])
   finalTime <- system.time(
-    finalModel <- rec_model(x, 
+    finalModel <- rec_model(x,
                             subset_x(data, indexFinal),
                             method = models,
                             tuneValue = bestTune,
@@ -1412,7 +1411,7 @@ train.recipe <- function(x,
                             sampling = trControl$sampling,
                             ...)
   )
-  
+
   if(trControl$trim && !is.null(models$trim)) {
     if(trControl$verboseIter) old_size <- object.size(finalModel$fit)
     finalModel$fit <- models$trim(finalModel$fit)
@@ -1425,28 +1424,29 @@ train.recipe <- function(x,
       cat("Final model footprint reduced by", reduction, "or", p_reduction, "\n")
     }
   }
-  
-  finalModel <- finalModel$fit
-  
+
+  trained_rec <- finalModel$recipe
+  finalModel  <- finalModel$fit
+
   ## Remove this and check for other places it is reference
   ## replaced by tuneValue
   if(method == "pls") finalModel$bestIter <- bestTune
-  
+
   ## To use predict.train and automatically use the optimal lambda,
   ## we need to save it
   if(method == "glmnet") finalModel$lambdaOpt <- bestTune$lambda
-  
+
   if(trControl$returnData) {
     outData <- data
   } else outData <- NULL
-  
+
   if(trControl$savePredictions == "final")
     tmp$predictions <- merge(bestTune, tmp$predictions)
-  
+
   endTime <- proc.time()
   times <- list(everything = endTime - startTime,
                 final = finalTime)
-  
+
   out <- structure(list(method = method,
                         modelInfo = models,
                         modelType = modelType,
@@ -1470,7 +1470,7 @@ train.recipe <- function(x,
                         rs_seed = rs_seed),
                    class = c("train.recipe", "train"))
   trControl$yLimits <- NULL
-  
+
   if(trControl$timingSamps > 0) {
     pData <- x_dat[sample(1:nrow(x_dat), trControl$timingSamps, replace = TRUE),,drop = FALSE]
     out$times$prediction <- system.time(predict(out, pData))
