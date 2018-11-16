@@ -485,6 +485,12 @@ train.default <- function(x, y,
   if(dotNames) colnames(tuneGrid) <- gsub("^\\.", "", colnames(tuneGrid))
   ## Check tuning parameter names
   tuneNames <- as.character(models$parameters$parameter)
+  if (!all(colnames(tuneGrid) %in% tuneNames)) {
+    badNames <- colnames(tuneGrid)[!(colnames(tuneGrid) %in% tuneNames)]
+    stop(paste("The tuning parameter grid should not have columns",
+               paste(tuneNames, collapse = ", ", sep = "")), call. = FALSE)
+  }
+
   goodNames <- all.equal(sort(tuneNames), sort(names(tuneGrid)))
 
   if(!is.logical(goodNames) || !goodNames) {
