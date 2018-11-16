@@ -39,7 +39,8 @@ is useful if speed is needed for unknown samples.}
 \code{\link{train}}.}
 
 \item{newdata}{an optional set of data to predict on. If \code{NULL}, then
-the original training data are used}
+the original training data are used but, if the \code{train} model used a
+recipe, an error will occur.}
 
 \item{type}{either "raw" or "prob", for the number/class predictions or
 class probabilities, respectively. Class probabilities are not available for
