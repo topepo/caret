@@ -3,6 +3,19 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+\section{Changes in version 6.0-81}{
+  \itemize{
+    \item The internals were updated to work with the latest version of the \cpkg{recipes} package. 
+    \item Jason Muhlenkamp added better error messages for misspecified tuning parameters \issue{956}.
+    \item Two bugs in random forests with RFE were fixed in \issue{942}. 
+    \item When correlation filters are used in \code{preProcess}, constant (i.e. zero-variance) columns are first removed to avoid errors \issue{966}.
+    \item A bug was fixed when \code{train} models using weights were updated \issue{935}. 
+    \item Benjamin Allévius added more statistics to the output of \code{thresholder} \issue{938}.
+    \item A bug was fixed that occurred when \code{indexFinal} was used where the recipe that was saved was created using the entire training set \issue{928}.
+  }
+}
+
+
 \section{Changes in version 6.0-80}{
   \itemize{
     \item Two bugs associated with \code{varImp} in \code{lm} \issue{858} and in \code{bartMachine} were fixed by \code{hadjipantelis}.
