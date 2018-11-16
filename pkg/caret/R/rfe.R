@@ -177,7 +177,7 @@ rfe <- function (x, ...) UseMethod("rfe")
     numFeat <- ncol(x)
     classLevels <- levels(y)
 
-    if(is.null(rfeControl$index)) 
+    if(is.null(rfeControl$index))
       rfeControl$index <- switch(tolower(rfeControl$method),
                                  cv = createFolds(y, rfeControl$number, returnTrain = TRUE),
                                  repeatedcv = createMultiFolds(y, rfeControl$number, rfeControl$repeats),
@@ -539,7 +539,7 @@ rfeIter <- function(x, y,
 #' (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
 #' @keywords hplot
 #' @method plot rfe
-#' @export  
+#' @export
 #' @examples
 #'
 #' \dontrun{
@@ -1024,7 +1024,7 @@ gamFuncs <- list(summary = defaultSummary,
 rfFuncs <-  list(summary = defaultSummary,
                  fit = function(x, y, first, last, ...) {
                    loadNamespace("randomForest")
-                   randomForest::randomForest(x, y, importance = (first|last), ...)
+                   randomForest::randomForest(x, y, importance = TRUE, ...)
                  },
                  pred = function(object, x)  {
                    tmp <- predict(object, x)
@@ -1045,8 +1045,9 @@ rfFuncs <-  list(summary = defaultSummary,
                    }
 
                    vimp <- vimp[order(vimp$Overall, decreasing = TRUE),, drop = FALSE]
-
-                   vimp$var <- rownames(vimp)
+                   if (ncol(x) == 1) {
+                     vimp$var <- colnames(x)
+                   } else vimp$var <- rownames(vimp)
                    vimp
                  },
                  selectSize = pickSizeBest,
