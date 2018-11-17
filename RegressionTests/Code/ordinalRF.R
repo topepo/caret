@@ -4,7 +4,7 @@ library(plyr)
 library(recipes)
 library(dplyr)
 
-themethod <-  modelInfo; 
+model <- "ordinalRF"
 
 #########################################################################
 
@@ -35,7 +35,7 @@ cctrl6 <- trainControl(method = "cv", number = 3,
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
-                             method = themethod, 
+                             method = "ordinalRF", 
                              trControl = cctrl1,
                              metric = "Kappa",  
                              tuneLength = 2,
@@ -43,7 +43,7 @@ test_class_cv_model <- train(trainX, trainY,
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = themethod, 
+                            method = "ordinalRF", 
                             trControl = cctrl1,  
                             metric = "Kappa", 
                             preProc = c("center", "scale"))
@@ -55,7 +55,7 @@ test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], t
 
 # set.seed(849)
 # test_class_loo_model <- train(trainX, trainY, 
-#                               method = themethod,
+#                               method = "ordinalRF",
 #                               trControl = cctrl2,
 #                               metric = "Kappa",
 #                               tuneLength = 2,
@@ -63,7 +63,7 @@ test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], t
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
-                               method = themethod,
+                               method = "ordinalRF",
                                trControl = cctrl3,  
                                tuneGrid = test_class_cv_model$bestTune,
                                metric = "Kappa", 
@@ -77,7 +77,7 @@ test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)]
 set.seed(849)
 test_class_rec <- train(x = rec_cls,
                         data = training,
-                        method = themethod,
+                        method = "ordinalRF",
                         trControl = cctrl6,
                         tuneLength = 2,
                         metric = "AUC" ) # This will return warnings
