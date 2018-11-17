@@ -5,6 +5,7 @@
 
 \section{Changes in version 6.0-81}{
   \itemize{
+    \item The \code{blackboost} code gained a dependency on \cpkg{partykit} due to changes in \cpkg{mboost}. 
     \item The internals were updated to work with the latest version of the \cpkg{recipes} package. 
     \item Jason Muhlenkamp added better error messages for misspecified tuning parameters \issue{956}.
     \item Two bugs in random forests with RFE were fixed in \issue{942}. 

@@ -1,5 +1,5 @@
 modelInfo <- list(label = "Boosted Tree", 
-                  library = c("party", "mboost", "plyr"),
+                  library = c("party", "mboost", "plyr", "partykit"),
                   type = c("Regression", "Classification"),
                   parameters = data.frame(parameter = c('mstop', 'maxdepth'),
                                           class = c("numeric", "numeric"),
@@ -36,7 +36,7 @@ modelInfo <- list(label = "Boosted Tree",
                       treeCtl <- theDots$tree_controls
                       theDots$tree_controls <- NULL
 
-                    } else treeCtl <- party::ctree_control(maxdepth = param$maxdepth)
+                    } else treeCtl <- partykit::ctree_control(maxdepth = param$maxdepth)
 
                     if(any(names(theDots) == "control")) {
                       theDots$control$mstop <- param$mstop 
