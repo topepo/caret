@@ -110,8 +110,13 @@ modelInfo <- list(label = "Partial Least Squares",
                       out <- data.frame(Overall = apply(abs(modelCoef), 1, 
                                                         weighted.mean, w = delta))
                     } else {       
-                      perf <- -t(apply(perf[1,,], 1, diff))
-                      perf <- t(apply(perf, 1, function(u) u/sum(u)))
+                      if(dim(perf)[3]<=2){ # case ncomp = 1
+                        perf <- -t(t(apply(perf[1,,], 1, diff)))
+                        perf <- t(t(apply(perf, 1, function(u) u/sum(u))))
+                      } else {
+                        perf <- -t(apply(perf[1,,], 1, diff))
+                        perf <- t(apply(perf, 1, function(u) u/sum(u)))
+                      }
                       out <- matrix(NA, ncol = numResp, nrow = dim(modelCoef)[1])
                       
                       for(i in 1:numResp) {
