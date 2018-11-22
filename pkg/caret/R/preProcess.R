@@ -236,9 +236,11 @@ preProcess.default <- function(x, method = c("center", "scale"),
   ## check for zero-variance predictors
   if(any(names(method) == "zv")){
     if(is.data.frame(x)) {
-      is_zv <- unlist(lapply(x[, !(colnames(x) %in% method$ignore), drop = FALSE], function(x) length(unique(x)) <= 1))
+      is_zv <- unlist(lapply(x[, !(colnames(x) %in% method$ignore), drop = FALSE], function(x)
+        ifelse(na.remove, length(na.omit(unique(x))), length(unique(x))) <= 1))
     } else {
-      is_zv <- apply(x[, !(colnames(x) %in% method$ignore), drop = FALSE], 2, function(x) length(unique(x)) <= 1)
+      is_zv <- apply(x[, !(colnames(x) %in% method$ignore), drop = FALSE], 2, function(x)
+        ifelse(na.remove, length(na.omit(unique(x))), length(unique(x))) <= 1)
     }
     if(any(is_zv)) {
       removed <- names(is_zv)[is_zv]
