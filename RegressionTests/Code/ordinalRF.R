@@ -4,9 +4,7 @@ library(plyr)
 library(recipes)
 library(dplyr)
 
-model <- "polr"
-
-
+model <- "ordinalRF"
 
 #########################################################################
 
@@ -26,38 +24,27 @@ library(MASS)
 mod <- polr(Class ~ ., data = training)
 strt <- c(coef(mod), mod$zeta)
 
-weight_test <- function (data, lev = NULL, model = NULL)  {
-  mean(data$weights)
-  postResample(data[, "pred"], data[, "obs"])
-}
-
 cctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all",
                        classProbs = TRUE)
 cctrl2 <- trainControl(method = "LOOCV",
                        classProbs = TRUE)
 cctrl3 <- trainControl(method = "none",
                        classProbs = TRUE)
-
-cctrl4 <- trainControl(method = "cv", number = 3, 
-                       summaryFunction = weight_test)
-cctrl5 <- trainControl(method = "LOOCV", summaryFunction = weight_test)
-
-cctrl6 <- trainControl(method = "cv", number = 3, summaryFunction = multiClassSummary,
-                       classProbs = TRUE)
+cctrl6 <- trainControl(method = "cv", number = 3,
+                       classProbs = TRUE, summaryFunction = multiClassSummary)
 
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
-                             method = "polr", 
+                             method = "ordinalRF", 
                              trControl = cctrl1,
-                             metric = "Kappa", 
-                             start = strt,
+                             metric = "Kappa",  
+                             tuneLength = 2,
                              preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_cv_form <- train(Class ~ ., data = training, 
-                            method = "polr", 
-                            trControl = cctrl1, 
-                            start = strt,
+                            method = "ordinalRF", 
+                            trControl = cctrl1,  
                             metric = "Kappa", 
                             preProc = c("center", "scale"))
 
@@ -66,54 +53,34 @@ test_class_prob <- predict(test_class_cv_model, testing[, -ncol(testing)], type 
 test_class_pred_form <- predict(test_class_cv_form, testing[, -ncol(testing)])
 test_class_prob_form <- predict(test_class_cv_form, testing[, -ncol(testing)], type = "prob")
 
-set.seed(849)
-test_class_loo_model <- train(trainX, trainY, 
-                              method = "polr", 
-                              start = strt, 
-                              trControl = cctrl2,
-                              metric = "Kappa", 
-                              preProc = c("center", "scale"))
+# set.seed(849)
+# test_class_loo_model <- train(trainX, trainY, 
+#                               method = "ordinalRF",
+#                               trControl = cctrl2,
+#                               metric = "Kappa",
+#                               tuneLength = 2,
+#                               preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_none_model <- train(trainX, trainY, 
-                               method = "polr", 
-                               trControl = cctrl3, 
-                               start = strt,
+                               method = "ordinalRF",
+                               trControl = cctrl3,  
                                tuneGrid = test_class_cv_model$bestTune,
                                metric = "Kappa", 
+                               tuneLength = 2,
                                preProc = c("center", "scale"))
 
 test_class_none_pred <- predict(test_class_none_model, testing[, -ncol(testing)])
 test_class_none_prob <- predict(test_class_none_model, testing[, -ncol(testing)], type = "prob")
 
-set.seed(849)
-test_class_cv_weight <- train(trainX, trainY, 
-                              weights = runif(nrow(trainX)),
-                              method = "polr", 
-                              trControl = cctrl4, 
-                              start = strt,
-                              tuneLength = 1,
-                              metric = "Accuracy", 
-                              preProc = c("center", "scale"))
-
-set.seed(849)
-test_class_loo_weight <- train(trainX, trainY, 
-                               weights = runif(nrow(trainX)),
-                               method = "polr", 
-                               trControl = cctrl5,
-                               tuneLength = 1, 
-                               start = strt,
-                               metric = "Accuracy", 
-                               preProc = c("center", "scale"))
 
 set.seed(849)
 test_class_rec <- train(x = rec_cls,
                         data = training,
-                        method = "polr", 
+                        method = "ordinalRF",
                         trControl = cctrl6,
-                        metric = "ROC",
-                        start = strt) # This will return warnings
-
+                        tuneLength = 2,
+                        metric = "AUC" ) # This will return warnings
 
 if(  !isTRUE(
   all.equal(test_class_cv_model$results[,'Accuracy'], 
@@ -122,8 +89,7 @@ if(  !isTRUE(
   
 }
 
-test_class_imp_rec <- varImp(test_class_rec)
-
+test_class_imp_rec <- varImp(test_class_rec) 
 
 test_class_pred_rec <- predict(test_class_rec, testing[, -ncol(testing)])
 test_class_prob_rec <- predict(test_class_rec, testing[, -ncol(testing)], 
@@ -152,6 +118,6 @@ save(list = c(tests, "sInfo", "timestamp", "timestamp_end"),
      file = file.path(getwd(), paste(model, ".RData", sep = "")))
 
 if(!interactive())
-   q("no")
+  q("no")
 
 

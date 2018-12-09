@@ -75,14 +75,14 @@ pred_failed <- function(x)
 holdout_rec <- function(object, dat, index) {
   ##
   ho_data <- bake(object$recipe,
-                  newdata = subset_x(dat, index),
+                  new_data = subset_x(dat, index),
                   all_outcomes())
   names(ho_data) <- "obs"
   ## ~~~~~~ move these two to other functions:
   wt_cols <- role_cols(object$recipe, "case weight")
   if(length(wt_cols) > 0) {
     wts <- bake(object$recipe,
-                newdata = subset_x(dat, index),
+                new_data = subset_x(dat, index),
                 has_role("case weight"))
     ho_data$weights <- get_vector(wts)
     rm(wts)
@@ -90,7 +90,7 @@ holdout_rec <- function(object, dat, index) {
   perf_cols <- role_cols(object$recipe, "performance var")
   if(length(perf_cols) > 0) {
     perf_data <- bake(object$recipe,
-                      newdata = subset_x(dat, index),
+                      new_data = subset_x(dat, index),
                       has_role("performance var"))
     ho_data <- cbind(ho_data, perf_data)
   }
@@ -130,7 +130,7 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
   }
 
   trained_rec <- prep(rec, training = dat, fresh = TRUE,
-                      verbose = FALSE, stringsAsFactors = TRUE,
+                      verbose = FALSE, strings_as_factors = TRUE,
                       retain = TRUE)
   x <- juice(trained_rec, all_predictors())
   y <- juice(trained_rec, all_outcomes())
@@ -174,7 +174,7 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
 
 #' @importFrom recipes bake all_predictors
 rec_pred <- function (method, object, newdata, param = NULL)  {
-  x <- bake(object$recipe, newdata = newdata, all_predictors())
+  x <- bake(object$recipe, new_data = newdata, all_predictors())
   out <- method$predict(modelFit = object$fit, newdata = x,
                         submodels = param)
   if(is.matrix(out) | is.data.frame(out))
@@ -184,7 +184,7 @@ rec_pred <- function (method, object, newdata, param = NULL)  {
 
 #' @importFrom recipes bake all_predictors
 rec_prob <- function (method, object, newdata = NULL, param = NULL)  {
-  x <- bake(object$recipe, newdata = newdata, all_predictors())
+  x <- bake(object$recipe, new_data = newdata, all_predictors())
   obsLevels <- levels(object$fit)
   classProb <- method$prob(modelFit = object$fit, newdata = x,
                            submodels = param)

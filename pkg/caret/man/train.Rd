@@ -278,20 +278,20 @@ cox2_recipe <- recipe(potency ~ ., data = cox2) \%>\%
   ## Remove sparse and unbalanced predictors
   step_nzv(all_predictors()) \%>\%
   ## Surface area predictors are highly correlated so
-  ## conduct PCA just on these. 
-  step_pca(contains("VSA"), prefix = "surf_area_", 
+  ## conduct PCA just on these.
+  step_pca(contains("VSA"), prefix = "surf_area_",
            threshold = .95) \%>\%
   ## Remove other highly correlated predictors
-  step_corr(all_predictors(), -starts_with("surf_area_"), 
+  step_corr(all_predictors(), -starts_with("surf_area_"),
             threshold = .90) \%>\%
   ## Center and scale all of the non-PCA predictors
   step_center(all_predictors(), -starts_with("surf_area_")) \%>\%
   step_scale(all_predictors(), -starts_with("surf_area_"))
 
 set.seed(888)
-cox2_lm <- train(cox2_recipe, 
+cox2_lm <- train(cox2_recipe,
                  data = cox2,
-                 method = "lm", 
+                 method = "lm",
                  trControl = trainControl(method = "cv"))
 
 #######################################

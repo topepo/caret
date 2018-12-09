@@ -55,13 +55,13 @@ Box-Cox transformation?}
 
 \item{verbose}{a logical: prints a log as the computations proceed}
 
-\item{freqCut}{the cutoff for the ratio of the most common value to the 
+\item{freqCut}{the cutoff for the ratio of the most common value to the
 second most common value. See \code{\link{nearZeroVar}}.}
 
-\item{uniqueCut}{the cutoff for the percentage of distinct values out of 
+\item{uniqueCut}{the cutoff for the percentage of distinct values out of
 the number of total samples. See \code{\link{nearZeroVar}}.}
 
-\item{cutoff}{a numeric value for the pair-wise absolute correlation cutoff. 
+\item{cutoff}{a numeric value for the pair-wise absolute correlation cutoff.
 See \code{\link{findCorrelation}}.}
 
 \item{rangeBounds}{a two-element numeric vector specifying closed interval
@@ -78,8 +78,8 @@ used for each } \item{dim}{the dimensions of \code{x}} \item{bc}{Box-Cox
 transformation values, see \code{\link{BoxCoxTrans}}} \item{mean}{a vector
 of means (if centering was requested)} \item{std}{a vector of standard
 deviations (if scaling or PCA was requested)} \item{rotation}{a matrix of
-eigenvectors if PCA was requested} \item{method}{the value of\code{method}}
-\item{thresh}{the value of\code{thresh}} \item{ranges}{a matrix of min and
+eigenvectors if PCA was requested} \item{method}{the value of \code{method}}
+\item{thresh}{the value of \code{thresh}} \item{ranges}{a matrix of min and
 max values for each predictor when \code{method} includes "range" (and
 \code{NULL} otherwise)} \item{numComp}{the number of principal components
 required of capture the specified amount of variance} \item{ica}{contains

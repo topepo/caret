@@ -1,0 +1,3 @@
+# CODEOWNERS for caret
+# https://www.tidyverse.org/development/understudies
+.github/CODEOWNERS @topepo @alexpghayes

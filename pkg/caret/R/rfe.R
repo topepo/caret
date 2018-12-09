@@ -1033,7 +1033,7 @@ gamFuncs <- list(summary = defaultSummary,
 rfFuncs <-  list(summary = defaultSummary,
                  fit = function(x, y, first, last, ...) {
                    loadNamespace("randomForest")
-                   randomForest::randomForest(x, y, importance = (first|last), ...)
+                   randomForest::randomForest(x, y, importance = TRUE, ...)
                  },
                  pred = function(object, x)  {
                    tmp <- predict(object, x)
@@ -1054,8 +1054,9 @@ rfFuncs <-  list(summary = defaultSummary,
                    }
 
                    vimp <- vimp[order(vimp$Overall, decreasing = TRUE),, drop = FALSE]
-
-                   vimp$var <- rownames(vimp)
+                   if (ncol(x) == 1) {
+                     vimp$var <- colnames(x)
+                   } else vimp$var <- rownames(vimp)
                    vimp
                  },
                  selectSize = pickSizeBest,

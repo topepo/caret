@@ -184,7 +184,7 @@ The package has several functions for visualizing the results. One method for do
 ggplot(plsFit)
 ```
 
-To predict new samples, `predict.train` can be used. For classification models, the default behavior is to calculated the predicted class. Using the option `type = "prob"` can be used to compute class probabilities from the model. For example:
+To predict new samples, `predict.train` can be used. For classification models, the default behavior is to calculate the predicted class. The option `type = "prob"` can be used to compute class probabilities from the model. For example:
 
 ```{r plsPred}
 plsClasses <- predict(plsFit, newdata = testing)

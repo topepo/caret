@@ -21,7 +21,8 @@ performance.}
 \item{verbose}{a logical to print logs to the screen as models are fit}
 
 \item{\dots}{options to pass to \code{\link{train}} to specify the model.
-These should not include \code{x}, \code{y}, \code{formula}, or \code{data}.}
+These should not include \code{x}, \code{y}, \code{formula}, or \code{data}.
+If \code{trainControl} is used here, do not use \code{method = "none"}.}
 }
 \value{
 a data frame with columns for each performance metric calculated by
@@ -54,19 +55,19 @@ set.seed(1412)
 class_dat <- twoClassSim(1000)
 
 set.seed(29510)
-lda_data <- learing_curve_dat(dat = class_dat, 
+lda_data <- learing_curve_dat(dat = class_dat,
                               outcome = "Class",
-                              test_prop = 1/4, 
+                              test_prop = 1/4,
                               ## `train` arguments:
-                              method = "lda", 
+                              method = "lda",
                               metric = "ROC",
-                              trControl = trainControl(classProbs = TRUE, 
+                              trControl = trainControl(classProbs = TRUE,
                                                        summaryFunction = twoClassSummary))
 
 
 
-ggplot(lda_data, aes(x = Training_Size, y = ROC, color = Data)) + 
-  geom_smooth(method = loess, span = .8) + 
+ggplot(lda_data, aes(x = Training_Size, y = ROC, color = Data)) +
+  geom_smooth(method = loess, span = .8) +
   theme_bw()
  }
 

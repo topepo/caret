@@ -68,6 +68,9 @@ modelInfo <- list(label = "Cubist",
                     rownames(out) <- object$usage$Variable
                     out
                   },
+                  predictors = function(x, ...) {
+                    subset(x$usage, Conditions > 0 | Model > 0)$Variable
+                  },
                   tags = c("Rule-Based Model", "Boosting", "Ensemble Model", 
                            "Prototype Models", "Model Tree", "Linear Regression",
                            "Implicit Feature Selection"),

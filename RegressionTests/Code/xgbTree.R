@@ -148,7 +148,7 @@ tmp <- training
 tmp$wts <- training_weight
 
 class_rec <- recipe(Class ~ ., data = tmp) %>%
-  add_role(wts, new_role = "case weight") %>%
+  update_role(wts, new_role = "case weight") %>%
   step_center(all_predictors()) %>%
   step_scale(all_predictors())
 
