@@ -1552,7 +1552,7 @@ update.gafs <- function(object, iter, x, y, ...) {
             ga_verbose = gafsControl$verbose,
             testX = x[ gafsControl$indexOut[[i]], , drop=FALSE],
             testY = y[ gafsControl$indexOut[[i]] ],
-            testPef = perf_data[ gafsControl$indexOut[[i]], , drop=FALSE],
+            testPerf = perf_data[ gafsControl$indexOut[[i]], , drop=FALSE],
             ga_seed = gafsControl$seeds[i],
             Resample = names(gafsControl$index)[i],
             holdout = gafsControl$holdout,
