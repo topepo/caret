@@ -1411,9 +1411,9 @@ update.safs <- function(object, iter, x, y, ...) {
       x_tr <- juice(resampled_rec, all_predictors(), composition = "data.frame")
       y_tr <- juice(resampled_rec, all_outcomes(), composition = "data.frame")
       y_tr <- y_tr[[1]]
-      x_te <- bake(resampled_rec, newdata = data[ -safsControl$index[[i]], ],
+      x_te <- bake(resampled_rec, new_data = data[ -safsControl$index[[i]], ],
                    all_predictors(), composition = "data.frame")
-      y_te <- bake(resampled_rec, newdata = data[ -safsControl$index[[i]], ],
+      y_te <- bake(resampled_rec, new_data = data[ -safsControl$index[[i]], ],
                    all_outcomes(), composition = "data.frame")
       y_te <- y_te[[1]]
 
@@ -1421,7 +1421,7 @@ update.safs <- function(object, iter, x, y, ...) {
         perf_tr <- juice(resampled_rec, has_role("performance var"))
         perf_te <- bake(
           resampled_rec,
-          newdata = data[ -safsControl$index[[i]], ],
+          new_data = data[ -safsControl$index[[i]], ],
           has_role("performance var")
         )
       } else {

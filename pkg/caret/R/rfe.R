@@ -1883,13 +1883,13 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
       y <- juice(trained_rec, all_outcomes())[[1]]
       test_x <- bake(
         trained_rec,
-        newdata = data[-modelIndex, , drop = FALSE],
+        new_data = data[-modelIndex, , drop = FALSE],
         all_predictors(),
         composition = "data.frame"
       )
       test_y <- bake(
         trained_rec,
-        newdata = data[-modelIndex, , drop = FALSE],
+        new_data = data[-modelIndex, , drop = FALSE],
         all_outcomes()
       )[[1]]
 
@@ -1897,7 +1897,7 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
       if(any(is_perf)) {
         test_perf <- bake(
           trained_rec,
-          newdata = data[-modelIndex, , drop = FALSE],
+          new_data = data[-modelIndex, , drop = FALSE],
           has_role("performance var"),
           composition = "data.frame"
         )
@@ -2056,13 +2056,13 @@ rfe_rec_loo <- function(rec, data, sizes, ctrl, lev, ...) {
       y <- juice(trained_rec, all_outcomes())[[1]]
       test_x <- bake(
         trained_rec,
-        newdata = data[-modelIndex, , drop = FALSE],
+        new_data = data[-modelIndex, , drop = FALSE],
         all_predictors(),
         composition = "data.frame"
       )
       test_y <- bake(
         trained_rec,
-        newdata = data[-modelIndex, , drop = FALSE],
+        new_data = data[-modelIndex, , drop = FALSE],
         all_outcomes()
       )[[1]]
 
@@ -2070,7 +2070,7 @@ rfe_rec_loo <- function(rec, data, sizes, ctrl, lev, ...) {
       if(any(is_perf)) {
         test_perf <- bake(
           trained_rec,
-          newdata = data[-modelIndex, , drop = FALSE],
+          new_data = data[-modelIndex, , drop = FALSE],
           has_role("performance var"),
           composition = "data.frame"
         )
