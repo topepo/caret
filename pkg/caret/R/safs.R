@@ -1069,9 +1069,10 @@ sa_select <- function(x, y,
 ###################################################################
 ##
 
-#' @method plot safs
 #' @importFrom stats update
+#' @method plot safs
 #' @export
+#' @export plot.safs
 plot.safs <- function(x,
                       metric = x$control$metric["external"],
                       estimate = c("internal", "external"),
@@ -1121,6 +1122,16 @@ plot.safs <- function(x,
   }
   out
 }
+
+
+#' @method ggplot safs
+#' @export ggplot.safs
+#' @export
+#' @rdname plot.gafs
+ggplot.safs <-
+  function (data = NULL, mapping = NULL, ..., environment = NULL) {
+    plot.safs(x = data, ...)
+  }
 
 ###################################################################
 ##
@@ -1519,6 +1530,8 @@ update.safs <- function(object, iter, x, y, ...) {
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_sa$subsets[[best_index]]]
     }
+
+
     if(safsControl$verbose) cat("+ final model\n")
 
     fit <- safsControl$functions$fit(x[, best_vars, drop=FALSE], y, lev = lvls, last = TRUE, ...)

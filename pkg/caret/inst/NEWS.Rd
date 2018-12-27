@@ -6,6 +6,7 @@
 \section{Changes in version 6.0-82}{
   \itemize{
     \item A bug was fixed in simulated annealing feature selection where the number of variables perturbed was based on the total number of variables instead of the more appropriate number of variables in the current subset. 
+    \item Convenience functions \code{ggplot.gafs} and \code{ggplot.safs} were added.  
   }
 }
 

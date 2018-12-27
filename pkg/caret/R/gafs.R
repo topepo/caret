@@ -1184,7 +1184,11 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' @param metric the measure of performance to plot (e.g. RMSE, accuracy, etc)
 #' @param estimate the type of estimate: either "internal" or "external"
 #' @param output either "data", "ggplot" or "lattice"
-#' @param \dots options passed to \code{\link[lattice]{xyplot}}
+#' @param data,mapping,environment kept for consistency with
+#'  \code{ggplot} and are not used here.
+#' @param \dots For \code{plot} methods, these are options passed
+#'  to \code{\link[lattice]{xyplot}}. For \code{ggplot} methods,
+#'  they are not used.
 #' @return Either a data frame, ggplot object or lattice object
 #' @author Max Kuhn
 #' @seealso \code{\link{gafs}}, \code{\link{safs}},
@@ -1269,6 +1273,16 @@ plot.gafs <- function(x,
   }
   out
 }
+
+
+#' @method ggplot gafs
+#' @export ggplot.gafs
+#' @export
+#' @rdname plot.gafs
+ggplot.gafs <-
+  function (data = NULL, mapping = NULL, ..., environment = NULL) {
+    plot.gafs(x = data, ...)
+  }
 
 ###################################################################
 ##
