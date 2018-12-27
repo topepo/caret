@@ -1653,6 +1653,13 @@ update.gafs <- function(object, iter, x, y, ...) {
 
     fit <- gafsControl$functions$fit(x[, best_vars, drop=FALSE], y, lev = lvls, last = TRUE, ...)
     endTime <- proc.time()
+
+    # remove some items that won't be used again
+    final_ga$sa$fit <- NULL
+    final_ga$sa$final <- NULL
+    final_ga$sa$diffs <- NULL
+    trained_rec$template <- NULL
+
     res <- list(fit = fit,
                 ga = final_ga,
                 ga_param = list(popSize = popSize,

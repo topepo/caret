@@ -1537,6 +1537,13 @@ update.safs <- function(object, iter, x, y, ...) {
     fit <- safsControl$functions$fit(x[, best_vars, drop=FALSE], y, lev = lvls, last = TRUE, ...)
 
     endTime <- proc.time()
+
+    # remove some items that won't be used again
+    final_sa$sa$fit <- NULL
+    final_sa$sa$final <- NULL
+    final_sa$sa$diffs <- NULL
+    trained_rec$template <- NULL
+
     res <- list(
       fit = fit,
       sa = final_sa,
