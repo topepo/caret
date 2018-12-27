@@ -584,7 +584,7 @@ safs <- function (x, ...) UseMethod("safs")
     external <- result[names(result) == "external"]
     external <- do.call("rbind", external)
     rownames(external) <- NULL
-    internal <- result[names(result) == "table"]
+    internal <- result[names(result) == "internal"]
     internal <- do.call("rbind", internal)
     rownames(internal) <- NULL
     selected_vars <- result[names(result) == "final"]
@@ -1057,7 +1057,7 @@ sa_select <- function(x, y,
                                        external[, !(names(external) %in% sa_external_names), drop = FALSE]),
                silent = TRUE)
   if(class(diffs)[1] == "try-error") diffs <- NULL
-  list(table = internal,
+  list(internal = internal,
        subsets = subsets,
        external = external,
        final = names(x)[best_subset],
@@ -1463,7 +1463,7 @@ update.safs <- function(object, iter, x, y, ...) {
     external <- result[names(result) == "external"]
     external <- do.call("rbind", external)
     rownames(external) <- NULL
-    internal <- result[names(result) == "table"]
+    internal <- result[names(result) == "internal"]
     internal <- do.call("rbind", internal)
     rownames(internal) <- NULL
     selected_vars <- result[names(result) == "final"]
