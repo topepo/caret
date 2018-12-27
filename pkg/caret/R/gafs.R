@@ -33,7 +33,9 @@ ga_func_check <- function(x) {
                    mutation = c('population', 'parent', '...'),
                    selectIter = c('x', 'metric', 'maximize'))
 
-  for(i in names(x)) {
+  check_names <- names(x)
+  check_names <- check_names[check_names != "fitness_extern"]
+  for(i in check_names) {
     .args <- names(formals(x[[i]]))
     .check <- same_args(.args, expected[[i]])
     if(!.check) {
@@ -802,7 +804,12 @@ print.gafs <- function (x, top = 5,
 #'
 #' @export predict.gafs
 predict.gafs <- function (object, newdata, ...) {
-  newdata <- newdata[, object$optVariables, drop = FALSE]
+  if (any(names(object) == "recipe") && !is.null(object$recipe)) {
+    newdata <-
+      bake(object$recipe, newdata, all_predictors(), composition = "data.frame")
+  } else {
+    newdata <- newdata[, object$optVariables, drop = FALSE]
+  }
   object$control$functions$pred(object$fit, newdata)
 }
 
