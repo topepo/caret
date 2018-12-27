@@ -17,7 +17,6 @@ sa_func_check <- function(x) {
   expected <- list(fit = c('x', 'y', 'lev', 'last', '...'),
                    fitness_intern = c('object', 'x', 'y', 'maximize', 'p'),
                    pred = c('object', 'x'),
-                   fitness_extern = c('data', 'lev', 'model'),
                    initial = c('vars', 'prob', '...'),
                    perturb = c('x', 'vars', 'number'),
                    prob = c('old', 'new', 'iteration'),
