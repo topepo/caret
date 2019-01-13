@@ -19,13 +19,13 @@ modelInfo <- list(label = "Neural Network",
                                          dropout = seq(0, .7, length = len), 
                                          activation = 'relu')
                     } else {
-                      out <- data.frame(layer1 = sample(2:20, replace = TRUE, size = len),
+                      out <- data.frame(layer1 = sample(2:20, replace = FALSE, size = len),
                                         layer2 = 0,
                                         layer3 = 0,
                                         learning.rate = runif(len),
                                         momentum = runif(len),
                                         dropout = runif(len, max = .7),
-                                        activation = sample(c('relu', 'sigmoid', 'tanh', 'softrelu'), replace= TRUE, size=len))
+                                        activation = sample(c('relu', 'sigmoid', 'tanh', 'softrelu'), replace= FALSE, size=len))
                     }
                     out
                   },
