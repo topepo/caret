@@ -56,7 +56,7 @@ findCorrelation_exact <- function(x, cutoff = 0.90, verbose = FALSE)
   
   for (i in 1:(varnum - 1)) {
     if(!any(x2[!is.na(x2)] > cutoff)){
-      if (verbose) cat("All correlations <=", cutoff, "\n")
+      if (verbose) cat("All correlations >=", cutoff, "\n")
       break()
     }
     if (deletecol[i]) next
