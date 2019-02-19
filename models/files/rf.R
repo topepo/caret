@@ -13,7 +13,7 @@ modelInfo <- list(label = "Random Forest",
                     } else {
                       out <- data.frame(mtry = unique(sample(1:ncol(x), size = len, replace = TRUE)))
                     }
-                    out
+                    out[!duplicated(out), ]
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...)
                     randomForest::randomForest(x, y, mtry = param$mtry, ...),

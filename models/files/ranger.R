@@ -40,7 +40,7 @@ modelInfo <- list(label = "Random Forest",
                           splitrule = sample(srules, size = len, replace = TRUE)
                         )
                     }
-                    out
+                    out[!duplicated(out), ]
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if((!is.data.frame(x))||dplyr::is.tbl(x)) x <- as.data.frame(x)

@@ -15,7 +15,7 @@ modelInfo <- list(label = "Random Forest",
                       out <- data.frame(predFixed = sample(1:ncol(x), size = len, replace = TRUE), #removed unique
                                         minNode = sample(1:(min(20,nrow(x))), size = len, replace = TRUE)) # might cause warning for very small samples < 20
                     }
-                    out
+                    out[!duplicated(out), ]
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
                     Rborist::Rborist(x, y, predFixed = param$predFixed, minNode = param$minNode, ...)
