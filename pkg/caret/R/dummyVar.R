@@ -242,8 +242,6 @@ predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
       for(j in object$lvls[[i]]) {
         from_text <- paste0(i, j)
         to_text <- paste(i, j, sep = object$sep)
-#        cnames <- gsub(from_text, to_text, cnames, fixed = TRUE)
-#        cnames <- stringi::stri_replace_last(str = cnames, replacement = to_text, regex = from_text)
         cnames[which(cnames == from_text)] <- stringi::stri_replace_last(str = cnames[which(cnames == from_text)], replacement = to_text, regex = from_text)
       }
     }
