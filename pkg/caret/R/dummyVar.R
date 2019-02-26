@@ -23,7 +23,7 @@
 #'            1      0      0      0      1      0      0}
 #'
 #' In some situations, there may be a need for dummy variables for all the
-#' levels of the factor. For the same example: 
+#' levels of the factor. For the same example:
 #' \preformatted{ dayMon dayTue dayWed dayThu dayFri daySat daySun
 #'       1      0      0      0      0      0      0
 #'       1      0      0      0      0      0      0
@@ -73,7 +73,7 @@
 #' logical}
 #'
 #' The \code{predict} function produces a data frame.
-#' 
+#'
 #' \code{class2ind} returns a matrix (or a vector if \code{drop2nd = TRUE}).
 #'
 #' \code{contr.ltfr} generates a design matrix.
@@ -122,7 +122,7 @@
 #' predict(noNames, when)
 #'
 #' head(class2ind(iris$Species))
-#' 
+#'
 #' two_levels <- factor(rep(letters[1:2], each = 5))
 #' class2ind(two_levels)
 #' class2ind(two_levels, drop2nd = TRUE)
@@ -140,7 +140,7 @@ dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, ful
 {
   formula <- as.formula(formula)
   if(!is.data.frame(data)) data <- as.data.frame(data)
-  
+
   vars <- all.vars(formula)
   if(any(vars == "."))
   {
@@ -179,7 +179,7 @@ dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, ful
               fullRank = fullRank)
   class(out) <- "dummyVars"
   out
-  
+
 }
 
 #' @rdname dummyVars
@@ -224,14 +224,14 @@ predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
     on.exit(options(contrasts = oldContr))
   }
   m <- model.frame(Terms, newdata, na.action = na.action, xlev = object$lvls)
-  
+
   x <- model.matrix(Terms, m)
-  
+
   if(object$levelsOnly) {
     for(i in object$facVars) {
       for(j in object$lvls[[i]]) {
         from_text <- paste0(i, j)
-        colnames(x) <- gsub(from_text, j, colnames(x), fixed = TRUE)
+        colnames(x)[which(colnames(x) == from_text)] <- stringi::stri_replace_last(str = colnames(x)[which(colnames(x) == from_text)], replacement = j, regex = from_text)
       }
     }
   }
@@ -242,7 +242,9 @@ predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
       for(j in object$lvls[[i]]) {
         from_text <- paste0(i, j)
         to_text <- paste(i, j, sep = object$sep)
-        cnames <- gsub(from_text, to_text, cnames, fixed = TRUE)
+#        cnames <- gsub(from_text, to_text, cnames, fixed = TRUE)
+#        cnames <- stringi::stri_replace_last(str = cnames, replacement = to_text, regex = from_text)
+        cnames[which(cnames == from_text)] <- stringi::stri_replace_last(str = cnames[which(cnames == from_text)], replacement = to_text, regex = from_text)
       }
     }
   }
@@ -291,7 +293,7 @@ contr.dummy <- function(n, ...)
 #' @rdname dummyVars
 #' @importFrom stats model.matrix
 #' @export
-#' @param drop2nd A logical: if the factor has two levels, should a single binary vector be returned?  
+#' @param drop2nd A logical: if the factor has two levels, should a single binary vector be returned?
 class2ind <- function(x, drop2nd = FALSE) {
   if(!is.factor(x)) stop("'x' should be a factor")
   y <- model.matrix(~ x - 1)
