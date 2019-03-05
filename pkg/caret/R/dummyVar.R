@@ -227,22 +227,36 @@ predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
 
   x <- model.matrix(Terms, m)
 
+  cnames <- colnames(x)
   if(object$levelsOnly) {
     for(i in object$facVars) {
       for(j in object$lvls[[i]]) {
         from_text <- paste0(i, j)
-        colnames(x)[which(colnames(x) == from_text)] <- stringi::stri_replace_last(str = colnames(x)[which(colnames(x) == from_text)], replacement = j, regex = from_text)
+        cnames[which(cnames == from_text)] <- j
       }
     }
   }
-  cnames <- colnames(x)
   if(!is.null(object$sep) & !object$levelsOnly) {
     for(i in object$facVars[order(-nchar(object$facVars))]) {
       ## the default output form model.matrix is NAMElevel with no separator.
       for(j in object$lvls[[i]]) {
         from_text <- paste0(i, j)
         to_text <- paste(i, j, sep = object$sep)
-        cnames[which(cnames == from_text)] <- stringi::stri_replace_last(str = cnames[which(cnames == from_text)], replacement = to_text, regex = from_text)
+        pos = which(cnames == from_text)
+        # If there are several identical NAMElevel matching (example: "X1" with level "11" and "X11" with level "1")
+        if (length(pos) > 1) {
+          # If the level j is not the first level of the feature i
+          if (which(object$lvls[[i]] == j) > 1) {
+            # Then we just have to test for the preceding NAMElevel being NAME(level-1)
+            cnames[pos][cnames[pos-1] == paste(i, object$lvls[[i]][which(object$lvls[[i]] == j)-1], sep = object$sep)] <- to_text
+          } else {
+            # Otherwise, we have to test for the preceding NAMElevel being (NAME-1)(last_level)
+            cnames[pos][cnames[pos-1] == paste(object$facVars[order(-nchar(object$facVars))][which(object$facVars[order(-nchar(object$facVars))] == i) - 1], utils::tail(object$lvls[[object$facVars[order(-nchar(object$facVars))][which(object$facVars[order(-nchar(object$facVars))] == i) - 1]]],n=1), sep = object$sep)] <- to_text
+          }
+        } else {
+          # Otherwise simply replace the last occurence of the pattern
+          cnames[pos] <- to_text
+        }
       }
     }
   }

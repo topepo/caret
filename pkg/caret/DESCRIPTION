@@ -15,7 +15,6 @@ Depends:
 URL: https://github.com/topepo/caret/
 BugReports: https://github.com/topepo/caret/issues
 Imports:
-    stringi,
     foreach,
     methods,
     plyr,
