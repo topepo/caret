@@ -119,7 +119,7 @@ x <- as.data.frame(x)
 
 We'll fit a random forest model and use the out-of-bag RMSE estimate as the internal performance metric and use the same repeated 10-fold cross-validation process used with the search. To do this, we'll use the built-in `rfGA` object for this purpose. The default GA operators will be used and conduct 200 generations of the algorithm.
 
-```{r ga_rf,cache=TRUE}
+```{r ga_rf}
 ga_ctrl <- gafsControl(functions = rfGA,
                        method = "repeatedcv",
                        repeats = 5)

@@ -413,7 +413,7 @@ What was the distribution of the maximum number of terms:
 term_dist <- 
   lm_rfe$resample %>% 
   group_by(Resample) %>% 
-  summarize(max_terms = max(Variables))
+  dplyr::summarize(max_terms = max(Variables))
 table(term_dist$max_terms)
 ```
 
