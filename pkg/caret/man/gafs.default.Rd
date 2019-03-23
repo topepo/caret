@@ -3,9 +3,14 @@
 \name{gafs.default}
 \alias{gafs.default}
 \alias{gafs}
+\alias{gafs.recipe}
 \title{Genetic algorithm feature selection}
 \usage{
 \method{gafs}{default}(x, y, iters = 10, popSize = 50,
+  pcrossover = 0.8, pmutation = 0.1, elite = 0, suggestions = NULL,
+  differences = TRUE, gafsControl = gafsControl(), ...)
+
+\method{gafs}{recipe}(x, data, iters = 10, popSize = 50,
   pcrossover = 0.8, pmutation = 0.1, elite = 0, suggestions = NULL,
   differences = TRUE, gafsControl = gafsControl(), ...)
 }
@@ -37,6 +42,9 @@ and without each predictor be calculated?}
 \code{\link{gafsControl}} and URL.}
 
 \item{...}{additional arguments to be passed to other methods}
+
+\item{data}{Data frame from which variables specified in
+\code{formula} or \code{recipe} are preferentially to be taken.}
 }
 \value{
 an object of class \code{gafs}

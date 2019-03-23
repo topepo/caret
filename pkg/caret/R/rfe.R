@@ -32,8 +32,8 @@
 #'
 #' @aliases rfe rfe.default rfeIter predict.rfe update.rfe
 #' @param x A matrix or data frame of predictors for model training. This
-#' object must have unique column names. For the recipes method, \code{x} 
-#' is a recipe object. 
+#' object must have unique column names. For the recipes method, \code{x}
+#' is a recipe object.
 #' @param y a vector of training set outcomes (either numeric or factor)
 #' @param testX a matrix or data frame of test set predictors. This must have
 #' the same column names as \code{x}
@@ -324,7 +324,9 @@ rfe <- function (x, ...) UseMethod("rfe")
   }
 
 #' @method rfe formula
+#' @inheritParams train
 #' @importFrom stats .getXlevels contrasts model.matrix model.response
+#' @rdname rfe
 #' @export
 rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
 {
@@ -540,7 +542,7 @@ rfeIter <- function(x, y,
 #' @return a lattice or ggplot object
 #' @note We using a recipe as an input, there may be some subset sizes that are
 #'  not well-replicated over resamples. The `ggplot` method will only show
-#'  subset sizes where at least half of the resamples have associated results. 
+#'  subset sizes where at least half of the resamples have associated results.
 #' @author Max Kuhn
 #' @seealso \code{\link{rfe}}, \code{\link[lattice]{xyplot}},
 #' \code{\link[ggplot2]{ggplot}}
@@ -1345,7 +1347,7 @@ predict.rfe <- function(object, newdata, ...) {
     if (xint > 0)  newdata <- newdata[, -xint, drop = FALSE]
   } else {
     if (any(names(object) == "recipe")) {
-      newdata <- 
+      newdata <-
         bake(object$recipe, newdata, all_predictors(), composition = "data.frame")
     }
   }
@@ -1549,6 +1551,7 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
 }
 
 #' @method rfe recipe
+#' @rdname rfe
 #' @export
 "rfe.recipe" <-
   function(x,
@@ -1870,9 +1873,9 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
       if (ctrl$verbose)
         cat("+(rfe)",
             names(resampleIndex)[iter],
-            "recipe", 
+            "recipe",
             "\n")
-      
+
       trained_rec <- prep(
         rec, training = data[modelIndex,,drop = FALSE], fresh = TRUE,
         verbose = FALSE, stringsAsFactors = TRUE,
@@ -1923,13 +1926,13 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
           "The `sizes` values are inconsistent with this.",
           call. = FALSE
         )
-      
+
       if (ctrl$verbose)
         cat("-(rfe)",
             names(resampleIndex)[iter],
-            "recipe", 
+            "recipe",
             "\n")
-      
+
       rfeResults <- rfe_rec(
         x, y,
         test_x, test_y,
@@ -2000,10 +2003,10 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
     plyr::ddply(resamples[, !grepl("\\.cell|Resample", colnames(resamples)), drop = FALSE],
                 .(Variables),
                 function(x) c(Num_Resamples = nrow(x)))
-  
+
   externPerf <- merge(externPerf, numVars, by = "Variables", all = TRUE)
   externPerf <- externPerf[order(externPerf$Variables),, drop = FALSE]
-  
+
   if (ctrl$method %in% c("boot632")) {
     externPerf <- merge(externPerf, apparent)
     for (p in seq(along = perfNames)) {

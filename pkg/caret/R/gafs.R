@@ -895,6 +895,7 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' mind that if multiple levels of parallelization occur, this can effect the
 #' number of workers and the amount of memory required exponentially.
 #'
+#' @inheritParams train
 #' @aliases gafs.default gafs
 #' @param x An object where samples are in rows and features are in columns.
 #' This could be a simple matrix, data frame or other type (e.g. sparse
@@ -1431,7 +1432,8 @@ update.gafs <- function(object, iter, x, y, ...) {
   out
 }
 
-
+#' @rdname gafs.default
+#' @method gafs recipe
 #' @export
 "gafs.recipe" <-
   function(x, data,

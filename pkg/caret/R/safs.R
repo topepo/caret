@@ -1296,6 +1296,7 @@ update.safs <- function(object, iter, x, y, ...) {
 }
 
 #' @rdname safs
+#' @method safs recipe
 #' @import recipes
 #' @export
 "safs.recipe" <-

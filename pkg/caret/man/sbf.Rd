@@ -15,9 +15,9 @@ sbf(x, ...)
 \method{sbf}{formula}(form, data, ..., subset, na.action,
   contrasts = NULL)
 
-\method{predict}{sbf}(object, newdata = NULL, ...)
-
 \method{sbf}{recipe}(x, data, sbfControl = sbfControl(), ...)
+
+\method{predict}{sbf}(object, newdata = NULL, ...)
 }
 \arguments{
 \item{x}{a data frame containing training data where samples are in rows and
