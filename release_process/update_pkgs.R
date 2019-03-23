@@ -7,19 +7,20 @@ fresh <- TRUE ## starting from a fresh, bare version of R
 ## Get Bioconductor packages
 ## try http:// if https:// URLs are not supported
 
-source("https://bioconductor.org/biocLite.R")
-biocLite("BiocInstaller")
+install.packages(c("BiocManager"), repos = "http://cran.r-project.org", type = "binary")
 
-library(BiocInstaller)
+library(BiocManager)
 #useDevel()
 
 if (Sys.info()["sysname"] == "Linux") {
-  biocLite(c("vbmp", "gpls", "logicFS", "graph", "RBGL"),
-           dependencies = c("Depends", "Imports"))
+  BiocManager::install(c("vbmp", "gpls", "logicFS", "graph", "RBGL"),
+                       dependencies = c("Depends", "Imports"),
+                       update = FALSE, ask = FALSE)
 } else {
-  biocLite(c("vbmp", "gpls", "logicFS", "graph", "RBGL"),
+  BiocManager::install(c("vbmp", "gpls", "logicFS", "graph", "RBGL"),
            type = "both",
-           dependencies = c("Depends", "Imports"))
+           dependencies = c("Depends", "Imports"),
+           update = FALSE, ask = FALSE)
 }
 
 
@@ -68,30 +69,38 @@ options(repos = "http://cran.r-project.org")
 all_pkg <- rownames(available.packages(type = "source"))
 
 diffs <- libs[!(libs %in% all_pkg)]
-if(length(diffs) > 0) print(diffs)
+if (length(diffs) > 0) print(diffs)
 
 ###################################################################
 ## Install the files. This might re-install caret so beware.
 
 # devtools::install_github('dmlc/xgboost',subdir='R-package')
 
+libs <- sort(libs)
+n <- length(libs)
 
+for (i in seq_along(libs)) {
+  if (fresh)
+    good <- rownames(installed.packages())
+  if (fresh && !(libs[i] %in% good)) {
+    cat(
+      "----------------------------------------------------------------\n",
+      libs[i], " (", i, " of ", n,
+      ")\n\n", sep = ""
+    )
 
-for(i in sort(libs)) {
-  if(fresh) good <- rownames(installed.packages())
-  if(fresh && !(i %in% good)) {
-    cat("----------------------------------------------------------------\n",
-        i, "\n\n")
-
-    # some of these need to be installed with bioClite - znmeb, 20161221
-    if (Sys.info()["sysname"] == "Linux") {
-      biocLite(i, ask = FALSE, suppressUpdates = FALSE)
-    } else {
-      biocLite(i, type = "source", ask = FALSE, suppressUpdates = FALSE)
-    }
+    BiocManager::install(
+      libs[i],
+      type = "both",
+      dependencies = c("Depends", "Imports"),
+      update = FALSE,
+      ask = FALSE
+    )
     cat("\n\n")
   }
 }
+
+warnings()
 
 ###################################################################
 ## Install orphaned packages: CHAID, rknn, SDDA
