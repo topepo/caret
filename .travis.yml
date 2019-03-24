@@ -14,7 +14,7 @@ r:
 
 matrix:
   allow_failures:
-    - r: 3.4.4
+    - r: oldrel
 
 r_packages: 
   - covr
