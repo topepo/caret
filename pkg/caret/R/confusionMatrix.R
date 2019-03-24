@@ -659,6 +659,7 @@ print.confusionMatrix <- function(x, mode = x$mode, digits = max(3, getOption("d
                      paste(overall[c("AccuracyNull", "AccuracyPValue")]),
                      "",
                      paste(overall["Kappa"]),
+                     "",
                      paste(overall["McnemarPValue"]))
 
     overallNames <- c("Accuracy", "95% CI",
@@ -666,6 +667,7 @@ print.confusionMatrix <- function(x, mode = x$mode, digits = max(3, getOption("d
                       "P-Value [Acc > NIR]",
                       "",
                       "Kappa",
+                      "",
                       "Mcnemar's Test P-Value")
 
     if(dim(x$table)[1] > 2){
