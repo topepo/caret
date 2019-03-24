@@ -12,6 +12,10 @@ r:
   - release
   - devel
 
+matrix:
+  allow_failures:
+    - r: 3.4
+
 r_packages: 
   - covr
   - data.table
