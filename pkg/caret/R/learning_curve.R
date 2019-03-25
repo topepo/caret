@@ -39,15 +39,18 @@
 #' set.seed(1412)
 #' class_dat <- twoClassSim(1000)
 #'
+#' ctrl <- trainControl(classProbs = TRUE,
+#'                      summaryFunction = twoClassSummary)
+#'
 #' set.seed(29510)
-#' lda_data <- learing_curve_dat(dat = class_dat,
-#'                               outcome = "Class",
-#'                               test_prop = 1/4,
-#'                               ## `train` arguments:
-#'                               method = "lda",
-#'                               metric = "ROC",
-#'                               trControl = trainControl(classProbs = TRUE,
-#'                                                        summaryFunction = twoClassSummary))
+#' lda_data <-
+#'   learning_curve_dat(dat = class_dat,
+#'                      outcome = "Class",
+#'                      test_prop = 1/4,
+#'                      ## `train` arguments:
+#'                      method = "lda",
+#'                      metric = "ROC",
+#'                      trControl = ctrl)
 #'
 #'
 #'
@@ -56,8 +59,8 @@
 #'   theme_bw()
 #'  }
 #'
-#' @export learing_curve_dat
-learing_curve_dat <- function(dat,
+#' @export learning_curve_dat
+learning_curve_dat <- function(dat,
                               outcome = NULL,
                               proportion = (1:10)/10,
                               test_prop = 0,
@@ -84,7 +87,7 @@ learing_curve_dat <- function(dat,
                  y = dat[in_mod, outcome],
                  ...)
     if (mod$control$method == "none")
-      stop("`learing_curve_dat` uses resampling so please choose a value of ",
+      stop("`learning_curve_dat` uses resampling so please choose a value of ",
            "`method` that is not 'none'", call. = FALSE)
 
     if(i == 1) perf_names <- mod$perfNames

@@ -5,11 +5,12 @@
 
 \section{Changes in version 6.0-82}{
   \itemize{
-    \item The \code{earth} and \code{ctree} models were udpdate to fix bugs \issue{1022}\issue{1018}.
     \item Immediate and required updates related to the different behavior of \code{sample} in R >= 3.6.
     \item \code{sbf}, \code{gafs}, and \code{safs} now accept recipes as inputs. A few sections of documentation were added to the \href{https://topepo.github.io/caret}{bookdown site}
     \item A bug was fixed in simulated annealing feature selection where the number of variables perturbed was based on the total number of variables instead of the more appropriate number of variables in the current subset.
     \item Convenience functions \code{ggplot.gafs} and \code{ggplot.safs} were added.
+    \item \code{learning_curve_dat} now has a real name.
+    \item The \code{earth} and \code{ctree} models were udpdate to fix bugs \issue{1022}\issue{1018}.
   }
 }
 
