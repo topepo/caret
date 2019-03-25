@@ -48,6 +48,7 @@ set.seed(849)
 test_class_rand <- train(trainX, trainY, 
                          method = "earth", 
                          trControl = cctrlR,
+                         glm = list(family = binomial, control = list(maxit = 50)),
                          tuneLength = 4)
 
 set.seed(849)
