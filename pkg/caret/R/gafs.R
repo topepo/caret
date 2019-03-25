@@ -1368,19 +1368,32 @@ selectIter = best)
 #' @export
 update.gafs <- function(object, iter, x, y, ...) {
   iter <- iter[1]
-  if(iter > length(object$ga$subsets))
+  if (iter > length(object$ga$subsets))
     stop(paste("iter must be less than", length(object$ga$subsets)))
-  if(is.null(x) | is.null(y))
-    stop("the original training data is needed to refit the model")
-  args <- list(x = x[, object$ga$subsets[[iter]], drop=FALSE],
-               y = y, lev = object$levels, last = TRUE)
-  if(length(object$the_dots) > 0) args <- c(args, object$the_dots)
-  if(object$control$verbose)
+
+  if (!is.null(object$recipe)) {
+    if (is.null(object$recipe$template))
+      stop("Recipe is missing data to be juiced.", call. = FALSE)
+    args <-
+      list(x = juice(object$recipe, all_predictors(), composition = "data.frame"),
+           y = juice(object$recipe, all_outcomes(), composition = "data.frame")[[1]],
+           lev = object$levels,
+           last = TRUE)
+  } else {
+    if (is.null(x) | is.null(y))
+      stop("the original training data is needed to refit the model")
+    args <- list(x = x[, object$ga$subsets[[iter]], drop=FALSE],
+                 y = y, lev = object$levels, last = TRUE)
+  }
+
+  if (length(object$the_dots) > 0)
+    args <- c(args, object$the_dots)
+  if (object$control$verbose)
     cat("Refitting model to use", length(object$ga$subsets[[iter]]),
         "predictors from generation", iter, "\n")
   object$fit <- do.call(object$control$functions$fit, args)
   object$auto <- FALSE
-  object$optVariables <- colnames(x)[object$ga$subsets[[iter]]]
+  object$optVariables <- colnames(args$x)[object$ga$subsets[[iter]]]
   object$optIter <- iter
   object
 }
@@ -1667,7 +1680,6 @@ update.gafs <- function(object, iter, x, y, ...) {
     final_ga$sa$fit <- NULL
     final_ga$sa$final <- NULL
     final_ga$sa$diffs <- NULL
-    trained_rec$template <- NULL
 
     res <- list(fit = fit,
                 ga = final_ga,

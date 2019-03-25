@@ -1230,7 +1230,7 @@ selectIter = best)
 #' @param object An object produced by \code{\link{gafs}} or \code{\link{safs}}
 #' @param iter a single numeric integer
 #' @param x,y the original training data used in the call to \code{\link{gafs}}
-#' or \code{\link{safs}}
+#' or \code{\link{safs}}. Only required for non-recipe methods.
 #' @param \dots not currently used
 #' @return an object of class \code{\link{gafs}} or \code{\link{safs}}
 #' @author Max Kuhn
@@ -1263,19 +1263,31 @@ selectIter = best)
 #' @export
 update.safs <- function(object, iter, x, y, ...) {
   iter <- iter[1]
-  if(iter > length(object$sa$subsets))
+  if (iter > length(object$sa$subsets))
     stop(paste("iter must be less than", length(object$sa$subsets)))
-  if(is.null(x) | is.null(y))
-    stop("the original training data is needed to refit the model")
-  args <- list(x = x[, object$sa$subsets[[iter]], drop=FALSE],
-               y = y, lev = object$levels, last = TRUE)
-  if(length(object$the_dots) > 0) args <- c(args, object$the_dots)
-  if(object$control$verbose)
+  if (!is.null(object$recipe)) {
+    if (is.null(object$recipe$template))
+      stop("Recipe is missing data to be juiced.", call. = FALSE)
+    args <-
+      list(x = juice(object$recipe, all_predictors(), composition = "data.frame"),
+           y = juice(object$recipe, all_outcomes(), composition = "data.frame")[[1]],
+           lev = object$levels,
+           last = TRUE)
+  } else {
+    if (is.null(x) | is.null(y))
+      stop("the original training data is needed to refit the model")
+    args <- list(x = x[, object$sa$subsets[[iter]], drop=FALSE],
+                 y = y, lev = object$levels, last = TRUE)
+  }
+
+  if (length(object$the_dots) > 0)
+    args <- c(args, object$the_dots)
+  if (object$control$verbose)
     cat("Refitting model to use", length(object$sa$subsets[[iter]]),
         "predictors from iteration", iter, "\n")
   object$fit <- do.call(object$control$functions$fit, args)
   object$auto <- FALSE
-  object$optVariables <- colnames(x)[object$sa$subsets[[iter]]]
+  object$optVariables <- colnames(args$x)[object$sa$subsets[[iter]]]
   object$optIter <- iter
   object
 }
@@ -1550,7 +1562,6 @@ update.safs <- function(object, iter, x, y, ...) {
     final_sa$sa$fit <- NULL
     final_sa$sa$final <- NULL
     final_sa$sa$diffs <- NULL
-    trained_rec$template <- NULL
 
     res <- list(
       fit = fit,

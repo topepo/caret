@@ -1367,15 +1367,32 @@ update.rfe <- function(object, x, y, size, ...) {
   size <- size[1]
   selectedVars <- object$variables
   bestVar <- object$control$functions$selectVar(selectedVars, size)
-  object$fit <- object$control$functions$fit(x[, bestVar, drop = FALSE],
-                                             y,
-                                             first = FALSE,
-                                             last = TRUE,
-                                             ...)
+
+  if (!is.null(object$recipe)) {
+    if (is.null(object$recipe$template))
+      stop("Recipe is missing data to be juiced.", call. = FALSE)
+    args <-
+      list(
+        x = juice(object$recipe, all_predictors(), composition = "data.frame"),
+        y = juice(object$recipe, all_outcomes(), composition = "data.frame"),
+        first = FALSE, last = TRUE
+      )
+    args$y <- args$y[,1]
+  } else {
+    args <-
+      list(x = x, y = y, first = FALSE, last = TRUE)
+  }
+  args$x <- args$x[, bestVar, drop = FALSE]
+
+  if (length(object$dots) > 0)
+    args <- c(args, object$dots)
+
+  object$fit <- do.call(object$control$functions$fit, args)
+
   object$bestSubset <- size
   object$bestVar <- bestVar
 
-  if(object$control$returnResamp == "final") {
+  if (object$control$returnResamp == "final") {
     warning("The saved resamples are no longer appropriate and were removed")
     object$resampledCM <- object$resample <- NULL
   }
