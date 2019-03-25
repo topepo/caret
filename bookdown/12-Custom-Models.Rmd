@@ -764,7 +764,7 @@ thresh_code$grid <- function(x, y, len = NULL, search = "grid") {
                         threshold = seq(.01, .99, length = len))
     } else {
       grid <- expand.grid(mtry = sample(1:p, size = len),
-                          threshold = runif(1, 0, size = len))
+                          threshold = runif(runif, min = 0, max = 1))
       }
   grid
   }
