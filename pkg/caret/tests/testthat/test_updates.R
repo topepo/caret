@@ -51,9 +51,10 @@ test_that("safs updating", {
          method = "lm",
          trControl = trainControl(method = "cv")
     )
-  sa_xy_2 <- update(sa_xy, iter = 2, x = dat[, -y_ind], y = dat$y)
+  new_iter <- ifelse(sa_xy$optIter == 1, 2, 1)
+  sa_xy_2 <- update(sa_xy, iter = new_iter, x = dat[, -y_ind], y = dat$y)
   expect_true(diff_coef(sa_xy, sa_xy_2))
-  expect_error(update(sa_xy, iter = 2))
+  expect_error(update(sa_xy, iter = new_iter))
   
   rec <- recipe(y ~ ., data = dat) %>% 
     step_mutate(Var01 = Var01/2)
@@ -67,10 +68,11 @@ test_that("safs updating", {
          method = "lm",
          trControl = trainControl(method = "cv")
     )
-  sa_rec_2 <- update(sa_rec, iter = 2)
+  new_iter <- ifelse(sa_rec_2$optIter == 1, 2, 1)
+  sa_rec_2 <- update(sa_rec, iter = new_iter)
   expect_true(diff_coef(sa_rec, sa_rec_2))  
   sa_rec$recipe$template <- NULL
-  expect_error(update(sa_rec, iter = 2))
+  expect_error(update(sa_rec, iter = new_iter))
   
 })
 
@@ -90,9 +92,10 @@ test_that("gafs updating", {
          method = "lm",
          trControl = trainControl(method = "cv")
     )
-  ga_xy_2 <- update(ga_xy, iter = 2, x = dat[, -y_ind], y = dat$y)
+  new_iter <- ifelse(ga_xy$optIter == 1, 2, 1)
+  ga_xy_2 <- update(ga_xy, iter = new_iter, x = dat[, -y_ind], y = dat$y)
   expect_true(diff_coef(ga_xy, ga_xy_2))
-  expect_error(update(ga_xy, iter = 2))
+  expect_error(update(ga_xy, iter = new_iter))
   
   rec <- recipe(y ~ ., data = dat) %>% 
     step_mutate(Var01 = Var01/2)
@@ -107,10 +110,11 @@ test_that("gafs updating", {
          method = "lm",
          trControl = trainControl(method = "cv")
     )
-  ga_rec_2 <- update(ga_rec, iter = 2)
+  new_iter <- ifelse(ga_rec$optIter == 1, 2, 1)
+  ga_rec_2 <- update(ga_rec, iter = new_iter)
   expect_true(diff_coef(ga_rec, ga_rec_2))  
   ga_rec$recipe$template <- NULL
-  expect_error(update(ga_rec, iter = 2))
+  expect_error(update(ga_rec, iter = new_iter))
 
 })
 
