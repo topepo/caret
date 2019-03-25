@@ -68,7 +68,7 @@ test_that("safs updating", {
          method = "lm",
          trControl = trainControl(method = "cv")
     )
-  new_iter <- ifelse(sa_rec_2$optIter == 1, 2, 1)
+  new_iter <- ifelse(sa_rec$optIter == 1, 2, 1)
   sa_rec_2 <- update(sa_rec, iter = new_iter)
   expect_true(diff_coef(sa_rec, sa_rec_2))  
   sa_rec$recipe$template <- NULL
