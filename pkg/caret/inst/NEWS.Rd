@@ -11,6 +11,7 @@
     \item Convenience functions \code{ggplot.gafs} and \code{ggplot.safs} were added.
     \item \code{learning_curve_dat} now has a real name.
     \item The \code{earth} and \code{ctree} models were udpdate to fix bugs \issue{1022}\issue{1018}.
+    \item When a model has the same value for its resamples, \code{plot.resamples} and \code{ggplot.resamples} now produce an estimate and missing values for the intervals (instead of failing) \issue{1007}
   }
 }
 
