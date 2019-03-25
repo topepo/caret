@@ -17,7 +17,7 @@ Contents
  - [Genetic Algorithms](#ga)
  - [Internal and External Performance Estimates](#performance)
  - [Basic Syntax](#syntax)
- - [Example](#example)
+ - [Example](#gaexample)
  - [Customizing the Search](#custom)
  - [The Example Revisited](#example2)
  - [Using Recipes](#recipes)
@@ -92,7 +92,7 @@ There are a few built-in sets of functions to use with  `gafs`: `caretGA`, `rfGA
 
 The GA implementation in [`caret`](http://cran.r-project.org/web/packages/caret/index.html) uses the underlying code from the [`GA`](http://cran.r-project.org/package=GA) package ([Scrucca, 2013](http://www.jstatsoft.org/v53/i04/)).
 
-<div id="example"></div>
+<div id="gaexample"></div>
 
 ## Example
 
