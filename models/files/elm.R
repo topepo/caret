@@ -61,4 +61,9 @@ modelInfo <- list(label = "Extreme Learning Machine",
                   predictors = function(x, ...) x$xNames,
                   tags = c("Neural Network"),
                   levels = function(x) x$lev,
+                  notes = paste(
+                    "The package is no longer on CRAN but can be installed",
+                    "from the archive at ",
+                    "https://cran.r-project.org/src/contrib/Archive/elmNN/"
+                  ),
                   sort = function(x) x[order(x$nhid),])
