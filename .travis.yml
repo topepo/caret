@@ -12,6 +12,10 @@ r:
   - release
   - devel
 
+matrix:
+  allow_failures:
+    - r: oldrel
+
 r_packages: 
   - covr
   - data.table

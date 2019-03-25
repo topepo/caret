@@ -3,16 +3,21 @@
 \name{gafs.default}
 \alias{gafs.default}
 \alias{gafs}
+\alias{gafs.recipe}
 \title{Genetic algorithm feature selection}
 \usage{
 \method{gafs}{default}(x, y, iters = 10, popSize = 50,
   pcrossover = 0.8, pmutation = 0.1, elite = 0, suggestions = NULL,
   differences = TRUE, gafsControl = gafsControl(), ...)
+
+\method{gafs}{recipe}(x, data, iters = 10, popSize = 50,
+  pcrossover = 0.8, pmutation = 0.1, elite = 0, suggestions = NULL,
+  differences = TRUE, gafsControl = gafsControl(), ...)
 }
 \arguments{
-\item{x}{an object where samples are in rows and features are in columns.
+\item{x}{An object where samples are in rows and features are in columns.
 This could be a simple matrix, data frame or other type (e.g. sparse
-matrix). See Details below}
+matrix). For the recipes method, \code{x} is a recipe object. See Details below}
 
 \item{y}{a numeric or factor vector containing the outcome for each sample}
 
@@ -37,6 +42,9 @@ and without each predictor be calculated?}
 \code{\link{gafsControl}} and URL.}
 
 \item{...}{additional arguments to be passed to other methods}
+
+\item{data}{Data frame from which variables specified in
+\code{formula} or \code{recipe} are preferentially to be taken.}
 }
 \value{
 an object of class \code{gafs}
@@ -84,9 +92,9 @@ This is an example of the output produced when \code{gafsControl(verbose =
 TRUE)} is used:
 
 \preformatted{
-Fold2 1 0.715 (13) 
+Fold2 1 0.715 (13)
 Fold2 2 0.715->0.737 (13->17, 30.4\%) *
-Fold2 3 0.737->0.732 (17->14, 24.0\%) 
+Fold2 3 0.737->0.732 (17->14, 24.0\%)
 Fold2 4 0.737->0.769 (17->23, 25.0\%) *
 }
 

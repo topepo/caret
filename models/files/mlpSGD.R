@@ -86,7 +86,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient 
                     } else {
                       out <- if(length(out) == 1) 
                         out[[1]][,1]  else {
-                          out <- do.call("rbind", out)
+                          out <- do.call("cbind", out)
                           out <- apply(out, 1, mean)
                         }
                     }

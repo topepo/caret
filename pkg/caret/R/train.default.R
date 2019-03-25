@@ -1316,7 +1316,7 @@ train.recipe <- function(x,
 
     ## Select the "optimal" tuning parameter.
     if(grepl("adapt", trControl$method)) {
-      perf_check <- subset(performance, .B == max(performance$.B))
+      perf_check <- subset(performance, Num_Resamples == max(performance$Num_Resamples))
     } else perf_check <- performance
 
     ## Make adaptive only look at parameters with B = max(B)

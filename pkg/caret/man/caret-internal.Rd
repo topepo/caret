@@ -54,7 +54,8 @@ probFunction(method, modelFit, newdata = NULL, preProc = NULL,
 
 resampleWrapper(x, ind)
 
-sbfIter(x, y, testX, testY, sbfControl = sbfControl(), ...)
+sbfIter(x, y, testX, testY, testPerf = NULL, sbfControl = sbfControl(),
+  ...)
 
 sortImp(object, top)
 

@@ -17,7 +17,6 @@ sa_func_check <- function(x) {
   expected <- list(fit = c('x', 'y', 'lev', 'last', '...'),
                    fitness_intern = c('object', 'x', 'y', 'maximize', 'p'),
                    pred = c('object', 'x'),
-                   fitness_extern = c('data', 'lev', 'model'),
                    initial = c('vars', 'prob', '...'),
                    perturb = c('x', 'vars', 'number'),
                    prob = c('old', 'new', 'iteration'),
@@ -28,7 +27,9 @@ sa_func_check <- function(x) {
     expected <- expected[!(names(expected) == "initial")]
   }
 
-  for(i in names(x)) {
+  check_names <- names(x)
+  check_names <- check_names[check_names != "fitness_extern"]
+  for(i in check_names) {
     .args <- names(formals(x[[i]]))
     .check <- same_args(.args, expected[[i]])
     if(!.check) {
@@ -162,7 +163,12 @@ print.safs <- function (x, top = 5,
 
 #' @export
 predict.safs <- function (object, newdata, ...) {
-  newdata <- newdata[, object$optVariables, drop = FALSE]
+  if (any(names(object) == "recipe") && !is.null(object$recipe)) {
+    newdata <-
+      bake(object$recipe, newdata, all_predictors(), composition = "data.frame")
+  } else {
+    newdata <- newdata[, object$optVariables, drop = FALSE]
+  }
   object$control$functions$pred(object$fit, newdata)
 }
 
@@ -400,13 +406,13 @@ safsControl <- function(functions = NULL,
 #' TRUE)} is used:
 #'
 #' \preformatted{
-#' Fold03 1 0.401 (11) 
+#' Fold03 1 0.401 (11)
 #' Fold03 2 0.401->0.410 (11+1, 91.7\%) *
-#' Fold03 3 0.410->0.396 (12+1, 92.3\%) 0.969 A 
-#' Fold03 4 0.410->0.370 (12+2, 85.7\%) 0.881 
-#' Fold03 5 0.410->0.399 (12+2, 85.7\%) 0.954 A 
-#' Fold03 6 0.410->0.399 (12+1, 78.6\%) 0.940 A 
-#' Fold03 7 0.410->0.428 (12+2, 73.3\%) * 
+#' Fold03 3 0.410->0.396 (12+1, 92.3\%) 0.969 A
+#' Fold03 4 0.410->0.370 (12+2, 85.7\%) 0.881
+#' Fold03 5 0.410->0.399 (12+2, 85.7\%) 0.954 A
+#' Fold03 6 0.410->0.399 (12+1, 78.6\%) 0.940 A
+#' Fold03 7 0.410->0.428 (12+2, 73.3\%) *
 #' }
 #'
 #' The text "Fold03" indicates that this search is for the third
@@ -438,10 +444,11 @@ safsControl <- function(functions = NULL,
 #' number of workers and the amount of memory required exponentially.
 #'
 #' @aliases safs.default safs
-#' @param x an object where samples are in rows and features are in columns.
+#' @param x An object where samples are in rows and features are in columns.
 #' This could be a simple matrix, data frame or other type (e.g. sparse
-#' matrix). See Details below.
+#' matrix). For the recipes method, \code{x} is a recipe object.  See Details below.
 #' @param y a numeric or factor vector containing the outcome for each sample.
+#' @param data an object of class \code{\link{rfe}}.
 #' @param iters number of search iterations
 #' @param differences a logical: should the difference in fitness values with
 #' and without each predictor be calculated
@@ -486,7 +493,7 @@ safsControl <- function(functions = NULL,
 safs <- function (x, ...) UseMethod("safs")
 
 #' @rdname safs
-#' @export 
+#' @export
 "safs.default" <-
   function(x, y,
            iters = 10,
@@ -581,11 +588,10 @@ safs <- function (x, ...) UseMethod("safs")
                 ...)
     }
 
-    ## TODO save only the parts you need inside of loop
     external <- result[names(result) == "external"]
     external <- do.call("rbind", external)
     rownames(external) <- NULL
-    internal <- result[names(result) == "table"]
+    internal <- result[names(result) == "internal"]
     internal <- do.call("rbind", internal)
     rownames(internal) <- NULL
     selected_vars <- result[names(result) == "final"]
@@ -666,6 +672,7 @@ safs <- function (x, ...) UseMethod("safs")
                 perfNames = perfNames,
                 auto = TRUE,
                 the_dots = list(...),
+                recipe = NULL,
                 times = list(everything = endTime - startTime),
                 levels = if(is.factor(y)) classLevels else NULL)
 
@@ -798,7 +805,7 @@ safs_initial <- function (vars, prob = .20, ...)  {
 
 #' @rdname safs_initial
 #' @export
-safs_perturb <- function(x, vars, number = floor(vars*.01) + 1) {
+safs_perturb <- function(x, vars, number = floor(length(x)*.01) + 1) {
   bin <- index2vec(x, vars)
   change <- sample(seq(along = bin), size = number)
   bin[change] <- ifelse(bin[change] == 1, 0, 1)
@@ -814,12 +821,25 @@ safs_prob <- function(old, new, iteration = 1) {
   exp(ediff*iteration)
 }
 
-sa_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY, sa_metric, sa_maximize, lvl = lvl, last = FALSE, ...) {
+sa_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY,
+                       perf, holdoutPerf, testPerf,
+                       sa_metric, sa_maximize, lvl = lvl, last = FALSE, ...) {
   mod <- funcs$fit(x[, ind, drop=FALSE], y, lev = lvl, last = last,...)
-  internal <- funcs$fitness_intern(mod,
-                                   x = if(!is.null(holdoutX)) holdoutX[, ind, drop=FALSE] else x[, ind, drop=FALSE],
-                                   y = if(!is.null(holdoutY)) holdoutY else y,
-                                   p = ncol(x))
+  if (!is.null(holdoutX)) {
+    intern_x <- holdoutX[, ind, drop = FALSE]
+    if(!is.null(holdoutPerf))
+      intern_x <- cbind(intern_x, holdoutPerf)
+  } else {
+    intern_x <- x[, ind, drop = FALSE]
+    if(!is.null(perf))
+      intern_x <- cbind(intern_x, perf)
+  }
+  internal <- funcs$fitness_intern(
+    mod,
+    x = intern_x,
+    y = if(!is.null(holdoutY)) holdoutY else y,
+    p = ncol(x)
+    )
   if(!is.null(testX)) {
     modelPred <- funcs$pred(mod, testX[, ind, drop=FALSE])
     if(is.data.frame(modelPred) | is.matrix(modelPred)) {
@@ -827,6 +847,10 @@ sa_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY, sa_me
       modelPred$obs <- testY
       modelPred$Size <- length(ind)
     } else modelPred <- data.frame(pred = modelPred, obs = testY, Size = sum(ind == 1))
+    if(!is.null(testPerf))
+      modelPred <- cbind(modelPred, testPerf)
+    # perf_data for test set
+
     external <- funcs$fitness_extern(modelPred, lev = levels(testY))
     if(is.null(names(external))) {
       names(external) <- paste0("external", 1:length(external))
@@ -836,8 +860,7 @@ sa_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY, sa_me
   if(sa_maximize["internal"])
     internal[sa_metric["internal"]] <- -internal[sa_metric["internal"]]
 
-  list(internal = internal,
-       external = external)
+  list(internal = internal, external = external)
 }
 
 ###################################################################
@@ -848,6 +871,9 @@ sa_select <- function(x, y,
                       ## testX, testY: optional holdout data for computing
                       ## the fitness function
                       testX = NULL, testY = NULL,
+                      # added for recipes only
+                      perf = NULL,
+                      testPerf = NULL,
                       iters = 20,
                       funcs = NULL,
                       sa_metric = NULL,
@@ -869,11 +895,15 @@ sa_select <- function(x, y,
                                       list = FALSE)
     holdout_x <- x[in_holdout,,drop = FALSE]
     holdout_y <- y[in_holdout]
+    holdout_perf <- perf[in_holdout,,drop = FALSE]
     x <- x[-in_holdout,,drop = FALSE]
     y <- y[-in_holdout]
+    perf <- perf[-in_holdout,,drop = FALSE]
+
   } else {
     holdout_x <- NULL
     holdout_y <- NULL
+    holdout_perf <- NULL
   }
 
 
@@ -885,17 +915,19 @@ sa_select <- function(x, y,
 
   restarts <- 1
   subsets <- vector(mode = "list", length = iters)
-  internal <- data.frame(Best = rep(0*NA, iters),
-                         Note = "",
-                         Random = runif(iters),
-                         Prob = rep(1, iters),
-                         Iter = 1:(iters),
-                         Cycle = rep(0*NA, iters),
-                         SinceRestart = rep(0*NA, iters),
-                         Size = rep(0*NA, iters),
-                         Similarity = rep(0*NA, iters),
-                         Similarity_B = rep(0*NA, iters),
-                         stringsAsFactors = FALSE)
+  internal <- data.frame(
+    Best = rep(0*NA, iters),
+    Note = "",
+    Random = runif(iters),
+    Prob = rep(1, iters),
+    Iter = 1:(iters),
+    Cycle = rep(0*NA, iters),
+    SinceRestart = rep(0*NA, iters),
+    Size = rep(0*NA, iters),
+    Similarity = rep(0*NA, iters),
+    Similarity_B = rep(0*NA, iters),
+    stringsAsFactors = FALSE
+  )
   external <- if(!is.null(testX)) data.frame(Iter = 1:(iters)) else NULL
 
   for(i in 1:iters){
@@ -927,6 +959,10 @@ sa_select <- function(x, y,
                           funcs,
                           holdoutX = holdout_x, holdoutY = holdout_y,
                           testX = testX, testY = testY,
+                          # perf_data for holdout and test
+                          perf = perf,
+                          holdoutPerf = holdout_perf,
+                          testPerf = testPerf,
                           sa_metric = sa_metric,
                           sa_maximize = sa_maximize,
                           lvl = lvl,
@@ -935,7 +971,7 @@ sa_select <- function(x, y,
 
     ## Use the initial results to setup containers for
     ## the remaining iterations
-    if(i == 1) {  ##TODO check for name and modify if needed as with external
+    if(i == 1) {
       k <- length(new_obj$internal)
       perf_names <- names(new_obj$internal)
       for(new_var in perf_names) internal[,new_var] <- NA
@@ -1028,7 +1064,7 @@ sa_select <- function(x, y,
                                        external[, !(names(external) %in% sa_external_names), drop = FALSE]),
                silent = TRUE)
   if(class(diffs)[1] == "try-error") diffs <- NULL
-  list(table = internal,
+  list(internal = internal,
        subsets = subsets,
        external = external,
        final = names(x)[best_subset],
@@ -1040,9 +1076,10 @@ sa_select <- function(x, y,
 ###################################################################
 ##
 
-#' @method plot safs
 #' @importFrom stats update
+#' @method plot safs
 #' @export
+#' @export plot.safs
 plot.safs <- function(x,
                       metric = x$control$metric["external"],
                       estimate = c("internal", "external"),
@@ -1092,6 +1129,16 @@ plot.safs <- function(x,
   }
   out
 }
+
+
+#' @method ggplot safs
+#' @export ggplot.safs
+#' @export
+#' @rdname plot.gafs
+ggplot.safs <-
+  function (data = NULL, mapping = NULL, ..., environment = NULL) {
+    plot.safs(x = data, ...)
+  }
 
 ###################################################################
 ##
@@ -1183,7 +1230,7 @@ selectIter = best)
 #' @param object An object produced by \code{\link{gafs}} or \code{\link{safs}}
 #' @param iter a single numeric integer
 #' @param x,y the original training data used in the call to \code{\link{gafs}}
-#' or \code{\link{safs}}
+#' or \code{\link{safs}}. Only required for non-recipe methods.
 #' @param \dots not currently used
 #' @return an object of class \code{\link{gafs}} or \code{\link{safs}}
 #' @author Max Kuhn
@@ -1216,19 +1263,31 @@ selectIter = best)
 #' @export
 update.safs <- function(object, iter, x, y, ...) {
   iter <- iter[1]
-  if(iter > length(object$sa$subsets))
+  if (iter > length(object$sa$subsets))
     stop(paste("iter must be less than", length(object$sa$subsets)))
-  if(is.null(x) | is.null(y))
-    stop("the original training data is needed to refit the model")
-  args <- list(x = x[, object$sa$subsets[[iter]], drop=FALSE],
-               y = y, lev = object$levels, last = TRUE)
-  if(length(object$the_dots) > 0) args <- c(args, object$the_dots)
-  if(object$control$verbose)
+  if (!is.null(object$recipe)) {
+    if (is.null(object$recipe$template))
+      stop("Recipe is missing data to be juiced.", call. = FALSE)
+    args <-
+      list(x = juice(object$recipe, all_predictors(), composition = "data.frame"),
+           y = juice(object$recipe, all_outcomes(), composition = "data.frame")[[1]],
+           lev = object$levels,
+           last = TRUE)
+  } else {
+    if (is.null(x) | is.null(y))
+      stop("the original training data is needed to refit the model")
+    args <- list(x = x[, object$sa$subsets[[iter]], drop=FALSE],
+                 y = y, lev = object$levels, last = TRUE)
+  }
+
+  if (length(object$the_dots) > 0)
+    args <- c(args, object$the_dots)
+  if (object$control$verbose)
     cat("Refitting model to use", length(object$sa$subsets[[iter]]),
         "predictors from iteration", iter, "\n")
   object$fit <- do.call(object$control$functions$fit, args)
   object$auto <- FALSE
-  object$optVariables <- colnames(x)[object$sa$subsets[[iter]]]
+  object$optVariables <- colnames(args$x)[object$sa$subsets[[iter]]]
   object$optIter <- iter
   object
 }
@@ -1248,6 +1307,287 @@ update.safs <- function(object, iter, x, y, ...) {
   out
 }
 
+#' @rdname safs
+#' @method safs recipe
+#' @import recipes
+#' @export
+"safs.recipe" <-
+  function(x, data,
+           iters = 10,
+           differences = TRUE,
+           safsControl = safsControl(),
+           ...) {
+    startTime <- proc.time()
+    funcCall <- match.call(expand.dots = TRUE)
+
+    if(safsControl$verbose)
+      cat("Preparing recipe\n")
+
+    orig_rec <- x
+    trained_rec <- prep(
+      x, training = data,
+      fresh = TRUE,
+      retain = TRUE,
+      verbose = FALSE,
+      stringsAsFactors = TRUE
+    )
+    x <- juice(trained_rec, all_predictors(), composition = "data.frame")
+    y <- juice(trained_rec, all_outcomes(), composition = "data.frame")
+    if(ncol(y) > 1)
+      stop("`safs` doesn't support multivariate outcomes", call. = FALSE)
+    y <- y[[1]]
+    is_weight <- summary(trained_rec)$role == "case weight"
+    if(any(is_weight))
+      stop("`safs` does not allow for weights.", call. = FALSE)
+
+    is_perf <- summary(trained_rec)$role == "performance var"
+    if(any(is_perf)) {
+      perf_data <- juice(trained_rec, has_role("performance var"))
+    } else perf_data <- NULL
+
+    if(is.null(safsControl$metric))
+      safsControl$metric <- rep(ifelse(is.factor(y), "Accuracy", "RMSE"), 2)
+    if(is.null(safsControl$maximize))
+      safsControl$maximize <- rep(ifelse(safsControl$metric == "RMSE", FALSE, TRUE), 2)
+    if(is.null(names(safsControl$metric)))
+      names(safsControl$metric) <- c("internal", "external")
+    if(is.null(names(safsControl$maximize)))
+      names(safsControl$maximize) <- c("internal", "external")
+
+    if(nrow(x) != length(y)) stop("there should be the same number of samples in x and y")
+    numFeat <- ncol(x)
+    classLevels <- levels(y)
+
+    if(is.null(safsControl$index))
+      safsControl$index <- switch(
+        tolower(safsControl$method),
+        cv = createFolds(y, safsControl$number, returnTrain = TRUE),
+        repeatedcv = createMultiFolds(y, safsControl$number, safsControl$repeats),
+        loocv = createFolds(y, length(y), returnTrain = TRUE),
+        boot =, boot632 = createResample(y, safsControl$number),
+        test = createDataPartition(y, 1, safsControl$p),
+        lgocv = createDataPartition(y, safsControl$number, safsControl$p)
+      )
+
+    if(is.null(names(safsControl$index)))
+      names(safsControl$index) <- getFromNamespace("prettySeq", "caret")(safsControl$index)
+
+    ## Create hold--out indicies
+    if(is.null(safsControl$indexOut)){
+      safsControl$indexOut <-
+        lapply(safsControl$index,
+               function(training, allSamples) allSamples[-unique(training)],
+               allSamples = seq(along = y))
+      names(safsControl$indexOut) <-
+        getFromNamespace("prettySeq", "caret")(safsControl$indexOut)
+    }
+
+    if(!is.null(safsControl$seeds)) {
+      if(length(safsControl$seeds) < length(safsControl$index) + 1)
+        stop(paste("There must be at least",
+                   length(safsControl$index) + 1,
+                   "random number seeds passed to safsControl"))
+    } else {
+      safsControl$seeds <- sample.int(100000, length(safsControl$index) + 1)
+    }
+
+    ## check summary function and metric
+    testOutput <- data.frame(pred = sample(y, min(10, length(y))),
+                             obs = sample(y, min(10, length(y))))
+
+    if(is.factor(y))
+      for(i in seq(along = classLevels)) testOutput[, classLevels[i]] <- runif(nrow(testOutput))
+    if(!is.null(perf_data))
+      testOutput <- cbind(
+        testOutput,
+        perf_data[sample(1:nrow(perf_data), nrow(testOutput)),, drop = FALSE]
+      )
+
+    test <- safsControl$functions$fitness_extern(testOutput, lev = classLevels)
+    perfNames <- names(test)
+    if(is.null(perfNames)) {
+      warning(paste("The external fitness results should be a *named* vector;",
+                    "new name(s) are",
+                    paste(paste0("external", 1:length(test)), sep = "", collapse = ", ")),
+              immediate. = TRUE)
+      perfNames <- paste0("external", 1:length(test))
+    }
+
+    if(!(safsControl$metric["external"] %in% perfNames)) {
+      warning(paste("The metric '", safsControl$metric["external"], "' is not created by the external summary function; '",
+                    perfNames[1], "' will be used instead", sep = ""))
+      safsControl$metric["external"] <- perfNames[1]
+    }
+
+    `%op%` <- getOper(safsControl$allowParallel && getDoParWorkers() > 1)
+
+    result <- foreach(
+      i = seq(along = safsControl$index),
+      .combine = "c",
+      .verbose = FALSE,
+      .errorhandling = "stop",
+      .packages = "recipes"
+      ) %op% {
+
+      # reprocess recipe
+      resampled_rec <- prep(
+        orig_rec,
+        training = data[safsControl$index[[i]], ],
+        fresh = TRUE,
+        retain = TRUE,
+        verbose = FALSE,
+        stringsAsFactors = TRUE
+      )
+      x_tr <- juice(resampled_rec, all_predictors(), composition = "data.frame")
+      y_tr <- juice(resampled_rec, all_outcomes(), composition = "data.frame")
+      y_tr <- y_tr[[1]]
+      x_te <- bake(resampled_rec, new_data = data[ -safsControl$index[[i]], ],
+                   all_predictors(), composition = "data.frame")
+      y_te <- bake(resampled_rec, new_data = data[ -safsControl$index[[i]], ],
+                   all_outcomes(), composition = "data.frame")
+      y_te <- y_te[[1]]
+
+      if(any(is_perf)) {
+        perf_tr <- juice(resampled_rec, has_role("performance var"))
+        perf_te <- bake(
+          resampled_rec,
+          new_data = data[ -safsControl$index[[i]], ],
+          has_role("performance var")
+        )
+      } else {
+        perf_tr <- NULL
+        perf_te <- NULL
+      }
+
+      sa_select(
+        x = x_tr,
+        y = y_tr,
+        funcs = safsControl$functions,
+        sa_metric = safsControl$metric,
+        sa_maximize = safsControl$maximize,
+        iters = iters,
+        sa_verbose = safsControl$verbose,
+        testX = x_te,
+        testY = y_te,
+        perf =  perf_tr,
+        testPerf = perf_te,
+        sa_seed = safsControl$seeds[i],
+        improve = safsControl$improve,
+        Resample = names(safsControl$index)[i],
+        holdout = safsControl$holdout,
+        lvl = classLevels,
+        ...
+      )
+    }
+
+    external <- result[names(result) == "external"]
+    external <- do.call("rbind", external)
+    rownames(external) <- NULL
+    internal <- result[names(result) == "internal"]
+    internal <- do.call("rbind", internal)
+    rownames(internal) <- NULL
+    selected_vars <- result[names(result) == "final"]
+    names(selected_vars) <- names(safsControl$index)
+    if(differences) {
+      diffs <- try(process_diffs(result[names(result) == "diffs"],
+                                 colnames(x)),
+                   silent = TRUE)
+      if(class(diffs)[1] == "try-error") {
+        diffs <- NULL
+        warning("An error occured when computing the variable differences")
+      }
+    } else diffs <- NULL
+    rm(result)
+
+    if(safsControl$verbose) cat("+ final SA\n")
+
+    if(safsControl$holdout > 0) {
+      in_holdout <- createDataPartition(y,
+                                        p = safsControl$holdout,
+                                        list = FALSE)
+      in_model <- seq(along = y)[-unique(in_holdout)]
+    } else {
+      in_model <- seq(along = y)
+      in_holdout <- NULL
+    }
+    final_sa <- sa_select(
+      x = x[in_model,,drop=FALSE],
+      y = y[in_model],
+      funcs = safsControl$functions,
+      sa_metric = safsControl$metric,
+      sa_maximize = safsControl$maximize,
+      iters = iters,
+      sa_verbose = safsControl$verbose,
+      testX = if(!is.null(in_holdout)) x[in_holdout,,drop=FALSE] else NULL,
+      testY = if(!is.null(in_holdout)) y[in_holdout] else NULL,
+      perf = perf_data[in_model,,drop=FALSE],
+      testPerf = if(!is.null(in_holdout)) perf_data[in_holdout,,drop=FALSE] else NULL,
+      sa_seed = safsControl$seeds[length(safsControl$seeds)],
+      improve = safsControl$improve,
+      lvl = classLevels,
+      ...
+    )
+    averages <-
+      ddply(external, .(Iter),
+            function(x, nms) {
+              apply(x[, perfNames, drop = FALSE], 2, mean)
+            },
+            nms = perfNames)
+
+    if(!is.null(safsControl$functions$selectIter)) {
+      best_index <-
+        safsControl$functions$selectIter(
+          averages,
+          metric = safsControl$metric["external"],
+          maximize = safsControl$maximize["external"]
+        )
+      best_iter <- averages$Iter[best_index]
+      best_vars <- colnames(x)[final_sa$subsets[[best_index]]]
+    } else {
+      best_index <- if(safsControl$maximize["external"])
+        which.max(averages[,safsControl$metric["external"]]) else
+          which.min(averages[,safsControl$metric["external"]])
+      best_iter <- averages$Iter[best_index]
+      best_vars <- colnames(x)[final_sa$subsets[[best_index]]]
+    }
+
+
+    if(safsControl$verbose) cat("+ final model\n")
+
+    fit <- safsControl$functions$fit(x[, best_vars, drop=FALSE], y, lev = lvls, last = TRUE, ...)
+
+    endTime <- proc.time()
+
+    # remove some items that won't be used again
+    final_sa$sa$fit <- NULL
+    final_sa$sa$final <- NULL
+    final_sa$sa$diffs <- NULL
+
+    res <- list(
+      fit = fit,
+      sa = final_sa,
+      external = external,
+      internal = internal,
+      all_vars  = colnames(x),
+      resampled_vars = selected_vars,
+      averages = averages,
+      iters = iters,
+      optVariables = best_vars,
+      optIter = best_iter,
+      control = safsControl,
+      dims = dim(x),
+      differences = diffs,
+      perfNames = perfNames,
+      auto = TRUE,
+      the_dots = list(...),
+      recipe = trained_rec,
+      times = list(everything = endTime - startTime),
+      levels = if(is.factor(y)) classLevels else NULL
+    )
+
+    class(res) <- "safs"
+    res
+  }
 
 
 
