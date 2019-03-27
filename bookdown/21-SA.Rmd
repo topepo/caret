@@ -19,9 +19,9 @@ Contents
  - [Simulated Annealing](#sa)
  - [Internal and External Performance Estimates](#performance)
  - [Basic Syntax](#syntax)
- - [Example](#example)
+ - [Example](#saexample)
  - [Customizing the Search](#custom)
- - [Using Recipes](#recipes)
+ - [Using Recipes](#sarecipes)
  
 <div id="sa"></div>
 
@@ -87,9 +87,9 @@ Some important options to `safsControl` are:
 
 There are a few built-in sets of functions to use with  `safs`: `caretSA`, `rfSA`, and `treebagSA`. The first is a simple interface to `train`. When using this, as shown above, arguments can be passed to  `train` using the  `...` structure and the resampling estimates of performance can be used as the internal fitness value. The functions provided by `rfSA` and `treebagSA` avoid using  `train` and their internal estimates of fitness come from using the out-of-bag estimates generated from the model.
 
-<div id="example"></div>
+<div id="saexample"></div>
 
-## Example
+## Simulated Annealing Example {#saexample}
 
 
 Using the example from the [previous page](recursive-feature-elimination.html#example) where there are five real predictors and 40 noise predictors.
@@ -279,7 +279,7 @@ ggplot(grid, aes(x = iter, y = prob, color = Difference)) +
 While this is the default, any user-written function can be used to assign probabilities.
 
  
-<div id="recipes"></div>
+<div id="sarecipes"></div>
 
 ## Using Recipes
 

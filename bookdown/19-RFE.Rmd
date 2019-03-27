@@ -17,6 +17,10 @@ Contents
  - [Feature Selection Using Search Algorithms](#search)
  - [Resampling and External Validation](#resamp)
  - [Recursive Feature Elimination via `caret`](#rfe)
+ - [An Example](#rfeexample)
+ - [Helper Functions](#rfehelpers)
+ - [The Example](#rfeexample2)
+ - [Using a Recipe](##rferecipes)
 
 ## Backwards Selection
 
@@ -62,9 +66,9 @@ In [`caret`](http://cran.r-project.org/web/packages/caret/index.html), Algorithm
 
 For a specific model, a set of functions must be specified in `rfeControl$functions`. Sections below has descriptions of these sub-functions. There are a number of pre-defined sets of functions for several models, including: linear regression (in the object `lmFuncs`), random forests (`rfFuncs`), naive Bayes (`nbFuncs`), bagged trees (`treebagFuncs`) and functions that can be used with  [`caret`](http://cran.r-project.org/web/packages/caret/index.html)'s `train` function (`caretFuncs`). The latter is useful if the model has tuning parameters that must be determined at each iteration.
 
-<div id="example"></div>
+<div id="rfeexample"></div>
 
-## An Example
+## An Example {#rfeexample}
 
 ```{r rfe_load_lib}
 library(caret)
@@ -141,7 +145,9 @@ plot(lmProfile, type = c("g", "o"))
 
 Also the resampling results are stored in the sub-object `lmProfile$resample` and can be used with several lattice functions. Univariate lattice functions (`densityplot`,  `histogram`) can be used to plot the resampling distribution while bivariate functions (`xyplot`,  `stripplot`) can be used to plot the distributions for different subset sizes. In the latter case, the option `returnResamp`` = "all"` in  `rfeControl` can be used to save all the resampling results. Example images are shown below for the random forest model.
 
-## Helper Functions
+<div id="rfehelpers"></div>
+
+## Helper Functions {#rfehelpers}
 
 To use feature elimination for an arbitrary model, a set of functions must be passed to `rfe` for each of the steps in Algorithm 2.
 
@@ -304,7 +310,9 @@ rfRFE$selectVar
 
 Note that if the predictor rankings are recomputed at each iteration (line 2.11) the user will need to write their own selection function to use the other ranks.
 
-## The Example
+<div id="rfeexample2"></div>
+
+## The Example {#rfeexample2}
 
 For random forest, we fit the same series of model sizes as the linear model. The option to save all the resampling results across subset sizes was changed for this model and are used to show the lattice plot function capabilities in the figures below.
 
@@ -341,8 +349,9 @@ print(plot1, split=c(1,1,1,2), more=TRUE)
 print(plot2, split=c(1,2,1,2))
 ``` 
 
+<div id="rferecipes"></div>
 
-## Using a Recipe
+## Using a Recipe {#rferecipes}
 
 A recipe can be used to specify the model terms and any preprocessing that may be needed. Instead of using 
 
