@@ -4,6 +4,7 @@ opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'rfe/', dev = 'svg', dev.arg
 library(caret)
 library(mlbench)
 library(Hmisc)
+library(tidyverse)
 library(randomForest)
 data(BloodBrain)
 theme_set(theme_bw())
@@ -339,3 +340,89 @@ plot2 <- densityplot(rfProfile,
 print(plot1, split=c(1,1,1,2), more=TRUE)
 print(plot2, split=c(1,2,1,2))
 ``` 
+
+
+## Using a Recipe
+
+A recipe can be used to specify the model terms and any preprocessing that may be needed. Instead of using 
+
+```{r rfe-rec-xy, eval = FALSE}
+rfe(x = predictors, y = outcome)
+```
+
+an existing recipe can be used along with a data frame containing the predictors and outcome:
+
+
+```{r rfe-rec-interface, eval = FALSE}
+rfe(recipe, data)
+```
+
+The recipe is prepped within each resample in the same manner that `train` executes the `preProc` option. However, since a recipe can do a variety of different operations, there are some potentially complicating factors. The main pitfall is that the recipe can involve the creation and deletion of predictors. There are a number of steps that can reduce the number of predictors, such as the ones for pooling factors into an "other" category, PCA signal extraction, as well as filters for near-zero variance predictors and highly correlated predictors. For this reason, it may be difficult to know how many predictors are available for the full model. Also, this number will likely vary between iterations of resampling. 
+
+To illustrate, let's use the blood-brain barrier data where there is a high degree of correlation between the predictors. A simple recipe could be
+
+```{r rfe-bbb-rec}
+library(recipes)
+library(tidyverse)
+
+data(BloodBrain)
+
+# combine into a single data frame
+bbb <- bbbDescr
+bbb$y <- logBBB
+
+bbb_rec <- recipe(y ~ ., data = bbb) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) %>%
+  step_nzv(all_predictors()) %>%
+  step_pca(all_predictors(), threshold = .95) 
+```
+
+Originally, there are `r ncol(bbbDescr)` predictors and, for the entire data set, the processed version has:
+
+```{r rfe-bbb-prep}
+prep(bbb_rec, training = bbb, retain = TRUE) %>% 
+  juice(all_predictors()) %>% 
+  ncol()
+```
+
+When calling `rfe`, let's start the maximum subset size at 28:
+
+```{r rfe-rec}
+bbb_ctrl <- rfeControl(
+  method = "repeatedcv",
+  repeats = 5,
+  functions = lmFuncs, 
+  returnResamp = "all"
+)
+
+set.seed(36)
+lm_rfe <- rfe(
+  bbb_rec,
+  data = bbb,
+  sizes = 2:28,
+  rfeControl = bbb_ctrl
+)
+
+ggplot(lm_rfe) + theme_bw()
+```
+
+What was the distribution of the maximum number of terms:
+
+```{r rfe-terms}
+term_dist <- 
+  lm_rfe$resample %>% 
+  group_by(Resample) %>% 
+  dplyr::summarize(max_terms = max(Variables))
+table(term_dist$max_terms)
+```
+
+So... `r median(term_dist$max_terms)`ish. 
+
+Suppose that we used `sizes = 2:ncol(bbbDescr)` when calling `rfe`. A warning is issued that:
+
+```
+Warning message:
+For the training set, the recipe generated fewer predictors than the 130 expected 
+in `sizes` and the number of subsets will be truncated to be <= 28 
+```

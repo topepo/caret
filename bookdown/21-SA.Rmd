@@ -7,6 +7,9 @@ library(parallel)
 library(doMC)
 registerDoMC(cores=detectCores()-1)
 library(randomForest)
+library(recipes)
+library(rsample)
+library(AmesHousing)
 ```
 
 # Feature Selection using Simulated Annealing
@@ -18,7 +21,8 @@ Contents
  - [Basic Syntax](#syntax)
  - [Example](#example)
  - [Customizing the Search](#custom)
-
+ - [Using Recipes](#recipes)
+ 
 <div id="sa"></div>
 
 ## Simulated Annealing
@@ -273,3 +277,63 @@ ggplot(grid, aes(x = iter, y = prob, color = Difference)) +
 ``` 
 
 While this is the default, any user-written function can be used to assign probabilities.
+
+ 
+<div id="recipes"></div>
+
+## Using Recipes
+
+Similar to the previous section on genetic algorothms, recipes can be used with `safs`. Using the same data as before:
+
+```{r sa-ames-start, inlcude = FALSE}
+library(AmesHousing)
+library(rsample)
+
+# Create the data and remove one column that is more of 
+# an outcome. 
+ames <- make_ames() %>%
+  select(-Overall_Qual)
+
+ncol(ames)
+# How many factor variables?
+sum(vapply(ames, is.factor, logical(1)))
+
+# We'll use `rsample` to make the initial split to be consistent with other
+# analyses of these data. Set the seed first to make sure that you get the 
+# same random numbers
+set.seed(4595)
+data_split <- initial_split(ames, strata = "Sale_Price", prop = 3/4)
+
+ames_train <- training(data_split) %>% as.data.frame()
+ames_test  <- testing(data_split) %>% as.data.frame()
+
+library(recipes)
+
+ames_rec <- recipe(Sale_Price ~ ., data = ames_train) %>% 
+  step_log(Sale_Price, base = 10) %>%
+  step_other(Neighborhood, threshold = 0.05)  %>%
+  step_dummy(all_nominal(), -Bldg_Type) %>%
+  step_interact(~ starts_with("Central_Air"):Year_Built) %>%
+  step_zv(all_predictors())%>%
+  step_bs(Longitude, Latitude, options = list(df = 5))
+```
+
+Let's again use linear models with the function:
+
+```{r sa-ames-lm, warning = FALSE, message = FALSE}
+lm_sa_ctrl <- safsControl(functions = caretSA,
+                          method = "cv",
+                          number = 10)
+
+set.seed(23555)
+lm_sa_search <- safs(
+  ames_rec, 
+  data = ames_train,
+  iters = 10, # we probably need thousands of iterations
+  safsControl = lm_sa_ctrl,
+  # now options to `train` for caretSA
+  method = "lm",
+  trControl = trainControl(method = "cv", allowParallel = FALSE)
+) 
+lm_sa_search
+```

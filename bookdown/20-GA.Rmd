@@ -17,10 +17,11 @@ Contents
  - [Genetic Algorithms](#ga)
  - [Internal and External Performance Estimates](#performance)
  - [Basic Syntax](#syntax)
- - [Example](#example)
+ - [Example](#gaexample)
  - [Customizing the Search](#custom)
  - [The Example Revisited](#example2)
-
+ - [Using Recipes](#recipes)
+ 
 <div id="ga"></div>
 
 ## Genetic Algorithms
@@ -91,7 +92,7 @@ There are a few built-in sets of functions to use with  `gafs`: `caretGA`, `rfGA
 
 The GA implementation in [`caret`](http://cran.r-project.org/web/packages/caret/index.html) uses the underlying code from the [`GA`](http://cran.r-project.org/package=GA) package ([Scrucca, 2013](http://www.jstatsoft.org/v53/i04/)).
 
-<div id="example"></div>
+<div id="gaexample"></div>
 
 ## Example
 
@@ -118,7 +119,7 @@ x <- as.data.frame(x)
 
 We'll fit a random forest model and use the out-of-bag RMSE estimate as the internal performance metric and use the same repeated 10-fold cross-validation process used with the search. To do this, we'll use the built-in `rfGA` object for this purpose. The default GA operators will be used and conduct 200 generations of the algorithm.
 
-```{r ga_rf,cache=TRUE}
+```{r ga_rf}
 ga_ctrl <- gafsControl(functions = rfGA,
                        method = "repeatedcv",
                        repeats = 5)
@@ -356,4 +357,75 @@ plot(rf_ga_d) + theme_bw()
 
 The final GA found `r I(length(rf_ga_d$optVariables))` that were selected: `r paste(rf_ga_d$optVariables,  sep = "", collapse = ", ")`. During resampling, the average number of predictors selected was `r round(mean(unlist(lapply(rf_ga_d$resampled_vars, length))), 1)`, indicating that the penalty on the number of predictors was effective.
 
+ 
+<div id="recipes"></div>
 
+## Using Recipes
+
+Like the other feature selection routines, `gafs` can take a data recipe as an input. This is advantageous when your data needs preprocessing before the model, such as:
+
+ * creation of dummy variables from factors
+ * specification of interactions
+ * missing data imputation
+ * more complex feature engineering methods 
+ 
+Like `train`, the recipe's preprocessing steps are calculated within each resample. This makes sure that the resampling statistics capture the variation and effect that the preprocessing has on the model. 
+
+As an example, the Ames housing data is used. These data contain a number of categorical predictors that require conversion to indicators as well as other variables that require processing. To load (and split) the data:
+
+```{r ga-ames-start}
+library(AmesHousing)
+library(rsample)
+
+# Create the data and remove one column that is more of 
+# an outcome. 
+ames <- make_ames() %>%
+  select(-Overall_Qual)
+
+ncol(ames)
+# How many factor variables?
+sum(vapply(ames, is.factor, logical(1)))
+
+# We'll use `rsample` to make the initial split to be consistent with other
+# analyses of these data. Set the seed first to make sure that you get the 
+# same random numbers
+set.seed(4595)
+data_split <- initial_split(ames, strata = "Sale_Price", prop = 3/4)
+
+ames_train <- training(data_split) %>% as.data.frame()
+ames_test  <- testing(data_split) %>% as.data.frame()
+```
+
+Here is a recipe that does differetn types of preprocssing on the predictor set:
+
+```{r ga-ames-rec}
+library(recipes)
+
+ames_rec <- recipe(Sale_Price ~ ., data = ames_train) %>% 
+  step_log(Sale_Price, base = 10) %>%
+  step_other(Neighborhood, threshold = 0.05)  %>%
+  step_dummy(all_nominal(), -Bldg_Type) %>%
+  step_interact(~ starts_with("Central_Air"):Year_Built) %>%
+  step_zv(all_predictors())%>%
+  step_bs(Longitude, Latitude, options = list(df = 5))
+```
+
+If this were executed on the training set, it would produce `r ames_rec %>% prep(training = ames, retain = TRUE) %>% juice(all_predictors()) %>% ncol()` predictor columns out of the original `r ncol(ames) - 1`. 
+
+Let's tune some linear models with `gafs` and, for the sake of computational time, only use 10 generations of the algorithm:
+
+```{r ga-ames-lm, warning = FALSE, message = FALSE}
+lm_ga_ctrl <- gafsControl(functions = caretGA, method = "cv", number = 10)
+
+set.seed(23555)
+lm_ga_search <- gafs(
+  ames_rec, 
+  data = ames_train,
+  iters = 10, 
+  gafsControl = lm_ga_ctrl,
+  # now options to `train` for caretGA
+  method = "lm",
+  trControl = trainControl(method = "cv", allowParallel = FALSE)
+) 
+lm_ga_search
+```

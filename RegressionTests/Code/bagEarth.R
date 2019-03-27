@@ -72,7 +72,8 @@ test_class_rand <- train(trainX, trainY,
                          method = "bagEarth", 
                          trControl = cctrlR,
                          tuneLength = 4,
-                         preProc = c("center", "scale"))
+                         preProc = c("center", "scale"),
+                         glm = list(family = binomial, control = list(maxit = 50)))
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 

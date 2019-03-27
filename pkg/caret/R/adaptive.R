@@ -802,15 +802,15 @@ bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
   se_thresh <- 100
   constant <- qnorm(1 - alpha)
   rs <- rs[order(rs$Resample, rs$model_id),]
+  rs <- rs[!is.na(rs[, metric]), ]
   scores <- ddply(rs, .(Resample), get_scores, maximize = maximize, metric = metric)
   scores <- ddply(scores, .(player1, player2), function(x) c(win1 = sum(x$win1),
                                                              win2 = sum(x$win2)))
   if(length(unique(rs$Resample)) >= 5) {
     tmp_scores <- try(skunked(scores), silent = TRUE)
     if(class(tmp_scores)[1] != "try-error") scores <- tmp_scores
-    scores
   }
-  best_mod <- ddply(rs, .(model_id), function(x, metric) mean(x[, metric]), metric = metric)
+  best_mod <- ddply(rs, .(model_id), function(x, metric) mean(x[, metric], na.rm = TRUE), metric = metric)
   best_mod <- if(maximize)
     best_mod$model_id[which.max(best_mod$V1)] else
       best_mod$model_id[which.min(best_mod$V1)]
@@ -864,11 +864,13 @@ skunked <- function(scores, verbose = TRUE) {
   scores
 }
 
+ 
 #' @importFrom stats cor t.test na.omit
 gls_eval <- function(x, metric, maximize, alpha = 0.05) {
+  x <- x[!is.na(x[, metric]), ]
   means <- ddply(x[, c(metric, "model_id")],
                  .(model_id),
-                 function(x, met) c(mean = mean(x[, met])),
+                 function(x, met) c(mean = mean(x[, met], na.rm = TRUE)),
                  met = metric)
   means <- if(maximize) means[order(-means$mean),] else means[order(means$mean),]
   levs <- as.character(means$model_id)
@@ -904,7 +906,7 @@ gls_eval <- function(x, metric, maximize, alpha = 0.05) {
 seq_eval <- function(x, metric, maximize, alpha = 0.05) {
   means <- ddply(x[, c(metric, "model_id")],
                  .(model_id),
-                 function(x, met) c(mean = mean(x[, met])),
+                 function(x, met) c(mean = mean(x[, met], na.rm = TRUE)),
                  met = metric)
   means <- if(maximize) means[order(-means$mean),] else means[order(means$mean),]
   levs <- as.character(means$model_id)
@@ -1001,7 +1003,7 @@ diffmat <- function(dat) {
 
 filter_on_diff <- function(dat, metric, cutoff = 0.01, maximize = TRUE, verbose = FALSE) {
   x <- long2wide(x = dat, metric = metric)
-  mns <- colMeans(x[, -1])
+  mns <- colMeans(x[, -1], na.rm = TRUE)
   if(!maximize) mns <- -mns
   x <- diffmat(x[, -1])
   tmp <- x
@@ -1068,7 +1070,7 @@ filter_on_corr <- function(dat, metric, cutoff, verbose = FALSE) {
     for (j in (i + 1):varnum) {
       if (!any(i == deletecol) & !any(j == deletecol)) {
         if (abs(x[i, j]) > cutoff) {
-          if (mean(x[i, -i]) > mean(x[-j, j])) {
+          if (mean(x[i, -i], na.rm = TRUE) > mean(x[-j, j], na.rm = TRUE)) {
             deletecol <- unique(c(deletecol, i))
           } else {
             deletecol <- unique(c(deletecol, j))

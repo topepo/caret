@@ -29,9 +29,9 @@ modelInfo <- list(label = "CHi-squared Automated Interaction Detection",
                         theDots$control$alpha4 <- param$alpha4
                         ctl <- theDots$control
                         theDots$control <- NULL
-                      } else ctl <- chaid_control(alpha2 = param$alpha2,
-                                                  alpha3 = param$alpha3,
-                                                  alpha4 = param$alpha4)
+                      } else ctl <- CHAID::chaid_control(alpha2 = param$alpha2,
+                                                         alpha3 = param$alpha3,
+                                                         alpha4 = param$alpha4)
                     ## pass in any model weights
                     if(!is.null(wts)) theDots$weights <- wts
                     modelArgs <- c(

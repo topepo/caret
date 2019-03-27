@@ -1,35 +1,27 @@
 
-
-context('twoClassSummary')
+context('twoClassSummary testing')
 
 
 test_that("twoClassSummary is calculating correctly", {
+  set.seed(1)
+  tr_dat <- twoClassSim(100)
+  te_dat <- twoClassSim(100)
+  mod <- knn3(x = as.matrix(tr_dat[, 1:5]), y = tr_dat$Class)
+  te_pred <- predict(mod, tr_dat[, 1:5], type = "class")
+  te_prob <- predict(mod, tr_dat[, 1:5], type = "prob")
+  te_prob <- as.data.frame(te_prob)
 
-library(caret)
+  cm <- caret::confusionMatrix(te_pred, te_dat$Class)
+  library(pROC)
+  roc_crv <- pROC::roc(te_dat$Class, te_prob$Class1, direction = ">")
+  roc_auc <- as.numeric(pROC::auc(roc_crv))
 
-set.seed(1)
-tr_dat <- twoClassSim(100)
-te_dat <- tr_dat
-tr_dat$Class = factor(tr_dat$Class, levels = rev(levels(te_dat$Class)))
+  te_res <- te_prob
+  te_res$pred <- te_pred
+  te_res$obs <- te_dat$Class
 
-set.seed(35)
-mod1 <- train(Class ~ ., data = tr_dat,
-              method = "fda",
-              tuneLength = 10,
-              metric = "ROC",
-              trControl = trainControl(classProbs = TRUE,
-                                       summaryFunction = twoClassSummary))
-
-set.seed(35)
-mod2 <- train(Class ~ ., data = te_dat,
-              method = "fda",
-              tuneLength = 10,
-              metric = "ROC",
-              trControl = trainControl(classProbs = TRUE,
-                                       summaryFunction = twoClassSummary))
-
-expect_equal(mod1$resample$ROC, mod2$resample$ROC)
-expect_equal(mod1$resample$Sens, mod2$resample$Spec)
-expect_equal(mod1$resample$Spec, mod2$resample$Sens)
-
+  tcs_res <- twoClassSummary(te_res, lev = levels(te_pred))
+  expect_equal(roc_auc, unname(tcs_res["ROC"]))
+  expect_equal(unname(cm$byClass["Sensitivity"]), unname(tcs_res["Sens"]))
+  expect_equal(unname(cm$byClass["Specificity"]), unname(tcs_res["Spec"]))
 })
