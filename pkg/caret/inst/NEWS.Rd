@@ -5,7 +5,7 @@
 
 \section{Changes in version 6.0-83}{
   \itemize{
-    \item blah balh blah
+    \item code{train} now removes duplicate models in the tuning grid. Duplicates could occur for models with discrete parameters.
   }
 }
 
