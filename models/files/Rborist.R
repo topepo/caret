@@ -7,15 +7,14 @@ modelInfo <- list(label = "Random Forest",
                                           label = c("#Randomly Selected Predictors","Minimal Node Size")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
-                      out <- data.frame(predFixed = caret::var_seq(p = ncol(x), 
-                                                                   classification = is.factor(y), 
+                      out <- data.frame(predFixed = caret::var_seq(p = ncol(x),
+                                                                   classification = is.factor(y),
                                                                    len = len),
                                         minNode = ifelse(is.factor(y), 2, 3))
                     } else {
                       out <- data.frame(predFixed = sample(1:ncol(x), size = len, replace = TRUE), #removed unique
                                         minNode = sample(1:(min(20,nrow(x))), size = len, replace = TRUE)) # might cause warning for very small samples < 20
                     }
-                    out[!duplicated(out), ]
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
                     Rborist::Rborist(x, y, predFixed = param$predFixed, minNode = param$minNode, ...)

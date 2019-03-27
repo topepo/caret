@@ -7,10 +7,10 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                   grid = function(x, y, len = NULL, search = "grid") {
                     dat <- if (is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    
+
                     mod <- earth::earth( .outcome~., data = dat, pmethod = "none")
                     maxTerms <- nrow(mod$dirs)
-                    
+
                     maxTerms <- min(200, floor(maxTerms * .75) + 2)
                     if (search == "grid") {
                       out <- data.frame(nprune = unique(floor(seq(2, to = maxTerms, length = len))),
@@ -19,14 +19,13 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                       out <- data.frame(nprune = sample(2:maxTerms, size = len, replace = TRUE),
                                         degree = sample(1:2, size = len, replace = TRUE))
                     }
-                    out[!duplicated(out),]
                   },
                   loop = function(grid) {
                     deg <- unique(grid$degree)
-                    
+
                     loop <- data.frame(degree = deg)
                     loop$nprune <- NA
-                    
+
                     submodels <- vector(mode = "list", length = length(deg))
                     for (i in seq(along = deg)) {
                       np <- grid[grid$degree == deg[i],"nprune"]
@@ -39,10 +38,10 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                     require(earth)
                     theDots <- list(...)
                     theDots$keepxy <- TRUE
-                    
+
                     ## pass in any model weights
                     if (!is.null(wts)) theDots$weights <- wts
-                    
+
                     modelArgs <- c(list(x = x, y = y,
                                         degree = param$degree,
                                         nprune = param$nprune),
@@ -50,9 +49,9 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                     if (is.factor(y) & !any(names(theDots) == "glm")) {
                       modelArgs$glm <- list(family = binomial, maxit = 100)
                     }
-                    
+
                     tmp <- do.call(earth::earth, modelArgs)
-                    
+
                     tmp$call["nprune"] <- param$nprune
                     tmp$call["degree"] <- param$degree
                     tmp
@@ -63,7 +62,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                     } else {
                       out <- earth:::predict.earth(modelFit, newdata)
                     }
-                    
+
                     if (!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- if (is.matrix(out)) out[,1] else out
@@ -89,11 +88,11 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                       colnames(out) <- modelFit$obsLevels
                     }
                     out <- as.data.frame(out)
-                    
+
                     if (!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
-                      
+
                       for(j in seq(along = submodels$nprune)) {
                         prunedFit <- earth:::update.earth(modelFit, nprune = submodels$nprune[j])
                         tmp2 <- earth:::predict.earth(prunedFit, newdata, type= "response")
@@ -118,16 +117,16 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                   varImp = function(object, value = "gcv", ...) {
                     earthImp <- earth::evimp(object)
                     if (!is.matrix(earthImp)) earthImp <- t(as.matrix(earthImp))
-                    
+
                     # get other variable names and padd with zeros
-                    
+
                     out <- earthImp
                     perfCol <- which(colnames(out) == value)
-                    
+
                     increaseInd <- out[,perfCol + 1]
                     out <- as.data.frame(out[,perfCol, drop = FALSE])
                     colnames(out) <- "Overall"
-                    
+
                     # At this point, we still may have some variables
                     # that are not in the model but have non-zero
                     # importance. We'll set those to zero
@@ -138,7 +137,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                     rownames(out) <- gsub("-unused", "", rownames(out))
                     out <- as.data.frame(out)
                     # fill in zeros for any variabels not  in out
-                    
+
                     xNames <- object$namesx.org
                     if (any(!(xNames %in% rownames(out)))) {
                       xNames <- xNames[!(xNames %in% rownames(out))]

@@ -7,13 +7,12 @@ modelInfo <- list(label = "Random Forest",
                                           label = "#Randomly Selected Predictors"),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
-                      out <- data.frame(mtry = caret::var_seq(p = ncol(x), 
-                                                              classification = is.factor(y), 
+                      out <- data.frame(mtry = caret::var_seq(p = ncol(x),
+                                                              classification = is.factor(y),
                                                               len = len))
                     } else {
                       out <- data.frame(mtry = unique(sample(1:ncol(x), size = len, replace = TRUE)))
                     }
-                    out[!duplicated(out), ]
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...)
                     randomForest::randomForest(x, y, mtry = param$mtry, ...),
@@ -42,11 +41,11 @@ modelInfo <- list(label = "Random Forest",
                         varImp <- data.frame(Overall = varImp[,1])
                       }
                     }
-                    
+
                     out <- as.data.frame(varImp)
                     if(dim(out)[2] == 2) {
                       tmp <- apply(out, 1, mean)
-                      out[,1] <- out[,2] <- tmp  
+                      out[,1] <- out[,2] <- tmp
                     }
                     out
                   },

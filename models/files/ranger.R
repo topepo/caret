@@ -12,8 +12,8 @@ modelInfo <- list(label = "Random Forest",
                   type = c("Classification", "Regression"),
                   parameters = data.frame(parameter = c("mtry", "splitrule", "min.node.size"),
                                           class = c("numeric", "character", "numeric"),
-                                          label = c("#Randomly Selected Predictors", 
-                                                    "Splitting Rule", 
+                                          label = c("#Randomly Selected Predictors",
+                                                    "Splitting Rule",
                                                     "Minimal Node Size")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
@@ -22,11 +22,11 @@ modelInfo <- list(label = "Random Forest",
                           "gini"
                       else
                         "variance"
-                      out <- expand.grid(mtry = 
+                      out <- expand.grid(mtry =
                                           caret::var_seq(p = ncol(x),
                                                          classification = is.factor(y),
                                                          len = len),
-                                         min.node.size = ifelse( is.factor(y), 1, 5), 
+                                         min.node.size = ifelse( is.factor(y), 1, 5),
                                         splitrule = c(srule, "extratrees"))
                     } else {
                       srules <- if (is.factor(y))
@@ -35,34 +35,33 @@ modelInfo <- list(label = "Random Forest",
                         c("variance", "extratrees", "maxstat")
                       out <-
                         data.frame(
-                          min.node.size= sample(1:(min(20,nrow(x))), size = len, replace = TRUE), 
+                          min.node.size= sample(1:(min(20,nrow(x))), size = len, replace = TRUE),
                           mtry = sample(1:ncol(x), size = len, replace = TRUE),
                           splitrule = sample(srules, size = len, replace = TRUE)
                         )
                     }
-                    out[!duplicated(out), ]
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if((!is.data.frame(x))||dplyr::is.tbl(x)) x <- as.data.frame(x)
                     x$.outcome <- y
                     if(!is.null(wts)) {
-                      out <- ranger::ranger(dependent.variable.name = ".outcome", 
-                                            data = x, 
+                      out <- ranger::ranger(dependent.variable.name = ".outcome",
+                                            data = x,
                                             mtry = min(param$mtry, ncol(x)),
                                             min.node.size = param$min.node.size,
                                             splitrule = as.character(param$splitrule),
                                             write.forest = TRUE,
-                                            probability = classProbs, 
-                                            case.weights = wts, 
+                                            probability = classProbs,
+                                            case.weights = wts,
                                             ...)
                     } else {
-                      out <- ranger::ranger(dependent.variable.name = ".outcome", 
-                                            data = x, 
-                                            mtry = min(param$mtry, ncol(x)), 
+                      out <- ranger::ranger(dependent.variable.name = ".outcome",
+                                            data = x,
+                                            mtry = min(param$mtry, ncol(x)),
                                             min.node.size = param$min.node.size,
                                             splitrule = as.character(param$splitrule),
                                             write.forest = TRUE,
-                                            probability = classProbs, 
+                                            probability = classProbs,
                                             ...)
                     }
                     ## in case the resampling method is "oob"

@@ -12,7 +12,6 @@ modelInfo <- list(label = "k-Nearest Neighbors",
                       by_val <- if(is.factor(y)) length(levels(y)) else 1
                       out <- data.frame(k = sample(seq(1, floor(nrow(x)/3), by = by_val), size = len, replace = TRUE))
                     }
-                    out[!duplicated(out), ]
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(is.factor(y))
