@@ -3,6 +3,12 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+\section{Changes in version 6.0-83}{
+  \itemize{
+    \item blah balh blah
+  }
+}
+
 \section{Changes in version 6.0-82}{
   \itemize{
     \item Immediate and required updates related to the different behavior of \code{sample} in R >= 3.6.
