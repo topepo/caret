@@ -475,6 +475,9 @@ train.default <- function(x, y,
     }
   }
 
+  ## Remove duplicates from grid that can occur with random sampling and discrete model parameters
+  tuneGrid <- tuneGrid[!duplicated(tuneGrid), , drop = FALSE]
+
   ## Check to make sure that there are tuning parameters in some cases
   if(grepl("adaptive", trControl$method) & nrow(tuneGrid) == 1) {
     stop(paste("For adaptive resampling, there needs to be more than one",
