@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>The caret Package</title>
+  <title>5 Model Training and Tuning | The caret Package</title>
   <meta name="description" content="Documentation for the caret package.">
-  <meta name="generator" content="bookdown 0.7.11 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="The caret Package" />
+  <meta property="og:title" content="5 Model Training and Tuning | The caret Package" />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="topepo/caret" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="The caret Package" />
+  <meta name="twitter:title" content="5 Model Training and Tuning | The caret Package" />
   
   <meta name="twitter:description" content="Documentation for the caret package." />
   
@@ -25,7 +25,7 @@
 <meta name="author" content="Max Kuhn">
 
 
-<meta name="date" content="2018-05-26">
+<meta name="date" content="2019-03-27">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -36,6 +36,7 @@
 <link rel="next" href="available-models.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -47,9 +48,9 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.4/datatables.js"></script>
+<script src="libs/datatables-binding-0.5/datatables.js"></script>
 <link href="libs/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" />
 <link href="libs/dt-core-bootstrap-1.10.16/css/dataTables.bootstrap.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-bootstrap-1.10.16/js/jquery.dataTables.min.js"></script>
@@ -58,10 +59,10 @@
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <script src="libs/d3-4.5.0/d3.min.js"></script>
 <script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
-<script src="libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="libs/plotly-binding-4.8.0/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.39.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.39.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -311,14 +312,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="19.2.3" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-fit-function-1"><i class="fa fa-check"></i><b>19.2.3</b> The <code>fit</code> Function</a></li>
 <li class="chapter" data-level="19.2.4" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-summary-and-pred-functions"><i class="fa fa-check"></i><b>19.2.4</b> The <code>summary</code> and <code>pred</code> Functions</a></li>
 </ul></li>
-<li class="chapter" data-level="19.3" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#the-example"><i class="fa fa-check"></i><b>19.3</b> The Example</a></li>
+<li class="chapter" data-level="19.3" data-path="feature-selection-using-univariate-filters.html"><a href="feature-selection-using-univariate-filters.html#fexample"><i class="fa fa-check"></i><b>19.3</b> The Example</a></li>
 </ul></li>
 <li class="chapter" data-level="20" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html"><i class="fa fa-check"></i><b>20</b> Recursive Feature Elimination</a><ul>
 <li class="chapter" data-level="20.1" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#backwards-selection"><i class="fa fa-check"></i><b>20.1</b> Backwards Selection</a></li>
 <li class="chapter" data-level="20.2" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#resampling-and-external-validation"><i class="fa fa-check"></i><b>20.2</b> Resampling and External Validation</a></li>
 <li class="chapter" data-level="20.3" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#recursive-feature-elimination-via-caret"><i class="fa fa-check"></i><b>20.3</b> Recursive Feature Elimination via <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a></a></li>
-<li class="chapter" data-level="20.4" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#an-example-3"><i class="fa fa-check"></i><b>20.4</b> An Example</a></li>
-<li class="chapter" data-level="20.5" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#helper-functions"><i class="fa fa-check"></i><b>20.5</b> Helper Functions</a><ul>
+<li class="chapter" data-level="20.4" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#rfeexample"><i class="fa fa-check"></i><b>20.4</b> An Example</a></li>
+<li class="chapter" data-level="20.5" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#rfehelpers"><i class="fa fa-check"></i><b>20.5</b> Helper Functions</a><ul>
 <li class="chapter" data-level="20.5.1" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-summary-function"><i class="fa fa-check"></i><b>20.5.1</b> The <code>summary</code> Function</a></li>
 <li class="chapter" data-level="20.5.2" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-fit-function-2"><i class="fa fa-check"></i><b>20.5.2</b> The <code>fit</code> Function</a></li>
 <li class="chapter" data-level="20.5.3" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-pred-function-1"><i class="fa fa-check"></i><b>20.5.3</b> The <code>pred</code> Function</a></li>
@@ -326,13 +327,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="20.5.5" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-selectsize-function"><i class="fa fa-check"></i><b>20.5.5</b> The <code>selectSize</code> Function</a></li>
 <li class="chapter" data-level="20.5.6" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-selectvar-function"><i class="fa fa-check"></i><b>20.5.6</b> The <code>selectVar</code> Function</a></li>
 </ul></li>
-<li class="chapter" data-level="20.6" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#the-example-1"><i class="fa fa-check"></i><b>20.6</b> The Example</a></li>
+<li class="chapter" data-level="20.6" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#rfeexample2"><i class="fa fa-check"></i><b>20.6</b> The Example</a></li>
+<li class="chapter" data-level="20.7" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html#rferecipes"><i class="fa fa-check"></i><b>20.7</b> Using a Recipe</a></li>
 </ul></li>
 <li class="chapter" data-level="21" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html"><i class="fa fa-check"></i><b>21</b> Feature Selection using Genetic Algorithms</a><ul>
 <li class="chapter" data-level="21.1" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#genetic-algorithms"><i class="fa fa-check"></i><b>21.1</b> Genetic Algorithms</a></li>
 <li class="chapter" data-level="21.2" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#internal-and-external-performance-estimates"><i class="fa fa-check"></i><b>21.2</b> Internal and External Performance Estimates</a></li>
 <li class="chapter" data-level="21.3" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#basic-syntax-1"><i class="fa fa-check"></i><b>21.3</b> Basic Syntax</a></li>
-<li class="chapter" data-level="21.4" data-path="model-training-and-tuning.html"><a href="model-training-and-tuning.html#example"><i class="fa fa-check"></i><b>21.4</b> Example</a></li>
+<li class="chapter" data-level="21.4" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#gaexample"><i class="fa fa-check"></i><b>21.4</b> Genetic Algorithm Example</a></li>
 <li class="chapter" data-level="21.5" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#customizing-the-search"><i class="fa fa-check"></i><b>21.5</b> Customizing the Search</a><ul>
 <li class="chapter" data-level="21.5.1" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-fit-function-3"><i class="fa fa-check"></i><b>21.5.1</b> The <code>fit</code> Function</a></li>
 <li class="chapter" data-level="21.5.2" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-pred-function-2"><i class="fa fa-check"></i><b>21.5.2</b> The <code>pred</code> Function</a></li>
@@ -345,12 +347,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="21.5.9" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-selectiter-function"><i class="fa fa-check"></i><b>21.5.9</b> The <code>selectIter</code> Function</a></li>
 </ul></li>
 <li class="chapter" data-level="21.6" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#the-example-revisited"><i class="fa fa-check"></i><b>21.6</b> The Example Revisited</a></li>
+<li class="chapter" data-level="21.7" data-path="feature-selection-using-genetic-algorithms.html"><a href="feature-selection-using-genetic-algorithms.html#using-recipes"><i class="fa fa-check"></i><b>21.7</b> Using Recipes</a></li>
 </ul></li>
 <li class="chapter" data-level="22" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html"><i class="fa fa-check"></i><b>22</b> Feature Selection using Simulated Annealing</a><ul>
 <li class="chapter" data-level="22.1" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#simulated-annealing"><i class="fa fa-check"></i><b>22.1</b> Simulated Annealing</a></li>
 <li class="chapter" data-level="22.2" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#internal-and-external-performance-estimates-1"><i class="fa fa-check"></i><b>22.2</b> Internal and External Performance Estimates</a></li>
 <li class="chapter" data-level="22.3" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#basic-syntax-2"><i class="fa fa-check"></i><b>22.3</b> Basic Syntax</a></li>
-<li class="chapter" data-level="22.4" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#example-1"><i class="fa fa-check"></i><b>22.4</b> Example</a></li>
+<li class="chapter" data-level="22.4" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#saexample"><i class="fa fa-check"></i><b>22.4</b> Simulated Annealing Example</a></li>
 <li class="chapter" data-level="22.5" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#customizing-the-search-1"><i class="fa fa-check"></i><b>22.5</b> Customizing the Search</a><ul>
 <li class="chapter" data-level="22.5.1" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-fit-function-4"><i class="fa fa-check"></i><b>22.5.1</b> The <code>fit</code> Function</a></li>
 <li class="chapter" data-level="22.5.2" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-pred-function-3"><i class="fa fa-check"></i><b>22.5.2</b> The <code>pred</code> Function</a></li>
@@ -360,6 +363,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="22.5.6" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-perturb-function"><i class="fa fa-check"></i><b>22.5.6</b> The <code>perturb</code> Function</a></li>
 <li class="chapter" data-level="22.5.7" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#the-prob-function"><i class="fa fa-check"></i><b>22.5.7</b> The <code>prob</code> Function</a></li>
 </ul></li>
+<li class="chapter" data-level="22.6" data-path="feature-selection-using-simulated-annealing.html"><a href="feature-selection-using-simulated-annealing.html#using-recipes-1"><i class="fa fa-check"></i><b>22.6</b> Using Recipes</a></li>
 </ul></li>
 <li class="chapter" data-level="23" data-path="data-sets.html"><a href="data-sets.html"><i class="fa fa-check"></i><b>23</b> Data Sets</a><ul>
 <li class="chapter" data-level="23.1" data-path="data-sets.html"><a href="data-sets.html#blood-brain-barrier-data"><i class="fa fa-check"></i><b>23.1</b> Blood-Brain Barrier Data</a></li>
@@ -430,7 +434,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>choose the “optimal” model across these parameters</li>
 <li>estimate model performance from a training set</li>
 </ul>
-<p>First, a specific model must be chosen. Currently, 237 are available using <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a>; see <a href="available-models.html"><code>train</code> Model List</a> or <a href="train-models-by-tag.html"><code>train</code> Models By Tag</a> for details. On these pages, there are lists of tuning parameters that can potentially be optimized. <a href="using-your-own-model-in-train.html">User-defined models</a> can also be created.</p>
+<p>First, a specific model must be chosen. Currently, 238 are available using <a href="http://cran.r-project.org/web/packages/caret/index.html"><code>caret</code></a>; see <a href="available-models.html"><code>train</code> Model List</a> or <a href="train-models-by-tag.html"><code>train</code> Models By Tag</a> for details. On these pages, there are lists of tuning parameters that can potentially be optimized. <a href="using-your-own-model-in-train.html">User-defined models</a> can also be created.</p>
 <p>The first step in tuning the model (line 1 in the algorithm below) is to choose a set of parameters to evaluate. For example, if fitting a Partial Least Squares (PLS) model, the number of PLS components to evaluate must be specified.</p>
 <p><img src="premade/TrainAlgo.png" /><!-- --></p>
 <p>Once the model and tuning parameter values have been defined, the type of resampling should be also be specified. Currently, <em>k</em>-fold cross-validation (once or repeated), leave-one-out cross-validation and bootstrap (simple estimation or the 632 rule) resampling methods can be used by <code>train</code>. After resampling, the process produces a profile of performance measures is available to guide the user as to which tuning parameter values should be chosen. By default, the function automatically chooses the tuning parameters associated with the best value, although different algorithms can be used (see details below).</p>
@@ -492,19 +496,19 @@ gbmFit1</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold, repeated 10 times) 
-## Summary of sample sizes: 141, 141, 142, 141, 141, 142, ... 
+## Summary of sample sizes: 141, 142, 141, 142, 141, 142, ... 
 ## Resampling results across tuning parameters:
 ## 
 ##   interaction.depth  n.trees  Accuracy   Kappa    
-##   1                   50      0.7876495  0.5712306
-##   1                  100      0.7957794  0.5867732
-##   1                  150      0.8140441  0.6235694
-##   2                   50      0.8073676  0.6101031
-##   2                  100      0.8158211  0.6263183
-##   2                  150      0.8244608  0.6441406
-##   3                   50      0.8167843  0.6294107
-##   3                  100      0.8251127  0.6458154
-##   3                  150      0.8284510  0.6522968
+##   1                   50      0.7935784  0.5797839
+##   1                  100      0.8171078  0.6290208
+##   1                  150      0.8219608  0.6386184
+##   2                   50      0.8041912  0.6027771
+##   2                  100      0.8302059  0.6556940
+##   2                  150      0.8283627  0.6520181
+##   3                   50      0.8110343  0.6170317
+##   3                  100      0.8301275  0.6551379
+##   3                  150      0.8310343  0.6577252
 ## 
 ## Tuning parameter &#39;shrinkage&#39; was held constant at a value of 0.1
 ## 
@@ -532,7 +536,7 @@ gbmFit1</code></pre>
 <li>There are two approaches to ensuring that the same <em>resamples</em> are used between calls to <code>train</code>. The first is to use <code>set.seed</code> just prior to calling <code>train</code>. The first use of random numbers is to create the resampling information. Alternatively, if you would like to use specific splits of the data, the <code>index</code> argument of the <code>trainControl</code> function can be used. This is briefly discussed below.</li>
 <li>When the models are created <em>inside of resampling</em>, the seeds can also be set. While setting the seed prior to calling <code>train</code> may guarantee that the same random numbers are used, this is unlikely to be the case when <a href="parallel-processing.html">parallel processing</a> is used (depending which technology is utilized). To set the model fitting seeds, <code>trainControl</code> has an additional argument called <code>seeds</code> that can be used. The value for this argument is a list of integer vectors that are used as seeds. The help page for <code>trainControl</code> describes the appropriate format for this option.</li>
 </ul>
-<p>How random numbers are used is highly dependent on the package author. There are rare cases where the underlying model function does not control the random number seed, especially if the computations are conducted in C code. Also, please note that <a href="https://github.com/topepo/caret/issues/452">some packages load random numbers when loaded (directly or via namespace)</a> and this may effect reproducibility.</p>
+<p>How random numbers are used is highly dependent on the package author. There are rare cases where the underlying model function does not control the random number seed, especially if the computations are conducted in C code. Also, please note that <a href="https://github.com/topepo/caret/issues/452">some packages load random numbers when loaded (directly or via namespace)</a> and this may affect reproducibility.</p>
 <div id="custom">
 
 </div>
@@ -587,27 +591,27 @@ gbmFit2</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold, repeated 10 times) 
-## Summary of sample sizes: 141, 141, 142, 141, 141, 142, ... 
+## Summary of sample sizes: 141, 142, 141, 142, 141, 142, ... 
 ## Resampling results across tuning parameters:
 ## 
 ##   interaction.depth  n.trees  Accuracy  Kappa
-##   1                    50     0.77      0.54 
-##   1                   100     0.80      0.59 
-##   1                   150     0.81      0.62 
-##   1                   200     0.82      0.64 
-##   1                   250     0.82      0.64 
-##   1                   300     0.82      0.64 
+##   1                    50     0.78      0.56 
+##   1                   100     0.81      0.61 
+##   1                   150     0.82      0.63 
+##   1                   200     0.83      0.65 
+##   1                   250     0.82      0.65 
+##   1                   300     0.83      0.65 
 ##   :                   :        :         : 
-##   9                  1350     0.84      0.68 
-##   9                  1400     0.84      0.68 
-##   9                  1450     0.84      0.68 
-##   9                  1500     0.84      0.68 
+##   9                  1350     0.85      0.69 
+##   9                  1400     0.85      0.69 
+##   9                  1450     0.85      0.69 
+##   9                  1500     0.85      0.69 
 ## 
 ## Tuning parameter &#39;shrinkage&#39; was held constant at a value of 0.1
 ## 
 ## Tuning parameter &#39;n.minobsinnode&#39; was held constant at a value of 20
 ## Accuracy was used to select the optimal model using the largest value.
-## The final values used for the model were n.trees = 350,
+## The final values used for the model were n.trees = 1200,
 ##  interaction.depth = 9, shrinkage = 0.1 and n.minobsinnode = 20.</code></pre>
 <p>Another option is to use a random sample of possible tuning parameter combinations, i.e. “random search”<a href="http://www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf">(pdf)</a>. This functionality is described on <a href="random-hyperparameter-search.html">this page</a>.</p>
 <p>To use a random search, use the option <code>search = &quot;random&quot;</code> in the call to <code>trainControl</code>. In this situation, the <code>tuneLength</code> parameter defines the total number of parameter combinations that will be evaluated.</p>
@@ -708,29 +712,29 @@ gbmFit3</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold, repeated 10 times) 
-## Summary of sample sizes: 141, 141, 142, 141, 141, 142, ... 
+## Summary of sample sizes: 141, 142, 141, 142, 141, 142, ... 
 ## Resampling results across tuning parameters:
 ## 
 ##   interaction.depth  n.trees  ROC   Sens  Spec
-##   1                    50     0.87  0.83  0.71
-##   1                   100     0.88  0.85  0.74
-##   1                   150     0.89  0.85  0.77
-##   1                   200     0.89  0.85  0.78
-##   1                   250     0.89  0.86  0.78
-##   1                   300     0.89  0.86  0.78
+##   1                    50     0.86  0.86  0.69
+##   1                   100     0.88  0.85  0.75
+##   1                   150     0.89  0.86  0.77
+##   1                   200     0.90  0.87  0.78
+##   1                   250     0.90  0.86  0.78
+##   1                   300     0.90  0.87  0.78
 ##   :                   :        :     :      :    
-##   9                  1350     0.91  0.89  0.79
-##   9                  1400     0.91  0.89  0.79
-##   9                  1450     0.91  0.89  0.79
-##   9                  1500     0.91  0.89  0.79
+##   9                  1350     0.92  0.88  0.81
+##   9                  1400     0.92  0.88  0.80
+##   9                  1450     0.92  0.88  0.81
+##   9                  1500     0.92  0.88  0.80
 ## 
 ## Tuning parameter &#39;shrinkage&#39; was held constant at a value of 0.1
 ## 
 ## Tuning parameter &#39;n.minobsinnode&#39; was held constant at a value of 20
 ## ROC was used to select the optimal model using the largest value.
-## The final values used for the model were n.trees = 250,
-##  interaction.depth = 9, shrinkage = 0.1 and n.minobsinnode = 20.</code></pre>
-<p>In this case, the average area under the ROC curve associated with the optimal tuning parameters was 0.914 across
+## The final values used for the model were n.trees = 1450,
+##  interaction.depth = 5, shrinkage = 0.1 and n.minobsinnode = 20.</code></pre>
+<p>In this case, the average area under the ROC curve associated with the optimal tuning parameters was 0.922 across
 the 100 resamples.</p>
 <div id="final">
 
@@ -748,17 +752,17 @@ the 100 resamples.</p>
 <li><code>maximize</code> is a single logical value indicating whether larger values of the performance metric are better (this is also directly passed from the call to <code>train</code>).</li>
 </ul>
 <p>The function should output a single integer indicating which row in <code>x</code> is chosen.</p>
-<p>As an example, if we chose the previous boosted tree model on the basis of overall accuracy, we would choose: n.trees = 250, interaction.depth = 9, shrinkage = 0.1, n.minobsinnode = 20. However, the scale in this plots is fairly tight, with accuracy values ranging from 0.872 to
-0.914. A less complex model (e.g. fewer, more shallow trees) might also yield acceptable accuracy.</p>
+<p>As an example, if we chose the previous boosted tree model on the basis of overall accuracy, we would choose: n.trees = 1450, interaction.depth = 5, shrinkage = 0.1, n.minobsinnode = 20. However, the scale in this plots is fairly tight, with accuracy values ranging from 0.863 to
+0.922. A less complex model (e.g. fewer, more shallow trees) might also yield acceptable accuracy.</p>
 <p>The tolerance function could be used to find a less complex model based on (<em>x</em>-<em>x</em><sub>best</sub>)/<em>x</em><sub>best</sub>x 100, which is the percent difference. For example, to select parameter values based on a 2% loss of performance:</p>
 <pre class="sourceCode r"><code class="sourceCode r">whichTwoPct &lt;-<span class="st"> </span><span class="kw">tolerance</span>(gbmFit3<span class="op">$</span>results, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>, 
                          <span class="dt">tol =</span> <span class="dv">2</span>, <span class="dt">maximize =</span> <span class="ot">TRUE</span>)  
 <span class="kw">cat</span>(<span class="st">&quot;best model within 2 pct of best:</span><span class="ch">\n</span><span class="st">&quot;</span>)</code></pre>
 <pre><code>## best model within 2 pct of best:</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">gbmFit3<span class="op">$</span>results[whichTwoPct,<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>]</code></pre>
-<pre><code>##    shrinkage interaction.depth n.minobsinnode n.trees      ROC      Sens
-## 32       0.1                 5             20     100 0.901255 0.8677778</code></pre>
-<p>This indicates that we can get a less complex model with an area under the ROC curve of 0.901 (compared to the “pick the best” value of 0.914).</p>
+<pre><code>##    shrinkage interaction.depth n.minobsinnode n.trees       ROC      Sens
+## 32       0.1                 5             20     100 0.9139707 0.8645833</code></pre>
+<p>This indicates that we can get a less complex model with an area under the ROC curve of 0.914 (compared to the “pick the best” value of 0.922).</p>
 <p>The main issue with these functions is related to ordering the models from simplest to complex. In some cases, this is easy (e.g. simple trees, partial least squares), but in cases such as this model, the ordering of models is subjective. For example, is a boosted tree model using 100 iterations and a tree depth of 2 more complex than one with 50 iterations and a depth of 8? The package makes some choices regarding the orderings. In the case of boosted trees, the package assumes that increasing the number of iterations adds complexity at a faster rate than increasing the tree depth, so models are ordered on the number of iterations then ordered with depth. See <code>?best</code> for more examples for specific models.</p>
 <div id="pred">
 
@@ -770,16 +774,16 @@ the 100 resamples.</p>
 <p>Also, there are very few standard syntaxes for model predictions in R. For example, to get class probabilities, many <code>predict</code> methods have an argument called <code>type</code> that is used to specify whether the classes or probabilities should be generated. Different packages use different values of <code>type</code>, such as <code>&quot;prob&quot;</code>, <code>&quot;posterior&quot;</code>, <code>&quot;response&quot;</code>, <code>&quot;probability&quot;</code> or <code>&quot;raw&quot;</code>. In other cases, completely different syntax is used.</p>
 <p>For <code>predict.train</code>, the type options are standardized to be <code>&quot;class&quot;</code> and <code>&quot;prob&quot;</code> (the underlying code matches these to the appropriate choices for each model. For example:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predict</span>(gbmFit3, <span class="dt">newdata =</span> <span class="kw">head</span>(testing))</code></pre>
-<pre><code>## [1] R R R R M M
+<pre><code>## [1] R M R M R M
 ## Levels: M R</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predict</span>(gbmFit3, <span class="dt">newdata =</span> <span class="kw">head</span>(testing), <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)</code></pre>
-<pre><code>##              M          R
-## 1 0.2600273005 0.73997270
-## 2 0.0113631254 0.98863687
-## 3 0.0003797417 0.99962026
-## 4 0.1532818480 0.84671815
-## 5 0.9879809255 0.01201907
-## 6 0.6342884390 0.36571156</code></pre>
+<pre><code>##              M            R
+## 1 3.215213e-02 9.678479e-01
+## 2 1.000000e+00 3.965815e-08
+## 3 6.996088e-13 1.000000e+00
+## 4 9.070652e-01 9.293483e-02
+## 5 2.029754e-03 9.979702e-01
+## 6 9.999662e-01 3.377548e-05</code></pre>
 <div id="resamp">
 
 </div>
@@ -825,22 +829,22 @@ svmFit                 </code></pre>
 ## 
 ## Pre-processing: centered (60), scaled (60) 
 ## Resampling: Cross-Validated (10 fold, repeated 10 times) 
-## Summary of sample sizes: 141, 141, 142, 141, 141, 142, ... 
+## Summary of sample sizes: 141, 142, 141, 142, 141, 142, ... 
 ## Resampling results across tuning parameters:
 ## 
 ##   C      ROC        Sens       Spec     
-##    0.25  0.8700471  0.7572222  0.7539286
-##    0.50  0.9102133  0.8587500  0.7819643
-##    1.00  0.9344767  0.8809722  0.7807143
-##    2.00  0.9346230  0.8870833  0.7878571
-##    4.00  0.9455828  0.8979167  0.8192857
-##    8.00  0.9486012  0.9002778  0.8162500
-##   16.00  0.9491146  0.9050000  0.8216071
-##   32.00  0.9491146  0.9119444  0.8164286
+##    0.25  0.8438318  0.7373611  0.7230357
+##    0.50  0.8714459  0.8083333  0.7316071
+##    1.00  0.8921354  0.8031944  0.7653571
+##    2.00  0.9116171  0.8358333  0.7925000
+##    4.00  0.9298934  0.8525000  0.8201786
+##    8.00  0.9318899  0.8684722  0.8217857
+##   16.00  0.9339658  0.8730556  0.8205357
+##   32.00  0.9339658  0.8776389  0.8276786
 ## 
-## Tuning parameter &#39;sigma&#39; was held constant at a value of 0.01334808
+## Tuning parameter &#39;sigma&#39; was held constant at a value of 0.01181293
 ## ROC was used to select the optimal model using the largest value.
-## The final values used for the model were sigma = 0.01334808 and C = 16.</code></pre>
+## The final values used for the model were sigma = 0.01181293 and C = 16.</code></pre>
 <p>Also, a regularized discriminant analysis model was fit.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">825</span>)
 rdaFit &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> training, 
@@ -857,30 +861,30 @@ rdaFit                 </code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold, repeated 10 times) 
-## Summary of sample sizes: 141, 141, 142, 141, 141, 142, ... 
+## Summary of sample sizes: 141, 142, 141, 142, 141, 142, ... 
 ## Resampling results across tuning parameters:
 ## 
 ##   gamma      lambda     ROC        Sens       Spec     
-##   0.0000000  0.0000000  0.6677145  0.9052778  0.3998214
-##   0.0000000  0.3333333  0.8516543  0.8425000  0.7564286
-##   0.0000000  0.6666667  0.8697941  0.8212500  0.7969643
-##   0.0000000  1.0000000  0.8560193  0.7772222  0.7898214
-##   0.3333333  0.0000000  0.9069866  0.8884722  0.7630357
-##   0.3333333  0.3333333  0.9247817  0.9201389  0.7942857
-##   0.3333333  0.6666667  0.9247148  0.9251389  0.7830357
-##   0.3333333  1.0000000  0.8782242  0.8462500  0.7817857
-##   0.6666667  0.0000000  0.9015352  0.8804167  0.7557143
-##   0.6666667  0.3333333  0.9100471  0.9044444  0.7607143
-##   0.6666667  0.6666667  0.9033209  0.9013889  0.7687500
-##   0.6666667  1.0000000  0.8704638  0.8077778  0.7883929
-##   1.0000000  0.0000000  0.7283631  0.6652778  0.6507143
-##   1.0000000  0.3333333  0.7308557  0.6676389  0.6564286
-##   1.0000000  0.6666667  0.7322222  0.6770833  0.6633929
-##   1.0000000  1.0000000  0.7342832  0.6745833  0.6607143
+##   0.0000000  0.0000000  0.6426029  0.9311111  0.3364286
+##   0.0000000  0.3333333  0.8543564  0.8076389  0.7585714
+##   0.0000000  0.6666667  0.8596577  0.8083333  0.7766071
+##   0.0000000  1.0000000  0.7950670  0.7677778  0.6925000
+##   0.3333333  0.0000000  0.8509276  0.8502778  0.6914286
+##   0.3333333  0.3333333  0.8650372  0.8676389  0.6866071
+##   0.3333333  0.6666667  0.8698115  0.8604167  0.6941071
+##   0.3333333  1.0000000  0.8336930  0.7597222  0.7542857
+##   0.6666667  0.0000000  0.8600868  0.8756944  0.6482143
+##   0.6666667  0.3333333  0.8692981  0.8794444  0.6446429
+##   0.6666667  0.6666667  0.8678547  0.8355556  0.6892857
+##   0.6666667  1.0000000  0.8277133  0.7445833  0.7448214
+##   1.0000000  0.0000000  0.7059797  0.6888889  0.6032143
+##   1.0000000  0.3333333  0.7098313  0.6830556  0.6101786
+##   1.0000000  0.6666667  0.7129489  0.6672222  0.6173214
+##   1.0000000  1.0000000  0.7193031  0.6626389  0.6296429
 ## 
 ## ROC was used to select the optimal model using the largest value.
 ## The final values used for the model were gamma = 0.3333333 and lambda
-##  = 0.3333333.</code></pre>
+##  = 0.6666667.</code></pre>
 <p>Given these models, can we make statistical statements about their performance differences? To do this, we first collect the resampling results using <code>resamples</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r">resamps &lt;-<span class="st"> </span><span class="kw">resamples</span>(<span class="kw">list</span>(<span class="dt">GBM =</span> gbmFit3,
                           <span class="dt">SVM =</span> svmFit,
@@ -903,22 +907,22 @@ resamps</code></pre>
 ## Number of resamples: 100 
 ## 
 ## ROC 
-##          Min.   1st Qu.    Median      Mean   3rd Qu. Max. NA&#39;s
-## GBM 0.6607143 0.8745040 0.9285714 0.9139534 0.9841890    1    0
-## SVM 0.7500000 0.9265873 0.9642857 0.9491146 0.9895833    1    0
-## RDA 0.6964286 0.8901910 0.9365079 0.9247817 0.9747024    1    0
+##          Min.  1st Qu.    Median      Mean   3rd Qu. Max. NA&#39;s
+## GBM 0.6964286 0.874504 0.9375000 0.9216270 0.9821429    1    0
+## SVM 0.7321429 0.905878 0.9464286 0.9339658 0.9821429    1    0
+## RDA 0.5625000 0.812500 0.8750000 0.8698115 0.9392361    1    0
 ## 
 ## Sens 
 ##          Min.   1st Qu.    Median      Mean 3rd Qu. Max. NA&#39;s
-## GBM 0.4444444 0.7777778 0.8888889 0.8818056       1    1    0
-## SVM 0.5555556 0.8506944 1.0000000 0.9050000       1    1    0
-## RDA 0.6250000 0.8750000 1.0000000 0.9201389       1    1    0
+## GBM 0.5555556 0.7777778 0.8750000 0.8776389       1    1    0
+## SVM 0.5000000 0.7777778 0.8888889 0.8730556       1    1    0
+## RDA 0.4444444 0.7777778 0.8750000 0.8604167       1    1    0
 ## 
 ## Spec 
-##          Min.   1st Qu.    Median      Mean 3rd Qu. Max. NA&#39;s
-## GBM 0.4285714 0.7142857 0.8571429 0.7966071   0.875    1    0
-## SVM 0.2857143 0.7142857 0.8571429 0.8216071   1.000    1    0
-## RDA 0.4285714 0.7142857 0.8571429 0.7942857   0.875    1    0</code></pre>
+##          Min.   1st Qu.    Median      Mean   3rd Qu. Max. NA&#39;s
+## GBM 0.4285714 0.7142857 0.8571429 0.8133929 1.0000000    1    0
+## SVM 0.4285714 0.7142857 0.8571429 0.8205357 0.9062500    1    0
+## RDA 0.1428571 0.5714286 0.7142857 0.6941071 0.8571429    1    0</code></pre>
 <p>Note that, in this case, the option <code>resamples = &quot;final&quot;</code> should be user-defined in the control objects.</p>
 <p>There are several lattice plot methods that can be used to visualize the resampling distributions: density plots, box-whisker plots, scatterplot matrices and scatterplots of summary statistics. For example:</p>
 <pre class="sourceCode r"><code class="sourceCode r">theme1 &lt;-<span class="st"> </span><span class="kw">trellis.par.get</span>()
@@ -959,22 +963,22 @@ difValues</code></pre>
 ## Lower diagonal: p-value for H0: difference = 0
 ## 
 ## ROC 
-##     GBM       SVM      RDA     
-## GBM           -0.03516 -0.01083
-## SVM 1.304e-07           0.02433
-## RDA 0.649032  0.001546         
+##     GBM       SVM       RDA     
+## GBM           -0.01234   0.05182
+## SVM 0.3388               0.06415
+## RDA 5.988e-07 2.638e-10         
 ## 
 ## Sens 
-##     GBM     SVM      RDA     
-## GBM         -0.02319 -0.03833
-## SVM 0.36881          -0.01514
-## RDA 0.02684 0.60884          
+##     GBM    SVM      RDA     
+## GBM        0.004583 0.017222
+## SVM 1.0000          0.012639
+## RDA 0.5187 1.0000           
 ## 
 ## Spec 
-##     GBM    SVM       RDA      
-## GBM        -0.025000  0.002321
-## SVM 0.1235            0.027321
-## RDA 1.0000 0.2994</code></pre>
+##     GBM       SVM       RDA      
+## GBM           -0.007143  0.119286
+## SVM 1                    0.126429
+## RDA 5.300e-07 1.921e-10</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">trellis.par.set</span>(theme1)
 <span class="kw">bwplot</span>(difValues, <span class="dt">layout =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</code></pre>
 <p><img src="basic/train_diff_box-1.svg" width="864" /></p>
@@ -1014,16 +1018,16 @@ gbmFit4</code></pre>
 ## Resampling: None</code></pre>
 <p>Note that <code>plot.train</code>, <code>resamples</code>, <code>confusionMatrix.train</code> and several other functions will not work with this object but <code>predict.train</code> and others will:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predict</span>(gbmFit4, <span class="dt">newdata =</span> <span class="kw">head</span>(testing))</code></pre>
-<pre><code>## [1] R R R R M M
+<pre><code>## [1] R M R R M M
 ## Levels: M R</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predict</span>(gbmFit4, <span class="dt">newdata =</span> <span class="kw">head</span>(testing), <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)</code></pre>
 <pre><code>##             M          R
-## 1 0.129181487 0.87081851
-## 2 0.039369722 0.96063028
-## 3 0.002722481 0.99727752
-## 4 0.076762607 0.92323739
-## 5 0.959529367 0.04047063
-## 6 0.622319826 0.37768017</code></pre>
+## 1 0.264671996 0.73532800
+## 2 0.960445979 0.03955402
+## 3 0.005731862 0.99426814
+## 4 0.298628996 0.70137100
+## 5 0.503935367 0.49606463
+## 6 0.813716635 0.18628336</code></pre>
 
 </div>
 </div>
@@ -1053,7 +1057,7 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -1063,6 +1067,10 @@ gitbook.start({
 "size": 2
 },
 "edit": {
+"link": null,
+"text": null
+},
+"history": {
 "link": null,
 "text": null
 },
@@ -1080,7 +1088,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');
     script.src = src;

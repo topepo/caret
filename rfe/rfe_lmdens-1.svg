@@ -76,10 +76,10 @@
 </symbol>
 </g>
 <clipPath id="clip1">
-  <path d="M 57.601562 295 L 476 295 L 476 297 L 57.601562 297 Z M 57.601562 295 "/>
+  <path d="M 57.601562 295 L 475.203125 295 L 475.203125 297 L 57.601562 297 Z M 57.601562 295 "/>
 </clipPath>
 </defs>
-<g id="surface184">
+<g id="surface187">
 <path style="fill:none;stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 75.765625 24.085938 C 75.765625 27.683594 70.367188 27.683594 70.367188 24.085938 C 70.367188 20.484375 75.765625 20.484375 75.765625 24.085938 "/>
 <path style="fill:none;stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 101.542969 54.992188 C 101.542969 58.59375 96.144531 58.59375 96.144531 54.992188 C 96.144531 51.394531 101.542969 51.394531 101.542969 54.992188 "/>
 <path style="fill:none;stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 127.320312 86.605469 C 127.320312 90.207031 121.921875 90.207031 121.921875 86.605469 C 121.921875 83.003906 127.320312 83.003906 127.320312 86.605469 "/>
