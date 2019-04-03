@@ -487,7 +487,7 @@ train.default <- function(x, y,
   tuneNames <- as.character(models$parameters$parameter)
   if (!all(colnames(tuneGrid) %in% tuneNames)) {
     badNames <- colnames(tuneGrid)[!(colnames(tuneGrid) %in% tuneNames)]
-    stop(paste("The tuning parameter grid should not have columns",
+    stop(paste("The tuning parameter grid should have columns",
                paste(tuneNames, collapse = ", ", sep = "")), call. = FALSE)
   }
 
