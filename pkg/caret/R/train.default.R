@@ -1127,9 +1127,13 @@ train.recipe <- function(x,
          call. = FALSE)
 
   ## If they don't exist, make the data partitions for the resampling iterations.
+  # Get outcomes from the _original_ data since that is what should be given to
+  # the recipe
+  y_orig_val <- trained_rec$var_info$variable[trained_rec$var_info$role == "outcome"]
+  y_orig_val <- y_orig_val
   trControl <- withr::with_seed(
     rs_seed,
-    make_resamples(trControl, outcome = y_dat)
+    make_resamples(trControl, outcome = data[[y_orig_val]])
   )
 
   if(is.logical(trControl$savePredictions)) {
@@ -1402,7 +1406,7 @@ train.recipe <- function(x,
 
   ## Make the final model based on the tuning results
   indexFinal <- if(is.null(trControl$indexFinal))
-    seq(along = y_dat) else trControl$indexFinal
+    seq(along = data[[y_orig_val]]) else trControl$indexFinal
 
   if(!(length(trControl$seeds) == 1 && is.na(trControl$seeds)))
     set.seed(trControl$seeds[[length(trControl$seeds)]][1])
