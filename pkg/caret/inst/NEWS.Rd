@@ -317,7 +317,7 @@
 		\item When specifying your own resampling indices, a value of \code{method = "custom"} can be used with \code{trainControl} for better printing.
 		\item Tim Lucas fixed a bug in \code{avNNet} when \code{bag = TRUE}
 		\item Fixed a bug found by \code{ruggerorossi} in \code{method = "dnn"} with classification.
-		\item A new option called \code{sampling} was added to \code{trainControl} that allows users to subsample their data in the case of a class imbalance. Another \href{http://topepo.github.io/caret/sampling.html}{help page} was added to explain the features.
+		\item A new option called \code{sampling} was added to \code{trainControl} that allows users to subsample their data in the case of a class imbalance. Another \href{http://topepo.github.io/caret/subsampling-for-class-imbalances.html}{help page} was added to explain the features.
 		\item Class probabilities can be computed for \code{extraTrees} models now.
 		\item When PCA pre-processing is conducted, the variance trace is saved in an object called \code{trace}.
 		\item More error traps were added for common mistakes (e.g. bad factor levels in classification).
@@ -332,7 +332,7 @@
 
 \section{Changes in version 6.0-47}{
 	\itemize{
-		\item CHAID from the R-Forge package \href{http://r-forge.r-project.org/projects/chaid/}{\pkg{CHAID}}
+		\item CHAID from the R-Forge package \pkg{CHAID}
 		\item Models \code{xgbTree} amd \code{xgbLinear} from the \code{xgboost} package were added. That package is not on CRAN  and can be installed from github using the \cpkg{devtools} package and \code{install_github('dmlc/xgboost',subdir='R-package')}.
 		\item \code{dratewka} enabled \code{rbf} models for regression.
 		\item A summary function for the multinomial likelihood called \code{mnLogLoss} was added.
@@ -508,9 +508,7 @@ more internal functions.
 
 \section{Changes in version 6.0-21}{
 \itemize{
-\item A new system for user-defined models has been added. See
-\href{http://caret.r-forge.r-project.org/custom_models.html}{http://caret.r-forge.r-project.org/custom_models.html}.
-
+\item A new system for user-defined models has been added. 
 \item When creating the grid of tuning parameter values, the column
 names no longer need to be preceded by a period. Periods can still be
 used as before but are not required. This isn't guaranteed to break
@@ -802,8 +800,7 @@ finding it).
 \itemize{
 
 \item The three vignettes were removed and two things were added: a
-smaller vignette and a large collection of help pages at
-\url{http://caret.r-forge.r-project.org/}.
+smaller vignette and a large collection of help pages.
 
 \item Minkoo Seo found a bug where \code{na.action} was not being properly
 set with train.formula().
