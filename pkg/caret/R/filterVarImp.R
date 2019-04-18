@@ -26,16 +26,16 @@ asNumeric <- function(data){
 #' predict the class. The sensitivity and specificity are computed for each
 #' cutoff and the ROC curve is computed. The trapezoidal rule is used to
 #' compute the area under the ROC curve. This area is used as the measure of
-#' variable importance. For multi--class outcomes, the problem is decomposed
+#' variable importance. For multi-class outcomes, the problem is decomposed
 #' into all pair-wise problems and the area under the curve is calculated for
 #' each class pair (i.e class 1 vs. class 2, class 2 vs. class 3 etc.). For a
 #' specific class, the maximum area under the curve across the relevant
-#' pair--wise AUC's is used as the variable importance measure.
+#' pair-wise AUC's is used as the variable importance measure.
 #' 
 #' For regression, the relationship between each predictor and the outcome is
 #' evaluated. An argument, \code{nonpara}, is used to pick the model fitting
 #' technique. When \code{nonpara = FALSE}, a linear model is fit and the
-#' absolute value of the $t$--value for the slope of the predictor is used.
+#' absolute value of the $t$-value for the slope of the predictor is used.
 #' Otherwise, a loess smoother is fit between the outcome and the predictor.
 #' The $R^2$ statistic is calculated for this model against the intercept only
 #' null model.

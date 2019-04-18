@@ -31,7 +31,7 @@ avNNet(x, ...)
 
 \item{data}{Data frame from which variables specified in  \code{formula} are preferentially to be taken.}
 
-\item{weights}{(case) weights for each example -- if missing defaults to 1.}
+\item{weights}{(case) weights for each example - if missing defaults to 1.}
 
 \item{repeats}{the number of neural networks with different random number seeds}
 

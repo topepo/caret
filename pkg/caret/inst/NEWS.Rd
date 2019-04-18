@@ -5,7 +5,8 @@
 
 \section{Changes in version 6.0-83}{
   \itemize{
-    \item blah balh blah
+    \item A new version was requested by CRAN since en dashes were used in the documentation.
+    \item A bug was fixed where, for some recipes that involve class imbalance sampling, the resampling indicies were computed incorrectly \issue{1030}.
   }
 }
 

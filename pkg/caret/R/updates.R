@@ -113,6 +113,12 @@ update.train <- function(object, param = NULL, ...) {
           all_outcomes()
         )
       args$y <- args$y[[1]]
+      if (length(levels(args$y)) > 0) {
+        args$obsLevels <- levels(args$y)
+      } else {
+        args["obsLevels"] <- list(NULL)
+      }
+
     } else {
       args$x <-
         object$trainingData[, !(colnames(object$trainingData) %in% c(".outcome", ".weights"))]
