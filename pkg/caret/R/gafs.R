@@ -992,7 +992,7 @@ gafs <- function (x, ...) UseMethod("gafs")
     if(is.null(names(gafsControl$index)))
       names(gafsControl$index) <- getFromNamespace("prettySeq", "caret")(gafsControl$index)
 
-    ## Create hold--out indicies
+    ## Create hold-out indicies
     if(is.null(gafsControl$indexOut)){
       gafsControl$indexOut <-
         lapply(gafsControl$index,
@@ -1514,7 +1514,7 @@ update.gafs <- function(object, iter, x, y, ...) {
     if(is.null(names(gafsControl$index)))
       names(gafsControl$index) <- getFromNamespace("prettySeq", "caret")(gafsControl$index)
 
-    ## Create hold--out indicies
+    ## Create hold-out indicies
     if(is.null(gafsControl$indexOut)){
       gafsControl$indexOut <-
         lapply(gafsControl$index,

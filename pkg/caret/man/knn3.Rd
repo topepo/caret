@@ -26,7 +26,7 @@ knn3Train(train, test, cl, k = 1, l = 0, prob = TRUE,
 \item{x}{a matrix of training set predictors}
 
 \item{...}{additional parameters to pass to \code{knn3Train}. However,
-passing \code{prob = FALSE} will be over--ridden.}
+passing \code{prob = FALSE} will be over-ridden.}
 
 \item{formula}{a formula of the form \code{lhs ~ rhs} where \code{lhs} is
 the response variable and \code{rhs} a set of predictors.}
