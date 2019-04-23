@@ -7,14 +7,16 @@ sudo: false
 warnings_are_errors: false
 cache: packages
 
-r:
-  - oldrel
-  - release
-  - devel
 
 matrix:
-  allow_failures:
-    - r: oldrel
+  include:
+  - r: devel
+  - r: release
+  - name: Strict Latin-1 locale
+    r: release
+    before_script:
+      - sudo locale-gen en_US
+      - export LC_ALL=en_US
 
 r_packages: 
   - covr
