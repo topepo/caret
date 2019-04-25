@@ -3,6 +3,12 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+\section{Changes in version 6.0-84}{
+  \itemize{
+    \item Another new version was related to character encodings.
+  }
+}
+
 \section{Changes in version 6.0-83}{
   \itemize{
     \item A new version was requested by CRAN since en dashes were used in the documentation.
