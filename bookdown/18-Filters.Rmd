@@ -18,7 +18,7 @@ Contents
 
  - [Univariate Filters](#filter)
  - [Basic Syntax](#syntax)
- - [The Example](#example)
+ - [The Example](#fexample)
 
 <div id="filter"></div>
 
@@ -77,7 +77,7 @@ calculate model performance on held-out samples. The  `pred` function is used to
 <div id="example">
  </div>
 
-## The Example
+## The Example {#fexample}
 
 Returning to the example from (Friedman, 1991), we can fit another random forest model with the predictors pre-filtered using the generalized additive model approach described previously.
 

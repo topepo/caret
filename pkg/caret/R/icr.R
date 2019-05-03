@@ -19,7 +19,7 @@ icr <- function (x, ...) UseMethod("icr")
 #' @param formula A formula of the form \code{class ~ x1 + x2 + \dots{}}
 #' @param data Data frame from which variables specified in \code{formula} are
 #' preferentially to be taken.
-#' @param weights (case) weights for each example -- if missing defaults to 1.
+#' @param weights (case) weights for each example - if missing defaults to 1.
 #' @param subset An index vector specifying the cases to be used in the
 #' training sample.  (NOTE: If given, this argument must be named.)
 #' @param na.action A function to specify the action to be taken if \code{NA}s

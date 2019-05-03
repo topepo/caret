@@ -13,7 +13,7 @@ resampleSummary(obs, resampled, index = NULL, keepData = TRUE)
 outcomes) or a data frame (for factors). For cross-validation, a vector is
 produced.}
 
-\item{index}{The list to index of samples in each cross--validation fold
+\item{index}{The list to index of samples in each cross-validation fold
 (only used for cross-validation).}
 
 \item{keepData}{A logical for returning the observed and predicted data.}

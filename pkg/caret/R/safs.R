@@ -528,7 +528,7 @@ safs <- function (x, ...) UseMethod("safs")
     if(is.null(names(safsControl$index)))
       names(safsControl$index) <- getFromNamespace("prettySeq", "caret")(safsControl$index)
 
-    ## Create hold--out indicies
+    ## Create hold-out indicies
     if(is.null(safsControl$indexOut)){
       safsControl$indexOut <- lapply(safsControl$index,
                                      function(training, allSamples) allSamples[-unique(training)],
@@ -1372,7 +1372,7 @@ update.safs <- function(object, iter, x, y, ...) {
     if(is.null(names(safsControl$index)))
       names(safsControl$index) <- getFromNamespace("prettySeq", "caret")(safsControl$index)
 
-    ## Create hold--out indicies
+    ## Create hold-out indicies
     if(is.null(safsControl$indexOut)){
       safsControl$indexOut <-
         lapply(safsControl$index,

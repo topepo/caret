@@ -20,7 +20,7 @@
 \item{data}{Data frame from which variables specified in \code{formula} are
 preferentially to be taken.}
 
-\item{weights}{(case) weights for each example -- if missing defaults to 1.}
+\item{weights}{(case) weights for each example - if missing defaults to 1.}
 
 \item{\dots}{arguments passed to \code{\link[fastICA]{fastICA}}}
 

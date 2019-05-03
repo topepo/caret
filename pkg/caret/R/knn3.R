@@ -22,7 +22,7 @@
 #' @param x a matrix of training set predictors
 #' @param y a factor vector of training set classes
 #' @param ... additional parameters to pass to \code{knn3Train}. However,
-#' passing \code{prob = FALSE} will be over--ridden.
+#' passing \code{prob = FALSE} will be over-ridden.
 #' @param train matrix or data frame of training set cases.
 #' @param test matrix or data frame of test set cases. A vector will be
 #' interpreted as a row vector for a single case.

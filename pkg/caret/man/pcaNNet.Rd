@@ -31,7 +31,7 @@ pcaNNet(x, ...)
 \item{data}{Data frame from which variables specified in \code{formula} are
 preferentially to be taken.}
 
-\item{weights}{(case) weights for each example -- if missing defaults to 1.}
+\item{weights}{(case) weights for each example - if missing defaults to 1.}
 
 \item{thresh}{a threshold for the cumulative proportion of variance to
 capture from the PCA analysis. For example, to retain enough PCA components

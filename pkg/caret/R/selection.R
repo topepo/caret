@@ -33,7 +33,7 @@
 #' not less than 3 is chosen (in this case, a model with a Kappa value of 0.35
 #' is acceptable).
 #'
-#' User--defined functions can also be used. The argument
+#' User-defined functions can also be used. The argument
 #' \code{selectionFunction} in \code{\link{trainControl}} can be used to pass
 #' the function directly or to pass the function by name.
 #'
@@ -71,7 +71,7 @@
 #' Neural networks are ordered by the number of hidden units and then the
 #' amount of weight decay.
 #'
-#' k--nearest neighbor models are ordered from most neighbors to least (i.e.
+#' k-nearest neighbor models are ordered from most neighbors to least (i.e.
 #' smoothest to model jagged decision boundaries).
 #'
 #' Elastic net models are ordered first on the L1 penalty, then by the L2

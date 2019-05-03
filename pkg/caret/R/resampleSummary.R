@@ -10,7 +10,7 @@
 #' @param resampled For bootstrapping, this is either a matrix (for numeric
 #' outcomes) or a data frame (for factors). For cross-validation, a vector is
 #' produced.
-#' @param index The list to index of samples in each cross--validation fold
+#' @param index The list to index of samples in each cross-validation fold
 #' (only used for cross-validation).
 #' @param keepData A logical for returning the observed and predicted data.
 #' @return A list with: \item{metrics }{A vector of values describing the

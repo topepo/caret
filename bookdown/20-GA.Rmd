@@ -20,7 +20,7 @@ Contents
  - [Example](#gaexample)
  - [Customizing the Search](#custom)
  - [The Example Revisited](#example2)
- - [Using Recipes](#recipes)
+ - [Using Recipes](#garecipes)
  
 <div id="ga"></div>
 
@@ -94,7 +94,7 @@ The GA implementation in [`caret`](http://cran.r-project.org/web/packages/caret/
 
 <div id="gaexample"></div>
 
-## Example
+## Genetic Algorithm Example {#gaexample}
 
 
 Using the example from the [previous page](recursive-feature-elimination.html#example) where there are five real predictors and 40 noise predictors:
@@ -358,7 +358,7 @@ plot(rf_ga_d) + theme_bw()
 The final GA found `r I(length(rf_ga_d$optVariables))` that were selected: `r paste(rf_ga_d$optVariables,  sep = "", collapse = ", ")`. During resampling, the average number of predictors selected was `r round(mean(unlist(lapply(rf_ga_d$resampled_vars, length))), 1)`, indicating that the penalty on the number of predictors was effective.
 
  
-<div id="recipes"></div>
+<div id="garecipes"></div>
 
 ## Using Recipes
 

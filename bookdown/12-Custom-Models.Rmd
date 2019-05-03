@@ -923,6 +923,6 @@ coef(mod$finalModel)
 ``` 
 
 ```{r custom-restart-par, include = FALSE}
-cl2 <- makeForkCluster(parallel::detectCores(logical = TRUE))
-registerDoParallel(cl2)
+library(doMC)
+registerDoMC(cores = parallel::detectCores(logical = TRUE))
 ```
