@@ -1,6 +1,25 @@
 Package: caret
 Version: 6.0-84
 Title: Classification and Regression Training
+Authors@R: c(
+    person("Max", "Kuhn", role = c("aut", "cre")),
+    person("Jed", "Wing", role = "ctb"),
+	person("Steve", "Weston", role = "ctb"),
+	person("Andre", "Williams", role = "ctb"),
+	person("Chris", "Keefer", role = "ctb"),
+	person("Allan", "Engelhardt", role = "ctb"),
+	person("Tony", "Cooper", role = "ctb"),
+	person("Zachary", "Mayer", role = "ctb"),
+	person("Brenton", "Kenkel", role = "ctb"),
+	person("R Core Team", role = "ctb"),
+	person("Michael", "Benesty", role = "ctb"),
+	person("Reynald", "Lescarbeau", role = "ctb"),
+	person("Andrew", "Ziem", role = "ctb"),
+	person("Luca", "Scrucca", role = "ctb"),
+	person("Yuan", "Tang", role = "ctb"),
+	person("Can", "Candan", role = "ctb"),
+	person("Tyler", "Hunt", role = "ctb")
+    )
 Author: Max Kuhn. Contributions from Jed Wing, Steve Weston, Andre
     Williams, Chris Keefer, Allan Engelhardt, Tony Cooper, Zachary Mayer,
     Brenton Kenkel, the R Core Team, Michael Benesty, Reynald Lescarbeau,
