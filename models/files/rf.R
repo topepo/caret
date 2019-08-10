@@ -32,8 +32,13 @@ modelInfo <- list(label = "Random Forest",
                   },
                   varImp = function(object, ...){
                     varImp <- randomForest::importance(object, ...)
-                    if(object$type == "regression")
-                      varImp <- data.frame(Overall = varImp[,"%IncMSE"])
+                    if(object$type == "regression") {
+                      if("%IncMSE" %in% colnames(varImp)) {
+                        varImp <- data.frame(Overall = varImp[,"%IncMSE"])
+                      } else {
+                        varImp <- data.frame(Overall = varImp[,1])
+                      }
+                    }
                     else {
                       retainNames <- levels(object$y)
                       if(all(retainNames %in% colnames(varImp))) {
