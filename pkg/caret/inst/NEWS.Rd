@@ -13,6 +13,7 @@
   \itemize{
     \item A new version was requested by CRAN since en dashes were used in the documentation.
     \item A bug was fixed where, for some recipes that involve class imbalance sampling, the resampling indicies were computed incorrectly \issue{1030}.
+    \item code{train} now removes duplicate models in the tuning grid. Duplicates could occur for models with discrete parameters.
   }
 }
 
@@ -514,7 +515,7 @@ more internal functions.
 
 \section{Changes in version 6.0-21}{
 \itemize{
-\item A new system for user-defined models has been added. 
+\item A new system for user-defined models has been added.
 \item When creating the grid of tuning parameter values, the column
 names no longer need to be preceded by a period. Periods can still be
 used as before but are not required. This isn't guaranteed to break

@@ -10,12 +10,11 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                       out <- expand.grid(select = c(TRUE, FALSE), method = "GCV.Cp")
                     } else {
                       out <- data.frame(select = sample(c(TRUE, FALSE), size = len, replace = TRUE),
-                                        method = sample(c("GCV.Cp", "ML", "REML"), 
+                                        method = sample(c("GCV.Cp", "ML", "REML"),
                                                         size = len, replace = TRUE))
                     }
-                    out[!duplicated(out),]
                   },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     require(mgcv)
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     modForm <- caret:::smootherFormula(x)
@@ -28,16 +27,16 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                     }
                     modelArgs <- list(formula = modForm,
                                       data = dat,
-                                      select = param$select, 
+                                      select = param$select,
                                       method = as.character(param$method))
                     ## Intercept family if passed in
                     theDots <- list(...)
                     if(!any(names(theDots) == "family")) modelArgs$family <- dist
                     modelArgs <- c(modelArgs, theDots)
-                    
+
                     out <- do.call(mgcv::bam, modelArgs)
                     out
-                    
+
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
@@ -67,7 +66,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                   varImp = function(object, ...) {
                     smoothed <- summary(object)$s.table[, "p-value", drop = FALSE]
                     linear <- summary(object)$p.table
-                    linear <- linear[, grepl("^Pr", colnames(linear)), drop = FALSE] 
+                    linear <- linear[, grepl("^Pr", colnames(linear)), drop = FALSE]
                     gams <- rbind(smoothed, linear)
                     gams <- gams[rownames(gams) != "(Intercept)",,drop = FALSE]
                     rownames(gams) <- gsub("^s\\(", "", rownames(gams))
@@ -84,7 +83,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                     }
                     gams
                   },
-                  notes = 
+                  notes =
                     paste(
                       'Which terms enter the model in a nonlinear manner is determined',
                       'by the number of unique values for the predictor. For example,',

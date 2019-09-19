@@ -14,7 +14,6 @@ modelInfo <- list(
       out <- data.frame(parallel = sample(c(TRUE, FALSE), size = len, replace = TRUE),
                         link = sample(links, size = len, replace = TRUE))
     }
-    out[!duplicated(out),,drop = FALSE]
   },
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
     theDots <- list(...)
