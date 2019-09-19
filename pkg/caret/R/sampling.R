@@ -15,7 +15,7 @@
 #' @param x a matrix or data frame of predictor variables
 #' @param y a factor variable with the class memberships
 #' @param list should the function return \code{list(x, y)} or bind \code{x}
-#' and \code{y} together? If \code{TRUE}, the output will be coerced to a data
+#' and \code{y} together? If \code{FALSE}, the output will be coerced to a data
 #' frame.
 #' @param yname if \code{list = FALSE}, a label for the class column
 #' @return Either a data frame or a list with elements \code{x} and \code{y}.

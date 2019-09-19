@@ -30,7 +30,7 @@ NULL
 
 if(getRversion() >= "2.15.1"){
 
-  utils::globalVariables(c('Metric', 'Model'))
+  utils::globalVariables(c('Metric', 'Model', 'Num_Resamples'))
 
 
   ## densityplot(~ values|Metric, data = plotData, groups = ind,

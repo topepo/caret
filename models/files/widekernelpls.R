@@ -19,13 +19,14 @@ modelInfo <- list(label = "Partial Least Squares",
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    ncomp <- min(ncol(x), param$ncomp)
                     out <- if(is.factor(y))
-                    {      
-                      caret::plsda(x, y, method = "oscorespls", ncomp = param$ncomp, ...)
+                    {
+                      caret::plsda(x, y, method = "widekernelpls", ncomp = ncomp, ...)
                     } else {
                       dat <- if(is.data.frame(x)) x else as.data.frame(x)
                       dat$.outcome <- y
-                      pls::plsr(.outcome ~ ., data = dat, method = "widekernelpls", ncomp = param$ncomp, ...)
+                      pls::plsr(.outcome ~ ., data = dat, method = "widekernelpls", ncomp = ncomp, ...)
                     }
                     out
                   },

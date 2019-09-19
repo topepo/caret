@@ -8,7 +8,7 @@
 Sutherland, J.J. and Weaver, D.F. (2004). Three-dimensional
 quantitative structure-activity and structure-selectivity relationships of
 dihydrofolate reductase inhibitors, \emph{Journal of Computer-Aided
-Molecular Design}, Vol. 18, pg. 309--331.
+Molecular Design}, Vol. 18, pg. 309-331.
 }
 \value{
 \item{dhfr}{data frame of chemical descriptors and the activity

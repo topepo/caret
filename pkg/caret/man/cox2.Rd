@@ -11,7 +11,7 @@
 Sutherland, J. J., O'Brien, L. A. and Weaver, D. F. (2003).
 Spline-Fitting with a Genetic Algorithm: A Method for Developing
 Classification Structure-Activity Relationships, \emph{Journal of Chemical
-Information and Computer Sciences}, Vol. 43, pg. 1906--1915.
+Information and Computer Sciences}, Vol. 43, pg. 1906-1915.
 }
 \value{
 \item{cox2Descr}{the descriptors} \item{cox2IC50}{the IC50 data used

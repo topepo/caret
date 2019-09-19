@@ -14,8 +14,7 @@ modelInfo <- list(
       out <- data.frame(parallel = sample(c(TRUE, FALSE), size = len, replace = TRUE),
                         link = sample(links, size = len, replace = TRUE))
     }
-    out[!duplicated(out),,drop = FALSE]
-  }, 
+  },
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
     theDots <- list(...)
     if(any(names(theDots) == "family")) {
@@ -30,7 +29,7 @@ modelInfo <- list(
     ## Set up data
     dat <- if (is.data.frame(x)) x else as.data.frame(x)
     dat$.outcome <- y
-    
+
     ## you can't programatically pass argments to `vglm`. This solution is from
     ## the pakcage maintainer T Yee on 4/15/16:
     ## Pass in model weights, if any
@@ -40,7 +39,7 @@ modelInfo <- list(
               "VGAM::acat(link = '",  .lnk , "', ",
               "parallel = ", .par ,
               "), ",
-              "data = dat)", sep = "")}), 
+              "data = dat)", sep = "")}),
         list(.par = param$parallel, .lnk = as.character(param$link))))
       run_this <- eval(run_this)
       out <- eval(parse(text = run_this))
@@ -50,7 +49,7 @@ modelInfo <- list(
               "VGAM::acat(link = '",  .lnk , "', ",
               "parallel = ", .par ,
               "), weights = wts,",
-              "data = dat)", sep = "")}), 
+              "data = dat)", sep = "")}),
         list(.par = param$parallel, .lnk = as.character(param$link))))
       run_this <- eval(run_this)
       out <- eval(parse(text = run_this))

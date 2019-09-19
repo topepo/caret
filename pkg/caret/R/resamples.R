@@ -896,13 +896,15 @@ dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$met
   results <- lapply(plotData,
                     function(x, cl)
                     {
-                      ttest <- try(t.test(x$value, conf.level = cl),
+                      ttest <- try(t.test(x$value, conf.level = cl, ...),
                                    silent = TRUE)
                       if(class(ttest)[1] == "htest")
                       {
                         out <- c(ttest$conf.int, ttest$estimate)
                         names(out) <- c("LowerLimit", "UpperLimit", "Estimate")
-                      } else out <- rep(NA, 3)
+                      } else {
+                        out <- c(LowerLimit = NA_real_, UpperLimit = NA_real_, Estimate = mean(x$value, na.rm = TRUE))
+                      }
                       out
                     },
                     cl = conf.level)
@@ -979,6 +981,7 @@ ggplot.resamples <-
     plotData <- subset(plotData, Model %in% models & Metric  %in% metric)
     plotData$variable <- factor(as.character(plotData$variable))
     plotData <- split(plotData, plotData$variable)
+
     if(statistic=='CI') {
       results <- lapply(
         plotData,
@@ -1006,6 +1009,7 @@ ggplot.resamples <-
     } else {
       stop(paste0("Unknown value for statistic parameter - valid values are 'CI' and 'IR'."))
     }
+
     results <- do.call("rbind", results)
     results <- as.data.frame(results)
     tmp <- strsplit(rownames(results), "~", fixed = TRUE)

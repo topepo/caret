@@ -13,7 +13,7 @@
 \usage{
 safs_initial(vars, prob = 0.2, ...)
 
-safs_perturb(x, vars, number = floor(vars * 0.01) + 1)
+safs_perturb(x, vars, number = floor(length(x) * 0.01) + 1)
 
 safs_prob(old, new, iteration = 1)
 

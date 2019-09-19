@@ -50,7 +50,7 @@ NULL
 #' @source Sutherland, J. J., O'Brien, L. A. and Weaver, D. F. (2003).
 #' Spline-Fitting with a Genetic Algorithm: A Method for Developing
 #' Classification Structure-Activity Relationships, \emph{Journal of Chemical
-#' Information and Computer Sciences}, Vol. 43, pg. 1906--1915.
+#' Information and Computer Sciences}, Vol. 43, pg. 1906-1915.
 #' @keywords datasets
 NULL
 
@@ -77,7 +77,7 @@ NULL
 #' @source Sutherland, J.J. and Weaver, D.F. (2004). Three-dimensional
 #' quantitative structure-activity and structure-selectivity relationships of
 #' dihydrofolate reductase inhibitors, \emph{Journal of Computer-Aided
-#' Molecular Design}, Vol. 18, pg. 309--331.
+#' Molecular Design}, Vol. 18, pg. 309-331.
 #' @keywords datasets
 NULL
 

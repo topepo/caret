@@ -5,6 +5,7 @@
 \alias{sbf.default}
 \alias{sbf.formula}
 \alias{predict.sbf}
+\alias{sbf.recipe}
 \title{Selection By Filtering (SBF)}
 \usage{
 sbf(x, ...)
@@ -14,11 +15,13 @@ sbf(x, ...)
 \method{sbf}{formula}(form, data, ..., subset, na.action,
   contrasts = NULL)
 
+\method{sbf}{recipe}(x, data, sbfControl = sbfControl(), ...)
+
 \method{predict}{sbf}(object, newdata = NULL, ...)
 }
 \arguments{
 \item{x}{a data frame containing training data where samples are in rows and
-features are in columns.}
+features are in columns. For the recipes method, \code{x} is a recipe object.}
 
 \item{\dots}{for \code{sbf}: arguments passed to the classification or
 regression routine (such as \code{\link[randomForest]{randomForest}}). For

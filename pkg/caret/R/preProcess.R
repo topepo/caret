@@ -32,7 +32,7 @@ getRangeBounds <- function(pp) {
 #'
 #' The Box-Cox (\code{method = "BoxCox"}), Yeo-Johnson (\code{method =
 #' "YeoJohnson"}), and exponential transformations (\code{method =
-#' "expoTrans"})have been "repurposed" here: they are being used to transform
+#' "expoTrans"}) have been "repurposed" here: they are being used to transform
 #' the predictor variables. The Box-Cox transformation was developed for
 #' transforming the response variable while another method, the Box-Tidwell
 #' transformation, was created to estimate transformations of predictor data.
@@ -40,7 +40,7 @@ getRangeBounds <- function(pp) {
 #' is equally effective for estimating power transformations. The Yeo-Johnson
 #' transformation is similar to the Box-Cox model but can accommodate
 #' predictors with zero and/or negative values (while the predictors values for
-#' the Box-Cox transformation must be strictly positive.) The exponential
+#' the Box-Cox transformation must be strictly positive). The exponential
 #' transformation of Manly (1976) can also be used for positive or negative
 #' data.
 #'
@@ -236,9 +236,11 @@ preProcess.default <- function(x, method = c("center", "scale"),
   ## check for zero-variance predictors
   if(any(names(method) == "zv")){
     if(is.data.frame(x)) {
-      is_zv <- unlist(lapply(x[, !(colnames(x) %in% method$ignore), drop = FALSE], function(x) length(unique(x)) <= 1))
+      is_zv <- unlist(lapply(x[, !(colnames(x) %in% method$ignore), drop = FALSE], function(x)
+        ifelse(na.remove, length(na.omit(unique(x))), length(unique(x))) <= 1))
     } else {
-      is_zv <- apply(x[, !(colnames(x) %in% method$ignore), drop = FALSE], 2, function(x) length(unique(x)) <= 1)
+      is_zv <- apply(x[, !(colnames(x) %in% method$ignore), drop = FALSE], 2, function(x)
+        ifelse(na.remove, length(na.omit(unique(x))), length(unique(x))) <= 1)
     }
     if(any(is_zv)) {
       removed <- names(is_zv)[is_zv]

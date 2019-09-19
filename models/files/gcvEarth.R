@@ -9,34 +9,34 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Splines",
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                  	require(earth)
+                    require(earth)
                     theDots <- list(...)
                     theDots$keepxy <- TRUE 
                     
                     ## pass in any model weights
-                    if(!is.null(wts)) theDots$weights <- wts
+                    if (!is.null(wts)) theDots$weights <- wts
                     
-                    modelArgs <- c(list(x = x, y = y,
-                                        degree = param$degree),
-                                   theDots)
-                    if(is.factor(y)) modelArgs$glm <- list(family=binomial)
-
+                    modelArgs <- c(list(x = x, y = y, degree = param$degree), theDots)
+                    
+                    if (is.factor(y) & !any(names(theDots) == "glm")) {
+                      modelArgs$glm <- list(family = binomial, maxit = 100)
+                    }
+                    
                     tmp <- do.call(earth::earth, modelArgs)
-
+                    
                     tmp$call["degree"] <-  param$degree
                     tmp 
-                    },
+                  },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(modelFit$problemType == "Classification")
-                    {
-                      out <- predict(modelFit, newdata,  type = "class")
+                    if (modelFit$problemType == "Classification") {
+                      out <- earth:::predict.earth(modelFit, newdata, type = "class")
                     } else {
-                      out <- predict(modelFit, newdata)
+                      out <- earth:::predict.earth(modelFit, newdata)
                     }
                     as.vector(out)            
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    out <- earth:::predict.earth(modelFit, newdata, type= "response")
+                    out <- earth:::predict.earth(modelFit, newdata, type = "response")
                     if (ncol(out) > 1) {
                       out <- t(apply(out, 1, function(x) x / sum(x)))
                     } else {
@@ -48,11 +48,11 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Splines",
                   predictors = function(x, ...) {
                     vi <- varImp(x)
                     notZero <- sort(unique(unlist(lapply(vi, function(x) which(x > 0)))))
-                    if(length(notZero) > 0) rownames(vi)[notZero] else NULL
+                    if (length(notZero) > 0) rownames(vi)[notZero] else NULL
                   },
                   varImp = function(object, value = "gcv", ...) {
                     earthImp <- earth::evimp(object)
-                    if(!is.matrix(earthImp)) earthImp <- t(as.matrix(earthImp))
+                    if (!is.matrix(earthImp)) earthImp <- t(as.matrix(earthImp))
                     
                     # get other variable names and padd with zeros
                     
@@ -66,7 +66,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Splines",
                     # At this point, we still may have some variables
                     # that are not in the model but have non-zero
                     # importance. We'll set those to zero
-                    if(any(earthImp[,"used"] == 0)) {
+                    if (any(earthImp[,"used"] == 0)) {
                       dropList <- grep("-unused", rownames(earthImp), value = TRUE)
                       out$Overall[rownames(out) %in% dropList] <- 0
                     }
@@ -75,7 +75,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Splines",
                     # fill in zeros for any variabels not  in out
                     
                     xNames <- object$namesx.org
-                    if(any(!(xNames %in% rownames(out)))) {
+                    if (any(!(xNames %in% rownames(out)))) {
                       xNames <- xNames[!(xNames %in% rownames(out))]
                       others <- data.frame(
                         Overall = rep(0, length(xNames)),
@@ -85,7 +85,8 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Splines",
                     out
                   },
                   levels = function(x) x$levels,
-                  tags = c("Multivariate Adaptive Regression Splines", "Implicit Feature Selection", 
+                  tags = c("Multivariate Adaptive Regression Splines", 
+                           "Implicit Feature Selection", 
                            "Accepts Case Weights"),
                   notes = paste(
                     "Unlike other packages used by `train`, the `earth`",

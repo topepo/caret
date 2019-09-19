@@ -6,7 +6,7 @@
 #' @param formula A formula of the form \code{class ~ x1 + x2 + \dots}
 #' @param x matrix or data frame of \code{x} values for examples.
 #' @param y matrix or data frame of target values for examples.
-#' @param weights (case) weights for each example -- if missing defaults to 1.
+#' @param weights (case) weights for each example - if missing defaults to 1.
 #' @param repeats the number of neural networks with different random number seeds
 #' @param bag a logical for bagging for each repeat
 #' @param seeds random number seeds that can be set prior to bagging (if done) and network creation. This helps maintain reproducibility when models are run in parallel.

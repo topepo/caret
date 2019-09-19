@@ -13,7 +13,6 @@ modelInfo <- list(label = "Extreme Learning Machine",
                       out <- data.frame(nhid = floor(runif(len, min = 1, max = 20)),
                                         actfun = sample(funs, replace = TRUE, size = len))
                     }
-                    out[!duplicated(out),]
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(is.factor(y)) {
@@ -27,20 +26,20 @@ modelInfo <- list(label = "Extreme Learning Machine",
                         x
                       }
                       out <- elmNN::elmtrain.default(
-                        x = x, 
-                        y = factor2ind(y), 
-                        nhid = param$nhid, 
-                        actfun = param$actfun, 
+                        x = x,
+                        y = factor2ind(y),
+                        nhid = param$nhid,
+                        actfun = param$actfun,
                         ...
                         )
                       out$lev <- levels(y)
-                      
+
                     } else {
                       out <- elmNN::elmtrain.default(
-                        x = x, 
-                        y = y, 
-                        nhid = param$nhid, 
-                        actfun = param$actfun, 
+                        x = x,
+                        y = y,
+                        nhid = param$nhid,
+                        actfun = param$actfun,
                         ...
                         )
                     }
@@ -61,4 +60,9 @@ modelInfo <- list(label = "Extreme Learning Machine",
                   predictors = function(x, ...) x$xNames,
                   tags = c("Neural Network"),
                   levels = function(x) x$lev,
+                  notes = paste(
+                    "The package is no longer on CRAN but can be installed",
+                    "from the archive at ",
+                    "https://cran.r-project.org/src/contrib/Archive/elmNN/"
+                  ),
                   sort = function(x) x[order(x$nhid),])
