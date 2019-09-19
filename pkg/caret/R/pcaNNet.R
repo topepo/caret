@@ -27,7 +27,7 @@
 #' @param formula A formula of the form \code{class ~ x1 + x2 + \dots{}}
 #' @param x matrix or data frame of \code{x} values for examples.
 #' @param y matrix or data frame of target values for examples.
-#' @param weights (case) weights for each example -- if missing defaults to 1.
+#' @param weights (case) weights for each example - if missing defaults to 1.
 #' @param thresh a threshold for the cumulative proportion of variance to
 #' capture from the PCA analysis. For example, to retain enough PCA components
 #' to capture 95 percent of variation, set \code{thresh = .95}

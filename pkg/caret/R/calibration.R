@@ -133,7 +133,7 @@ calibration.formula <- function(x, data = NULL, class = NULL, cuts = 11, subset 
   calibData <- data.frame(prob = form$y)
   probNames <- strsplit(form$right.name, " + ", fixed = TRUE)[[1]]
 
-  calibData <- data.frame(calibClassVar = rep(form$left, length(probNames)),
+  calibData <- data.frame(calibClassVar = form$left,
                           calibProbVar = form$right)
   calibData$calibModelVar <- if(length(probNames) > 1) form$condition[[length(form$condition)]] else probNames
 

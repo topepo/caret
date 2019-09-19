@@ -3,12 +3,12 @@ modelInfo <- list(label = "Random k-Nearest Neighbors with Feature Selection",
                   type = c("Classification", "Regression"),
                   parameters = data.frame(parameter = c("k", "mtry", "d"),
                                           class = rep("numeric", 3),
-                                          label = c("#Neighbors", 
+                                          label = c("#Neighbors",
                                                     "#Randomly Selected Predictors",
                                                     "#Features Dropped")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
-                      grid <- expand.grid(k = (5:((2 * len)+4))[(5:((2 * len)+4))%%2 > 0], 
+                      grid <- expand.grid(k = (5:((2 * len)+4))[(5:((2 * len)+4))%%2 > 0],
                                           d = seq(.2, .8, length = len))
                     } else {
                       by_val <- if(is.factor(y)) length(levels(y)) else 1
@@ -20,7 +20,6 @@ modelInfo <- list(label = "Random k-Nearest Neighbors with Feature Selection",
                     newp <- ncol(x) - grid$d
                     grid$mtry <- if (!is.null(y) && !is.factor(y))
                       pmax(floor(newp/3), 1) else floor(sqrt(newp))
-                    grid[!duplicated(grid),,drop = FALSE]
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
@@ -31,9 +30,9 @@ modelInfo <- list(label = "Random k-Nearest Neighbors with Feature Selection",
                                     ncol(x) - 1, sep = ""))
                       param$d <- ncol(x) - 1
                     }
-                    out <- list(data = x, y = y, 
-                                mtry = min(param$mtry, ncol(x) - param$d), 
-                                k = param$k, 
+                    out <- list(data = x, y = y,
+                                mtry = min(param$mtry, ncol(x) - param$d),
+                                k = param$k,
                                 d = param$d)
                     if(out$mtry != param$mtry) {
                       warning(paste("'mtry' was set at ", param$mtry,

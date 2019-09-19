@@ -20,7 +20,7 @@ modelInfo <- list(label = "L2 Regularized Support Vector Machine (dual) with Lin
                     # 
                     #  2 - L2-regularized L2-loss support vector classification (primal) 
                     #  3 - L2-regularized L1-loss support vector classification (dual) 
-                    # 12 – L2-regularized L2-loss support vector regression (dual)
+                    # 12 - L2-regularized L2-loss support vector regression (dual)
                     # 13 - L2-regularized L1-loss support vector regression (dual) 
                     
                     if(param$Loss == "L2") {

@@ -11,11 +11,11 @@
 avNNet(x, ...)
 
 \method{avNNet}{formula}(formula, data, weights, ..., repeats = 5,
-  bag = FALSE, allowParallel = TRUE, seeds = sample.int(1e+05,
+  bag = FALSE, allowParallel = TRUE, seeds = sample.int(100000,
   repeats), subset, na.action, contrasts = NULL)
 
 \method{avNNet}{default}(x, y, repeats = 5, bag = FALSE,
-  allowParallel = TRUE, seeds = sample.int(1e+05, repeats), ...)
+  allowParallel = TRUE, seeds = sample.int(100000, repeats), ...)
 
 \method{print}{avNNet}(x, ...)
 
@@ -31,7 +31,7 @@ avNNet(x, ...)
 
 \item{data}{Data frame from which variables specified in  \code{formula} are preferentially to be taken.}
 
-\item{weights}{(case) weights for each example -- if missing defaults to 1.}
+\item{weights}{(case) weights for each example - if missing defaults to 1.}
 
 \item{repeats}{the number of neural networks with different random number seeds}
 

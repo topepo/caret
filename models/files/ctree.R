@@ -45,7 +45,7 @@ modelInfo <- list(label = "Conditional Inference Tree",
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
                     obsLevels <- levels(modelFit@data@get("response")[,1])
-                    rawProbs <- treeresponse(modelFit, newdata)
+                    rawProbs <- party::treeresponse(modelFit, newdata)
                     probMatrix <- matrix(unlist(rawProbs), ncol = length(obsLevels), byrow = TRUE)
                     out <- data.frame(probMatrix)
                     colnames(out) <- obsLevels

@@ -896,13 +896,15 @@ dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$met
   results <- lapply(plotData,
                     function(x, cl)
                     {
-                      ttest <- try(t.test(x$value, conf.level = cl),
+                      ttest <- try(t.test(x$value, conf.level = cl, ...),
                                    silent = TRUE)
                       if(class(ttest)[1] == "htest")
                       {
                         out <- c(ttest$conf.int, ttest$estimate)
                         names(out) <- c("LowerLimit", "UpperLimit", "Estimate")
-                      } else out <- rep(NA, 3)
+                      } else {
+                        out <- c(LowerLimit = NA_real_, UpperLimit = NA_real_, Estimate = mean(x$value, na.rm = TRUE))
+                      }
                       out
                     },
                     cl = conf.level)
@@ -982,14 +984,14 @@ ggplot.resamples <-
     results <- lapply(
       plotData,
       function(x, cl) {
-        ttest <- try(t.test(x$value, conf.level = cl),
-                     silent = TRUE)
+        ttest <- try(t.test(x$value, conf.level = cl, ...), silent = TRUE)
         if (class(ttest)[1] == "htest") {
           out <- c(ttest$conf.int, ttest$estimate)
           names(out) <-
             c("LowerLimit", "UpperLimit", "Estimate")
         } else
-          out <- rep(NA, 3)
+          out <-
+            c(LowerLimit = NA_real_, UpperLimit = NA_real_, Estimate = mean(x$value, na.rm = TRUE))
         out
       },
       cl = conf.level)

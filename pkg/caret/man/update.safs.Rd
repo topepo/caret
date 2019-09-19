@@ -13,7 +13,7 @@
 \item{iter}{a single numeric integer}
 
 \item{x, y}{the original training data used in the call to \code{\link{gafs}}
-or \code{\link{safs}}}
+or \code{\link{safs}}. Only required for non-recipe methods.}
 
 \item{\dots}{not currently used}
 }

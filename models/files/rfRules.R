@@ -6,15 +6,14 @@ modelInfo <- list(label = "Random Forest Rule-Based Model",
                                           label = c("#Randomly Selected Predictors","Maximum Rule Depth")),
                   grid = function(x, y, len = NULL, search = "grid"){
                     if(search == "grid") {
-                      out <- data.frame(mtry = caret::var_seq(p = ncol(x), 
-                                                              classification = is.factor(y), 
-                                                              len = len), 
+                      out <- data.frame(mtry = caret::var_seq(p = ncol(x),
+                                                              classification = is.factor(y),
+                                                              len = len),
                                         maxdepth = (1:len)+1)
                     } else {
                       out <- data.frame(mtry = sample(1:ncol(x), size = len, replace = TRUE),
                                         maxdepth = sample(1:15, size = len, replace = TRUE))
                     }
-                    out[!duplicated(out),]
                   },
                   loop = function(grid) {
                     loop <- plyr::ddply(grid, c("mtry"),
@@ -22,21 +21,21 @@ modelInfo <- list(label = "Random Forest Rule-Based Model",
                     submodels <- vector(mode = "list", length = nrow(loop))
                     for(i in seq(along = loop$maxdepth)) {
                       index <- which(grid$mtry == loop$mtry[i])
-                      trees <- grid[index, "maxdepth"] 
+                      trees <- grid[index, "maxdepth"]
                       submodels[[i]] <- data.frame(maxdepth = trees[trees != loop$maxdepth[i]])
-                    }    
+                    }
                     list(loop = loop, submodels = submodels)
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    if(!is.data.frame(x) | inherits(x, "tbl_df")) 
+                    if(!is.data.frame(x) | inherits(x, "tbl_df"))
                       x <- as.data.frame(x)
                     RFor <- randomForest::randomForest(x, y, mtry = param$mtry, ...)
-                    treeList <- inTrees::RF2List(RFor)  
-                    exec <- inTrees::extractRules(treeList,x, maxdepth=param$maxdepth, ntree = RFor$ntree) 
-                    ruleMetric <- inTrees::getRuleMetric(exec,x,y) 
-                    ruleMetric <- inTrees::pruneRule(ruleMetric,x,y) 
-                    ruleMetric <- inTrees::selectRuleRRF(ruleMetric,x,y) 
-                    out <- list(model = inTrees::buildLearner(ruleMetric,x,y)) 
+                    treeList <- inTrees::RF2List(RFor)
+                    exec <- inTrees::extractRules(treeList,x, maxdepth=param$maxdepth, ntree = RFor$ntree)
+                    ruleMetric <- inTrees::getRuleMetric(exec,x,y)
+                    ruleMetric <- inTrees::pruneRule(ruleMetric,x,y)
+                    ruleMetric <- inTrees::selectRuleRRF(ruleMetric,x,y)
+                    out <- list(model = inTrees::buildLearner(ruleMetric,x,y))
                     if(!last) {
                       out$rf <- treeList
                       out$x <- x
@@ -46,7 +45,7 @@ modelInfo <- list(label = "Random Forest Rule-Based Model",
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
+                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df"))
                       newdata <- as.data.frame(newdata)
                     out <- inTrees::applyLearner(modelFit$model, newdata)
                     if(modelFit$problemType == "Regression") out <- as.numeric(out)
@@ -72,7 +71,7 @@ modelInfo <- list(label = "Random Forest Rule-Based Model",
                   prob = NULL,
                   predictors = function(x, ...) {
                     split_up <- strsplit(x$model[,"condition"], "&")
-                    
+
                     isolate <- function(x) {
                       index <- gregexpr("]", x, fixed = TRUE)
                       out <- NULL
@@ -86,13 +85,13 @@ modelInfo <- list(label = "Random Forest Rule-Based Model",
                       }
                       as.numeric(unique(out))
                     }
-                    
+
                     var_index <- unique(unlist(lapply(split_up, isolate)))
                     if(length(var_index) > 0) x$xNames[var_index] else NULL
                   },
                   varImp = function(object, ...) {
                     split_up <- strsplit(object$model[,"condition"], "&")
-                    
+
                     isolate <- function(x) {
                       index <- gregexpr("]", x, fixed = TRUE)
                       out <- NULL
@@ -106,10 +105,10 @@ modelInfo <- list(label = "Random Forest Rule-Based Model",
                       }
                       as.numeric(unique(out))
                     }
-                    
+
                     var_index <- lapply(split_up, isolate)
-                    
-                    vars_dat <- lapply(var_index, 
+
+                    vars_dat <- lapply(var_index,
                                        function(x, p) {
                                          out <- rep(0, p)
                                          if(length(x) > 0) out[x] <- 1
@@ -126,6 +125,6 @@ modelInfo <- list(label = "Random Forest Rule-Based Model",
                     out
                   },
                   levels = function(x) x$obsLevels,
-                  tags = c("Random Forest", "Ensemble Model", "Bagging", 
+                  tags = c("Random Forest", "Ensemble Model", "Bagging",
                            "Implicit Feature Selection", "Rule-Based Model"),
                   sort = function(x) x[order(x[,"maxdepth"]),])

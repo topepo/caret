@@ -12,50 +12,51 @@ modelInfo <- list(label = "Partial Least Squares",
                     }
                     out
                   },
-                  loop = function(grid) {     
+                  loop = function(grid) {
                     grid <- grid[order(grid$ncomp, decreasing = TRUE),, drop = FALSE]
                     loop <- grid[1,,drop = FALSE]
-                    submodels <- list(grid[-1,,drop = FALSE])  
+                    submodels <- list(grid[-1,,drop = FALSE])
                     list(loop = loop, submodels = submodels)
                   },
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {   
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
+                    ncomp <- min(ncol(x), param$ncomp)
                     out <- if(is.factor(y))
-                    {      
-                      plsda(x, y, method = "oscorespls", ncomp = param$ncomp, ...)
+                    {
+                      plsda(x, y, method = "oscorespls", ncomp = ncomp, ...)
                     } else {
                       dat <- if(is.data.frame(x)) x else as.data.frame(x)
                       dat$.outcome <- y
-                      pls::plsr(.outcome ~ ., data = dat, method = "oscorespls", ncomp = param$ncomp, ...)
+                      pls::plsr(.outcome ~ ., data = dat, method = "oscorespls", ncomp = ncomp, ...)
                     }
                     out
                   },
-                  predict = function(modelFit, newdata, submodels = NULL) {                    
+                  predict = function(modelFit, newdata, submodels = NULL) {
                     out <- if(modelFit$problemType == "Classification")
                     {
                       if(!is.matrix(newdata)) newdata <- as.matrix(newdata)
                       out <- predict(modelFit, newdata, type="class")
-                      
+
                     } else as.vector(pls:::predict.mvr(modelFit, newdata, ncomp = max(modelFit$ncomp)))
-                    
+
                     if(!is.null(submodels))
                     {
                       ## We'll merge the first set of predictions below
                       tmp <- vector(mode = "list", length = nrow(submodels))
-                      
+
                       if(modelFit$problemType == "Classification")
                       {
                         if(length(submodels$ncomp) > 1)
                         {
                           tmp <- as.list(predict(modelFit, newdata, ncomp = submodels$ncomp))
                         } else tmp <- list(predict(modelFit, newdata, ncomp = submodels$ncomp))
-                        
+
                       } else {
                         tmp <- as.list(
                           as.data.frame(
                             apply(predict(modelFit, newdata, ncomp = submodels$ncomp), 3, function(x) list(x))))
                       }
-                      
-                      out <- c(list(out), tmp)   
+
+                      out <- c(list(out), tmp)
                     }
                     out
                   },
@@ -73,7 +74,7 @@ modelInfo <- list(label = "Partial Least Squares",
                     {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
                       tmp[[1]] <- out
-                      
+
                       for(j in seq(along = submodels$ncomp))
                       {
                         tmpProb <- predict(modelFit, newdata, type = "prob",  ncomp = submodels$ncomp[j])
@@ -83,11 +84,11 @@ modelInfo <- list(label = "Partial Least Squares",
                           } else {
                             tmpProb <- as.data.frame(t(tmpProb[,,1]))
                           }
-                        } 
+                        }
                         tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels])
                       }
                       out <- tmp
-                    }                        
+                    }
                     out
                   },
                   varImp = function(object, estimate = NULL, ...) {
@@ -99,15 +100,15 @@ modelInfo <- list(label = "Partial Least Squares",
                     if(length(nms$estimate) > 1) {
                       pIndex <- if(is.null(estimate)) 1 else which(nms$estimate == estimate)
                       perf <- perf[pIndex,,,drop = FALSE]
-                    }  
+                    }
                     numResp <- dim(modelCoef)[2]
-                    
+
                     if(numResp <= 2) {
-                      modelCoef <- modelCoef[,1,,drop = FALSE]     
+                      modelCoef <- modelCoef[,1,,drop = FALSE]
                       perf <- perf[,1,]
                       delta <- -diff(perf)
                       delta <- delta/sum(delta)
-                      out <- data.frame(Overall = apply(abs(modelCoef), 1, 
+                      out <- data.frame(Overall = apply(abs(modelCoef), 1,
                                                         weighted.mean, w = delta))
                     } else {       
                       if(dim(perf)[3]<=2){ # case ncomp = 1
@@ -117,8 +118,9 @@ modelInfo <- list(label = "Partial Least Squares",
                         perf <- -t(apply(perf[1,,], 1, diff))
                         perf <- t(apply(perf, 1, function(u) u/sum(u)))
                       }
+
                       out <- matrix(NA, ncol = numResp, nrow = dim(modelCoef)[1])
-                      
+
                       for(i in 1:numResp) {
                         tmp <- abs(modelCoef[,i,, drop = FALSE])
                         out[,i] <- apply(tmp, 1,  weighted.mean, w = perf[i,])
