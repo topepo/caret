@@ -11,11 +11,11 @@
 avNNet(x, ...)
 
 \method{avNNet}{formula}(formula, data, weights, ..., repeats = 5,
-  bag = FALSE, allowParallel = TRUE, seeds = sample.int(100000,
+  bag = FALSE, allowParallel = TRUE, seeds = sample.int(1e+05,
   repeats), subset, na.action, contrasts = NULL)
 
 \method{avNNet}{default}(x, y, repeats = 5, bag = FALSE,
-  allowParallel = TRUE, seeds = sample.int(100000, repeats), ...)
+  allowParallel = TRUE, seeds = sample.int(1e+05, repeats), ...)
 
 \method{print}{avNNet}(x, ...)
 
