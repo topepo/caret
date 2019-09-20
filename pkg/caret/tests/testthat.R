@@ -1,4 +1,8 @@
 library(testthat)
 library(caret)
 
-test_check("caret")
+if (requireNamespace("xml2")) {
+  test_check("caret", reporter = MultiReporter$new(reporters = list(JunitReporter$new(file = "test-results.xml"), CheckReporter$new())))
+} else {
+  test_check("caret")
+}

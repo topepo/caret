@@ -76,7 +76,9 @@ Suggests:
     Cubist,
     testthat (>= 0.9.1),
     rpart,
-    dplyr
+    dplyr,
+    xml2,
+    covr
 License: GPL (>= 2)
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
