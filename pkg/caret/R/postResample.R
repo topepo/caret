@@ -173,7 +173,7 @@ twoClassSummary <- function (data, lev = NULL, model = NULL)
   rocAUC <- ModelMetrics::auc(ifelse(data$obs == lev[2], 0, 1), data[, lvls[1]])
   out <- c(rocAUC,
            sensitivity(data[, "pred"], data[, "obs"], lev[1]),
-           specificity(data[, "pred"], data[, "obs"], lev[2]))
+           specificity(data[, "pred"], data[, "obs"], lev[1]))
   names(out) <- c("ROC", "Sens", "Spec")
   out
 }
