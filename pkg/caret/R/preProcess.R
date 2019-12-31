@@ -278,10 +278,10 @@ preProcess.default <- function(x, method = c("center", "scale"),
 
   ## check for highly correlated predictors
   if(any(names(method) == "corr")){
-    cmat <- try(cor(x[, !(colnames(x) %in% c(method$ignore, method$remove)), drop = FALSE], 
-                    use = "pairwise.complete.obs"), 
+    cmat <- try(cor(x[, !(colnames(x) %in% c(method$ignore, method$remove)), drop = FALSE],
+                    use = "pairwise.complete.obs"),
                 silent = TRUE)
-    if(class(cmat)[1] != "try-error") {
+    if(inherits(cmat, "try-error")) {
       high_corr <- findCorrelation(cmat, cutoff = cutoff)
       if(length(high_corr) > 0) {
         removed <- colnames(cmat)[high_corr]

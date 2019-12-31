@@ -108,7 +108,7 @@
 #' dat <- data.frame(obs =  factor(sample(classes, 50, replace = TRUE)),
 #'                   pred = factor(sample(classes, 50, replace = TRUE)),
 #'                   class1 = runif(50))
-#' dat$class2 <- 1 - dat$class1            
+#' dat$class2 <- 1 - dat$class1
 #'
 #' defaultSummary(dat, lev = classes)
 #' twoClassSummary(dat, lev = classes)
@@ -134,7 +134,7 @@ postResample <- function(pred, obs)
               resamplCor <- NA
             } else {
               resamplCor <- try(cor(pred, obs, use = "pairwise.complete.obs"), silent = TRUE)
-              if(class(resamplCor) == "try-error") resamplCor <- NA
+              if (inherits(resamplCor, "try-error")) resamplCor <- NA
             }
           mse <- mean((pred - obs)^2)
           mae <- mean(abs(pred - obs))
@@ -220,7 +220,7 @@ multiClassSummary <- function(data, lev = NULL, model = NULL){
                prob <- data[,x]
                roc_auc <- try(ModelMetrics::auc(obs, data[,x]), silent = TRUE)
                # browser()
-               pr_auc <- try(MLmetrics::PRAUC(y_pred = data[,x], 
+               pr_auc <- try(MLmetrics::PRAUC(y_pred = data[,x],
                                               y_true = obs),
                              silent = TRUE)
                if(inherits(pr_auc, "try-error"))
@@ -268,9 +268,9 @@ multiClassSummary <- function(data, lev = NULL, model = NULL){
 
   # Change name ordering to place most useful first
   # May want to remove some of these eventually
-  stat_list <- c("Accuracy", "Kappa", "Mean_F1", 
+  stat_list <- c("Accuracy", "Kappa", "Mean_F1",
                  "Mean_Sensitivity", "Mean_Specificity",
-                 "Mean_Pos_Pred_Value", "Mean_Neg_Pred_Value", 
+                 "Mean_Pos_Pred_Value", "Mean_Neg_Pred_Value",
                  "Mean_Precision", "Mean_Recall",
                  "Mean_Detection_Rate",
                  "Mean_Balanced_Accuracy")

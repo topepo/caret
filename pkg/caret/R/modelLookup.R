@@ -1,20 +1,20 @@
 #' Tools for Models Available in \code{train}
-#' 
+#'
 #' These function show information about models and packages that are
 #' accessible via \code{\link{train}}
-#' 
+#'
 #' \code{modelLookup} is good for getting information related to the tuning
 #' parameters for a model. \code{getModelInfo} will return all the functions
 #' and metadata associated with a model. Both of these functions will only
 #' search within the models bundled in this package.
-#' 
+#'
 #' \code{checkInstall} will check to see if packages are installed. If they are
 #' not and the session is interactive, an option is given to install the
 #' packages using \code{\link[utils]{install.packages}} using that functions
 #' default arguments (the missing packages are listed if you would like to
 #' install them with other options). If the session is not interactive, an
 #' error is thrown.
-#' 
+#'
 #' @aliases modelLookup getModelInfo checkInstall
 #' @param model a character string associated with the \code{method} argument
 #' of \code{\link{train}}. If no value is passed, all models are returned. For
@@ -30,10 +30,10 @@
 #' \item{forReg }{a logical; can the model be used for regression?}
 #' \item{forClass }{a logical; can the model be used for classification?}
 #' \item{probModel }{a logical; does the model produce class probabilities?}
-#' 
+#'
 #' \code{getModelInfo} returns a list containing one or more lists of the
 #' standard model information.
-#' 
+#'
 #' \code{checkInstall} returns not value.
 #' @note The column \code{seq} is no longer included in the output of
 #' \code{modelLookup}.
@@ -42,32 +42,32 @@
 #' \code{\link[base]{grepl}}
 #' @keywords utilities
 #' @examples
-#' 
-#' \dontrun{ 
+#'
+#' \dontrun{
 #' modelLookup()
 #' modelLookup("gbm")
-#' 
+#'
 #' getModelInfo("pls")
 #' getModelInfo("^pls")
 #' getModelInfo("pls", regex = FALSE)
-#' 
+#'
 #' checkInstall(getModelInfo("pls")$library)
 #' }
-#' 
+#'
 #' @export modelLookup
 modelLookup <- function(model = NULL){
   load(system.file("models", "models.RData", package = "caret"))
   if(!is.null(model)){
     if(!(model %in% names(models))) stop(paste("Model '", method, "' is not in the ",
-                                               "set of existing models", sep = ""))   
-    
-    models <- models[model == names(models)]                                                    
-  }                                                                        
+                                               "set of existing models", sep = ""))
+
+    models <- models[model == names(models)]
+  }
   out <- lapply(models,
                 function(x) {
                   out <- x$parameters[, c("parameter", "label")]
                   out$forReg <- "Regression" %in% x$type
-                  out$forClass <- "Classification" %in% x$type     
+                  out$forClass <- "Classification" %in% x$type
                   out$probModel <- !is.null(x$prob)
                   out
                 })
@@ -92,11 +92,11 @@ checkInstall <- function(pkg){
   good <- rep(TRUE, length(pkg))
   for(i in seq(along = pkg)){
     tested <- try(find.package(pkg[i]), silent = TRUE)
-    if(class(tested)[1] == "try-error") good[i] <- FALSE
+    if (inherits(tested, "try-error")) good[i] <- FALSE
   }
   if(any(!good)){
     pkList <- paste(pkg[!good], collapse = ", ")
-    msg <- paste(sum(!good), 
+    msg <- paste(sum(!good),
                  ifelse(sum(!good) > 1, " packages are", " package is"),
                  " needed for this model and",
                  ifelse(sum(!good) > 1, " are", " is"),
@@ -106,7 +106,7 @@ checkInstall <- function(pkg){
                  ifelse(sum(!good) > 1, " them", " it"),
                  " now?",
                  sep = "")
-    cat(msg)    
+    cat(msg)
     if(interactive()) {
       bioc <- c("affy", "logicFS", "gpls", "vbmp")
       installChoice <- menu(c("yes", "no"))
