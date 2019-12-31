@@ -258,7 +258,7 @@ For example, the `ksvm` function uses `S4` methods but, unlike most model functi
 lpSVM$levels <- function(x) kernlab::lev(x)
 ```
 
-In most other cases, the levels will beed to be extracted from data contained in the fitted model object. As another example, objects created using the `ctree` function in the `party` package would need to use:
+In most other cases, the levels will need to be extracted from data contained in the fitted model object. As another example, objects created using the `ctree` function in the `party` package would need to use:
 
 ```{r custom_lev_S4, eval = FALSE}
 function(x) levels(x@data@get("response")[,1])
