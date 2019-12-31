@@ -35,7 +35,7 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@master
 
       - name: Query dependencies
-        run: Rscript -e "install.packages('remotes')" -e "saveRDS(remotes::dev_package_deps(dependencies = TRUE), 'depends.Rds')"
+        run: Rscript -e "install.packages('remotes')" -e "saveRDS(remotes::dev_package_deps(pkgdir = 'pkg/caret/', dependencies = TRUE), 'depends.Rds')"
 
       - name: Cache R packages
         if: runner.os != 'Windows'
@@ -58,7 +58,7 @@ jobs:
         run: Rscript -e "library(remotes)" -e "update(readRDS('depends.Rds'))" -e "remotes::install_cran('rcmdcheck')"
 
       - name: Check
-        run: Rscript -e "rcmdcheck::rcmdcheck(args = '--no-manual', error_on = 'warning', check_dir = 'check')"
+        run: Rscript -e "rcmdcheck::rcmdcheck(path = 'pkg/caret/', args = '--no-manual', error_on = 'warning', check_dir = 'check')"
 
       - name: Upload check results
         if: failure()
