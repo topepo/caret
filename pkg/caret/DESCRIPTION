@@ -2,8 +2,8 @@ Package: caret
 Version: 6.0-84.9000
 Title: Classification and Regression Training
 Authors@R: c(
-    person("Max", "Kuhn", role = c("aut", "cre")),
-    person("Jed", "Wing", role = "ctb"),
+  person("Max", "Kuhn", role = c("aut", "cre"), email = "mxkuhn@gmail.com"),
+  person("Jed", "Wing", role = "ctb"),
 	person("Steve", "Weston", role = "ctb"),
 	person("Andre", "Williams", role = "ctb"),
 	person("Chris", "Keefer", role = "ctb"),
@@ -20,13 +20,8 @@ Authors@R: c(
 	person("Can", "Candan", role = "ctb"),
 	person("Tyler", "Hunt", role = "ctb")
     )
-Author: Max Kuhn. Contributions from Jed Wing, Steve Weston, Andre
-    Williams, Chris Keefer, Allan Engelhardt, Tony Cooper, Zachary Mayer,
-    Brenton Kenkel, the R Core Team, Michael Benesty, Reynald Lescarbeau,
-    Andrew Ziem, Luca Scrucca, Yuan Tang, Can Candan, and Tyler Hunt.
 Description: Misc functions for training and plotting classification and
     regression models.
-Maintainer: Max Kuhn <mxkuhn@gmail.com>
 Depends:
     R (>= 3.2.0),
     lattice (>= 0.20),
