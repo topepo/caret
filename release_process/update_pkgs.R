@@ -28,10 +28,10 @@ if (Sys.info()["sysname"] == "Linux") {
 ## Get the names of all CRAN related packages references by caret.
 ## Exclude orphaned and Bioconductor packages for now
 
-install.packages(c("devtools"), repos = "http://cran.r-project.org", type = "source")
-
-library(devtools)
-install_github("topepo/caret", subdir = "pkg/caret")
+# install.packages(c("devtools"), repos = "http://cran.r-project.org", type = "source")
+#
+# library(devtools)
+# install_github("topepo/caret", subdir = "pkg/caret")
 
 library(caret)
 
@@ -82,20 +82,25 @@ n <- length(libs)
 for (i in seq_along(libs)) {
   if (fresh)
     good <- rownames(installed.packages())
-  if (fresh && !(libs[i] %in% good)) {
+  if (fresh) {
     cat(
       "----------------------------------------------------------------\n",
       libs[i], " (", i, " of ", n,
       ")\n\n", sep = ""
     )
 
-    BiocManager::install(
-      libs[i],
-      type = "both",
-      dependencies = c("Depends", "Imports"),
-      update = FALSE,
-      ask = FALSE
+    res <- try(
+      BiocManager::install(
+        libs[i],
+        type = "both",
+        dependencies = c("Depends", "Imports"),
+        update = FALSE,
+        ask = FALSE
+      ),
+      silent = TRUE
     )
+
+    print(res)
     cat("\n\n")
   }
 }

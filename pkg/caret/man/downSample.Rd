@@ -13,7 +13,7 @@ downSample(x, y, list = FALSE, yname = "Class")
 \item{y}{a factor variable with the class memberships}
 
 \item{list}{should the function return \code{list(x, y)} or bind \code{x}
-and \code{y} together? If \code{TRUE}, the output will be coerced to a data
+and \code{y} together? If \code{FALSE}, the output will be coerced to a data
 frame.}
 
 \item{yname}{if \code{list = FALSE}, a label for the class column}
