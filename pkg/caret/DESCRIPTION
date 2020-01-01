@@ -40,7 +40,8 @@ Imports:
     utils,
     grDevices,
     recipes (>= 0.1.4),
-    withr (>= 2.0.0)
+    withr (>= 2.0.0),
+    pROC,
 Suggests:
     BradleyTerry2,
     e1071,
@@ -60,7 +61,6 @@ Suggests:
     nnet,
     party (>= 0.9-99992),
     pls,
-    pROC,
     proxy,
     randomForest,
     RANN,
