@@ -159,18 +159,19 @@ postResample <- function(pred, obs)
 
 
 #' @rdname postResample
-#' @importFrom ModelMetrics auc
+#' @importFrom pROC roc
 #' @export
-twoClassSummary <- function (data, lev = NULL, model = NULL)
-{
-  lvls <- levels(data$obs)
-  if(length(lvls) > 2)
-    stop(paste("Your outcome has", length(lvls),
+twoClassSummary <- function (data, lev = NULL, model = NULL) {
+  if(length(lev) > 2) {
+    stop(paste("Your outcome has", length(lev),
                "levels. The twoClassSummary() function isn't appropriate."))
-  requireNamespaceQuietStop('ModelMetrics')
-  if (!all(levels(data[, "pred"]) == lvls))
+  }
+  requireNamespaceQuietStop('pROC')
+  if (!all(levels(data[, "pred"]) == lev)) {
     stop("levels of observed and predicted data do not match")
-  rocAUC <- ModelMetrics::auc(ifelse(data$obs == lev[2], 0, 1), data[, lvls[1]])
+  }
+  rocObject <- try(pROC::roc(data$obs, data[, lev[1]], direction = ">", quiet = TRUE), silent = TRUE)
+  rocAUC <- if(inherits(rocObject, "try-error")) NA else rocObject$auc
   out <- c(rocAUC,
            sensitivity(data[, "pred"], data[, "obs"], lev[1]),
            specificity(data[, "pred"], data[, "obs"], lev[2]))
@@ -208,7 +209,7 @@ multiClassSummary <- function(data, lev = NULL, model = NULL){
     ## Overall multinomial loss
     lloss <- mnLogLoss(data = data, lev = lev, model = model)
 
-    requireNamespaceQuietStop("ModelMetrics")
+    requireNamespaceQuietStop("pROC")
     requireNamespaceQuietStop("MLmetrics")
 
     #Calculate custom one-vs-all ROC curves for each class
@@ -218,10 +219,9 @@ multiClassSummary <- function(data, lev = NULL, model = NULL){
                #Grab one-vs-all data for the class
                obs  <- ifelse(data[,"obs"] == x, 1, 0)
                prob <- data[,x]
-               roc_auc <- try(ModelMetrics::auc(obs, data[,x]), silent = TRUE)
-               # browser()
-               pr_auc <- try(MLmetrics::PRAUC(y_pred = data[,x],
-                                              y_true = obs),
+               roc_auc <- try(pROC::roc(obs, data[,x], direction = "<", quiet = TRUE), silent = TRUE)
+               roc_auc <- if (inherits(roc_auc, "try-error")) NA else roc_auc$auc
+               pr_auc <- try(MLmetrics::PRAUC(y_pred = data[,x], y_true = obs),
                              silent = TRUE)
                if(inherits(pr_auc, "try-error"))
                  pr_auc <- NA
