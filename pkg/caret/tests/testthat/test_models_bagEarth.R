@@ -27,7 +27,7 @@ test_that('bagEarth simple classification', {
     pred_response <- predict(fit, newdata=data)
     expect_is(pred_response, "factor")
     expect_equal(length(pred_response), nrow(data))
-    
+
     pred_class <- predict(fit, newdata=data, type="class")
     expect_is(pred_class, "factor")
     expect_equal(length(pred_class), 1000)
