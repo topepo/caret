@@ -61,7 +61,7 @@ The column \code{seq} is no longer included in the output of
 }
 \examples{
 
-\dontrun{ 
+\dontrun{
 modelLookup()
 modelLookup("gbm")
 

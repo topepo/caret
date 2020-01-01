@@ -73,6 +73,6 @@ Suggests:
     rpart,
     dplyr
 License: GPL (>= 2)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 VignetteBuilder: knitr
 Encoding: UTF-8

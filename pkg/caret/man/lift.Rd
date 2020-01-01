@@ -13,16 +13,29 @@ lift(x, ...)
 
 \method{lift}{default}(x, ...)
 
-\method{lift}{formula}(x, data = NULL, class = NULL, subset = TRUE,
-  lattice.options = NULL, cuts = NULL, labels = NULL, ...)
+\method{lift}{formula}(
+  x,
+  data = NULL,
+  class = NULL,
+  subset = TRUE,
+  lattice.options = NULL,
+  cuts = NULL,
+  labels = NULL,
+  ...
+)
 
 \method{print}{lift}(x, ...)
 
-\method{xyplot}{lift}(x, data = NULL, plot = "gain", values = NULL,
-  ...)
+\method{xyplot}{lift}(x, data = NULL, plot = "gain", values = NULL, ...)
 
-\method{ggplot}{lift}(data = NULL, mapping = NULL, plot = "gain",
-  values = NULL, ..., environment = NULL)
+\method{ggplot}{lift}(
+  data = NULL,
+  mapping = NULL,
+  plot = "gain",
+  values = NULL,
+  ...,
+  environment = NULL
+)
 }
 \arguments{
 \item{x}{a \code{lattice} formula (see \code{\link[lattice:xyplot]{xyplot}}

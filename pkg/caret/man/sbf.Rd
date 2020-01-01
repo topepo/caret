@@ -12,8 +12,7 @@ sbf(x, ...)
 
 \method{sbf}{default}(x, y, sbfControl = sbfControl(), ...)
 
-\method{sbf}{formula}(form, data, ..., subset, na.action,
-  contrasts = NULL)
+\method{sbf}{formula}(form, data, ..., subset, na.action, contrasts = NULL)
 
 \method{sbf}{recipe}(x, data, sbfControl = sbfControl(), ...)
 

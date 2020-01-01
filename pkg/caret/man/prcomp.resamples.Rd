@@ -9,8 +9,7 @@
 \usage{
 \method{prcomp}{resamples}(x, metric = x$metrics[1], ...)
 
-\method{plot}{prcomp.resamples}(x, what = "scree", dims = max(2,
-  ncol(x$rotation)), ...)
+\method{plot}{prcomp.resamples}(x, what = "scree", dims = max(2, ncol(x$rotation)), ...)
 }
 \arguments{
 \item{x}{For \code{prcomp}, an object of class \code{\link{resamples}} and

@@ -5,18 +5,41 @@
 \alias{safsControl}
 \title{Control parameters for GA and SA feature selection}
 \usage{
-gafsControl(functions = NULL, method = "repeatedcv", metric = NULL,
-  maximize = NULL, number = ifelse(grepl("cv", method), 10, 25),
-  repeats = ifelse(grepl("cv", method), 1, 5), verbose = FALSE,
-  returnResamp = "final", p = 0.75, index = NULL, indexOut = NULL,
-  seeds = NULL, holdout = 0, genParallel = FALSE,
-  allowParallel = TRUE)
+gafsControl(
+  functions = NULL,
+  method = "repeatedcv",
+  metric = NULL,
+  maximize = NULL,
+  number = ifelse(grepl("cv", method), 10, 25),
+  repeats = ifelse(grepl("cv", method), 1, 5),
+  verbose = FALSE,
+  returnResamp = "final",
+  p = 0.75,
+  index = NULL,
+  indexOut = NULL,
+  seeds = NULL,
+  holdout = 0,
+  genParallel = FALSE,
+  allowParallel = TRUE
+)
 
-safsControl(functions = NULL, method = "repeatedcv", metric = NULL,
-  maximize = NULL, number = ifelse(grepl("cv", method), 10, 25),
-  repeats = ifelse(grepl("cv", method), 1, 5), verbose = FALSE,
-  returnResamp = "final", p = 0.75, index = NULL, indexOut = NULL,
-  seeds = NULL, holdout = 0, improve = Inf, allowParallel = TRUE)
+safsControl(
+  functions = NULL,
+  method = "repeatedcv",
+  metric = NULL,
+  maximize = NULL,
+  number = ifelse(grepl("cv", method), 10, 25),
+  repeats = ifelse(grepl("cv", method), 1, 5),
+  verbose = FALSE,
+  returnResamp = "final",
+  p = 0.75,
+  index = NULL,
+  indexOut = NULL,
+  seeds = NULL,
+  holdout = 0,
+  improve = Inf,
+  allowParallel = TRUE
+)
 }
 \arguments{
 \item{functions}{a list of functions for model fitting, prediction etc (see

@@ -25,8 +25,19 @@
 \alias{outcome_conversion}
 \title{Internal Functions}
 \usage{
-createModel(x, y, wts, method, tuneValue, obsLevels, pp = NULL,
-  last = FALSE, sampling = NULL, classProbs, ...)
+createModel(
+  x,
+  y,
+  wts,
+  method,
+  tuneValue,
+  obsLevels,
+  pp = NULL,
+  last = FALSE,
+  sampling = NULL,
+  classProbs,
+  ...
+)
 
 well_numbered(prefix, items)
 
@@ -44,18 +55,15 @@ bagEarthStats(x)
 
 outcome_conversion(x, lv)
 
-predictionFunction(method, modelFit, newdata, preProc = NULL,
-  param = NULL)
+predictionFunction(method, modelFit, newdata, preProc = NULL, param = NULL)
 
 hasTerms(x)
 
-probFunction(method, modelFit, newdata = NULL, preProc = NULL,
-  param = NULL)
+probFunction(method, modelFit, newdata = NULL, preProc = NULL, param = NULL)
 
 resampleWrapper(x, ind)
 
-sbfIter(x, y, testX, testY, testPerf = NULL, sbfControl = sbfControl(),
-  ...)
+sbfIter(x, y, testX, testY, testPerf = NULL, sbfControl = sbfControl(), ...)
 
 sortImp(object, top)
 

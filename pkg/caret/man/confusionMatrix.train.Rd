@@ -6,8 +6,12 @@
 \alias{confusionMatrix.sbf}
 \title{Estimate a Resampled Confusion Matrix}
 \usage{
-\method{confusionMatrix}{train}(data, norm = "overall",
-  dnn = c("Prediction", "Reference"), ...)
+\method{confusionMatrix}{train}(
+  data,
+  norm = "overall",
+  dnn = c("Prediction", "Reference"),
+  ...
+)
 }
 \arguments{
 \item{data}{An object of class \code{\link{train}}, \code{\link{rfe}},

@@ -4,18 +4,36 @@
 \alias{trainControl}
 \title{Control parameters for train}
 \usage{
-trainControl(method = "boot", number = ifelse(grepl("cv", method), 10,
-  25), repeats = ifelse(grepl("[d_]cv$", method), 1, NA), p = 0.75,
-  search = "grid", initialWindow = NULL, horizon = 1,
-  fixedWindow = TRUE, skip = 0, verboseIter = FALSE,
-  returnData = TRUE, returnResamp = "final", savePredictions = FALSE,
-  classProbs = FALSE, summaryFunction = defaultSummary,
-  selectionFunction = "best", preProcOptions = list(thresh = 0.95,
-  ICAcomp = 3, k = 5, freqCut = 95/5, uniqueCut = 10, cutoff = 0.9),
-  sampling = NULL, index = NULL, indexOut = NULL,
-  indexFinal = NULL, timingSamps = 0, predictionBounds = rep(FALSE,
-  2), seeds = NA, adaptive = list(min = 5, alpha = 0.05, method =
-  "gls", complete = TRUE), trim = FALSE, allowParallel = TRUE)
+trainControl(
+  method = "boot",
+  number = ifelse(grepl("cv", method), 10, 25),
+  repeats = ifelse(grepl("[d_]cv$", method), 1, NA),
+  p = 0.75,
+  search = "grid",
+  initialWindow = NULL,
+  horizon = 1,
+  fixedWindow = TRUE,
+  skip = 0,
+  verboseIter = FALSE,
+  returnData = TRUE,
+  returnResamp = "final",
+  savePredictions = FALSE,
+  classProbs = FALSE,
+  summaryFunction = defaultSummary,
+  selectionFunction = "best",
+  preProcOptions = list(thresh = 0.95, ICAcomp = 3, k = 5, freqCut = 95/5, uniqueCut =
+    10, cutoff = 0.9),
+  sampling = NULL,
+  index = NULL,
+  indexOut = NULL,
+  indexFinal = NULL,
+  timingSamps = 0,
+  predictionBounds = rep(FALSE, 2),
+  seeds = NA,
+  adaptive = list(min = 5, alpha = 0.05, method = "gls", complete = TRUE),
+  trim = FALSE,
+  allowParallel = TRUE
+)
 }
 \arguments{
 \item{method}{The resampling method: \code{"boot"}, \code{"boot632"},

@@ -5,8 +5,12 @@
 \alias{varImp.safs}
 \title{Variable importances for GAs and SAs}
 \usage{
-\method{varImp}{gafs}(object, metric = object$control$metric["external"],
-  maximize = object$control$maximize["external"], ...)
+\method{varImp}{gafs}(
+  object,
+  metric = object$control$metric["external"],
+  maximize = object$control$maximize["external"],
+  ...
+)
 }
 \arguments{
 \item{object}{an \code{\link{safs}} or \code{\link{gafs}} object}

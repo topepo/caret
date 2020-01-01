@@ -6,8 +6,16 @@
 \alias{sumDiss}
 \title{Maximum Dissimilarity Sampling}
 \usage{
-maxDissim(a, b, n = 2, obj = minDiss, useNames = FALSE,
-  randomFrac = 1, verbose = FALSE, ...)
+maxDissim(
+  a,
+  b,
+  n = 2,
+  obj = minDiss,
+  useNames = FALSE,
+  randomFrac = 1,
+  verbose = FALSE,
+  ...
+)
 
 minDiss(u)
 

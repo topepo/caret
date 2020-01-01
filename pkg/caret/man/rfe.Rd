@@ -12,21 +12,41 @@
 \usage{
 rfe(x, ...)
 
-\method{rfe}{default}(x, y, sizes = 2^(2:4),
+\method{rfe}{default}(
+  x,
+  y,
+  sizes = 2^(2:4),
   metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
   maximize = ifelse(metric == "RMSE", FALSE, TRUE),
-  rfeControl = rfeControl(), ...)
+  rfeControl = rfeControl(),
+  ...
+)
 
-\method{rfe}{formula}(form, data, ..., subset, na.action,
-  contrasts = NULL)
+\method{rfe}{formula}(form, data, ..., subset, na.action, contrasts = NULL)
 
-rfeIter(x, y, testX, testY, sizes, rfeControl = rfeControl(),
-  label = "", seeds = NA, ...)
+rfeIter(
+  x,
+  y,
+  testX,
+  testY,
+  sizes,
+  rfeControl = rfeControl(),
+  label = "",
+  seeds = NA,
+  ...
+)
 
 \method{update}{rfe}(object, x, y, size, ...)
 
-\method{rfe}{recipe}(x, data, sizes = 2^(2:4), metric = NULL,
-  maximize = NULL, rfeControl = rfeControl(), ...)
+\method{rfe}{recipe}(
+  x,
+  data,
+  sizes = 2^(2:4),
+  metric = NULL,
+  maximize = NULL,
+  rfeControl = rfeControl(),
+  ...
+)
 }
 \arguments{
 \item{x}{A matrix or data frame of predictors for model training. This
