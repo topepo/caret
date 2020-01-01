@@ -85,7 +85,7 @@
     }
     if (is.null(weights))
       weights <- rep(1, dim(x)[1])
-    
+
     if (is.factor(y)) {
       lev <- levels(y)
       theDots <- list(...)
@@ -94,11 +94,11 @@
     } else {
       lev <- NA
     }
-    
+
     foo <- function(index, x, y, w, ...) {
       subX <- x[index, , drop = FALSE]
       subY <- y[index]
-      
+
       if (is.null(w)) {
         fit <- earth::earth(x = subX, y = subY, ...)
       } else {
@@ -111,7 +111,7 @@
       fit$index <- index
       fit
     }
-    
+
     oobFoo <- function(fit, x, y, lev) {
       index <- fit$index
       subX <- x[-index, , drop = FALSE]
@@ -123,7 +123,7 @@
         predict(fit, subX, type = "class")
       postResample(predY, subY)
     }
-    
+
     btSamples <- createResample(y, times = B)
     btFits <- lapply(btSamples,
                      foo,
@@ -182,7 +182,7 @@
   attr(Terms, "intercept") <- 0
   y <- model.response(m)
   w <- model.weights(m)
-  x <- model.matrix(Terms, m, contrasts)
+  x <- model.matrix(Terms, m)
   cons <- attr(x, "contrast")
   xint <- match("(Intercept)", colnames(x), nomatch = 0)
   if (xint > 0)  x <- x[, -xint, drop = FALSE]
@@ -215,10 +215,10 @@
 #' vector and \code{type = "probs"} outputs a matrix of class probabilities.
 #' @param \dots not used
 #' @return A vector of predictions (for regression or \code{type = "class"})
-#'  or a data frame of class probabilities. By default, when the model 
+#'  or a data frame of class probabilities. By default, when the model
 #'  predicts a number, a vector of numeric predictions is returned. When
 #'  a classification model is used, the default prediction is a factor vector
-#'  of classes. 
+#'  of classes.
 #' @note If the predictions for the original training set are needed, there are
 #' two ways to calculate them. First, the original data set can be predicted by
 #' each bagged earth model. Secondly, the predictions from each bootstrap
@@ -229,7 +229,7 @@
 #' @seealso \code{\link{bagEarth}}
 #' @keywords regression
 #' @method predict bagEarth
-#' @export  
+#' @export
 #' @examples
 #'
 #' \dontrun{
@@ -255,7 +255,7 @@
         "class"
     }
     if (!any(type %in% c("response", "class", "prob")))
-      stop("type must be either response, class or prob", 
+      stop("type must be either response, class or prob",
            call. = FALSE)
     requireNamespaceQuietStop("earth")
     ## get oob predictions
@@ -265,10 +265,10 @@
       data.frame(pred = x$fitted.values[oobIndex],
                  sample = oobIndex)
     }
-    
+
     if (is.null(newdata) & !is.null(object$x))
       newdata <- object$x
-    
+
     if (is.null(newdata)) {
       pred <- lapply(object$fit, getTrainPred)
       pred <- rbind.fill(pred)
@@ -286,7 +286,7 @@
                      y = newdata)
       out <- aggregate_pred(pred, object$levels, object$summary)
     }
-    
+
     if (type == "class") {
       out <- object$levels[apply(out, 1, which.max)]
       out <- factor(out, levels = object$levels)
@@ -329,7 +329,7 @@ print.bagEarth <- function (x, ...) {
 #' @author Max Kuhn
 #' @keywords manip
 #' @method summary bagEarth
-#' @export 
+#' @export
 #' @examples
 #'
 #' \dontrun{
@@ -366,7 +366,7 @@ print.bagEarth <- function (x, ...) {
 "print.summary.bagEarth" <-
   function(x, digits = max(3, getOption("digits") - 3), ...) {
     cat("\nCall:\n", deparse(x$bagEarthCall), "\n\n", sep = "")
-    
+
     oobStat <-
       apply(x$oob, 2, function(x)
         quantile(x, probs = c(0, 0.025, .5, .975, 1)))

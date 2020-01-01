@@ -6,11 +6,17 @@
 \alias{compare_models}
 \title{Inferential Assessments About Model Performance}
 \usage{
-\method{diff}{resamples}(x, models = x$models, metric = x$metrics,
-  test = t.test, confLevel = 0.95, adjustment = "bonferroni", ...)
+\method{diff}{resamples}(
+  x,
+  models = x$models,
+  metric = x$metrics,
+  test = t.test,
+  confLevel = 0.95,
+  adjustment = "bonferroni",
+  ...
+)
 
-\method{summary}{diff.resamples}(object, digits = max(3,
-  getOption("digits") - 3), ...)
+\method{summary}{diff.resamples}(object, digits = max(3, getOption("digits") - 3), ...)
 
 compare_models(a, b, metric = a$metric[1])
 }

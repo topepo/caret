@@ -1,9 +1,9 @@
 Package: caret
-Version: 6.0-84
+Version: 6.0-84.9000
 Title: Classification and Regression Training
 Authors@R: c(
-    person("Max", "Kuhn", role = c("aut", "cre")),
-    person("Jed", "Wing", role = "ctb"),
+  person("Max", "Kuhn", role = c("aut", "cre"), email = "mxkuhn@gmail.com"),
+  person("Jed", "Wing", role = "ctb"),
 	person("Steve", "Weston", role = "ctb"),
 	person("Andre", "Williams", role = "ctb"),
 	person("Chris", "Keefer", role = "ctb"),
@@ -20,13 +20,8 @@ Authors@R: c(
 	person("Can", "Candan", role = "ctb"),
 	person("Tyler", "Hunt", role = "ctb")
     )
-Author: Max Kuhn. Contributions from Jed Wing, Steve Weston, Andre
-    Williams, Chris Keefer, Allan Engelhardt, Tony Cooper, Zachary Mayer,
-    Brenton Kenkel, the R Core Team, Michael Benesty, Reynald Lescarbeau,
-    Andrew Ziem, Luca Scrucca, Yuan Tang, Can Candan, and Tyler Hunt.
 Description: Misc functions for training and plotting classification and
     regression models.
-Maintainer: Max Kuhn <mxkuhn@gmail.com>
 Depends:
     R (>= 3.2.0),
     lattice (>= 0.20),
@@ -45,7 +40,8 @@ Imports:
     utils,
     grDevices,
     recipes (>= 0.1.4),
-    withr (>= 2.0.0)
+    withr (>= 2.0.0),
+    pROC,
 Suggests:
     BradleyTerry2,
     e1071,
@@ -65,7 +61,6 @@ Suggests:
     nnet,
     party (>= 0.9-99992),
     pls,
-    pROC,
     proxy,
     randomForest,
     RANN,
@@ -78,6 +73,6 @@ Suggests:
     rpart,
     dplyr
 License: GPL (>= 2)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2.9000
 VignetteBuilder: knitr
 Encoding: UTF-8

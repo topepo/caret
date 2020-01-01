@@ -600,7 +600,7 @@ safs <- function (x, ...) UseMethod("safs")
       diffs <- try(process_diffs(result[names(result) == "diffs"],
                                  colnames(x)),
                    silent = TRUE)
-      if(class(diffs)[1] == "try-error") {
+      if (inherits(diffs, "try-error")) {
         diffs <- NULL
         warning("An error occured when computing the variable differences")
       }
@@ -1063,7 +1063,7 @@ sa_select <- function(x, y,
                                        subsets,
                                        external[, !(names(external) %in% sa_external_names), drop = FALSE]),
                silent = TRUE)
-  if(class(diffs)[1] == "try-error") diffs <- NULL
+  if (inherits(diffs, "try-error"))  diffs <- NULL
   list(internal = internal,
        subsets = subsets,
        external = external,
@@ -1492,7 +1492,7 @@ update.safs <- function(object, iter, x, y, ...) {
       diffs <- try(process_diffs(result[names(result) == "diffs"],
                                  colnames(x)),
                    silent = TRUE)
-      if(class(diffs)[1] == "try-error") {
+      if (inherits(diffs, "try-error")) {
         diffs <- NULL
         warning("An error occured when computing the variable differences")
       }

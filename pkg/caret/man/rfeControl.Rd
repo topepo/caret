@@ -4,12 +4,22 @@
 \alias{rfeControl}
 \title{Controlling the Feature Selection Algorithms}
 \usage{
-rfeControl(functions = NULL, rerank = FALSE, method = "boot",
-  saveDetails = FALSE, number = ifelse(method \%in\% c("cv",
-  "repeatedcv"), 10, 25), repeats = ifelse(method \%in\% c("cv",
-  "repeatedcv"), 1, number), verbose = FALSE, returnResamp = "final",
-  p = 0.75, index = NULL, indexOut = NULL, timingSamps = 0,
-  seeds = NA, allowParallel = TRUE)
+rfeControl(
+  functions = NULL,
+  rerank = FALSE,
+  method = "boot",
+  saveDetails = FALSE,
+  number = ifelse(method \%in\% c("cv", "repeatedcv"), 10, 25),
+  repeats = ifelse(method \%in\% c("cv", "repeatedcv"), 1, number),
+  verbose = FALSE,
+  returnResamp = "final",
+  p = 0.75,
+  index = NULL,
+  indexOut = NULL,
+  timingSamps = 0,
+  seeds = NA,
+  allowParallel = TRUE
+)
 }
 \arguments{
 \item{functions}{a list of functions for model fitting, prediction and

@@ -7,14 +7,17 @@
 \alias{ggplot.safs}
 \title{Plot Method for the gafs and safs Classes}
 \usage{
-\method{plot}{gafs}(x, metric = x$control$metric["external"],
-  estimate = c("internal", "external"), output = "ggplot", ...)
+\method{plot}{gafs}(
+  x,
+  metric = x$control$metric["external"],
+  estimate = c("internal", "external"),
+  output = "ggplot",
+  ...
+)
 
-\method{ggplot}{gafs}(data = NULL, mapping = NULL, ...,
-  environment = NULL)
+\method{ggplot}{gafs}(data = NULL, mapping = NULL, ..., environment = NULL)
 
-\method{ggplot}{safs}(data = NULL, mapping = NULL, ...,
-  environment = NULL)
+\method{ggplot}{safs}(data = NULL, mapping = NULL, ..., environment = NULL)
 }
 \arguments{
 \item{x}{an object of class \code{\link{gafs}} or \code{\link{safs}}}

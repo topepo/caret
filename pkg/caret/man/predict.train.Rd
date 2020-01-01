@@ -8,14 +8,25 @@
 \alias{predict.list}
 \title{Extract predictions and class probabilities from train objects}
 \usage{
-extractPrediction(models, testX = NULL, testY = NULL, unkX = NULL,
-  unkOnly = !is.null(unkX) & is.null(testX), verbose = FALSE)
+extractPrediction(
+  models,
+  testX = NULL,
+  testY = NULL,
+  unkX = NULL,
+  unkOnly = !is.null(unkX) & is.null(testX),
+  verbose = FALSE
+)
 
-extractProb(models, testX = NULL, testY = NULL, unkX = NULL,
-  unkOnly = !is.null(unkX) & is.null(testX), verbose = FALSE)
+extractProb(
+  models,
+  testX = NULL,
+  testY = NULL,
+  unkX = NULL,
+  unkOnly = !is.null(unkX) & is.null(testX),
+  verbose = FALSE
+)
 
-\method{predict}{train}(object, newdata = NULL, type = "raw",
-  na.action = na.omit, ...)
+\method{predict}{train}(object, newdata = NULL, type = "raw", na.action = na.omit, ...)
 }
 \arguments{
 \item{models}{a list of objects of the class \code{train}. The objects must

@@ -8,11 +8,24 @@
 \usage{
 preProcess(x, ...)
 
-\method{preProcess}{default}(x, method = c("center", "scale"),
-  thresh = 0.95, pcaComp = NULL, na.remove = TRUE, k = 5,
-  knnSummary = mean, outcome = NULL, fudge = 0.2, numUnique = 3,
-  verbose = FALSE, freqCut = 95/5, uniqueCut = 10, cutoff = 0.9,
-  rangeBounds = c(0, 1), ...)
+\method{preProcess}{default}(
+  x,
+  method = c("center", "scale"),
+  thresh = 0.95,
+  pcaComp = NULL,
+  na.remove = TRUE,
+  k = 5,
+  knnSummary = mean,
+  outcome = NULL,
+  fudge = 0.2,
+  numUnique = 3,
+  verbose = FALSE,
+  freqCut = 95/5,
+  uniqueCut = 10,
+  cutoff = 0.9,
+  rangeBounds = c(0, 1),
+  ...
+)
 
 \method{predict}{preProcess}(object, newdata, ...)
 }

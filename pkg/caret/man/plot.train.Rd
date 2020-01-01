@@ -5,13 +5,27 @@
 \alias{plot.train}
 \title{Plot Method for the train Class}
 \usage{
-\method{ggplot}{train}(data = NULL, mapping = NULL,
-  metric = data$metric[1], plotType = "scatter", output = "layered",
-  nameInStrip = FALSE, highlight = FALSE, ..., environment = NULL)
+\method{ggplot}{train}(
+  data = NULL,
+  mapping = NULL,
+  metric = data$metric[1],
+  plotType = "scatter",
+  output = "layered",
+  nameInStrip = FALSE,
+  highlight = FALSE,
+  ...,
+  environment = NULL
+)
 
-\method{plot}{train}(x, plotType = "scatter", metric = x$metric[1],
-  digits = getOption("digits") - 3, xTrans = NULL,
-  nameInStrip = FALSE, ...)
+\method{plot}{train}(
+  x,
+  plotType = "scatter",
+  metric = x$metric[1],
+  digits = getOption("digits") - 3,
+  xTrans = NULL,
+  nameInStrip = FALSE,
+  ...
+)
 }
 \arguments{
 \item{data}{an object of class \code{\link{train}}.}

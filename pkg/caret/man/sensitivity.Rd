@@ -22,30 +22,41 @@
 \usage{
 negPredValue(data, ...)
 
-\method{negPredValue}{default}(data, reference,
-  negative = levels(reference)[2], prevalence = NULL, ...)
+\method{negPredValue}{default}(
+  data,
+  reference,
+  negative = levels(reference)[2],
+  prevalence = NULL,
+  ...
+)
 
-\method{negPredValue}{table}(data, negative = rownames(data)[-1],
-  prevalence = NULL, ...)
+\method{negPredValue}{table}(data, negative = rownames(data)[-1], prevalence = NULL, ...)
 
-\method{negPredValue}{matrix}(data, negative = rownames(data)[-1],
-  prevalence = NULL, ...)
+\method{negPredValue}{matrix}(data, negative = rownames(data)[-1], prevalence = NULL, ...)
 
 posPredValue(data, ...)
 
-\method{posPredValue}{default}(data, reference,
-  positive = levels(reference)[1], prevalence = NULL, ...)
+\method{posPredValue}{default}(
+  data,
+  reference,
+  positive = levels(reference)[1],
+  prevalence = NULL,
+  ...
+)
 
-\method{posPredValue}{table}(data, positive = rownames(data)[1],
-  prevalence = NULL, ...)
+\method{posPredValue}{table}(data, positive = rownames(data)[1], prevalence = NULL, ...)
 
-\method{posPredValue}{matrix}(data, positive = rownames(data)[1],
-  prevalence = NULL, ...)
+\method{posPredValue}{matrix}(data, positive = rownames(data)[1], prevalence = NULL, ...)
 
 sensitivity(data, ...)
 
-\method{sensitivity}{default}(data, reference,
-  positive = levels(reference)[1], na.rm = TRUE, ...)
+\method{sensitivity}{default}(
+  data,
+  reference,
+  positive = levels(reference)[1],
+  na.rm = TRUE,
+  ...
+)
 
 \method{sensitivity}{table}(data, positive = rownames(data)[1], ...)
 

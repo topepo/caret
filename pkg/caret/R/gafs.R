@@ -639,7 +639,7 @@ ga_select <- function(x, y, perf = NULL,
                                        subsets,
                                        external[, !(names(external) %in% ga_external_names), drop = FALSE]),
                silent = TRUE)
-  if(class(diffs)[1] == "try-error") diffs <- NULL
+  if (inherits(diffs, "try-error")) diffs <- NULL
 
   list(internal = internal,
        subsets = subsets,
@@ -1610,7 +1610,7 @@ update.gafs <- function(object, iter, x, y, ...) {
       diffs <- try(process_diffs(result[names(result) == "diffs"],
                                  colnames(x)),
                    silent = TRUE)
-      if(class(diffs)[1] == "try-error") {
+      if (inherits(diffs, "try-error"))  {
         diffs <- NULL
         # warning("An error occured when computing the variable differences")
       }

@@ -4,8 +4,13 @@
 \alias{findCorrelation}
 \title{Determine highly correlated variables}
 \usage{
-findCorrelation(x, cutoff = 0.9, verbose = FALSE, names = FALSE,
-  exact = ncol(x) < 100)
+findCorrelation(
+  x,
+  cutoff = 0.9,
+  verbose = FALSE,
+  names = FALSE,
+  exact = ncol(x) < 100
+)
 }
 \arguments{
 \item{x}{A correlation matrix}

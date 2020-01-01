@@ -4,8 +4,13 @@
 \alias{print.confusionMatrix}
 \title{Print method for confusionMatrix}
 \usage{
-\method{print}{confusionMatrix}(x, mode = x$mode, digits = max(3,
-  getOption("digits") - 3), printStats = TRUE, ...)
+\method{print}{confusionMatrix}(
+  x,
+  mode = x$mode,
+  digits = max(3, getOption("digits") - 3),
+  printStats = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{an object of class \code{confusionMatrix}}

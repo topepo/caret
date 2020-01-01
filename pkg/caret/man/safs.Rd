@@ -8,11 +8,9 @@
 \usage{
 safs(x, ...)
 
-\method{safs}{default}(x, y, iters = 10, differences = TRUE,
-  safsControl = safsControl(), ...)
+\method{safs}{default}(x, y, iters = 10, differences = TRUE, safsControl = safsControl(), ...)
 
-\method{safs}{recipe}(x, data, iters = 10, differences = TRUE,
-  safsControl = safsControl(), ...)
+\method{safs}{recipe}(x, data, iters = 10, differences = TRUE, safsControl = safsControl(), ...)
 }
 \arguments{
 \item{x}{An object where samples are in rows and features are in columns.

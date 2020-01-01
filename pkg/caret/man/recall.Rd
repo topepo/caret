@@ -17,23 +17,26 @@ recall(data, ...)
 
 \method{recall}{table}(data, relevant = rownames(data)[1], ...)
 
-\method{recall}{default}(data, reference,
-  relevant = levels(reference)[1], na.rm = TRUE, ...)
+\method{recall}{default}(data, reference, relevant = levels(reference)[1], na.rm = TRUE, ...)
 
 precision(data, ...)
 
-\method{precision}{default}(data, reference,
-  relevant = levels(reference)[1], na.rm = TRUE, ...)
+\method{precision}{default}(data, reference, relevant = levels(reference)[1], na.rm = TRUE, ...)
 
 \method{precision}{table}(data, relevant = rownames(data)[1], ...)
 
 F_meas(data, ...)
 
-\method{F_meas}{default}(data, reference,
-  relevant = levels(reference)[1], beta = 1, na.rm = TRUE, ...)
+\method{F_meas}{default}(
+  data,
+  reference,
+  relevant = levels(reference)[1],
+  beta = 1,
+  na.rm = TRUE,
+  ...
+)
 
-\method{F_meas}{table}(data, relevant = rownames(data)[1], beta = 1,
-  ...)
+\method{F_meas}{table}(data, relevant = rownames(data)[1], beta = 1, ...)
 }
 \arguments{
 \item{data}{for the default functions, a factor containing the discrete

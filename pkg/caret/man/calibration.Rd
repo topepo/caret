@@ -14,8 +14,15 @@ calibration(x, ...)
 
 \method{calibration}{default}(x, ...)
 
-\method{calibration}{formula}(x, data = NULL, class = NULL,
-  cuts = 11, subset = TRUE, lattice.options = NULL, ...)
+\method{calibration}{formula}(
+  x,
+  data = NULL,
+  class = NULL,
+  cuts = 11,
+  subset = TRUE,
+  lattice.options = NULL,
+  ...
+)
 
 \method{print}{calibration}(x, ...)
 

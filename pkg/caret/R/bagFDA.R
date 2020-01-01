@@ -133,7 +133,7 @@ function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights = NUL
    attr(Terms, "intercept") <- 0
    y <- model.response(m)
    w <- model.weights(m)
-   x <- model.matrix(Terms, m, contrasts)
+   x <- model.matrix(Terms, m)
    cons <- attr(x, "contrast")
    xint <- match("(Intercept)", colnames(x), nomatch = 0)
    if (xint > 0)  x <- x[, -xint, drop = FALSE]
