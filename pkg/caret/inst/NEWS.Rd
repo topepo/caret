@@ -6,6 +6,8 @@
 \section{Changes in version 6.0-85}{
   \itemize{
     \item Internal changes required by r-devel for new matrix class structure.
+    \item Michael Mayer contributed a faster version of `groupKFold()`. \issue{1108}
+
   }
 }
 
