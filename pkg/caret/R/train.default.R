@@ -317,8 +317,11 @@ train.default <- function(x, y,
   if(is.character(y)) y <- as.factor(y)
 
   if( !is.numeric(y) & !is.factor(y) ){
-    #This error will often trigger if the y value is logical.
-    stop( "Please make sure `y` is a factor or numeric value." , call. = FALSE )
+    msg <- paste("Please make sure that the outcome column is a factor or numeric .",
+                 "The class(es) of the column:",
+                 paste0("'", class(y), "'", collapse = ", "))
+
+    stop(msg, call. = FALSE )
   }
 
   if(is.list(method)) {
