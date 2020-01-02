@@ -7,6 +7,9 @@
   \itemize{
     \item Internal changes required by r-devel for new matrix class structure.
     \item Michael Mayer contributed a faster version of `groupKFold()`. \issue{1108}
+    \item A typo in a variable name was fixed. \issue{1087}
+    \item Removed some warnings related to contrasts.
+    \item Temporarily moved ROC calculations back to the \cpkg{pROC} package related to \code{JackStat/ModelMetrics#30}. \issue{1105}
 
   }
 }
