@@ -116,6 +116,12 @@ resamples.default <- function(x, modelNames = names(x), ...) {
     }
   }
 
+  rs_method <- vapply(x, function(x) x$control$method, character(1))
+  if (any(rs_method == "LOOCV")) {
+    stop("LOOCV is not compatible with `resamples()` since only one resampling ",
+         "estimate is available.", call. = FALSE)
+  }
+
   numResamp <- unlist(lapply(x, function(x) length(x$control$index)))
   if(length(unique(numResamp)) > 1) stop("There are different numbers of resamples in each model")
 
