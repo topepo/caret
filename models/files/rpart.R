@@ -139,7 +139,7 @@ modelInfo <- list(label = "CART",
                                        sum,
                                        na.rm = TRUE)
                     } else {
-		      out <- data.frame(x = numeric(), Vaiable = character())
+		      out <- data.frame(x = numeric(), Variable = character())
 		    }
                     allVars <- colnames(attributes(object$terms)$factors)
                     if(!all(allVars %in% out$Variable)) {
