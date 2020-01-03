@@ -7,10 +7,10 @@ modelInfo <- list(label = "Neural Network",
                                           label = c('#Hidden Units', 'Weight Decay')),
                   grid = function(x, y, len = NULL, search = "grid"){
                     if(search == "grid") {
-                      out <- expand.grid(size = ((1:len) * 2) - 1, 
+                      out <- expand.grid(size = ((1:len) * 2) - 1,
                                          decay = c(0, 10 ^ seq(-1, -4, length = len - 1)))
                     } else {
-                      out <- data.frame(size = sample(1:20, size = len, replace = TRUE), 
+                      out <- data.frame(size = sample(1:20, size = len, replace = TRUE),
                                         decay = 10^runif(len, min = -5, 1))
                     }
                     out
@@ -18,8 +18,7 @@ modelInfo <- list(label = "Neural Network",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x)
                     dat$.outcome <- y
-                    if(!is.null(wts))
-                    {
+                    if(!is.null(wts)) {
                       out <- nnet::nnet(.outcome ~ .,
                                         data = dat,
                                         weights = wts,
@@ -33,20 +32,18 @@ modelInfo <- list(label = "Neural Network",
                                              ...)
                     out
                   },
-                  predict = function(modelFit, newdata, submodels = NULL)
-                  {
+                  predict = function(modelFit, newdata, submodels = NULL) {
                     if(modelFit$problemType == "Classification")
                     {
                       out <- predict(modelFit, newdata, type="class")
                     } else {
-                      out  <- predict(modelFit, newdata, type="raw")
+                      out  <- predict(modelFit, newdata, type="raw")[,1]
                     }
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
                     out <- predict(modelFit, newdata)
-                    if(ncol(as.data.frame(out)) == 1)
-                    {
+                    if(ncol(as.data.frame(out)) == 1) {
                       out <- cbind(out, 1-out)
                       dimnames(out)[[2]] <-  rev(modelFit$obsLevels)
                     }
