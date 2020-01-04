@@ -1,5 +1,5 @@
 Package: caret
-Version: 6.0-84.9000
+Version: 6.0-85
 Title: Classification and Regression Training
 Authors@R: c(
   person("Max", "Kuhn", role = c("aut", "cre"), email = "mxkuhn@gmail.com"),

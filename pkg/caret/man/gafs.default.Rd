@@ -169,7 +169,7 @@ Kuhn M and Johnson K (2013), Applied Predictive Modeling,
 Springer, Chapter 19 \url{http://appliedpredictivemodeling.com}
 
 Scrucca L (2013). GA: A Package for Genetic Algorithms in R. Journal of
-Statistical Software, 53(4), 1-37. \url{www.jstatsoft.org/v53/i04}
+Statistical Software, 53(4), 1-37. \url{https://www.jstatsoft.org/article/view/v053i04}
 
 Mitchell M (1996), An Introduction to Genetic Algorithms, MIT Press.
 
