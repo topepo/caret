@@ -75,7 +75,7 @@ knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...)
     stop("formula missing or incorrect")
   m <- match.call(expand.dots = FALSE)
   if (is.matrix(eval(m$data, parent.frame())))
-    m$data <- as.data.frame(data)
+    m$data <- as.data.frame(data, stringsAsFactors = FALSE)
   m[[1]] <- as.name("model.frame")
   m$... <- NULL
   m$k <- NULL
@@ -127,7 +127,7 @@ knnreg.matrix <- function(x, y, k = 5, ...)
 #' @export
 knnreg.data.frame <- function(x, y, k = 5, ...)
 {
-  x <- as.data.frame(x)
+  x <- as.data.frame(x, stringsAsFactors = TRUE)
   if(!is.numeric(y)) stop("y must be numeric")
   RET <- list(learn = list(y = y, X = x))
   RET$k <- k

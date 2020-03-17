@@ -6,7 +6,7 @@ check.medianImpute <- function(x) {
 	med <- apply(x, 2, median, na.rm=TRUE)
 	anyEmptyColumn <- any(is.na(med))
 	med[is.na(med)] <- 0
-	
+
 	if(anyEmptyColumn) {
 		expect_warning(
 			pp <- preProcess(x, method = "medianImpute"),
@@ -16,11 +16,11 @@ check.medianImpute <- function(x) {
 		pp <- preProcess(x, method = "medianImpute")
 	}
 	expect_equal(pp$median, med)
-	
+
 	x.filled <- predict(pp, newdata=x)
 	expect_false(any(is.na(x.filled)))
 	expect_equal(x[!is.na(x)], x.filled[!is.na(x)])
-	
+
 	med.filled <- apply(x.filled, 2, median)
 	expect_equal(med.filled, med)
 }
@@ -38,5 +38,5 @@ test_that("median Impute works for matrix with named columns", {
 })
 
 test_that("median Impute works for data.frames", {
-	check.medianImpute(as.data.frame(x))
+	check.medianImpute(as.data.frame(x, stringsAsFactors = TRUE))
 })

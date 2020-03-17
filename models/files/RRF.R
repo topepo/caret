@@ -51,7 +51,7 @@ modelInfo <- list(label = "Regularized Random Forest",
                         varImp <- data.frame(Overall = varImp[,1])
                       }
                     } 
-                    out <- as.data.frame(varImp)
+                    out <- as.data.frame(varImp, stringsAsFactors = TRUE)
                     if(dim(out)[2] == 2) {
                       tmp <- apply(out, 1, mean)
                       out[,1] <- out[,2] <- tmp  

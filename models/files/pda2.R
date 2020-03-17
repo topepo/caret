@@ -14,7 +14,7 @@ modelInfo <- list(label = "Penalized Discriminant Analysis",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     if(!is.null(wts))
                     {

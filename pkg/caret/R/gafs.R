@@ -338,7 +338,7 @@ ga_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY,
   if(!is.null(testX)) {
     modelPred <- funcs$pred(mod, testX[, ind, drop=FALSE])
     if(is.data.frame(modelPred) | is.matrix(modelPred)) {
-      if(is.matrix(modelPred)) modelPred <- as.data.frame(modelPred)
+      if(is.matrix(modelPred)) modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
       modelPred$obs <- testY
       modelPred$Size <- length(ind)
     } else modelPred <- data.frame(pred = modelPred, obs = testY, Size = sum(ind == 1))
@@ -1302,7 +1302,7 @@ caretGA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) train(x, y, 
                   tmp <- predict(object, x)
                   if(object$control$classProbs) {
                     out <- cbind(data.frame(pred = tmp),
-                                 as.data.frame(predict(object, x, type = "prob")))
+                                 as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
                   } else out <- tmp
                   out
                 },
@@ -1330,7 +1330,7 @@ pred = function(object, x) {
   tmp <- predict(object, x)
   if(is.factor(object$y)) {
     out <- cbind(data.frame(pred = tmp),
-                 as.data.frame(predict(object, x, type = "prob")))
+                 as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
   } else out <- tmp
   out
 },
@@ -1352,7 +1352,7 @@ pred = function(object, x) {
   tmp <- predict(object, x)
   if(is.factor(object$y)) {
     out <- cbind(data.frame(pred = tmp),
-                 as.data.frame(predict(object, x, type = "prob")))
+                 as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
   } else out <- tmp
   out
 },

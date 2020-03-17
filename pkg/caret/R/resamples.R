@@ -185,7 +185,7 @@ resamples.default <- function(x, modelNames = names(x), ...) {
       values = out,
       models = modelNames,
       metrics = pNames,
-      timings = as.data.frame(timings),
+      timings = as.data.frame(timings, stringsAsFactors = TRUE),
       methods = unlist(lapply(x, function(x) x$method))),
     class = "resamples")
 
@@ -363,7 +363,7 @@ prcomp.resamples <- function(x, metric = x$metrics[1],  ...)
                          names(tmpData),
                          fixed = TRUE)
 
-  tmpData <- as.data.frame(t(tmpData))
+  tmpData <- as.data.frame(t(tmpData), stringsAsFactors = TRUE)
   colnames(tmpData) <- paste("Resample",
                              gsub(" ", "0", format(1:ncol(tmpData))),
                              sep = "")
@@ -1002,7 +1002,7 @@ ggplot.resamples <-
       },
       cl = conf.level)
     results <- do.call("rbind", results)
-    results <- as.data.frame(results)
+    results <- as.data.frame(results, stringsAsFactors = TRUE)
     tmp <- strsplit(rownames(results), "~", fixed = TRUE)
     results$Model <- unlist(lapply(tmp, function(x) x[1]))
     results$Model <- reorder(results$Model, results$Estimate, median)
@@ -1172,7 +1172,7 @@ diff.resamples <- function(x,
 densityplot.diff.resamples <- function(x, data, metric = x$metric, ...)
 {
   plotData <- lapply(x$difs,
-                     function(x) stack(as.data.frame(x)))
+                     function(x) stack(as.data.frame(x, stringsAsFactors = TRUE)))
   plotData <- do.call("rbind", plotData)
   plotData$Metric <- rep(x$metric, each = length(x$difs[[1]]))
   plotData$ind <- gsub(".diff.", " - ", plotData$ind, fixed = TRUE)
@@ -1192,7 +1192,7 @@ densityplot.diff.resamples <- function(x, data, metric = x$metric, ...)
 bwplot.diff.resamples <- function(x, data, metric = x$metric, ...)
 {
   plotData <- lapply(x$difs,
-                     function(x) stack(as.data.frame(x)))
+                     function(x) stack(as.data.frame(x, stringsAsFactors = TRUE)))
   plotData <-  do.call("rbind", plotData)
   plotData$Metric <- rep(x$metric, each = length(x$difs[[1]]))
   plotData$ind <- gsub(".diff.", " - ", plotData$ind, fixed = TRUE)
@@ -1305,7 +1305,7 @@ levelplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], what 
       }
     }
     colnames(temp) <- x$models
-    temp  <- as.data.frame(temp)
+    temp  <- as.data.frame(temp, stringsAsFactors = TRUE)
     temp$A <- x$models
     temp$Metric <- x$metric[h]
     all[[h]] <- temp
@@ -1416,7 +1416,7 @@ dotplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], ...)
 
   }
   h <- which(x$metric == metric)
-  plotData <- as.data.frame(matrix(NA, ncol = 3, nrow = ncol(x$difs[[metric]])))
+  plotData <- as.data.frame(matrix(NA, ncol = 3, nrow = ncol(x$difs[[metric]])), stringsAsFactors = TRUE)
   ## Get point and interval estimates on the differences
   index <- 0
   for(i in seq(along = x$models))

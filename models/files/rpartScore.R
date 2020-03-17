@@ -5,7 +5,7 @@ modelInfo <- list(label = "CART or Ordinal Responses",
                                           class = c("numeric", "character", "character"),
                                           label = c("Complexity Parameter", "Split Function", "Pruning Measure")),
                   grid = function(x, y, len = NULL, search = "grid"){
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     initialFit <- rpart::rpart(.outcome ~ .,
                                                data = dat,
@@ -56,7 +56,7 @@ modelInfo <- list(label = "CART or Ordinal Responses",
                     if(!is.null(wts)) theDots$weights <- wts    
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
-                                        data = if(is.data.frame(x)) x else as.data.frame(x),
+                                        data = if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE),
                                         split = as.character(param$split),
                                         prune = as.character(param$prune),
                                         control = ctl),
@@ -69,7 +69,7 @@ modelInfo <- list(label = "CART or Ordinal Responses",
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {    
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     out  <-  modelFit$obsLevels[predict(modelFit, newdata)]
                     
                     if(!is.null(submodels)) {

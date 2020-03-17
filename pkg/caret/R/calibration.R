@@ -1,38 +1,38 @@
 #' Probability Calibration Plot
 #'
 #' @name calibration
-#' @aliases calibration calibration.formula calibration.default xyplot.calibration ggplot.calibration 
+#' @aliases calibration calibration.formula calibration.default xyplot.calibration ggplot.calibration
 #' panel.calibration
 #'
-#' @description For classification models, this function creates a 'calibration plot' that describes 
+#' @description For classification models, this function creates a 'calibration plot' that describes
 #' how consistent model probabilities are with observed event rates.
 #'
 #' @param x a \code{lattice} formula (see \code{\link[lattice:xyplot]{xyplot}} for syntax) where the left
-#' -hand side of the formula is a factor class variable of the observed outcome and the right-hand side 
-#' specifies one or model columns corresponding to a numeric ranking variable for a model (e.g. class 
+#' -hand side of the formula is a factor class variable of the observed outcome and the right-hand side
+#' specifies one or model columns corresponding to a numeric ranking variable for a model (e.g. class
 #' probabilities). The classification variable should have two levels.
 #'
-#' @param data For \code{calibration.formula}, a data frame (or more precisely, anything that is a valid 
-#' \code{envir} argument in \code{eval}, e.g., a list or an environment) containing values for any 
-#' variables in the formula, as well as \code{groups} and \code{subset} if applicable. If not found in 
-#' \code{data}, or if \code{data} is unspecified, the variables are looked for in the environment of the 
-#' formula. This argument is not used for \code{xyplot.calibration}. For {ggplot.calibration}, \code{data} 
+#' @param data For \code{calibration.formula}, a data frame (or more precisely, anything that is a valid
+#' \code{envir} argument in \code{eval}, e.g., a list or an environment) containing values for any
+#' variables in the formula, as well as \code{groups} and \code{subset} if applicable. If not found in
+#' \code{data}, or if \code{data} is unspecified, the variables are looked for in the environment of the
+#' formula. This argument is not used for \code{xyplot.calibration}. For {ggplot.calibration}, \code{data}
 #' should be an object of class "\code{calibration}"."
 #'
 #' @param class a character string for the class of interest
 #'
-#' @param cuts If a single number this indicates the number of splits of the data are used to create the 
-#' plot. By default, it uses as many cuts as there are rows in \code{data}. If a vector, these are the 
+#' @param cuts If a single number this indicates the number of splits of the data are used to create the
+#' plot. By default, it uses as many cuts as there are rows in \code{data}. If a vector, these are the
 #' actual cuts that will be used.
 #'
-#' @param subset An expression that evaluates to a logical or integer indexing vector. It is evaluated in 
+#' @param subset An expression that evaluates to a logical or integer indexing vector. It is evaluated in
 #' \code{data}. Only the resulting rows of \code{data} are used for the plot.
 #'
 #' @param lattice.options A list that could be supplied to \code{\link[lattice:lattice.options]{lattice.options}}
 #'
-#' @param bwidth,dwidth a numeric value for the confidence interval bar width and dodge width, respectively. 
+#' @param bwidth,dwidth a numeric value for the confidence interval bar width and dodge width, respectively.
 #' In the latter case, a dodge is only used when multiple models are specified in the formula.
-#' @param \dots options to pass through to \code{\link[lattice:xyplot]{xyplot}} or the panel function (not 
+#' @param \dots options to pass through to \code{\link[lattice:xyplot]{xyplot}} or the panel function (not
 #' used in \code{calibration.formula}).
 #'
 #' @details
@@ -46,17 +46,17 @@
 #'    \item the event rate is determined for each bin}
 #' \code{xyplot.calibration} produces a plot of the observed event rate by the mid-point of the bins.
 #'
-#' This implementation uses the \pkg{lattice} function \code{\link[lattice:xyplot]{xyplot}}, so plot 
-#' elements can be changed via panel functions, \code{\link[lattice:trellis.par.get]{trellis.par.set}} or 
-#' other means. \code{calibration} uses the panel function \code{\link{panel.calibration}} by default, but 
+#' This implementation uses the \pkg{lattice} function \code{\link[lattice:xyplot]{xyplot}}, so plot
+#' elements can be changed via panel functions, \code{\link[lattice:trellis.par.get]{trellis.par.set}} or
+#' other means. \code{calibration} uses the panel function \code{\link{panel.calibration}} by default, but
 #' it can be changed by passing that argument into \code{xyplot.calibration}.
 #'
-#' The following elements are set by default in the plot but can be changed by passing new values into 
-#' \code{xyplot.calibration}: \code{xlab = "Bin Midpoint"}, \code{ylab = "Observed Event Percentage"}, 
-#' \code{type = "o"}, \code{ylim = extendrange(c(0, 100))},\code{xlim = extendrange(c(0, 100))} and 
+#' The following elements are set by default in the plot but can be changed by passing new values into
+#' \code{xyplot.calibration}: \code{xlab = "Bin Midpoint"}, \code{ylab = "Observed Event Percentage"},
+#' \code{type = "o"}, \code{ylim = extendrange(c(0, 100))},\code{xlim = extendrange(c(0, 100))} and
 #' \code{panel = panel.calibration}
 #'
-#' For the \code{ggplot} method, confidence intervals on the estimated proportions (from 
+#' For the \code{ggplot} method, confidence intervals on the estimated proportions (from
 #' \code{\link[stats]{binom.test}}) are also shown.
 #'
 #' @return
@@ -140,7 +140,7 @@ calibration.formula <- function(x, data = NULL, class = NULL, cuts = 11, subset 
   if(length(form$condition) > 0 && any(names(form$condition) != ""))
   {
     ind <- sum(names(form$condition) != "")
-    tmp <- as.data.frame(form$condition[1:ind])
+    tmp <- as.data.frame(form$condition[1:ind], stringsAsFactors = TRUE)
     calibData <- cbind(calibData, tmp)
   }
   if(!is.factor(calibData$calibClassVar)) stop("the left-hand side of the formula must be a factor of classes")

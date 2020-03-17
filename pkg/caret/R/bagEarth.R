@@ -389,7 +389,7 @@ aggregate_pred <- function(x, lvl, summ) {
     colnames(x) <- lvl
     out <- apply(x, c(1,2), summ)
     out <- t(apply(out, 1, function(x) x/sum(x)))
-    out <- as.data.frame(out)
+    out <- as.data.frame(out, stringsAsFactors = TRUE)
   } else {
     # regression
     out <- matrix(unlist(x), ncol = length(x))

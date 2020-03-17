@@ -46,7 +46,7 @@ test_that("multiClassSummary ROC values", {
   ir_te <- iris[-in_train,]
   mod <- MASS::lda(Species ~ ., data = ir_tr)
   pred <- predict(mod, ir_te[, -5])$posterior
-  pred <- as.data.frame(pred)
+  pred <- as.data.frame(pred, stringsAsFactors = TRUE)
   dat <- pred
   dat$pred <-  predict(mod, ir_te[, -5])$class
   dat$obs <- ir_te$Species

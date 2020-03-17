@@ -14,7 +14,7 @@ modelInfo <- list(label = "Penalized Multinomial Regression",
                     out
                   }, 
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     if(!is.null(wts)) {
                       out <- nnet::multinom(.outcome ~ .,
@@ -33,7 +33,7 @@ modelInfo <- list(label = "Penalized Multinomial Regression",
                   prob = function(modelFit, newdata, submodels = NULL){
                     out <- predict(modelFit, newdata, type = "probs")
                     if(nrow(newdata) == 1) {
-                      out <- as.data.frame(t(out))
+                      out <- as.data.frame(t(out), stringsAsFactors = TRUE)
                     }
                     if(length(modelFit$obsLevels) == 2) {
                       out <- cbind(1 - out, out)
@@ -48,7 +48,7 @@ modelInfo <- list(label = "Penalized Multinomial Regression",
                       out <- data.frame(Overall = out)
                       rownames(out) <- names(coef(object))
                     } else {
-                      out <- as.data.frame(apply(out, 2, sum))
+                      out <- as.data.frame(apply(out, 2, sum), stringsAsFactors = TRUE)
                       names(out)[1] <- "Overall"
                     }
                     subset(out, rownames(out) != "(Intercept)")

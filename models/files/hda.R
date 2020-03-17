@@ -7,7 +7,7 @@ modelInfo <- list(label = "Heteroscedastic Discriminant Analysis",
                                           label = c('Gamma', 'Lambda', 'Dimension of the Discriminative Subspace')),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
-                      out <- expand.grid(gamma = seq(0.1, 1, length = len), 
+                      out <- expand.grid(gamma = seq(0.1, 1, length = len),
                                          lambda =  seq(0, 1, length = len),
                                          newdim = 2:(min(len, ncol(x))))
                     } else {
@@ -28,10 +28,11 @@ modelInfo <- list(label = "Heteroscedastic Discriminant Analysis",
                     if(is.vector(tmp)) tmp <- matrix(tmp, ncol = 1)
                     as.character(predict(modelFit$naivebayes, tmp))
                   },
-                  prob = function(modelFit, newdata, submodels = NULL) {        
+                  prob = function(modelFit, newdata, submodels = NULL) {
                     tmp <- predict(modelFit, as.matrix(newdata))
                     if(is.vector(tmp)) tmp <- matrix(tmp, ncol = 1)
-                    as.data.frame(predict(modelFit$naivebayes, tmp, type = "raw"))
+                    as.data.frame(predict(modelFit$naivebayes, tmp, type = "raw"),
+                                  stringsAsFactors = FALSE)
                   },
                   levels = function(x) x$obsLevels,
                   tags = c("Discriminant Analysis", "Linear Classifier", "Regularization"),

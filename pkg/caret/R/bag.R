@@ -149,7 +149,7 @@ bagControl <- function(
             {
               out <- data.frame(pred  = pred, obs = y[-unique(index)])
             } else {
-              out <- as.data.frame(pred)
+              out <- as.data.frame(pred, stringsAsFactors = TRUE)
               out$obs <- y[-unique(index)]
               if(is.factor(y) & !(any(names(out) == "pred")))
                 {
@@ -324,7 +324,7 @@ ldaBag <- list(fit = function(x, y, ...)
 
                pred = function(object, x)
                {
-                 if(!is.data.frame(x)) x <- as.data.frame(x)
+                 if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
                  predict(object, x)$posterior
                },
                aggregate = function(x, type = "class")
@@ -347,7 +347,7 @@ ldaBag <- list(fit = function(x, y, ...)
                    {
                      out <- factor(classes[apply(pooled, 1, which.max)],
                                    levels = classes)
-                   } else out <- as.data.frame(pooled)
+                   } else out <- as.data.frame(pooled, stringsAsFactors = TRUE)
                  out
                })
 
@@ -362,7 +362,7 @@ plsBag <- list(fit = function(x, y,  ...)
 
                pred = function(object, x)
                {
-                 if(!is.data.frame(x)) x <- as.data.frame(x)
+                 if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
                  predict(object, x, type = "prob")[,,]
                },
                aggregate = function(x, type = "class")
@@ -380,7 +380,7 @@ plsBag <- list(fit = function(x, y,  ...)
                    {
                      out <- factor(classes[apply(pooled, 1, which.max)],
                                    levels = classes)
-                   } else out <- as.data.frame(pooled)
+                   } else out <- as.data.frame(pooled, stringsAsFactors = TRUE)
                  out
                })
 
@@ -395,8 +395,8 @@ nbBag <- list(fit = function(x, y,  ...)
 
                pred = function(object, x)
                {
-                 if(!is.data.frame(x)) x <- as.data.frame(x)
-                 as.data.frame(predict(object, x)$posterior)
+                 if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
+                 as.data.frame(predict(object, x)$posterior, stringsAsFactors = TRUE)
                },
                aggregate = function(x, type = "class")
                {
@@ -412,7 +412,7 @@ nbBag <- list(fit = function(x, y,  ...)
                    {
                      out <- factor(classes[apply(pooled, 1, which.max)],
                                    levels = classes)
-                   } else out <- as.data.frame(pooled)
+                   } else out <- as.data.frame(pooled, stringsAsFactors = TRUE)
                  out
                })
 
@@ -423,14 +423,14 @@ nbBag <- list(fit = function(x, y,  ...)
 ctreeBag <- list(fit = function(x, y,  ...)
                 {
                   loadNamespace("party")
-                  data <- as.data.frame(x)
+                  data <- as.data.frame(x, stringsAsFactors = TRUE)
                   data$y <- y
                   party::ctree(y~., data = data)
                 },
 
                 pred = function(object, x)
                 {
-                  if(!is.data.frame(x)) x <- as.data.frame(x)
+                  if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
                   obsLevels <-  levels(object@data@get("response")[,1])
                   if(!is.null(obsLevels))
                     {
@@ -459,7 +459,7 @@ ctreeBag <- list(fit = function(x, y,  ...)
                          {
                            out <- factor(classes[apply(pooled, 1, which.max)],
                                          levels = classes)
-                         } else out <- as.data.frame(pooled)
+                         } else out <- as.data.frame(pooled, stringsAsFactors = TRUE)
                      } else {
                        x <- matrix(unlist(x), ncol = length(x))
                        out <- apply(x, 1, median)
@@ -507,7 +507,7 @@ svmBag <- list(fit = function(x, y,  ...)
                          {
                            out <- factor(classes[apply(pooled, 1, which.max)],
                                          levels = classes)
-                         } else out <- as.data.frame(pooled)
+                         } else out <- as.data.frame(pooled, stringsAsFactors = TRUE)
                      } else {
                        x <- matrix(unlist(x), ncol = length(x))
                        out <- apply(x, 1, median)
@@ -560,7 +560,7 @@ nnetBag <- list(fit = function(x, y,  ...)
                          {
                            out <- factor(classes[apply(pooled, 1, which.max)],
                                          levels = classes)
-                         } else out <- as.data.frame(pooled)
+                         } else out <- as.data.frame(pooled, stringsAsFactors = TRUE)
                      } else {
                        x <- matrix(unlist(x), ncol = length(x))
                        out <- apply(x, 1, median)

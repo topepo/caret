@@ -20,7 +20,7 @@ modelInfo <- list(label = "CHi-squared Automated Interaction Detection",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     theDots <- list(...)
                     if(any(names(theDots) == "control")) {
@@ -44,11 +44,11 @@ modelInfo <- list(label = "CHi-squared Automated Interaction Detection",
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     predict(modelFit, newdata)
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     predict(modelFit, newdata, type = "prob")
                   },
                   levels = function(x) x$obsLevels,

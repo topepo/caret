@@ -24,7 +24,7 @@ modelInfo <- list(label = "Partial Least Squares",
                     {
                       plsda(x, y, method = "oscorespls", ncomp = ncomp, ...)
                     } else {
-                      dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                      dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                       dat$.outcome <- y
                       pls::plsr(.outcome ~ ., data = dat, method = "oscorespls", ncomp = ncomp, ...)
                     }
@@ -67,7 +67,7 @@ modelInfo <- list(label = "Partial Least Squares",
                       if(dim(out)[1] > 1) {
                         out <- out[,,1]
                       } else {
-                        out <- as.data.frame(t(out[,,1]))
+                        out <- as.data.frame(t(out[,,1]), stringsAsFactors = TRUE)
                       }
                     }
                     if(!is.null(submodels))
@@ -82,7 +82,7 @@ modelInfo <- list(label = "Partial Least Squares",
                           if(dim(tmpProb)[1] > 1) {
                             tmpProb <- tmpProb[,,1]
                           } else {
-                            tmpProb <- as.data.frame(t(tmpProb[,,1]))
+                            tmpProb <- as.data.frame(t(tmpProb[,,1]), stringsAsFactors = TRUE)
                           }
                         }
                         tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels])
@@ -128,7 +128,7 @@ modelInfo <- list(label = "Partial Least Squares",
                       colnames(out) <- dimnames(modelCoef)[[2]]
                       rownames(out) <- dimnames(modelCoef)[[1]]
                     }
-                    as.data.frame(out)
+                    as.data.frame(out, stringsAsFactors = TRUE)
                   },
                   predictors = function(x, ...) rownames(x$projection),
                   levels = function(x) x$obsLevels,

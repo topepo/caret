@@ -18,7 +18,7 @@ modelInfo <- list(
     modelArgs <- list(...)
 
     ## Set up data
-    dat <- if (is.data.frame(x)) x else as.data.frame(x)
+    dat <- if (is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
     dat$.outcome <- y
     modelArgs <- c(list(formula = .outcome ~ .,
                         data = dat,

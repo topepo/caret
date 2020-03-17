@@ -16,7 +16,7 @@ modelInfo <- list(label = "Tree-Based Ensembles",
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
                     if(!is.data.frame(x) | inherits(x, "tbl_df")) 
-                      x <- as.data.frame(x)
+                      x <- as.data.frame(x, stringsAsFactors = TRUE)
                     if(is.numeric(y)) {
                       out <- nodeHarvest::nodeHarvest(x, y,
                                                       maxinter = param$maxinter,
@@ -34,7 +34,7 @@ modelInfo <- list(label = "Tree-Based Ensembles",
                   },
                   predict = function(modelFit, newdata, submodels = NULL){
                     if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
-                      newdata <- as.data.frame(newdata)
+                      newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     if(modelFit$problemType == "Regression") {
                       predict(modelFit, as.matrix(newdata), maxshow = 0)
                     } else  {
@@ -44,7 +44,7 @@ modelInfo <- list(label = "Tree-Based Ensembles",
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
                     if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
-                      newdata <- as.data.frame(newdata)
+                      newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     out <- predict(modelFit, as.matrix(newdata), maxshow = 0)
                     if(is.vector(out)) {
                       out <- cbind(out, 1 - out)

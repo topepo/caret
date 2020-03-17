@@ -7,7 +7,7 @@ modelInfo <- list(label = "Generalized Linear Model with Stepwise Feature Select
                                           label = "parameter"),
                   grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     if(length(levels(y)) > 2) stop("glm models can only use 2-class outcomes")
                     
@@ -54,7 +54,7 @@ modelInfo <- list(label = "Generalized Linear Model with Stepwise Feature Select
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     if(modelFit$problemType == "Classification")
                     {
                       probs <-  predict(modelFit, newdata, type = "response")
@@ -67,7 +67,7 @@ modelInfo <- list(label = "Generalized Linear Model with Stepwise Feature Select
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     out <- predict(modelFit, newdata, type = "response")
                     out <- cbind(1-out, out)
                     ## glm models the second factor level, we treat the first as the

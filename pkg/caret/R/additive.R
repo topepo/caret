@@ -18,7 +18,7 @@ additivePlot <- function(x, data, n = 100, quant = 0, plot = TRUE, ...)
     meds <- lapply(data,
                    function(x, len) rep(median(x, na.rm = TRUE), len),
                    len = n)
-    meds <- as.data.frame(meds)
+    meds <- as.data.frame(meds, stringsAsFactors = TRUE)
     predGrid <- lapply(seqs,
                        function(x, m)
                        {

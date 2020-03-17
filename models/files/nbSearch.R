@@ -24,7 +24,7 @@ modelInfo <- list(
   },
   loop = NULL,
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
     dat$.outcome <- y
     if(param$direction == "forward") {
       struct <- bnclassify::fssj(class = '.outcome', dataset = dat,
@@ -40,11 +40,11 @@ modelInfo <- list(
     bnclassify::lp(struct, dat, smooth = param$final_smooth, ...)
   },
   predict = function(modelFit, newdata, submodels = NULL) {
-    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
     predict(modelFit, newdata)       
   },
   prob = function(modelFit, newdata, submodels = NULL) {
-    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
     predict(modelFit, newdata, prob = TRUE) 
   },
   levels = function(x) x$obsLevels,

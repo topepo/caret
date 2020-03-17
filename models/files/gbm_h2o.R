@@ -30,7 +30,7 @@ modelInfo <- list(label = "Gradient Boosting Machines",
                     if(lvs == 2) fam <- "bernoulli"
                     if(lvs >  2) fam <- "multinomial" ## intercept ... for family arg
 
-                    dat <- if(!is.data.frame(x)) as.data.frame(x) else x
+                    dat <- if(!is.data.frame(x)) as.data.frame(x, stringsAsFactors = TRUE) else x
                     dat$.outcome <- y
                     frame_name <- paste0("tmp_gbm_dat_",sample.int(100000, 1))
                     tmp_train_dat = h2o::as.h2o(dat, destination_frame = frame_name)
@@ -47,20 +47,20 @@ modelInfo <- list(label = "Gradient Boosting Machines",
                   predict = function(modelFit, newdata, submodels = NULL) {
                     frame_name <- paste0("new_gbm_dat_",sample.int(100000, 1))
                     newdata <- h2o::as.h2o(newdata, destination_frame = frame_name)
-                    as.data.frame(predict(modelFit, newdata))[,1]
+                    as.data.frame(predict(modelFit, newdata), stringsAsFactors = TRUE)[,1]
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     frame_name <- paste0("new_gbm_dat_",sample.int(100000, 1))
                     newdata <- h2o::as.h2o(newdata, destination_frame = frame_name)
-                    as.data.frame(predict(modelFit, newdata))[,-1]
+                    as.data.frame(predict(modelFit, newdata), stringsAsFactors = TRUE)[,-1]
                   },
                   predictors = function(x, ...) {
-                    out <- as.data.frame(h2o::h2o.varimp(x))
+                    out <- as.data.frame(h2o::h2o.varimp(x), stringsAsFactors = TRUE)
                     out <- subset(out, relative_importance > 0)
                     as.character(out$variable)
                   },
                   varImp = function(object, ...) {
-                    out <- as.data.frame(h2o::h2o.varimp(object))
+                    out <- as.data.frame(h2o::h2o.varimp(object), stringsAsFactors = TRUE)
                     colnames(out)[colnames(out) == "relative_importance"] <- "Overall"
                     rownames(out) <- out$variable
                     out[, c("Overall"), drop = FALSE]

@@ -27,7 +27,7 @@ modelInfo <- list(
     fam <- do.call(VGAM::cumulative, list(link = as.character(param$link), parallel = param$parallel))
 
     ## Set up data
-    dat <- if (is.data.frame(x)) x else as.data.frame(x)
+    dat <- if (is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
     dat$.outcome <- y
 
     ## you can't programatically pass argments to `vglm`. This solution is from
@@ -57,14 +57,14 @@ modelInfo <- list(
     out
   },
   predict = function(modelFit, newdata, preProc = NULL, submodels = NULL) {
-    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
     out <- VGAM::predictvglm(modelFit, newdata = newdata, type = "response")
     ordered(modelFit@misc$ynames[apply(out, 1, which.max)], levels = modelFit@misc$ynames)
     },
   prob = function(modelFit, newdata, preProc = NULL, submodels = NULL){
-    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
     out <- VGAM::predictvglm(modelFit, newdata = newdata, type = "response")
-    out <- as.data.frame(out)
+    out <- as.data.frame(out, stringsAsFactors = TRUE)
     names(out) <- modelFit@misc$ynames
     out
   },

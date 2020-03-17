@@ -41,7 +41,7 @@ modelInfo <- list(label = "AdaBoost.M1",
                                                 cp=-1,minsplit=0,xval=0) 
                     
                     if (!is.data.frame(x) | inherits(x, "tbl_df"))
-                      x <- as.data.frame(x)
+                      x <- as.data.frame(x, stringsAsFactors = TRUE)
                     
                     modelArgs <- c(list(formula = as.formula(.outcome ~ .),
                                         data = x,
@@ -55,7 +55,7 @@ modelInfo <- list(label = "AdaBoost.M1",
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if (!is.data.frame(newdata) | inherits(newdata, "tbl_df"))
-                      newdata <- as.data.frame(newdata)
+                      newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     ## The predict function requires the outcome! Trick it by
                     ## adding bogus data
                     newdata$.outcome <- factor(rep(modelFit$obsLevels[1], nrow(newdata)), 
@@ -76,7 +76,7 @@ modelInfo <- list(label = "AdaBoost.M1",
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
                     if (!is.data.frame(newdata) | inherits(newdata, "tbl_df"))
-                      newdata <- as.data.frame(newdata)
+                      newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     ## The predict function requires the outcome! Trick it by
                     ## adding bogus data
                     newdata$.outcome <- factor(rep(modelFit$obsLevels[1], nrow(newdata)), 

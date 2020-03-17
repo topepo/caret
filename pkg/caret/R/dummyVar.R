@@ -139,7 +139,7 @@
 dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, fullRank = FALSE, ...)
 {
   formula <- as.formula(formula)
-  if(!is.data.frame(data)) data <- as.data.frame(data)
+  if(!is.data.frame(data)) data <- as.data.frame(data, stringsAsFactors = FALSE)
 
   vars <- all.vars(formula)
   if(any(vars == "."))
@@ -206,7 +206,7 @@ print.dummyVars <- function(x, ...)
 predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
 {
   if(is.null(newdata)) stop("newdata must be supplied")
-  if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+  if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = FALSE)
   if(!all(object$vars %in% names(newdata))) stop(
     paste("Variable(s)",
           paste("'", object$vars[!object$vars %in% names(newdata)],

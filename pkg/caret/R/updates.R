@@ -70,7 +70,7 @@ update.train <- function(object, param = NULL, ...) {
     if (is.null(object$trainingData))
       stop("original training data is needed; use returnData = TRUE in trainControl()")
 
-    if(is.list(param)) param <- as.data.frame(param)
+    if(is.list(param)) param <- as.data.frame(param, stringsAsFactors = TRUE)
     dotNames <- hasDots(param, object$modelInfo)
     if(dotNames) colnames(param) <- gsub("^\\.", "", colnames(param))
 

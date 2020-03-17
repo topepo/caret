@@ -52,7 +52,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                     if(!is.null(wts)) theDots$w <- wts
                     if(is.factor(y) && length(lev) == 2) y <- ifelse(y == lev[1], 1, 0)
                     if(!is.data.frame(x) | inherits(x, "tbl_df"))
-                      x <- as.data.frame(x)
+                      x <- as.data.frame(x, stringsAsFactors = TRUE)
 
                     modArgs <- list(x = x,
                                     y = y,
@@ -112,7 +112,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                                     },
                                     gaussian =, laplace =, tdist =,  poisson =, quantile=  {
                                       ## an nxt matrix
-                                      tmp <- as.list(as.data.frame(tmp))
+                                      tmp <- as.list(as.data.frame(tmp, stringsAsFactors = TRUE))
                                       c(list(out), tmp)
                                     })
                     }
@@ -126,7 +126,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
 
                     out <- switch(modelFit$distribution$name,
                                   multinomial = {
-                                    out <- if(dim(out)[3] == 1) as.data.frame(out) else out[,,1]
+                                    out <- if(dim(out)[3] == 1) as.data.frame(out, stringsAsFactors = TRUE) else out[,,1]
                                     colnames(out) <- modelFit$obsLevels
                                     out
                                   },
@@ -152,7 +152,7 @@ modelInfo <- list(label = "Stochastic Gradient Boosting",
                                     bernoulli =, adaboost =, huberized = {
                                       ## The data come back as an nx1t matrix
                                       ## of probabilities.
-                                      tmp <- as.list(as.data.frame(tmp))
+                                      tmp <- as.list(as.data.frame(tmp, stringsAsFactors = TRUE))
                                       lapply(tmp, function(x, lvl) {
                                         x <- cbind(x, 1 - x)
                                         colnames(x) <- lvl

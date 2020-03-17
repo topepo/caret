@@ -24,7 +24,7 @@ modelInfo <- list(label = "Partial Least Squares",
                     {
                       caret::plsda(x, y, method = "kernelpls", ncomp = ncomp, ...)
                     } else {
-                      dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                      dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                       dat$.outcome <- y
                       pls::plsr(.outcome ~ ., data = dat, method = "kernelpls", ncomp = ncomp, ...)
                     }
@@ -53,7 +53,10 @@ modelInfo <- list(label = "Partial Least Squares",
                       } else {
                         tmp <- as.list(
                           as.data.frame(
-                            apply(predict(modelFit, newdata, ncomp = submodels$ncomp), 3, function(x) list(x))))
+                            apply(predict(modelFit, newdata, ncomp = submodels$ncomp), 3, function(x) list(x)),
+                            stringsAsFActors = FALSE
+                          )
+                        )
                       }
 
                       out <- c(list(out), tmp)
@@ -67,7 +70,7 @@ modelInfo <- list(label = "Partial Least Squares",
                       if(dim(out)[1] > 1) {
                         out <- out[,,1]
                       } else {
-                        out <- as.data.frame(t(out[,,1]))
+                        out <- as.data.frame(t(out[,,1]), stringsAsFactors = TRUE)
                       }
                     }
                     if(!is.null(submodels))
@@ -82,11 +85,11 @@ modelInfo <- list(label = "Partial Least Squares",
                           if(dim(tmpProb)[1] > 1) {
                             tmpProb <- tmpProb[,,1]
                           } else {
-                            tmpProb <- as.data.frame(t(tmpProb[,,1]))
+                            tmpProb <- as.data.frame(t(tmpProb[,,1]), stringsAsFactors = TRUE)
                           }
                         }
 
-                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels,drop = FALSE])
+                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE], stringsAsFactors = TRUE)
                       }
                       out <- tmp
                     }
@@ -123,7 +126,7 @@ modelInfo <- list(label = "Partial Least Squares",
                       colnames(out) <- dimnames(modelCoef)[[2]]
                       rownames(out) <- dimnames(modelCoef)[[1]]
                     }
-                    as.data.frame(out)
+                    as.data.frame(out, stringsAsFactors = TRUE)
                   },
                   predictors = function(x, ...) rownames(x$projection),
                   levels = function(x) x$obsLevels,

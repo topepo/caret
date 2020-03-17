@@ -16,7 +16,7 @@ modelInfo <- list(label = "Neural Networks with Feature Extraction",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     if(!is.null(wts))
                     {
@@ -45,7 +45,7 @@ modelInfo <- list(label = "Neural Networks with Feature Extraction",
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
                     out <- predict(modelFit, newdata, type = "prob")
-                    if(ncol(as.data.frame(out)) == 1)
+                    if(ncol(as.data.frame(out, stringsAsFactors = TRUE)) == 1)
                     {
                       out <- cbind(out, 1-out)
                       dimnames(out)[[2]] <-  rev(modelFit$obsLevels)

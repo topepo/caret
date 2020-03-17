@@ -4,17 +4,17 @@ icr <- function (x, ...) UseMethod("icr")
 
 
 #' Independent Component Regression
-#' 
+#'
 #' Fit a linear regression model using independent components
-#' 
+#'
 #' This produces a model analogous to Principal Components Regression (PCR) but
 #' uses Independent Component Analysis (ICA) to produce the scores. The user
 #' must specify a value of \code{n.comp} to pass to
 #' \code{\link[fastICA]{fastICA}}.
-#' 
+#'
 #' The function \code{\link{preProcess}} to produce the ICA scores for the
 #' original data and for \code{newdata}.
-#' 
+#'
 #' @aliases icr.formula icr.default icr predict.icr
 #' @param formula A formula of the form \code{class ~ x1 + x2 + \dots{}}
 #' @param data Data frame from which variables specified in \code{formula} are
@@ -42,22 +42,22 @@ icr <- function (x, ...) UseMethod("icr")
 #' \code{\link[stats]{lm}}
 #' @keywords multivariate
 #' @examples
-#' 
+#'
 #' data(BloodBrain)
-#' 
+#'
 #' icrFit <- icr(bbbDescr, logBBB, n.comp = 5)
-#' 
+#'
 #' icrFit
-#' 
+#'
 #' predict(icrFit, bbbDescr[1:5,])
 #' @method icr formula
-#' @export 
-icr.formula <- function (formula, data, weights, ...,              
-                         subset, na.action, contrasts = NULL) 
+#' @export
+icr.formula <- function (formula, data, weights, ...,
+                         subset, na.action, contrasts = NULL)
 {
     m <- match.call(expand.dots = FALSE)
-    if (is.matrix(eval.parent(m$data))) 
-        m$data <- as.data.frame(data)
+    if (is.matrix(eval.parent(m$data)))
+        m$data <- as.data.frame(data, stringsAsFactors = TRUE)
     m$... <- m$contrasts <- NULL
     m[[1]] <- as.name("model.frame")
     m <- eval.parent(m)
@@ -65,10 +65,10 @@ icr.formula <- function (formula, data, weights, ...,
     x <- model.matrix(Terms, m, contrasts)
     cons <- attr(x, "contrast")
     xint <- match("(Intercept)", colnames(x), nomatch = 0)
-    if (xint > 0) 
+    if (xint > 0)
         x <- x[, -xint, drop = FALSE]
     w <- model.weights(m)
-    if (length(w) == 0) 
+    if (length(w) == 0)
         w <- rep(1, nrow(x))
     y <- model.response(m)
 
@@ -94,9 +94,9 @@ icr.default <- function(x, y, ...)
 
     if(is.factor(y)) stop("y must be numeric")
 
-    data <- if(is.data.frame(x)) x else as.data.frame(x)
+    data <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
     data$y <- y
-    
+
     modelFit <- lm(y ~ ., data = data)
 
     out <- list(model = modelFit,
@@ -111,10 +111,10 @@ icr.default <- function(x, y, ...)
 
 #' @importFrom stats4 coef
 #' @export
-print.icr <- function (x, digits = max(3, getOption("digits") - 3), ...) 
+print.icr <- function (x, digits = max(3, getOption("digits") - 3), ...)
 {
   cat("Independent Component Regression\n\n")
-  
+
   cat("Created from", x$dim[1], "samples and", x$dim[2], "variables\n\n")
 
   if (length(coef(x$model))) {
@@ -123,7 +123,7 @@ print.icr <- function (x, digits = max(3, getOption("digits") - 3), ...)
                       format(
                              coef(x$model),
                              digits = digits),
-                      print.gap = 2, 
+                      print.gap = 2,
             quote = FALSE)
     }
     else cat("No coefficients\n")
@@ -144,24 +144,24 @@ predict.icr <- function(object, newdata, ...)
         return(fitted(object$model))
       }  else {
         if (inherits(object, "icr.formula")) {
-          newdata <- as.data.frame(newdata)
+          newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
           rn <- row.names(newdata)
           Terms <- delete.response(object$terms)
-          m <- model.frame(Terms, newdata, na.action = na.omit, 
+          m <- model.frame(Terms, newdata, na.action = na.omit,
                            xlev = object$xlevels)
-          if (!is.null(cl <- attr(Terms, "dataClasses"))) 
+          if (!is.null(cl <- attr(Terms, "dataClasses")))
             .checkMFClasses(cl, m)
           keep <- match(row.names(m), rn)
           x <- model.matrix(Terms, m, contrasts = object$contrasts)
           xint <- match("(Intercept)", colnames(x), nomatch = 0)
-          if (xint > 0) 
+          if (xint > 0)
             x <- x[, -xint, drop = FALSE]
         }
         else {
-          if (is.null(dim(newdata))) 
+          if (is.null(dim(newdata)))
             dim(newdata) <- c(1, length(newdata))
           x <- as.matrix(newdata)
-          if (any(is.na(x))) 
+          if (any(is.na(x)))
             stop("missing values in 'x'")
           keep <- 1:nrow(x)
           rn <- rownames(x)
@@ -172,7 +172,7 @@ predict.icr <- function(object, newdata, ...)
       {
         x <- x[, object$names, drop = FALSE]
       }
-    if(!is.data.frame(x)) x <- as.data.frame(x)
+    if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
     x <- predict(object$ica, x)
     predict(object$model, x, ...)
   }
