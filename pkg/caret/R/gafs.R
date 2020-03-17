@@ -101,7 +101,7 @@ ga_func_check <- function(x) {
 #' @references Scrucca L (2013). GA: A Package for Genetic Algorithms in R.
 #' Journal of Statistical Software, 53(4), 1-37.
 #'
-#' \urlhttps://cran.r-project.org › package=GA}
+#' \url{https://cran.r-project.org/package=GA}
 #'
 #' \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}
 #' @examples
