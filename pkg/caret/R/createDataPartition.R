@@ -197,7 +197,7 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
       for(i in 1:length(numInClass)) {
         ## create a vector of integers from 1:k as many times as possible without
         ## going over the number of samples in the class. Note that if the number
-        ## of samples in a class is less than k, nothing is producd here.
+        ## of samples in a class is less than k, nothing is produced here.
         min_reps <- numInClass[i] %/% k
         if(min_reps > 0) {
           spares <- numInClass[i] %% k
