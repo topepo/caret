@@ -77,5 +77,4 @@ License: GPL (>= 2)
 RoxygenNote: 7.0.2.9000
 VignetteBuilder: knitr
 Encoding: UTF-8
-Remotes:
-  tidymodels/recipes@0-1-10-rc
+
