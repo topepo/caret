@@ -463,7 +463,12 @@ preProcess.default <- function(x, method = c("center", "scale"),
     tmp <- prcomp(x[, method$pca, drop = FALSE], scale = TRUE, retx = FALSE)
     if(is.null(pcaComp)) {
       cumVar <- cumsum(tmp$sdev^2/sum(tmp$sdev^2))
-      numComp <- max(2, which.max(cumVar >= thresh))
+      aboveThresh <- cumVar >= thresh
+      if (!any(aboveThresh)) {
+        numComp <- length(aboveThresh)
+      } else {
+        numComp <- max(2, which.max(aboveThresh))
+      }
     } else numComp <- min(pcaComp, ncol(tmp$rotation))
     rot <- tmp$rotation[,1:numComp]
   } else {
