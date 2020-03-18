@@ -98,7 +98,7 @@ getRangeBounds <- function(pp) {
 #' less than two unique values unless either \code{method = "zv"} or
 #' \code{method = "nzv"} are invoked.
 #'
-#' Non-numeric data will not be pre-processed and there values will be in the
+#' Non-numeric data will not be pre-processed and their values will be in the
 #' data frame produced by the \code{predict} function. Note that when PCA or
 #' ICA is used, the non-numeric columns may be in different positions when
 #' predicted.
