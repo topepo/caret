@@ -1,4 +1,5 @@
 context("Test ggplot")
+skip_if_not_installed("kernlab")
 
 test_that("ggplot.train correctly orders factors", {
   library(caret)

@@ -8,7 +8,7 @@ dat <- twoClassSim(100)
 dat_tb <- as_tibble(dat)
 a <- dat[,5]
 y <- dat[["Class"]]
-df <- data.frame(a,y)
+df <- data.frame(a, y, stringsAsFactors = TRUE)
 rec <- recipe(y ~ .,data = df)
 
 ctrl <- trainControl(method = "repeatedcv",

@@ -1,7 +1,7 @@
 context('multiClassSummary')
 
 test_that("multiClassSummary presenting warnings from train", {
-  skip("Waiting for resolution on JackStat/ModelMetrics#30")
+  skip_if_not_installed("ModelMetrics", "1.2.2.2")
   library(caret)
   N = 1000
 
