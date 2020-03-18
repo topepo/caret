@@ -71,7 +71,8 @@ Suggests:
     Cubist,
     testthat (>= 0.9.1),
     rpart,
-    dplyr
+    dplyr,
+    covr
 License: GPL (>= 2)
 RoxygenNote: 7.0.2.9000
 VignetteBuilder: knitr
