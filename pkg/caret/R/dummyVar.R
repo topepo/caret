@@ -90,7 +90,8 @@
 #'                             "morning", "afternoon", "afternoon"),
 #'                    day = c("Mon", "Mon", "Mon",
 #'                            "Wed", "Wed", "Fri",
-#'                            "Sat", "Sat", "Fri"))
+#'                            "Sat", "Sat", "Fri"),
+#'                            stringsAsFactors = TRUE)
 #'
 #' levels(when$time) <- list(morning="morning",
 #'                           afternoon="afternoon",

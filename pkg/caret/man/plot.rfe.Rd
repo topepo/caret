@@ -59,7 +59,7 @@ data(BloodBrain)
 
 x <- scale(bbbDescr[,-nearZeroVar(bbbDescr)])
 x <- x[, -findCorrelation(cor(x), .8)]
-x <- as.data.frame(x)
+x <- as.data.frame(x, stringsAsFactors = TRUE)
 
 set.seed(1)
 lmProfile <- rfe(x, logBBB,
