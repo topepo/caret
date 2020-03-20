@@ -97,7 +97,7 @@ holdout_rec <- function(object, dat, index) {
   ## ~~~~~~
 
   ho_data$rowIndex <- (1:nrow(dat))[index]
-  ho_data <- as.data.frame(ho_data)
+  ho_data <- as.data.frame(ho_data, stringsAsFactors = FALSE)
 }
 
 #' @importFrom recipes bake prep juice has_role
@@ -189,7 +189,7 @@ rec_prob <- function (method, object, newdata = NULL, param = NULL)  {
   classProb <- method$prob(modelFit = object$fit, newdata = x,
                            submodels = param)
   if (!is.data.frame(classProb) & is.null(param)) {
-    classProb <- as.data.frame(classProb)
+    classProb <- as.data.frame(classProb, stringsAsFactors = FALSE)
     if (!is.null(obsLevels))
       classprob <- classProb[, obsLevels]
   }
@@ -378,7 +378,7 @@ oob_train_rec <- function(rec, dat, info, method,
       if(ctrl$verboseIter)
         progress(printed[parm,,drop = FALSE], "", 1, FALSE)
 
-      cbind(as.data.frame(t(out)), info$loop[parm,,drop = FALSE])
+      cbind(as.data.frame(t(out), stringsAsFactors = TRUE), info$loop[parm,,drop = FALSE])
     }
   names(result) <- gsub("^\\.", "", names(result))
   result
@@ -566,7 +566,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
         ## if classification, get the confusion matrix
         if(length(lev) > 1 && length(lev) <= 50)
           thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-        thisResample <- as.data.frame(t(thisResample))
+        thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
         thisResample <- cbind(thisResample, info$loop[parm,,drop = FALSE])
       }
       thisResample$Resample <- names(resampleIndex)[iter]
@@ -827,7 +827,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                 ## if classification, get the confusion matrix
                 if(length(lev) > 1 && length(lev) <= 5)
                   thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-                thisResample <- as.data.frame(t(thisResample))
+                thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
                 thisResample <- cbind(thisResample, info$loop[parm,,drop = FALSE])
 
               }
@@ -1009,7 +1009,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                     ## if classification, get the confusion matrix
                     if(length(lev) > 1 && length(lev) <= 50)
                       thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-                    thisResample <- as.data.frame(t(thisResample))
+                    thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
                     thisResample <- cbind(thisResample, new_info$loop[parm,,drop = FALSE])
 
                   }
@@ -1254,7 +1254,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                   ## if classification, get the confusion matrix
                   if(length(lev) > 1 && length(lev) <= 50)
                     thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-                  thisResample <- as.data.frame(t(thisResample))
+                  thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
                   thisResample <- cbind(thisResample, new_info$loop[parm,,drop = FALSE])
 
                 }

@@ -81,7 +81,7 @@
 #'
 #' x <- scale(bbbDescr[,-nearZeroVar(bbbDescr)])
 #' x <- x[, -findCorrelation(cor(x), .8)]
-#' x <- as.data.frame(x)
+#' x <- as.data.frame(x, stringsAsFactors = TRUE)
 #'
 #' set.seed(1)
 #' lmProfile <- rfe(x, logBBB,
@@ -300,7 +300,7 @@ rfe <- function (x, ...) UseMethod("rfe")
       list(
         pred = if(rfeControl$saveDetails) do.call("rbind", tmp$everything[names(tmp$everything) == "predictions"]) else NULL,
         variables = selectedVars,
-        results = as.data.frame(externPerf),
+        results = as.data.frame(externPerf, stringsAsFactors = TRUE),
         bestSubset = bestSubset,
         fit = fit,
         optVariables = bestVar,
@@ -331,7 +331,7 @@ rfe <- function (x, ...) UseMethod("rfe")
 rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
 {
   m <- match.call(expand.dots = FALSE)
-  if (is.matrix(eval.parent(m$data))) m$data <- as.data.frame(data)
+  if (is.matrix(eval.parent(m$data))) m$data <- as.data.frame(data, stringsAsFactors = TRUE)
   m$... <- m$contrasts <- NULL
   m[[1]] <- as.name("model.frame")
   m <- eval.parent(m)
@@ -341,7 +341,7 @@ rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
   xint <- match("(Intercept)", colnames(x), nomatch = 0)
   if (xint > 0)  x <- x[, -xint, drop = FALSE]
   y <- model.response(m)
-  res <- rfe(as.data.frame(x), y, ...)
+  res <- rfe(as.data.frame(x, stringsAsFactors = TRUE), y, ...)
   res$terms <- Terms
   res$coefnames <- colnames(x)
   res$call <- match.call()
@@ -438,7 +438,7 @@ rfeIter <- function(x, y,
     if(is.data.frame(modelPred) | is.matrix(modelPred))
     {
       if(is.matrix(modelPred)) {
-        modelPred <- as.data.frame(modelPred)
+        modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
         ## in the case where the function returns a matrix with a single column
         ## make sure that it is named pred
         if(ncol(modelPred) == 1) names(modelPred) <- "pred"
@@ -558,7 +558,7 @@ rfeIter <- function(x, y,
 #'
 #' x <- scale(bbbDescr[,-nearZeroVar(bbbDescr)])
 #' x <- x[, -findCorrelation(cor(x), .8)]
-#' x <- as.data.frame(x)
+#' x <- as.data.frame(x, stringsAsFactors = TRUE)
 #'
 #' set.seed(1)
 #' lmProfile <- rfe(x, logBBB,
@@ -893,13 +893,13 @@ caretFuncs <- list(summary = defaultSummary,
                      tmp <- predict(object, x)
                      if(object$modelType == "Classification" & object$control$classProbs) {
                        out <- cbind(data.frame(pred = tmp),
-                                    as.data.frame(predict(object, x, type = "prob")))
+                                    as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE), stringsAsFactors = TRUE)
                      } else out <- tmp
                      out
                    },
                    rank = function(object, x, y) {
                      vimp <- varImp(object, scale = FALSE)$importance
-                     if(!is.data.frame(vimp)) vimp <- as.data.frame(vimp)
+                     if(!is.data.frame(vimp)) vimp <- as.data.frame(vimp, stringsAsFactors = TRUE)
                      if(object$modelType == "Regression") {
                        vimp <- vimp[order(vimp[,1], decreasing = TRUE),,drop = FALSE]
                      } else {
@@ -929,7 +929,7 @@ ldaFuncs <- list(summary = defaultSummary,
                  {
                    tmp <- predict(object, x)
                    out <- cbind(data.frame(pred = tmp$class),
-                                as.data.frame(tmp$posterior))
+                                as.data.frame(tmp$posterior, stringsAsFactors = FALSE), stringsAsFactors = TRUE)
                    out
                  },
                  rank = function(object, x, y)
@@ -939,7 +939,7 @@ ldaFuncs <- list(summary = defaultSummary,
                    vimp$Overall <- apply(vimp, 1, mean)
                    vimp <- vimp[order(vimp$Overall, decreasing = TRUE),]
 
-                   vimp <- as.data.frame(vimp)[, "Overall",drop = FALSE]
+                   vimp <- as.data.frame(vimp, stringsAsFactors = TRUE)[, "Overall",drop = FALSE]
                    vimp$var <- rownames(vimp)
                    vimp
 
@@ -960,7 +960,7 @@ treebagFuncs <- list(summary = defaultSummary,
                        tmp <- predict(object, x)
                        if(is.factor(object$y)) {
                          out <- cbind(data.frame(pred = tmp),
-                                      as.data.frame(predict(object, x, type = "prob")))
+                                      as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE), stringsAsFactors = TRUE)
                        } else out <- tmp
                        out
                      },
@@ -983,7 +983,7 @@ gamFuncs <- list(summary = defaultSummary,
                    if(gamLoaded) detach(package:gam)
                    loadNamespace("mgcv")
                    gam <- get("gam", asNamespace("mgcv"))
-                   dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                   dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                    dat$y <- y
                    args <- list(formula = gamFormula(x, smoother = "s", y = "y"),
                                 data = dat,
@@ -991,7 +991,7 @@ gamFuncs <- list(summary = defaultSummary,
                    do.call("gam", args)
                  },
                  pred = function(object, x) {
-                   if(!is.data.frame(x)) x <- as.data.frame(x)
+                   if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
                    loaded <- search()
                    gamLoaded <- any(loaded == "package:gam")
                    if(gamLoaded) detach(package:gam)
@@ -1041,7 +1041,8 @@ rfFuncs <-  list(summary = defaultSummary,
                    tmp <- predict(object, x)
                    if(is.factor(object$y)) {
                      out <- cbind(data.frame(pred = tmp),
-                                  as.data.frame(predict(object, x, type = "prob")))
+                                  as.data.frame(predict(object, x, type = "prob"),
+                                                stringsAsFactors = TRUE))
                    } else out <- tmp
                    out
                  },
@@ -1070,12 +1071,12 @@ rfFuncs <-  list(summary = defaultSummary,
 #' @export
 lmFuncs <- list(summary = defaultSummary,
                 fit = function(x, y, first, last, ...) {
-                  tmp <- if(is.data.frame(x)) x else as.data.frame(x)
+                  tmp <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                   tmp$y <- y
                   lm(y~., data = tmp)
                 },
                 pred = function(object, x) {
-                  if(!is.data.frame(x)) x <- as.data.frame(x)
+                  if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
                   predict(object, x)
                 },
                 rank = function(object, x, y) {
@@ -1103,7 +1104,7 @@ nbFuncs <- list(summary = defaultSummary,
                 pred = function(object, x) {
                   tmp <- predict(object, x)
                   out <- cbind(data.frame(pred = tmp$class),
-                               as.data.frame(tmp$posterior))
+                               as.data.frame(tmp$posterior, stringsAsFactors = TRUE))
                   out
                 },
                 rank = function(object, x, y) {
@@ -1127,12 +1128,12 @@ nbFuncs <- list(summary = defaultSummary,
 #' @export
 lrFuncs <- ldaFuncs
 lrFuncs$fit <- function (x, y, first, last, ...)  {
-  tmp <- if(is.data.frame(x)) x else as.data.frame(x)
+  tmp <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
   tmp$Class <- y
   glm(Class ~ ., data = tmp, family = "binomial")
 }
 lrFuncs$pred <- function (object, x) {
-  if(!is.data.frame(x)) x <- as.data.frame(x)
+  if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
   lvl <- levels(object$data$Class)
   tmp <- predict(object, x, type = "response")
   out <- data.frame(1-tmp, tmp)
@@ -1199,7 +1200,7 @@ lrFuncs$rank <- function (object, x, y) {
 #'
 #' normalization <- preProcess(x)
 #' x <- predict(normalization, x)
-#' x <- as.data.frame(x)
+#' x <- as.data.frame(x, stringsAsFactors = TRUE)
 #' subsets <- c(10, 15, 20, 25)
 #'
 #' ctrl <- rfeControl(
@@ -1231,7 +1232,7 @@ densityplot.rfe <- function(x,
   if(x$control$method %in%  c("oob", "LOOCV"))
     stop("Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling")
 
-  data <- as.data.frame(x$resample)
+  data <- as.data.frame(x$resample, stringsAsFactors = TRUE)
   data$Variable <- factor(data$Variable,
                           levels = paste(sort(unique(data$Variable))))
 
@@ -1252,7 +1253,7 @@ histogram.rfe <- function(x,
   if(x$control$method %in%  c("oob", "LOOCV"))
     stop("Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling")
 
-  data <- as.data.frame(x$resample)
+  data <- as.data.frame(x$resample, stringsAsFactors = TRUE)
   data$Variable <- factor(data$Variable,
                           levels = paste(sort(unique(data$Variable))))
 
@@ -1273,7 +1274,7 @@ stripplot.rfe <- function(x,
   if(x$control$method %in%  c("oob", "LOOCV"))
     stop("Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling")
 
-  data <- as.data.frame(x$resample)
+  data <- as.data.frame(x$resample, stringsAsFactors = TRUE)
   data$Variable <- factor(data$Variable,
                           levels = paste(sort(unique(data$Variable))))
   theDots <- list(...)
@@ -1301,7 +1302,7 @@ xyplot.rfe <- function(x,
   if(x$control$method %in%  c("oob", "LOOCV"))
     stop("Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling")
 
-  data <- as.data.frame(x$resample)
+  data <- as.data.frame(x$resample, stringsAsFactors = TRUE)
 
   form <- as.formula(paste(metric, " ~ Variables"))
   xyplot(form, data = data, ...)
@@ -1334,7 +1335,7 @@ predict.rfe <- function(object, newdata, ...) {
     warning("... are ignored for predict.rfe")
 
   if(inherits(object, "rfe.formula")) {
-    newdata <- as.data.frame(newdata)
+    newdata <- as.data.frame(newdata, stringsAsFactors = FALSE)
     rn <- row.names(newdata)
     Terms <- delete.response(object$terms)
     m <- model.frame(Terms, newdata, na.action = na.omit,
@@ -1477,7 +1478,7 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
       rfeControl$functions$pred(fitObject, test_x[, retained, drop = FALSE])
     if (is.data.frame(modelPred) | is.matrix(modelPred)) {
       if (is.matrix(modelPred)) {
-        modelPred <- as.data.frame(modelPred)
+        modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
         ## in the case where the function returns a matrix with a single column
         ## make sure that it is named pred
         if (ncol(modelPred) == 1)
@@ -1820,7 +1821,7 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
         else
           NULL,
         variables = selectedVars,
-        results = as.data.frame(externPerf),
+        results = as.data.frame(externPerf, stringsAsFactors = FALSE),
         bestSubset = bestSubset,
         fit = fit,
         optVariables = bestVar,

@@ -57,7 +57,7 @@ modelInfo <- list(label = "Linear Regression with Forward Selection",
                       preds <- lapply(betas[keepers], foo, x= newdata)
                       preds <- do.call("cbind", preds)
                       
-                      out <- as.data.frame(cbind(out, preds))
+                      out <- as.data.frame(cbind(out, preds), stringsAsFactors = TRUE)
                       out <- as.list(out)
                     }
                     

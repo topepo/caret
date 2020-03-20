@@ -34,7 +34,7 @@
 #' @export downSample
 downSample <- function(x, y, list = FALSE, yname = "Class") {
   if (!is.data.frame(x)) {
-    x <- as.data.frame(x)
+    x <- as.data.frame(x, stringsAsFactors = TRUE)
   }
   if (!is.factor(y)) {
     warning(
@@ -68,7 +68,7 @@ downSample <- function(x, y, list = FALSE, yname = "Class") {
 #' @export
 upSample <- function(x, y, list = FALSE, yname = "Class") {
   if (!is.data.frame(x)) {
-    x <- as.data.frame(x)
+    x <- as.data.frame(x, stringsAsFactors = TRUE)
   }
   if (!is.factor(y)) {
     warning(

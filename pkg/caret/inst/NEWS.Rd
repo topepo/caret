@@ -3,6 +3,12 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+\section{Changes in version 6.0-86}{
+  \itemize{
+    \item Small release for \code{stringsAsFactors = TRUE} in R-4.0
+  }
+}
+
 \section{Changes in version 6.0-85}{
   \itemize{
     \item Internal changes required by r-devel for new matrix class structure.

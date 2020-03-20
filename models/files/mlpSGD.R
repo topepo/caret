@@ -79,7 +79,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient 
                                     FCNN4R::mlp_eval(obj$net, input = newdata),
                                   newdata = newdata)
                     if(modelFit$problemType == "Classification") {
-                      out <- as.data.frame(do.call("rbind", out))
+                      out <- as.data.frame(do.call("rbind", out), stringsAsFactors = TRUE)
                       out$sample <- rep(1:nrow(newdata), length(modelFit$models))
                       out <- plyr::ddply(out, plyr::`.`(sample), function(x) colMeans(x[, -ncol(x)]))[, -1]
                       out <- modelFit$obsLevels[apply(out, 1, which.max)]
@@ -98,12 +98,12 @@ modelInfo <- list(label = "Multilayer Perceptron Network by Stochastic Gradient 
                                   function(obj, newdata)
                                     FCNN4R::mlp_eval(obj$net, input = newdata),
                                   newdata = newdata)
-                    out <- as.data.frame(do.call("rbind", out))
+                    out <- as.data.frame(do.call("rbind", out), stringsAsFactors = TRUE)
                     out$sample <- rep(1:nrow(newdata), length(modelFit$models))
                     out <- plyr::ddply(out, plyr::`.`(sample), function(x) colMeans(x[, -ncol(x)]))[, -1]
                     out <- t(apply(out, 1, function(x) exp(x)/sum(exp(x))))
                     colnames(out) <- modelFit$obsLevels
-                    as.data.frame(out)
+                    as.data.frame(out, stringsAsFactors = TRUE)
                   },
                   varImp = function(object, ...) {
                     imps <- lapply(object$models, caret:::GarsonWeights_FCNN4R, xnames = object$xNames)

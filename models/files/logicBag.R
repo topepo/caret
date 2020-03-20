@@ -36,7 +36,7 @@ modelInfo <- list(label = "Bagged Logic Regression",
                     if(length(modelFit$obsLevels) == 2)
                     {
                       out <- predict(modelFit, newData = newdata, type = "prob")
-                      out <- as.data.frame(cbind(out, 1 - out))
+                      out <- as.data.frame(cbind(out, 1 - out), stringsAsFactors = TRUE)
                       colnames(out) <- modelFit$obsLevels
                     } else {
                       out <- predict(modelFit, newData = newdata, type = "prob")

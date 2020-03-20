@@ -16,7 +16,7 @@ modelInfo <- list(label = "Neural Network",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     if(!is.null(wts)) {
                       out <- nnet::nnet(.outcome ~ .,
@@ -43,7 +43,7 @@ modelInfo <- list(label = "Neural Network",
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
                     out <- predict(modelFit, newdata)
-                    if(ncol(as.data.frame(out)) == 1) {
+                    if(ncol(as.data.frame(out, stringsAsFactors = TRUE)) == 1) {
                       out <- cbind(out, 1-out)
                       dimnames(out)[[2]] <-  rev(modelFit$obsLevels)
                     }
@@ -55,7 +55,7 @@ modelInfo <- list(label = "Neural Network",
                       imp <- cbind(apply(imp, 1, mean), imp)
                       colnames(imp)[1] <- "Overall"
                     } else {
-                      imp <- as.data.frame(imp)
+                      imp <- as.data.frame(imp, stringsAsFactors = TRUE)
                       names(imp) <- "Overall"
                     }
                     if(!is.null(object$xNames)) rownames(imp) <- object$xNames

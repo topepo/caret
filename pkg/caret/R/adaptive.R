@@ -139,7 +139,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                              preProc = mod$preProc,
                                              param = submod)
                 } else {
-                  probValues <- as.data.frame(matrix(NA, nrow = nPred, ncol = length(lev)))
+                  probValues <- as.data.frame(matrix(NA, nrow = nPred, ncol = length(lev)), stringsAsFactors = FALSE)
                   colnames(probValues) <- lev
                   if(!is.null(submod))
                   {
@@ -232,7 +232,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
 
                 ## if classification, get the confusion matrix
                 if(length(lev) > 1) thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-                thisResample <- as.data.frame(t(thisResample))
+                thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
                 thisResample <- cbind(thisResample, info$loop[parm,,drop = FALSE])
 
               }
@@ -363,7 +363,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                                                 preProc = mod$preProc,
                                                                 param = submod)
                                    } else {
-                                     probValues <- as.data.frame(matrix(NA, nrow = nPred, ncol = length(lev)))
+                                     probValues <- as.data.frame(matrix(NA, nrow = nPred, ncol = length(lev)), stringsAsFactors = FALSE)
                                      colnames(probValues) <- lev
                                      if(!is.null(submod))
                                      {
@@ -457,7 +457,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
 
                                    ## if classification, get the confusion matrix
                                    if(length(lev) > 1) thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-                                   thisResample <- as.data.frame(t(thisResample))
+                                   thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
                                    thisResample <- cbind(thisResample, new_info$loop[parm,,drop = FALSE])
 
                                  }
@@ -652,7 +652,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                                preProc = mod$preProc,
                                                param = submod)
                   } else {
-                    probValues <- as.data.frame(matrix(NA, nrow = nPred, ncol = length(lev)))
+                    probValues <- as.data.frame(matrix(NA, nrow = nPred, ncol = length(lev)), stringsAsFactors = FALSE)
                     colnames(probValues) <- lev
                     if(!is.null(submod))
                     {
@@ -746,7 +746,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
 
                   ## if classification, get the confusion matrix
                   if(length(lev) > 1) thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-                  thisResample <- as.data.frame(t(thisResample))
+                  thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
                   thisResample <- cbind(thisResample, new_info$loop[parm,,drop = FALSE])
 
                 }

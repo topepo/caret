@@ -55,7 +55,7 @@ modelInfo <- list(label = "Boosted Tree",
                     if(!is.null(wts)) theDots$weights <- wts
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
-                                        data = if(!is.data.frame(x)) as.data.frame(x) else x,
+                                        data = if(!is.data.frame(x)) as.data.frame(x, stringsAsFactors = TRUE) else x,
                                         control = ctl,
                                         tree_controls = treeCtl),
                                    theDots)  
@@ -67,7 +67,7 @@ modelInfo <- list(label = "Boosted Tree",
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     predType <- ifelse(modelFit$problemType == "Classification", "class", "response")
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     out <- predict(modelFit, newdata, type = predType)
                     
                     if(!is.null(submodels)) {
@@ -86,7 +86,7 @@ modelInfo <- list(label = "Boosted Tree",
                     out  
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     probs <- predict(modelFit, newdata, type = "response")
                     out <- cbind(1 - probs, probs)
                     colnames(out) <- modelFit$obsLevels
@@ -98,7 +98,7 @@ modelInfo <- list(label = "Boosted Tree",
                         tmpProb <- predict(modelFit[submodels$mstop[j]], newdata, type = "response")
                         tmpProb <- cbind(1 - tmpProb, tmpProb)
                         colnames(tmpProb) <- modelFit$obsLevels
-                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE])           
+                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE], stringsAsFactors = TRUE)           
                       }
                       out <- tmp
                     }                        

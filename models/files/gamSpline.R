@@ -15,7 +15,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     require(gam)
-                    args <- list(data = if(is.data.frame(x)) x else as.data.frame(x))
+                    args <- list(data = if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE))
                     args$data$.outcome <- y
                     ## if(!is.null(wts))  args$weights <- wts
                     args$formula <- caret:::smootherFormula(x,
@@ -32,7 +32,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                     do.call(gam::gam, args)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     if(modelFit$problemType == "Classification") {
                       probs <-  gam:::predict.Gam(modelFit, newdata, type = "response")
                       out <- ifelse(probs < .5,
@@ -44,7 +44,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     out <- gam:::predict.Gam(modelFit, newdata, type = "response")
                     out <- cbind(1-out, out)
                     ## glm models the second factor level, we treat the first as the
@@ -78,7 +78,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                     gams <- gams[rownames(gams) != "(Intercept)",,drop = FALSE]
                     rownames(gams) <- getNames(rownames(gams))
                     colnames(gams)[1] <- "Overall"
-                    gams <- as.data.frame(gams)
+                    gams <- as.data.frame(gams, stringsAsFactors = TRUE)
                     gams$Overall <- -log10(gams$Overall)
                     allPreds <- getNames(colnames(attr(object$terms,"factors")))
                     extras <- allPreds[!(allPreds %in% rownames(gams))]

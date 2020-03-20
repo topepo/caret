@@ -75,7 +75,8 @@ modelInfo <- list(label = "glmnet",
 
                     if(!is.null(submodels)) {
                       if(length(modelFit$obsLevels) < 2) {
-                        tmp <- as.list(as.data.frame(predict(modelFit, newdata, s = submodels$lambda)))
+                        tmp <- as.list(as.data.frame(predict(modelFit, newdata, s = submodels$lambda),
+                                                     stringsAsFactors = TRUE))
                       } else {
                         tmp <- predict(modelFit, newdata, s = submodels$lambda, type = "class")
                         tmp <- if(is.matrix(tmp)) as.data.frame(tmp, stringsAsFactors = FALSE) else as.character(tmp)
@@ -93,10 +94,10 @@ modelInfo <- list(label = "glmnet",
                                      type = "response")
                     if(length(obsLevels) == 2) {
                       probs <- as.vector(probs)
-                      probs <- as.data.frame(cbind(1-probs, probs))
+                      probs <- as.data.frame(cbind(1-probs, probs), stringsAsFactors = FALSE)
                       colnames(probs) <- modelFit$obsLevels
                     } else {
-                      probs <- as.data.frame(probs[,,1,drop = FALSE])
+                      probs <- as.data.frame(probs[,,1,drop = FALSE], stringsAsFactors = FALSE)
                       names(probs) <- modelFit$obsLevels
                     }
                     if(!is.null(submodels)) {
@@ -105,7 +106,7 @@ modelInfo <- list(label = "glmnet",
                                      s = submodels$lambda,
                                      type = "response")
                       if(length(obsLevels) == 2) {
-                        tmp <- as.list(as.data.frame(tmp))
+                        tmp <- as.list(as.data.frame(tmp, stringsAsFactors = TRUE))
                         tmp <- lapply(tmp,
                                       function(x, lev) {
                                         x <- as.vector(x)
@@ -146,7 +147,7 @@ modelInfo <- list(label = "glmnet",
                     beta <- predict(object, s = lambda, type = "coef")
                     if(is.list(beta)) {
                       out <- do.call("cbind", lapply(beta, function(x) x[,1]))
-                      out <- as.data.frame(out)
+                      out <- as.data.frame(out, stringsAsFactors = TRUE)
                     } else out <- data.frame(Overall = beta[,1])
                     out <- abs(out[rownames(out) != "(Intercept)",,drop = FALSE])
                     out

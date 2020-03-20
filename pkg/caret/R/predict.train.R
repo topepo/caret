@@ -121,7 +121,7 @@ predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.o
 
   if(!is.null(newdata)) {
     if (inherits(object, "train.formula")) {
-      newdata <- as.data.frame(newdata)
+      newdata <- as.data.frame(newdata, stringsAsFactors = FALSE)
       rn <- row.names(newdata)
       Terms <- delete.response(object$terms)
       m <- model.frame(Terms, newdata, na.action = na.action, xlev = object$xlevels)
@@ -144,7 +144,7 @@ predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.o
         if("train.formula" %in% class(object) &&
            any(unlist(lapply(newdata, is.factor)))) {
           newdata <- model.matrix(~., data = newdata)[,-1]
-          newdata <- as.data.frame(newdata)
+          newdata <- as.data.frame(newdata, stringsAsFactors = FALSE)
         }
       }
     } else stop("please specify data via newdata")

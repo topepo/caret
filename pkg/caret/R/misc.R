@@ -46,7 +46,7 @@ evalSummaryFunction <- function(y, wts = NULL, perf = NULL, ctrl, lev, metric, m
     pred_samp <- y[sample(1:n, min(10, n)), "time"]
     obs_samp <- y[sample(1:n, min(10, n)),]
   }
-  
+
   ## get phoney performance to obtain the names of the outputs
   testOutput <- data.frame(pred = pred_samp, obs = obs_samp)
   if(!is.null(perf)) {
@@ -55,7 +55,7 @@ evalSummaryFunction <- function(y, wts = NULL, perf = NULL, ctrl, lev, metric, m
     perf <- perf[sample(1:nrow(perf), nrow(testOutput)),, drop = FALSE]
     testOutput <-cbind(testOutput, perf)
   }
-  
+
   if(ctrl$classProbs) {
     for(i in seq(along = lev)) testOutput[, lev[i]] <- runif(nrow(testOutput))
     testOutput[, lev] <- t(apply(testOutput[, lev], 1, function(x) x/sum(x)))
@@ -82,7 +82,7 @@ model2method <- function(x)
 {
   ## There are some disconnecs between the object class and the
   ## method used by train.
-  
+
   switch(x,
          randomForest = "rf",
          rvm = "rvmRadial",
@@ -100,7 +100,7 @@ model2method <- function(x)
 Kim2009 <- function(n)
 {
   grid <- matrix(runif(n*10), ncol = 10)
-  grid <- as.data.frame(grid)
+  grid <- as.data.frame(grid, stringsAsFactors = TRUE)
   names(grid) = paste("x", 1:10, sep = "")
   grid$x5 <- floor((grid$x5*3)+1)
   pred <- -10 + 10 * sin(pi * grid$x1* grid$x2) + 5*(grid$x3 - .5)^2 + 5*grid$x4 + 2*grid$x5
@@ -117,7 +117,7 @@ gamFormula <- function(data, smoother = "s", cut = 8, y = "y")
 {
   nzv <- nearZeroVar(data)
   if(length(nzv) > 0) data <- data[, -nzv, drop = FALSE]
-  
+
   numValues <- apply(data, 2, function(x) length(unique(x)))
   prefix <- rep("", ncol(data))
   prefix[numValues > cut] <- paste(smoother, "(", sep = "")
@@ -134,7 +134,7 @@ printCall <- function(x)
   call <- paste(deparse(x), collapse = "\n")
   #     cat("\nCall:\n", call, "\n\n", sep = "")
   ## or
-  
+
   cat("\nCall:\n", truncateText(deparse(x, width.cutoff = 500)), "\n\n", sep = "")
   invisible(call)
 }
@@ -183,7 +183,7 @@ R2 <- function(pred, obs, formula = "corr", na.rm = FALSE)
 RMSE <- function(pred, obs, na.rm = FALSE) sqrt(mean((pred - obs)^2, na.rm = na.rm))
 
 #' @export
-MAE <- function(pred, obs, na.rm = FALSE) mean(abs(pred - obs), na.rm = na.rm)  
+MAE <- function(pred, obs, na.rm = FALSE) mean(abs(pred - obs), na.rm = na.rm)
 
 #' @importFrom utils capture.output
 partRuleSummary <- function(x)
@@ -198,16 +198,16 @@ partRuleSummary <- function(x)
                          Overall = 0)
   for(i in seq(along = predictors))
     varUsage$Overall[i] <- sum(grepl(paste("^", predictors[i], sep = ""), conditions))
-  
+
   numClass <- rep(NA, length(classes))
   names(numClass) <- classes
   for(i in seq(along = classes))
     numClass[i] <- sum(grepl(paste(":", classes[i], sep = " "), classPred))
-  
+
   list(varUsage = varUsage,
        numCond = length(conditions),
        classes = numClass)
-  
+
 }
 
 #' @importFrom utils capture.output
@@ -224,16 +224,16 @@ ripperRuleSummary <- function(x)
                          Overall = 0)
   for(i in seq(along = predictors))
     varUsage$Overall[i] <- sum(grepl(paste("\\(", predictors[i], sep = ""), conditions))
-  
+
   numClass <- rep(NA, length(classes))
   names(numClass) <- classes
   for(i in seq(along = classes))
     numClass[i] <- sum(grepl(paste(x$terms[[2]], "=", classes[i], sep = ""), conditions))
-  
+
   list(varUsage = varUsage,
        numCond = length(conditions),
        classes = numClass)
-  
+
 }
 
 ##########################################################################################################
@@ -278,7 +278,7 @@ smootherFormula <- function(data, smoother = "s", cut = 10, df = 0, span = .5, d
 {
   nzv <- nearZeroVar(data)
   if(length(nzv) > 0) data <- data[, -nzv, drop = FALSE]
-  
+
   numValues <- sort(apply(data, 2, function(x) length(unique(x))))
   prefix <- rep("", ncol(data))
   suffix <- rep("", ncol(data))
@@ -314,12 +314,12 @@ makeTable <- function(x)
 {
   params <- paste("\\code{", as.character(x$parameter), "}", sep = "", collapse = ", ")
   params <- ifelse(params == "\\code{parameter}", "None", params)
-  
+
   data.frame(method = as.character(x$model)[1],
              Package = cranRef(as.character(x$Package)[1]),
              Parameters = params)
-  
-  
+
+
 }
 
 scrubCall <- function(x)
@@ -423,7 +423,7 @@ parse_sampling <- function(x, check_install = TRUE) {
   ### a string to match to a existing method
   ### a function
   ### a list
-  
+
   ## output should be a list with elements
   ### name
   ### func
@@ -432,7 +432,7 @@ parse_sampling <- function(x, check_install = TRUE) {
   if(!(x_class %in% c("character", "function", "list"))) {
     stop(paste("The sampling argument should be either a",
                "string, function, or list. See",
-               "http://topepo.github.io/caret/model-training-and-tuning.html"), 
+               "http://topepo.github.io/caret/model-training-and-tuning.html"),
          call. = FALSE)
   }
   if(x_class == "character") {
@@ -440,7 +440,7 @@ parse_sampling <- function(x, check_install = TRUE) {
     load(system.file("models", "sampling.RData", package = "caret"))
     s_method <- names(sampling_methods)
     if(!(x %in% s_method)) {
-      stop("That sampling scheme is not in caret's built-in library", 
+      stop("That sampling scheme is not in caret's built-in library",
            call. = FALSE)
     } else {
       x <- list(name = x,
@@ -448,7 +448,7 @@ parse_sampling <- function(x, check_install = TRUE) {
                 first = TRUE)
     }
     pkgs <- switch(x$name, rose = "ROSE", smote = "DMwR", "")
-    if(pkgs != "" & check_install) 
+    if(pkgs != "" & check_install)
       checkInstall(pkgs)
   } else {
     if(x_class == "function") {
@@ -466,11 +466,11 @@ parse_sampling <- function(x, check_install = TRUE) {
 check_samp_func <- function(x) {
   s_args <- sort(names(formals(x)))
   if(length(s_args) != 2) {
-    stop("the 'sampling' function should have arguments 'x' and 'y'", 
+    stop("the 'sampling' function should have arguments 'x' and 'y'",
          call. = FALSE)
   } else {
     if(!all(s_args == c("x", "y")))
-      stop("the 'sampling' function should have arguments 'x' and 'y'", 
+      stop("the 'sampling' function should have arguments 'x' and 'y'",
            call. = FALSE)
   }
   invisible(NULL)
@@ -481,12 +481,12 @@ check_samp_list <- function(x) {
   x_names <- sort(names(x))
   if(length(x_names) != length(exp_names)) {
     stop(paste("the 'sampling' list should have elements",
-               paste(exp_names, sep = "", collapse = ", ")), 
+               paste(exp_names, sep = "", collapse = ", ")),
          call. = FALSE)
   } else {
     if(!all(exp_names == x_names))
       stop(paste("the 'sampling' list should have elements",
-                 paste(exp_names, sep = "", collapse = ", ")), 
+                 paste(exp_names, sep = "", collapse = ", ")),
            call. = FALSE)
   }
   check_samp_func(x$func)
@@ -571,19 +571,19 @@ outcome_conversion <- function(x, lv) {
 }
 
 check_na_conflict <- function(call_obj) {
-  
+
   ## check for na.action info:
   if("na.action" %in% names(as.list(call_obj))) {
     nam <- as.character(call_obj$na.action)
   } else nam <- "na.fail"
-  
+
   ## check for preprocess info:
   has_pp <- grepl("^preProc", names(call_obj))
   if(any(has_pp)) {
     pp <- as.character(call_obj[has_pp])
     imputes <- if(any(grepl("impute", tolower(pp)))) TRUE else FALSE
   } else imputes <- FALSE
-  
+
   if(imputes & any(nam %in% c("na.omit", "na.exclude")))
     warning(paste0("`preProcess` includes an imputation method but missing ",
                    "data will be eliminated by the formula method using `na.action=",
@@ -610,14 +610,14 @@ fail_warning <- function(settings, msg, where = "model fit", iter, verb) {
 
   if (!is.character(msg))
     msg <- as.character(msg)
-  
+
   wrn <- paste(colnames(settings),
                settings,
                sep = "=",
                collapse = ", ")
   wrn <- paste(where, " failed for ", iter,
                ": ", wrn, " ", msg, sep = "")
-  if (verb)  
+  if (verb)
     cat(wrn, "\n")
 
   warning(wrn, call. = FALSE)
@@ -644,7 +644,7 @@ fill_failed_pred <- function(index, lev, submod){
 
 fill_failed_prob <- function(index, lev, submod) {
   probValues <- matrix(NA, nrow = length(index), ncol = length(lev))
-  probValues <- as.data.frame(probValues)
+  probValues <- as.data.frame(probValues, stringsAsFactors = TRUE)
   colnames(probValues) <- lev
   if (!is.null(submod))
     probValues <- rep(list(probValues), nrow(submod) + 1L)
@@ -653,10 +653,10 @@ fill_failed_prob <- function(index, lev, submod) {
 
 optimism_xy <- function(ctrl, x, y, wts, iter, lev, method, mod, predicted, submod, loop) {
   indexExtra <- ctrl$indexExtra[[iter]]
-  
+
   if(is.null(indexExtra) || inherits(mod, "try-error") || inherits(predicted, "try-error"))
     return (NULL)
-  
+
   predictedExtra <- lapply(indexExtra, function(index) {
     pred <- predictionFunction(method = method,
                                modelFit = mod$fit,
@@ -664,7 +664,7 @@ optimism_xy <- function(ctrl, x, y, wts, iter, lev, method, mod, predicted, subm
                                preProc = mod$preProc,
                                param = submod)
   })
-  
+
   if(ctrl$classProbs)
     probValuesExtra <- lapply(indexExtra, function(index) {
       probFunction(method = method,
@@ -676,16 +676,16 @@ optimism_xy <- function(ctrl, x, y, wts, iter, lev, method, mod, predicted, subm
   else
     probValuesExtra <- lapply(indexExtra, function(index) {
       probValues <- matrix(NA, nrow = length(index), ncol = length(lev))
-      probValues <- as.data.frame(probValues)
+      probValues <- as.data.frame(probValues, stringsAsFactors = TRUE)
       colnames(probValues) <- lev
       if (!is.null(submod)) probValues <- rep(list(probValues), nrow(submod) + 1L)
       probValues
     })
-  
+
   if(!is.null(submod)) {
     allParam <- expandParameters(loop, submod)
     allParam <- allParam[complete.cases(allParam),, drop = FALSE]
-    
+
     predictedExtra <- Map(predictedExtra, indexExtra, f = function(predicted, holdoutIndex) {
       lapply(predicted, function(x) {
         y <- y[holdoutIndex]
@@ -697,12 +697,12 @@ optimism_xy <- function(ctrl, x, y, wts, iter, lev, method, mod, predicted, subm
         out
       })
     })
-    
+
     if(ctrl$classProbs)
       predictedExtra <- Map(predictedExtra, probValuesExtra, f = function(predicted, probValues) {
         Map(cbind, predicted, probValues)
       })
-    
+
     thisResampleExtra <- lapply(predictedExtra, function(predicted) {
       lapply(predicted,
              ctrl$summaryFunction,
@@ -719,7 +719,7 @@ optimism_xy <- function(ctrl, x, y, wts, iter, lev, method, mod, predicted, subm
     })
     thisResampleExtra <- do.call(cbind, lapply(thisResampleExtra, function(x) do.call(rbind, x)))
     thisResampleExtra <- cbind(allParam, thisResampleExtra)
-    
+
   } else {
     thisResampleExtra <- Map(predictedExtra, indexExtra, probValuesExtra,
                              f = function(predicted, holdoutIndex, probValues) {
@@ -738,19 +738,19 @@ optimism_xy <- function(ctrl, x, y, wts, iter, lev, method, mod, predicted, subm
     names(thisResampleExtra[[1L]]) <- paste0(names(thisResampleExtra[[1L]]), "Orig")
     names(thisResampleExtra[[2L]]) <- paste0(names(thisResampleExtra[[2L]]), "Boot")
     thisResampleExtra <- unlist(unname(thisResampleExtra), recursive = FALSE)
-    thisResampleExtra <- cbind(as.data.frame(t(thisResampleExtra)), loop)
+    thisResampleExtra <- cbind(as.data.frame(t(thisResampleExtra), stringsAsFactors = TRUE), loop)
   }
-  
+
   # return
   thisResampleExtra
 }
 
 optimism_rec <- function(ctrl, dat, iter, lev, method, mod_rec, predicted, submod, loop) {
   indexExtra <- ctrl$indexExtra[[iter]]
-  
+
   if(is.null(indexExtra) || model_failed(mod_rec) || inherits(predicted, "try-error"))
     return (NULL)
-  
+
   predictedExtra <- lapply(indexExtra, function(index) {
     pred <- rec_pred(method = method,
                      object = mod_rec,
@@ -758,7 +758,7 @@ optimism_rec <- function(ctrl, dat, iter, lev, method, mod_rec, predicted, submo
                      param = submod)
     trim_values(pred, ctrl, is.null(lev))
   })
-  
+
   if(ctrl$classProbs)
     probValuesExtra <- lapply(indexExtra, function(index) {
       rec_prob(method = method,
@@ -770,11 +770,11 @@ optimism_rec <- function(ctrl, dat, iter, lev, method, mod_rec, predicted, submo
     probValuesExtra <- lapply(indexExtra, function(index) {
       fill_failed_prob(index, lev, submod)
     })
-  
+
   if(!is.null(submod)) {
     allParam <- expandParameters(loop, submod)
     allParam <- allParam[complete.cases(allParam),, drop = FALSE]
-    
+
     predictedExtra <- Map(predictedExtra, indexExtra, f = function(predicted, holdoutIndex) {
       lapply(predicted, function(x) {
         x <- outcome_conversion(x, lv = lev)
@@ -783,12 +783,12 @@ optimism_rec <- function(ctrl, dat, iter, lev, method, mod_rec, predicted, submo
         dat
       })
     })
-    
+
     if(ctrl$classProbs)
       predictedExtra <- Map(predictedExtra, probValuesExtra, f = function(predicted, probValues) {
         Map(cbind, predicted, probValues)
       })
-    
+
     thisResampleExtra <- lapply(predictedExtra, function(predicted) {
       lapply(predicted,
              ctrl$summaryFunction,
@@ -805,7 +805,7 @@ optimism_rec <- function(ctrl, dat, iter, lev, method, mod_rec, predicted, submo
     })
     thisResampleExtra <- do.call(cbind, lapply(thisResampleExtra, function(x) do.call(rbind, x)))
     thisResampleExtra <- cbind(allParam, thisResampleExtra)
-    
+
   } else {
     thisResampleExtra <- Map(predictedExtra, indexExtra, probValuesExtra,
                              f = function(predicted, holdoutIndex, probValues) {
@@ -818,9 +818,9 @@ optimism_rec <- function(ctrl, dat, iter, lev, method, mod_rec, predicted, submo
     names(thisResampleExtra[[1L]]) <- paste0(names(thisResampleExtra[[1L]]), "Orig")
     names(thisResampleExtra[[2L]]) <- paste0(names(thisResampleExtra[[2L]]), "Boot")
     thisResampleExtra <- unlist(unname(thisResampleExtra), recursive = FALSE)
-    thisResampleExtra <- cbind(as.data.frame(t(thisResampleExtra)), loop)
+    thisResampleExtra <- cbind(as.data.frame(t(thisResampleExtra), stringsAsFactors = TRUE), loop)
   }
-  
+
   # return
   thisResampleExtra
 }

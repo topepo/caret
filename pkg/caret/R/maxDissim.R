@@ -160,7 +160,7 @@ splitter <- function(x, p = .8, start = NULL, ...)
 
 splitByDissim <- function(x, p = .8, y = NULL, start = NULL, ...)
   {
-    if(!is.data.frame(x)) x <- as.data.frame(x)
+    if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
     
     if(!is.null(y))
       {

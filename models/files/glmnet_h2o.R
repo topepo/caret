@@ -16,7 +16,7 @@ modelInfo <- list(label = "glmnet",
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(!is.data.frame(x)) as.data.frame(x) else x
+                    dat <- if(!is.data.frame(x)) as.data.frame(x, stringsAsFactors = TRUE) else x
                     dat$.outcome <- y
                     p <- ncol(dat)
                     frame_name <- paste0("tmp_glmnet_dat_",sample.int(100000, 1))
@@ -30,21 +30,21 @@ modelInfo <- list(label = "glmnet",
                   predict = function(modelFit, newdata, submodels = NULL) {
                     frame_name <- paste0("new_glmnet_dat_",sample.int(100000, 1))
                     newdata <- h2o::as.h2o(newdata, destination_frame = frame_name)
-                    as.data.frame(predict(modelFit, newdata))[,1]
+                    as.data.frame(predict(modelFit, newdata), stringsAsFactors = TRUE)[,1]
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     frame_name <- paste0("new_glmnet_dat_",sample.int(100000, 1))
                     newdata <- h2o::as.h2o(newdata, destination_frame = frame_name)
-                    as.data.frame(predict(modelFit, newdata))[,-1]
+                    as.data.frame(predict(modelFit, newdata), stringsAsFactors = TRUE)[,-1]
                   },
                   predictors = function(object, ...) {
-                    out <- as.data.frame(h2o::h2o.varimp(object))
+                    out <- as.data.frame(h2o::h2o.varimp(object), stringsAsFactors = TRUE)
                     colnames(out)[colnames(out) == "coefficients"] <- "Overall"
                     out <- out[!is.na(out$Overall),]   
                     out$names
                   },
                   varImp = function(object, ...) {
-                    out <- as.data.frame(h2o::h2o.varimp(object))
+                    out <- as.data.frame(h2o::h2o.varimp(object), stringsAsFactors = TRUE)
                     colnames(out)[colnames(out) == "coefficients"] <- "Overall"
                     rownames(out) <- out$names
                     out <- out[!is.na(out$Overall), c("Overall"), drop = FALSE]   

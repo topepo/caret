@@ -1,7 +1,7 @@
 context('Box Cox transformations')
 
 ###################################################################
-## Generate data and do BC using the source function to get 
+## Generate data and do BC using the source function to get
 ## expected results
 
 library(MASS)
@@ -13,7 +13,7 @@ colnames(dat) <- paste0("x", 1:3)
 
 exp_lambdas <- rep(NA, 3)
 for(i in 1:ncol(dat)) {
-  tmp <- as.data.frame(dat)[,i,drop = FALSE]
+  tmp <- as.data.frame(dat, stringsAsFactors = TRUE)[,i,drop = FALSE]
   names(tmp)[1] <- "x"
   tmp_bc <- boxcox(x ~ 1, data = tmp, plotit = FALSE, lambda = seq(-2, 2, by = .1))
   exp_lambdas[i] <- tmp_bc$x[which.max(tmp_bc$y)]
@@ -27,5 +27,5 @@ check_BoxCox <- function(x, expected = NULL) {
 }
 
 check_BoxCox(dat, expected = exp_lambdas)
-check_BoxCox(as.data.frame(dat), expected = exp_lambdas)
+check_BoxCox(as.data.frame(dat, stringsAsFactors = TRUE), expected = exp_lambdas)
 

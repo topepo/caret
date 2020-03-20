@@ -112,7 +112,12 @@ rf_ga <- gafs(x = predictors,
 
 }
 \references{
+Scrucca L (2013). GA: A Package for Genetic Algorithms in R.
+Journal of Statistical Software, 53(4), 1-37.
 
+\url{https://cran.r-project.org/package=GA}
+
+\url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}
 }
 \seealso{
 \code{\link{gafs}}, \code{\link{gafsControl}}

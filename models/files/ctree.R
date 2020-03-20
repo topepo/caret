@@ -14,7 +14,7 @@ modelInfo <- list(label = "Conditional Inference Tree",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     theDots <- list(...)
                     if(any(names(theDots) == "controls"))
@@ -36,14 +36,14 @@ modelInfo <- list(label = "Conditional Inference Tree",
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     out <- predict(modelFit, newdata)
                     if(!is.null(modelFit@responses@levels$.outcome)) out <- as.character(out)
                     if(is.matrix(out)) out <- out[,1]
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     obsLevels <- levels(modelFit@data@get("response")[,1])
                     rawProbs <- party::treeresponse(modelFit, newdata)
                     probMatrix <- matrix(unlist(rawProbs), ncol = length(obsLevels), byrow = TRUE)

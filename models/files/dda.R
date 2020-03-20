@@ -32,7 +32,7 @@ modelInfo <- list(label = "Diagonal Discriminant Analysis",
                     predict(modelFit, newdata)$class,
                   prob = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, newdata)$scores
-                    as.data.frame(t(apply(out, 2, function(x) exp(-x)/sum(exp(-x)))))
+                    as.data.frame(t(apply(out, 2, function(x) exp(-x)/sum(exp(-x)))), stringsAsFactors = TRUE)
                     },
                   predictors = function(x, ...) if(hasTerms(x)) predictors(x$terms) else colnames(x$means),
                   tags = c("Discriminant Analysis", "Linear Classifier", "Polynomial Model", "Regularization"),

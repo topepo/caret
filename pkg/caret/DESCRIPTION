@@ -1,5 +1,5 @@
 Package: caret
-Version: 6.0-85
+Version: 6.0-86
 Title: Classification and Regression Training
 Authors@R: c(
   person("Max", "Kuhn", role = c("aut", "cre"), email = "mxkuhn@gmail.com"),
@@ -32,14 +32,14 @@ Imports:
     foreach,
     methods,
     plyr,
-    ModelMetrics (>= 1.1.0),
+    ModelMetrics (>= 1.2.2.2),
     nlme,
     reshape2,
     stats,
     stats4,
     utils,
     grDevices,
-    recipes (>= 0.1.4),
+    recipes (>= 0.1.10),
     withr (>= 2.0.0),
     pROC,
 Suggests:
@@ -71,8 +71,10 @@ Suggests:
     Cubist,
     testthat (>= 0.9.1),
     rpart,
-    dplyr
+    dplyr,
+    covr
 License: GPL (>= 2)
 RoxygenNote: 7.0.2.9000
 VignetteBuilder: knitr
 Encoding: UTF-8
+

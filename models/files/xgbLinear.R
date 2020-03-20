@@ -108,7 +108,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       out <- matrix(out, ncol = length(modelFit$obsLevels), byrow = TRUE)
                       colnames(out) <- modelFit$obsLevels
                     }
-                    as.data.frame(out)
+                    as.data.frame(out, stringsAsFactors = TRUE)
                   },
                   predictors = function(x, ...) {
                     imp <- xgboost::xgb.importance(x$xNames, model = x)
@@ -116,7 +116,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                   },
                   varImp = function(object, numTrees = NULL, ...) {
                     imp <- xgboost::xgb.importance(object$xNames, model = object)
-                    imp <- as.data.frame(imp)[, 1:2]
+                    imp <- as.data.frame(imp, stringsAsFactors = TRUE)[, 1:2]
                     rownames(imp) <- as.character(imp[,1])
                     imp <- imp[,2,drop = FALSE]
                     colnames(imp) <- "Overall"

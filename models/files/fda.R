@@ -6,7 +6,7 @@ modelInfo <- list(label = "Flexible Discriminant Analysis",
                                           class = c("numeric", "numeric"),
                                           label = c('Product Degree', '#Terms')),
                   grid = function(x, y, len = NULL, search = "grid") {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
 
                     mod <- earth::earth( .outcome~., data = dat, pmethod = "none")
@@ -23,7 +23,7 @@ modelInfo <- list(label = "Flexible Discriminant Analysis",
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                   	require(earth)
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
 
                     mda::fda(.outcome ~ ., data = dat, method = earth::earth,

@@ -29,7 +29,7 @@ modelInfo  <- list(label = "Random Forest",
                      out
                    },
                    fit = function(x, y, wts, param, lev, last, classProbs, ...){ 
-                     if((!is.data.frame(x))||dplyr::is.tbl(x)) x <- as.data.frame(x)
+                     if((!is.data.frame(x))||dplyr::is.tbl(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
                      x$.outcome <- y  
                      out <- ordinalForest::ordfor(depvar = ".outcome", 
                                                   data = x, 
@@ -40,12 +40,12 @@ modelInfo  <- list(label = "Random Forest",
                      out
                    },
                    predict = function(modelFit, newdata, submodels = NULL){
-                     if((!is.data.frame(newdata))||dplyr::is.tbl(newdata)) newdata <- as.data.frame(newdata)
+                     if((!is.data.frame(newdata))||dplyr::is.tbl(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                      out <- predict(modelFit, newdata)$ypred 
                      out
                    },
                    prob = function(modelFit, newdata, submodels = NULL){
-                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                     if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                      out <- predict(modelFit, newdata)$classfreqtree
                      out
                    },

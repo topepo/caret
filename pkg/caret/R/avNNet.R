@@ -68,7 +68,7 @@ avNNet.formula <- function (formula, data, weights, ...,
 {
   m <- match.call(expand.dots = FALSE)
   if (is.matrix(eval.parent(m$data)))
-    m$data <- as.data.frame(data)
+    m$data <- as.data.frame(data, stringsAsFactors = FALSE)
 ##  bag <- m$bag
 ##  repeats <- m$repeats
   m$... <- m$contrasts <- m$bag <- m$repeats <- m$allowParallel <- NULL
@@ -196,7 +196,7 @@ predict.avNNet <- function(object, newdata, type = c("raw", "class", "prob"), ..
           }
       }  else {
         if (inherits(object, "avNNet.formula")) {
-          newdata <- as.data.frame(newdata)
+          newdata <- as.data.frame(newdata, stringsAsFactors = FALSE)
           rn <- row.names(newdata)
           Terms <- delete.response(object$terms)
           m <- model.frame(Terms, newdata, na.action = na.omit,

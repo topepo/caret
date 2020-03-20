@@ -1,7 +1,7 @@
 context('multiClassSummary')
 
 test_that("multiClassSummary presenting warnings from train", {
-  skip("Waiting for resolution on JackStat/ModelMetrics#30")
+  skip_if_not_installed("ModelMetrics", "1.2.2.2")
   library(caret)
   N = 1000
 
@@ -46,7 +46,7 @@ test_that("multiClassSummary ROC values", {
   ir_te <- iris[-in_train,]
   mod <- MASS::lda(Species ~ ., data = ir_tr)
   pred <- predict(mod, ir_te[, -5])$posterior
-  pred <- as.data.frame(pred)
+  pred <- as.data.frame(pred, stringsAsFactors = TRUE)
   dat <- pred
   dat$pred <-  predict(mod, ir_te[, -5])$class
   dat$obs <- ir_te$Species

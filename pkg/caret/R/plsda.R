@@ -145,8 +145,12 @@ predict.plsda <- function(object, newdata = NULL, ncomp = NULL, type = "class", 
                for(i in 1:dim(tmpPred)[3]) {
                  tmpOut[,i] <- object$obsLevels[apply(tmpPred[,,i,drop=FALSE], 1, which.max)]
                }
-               out <- as.data.frame(tmpOut)
-               out <- as.data.frame(lapply(out, function(x, y) factor(x, levels = y), y = object$obsLevels))
+               out <- as.data.frame(tmpOut, stringsAsFactors = TRUE)
+               out <- as.data.frame(
+                 lapply(out, function(x, y) factor(x, levels = y),
+                        y = object$obsLevels),
+                 stringsAsFactors = TRUE
+               )
                names(out) <- paste("ncomp", ncomp, sep = "")
                rownames(out) <- rownames(newdata)
                if(length(ncomp) == 1) out <- out[,1]
@@ -171,7 +175,7 @@ predict.plsda <- function(object, newdata = NULL, ncomp = NULL, type = "class", 
     tmp <- vector(mode = "list", length = length(ncomp))
     for(i in seq(along = ncomp)) {
       tmp[[i]] <- predict(object$probModel[[ ncomp[i] ]],
-                          as.data.frame(tmpPred[,-length(object$obsLevels),i]))
+                          as.data.frame(tmpPred[,-length(object$obsLevels),i]), stringsAsFactors = TRUE)
     }
 
     if(type == "class") {
@@ -179,8 +183,12 @@ predict.plsda <- function(object, newdata = NULL, ncomp = NULL, type = "class", 
                        lapply(tmp, function(x) as.character(x$class))))
       rownames(out) <- names(tmp[[1]]$class)
       colnames(out) <- paste("ncomp", ncomp, sep = "")
-      out <- as.data.frame(out)
-      out <- as.data.frame(lapply(out, function(x, y) factor(x, levels = y), y = object$obsLevels))
+      out <- as.data.frame(out, stringsAsFactors = TRUE)
+      out <- as.data.frame(
+        lapply(out, function(x, y) factor(x, levels = y),
+               y = object$obsLevels),
+        stringsAsFactors = TRUE
+      )
       if(length(ncomp) == 1) out <- out[,1]
     } else {
       out <- array(dim = c(dim(tmp[[1]]$posterior), length(ncomp)),

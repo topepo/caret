@@ -83,7 +83,7 @@ function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
    {
       subX <- x[index,, drop = FALSE]
       subY <- y[index]
-      tmp <- as.data.frame(subX)
+      tmp <- as.data.frame(subX, stringsAsFactors = FALSE)
       tmp$.outcome <- subY
       if(!is.null(w)) subW <- w[index]
       fit <- if(is.null(w))
@@ -195,7 +195,7 @@ function(object, newdata = NULL, type = "class", ...)
                       {
                         tmp <- predict(x, newdata = y, type = "posterior")
                         nms <- colnames(tmp)
-                        tmp <- as.data.frame(tmp)
+                        tmp <- as.data.frame(tmp, stringsAsFactors = FALSE)
                         names(tmp) <- nms
                         tmp$sample <- 1:nrow(tmp)
                         tmp

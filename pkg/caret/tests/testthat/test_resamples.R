@@ -43,7 +43,7 @@ test_that('test group-k-fold', {
   get_data <- function(n = 500) {
     prevalence <- seq(.1, .9, length = 26)
     dat <- sample(letters, size = n, replace = TRUE, prob = sample(prevalence))
-    data.frame(grp = dat)
+    data.frame(grp = dat, stringsAsFactors = TRUE)
   }
 
   check_rs <- function(ind, dat) {
@@ -61,10 +61,11 @@ test_that('test group-k-fold', {
       for (i in 1:20) {
         inds <- groupKFold(dat$grp, k = i)
         running_sum <- running_sum + sum(vapply(inds, check_rs, logical(1), dat))
+
       }
     }
   }
-
+  expect_true(running_sum == 0)
 
 
 })

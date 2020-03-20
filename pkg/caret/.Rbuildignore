@@ -3,3 +3,5 @@
 ^\.travis\.yml$
 ^revdep$
 ^\.github/workflows/R-CMD-check\.yaml$
+^codecov\.yml$
+^\.github$

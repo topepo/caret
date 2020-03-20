@@ -36,7 +36,7 @@ modelInfo <- list(label = "Linear Discriminant Analysis",
                       for(j in seq(along = submodels$dimen))
                       {
                         tmpProb <- predict(modelFit, newdata, dimen = submodels$dimen[j])$posterior
-                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE])
+                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE], stringsAsFactors = TRUE)
                       }
                       out <- tmp
                     }                        

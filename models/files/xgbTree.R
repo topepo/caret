@@ -180,7 +180,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       out <- matrix(out, ncol = length(modelFit$obsLevels), byrow = TRUE)
                       colnames(out) <- modelFit$obsLevels
                     }
-                    out <- as.data.frame(out)
+                    out <- as.data.frame(out, stringsAsFactors = TRUE)
 
                     if(!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
@@ -194,7 +194,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                           tmp_pred <- matrix(tmp_pred, ncol = length(modelFit$obsLevels), byrow = TRUE)
                           colnames(tmp_pred) <- modelFit$obsLevels
                         }
-                        tmp_pred <- as.data.frame(tmp_pred)
+                        tmp_pred <- as.data.frame(tmp_pred, stringsAsFactors = TRUE)
                         tmp[[j+1]]  <- tmp_pred
                       }
                       out <- tmp
@@ -207,7 +207,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                   },
                   varImp = function(object, numTrees = NULL, ...) {
                     imp <- xgboost::xgb.importance(object$xNames, model = object)
-                    imp <- as.data.frame(imp)[, 1:2]
+                    imp <- as.data.frame(imp, stringsAsFactors = TRUE)[, 1:2]
                     rownames(imp) <- as.character(imp[,1])
                     imp <- imp[,2,drop = FALSE]
                     colnames(imp) <- "Overall"

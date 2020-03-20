@@ -33,7 +33,7 @@ extractProb <- function(models,
   predProb <- predClass <- obs <- modelName <- dataType <- objName <- NULL
   if(!is.null(testX))
   {
-    if(!is.data.frame(testX)) testX <- as.data.frame(testX)
+    if(!is.data.frame(testX)) testX <- as.data.frame(testX, stringsAsFactors = TRUE)
     hasNa <- apply(testX, 1, function(data) any(is.na(data)))
     if(verbose) cat("There were ", sum(hasNa), "rows with missing values\n\n"); flush.console()
   }
@@ -61,7 +61,7 @@ extractProb <- function(models,
 
       # Test Data
       if(!is.null(testX) & !is.null(testY)) {
-        if(!is.data.frame(testX)) testX <- as.data.frame(testX)
+        if(!is.data.frame(testX)) testX <- as.data.frame(testX, stringsAsFactors = TRUE)
         tempX <- testX
         tempY <- testY
         tempX$.outcome <- NULL
@@ -88,7 +88,7 @@ extractProb <- function(models,
     # Unknown Data
     if(!is.null(unkX))
     {
-      if(!is.data.frame(unkX)) unkX <- as.data.frame(unkX)
+      if(!is.data.frame(unkX)) unkX <- as.data.frame(unkX, stringsAsFactors = TRUE)
       tempX <- unkX
       tempX$.outcome <- NULL
 

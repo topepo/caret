@@ -93,7 +93,7 @@ classDist.default <- function(x, y, groups = 5,
                     tol = sqrt(.Machine$double.eps))
       keep <- min(keep, ncol(pca$rotation))
       if(!is.null(keep)) pca$rotation <- pca$rotation[, 1:keep, drop = FALSE]
-      x <- as.data.frame(predict(pca, newdata = x))
+      x <- as.data.frame(predict(pca, newdata = x), stringsAsFactors = FALSE)
     } else pca <- NULL
 
   x <- split(x, y)
