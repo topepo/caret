@@ -5,9 +5,14 @@
 \alias{plot.rfe}
 \title{Plot RFE Performance Profiles}
 \usage{
-\method{ggplot}{rfe}(data = NULL, mapping = NULL,
-  metric = data$metric[1], output = "layered", ...,
-  environment = NULL)
+\method{ggplot}{rfe}(
+  data = NULL,
+  mapping = NULL,
+  metric = data$metric[1],
+  output = "layered",
+  ...,
+  environment = NULL
+)
 
 \method{plot}{rfe}(x, metric = x$metric, ...)
 }
@@ -54,7 +59,7 @@ data(BloodBrain)
 
 x <- scale(bbbDescr[,-nearZeroVar(bbbDescr)])
 x <- x[, -findCorrelation(cor(x), .8)]
-x <- as.data.frame(x)
+x <- as.data.frame(x, stringsAsFactors = TRUE)
 
 set.seed(1)
 lmProfile <- rfe(x, logBBB,

@@ -6,13 +6,33 @@
 \alias{gafs.recipe}
 \title{Genetic algorithm feature selection}
 \usage{
-\method{gafs}{default}(x, y, iters = 10, popSize = 50,
-  pcrossover = 0.8, pmutation = 0.1, elite = 0, suggestions = NULL,
-  differences = TRUE, gafsControl = gafsControl(), ...)
+\method{gafs}{default}(
+  x,
+  y,
+  iters = 10,
+  popSize = 50,
+  pcrossover = 0.8,
+  pmutation = 0.1,
+  elite = 0,
+  suggestions = NULL,
+  differences = TRUE,
+  gafsControl = gafsControl(),
+  ...
+)
 
-\method{gafs}{recipe}(x, data, iters = 10, popSize = 50,
-  pcrossover = 0.8, pmutation = 0.1, elite = 0, suggestions = NULL,
-  differences = TRUE, gafsControl = gafsControl(), ...)
+\method{gafs}{recipe}(
+  x,
+  data,
+  iters = 10,
+  popSize = 50,
+  pcrossover = 0.8,
+  pmutation = 0.1,
+  elite = 0,
+  suggestions = NULL,
+  differences = TRUE,
+  gafsControl = gafsControl(),
+  ...
+)
 }
 \arguments{
 \item{x}{An object where samples are in rows and features are in columns.
@@ -149,7 +169,7 @@ Kuhn M and Johnson K (2013), Applied Predictive Modeling,
 Springer, Chapter 19 \url{http://appliedpredictivemodeling.com}
 
 Scrucca L (2013). GA: A Package for Genetic Algorithms in R. Journal of
-Statistical Software, 53(4), 1-37. \url{www.jstatsoft.org/v53/i04}
+Statistical Software, 53(4), 1-37. \url{https://www.jstatsoft.org/article/view/v053i04}
 
 Mitchell M (1996), An Introduction to Genetic Algorithms, MIT Press.
 

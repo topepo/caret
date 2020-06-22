@@ -5,7 +5,7 @@ modelInfo <- list(label = "CART",
                                           class = c("numeric"),
                                           label = c("Complexity Parameter")),
                   grid = function(x, y, len = NULL, search = "grid"){
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     initialFit <- rpart::rpart(.outcome ~ .,
                                                data = dat,
@@ -45,7 +45,7 @@ modelInfo <- list(label = "CART",
                     if(!is.null(wts)) theDots$weights <- wts
 
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
-                                        data = if(is.data.frame(x)) x else as.data.frame(x),
+                                        data = if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE),
                                         control = ctl),
                                    theDots)
                     modelArgs$data$.outcome <- y
@@ -56,7 +56,7 @@ modelInfo <- list(label = "CART",
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
 
                     pType <- if(modelFit$problemType == "Classification") "class" else "vector"
                     out  <- predict(modelFit, newdata, type=pType)
@@ -75,7 +75,7 @@ modelInfo <- list(label = "CART",
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     out <- predict(modelFit, newdata, type = "prob")
 
                     if(!is.null(submodels))
@@ -86,7 +86,7 @@ modelInfo <- list(label = "CART",
                       {
                         prunedFit <- rpart::prune.rpart(modelFit, cp = submodels$cp[j])
                         tmpProb <- predict(prunedFit, newdata, type = "prob")
-                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE])
+                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE], stringsAsFactors = TRUE)
                       }
                       out <- tmp
                     }
@@ -111,7 +111,7 @@ modelInfo <- list(label = "CART",
                       splits$var <- tmp
                       splits$type <- ""
 
-                      frame <- as.data.frame(object$frame)
+                      frame <- as.data.frame(object$frame, stringsAsFactors = TRUE)
                       index <- 0
                       for(i in 1:nrow(frame)) {
                         if(frame$var[i] != "<leaf>") {
@@ -139,7 +139,7 @@ modelInfo <- list(label = "CART",
                                        sum,
                                        na.rm = TRUE)
                     } else {
-		      out <- data.frame(x = numeric(), Vaiable = character())
+		      out <- data.frame(x = numeric(), Variable = character())
 		    }
                     allVars <- colnames(attributes(object$terms)$factors)
                     if(!all(allVars %in% out$Variable)) {

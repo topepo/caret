@@ -32,11 +32,11 @@ modelInfo <- list(label = "Rotation Forest",
                     if(length(lev) != 2)
                       stop("rotationForest is only implemented for binary classification")
                     y <- ifelse(y == lev[1], 1, 0)
-                    if(!is.data.frame(x)) x <- as.data.frame(x)
+                    if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
                     rotationForest::rotationForest(x, y, K = param$K, L = param$L, ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     out <- predict(modelFit, newdata)
                     out <- ifelse(out >= .5, modelFit$obsLevels[1], modelFit$obsLevels[2])
                     
@@ -53,7 +53,7 @@ modelInfo <- list(label = "Rotation Forest",
                     out   
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     all_L <- predict(modelFit, newdata, all = TRUE)
                     out <- apply(all_L, 1, mean)
                     out <- data.frame(x = out, y = 1 - out)

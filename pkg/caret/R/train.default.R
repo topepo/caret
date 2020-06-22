@@ -317,8 +317,11 @@ train.default <- function(x, y,
   if(is.character(y)) y <- as.factor(y)
 
   if( !is.numeric(y) & !is.factor(y) ){
-    #This error will often trigger if the y value is logical.
-    stop( "Please make sure `y` is a factor or numeric value." , call. = FALSE )
+    msg <- paste("Please make sure that the outcome column is a factor or numeric .",
+                 "The class(es) of the column:",
+                 paste0("'", class(y), "'", collapse = ", "))
+
+    stop(msg, call. = FALSE )
   }
 
   if(is.list(method)) {
@@ -371,7 +374,7 @@ train.default <- function(x, y,
     trControl$sampling <- parse_sampling(trControl$sampling)
   }
 
-  if(any(class(x) == "data.table")) x <- as.data.frame(x)
+  if(any(class(x) == "data.table")) x <- as.data.frame(x, stringsAsFactors = TRUE)
   check_dims(x = x, y = y)
   n <- if(class(y)[1] == "Surv") nrow(y) else length(y)
 
@@ -780,7 +783,7 @@ train.default <- function(x, y,
                                        metric = metric,
                                        method = method)
     perfNames <- names(performance)
-    performance <- as.data.frame(t(performance))
+    performance <- as.data.frame(t(performance), stringsAsFactors = TRUE)
     performance <- cbind(performance, tuneGrid)
     performance <- performance[-1,,drop = FALSE]
     tmp <- resampledCM <- NULL
@@ -865,7 +868,7 @@ train.default <- function(x, y,
 
   if(trControl$returnData) {
     outData <- if (inherits(x, "sparseMatrix")) as.matrix(x) else x
-    if (!is.data.frame(outData)) outData <- try(as.data.frame(outData), silent = TRUE)
+    outData <- if(!is.data.frame(x)) try(as.data.frame(x, stringsAsFactors = TRUE), silent = TRUE) else x
     if(inherits(outData, "try-error")) {
       warning("The training data could not be converted to a data frame for saving")
       outData <- NULL
@@ -918,7 +921,7 @@ train.default <- function(x, y,
 #' @export
 train.formula <- function (form, data, ..., weights, subset, na.action = na.fail, contrasts = NULL)  {
   m <- match.call(expand.dots = FALSE)
-  if (is.matrix(eval.parent(m$data)))  m$data <- as.data.frame(data)
+  if (is.matrix(eval.parent(m$data)))  m$data <- as.data.frame(data, stringsAsFactors = TRUE)
   m$... <- m$contrasts <- NULL
 
   check_na_conflict(match.call(expand.dots = TRUE))
@@ -1368,7 +1371,7 @@ train.recipe <- function(x,
                                        metric = metric,
                                        method = method)
     perfNames <- names(performance)
-    performance <- as.data.frame(t(performance))
+    performance <- as.data.frame(t(performance), stringsAsFactors = TRUE)
     performance <- cbind(performance, tuneGrid)
     performance <- performance[-1,,drop = FALSE]
     tmp <- resampledCM <- NULL

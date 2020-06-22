@@ -3,8 +3,8 @@ context('Dummy Variables')
 ## Test cases by Josh Brady (doublej2) from issue #344
 
 check_dummies <- function(x, expected = NULL) {
-  dfTrain <- data.frame(xf = c('a','b','c'))
-  dfTest <- data.frame(xf = c('a','b'))
+  dfTrain <- data.frame(xf = c('a','b','c'), stringsAsFactors = TRUE)
+  dfTest <- data.frame(xf = c('a','b'), stringsAsFactors = TRUE)
 
   dummyObj1 <- dummyVars(~., dfTrain)
 
@@ -27,7 +27,8 @@ check_dummies <- function(x, expected = NULL) {
                               "morning", "afternoon", "afternoon"),
                      day = c("Mon", "Mon", "Mon",
                              "Wed", "Wed", "Fri",
-                             "Sat", "Sat", "Fri"))
+                             "Sat", "Sat", "Fri"),
+                     stringsAsFactors = TRUE)
 
   levels(when$time) <- list(morning="morning",
                             afternoon="afternoon",
@@ -93,7 +94,8 @@ check_dummies <- function(x, expected = NULL) {
   test_data <- data.frame('id' = seq(1,30,1),
                           'fooFactor' = factor(c(rep(1,10), rep(2,10), rep(3,10))),
                           'fooFactorBar' = factor(c(rep(4,10), rep(5,10), rep(6,10))),
-                          'fooBarFactor' = factor(c(rep(7,10), rep(8,10), rep(9,10))))
+                          'fooBarFactor' = factor(c(rep(7,10), rep(8,10), rep(9,10))),
+                          stringsAsFactors = TRUE)
 
   foosbars <- dummies <- dummyVars(formula = id ~.,
                                    data = test_data,
@@ -118,7 +120,17 @@ check_dummies <- function(x, expected = NULL) {
 
 
 test_that("Good names for dummies with reocurring patterns", {
-  data = data.frame(matrix(rep(as.factor(sample.int(15, size = 100, replace = TRUE, prob = rep(1/15,15))), 15), ncol = 15))
+  data = data.frame(
+    matrix(
+      rep(
+        as.factor(sample.int(15, size = 100, replace = TRUE, prob = rep(1 / 15, 15))
+        ),
+        15
+      ),
+      ncol = 15
+    ),
+    stringsAsFactors = TRUE
+  )
   essai_dummyVars = caret::dummyVars(stats::as.formula(paste0("~ ", colnames(data), collapse = "+")), data)
 
   exp_names_lvls <- apply(expand.grid(paste0("X",1:15), paste0(".",1:15)), 1, paste, collapse="")

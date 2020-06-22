@@ -19,8 +19,7 @@ knn3(x, ...)
 
 \method{print}{knn3}(x, ...)
 
-knn3Train(train, test, cl, k = 1, l = 0, prob = TRUE,
-  use.all = TRUE)
+knn3Train(train, test, cl, k = 1, l = 0, prob = TRUE, use.all = TRUE)
 }
 \arguments{
 \item{x}{a matrix of training set predictors}

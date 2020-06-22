@@ -243,7 +243,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         ## if classification, get the confusion matrix
         if(length(lev) > 1 && length(lev) <= 50)
           thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-        thisResample <- as.data.frame(t(thisResample))
+        thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
         thisResample <- cbind(thisResample, info$loop[parm,,drop = FALSE])
       }
       thisResample$Resample <- names(resampleIndex)[iter]
@@ -503,7 +503,7 @@ oobTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
 
     if(ctrl$verboseIter) progress(printed[parm,,drop = FALSE], "", 1, FALSE)
 
-    cbind(as.data.frame(t(out)), info$loop[parm,,drop = FALSE])
+    cbind(as.data.frame(t(out), stringsAsFactors = TRUE), info$loop[parm,,drop = FALSE])
   }
   names(result) <- gsub("^\\.", "", names(result))
   result

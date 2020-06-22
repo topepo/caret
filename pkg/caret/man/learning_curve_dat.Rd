@@ -4,8 +4,14 @@
 \alias{learning_curve_dat}
 \title{Create Data to Plot a Learning Curve}
 \usage{
-learning_curve_dat(dat, outcome = NULL, proportion = (1:10)/10,
-  test_prop = 0, verbose = TRUE, ...)
+learning_curve_dat(
+  dat,
+  outcome = NULL,
+  proportion = (1:10)/10,
+  test_prop = 0,
+  verbose = TRUE,
+  ...
+)
 }
 \arguments{
 \item{dat}{the training data}

@@ -5,7 +5,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                                           class = c("numeric", "numeric"),
                                           label = c('#Terms', 'Product Degree')),
                   grid = function(x, y, len = NULL, search = "grid") {
-                    dat <- if (is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if (is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
 
                     mod <- earth::earth( .outcome~., data = dat, pmethod = "none")
@@ -87,7 +87,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                       out <- cbind(1 - out[, 1], out[, 1])
                       colnames(out) <- modelFit$obsLevels
                     }
-                    out <- as.data.frame(out)
+                    out <- as.data.frame(out, stringsAsFactors = TRUE)
 
                     if (!is.null(submodels)) {
                       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
@@ -102,7 +102,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                           tmp2 <- cbind(1 - tmp2[, 1], tmp2[, 1])
                           colnames(tmp2) <- modelFit$obsLevels
                         }
-                        tmp2 <- as.data.frame(tmp2)
+                        tmp2 <- as.data.frame(tmp2, stringsAsFactors = TRUE)
                         tmp[[j+1]] <- tmp2
                       }
                       out <- tmp
@@ -124,7 +124,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                     perfCol <- which(colnames(out) == value)
 
                     increaseInd <- out[,perfCol + 1]
-                    out <- as.data.frame(out[,perfCol, drop = FALSE])
+                    out <- as.data.frame(out[,perfCol, drop = FALSE], stringsAsFactors = TRUE)
                     colnames(out) <- "Overall"
 
                     # At this point, we still may have some variables
@@ -135,7 +135,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                       out$Overall[rownames(out) %in% dropList] <- 0
                     }
                     rownames(out) <- gsub("-unused", "", rownames(out))
-                    out <- as.data.frame(out)
+                    out <- as.data.frame(out, stringsAsFactors = TRUE)
                     # fill in zeros for any variabels not  in out
 
                     xNames <- object$namesx.org

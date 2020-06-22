@@ -37,7 +37,7 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                     ## pass in any model weights
                     if(!is.null(wts)) theDots$weights <- wts
 
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
                                         data = dat, control = ctl),
@@ -70,7 +70,7 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     predType <- ifelse(modelFit$problemType == "Classification", "class", "response")
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     out <- predict(modelFit, newdata, type = predType)
                     if(!is.null(submodels)) {
 
@@ -94,7 +94,7 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     probs <- predict(modelFit, newdata, type = "response")
                     out <- cbind(1 - probs, probs)
                     colnames(out) <- modelFit$obsLevels
@@ -109,7 +109,7 @@ modelInfo <- list(label = "Boosted Generalized Additive Model",
                         tmpProb <- predict(modelFit[this_mstop], newdata, type = "response")
                         tmpProb <- cbind(1 - tmpProb, tmpProb)
                         colnames(tmpProb) <- modelFit$obsLevels
-                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels,drop = FALSE])
+                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE], stringsAsFactors = TRUE)
                       }
                       out <- tmp
                       mboost::mstop(modelFit) <- modelFit$.org.mstop

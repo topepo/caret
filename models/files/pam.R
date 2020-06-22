@@ -67,7 +67,7 @@ modelInfo <- list(label = "Nearest Shrunken Centroids",
                         tmpProb <-  pamr::pamr.predict(modelFit, t(newdata),
                                                        threshold =  submodels$threshold[j],
                                                        type= "posterior")
-                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels,drop = FALSE])
+                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE], stringsAsFactors = TRUE)
                       }
                       out <- tmp
                     }   
@@ -112,7 +112,7 @@ modelInfo <- list(label = "Nearest Shrunken Centroids",
                     standCentroids <- (centroids - object$centroid.overall)/object$sd
                     rownames(standCentroids) <- featureNames
                     colnames(standCentroids) <- names(object$prior)
-                    as.data.frame(standCentroids)
+                    as.data.frame(standCentroids, stringsAsFactors = TRUE)
                   },
                   levels = function(x) names(x$prior),
                   tags = c("Prototype Models", "Implicit Feature Selection", "Linear Classifier"),

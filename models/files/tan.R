@@ -17,7 +17,7 @@ modelInfo <- list(label = "Tree Augmented Naive Bayes Classifier",
                   },
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     bnclassify::bnc('tan_cl', class = '.outcome', dataset = dat,
                                     smooth = param$smooth,
@@ -25,11 +25,11 @@ modelInfo <- list(label = "Tree Augmented Naive Bayes Classifier",
                                     ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     predict(modelFit, newdata)       
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     predict(modelFit, newdata, prob = TRUE) 
                   },
                   levels = function(x) x$obsLevels,

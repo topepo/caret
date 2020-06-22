@@ -102,7 +102,7 @@ filterVarImp <- function(x, y, nonpara = FALSE, ...){
           outStat <- cbind(tmp, tmp)
         }
 
-      outStat <- as.data.frame(outStat)
+      outStat <- as.data.frame(outStat, stringsAsFactors = FALSE)
       colnames(outStat) <- classLevels
       rownames(outStat) <- dimnames(x)[[2]]
       outStat <- data.frame(outStat)

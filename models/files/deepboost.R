@@ -29,7 +29,7 @@ modelInfo <- list(label = "DeepBoost",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    if(!is.data.frame(x)) x <- as.data.frame(x)
+                    if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
                     if(is.null(wts)) {
                       dat <- x
                       dat$.outcome <- y
@@ -58,7 +58,7 @@ modelInfo <- list(label = "DeepBoost",
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata)) 
-                      newdata <- as.data.frame(newdata)
+                      newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     deepboost:::predict(modelFit, newdata)
                   },
                   levels = function(x) x@classes,

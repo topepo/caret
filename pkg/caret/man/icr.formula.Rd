@@ -7,8 +7,7 @@
 \alias{predict.icr}
 \title{Independent Component Regression}
 \usage{
-\method{icr}{formula}(formula, data, weights, ..., subset, na.action,
-  contrasts = NULL)
+\method{icr}{formula}(formula, data, weights, ..., subset, na.action, contrasts = NULL)
 
 \method{icr}{default}(x, y, ...)
 

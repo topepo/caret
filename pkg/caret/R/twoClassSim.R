@@ -170,7 +170,7 @@ twoClassSim <- function(n = 100,
   tmpData <- cbind(tmpData, matrix(runif(n*2), ncol = 2))
   colnames(tmpData)[(ncol(tmpData)-1):ncol(tmpData)] <- paste("Nonlinear", 2:3, sep = "")
   
-  tmpData <- as.data.frame(tmpData)
+  tmpData <- as.data.frame(tmpData, stringsAsFactors = FALSE)
   p <- ncol(tmpData)
   
   if(noiseVars > 0) {

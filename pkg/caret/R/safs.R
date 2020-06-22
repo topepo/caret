@@ -600,7 +600,7 @@ safs <- function (x, ...) UseMethod("safs")
       diffs <- try(process_diffs(result[names(result) == "diffs"],
                                  colnames(x)),
                    silent = TRUE)
-      if(class(diffs)[1] == "try-error") {
+      if (inherits(diffs, "try-error")) {
         diffs <- NULL
         warning("An error occured when computing the variable differences")
       }
@@ -843,7 +843,7 @@ sa_wrapper <- function(ind, x, y, funcs, holdoutX, holdoutY, testX, testY,
   if(!is.null(testX)) {
     modelPred <- funcs$pred(mod, testX[, ind, drop=FALSE])
     if(is.data.frame(modelPred) | is.matrix(modelPred)) {
-      if(is.matrix(modelPred)) modelPred <- as.data.frame(modelPred)
+      if(is.matrix(modelPred)) modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
       modelPred$obs <- testY
       modelPred$Size <- length(ind)
     } else modelPred <- data.frame(pred = modelPred, obs = testY, Size = sum(ind == 1))
@@ -1063,7 +1063,7 @@ sa_select <- function(x, y,
                                        subsets,
                                        external[, !(names(external) %in% sa_external_names), drop = FALSE]),
                silent = TRUE)
-  if(class(diffs)[1] == "try-error") diffs <- NULL
+  if (inherits(diffs, "try-error"))  diffs <- NULL
   list(internal = internal,
        subsets = subsets,
        external = external,
@@ -1150,7 +1150,7 @@ caretSA <- list(fit = function(x, y, lev = NULL, last = FALSE, ...) train(x, y, 
                   tmp <- predict(object, x)
                   if(object$control$classProbs) {
                     out <- cbind(data.frame(pred = tmp),
-                                 as.data.frame(predict(object, x, type = "prob")))
+                                 as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
                   } else out <- tmp
                   out
                 },
@@ -1177,7 +1177,7 @@ pred = function(object, x) {
   tmp <- predict(object, x)
   if(is.factor(object$y)) {
     out <- cbind(data.frame(pred = tmp),
-                 as.data.frame(predict(object, x, type = "prob")))
+                 as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
   } else out <- tmp
   out
 },
@@ -1199,7 +1199,7 @@ pred = function(object, x) {
   tmp <- predict(object, x)
   if(is.factor(object$y)) {
     out <- cbind(data.frame(pred = tmp),
-                 as.data.frame(predict(object, x, type = "prob")))
+                 as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
   } else out <- tmp
   out
 },
@@ -1492,7 +1492,7 @@ update.safs <- function(object, iter, x, y, ...) {
       diffs <- try(process_diffs(result[names(result) == "diffs"],
                                  colnames(x)),
                    silent = TRUE)
-      if(class(diffs)[1] == "try-error") {
+      if (inherits(diffs, "try-error")) {
         diffs <- NULL
         warning("An error occured when computing the variable differences")
       }

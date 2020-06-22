@@ -43,7 +43,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Splines",
                       out <- cbind(1 - out[, 1], out[, 1])
                       colnames(out) <- modelFit$obsLevels
                     }
-                    as.data.frame(out)
+                    as.data.frame(out, stringsAsFactors = TRUE)
                   },
                   predictors = function(x, ...) {
                     vi <- varImp(x)
@@ -60,7 +60,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Splines",
                     perfCol <- which(colnames(out) == value)
                     
                     increaseInd <- out[,perfCol + 1]
-                    out <- as.data.frame(out[,perfCol, drop = FALSE])  
+                    out <- as.data.frame(out[,perfCol, drop = FALSE], stringsAsFactors = TRUE)  
                     colnames(out) <- "Overall"
                     
                     # At this point, we still may have some variables
@@ -71,7 +71,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Splines",
                       out$Overall[rownames(out) %in% dropList] <- 0
                     }
                     rownames(out) <- gsub("-unused", "", rownames(out))                
-                    out <- as.data.frame(out)
+                    out <- as.data.frame(out, stringsAsFactors = TRUE)
                     # fill in zeros for any variabels not  in out
                     
                     xNames <- object$namesx.org

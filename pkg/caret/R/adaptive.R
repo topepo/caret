@@ -76,7 +76,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                      param = submod),
                   silent = TRUE)
 
-                if(class(predicted)[1] == "try-error") {
+                if (inherits(predicted, "try-error")) {
                   wrn <- paste(colnames(printed[parm,,drop = FALSE]),
                                printed[parm,,drop = FALSE],
                                sep = "=",
@@ -139,7 +139,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                              preProc = mod$preProc,
                                              param = submod)
                 } else {
-                  probValues <- as.data.frame(matrix(NA, nrow = nPred, ncol = length(lev)))
+                  probValues <- as.data.frame(matrix(NA, nrow = nPred, ncol = length(lev)), stringsAsFactors = FALSE)
                   colnames(probValues) <- lev
                   if(!is.null(submod))
                   {
@@ -232,7 +232,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
 
                 ## if classification, get the confusion matrix
                 if(length(lev) > 1) thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-                thisResample <- as.data.frame(t(thisResample))
+                thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
                 thisResample <- cbind(thisResample, info$loop[parm,,drop = FALSE])
 
               }
@@ -300,7 +300,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                                         param = submod),
                                      silent = TRUE)
 
-                                   if(class(predicted)[1] == "try-error") {
+                                   if (inherits(predicted, "try-error"))  {
                                      wrn <- paste(colnames(printed[parm,,drop = FALSE]),
                                                   printed[parm,,drop = FALSE],
                                                   sep = "=",
@@ -363,7 +363,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                                                 preProc = mod$preProc,
                                                                 param = submod)
                                    } else {
-                                     probValues <- as.data.frame(matrix(NA, nrow = nPred, ncol = length(lev)))
+                                     probValues <- as.data.frame(matrix(NA, nrow = nPred, ncol = length(lev)), stringsAsFactors = FALSE)
                                      colnames(probValues) <- lev
                                      if(!is.null(submod))
                                      {
@@ -457,7 +457,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
 
                                    ## if classification, get the confusion matrix
                                    if(length(lev) > 1) thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-                                   thisResample <- as.data.frame(t(thisResample))
+                                   thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
                                    thisResample <- cbind(thisResample, new_info$loop[parm,,drop = FALSE])
 
                                  }
@@ -589,7 +589,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                        param = submod),
                     silent = TRUE)
 
-                  if(class(predicted)[1] == "try-error") {
+                  if (inherits(predicted, "try-error")) {
                     wrn <- paste(colnames(printed[parm,,drop = FALSE]),
                                  printed[parm,,drop = FALSE],
                                  sep = "=",
@@ -652,7 +652,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                                preProc = mod$preProc,
                                                param = submod)
                   } else {
-                    probValues <- as.data.frame(matrix(NA, nrow = nPred, ncol = length(lev)))
+                    probValues <- as.data.frame(matrix(NA, nrow = nPred, ncol = length(lev)), stringsAsFactors = FALSE)
                     colnames(probValues) <- lev
                     if(!is.null(submod))
                     {
@@ -746,7 +746,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
 
                   ## if classification, get the confusion matrix
                   if(length(lev) > 1) thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-                  thisResample <- as.data.frame(t(thisResample))
+                  thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
                   thisResample <- cbind(thisResample, new_info$loop[parm,,drop = FALSE])
 
                 }
@@ -808,7 +808,7 @@ bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
                                                              win2 = sum(x$win2)))
   if(length(unique(rs$Resample)) >= 5) {
     tmp_scores <- try(skunked(scores), silent = TRUE)
-    if(class(tmp_scores)[1] != "try-error") scores <- tmp_scores
+    if (inherits(tmp_scores, "try-error")) scores <- tmp_scores
   }
   best_mod <- ddply(rs, .(model_id), function(x, metric) mean(x[, metric], na.rm = TRUE), metric = metric)
   best_mod <- if(maximize)
@@ -864,7 +864,7 @@ skunked <- function(scores, verbose = TRUE) {
   scores
 }
 
- 
+
 #' @importFrom stats cor t.test na.omit
 gls_eval <- function(x, metric, maximize, alpha = 0.05) {
   x <- x[!is.na(x[, metric]), ]

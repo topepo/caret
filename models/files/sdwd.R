@@ -49,7 +49,7 @@ modelInfo <- list(label = "Sparse Distance Weighted Discrimination",
                     names(out)[out]
                   },
                   varImp = function(object, lambda = NULL, ...) {
-                    out <- as.data.frame(as.matrix(abs(object$beta)))
+                    out <- as.data.frame(as.matrix(abs(object$beta)), stringsAsFactors = TRUE)
                     colnames(out) <- "Overall"
                     out
                   },

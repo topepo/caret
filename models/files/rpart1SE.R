@@ -7,7 +7,7 @@ modelInfo <- list(label = "CART",
                   grid = function(x, y, len = NULL, search = "grid") data.frame(parameter = "none"),
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     
                     ## check to see if weights were passed in (and availible)
@@ -19,7 +19,7 @@ modelInfo <- list(label = "CART",
                     out           
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {                  
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     
                     out <- if(modelFit$problemType == "Classification") 
                       predict(modelFit, newdata, type = "class") else 
@@ -27,7 +27,7 @@ modelInfo <- list(label = "CART",
                     out
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     predict(modelFit, newdata, type = "prob")
                   },
                   predictors = function(x, surrogate = TRUE, ...)  {
@@ -48,7 +48,7 @@ modelInfo <- list(label = "CART",
                     splits$var <- tmp
                     splits$type <- ""
                     
-                    frame <- as.data.frame(object$frame)
+                    frame <- as.data.frame(object$frame, stringsAsFactors = TRUE)
                     index <- 0
                     for(i in 1:nrow(frame)) {
                       if(frame$var[i] != "<leaf>") {

@@ -61,8 +61,7 @@ varImp(object, ...)
 
 \method{varImp}{RRF}(object, ...)
 
-\method{varImp}{rpart}(object, surrogates = FALSE, competes = TRUE,
-  ...)
+\method{varImp}{rpart}(object, surrogates = FALSE, competes = TRUE, ...)
 
 \method{varImp}{randomForest}(object, ...)
 
@@ -90,8 +89,7 @@ varImp(object, ...)
 
 \method{varImp}{Gam}(object, ...)
 
-\method{varImp}{train}(object, useModel = TRUE, nonpara = TRUE,
-  scale = TRUE, ...)
+\method{varImp}{train}(object, useModel = TRUE, nonpara = TRUE, scale = TRUE, ...)
 }
 \arguments{
 \item{object}{an object corresponding to a fitted model}

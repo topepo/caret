@@ -4,25 +4,25 @@
 
 
 #' Neural Networks with a Principal Component Step
-#' 
+#'
 #' Run PCA on a dataset, then use it in a neural network model
-#' 
+#'
 #' The function first will run principal component analysis on the data. The
 #' cumulative percentage of variance is computed for each principal component.
 #' The function uses the \code{thresh} argument to determine how many
 #' components must be retained to capture this amount of variance in the
 #' predictors.
-#' 
+#'
 #' The principal components are then used in a neural network model.
-#' 
+#'
 #' When predicting samples, the new data are similarly transformed using the
 #' information from the PCA analysis on the training data and then predicted.
-#' 
+#'
 #' Because the variance of each predictor is used in the PCA analysis, the code
 #' does a quick check to make sure that each predictor has at least two
 #' distinct values. If a predictor has one unique value, it is removed prior to
 #' the analysis.
-#' 
+#'
 #' @aliases pcaNNet pcaNNet.default predict.pcaNNet pcaNNet.formula
 #' @param formula A formula of the form \code{class ~ x1 + x2 + \dots{}}
 #' @param x matrix or data frame of \code{x} values for examples.
@@ -60,13 +60,13 @@
 #' Networks.} Cambridge.
 #' @keywords neural
 #' @examples
-#' 
+#'
 #' data(BloodBrain)
 #' modelFit <- pcaNNet(bbbDescr[, 1:10], logBBB, size = 5, linout = TRUE, trace = FALSE)
 #' modelFit
-#' 
+#'
 #' predict(modelFit, bbbDescr[, 1:10])
-#' 
+#'
 #' @export pcaNNet
 pcaNNet <- function (x, ...)
    UseMethod("pcaNNet")
@@ -79,12 +79,12 @@ pcaNNet <- function (x, ...)
 #' @export
 pcaNNet.formula <- function (formula, data, weights, ...,
                              thresh = .99,
-                             subset, na.action, contrasts = NULL) 
+                             subset, na.action, contrasts = NULL)
 {
 
     m <- match.call(expand.dots = FALSE)
-    if (is.matrix(eval.parent(m$data))) 
-        m$data <- as.data.frame(data)
+    if (is.matrix(eval.parent(m$data)))
+        m$data <- as.data.frame(data, stringsAsFactors = TRUE)
     m$... <- m$contrasts <- NULL
     m[[1]] <- as.name("model.frame")
     m <- eval.parent(m)
@@ -92,10 +92,10 @@ pcaNNet.formula <- function (formula, data, weights, ...,
     x <- model.matrix(Terms, m, contrasts)
     cons <- attr(x, "contrast")
     xint <- match("(Intercept)", colnames(x), nomatch = 0)
-    if (xint > 0) 
+    if (xint > 0)
         x <- x[, -xint, drop = FALSE]
     w <- model.weights(m)
-    if (length(w) == 0) 
+    if (length(w) == 0)
         w <- rep(1, nrow(x))
     y <- model.response(m)
 
@@ -111,7 +111,7 @@ pcaNNet.formula <- function (formula, data, weights, ...,
 
 #' @rdname pcaNNet
 #' @method pcaNNet default
-#' @export 
+#' @export
 pcaNNet.default <- function(x, y, thresh = .99, ...)
   {
     requireNamespaceQuietStop("nnet")
@@ -124,7 +124,7 @@ pcaNNet.default <- function(x, y, thresh = .99, ...)
         x <- x[,!isZV, drop = FALSE]
         xNames <- colnames(x)
       } else xNames <- NULL
-    
+
     # get pca
     pp <- preProcess(x, "pca", thresh = thresh)
     x <- predict(pp, x)
@@ -137,11 +137,11 @@ pcaNNet.default <- function(x, y, thresh = .99, ...)
         y <- class2ind(y)
       } else classLev <- NULL
 
-        
+
     # fit nnet
     modelFit <- nnet::nnet(x, y, ...)
-    modelFit$lev <- classLev  
-    
+    modelFit$lev <- classLev
+
     # return results
     out <- list(model = modelFit,
                 pc = pp,
@@ -153,12 +153,12 @@ pcaNNet.default <- function(x, y, thresh = .99, ...)
 #' @rdname pcaNNet
 #' @method print pcaNNet
 #' @export
-print.pcaNNet <- function (x, ...) 
+print.pcaNNet <- function (x, ...)
 {
   cat("Neural Network Model with PCA Pre-Processing\n\n")
-  
+
   cat("Created from", x$pc$dim[1], "samples and", x$pc$dim[2], "variables\n")
-  cat("PCA needed", x$pc$numComp, "components to capture", 
+  cat("PCA needed", x$pc$numComp, "components to capture",
       round(x$pc$thresh * 100, 2), "percent of the variance\n\n")
 
   print(x$model)
@@ -173,7 +173,7 @@ print.pcaNNet <- function (x, ...)
 predict.pcaNNet <- function(object, newdata, type = c("raw", "class", "prob"), ...)
   {
     requireNamespaceQuietStop("nnet")
-    if (!inherits(object, "pcaNNet")) 
+    if (!inherits(object, "pcaNNet"))
       stop("object not of class \"pcaNNet\"")
     if (missing(newdata))
       {
@@ -188,24 +188,24 @@ predict.pcaNNet <- function(object, newdata, type = c("raw", "class", "prob"), .
            }
       }  else {
         if (inherits(object, "pcaNNet.formula")) {
-          newdata <- as.data.frame(newdata)
+          newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
           rn <- row.names(newdata)
           Terms <- delete.response(object$terms)
-          m <- model.frame(Terms, newdata, na.action = na.omit, 
+          m <- model.frame(Terms, newdata, na.action = na.omit,
                            xlev = object$xlevels)
-          if (!is.null(cl <- attr(Terms, "dataClasses"))) 
+          if (!is.null(cl <- attr(Terms, "dataClasses")))
             .checkMFClasses(cl, m)
           keep <- match(row.names(m), rn)
           x <- model.matrix(Terms, m, contrasts = object$contrasts)
           xint <- match("(Intercept)", colnames(x), nomatch = 0)
-          if (xint > 0) 
+          if (xint > 0)
             x <- x[, -xint, drop = FALSE]
         }
         else {
-          if (is.null(dim(newdata))) 
+          if (is.null(dim(newdata)))
             dim(newdata) <- c(1, length(newdata))
           x <- as.matrix(newdata)
-          if (any(is.na(x))) 
+          if (any(is.na(x)))
             stop("missing values in 'x'")
           keep <- 1:nrow(x)
           rn <- rownames(x)

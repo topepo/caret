@@ -48,7 +48,7 @@ modelInfo <- list(label = "Bagged MARS using gCV Pruning",
                   },
                   varImp = function(object, ...) {
                     allImp <- lapply(object$fit, varImp, ...)
-                    impDF <- as.data.frame(allImp)
+                    impDF <- as.data.frame(allImp, stringsAsFactors = TRUE)
                     meanImp <- apply(impDF, 1, mean)
                     out <- data.frame(Overall = meanImp)
                     rownames(out) <- names(meanImp)

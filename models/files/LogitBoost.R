@@ -66,7 +66,7 @@ modelInfo <- list(label = "Boosted Logistic Regression",
                                                                type = "raw",
                                                                nIter = submodels$nIter[j])
                         tmpProb <- out <- t(apply(tmpProb, 1, function(x) x/sum(x)))
-                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels,drop = FALSE])           
+                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE], stringsAsFactors = TRUE)           
                       }
                       out <- tmp
                     }                       

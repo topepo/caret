@@ -13,7 +13,7 @@
   } else {
     if(inherits(object, "train.recipe")) {
       x_dat <- recipes::juice(object$recipe, all_predictors())
-      x_dat <- as.data.frame(x_dat)
+      x_dat <- as.data.frame(x_dat, stringsAsFactors = FALSE)
       y_dat <- recipes::juice(object$recipe, all_outcomes())
       y_dat <- getElement(y_dat, names(y_dat))
     } else {

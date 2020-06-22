@@ -14,15 +14,15 @@ createResample <- function(y, times = 10, list = TRUE) {
       out
     }
   )
-  
+
   if (list)  {
-    out <- as.data.frame(out)
+    out <- as.data.frame(out, stringsAsFactors = TRUE)
     attributes(out) <- NULL
     names(out) <- prettySeq(out)
   } else {
     colnames(out) <- prettySeq(1:ncol(out))
   }
-  
+
   out
 }
 

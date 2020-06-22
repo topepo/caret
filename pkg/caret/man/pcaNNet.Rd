@@ -10,15 +10,22 @@
 \usage{
 pcaNNet(x, ...)
 
-\method{pcaNNet}{formula}(formula, data, weights, ..., thresh = 0.99,
-  subset, na.action, contrasts = NULL)
+\method{pcaNNet}{formula}(
+  formula,
+  data,
+  weights,
+  ...,
+  thresh = 0.99,
+  subset,
+  na.action,
+  contrasts = NULL
+)
 
 \method{pcaNNet}{default}(x, y, thresh = 0.99, ...)
 
 \method{print}{pcaNNet}(x, ...)
 
-\method{predict}{pcaNNet}(object, newdata, type = c("raw", "class",
-  "prob"), ...)
+\method{predict}{pcaNNet}(object, newdata, type = c("raw", "class", "prob"), ...)
 }
 \arguments{
 \item{x}{matrix or data frame of \code{x} values for examples.}

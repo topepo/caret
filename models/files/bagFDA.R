@@ -6,7 +6,7 @@ modelInfo <- list(label = "Bagged Flexible Discriminant Analysis",
                                           class = c("numeric", "numeric"),
                                           label = c('Product Degree', '#Terms')),
                   grid = function(x, y, len = NULL, search = "grid") {
-                    dat <- if(!is.data.frame(x)) as.data.frame(x) else x
+                    dat <- if(!is.data.frame(x)) as.data.frame(x, stringsAsFactors = TRUE) else x
                     dat$.outcome <- y
                     
                     mod <- mda::fda( .outcome~., data = dat, method = earth::earth, pmethod = "none")
@@ -24,7 +24,7 @@ modelInfo <- list(label = "Bagged Flexible Discriminant Analysis",
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                   	require(earth)
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     bagFDA(.outcome ~ ., 
                            data = dat, 
@@ -51,7 +51,7 @@ modelInfo <- list(label = "Bagged Flexible Discriminant Analysis",
                   },
                   varImp = function(object, ...) {
                     allImp <- lapply(object$fit, varImp, ...)
-                    impDF <- as.data.frame(allImp)
+                    impDF <- as.data.frame(allImp, stringsAsFactors = TRUE)
                     meanImp <- apply(impDF, 1, mean)
                     out <- data.frame(Overall = meanImp)
                     rownames(out) <- names(meanImp)

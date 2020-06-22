@@ -15,15 +15,13 @@ resamples(x, ...)
 
 \method{resamples}{default}(x, modelNames = names(x), ...)
 
-\method{sort}{resamples}(x, decreasing = FALSE, metric = x$metric[1],
-  FUN = mean, ...)
+\method{sort}{resamples}(x, decreasing = FALSE, metric = x$metric[1], FUN = mean, ...)
 
 \method{summary}{resamples}(object, metric = object$metrics, ...)
 
 \method{as.matrix}{resamples}(x, metric = x$metric[1], ...)
 
-\method{as.data.frame}{resamples}(x, row.names = NULL,
-  optional = FALSE, metric = x$metric[1], ...)
+\method{as.data.frame}{resamples}(x, row.names = NULL, optional = FALSE, metric = x$metric[1], ...)
 
 modelCor(x, metric = x$metric[1], ...)
 

@@ -98,7 +98,7 @@ getRangeBounds <- function(pp) {
 #' less than two unique values unless either \code{method = "zv"} or
 #' \code{method = "nzv"} are invoked.
 #'
-#' Non-numeric data will not be pre-processed and there values will be in the
+#' Non-numeric data will not be pre-processed and their values will be in the
 #' data frame produced by the \code{predict} function. Note that when PCA or
 #' ICA is used, the non-numeric columns may be in different positions when
 #' predicted.
@@ -278,10 +278,10 @@ preProcess.default <- function(x, method = c("center", "scale"),
 
   ## check for highly correlated predictors
   if(any(names(method) == "corr")){
-    cmat <- try(cor(x[, !(colnames(x) %in% c(method$ignore, method$remove)), drop = FALSE], 
-                    use = "pairwise.complete.obs"), 
+    cmat <- try(cor(x[, !(colnames(x) %in% c(method$ignore, method$remove)), drop = FALSE],
+                    use = "pairwise.complete.obs"),
                 silent = TRUE)
-    if(class(cmat)[1] != "try-error") {
+    if(inherits(cmat, "try-error")) {
       high_corr <- findCorrelation(cmat, cutoff = cutoff)
       if(length(high_corr) > 0) {
         removed <- colnames(cmat)[high_corr]
@@ -338,7 +338,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
       if(length(yj) > 0) {
         for(i in seq(along = yj)) {
           who <- names(yj)[i]
-          x[,who] <- recipes::yj_trans(x[,who], yj[who])
+          x[,who] <- recipes::yj_transform(x[,who], yj[who])
         }
       }
     } else {
@@ -463,7 +463,12 @@ preProcess.default <- function(x, method = c("center", "scale"),
     tmp <- prcomp(x[, method$pca, drop = FALSE], scale = TRUE, retx = FALSE)
     if(is.null(pcaComp)) {
       cumVar <- cumsum(tmp$sdev^2/sum(tmp$sdev^2))
-      numComp <- max(2, which.max(cumVar >= thresh))
+      aboveThresh <- cumVar >= thresh
+      if (!any(aboveThresh)) {
+        numComp <- length(aboveThresh)
+      } else {
+        numComp <- max(2, which.max(aboveThresh))
+      }
     } else numComp <- min(pcaComp, ncol(tmp$rotation))
     rot <- tmp$rotation[,1:numComp]
   } else {
@@ -553,7 +558,7 @@ predict.preProcess <- function(object, newdata, ...) {
     if(length(lam) > 0) {
       for(i in seq(along = lam)) {
         who <- names(lam)[i]
-        newdata[,who] <- recipes::yj_trans(newdata[,who], lam[who])
+        newdata[,who] <- recipes::yj_transform(newdata[,who], lam[who])
       }
     }
   }
@@ -603,7 +608,7 @@ predict.preProcess <- function(object, newdata, ...) {
       newdata[!cc, object$method$knnImpute] <- hasMiss
     } else {
       if(is.data.frame(newdata)) {
-        newdata[!cc, object$method$knnImpute] <- as.data.frame(hasMiss)
+        newdata[!cc, object$method$knnImpute] <- as.data.frame(hasMiss, stringsAsFactors = TRUE)
       } else newdata[!cc, object$method$knnImpute] <- as.matrix(hasMiss)
     }
   }
@@ -616,7 +621,7 @@ predict.preProcess <- function(object, newdata, ...) {
                          function(x) any(is.na(x)))
     missingVars <- names(missingVars)[missingVars]
     ## ipred's bagging procedure only allows for data frames
-    if(!is.data.frame(hasMiss)) hasMiss <- as.data.frame(hasMiss)
+    if(!is.data.frame(hasMiss)) hasMiss <- as.data.frame(hasMiss, stringsAsFactors = TRUE)
     for(i in seq(along = missingVars)) {
       preds <- predict(object$bagImp[[missingVars[i]]]$model,
                        hasMiss[, !colnames(hasMiss) %in% missingVars[i], drop = FALSE])
@@ -628,7 +633,7 @@ predict.preProcess <- function(object, newdata, ...) {
       newdata[!cc,] <- hasMiss
     } else {
       if(is.data.frame(newdata)) {
-        newdata[!cc,] <- as.data.frame(hasMiss)
+        newdata[!cc,] <- as.data.frame(hasMiss, stringsAsFactors = TRUE)
       } else newdata[!cc,] <- as.matrix(hasMiss)
     }
   }
@@ -644,7 +649,7 @@ predict.preProcess <- function(object, newdata, ...) {
   if(any(names(object$method) == "pca")) {
     pca_cols <- newdata[, object$method$pca, drop = FALSE]
     pca_cols <-if(is.matrix(pca_cols)) pca_cols %*% object$rotation else as.matrix(pca_cols) %*% object$rotation
-    if(is.data.frame(newdata)) pca_cols <- as.data.frame(pca_cols)
+    if(is.data.frame(newdata)) pca_cols <- as.data.frame(pca_cols, stringsAsFactors = TRUE)
     newdata <- cbind(newdata, pca_cols)
     ## normally we get rid of columns that we used to create
     ## the PC's unless we still need them or want them
@@ -664,7 +669,7 @@ predict.preProcess <- function(object, newdata, ...) {
     ##if(object$ica$row.norm) newdata <- apply(newdata, 1, function(u) u/sd(u))
     ica_cols <- ica_cols %*% object$ica$K %*% object$ica$W
     colnames(ica_cols) <- paste("ICA", 1:ncol(object$ica$W), sep = "")
-    if(is.data.frame(newdata)) ica_cols <- as.data.frame(ica_cols)
+    if(is.data.frame(newdata)) ica_cols <- as.data.frame(ica_cols, stringsAsFactors = TRUE)
     newdata <- cbind(newdata, ica_cols)
     ## Same as PCA above
     discard <- object$method$ica
@@ -800,7 +805,7 @@ bagImp <- function(var, x, B = 10) {
   ## (y, X) interface, but the latter would have to
   ## do case-wise deletion of samples from the
   ## training set.
-  if(!is.data.frame(x)) x <- as.data.frame(x)
+  if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
   mod <- ipred::bagging(as.formula(paste(var, "~.")),
                         data = x,
                         nbagg = B,

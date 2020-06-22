@@ -4,11 +4,19 @@
 \alias{panel.needle}
 \title{Needle Plot Lattice Panel}
 \usage{
-panel.needle(x, y, horizontal = TRUE, pch = if (is.null(groups))
-  dot.symbol$pch else sup.symbol$pch, col = if (is.null(groups))
-  dot.symbol$col else sup.symbol$col, lty = dot.line$lty,
-  lwd = dot.line$lwd, col.line = dot.line$col, levels.fos = NULL,
-  groups = NULL, ...)
+panel.needle(
+  x,
+  y,
+  horizontal = TRUE,
+  pch = if (is.null(groups)) dot.symbol$pch else sup.symbol$pch,
+  col = if (is.null(groups)) dot.symbol$col else sup.symbol$col,
+  lty = dot.line$lty,
+  lwd = dot.line$lwd,
+  col.line = dot.line$col,
+  levels.fos = NULL,
+  groups = NULL,
+  ...
+)
 }
 \arguments{
 \item{x, y}{variables to be plotted in the panel. Typically y is the 'factor'}

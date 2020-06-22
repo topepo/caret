@@ -12,11 +12,6 @@ matrix:
   include:
   - r: devel
   - r: release
-  - name: Strict Latin-1 locale
-    r: release
-    before_script:
-      - sudo locale-gen en_US
-      - export LC_ALL=en_US
 
 r_packages: 
   - covr

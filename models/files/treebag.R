@@ -62,7 +62,7 @@ modelInfo <- list(label = "Bagged CART",
                     foo <- function(object, y, x) {
                       holdY <- y[-object$bindx]
                       tmp_x <- x[-object$bindx,,drop = FALSE]
-                      if(!is.data.frame(tmp_x)) tmp_x <- as.data.frame(tmp_x)
+                      if(!is.data.frame(tmp_x)) tmp_x <- as.data.frame(tmp_x, stringsAsFactors = TRUE)
                       if(is.factor(y)) {
                         tmp <- predict(object$btree, tmp_x, type = "class")
                         tmp <- factor(as.character(tmp), levels = levels(y))

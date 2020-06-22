@@ -16,7 +16,7 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     theDots <- list(...)
                     
@@ -40,7 +40,7 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                     out
                   },
                   predict = function(modelFit, newdata = NULL, submodels = NULL) {
-                    if(!is.null(newdata) && !is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.null(newdata) && !is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     ## party builds the levels into the model object, so I'm
                     ## going to assume that all the levels will be passed to
                     ## the output
@@ -51,7 +51,7 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                     out
                   },
                   prob = function(modelFit, newdata = NULL, submodels = NULL) {
-                    if(!is.null(newdata) && !is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.null(newdata) && !is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     obsLevels <- levels(modelFit@data@get("response")[,1])
                     rawProbs <- party::treeresponse(modelFit, newdata = newdata, OOB = TRUE)
                     probMatrix <- matrix(unlist(rawProbs), ncol = length(obsLevels), byrow = TRUE)

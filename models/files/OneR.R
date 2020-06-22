@@ -8,7 +8,7 @@ modelInfo <- list(label = "Single Rule Classification",
                   grid = function(x, y, len = NULL, search = "grid") 
                     data.frame(parameter = "none"),
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     theDots <- list(...)
                     
@@ -20,11 +20,11 @@ modelInfo <- list(label = "Single Rule Classification",
                     out      
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     predict(modelFit, newdata)
                     },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     predict(modelFit, newdata, type = "probability")
                     },
                   levels = function(x) x$obsLevels,

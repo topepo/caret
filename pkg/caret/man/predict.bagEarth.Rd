@@ -32,7 +32,7 @@ vector and \code{type = "probs"} outputs a matrix of class probabilities.}
 }
 \value{
 A vector of predictions (for regression or \code{type = "class"})
- or a data frame of class probabilities. By default, when the model 
+ or a data frame of class probabilities. By default, when the model
  predicts a number, a vector of numeric predictions is returned. When
  a classification model is used, the default prediction is a factor vector
  of classes.

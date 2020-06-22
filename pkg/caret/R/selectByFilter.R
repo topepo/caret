@@ -39,7 +39,7 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
     modelPred <- sbfControl$functions$pred(fitObject, testX)
     if (is.data.frame(modelPred) | is.matrix(modelPred)) {
       if (is.matrix(modelPred))
-        modelPred <- as.data.frame(modelPred)
+        modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
       modelPred$obs <- testY
     } else
       modelPred <- data.frame(pred = modelPred, obs = testY)
@@ -315,7 +315,7 @@ sbf <- function (x, ...) UseMethod("sbf")
 #' @export
 sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
   m <- match.call(expand.dots = FALSE)
-  if (is.matrix(eval.parent(m$data))) m$data <- as.data.frame(data)
+  if (is.matrix(eval.parent(m$data))) m$data <- as.data.frame(data, stringsAsFactors = FALSE)
   m$... <- m$contrasts <- NULL
   m[[1]] <- as.name("model.frame")
   m <- eval.parent(m)
@@ -325,7 +325,7 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
   xint <- match("(Intercept)", colnames(x), nomatch = 0)
   if (xint > 0)  x <- x[, -xint, drop = FALSE]
   y <- model.response(m)
-  res <- sbf(as.data.frame(x), y, ...)
+  res <- sbf(as.data.frame(x, stringsAsFactors = TRUE), y, ...)
   res$terms <- Terms
   res$coefnames <- colnames(x)
   res$call <- match.call()
@@ -782,7 +782,7 @@ print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 predict.sbf <- function(object, newdata = NULL, ...) {
   if (!is.null(newdata)) {
     if (inherits(object, "sbf.formula")) {
-      newdata <- as.data.frame(newdata)
+      newdata <- as.data.frame(newdata, stringsAsFactors = FALSE)
       rn <- row.names(newdata)
       Terms <- delete.response(object$terms)
       m <- model.frame(Terms, newdata, na.action = na.omit, xlev = object$xlevels)
@@ -1017,14 +1017,14 @@ caretSBF <- list(summary = defaultSummary,
                           !is.null(object$modelInfo$prob))
                      {
                        out <- cbind(data.frame(pred = tmp),
-                                    as.data.frame(predict(object, x, type = "prob")))
+                                    as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
                      } else out <- tmp
                    } else {
                      tmp <- predict(object, x)
                      if(!is.null(object$levels))
                      {
                        out <- cbind(data.frame(pred = tmp),
-                                    as.data.frame(predict(object, x, type = "prob")))
+                                    as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
                      } else out <- tmp
                    }
                    out
@@ -1056,14 +1056,14 @@ rfSBF <- list(summary = defaultSummary,
                   if(!is.null(object$levels))
                   {
                     out <- cbind(data.frame(pred = tmp),
-                                 as.data.frame(predict(object, x, type = "prob")))
+                                 as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
                   } else out <- tmp
                 } else {
                   tmp <- predict(object, x)
                   if(is.factor(object$y))
                   {
                     out <- cbind(data.frame(pred = tmp),
-                                 as.data.frame(predict(object, x, type = "prob")))
+                                 as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
                   } else out <- tmp
                 }
 
@@ -1084,7 +1084,7 @@ lmSBF <- list(summary = defaultSummary,
               {
                 if(ncol(x) > 0)
                 {
-                  tmp <- as.data.frame(x)
+                  tmp <- as.data.frame(x, stringsAsFactors = TRUE)
                   tmp$y <- y
                   lm(y~., data = tmp)
                 } else nullModel(y = y)
@@ -1124,7 +1124,7 @@ ldaSBF <- list(summary = defaultSummary,
                  } else {
                    tmp <- predict(object, x)
                    out <- cbind(data.frame(pred = tmp$class),
-                                as.data.frame(tmp$posterior))
+                                as.data.frame(tmp$posterior, stringsAsFactors = FALSE))
                  }
                  out
                },
@@ -1161,7 +1161,7 @@ nbSBF <- list(summary = defaultSummary,
                 } else {
                   tmp <- predict(object, x)
                   out <- cbind(data.frame(pred = tmp$class),
-                               as.data.frame(tmp$posterior))
+                               as.data.frame(tmp$posterior, stringsAsFactors = FALSE))
                 }
                 out
               },
@@ -1198,14 +1198,14 @@ treebagSBF <- list(summary = defaultSummary,
                        if(!is.null(object$levels))
                        {
                          out <- cbind(data.frame(pred = tmp),
-                                      as.data.frame(predict(object, x, type = "prob")))
+                                      as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
                        } else out <- tmp
                      } else {
                        tmp <- predict(object, x)
                        if(is.factor(object$y))
                        {
                          out <- cbind(data.frame(pred = tmp),
-                                      as.data.frame(predict(object, x, type = "prob")))
+                                      as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
                        } else out <- tmp
                      }
                      out
@@ -1260,7 +1260,7 @@ densityplot.sbf <- function(x,
   if(x$control$method %in%  c("oob", "LOOCV"))
     stop("Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling")
 
-  data <- as.data.frame(x$resample)
+  data <- as.data.frame(x$resample, stringsAsFactors = TRUE)
   form <- as.formula(paste("~", metric))
   densityplot(form, data = data, ...)
 }
@@ -1278,7 +1278,7 @@ histogram.sbf <- function(x,
   if(x$control$method %in%  c("oob", "LOOCV"))
     stop("Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling")
 
-  data <- as.data.frame(x$resample)
+  data <- as.data.frame(x$resample, stringsAsFactors = TRUE)
 
   form <- as.formula(paste("~", metric))
   histogram(form, data = data, ...)
@@ -1300,7 +1300,7 @@ varImp.sbf <- function(object, onlyFinal = TRUE, ...)
   vars <- sort(table(unlist(object$variables)), decreasing = TRUE)/length(object$control$index)
 
 
-  out <- as.data.frame(vars)
+  out <- as.data.frame(vars, stringsAsFactors = FALSE)
   names(out) <- "Overall"
   if(onlyFinal) out <- subset(out, rownames(out) %in% object$optVariables)
   out[order(-out$Overall),,drop = FALSE]
@@ -1412,7 +1412,7 @@ predict.nullModel <- function (object, newdata = NULL, type  = NULL, ...)
     {
       out <- matrix(rep(object$pct, n), nrow = n, byrow = TRUE)
       colnames(out) <- object$levels
-      out <- as.data.frame(out)
+      out <- as.data.frame(out, stringsAsFactors = TRUE)
     } else {
       out <- factor(rep(object$value, n), levels = object$levels)
     }

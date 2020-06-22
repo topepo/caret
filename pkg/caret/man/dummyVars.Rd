@@ -12,8 +12,7 @@
 \usage{
 dummyVars(formula, ...)
 
-\method{dummyVars}{default}(formula, data, sep = ".",
-  levelsOnly = FALSE, fullRank = FALSE, ...)
+\method{dummyVars}{default}(formula, data, sep = ".", levelsOnly = FALSE, fullRank = FALSE, ...)
 
 \method{print}{dummyVars}(x, ...)
 
@@ -124,7 +123,8 @@ when <- data.frame(time = c("afternoon", "night", "afternoon",
                             "morning", "afternoon", "afternoon"),
                    day = c("Mon", "Mon", "Mon",
                            "Wed", "Wed", "Fri",
-                           "Sat", "Sat", "Fri"))
+                           "Sat", "Sat", "Fri"),
+                           stringsAsFactors = TRUE)
 
 levels(when$time) <- list(morning="morning",
                           afternoon="afternoon",

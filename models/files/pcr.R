@@ -20,7 +20,7 @@ modelInfo <- list(label = "Principal Component Analysis",
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     ncomp <- min(ncol(x), param$ncomp)
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     pls::pcr(.outcome ~ ., data = dat, ncomp = ncomp, ...)
                   },
@@ -30,7 +30,7 @@ modelInfo <- list(label = "Principal Component Analysis",
                     if(!is.null(submodels))
                     {
                       tmp <- apply(predict(modelFit, newdata, ncomp = submodels$ncomp), 3, function(x) list(x))
-                      tmp <-  as.data.frame(tmp)
+                      tmp <-  as.data.frame(tmp, stringsAsFactors = TRUE)
                       out <- c(list(out), as.list(tmp))
                     }
                     out

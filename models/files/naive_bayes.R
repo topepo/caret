@@ -14,12 +14,12 @@ modelInfo <- list(label = "Naive Bayes",
                    out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     predict(modelFit , newdata)
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
-                    as.data.frame(predict(modelFit, newdata, type = "prob"))
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
+                    as.data.frame(predict(modelFit, newdata, type = "prob"), stringsAsFactors = TRUE)
                     },
                   predictors = function(x, ...) if(hasTerms(x)) predictors(x$terms) else names(x$tables),
                   tags = c("Bayesian Model"),

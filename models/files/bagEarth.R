@@ -5,7 +5,7 @@ modelInfo <- list(label = "Bagged MARS",
                                           class = c("numeric", "numeric"),
                                           label = c('#Terms', 'Product Degree')),
                   grid = function(x, y, len = NULL, search = "grid") {
-                    dat <- if (is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if (is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
 
                     mod <- earth::earth( .outcome~., data = dat, pmethod = "none")
@@ -108,7 +108,7 @@ modelInfo <- list(label = "Bagged MARS",
                   },
                   varImp = function(object, ...) {
                     allImp <- lapply(object$fit, varImp, ...)
-                    impDF <- as.data.frame(allImp)
+                    impDF <- as.data.frame(allImp, stringsAsFactors = TRUE)
                     meanImp <- apply(impDF, 1, mean)
                     out <- data.frame(Overall = meanImp)
                     rownames(out) <- names(meanImp)

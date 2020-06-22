@@ -197,7 +197,7 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
       for(i in 1:length(numInClass)) {
         ## create a vector of integers from 1:k as many times as possible without
         ## going over the number of samples in the class. Note that if the number
-        ## of samples in a class is less than k, nothing is producd here.
+        ## of samples in a class is less than k, nothing is produced here.
         min_reps <- numInClass[i] %/% k
         if(min_reps > 0) {
           spares <- numInClass[i] %% k
@@ -271,16 +271,18 @@ createTimeSlices <- function(y, initialWindow, horizon = 1, fixedWindow = TRUE, 
 #' @rdname createDataPartition
 #' @export
 groupKFold <- function(group, k = length(unique(group))) {
-  if(k > length(unique(group)))
-    stop(paste("`k` should be less than", length(unique(group))))
-  dat <- data.frame(index = seq(along = group), group = group)
-  groups <- data.frame(group = unique(dat$group))
-  group_folds <- createFolds(groups$group, returnTrain = TRUE, k = k)
-  group_folds <- lapply(group_folds, function(x, y) y[x,,drop = FALSE], y = groups)
-  dat_folds <- lapply(group_folds, function(x, y) merge(x, y), y = dat)
-  lapply(dat_folds, function(x) sort(x$index))
+  g_unique <- unique(group)
+  m <- length(g_unique)
+  if (k > m) {
+    stop("`k` should be less than ", m)
+  }
+  g_folds <- sample(k, size = m, replace = TRUE)
+  # Distribute obs to hold-out
+  out <- split(seq_along(group), g_folds[match(group, g_unique)])
+  names(out) <- paste0("Fold", gsub(" ", "0", format(seq_along(out))))
+  # Switch from hold-out to fold
+  lapply(out, function(z) seq_along(group)[-z])
 }
-
 
 make_resamples <- function(ctrl_obj, outcome) {
   n <- length(outcome)
