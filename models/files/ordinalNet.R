@@ -13,7 +13,7 @@ modelInfo <- list(label = "Penalized Ordinal Regression",
                                           label = c('Mixing Percentage', 'Penalty Parameter', 'Model Form', 'Model Family')),
                   grid = function(x, y, len = NULL, search = 'grid') {modeltypes <- c('parallel', 'nonparallel', 'semiparallel')
                                                                       families <- c("cumulative", "sratio", "cratio", "acat")
-                                                                      max_lambda <- max(ordinalNet(x = x, y = y, alpha = 0.01, nLambda = 2)$lambdaVals)
+                                                                      max_lambda <- max(ordinalNet::ordinalNet(x = x, y = y, alpha = 0.01, nLambda = 2)$lambdaVals)
                                                                       min_lambda <- 0.005 * max_lambda
                                                                       if (search == "grid") {
                                                                         out <- data.frame(
@@ -33,7 +33,7 @@ modelInfo <- list(label = "Penalized Ordinal Regression",
                                                                       out
                                                                      },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {if (!is.matrix(x)) x <- as.matrix(x)
-                                                                                out <- ordinalNet(
+                                                                                out <- ordinalNet::ordinalNet(
                                                                                   x = x, 
                                                                                   y = y, 
                                                                                   alpha = param$alpha, 
