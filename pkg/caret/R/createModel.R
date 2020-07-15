@@ -59,6 +59,8 @@
     modelFit$tuneValue <- tuneValue
     modelFit$obsLevels <- obsLevels
     modelFit$param <- list(...)
+    modelFit$data <- x
+    modelFit$response <- y
   }
 
   list(fit = modelFit, preProc = ppObj)
