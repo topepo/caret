@@ -317,7 +317,7 @@ train.default <- function(x, y,
   if(is.character(y)) y <- as.factor(y)
 
   if( !is.numeric(y) & !is.factor(y) ){
-    msg <- paste("Please make sure that the outcome column is a factor or numeric .",
+    msg <- paste("Please make sure that the outcome column is a factor or numeric.",
                  "The class(es) of the column:",
                  paste0("'", class(y), "'", collapse = ", "))
 
