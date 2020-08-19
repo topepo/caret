@@ -3,6 +3,14 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+
+\section{Changes in version 6.0-87}{
+  \itemize{
+    \item The \cpkg{ordinalNET} model was given an additional tuning parameter \code{modeltype}.
+  }
+}
+
+
 \section{Changes in version 6.0-86}{
   \itemize{
     \item Small release for \code{stringsAsFactors = TRUE} in R-4.0
@@ -12,7 +20,7 @@
 \section{Changes in version 6.0-85}{
   \itemize{
     \item Internal changes required by r-devel for new matrix class structure.
-    \item Michael Mayer contributed a faster version of `groupKFold()`. \issue{1108}
+    \item Michael Mayer contributed a faster version of \code{groupKFold()}. \issue{1108}
     \item A typo in a variable name was fixed. \issue{1087}
     \item Removed some warnings related to contrasts.
     \item Temporarily moved ROC calculations back to the \cpkg{pROC} package related to \code{JackStat/ModelMetrics#30}. \issue{1105}
