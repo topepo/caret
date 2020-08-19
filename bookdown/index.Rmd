@@ -34,7 +34,7 @@ Some resources:
 -   There is also a paper on caret in the [Journal of Statistical Software](http://www.jstatsoft.org/v28/i05). The example data can be obtained [here](descr.RData)(the predictors) and [here](mutagen.RData) (the outcomes).
 -   There is a [webinar](http://www.youtube.com/watch?v=7Jbb2ItbTC4) for the package on Youtube that was organized and recorded by Ray DiGiacomo Jr for the Orange County R User Group.
 -   At [useR! 2014](http://user2014.stat.ucla.edu), I was [interviewed](http://youtu.be/YmHyAHkjX_A) and discussed the package     and the book.
-- [DataCamp](https://www.datacamp.com) has a [beginner's tutorial on machine learning in R](https://www.datacamp.com/courses/machine-learning-toolbox) using `caret`.  
+- A list of `caret` **video tutorials** [can be found here](https://www.google.com/search?q=caret+tutorials&client=safari&rls=en&source=lnms&tbm=vid).  
 
 
 You can always email [me](mailto:mxkuhn@gmail.com) with questions,comments or suggestions.
