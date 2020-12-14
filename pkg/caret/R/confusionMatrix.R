@@ -185,6 +185,22 @@ confusionMatrix.default <- function(data, reference,
 }
 
 #' @rdname confusionMatrix
+#' @method confusionMatrix matrix
+#' @importFrom utils getFromNamespace
+#' @export
+confusionMatrix.matrix <- function(data,
+                                   positive = NULL,
+                                   prevalence = NULL,
+                                   mode = "sens_spec",
+                                   ...) {
+  if (length(unique(dim(data))) != 1) {
+    stop("matrix must have equal dimensions")
+  }
+  classTable <- as.table(data, ...)
+  getFromNamespace("confusionMatrix.table", "caret")(classTable, positive, prevalence = prevalence, mode = mode)
+}
+
+#' @rdname confusionMatrix
 #' @importFrom stats binom.test mcnemar.test
 #' @export
 confusionMatrix.table <- function(data, positive = NULL,
