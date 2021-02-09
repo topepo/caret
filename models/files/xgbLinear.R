@@ -72,7 +72,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                                      alpha = param$alpha), 
                                                 data = x,
                                                 nrounds = param$nrounds,
-                                                objective = "reg:linear",
+                                                objective = "reg:squarederror",
                                                 ...)
                     }
                     out

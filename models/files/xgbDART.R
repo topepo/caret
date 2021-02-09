@@ -150,7 +150,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                                      colsample_bytree = param$colsample_bytree),
                                                 data = x,
                                                 nrounds = param$nrounds,
-                                                objective = "reg:linear",
+                                                objective = "reg:squarederror",
                                                 booster= "dart",
                                                 ...)
                     }
