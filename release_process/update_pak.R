@@ -1,8 +1,10 @@
-options(repos = "http://cran.r-project.org")
+options(repos = "http://cran.r-project.org", width = 100)
 library(tools)
 library(pak)
+library(cli)
 
-###################################################################
+# ------------------------------------------------------------------------------
+
 ## Get the names of all CRAN related packages references by caret.
 ## Exclude orphaned and Bioconductor packages for now
 
@@ -16,32 +18,15 @@ library(caret)
 mods <- getModelInfo()
 
 libs <- unlist(lapply(mods, function(x) x$library))
-libs <- unique(sort(libs))
 libs <- libs[!(libs %in% c("caret", "vbmp", "gpls", "logicFS", "SDDA"))]
-libs <- c(libs, "knitr", "Hmisc", "googleVis", "animation",
-          "desirability", "networkD3", "heatmaply", "arm", "xtable",
-          "RColorBrewer", "gplots", "iplots", "latticeExtra",
-          "scatterplot3d", "vcd", "igraph", "corrplot", "ctv",
-          "Cairo", "shiny", "scales", "tabplot", "tikzDevice", "odfWeave",
-          "multicore", "doMC", "doMPI", "doSMP", "doBy",
-          "foreach", "doParallel", "aod", "car", "contrast", "Design",
-          "faraway",  "geepack",  "gmodels", "lme4", "tidyr", "devtools", "testthat",
-          "multcomp", "multtest", "pda", "qvalue", "ChemometricsWithR", "markdown",
-          "rmarkdown", "pscl",
-          ## odds and ends
-          "ape", "gdata", "boot", "bootstrap", "chron", "combinat", "concord", "cluster",
-          "desirability", "gsubfn", "gtools", "impute", "Matrix", "proxy", "plyr",
-          "reshape", "rJava", "SparseM", "sqldf", "XML", "lubridate", "GA",
-          "aroma.affymetrix", "remMap", "cghFLasso", "RCurl", "QSARdata", "reshape2",
-          "mapproj", "ggmap", "ggvis", "SuperLearner", "subsemble", "caretEnsemble",
-          "ROSE", "DMwR", "ellipse", "bookdown", "DT", "AppliedPredictiveModeling",
-          "pROC", "ggthemes", "sessioninfo", "mlbench", "tidyverse",
-          "vbmp", "gpls", "logicFS", "graph", "RBGL", "BiocManager")
 libs <- c(libs, package_dependencies("caret", reverse = TRUE)$caret)
 libs <- unique(libs)
 
+# Don't install rJava in case it borks the existing system
+libs <- libs[libs != "rJava"]
 
-###################################################################
+# ------------------------------------------------------------------------------
+
 ## Check to see if any packages are not on CRAN
 
 options(repos = "http://cran.r-project.org")
@@ -50,21 +35,35 @@ all_pkg <- rownames(available.packages(type = "source"))
 diffs <- libs[!(libs %in% all_pkg)]
 if (length(diffs) > 0) print(diffs)
 
-###################################################################
+# ------------------------------------------------------------------------------
 ## Install the files. This might re-install caret so beware.
-
-# devtools::install_github('dmlc/xgboost',subdir='R-package')
 
 libs <- sort(libs)
 n <- length(libs)
+iters <- format(1:n)
+libs_chr <- format(libs)
 
 for (i in seq_along(libs)) {
+  cli::cli_rule(paste0(libs_chr[i], " (", iters[i], "/", n, ")"))
+
   res <- try(
-    pkg_install(libs[i], upgrade = TRUE, ask = FALSE),
+    pak(libs[i], upgrade = TRUE, ask = FALSE),
     silent = TRUE
   )
 
-  print(res)
+  if (inherits(res, "try-error")) {
+    cat("Failed to install", libs[i], "\n\n")
+    print(as.character(res))
+  }
+
   cat("\n\n")
 }
 
+# ------------------------------------------------------------------------------
+# exceptions:
+
+install.packages("CHAID", repos="http://R-Forge.R-project.org")
+
+# ------------------------------------------------------------------------------
+
+q("no")
