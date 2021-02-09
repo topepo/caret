@@ -1,9 +1,7 @@
-[![Build Status](https://travis-ci.org/topepo/caret.svg?topepo=master)](https://travis-ci.org/topepo/caret)
+[![R-CMD-check](https://github.com/topepo/caret/workflows/R-CMD-check/badge.svg)](https://github.com/topepo/caret/actions)
 [![Coverage Status](https://coveralls.io/repos/topepo/caret/badge.svg?branch=master)](https://coveralls.io/r/topepo/caret?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/caret)](http://cran.r-project.org/web/packages/caret)
 [![Downloads](http://cranlogs.r-pkg.org/badges/caret)](http://cran.rstudio.com/package=caret)
-[![R build status](https://github.com/topepo/caret/workflows/R-CMD-check/badge.svg)](https://github.com/topepo/caret/actions)
-  
   
 # Classification and Regression Training
 
@@ -16,5 +14,5 @@ install.packages('caret')
 
 ## Install the development version from GitHub:
 ```r
-devtools::install_github('topepo/caret/pkg/caret')
+pak::pak('topepo/caret/pkg/caret')
 ```
