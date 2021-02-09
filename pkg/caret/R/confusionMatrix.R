@@ -197,7 +197,7 @@ confusionMatrix.matrix <- function(data,
     stop("matrix must have equal dimensions")
   }
   classTable <- as.table(data, ...)
-  getFromNamespace("confusionMatrix.table", "caret")(classTable, positive, prevalence = prevalence, mode = mode)
+  confusionMatrix(classTable, positive, prevalence = prevalence, mode = mode)
 }
 
 #' @rdname confusionMatrix
