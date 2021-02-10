@@ -7,10 +7,10 @@ fselect <- FALSE
 
 #############################################################################
 
-newPath <- paste(format(Sys.time(), "%Y_%m_%d_%H"), 
+newPath <- paste(format(Sys.time(), "%Y_%m_%d_%H"),
                  packageDescription("caret")$Version,
                  sep = "__")
-                 
+
 dir.create(paste0("~/tmp/", newPath))
 
 if(!small) {
@@ -20,7 +20,7 @@ if(!small) {
   testFiles <- c(## some models with sequential parameters:
                  "glmnet", "simpls", "rpart", "cubist",
                  ## nonstandard input options
-                 "xgbTree", 
+                 "xgbTree",
                  ## basic models
                  "ctree", "svmRadial", "WM", "bag",
                  ## Other clases
@@ -29,10 +29,10 @@ if(!small) {
   testFiles <- paste(file.path(getwd(), "Code", testFiles))
 }
 ## package archived or models excluded
-exclusions <- c("rknn", "rknnBel", "[mM]xnet", "sdda", "enpls.fs", 
-                "enpls", "Boruta", "Mlda", "RFlda", "rbf", "bdk", 
-                "SLAVE", "_back", "oblique\\.tree", "ordinalRF", 
-                "pythonKnnReg")
+exclusions <- c("rknn", "rknnBel", "[mM]xnet", "sdda", "enpls.fs",
+                "enpls", "Boruta", "Mlda", "RFlda", "rbf", "bdk",
+                "SLAVE", "_back", "oblique\\.tree", "ordinalRF",
+                "pythonKnnReg", "GCCL")
 exclusions <- paste0("(", exclusions, ")")
 exclusions <- paste0(exclusions, collapse = "|")
 testFiles <- testFiles[!grepl(exclusions, testFiles)]
@@ -46,8 +46,8 @@ newFiles <- paste0("~/tmp/", newPath, "/", basename(testFiles))
 
 file.copy(testFiles, newFiles)
 
-frbs <- c('ANFIS', 'DENFIS', 'FH.GBML', 'FIR.DM', 'FRBCS.CHI', 'FRBCS.W', 
-          'FS.HGD', 'GFS.FR.MOGAL', 'GFS.GCCL', 'GFS.LT.RS', 'GFS.THRIFT', 
+frbs <- c('ANFIS', 'DENFIS', 'FH.GBML', 'FIR.DM', 'FRBCS.CHI', 'FRBCS.W',
+          'FS.HGD', 'GFS.FR.MOGAL', 'GFS.GCCL', 'GFS.LT.RS', 'GFS.THRIFT',
           'HYFIS', 'SBC', 'SLAVE', 'WM')
 frbs <- paste0(frbs, ".RData")
 
@@ -60,7 +60,7 @@ rFiles <- basename(testFiles)
 rFiles <- sample(rFiles)
 
 file_label <- gsub(".R$", "", rFiles)
-file_label <- paste0(format(seq_along(file_label)), "/", 
+file_label <- paste0(format(seq_along(file_label)), "/",
                      length(file_label), " ",
                      file_label)
 
