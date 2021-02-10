@@ -22,9 +22,9 @@ trainY <- training$y
 
 rec_reg <- recipe(y ~ ., data = training) %>%
   step_center(all_predictors()) %>%
-  step_scale(all_predictors()) 
+  step_scale(all_predictors())
 testX <- trainX[, -ncol(training)]
-testY <- trainX$y 
+testY <- trainX$y
 
 rctrl1 <- trainControl(method = "cv", number = 3, returnResamp = "all")
 rctrl2 <- trainControl(method = "LOOCV")
@@ -37,14 +37,14 @@ test_reg_cv_model <- train(trainX, trainY, method = "rvmRadial", trControl = rct
 test_reg_pred <- predict(test_reg_cv_model, testX)
 
 set.seed(849)
-test_reg_cv_form <- train(y ~ ., data = training, 
+test_reg_cv_form <- train(y ~ ., data = training,
                           method = "rvmRadial", trControl = rctrl1,
                           preProc = c("center", "scale"))
 test_reg_pred_form <- predict(test_reg_cv_form, testX)
 
 set.seed(849)
-test_reg_rand <- train(trainX, trainY, 
-                       method = "rvmRadial", 
+test_reg_rand <- train(trainX, trainY,
+                       method = "rvmRadial",
                        trControl = rctrlR,
                        tuneLength = 4,
                        preProc = c("center", "scale"))
@@ -54,8 +54,8 @@ test_reg_loo_model <- train(trainX, trainY, method = "rvmRadial", trControl = rc
                             preProc = c("center", "scale"))
 
 set.seed(849)
-test_reg_none_model <- train(trainX, trainY, 
-                             method = "rvmRadial", 
+test_reg_none_model <- train(trainX, trainY,
+                             method = "rvmRadial",
                              trControl = rctrl3,
                              tuneLength = 1,
                              preProc = c("center", "scale"))
@@ -64,13 +64,14 @@ test_reg_none_pred <- predict(test_reg_none_model, testX)
 set.seed(849)
 test_reg_rec <- train(x = rec_reg,
                       data = training,
-                      method = "rvmRadial", 
+                      method = "rvmRadial",
                       trControl = rctrl1)
 
 if(
   !isTRUE(
-    all.equal(test_reg_cv_model$results, 
-              test_reg_rec$results))
+    all.equal(test_reg_cv_model$results,
+              test_reg_rec$results,
+              tol = .1))
 )
   stop("CV weights not giving the same results")
 

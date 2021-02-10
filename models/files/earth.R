@@ -136,7 +136,7 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                     }
                     rownames(out) <- gsub("-unused", "", rownames(out))
                     out <- as.data.frame(out, stringsAsFactors = TRUE)
-                    # fill in zeros for any variabels not  in out
+                    # fill in zeros for any variables not  in out
 
                     xNames <- object$namesx.org
                     if (any(!(xNames %in% rownames(out)))) {

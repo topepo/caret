@@ -1,4 +1,4 @@
-modelInfo <- list(label = "Bagged MARS using gCV Pruning", 
+modelInfo <- list(label = "Bagged MARS using gCV Pruning",
                   library = "earth",
                   type = c("Regression", "Classification"),
                   parameters = data.frame(parameter = c('degree'),
@@ -6,25 +6,25 @@ modelInfo <- list(label = "Bagged MARS using gCV Pruning",
                                           label = c('Product Degree')),
                   grid = function(x, y, len = NULL, search = "grid")  data.frame(degree = 1),
                   loop = NULL,
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                   	require(earth)
                     theDots <- list(...)
-                    theDots$keepxy <- TRUE 
-                    
+                    theDots$keepxy <- TRUE
+
                     ## pass in any model weights
-                    if (!is.null(wts)) 
+                    if (!is.null(wts))
                       theDots$weights <- wts
-                    
+
                     modelArgs <- c(list(x = x, y = y, degree = param$degree), theDots)
-                    
+
                     if (is.factor(y) & !any(names(theDots) == "glm")) {
                       modelArgs$glm <- list(family = binomial, maxit = 100)
                     }
-                    
+
                     tmp <- do.call(getFromNamespace("bagEarth.default", "caret"), modelArgs)
-                    
+
                     tmp$call["degree"] <-  param$degree
-                    tmp 
+                    tmp
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if (modelFit$problemType == "Classification") {
@@ -48,18 +48,26 @@ modelInfo <- list(label = "Bagged MARS using gCV Pruning",
                   },
                   varImp = function(object, ...) {
                     allImp <- lapply(object$fit, varImp, ...)
-                    impDF <- as.data.frame(allImp, stringsAsFactors = TRUE)
-                    meanImp <- apply(impDF, 1, mean)
-                    out <- data.frame(Overall = meanImp)
-                    rownames(out) <- names(meanImp)
-                    out
+                    add_row_names <- function(x) {
+                      x$variable <- rownames(x)
+                      rownames(x) <- NULL
+                      x
+                    }
+                    allImp <- lapply(allImp, add_row_names)
+                    impDF <- do.call("rbind", allImp)
+
+                    meanImp <- plyr::ddply(impDF, .(variable),
+                                           function(x) c(Overall = mean(x$Overall)))
+                    rownames(meanImp) <- meanImp$variable
+                    meanImp$variable <- NULL
+                    meanImp
                   },
                   levels = function(x) x$levels,
-                  tags = c("Multivariate Adaptive Regression Splines", "Ensemble Model", 
+                  tags = c("Multivariate Adaptive Regression Splines", "Ensemble Model",
                            "Implicit Feature Selection", "Bagging", "Accepts Case Weights"),
                   notes = paste(
                     "Unlike other packages used by `train`, the `earth`",
                     "package is fully loaded when this model is used."
-                  ),                  
+                  ),
                   sort = function(x) x[order(x$degree),],
                   oob = function(x) apply(x$oob, 2, function(x) quantile(x, probs = .5)))

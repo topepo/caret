@@ -108,11 +108,19 @@ modelInfo <- list(label = "Bagged MARS",
                   },
                   varImp = function(object, ...) {
                     allImp <- lapply(object$fit, varImp, ...)
-                    impDF <- as.data.frame(allImp, stringsAsFactors = TRUE)
-                    meanImp <- apply(impDF, 1, mean)
-                    out <- data.frame(Overall = meanImp)
-                    rownames(out) <- names(meanImp)
-                    out
+                    add_row_names <- function(x) {
+                      x$variable <- rownames(x)
+                      rownames(x) <- NULL
+                      x
+                    }
+                    allImp <- lapply(allImp, add_row_names)
+                    impDF <- do.call("rbind", allImp)
+
+                    meanImp <- plyr::ddply(impDF, .(variable),
+                                           function(x) c(Overall = mean(x$Overall)))
+                    rownames(meanImp) <- meanImp$variable
+                    meanImp$variable <- NULL
+                    meanImp
                   },
                   levels = function(x) x$levels,
                   tags = c("Multivariate Adaptive Regression Splines", "Ensemble Model",
