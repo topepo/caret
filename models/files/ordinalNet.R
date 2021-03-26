@@ -12,7 +12,7 @@ modelInfo <- list(label = "Penalized Ordinal Regression",
                   parameters = data.frame(
                     parameters = c('alpha', 'criteria', 'link', 'lambda', 'modeltype', 'family'),
                     class = c('numeric', 'character', 'character', 'numeric', 'character', 'character'),
-                    label = c('Mixing Percentage', 'Penalty Parameter', 'Model Form', 'Model Family')
+                    label = c('Mixing Percentage', 'Selection criterion', 'Link Function','Penalty Parameter', 'Model Form', 'Model Family')
                   ),
                   grid = function(x, y, len = NULL, search = 'grid') {
                     links <- c("logit", "probit", "cloglog", "cauchit")
