@@ -78,7 +78,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Weight Decay",
                           units = 1, 
                           activation = 'linear',
                           kernel_regularizer = keras::regularizer_l2(param$lambda)
-                        ) %>% compile(
+                        ) %>% keras::compile(
                           loss = "mean_squared_error",
                           optimizer = keras::optimizer_rmsprop(
                             lr = param$lr,
