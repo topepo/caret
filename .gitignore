@@ -128,3 +128,4 @@ RegressionTests/badhess.txt
 
 pkg/caret/revdep
 
+release_process/update_pak.Rout

@@ -13,7 +13,7 @@ modelInfo <- list(label = "Bayesian Additive Regression Trees",
                     if(search == "grid") {
                       out <- expand.grid(num_trees = 50,
                                          k = (1:len)+ 1,
-                                         alpha = seq(.9, .99, length = len), 
+                                         alpha = seq(.9, .99, length = len),
                                          beta = seq(1, 3, length = len),
                                          nu =  (1:len)+ 1)
                     } else {
@@ -26,39 +26,38 @@ modelInfo <- list(label = "Bayesian Additive Regression Trees",
                     if(is.factor(y)) {
                       out$k <- NA
                       out$nu <- NA
-                    } 
-                    out <- out[!duplicated(out),]
+                    }
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    if(!is.data.frame(x) | inherits(x, "tbl_df")) 
-                      x <- as.data.frame(x)
+                    if(!is.data.frame(x) | inherits(x, "tbl_df"))
+                      x <- as.data.frame(x, stringsAsFactors = TRUE)
                     out <- if(is.factor(y)) {
-                      bartMachine::bartMachine(X = x, y = y, 
-                                               num_trees = param$num_trees, 
-                                               alpha = param$alpha, 
+                      bartMachine::bartMachine(X = x, y = y,
+                                               num_trees = param$num_trees,
+                                               alpha = param$alpha,
                                                beta = param$beta,
                                                ...)
                     } else {
-                      bartMachine::bartMachine(X = x, y = y, 
-                                               num_trees = param$num_trees, 
-                                               k = param$k, 
-                                               alpha = param$alpha, 
+                      bartMachine::bartMachine(X = x, y = y,
+                                               num_trees = param$num_trees,
+                                               k = param$k,
+                                               alpha = param$alpha,
                                                beta = param$beta,
                                                nu = param$nu,
-                                               ...)                     
+                                               ...)
                     }
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
-                      newdata <- as.data.frame(newdata)
-                    out <- if(is.factor(modelFit$y)) 
-                      predict(modelFit, newdata, type = "class") else 
-                        predict(modelFit, newdata) 
+                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df"))
+                      newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
+                    out <- if(is.factor(modelFit$y))
+                      predict(modelFit, newdata, type = "class") else
+                        predict(modelFit, newdata)
                     },
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
-                      newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata) | inherits(newdata, "tbl_df"))
+                      newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     out <- predict(modelFit, newdata, type = "prob")
                     out <- data.frame(y1 = 1- out, y2 = out)
                     colnames(out) <- modelFit$y_levels

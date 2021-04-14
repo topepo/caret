@@ -8,7 +8,7 @@ modelInfo <- list(label = "Negative Binomial Generalized Linear Model",
                   grid = function(x, y, len = NULL, search = "grid") 
                     data.frame(link = c("log", "sqrt", "identity"))[1:min(len, 3),,drop = FALSE],
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
 
                     theDots <- list(...)
@@ -28,7 +28,7 @@ modelInfo <- list(label = "Negative Binomial Generalized Linear Model",
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     predict(modelFit, newdata, type = "response")
                   },
                   prob = NULL,

@@ -25,7 +25,7 @@ predict.splsda <- function(object, newdata = NULL, type = "class", ...)
     } else {
       requireNamespaceQuietStop("klaR")
       ## Bayes rule
-      tmpPred <-  as.data.frame(tmpPred[,-length(object$obsLevels)])
+      tmpPred <-  as.data.frame(tmpPred[,-length(object$obsLevels)], stringsAsFactors = TRUE)
       pred <- predict(object$probModel, tmpPred)
       out <- switch(type, class = pred$class, prob = pred$posterior)
 
@@ -44,7 +44,7 @@ splsda.default <- function(x, y, probMethod = "softmax", prior = NULL, ...)
     {
       if(!is.null(prior)) warning("Priors are ignored unless probMethod = \"Bayes\"")
     }
-  
+
   if(is.factor(y))
     {
       obsLevels <- levels(y)
@@ -60,7 +60,7 @@ splsda.default <- function(x, y, probMethod = "softmax", prior = NULL, ...)
           oldY <- obsLevels[apply(y, 1, which.max)]
         } else stop("y must be a matrix or a factor")
     }
-  
+
   if(!is.matrix(x)) x <- as.matrix(x)
 
   tmpData <- data.frame(n = paste("row", 1:nrow(y), sep = ""))
@@ -68,7 +68,7 @@ splsda.default <- function(x, y, probMethod = "softmax", prior = NULL, ...)
   tmpData$x <- x
 
   out <- spls::spls(x, y, ...)
-  
+
   out$obsLevels <- obsLevels
   out$probMethod <- probMethod
   if(probMethod == "Bayes")
@@ -86,17 +86,17 @@ splsda.default <- function(x, y, probMethod = "softmax", prior = NULL, ...)
       ## Get the raw model predictions, but leave one behind since the
       ## final class probs sum to one
       train <- train[, -length(obsLevels), drop = FALSE]
-      
+
       out$probModel <- makeModels(train, oldY, pri = prior)
-    } else out$probModel <- NULL 
-  
+    } else out$probModel <- NULL
+
   ##out$call <- funcCall
   class(out) <- "splsda"
   out
 }
 
 #' @export
-print.splsda <- function (x, ...) 
+print.splsda <- function (x, ...)
 {
     xmat <- x$x
     p <- ncol(xmat)
@@ -111,23 +111,23 @@ print.splsda <- function (x, ...)
     if (q == 1) {
         cat("\nSparse Partial Least Squares for discriminant analysis\n")
         cat("----\n")
-        cat(paste("Parameters: eta = ", eta, ", K = ", K, "\n", 
+        cat(paste("Parameters: eta = ", eta, ", K = ", K, "\n",
             sep = ""))
     }
     if (q > 1) {
         cat("\nSparse Partial Least Squares for discriminant analysis\n")
         cat("----\n")
-        cat(paste("Parameters: eta = ", eta, ", K = ", K, ", kappa = ", 
+        cat(paste("Parameters: eta = ", eta, ", K = ", K, ", kappa = ",
             kappa, "\n", sep = ""))
     }
-    cat(paste("PLS algorithm:\n", select, " for variable selection, ", 
+    cat(paste("PLS algorithm:\n", select, " for variable selection, ",
         fit, " for model fitting\n", sep = ""))
 
     switch(x$probMethod,
            softmax = cat("The softmax function was used to compute class probabilities.\n"),
            Bayes = cat("Bayes rule was used to compute class probabilities.\n"))
-    
-    cat(paste("\nSPLS chose ", length(A), " variables among ", 
+
+    cat(paste("\nSPLS chose ", length(A), " variables among ",
         p, " variables\n\n", sep = ""))
     cat("Selected variables: \n")
     if (!is.null(xAnames)) {

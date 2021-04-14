@@ -1,0 +1,2401 @@
+
+R version 4.0.3 (2020-10-10) -- "Bunny-Wunnies Freak Out"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin17.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(repos = "http://cran.r-project.org", width = 100)
+> library(tools)
+> library(pak)
+> library(cli)
+> 
+> # ------------------------------------------------------------------------------
+> 
+> ## Get the names of all CRAN related packages references by caret.
+> ## Exclude orphaned and Bioconductor packages for now
+> 
+> # install.packages(c("devtools"), repos = "http://cran.r-project.org", type = "source")
+> #
+> # library(devtools)
+> # install_github("topepo/caret", subdir = "pkg/caret")
+> 
+> library(caret)
+Loading required package: lattice
+Loading required package: ggplot2
+> 
+> mods <- getModelInfo()
+> 
+> libs <- unlist(lapply(mods, function(x) x$library))
+> libs <- libs[!(libs %in% c("caret", "vbmp", "gpls", "logicFS", "SDDA"))]
+> libs <- c(libs, package_dependencies("caret", reverse = TRUE)$caret)
+> libs <- unique(libs)
+> 
+> # Don't install rJava in case it borks the existing system
+> libs <- libs[libs != "rJava"]
+> 
+> # ------------------------------------------------------------------------------
+> 
+> ## Check to see if any packages are not on CRAN
+> 
+> options(repos = "http://cran.r-project.org")
+> all_pkg <- rownames(available.packages(type = "source"))
+> 
+> diffs <- libs[!(libs %in% all_pkg)]
+> if (length(diffs) > 0) print(diffs)
+[1] "adaptDA"       "CHAID"         "sparsediscrim" "elmNN"         "foba"          "FCNN4R"       
+[7] "mxnet"        
+> 
+> # ------------------------------------------------------------------------------
+> ## Install the files. This might re-install caret so beware.
+> 
+> libs <- sort(libs)
+> n <- length(libs)
+> iters <- format(1:n)
+> libs_chr <- format(libs)
+> 
+> for (i in seq_along(libs)) {
++   cli::cli_rule(paste0(libs_chr[i], " (", iters[i], "/", n, ")"))
++ 
++   res <- try(
++     pak(libs[i], upgrade = TRUE, ask = FALSE),
++     silent = TRUE
++   )
++ 
++   if (inherits(res, "try-error")) {
++     cat("Failed to install", libs[i], "\n\n")
++     print(as.character(res))
++   }
++ 
++   cat("\n\n")
++ }
+── ada                  (  1/237) ──────────────────────────────────────────────────────────────────
+ℹ Loading global cached package metadata
+✔ Loading global cached package metadata ... done
+
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 1 pkgs | kept 2, updated 0, new 0 | downloaded 0 (0 B) 7.1s
+
+
+── adabag               (  2/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 64 pkgs | kept 65, updated 0, new 0 | downloaded 0 (0 B) 2.5s
+
+
+── adaptDA              (  3/237) ──────────────────────────────────────────────────────────────────
+Failed to install adaptDA 
+
+[1] "Error : invalid version specification ‘NA’\n"
+
+
+── AdaSampling          (  4/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 64 pkgs | kept 65, updated 0, new 0 | downloaded 0 (0 B) 2.6s
+
+
+── aLFQ                 (  5/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 78 pkgs | kept 79, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── ampir                (  6/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 65 pkgs | kept 66, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── AntAngioCOOL         (  7/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 66 pkgs | kept 67, updated 0, new 0 | downloaded 0 (0 B) 2.5s
+
+
+── arm                  (  8/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 70 pkgs | kept 71, updated 0, new 0 | downloaded 0 (0 B) 2.6s
+
+
+── assignPOP            (  9/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 67 pkgs | kept 68, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── autoBagging          ( 10/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 85 pkgs | kept 86, updated 0, new 0 | downloaded 0 (0 B) 3.1s
+
+
+── AutoStepwiseGLM      ( 11/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 65 pkgs | kept 66, updated 0, new 0 | downloaded 0 (0 B) 2.5s
+
+
+── bartMachine          ( 12/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 8 pkgs | kept 9, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── binda                ( 13/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 1 pkgs | kept 2, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── biomod2              ( 14/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 90 pkgs | kept 91, updated 0, new 0 | downloaded 0 (0 B) 3.1s
+
+
+── BLRShiny             ( 15/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 92 pkgs | kept 93, updated 0, new 0 | downloaded 0 (0 B) 3.1s
+
+
+── BLRShiny2            ( 16/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 92 pkgs | kept 93, updated 0, new 0 | downloaded 0 (0 B) 3s
+
+
+── bnclassify           ( 17/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 5 pkgs | kept 6, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── bnviewer             ( 18/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 87 pkgs | kept 88, updated 0, new 0 | downloaded 0 (0 B) 3s
+
+
+── brnn                 ( 19/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 2 pkgs | kept 3, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── bst                  ( 20/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 9 pkgs | kept 10, updated 0, new 0 | downloaded 0 (0 B) 1.8s
+
+
+── C50                  ( 21/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 17 pkgs | kept 18, updated 0, new 0 | downloaded 0 (0 B) 1.7s
+
+
+── caretEnsemble        ( 22/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 65 pkgs | kept 66, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── CAST                 ( 23/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 65 pkgs | kept 66, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── cat2cat              ( 24/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 67 pkgs | kept 68, updated 0, new 0 | downloaded 0 (0 B) 2.6s
+
+
+── caTools              ( 25/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 1 pkgs | kept 2, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── CHAID                ( 26/237) ──────────────────────────────────────────────────────────────────
+Failed to install CHAID 
+
+[1] "Error : Cannot install packages:\n* CHAID: Can't find package called CHAID.\n"
+
+
+── chemmodlab           ( 27/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 110 pkgs | kept 111, updated 0, new 0 | downloaded 0 (0 B) 3.5s
+
+
+── class                ( 28/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 1 pkgs | kept 2, updated 0, new 0 | downloaded 0 (0 B) 1.6s
+
+
+── classifierplots      ( 29/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 70 pkgs | kept 71, updated 0, new 0 | downloaded 0 (0 B) 2.6s
+
+
+── ClinicalUtilityRecal ( 30/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 65 pkgs | kept 66, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── clustDRM             ( 31/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 111 pkgs | kept 112, updated 0, new 0 | downloaded 0 (0 B) 3.1s
+
+
+── CMShiny              ( 32/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 92 pkgs | kept 93, updated 0, new 0 | downloaded 0 (0 B) 3.1s
+
+
+── coca                 ( 33/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 77 pkgs | kept 78, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── ContaminatedMixt     ( 34/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 68 pkgs | kept 69, updated 0, new 0 | downloaded 0 (0 B) 2.6s
+
+
+── CopulaCenR           ( 35/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 98 pkgs | kept 99, updated 0, new 0 | downloaded 0 (0 B) 3s
+
+
+── crtests              ( 36/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 63 pkgs | kept 64, updated 0, new 0 | downloaded 0 (0 B) 2.6s
+
+
+── CSUV                 ( 37/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 100 pkgs | kept 101, updated 0, new 0 | downloaded 0 (0 B) 3.1s
+
+
+── CTShiny              ( 38/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 104 pkgs | kept 105, updated 0, new 0 | downloaded 0 (0 B) 3.1s
+
+
+── CTShiny2             ( 39/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 104 pkgs | kept 105, updated 0, new 0 | downloaded 0 (0 B) 3.3s
+
+
+── Cubist               ( 40/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 8 pkgs | kept 9, updated 0, new 0 | downloaded 0 (0 B) 1.7s
+
+
+── cytominer            ( 41/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 68 pkgs | kept 69, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── DamiaNN              ( 42/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 80 pkgs | kept 81, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── datafsm              ( 43/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 64 pkgs | kept 65, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── deepboost            ( 44/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 1 pkgs | kept 2, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── deepnet              ( 45/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.2s
+
+
+── dissever             ( 46/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 68 pkgs | kept 69, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── dplyr                ( 47/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 19 pkgs | kept 20, updated 0, new 0 | downloaded 0 (0 B) 1.6s
+
+
+── driveR               ( 48/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 117 pkgs | kept 118, updated 0, new 0 | downloaded 0 (0 B) 3.3s
+
+
+── dtree                ( 49/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 78 pkgs | kept 79, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── dtwSat               ( 50/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 74 pkgs | kept 75, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── e1071                ( 51/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 2 pkgs | kept 3, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── earth                ( 52/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 4 pkgs | kept 5, updated 0, new 0 | downloaded 0 (0 B) 1.6s
+
+
+── eclust               ( 53/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 111 pkgs | kept 112, updated 0, new 0 | downloaded 0 (0 B) 3s
+
+
+── elasticnet           ( 54/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 1 pkgs | kept 2, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── elmNN                ( 55/237) ──────────────────────────────────────────────────────────────────
+Failed to install elmNN 
+
+[1] "Error : invalid version specification ‘NA’\n"
+
+
+── ensembleR            ( 56/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 63 pkgs | kept 64, updated 0, new 0 | downloaded 0 (0 B) 2.6s
+
+
+── evtree               ( 57/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 9 pkgs | kept 10, updated 0, new 0 | downloaded 0 (0 B) 1.7s
+
+
+── extraTrees           ( 58/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 1 pkgs | kept 2, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── fairness             ( 59/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 126 pkgs | kept 127, updated 0, new 0 | downloaded 0 (0 B) 3.5s
+
+
+── fastAdaboost         ( 60/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 2 pkgs | kept 3, updated 0, new 0 | downloaded 0 (0 B) 1.6s
+
+
+── fastICA              ( 61/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── FCNN4R               ( 62/237) ──────────────────────────────────────────────────────────────────
+Failed to install FCNN4R 
+
+[1] "Error : invalid version specification ‘NA’\n"
+
+
+── fdm2id               ( 63/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 192 pkgs | kept 193, updated 0, new 0 | downloaded 0 (0 B) 4.8s
+
+
+── featuretoolsR        ( 64/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 82 pkgs | kept 83, updated 0, new 0 | downloaded 0 (0 B) 2.5s
+
+
+── fieldRS              ( 65/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 80 pkgs | kept 81, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── fmf                  ( 66/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 146 pkgs | kept 147, updated 0, new 0 | downloaded 0 (0 B) 4.1s
+
+
+── foba                 ( 67/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.2s
+
+
+── foreach              ( 68/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 2 pkgs | kept 3, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── foster               ( 69/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 83 pkgs | kept 84, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── frbs                 ( 70/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── fscaret              ( 71/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 66 pkgs | kept 67, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── FSinR                ( 72/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 71 pkgs | kept 72, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── FuncNN               ( 73/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 146 pkgs | kept 147, updated 0, new 0 | downloaded 0 (0 B) 3.7s
+
+
+── gam                  ( 74/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 3 pkgs | kept 4, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── gbm                  ( 75/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 3 pkgs | kept 4, updated 0, new 0 | downloaded 0 (0 B) 1.6s
+
+
+── glmdisc              ( 76/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 65 pkgs | kept 66, updated 0, new 0 | downloaded 0 (0 B) 2.6s
+
+
+── glmnet               ( 77/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 7 pkgs | kept 8, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── glmtree              ( 78/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 68 pkgs | kept 69, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── GPCMlasso            ( 79/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 78 pkgs | kept 79, updated 0, new 0 | downloaded 0 (0 B) 2.9s
+
+
+── h2o                  ( 80/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 3 pkgs | kept 4, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── hda                  ( 81/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 3 pkgs | kept 4, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── HDclassif            ( 82/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 6 pkgs | kept 7, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── healthcareai         ( 83/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 75 pkgs | kept 76, updated 0, new 0 | downloaded 0 (0 B) 2.9s
+
+
+── HiDimDA              ( 84/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── hsdar                ( 85/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 69 pkgs | kept 70, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── iForecast            ( 86/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 64 pkgs | kept 65, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── import               ( 87/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── inTrees              ( 88/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 10 pkgs | kept 11, updated 0, new 0 | downloaded 0 (0 B) 1.7s
+
+
+── ipred                ( 89/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 13 pkgs | kept 14, updated 0, new 0 | downloaded 0 (0 B) 1.6s
+
+
+── JFE                  ( 90/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 101 pkgs | kept 102, updated 0, new 0 | downloaded 0 (0 B) 3s
+
+
+── JQL                  ( 91/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 65 pkgs | kept 66, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── KCSKNNShiny          ( 92/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 85 pkgs | kept 86, updated 0, new 0 | downloaded 0 (0 B) 3.1s
+
+
+── KCSNBShiny           ( 93/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 85 pkgs | kept 86, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── keras                ( 94/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 26 pkgs | kept 27, updated 0, new 0 | downloaded 0 (0 B) 1.7s
+
+
+── kerndwd              ( 95/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── kernlab              ( 96/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── kknn                 ( 97/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 5 pkgs | kept 6, updated 0, new 0 | downloaded 0 (0 B) 1.7s
+
+
+── klaR                 ( 98/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 66 pkgs | kept 67, updated 0, new 0 | downloaded 0 (0 B) 2.3s
+
+
+── KNNShiny             ( 99/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 98 pkgs | kept 99, updated 0, new 0 | downloaded 0 (0 B) 3s
+
+
+── kohonen              (100/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 1 pkgs | kept 2, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── KRLS                 (101/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── lars                 (102/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.2s
+
+
+── LassoGEE             (103/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 67 pkgs | kept 68, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── latrend              (104/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 117 pkgs | kept 118, updated 0, new 0 | downloaded 0 (0 B) 3.1s
+
+
+── leaps                (105/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.2s
+
+
+── LiblineaR            (106/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── lilikoi              (107/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 188 pkgs | kept 189, updated 0, new 0 | downloaded 0 (0 B) 4s
+
+
+── LncFinder            (108/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 72 pkgs | kept 73, updated 0, new 0 | downloaded 0 (0 B) 2.5s
+
+
+── LogicReg             (109/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 3 pkgs | kept 4, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── LPRelevance          (110/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 73 pkgs | kept 74, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── m2b                  (111/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 69 pkgs | kept 70, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── mand                 (112/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 78 pkgs | kept 79, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── manymodelr           (113/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 70 pkgs | kept 71, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── MASS                 (114/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── Matrix               (115/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 1 pkgs | kept 2, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── mboost               (116/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 12 pkgs | kept 13, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── mcca                 (117/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 98 pkgs | kept 99, updated 0, new 0 | downloaded 0 (0 B) 3.1s
+
+
+── mda                  (118/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 2 pkgs | kept 3, updated 0, new 0 | downloaded 0 (0 B) 1.7s
+
+
+── MetabolomicsBasics   (119/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 100 pkgs | kept 101, updated 0, new 0 | downloaded 0 (0 B) 3s
+
+
+── MetaClean            (120/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 167 pkgs | kept 168, updated 0, new 0 | downloaded 0 (0 B) 3.8s
+
+
+── metaEnsembleR        (121/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 67 pkgs | kept 68, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── mgcv                 (122/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 3 pkgs | kept 4, updated 0, new 0 | downloaded 0 (0 B) 1.7s
+
+
+── MiDA                 (123/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 93 pkgs | kept 94, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── mikropml             (124/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 75 pkgs | kept 76, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── MLDAShiny            (125/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 113 pkgs | kept 114, updated 0, new 0 | downloaded 0 (0 B) 3.2s
+
+
+── MLDAShiny2           (126/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 113 pkgs | kept 114, updated 0, new 0 | downloaded 0 (0 B) 3.3s
+
+
+── mlquantify           (127/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 64 pkgs | kept 65, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── MNLR                 (128/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 90 pkgs | kept 91, updated 0, new 0 | downloaded 0 (0 B) 2.9s
+
+
+── MobileTrigger        (129/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 95 pkgs | kept 96, updated 0, new 0 | downloaded 0 (0 B) 2.9s
+
+
+── modelgrid            (130/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 63 pkgs | kept 64, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── monmlp               (131/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 2 pkgs | kept 3, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── monomvn              (132/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 5 pkgs | kept 6, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── mosaicModel          (133/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 124 pkgs | kept 125, updated 0, new 0 | downloaded 0 (0 B) 3.5s
+
+
+── MRFcov               (134/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 69 pkgs | kept 70, updated 0, new 0 | downloaded 0 (0 B) 3s
+
+
+── MRReg                (135/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 64 pkgs | kept 65, updated 0, new 0 | downloaded 0 (0 B) 2.5s
+
+
+── msaenet              (136/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 10 pkgs | kept 11, updated 0, new 0 | downloaded 0 (0 B) 1.6s
+
+
+── multiclassPairs      (137/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 68 pkgs | kept 69, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── mxnet                (138/237) ──────────────────────────────────────────────────────────────────
+Failed to install mxnet 
+
+[1] "Error : Cannot install packages:\n* mxnet: Can't find package called mxnet.\n"
+
+
+── naivebayes           (139/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── NBShiny              (140/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 92 pkgs | kept 93, updated 0, new 0 | downloaded 0 (0 B) 2.9s
+
+
+── NBShiny2             (141/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 92 pkgs | kept 93, updated 0, new 0 | downloaded 0 (0 B) 3s
+
+
+── NBShiny3             (142/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 92 pkgs | kept 93, updated 0, new 0 | downloaded 0 (0 B) 3s
+
+
+── nbTransmission       (143/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 64 pkgs | kept 65, updated 0, new 0 | downloaded 0 (0 B) 2.6s
+
+
+── neuralnet            (144/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 2 pkgs | kept 3, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── NeuralSens           (145/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 93 pkgs | kept 94, updated 0, new 0 | downloaded 0 (0 B) 3s
+
+
+── nnet                 (146/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── nnGarrote            (147/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 66 pkgs | kept 67, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── nnls                 (148/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.2s
+
+
+── NNS                  (149/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 138 pkgs | kept 139, updated 0, new 0 | downloaded 0 (0 B) 3.8s
+
+
+── nodeHarvest          (150/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 2 pkgs | kept 3, updated 0, new 0 | downloaded 0 (0 B) 1.7s
+
+
+── NoiseFiltersR        (151/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 70 pkgs | kept 71, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── nonet                (152/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 110 pkgs | kept 111, updated 0, new 0 | downloaded 0 (0 B) 3.3s
+
+
+── NonProbEst           (153/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 68 pkgs | kept 69, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── obliqueRF            (154/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 11 pkgs | kept 12, updated 0, new 0 | downloaded 0 (0 B) 1.7s
+
+
+── oncrawlR             (155/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 99 pkgs | kept 100, updated 0, new 0 | downloaded 0 (0 B) 2.9s
+
+
+── ordinalForest        (156/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 13 pkgs | kept 14, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── ordinalNet           (157/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── pamr                 (158/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 4 pkgs | kept 5, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── panelWranglR         (159/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 87 pkgs | kept 88, updated 0, new 0 | downloaded 0 (0 B) 3s
+
+
+── ParallelDSM          (160/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 80 pkgs | kept 81, updated 0, new 0 | downloaded 0 (0 B) 2.9s
+
+
+── parboost             (161/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 84 pkgs | kept 85, updated 0, new 0 | downloaded 0 (0 B) 3.1s
+
+
+── partDSA              (162/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 3 pkgs | kept 4, updated 0, new 0 | downloaded 0 (0 B) 1.7s
+
+
+── party                (163/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 15 pkgs | kept 16, updated 0, new 0 | downloaded 0 (0 B) 1.8s
+
+
+── partykit             (164/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 8 pkgs | kept 9, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── penalized            (165/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 4 pkgs | kept 5, updated 0, new 0 | downloaded 0 (0 B) 1.6s
+
+
+── penalizedLDA         (166/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 1 pkgs | kept 2, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── pls                  (167/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── plsRglm              (168/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 85 pkgs | kept 86, updated 0, new 0 | downloaded 0 (0 B) 2.5s
+
+
+── plyr                 (169/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 1 pkgs | kept 2, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── PredPsych            (170/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 78 pkgs | kept 79, updated 0, new 0 | downloaded 0 (0 B) 2.9s
+
+
+── predtoolsTS          (171/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 114 pkgs | kept 115, updated 0, new 0 | downloaded 0 (0 B) 3.3s
+
+
+── PriceIndices         (172/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 70 pkgs | kept 71, updated 0, new 0 | downloaded 0 (0 B) 2.6s
+
+
+── protoclass           (173/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 2 pkgs | kept 3, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── proxy                (174/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── qrnn                 (175/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── quantable            (176/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 72 pkgs | kept 73, updated 0, new 0 | downloaded 0 (0 B) 3.2s
+
+
+── quantregForest       (177/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 2 pkgs | kept 3, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── RadialVisGadgets     (178/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 86 pkgs | kept 87, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── randomForest         (179/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── randomGLM            (180/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 5 pkgs | kept 6, updated 0, new 0 | downloaded 0 (0 B) 1.6s
+
+
+── RandPro              (181/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 64 pkgs | kept 65, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── ranger               (182/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 3 pkgs | kept 4, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── RaSEn                (183/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 70 pkgs | kept 71, updated 0, new 0 | downloaded 0 (0 B) 2.6s
+
+
+── Rborist              (184/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 3 pkgs | kept 4, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── relaxo               (185/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 1 pkgs | kept 2, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── RelimpPCR            (186/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 71 pkgs | kept 72, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── rFerns               (187/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.2s
+
+
+── RISCA                (188/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will update 1 package.
+→ Will download 1 package with unknown size.
++ RISCA 0.8.2 → 0.9  ⬇
+ℹ Getting 1 pkg with unknown size
+
+✔ Got RISCA 0.9 (macos) (2.65 MB)
+✔ Downloaded 1 package (2.65 MB) in 1.9s
+
+✔ Installed RISCA 0.9  (46ms)
+✔ 1 + 79 pkgs | kept 79, updated 1, new 0 | downloaded 1 (2.65 MB) 4.6s
+
+
+── rmda                 (189/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 65 pkgs | kept 66, updated 0, new 0 | downloaded 0 (0 B) 2.9s
+
+
+── RMKL                 (190/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 65 pkgs | kept 66, updated 0, new 0 | downloaded 0 (0 B) 3s
+
+
+── rModeling            (191/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 64 pkgs | kept 65, updated 0, new 0 | downloaded 0 (0 B) 2.9s
+
+
+── robustDA             (192/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will update 1 package.
+→ Will download 1 package with unknown size.
++ robustDA 1.1 → 1.2  ⬇
+ℹ Getting 1 pkg with unknown size
+
+✔ Got robustDA 1.2 (macos) (22.01 kB)
+✔ Downloaded 1 package (22.01 kB) in 650ms
+
+✔ Installed robustDA 1.2  (22ms)
+✔ 1 + 4 pkgs | kept 4, updated 1, new 0 | downloaded 1 (22.01 kB) 2.1s
+
+
+── rocc                 (193/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 6 pkgs | kept 7, updated 0, new 0 | downloaded 0 (0 B) 1.8s
+
+
+── rotationForest       (194/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will update 1 package.
+→ Will download 1 package with unknown size.
++ rotationForest 1.0 → 0.1.3  ⬇
+ℹ Getting 1 pkg with unknown size
+
+✔ Got rotationForest 0.1.3 (macos) (22.23 kB)
+✔ Downloaded 1 package (22.23 kB) in 798ms
+
+✔ Installed rotationForest 0.1.3  (26ms)
+✔ 1 + 1 pkgs | kept 1, updated 1, new 0 | downloaded 1 (22.23 kB) 2.2s
+
+
+── rpart                (195/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.6s
+
+
+── rpartScore           (196/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 1 pkgs | kept 2, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── rqPen                (197/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 10 pkgs | kept 11, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── rrcov                (198/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 5 pkgs | kept 6, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── rrcovHD              (199/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 43 pkgs | kept 44, updated 0, new 0 | downloaded 0 (0 B) 2.3s
+
+
+── RRF                  (200/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── rrlda                (201/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will update 4 packages.
+→ Will download 4 packages with unknown size.
++ GGally          2.0.0 → 2.1.0  ⬇
++ robCompositions 2.2.1 → 2.3.0  ⬇
++ vcd             1.4-7 → 1.4-8  ⬇
++ VIM             6.0.0 → 6.1.0  ⬇
+ℹ Getting 4 pkgs with unknown sizes
+
+✔ Got GGally 2.1.0 (macos) (1.63 MB)
+✔ Got vcd 1.4-8 (macos) (1.52 MB)
+✔ Got VIM 6.1.0 (macos) (2.62 MB)
+✔ Got robCompositions 2.3.0 (macos) (5.05 MB)
+✔ Downloaded 4 packages (10.82 MB) in 2.5s
+
+✔ Installed GGally 2.1.0  (65ms)
+✔ Installed VIM 6.1.0  (103ms)
+✔ Installed robCompositions 2.3.0  (176ms)
+✔ Installed vcd 1.4-8  (210ms)
+✔ 1 + 134 pkgs | kept 131, updated 4, new 0 | downloaded 4 (10.82 MB) 6.2s
+
+
+── RSNNS                (202/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 1 pkgs | kept 2, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── RStoolbox            (203/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 70 pkgs | kept 71, updated 0, new 0 | downloaded 0 (0 B) 2.9s
+
+
+── RWeka                (204/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 2 pkgs | kept 3, updated 0, new 0 | downloaded 0 (0 B) 1.5s
+
+
+── sda                  (205/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will update 1 package.
+→ Will download 1 package with unknown size.
++ fdrtool 1.2.15 → 1.2.16  ⬇
+ℹ Getting 1 pkg with unknown size
+
+✔ Got fdrtool 1.2.16 (macos) (140.04 kB)
+✔ Downloaded 1 package (140.04 kB) in 1.3s
+
+✔ Installed fdrtool 1.2.16  (27ms)
+✔ 1 + 3 pkgs | kept 3, updated 1, new 0 | downloaded 1 (140.04 kB) 3s
+
+
+── sdwd                 (206/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will update 1 package.
+→ Will download 1 package with unknown size.
++ sdwd 1.0.3 → 1.0.5  ⬇
+ℹ Getting 1 pkg with unknown size
+
+✔ Got sdwd 1.0.5 (macos) (1.05 MB)
+✔ Downloaded 1 package (1.05 MB) in 1.9s
+
+✔ Installed sdwd 1.0.5  (27ms)
+✔ 1 + 2 pkgs | kept 2, updated 1, new 0 | downloaded 1 (1.05 MB) 3.4s
+
+
+── shinyr               (207/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will update 2 packages.
+→ Will download 2 packages with unknown size.
++ NLP 0.2-0 → 0.2-1  ⬇
++ tm  0.7-7 → 0.7-8  ⬇
+ℹ Getting 2 pkgs with unknown sizes
+
+✔ Got NLP 0.2-1 (macos) (388.61 kB)
+✔ Got tm 0.7-8 (macos) (1.10 MB)
+✔ Downloaded 2 packages (1.49 MB) in 1.6s
+
+✔ Installed NLP 0.2-1  (58ms)
+✔ Installed tm 0.7-8  (108ms)
+✔ 1 + 116 pkgs | kept 115, updated 2, new 0 | downloaded 2 (1.49 MB) 4.7s
+
+
+── SLEMI                (208/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 91 pkgs | kept 92, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── smartR               (209/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will update 5 packages.
+→ Will download 5 packages with unknown size.
++ gdistance  1.3-1  → 1.3-6   ⬇
++ marmap     1.0.4  → 1.0.5   ⬇
++ PBSmapping 2.72.1 → 2.73.0  ⬇
++ spData     0.3.5  → 0.3.8   ⬇
++ spdep      1.1-3  → 1.1-5   ⬇
+ℹ Getting 5 pkgs with unknown sizes
+
+✔ Got gdistance 1.3-6 (macos) (1.38 MB)
+✔ Got marmap 1.0.5 (macos) (2.47 MB)
+✔ Got spData 0.3.8 (macos) (3.97 MB)
+✔ Got spdep 1.1-5 (macos) (4.22 MB)
+✔ Got PBSmapping 2.73.0 (macos) (5.08 MB)
+✔ Downloaded 5 packages (17.13 MB) in 2.9s
+
+✔ Installed PBSmapping 2.73.0  (95ms)
+✔ Installed gdistance 1.3-6  (131ms)
+✔ Installed marmap 1.0.5  (156ms)
+✔ Installed spData 0.3.8  (179ms)
+✔ Installed spdep 1.1-5  (207ms)
+✔ 1 + 133 pkgs | kept 129, updated 5, new 0 | downloaded 5 (17.13 MB) 6.4s
+
+
+── snn                  (210/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── soilassessment       (211/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will update 1 package.
+→ Will download 1 package with unknown size.
++ soilassessment 0.1.1 → 0.2.1  ⬇
+ℹ Getting 1 pkg with unknown size
+
+✔ Got soilassessment 0.2.1 (macos) (1.72 MB)
+✔ Downloaded 1 package (1.72 MB) in 1.9s
+
+✔ Installed soilassessment 0.2.1  (30ms)
+✔ 1 + 109 pkgs | kept 109, updated 1, new 0 | downloaded 1 (1.72 MB) 5.1s
+
+
+── Sojourn              (212/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will install 1 package.
+→ Will update 7 packages.
+→ Will download 8 packages with unknown size.
++ anytime   0.3.7   → 0.3.9    ⬇
++ DescTools 0.99.36 → 0.99.40  ⬇
++ Exact     2.0     → 2.1      ⬇
++ GENEAread 2.0.8   → 2.0.9    ⬇
++ GGIR      2.0-0   → 2.2-0    ⬇
++ gmp       0.5-14  → 0.6-2    ⬇
++ unisensR            0.3.3    ⬇
++ vroom     1.2.1   → 1.4.0    ⬇
+ℹ Getting 8 pkgs with unknown sizes
+
+✔ Got Exact 2.1 (macos) (105.29 kB)
+✔ Got GENEAread 2.0.9 (macos) (392.48 kB)
+✔ Got unisensR 0.3.3 (macos) (183.97 kB)
+✔ Got gmp 0.6-2 (macos) (869.05 kB)
+✔ Got anytime 0.3.9 (macos) (1.22 MB)
+✔ Got GGIR 2.2-0 (macos) (2.91 MB)
+✔ Got vroom 1.4.0 (macos) (2.45 MB)
+✔ Got DescTools 0.99.40 (macos) (5.95 MB)
+✔ Downloaded 8 packages (14.09 MB) in 2.6s
+
+✔ Installed DescTools 0.99.40  (106ms)
+✔ Installed Exact 2.1  (131ms)
+✔ Installed GENEAread 2.0.9  (165ms)
+✔ Installed GGIR 2.2-0  (197ms)
+✔ Installed anytime 0.3.9  (224ms)
+✔ Installed gmp 0.6-2  (278ms)
+✔ Installed unisensR 0.3.3  (306ms)
+✔ Installed vroom 1.4.0  (353ms)
+✔ 1 + 107 pkgs | kept 100, updated 7, new 1 | downloaded 8 (14.09 MB) 5.8s
+
+
+── Sojourn.Data         (213/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 63 pkgs | kept 64, updated 0, new 0 | downloaded 0 (0 B) 2.6s
+
+
+── sparsediscrim        (214/237) ──────────────────────────────────────────────────────────────────
+Failed to install sparsediscrim 
+
+[1] "Error : Cannot install packages:\n* sparsediscrim: Can't find package called sparsediscrim.\n"
+
+
+── sparseLDA            (215/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 5 pkgs | kept 6, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── specmine             (216/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will install 4 packages.
+→ Will update 4 packages.
+→ Will download 8 packages with unknown size.
++ baseline          1.3-0  → 1.3-1   ⬇
++ ggtext                     0.1.1   ⬇
++ gridtext          0.1.1  → 0.1.4   ⬇
++ imputeTS                   3.2     ⬇
++ qtl               1.46-2 → 1.47-9  ⬇
++ specmine          3.0.1  → 3.0.3   ⬇
++ specmine.datasets          0.0.1   ⬇
++ stinepack                  1.4     ⬇
+ℹ Getting 8 pkgs with unknown sizes
+
+✔ Got gridtext 0.1.4 (macos) (944.19 kB)
+✔ Got ggtext 0.1.1 (macos) (1.25 MB)
+✔ Got stinepack 1.4 (macos) (31.07 kB)
+✔ Got specmine.datasets 0.0.1 (macos) (1.75 MB)
+✔ Got baseline 1.3-1 (macos) (2.18 MB)
+✔ Got specmine 3.0.3 (macos) (1.40 MB)
+✔ Got imputeTS 3.2 (macos) (2.98 MB)
+✔ Got qtl 1.47-9 (macos) (6.43 MB)
+✔ Downloaded 8 packages (16.97 MB) in 3.7s
+
+✔ Installed baseline 1.3-1  (84ms)
+✔ Installed ggtext 0.1.1  (109ms)
+✔ Installed gridtext 0.1.4  (147ms)
+✔ Installed imputeTS 3.2  (168ms)
+✔ Installed specmine.datasets 0.0.1  (178ms)
+✔ Installed qtl 1.47-9  (237ms)
+✔ Installed specmine 3.0.3  (252ms)
+✔ Installed stinepack 1.4  (270ms)
+✔ 1 + 178 pkgs | kept 171, updated 4, new 4 | downloaded 8 (16.97 MB) 8.3s
+
+
+── spikeslab            (217/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 2 pkgs | kept 3, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── splitSelect          (218/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will update 1 package.
+→ Will download 1 package with unknown size.
++ splitSelect 1.0.0 → 1.0.1  ⬇
+ℹ Getting 1 pkg with unknown size
+
+✔ Got splitSelect 1.0.1 (macos) (80.52 kB)
+✔ Downloaded 1 package (80.52 kB) in 1.1s
+
+✔ Installed splitSelect 1.0.1  (23ms)
+✔ 1 + 67 pkgs | kept 67, updated 1, new 0 | downloaded 1 (80.52 kB) 3.8s
+
+
+── spls                 (219/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 3 pkgs | kept 4, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── SQB                  (220/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 64 pkgs | kept 65, updated 0, new 0 | downloaded 0 (0 B) 2.6s
+
+
+── ssr                  (221/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 64 pkgs | kept 65, updated 0, new 0 | downloaded 0 (0 B) 2.7s
+
+
+── stepPenal            (222/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will update 1 package.
+→ Will download 1 package with unknown size.
++ dfoptim 2018.2-1 → 2020.10-1  ⬇
+ℹ Getting 1 pkg with unknown size
+
+✔ Got dfoptim 2020.10-1 (macos) (73.75 kB)
+✔ Downloaded 1 package (73.75 kB) in 875ms
+
+✔ Installed dfoptim 2020.10-1  (27ms)
+✔ 1 + 67 pkgs | kept 67, updated 1, new 0 | downloaded 1 (73.75 kB) 3.4s
+
+
+── stepPlr              (223/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+── studyStrap           (224/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will update 1 package.
+→ Will download 1 package with unknown size.
++ MatrixCorrelation 0.9.2 → 0.9.5  ⬇
+ℹ Getting 1 pkg with unknown size
+
+✔ Got MatrixCorrelation 0.9.5 (macos) (574.58 kB)
+✔ Downloaded 1 package (574.58 kB) in 2.1s
+
+✔ Installed MatrixCorrelation 0.9.5  (47ms)
+✔ 1 + 135 pkgs | kept 135, updated 1, new 0 | downloaded 1 (574.58 kB) 5.8s
+
+
+── superpc              (225/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will update 1 package.
+→ Will download 1 package with unknown size.
++ superpc 1.09 → 1.12  ⬇
+ℹ Getting 1 pkg with unknown size
+
+✔ Got superpc 1.12 (macos) (290.86 kB)
+✔ Downloaded 1 package (290.86 kB) in 1.3s
+
+✔ Installed superpc 1.12  (46ms)
+✔ 1 + 3 pkgs | kept 3, updated 1, new 0 | downloaded 1 (290.86 kB) 3s
+
+
+── supervisedPRIM       (226/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will update 1 package.
+→ Will download 1 package with unknown size.
++ prim 1.0.17 → 1.0.20  ⬇
+ℹ Getting 1 pkg with unknown size
+
+✔ Got prim 1.0.20 (macos) (285.69 kB)
+✔ Downloaded 1 package (285.69 kB) in 1.3s
+
+✔ Installed prim 1.0.20  (32ms)
+✔ 1 + 14 pkgs | kept 14, updated 1, new 0 | downloaded 1 (285.69 kB) 3.9s
+
+
+── swag                 (227/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will install 1 package.
+→ Will download 1 package with unknown size.
++ swag   0.1.0  ⬇
+ℹ Getting 1 pkg with unknown size
+
+✔ Got swag 0.1.0 (macos) (54.08 kB)
+✔ Downloaded 1 package (54.08 kB) in 1.4s
+
+✔ Installed swag 0.1.0  (23ms)
+✔ 1 + 66 pkgs | kept 66, updated 0, new 1 | downloaded 1 (54.08 kB) 3.8s
+
+
+── TestDimorph          (228/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will install 3 packages.
+→ Will update 1 package.
+→ Will download 4 packages with unknown size.
++ cutpointr           1.0.32  ⬇
++ Morpho              2.8     ⬇
++ Rvcg                0.19.2  ⬇
++ TestDimorph 0.3.1 → 0.4.0   ⬇
+ℹ Getting 4 pkgs with unknown sizes
+
+✔ Got TestDimorph 0.4.0 (macos) (366.09 kB)
+✔ Got cutpointr 1.0.32 (macos) (1.72 MB)
+✔ Got Morpho 2.8 (macos) (5.48 MB)
+✔ Got Rvcg 0.19.2 (macos) (9.28 MB)
+✔ Downloaded 4 packages (16.85 MB) in 3s
+
+✔ Installed TestDimorph 0.4.0  (43ms)
+✔ Installed Morpho 2.8  (96ms)
+✔ Installed cutpointr 1.0.32  (112ms)
+✔ Installed Rvcg 0.19.2  (180ms)
+✔ 1 + 111 pkgs | kept 108, updated 1, new 3 | downloaded 4 (16.85 MB) 6.8s
+
+
+── TLBC                 (229/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 66 pkgs | kept 67, updated 0, new 0 | downloaded 0 (0 B) 2.6s
+
+
+── TrafficBDE           (230/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 68 pkgs | kept 69, updated 0, new 0 | downloaded 0 (0 B) 2.6s
+
+
+── varEst               (231/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 67 pkgs | kept 68, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── VGAM                 (232/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 0 pkgs | kept 1, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── waterquality         (233/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will install 1 package.
+→ Will update 1 package.
+→ Will download 2 packages with unknown size.
++ pingr        2.0.0 → 2.0.1  ⬇
++ waterquality         0.2.6  ⬇
+ℹ Getting 2 pkgs with unknown sizes
+
+✔ Got pingr 2.0.1 (macos) (46.42 kB)
+✔ Got waterquality 0.2.6 (macos) (2.87 MB)
+✔ Downloaded 2 packages (2.91 MB) in 2s
+
+✔ Installed pingr 2.0.1  (39ms)
+✔ Installed waterquality 0.2.6  (64ms)
+✔ 1 + 69 pkgs | kept 68, updated 1, new 1 | downloaded 2 (2.91 MB) 4.9s
+
+
+── waves                (234/237) ──────────────────────────────────────────────────────────────────
+ 
+→ Will install 4 packages.
+→ Will update 1 package.
+→ Will download 5 packages with unknown size.
++ epiR               2.0.19  ⬇
++ mathjaxr   0.8-3 → 1.2-0   ⬇
++ prospectr          0.2.1   ⬇
++ spectacles         0.5-3   ⬇
++ waves              0.1.0   ⬇
+ℹ Getting 5 pkgs with unknown sizes
+
+✔ Got mathjaxr 1.2-0 (macos) (816.10 kB)
+✔ Got epiR 2.0.19 (macos) (1.16 MB)
+✔ Got spectacles 0.5-3 (macos) (2.53 MB)
+✔ Got waves 0.1.0 (macos) (3.30 MB)
+✔ Got prospectr 0.2.1 (macos) (3.26 MB)
+✔ Downloaded 5 packages (11.07 MB) in 2s
+
+✔ Installed epiR 2.0.19  (51ms)
+✔ Installed mathjaxr 1.2-0  (88ms)
+✔ Installed prospectr 0.2.1  (119ms)
+✔ Installed spectacles 0.5-3  (138ms)
+✔ Installed waves 0.1.0  (157ms)
+✔ 1 + 78 pkgs | kept 74, updated 1, new 4 | downloaded 5 (11.07 MB) 5s
+
+
+── WRTDStidal           (235/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 84 pkgs | kept 85, updated 0, new 0 | downloaded 0 (0 B) 2.8s
+
+
+── wsrf                 (236/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 1 pkgs | kept 2, updated 0, new 0 | downloaded 0 (0 B) 1.3s
+
+
+── xgboost              (237/237) ──────────────────────────────────────────────────────────────────
+ 
+ℹ No downloads are needed
+
+
+✔ No changes are needed
+✔ 1 + 4 pkgs | kept 5, updated 0, new 0 | downloaded 0 (0 B) 1.4s
+
+
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  9.879   1.083 596.095 

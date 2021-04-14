@@ -23,7 +23,7 @@
 #'            1      0      0      0      1      0      0}
 #'
 #' In some situations, there may be a need for dummy variables for all the
-#' levels of the factor. For the same example: 
+#' levels of the factor. For the same example:
 #' \preformatted{ dayMon dayTue dayWed dayThu dayFri daySat daySun
 #'       1      0      0      0      0      0      0
 #'       1      0      0      0      0      0      0
@@ -73,7 +73,7 @@
 #' logical}
 #'
 #' The \code{predict} function produces a data frame.
-#' 
+#'
 #' \code{class2ind} returns a matrix (or a vector if \code{drop2nd = TRUE}).
 #'
 #' \code{contr.ltfr} generates a design matrix.
@@ -90,7 +90,8 @@
 #'                             "morning", "afternoon", "afternoon"),
 #'                    day = c("Mon", "Mon", "Mon",
 #'                            "Wed", "Wed", "Fri",
-#'                            "Sat", "Sat", "Fri"))
+#'                            "Sat", "Sat", "Fri"),
+#'                            stringsAsFactors = TRUE)
 #'
 #' levels(when$time) <- list(morning="morning",
 #'                           afternoon="afternoon",
@@ -122,7 +123,7 @@
 #' predict(noNames, when)
 #'
 #' head(class2ind(iris$Species))
-#' 
+#'
 #' two_levels <- factor(rep(letters[1:2], each = 5))
 #' class2ind(two_levels)
 #' class2ind(two_levels, drop2nd = TRUE)
@@ -139,8 +140,8 @@
 dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, fullRank = FALSE, ...)
 {
   formula <- as.formula(formula)
-  if(!is.data.frame(data)) data <- as.data.frame(data)
-  
+  if(!is.data.frame(data)) data <- as.data.frame(data, stringsAsFactors = FALSE)
+
   vars <- all.vars(formula)
   if(any(vars == "."))
   {
@@ -179,7 +180,7 @@ dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, ful
               fullRank = fullRank)
   class(out) <- "dummyVars"
   out
-  
+
 }
 
 #' @rdname dummyVars
@@ -206,7 +207,7 @@ print.dummyVars <- function(x, ...)
 predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
 {
   if(is.null(newdata)) stop("newdata must be supplied")
-  if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+  if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = FALSE)
   if(!all(object$vars %in% names(newdata))) stop(
     paste("Variable(s)",
           paste("'", object$vars[!object$vars %in% names(newdata)],
@@ -224,25 +225,39 @@ predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)
     on.exit(options(contrasts = oldContr))
   }
   m <- model.frame(Terms, newdata, na.action = na.action, xlev = object$lvls)
-  
+
   x <- model.matrix(Terms, m)
-  
+
+  cnames <- colnames(x)
   if(object$levelsOnly) {
     for(i in object$facVars) {
       for(j in object$lvls[[i]]) {
         from_text <- paste0(i, j)
-        colnames(x) <- gsub(from_text, j, colnames(x), fixed = TRUE)
+        cnames[which(cnames == from_text)] <- j
       }
     }
   }
-  cnames <- colnames(x)
   if(!is.null(object$sep) & !object$levelsOnly) {
     for(i in object$facVars[order(-nchar(object$facVars))]) {
       ## the default output form model.matrix is NAMElevel with no separator.
       for(j in object$lvls[[i]]) {
         from_text <- paste0(i, j)
         to_text <- paste(i, j, sep = object$sep)
-        cnames <- gsub(from_text, to_text, cnames, fixed = TRUE)
+        pos = which(cnames == from_text)
+        # If there are several identical NAMElevel matching (example: "X1" with level "11" and "X11" with level "1")
+        if (length(pos) > 1) {
+          # If the level j is not the first level of the feature i
+          if (which(object$lvls[[i]] == j) > 1) {
+            # Then we just have to test for the preceding NAMElevel being NAME(level-1)
+            cnames[pos][cnames[pos-1] == paste(i, object$lvls[[i]][which(object$lvls[[i]] == j)-1], sep = object$sep)] <- to_text
+          } else {
+            # Otherwise, we have to test for the preceding NAMElevel being (NAME-1)(last_level)
+            cnames[pos][cnames[pos-1] == paste(object$facVars[order(-nchar(object$facVars))][which(object$facVars[order(-nchar(object$facVars))] == i) - 1], utils::tail(object$lvls[[object$facVars[order(-nchar(object$facVars))][which(object$facVars[order(-nchar(object$facVars))] == i) - 1]]],n=1), sep = object$sep)] <- to_text
+          }
+        } else {
+          # Otherwise simply replace the last occurence of the pattern
+          cnames[pos] <- to_text
+        }
       }
     }
   }
@@ -291,7 +306,7 @@ contr.dummy <- function(n, ...)
 #' @rdname dummyVars
 #' @importFrom stats model.matrix
 #' @export
-#' @param drop2nd A logical: if the factor has two levels, should a single binary vector be returned?  
+#' @param drop2nd A logical: if the factor has two levels, should a single binary vector be returned?
 class2ind <- function(x, drop2nd = FALSE) {
   if(!is.factor(x)) stop("'x' should be a factor")
   y <- model.matrix(~ x - 1)

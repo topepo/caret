@@ -6,7 +6,7 @@
 #' @param formula A formula of the form \code{class ~ x1 + x2 + \dots}
 #' @param x matrix or data frame of \code{x} values for examples.
 #' @param y matrix or data frame of target values for examples.
-#' @param weights (case) weights for each example -- if missing defaults to 1.
+#' @param weights (case) weights for each example - if missing defaults to 1.
 #' @param repeats the number of neural networks with different random number seeds
 #' @param bag a logical for bagging for each repeat
 #' @param seeds random number seeds that can be set prior to bagging (if done) and network creation. This helps maintain reproducibility when models are run in parallel.
@@ -68,7 +68,7 @@ avNNet.formula <- function (formula, data, weights, ...,
 {
   m <- match.call(expand.dots = FALSE)
   if (is.matrix(eval.parent(m$data)))
-    m$data <- as.data.frame(data)
+    m$data <- as.data.frame(data, stringsAsFactors = FALSE)
 ##  bag <- m$bag
 ##  repeats <- m$repeats
   m$... <- m$contrasts <- m$bag <- m$repeats <- m$allowParallel <- NULL
@@ -196,7 +196,7 @@ predict.avNNet <- function(object, newdata, type = c("raw", "class", "prob"), ..
           }
       }  else {
         if (inherits(object, "avNNet.formula")) {
-          newdata <- as.data.frame(newdata)
+          newdata <- as.data.frame(newdata, stringsAsFactors = FALSE)
           rn <- row.names(newdata)
           Terms <- delete.response(object$terms)
           m <- model.frame(Terms, newdata, na.action = na.omit,

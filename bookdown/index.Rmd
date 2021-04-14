@@ -13,7 +13,7 @@ split_by: chapter
 
 # Introduction
 
-The [`caret`](http://cran.r-project.org/web/packages/caret/index.html) package (short for _C_lassification _A_nd _RE_gression _T_raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:
+The [`caret`](http://cran.r-project.org/web/packages/caret/index.html) package (short for <b>C</b>lassification  <b>A</b>nd  <b>RE</b>gression  <b>T</b>raining) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:
 
 -   data splitting
 -   pre-processing
@@ -30,10 +30,11 @@ The current release version can be found on [CRAN](http://cran.r-project.org/web
 Some resources:
 
 -   The book *Applied Predictive Modeling* features **caret** and over 40 other R packages. It is on sale at     [Amazon](http://www.amazon.com/dp/1461468485) or the [the publisher's     website](http://www.springer.com/statistics/life+sciences%2C+medicine+%26+health/book/978-1-4614-6848-6). There is a [companion     website](http://appliedpredictivemodeling.com/) too.
+- The book _Feature Engineering and Selection_ also uses **caret**. See [`https://bookdown.org/max/FES/`](https://bookdown.org/max/FES/) for the book at [`https://github.com/topepo/FES`](https://github.com/topepo/FES) for the code. 
 -   There is also a paper on caret in the [Journal of Statistical Software](http://www.jstatsoft.org/v28/i05). The example data can be obtained [here](descr.RData)(the predictors) and [here](mutagen.RData) (the outcomes).
 -   There is a [webinar](http://www.youtube.com/watch?v=7Jbb2ItbTC4) for the package on Youtube that was organized and recorded by Ray DiGiacomo Jr for the Orange County R User Group.
 -   At [useR! 2014](http://user2014.stat.ucla.edu), I was [interviewed](http://youtu.be/YmHyAHkjX_A) and discussed the package     and the book.
-- [DataCamp](https://www.datacamp.com) has a [beginner's tutorial on machine learning in R](https://www.datacamp.com/courses/machine-learning-toolbox) using `caret`.  
+- A list of `caret` **video tutorials** [can be found here](https://www.google.com/search?q=caret+tutorials&client=safari&rls=en&source=lnms&tbm=vid).  
 
 
 You can always email [me](mailto:mxkuhn@gmail.com) with questions,comments or suggestions.

@@ -3,10 +3,78 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+
+\section{Changes in version 6.0-87}{
+  \itemize{
+    \item The \cpkg{ordinalNET} model was given an additional tuning parameter \code{modeltype}.
+  }
+}
+
+
+\section{Changes in version 6.0-86}{
+  \itemize{
+    \item Small release for \code{stringsAsFactors = TRUE} in R-4.0
+  }
+}
+
+\section{Changes in version 6.0-85}{
+  \itemize{
+    \item Internal changes required by r-devel for new matrix class structure.
+    \item Michael Mayer contributed a faster version of \code{groupKFold()}. \issue{1108}
+    \item A typo in a variable name was fixed. \issue{1087}
+    \item Removed some warnings related to contrasts.
+    \item Temporarily moved ROC calculations back to the \cpkg{pROC} package related to \code{JackStat/ModelMetrics#30}. \issue{1105}
+
+  }
+}
+
+\section{Changes in version 6.0-84}{
+  \itemize{
+    \item Another new version was related to character encodings.
+  }
+}
+
+\section{Changes in version 6.0-83}{
+  \itemize{
+    \item A new version was requested by CRAN since en dashes were used in the documentation.
+    \item A bug was fixed where, for some recipes that involve class imbalance sampling, the resampling indicies were computed incorrectly \issue{1030}.
+    \item code{train} now removes duplicate models in the tuning grid. Duplicates could occur for models with discrete parameters.
+  }
+}
+
+\section{Changes in version 6.0-82}{
+  \itemize{
+    \item Immediate and required updates related to the different behavior of \code{sample} in R >= 3.6.
+    \item \code{sbf}, \code{gafs}, and \code{safs} now accept recipes as inputs. A few sections of documentation were added to the \href{https://topepo.github.io/caret}{bookdown site}
+    \item A bug was fixed in simulated annealing feature selection where the number of variables perturbed was based on the total number of variables instead of the more appropriate number of variables in the current subset.
+    \item Convenience functions \code{ggplot.gafs} and \code{ggplot.safs} were added.
+    \item \code{learning_curve_dat} now has a real name.
+    \item The \code{earth} and \code{ctree} models were udpdate to fix bugs \issue{1022}\issue{1018}.
+    \item When a model has the same value for its resamples, \code{plot.resamples} and \code{ggplot.resamples} now produce an estimate and missing values for the intervals (instead of failing) \issue{1007}
+  }
+}
+
+\section{Changes in version 6.0-81}{
+  \itemize{
+    \item The \code{blackboost} code gained a dependency on \cpkg{partykit} due to changes in \cpkg{mboost}.
+    \item The internals were updated to work with the latest version of the \cpkg{recipes} package.
+    \item Jason Muhlenkamp added better error messages for misspecified tuning parameters \issue{956}.
+    \item Two bugs in random forests with RFE were fixed in \issue{942}.
+    \item When correlation filters are used in \code{preProcess}, constant (i.e. zero-variance) columns are first removed to avoid errors \issue{966}.
+    \item A bug was fixed when \code{train} models using weights were updated \issue{935}.
+    \item Benjamin Allévius added more statistics to the output of \code{thresholder} \issue{938}.
+    \item A bug was fixed that occurred when \code{indexFinal} was used where the recipe that was saved was created using the entire training set \issue{928}.
+  }
+}
+
+
 \section{Changes in version 6.0-80}{
-  \itemize{ 
+  \itemize{
     \item Two bugs associated with \code{varImp} in \code{lm} \issue{858} and in \code{bartMachine} were fixed by \code{hadjipantelis}.
     \item SMOTE sampling now works with tibbles \issue{875}
+    \item \cpkg{rpart} now a dependency due to new CRAN policies.
+    \item Added a \code{ggplot} method for \code{resamples} that produces confidence intervals.
+    \item \code{hadjipantelis} added some fixes for \code{mxnet} models \issue{887}.
   }
 }
 
@@ -281,7 +349,7 @@
 		\item When specifying your own resampling indices, a value of \code{method = "custom"} can be used with \code{trainControl} for better printing.
 		\item Tim Lucas fixed a bug in \code{avNNet} when \code{bag = TRUE}
 		\item Fixed a bug found by \code{ruggerorossi} in \code{method = "dnn"} with classification.
-		\item A new option called \code{sampling} was added to \code{trainControl} that allows users to subsample their data in the case of a class imbalance. Another \href{http://topepo.github.io/caret/sampling.html}{help page} was added to explain the features.
+		\item A new option called \code{sampling} was added to \code{trainControl} that allows users to subsample their data in the case of a class imbalance. Another \href{http://topepo.github.io/caret/subsampling-for-class-imbalances.html}{help page} was added to explain the features.
 		\item Class probabilities can be computed for \code{extraTrees} models now.
 		\item When PCA pre-processing is conducted, the variance trace is saved in an object called \code{trace}.
 		\item More error traps were added for common mistakes (e.g. bad factor levels in classification).
@@ -296,7 +364,7 @@
 
 \section{Changes in version 6.0-47}{
 	\itemize{
-		\item CHAID from the R-Forge package \href{http://r-forge.r-project.org/projects/chaid/}{\pkg{CHAID}}
+		\item CHAID from the R-Forge package \pkg{CHAID}
 		\item Models \code{xgbTree} amd \code{xgbLinear} from the \code{xgboost} package were added. That package is not on CRAN  and can be installed from github using the \cpkg{devtools} package and \code{install_github('dmlc/xgboost',subdir='R-package')}.
 		\item \code{dratewka} enabled \code{rbf} models for regression.
 		\item A summary function for the multinomial likelihood called \code{mnLogLoss} was added.
@@ -472,9 +540,7 @@ more internal functions.
 
 \section{Changes in version 6.0-21}{
 \itemize{
-\item A new system for user-defined models has been added. See
-\href{http://caret.r-forge.r-project.org/custom_models.html}{http://caret.r-forge.r-project.org/custom_models.html}.
-
+\item A new system for user-defined models has been added.
 \item When creating the grid of tuning parameter values, the column
 names no longer need to be preceded by a period. Periods can still be
 used as before but are not required. This isn't guaranteed to break
@@ -766,8 +832,7 @@ finding it).
 \itemize{
 
 \item The three vignettes were removed and two things were added: a
-smaller vignette and a large collection of help pages at
-\url{http://caret.r-forge.r-project.org/}.
+smaller vignette and a large collection of help pages.
 
 \item Minkoo Seo found a bug where \code{na.action} was not being properly
 set with train.formula().

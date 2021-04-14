@@ -16,11 +16,10 @@ modelInfo <- list(label = "Gradient Boosting Machines",
                                          col_sample_rate = 1)
                     } else {
                       out <- data.frame(ntrees = floor(runif(len, min = 1, max = 5000)),
-                                        max_depth = sample(1:10, replace = TRUE, size = len),         
+                                        max_depth = sample(1:10, replace = TRUE, size = len),
                                         learn_rate = runif(len, min = .001, max = .6),
                                         min_rows = sample(5:25, replace = TRUE, size = len),
                                         col_sample_rate = runif(len))
-                      out <- out[!duplicated(out),]
                     }
                     out
                   },
@@ -30,8 +29,8 @@ modelInfo <- list(label = "Gradient Boosting Machines",
                     fam <- "gaussian"
                     if(lvs == 2) fam <- "bernoulli"
                     if(lvs >  2) fam <- "multinomial" ## intercept ... for family arg
-                    
-                    dat <- if(!is.data.frame(x)) as.data.frame(x) else x
+
+                    dat <- if(!is.data.frame(x)) as.data.frame(x, stringsAsFactors = TRUE) else x
                     dat$.outcome <- y
                     frame_name <- paste0("tmp_gbm_dat_",sample.int(100000, 1))
                     tmp_train_dat = h2o::as.h2o(dat, destination_frame = frame_name)
@@ -48,26 +47,26 @@ modelInfo <- list(label = "Gradient Boosting Machines",
                   predict = function(modelFit, newdata, submodels = NULL) {
                     frame_name <- paste0("new_gbm_dat_",sample.int(100000, 1))
                     newdata <- h2o::as.h2o(newdata, destination_frame = frame_name)
-                    as.data.frame(predict(modelFit, newdata))[,1]
+                    as.data.frame(predict(modelFit, newdata), stringsAsFactors = TRUE)[,1]
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     frame_name <- paste0("new_gbm_dat_",sample.int(100000, 1))
                     newdata <- h2o::as.h2o(newdata, destination_frame = frame_name)
-                    as.data.frame(predict(modelFit, newdata))[,-1]
+                    as.data.frame(predict(modelFit, newdata), stringsAsFactors = TRUE)[,-1]
                   },
                   predictors = function(x, ...) {
-                    out <- as.data.frame(h2o::h2o.varimp(x))
+                    out <- as.data.frame(h2o::h2o.varimp(x), stringsAsFactors = TRUE)
                     out <- subset(out, relative_importance > 0)
                     as.character(out$variable)
                   },
                   varImp = function(object, ...) {
-                    out <- as.data.frame(h2o::h2o.varimp(object))
+                    out <- as.data.frame(h2o::h2o.varimp(object), stringsAsFactors = TRUE)
                     colnames(out)[colnames(out) == "relative_importance"] <- "Overall"
                     rownames(out) <- out$variable
-                    out[, c("Overall"), drop = FALSE]   
+                    out[, c("Overall"), drop = FALSE]
                   },
                   levels = function(x) x@model$training_metrics@metrics$domain,
-                  tags = c("Tree-Based Model", "Boosting", 
+                  tags = c("Tree-Based Model", "Boosting",
                            "Ensemble Model", "Implicit Feature Selection"),
                   sort = function(x) x[order(x$ntrees, x$max_depth, x$learn_rate),],
                   trim = NULL)

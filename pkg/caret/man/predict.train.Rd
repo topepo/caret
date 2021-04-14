@@ -6,18 +6,27 @@
 \alias{extractProb}
 \alias{predict.train}
 \alias{predict.list}
-\alias{extractPrediction}
-\alias{extractProb}
 \title{Extract predictions and class probabilities from train objects}
 \usage{
-extractPrediction(models, testX = NULL, testY = NULL, unkX = NULL,
-  unkOnly = !is.null(unkX) & is.null(testX), verbose = FALSE)
+extractPrediction(
+  models,
+  testX = NULL,
+  testY = NULL,
+  unkX = NULL,
+  unkOnly = !is.null(unkX) & is.null(testX),
+  verbose = FALSE
+)
 
-extractProb(models, testX = NULL, testY = NULL, unkX = NULL,
-  unkOnly = !is.null(unkX) & is.null(testX), verbose = FALSE)
+extractProb(
+  models,
+  testX = NULL,
+  testY = NULL,
+  unkX = NULL,
+  unkOnly = !is.null(unkX) & is.null(testX),
+  verbose = FALSE
+)
 
-\method{predict}{train}(object, newdata = NULL, type = "raw",
-  na.action = na.omit, ...)
+\method{predict}{train}(object, newdata = NULL, type = "raw", na.action = na.omit, ...)
 }
 \arguments{
 \item{models}{a list of objects of the class \code{train}. The objects must
@@ -41,7 +50,8 @@ is useful if speed is needed for unknown samples.}
 \code{\link{train}}.}
 
 \item{newdata}{an optional set of data to predict on. If \code{NULL}, then
-the original training data are used}
+the original training data are used but, if the \code{train} model used a
+recipe, an error will occur.}
 
 \item{type}{either "raw" or "prob", for the number/class predictions or
 class probabilities, respectively. Class probabilities are not available for

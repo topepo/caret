@@ -8,19 +8,26 @@ modelInfo <- list(label = "Bagged MARS using gCV Pruning",
                   loop = NULL,
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                   	require(earth)
-                    if(is.factor(y)){
-                      mod <- caret::bagEarth(x, y, degree = param$degree, 
-                                             glm = list(family=binomial, maxit=100),
-                                             weights = wts,
-                                             ...)
-                    } else {
-                      mod <- caret::bagEarth(x, y, degree = param$degree, weights = wts, ...)
-                    }  
-                    mod
+                    theDots <- list(...)
+                    theDots$keepxy <- TRUE 
+                    
+                    ## pass in any model weights
+                    if (!is.null(wts)) 
+                      theDots$weights <- wts
+                    
+                    modelArgs <- c(list(x = x, y = y, degree = param$degree), theDots)
+                    
+                    if (is.factor(y) & !any(names(theDots) == "glm")) {
+                      modelArgs$glm <- list(family = binomial, maxit = 100)
+                    }
+                    
+                    tmp <- do.call(getFromNamespace("bagEarth.default", "caret"), modelArgs)
+                    
+                    tmp$call["degree"] <-  param$degree
+                    tmp 
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(modelFit$problemType == "Classification")
-                    {
+                    if (modelFit$problemType == "Classification") {
                       out <- predict(modelFit, newdata,  type = "class")
                     } else {
                       out <- predict(modelFit, newdata)
@@ -41,7 +48,7 @@ modelInfo <- list(label = "Bagged MARS using gCV Pruning",
                   },
                   varImp = function(object, ...) {
                     allImp <- lapply(object$fit, varImp, ...)
-                    impDF <- as.data.frame(allImp)
+                    impDF <- as.data.frame(allImp, stringsAsFactors = TRUE)
                     meanImp <- apply(impDF, 1, mean)
                     out <- data.frame(Overall = meanImp)
                     rownames(out) <- names(meanImp)

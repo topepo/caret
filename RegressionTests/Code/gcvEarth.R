@@ -46,7 +46,8 @@ set.seed(849)
 test_class_rand <- train(trainX, trainY, 
                          method = "gcvEarth", 
                          trControl = cctrlR,
-                         tuneLength = 4)
+                         tuneLength = 4,
+                         glm = list(family = binomial, control = list(maxit = 50)))
 
 set.seed(849)
 test_class_loo_model <- train(trainX, trainY, 

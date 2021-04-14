@@ -32,7 +32,7 @@ modelInfo <- list(label = "partDSA",
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.data.frame(x) | inherits(x, "tbl_df")) 
-                      x <- as.data.frame(x)
+                      x <- as.data.frame(x, stringsAsFactors = TRUE)
                     partDSA::partDSA(x, y,
                                      control = partDSA::DSA.control(
                                        cut.off.growth = param$cut.off.growth,
@@ -42,7 +42,7 @@ modelInfo <- list(label = "partDSA",
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
-                      newdata <- as.data.frame(newdata)
+                      newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     if(!is.null(submodels)) {
                       tmp <- c(modelFit$tuneValue$cut.off.growth, submodels$cut.off.growth)
                       
@@ -58,7 +58,7 @@ modelInfo <- list(label = "partDSA",
                         out <- partDSA::predict.dsa(modelFit, newdata)
                         if(max(tmp) > ncol(out)) tmp[tmp > ncol(out)] <- ncol(out)
                         out <- out[,tmp, drop= FALSE]
-                        out <- as.list(as.data.frame(out))
+                        out <- as.list(as.data.frame(out, stringsAsFactors = TRUE))
                       }
                     } else {
                       ## There maybe less items than modelFit$cut.off.growth

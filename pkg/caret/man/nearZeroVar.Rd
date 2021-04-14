@@ -5,12 +5,17 @@
 \alias{nzv}
 \alias{checkResamples}
 \alias{checkConditionalX}
-\alias{checkConditionalX}
-\alias{checkResamples}
 \title{Identification of near zero variance predictors}
 \usage{
-nearZeroVar(x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE,
-  names = FALSE, foreach = FALSE, allowParallel = TRUE)
+nearZeroVar(
+  x,
+  freqCut = 95/5,
+  uniqueCut = 10,
+  saveMetrics = FALSE,
+  names = FALSE,
+  foreach = FALSE,
+  allowParallel = TRUE
+)
 
 checkConditionalX(x, y)
 

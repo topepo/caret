@@ -6,7 +6,7 @@ modelInfo <- list(label = "Flexible Discriminant Analysis",
                                           class = c("numeric", "numeric"),
                                           label = c('Product Degree', '#Terms')),
                   grid = function(x, y, len = NULL, search = "grid") {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
 
                     mod <- earth::earth( .outcome~., data = dat, pmethod = "none")
@@ -20,11 +20,10 @@ modelInfo <- list(label = "Flexible Discriminant Analysis",
                       out <- data.frame(nprune = sample(2:maxTerms, size = len, replace = TRUE),
                                         degree = sample(1:2, size = len, replace = TRUE))
                     }
-                    out[!duplicated(out),]
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                   	require(earth)
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
 
                     mda::fda(.outcome ~ ., data = dat, method = earth::earth,
@@ -39,7 +38,7 @@ modelInfo <- list(label = "Flexible Discriminant Analysis",
                   notes = paste(
                     "Unlike other packages used by `train`, the `earth`",
                     "package is fully loaded when this model is used."
-                  ),                  
+                  ),
                   predict = function(modelFit, newdata, submodels = NULL)
                     predict(modelFit , newdata),
                   prob = function(modelFit, newdata, submodels = NULL)

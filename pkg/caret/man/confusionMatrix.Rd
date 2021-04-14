@@ -4,18 +4,27 @@
 \alias{confusionMatrix}
 \alias{confusionMatrix.table}
 \alias{confusionMatrix.default}
-\alias{confusionMatrix.default}
-\alias{confusionMatrix.table}
 \title{Create a confusion matrix}
 \usage{
 confusionMatrix(data, ...)
 
-\method{confusionMatrix}{default}(data, reference, positive = NULL,
-  dnn = c("Prediction", "Reference"), prevalence = NULL,
-  mode = "sens_spec", ...)
+\method{confusionMatrix}{default}(
+  data,
+  reference,
+  positive = NULL,
+  dnn = c("Prediction", "Reference"),
+  prevalence = NULL,
+  mode = "sens_spec",
+  ...
+)
 
-\method{confusionMatrix}{table}(data, positive = NULL, prevalence = NULL,
-  mode = "sens_spec", ...)
+\method{confusionMatrix}{table}(
+  data,
+  positive = NULL,
+  prevalence = NULL,
+  mode = "sens_spec",
+  ...
+)
 }
 \arguments{
 \item{data}{a factor of predicted classes (for the default method) or an

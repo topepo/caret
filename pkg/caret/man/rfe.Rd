@@ -6,25 +6,52 @@
 \alias{rfeIter}
 \alias{predict.rfe}
 \alias{update.rfe}
-\alias{rfe.default}
-\alias{rfeIter}
-\alias{update.rfe}
+\alias{rfe.formula}
+\alias{rfe.recipe}
 \title{Backwards Feature Selection}
 \usage{
 rfe(x, ...)
 
-\method{rfe}{default}(x, y, sizes = 2^(2:4), metric = ifelse(is.factor(y),
-  "Accuracy", "RMSE"), maximize = ifelse(metric == "RMSE", FALSE, TRUE),
-  rfeControl = rfeControl(), ...)
+\method{rfe}{default}(
+  x,
+  y,
+  sizes = 2^(2:4),
+  metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
+  maximize = ifelse(metric == "RMSE", FALSE, TRUE),
+  rfeControl = rfeControl(),
+  ...
+)
 
-rfeIter(x, y, testX, testY, sizes, rfeControl = rfeControl(), label = "",
-  seeds = NA, ...)
+\method{rfe}{formula}(form, data, ..., subset, na.action, contrasts = NULL)
+
+rfeIter(
+  x,
+  y,
+  testX,
+  testY,
+  sizes,
+  rfeControl = rfeControl(),
+  label = "",
+  seeds = NA,
+  ...
+)
 
 \method{update}{rfe}(object, x, y, size, ...)
+
+\method{rfe}{recipe}(
+  x,
+  data,
+  sizes = 2^(2:4),
+  metric = NULL,
+  maximize = NULL,
+  rfeControl = rfeControl(),
+  ...
+)
 }
 \arguments{
-\item{x}{a matrix or data frame of predictors for model training. This
-object must have unique column names.}
+\item{x}{A matrix or data frame of predictors for model training. This
+object must have unique column names. For the recipes method, \code{x}
+is a recipe object.}
 
 \item{\dots}{options to pass to the model fitting function (ignored in
 \code{predict.rfe})}
@@ -47,6 +74,24 @@ arguments.}
 prediction. The web page
 \url{http://topepo.github.io/caret/recursive-feature-elimination.html#rfe} has more
 details and examples related to this function.}
+
+\item{form}{A formula of the form \code{y ~ x1 + x2 + ...}}
+
+\item{data}{Data frame from which variables specified in
+\code{formula} or \code{recipe} are preferentially to be taken.}
+
+\item{subset}{An index vector specifying the cases to be used
+in the training sample. (NOTE: If given, this argument must be
+named.)}
+
+\item{na.action}{A function to specify the action to be taken
+if NAs are found. The default action is for the procedure to
+fail. An alternative is \code{na.omit}, which leads to rejection
+of cases with missing values on any required variable. (NOTE: If
+given, this argument must be named.)}
+
+\item{contrasts}{A list of contrasts to be used for some or all
+the factors appearing as variables in the model formula.}
 
 \item{testX}{a matrix or data frame of test set predictors. This must have
 the same column names as \code{x}}
@@ -104,6 +149,13 @@ When updating a model, if the entire set of resamples were not saved using
 \code{rfeControl(returnResamp = "final")}, the existing resamples are
 removed with a warning.
 }
+\note{
+We using a recipe as an input, there may be some subset
+ sizes that are not well-replicated over resamples. `rfe` method
+ will only consider subset sizes where at least half of the
+ resamples have associated results in the search for an optimal
+ subset size.
+}
 \examples{
 
 \dontrun{
@@ -111,7 +163,7 @@ data(BloodBrain)
 
 x <- scale(bbbDescr[,-nearZeroVar(bbbDescr)])
 x <- x[, -findCorrelation(cor(x), .8)]
-x <- as.data.frame(x)
+x <- as.data.frame(x, stringsAsFactors = TRUE)
 
 set.seed(1)
 lmProfile <- rfe(x, logBBB,

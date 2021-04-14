@@ -31,7 +31,8 @@ if(!small) {
 ## package archived or models excluded
 exclusions <- c("rknn", "rknnBel", "[mM]xnet", "sdda", "enpls.fs", 
                 "enpls", "Boruta", "Mlda", "RFlda", "rbf", "bdk", 
-                "SLAVE", "_back", "oblique\\.tree")
+                "SLAVE", "_back", "oblique\\.tree", "ordinalRF", 
+                "pythonKnnReg")
 exclusions <- paste0("(", exclusions, ")")
 exclusions <- paste0(exclusions, collapse = "|")
 testFiles <- testFiles[!grepl(exclusions, testFiles)]

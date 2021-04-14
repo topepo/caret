@@ -70,20 +70,19 @@ model_failed <- function(x) {
 pred_failed <- function(x)
   inherits(x, "try-error")
 
-## Convert the recipe to holdout data. rename this to something like
-## get_perf_data
+## Convert the recipe to holdout data.
 #' @importFrom recipes bake all_predictors all_outcomes has_role
 holdout_rec <- function(object, dat, index) {
   ##
   ho_data <- bake(object$recipe,
-                  newdata = subset_x(dat, index),
+                  new_data = subset_x(dat, index),
                   all_outcomes())
   names(ho_data) <- "obs"
   ## ~~~~~~ move these two to other functions:
   wt_cols <- role_cols(object$recipe, "case weight")
   if(length(wt_cols) > 0) {
     wts <- bake(object$recipe,
-                newdata = subset_x(dat, index),
+                new_data = subset_x(dat, index),
                 has_role("case weight"))
     ho_data$weights <- get_vector(wts)
     rm(wts)
@@ -91,14 +90,14 @@ holdout_rec <- function(object, dat, index) {
   perf_cols <- role_cols(object$recipe, "performance var")
   if(length(perf_cols) > 0) {
     perf_data <- bake(object$recipe,
-                      newdata = subset_x(dat, index),
+                      new_data = subset_x(dat, index),
                       has_role("performance var"))
     ho_data <- cbind(ho_data, perf_data)
   }
   ## ~~~~~~
 
   ho_data$rowIndex <- (1:nrow(dat))[index]
-  ho_data <- as.data.frame(ho_data)
+  ho_data <- as.data.frame(ho_data, stringsAsFactors = FALSE)
 }
 
 #' @importFrom recipes bake prep juice has_role
@@ -131,7 +130,7 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
   }
 
   trained_rec <- prep(rec, training = dat, fresh = TRUE,
-                      verbose = FALSE, stringsAsFactors = TRUE,
+                      verbose = FALSE, strings_as_factors = TRUE,
                       retain = TRUE)
   x <- juice(trained_rec, all_predictors())
   y <- juice(trained_rec, all_outcomes())
@@ -175,7 +174,7 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
 
 #' @importFrom recipes bake all_predictors
 rec_pred <- function (method, object, newdata, param = NULL)  {
-  x <- bake(object$recipe, newdata = newdata, all_predictors())
+  x <- bake(object$recipe, new_data = newdata, all_predictors())
   out <- method$predict(modelFit = object$fit, newdata = x,
                         submodels = param)
   if(is.matrix(out) | is.data.frame(out))
@@ -185,12 +184,12 @@ rec_pred <- function (method, object, newdata, param = NULL)  {
 
 #' @importFrom recipes bake all_predictors
 rec_prob <- function (method, object, newdata = NULL, param = NULL)  {
-  x <- bake(object$recipe, newdata = newdata, all_predictors())
+  x <- bake(object$recipe, new_data = newdata, all_predictors())
   obsLevels <- levels(object$fit)
   classProb <- method$prob(modelFit = object$fit, newdata = x,
                            submodels = param)
   if (!is.data.frame(classProb) & is.null(param)) {
-    classProb <- as.data.frame(classProb)
+    classProb <- as.data.frame(classProb, stringsAsFactors = FALSE)
     if (!is.null(obsLevels))
       classprob <- classProb[, obsLevels]
   }
@@ -207,8 +206,6 @@ loo_train_rec <- function(rec, dat, info, method,
   colnames(printed) <- gsub("^\\.", "", colnames(printed))
 
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
-
-  is_regression <- is.null(lev)
 
   pkgs <- c("methods", "caret", "recipes")
   if(!is.null(method$library))
@@ -290,7 +287,7 @@ loo_train_rec <- function(rec, dat, info, method,
                 if(testing) print(head(probValues))
               }
 
-              predicted <- trim_values(predicted, ctrl, is_regression)
+              predicted <- trim_values(predicted, ctrl, is.null(lev))
 
               ##################################
 
@@ -381,7 +378,7 @@ oob_train_rec <- function(rec, dat, info, method,
       if(ctrl$verboseIter)
         progress(printed[parm,,drop = FALSE], "", 1, FALSE)
 
-      cbind(as.data.frame(t(out)), info$loop[parm,,drop = FALSE])
+      cbind(as.data.frame(t(out), stringsAsFactors = TRUE), info$loop[parm,,drop = FALSE])
     }
   names(result) <- gsub("^\\.", "", names(result))
   result
@@ -409,13 +406,12 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
   pkgs <- c("methods", "caret", "recipes")
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
 
-  is_regression <- is.null(lev)
 
   export <- c()
 
   result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .packages = pkgs, .export = export) %:%
     foreach(parm = 1L:nrow(info$loop), .combine = "c", .packages = pkgs, .export = export)  %op% {
-
+      
       if(!(length(ctrl$seeds) == 1L && is.na(ctrl$seeds)))
         set.seed(ctrl$seeds[[iter]][parm])
 
@@ -492,7 +488,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
 
       ##################################
 
-      predicted <- trim_values(predicted, ctrl, is_regression)
+      predicted <- trim_values(predicted, ctrl, is.null(lev))
 
       ## We'll attach data points/columns to the object used
       ## to assess holdout performance
@@ -570,7 +566,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
         ## if classification, get the confusion matrix
         if(length(lev) > 1 && length(lev) <= 50)
           thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-        thisResample <- as.data.frame(t(thisResample))
+        thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
         thisResample <- cbind(thisResample, info$loop[parm,,drop = FALSE])
       }
       thisResample$Resample <- names(resampleIndex)[iter]
@@ -696,8 +692,6 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
               modelIndex <- resampleIndex[[iter]]
               holdoutIndex <- ctrl$indexOut[[iter]]
 
-              is_regression <- is.null(lev)
-
               if(testing) cat("pre-model\n")
 
               if(is.null(info$submodels[[parm]]) || nrow(info$submodels[[parm]]) > 0) {
@@ -756,7 +750,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
 
               ##################################
 
-              predicted <- trim_values(predicted, ctrl, is_regression)
+              predicted <- trim_values(predicted, ctrl, is.null(lev))
 
               ##################################
 
@@ -833,7 +827,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                 ## if classification, get the confusion matrix
                 if(length(lev) > 1 && length(lev) <= 5)
                   thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-                thisResample <- as.data.frame(t(thisResample))
+                thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
                 thisResample <- cbind(thisResample, info$loop[parm,,drop = FALSE])
 
               }
@@ -872,6 +866,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                 .packages = c("methods", "caret"),
                 .errorhandling = "stop")  %op%  {
 
+                  
                   if(ctrl$verboseIter)
                     progress(printed[parm,,drop = FALSE],
                              names(resampleIndex), iter, TRUE)
@@ -932,7 +927,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
 
                   ##################################
 
-                  predicted <- trim_values(predicted, ctrl, is_regression)
+                  predicted <- trim_values(predicted, ctrl, is.null(lev))
 
                   ##################################
 
@@ -1014,7 +1009,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                     ## if classification, get the confusion matrix
                     if(length(lev) > 1 && length(lev) <= 50)
                       thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-                    thisResample <- as.data.frame(t(thisResample))
+                    thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
                     thisResample <- cbind(thisResample, new_info$loop[parm,,drop = FALSE])
 
                   }
@@ -1178,7 +1173,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                 }
                 ##################################
 
-                predicted <- trim_values(predicted, ctrl, is_regression)
+                predicted <- trim_values(predicted, ctrl, is.null(lev))
 
                 ##################################
 
@@ -1259,7 +1254,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                   ## if classification, get the confusion matrix
                   if(length(lev) > 1 && length(lev) <= 50)
                     thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-                  thisResample <- as.data.frame(t(thisResample))
+                  thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
                   thisResample <- cbind(thisResample, new_info$loop[parm,,drop = FALSE])
 
                 }
@@ -1270,6 +1265,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
               } ## end final loop to finish cleanup resamples and models
     init_result <- c(init_result, final_result)
   }
+
   resamples <- rbind.fill(init_result[names(init_result) == "resamples"])
   pred <- if(keep_pred)  rbind.fill(init_result[names(init_result) == "pred"]) else NULL
   names(resamples) <- gsub("^\\.", "", names(resamples))
@@ -1283,7 +1279,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                exclude = gsub("^\\.", "", colnames(info$loop)))
   num_resamp <- ddply(resamples,
                       gsub("^\\.", "", colnames(info$loop)),
-                      function(x) c(.B = nrow(x)))
+                      function(x) c(Num_Resamples = nrow(x)))
   out <- merge(out, num_resamp)
 
   list(performance = out, resamples = resamples, predictions = if(keep_pred) pred else NULL)

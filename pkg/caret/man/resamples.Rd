@@ -8,12 +8,6 @@
 \alias{as.matrix.resamples}
 \alias{as.data.frame.resamples}
 \alias{modelCor}
-\alias{resamples.default}
-\alias{sort.resamples}
-\alias{summary.resamples}
-\alias{as.matrix.resamples}
-\alias{as.data.frame.resamples}
-\alias{modelCor}
 \alias{print.resamples}
 \title{Collation and Visualization of Resampling Results}
 \usage{
@@ -21,15 +15,13 @@ resamples(x, ...)
 
 \method{resamples}{default}(x, modelNames = names(x), ...)
 
-\method{sort}{resamples}(x, decreasing = FALSE, metric = x$metric[1],
-  FUN = mean, ...)
+\method{sort}{resamples}(x, decreasing = FALSE, metric = x$metric[1], FUN = mean, ...)
 
 \method{summary}{resamples}(object, metric = object$metrics, ...)
 
 \method{as.matrix}{resamples}(x, metric = x$metric[1], ...)
 
-\method{as.data.frame}{resamples}(x, row.names = NULL, optional = FALSE,
-  metric = x$metric[1], ...)
+\method{as.data.frame}{resamples}(x, row.names = NULL, optional = FALSE, metric = x$metric[1], ...)
 
 modelCor(x, metric = x$metric[1], ...)
 

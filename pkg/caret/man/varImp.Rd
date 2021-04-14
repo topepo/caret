@@ -26,34 +26,11 @@
 \alias{varImp.nnet}
 \alias{varImp.C5.0}
 \alias{varImp.glmnet}
-\alias{varImp.bagEarth}
-\alias{varImp.bagFDA}
-\alias{varImp.C5.0}
-\alias{varImp.cubist}
-\alias{varImp.dsa}
 \alias{varImp.glm}
-\alias{varImp.glmnet}
-\alias{varImp.JRip}
-\alias{varImp.multinom}
-\alias{varImp.nnet}
 \alias{varImp.avNNet}
-\alias{varImp.PART}
 \alias{varImp.RRF}
-\alias{varImp.rpart}
-\alias{varImp.randomForest}
-\alias{varImp.gbm}
-\alias{varImp.classbagg}
-\alias{varImp.regbagg}
-\alias{varImp.pamrtrained}
-\alias{varImp.lm}
-\alias{varImp.mvr}
-\alias{varImp.earth}
-\alias{varImp.RandomForest}
-\alias{varImp.plsda}
-\alias{varImp.fda}
 \alias{varImp.gam}
 \alias{varImp.Gam}
-\alias{varImp.train}
 \title{Calculation of variable importance for regression and classification models}
 \usage{
 varImp(object, ...)
@@ -112,8 +89,7 @@ varImp(object, ...)
 
 \method{varImp}{Gam}(object, ...)
 
-\method{varImp}{train}(object, useModel = TRUE, nonpara = TRUE,
-  scale = TRUE, ...)
+\method{varImp}{train}(object, useModel = TRUE, nonpara = TRUE, scale = TRUE, ...)
 }
 \arguments{
 \item{object}{an object corresponding to a fitted model}
@@ -172,7 +148,7 @@ For models that do not have corresponding \code{varImp} methods, see
 
 Otherwise:
 
-\bold{Linear Models}: the absolute value of the t--statistic for each model
+\bold{Linear Models}: the absolute value of the t-statistic for each model
 parameter is used.
 
 \bold{\code{glmboost}} and \bold{\code{glmnet}}: the absolute value of the coefficients
@@ -195,7 +171,7 @@ the sum is returned. Also, since there may be candidate variables that are
 important but are not used in a split, the top competing variables are also
 tabulated at each split. This can be turned off using the \code{maxcompete}
 argument in \code{rpart.control}. This method does not currently provide
-class--specific measures of importance when the response is a factor.
+class-specific measures of importance when the response is a factor.
 
 \bold{Bagged Trees}: The same methodology as a single tree is applied to all
 bootstrapped trees and the total importance is returned

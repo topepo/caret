@@ -4,8 +4,14 @@
 \alias{print.train}
 \title{Print Method for the train Class}
 \usage{
-\method{print}{train}(x, printCall = FALSE, details = FALSE,
-  selectCol = FALSE, showSD = FALSE, ...)
+\method{print}{train}(
+  x,
+  printCall = FALSE,
+  details = FALSE,
+  selectCol = FALSE,
+  showSD = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{an object of class \code{\link{train}}.}

@@ -93,7 +93,7 @@ classDist.default <- function(x, y, groups = 5,
                     tol = sqrt(.Machine$double.eps))
       keep <- min(keep, ncol(pca$rotation))
       if(!is.null(keep)) pca$rotation <- pca$rotation[, 1:keep, drop = FALSE]
-      x <- as.data.frame(predict(pca, newdata = x))
+      x <- as.data.frame(predict(pca, newdata = x), stringsAsFactors = FALSE)
     } else pca <- NULL
 
   x <- split(x, y)
@@ -103,10 +103,10 @@ classDist.default <- function(x, y, groups = 5,
       if(nrow(u) < ncol(u))
         stop("there must be more rows than columns for this class")
       A <- try(cov(u), silent = TRUE)
-      if(class(A) == "try-error")
+      if(inherits(A, "try-error"))
         stop("Cannot compute the covariance matrix")
       A <- try(solve(A), silent = TRUE)
-      if(class(A) == "try-error")
+      if(inherits(A, "try-error"))
         stop("Cannot invert the covariance matrix")
       list(means = colMeans(u, na.rm = TRUE),
            A = A)

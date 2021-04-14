@@ -13,16 +13,6 @@
 \alias{ldaFuncs}
 \alias{nbFuncs}
 \alias{lrFuncs}
-\alias{pickSizeBest}
-\alias{pickSizeTolerance}
-\alias{pickVars}
-\alias{ldaFuncs}
-\alias{treebagFuncs}
-\alias{gamFuncs}
-\alias{rfFuncs}
-\alias{lmFuncs}
-\alias{nbFuncs}
-\alias{lrFuncs}
 \title{Backwards Feature Selection Helper Functions}
 \format{An object of class \code{list} of length 6.}
 \usage{
@@ -108,11 +98,11 @@ within5Pct <- pickSizeTolerance(example, metric = "RMSE", maximize = FALSE)
 cat("numerically optimal:",
     example$RMSE[absoluteBest],
     "RMSE in position",
-    absoluteBest, "\\n")
+    absoluteBest, "\n")
 cat("Accepting a 1.5 pct loss:",
     example$RMSE[within5Pct],
     "RMSE in position",
-    within5Pct, "\\n")
+    within5Pct, "\n")
 
 ## Example where we would like to maximize
 example2 <- data.frame(Rsquared = c(0.4, 0.6, 0.94, 0.95, 0.95, 0.95, 0.95),
@@ -129,11 +119,11 @@ within5Pct2 <- pickSizeTolerance(example2, metric = "Rsquared", maximize = TRUE)
 cat("numerically optimal:",
     example2$Rsquared[absoluteBest2],
     "R^2 in position",
-    absoluteBest2, "\\n")
+    absoluteBest2, "\n")
 cat("Accepting a 1.5 pct loss:",
     example2$Rsquared[within5Pct2],
     "R^2 in position",
-    within5Pct2, "\\n")
+    within5Pct2, "\n")
 
 }
 \seealso{

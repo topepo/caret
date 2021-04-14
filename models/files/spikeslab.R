@@ -48,7 +48,7 @@ modelInfo <- list(label = "Spike and Slab Regression",
                       vars <- vars[order(vars$order),]
                       
                       out <- out[,vars$index]
-                      out <- as.list(as.data.frame(out))
+                      out <- as.list(as.data.frame(out, stringsAsFactors = TRUE))
                     } else {
                       index <- modelFit$.path$index[modelFit$.path$k == modelFit$.size]
                       out <- out[,index]

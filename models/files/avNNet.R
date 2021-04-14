@@ -18,7 +18,7 @@ modelInfo <- list(label = "Model Averaged Neural Network",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     if(!is.null(wts)) {
                       out <- caret::avNNet(.outcome ~ .,
@@ -48,7 +48,7 @@ modelInfo <- list(label = "Model Averaged Neural Network",
                   },
                   prob = function(modelFit, newdata, submodels = NULL){
                     out <- predict(modelFit, newdata, type = "prob")
-                    if(ncol(as.data.frame(out)) == 1)
+                    if(ncol(as.data.frame(out, stringsAsFactors = TRUE)) == 1)
                     {
                       out <- cbind(out, 1-out)
                       dimnames(out)[[2]] <-  rev(modelFit$obsLevels)

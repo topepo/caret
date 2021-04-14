@@ -18,45 +18,45 @@
 \alias{specificity.default}
 \alias{specificity.table}
 \alias{specificity.matrix}
-\alias{posPredValue}
-\alias{posPredValue.default}
-\alias{posPredValue.table}
-\alias{posPredValue.matrix}
-\alias{negPredValue}
-\alias{negPredValue.default}
-\alias{negPredValue.table}
-\alias{negPredValue.matrix}
-\alias{sensitivity.default}
-\alias{sensitivity.table}
-\alias{sensitivity.matrix}
 \title{Calculate sensitivity, specificity and predictive values}
 \usage{
 negPredValue(data, ...)
 
-\method{negPredValue}{default}(data, reference,
-  negative = levels(reference)[2], prevalence = NULL, ...)
+\method{negPredValue}{default}(
+  data,
+  reference,
+  negative = levels(reference)[2],
+  prevalence = NULL,
+  ...
+)
 
-\method{negPredValue}{table}(data, negative = rownames(data)[-1],
-  prevalence = NULL, ...)
+\method{negPredValue}{table}(data, negative = rownames(data)[-1], prevalence = NULL, ...)
 
-\method{negPredValue}{matrix}(data, negative = rownames(data)[-1],
-  prevalence = NULL, ...)
+\method{negPredValue}{matrix}(data, negative = rownames(data)[-1], prevalence = NULL, ...)
 
 posPredValue(data, ...)
 
-\method{posPredValue}{default}(data, reference,
-  positive = levels(reference)[1], prevalence = NULL, ...)
+\method{posPredValue}{default}(
+  data,
+  reference,
+  positive = levels(reference)[1],
+  prevalence = NULL,
+  ...
+)
 
-\method{posPredValue}{table}(data, positive = rownames(data)[1],
-  prevalence = NULL, ...)
+\method{posPredValue}{table}(data, positive = rownames(data)[1], prevalence = NULL, ...)
 
-\method{posPredValue}{matrix}(data, positive = rownames(data)[1],
-  prevalence = NULL, ...)
+\method{posPredValue}{matrix}(data, positive = rownames(data)[1], prevalence = NULL, ...)
 
 sensitivity(data, ...)
 
-\method{sensitivity}{default}(data, reference,
-  positive = levels(reference)[1], na.rm = TRUE, ...)
+\method{sensitivity}{default}(
+  data,
+  reference,
+  positive = levels(reference)[1],
+  na.rm = TRUE,
+  ...
+)
 
 \method{sensitivity}{table}(data, positive = rownames(data)[1], ...)
 

@@ -26,7 +26,7 @@ modelInfo <- list(label = "Boosted Linear Model",
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
                     if(!is.data.frame(x) | inherits(x, "tbl_df")) 
-                      x <- as.data.frame(x)
+                      x <- as.data.frame(x, stringsAsFactors = TRUE)
                     
                     theDots <- list(...)
                     modDist <- if(is.factor(y)) "hinge" else "gaussian"
@@ -49,7 +49,7 @@ modelInfo <- list(label = "Boosted Linear Model",
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.data.frame(newdata) | inherits(newdata, "tbl_df")) 
-                      newdata <- as.data.frame(newdata)
+                      newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     if(modelFit$problemType == "Classification") {
                       out <- predict(modelFit, newdata, type = "class", mstop = modelFit$submodels$mstop)
                       out <- ifelse(out == 1, modelFit$obsLevels[1], modelFit$obsLevels[2])

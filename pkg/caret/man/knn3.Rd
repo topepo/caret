@@ -6,11 +6,7 @@
 \alias{knn3.matrix}
 \alias{knn3.data.frame}
 \alias{knn3Train}
-\alias{knn3.formula}
-\alias{knn3.data.frame}
-\alias{knn3.matrix}
 \alias{print.knn3}
-\alias{knn3Train}
 \title{k-Nearest Neighbour Classification}
 \usage{
 knn3(x, ...)
@@ -29,7 +25,7 @@ knn3Train(train, test, cl, k = 1, l = 0, prob = TRUE, use.all = TRUE)
 \item{x}{a matrix of training set predictors}
 
 \item{...}{additional parameters to pass to \code{knn3Train}. However,
-passing \code{prob = FALSE} will be over--ridden.}
+passing \code{prob = FALSE} will be over-ridden.}
 
 \item{formula}{a formula of the form \code{lhs ~ rhs} where \code{lhs} is
 the response variable and \code{rhs} a set of predictors.}

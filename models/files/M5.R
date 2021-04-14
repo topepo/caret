@@ -24,14 +24,14 @@ modelInfo <- list(label = "Model Tree",
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
                                         control = ctl),
                                    theDots)
-                    modelArgs$data <- if(is.data.frame(x)) x else as.data.frame(x)
+                    modelArgs$data <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     modelArgs$data$.outcome <- y
                     
                     out <- do.call(if(param$rules == "Yes") RWeka::M5Rules else RWeka::M5P, modelArgs) 
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     predict(modelFit, newdata)
                   },
                   prob = NULL,

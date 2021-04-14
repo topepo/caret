@@ -121,7 +121,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Dropout",
                       newdata <- as.matrix(newdata)
                     out <- predict(modelFit$object, newdata)
                     colnames(out) <- modelFit$obsLevels
-                    as.data.frame(out)
+                    as.data.frame(out, stringsAsFactors = TRUE)
                   },
                   varImp = NULL,
                   tags = c("Neural Network"),

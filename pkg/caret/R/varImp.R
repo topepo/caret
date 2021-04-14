@@ -8,7 +8,7 @@
 #'
 #' Otherwise:
 #'
-#' \bold{Linear Models}: the absolute value of the t--statistic for each model
+#' \bold{Linear Models}: the absolute value of the t-statistic for each model
 #' parameter is used.
 #'
 #' \bold{\code{glmboost}} and \bold{\code{glmnet}}: the absolute value of the coefficients
@@ -31,7 +31,7 @@
 #' important but are not used in a split, the top competing variables are also
 #' tabulated at each split. This can be turned off using the \code{maxcompete}
 #' argument in \code{rpart.control}. This method does not currently provide
-#' class--specific measures of importance when the response is a factor.
+#' class-specific measures of importance when the response is a factor.
 #'
 #' \bold{Bagged Trees}: The same methodology as a single tree is applied to all
 #' bootstrapped trees and the total importance is returned

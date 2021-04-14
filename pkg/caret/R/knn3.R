@@ -22,7 +22,7 @@
 #' @param x a matrix of training set predictors
 #' @param y a factor vector of training set classes
 #' @param ... additional parameters to pass to \code{knn3Train}. However,
-#' passing \code{prob = FALSE} will be over--ridden.
+#' passing \code{prob = FALSE} will be over-ridden.
 #' @param train matrix or data frame of training set cases.
 #' @param test matrix or data frame of test set cases. A vector will be
 #' interpreted as a row vector for a single case.
@@ -76,7 +76,7 @@ knn3.formula <- function (formula, data, subset, na.action, k = 5, ...)
         stop("formula missing or incorrect")
     m <- match.call(expand.dots = FALSE)
     if (is.matrix(eval(m$data, parent.frame())))
-        m$data <- as.data.frame(data)
+        m$data <- as.data.frame(data, stringsAsFactors = TRUE)
     m[[1]] <- as.name("model.frame")
     m$... <- NULL
     m$k <- NULL

@@ -1,15 +1,29 @@
 Package: caret
-Version: 6.0-79
+Version: 6.0-87
 Title: Classification and Regression Training
-Author: Max Kuhn. Contributions from Jed Wing, Steve Weston, Andre
-    Williams, Chris Keefer, Allan Engelhardt, Tony Cooper, Zachary Mayer,
-    Brenton Kenkel, the R Core Team, Michael Benesty, Reynald Lescarbeau,
-    Andrew Ziem, Luca Scrucca, Yuan Tang, Can Candan, and Tyler Hunt.
+Authors@R: c(
+  person("Max", "Kuhn", role = c("aut", "cre"), email = "mxkuhn@gmail.com"),
+  person("Jed", "Wing", role = "ctb"),
+	person("Steve", "Weston", role = "ctb"),
+	person("Andre", "Williams", role = "ctb"),
+	person("Chris", "Keefer", role = "ctb"),
+	person("Allan", "Engelhardt", role = "ctb"),
+	person("Tony", "Cooper", role = "ctb"),
+	person("Zachary", "Mayer", role = "ctb"),
+	person("Brenton", "Kenkel", role = "ctb"),
+	person("R Core Team", role = "ctb"),
+	person("Michael", "Benesty", role = "ctb"),
+	person("Reynald", "Lescarbeau", role = "ctb"),
+	person("Andrew", "Ziem", role = "ctb"),
+	person("Luca", "Scrucca", role = "ctb"),
+	person("Yuan", "Tang", role = "ctb"),
+	person("Can", "Candan", role = "ctb"),
+	person("Tyler", "Hunt", role = "ctb")
+    )
 Description: Misc functions for training and plotting classification and
     regression models.
-Maintainer: Max Kuhn <mxkuhn@gmail.com>
 Depends:
-    R (>= 2.10),
+    R (>= 3.2.0),
     lattice (>= 0.20),
     ggplot2
 URL: https://github.com/topepo/caret/
@@ -18,15 +32,16 @@ Imports:
     foreach,
     methods,
     plyr,
-    ModelMetrics (>= 1.1.0),
+    ModelMetrics (>= 1.2.2.2),
     nlme,
     reshape2,
     stats,
     stats4,
     utils,
     grDevices,
-    recipes (>= 0.0.1),
-    withr (>= 2.0.0)
+    recipes (>= 0.1.10),
+    withr (>= 2.0.0),
+    pROC,
 Suggests:
     BradleyTerry2,
     e1071,
@@ -46,7 +61,6 @@ Suggests:
     nnet,
     party (>= 0.9-99992),
     pls,
-    pROC,
     proxy,
     randomForest,
     RANN,
@@ -55,8 +69,11 @@ Suggests:
     pamr,
     superpc,
     Cubist,
-    testthat (>= 0.9.1)
+    testthat (>= 0.9.1),
+    rpart,
+    dplyr,
+    covr
 License: GPL (>= 2)
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.1.9000
 VignetteBuilder: knitr
-
+Encoding: UTF-8

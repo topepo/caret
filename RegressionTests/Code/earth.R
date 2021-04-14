@@ -48,6 +48,7 @@ set.seed(849)
 test_class_rand <- train(trainX, trainY, 
                          method = "earth", 
                          trControl = cctrlR,
+                         glm = list(family = binomial, control = list(maxit = 50)),
                          tuneLength = 4)
 
 set.seed(849)
@@ -223,7 +224,7 @@ tmp <- training
 tmp$wts <- case_weights
 
 reg_rec <- recipe(y ~ ., data = tmp) %>%
-  add_role(wts, new_role = "case weight") %>%
+  update_role(wts, new_role = "case weight") %>%
   step_center(all_predictors()) %>%
   step_scale(all_predictors())
 

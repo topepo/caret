@@ -258,7 +258,7 @@ For example, the `ksvm` function uses `S4` methods but, unlike most model functi
 lpSVM$levels <- function(x) kernlab::lev(x)
 ```
 
-In most other cases, the levels will beed to be extracted from data contained in the fitted model object. As another example, objects created using the `ctree` function in the `party` package would need to use:
+In most other cases, the levels will need to be extracted from data contained in the fitted model object. As another example, objects created using the `ctree` function in the `party` package would need to use:
 
 ```{r custom_lev_S4, eval = FALSE}
 function(x) levels(x@data@get("response")[,1])
@@ -764,7 +764,7 @@ thresh_code$grid <- function(x, y, len = NULL, search = "grid") {
                         threshold = seq(.01, .99, length = len))
     } else {
       grid <- expand.grid(mtry = sample(1:p, size = len),
-                          threshold = runif(1, 0, size = len))
+                          threshold = runif(runif, min = 0, max = 1))
       }
   grid
   }
@@ -923,6 +923,6 @@ coef(mod$finalModel)
 ``` 
 
 ```{r custom-restart-par, include = FALSE}
-cl2 <- makeForkCluster(parallel::detectCores(logical = TRUE))
-registerDoParallel(cl2)
+library(doMC)
+registerDoMC(cores = parallel::detectCores(logical = TRUE))
 ```

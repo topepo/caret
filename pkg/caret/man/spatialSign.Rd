@@ -5,9 +5,6 @@
 \alias{spatialSign.default}
 \alias{spatialSign.matrix}
 \alias{spatialSign.data.frame}
-\alias{spatialSign.default}
-\alias{spatialSign.matrix}
-\alias{spatialSign.data.frame}
 \title{Compute the multivariate spatial sign}
 \usage{
 spatialSign(x, ...)

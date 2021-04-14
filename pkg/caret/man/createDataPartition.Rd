@@ -7,19 +7,21 @@
 \alias{createMultiFolds}
 \alias{createTimeSlices}
 \alias{groupKFold}
-\alias{createFolds}
-\alias{createTimeSlices}
-\alias{groupKFold}
-\alias{createResample}
 \title{Data Splitting functions}
 \usage{
-createDataPartition(y, times = 1, p = 0.5, list = TRUE, groups = min(5,
-  length(y)))
+createDataPartition(
+  y,
+  times = 1,
+  p = 0.5,
+  list = TRUE,
+  groups = min(5, length(y))
+)
 
 createFolds(y, k = 10, list = TRUE, returnTrain = FALSE)
 
-createTimeSlices(y, initialWindow, horizon = 1, fixedWindow = TRUE,
-  skip = 0)
+createMultiFolds(y, k = 10, times = 5)
+
+createTimeSlices(y, initialWindow, horizon = 1, fixedWindow = TRUE, skip = 0)
 
 groupKFold(group, k = length(unique(group)))
 

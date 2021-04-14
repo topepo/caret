@@ -3,13 +3,17 @@
 \name{plot.varImp.train}
 \alias{plot.varImp.train}
 \alias{ggplot.varImp.train}
-\alias{ggplot.varImp.train}
 \title{Plotting variable importance measures}
 \usage{
 \method{plot}{varImp.train}(x, top = dim(x$importance)[1], ...)
 
-\method{ggplot}{varImp.train}(data, mapping = NULL,
-  top = dim(data$importance)[1], ..., environment = NULL)
+\method{ggplot}{varImp.train}(
+  data,
+  mapping = NULL,
+  top = dim(data$importance)[1],
+  ...,
+  environment = NULL
+)
 }
 \arguments{
 \item{x, data}{an object with class \code{varImp}.}

@@ -4,8 +4,13 @@
 \alias{featurePlot}
 \title{Wrapper for Lattice Plotting of Predictor Variables}
 \usage{
-featurePlot(x, y, plot = if (is.factor(y)) "strip" else "scatter",
-  labels = c("Feature", ""), ...)
+featurePlot(
+  x,
+  y,
+  plot = if (is.factor(y)) "strip" else "scatter",
+  labels = c("Feature", ""),
+  ...
+)
 }
 \arguments{
 \item{x}{a matrix or data frame of continuous feature/probe/spectra data.}

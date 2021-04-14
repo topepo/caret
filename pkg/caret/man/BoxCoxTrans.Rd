@@ -7,15 +7,19 @@
 \alias{expoTrans.default}
 \alias{expoTrans}
 \alias{predict.expoTrans}
-\alias{BoxCoxTrans.default}
 \alias{print.BoxCoxTrans}
-\alias{predict.BoxCoxTrans}
 \title{Box-Cox and Exponential Transformations}
 \usage{
 BoxCoxTrans(y, ...)
 
-\method{BoxCoxTrans}{default}(y, x = rep(1, length(y)), fudge = 0.2,
-  numUnique = 3, na.rm = FALSE, ...)
+\method{BoxCoxTrans}{default}(
+  y,
+  x = rep(1, length(y)),
+  fudge = 0.2,
+  numUnique = 3,
+  na.rm = FALSE,
+  ...
+)
 
 \method{print}{BoxCoxTrans}(x, newdata, digits = 3, ...)
 

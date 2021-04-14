@@ -5,11 +5,12 @@ If you are filing a bug, make sure these boxes are checked before submitting you
 - [ ] Start a new R session
 - [ ] Install the latest version of caret: `update.packages(oldPkgs="caret", ask=FALSE)`
 - [ ] [Write a minimal reproducible example](http://stackoverflow.com/a/5963610)
+- [ ] **Do not** use parallel processing in the code (unless you are certain that the issue is about parallel processing).
 - [ ] run `sessionInfo()`
 
 ### Minimal, reproducible example:
 
-__Please read this page__: [reprex = {repr}oducible {ex}ample](https://github.com/jennybc/reprex#what-is-a-reprex) 
+__Please read this page__: [reprex = {repr}oducible {ex}ample](https://github.com/jennybc/reprex#what-is-a-reprex); your issue can be easily formatted using the **[`reprex` package](https://cran.r-project.org/package=reprex)**. 
 
 Text and example code modified from [the R FAQ on stackoverflow](http://stackoverflow.com/a/5963610)
 

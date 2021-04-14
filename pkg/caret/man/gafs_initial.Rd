@@ -11,13 +11,7 @@
 \alias{caretGA}
 \alias{rfGA}
 \alias{treebagGA}
-\alias{gafs_lrSelection}
-\alias{gafs_spCrossover}
-\alias{gafs_raMutation}
 \alias{gafs_nlrSelection}
-\alias{gafs_rwSelection}
-\alias{gafs_tourSelection}
-\alias{gafs_uCrossover}
 \title{Ancillary genetic algorithm functions}
 \usage{
 gafs_initial(vars, popSize, ...)
@@ -121,7 +115,7 @@ rf_ga <- gafs(x = predictors,
 Scrucca L (2013). GA: A Package for Genetic Algorithms in R.
 Journal of Statistical Software, 53(4), 1-37.
 
-\url{cran.r-project.org/web/packages/GA/}
+\url{https://cran.r-project.org/package=GA}
 
 \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}
 }

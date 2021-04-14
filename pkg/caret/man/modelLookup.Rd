@@ -4,8 +4,6 @@
 \alias{modelLookup}
 \alias{getModelInfo}
 \alias{checkInstall}
-\alias{checkInstall}
-\alias{getModelInfo}
 \title{Tools for Models Available in \code{train}}
 \usage{
 modelLookup(model = NULL)
@@ -63,7 +61,7 @@ The column \code{seq} is no longer included in the output of
 }
 \examples{
 
-\dontrun{ 
+\dontrun{
 modelLookup()
 modelLookup("gbm")
 

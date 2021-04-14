@@ -185,6 +185,22 @@ confusionMatrix.default <- function(data, reference,
 }
 
 #' @rdname confusionMatrix
+#' @method confusionMatrix matrix
+#' @importFrom utils getFromNamespace
+#' @export
+confusionMatrix.matrix <- function(data,
+                                   positive = NULL,
+                                   prevalence = NULL,
+                                   mode = "sens_spec",
+                                   ...) {
+  if (length(unique(dim(data))) != 1) {
+    stop("matrix must have equal dimensions")
+  }
+  classTable <- as.table(data, ...)
+  confusionMatrix(classTable, positive, prevalence = prevalence, mode = mode)
+}
+
+#' @rdname confusionMatrix
 #' @importFrom stats binom.test mcnemar.test
 #' @export
 confusionMatrix.table <- function(data, positive = NULL,
@@ -194,7 +210,7 @@ confusionMatrix.table <- function(data, positive = NULL,
     stop("`mode` should be either 'sens_spec', 'prec_recall', or 'everything'")
   if(length(dim(data)) != 2) stop("the table must have two dimensions")
   if(!all.equal(nrow(data), ncol(data))) stop("the table must nrow = ncol")
-  if(!all.equal(rownames(data), colnames(data))) stop("the table must the same classes in the same order")
+  if(!isTRUE(all.equal(rownames(data), colnames(data)))) stop("the table must the same classes in the same order")
   if(!is.character(positive) & !is.null(positive)) stop("positive argument must be character")
 
   classLevels <- rownames(data)
@@ -659,6 +675,7 @@ print.confusionMatrix <- function(x, mode = x$mode, digits = max(3, getOption("d
                      paste(overall[c("AccuracyNull", "AccuracyPValue")]),
                      "",
                      paste(overall["Kappa"]),
+                     "",
                      paste(overall["McnemarPValue"]))
 
     overallNames <- c("Accuracy", "95% CI",
@@ -666,6 +683,7 @@ print.confusionMatrix <- function(x, mode = x$mode, digits = max(3, getOption("d
                       "P-Value [Acc > NIR]",
                       "",
                       "Kappa",
+                      "",
                       "Mcnemar's Test P-Value")
 
     if(dim(x$table)[1] > 2){

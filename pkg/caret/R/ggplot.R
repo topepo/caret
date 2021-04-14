@@ -148,22 +148,27 @@ ggplot.train <- function(data = NULL, mapping = NULL, metric = data$metric[1], p
 #' @rdname plot.rfe
 #' @export
 ggplot.rfe <- function(data = NULL, mapping = NULL, metric = data$metric[1],
-                       output = "layered", ..., environment = NULL)
-{
+                       output = "layered", ..., environment = NULL) {
   if(!(output %in% c("data", "layered", "ggplot")))
     stop("'outout' should be either 'data', 'ggplot' or 'layered'")
   resampText <- resampName(data, FALSE)
   resampText <- paste(metric, resampText)
   if(output == "data") return(data$results)
+
+    if(any(names(data$results) == "Num_Resamples")) {
+      data$results <- 
+        subset(data$results, Num_Resamples >= floor(.5 * length(data$control$index)))
+  }
+  
   notBest <- subset(data$results, Variables != data$bestSubset)
   best <- subset(data$results, Variables == data$bestSubset)
-
+  
   out <- ggplot(data$results, aes_string(x = "Variables", y = metric))
   if(output == "ggplot") return(out)
   out <- out + geom_line()
   out <- out + ylab(resampText)
   out <- out + geom_point(data = notBest, aes_string(x = "Variables", y = metric))
-
+  
   out <- out + geom_point(data=best, aes_string(x = "Variables", y = metric),
                           size = 3, colour="blue")
   out

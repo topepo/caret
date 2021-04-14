@@ -11,34 +11,30 @@
 \alias{F_meas}
 \alias{F_meas.default}
 \alias{F_meas.table}
-\alias{recall.table}
-\alias{recall.default}
-\alias{precision}
-\alias{precision.default}
-\alias{precision.table}
-\alias{F_meas}
-\alias{F_meas.default}
-\alias{F_meas.table}
 \title{Calculate recall, precision and F values}
 \usage{
 recall(data, ...)
 
 \method{recall}{table}(data, relevant = rownames(data)[1], ...)
 
-\method{recall}{default}(data, reference, relevant = levels(reference)[1],
-  na.rm = TRUE, ...)
+\method{recall}{default}(data, reference, relevant = levels(reference)[1], na.rm = TRUE, ...)
 
 precision(data, ...)
 
-\method{precision}{default}(data, reference, relevant = levels(reference)[1],
-  na.rm = TRUE, ...)
+\method{precision}{default}(data, reference, relevant = levels(reference)[1], na.rm = TRUE, ...)
 
 \method{precision}{table}(data, relevant = rownames(data)[1], ...)
 
 F_meas(data, ...)
 
-\method{F_meas}{default}(data, reference, relevant = levels(reference)[1],
-  beta = 1, na.rm = TRUE, ...)
+\method{F_meas}{default}(
+  data,
+  reference,
+  relevant = levels(reference)[1],
+  beta = 1,
+  na.rm = TRUE,
+  ...
+)
 
 \method{F_meas}{table}(data, relevant = rownames(data)[1], beta = 1, ...)
 }
@@ -72,7 +68,7 @@ must have the same two possible outcomes and one of the outcomes must be
 thought of as a "relevant" results.
 }
 \details{
-The recall (aka specificity) is defined as the proportion of relevant
+The recall (aka sensitivity) is defined as the proportion of relevant
 results out of the number of samples which were actually relevant. When
 there are no relevant results, recall is not defined and a value of
 \code{NA} is returned.

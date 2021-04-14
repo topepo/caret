@@ -8,17 +8,12 @@
 \alias{caretSA}
 \alias{rfSA}
 \alias{treebagSA}
-\alias{safs_perturb}
-\alias{safs_prob}
-\alias{caretSA}
-\alias{treebagSA}
-\alias{rfSA}
 \title{Ancillary simulated annealing functions}
 \format{An object of class \code{list} of length 8.}
 \usage{
 safs_initial(vars, prob = 0.2, ...)
 
-safs_perturb(x, vars, number = floor(vars * 0.01) + 1)
+safs_perturb(x, vars, number = floor(length(x) * 0.01) + 1)
 
 safs_prob(old, new, iteration = 1)
 

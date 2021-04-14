@@ -42,6 +42,9 @@ cctrl4 <- trainControl(method = "cv", number = 3,
                        summaryFunction = weight_test)
 cctrl5 <- trainControl(method = "LOOCV", summaryFunction = weight_test)
 
+cctrl6 <- trainControl(method = "cv", number = 3, summaryFunction = multiClassSummary,
+                       classProbs = TRUE)
+
 set.seed(849)
 test_class_cv_model <- train(trainX, trainY, 
                              method = "polr", 
@@ -107,17 +110,17 @@ set.seed(849)
 test_class_rec <- train(x = rec_cls,
                         data = training,
                         method = "polr", 
-                        trControl = cctrl1,
+                        trControl = cctrl6,
                         metric = "ROC",
-                        start = strt)
+                        start = strt) # This will return warnings
 
 
-if(
-  !isTRUE(
-    all.equal(test_class_cv_model$results, 
-              test_class_rec$results))
-)
+if(  !isTRUE(
+  all.equal(test_class_cv_model$results[,'Accuracy'], 
+            test_class_rec$results[,'Accuracy'])) ){
   stop("CV weights not giving the same results")
+  
+}
 
 test_class_imp_rec <- varImp(test_class_rec)
 

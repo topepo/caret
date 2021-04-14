@@ -7,17 +7,12 @@
 \alias{contr.dummy}
 \alias{contr.ltfr}
 \alias{class2ind}
-\alias{dummyVars.default}
 \alias{print.dummyVars}
-\alias{predict.dummyVars}
-\alias{contr.ltfr}
-\alias{class2ind}
 \title{Create A Full Set of Dummy Variables}
 \usage{
 dummyVars(formula, ...)
 
-\method{dummyVars}{default}(formula, data, sep = ".", levelsOnly = FALSE,
-  fullRank = FALSE, ...)
+\method{dummyVars}{default}(formula, data, sep = ".", levelsOnly = FALSE, fullRank = FALSE, ...)
 
 \method{print}{dummyVars}(x, ...)
 
@@ -103,7 +98,7 @@ For the data in the Example section below, this would produce:
            1      0      0      0      1      0      0}
 
 In some situations, there may be a need for dummy variables for all the
-levels of the factor. For the same example: 
+levels of the factor. For the same example:
 \preformatted{ dayMon dayTue dayWed dayThu dayFri daySat daySun
       1      0      0      0      0      0      0
       1      0      0      0      0      0      0
@@ -128,7 +123,8 @@ when <- data.frame(time = c("afternoon", "night", "afternoon",
                             "morning", "afternoon", "afternoon"),
                    day = c("Mon", "Mon", "Mon",
                            "Wed", "Wed", "Fri",
-                           "Sat", "Sat", "Fri"))
+                           "Sat", "Sat", "Fri"),
+                           stringsAsFactors = TRUE)
 
 levels(when$time) <- list(morning="morning",
                           afternoon="afternoon",

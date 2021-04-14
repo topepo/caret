@@ -7,17 +7,13 @@
 \alias{splsda.default}
 \alias{predict.splsda}
 \alias{splsda}
-\alias{predict.plsda}
-\alias{plsda.default}
 \title{Partial Least Squares and Sparse Partial Least Squares Discriminant Analysis}
 \usage{
 plsda(x, ...)
 
-\method{predict}{plsda}(object, newdata = NULL, ncomp = NULL,
-  type = "class", ...)
+\method{predict}{plsda}(object, newdata = NULL, ncomp = NULL, type = "class", ...)
 
-\method{plsda}{default}(x, y, ncomp = 2, probMethod = "softmax",
-  prior = NULL, ...)
+\method{plsda}{default}(x, y, ncomp = 2, probMethod = "softmax", prior = NULL, ...)
 }
 \arguments{
 \item{x}{a matrix or data frame of predictors}

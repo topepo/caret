@@ -21,7 +21,7 @@ modelInfo <- list(label = "k-Nearest Neighbors",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     kknn::train.kknn(.outcome ~ ., data = dat,
                                kmax = param$kmax,
@@ -29,13 +29,13 @@ modelInfo <- list(label = "k-Nearest Neighbors",
                                kernel = as.character(param$kernel), ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     predict(modelFit, newdata)
                   },
                   levels = function(x) x$obsLevels,
                   tags = "Prototype Models",
                   prob = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     predict(modelFit, newdata, type = "prob")
                   },
                   sort = function(x) x[order(-x[,1]),])

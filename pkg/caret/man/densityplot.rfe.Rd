@@ -54,7 +54,7 @@ colnames(x) <- paste("var", 1:ncol(x), sep = "")
 
 normalization <- preProcess(x)
 x <- predict(normalization, x)
-x <- as.data.frame(x)
+x <- as.data.frame(x, stringsAsFactors = TRUE)
 subsets <- c(10, 15, 20, 25)
 
 ctrl <- rfeControl(

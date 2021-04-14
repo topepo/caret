@@ -83,7 +83,7 @@ function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
    {
       subX <- x[index,, drop = FALSE]
       subY <- y[index]
-      tmp <- as.data.frame(subX)
+      tmp <- as.data.frame(subX, stringsAsFactors = FALSE)
       tmp$.outcome <- subY
       if(!is.null(w)) subW <- w[index]
       fit <- if(is.null(w))
@@ -133,7 +133,7 @@ function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights = NUL
    attr(Terms, "intercept") <- 0
    y <- model.response(m)
    w <- model.weights(m)
-   x <- model.matrix(Terms, m, contrasts)
+   x <- model.matrix(Terms, m)
    cons <- attr(x, "contrast")
    xint <- match("(Intercept)", colnames(x), nomatch = 0)
    if (xint > 0)  x <- x[, -xint, drop = FALSE]
@@ -195,7 +195,7 @@ function(object, newdata = NULL, type = "class", ...)
                       {
                         tmp <- predict(x, newdata = y, type = "posterior")
                         nms <- colnames(tmp)
-                        tmp <- as.data.frame(tmp)
+                        tmp <- as.data.frame(tmp, stringsAsFactors = FALSE)
                         names(tmp) <- nms
                         tmp$sample <- 1:nrow(tmp)
                         tmp

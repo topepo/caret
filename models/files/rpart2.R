@@ -5,7 +5,7 @@ modelInfo <- list(label = "CART",
                                           class = c("numeric"),
                                           label = c("Max Tree Depth")),
                   grid = function(x, y, len = NULL, search = "grid"){
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     initialFit <- rpart::rpart(.outcome ~ .,
                                                data = dat,
@@ -19,8 +19,8 @@ modelInfo <- list(label = "CART",
                         cat("note: only", nrow(initialFit),
                             "possible values of the max tree depth from the initial fit.\n",
                             "Truncating the grid to", nrow(initialFit), ".\n\n")
-                        tuneSeq <-  as.data.frame(initialFit)
-                      } else tuneSeq <-  as.data.frame(initialFit[1:len,])
+                        tuneSeq <-  as.data.frame(initialFit, stringsAsFactors = TRUE)
+                      } else tuneSeq <-  as.data.frame(initialFit[1:len,], stringsAsFactors = TRUE)
                       colnames(tuneSeq) <- "maxdepth"
                     } else {
                       tuneSeq <- data.frame(maxdepth = unique(sample(as.vector(initialFit[,1]), 
@@ -48,7 +48,7 @@ modelInfo <- list(label = "CART",
                     if(!is.null(wts)) theDots$weights <- wts    
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
-                                        data = if(is.data.frame(x)) x else as.data.frame(x),
+                                        data = if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE),
                                         control = ctl),
                                    theDots)
                     modelArgs$data$.outcome <- y
@@ -66,7 +66,7 @@ modelInfo <- list(label = "CART",
                       out
                     }
                     
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     
                     pType <- if(modelFit$problemType == "Classification") "class" else "vector"
                     out  <- predict(modelFit, newdata, type=pType)
@@ -92,7 +92,7 @@ modelInfo <- list(label = "CART",
                       out[depth > max(x[,"nsplit"])] <- min(x[,"CP"]) * .99
                       out
                     }
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     out <- predict(modelFit, newdata, type = "prob")
                     
                     if(!is.null(submodels))
@@ -105,7 +105,7 @@ modelInfo <- list(label = "CART",
                       {
                         prunedFit <- rpart::prune.rpart(modelFit, cp = cpValues[j])
                         tmpProb <- predict(prunedFit, newdata, type = "prob")
-                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE])
+                        tmp[[j+1]] <- as.data.frame(tmpProb[, modelFit$obsLevels, drop = FALSE], stringsAsFactors = TRUE)
                       }
                       out <- tmp
                     }                              
@@ -129,7 +129,7 @@ modelInfo <- list(label = "CART",
                     splits$var <- tmp
                     splits$type <- ""
                     
-                    frame <- as.data.frame(object$frame)
+                    frame <- as.data.frame(object$frame, stringsAsFactors = TRUE)
                     index <- 0
                     for(i in 1:nrow(frame)) {
                       if(frame$var[i] != "<leaf>") {

@@ -50,7 +50,7 @@ NULL
 #' @source Sutherland, J. J., O'Brien, L. A. and Weaver, D. F. (2003).
 #' Spline-Fitting with a Genetic Algorithm: A Method for Developing
 #' Classification Structure-Activity Relationships, \emph{Journal of Chemical
-#' Information and Computer Sciences}, Vol. 43, pg. 1906--1915.
+#' Information and Computer Sciences}, Vol. 43, pg. 1906-1915.
 #' @keywords datasets
 NULL
 
@@ -77,7 +77,7 @@ NULL
 #' @source Sutherland, J.J. and Weaver, D.F. (2004). Three-dimensional
 #' quantitative structure-activity and structure-selectivity relationships of
 #' dihydrofolate reductase inhibitors, \emph{Journal of Computer-Aided
-#' Molecular Design}, Vol. 18, pg. 309--331.
+#' Molecular Design}, Vol. 18, pg. 309-331.
 #' @keywords datasets
 NULL
 
@@ -249,18 +249,18 @@ NULL
 NULL
 
 #' Kelly Blue Book resale data for 2005 model year GM cars
-#' 
+#'
 #' Kuiper (2008) collected data on Kelly Blue Book resale data for 804 GM cars (2005 model year).
-#' 
+#'
 #' @name cars
 #' @docType data
-#' @return \item{cars}{data frame of the suggested retail price (column \code{Price}) and various 
-#' characteristics of each car (columns \code{Mileage}, \code{Cylinder}, \code{Doors}, \code{Cruise}, 
+#' @return \item{cars}{data frame of the suggested retail price (column \code{Price}) and various
+#' characteristics of each car (columns \code{Mileage}, \code{Cylinder}, \code{Doors}, \code{Cruise},
 #' \code{Sound}, \code{Leather}, \code{Buick}, \code{Cadillac}, \code{Chevy}, \code{Pontiac}, \code{Saab},
 #'  \code{Saturn}, \code{convertible}, \code{coupe}, \code{hatchback}, \code{sedan} and \code{wagon})}
-#' @source Kuiper, S. (2008). Introduction to Multiple Regression: How Much Is Your Car Worth?, 
+#' @source Kuiper, S. (2008). Introduction to Multiple Regression: How Much Is Your Car Worth?,
 #' \emph{Journal of Statistics Education}, Vol. 16
-#' \url{www.amstat.org/publications/jse/v16n3/datasets.kuiper.html}.
+#' \url{http://jse.amstat.org/jse_archive.htm#2008}.
 #' @keywords datasets
 NULL
 

@@ -4,17 +4,28 @@
 \alias{preProcess}
 \alias{preProcess.default}
 \alias{predict.preProcess}
-\alias{preProcess.default}
-\alias{predict.preProcess}
 \title{Pre-Processing of Predictors}
 \usage{
 preProcess(x, ...)
 
-\method{preProcess}{default}(x, method = c("center", "scale"),
-  thresh = 0.95, pcaComp = NULL, na.remove = TRUE, k = 5,
-  knnSummary = mean, outcome = NULL, fudge = 0.2, numUnique = 3,
-  verbose = FALSE, freqCut = 95/5, uniqueCut = 10, cutoff = 0.9,
-  rangeBounds = c(0, 1), ...)
+\method{preProcess}{default}(
+  x,
+  method = c("center", "scale"),
+  thresh = 0.95,
+  pcaComp = NULL,
+  na.remove = TRUE,
+  k = 5,
+  knnSummary = mean,
+  outcome = NULL,
+  fudge = 0.2,
+  numUnique = 3,
+  verbose = FALSE,
+  freqCut = 95/5,
+  uniqueCut = 10,
+  cutoff = 0.9,
+  rangeBounds = c(0, 1),
+  ...
+)
 
 \method{predict}{preProcess}(object, newdata, ...)
 }
@@ -57,13 +68,13 @@ Box-Cox transformation?}
 
 \item{verbose}{a logical: prints a log as the computations proceed}
 
-\item{freqCut}{the cutoff for the ratio of the most common value to the 
+\item{freqCut}{the cutoff for the ratio of the most common value to the
 second most common value. See \code{\link{nearZeroVar}}.}
 
-\item{uniqueCut}{the cutoff for the percentage of distinct values out of 
+\item{uniqueCut}{the cutoff for the percentage of distinct values out of
 the number of total samples. See \code{\link{nearZeroVar}}.}
 
-\item{cutoff}{a numeric value for the pair-wise absolute correlation cutoff. 
+\item{cutoff}{a numeric value for the pair-wise absolute correlation cutoff.
 See \code{\link{findCorrelation}}.}
 
 \item{rangeBounds}{a two-element numeric vector specifying closed interval
@@ -80,8 +91,8 @@ used for each } \item{dim}{the dimensions of \code{x}} \item{bc}{Box-Cox
 transformation values, see \code{\link{BoxCoxTrans}}} \item{mean}{a vector
 of means (if centering was requested)} \item{std}{a vector of standard
 deviations (if scaling or PCA was requested)} \item{rotation}{a matrix of
-eigenvectors if PCA was requested} \item{method}{the value of\code{method}}
-\item{thresh}{the value of\code{thresh}} \item{ranges}{a matrix of min and
+eigenvectors if PCA was requested} \item{method}{the value of \code{method}}
+\item{thresh}{the value of \code{thresh}} \item{ranges}{a matrix of min and
 max values for each predictor when \code{method} includes "range" (and
 \code{NULL} otherwise)} \item{numComp}{the number of principal components
 required of capture the specified amount of variance} \item{ica}{contains
@@ -101,7 +112,7 @@ nothing is recomputed when using the \code{predict} function.
 
 The Box-Cox (\code{method = "BoxCox"}), Yeo-Johnson (\code{method =
 "YeoJohnson"}), and exponential transformations (\code{method =
-"expoTrans"})have been "repurposed" here: they are being used to transform
+"expoTrans"}) have been "repurposed" here: they are being used to transform
 the predictor variables. The Box-Cox transformation was developed for
 transforming the response variable while another method, the Box-Tidwell
 transformation, was created to estimate transformations of predictor data.
@@ -109,7 +120,7 @@ However, the Box-Cox method is simpler, more computationally efficient and
 is equally effective for estimating power transformations. The Yeo-Johnson
 transformation is similar to the Box-Cox model but can accommodate
 predictors with zero and/or negative values (while the predictors values for
-the Box-Cox transformation must be strictly positive.) The exponential
+the Box-Cox transformation must be strictly positive). The exponential
 transformation of Manly (1976) can also be used for positive or negative
 data.
 
@@ -167,7 +178,7 @@ The function will throw an error of any numeric variables in \code{x} has
 less than two unique values unless either \code{method = "zv"} or
 \code{method = "nzv"} are invoked.
 
-Non-numeric data will not be pre-processed and there values will be in the
+Non-numeric data will not be pre-processed and their values will be in the
 data frame produced by the \code{predict} function. Note that when PCA or
 ICA is used, the non-numeric columns may be in different positions when
 predicted.

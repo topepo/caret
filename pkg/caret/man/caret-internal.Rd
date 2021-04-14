@@ -22,27 +22,22 @@
 \alias{ipredStats}
 \alias{rfStats}
 \alias{well_numbered}
-\alias{well_numbered}
-\alias{gamFormula}
-\alias{flatTable}
-\alias{ipredStats}
-\alias{rfStats}
-\alias{cforestStats}
-\alias{bagEarthStats}
 \alias{outcome_conversion}
-\alias{predictionFunction}
-\alias{hasTerms}
-\alias{probFunction}
-\alias{resampleWrapper}
-\alias{sbfIter}
-\alias{sortImp}
-\alias{progress}
-\alias{MeanSD}
-\alias{expandParameters}
 \title{Internal Functions}
 \usage{
-createModel(x, y, wts, method, tuneValue, obsLevels, pp = NULL,
-  last = FALSE, sampling = NULL, classProbs, ...)
+createModel(
+  x,
+  y,
+  wts,
+  method,
+  tuneValue,
+  obsLevels,
+  pp = NULL,
+  last = FALSE,
+  sampling = NULL,
+  classProbs,
+  ...
+)
 
 well_numbered(prefix, items)
 
@@ -64,12 +59,11 @@ predictionFunction(method, modelFit, newdata, preProc = NULL, param = NULL)
 
 hasTerms(x)
 
-probFunction(method, modelFit, newdata = NULL, preProc = NULL,
-  param = NULL)
+probFunction(method, modelFit, newdata = NULL, preProc = NULL, param = NULL)
 
 resampleWrapper(x, ind)
 
-sbfIter(x, y, testX, testY, sbfControl = sbfControl(), ...)
+sbfIter(x, y, testX, testY, testPerf = NULL, sbfControl = sbfControl(), ...)
 
 sortImp(object, top)
 

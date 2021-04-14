@@ -4,27 +4,38 @@
 \alias{train}
 \alias{train.default}
 \alias{train.formula}
-\alias{train.default}
-\alias{train.formula}
 \alias{train.recipe}
 \title{Fit Predictive Models over Different Tuning Parameters}
 \usage{
 train(x, ...)
 
-\method{train}{default}(x, y, method = "rf", preProcess = NULL, ...,
-  weights = NULL, metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
+\method{train}{default}(
+  x,
+  y,
+  method = "rf",
+  preProcess = NULL,
+  ...,
+  weights = NULL,
+  metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
   maximize = ifelse(metric \%in\% c("RMSE", "logLoss", "MAE"), FALSE, TRUE),
-  trControl = trainControl(), tuneGrid = NULL,
-  tuneLength = ifelse(trControl$method == "none", 1, 3))
+  trControl = trainControl(),
+  tuneGrid = NULL,
+  tuneLength = ifelse(trControl$method == "none", 1, 3)
+)
 
-\method{train}{formula}(form, data, ..., weights, subset, na.action = na.fail,
-  contrasts = NULL)
+\method{train}{formula}(form, data, ..., weights, subset, na.action = na.fail, contrasts = NULL)
 
-\method{train}{recipe}(x, data, method = "rf", ...,
+\method{train}{recipe}(
+  x,
+  data,
+  method = "rf",
+  ...,
   metric = ifelse(is.factor(y_dat), "Accuracy", "RMSE"),
   maximize = ifelse(metric \%in\% c("RMSE", "logLoss", "MAE"), FALSE, TRUE),
-  trControl = trainControl(), tuneGrid = NULL,
-  tuneLength = ifelse(trControl$method == "none", 1, 3))
+  trControl = trainControl(),
+  tuneGrid = NULL,
+  tuneLength = ifelse(trControl$method == "none", 1, 3)
+)
 }
 \arguments{
 \item{x}{For the default method, \code{x} is an object where
@@ -280,20 +291,20 @@ cox2_recipe <- recipe(potency ~ ., data = cox2) \%>\%
   ## Remove sparse and unbalanced predictors
   step_nzv(all_predictors()) \%>\%
   ## Surface area predictors are highly correlated so
-  ## conduct PCA just on these. 
-  step_pca(contains("VSA"), prefix = "surf_area_", 
+  ## conduct PCA just on these.
+  step_pca(contains("VSA"), prefix = "surf_area_",
            threshold = .95) \%>\%
   ## Remove other highly correlated predictors
-  step_corr(all_predictors(), -starts_with("surf_area_"), 
+  step_corr(all_predictors(), -starts_with("surf_area_"),
             threshold = .90) \%>\%
   ## Center and scale all of the non-PCA predictors
   step_center(all_predictors(), -starts_with("surf_area_")) \%>\%
   step_scale(all_predictors(), -starts_with("surf_area_"))
 
 set.seed(888)
-cox2_lm <- train(cox2_recipe, 
+cox2_lm <- train(cox2_recipe,
                  data = cox2,
-                 method = "lm", 
+                 method = "lm",
                  trControl = trainControl(method = "cv"))
 
 #######################################

@@ -5,7 +5,7 @@ modelInfo <- list(label = "Cost-Sensitive CART",
                                           class = c("numeric", "numeric"),
                                           label = c("Complexity Parameter", "Cost")),
                   grid = function(x, y, len = NULL, search = "grid"){
-                    dat <- if(is.data.frame(x)) x else as.data.frame(x)
+                    dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
                     initialFit <- rpart::rpart(.outcome ~ .,
                                                data = dat,
@@ -57,7 +57,7 @@ modelInfo <- list(label = "Cost-Sensitive CART",
                     if(!is.null(wts)) theDots$weights <- wts    
                     
                     modelArgs <- c(list(formula = as.formula(".outcome ~ ."),
-                                        data = if(is.data.frame(x)) x else as.data.frame(x),
+                                        data = if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE),
                                         parms = parms,
                                         control = ctl),
                                    theDots)
@@ -67,7 +67,7 @@ modelInfo <- list(label = "Cost-Sensitive CART",
                     out
                     },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+                    if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
                     
                     pType <- if(modelFit$problemType == "Classification") "class" else "vector"
                     out  <- predict(modelFit, newdata, type = pType)

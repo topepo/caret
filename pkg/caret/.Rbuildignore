@@ -1,4 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
-revdep
+^revdep$
+^\.github/workflows/R-CMD-check\.yaml$
+^codecov\.yml$
+^\.github$

@@ -60,7 +60,7 @@ modelInfo <- list(label = "Multi-Step Adaptive MCP-Net",
                   prob = function(modelFit, newdata, submodels = NULL) {
                     if(!is.matrix(newdata)) newdata <- as.matrix(newdata)
                     out <- msaenet:::predict.msaenet(modelFit, newdata, type = "response")
-                    out <- as.data.frame(cbind(1-out, out))
+                    out <- as.data.frame(cbind(1-out, out), stringsAsFactors = TRUE)
                     colnames(out) <- modelFit$obsLevels
                     out
                   },

@@ -5,23 +5,27 @@
 \alias{pcaNNet.default}
 \alias{predict.pcaNNet}
 \alias{pcaNNet.formula}
-\alias{pcaNNet.formula}
-\alias{pcaNNet.default}
 \alias{print.pcaNNet}
-\alias{predict.pcaNNet}
 \title{Neural Networks with a Principal Component Step}
 \usage{
 pcaNNet(x, ...)
 
-\method{pcaNNet}{formula}(formula, data, weights, ..., thresh = 0.99, subset,
-  na.action, contrasts = NULL)
+\method{pcaNNet}{formula}(
+  formula,
+  data,
+  weights,
+  ...,
+  thresh = 0.99,
+  subset,
+  na.action,
+  contrasts = NULL
+)
 
 \method{pcaNNet}{default}(x, y, thresh = 0.99, ...)
 
 \method{print}{pcaNNet}(x, ...)
 
-\method{predict}{pcaNNet}(object, newdata, type = c("raw", "class", "prob"),
-  ...)
+\method{predict}{pcaNNet}(object, newdata, type = c("raw", "class", "prob"), ...)
 }
 \arguments{
 \item{x}{matrix or data frame of \code{x} values for examples.}
@@ -34,7 +38,7 @@ pcaNNet(x, ...)
 \item{data}{Data frame from which variables specified in \code{formula} are
 preferentially to be taken.}
 
-\item{weights}{(case) weights for each example -- if missing defaults to 1.}
+\item{weights}{(case) weights for each example - if missing defaults to 1.}
 
 \item{thresh}{a threshold for the cumulative proportion of variance to
 capture from the PCA analysis. For example, to retain enough PCA components

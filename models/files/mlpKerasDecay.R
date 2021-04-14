@@ -78,7 +78,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Weight Decay",
                           units = 1, 
                           activation = 'linear',
                           kernel_regularizer = keras::regularizer_l2(param$lambda)
-                        ) %>% compile(
+                        ) %>% keras::compile(
                           loss = "mean_squared_error",
                           optimizer = keras::optimizer_rmsprop(
                             lr = param$lr,
@@ -119,7 +119,7 @@ modelInfo <- list(label = "Multilayer Perceptron Network with Weight Decay",
                       newdata <- as.matrix(newdata)
                     out <- predict(modelFit$object, newdata)
                     colnames(out) <- modelFit$obsLevels
-                    as.data.frame(out)
+                    as.data.frame(out, stringsAsFactors = TRUE)
                   },
                   varImp = NULL,
                   tags = c("Neural Network", "L2 Regularization"),

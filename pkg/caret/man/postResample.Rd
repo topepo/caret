@@ -3,7 +3,6 @@
 \name{defaultSummary}
 \alias{defaultSummary}
 \alias{postResample}
-\alias{defaultSummary}
 \alias{twoClassSummary}
 \alias{prSummary}
 \alias{getTrainPerf}
@@ -12,10 +11,6 @@
 \alias{RMSE}
 \alias{multiClassSummary}
 \alias{MAE}
-\alias{twoClassSummary}
-\alias{mnLogLoss}
-\alias{multiClassSummary}
-\alias{prSummary}
 \title{Calculates performance across resamples}
 \usage{
 defaultSummary(data, lev = NULL, model = NULL)
@@ -70,7 +65,7 @@ Note that many models have more predictors (or parameters) than
  wither using as the square of the correlation between the
  observed and predicted outcomes when \code{form = "corr"}. when
  \code{form = "traditional"}, \deqn{ R^2 = 1-\frac{\sum (y_i -
- \hat{y}_i)^2}{\sum (y_i - \bar{y}_i)^2} }. Mean absolute error
+ \hat{y}_i)^2}{\sum (y_i - \bar{y})^2} }. Mean absolute error
  is calculated using \code{mean(abs(pred-obs))}.
 
 \code{defaultSummary} is the default function to compute
@@ -141,7 +136,7 @@ set.seed(1)
 dat <- data.frame(obs =  factor(sample(classes, 50, replace = TRUE)),
                   pred = factor(sample(classes, 50, replace = TRUE)),
                   class1 = runif(50))
-dat$class2 <- 1 - dat$class1            
+dat$class2 <- 1 - dat$class1
 
 defaultSummary(dat, lev = classes)
 twoClassSummary(dat, lev = classes)
