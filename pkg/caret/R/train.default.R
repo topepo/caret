@@ -302,7 +302,7 @@ train.default <- function(x, y,
                           ...,
                           weights = NULL,
                           metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
-                          maximize = ifelse(metric %in% c("RMSE", "logLoss", "MAE"), FALSE, TRUE),
+                          maximize = ifelse(metric %in% c("RMSE", "logLoss", "MAE", "logLoss"), FALSE, TRUE),
                           trControl = trainControl(),
                           tuneGrid = NULL,
                           tuneLength = ifelse(trControl$method == "none", 1, 3)) {
