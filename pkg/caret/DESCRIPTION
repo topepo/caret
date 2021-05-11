@@ -64,6 +64,7 @@ Suggests:
     proxy,
     randomForest,
     RANN,
+    rmarkdown,
     spls,
     subselect,
     pamr,
