@@ -968,7 +968,7 @@ gafs <- function (x, ...) UseMethod("gafs")
     if(is.null(gafsControl$metric))
       gafsControl$metric <- rep(ifelse(is.factor(y), "Accuracy", "RMSE"), 2)
     if(is.null(gafsControl$maximize))
-      gafsControl$maximize <- rep(ifelse(gafsControl$metric == "RMSE", FALSE, TRUE), 2)
+      gafsControl$maximize <- rep(ifelse(gafsControl$metric %in% c("RMSE", "MAE", "logLoss"), FALSE, TRUE), 2)
     if(is.null(names(gafsControl$metric)))
       names(gafsControl$metric) <- c("internal", "external")
     if(is.null(names(gafsControl$maximize)))
@@ -1230,7 +1230,6 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' summary(plot_data)
 #'     }
 #'
-#' @method plot gafs
 #' @export plot.gafs
 plot.gafs <- function(x,
                       metric = x$control$metric["external"],
@@ -1490,7 +1489,7 @@ update.gafs <- function(object, iter, x, y, ...) {
     if(is.null(gafsControl$metric))
       gafsControl$metric <- rep(ifelse(is.factor(y), "Accuracy", "RMSE"), 2)
     if(is.null(gafsControl$maximize))
-      gafsControl$maximize <- rep(ifelse(gafsControl$metric == "RMSE", FALSE, TRUE), 2)
+      gafsControl$maximize <- rep(ifelse(gafsControl$metric %in% c("RMSE", "MAE", "logLoss"), FALSE, TRUE), 2)
     if(is.null(names(gafsControl$metric)))
       names(gafsControl$metric) <- c("internal", "external")
     if(is.null(names(gafsControl$maximize)))

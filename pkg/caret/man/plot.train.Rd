@@ -92,8 +92,8 @@ plot is created inside conditioning panels/facets.
 \dontrun{
 library(klaR)
 rdaFit <- train(Species ~ .,
-                data = iris, 
-                method = "rda", 
+                data = iris,
+                method = "rda",
                 control = trainControl(method = "cv"))
 plot(rdaFit)
 plot(rdaFit, plotType = "level")
@@ -101,7 +101,7 @@ plot(rdaFit, plotType = "level")
 ggplot(rdaFit) + theme_bw()
 
 }
- 
+
 }
 \references{
 Kuhn (2008), ``Building Predictive Models in R Using the caret''
