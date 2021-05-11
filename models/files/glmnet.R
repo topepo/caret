@@ -52,20 +52,19 @@ modelInfo <- list(label = "glmnet",
                     ## pass in any model weights
                     if(!is.null(wts)) theDots$weights <- wts
 
-                    if(!(class(x)[1] %in% c("matrix", "sparseMatrix")))
+                    if(!is.matrix(x) && !inherits(x, "sparseMatrix"))
                       x <- Matrix::as.matrix(x)
 
                     modelArgs <- c(list(x = x,
                                         y = y,
                                         alpha = param$alpha),
                                    theDots)
-
                     out <- do.call(glmnet::glmnet, modelArgs)
                     if(!is.na(param$lambda[1])) out$lambdaOpt <- param$lambda[1]
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.matrix(newdata)) newdata <- Matrix::as.matrix(newdata)
+                    if(!is.matrix(newdata) && !inherits(newdata, "sparseMatrix")) newdata <- Matrix::as.matrix(newdata)
                     if(length(modelFit$obsLevels) < 2) {
                       out <- predict(modelFit, newdata, s = modelFit$lambdaOpt)
                     } else {
