@@ -93,7 +93,7 @@ fitControl <- trainControl(## 10-fold CV
 
 More information about `trainControl` is given in [a section below](#custom).
 
-The first two arguments to `train` are the predictor and outcome data objects, respectively. The third argument, `method`, specifies the type of model (see [`train` Model List](available-models.html') or [`train` Models By Tag](train-models-by-tag.html)). To illustrate, we will fit a boosted tree model via the [`gbm`](http://cran.r-project.org/web/packages/gbm/index.html) package. The basic syntax for fitting this model using repeated cross-validation is shown below:
+The first two arguments to `train` are the predictor and outcome data objects, respectively. The third argument, `method`, specifies the type of model (see [`train` Model List](available-models.html) or [`train` Models By Tag](train-models-by-tag.html)). To illustrate, we will fit a boosted tree model via the [`gbm`](http://cran.r-project.org/web/packages/gbm/index.html) package. The basic syntax for fitting this model using repeated cross-validation is shown below:
 
 ```{r train_gbm1,cache=TRUE,tidy=FALSE}
 set.seed(825)
