@@ -26,7 +26,7 @@ modelInfo <- list(label = "Conditional Inference Random Forest",
                       ctl <- theDots$controls
                       theDots$controls <- NULL
 
-                    } else ctl <- party::cforest_control(mtry = param$mtry)
+                    } else ctl <- party::cforest_control(mtry = min(param$mtry, ncol(x)))
 
                     ## pass in any model weights
                     if(!is.null(wts)) theDots$weights <- wts
