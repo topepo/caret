@@ -4,15 +4,15 @@ set.seed(442)
 
 test_that("Confusion matrix works", {
   library(caret)
-  train <- twoClassSim(n = 1000, intercept = -8, linearVars = 3, 
+  train <- twoClassSim(n = 1000, intercept = -8, linearVars = 3,
                        noiseVars = 10, corrVars = 4, corrValue = 0.6)
-  
+
   ctrl <- trainControl(method = "cv", classProbs = TRUE)
-  
-  fullModel <- train(Class ~ ., data = train, 
-                     method = "knn", 
-                     preProc = c("center", "scale"), 
-                     tuneLength = 4, 
+
+  fullModel <- train(Class ~ ., data = train,
+                     method = "knn",
+                     preProc = c("center", "scale"),
+                     tuneLength = 4,
                      trControl = ctrl)
   dat <- train$Class
   ref <- predict(fullModel, newdata = train)
@@ -42,4 +42,8 @@ test_that("Confusion matrix works", {
   expect_identical(cm4$overall, cm3$overall)
   expect_true(identical(cm1, cm2))
   expect_true(identical(cm3, cm4))
+
+  mat1 <- as.matrix(cm1$table)
+  cm11 <- confusionMatrix(mat1)
+  expect_equal(cm1, cm11)
 })

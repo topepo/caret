@@ -302,7 +302,7 @@ train.default <- function(x, y,
                           ...,
                           weights = NULL,
                           metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
-                          maximize = ifelse(metric %in% c("RMSE", "logLoss", "MAE"), FALSE, TRUE),
+                          maximize = ifelse(metric %in% c("RMSE", "logLoss", "MAE", "logLoss"), FALSE, TRUE),
                           trControl = trainControl(),
                           tuneGrid = NULL,
                           tuneLength = ifelse(trControl$method == "none", 1, 3)) {
@@ -317,7 +317,7 @@ train.default <- function(x, y,
   if(is.character(y)) y <- as.factor(y)
 
   if( !is.numeric(y) & !is.factor(y) ){
-    msg <- paste("Please make sure that the outcome column is a factor or numeric .",
+    msg <- paste("Please make sure that the outcome column is a factor or numeric.",
                  "The class(es) of the column:",
                  paste0("'", class(y), "'", collapse = ", "))
 

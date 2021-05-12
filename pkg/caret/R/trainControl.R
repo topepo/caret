@@ -240,7 +240,7 @@ trainControl <- function(method = "boot",
   if(!(search %in% c("grid", "random")))
     stop("`search` should be either 'grid' or 'random'")
   if(method == "oob" & any(names(match.call()) == "summaryFunction")) {
-    warning("Custom summary measures cannot be computed for out-of-baf resampling. ",
+    warning("Custom summary measures cannot be computed for out-of-bag resampling. ",
             "This value of `summaryFunction` will be ignored.", 
             call. = FALSE)
   }

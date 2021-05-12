@@ -1,25 +1,25 @@
 #' Plot Method for the train Class
-#' 
+#'
 #' This function takes the output of a \code{\link{train}} object and creates a
 #' line or level plot using the \pkg{lattice} or \pkg{ggplot2} libraries.
-#' 
+#'
 #' If there are no tuning parameters, or none were varied, an error is
 #' produced.
-#' 
+#'
 #' If the model has one tuning parameter with multiple candidate values, a plot
 #' is produced showing the profile of the results over the parameter. Also, a
 #' plot can be produced if there are multiple tuning parameters but only one is
 #' varied.
-#' 
+#'
 #' If there are two tuning parameters with different values, a plot can be
 #' produced where a different line is shown for each value of of the other
 #' parameter. For three parameters, the same line plot is created within
 #' conditioning panels/facets of the other parameter.
-#' 
+#'
 #' Also, with two tuning parameters (with different values), a levelplot (i.e.
 #' un-clustered heatmap) can be created. For more than two parameters, this
 #' plot is created inside conditioning panels/facets.
-#' 
+#'
 #' @aliases plot.train ggplot.train
 #' @param x an object of class \code{\link{train}}.
 #' @param metric What measure of performance to plot. Examples of possible
@@ -56,22 +56,21 @@
 #' @method plot train
 #' @export
 #' @examples
-#' 
-#' 
+#'
+#'
 #' \dontrun{
 #' library(klaR)
 #' rdaFit <- train(Species ~ .,
-#'                 data = iris, 
-#'                 method = "rda", 
+#'                 data = iris,
+#'                 method = "rda",
 #'                 control = trainControl(method = "cv"))
 #' plot(rdaFit)
 #' plot(rdaFit, plotType = "level")
-#' 
+#'
 #' ggplot(rdaFit) + theme_bw()
-#' 
+#'
 #' }
-#'  
-#' @method plot train
+#'
 #' @export plot.train
 "plot.train" <-  function(x,
                     plotType = "scatter",
@@ -81,20 +80,20 @@
                     nameInStrip = FALSE,
                     ...)
   {
-    
+
 
     ## Error trap
     if(!(plotType %in% c("level", "scatter", "line"))) stop("plotType must be either level, scatter or line")
-    
+
     cutpoints <- c(0, 1.9, 2.9, 3.9, Inf)
-    
+
     ## define some functions
     prettyVal <- function(u, dig, Name = NULL)
-      { 
+      {
         if(is.numeric(u))
           {
             if(!is.null(Name)) u <- paste(gsub(".", " ", Name, fixed = TRUE),
-                                          ": ", 
+                                          ": ",
                                           format(u, digits = dig), sep = "")
             return(factor(u))
           } else return(if(!is.factor(u)) as.factor(u) else u)
@@ -103,10 +102,10 @@
     ## Get tuning parameter info
 
     params <- as.character(x$modelInfo$parameters$parameter)
-    
-    if(grepl("adapt", x$control$method)) 
+
+    if(grepl("adapt", x$control$method))
       warning("When using adaptive resampling, this plot may not accurately capture the relationship between the tuning parameters and model performance.")
-    
+
     plotIt <- "yes"
     if(all(params == "parameter"))
       {
@@ -125,8 +124,8 @@
 ##        if(x$method == "vbmpRadial") dat$estimateTheta <- factor(ifelse(dat$estimateTheta == "Yes", "Estimate Theta", "Do Not Estimate Theta"))
 
 
-        ## Check to see which tuning parameters were varied        
-        
+        ## Check to see which tuning parameters were varied
+
         paramValues <- apply(dat[,params,drop = FALSE],
                              2,
                              function(x) length(unique(x)))
@@ -134,7 +133,7 @@
         if(any(paramValues > 1))
           {
             params <- names(paramValues)[paramValues > 1]
-          } else plotIt <- "There are no tuning parameters with more than 1 value."         
+          } else plotIt <- "There are no tuning parameters with more than 1 value."
       }
 
     if(plotIt == "yes")
@@ -146,7 +145,7 @@
           numUnique <- sort(numUnique,  decreasing = TRUE)
           dat <- dat[, c(metric, names(numUnique))]
           params <- names(numUnique)
-        }  
+        }
         ## The conveintion is that the first parameter (in
         ## position #2 of dat) is plotted on the x-axis,
         ## the second parameter is the grouping variable
@@ -158,7 +157,7 @@
 
 
         resampText <- resampName(x, FALSE)
-        
+
         if(plotType %in% c("line", "scatter"))
           {
 
@@ -179,7 +178,7 @@
             }
             ## make formula
             form <- if(p <= 2)
-              {          
+              {
                 as.formula(
                            paste(metric, "~", params[1], sep = ""))
               } else as.formula(paste(metric, "~", params[1], "|",
@@ -191,29 +190,29 @@
             if(length(list(...)) > 0) defaultArgs <- c(defaultArgs, list(...))
             lNames <- names(defaultArgs)
             if(!("ylab" %in% lNames))  defaultArgs$ylab <- paste(metric, resampText)
-            
+
             if(!("type" %in% lNames) & plotType == "scatter") defaultArgs$type <- c("g", "o")
             if(!("type" %in% lNames) & plotType == "line") defaultArgs$type <- c("g", "o")
             if(p > 1)
               {
-                ## I apologize in advance for the following 3 line kludge. 
+                ## I apologize in advance for the following 3 line kludge.
                 groupCols <- 4
                 if(length(unique(dat[,3])) < 4) groupCols <- length(unique(dat[,3]))
                 if(length(unique(dat[,3])) %in% 5:6) groupCols <- 3
-                
+
                 groupCols <- as.numeric(
                                         cut(length(unique(dat[,3])),
                                             cutpoints,
                                             include.lowest = TRUE))
-                
+
                 if(!(any(c("key", "auto.key") %in% lNames)))
-                  defaultArgs$auto.key <- list(columns = groupCols, 
-                                               lines = TRUE, 
-                                               title = as.character(x$modelInfo$parameter$label)[x$modelInfo$parameter$parameter == params[2]], 
+                  defaultArgs$auto.key <- list(columns = groupCols,
+                                               lines = TRUE,
+                                               title = as.character(x$modelInfo$parameter$label)[x$modelInfo$parameter$parameter == params[2]],
                                                cex.title = 1)
               }
             if(!("xlab" %in% lNames)) defaultArgs$xlab <- as.character(x$modelInfo$parameter$label)[x$modelInfo$parameter$parameter == params[1]]
-            
+
             if(plotType == "scatter")
               {
                 out <- do.call("xyplot", defaultArgs)
@@ -221,7 +220,7 @@
                 ## line plot #########################
                 out <- do.call("stripplot", defaultArgs)
               }
-            
+
           }
 
         if(plotType == "level")
@@ -238,7 +237,7 @@
             }
             ## make formula
             form <- if(p <= 2)
-              {          
+              {
                 as.formula(paste(metric, "~", params[1], "*", params[2], sep = ""))
               } else as.formula(paste(metric, "~", params[1], "*", params[2], "|",
                                       paste(params[-(1:2)], collapse = "*"),
@@ -247,19 +246,19 @@
             if(length(list(...)) > 0) defaultArgs <- c(defaultArgs, list(...))
             lNames <- names(defaultArgs)
             if(!("sub" %in% lNames)) defaultArgs$sub <- paste(metric, resampText)
- 
+
             if(!("xlab" %in% lNames)) defaultArgs$xlab <- as.character(x$modelInfo$parameter$label)[x$modelInfo$parameter$parameter == params[1]]
             if(!("ylab" %in% lNames)) defaultArgs$ylab <- as.character(x$modelInfo$parameter$label)[x$modelInfo$parameter$parameter == params[2]]
 
-            
-            
+
+
             out <- do.call("levelplot", defaultArgs)
-          }        
-        
+          }
+
       } else stop(plotIt)
- 
+
     out
-    
+
 
   }
 

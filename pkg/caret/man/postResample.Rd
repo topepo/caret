@@ -65,7 +65,7 @@ Note that many models have more predictors (or parameters) than
  wither using as the square of the correlation between the
  observed and predicted outcomes when \code{form = "corr"}. when
  \code{form = "traditional"}, \deqn{ R^2 = 1-\frac{\sum (y_i -
- \hat{y}_i)^2}{\sum (y_i - \bar{y}_i)^2} }. Mean absolute error
+ \hat{y}_i)^2}{\sum (y_i - \bar{y})^2} }. Mean absolute error
  is calculated using \code{mean(abs(pred-obs))}.
 
 \code{defaultSummary} is the default function to compute

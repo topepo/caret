@@ -172,7 +172,7 @@ rfe <- function (x, ...) UseMethod("rfe")
   function(x, y,
            sizes = 2^(2:4),
            metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
-           maximize = ifelse(metric == "RMSE", FALSE, TRUE),
+           maximize = ifelse(metric %in% c("RMSE", "MAE", "logLoss"), FALSE, TRUE),
            rfeControl = rfeControl(), ...)
   {
     startTime <- proc.time()
@@ -569,7 +569,6 @@ rfeIter <- function(x, y,
 #' plot(lmProfile, metric = "Rsquared")
 #' ggplot(lmProfile)
 #' }
-#' @method plot rfe
 #' @export plot.rfe
 plot.rfe <- function (x,
                       metric = x$metric,
@@ -1616,7 +1615,7 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
       metric <- ifelse(is.factor(y_dat), "Accuracy", "RMSE")
 
     maximize <-
-      ifelse(metric %in% c("RMSE", "MAE"), FALSE, TRUE) # TODO make a function
+      ifelse(metric %in% c("RMSE", "MAE", "logLoss"), FALSE, TRUE) # TODO make a function
 
 
 

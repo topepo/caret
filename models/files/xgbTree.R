@@ -116,7 +116,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                                      subsample = param$subsample),
                                                  data = x,
                                                  nrounds = param$nrounds,
-                                                 objective = "reg:linear",
+                                                 objective = "reg:squarederror",
                                                  ...)
                     }
                     out

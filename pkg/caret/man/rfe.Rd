@@ -17,7 +17,7 @@ rfe(x, ...)
   y,
   sizes = 2^(2:4),
   metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
-  maximize = ifelse(metric == "RMSE", FALSE, TRUE),
+  maximize = ifelse(metric \%in\% c("RMSE", "MAE", "logLoss"), FALSE, TRUE),
   rfeControl = rfeControl(),
   ...
 )

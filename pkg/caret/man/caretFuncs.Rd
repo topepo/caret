@@ -14,7 +14,23 @@
 \alias{nbFuncs}
 \alias{lrFuncs}
 \title{Backwards Feature Selection Helper Functions}
-\format{An object of class \code{list} of length 6.}
+\format{
+An object of class \code{list} of length 6.
+
+An object of class \code{list} of length 6.
+
+An object of class \code{list} of length 6.
+
+An object of class \code{list} of length 6.
+
+An object of class \code{list} of length 6.
+
+An object of class \code{list} of length 6.
+
+An object of class \code{list} of length 6.
+
+An object of class \code{list} of length 6.
+}
 \usage{
 pickSizeBest(x, metric, maximize)
 

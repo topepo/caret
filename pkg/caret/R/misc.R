@@ -396,7 +396,7 @@ get_resample_perf.gafs <- function(x) {
 #' @export var_seq
 var_seq <- function(p, classification = FALSE, len = 3) {
   if(len == 1) {
-    tuneSeq <- if(classification) max(floor(p/3), 1) else floor(sqrt(p))
+    tuneSeq <- if(!classification) max(floor(p/3), 1) else floor(sqrt(p))
   } else {
     if(p <= len)
     {

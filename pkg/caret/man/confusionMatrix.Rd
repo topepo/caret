@@ -4,6 +4,7 @@
 \alias{confusionMatrix}
 \alias{confusionMatrix.table}
 \alias{confusionMatrix.default}
+\alias{confusionMatrix.matrix}
 \title{Create a confusion matrix}
 \usage{
 confusionMatrix(data, ...)
@@ -13,6 +14,14 @@ confusionMatrix(data, ...)
   reference,
   positive = NULL,
   dnn = c("Prediction", "Reference"),
+  prevalence = NULL,
+  mode = "sens_spec",
+  ...
+)
+
+\method{confusionMatrix}{matrix}(
+  data,
+  positive = NULL,
   prevalence = NULL,
   mode = "sens_spec",
   ...
