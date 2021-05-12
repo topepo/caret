@@ -649,6 +649,9 @@ predict.preProcess <- function(object, newdata, ...) {
   if(any(names(object$method) == "pca")) {
     pca_cols <- newdata[, object$method$pca, drop = FALSE]
     pca_cols <-if(is.matrix(pca_cols)) pca_cols %*% object$rotation else as.matrix(pca_cols) %*% object$rotation
+    if (ncol(pca_cols) == 1) {
+      colnames(pca_cols) <- "PC1"
+    }
     if(is.data.frame(newdata)) pca_cols <- as.data.frame(pca_cols, stringsAsFactors = TRUE)
     newdata <- cbind(newdata, pca_cols)
     ## normally we get rid of columns that we used to create

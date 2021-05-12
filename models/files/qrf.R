@@ -16,7 +16,7 @@ modelInfo <- list(label = "Quantile Random Forest",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...)
-                    quantregForest::quantregForest(x, y, mtry = param$mtry, ...),
+                    quantregForest::quantregForest(x, y, mtry = min(param$mtry, ncol(x)), ...),
                   predict = function(modelFit, newdata, submodels = NULL) {
                     out <- predict(modelFit, newdata, what = 0.5)
                     if(is.matrix(out)) out <- out[,1]

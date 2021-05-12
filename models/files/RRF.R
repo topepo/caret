@@ -23,7 +23,7 @@ modelInfo <- list(label = "Regularized Random Forest",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     theDots <- list(...)
                     theDots$importance <- TRUE
-                    args <- list(x = x, y = y, mtry = param$mtry)
+                    args <- list(x = x, y = y, mtry = min(param$mtry, ncol(x)))
                     args <- c(args, theDots)                       
                     firstFit <- do.call(randomForest::randomForest, args)
                     firstImp <- randomForest:::importance(firstFit)
@@ -33,7 +33,7 @@ modelInfo <- list(label = "Regularized Random Forest",
                     } else firstImp <- firstImp[,"%IncMSE"]/max(firstImp[,"%IncMSE"])
                     firstImp <- ((1 - param$coefImp) * param$coefReg) + (param$coefImp * firstImp)
                     
-                    RRF::RRF(x, y, mtry = param$mtry, coefReg = firstImp, ...)
+                    RRF::RRF(x, y, mtry = min(param$mtry, ncol(x)), coefReg = firstImp, ...)
                   },
                   predict = function(modelFit, newdata, submodels = NULL) 
                     predict(modelFit, newdata),
