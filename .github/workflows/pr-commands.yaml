@@ -16,7 +16,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: r-lib/actions/setup-r@v1
       - name: Install dependencies
-        run: Rscript -e 'install.packages(c("remotes", "roxygen2"))' -e 'remotes::install_deps(pkgdir = "pkg/caret", dependencies = TRUE)'
+        run: Rscript -e 'install.packages(c("remotes", "roxygen2"))' -e 'remotes::install_deps(pkgdir = "local::./pkg/caret", dependencies = TRUE)'
       - name: Document
         run: Rscript -e 'roxygen2::roxygenise()'
       - name: commit
