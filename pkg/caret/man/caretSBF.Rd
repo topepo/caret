@@ -11,7 +11,9 @@
 \alias{gamScores}
 \alias{anovaScores}
 \title{Selection By Filtering (SBF) Helper Functions}
-\format{An object of class \code{list} of length 5.}
+\format{
+An object of class \code{list} of length 5.
+}
 \usage{
 caretSBF
 

@@ -9,7 +9,13 @@
 \alias{rfSA}
 \alias{treebagSA}
 \title{Ancillary simulated annealing functions}
-\format{An object of class \code{list} of length 8.}
+\format{
+An object of class \code{list} of length 8.
+
+An object of class \code{list} of length 8.
+
+An object of class \code{list} of length 8.
+}
 \usage{
 safs_initial(vars, prob = 0.2, ...)
 
