@@ -66,7 +66,7 @@ modelInfo <- list(label = "glmnet",
                   predict = function(modelFit, newdata, submodels = NULL) {
                     if(!is.matrix(newdata) && !inherits(newdata, "sparseMatrix")) newdata <- Matrix::as.matrix(newdata)
                     if(length(modelFit$obsLevels) < 2) {
-                      out <- predict(modelFit, newdata, s = modelFit$lambdaOpt)
+                      out <- predict(modelFit, newdata, s = modelFit$lambdaOpt, type = "response")
                     } else {
                       out <- predict(modelFit, newdata, s = modelFit$lambdaOpt, type = "class")
                     }
