@@ -502,6 +502,9 @@ rfeIter <- function(x, y,
                  "There may be linear dependencies in your predictor variables"),
               call. = FALSE)
     }
+    if (!any(names(modImp) == "var")) {
+      stop("The importance score data should include a column named `var`.")
+    }
     finalVariables[[k]] <- subset(modImp, var %in% retained)
     finalVariables[[k]]$Variables <- sizeValues[[k]]
     if(k < length(sizeValues)) retained <- as.character(modImp$var)[1:sizeValues[k+1]]
