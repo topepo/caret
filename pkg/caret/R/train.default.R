@@ -867,6 +867,7 @@ train.default <- function(x, y,
   if(method == "glmnet") finalModel$lambdaOpt <- bestTune$lambda
 
   if(trControl$returnData) {
+    outData <- if (inherits(x, "sparseMatrix")) as.matrix(x) else x
     outData <- if(!is.data.frame(x)) try(as.data.frame(x, stringsAsFactors = TRUE), silent = TRUE) else x
     if(inherits(outData, "try-error")) {
       warning("The training data could not be converted to a data frame for saving")
