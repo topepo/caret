@@ -29,7 +29,7 @@ modelInfo <- list(label = "Random Forest Rule-Based Model",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(!is.data.frame(x) | inherits(x, "tbl_df"))
                       x <- as.data.frame(x, stringsAsFactors = TRUE)
-                    RFor <- randomForest::randomForest(x, y, mtry = param$mtry, ...)
+                    RFor <- randomForest::randomForest(x, y, mtry = min(param$mtry, ncol(x)), ...)
                     treeList <- inTrees::RF2List(RFor)
                     exec <- inTrees::extractRules(treeList,x, maxdepth=param$maxdepth, ntree = RFor$ntree)
                     ruleMetric <- inTrees::getRuleMetric(exec,x,y)

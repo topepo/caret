@@ -17,7 +17,7 @@
                         }
                       },
                       fit = function(x, y, wts, param, lev, last, classProbs, ...)
-                        extraTrees::extraTrees(x, y, mtry = param$mtry, numRandomCuts = param$numRandomCuts, ...),
+                        extraTrees::extraTrees(x, y, mtry = min(param$mtry, ncol(x)), numRandomCuts = param$numRandomCuts, ...),
                       predict = function(modelFit, newdata, submodels = NULL)
                         predict(modelFit, newdata),
                       prob = function(modelFit, newdata, submodels = NULL)
