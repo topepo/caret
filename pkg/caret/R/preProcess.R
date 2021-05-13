@@ -52,7 +52,8 @@ getRangeBounds <- function(pp) {
 #' samples have values larger or smaller than those in the training set, values
 #' will be outside of this range.
 #'
-#' Predictors that are not numeric are ignored in the calculations.
+#' Predictors that are not numeric are ignored in the calculations (including
+#' methods "zv`" and "nzv`").
 #'
 #' \code{method = "zv"} identifies numeric predictor columns with a single
 #' value (i.e. having zero variance) and excludes them from further

@@ -1,5 +1,5 @@
 Package: caret
-Version: 6.0-87
+Version: 6.0-87.9000
 Title: Classification and Regression Training
 Authors@R: c(
   person("Max", "Kuhn", role = c("aut", "cre"), email = "mxkuhn@gmail.com"),
@@ -54,6 +54,7 @@ Suggests:
     klaR,
     MASS,
     ellipse,
+    Matrix,
     mda,
     mgcv,
     mlbench,
