@@ -868,7 +868,9 @@ train.default <- function(x, y,
 
   if(trControl$returnData) {
     outData <- if (inherits(x, "sparseMatrix")) as.matrix(x) else x
-    outData <- if(!is.data.frame(x)) try(as.data.frame(x, stringsAsFactors = TRUE), silent = TRUE) else x
+    if(!is.data.frame(outData)) {
+      outData <- try(as.data.frame(outData, stringsAsFactors = TRUE), silent = TRUE)
+    }
     if(inherits(outData, "try-error")) {
       warning("The training data could not be converted to a data frame for saving")
       outData <- NULL
