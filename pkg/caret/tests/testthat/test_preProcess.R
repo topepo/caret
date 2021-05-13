@@ -40,3 +40,12 @@ test_that("median Impute works for matrix with named columns", {
 test_that("median Impute works for data.frames", {
 	check.medianImpute(as.data.frame(x, stringsAsFactors = TRUE))
 })
+
+test_that("correlation filter", {
+  expect_equal(
+    preProcess(iris, "corr")$method,
+    list(ignore = "Species", remove = "Petal.Length")
+  )
+})
+
+

@@ -52,7 +52,8 @@ getRangeBounds <- function(pp) {
 #' samples have values larger or smaller than those in the training set, values
 #' will be outside of this range.
 #'
-#' Predictors that are not numeric are ignored in the calculations.
+#' Predictors that are not numeric are ignored in the calculations (including
+#' methods "zv`" and "nzv`").
 #'
 #' \code{method = "zv"} identifies numeric predictor columns with a single
 #' value (i.e. having zero variance) and excludes them from further
@@ -281,14 +282,14 @@ preProcess.default <- function(x, method = c("center", "scale"),
     cmat <- try(cor(x[, !(colnames(x) %in% c(method$ignore, method$remove)), drop = FALSE],
                     use = "pairwise.complete.obs"),
                 silent = TRUE)
-    if(inherits(cmat, "try-error")) {
+    if(!inherits(cmat, "try-error")) {
       high_corr <- findCorrelation(cmat, cutoff = cutoff)
       if(length(high_corr) > 0) {
         removed <- colnames(cmat)[high_corr]
         method$remove <- unique(c(method$remove, removed))
         if(verbose) cat(paste(" ", length(removed), "highly correlated predictors were removed.\n"))
-      } else warning(paste("correlation matrix could not be computed:\n", cmat))
-    }
+      }
+    } else warning(paste("correlation matrix could not be computed:\n", cmat))
     method$corr <- NULL
   }
 
