@@ -139,7 +139,6 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                       if (!is.null(wts))
                         xgboost::setinfo(x, 'weight', wts)
 
-                      # browser()
                       out <- xgboost::xgb.train(list(max_depth = param$max_depth,
                                                      eta = param$eta,
                                                      rate_drop = param$rate_drop,

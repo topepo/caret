@@ -108,10 +108,17 @@ modelInfo <- list(label = "Bagged MARS",
                   },
                   varImp = function(object, ...) {
                     allImp <- lapply(object$fit, varImp, ...)
-                    impDF <- as.data.frame(allImp, stringsAsFactors = TRUE)
-                    meanImp <- apply(impDF, 1, mean)
-                    out <- data.frame(Overall = meanImp)
-                    rownames(out) <- names(meanImp)
+                    allImp <- lapply(allImp,
+                                     function (x) {
+                                       x$var <- rownames(x)
+                                       x
+                                     },
+                                     ...)
+                    allImp <- do.call("rbind", allImp)
+
+                    impDF <- plyr::ddply(allImp, .(var), function(x) c(Overall = mean(x$Overall, rm.na = TRUE)))
+                    out <- data.frame(Overall = impDF$Overall)
+                    rownames(out) <- impDF$var
                     out
                   },
                   levels = function(x) x$levels,

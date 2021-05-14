@@ -12,15 +12,15 @@ modelInfo  <- list(label = "Random Forest",
                    type = c("Classification"),
                    parameters = data.frame(parameter = c("nsets", "ntreeperdiv", "ntreefinal"),
                                            class = c("numeric", "numeric", "numeric"),
-                                           label = c("# score sets tried prior to the approximation", 
-                                                     "# of trees (small RFs)", 
+                                           label = c("# score sets tried prior to the approximation",
+                                                     "# of trees (small RFs)",
                                                      "# of trees (final RF)")),
                    grid = function(x, y, len = NULL, search = "grid"){
-                     if(search == "grid"){ 
+                     if(search == "grid"){
                        out <- expand.grid(nsets = seq_len(len)*50,
-                                          ntreeperdiv = seq_len(len)*50, 
+                                          ntreeperdiv = seq_len(len)*50,
                                           ntreefinal =  seq_len(len)*200)
-                     } else { 
+                     } else {
                        out <-data.frame(nsets = sample(20, size = len, replace = TRUE)*50,
                                         ntreeperdiv =sample(20, size = len, replace = TRUE)*50,
                                         ntreefinal =  sample(2:20, size = len, replace = TRUE)*200
@@ -28,26 +28,27 @@ modelInfo  <- list(label = "Random Forest",
                      }
                      out
                    },
-                   fit = function(x, y, wts, param, lev, last, classProbs, ...){ 
+                   fit = function(x, y, wts, param, lev, last, classProbs, ...){
                      if((!is.data.frame(x))||dplyr::is.tbl(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
-                     x$.outcome <- y  
-                     out <- ordinalForest::ordfor(depvar = ".outcome", 
-                                                  data = x, 
-                                                  nsets = param$nsets, 
+                     x$.outcome <- y
+                     out <- ordinalForest::ordfor(depvar = ".outcome",
+                                                  data = x,
+                                                  nsets = param$nsets,
                                                   ntreeperdiv = param$ntreeperdiv,
-                                                  ntreefinal =  param$ntreefinal, 
+                                                  ntreefinal =  param$ntreefinal,
                                                   ...)
                      out
                    },
                    predict = function(modelFit, newdata, submodels = NULL){
                      if((!is.data.frame(newdata))||dplyr::is.tbl(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
-                     out <- predict(modelFit, newdata)$ypred 
+                     out <- predict(modelFit, newdata)$ypred
                      out
                    },
                    prob = function(modelFit, newdata, submodels = NULL){
                      if(!is.data.frame(newdata)) newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
-                     out <- predict(modelFit, newdata)$classfreqtree
-                     out
+                     out <- predict(modelFit, newdata)$classprobs
+                     colnames(out) <- modelFit$classes
+                     as.data.frame(out)
                    },
                    predictors = function(x, ...){
                      var_index <- sort(unique(unlist(lapply(x$forestfinal$forest$split.varIDs, function(x) x))))
@@ -65,9 +66,9 @@ modelInfo  <- list(label = "Random Forest",
                    levels = function(x){
                      if(x$treetype == "Classification"){
                        out <- levels(x$predictions)
-                     } else out <- NULL 
+                     } else out <- NULL
                      out
-                   }, 
+                   },
                    tags = c("Random Forest", "Ensemble Model", "Bagging",
                             "Implicit Feature Selection", "Ordinal Outcomes" ),
                    sort = function(x){ x[order(x[,1]),] }
