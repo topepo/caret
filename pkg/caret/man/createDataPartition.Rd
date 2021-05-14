@@ -145,7 +145,7 @@ lapply(folds, function(x, y) table(y[x]), y = groups)
 \url{http://topepo.github.io/caret/data-splitting.html}
 
 Hyndman and Athanasopoulos (2013), Forecasting: principles and practice.
-\url{https://www.otexts.org/fpp}
+\url{https://otexts.com/fpp2/}
 }
 \author{
 Max Kuhn, \code{createTimeSlices} by Tony Cooper

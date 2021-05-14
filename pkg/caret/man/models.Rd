@@ -1210,7 +1210,7 @@ For classification and regression using package \pkg{mxnet} with tuning paramete
 \item Activation Function (\code{activation}, character)
 }
 
-Note: The \code{mxnet} package is not yet on CRAN. See \url{http://mxnet.io} for installation instructions. 
+Note: The \code{mxnet} package is not yet on CRAN. See \url{https://mxnet.apache.org/} for installation instructions. 
 
 \strong{Neural Network} (\code{method = 'mxnetAdam'})
 
@@ -1226,7 +1226,7 @@ For classification and regression using package \pkg{mxnet} with tuning paramete
 \item Activation Function (\code{activation}, character)
 }
 
-Note: The \code{mxnet} package is not yet on CRAN. See \url{http://mxnet.io} for installation instructions. Users are strongly advised to define \code{num.round} themselves. 
+Note: The \code{mxnet} package is not yet on CRAN. See \url{https://mxnet.apache.org/} for installation instructions. Users are strongly advised to define \code{num.round} themselves. 
 
 \strong{Neural Network} (\code{method = 'neuralnet'})
 

@@ -173,7 +173,7 @@ Statistical Software, 53(4), 1-37. \url{https://www.jstatsoft.org/article/view/v
 
 Mitchell M (1996), An Introduction to Genetic Algorithms, MIT Press.
 
-\url{http://en.wikipedia.org/wiki/Jaccard_index}
+\url{https://en.wikipedia.org/wiki/Jaccard_index}
 }
 \seealso{
 \code{\link{gafsControl}}, \code{\link{predict.gafs}},
