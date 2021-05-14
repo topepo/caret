@@ -1,24 +1,24 @@
 modelInfo <- list(
   library = "pre",
   type = c("Classification", "Regression"),
-  parameters = data.frame(parameter = c("sampfrac", "maxdepth", 
-                                        "learnrate", "mtry", 
-                                        "use.grad", 
+  parameters = data.frame(parameter = c("sampfrac", "maxdepth",
+                                        "learnrate", "mtry",
+                                        "use.grad",
                                         "penalty.par.val"),
-                          class = c(rep("numeric", times = 4), 
+                          class = c(rep("numeric", times = 4),
                                     "logical", "character"),
-                          label = c("Subsampling Fraction", 
-                                    "Max Tree Depth", 
-                                    "Shrinkage", 
+                          label = c("Subsampling Fraction",
+                                    "Max Tree Depth",
+                                    "Shrinkage",
                                     "# Randomly Selected Predictors",
-                                    "Employ Gradient Boosting", 
+                                    "Employ Gradient Boosting",
                                     "Regularization Parameter")),
-  grid = function(x, y, len = NULL, search = "grid", 
-                  sampfrac = .5, maxdepth = 3L, learnrate = .01, 
+  grid = function(x, y, len = NULL, search = "grid",
+                  sampfrac = .5, maxdepth = 3L, learnrate = .01,
                   mtry = Inf, use.grad = TRUE, penalty.par.val = "lambda.1se") {
     if (search == "grid") {
       if (!is.null(len)) {
-        maxdepth <- c(3L, 4L, 2L, 5L, 1L, 6:len)[1:len] 
+        maxdepth <- c(3L, 4L, 2L, 5L, 1L, 6:len)[1:len]
         if (len > 2) {
           sampfrac <- c(.5, .75, 1)
         }
@@ -26,14 +26,14 @@ modelInfo <- list(
           penalty.par.val = c("lambda.min", "lambda.1se")
         }
       }
-      out <- expand.grid(sampfrac = sampfrac, maxdepth = maxdepth, 
-                         learnrate = learnrate, mtry = mtry, 
-                         use.grad = use.grad,  
+      out <- expand.grid(sampfrac = sampfrac, maxdepth = maxdepth,
+                         learnrate = learnrate, mtry = mtry,
+                         use.grad = use.grad,
                          penalty.par.val = penalty.par.val)
     } else if (search == "random") {
       out <- data.frame(
         sampfrac = sample(c(.5, .75, 1), size = len, replace = TRUE),
-        maxdepth = sample(2L:6L, size = len, replace = TRUE), 
+        maxdepth = sample(2L:6L, size = len, replace = TRUE),
         learnrate = sample(c(0.001, 0.01, 0.1), size = len, replace = TRUE),
         mtry = sample(c(ceiling(sqrt(ncol(x))), ceiling(ncol(x)/3), ncol(x)), size = len, replace = TRUE),
         use.grad = sample(c(TRUE, FALSE), size = len, replace = TRUE),
@@ -41,12 +41,12 @@ modelInfo <- list(
     }
     return(out)
   },
-  fit = function(x, y, wts = NULL, param, lev = NULL, last = NULL, 
-                 weights = NULL, classProbs, ...) { 
+  fit = function(x, y, wts = NULL, param, lev = NULL, last = NULL,
+                 weights = NULL, classProbs, ...) {
     theDots <- list(...)
     if(!any(names(theDots) == "family")) {
       theDots$family <- if (is.factor(y)) {
-        if (nlevels(y) == 2L) { 
+        if (nlevels(y) == 2L) {
           "binomial"
         } else {
           "multinomial"
@@ -58,40 +58,40 @@ modelInfo <- list(
     data <- data.frame(x, .outcome = y)
     formula <- .outcome ~ .
     if (is.null(weights)) { weights <- rep(1, times = nrow(x)) }
-    pre(formula = formula, data = data, weights = weights, 
-        sampfrac = param$sampfrac, maxdepth = param$maxdepth, 
-        learnrate = param$learnrate, mtry = param$mtry, 
+    pre(formula = formula, data = data, weights = weights,
+        sampfrac = param$sampfrac, maxdepth = param$maxdepth,
+        learnrate = param$learnrate, mtry = param$mtry,
         use.grad = param$use.grad, ...)
   },
   predict = function(modelFit, newdata, submodels = NULL) {
     if (is.null(submodels)) {
       if (modelFit$family %in% c("gaussian", "mgaussian")) {
-        out <- pre:::predict.pre(object = modelFit, 
+        out <- pre:::predict.pre(object = modelFit,
                                  newdata = as.data.frame(newdata))
       } else if (modelFit$family == "poisson") {
-        out <- pre:::predict.pre(object = modelFit, 
+        out <- pre:::predict.pre(object = modelFit,
                                  newdata = as.data.frame(newdata), type = "response")
       } else {
-        out <- factor(pre:::predict.pre(object = modelFit, 
-                                        newdata = as.data.frame(newdata), type = "class"))      
+        out <- factor(pre:::predict.pre(object = modelFit,
+                                        newdata = as.data.frame(newdata), type = "class"))
       }
     } else {
       out <- list()
       for (i in seq(along.with = submodels$penalty.par.val)) {
         if (modelFit$family %in% c("gaussian", "mgaussian")) {
-          out[[i]] <- pre:::predict.pre(object = modelFit, 
-                                        newdata = as.data.frame(newdata), 
-                                        penalty.par.val = as.character(submodels$penalty.par.val[i])) 
+          out[[i]] <- pre:::predict.pre(object = modelFit,
+                                        newdata = as.data.frame(newdata),
+                                        penalty.par.val = as.character(submodels$penalty.par.val[i]))
         } else if (modelFit$family == "poisson") {
-          out[[i]] <- pre:::predict.pre(object = modelFit, 
-                                        newdata = as.data.frame(newdata), 
+          out[[i]] <- pre:::predict.pre(object = modelFit,
+                                        newdata = as.data.frame(newdata),
                                         type = "response",
                                         penalty.par.val = as.character(submodels$penalty.par.val[i]))
         } else {
-          out[[i]] <- factor(pre:::predict.pre(object = modelFit, 
-                                               newdata = as.data.frame(newdata), 
+          out[[i]] <- factor(pre:::predict.pre(object = modelFit,
+                                               newdata = as.data.frame(newdata),
                                                type = "class",
-                                               penalty.par.val = as.character(submodels$penalty.par.val[i])))      
+                                               penalty.par.val = as.character(submodels$penalty.par.val[i])))
         }
       }
     }
@@ -99,10 +99,10 @@ modelInfo <- list(
   },
   prob = function(modelFit, newdata, submodels = NULL) {
     if (is.null(submodels)) {
-      probs <- pre:::predict.pre(object = modelFit, 
-                                 newdata = as.data.frame(newdata), 
+      probs <- pre:::predict.pre(object = modelFit,
+                                 newdata = as.data.frame(newdata),
                                  type = "response")
-      # For binary classification, create matrix:    
+      # For binary classification, create matrix:
       if (is.null(ncol(probs)) || ncol(probs) == 1) {
         probs <- data.frame(1 - probs, probs)
         colnames(probs) <- levels(modelFit$data[,modelFit$y_names])
@@ -110,11 +110,11 @@ modelInfo <- list(
     } else {
       probs <- list()
       for (i in seq(along.with = submodels$penalty.par.val)) {
-        probs[[i]] <- pre:::predict.pre(object = modelFit, 
-                                   newdata = as.data.frame(newdata), 
+        probs[[i]] <- pre:::predict.pre(object = modelFit,
+                                   newdata = as.data.frame(newdata),
                                    type = "response",
                                    penalty.par.val = as.character(submodels$penalty.par.val[i]))
-        # For binary classification, create matrix:    
+        # For binary classification, create matrix:
         if (is.null(ncol(probs[[i]])) || ncol(probs[[i]]) == 1) {
           probs[[i]] <- data.frame(1 - probs[[i]], probs[[i]])
           colnames(probs[[i]]) <- levels(modelFit$data[,modelFit$y_names])
@@ -133,12 +133,12 @@ modelInfo <- list(
     x[ordering,]
   },
   loop = function(fullGrid) {
-  
+
     # loop should provide a grid containing models that can
     # be looped over for tuning penalty.par.val
     loop_rows <- rownames(unique(fullGrid[,-which(names(fullGrid) == "penalty.par.val")]))
     loop <- fullGrid[rownames(fullGrid) %in% loop_rows, ]
-  
+
     ## submodels should be a list and length(submodels == nrow(loop)
     ## each element of submodels should be a data.frame with column penalty.par.val, with a row for every value to loop over
     submodels <- list()
@@ -161,7 +161,7 @@ modelInfo <- list(
   levels = function(x) { levels(x$data[,x$y_names]) },
   tag = c("Rule-Based Model", "Tree-Based Model", "L1 regularization", "Bagging", "Boosting"),
   label = "Prediction Rule Ensembles",
-  predictors = function(x, ...) { 
+  predictors = function(x, ...) {
     if (x$family %in% c("gaussian", "poisson", "binomial")) {
       return(suppressWarnings(importance(x, plot = FALSE, ...)$varimps$varname))
     } else {
@@ -174,7 +174,7 @@ modelInfo <- list(
       varImp <- pre:::importance(x, plot = FALSE, ...)$varimps
       varnames <- varImp$varname
       varImp <- data.frame(Overall = varImp$imp)
-      rownames(varImp) <- varnames  
+      rownames(varImp) <- varnames
       return(varImp)
     } else {
       warning("Variable importances cannot be calculated for multinomial or mgaussian family")
@@ -183,5 +183,6 @@ modelInfo <- list(
   },
   oob = NULL,
   notes = NULL,
-  check = NULL
+  check = NULL,
+  tags = c("Rule-Based Model", "Regularization")
 )
