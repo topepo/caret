@@ -66,12 +66,12 @@ file_label <- paste0(format(seq_along(file_label)), "/",
 
 header <- paste(rFiles, "Data: ", rFiles, "\n", sep = "")
 
-strt <- paste("\t@date '+ %Y-%m-%d %H:%M:%S:%3N Starting ",
+strt <- paste("\t@date '+ %Y-%m-%d %H:%M:%S Starting ",
               file_label, "'\n", sep = "")
 
 batch <- paste("\t@R CMD BATCH --vanilla ", rFiles, "\n", sep = "")
 
-fini <- paste("\t@date '+ %Y-%m-%d %H:%M:%S:%3N Finished ",
+fini <- paste("\t@date '+ %Y-%m-%d %H:%M:%S Finished ",
               file_label, "'\n\n", sep = "")
 
 rdata <- paste(rFiles, "Data", sep = "")

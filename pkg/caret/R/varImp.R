@@ -367,12 +367,6 @@ varImp.avNNet <- function(object, ...){
   imps
 }
 
-foo <- function(x) {
-  browser()
-  colMeans(x)
-}
-
-
 #' @rdname varImp
 #' @export
 varImp.PART <- function(object, ...){
