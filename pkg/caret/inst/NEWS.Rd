@@ -3,6 +3,16 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+\section{Changes in version 6.0-88}{
+  \itemize{
+   \item Fixed cases where the "corr" filter was not run in \code{preProcess()}.
+   \item Prediction type bug for Poisson glm model was fixed \issue{1231}.
+   \item Fixed a \code{PreProcess()} bug related to a single PCA component \issue{1181}.
+   \item Fixed random forest bugs related to \code{rfe()} \issue{#1077}, \issue{1062}.
+   \item RuleFit was added via the \cpkg{pre} package \issue{1218}.
+   \item Bugs were fixed where MAE was not treated as a minimization metric \issue{1224}.
+  }
+}
 
 \section{Changes in version 6.0-87}{
   \itemize{
@@ -45,7 +55,7 @@
 \section{Changes in version 6.0-82}{
   \itemize{
     \item Immediate and required updates related to the different behavior of \code{sample} in R >= 3.6.
-    \item \code{sbf}, \code{gafs}, and \code{safs} now accept recipes as inputs. A few sections of documentation were added to the \href{https://topepo.github.io/caret}{bookdown site}
+    \item \code{sbf}, \code{gafs}, and \code{safs} now accept recipes as inputs. A few sections of documentation were added to the \href{https://topepo.github.io/caret/}{bookdown site}
     \item A bug was fixed in simulated annealing feature selection where the number of variables perturbed was based on the total number of variables instead of the more appropriate number of variables in the current subset.
     \item Convenience functions \code{ggplot.gafs} and \code{ggplot.safs} were added.
     \item \code{learning_curve_dat} now has a real name.
@@ -136,7 +146,7 @@
     \item The parameter ranges for \code{AdaBag} and \code{AdaBoost.M1} were changed; the number of iterations in the default grids have been lowered.
     \item Switched to non-formula interface in ranger. Also, another tuning parameter was added to ranger (\code{splitrule}) that can be used to change the splitting procedure and includes extremely randomized trees. This requires version 0.8.0 of the \cpkg{ranger} package. \issue{581}
     \item A simple "null model" was added. For classification, it predictors using the most prevalent level and, for regression, fits an intercept only model. \issue{694}
-    \item A function \code{thresholder} was added to analyze the resample results for two class problems to choose an appropriate probability cutoff a la \url{https://topepo.github.io/caret/using-your-own-model-in-train.html#Illustration5} \issue{224}.
+    \item A function \code{thresholder} was added to analyze the resample results for two class problems to choose an appropriate probability cutoff a la \url{https://topepo.github.io/caret//using-your-own-model-in-train.html#Illustration5} \issue{224}.
     \item Two neural network models (containing a single hidden layers) using \code{tensorflow}/\code{keras} were added.  \code{mlpKerasDecay} uses standard weight decay while \code{mlpKerasDropout} uses dropout for regularization. Both use RMSProp optimizer and have a lot of tuning parameters. Two additional models, \code{mlpKerasDecayCost} and \code{mlpKerasDropoutCost}, are classification only and perform cost-sensitive learning. Note that these models will not run in parallel using \cpkg{caret}'s parallelism and also will not give reproducible results from run-to-run (see \url{https://github.com/rstudio/keras/issues/42}).
     \item The range for one parameter (\code{gamma}) was modified in the \code{mlpSGD} model code.
     \item A bug in classification models with all missing predictions was fixed (found by andzandz11). \issue{684}
@@ -196,7 +206,7 @@
 		\item A bug in \code{bdk} and \code{xyf} models was fixed where the appropriate number of parameter combinations are tested during random search.
 		\item A bug in \code{rfe} was fixed related to neural networks found by david-machinelearning \issue{485}
 		\item Neural networks via stochastic gradient descent (\code{method = "mlpSGD"}) was adapted for classification and a variable importance calculation was added.
-		\item \href{http://www.h2o.ai/}{h2o} versions of glmnet and gradient boosting machines were added with methods \code{"glmnet\_h2o"} and \code{"gbm\_h2o"}. These methods are not currently optimized.  \issue{283}
+		\item \href{https://www.h2o.ai/}{h2o} versions of glmnet and gradient boosting machines were added with methods \code{"glmnet\_h2o"} and \code{"gbm\_h2o"}. These methods are not currently optimized.  \issue{283}
 		\item The fuzzy rule-based models (\code{WM}, \code{SLAVE}, \code{SBC}, \code{HYFIS}, \code{GFS.THRIFT}, \code{GFS.LT.RS}, \code{GFS.GCCL}, \code{GFS.FR.MOGUL}, \code{FS.HGD}, \code{FRBCS.W}, \code{FRBCS.CHI}, \code{FIR.DM}, \code{FH.GBML}, \code{DENFIS}, and \code{ANFIS}) were modified so that the user can pass in the predictor ranges using the \code{range.data} argument to those functions. \issue{498}
 		\item A variable importance method was added for boosted generalized linear models \issue{493}
 		\item \code{preProcess} now has an option to filter out highly correlated predictors.
@@ -504,7 +514,7 @@ calculation for neural network models.
 
 \item When case weights are specified in \code{train}, the hold-out weights are exposed when computing the summary function.
 
-\item A check was made to convert a \code{data.table} given to \code{train} to a data frame (see \url{http://stackoverflow.com/questions/23256177/r-caret-renames-column-in-data-table-after-training}).
+\item A check was made to convert a \code{data.table} given to \code{train} to a data frame (see \url{https://stackoverflow.com/questions/23256177/r-caret-renames-column-in-data-table-after-training}).
 
 }
 }
