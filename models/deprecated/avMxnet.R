@@ -9,8 +9,8 @@ modelInfo <- list(label = "Model Averaged Neural Network",
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
                       out <- expand.grid(layer1 = ((1:len) * 2) - 1, layer2 = 0, layer3 = 0,
-                                         learning.rate = 2e-6, 
-                                         momentum = 0.9, 
+                                         learning.rate = 2e-6,
+                                         momentum = 0.9,
                                          dropout = seq(0, .7, length = len),
                                          repeats = 5)
                     } else {
@@ -19,7 +19,7 @@ modelInfo <- list(label = "Model Averaged Neural Network",
                                         layer3 = 0,
                                         learning.rate = runif(len),
                                         momentum = runif(len, min = .9),
-                                        dropout = runif(len, max = .7), 
+                                        dropout = runif(len, max = .7),
                                         repeats = sample(1:15, replace = TRUE, size = len))
                     }
                     out
@@ -31,29 +31,29 @@ modelInfo <- list(label = "Model Averaged Neural Network",
                     if(!is.matrix(x)) x <- as.matrix(x)
                     if(is.numeric(y)) {
                       for(i in 1:param$repeats) {
-                        out$models[[i]] <- mxnet::mx.mlp(data = x, 
+                        out$models[[i]] <- mxnet::mx.mlp(data = x,
                                                          label = y,
                                                          hidden_node = num_units,
-                                                         out_node = 1, 
-                                                         out_activation = "rmse", 
-                                                         learning.rate = param$learning.rate, 
-                                                         momentum = param$momentum, 
-                                                         eval.metric = mxnet::mx.metric.rmse, 
+                                                         out_node = 1,
+                                                         out_activation = "rmse",
+                                                         learning.rate = param$learning.rate,
+                                                         momentum = param$momentum,
+                                                         eval.metric = mxnet::mx.metric.rmse,
                                                          array.layout = "rowmajor",
                                                          ...)
                       }
                     } else {
                       y <- as.numeric(y) - 1
                       for(i in 1:param$repeats) {
-                        out$models[[i]] <- mxnet::mx.mlp(data = x, 
+                        out$models[[i]] <- mxnet::mx.mlp(data = x,
                                                          label = y,
                                                          hidden_node = num_units,
-                                                         out_node = length(unique(y)), 
+                                                         out_node = length(unique(y)),
                                                          out_activation = "softmax",
-                                                         learning.rate = param$learning.rate, 
-                                                         momentum = param$momentum, 
-                                                         eval.metric = mxnet::mx.metric.accuracy, 
-                                                         array.layout = "rowmajor", 
+                                                         learning.rate = param$learning.rate,
+                                                         momentum = param$momentum,
+                                                         eval.metric = mxnet::mx.metric.accuracy,
+                                                         array.layout = "rowmajor",
                                                          ...)
                       }
                     }
@@ -66,7 +66,7 @@ modelInfo <- list(label = "Model Averaged Neural Network",
                       pred <- if(i == 1) tmp else pred + tmp
                     }
                     pred <- pred/length(modelFit$models)
-                    
+
                     if(modelFit$problemType == "Regression") {
                       pred <- pred[1,]
                     } else {
@@ -83,7 +83,7 @@ modelInfo <- list(label = "Model Averaged Neural Network",
                     }
                     pred <- pred/length(modelFit$models)
                     pred <- t(apply(pred, 2, function(x) x/sum(x)))
-                    
+
                     colnames(pred) <- modelFit$obsLevels
                     pred
                   },
@@ -91,6 +91,6 @@ modelInfo <- list(label = "Model Averaged Neural Network",
                     if(any(names(x) == "xNames")) x$xNames else NA
                   },
                   notes = paste("The `mxnet` package is not yet on CRAN.",
-                                "See [http://mxnet.io](http://mxnet.io) for installation instructions."),
+                                "See [https://mxnet.apache.org/](https://mxnet.apache.org/) for installation instructions."),
                   tags = c("Neural Network", "Ensemble Model"),
                   sort = function(x) x[order(x$layer1, x$layer2, x$layer3),])

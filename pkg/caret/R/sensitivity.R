@@ -1,34 +1,34 @@
 #' Calculate sensitivity, specificity and predictive values
-#' 
+#'
 #' These functions calculate the sensitivity, specificity or predictive values
 #' of a measurement system compared to a reference results (the truth or a gold
 #' standard). The measurement and "truth" data must have the same two possible
 #' outcomes and one of the outcomes must be thought of as a "positive" results.
-#' 
+#'
 #' The sensitivity is defined as the proportion of positive results out of the
 #' number of samples which were actually positive. When there are no positive
 #' results, sensitivity is not defined and a value of \code{NA} is returned.
 #' Similarly, when there are no negative results, specificity is not defined
 #' and a value of \code{NA} is returned. Similar statements are true for
 #' predictive values.
-#' 
+#'
 #' The positive predictive value is defined as the percent of predicted
 #' positives that are actually positive while the negative predictive value is
 #' defined as the percent of negative positives that are actually negative.
-#' 
+#'
 #' Suppose a 2x2 table with notation
-#' 
+#'
 #' \tabular{rcc}{ \tab Reference \tab \cr Predicted \tab Event \tab No Event
 #' \cr Event \tab A \tab B \cr No Event \tab C \tab D \cr }
-#' 
+#'
 #' The formulas used here are: \deqn{Sensitivity = A/(A+C)} \deqn{Specificity =
 #' D/(B+D)} \deqn{Prevalence = (A+C)/(A+B+C+D)} \deqn{PPV = (sensitivity *
 #' Prevalence)/((sensitivity*Prevalence) + ((1-specificity)*(1-Prevalence)))}
 #' \deqn{NPV = (specificity * (1-Prevalence))/(((1-sensitivity)*Prevalence) +
 #' ((specificity)*(1-Prevalence)))}
-#' 
+#'
 #' See the references for discussions of the statistics.
-#' 
+#'
 #' @aliases sensitivity sensitivity.default sensitivity.table
 #' sensitivity.matrix specificity specificity.default specificity.table
 #' specificity.matrix posPredValue posPredValue.default posPredValue.table
@@ -52,42 +52,42 @@
 #' @seealso \code{\link{confusionMatrix}}
 #' @references Kuhn, M. (2008), ``Building predictive models in R using the
 #' caret package, '' \emph{Journal of Statistical Software},
-#' (\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf}).
-#' 
+#' (\url{https://www.jstatsoft.org/article/view/v028i05/v28i05.pdf}).
+#'
 #' Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 1: sensitivity and
 #' specificity,'' \emph{British Medical Journal}, vol 308, 1552.
-#' 
+#'
 #' Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 2: predictive values,''
 #' \emph{British Medical Journal}, vol 309, 102.
 #' @keywords manip
 #' @examples
-#' 
+#'
 #' \dontrun{
 #' ###################
 #' ## 2 class example
-#' 
+#'
 #' lvs <- c("normal", "abnormal")
 #' truth <- factor(rep(lvs, times = c(86, 258)),
 #'                 levels = rev(lvs))
 #' pred <- factor(
 #'                c(
 #'                  rep(lvs, times = c(54, 32)),
-#'                  rep(lvs, times = c(27, 231))),               
+#'                  rep(lvs, times = c(27, 231))),
 #'                levels = rev(lvs))
-#' 
+#'
 #' xtab <- table(pred, truth)
-#' 
+#'
 #' sensitivity(pred, truth)
 #' sensitivity(xtab)
 #' posPredValue(pred, truth)
 #' posPredValue(pred, truth, prevalence = 0.25)
-#' 
+#'
 #' specificity(pred, truth)
 #' negPredValue(pred, truth)
 #' negPredValue(xtab)
 #' negPredValue(pred, truth, prevalence = 0.25)
-#' 
-#' 
+#'
+#'
 #' prev <- seq(0.001, .99, length = 20)
 #' npvVals <- ppvVals <- prev  * NA
 #' for(i in seq(along = prev))
@@ -95,7 +95,7 @@
 #'     ppvVals[i] <- posPredValue(pred, truth, prevalence = prev[i])
 #'     npvVals[i] <- negPredValue(pred, truth, prevalence = prev[i])
 #'   }
-#' 
+#'
 #' plot(prev, ppvVals,
 #'      ylim = c(0, 1),
 #'      type = "l",
@@ -108,29 +108,29 @@
 #'        c("ppv", "npv", "sens", "spec"),
 #'        col = c("black", "red", "black", "red"),
 #'        lty = c(1, 1, 2, 2))
-#' 
+#'
 #' ###################
 #' ## 3 class example
-#' 
+#'
 #' library(MASS)
-#' 
+#'
 #' fit <- lda(Species ~ ., data = iris)
 #' model <- predict(fit)$class
-#' 
+#'
 #' irisTabs <- table(model, iris$Species)
-#' 
+#'
 #' ## When passing factors, an error occurs with more
 #' ## than two levels
 #' sensitivity(model, iris$Species)
-#' 
+#'
 #' ## When passing a table, more than two levels can
 #' ## be used
 #' sensitivity(irisTabs, "versicolor")
 #' specificity(irisTabs, c("setosa", "virginica"))
 #' }
-#' 
+#'
 #' @export sensitivity
-sensitivity <- 
+sensitivity <-
   function(data, ...){
     UseMethod("sensitivity")
   }
@@ -141,7 +141,7 @@ sensitivity <-
 "sensitivity.default" <-
   function(data, reference, positive = levels(reference)[1], na.rm = TRUE, ...)
 {
-  if(!is.factor(reference) | !is.factor(data)) 
+  if(!is.factor(reference) | !is.factor(data))
     stop("inputs must be factors")
 
   ## todo: relax the =2 constraint and let ngative length be > 2
@@ -175,14 +175,14 @@ sensitivity <-
     {
       tmp <- data
       data <- matrix(NA, 2, 2)
-      
+
       colnames(data) <- rownames(data) <- c("pos", "neg")
       posCol <- which(colnames(tmp) %in% positive)
       negCol <- which(!(colnames(tmp) %in% positive))
-      
+
       data[1, 1] <- sum(tmp[posCol, posCol])
       data[1, 2] <- sum(tmp[posCol, negCol])
-      data[2, 1] <- sum(tmp[negCol, posCol])      
+      data[2, 1] <- sum(tmp[negCol, posCol])
       data[2, 2] <- sum(tmp[negCol, negCol])
       data <- as.table(data)
       positive <- "pos"

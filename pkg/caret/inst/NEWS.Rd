@@ -16,7 +16,7 @@
 
 \section{Changes in version 6.0-87}{
   \itemize{
-    \item The \cpkg{ordinalNET} model was given an additional tuning parameter \code{modeltype}.
+    \item The \cpkg{ordinalNet} model was given an additional tuning parameter \code{modeltype}.
   }
 }
 

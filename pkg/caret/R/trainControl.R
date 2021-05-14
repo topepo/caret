@@ -1,7 +1,7 @@
 #' Control parameters for train
-#' 
+#'
 #' Control the computational nuances of the \code{\link{train}} function
-#' 
+#'
 #' When setting the seeds manually, the number of models being evaluated is
 #' required. This may not be obvious as \code{train} does some optimizations
 #' for certain models. For example, when tuning over PLS model, the only model
@@ -9,18 +9,18 @@
 #' model is being tuned over \code{comp in 1:10}, the only model fit is
 #' \code{ncomp = 10}. However, if the vector of integers used in the
 #' \code{seeds} arguments is longer than actually needed, no error is thrown.
-#' 
+#'
 #' Using \code{method = "none"} and specifying more than one model in
 #' \code{\link{train}}'s \code{tuneGrid} or \code{tuneLength} arguments will
 #' result in an error.
-#' 
+#'
 #' Using adaptive resampling when \code{method} is either \code{"adaptive_cv"},
 #' \code{"adaptive_boot"} or \code{"adaptive_LGOCV"}, the full set of resamples
 #' is not run for each model. As resampling continues, a futility analysis is
 #' conducted and models with a low probability of being optimal are removed.
 #' These features are experimental. See Kuhn (2014) for more details. The
 #' options for this procedure are:
-#' 
+#'
 #' \itemize{ \item \code{min}: the minimum number of resamples used before
 #' models are removed \item \code{alpha}: the confidence level of the one-sided
 #' intervals used to measure futility \item \code{method}: either generalized
@@ -28,28 +28,28 @@
 #' = "BT"}) \item \code{complete}: if a single parameter value is found before
 #' the end of resampling, should the full set of resamples be computed for that
 #' parameter. ) }
-#' 
+#'
 #' The option \code{search = "grid"} uses the default grid search routine. When
 #' \code{search = "random"}, a random search procedure is used (Bergstra and
 #' Bengio, 2012). See \url{http://topepo.github.io/caret/random-hyperparameter-search.html} for
 #' details and an example.
-#' 
+#'
 #' The supported bootstrap methods are:
-#' 
+#'
 #' \itemize{
 #'   \item \code{"boot"}: the usual bootstrap.
 #'   \item \code{"boot632"}: the 0.632 bootstrap estimator (Efron, 1983).
 #'   \item \code{"optimism_boot"}: the optimism bootstrap estimator.
 #'     (Efron and Tibshirani, 1994).
-#'   \item \code{"boot_all"}: all of the above (for efficiency, 
+#'   \item \code{"boot_all"}: all of the above (for efficiency,
 #'     but "boot" will be used for calculations).
 #' }
-#' 
-#' The \code{"boot632"} method should not to be confused with the 0.632+ 
+#'
+#' The \code{"boot632"} method should not to be confused with the 0.632+
 #' estimator proposed later by the same author.
-#' 
+#'
 #' Note that if \code{index} or \code{indexOut} are specified, the label shown by \code{train} may not be accurate since these arguments supersede the \code{method} argument.
-#' 
+#'
 #' @param method The resampling method: \code{"boot"}, \code{"boot632"},
 #' \code{"optimism_boot"}, \code{"boot_all"},
 #' \code{"cv"}, \code{"repeatedcv"}, \code{"LOOCV"}, \code{"LGOCV"} (for
@@ -80,8 +80,8 @@
 #' classification models (along with predicted values) in each resample?
 #' @param summaryFunction a function to compute performance metrics across
 #' resamples. The arguments to the function should be the same as those in
-#' \code{\link{defaultSummary}}. Note that if \code{method = "oob"} is used, 
-#' this option is ignored and a warning is issued. 
+#' \code{\link{defaultSummary}}. Note that if \code{method = "oob"} is used,
+#' this option is ignored and a warning is issued.
 #' @param selectionFunction the function used to select the optimal tuning
 #' parameter. This can be a name of the function or the function itself. See
 #' \code{\link{best}} for details and other options.
@@ -139,58 +139,58 @@
 #' @references Efron (1983). ``Estimating the error rate of a prediction rule:
 #' improvement on cross-validation''. Journal of the American Statistical
 #' Association, 78(382):316-331
-#' 
+#'
 #' Efron, B., & Tibshirani, R. J. (1994). ``An introduction to the bootstrap'',
 #' pages 249-252. CRC press.
-#' 
+#'
 #' Bergstra and Bengio (2012), ``Random Search for Hyper-Parameter
 #' Optimization'', Journal of Machine Learning Research, 13(Feb):281-305
-#' 
+#'
 #' Kuhn (2014), ``Futility Analysis in the Cross-Validation of Machine Learning
-#' Models'' \url{http://arxiv.org/abs/1405.6974},
-#' 
+#' Models'' \url{https://arxiv.org/abs/1405.6974},
+#'
 #' Package website for subsampling:
 #' \url{https://topepo.github.io/caret/subsampling-for-class-imbalances.html}
 #' @keywords utilities
 #' @examples
-#' 
+#'
 #' \dontrun{
-#' 
+#'
 #' ## Do 5 repeats of 10-Fold CV for the iris data. We will fit
 #' ## a KNN model that evaluates 12 values of k and set the seed
 #' ## at each iteration.
-#' 
+#'
 #' set.seed(123)
 #' seeds <- vector(mode = "list", length = 51)
 #' for(i in 1:50) seeds[[i]] <- sample.int(1000, 22)
-#' 
+#'
 #' ## For the last model:
 #' seeds[[51]] <- sample.int(1000, 1)
-#' 
+#'
 #' ctrl <- trainControl(method = "repeatedcv",
 #'                      repeats = 5,
 #'                      seeds = seeds)
-#' 
+#'
 #' set.seed(1)
 #' mod <- train(Species ~ ., data = iris,
 #'              method = "knn",
 #'              tuneLength = 12,
 #'              trControl = ctrl)
-#' 
-#' 
+#'
+#'
 #' ctrl2 <- trainControl(method = "adaptive_cv",
 #'                       repeats = 5,
 #'                       verboseIter = TRUE,
 #'                       seeds = seeds)
-#' 
+#'
 #' set.seed(1)
 #' mod2 <- train(Species ~ ., data = iris,
 #'               method = "knn",
 #'               tuneLength = 12,
 #'               trControl = ctrl2)
-#' 
+#'
 #' }
-#' 
+#'
 #' @export trainControl
 trainControl <- function(method = "boot",
                          number = ifelse(grepl("cv", method), 10, 25),
@@ -208,7 +208,7 @@ trainControl <- function(method = "boot",
                          classProbs = FALSE,
                          summaryFunction = defaultSummary,
                          selectionFunction = "best",
-                         preProcOptions = list(thresh = 0.95, ICAcomp = 3, k = 5, 
+                         preProcOptions = list(thresh = 0.95, ICAcomp = 3, k = 5,
                                                freqCut = 95/5, uniqueCut = 10,
                                                cutoff = 0.9),
                          sampling = NULL,
@@ -229,7 +229,7 @@ trainControl <- function(method = "boot",
   if(any(names(preProcOptions) == "x")) stop("'x' cannot be specified here")
   if(!is.na(repeats) & !(method %in% c("repeatedcv", "adaptive_cv")))
     warning("`repeats` has no meaning for this resampling method.", call. = FALSE)
-  
+
   if(!(adaptive$method %in% c("gls", "BT"))) stop("incorrect value of adaptive$method")
   if(adaptive$alpha < .0000001 | adaptive$alpha > 1) stop("incorrect value of adaptive$alpha")
   if(grepl("adapt", method)) {
@@ -241,10 +241,10 @@ trainControl <- function(method = "boot",
     stop("`search` should be either 'grid' or 'random'")
   if(method == "oob" & any(names(match.call()) == "summaryFunction")) {
     warning("Custom summary measures cannot be computed for out-of-bag resampling. ",
-            "This value of `summaryFunction` will be ignored.", 
+            "This value of `summaryFunction` will be ignored.",
             call. = FALSE)
   }
-  
+
   list(method = method,
        number = number,
        repeats = repeats,

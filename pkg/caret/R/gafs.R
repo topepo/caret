@@ -926,7 +926,7 @@ gafs <- function (x, ...) UseMethod("gafs")
 #'
 #' Mitchell M (1996), An Introduction to Genetic Algorithms, MIT Press.
 #'
-#' \url{http://en.wikipedia.org/wiki/Jaccard_index}
+#' \url{https://en.wikipedia.org/wiki/Jaccard_index}
 #' @keywords models
 #' @method gafs default
 #' @export

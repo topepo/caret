@@ -2,21 +2,21 @@ modelInfo <- list(label = "Neural Network",
                   library = "mxnet",
                   loop = NULL,
                   type = c('Classification', 'Regression'),
-                  parameters = data.frame(parameter = c('layer1', 'layer2', 'layer3', 
-                                                        "learning.rate", "momentum", "dropout", 
+                  parameters = data.frame(parameter = c('layer1', 'layer2', 'layer3',
+                                                        "learning.rate", "momentum", "dropout",
                                                         "activation"),
                                           class = c(rep('numeric', 6), "character"),
-                                          label = c('#Hidden Units in Layer 1', '#Hidden Units in Layer 2', 
+                                          label = c('#Hidden Units in Layer 1', '#Hidden Units in Layer 2',
                                                     '#Hidden Units in Layer 3',
-                                                    "Learning Rate", "Momentum", 
-                                                    "Dropout Rate", 
+                                                    "Learning Rate", "Momentum",
+                                                    "Dropout Rate",
                                                     "Activation Function")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
                       out <- expand.grid(layer1 = ((1:len) * 2) - 1, layer2 = 0, layer3 = 0,
-                                         learning.rate = 2e-6, 
-                                         momentum = 0.9, 
-                                         dropout = seq(0, .7, length = len), 
+                                         learning.rate = 2e-6,
+                                         momentum = 0.9,
+                                         dropout = seq(0, .7, length = len),
                                          activation = 'relu')
                     } else {
                       out <- data.frame(layer1 = sample(2:20, replace = TRUE, size = len),
@@ -30,7 +30,7 @@ modelInfo <- list(label = "Neural Network",
                     out
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-                    mxnet::mx.set.seed(21)  
+                    mxnet::mx.set.seed(21)
                     num_units <- param[grepl("layer[1-9]", names(param))]
                     num_units <- num_units[num_units > 0]
                     if(!is.matrix(x)) x <- as.matrix(x)
@@ -38,14 +38,14 @@ modelInfo <- list(label = "Neural Network",
                       out <- mxnet::mx.mlp(data = x,
                                            label = y,
                                            hidden_node = num_units,
-                                           out_node = 1, 
-                                           out_activation = "rmse", 
-                                           learning.rate = param$learning.rate, 
-                                           momentum = param$momentum, 
-                                           eval.metric = mxnet::mx.metric.rmse, 
+                                           out_node = 1,
+                                           out_activation = "rmse",
+                                           learning.rate = param$learning.rate,
+                                           momentum = param$momentum,
+                                           eval.metric = mxnet::mx.metric.rmse,
                                            array.layout = "rowmajor",
                                            activation = rep( as.character(param$activation), length(num_units)),
-                                           # Use He/MSRA when available in R 
+                                           # Use He/MSRA when available in R
                                            initializer = mxnet::mx.init.Xavier(factor_type = "avg", magnitude = 3, rnd_type = 'uniform'),
                                            ...)
                     } else {
@@ -53,14 +53,14 @@ modelInfo <- list(label = "Neural Network",
                       out <- mxnet::mx.mlp(data = x,
                                            label = y,
                                            hidden_node = num_units,
-                                           out_node = length(unique(y)), 
+                                           out_node = length(unique(y)),
                                            out_activation = "softmax",
-                                           learning.rate = param$learning.rate, 
-                                           momentum = param$momentum, 
-                                           eval.metric = mxnet::mx.metric.accuracy, 
+                                           learning.rate = param$learning.rate,
+                                           momentum = param$momentum,
+                                           eval.metric = mxnet::mx.metric.accuracy,
                                            array.layout = "rowmajor",
                                            activation = rep( as.character(param$activation), length(num_units)),
-                                           initializer = mxnet::mx.init.Xavier(factor_type = "avg", magnitude = 3, rnd_type = 'uniform'), 
+                                           initializer = mxnet::mx.init.Xavier(factor_type = "avg", magnitude = 3, rnd_type = 'uniform'),
                                            ...)
                     }
                     if(last)
@@ -85,6 +85,6 @@ modelInfo <- list(label = "Neural Network",
                     pred
                   },
                   notes = paste("The `mxnet` package is not yet on CRAN.",
-                                "See [http://mxnet.io](http://mxnet.io) for installation instructions."),
+                                "See [https://mxnet.apache.org/](https://mxnet.apache.org/) for installation instructions."),
                   tags = c("Neural Network"),
                   sort = function(x) x[order(x$layer1, x$layer2, x$layer3),])
