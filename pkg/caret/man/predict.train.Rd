@@ -131,7 +131,7 @@ extractProb(bothModels, testX = iris[1:10, -5])
 }
 \references{
 Kuhn (2008), ``Building Predictive Models in R Using the caret''
-(\url{http://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
+(\url{https://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
 }
 \seealso{
 \code{\link{plotObsVsPred}}, \code{\link{plotClassProbs}},

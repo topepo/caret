@@ -209,7 +209,7 @@ NULL
 #' '\code{zip}', '\code{beds}', '\code{baths}', '\code{sqft}', '\code{type}',
 #' '\code{price}', '\code{latitude}', and '\code{longitude}'}
 #' @source SpatialKey website:
-#' \url{https://support.spatialkey.com/spatialkey-sample-csv-data}
+#' \url{https://support.spatialkey.com/spatialkey-sample-csv-data/}
 #' @keywords datasets
 #' @examples
 #'
@@ -294,7 +294,7 @@ NULL
 #' @source Hill, LaPan, Li and Haney (2007). Impact of image segmentation on
 #' high-content screening data quality for SK-BR-3 cells, \emph{BMC
 #' Bioinformatics}, Vol. 8, pg. 340,
-#' \url{http://www.biomedcentral.com/1471-2105/8/340}.
+#' \url{https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-8-340}.
 #' @keywords datasets
 NULL
 

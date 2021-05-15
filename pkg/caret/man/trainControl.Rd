@@ -251,7 +251,7 @@ Bergstra and Bengio (2012), ``Random Search for Hyper-Parameter
 Optimization'', Journal of Machine Learning Research, 13(Feb):281-305
 
 Kuhn (2014), ``Futility Analysis in the Cross-Validation of Machine Learning
-Models'' \url{http://arxiv.org/abs/1405.6974},
+Models'' \url{https://arxiv.org/abs/1405.6974},
 
 Package website for subsampling:
 \url{https://topepo.github.io/caret/subsampling-for-class-imbalances.html}

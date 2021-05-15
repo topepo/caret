@@ -33,17 +33,17 @@
 #' Hyndman and Athanasopoulos (2013)) discuss rolling forecasting origin
 #' techniques that move the training and test sets in time.
 #' \code{createTimeSlices} can create the indices for this type of splitting.
-#' 
+#'
 #' For Group k-fold cross-validation, the data are split such that no group
-#' is contained in both the modeling and holdout sets. One or more group 
+#' is contained in both the modeling and holdout sets. One or more group
 #' could be left out, depending on the value of \code{k}.
 #'
 #' @aliases createDataPartition createResample createFolds createMultiFolds
 #'   createTimeSlices groupKFold
 #' @param y a vector of outcomes. For \code{createTimeSlices}, these should be
 #'   in chronological order.
-#' @param group a vector of groups whose length matches the number of rows in 
-#' the overall data set. 
+#' @param group a vector of groups whose length matches the number of rows in
+#' the overall data set.
 #' @param times the number of partitions to create
 #' @param p the percentage of data that goes to training
 #' @param list logical - should the results be in a list (\code{TRUE}) or a
@@ -68,7 +68,7 @@
 #' @references \url{http://topepo.github.io/caret/data-splitting.html}
 #'
 #' Hyndman and Athanasopoulos (2013), Forecasting: principles and practice.
-#' \url{https://www.otexts.org/fpp}
+#' \url{https://otexts.com/fpp2/}
 #' @keywords utilities
 #' @examples
 #'
@@ -289,7 +289,7 @@ make_resamples <- function(ctrl_obj, outcome) {
   if(is.null(ctrl_obj$index)) {
     if(ctrl_obj$method == "custom")
       stop("'custom' resampling is appropriate when the `trControl` argument `index` is used", call. = FALSE)
-    ctrl_obj$index <- 
+    ctrl_obj$index <-
       switch(tolower(ctrl_obj$method),
              oob = NULL,
              none = list(seq(along = outcome)),
@@ -317,10 +317,10 @@ make_resamples <- function(ctrl_obj, outcome) {
         stop("`indexOut` should be lists of integers.", call. = FALSE)
     }
   }
-  
-  if(ctrl_obj$method == "apparent") 
+
+  if(ctrl_obj$method == "apparent")
     ctrl_obj$indexOut <- list(all = seq(along = outcome))
-  
+
   ## Create holdout indices
   if(is.null(ctrl_obj$indexOut) && ctrl_obj$method != "oob"){
     if(tolower(ctrl_obj$method) != "timeslice") {
@@ -339,7 +339,7 @@ make_resamples <- function(ctrl_obj, outcome) {
       }
       names(ctrl_obj$indexOut) <- prettySeq(ctrl_obj$indexOut)
     } else {
-      ctrl_obj$indexOut <- 
+      ctrl_obj$indexOut <-
         createTimeSlices(seq(along = outcome),
                          initialWindow = ctrl_obj$initialWindow,
                          horizon = ctrl_obj$horizon,
@@ -347,12 +347,12 @@ make_resamples <- function(ctrl_obj, outcome) {
                          skip = ctrl_obj$skip)$test
     }
   }
-  
-  if(ctrl_obj$method != "oob" & is.null(ctrl_obj$index)) 
+
+  if(ctrl_obj$method != "oob" & is.null(ctrl_obj$index))
     names(ctrl_obj$index) <- prettySeq(ctrl_obj$index)
-  if(ctrl_obj$method != "oob" & is.null(names(ctrl_obj$index)))    
+  if(ctrl_obj$method != "oob" & is.null(names(ctrl_obj$index)))
     names(ctrl_obj$index)    <- prettySeq(ctrl_obj$index)
-  if(ctrl_obj$method != "oob" & is.null(names(ctrl_obj$indexOut))) 
+  if(ctrl_obj$method != "oob" & is.null(names(ctrl_obj$indexOut)))
     names(ctrl_obj$indexOut) <- prettySeq(ctrl_obj$indexOut)
   ctrl_obj
 }

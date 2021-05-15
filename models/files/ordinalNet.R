@@ -10,7 +10,7 @@ modelInfo <- list(label = "Penalized Ordinal Regression",
                   },
                   type = "Classification",
                   parameters = data.frame(
-                    parameters = c('alpha', 'criteria', 'link', 'lambda', 'modeltype', 'family'),
+                    parameter = c('alpha', 'criteria', 'link', 'lambda', 'modeltype', 'family'),
                     class = c('numeric', 'character', 'character', 'numeric', 'character', 'character'),
                     label = c('Mixing Percentage', 'Selection criterion', 'Link Function','Penalty Parameter', 'Model Form', 'Model Family')
                   ),
@@ -44,14 +44,14 @@ modelInfo <- list(label = "Penalized Ordinal Regression",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if (!is.matrix(x)) x <- as.matrix(x)
                     out <- ordinalNet::ordinalNet(
-                      x = x, 
-                      y = y, 
+                      x = x,
+                      y = y,
                       alpha = param$alpha,
                       link = as.character(param$link),
                       lambdaVals = param$lambda,
-                      family = as.character(param$family), 
-                      parallelTerms = (as.character(param$modeltype) %in% c('parallel', 'semiparallel')), 
-                      nonparallelTerms = (as.character(param$modeltype) %in% c('semiparallel', 'nonparallel')), 
+                      family = as.character(param$family),
+                      parallelTerms = (as.character(param$modeltype) %in% c('parallel', 'semiparallel')),
+                      nonparallelTerms = (as.character(param$modeltype) %in% c('semiparallel', 'nonparallel')),
                       ...
                     )
                     out$.criteria <- as.character(param$criteria)
@@ -82,14 +82,14 @@ modelInfo <- list(label = "Penalized Ordinal Regression",
                     out
                   },
                   levels = function(x) if(any(names(x) == "obsLevels")) x$obsLevels else NULL,
-                  tags = c("Generalized Linear Model", "Implicit Feature Selection", 
+                  tags = c("Generalized Linear Model", "Implicit Feature Selection",
                            "L1 Regularization", "L2 Regularization", "Linear Classifier",
                            "Linear Regression", "Ordinal Outcomes"),
                   sort = function(x) {
                     model_type_order <- c('parallel' = 1, 'semiparallel' = 2, 'nonparallel' = 3)
                     mt <- model_type_order[x$modeltype]
                     a <- x$alpha
-                    l <- x$lambda 
+                    l <- x$lambda
                     family_order <- c("cratio" = 1, "sratio" = 2, "acat" = 3, "cumulative" = 4)
                     f <- family_order[x$family]
                     x[order(mt, a, l, f), ]
