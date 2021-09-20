@@ -63,6 +63,7 @@ Depends:
     lattice (>= 0.20),
     R (>= 3.2.0)
 Imports:
+    e1071,
     foreach,
     grDevices,
     methods,
