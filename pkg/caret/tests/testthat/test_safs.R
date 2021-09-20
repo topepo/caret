@@ -45,5 +45,34 @@ test_that("high level tests", {
 
 })
 
+test_that("" , {
+  skip_on_cran()
 
+  set.seed(1)
+  train_data <- caret::twoClassSim(100, noiseVars = 10)
+  test_data  <- caret::twoClassSim(10,  noiseVars = 10)
+
+  ## A short example
+  ctrl <- caret::safsControl(functions = rfSA,
+                             method = "cv",
+                             number = 3)
+
+  expect_warning({
+    set.seed(2)
+    caret::safs(x = train_data[, -ncol(train_data)],
+                y = train_data$Class,
+                iters = 3,
+                safsControl = ctrl)
+  },
+  "Variable differences could not be compute"
+  )
+  expect_silent({
+    set.seed(2)
+    caret::safs(x = train_data[, -ncol(train_data)],
+                y = train_data$Class,
+                iters = 5,
+                safsControl = ctrl)
+  }
+  )
+})
 

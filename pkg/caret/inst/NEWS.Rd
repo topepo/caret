@@ -7,6 +7,7 @@
 \section{Changes in version 6.0-89}{
   \itemize{
    \item SMOTE subsampling is now computed via the \cpkg{themis} package \issue{1226}.
+   \item For SA feature selection, a better warning is given when there are too few iterations for computing differences \issue{1247}.
 
   }
 }
