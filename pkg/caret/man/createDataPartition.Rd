@@ -58,7 +58,7 @@ training set sample}
 \item{skip}{integer, how many (if any) resamples to skip to thin the total
 amount}
 
-\item{group}{a vector of groups whose length matches the number of rows in 
+\item{group}{a vector of groups whose length matches the number of rows in
 the overall data set.}
 }
 \value{
@@ -102,7 +102,7 @@ techniques that move the training and test sets in time.
 \code{createTimeSlices} can create the indices for this type of splitting.
 
 For Group k-fold cross-validation, the data are split such that no group
-is contained in both the modeling and holdout sets. One or more group 
+is contained in both the modeling and holdout sets. One or more group
 could be left out, depending on the value of \code{k}.
 }
 \examples{

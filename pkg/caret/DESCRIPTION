@@ -1,81 +1,116 @@
 Package: caret
-Version: 6.0-88
 Title: Classification and Regression Training
-Authors@R: c(
-  person("Max", "Kuhn", role = c("aut", "cre"), email = "mxkuhn@gmail.com"),
-  person("Jed", "Wing", role = "ctb"),
-	person("Steve", "Weston", role = "ctb"),
-	person("Andre", "Williams", role = "ctb"),
-	person("Chris", "Keefer", role = "ctb"),
-	person("Allan", "Engelhardt", role = "ctb"),
-	person("Tony", "Cooper", role = "ctb"),
-	person("Zachary", "Mayer", role = "ctb"),
-	person("Brenton", "Kenkel", role = "ctb"),
-	person("R Core Team", role = "ctb"),
-	person("Michael", "Benesty", role = "ctb"),
-	person("Reynald", "Lescarbeau", role = "ctb"),
-	person("Andrew", "Ziem", role = "ctb"),
-	person("Luca", "Scrucca", role = "ctb"),
-	person("Yuan", "Tang", role = "ctb"),
-	person("Can", "Candan", role = "ctb"),
-	person("Tyler", "Hunt", role = "ctb")
-    )
+Version: 6.0-88
+Authors@R: 
+    c(person(given = "Max",
+             family = "Kuhn",
+             role = c("aut", "cre"),
+             email = "mxkuhn@gmail.com"),
+      person(given = "Jed",
+             family = "Wing",
+             role = "ctb"),
+      person(given = "Steve",
+             family = "Weston",
+             role = "ctb"),
+      person(given = "Andre",
+             family = "Williams",
+             role = "ctb"),
+      person(given = "Chris",
+             family = "Keefer",
+             role = "ctb"),
+      person(given = "Allan",
+             family = "Engelhardt",
+             role = "ctb"),
+      person(given = "Tony",
+             family = "Cooper",
+             role = "ctb"),
+      person(given = "Zachary",
+             family = "Mayer",
+             role = "ctb"),
+      person(given = "Brenton",
+             family = "Kenkel",
+             role = "ctb"),
+      person(given = "R Core Team",
+             role = "ctb"),
+      person(given = "Michael",
+             family = "Benesty",
+             role = "ctb"),
+      person(given = "Reynald",
+             family = "Lescarbeau",
+             role = "ctb"),
+      person(given = "Andrew",
+             family = "Ziem",
+             role = "ctb"),
+      person(given = "Luca",
+             family = "Scrucca",
+             role = "ctb"),
+      person(given = "Yuan",
+             family = "Tang",
+             role = "ctb"),
+      person(given = "Can",
+             family = "Candan",
+             role = "ctb"),
+      person(given = "Tyler",
+             family = "Hunt",
+             role = "ctb"))
 Description: Misc functions for training and plotting classification and
     regression models.
-Depends:
-    R (>= 3.2.0),
-    lattice (>= 0.20),
-    ggplot2
+License: GPL (>= 2)
 URL: https://github.com/topepo/caret/
 BugReports: https://github.com/topepo/caret/issues
+Depends:
+    ggplot2,
+    lattice (>= 0.20),
+    R (>= 3.2.0)
 Imports:
     foreach,
+    grDevices,
     methods,
-    plyr,
     ModelMetrics (>= 1.2.2.2),
     nlme,
+    plyr,
+    pROC,
+    recipes (>= 0.1.10),
     reshape2,
     stats,
     stats4,
     utils,
-    grDevices,
-    recipes (>= 0.1.10),
-    withr (>= 2.0.0),
-    pROC,
+    withr (>= 2.0.0)
 Suggests:
     BradleyTerry2,
+    covr,
+    Cubist,
+    dplyr,
     e1071,
     earth (>= 2.2-3),
+    ellipse,
     fastICA,
     gam (>= 1.15),
     ipred,
     kernlab,
-    knitr,
     klaR,
+    knitr,
     MASS,
-    ellipse,
     Matrix,
     mda,
     mgcv,
     mlbench,
     MLmetrics,
     nnet,
+    pamr,
     party (>= 0.9-99992),
     pls,
     proxy,
     randomForest,
     RANN,
     rmarkdown,
+    rpart,
     spls,
     subselect,
-    pamr,
     superpc,
-    Cubist,
     testthat (>= 0.9.1),
-    rpart,
-    dplyr,
-    covr
-License: GPL (>= 2)
-RoxygenNote: 7.1.1.9001
-VignetteBuilder: knitr
+    themis (>= 0.1.3)
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
+RoxygenNote: 7.1.2

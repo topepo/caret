@@ -92,7 +92,7 @@
 #' sampling that is conducted after resampling (usually to resolve class
 #' imbalances). Values are \code{"none"}, \code{"down"}, \code{"up"},
 #' \code{"smote"}, or \code{"rose"}. The latter two values require the
-#' \pkg{DMwR} and \pkg{ROSE} packages, respectively. This argument can also be
+#' \pkg{themis} and \pkg{ROSE} packages, respectively. This argument can also be
 #' a list to facilitate custom sampling and these details can be found on the
 #' \pkg{caret} package website for sampling (link below).
 #' @param index a list with elements for each resampling iteration. Each list

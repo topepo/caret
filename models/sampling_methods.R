@@ -4,8 +4,8 @@ sampling_methods <- list(
   up = function(x, y)
     upSample(x, y, list = TRUE),
   smote = function(x, y) {
-    checkInstall("DMwR")
-    library(DMwR)
+    checkInstall("themis")
+    library(themis)
     dat <-
       if (is.data.frame(x)) {
         if (inherits(x, "tbl_df"))
@@ -16,7 +16,7 @@ sampling_methods <- list(
     else
       as.data.frame(x)
     dat$.y <- y
-    dat <- SMOTE(.y ~ ., data = dat)
+    dat <- themis::smote(dat, var = ".y")
     list(x = dat[,!grepl(".y", colnames(dat), fixed = TRUE), drop = FALSE],
          y = dat$.y)
   },
