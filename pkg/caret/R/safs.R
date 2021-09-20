@@ -451,7 +451,7 @@ safsControl <- function(functions = NULL,
 #' @param data an object of class \code{\link{rfe}}.
 #' @param iters number of search iterations
 #' @param differences a logical: should the difference in fitness values with
-#' and without each predictor be calculated
+#' and without each predictor be calculated?
 #' @param safsControl a list of values that define how this function acts. See
 #' \code{\link{safsControl}} and URL.
 #' @param \dots arguments passed to the classification or regression routine
@@ -601,8 +601,12 @@ safs <- function (x, ...) UseMethod("safs")
                                  colnames(x)),
                    silent = TRUE)
       if (inherits(diffs, "try-error")) {
+
+        msg <- strsplit(as.character(diffs), " :", fixed = TRUE)[[1]][2]
+        warning(
+          paste0("Variable differences could not be computed:", msg)
+        )
         diffs <- NULL
-        warning("An error occured when computing the variable differences")
       }
     } else diffs <- NULL
     rm(result)
