@@ -98,7 +98,7 @@ checkInstall <- function(pkg){
     pkList <- paste(pkg[!good], collapse = ", ")
     msg <- paste(sum(!good),
                  ifelse(sum(!good) > 1, " packages are", " package is"),
-                 " needed for this model and",
+                 " needed and",
                  ifelse(sum(!good) > 1, " are", " is"),
                  " not installed. (",
                  pkList,
