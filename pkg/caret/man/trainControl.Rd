@@ -77,7 +77,7 @@ classification models (along with predicted values) in each resample?}
 
 \item{summaryFunction}{a function to compute performance metrics across
 resamples. The arguments to the function should be the same as those in
-\code{\link{defaultSummary}}. Note that if \code{method = "oob"} is used, 
+\code{\link{defaultSummary}}. Note that if \code{method = "oob"} is used,
 this option is ignored and a warning is issued.}
 
 \item{selectionFunction}{the function used to select the optimal tuning
@@ -92,7 +92,7 @@ The type of pre-processing (e.g. center, scaling etc) is passed in via the
 sampling that is conducted after resampling (usually to resolve class
 imbalances). Values are \code{"none"}, \code{"down"}, \code{"up"},
 \code{"smote"}, or \code{"rose"}. The latter two values require the
-\pkg{DMwR} and \pkg{ROSE} packages, respectively. This argument can also be
+\pkg{themis} and \pkg{ROSE} packages, respectively. This argument can also be
 a list to facilitate custom sampling and these details can be found on the
 \pkg{caret} package website for sampling (link below).}
 
@@ -190,11 +190,11 @@ The supported bootstrap methods are:
   \item \code{"boot632"}: the 0.632 bootstrap estimator (Efron, 1983).
   \item \code{"optimism_boot"}: the optimism bootstrap estimator.
     (Efron and Tibshirani, 1994).
-  \item \code{"boot_all"}: all of the above (for efficiency, 
+  \item \code{"boot_all"}: all of the above (for efficiency,
     but "boot" will be used for calculations).
 }
 
-The \code{"boot632"} method should not to be confused with the 0.632+ 
+The \code{"boot632"} method should not to be confused with the 0.632+
 estimator proposed later by the same author.
 
 Note that if \code{index} or \code{indexOut} are specified, the label shown by \code{train} may not be accurate since these arguments supersede the \code{method} argument.

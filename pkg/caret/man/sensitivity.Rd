@@ -129,7 +129,7 @@ truth <- factor(rep(lvs, times = c(86, 258)),
 pred <- factor(
                c(
                  rep(lvs, times = c(54, 32)),
-                 rep(lvs, times = c(27, 231))),               
+                 rep(lvs, times = c(27, 231))),
                levels = rev(lvs))
 
 xtab <- table(pred, truth)
