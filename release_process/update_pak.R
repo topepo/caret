@@ -1,5 +1,6 @@
 options(repos = "http://cran.r-project.org", width = 100)
 library(tools)
+# install.packages("pak", repos = "https://r-lib.github.io/p/pak/dev/")
 library(pak)
 library(cli)
 
@@ -47,7 +48,7 @@ for (i in seq_along(libs)) {
   cli::cli_rule(paste0(libs_chr[i], " (", iters[i], "/", n, ")"))
 
   res <- try(
-    pak(libs[i], upgrade = TRUE, ask = FALSE),
+    pkg_install(libs[i], upgrade = TRUE, ask = FALSE),
     silent = TRUE
   )
 
