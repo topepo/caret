@@ -205,7 +205,6 @@ confusionMatrix.matrix <- function(data,
 #' @export
 confusionMatrix.table <- function(data, positive = NULL,
                                   prevalence = NULL, mode = "sens_spec", ...){
-  requireNamespaceQuietStop("e1071")
   if(!(mode %in% c("sens_spec", "prec_recall", "everything")))
     stop("`mode` should be either 'sens_spec', 'prec_recall', or 'everything'")
   if(length(dim(data)) != 2) stop("the table must have two dimensions")

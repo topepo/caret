@@ -25,7 +25,7 @@ specified in the function \code{safsControl$functions$fit}}
 \item{iters}{number of search iterations}
 
 \item{differences}{a logical: should the difference in fitness values with
-and without each predictor be calculated}
+and without each predictor be calculated?}
 
 \item{safsControl}{a list of values that define how this function acts. See
 \code{\link{safsControl}} and URL.}

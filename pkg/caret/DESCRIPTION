@@ -82,7 +82,6 @@ Suggests:
     covr,
     Cubist,
     dplyr,
-    e1071,
     earth (>= 2.2-3),
     ellipse,
     fastICA,
