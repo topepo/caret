@@ -308,6 +308,12 @@ train.default <- function(x, y,
                           tuneLength = ifelse(trControl$method == "none", 1, 3)) {
   startTime <- proc.time()
 
+  if (is.vector(x)) {
+    ptype <- NULL
+  } else {
+    ptype <- x[0,,drop = FALSE]
+  }
+
   ## get a seed before packages are loaded or recipes are processed
   rs_seed <- sample.int(.Machine$integer.max, 1L)
 
@@ -900,6 +906,7 @@ train.default <- function(x, y,
                         finalModel = finalModel,
                         preProcess = pp,
                         trainingData = outData,
+                        ptype = ptype,
                         resample = byResample,
                         resampledCM = resampledCM,
                         perfNames = perfNames,
@@ -939,6 +946,7 @@ train.formula <- function (form, data, ..., weights, subset, na.action = na.fail
   m <- eval.parent(m)
   if(nrow(m) < 1) stop("Every row has at least one missing value were found", call. = FALSE)
   Terms <- attr(m, "terms")
+  ptype <- terms_ptype(Terms, data)
   x <- model.matrix(Terms, m, contrasts)
   cons <- attr(x, "contrast")
   int_flag <- grepl("(Intercept)", colnames(x))
@@ -953,6 +961,7 @@ train.formula <- function (form, data, ..., weights, subset, na.action = na.fail
   res$na.action <- attr(m, "na.action")
   res$contrasts <- cons
   res$xlevels <- .getXlevels(Terms, m)
+  res$ptype <- ptype
   if(!is.null(res$trainingData)) {
     ## We re-save the original data from the formula interface
     ## since it has not been converted to dummy variables.
