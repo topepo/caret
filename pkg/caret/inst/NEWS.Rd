@@ -8,7 +8,8 @@
   \itemize{
    \item SMOTE subsampling is now computed via the \cpkg{themis} package \issue{1226}.
    \item For SA feature selection, a better warning is given when there are too few iterations for computing differences \issue{1247}.
-
+   \item Better error message when pacakges are missing \issue{1246}.
+   \item \cpkg{e1071} was promoted from Suggests to Imports \issue{1238}.
   }
 }
 
