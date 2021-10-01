@@ -832,4 +832,10 @@ parallel_check <- function(pkg, models) {
   flush.console()
 }
 
+# ------------------------------------------------------------------------------
 
+terms_ptype <- function(x, data) {
+  cols <- attr(x, "variables")[-2]
+  cols <- all.vars(cols)
+  data[0, cols, drop = FALSE]
+}
