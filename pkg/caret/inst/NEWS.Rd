@@ -6,6 +6,7 @@
 \section{Changes in version 6.0-90}{
   \itemize{
    \item A \code{ptype} element was added to \code{train} objects that records the trianing set predictor columns and their types using a zero-row slice.
+   \item Updated the internal object containing the subsampling information. The old package dependencies were being used.
    }
 }
 
