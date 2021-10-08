@@ -79,7 +79,7 @@ predict.list <- function(object, ...) {
 #' @seealso \code{\link{plotObsVsPred}}, \code{\link{plotClassProbs}},
 #' \code{\link{trainControl}}
 #' @references Kuhn (2008), ``Building Predictive Models in R Using the caret''
-#' (\url{https://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
+#' (\doi{10.18637/jss.v028.i05})
 #' @keywords manip
 #' @examples
 #'

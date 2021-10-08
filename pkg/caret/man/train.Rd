@@ -335,7 +335,7 @@ usingMC <-  train(medv ~ .,
 \url{http://topepo.github.io/caret/}
 
 Kuhn (2008), ``Building Predictive Models in R Using the caret''
-(\url{https://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
+(\doi{10.18637/jss.v028.i05})
 
 \url{https://topepo.github.io/recipes/}
 }

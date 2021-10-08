@@ -122,7 +122,7 @@ recall(data = tbl_2_2_pred, reference = tbl_2_2_truth, relevant = "Relevant")
 \references{
 Kuhn, M. (2008), ``Building predictive models in R using the
 caret package, '' \emph{Journal of Statistical Software},
-(\url{https://www.jstatsoft.org/article/view/v028i05/v28i05.pdf}).
+(\doi{10.18637/jss.v028.i05}).
 
 Buckland, M., & Gey, F. (1994). The relationship between Recall and
 Precision. \emph{Journal of the American Society for Information Science},

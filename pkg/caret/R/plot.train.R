@@ -51,7 +51,7 @@
 #' \code{\link[lattice]{xyplot}}, \code{\link[lattice:xyplot]{stripplot}},
 #' \code{\link[ggplot2]{ggplot}}
 #' @references Kuhn (2008), ``Building Predictive Models in R Using the caret''
-#' (\url{https://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
+#' (\doi{10.18637/jss.v028.i05})
 #' @keywords hplot
 #' @method plot train
 #' @export

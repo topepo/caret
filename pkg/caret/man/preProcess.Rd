@@ -204,7 +204,7 @@ Kuhn and Johnson (2013), Applied Predictive Modeling, Springer, New York
 (chapter 4)
 
 Kuhn (2008), Building predictive models in R using the caret
-(\url{https://www.jstatsoft.org/article/view/v028i05/v28i05.pdf})
+(\doi{10.18637/jss.v028.i05})
 
 Box, G. E. P. and Cox, D. R. (1964) An analysis of transformations (with
 discussion). Journal of the Royal Statistical Society B, 26, 211-252.
