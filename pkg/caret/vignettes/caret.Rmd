@@ -61,11 +61,7 @@ One of the primary tools in the package is the `train` function which can be use
  * choose the ``optimal'' model across these parameters
  * estimate model performance from a training set
 
-More formally:
-
-```{r echo = FALSE, out.width = '80%'}
-knitr::include_graphics("train_algo.png")
-```
+A formal algorithm description can be found in Section 5.1 of the [caret  manual](https://topepo.github.io/caret/model-training-and-tuning.html#model-training-and-parameter-tuning).
 
 There are options for customizing almost every step of this process (e.g. resampling technique, choosing the optimal parameters etc). To demonstrate this function, the Sonar data from the **mlbench** package will be used.
 
