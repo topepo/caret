@@ -34,4 +34,4 @@ sampling_methods <- list(
          y = dat$.y)
   }
 )
-save(sampling_methods, file = "inst/models/sampling.RData")
+save(sampling_methods, file = "inst/models/sampling.RData", version = 2)
