@@ -204,7 +204,7 @@ twoClassSim <- function(n = 100,
   if(linearVars > 0) {
     lin <- seq(10, 1, length = linearVars)/4 
     lin <- lin * rep(c(-1, 1), floor(linearVars)+1)[1:linearVars] 
-    for(i in seq(along = lin)) lp <- lp + tmpData[, i+3]*lin[i]
+    for(i in seq(along = lin)) lp <- lp + tmpData[, i+2]*lin[i]
   }
   
   if(ordinal){
@@ -225,3 +225,4 @@ twoClassSim <- function(n = 100,
   
   tmpData
 }
+
