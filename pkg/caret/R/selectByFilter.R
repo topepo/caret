@@ -1050,7 +1050,7 @@ rfSBF <- list(summary = defaultSummary,
               },
               pred = function(object, x)
               {
-                if(class(object) == "nullModel")
+                if (inherits(object, "nullModel"))
                 {
                   tmp <- predict(object, x)
                   if(!is.null(object$levels))
@@ -1113,7 +1113,7 @@ ldaSBF <- list(summary = defaultSummary,
                },
                pred = function(object, x)
                {
-                 if(class(object) == "nullModel")
+                 if (inherits(object, "nullModel"))
                  {
                    tmp <- predict(object, x)
                    out <- cbind(data.frame(pred = tmp),
@@ -1150,7 +1150,7 @@ nbSBF <- list(summary = defaultSummary,
               },
               pred = function(object, x)
               {
-                if(class(object) == "nullModel")
+                if (inherits(object, "nullModel"))
                 {
                   tmp <- predict(object, x)
                   out <- cbind(data.frame(pred = tmp),
@@ -1192,7 +1192,7 @@ treebagSBF <- list(summary = defaultSummary,
 
                    pred = function(object, x)
                    {
-                     if(class(object) == "nullModel")
+                     if (inherits(object, "nullModel"))
                      {
                        tmp <- predict(object, x)
                        if(!is.null(object$levels))

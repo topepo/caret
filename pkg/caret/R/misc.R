@@ -31,9 +31,9 @@ well_numbered <- function(prefix, items) {
 
 #' @importFrom stats runif
 evalSummaryFunction <- function(y, wts = NULL, perf = NULL, ctrl, lev, metric, method) {
-  n <- if(class(y)[1] == "Surv") nrow(y) else length(y)
+  n <- if(inherits(y, "Surv")) nrow(y) else length(y)
   ## sample doesn't work for Surv objects
-  if(class(y)[1] != "Surv") {
+  if(!inherits(y, "Surv")) {
     if(is.factor(y)) {
       values <- rep_len(levels(y), min(10, n))
       pred_samp <- factor(sample(values), levels = lev)
@@ -74,7 +74,7 @@ hasDots <- function(grid, info) {
   mnames2 <- paste(".", mnames, sep = "")
   gnames <- sort(colnames(grid))
   out <- all.equal(mnames2, gnames)
-  if(class(out)[1] != "logical") out <- FALSE
+  if(!inherits(out, "logical")) out <- FALSE
   out
 }
 
@@ -542,7 +542,7 @@ get_labels <- function(mods, format = FALSE) {
 }
 
 check_dims <- function(x, y) {
-  n <- if(class(y)[1] == "Surv") nrow(y) else length(y)
+  n <- if(inherits(y, "Surv")) nrow(y) else length(y)
   stopifnot(nrow(x) > 1)
   stopifnot(nrow(x) == n)
   invisible(NULL)
