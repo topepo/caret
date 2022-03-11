@@ -107,7 +107,7 @@
 #' lapply(folds, function(x, y) table(y[x]), y = groups)
 #' @export createDataPartition
 createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = min(5, length(y))){
-  if(class(y)[1] == "Surv") y <- y[,"time"]
+  if(inherits(y, "Surv")) y <- y[,"time"]
   out <- vector(mode = "list", times)
 
   if(length(y) < 2) stop("y must have at least 2 data points")
@@ -165,7 +165,7 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
 #' @export
 "createFolds" <-
   function(y, k = 10, list = TRUE, returnTrain = FALSE) {
-    if(class(y)[1] == "Surv") y <- y[,"time"]
+    if(inherits(y, "Surv")) y <- y[,"time"]
     if(is.numeric(y)) {
       ## Group the numeric data based on their magnitudes
       ## and sample within those groups.
@@ -225,7 +225,7 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
 #' @rdname createDataPartition
 #' @export
 createMultiFolds <- function(y, k = 10, times = 5) {
-  if(class(y)[1] == "Surv") y <- y[,"time"]
+  if(inherits(y, "Surv")) y <- y[,"time"]
   prettyNums <- paste("Rep", gsub(" ", "0", format(1:times)), sep = "")
   for(i in 1:times) {
     tmp <- createFolds(y, k = k, list = TRUE, returnTrain = TRUE)
@@ -325,7 +325,7 @@ make_resamples <- function(ctrl_obj, outcome) {
   if(is.null(ctrl_obj$indexOut) && ctrl_obj$method != "oob"){
     if(tolower(ctrl_obj$method) != "timeslice") {
       y_index <-
-        if (class(outcome)[1] == "Surv")
+        if (inherits(outcome, "Surv"))
           1:nrow(outcome)
       else
         seq(along = outcome)

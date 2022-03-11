@@ -59,7 +59,7 @@
 
 knn3.default <- function(x, ...)
 {
-   if(!any(class(x) %in% "formula"))  stop("knn3 only implemented for formula objects")
+   if(!inherits(x, "formula"))  stop("knn3 only implemented for formula objects")
 }
 
 #' @rdname knn3

@@ -2,7 +2,7 @@
 #' @importFrom stats median predict quantile
 additivePlot <- function(x, data, n = 100, quant = 0, plot = TRUE, ...)
   {
-    if(any(class(x) == "earth"))
+    if(inherits(x, "earth"))
       {
         data <- data[, predictors(x), drop = FALSE]
       }
