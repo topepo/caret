@@ -1086,7 +1086,7 @@ train.recipe <- function(x,
   }
 
   check_dims(x = x_dat, y = y_dat)
-  n <- if(inherits(y, "Surv")) nrow(y_dat) else length(y_dat)
+  n <- if(inherits(y_dat, "Surv")) nrow(y_dat) else length(y_dat)
 
   ## Some models that use RWeka start multiple threads and this conflicts with multicore:
   parallel_check("RWeka", models)
