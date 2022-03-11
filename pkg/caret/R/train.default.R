@@ -465,7 +465,7 @@ train.default <- function(x, y,
   ## and data for some models (rpart, pam, etc - see manual for more details)
   if(is.null(tuneGrid)) {
     if(!is.null(ppOpt) && length(models$parameters$parameter) > 1 &&
-         as.character(models$parameters$parameter) != "parameter") {
+         all(as.character(models$parameters$parameter) != "parameter")) {
       pp <- list(method = ppOpt$options)
       if("ica" %in% pp$method) pp$n.comp <- ppOpt$ICAcomp
       if("pca" %in% pp$method) pp$thresh <- ppOpt$thresh

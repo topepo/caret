@@ -10,7 +10,7 @@ predict.train.recipe <- function(object,
                                         recipe = object$recipe),
                           newdata = newdata)
     names(predicted) <- NULL
-    if (!is.null(object$levels) && !is.na(object$levels)) {
+    if (!is.null(object$levels) && all(!is.na(object$levels))) {
       predicted <- if (attr(object$levels, "ordered"))
         ordered(as.character(predicted), levels = object$levels)
       else
@@ -411,7 +411,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
 
   result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .packages = pkgs, .export = export) %:%
     foreach(parm = 1L:nrow(info$loop), .combine = "c", .packages = pkgs, .export = export)  %op% {
-      
+
       if(!(length(ctrl$seeds) == 1L && is.na(ctrl$seeds)))
         set.seed(ctrl$seeds[[iter]][parm])
 
@@ -866,7 +866,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                 .packages = c("methods", "caret"),
                 .errorhandling = "stop")  %op%  {
 
-                  
+
                   if(ctrl$verboseIter)
                     progress(printed[parm,,drop = FALSE],
                              names(resampleIndex), iter, TRUE)

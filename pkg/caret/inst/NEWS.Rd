@@ -3,6 +3,12 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+\section{Changes in version 6.0-91}{
+  \itemize{
+   \item Small maintenance release with required changes for R 4.2.
+   }
+}
+
 \section{Changes in version 6.0-90}{
   \itemize{
    \item A \code{ptype} element was added to \code{train} objects that records the trianing set predictor columns and their types using a zero-row slice.
