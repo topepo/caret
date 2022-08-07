@@ -380,9 +380,9 @@ train.default <- function(x, y,
     trControl$sampling <- parse_sampling(trControl$sampling)
   }
 
-  if(any(class(x) == "data.table")) x <- as.data.frame(x, stringsAsFactors = TRUE)
+  if(inherits(x, "data.table")) x <- as.data.frame(x, stringsAsFactors = TRUE)
   check_dims(x = x, y = y)
-  n <- if(class(y)[1] == "Surv") nrow(y) else length(y)
+  n <- if(inherits(y, "Surv")) nrow(y) else length(y)
 
   ## TODO add check method and execute here
 
@@ -465,7 +465,7 @@ train.default <- function(x, y,
   ## and data for some models (rpart, pam, etc - see manual for more details)
   if(is.null(tuneGrid)) {
     if(!is.null(ppOpt) && length(models$parameters$parameter) > 1 &&
-         as.character(models$parameters$parameter) != "parameter") {
+         all(as.character(models$parameters$parameter) != "parameter")) {
       pp <- list(method = ppOpt$options)
       if("ica" %in% pp$method) pp$n.comp <- ppOpt$ICAcomp
       if("pca" %in% pp$method) pp$thresh <- ppOpt$thresh
@@ -1086,7 +1086,7 @@ train.recipe <- function(x,
   }
 
   check_dims(x = x_dat, y = y_dat)
-  n <- if(class(y_dat)[1] == "Surv") nrow(y_dat) else length(y_dat)
+  n <- if(inherits(y_dat, "Surv")) nrow(y_dat) else length(y_dat)
 
   ## Some models that use RWeka start multiple threads and this conflicts with multicore:
   parallel_check("RWeka", models)

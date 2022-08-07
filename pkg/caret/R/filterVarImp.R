@@ -14,13 +14,13 @@ asNumeric <- function(data){
 
 
 #' Calculation of filter-based variable importance
-#' 
+#'
 #' Specific engines for variable importance on a model by model basis.
-#' 
-#' 
+#'
+#'
 #' The importance of each predictor is evaluated individually using a
 #' ``filter'' approach.
-#' 
+#'
 #' For classification, ROC curve analysis is conducted on each predictor. For
 #' two class problems, a series of cutoffs is applied to the predictor data to
 #' predict the class. The sensitivity and specificity are computed for each
@@ -31,7 +31,7 @@ asNumeric <- function(data){
 #' each class pair (i.e class 1 vs. class 2, class 2 vs. class 3 etc.). For a
 #' specific class, the maximum area under the curve across the relevant
 #' pair-wise AUC's is used as the variable importance measure.
-#' 
+#'
 #' For regression, the relationship between each predictor and the outcome is
 #' evaluated. An argument, \code{nonpara}, is used to pick the model fitting
 #' technique. When \code{nonpara = FALSE}, a linear model is fit and the
@@ -39,7 +39,7 @@ asNumeric <- function(data){
 #' Otherwise, a loess smoother is fit between the outcome and the predictor.
 #' The $R^2$ statistic is calculated for this model against the intercept only
 #' null model.
-#' 
+#'
 #' @param x A matrix or data frame of predictor data
 #' @param y A vector (numeric or factor) of outcomes)
 #' @param nonpara should nonparametric methods be used to assess the
@@ -52,20 +52,20 @@ asNumeric <- function(data){
 #' @author Max Kuhn
 #' @keywords models
 #' @examples
-#' 
+#'
 #' data(mdrr)
 #' filterVarImp(mdrrDescr[, 1:5], mdrrClass)
-#' 
+#'
 #' data(BloodBrain)
-#' 
+#'
 #' filterVarImp(bbbDescr[, 1:5], logBBB, nonpara = FALSE)
 #' apply(bbbDescr[, 1:5],
 #'       2,
 #'       function(x, y) summary(lm(y~x))$coefficients[2,3],
 #'       y = logBBB)
-#' 
+#'
 #' filterVarImp(bbbDescr[, 1:5], logBBB, nonpara = TRUE)
-#' 
+#'
 #' @export filterVarImp
 #' @importFrom stats loess resid
 #' @importFrom utils combn
@@ -121,8 +121,8 @@ filterVarImp <- function(x, y, nonpara = FALSE, ...){
             } else {
               regMod <- try(loess(y~x, na.action = na.omit, ...), silent = TRUE)
 
-              if(class(regMod) == "try-error" | any(is.nan(regMod$residuals))) try(regMod <- lm(y~x, ...))
-              if(class(regMod) == "try-error") return(NA)
+              if(inherits(regMod, "try-error") | any(is.nan(regMod$residuals))) try(regMod <- lm(y~x, ...))
+              if(inherits(regMod, "try-error")) return(NA)
             }
 
           pR2 <- 1 - (sum(resid(regMod)^2)/meanMod)
