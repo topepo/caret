@@ -1,6 +1,6 @@
 Package: caret
 Title: Classification and Regression Training
-Version: 6.0-92
+Version: 6.0-93
 Authors@R: 
     c(person(given = "Max",
              family = "Kuhn",
