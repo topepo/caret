@@ -3,6 +3,8 @@
  *  modificatios by Andre Williams
  */
 
+#define NO_S_TYPEDEFS
+
 #include <R.h>
 
 #define EPS 1e-4		/* relative test of equality of distances */
@@ -14,6 +16,7 @@
 #define MAX_TIES 1000
 /* Not worth doing this dynamically -- limits k + # ties + fence, in fact */
 
+typedef int Sint;
 
 void
 knn3(Sint *kin, Sint *lin, Sint *pntr, Sint *pnte, Sint *p,
@@ -35,7 +38,7 @@ knn3(Sint *kin, Sint *lin, Sint *pntr, Sint *pnte, Sint *p,
     for (npat = 0; npat < nte; npat++) {
 	kn = kinit;
 	for (k = 0; k < kn; k++)
-	    nndist[k] = 0.99 * DOUBLE_XMAX;
+	    nndist[k] = 0.99 * DBL_MAX;
 	for (j = 0; j < ntr; j++) {
 	    if ((*cv > 0) && (j == npat))
 		continue;
@@ -60,7 +63,7 @@ knn3(Sint *kin, Sint *lin, Sint *pntr, Sint *pnte, Sint *p,
 				error("too many ties in knn");
 			break;
 		    }
-	    nndist[kn] = 0.99 * DOUBLE_XMAX;
+	    nndist[kn] = 0.99 * DBL_MAX;
 	}
 
 	for (j = 0; j <= *nc; j++)
@@ -124,16 +127,16 @@ knn3(Sint *kin, Sint *lin, Sint *pntr, Sint *pnte, Sint *p,
 
 		all_vote[npat*(*nc) + (i-1)] = (double)votes[i]/(kinit+extras);
 	}
-	
+
     }
     RANDOUT;
 }
 
 
 
-void 
-knn3reg(Sint *kin, Sint *pntr, Sint *pnte, Sint *p, 
-		double *train, double *y, double *test, 
+void
+knn3reg(Sint *kin, Sint *pntr, Sint *pnte, Sint *p,
+		double *train, double *y, double *test,
 		double *means, Sint *cv, Sint *use_all)
 {
 	int   j, k, k1, kinit = *kin, kn, npat,
@@ -156,7 +159,7 @@ knn3reg(Sint *kin, Sint *pntr, Sint *pnte, Sint *p,
 		count = 0;
 		kn = kinit;
 		for (k = 0; k < kn; k++)
-			nndist[k] = 0.99 * DOUBLE_XMAX;
+			nndist[k] = 0.99 * DBL_MAX;
 		for (j = 0; j < ntr; j++) {
 			if ((*cv > 0) && (j == npat))
 				continue;
@@ -181,7 +184,7 @@ knn3reg(Sint *kin, Sint *pntr, Sint *pnte, Sint *p,
 								error("too many ties in knn");
 						break;
 					}
-					nndist[kn] = 0.99 * DOUBLE_XMAX;
+					nndist[kn] = 0.99 * DBL_MAX;
 		}
 
 		if (*use_all) {
@@ -242,7 +245,7 @@ knn3reg(Sint *kin, Sint *pntr, Sint *pnte, Sint *p,
 
 
 
-#include "R_ext/Rdynload.h" 
+#include "R_ext/Rdynload.h"
 
 static const R_CMethodDef CEntries[] = {
 	{"knn3", (DL_FUNC) &knn3, 13}, {"knn3reg", (DL_FUNC) &knn3reg, 10},
