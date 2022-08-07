@@ -38,7 +38,7 @@ knn3(Sint *kin, Sint *lin, Sint *pntr, Sint *pnte, Sint *p,
     for (npat = 0; npat < nte; npat++) {
 	kn = kinit;
 	for (k = 0; k < kn; k++)
-	    nndist[k] = 0.99 * DOUBLE_XMAX;
+	    nndist[k] = 0.99 * DBL_MAX;
 	for (j = 0; j < ntr; j++) {
 	    if ((*cv > 0) && (j == npat))
 		continue;
@@ -63,7 +63,7 @@ knn3(Sint *kin, Sint *lin, Sint *pntr, Sint *pnte, Sint *p,
 				error("too many ties in knn");
 			break;
 		    }
-	    nndist[kn] = 0.99 * DOUBLE_XMAX;
+	    nndist[kn] = 0.99 * DBL_MAX;
 	}
 
 	for (j = 0; j <= *nc; j++)
@@ -159,7 +159,7 @@ knn3reg(Sint *kin, Sint *pntr, Sint *pnte, Sint *p,
 		count = 0;
 		kn = kinit;
 		for (k = 0; k < kn; k++)
-			nndist[k] = 0.99 * DOUBLE_XMAX;
+			nndist[k] = 0.99 * DBL_MAX;
 		for (j = 0; j < ntr; j++) {
 			if ((*cv > 0) && (j == npat))
 				continue;
@@ -184,7 +184,7 @@ knn3reg(Sint *kin, Sint *pntr, Sint *pnte, Sint *p,
 								error("too many ties in knn");
 						break;
 					}
-					nndist[kn] = 0.99 * DOUBLE_XMAX;
+					nndist[kn] = 0.99 * DBL_MAX;
 		}
 
 		if (*use_all) {
