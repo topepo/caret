@@ -40,7 +40,7 @@ modelInfo <- list(label = "Random Forest",
                           min.node.size= sample(1:(min(20,nrow(x))), size = len, replace = TRUE),
                           mtry = sample(1:ncol(x), size = len, replace = TRUE),
                           splitrule = sample(srules, size = len, replace = TRUE),
-                          num.trees = sample(1:2000, size = len, replace = TRUE)
+                          num.trees = 500
                         )
                     }
                   },

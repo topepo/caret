@@ -18,12 +18,12 @@ modelInfo <- list(label = "Random Forest",
                     } else {
                       out <- data.frame(mtry = unique(sample(1:ncol(x), size = len, replace = TRUE)),
                                         nodesize = sample(1:(min(20,nrow(x))), size = len, replace = TRUE),
-                                        ntree = sample(1:2000, size = len, replace = TRUE)
+                                        ntree = 500
                       )
                     }
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...)
-                    randomForest::randomForest(x, y, 
+                    randomForest::randomForest(x, y,
                                                mtry = min(param$mtry, ncol(x)),
                                                nodesize = param$nodesize,
                                                ntree = param$ntree,
