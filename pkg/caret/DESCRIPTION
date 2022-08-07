@@ -1,11 +1,12 @@
 Package: caret
 Title: Classification and Regression Training
-Version: 6.0-90
+Version: 6.0-93
 Authors@R: 
     c(person(given = "Max",
              family = "Kuhn",
              role = c("aut", "cre"),
-             email = "mxkuhn@gmail.com"),
+             email = "mxkuhn@gmail.com",
+             comment = c(ORCID = "0000-0003-2402-136X")),
       person(given = "Jed",
              family = "Wing",
              role = "ctb"),
@@ -113,4 +114,4 @@ Suggests:
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
