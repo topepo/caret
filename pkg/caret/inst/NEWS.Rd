@@ -6,6 +6,8 @@
 \section{Changes in version 6.0-93}{
   \itemize{
    \item CRAN required changes for legacy S typedef Sint.
+   \item Xabriel J. Collazo Mojica added check for class probabilities when PR curves are requested \issue{1274}.
+   \item jttoivon enabled the number of trees in ranger and randomForest models to be tuned. The default is still used in the automatic grid creation code. Users who want to tune this parameter should make custom grids \issue{1268}.
    }
 }
 
