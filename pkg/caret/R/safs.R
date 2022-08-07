@@ -361,8 +361,7 @@ safsControl <- function(functions = NULL,
        allowParallel = allowParallel)
 }
 
-#' @title Simulated annealing feature selection
-#'
+#' Simulated annealing feature selection
 #'
 #' @description
 #' Supervised feature selection using simulated annealing
@@ -370,6 +369,8 @@ safsControl <- function(functions = NULL,
 #' \code{\link{safs}} conducts a supervised binary search of the predictor
 #' space using simulated annealing (SA). See Kirkpatrick et al (1983) for more
 #' information on this search algorithm.
+#'
+#' @details
 #'
 #' This function conducts the search of the feature space repeatedly within
 #' resampling iterations. First, the training data are split be whatever
