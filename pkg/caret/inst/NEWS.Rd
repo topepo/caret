@@ -3,6 +3,12 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+\section{Changes in version 6.0-93}{
+  \itemize{
+   \item CRAN required changes for legacy S typedef Sint.
+   }
+}
+
 \section{Changes in version 6.0-92}{
   \itemize{
    \item Small maintenance release with required C changes for R 4.2.

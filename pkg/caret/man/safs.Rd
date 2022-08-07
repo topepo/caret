@@ -41,7 +41,8 @@ Supervised feature selection using simulated annealing
 \code{\link{safs}} conducts a supervised binary search of the predictor
 space using simulated annealing (SA). See Kirkpatrick et al (1983) for more
 information on this search algorithm.
-
+}
+\details{
 This function conducts the search of the feature space repeatedly within
 resampling iterations. First, the training data are split be whatever
 resampling method was specified in the control function. For example, if
