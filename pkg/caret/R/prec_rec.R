@@ -232,6 +232,11 @@ prSummary <- function (data, lev = NULL, model = NULL)  {
   if (!all(levels(data[, "pred"]) == levels(data[, "obs"])))
     stop("Levels of observed and predicted data do not match.",
          call. = FALSE)
+  if (!lev[1] %in% colnames(data))
+    stop(paste("Class probabilities are needed to score models using the",
+               "area under the PR curve. Set `classProbs = TRUE`",
+               "in the trainControl() function."),
+         call. = FALSE)
 
   pr_auc <-
     try(MLmetrics::PRAUC(y_pred = data[, lev[1]],
