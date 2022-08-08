@@ -2,20 +2,32 @@ modelInfo <- list(label = "Random Forest",
                   library = "randomForest",
                   loop = NULL,
                   type = c("Classification", "Regression"),
-                  parameters = data.frame(parameter = "mtry",
-                                          class = "numeric",
-                                          label = "#Randomly Selected Predictors"),
+                  parameters = data.frame(parameter = c("mtry", "nodesize", "ntree"),
+                                          class = c("numeric", "numeric", "numeric"),
+                                          label = c("#Randomly Selected Predictors",
+                                                    "Minimum Node Size",
+                                                    "Number of trees")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
-                      out <- data.frame(mtry = caret::var_seq(p = ncol(x),
+                      out <- expand.grid(mtry = caret::var_seq(p = ncol(x),
                                                               classification = is.factor(y),
-                                                              len = len))
+                                                              len = len),
+                                         nodesize = ifelse( is.factor(y), 1, 5),
+                                         ntree = 500
+                      )
                     } else {
-                      out <- data.frame(mtry = unique(sample(1:ncol(x), size = len, replace = TRUE)))
+                      out <- data.frame(mtry = unique(sample(1:ncol(x), size = len, replace = TRUE)),
+                                        nodesize = sample(1:(min(20,nrow(x))), size = len, replace = TRUE),
+                                        ntree = 500
+                      )
                     }
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...)
-                    randomForest::randomForest(x, y, mtry = min(param$mtry, ncol(x)), ...),
+                    randomForest::randomForest(x, y,
+                                               mtry = min(param$mtry, ncol(x)),
+                                               nodesize = param$nodesize,
+                                               ntree = param$ntree,
+                                               ...),
                   predict = function(modelFit, newdata, submodels = NULL)
                     if(!is.null(newdata)) predict(modelFit, newdata) else predict(modelFit),
                   prob = function(modelFit, newdata, submodels = NULL)
