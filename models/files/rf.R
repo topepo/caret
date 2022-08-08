@@ -2,23 +2,20 @@ modelInfo <- list(label = "Random Forest",
                   library = "randomForest",
                   loop = NULL,
                   type = c("Classification", "Regression"),
-                  parameters = data.frame(parameter = c("mtry", "nodesize", "ntree"),
-                                          class = c("numeric", "numeric", "numeric"),
+                  parameters = data.frame(parameter = c("mtry", "nodesize"),
+                                          class = c("numeric", "numeric"),
                                           label = c("#Randomly Selected Predictors",
-                                                    "Minimum Node Size",
-                                                    "Number of trees")),
+                                                    "Minimum Node Size")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
                       out <- expand.grid(mtry = caret::var_seq(p = ncol(x),
                                                               classification = is.factor(y),
                                                               len = len),
-                                         nodesize = ifelse( is.factor(y), 1, 5),
-                                         ntree = 500
+                                         nodesize = ifelse( is.factor(y), 1, 5)
                       )
                     } else {
                       out <- data.frame(mtry = unique(sample(1:ncol(x), size = len, replace = TRUE)),
-                                        nodesize = sample(1:(min(20,nrow(x))), size = len, replace = TRUE),
-                                        ntree = 500
+                                        nodesize = sample(1:(min(20,nrow(x))), size = len, replace = TRUE)
                       )
                     }
                   },

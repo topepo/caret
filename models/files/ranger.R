@@ -10,12 +10,12 @@ modelInfo <- list(label = "Random Forest",
                   },
                   loop = NULL,
                   type = c("Classification", "Regression"),
-                  parameters = data.frame(parameter = c("mtry", "splitrule", "min.node.size", "num.trees"),
-                                          class = c("numeric", "character", "numeric", "numeric"),
+                  parameters = data.frame(parameter = c("mtry", "splitrule", "min.node.size"),
+                                          class = c("numeric", "character", "numeric"),
                                           label = c("#Randomly Selected Predictors",
                                                     "Splitting Rule",
-                                                    "Minimal Node Size",
-                                                    "Number of trees")),
+                                                    "Minimal Node Size"
+                                                    )),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
                       srule <-
@@ -28,8 +28,7 @@ modelInfo <- list(label = "Random Forest",
                                                          classification = is.factor(y),
                                                          len = len),
                                          min.node.size = ifelse( is.factor(y), 1, 5),
-                                         splitrule = c(srule, "extratrees"),
-                                         num.trees = 500)
+                                         splitrule = c(srule, "extratrees"))
                     } else {
                       srules <- if (is.factor(y))
                         c("gini", "extratrees")
