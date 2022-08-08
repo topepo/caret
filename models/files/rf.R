@@ -2,28 +2,20 @@ modelInfo <- list(label = "Random Forest",
                   library = "randomForest",
                   loop = NULL,
                   type = c("Classification", "Regression"),
-                  parameters = data.frame(parameter = c("mtry", "nodesize"),
-                                          class = c("numeric", "numeric"),
-                                          label = c("#Randomly Selected Predictors",
-                                                    "Minimum Node Size")),
+                  parameters = data.frame(parameter = "mtry",
+                                          class = "numeric",
+                                          label = "#Randomly Selected Predictors"),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
-                      out <- expand.grid(mtry = caret::var_seq(p = ncol(x),
+                      out <- data.frame(mtry = caret::var_seq(p = ncol(x),
                                                               classification = is.factor(y),
-                                                              len = len),
-                                         nodesize = ifelse( is.factor(y), 1, 5)
-                      )
+                                                              len = len))
                     } else {
-                      out <- data.frame(mtry = unique(sample(1:ncol(x), size = len, replace = TRUE)),
-                                        nodesize = sample(1:(min(20,nrow(x))), size = len, replace = TRUE)
-                      )
+                      out <- data.frame(mtry = unique(sample(1:ncol(x), size = len, replace = TRUE)))
                     }
                   },
                   fit = function(x, y, wts, param, lev, last, classProbs, ...)
-                    randomForest::randomForest(x, y,
-                                               mtry = min(param$mtry, ncol(x)),
-                                               nodesize = param$nodesize,
-                                               ...),
+                    randomForest::randomForest(x, y, mtry = param$mtry, ...),
                   predict = function(modelFit, newdata, submodels = NULL)
                     if(!is.null(newdata)) predict(modelFit, newdata) else predict(modelFit),
                   prob = function(modelFit, newdata, submodels = NULL)
@@ -41,20 +33,17 @@ modelInfo <- list(label = "Random Forest",
                     varImp <- randomForest::importance(object, ...)
                     if(object$type == "regression") {
                       if("%IncMSE" %in% colnames(varImp)) {
-                        varImp <- as.data.frame(varImp[,"%IncMSE", drop = FALSE])
-                        colnames(varImp) <- "Overall"
+                        varImp <- data.frame(Overall = varImp[,"%IncMSE"])
                       } else {
-                        varImp <- as.data.frame(varImp[,1, drop = FALSE])
-                        colnames(varImp) <- "Overall"
+                        varImp <- data.frame(Overall = varImp[,1])
                       }
                     }
                     else {
                       retainNames <- levels(object$y)
                       if(all(retainNames %in% colnames(varImp))) {
-                        varImp <- varImp[, retainNames, drop = FALSE]
+                        varImp <- varImp[, retainNames]
                       } else {
-                        varImp <- as.data.frame(varImp[,1, drop = FALSE])
-                        colnames(varImp) <- "Overall"
+                        varImp <- data.frame(Overall = varImp[,1])
                       }
                     }
 
@@ -76,3 +65,4 @@ modelInfo <- list(label = "Random Forest",
                     names(out) <- if(x$type == "regression") c("RMSE", "Rsquared") else c("Accuracy", "Kappa")
                     out
                   })
+

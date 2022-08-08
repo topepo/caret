@@ -14,8 +14,7 @@ modelInfo <- list(label = "Random Forest",
                                           class = c("numeric", "character", "numeric"),
                                           label = c("#Randomly Selected Predictors",
                                                     "Splitting Rule",
-                                                    "Minimal Node Size"
-                                                    )),
+                                                    "Minimal Node Size")),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
                       srule <-
@@ -24,9 +23,9 @@ modelInfo <- list(label = "Random Forest",
                       else
                         "variance"
                       out <- expand.grid(mtry =
-                                          caret::var_seq(p = ncol(x),
-                                                         classification = is.factor(y),
-                                                         len = len),
+                                           caret::var_seq(p = ncol(x),
+                                                          classification = is.factor(y),
+                                                          len = len),
                                          min.node.size = ifelse( is.factor(y), 1, 5),
                                          splitrule = c(srule, "extratrees"))
                     } else {
@@ -38,8 +37,7 @@ modelInfo <- list(label = "Random Forest",
                         data.frame(
                           min.node.size= sample(1:(min(20,nrow(x))), size = len, replace = TRUE),
                           mtry = sample(1:ncol(x), size = len, replace = TRUE),
-                          splitrule = sample(srules, size = len, replace = TRUE),
-                          num.trees = 500
+                          splitrule = sample(srules, size = len, replace = TRUE)
                         )
                     }
                   },
@@ -52,7 +50,6 @@ modelInfo <- list(label = "Random Forest",
                                             mtry = min(param$mtry, ncol(x)),
                                             min.node.size = param$min.node.size,
                                             splitrule = as.character(param$splitrule),
-                                            num.trees = param$num.trees,
                                             write.forest = TRUE,
                                             probability = classProbs,
                                             case.weights = wts,
@@ -63,7 +60,6 @@ modelInfo <- list(label = "Random Forest",
                                             mtry = min(param$mtry, ncol(x)),
                                             min.node.size = param$min.node.size,
                                             splitrule = as.character(param$splitrule),
-                                            num.trees = param$num.trees,
                                             write.forest = TRUE,
                                             probability = classProbs,
                                             ...)
