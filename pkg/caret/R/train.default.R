@@ -834,18 +834,19 @@ train.default <- function(x, y,
   indexFinal <- if(is.null(trControl$indexFinal)) seq(along = y) else trControl$indexFinal
 
   if(!(length(trControl$seeds) == 1 && is.na(trControl$seeds))) set.seed(trControl$seeds[[length(trControl$seeds)]][1])
-  finalTime <- system.time(
-    finalModel <- createModel(x = subset_x(x, indexFinal),
-                              y = y[indexFinal],
-                              wts = weights[indexFinal],
-                              method = models,
-                              tuneValue = bestTune,
-                              obsLevels = classLevels,
-                              pp = ppOpt,
-                              last = TRUE,
-                              classProbs = trControl$classProbs,
-                              sampling = trControl$sampling,
-                              ...))
+  startFinalTime <- proc.time()
+  finalModel <- createModel(x = subset_x(x, indexFinal),
+                            y = y[indexFinal],
+                            wts = weights[indexFinal],
+                            method = models,
+                            tuneValue = bestTune,
+                            obsLevels = classLevels,
+                            pp = ppOpt,
+                            last = TRUE,
+                            classProbs = trControl$classProbs,
+                            sampling = trControl$sampling,
+                            ...)
+  endFinalTime <- proc.time()
 
   if(trControl$trim && !is.null(models$trim)) {
     if(trControl$verboseIter) old_size <- object.size(finalModel$fit)
@@ -891,7 +892,7 @@ train.default <- function(x, y,
 
   endTime <- proc.time()
   times <- list(everything = endTime - startTime,
-                final = finalTime)
+                final = endFinalTime - startFinalTime)
 
   out <- structure(list(method = method,
                         modelInfo = models,
