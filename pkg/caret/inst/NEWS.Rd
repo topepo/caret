@@ -7,7 +7,6 @@
   \itemize{
    \item CRAN required changes for legacy S typedef Sint.
    \item Xabriel J. Collazo Mojica added check for class probabilities when PR curves are requested \issue{1274}.
-   \item jttoivon enabled the number of trees in ranger and randomForest models to be tuned. The default is still used in the automatic grid creation code. Users who want to tune this parameter should make custom grids \issue{1268}.
    }
 }
 
@@ -243,7 +242,7 @@
 		\item A bug in \code{bdk} and \code{xyf} models was fixed where the appropriate number of parameter combinations are tested during random search.
 		\item A bug in \code{rfe} was fixed related to neural networks found by david-machinelearning \issue{485}
 		\item Neural networks via stochastic gradient descent (\code{method = "mlpSGD"}) was adapted for classification and a variable importance calculation was added.
-		\item \href{https://h2o.ai/}{h2o} versions of glmnet and gradient boosting machines were added with methods \code{"glmnet\_h2o"} and \code{"gbm\_h2o"}. These methods are not currently optimized.  \issue{283}
+		\item  \href{https://h2o.ai/}{h2o} versions of glmnet and gradient boosting machines were added with methods \code{"glmnet\_h2o"} and \code{"gbm\_h2o"}. These methods are not currently optimized.  \issue{283}
 		\item The fuzzy rule-based models (\code{WM}, \code{SLAVE}, \code{SBC}, \code{HYFIS}, \code{GFS.THRIFT}, \code{GFS.LT.RS}, \code{GFS.GCCL}, \code{GFS.FR.MOGUL}, \code{FS.HGD}, \code{FRBCS.W}, \code{FRBCS.CHI}, \code{FIR.DM}, \code{FH.GBML}, \code{DENFIS}, and \code{ANFIS}) were modified so that the user can pass in the predictor ranges using the \code{range.data} argument to those functions. \issue{498}
 		\item A variable importance method was added for boosted generalized linear models \issue{493}
 		\item \code{preProcess} now has an option to filter out highly correlated predictors.
