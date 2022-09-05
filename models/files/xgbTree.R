@@ -3,13 +3,15 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                   type = c("Regression", "Classification"),
                   parameters = data.frame(parameter = c('nrounds', 'max_depth', 'eta',
                                                         'gamma', 'colsample_bytree',
-                                                        'min_child_weight', 'subsample'),
-                                          class = rep("numeric", 7),
+                                                        'min_child_weight', 'subsample',
+                                                        'tree_method'),
+                                          class = c(rep("numeric", 7), 'character')
                                           label = c('# Boosting Iterations', 'Max Tree Depth',
                                                     'Shrinkage', "Minimum Loss Reduction",
                                                     'Subsample Ratio of Columns',
                                                     'Minimum Sum of Instance Weight',
-                                                    'Subsample Percentage')),
+                                                    'Subsample Percentage',
+                                                    'Tree-Building Algorithm')),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
                       out <- expand.grid(max_depth = seq(1, len),
@@ -18,7 +20,8 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                          gamma = 0,
                                          colsample_bytree = c(.6, .8),
                                          min_child_weight = c(1),
-                                         subsample = seq(.5, 1, length = len))
+                                         subsample = seq(.5, 1, length = len),
+                                         tree_method = 'auto')
                     } else {
                       out <- data.frame(nrounds = sample(1:1000, size = len, replace = TRUE),
                                         max_depth = sample(1:10, replace = TRUE, size = len),
@@ -26,7 +29,8 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                         gamma = runif(len, min = 0, max = 10),
                                         colsample_bytree = runif(len, min = .3, max = .7),
                                         min_child_weight = sample(0:20, size = len, replace = TRUE),
-                                        subsample = runif(len, min = .25, max = 1))
+                                        subsample = runif(len, min = .25, max = 1),
+                                        tree_method = 'auto')
                       out$nrounds <- floor(out$nrounds)
                     }
                     out
@@ -71,7 +75,8 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                                        gamma = param$gamma,
                                                        colsample_bytree = param$colsample_bytree,
                                                        min_child_weight = param$min_child_weight,
-                                                       subsample = param$subsample),
+                                                       subsample = param$subsample,
+                                                       tree_method = param$tree_method),
                                                   data = x,
                                                   nrounds = param$nrounds,
                                                   objective = "binary:logistic",
@@ -97,6 +102,7 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                                        num_class = length(lev),
                                                        nrounds = param$nrounds,
                                                        objective = "multi:softprob",
+                                                       tree_method = param$tree_method,
                                                        ...)
                       }
                     } else {
@@ -113,7 +119,8 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                                      gamma = param$gamma,
                                                      colsample_bytree = param$colsample_bytree,
                                                      min_child_weight = param$min_child_weight,
-                                                     subsample = param$subsample),
+                                                     subsample = param$subsample,
+                                                     tree_method = param$tree_method),
                                                  data = x,
                                                  nrounds = param$nrounds,
                                                  objective = "reg:squarederror",
