@@ -303,7 +303,7 @@ ggplot(Laplacian) + scale_x_log10()
 
 ## Illustrative Example 2: Something More Complicated - `LogitBoost`
 
-###The loop Element
+### The loop Element
 
 
 This function can be used to create custom loops for models to tune over. In most cases, the function can just return the existing tuning grid.
