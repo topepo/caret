@@ -72,7 +72,7 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                       out <- out[, kernlab::lev(modelFit), drop = FALSE]
                     } else {
                       warning("kernlab class probability calculations failed; returning NAs")
-                      out <- matrix(NA, nrow(newdata) * length(kernlab::lev(modelFit)), ncol = length(kernlab::lev(modelFit)))
+                      out <- matrix(NA, nrow(newdata), ncol = length(kernlab::lev(modelFit)))
                       colnames(out) <- kernlab::lev(modelFit)
                     }
                     out
