@@ -1010,7 +1010,7 @@ caretSBF <- list(summary = defaultSummary,
                  },
                  pred = function(object, x)
                  {
-                   if(class(object) != "nullModel")
+                   if(!inherits(object, "nullModel"))
                    {
                      tmp <- predict(object, x)
                      if(object$modelType == "Classification" &
