@@ -3,8 +3,12 @@
 on:
   push:
     branches: [main, master]
+    inputs:
+      working-directory: pkg/caret
   pull_request:
     branches: [main, master]
+    inputs:
+      working-directory: pkg/caret
 
 name: test-coverage
 
