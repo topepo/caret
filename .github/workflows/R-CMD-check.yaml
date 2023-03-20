@@ -11,6 +11,7 @@ on:
     branches: [main, master]
 
 name: R-CMD-check
+working-directory: /pkg/caret
 
 jobs:
   R-CMD-check:

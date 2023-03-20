@@ -7,6 +7,7 @@ on:
     branches: [main, master]
 
 name: test-coverage
+working-directory: /pkg/caret
 
 jobs:
   test-coverage:
@@ -31,6 +32,7 @@ jobs:
           covr::codecov(
             quiet = FALSE,
             clean = FALSE,
+            path = "pkg/caret",
             install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
           )
         shell: Rscript {0}

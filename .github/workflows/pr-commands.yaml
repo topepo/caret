@@ -5,6 +5,7 @@ on:
     types: [created]
 
 name: Commands
+working-directory: /pkg/caret
 
 jobs:
   document:
