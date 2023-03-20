@@ -12,6 +12,9 @@ on:
 
 name: R-CMD-check
 
+inputs:
+  working-directory: pkg/caret
+
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
