@@ -3,12 +3,8 @@
 on:
   push:
     branches: [main, master]
-    inputs:
-      working-directory: pkg/caret
   pull_request:
     branches: [main, master]
-    inputs:
-      working-directory: pkg/caret
 
 name: test-coverage
 
@@ -32,6 +28,7 @@ jobs:
         with:
           extra-packages: any::covr
           needs: coverage
+          working-directory: pkg/caret
 
       - name: Test coverage
         run: |

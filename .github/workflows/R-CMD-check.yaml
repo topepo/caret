@@ -7,12 +7,8 @@
 on:
   push:
     branches: [main, master]
-    inputs:
-      working-directory: pkg/caret
   pull_request:
     branches: [main, master]
-    inputs:
-      working-directory: pkg/caret
 
 name: R-CMD-check
 
@@ -55,7 +51,9 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
+          working-directory: pkg/caret
 
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
+          working-directory: pkg/caret

@@ -5,7 +5,6 @@ on:
     types: [created]
 
 name: Commands
-working-directory: /pkg/caret
 
 jobs:
   document:
@@ -29,6 +28,7 @@ jobs:
         with:
           extra-packages: any::roxygen2
           needs: pr-document
+          working-directory: pkg/caret
 
       - name: Document
         run: roxygen2::roxygenise()
