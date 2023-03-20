@@ -8,9 +8,6 @@ on:
 
 name: test-coverage
 
-inputs:
-  working-directory: pkg/caret
-
 jobs:
   test-coverage:
     runs-on: ubuntu-latest
