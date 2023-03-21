@@ -10,7 +10,9 @@ modelInfo <- list(label = "glmnet",
                       if(!is.na(numLev)) {
                         fam <- ifelse(numLev > 2, "multinomial", "binomial")
                       } else fam <- "gaussian"
-                      init <- glmnet::glmnet(Matrix::as.matrix(x), y,
+                      if(!is.matrix(x) && !inherits(x, "sparseMatrix"))
+                        x <- Matrix::as.matrix(x)
+                      init <- glmnet::glmnet(x, y,
                                      family = fam,
                                      nlambda = len+2,
                                      alpha = .5)
@@ -64,7 +66,8 @@ modelInfo <- list(label = "glmnet",
                     out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
-                    if(!is.matrix(newdata) && !inherits(newdata, "sparseMatrix")) newdata <- Matrix::as.matrix(newdata)
+                    if(!is.matrix(newdata) && !inherits(newdata, "sparseMatrix")) 
+                      newdata <- Matrix::as.matrix(newdata)
                     if(length(modelFit$obsLevels) < 2) {
                       out <- predict(modelFit, newdata, s = modelFit$lambdaOpt, type = "response")
                     } else {
@@ -87,8 +90,9 @@ modelInfo <- list(label = "glmnet",
                   },
                   prob = function(modelFit, newdata, submodels = NULL) {
                     obsLevels <- if("classnames" %in% names(modelFit)) modelFit$classnames else NULL
-                    probs <- predict(modelFit,
-                                     Matrix::as.matrix(newdata),
+                    if(!is.matrix(newdata) && !inherits(newdata, "sparseMatrix"))
+                      newdata <- Matrix::as.matrix(newdata)
+                    probs <- predict(modelFit, newdata,
                                      s = modelFit$lambdaOpt,
                                      type = "response")
                     if(length(obsLevels) == 2) {
@@ -100,8 +104,7 @@ modelInfo <- list(label = "glmnet",
                       names(probs) <- modelFit$obsLevels
                     }
                     if(!is.null(submodels)) {
-                      tmp <- predict(modelFit,
-                                     Matrix::as.matrix(newdata),
+                      tmp <- predict(modelFit, newdata,
                                      s = submodels$lambda,
                                      type = "response")
                       if(length(obsLevels) == 2) {
