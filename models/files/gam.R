@@ -7,7 +7,7 @@ modelInfo <- list(label = "Generalized Additive Model using Splines",
                                           label = c('Feature Selection', 'Method')),
                   grid = function(x, y, len = NULL, search = "grid") {
                     if(search == "grid") {
-                      out <- expand.grid(select = c(TRUE, FALSE), method = "GCV.Cp")
+                      out <- expand.grid(select = c(TRUE, FALSE)[1:min(2,len)], method = "GCV.Cp")
                     } else {
                       out <- data.frame(select = sample(c(TRUE, FALSE), size = len, replace = TRUE),
                                         method = sample(c("GCV.Cp", "ML"), size = len, replace = TRUE))
