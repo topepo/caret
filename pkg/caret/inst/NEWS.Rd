@@ -3,6 +3,13 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+\section{Changes in version 6.0-94}{
+  \itemize{
+   \item Bug fix in how some S3 signatures were designed (for R-devel).
+   \item Adrián Panella fixed a bug with `method = "svmRadial" that occured when the SVM probability model failed \issue{1327}
+   }
+}
+
 \section{Changes in version 6.0-93}{
   \itemize{
    \item CRAN required changes for legacy S typedef Sint.
