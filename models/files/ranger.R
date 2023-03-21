@@ -27,7 +27,7 @@ modelInfo <- list(label = "Random Forest",
                                                           classification = is.factor(y),
                                                           len = len),
                                          min.node.size = ifelse( is.factor(y), 1, 5),
-                                         splitrule = c(srule, "extratrees"))
+                                         splitrule = c(srule, "extratrees")[1:min(2,len)])
                     } else {
                       srules <- if (is.factor(y))
                         c("gini", "extratrees")
