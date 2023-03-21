@@ -1,7 +1,7 @@
 citHeader("To cite caret in publications use:")
 
-citEntry(
-  entry    = "Article",
+utils::bibentry(
+  bibtype    = "Article",
   title    = "Building Predictive Models in R Using the caret Package",
   volume   = "28",
   url      = "https://www.jstatsoft.org/index.php/jss/article/view/v028i05",
