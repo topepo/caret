@@ -17,7 +17,7 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                     out
                   },
                   loop = NULL,
-                  fit = function(x, y, wts, param, lev, last, classProbs, ...) { 
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     if(any(names(list(...)) == "prob.model") | is.numeric(y)) {
                       out <- kernlab::ksvm(x = as.matrix(x), y = y,
                                            kernel = "rbfdot",
@@ -31,13 +31,13 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                                            prob.model = classProbs,
                                            ...)
                     }
-                    out            
+                    out
                   },
                   predict = function(modelFit, newdata, submodels = NULL) {
                     svmPred <- function(obj, x) {
                       hasPM <- !is.null(unlist(obj@prob.model))
                       if(hasPM) {
-                        pred <- kernlab::lev(obj)[apply(kernlab::predict(obj, x, type = "probabilities"), 
+                        pred <- kernlab::lev(obj)[apply(kernlab::predict(obj, x, type = "probabilities"),
                                                1, which.max)]
                       } else pred <- kernlab::predict(obj, x)
                       pred
@@ -53,7 +53,7 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                       if(class(out)[1] == "try-error") {
                         warning("kernlab prediction calculations failed; returning NAs")
                         out <- rep(NA, nrow(newdata))
-                      } 
+                      }
                     }
                     if(is.matrix(out)) out <- out[,1]
                     out
@@ -71,8 +71,9 @@ modelInfo <- list(label = "Support Vector Machines with Radial Basis Function Ke
                       }
                       out <- out[, kernlab::lev(modelFit), drop = FALSE]
                     } else {
+                      num_lvls <- length(kernlab::lev(modelFit))
                       warning("kernlab class probability calculations failed; returning NAs")
-                      out <- matrix(NA, nrow(newdata) * length(kernlab::lev(modelFit)), ncol = length(kernlab::lev(modelFit)))
+                      out <- matrix(NA, nrow(newdata) * num_lvls,  ncol = num_lvls)
                       colnames(out) <- kernlab::lev(modelFit)
                     }
                     out
