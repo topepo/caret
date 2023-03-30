@@ -14,6 +14,7 @@ test_that("R2 and RMSE are calculating correctly", {
 
 
 test_that("auc calculation is > .5 when Xs provide prediction", {
+  skip_if_not_installed("MLmetrics")
 
   trCntlListMulti  <-
     trainControl(
