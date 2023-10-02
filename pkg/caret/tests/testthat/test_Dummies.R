@@ -120,15 +120,13 @@ check_dummies <- function(x, expected = NULL) {
 
 
 test_that("Good names for dummies with reocurring patterns", {
+  # Ensure this sample contains 1:15, which happens 98.5% of the time
+  repeat {
+    entry <- sample.int(15, size = 100, replace = TRUE, prob = rep(1 / 15, 15))
+    if (length(unique(entry)) == 15L) break
+  }
   data = data.frame(
-    matrix(
-      rep(
-        as.factor(sample.int(15, size = 100, replace = TRUE, prob = rep(1 / 15, 15))
-        ),
-        15
-      ),
-      ncol = 15
-    ),
+    matrix(rep(as.factor(entry), 15L), ncol = 15),
     stringsAsFactors = TRUE
   )
   essai_dummyVars = caret::dummyVars(stats::as.formula(paste0("~ ", colnames(data), collapse = "+")), data)
@@ -137,4 +135,3 @@ test_that("Good names for dummies with reocurring patterns", {
   res_names_lvls <- colnames(predict(essai_dummyVars, data))
   expect_true(all(exp_names_lvls %in% res_names_lvls))
 })
-
