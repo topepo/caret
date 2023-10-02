@@ -120,10 +120,11 @@ check_dummies <- function(x, expected = NULL) {
 
 
 test_that("Good names for dummies with reocurring patterns", {
+  # 200 all but guarantees (99.999% chance) 1:15 all represented, #1350
   data = data.frame(
     matrix(
       rep(
-        as.factor(sample.int(15, size = 100, replace = TRUE, prob = rep(1 / 15, 15))
+        as.factor(sample.int(15, size = 200, replace = TRUE, prob = rep(1 / 15, 15))
         ),
         15
       ),
@@ -137,4 +138,3 @@ test_that("Good names for dummies with reocurring patterns", {
   res_names_lvls <- colnames(predict(essai_dummyVars, data))
   expect_true(all(exp_names_lvls %in% res_names_lvls))
 })
-
