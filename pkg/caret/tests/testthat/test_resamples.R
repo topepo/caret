@@ -41,7 +41,7 @@ test_that('resample calculations', {
 
 test_that('test group-k-fold', {
   get_data <- function(n = 500) {
-    prevalence <- seq(.1, .9, length = 26)
+    prevalence <- seq(.1, .9, length.out = 26)
     dat <- sample(letters, size = n, replace = TRUE, prob = sample(prevalence))
     data.frame(grp = dat, stringsAsFactors = TRUE)
   }

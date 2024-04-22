@@ -400,10 +400,10 @@ var_seq <- function(p, classification = FALSE, len = 3) {
   } else {
     if(p <= len)
     {
-      tuneSeq <- floor(seq(2, to = p, length = p))
+      tuneSeq <- floor(seq(2, to = p, length.out = p))
     } else {
-      if(p < 500 ) tuneSeq <- floor(seq(2, to = p, length = len))
-      else tuneSeq <- floor(2^seq(1, to = log(p, base = 2), length = len))
+      if(p < 500 ) tuneSeq <- floor(seq(2, to = p, length.out = len))
+      else tuneSeq <- floor(2^seq(1, to = log(p, base = 2), length.out = len))
     }
   }
   if(any(table(tuneSeq) > 1)) {

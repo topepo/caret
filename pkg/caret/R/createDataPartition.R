@@ -116,7 +116,7 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
 
   if(is.numeric(y)) {
     y <- cut(y,
-             unique(quantile(y, probs = seq(0, 1, length = groups))),
+             unique(quantile(y, probs = seq(0, 1, length.out = groups))),
              include.lowest = TRUE)
   } else {
     xtab <- table(y)
@@ -180,7 +180,7 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
       cuts <- floor(length(y)/k)
       if(cuts < 2) cuts <- 2
       if(cuts > 5) cuts <- 5
-      breaks <- unique(quantile(y, probs = seq(0, 1, length = cuts)))
+      breaks <- unique(quantile(y, probs = seq(0, 1, length.out = cuts)))
       y <- cut(y, breaks, include.lowest = TRUE)
     }
 

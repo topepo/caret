@@ -75,7 +75,7 @@ classDist.default <- function(x, y, groups = 5,
   if(is.numeric(y))
     {
       y <- cut(y,
-               unique(quantile(y, probs = seq(0, 1, length = groups + 1))),
+               unique(quantile(y, probs = seq(0, 1, length.out = groups + 1))),
                include.lowest = TRUE)
       classLabels <- paste(round((1:groups)/groups*100, 2))
       y <- factor(y)

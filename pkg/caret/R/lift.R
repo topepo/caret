@@ -233,7 +233,7 @@ liftCalc <- function(x, class = levels(x$liftClassVar)[1], cuts = NULL) {
   baseline <- mean(x$liftClassVar == class)
   if(!is.null(cuts)) {
     if(length(cuts) == 1) {
-      cuts <- rev(seq(0, 1, length = cuts))
+      cuts <- rev(seq(0, 1, length.out = cuts))
     } else {
       cuts <- unique(c(1, sort(cuts, decreasing = TRUE), 0))
     }

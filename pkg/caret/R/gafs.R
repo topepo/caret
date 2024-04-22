@@ -136,7 +136,7 @@ ga_func_check <- function(x) {
 #' @export gafs_initial
 gafs_initial <- function (vars, popSize, ...)  {
   x <- matrix(NA, nrow = popSize, ncol = vars)
-  probs <- seq(.9, .1, length = popSize)
+  probs <- seq(.9, .1, length.out = popSize)
   for(i in 1:popSize){
     x[i,] <- sample(0:1, replace = TRUE,
                     size = vars,
