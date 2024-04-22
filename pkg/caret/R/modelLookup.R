@@ -90,7 +90,7 @@ missing_packages <- function(mods = getModelInfo()) {
 #' @export
 checkInstall <- function(pkg){
   good <- rep(TRUE, length(pkg))
-  for(i in seq(along = pkg)){
+  for(i in seq(along.with = pkg)){
     tested <- try(find.package(pkg[i]), silent = TRUE)
     if (inherits(tested, "try-error")) good[i] <- FALSE
   }
