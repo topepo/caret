@@ -944,6 +944,7 @@ train.formula <- function (form, data, ..., weights, subset, na.action = na.fail
 
   # do we need the double colon here?
   m[[1]] <- quote(stats::model.frame)
+  names(m)[names(m) == "form"] <- "formula" # avoid warning under warnPartialMatchArgs=TRUE
   m <- eval.parent(m)
   if(nrow(m) < 1) stop("Every row has at least one missing value were found", call. = FALSE)
   Terms <- attr(m, "terms")
