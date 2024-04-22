@@ -94,7 +94,7 @@ if(getRversion() >= "2.15.1"){
   ## nominalTrainWorkflow: no visible binding for global variable 'Resample'
   ## oobTrainWorkflow: no visible binding for global variable 'parm'
   ##
-  ##  result <- foreach(iter = seq(along = resampleIndex),
+  ##  result <- foreach(iter = seq(along.with = resampleIndex),
   ##                    .combine = "c", .verbose = FALSE,
   ##                    .packages = "caret", .errorhandling = "stop") %:%
   ##    foreach(parm = 1:nrow(info$loop), .combine = "c",

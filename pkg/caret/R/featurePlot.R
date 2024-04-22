@@ -66,7 +66,7 @@ function(x, y,
                lineInfo <-  trellis.par.get("superpose.line")
                pointInfo <-  trellis.par.get("superpose.symbol")
                uniqueGroups <- sort(unique(groups))
-               for (i in seq(along=uniqueGroups))
+               for (i in seq(along.with=uniqueGroups))
                {
                   id <- which(groups[subscripts] == uniqueGroups[i])
                   panel.xyplot(x[id], y[id], pch = pointInfo$pch[i],

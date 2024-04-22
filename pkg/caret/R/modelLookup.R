@@ -71,7 +71,7 @@ modelLookup <- function(model = NULL){
                   out$probModel <- !is.null(x$prob)
                   out
                 })
-  for(i in seq(along = out)) out[[i]]$model <- names(models)[i]
+  for(i in seq(along.with = out)) out[[i]]$model <- names(models)[i]
   out <- do.call("rbind", out)
   rownames(out) <- NULL
   out <- out[, c('model', 'parameter', 'label', 'forReg', 'forClass', 'probModel')]

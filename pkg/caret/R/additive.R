@@ -10,11 +10,11 @@ additivePlot <- function(x, data, n = 100, quant = 0, plot = TRUE, ...)
                    function(x, len, q) list(seq = seq(
                                               quantile(x, na.rm = TRUE, probs = q),
                                               quantile(x, na.rm = TRUE, probs = 1 - q),
-                                              length = len),
+                                              length.out = len),
                                             var = ""),
                    len = n,
                    q = quant)
-    for(i in seq(along = seqs)) seqs[[i]]$var <- colnames(data)[i]
+    for(i in seq(along.with = seqs)) seqs[[i]]$var <- colnames(data)[i]
     meds <- lapply(data,
                    function(x, len) rep(median(x, na.rm = TRUE), len),
                    len = n)

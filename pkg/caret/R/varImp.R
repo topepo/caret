@@ -280,7 +280,7 @@ GarsonWeights_FCNN4R <- function (object, xnames = NULL, ynames = NULL) {
 varImpDependencies <- function(libName){
   code <- getModelInfo(libName, regex = FALSE)[[1]]
   checkInstall(code$library)
-  for(i in seq(along = code$library))
+  for(i in seq(along.with = code$library))
     do.call("requireNamespaceQuietStop", list(package = code$library[i]))
   return(code)
 }

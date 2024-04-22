@@ -204,7 +204,7 @@ function(object, newdata = NULL, type = "class", ...)
      }
    pred <- rbind.fill(pred)
    out <- ddply(pred, .(sample),
-                function(x) colMeans(x[,seq(along = object$levels)], na.rm = TRUE))
+                function(x) colMeans(x[,seq(along.with = object$levels)], na.rm = TRUE))
    out <- out[,-1,drop = FALSE]
    rownames(out) <- rownames(newdata)
    predClass <- object$levels[apply(out, 1, which.max)]

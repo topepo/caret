@@ -281,7 +281,7 @@ confusionMatrix.table <- function(data, positive = NULL,
 
     tableStats <- matrix(NA, nrow = length(classLevels), ncol = 11)
 
-    for(i in seq(along = classLevels)) {
+    for(i in seq(along.with = classLevels)) {
       pos <- classLevels[i]
       neg <- classLevels[!(classLevels %in% classLevels[i])]
       prev <- if(is.null(prevalence)) sum(data[, pos])/sum(data) else prevalence[pos]

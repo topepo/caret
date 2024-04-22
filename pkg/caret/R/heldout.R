@@ -106,7 +106,7 @@ oob_pred.list <- function(x, direction = "wide", what = "both", ...) {
 
   nms <- names(oob)
   if(is.null(nms)) nms <- well_numbered("Model", length(oob))
-  for(i in seq(along = nms)) oob[[i]]$.label <- nms[i]
+  for(i in seq(along.with = nms)) oob[[i]]$.label <- nms[i]
   oob <- rbind.fill(oob)
   if(length(table(table(oob$n))) > 1)
     stop("Some averages have different sample sizes than others")

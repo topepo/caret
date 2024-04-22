@@ -37,7 +37,7 @@ predictors.train <- function(x, ...) {
   } else code <- x$modelInfo
   if(!is.null(code$predictors)){
     checkInstall(code$library)
-    for(i in seq(along = code$library))
+    for(i in seq(along.with = code$library))
       do.call("requireNamespaceQuietStop", list(package = code$library[i]))
     out <- code$predictors(x$finalModel, ...)
   } else {
@@ -56,7 +56,7 @@ predictors.default <- function(x, ...) {
   if(!is.null(code)) {
     if(!is.null(code$predictors)){
       checkInstall(code$library)
-      for(i in seq(along = code$library))
+      for(i in seq(along.with = code$library))
         do.call("requireNamespaceQuietStop", list(package = code$library[i]))
       out <- code$predictors(x, ...)
     } else {
@@ -91,7 +91,7 @@ hasTerms <- function(x)
 basicVars <- function(x, y)
   {
     hasVar <- rep(NA, length(x))
-    for(i in seq(along = x))
+    for(i in seq(along.with = x))
       hasVar[i] <- length(grep(x[i], y, fixed = TRUE)) > 0
     x[hasVar]
   }

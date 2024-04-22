@@ -22,12 +22,12 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
   pkgs <- c("methods", "caret")
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
 
-  init_index <- seq(along = resampleIndex)[1:(ctrl$adaptive$min-1)]
-  extra_index <- seq(along = resampleIndex)[-(1:(ctrl$adaptive$min-1))]
+  init_index <- seq(along.with = resampleIndex)[1:(ctrl$adaptive$min-1)]
+  extra_index <- seq(along.with = resampleIndex)[-(1:(ctrl$adaptive$min-1))]
 
   keep_pred <- isTRUE(ctrl$savePredictions) || ctrl$savePredictions %in% c("all", "final")
 
-  init_result <- foreach(iter = seq(along = init_index),
+  init_result <- foreach(iter = seq(along.with = init_index),
                          .combine = "c",
                          .verbose = FALSE,
                          .errorhandling = "stop") %:%
@@ -91,14 +91,14 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                   nPred <- length(holdoutIndex)
                   if(!is.null(lev)) {
                     predicted <- rep("", nPred)
-                    predicted[seq(along = predicted)] <- NA
+                    predicted[seq(along.with = predicted)] <- NA
                   } else {
                     predicted <- rep(NA, nPred)
                   }
                   if(!is.null(submod)) {
                     tmp <- predicted
                     predicted <- vector(mode = "list", length = nrow(info$submodels[[parm]]) + 1)
-                    for(i in seq(along = predicted)) predicted[[i]] <- tmp
+                    for(i in seq(along.with = predicted)) predicted[[i]] <- tmp
                     rm(tmp)
                   }
                 }
@@ -117,14 +117,14 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                 nPred <- length(holdoutIndex)
                 if(!is.null(lev)) {
                   predicted <- rep("", nPred)
-                  predicted[seq(along = predicted)] <- NA
+                  predicted[seq(along.with = predicted)] <- NA
                 } else {
                   predicted <- rep(NA, nPred)
                 }
                 if(!is.null(submod)) {
                   tmp <- predicted
                   predicted <- vector(mode = "list", length = nrow(info$submodels[[parm]]) + 1)
-                  for(i in seq(along = predicted)) predicted[[i]] <- tmp
+                  for(i in seq(along.with = predicted)) predicted[[i]] <- tmp
                   rm(tmp)
                 }
               }
@@ -145,7 +145,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                   {
                     tmp <- probValues
                     probValues <- vector(mode = "list", length = nrow(info$submodels[[parm]]) + 1)
-                    for(i in seq(along = probValues)) probValues[[i]] <- tmp
+                    for(i in seq(along.with = probValues)) probValues[[i]] <- tmp
                     rm(tmp)
                   }
                 }
@@ -175,12 +175,12 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
 
                 ## same for the class probabilities
                 if(ctrl$classProbs) {
-                  for(k in seq(along = predicted)) predicted[[k]] <- cbind(predicted[[k]], probValues[[k]])
+                  for(k in seq(along.with = predicted)) predicted[[k]] <- cbind(predicted[[k]], probValues[[k]])
                 }
 
                 if(keep_pred) {
                   tmpPred <- predicted
-                  for(modIndex in seq(along = tmpPred))
+                  for(modIndex in seq(along.with = tmpPred))
                   {
                     tmpPred[[modIndex]]$rowIndex <- holdoutIndex
                     tmpPred[[modIndex]] <- merge(tmpPred[[modIndex]],
@@ -201,7 +201,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                 if(length(lev) > 1) {
                   cells <- lapply(predicted,
                                   function(x) flatTable(x$pred, x$obs))
-                  for(ind in seq(along = cells)) thisResample[[ind]] <- c(thisResample[[ind]], cells[[ind]])
+                  for(ind in seq(along.with = cells)) thisResample[[ind]] <- c(thisResample[[ind]], cells[[ind]])
                 }
                 thisResample <- do.call("rbind", thisResample)
                 thisResample <- cbind(allParam, thisResample)
@@ -315,14 +315,14 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                      nPred <- length(holdoutIndex)
                                      if(!is.null(lev)) {
                                        predicted <- rep("", nPred)
-                                       predicted[seq(along = predicted)] <- NA
+                                       predicted[seq(along.with = predicted)] <- NA
                                      } else {
                                        predicted <- rep(NA, nPred)
                                      }
                                      if(!is.null(submod)) {
                                        tmp <- predicted
                                        predicted <- vector(mode = "list", length = nrow(new_info$submodels[[parm]]) + 1)
-                                       for(i in seq(along = predicted)) predicted[[i]] <- tmp
+                                       for(i in seq(along.with = predicted)) predicted[[i]] <- tmp
                                        rm(tmp)
                                      }
                                    }
@@ -341,14 +341,14 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                    nPred <- length(holdoutIndex)
                                    if(!is.null(lev)) {
                                      predicted <- rep("", nPred)
-                                     predicted[seq(along = predicted)] <- NA
+                                     predicted[seq(along.with = predicted)] <- NA
                                    } else {
                                      predicted <- rep(NA, nPred)
                                    }
                                    if(!is.null(submod)) {
                                      tmp <- predicted
                                      predicted <- vector(mode = "list", length = nrow(new_info$submodels[[parm]]) + 1)
-                                     for(i in seq(along = predicted)) predicted[[i]] <- tmp
+                                     for(i in seq(along.with = predicted)) predicted[[i]] <- tmp
                                      rm(tmp)
                                    }
                                  }
@@ -369,7 +369,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                      {
                                        tmp <- probValues
                                        probValues <- vector(mode = "list", length = nrow(new_info$submodels[[parm]]) + 1)
-                                       for(i in seq(along = probValues)) probValues[[i]] <- tmp
+                                       for(i in seq(along.with = probValues)) probValues[[i]] <- tmp
                                        rm(tmp)
                                      }
                                    }
@@ -400,12 +400,12 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
 
                                    ## same for the class probabilities
                                    if(ctrl$classProbs) {
-                                     for(k in seq(along = predicted)) predicted[[k]] <- cbind(predicted[[k]], probValues[[k]])
+                                     for(k in seq(along.with = predicted)) predicted[[k]] <- cbind(predicted[[k]], probValues[[k]])
                                    }
 
                                    if(keep_pred) {
                                      tmpPred <- predicted
-                                     for(modIndex in seq(along = tmpPred))
+                                     for(modIndex in seq(along.with = tmpPred))
                                      {
                                        tmpPred[[modIndex]]$rowIndex <- holdoutIndex
                                        tmpPred[[modIndex]] <- merge(tmpPred[[modIndex]],
@@ -426,7 +426,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                    if(length(lev) > 1) {
                                      cells <- lapply(predicted,
                                                      function(x) flatTable(x$pred, x$obs))
-                                     for(ind in seq(along = cells)) thisResample[[ind]] <- c(thisResample[[ind]], cells[[ind]])
+                                     for(ind in seq(along.with = cells)) thisResample[[ind]] <- c(thisResample[[ind]], cells[[ind]])
                                    }
                                    thisResample <- do.call("rbind", thisResample)
                                    thisResample <- cbind(allParam, thisResample)
@@ -541,7 +541,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
     printed <- format(new_info$loop, digits = 4)
     colnames(printed) <- gsub("^\\.", "", colnames(printed))
 
-    final_index <- seq(along = resampleIndex)[(last_iter+1):length(ctrl$index)]
+    final_index <- seq(along.with = resampleIndex)[(last_iter+1):length(ctrl$index)]
     final_result <- foreach(iter = final_index,
                             .combine = "c",
                             .verbose = FALSE) %:%
@@ -604,14 +604,14 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                     nPred <- length(holdoutIndex)
                     if(!is.null(lev)) {
                       predicted <- rep("", nPred)
-                      predicted[seq(along = predicted)] <- NA
+                      predicted[seq(along.with = predicted)] <- NA
                     } else {
                       predicted <- rep(NA, nPred)
                     }
                     if(!is.null(submod)) {
                       tmp <- predicted
                       predicted <- vector(mode = "list", length = nrow(info$submodels[[parm]]) + 1)
-                      for(i in seq(along = predicted)) predicted[[i]] <- tmp
+                      for(i in seq(along.with = predicted)) predicted[[i]] <- tmp
                       rm(tmp)
                     }
                   }
@@ -630,14 +630,14 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                   nPred <- length(holdoutIndex)
                   if(!is.null(lev)) {
                     predicted <- rep("", nPred)
-                    predicted[seq(along = predicted)] <- NA
+                    predicted[seq(along.with = predicted)] <- NA
                   } else {
                     predicted <- rep(NA, nPred)
                   }
                   if(!is.null(submod)) {
                     tmp <- predicted
                     predicted <- vector(mode = "list", length = nrow(info$submodels[[parm]]) + 1)
-                    for(i in seq(along = predicted)) predicted[[i]] <- tmp
+                    for(i in seq(along.with = predicted)) predicted[[i]] <- tmp
                     rm(tmp)
                   }
                 }
@@ -658,7 +658,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                     {
                       tmp <- probValues
                       probValues <- vector(mode = "list", length = nrow(info$submodels[[parm]]) + 1)
-                      for(i in seq(along = probValues)) probValues[[i]] <- tmp
+                      for(i in seq(along.with = probValues)) probValues[[i]] <- tmp
                       rm(tmp)
                     }
                   }
@@ -689,12 +689,12 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
 
                   ## same for the class probabilities
                   if(ctrl$classProbs) {
-                    for(k in seq(along = predicted)) predicted[[k]] <- cbind(predicted[[k]], probValues[[k]])
+                    for(k in seq(along.with = predicted)) predicted[[k]] <- cbind(predicted[[k]], probValues[[k]])
                   }
 
                   if(keep_pred) {
                     tmpPred <- predicted
-                    for(modIndex in seq(along = tmpPred))
+                    for(modIndex in seq(along.with = tmpPred))
                     {
                       tmpPred[[modIndex]]$rowIndex <- holdoutIndex
                       tmpPred[[modIndex]] <- merge(tmpPred[[modIndex]],
@@ -715,7 +715,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                   if(length(lev) > 1) {
                     cells <- lapply(predicted,
                                     function(x) flatTable(x$pred, x$obs))
-                    for(ind in seq(along = cells)) thisResample[[ind]] <- c(thisResample[[ind]], cells[[ind]])
+                    for(ind in seq(along.with = cells)) thisResample[[ind]] <- c(thisResample[[ind]], cells[[ind]])
                   }
                   thisResample <- do.call("rbind", thisResample)
                   thisResample <- cbind(allParam, thisResample)

@@ -345,7 +345,7 @@ train.default <- function(x, y,
       stop(paste("Model", method, "is not in caret's built-in library"), call. = FALSE)
   }
   checkInstall(models$library)
-  for(i in seq(along = models$library)) do.call("requireNamespaceQuietStop", list(package = models$library[i]))
+  for(i in seq(along.with = models$library)) do.call("requireNamespaceQuietStop", list(package = models$library[i]))
   if(any(names(models) == "check") && is.function(models$check)) {
     software_check <- models$check(models$library)
   }
@@ -585,7 +585,7 @@ train.default <- function(x, y,
     ##         tmp <- vector(mode = "list", length = nrow(param) + 1)
     ##         tmp[[1]] <- out
     ##
-    ##         for(j in seq(along = param$.n.trees))
+    ##         for(j in seq(along.with = param$.n.trees))
     ##           {
     ##             tmp[[j]]  <- predict(modelFit,
     ##                                  newdata,
@@ -816,7 +816,7 @@ train.default <- function(x, y,
 
   ## Reorder rows of performance
   orderList <- list()
-  for(i in seq(along = paramNames)) orderList[[i]] <- performance[,paramNames[i]]
+  for(i in seq(along.with = paramNames)) orderList[[i]] <- performance[,paramNames[i]]
 
   performance <- performance[do.call("order", orderList),]
 
@@ -831,7 +831,7 @@ train.default <- function(x, y,
 
   ## Make the final model based on the tuning results
 
-  indexFinal <- if(is.null(trControl$indexFinal)) seq(along = y) else trControl$indexFinal
+  indexFinal <- if(is.null(trControl$indexFinal)) seq(along.with = y) else trControl$indexFinal
 
   if(!(length(trControl$seeds) == 1 && is.na(trControl$seeds))) set.seed(trControl$seeds[[length(trControl$seeds)]][1])
   startFinalTime <- proc.time()
@@ -1013,7 +1013,7 @@ train.recipe <- function(x,
       stop(paste("Model", method, "is not in caret's built-in library"), call. = FALSE)
   }
   checkInstall(models$library)
-  for(i in seq(along = models$library))
+  for(i in seq(along.with = models$library))
     do.call("requireNamespace", list(package = models$library[i]))
   if(any(names(models) == "check") && is.function(models$check)) {
     software_check <- models$check(models$library)
@@ -1411,7 +1411,7 @@ train.recipe <- function(x,
 
   ## Reorder rows of performance
   orderList <- list()
-  for(i in seq(along = paramNames)) orderList[[i]] <- performance[,paramNames[i]]
+  for(i in seq(along.with = paramNames)) orderList[[i]] <- performance[,paramNames[i]]
 
   performance <- performance[do.call("order", orderList),]
 
@@ -1426,7 +1426,7 @@ train.recipe <- function(x,
 
   ## Make the final model based on the tuning results
   indexFinal <- if(is.null(trControl$indexFinal))
-    seq(along = data[[y_orig_val]]) else trControl$indexFinal
+    seq(along.with = data[[y_orig_val]]) else trControl$indexFinal
 
   if(!(length(trControl$seeds) == 1 && is.na(trControl$seeds)))
     set.seed(trControl$seeds[[length(trControl$seeds)]][1])

@@ -89,7 +89,7 @@ example <- function(pct = 1, obj = minDiss, ...)
        xlab = "variable 1", ylab = "variable 2")
   points(base, pch = 16, cex = .7)
   
-  for(i in seq(along = newSamp))
+  for(i in seq(along.with = newSamp))
     points(
            pool[newSamp[i],1], 
            pool[newSamp[i],2], 

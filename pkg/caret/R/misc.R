@@ -1,5 +1,5 @@
 subsemble_index <- function(y, J = 2, V = 10){
-  dat <- data.frame(y = y, index = seq(along = y))
+  dat <- data.frame(y = y, index = seq(along.with = y))
   outer_index <- sample(1:J, size = nrow(dat), replace = TRUE)
   outer_splits <- vector(mode = "list", length = J)
   for(i in 1:J) {
@@ -15,7 +15,7 @@ subsemble_index <- function(y, J = 2, V = 10){
   }
   all_index <- lapply(outer_splits, foo, V = V)
   model_index <- holdout_index <- NULL
-  for(i in seq(along = all_index)) {
+  for(i in seq(along.with = all_index)) {
     model_index   <- c(model_index,   all_index[[i]]$model)
     holdout_index <- c(holdout_index, all_index[[i]]$holdout)
   }
@@ -57,7 +57,7 @@ evalSummaryFunction <- function(y, wts = NULL, perf = NULL, ctrl, lev, metric, m
   }
 
   if(ctrl$classProbs) {
-    for(i in seq(along = lev)) testOutput[, lev[i]] <- runif(nrow(testOutput))
+    for(i in seq(along.with = lev)) testOutput[, lev[i]] <- runif(nrow(testOutput))
     testOutput[, lev] <- t(apply(testOutput[, lev], 1, function(x) x/sum(x)))
   } else {
     if(metric == "ROC" & !ctrl$classProbs)
@@ -145,12 +145,12 @@ flatTable <- function(pred, obs)
 {
   cells <- as.vector(table(pred, obs))
   if(length(cells) == 0) cells <- rep(NA, length(levels(obs))^2)
-  names(cells) <- paste(".cell", seq(along= cells), sep = "")
+  names(cells) <- paste(".cell", seq(along.with= cells), sep = "")
   cells
 }
 
 
-prettySeq <- function(x) paste("Resample", gsub(" ", "0", format(seq(along = x))), sep = "")
+prettySeq <- function(x) paste("Resample", gsub(" ", "0", format(seq(along.with = x))), sep = "")
 
 #' @rdname caret-internal
 #' @export
@@ -196,12 +196,12 @@ partRuleSummary <- function(x)
   classPred <- grep("\\)$", conditions, value = TRUE)
   varUsage <- data.frame(Var = predictors,
                          Overall = 0)
-  for(i in seq(along = predictors))
+  for(i in seq(along.with = predictors))
     varUsage$Overall[i] <- sum(grepl(paste("^", predictors[i], sep = ""), conditions))
 
   numClass <- rep(NA, length(classes))
   names(numClass) <- classes
-  for(i in seq(along = classes))
+  for(i in seq(along.with = classes))
     numClass[i] <- sum(grepl(paste(":", classes[i], sep = " "), classPred))
 
   list(varUsage = varUsage,
@@ -222,12 +222,12 @@ ripperRuleSummary <- function(x)
   conditions <- grep("(<=|>=|<|>|=)", rules, value = TRUE)
   varUsage <- data.frame(Var = predictors,
                          Overall = 0)
-  for(i in seq(along = predictors))
+  for(i in seq(along.with = predictors))
     varUsage$Overall[i] <- sum(grepl(paste("\\(", predictors[i], sep = ""), conditions))
 
   numClass <- rep(NA, length(classes))
   names(numClass) <- classes
-  for(i in seq(along = classes))
+  for(i in seq(along.with = classes))
     numClass[i] <- sum(grepl(paste(x$terms[[2]], "=", classes[i], sep = ""), conditions))
 
   list(varUsage = varUsage,
@@ -255,7 +255,7 @@ repList <- function(x, times = 3, addIndex = FALSE)
 {
   out <- vector(mode = "list", length = times)
   out <- lapply(out, function(a, b) b, b = x)
-  if(addIndex) for(i in seq(along = out)) out[[i]]$.index <- i
+  if(addIndex) for(i in seq(along.with = out)) out[[i]]$.index <- i
   out
 }
 
@@ -629,14 +629,14 @@ fill_failed_pred <- function(index, lev, submod){
   nPred <- length(index)
   if(!is.null(lev)) {
     predicted <- rep("", nPred)
-    predicted[seq(along = predicted)] <- NA
+    predicted[seq(along.with = predicted)] <- NA
   } else {
     predicted <- rep(NA, nPred)
   }
   if(!is.null(submod)) {
     tmp <- predicted
     predicted <- vector(mode = "list", length = nrow(submod) + 1)
-    for(i in seq(along = predicted)) predicted[[i]] <- tmp
+    for(i in seq(along.with = predicted)) predicted[[i]] <- tmp
     rm(tmp)
   }
   predicted

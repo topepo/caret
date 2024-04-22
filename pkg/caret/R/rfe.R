@@ -196,7 +196,7 @@ rfe <- function (x, ...) UseMethod("rfe")
     if(is.null(rfeControl$indexOut)){
       rfeControl$indexOut <- lapply(rfeControl$index,
                                     function(training, allSamples) allSamples[-unique(training)],
-                                    allSamples = seq(along = y))
+                                    allSamples = seq(along.with = y))
       names(rfeControl$indexOut) <- prettySeq(rfeControl$indexOut)
     }
 
@@ -209,7 +209,7 @@ rfe <- function (x, ...) UseMethod("rfe")
 
     if(is.factor(y))
     {
-      for(i in seq(along = classLevels)) testOutput[, classLevels[i]] <- runif(nrow(testOutput))
+      for(i in seq(along.with = classLevels)) testOutput[, classLevels[i]] <- runif(nrow(testOutput))
     }
 
     test <- rfeControl$functions$summary(testOutput, lev = classLevels)
@@ -412,7 +412,7 @@ rfeIter <- function(x, y,
   sizeText <- format(sizeValues)
 
   finalVariables <- vector(length(sizeValues), mode = "list")
-  for(k in seq(along = sizeValues))
+  for(k in seq(along.with = sizeValues))
   {
     if(!any(is.na(seeds))) set.seed(seeds[k])
     if(rfeControl$verbose)
@@ -1448,7 +1448,7 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
   sizeText <- format(sizeValues)
 
   finalVariables <- vector(length(sizeValues), mode = "list")
-  for (k in seq(along = sizeValues)) {
+  for (k in seq(along.with = sizeValues)) {
     if (!any(is.na(seeds)))
       set.seed(seeds[k])
 
@@ -1640,7 +1640,7 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
       rfeControl$indexOut <- lapply(rfeControl$index,
                                     function(training, allSamples)
                                       allSamples[-unique(training)],
-                                    allSamples = seq(along = y_dat))
+                                    allSamples = seq(along.with = y_dat))
       names(rfeControl$indexOut) <- prettySeq(rfeControl$indexOut)
     }
 
@@ -1656,7 +1656,7 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
     testOutput <- data.frame(pred = sample(y_dat, min(10, length(y_dat))),
                              obs = sample(y_dat, min(10, length(y_dat))))
     if (is.factor(y_dat)) {
-      for (i in seq(along = classLevels))
+      for (i in seq(along.with = classLevels))
         testOutput[, classLevels[i]] <- runif(nrow(testOutput))
     }
     if(!is.null(perf_data))
@@ -1865,7 +1865,7 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
   `%op%` <- getOper(ctrl$allowParallel && foreach::getDoParWorkers() > 1)
   result <-
     foreach(
-      iter = seq(along = resampleIndex),
+      iter = seq(along.with = resampleIndex),
       .combine = "c",
       .verbose = FALSE,
       .errorhandling = "stop",
@@ -1974,7 +1974,7 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
         ## So, we need to find out how many set of predictions there are:
         nReps <- length(table(rfeResults$pred$Variables))
         rfeResults$pred$rowIndex <-
-          rep(seq(along = y)[unique(holdoutIndex)], nReps)
+          rep(seq(along.with = y)[unique(holdoutIndex)], nReps)
       }
 
       if (is.factor(y) && length(lev) <= 50) {
@@ -2029,7 +2029,7 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
 
   if (ctrl$method %in% c("boot632")) {
     externPerf <- merge(externPerf, apparent)
-    for (p in seq(along = perfNames)) {
+    for (p in seq(along.with = perfNames)) {
       const <- 1 - exp(-1)
       externPerf[, perfNames[p]] <-
         (const * externPerf[, perfNames[p]]) +  ((1 - const) * externPerf[, paste(perfNames[p], "Apparent", sep = "")])
@@ -2048,7 +2048,7 @@ rfe_rec_loo <- function(rec, data, sizes, ctrl, lev, ...) {
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
   result <-
     foreach(
-      iter = seq(along = resampleIndex),
+      iter = seq(along.with = resampleIndex),
       .combine = "c",
       .verbose = FALSE,
       .errorhandling = "stop",

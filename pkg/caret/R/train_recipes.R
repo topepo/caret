@@ -211,7 +211,7 @@ loo_train_rec <- function(rec, dat, info, method,
   if(!is.null(method$library))
     pkgs <- c(pkgs, method$library)
 
-  result <- foreach(iter = seq(along = ctrl$index),
+  result <- foreach(iter = seq(along.with = ctrl$index),
                     .combine = "rbind",
                     .verbose = FALSE,
                     .packages = pkgs,
@@ -309,7 +309,7 @@ loo_train_rec <- function(rec, dat, info, method,
                 if(testing) print(head(predicted))
                 ## same for the class probabilities
                 if(ctrl$classProbs) {
-                  for(k in seq(along = predicted)) predicted[[k]] <-
+                  for(k in seq(along.with = predicted)) predicted[[k]] <-
                       cbind(predicted[[k]], probValues[[k]])
                 }
                 predicted <- do.call("rbind", predicted)
@@ -409,7 +409,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
 
   export <- c()
 
-  result <- foreach(iter = seq(along = resampleIndex), .combine = "c", .packages = pkgs, .export = export) %:%
+  result <- foreach(iter = seq(along.with = resampleIndex), .combine = "c", .packages = pkgs, .export = export) %:%
     foreach(parm = 1L:nrow(info$loop), .combine = "c", .packages = pkgs, .export = export)  %op% {
 
       if(!(length(ctrl$seeds) == 1L && is.na(ctrl$seeds)))
@@ -517,7 +517,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
 
         if(keep_pred) {
           tmpPred <- predicted
-          for(modIndex in seq(along = tmpPred)) {
+          for(modIndex in seq(along.with = tmpPred)) {
             tmpPred[[modIndex]] <- merge(tmpPred[[modIndex]],
                                          allParam[modIndex,,drop = FALSE],
                                          all = TRUE)
@@ -537,7 +537,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
         if(length(lev) > 1 && length(lev) <= 50) {
           cells <- lapply(predicted,
                           function(x) flatTable(x$pred, x$obs))
-          for(ind in seq(along = cells))
+          for(ind in seq(along.with = cells))
             thisResample[[ind]] <- c(thisResample[[ind]], cells[[ind]])
         }
         thisResample <- do.call("rbind", thisResample)
@@ -663,12 +663,12 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
   pkgs <- c("methods", "caret")
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
 
-  init_index <- seq(along = resampleIndex)[1:(ctrl$adaptive$min-1)]
-  extra_index <- seq(along = resampleIndex)[-(1:(ctrl$adaptive$min-1))]
+  init_index <- seq(along.with = resampleIndex)[1:(ctrl$adaptive$min-1)]
+  extra_index <- seq(along.with = resampleIndex)[-(1:(ctrl$adaptive$min-1))]
 
   keep_pred <- isTRUE(ctrl$savePredictions) || ctrl$savePredictions %in% c("all", "final")
 
-  init_result <- foreach(iter = seq(along = init_index),
+  init_result <- foreach(iter = seq(along.with = init_index),
                          .combine = "c",
                          .verbose = FALSE,
                          .packages = pkgs,
@@ -776,13 +776,13 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
 
                 ## same for the class probabilities
                 if(ctrl$classProbs) {
-                  for(k in seq(along = predicted))
+                  for(k in seq(along.with = predicted))
                     predicted[[k]] <- cbind(predicted[[k]], probValues[[k]])
                 }
 
                 if(keep_pred) {
                   tmpPred <- predicted
-                  for(modIndex in seq(along = tmpPred)) {
+                  for(modIndex in seq(along.with = tmpPred)) {
                     tmpPred[[modIndex]]$rowIndex <- holdoutIndex
                     tmpPred[[modIndex]] <- merge(tmpPred[[modIndex]],
                                                  allParam[modIndex,,drop = FALSE],
@@ -802,7 +802,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                 if(length(lev) > 1 && length(lev) <= 50) {
                   cells <- lapply(predicted,
                                   function(x) flatTable(x$pred, x$obs))
-                  for(ind in seq(along = cells)) thisResample[[ind]] <- c(thisResample[[ind]], cells[[ind]])
+                  for(ind in seq(along.with = cells)) thisResample[[ind]] <- c(thisResample[[ind]], cells[[ind]])
                 }
                 thisResample <- do.call("rbind", thisResample)
                 thisResample <- cbind(allParam, thisResample)
@@ -955,13 +955,13 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
 
                     ## same for the class probabilities
                     if(ctrl$classProbs) {
-                      for(k in seq(along = predicted))
+                      for(k in seq(along.with = predicted))
                         predicted[[k]] <- cbind(predicted[[k]], probValues[[k]])
                     }
 
                     if(keep_pred) {
                       tmpPred <- predicted
-                      for(modIndex in seq(along = tmpPred)) {
+                      for(modIndex in seq(along.with = tmpPred)) {
                         tmpPred[[modIndex]]$rowIndex <- holdoutIndex
                         tmpPred[[modIndex]] <- merge(tmpPred[[modIndex]],
                                                      allParam[modIndex,,drop = FALSE],
@@ -981,7 +981,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                     if(length(lev) > 1 && length(lev) <= 50) {
                       cells <- lapply(predicted,
                                       function(x) flatTable(x$pred, x$obs))
-                      for(ind in seq(along = cells))
+                      for(ind in seq(along.with = cells))
                         thisResample[[ind]] <- c(thisResample[[ind]], cells[[ind]])
                     }
                     thisResample <- do.call("rbind", thisResample)
@@ -1093,7 +1093,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
     printed <- format(new_info$loop, digits = 4)
     colnames(printed) <- gsub("^\\.", "", colnames(printed))
 
-    final_index <- seq(along = resampleIndex)[(last_iter+1):length(ctrl$index)]
+    final_index <- seq(along.with = resampleIndex)[(last_iter+1):length(ctrl$index)]
     final_result <- foreach(iter = final_index,
                             .combine = "c",
                             .verbose = FALSE,
@@ -1200,13 +1200,13 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
 
                   ## same for the class probabilities
                   if(ctrl$classProbs) {
-                    for(k in seq(along = predicted))
+                    for(k in seq(along.with = predicted))
                       predicted[[k]] <- cbind(predicted[[k]], probValues[[k]])
                   }
 
                   if(keep_pred) {
                     tmpPred <- predicted
-                    for(modIndex in seq(along = tmpPred)) {
+                    for(modIndex in seq(along.with = tmpPred)) {
                       tmpPred[[modIndex]]$rowIndex <- holdoutIndex
                       tmpPred[[modIndex]] <- merge(tmpPred[[modIndex]],
                                                    allParam[modIndex,,drop = FALSE],
@@ -1226,7 +1226,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                   if(length(lev) > 1 && length(lev) <= 50) {
                     cells <- lapply(predicted,
                                     function(x) flatTable(x$pred, x$obs))
-                    for(ind in seq(along = cells))
+                    for(ind in seq(along.with = cells))
                       thisResample[[ind]] <- c(thisResample[[ind]], cells[[ind]])
                   }
                   thisResample <- do.call("rbind", thisResample)

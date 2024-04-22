@@ -142,7 +142,7 @@ resamples.default <- function(x, modelNames = names(x), ...) {
   }
 
   rs_values <- vector(mode = "list", length = length(x))
-  for(i in seq(along = x)) {
+  for(i in seq(along.with = x)) {
     if(class(x[[i]])[1] == "rfe" && x[[i]]$control$returnResamp == "all"){
       warning(paste0("'", modelNames[i], "' did not have 'returnResamp=\"final\"; the optimal subset is used"))
     }
@@ -170,7 +170,7 @@ resamples.default <- function(x, modelNames = names(x), ...) {
   rs_values <- lapply(rs_values,
                       function(x, n) x[,n,drop = FALSE],
                       n = c(pNames, "Resample"))
-  for(mod in seq(along = modelNames)) {
+  for(mod in seq(along.with = modelNames)) {
     names(rs_values[[mod]])[names(rs_values[[mod]]) %in% pNames] <-
       paste(modelNames[mod], names(rs_values[[mod]])[names(rs_values[[mod]]) %in% pNames], sep = "~")
     out <- if(mod == 1) rs_values[[mod]] else merge(out, rs_values[[mod]])
@@ -209,7 +209,7 @@ sort.resamples <- function(x, decreasing = FALSE, metric = x$metric[1], FUN = me
 summary.resamples <- function(object, metric = object$metrics, ...){
   vals <- object$values[, names(object$values) != "Resample", drop = FALSE]
   out <- vector(mode = "list", length = length(metric))
-  for(i in seq(along = metric)) {
+  for(i in seq(along.with = metric)) {
     tmpData <- vals[, grep(paste("~", metric[i], sep = ""), names(vals), fixed = TRUE), drop = FALSE]
 
     out[[i]] <- do.call("rbind", lapply(tmpData, function(x) summary(x)[1:6]))
@@ -418,14 +418,14 @@ plot.prcomp.resamples <- function(x, what = "scree", dims = max(2, ncol(x$rotati
          scree =
 {
   barchart(x$sdev ~ paste("PC",
-                          gsub(" ", "0", format(seq(along = x$sdev))),
+                          gsub(" ", "0", format(seq(along.with = x$sdev))),
                           sep = ""),
            ylab = "Standard Deviation", ...)
 },
 cumulative =
 {
   barchart(cumsum(x$sdev^2)/sum(x$sdev^2) ~ paste("PC",
-                                                  gsub(" ", "0", format(seq(along = x$sdev))),
+                                                  gsub(" ", "0", format(seq(along.with = x$sdev))),
                                                   sep = ""),
            ylab = "Culmulative Percent of Variance", ...)
 },
@@ -530,7 +530,7 @@ print.summary.resamples <- function(x, ...)
 
   cat("\n")
 
-  for(i in seq(along = x$statistics))
+  for(i in seq(along.with = x$statistics))
   {
     cat(names(x$statistics)[i], "\n")
     print(x$statistics[[i]])
@@ -700,7 +700,7 @@ xyplot.resamples <- function (x, data = NULL, what = "scatter", models = NULL, m
       lx <- as.numeric(lx[subscripts])
       ux <- as.numeric(ux[subscripts])
       gps <- unique(groups)
-      for(i in seq(along = gps))
+      for(i in seq(along.with = gps))
       {
         panel.arrows(lx[groups == gps[i]],
                      y[groups == gps[i]],
@@ -1122,7 +1122,7 @@ diff.resamples <- function(x,
   if(adjustment == "bonferroni") confLevel <- 1 - ((1 - confLevel)/ncomp)
   allStats <- allDif
 
-  for(h in seq(along = metric))
+  for(h in seq(along.with = metric))
   {
     index <- 0
     dif <- matrix(NA,
@@ -1131,9 +1131,9 @@ diff.resamples <- function(x,
     stat <- vector(mode = "list", length = choose(length(models), 2))
 
     colnames(dif) <- paste("tmp", 1:ncol(dif), sep = "")
-    for(i in seq(along = models))
+    for(i in seq(along.with = models))
     {
-      for(j in seq(along = models))
+      for(j in seq(along.with = models))
       {
         if(i < j)
         {
@@ -1228,13 +1228,13 @@ summary.diff.resamples <- function(object, digits = max(3, getOption("digits") -
   all <- vector(mode = "list", length = length(object$metric))
   names(all) <- object$metric
 
-  for(h in seq(along = object$metric))
+  for(h in seq(along.with = object$metric))
   {
     pvals <- matrix(NA, nrow = length(object$models), ncol = length(object$models))
     meanDiff <- pvals
     index <- 0
-    for(i in seq(along = object$models)) {
-      for(j in seq(along = object$models)) {
+    for(i in seq(along.with = object$models)) {
+      for(j in seq(along.with = object$models)) {
         if(i < j) {
           index <- index + 1
           meanDiff[i, j] <- object$statistics[[h]][index][[1]]$estimate
@@ -1243,8 +1243,8 @@ summary.diff.resamples <- function(object, digits = max(3, getOption("digits") -
     }
 
     index <- 0
-    for(i in seq(along = object$models)) {
-      for(j in seq(along = object$models)) {
+    for(i in seq(along.with = object$models)) {
+      for(j in seq(along.with = object$models)) {
         if(i < j) {
           index <- index + 1
           pvals[j, i] <- object$statistics[[h]][index][[1]]$p.value
@@ -1284,13 +1284,13 @@ levelplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], what 
   all <- vector(mode = "list", length = length(x$metric))
   names(all) <- x$metric
 
-  for(h in seq(along = x$metric))
+  for(h in seq(along.with = x$metric))
   {
     temp <- matrix(NA, nrow = length(x$models), ncol = length( x$models))
     index <- 0
-    for(i in seq(along = x$models))
+    for(i in seq(along.with = x$models))
     {
-      for(j in seq(along = x$models))
+      for(j in seq(along.with = x$models))
       {
 
         if(i < j)
@@ -1342,7 +1342,7 @@ print.summary.diff.resamples <- function(x, ...)
       "Lower diagonal: p-value for H0: difference = 0\n\n",
       sep = "")
 
-  for(i in seq(along = x$table))
+  for(i in seq(along.with = x$table))
   {
     cat(names(x$table)[i], "\n")
     print(x$table[[i]], quote = FALSE)
@@ -1419,9 +1419,9 @@ dotplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], ...)
   plotData <- as.data.frame(matrix(NA, ncol = 3, nrow = ncol(x$difs[[metric]])), stringsAsFactors = TRUE)
   ## Get point and interval estimates on the differences
   index <- 0
-  for(i in seq(along = x$models))
+  for(i in seq(along.with = x$models))
   {
-    for(j in seq(along = x$models))
+    for(j in seq(along.with = x$models))
     {
 
       if(i < j)
@@ -1462,7 +1462,7 @@ dotplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], ...)
                          col = plotTheme$reference.line$col[1],
                          lty = plotTheme$reference.line$lty[1],
                          lwd = plotTheme$reference.line$lwd[1])
-            for(i in seq(along = upper$mod))
+            for(i in seq(along.with = upper$mod))
             {
               panel.segments(upper$x[i], upper$mod[i], lower$x[i], lower$mod[i],
                              col = plotTheme$plot.line$col[1],

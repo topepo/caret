@@ -8,7 +8,7 @@ createResample <- function(y, times = 10, list = TRUE) {
   out <- apply(
     trainIndex, 2,
     function(data) {
-      index <- seq(along = data)
+      index <- seq(along.with = data)
       out <-
         sort(sample(index, size = length(index), replace = TRUE))
       out

@@ -61,7 +61,7 @@
 #'        xlab = "variable 1", ylab = "variable 2")
 #'   points(base, pch = 16, cex = .7)
 #'   
-#'   for(i in seq(along = newSamp))
+#'   for(i in seq(along.with = newSamp))
 #'     points(
 #'            pool[newSamp[i],1], 
 #'            pool[newSamp[i],2], 
@@ -167,11 +167,11 @@ splitByDissim <- function(x, p = .8, y = NULL, start = NULL, ...)
         if(!is.factor(y)) y <- as.factor(y)
         lvl <- levels(y)
         
-        ind <- split(seq(along = y), y)
-        ind2 <- lapply(ind, function(x) seq(along = x))
+        ind <- split(seq(along.with = y), y)
+        ind2 <- lapply(ind, function(x) seq(along.with = x))
         start2 <- lapply(ind, function(x, start) which(x %in% start),
                          start = start)
-        for(i in seq(along = lvl))
+        for(i in seq(along.with = lvl))
           {
             tmp <- splitter(x[ind[[i]],, drop = FALSE],
                             p = p,

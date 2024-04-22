@@ -58,7 +58,7 @@
 #' \dontrun{
 #' data(mdrr)
 #' set.seed(1)
-#' inTrain <- sample(seq(along = mdrrClass), 450)
+#' inTrain <- sample(seq(along.with = mdrrClass), 450)
 #'
 #' nzv <- nearZeroVar(mdrrDescr)
 #' filteredDescr <- mdrrDescr[, -nzv]
@@ -173,7 +173,7 @@ predict.plsda <- function(object, newdata = NULL, ncomp = NULL, type = "class", 
 
     requireNamespaceQuietStop("klaR")
     tmp <- vector(mode = "list", length = length(ncomp))
-    for(i in seq(along = ncomp)) {
+    for(i in seq(along.with = ncomp)) {
       tmp[[i]] <- predict(object$probModel[[ ncomp[i] ]],
                           as.data.frame(tmpPred[,-length(object$obsLevels),i]), stringsAsFactors = TRUE)
     }
@@ -196,7 +196,7 @@ predict.plsda <- function(object, newdata = NULL, ncomp = NULL, type = "class", 
                      rownames(tmp[[1]]$posterior),
                      colnames(tmp[[1]]$posterior),
                      paste("ncomp", ncomp, sep = "")))
-      for(i in seq(along = ncomp)) out[,,i] <- tmp[[i]]$posterior
+      for(i in seq(along.with = ncomp)) out[,,i] <- tmp[[i]]$posterior
     }
   }
   out

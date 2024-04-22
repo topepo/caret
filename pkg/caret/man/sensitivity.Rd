@@ -159,7 +159,7 @@ negPredValue(pred, truth, prevalence = 0.25)
 
 prev <- seq(0.001, .99, length = 20)
 npvVals <- ppvVals <- prev  * NA
-for(i in seq(along = prev))
+for(i in seq(along.with = prev))
   {
     ppvVals[i] <- posPredValue(pred, truth, prevalence = prev[i])
     npvVals[i] <- negPredValue(pred, truth, prevalence = prev[i])

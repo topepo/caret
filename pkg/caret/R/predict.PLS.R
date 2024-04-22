@@ -26,7 +26,7 @@ predict.PLS <- function(object, newdata,
    dnB[[1]] <- c("(Intercept)", dnB[[1]])
    BInt <- array(dim = dB, dimnames = dnB)
    BInt[-1, , ] <- B
-   for (i in seq(along = 1:ncomp)) BInt[1, , i] <- object$Ymeans - object$Xmeans %*% B[, , i]
+   for (i in seq(along.with = 1:ncomp)) BInt[1, , i] <- object$Ymeans - object$Xmeans %*% B[, , i]
    B <- BInt
    # stop
    
