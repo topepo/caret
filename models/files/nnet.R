@@ -18,17 +18,20 @@ modelInfo <- list(label = "Neural Network",
                   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
                     dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
                     dat$.outcome <- y
+                    linout <- ifelse(is.factor(y), FALSE, TRUE)                    
                     if(!is.null(wts)) {
                       out <- nnet::nnet(.outcome ~ .,
                                         data = dat,
                                         weights = wts,
                                         size = param$size,
                                         decay = param$decay,
+                                        linout = linout,
                                         ...)
                     } else out <- nnet::nnet(.outcome ~ .,
                                              data = dat,
                                              size = param$size,
                                              decay = param$decay,
+                                             linout = linout,
                                              ...)
                     out
                   },
