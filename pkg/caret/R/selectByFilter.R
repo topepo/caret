@@ -196,7 +196,7 @@ sbf <- function (x, ...) UseMethod("sbf")
     if(is.null(sbfControl$indexOut)){
       sbfControl$indexOut <- lapply(sbfControl$index,
                                     function(training, allSamples) allSamples[-unique(training)],
-                                    allSamples = seq(along = y))
+                                    allSamples = seq(along.with = y))
       names(sbfControl$indexOut) <- prettySeq(sbfControl$indexOut)
     }
     ## check summary function and metric
@@ -204,7 +204,7 @@ sbf <- function (x, ...) UseMethod("sbf")
                              obs = sample(y, min(10, length(y))))
 
     if(is.factor(y))
-      for(i in seq(along = classLevels))
+      for(i in seq(along.with = classLevels))
         testOutput[, classLevels[i]] <- runif(nrow(testOutput))
 
 
@@ -389,7 +389,7 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
     if(is.null(sbfControl$indexOut)){
       sbfControl$indexOut <- lapply(sbfControl$index,
                                     function(training, allSamples) allSamples[-unique(training)],
-                                    allSamples = seq(along = y))
+                                    allSamples = seq(along.with = y))
       names(sbfControl$indexOut) <- prettySeq(sbfControl$indexOut)
     }
     ## check summary function and metric
@@ -397,7 +397,7 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
                              obs = sample(y, min(10, length(y))))
 
     if(is.factor(y))
-      for(i in seq(along = classLevels))
+      for(i in seq(along.with = classLevels))
         testOutput[, classLevels[i]] <- runif(nrow(testOutput))
     if(!is.null(perf_data))
       testOutput <- cbind(
@@ -522,7 +522,7 @@ sbf_rec <- function(rec, data, ctrl, lev, ...) {
 
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
   result <- foreach(
-    iter = seq(along = resampleIndex),
+    iter = seq(along.with = resampleIndex),
     .combine = "c",
     .verbose = FALSE,
     .errorhandling = "stop",
@@ -612,7 +612,7 @@ sbf_rec <- function(rec, data, ctrl, lev, ...) {
 
     const <- 1-exp(-1)
 
-    for(p in seq(along = perfNames))
+    for(p in seq(along.with = perfNames))
       performance[perfNames[p]] <-
       (const * performance[perfNames[p]]) +  ((1-const) * apparent[perfNames[p]])
   }
@@ -637,7 +637,7 @@ sbf_loo_rec <- function(rec, data, ctrl, lev, ...) {
 
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
   result <- foreach(
-    iter = seq(along = resampleIndex),
+    iter = seq(along.with = resampleIndex),
     .combine = "c",
     .verbose = FALSE,
     .errorhandling = "stop",

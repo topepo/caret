@@ -533,7 +533,7 @@ safs <- function (x, ...) UseMethod("safs")
     if(is.null(safsControl$indexOut)){
       safsControl$indexOut <- lapply(safsControl$index,
                                      function(training, allSamples) allSamples[-unique(training)],
-                                     allSamples = seq(along = y))
+                                     allSamples = seq(along.with = y))
       names(safsControl$indexOut) <- getFromNamespace("prettySeq", "caret")(safsControl$indexOut)
     }
 
@@ -551,7 +551,7 @@ safs <- function (x, ...) UseMethod("safs")
                              obs = sample(y, min(10, length(y))))
 
     if(is.factor(y))
-      for(i in seq(along = classLevels)) testOutput[, classLevels[i]] <- runif(nrow(testOutput))
+      for(i in seq(along.with = classLevels)) testOutput[, classLevels[i]] <- runif(nrow(testOutput))
 
     test <- safsControl$functions$fitness_extern(testOutput, lev = classLevels)
     perfNames <- names(test)
@@ -571,7 +571,7 @@ safs <- function (x, ...) UseMethod("safs")
 
     `%op%` <- getOper(safsControl$allowParallel && getDoParWorkers() > 1)
     #     sa_resampled <- external <- vector(mode = "list", length = length(safsControl$index))
-    result <- foreach(i = seq(along = safsControl$index), .combine = "c", .verbose = FALSE, .errorhandling = "stop") %op% {
+    result <- foreach(i = seq(along.with = safsControl$index), .combine = "c", .verbose = FALSE, .errorhandling = "stop") %op% {
       sa_select(x[safsControl$index[[i]],,drop=FALSE],
                 y[safsControl$index[[i]]],
                 funcs = safsControl$functions,
@@ -618,9 +618,9 @@ safs <- function (x, ...) UseMethod("safs")
       in_holdout <- createDataPartition(y,
                                         p = safsControl$holdout,
                                         list = FALSE)
-      in_model <- seq(along = y)[-unique(in_holdout)]
+      in_model <- seq(along.with = y)[-unique(in_holdout)]
     } else {
-      in_model <- seq(along = y)
+      in_model <- seq(along.with = y)
       in_holdout <- NULL
     }
     final_sa <- sa_select(x[in_model,,drop=FALSE],
@@ -812,7 +812,7 @@ safs_initial <- function (vars, prob = .20, ...)  {
 #' @export
 safs_perturb <- function(x, vars, number = floor(length(x)*.01) + 1) {
   bin <- index2vec(x, vars)
-  change <- sample(seq(along = bin), size = number)
+  change <- sample(seq(along.with = bin), size = number)
   bin[change] <- ifelse(bin[change] == 1, 0, 1)
   sort(which(bin == 1))
 }
@@ -1382,7 +1382,7 @@ update.safs <- function(object, iter, x, y, ...) {
       safsControl$indexOut <-
         lapply(safsControl$index,
                function(training, allSamples) allSamples[-unique(training)],
-               allSamples = seq(along = y))
+               allSamples = seq(along.with = y))
       names(safsControl$indexOut) <-
         getFromNamespace("prettySeq", "caret")(safsControl$indexOut)
     }
@@ -1401,7 +1401,7 @@ update.safs <- function(object, iter, x, y, ...) {
                              obs = sample(y, min(10, length(y))))
 
     if(is.factor(y))
-      for(i in seq(along = classLevels)) testOutput[, classLevels[i]] <- runif(nrow(testOutput))
+      for(i in seq(along.with = classLevels)) testOutput[, classLevels[i]] <- runif(nrow(testOutput))
     if(!is.null(perf_data))
       testOutput <- cbind(
         testOutput,
@@ -1427,7 +1427,7 @@ update.safs <- function(object, iter, x, y, ...) {
     `%op%` <- getOper(safsControl$allowParallel && getDoParWorkers() > 1)
 
     result <- foreach(
-      i = seq(along = safsControl$index),
+      i = seq(along.with = safsControl$index),
       .combine = "c",
       .verbose = FALSE,
       .errorhandling = "stop",
@@ -1510,9 +1510,9 @@ update.safs <- function(object, iter, x, y, ...) {
       in_holdout <- createDataPartition(y,
                                         p = safsControl$holdout,
                                         list = FALSE)
-      in_model <- seq(along = y)[-unique(in_holdout)]
+      in_model <- seq(along.with = y)[-unique(in_holdout)]
     } else {
-      in_model <- seq(along = y)
+      in_model <- seq(along.with = y)
       in_holdout <- NULL
     }
     final_sa <- sa_select(

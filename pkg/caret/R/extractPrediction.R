@@ -31,7 +31,7 @@ extractPrediction <- function(models,
     if(verbose) cat("There were ", sum(hasNa), "rows with missing values\n\n")
   }
   
-  for(i in seq(along = models))
+  for(i in seq(along.with = models))
   {
     if(!unkOnly)
     {

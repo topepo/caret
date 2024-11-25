@@ -337,7 +337,7 @@ preProcess.default <- function(x, method = c("center", "scale"),
       }
       # now apply to current data
       if(length(yj) > 0) {
-        for(i in seq(along = yj)) {
+        for(i in seq(along.with = yj)) {
           who <- names(yj)[i]
           x[,who] <- recipes::yj_transform(x[,who], yj[who])
         }
@@ -557,7 +557,7 @@ predict.preProcess <- function(object, newdata, ...) {
     lam <- get_yj_lambda(object$yj)
     lam <- lam[!is.na(lam)]
     if(length(lam) > 0) {
-      for(i in seq(along = lam)) {
+      for(i in seq(along.with = lam)) {
         who <- names(lam)[i]
         newdata[,who] <- recipes::yj_transform(newdata[,who], lam[who])
       }
@@ -565,7 +565,7 @@ predict.preProcess <- function(object, newdata, ...) {
   }
 
   if(!is.null(object$et)) {
-    for(i in seq(along = object$et)) {
+    for(i in seq(along.with = object$et)) {
       who <-  names(object$et)[i]
       newdata[,who] <- predict(object$et[[who]], newdata[,who])
     }
@@ -623,7 +623,7 @@ predict.preProcess <- function(object, newdata, ...) {
     missingVars <- names(missingVars)[missingVars]
     ## ipred's bagging procedure only allows for data frames
     if(!is.data.frame(hasMiss)) hasMiss <- as.data.frame(hasMiss, stringsAsFactors = TRUE)
-    for(i in seq(along = missingVars)) {
+    for(i in seq(along.with = missingVars)) {
       preds <- predict(object$bagImp[[missingVars[i]]]$model,
                        hasMiss[, !colnames(hasMiss) %in% missingVars[i], drop = FALSE])
 

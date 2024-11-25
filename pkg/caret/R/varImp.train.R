@@ -6,7 +6,7 @@
   if(is.null(code$varImp)) useModel <- FALSE
   if(useModel) {
     checkInstall(code$library)
-    for(i in seq(along = code$library))
+    for(i in seq(along.with = code$library))
       do.call("requireNamespaceQuietStop", list(package = code$library[i]))
     imp <- code$varImp(object$finalModel, ...)
     modelName <- object$method

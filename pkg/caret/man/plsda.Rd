@@ -83,7 +83,7 @@ for the posterior probability calculations.
 \dontrun{
 data(mdrr)
 set.seed(1)
-inTrain <- sample(seq(along = mdrrClass), 450)
+inTrain <- sample(seq(along.with = mdrrClass), 450)
 
 nzv <- nearZeroVar(mdrrDescr)
 filteredDescr <- mdrrDescr[, -nzv]

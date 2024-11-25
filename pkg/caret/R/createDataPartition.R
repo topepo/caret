@@ -116,7 +116,7 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
 
   if(is.numeric(y)) {
     y <- cut(y,
-             unique(quantile(y, probs = seq(0, 1, length = groups))),
+             unique(quantile(y, probs = seq(0, 1, length.out = groups))),
              include.lowest = TRUE)
   } else {
     xtab <- table(y)
@@ -144,7 +144,7 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
   }
 
   for (j in 1:times) {
-    tmp <- dlply(data.frame(y = y, index = seq(along = y)),
+    tmp <- dlply(data.frame(y = y, index = seq(along.with = y)),
                  .(y), subsample, p = p)
     tmp <- sort(as.vector(unlist(tmp)))
     out[[j]] <- tmp
@@ -180,7 +180,7 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
       cuts <- floor(length(y)/k)
       if(cuts < 2) cuts <- 2
       if(cuts > 5) cuts <- 5
-      breaks <- unique(quantile(y, probs = seq(0, 1, length = cuts)))
+      breaks <- unique(quantile(y, probs = seq(0, 1, length.out = cuts)))
       y <- cut(y, breaks, include.lowest = TRUE)
     }
 
@@ -212,12 +212,12 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
           foldVector[which(y == names(numInClass)[i])] <- sample(1:k, size = numInClass[i])
         }
       }
-    } else foldVector <- seq(along = y)
+    } else foldVector <- seq(along.with = y)
 
     if(list) {
-      out <- split(seq(along = y), foldVector)
-      names(out) <- paste("Fold", gsub(" ", "0", format(seq(along = out))), sep = "")
-      if(returnTrain) out <- lapply(out, function(data, y) y[-data], y = seq(along = y))
+      out <- split(seq(along.with = y), foldVector)
+      names(out) <- paste("Fold", gsub(" ", "0", format(seq(along.with = out))), sep = "")
+      if(returnTrain) out <- lapply(out, function(data, y) y[-data], y = seq(along.with = y))
     } else out <- foldVector
     out
   }
@@ -230,7 +230,7 @@ createMultiFolds <- function(y, k = 10, times = 5) {
   for(i in 1:times) {
     tmp <- createFolds(y, k = k, list = TRUE, returnTrain = TRUE)
     names(tmp) <- paste("Fold",
-                        gsub(" ", "0", format(seq(along = tmp))),
+                        gsub(" ", "0", format(seq(along.with = tmp))),
                         ".",
                         prettyNums[i],
                         sep = "")
@@ -292,8 +292,8 @@ make_resamples <- function(ctrl_obj, outcome) {
     ctrl_obj$index <-
       switch(tolower(ctrl_obj$method),
              oob = NULL,
-             none = list(seq(along = outcome)),
-             apparent = list(all = seq(along = outcome)),
+             none = list(seq(along.with = outcome)),
+             apparent = list(all = seq(along.with = outcome)),
              alt_cv =, cv = createFolds(outcome, ctrl_obj$number, returnTrain = TRUE),
              repeatedcv =, adaptive_cv = createMultiFolds(outcome, ctrl_obj$number, ctrl_obj$repeats),
              loocv = createFolds(outcome, n, returnTrain = TRUE),
@@ -301,7 +301,7 @@ make_resamples <- function(ctrl_obj, outcome) {
              adaptive_boot = createResample(outcome, ctrl_obj$number),
              test = createDataPartition(outcome, 1, ctrl_obj$p),
              adaptive_lgocv =, lgocv = createDataPartition(outcome, ctrl_obj$number, ctrl_obj$p),
-             timeslice = createTimeSlices(seq(along = outcome),
+             timeslice = createTimeSlices(seq(along.with = outcome),
                                           initialWindow = ctrl_obj$initialWindow,
                                           horizon = ctrl_obj$horizon,
                                           fixedWindow = ctrl_obj$fixedWindow,
@@ -319,7 +319,7 @@ make_resamples <- function(ctrl_obj, outcome) {
   }
 
   if(ctrl_obj$method == "apparent")
-    ctrl_obj$indexOut <- list(all = seq(along = outcome))
+    ctrl_obj$indexOut <- list(all = seq(along.with = outcome))
 
   ## Create holdout indices
   if(is.null(ctrl_obj$indexOut) && ctrl_obj$method != "oob"){
@@ -328,7 +328,7 @@ make_resamples <- function(ctrl_obj, outcome) {
         if (inherits(outcome, "Surv"))
           1:nrow(outcome)
       else
-        seq(along = outcome)
+        seq(along.with = outcome)
       ctrl_obj$indexOut <-
         lapply(ctrl_obj$index, function(training)
           setdiff(y_index, training))
@@ -340,7 +340,7 @@ make_resamples <- function(ctrl_obj, outcome) {
       names(ctrl_obj$indexOut) <- prettySeq(ctrl_obj$indexOut)
     } else {
       ctrl_obj$indexOut <-
-        createTimeSlices(seq(along = outcome),
+        createTimeSlices(seq(along.with = outcome),
                          initialWindow = ctrl_obj$initialWindow,
                          horizon = ctrl_obj$horizon,
                          fixedWindow = ctrl_obj$fixedWindow,

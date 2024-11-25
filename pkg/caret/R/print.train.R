@@ -192,7 +192,7 @@ stringFunc <- function (x)  {
         numVals <- apply(tuneAcc[, params, drop = FALSE], 2, function(x) length(unique(x)))
         if(any(numVals < 2)) {
           constString <- NULL
-          for(i in seq(along = numVals)) {
+          for(i in seq(along.with = numVals)) {
             if(numVals[i] == 1)
               constString <- c(constString,
                                paste0("Tuning parameter '",
@@ -210,7 +210,7 @@ stringFunc <- function (x)  {
       colnames(tuneAcc)[colnames(tuneAcc) == ".B"] <- "Resamples"
       nms <- names(tuneAcc)[names(tuneAcc) %in% params]
       sort_args <- vector(mode = "list", length = length(nms))
-      for(i in seq(along = nms)) {
+      for(i in seq(along.with = nms)) {
         sort_args[[i]] <- tuneAcc[, nms[i]]
       }
       tune_ord <- do.call("order", sort_args)

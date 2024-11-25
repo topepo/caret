@@ -136,7 +136,7 @@ ga_func_check <- function(x) {
 #' @export gafs_initial
 gafs_initial <- function (vars, popSize, ...)  {
   x <- matrix(NA, nrow = popSize, ncol = vars)
-  probs <- seq(.9, .1, length = popSize)
+  probs <- seq(.9, .1, length.out = popSize)
   for(i in 1:popSize){
     x[i,] <- sample(0:1, replace = TRUE,
                     size = vars,
@@ -997,7 +997,7 @@ gafs <- function (x, ...) UseMethod("gafs")
       gafsControl$indexOut <-
         lapply(gafsControl$index,
                function(training, allSamples) allSamples[-unique(training)],
-               allSamples = seq(along = y)
+               allSamples = seq(along.with = y)
                )
       names(gafsControl$indexOut) <-
         getFromNamespace("prettySeq", "caret")(gafsControl$indexOut)
@@ -1017,7 +1017,7 @@ gafs <- function (x, ...) UseMethod("gafs")
                              obs = sample(y, min(10, length(y))))
 
     if(is.factor(y))
-      for(i in seq(along = classLevels))
+      for(i in seq(along.with = classLevels))
         testOutput[, classLevels[i]] <- runif(nrow(testOutput))
 
     test <- gafsControl$functions$fitness_extern(testOutput, lev = classLevels)
@@ -1041,7 +1041,7 @@ gafs <- function (x, ...) UseMethod("gafs")
 
     result <-
       foreach(
-        i = seq(along = gafsControl$index),
+        i = seq(along.with = gafsControl$index),
         .combine = "c", .verbose = FALSE,
         .errorhandling = "stop") %op% {
       ga_select(
@@ -1094,9 +1094,9 @@ gafs <- function (x, ...) UseMethod("gafs")
       in_holdout <- createDataPartition(y,
                                         p = gafsControl$holdout,
                                         list = FALSE)
-      in_model <- seq(along = y)[-unique(in_holdout)]
+      in_model <- seq(along.with = y)[-unique(in_holdout)]
     } else {
-      in_model <- seq(along = y)
+      in_model <- seq(along.with = y)
       in_holdout <- NULL
     }
     final_ga <- ga_select(
@@ -1518,7 +1518,7 @@ update.gafs <- function(object, iter, x, y, ...) {
       gafsControl$indexOut <-
         lapply(gafsControl$index,
                function(training, allSamples) allSamples[-unique(training)],
-               allSamples = seq(along = y)
+               allSamples = seq(along.with = y)
         )
       names(gafsControl$indexOut) <-
         getFromNamespace("prettySeq", "caret")(gafsControl$indexOut)
@@ -1538,7 +1538,7 @@ update.gafs <- function(object, iter, x, y, ...) {
                              obs = sample(y, min(10, length(y))))
 
     if(is.factor(y))
-      for(i in seq(along = classLevels))
+      for(i in seq(along.with = classLevels))
         testOutput[, classLevels[i]] <- runif(nrow(testOutput))
     if(!is.null(perf_data))
       testOutput <- cbind(
@@ -1567,7 +1567,7 @@ update.gafs <- function(object, iter, x, y, ...) {
 
     result <-
       foreach(
-        i = seq(along = gafsControl$index),
+        i = seq(along.with = gafsControl$index),
         .combine = "c", .verbose = FALSE,
         .errorhandling = "stop") %op% {
           ga_select(
@@ -1622,9 +1622,9 @@ update.gafs <- function(object, iter, x, y, ...) {
       in_holdout <- createDataPartition(y,
                                         p = gafsControl$holdout,
                                         list = FALSE)
-      in_model <- seq(along = y)[-unique(in_holdout)]
+      in_model <- seq(along.with = y)[-unique(in_holdout)]
     } else {
-      in_model <- seq(along = y)
+      in_model <- seq(along.with = y)
       in_holdout <- NULL
     }
     final_ga <- ga_select(

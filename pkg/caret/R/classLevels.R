@@ -13,7 +13,7 @@ levels.train <- function(x, ...) {
       } else code <- x$modelInfo
       if(!is.null(code$levels)){
         checkInstall(code$library)
-        for(i in seq(along = code$library))
+        for(i in seq(along.with = code$library))
           do.call("requireNamespaceQuietStop", list(package = code$library[i]))
         out <- code$levels(x$finalModel, ...)
       } else out <- NULL

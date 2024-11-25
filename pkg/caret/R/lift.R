@@ -162,7 +162,7 @@ lift.formula <- function(x, data = NULL,
   if(!is.null(labels)) {
     plotData$originalName <- plotData$liftModelVar
     plotData$liftModelVar <- as.character(plotData$liftModelVar)
-    for(i in seq(along = labels)) plotData$liftModelVar[plotData$liftModelVar == names(labels)[i]] <- labels[i]
+    for(i in seq(along.with = labels)) plotData$liftModelVar[plotData$liftModelVar == names(labels)[i]] <- labels[i]
     plotData$liftModelVar <- factor(plotData$liftModelVar,
                                     levels = labels)
   }
@@ -233,7 +233,7 @@ liftCalc <- function(x, class = levels(x$liftClassVar)[1], cuts = NULL) {
   baseline <- mean(x$liftClassVar == class)
   if(!is.null(cuts)) {
     if(length(cuts) == 1) {
-      cuts <- rev(seq(0, 1, length = cuts))
+      cuts <- rev(seq(0, 1, length.out = cuts))
     } else {
       cuts <- unique(c(1, sort(cuts, decreasing = TRUE), 0))
     }
@@ -249,7 +249,7 @@ liftCalc <- function(x, class = levels(x$liftClassVar)[1], cuts = NULL) {
                     n = NA,
                     Sn = NA,
                     Sp = NA)
-  for(i in seq(along = cuts)) {
+  for(i in seq(along.with = cuts)) {
     sub <- x$liftClassVar[x$liftProbVar >= tmp$cuts[i]]
     tmp$n[i] <- length(sub)
     tmp$events[i] <- sum(sub == class)
@@ -342,7 +342,7 @@ panel.lift2 <- function (x, y, pct = 0, values = NULL, ...)  {
     if(any(names(theDots) == "groups")) {
       dat <- data.frame(x = x, y = y, groups = theDots$groups)
       ung <- unique(dat$groups)
-      for(i in seq(along = ung))  {
+      for(i in seq(along.with = ung))  {
         dat0 <- subset(dat, groups == ung[i])
         plotRef(dat0$x, dat0$y, values, iter = i)
       }
@@ -464,7 +464,7 @@ get_ref_point <- function(dat, v, window = 5) {
   res <- data.frame(CumEventPct = v,
                     CumTestedPct = NA)
 
-  for(i in seq(along = v)) {
+  for(i in seq(along.with = v)) {
     nearest <- which.min((y - v[i])^2)
     index <- max(1, nearest - window):min(length(y), nearest + window)
     res$CumTestedPct[i] <-

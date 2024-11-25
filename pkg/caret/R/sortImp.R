@@ -23,7 +23,7 @@ sortImp <- function(object, top)
 
    if(length(tiedRanks) > 0)
    {
-      for(i in seq(along = tiedRanks))
+      for(i in seq(along.with = tiedRanks))
       {
          tmp <- featureRank[featureRank == tiedRanks[i]] 
          featureRank[featureRank == tiedRanks[i]] <- tmp + runif(length(tmp), min = 0.001, max = 0.999)

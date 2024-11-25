@@ -133,7 +133,7 @@ bagControl <- function(
         {
           freaks <- table(subY)
           smallFreak <- min(freaks)
-          splitUp <- split(seq(along = subY), subY)
+          splitUp <- split(seq(along.with = subY), subY)
           splitUp <- lapply(splitUp,
                             sample,
                             size = smallFreak)
@@ -173,7 +173,7 @@ bagControl <- function(
   btSamples <- createResample(y, times = B)
 
   `%op%` <-  if(bagControl$allowParallel)  `%dopar%` else  `%do%`
-  btFits <- foreach(iter = seq(along = btSamples),
+  btFits <- foreach(iter = seq(along.with = btSamples),
                     .verbose = FALSE,
                     .packages = "caret",
                     .errorhandling = "stop") %op%

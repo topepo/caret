@@ -38,7 +38,7 @@ extractProb <- function(models,
     if(verbose) cat("There were ", sum(hasNa), "rows with missing values\n\n"); flush.console()
   }
 
-  for(i in seq(along = models))
+  for(i in seq(along.with = models))
   {
     if(verbose) cat("starting ", models[[i]]$method, "\n"); flush.console()
     if(!unkOnly) {

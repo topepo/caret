@@ -43,7 +43,7 @@
       pch <- rep(pch, length(x))
       pch <- ifelse(x == 0, NA, pch)
       
-      for(i in seq(along=x)) lsegments(x[i], y[i], 0, y[i])
+      for(i in seq(along.with=x)) lsegments(x[i], y[i], 0, y[i])
       if (is.null(groups)) 
         panel.xyplot(x = x, y = y, col = col, pch = pch, ...)
       else panel.superpose(x = x, y = y, groups = groups, col = col, pch = pch, ...)        

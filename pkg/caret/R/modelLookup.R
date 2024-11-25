@@ -71,7 +71,7 @@ modelLookup <- function(model = NULL){
                   out$probModel <- !is.null(x$prob)
                   out
                 })
-  for(i in seq(along = out)) out[[i]]$model <- names(models)[i]
+  for(i in seq(along.with = out)) out[[i]]$model <- names(models)[i]
   out <- do.call("rbind", out)
   rownames(out) <- NULL
   out <- out[, c('model', 'parameter', 'label', 'forReg', 'forClass', 'probModel')]
@@ -90,7 +90,7 @@ missing_packages <- function(mods = getModelInfo()) {
 #' @export
 checkInstall <- function(pkg){
   good <- rep(TRUE, length(pkg))
-  for(i in seq(along = pkg)){
+  for(i in seq(along.with = pkg)){
     tested <- try(find.package(pkg[i]), silent = TRUE)
     if (inherits(tested, "try-error")) good[i] <- FALSE
   }

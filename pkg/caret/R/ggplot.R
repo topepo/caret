@@ -181,7 +181,7 @@ random_search_plot <- function(x, metric = x$metric[1]) {
   p_names <- as.character(params$parameter)
 
   exclude <- NULL
-  for(i in seq(along = p_names)) {
+  for(i in seq(along.with = p_names)) {
     if(all(is.na(x$results[, p_names[i]])))
       exclude <- c(exclude, i)
   }

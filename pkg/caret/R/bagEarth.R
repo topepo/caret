@@ -260,7 +260,7 @@
     requireNamespaceQuietStop("earth")
     ## get oob predictions
     getTrainPred <- function(x) {
-      oobIndex <- seq(along = x$fitted.values)
+      oobIndex <- seq(along.with = x$fitted.values)
       oobIndex <- oobIndex[!(oobIndex %in% unique(x$index))]
       data.frame(pred = x$fitted.values[oobIndex],
                  sample = oobIndex)
