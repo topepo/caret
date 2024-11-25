@@ -93,7 +93,7 @@
   \itemize{
     \item A new version was requested by CRAN since en dashes were used in the documentation.
     \item A bug was fixed where, for some recipes that involve class imbalance sampling, the resampling indicies were computed incorrectly \issue{1030}.
-    \item code{train} now removes duplicate models in the tuning grid. Duplicates could occur for models with discrete parameters.
+    \item \code{train} now removes duplicate models in the tuning grid. Duplicates could occur for models with discrete parameters.
   }
 }
 

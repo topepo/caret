@@ -43,8 +43,8 @@ used in \code{calibration.formula}).}
 \code{envir} argument in \code{eval}, e.g., a list or an environment) containing values for any
 variables in the formula, as well as \code{groups} and \code{subset} if applicable. If not found in
 \code{data}, or if \code{data} is unspecified, the variables are looked for in the environment of the
-formula. This argument is not used for \code{xyplot.calibration}. For {ggplot.calibration}, \code{data}
-should be an object of class "\code{calibration}"."}
+formula. This argument is not used for \code{xyplot.calibration}. For \code{ggplot.calibration}, \code{data}
+should be an object of class "\code{calibration}".}
 
 \item{class}{a character string for the class of interest}
 
