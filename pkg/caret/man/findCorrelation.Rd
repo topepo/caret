@@ -46,18 +46,12 @@ correlations at each step while \code{exact = FALSE} uses all the
 correlations regardless of whether they have been eliminated or not. The
 exact calculations will remove a smaller number of predictors but can be
 much slower when the problem dimensions are "big".
-
-There are several function in the \pkg{subselect} package
-(\code{\link[subselect:eleaps]{leaps}},
-\code{\link[subselect:genetic]{genetic}},
-\code{\link[subselect:anneal]{anneal}}) that can also be used to accomplish
-the same goal but tend to retain more predictors.
 }
 \examples{
 
-R1 <- structure(c(1, 0.86, 0.56, 0.32, 0.85, 0.86, 1, 0.01, 0.74, 0.32, 
+R1 <- structure(c(1, 0.86, 0.56, 0.32, 0.85, 0.86, 1, 0.01, 0.74, 0.32,
                   0.56, 0.01, 1, 0.65, 0.91, 0.32, 0.74, 0.65, 1, 0.36,
-                  0.85, 0.32, 0.91, 0.36, 1), 
+                  0.85, 0.32, 0.91, 0.36, 1),
                 .Dim = c(5L, 5L))
 colnames(R1) <- rownames(R1) <- paste0("x", 1:ncol(R1))
 R1
