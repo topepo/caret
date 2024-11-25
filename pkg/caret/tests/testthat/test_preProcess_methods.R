@@ -1,8 +1,3 @@
-library(caret)
-library(fastICA)
-library(testthat)
-library(MASS)
-
 context('preProcess/methods')
 
 ###################################################################
@@ -186,6 +181,7 @@ test_that('issue #825 for pca threshold choice', {
 ## test ica
 
 test_that('ICA trans', {
+  skip_if_not_installed("fastICA")
   skip_on_cran()
   set.seed(1)
   ica_dat1 <- twoClassSim(30)[, 1:5]
@@ -202,8 +198,7 @@ test_that('ICA trans', {
     ica_dat2_scaled[,i] <- (ica_dat2_scaled[,i]-ica_dat1_means[i])/ica_dat1_sds[i]
 
   set.seed(1)
-  ic_obj <- fastICA(scale(ica_dat1, center = TRUE, scale = TRUE),
-                    n.comp = 3)
+  ic_obj <- fastICA::fastICA(scale(ica_dat1, center = TRUE, scale = TRUE), n.comp = 3)
   ica_dat2_exp <- as.matrix(ica_dat2_scaled) %*% ic_obj$K %*% ic_obj$W
   colnames(ica_dat2_exp) <- paste("ICA", 1:ncol(ic_obj$W), sep = "")
   expect_equal(as.data.frame(ica_dat2_exp, stringsAsFactors = TRUE), ica_dat2_ica, tolerance = .00001)
