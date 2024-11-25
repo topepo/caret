@@ -107,7 +107,6 @@ Suggests:
     rmarkdown,
     rpart,
     spls,
-    subselect,
     superpc,
     testthat (>= 0.9.1),
     themis (>= 0.1.3)
