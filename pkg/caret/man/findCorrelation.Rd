@@ -76,9 +76,7 @@ findCorrelation(R2, cutoff = .99, verbose = TRUE)
 
 }
 \seealso{
-\code{\link[subselect:eleaps]{leaps}},
-\code{\link[subselect:genetic]{genetic}},
-\code{\link[subselect:anneal]{anneal}}, \code{\link{findLinearCombos}}
+\code{\link{findLinearCombos}}
 }
 \author{
 Original R code by Dong Li, modified by Max Kuhn

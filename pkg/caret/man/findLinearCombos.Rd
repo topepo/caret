@@ -50,9 +50,6 @@ testData2[,6] <- c(0, 0, 1, 0, 0, 1)
 findLinearCombos(testData2)
 
 }
-\seealso{
-\code{\link[subselect:trim.matrix]{trim.matrix}}
-}
 \author{
 Kirk Mettler and Jed Wing (\code{enumLC}) and Max Kuhn
 (\code{findLinearCombos})

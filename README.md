@@ -8,6 +8,7 @@
 Miscellaneous functions for training and plotting classification and regression models.  Detailed documentation is at http://topepo.github.io/caret/index.html
 
 ## Install the current release from CRAN:
+
 ```r
 install.packages('caret')
 ```
@@ -16,3 +17,8 @@ install.packages('caret')
 ```r
 pak::pak('topepo/caret/pkg/caret')
 ```
+
+## Status
+
+caret will be 20 years old in March of 2026. The package is currently in *maintenance mode*; the author will fix bugs and make CRAN releases as needed, but there will not be any major features in the package. **It will stay on CRAN long-term**; it's not going away. 
+

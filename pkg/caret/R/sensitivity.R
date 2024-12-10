@@ -196,6 +196,7 @@ sensitivity <-
 }
 
 #' @rdname sensitivity
+#' @export
 "sensitivity.matrix" <-
   function(data, positive = rownames(data)[1], ...)
 {

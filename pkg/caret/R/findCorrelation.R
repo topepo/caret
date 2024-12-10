@@ -119,9 +119,7 @@ findCorrelation_exact <- function(x, cutoff = 0.90, verbose = FALSE)
 #' = TRUE}) otherwise a vector of column names. If no correlations meet the
 #' criteria, \code{integer(0)} is returned.
 #' @author Original R code by Dong Li, modified by Max Kuhn
-#' @seealso \code{\link[subselect:eleaps]{leaps}},
-#' \code{\link[subselect:genetic]{genetic}},
-#' \code{\link[subselect:anneal]{anneal}}, \code{\link{findLinearCombos}}
+#' @seealso \code{\link{findLinearCombos}}
 #' @keywords manip
 #' @examples
 #'

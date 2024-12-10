@@ -337,37 +337,40 @@ requireNamespaceQuietStop <- function(package) {
 
 get_resample_perf <- function (x, ...) UseMethod("get_resample_perf")
 
-get_resample_perf.train <- function(x) {
+#' @export
+get_resample_perf.train <- function(x, ...) {
   if(x$control$returnResamp == "none")
     stop("use returnResamp == 'none' in trainControl()", call. = FALSE)
   out <- merge(x$resample, x$bestTune)
   out[, c(x$perfNames, "Resample")]
 }
 
-get_resample_perf.rfe <- function(x) {
+#' @export
+get_resample_perf.rfe <- function(x, ...) {
   if(x$control$returnResamp == "none")
     stop("use returnResamp == 'none' in trainControl()", call. = FALSE)
   out <- subset(x$resample, Variables == x$bestSubset)
   out[, c(x$perfNames, "Resample")]
 }
 
-get_resample_perf.sbf <- function(x) {
+#' @export
+get_resample_perf.sbf <- function(x, ...) {
   if(x$control$returnResamp == "none")
     stop("use returnResamp == 'none' in trainControl()", call. = FALSE)
   x$resample
 }
 
-get_resample_perf.safs <- function(x) {
+#' @export
+get_resample_perf.safs <- function(x, ...) {
   out <- subset(x$external, Iter == x$optIter)
   out[, !(names(out) %in% "Iter")]
 }
 
-get_resample_perf.gafs <- function(x) {
+#' @export
+get_resample_perf.gafs <- function(x, ...) {
   out <- subset(x$external, Iter == x$optIter)
   out[, !(names(out) %in% "Iter")]
 }
-
-
 
 
 #' Sequences of Variables for Tuning
