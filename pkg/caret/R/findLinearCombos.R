@@ -9,12 +9,14 @@ enumLC.default <- function(object, ...)
    stop(paste('enumLC does not support ', class(object), 'objects'))
 }
 
+#' @export
 enumLC.matrix <- function(object, ...)
 {
    # factor the matrix using QR decomposition and then process it
    internalEnumLC(qr(object))
 }
 
+#' @export
 enumLC.lm <- function(object, ...)
 {
    # extract the QR decomposition and the process it
@@ -22,6 +24,7 @@ enumLC.lm <- function(object, ...)
 }
 
 #' @importFrom stats lm
+#' @export
 enumLC.formula <- function(object, ...)
 {
    # create an lm fit object from the formula, and then call
@@ -74,7 +77,6 @@ internalEnumLC <- function(qrObj, ...)
 #' numbers that can be removed to counter the linear combinations}
 #' @author Kirk Mettler and Jed Wing (\code{enumLC}) and Max Kuhn
 #' (\code{findLinearCombos})
-#' @seealso \code{\link[subselect:trim.matrix]{trim.matrix}}
 #' @keywords manip
 #' @examples
 #'

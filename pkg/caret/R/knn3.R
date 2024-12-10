@@ -54,9 +54,10 @@
 #' cl <- factor(c(rep("s",25), rep("c",25), rep("v",25)))
 #' knn3Train(train, test, cl, k = 5, prob = TRUE)
 #'
-#' @export knn3
+#' @export
 "knn3" <- function(x, ...)   UseMethod("knn3")
 
+#' @export
 knn3.default <- function(x, ...)
 {
    if(!inherits(x, "formula"))  stop("knn3 only implemented for formula objects")

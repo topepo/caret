@@ -1,5 +1,6 @@
 
-predict.PLS <- function(object, newdata, 
+#' @export
+predict.PLS <- function(object, newdata,
    ncomp = NULL,
    type = ifelse(object$isRegression, "response", "class"), ...)
 {
@@ -7,7 +8,7 @@ predict.PLS <- function(object, newdata,
    if(is.null(ncomp) & !is.null(object$bestIter$.ncomp)) ncomp <- object$bestIter$.ncomp
 
    if(is.null(ncomp)) stop("the number of components must be given")
-   
+
    # adapted from the pls package
    if(object$isRegression & c(type %in% c("class", "prob")))
       stop("cannot get a class estimate if the original y was not a factor")
@@ -29,25 +30,25 @@ predict.PLS <- function(object, newdata,
    for (i in seq(along.with = 1:ncomp)) BInt[1, , i] <- object$Ymeans - object$Xmeans %*% B[, , i]
    B <- BInt
    # stop
-   
-   # from predict.mvr in pls package   
+
+   # from predict.mvr in pls package
    dPred <- dim(B)
    dPred[1] <- dim(newdata)[1]
    dnPred <- dimnames(B)
    dnPred[1] <- dimnames(newdata)[1]
    pred <- array(dim = dPred, dimnames = dnPred)
-   predY <- sweep(newdata %*% B[-1, , ncomp], 2, B[1, , ncomp], "+")   
+   predY <- sweep(newdata %*% B[-1, , ncomp], 2, B[1, , ncomp], "+")
    # stop
- 
+
    out <- switch(
       type,
       response = predY,
-      class = 
+      class =
          {
             classNum <- apply(predY, 1, which.max)
-            factor(object$yLevels[classNum], levels = object$yLevels)   
+            factor(object$yLevels[classNum], levels = object$yLevels)
          },
-      # use softmax technique here         
+      # use softmax technique here
       prob =  t(apply(predY, 1, function(data) exp(data)/sum(exp(data)))))
 
    out

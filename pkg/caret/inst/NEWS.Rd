@@ -3,6 +3,13 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/topepo/caret/issues/#1}{(issue #1)}}
 
+\section{Changes in version 7.0-1}{
+ \itemize{
+   \item CRAN mandated update.
+   \item caret will be 20 years old in March of 2026. The package is currently in maintenance mode; the author will fix bugs and make CRAN releases as needed, but there will not be any major features in the package. It will stay on CRAN long-term; it's not going away.
+  }
+}
+
 \section{Changes in version 6.0-94}{
   \itemize{
    \item Bug fix in how some S3 signatures were designed (for R-devel).
@@ -192,7 +199,7 @@
     \item Switched to non-formula interface in ranger. Also, another tuning parameter was added to ranger (\code{splitrule}) that can be used to change the splitting procedure and includes extremely randomized trees. This requires version 0.8.0 of the \cpkg{ranger} package. \issue{581}
     \item A simple "null model" was added. For classification, it predictors using the most prevalent level and, for regression, fits an intercept only model. \issue{694}
     \item A function \code{thresholder} was added to analyze the resample results for two class problems to choose an appropriate probability cutoff a la \url{https://topepo.github.io/caret//using-your-own-model-in-train.html#Illustration5} \issue{224}.
-    \item Two neural network models (containing a single hidden layers) using \code{tensorflow}/\code{keras} were added.  \code{mlpKerasDecay} uses standard weight decay while \code{mlpKerasDropout} uses dropout for regularization. Both use RMSProp optimizer and have a lot of tuning parameters. Two additional models, \code{mlpKerasDecayCost} and \code{mlpKerasDropoutCost}, are classification only and perform cost-sensitive learning. Note that these models will not run in parallel using \cpkg{caret}'s parallelism and also will not give reproducible results from run-to-run (see \url{https://github.com/rstudio/keras/issues/42}).
+    \item Two neural network models (containing a single hidden layers) using \code{tensorflow}/\code{keras} were added.  \code{mlpKerasDecay} uses standard weight decay while \code{mlpKerasDropout} uses dropout for regularization. Both use RMSProp optimizer and have a lot of tuning parameters. Two additional models, \code{mlpKerasDecayCost} and \code{mlpKerasDropoutCost}, are classification only and perform cost-sensitive learning. Note that these models will not run in parallel using \cpkg{caret}'s parallelism and also will not give reproducible results from run-to-run (see \url{https://github.com/rstudio/keras3/issues/42}).
     \item The range for one parameter (\code{gamma}) was modified in the \code{mlpSGD} model code.
     \item A bug in classification models with all missing predictions was fixed (found by andzandz11). \issue{684}
     \item A bug preventing preprocessing to work properly when the preprocessing transformations are related to individual columns only fixed by Mateusz Kobos in \issue{679}.

@@ -65,6 +65,7 @@ function(data, reference, negative = levels(reference)[-1], na.rm = TRUE, ...)
   spec
 }
 
+#' @export
 "specificity.matrix" <-
   function(data, negative = rownames(data)[-1], ...)
 {

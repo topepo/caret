@@ -44,7 +44,7 @@ simple matrix, data frame or other type (e.g. sparse matrix) but
 must have column names (see Details below). Preprocessing using
 the \code{preProcess} argument only supports matrices or data
 frames. When using the recipe method, \code{x} should be an
-unprepared \code{\link{recipe}} object that describes the model
+unprepared [recipes::recipe()] object that describes the model
 terms (i.e. outcome, predictors, etc.) as well as any
 pre-processing that should be done to the data. This is an
 alternative approach to specifying the model. Note that, when
