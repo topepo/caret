@@ -977,6 +977,7 @@ ggplot.resamples <-
             environment = NULL,
             models = data$models,
             metric = data$metric[1],
+            statistic = 'CI',
             conf.level = 0.95,
             ...) {
     plotData <- melt(data$values, id.vars = "Resample")
@@ -985,22 +986,36 @@ ggplot.resamples <-
     plotData$Metric <- unlist(lapply(tmp, function(x) x[2]))
     plotData <- subset(plotData, Model %in% models & Metric  %in% metric)
     plotData$variable <- factor(as.character(plotData$variable))
-
     plotData <- split(plotData, plotData$variable)
-    results <- lapply(
-      plotData,
-      function(x, cl) {
-        ttest <- try(t.test(x$value, conf.level = cl, ...), silent = TRUE)
-        if (class(ttest)[1] == "htest") {
-          out <- c(ttest$conf.int, ttest$estimate)
-          names(out) <-
-            c("LowerLimit", "UpperLimit", "Estimate")
-        } else
-          out <-
-            c(LowerLimit = NA_real_, UpperLimit = NA_real_, Estimate = mean(x$value, na.rm = TRUE))
-        out
-      },
-      cl = conf.level)
+
+    if(statistic=='CI') {
+      results <- lapply(
+        plotData,
+        function(x, cl) {
+          ttest <- try(t.test(x$value, conf.level = cl),
+                       silent = TRUE)
+          if (class(ttest)[1] == "htest") {
+            out <- c(ttest$conf.int, ttest$estimate)
+            names(out) <-
+              c("LowerLimit", "UpperLimit", "Estimate")
+          } else
+            out <- rep(NA, 3)
+          out
+        },
+        cl = conf.level)
+    } else if (statistic=='IR') {
+      results <- lapply(
+        plotData,
+        function(x, cl) {
+          out<-c(as.numeric(quantile(x$value, probs = c(0.25, 0.75), na.rm=TRUE)), median(x$value, na.rm=TRUE))
+            names(out) <-c("LowerLimit", "UpperLimit", "Estimate")
+          out
+        },
+        cl = conf.level)
+    } else {
+      stop(paste0("Unknown value for statistic parameter - valid values are 'CI' and 'IR'."))
+    }
+
     results <- do.call("rbind", results)
     results <- as.data.frame(results, stringsAsFactors = TRUE)
     tmp <- strsplit(rownames(results), "~", fixed = TRUE)
