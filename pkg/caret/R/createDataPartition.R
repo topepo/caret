@@ -115,6 +115,7 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
   if(groups < 2) groups <- 2
 
   if(is.numeric(y)) {
+    if (anyNA(y)) stop("y must not have NA values")
     y <- cut(y,
              unique(quantile(y, probs = seq(0, 1, length.out = groups))),
              include.lowest = TRUE)
