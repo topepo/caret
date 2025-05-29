@@ -151,7 +151,6 @@ nzv <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE, names =
 
 zeroVar <- function(x)
 {
-  x <- x[,colnames(x) != ".outcome", drop = FALSE]
   which(apply(x, 2, function(x) length(unique(x)) < 2))
 }
 
@@ -159,8 +158,15 @@ zeroVar <- function(x)
 #' @export
 checkConditionalX <- function(x, y)
 {
-  x$.outcome <- y
-  unique(unlist(dlply(x, .(.outcome), zeroVar)))
+  # force NA to be sorted last & kept by split()
+  if (anyNA(y)) {
+    y <- factor(y)
+    old_levels <- levels(y)
+    new_level <- paste0(tail(old_levels, 1L), "___")
+    levels(y) <- c(old_levels, new_level)
+    y[is.na(y)] <- new_level
+  }
+  unique(unlist(lapply(split(x, y), zeroVar)))
 }
 
 #' @rdname nearZeroVar

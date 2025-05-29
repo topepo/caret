@@ -106,6 +106,7 @@
 #' folds <- groupKFold(groups)
 #' lapply(folds, function(x, y) table(y[x]), y = groups)
 #' @export createDataPartition
+#' @importFrom utils tail
 createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = min(5, length(y))){
   if(inherits(y, "Surv")) y <- y[,"time"]
   out <- vector(mode = "list", times)
@@ -131,6 +132,15 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
                     paste(names(xtab)[xtab  == 1], sep = "", collapse = ", "),
                     ") and these will be selected for the sample"))
     }
+    # force missing level to come last
+    if (anyNA(y)) {
+      na_sentinel <- paste0(tail(names(xtab), 1L), "___")
+      if (is.factor(y)) {
+        # trying to write a level that's not "registered" won't work.
+        levels(y) <- c(levels(y), na_sentinel)
+      }
+      y[is.na(y)] <- na_sentinel
+    }
   }
 
   subsample <- function(dat, p) {
@@ -144,8 +154,8 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
   }
 
   for (j in 1:times) {
-    tmp <- dlply(data.frame(y = y, index = seq(along.with = y)),
-                 .(y), subsample, p = p)
+    tmp <- lapply(split(data.frame(y = y, index = seq_along(y)), y),
+                  subsample, p = p)
     tmp <- sort(as.vector(unlist(tmp)))
     out[[j]] <- tmp
   }
