@@ -202,7 +202,7 @@ function(object, newdata = NULL, type = "class", ...)
                       },
                       y = newdata)
      }
-   pred <- rbind.fill(pred)
+   pred <- bind_rows(pred)
    out <- ddply(pred, .(sample),
                 function(x) colMeans(x[,seq(along.with = object$levels)], na.rm = TRUE))
    out <- out[,-1,drop = FALSE]

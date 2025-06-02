@@ -160,7 +160,7 @@ reformat <- function(x) {
 }
 
 modelTable <- lapply(mods, reformat)
-modelTable <- rbind.fill(modelTable)
+modelTable <- bind_rows(modelTable)
 modelTable$Type[grepl(",", modelTable$Type)] <- "Dual Use"
 modelTable$Method <- names(mods)
 colnames(modelTable)[2] <- "method Argument Value"

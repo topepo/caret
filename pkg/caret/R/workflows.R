@@ -195,7 +195,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
                                          allParam[modIndex,,drop = FALSE],
                                          all = TRUE)
           }
-          tmpPred <- rbind.fill(tmpPred)
+          tmpPred <- bind_rows(tmpPred)
           tmpPred$Resample <- names(resampleIndex)[iter]
         } else tmpPred <- NULL
 
@@ -258,9 +258,9 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
       list(resamples = thisResample, pred = tmpPred, resamplesExtra = thisResampleExtra)
     }
 
-  resamples <- rbind.fill(result[names(result) == "resamples"])
-  pred <- rbind.fill(result[names(result) == "pred"])
-  resamplesExtra <- rbind.fill(result[names(result) == "resamplesExtra"])
+  resamples <- bind_rows(result[names(result) == "resamples"])
+  pred <- bind_rows(result[names(result) == "pred"])
+  resamplesExtra <- bind_rows(result[names(result) == "resamplesExtra"])
   if(ctrl$method %in% c("boot632", "optimism_boot", "boot_all"))
   {
     perfNames <- names(resamples)
@@ -563,8 +563,8 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...) {
     list(resamples = resamples, selectedVars = sbfResults$variables, pred = tmpPred)
   }
 
-  resamples <- rbind.fill(result[names(result) == "resamples"])
-  pred <- if(ctrl$saveDetails) rbind.fill(result[names(result) == "pred"]) else NULL
+  resamples <- bind_rows(result[names(result) == "resamples"])
+  pred <- if(ctrl$saveDetails) bind_rows(result[names(result) == "pred"]) else NULL
   performance <- MeanSD(resamples[,!grepl("Resample", colnames(resamples)),drop = FALSE])
 
   if(ctrl$method %in% c("boot632")) {

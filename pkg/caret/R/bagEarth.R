@@ -271,7 +271,7 @@
 
     if (is.null(newdata)) {
       pred <- lapply(object$fit, getTrainPred)
-      pred <- rbind.fill(pred)
+      pred <- bind_rows(pred)
       out <-
         ddply(pred, .(sample), function(x)
           object$summary(x$pred))$V1

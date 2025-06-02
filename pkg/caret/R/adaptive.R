@@ -187,7 +187,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                                  allParam[modIndex,,drop = FALSE],
                                                  all = TRUE)
                   }
-                  tmpPred <- rbind.fill(tmpPred)
+                  tmpPred <- bind_rows(tmpPred)
                   tmpPred$Resample <- names(resampleIndex)[iter]
                 } else tmpPred <- NULL
 
@@ -243,8 +243,8 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
             } ## end initial loop over resamples and models
 
 
-  init_resamp <- rbind.fill(init_result[names(init_result) == "resamples"])
-  init_pred <- if(keep_pred)  rbind.fill(init_result[names(init_result) == "pred"]) else NULL
+  init_resamp <- bind_rows(init_result[names(init_result) == "resamples"])
+  init_pred <- if(keep_pred)  bind_rows(init_result[names(init_result) == "pred"]) else NULL
   names(init_resamp) <- gsub("^\\.", "", names(init_resamp))
   if(any(!complete.cases(init_resamp[,!grepl("^cell|Resample", colnames(init_resamp)),drop = FALSE])))
     warning("There were missing values in resampled performance measures.")
@@ -412,7 +412,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                                                     allParam[modIndex,,drop = FALSE],
                                                                     all = TRUE)
                                      }
-                                     tmpPred <- rbind.fill(tmpPred)
+                                     tmpPred <- bind_rows(tmpPred)
                                      tmpPred$Resample <- names(resampleIndex)[iter]
                                    } else tmpPred <- NULL
 
@@ -701,7 +701,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                                    allParam[modIndex,,drop = FALSE],
                                                    all = TRUE)
                     }
-                    tmpPred <- rbind.fill(tmpPred)
+                    tmpPred <- bind_rows(tmpPred)
                     tmpPred$Resample <- names(resampleIndex)[iter]
                   } else tmpPred <- NULL
 
@@ -757,8 +757,8 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
               } ## end final loop to finish cleanup resamples and models
     init_result <- c(init_result, final_result)
   }
-  resamples <- rbind.fill(init_result[names(init_result) == "resamples"])
-  pred <- if(keep_pred)  rbind.fill(init_result[names(init_result) == "pred"]) else NULL
+  resamples <- bind_rows(init_result[names(init_result) == "resamples"])
+  pred <- if(keep_pred)  bind_rows(init_result[names(init_result) == "pred"]) else NULL
   names(resamples) <- gsub("^\\.", "", names(resamples))
 
   if(any(!complete.cases(resamples[,!grepl("^cell|Resample", colnames(resamples)),drop = FALSE])))

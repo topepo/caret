@@ -592,8 +592,8 @@ sbf_rec <- function(rec, data, ctrl, lev, ...) {
       list(resamples = resamples, selectedVars = sbfResults$variables, pred = tmpPred)
     }
 
-  resamples <- rbind.fill(result[names(result) == "resamples"])
-  pred <- if(ctrl$saveDetails) rbind.fill(result[names(result) == "pred"]) else NULL
+  resamples <- bind_rows(result[names(result) == "resamples"])
+  pred <- if(ctrl$saveDetails) bind_rows(result[names(result) == "pred"]) else NULL
   performance <- MeanSD(resamples[,!grepl("Resample", colnames(resamples)),drop = FALSE])
 
   if(ctrl$method %in% c("boot632")) {

@@ -77,7 +77,7 @@ oob_pred.sbf <- function(x, average = TRUE, ...) {
   if(is.null(x$pred))
     stop("re-fit the model using 'rfeControl(saveDetails=TRUE)'")
   prd <- x$pred[names(x$pred) == "predictions"]
-  prd <- rbind.fill(prd)
+  prd <- bind_rows(prd)
   prd <- prd[!duplicated(prd),]
 
   if(average) prd <- get_averages(x, prd, bycol = "rowIndex")
@@ -107,7 +107,7 @@ oob_pred.list <- function(x, direction = "wide", what = "both", ...) {
   nms <- names(oob)
   if(is.null(nms)) nms <- well_numbered("Model", length(oob))
   for(i in seq(along.with = nms)) oob[[i]]$.label <- nms[i]
-  oob <- rbind.fill(oob)
+  oob <- bind_rows(oob)
   if(length(table(table(oob$n))) > 1)
     stop("Some averages have different sample sizes than others")
   if(direction == "wide") {

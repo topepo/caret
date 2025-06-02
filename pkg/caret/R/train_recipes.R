@@ -522,7 +522,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
                                          allParam[modIndex,,drop = FALSE],
                                          all = TRUE)
           }
-          tmpPred <- rbind.fill(tmpPred)
+          tmpPred <- bind_rows(tmpPred)
           tmpPred$Resample <- names(resampleIndex)[iter]
         } else tmpPred <- NULL
 
@@ -582,9 +582,9 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
       list(resamples = thisResample, pred = tmpPred, resamplesExtra = thisResampleExtra)
     }
 
-  resamples <- rbind.fill(result[names(result) == "resamples"])
-  pred <- rbind.fill(result[names(result) == "pred"])
-  resamplesExtra <- rbind.fill(result[names(result) == "resamplesExtra"])
+  resamples <- bind_rows(result[names(result) == "resamples"])
+  pred <- bind_rows(result[names(result) == "pred"])
+  resamplesExtra <- bind_rows(result[names(result) == "resamplesExtra"])
   if(ctrl$method %in% c("boot632", "optimism_boot", "boot_all")) {
     perfNames <- names(resamples)
     perfNames <- perfNames[!(perfNames %in% c("Resample", as.character(method$parameters$parameter)))]
@@ -788,7 +788,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                                                  allParam[modIndex,,drop = FALSE],
                                                  all = TRUE)
                   }
-                  tmpPred <- rbind.fill(tmpPred)
+                  tmpPred <- bind_rows(tmpPred)
                   tmpPred$Resample <- names(resampleIndex)[iter]
                 } else tmpPred <- NULL
 
@@ -838,8 +838,8 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
             } ## end initial loop over resamples and models
 
 
-  init_resamp <- rbind.fill(init_result[names(init_result) == "resamples"])
-  init_pred <- if(keep_pred)  rbind.fill(init_result[names(init_result) == "pred"]) else NULL
+  init_resamp <- bind_rows(init_result[names(init_result) == "resamples"])
+  init_pred <- if(keep_pred)  bind_rows(init_result[names(init_result) == "pred"]) else NULL
   names(init_resamp) <- gsub("^\\.", "", names(init_resamp))
   if(any(!complete.cases(init_resamp[,!grepl("^cell|Resample", colnames(init_resamp)),drop = FALSE])))
     warning("There were missing values in resampled performance measures.")
@@ -967,7 +967,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                                                      allParam[modIndex,,drop = FALSE],
                                                      all = TRUE)
                       }
-                      tmpPred <- rbind.fill(tmpPred)
+                      tmpPred <- bind_rows(tmpPred)
                       tmpPred$Resample <- names(resampleIndex)[iter]
                     } else tmpPred <- NULL
 
@@ -1212,7 +1212,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                                                    allParam[modIndex,,drop = FALSE],
                                                    all = TRUE)
                     }
-                    tmpPred <- rbind.fill(tmpPred)
+                    tmpPred <- bind_rows(tmpPred)
                     tmpPred$Resample <- names(resampleIndex)[iter]
                   } else tmpPred <- NULL
 
@@ -1266,8 +1266,8 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
     init_result <- c(init_result, final_result)
   }
 
-  resamples <- rbind.fill(init_result[names(init_result) == "resamples"])
-  pred <- if(keep_pred)  rbind.fill(init_result[names(init_result) == "pred"]) else NULL
+  resamples <- bind_rows(init_result[names(init_result) == "resamples"])
+  pred <- if(keep_pred)  bind_rows(init_result[names(init_result) == "pred"]) else NULL
   names(resamples) <- gsub("^\\.", "", names(resamples))
 
   if(any(!complete.cases(resamples[,!grepl("^cell|Resample", colnames(resamples)),drop = FALSE])))
