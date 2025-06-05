@@ -249,11 +249,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
   if(any(!complete.cases(init_resamp[,!grepl("^cell|Resample", colnames(init_resamp)),drop = FALSE])))
     warning("There were missing values in resampled performance measures.")
 
-  init_summary <- ddply(init_resamp[,!grepl("^cell|Resample", colnames(init_resamp)),drop = FALSE],
-                        ## TODO check this for seq models
-                        gsub("^\\.", "", colnames(info$loop)),
-                        MeanSD,
-                        exclude = gsub("^\\.", "", colnames(info$loop)))
+  init_summary <- dplyr_mean_sd(init_resamp, by_cols = gsub("^\\.", "", colnames(info$loop)))
 
   new_info <- info
   num_left <- Inf
@@ -764,11 +760,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
   if(any(!complete.cases(resamples[,!grepl("^cell|Resample", colnames(resamples)),drop = FALSE])))
     warning("There were missing values in resampled performance measures.")
 
-  out <- ddply(resamples[,!grepl("^cell|Resample", colnames(resamples)),drop = FALSE],
-               ## TODO check this for seq models
-               gsub("^\\.", "", colnames(info$loop)),
-               MeanSD,
-               exclude = gsub("^\\.", "", colnames(info$loop)))
+  out <- dplyr_mean_sd(resamples, by_cols = gsub("^\\.", "", colnames(info$loop)))
   num_resamp <- ddply(resamples,
                       gsub("^\\.", "", colnames(info$loop)),
                       function(x) c(.B = nrow(x)))

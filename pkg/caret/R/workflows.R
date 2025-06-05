@@ -32,6 +32,33 @@ MeanSD <- function(x, exclude = NULL)
   out
 }
 
+#' We want compatibility with MeanSD, which requires the output columns to
+#'   have no suffix, which isn't possible directly because it would require
+#'   something like list(`` = mean) [0-length variable name] to work. If
+#'   we exclude .names in this call, though, the next across(everything())
+#'   will use the already-summarized variables from this first call. If we
+#'   instead use a single across() with multiple .fns, we need one more
+#'   post-processing step for consistency with MeanSD, namely to relocate()
+#'   the columns in the expected order [mean columns, then sd columns].
+#'   Therefore choose this route, which gets the column order right up
+#'   front, while using a sufficiently 'unusual' suffix to avoid any
+#'   potential name collisions.
+#' @importFrom dplyr %>% across arrange ends_with everything matches pick
+#'   rename_with select summarize
+#' @importFrom stats sd
+#' @noRd
+dplyr_mean_sd <- function(x, by_cols) {
+  x %>%
+    select(-matches("^cell|Resample")) %>%
+    summarize(
+      .by = {{by_cols}},
+      across(everything(), function(x) mean(x, na.rm = TRUE), .names = "{.col}XXGROUPING_MEAN"),
+      across(!ends_with("XXGROUPING_MEAN"), function(x) sd(x, na.rm = TRUE), .names = "{.col}SD")
+    ) %>%
+    arrange(pick({{by_cols}})) %>%
+    rename_with(function(x) gsub("XXGROUPING_MEAN$", "", x))
+}
+
 #' @rdname caret-internal
 #' @export
 expandParameters <- function(fixed, seq)
@@ -289,11 +316,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
     warning("There were missing values in resampled performance measures.")
   }
 
-  out <- ddply(resamples[,!grepl("^cell|Resample", colnames(resamples)),drop = FALSE],
-               ## TODO check this for seq models
-               gsub("^\\.", "", colnames(info$loop)),
-               MeanSD,
-               exclude = gsub("^\\.", "", colnames(info$loop)))
+  out <- dplyr_mean_sd(resamples, by_cols = gsub("^\\.", "", colnames(info$loop)))
 
   if(ctrl$method %in% c("boot632", "boot_all")) {
     out <- merge(out, apparent)
@@ -723,10 +746,7 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
     resamples <- subset(resamples, Resample != "AllData")
   }
 
-  externPerf <- plyr::ddply(resamples[,!grepl("\\.cell|Resample", colnames(resamples)),drop = FALSE],
-                      .(Variables),
-                      MeanSD,
-                      exclude = "Variables")
+  externPerf <- dplyr_mean_sd(resamples, by_cols = "Variables")
   if(ctrl$method %in% c("boot632"))
   {
     externPerf <- merge(externPerf, apparent)

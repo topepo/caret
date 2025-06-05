@@ -2014,11 +2014,7 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
     resamples <- subset(resamples, Resample != "AllData")
   }
 
-  externPerf <-
-    plyr::ddply(resamples[, !grepl("\\.cell|Resample", colnames(resamples)), drop = FALSE],
-                .(Variables),
-                MeanSD,
-                exclude = "Variables")
+  externPerf <- dplyr_mean_sd(resamples, by_cols = "Variables")
   numVars <-
     plyr::ddply(resamples[, !grepl("\\.cell|Resample", colnames(resamples)), drop = FALSE],
                 .(Variables),
