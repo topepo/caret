@@ -378,16 +378,20 @@ as.matrix.confusionMatrix <- function(x, what = "xtabs", ...){
   out
 }
 
+#' @importFrom dplyr %>% arrange summarize
 sbf_resampledCM <- function(x) {
   lev <- x$obsLevels
   if("pred" %in% names(x) && !is.null(x$pred)) {
     resampledCM <- do.call("rbind", x$pred[names(x$pred) == "predictions"])
-    resampledCM <- ddply(resampledCM, .(Resample), function(y) flatTable(pred  = y$pred, obs = y$obs))
+    resampledCM <- resampledCM %>%
+      summarize(data.frame(as.list(flatTable(pred, obs))), .by = "Resample") %>%
+      arrange(Resample)
   } else stop(paste("When there are 50+ classes, the function does not automatically pre-compute the",
                     "resampled confusion matrices. You can get them when the option",
                     "`saveDetails = TRUE`."))
   resampledCM
 }
+#' @importFrom dplyr %>% arrange summarize
 rfe_resampledCM <- function(x) {
   lev <- x$obsLevels
   if("resample" %in% names(x) &&
@@ -397,7 +401,9 @@ rfe_resampledCM <- function(x) {
     resampledCM <- resampledCM[,grepl("\\.cell[1-9]", names(resampledCM))]
   } else {
     if(!is.null(x$pred)) {
-      resampledCM <- ddply(x$pred, .(Resample), function(y) flatTable(pred  = y$pred, obs = y$obs))
+      resampledCM <- x$pred %>%
+        summarize(data.frame(as.list(flatTable(pred, obs))), .by = "Resample") %>%
+        arrange(Resample)
     } else {
       if(length(lev) > 50)
         stop(paste("When there are 50+ classes, `the function does not automatically pre-compute the",
@@ -407,6 +413,7 @@ rfe_resampledCM <- function(x) {
   }
   resampledCM
 }
+#' @importFrom dplyr %>% arrange summarize
 train_resampledCM <- function(x) {
   if(x$modelType == "Regression")
     stop("confusion matrices are only valid for classification models")
@@ -422,7 +429,9 @@ train_resampledCM <- function(x) {
     resampledCM <- merge(x$bestTune, x$resampledCM)
   } else {
     if(!is.null(x$pred)) {
-      resampledCM <- ddply(merge(x$pred, x$bestTune), .(Resample), function(y) flatTable(pred  = y$pred, obs = y$obs))
+      resampledCM <- merge(x$pred, x$bestTune) %>%
+        summarize(data.frame(as.list(flatTable(pred, obs))), .by = "Resample") %>%
+        arrange(Resample)
     } else {
       if(length(lev) > 50)
         stop(paste("When there are 50+ classes, `train` does not automatically pre-compute the",

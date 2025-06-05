@@ -648,6 +648,7 @@ looSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...) {
 
 ################################################################################################
 
+#' @importFrom dplyr %>% arrange summarize
 #' @import foreach
 nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
 {
@@ -698,7 +699,9 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
     }
 
     if(is.factor(y) && length(lev) <= 50) {
-      cells <- plyr::ddply(rfeResults$pred, .(Variables), function(x) flatTable(x$pred, x$obs))
+      cells <- rfeResults$pred %>%
+        summarize(data.frame(as.list(flatTable(pred, obs))), .by = "Variables") %>%
+        arrange(Variables)
       resamples <- merge(resamples, cells)
     }
 

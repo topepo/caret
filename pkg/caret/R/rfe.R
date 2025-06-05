@@ -1851,6 +1851,7 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
   }
 
 
+#' @importFrom dplyr %>% arrange summarize
 rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
   loadNamespace("caret")
   loadNamespace("recipes")
@@ -1978,9 +1979,9 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
       }
 
       if (is.factor(y) && length(lev) <= 50) {
-        cells <-
-          plyr::ddply(rfeResults$pred, .(Variables), function(x)
-            flatTable(x$pred, x$obs))
+        cells <- rfeResults$pred %>%
+          summarize(data.frame(as.list(flatTable(pred, obs))), .by = "Variables") %>%
+          arrange(Variables)
         resamples <- merge(resamples, cells)
       }
 
