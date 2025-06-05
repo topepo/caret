@@ -267,6 +267,7 @@ print.bag <- function (x, ...)
 
 #' @rdname bag
 #' @method summary bag
+#' @importFrom dplyr %>% arrange summarize
 #' @importFrom stats quantile
 #' @export
 "summary.bag" <-
@@ -280,7 +281,9 @@ print.bag <- function (x, ...)
       key <- NULL
       oobData <- lapply(object$fits, function(x) x$oob)
       oobData <- do.call("rbind", oobData)
-      oobResults <- ddply(oobData, .(key), defaultSummary)
+      oobResults <- oobData %>%
+        summarize(data.frame(as.list(defaultSummary(.data))), .by = "key") %>%
+        arrange(key)
       oobResults$key <- NULL
       oobStat <- apply(oobResults, 2,
                        function(x) quantile(x,
