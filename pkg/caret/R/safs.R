@@ -55,6 +55,7 @@ sa_bl_correct0 <- function(x) {
 
 sa_bl_correct <- function(x) ddply(x, .(Resample), sa_bl_correct0 )
 
+#' @importFrom dplyr summarize
 #' @importFrom utils getFromNamespace
 #' @export
 print.safs <- function (x, top = 5,
@@ -77,7 +78,8 @@ print.safs <- function (x, top = 5,
 
   cat("Maximum search iterations:", max(x$iters), "\n")
   if(x$control$improve < Inf) {
-    num_re <- ddply(x$internal, "Resample", function(x) sum(x$Note == "Restart"))
+    num_re <- x$internal %>%
+      summarize(.by = "Resample", V1 = sum(Note == "Restart"))
     cat("Restart after ", x$control$improve, " iterations without improvement (",
         round(mean(num_re$V1), 1), " restarts on average)\n", sep = "")
   }
@@ -1081,6 +1083,8 @@ sa_select <- function(x, y,
 ###################################################################
 ##
 
+#' @importFrom dplyr arrange pick summarize
+#' @importFrom rlang sym
 #' @importFrom stats update
 #' @method plot safs
 #' @export
@@ -1113,11 +1117,10 @@ plot.safs <- function(x,
     }
   }
   if(output == "data") out <- plot_dat
-  plot_dat <- if(both_estimates)
-    ddply(plot_dat, c("Iter", "Estimate"),
-          function(x) c(Mean = mean(x[, metric]))) else
-            ddply(plot_dat, c("Iter"),
-                  function(x) c(Mean = mean(x[, metric])))
+  by_cols <- if(both_estimates) c("Iter", "Estimate") else c("Iter")
+  plot_dat <- plot_dat %>%
+    summarize(Mean = mean(!!sym(metric)), .by = {{by_cols}}) %>%
+    arrange(pick({{by_cols}}))
 
   if(output == "ggplot") {
     out <- if(both_estimates)

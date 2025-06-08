@@ -384,6 +384,7 @@ oob_train_rec <- function(rec, dat, info, method,
   result
 }
 
+#' @importFrom dplyr across arrange everything matches pick select summarize
 train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
   loadNamespace("caret")
   loadNamespace("recipes")
@@ -626,12 +627,11 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
 
   if(ctrl$method %in% c("optimism_boot", "boot_all")) {
     out <- merge(out, apparent)
-    out <- merge(out, ddply(resamplesExtra[, !grepl("Resample", colnames(resamplesExtra)), drop = FALSE],
-                            colnames(info$loop),
-                            function(df, exclude) {
-                              colMeans(df[, setdiff(colnames(df), exclude), drop = FALSE])
-                            },
-                            exclude = colnames(info$loop)))
+    group_cols <- colnames(info$loop)
+    out <- merge(out, resamplesExtra %>%
+                        select(-matches("Resample")) %>%
+                        summarize(.by = {{group_cols}}, across(everything(), mean)) %>%
+                        arrange(pick({{group_cols}})))
     sapply(perfNames, function(perfName) {
       optimism <- out[ , paste0(perfName, "Orig")] - out[ , paste0(perfName, "Boot")]
       final_estimate <- out[ , paste0(perfName, "Apparent")] + optimism
@@ -649,6 +649,8 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
   list(performance = out, resamples = resamples, predictions = if(keep_pred) pred else NULL)
 }
 
+#' @importFrom dplyr arrange n pick summarize
+#' @noRd
 train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize, testing = FALSE, ...) {
   loadNamespace("caret")
 
@@ -1277,9 +1279,10 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                gsub("^\\.", "", colnames(info$loop)),
                MeanSD,
                exclude = gsub("^\\.", "", colnames(info$loop)))
-  num_resamp <- ddply(resamples,
-                      gsub("^\\.", "", colnames(info$loop)),
-                      function(x) c(Num_Resamples = nrow(x)))
+  by_cols <- gsub("^\\.", "", colnames(info$loop))
+  num_resamp <- resamples %>%
+    summarize(Num_Resamples = n(), .by = {{by_cols}}) %>%
+    arrange(pick({{by_cols}}))
   out <- merge(out, num_resamp)
 
   list(performance = out, resamples = resamples, predictions = if(keep_pred) pred else NULL)

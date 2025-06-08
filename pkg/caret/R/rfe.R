@@ -1850,7 +1850,8 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
     out
   }
 
-
+#' @importFrom dplyr arrange n summarize
+#' @noRd
 rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
   loadNamespace("caret")
   loadNamespace("recipes")
@@ -2019,10 +2020,9 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
                 .(Variables),
                 MeanSD,
                 exclude = "Variables")
-  numVars <-
-    plyr::ddply(resamples[, !grepl("\\.cell|Resample", colnames(resamples)), drop = FALSE],
-                .(Variables),
-                function(x) c(Num_Resamples = nrow(x)))
+  numVars <- resamples %>%
+    summarize(.by = "Variables", Num_Resamples = n()) %>%
+    arrange(Variables)
 
   externPerf <- merge(externPerf, numVars, by = "Variables", all = TRUE)
   externPerf <- externPerf[order(externPerf$Variables),, drop = FALSE]

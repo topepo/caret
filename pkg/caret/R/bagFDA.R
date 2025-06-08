@@ -164,6 +164,7 @@ function (x, ...)
 
 
 #' @rdname predict.bagEarth
+#' @importFrom dplyr across arrange summarize
 #' @importFrom stats predict
 #' @export
 "predict.bagFDA" <-
@@ -203,8 +204,12 @@ function(object, newdata = NULL, type = "class", ...)
                       y = newdata)
      }
    pred <- rbind.fill(pred)
-   out <- ddply(pred, .(sample),
-                function(x) colMeans(x[,seq(along.with = object$levels)], na.rm = TRUE))
+   out <- pred %>%
+     summarize(
+       .by = "sample",
+       across(seq_along(object$levels), function(x) mean(x, na.rm = TRUE))
+     ) %>%
+     arrange(sample)
    out <- out[,-1,drop = FALSE]
    rownames(out) <- rownames(newdata)
    predClass <- object$levels[apply(out, 1, which.max)]

@@ -64,6 +64,7 @@ Depends:
     lattice (>= 0.20),
     R (>= 3.2.0)
 Imports:
+    dplyr,
     e1071,
     foreach,
     grDevices,
@@ -74,6 +75,7 @@ Imports:
     pROC,
     recipes (>= 0.1.10),
     reshape2,
+    rlang,
     stats,
     stats4,
     utils,
@@ -82,7 +84,6 @@ Suggests:
     BradleyTerry2,
     covr,
     Cubist,
-    dplyr,
     earth (>= 2.2-3),
     ellipse,
     fastICA,

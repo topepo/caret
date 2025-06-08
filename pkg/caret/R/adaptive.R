@@ -2,6 +2,7 @@
 ##       add na.action to all eval functions
 ##       change multiplier and alpha to confidence
 
+#' @importFrom dplyr arrange n pick summarize
 #' @importFrom stats complete.cases
 #' @importFrom utils head
 #' @import foreach
@@ -764,14 +765,15 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
   if(any(!complete.cases(resamples[,!grepl("^cell|Resample", colnames(resamples)),drop = FALSE])))
     warning("There were missing values in resampled performance measures.")
 
+  by_cols <- gsub("^\\.", "", colnames(info$loop))
   out <- ddply(resamples[,!grepl("^cell|Resample", colnames(resamples)),drop = FALSE],
                ## TODO check this for seq models
                gsub("^\\.", "", colnames(info$loop)),
                MeanSD,
                exclude = gsub("^\\.", "", colnames(info$loop)))
-  num_resamp <- ddply(resamples,
-                      gsub("^\\.", "", colnames(info$loop)),
-                      function(x) c(.B = nrow(x)))
+  num_resamp <- resamples %>%
+    summarize(.by = {{by_cols}}, .B = n()) %>%
+    arrange(pick({{by_cols}}))
   out <- merge(out, num_resamp)
 
   list(performance = out, resamples = resamples, predictions = if(keep_pred) pred else NULL)

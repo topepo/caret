@@ -307,12 +307,11 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
 
   if(ctrl$method %in% c("optimism_boot", "boot_all")) {
     out <- merge(out, apparent)
-    out <- merge(out, ddply(resamplesExtra[, !grepl("Resample", colnames(resamplesExtra)), drop = FALSE],
-                            colnames(info$loop),
-                            function(df, exclude) {
-                              colMeans(df[, setdiff(colnames(df), exclude), drop = FALSE])
-                            },
-                            exclude = colnames(info$loop)))
+    by_cols <- colnames(info$loop)
+    out <- merge(out, resamplesExtra %>%
+                        select(-matches("Resample")) %>%
+                        summarize(.by = {{by_cols}}, across(everything(), mean)) %>%
+                        arrange(pick({{by_cols}})))
     sapply(perfNames, function(perfName) {
       optimism <- out[ , paste0(perfName, "Orig")] - out[ , paste0(perfName, "Boot")]
       final_estimate <- out[ , paste0(perfName, "Apparent")] + optimism
