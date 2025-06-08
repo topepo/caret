@@ -48,7 +48,7 @@
 #' are Youden's J statistic and the distance to the best possible cutoff (i.e.
 #' perfect sensitivity and specificity.
 #' @export
-#' @importFrom plyr ddply
+#' @importFrom plyr ddply .
 #' @examples 
 #' \dontrun{
 #' set.seed(2444)

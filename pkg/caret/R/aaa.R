@@ -206,6 +206,17 @@ if(getRversion() >= "2.15.1"){
   ## ggplot.calibration: no visible binding for global variable 'Lower'
   ## ggplot.calibration: no visible binding for global variable 'Upper'
   utils::globalVariables(c('midpoint', 'Percent', 'Lower', 'Upper'))
+
+  ## bwplot.resamples: no visible binding for global variable 'value'
+  ## bwplot.resamples: no visible binding for global variable 'Median'
+  ## get_averages.rfe: no visible global function definition for 'across'
+  ## get_averages.rfe: no visible binding for global variable 'pred'
+  ## get_averages.rfe: no visible binding for global variable 'full'
+  ## pickVars: no visible binding for global variable 'Overall'
+  ## process_diffs: no visible binding for global variable 'Var1'
+  ## process_diffs: no visible binding for global variable 'Var2'
+  ## skunked: no visible binding for global variable 'V1'
+  utils::globalVariables(c('value', 'Median', 'pred', 'full', 'Overall', 'Var1', 'Var2', 'V1'))
 }
 
 ###################################################################

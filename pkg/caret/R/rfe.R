@@ -789,14 +789,13 @@ pickSizeTolerance <- function(x, metric, tol = 1.5, maximize)
 }
 
 #' @rdname caretFuncs
+#' @importFrom dplyr %>% arrange desc summarize
 #' @export
 pickVars <- function(y, size)
 {
-  finalImp <- ddply(y[, c("Overall", "var")],
-                    .(var),
-                    function(x) mean(x$Overall, na.rm = TRUE))
-  names(finalImp)[2] <- "Overall"
-  finalImp <- finalImp[order(finalImp$Overall, decreasing = TRUE),]
+  finalImp <- y %>%
+    summarize(Overall = mean(Overall, na.rm = TRUE), .by = var) %>%
+    arrange(desc(Overall))
   as.character(finalImp$var[1:size])
 }
 
@@ -1317,12 +1316,13 @@ xyplot.rfe <- function(x,
 #' @export
 predictors.rfe <- function(x, ...) x$optVariables
 
+#' @importFrom dplyr %>% filter summarize
 #' @export
 varImp.rfe <- function(object, drop = FALSE, ...)
 {
-  imp <- subset(object$variables, Variables == object$optsize)
-  imp <- ddply(imp[, c("Overall", "var")], .(var), function(x) mean(x$Overall, rm.na = TRUE))
-  names(imp)[2] <- "Overall"
+  imp <- object$variables %>%
+    filter(Variables == object$optsize) %>%
+    summarize(Overall = mean(Overall, na.rm = TRUE), .by = var)
 
   if(drop) imp <- subset(imp, var %in% object$optVar)
   rownames(imp) <- imp$var

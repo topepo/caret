@@ -16,6 +16,7 @@ get_fitness_differences <- function(pnames, subsets, fitness, label) {
   melt(apply(signs, 2, snr, y = fitness))
 }
 
+#' @importFrom dplyr %>% arrange summarize
 #' @importFrom stats reshape
 process_diffs <- function(x, pnames) {
   is_null_res <- vapply(x, is.null, logical(1))
@@ -23,9 +24,10 @@ process_diffs <- function(x, pnames) {
     stop("Not enough results to compute differences")
   }
   x <- x[!is_null_res]
-  x <- do.call("rbind", x)
-  mean_diffs <- ddply(x, c("Var1", "Var2"),
-                      function(x) c(mean = mean(x$value, na.rm = TRUE)))
+  x <- do.call(rbind, x)
+  mean_diffs <- x %>%
+    summarize(mean = mean(value, na.rm = TRUE), .by = c("Var1", "Var2")) %>%
+    arrange(Var1, Var2)
 
   mean_diffs <- reshape(mean_diffs, direction = "wide",
                         v.names = "mean",

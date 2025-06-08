@@ -796,6 +796,7 @@ get_id <- function(x, param) {
   params
 }
 
+#' @importFrom dplyr %>% arrange summarize sym
 #' @importFrom stats qnorm
 bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
   if (!requireNamespace("BradleyTerry2")) stop("BradleyTerry2 package missing")
@@ -804,13 +805,15 @@ bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
   rs <- rs[order(rs$Resample, rs$model_id),]
   rs <- rs[!is.na(rs[, metric]), ]
   scores <- ddply(rs, .(Resample), get_scores, maximize = maximize, metric = metric)
-  scores <- ddply(scores, .(player1, player2), function(x) c(win1 = sum(x$win1),
-                                                             win2 = sum(x$win2)))
+  scores <- scores %>%
+    summarize(win1 = sum(win1), win2 = sum(win2), .by = c("player1", "player2")) %>%
+    arrange(player1, player2)
   if(length(unique(rs$Resample)) >= 5) {
     tmp_scores <- try(skunked(scores), silent = TRUE)
     if (inherits(tmp_scores, "try-error")) scores <- tmp_scores
   }
-  best_mod <- ddply(rs, .(model_id), function(x, metric) mean(x[, metric], na.rm = TRUE), metric = metric)
+  best_mod <- rs %>%
+    summarize(V1 = mean(!!sym(metric), na.rm = TRUE), .by = "model_id")
   best_mod <- if(maximize)
     best_mod$model_id[which.max(best_mod$V1)] else
       best_mod$model_id[which.min(best_mod$V1)]
@@ -844,11 +847,12 @@ get_scores <- function(x, maximize = NULL, metric = NULL)
 }
 
 ## check to see if there are any models/players that never won a game
+#' @importFrom dplyr summarize
 skunked <- function(scores, verbose = TRUE) {
-  p1 <- ddply(scores, .(player1), function(x) sum(x$win1))
-  p2 <- ddply(scores, .(player2), function(x) sum(x$win2))
+  p1 <- summarize(scores, .by = player1, V1 = sum(win1))
+  p2 <- summarize(scores, .by = player2, V1 = sum(win2))
   names(p1)[1] <- names(p2)[1] <- "playa"
-  by_player <- ddply(rbind(p1, p2), .(playa), function(x) c(wins = sum(x$V1)))
+  by_player <- summarize(rbind(p1, p2), .by = playa, wins = sum(V1))
   if(any(by_player$wins < 1)) {
     skunked <- as.character(by_player$playa[by_player$wins < 1])
     if(verbose) cat("o", sum(by_player$wins < 1),
@@ -865,13 +869,12 @@ skunked <- function(scores, verbose = TRUE) {
 }
 
 
+#' @importFrom dplyr %>% summarize sym
 #' @importFrom stats cor t.test na.omit
 gls_eval <- function(x, metric, maximize, alpha = 0.05) {
   x <- x[!is.na(x[, metric]), ]
-  means <- ddply(x[, c(metric, "model_id")],
-                 .(model_id),
-                 function(x, met) c(mean = mean(x[, met], na.rm = TRUE)),
-                 met = metric)
+  means <- x %>%
+    summarize(mean = mean(!!sym(metric), na.rm = TRUE), .by = "model_id")
   means <- if(maximize) means[order(-means$mean),] else means[order(means$mean),]
   levs <- as.character(means$model_id)
   bl <- levs[1]
@@ -901,13 +904,12 @@ gls_eval <- function(x, metric, maximize, alpha = 0.05) {
   unique(c(bl, keepers))
 }
 
+#' @importFrom dplyr %>% summarize sym
 #' @importFrom stats4 coef
 #' @importFrom stats t.test lm pt
 seq_eval <- function(x, metric, maximize, alpha = 0.05) {
-  means <- ddply(x[, c(metric, "model_id")],
-                 .(model_id),
-                 function(x, met) c(mean = mean(x[, met], na.rm = TRUE)),
-                 met = metric)
+  means <- x %>%
+    summarize(mean = mean(!!sym(metric), na.rm = TRUE), .by = "model_id")
   means <- if(maximize) means[order(-means$mean),] else means[order(means$mean),]
   levs <- as.character(means$model_id)
   bl <- levs[1]

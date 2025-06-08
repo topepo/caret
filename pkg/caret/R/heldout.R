@@ -139,70 +139,64 @@ oob_pred.list <- function(x, direction = "wide", what = "both", ...) {
 
 get_averages <- function (x, ...) UseMethod("get_averages")
 
+#' @importFrom dplyr %>% across all_of arrange mutate pick summarize
 #' @importFrom stats complete.cases
 get_averages.train <- function(x, prd, bycol = "rowIndex", ...) {
   if("Regression" %in% x$modelType) {
-    out <- ddply(prd, bycol,
-                 function(x) c(colMeans(x[, c("pred", "obs")])))
+    out <- summarize(prd, across(all_of(c("pred", "obs")), mean), .by = {{bycol}})
   } else {
-    out <- ddply(prd, bycol,
-                 function(x) c(pred = char_mode(x$pred),
-                               obs = as.character(x$obs)[1]))
+    out <- summarize(prd, pred = char_mode(pred), obs = as.character(obs[1L]), .by = {{bycol}})
     if(x$control$classProbs) {
       lev <- train_lev(x)
-      cprobs <- ddply(prd, bycol,
-                      function(x, lev) c(colMeans(x[, lev])),
-                      lev = lev)
+      cprobs <- summarize(prd, across(all_of(lev), mean), .by = {{bycol}})
       out <- merge(out, cprobs)
     }
   }
-  n <- ddply(prd, bycol, function(x) c(n = sum(complete.cases(x))))
+  n <- prd %>%
+    mutate(full = complete.cases(prd)) %>%
+    summarize(prd, n = sum(full), .by = {{bycol}})
   out <- merge(out, n)
-  out
+  arrange(out, pick({{bycol}}))
 }
 
+#' @importFrom dplyr %>% across all_of arrange mutate pick summarize
 #' @importFrom stats complete.cases
 get_averages.rfe <- function(x, prd, bycol = "rowIndex", ...) {
   if(is.null(x$obsLevels)) {
-    out <- ddply(prd, bycol,
-                 function(x) c(colMeans(x[, c("pred", "obs")])))
+    out <- summarize(prd, across(all_of(c("pred", "obs")), mean), .by = {{bycol}})
   } else {
-    out <- ddply(prd, bycol,
-                 function(x) c(pred = char_mode(x$pred),
-                               obs = as.character(x$obs)[1]))
+    out <- summarize(prd, pred = char_mode(pred), obs = as.character(obs[1L]), .by = {{bycol}})
     if(all(x$obsLevels %in% colnames(prd))) {
       lev <- x$obsLevels
-      cprobs <- ddply(prd, bycol,
-                      function(x, lev) c(colMeans(x[, lev])),
-                      lev = lev)
+      cprobs <- summarize(prd, across(all_of(lev), mean), .by = {{bycol}})
       out <- merge(out, cprobs)
     }
   }
-  n <- ddply(prd, bycol, function(x) c(n = sum(complete.cases(x))))
+  n <- prd %>%
+    mutate(full = complete.cases(prd)) %>%
+    summarize(prd, n = sum(full), .by = {{bycol}})
   out <- merge(out, n)
-  out
+  arrange(out, pick({{bycol}}))
 }
 
+#' @importFrom dplyr %>% across all_of arrange mutate pick summarize
 #' @importFrom stats complete.cases
 get_averages.sbf <- function(x, prd, bycol = "rowIndex", ...) {
   if(is.null(x$obsLevels)) {
-    out <- ddply(prd, bycol,
-                 function(x) c(colMeans(x[, c("pred", "obs")])))
+    out <- summarize(prd, across(all_of(c("pred", "obs")), mean), .by = {{bycol}})
   } else {
-    out <- ddply(prd, bycol,
-                 function(x) c(pred = char_mode(x$pred),
-                               obs = as.character(x$obs)[1]))
+    out <- summarize(prd, pred = char_mode(pred), obs = as.character(obs[1L]), .by = {{bycol}})
     if(all(x$obsLevels %in% colnames(prd))) {
       lev <- x$obsLevels
-      cprobs <- ddply(prd, bycol,
-                      function(x, lev) c(colMeans(x[, lev])),
-                      lev = lev)
+      cprobs <- summarize(prd, across(all_of(lev), mean), .by = {{bycol}})
       out <- merge(out, cprobs)
     }
   }
-  n <- ddply(prd, bycol, function(x) c(n = sum(complete.cases(x))))
+  n <- prd %>%
+    mutate(full = complete.cases(prd)) %>%
+    summarize(prd, n = sum(full), .by = {{bycol}})
   out <- merge(out, n)
-  out
+  arrange(out, pick({{bycol}}))
 }
 
 ###################################################################

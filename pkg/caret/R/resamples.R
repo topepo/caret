@@ -862,6 +862,7 @@ densityplot.resamples <- function (x, data = NULL, models = x$models, metric = x
 }
 
 #' @rdname xyplot.resamples
+#' @importFrom dplyr arrange filter summarize
 #' @importFrom stats as.formula
 #' @method bwplot resamples
 #' @export
@@ -872,10 +873,10 @@ bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metr
   plotData$Model <- unlist(lapply(tmp, function(x) x[1]))
   plotData$Metric <- unlist(lapply(tmp, function(x) x[2]))
   plotData <- subset(plotData, Model %in% models & Metric  %in% metric)
-  avPerf <- ddply(subset(plotData, Metric == metric[1]),
-                  .(Model),
-                  function(x) c(Median = median(x$value, na.rm = TRUE)))
-  avPerf <- avPerf[order(avPerf$Median),]
+  avPerf <- plotData %>%
+    filter(Metric == metric[1L]) %>%
+    summarize(Median = median(value, na.rm = TRUE), .by = Model) %>%
+    arrange(Median)
   plotData$Model <- factor(as.character(plotData$Model),
                            levels = avPerf$Model)
   metricVals <- unique(plotData$Metric)
@@ -886,6 +887,7 @@ bwplot.resamples <- function (x, data = NULL, models = x$models, metric = x$metr
 }
 
 #' @rdname xyplot.resamples
+#' @importFrom dplyr arrange filter summarize
 #' @importFrom stats aggregate as.formula median t.test
 #' @method dotplot resamples
 #' @export
@@ -922,10 +924,10 @@ dotplot.resamples <- function (x, data = NULL, models = x$models, metric = x$met
   results$Metric <- unlist(lapply(tmp, function(x) x[2]))
   ## to avoid "no visible binding for global variable 'Var2'"
   Var2 <- NULL
-  avPerf <- ddply(subset(results, Metric == metric[1] & Var2 == "Estimate"),
-                  .(Model),
-                  function(x) c(Median = median(x$value, na.rm = TRUE)))
-  avPerf <- avPerf[order(avPerf$Median),]
+  avPerf <- results %>%
+    filter(Metric == metric[1L], Var2 == "Estimate") %>%
+    summarize(Median = median(value, na.rm = TRUE), .by = Model) %>%
+    arrange(Median)
   results$Model <- factor(as.character(results$Model),
                           levels = avPerf$Model)
   metricVals <- unique(results$Metric)

@@ -494,6 +494,7 @@ safsControl <- function(functions = NULL,
 safs <- function (x, ...) UseMethod("safs")
 
 #' @rdname safs
+#' @importFrom dplyr %>% arrange pick summarize
 #' @export
 "safs.default" <-
   function(x, y,
@@ -637,11 +638,9 @@ safs <- function (x, ...) UseMethod("safs")
                           lvl = classLevels,
                           ...)
 
-    averages <- ddply(external, .(Iter),
-                      function(x, nms) {
-                        apply(x[, perfNames, drop = FALSE], 2, mean)
-                      },
-                      nms = perfNames)
+    averages <- external %>%
+      summarize(.by = "Iter", across(all_of(perfNames), mean)) %>%
+      arrange(Iter)
 
     if(!is.null(safsControl$functions$selectIter)) {
       best_index <- safsControl$functions$selectIter(averages,
@@ -1315,6 +1314,7 @@ update.safs <- function(object, iter, x, y, ...) {
 #' @rdname safs
 #' @method safs recipe
 #' @import recipes
+#' @importFrom dplyr %>% across all_of arrange summarize
 #' @export
 "safs.recipe" <-
   function(x, data,
@@ -1532,12 +1532,9 @@ update.safs <- function(object, iter, x, y, ...) {
       lvl = classLevels,
       ...
     )
-    averages <-
-      ddply(external, .(Iter),
-            function(x, nms) {
-              apply(x[, perfNames, drop = FALSE], 2, mean)
-            },
-            nms = perfNames)
+    averages <- external %>%
+      summarize(.by = "Iter", across(all_of(perfNames), mean)) %>%
+      arrange(Iter)
 
     if(!is.null(safsControl$functions$selectIter)) {
       best_index <-

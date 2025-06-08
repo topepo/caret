@@ -950,6 +950,7 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' rf_search
 #'   }
 #'
+#' @importFrom dplyr %>% across all_of arrange summarize
 #' @export gafs.default
 "gafs.default" <-
   function(x, y,
@@ -1119,11 +1120,10 @@ gafs <- function (x, ...) UseMethod("gafs")
       genParallel = gafsControl$genParallel,
       ...
       )
-    averages <- ddply(external, .(Iter),
-                      function(x, nms) {
-                        apply(x[, perfNames, drop = FALSE], 2, mean)
-                      },
-                      nms = perfNames)
+    averages <- external %>%
+      summarize(.by = "Iter", across(all_of(perfNames), mean)) %>%
+      arrange(Iter)
+
     if(!is.null(gafsControl$functions$selectIter)) {
       best_index <-
         gafsControl$functions$selectIter(
@@ -1230,6 +1230,7 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' summary(plot_data)
 #'     }
 #'
+#' @importFrom dplyr %>% arrange pick summarize
 #' @export plot.gafs
 plot.gafs <- function(x,
                       metric = x$control$metric["external"],
@@ -1259,11 +1260,10 @@ plot.gafs <- function(x,
     }
   }
   if(output == "data") out <- plot_dat
-  plot_dat <- if(both_estimates)
-    ddply(plot_dat, c("Iter", "Estimate"),
-          function(x) c(Mean = mean(x[, metric]))) else
-            ddply(plot_dat, c("Iter"),
-                  function(x) c(Mean = mean(x[, metric])))
+  bycols <- if (both_estimates) c("Iter", "Estimate") else "Iter"
+  plot_dat <- plot_dat %>%
+    summarize(Mean = mean(!!sym(metric)), .by = bycols) %>%
+    arrange(pick(bycols))
 
   if(output == "ggplot") {
     out <- if(both_estimates)
@@ -1446,6 +1446,7 @@ update.gafs <- function(object, iter, x, y, ...) {
 
 #' @rdname gafs.default
 #' @method gafs recipe
+#' @importFrom dplyr %>% arrange pick summarize
 #' @export
 "gafs.recipe" <-
   function(x, data,
@@ -1649,11 +1650,10 @@ update.gafs <- function(object, iter, x, y, ...) {
       genParallel = gafsControl$genParallel,
       ...
     )
-    averages <- ddply(external, .(Iter),
-                      function(x, nms) {
-                        apply(x[, perfNames, drop = FALSE], 2, mean)
-                      },
-                      nms = perfNames)
+    averages <- external %>%
+      summarize(.by = "Iter", across(all_of(perfNames), mean)) %>%
+      arrange(Iter)
+
     if(!is.null(gafsControl$functions$selectIter)) {
       best_index <-
         gafsControl$functions$selectIter(
