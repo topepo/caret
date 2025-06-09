@@ -41,20 +41,6 @@ sa_func_check <- function(x) {
   }
 }
 
-
-
-sa_bl_correct0 <- function(x) {
-  extras <- c('Best', 'Note', 'Random', 'Prob', 'Iter',
-              'Cycle', 'SinceRestart', 'Size', 'Resample')
-  bl <- x[which.min(x$Iter),]
-  bl <- bl[, !(names(bl) %in% extras)]
-  perf_names <- names(bl)
-  for(i in perf_names) x[, i] <- x[,i] - bl[,i]
-  x
-}
-
-sa_bl_correct <- function(x) ddply(x, .(Resample), sa_bl_correct0 )
-
 #' @importFrom utils getFromNamespace
 #' @export
 print.safs <- function (x, top = 5,

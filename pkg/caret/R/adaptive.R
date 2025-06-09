@@ -933,29 +933,6 @@ seq_eval <- function(x, metric, maximize, alpha = 0.05) {
   unique(c(bl, keepers))
 }
 
-retrospective <- function(x, B = 5, method = "BT", alpha = 0.05) {
-  rs <- x$resample
-  if(!is.factor(rs$Resample)) rs$Resample <- factor(rs$Resample)
-  rs <- subset(rs, as.numeric(Resample) <= B)
-  current_mods <- get_id(rs, as.character(x$modelInfo$param$parameter))
-  #   current_mods <- merge(current_mods, new_loop)
-  rs <- merge(rs, current_mods)
-
-  if(method == "BT") {
-    filtered_mods <- try(bt_eval(rs, metric = x$metric, maximize = x$maximize,
-                                 alpha = alpha),
-                         silent = TRUE)
-  } else {
-    filtered_mods <- try(gls_eval(rs, metric = x$metric, maximize = x$maximize,
-                                  alpha = alpha),
-                         silent = TRUE)
-  }
-
-
-  list(models = filtered_mods, mods = subset(current_mods, model_id %in% filtered_mods),
-       long = rs, wide = long2wide(rs, x$metric))
-}
-
 cccmat <- function(dat) {
   p <- ncol(dat)
   out <- matrix(1, ncol = p, nrow = p)
