@@ -48,6 +48,7 @@
 #' are Youden's J statistic and the distance to the best possible cutoff (i.e.
 #' perfect sensitivity and specificity.
 #' @export
+#' @importFrom dplyr arrange everything mutate pick summarize
 #' @importFrom plyr ddply
 #' @examples 
 #' \dontrun{
@@ -128,14 +129,20 @@ thresholder <- function(x, threshold, final = TRUE, statistics = "all") {
   param <- c("Resample", names(x$bestTune), "prob_threshold")
   
   ## Based on the threshold, recode the predicted classes
-  pred_dat <- ddply(pred_dat, .variables = param, recode)
+  pred_dat <- pred_dat %>%
+    mutate(.by = {{param}}, pred = recode(.data)) %>%
+    arrange(pick({{param}}))
   
   ## Compute statistics per threshold and tuning parameters
-  pred_stats <- ddply(pred_dat, .variables = param, stats)
+  pred_stats <- pred_dat %>%
+    summarize(.by = {{param}}, stats(pred, obs)) %>%
+    arrange(pick({{param}}))
   
   ## Summarize over resamples
-  pred_resamp <- ddply(pred_stats, .variables = param[-1],
-                       summ_stats, statistics)
+  by_cols <- param[-1L]
+  pred_resamp <- pred_stats %>%
+    summarize(.by = {{by_cols}}, summ_stats(pick(everything()), cols = statistics)) %>%
+    arrange(pick({{by_cols}}))
   pred_resamp
 }
 
@@ -150,33 +157,35 @@ expand_preds <- function(df, th, excl = NULL) {
   df
 }
 
-
+#' @importFrom dplyr if_else
+#' @noRd
 recode <- function(dat) {
   lvl <- levels(dat$obs)
-  dat$pred <- ifelse(dat[, lvl[1]] > dat$prob_threshold,
-                     lvl[1], lvl[2])
-  dat$pred <- factor(dat$pred, levels = lvl)
-  dat
+  pred <- if_else(dat[[lvl[1]]] > dat$prob_threshold, lvl[1], lvl[2])
+  factor(pred, levels = lvl)
 }
 
-stats <- function(dat) {
-  tab <- caret::confusionMatrix(dat$pred, dat$obs,
-                                positive = levels(dat$obs)[1])
-  res <- c(tab$byClass, tab$overall[c("Accuracy", "Kappa")])
-  res <- c(res,
-           res["Sensitivity"] + res["Specificity"] - 1,
-           sqrt((res["Sensitivity"] - 1) ^ 2 + (res["Specificity"] - 1) ^ 2))
-  names(res)[-seq_len(length(res) - 2)] <- c("J", "Dist")
+stats <- function(pred, obs) {
+  tab <- caret::confusionMatrix(pred, obs, positive = levels(obs)[1L])
+  res <- data.frame(
+    as.list(c(tab$byClass, tab$overall[c("Accuracy", "Kappa")])),
+    check.names = FALSE
+  )
+  res$J <- res$Sensitivity + res$Specificity - 1
+  res$Dist <- sqrt((res$Sensitivity - 1) ^ 2 + (res$Specificity - 1) ^ 2)
   res
 }
 
 summ_stats <- function(x, cols) {
-  na_cols <- apply(x, 2, function(x) any(is.na(x)))
+  na_cols <- apply(x, 2, anyNA)
   na_col_names <- colnames(x)[na_cols]
   relevant_col_names <- intersect(na_col_names, cols)
   if (length(relevant_col_names) > 0)
     warning("The following columns have missing values (NA), which have been ",
-            "removed: '", paste0(relevant_col_names, collapse = "', '"),
-            "'.\n")
-  colMeans(x[, cols, drop = FALSE], na.rm = TRUE)
+            "removed: ", paste0("'", relevant_col_names, "'", collapse = ", "),
+            ".\n")
+  data.frame(
+    as.list(colMeans(x[, cols, drop = FALSE], na.rm = TRUE)),
+    check.names = FALSE
+  )
 }
