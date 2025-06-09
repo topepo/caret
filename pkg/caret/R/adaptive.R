@@ -796,6 +796,7 @@ get_id <- function(x, param) {
   params
 }
 
+#' @importFrom dplyr %>% .data arrange summarize
 #' @importFrom stats qnorm
 bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
   if (!requireNamespace("BradleyTerry2")) stop("BradleyTerry2 package missing")
@@ -803,7 +804,9 @@ bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
   constant <- qnorm(1 - alpha)
   rs <- rs[order(rs$Resample, rs$model_id),]
   rs <- rs[!is.na(rs[, metric]), ]
-  scores <- ddply(rs, .(Resample), get_scores, maximize = maximize, metric = metric)
+  scores <- rs %>%
+    summarize(.by = "Resample", get_scores(.data, maximize = maximize, metric = metric)) %>%
+    arrange(Resample)
   scores <- ddply(scores, .(player1, player2), function(x) c(win1 = sum(x$win1),
                                                              win2 = sum(x$win2)))
   if(length(unique(rs$Resample)) >= 5) {
