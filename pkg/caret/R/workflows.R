@@ -330,7 +330,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
   list(performance = out, resamples = resamples, predictions = if(keep_pred) pred else NULL)
 }
 
-
+#' @importFrom dplyr arrange everything pick 
 #' @import foreach
 looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing = FALSE, ...)
 {
@@ -461,11 +461,15 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
     }
 
   names(result) <- gsub("^\\.", "", names(result))
-  out <- ddply(result,
-               as.character(method$parameter$parameter),
-               ctrl$summaryFunction,
-               lev = lev,
-               model = method)
+  by_cols <- as.character(method$parameter$parameter)
+  out <- result %>%
+    summarize(
+      .by = {{by_cols}},
+      data.frame(as.list(
+        ctrl$summaryFunction(pick(everything()), lev = lev, model = method)
+      ))
+    ) %>%
+    arrange(pick({{by_cols}}))
   list(performance = out, predictions = result)
 }
 
@@ -648,6 +652,7 @@ looSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...) {
 
 ################################################################################################
 
+#' @importFrom dplyr %>% arrange everything pick summarize
 #' @import foreach
 nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
 {
@@ -686,7 +691,14 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
                           label = names(resampleIndex)[iter],
                           seeds = seeds,
                           ...)
-    resamples <- plyr::ddply(rfeResults$pred, .(Variables), ctrl$functions$summary, lev = lev)
+    resamples <- rfeResults$pred %>%
+      summarize(
+        .by = "Variables",
+        data.frame(as.list(
+          ctrl$functions$summary(pick(everything()), lev = lev)
+        ))
+      ) %>%
+      arrange(Variables)
 
     if(ctrl$saveDetails)
     {
@@ -740,6 +752,7 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
   list(performance = externPerf, everything = result)
 }
 
+#' @importFrom dplyr arrange everything pick summarize
 #' @import foreach
 looRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
 {
@@ -768,7 +781,14 @@ looRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
     rfeResults
   }
   preds <- do.call("rbind", result[names(result) == "pred"])
-  resamples <- ddply(preds, .(Variables), ctrl$functions$summary, lev = lev)
+  resamples <- preds %>%
+    summarize(
+      .by = "Variables",
+      data.frame(as.list(
+        ctrl$functions$summary(pick(everything()), lev = lev)
+      ))
+    ) %>%
+    arrange(Variables)
   list(performance = resamples, everything = result)
 }
 

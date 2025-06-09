@@ -243,6 +243,7 @@
 #' }
 #'
 #' @export predict.bagEarth
+#' @importFrom dplyr arrange summarize
 "predict.bagEarth" <-
   function(object,
            newdata = NULL,
@@ -272,9 +273,9 @@
     if (is.null(newdata)) {
       pred <- lapply(object$fit, getTrainPred)
       pred <- rbind.fill(pred)
-      out <-
-        ddply(pred, .(sample), function(x)
-          object$summary(x$pred))$V1
+      out <- pred %>%
+        summarize(.by = "sample", V1 = object$summary(pred)$V1) %>%
+        arrange(sample)
     } else {
       pred <- lapply(object$fit,
                      function(x, y) {

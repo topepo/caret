@@ -1851,6 +1851,8 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
   }
 
 
+#' @importFrom dplyr %>% arrange everything pick summarize
+#' @noRd
 rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
   loadNamespace("caret")
   loadNamespace("recipes")
@@ -1962,11 +1964,14 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
         seeds = seeds,
         ...
       )
-      resamples <-
-        plyr::ddply(rfeResults$pred,
-                    .(Variables),
-                    ctrl$functions$summary,
-                    lev = lev)
+      resamples <- rfeResults$pred %>%
+        summarize(
+          .by = "Variables",
+          data.frame(as.list(
+            ctrl$functions$summary(pick(everything()), lev = lev)
+          ))
+        ) %>%
+        arrange(Variables)
 
       if (ctrl$saveDetails) {
         rfeResults$pred$Resample <- names(resampleIndex)[iter]
@@ -2040,6 +2045,9 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
   list(performance = externPerf, everything = result)
 }
 
+
+#' @importFrom dplyr %>% arrange everything pick summarize
+#' @noRd
 rfe_rec_loo <- function(rec, data, sizes, ctrl, lev, ...) {
   loadNamespace("caret")
   loadNamespace("recipes")
@@ -2132,8 +2140,14 @@ rfe_rec_loo <- function(rec, data, sizes, ctrl, lev, ...) {
       rfeResults
     }
   preds <- do.call("rbind", result[names(result) == "pred"])
-  resamples <-
-    ddply(preds, .(Variables), ctrl$functions$summary, lev = lev)
+  resamples <- preds %>%
+    summarize(
+      .by = "Variables",
+      data.frame(as.list(
+        ctrl$functions$summary(pick(everything()), lev = lev)
+      ))
+    ) %>%
+    arrange(Variables)
   list(performance = resamples, everything = result)
 }
 

@@ -197,6 +197,8 @@ rec_prob <- function (method, object, newdata = NULL, param = NULL)  {
 }
 
 ## analogous workflows to the originals
+#' @importFrom dplyr arrange everyt
+#' @noRd
 loo_train_rec <- function(rec, dat, info, method,
                           ctrl, lev, testing = FALSE, ...) {
   loadNamespace("caret")
@@ -332,11 +334,15 @@ loo_train_rec <- function(rec, dat, info, method,
             }
 
   names(result) <- gsub("^\\.", "", names(result))
-  out <- ddply(result,
-               as.character(method$parameter$parameter),
-               ctrl$summaryFunction,
-               lev = lev,
-               model = method)
+  by_cols <- as.character(method$parameter$parameter)
+  out <- result %>%
+    summarize(
+      .by = {{by_cols}},
+      data.frame(as.list(
+        ctrl$summaryFunction(pick(everything()), lev = lev, model = method)
+      ))
+    ) %>%
+    arrange(pick({{by_cols}}))
   list(performance = out, predictions = result)
 }
 
