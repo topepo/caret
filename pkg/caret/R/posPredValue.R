@@ -30,8 +30,8 @@ posPredValue <-
   function(data, positive = rownames(data)[1], prevalence = NULL, ...)
 {
   ## "truth" in columns, predictions in rows
-  if(!all.equal(nrow(data), ncol(data))) stop("the table must have nrow = ncol")
-  if(!all.equal(rownames(data), colnames(data))) stop("the table must the same groups in the same order")
+  if(!isTRUE(all.equal(nrow(data), ncol(data)))) stop("the table must have nrow = ncol")
+  if(!isTRUE(all.equal(rownames(data), colnames(data)))) stop("the table must the same groups in the same order")
 
   if(nrow(data) > 2)
     {

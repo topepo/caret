@@ -208,7 +208,7 @@ confusionMatrix.table <- function(data, positive = NULL,
   if(!(mode %in% c("sens_spec", "prec_recall", "everything")))
     stop("`mode` should be either 'sens_spec', 'prec_recall', or 'everything'")
   if(length(dim(data)) != 2) stop("the table must have two dimensions")
-  if(!all.equal(nrow(data), ncol(data))) stop("the table must nrow = ncol")
+  if(!isTRUE(all.equal(nrow(data), ncol(data)))) stop("the table must nrow = ncol")
   if(!isTRUE(all.equal(rownames(data), colnames(data)))) stop("the table must the same classes in the same order")
   if(!is.character(positive) & !is.null(positive)) stop("positive argument must be character")
 
