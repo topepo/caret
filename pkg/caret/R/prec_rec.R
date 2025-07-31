@@ -91,8 +91,8 @@ recall <- function(data, ...) UseMethod("recall")
 #' @rdname recall
 #' @export
 "recall.table" <- function(data, relevant = rownames(data)[1], ...){
-  if(!all.equal(nrow(data), ncol(data))) stop("the table must have nrow = ncol")
-  if(!all.equal(rownames(data), colnames(data))) stop("the table must the same groups in the same order")
+  if(!isTRUE(all.equal(nrow(data), ncol(data)))) stop("the table must have nrow = ncol")
+  if(!isTRUE(all.equal(rownames(data), colnames(data)))) stop("the table must the same groups in the same order")
 
   if(nrow(data) > 2) {
     tmp <- data
@@ -163,9 +163,9 @@ precision.default <- function(data, reference, relevant = levels(reference)[1],
 #' @rdname recall
 #' @export
 precision.table <- function (data, relevant = rownames(data)[1], ...) {
-  if (!all.equal(nrow(data), ncol(data)))
+  if (!isTRUE(all.equal(nrow(data), ncol(data))))
     stop("the table must have nrow = ncol")
-  if (!all.equal(rownames(data), colnames(data)))
+  if (!isTRUE(all.equal(rownames(data), colnames(data))))
     stop("the table must the same groups in the same order")
   if (nrow(data) > 2) {
     tmp <- data
