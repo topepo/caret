@@ -111,7 +111,7 @@ lift.default <- function(x, ...) stop("'x' should be a formula")
 
 #' @rdname lift
 #' @method lift formula
-#' @importFrom dplyr arrange everything pick summarize
+#' @importFrom dplyr arrange everything pick reframe
 #' @export
 lift.formula <- function(x, data = NULL,
                          class = NULL,
@@ -392,7 +392,7 @@ utils::globalVariables(c("CumEventPct", "CumTestedPct",
 #' @rdname lift
 #' @param mapping,environment  Not used (required for \code{ggplot} consistency).
 #' @method ggplot lift
-#' @importFrom dplyr arrange everything filter pick summarize
+#' @importFrom dplyr arrange everything filter pick reframe
 #' @export
 ggplot.lift <- function (data = NULL, mapping = NULL, plot = "gain", values = NULL, ...,
                  environment = NULL) {
