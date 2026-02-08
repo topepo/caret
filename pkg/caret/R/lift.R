@@ -111,6 +111,7 @@ lift.default <- function(x, ...) stop("'x' should be a formula")
 
 #' @rdname lift
 #' @method lift formula
+#' @importFrom dplyr arrange everything pick reframe
 #' @export
 lift.formula <- function(x, data = NULL,
                          class = NULL,
@@ -158,7 +159,9 @@ lift.formula <- function(x, data = NULL,
   splitVars <- names(liftData)[!(names(liftData) %in% c("liftClassVar", "liftProbVar"))]
 
   if(is.null(class)) class <- levels(liftData$liftClassVar)[1]
-  plotData <- ddply(liftData, splitVars, liftCalc, class = class, cuts = cuts)
+  plotData <- liftData %>%
+    reframe(.by = {{splitVars}}, liftCalc(pick(everything()), class = class, cuts = cuts)) %>%
+    arrange(pick({{splitVars}}))
   if(!is.null(labels)) {
     plotData$originalName <- plotData$liftModelVar
     plotData$liftModelVar <- as.character(plotData$liftModelVar)
@@ -389,6 +392,7 @@ utils::globalVariables(c("CumEventPct", "CumTestedPct",
 #' @rdname lift
 #' @param mapping,environment  Not used (required for \code{ggplot} consistency).
 #' @method ggplot lift
+#' @importFrom dplyr arrange everything filter pick reframe
 #' @export
 ggplot.lift <- function (data = NULL, mapping = NULL, plot = "gain", values = NULL, ...,
                  environment = NULL) {
@@ -418,8 +422,10 @@ ggplot.lift <- function (data = NULL, mapping = NULL, plot = "gain", values = NU
     else
       res + geom_line(aes(col = Model))
     if(!is.null(values)) {
-      ref_values <- ddply(data$data, .(Model), get_ref_point, v = values)
-      ref_values <- ref_values[!is.na(ref_values$CumTestedPct),]
+      ref_values <- data$data %>%
+        reframe(.by = "Model", get_ref_point(pick(everything()), v = values)) %>%
+        arrange(Model) %>%
+        filter(!is.na(CumTestedPct))
       if(nrow(ref_values) > 0) {
         if(nmod > 1) {
           res <- res +
@@ -464,7 +470,7 @@ get_ref_point <- function(dat, v, window = 5) {
   res <- data.frame(CumEventPct = v,
                     CumTestedPct = NA)
 
-  for(i in seq(along.with = v)) {
+  for(i in seq_along(v)) {
     nearest <- which.min((y - v[i])^2)
     index <- max(1, nearest - window):min(length(y), nearest + window)
     res$CumTestedPct[i] <-
