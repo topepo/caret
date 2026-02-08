@@ -160,7 +160,7 @@ lift.formula <- function(x, data = NULL,
 
   if(is.null(class)) class <- levels(liftData$liftClassVar)[1]
   plotData <- liftData %>%
-    summarize(.by = {{splitVars}}, liftCalc(pick(everything()), class = class, cuts = cuts)) %>%
+    reframe(.by = {{splitVars}}, liftCalc(pick(everything()), class = class, cuts = cuts)) %>%
     arrange(pick({{splitVars}}))
   if(!is.null(labels)) {
     plotData$originalName <- plotData$liftModelVar
@@ -423,7 +423,7 @@ ggplot.lift <- function (data = NULL, mapping = NULL, plot = "gain", values = NU
       res + geom_line(aes(col = Model))
     if(!is.null(values)) {
       ref_values <- data$data %>%
-        summarize(.by = "Model", get_ref_point(pick(everything()), v = values)) %>%
+        reframe(.by = "Model", get_ref_point(pick(everything()), v = values)) %>%
         arrange(Model) %>%
         filter(!is.na(CumTestedPct))
       if(nrow(ref_values) > 0) {
