@@ -114,6 +114,7 @@ calibration.default <- function(x, ...) stop("'x' should be a formula")
 
 #' @rdname calibration
 #' @method calibration formula
+#' @importFrom dplyr .data arrange pick reframe
 #' @export
 calibration.formula <- function(x, data = NULL, class = NULL, cuts = 11, subset = TRUE, lattice.options = NULL, ...)
 {
@@ -148,7 +149,9 @@ calibration.formula <- function(x, data = NULL, class = NULL, cuts = 11, subset 
   splitVars <- names(calibData)[!(names(calibData) %in% c("calibClassVar", "calibProbVar"))]
 
   if(is.null(class)) class <- levels(calibData$calibClassVar)[1]
-  plotData <- ddply(calibData, splitVars, calibCalc, class = class, cuts = cuts)
+  plotData <- calibData %>%
+    reframe(.by = {{splitVars}}, calibCalc(.data, class = class, cuts = cuts)) %>%
+    arrange(pick({{splitVars}}))
   out <- list(data = plotData, cuts = cuts, class = class, probNames = probNames,
               call = match.call())
   class(out) <- "calibration"
@@ -167,7 +170,9 @@ print.calibration <- function(x, ...)
   invisible(x)
 }
 
-#' @importFrom stats binom.test
+utils::globalVariables("is_this_class")
+#' @importFrom dplyr arrange mutate n summarize
+#' @importFrom stats binom.test setNames
 calibCalc <- function(x, class = levels(obs)[1], cuts = 11) {
   if(length(cuts) == 1) {
     num_cuts <- cuts
@@ -180,21 +185,25 @@ calibCalc <- function(x, class = levels(obs)[1], cuts = 11) {
                          bin = cut(x$calibProbVar, cuts, include.lowest = TRUE),
                          class = x$calibClassVar)
 
-  dataPoints <- ddply(binData,
-                      .(bin),
-                      function(x, cls) {
-                        if(nrow(x) > 0) {
-                          tmp <- binom.test(x = sum(x$class == cls), n = nrow(x))
-                          out <- c(Percent = mean(x$class == cls)*100,
-                                   Lower  = tmp$conf.int[1]*100,
-                                   Upper  = tmp$conf.int[2]*100,
-                                   Count = sum(x$class == cls))
-                        } else out <- c(Percent = NA, Lower  = NA,
-                                        Upper  = NA, Count = 0)
-                        out
-                      },
-                      cls = class,
-                      .drop = FALSE)
+  dataPoints <- binData %>%
+    mutate(is_this_class = class == !!class) %>%
+    summarize(
+      .by = "bin",
+      Percent = mean(is_this_class) * 100,
+      setNames(
+        data.frame(as.list(binom.test(sum(is_this_class), n())$conf.int * 100)),
+        c("Lower", "Upper")
+      ),
+      Count = sum(is_this_class)
+    )
+  missing_levels <- setdiff(levels(dataPoints$bin), unique(dataPoints$bin))
+  if (length(missing_levels) > 0L) {
+    dataPoints <- rbind(
+      dataPoints,
+      data.frame(bin = missing_levels, Percent = NA, Lower = NA, Upper = NA, Count = 0L)
+    )
+  }
+  dataPoints <- arrange(dataPoints, bin)
   dataPoints$midpoint <- NA
   for(i in 2:length(cuts))
     dataPoints$midpoint[i-1] <- .5*(cuts[i] + cuts[i-1]) * 100
