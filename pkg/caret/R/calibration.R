@@ -114,7 +114,7 @@ calibration.default <- function(x, ...) stop("'x' should be a formula")
 
 #' @rdname calibration
 #' @method calibration formula
-#' @importFrom dplyr .data arrange pick summarize
+#' @importFrom dplyr .data arrange pick reframe
 #' @export
 calibration.formula <- function(x, data = NULL, class = NULL, cuts = 11, subset = TRUE, lattice.options = NULL, ...)
 {
@@ -150,7 +150,7 @@ calibration.formula <- function(x, data = NULL, class = NULL, cuts = 11, subset 
 
   if(is.null(class)) class <- levels(calibData$calibClassVar)[1]
   plotData <- calibData %>%
-    summarize(.by = {{splitVars}}, calibCalc(.data, class = class, cuts = cuts)) %>%
+    reframe(.by = {{splitVars}}, calibCalc(.data, class = class, cuts = cuts)) %>%
     arrange(pick({{splitVars}}))
   out <- list(data = plotData, cuts = cuts, class = class, probNames = probNames,
               call = match.call())
