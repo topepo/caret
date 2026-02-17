@@ -171,19 +171,56 @@ bagEarthStats <- function(x) getModelInfo("bagEarth", regex = FALSE)[[1]]$oob(x)
 
 #' @importFrom stats complete.cases cor
 #' @export
-R2 <- function(pred, obs, formula = "corr", na.rm = FALSE)
+R2 <- function(pred, obs, formula = "corr", na.rm = FALSE, weights = NULL)
 {
   n <- sum(complete.cases(pred))
-  switch(formula,
-         corr = cor(obs, pred, use = ifelse(na.rm, "complete.obs", "everything"))^2,
-         traditional = 1 - (sum((obs-pred)^2, na.rm = na.rm)/((n-1)*var(obs, na.rm = na.rm))))
+  if(is.null(weights)) {
+    switch(formula,
+           corr = cor(obs, pred, use = ifelse(na.rm, "complete.obs", "everything"))^2,
+           traditional = 1 - (sum((obs-pred)^2, na.rm = na.rm)/((n-1)*var(obs, na.rm = na.rm))))
+  } else {
+    if(length(weights) != length(pred)) stop("`weights` must have the same length as `pred`")
+    if(na.rm) {
+      good <- complete.cases(pred, obs, weights)
+      pred <- pred[good]
+      obs <- obs[good]
+      weights <- weights[good]
+    } else {
+      if(any(!complete.cases(pred, obs, weights))) return(NA_real_)
+    }
+    sum_w <- sum(weights)
+    if(sum_w <= 0) return(NA_real_)
+    w_obs <- weighted.mean(obs, weights)
+    switch(formula,
+           corr = {
+             w_pred <- weighted.mean(pred, weights)
+             var_obs <- sum(weights * (obs - w_obs)^2)/sum_w
+             var_pred <- sum(weights * (pred - w_pred)^2)/sum_w
+             if(var_obs <= 0 || var_pred <= 0) NA_real_ else {
+               cov_w <- sum(weights * (obs - w_obs) * (pred - w_pred))/sum_w
+               (cov_w/sqrt(var_obs * var_pred))^2
+             }
+           },
+           traditional = {
+             sst <- sum(weights * (obs - w_obs)^2)
+             if(sst <= 0) NA_real_ else 1 - (sum(weights * (obs - pred)^2)/sst)
+           })
+  }
 }
 
 #' @export
-RMSE <- function(pred, obs, na.rm = FALSE) sqrt(mean((pred - obs)^2, na.rm = na.rm))
+RMSE <- function(pred, obs, na.rm = FALSE, weights = NULL) {
+  if(is.null(weights)) return(sqrt(mean((pred - obs)^2, na.rm = na.rm)))
+  if(length(weights) != length(pred)) stop("`weights` must have the same length as `pred`")
+  sqrt(weighted.mean((pred - obs)^2, weights, na.rm = na.rm))
+}
 
 #' @export
-MAE <- function(pred, obs, na.rm = FALSE) mean(abs(pred - obs), na.rm = na.rm)
+MAE <- function(pred, obs, na.rm = FALSE, weights = NULL) {
+  if(is.null(weights)) return(mean(abs(pred - obs), na.rm = na.rm))
+  if(length(weights) != length(pred)) stop("`weights` must have the same length as `pred`")
+  weighted.mean(abs(pred - obs), weights, na.rm = na.rm)
+}
 
 #' @importFrom utils capture.output
 partRuleSummary <- function(x)
