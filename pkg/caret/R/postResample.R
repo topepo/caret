@@ -81,6 +81,7 @@
 #'  getTrainPerf mnLogLoss R2 RMSE multiClassSummary MAE
 #' @param pred A vector of numeric data (could be a factor)
 #' @param obs A vector of numeric data (could be a factor)
+#' @param weights Optional case weights for regression summaries.
 #' @param data a data frame with columns \code{obs} and
 #'  \code{pred} for the observed and predicted outcomes. For metrics
 #'  that rely on class probabilities, such as
@@ -116,12 +117,14 @@
 #' mnLogLoss(dat, lev = classes)
 #'
 #' @export postResample
-postResample <- function(pred, obs)
+postResample <- function(pred, obs, weights = NULL)
 {
 
   isNA <- is.na(pred)
   pred <- pred[!isNA]
   obs <- obs[!isNA]
+  if(!is.null(weights))
+    weights <- weights[!isNA]
 
   if (!is.factor(obs) && is.numeric(obs))
     {
@@ -129,17 +132,14 @@ postResample <- function(pred, obs)
         {
           out <- rep(NA, 3)
         } else {
-          if(length(unique(pred)) < 2 || length(unique(obs)) < 2)
-            {
-              resamplCor <- NA
-            } else {
-              resamplCor <- try(cor(pred, obs, use = "pairwise.complete.obs"), silent = TRUE)
-              if (inherits(resamplCor, "try-error")) resamplCor <- NA
-            }
-          mse <- mean((pred - obs)^2)
-          mae <- mean(abs(pred - obs))
+          rmse <- try(RMSE(pred, obs, weights = weights), silent = TRUE)
+          if (inherits(rmse, "try-error")) rmse <- NA
+          rsq <- try(R2(pred, obs, formula = "corr", weights = weights), silent = TRUE)
+          if (inherits(rsq, "try-error")) rsq <- NA
+          mae <- try(MAE(pred, obs, weights = weights), silent = TRUE)
+          if (inherits(mae, "try-error")) mae <- NA
 
-          out <- c(sqrt(mse), resamplCor^2, mae)
+          out <- c(rmse, rsq, mae)
         }
       names(out) <- c("RMSE", "Rsquared", "MAE")
     } else {

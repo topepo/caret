@@ -229,5 +229,6 @@ best <- function(x, metric, maximize)
 defaultSummary <- function(data, lev = NULL, model = NULL)
 {
   if(is.character(data$obs)) data$obs <- factor(data$obs, levels = lev)
-  postResample(data[,"pred"], data[,"obs"])
+  postResample(data[, "pred"], data[, "obs"],
+               if(any(names(data) == "weights")) data[, "weights"] else NULL)
 }
