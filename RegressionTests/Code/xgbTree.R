@@ -18,7 +18,9 @@ xgbGrid <- expand.grid(nrounds = c(1, 10),
                        gamma = 0,
                        colsample_bytree = .7,
                        min_child_weight = 1,
-                       subsample = c(.8, 1))
+                       subsample = c(.8, 1),
+                       lambda = 1,
+                       alpha = 0)
 
 set.seed(2)
 training <- twoClassSim(100, linearVars = 2)
