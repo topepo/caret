@@ -44,8 +44,8 @@ modelInfo <- list(label = "eXtreme Gradient Boosting",
                                          rate_drop = c(0.01, 0.50),
                                          skip_drop = c(0.05, 0.95),
                                          min_child_weight = c(1),
-                                         lambda = c(0, 1),
-                                         alpha = c(0, 1))
+                                         lambda = 1,
+                                         alpha = 0)
                     } else {
                       out <- data.frame(nrounds = sample(1:1000, size = len, replace = TRUE),
                                         max_depth = sample(1:10, replace = TRUE, size = len),
