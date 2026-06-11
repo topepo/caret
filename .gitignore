@@ -2,7 +2,7 @@
 
 *.so
 
-pkg/caret/DESCRIPTION~
+DESCRIPTION~
 
 *.tar.gz
 
@@ -22,31 +22,15 @@ pkg/caret/DESCRIPTION~
 
 TAGS
 
-pkg/caret/inst/NEWS.Rd~
+inst/NEWS.Rd~
 
-pkg/caret/src/symbols.rds
-
-html/featureselection.html
-
-html/makeHTML.Rout
-
-html/similarity.html
-
-html/tag_data.csv
-
-RegressionTests/move_files.Rout
-
-RegressionTests/.RData
+src/symbols.rds
 
 caret.Rproj
 
 auto/
 
 release_process/talk/caret.vrb
-
-release_process/talk/caret.nav
-
-release_process/talk/caret.log
 
 release_process/talk/caret.nav
 
@@ -118,14 +102,10 @@ bookdown/sa/*
 
 bookdown/make_files.Rout
 
-RegressionTests/package_archives/sdwd_1.0.2.tgz
-
 release_process/.RData
 
 release_process/make_model_Rd.Rout
 
-RegressionTests/badhess.txt
-
-pkg/caret/revdep
+revdep
 
 release_process/update_pak.Rout
