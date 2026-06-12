@@ -53,7 +53,7 @@ for(i in seq(along = mods)) {
 
 
 
-sink("~/github/caret/pkg/caret/man/models.Rd")
+sink("~/github/caret/man/models.Rd")
 cat("\\name{train_model_list}\n",
     "\\alias{train_model_list}\n",
     "\\alias{models}\n",    

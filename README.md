@@ -15,7 +15,7 @@ install.packages('caret')
 
 ## Install the development version from GitHub:
 ```r
-pak::pak('topepo/caret/pkg/caret')
+pak::pak('topepo/caret')
 ```
 
 ## Status

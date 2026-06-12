@@ -19,7 +19,7 @@ if(!dir.exists(prod_path))
 
 setwd(devel_path)
 
-src <- build("~/github/caret/pkg/caret")
+src <- build("~/github/caret")
 file.copy(src, devel_path)
 
 check_packages_in_dir(devel_path, reverse = list())
@@ -71,7 +71,7 @@ if(FALSE) {
   library(revdepcheck)
   library(parallel)
   
-  setwd("../pkg/caret/")
+  setwd("~/github/caret/")
   
   revdep_check(num_workers = detectCores() - 1)
 }
