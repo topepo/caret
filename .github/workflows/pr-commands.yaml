@@ -32,8 +32,6 @@ jobs:
         with:
           extra-packages: any::roxygen2
           needs: pr-document
-          working-directory: pkg/caret
-
       - name: Document
         run: roxygen2::roxygenise()
         shell: Rscript {0}
