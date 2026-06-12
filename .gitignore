@@ -30,27 +30,27 @@ caret.Rproj
 
 auto/
 
-release_process/talk/caret.vrb
+inst/release_process/talk/caret.vrb
 
-release_process/talk/caret.nav
+inst/release_process/talk/caret.nav
 
-release_process/talk/caret.log
+inst/release_process/talk/caret.log
 
-release_process/Open_Data_Science_Conference/caret.nav
+inst/release_process/Open_Data_Science_Conference/caret.nav
 
-release_process/Open_Data_Science_Conference/caret.fdb_latexmk
+inst/release_process/Open_Data_Science_Conference/caret.fdb_latexmk
 
-release_process/Open_Data_Science_Conference/caret.log
+inst/release_process/Open_Data_Science_Conference/caret.log
 
-release_process/Open_Data_Science_Conference/caret.snm
+inst/release_process/Open_Data_Science_Conference/caret.snm
 
-release_process/Open_Data_Science_Conference/caret.toc
+inst/release_process/Open_Data_Science_Conference/caret.toc
 
-release_process/Open_Data_Science_Conference/caret.vrb
+inst/release_process/Open_Data_Science_Conference/caret.vrb
 
-models/files/.RData
+inst/model_sources/files/.RData
 
-models/parseModels.Rout
+inst/model_sources/parseModels.Rout
 
 .DS_Store
 
@@ -58,54 +58,54 @@ models/parseModels.Rout
 
 *.dll
 
-bookdown/tag_data.csv
+inst/bookdown/tag_data.csv
 
-bookdown/_book/*
+inst/bookdown/_book/*
 
-bookdown/_bookdown_files/*
+inst/bookdown/_bookdown_files/*
 
-bookdown/_main_cache/*
+inst/bookdown/_main_cache/*
 
-bookdown/_main_files/*
+inst/bookdown/_main_files/*
 
-bookdown/_main.Rmd
+inst/bookdown/_main.Rmd
 
-bookdown/.Rhistory
+inst/bookdown/.Rhistory
 
-bookdown/basic/*
+inst/bookdown/basic/*
 
-bookdown/performance/*
+inst/bookdown/performance/*
 
-bookdown/preprocess/*
+inst/bookdown/preprocess/*
 
-bookdown/random/*
+inst/bookdown/random/*
 
-bookdown/splitting/*
+inst/bookdown/splitting/*
 
-bookdown/visualizations/*
+inst/bookdown/visualizations/*
 
-bookdown/sampling/*
+inst/bookdown/sampling/*
 
-bookdown/custom/*
+inst/bookdown/custom/*
 
-bookdown/varimp/*
+inst/bookdown/varimp/*
 
-bookdown/misc/*
+inst/bookdown/misc/*
 
-bookdown/rfe/*
+inst/bookdown/rfe/*
 
-bookdown/filters/*
+inst/bookdown/filters/*
 
-bookdown/ga/*
+inst/bookdown/ga/*
 
-bookdown/sa/*
+inst/bookdown/sa/*
 
-bookdown/make_files.Rout
+inst/bookdown/make_files.Rout
 
-release_process/.RData
+inst/release_process/.RData
 
-release_process/make_model_Rd.Rout
+inst/release_process/make_model_Rd.Rout
 
 revdep
 
-release_process/update_pak.Rout
+inst/release_process/update_pak.Rout

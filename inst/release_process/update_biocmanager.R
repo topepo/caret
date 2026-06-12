@@ -1,8 +1,9 @@
 options(repos = "http://cran.r-project.org", width = 100)
-library(tools)
-# install.packages("pak", repos = "https://r-lib.github.io/p/pak/dev/")
-library(pak)
+install.packages(c("BiocManager", "cli"), type = "source")
+
+library(BiocManager)
 library(cli)
+library(tools)
 
 # ------------------------------------------------------------------------------
 
@@ -12,7 +13,7 @@ library(cli)
 # install.packages(c("devtools"), repos = "http://cran.r-project.org", type = "source")
 #
 # library(devtools)
-# install_github("topepo/caret", subdir = "pkg/caret")
+# install_github("topepo/caret")
 
 library(caret)
 
@@ -48,7 +49,13 @@ for (i in seq_along(libs)) {
   cli::cli_rule(paste0(libs_chr[i], " (", iters[i], "/", n, ")"))
 
   res <- try(
-    pkg_install(libs[i], upgrade = TRUE, ask = FALSE),
+    BiocManager::install(
+      libs[i],
+      type = "both",
+      dependencies = c("Depends", "Imports"),
+      update = FALSE,
+      ask = FALSE
+    ),
     silent = TRUE
   )
 

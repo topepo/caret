@@ -5,6 +5,6 @@
 ^\.github/workflows/R-CMD-check\.yaml$
 ^codecov\.yml$
 ^\.github$
-^bookdown$
-^models$
-^release_process$
+^inst/bookdown$
+^inst/model_sources$
+^inst/release_process$

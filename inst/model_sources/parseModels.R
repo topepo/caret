@@ -1,4 +1,4 @@
-setwd("~/github/caret/models/files")
+setwd("~/github/caret/inst/model_sources/files")
 
 modelFiles <- list.files(pattern = "\\.R$")
 
@@ -14,7 +14,7 @@ for(i in seq(along = modelFiles)) {
 
 
 
-save(models, file = "../../pkg/caret/inst/models/models.RData", version = 2)
+save(models, file = "../../models/models.RData", version = 2)
 
 # cat("\nYou can update your caret installation using the command:\n\n")
 # cat(sprintf("  cp models.RData %s/.\n", system.file("models", package="caret")))
