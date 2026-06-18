@@ -1,4 +1,3 @@
-
 context('twoClassSummary testing')
 
 
@@ -13,7 +12,12 @@ test_that("twoClassSummary is calculating correctly", {
 
   cm <- caret::confusionMatrix(te_pred, te_dat$Class)
   library(pROC)
-  roc_crv <- pROC::roc(te_dat$Class, te_prob$Class1, direction = ">", quiet = TRUE)
+  roc_crv <- pROC::roc(
+    te_dat$Class,
+    te_prob$Class1,
+    direction = ">",
+    quiet = TRUE
+  )
   roc_auc <- as.numeric(pROC::auc(roc_crv))
 
   te_res <- te_prob

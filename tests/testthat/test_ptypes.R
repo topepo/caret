@@ -15,9 +15,24 @@ f_oned <- train(mpg ~ wt, data = mtcars, method = "lm", trControl = none)
 f_inter <- train(mpg ~ (.)^2, data = mtcars, method = "lm", trControl = none)
 f_dmmy <- train(price ~ ., data = Sacramento, method = "lm", trControl = none)
 
-xy_plain <- train(x = mtcars[, -1], y = mtcars$mpg, method = "lm", trControl = none)
-xy_oned <- train(x = mtcars[, "wt", drop = FALSE], y = mtcars$mpg, method = "lm", trControl = none)
-xy_dmmy <- train(x = Sacramento[, -7], y = Sacramento$price, method = "lm", trControl = none)
+xy_plain <- train(
+  x = mtcars[, -1],
+  y = mtcars$mpg,
+  method = "lm",
+  trControl = none
+)
+xy_oned <- train(
+  x = mtcars[, "wt", drop = FALSE],
+  y = mtcars$mpg,
+  method = "lm",
+  trControl = none
+)
+xy_dmmy <- train(
+  x = Sacramento[, -7],
+  y = Sacramento$price,
+  method = "lm",
+  trControl = none
+)
 
 # ------------------------------------------------------------------------------
 

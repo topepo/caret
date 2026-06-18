@@ -7,28 +7,31 @@ test_that('bayesglm classification', {
   te_dat <- twoClassSim(200)
 
   set.seed(2)
-  class_trim <- train(Class ~ ., data = tr_dat,
-                      method = "bayesglm",
-                      tuneLength=1,
-                      trControl = trainControl(method = "none",
-                                               classProbs = TRUE,
-                                               trim = TRUE))
+  class_trim <- train(
+    Class ~ .,
+    data = tr_dat,
+    method = "bayesglm",
+    tuneLength = 1,
+    trControl = trainControl(method = "none", classProbs = TRUE, trim = TRUE)
+  )
 
   set.seed(2)
-  class_notrim <- train(Class ~ ., data = tr_dat,
-                        method = "bayesglm",
-                        tuneLength=1,
-                        trControl = trainControl(method = "none",
-                                                 classProbs = TRUE,
-                                                 trim = FALSE))
+  class_notrim <- train(
+    Class ~ .,
+    data = tr_dat,
+    method = "bayesglm",
+    tuneLength = 1,
+    trControl = trainControl(method = "none", classProbs = TRUE, trim = FALSE)
+  )
 
-  expect_equal(predict(class_trim,   te_dat),
-               predict(class_notrim, te_dat))
+  expect_equal(predict(class_trim, te_dat), predict(class_notrim, te_dat))
 
-  expect_equal(predict(class_trim,   te_dat, type = "prob"),
-               predict(class_notrim, te_dat, type = "prob"))
+  expect_equal(
+    predict(class_trim, te_dat, type = "prob"),
+    predict(class_notrim, te_dat, type = "prob")
+  )
 
-  expect_less_than(object.size(class_trim)-object.size(class_notrim), 0)
+  expect_less_than(object.size(class_trim) - object.size(class_notrim), 0)
 })
 
 test_that('bayesglm regression', {
@@ -38,20 +41,22 @@ test_that('bayesglm regression', {
   te_dat <- SLC14_1(200)
 
   set.seed(2)
-  reg_trim <- train(y ~ ., data = tr_dat,
-                    method = "bayesglm",
-                    tuneLength=1,
-                    trControl = trainControl(method = "none",
-                                             trim = TRUE))
+  reg_trim <- train(
+    y ~ .,
+    data = tr_dat,
+    method = "bayesglm",
+    tuneLength = 1,
+    trControl = trainControl(method = "none", trim = TRUE)
+  )
 
   set.seed(2)
-  reg_notrim <- train(y ~ ., data = tr_dat,
-                      method = "bayesglm",
-                      tuneLength=1,
-                      trControl = trainControl(method = "none",
-                                               trim = FALSE))
-  expect_equal(predict(reg_trim,   te_dat),
-               predict(reg_notrim, te_dat))
-  expect_less_than(object.size(reg_trim)-object.size(reg_notrim), 0)
+  reg_notrim <- train(
+    y ~ .,
+    data = tr_dat,
+    method = "bayesglm",
+    tuneLength = 1,
+    trControl = trainControl(method = "none", trim = FALSE)
+  )
+  expect_equal(predict(reg_trim, te_dat), predict(reg_notrim, te_dat))
+  expect_less_than(object.size(reg_trim) - object.size(reg_notrim), 0)
 })
-

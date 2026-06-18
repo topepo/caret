@@ -11,11 +11,9 @@ test_that('check appropriate sampling calls by name', {
   arg_first <- c(TRUE, FALSE)
 
   ## test that calling by string gives the right result
-  for(i in arg_names) {
+  for (i in arg_names) {
     out <- caret:::parse_sampling(i, check_install = FALSE)
-    expected <- list(name = i,
-                     func = sampling_methods[[i]],
-                     first = TRUE)
+    expected <- list(name = i, func = sampling_methods[[i]], first = TRUE)
     expect_equivalent(out, expected)
   }
 })
@@ -27,12 +25,13 @@ test_that('check appropriate sampling calls by function', {
   arg_first <- c(TRUE, FALSE)
 
   ## test that calling by function gives the right result
-  for(i in arg_names) {
-    out <- caret:::parse_sampling(sampling_methods[[i]], 
-                                  check_install = FALSE)
-    expected <- list(name = "custom",
-                     func = sampling_methods[[i]],
-                     first = TRUE)
+  for (i in arg_names) {
+    out <- caret:::parse_sampling(sampling_methods[[i]], check_install = FALSE)
+    expected <- list(
+      name = "custom",
+      func = sampling_methods[[i]],
+      first = TRUE
+    )
     expect_equivalent(out, expected)
   }
 })
@@ -46,23 +45,28 @@ test_that('check bad first arg', {
   skip_on_cran()
   expect_error(
     caret:::parse_sampling(
-      list(name = "yep", func = sampling_methods[["up"]], first = 2), 
-      check_install = FALSE)
+      list(name = "yep", func = sampling_methods[["up"]], first = 2),
+      check_install = FALSE
     )
+  )
 })
 
 test_that('check bad func arg', {
   skip_on_cran()
   expect_error(
     caret:::parse_sampling(
-      list(name = "yep", func = I, first = 2), 
-      check_install = FALSE)
+      list(name = "yep", func = I, first = 2),
+      check_install = FALSE
     )
+  )
 })
 
 test_that('check incomplete list', {
   skip_on_cran()
-  expect_error(caret:::parse_sampling(list(name = "yep"), check_install = FALSE))
+  expect_error(caret:::parse_sampling(
+    list(name = "yep"),
+    check_install = FALSE
+  ))
 })
 
 test_that('check call', {
@@ -81,7 +85,7 @@ test_that('check getting all methods', {
 test_that('check getting one method', {
   skip_on_cran()
   arg_names <- c("up", "down", "rose", "smote")
-  for(i in arg_names) {
+  for (i in arg_names) {
     out <- getSamplingInfo(i, regex = FALSE)
     expected <- list(sampling_methods[[i]])
     names(expected) <- i
@@ -93,4 +97,3 @@ test_that('check missing method', {
   skip_on_cran()
   expect_error(getSamplingInfo("plum"))
 })
-
