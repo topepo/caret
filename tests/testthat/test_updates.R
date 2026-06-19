@@ -133,7 +133,9 @@ test_that("rfe updating", {
         method = "lm",
         trControl = trainControl(method = "none")
     )
-  rfe_xy_2 <- expect_warning(update(rfe_xy, size = 5, x = dat[, -y_ind], y = dat$y))
+  expect_warning(
+    rfe_xy_2 <- update(rfe_xy, size = 5, x = dat[, -y_ind], y = dat$y)
+  )
   expect_equal(length(rfe_xy_2$fit$finalModel$coefficients), 6)
   expect_error(update(rfe_xy, size = 5))
   
