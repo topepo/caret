@@ -1,15 +1,12 @@
-
 context('misc functions')
 
 
 test_that("R2 and RMSE are calculating correctly", {
-
   pred <- runif(25)
   obs <- runif(25)
 
   expect_equal(R2(pred, obs), cor(obs, pred)^2)
   expect_equal(RMSE(pred, obs), sqrt(mean((pred - obs)^2)))
-
 })
 
 
@@ -18,7 +15,7 @@ test_that("auc calculation is > .5 when Xs provide prediction", {
   skip_if_not_installed("earth")
   skip_if_not_installed("mda")
 
-  trCntlListMulti  <-
+  trCntlListMulti <-
     trainControl(
       method = "cv",
       number = 3,
@@ -28,10 +25,12 @@ test_that("auc calculation is > .5 when Xs provide prediction", {
     )
 
   set.seed(3453)
-  knnFit <- train(Species ~ .,
-                  data = iris,
-                  method = "knn",
-                  trControl = trCntlListMulti)
+  knnFit <- train(
+    Species ~ .,
+    data = iris,
+    method = "knn",
+    trControl = trCntlListMulti
+  )
 
   expect_true(all(knnFit$resample$AUC > .5))
 
@@ -48,10 +47,11 @@ test_that("auc calculation is > .5 when Xs provide prediction", {
     method = "fda",
     tuneLength = 10,
     metric = "ROC",
-    trControl = trainControl(classProbs = TRUE,
-                             summaryFunction = twoClassSummary)
+    trControl = trainControl(
+      classProbs = TRUE,
+      summaryFunction = twoClassSummary
+    )
   )
 
   expect_true(all(modle$resample$AUC > .5))
-
 })

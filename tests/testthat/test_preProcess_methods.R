@@ -13,16 +13,18 @@ test_that('centering and scaling trans', {
   cs_dat1_sds <- apply(cs_dat1, 2, sd)
 
   cs_dat2_centered_exp <- cs_dat2
-  for(i in 1:ncol(cs_dat2_centered_exp))
-    cs_dat2_centered_exp[,i] <- cs_dat2_centered_exp[,i] - cs_dat1_means[i]
+  for (i in 1:ncol(cs_dat2_centered_exp)) {
+    cs_dat2_centered_exp[, i] <- cs_dat2_centered_exp[, i] - cs_dat1_means[i]
+  }
 
   cs_dat2_pp_centered <- preProcess(cs_dat1, "center")
   cs_dat2_centered <- predict(cs_dat2_pp_centered, cs_dat2)
   expect_equal(cs_dat2_centered_exp, cs_dat2_centered)
 
   cs_dat2_scaled_exp <- cs_dat2
-  for(i in 1:ncol(cs_dat2_scaled_exp))
-    cs_dat2_scaled_exp[,i] <- cs_dat2_scaled_exp[,i]/cs_dat1_sds[i]
+  for (i in 1:ncol(cs_dat2_scaled_exp)) {
+    cs_dat2_scaled_exp[, i] <- cs_dat2_scaled_exp[, i] / cs_dat1_sds[i]
+  }
 
   cs_dat2_pp_scaled <- preProcess(cs_dat1, "scale")
   cs_dat2_scaled <- predict(cs_dat2_pp_scaled, cs_dat2)
@@ -41,22 +43,23 @@ test_that('centering and scaling trans with missing data', {
   cs_dat1_sds <- apply(cs_dat1, 2, sd, na.rm = TRUE)
 
   cs_dat2_centered_exp <- cs_dat2
-  for(i in 1:ncol(cs_dat2_centered_exp))
-    cs_dat2_centered_exp[,i] <- cs_dat2_centered_exp[,i] - cs_dat1_means[i]
+  for (i in 1:ncol(cs_dat2_centered_exp)) {
+    cs_dat2_centered_exp[, i] <- cs_dat2_centered_exp[, i] - cs_dat1_means[i]
+  }
 
   cs_dat2_pp_centered <- preProcess(cs_dat1, "center")
   cs_dat2_centered <- predict(cs_dat2_pp_centered, cs_dat2)
   expect_equal(cs_dat2_centered_exp, cs_dat2_centered)
 
   cs_dat2_scaled_exp <- cs_dat2
-  for(i in 1:ncol(cs_dat2_scaled_exp))
-    cs_dat2_scaled_exp[,i] <- cs_dat2_scaled_exp[,i]/cs_dat1_sds[i]
+  for (i in 1:ncol(cs_dat2_scaled_exp)) {
+    cs_dat2_scaled_exp[, i] <- cs_dat2_scaled_exp[, i] / cs_dat1_sds[i]
+  }
 
   cs_dat2_pp_scaled <- preProcess(cs_dat1, "scale")
   cs_dat2_scaled <- predict(cs_dat2_pp_scaled, cs_dat2)
   expect_equal(cs_dat2_scaled_exp, cs_dat2_scaled)
 })
-
 
 
 ###################################################################
@@ -74,8 +77,10 @@ test_that('conversion to range trans', {
 
   # Default range [0, 1]:
   rng_dat2_ranged_exp <- rng_dat2
-  for(i in 1:ncol(rng_dat2_ranged_exp))
-    rng_dat2_ranged_exp[,i] <- (rng_dat2_ranged_exp[,i] - rng_dat1_min[i])/rng_dat1_rng[i]
+  for (i in 1:ncol(rng_dat2_ranged_exp)) {
+    rng_dat2_ranged_exp[, i] <- (rng_dat2_ranged_exp[, i] - rng_dat1_min[i]) /
+      rng_dat1_rng[i]
+  }
 
   rng_dat2_pp <- preProcess(rng_dat1, "range")
   rng_dat2_ranged <- predict(rng_dat2_pp, rng_dat2)
@@ -85,17 +90,26 @@ test_that('conversion to range trans', {
   rangeBounds = c(-0.7, 0.4)
 
   rng_dat2_ranged_custom_exp <- rng_dat2_ranged_exp
-  for(i in 1:ncol(rng_dat2_ranged_custom_exp))
-    rng_dat2_ranged_custom_exp[,i] <-
-      rng_dat2_ranged_custom_exp[,i] * (rangeBounds[2] - rangeBounds[1]) + rangeBounds[1]
+  for (i in 1:ncol(rng_dat2_ranged_custom_exp)) {
+    rng_dat2_ranged_custom_exp[, i] <-
+      rng_dat2_ranged_custom_exp[, i] *
+      (rangeBounds[2] - rangeBounds[1]) +
+      rangeBounds[1]
+  }
 
   rng_dat2_custom_pp <- preProcess(rng_dat1, "range", rangeBounds = rangeBounds)
   rng_dat2_ranged_custom <- predict(rng_dat2_custom_pp, rng_dat2)
   expect_equal(rng_dat2_ranged_custom_exp, rng_dat2_ranged_custom)
 
-  expect_error(preProcess(rng_dat1, "range", rangeBounds = ""), "'rangeBounds' should be a two-element numeric vector")
+  expect_error(
+    preProcess(rng_dat1, "range", rangeBounds = ""),
+    "'rangeBounds' should be a two-element numeric vector"
+  )
 
-  expect_error(preProcess(rng_dat1, "range", rangeBounds = c(0.4, -0.7)), "'rangeBounds' interval is empty")
+  expect_error(
+    preProcess(rng_dat1, "range", rangeBounds = c(0.4, -0.7)),
+    "'rangeBounds' interval is empty"
+  )
 })
 
 test_that('conversion to range trans with missing data', {
@@ -112,8 +126,10 @@ test_that('conversion to range trans with missing data', {
 
   # Default range [0, 1]:
   rng_dat2_ranged_exp <- rng_dat2
-  for(i in 1:ncol(rng_dat2_ranged_exp))
-    rng_dat2_ranged_exp[,i] <- (rng_dat2_ranged_exp[,i] - rng_dat1_min[i])/rng_dat1_rng[i]
+  for (i in 1:ncol(rng_dat2_ranged_exp)) {
+    rng_dat2_ranged_exp[, i] <- (rng_dat2_ranged_exp[, i] - rng_dat1_min[i]) /
+      rng_dat1_rng[i]
+  }
 
   rng_dat2_pp <- preProcess(rng_dat1, "range")
   rng_dat2_ranged <- predict(rng_dat2_pp, rng_dat2)
@@ -123,9 +139,12 @@ test_that('conversion to range trans with missing data', {
   rangeBounds = c(-0.7, 0.4)
 
   rng_dat2_ranged_custom_exp <- rng_dat2_ranged_exp
-  for(i in 1:ncol(rng_dat2_ranged_custom_exp))
-    rng_dat2_ranged_custom_exp[,i] <-
-      rng_dat2_ranged_custom_exp[,i] * (rangeBounds[2] - rangeBounds[1]) + rangeBounds[1]
+  for (i in 1:ncol(rng_dat2_ranged_custom_exp)) {
+    rng_dat2_ranged_custom_exp[, i] <-
+      rng_dat2_ranged_custom_exp[, i] *
+      (rangeBounds[2] - rangeBounds[1]) +
+      rangeBounds[1]
+  }
 
   rng_dat2_custom_pp <- preProcess(rng_dat1, "range", rangeBounds = rangeBounds)
   rng_dat2_ranged_custom <- predict(rng_dat2_custom_pp, rng_dat2)
@@ -142,10 +161,16 @@ test_that('PCA trans', {
   pca_dat2 <- twoClassSim(30)[, 1:5]
 
   pc_obj <- prcomp(pca_dat1, center = TRUE, scale. = TRUE)
-  pca_dat2_exp <- as.data.frame(predict(pc_obj, pca_dat2), stringsAsFactors = TRUE)
+  pca_dat2_exp <- as.data.frame(
+    predict(pc_obj, pca_dat2),
+    stringsAsFactors = TRUE
+  )
 
   pca_dat2_pp <- preProcess(pca_dat1, "pca")
-  pca_dat2_pca <- as.data.frame(predict(pca_dat2_pp, pca_dat2), stringsAsFactors = TRUE)
+  pca_dat2_pca <- as.data.frame(
+    predict(pca_dat2_pp, pca_dat2),
+    stringsAsFactors = TRUE
+  )
   expect_equal(pca_dat2_pca, pca_dat2_exp[, 1:ncol(pca_dat2_pca)])
 })
 
@@ -161,20 +186,24 @@ test_that('PCA trans with missing data', {
   pca_dat1[1, 3] <- NA
   pca_dat1[13, 5] <- NA
 
-  pc_obj <- prcomp(pca_dat1[complete.cases(pca_dat1),],
-                   center = TRUE, scale. = TRUE)
+  pc_obj <- prcomp(
+    pca_dat1[complete.cases(pca_dat1), ],
+    center = TRUE,
+    scale. = TRUE
+  )
 
   pca_dat2_pp <- preProcess(pca_dat1, "pca")
-  expect_equal(pc_obj$rotation[, 1:ncol(pca_dat2_pp$rotation)], pca_dat2_pp$rotation)
+  expect_equal(
+    pc_obj$rotation[, 1:ncol(pca_dat2_pp$rotation)],
+    pca_dat2_pp$rotation
+  )
 })
 
 
 test_that('issue #825 for pca threshold choice', {
   skip_on_cran()
-  expect_equal(preProcess(mtcars, method = "pca", thresh = 0.999)$numComp,
-               11)
-  expect_equal(preProcess(mtcars, method = "pca", thresh = 1)$numComp,
-               11)
+  expect_equal(preProcess(mtcars, method = "pca", thresh = 0.999)$numComp, 11)
+  expect_equal(preProcess(mtcars, method = "pca", thresh = 1)$numComp, 11)
 })
 
 ###################################################################
@@ -194,14 +223,23 @@ test_that('ICA trans', {
   ica_dat1_means <- apply(ica_dat1, 2, mean)
   ica_dat1_sds <- apply(ica_dat1, 2, sd)
   ica_dat2_scaled <- ica_dat2
-  for(i in 1:ncol(ica_dat2_scaled))
-    ica_dat2_scaled[,i] <- (ica_dat2_scaled[,i]-ica_dat1_means[i])/ica_dat1_sds[i]
+  for (i in 1:ncol(ica_dat2_scaled)) {
+    ica_dat2_scaled[, i] <- (ica_dat2_scaled[, i] - ica_dat1_means[i]) /
+      ica_dat1_sds[i]
+  }
 
   set.seed(1)
-  ic_obj <- fastICA::fastICA(scale(ica_dat1, center = TRUE, scale = TRUE), n.comp = 3)
+  ic_obj <- fastICA::fastICA(
+    scale(ica_dat1, center = TRUE, scale = TRUE),
+    n.comp = 3
+  )
   ica_dat2_exp <- as.matrix(ica_dat2_scaled) %*% ic_obj$K %*% ic_obj$W
   colnames(ica_dat2_exp) <- paste("ICA", 1:ncol(ic_obj$W), sep = "")
-  expect_equal(as.data.frame(ica_dat2_exp, stringsAsFactors = TRUE), ica_dat2_ica, tolerance = .00001)
+  expect_equal(
+    as.data.frame(ica_dat2_exp, stringsAsFactors = TRUE),
+    ica_dat2_ica,
+    tolerance = .00001
+  )
 })
 
 
@@ -220,11 +258,16 @@ test_that('Spatial sign trans', {
   ss_dat1_means <- apply(ss_dat1, 2, mean)
   ss_dat1_sds <- apply(ss_dat1, 2, sd)
   ss_dat2_scaled <- ss_dat2
-  for(i in 1:ncol(ss_dat2_scaled))
-    ss_dat2_scaled[,i] <- (ss_dat2_scaled[,i]-ss_dat1_means[i])/ss_dat1_sds[i]
+  for (i in 1:ncol(ss_dat2_scaled)) {
+    ss_dat2_scaled[, i] <- (ss_dat2_scaled[, i] - ss_dat1_means[i]) /
+      ss_dat1_sds[i]
+  }
 
-  ss_dat2_ss_exp <- t(apply(ss_dat2_scaled, 1, function(x) x/sqrt(sum(x^2))))
-  expect_equal(as.data.frame(ss_dat2_ss_exp, stringsAsFactors = TRUE), ss_dat2_ss)
+  ss_dat2_ss_exp <- t(apply(ss_dat2_scaled, 1, function(x) x / sqrt(sum(x^2))))
+  expect_equal(
+    as.data.frame(ss_dat2_ss_exp, stringsAsFactors = TRUE),
+    ss_dat2_ss
+  )
 })
 
 
@@ -234,19 +277,25 @@ test_that('Spatial sign trans', {
 test_that('Box-Cox trans', {
   skip_on_cran()
   set.seed(1)
-  bc_dat1 <- as.data.frame(1/abs(twoClassSim(30)[, 1:5]), stringsAsFactors = TRUE)
-  bc_dat2 <- as.data.frame(1/abs(twoClassSim(30)[, 1:5]), stringsAsFactors = TRUE)
+  bc_dat1 <- as.data.frame(
+    1 / abs(twoClassSim(30)[, 1:5]),
+    stringsAsFactors = TRUE
+  )
+  bc_dat2 <- as.data.frame(
+    1 / abs(twoClassSim(30)[, 1:5]),
+    stringsAsFactors = TRUE
+  )
 
   bc_dat2_pp <- preProcess(bc_dat1, method = "BoxCox")
   bc_dat2_bc <- predict(bc_dat2_pp, bc_dat2)
 
-  bc_trans <- lapply(bc_dat1,
-                     function(x) MASS::boxcox(x ~ rep(1, length(x)),
-                                              plotit = FALSE))
+  bc_trans <- lapply(bc_dat1, function(x) {
+    MASS::boxcox(x ~ rep(1, length(x)), plotit = FALSE)
+  })
   bc_dat2_bc_exp <- bc_dat2
-  for(i in 1:ncol(bc_dat2)) {
+  for (i in 1:ncol(bc_dat2)) {
     lambda <- bc_trans[[i]]$x[which.max(bc_trans[[i]]$y)]
-    bc_dat2_bc_exp[, i] <- (bc_dat2_bc_exp[, i]^lambda - 1)/lambda
+    bc_dat2_bc_exp[, i] <- (bc_dat2_bc_exp[, i]^lambda - 1) / lambda
   }
   expect_equal(bc_dat2_bc_exp, bc_dat2_bc)
 })
@@ -255,25 +304,29 @@ test_that('Box-Cox trans', {
 test_that('Box-Cox trans with missing data', {
   skip_on_cran()
   set.seed(1)
-  bc_dat1 <- as.data.frame(1/abs(twoClassSim(30)[, 1:5]), stringsAsFactors = TRUE)
-  bc_dat2 <- as.data.frame(1/abs(twoClassSim(30)[, 1:5]), stringsAsFactors = TRUE)
+  bc_dat1 <- as.data.frame(
+    1 / abs(twoClassSim(30)[, 1:5]),
+    stringsAsFactors = TRUE
+  )
+  bc_dat2 <- as.data.frame(
+    1 / abs(twoClassSim(30)[, 1:5]),
+    stringsAsFactors = TRUE
+  )
   bc_dat1[1, 3] <- NA
   bc_dat1[13, 5] <- NA
 
   bc_dat2_pp <- preProcess(bc_dat1, method = "BoxCox")
   bc_dat2_bc <- predict(bc_dat2_pp, bc_dat2)
 
-  bc_trans <- lapply(bc_dat1,
-                     function(x) {
-                       x <- x[!is.na(x)]
-                       MASS::boxcox(x ~ rep(1, length(x)),
-                                              plotit = FALSE)
-                     })
+  bc_trans <- lapply(bc_dat1, function(x) {
+    x <- x[!is.na(x)]
+    MASS::boxcox(x ~ rep(1, length(x)), plotit = FALSE)
+  })
 
   bc_dat2_bc_exp <- bc_dat2
-  for(i in 1:ncol(bc_dat2)) {
+  for (i in 1:ncol(bc_dat2)) {
     lambda <- bc_trans[[i]]$x[which.max(bc_trans[[i]]$y)]
-    bc_dat2_bc_exp[, i] <- (bc_dat2_bc_exp[, i]^lambda - 1)/lambda
+    bc_dat2_bc_exp[, i] <- (bc_dat2_bc_exp[, i]^lambda - 1) / lambda
   }
   expect_equal(bc_dat2_bc_exp, bc_dat2_bc)
 })
@@ -284,8 +337,14 @@ test_that('Box-Cox trans with missing data', {
 test_that('Yeo-Johnson trans', {
   skip_on_cran()
   set.seed(1)
-  yj_dat1 <- as.data.frame(1/abs(twoClassSim(30)[, 1:5]), stringsAsFactors = TRUE)
-  yj_dat2 <- as.data.frame(1/abs(twoClassSim(30)[, 1:5]), stringsAsFactors = TRUE)
+  yj_dat1 <- as.data.frame(
+    1 / abs(twoClassSim(30)[, 1:5]),
+    stringsAsFactors = TRUE
+  )
+  yj_dat2 <- as.data.frame(
+    1 / abs(twoClassSim(30)[, 1:5]),
+    stringsAsFactors = TRUE
+  )
 
   yj_dat2_pp <- preProcess(yj_dat1, method = "YeoJohnson")
   yj_dat2_yj <- predict(yj_dat2_pp, yj_dat2)
@@ -296,15 +355,18 @@ test_that('Yeo-Johnson trans', {
 
   yj_lambda_exp <- structure(
     c(
-      -1.17126152733178,-0.824731066670367,-0.706588079282242,
-      -1.03306249319229,-0.75439768809812
+      -1.17126152733178,
+      -0.824731066670367,
+      -0.706588079282242,
+      -1.03306249319229,
+      -0.75439768809812
     ),
-    .Names = c("TwoFactor1", "TwoFactor2", "Linear01",
-               "Linear02", "Linear03")
+    .Names = c("TwoFactor1", "TwoFactor2", "Linear01", "Linear02", "Linear03")
   )
 
   expect_equal(yj_lambda_exp, yj_dat2_pp$yj, tolerance = 0.00001)
 
+  # fmt: skip
   yj_pred_exp <-
   structure(
     list(
@@ -361,8 +423,14 @@ test_that('Yeo-Johnson trans', {
 test_that('Yeo-Johnson trans with mising data', {
   skip_on_cran()
   set.seed(1)
-  yj_dat1 <- as.data.frame(1/abs(twoClassSim(30)[, 1:5]), stringsAsFactors = TRUE)
-  yj_dat2 <- as.data.frame(1/abs(twoClassSim(30)[, 1:5]), stringsAsFactors = TRUE)
+  yj_dat1 <- as.data.frame(
+    1 / abs(twoClassSim(30)[, 1:5]),
+    stringsAsFactors = TRUE
+  )
+  yj_dat2 <- as.data.frame(
+    1 / abs(twoClassSim(30)[, 1:5]),
+    stringsAsFactors = TRUE
+  )
   yj_dat1[1, 3] <- NA
   yj_dat1[13, 5] <- NA
 
@@ -389,6 +457,7 @@ test_that('Yeo-Johnson trans with mising data', {
   #                                     family = "yjPower")
   #                    })
 
+  # fmt: skip
   yj_pred_exp <-
     structure(
       list(
@@ -399,8 +468,7 @@ test_that('Yeo-Johnson trans with mising data', {
                        0.534820290852273, 0.648861162529164, 0.375342714187168, 0.655069041209095,
                        0.356196716995193, 0.754580709735319, 0.815397568471886, 0.231018640782111,
                        0.834233681694831, 0.5143818322544, 0.605099195272536, 0.239342349309458,
-                       0.325877110845926, 0.556910621166843, 0.656052500704136, 0.24465996399532
-        ),
+                       0.325877110845926, 0.556910621166843, 0.656052500704136, 0.24465996399532),
         TwoFactor2 = c(0.301615328120378, 0.461445322028633, 0.707248808552887,
                        0.244768984552592, 1.01067529242088, 0.332615908226651, 0.370035788857244,
                        0.317957630575641, 0.431769991391304, 0.692643661966023, 0.264252145311897,
@@ -425,8 +493,7 @@ test_that('Yeo-Johnson trans with mising data', {
                      0.928178968632499, 0.36987132660124, 0.854057804871416, 0.454516797058032,
                      0.587249892224224, 0.854756545648468, 0.452035356468675, 0.456792695615081,
                      0.902832766379788, 0.678172210837119, 0.375769901612575, 0.55844738028494,
-                     0.753293517878738, 0.434506299792077, 0.615740571333, 0.751245083135553
-        ),
+                     0.753293517878738, 0.434506299792077, 0.615740571333, 0.751245083135553),
         Linear03 = c(0.805118298846952, 0.85121450654463, 0.745194683843413,
                      1.2860525878536, 0.461776644848524, 1.18271554878404, 0.651210085828673,
                      0.731627675071425, 0.32722557069373, 0.823698767964377, 0.75491324104535,
@@ -447,19 +514,23 @@ test_that('Yeo-Johnson trans with mising data', {
 
 test_that('filters', {
   skip_on_cran()
-  dat <- data.frame(x1 = 1:50,
-                    x2 = 1,
-                    x3 = c(rep(1, 49), 0),
-                    x4 = c(rep(0, 50), 1:50),
-                    y = factor(rep(letters[1:2], each = 50)))
+  dat <- data.frame(
+    x1 = 1:50,
+    x2 = 1,
+    x3 = c(rep(1, 49), 0),
+    x4 = c(rep(0, 50), 1:50),
+    y = factor(rep(letters[1:2], each = 50))
+  )
 
-  no_zv  <- preProcess(dat, method = "zv")
+  no_zv <- preProcess(dat, method = "zv")
   no_nzv <- preProcess(dat, method = "nzv")
   no_xgy <- preProcess(dat, method = "conditionalX", outcome = dat$y)
-  filter_mean <- preProcess(dat,
-                            method = list(conditionalX = names(dat)[1:4], center = "x1"),
-                            outcome = dat$y)
-  no_zv_pred  <- predict(no_zv, dat)
+  filter_mean <- preProcess(
+    dat,
+    method = list(conditionalX = names(dat)[1:4], center = "x1"),
+    outcome = dat$y
+  )
+  no_zv_pred <- predict(no_zv, dat)
   no_nzv_pred <- predict(no_nzv, dat)
   no_xgy_pred <- predict(no_xgy, dat[, 1:4])
   filter_mean_pred <- predict(filter_mean, dat[, 1:4])
@@ -472,5 +543,3 @@ test_that('filters', {
   expect_equal(colnames(filter_mean_pred), c("x1", "x3"))
   expect_equal(filter_mean_pred$x1, x1_exp)
 })
-
-
