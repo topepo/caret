@@ -108,9 +108,10 @@ Suggests:
     rpart,
     spls,
     superpc,
-    testthat (>= 0.9.1),
+    testthat (>= 3.0.0),
     themis (>= 0.1.3)
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
 RoxygenNote: 7.3.2
+Config/testthat/edition: 3
