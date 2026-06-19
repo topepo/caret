@@ -10,10 +10,18 @@ check_rpart_reg <- function() {
   skip_on_cran()
   set.seed(1)
   train_dat <- SLC14_1(100)
-  train_dat$factor_var <- factor(sample(letters[1:2], nrow(train_dat), replace = TRUE))
+  train_dat$factor_var <- factor(sample(
+    letters[1:2],
+    nrow(train_dat),
+    replace = TRUE
+  ))
   test_dat <- SLC14_1(1000)
-  test_dat$factor_var <- factor(sample(letters[1:2], nrow(test_dat), replace = TRUE))
-  
+  test_dat$factor_var <- factor(sample(
+    letters[1:2],
+    nrow(test_dat),
+    replace = TRUE
+  ))
+
   library(rpart)
   rpart_full <- rpart(y ~ ., data = train_dat)
   rpart_trim <- caret:::trim(rpart_full)
@@ -24,14 +32,23 @@ check_rpart_class <- function() {
   skip_on_cran()
   set.seed(1)
   train_dat <- twoClassSim(100)
-  train_dat$factor_var <- factor(sample(letters[1:2], nrow(train_dat), replace = TRUE))
+  train_dat$factor_var <- factor(sample(
+    letters[1:2],
+    nrow(train_dat),
+    replace = TRUE
+  ))
   test_dat <- twoClassSim(1000)
-  test_dat$factor_var <- factor(sample(letters[1:2], nrow(test_dat), replace = TRUE))
-  
+  test_dat$factor_var <- factor(sample(
+    letters[1:2],
+    nrow(test_dat),
+    replace = TRUE
+  ))
+
   library(rpart)
   rpart_full <- rpart(Class ~ ., data = train_dat)
   rpart_trim <- caret:::trim(rpart_full)
-  predict(rpart_full, test_dat)[, "Class1"] - predict(rpart_trim, test_dat)[, "Class1"]
+  predict(rpart_full, test_dat)[, "Class1"] -
+    predict(rpart_trim, test_dat)[, "Class1"]
 }
 
 ###################################################################
@@ -41,10 +58,18 @@ check_bag_reg <- function() {
   skip_on_cran()
   set.seed(1)
   train_dat <- SLC14_1(100)
-  train_dat$factor_var <- factor(sample(letters[1:2], nrow(train_dat), replace = TRUE))
+  train_dat$factor_var <- factor(sample(
+    letters[1:2],
+    nrow(train_dat),
+    replace = TRUE
+  ))
   test_dat <- SLC14_1(1000)
-  test_dat$factor_var <- factor(sample(letters[1:2], nrow(test_dat), replace = TRUE))
-  
+  test_dat$factor_var <- factor(sample(
+    letters[1:2],
+    nrow(test_dat),
+    replace = TRUE
+  ))
+
   library(rpart)
   bag_full <- bagging(y ~ ., data = train_dat)
   bag_trim <- caret:::trim(bag_full)
@@ -65,5 +90,3 @@ test_that("trimmed rpart classification produces identical predicted values", {
 test_that("trimmed bagging regression produces identical predicted values", {
   expect_that(sum(check_bag_reg()), equals(0))
 })
-
-

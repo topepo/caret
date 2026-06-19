@@ -1,22 +1,18 @@
 context('classDist')
 
 test_that("errors working", {
-
   trainSet = 1:3
 
   expect_error(
     distData <- classDist(
       iris[trainSet, 1:4],
       iris$Species[trainSet]
-    )
-    ,"more rows than columns"
+    ),
+    "more rows than columns"
   )
-
-
 })
 
 test_that("Object matches expectations - factor y", {
-
   trainSet <- sample(1:150, 100)
   x = iris[trainSet, 1:4]
   y = iris$Species[trainSet]
@@ -47,12 +43,10 @@ test_that("Object matches expectations - factor y", {
 
   expect_true(all(distData2$pca$sdev == PCA$sdev))
   expect_true(all(distData2$pca$rotation == PCA$rotation))
-
 })
 
 
 test_that("Object matches expectations - numeric y", {
-
   trainSet <- sample(1:150, 100)
   x = iris[trainSet, 1:4]
   y = as.numeric(iris$Species[trainSet])
@@ -78,12 +72,10 @@ test_that("Object matches expectations - numeric y", {
 
   expect_true(all(distData2$pca$sdev == PCA$sdev))
   expect_true(all(distData2$pca$rotation == PCA$rotation))
-
 })
 
 
 test_that("predictions", {
-
   trainSet <- sample(1:150, 100)
   x = iris[trainSet, 1:4]
   y = iris$Species[trainSet]
@@ -94,6 +86,4 @@ test_that("predictions", {
 
   ## PCA and non-PCA preds match
   expect_equal(predict(distData, x), predict(distData2, x), tolerance = .0001)
-
-
 })
