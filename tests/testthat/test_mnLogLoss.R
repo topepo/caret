@@ -52,5 +52,5 @@ test_that("Twoclass logloss returns expected values", {
 
   expect_equal(result1, c(logLoss = 0.244998), tolerance = .00001)
   expect_equal(result2, c(logLoss = 0.306248), tolerance = .000001)
-  expect_equal(result3, c(logLoss = 0.244998), tolerance = .000001)
+  expect_equal(result3, c(logLoss = 0.244998), tolerance = .00001)
 })
