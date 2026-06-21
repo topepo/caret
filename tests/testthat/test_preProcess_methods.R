@@ -1,5 +1,3 @@
-context('preProcess/methods')
-
 ###################################################################
 ## test centering and scaling
 

@@ -1,5 +1,3 @@
-context('spatialSign')
-
 test_that("errors working", {
   # vector
   expect_error(spatialSign(iris$Species), "not defined")

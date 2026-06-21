@@ -1,5 +1,3 @@
-context('varImp')
-
 test_that("high level tests", {
   data(iris)
   TrainData <- iris[, 1:4]

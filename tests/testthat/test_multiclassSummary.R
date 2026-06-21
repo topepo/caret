@@ -1,5 +1,3 @@
-context('multiClassSummary')
-
 test_that("multiClassSummary presenting warnings from train", {
   skip_if_not_installed("MLmetrics")
   skip_if_not_installed("ModelMetrics", "1.2.2.2")

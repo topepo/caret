@@ -1,5 +1,3 @@
-context('Box Cox transformations')
-
 ###################################################################
 ## Generate data and do BC using the source function to get
 ## expected results

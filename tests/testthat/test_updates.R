@@ -4,8 +4,6 @@ library(testthat)
 
 # ------------------------------------------------------------------------------
 
-context('updating objects')
-
 diff_coef <- function(x, y) {
   x_nm <- names(x$fit$finalModel$coefficients)
   y_nm <- names(y$fit$finalModel$coefficients)

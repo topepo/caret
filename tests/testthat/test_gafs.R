@@ -1,5 +1,3 @@
-context('gafs')
-
 test_that("gafsControl errors working", {
   expect_error(gafsControl(method = "larry"), "method should be one of")
 

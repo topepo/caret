@@ -1,5 +1,3 @@
-context('Dummy Variables')
-
 ## Test cases by Josh Brady (doublej2) from issue #344
 
 check_dummies <- function(x, expected = NULL) {

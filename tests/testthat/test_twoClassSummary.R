@@ -1,6 +1,3 @@
-context('twoClassSummary testing')
-
-
 test_that("twoClassSummary is calculating correctly", {
   set.seed(1)
   tr_dat <- twoClassSim(100)

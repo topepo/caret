@@ -1,4 +1,3 @@
-context('Test confusionMatrix')
 set.seed(442)
 
 

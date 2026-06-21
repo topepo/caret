@@ -1,5 +1,3 @@
-context('upsampling with recipes')
-
 test_that("model test", {
   skip_if_not_installed("themis")
   withr::local_seed(2542)

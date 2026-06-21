@@ -1,5 +1,3 @@
-context('safs')
-
 test_that("safsControl errors working", {
   expect_error(safsControl(method = "larry"), "method should be one of")
 

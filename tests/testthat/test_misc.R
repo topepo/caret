@@ -1,6 +1,3 @@
-context('misc functions')
-
-
 test_that("R2 and RMSE are calculating correctly", {
   pred <- runif(25)
   obs <- runif(25)
