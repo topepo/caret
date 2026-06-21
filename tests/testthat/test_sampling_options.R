@@ -76,7 +76,10 @@ test_that('check incomplete list', {
 
 test_that('check call', {
   skip_on_cran()
-  expect_snapshot(caret:::parse_sampling(14, check_install = FALSE), error = TRUE)
+  expect_snapshot(
+    caret:::parse_sampling(14, check_install = FALSE),
+    error = TRUE
+  )
 })
 
 ###################################################################

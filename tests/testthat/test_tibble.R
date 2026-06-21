@@ -3,7 +3,7 @@ library(recipes)
 library(dplyr)
 library(testthat)
 
-set.seed(1)
+set.seed(8801)
 dat <- twoClassSim(100)
 dat_tb <- as_tibble(dat)
 a <- dat[, 5]

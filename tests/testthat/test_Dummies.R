@@ -140,7 +140,7 @@ check_dummies <- function(x, expected = NULL) {
 
 
 test_that("Good names for dummies with reocurring patterns", {
-  set.seed(1)
+  set.seed(176)
   # 200 all but guarantees (99.999% chance) 1:15 all represented, #1350
   data = data.frame(
     matrix(

@@ -25,7 +25,7 @@ check.medianImpute <- function(x) {
 }
 
 # Tested data matrix
-set.seed(1)
+set.seed(9019)
 x <- matrix(rnorm(20, mean = 10, sd = 5), nrow = 4)
 x[2, 1] <- x[3, 4] <- x[2, 5] <- x[4, 5] <- NA
 x[, 3] <- NA
