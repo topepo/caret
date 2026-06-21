@@ -17,7 +17,7 @@ test_that('bad class levels', {
       )
     )
   }
-  expect_error(foo(dat))
+  expect_snapshot(foo(dat), error = TRUE)
 })
 
 test_that('no class probs with ROC', {
@@ -33,7 +33,7 @@ test_that('no class probs with ROC', {
       trControl = trainControl(summaryFunction = twoClassSummary)
     )
   }
-  expect_error(foo(dat))
+  expect_snapshot(foo(dat), error = TRUE)
 })
 
 test_that('numeric y and classification', {
@@ -44,7 +44,7 @@ test_that('numeric y and classification', {
   foo <- function(train_dat) {
     train(Class ~ ., data = train_dat, method = "rpart")
   }
-  expect_warning(foo(dat))
+  expect_snapshot_warning(foo(dat))
 })
 
 test_that('3+ classes and twoClassSummary', {
@@ -62,5 +62,5 @@ test_that('3+ classes and twoClassSummary', {
       )
     )
   }
-  expect_error(foo())
+  expect_snapshot(foo(), error = TRUE)
 })

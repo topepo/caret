@@ -38,40 +38,45 @@ test_that('check appropriate sampling calls by function', {
 
 test_that('check bad sampling name', {
   skip_on_cran()
-  expect_error(caret:::parse_sampling("what?"))
+  expect_snapshot(caret:::parse_sampling("what?"), error = TRUE)
 })
 
 test_that('check bad first arg', {
   skip_on_cran()
-  expect_error(
+  expect_snapshot(
     caret:::parse_sampling(
       list(name = "yep", func = sampling_methods[["up"]], first = 2),
       check_install = FALSE
-    )
+    ),
+    error = TRUE
   )
 })
 
 test_that('check bad func arg', {
   skip_on_cran()
-  expect_error(
+  expect_snapshot(
     caret:::parse_sampling(
       list(name = "yep", func = I, first = 2),
       check_install = FALSE
-    )
+    ),
+    error = TRUE
   )
 })
 
 test_that('check incomplete list', {
   skip_on_cran()
-  expect_error(caret:::parse_sampling(
-    list(name = "yep"),
-    check_install = FALSE
-  ))
+  expect_snapshot(
+    caret:::parse_sampling(
+      list(name = "yep"),
+      check_install = FALSE
+    ),
+    error = TRUE
+  )
 })
 
 test_that('check call', {
   skip_on_cran()
-  expect_error(caret:::parse_sampling(14, check_install = FALSE))
+  expect_snapshot(caret:::parse_sampling(14, check_install = FALSE), error = TRUE)
 })
 
 ###################################################################
@@ -95,5 +100,5 @@ test_that('check getting one method', {
 
 test_that('check missing method', {
   skip_on_cran()
-  expect_error(getSamplingInfo("plum"))
+  expect_snapshot(getSamplingInfo("plum"), error = TRUE)
 })

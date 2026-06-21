@@ -101,14 +101,14 @@ test_that('conversion to range trans', {
   rng_dat2_ranged_custom <- predict(rng_dat2_custom_pp, rng_dat2)
   expect_equal(rng_dat2_ranged_custom_exp, rng_dat2_ranged_custom)
 
-  expect_error(
+  expect_snapshot(
     preProcess(rng_dat1, "range", rangeBounds = ""),
-    "'rangeBounds' should be a two-element numeric vector"
+    error = TRUE
   )
 
-  expect_error(
+  expect_snapshot(
     preProcess(rng_dat1, "range", rangeBounds = c(0.4, -0.7)),
-    "'rangeBounds' interval is empty"
+    error = TRUE
   )
 })
 

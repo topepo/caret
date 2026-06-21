@@ -8,9 +8,8 @@ check.medianImpute <- function(x) {
   med[is.na(med)] <- 0
 
   if (anyEmptyColumn) {
-    expect_warning(
-      pp <- preProcess(x, method = "medianImpute"),
-      "never filled"
+    expect_snapshot_warning(
+      pp <- preProcess(x, method = "medianImpute")
     )
   } else {
     pp <- preProcess(x, method = "medianImpute")

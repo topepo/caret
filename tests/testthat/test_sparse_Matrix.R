@@ -7,8 +7,8 @@ test_that("caret can return sparse Matrix object", {
 
   x <- Matrix::Matrix(as.matrix(mtcars)[, -1], sparse = TRUE)
   y <- mtcars$mpg
-  expect_warning(train(x, y, method = "glmnet"), NA)
-  expect_warning(train(as.matrix(x), y, method = "glmnet"), NA)
+  expect_no_warning(train(x, y, method = "glmnet"))
+  expect_no_warning(train(as.matrix(x), y, method = "glmnet"))
 
   cls_y <- factor(rep_len(letters[1:2], nrow(mtcars)))
   ctrl <- trainControl(
@@ -16,18 +16,16 @@ test_that("caret can return sparse Matrix object", {
     classProbs = TRUE,
     summaryFunction = twoClassSummary
   )
-  expect_error(
-    train(x, cls_y, method = "glmnet", metric = "ROC", trControl = ctrl),
-    NA
+  expect_no_error(
+    train(x, cls_y, method = "glmnet", metric = "ROC", trControl = ctrl)
   )
-  expect_error(
+  expect_no_error(
     train(
       as.matrix(x),
       cls_y,
       method = "glmnet",
       metric = "ROC",
       trControl = ctrl
-    ),
-    NA
+    )
   )
 })
