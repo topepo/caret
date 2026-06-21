@@ -46,7 +46,7 @@ test_that("Confusion matrix works", {
   expect_snapshot_warning(confusionMatrix(dat2, ref2))
   expect_snapshot_warning(confusionMatrix(dat3, ref2))
   expect_snapshot(confusionMatrix(dat5, ref2), error = TRUE)
-  expect_snapshot(confusionMatrix(dat5, ref1), error = TRUE)
+  expect_snapshot(confusionMatrix(dat5, ref), error = TRUE)
   expect_identical(cm1$overall, cm2$overall)
   expect_identical(cm4$overall, cm3$overall)
   expect_true(identical(cm1, cm2))

@@ -17,8 +17,8 @@
 ---
 
     Code
-      confusionMatrix(dat5, ref1)
+      confusionMatrix(dat5, ref)
     Condition
-      Error:
-      ! object 'ref1' not found
+      Error in `confusionMatrix.default()`:
+      ! The data contain levels not found in the data.
 
