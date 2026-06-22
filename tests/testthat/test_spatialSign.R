@@ -1,5 +1,3 @@
-context('spatialSign')
-
 test_that("errors working", {
   # vector
   expect_snapshot(spatialSign(iris$Species), error = TRUE)

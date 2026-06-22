@@ -1,5 +1,3 @@
-context('mnLogLoss')
-
 classes <- LETTERS[1:3]
 
 test_dat1 <- data.frame(

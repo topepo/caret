@@ -1,5 +1,3 @@
-context('gafs')
-
 test_that("gafsControl errors working", {
   expect_snapshot(gafsControl(method = "larry"), error = TRUE)
 

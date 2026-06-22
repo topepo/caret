@@ -1,5 +1,3 @@
-context('safs')
-
 test_that("safsControl errors working", {
   expect_snapshot(safsControl(method = "larry"), error = TRUE)
 

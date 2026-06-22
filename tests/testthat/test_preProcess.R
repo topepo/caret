@@ -1,5 +1,3 @@
-context('Test preProcess')
-
 # Helper function
 check.medianImpute <- function(x) {
   # Reference column medians for checks

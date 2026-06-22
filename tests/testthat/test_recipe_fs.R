@@ -2,7 +2,6 @@ library(testthat)
 library(caret)
 library(recipes)
 
-context('selection with recipes')
 
 # ------------------------------------------------------------------------------
 

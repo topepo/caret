@@ -1,5 +1,3 @@
-context('classDist')
-
 test_that("errors working", {
   trainSet = 1:3
 

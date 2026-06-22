@@ -1,5 +1,3 @@
-context('Test preProcess internals')
-
 test_that("handles situation when there's a single column per transformation", {
   # For the data below, the list of transformations used internally by
   # "preProcess" contains a single related attribute

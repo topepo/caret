@@ -1,5 +1,3 @@
-context('ptypes')
-
 data("Sacramento", package = "caret")
 
 mtcars_0 <- mtcars[0, -1]

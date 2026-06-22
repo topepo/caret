@@ -1,5 +1,3 @@
-context('Test model object trimming')
-
 library(rpart)
 library(ipred)
 

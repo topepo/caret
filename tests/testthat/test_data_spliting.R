@@ -1,5 +1,3 @@
-context("Data Spliting")
-
 test_that("createTimeSlices works as expected", {
   s1 <- createTimeSlices(1:8, 5, horizon = 1)
   s2 <- createTimeSlices(1:8, 5, horizon = 1, skip = 3)

@@ -1,4 +1,3 @@
-context('Minimal Tests')
 # fmt: skip
 stats <- caret:::basic2x2Stats(factor(0:1), factor(0:1), pos='1', neg='0')
 expect_equal(stats[['Sensitivity']], 1)

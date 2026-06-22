@@ -1,7 +1,6 @@
 library(caret)
 library(testthat)
 
-context("sampling options")
 load(system.file("models", "sampling.RData", package = "caret"))
 
 test_that('check appropriate sampling calls by name', {

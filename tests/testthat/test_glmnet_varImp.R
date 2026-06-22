@@ -1,6 +1,5 @@
 library(caret)
 
-context('Testing varImp')
 
 test_that('glmnet varImp returns non-negative values', {
   skip_on_cran()

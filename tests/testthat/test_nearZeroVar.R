@@ -1,5 +1,3 @@
-context("Test nearZeroVar")
-
 test_that("nearZeroVar works properly with foreach", {
   ## shouldn't trigger error
   r <- nearZeroVar(iris, foreach = T)
