@@ -666,43 +666,20 @@ plot.rfe <- function (x,
 #' Model details about these functions, including examples, are at
 #' \url{http://topepo.github.io/caret/recursive-feature-elimination.html}. .
 #'
+#' @inheritParams trainControl
 #' @param functions a list of functions for model fitting, prediction and
 #' variable importance (see Details below)
 #' @param rerank a logical: should variable importance be re-calculated each
 #' time features are removed?
-#' @param method The external resampling method: \code{boot}, \code{cv},
-#' \code{LOOCV} or \code{LGOCV} (for repeated training/test splits
-#' @param number Either the number of folds or number of resampling iterations
-#' @param repeats For repeated k-fold cross-validation only: the number of
-#' complete sets of folds to compute
 #' @param saveDetails a logical to save the predictions and variable
 #' importances from the selection process
 #' @param verbose a logical to print a log for each external resampling
 #' iteration
-#' @param returnResamp A character string indicating how much of the resampled
-#' summary metrics should be saved. Values can be ``final'', ``all'' or
-#' ``none''
-#' @param p For leave-group out cross-validation: the training percentage
 #' @param index a list with elements for each external resampling iteration.
 #' Each list element is the sample rows used for training at that iteration.
 #' @param indexOut a list (the same length as \code{index}) that dictates which
 #' sample are held-out for each resample. If \code{NULL}, then the unique set
 #' of samples not contained in \code{index} is used.
-#' @param timingSamps the number of training set samples that will be used to
-#' measure the time for predicting samples (zero indicates that the prediction
-#' time should not be estimated).
-#' @param seeds an optional set of integers that will be used to set the seed
-#' at each resampling iteration. This is useful when the models are run in
-#' parallel. A value of \code{NA} will stop the seed from being set within the
-#' worker processes while a value of \code{NULL} will set the seeds using a
-#' random set of integers. Alternatively, a list can be used. The list should
-#' have \code{B+1} elements where \code{B} is the number of resamples. The
-#' first \code{B} elements of the list should be vectors of integers of length
-#' \code{P} where \code{P} is the number of subsets being evaluated (including
-#' the full set). The last element of the list only needs to be a single
-#' integer (for the final model). See the Examples section below.
-#' @param allowParallel if a parallel backend is loaded and available, should
-#' the function use it?
 #' @return A list
 #' @author Max Kuhn
 #' @seealso \code{\link{rfe}}, \code{\link{lmFuncs}}, \code{\link{rfFuncs}},
@@ -830,8 +807,7 @@ pickVars <- function(y, size)
 #' Both of the 'pick' functions assume that the data are sorted from smallest
 #' subset size to largest.
 #'
-#' @aliases caretFuncs lmFuncs rfFuncs gamFuncs treebagFuncs ldaFuncs nbFuncs
-#' lrFuncs pickSizeBest pickSizeTolerance pickVars
+#' @aliases caretFuncs lmFuncs rfFuncs gamFuncs treebagFuncs ldaFuncs nbFuncs lrFuncs pickSizeBest pickSizeTolerance pickVars
 #' @param x a matrix or data frame with the performance metric of interest
 #' @param metric a character string with the name of the performance metric
 #' that should be used to choose the appropriate number of variables

@@ -28,8 +28,15 @@ variable importance (see Details below)}
 \item{rerank}{a logical: should variable importance be re-calculated each
 time features are removed?}
 
-\item{method}{The external resampling method: \code{boot}, \code{cv},
-\code{LOOCV} or \code{LGOCV} (for repeated training/test splits}
+\item{method}{The resampling method: \code{"boot"}, \code{"boot632"},
+\code{"optimism_boot"}, \code{"boot_all"},
+\code{"cv"}, \code{"repeatedcv"}, \code{"LOOCV"}, \code{"LGOCV"} (for
+repeated training/test splits), \code{"none"} (only fits one model to the
+entire training set), \code{"oob"} (only for random forest, bagged trees,
+bagged earth, bagged flexible discriminant analysis, or conditional tree
+forest models), \code{"timeslice"}, \code{"adaptive_cv"},
+\code{"adaptive_boot"}, or \code{"adaptive_LGOCV"}. Not all methods are
+available for all control functions; see Details.}
 
 \item{saveDetails}{a logical to save the predictions and variable
 importances from the selection process}
@@ -43,21 +50,22 @@ complete sets of folds to compute}
 iteration}
 
 \item{returnResamp}{A character string indicating how much of the resampled
-summary metrics should be saved. Values can be ``final'', ``all'' or
-``none''}
+summary metrics should be saved. Values can be \code{"final"}, \code{"all"}
+or \code{"none"}}
 
 \item{p}{For leave-group out cross-validation: the training percentage}
 
-\item{index}{a list with elements for each external resampling iteration.
-Each list element is the sample rows used for training at that iteration.}
+\item{index}{a list with elements for each resampling iteration. Each list
+element is a vector of integers corresponding to the rows used for training
+at that iteration.}
 
 \item{indexOut}{a list (the same length as \code{index}) that dictates which
-sample are held-out for each resample. If \code{NULL}, then the unique set
-of samples not contained in \code{index} is used.}
+data are held-out for each resample (as integers). If \code{NULL}, then the
+unique set of samples not contained in \code{index} is used.}
 
 \item{timingSamps}{the number of training set samples that will be used to
 measure the time for predicting samples (zero indicates that the prediction
-time should not be estimated).}
+time should not be estimated.}
 
 \item{seeds}{an optional set of integers that will be used to set the seed
 at each resampling iteration. This is useful when the models are run in
@@ -66,9 +74,9 @@ worker processes while a value of \code{NULL} will set the seeds using a
 random set of integers. Alternatively, a list can be used. The list should
 have \code{B+1} elements where \code{B} is the number of resamples. The
 first \code{B} elements of the list should be vectors of integers of length
-\code{P} where \code{P} is the number of subsets being evaluated (including
-the full set). The last element of the list only needs to be a single
-integer (for the final model). See the Examples section below.}
+\code{M} where \code{M} is the number of models or subsets being evaluated.
+The last element of the list only needs to be a single integer (for the
+final model). See the Examples section below and the Details section.}
 
 \item{allowParallel}{if a parallel backend is loaded and available, should
 the function use it?}

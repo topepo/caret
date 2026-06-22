@@ -8,8 +8,7 @@
 #' underlying C code from the \code{class} package has been modified to return
 #' average outcome.
 #'
-#' @aliases knnreg knnregTrain knnreg.formula knnreg.default knnreg.matrix
-#' knnreg.data.frame knnreg
+#' @aliases knnreg knnregTrain knnreg.formula knnreg.default knnreg.matrix knnreg.data.frame
 #' @param formula a formula of the form \code{lhs ~ rhs} where \code{lhs} is
 #' the response variable and \code{rhs} a set of predictors.
 #' @param data optional data frame containing the variables in the model

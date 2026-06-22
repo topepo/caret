@@ -4,8 +4,7 @@
 #'  unit length circle). The spatial sign of a vector \code{w} is
 #'  \code{w /norm(w)}.
 #' 
-#' @aliases spatialSign spatialSign.default spatialSign.matrix
-#' spatialSign.data.frame
+#' @aliases spatialSign spatialSign.default spatialSign.matrix spatialSign.data.frame
 #' @param x an object full of numeric data (which should probably
 #'  be scaled). Factors are not allowed. This could be a vector,
 #'  matrix or data frame.

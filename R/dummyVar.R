@@ -42,8 +42,7 @@
 #' \code{class2ind} is most useful for converting a factor outcome vector to a
 #' matrix (or vector) of dummy variables.
 #'
-#' @aliases dummyVars dummyVars.default predict.dummyVars contr.dummy
-#' contr.ltfr class2ind
+#' @aliases dummyVars dummyVars.default predict.dummyVars contr.dummy contr.ltfr class2ind
 #' @param formula An appropriate R model formula, see References
 #' @param data A data frame with the predictors of interest
 #' @param sep An optional separator between factor variable names and their

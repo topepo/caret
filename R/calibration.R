@@ -1,8 +1,7 @@
 #' Probability Calibration Plot
 #'
 #' @name calibration
-#' @aliases calibration calibration.formula calibration.default xyplot.calibration ggplot.calibration
-#' panel.calibration
+#' @aliases calibration calibration.formula calibration.default xyplot.calibration ggplot.calibration panel.calibration
 #'
 #' @description For classification models, this function creates a 'calibration plot' that describes
 #' how consistent model probabilities are with observed event rates.

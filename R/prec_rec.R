@@ -27,8 +27,7 @@
 #'
 #' See the references for discussions of the statistics.
 #'
-#' @aliases recall recall.default recall.table precision precision.default
-#' precision.table precision.matrix F_meas F_meas.default F_meas.table
+#' @aliases recall recall.default recall.table precision precision.default precision.table precision.matrix F_meas F_meas.default F_meas.table
 #' @param data for the default functions, a factor containing the discrete
 #' measurements. For the \code{table} function, a table.
 #' @param reference a factor containing the reference values (i.e. truth)

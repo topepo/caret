@@ -38,8 +38,7 @@
 #' is contained in both the modeling and holdout sets. One or more group
 #' could be left out, depending on the value of \code{k}.
 #'
-#' @aliases createDataPartition createResample createFolds createMultiFolds
-#'   createTimeSlices groupKFold
+#' @aliases createDataPartition createResample createFolds createMultiFolds createTimeSlices groupKFold
 #' @param y a vector of outcomes. For \code{createTimeSlices}, these should be
 #'   in chronological order.
 #' @param group a vector of groups whose length matches the number of rows in

@@ -84,8 +84,7 @@ ga_func_check <- function(x) {
 #' accuracy or Kappa (for classification) and RMSE and R-squared (for
 #' regression).
 #'
-#' @aliases gafs_initial gafs_lrSelection gafs_rwSelection gafs_tourSelection
-#' gafs_uCrossover gafs_spCrossover gafs_raMutation caretGA rfGA treebagGA
+#' @aliases gafs_initial gafs_lrSelection gafs_rwSelection gafs_tourSelection gafs_uCrossover gafs_spCrossover gafs_raMutation caretGA rfGA treebagGA
 #' @param vars number of possible predictors
 #' @param popSize the population size passed into \code{\link{gafs}}
 #' @param population a binary matrix of the current subsets with predictors in

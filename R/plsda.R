@@ -25,8 +25,7 @@
 #' \code{\link[klaR]{NaiveBayes}} function is used with \code{usekernel = TRUE}
 #' for the posterior probability calculations.
 #'
-#' @aliases plsda.default predict.plsda plsda splsda.default predict.splsda
-#' splsda
+#' @aliases plsda.default predict.plsda plsda splsda.default predict.splsda splsda
 #' @param x a matrix or data frame of predictors
 #' @param y a factor or indicator matrix for the discrete outcome. If a matrix,
 #' the entries must be either 0 or 1 and rows must sum to one

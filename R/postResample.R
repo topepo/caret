@@ -77,8 +77,7 @@
 #'  argument of the call to \code{\link{trainControl}} of the same
 #'  name.
 #'
-#' @aliases postResample defaultSummary twoClassSummary prSummary
-#'  getTrainPerf mnLogLoss R2 RMSE multiClassSummary MAE
+#' @aliases postResample defaultSummary twoClassSummary prSummary getTrainPerf mnLogLoss R2 RMSE multiClassSummary MAE
 #' @param pred A vector of numeric data (could be a factor)
 #' @param obs A vector of numeric data (could be a factor)
 #' @param data a data frame with columns \code{obs} and

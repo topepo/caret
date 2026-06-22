@@ -45,9 +45,15 @@ safsControl(
 \item{functions}{a list of functions for model fitting, prediction etc (see
 Details below)}
 
-\item{method}{The resampling method: \code{boot}, \code{boot632}, \code{cv},
-\code{repeatedcv}, \code{LOOCV}, \code{LGOCV} (for repeated training/test
-splits)}
+\item{method}{The resampling method: \code{"boot"}, \code{"boot632"},
+\code{"optimism_boot"}, \code{"boot_all"},
+\code{"cv"}, \code{"repeatedcv"}, \code{"LOOCV"}, \code{"LGOCV"} (for
+repeated training/test splits), \code{"none"} (only fits one model to the
+entire training set), \code{"oob"} (only for random forest, bagged trees,
+bagged earth, bagged flexible discriminant analysis, or conditional tree
+forest models), \code{"timeslice"}, \code{"adaptive_cv"},
+\code{"adaptive_boot"}, or \code{"adaptive_LGOCV"}. Not all methods are
+available for all control functions; see Details.}
 
 \item{metric}{a two-element string that specifies what summary metric will
 be used to select the optimal number of iterations from the external fitness
@@ -57,7 +63,7 @@ vector should have names \code{"internal"} and \code{"external"}. See
 difference.}
 
 \item{maximize}{a two-element logical: should the metrics be maximized or
-minimized? Like the \code{metric} argument, this this vector should have
+minimized? Like the \code{metric} argument, this vector should have
 names \code{"internal"} and \code{"external"}.}
 
 \item{number}{Either the number of folds or number of resampling iterations}
@@ -68,26 +74,35 @@ complete sets of folds to compute}
 \item{verbose}{a logical for printing results}
 
 \item{returnResamp}{A character string indicating how much of the resampled
-summary metrics should be saved. Values can be ``all'' or ``none''}
+summary metrics should be saved. Values can be \code{"final"}, \code{"all"}
+or \code{"none"}}
 
 \item{p}{For leave-group out cross-validation: the training percentage}
 
 \item{index}{a list with elements for each resampling iteration. Each list
-element is the sample rows used for training at that iteration.}
+element is a vector of integers corresponding to the rows used for training
+at that iteration.}
 
 \item{indexOut}{a list (the same length as \code{index}) that dictates which
-sample are held-out for each resample. If \code{NULL}, then the unique set
-of samples not contained in \code{index} is used.}
+data are held-out for each resample (as integers). If \code{NULL}, then the
+unique set of samples not contained in \code{index} is used.}
 
-\item{seeds}{a vector or integers that can be used to set the seed during
-each search. The number of seeds must be equal to the number of resamples
-plus one.}
+\item{seeds}{an optional set of integers that will be used to set the seed
+at each resampling iteration. This is useful when the models are run in
+parallel. A value of \code{NA} will stop the seed from being set within the
+worker processes while a value of \code{NULL} will set the seeds using a
+random set of integers. Alternatively, a list can be used. The list should
+have \code{B+1} elements where \code{B} is the number of resamples. The
+first \code{B} elements of the list should be vectors of integers of length
+\code{M} where \code{M} is the number of models or subsets being evaluated.
+The last element of the list only needs to be a single integer (for the
+final model). See the Examples section below and the Details section.}
 
 \item{holdout}{the proportion of data in [0, 1) to be held-back from
 \code{x} and \code{y} to calculate the internal fitness values}
 
 \item{genParallel}{if a parallel backend is loaded and available, should
-\code{\link{gafs}} use it tp parallelize the fitness calculations within a
+\code{\link{gafs}} use it to parallelize the fitness calculations within a
 generation within a resample?}
 
 \item{allowParallel}{if a parallel backend is loaded and available, should

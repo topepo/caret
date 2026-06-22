@@ -56,8 +56,9 @@
 #' repeated training/test splits), \code{"none"} (only fits one model to the
 #' entire training set), \code{"oob"} (only for random forest, bagged trees,
 #' bagged earth, bagged flexible discriminant analysis, or conditional tree
-#' forest models), \code{timeslice}, \code{"adaptive_cv"}, \code{"adaptive_boot"} or
-#' \code{"adaptive_LGOCV"}
+#' forest models), \code{"timeslice"}, \code{"adaptive_cv"},
+#' \code{"adaptive_boot"}, or \code{"adaptive_LGOCV"}. Not all methods are
+#' available for all control functions; see Details.
 #' @param number Either the number of folds or number of resampling iterations
 #' @param repeats For repeated k-fold cross-validation only: the number of
 #' complete sets of folds to compute
@@ -118,13 +119,11 @@
 #' parallel. A value of \code{NA} will stop the seed from being set within the
 #' worker processes while a value of \code{NULL} will set the seeds using a
 #' random set of integers. Alternatively, a list can be used. The list should
-#' have \code{B+1} elements where \code{B} is the number of resamples, unless
-#' \code{method} is \code{"boot632"} in which case \code{B} is the number of
-#' resamples plus 1. The first \code{B} elements of the list should be vectors
-#' of integers of length \code{M} where \code{M} is the number of models being
-#' evaluated. The last element of the list only needs to be a single integer
-#' (for the final model). See the Examples section below and the Details
-#' section.
+#' have \code{B+1} elements where \code{B} is the number of resamples. The
+#' first \code{B} elements of the list should be vectors of integers of length
+#' \code{M} where \code{M} is the number of models or subsets being evaluated.
+#' The last element of the list only needs to be a single integer (for the
+#' final model). See the Examples section below and the Details section.
 #' @param adaptive a list used when \code{method} is \code{"adaptive_cv"},
 #' \code{"adaptive_boot"} or \code{"adaptive_LGOCV"}. See Details below.
 #' @param trim a logical. If \code{TRUE} the final model in

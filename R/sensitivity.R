@@ -29,11 +29,7 @@
 #'
 #' See the references for discussions of the statistics.
 #'
-#' @aliases sensitivity sensitivity.default sensitivity.table
-#' sensitivity.matrix specificity specificity.default specificity.table
-#' specificity.matrix posPredValue posPredValue.default posPredValue.table
-#' posPredValue.matrix negPredValue negPredValue.default negPredValue.table
-#' negPredValue.matrix
+#' @aliases sensitivity sensitivity.default sensitivity.table sensitivity.matrix specificity specificity.default specificity.table specificity.matrix posPredValue posPredValue.default posPredValue.table posPredValue.matrix negPredValue negPredValue.default negPredValue.table negPredValue.matrix
 #' @param data for the default functions, a factor containing the discrete
 #' measurements. For the \code{table} or \code{matrix} functions, a table or
 #' matric object, respectively.

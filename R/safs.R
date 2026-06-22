@@ -264,11 +264,10 @@ predict.safs <- function (object, newdata, ...) {
 #' number of workers and the amount of memory required exponentially.
 #'
 #' @aliases safsControl gafsControl
+#' @inheritParams trainControl
+#' @inheritParams rfeControl
 #' @param functions a list of functions for model fitting, prediction etc (see
 #' Details below)
-#' @param method The resampling method: \code{boot}, \code{boot632}, \code{cv},
-#' \code{repeatedcv}, \code{LOOCV}, \code{LGOCV} (for repeated training/test
-#' splits)
 #' @param metric a two-element string that specifies what summary metric will
 #' be used to select the optimal number of iterations from the external fitness
 #' value and which metric should guide subset selection. If specified, this
@@ -276,32 +275,16 @@ predict.safs <- function (object, newdata, ...) {
 #' \code{\link{gafs}} and/or \code{\link{safs}} for explanations of the
 #' difference.
 #' @param maximize a two-element logical: should the metrics be maximized or
-#' minimized? Like the \code{metric} argument, this this vector should have
+#' minimized? Like the \code{metric} argument, this vector should have
 #' names \code{"internal"} and \code{"external"}.
-#' @param number Either the number of folds or number of resampling iterations
-#' @param repeats For repeated k-fold cross-validation only: the number of
-#' complete sets of folds to compute
 #' @param verbose a logical for printing results
-#' @param returnResamp A character string indicating how much of the resampled
-#' summary metrics should be saved. Values can be ``all'' or ``none''
-#' @param p For leave-group out cross-validation: the training percentage
-#' @param index a list with elements for each resampling iteration. Each list
-#' element is the sample rows used for training at that iteration.
-#' @param indexOut a list (the same length as \code{index}) that dictates which
-#' sample are held-out for each resample. If \code{NULL}, then the unique set
-#' of samples not contained in \code{index} is used.
-#' @param seeds a vector or integers that can be used to set the seed during
-#' each search. The number of seeds must be equal to the number of resamples
-#' plus one.
 #' @param holdout the proportion of data in [0, 1) to be held-back from
 #' \code{x} and \code{y} to calculate the internal fitness values
 #' @param improve the number of iterations without improvement before
 #' \code{\link{safs}} reverts back to the previous optimal subset
 #' @param genParallel if a parallel backend is loaded and available, should
-#' \code{\link{gafs}} use it tp parallelize the fitness calculations within a
+#' \code{\link{gafs}} use it to parallelize the fitness calculations within a
 #' generation within a resample?
-#' @param allowParallel if a parallel backend is loaded and available, should
-#' the function use it?
 #' @return An echo of the parameters specified
 #' @author Max Kuhn
 #' @seealso \code{\link{safs}}, \code{\link{safs}}, , \code{\link{caretGA}},

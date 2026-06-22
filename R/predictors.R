@@ -19,8 +19,7 @@
 #' For example, \code{\link[nnet]{nnet}} may return missing values from
 #' \code{predictors}.
 #'
-#' @aliases predictors predictors.formula predictors.terms predictors.train
-#' predictors.default predictors.list predictors.rfe predictors.sbf
+#' @aliases predictors predictors.formula predictors.terms predictors.train predictors.default predictors.list predictors.rfe predictors.sbf
 #' @param x a model object, list or terms
 #' @param \dots not currently used
 #' @return a character string of predictors or \code{NA}.

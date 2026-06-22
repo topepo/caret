@@ -111,11 +111,7 @@
 #' of 0.50 means that the predictor survived the filter in half of the
 #' resamples.
 #'
-#' @aliases varImp varImp.train varImp.earth varImp.rpart varImp.randomForest
-#' varImp.gbm varImp.regbagg varImp.classbagg varImp.pamrtrained varImp.lm
-#' varImp.mvr varImp.bagEarth varImp.bagFDA varImp.RandomForest varImp.rfe
-#' varImp.dsa varImp.fda varImp.multinom varImp.cubist varImp.plsda varImp.JRip
-#' varImp.PART varImp.nnet varImp.C5.0 varImp.glmnet
+#' @aliases varImp varImp.train varImp.earth varImp.rpart varImp.randomForest varImp.gbm varImp.regbagg varImp.classbagg varImp.pamrtrained varImp.lm varImp.mvr varImp.bagEarth varImp.bagFDA varImp.RandomForest varImp.rfe varImp.dsa varImp.fda varImp.multinom varImp.cubist varImp.plsda varImp.JRip varImp.PART varImp.nnet varImp.C5.0 varImp.glmnet
 #' @param object an object corresponding to a fitted model
 #' @param useModel use a model based technique for measuring variable
 #' importance?  This is only used for some models (lm, pls, rf, rpart, gbm, pam
