@@ -33,7 +33,6 @@ stringFunc <- function (x)  {
 #' @author Max Kuhn
 #' @seealso [train()]
 #' @keywords print
-#' @method print train
 #' @export  
 #' @examples
 #'

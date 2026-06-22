@@ -23,7 +23,6 @@
 #' @return a lattice plot object
 #' @author Max Kuhn
 #' @keywords hplot
-#' @method plot varImp.train
 #' @export
 
 "plot.varImp.train" <-

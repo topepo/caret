@@ -100,7 +100,6 @@ predict.list <- function(object, ...) {
 #' extractProb(bothModels, testX = iris[1:10, -5])
 #'   }
 #'
-#' @method predict train
 #' @export predict.train
 #' @export
 predict.train <- function(object, newdata = NULL, type = "raw", na.action = na.omit, ...) {

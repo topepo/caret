@@ -1034,7 +1034,6 @@ sa_select <- function(x, y,
 ##
 
 #' @importFrom stats update
-#' @method plot safs
 #' @export
 #' @export plot.safs
 plot.safs <- function(x,
@@ -1088,7 +1087,6 @@ plot.safs <- function(x,
 }
 
 
-#' @method ggplot safs
 #' @export ggplot.safs
 #' @export
 #' @rdname plot.gafs
@@ -1215,7 +1213,6 @@ selectIter = best)
 #'                      y = train_data$Class)
 #' rf_search2
 #' }
-#' @method update safs
 #' @export
 update.safs <- function(object, iter, x, y, ...) {
   iter <- iter[1]
@@ -1264,7 +1261,6 @@ update.safs <- function(object, iter, x, y, ...) {
 }
 
 #' @rdname safs
-#' @method safs recipe
 #' @import recipes
 #' @export
 "safs.recipe" <-

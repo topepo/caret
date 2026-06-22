@@ -771,7 +771,6 @@ print.gafs <- function (x, top = 5,
 #' @author Max Kuhn
 #' @seealso [safs()], [gafs()]
 #' @keywords multivariate
-#' @method predict gafs
 #' @export
 #' @examples
 #'
@@ -920,7 +919,6 @@ gafs <- function (x, ...) UseMethod("gafs")
 #'
 #' <https://en.wikipedia.org/wiki/Jaccard_index>
 #' @keywords models
-#' @method gafs default
 #' @export
 #' @examples
 #'
@@ -1192,7 +1190,6 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' @author Max Kuhn
 #' @seealso [gafs()], [safs()], [ggplot2::ggplot()], [lattice::xyplot()]
 #' @keywords hplot
-#' @method plot gafs
 #' @export
 #' @examples
 #'
@@ -1272,7 +1269,6 @@ plot.gafs <- function(x,
 }
 
 
-#' @method ggplot gafs
 #' @export ggplot.gafs
 #' @export
 #' @rdname plot.gafs
@@ -1353,7 +1349,6 @@ crossover = gafs_spCrossover,
 mutation = gafs_raMutation,
 selectIter = best)
 
-#' @method update gafs
 #' @export
 update.gafs <- function(object, iter, x, y, ...) {
   iter <- iter[1]
@@ -1434,7 +1429,6 @@ update.gafs <- function(object, iter, x, y, ...) {
 }
 
 #' @rdname gafs.default
-#' @method gafs recipe
 #' @export
 "gafs.recipe" <-
   function(x, data,

@@ -52,7 +52,6 @@
 "knnreg" <- function(x, ...)   UseMethod("knnreg")
 
 #' @rdname knnreg
-#' @method knnreg default
 #' @export
 knnreg.default <- function(x, ...)
 {
@@ -60,7 +59,6 @@ knnreg.default <- function(x, ...)
 }
 
 #' @rdname knnreg
-#' @method knnreg formula
 #' @importFrom stats model.matrix terms model.extract
 #' @export
 knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...)
@@ -104,7 +102,6 @@ knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...)
 }
 
 #' @rdname knnreg
-#' @method knnreg matrix
 #' @export
 knnreg.matrix <- function(x, y, k = 5, ...)
 {
@@ -120,7 +117,6 @@ knnreg.matrix <- function(x, y, k = 5, ...)
 }
 
 #' @rdname knnreg
-#' @method knnreg data.frame
 #' @export
 knnreg.data.frame <- function(x, y, k = 5, ...)
 {
@@ -136,7 +132,6 @@ knnreg.data.frame <- function(x, y, k = 5, ...)
 }
 
 #' @rdname knnreg
-#' @method print knnreg
 #' @export
 print.knnreg <- function (x, ...)
 {
@@ -162,7 +157,6 @@ print.knnreg <- function (x, ...)
 #' @author Max Kuhn, Chris Keefer, adapted from [class::knn()] and
 #'   [ipred::predict.ipredknn()]
 #' @keywords multivariate
-#' @method predict knnreg
 #' @export
 predict.knnreg <- function (object, newdata, ...)
 {

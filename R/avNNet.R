@@ -71,7 +71,6 @@ avNNet <- function(x, ...) {
 ## this is a near copy of nnet.formula
 #' @importFrom stats .getXlevels contrasts model.matrix model.response model.weights
 #' @rdname avNNet
-#' @method avNNet formula
 #' @export
 avNNet.formula <- function(
   formula,
@@ -129,7 +128,6 @@ avNNet.formula <- function(
 
 #' @import foreach
 #' @rdname avNNet
-#' @method avNNet default
 #' @export
 avNNet.default <- function(
   x,
@@ -199,7 +197,6 @@ avNNet.default <- function(
 }
 
 #' @rdname avNNet
-#' @method print avNNet
 #' @export
 print.avNNet <- function(x, ...) {
   cat(
@@ -216,7 +213,6 @@ print.avNNet <- function(x, ...) {
 
 #' @importFrom stats .checkMFClasses delete.response fitted.values model.frame model.matrix predict na.omit
 #' @rdname avNNet
-#' @method predict avNNet
 #' @export
 predict.avNNet <- function(
   object,

@@ -1,4 +1,3 @@
-#' @method print varImp.train
 #' @export
 "print.varImp.train" <-
 function(x, top = min(20, dim(x$importance)[1]), digits = max(3, getOption("digits") - 3), ...)

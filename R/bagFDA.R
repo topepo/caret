@@ -63,7 +63,6 @@ function(x, ...)
    UseMethod("bagFDA")
 
 #' @rdname bagFDA
-#' @method bagFDA default
 #' @importFrom stats predict
 #' @export
 "bagFDA.default" <-
@@ -109,7 +108,6 @@ function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
 }
 
 #' @rdname bagFDA
-#' @method bagFDA formula
 #' @importFrom stats contrasts model.matrix model.response model.weights na.omit
 #' @export
 "bagFDA.formula" <-
@@ -139,7 +137,6 @@ function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights = NUL
 }
 
 #' @rdname bagFDA
-#' @method print bagFDA
 #' @export
 "print.bagFDA" <-
 function (x, ...)
@@ -209,7 +206,6 @@ function(object, newdata = NULL, type = "class", ...)
 }
 
 #' @rdname summary.bagEarth
-#' @method summary bagFDA
 #' @importFrom stats quantile
 #' @export
 "summary.bagFDA" <-

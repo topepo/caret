@@ -115,12 +115,10 @@
 calibration <- function(x, ...) UseMethod("calibration")
 
 #' @rdname calibration
-#' @method calibration default
 #' @export
 calibration.default <- function(x, ...) stop("'x' should be a formula")
 
 #' @rdname calibration
-#' @method calibration formula
 #' @export
 calibration.formula <- function(x, data = NULL, class = NULL, cuts = 11, subset = TRUE, lattice.options = NULL, ...)
 {
@@ -163,7 +161,6 @@ calibration.formula <- function(x, data = NULL, class = NULL, cuts = 11, subset 
 }
 
 #' @rdname calibration
-#' @method print calibration
 #' @export
 print.calibration <- function(x, ...)
 {
@@ -209,14 +206,12 @@ calibCalc <- function(x, class = levels(obs)[1], cuts = 11) {
   dataPoints
 }
 
-#' @method plot calibration
 #' @export
 plot.calibration <- function(x, y = NULL, ...)
   xyplot(x = x, data = NULL, ...)
 
 
 #' @rdname calibration
-#' @method xyplot calibration
 #' @importFrom stats as.formula
 #' @importFrom grDevices extendrange
 #' @export
@@ -245,7 +240,6 @@ xyplot.calibration <- function(x, data = NULL, ...){
 }
 
 #' @rdname calibration
-#' @method ggplot calibration
 #' @export
 ggplot.calibration <- function(data, ..., bwidth = 2, dwidth = 3){
   data$data$Model <- data$data$calibModelVar

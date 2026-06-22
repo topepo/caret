@@ -163,7 +163,6 @@
 rfe <- function (x, ...) UseMethod("rfe")
 
 #' @rdname rfe
-#' @method rfe default
 #' @importFrom stats predict runif
 #' @export
 "rfe.default" <-
@@ -321,7 +320,6 @@ rfe <- function (x, ...) UseMethod("rfe")
     out
   }
 
-#' @method rfe formula
 #' @inheritParams train
 #' @importFrom stats .getXlevels contrasts model.matrix model.response
 #' @rdname rfe
@@ -352,7 +350,6 @@ rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
 
 ######################################################################
 ######################################################################
-#' @method print rfe
 #' @export
 print.rfe <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 {
@@ -548,7 +545,6 @@ rfeIter <- function(x, y,
 #' @references Kuhn (2008), ``Building Predictive Models in R Using the caret''
 #'   (\doi{10.18637/jss.v028.i05})
 #' @keywords hplot
-#' @method plot rfe
 #' @export
 #' @examples
 #'
@@ -1323,7 +1319,6 @@ predict.rfe <- function(object, newdata, ...) {
 }
 
 #' @rdname rfe
-#' @method update rfe
 #' @export
 update.rfe <- function(object, x, y, size, ...) {
   size <- size[1]
@@ -1529,7 +1524,6 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
   list(finalVariables = finalVariables, pred = rfePred)
 }
 
-#' @method rfe recipe
 #' @rdname rfe
 #' @export
 "rfe.recipe" <-

@@ -124,7 +124,6 @@ bagControl <- function(
 
 
 #' @rdname bag
-#' @method bag default
 #' @export
 "bag.default" <-
   function(x, y, B = 10, vars = ncol(x), bagControl = NULL, ...) {
@@ -264,7 +263,6 @@ bagControl <- function(
   }
 
 #' @rdname bag
-#' @method predict bag
 #' @importFrom stats predict
 #' @export
 "predict.bag" <-
@@ -284,7 +282,6 @@ bagControl <- function(
   }
 
 #' @rdname bag
-#' @method print bag
 #' @export
 print.bag <- function(x, ...) {
   printCall(x$call)
@@ -315,7 +312,6 @@ print.bag <- function(x, ...) {
 }
 
 #' @rdname bag
-#' @method summary bag
 #' @importFrom stats quantile
 #' @export
 "summary.bag" <-
@@ -347,7 +343,6 @@ print.bag <- function(x, ...) {
   }
 
 #' @rdname bag
-#' @method print summary.bag
 #' @export
 "print.summary.bag" <-
   function(x, digits = max(3, getOption("digits") - 3), ...) {

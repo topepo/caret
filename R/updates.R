@@ -39,7 +39,6 @@
 #'
 #' update(knnFit1, list(.k = 3))
 #' }
-#' @method update train
 #' @export
 #' @importFrom recipes juice all_predictors all_outcomes
 update.train <- function(object, param = NULL, ...) {

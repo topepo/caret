@@ -1488,7 +1488,6 @@ train.recipe <- function(x,
 }
 
 
-#' @method summary train
 #' @export
 summary.train <- function(object, ...) summary(object$finalModel, ...)
 

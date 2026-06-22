@@ -67,7 +67,6 @@
 classDist <- function (x, ...)  UseMethod("classDist")
 
 #' @rdname classDist
-#' @method classDist default
 #' @importFrom stats cov predict quantile prcomp
 #' @export
 classDist.default <- function(x, y, groups = 5,
@@ -155,7 +154,6 @@ print.classDist <- function(x, ...)
   }
 
 #' @rdname classDist
-#' @method predict classDist
 #' @importFrom stats mahalanobis predict
 #' @export
 predict.classDist <- function(object, newdata, trans = log, ...)

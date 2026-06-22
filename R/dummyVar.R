@@ -117,7 +117,6 @@
   }
 
 #' @rdname dummyVars
-#' @method dummyVars default
 #' @importFrom stats as.formula model.frame
 #' @export
 dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, fullRank = FALSE, ...)
@@ -167,7 +166,6 @@ dummyVars.default <- function (formula, data, sep = ".", levelsOnly = FALSE, ful
 }
 
 #' @rdname dummyVars
-#' @method print dummyVars
 #' @export
 print.dummyVars <- function(x, ...)
 {
@@ -184,7 +182,6 @@ print.dummyVars <- function(x, ...)
 }
 
 #' @rdname dummyVars
-#' @method predict dummyVars
 #' @importFrom stats delete.response model.frame model.matrix na.pass
 #' @export
 predict.dummyVars <- function(object, newdata, na.action = na.pass, ...)

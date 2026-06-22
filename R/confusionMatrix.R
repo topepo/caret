@@ -133,7 +133,6 @@ confusionMatrix <-
   }
 
 #' @rdname confusionMatrix
-#' @method confusionMatrix default
 #' @importFrom utils getFromNamespace
 #' @export
 confusionMatrix.default <- function(data, reference,
@@ -184,7 +183,6 @@ confusionMatrix.default <- function(data, reference,
 }
 
 #' @rdname confusionMatrix
-#' @method confusionMatrix matrix
 #' @importFrom utils getFromNamespace
 #' @export
 confusionMatrix.matrix <- function(data,
@@ -547,7 +545,6 @@ confusionMatrix.rfe <- confusionMatrix.train
 confusionMatrix.sbf <- confusionMatrix.train
 
 #' @importFrom utils getFromNamespace
-#' @method print confusionMatrix.train
 #' @export
 print.confusionMatrix.train <- function(x, digits = 1, ...){
   cat(x$text, "\n")
@@ -571,11 +568,9 @@ print.confusionMatrix.train <- function(x, digits = 1, ...){
   invisible(x)
 }
 
-#' @method print confusionMatrix.rfe
 #' @export
 print.confusionMatrix.rfe <- print.confusionMatrix.train
 
-#' @method print confusionMatrix.sbf
 #' @export
 print.confusionMatrix.sbf <- print.confusionMatrix.train
 

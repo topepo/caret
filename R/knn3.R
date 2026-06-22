@@ -62,7 +62,6 @@ knn3.default <- function(x, ...)
 }
 
 #' @rdname knn3
-#' @method knn3 formula
 #' @importFrom stats model.matrix terms model.extract
 #' @export
 knn3.formula <- function (formula, data, subset, na.action, k = 5, ...)
@@ -107,7 +106,6 @@ knn3.formula <- function (formula, data, subset, na.action, k = 5, ...)
 }
 
 #' @rdname knn3
-#' @method knn3 data.frame
 #' @export
 knn3.data.frame <- function(x, y, k = 5, ...)
 {
@@ -117,7 +115,6 @@ knn3.data.frame <- function(x, y, k = 5, ...)
 }
 
 #' @rdname knn3
-#' @method knn3 matrix
 #' @export
 knn3.matrix <- function(x, y, k = 5, ...)
 {
@@ -134,7 +131,6 @@ knn3.matrix <- function(x, y, k = 5, ...)
 }
 
 #' @rdname knn3
-#' @method print knn3
 #' @export
 print.knn3 <- function (x, ...)
 {
@@ -168,7 +164,6 @@ print.knn3 <- function (x, ...)
 #' @author [ipred::predict.ipredknn()] by Torsten.Hothorn
 #'   <Torsten.Hothorn@@rzmail.uni-erlangen.de>
 #' @keywords multivariate
-#' @method predict knn3
 #' @export
 predict.knn3 <- function (object, newdata, type = c("prob", "class"), ...)
 {

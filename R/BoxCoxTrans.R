@@ -109,7 +109,6 @@ BoxCoxTrans.default <- function(y, x = rep(1, length(y)), fudge = .2, numUnique 
 
 
 #' @rdname BoxCoxTrans
-#' @method print BoxCoxTrans
 #' @export
 print.BoxCoxTrans <- function(x, newdata, digits = 3, ...){
   cat("Box-Cox Transformation\n\n")
@@ -132,7 +131,6 @@ print.BoxCoxTrans <- function(x, newdata, digits = 3, ...){
 
 
 #' @rdname BoxCoxTrans
-#' @method predict BoxCoxTrans
 #' @export
 predict.BoxCoxTrans <- function(object, newdata, ...) {
   if(!is.vector(newdata) || !is.numeric(newdata)) stop("newdata should be a numeric vector")

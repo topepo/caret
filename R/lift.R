@@ -104,12 +104,10 @@
 lift <- function(x, ...) UseMethod("lift")
 
 #' @rdname lift
-#' @method lift default
 #' @export
 lift.default <- function(x, ...) stop("'x' should be a formula")
 
 #' @rdname lift
-#' @method lift formula
 #' @export
 lift.formula <- function(x, data = NULL,
                          class = NULL,
@@ -172,7 +170,6 @@ lift.formula <- function(x, data = NULL,
 }
 
 #' @rdname lift
-#' @method print lift
 #' @export
 print.lift <- function(x, ...) {
   printCall(x$call)
@@ -181,12 +178,10 @@ print.lift <- function(x, ...) {
   invisible(x)
 }
 
-#' @method plot lift
 #' @export
 plot.lift <- function(x, y = NULL, ...) xyplot.lift(x = x, data = NULL, ...)
 
 #' @rdname lift
-#' @method xyplot lift
 #' @importFrom stats as.formula
 #' @importFrom grDevices extendrange
 #' @export
@@ -383,7 +378,6 @@ utils::globalVariables(c("CumEventPct", "CumTestedPct",
                          "cuts", "x1", "x2", "y1", "y2"))
 #' @rdname lift
 #' @param mapping,environment Not used (required for `ggplot` consistency).
-#' @method ggplot lift
 #' @export
 ggplot.lift <- function (data = NULL, mapping = NULL, plot = "gain", values = NULL, ...,
                  environment = NULL) {

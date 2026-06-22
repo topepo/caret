@@ -76,7 +76,6 @@ pcaNNet <- function (x, ...)
 
 # this is a near copy of nnet.formula
 #' @rdname pcaNNet
-#' @method pcaNNet formula
 #' @importFrom stats .getXlevels contrasts model.matrix model.response model.weights
 #' @export
 pcaNNet.formula <- function (formula, data, weights, ...,
@@ -112,7 +111,6 @@ pcaNNet.formula <- function (formula, data, weights, ...,
 }
 
 #' @rdname pcaNNet
-#' @method pcaNNet default
 #' @export
 pcaNNet.default <- function(x, y, thresh = .99, ...)
   {
@@ -153,7 +151,6 @@ pcaNNet.default <- function(x, y, thresh = .99, ...)
   }
 
 #' @rdname pcaNNet
-#' @method print pcaNNet
 #' @export
 print.pcaNNet <- function (x, ...)
 {
@@ -169,7 +166,6 @@ print.pcaNNet <- function (x, ...)
 }
 
 #' @rdname pcaNNet
-#' @method predict pcaNNet
 #' @importFrom stats .checkMFClasses delete.response model.frame model.matrix predict na.omit fitted
 #' @export
 predict.pcaNNet <- function(object, newdata, type = c("raw", "class", "prob"), ...)

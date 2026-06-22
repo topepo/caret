@@ -56,7 +56,6 @@
   UseMethod("bagEarth")
 
 #' @rdname bagEarth
-#' @method bagEarth default
 #' @importFrom stats predict
 #' @export
 "bagEarth.default" <-
@@ -157,7 +156,6 @@
   }
 
 #' @rdname bagEarth
-#' @method bagEarth formula
 #' @importFrom stats contrasts model.matrix model.response model.weights na.omit
 #' @export
 "bagEarth.formula" <-
@@ -222,7 +220,6 @@
 #' @author Max Kuhn
 #' @seealso [bagEarth()]
 #' @keywords regression
-#' @method predict bagEarth
 #' @export
 #' @examples
 #'
@@ -324,7 +321,6 @@ print.bagEarth <- function (x, ...) {
 #' * `bmarsCall`: the original call to `bagEarth`
 #' @author Max Kuhn
 #' @keywords manip
-#' @method summary bagEarth
 #' @export
 #' @examples
 #'

@@ -52,7 +52,6 @@ icr <- function (x, ...) UseMethod("icr")
 #' icrFit
 #'
 #' predict(icrFit, bbbDescr[1:5,])
-#' @method icr formula
 #' @export
 icr.formula <- function (formula, data, weights, ...,
                          subset, na.action, contrasts = NULL)
@@ -85,7 +84,6 @@ icr.formula <- function (formula, data, weights, ...,
 }
 
 #' @rdname icr.formula
-#' @method icr default
 #' @importFrom stats predict lm
 #' @export
 icr.default <- function(x, y, ...)
@@ -134,7 +132,6 @@ print.icr <- function (x, digits = max(3, getOption("digits") - 3), ...)
 }
 
 #' @rdname icr.formula
-#' @method predict icr
 #' @importFrom stats .checkMFClasses delete.response model.frame model.matrix predict na.omit fitted
 #' @export
 predict.icr <- function(object, newdata, ...)
