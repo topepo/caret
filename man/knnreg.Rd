@@ -29,8 +29,8 @@ knnregTrain(train, test, y, k = 5, use.all = TRUE)
 
 \item{...}{additional parameters to pass to \code{knnregTrain}.}
 
-\item{formula}{a formula of the form \code{lhs ~ rhs} where \code{lhs} is
-the response variable and \code{rhs} a set of predictors.}
+\item{formula}{a formula of the form \code{lhs ~ rhs} where \code{lhs} is the response
+variable and \code{rhs} a set of predictors.}
 
 \item{data}{optional data frame containing the variables in the model
 formula.}
@@ -51,22 +51,20 @@ contain \code{NA}s.}
 interpreted as a row vector for a single case.}
 
 \item{use.all}{controls handling of ties. If true, all distances equal to
-the \code{k}th largest are included. If false, a random selection of
-distances equal to the \code{k}th is chosen to use exactly \code{k}
-neighbours.}
+the \code{k}th largest are included. If false, a random selection of distances
+equal to the \code{k}th is chosen to use exactly \code{k} neighbours.}
 }
 \value{
-An object of class \code{knnreg}. See \code{\link{predict.knnreg}}.
+An object of class \code{knnreg}. See \code{\link[=predict.knnreg]{predict.knnreg()}}.
 }
 \description{
 $k$-nearest neighbour regression that can return the average value for the
 neighbours.
 }
 \details{
-\code{knnreg} is similar to \code{\link[ipred]{ipredknn}} and
-\code{knnregTrain} is a modification of \code{\link[class]{knn}}. The
-underlying C code from the \code{class} package has been modified to return
-average outcome.
+\code{knnreg} is similar to \code{\link[ipred:ipredknn]{ipred::ipredknn()}} and \code{knnregTrain} is a
+modification of \code{\link[class:knn]{class::knn()}}. The underlying C code from the \code{class}
+package has been modified to return average outcome.
 }
 \examples{
 
@@ -86,9 +84,9 @@ plot(testY, predict(fit, testX))
 
 }
 \author{
-\code{\link[class]{knn}} by W. N. Venables and B. D. Ripley and
-\code{\link[ipred]{ipredknn}} by Torsten.Hothorn
-<Torsten.Hothorn@rzmail.uni-erlangen.de>, modifications by Max Kuhn and
+\code{\link[class:knn]{class::knn()}} by W. N. Venables and B. D. Ripley and
+\code{\link[ipred:ipredknn]{ipred::ipredknn()}} by Torsten.Hothorn
+\href{mailto:Torsten.Hothorn@rzmail.uni-erlangen.de}{Torsten.Hothorn@rzmail.uni-erlangen.de}, modifications by Max Kuhn and
 Chris Keefer
 }
 \keyword{multivariate}

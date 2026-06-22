@@ -7,16 +7,15 @@
 \method{format}{bagEarth}(x, file = "", cat = TRUE, ...)
 }
 \arguments{
-\item{x}{An \code{\link{bagEarth}} object.  This is the only required
-argument.}
+\item{x}{An \code{\link[=bagEarth]{bagEarth()}} object.  This is the only required argument.}
 
 \item{file}{A connection, or a character string naming the file to print to.
 If "" (the default), the output prints to the standard output connection.
-See \code{\link[base]{cat}}.}
+See \code{\link[base:cat]{base::cat()}}.}
 
 \item{cat}{a logical; should the equation be printed?}
 
-\item{\dots}{Arguments to \code{\link[earth]{format.earth}}.}
+\item{\dots}{Arguments to \code{\link[earth:format.earth]{earth::format.earth()}}.}
 }
 \value{
 A character representation of the bagged earth object.
@@ -50,6 +49,6 @@ format(a)
 
 }
 \seealso{
-\code{\link[earth]{earth}}
+\code{\link[earth:earth]{earth::earth()}}
 }
 \keyword{models}

@@ -28,19 +28,19 @@ groupKFold(group, k = length(unique(group)))
 createResample(y, times = 10, list = TRUE)
 }
 \arguments{
-\item{y}{a vector of outcomes. For \code{createTimeSlices}, these should be
-in chronological order.}
+\item{y}{a vector of outcomes. For \code{createTimeSlices}, these should be in
+chronological order.}
 
 \item{times}{the number of partitions to create}
 
 \item{p}{the percentage of data that goes to training}
 
-\item{list}{logical - should the results be in a list (\code{TRUE}) or a
-matrix with the number of rows equal to \code{floor(p * length(y))} and
-\code{times} columns.}
+\item{list}{logical - should the results be in a list (\code{TRUE}) or a matrix
+with the number of rows equal to \code{floor(p * length(y))} and \code{times}
+columns.}
 
-\item{groups}{for numeric \code{y}, the number of breaks in the quantiles
-(see below)}
+\item{groups}{for numeric \code{y}, the number of breaks in the quantiles (see
+below)}
 
 \item{k}{an integer for the number of folds.}
 
@@ -63,33 +63,33 @@ the overall data set.}
 }
 \value{
 A list or matrix of row position integers corresponding to the
-  training data. For \code{createTimeSlices} subsamples are named by the end
-  index of each training subsample.
+training data. For \code{createTimeSlices} subsamples are named by the end
+index of each training subsample.
 }
 \description{
-A series of test/training partitions are created using
-\code{createDataPartition} while \code{createResample} creates one or more
-bootstrap samples. \code{createFolds} splits the data into \code{k} groups
-while \code{createTimeSlices} creates cross-validation split for series data.
-\code{groupKFold} splits the data based on a grouping factor.
+A series of test/training partitions are created using \code{createDataPartition}
+while \code{createResample} creates one or more bootstrap samples. \code{createFolds}
+splits the data into \code{k} groups while \code{createTimeSlices} creates
+cross-validation split for series data. \code{groupKFold} splits the data based
+on a grouping factor.
 }
 \details{
 For bootstrap samples, simple random sampling is used.
 
 For other data splitting, the random sampling is done within the levels of
-\code{y} when \code{y} is a factor in an attempt to balance the class
-distributions within the splits.
+\code{y} when \code{y} is a factor in an attempt to balance the class distributions
+within the splits.
 
 For numeric \code{y}, the sample is split into groups sections based on
 percentiles and sampling is done within these subgroups. For
-\code{createDataPartition}, the number of percentiles is set via the
-\code{groups} argument. For \code{createFolds} and \code{createMultiFolds},
-the number of groups is set dynamically based on the sample size and
-\code{k}.  For smaller samples sizes, these two functions may not do
-stratified splitting and, at most, will split the data into quartiles.
+\code{createDataPartition}, the number of percentiles is set via the \code{groups}
+argument. For \code{createFolds} and \code{createMultiFolds}, the number of groups is
+set dynamically based on the sample size and \code{k}.  For smaller samples
+sizes, these two functions may not do stratified splitting and, at most,
+will split the data into quartiles.
 
-Also, for \code{createDataPartition}, very small class sizes (<= 3) the
-classes may not show up in both the training and test data
+Also, for \code{createDataPartition}, very small class sizes (<= 3) the classes
+may not show up in both the training and test data
 
 For multiple k-fold cross-validation, completely independent folds are
 created.  The names of the list objects will denote the fold membership
@@ -98,12 +98,12 @@ cross-validation set (of \code{times}). Note that this function calls
 \code{createFolds} with \code{list = TRUE} and \code{returnTrain = TRUE}.
 
 Hyndman and Athanasopoulos (2013)) discuss rolling forecasting origin
-techniques that move the training and test sets in time.
-\code{createTimeSlices} can create the indices for this type of splitting.
+techniques that move the training and test sets in time. \code{createTimeSlices}
+can create the indices for this type of splitting.
 
-For Group k-fold cross-validation, the data are split such that no group
-is contained in both the modeling and holdout sets. One or more group
-could be left out, depending on the value of \code{k}.
+For Group k-fold cross-validation, the data are split such that no group is
+contained in both the modeling and holdout sets. One or more group could be
+left out, depending on the value of \code{k}.
 }
 \examples{
 

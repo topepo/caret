@@ -7,33 +7,33 @@
 \method{update}{train}(object, param = NULL, ...)
 }
 \arguments{
-\item{object}{an object of class \code{\link{train}}}
+\item{object}{an object of class \code{\link[=train]{train()}}}
 
 \item{param}{a data frame or named list of all tuning parameters}
 
 \item{\dots}{not currently used}
 }
 \value{
-a new \code{\link{train}} object
+a new \code{\link[=train]{train()}} object
 }
 \description{
-\code{update} allows a user to over-ride the tuning parameter selection
-process by specifying a set of tuning parameters or to update the model
-object to the latest version of this package.
+\code{update} allows a user to over-ride the tuning parameter selection process
+by specifying a set of tuning parameters or to update the model object to
+the latest version of this package.
 }
 \details{
 If the model object was created with version 5.17-7 or earlier, the
-underlying package structure was different. To make old \code{\link{train}}
-objects consistent with the new structure, use \code{param = NULL} to get
-the same object back with updates.
+underlying package structure was different. To make old \code{\link[=train]{train()}} objects
+consistent with the new structure, use \code{param = NULL} to get the same object
+back with updates.
 
 To update the model parameters, the training data must be stored in the
-model object (see the option \code{returnData} in
-\code{\link{trainControl}}. Also, all tuning parameters must be specified in
-the \code{param} slot. All other options are held constant, including the
-original pre-processing (if any), options passed in using code... and so on.
-When printing, the verbiage "The tuning parameter was set manually." is used
-to describe how the tuning parameters were created.
+model object (see the option \code{returnData} in \code{\link[=trainControl]{trainControl()}}. Also, all
+tuning parameters must be specified in the \code{param} slot. All other options
+are held constant, including the original pre-processing (if any), options
+passed in using code... and so on. When printing, the verbiage "The tuning
+parameter was set manually." is used to describe how the tuning parameters
+were created.
 }
 \examples{
 
@@ -52,7 +52,7 @@ update(knnFit1, list(.k = 3))
 }
 }
 \seealso{
-\code{\link{train}}, \code{\link{trainControl}}
+\code{\link[=train]{train()}}, \code{\link[=trainControl]{trainControl()}}
 }
 \author{
 Max Kuhn

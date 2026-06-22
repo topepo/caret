@@ -27,10 +27,10 @@ getRangeBounds <- function(pp) {
 #' from the training data and applied to any data set with the same variables.
 #'
 #' In all cases, transformations and operations are estimated using the data in
-#' \code{x} and these operations are applied to new data using these values;
-#' nothing is recomputed when using the \code{predict} function.
+#' `x` and these operations are applied to new data using these values; nothing
+#' is recomputed when using the `predict` function.
 #'
-#' The Box-Cox (\code{method = "BoxCox"}), Yeo-Johnson (\code{method =
+#' The Box-Cox (`method = "BoxCox"`), Yeo-Johnson (\code{method =
 #' "YeoJohnson"}), and exponential transformations (\code{method =
 #' "expoTrans"}) have been "repurposed" here: they are being used to transform
 #' the predictor variables. The Box-Cox transformation was developed for
@@ -44,39 +44,39 @@ getRangeBounds <- function(pp) {
 #' transformation of Manly (1976) can also be used for positive or negative
 #' data.
 #'
-#' \code{method = "center"} subtracts the mean of the predictor's data (again
-#' from the data in \code{x}) from the predictor values while \code{method =
-#' "scale"} divides by the standard deviation.
+#' `method = "center"` subtracts the mean of the predictor's data (again from
+#' the data in `x`) from the predictor values while \code{method = "scale"}
+#' divides by the standard deviation.
 #'
-#' The "range" transformation scales the data to be within \code{rangeBounds}. If new
-#' samples have values larger or smaller than those in the training set, values
-#' will be outside of this range.
+#' The "range" transformation scales the data to be within `rangeBounds`. If
+#' new samples have values larger or smaller than those in the training set,
+#' values will be outside of this range.
 #'
 #' Predictors that are not numeric are ignored in the calculations (including
 #' methods "zv`" and "nzv`").
 #'
-#' \code{method = "zv"} identifies numeric predictor columns with a single
-#' value (i.e. having zero variance) and excludes them from further
-#' calculations. Similarly, \code{method = "nzv"} does the same by applying
-#' \code{\link{nearZeroVar}} exclude "near zero-variance" predictors. The options
-#' \code{freqCut} and \code{uniqueCut} can be used to modify the filter.
+#' `method = "zv"` identifies numeric predictor columns with a single value
+#' (i.e. having zero variance) and excludes them from further calculations.
+#' Similarly, `method = "nzv"` does the same by applying [nearZeroVar()]
+#' exclude "near zero-variance" predictors. The options `freqCut` and
+#' `uniqueCut` can be used to modify the filter.
 #'
-#' \code{method = "corr"} seeks to filter out highly correlated predictors. See
-#' \code{\link{findCorrelation}}.
+#' `method = "corr"` seeks to filter out highly correlated predictors. See
+#' [findCorrelation()].
 #'
-#' For classification, \code{method = "conditionalX"} examines the distribution
-#' of each predictor conditional on the outcome. If there is only one unique
-#' value within any class, the predictor is excluded from further calculations
-#' (see \code{\link{checkConditionalX}} for an example). When \code{outcome} is
-#' not a factor, this calculation is not executed. This operation can be time
-#' consuming when used within resampling via \code{\link{train}}.
+#' For classification, `method = "conditionalX"` examines the distribution of
+#' each predictor conditional on the outcome. If there is only one unique value
+#' within any class, the predictor is excluded from further calculations (see
+#' [checkConditionalX()] for an example). When `outcome` is not a factor, this
+#' calculation is not executed. This operation can be time consuming when used
+#' within resampling via [train()].
 #'
 #' The operations are applied in this order: zero-variance filter, near-zero
-#' variance filter, correlation filter, Box-Cox/Yeo-Johnson/exponential transformation, centering,
-#' scaling, range, imputation, PCA, ICA then spatial sign. This is a departure
-#' from versions of \pkg{caret} prior to version 4.76 (where imputation was
-#' done first) and is not backwards compatible if bagging was used for
-#' imputation.
+#' variance filter, correlation filter, Box-Cox/Yeo-Johnson/exponential
+#' transformation, centering, scaling, range, imputation, PCA, ICA then spatial
+#' sign. This is a departure from versions of \pkg{caret} prior to version 4.76
+#' (where imputation was done first) and is not backwards compatible if bagging
+#' was used for imputation.
 #'
 #' If PCA is requested but centering and scaling are not, the values will still
 #' be centered and scaled. Similarly, when ICA is requested, the data are
@@ -92,75 +92,73 @@ getRangeBounds <- function(pp) {
 #' predictor independently, and may be inaccurate.
 #'
 #' A warning is thrown if both PCA and ICA are requested. ICA, as implemented
-#' by the \code{\link[fastICA]{fastICA}} package automatically does a PCA
-#' decomposition prior to finding the ICA scores.
+#' by the [fastICA::fastICA()] package automatically does a PCA decomposition
+#' prior to finding the ICA scores.
 #'
-#' The function will throw an error of any numeric variables in \code{x} has
-#' less than two unique values unless either \code{method = "zv"} or
-#' \code{method = "nzv"} are invoked.
+#' The function will throw an error of any numeric variables in `x` has less
+#' than two unique values unless either `method = "zv"` or `method = "nzv"` are
+#' invoked.
 #'
 #' Non-numeric data will not be pre-processed and their values will be in the
-#' data frame produced by the \code{predict} function. Note that when PCA or
-#' ICA is used, the non-numeric columns may be in different positions when
-#' predicted.
+#' data frame produced by the `predict` function. Note that when PCA or ICA is
+#' used, the non-numeric columns may be in different positions when predicted.
 #'
 #' @aliases preProcess preProcess.default predict.preProcess
 #' @param x a matrix or data frame. Non-numeric predictors are allowed but will
-#' be ignored.
+#'   be ignored.
 #' @param method a character vector specifying the type of processing. Possible
-#' values are "BoxCox", "YeoJohnson", "expoTrans", "center", "scale", "range",
-#' "knnImpute", "bagImpute", "medianImpute", "pca", "ica", "spatialSign", "corr", "zv",
-#' "nzv", and "conditionalX" (see Details below)
-#' @param          thresh a cutoff for the cumulative percent of variance to be retained
-#' by PCA
+#'   values are "BoxCox", "YeoJohnson", "expoTrans", "center", "scale",
+#'   "range", "knnImpute", "bagImpute", "medianImpute", "pca", "ica",
+#'   "spatialSign", "corr", "zv", "nzv", and "conditionalX" (see Details below)
+#' @param thresh a cutoff for the cumulative percent of variance to be retained
+#'   by PCA
 #' @param pcaComp the specific number of PCA components to keep. If specified,
-#' this over-rides \code{thresh}
+#'   this over-rides `thresh`
 #' @param na.remove a logical; should missing values be removed from the
-#' calculations?
-#' @param object an object of class \code{preProcess}
+#'   calculations?
+#' @param object an object of class `preProcess`
 #' @param newdata a matrix or data frame of new data to be pre-processed
 #' @param k the number of nearest neighbors from the training set to use for
-#' imputation
+#'   imputation
 #' @param knnSummary function to average the neighbor values per column during
-#' imputation
+#'   imputation
 #' @param outcome a numeric or factor vector for the training set outcomes.
-#' This can be used to help estimate the Box-Cox transformation of the
-#' predictor variables (see Details below)
+#'   This can be used to help estimate the Box-Cox transformation of the
+#'   predictor variables (see Details below)
 #' @param fudge a tolerance value: Box-Cox transformation lambda values within
-#' +/-fudge will be coerced to 0 and within 1+/-fudge will be coerced to 1.
-#' @param numUnique how many unique values should \code{y} have to estimate the
-#' Box-Cox transformation?
+#'   +/-fudge will be coerced to 0 and within 1+/-fudge will be coerced to 1.
+#' @param numUnique how many unique values should `y` have to estimate the
+#'   Box-Cox transformation?
 #' @param verbose a logical: prints a log as the computations proceed
 #' @param freqCut the cutoff for the ratio of the most common value to the
-#' second most common value. See \code{\link{nearZeroVar}}.
-#' @param uniqueCut the cutoff for the percentage of distinct values out of
-#' the number of total samples. See \code{\link{nearZeroVar}}.
+#'   second most common value. See [nearZeroVar()].
+#' @param uniqueCut the cutoff for the percentage of distinct values out of the
+#'   number of total samples. See [nearZeroVar()].
 #' @param cutoff a numeric value for the pair-wise absolute correlation cutoff.
-#' See \code{\link{findCorrelation}}.
+#'   See [findCorrelation()].
 #' @param rangeBounds a two-element numeric vector specifying closed interval
-#' for range transformation
-#' @param \dots additional arguments to pass to \code{\link[fastICA]{fastICA}},
-#' such as \code{n.comp}
-#' @return \code{preProcess} results in a list with elements \item{call}{the
-#' function call} \item{method}{a named list of operations and the variables
-#' used for each } \item{dim}{the dimensions of \code{x}} \item{bc}{Box-Cox
-#' transformation values, see \code{\link{BoxCoxTrans}}} \item{mean}{a vector
-#' of means (if centering was requested)} \item{std}{a vector of standard
-#' deviations (if scaling or PCA was requested)} \item{rotation}{a matrix of
-#' eigenvectors if PCA was requested} \item{method}{the value of \code{method}}
-#' \item{thresh}{the value of \code{thresh}} \item{ranges}{a matrix of min and
-#' max values for each predictor when \code{method} includes "range" (and
-#' \code{NULL} otherwise)} \item{numComp}{the number of principal components
-#' required of capture the specified amount of variance} \item{ica}{contains
-#' values for the \code{W} and \code{K} matrix of the decomposition}
-#' \item{median}{a vector of medians (if median imputation was requested)}
+#'   for range transformation
+#' @param \dots additional arguments to pass to [fastICA::fastICA()], such as
+#'   `n.comp`
+#' @return `preProcess` results in a list with elements \item{call}{the
+#'   function call} \item{method}{a named list of operations and the variables
+#'   used for each } \item{dim}{the dimensions of `x`} \item{bc}{Box-Cox
+#'   transformation values, see [BoxCoxTrans()]} \item{mean}{a vector of means
+#'   (if centering was requested)} \item{std}{a vector of standard deviations
+#'   (if scaling or PCA was requested)} \item{rotation}{a matrix of
+#'   eigenvectors if PCA was requested} \item{method}{the value of `method`}
+#'   \item{thresh}{the value of `thresh`} \item{ranges}{a matrix of min and max
+#'   values for each predictor when `method` includes "range" (and `NULL`
+#'   otherwise)} \item{numComp}{the number of principal components required of
+#'   capture the specified amount of variance} \item{ica}{contains values for
+#'   the `W` and `K` matrix of the decomposition} \item{median}{a vector of
+#'   medians (if median imputation was requested)}
 #'
-#' \code{predict.preProcess} will produce a data frame.
+#' `predict.preProcess` will produce a data frame.
 #' @author Max Kuhn, median imputation by Zachary Mayer
-#' @seealso \code{\link{BoxCoxTrans}}, \code{\link{expoTrans}}
-#' \code{\link[MASS]{boxcox}}, \code{\link[stats]{prcomp}},
-#' \code{\link[fastICA]{fastICA}}, \code{\link{spatialSign}}
-#' @references \url{http://topepo.github.io/caret/pre-processing.html}
+#' @seealso [BoxCoxTrans()], [expoTrans()] [MASS::boxcox()], [stats::prcomp()],
+#'   [fastICA::fastICA()], [spatialSign()]
+#' @references <http://topepo.github.io/caret/pre-processing.html>
 #'
 #' Kuhn and Johnson (2013), Applied Predictive Modeling, Springer, New York
 #' (chapter 4)
@@ -1106,4 +1104,3 @@ get_yj_lambda <- function(x) {
   }
   res[!is.na(res)]
 }
-

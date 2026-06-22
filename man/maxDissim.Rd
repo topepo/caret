@@ -53,10 +53,10 @@ samples and the existing subset.
 \details{
 Given an initial set of m samples and a larger pool of n samples, this
 function iteratively adds points to the smaller set by finding with of the n
-samples is most dissimilar to the initial set. The argument \code{obj}
-measures the overall dissimilarity between the initial set and a candidate
-point. For example, maximizing the minimum or the sum of the m
-dissimilarities are two common approaches.
+samples is most dissimilar to the initial set. The argument \code{obj} measures
+the overall dissimilarity between the initial set and a candidate point. For
+example, maximizing the minimum or the sum of the m dissimilarities are two
+common approaches.
 
 This algorithm tends to select points on the edge of the data mainstream and
 will reliably select outliers. To select more samples towards the interior
@@ -121,7 +121,7 @@ Selecting Structurally Diverse Sets of Compounds," \emph{Journal of
 Computational Biology}, 6, 447-457.
 }
 \seealso{
-\code{\link{dist}}
+\code{\link[stats:dist]{stats::dist()}}
 }
 \author{
 Max Kuhn \email{max.kuhn@pfizer.com}

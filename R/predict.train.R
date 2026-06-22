@@ -10,76 +10,70 @@ predict.list <- function(object, ...) {
 
 #' Extract predictions and class probabilities from train objects
 #'
-#' These functions can be used for a single \code{train} object or to loop
-#' through a number of \code{train} objects to calculate the training and test
-#' data predictions and class probabilities.
+#' These functions can be used for a single `train` object or to loop through a
+#' number of `train` objects to calculate the training and test data
+#' predictions and class probabilities.
 #'
 #' These functions are wrappers for the specific prediction functions in each
 #' modeling package. In each case, the optimal tuning values given in the
-#' \code{tuneValue} slot of the \code{finalModel} object are used to predict.
+#' `tuneValue` slot of the `finalModel` object are used to predict.
 #'
-#' To get simple predictions for a new data set, the \code{predict} function
-#' can be used. Limits can be imposed on the range of predictions. See
-#' \code{\link{trainControl}} for more information.
+#' To get simple predictions for a new data set, the `predict` function can be
+#' used. Limits can be imposed on the range of predictions. See
+#' [trainControl()] for more information.
 #'
-#' To get predictions for a series of models at once, a list of
-#' \code{\link{train}} objects can be passes to the \code{predict} function and
-#' a list of model predictions will be returned.
+#' To get predictions for a series of models at once, a list of [train()]
+#' objects can be passes to the `predict` function and a list of model
+#' predictions will be returned.
 #'
 #' The two extraction functions can be used to get the predictions and observed
 #' outcomes at once for the training, test and/or unknown samples at once in a
 #' single data frame (instead of a list of just the predictions). These objects
-#' can then be passes to \code{\link{plotObsVsPred}} or
-#' \code{\link{plotClassProbs}}.
+#' can then be passes to [plotObsVsPred()] or [plotClassProbs()].
 #'
 #' @aliases predict.list predict.train extractPrediction extractProb
-#' @param object For \code{predict.train}, an object of class
-#' \code{\link{train}}. For \code{predict.list}, a list of objects of class
-#' \code{\link{train}}.
-#' @param newdata an optional set of data to predict on. If \code{NULL}, then
-#' the original training data are used but, if the \code{train} model used a
-#' recipe, an error will occur.
+#' @param object For `predict.train`, an object of class [train()]. For
+#'   `predict.list`, a list of objects of class [train()].
+#' @param newdata an optional set of data to predict on. If `NULL`, then the
+#'   original training data are used but, if the `train` model used a recipe,
+#'   an error will occur.
 #' @param type either "raw" or "prob", for the number/class predictions or
-#' class probabilities, respectively. Class probabilities are not available for
-#' all classification models
-#' @param models a list of objects of the class \code{train}. The objects must
-#' have been generated with \code{fitBest = FALSE} and \code{returnData =
-#' TRUE}.
+#'   class probabilities, respectively. Class probabilities are not available
+#'   for all classification models
+#' @param models a list of objects of the class `train`. The objects must have
+#'   been generated with `fitBest = FALSE` and \code{returnData = TRUE}.
 #' @param na.action the method for handling missing data
 #' @param testX an optional set of data to predict
-#' @param testY an optional outcome corresponding to the data given in
-#' \code{testX}
+#' @param testY an optional outcome corresponding to the data given in `testX`
 #' @param unkX another optional set of data to predict without known outcomes
 #' @param unkOnly a logical to bypass training and test set predictions. This
-#' is useful if speed is needed for unknown samples.
+#'   is useful if speed is needed for unknown samples.
 #' @param verbose a logical for printing messages
-#' @param \dots only used for \code{sort} and \code{modelCor} and captures
-#' arguments to pass to \code{sort} or \code{FUN}.
+#' @param \dots only used for `sort` and `modelCor` and captures arguments to
+#'   pass to `sort` or `FUN`.
 #' @return
 #'
-#' For \code{predict.train}, a vector of predictions if \code{type = "raw"} or
-#' a data frame of class probabilities for \code{type = "prob"}. In the latter
-#' case, there are columns for each class.
+#' For `predict.train`, a vector of predictions if `type = "raw"` or a data
+#' frame of class probabilities for `type = "prob"`. In the latter case, there
+#' are columns for each class.
 #'
-#' For \code{predict.list}, a list results. Each element is produced by
-#' \code{predict.train}.
+#' For `predict.list`, a list results. Each element is produced by
+#' `predict.train`.
 #'
-#' For \code{extractPrediction}, a data frame with columns: \item{obs }{the
-#' observed training and test data} \item{pred }{predicted values}
-#' \item{model}{the type of model used to predict} \item{object}{the names of
-#' the objects within \code{models}. If \code{models} is an un-named list, the
-#' values of \code{object} will be "Object1", "Object2" and so on}
-#' \item{dataType }{"Training", "Test" or "Unknown" depending on what was
-#' specified}
+#' For `extractPrediction`, a data frame with columns: \item{obs }{the observed
+#' training and test data} \item{pred }{predicted values} \item{model}{the type
+#' of model used to predict} \item{object}{the names of the objects within
+#' `models`. If `models` is an un-named list, the values of `object` will be
+#' "Object1", "Object2" and so on} \item{dataType }{"Training", "Test" or
+#' "Unknown" depending on what was specified}
 #'
-#' For \code{extractProb}, a data frame. There is a column for each class
-#' containing the probabilities. The remaining columns are the same as above
-#' (although the \code{pred} column is the predicted class)
+#' For `extractProb`, a data frame. There is a column for each class containing
+#' the probabilities. The remaining columns are the same as above (although the
+#' `pred` column is the predicted class)
 #' @author Max Kuhn
-#' @seealso \code{\link{plotObsVsPred}}, \code{\link{plotClassProbs}},
-#' \code{\link{trainControl}}
+#' @seealso [plotObsVsPred()], [plotClassProbs()], [trainControl()]
 #' @references Kuhn (2008), ``Building Predictive Models in R Using the caret''
-#' (\doi{10.18637/jss.v028.i05})
+#'   (\doi{10.18637/jss.v028.i05})
 #' @keywords manip
 #' @examples
 #'

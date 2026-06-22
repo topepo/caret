@@ -1,25 +1,24 @@
 #' Plot Observed versus Predicted Results in Regression and Classification
 #' Models
-#' 
+#'
 #' This function takes an object (preferably from the function
-#' \code{\link{extractPrediction}}) and creates a lattice plot. For numeric
-#' outcomes, the observed and predicted data are plotted with a 45 degree
-#' reference line and a smoothed fit. For factor outcomes, a dotplot plot is
-#' produced with the accuracies for the different models.
-#' 
-#' If the call to \code{\link{extractPrediction}} included test data, these
-#' data are shown, but if unknowns were also included, they are not plotted
-#' 
-#' 
-#' @param object an object (preferably from the function
-#' \code{\link{extractPrediction}}. There should be columns named \code{obs},
-#' \code{pred}, \code{model} (e.g. "rpart", "nnet" etc.)  and \code{dataType}
-#' (e.g. "Training", "Test" etc)
+#' [extractPrediction()]) and creates a lattice plot. For numeric outcomes, the
+#' observed and predicted data are plotted with a 45 degree reference line and
+#' a smoothed fit. For factor outcomes, a dotplot plot is produced with the
+#' accuracies for the different models.
+#'
+#' If the call to [extractPrediction()] included test data, these data are
+#' shown, but if unknowns were also included, they are not plotted
+#'
+#'
+#' @param object an object (preferably from the function [extractPrediction()].
+#'   There should be columns named `obs`, `pred`, `model` (e.g. "rpart", "nnet"
+#'   etc.)  and `dataType` (e.g. "Training", "Test" etc)
 #' @param equalRanges a logical; should the x- and y-axis ranges be the same?
-#' @param \dots parameters to pass to \code{\link[lattice]{xyplot}} or
-#' \code{\link[lattice:xyplot]{dotplot}}, such as \code{auto.key}
+#' @param \dots parameters to pass to [lattice::xyplot()] or
+#'   [lattice::dotplot()], such as `auto.key`
 #' @return A lattice object. Note that the plot has to be printed to be
-#' displayed (especially in a loop).
+#'   displayed (especially in a loop).
 #' @author Max Kuhn
 #' @keywords hplot
 #' @examples
@@ -118,4 +117,3 @@ plotObsVsPred <- function(object, equalRanges = TRUE, ...)
    out
 
 }
-

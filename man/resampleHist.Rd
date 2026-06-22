@@ -7,7 +7,7 @@
 resampleHist(object, type = "density", ...)
 }
 \arguments{
-\item{object}{an object resulting form a call to \code{\link{train}}}
+\item{object}{an object resulting form a call to \code{\link[=train]{train()}}}
 
 \item{type}{a character string. Either "hist" or "density"}
 
@@ -22,12 +22,11 @@ Create a lattice histogram or densityplot from the resampled outcomes from a
 }
 \details{
 All the metrics from the object are plotted, but only for the final model.
-For more comprehensive plots functions, see \code{\link{histogram.train}},
-\code{\link{densityplot.train}}, \code{\link{xyplot.train}},
-\code{\link{stripplot.train}}.
+For more comprehensive plots functions, see \code{\link[=histogram.train]{histogram.train()}},
+\code{\link[=densityplot.train]{densityplot.train()}}, \code{\link[=xyplot.train]{xyplot.train()}}, \code{\link[=stripplot.train]{stripplot.train()}}.
 
-For the plot to be made, the \code{returnResamp} argument in
-\code{\link{trainControl}} should be either "final" or "all".
+For the plot to be made, the \code{returnResamp} argument in \code{\link[=trainControl]{trainControl()}}
+should be either "final" or "all".
 }
 \examples{
 
@@ -44,10 +43,9 @@ resampleHist(knnFit)
 
 }
 \seealso{
-\code{\link{train}}, \code{\link[lattice]{histogram}},
-\code{\link[lattice:histogram]{densityplot}}, \code{\link{histogram.train}},
-\code{\link{densityplot.train}}, \code{\link{xyplot.train}},
-\code{\link{stripplot.train}}
+\code{\link[=train]{train()}}, \code{\link[lattice:histogram]{lattice::histogram()}}, \code{\link[lattice:densityplot]{lattice::densityplot()}},
+\code{\link[=histogram.train]{histogram.train()}}, \code{\link[=densityplot.train]{densityplot.train()}}, \code{\link[=xyplot.train]{xyplot.train()}},
+\code{\link[=stripplot.train]{stripplot.train()}}
 }
 \author{
 Max Kuhn

@@ -36,4 +36,3 @@ sortImp <- function(object, top)
    out <- out[1:top,, drop = FALSE]
    out
 }
-

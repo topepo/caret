@@ -28,7 +28,7 @@
 )
 }
 \arguments{
-\item{data}{an object of class \code{\link{train}}.}
+\item{data}{an object of class \code{\link[=train]{train()}}.}
 
 \item{mapping, environment}{unused arguments to make consistent with
 \pkg{ggplot2} generic method}
@@ -37,8 +37,8 @@
 values are "RMSE", "Rsquared", "Accuracy" or "Kappa". Other values can be
 used depending on what metrics have been calculated.}
 
-\item{plotType}{a string describing the type of plot (\code{"scatter"},
-\code{"level"} or \code{"line"} (\code{plot} only))}
+\item{plotType}{a string describing the type of plot (\code{"scatter"}, \code{"level"}
+or \code{"line"} (\code{plot} only))}
 
 \item{output}{either "data", "ggplot" or "layered". The first returns a data
 frame while the second returns a simple \code{ggplot} object with no layers.
@@ -51,12 +51,11 @@ should the name and value be included in the panel title?}
 optimal parameter setting for models using grid search.}
 
 \item{\dots}{\code{plot} only: specifications to be passed to
-\code{\link[lattice]{levelplot}}, \code{\link[lattice]{xyplot}},
-\code{\link[lattice:xyplot]{stripplot}} (for line plots). The function
-automatically sets some arguments (e.g. axis labels) but passing in values
-here will over-ride the defaults}
+\code{\link[lattice:levelplot]{lattice::levelplot()}}, \code{\link[lattice:xyplot]{lattice::xyplot()}}, \code{\link[lattice:stripplot]{lattice::stripplot()}} (for
+line plots). The function automatically sets some arguments (e.g. axis
+labels) but passing in values here will over-ride the defaults}
 
-\item{x}{an object of class \code{\link{train}}.}
+\item{x}{an object of class \code{\link[=train]{train()}}.}
 
 \item{digits}{an integer specifying the number of significant digits used to
 label the parameter value.}
@@ -65,8 +64,8 @@ label the parameter value.}
 plots.}
 }
 \description{
-This function takes the output of a \code{\link{train}} object and creates a
-line or level plot using the \pkg{lattice} or \pkg{ggplot2} libraries.
+This function takes the output of a \code{\link[=train]{train()}} object and creates a line or
+level plot using the \pkg{lattice} or \pkg{ggplot2} libraries.
 }
 \details{
 If there are no tuning parameters, or none were varied, an error is
@@ -108,9 +107,8 @@ Kuhn (2008), ``Building Predictive Models in R Using the caret''
 (\doi{10.18637/jss.v028.i05})
 }
 \seealso{
-\code{\link{train}}, \code{\link[lattice]{levelplot}},
-\code{\link[lattice]{xyplot}}, \code{\link[lattice:xyplot]{stripplot}},
-\code{\link[ggplot2]{ggplot}}
+\code{\link[=train]{train()}}, \code{\link[lattice:levelplot]{lattice::levelplot()}}, \code{\link[lattice:xyplot]{lattice::xyplot()}},
+\code{\link[lattice:stripplot]{lattice::stripplot()}}, \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}}
 }
 \author{
 Max Kuhn

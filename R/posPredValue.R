@@ -68,4 +68,3 @@ posPredValue <-
   data <- as.table(data)
   posPredValue.table(data, prevalence = prevalence)
 }
-

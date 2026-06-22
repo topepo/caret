@@ -31,15 +31,15 @@ class2ind(x, drop2nd = FALSE)
 
 \item{sep}{An optional separator between factor variable names and their
 levels. Use \code{sep = NULL} for no separator (i.e. normal behavior of
-\code{\link[stats]{model.matrix}} as shown in the Details section)}
+\code{\link[stats:model.matrix]{stats::model.matrix()}} as shown in the Details section)}
 
-\item{levelsOnly}{A logical; \code{TRUE} means to completely remove the
-variable names from the column names}
+\item{levelsOnly}{A logical; \code{TRUE} means to completely remove the variable
+names from the column names}
 
 \item{fullRank}{A logical; should a full rank or less than full rank
-parameterization be used? If \code{TRUE}, factors are encoded to be
-consistent with \code{\link[stats]{model.matrix}} and the resulting there
-are no linear dependencies induced between the columns.}
+parameterization be used? If \code{TRUE}, factors are encoded to be consistent
+with \code{\link[stats:model.matrix]{stats::model.matrix()}} and the resulting there are no linear
+dependencies induced between the columns.}
 
 \item{x}{A factor vector.}
 
@@ -56,15 +56,16 @@ values in \code{newdata}. The default is to predict \code{NA}.}
 
 \item{sparse}{A logical indicating if the result should be sparse.}
 
-\item{drop2nd}{A logical: if the factor has two levels, should a single binary vector be returned?}
+\item{drop2nd}{A logical: if the factor has two levels, should a single
+binary vector be returned?}
 }
 \value{
 The output of \code{dummyVars} is a list of class 'dummyVars' with
 elements \item{call }{the function call} \item{form }{the model formula}
-\item{vars }{names of all the variables in the model} \item{facVars }{names
-of all the factor variables in the model} \item{lvls }{levels of any factor
-variables} \item{sep }{\code{NULL} or a character separator} \item{terms
-}{the \code{\link[stats]{terms.formula}} object} \item{levelsOnly }{a
+\item{vars }{names of all the variables in the model} \item{facVars
+}{names of all the factor variables in the model} \item{lvls }{levels of
+any factor variables} \item{sep }{\code{NULL} or a character separator}
+\item{terms }{the \code{\link[stats:terms.formula]{stats::terms.formula()}} object} \item{levelsOnly }{a
 logical}
 
 The \code{predict} function produces a data frame.
@@ -74,44 +75,30 @@ The \code{predict} function produces a data frame.
 \code{contr.ltfr} generates a design matrix.
 }
 \description{
-\code{dummyVars} creates a full set of dummy variables (i.e. less than full
-rank parameterization)
+\code{dummyVars} creates a full set of dummy variables (i.e. less than full rank
+parameterization)
 }
 \details{
-Most of the \code{\link[stats]{contrasts}} functions in R produce full rank
+Most of the \code{\link[stats:contrasts]{stats::contrasts()}} functions in R produce full rank
 parameterizations of the predictor data. For example,
-\code{\link[stats]{contr.treatment}} creates a reference cell in the data
-and defines dummy variables for all factor levels except those in the
-reference cell. For example, if a factor with 5 levels is used in a model
-formula alone, \code{\link[stats]{contr.treatment}} creates columns for the
-intercept and all the factor levels except the first level of the factor.
-For the data in the Example section below, this would produce:
-\preformatted{ (Intercept) dayTue dayWed dayThu dayFri daySat daySun
-           1      0      0      0      0      0      0
-           1      0      0      0      0      0      0
-           1      0      0      0      0      0      0
-           1      0      1      0      0      0      0
-           1      0      1      0      0      0      0
-           1      0      0      0      1      0      0
-           1      0      0      0      0      1      0
-           1      0      0      0      0      1      0
-           1      0      0      0      1      0      0}
+\code{\link[stats:contr.treatment]{stats::contr.treatment()}} creates a reference cell in the data and defines
+dummy variables for all factor levels except those in the reference cell.
+For example, if a factor with 5 levels is used in a model formula alone,
+\code{\link[stats:contr.treatment]{stats::contr.treatment()}} creates columns for the intercept and all the
+factor levels except the first level of the factor. For the data in the
+Example section below, this would produce:
+\preformatted{ (Intercept) dayTue dayWed dayThu dayFri daySat daySun 1 0 0 0
+0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 1 0 0 0 0 1 0 1 0 0 0 0 1 0 0 0 1 0 0
+1 0 0 0 0 1 0 1 0 0 0 0 1 0 1 0 0 0 1 0 0}
 
 In some situations, there may be a need for dummy variables for all the
 levels of the factor. For the same example:
-\preformatted{ dayMon dayTue dayWed dayThu dayFri daySat daySun
-      1      0      0      0      0      0      0
-      1      0      0      0      0      0      0
-      1      0      0      0      0      0      0
-      0      0      1      0      0      0      0
-      0      0      1      0      0      0      0
-      0      0      0      0      1      0      0
-      0      0      0      0      0      1      0
-      0      0      0      0      0      1      0
-      0      0      0      0      1      0      0}
+\preformatted{ dayMon dayTue dayWed dayThu dayFri daySat daySun 1 0 0 0 0 0
+0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0
+0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 1 0 0}
 
-Given a formula and initial data set, the class \code{dummyVars} gathers all
-the information needed to produce a full set of dummy variables for any data
+Given a formula and initial data set, the class \code{dummyVars} gathers all the
+information needed to produce a full set of dummy variables for any data
 set. It uses \code{contr.ltfr} as the base function to do this.
 
 \code{class2ind} is most useful for converting a factor outcome vector to a
@@ -165,11 +152,10 @@ class2ind(two_levels, drop2nd = TRUE)
 \url{https://cran.r-project.org/doc/manuals/R-intro.html#Formulae-for-statistical-models}
 }
 \seealso{
-\code{\link[stats]{model.matrix}}, \code{\link[stats]{contrasts}},
-\code{\link[stats]{formula}}
+\code{\link[stats:model.matrix]{stats::model.matrix()}}, \code{\link[stats:contrasts]{stats::contrasts()}}, \code{\link[stats:formula]{stats::formula()}}
 }
 \author{
-\code{contr.ltfr} is a small modification of
-\code{\link[stats]{contr.treatment}} by Max Kuhn
+\code{contr.ltfr} is a small modification of \code{\link[stats:contr.treatment]{stats::contr.treatment()}}
+by Max Kuhn
 }
 \keyword{models}

@@ -17,17 +17,15 @@ featurePlot(
 
 \item{y}{a factor indicating class membership.}
 
-\item{plot}{the type of plot. For classification: \code{box}, \code{strip},
-\code{density}, \code{pairs} or \code{ellipse}.  For regression,
-\code{pairs} or \code{scatter}}
+\item{plot}{the type of plot. For classification: \code{box}, \code{strip}, \code{density},
+\code{pairs} or \code{ellipse}.  For regression, \code{pairs} or \code{scatter}}
 
 \item{labels}{a bad attempt at pre-defined axis labels}
 
 \item{\dots}{options passed to lattice calls.}
 }
 \value{
-An object of class ``trellis''. The `update' method can be used to
-update components of the object and the `print' method (usually called by
+An object of class ``trellis''. The \verb{update' method can be used to update components of the object and the }print' method (usually called by
 default) will plot it on an appropriate plotting device.
 }
 \description{

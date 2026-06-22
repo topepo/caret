@@ -18,9 +18,9 @@ plsda(x, ...)
 \arguments{
 \item{x}{a matrix or data frame of predictors}
 
-\item{\dots}{arguments to pass to \code{\link[pls:mvr]{plsr}} or
-\code{\link[spls]{spls}}. For \code{splsda}, this is the method for passing
-tuning parameters specifications (e.g. \code{K}, \code{eta} or \code{kappa})}
+\item{\dots}{arguments to pass to \code{\link[pls:plsr]{pls::plsr()}} or \code{\link[spls:spls]{spls::spls()}}. For
+\code{splsda}, this is the method for passing tuning parameters specifications
+(e.g. \code{K}, \code{eta} or \code{kappa})}
 
 \item{object}{an object produced by \code{plsda}}
 
@@ -29,9 +29,8 @@ tuning parameters specifications (e.g. \code{K}, \code{eta} or \code{kappa})}
 \item{ncomp}{the number of components to include in the model. Predictions
 can be made for models with values less than \code{ncomp}.}
 
-\item{type}{either \code{"class"}, \code{"prob"} or \code{"raw"} to produce
-the predicted class, class probabilities or the raw model scores,
-respectively.}
+\item{type}{either \code{"class"}, \code{"prob"} or \code{"raw"} to produce the predicted
+class, class probabilities or the raw model scores, respectively.}
 
 \item{y}{a factor or indicator matrix for the discrete outcome. If a matrix,
 the entries must be either 0 or 1 and rows must sum to one}
@@ -42,41 +41,41 @@ the entries must be either 0 or 1 and rows must sum to one}
 \code{probeMethod = "Bayes"})}
 }
 \value{
-For \code{plsda}, an object of class "plsda" and "mvr". For
-\code{splsda}, an object of class \code{splsda}.
+For \code{plsda}, an object of class "plsda" and "mvr". For \code{splsda}, an
+object of class \code{splsda}.
 
 The predict methods produce either a vector, matrix or three-dimensional
-array, depending on the values of \code{type} of \code{ncomp}. For example,
-specifying more than one value of \code{ncomp} with \code{type = "class"}
-with produce a three dimensional array but the default specification would
-produce a factor vector.
+array, depending on the values of \code{type} of \code{ncomp}. For example, specifying
+more than one value of \code{ncomp} with \code{type = "class"} with produce a three
+dimensional array but the default specification would produce a factor
+vector.
 }
 \description{
-\code{plsda} is used to fit standard PLS models for classification while
-\code{splsda} performs sparse PLS that embeds feature selection and
-regularization for the same purpose.
+\code{plsda} is used to fit standard PLS models for classification while \code{splsda}
+performs sparse PLS that embeds feature selection and regularization for the
+same purpose.
 }
 \details{
 If a factor is supplied, the appropriate indicator matrix is created.
 
 A multivariate PLS model is fit to the indicator matrix using the
-\code{\link[pls:mvr]{plsr}} or \code{\link[spls]{spls}} function.
+\code{\link[pls:plsr]{pls::plsr()}} or \code{\link[spls:spls]{spls::spls()}} function.
 
 Two prediction methods can be used.
 
-The \bold{softmax function} transforms the model predictions to
+The \strong{softmax function} transforms the model predictions to
 "probability-like" values (e.g. on [0, 1] and sum to 1). The class with the
 largest class probability is the predicted class.
 
-Also, \bold{Bayes rule} can be applied to the model predictions to form
+Also, \strong{Bayes rule} can be applied to the model predictions to form
 posterior probabilities. Here, the model predictions for the training set
 are used along with the training set outcomes to create conditional
 distributions for each class. When new samples are predicted, the raw model
 predictions are run through these conditional distributions to produce a
 posterior probability for each class (along with the prior). This process is
 repeated \code{ncomp} times for every possible PLS model. The
-\code{\link[klaR]{NaiveBayes}} function is used with \code{usekernel = TRUE}
-for the posterior probability calculations.
+\code{\link[klaR:NaiveBayes]{klaR::NaiveBayes()}} function is used with \code{usekernel = TRUE} for the
+posterior probability calculations.
 }
 \examples{
 
@@ -135,6 +134,6 @@ confusionMatrix(caret:::predict.splsda(splsFit, testDescr),
 
 }
 \seealso{
-\code{\link[pls:mvr]{plsr}}, \code{\link[spls]{spls}}
+\code{\link[pls:plsr]{pls::plsr()}}, \code{\link[spls:spls]{spls::spls()}}
 }
 \keyword{models}

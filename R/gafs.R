@@ -52,57 +52,54 @@ ga_func_check <- function(x) {
 
 #' Ancillary genetic algorithm functions
 #'
-#' @description
-#' Built-in functions related to genetic algorithms
+#' @description Built-in functions related to genetic algorithms
 #'
-#' These functions are used with the \code{functions} argument of the
-#' \code{\link{gafsControl}} function. More information on the details of these
-#' functions are at \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}.
+#' These functions are used with the `functions` argument of the
+#' [gafsControl()] function. More information on the details of these functions
+#' are at
+#' <http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html>.
 #'
-#' Most of the \code{gafs_*} functions are based on those from the GA package
-#' by Luca Scrucca. These functions here are small re-writes to work outside of
+#' Most of the `gafs_*` functions are based on those from the GA package by
+#' Luca Scrucca. These functions here are small re-writes to work outside of
 #' the GA package.
 #'
-#' The objects \code{caretGA}, \code{rfGA} and \code{treebagGA} are example
-#' lists that can be used with the \code{functions} argument of
-#' \code{\link{gafsControl}}.
+#' The objects `caretGA`, `rfGA` and `treebagGA` are example lists that can be
+#' used with the `functions` argument of [gafsControl()].
 #'
-#' In the case of \code{caretGA}, the \code{...} structure of
-#' \code{\link{gafs}} passes through to the model fitting routine. As a
-#' consequence, the \code{\link{train}} function can easily be accessed by
-#' passing important arguments belonging to \code{\link{train}} to
-#' \code{\link{gafs}}. See the examples below. By default, using \code{caretGA}
-#' will used the resampled performance estimates produced by
-#' \code{\link{train}} as the internal estimate of fitness.
+#' In the case of `caretGA`, the `...` structure of [gafs()] passes through to
+#' the model fitting routine. As a consequence, the [train()] function can
+#' easily be accessed by passing important arguments belonging to [train()] to
+#' [gafs()]. See the examples below. By default, using `caretGA` will used the
+#' resampled performance estimates produced by [train()] as the internal
+#' estimate of fitness.
 #'
-#' For \code{rfGA} and \code{treebagGA}, the \code{randomForest} and
-#' \code{bagging} functions are used directly (i.e. \code{\link{train}} is not
-#' used). Arguments to either of these functions can also be passed to them
-#' though the \code{\link{gafs}} call (see examples below). For these two
-#' functions, the internal fitness is estimated using the out-of-bag estimates
-#' naturally produced by those functions. While faster, this limits the user to
-#' accuracy or Kappa (for classification) and RMSE and R-squared (for
-#' regression).
+#' For `rfGA` and `treebagGA`, the `randomForest` and `bagging` functions are
+#' used directly (i.e. [train()] is not used). Arguments to either of these
+#' functions can also be passed to them though the [gafs()] call (see examples
+#' below). For these two functions, the internal fitness is estimated using the
+#' out-of-bag estimates naturally produced by those functions. While faster,
+#' this limits the user to accuracy or Kappa (for classification) and RMSE and
+#' R-squared (for regression).
 #'
 #' @aliases gafs_initial gafs_lrSelection gafs_rwSelection gafs_tourSelection gafs_uCrossover gafs_spCrossover gafs_raMutation caretGA rfGA treebagGA
 #' @param vars number of possible predictors
-#' @param popSize the population size passed into \code{\link{gafs}}
+#' @param popSize the population size passed into [gafs()]
 #' @param population a binary matrix of the current subsets with predictors in
-#' columns and individuals in rows
+#'   columns and individuals in rows
 #' @param fitness a vector of fitness values
 #' @param parent,parents integer(s) for which chromosomes are altered
 #' @param r,q,k tuning parameters for the specific selection operator
 #' @param \dots not currently used
 #' @return The return value depends on the function.
-#' @author Luca Scrucca, \code{gafs_initial}, \code{caretGA}, \code{rfGA} and
-#' \code{treebagGA} by Max Kuhn
-#' @seealso \code{\link{gafs}}, \code{\link{gafsControl}}
+#' @author Luca Scrucca, `gafs_initial`, `caretGA`, `rfGA` and `treebagGA` by
+#'   Max Kuhn
+#' @seealso [gafs()], [gafsControl()]
 #' @references Scrucca L (2013). GA: A Package for Genetic Algorithms in R.
-#' Journal of Statistical Software, 53(4), 1-37.
+#'   Journal of Statistical Software, 53(4), 1-37.
 #'
-#' \url{https://cran.r-project.org/package=GA}
+#' <https://cran.r-project.org/package=GA>
 #'
-#' \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}
+#' <http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html>
 #' @examples
 #'
 #' pop <- gafs_initial(vars = 10, popSize = 10)
@@ -763,18 +760,18 @@ print.gafs <- function (x, top = 5,
 
 #' Predict new samples
 #'
-#' Predict new samples using \code{\link{safs}} and \code{\link{gafs}} objects.
+#' Predict new samples using [safs()] and [gafs()] objects.
 #'
-#' Only the predictors listed in \code{object$optVariables} are required.
+#' Only the predictors listed in `object$optVariables` are required.
 #'
 #' @aliases predict.gafs predict.safs
-#' @param object an object of class \code{\link{safs}} or \code{\link{gafs}}
+#' @param object an object of class [safs()] or [gafs()]
 #' @param newdata a data frame or matrix of predictors.
 #' @param \dots not currently used
 #' @return The type of result depends on what was specified in
-#' \code{object$control$functions$predict}.
+#'   `object$control$functions$predict`.
 #' @author Max Kuhn
-#' @seealso \code{\link{safs}}, \code{\link{gafs}}
+#' @seealso [safs()], [gafs()]
 #' @keywords multivariate
 #' @method predict gafs
 #' @export
@@ -824,9 +821,9 @@ gafs <- function (x, ...) UseMethod("gafs")
 #'
 #' Supervised feature selection using genetic algorithms
 #'
-#' \code{\link{gafs}} conducts a supervised binary search of the predictor
-#' space using a genetic algorithm. See Mitchell (1996) and Scrucca (2013) for
-#' more details on genetic algorithms.
+#' [gafs()] conducts a supervised binary search of the predictor space using a
+#' genetic algorithm. See Mitchell (1996) and Scrucca (2013) for more details
+#' on genetic algorithms.
 #'
 #' This function conducts the search of the feature space repeatedly within
 #' resampling iterations. First, the training data are split be whatever
@@ -862,31 +859,28 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' This is an example of the output produced when \code{gafsControl(verbose =
 #' TRUE)} is used:
 #'
-#' \preformatted{
-#' Fold2 1 0.715 (13)
-#' Fold2 2 0.715->0.737 (13->17, 30.4\%) *
-#' Fold2 3 0.737->0.732 (17->14, 24.0\%)
-#' Fold2 4 0.737->0.769 (17->23, 25.0\%) *
-#' }
+#' \preformatted{ Fold2 1 0.715 (13) Fold2 2 0.715->0.737 (13->17, 30.4\%) *
+#' Fold2 3 0.737->0.732 (17->14, 24.0\%) Fold2 4 0.737->0.769 (17->23, 25.0\%)
+#' * }
 #'
 #' For the second resample (e.g. fold 2), the best subset across all
 #' individuals tested in the first generation contained 13 predictors and was
 #' associated with a fitness value of 0.715. The second generation produced a
 #' better subset containing 17 samples with an associated fitness values of
-#' 0.737 (and improvement is symbolized by the \code{*}. The percentage listed
-#' is the Jaccard similarity between the previous best individual (with 13
+#' 0.737 (and improvement is symbolized by the `*`. The percentage listed is
+#' the Jaccard similarity between the previous best individual (with 13
 #' predictors) and the new best. The third generation did not produce a better
 #' fitness value but the fourth generation did.
 #'
 #' The search algorithm can be parallelized in several places: \enumerate{
 #' \item each externally resampled GA can be run independently (controlled by
-#' the \code{allowParallel} option of \code{\link{gafsControl}}) \item within a
-#' GA, the fitness calculations at a particular generation can be run in
-#' parallel over the current set of individuals (see the \code{genParallel}
-#' option in \code{\link{gafsControl}}) \item if inner resampling is used,
-#' these can be run in parallel (controls depend on the function used. See, for
-#' example, \code{\link[caret]{trainControl}}) \item any parallelization of the
-#' individual model fits. This is also specific to the modeling function.  }
+#' the `allowParallel` option of [gafsControl()]) \item within a GA, the
+#' fitness calculations at a particular generation can be run in parallel over
+#' the current set of individuals (see the `genParallel` option in
+#' [gafsControl()]) \item if inner resampling is used, these can be run in
+#' parallel (controls depend on the function used. See, for example,
+#' [caret::trainControl()]) \item any parallelization of the individual model
+#' fits. This is also specific to the modeling function.  }
 #'
 #' It is probably best to pick one of these areas for parallelization and the
 #' first is likely to produces the largest decrease in run-time since it is the
@@ -897,8 +891,8 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' @inheritParams train
 #' @aliases gafs.default gafs
 #' @param x An object where samples are in rows and features are in columns.
-#' This could be a simple matrix, data frame or other type (e.g. sparse
-#' matrix). For the recipes method, \code{x} is a recipe object. See Details below
+#'   This could be a simple matrix, data frame or other type (e.g. sparse
+#'   matrix). For the recipes method, `x` is a recipe object. See Details below
 #' @param y a numeric or factor vector containing the outcome for each sample
 #' @param iters number of search iterations
 #' @param popSize number of subsets evaluated at each iteration
@@ -906,26 +900,27 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' @param pmutation the mutation probability
 #' @param elite the number of best subsets to survive at each generation
 #' @param suggestions a binary matrix of subsets strings to be included in the
-#' initial population. If provided the number of columns must match the number
-#' of columns in \code{x}
+#'   initial population. If provided the number of columns must match the
+#'   number of columns in `x`
 #' @param differences a logical: should the difference in fitness values with
-#' and without each predictor be calculated?
+#'   and without each predictor be calculated?
 #' @param gafsControl a list of values that define how this function acts. See
-#' \code{\link{gafsControl}} and URL.
+#'   [gafsControl()] and URL.
 #' @param ... additional arguments to be passed to other methods
-#' @return an object of class \code{gafs}
+#' @return an object of class `gafs`
 #' @author Max Kuhn, Luca Scrucca (for GA internals)
-#' @seealso \code{\link{gafsControl}}, \code{\link{predict.gafs}},
-#' \code{\link{caretGA}}, \code{\link{rfGA}} \code{\link{treebagGA}}
+#' @seealso [gafsControl()], [predict.gafs()], [caretGA()], [rfGA()]
+#'   [treebagGA()]
 #' @references Kuhn M and Johnson K (2013), Applied Predictive Modeling,
-#' Springer, Chapter 19 \url{http://appliedpredictivemodeling.com}
+#'   Springer, Chapter 19 <http://appliedpredictivemodeling.com>
 #'
 #' Scrucca L (2013). GA: A Package for Genetic Algorithms in R. Journal of
-#' Statistical Software, 53(4), 1-37. \url{https://www.jstatsoft.org/article/view/v053i04}
+#' Statistical Software, 53(4), 1-37.
+#' <https://www.jstatsoft.org/article/view/v053i04>
 #'
 #' Mitchell M (1996), An Introduction to Genetic Algorithms, MIT Press.
 #'
-#' \url{https://en.wikipedia.org/wiki/Jaccard_index}
+#' <https://en.wikipedia.org/wiki/Jaccard_index>
 #' @keywords models
 #' @method gafs default
 #' @export
@@ -1183,23 +1178,21 @@ gafs <- function (x, ...) UseMethod("gafs")
 #' The mean (averaged over the resamples) is plotted against the search
 #' iteration using a scatter plot.
 #'
-#' When \code{output = "data"}, the unaveraged data are returned with columns
-#' for all the performance metrics and the resample indicator.
+#' When `output = "data"`, the unaveraged data are returned with columns for
+#' all the performance metrics and the resample indicator.
 #'
 #' @aliases plot.safs plot.gafs
-#' @param x an object of class \code{\link{gafs}} or \code{\link{safs}}
+#' @param x an object of class [gafs()] or [safs()]
 #' @param metric the measure of performance to plot (e.g. RMSE, accuracy, etc)
 #' @param estimate the type of estimate: either "internal" or "external"
 #' @param output either "data", "ggplot" or "lattice"
-#' @param data,mapping,environment kept for consistency with
-#'  \code{ggplot} and are not used here.
-#' @param \dots For \code{plot} methods, these are options passed
-#'  to \code{\link[lattice]{xyplot}}. For \code{ggplot} methods,
-#'  they are not used.
+#' @param data,mapping,environment kept for consistency with `ggplot` and are
+#'   not used here.
+#' @param \dots For `plot` methods, these are options passed to
+#'   [lattice::xyplot()]. For `ggplot` methods, they are not used.
 #' @return Either a data frame, ggplot object or lattice object
 #' @author Max Kuhn
-#' @seealso \code{\link{gafs}}, \code{\link{safs}},
-#' \code{\link[ggplot2]{ggplot}}, \code{\link[lattice]{xyplot}}
+#' @seealso [gafs()], [safs()], [ggplot2::ggplot()], [lattice::xyplot()]
 #' @keywords hplot
 #' @method plot gafs
 #' @export
@@ -1400,34 +1393,33 @@ update.gafs <- function(object, iter, x, y, ...) {
 
 #' Variable importances for GAs and SAs
 #'
-#' Variable importance scores for \code{\link{safs}} and \code{\link{gafs}}
-#' objects.
+#' Variable importance scores for [safs()] and [gafs()] objects.
 #'
 #' A crude measure of importance is computed for thee two search procedures. At
 #' the end of a search process, the difference in the fitness values is
 #' computed for models with and without each feature (based on the search
 #' history). If a predictor has at least two subsets that include and did not
-#' include the predictor, a t-statistic is computed (otherwise a value of
-#' \code{NA} is assigned to the predictor).
+#' include the predictor, a t-statistic is computed (otherwise a value of `NA`
+#' is assigned to the predictor).
 #'
 #' This computation is done separately for each resample and the t-statistics
-#' are averaged (\code{NA} values are ignored) and this average is reported as
-#' the importance. If the fitness value should be minimized, the negative value
-#' of the t-statistic is used in the average.
+#' are averaged (`NA` values are ignored) and this average is reported as the
+#' importance. If the fitness value should be minimized, the negative value of
+#' the t-statistic is used in the average.
 #'
 #' As such, the importance score reflects the standardized increase in fitness
 #' that occurs when the predict is included in the subset. Values near zero (or
 #' negative) indicate that the predictor may not be important to the model.
 #'
 #' @aliases varImp.gafs varImp.safs
-#' @param object an \code{\link{safs}} or \code{\link{gafs}} object
+#' @param object an [safs()] or [gafs()] object
 #' @param metric a metric to compute importance (see Details below)
 #' @param maximize are larger values of the metric better?
 #' @param \dots not currently uses
 #' @return a data frame where the rownames are the predictor names and the
-#' column is the average t-statistic
+#'   column is the average t-statistic
 #' @author Max Kuhn
-#' @seealso \code{\link{safs}}, \code{\link{gafs}}
+#' @seealso [safs()], [gafs()]
 #' @export
 "varImp.gafs" <- function(object,
                           metric = object$control$metric["external"],
@@ -1707,6 +1699,5 @@ update.gafs <- function(object, iter, x, y, ...) {
     class(res) <- "gafs"
     res
   }
-
 
 

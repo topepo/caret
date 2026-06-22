@@ -14,13 +14,12 @@ filterVarImp(x, y, nonpara = FALSE, ...)
 \item{nonpara}{should nonparametric methods be used to assess the
 relationship between the features and response}
 
-\item{...}{options to pass to either \code{\link[stats]{lm}} or
-\code{\link[stats]{loess}}}
+\item{...}{options to pass to either \code{\link[stats:lm]{stats::lm()}} or \code{\link[stats:loess]{stats::loess()}}}
 }
 \value{
 A data frame with variable importances. Column names depend on the
-problem type.  For regression, the data frame contains one column: "Overall"
-for the importance values.
+problem type.  For regression, the data frame contains one column:
+"Overall" for the importance values.
 }
 \description{
 Specific engines for variable importance on a model by model basis.
@@ -42,11 +41,11 @@ pair-wise AUC's is used as the variable importance measure.
 
 For regression, the relationship between each predictor and the outcome is
 evaluated. An argument, \code{nonpara}, is used to pick the model fitting
-technique. When \code{nonpara = FALSE}, a linear model is fit and the
-absolute value of the $t$-value for the slope of the predictor is used.
-Otherwise, a loess smoother is fit between the outcome and the predictor.
-The $R^2$ statistic is calculated for this model against the intercept only
-null model.
+technique. When \code{nonpara = FALSE}, a linear model is fit and the absolute
+value of the $t$-value for the slope of the predictor is used. Otherwise, a
+loess smoother is fit between the outcome and the predictor. The $R^2$
+statistic is calculated for this model against the intercept only null
+model.
 }
 \examples{
 

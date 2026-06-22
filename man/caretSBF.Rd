@@ -31,25 +31,21 @@ More details on these functions can be found at
 
 This page documents the functions that are used in selection by filtering
 (SBF). The functions described here are passed to the algorithm via the
-\code{functions} argument of \code{\link{sbfControl}}.
+\code{functions} argument of \code{\link[=sbfControl]{sbfControl()}}.
 
-See \code{\link{sbfControl}} for details on how these functions should be
-defined.
+See \code{\link[=sbfControl]{sbfControl()}} for details on how these functions should be defined.
 
-\code{anovaScores} and \code{gamScores} are two examples of univariate
-filtering functions. \code{anovaScores} fits a simple linear model between a
-single feature and the outcome, then the p-value for the whole model F-test
-is returned. \code{gamScores} fits a generalized additive model between a
-single predictor and the outcome using a smoothing spline basis function. A
-p-value is generated using the whole model test from
-\code{\link[gam]{summary.Gam}} and is returned.
+\code{anovaScores} and \code{gamScores} are two examples of univariate filtering
+functions. \code{anovaScores} fits a simple linear model between a single feature
+and the outcome, then the p-value for the whole model F-test is returned.
+\code{gamScores} fits a generalized additive model between a single predictor and
+the outcome using a smoothing spline basis function. A p-value is generated
+using the whole model test from \code{\link[gam:summary.Gam]{gam::summary.Gam()}} and is returned.
 
-If a particular model fails for \code{lm} or \code{gam}, a p-value of 1 is
-returned.
+If a particular model fails for \code{lm} or \code{gam}, a p-value of 1 is returned.
 }
 \seealso{
-\code{\link{sbfControl}}, \code{\link{sbf}},
-\code{\link[gam]{summary.Gam}}
+\code{\link[=sbfControl]{sbfControl()}}, \code{\link[=sbf]{sbf()}}, \code{\link[gam:summary.Gam]{gam::summary.Gam()}}
 }
 \author{
 Max Kuhn

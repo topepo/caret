@@ -6,7 +6,7 @@
 #' The functions requires that the factors have exactly the same levels.
 #'
 #' For two class problems, the sensitivity, specificity, positive predictive
-#' value and negative predictive value is calculated using the \code{positive}
+#' value and negative predictive value is calculated using the `positive`
 #' argument. Also, the prevalence of the "event" is computed from the data
 #' (unless passed in as an argument), the detection rate (the rate of true
 #' events also predicted to be events) and the detection prevalence (the
@@ -28,7 +28,7 @@
 #' \deqn{Precision = A/(A+B)} \deqn{Recall = A/(A+C)} \deqn{F1 =
 #' (1+beta^2)*precision*recall/((beta^2 * precision)+recall)}
 #'
-#' where \code{beta = 1} for this function.
+#' where `beta = 1` for this function.
 #'
 #' See the references for discussions of the first five formulas.
 #'
@@ -36,65 +36,62 @@
 #' factor level to the remaining levels (i.e. a "one versus all" approach).
 #'
 #' The overall accuracy and unweighted Kappa statistic are calculated. A
-#' p-value from McNemar's test is also computed using
-#' \code{\link[stats]{mcnemar.test}} (which can produce \code{NA} values with
-#' sparse tables).
+#' p-value from McNemar's test is also computed using [stats::mcnemar.test()]
+#' (which can produce `NA` values with sparse tables).
 #'
 #' The overall accuracy rate is computed along with a 95 percent confidence
-#' interval for this rate (using \code{\link[stats]{binom.test}}) and a
-#' one-sided test to see if the accuracy is better than the "no information
-#' rate," which is taken to be the largest class percentage in the data.
+#' interval for this rate (using [stats::binom.test()]) and a one-sided test to
+#' see if the accuracy is better than the "no information rate," which is taken
+#' to be the largest class percentage in the data.
 #'
 #' @aliases confusionMatrix.table confusionMatrix.default confusionMatrix
 #' @param data a factor of predicted classes (for the default method) or an
-#' object of class \code{\link[base]{table}}.
+#'   object of class [base::table()].
 #' @param reference a factor of classes to be used as the true results
 #' @param positive an optional character string for the factor level that
-#' corresponds to a "positive" result (if that makes sense for your data). If
-#' there are only two factor levels, the first level will be used as the
-#' "positive" result. When \code{mode = "prec_recall"}, \code{positive} is the
-#' same value used for \code{relevant} for functions \code{\link{precision}},
-#' \code{\link{recall}}, and \code{\link{F_meas.table}}.
+#'   corresponds to a "positive" result (if that makes sense for your data). If
+#'   there are only two factor levels, the first level will be used as the
+#'   "positive" result. When `mode = "prec_recall"`, `positive` is the same
+#'   value used for `relevant` for functions [precision()], [recall()], and
+#'   [F_meas.table()].
 #' @param dnn a character vector of dimnames for the table
 #' @param prevalence a numeric value or matrix for the rate of the "positive"
-#' class of the data. When \code{data} has two levels, \code{prevalence} should
-#' be a single numeric value. Otherwise, it should be a vector of numeric
-#' values with elements for each class. The vector should have names
-#' corresponding to the classes.
+#'   class of the data. When `data` has two levels, `prevalence` should be a
+#'   single numeric value. Otherwise, it should be a vector of numeric values
+#'   with elements for each class. The vector should have names corresponding
+#'   to the classes.
 #' @param mode a single character string either "sens_spec", "prec_recall", or
-#' "everything"
-#' @param \dots options to be passed to \code{table}. NOTE: do not include
-#' \code{dnn} here
-#' @return a list with elements \item{table}{the results of \code{table} on
-#' \code{data} and \code{reference}} \item{positive}{the positive result level}
-#' \item{overall}{a numeric vector with overall accuracy and Kappa statistic
-#' values} \item{byClass}{the sensitivity, specificity, positive predictive
-#' value, negative predictive value, precision, recall, F1, prevalence,
-#' detection rate, detection prevalence and balanced accuracy for each class.
-#' For two class systems, this is calculated once using the \code{positive}
-#' argument}
+#'   "everything"
+#' @param \dots options to be passed to `table`. NOTE: do not include `dnn`
+#'   here
+#' @return a list with elements \item{table}{the results of `table` on `data`
+#'   and `reference`} \item{positive}{the positive result level}
+#'   \item{overall}{a numeric vector with overall accuracy and Kappa statistic
+#'   values} \item{byClass}{the sensitivity, specificity, positive predictive
+#'   value, negative predictive value, precision, recall, F1, prevalence,
+#'   detection rate, detection prevalence and balanced accuracy for each class.
+#'   For two class systems, this is calculated once using the `positive`
+#'   argument}
 #' @note If the reference and data factors have the same levels, but in the
-#' incorrect order, the function will reorder them to the order of the data and
-#' issue a warning.
+#'   incorrect order, the function will reorder them to the order of the data
+#'   and issue a warning.
 #' @author Max Kuhn
-#' @seealso \code{\link{as.table.confusionMatrix}},
-#' \code{\link{as.matrix.confusionMatrix}}, \code{\link{sensitivity}},
-#' \code{\link{specificity}}, \code{\link{posPredValue}},
-#' \code{\link{negPredValue}}, \code{\link{print.confusionMatrix}},
-#' \code{\link[stats]{binom.test}}
+#' @seealso [as.table.confusionMatrix()], [as.matrix.confusionMatrix()],
+#'   [sensitivity()], [specificity()], [posPredValue()], [negPredValue()],
+#'   [print.confusionMatrix()], [stats::binom.test()]
 #' @references Kuhn, M. (2008), ``Building predictive models in R using the
-#' caret package, '' \emph{Journal of Statistical Software},
-#' (\doi{10.18637/jss.v028.i05}).
+#'   caret package, '' *Journal of Statistical Software*,
+#'   (\doi{10.18637/jss.v028.i05}).
 #'
 #' Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 1: sensitivity and
-#' specificity,'' \emph{British Medical Journal}, vol 308, 1552.
+#' specificity,'' *British Medical Journal*, vol 308, 1552.
 #'
 #' Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 2: predictive values,''
-#' \emph{British Medical Journal}, vol 309, 102.
+#' *British Medical Journal*, vol 309, 102.
 #'
 #' Velez, D.R., et. al. (2008) ``A balanced accuracy function for epistasis
 #' modeling in imbalanced datasets using multifactor dimensionality
-#' reduction.,'' \emph{Genetic Epidemiology}, vol 4, 306.
+#' reduction.,'' *Genetic Epidemiology*, vol 4, 306.
 #' @keywords utilities
 #' @examples
 #'
@@ -318,13 +315,15 @@ confusionMatrix.table <- function(data, positive = NULL,
 #' Confusion matrix as a table
 #' @name as.matrix.confusionMatrix
 #' @aliases as.table.confusionMatrix
-#' @description Conversion functions for class \code{confusionMatrix}
+#' @description Conversion functions for class `confusionMatrix`
 #'
-#' @param x an object of class \code{\link{confusionMatrix}}
-#' @param what data to convert to matrix. Either \code{"xtabs"}, \code{"overall"} or  \code{"classes"}
+#' @param x an object of class [confusionMatrix()]
+#' @param what data to convert to matrix. Either `"xtabs"`, `"overall"` or
+#'   `"classes"`
 #' @param \dots not currently used
 #'
-#' @details For \code{as.table}, the cross-tabulations are saved. For \code{as.matrix}, the three object types are saved in matrix format.
+#' @details For `as.table`, the cross-tabulations are saved. For `as.matrix`,
+#'   the three object types are saved in matrix format.
 #'
 #' @return A matrix or table
 #'
@@ -441,39 +440,36 @@ as.table.confusionMatrix <- function(x, ...)  x$table
 
 #' Estimate a Resampled Confusion Matrix
 #'
-#' Using a \code{\link{train}}, \code{\link{rfe}}, \code{\link{sbf}} object,
-#' determine a confusion matrix based on the resampling procedure
+#' Using a [train()], [rfe()], [sbf()] object, determine a confusion matrix
+#' based on the resampling procedure
 #'
-#' When \code{\link{train}} is used for tuning a model, it tracks the confusion
-#' matrix cell entries for the hold-out samples. These can be aggregated and
-#' used for diagnostic purposes. For \code{\link{train}}, the matrix is
-#' estimated for the final model tuning parameters determined by
-#' \code{\link{train}}. For \code{\link{rfe}}, the matrix is associated with
-#' the optimal number of variables.
+#' When [train()] is used for tuning a model, it tracks the confusion matrix
+#' cell entries for the hold-out samples. These can be aggregated and used for
+#' diagnostic purposes. For [train()], the matrix is estimated for the final
+#' model tuning parameters determined by [train()]. For [rfe()], the matrix is
+#' associated with the optimal number of variables.
 #'
-#' There are several ways to show the table entries. Using \code{norm = "none"}
-#' will show the aggregated counts of samples on each of the cells (across all
-#' resamples). For \code{norm = "average"}, the average number of cell counts
-#' across resamples is computed (this can help evaluate how many holdout
-#' samples there were on average). The default is \code{norm = "overall"},
-#' which is equivalento to \code{"average"} but in percentages.
+#' There are several ways to show the table entries. Using `norm = "none"` will
+#' show the aggregated counts of samples on each of the cells (across all
+#' resamples). For `norm = "average"`, the average number of cell counts across
+#' resamples is computed (this can help evaluate how many holdout samples there
+#' were on average). The default is `norm = "overall"`, which is equivalento to
+#' `"average"` but in percentages.
 #'
 #' @aliases confusionMatrix.train confusionMatrix.rfe confusionMatrix.sbf
-#' @param data An object of class \code{\link{train}}, \code{\link{rfe}},
-#' \code{\link{sbf}} that did not use out-of-bag resampling or leave-one-out
-#' cross-validation.
+#' @param data An object of class [train()], [rfe()], [sbf()] that did not use
+#'   out-of-bag resampling or leave-one-out cross-validation.
 #' @param norm A character string indicating how the table entries should be
-#' normalized. Valid values are "none", "overall" or "average".
+#'   normalized. Valid values are "none", "overall" or "average".
 #' @param dnn A character vector of dimnames for the table
 #' @param \dots not used here
-#' @return a list of class \code{confusionMatrix.train},
-#' \code{confusionMatrix.rfe} or \code{confusionMatrix.sbf} with elements
-#' \item{table}{the normalized matrix} \item{norm}{an echo fo the call}
-#' \item{text}{a character string with details about the resampling procedure
-#' (e.g. "Bootstrapped (25 reps) Confusion Matrix"}
+#' @return a list of class `confusionMatrix.train`, `confusionMatrix.rfe` or
+#'   `confusionMatrix.sbf` with elements \item{table}{the normalized matrix}
+#'   \item{norm}{an echo fo the call} \item{text}{a character string with
+#'   details about the resampling procedure (e.g. "Bootstrapped (25 reps)
+#'   Confusion Matrix"}
 #' @author Max Kuhn
-#' @seealso \code{\link{confusionMatrix}}, \code{\link{train}},
-#' \code{\link{rfe}}, \code{\link{sbf}}, \code{\link{trainControl}}
+#' @seealso [confusionMatrix()], [train()], [rfe()], [sbf()], [trainControl()]
 #' @keywords utilities
 #' @export
 #' @examples
@@ -633,19 +629,19 @@ resampName <- function(x, numbers = TRUE){
 
 #' Print method for confusionMatrix
 #'
-#' a print method for \code{confusionMatrix}
+#' a print method for `confusionMatrix`
 #'
 #'
-#' @param x an object of class \code{confusionMatrix}
+#' @param x an object of class `confusionMatrix`
 #' @param mode a single character string either "sens_spec", "prec_recall", or
-#' "everything"
+#'   "everything"
 #' @param digits number of significant digits when printed
-#' @param printStats a logical: if \code{TRUE} then table statistics are also
-#' printed
-#' @param \dots optional arguments to pass to \code{print.table}
-#' @return \code{x} is invisibly returned
+#' @param printStats a logical: if `TRUE` then table statistics are also
+#'   printed
+#' @param \dots optional arguments to pass to `print.table`
+#' @return `x` is invisibly returned
 #' @author Max Kuhn
-#' @seealso \code{\link{confusionMatrix}}
+#' @seealso [confusionMatrix()]
 #' @keywords utilities
 #' @export
 

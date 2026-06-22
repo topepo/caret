@@ -57,21 +57,19 @@ Ancillary functions for backwards selection
 \details{
 This page describes the functions that are used in backwards selection (aka
 recursive feature elimination). The functions described here are passed to
-the algorithm via the \code{functions} argument of \code{\link{rfeControl}}.
+the algorithm via the \code{functions} argument of \code{\link[=rfeControl]{rfeControl()}}.
 
-See \code{\link{rfeControl}} for details on how these functions should be
-defined.
+See \code{\link[=rfeControl]{rfeControl()}} for details on how these functions should be defined.
 
 The 'pick' functions are used to find the appropriate subset size for
-different situations. \code{pickBest} will find the position associated with
-the numerically best value (see the \code{maximize} argument to help define
-this).
+different situations. \code{pickBest} will find the position associated with the
+numerically best value (see the \code{maximize} argument to help define this).
 
 \code{pickSizeTolerance} picks the lowest position (i.e. the smallest subset
 size) that has no more of an X percent loss in performances. When
-maximizing, it calculates (O-X)/O*100, where X is the set of performance
+maximizing, it calculates (O-X)/O\emph{100, where X is the set of performance
 values and O is max(X). This is the percent loss. When X is to be minimized,
-it uses (X-O)/O*100 (so that values greater than X have a positive "loss").
+it uses (X-O)/O}100 (so that values greater than X have a positive "loss").
 The function finds the smallest subset size that has a percent loss less
 than \code{tol}.
 
@@ -125,7 +123,7 @@ cat("Accepting a 1.5 pct loss:",
 
 }
 \seealso{
-\code{\link{rfeControl}}, \code{\link{rfe}}
+\code{\link[=rfeControl]{rfeControl()}}, \code{\link[=rfe]{rfe()}}
 }
 \author{
 Max Kuhn

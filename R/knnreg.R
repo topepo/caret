@@ -3,36 +3,34 @@
 #' $k$-nearest neighbour regression that can return the average value for the
 #' neighbours.
 #'
-#' \code{knnreg} is similar to \code{\link[ipred]{ipredknn}} and
-#' \code{knnregTrain} is a modification of \code{\link[class]{knn}}. The
-#' underlying C code from the \code{class} package has been modified to return
-#' average outcome.
+#' `knnreg` is similar to [ipred::ipredknn()] and `knnregTrain` is a
+#' modification of [class::knn()]. The underlying C code from the `class`
+#' package has been modified to return average outcome.
 #'
 #' @aliases knnreg knnregTrain knnreg.formula knnreg.default knnreg.matrix knnreg.data.frame
-#' @param formula a formula of the form \code{lhs ~ rhs} where \code{lhs} is
-#' the response variable and \code{rhs} a set of predictors.
+#' @param formula a formula of the form `lhs ~ rhs` where `lhs` is the response
+#'   variable and `rhs` a set of predictors.
 #' @param data optional data frame containing the variables in the model
-#' formula.
+#'   formula.
 #' @param subset optional vector specifying a subset of observations to be
-#' used.
+#'   used.
 #' @param na.action function which indicates what should happen when the data
-#' contain \code{NA}s.
+#'   contain `NA`s.
 #' @param k number of neighbours considered.
 #' @param x a matrix or data frame of training set predictors.
 #' @param y a numeric vector of outcomes.
-#' @param ... additional parameters to pass to \code{knnregTrain}.
+#' @param ... additional parameters to pass to `knnregTrain`.
 #' @param train matrix or data frame of training set cases.
 #' @param test matrix or data frame of test set cases. A vector will be
-#' interpreted as a row vector for a single case.
+#'   interpreted as a row vector for a single case.
 #' @param use.all controls handling of ties. If true, all distances equal to
-#' the \code{k}th largest are included. If false, a random selection of
-#' distances equal to the \code{k}th is chosen to use exactly \code{k}
-#' neighbours.
-#' @return An object of class \code{knnreg}. See \code{\link{predict.knnreg}}.
-#' @author \code{\link[class]{knn}} by W. N. Venables and B. D. Ripley and
-#' \code{\link[ipred]{ipredknn}} by Torsten.Hothorn
-#' <Torsten.Hothorn@@rzmail.uni-erlangen.de>, modifications by Max Kuhn and
-#' Chris Keefer
+#'   the `k`th largest are included. If false, a random selection of distances
+#'   equal to the `k`th is chosen to use exactly `k` neighbours.
+#' @return An object of class `knnreg`. See [predict.knnreg()].
+#' @author [class::knn()] by W. N. Venables and B. D. Ripley and
+#'   [ipred::ipredknn()] by Torsten.Hothorn
+#'   <Torsten.Hothorn@@rzmail.uni-erlangen.de>, modifications by Max Kuhn and
+#'   Chris Keefer
 #' @keywords multivariate
 #' @examples
 #'
@@ -152,17 +150,17 @@ print.knnreg <- function (x, ...)
 #'
 #' Predict the outcome of a new observation based on k-NN.
 #'
-#' This function is a method for the generic function \code{\link{predict}} for
-#' class \code{knnreg}. For the details see \code{\link{knnreg}}. This is
-#' essentially a copy of \code{\link[ipred]{predict.ipredknn}}.
+#' This function is a method for the generic function [predict()] for class
+#' `knnreg`. For the details see [knnreg()]. This is essentially a copy of
+#' [ipred::predict.ipredknn()].
 #'
 #' @aliases predict.knnreg
-#' @param object object of class \code{knnreg}.
+#' @param object object of class `knnreg`.
 #' @param newdata a data frame or matrix of new observations.
 #' @param ... additional arguments.
 #' @return a numeric vector
-#' @author Max Kuhn, Chris Keefer, adapted from \code{\link[class]{knn}} and
-#' \code{\link[ipred]{predict.ipredknn}}
+#' @author Max Kuhn, Chris Keefer, adapted from [class::knn()] and
+#'   [ipred::predict.ipredknn()]
 #' @keywords multivariate
 #' @method predict knnreg
 #' @export

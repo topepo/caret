@@ -49,42 +49,36 @@ densityplot.train <- function(x,
 
 
 #' Lattice functions for plotting resampling results
-#' 
+#'
 #' A set of lattice functions are provided to plot the resampled performance
 #' estimates (e.g. classification accuracy, RMSE) over tuning parameters (if
 #' any).
-#' 
+#'
 #' By default, only the resampling results for the optimal model are saved in
-#' the \code{train} object. The function \code{\link{trainControl}} can be used
-#' to save all the results (see the example below).
-#' 
+#' the `train` object. The function [trainControl()] can be used to save all
+#' the results (see the example below).
+#'
 #' If leave-one-out or out-of-bag resampling was specified, plots cannot be
-#' produced (see the \code{method} argument of \code{\link{trainControl}})
-#' 
-#' For \code{xyplot} and \code{stripplot}, the tuning parameter with the most
-#' unique values will be plotted on the x-axis. The remaining parameters (if
-#' any) will be used as conditioning variables. For \code{densityplot} and
-#' \code{histogram}, all tuning parameters are used for conditioning.
-#' 
-#' Using \code{horizontal = FALSE} in \code{stripplot} works.
-#' 
+#' produced (see the `method` argument of [trainControl()])
+#'
+#' For `xyplot` and `stripplot`, the tuning parameter with the most unique
+#' values will be plotted on the x-axis. The remaining parameters (if any) will
+#' be used as conditioning variables. For `densityplot` and `histogram`, all
+#' tuning parameters are used for conditioning.
+#'
+#' Using `horizontal = FALSE` in `stripplot` works.
+#'
 #' @aliases stripplot.train xyplot.train densityplot.train histogram.train
-#' @param x An object produced by \code{\link{train}}
+#' @param x An object produced by [train()]
 #' @param data This argument is not used
 #' @param metric A character string specifying the single performance metric
-#' that will be plotted
-#' @param \dots arguments to pass to either
-#' \code{\link[lattice:histogram]{histogram}},
-#' \code{\link[lattice:histogram]{densityplot}},
-#' \code{\link[lattice:xyplot]{xyplot}} or
-#' \code{\link[lattice:xyplot]{stripplot}}
+#'   that will be plotted
+#' @param \dots arguments to pass to either [lattice::histogram()],
+#'   [lattice::densityplot()], [lattice::xyplot()] or [lattice::stripplot()]
 #' @return A lattice plot object
 #' @author Max Kuhn
-#' @seealso \code{\link{train}}, \code{\link{trainControl}},
-#' \code{\link[lattice:histogram]{histogram}},
-#' \code{\link[lattice:histogram]{densityplot}},
-#' \code{\link[lattice:xyplot]{xyplot}},
-#' \code{\link[lattice:xyplot]{stripplot}}
+#' @seealso [train()], [trainControl()], [lattice::histogram()],
+#'   [lattice::densityplot()], [lattice::xyplot()], [lattice::stripplot()]
 #' @keywords hplot
 #' @examples
 #' 

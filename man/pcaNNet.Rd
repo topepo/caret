@@ -30,10 +30,10 @@ pcaNNet(x, ...)
 \arguments{
 \item{x}{matrix or data frame of \code{x} values for examples.}
 
-\item{\dots}{arguments passed to \code{\link[nnet]{nnet}}, such as
-\code{size}, \code{decay}, etc.}
+\item{\dots}{arguments passed to \code{\link[nnet:nnet]{nnet::nnet()}}, such as \code{size}, \code{decay},
+etc.}
 
-\item{formula}{A formula of the form \code{class ~ x1 + x2 + \dots{}}}
+\item{formula}{A formula of the form \code{class ~ x1 + x2 + ...}}
 
 \item{data}{Data frame from which variables specified in \code{formula} are
 preferentially to be taken.}
@@ -41,15 +41,15 @@ preferentially to be taken.}
 \item{weights}{(case) weights for each example - if missing defaults to 1.}
 
 \item{thresh}{a threshold for the cumulative proportion of variance to
-capture from the PCA analysis. For example, to retain enough PCA components
-to capture 95 percent of variation, set \code{thresh = .95}}
+capture from the PCA analysis. For example, to retain enough PCA
+components to capture 95 percent of variation, set \code{thresh = .95}}
 
 \item{subset}{An index vector specifying the cases to be used in the
 training sample.  (NOTE: If given, this argument must be named.)}
 
-\item{na.action}{A function to specify the action to be taken if \code{NA}s
-are found. The default action is for the procedure to fail.  An alternative
-is na.omit, which leads to rejection of cases with missing values on any
+\item{na.action}{A function to specify the action to be taken if \code{NA}s are
+found. The default action is for the procedure to fail.  An alternative is
+na.omit, which leads to rejection of cases with missing values on any
 required variable.  (NOTE: If given, this argument must be named.)}
 
 \item{contrasts}{a list of contrasts to be used for some or all of the
@@ -57,8 +57,7 @@ factors appearing as variables in the model formula.}
 
 \item{y}{matrix or data frame of target values for examples.}
 
-\item{object}{an object of class \code{pcaNNet} as returned by
-\code{pcaNNet}.}
+\item{object}{an object of class \code{pcaNNet} as returned by \code{pcaNNet}.}
 
 \item{newdata}{matrix or data frame of test examples. A vector is considered
 to be a row vector comprising a single case.}
@@ -66,12 +65,15 @@ to be a row vector comprising a single case.}
 \item{type}{Type of output}
 }
 \value{
-For \code{pcaNNet}, an object of \code{"pcaNNet"} or
-\code{"pcaNNet.formula"}. Items of interest in the output are: \item{pc
-}{the output from \code{\link{preProcess}}} \item{model }{the model
-generated from \code{\link[nnet]{nnet}}} \item{names }{if any predictors had
-only one distinct value, this is a character string of the remaining
-columns. Otherwise a value of \code{NULL}}
+For \code{pcaNNet}, an object of \code{"pcaNNet"} or \code{"pcaNNet.formula"}.
+Items of interest in the output are:
+\itemize{
+\item \code{pc}: the output from \code{\link[=preProcess]{preProcess()}}
+\item \code{model}: the model generated from \code{\link[nnet:nnet]{nnet::nnet()}}
+\item \code{names}: if any predictors had only one distinct value, this is a
+character string of the remaining columns. Otherwise a
+value of \code{NULL}
+}
 }
 \description{
 Run PCA on a dataset, then use it in a neural network model
@@ -79,9 +81,8 @@ Run PCA on a dataset, then use it in a neural network model
 \details{
 The function first will run principal component analysis on the data. The
 cumulative percentage of variance is computed for each principal component.
-The function uses the \code{thresh} argument to determine how many
-components must be retained to capture this amount of variance in the
-predictors.
+The function uses the \code{thresh} argument to determine how many components
+must be retained to capture this amount of variance in the predictors.
 
 The principal components are then used in a neural network model.
 
@@ -103,11 +104,11 @@ predict(modelFit, bbbDescr[, 1:10])
 
 }
 \references{
-Ripley, B. D. (1996) \emph{Pattern Recognition and Neural
-Networks.} Cambridge.
+Ripley, B. D. (1996) \emph{Pattern Recognition and Neural Networks.}
+Cambridge.
 }
 \seealso{
-\code{\link[nnet]{nnet}}, \code{\link{preProcess}}
+\code{\link[nnet:nnet]{nnet::nnet()}}, \code{\link[=preProcess]{preProcess()}}
 }
 \author{
 These are heavily based on the \code{nnet} code from Brian Ripley.

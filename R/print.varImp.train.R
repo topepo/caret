@@ -21,4 +21,3 @@ function(x, top = min(20, dim(x$importance)[1]), digits = max(3, getOption("digi
    print(printObj, digits = digits, ...)
    invisible(x)
 }
-

@@ -37,14 +37,13 @@ trainControl(
 }
 \arguments{
 \item{method}{The resampling method: \code{"boot"}, \code{"boot632"},
-\code{"optimism_boot"}, \code{"boot_all"},
-\code{"cv"}, \code{"repeatedcv"}, \code{"LOOCV"}, \code{"LGOCV"} (for
-repeated training/test splits), \code{"none"} (only fits one model to the
-entire training set), \code{"oob"} (only for random forest, bagged trees,
-bagged earth, bagged flexible discriminant analysis, or conditional tree
-forest models), \code{"timeslice"}, \code{"adaptive_cv"},
-\code{"adaptive_boot"}, or \code{"adaptive_LGOCV"}. Not all methods are
-available for all control functions; see Details.}
+\code{"optimism_boot"}, \code{"boot_all"}, \code{"cv"}, \code{"repeatedcv"}, \code{"LOOCV"},
+\code{"LGOCV"} (for repeated training/test splits), \code{"none"} (only fits one
+model to the entire training set), \code{"oob"} (only for random forest, bagged
+trees, bagged earth, bagged flexible discriminant analysis, or conditional
+tree forest models), \code{"timeslice"}, \code{"adaptive_cv"}, \code{"adaptive_boot"}, or
+\code{"adaptive_LGOCV"}. Not all methods are available for all control
+functions; see Details.}
 
 \item{number}{Either the number of folds or number of resampling iterations}
 
@@ -53,92 +52,91 @@ complete sets of folds to compute}
 
 \item{p}{For leave-group out cross-validation: the training percentage}
 
-\item{search}{Either \code{"grid"} or \code{"random"}, describing how the
-tuning parameter grid is determined. See details below.}
+\item{search}{Either \code{"grid"} or \code{"random"}, describing how the tuning
+parameter grid is determined. See details below.}
 
 \item{initialWindow, horizon, fixedWindow, skip}{possible arguments to
-\code{\link{createTimeSlices}} when method is \code{timeslice}.}
+\code{\link[=createTimeSlices]{createTimeSlices()}} when method is \code{timeslice}.}
 
 \item{verboseIter}{A logical for printing a training log.}
 
 \item{returnData}{A logical for saving the data}
 
 \item{returnResamp}{A character string indicating how much of the resampled
-summary metrics should be saved. Values can be \code{"final"}, \code{"all"}
-or \code{"none"}}
+summary metrics should be saved. Values can be \code{"final"}, \code{"all"} or
+\code{"none"}}
 
 \item{savePredictions}{an indicator of how much of the hold-out predictions
 for each resample should be saved. Values can be either \code{"all"},
-\code{"final"}, or \code{"none"}. A logical value can also be used that
-convert to \code{"all"} (for true) or \code{"none"} (for false).
-\code{"final"} saves the predictions for the optimal tuning parameters.}
+\code{"final"}, or \code{"none"}. A logical value can also be used that convert to
+\code{"all"} (for true) or \code{"none"} (for false). \code{"final"} saves the
+predictions for the optimal tuning parameters.}
 
 \item{classProbs}{a logical; should class probabilities be computed for
 classification models (along with predicted values) in each resample?}
 
 \item{summaryFunction}{a function to compute performance metrics across
 resamples. The arguments to the function should be the same as those in
-\code{\link{defaultSummary}}. Note that if \code{method = "oob"} is used,
-this option is ignored and a warning is issued.}
+\code{\link[=defaultSummary]{defaultSummary()}}. Note that if \code{method = "oob"} is used, this option is
+ignored and a warning is issued.}
 
 \item{selectionFunction}{the function used to select the optimal tuning
 parameter. This can be a name of the function or the function itself. See
-\code{\link{best}} for details and other options.}
+\code{\link[=best]{best()}} for details and other options.}
 
-\item{preProcOptions}{A list of options to pass to \code{\link{preProcess}}.
-The type of pre-processing (e.g. center, scaling etc) is passed in via the
-\code{preProc} option in \code{\link{train}}.}
+\item{preProcOptions}{A list of options to pass to \code{\link[=preProcess]{preProcess()}}. The type
+of pre-processing (e.g. center, scaling etc) is passed in via the
+\code{preProc} option in \code{\link[=train]{train()}}.}
 
 \item{sampling}{a single character value describing the type of additional
 sampling that is conducted after resampling (usually to resolve class
-imbalances). Values are \code{"none"}, \code{"down"}, \code{"up"},
-\code{"smote"}, or \code{"rose"}. The latter two values require the
-\pkg{themis} and \pkg{ROSE} packages, respectively. This argument can also be
-a list to facilitate custom sampling and these details can be found on the
-\pkg{caret} package website for sampling (link below).}
+imbalances). Values are \code{"none"}, \code{"down"}, \code{"up"}, \code{"smote"}, or
+\code{"rose"}. The latter two values require the \pkg{themis} and \pkg{ROSE}
+packages, respectively. This argument can also be a list to facilitate
+custom sampling and these details can be found on the \pkg{caret} package
+website for sampling (link below).}
 
 \item{index}{a list with elements for each resampling iteration. Each list
-element is a vector of integers corresponding to the rows used for training
-at that iteration.}
+element is a vector of integers corresponding to the rows used for
+training at that iteration.}
 
-\item{indexOut}{a list (the same length as \code{index}) that dictates which
-data are held-out for each resample (as integers). If \code{NULL}, then the
-unique set of samples not contained in \code{index} is used.}
+\item{indexOut}{a list (the same length as \code{index}) that dictates which data
+are held-out for each resample (as integers). If \code{NULL}, then the unique
+set of samples not contained in \code{index} is used.}
 
 \item{indexFinal}{an optional vector of integers indicating which samples
-are used to fit the final model after resampling. If \code{NULL}, then
-entire data set is used.}
+are used to fit the final model after resampling. If \code{NULL}, then entire
+data set is used.}
 
 \item{timingSamps}{the number of training set samples that will be used to
-measure the time for predicting samples (zero indicates that the prediction
-time should not be estimated.}
+measure the time for predicting samples (zero indicates that the
+prediction time should not be estimated.}
 
 \item{predictionBounds}{a logical or numeric vector of length 2 (regression
-only). If logical, the predictions can be constrained to be within the limit
-of the training set outcomes. For example, a value of \code{c(TRUE, FALSE)}
-would only constrain the lower end of predictions. If numeric, specific
-bounds can be used. For example, if \code{c(10, NA)}, values below 10 would
-be predicted as 10 (with no constraint in the upper side).}
+only). If logical, the predictions can be constrained to be within the
+limit of the training set outcomes. For example, a value of \code{c(TRUE, FALSE)} would only constrain the lower end of predictions. If numeric,
+specific bounds can be used. For example, if \code{c(10, NA)}, values below 10
+would be predicted as 10 (with no constraint in the upper side).}
 
 \item{seeds}{an optional set of integers that will be used to set the seed
 at each resampling iteration. This is useful when the models are run in
 parallel. A value of \code{NA} will stop the seed from being set within the
-worker processes while a value of \code{NULL} will set the seeds using a
-random set of integers. Alternatively, a list can be used. The list should
-have \code{B+1} elements where \code{B} is the number of resamples. The
-first \code{B} elements of the list should be vectors of integers of length
-\code{M} where \code{M} is the number of models or subsets being evaluated.
-The last element of the list only needs to be a single integer (for the
-final model). See the Examples section below and the Details section.}
+worker processes while a value of \code{NULL} will set the seeds using a random
+set of integers. Alternatively, a list can be used. The list should have
+\code{B+1} elements where \code{B} is the number of resamples. The first \code{B}
+elements of the list should be vectors of integers of length \code{M} where \code{M}
+is the number of models or subsets being evaluated. The last element of
+the list only needs to be a single integer (for the final model). See the
+Examples section below and the Details section.}
 
 \item{adaptive}{a list used when \code{method} is \code{"adaptive_cv"},
 \code{"adaptive_boot"} or \code{"adaptive_LGOCV"}. See Details below.}
 
-\item{trim}{a logical. If \code{TRUE} the final model in
-\code{object\$finalModel} may have some components of the object removed so
-reduce the size of the saved object. The \code{predict} method will still
-work, but some other features of the model may not work. \code{trim}ing will
-occur only for models where this feature has been implemented.}
+\item{trim}{a logical. If \code{TRUE} the final model in \verb{object\\$finalModel} may
+have some components of the object removed so reduce the size of the saved
+object. The \code{predict} method will still work, but some other features of
+the model may not work. \code{trim}ing will occur only for models where this
+feature has been implemented.}
 
 \item{allowParallel}{if a parallel backend is loaded and available, should
 the function use it?}
@@ -147,56 +145,52 @@ the function use it?}
 An echo of the parameters specified
 }
 \description{
-Control the computational nuances of the \code{\link{train}} function
+Control the computational nuances of the \code{\link[=train]{train()}} function
 }
 \details{
 When setting the seeds manually, the number of models being evaluated is
-required. This may not be obvious as \code{train} does some optimizations
-for certain models. For example, when tuning over PLS model, the only model
-that is fit is the one with the largest number of components. So if the
-model is being tuned over \code{comp in 1:10}, the only model fit is
-\code{ncomp = 10}. However, if the vector of integers used in the
-\code{seeds} arguments is longer than actually needed, no error is thrown.
+required. This may not be obvious as \code{train} does some optimizations for
+certain models. For example, when tuning over PLS model, the only model that
+is fit is the one with the largest number of components. So if the model is
+being tuned over \verb{comp in 1:10}, the only model fit is \code{ncomp = 10}.
+However, if the vector of integers used in the \code{seeds} arguments is longer
+than actually needed, no error is thrown.
 
-Using \code{method = "none"} and specifying more than one model in
-\code{\link{train}}'s \code{tuneGrid} or \code{tuneLength} arguments will
-result in an error.
+Using \code{method = "none"} and specifying more than one model in \code{\link[=train]{train()}}'s
+\code{tuneGrid} or \code{tuneLength} arguments will result in an error.
 
 Using adaptive resampling when \code{method} is either \code{"adaptive_cv"},
-\code{"adaptive_boot"} or \code{"adaptive_LGOCV"}, the full set of resamples
-is not run for each model. As resampling continues, a futility analysis is
+\code{"adaptive_boot"} or \code{"adaptive_LGOCV"}, the full set of resamples is not
+run for each model. As resampling continues, a futility analysis is
 conducted and models with a low probability of being optimal are removed.
 These features are experimental. See Kuhn (2014) for more details. The
 options for this procedure are:
 
-\itemize{ \item \code{min}: the minimum number of resamples used before
-models are removed \item \code{alpha}: the confidence level of the one-sided
-intervals used to measure futility \item \code{method}: either generalized
-least squares (\code{method = "gls"}) or a Bradley-Terry model (\code{method
-= "BT"}) \item \code{complete}: if a single parameter value is found before
-the end of resampling, should the full set of resamples be computed for that
-parameter. ) }
+\itemize{ \item \code{min}: the minimum number of resamples used before models
+are removed \item \code{alpha}: the confidence level of the one-sided intervals
+used to measure futility \item \code{method}: either generalized least squares
+(\code{method = "gls"}) or a Bradley-Terry model (\code{method = "BT"}) \item
+\code{complete}: if a single parameter value is found before the end of
+resampling, should the full set of resamples be computed for that parameter.
+) }
 
 The option \code{search = "grid"} uses the default grid search routine. When
-\code{search = "random"}, a random search procedure is used (Bergstra and
-Bengio, 2012). See \url{http://topepo.github.io/caret/random-hyperparameter-search.html} for
-details and an example.
+\code{search = "random"}, a random search procedure is used (Bergstra and Bengio,
+2012). See \url{http://topepo.github.io/caret/random-hyperparameter-search.html}
+for details and an example.
 
 The supported bootstrap methods are:
 
-\itemize{
-  \item \code{"boot"}: the usual bootstrap.
-  \item \code{"boot632"}: the 0.632 bootstrap estimator (Efron, 1983).
-  \item \code{"optimism_boot"}: the optimism bootstrap estimator.
-    (Efron and Tibshirani, 1994).
-  \item \code{"boot_all"}: all of the above (for efficiency,
-    but "boot" will be used for calculations).
-}
+\itemize{ \item \code{"boot"}: the usual bootstrap. \item \code{"boot632"}: the 0.632
+bootstrap estimator (Efron, 1983). \item \code{"optimism_boot"}: the optimism
+bootstrap estimator. (Efron and Tibshirani, 1994). \item \code{"boot_all"}: all
+of the above (for efficiency, but "boot" will be used for calculations). }
 
-The \code{"boot632"} method should not to be confused with the 0.632+
-estimator proposed later by the same author.
+The \code{"boot632"} method should not to be confused with the 0.632+ estimator
+proposed later by the same author.
 
-Note that if \code{index} or \code{indexOut} are specified, the label shown by \code{train} may not be accurate since these arguments supersede the \code{method} argument.
+Note that if \code{index} or \code{indexOut} are specified, the label shown by \code{train}
+may not be accurate since these arguments supersede the \code{method} argument.
 }
 \examples{
 

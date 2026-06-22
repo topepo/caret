@@ -20,12 +20,12 @@ a numeric vector
 Predict the outcome of a new observation based on k-NN.
 }
 \details{
-This function is a method for the generic function \code{\link{predict}} for
-class \code{knnreg}. For the details see \code{\link{knnreg}}. This is
-essentially a copy of \code{\link[ipred]{predict.ipredknn}}.
+This function is a method for the generic function \code{\link[=predict]{predict()}} for class
+\code{knnreg}. For the details see \code{\link[=knnreg]{knnreg()}}. This is essentially a copy of
+\code{\link[ipred:predict.ipredknn]{ipred::predict.ipredknn()}}.
 }
 \author{
-Max Kuhn, Chris Keefer, adapted from \code{\link[class]{knn}} and
-\code{\link[ipred]{predict.ipredknn}}
+Max Kuhn, Chris Keefer, adapted from \code{\link[class:knn]{class::knn()}} and
+\code{\link[ipred:predict.ipredknn]{ipred::predict.ipredknn()}}
 }
 \keyword{multivariate}

@@ -71,24 +71,24 @@ a data frame with columns: \item{Class }{A factor with levels
 "Class1" and "Class2"} \item{TwoFactor1, TwoFactor2 }{Correlated
 multivariate normal predictors (denoted as \code{A} and \code{B} above)}
 \item{Nonlinear1, Nonlinear2, Nonlinear3}{Uncorrelated random uniform
-predictors (\code{J}, \code{K} and \code{L} above).} \item{Linear1,
-}{Optional uncorrelated standard normal predictors (\code{C} through
-\code{H} above)}\item{list()}{Optional uncorrelated standard normal
-predictors (\code{C} through \code{H} above)} \item{Noise1, }{Optional
-uncorrelated standard normal predictions}\item{list()}{Optional uncorrelated
-standard normal predictions} \item{Corr1, }{Optional correlated multivariate
-normal predictors (each with unit variances)}\item{list()}{Optional
-correlated multivariate normal predictors (each with unit variances)}.
+predictors (\code{J}, \code{K} and \code{L} above).} \item{Linear1, }{Optional
+uncorrelated standard normal predictors (\code{C} through \code{H}
+above)}\item{list()}{Optional uncorrelated standard normal predictors (\code{C}
+through \code{H} above)} \item{Noise1, }{Optional uncorrelated standard normal
+predictions}\item{list()}{Optional uncorrelated standard normal
+predictions} \item{Corr1, }{Optional correlated multivariate normal
+predictors (each with unit variances)}\item{list()}{Optional correlated
+multivariate normal predictors (each with unit variances)}.
 }
 \description{
 This function simulates regression and classification data with truly
 important predictors and irrelevant predictions.
 }
 \details{
-The first function (\code{twoClassSim}) generates two class data. The data
-are simulated in different sets. First, two multivariate normal predictors
-(denoted here as \code{A} and \code{B}) are created with a correlation our
-about 0.65. They change the log-odds using main effects and an interaction:
+The first function (\code{twoClassSim}) generates two class data. The data are
+simulated in different sets. First, two multivariate normal predictors
+(denoted here as \code{A} and \code{B}) are created with a correlation our about 0.65.
+They change the log-odds using main effects and an interaction:
 
 \preformatted{ intercept - 4A + 4B + 2AB }
 
@@ -119,15 +119,17 @@ actually make the assignment of the actual class. To mislabel the data, the
 probability is reversed (i.e. \code{p = 1 - p}) before the random number
 generation.
 
-For \code{ordinal = TRUE}, random normal errors are added to the linear
-predictor (i.e. prior to computing the probability) and cut points (0.00,
-0.20, 0.75, and 1.00) are used to bin the probabilities into classes
-\code{"low"}, \code{"med"}, and \code{"high"} (despite the function's name).
+For \code{ordinal = TRUE}, random normal errors are added to the linear predictor
+(i.e. prior to computing the probability) and cut points (0.00, 0.20, 0.75,
+and 1.00) are used to bin the probabilities into classes \code{"low"}, \code{"med"},
+and \code{"high"} (despite the function's name).
 
 The remaining functions simulate regression data sets. \code{LPH07_1} and
 \code{LPH07_2} are from van der Laan et al. (2007). The first function uses
-random Bernoulli variables that have a 40\% probability of being a value of
-1. The true regression equation is:
+random Bernoulli variables that have a 40\\% probability of being a value of
+\enumerate{
+\item The true regression equation is:
+}
 
 \preformatted{ 2*w_1*w_10 + 4*w_2*w_7 + 3*w_4*w_5 - 5*w_6*w_10 + 3*w_8*w_9 +
 w_1*w_2*w_4 - 2*w_7*(1-w_6)*w_2*w_9 - 4*(1 - w_10)*w_1*(1-w_4) }
@@ -135,14 +137,13 @@ w_1*w_2*w_4 - 2*w_7*(1-w_6)*w_2*w_9 - 4*(1 - w_10)*w_1*(1-w_4) }
 The simulated error term is a standard normal (i.e. Gaussian). The noise
 variables are simulated in the same manner as described above but are made
 binary based on whether the normal random variable is above or below 0. If
-\code{factors = TRUE}, each of the predictors is coerced into a factor.
-This simulation can also be adapted for classification using the option
-\code{class = TRUE}. In this case, the outcome is converted to be a factor
-by first computing the logit transformation of the equation above and using
-uniform random numbers to assign the observed class.
+\code{factors = TRUE}, each of the predictors is coerced into a factor. This
+simulation can also be adapted for classification using the option \code{class = TRUE}. In this case, the outcome is converted to be a factor by first
+computing the logit transformation of the equation above and using uniform
+random numbers to assign the observed class.
 
-A second function (\code{LPH07_2}) uses 20 independent Gaussians with mean
-zero and variance 16. The functional form here is:
+A second function (\code{LPH07_2}) uses 20 independent Gaussians with mean zero
+and variance 16. The functional form here is:
 
 \preformatted{ x_1*x_2 + x_10^2 - x_3*x_17 - x_15*x_4 + x_9*x_5 + x_19 -
 x_20^2 + x_9*x_8 }
@@ -160,8 +161,8 @@ cos(x_13) + 2*x_14 + abs(x_15) + I(x_16 < -1) + x_17*I(x_17 < -1) - 2 * x_18
 
 The random error here is also Gaussian with mean zero and a variance of 9.
 
-\code{SLC14_2} is also from Sapp et al. (2014). Two hundred independent
-Gaussian variables are generated, each having mean zero and variance 16. The
+\code{SLC14_2} is also from Sapp et al. (2014). Two hundred independent Gaussian
+variables are generated, each having mean zero and variance 16. The
 functional form is
 
 \preformatted{ -1 + log(abs(x_1)) + ... + log(abs(x_200)) }

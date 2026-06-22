@@ -1,22 +1,20 @@
 #' Compute the multivariate spatial sign
-#' 
-#' Compute the spatial sign (a projection of a data vector to a
-#'  unit length circle). The spatial sign of a vector \code{w} is
-#'  \code{w /norm(w)}.
-#' 
+#'
+#' Compute the spatial sign (a projection of a data vector to a unit length
+#' circle). The spatial sign of a vector `w` is `w /norm(w)`.
+#'
 #' @aliases spatialSign spatialSign.default spatialSign.matrix spatialSign.data.frame
-#' @param x an object full of numeric data (which should probably
-#'  be scaled). Factors are not allowed. This could be a vector,
-#'  matrix or data frame.
-#' @param na.rm A logical; should missing data be removed when
-#'  computing the norm of the vector?
-#' @param ... Not currently used. 
-#' @return A vector, matrix or data frame with the same dim names
-#'  of the original data.
+#' @param x an object full of numeric data (which should probably be scaled).
+#'   Factors are not allowed. This could be a vector, matrix or data frame.
+#' @param na.rm A logical; should missing data be removed when computing the
+#'   norm of the vector?
+#' @param ... Not currently used.
+#' @return A vector, matrix or data frame with the same dim names of the
+#'   original data.
 #' @author Max Kuhn
-#' @references Serneels et al. Spatial sign preprocessing: a
-#'  simple way to impart moderate robustness to multivariate
-#'  estimators. J. Chem. Inf. Model (2006) vol. 46 (3) pp. 1402-1409
+#' @references Serneels et al. Spatial sign preprocessing: a simple way to
+#'   impart moderate robustness to multivariate estimators. J. Chem. Inf. Model
+#'   (2006) vol. 46 (3) pp. 1402-1409
 #' @keywords manip
 #' @examples
 #' 
@@ -84,4 +82,3 @@
   dimnames(tmp) <- xNames
   tmp
 }
-

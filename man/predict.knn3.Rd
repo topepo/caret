@@ -24,12 +24,12 @@ class.
 Predict the class of a new observation based on k-NN.
 }
 \details{
-This function is a method for the generic function \code{\link{predict}} for
-class \code{knn3}. For the details see \code{\link{knn3}}. This is
-essentially a copy of \code{\link[ipred]{predict.ipredknn}}.
+This function is a method for the generic function \code{\link[=predict]{predict()}} for class
+\code{knn3}. For the details see \code{\link[=knn3]{knn3()}}. This is essentially a copy of
+\code{\link[ipred:predict.ipredknn]{ipred::predict.ipredknn()}}.
 }
 \author{
-\code{\link[ipred]{predict.ipredknn}} by Torsten.Hothorn
-<Torsten.Hothorn@rzmail.uni-erlangen.de>
+\code{\link[ipred:predict.ipredknn]{ipred::predict.ipredknn()}} by Torsten.Hothorn
+\href{mailto:Torsten.Hothorn@rzmail.uni-erlangen.de}{Torsten.Hothorn@rzmail.uni-erlangen.de}
 }
 \keyword{multivariate}

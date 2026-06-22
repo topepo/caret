@@ -1,52 +1,55 @@
 #' Compute and predict the distances to class centroids
 #'
 #' @aliases classDist.default classDist predict.classDist
-#' @description This function computes the class centroids and covariance matrix for a training set for determining Mahalanobis distances of samples to each class centroid.
+#' @description This function computes the class centroids and covariance
+#'   matrix for a training set for determining Mahalanobis distances of samples
+#'   to each class centroid.
 #'
 #'
 #' @param x a matrix or data frame of predictor variables
 #' @param y a numeric or factor vector of class labels
-#' @param groups an integer for the number of bins for splitting a numeric outcome
-#' @param pca a logical: should principal components analysis be  applied to the dataset prior to splitting the data by class?
-#' @param keep an integer for the number of PCA components that should by used to predict new samples (\code{NULL} uses all within a tolerance of \code{sqrt(.Machine$double.eps)})
-#' @param object an object of class \code{classDist}
-#' @param newdata a matrix or data frame. If \code{vars} was previously specified, these columns should be in \code{newdata}
-#' @param trans an optional function that can be applied to each class distance. \code{trans = NULL} will not apply a function
+#' @param groups an integer for the number of bins for splitting a numeric
+#'   outcome
+#' @param pca a logical: should principal components analysis be applied to the
+#'   dataset prior to splitting the data by class?
+#' @param keep an integer for the number of PCA components that should by used
+#'   to predict new samples (`NULL` uses all within a tolerance of
+#'   `sqrt(.Machine$double.eps)`)
+#' @param object an object of class `classDist`
+#' @param newdata a matrix or data frame. If `vars` was previously specified,
+#'   these columns should be in `newdata`
+#' @param trans an optional function that can be applied to each class
+#'   distance. `trans = NULL` will not apply a function
 #' @param \dots optional arguments to pass (not currently used)
 #'
-#' @details
-#' For factor outcomes, the data are split into groups for each class
-#' and the mean and covariance matrix are calculated. These are then
-#' used to compute Mahalanobis distances to the class centers (using
-#' \code{predict.classDist} The function will check for non-singular matrices.
+#' @details For factor outcomes, the data are split into groups for each class
+#'   and the mean and covariance matrix are calculated. These are then used to
+#'   compute Mahalanobis distances to the class centers (using
+#'   `predict.classDist` The function will check for non-singular matrices.
 #'
-#' For numeric outcomes, the data are split into roughly equal sized
-#' bins based on \code{groups}. Percentiles are used to split the data.
+#' For numeric outcomes, the data are split into roughly equal sized bins based
+#' on `groups`. Percentiles are used to split the data.
 #'
-#' @return
-#' for \code{classDist}, an object of class \code{classDist} with
-#' elements:
-#'   \item{values }{a list with elements for each class. Each element
-#'                  contains a mean vector for the class centroid and the
-#'                  inverse of the class covariance matrix}
-#'   \item{classes}{a character vector of class labels}
-#'   \item{pca}{the results of \code{\link[stats]{prcomp}} when
-#'              \code{pca = TRUE}}
-#'   \item{call}{the function call}
-#'   \item{p}{the number of variables}
+#' @return for `classDist`, an object of class `classDist` with elements:
+#'   \item{values }{a list with elements for each class. Each element contains
+#'   a mean vector for the class centroid and the inverse of the class
+#'   covariance matrix} \item{classes}{a character vector of class labels}
+#'   \item{pca}{the results of [stats::prcomp()] when `pca = TRUE`}
+#'   \item{call}{the function call} \item{p}{the number of variables}
 #'   \item{n}{a vector of samples sizes per class}
 #'
-#' For \code{predict.classDist}, a matrix with columns for each class.
-#' The columns names are the names of the class with the prefix
-#' \code{dist.}. In the case of numeric \code{y}, the class labels are
-#' the percentiles. For example, of \code{groups = 9}, the variable names
-#' would be \code{dist.11.11}, \code{dist.22.22}, etc.
+#' For `predict.classDist`, a matrix with columns for each class. The columns
+#' names are the names of the class with the prefix `dist.`. In the case of
+#' numeric `y`, the class labels are the percentiles. For example, of `groups =
+#' 9`, the variable names would be `dist.11.11`, `dist.22.22`, etc.
 #'
 #' @author Max Kuhn
 #'
-#' @references Forina et al. CAIMAN brothers: A family of powerful classification and class modeling techniques. Chemometrics and Intelligent Laboratory Systems (2009) vol. 96 (2) pp. 239-245
+#' @references Forina et al. CAIMAN brothers: A family of powerful
+#'   classification and class modeling techniques. Chemometrics and Intelligent
+#'   Laboratory Systems (2009) vol. 96 (2) pp. 239-245
 #'
-#' @seealso \code{\link[stats]{mahalanobis}}
+#' @seealso [stats::mahalanobis()]
 #'
 #' @examples
 #' trainSet <- sample(1:150, 100)

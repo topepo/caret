@@ -1,15 +1,15 @@
 #' Create a dotplot of variable importance values
-#' 
-#' A lattice \code{\link[lattice:xyplot]{dotplot}} is created from an object of
-#' class \code{varImp.train}.
-#' 
-#' 
-#' @param x an object of class \code{varImp.train}
+#'
+#' A lattice [lattice::dotplot()] is created from an object of class
+#' `varImp.train`.
+#'
+#'
+#' @param x an object of class `varImp.train`
 #' @param top the number of predictors to plot
-#' @param \dots options passed to \code{\link[lattice:xyplot]{dotplot}}
-#' @return an object of class \code{trellis}.
+#' @param \dots options passed to [lattice::dotplot()]
+#' @return an object of class `trellis`.
 #' @author Max Kuhn
-#' @seealso \code{\link{varImp}}, \code{\link[lattice:xyplot]{dotplot}}
+#' @seealso [varImp()], [lattice::dotplot()]
 #' @keywords hplot
 #' @examples
 #' 
@@ -62,4 +62,3 @@ dotPlot <- function (x, top = min(20, dim(x$importance)[1]), ...)
    }
    out
 }
-

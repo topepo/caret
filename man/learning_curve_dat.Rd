@@ -26,18 +26,18 @@ performance.}
 
 \item{verbose}{a logical to print logs to the screen as models are fit}
 
-\item{\dots}{options to pass to \code{\link{train}} to specify the model.
-These should not include \code{x}, \code{y}, \code{formula}, or \code{data}.
-If \code{trainControl} is used here, do not use \code{method = "none"}.}
+\item{\dots}{options to pass to \code{\link[=train]{train()}} to specify the model. These should
+not include \code{x}, \code{y}, \code{formula}, or \code{data}. If \code{trainControl} is used
+here, do not use \code{method = "none"}.}
 }
 \value{
 a data frame with columns for each performance metric calculated by
-\code{\link{train}} as well as columns: \item{Training_Size }{the number of
-data points used in the current model fit} \item{Data }{which data were used
-to calculate performance. Values are "Resampling", "Training", and
-(optionally) "Testing"} In the results, each data set size will have one row
-for the apparent error rate, one row for the test set results (if used) and
-as many rows as resamples (e.g. 10 rows if 10-fold CV is used).
+\code{\link[=train]{train()}} as well as columns: \item{Training_Size }{the number of data
+points used in the current model fit} \item{Data }{which data were used to
+calculate performance. Values are "Resampling", "Training", and
+(optionally) "Testing"} In the results, each data set size will have one
+row for the apparent error rate, one row for the test set results (if
+used) and as many rows as resamples (e.g. 10 rows if 10-fold CV is used).
 }
 \description{
 For a given model, this function fits several versions on different sizes of
@@ -46,13 +46,12 @@ the total training set and returns the results
 \details{
 This function creates a data set that can be used to plot how well the model
 performs over different sized versions of the training set. For each data
-set size, the performance metrics are determined and saved. If
-\code{test_prop == 0}, the apparent measure of performance (i.e.
-re-predicting the training set) and the resampled estimate of performance
-are available. Otherwise, the test set results are also added.
+set size, the performance metrics are determined and saved. If \code{test_prop == 0}, the apparent measure of performance (i.e. re-predicting the training
+set) and the resampled estimate of performance are available. Otherwise, the
+test set results are also added.
 
 If the model being fit has tuning parameters, the results are based on the
-optimal settings determined by \code{\link{train}}.
+optimal settings determined by \code{\link[=train]{train()}}.
 }
 \examples{
 
@@ -82,7 +81,7 @@ ggplot(lda_data, aes(x = Training_Size, y = ROC, color = Data)) +
 
 }
 \seealso{
-\code{\link{train}}
+\code{\link[=train]{train()}}
 }
 \author{
 Max Kuhn

@@ -19,15 +19,15 @@ findCorrelation(
 
 \item{verbose}{A boolean for printing the details}
 
-\item{names}{a logical; should the column names be returned (\code{TRUE}) or
-the column index (\code{FALSE})?}
+\item{names}{a logical; should the column names be returned (\code{TRUE}) or the
+column index (\code{FALSE})?}
 
 \item{exact}{a logical; should the average correlations be recomputed at
 each step? See Details below.}
 }
 \value{
 A vector of indices denoting the columns to remove (when \code{names
-= TRUE}) otherwise a vector of column names. If no correlations meet the
+  = TRUE}) otherwise a vector of column names. If no correlations meet the
 criteria, \code{integer(0)} is returned.
 }
 \description{
@@ -42,10 +42,10 @@ correlation of each variable and removes the variable with the largest mean
 absolute correlation.
 
 Using \code{exact = TRUE} will cause the function to re-evaluate the average
-correlations at each step while \code{exact = FALSE} uses all the
-correlations regardless of whether they have been eliminated or not. The
-exact calculations will remove a smaller number of predictors but can be
-much slower when the problem dimensions are "big".
+correlations at each step while \code{exact = FALSE} uses all the correlations
+regardless of whether they have been eliminated or not. The exact
+calculations will remove a smaller number of predictors but can be much
+slower when the problem dimensions are "big".
 }
 \examples{
 
@@ -76,7 +76,7 @@ findCorrelation(R2, cutoff = .99, verbose = TRUE)
 
 }
 \seealso{
-\code{\link{findLinearCombos}}
+\code{\link[=findLinearCombos]{findLinearCombos()}}
 }
 \author{
 Original R code by Dong Li, modified by Max Kuhn

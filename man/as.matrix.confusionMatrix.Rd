@@ -8,9 +8,10 @@
 \method{as.matrix}{confusionMatrix}(x, what = "xtabs", ...)
 }
 \arguments{
-\item{x}{an object of class \code{\link{confusionMatrix}}}
+\item{x}{an object of class \code{\link[=confusionMatrix]{confusionMatrix()}}}
 
-\item{what}{data to convert to matrix. Either \code{"xtabs"}, \code{"overall"} or  \code{"classes"}}
+\item{what}{data to convert to matrix. Either \code{"xtabs"}, \code{"overall"} or
+\code{"classes"}}
 
 \item{\dots}{not currently used}
 }
@@ -21,7 +22,8 @@ A matrix or table
 Conversion functions for class \code{confusionMatrix}
 }
 \details{
-For \code{as.table}, the cross-tabulations are saved. For \code{as.matrix}, the three object types are saved in matrix format.
+For \code{as.table}, the cross-tabulations are saved. For \code{as.matrix},
+the three object types are saved in matrix format.
 }
 \examples{
 ###################

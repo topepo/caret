@@ -70,8 +70,8 @@ thought of as a "relevant" results.
 \details{
 The recall (aka sensitivity) is defined as the proportion of relevant
 results out of the number of samples which were actually relevant. When
-there are no relevant results, recall is not defined and a value of
-\code{NA} is returned.
+there are no relevant results, recall is not defined and a value of \code{NA} is
+returned.
 
 The precision is percentage of predicted truly relevant results of the total
 number of predicted relevant results and characterizes the "purity in
@@ -125,15 +125,15 @@ caret package, '' \emph{Journal of Statistical Software},
 (\doi{10.18637/jss.v028.i05}).
 
 Buckland, M., & Gey, F. (1994). The relationship between Recall and
-Precision. \emph{Journal of the American Society for Information Science},
-45(1), 12-19.
+Precision. \emph{Journal of the American Society for Information Science}, 45(1),
+12-19.
 
 Powers, D. (2007). Evaluation: From Precision, Recall and F Factor to ROC,
 Informedness, Markedness and Correlation. Technical Report SIE-07-001,
 Flinders University
 }
 \seealso{
-\code{\link{confusionMatrix}}
+\code{\link[=confusionMatrix]{confusionMatrix()}}
 }
 \author{
 Max Kuhn

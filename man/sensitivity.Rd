@@ -76,8 +76,8 @@ specificity(data, ...)
 }
 \arguments{
 \item{data}{for the default functions, a factor containing the discrete
-measurements. For the \code{table} or \code{matrix} functions, a table or
-matric object, respectively.}
+measurements. For the \code{table} or \code{matrix} functions, a table or matric
+object, respectively.}
 
 \item{...}{not currently used}
 
@@ -109,8 +109,8 @@ The sensitivity is defined as the proportion of positive results out of the
 number of samples which were actually positive. When there are no positive
 results, sensitivity is not defined and a value of \code{NA} is returned.
 Similarly, when there are no negative results, specificity is not defined
-and a value of \code{NA} is returned. Similar statements are true for
-predictive values.
+and a value of \code{NA} is returned. Similar statements are true for predictive
+values.
 
 The positive predictive value is defined as the percent of predicted
 positives that are actually positive while the negative predictive value is
@@ -211,7 +211,7 @@ Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 2: predictive values,''
 \emph{British Medical Journal}, vol 309, 102.
 }
 \seealso{
-\code{\link{confusionMatrix}}
+\code{\link[=confusionMatrix]{confusionMatrix()}}
 }
 \author{
 Max Kuhn

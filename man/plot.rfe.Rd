@@ -17,7 +17,7 @@
 \method{plot}{rfe}(x, metric = x$metric, ...)
 }
 \arguments{
-\item{data}{an object of class \code{\link{rfe}}.}
+\item{data}{an object of class \code{\link[=rfe]{rfe()}}.}
 
 \item{mapping, environment}{unused arguments to make consistent with
 \pkg{ggplot2} generic method}
@@ -31,11 +31,10 @@ frame while the second returns a simple \code{ggplot} object with no layers.
 The third value returns a plot with a set of layers.}
 
 \item{\dots}{\code{plot} only: specifications to be passed to
-\code{\link[lattice]{xyplot}}. The function automatically sets some
-arguments (e.g. axis labels) but passing in values here will over-ride the
-defaults.}
+\code{\link[lattice:xyplot]{lattice::xyplot()}}. The function automatically sets some arguments (e.g.
+axis labels) but passing in values here will over-ride the defaults.}
 
-\item{x}{an object of class \code{\link{rfe}}.}
+\item{x}{an object of class \code{\link[=rfe]{rfe()}}.}
 }
 \value{
 a lattice or ggplot object
@@ -49,8 +48,8 @@ These plots show the average performance versus the subset sizes.
 }
 \note{
 We using a recipe as an input, there may be some subset sizes that are
- not well-replicated over resamples. The `ggplot` method will only show
- subset sizes where at least half of the resamples have associated results.
+not well-replicated over resamples. The \code{ggplot} method will only show
+subset sizes where at least half of the resamples have associated results.
 }
 \examples{
 
@@ -76,8 +75,7 @@ Kuhn (2008), ``Building Predictive Models in R Using the caret''
 (\doi{10.18637/jss.v028.i05})
 }
 \seealso{
-\code{\link{rfe}}, \code{\link[lattice]{xyplot}},
-\code{\link[ggplot2]{ggplot}}
+\code{\link[=rfe]{rfe()}}, \code{\link[lattice:xyplot]{lattice::xyplot()}}, \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}}
 }
 \author{
 Max Kuhn

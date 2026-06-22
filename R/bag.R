@@ -1,7 +1,9 @@
 #' A General Framework For Bagging
 #' @aliases bag.default bag bagControl predict.bag ldaBag plsBag nbBag ctreeBag svmBag nnetBag
 #'
-#' @description \code{bag} provides a framework for bagging classification or regression models. The user can provide their own functions for model building, prediction and aggregation of predictions (see Details below).
+#' @description `bag` provides a framework for bagging classification or
+#'   regression models. The user can provide their own functions for model
+#'   building, prediction and aggregation of predictions (see Details below).
 #'
 #'
 #' @param x a matrix or data frame of predictors
@@ -9,34 +11,57 @@
 #' @param B the number of bootstrap samples to train over.
 #' @param bagControl a list of options.
 #' @param \dots arguments to pass to the model function
-#' @param fit a function that has arguments \code{x}, \code{y} and \code{...} and produces a model object #' that can later be used for prediction. Example functions are found in \code{ldaBag}, \code{plsBag}, #' \code{nbBag}, \code{svmBag} and \code{nnetBag}.
-#' @param predict a function that generates predictions for each sub-model. The function should have #' arguments \code{object} and \code{x}. The output of the function can be any type of object (see the #' example below where posterior probabilities are generated. Example functions are found in \code{ldaBag}#' , \code{plsBag}, \code{nbBag}, \code{svmBag} and \code{nnetBag}.)
-#' @param aggregate a function with arguments \code{x} and \code{type}. The function that takes the output #' of the \code{predict} function and reduces the bagged predictions to a single prediction per sample. #' the \code{type} argument can be used to switch between predicting classes or class probabilities for #' classification models. Example functions are found in \code{ldaBag}, \code{plsBag}, \code{nbBag}, #' \code{svmBag} and \code{nnetBag}.
-#' @param downSample logical: for classification, should the data set be randomly sampled so that each #' class has the same number of samples as the smallest class?
-#' @param oob logical: should out-of-bag statistics be computed and the predictions retained?
-#' @param allowParallel a parallel backend is loaded and available, should the function use it?
-#' @param vars an integer. If this argument is not \code{NULL}, a random sample of size \code{vars} is taken of the predictors in each bagging iteration. If \code{NULL}, all predictors are used.
-#' @param object an object of class \code{bag}.
-#' @param newdata a matrix or data frame of samples for prediction. Note that this argument must have a non-null value
-#' @param digits minimal number of \emph{significant digits}.
+#' @param fit a function that has arguments `x`, `y` and `...` and produces a
+#'   model object #' that can later be used for prediction. Example functions
+#'   are found in `ldaBag`, `plsBag`, #' `nbBag`, `svmBag` and `nnetBag`.
+#' @param predict a function that generates predictions for each sub-model. The
+#'   function should have #' arguments `object` and `x`. The output of the
+#'   function can be any type of object (see the #' example below where
+#'   posterior probabilities are generated. Example functions are found in
+#'   `ldaBag`#' , `plsBag`, `nbBag`, `svmBag` and `nnetBag`.)
+#' @param aggregate a function with arguments `x` and `type`. The function that
+#'   takes the output #' of the `predict` function and reduces the bagged
+#'   predictions to a single prediction per sample. #' the `type` argument can
+#'   be used to switch between predicting classes or class probabilities for #'
+#'   classification models. Example functions are found in `ldaBag`, `plsBag`,
+#'   `nbBag`, #' `svmBag` and `nnetBag`.
+#' @param downSample logical: for classification, should the data set be
+#'   randomly sampled so that each #' class has the same number of samples as
+#'   the smallest class?
+#' @param oob logical: should out-of-bag statistics be computed and the
+#'   predictions retained?
+#' @param allowParallel a parallel backend is loaded and available, should the
+#'   function use it?
+#' @param vars an integer. If this argument is not `NULL`, a random sample of
+#'   size `vars` is taken of the predictors in each bagging iteration. If
+#'   `NULL`, all predictors are used.
+#' @param object an object of class `bag`.
+#' @param newdata a matrix or data frame of samples for prediction. Note that
+#'   this argument must have a non-null value
+#' @param digits minimal number of *significant digits*.
 #'
-#' @details The function is basically a framework where users can plug in any model in to assess
-#' the effect of bagging. Examples functions can be found in \code{ldaBag}, \code{plsBag}
-#' , \code{nbBag}, \code{svmBag} and \code{nnetBag}.
-#' Each has elements \code{fit}, \code{pred} and \code{aggregate}.
+#' @details The function is basically a framework where users can plug in any
+#'   model in to assess the effect of bagging. Examples functions can be found
+#'   in `ldaBag`, `plsBag` , `nbBag`, `svmBag` and `nnetBag`. Each has elements
+#'   `fit`, `pred` and `aggregate`.
 #'
-#' One note: when \code{vars} is not \code{NULL}, the sub-setting occurs prior to the \code{fit} and #' \code{predict} functions are called. In this way, the user probably does not need to account for the #' change in predictors in their functions.
+#' One note: when `vars` is not `NULL`, the sub-setting occurs prior to the
+#' `fit` and #' `predict` functions are called. In this way, the user probably
+#' does not need to account for the #' change in predictors in their functions.
 #'
-#' When using \code{bag} with \code{\link{train}}, classification models should use \code{type = "prob"} #' inside of the \code{predict} function so that \code{predict.train(object, newdata, type = "prob")} will #' work.
+#' When using `bag` with [train()], classification models should use `type =
+#' "prob"` #' inside of the `predict` function so that `predict.train(object,
+#' newdata, type = "prob")` will #' work.
 #'
-#' If a parallel backend is registered, the \pkg{foreach} package is used to train the models in parallel.
+#' If a parallel backend is registered, the \pkg{foreach} package is used to
+#' train the models in parallel.
 #'
-#' @return
-#'   \code{bag} produces an object of class \code{bag} with elements
-#'   \item{fits }{a list with two sub-objects: the \code{fit} object has the actual model fit for that #' bagged samples and the \code{vars} object is either \code{NULL} or a vector of integers corresponding to which predictors were sampled for that model}
-#'   \item{control }{a mirror of the arguments passed into \code{bagControl}}
-#'   \item{call }{the call}
-#'   \item{B }{the number of bagging iterations}
+#' @return `bag` produces an object of class `bag` with elements \item{fits }{a
+#'   list with two sub-objects: the `fit` object has the actual model fit for
+#'   that #' bagged samples and the `vars` object is either `NULL` or a vector
+#'   of integers corresponding to which predictors were sampled for that model}
+#'   \item{control }{a mirror of the arguments passed into `bagControl`}
+#'   \item{call }{the call} \item{B }{the number of bagging iterations}
 #'   \item{dims }{the dimensions of the training set}
 #'
 #' @author Max Kuhn
@@ -567,5 +592,4 @@ nnetBag <- list(fit = function(x, y,  ...)
                      }
                    out
                 })
-
 

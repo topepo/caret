@@ -1,25 +1,24 @@
 #' Plot Predicted Probabilities in Classification Models
-#' 
-#' This function takes an object (preferably from the function
-#' \code{\link{extractProb}}) and creates a lattice plot.
-#' 
-#' If the call to \code{\link{extractProb}} included test data, these data are
-#' shown, but if unknowns were also included, these are not plotted
-#' 
-#' 
-#' @param object an object (preferably from the function
-#' \code{\link{extractProb}}. There should be columns for each level of the
-#' class factor and columns named \code{obs}, \code{pred}, \code{model} (e.g.
-#' "rpart", "nnet" etc), \code{dataType} (e.g. "Training", "Test" etc) and
-#' optionally \code{objects} (for giving names to objects with the same model
-#' type).
+#'
+#' This function takes an object (preferably from the function [extractProb()])
+#' and creates a lattice plot.
+#'
+#' If the call to [extractProb()] included test data, these data are shown, but
+#' if unknowns were also included, these are not plotted
+#'
+#'
+#' @param object an object (preferably from the function [extractProb()]. There
+#'   should be columns for each level of the class factor and columns named
+#'   `obs`, `pred`, `model` (e.g. "rpart", "nnet" etc), `dataType` (e.g.
+#'   "Training", "Test" etc) and optionally `objects` (for giving names to
+#'   objects with the same model type).
 #' @param plotType either "histogram" or "densityplot"
 #' @param useObjects a logical; should the object name (if any) be used as a
-#' conditioning variable?
-#' @param \dots parameters to pass to \code{\link[lattice]{histogram}} or
-#' \code{\link[lattice]{densityplot}}
+#'   conditioning variable?
+#' @param \dots parameters to pass to [lattice::histogram()] or
+#'   [lattice::densityplot()]
 #' @return A lattice object. Note that the plot has to be printed to be
-#' displayed (especially in a loop).
+#'   displayed (especially in a loop).
 #' @author Max Kuhn
 #' @keywords hplot
 #' @examples
@@ -118,4 +117,3 @@ plotClassProbs <- function(object,
     }
   out
 }
-

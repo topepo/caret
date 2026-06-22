@@ -1,7 +1,7 @@
 #' Plot Method for the train Class
 #'
-#' This function takes the output of a \code{\link{train}} object and creates a
-#' line or level plot using the \pkg{lattice} or \pkg{ggplot2} libraries.
+#' This function takes the output of a [train()] object and creates a line or
+#' level plot using the \pkg{lattice} or \pkg{ggplot2} libraries.
 #'
 #' If there are no tuning parameters, or none were varied, an error is
 #' produced.
@@ -21,37 +21,35 @@
 #' plot is created inside conditioning panels/facets.
 #'
 #' @aliases plot.train ggplot.train
-#' @param x an object of class \code{\link{train}}.
+#' @param x an object of class [train()].
 #' @param metric What measure of performance to plot. Examples of possible
-#' values are "RMSE", "Rsquared", "Accuracy" or "Kappa". Other values can be
-#' used depending on what metrics have been calculated.
-#' @param plotType a string describing the type of plot (\code{"scatter"},
-#' \code{"level"} or \code{"line"} (\code{plot} only))
+#'   values are "RMSE", "Rsquared", "Accuracy" or "Kappa". Other values can be
+#'   used depending on what metrics have been calculated.
+#' @param plotType a string describing the type of plot (`"scatter"`, `"level"`
+#'   or `"line"` (`plot` only))
 #' @param digits an integer specifying the number of significant digits used to
-#' label the parameter value.
+#'   label the parameter value.
 #' @param xTrans a function that will be used to scale the x-axis in scatter
-#' plots.
-#' @param data an object of class \code{\link{train}}.
+#'   plots.
+#' @param data an object of class [train()].
 #' @param output either "data", "ggplot" or "layered". The first returns a data
-#' frame while the second returns a simple \code{ggplot} object with no layers.
-#' The third value returns a plot with a set of layers.
+#'   frame while the second returns a simple `ggplot` object with no layers.
+#'   The third value returns a plot with a set of layers.
 #' @param nameInStrip a logical: if there are more than 2 tuning parameters,
-#' should the name and value be included in the panel title?
-#' @param highlight a logical: if \code{TRUE}, a diamond is placed around the
-#' optimal parameter setting for models using grid search.
+#'   should the name and value be included in the panel title?
+#' @param highlight a logical: if `TRUE`, a diamond is placed around the
+#'   optimal parameter setting for models using grid search.
 #' @param mapping,environment unused arguments to make consistent with
-#' \pkg{ggplot2} generic method
-#' @param \dots \code{plot} only: specifications to be passed to
-#' \code{\link[lattice]{levelplot}}, \code{\link[lattice]{xyplot}},
-#' \code{\link[lattice:xyplot]{stripplot}} (for line plots). The function
-#' automatically sets some arguments (e.g. axis labels) but passing in values
-#' here will over-ride the defaults
+#'   \pkg{ggplot2} generic method
+#' @param \dots `plot` only: specifications to be passed to
+#'   [lattice::levelplot()], [lattice::xyplot()], [lattice::stripplot()] (for
+#'   line plots). The function automatically sets some arguments (e.g. axis
+#'   labels) but passing in values here will over-ride the defaults
 #' @author Max Kuhn
-#' @seealso \code{\link{train}}, \code{\link[lattice]{levelplot}},
-#' \code{\link[lattice]{xyplot}}, \code{\link[lattice:xyplot]{stripplot}},
-#' \code{\link[ggplot2]{ggplot}}
+#' @seealso [train()], [lattice::levelplot()], [lattice::xyplot()],
+#'   [lattice::stripplot()], [ggplot2::ggplot()]
 #' @references Kuhn (2008), ``Building Predictive Models in R Using the caret''
-#' (\doi{10.18637/jss.v028.i05})
+#'   (\doi{10.18637/jss.v028.i05})
 #' @keywords hplot
 #' @method plot train
 #' @export
@@ -261,5 +259,4 @@
 
 
   }
-
 

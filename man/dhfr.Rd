@@ -7,8 +7,8 @@
 \source{
 Sutherland, J.J. and Weaver, D.F. (2004). Three-dimensional
 quantitative structure-activity and structure-selectivity relationships of
-dihydrofolate reductase inhibitors, \emph{Journal of Computer-Aided
-Molecular Design}, Vol. 18, pg. 309-331.
+dihydrofolate reductase inhibitors, \emph{Journal of Computer-Aided Molecular
+Design}, Vol. 18, pg. 309-331.
 }
 \value{
 \item{dhfr}{data frame of chemical descriptors and the activity
@@ -21,8 +21,8 @@ compound, 228 molecular descriptors have been calculated. Additionally, each
 samples is designated as "active" or "inactive".
 }
 \details{
-The data frame \code{dhfr} contains a column called \code{Y} with the
-outcome classification. The remainder of the columns are molecular
-descriptor values.
+The data frame \code{dhfr} contains a column called \code{Y} with the outcome
+classification. The remainder of the columns are molecular descriptor
+values.
 }
 \keyword{datasets}

@@ -50,8 +50,8 @@ rfeIter(
 }
 \arguments{
 \item{x}{A matrix or data frame of predictors for model training. This
-object must have unique column names. For the recipes method, \code{x}
-is a recipe object.}
+object must have unique column names. For the recipes method, \code{x} is a
+recipe object.}
 
 \item{\dots}{options to pass to the model fitting function (ignored in
 \code{predict.rfe})}
@@ -63,35 +63,32 @@ features that should be retained}
 
 \item{metric}{a string that specifies what summary metric will be used to
 select the optimal model. By default, possible values are "RMSE" and
-"Rsquared" for regression and "Accuracy" and "Kappa" for classification. If
-custom performance metrics are used (via the \code{functions} argument in
-\code{\link{rfeControl}}, the value of \code{metric} should match one of the
-arguments.}
+"Rsquared" for regression and "Accuracy" and "Kappa" for classification.
+If custom performance metrics are used (via the \code{functions} argument in
+\code{\link[=rfeControl]{rfeControl()}}, the value of \code{metric} should match one of the arguments.}
 
 \item{maximize}{a logical: should the metric be maximized or minimized?}
 
 \item{rfeControl}{a list of options, including functions for fitting and
 prediction. The web page
-\url{http://topepo.github.io/caret/recursive-feature-elimination.html#rfe} has more
-details and examples related to this function.}
+\url{http://topepo.github.io/caret/recursive-feature-elimination.html#rfe} has
+more details and examples related to this function.}
 
 \item{form}{A formula of the form \code{y ~ x1 + x2 + ...}}
 
-\item{data}{Data frame from which variables specified in
-\code{formula} or \code{recipe} are preferentially to be taken.}
+\item{data}{Data frame from which variables specified in \code{formula} or
+\code{recipe} are preferentially to be taken.}
 
-\item{subset}{An index vector specifying the cases to be used
-in the training sample. (NOTE: If given, this argument must be
-named.)}
+\item{subset}{An index vector specifying the cases to be used in the
+training sample. (NOTE: If given, this argument must be named.)}
 
-\item{na.action}{A function to specify the action to be taken
-if NAs are found. The default action is for the procedure to
-fail. An alternative is \code{na.omit}, which leads to rejection
-of cases with missing values on any required variable. (NOTE: If
-given, this argument must be named.)}
+\item{na.action}{A function to specify the action to be taken if NAs are
+found. The default action is for the procedure to fail. An alternative is
+\code{na.omit}, which leads to rejection of cases with missing values on any
+required variable. (NOTE: If given, this argument must be named.)}
 
-\item{contrasts}{A list of contrasts to be used for some or all
-the factors appearing as variables in the model formula.}
+\item{contrasts}{A list of contrasts to be used for some or all the factors
+appearing as variables in the model formula.}
 
 \item{testX}{a matrix or data frame of test set predictors. This must have
 the same column names as \code{x}}
@@ -112,8 +109,8 @@ should be retained in the updated model}
 \value{
 A list with elements \item{finalVariables}{a list of size
 \code{length(sizes) + 1} containing the column names of the ``surviving''
-predictors at each stage of selection. The first element corresponds to all
-the predictors (i.e. \code{size = ncol(x)})} \item{pred }{a data frame with
+predictors at each stage of selection. The first element corresponds to
+all the predictors (i.e. \code{size = ncol(x)})} \item{pred }{a data frame with
 columns for the test set outcome, the predicted outcome and the subset
 size.}
 }
@@ -129,32 +126,31 @@ This function implements backwards selection of predictors based on
 predictor importance ranking. The predictors are ranked and the less
 important ones are sequentially eliminated prior to modeling. The goal is to
 find a subset of predictors that can be used to produce an accurate model.
-The web page \url{http://topepo.github.io/caret/recursive-feature-elimination.html#rfe}
-has more details and examples related to this function.
+The web page
+\url{http://topepo.github.io/caret/recursive-feature-elimination.html#rfe} has
+more details and examples related to this function.
 
-\code{rfe} can be used with "explicit parallelism", where different
-resamples (e.g. cross-validation group) can be split up and run on multiple
-machines or processors. By default, \code{rfe} will use a single processor
-on the host machine. As of version 4.99 of this package, the framework used
-for parallel processing uses the \pkg{foreach} package. To run the resamples
-in parallel, the code for \code{rfe} does not change; prior to the call to
-\code{rfe}, a parallel backend is registered with \pkg{foreach} (see the
-examples below).
+\code{rfe} can be used with "explicit parallelism", where different resamples
+(e.g. cross-validation group) can be split up and run on multiple machines
+or processors. By default, \code{rfe} will use a single processor on the host
+machine. As of version 4.99 of this package, the framework used for parallel
+processing uses the \pkg{foreach} package. To run the resamples in parallel,
+the code for \code{rfe} does not change; prior to the call to \code{rfe}, a parallel
+backend is registered with \pkg{foreach} (see the examples below).
 
-\code{rfeIter} is the basic algorithm while \code{rfe} wraps these
-operations inside of resampling. To avoid selection bias, it is better to
-use the function \code{rfe} than \code{rfeIter}.
+\code{rfeIter} is the basic algorithm while \code{rfe} wraps these operations inside
+of resampling. To avoid selection bias, it is better to use the function
+\code{rfe} than \code{rfeIter}.
 
 When updating a model, if the entire set of resamples were not saved using
-\code{rfeControl(returnResamp = "final")}, the existing resamples are
-removed with a warning.
+\code{rfeControl(returnResamp = "final")}, the existing resamples are removed
+with a warning.
 }
 \note{
-We using a recipe as an input, there may be some subset
- sizes that are not well-replicated over resamples. `rfe` method
- will only consider subset sizes where at least half of the
- resamples have associated results in the search for an optimal
- subset size.
+We using a recipe as an input, there may be some subset sizes that are
+not well-replicated over resamples. \code{rfe} method will only consider subset
+sizes where at least half of the resamples have associated results in the
+search for an optimal subset size.
 }
 \examples{
 
@@ -245,7 +241,7 @@ lmProfile <- rfe(x, logBBB,
 
 }
 \seealso{
-\code{\link{rfeControl}}
+\code{\link[=rfeControl]{rfeControl()}}
 }
 \author{
 Max Kuhn

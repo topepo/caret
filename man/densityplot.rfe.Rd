@@ -11,18 +11,15 @@ selection}
 \method{densityplot}{rfe}(x, data = NULL, metric = x$metric, ...)
 }
 \arguments{
-\item{x}{An object produced by \code{\link{rfe}}}
+\item{x}{An object produced by \code{\link[=rfe]{rfe()}}}
 
 \item{data}{This argument is not used}
 
 \item{metric}{A character string specifying the single performance metric
 that will be plotted}
 
-\item{\dots}{arguments to pass to either
-\code{\link[lattice:histogram]{histogram}},
-\code{\link[lattice:histogram]{densityplot}},
-\code{\link[lattice:xyplot]{xyplot}} or
-\code{\link[lattice:xyplot]{stripplot}}}
+\item{\dots}{arguments to pass to either \code{\link[lattice:histogram]{lattice::histogram()}},
+\code{\link[lattice:densityplot]{lattice::densityplot()}}, \code{\link[lattice:xyplot]{lattice::xyplot()}} or \code{\link[lattice:stripplot]{lattice::stripplot()}}}
 }
 \value{
 A lattice plot object
@@ -33,11 +30,11 @@ estimates (e.g. classification accuracy, RMSE) over different subset sizes.
 }
 \details{
 By default, only the resampling results for the optimal model are saved in
-the \code{rfe} object. The function \code{\link{rfeControl}} can be used to
-save all the results using the \code{returnResamp} argument.
+the \code{rfe} object. The function \code{\link[=rfeControl]{rfeControl()}} can be used to save all the
+results using the \code{returnResamp} argument.
 
 If leave-one-out or out-of-bag resampling was specified, plots cannot be
-produced (see the \code{method} argument of \code{\link{rfeControl}})
+produced (see the \code{method} argument of \code{\link[=rfeControl]{rfeControl()}})
 }
 \examples{
 
@@ -75,11 +72,8 @@ densityplot(lmProfile)
 
 }
 \seealso{
-\code{\link{rfe}}, \code{\link{rfeControl}},
-\code{\link[lattice:histogram]{histogram}},
-\code{\link[lattice:histogram]{densityplot}},
-\code{\link[lattice:xyplot]{xyplot}},
-\code{\link[lattice:xyplot]{stripplot}}
+\code{\link[=rfe]{rfe()}}, \code{\link[=rfeControl]{rfeControl()}}, \code{\link[lattice:histogram]{lattice::histogram()}},
+\code{\link[lattice:densityplot]{lattice::densityplot()}}, \code{\link[lattice:xyplot]{lattice::xyplot()}}, \code{\link[lattice:stripplot]{lattice::stripplot()}}
 }
 \author{
 Max Kuhn

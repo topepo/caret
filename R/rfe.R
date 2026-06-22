@@ -4,75 +4,73 @@
 #' algorithm
 #'
 #' More details on this function can be found at
-#' \url{http://topepo.github.io/caret/recursive-feature-elimination.html}.
+#' <http://topepo.github.io/caret/recursive-feature-elimination.html>.
 #'
 #' This function implements backwards selection of predictors based on
 #' predictor importance ranking. The predictors are ranked and the less
 #' important ones are sequentially eliminated prior to modeling. The goal is to
 #' find a subset of predictors that can be used to produce an accurate model.
-#' The web page \url{http://topepo.github.io/caret/recursive-feature-elimination.html#rfe}
-#' has more details and examples related to this function.
+#' The web page
+#' <http://topepo.github.io/caret/recursive-feature-elimination.html#rfe> has
+#' more details and examples related to this function.
 #'
-#' \code{rfe} can be used with "explicit parallelism", where different
-#' resamples (e.g. cross-validation group) can be split up and run on multiple
-#' machines or processors. By default, \code{rfe} will use a single processor
-#' on the host machine. As of version 4.99 of this package, the framework used
-#' for parallel processing uses the \pkg{foreach} package. To run the resamples
-#' in parallel, the code for \code{rfe} does not change; prior to the call to
-#' \code{rfe}, a parallel backend is registered with \pkg{foreach} (see the
-#' examples below).
+#' `rfe` can be used with "explicit parallelism", where different resamples
+#' (e.g. cross-validation group) can be split up and run on multiple machines
+#' or processors. By default, `rfe` will use a single processor on the host
+#' machine. As of version 4.99 of this package, the framework used for parallel
+#' processing uses the \pkg{foreach} package. To run the resamples in parallel,
+#' the code for `rfe` does not change; prior to the call to `rfe`, a parallel
+#' backend is registered with \pkg{foreach} (see the examples below).
 #'
-#' \code{rfeIter} is the basic algorithm while \code{rfe} wraps these
-#' operations inside of resampling. To avoid selection bias, it is better to
-#' use the function \code{rfe} than \code{rfeIter}.
+#' `rfeIter` is the basic algorithm while `rfe` wraps these operations inside
+#' of resampling. To avoid selection bias, it is better to use the function
+#' `rfe` than `rfeIter`.
 #'
 #' When updating a model, if the entire set of resamples were not saved using
-#' \code{rfeControl(returnResamp = "final")}, the existing resamples are
-#' removed with a warning.
+#' `rfeControl(returnResamp = "final")`, the existing resamples are removed
+#' with a warning.
 #'
 #' @aliases rfe rfe.default rfeIter predict.rfe update.rfe
 #' @param x A matrix or data frame of predictors for model training. This
-#' object must have unique column names. For the recipes method, \code{x}
-#' is a recipe object.
+#'   object must have unique column names. For the recipes method, `x` is a
+#'   recipe object.
 #' @param y a vector of training set outcomes (either numeric or factor)
 #' @param testX a matrix or data frame of test set predictors. This must have
-#' the same column names as \code{x}
+#'   the same column names as `x`
 #' @param testY a vector of test set outcomes
 #' @param sizes a numeric vector of integers corresponding to the number of
-#' features that should be retained
+#'   features that should be retained
 #' @param metric a string that specifies what summary metric will be used to
-#' select the optimal model. By default, possible values are "RMSE" and
-#' "Rsquared" for regression and "Accuracy" and "Kappa" for classification. If
-#' custom performance metrics are used (via the \code{functions} argument in
-#' \code{\link{rfeControl}}, the value of \code{metric} should match one of the
-#' arguments.
+#'   select the optimal model. By default, possible values are "RMSE" and
+#'   "Rsquared" for regression and "Accuracy" and "Kappa" for classification.
+#'   If custom performance metrics are used (via the `functions` argument in
+#'   [rfeControl()], the value of `metric` should match one of the arguments.
 #' @param maximize a logical: should the metric be maximized or minimized?
 #' @param rfeControl a list of options, including functions for fitting and
-#' prediction. The web page
-#' \url{http://topepo.github.io/caret/recursive-feature-elimination.html#rfe} has more
-#' details and examples related to this function.
-#' @param object an object of class \code{rfe}
+#'   prediction. The web page
+#'   <http://topepo.github.io/caret/recursive-feature-elimination.html#rfe> has
+#'   more details and examples related to this function.
+#' @param object an object of class `rfe`
 #' @param size a single integers corresponding to the number of features that
-#' should be retained in the updated model
+#'   should be retained in the updated model
 #' @param label an optional character string to be printed when in verbose
-#' mode.
+#'   mode.
 #' @param seeds an optional vector of integers for the size. The vector should
-#' have length of \code{length(sizes)+1}
+#'   have length of `length(sizes)+1`
 #' @param \dots options to pass to the model fitting function (ignored in
-#' \code{predict.rfe})
+#'   `predict.rfe`)
 #' @return A list with elements \item{finalVariables}{a list of size
-#' \code{length(sizes) + 1} containing the column names of the ``surviving''
-#' predictors at each stage of selection. The first element corresponds to all
-#' the predictors (i.e. \code{size = ncol(x)})} \item{pred }{a data frame with
-#' columns for the test set outcome, the predicted outcome and the subset
-#' size.}
-#' @note We using a recipe as an input, there may be some subset
-#'  sizes that are not well-replicated over resamples. `rfe` method
-#'  will only consider subset sizes where at least half of the
-#'  resamples have associated results in the search for an optimal
-#'  subset size.
+#'   `length(sizes) + 1` containing the column names of the ``surviving''
+#'   predictors at each stage of selection. The first element corresponds to
+#'   all the predictors (i.e. `size = ncol(x)`)} \item{pred }{a data frame with
+#'   columns for the test set outcome, the predicted outcome and the subset
+#'   size.}
+#' @note We using a recipe as an input, there may be some subset sizes that are
+#'   not well-replicated over resamples. `rfe` method will only consider subset
+#'   sizes where at least half of the resamples have associated results in the
+#'   search for an optimal subset size.
 #' @author Max Kuhn
-#' @seealso \code{\link{rfeControl}}
+#' @seealso [rfeControl()]
 #' @keywords models
 #' @examples
 #'
@@ -528,29 +526,27 @@ rfeIter <- function(x, y,
 #' These plots show the average performance versus the subset sizes.
 #'
 #' @aliases plot.rfe ggplot.rfe
-#' @param x an object of class \code{\link{rfe}}.
+#' @param x an object of class [rfe()].
 #' @param metric What measure of performance to plot. Examples of possible
-#' values are "RMSE", "Rsquared", "Accuracy" or "Kappa". Other values can be
-#' used depending on what metrics have been calculated.
-#' @param \dots \code{plot} only: specifications to be passed to
-#' \code{\link[lattice]{xyplot}}. The function automatically sets some
-#' arguments (e.g. axis labels) but passing in values here will over-ride the
-#' defaults.
-#' @param data an object of class \code{\link{rfe}}.
+#'   values are "RMSE", "Rsquared", "Accuracy" or "Kappa". Other values can be
+#'   used depending on what metrics have been calculated.
+#' @param \dots `plot` only: specifications to be passed to
+#'   [lattice::xyplot()]. The function automatically sets some arguments (e.g.
+#'   axis labels) but passing in values here will over-ride the defaults.
+#' @param data an object of class [rfe()].
 #' @param output either "data", "ggplot" or "layered". The first returns a data
-#' frame while the second returns a simple \code{ggplot} object with no layers.
-#' The third value returns a plot with a set of layers.
+#'   frame while the second returns a simple `ggplot` object with no layers.
+#'   The third value returns a plot with a set of layers.
 #' @param mapping,environment unused arguments to make consistent with
-#' \pkg{ggplot2} generic method
+#'   \pkg{ggplot2} generic method
 #' @return a lattice or ggplot object
 #' @note We using a recipe as an input, there may be some subset sizes that are
-#'  not well-replicated over resamples. The `ggplot` method will only show
-#'  subset sizes where at least half of the resamples have associated results.
+#'   not well-replicated over resamples. The `ggplot` method will only show
+#'   subset sizes where at least half of the resamples have associated results.
 #' @author Max Kuhn
-#' @seealso \code{\link{rfe}}, \code{\link[lattice]{xyplot}},
-#' \code{\link[ggplot2]{ggplot}}
+#' @seealso [rfe()], [lattice::xyplot()], [ggplot2::ggplot()]
 #' @references Kuhn (2008), ``Building Predictive Models in R Using the caret''
-#' (\doi{10.18637/jss.v028.i05})
+#'   (\doi{10.18637/jss.v028.i05})
 #' @keywords hplot
 #' @method plot rfe
 #' @export
@@ -605,86 +601,81 @@ plot.rfe <- function (x,
 #' details of the feature selection algorithms used in this package.
 #'
 #' More details on this function can be found at
-#' \url{http://topepo.github.io/caret/recursive-feature-elimination.html#rfe}.
+#' <http://topepo.github.io/caret/recursive-feature-elimination.html#rfe>.
 #'
 #' Backwards selection requires function to be specified for some operations.
 #'
-#' The \code{fit} function builds the model based on the current data set. The
-#' arguments for the function must be: \itemize{ \item\code{x} the current
-#' training set of predictor data with the appropriate subset of variables
-#' \item\code{y} the current outcome data (either a numeric or factor vector)
-#' \item\code{first} a single logical value for whether the current predictor
-#' set has all possible variables \item\code{last} similar to \code{first}, but
-#' \code{TRUE} when the last model is fit with the final subset size and
-#' predictors.  \item\code{...}optional arguments to pass to the fit function
-#' in the call to \code{rfe} } The function should return a model object that
-#' can be used to generate predictions.
+#' The `fit` function builds the model based on the current data set. The
+#' arguments for the function must be: \itemize{ \item`x` the current training
+#' set of predictor data with the appropriate subset of variables \item`y` the
+#' current outcome data (either a numeric or factor vector) \item`first` a
+#' single logical value for whether the current predictor set has all possible
+#' variables \item`last` similar to `first`, but `TRUE` when the last model is
+#' fit with the final subset size and predictors.  \item`...`optional arguments
+#' to pass to the fit function in the call to `rfe` } The function should
+#' return a model object that can be used to generate predictions.
 #'
-#' The \code{pred} function returns a vector of predictions (numeric or
-#' factors) from the current model. The arguments are: \itemize{
-#' \item\code{object} the model generated by the \code{fit} function
-#' \item\code{x} the current set of predictor set for the held-back samples }
+#' The `pred` function returns a vector of predictions (numeric or factors)
+#' from the current model. The arguments are: \itemize{ \item`object` the model
+#' generated by the `fit` function \item`x` the current set of predictor set
+#' for the held-back samples }
 #'
-#' The \code{rank} function is used to return the predictors in the order of
-#' the most important to the least important. Inputs are: \itemize{
-#' \item\code{object} the model generated by the \code{fit} function
-#' \item\code{x} the current set of predictor set for the training samples
-#' \item\code{y} the current training outcomes } The function should return a
-#' data frame with a column called \code{var} that has the current variable
-#' names. The first row should be the most important predictor etc. Other
-#' columns can be included in the output and will be returned in the final
-#' \code{rfe} object.
+#' The `rank` function is used to return the predictors in the order of the
+#' most important to the least important. Inputs are: \itemize{ \item`object`
+#' the model generated by the `fit` function \item`x` the current set of
+#' predictor set for the training samples \item`y` the current training
+#' outcomes } The function should return a data frame with a column called
+#' `var` that has the current variable names. The first row should be the most
+#' important predictor etc. Other columns can be included in the output and
+#' will be returned in the final `rfe` object.
 #'
-#' The \code{selectSize} function determines the optimal number of predictors
-#' based on the resampling output. Inputs for the function are: \itemize{
-#' \item\code{x}a matrix with columns for the performance metrics and the
-#' number of variables, called "\code{Variables}" \item\code{metric}a character
-#' string of the performance measure to optimize (e.g. "RMSE", "Rsquared",
-#' "Accuracy" or "Kappa") \item\code{maximize}a single logical for whether the
-#' metric should be maximized } This function should return an integer
-#' corresponding to the optimal subset size. \pkg{caret} comes with two
-#' examples functions for this purpose: \code{\link{pickSizeBest}} and
-#' \code{\link{pickSizeTolerance}}.
+#' The `selectSize` function determines the optimal number of predictors based
+#' on the resampling output. Inputs for the function are: \itemize{ \item`x`a
+#' matrix with columns for the performance metrics and the number of variables,
+#' called "`Variables`" \item`metric`a character string of the performance
+#' measure to optimize (e.g. "RMSE", "Rsquared", "Accuracy" or "Kappa")
+#' \item`maximize`a single logical for whether the metric should be maximized }
+#' This function should return an integer corresponding to the optimal subset
+#' size. \pkg{caret} comes with two examples functions for this purpose:
+#' [pickSizeBest()] and [pickSizeTolerance()].
 #'
-#' After the optimal subset size is determined, the \code{selectVar} function
-#' will be used to calculate the best rankings for each variable across all the
-#' resampling iterations. Inputs for the function are: \itemize{ \item\code{y}
-#' a list of variables importance for each resampling iteration and each subset
-#' size (generated by the user-defined \code{rank} function). In the example,
-#' each each of the cross-validation groups the output of the \code{rank}
-#' function is saved for each of the subset sizes (including the original
-#' subset). If the rankings are not recomputed at each iteration, the values
-#' will be the same within each cross-validation iteration.  \item\code{size}
-#' the integer returned by the \code{selectSize} function } This function
-#' should return a character string of predictor names (of length \code{size})
-#' in the order of most important to least important
+#' After the optimal subset size is determined, the `selectVar` function will
+#' be used to calculate the best rankings for each variable across all the
+#' resampling iterations. Inputs for the function are: \itemize{ \item`y` a
+#' list of variables importance for each resampling iteration and each subset
+#' size (generated by the user-defined `rank` function). In the example, each
+#' each of the cross-validation groups the output of the `rank` function is
+#' saved for each of the subset sizes (including the original subset). If the
+#' rankings are not recomputed at each iteration, the values will be the same
+#' within each cross-validation iteration.  \item`size` the integer returned by
+#' the `selectSize` function } This function should return a character string
+#' of predictor names (of length `size`) in the order of most important to
+#' least important
 #'
-#' Examples of these functions are included in the package:
-#' \code{\link{lmFuncs}}, \code{\link{rfFuncs}}, \code{\link{treebagFuncs}} and
-#' \code{\link{nbFuncs}}.
+#' Examples of these functions are included in the package: [lmFuncs()],
+#' [rfFuncs()], [treebagFuncs()] and [nbFuncs()].
 #'
 #' Model details about these functions, including examples, are at
-#' \url{http://topepo.github.io/caret/recursive-feature-elimination.html}. .
+#' <http://topepo.github.io/caret/recursive-feature-elimination.html>. .
 #'
 #' @inheritParams trainControl
 #' @param functions a list of functions for model fitting, prediction and
-#' variable importance (see Details below)
+#'   variable importance (see Details below)
 #' @param rerank a logical: should variable importance be re-calculated each
-#' time features are removed?
+#'   time features are removed?
 #' @param saveDetails a logical to save the predictions and variable
-#' importances from the selection process
+#'   importances from the selection process
 #' @param verbose a logical to print a log for each external resampling
-#' iteration
+#'   iteration
 #' @param index a list with elements for each external resampling iteration.
-#' Each list element is the sample rows used for training at that iteration.
-#' @param indexOut a list (the same length as \code{index}) that dictates which
-#' sample are held-out for each resample. If \code{NULL}, then the unique set
-#' of samples not contained in \code{index} is used.
+#'   Each list element is the sample rows used for training at that iteration.
+#' @param indexOut a list (the same length as `index`) that dictates which
+#'   sample are held-out for each resample. If `NULL`, then the unique set of
+#'   samples not contained in `index` is used.
 #' @return A list
 #' @author Max Kuhn
-#' @seealso \code{\link{rfe}}, \code{\link{lmFuncs}}, \code{\link{rfFuncs}},
-#' \code{\link{treebagFuncs}}, \code{\link{nbFuncs}},
-#' \code{\link{pickSizeBest}}, \code{\link{pickSizeTolerance}}
+#' @seealso [rfe()], [lmFuncs()], [rfFuncs()], [treebagFuncs()], [nbFuncs()],
+#'   [pickSizeBest()], [pickSizeTolerance()]
 #' @keywords utilities
 #' @examples
 #'
@@ -786,23 +777,21 @@ pickVars <- function(y, size)
 #'
 #' This page describes the functions that are used in backwards selection (aka
 #' recursive feature elimination). The functions described here are passed to
-#' the algorithm via the \code{functions} argument of \code{\link{rfeControl}}.
+#' the algorithm via the `functions` argument of [rfeControl()].
 #'
-#' See \code{\link{rfeControl}} for details on how these functions should be
-#' defined.
+#' See [rfeControl()] for details on how these functions should be defined.
 #'
 #' The 'pick' functions are used to find the appropriate subset size for
-#' different situations. \code{pickBest} will find the position associated with
-#' the numerically best value (see the \code{maximize} argument to help define
-#' this).
+#' different situations. `pickBest` will find the position associated with the
+#' numerically best value (see the `maximize` argument to help define this).
 #'
-#' \code{pickSizeTolerance} picks the lowest position (i.e. the smallest subset
+#' `pickSizeTolerance` picks the lowest position (i.e. the smallest subset
 #' size) that has no more of an X percent loss in performances. When
 #' maximizing, it calculates (O-X)/O*100, where X is the set of performance
 #' values and O is max(X). This is the percent loss. When X is to be minimized,
 #' it uses (X-O)/O*100 (so that values greater than X have a positive "loss").
 #' The function finds the smallest subset size that has a percent loss less
-#' than \code{tol}.
+#' than `tol`.
 #'
 #' Both of the 'pick' functions assume that the data are sorted from smallest
 #' subset size to largest.
@@ -810,14 +799,14 @@ pickVars <- function(y, size)
 #' @aliases caretFuncs lmFuncs rfFuncs gamFuncs treebagFuncs ldaFuncs nbFuncs lrFuncs pickSizeBest pickSizeTolerance pickVars
 #' @param x a matrix or data frame with the performance metric of interest
 #' @param metric a character string with the name of the performance metric
-#' that should be used to choose the appropriate number of variables
+#'   that should be used to choose the appropriate number of variables
 #' @param maximize a logical; should the metric be maximized?
 #' @param tol a scalar to denote the acceptable difference in optimal
-#' performance (see Details below)
-#' @param y a list of data frames with variables \code{Overall} and \code{var}
+#'   performance (see Details below)
+#' @param y a list of data frames with variables `Overall` and `var`
 #' @param size an integer for the number of variables to retain
 #' @author Max Kuhn
-#' @seealso \code{\link{rfeControl}}, \code{\link{rfe}}
+#' @seealso [rfeControl()], [rfe()]
 #' @keywords models
 #' @examples
 #'
@@ -1139,29 +1128,23 @@ lrFuncs$rank <- function (object, x, y) {
 #' estimates (e.g. classification accuracy, RMSE) over different subset sizes.
 #'
 #' By default, only the resampling results for the optimal model are saved in
-#' the \code{rfe} object. The function \code{\link{rfeControl}} can be used to
-#' save all the results using the \code{returnResamp} argument.
+#' the `rfe` object. The function [rfeControl()] can be used to save all the
+#' results using the `returnResamp` argument.
 #'
 #' If leave-one-out or out-of-bag resampling was specified, plots cannot be
-#' produced (see the \code{method} argument of \code{\link{rfeControl}})
+#' produced (see the `method` argument of [rfeControl()])
 #'
 #' @aliases xyplot.rfe stripplot.rfe densityplot.rfe histogram.rfe
-#' @param x An object produced by \code{\link{rfe}}
+#' @param x An object produced by [rfe()]
 #' @param data This argument is not used
 #' @param metric A character string specifying the single performance metric
-#' that will be plotted
-#' @param \dots arguments to pass to either
-#' \code{\link[lattice:histogram]{histogram}},
-#' \code{\link[lattice:histogram]{densityplot}},
-#' \code{\link[lattice:xyplot]{xyplot}} or
-#' \code{\link[lattice:xyplot]{stripplot}}
+#'   that will be plotted
+#' @param \dots arguments to pass to either [lattice::histogram()],
+#'   [lattice::densityplot()], [lattice::xyplot()] or [lattice::stripplot()]
 #' @return A lattice plot object
 #' @author Max Kuhn
-#' @seealso \code{\link{rfe}}, \code{\link{rfeControl}},
-#' \code{\link[lattice:histogram]{histogram}},
-#' \code{\link[lattice:histogram]{densityplot}},
-#' \code{\link[lattice:xyplot]{xyplot}},
-#' \code{\link[lattice:xyplot]{stripplot}}
+#' @seealso [rfe()], [rfeControl()], [lattice::histogram()],
+#'   [lattice::densityplot()], [lattice::xyplot()], [lattice::stripplot()]
 #' @keywords hplot
 #' @examples
 #'
@@ -2112,6 +2095,5 @@ rfe_rec_loo <- function(rec, data, sizes, ctrl, lev, ...) {
     ddply(preds, .(Variables), ctrl$functions$summary, lev = lev)
   list(performance = resamples, everything = result)
 }
-
 
 

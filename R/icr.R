@@ -9,37 +9,39 @@ icr <- function (x, ...) UseMethod("icr")
 #'
 #' This produces a model analogous to Principal Components Regression (PCR) but
 #' uses Independent Component Analysis (ICA) to produce the scores. The user
-#' must specify a value of \code{n.comp} to pass to
-#' \code{\link[fastICA]{fastICA}}.
+#' must specify a value of `n.comp` to pass to [fastICA::fastICA()].
 #'
-#' The function \code{\link{preProcess}} to produce the ICA scores for the
-#' original data and for \code{newdata}.
+#' The function [preProcess()] to produce the ICA scores for the original data
+#' and for `newdata`.
 #'
 #' @aliases icr.formula icr.default icr predict.icr
-#' @param formula A formula of the form \code{class ~ x1 + x2 + \dots{}}
-#' @param data Data frame from which variables specified in \code{formula} are
-#' preferentially to be taken.
+#' @param formula A formula of the form `class ~ x1 + x2 + ...`
+#' @param data Data frame from which variables specified in `formula` are
+#'   preferentially to be taken.
 #' @param weights (case) weights for each example - if missing defaults to 1.
 #' @param subset An index vector specifying the cases to be used in the
-#' training sample.  (NOTE: If given, this argument must be named.)
-#' @param na.action A function to specify the action to be taken if \code{NA}s
-#' are found. The default action is for the procedure to fail.  An alternative
-#' is na.omit, which leads to rejection of cases with missing values on any
-#' required variable.  (NOTE: If given, this argument must be named.)
+#'   training sample.  (NOTE: If given, this argument must be named.)
+#' @param na.action A function to specify the action to be taken if `NA`s are
+#'   found. The default action is for the procedure to fail.  An alternative is
+#'   na.omit, which leads to rejection of cases with missing values on any
+#'   required variable.  (NOTE: If given, this argument must be named.)
 #' @param contrasts a list of contrasts to be used for some or all of the
-#' factors appearing as variables in the model formula.
-#' @param \dots arguments passed to \code{\link[fastICA]{fastICA}}
-#' @param x matrix or data frame of \code{x} values for examples.
+#'   factors appearing as variables in the model formula.
+#' @param \dots arguments passed to [fastICA::fastICA()]
+#' @param x matrix or data frame of `x` values for examples.
 #' @param y matrix or data frame of target values for examples.
-#' @param object an object of class \code{icr} as returned by \code{icr}.
+#' @param object an object of class `icr` as returned by `icr`.
 #' @param newdata matrix or data frame of test examples.
-#' @return For \code{icr}, a list with elements \item{model }{the results of
-#' \code{\link[stats]{lm}} after the ICA transformation} \item{ica
-#' }{pre-processing information} \item{n.comp }{number of ICA components}
-#' \item{names }{column names of the original data}
+#' @return
+#'
+#' For `icr`, a list with elements:
+#'
+#' * `model`: the results of [stats::lm()] after the ICA transformation
+#' * `ica`: pre-processing information
+#' * `n.comp`: number of ICA components
+#' * `names`: column names of the original data
 #' @author Max Kuhn
-#' @seealso \code{\link[fastICA]{fastICA}}, \code{\link{preProcess}},
-#' \code{\link[stats]{lm}}
+#' @seealso [fastICA::fastICA()], [preProcess()], [stats::lm()]
 #' @keywords multivariate
 #' @examples
 #'
@@ -176,4 +178,3 @@ predict.icr <- function(object, newdata, ...)
     x <- predict(object$ica, x)
     predict(object$model, x, ...)
   }
-

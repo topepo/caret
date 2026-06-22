@@ -30,11 +30,11 @@ compare_models(a, b, metric = a$metric[1])
 \item{test}{a function to compute differences. The output of this function
 should have scalar outputs called \code{estimate} and \code{p.value}}
 
-\item{confLevel}{confidence level to use for
-\code{\link{dotplot.diff.resamples}}. See Details below.}
+\item{confLevel}{confidence level to use for \code{\link[=dotplot.diff.resamples]{dotplot.diff.resamples()}}. See
+Details below.}
 
 \item{adjustment}{any p-value adjustment method to pass to
-\code{\link[stats]{p.adjust}}.}
+\code{\link[stats:p.adjust]{stats::p.adjust()}}.}
 
 \item{\dots}{further arguments to pass to \code{test}}
 
@@ -42,9 +42,8 @@ should have scalar outputs called \code{estimate} and \code{p.value}}
 
 \item{digits}{the number of significant differences to display when printing}
 
-\item{a, b}{two objects of class \code{\link{train}}, \code{\link{sbf}} or
-\code{\link{rfe}} with a common set of resampling indices in the
-\code{control} object.}
+\item{a, b}{two objects of class \code{\link[=train]{train()}}, \code{\link[=sbf]{sbf()}} or \code{\link[=rfe]{rfe()}} with a common
+set of resampling indices in the \code{control} object.}
 }
 \value{
 An object of class \code{"diff.resamples"} with elements: \item{call
@@ -61,8 +60,8 @@ An object of class \code{"summary.diff.resamples"} with elements: \item{call
 }{the call} \item{table }{a list of tables that show the differences and
 p-values }
 
-...or (for \code{compare_models}) an object of class \code{htest} resulting
-from \code{\link[stats]{t.test}}.
+...or (for \code{compare_models}) an object of class \code{htest} resulting from
+\code{\link[stats:t.test]{stats::t.test()}}.
 }
 \description{
 Methods for making inferences about differences between models
@@ -75,12 +74,12 @@ For each metric, all pair-wise differences are computed and tested to assess
 if the difference is equal to zero.
 
 When a Bonferroni correction is used, the confidence level is changed from
-\code{confLevel} to \code{1-((1-confLevel)/p)} here \code{p} is the number
-of pair-wise comparisons are being made. For other correction methods, no
-such change is used.
+\code{confLevel} to \code{1-((1-confLevel)/p)} here \code{p} is the number of pair-wise
+comparisons are being made. For other correction methods, no such change is
+used.
 
 \code{compare_models} is a shorthand function to compare two models using a
-single metric. It returns the results of \code{\link[stats]{t.test}} on the
+single metric. It returns the results of \code{\link[stats:t.test]{stats::t.test()}} on the
 differences.
 }
 \examples{
@@ -112,9 +111,9 @@ experiments. Ludwigs-Maximilians-Universitat Munchen, Department of
 Statistics, Tech. Rep (2008) vol. 30
 }
 \seealso{
-\code{\link{resamples}}, \code{\link{dotplot.diff.resamples}},
-\code{\link{densityplot.diff.resamples}},
-\code{\link{bwplot.diff.resamples}}, \code{\link{levelplot.diff.resamples}}
+\code{\link[=resamples]{resamples()}}, \code{\link[=dotplot.diff.resamples]{dotplot.diff.resamples()}},
+\code{\link[=densityplot.diff.resamples]{densityplot.diff.resamples()}}, \code{\link[=bwplot.diff.resamples]{bwplot.diff.resamples()}},
+\code{\link[=levelplot.diff.resamples]{levelplot.diff.resamples()}}
 }
 \author{
 Max Kuhn

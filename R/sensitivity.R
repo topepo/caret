@@ -7,10 +7,10 @@
 #'
 #' The sensitivity is defined as the proportion of positive results out of the
 #' number of samples which were actually positive. When there are no positive
-#' results, sensitivity is not defined and a value of \code{NA} is returned.
+#' results, sensitivity is not defined and a value of `NA` is returned.
 #' Similarly, when there are no negative results, specificity is not defined
-#' and a value of \code{NA} is returned. Similar statements are true for
-#' predictive values.
+#' and a value of `NA` is returned. Similar statements are true for predictive
+#' values.
 #'
 #' The positive predictive value is defined as the percent of predicted
 #' positives that are actually positive while the negative predictive value is
@@ -31,30 +31,30 @@
 #'
 #' @aliases sensitivity sensitivity.default sensitivity.table sensitivity.matrix specificity specificity.default specificity.table specificity.matrix posPredValue posPredValue.default posPredValue.table posPredValue.matrix negPredValue negPredValue.default negPredValue.table negPredValue.matrix
 #' @param data for the default functions, a factor containing the discrete
-#' measurements. For the \code{table} or \code{matrix} functions, a table or
-#' matric object, respectively.
+#'   measurements. For the `table` or `matrix` functions, a table or matric
+#'   object, respectively.
 #' @param reference a factor containing the reference values
 #' @param positive a character string that defines the factor level
-#' corresponding to the "positive" results
+#'   corresponding to the "positive" results
 #' @param negative a character string that defines the factor level
-#' corresponding to the "negative" results
+#'   corresponding to the "negative" results
 #' @param prevalence a numeric value for the rate of the "positive" class of
-#' the data
-#' @param na.rm a logical value indicating whether \code{NA} values should be
-#' stripped before the computation proceeds
+#'   the data
+#' @param na.rm a logical value indicating whether `NA` values should be
+#'   stripped before the computation proceeds
 #' @param ... not currently used
 #' @return A number between 0 and 1 (or NA).
 #' @author Max Kuhn
-#' @seealso \code{\link{confusionMatrix}}
+#' @seealso [confusionMatrix()]
 #' @references Kuhn, M. (2008), ``Building predictive models in R using the
-#' caret package, '' \emph{Journal of Statistical Software},
-#' (\doi{10.18637/jss.v028.i05}).
+#'   caret package, '' *Journal of Statistical Software*,
+#'   (\doi{10.18637/jss.v028.i05}).
 #'
 #' Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 1: sensitivity and
-#' specificity,'' \emph{British Medical Journal}, vol 308, 1552.
+#' specificity,'' *British Medical Journal*, vol 308, 1552.
 #'
 #' Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 2: predictive values,''
-#' \emph{British Medical Journal}, vol 309, 102.
+#' *British Medical Journal*, vol 309, 102.
 #' @keywords manip
 #' @examples
 #'

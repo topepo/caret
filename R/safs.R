@@ -176,86 +176,66 @@ predict.safs <- function (object, newdata, ...) {
 
 #' @title Control parameters for GA and SA feature selection
 #'
-#' @description
-#' Control the computational nuances of the \code{\link{gafs}} and
-#' \code{\link{safs}} functions
+#' @description Control the computational nuances of the [gafs()] and [safs()]
+#'   functions
 #'
 #' Many of these options are the same as those described for
-#' \code{\link[caret]{trainControl}}. More extensive documentation and examples
-#' can be found on the \pkg{caret} website at
-#' \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html#syntax} and
-#' \url{http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html#syntax}.
+#' [caret::trainControl()]. More extensive documentation and examples can be
+#' found on the \pkg{caret} website at
+#' <http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html#syntax>
+#' and
+#' <http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html#syntax>.
 #'
-#' The \code{functions} component contains the information about how the model
+#' The `functions` component contains the information about how the model
 #' should be fit and summarized. It also contains the elements needed for the
 #' GA and SA modules (e.g. cross-over, etc).
 #'
-#' The elements of \code{functions} that are the same for GAs and SAs are:
-#' \itemize{
-#' \item \code{fit}, with arguments \code{x}, \code{y}, \code{lev},
-#' \code{last}, and \code{...}, is used to fit the classification or regression
-#' model
-#' \item \code{pred}, with arguments \code{object} and \code{x}, predicts
-#' new samples
-#' \item \code{fitness_intern}, with arguments \code{object},
-#' \code{x}, \code{y}, \code{maximize}, and \code{p}, summarizes performance
-#' for the internal estimates of fitness
-#' \item \code{fitness_extern}, with
-#' arguments \code{data}, \code{lev}, and \code{model}, summarizes performance
-#' using the externally held-out samples
-#' \item \code{selectIter}, with
-#' arguments \code{x}, \code{metric}, and \code{maximize}, determines the best
-#' search iteration for feature selection.
-#' }
+#' The elements of `functions` that are the same for GAs and SAs are: \itemize{
+#' \item `fit`, with arguments `x`, `y`, `lev`, `last`, and `...`, is used to
+#' fit the classification or regression model \item `pred`, with arguments
+#' `object` and `x`, predicts new samples \item `fitness_intern`, with
+#' arguments `object`, `x`, `y`, `maximize`, and `p`, summarizes performance
+#' for the internal estimates of fitness \item `fitness_extern`, with arguments
+#' `data`, `lev`, and `model`, summarizes performance using the externally
+#' held-out samples \item `selectIter`, with arguments `x`, `metric`, and
+#' `maximize`, determines the best search iteration for feature selection. }
 #'
-#' The elements of \code{functions} specific to genetic algorithms are:
-#' \itemize{
-#' \item \code{initial}, with arguments \code{vars}, \code{popSize}
-#' and \code{...}, creates an initial population.
-#' \item \code{selection}, with
-#' arguments \code{population}, \code{fitness}, \code{r}, \code{q}, and
-#' \code{...}, conducts selection of individuals.
-#' \item \code{crossover}, with
-#' arguments \code{population}, \code{fitness}, \code{parents} and \code{...},
-#' control genetic reproduction.
-#' \item \code{mutation}, with arguments
-#' \code{population}, \code{parent} and \code{...}, adds mutations.
-#' }
+#' The elements of `functions` specific to genetic algorithms are: \itemize{
+#' \item `initial`, with arguments `vars`, `popSize` and `...`, creates an
+#' initial population. \item `selection`, with arguments `population`,
+#' `fitness`, `r`, `q`, and `...`, conducts selection of individuals. \item
+#' `crossover`, with arguments `population`, `fitness`, `parents` and `...`,
+#' control genetic reproduction. \item `mutation`, with arguments `population`,
+#' `parent` and `...`, adds mutations. }
 #'
-#' The elements of \code{functions} specific to simulated annealing are:
-#' \itemize{
-#' \item \code{initial}, with arguments \code{vars}, \code{prob}, and
-#' \code{...}, creates the initial subset.
-#' \item \code{perturb}, with
-#' arguments \code{x}, \code{vars}, and \code{number}, makes incremental
-#' changes to the subsets.
-#' \item \code{prob}, with arguments \code{old},
-#' \code{new}, and \code{iteration}, computes the acceptance probabilities
-#' }
+#' The elements of `functions` specific to simulated annealing are: \itemize{
+#' \item `initial`, with arguments `vars`, `prob`, and `...`, creates the
+#' initial subset. \item `perturb`, with arguments `x`, `vars`, and `number`,
+#' makes incremental changes to the subsets. \item `prob`, with arguments
+#' `old`, `new`, and `iteration`, computes the acceptance probabilities }
 #'
-#' The pages \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html} and
-#' \url{http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html} have more details about each of
-#' these functions.
+#' The pages
+#' <http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html>
+#' and
+#' <http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html>
+#' have more details about each of these functions.
 #'
-#' \code{holdout} can be used to hold out samples for computing the internal
-#' fitness value. Note that this is independent of the external resampling
-#' step. Suppose 10-fold CV is being used. Within a resampling iteration,
-#' \code{holdout} can be used to sample an additional proportion of the 90\%
-#' resampled data to use for estimating fitness. This may not be a good idea
-#' unless you have a very large training set and want to avoid an internal
-#' resampling procedure to estimate fitness.
+#' `holdout` can be used to hold out samples for computing the internal fitness
+#' value. Note that this is independent of the external resampling step.
+#' Suppose 10-fold CV is being used. Within a resampling iteration, `holdout`
+#' can be used to sample an additional proportion of the 90\% resampled data to
+#' use for estimating fitness. This may not be a good idea unless you have a
+#' very large training set and want to avoid an internal resampling procedure
+#' to estimate fitness.
 #'
-#' The search algorithms can be parallelized in several places:
-#' \enumerate{
+#' The search algorithms can be parallelized in several places: \enumerate{
 #' \item each externally resampled GA or SA can be run independently
-#' (controlled by the \code{allowParallel} options)
-#' \item within a GA, the
-#' fitness calculations at a particular generation can be run in parallel over
-#' the current set of individuals (see the \code{genParallel})
-#' \item if inner resampling is used, these can be run in parallel (controls depend on the
-#' function used. See, for example, \code{\link[caret]{trainControl}})
-#' \item any parallelization of the individual model fits. This is also specific to the modeling function.
-#' }
+#' (controlled by the `allowParallel` options) \item within a GA, the fitness
+#' calculations at a particular generation can be run in parallel over the
+#' current set of individuals (see the `genParallel`) \item if inner resampling
+#' is used, these can be run in parallel (controls depend on the function used.
+#' See, for example, [caret::trainControl()]) \item any parallelization of the
+#' individual model fits. This is also specific to the modeling function. }
 #'
 #' It is probably best to pick one of these areas for parallelization and the
 #' first is likely to produces the largest decrease in run-time since it is the
@@ -267,31 +247,30 @@ predict.safs <- function (object, newdata, ...) {
 #' @inheritParams trainControl
 #' @inheritParams rfeControl
 #' @param functions a list of functions for model fitting, prediction etc (see
-#' Details below)
+#'   Details below)
 #' @param metric a two-element string that specifies what summary metric will
-#' be used to select the optimal number of iterations from the external fitness
-#' value and which metric should guide subset selection. If specified, this
-#' vector should have names \code{"internal"} and \code{"external"}. See
-#' \code{\link{gafs}} and/or \code{\link{safs}} for explanations of the
-#' difference.
+#'   be used to select the optimal number of iterations from the external
+#'   fitness value and which metric should guide subset selection. If
+#'   specified, this vector should have names `"internal"` and `"external"`.
+#'   See [gafs()] and/or [safs()] for explanations of the difference.
 #' @param maximize a two-element logical: should the metrics be maximized or
-#' minimized? Like the \code{metric} argument, this vector should have
-#' names \code{"internal"} and \code{"external"}.
+#'   minimized? Like the `metric` argument, this vector should have names
+#'   `"internal"` and `"external"`.
 #' @param verbose a logical for printing results
-#' @param holdout the proportion of data in [0, 1) to be held-back from
-#' \code{x} and \code{y} to calculate the internal fitness values
-#' @param improve the number of iterations without improvement before
-#' \code{\link{safs}} reverts back to the previous optimal subset
+#' @param holdout the proportion of data in \[0, 1) to be held-back from `x`
+#'   and `y` to calculate the internal fitness values
+#' @param improve the number of iterations without improvement before [safs()]
+#'   reverts back to the previous optimal subset
 #' @param genParallel if a parallel backend is loaded and available, should
-#' \code{\link{gafs}} use it to parallelize the fitness calculations within a
-#' generation within a resample?
+#'   [gafs()] use it to parallelize the fitness calculations within a
+#'   generation within a resample?
 #' @return An echo of the parameters specified
 #' @author Max Kuhn
-#' @seealso \code{\link{safs}}, \code{\link{safs}}, , \code{\link{caretGA}},
-#' \code{\link{rfGA}}, \code{\link{treebagGA}}, \code{\link{caretSA}},
-#' \code{\link{rfSA}}, \code{\link{treebagSA}}
-#' @references \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html},
-#' \url{http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html}
+#' @seealso [safs()], [safs()], , [caretGA()], [rfGA()], [treebagGA()],
+#'   [caretSA()], [rfSA()], [treebagSA()]
+#' @references
+#'   <http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html>,
+#'   <http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html>
 #' @keywords utilities
 #' @export safsControl
 safsControl <- function(functions = NULL,
@@ -346,12 +325,11 @@ safsControl <- function(functions = NULL,
 
 #' Simulated annealing feature selection
 #'
-#' @description
-#' Supervised feature selection using simulated annealing
+#' @description Supervised feature selection using simulated annealing
 #'
-#' \code{\link{safs}} conducts a supervised binary search of the predictor
-#' space using simulated annealing (SA). See Kirkpatrick et al (1983) for more
-#' information on this search algorithm.
+#' [safs()] conducts a supervised binary search of the predictor space using
+#' simulated annealing (SA). See Kirkpatrick et al (1983) for more information
+#' on this search algorithm.
 #'
 #' @details
 #'
@@ -389,15 +367,10 @@ safsControl <- function(functions = NULL,
 #' This is an example of the output produced when \code{safsControl(verbose =
 #' TRUE)} is used:
 #'
-#' \preformatted{
-#' Fold03 1 0.401 (11)
-#' Fold03 2 0.401->0.410 (11+1, 91.7\%) *
-#' Fold03 3 0.410->0.396 (12+1, 92.3\%) 0.969 A
-#' Fold03 4 0.410->0.370 (12+2, 85.7\%) 0.881
-#' Fold03 5 0.410->0.399 (12+2, 85.7\%) 0.954 A
-#' Fold03 6 0.410->0.399 (12+1, 78.6\%) 0.940 A
-#' Fold03 7 0.410->0.428 (12+2, 73.3\%) *
-#' }
+#' \preformatted{ Fold03 1 0.401 (11) Fold03 2 0.401->0.410 (11+1, 91.7\%) *
+#' Fold03 3 0.410->0.396 (12+1, 92.3\%) 0.969 A Fold03 4 0.410->0.370 (12+2,
+#' 85.7\%) 0.881 Fold03 5 0.410->0.399 (12+2, 85.7\%) 0.954 A Fold03 6
+#' 0.410->0.399 (12+1, 78.6\%) 0.940 A Fold03 7 0.410->0.428 (12+2, 73.3\%) * }
 #'
 #' The text "Fold03" indicates that this search is for the third
 #' cross-validation fold. The initial subset of 11 predictors had a fitness
@@ -415,11 +388,10 @@ safsControl <- function(functions = NULL,
 #'
 #' The search algorithm can be parallelized in several places: \enumerate{
 #' \item each externally resampled SA can be run independently (controlled by
-#' the \code{allowParallel} option of \code{\link{safsControl}}) \item if inner
-#' resampling is used, these can be run in parallel (controls depend on the
-#' function used. See, for example, \code{\link[caret]{trainControl}}) \item
-#' any parallelization of the individual model fits. This is also specific to
-#' the modeling function.  }
+#' the `allowParallel` option of [safsControl()]) \item if inner resampling is
+#' used, these can be run in parallel (controls depend on the function used.
+#' See, for example, [caret::trainControl()]) \item any parallelization of the
+#' individual model fits. This is also specific to the modeling function.  }
 #'
 #' It is probably best to pick one of these areas for parallelization and the
 #' first is likely to produces the largest decrease in run-time since it is the
@@ -429,23 +401,25 @@ safsControl <- function(functions = NULL,
 #'
 #' @aliases safs.default safs
 #' @param x An object where samples are in rows and features are in columns.
-#' This could be a simple matrix, data frame or other type (e.g. sparse
-#' matrix). For the recipes method, \code{x} is a recipe object.  See Details below.
+#'   This could be a simple matrix, data frame or other type (e.g. sparse
+#'   matrix). For the recipes method, `x` is a recipe object.  See Details
+#'   below.
 #' @param y a numeric or factor vector containing the outcome for each sample.
-#' @param data an object of class \code{\link{rfe}}.
+#' @param data an object of class [rfe()].
 #' @param iters number of search iterations
 #' @param differences a logical: should the difference in fitness values with
-#' and without each predictor be calculated?
+#'   and without each predictor be calculated?
 #' @param safsControl a list of values that define how this function acts. See
-#' \code{\link{safsControl}} and URL.
+#'   [safsControl()] and URL.
 #' @param \dots arguments passed to the classification or regression routine
-#' specified in the function \code{safsControl$functions$fit}
-#' @return an object of class \code{safs}
+#'   specified in the function `safsControl$functions$fit`
+#' @return an object of class `safs`
 #' @author Max Kuhn
-#' @seealso \code{\link{safsControl}}, \code{\link{predict.safs}}
-#' @references \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}
+#' @seealso [safsControl()], [predict.safs()]
+#' @references
+#'   <http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html>
 #'
-#' \url{http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html}
+#' <http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html>
 #'
 #' Kuhn and Johnson (2013), Applied Predictive Modeling, Springer
 #'
@@ -672,67 +646,64 @@ safs <- function (x, ...) UseMethod("safs")
 
 #' Ancillary simulated annealing functions
 #'
-#' @description
-#' Built-in functions related to simulated annealing
+#' @description Built-in functions related to simulated annealing
 #'
-#' These functions are used with the \code{functions} argument of the
-#' \code{\link{safsControl}} function. More information on the details of these
-#' functions are at \url{http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html}.
+#' These functions are used with the `functions` argument of the
+#' [safsControl()] function. More information on the details of these functions
+#' are at
+#' <http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html>.
 #'
-#' The \code{initial} function is used to create the first predictor subset.
-#' The function \code{safs_initial} randomly selects 20\% of the predictors.
-#' Note that, instead of a function, \code{\link{safs}} can also accept a
-#' vector of column numbers as the initial subset.
+#' The `initial` function is used to create the first predictor subset. The
+#' function `safs_initial` randomly selects 20\% of the predictors. Note that,
+#' instead of a function, [safs()] can also accept a vector of column numbers
+#' as the initial subset.
 #'
-#' \code{safs_perturb} is an example of the operation that changes the subset
+#' `safs_perturb` is an example of the operation that changes the subset
 #' configuration at the start of each new iteration. By default, it will change
 #' roughly 1\% of the variables in the current subset.
 #'
-#' The \code{prob} function defines the acceptance probability at each
-#' iteration, given the old and new fitness (i.e. energy values). It assumes
-#' that smaller values are better. The default probability function computed
-#' the percentage difference between the current and new fitness value and
-#' using an exponential function to compute a probability: \preformatted{ prob
-#' = exp[(current-new)/current*iteration] }
+#' The `prob` function defines the acceptance probability at each iteration,
+#' given the old and new fitness (i.e. energy values). It assumes that smaller
+#' values are better. The default probability function computed the percentage
+#' difference between the current and new fitness value and using an
+#' exponential function to compute a probability: \preformatted{ prob =
+#' exp[(current-new)/current*iteration] }
 #'
 #' @aliases safs_initial safs_perturb safs_prob caretSA rfSA treebagSA
 #' @param vars the total number of possible predictor variables
 #' @param prob The probability that an individual predictor is included in the
-#' initial predictor set
+#'   initial predictor set
 #' @param x the integer index vector for the current subset
 #' @param old,new fitness values associated with the current and new subset
 #' @param iteration the number of iterations overall or the number of
-#' iterations since restart (if \code{improve} is used in
-#' \code{\link{safsControl}})
+#'   iterations since restart (if `improve` is used in [safsControl()])
 #' @param number the number of predictor variables to perturb
 #' @param \dots not currently used
 #' @return The return value depends on the function. Note that the SA code
-#' encodes the subsets as a vector of integers that are included in the subset
-#' (which is different than the encoding used for GAs).
+#'   encodes the subsets as a vector of integers that are included in the
+#'   subset (which is different than the encoding used for GAs).
 #'
-#' The objects \code{caretSA}, \code{rfSA} and \code{treebagSA} are example
-#' lists that can be used with the \code{functions} argument of
-#' \code{\link{safsControl}}.
+#' The objects `caretSA`, `rfSA` and `treebagSA` are example lists that can be
+#' used with the `functions` argument of [safsControl()].
 #'
-#' In the case of \code{caretSA}, the \code{...} structure of
-#' \code{\link{safs}} passes through to the model fitting routine. As a
-#' consequence, the \code{\link{train}} function can easily be accessed by
-#' passing important arguments belonging to \code{\link{train}} to
-#' \code{\link{safs}}. See the examples below. By default, using \code{caretSA}
-#' will used the resampled performance estimates produced by
-#' \code{\link{train}} as the internal estimate of fitness.
+#' In the case of `caretSA`, the `...` structure of [safs()] passes through to
+#' the model fitting routine. As a consequence, the [train()] function can
+#' easily be accessed by passing important arguments belonging to [train()] to
+#' [safs()]. See the examples below. By default, using `caretSA` will used the
+#' resampled performance estimates produced by [train()] as the internal
+#' estimate of fitness.
 #'
-#' For \code{rfSA} and \code{treebagSA}, the \code{randomForest} and
-#' \code{bagging} functions are used directly (i.e. \code{\link{train}} is not
-#' used). Arguments to either of these functions can also be passed to them
-#' though the \code{\link{safs}} call (see examples below). For these two
-#' functions, the internal fitness is estimated using the out-of-bag estimates
-#' naturally produced by those functions. While faster, this limits the user to
-#' accuracy or Kappa (for classification) and RMSE and R-squared (for
-#' regression).
+#' For `rfSA` and `treebagSA`, the `randomForest` and `bagging` functions are
+#' used directly (i.e. [train()] is not used). Arguments to either of these
+#' functions can also be passed to them though the [safs()] call (see examples
+#' below). For these two functions, the internal fitness is estimated using the
+#' out-of-bag estimates naturally produced by those functions. While faster,
+#' this limits the user to accuracy or Kappa (for classification) and RMSE and
+#' R-squared (for regression).
 #' @author Max Kuhn
-#' @seealso \code{\link{safs}}, \code{\link{safsControl}}
-#' @references \url{http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html}
+#' @seealso [safs()], [safsControl()]
+#' @references
+#'   <http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html>
 #' @examples
 #'
 #' selected_vars <- safs_initial(vars = 10 , prob = 0.2)
@@ -1202,27 +1173,26 @@ selectIter = best)
 
 #' Update or Re-fit a SA or GA Model
 #'
-#' @description
-#' \code{update} allows a user to over-ride the search iteration selection
-#' process.
+#' @description `update` allows a user to over-ride the search iteration
+#'   selection process.
 #'
-#' Based on the results of plotting a \code{\link{gafs}} or \code{\link{safs}}
-#' object, these functions can be used to supersede the number of iterations
-#' determined analytically from the resamples.
+#' Based on the results of plotting a [gafs()] or [safs()] object, these
+#' functions can be used to supersede the number of iterations determined
+#' analytically from the resamples.
 #'
-#' Any values of \code{...} originally passed to \code{\link{gafs}} or
-#' \code{\link{safs}} are automatically passed on to the updated model (i.e.
-#' they do not need to be supplied again to \code{update}.
+#' Any values of `...` originally passed to [gafs()] or [safs()] are
+#' automatically passed on to the updated model (i.e. they do not need to be
+#' supplied again to `update`.
 #'
 #' @aliases update.safs update.gafs
-#' @param object An object produced by \code{\link{gafs}} or \code{\link{safs}}
+#' @param object An object produced by [gafs()] or [safs()]
 #' @param iter a single numeric integer
-#' @param x,y the original training data used in the call to \code{\link{gafs}}
-#' or \code{\link{safs}}. Only required for non-recipe methods.
+#' @param x,y the original training data used in the call to [gafs()] or
+#'   [safs()]. Only required for non-recipe methods.
 #' @param \dots not currently used
-#' @return an object of class \code{\link{gafs}} or \code{\link{safs}}
+#' @return an object of class [gafs()] or [safs()]
 #' @author Max Kuhn
-#' @seealso \code{\link{gafs}}, \code{\link{safs}}
+#' @seealso [gafs()], [safs()]
 #' @keywords models
 #' @examples
 #'
@@ -1576,7 +1546,6 @@ update.safs <- function(object, iter, x, y, ...) {
     class(res) <- "safs"
     res
   }
-
 
 
 

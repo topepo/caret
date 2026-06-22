@@ -1,38 +1,38 @@
 #' Maximum Dissimilarity Sampling
-#' 
+#'
 #' Functions to create a sub-sample by maximizing the dissimilarity between new
 #' samples and the existing subset.
-#' 
+#'
 #' Given an initial set of m samples and a larger pool of n samples, this
 #' function iteratively adds points to the smaller set by finding with of the n
-#' samples is most dissimilar to the initial set. The argument \code{obj}
-#' measures the overall dissimilarity between the initial set and a candidate
-#' point. For example, maximizing the minimum or the sum of the m
-#' dissimilarities are two common approaches.
-#' 
+#' samples is most dissimilar to the initial set. The argument `obj` measures
+#' the overall dissimilarity between the initial set and a candidate point. For
+#' example, maximizing the minimum or the sum of the m dissimilarities are two
+#' common approaches.
+#'
 #' This algorithm tends to select points on the edge of the data mainstream and
 #' will reliably select outliers. To select more samples towards the interior
-#' of the data set, set \code{randomFrac} to be small (see the examples below).
-#' 
+#' of the data set, set `randomFrac` to be small (see the examples below).
+#'
 #' @aliases maxDissim minDiss sumDiss
 #' @param a a matrix or data frame of samples to start
 #' @param b a matrix or data frame of samples to sample from
 #' @param n the size of the sub-sample
 #' @param obj an objective function to measure overall dissimilarity
 #' @param useNames a logical: should the function return the row names (as
-#' opposed ot the row index)
+#'   opposed ot the row index)
 #' @param randomFrac a number in (0, 1] that can be used to sub-sample from the
-#' remaining candidate values
+#'   remaining candidate values
 #' @param verbose a logical; should each step be printed?
 #' @param \dots optional arguments to pass to dist
 #' @param u a vector of dissimilarities
-#' @return a vector of integers or row names (depending on \code{useNames})
-#' corresponding to the rows of \code{b} that comprise the sub-sample.
+#' @return a vector of integers or row names (depending on `useNames`)
+#'   corresponding to the rows of `b` that comprise the sub-sample.
 #' @author Max Kuhn \email{max.kuhn@@pfizer.com}
-#' @seealso \code{\link{dist}}
+#' @seealso [stats::dist()]
 #' @references Willett, P. (1999), "Dissimilarity-Based Algorithms for
-#' Selecting Structurally Diverse Sets of Compounds," \emph{Journal of
-#' Computational Biology}, 6, 447-457.
+#'   Selecting Structurally Diverse Sets of Compounds," *Journal of
+#'   Computational Biology*, 6, 447-457.
 #' @keywords utilities
 #' @examples
 #' 
@@ -185,4 +185,3 @@ splitByDissim <- function(x, p = .8, y = NULL, start = NULL, ...)
       }
     out
   }
-

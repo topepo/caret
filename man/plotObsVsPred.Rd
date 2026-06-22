@@ -8,15 +8,14 @@ Models}
 plotObsVsPred(object, equalRanges = TRUE, ...)
 }
 \arguments{
-\item{object}{an object (preferably from the function
-\code{\link{extractPrediction}}. There should be columns named \code{obs},
-\code{pred}, \code{model} (e.g. "rpart", "nnet" etc.)  and \code{dataType}
-(e.g. "Training", "Test" etc)}
+\item{object}{an object (preferably from the function \code{\link[=extractPrediction]{extractPrediction()}}.
+There should be columns named \code{obs}, \code{pred}, \code{model} (e.g. "rpart", "nnet"
+etc.)  and \code{dataType} (e.g. "Training", "Test" etc)}
 
 \item{equalRanges}{a logical; should the x- and y-axis ranges be the same?}
 
-\item{\dots}{parameters to pass to \code{\link[lattice]{xyplot}} or
-\code{\link[lattice:xyplot]{dotplot}}, such as \code{auto.key}}
+\item{\dots}{parameters to pass to \code{\link[lattice:xyplot]{lattice::xyplot()}} or
+\code{\link[lattice:dotplot]{lattice::dotplot()}}, such as \code{auto.key}}
 }
 \value{
 A lattice object. Note that the plot has to be printed to be
@@ -24,14 +23,14 @@ displayed (especially in a loop).
 }
 \description{
 This function takes an object (preferably from the function
-\code{\link{extractPrediction}}) and creates a lattice plot. For numeric
-outcomes, the observed and predicted data are plotted with a 45 degree
-reference line and a smoothed fit. For factor outcomes, a dotplot plot is
-produced with the accuracies for the different models.
+\code{\link[=extractPrediction]{extractPrediction()}}) and creates a lattice plot. For numeric outcomes, the
+observed and predicted data are plotted with a 45 degree reference line and
+a smoothed fit. For factor outcomes, a dotplot plot is produced with the
+accuracies for the different models.
 }
 \details{
-If the call to \code{\link{extractPrediction}} included test data, these
-data are shown, but if unknowns were also included, they are not plotted
+If the call to \code{\link[=extractPrediction]{extractPrediction()}} included test data, these data are
+shown, but if unknowns were also included, they are not plotted
 }
 \examples{
 

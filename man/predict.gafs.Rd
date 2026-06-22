@@ -8,7 +8,7 @@
 \method{predict}{gafs}(object, newdata, ...)
 }
 \arguments{
-\item{object}{an object of class \code{\link{safs}} or \code{\link{gafs}}}
+\item{object}{an object of class \code{\link[=safs]{safs()}} or \code{\link[=gafs]{gafs()}}}
 
 \item{newdata}{a data frame or matrix of predictors.}
 
@@ -19,7 +19,7 @@ The type of result depends on what was specified in
 \code{object$control$functions$predict}.
 }
 \description{
-Predict new samples using \code{\link{safs}} and \code{\link{gafs}} objects.
+Predict new samples using \code{\link[=safs]{safs()}} and \code{\link[=gafs]{gafs()}} objects.
 }
 \details{
 Only the predictors listed in \code{object$optVariables} are required.
@@ -49,7 +49,7 @@ predict(rf_search, train_data)
 
 }
 \seealso{
-\code{\link{safs}}, \code{\link{gafs}}
+\code{\link[=safs]{safs()}}, \code{\link[=gafs]{gafs()}}
 }
 \author{
 Max Kuhn

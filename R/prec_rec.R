@@ -8,8 +8,8 @@
 #'
 #' The recall (aka sensitivity) is defined as the proportion of relevant
 #' results out of the number of samples which were actually relevant. When
-#' there are no relevant results, recall is not defined and a value of
-#' \code{NA} is returned.
+#' there are no relevant results, recall is not defined and a value of `NA` is
+#' returned.
 #'
 #' The precision is percentage of predicted truly relevant results of the total
 #' number of predicted relevant results and characterizes the "purity in
@@ -29,27 +29,27 @@
 #'
 #' @aliases recall recall.default recall.table precision precision.default precision.table precision.matrix F_meas F_meas.default F_meas.table
 #' @param data for the default functions, a factor containing the discrete
-#' measurements. For the \code{table} function, a table.
+#'   measurements. For the `table` function, a table.
 #' @param reference a factor containing the reference values (i.e. truth)
 #' @param relevant a character string that defines the factor level
-#' corresponding to the "relevant" results
+#'   corresponding to the "relevant" results
 #' @param beta a numeric value used to weight precision and recall. A value of
-#' 1 is traditionally used and corresponds to the harmonic mean of the two
-#' values but other values weight recall beta times more important than
-#' precision.
-#' @param na.rm a logical value indicating whether \code{NA} values should be
-#' stripped before the computation proceeds
+#'   1 is traditionally used and corresponds to the harmonic mean of the two
+#'   values but other values weight recall beta times more important than
+#'   precision.
+#' @param na.rm a logical value indicating whether `NA` values should be
+#'   stripped before the computation proceeds
 #' @param ... not currently used
 #' @return A number between 0 and 1 (or NA).
 #' @author Max Kuhn
-#' @seealso \code{\link{confusionMatrix}}
+#' @seealso [confusionMatrix()]
 #' @references Kuhn, M. (2008), ``Building predictive models in R using the
-#' caret package, '' \emph{Journal of Statistical Software},
-#' (\doi{10.18637/jss.v028.i05}).
+#'   caret package, '' *Journal of Statistical Software*,
+#'   (\doi{10.18637/jss.v028.i05}).
 #'
 #' Buckland, M., & Gey, F. (1994). The relationship between Recall and
-#' Precision. \emph{Journal of the American Society for Information Science},
-#' 45(1), 12-19.
+#' Precision. *Journal of the American Society for Information Science*, 45(1),
+#' 12-19.
 #'
 #' Powers, D. (2007). Evaluation: From Precision, Recall and F Factor to ROC,
 #' Informedness, Markedness and Correlation. Technical Report SIE-07-001,
@@ -249,4 +249,3 @@ prSummary <- function (data, lev = NULL, model = NULL)  {
     Recall = recall.default(data = data$pred, reference = data$obs, relevant = lev[1]),
     F = F_meas.default(data = data$pred, reference = data$obs, relevant = lev[1]))
 }
-

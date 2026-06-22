@@ -1,17 +1,16 @@
 #' Format 'bagEarth' objects
-#' 
+#'
 #' Return a string representing the \sQuote{bagEarth} expression.
-#' 
-#' 
-#' @param x An \code{\link{bagEarth}} object.  This is the only required
-#' argument.
+#'
+#'
+#' @param x An [bagEarth()] object.  This is the only required argument.
 #' @param file A connection, or a character string naming the file to print to.
-#' If "" (the default), the output prints to the standard output connection.
-#' See \code{\link[base]{cat}}.
+#'   If "" (the default), the output prints to the standard output connection.
+#'   See [base::cat()].
 #' @param cat a logical; should the equation be printed?
-#' @param \dots Arguments to \code{\link[earth]{format.earth}}.
+#' @param \dots Arguments to [earth::format.earth()].
 #' @return A character representation of the bagged earth object.
-#' @seealso \code{\link[earth]{earth}}
+#' @seealso [earth::earth()]
 #' @keywords models
 #' @examples
 #' 
@@ -55,4 +54,3 @@ format.bagEarth <- function(x, file = "", cat = TRUE, ...)
   
   if(cat) cat(allEq, file = file) else return(allEq)  
 }
-

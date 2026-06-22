@@ -8,29 +8,29 @@
 \method{update}{safs}(object, iter, x, y, ...)
 }
 \arguments{
-\item{object}{An object produced by \code{\link{gafs}} or \code{\link{safs}}}
+\item{object}{An object produced by \code{\link[=gafs]{gafs()}} or \code{\link[=safs]{safs()}}}
 
 \item{iter}{a single numeric integer}
 
-\item{x, y}{the original training data used in the call to \code{\link{gafs}}
-or \code{\link{safs}}. Only required for non-recipe methods.}
+\item{x, y}{the original training data used in the call to \code{\link[=gafs]{gafs()}} or
+\code{\link[=safs]{safs()}}. Only required for non-recipe methods.}
 
 \item{\dots}{not currently used}
 }
 \value{
-an object of class \code{\link{gafs}} or \code{\link{safs}}
+an object of class \code{\link[=gafs]{gafs()}} or \code{\link[=safs]{safs()}}
 }
 \description{
-\code{update} allows a user to over-ride the search iteration selection
-process.
+\code{update} allows a user to over-ride the search iteration
+selection process.
 
-Based on the results of plotting a \code{\link{gafs}} or \code{\link{safs}}
-object, these functions can be used to supersede the number of iterations
-determined analytically from the resamples.
+Based on the results of plotting a \code{\link[=gafs]{gafs()}} or \code{\link[=safs]{safs()}} object, these
+functions can be used to supersede the number of iterations determined
+analytically from the resamples.
 
-Any values of \code{...} originally passed to \code{\link{gafs}} or
-\code{\link{safs}} are automatically passed on to the updated model (i.e.
-they do not need to be supplied again to \code{update}.
+Any values of \code{...} originally passed to \code{\link[=gafs]{gafs()}} or \code{\link[=safs]{safs()}} are
+automatically passed on to the updated model (i.e. they do not need to be
+supplied again to \code{update}.
 }
 \examples{
 
@@ -57,7 +57,7 @@ rf_search2
 }
 }
 \seealso{
-\code{\link{gafs}}, \code{\link{safs}}
+\code{\link[=gafs]{gafs()}}, \code{\link[=safs]{safs()}}
 }
 \author{
 Max Kuhn

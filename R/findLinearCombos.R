@@ -72,11 +72,11 @@ internalEnumLC <- function(qrObj, ...)
 #'
 #' @param x a numeric matrix
 #' @return a list with elements: \item{linearCombos }{If there are linear
-#' combinations, this will be a list with elements for each dependency that
-#' contains vectors of column numbers. } \item{remove }{a list of column
-#' numbers that can be removed to counter the linear combinations}
-#' @author Kirk Mettler and Jed Wing (\code{enumLC}) and Max Kuhn
-#' (\code{findLinearCombos})
+#'   combinations, this will be a list with elements for each dependency that
+#'   contains vectors of column numbers. } \item{remove }{a list of column
+#'   numbers that can be removed to counter the linear combinations}
+#' @author Kirk Mettler and Jed Wing (`enumLC`) and Max Kuhn
+#'   (`findLinearCombos`)
 #' @keywords manip
 #' @examples
 #'

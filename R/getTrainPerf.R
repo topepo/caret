@@ -8,4 +8,3 @@ getTrainPerf <- function(x) {
   out$method <- x$method
   out
 }
-

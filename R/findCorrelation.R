@@ -102,24 +102,24 @@ findCorrelation_exact <- function(x, cutoff = 0.90, verbose = FALSE)
 #' correlation of each variable and removes the variable with the largest mean
 #' absolute correlation.
 #'
-#' Using \code{exact = TRUE} will cause the function to re-evaluate the average
-#' correlations at each step while \code{exact = FALSE} uses all the
-#' correlations regardless of whether they have been eliminated or not. The
-#' exact calculations will remove a smaller number of predictors but can be
-#' much slower when the problem dimensions are "big".
+#' Using `exact = TRUE` will cause the function to re-evaluate the average
+#' correlations at each step while `exact = FALSE` uses all the correlations
+#' regardless of whether they have been eliminated or not. The exact
+#' calculations will remove a smaller number of predictors but can be much
+#' slower when the problem dimensions are "big".
 #'
 #' @param x A correlation matrix
 #' @param cutoff A numeric value for the pair-wise absolute correlation cutoff
 #' @param verbose A boolean for printing the details
-#' @param names a logical; should the column names be returned (\code{TRUE}) or
-#' the column index (\code{FALSE})?
+#' @param names a logical; should the column names be returned (`TRUE`) or the
+#'   column index (`FALSE`)?
 #' @param exact a logical; should the average correlations be recomputed at
-#' each step? See Details below.
+#'   each step? See Details below.
 #' @return A vector of indices denoting the columns to remove (when \code{names
-#' = TRUE}) otherwise a vector of column names. If no correlations meet the
-#' criteria, \code{integer(0)} is returned.
+#'   = TRUE}) otherwise a vector of column names. If no correlations meet the
+#'   criteria, `integer(0)` is returned.
 #' @author Original R code by Dong Li, modified by Max Kuhn
-#' @seealso \code{\link{findLinearCombos}}
+#' @seealso [findLinearCombos()]
 #' @keywords manip
 #' @examples
 #'
@@ -159,6 +159,5 @@ findCorrelation <- function(x, cutoff = 0.90, verbose = FALSE, names = FALSE, ex
   if(names) out <- colnames(x)[out]
   out
 }
-
 
 

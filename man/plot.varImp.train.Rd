@@ -22,7 +22,7 @@
 displayed (in order of importance)}
 
 \item{\dots}{arguments to pass to the lattice plot function
-(\code{\link[lattice:xyplot]{dotplot}} and \code{\link{panel.needle}})}
+(\code{\link[lattice:dotplot]{lattice::dotplot()}} and \code{\link[=panel.needle]{panel.needle()}})}
 
 \item{mapping, environment}{unused arguments to make consistent with
 \pkg{ggplot2} generic method}

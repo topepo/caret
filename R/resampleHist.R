@@ -1,25 +1,23 @@
 #' Plot the resampling distribution of the model statistics
-#' 
+#'
 #' Create a lattice histogram or densityplot from the resampled outcomes from a
-#' \code{train} object.
-#' 
+#' `train` object.
+#'
 #' All the metrics from the object are plotted, but only for the final model.
-#' For more comprehensive plots functions, see \code{\link{histogram.train}},
-#' \code{\link{densityplot.train}}, \code{\link{xyplot.train}},
-#' \code{\link{stripplot.train}}.
-#' 
-#' For the plot to be made, the \code{returnResamp} argument in
-#' \code{\link{trainControl}} should be either "final" or "all".
-#' 
-#' @param object an object resulting form a call to \code{\link{train}}
+#' For more comprehensive plots functions, see [histogram.train()],
+#' [densityplot.train()], [xyplot.train()], [stripplot.train()].
+#'
+#' For the plot to be made, the `returnResamp` argument in [trainControl()]
+#' should be either "final" or "all".
+#'
+#' @param object an object resulting form a call to [train()]
 #' @param type a character string. Either "hist" or "density"
 #' @param \dots options to pass to histogram or densityplot
-#' @return a object of class \code{trellis}
+#' @return a object of class `trellis`
 #' @author Max Kuhn
-#' @seealso \code{\link{train}}, \code{\link[lattice]{histogram}},
-#' \code{\link[lattice:histogram]{densityplot}}, \code{\link{histogram.train}},
-#' \code{\link{densityplot.train}}, \code{\link{xyplot.train}},
-#' \code{\link{stripplot.train}}
+#' @seealso [train()], [lattice::histogram()], [lattice::densityplot()],
+#'   [histogram.train()], [densityplot.train()], [xyplot.train()],
+#'   [stripplot.train()]
 #' @keywords hplot
 #' @examples
 #' 

@@ -37,34 +37,34 @@ confusionMatrix(data, ...)
 }
 \arguments{
 \item{data}{a factor of predicted classes (for the default method) or an
-object of class \code{\link[base]{table}}.}
+object of class \code{\link[base:table]{base::table()}}.}
 
-\item{\dots}{options to be passed to \code{table}. NOTE: do not include
-\code{dnn} here}
+\item{\dots}{options to be passed to \code{table}. NOTE: do not include \code{dnn}
+here}
 
 \item{reference}{a factor of classes to be used as the true results}
 
 \item{positive}{an optional character string for the factor level that
 corresponds to a "positive" result (if that makes sense for your data). If
 there are only two factor levels, the first level will be used as the
-"positive" result. When \code{mode = "prec_recall"}, \code{positive} is the
-same value used for \code{relevant} for functions \code{\link{precision}},
-\code{\link{recall}}, and \code{\link{F_meas.table}}.}
+"positive" result. When \code{mode = "prec_recall"}, \code{positive} is the same
+value used for \code{relevant} for functions \code{\link[=precision]{precision()}}, \code{\link[=recall]{recall()}}, and
+\code{\link[=F_meas.table]{F_meas.table()}}.}
 
 \item{dnn}{a character vector of dimnames for the table}
 
 \item{prevalence}{a numeric value or matrix for the rate of the "positive"
-class of the data. When \code{data} has two levels, \code{prevalence} should
-be a single numeric value. Otherwise, it should be a vector of numeric
-values with elements for each class. The vector should have names
-corresponding to the classes.}
+class of the data. When \code{data} has two levels, \code{prevalence} should be a
+single numeric value. Otherwise, it should be a vector of numeric values
+with elements for each class. The vector should have names corresponding
+to the classes.}
 
 \item{mode}{a single character string either "sens_spec", "prec_recall", or
 "everything"}
 }
 \value{
-a list with elements \item{table}{the results of \code{table} on
-\code{data} and \code{reference}} \item{positive}{the positive result level}
+a list with elements \item{table}{the results of \code{table} on \code{data}
+and \code{reference}} \item{positive}{the positive result level}
 \item{overall}{a numeric vector with overall accuracy and Kappa statistic
 values} \item{byClass}{the sensitivity, specificity, positive predictive
 value, negative predictive value, precision, recall, F1, prevalence,
@@ -110,19 +110,18 @@ For more than two classes, these results are calculated comparing each
 factor level to the remaining levels (i.e. a "one versus all" approach).
 
 The overall accuracy and unweighted Kappa statistic are calculated. A
-p-value from McNemar's test is also computed using
-\code{\link[stats]{mcnemar.test}} (which can produce \code{NA} values with
-sparse tables).
+p-value from McNemar's test is also computed using \code{\link[stats:mcnemar.test]{stats::mcnemar.test()}}
+(which can produce \code{NA} values with sparse tables).
 
 The overall accuracy rate is computed along with a 95 percent confidence
-interval for this rate (using \code{\link[stats]{binom.test}}) and a
-one-sided test to see if the accuracy is better than the "no information
-rate," which is taken to be the largest class percentage in the data.
+interval for this rate (using \code{\link[stats:binom.test]{stats::binom.test()}}) and a one-sided test to
+see if the accuracy is better than the "no information rate," which is taken
+to be the largest class percentage in the data.
 }
 \note{
 If the reference and data factors have the same levels, but in the
-incorrect order, the function will reorder them to the order of the data and
-issue a warning.
+incorrect order, the function will reorder them to the order of the data
+and issue a warning.
 }
 \examples{
 
@@ -172,11 +171,9 @@ modeling in imbalanced datasets using multifactor dimensionality
 reduction.,'' \emph{Genetic Epidemiology}, vol 4, 306.
 }
 \seealso{
-\code{\link{as.table.confusionMatrix}},
-\code{\link{as.matrix.confusionMatrix}}, \code{\link{sensitivity}},
-\code{\link{specificity}}, \code{\link{posPredValue}},
-\code{\link{negPredValue}}, \code{\link{print.confusionMatrix}},
-\code{\link[stats]{binom.test}}
+\code{\link[=as.table.confusionMatrix]{as.table.confusionMatrix()}}, \code{\link[=as.matrix.confusionMatrix]{as.matrix.confusionMatrix()}},
+\code{\link[=sensitivity]{sensitivity()}}, \code{\link[=specificity]{specificity()}}, \code{\link[=posPredValue]{posPredValue()}}, \code{\link[=negPredValue]{negPredValue()}},
+\code{\link[=print.confusionMatrix]{print.confusionMatrix()}}, \code{\link[stats:binom.test]{stats::binom.test()}}
 }
 \author{
 Max Kuhn

@@ -14,9 +14,8 @@
 )
 }
 \arguments{
-\item{data}{An object of class \code{\link{train}}, \code{\link{rfe}},
-\code{\link{sbf}} that did not use out-of-bag resampling or leave-one-out
-cross-validation.}
+\item{data}{An object of class \code{\link[=train]{train()}}, \code{\link[=rfe]{rfe()}}, \code{\link[=sbf]{sbf()}} that did not use
+out-of-bag resampling or leave-one-out cross-validation.}
 
 \item{norm}{A character string indicating how the table entries should be
 normalized. Valid values are "none", "overall" or "average".}
@@ -26,30 +25,29 @@ normalized. Valid values are "none", "overall" or "average".}
 \item{\dots}{not used here}
 }
 \value{
-a list of class \code{confusionMatrix.train},
-\code{confusionMatrix.rfe} or \code{confusionMatrix.sbf} with elements
-\item{table}{the normalized matrix} \item{norm}{an echo fo the call}
-\item{text}{a character string with details about the resampling procedure
-(e.g. "Bootstrapped (25 reps) Confusion Matrix"}
+a list of class \code{confusionMatrix.train}, \code{confusionMatrix.rfe} or
+\code{confusionMatrix.sbf} with elements \item{table}{the normalized matrix}
+\item{norm}{an echo fo the call} \item{text}{a character string with
+details about the resampling procedure (e.g. "Bootstrapped (25 reps)
+Confusion Matrix"}
 }
 \description{
-Using a \code{\link{train}}, \code{\link{rfe}}, \code{\link{sbf}} object,
-determine a confusion matrix based on the resampling procedure
+Using a \code{\link[=train]{train()}}, \code{\link[=rfe]{rfe()}}, \code{\link[=sbf]{sbf()}} object, determine a confusion matrix
+based on the resampling procedure
 }
 \details{
-When \code{\link{train}} is used for tuning a model, it tracks the confusion
-matrix cell entries for the hold-out samples. These can be aggregated and
-used for diagnostic purposes. For \code{\link{train}}, the matrix is
-estimated for the final model tuning parameters determined by
-\code{\link{train}}. For \code{\link{rfe}}, the matrix is associated with
-the optimal number of variables.
+When \code{\link[=train]{train()}} is used for tuning a model, it tracks the confusion matrix
+cell entries for the hold-out samples. These can be aggregated and used for
+diagnostic purposes. For \code{\link[=train]{train()}}, the matrix is estimated for the final
+model tuning parameters determined by \code{\link[=train]{train()}}. For \code{\link[=rfe]{rfe()}}, the matrix is
+associated with the optimal number of variables.
 
-There are several ways to show the table entries. Using \code{norm = "none"}
-will show the aggregated counts of samples on each of the cells (across all
-resamples). For \code{norm = "average"}, the average number of cell counts
-across resamples is computed (this can help evaluate how many holdout
-samples there were on average). The default is \code{norm = "overall"},
-which is equivalento to \code{"average"} but in percentages.
+There are several ways to show the table entries. Using \code{norm = "none"} will
+show the aggregated counts of samples on each of the cells (across all
+resamples). For \code{norm = "average"}, the average number of cell counts across
+resamples is computed (this can help evaluate how many holdout samples there
+were on average). The default is \code{norm = "overall"}, which is equivalento to
+\code{"average"} but in percentages.
 }
 \examples{
 
@@ -70,8 +68,7 @@ confusionMatrix(knnFit, "none")
 
 }
 \seealso{
-\code{\link{confusionMatrix}}, \code{\link{train}},
-\code{\link{rfe}}, \code{\link{sbf}}, \code{\link{trainControl}}
+\code{\link[=confusionMatrix]{confusionMatrix()}}, \code{\link[=train]{train()}}, \code{\link[=rfe]{rfe()}}, \code{\link[=sbf]{sbf()}}, \code{\link[=trainControl]{trainControl()}}
 }
 \author{
 Max Kuhn
