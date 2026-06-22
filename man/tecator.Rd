@@ -7,9 +7,12 @@
 \alias{endpoints}
 \title{Fat, Water and Protein Content of Meat Samples}
 \value{
-\item{absorp}{absorbance data for 215 samples. The first 129 were
-originally used as a training set} \item{endpoints}{the percentages of
-water, fat and protein}
+:
+\itemize{
+\item \code{absorp}: absorbance data for 215 samples. The first 129 were originally
+used as a training set
+\item \code{endpoints}: the percentages of water, fat and protein
+}
 }
 \description{
 "These data are recorded on a Tecator Infratec Food and Feed Analyzer

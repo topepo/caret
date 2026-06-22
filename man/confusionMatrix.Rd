@@ -63,14 +63,18 @@ to the classes.}
 "everything"}
 }
 \value{
-a list with elements \item{table}{the results of \code{table} on \code{data}
-and \code{reference}} \item{positive}{the positive result level}
-\item{overall}{a numeric vector with overall accuracy and Kappa statistic
-values} \item{byClass}{the sensitivity, specificity, positive predictive
-value, negative predictive value, precision, recall, F1, prevalence,
-detection rate, detection prevalence and balanced accuracy for each class.
-For two class systems, this is calculated once using the \code{positive}
-argument}
+a list with elements:
+\itemize{
+\item \code{table}: the results of \code{table} on \code{data} and \code{reference}
+\item \code{positive}: the positive result level
+\item \code{overall}: a numeric vector with overall accuracy and Kappa statistic
+values
+\item \code{byClass}: the sensitivity, specificity, positive predictive value,
+negative predictive value, precision, recall, F1, prevalence,
+detection rate, detection prevalence and balanced accuracy for
+each class. For two class systems, this is calculated once
+using the \code{positive} argument
+}
 }
 \description{
 Calculates a cross-tabulation of observed and predicted classes with

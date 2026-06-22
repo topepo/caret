@@ -67,12 +67,14 @@
 #' For the `ggplot` method, confidence intervals on the estimated proportions
 #' (from [stats::binom.test()]) are also shown.
 #'
-#' @return `calibration.formula` returns a list with elements: \item{data}{the
-#'   data used for plotting} \item{cuts}{the number of cuts} \item{class}{the
-#'   event class} \item{probNames}{the names of the model probabilities}
+#' @return `calibration.formula` returns a list with elements:
+#'
+#' * `data`: the data used for plotting
+#' * `cuts`: the number of cuts
+#' * `class`: the event class
+#' * `probNames`: the names of the model probabilities
 #'
 #' `xyplot.calibration` returns a \pkg{lattice} object
-#'
 #' @author Max Kuhn, some \pkg{lattice} code and documentation by Deepayan
 #'   Sarkar
 #'

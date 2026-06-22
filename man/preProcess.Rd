@@ -85,19 +85,24 @@ for range transformation}
 \item{newdata}{a matrix or data frame of new data to be pre-processed}
 }
 \value{
-\code{preProcess} results in a list with elements \item{call}{the
-function call} \item{method}{a named list of operations and the variables
-used for each } \item{dim}{the dimensions of \code{x}} \item{bc}{Box-Cox
-transformation values, see \code{\link[=BoxCoxTrans]{BoxCoxTrans()}}} \item{mean}{a vector of means
-(if centering was requested)} \item{std}{a vector of standard deviations
-(if scaling or PCA was requested)} \item{rotation}{a matrix of
-eigenvectors if PCA was requested} \item{method}{the value of \code{method}}
-\item{thresh}{the value of \code{thresh}} \item{ranges}{a matrix of min and max
-values for each predictor when \code{method} includes "range" (and \code{NULL}
-otherwise)} \item{numComp}{the number of principal components required of
-capture the specified amount of variance} \item{ica}{contains values for
-the \code{W} and \code{K} matrix of the decomposition} \item{median}{a vector of
-medians (if median imputation was requested)}
+\code{preProcess} results in a list with elements:
+\itemize{
+\item \code{call}: the function call
+\item \code{method}: a named list of operations and the variables used for each
+\item \code{dim}: the dimensions of \code{x}
+\item \code{bc}: Box-Cox transformation values, see \code{\link[=BoxCoxTrans]{BoxCoxTrans()}}
+\item \code{mean}: a vector of means (if centering was requested)
+\item \code{std}: a vector of standard deviations (if scaling or PCA was requested)
+\item \code{rotation}: a matrix of eigenvectors if PCA was requested
+\item \code{method}: the value of \code{method}
+\item \code{thresh}: the value of \code{thresh}
+\item \code{ranges}: a matrix of min and max values for each predictor when \code{method}
+includes "range" (and \code{NULL} otherwise)
+\item \code{numComp}: the number of principal components required of capture the
+specified amount of variance
+\item \code{ica}: contains values for the \code{W} and \code{K} matrix of the decomposition
+\item \code{median}: a vector of medians (if median imputation was requested)
+}
 
 \code{predict.preProcess} will produce a data frame.
 }

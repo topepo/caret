@@ -67,12 +67,17 @@ are columns for each class.
 For \code{predict.list}, a list results. Each element is produced by
 \code{predict.train}.
 
-For \code{extractPrediction}, a data frame with columns: \item{obs }{the observed
-training and test data} \item{pred }{predicted values} \item{model}{the type
-of model used to predict} \item{object}{the names of the objects within
-\code{models}. If \code{models} is an un-named list, the values of \code{object} will be
-"Object1", "Object2" and so on} \item{dataType }{"Training", "Test" or
-"Unknown" depending on what was specified}
+For \code{extractPrediction}, a data frame with columns:
+\itemize{
+\item \code{obs}: the observed training and test data
+\item \code{pred}: predicted values
+\item \code{model}: the type of model used to predict
+\item \code{object}: the names of the objects within \code{models}. If \code{models} is an
+un-named list, the values of \code{object} will be "Object1",
+"Object2" and so on
+\item \code{dataType}: "Training", "Test" or "Unknown" depending on what was
+specified
+}
 
 For \code{extractProb}, a data frame. There is a column for each class containing
 the probabilities. The remaining columns are the same as above (although the

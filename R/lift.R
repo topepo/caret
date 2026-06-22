@@ -68,10 +68,13 @@
 #'   \code{type = "gain"}.
 #' @param \dots options to pass through to [lattice::xyplot()] or the panel
 #'   function (not used in `lift.formula`).
-#' @return `lift.formula` returns a list with elements: \item{data}{the data
-#'   used for plotting} \item{cuts}{the number of cuts} \item{class}{the event
-#'   class} \item{probNames}{the names of the model probabilities}
-#'   \item{pct}{the baseline event rate}
+#' @return `lift.formula` returns a list with elements:
+#'
+#' * `data`: the data used for plotting
+#' * `cuts`: the number of cuts
+#' * `class`: the event class
+#' * `probNames`: the names of the model probabilities
+#' * `pct`: the baseline event rate
 #'
 #' `xyplot.lift` returns a \pkg{lattice} object
 #' @author Max Kuhn, some \pkg{lattice} code and documentation by Deepayan

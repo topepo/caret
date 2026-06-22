@@ -61,18 +61,20 @@ binary vector be returned?}
 }
 \value{
 The output of \code{dummyVars} is a list of class 'dummyVars' with
-elements \item{call }{the function call} \item{form }{the model formula}
-\item{vars }{names of all the variables in the model} \item{facVars
-}{names of all the factor variables in the model} \item{lvls }{levels of
-any factor variables} \item{sep }{\code{NULL} or a character separator}
-\item{terms }{the \code{\link[stats:terms.formula]{stats::terms.formula()}} object} \item{levelsOnly }{a
-logical}
+elements
+\itemize{
+\item \code{call}: the function call
+\item \code{form}: the model formula
+\item \code{vars}: names of all the variables in the model
+\item \code{facVars}: names of all the factor variables in the model
+\item \code{lvls}: levels of any factor variables
+\item \code{sep}: \code{NULL} or a character separator
+\item \code{terms}: the \code{\link[stats:terms.formula]{stats::terms.formula()}} object
+\item \code{levelsOnly}: a logical
+}
 
-The \code{predict} function produces a data frame.
-
-\code{class2ind} returns a matrix (or a vector if \code{drop2nd = TRUE}).
-
-\code{contr.ltfr} generates a design matrix.
+The \code{predict} function produces a data frame. \code{class2ind} returns a matrix
+(or a vector if \code{drop2nd = TRUE}). \code{contr.ltfr} generates a design matrix.
 }
 \description{
 \code{dummyVars} creates a full set of dummy variables (i.e. less than full rank

@@ -67,9 +67,13 @@ and dodge width, respectively. In the latter case, a dodge is only used
 when multiple models are specified in the formula.}
 }
 \value{
-\code{calibration.formula} returns a list with elements: \item{data}{the
-data used for plotting} \item{cuts}{the number of cuts} \item{class}{the
-event class} \item{probNames}{the names of the model probabilities}
+\code{calibration.formula} returns a list with elements:
+\itemize{
+\item \code{data}: the data used for plotting
+\item \code{cuts}: the number of cuts
+\item \code{class}: the event class
+\item \code{probNames}: the names of the model probabilities
+}
 
 \code{xyplot.calibration} returns a \pkg{lattice} object
 }

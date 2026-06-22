@@ -99,13 +99,17 @@ this argument must have a non-null value}
 \item{digits}{minimal number of \emph{significant digits}.}
 }
 \value{
-\code{bag} produces an object of class \code{bag} with elements \item{fits }{a
-list with two sub-objects: the \code{fit} object has the actual model fit for
-that #' bagged samples and the \code{vars} object is either \code{NULL} or a vector
-of integers corresponding to which predictors were sampled for that model}
-\item{control }{a mirror of the arguments passed into \code{bagControl}}
-\item{call }{the call} \item{B }{the number of bagging iterations}
-\item{dims }{the dimensions of the training set}
+\code{bag} produces an object of class \code{bag} with elements:
+\itemize{
+\item \code{fits}: a list with two sub-objects: the \code{fit} object has the actual model
+fit for that #' bagged samples and the \code{vars} object is either
+\code{NULL} or a vector of integers corresponding to which predictors
+were sampled for that model
+\item \code{control}: a mirror of the arguments passed into \code{bagControl}
+\item \code{call}: the call
+\item \code{B}: the number of bagging iterations
+\item \code{dims}: the dimensions of the training set
+}
 }
 \description{
 \code{bag} provides a framework for bagging classification or

@@ -51,10 +51,14 @@ na.omit, which leads to rejection of cases with missing values on any
 required variable.  (NOTE: If given, this argument must be named.)}
 }
 \value{
-A list with elements \item{fit }{a list of \code{B} FDA fits} \item{B
-}{the number of bootstrap samples} \item{call }{the function call} \item{x
-}{either \code{NULL} or the value of \code{x}, depending on the value of \code{keepX}}
-\item{oob}{a matrix of performance estimates for each bootstrap sample}
+A list with elements:
+\itemize{
+\item \code{fit}: a list of \code{B} FDA fits
+\item \code{B}: the number of bootstrap samples
+\item \code{call}: the function call
+\item \code{x}: either \code{NULL} or the value of \code{x}, depending on the value of \code{keepX}
+\item \code{oob}: a matrix of performance estimates for each bootstrap sample
+}
 }
 \description{
 A bagging wrapper for flexible discriminant analysis (FDA)

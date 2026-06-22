@@ -50,18 +50,18 @@
 #' @param x A factor vector.
 #' @param ... additional arguments to be passed to other methods
 #' @return The output of `dummyVars` is a list of class 'dummyVars' with
-#'   elements \item{call }{the function call} \item{form }{the model formula}
-#'   \item{vars }{names of all the variables in the model} \item{facVars
-#'   }{names of all the factor variables in the model} \item{lvls }{levels of
-#'   any factor variables} \item{sep }{`NULL` or a character separator}
-#'   \item{terms }{the [stats::terms.formula()] object} \item{levelsOnly }{a
-#'   logical}
+#' elements
+#' * `call`: the function call
+#' * `form`: the model formula
+#' * `vars`: names of all the variables in the model
+#' * `facVars`: names of all the factor variables in the model
+#' * `lvls`: levels of any factor variables
+#' * `sep`: `NULL` or a character separator
+#' * `terms`: the [stats::terms.formula()] object
+#' * `levelsOnly`: a logical
 #'
-#' The `predict` function produces a data frame.
-#'
-#' `class2ind` returns a matrix (or a vector if `drop2nd = TRUE`).
-#'
-#' `contr.ltfr` generates a design matrix.
+#' The `predict` function produces a data frame. `class2ind` returns a matrix
+#' (or a vector if `drop2nd = TRUE`). `contr.ltfr` generates a design matrix.
 #' @author `contr.ltfr` is a small modification of [stats::contr.treatment()]
 #'   by Max Kuhn
 #' @seealso [stats::model.matrix()], [stats::contrasts()], [stats::formula()]

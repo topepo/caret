@@ -67,18 +67,24 @@ used when \code{ordinal = FALSE}. See Details below.}
 \item{ordinal}{Should an ordered factor be returned? See Details below.}
 }
 \value{
-a data frame with columns: \item{Class }{A factor with levels
-"Class1" and "Class2"} \item{TwoFactor1, TwoFactor2 }{Correlated
-multivariate normal predictors (denoted as \code{A} and \code{B} above)}
-\item{Nonlinear1, Nonlinear2, Nonlinear3}{Uncorrelated random uniform
-predictors (\code{J}, \code{K} and \code{L} above).} \item{Linear1, }{Optional
-uncorrelated standard normal predictors (\code{C} through \code{H}
-above)}\item{list()}{Optional uncorrelated standard normal predictors (\code{C}
-through \code{H} above)} \item{Noise1, }{Optional uncorrelated standard normal
-predictions}\item{list()}{Optional uncorrelated standard normal
-predictions} \item{Corr1, }{Optional correlated multivariate normal
-predictors (each with unit variances)}\item{list()}{Optional correlated
-multivariate normal predictors (each with unit variances)}.
+a data frame with columns:
+\itemize{
+\item \code{Class}: A factor with levels "Class1" and "Class2"
+\item \verb{TwoFactor1, TwoFactor2}: Correlated multivariate normal predictors
+(denoted as \code{A} and \code{B} above)
+\item \verb{Nonlinear1, Nonlinear2, Nonlinear3}: Uncorrelated random uniform
+predictors (\code{J}, \code{K} and \code{L} above).
+\item \verb{Linear1,}: Optional uncorrelated standard normal predictors (\code{C} through
+\code{H} above)
+\item \code{list()}: Optional uncorrelated standard normal predictors (\code{C} through
+\code{H} above)
+\item \verb{Noise1,}: Optional uncorrelated standard normal predictions
+\item \code{list()}: Optional uncorrelated standard normal predictions
+\item \verb{Corr1,}: Optional correlated multivariate normal predictors (each with
+unit variances)
+\item \code{list()}: Optional correlated multivariate normal predictors (each with
+unit variances)
+}
 }
 \description{
 This function simulates regression and classification data with truly

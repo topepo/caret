@@ -39,12 +39,16 @@ distance. \code{trans = NULL} will not apply a function}
 }
 \value{
 for \code{classDist}, an object of class \code{classDist} with elements:
-\item{values }{a list with elements for each class. Each element contains
-a mean vector for the class centroid and the inverse of the class
-covariance matrix} \item{classes}{a character vector of class labels}
-\item{pca}{the results of \code{\link[stats:prcomp]{stats::prcomp()}} when \code{pca = TRUE}}
-\item{call}{the function call} \item{p}{the number of variables}
-\item{n}{a vector of samples sizes per class}
+\itemize{
+\item \code{values}: a list with elements for each class. Each element contains a
+mean vector for the class centroid and the inverse of the class
+covariance matrix
+\item \code{classes}: a character vector of class labels
+\item \code{pca}: the results of \code{\link[stats:prcomp]{stats::prcomp()}} when \code{pca = TRUE}
+\item \code{call}: the function call
+\item \code{p}: the number of variables
+\item \code{n}: a vector of samples sizes per class
+}
 
 For \code{predict.classDist}, a matrix with columns for each class. The columns
 names are the names of the class with the prefix \code{dist.}. In the case of

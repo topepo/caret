@@ -26,10 +26,13 @@ normalized. Valid values are "none", "overall" or "average".}
 }
 \value{
 a list of class \code{confusionMatrix.train}, \code{confusionMatrix.rfe} or
-\code{confusionMatrix.sbf} with elements \item{table}{the normalized matrix}
-\item{norm}{an echo fo the call} \item{text}{a character string with
-details about the resampling procedure (e.g. "Bootstrapped (25 reps)
-Confusion Matrix"}
+\code{confusionMatrix.sbf} with elements
+\itemize{
+\item \code{table}: the normalized matrix
+\item \code{norm}: an echo fo the call
+\item \code{text}: a character string with details about the resampling procedure
+(e.g. "Bootstrapped (25 reps) Confusion Matrix"
+}
 }
 \description{
 Using a \code{\link[=train]{train()}}, \code{\link[=rfe]{rfe()}}, \code{\link[=sbf]{sbf()}} object, determine a confusion matrix

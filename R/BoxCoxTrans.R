@@ -34,14 +34,16 @@
 #' estimated and no transformation is applied.
 #'
 #' @return Both functions returns a list of class of either `BoxCoxTrans` or
-#'   `expoTrans` with elements \item{lambda }{estimated transformation value}
-#'   \item{fudge }{value of `fudge`} \item{n }{number of data points used to
-#'   estimate lambda} \item{summary }{the results of `summary(y)`} \item{ratio
-#'   }{`max(y)/min(y)`} \item{skewness }{sample skewness statistic}
-#'   `BoxCoxTrans` also returns: \item{fudge }{value of `fudge`}
+#' `expoTrans` with elements
+#' * `lambda`: estimated transformation value
+#' * `fudge`: value of `fudge`
+#' * `n`: number of data points used to estimate lambda
+#' * `summary`: the results of `summary(y)`
+#' * `ratio`: `max(y)/min(y)`
+#' * `skewness`: sample skewness statistic
+#' * `fudge`: value of `fudge`
 #'
 #' The `predict` functions returns numeric vectors of transformed values
-#'
 #' @references Box, G. E. P. and Cox, D. R. (1964) An analysis of
 #'   transformations (with discussion). Journal of the Royal Statistical
 #'   Society B, 26, 211-252. Manly, B. L. (1976) Exponential data

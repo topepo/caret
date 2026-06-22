@@ -88,10 +88,14 @@ these percentages are found. The lines use either the \code{plot.line} or
 \item{mapping, environment}{Not used (required for \code{ggplot} consistency).}
 }
 \value{
-\code{lift.formula} returns a list with elements: \item{data}{the data
-used for plotting} \item{cuts}{the number of cuts} \item{class}{the event
-class} \item{probNames}{the names of the model probabilities}
-\item{pct}{the baseline event rate}
+\code{lift.formula} returns a list with elements:
+\itemize{
+\item \code{data}: the data used for plotting
+\item \code{cuts}: the number of cuts
+\item \code{class}: the event class
+\item \code{probNames}: the names of the model probabilities
+\item \code{pct}: the baseline event rate
+}
 
 \code{xyplot.lift} returns a \pkg{lattice} object
 }

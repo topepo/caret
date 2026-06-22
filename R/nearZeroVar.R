@@ -47,12 +47,15 @@
 #'   but execution time should be shorter.
 #' @return For `nearZeroVar`: if `saveMetrics = FALSE`, a vector of integers
 #'   corresponding to the column positions of the problematic predictors. If
-#'   `saveMetrics = TRUE`, a data frame with columns: \item{freqRatio }{the
-#'   ratio of frequencies for the most common value over the second most common
-#'   value} \item{percentUnique }{the percentage of unique data points out of
-#'   the total number of data points} \item{zeroVar }{a vector of logicals for
-#'   whether the predictor has only one distinct value} \item{nzv }{a vector of
-#'   logicals for whether the predictor is a near zero variance predictor}
+#' `saveMetrics = TRUE`, a data frame with columns:
+#' * `freqRatio`: the ratio of frequencies for the most common value over the
+#'                second most common value
+#' * `percentUnique`: the percentage of unique data points out of the total
+#'                    number of data points
+#' * `zeroVar`: a vector of logicals for whether the predictor has only one
+#'              distinct value
+#' * `nzv`: a vector of logicals for whether the predictor is a near zero
+#'          variance predictor
 #'
 #' For `checkResamples` or `checkConditionalX`, a vector of column indicators
 #' for predictors with empty conditional distributions in at least one class of

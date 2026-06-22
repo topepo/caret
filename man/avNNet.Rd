@@ -85,10 +85,14 @@ the predicted class or \code{prob} for the class probabilities.}
 }
 \value{
 For \code{avNNet}, an object of \code{"avNNet"} or \code{"avNNet.formula"}. Items
-of interest in #' the output are: \item{model }{a list of the models
-generated from \code{\link[nnet:nnet]{nnet::nnet()}}} \item{repeats }{an echo of the model input}
-\item{names }{if any predictors had only one distinct value, this is a
-character string of the #' remaining columns. Otherwise a value of \code{NULL}}
+of interest in #' the output are:
+\itemize{
+\item \code{model}: a list of the models generated from \code{\link[nnet:nnet]{nnet::nnet()}}
+\item \code{repeats}: an echo of the model input
+\item \code{names}: if any predictors had only one distinct value, this is a
+character string of the #' remaining columns. Otherwise a value
+of \code{NULL}
+}
 }
 \description{
 Aggregate several neural network models

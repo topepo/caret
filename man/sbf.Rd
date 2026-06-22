@@ -54,19 +54,24 @@ appearing as variables in the model formula.}
 non-null column names}
 }
 \value{
-for \code{sbf}, an object of class \code{sbf} with elements: \item{pred}{if
-\code{sbfControl$saveDetails} is \code{TRUE}, this is a list of predictions for the
-hold-out samples at each resampling iteration. Otherwise it is \code{NULL}}
-\item{variables}{a list of variable names that survived the filter at each
-resampling iteration} \item{results}{a data frame of results aggregated
-over the resamples} \item{fit}{the final model fit with only the filtered
-variables} \item{optVariables}{the names of the variables that survived
-the filter using the training set} \item{ call}{the function call}
-\item{control}{the control object} \item{resample}{if
-\code{sbfControl$returnResamp} is "all", a data frame of the resampled
-performance measures. Otherwise, \code{NULL}} \item{metrics}{a character vector
-of names of the performance measures} \item{dots}{a list of optional
-arguments that were passed in}
+for \code{sbf}, an object of class \code{sbf} with elements:
+\itemize{
+\item \code{pred}: if \code{sbfControl$saveDetails} is \code{TRUE}, this is a list of
+predictions for the hold-out samples at each resampling iteration.
+Otherwise it is \code{NULL}
+\item \code{variables}: a list of variable names that survived the filter at each
+resampling iteration
+\item \code{results}: a data frame of results aggregated over the resamples
+\item \code{fit}: the final model fit with only the filtered variables
+\item \code{optVariables}: the names of the variables that survived the filter using
+the training set
+\item \code{call}: the function call
+\item \code{control}: the control object
+\item \code{resample}: if \code{sbfControl$returnResamp} is "all", a data frame of the
+resampled performance measures. Otherwise, \code{NULL}
+\item \code{metrics}: a character vector of names of the performance measures
+\item \code{dots}: a list of optional arguments that were passed in
+}
 
 For \code{predict.sbf}, a vector of predictions.
 }

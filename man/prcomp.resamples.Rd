@@ -33,8 +33,11 @@ components}
 \value{
 For \code{prcomp.resamples}, an object with classes \code{prcomp.resamples}
 and \code{prcomp}. This object is the same as the object produced by \code{prcomp},
-but with additional elements: \item{metric }{the value for the \code{metric}
-argument} \item{call }{the call}
+but with additional elements:
+\itemize{
+\item \code{metric}: the value for the \code{metric} argument
+\item \code{call}: the call
+}
 
 For \code{plot.prcomp.resamples}, a Lattice object (see Details above)
 }

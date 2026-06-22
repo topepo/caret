@@ -15,9 +15,10 @@
 #' @name BloodBrain
 #' @aliases BloodBrain bbbDescr logBBB
 #' @docType data
-#' @return \item{bbbDescr}{data frame of chemical descriptors}
-#'   \item{logBBB}{vector of assay results}
+#' @return:
 #'
+#' * `bbbDescr`: data frame of chemical descriptors
+#' * `logBBB`: vector of assay results
 #' @source Mente, S.R. and Lombardo, F. (2005). A recursive-partitioning model
 #'   for blood-brain barrier permeation, *Journal of Computer-Aided Molecular
 #'   Design*, Vol. 19, pg. 465-481.
@@ -43,11 +44,12 @@ NULL
 #' @name cox2
 #' @aliases cox2 cox2Class cox2Descr cox2IC50
 #' @docType data
-#' @return \item{cox2Descr}{the descriptors} \item{cox2IC50}{the IC50 data used
-#'   to determine activity}
+#' @return:
 #'
-#' \item{cox2Class}{the categorical outcome ("Active" or "Inactive") based on
-#' the $2^2.5$ cutoff}
+#' * `cox2Descr`: the descriptors
+#' * `cox2IC50`: the IC50 data used to determine activity
+#' * `cox2Class`: the categorical outcome ("Active" or "Inactive") based on the
+#'                $2^2.5$ cutoff
 #' @source Sutherland, J. J., O'Brien, L. A. and Weaver, D. F. (2003).
 #'   Spline-Fitting with a Genetic Algorithm: A Method for Developing
 #'   Classification Structure-Activity Relationships, *Journal of Chemical
@@ -73,8 +75,9 @@ NULL
 #'
 #' @name dhfr
 #' @docType data
-#' @return \item{dhfr}{data frame of chemical descriptors and the activity
-#'   values}
+#' @return:
+#'
+#' * `dhfr`: data frame of chemical descriptors and the activity values
 #' @source Sutherland, J.J. and Weaver, D.F. (2004). Three-dimensional
 #'   quantitative structure-activity and structure-selectivity relationships of
 #'   dihydrofolate reductase inhibitors, *Journal of Computer-Aided Molecular
@@ -135,8 +138,10 @@ NULL
 #' @name mdrr
 #' @aliases mdrr mdrrClass mdrrDescr
 #' @docType data
-#' @return \item{mdrrDescr}{the descriptors} \item{mdrrClass}{the categorical
-#'   outcome ("Active" or "Inactive")}
+#' @return:
+#'
+#' * `mdrrDescr`: the descriptors
+#' * `mdrrClass`: the categorical outcome ("Active" or "Inactive")
 #' @source Svetnik, V., Liaw, A., Tong, C., Culberson, J. C., Sheridan, R. P.
 #'   Feuston, B. P (2003).  Random Forest: A Classification and Regression Tool
 #'   for Compound Classification and QSAR Modeling, *Journal of Chemical
@@ -158,12 +163,14 @@ NULL
 #' @name oil
 #' @aliases oil oilType fattyAcids
 #' @docType data
-#' @return \item{fattyAcids}{data frame of fatty acid compositions: Palmitic,
-#'   Stearic, Oleic, Linoleic, Linolenic, Eicosanoic and Eicosenoic. When
-#'   values fell below the lower limit of the assay (denoted as <X in the
-#'   paper), the limit was used. } \item{oilType}{factor of oil types: pumpkin
-#'   (A), sunflower (B), peanut (C), olive (D), soybean (E), rapeseed (F) and
-#'   corn (G).}
+#' @return:
+#'
+#' * `fattyAcids`: data frame of fatty acid compositions: Palmitic, Stearic,
+#'                 Oleic, Linoleic, Linolenic, Eicosanoic and Eicosenoic. When
+#'                 values fell below the lower limit of the assay (denoted as
+#'                 <X in the paper), the limit was used.
+#' * `oilType`: factor of oil types: pumpkin (A), sunflower (B), peanut (C),
+#'              olive (D), soybean (E), rapeseed (F) and corn (G).
 #' @source Brodnjak-Voncina et al. (2005). Multivariate data analysis in
 #'   classification of vegetable oils characterized by the content of fatty
 #'   acids, *Chemometrics and Intelligent Laboratory Systems*, Vol. 75:31-45.
@@ -182,9 +189,11 @@ NULL
 #' @name pottery
 #' @aliases pottery potteryClass
 #' @docType data
-#' @return \item{pottery}{11 elemental composition measurements }
-#'   \item{potteryClass}{factor of pottery type: black carbon containing bulks
-#'   (A) and clayey (B)}
+#' @return:
+#'
+#' * `pottery`: 11 elemental composition measurements
+#' * `potteryClass`: factor of pottery type: black carbon containing bulks (A)
+#'                   and clayey (B)
 #' @source R. G. Brereton (2003). *Chemometrics: Data Analysis for the
 #'   Laboratory and Chemical Plant*, pg. 261.
 #' @keywords datasets
@@ -206,9 +215,11 @@ NULL
 #'
 #' @name Sacramento
 #' @docType data
-#' @return \item{Sacramento}{a data frame with columns '`city`', '`zip`',
-#'   '`beds`', '`baths`', '`sqft`', '`type`', '`price`', '`latitude`', and
-#'   '`longitude`'}
+#' @return:
+#'
+#' * `Sacramento`: a data frame with columns '`city`', '`zip`', '`beds`',
+#'                 '`baths`', '`sqft`', '`type`', '`price`', '`latitude`', and
+#'                 '`longitude`'
 #' @source SpatialKey website:
 #'   <https://support.spatialkey.com/spatialkey-sample-csv-data/>
 #' @keywords datasets
@@ -240,8 +251,10 @@ NULL
 #' @name scat
 #' @aliases scat scat_orig
 #' @docType data
-#' @return \item{scat_orig}{the entire data set in the Supplemental Materials}
-#'   \item{scat}{data on the three main species}
+#' @return:
+#'
+#' * `scat_orig`: the entire data set in the Supplemental Materials
+#' * `scat`: data on the three main species
 #' @source Reid, R. E. B. (2015). A morphometric modeling approach to
 #'   distinguishing among bobcat, coyote and gray fox scats. *Wildlife
 #'   Biology*, 21(5), 254-262
@@ -255,11 +268,13 @@ NULL
 #'
 #' @name cars
 #' @docType data
-#' @return \item{cars}{data frame of the suggested retail price (column
-#'   `Price`) and various characteristics of each car (columns `Mileage`,
-#'   `Cylinder`, `Doors`, `Cruise`, `Sound`, `Leather`, `Buick`, `Cadillac`,
-#'   `Chevy`, `Pontiac`, `Saab`, `Saturn`, `convertible`, `coupe`, `hatchback`,
-#'   `sedan` and `wagon`)}
+#' @return:
+#'
+#' * `cars`: data frame of the suggested retail price (column `Price`) and
+#'           various characteristics of each car (columns `Mileage`,
+#'           `Cylinder`, `Doors`, `Cruise`, `Sound`, `Leather`, `Buick`,
+#'           `Cadillac`, `Chevy`, `Pontiac`, `Saab`, `Saturn`, `convertible`,
+#'           `coupe`, `hatchback`, `sedan` and `wagon`)
 #' @source Kuiper, S. (2008). Introduction to Multiple Regression: How Much Is
 #'   Your Car Worth?, *Journal of Statistics Education*, Vol. 16
 #'   <http://jse.amstat.org/jse_archive.htm#2008>.
@@ -291,7 +306,9 @@ NULL
 #'
 #' @name segmentationData
 #' @docType data
-#' @return \item{segmentationData}{data frame of cells}
+#' @return:
+#'
+#' * `segmentationData`: data frame of cells
 #' @source Hill, LaPan, Li and Haney (2007). Impact of image segmentation on
 #'   high-content screening data quality for SK-BR-3 cells, *BMC
 #'   Bioinformatics*, Vol. 8, pg. 340,
@@ -331,9 +348,11 @@ NULL
 #' @name tecator
 #' @aliases tecator absorp endpoints
 #' @docType data
-#' @return \item{absorp}{absorbance data for 215 samples. The first 129 were
-#'   originally used as a training set} \item{endpoints}{the percentages of
-#'   water, fat and protein}
+#' @return:
+#'
+#' * `absorp`: absorbance data for 215 samples. The first 129 were originally
+#'             used as a training set
+#' * `endpoints`: the percentages of water, fat and protein
 #' @keywords datasets
 #' @examples
 #'

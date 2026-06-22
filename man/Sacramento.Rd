@@ -9,9 +9,12 @@ SpatialKey website:
 \url{https://support.spatialkey.com/spatialkey-sample-csv-data/}
 }
 \value{
-\item{Sacramento}{a data frame with columns '\code{city}', '\code{zip}',
-'\code{beds}', '\code{baths}', '\code{sqft}', '\code{type}', '\code{price}', '\code{latitude}', and
-'\code{longitude}'}
+:
+\itemize{
+\item \code{Sacramento}: a data frame with columns '\code{city}', '\code{zip}', '\code{beds}',
+'\code{baths}', '\code{sqft}', '\code{type}', '\code{price}', '\code{latitude}', and
+'\code{longitude}'
+}
 }
 \description{
 This data frame contains house and sale price data for 932 homes in

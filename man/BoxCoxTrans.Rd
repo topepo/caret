@@ -52,11 +52,16 @@ stripped from \code{y} and \code{x} before the computation proceeds.}
 }
 \value{
 Both functions returns a list of class of either \code{BoxCoxTrans} or
-\code{expoTrans} with elements \item{lambda }{estimated transformation value}
-\item{fudge }{value of \code{fudge}} \item{n }{number of data points used to
-estimate lambda} \item{summary }{the results of \code{summary(y)}} \item{ratio
-}{\code{max(y)/min(y)}} \item{skewness }{sample skewness statistic}
-\code{BoxCoxTrans} also returns: \item{fudge }{value of \code{fudge}}
+\code{expoTrans} with elements
+\itemize{
+\item \code{lambda}: estimated transformation value
+\item \code{fudge}: value of \code{fudge}
+\item \code{n}: number of data points used to estimate lambda
+\item \code{summary}: the results of \code{summary(y)}
+\item \code{ratio}: \code{max(y)/min(y)}
+\item \code{skewness}: sample skewness statistic
+\item \code{fudge}: value of \code{fudge}
+}
 
 The \code{predict} functions returns numeric vectors of transformed values
 }

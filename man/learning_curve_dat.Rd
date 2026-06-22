@@ -32,12 +32,16 @@ here, do not use \code{method = "none"}.}
 }
 \value{
 a data frame with columns for each performance metric calculated by
-\code{\link[=train]{train()}} as well as columns: \item{Training_Size }{the number of data
-points used in the current model fit} \item{Data }{which data were used to
-calculate performance. Values are "Resampling", "Training", and
-(optionally) "Testing"} In the results, each data set size will have one
-row for the apparent error rate, one row for the test set results (if
-used) and as many rows as resamples (e.g. 10 rows if 10-fold CV is used).
+\code{\link[=train]{train()}} as well as columns:
+\itemize{
+\item \code{Training_Size}: the number of data points used in the current model fit
+\item \code{Data}: which data were used to calculate performance. Values are
+"Resampling", "Training", and (optionally) "Testing"
+}
+
+In the results, each data set size will have one row for the apparent error
+rate, one row for the test set results (if used) and as many rows as
+resamples (e.g. 10 rows if 10-fold CV is used).
 }
 \description{
 For a given model, this function fits several versions on different sizes of

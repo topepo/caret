@@ -10,10 +10,14 @@ findLinearCombos(x)
 \item{x}{a numeric matrix}
 }
 \value{
-a list with elements: \item{linearCombos }{If there are linear
-combinations, this will be a list with elements for each dependency that
-contains vectors of column numbers. } \item{remove }{a list of column
-numbers that can be removed to counter the linear combinations}
+a list with elements:
+\itemize{
+\item \code{linearCombos}: If there are linear combinations, this will be a list with
+elements for each dependency that contains vectors of
+column numbers.
+\item \code{remove}: a list of column numbers that can be removed to counter the
+linear combinations
+}
 }
 \description{
 Enumerate and resolve the linear combinations in a numeric matrix

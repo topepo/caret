@@ -120,27 +120,36 @@ required variable. (NOTE: If given, this argument must be named.)}
 appearing as variables in the model formula.}
 }
 \value{
-A list is returned of class \code{train} containing: \item{method }{The
-chosen model.} \item{modelType }{An identifier of the model type.}
-\item{results }{A data frame the training error rate and values of the
-tuning parameters.} \item{bestTune }{A data frame with the final
-parameters.} \item{call}{The (matched) function call with dots expanded}
-\item{dots}{A list containing any ... values passed to the original call}
-\item{metric}{A string that specifies what summary metric will be used to
-select the optimal model.} \item{control}{The list of control parameters.}
-\item{preProcess }{Either \code{NULL} or an object of class \code{\link[=preProcess]{preProcess()}}}
-\item{finalModel}{A fit object using the best parameters}
-\item{trainingData}{A data frame} \item{resample}{A data frame with
-columns for each performance metric. Each row corresponds to each
-resample. If leave-one-out cross-validation or out-of-bag estimation
-methods are requested, this will be \code{NULL}. The \code{returnResamp} argument of
-\code{\link[=trainControl]{trainControl()}} controls how much of the resampled results are saved.}
-\item{perfNames}{A character vector of performance metrics that are
-produced by the summary function} \item{maximize}{A logical recycled from
-the function arguments.} \item{yLimits}{The range of the training set
-outcomes.} \item{times}{A list of execution times: \code{everything} is for the
-entire call to \code{train}, \code{final} for the final model fit and, optionally,
-\code{prediction} for the time to predict new samples (see \code{\link[=trainControl]{trainControl()}})}
+A list is returned of class \code{train} containing:
+\itemize{
+\item \code{method}: The chosen model.
+\item \code{modelType}: An identifier of the model type.
+\item \code{results}: A data frame the training error rate and values of the tuning
+parameters.
+\item \code{bestTune}: A data frame with the final parameters.
+\item \code{call}: The (matched) function call with dots expanded
+\item \code{dots}: A list containing any ... values passed to the original call
+\item \code{metric}: A string that specifies what summary metric will be used to
+select the optimal model.
+\item \code{control}: The list of control parameters.
+\item \code{preProcess}: Either \code{NULL} or an object of class \code{\link[=preProcess]{preProcess()}}
+\item \code{finalModel}: A fit object using the best parameters
+\item \code{trainingData}: A data frame
+\item \code{resample}: A data frame with columns for each performance metric. Each
+row corresponds to each resample. If leave-one-out
+cross-validation or out-of-bag estimation methods are
+requested, this will be \code{NULL}. The \code{returnResamp} argument of
+\code{\link[=trainControl]{trainControl()}} controls how much of the resampled results
+are saved.
+\item \code{perfNames}: A character vector of performance metrics that are produced
+by the summary function
+\item \code{maximize}: A logical recycled from the function arguments.
+\item \code{yLimits}: The range of the training set outcomes.
+\item \code{times}: A list of execution times: \code{everything} is for the entire call to
+\code{train}, \code{final} for the final model fit and, optionally,
+\code{prediction} for the time to predict new samples (see
+\code{\link[=trainControl]{trainControl()}})
+}
 }
 \description{
 This function sets up a grid of tuning parameters for a number of

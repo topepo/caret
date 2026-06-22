@@ -13,8 +13,11 @@ for Compound Classification and QSAR Modeling, \emph{Journal of Chemical
 Information and Computer Sciences}, Vol. 43, pg. 1947-1958.
 }
 \value{
-\item{mdrrDescr}{the descriptors} \item{mdrrClass}{the categorical
-outcome ("Active" or "Inactive")}
+:
+\itemize{
+\item \code{mdrrDescr}: the descriptors
+\item \code{mdrrClass}: the categorical outcome ("Active" or "Inactive")
+}
 }
 \description{
 Svetnik et al. (2003) describe these data: "Bakken and Jurs studied a set of

@@ -15,9 +15,12 @@
 \item{\dots}{optional arguments (not used)}
 }
 \value{
-a list with elements \item{modelInfo}{a matrix with the number of
-model terms and variables used} \item{oobStat }{a summary of the
-out-of-bag statistics} \item{bmarsCall }{the original call to \code{bagEarth}}
+a list with elements:
+\itemize{
+\item \code{modelInfo}: a matrix with the number of model terms and variables used
+\item \code{oobStat}: a summary of the out-of-bag statistics
+\item \code{bmarsCall}: the original call to \code{bagEarth}
+}
 }
 \description{
 The function shows a summary of the results from a bagged earth model

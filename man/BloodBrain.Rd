@@ -12,8 +12,11 @@ for blood-brain barrier permeation, \emph{Journal of Computer-Aided Molecular
 Design}, Vol. 19, pg. 465-481.
 }
 \value{
-\item{bbbDescr}{data frame of chemical descriptors}
-\item{logBBB}{vector of assay results}
+:
+\itemize{
+\item \code{bbbDescr}: data frame of chemical descriptors
+\item \code{logBBB}: vector of assay results
+}
 }
 \description{
 Mente and Lombardo (2005) develop models to predict the log of the ratio of

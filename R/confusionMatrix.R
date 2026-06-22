@@ -64,14 +64,17 @@
 #'   "everything"
 #' @param \dots options to be passed to `table`. NOTE: do not include `dnn`
 #'   here
-#' @return a list with elements \item{table}{the results of `table` on `data`
-#'   and `reference`} \item{positive}{the positive result level}
-#'   \item{overall}{a numeric vector with overall accuracy and Kappa statistic
-#'   values} \item{byClass}{the sensitivity, specificity, positive predictive
-#'   value, negative predictive value, precision, recall, F1, prevalence,
-#'   detection rate, detection prevalence and balanced accuracy for each class.
-#'   For two class systems, this is calculated once using the `positive`
-#'   argument}
+#' @return a list with elements:
+#'
+#' * `table`: the results of `table` on `data` and `reference`
+#' * `positive`: the positive result level
+#' * `overall`: a numeric vector with overall accuracy and Kappa statistic
+#'              values
+#' * `byClass`: the sensitivity, specificity, positive predictive value,
+#'              negative predictive value, precision, recall, F1, prevalence,
+#'              detection rate, detection prevalence and balanced accuracy for
+#'              each class. For two class systems, this is calculated once
+#'              using the `positive` argument
 #' @note If the reference and data factors have the same levels, but in the
 #'   incorrect order, the function will reorder them to the order of the data
 #'   and issue a warning.
@@ -464,10 +467,11 @@ as.table.confusionMatrix <- function(x, ...)  x$table
 #' @param dnn A character vector of dimnames for the table
 #' @param \dots not used here
 #' @return a list of class `confusionMatrix.train`, `confusionMatrix.rfe` or
-#'   `confusionMatrix.sbf` with elements \item{table}{the normalized matrix}
-#'   \item{norm}{an echo fo the call} \item{text}{a character string with
-#'   details about the resampling procedure (e.g. "Bootstrapped (25 reps)
-#'   Confusion Matrix"}
+#' `confusionMatrix.sbf` with elements
+#' * `table`: the normalized matrix
+#' * `norm`: an echo fo the call
+#' * `text`: a character string with details about the resampling procedure
+#'           (e.g. "Bootstrapped (25 reps) Confusion Matrix"
 #' @author Max Kuhn
 #' @seealso [confusionMatrix()], [train()], [rfe()], [sbf()], [trainControl()]
 #' @keywords utilities

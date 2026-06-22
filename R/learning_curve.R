@@ -24,12 +24,14 @@
 #'   not include `x`, `y`, `formula`, or `data`. If `trainControl` is used
 #'   here, do not use `method = "none"`.
 #' @return a data frame with columns for each performance metric calculated by
-#'   [train()] as well as columns: \item{Training_Size }{the number of data
-#'   points used in the current model fit} \item{Data }{which data were used to
-#'   calculate performance. Values are "Resampling", "Training", and
-#'   (optionally) "Testing"} In the results, each data set size will have one
-#'   row for the apparent error rate, one row for the test set results (if
-#'   used) and as many rows as resamples (e.g. 10 rows if 10-fold CV is used).
+#' [train()] as well as columns:
+#' * `Training_Size`: the number of data points used in the current model fit
+#' * `Data`: which data were used to calculate performance. Values are
+#'           "Resampling", "Training", and (optionally) "Testing"
+#'
+#' In the results, each data set size will have one row for the apparent error
+#' rate, one row for the test set results (if used) and as many rows as
+#' resamples (e.g. 10 rows if 10-fold CV is used).
 #' @author Max Kuhn
 #' @seealso [train()]
 #' @keywords models

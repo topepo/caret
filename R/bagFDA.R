@@ -26,11 +26,13 @@
 #'
 #' @details The function computes a FDA model for each bootstap sample.
 #'
-#' @return A list with elements \item{fit }{a list of `B` FDA fits} \item{B
-#'   }{the number of bootstrap samples} \item{call }{the function call} \item{x
-#'   }{either `NULL` or the value of `x`, depending on the value of `keepX`}
-#'   \item{oob}{a matrix of performance estimates for each bootstrap sample}
+#' @return A list with elements:
 #'
+#' * `fit`: a list of `B` FDA fits
+#' * `B`: the number of bootstrap samples
+#' * `call`: the function call
+#' * `x`: either `NULL` or the value of `x`, depending on the value of `keepX`
+#' * `oob`: a matrix of performance estimates for each bootstrap sample
 #' @references J. Friedman, ``Multivariate Adaptive Regression Splines'' (with
 #'   discussion) (1991).  Annals of Statistics, 19/1, 1-141.
 #'

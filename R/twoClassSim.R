@@ -122,18 +122,24 @@
 #' @param ordinal Should an ordered factor be returned? See Details below.
 #' @param factors Should the binary predictors be converted to factors?
 #' @param class Should the simulation produce class labels instead of numbers?
-#' @return a data frame with columns: \item{Class }{A factor with levels
-#'   "Class1" and "Class2"} \item{TwoFactor1, TwoFactor2 }{Correlated
-#'   multivariate normal predictors (denoted as `A` and `B` above)}
-#'   \item{Nonlinear1, Nonlinear2, Nonlinear3}{Uncorrelated random uniform
-#'   predictors (`J`, `K` and `L` above).} \item{Linear1, }{Optional
-#'   uncorrelated standard normal predictors (`C` through `H`
-#'   above)}\item{list()}{Optional uncorrelated standard normal predictors (`C`
-#'   through `H` above)} \item{Noise1, }{Optional uncorrelated standard normal
-#'   predictions}\item{list()}{Optional uncorrelated standard normal
-#'   predictions} \item{Corr1, }{Optional correlated multivariate normal
-#'   predictors (each with unit variances)}\item{list()}{Optional correlated
-#'   multivariate normal predictors (each with unit variances)}.
+#' @return a data frame with columns:
+#'
+#' * `Class`: A factor with levels "Class1" and "Class2"
+#' * `TwoFactor1, TwoFactor2`: Correlated multivariate normal predictors
+#'                             (denoted as `A` and `B` above)
+#' * `Nonlinear1, Nonlinear2, Nonlinear3`: Uncorrelated random uniform
+#'                                         predictors (`J`, `K` and `L` above).
+#' * `Linear1,`: Optional uncorrelated standard normal predictors (`C` through
+#'               `H` above)
+#' * `list()`: Optional uncorrelated standard normal predictors (`C` through
+#'             `H` above)
+#' * `Noise1,`: Optional uncorrelated standard normal predictions
+#' * `list()`: Optional uncorrelated standard normal predictions
+#' * `Corr1,`: Optional correlated multivariate normal predictors (each with
+#'             unit variances)
+#' * `list()`: Optional correlated multivariate normal predictors (each with
+#'             unit variances)
+#'
 #' @author Max Kuhn
 #' @references van der Laan, M. J., & Polley Eric, C. (2007). Super learner.
 #'   Statistical Applications in Genetics and Molecular Biology, 6(1), 1-23.

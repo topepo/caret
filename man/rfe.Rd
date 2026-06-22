@@ -107,12 +107,15 @@ have length of \code{length(sizes)+1}}
 should be retained in the updated model}
 }
 \value{
-A list with elements \item{finalVariables}{a list of size
-\code{length(sizes) + 1} containing the column names of the ``surviving''
-predictors at each stage of selection. The first element corresponds to
-all the predictors (i.e. \code{size = ncol(x)})} \item{pred }{a data frame with
-columns for the test set outcome, the predicted outcome and the subset
-size.}
+A list with elements:
+\itemize{
+\item \code{finalVariables}: a list of size \code{length(sizes) + 1} containing the column
+names of the ``surviving'' predictors at each stage of
+selection. The first element corresponds to all the
+predictors (i.e. \code{size = ncol(x)})
+\item \code{pred}: a data frame with columns for the test set outcome, the predicted
+outcome and the subset size.
+}
 }
 \description{
 A simple backwards selection, a.k.a. recursive feature elimination (RFE),

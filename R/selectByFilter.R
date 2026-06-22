@@ -106,19 +106,23 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
 #'   routine (such as [randomForest::randomForest()]). For `predict.sbf`:
 #'   augments cannot be passed to the prediction function using `predict.sbf`
 #'   as it uses the function originally specified for prediction.
-#' @return for `sbf`, an object of class `sbf` with elements: \item{pred}{if
-#'   `sbfControl$saveDetails` is `TRUE`, this is a list of predictions for the
-#'   hold-out samples at each resampling iteration. Otherwise it is `NULL`}
-#'   \item{variables}{a list of variable names that survived the filter at each
-#'   resampling iteration} \item{results}{a data frame of results aggregated
-#'   over the resamples} \item{fit}{the final model fit with only the filtered
-#'   variables} \item{optVariables}{the names of the variables that survived
-#'   the filter using the training set} \item{ call}{the function call}
-#'   \item{control}{the control object} \item{resample}{if
-#'   `sbfControl$returnResamp` is "all", a data frame of the resampled
-#'   performance measures. Otherwise, `NULL`} \item{metrics}{a character vector
-#'   of names of the performance measures} \item{dots}{a list of optional
-#'   arguments that were passed in}
+#' @return for `sbf`, an object of class `sbf` with elements:
+#'
+#' * `pred`: if `sbfControl$saveDetails` is `TRUE`, this is a list of
+#'           predictions for the hold-out samples at each resampling iteration.
+#'           Otherwise it is `NULL`
+#' * `variables`: a list of variable names that survived the filter at each
+#'                resampling iteration
+#' * `results`: a data frame of results aggregated over the resamples
+#' * `fit`: the final model fit with only the filtered variables
+#' * `optVariables`: the names of the variables that survived the filter using
+#'                   the training set
+#' * `call`: the function call
+#' * `control`: the control object
+#' * `resample`: if `sbfControl$returnResamp` is "all", a data frame of the
+#'               resampled performance measures. Otherwise, `NULL`
+#' * `metrics`: a character vector of names of the performance measures
+#' * `dots`: a list of optional arguments that were passed in
 #'
 #' For `predict.sbf`, a vector of predictions.
 #' @author Max Kuhn
@@ -1321,12 +1325,15 @@ varImp.sbf <- function(object, onlyFinal = TRUE, ...)
 #' @param type Either "raw" (for regression), "class" or "prob" (for
 #'   classification)
 #' @return The output of `nullModel` is a list of class `nullModel` with
-#'   elements \item{call }{the function call} \item{value }{the mean of `y` or
-#'   the most prevalent class} \item{levels }{when `y` is a factor, a vector of
-#'   levels. `NULL` otherwise} \item{pct }{when `y` is a factor, a data frame
-#'   with a column for each class (`NULL` otherwise). The column for the most
-#'   prevalent class has the proportion of the training samples with that class
-#'   (the other columns are zero). } \item{n }{the number of elements in `y`}
+#' elements
+#' * `call`: the function call
+#' * `value`: the mean of `y` or the most prevalent class
+#' * `levels`: when `y` is a factor, a vector of levels. `NULL` otherwise
+#' * `pct`: when `y` is a factor, a data frame with a column for each class
+#'          (`NULL` otherwise). The column for the most prevalent class has the
+#'          proportion of the training samples with that class (the other
+#'          columns are zero).
+#' * `n`: the number of elements in `y`
 #'
 #' `predict.nullModel` returns a either a factor or numeric vector depending on
 #' the class of `y`. All predictions are always the same.

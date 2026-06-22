@@ -11,7 +11,10 @@ Bioinformatics}, Vol. 8, pg. 340,
 \url{https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-8-340}.
 }
 \value{
-\item{segmentationData}{data frame of cells}
+:
+\itemize{
+\item \code{segmentationData}: data frame of cells
+}
 }
 \description{
 Hill, LaPan, Li and Haney (2007) develop models to predict which cells in a

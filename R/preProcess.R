@@ -140,19 +140,23 @@ getRangeBounds <- function(pp) {
 #'   for range transformation
 #' @param \dots additional arguments to pass to [fastICA::fastICA()], such as
 #'   `n.comp`
-#' @return `preProcess` results in a list with elements \item{call}{the
-#'   function call} \item{method}{a named list of operations and the variables
-#'   used for each } \item{dim}{the dimensions of `x`} \item{bc}{Box-Cox
-#'   transformation values, see [BoxCoxTrans()]} \item{mean}{a vector of means
-#'   (if centering was requested)} \item{std}{a vector of standard deviations
-#'   (if scaling or PCA was requested)} \item{rotation}{a matrix of
-#'   eigenvectors if PCA was requested} \item{method}{the value of `method`}
-#'   \item{thresh}{the value of `thresh`} \item{ranges}{a matrix of min and max
-#'   values for each predictor when `method` includes "range" (and `NULL`
-#'   otherwise)} \item{numComp}{the number of principal components required of
-#'   capture the specified amount of variance} \item{ica}{contains values for
-#'   the `W` and `K` matrix of the decomposition} \item{median}{a vector of
-#'   medians (if median imputation was requested)}
+#' @return `preProcess` results in a list with elements:
+#'
+#' * `call`: the function call
+#' * `method`: a named list of operations and the variables used for each
+#' * `dim`: the dimensions of `x`
+#' * `bc`: Box-Cox transformation values, see [BoxCoxTrans()]
+#' * `mean`: a vector of means (if centering was requested)
+#' * `std`: a vector of standard deviations (if scaling or PCA was requested)
+#' * `rotation`: a matrix of eigenvectors if PCA was requested
+#' * `method`: the value of `method`
+#' * `thresh`: the value of `thresh`
+#' * `ranges`: a matrix of min and max values for each predictor when `method`
+#'             includes "range" (and `NULL` otherwise)
+#' * `numComp`: the number of principal components required of capture the
+#'              specified amount of variance
+#' * `ica`: contains values for the `W` and `K` matrix of the decomposition
+#' * `median`: a vector of medians (if median imputation was requested)
 #'
 #' `predict.preProcess` will produce a data frame.
 #' @author Max Kuhn, median imputation by Zachary Mayer

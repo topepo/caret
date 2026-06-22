@@ -52,12 +52,17 @@ with \code{as.data.frame}}
 }
 \value{
 For \code{resamples}: an object with class \code{"resamples"} with elements
-\item{call }{the call} \item{values }{a data frame of results where rows
-correspond to resampled data sets and columns indicate the model and
-metric} \item{models }{a character string of model labels} \item{metrics
-}{a character string of performance metrics} \item{methods }{a character
-string of the \code{\link[=train]{train()}} \code{method} argument values for each model } For
-\code{sort.resamples} a character string in the sorted order is generated.
+\itemize{
+\item \code{call}: the call
+\item \code{values}: a data frame of results where rows correspond to resampled data
+sets and columns indicate the model and metric
+\item \code{models}: a character string of model labels
+\item \code{metrics}: a character string of performance metrics
+\item \code{methods}: a character string of the \code{\link[=train]{train()}} \code{method} argument values
+for each model
+}
+
+For \code{sort.resamples} a character string in the sorted order is generated.
 \code{modelCor} returns a correlation matrix.
 }
 \description{

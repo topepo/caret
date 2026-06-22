@@ -26,11 +26,13 @@
 #'
 #' @details The function computes a Earth model for each bootstap sample.
 #'
-#' @return A list with elements \item{fit }{a list of `B` Earth fits} \item{B
-#'   }{the number of bootstrap samples} \item{call }{the function call} \item{x
-#'   }{either `NULL` or the value of `x`, depending on the value of `keepX`}
-#'   \item{oob}{a matrix of performance estimates for each bootstrap sample}
+#' @return A list with elements:
 #'
+#' * `fit`: a list of `B` Earth fits
+#' * `B`: the number of bootstrap samples
+#' * `call`: the function call
+#' * `x`: either `NULL` or the value of `x`, depending on the value of `keepX`
+#' * `oob`: a matrix of performance estimates for each bootstrap sample
 #' @references J. Friedman, ``Multivariate Adaptive Regression Splines'' (with
 #'   discussion) (1991).  Annals of Statistics, 19/1, 1-141.
 #'
@@ -317,9 +319,11 @@ print.bagEarth <- function (x, ...) {
 #' @aliases summary.bagEarth summary.bagFDA
 #' @param object an object of class "bagEarth" or "bagFDA"
 #' @param \dots optional arguments (not used)
-#' @return a list with elements \item{modelInfo}{a matrix with the number of
-#'   model terms and variables used} \item{oobStat }{a summary of the
-#'   out-of-bag statistics} \item{bmarsCall }{the original call to `bagEarth`}
+#' @return a list with elements:
+#'
+#' * `modelInfo`: a matrix with the number of model terms and variables used
+#' * `oobStat`: a summary of the out-of-bag statistics
+#' * `bmarsCall`: the original call to `bagEarth`
 #' @author Max Kuhn
 #' @keywords manip
 #' @method summary bagEarth

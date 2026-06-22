@@ -59,12 +59,14 @@
 #'   have length of `length(sizes)+1`
 #' @param \dots options to pass to the model fitting function (ignored in
 #'   `predict.rfe`)
-#' @return A list with elements \item{finalVariables}{a list of size
-#'   `length(sizes) + 1` containing the column names of the ``surviving''
-#'   predictors at each stage of selection. The first element corresponds to
-#'   all the predictors (i.e. `size = ncol(x)`)} \item{pred }{a data frame with
-#'   columns for the test set outcome, the predicted outcome and the subset
-#'   size.}
+#' @return A list with elements:
+#'
+#' * `finalVariables`: a list of size `length(sizes) + 1` containing the column
+#'                     names of the ``surviving'' predictors at each stage of
+#'                     selection. The first element corresponds to all the
+#'                     predictors (i.e. `size = ncol(x)`)
+#' * `pred`: a data frame with columns for the test set outcome, the predicted
+#'           outcome and the subset size.
 #' @note We using a recipe as an input, there may be some subset sizes that are
 #'   not well-replicated over resamples. `rfe` method will only consider subset
 #'   sizes where at least half of the resamples have associated results in the

@@ -60,12 +60,15 @@ predict.list <- function(object, ...) {
 #' For `predict.list`, a list results. Each element is produced by
 #' `predict.train`.
 #'
-#' For `extractPrediction`, a data frame with columns: \item{obs }{the observed
-#' training and test data} \item{pred }{predicted values} \item{model}{the type
-#' of model used to predict} \item{object}{the names of the objects within
-#' `models`. If `models` is an un-named list, the values of `object` will be
-#' "Object1", "Object2" and so on} \item{dataType }{"Training", "Test" or
-#' "Unknown" depending on what was specified}
+#' For `extractPrediction`, a data frame with columns:
+#' * `obs`: the observed training and test data
+#' * `pred`: predicted values
+#' * `model`: the type of model used to predict
+#' * `object`: the names of the objects within `models`. If `models` is an
+#'             un-named list, the values of `object` will be "Object1",
+#'             "Object2" and so on
+#' * `dataType`: "Training", "Test" or "Unknown" depending on what was
+#'               specified
 #'
 #' For `extractProb`, a data frame. There is a column for each class containing
 #' the probabilities. The remaining columns are the same as above (although the

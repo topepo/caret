@@ -25,17 +25,18 @@ simple match is conducted against the whole name of the model.}
 \item{...}{options to pass to \code{\link[base:grepl]{base::grepl()}}}
 }
 \value{
-\code{modelLookup} produces a data frame with columns \item{model }{a
-character string for the model code} \item{parameter }{the tuning
-parameter name} \item{label }{a tuning parameter label (used in plots)}
-\item{forReg }{a logical; can the model be used for regression?}
-\item{forClass }{a logical; can the model be used for classification?}
-\item{probModel }{a logical; does the model produce class probabilities?}
+\code{modelLookup} produces a data frame with columns:
+\itemize{
+\item \code{model}: a character string for the model code
+\item \code{parameter}: the tuning parameter name
+\item \code{label}: a tuning parameter label (used in plots)
+\item \code{forReg}: a logical; can the model be used for regression?
+\item \code{forClass}: a logical; can the model be used for classification?
+\item \code{probModel}: a logical; does the model produce class probabilities?
+}
 
 \code{getModelInfo} returns a list containing one or more lists of the standard
-model information.
-
-\code{checkInstall} returns not value.
+model information. \code{checkInstall} returns not value.
 }
 \description{
 These function show information about models and packages that are

@@ -31,18 +31,19 @@
 #' on `groups`. Percentiles are used to split the data.
 #'
 #' @return for `classDist`, an object of class `classDist` with elements:
-#'   \item{values }{a list with elements for each class. Each element contains
-#'   a mean vector for the class centroid and the inverse of the class
-#'   covariance matrix} \item{classes}{a character vector of class labels}
-#'   \item{pca}{the results of [stats::prcomp()] when `pca = TRUE`}
-#'   \item{call}{the function call} \item{p}{the number of variables}
-#'   \item{n}{a vector of samples sizes per class}
+#' * `values`: a list with elements for each class. Each element contains a
+#'             mean vector for the class centroid and the inverse of the class
+#'             covariance matrix
+#' * `classes`: a character vector of class labels
+#' * `pca`: the results of [stats::prcomp()] when `pca = TRUE`
+#' * `call`: the function call
+#' * `p`: the number of variables
+#' * `n`: a vector of samples sizes per class
 #'
 #' For `predict.classDist`, a matrix with columns for each class. The columns
 #' names are the names of the class with the prefix `dist.`. In the case of
 #' numeric `y`, the class labels are the percentiles. For example, of `groups =
 #' 9`, the variable names would be `dist.11.11`, `dist.22.22`, etc.
-#'
 #' @author Max Kuhn
 #'
 #' @references Forina et al. CAIMAN brothers: A family of powerful

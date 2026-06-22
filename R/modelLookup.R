@@ -22,17 +22,17 @@
 #'   simple match is conducted against the whole name of the model.
 #' @param pkg a character string of package names.
 #' @param ...  options to pass to [base::grepl()]
-#' @return `modelLookup` produces a data frame with columns \item{model }{a
-#'   character string for the model code} \item{parameter }{the tuning
-#'   parameter name} \item{label }{a tuning parameter label (used in plots)}
-#'   \item{forReg }{a logical; can the model be used for regression?}
-#'   \item{forClass }{a logical; can the model be used for classification?}
-#'   \item{probModel }{a logical; does the model produce class probabilities?}
+#' @return `modelLookup` produces a data frame with columns:
+#'
+#' * `model`: a character string for the model code
+#' * `parameter`: the tuning parameter name
+#' * `label`: a tuning parameter label (used in plots)
+#' * `forReg`: a logical; can the model be used for regression?
+#' * `forClass`: a logical; can the model be used for classification?
+#' * `probModel`: a logical; does the model produce class probabilities?
 #'
 #' `getModelInfo` returns a list containing one or more lists of the standard
-#' model information.
-#'
-#' `checkInstall` returns not value.
+#' model information. `checkInstall` returns not value.
 #' @note The column `seq` is no longer included in the output of `modelLookup`.
 #' @author Max Kuhn
 #' @seealso [train()], [utils::install.packages()], [base::grepl()]

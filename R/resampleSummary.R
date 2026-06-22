@@ -13,10 +13,11 @@
 #' @param index The list to index of samples in each cross-validation fold
 #'   (only used for cross-validation).
 #' @param keepData A logical for returning the observed and predicted data.
-#' @return A list with: \item{metrics }{A vector of values describing the
-#'   bootstrap distribution.} \item{data }{A data frame or `NULL`. Columns
-#'   include `obs`, `pred` and `group` (for tracking cross-validation folds or
-#'   bootstrap samples)}
+#' @return A list with:
+#'
+#' * `metrics`: A vector of values describing the bootstrap distribution.
+#' * `data`: A data frame or `NULL`. Columns include `obs`, `pred` and `group`
+#'           (for tracking cross-validation folds or bootstrap samples)
 #' @author Max Kuhn
 #' @seealso [postResample()]
 #' @keywords utilities

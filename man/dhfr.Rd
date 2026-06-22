@@ -11,8 +11,10 @@ dihydrofolate reductase inhibitors, \emph{Journal of Computer-Aided Molecular
 Design}, Vol. 18, pg. 309-331.
 }
 \value{
-\item{dhfr}{data frame of chemical descriptors and the activity
-values}
+:
+\itemize{
+\item \code{dhfr}: data frame of chemical descriptors and the activity values
+}
 }
 \description{
 Sutherland and Weaver (2004) discuss QSAR models for dihydrofolate reductase
