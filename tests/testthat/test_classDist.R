@@ -3,12 +3,12 @@ context('classDist')
 test_that("errors working", {
   trainSet = 1:3
 
-  expect_error(
+  expect_snapshot(
     distData <- classDist(
       iris[trainSet, 1:4],
       iris$Species[trainSet]
     ),
-    "more rows than columns"
+    error = TRUE
   )
 })
 

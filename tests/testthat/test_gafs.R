@@ -1,16 +1,16 @@
 context('gafs')
 
 test_that("gafsControl errors working", {
-  expect_error(gafsControl(method = "larry"), "method should be one of")
+  expect_snapshot(gafsControl(method = "larry"), error = TRUE)
 
-  expect_error(
+  expect_snapshot(
     gafsControl(metric = c("larry", "harry", "moe")),
-    "should be a two-element named vector"
+    error = TRUE
   )
 
-  expect_error(
+  expect_snapshot(
     gafsControl(maximize = c("larry", "harry", "moe")),
-    "should be a two-element named vector"
+    error = TRUE
   )
 })
 

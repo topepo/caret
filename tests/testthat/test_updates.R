@@ -60,7 +60,7 @@ test_that("safs updating", {
   new_iter <- ifelse(sa_xy$optIter == 1, 2, 1)
   sa_xy_2 <- update(sa_xy, iter = new_iter, x = dat[, -y_ind], y = dat$y)
   expect_true(diff_coef(sa_xy, sa_xy_2))
-  expect_error(update(sa_xy, iter = new_iter))
+  expect_snapshot(update(sa_xy, iter = new_iter), error = TRUE)
 
   rec <- recipe(y ~ ., data = dat) %>%
     step_mutate(Var01 = Var01 / 2)
@@ -79,7 +79,7 @@ test_that("safs updating", {
   sa_rec_2 <- update(sa_rec, iter = new_iter)
   expect_true(diff_coef(sa_rec, sa_rec_2))
   sa_rec$recipe$template <- NULL
-  expect_error(update(sa_rec, iter = new_iter))
+  expect_snapshot(update(sa_rec, iter = new_iter), error = TRUE)
 })
 
 # ------------------------------------------------------------------------------
@@ -102,7 +102,7 @@ test_that("gafs updating", {
   new_iter <- ifelse(ga_xy$optIter == 1, 2, 1)
   ga_xy_2 <- update(ga_xy, iter = new_iter, x = dat[, -y_ind], y = dat$y)
   expect_true(diff_coef(ga_xy, ga_xy_2))
-  expect_error(update(ga_xy, iter = new_iter))
+  expect_snapshot(update(ga_xy, iter = new_iter), error = TRUE)
 
   rec <- recipe(y ~ ., data = dat) %>%
     step_mutate(Var01 = Var01 / 2)
@@ -122,7 +122,7 @@ test_that("gafs updating", {
   ga_rec_2 <- update(ga_rec, iter = new_iter)
   expect_true(diff_coef(ga_rec, ga_rec_2))
   ga_rec$recipe$template <- NULL
-  expect_error(update(ga_rec, iter = new_iter))
+  expect_snapshot(update(ga_rec, iter = new_iter), error = TRUE)
 })
 
 
@@ -141,7 +141,7 @@ test_that("rfe updating", {
       method = "lm",
       trControl = trainControl(method = "none")
     )
-  expect_warning(
+  expect_snapshot_warning(
     rfe_xy_2 <- update(
       rfe_xy,
       size = 5,
@@ -150,7 +150,7 @@ test_that("rfe updating", {
     )
   )
   expect_equal(length(rfe_xy_2$fit$finalModel$coefficients), 6)
-  expect_error(update(rfe_xy, size = 5))
+  expect_snapshot(update(rfe_xy, size = 5), error = TRUE)
 
   rec <- recipe(y ~ ., data = dat) %>%
     step_mutate(Var01 = Var01 / 2)
@@ -164,8 +164,8 @@ test_that("rfe updating", {
       method = "lm",
       trControl = trainControl(method = "none")
     )
-  expect_warning(rfe_rec_2 <- update(rfe_rec, size = 5))
+  expect_snapshot_warning(rfe_rec_2 <- update(rfe_rec, size = 5))
   expect_equal(length(rfe_rec_2$fit$finalModel$coefficients), 6)
   rfe_rec$recipe$template <- NULL
-  expect_error(update(rfe_rec, size = 5))
+  expect_snapshot(update(rfe_rec, size = 5), error = TRUE)
 })

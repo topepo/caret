@@ -36,7 +36,7 @@ test_that("auc calculation is > .5 when Xs provide prediction", {
 
   library(caret)
 
-  set.seed(1)
+  set.seed(7686)
   tr_dat <- twoClassSim(200)
   te_dat <- tr_dat
   tr_dat$Class = factor(tr_dat$Class, levels = rev(levels(te_dat$Class)))

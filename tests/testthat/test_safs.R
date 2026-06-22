@@ -1,21 +1,21 @@
 context('safs')
 
 test_that("safsControl errors working", {
-  expect_error(safsControl(method = "larry"), "method should be one of")
+  expect_snapshot(safsControl(method = "larry"), error = TRUE)
 
-  expect_error(
+  expect_snapshot(
     safsControl(metric = c("larry", "harry", "moe")),
-    "should be a two-element named vector"
+    error = TRUE
   )
 
-  expect_error(
+  expect_snapshot(
     safsControl(maximize = c("larry", "harry", "moe")),
-    "should be a two-element named vector"
+    error = TRUE
   )
 
-  expect_error(safsControl(holdout = -1), "'holdout' should be")
+  expect_snapshot(safsControl(holdout = -1), error = TRUE)
 
-  expect_error(safsControl(improve = 1), "'improve' should be")
+  expect_snapshot(safsControl(improve = 1), error = TRUE)
 })
 
 test_that("high level tests", {
@@ -40,7 +40,7 @@ test_that("high level tests", {
   #                   safsControl = ctrl)
 })
 
-test_that("", {
+test_that("safs runs with random-forest functions", {
   skip_on_cran()
 
   set.seed(1)
@@ -50,18 +50,15 @@ test_that("", {
   ## A short example
   ctrl <- caret::safsControl(functions = rfSA, method = "cv", number = 3)
 
-  expect_warning(
-    {
-      set.seed(2)
-      caret::safs(
-        x = train_data[, -ncol(train_data)],
-        y = train_data$Class,
-        iters = 3,
-        safsControl = ctrl
-      )
-    },
-    "Variable differences could not be compute"
-  )
+  expect_snapshot_warning({
+    set.seed(2)
+    caret::safs(
+      x = train_data[, -ncol(train_data)],
+      y = train_data$Class,
+      iters = 3,
+      safsControl = ctrl
+    )
+  })
   expect_silent({
     set.seed(2)
     caret::safs(

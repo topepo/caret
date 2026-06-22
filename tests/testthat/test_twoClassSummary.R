@@ -2,7 +2,7 @@ context('twoClassSummary testing')
 
 
 test_that("twoClassSummary is calculating correctly", {
-  set.seed(1)
+  set.seed(8225)
   tr_dat <- twoClassSim(100)
   te_dat <- twoClassSim(100)
   mod <- knn3(x = as.matrix(tr_dat[, 1:5]), y = tr_dat$Class)

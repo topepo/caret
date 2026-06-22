@@ -2,13 +2,13 @@ context('spatialSign')
 
 test_that("errors working", {
   # vector
-  expect_error(spatialSign(iris$Species), "not defined")
+  expect_snapshot(spatialSign(iris$Species), error = TRUE)
 
   # matrix
-  expect_error(spatialSign(as.matrix(iris)), "not defined")
+  expect_snapshot(spatialSign(as.matrix(iris)), error = TRUE)
 
   # data.frame
-  expect_error(spatialSign(iris), "not defined")
+  expect_snapshot(spatialSign(iris), error = TRUE)
 })
 
 test_that("results match", {

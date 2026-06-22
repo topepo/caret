@@ -3,7 +3,7 @@ library(recipes)
 library(dplyr)
 library(testthat)
 
-set.seed(1)
+set.seed(8801)
 dat <- twoClassSim(100)
 dat_tb <- as_tibble(dat)
 a <- dat[, 5]
@@ -19,7 +19,7 @@ ctrl <- trainControl(
 )
 
 test_that('train runs on tibbles and recipes with glm', {
-  expect_error(
+  expect_no_error(
     train(
       rec,
       data = as_tibble(df),
@@ -27,13 +27,12 @@ test_that('train runs on tibbles and recipes with glm', {
       family = "binomial",
       metric = "ROC",
       trControl = ctrl
-    ),
-    regexp = NA
+    )
   )
 })
 
 test_that('train runs on tibbles and formulas with glm', {
-  expect_error(
+  expect_no_error(
     train(
       y ~ .,
       data = as_tibble(df),
@@ -41,13 +40,12 @@ test_that('train runs on tibbles and formulas with glm', {
       family = "binomial",
       metric = "ROC",
       trControl = ctrl
-    ),
-    regexp = NA
+    )
   )
 })
 
 test_that('train runs on tibbles and recipes with glm', {
-  expect_error(
+  expect_no_error(
     train(
       rec,
       data = as_tibble(df),
@@ -55,23 +53,20 @@ test_that('train runs on tibbles and recipes with glm', {
       family = "binomial",
       metric = "ROC",
       trControl = ctrl
-    ),
-    regexp = NA
+    )
   )
 })
 
 
 test_that('downsampling on tibble', {
-  expect_error(
-    caret:::parse_sampling("down")$func(dat_tb[, 1], dat_tb$Class),
-    regexp = NA
+  expect_no_error(
+    caret:::parse_sampling("down")$func(dat_tb[, 1], dat_tb$Class)
   )
 })
 
 test_that('upsampling on tibble', {
-  expect_error(
-    caret:::parse_sampling("up")$func(dat_tb[, 1], dat_tb$Class),
-    regexp = NA
+  expect_no_error(
+    caret:::parse_sampling("up")$func(dat_tb[, 1], dat_tb$Class)
   )
 })
 

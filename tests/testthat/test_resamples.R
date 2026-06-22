@@ -10,7 +10,7 @@ test_that('resample calculations', {
   set.seed(5423)
   lm_fit <- train(y ~ ., data = tr_dat, method = "lm", trControl = ctrl)
   set.seed(5423)
-  expect_warning(
+  expect_snapshot_warning(
     rlm_fit <- train(y ~ ., data = tr_dat, method = "rlm", trControl = ctrl)
   )
 
