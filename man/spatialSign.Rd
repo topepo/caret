@@ -53,7 +53,18 @@ Serneels et al. Spatial sign preprocessing: a simple way to
 impart moderate robustness to multivariate estimators. J. Chem. Inf. Model
 (2006) vol. 46 (3) pp. 1402-1409
 }
+\seealso{
+Other preprocessing:
+\code{\link[=BoxCoxTrans]{BoxCoxTrans()}},
+\code{\link[=avNNet]{avNNet()}},
+\code{\link[=dummyVars]{dummyVars()}},
+\code{\link[=findCorrelation]{findCorrelation()}},
+\code{\link[=nearZeroVar]{nearZeroVar()}},
+\code{\link[=pcaNNet]{pcaNNet()}},
+\code{\link[=preProcess]{preProcess()}}
+}
 \author{
 Max Kuhn
 }
+\concept{preprocessing}
 \keyword{manip}

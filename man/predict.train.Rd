@@ -135,8 +135,16 @@ Kuhn (2008), ``Building Predictive Models in R Using the caret''
 }
 \seealso{
 \code{\link[=plotObsVsPred]{plotObsVsPred()}}, \code{\link[=plotClassProbs]{plotClassProbs()}}, \code{\link[=trainControl]{trainControl()}}
+
+Other train:
+\code{\link[=ggplot.train]{ggplot.train()}},
+\code{\link[=print.train]{print.train()}},
+\code{\link[=train]{train()}},
+\code{\link[=trainControl]{trainControl()}},
+\code{\link[=varImp]{varImp()}}
 }
 \author{
 Max Kuhn
 }
+\concept{train}
 \keyword{manip}

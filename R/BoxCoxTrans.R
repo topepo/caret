@@ -69,6 +69,7 @@
 #' manly <- expoTrans(ratio)
 #' manly
 #'
+#' @family preprocessing
 #' @keywords utilities
 #'
 #' @export

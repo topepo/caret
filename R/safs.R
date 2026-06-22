@@ -271,6 +271,7 @@ predict.safs <- function (object, newdata, ...) {
 #' @references
 #'   <http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html>,
 #'   <http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html>
+#' @family feature-selection
 #' @keywords utilities
 #' @export safsControl
 safsControl <- function(functions = NULL,

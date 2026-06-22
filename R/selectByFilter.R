@@ -127,6 +127,7 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
 #' For `predict.sbf`, a vector of predictions.
 #' @author Max Kuhn
 #' @seealso [sbfControl()]
+#' @family feature-selection
 #' @keywords models
 #' @examples
 #'

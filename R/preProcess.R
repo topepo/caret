@@ -181,6 +181,7 @@ getRangeBounds <- function(pp) {
 #'
 #' Yeo, I-K. and Johnson, R. (2000). A new family of power transformations to
 #' improve normality or symmetry. Biometrika, 87, 954-959.
+#' @family preprocessing
 #' @keywords utilities
 #' @examples
 #'

@@ -102,14 +102,23 @@ ggplot(rdaFit) + theme_bw()
 
 }
 \references{
-Kuhn (2008), ``Building Predictive Models in R Using the caret''
-(\doi{10.18637/jss.v028.i05})
+Kuhn, M. (2008), "Building Predictive Models in R Using the
+caret Package," \emph{Journal of Statistical Software}, 28(5), 1-26.
+(\doi{10.18637/jss.v028.i05}).
 }
 \seealso{
 \code{\link[=train]{train()}}, \code{\link[lattice:levelplot]{lattice::levelplot()}}, \code{\link[lattice:xyplot]{lattice::xyplot()}},
 \code{\link[lattice:stripplot]{lattice::stripplot()}}, \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}}
+
+Other train:
+\code{\link[=extractPrediction]{extractPrediction()}},
+\code{\link[=print.train]{print.train()}},
+\code{\link[=train]{train()}},
+\code{\link[=trainControl]{trainControl()}},
+\code{\link[=varImp]{varImp()}}
 }
 \author{
 Max Kuhn
 }
+\concept{train}
 \keyword{hplot}

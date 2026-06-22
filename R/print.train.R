@@ -32,6 +32,7 @@ stringFunc <- function (x)  {
 #' @return A matrix with the complexity parameters and performance (invisibly).
 #' @author Max Kuhn
 #' @seealso [train()]
+#' @family train
 #' @keywords print
 #' @export  
 #' @examples

@@ -118,7 +118,18 @@ x$x3[folds[[1]]] <- 0
 checkResamples(folds, x, classes)
 
 }
+\seealso{
+Other preprocessing:
+\code{\link[=BoxCoxTrans]{BoxCoxTrans()}},
+\code{\link[=avNNet]{avNNet()}},
+\code{\link[=dummyVars]{dummyVars()}},
+\code{\link[=findCorrelation]{findCorrelation()}},
+\code{\link[=pcaNNet]{pcaNNet()}},
+\code{\link[=preProcess]{preProcess()}},
+\code{\link[=spatialSign]{spatialSign()}}
+}
 \author{
 Max Kuhn, with speed improvements to nearZeroVar by Allan Engelhardt
 }
+\concept{preprocessing}
 \keyword{utilities}

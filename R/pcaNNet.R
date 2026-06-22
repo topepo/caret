@@ -23,23 +23,14 @@
 #' the analysis.
 #'
 #' @aliases pcaNNet pcaNNet.default predict.pcaNNet pcaNNet.formula
-#' @param formula A formula of the form `class ~ x1 + x2 + ...`
+#' @template param-formula-data
+#' @param contrasts a list of contrasts to be used for some or all of the
+#'   factors appearing as variables in the model formula.
 #' @param x matrix or data frame of `x` values for examples.
 #' @param y matrix or data frame of target values for examples.
-#' @param weights (case) weights for each example - if missing defaults to 1.
 #' @param thresh a threshold for the cumulative proportion of variance to
 #'   capture from the PCA analysis. For example, to retain enough PCA
 #'   components to capture 95 percent of variation, set `thresh = .95`
-#' @param data Data frame from which variables specified in `formula` are
-#'   preferentially to be taken.
-#' @param subset An index vector specifying the cases to be used in the
-#'   training sample.  (NOTE: If given, this argument must be named.)
-#' @param na.action A function to specify the action to be taken if `NA`s are
-#'   found. The default action is for the procedure to fail.  An alternative is
-#'   na.omit, which leads to rejection of cases with missing values on any
-#'   required variable.  (NOTE: If given, this argument must be named.)
-#' @param contrasts a list of contrasts to be used for some or all of the
-#'   factors appearing as variables in the model formula.
 #' @param object an object of class `pcaNNet` as returned by `pcaNNet`.
 #' @param newdata matrix or data frame of test examples. A vector is considered
 #'   to be a row vector comprising a single case.
@@ -58,8 +49,8 @@
 #'            value of `NULL`
 #' @author These are heavily based on the `nnet` code from Brian Ripley.
 #' @seealso [nnet::nnet()], [preProcess()]
-#' @references Ripley, B. D. (1996) *Pattern Recognition and Neural Networks.*
-#'   Cambridge.
+#' @template ref-ripley-1996
+#' @family preprocessing
 #' @keywords neural
 #' @examples
 #'

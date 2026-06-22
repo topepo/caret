@@ -46,15 +46,16 @@
 #' @return A number between 0 and 1 (or NA).
 #' @author Max Kuhn
 #' @seealso [confusionMatrix()]
-#' @references Kuhn, M. (2008), ``Building predictive models in R using the
-#'   caret package, '' *Journal of Statistical Software*,
+#' @references Kuhn, M. (2008), "Building Predictive Models in R Using the
+#'   caret Package," *Journal of Statistical Software*, 28(5), 1-26.
 #'   (\doi{10.18637/jss.v028.i05}).
 #'
-#' Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 1: sensitivity and
-#' specificity,'' *British Medical Journal*, vol 308, 1552.
+#' Altman, D.G., Bland, J.M. (1994) "Diagnostic tests 1: sensitivity and
+#' specificity," *British Medical Journal*, vol 308, 1552.
 #'
-#' Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 2: predictive values,''
+#' Altman, D.G., Bland, J.M. (1994) "Diagnostic tests 2: predictive values,"
 #' *British Medical Journal*, vol 309, 102.
+#' @family performance
 #' @keywords manip
 #' @examples
 #'

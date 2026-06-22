@@ -154,9 +154,19 @@ class2ind(two_levels, drop2nd = TRUE)
 }
 \seealso{
 \code{\link[stats:model.matrix]{stats::model.matrix()}}, \code{\link[stats:contrasts]{stats::contrasts()}}, \code{\link[stats:formula]{stats::formula()}}
+
+Other preprocessing:
+\code{\link[=BoxCoxTrans]{BoxCoxTrans()}},
+\code{\link[=avNNet]{avNNet()}},
+\code{\link[=findCorrelation]{findCorrelation()}},
+\code{\link[=nearZeroVar]{nearZeroVar()}},
+\code{\link[=pcaNNet]{pcaNNet()}},
+\code{\link[=preProcess]{preProcess()}},
+\code{\link[=spatialSign]{spatialSign()}}
 }
 \author{
 \code{contr.ltfr} is a small modification of \code{\link[stats:contr.treatment]{stats::contr.treatment()}}
 by Max Kuhn
 }
+\concept{preprocessing}
 \keyword{models}

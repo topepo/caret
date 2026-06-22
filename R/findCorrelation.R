@@ -120,6 +120,7 @@ findCorrelation_exact <- function(x, cutoff = 0.90, verbose = FALSE)
 #'   criteria, `integer(0)` is returned.
 #' @author Original R code by Dong Li, modified by Max Kuhn
 #' @seealso [findLinearCombos()]
+#' @family preprocessing
 #' @keywords manip
 #' @examples
 #'

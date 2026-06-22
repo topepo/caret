@@ -26,7 +26,9 @@
 #' @param use.all controls handling of ties. If true, all distances equal to
 #'   the `k`th largest are included. If false, a random selection of distances
 #'   equal to the `k`th is chosen to use exactly `k` neighbours.
-#' @return An object of class `knnreg`. See [predict.knnreg()].
+#' @param object object of class `knnreg`.
+#' @param newdata a data frame or matrix of new observations.
+#' @return An object of class `knnreg`.
 #' @author [class::knn()] by W. N. Venables and B. D. Ripley and
 #'   [ipred::ipredknn()] by Torsten.Hothorn
 #'   <Torsten.Hothorn@@rzmail.uni-erlangen.de>, modifications by Max Kuhn and
@@ -141,22 +143,7 @@ print.knnreg <- function (x, ...)
 
 
 
-#' Predictions from k-Nearest Neighbors Regression Model
-#'
-#' Predict the outcome of a new observation based on k-NN.
-#'
-#' This function is a method for the generic function [predict()] for class
-#' `knnreg`. For the details see [knnreg()]. This is essentially a copy of
-#' [ipred::predict.ipredknn()].
-#'
-#' @aliases predict.knnreg
-#' @param object object of class `knnreg`.
-#' @param newdata a data frame or matrix of new observations.
-#' @param ... additional arguments.
-#' @return a numeric vector
-#' @author Max Kuhn, Chris Keefer, adapted from [class::knn()] and
-#'   [ipred::predict.ipredknn()]
-#' @keywords multivariate
+#' @rdname knnreg
 #' @export
 predict.knnreg <- function (object, newdata, ...)
 {

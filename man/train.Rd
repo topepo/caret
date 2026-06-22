@@ -323,9 +323,17 @@ Kuhn (2008), ``Building Predictive Models in R Using the caret''
 \seealso{
 \code{\link[=models]{models()}}, \code{\link[=trainControl]{trainControl()}}, \code{\link[=update.train]{update.train()}}, \code{\link[=modelLookup]{modelLookup()}},
 \code{\link[=createFolds]{createFolds()}}, \code{\link[recipes:recipe]{recipes::recipe()}}
+
+Other train:
+\code{\link[=extractPrediction]{extractPrediction()}},
+\code{\link[=ggplot.train]{ggplot.train()}},
+\code{\link[=print.train]{print.train()}},
+\code{\link[=trainControl]{trainControl()}},
+\code{\link[=varImp]{varImp()}}
 }
 \author{
 Max Kuhn (the guts of \code{train.formula} were based on Ripley's
 \code{nnet.formula})
 }
+\concept{train}
 \keyword{models}

@@ -54,6 +54,7 @@
 #' Eugster et al. Exploratory and inferential analysis of benchmark
 #' experiments. Ludwigs-Maximilians-Universitat Munchen, Department of
 #' Statistics, Tech. Rep (2008) vol. 30
+#' @family resampling
 #' @keywords models
 #' @examples
 #'

@@ -147,6 +147,7 @@
 #'
 #' Quinlan, J. (1992). Learning with continuous classes. Proceedings of the 5th
 #' Australian Joint Conference On Artificial Intelligence, 343-348.
+#' @family train
 #' @keywords models
 #' @export varImp
 "varImp" <-

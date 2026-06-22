@@ -159,26 +159,32 @@ confusionMatrix(iris$Species, sample(iris$Species))
 
 }
 \references{
-Kuhn, M. (2008), ``Building predictive models in R using the
-caret package, '' \emph{Journal of Statistical Software},
+Kuhn, M. (2008), "Building Predictive Models in R Using the
+caret Package," \emph{Journal of Statistical Software}, 28(5), 1-26.
 (\doi{10.18637/jss.v028.i05}).
 
-Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 1: sensitivity and
-specificity,'' \emph{British Medical Journal}, vol 308, 1552.
+Altman, D.G., Bland, J.M. (1994) "Diagnostic tests 1: sensitivity and
+specificity," \emph{British Medical Journal}, vol 308, 1552.
 
-Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 2: predictive values,''
+Altman, D.G., Bland, J.M. (1994) "Diagnostic tests 2: predictive values,"
 \emph{British Medical Journal}, vol 309, 102.
 
-Velez, D.R., et. al. (2008) ``A balanced accuracy function for epistasis
+Velez, D.R., et. al. (2008) "A balanced accuracy function for epistasis
 modeling in imbalanced datasets using multifactor dimensionality
-reduction.,'' \emph{Genetic Epidemiology}, vol 4, 306.
+reduction.," \emph{Genetic Epidemiology}, vol 4, 306.
 }
 \seealso{
 \code{\link[=as.table.confusionMatrix]{as.table.confusionMatrix()}}, \code{\link[=as.matrix.confusionMatrix]{as.matrix.confusionMatrix()}},
 \code{\link[=sensitivity]{sensitivity()}}, \code{\link[=specificity]{specificity()}}, \code{\link[=posPredValue]{posPredValue()}}, \code{\link[=negPredValue]{negPredValue()}},
 \code{\link[=print.confusionMatrix]{print.confusionMatrix()}}, \code{\link[stats:binom.test]{stats::binom.test()}}
+
+Other performance:
+\code{\link[=defaultSummary]{defaultSummary()}},
+\code{\link[=negPredValue]{negPredValue()}},
+\code{\link[=recall]{recall()}}
 }
 \author{
 Max Kuhn
 }
+\concept{performance}
 \keyword{utilities}

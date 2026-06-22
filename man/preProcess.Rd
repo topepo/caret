@@ -225,8 +225,18 @@ improve normality or symmetry. Biometrika, 87, 954-959.
 \seealso{
 \code{\link[=BoxCoxTrans]{BoxCoxTrans()}}, \code{\link[=expoTrans]{expoTrans()}} \code{\link[MASS:boxcox]{MASS::boxcox()}}, \code{\link[stats:prcomp]{stats::prcomp()}},
 \code{\link[fastICA:fastICA]{fastICA::fastICA()}}, \code{\link[=spatialSign]{spatialSign()}}
+
+Other preprocessing:
+\code{\link[=BoxCoxTrans]{BoxCoxTrans()}},
+\code{\link[=avNNet]{avNNet()}},
+\code{\link[=dummyVars]{dummyVars()}},
+\code{\link[=findCorrelation]{findCorrelation()}},
+\code{\link[=nearZeroVar]{nearZeroVar()}},
+\code{\link[=pcaNNet]{pcaNNet()}},
+\code{\link[=spatialSign]{spatialSign()}}
 }
 \author{
 Max Kuhn, median imputation by Zachary Mayer
 }
+\concept{preprocessing}
 \keyword{utilities}

@@ -2,10 +2,11 @@
 #' @name avNNet
 #' @description Aggregate several neural network models
 #'
-#' @param formula A formula of the form `class ~ x1 + x2 + \dots`
+#' @template param-formula-data
+#' @param contrasts a list of contrasts to be used for some or all of the
+#'   factors appearing as variables in the model formula.
 #' @param x matrix or data frame of `x` values for examples.
 #' @param y matrix or data frame of target values for examples.
-#' @param weights (case) weights for each example - if missing defaults to 1.
 #' @param repeats the number of neural networks with different random number
 #'   seeds
 #' @param bag a logical for bagging for each repeat
@@ -14,16 +15,6 @@
 #'   run in parallel.
 #' @param allowParallel if a parallel backend is loaded and available, should
 #'   the function use it?
-#' @param data Data frame from which variables specified in `formula` are
-#'   preferentially to be taken.
-#' @param subset An index vector specifying the cases to be used in the
-#'   training sample.  (NOTE: If given, this argument must be named.)
-#' @param na.action A function to specify the action to be taken if `NA`s are
-#'   found. The default action is for the procedure to fail.  An alternative is
-#'   `na.omit`, which leads to rejection of cases with missing values on any
-#'   required variable.  (NOTE: If given, this argument must be named.)
-#' @param contrasts a list of contrasts to be used for some or all of the
-#'   factors appearing as variables in the model formula.
 #' @param object an object of class `avNNet` as returned by `avNNet`.
 #' @param newdata matrix or data frame of test examples. A vector is considered
 #'   to be a row vector comprising a single case.
@@ -47,8 +38,8 @@
 #' * `names`: if any predictors had only one distinct value, this is a
 #'            character string of the remaining columns. Otherwise a value
 #'            of `NULL`
-#' @references Ripley, B. D. (1996) *Pattern Recognition and Neural Networks.*
-#'   Cambridge.
+#' @template ref-ripley-1996
+#' @family preprocessing
 #'
 #' @author These are heavily based on the `nnet` code from Brian Ripley.
 #' @seealso [nnet::nnet()], [preProcess()]

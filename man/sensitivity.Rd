@@ -199,20 +199,26 @@ specificity(irisTabs, c("setosa", "virginica"))
 
 }
 \references{
-Kuhn, M. (2008), ``Building predictive models in R using the
-caret package, '' \emph{Journal of Statistical Software},
+Kuhn, M. (2008), "Building Predictive Models in R Using the
+caret Package," \emph{Journal of Statistical Software}, 28(5), 1-26.
 (\doi{10.18637/jss.v028.i05}).
 
-Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 1: sensitivity and
-specificity,'' \emph{British Medical Journal}, vol 308, 1552.
+Altman, D.G., Bland, J.M. (1994) "Diagnostic tests 1: sensitivity and
+specificity," \emph{British Medical Journal}, vol 308, 1552.
 
-Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 2: predictive values,''
+Altman, D.G., Bland, J.M. (1994) "Diagnostic tests 2: predictive values,"
 \emph{British Medical Journal}, vol 309, 102.
 }
 \seealso{
 \code{\link[=confusionMatrix]{confusionMatrix()}}
+
+Other performance:
+\code{\link[=confusionMatrix]{confusionMatrix()}},
+\code{\link[=defaultSummary]{defaultSummary()}},
+\code{\link[=recall]{recall()}}
 }
 \author{
 Max Kuhn
 }
+\concept{performance}
 \keyword{manip}

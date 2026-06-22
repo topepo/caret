@@ -82,19 +82,20 @@
 #' @seealso [as.table.confusionMatrix()], [as.matrix.confusionMatrix()],
 #'   [sensitivity()], [specificity()], [posPredValue()], [negPredValue()],
 #'   [print.confusionMatrix()], [stats::binom.test()]
-#' @references Kuhn, M. (2008), ``Building predictive models in R using the
-#'   caret package, '' *Journal of Statistical Software*,
+#' @references Kuhn, M. (2008), "Building Predictive Models in R Using the
+#'   caret Package," *Journal of Statistical Software*, 28(5), 1-26.
 #'   (\doi{10.18637/jss.v028.i05}).
 #'
-#' Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 1: sensitivity and
-#' specificity,'' *British Medical Journal*, vol 308, 1552.
+#' Altman, D.G., Bland, J.M. (1994) "Diagnostic tests 1: sensitivity and
+#' specificity," *British Medical Journal*, vol 308, 1552.
 #'
-#' Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 2: predictive values,''
+#' Altman, D.G., Bland, J.M. (1994) "Diagnostic tests 2: predictive values,"
 #' *British Medical Journal*, vol 309, 102.
 #'
-#' Velez, D.R., et. al. (2008) ``A balanced accuracy function for epistasis
+#' Velez, D.R., et. al. (2008) "A balanced accuracy function for epistasis
 #' modeling in imbalanced datasets using multifactor dimensionality
-#' reduction.,'' *Genetic Epidemiology*, vol 4, 306.
+#' reduction.," *Genetic Epidemiology*, vol 4, 306.
+#' @family performance
 #' @keywords utilities
 #' @examples
 #'

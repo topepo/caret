@@ -48,8 +48,8 @@
 #' @author Max Kuhn
 #' @seealso [train()], [lattice::levelplot()], [lattice::xyplot()],
 #'   [lattice::stripplot()], [ggplot2::ggplot()]
-#' @references Kuhn (2008), ``Building Predictive Models in R Using the caret''
-#'   (\doi{10.18637/jss.v028.i05})
+#' @template ref-kuhn-2008
+#' @family train
 #' @keywords hplot
 #' @export
 #' @examples

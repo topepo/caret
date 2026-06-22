@@ -139,6 +139,7 @@
 #' (\doi{10.18637/jss.v028.i05})
 #'
 #' <https://topepo.github.io/recipes/>
+#' @family train
 #' @keywords models
 #' @examples
 #'

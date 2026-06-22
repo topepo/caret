@@ -248,7 +248,16 @@ Models'' \url{https://arxiv.org/abs/1405.6974},
 Package website for subsampling:
 \url{https://topepo.github.io/caret/subsampling-for-class-imbalances.html}
 }
+\seealso{
+Other train:
+\code{\link[=extractPrediction]{extractPrediction()}},
+\code{\link[=ggplot.train]{ggplot.train()}},
+\code{\link[=print.train]{print.train()}},
+\code{\link[=train]{train()}},
+\code{\link[=varImp]{varImp()}}
+}
 \author{
 Max Kuhn
 }
+\concept{train}
 \keyword{utilities}

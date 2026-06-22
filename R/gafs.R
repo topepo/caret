@@ -770,6 +770,7 @@ print.gafs <- function (x, top = 5,
 #'   `object$control$functions$predict`.
 #' @author Max Kuhn
 #' @seealso [safs()], [gafs()]
+#' @family feature-selection
 #' @keywords multivariate
 #' @export
 #' @examples

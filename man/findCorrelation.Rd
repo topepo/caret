@@ -76,8 +76,18 @@ findCorrelation(R2, cutoff = .99, verbose = TRUE)
 }
 \seealso{
 \code{\link[=findLinearCombos]{findLinearCombos()}}
+
+Other preprocessing:
+\code{\link[=BoxCoxTrans]{BoxCoxTrans()}},
+\code{\link[=avNNet]{avNNet()}},
+\code{\link[=dummyVars]{dummyVars()}},
+\code{\link[=nearZeroVar]{nearZeroVar()}},
+\code{\link[=pcaNNet]{pcaNNet()}},
+\code{\link[=preProcess]{preProcess()}},
+\code{\link[=spatialSign]{spatialSign()}}
 }
 \author{
 Original R code by Dong Li, modified by Max Kuhn
 }
+\concept{preprocessing}
 \keyword{manip}

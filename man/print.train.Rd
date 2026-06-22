@@ -59,8 +59,16 @@ print(rdaFit, showSD = TRUE)
 }
 \seealso{
 \code{\link[=train]{train()}}
+
+Other train:
+\code{\link[=extractPrediction]{extractPrediction()}},
+\code{\link[=ggplot.train]{ggplot.train()}},
+\code{\link[=train]{train()}},
+\code{\link[=trainControl]{trainControl()}},
+\code{\link[=varImp]{varImp()}}
 }
 \author{
 Max Kuhn
 }
+\concept{train}
 \keyword{print}

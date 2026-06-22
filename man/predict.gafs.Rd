@@ -50,8 +50,14 @@ predict(rf_search, train_data)
 }
 \seealso{
 \code{\link[=safs]{safs()}}, \code{\link[=gafs]{gafs()}}
+
+Other feature-selection:
+\code{\link[=gafsControl]{gafsControl()}},
+\code{\link[=rfe]{rfe()}},
+\code{\link[=sbf]{sbf()}}
 }
 \author{
 Max Kuhn
 }
+\concept{feature-selection}
 \keyword{multivariate}

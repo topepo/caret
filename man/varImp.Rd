@@ -257,7 +257,16 @@ neural network models. Ecological Modelling, 160(3), 249-264.
 Quinlan, J. (1992). Learning with continuous classes. Proceedings of the 5th
 Australian Joint Conference On Artificial Intelligence, 343-348.
 }
+\seealso{
+Other train:
+\code{\link[=extractPrediction]{extractPrediction()}},
+\code{\link[=ggplot.train]{ggplot.train()}},
+\code{\link[=print.train]{print.train()}},
+\code{\link[=train]{train()}},
+\code{\link[=trainControl]{trainControl()}}
+}
 \author{
 Max Kuhn
 }
+\concept{train}
 \keyword{models}

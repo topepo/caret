@@ -43,8 +43,8 @@
 #' @return A number between 0 and 1 (or NA).
 #' @author Max Kuhn
 #' @seealso [confusionMatrix()]
-#' @references Kuhn, M. (2008), ``Building predictive models in R using the
-#'   caret package, '' *Journal of Statistical Software*,
+#' @references Kuhn, M. (2008), "Building Predictive Models in R Using the
+#'   caret Package," *Journal of Statistical Software*, 28(5), 1-26.
 #'   (\doi{10.18637/jss.v028.i05}).
 #'
 #' Buckland, M., & Gey, F. (1994). The relationship between Recall and
@@ -54,6 +54,7 @@
 #' Powers, D. (2007). Evaluation: From Precision, Recall and F Factor to ROC,
 #' Informedness, Markedness and Correlation. Technical Report SIE-07-001,
 #' Flinders University
+#' @family performance
 #' @keywords manip
 #' @examples
 #'

@@ -67,6 +67,7 @@
 #'
 #' Hyndman and Athanasopoulos (2013), Forecasting: principles and practice.
 #' <https://otexts.com/fpp2/>
+#' @family resampling
 #' @keywords utilities
 #' @examples
 #'

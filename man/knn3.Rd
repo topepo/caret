@@ -7,6 +7,7 @@
 \alias{knn3.data.frame}
 \alias{knn3Train}
 \alias{print.knn3}
+\alias{predict.knn3}
 \title{k-Nearest Neighbour Classification}
 \usage{
 knn3(x, ...)
@@ -18,6 +19,8 @@ knn3(x, ...)
 \method{knn3}{matrix}(x, y, k = 5, ...)
 
 \method{print}{knn3}(x, ...)
+
+\method{predict}{knn3}(object, newdata, type = c("prob", "class"), ...)
 
 knn3Train(train, test, cl, k = 1, l = 0, prob = TRUE, use.all = TRUE)
 }
@@ -43,6 +46,13 @@ contain \code{NA}s.}
 
 \item{y}{a factor vector of training set classes}
 
+\item{object}{object of class \code{knn3}.}
+
+\item{newdata}{a data frame of new observations.}
+
+\item{type}{return either the predicted class or the proportion of the
+votes for the winning class.}
+
 \item{train}{matrix or data frame of training set cases.}
 
 \item{test}{matrix or data frame of test set cases. A vector will be
@@ -62,7 +72,7 @@ the \code{k}th largest are included. If false, a random selection of distances
 equal to the \code{k}th is chosen to use exactly \code{k} neighbours.}
 }
 \value{
-An object of class \code{knn3}. See \code{\link[=predict.knn3]{predict.knn3()}}.
+An object of class \code{knn3}.
 }
 \description{
 $k$-nearest neighbour classification that can return class votes for all

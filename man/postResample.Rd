@@ -135,8 +135,14 @@ Kvalseth. Cautionary note about \eqn{R^2}. American Statistician
 }
 \seealso{
 \code{\link[=trainControl]{trainControl()}}
+
+Other performance:
+\code{\link[=confusionMatrix]{confusionMatrix()}},
+\code{\link[=negPredValue]{negPredValue()}},
+\code{\link[=recall]{recall()}}
 }
 \author{
 Max Kuhn, Zachary Mayer
 }
+\concept{performance}
 \keyword{utilities}

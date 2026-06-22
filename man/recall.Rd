@@ -119,8 +119,8 @@ recall(data = tbl_2_2_pred, reference = tbl_2_2_truth, relevant = "Relevant")
 
 }
 \references{
-Kuhn, M. (2008), ``Building predictive models in R using the
-caret package, '' \emph{Journal of Statistical Software},
+Kuhn, M. (2008), "Building Predictive Models in R Using the
+caret Package," \emph{Journal of Statistical Software}, 28(5), 1-26.
 (\doi{10.18637/jss.v028.i05}).
 
 Buckland, M., & Gey, F. (1994). The relationship between Recall and
@@ -133,8 +133,14 @@ Flinders University
 }
 \seealso{
 \code{\link[=confusionMatrix]{confusionMatrix()}}
+
+Other performance:
+\code{\link[=confusionMatrix]{confusionMatrix()}},
+\code{\link[=defaultSummary]{defaultSummary()}},
+\code{\link[=negPredValue]{negPredValue()}}
 }
 \author{
 Max Kuhn
 }
+\concept{performance}
 \keyword{manip}

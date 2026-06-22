@@ -67,6 +67,7 @@
 #' @seealso [stats::model.matrix()], [stats::contrasts()], [stats::formula()]
 #' @references
 #'   <https://cran.r-project.org/doc/manuals/R-intro.html#Formulae-for-statistical-models>
+#' @family preprocessing
 #' @keywords models
 #' @examples
 #' when <- data.frame(time = c("afternoon", "night", "afternoon",

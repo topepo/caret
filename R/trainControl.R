@@ -145,6 +145,7 @@
 #'
 #' Package website for subsampling:
 #' <https://topepo.github.io/caret/subsampling-for-class-imbalances.html>
+#' @family train
 #' @keywords utilities
 #' @examples
 #'

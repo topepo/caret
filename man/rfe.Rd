@@ -243,8 +243,14 @@ lmProfile <- rfe(x, logBBB,
 }
 \seealso{
 \code{\link[=rfeControl]{rfeControl()}}
+
+Other feature-selection:
+\code{\link[=gafsControl]{gafsControl()}},
+\code{\link[=predict.gafs]{predict.gafs()}},
+\code{\link[=sbf]{sbf()}}
 }
 \author{
 Max Kuhn
 }
+\concept{feature-selection}
 \keyword{models}

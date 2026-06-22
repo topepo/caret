@@ -106,8 +106,18 @@ transformations. The Statistician, 25, 37 - 42.
 }
 \seealso{
 \code{\link[MASS:boxcox]{MASS::boxcox()}}, \code{\link[=preProcess]{preProcess()}}, \code{\link[=optim]{optim()}}
+
+Other preprocessing:
+\code{\link[=avNNet]{avNNet()}},
+\code{\link[=dummyVars]{dummyVars()}},
+\code{\link[=findCorrelation]{findCorrelation()}},
+\code{\link[=nearZeroVar]{nearZeroVar()}},
+\code{\link[=pcaNNet]{pcaNNet()}},
+\code{\link[=preProcess]{preProcess()}},
+\code{\link[=spatialSign]{spatialSign()}}
 }
 \author{
 Max Author
 }
+\concept{preprocessing}
 \keyword{utilities}

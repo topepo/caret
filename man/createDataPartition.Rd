@@ -147,7 +147,12 @@ lapply(folds, function(x, y) table(y[x]), y = groups)
 Hyndman and Athanasopoulos (2013), Forecasting: principles and practice.
 \url{https://otexts.com/fpp2/}
 }
+\seealso{
+Other resampling:
+\code{\link[=resamples]{resamples()}}
+}
 \author{
 Max Kuhn, \code{createTimeSlices} by Tony Cooper
 }
+\concept{resampling}
 \keyword{utilities}

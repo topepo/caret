@@ -73,6 +73,7 @@
 #'   search for an optimal subset size.
 #' @author Max Kuhn
 #' @seealso [rfeControl()]
+#' @family feature-selection
 #' @keywords models
 #' @examples
 #'

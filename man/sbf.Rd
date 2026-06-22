@@ -140,8 +140,14 @@ confusionMatrix(filteredNB)
 }
 \seealso{
 \code{\link[=sbfControl]{sbfControl()}}
+
+Other feature-selection:
+\code{\link[=gafsControl]{gafsControl()}},
+\code{\link[=predict.gafs]{predict.gafs()}},
+\code{\link[=rfe]{rfe()}}
 }
 \author{
 Max Kuhn
 }
+\concept{feature-selection}
 \keyword{models}

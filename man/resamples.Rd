@@ -134,8 +134,12 @@ Statistics, Tech. Rep (2008) vol. 30
 \code{\link[=train]{train()}}, \code{\link[=trainControl]{trainControl()}}, \code{\link[=diff.resamples]{diff.resamples()}},
 \code{\link[=xyplot.resamples]{xyplot.resamples()}}, \code{\link[=densityplot.resamples]{densityplot.resamples()}}, \code{\link[=bwplot.resamples]{bwplot.resamples()}},
 \code{\link[=splom.resamples]{splom.resamples()}}
+
+Other resampling:
+\code{\link[=createDataPartition]{createDataPartition()}}
 }
 \author{
 Max Kuhn
 }
+\concept{resampling}
 \keyword{models}

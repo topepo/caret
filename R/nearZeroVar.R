@@ -61,6 +61,7 @@
 #' for predictors with empty conditional distributions in at least one class of
 #' `y`.
 #' @author Max Kuhn, with speed improvements to nearZeroVar by Allan Engelhardt
+#' @family preprocessing
 #' @keywords utilities
 #' @examples
 #' 

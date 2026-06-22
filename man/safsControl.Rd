@@ -187,8 +187,14 @@ number of workers and the amount of memory required exponentially.
 \seealso{
 \code{\link[=safs]{safs()}}, \code{\link[=safs]{safs()}}, , \code{\link[=caretGA]{caretGA()}}, \code{\link[=rfGA]{rfGA()}}, \code{\link[=treebagGA]{treebagGA()}},
 \code{\link[=caretSA]{caretSA()}}, \code{\link[=rfSA]{rfSA()}}, \code{\link[=treebagSA]{treebagSA()}}
+
+Other feature-selection:
+\code{\link[=predict.gafs]{predict.gafs()}},
+\code{\link[=rfe]{rfe()}},
+\code{\link[=sbf]{sbf()}}
 }
 \author{
 Max Kuhn
 }
+\concept{feature-selection}
 \keyword{utilities}

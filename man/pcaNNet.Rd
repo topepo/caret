@@ -33,7 +33,7 @@ pcaNNet(x, ...)
 \item{\dots}{arguments passed to \code{\link[nnet:nnet]{nnet::nnet()}}, such as \code{size}, \code{decay},
 etc.}
 
-\item{formula}{A formula of the form \code{class ~ x1 + x2 + ...}}
+\item{formula}{A formula of the form \code{y ~ x1 + x2 + ...}}
 
 \item{data}{Data frame from which variables specified in \code{formula} are
 preferentially to be taken.}
@@ -45,12 +45,12 @@ capture from the PCA analysis. For example, to retain enough PCA
 components to capture 95 percent of variation, set \code{thresh = .95}}
 
 \item{subset}{An index vector specifying the cases to be used in the
-training sample.  (NOTE: If given, this argument must be named.)}
+training sample. (NOTE: If given, this argument must be named.)}
 
 \item{na.action}{A function to specify the action to be taken if \code{NA}s are
-found. The default action is for the procedure to fail.  An alternative is
-na.omit, which leads to rejection of cases with missing values on any
-required variable.  (NOTE: If given, this argument must be named.)}
+found. The default action is for the procedure to fail. An alternative is
+\code{na.omit}, which leads to rejection of cases with missing values on any
+required variable. (NOTE: If given, this argument must be named.)}
 
 \item{contrasts}{a list of contrasts to be used for some or all of the
 factors appearing as variables in the model formula.}
@@ -109,8 +109,18 @@ Cambridge.
 }
 \seealso{
 \code{\link[nnet:nnet]{nnet::nnet()}}, \code{\link[=preProcess]{preProcess()}}
+
+Other preprocessing:
+\code{\link[=BoxCoxTrans]{BoxCoxTrans()}},
+\code{\link[=avNNet]{avNNet()}},
+\code{\link[=dummyVars]{dummyVars()}},
+\code{\link[=findCorrelation]{findCorrelation()}},
+\code{\link[=nearZeroVar]{nearZeroVar()}},
+\code{\link[=preProcess]{preProcess()}},
+\code{\link[=spatialSign]{spatialSign()}}
 }
 \author{
 These are heavily based on the \code{nnet} code from Brian Ripley.
 }
+\concept{preprocessing}
 \keyword{neural}

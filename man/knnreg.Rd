@@ -8,6 +8,7 @@
 \alias{knnreg.matrix}
 \alias{knnreg.data.frame}
 \alias{print.knnreg}
+\alias{predict.knnreg}
 \title{k-Nearest Neighbour Regression}
 \usage{
 knnreg(x, ...)
@@ -21,6 +22,8 @@ knnreg(x, ...)
 \method{knnreg}{data.frame}(x, y, k = 5, ...)
 
 \method{print}{knnreg}(x, ...)
+
+\method{predict}{knnreg}(object, newdata, ...)
 
 knnregTrain(train, test, y, k = 5, use.all = TRUE)
 }
@@ -45,6 +48,10 @@ contain \code{NA}s.}
 
 \item{y}{a numeric vector of outcomes.}
 
+\item{object}{object of class \code{knnreg}.}
+
+\item{newdata}{a data frame or matrix of new observations.}
+
 \item{train}{matrix or data frame of training set cases.}
 
 \item{test}{matrix or data frame of test set cases. A vector will be
@@ -55,7 +62,7 @@ the \code{k}th largest are included. If false, a random selection of distances
 equal to the \code{k}th is chosen to use exactly \code{k} neighbours.}
 }
 \value{
-An object of class \code{knnreg}. See \code{\link[=predict.knnreg]{predict.knnreg()}}.
+An object of class \code{knnreg}.
 }
 \description{
 $k$-nearest neighbour regression that can return the average value for the

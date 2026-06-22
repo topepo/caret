@@ -34,7 +34,11 @@
 #' @param use.all controls handling of ties. If true, all distances equal to
 #'   the `k`th largest are included. If false, a random selection of distances
 #'   equal to the `k`th is chosen to use exactly `k` neighbours.
-#' @return An object of class `knn3`. See [predict.knn3()].
+#' @param object object of class `knn3`.
+#' @param newdata a data frame of new observations.
+#' @param type return either the predicted class or the proportion of the
+#'   votes for the winning class.
+#' @return An object of class `knn3`.
 #' @author [class::knn()] by W. N. Venables and B. D. Ripley and
 #'   [ipred::ipredknn()] by Torsten.Hothorn
 #'   <Torsten.Hothorn@@rzmail.uni-erlangen.de>, modifications by Max Kuhn and
@@ -146,24 +150,7 @@ print.knn3 <- function (x, ...)
 
 
 
-#' Predictions from k-Nearest Neighbors
-#'
-#' Predict the class of a new observation based on k-NN.
-#'
-#' This function is a method for the generic function [predict()] for class
-#' `knn3`. For the details see [knn3()]. This is essentially a copy of
-#' [ipred::predict.ipredknn()].
-#'
-#' @param object object of class `knn3`.
-#' @param newdata a data frame of new observations.
-#' @param type return either the predicted class or the proportion of the votes
-#'   for the winning class.
-#' @param ... additional arguments.
-#' @return Either the predicted class or the proportion of the votes for each
-#'   class.
-#' @author [ipred::predict.ipredknn()] by Torsten.Hothorn
-#'   <Torsten.Hothorn@@rzmail.uni-erlangen.de>
-#' @keywords multivariate
+#' @rdname knn3
 #' @export
 predict.knn3 <- function (object, newdata, type = c("prob", "class"), ...)
 {

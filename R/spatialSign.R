@@ -15,6 +15,7 @@
 #' @references Serneels et al. Spatial sign preprocessing: a simple way to
 #'   impart moderate robustness to multivariate estimators. J. Chem. Inf. Model
 #'   (2006) vol. 46 (3) pp. 1402-1409
+#' @family preprocessing
 #' @keywords manip
 #' @examples
 #' 
