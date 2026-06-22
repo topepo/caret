@@ -755,8 +755,6 @@ safs <- function (x, ...) UseMethod("safs")
 #'               importance = TRUE)
 #' 	}
 #'
-#'
-#'
 #' @export safs_initial
 safs_initial <- function (vars, prob = .20, ...)  {
   sort(sample.int(vars, size = floor(vars*prob)+1))

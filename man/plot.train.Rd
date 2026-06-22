@@ -87,7 +87,6 @@ plot is created inside conditioning panels/facets.
 }
 \examples{
 
-
 \dontrun{
 library(klaR)
 rdaFit <- train(Species ~ .,

@@ -30,7 +30,6 @@ should be either "final" or "all".
 }
 \examples{
 
-
 \dontrun{
 data(iris)
 TrainData <- iris[,1:4]

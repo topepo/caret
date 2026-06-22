@@ -51,7 +51,6 @@ predVals <- extractPrediction(list(rpartFit, plsFit),
 
 plotObsVsPred(predVals)
 
-
 #classification example
 data(Satellite)
 numSamples <- dim(Satellite)[1]

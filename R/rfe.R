@@ -157,9 +157,7 @@
 #'                  rfeControl = rfeControl(functions = lmFuncs,
 #'                                          number = 200))
 #'
-#'
 #' }
-#'
 #'
 #' @export rfe
 rfe <- function (x, ...) UseMethod("rfe")

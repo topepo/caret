@@ -95,7 +95,6 @@
 #' predict(mainEffects, when2[1:3,])
 #' predict(mainEffects, when2[1:3,], na.action = na.omit)
 #'
-#'
 #' interactionModel <- dummyVars(~ day + time + day:time,
 #'                               data = when,
 #'                               sep = ".")

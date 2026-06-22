@@ -217,7 +217,6 @@ mod <- train(Species ~ ., data = iris,
              tuneLength = 12,
              trControl = ctrl)
 
-
 ctrl2 <- trainControl(method = "adaptive_cv",
                       repeats = 5,
                       verboseIter = TRUE,

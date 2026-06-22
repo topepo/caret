@@ -2,7 +2,6 @@
 #' @name avNNet
 #' @description Aggregate several neural network models
 #'
-#'
 #' @param formula A formula of the form `class ~ x1 + x2 + \dots`
 #' @param x matrix or data frame of `x` values for examples.
 #' @param y matrix or data frame of target values for examples.

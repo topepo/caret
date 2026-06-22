@@ -55,24 +55,24 @@ nnetBag
 \item{\dots}{arguments to pass to the model function}
 
 \item{fit}{a function that has arguments \code{x}, \code{y} and \code{...} and produces a
-model object #' that can later be used for prediction. Example functions
-are found in \code{ldaBag}, \code{plsBag}, #' \code{nbBag}, \code{svmBag} and \code{nnetBag}.}
+model object that can later be used for prediction. Example functions
+are found in \code{ldaBag}, \code{plsBag}, \code{nbBag}, \code{svmBag} and \code{nnetBag}.}
 
 \item{predict}{a function that generates predictions for each sub-model. The
-function should have #' arguments \code{object} and \code{x}. The output of the
-function can be any type of object (see the #' example below where
+function should have arguments \code{object} and \code{x}. The output of the
+function can be any type of object (see the example below where
 posterior probabilities are generated. Example functions are found in
 \code{ldaBag}#' , \code{plsBag}, \code{nbBag}, \code{svmBag} and \code{nnetBag}.)}
 
 \item{aggregate}{a function with arguments \code{x} and \code{type}. The function that
-takes the output #' of the \code{predict} function and reduces the bagged
-predictions to a single prediction per sample. #' the \code{type} argument can
+takes the output of the \code{predict} function and reduces the bagged
+predictions to a single prediction per sample. the \code{type} argument can
 be used to switch between predicting classes or class probabilities for #'
 classification models. Example functions are found in \code{ldaBag}, \code{plsBag},
-\code{nbBag}, #' \code{svmBag} and \code{nnetBag}.}
+\code{nbBag}, \code{svmBag} and \code{nnetBag}.}
 
 \item{downSample}{logical: for classification, should the data set be
-randomly sampled so that each #' class has the same number of samples as
+randomly sampled so that each class has the same number of samples as
 the smallest class?}
 
 \item{oob}{logical: should out-of-bag statistics be computed and the
@@ -102,7 +102,7 @@ this argument must have a non-null value}
 \code{bag} produces an object of class \code{bag} with elements:
 \itemize{
 \item \code{fits}: a list with two sub-objects: the \code{fit} object has the actual model
-fit for that #' bagged samples and the \code{vars} object is either
+fit for that bagged samples and the \code{vars} object is either
 \code{NULL} or a vector of integers corresponding to which predictors
 were sampled for that model
 \item \code{control}: a mirror of the arguments passed into \code{bagControl}
@@ -123,10 +123,10 @@ in \code{ldaBag}, \code{plsBag} , \code{nbBag}, \code{svmBag} and \code{nnetBag}
 \code{fit}, \code{pred} and \code{aggregate}.
 
 One note: when \code{vars} is not \code{NULL}, the sub-setting occurs prior to the
-\code{fit} and #' \code{predict} functions are called. In this way, the user probably
-does not need to account for the #' change in predictors in their functions.
+\code{fit} and \code{predict} functions are called. In this way, the user probably
+does not need to account for the change in predictors in their functions.
 
-When using \code{bag} with \code{\link[=train]{train()}}, classification models should use \code{type = "prob"} #' inside of the \code{predict} function so that \code{predict.train(object, newdata, type = "prob")} will #' work.
+When using \code{bag} with \code{\link[=train]{train()}}, classification models should use \code{type = "prob"} inside of the \code{predict} function so that \code{predict.train(object, newdata, type = "prob")} will work.
 
 If a parallel backend is registered, the \pkg{foreach} package is used to
 train the models in parallel.
@@ -139,9 +139,6 @@ data(BloodBrain)
 ##                bagControl = bagControl(fit = ctreeBag$fit,
 ##                                        predict = ctreeBag$pred,
 ##                                        aggregate = ctreeBag$aggregate))
-
-
-
 
 ## An example of pooling posterior probabilities to generate class predictions
 data(mdrr)

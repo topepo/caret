@@ -4,7 +4,6 @@
 #'
 #' @description Internal functions
 #'
-#'
 #' @author Max Kuhn, but `caretTheme` uses an expanded grid of the "Blues"
 #'   palette designed by Cynthia Brewer and Mark Harrower
 #'

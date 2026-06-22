@@ -66,6 +66,5 @@ useless <- nullModel(y = outcome)
 useless
 predict(useless, matrix(NA, nrow = 10))
 
-
 }
 \keyword{models}

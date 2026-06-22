@@ -55,7 +55,6 @@
 #' @export
 #' @examples
 #'
-#'
 #' \dontrun{
 #' library(klaR)
 #' rdaFit <- train(Species ~ .,

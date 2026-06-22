@@ -88,7 +88,6 @@ gafs_lrSelection(population = pop, fitness = 1:10)
 
 gafs_spCrossover(population = pop, fitness = 1:10, parents = 1:2)
 
-
 \dontrun{
 ## Hypothetical examples
 lda_ga <- gafs(x = predictors,
@@ -106,7 +105,6 @@ rf_ga <- gafs(x = predictors,
               ntree = 1000,
               importance = TRUE)
 	}
-
 
 }
 \references{

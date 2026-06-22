@@ -4,7 +4,6 @@
 #' @description A bagging wrapper for multivariate adaptive regression splines
 #'   (MARS) via the `earth` function
 #'
-#'
 #' @param formula A formula of the form `y ~ x1 + x2 + ...`
 #' @param x matrix or data frame of 'x' values for examples.
 #' @param y matrix or data frame of numeric values outcomes.
@@ -192,7 +191,6 @@
 
 
 #' Predicted values based on bagged Earth and FDA models
-#'
 #'
 #' @aliases predict.bagEarth
 #' @param object Object of class inheriting from `bagEarth`

@@ -57,7 +57,6 @@
 #' @keywords models
 #' @examples
 #'
-#'
 #' data(BloodBrain)
 #' set.seed(1)
 #'
@@ -619,7 +618,6 @@ print.summary.resamples <- function(x, ...)
 #' splom(resamps, variables = "metrics")
 #'
 #' parallelplot(resamps, metric = "RMSE")
-#'
 #'
 #' }
 #'

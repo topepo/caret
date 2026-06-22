@@ -156,7 +156,6 @@ negPredValue(pred, truth)
 negPredValue(xtab)
 negPredValue(pred, truth, prevalence = 0.25)
 
-
 prev <- seq(0.001, .99, length = 20)
 npvVals <- ppvVals <- prev  * NA
 for(i in seq(along.with = prev))

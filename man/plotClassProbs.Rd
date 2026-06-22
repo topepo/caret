@@ -56,7 +56,6 @@ nbFit2 <- train(trainData, trainY, "nb",
                 trControl = ctrl,
                 tuneGrid = data.frame(usekernel = FALSE, fL = 0))
 
-
 models <- list(para = nbFit2, nonpara = nbFit1)
 
 predProbs <- extractProb(models, testX = testData,  testY = testY)
@@ -69,8 +68,6 @@ plotClassProbs(predProbs,
                plotType = "densityplot",
                auto.key = list(columns = 2))
 }
-
-
 
 }
 \author{

@@ -3,7 +3,6 @@
 #' A lattice [lattice::dotplot()] is created from an object of class
 #' `varImp.train`.
 #'
-#'
 #' @param x an object of class `varImp.train`
 #' @param top the number of predictors to plot
 #' @param \dots options passed to [lattice::dotplot()]
@@ -12,7 +11,6 @@
 #' @seealso [varImp()], [lattice::dotplot()]
 #' @keywords hplot
 #' @examples
-#' 
 #' 
 #' data(iris)
 #' TrainData <- iris[,1:4]
@@ -23,7 +21,6 @@
 #' knnImp <- varImp(knnFit)
 #' 
 #' dotPlot(knnImp)
-#' 
 #' 
 #' @export dotPlot
 dotPlot <- function (x, top = min(20, dim(x$importance)[1]), ...) 

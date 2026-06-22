@@ -5,7 +5,6 @@
 #'   regression models. The user can provide their own functions for model
 #'   building, prediction and aggregation of predictions (see Details below).
 #'
-#'
 #' @param x a matrix or data frame of predictors
 #' @param y a vector of outcomes
 #' @param B the number of bootstrap samples to train over.
@@ -76,9 +75,6 @@
 #' ##                bagControl = bagControl(fit = ctreeBag$fit,
 #' ##                                        predict = ctreeBag$pred,
 #' ##                                        aggregate = ctreeBag$aggregate))
-#'
-#'
-#'
 #'
 #' ## An example of pooling posterior probabilities to generate class predictions
 #' data(mdrr)

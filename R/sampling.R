@@ -29,7 +29,6 @@
 #'
 #' upSample(fattyAcids, oilType)
 #'
-#'
 #' @export downSample
 downSample <- function(x, y, list = FALSE, yname = "Class") {
   if (!is.data.frame(x)) {

@@ -134,7 +134,6 @@ findCorrelation_exact <- function(x, cutoff = 0.90, verbose = FALSE)
 #' findCorrelation(R1, cutoff = .6, exact = TRUE)
 #' findCorrelation(R1, cutoff = .6, exact = TRUE, names = FALSE)
 #'
-#'
 #' R2 <- diag(rep(1, 5))
 #' R2[2, 3] <- R2[3, 2] <- .7
 #' R2[5, 3] <- R2[3, 5] <- -.7

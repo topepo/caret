@@ -137,7 +137,6 @@ filteredNB <- sbf(mdrrDescr, mdrrClass,
 confusionMatrix(filteredNB)
 }
 
-
 }
 \seealso{
 \code{\link[=sbfControl]{sbfControl()}}

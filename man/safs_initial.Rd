@@ -136,8 +136,6 @@ rf_sa <- safs(x = predictors,
               importance = TRUE)
 	}
 
-
-
 }
 \references{
 \url{http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html}

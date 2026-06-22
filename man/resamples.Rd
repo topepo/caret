@@ -86,7 +86,6 @@ combination.
 }
 \examples{
 
-
 data(BloodBrain)
 set.seed(1)
 

@@ -164,7 +164,6 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
 #' confusionMatrix(filteredNB)
 #' }
 #'
-#'
 #' @export sbf
 sbf <- function (x, ...) UseMethod("sbf")
 
@@ -910,7 +909,6 @@ predict.sbf <- function(object, newdata = NULL, ...) {
 #'                                          method = "cv"))
 #' RFwithGAM
 #'
-#'
 #' ## A simple example for multivariate scoring
 #' rfSBF2 <- rfSBF
 #' rfSBF2$score <- function(x, y) apply(x, 2, rfSBF$score, y = y)
@@ -923,7 +921,6 @@ predict.sbf <- function(object, newdata = NULL, ...) {
 #'                                           method = "cv",
 #'                                           multivariate = TRUE))
 #' RFwithGAM2
-#'
 #'
 #' }
 #' @export sbfControl
@@ -1347,7 +1344,6 @@ varImp.sbf <- function(object, onlyFinal = TRUE, ...)
 #' useless <- nullModel(y = outcome)
 #' useless
 #' predict(useless, matrix(NA, nrow = 10))
-#'
 #'
 #' @export nullModel
 nullModel <- function (x, ...) UseMethod("nullModel")

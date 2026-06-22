@@ -4,7 +4,6 @@
 #' @description A bagging wrapper for flexible discriminant analysis (FDA)
 #'   using multivariate adaptive regression splines (MARS) basis functions
 #'
-#'
 #' @param formula A formula of the form `y ~ x1 + x2 + ...`
 #' @param x matrix or data frame of 'x' values for examples.
 #' @param y matrix or data frame of numeric values outcomes.
@@ -50,7 +49,6 @@
 #'
 #' trainData <- Glass[ inTrain, ]
 #' testData  <- Glass[-inTrain, ]
-#'
 #'
 #' set.seed(3577)
 #' baggedFit <- bagFDA(Type ~ ., trainData)

@@ -103,7 +103,6 @@ data(BloodBrain)
 nearZeroVar(bbbDescr)
 nearZeroVar(bbbDescr, names = TRUE)
 
-
 set.seed(1)
 classes <- factor(rep(letters[1:3], each = 30))
 x <- data.frame(x1 = rep(c(0, 1), 45),
@@ -117,8 +116,6 @@ x$x3 <- x$x1
 x$x3[folds[[1]]] <- 0
 
 checkResamples(folds, x, classes)
-
-
 
 }
 \author{

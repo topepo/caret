@@ -70,7 +70,6 @@
 #' nearZeroVar(bbbDescr)
 #' nearZeroVar(bbbDescr, names = TRUE)
 #' 
-#' 
 #' set.seed(1)
 #' classes <- factor(rep(letters[1:3], each = 30))
 #' x <- data.frame(x1 = rep(c(0, 1), 45),
@@ -84,8 +83,6 @@
 #' x$x3[folds[[1]]] <- 0
 #' 
 #' checkResamples(folds, x, classes)
-#' 
-#' 
 #' 
 #' @export nearZeroVar
 nearZeroVar <- function (x, freqCut = 95/5, uniqueCut = 10, saveMetrics = FALSE, names = FALSE, foreach = FALSE, allowParallel = TRUE) {

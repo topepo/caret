@@ -54,7 +54,6 @@ were on average). The default is \code{norm = "overall"}, which is equivalento t
 }
 \examples{
 
-
 data(iris)
 TrainData <- iris[,1:4]
 TrainClasses <- iris[,5]
@@ -67,7 +66,6 @@ knnFit <- train(TrainData, TrainClasses,
 confusionMatrix(knnFit)
 confusionMatrix(knnFit, "average")
 confusionMatrix(knnFit, "none")
-
 
 }
 \seealso{

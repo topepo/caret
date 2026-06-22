@@ -6,7 +6,6 @@
 #' If the call to [extractProb()] included test data, these data are shown, but
 #' if unknowns were also included, these are not plotted
 #'
-#'
 #' @param object an object (preferably from the function [extractProb()]. There
 #'   should be columns for each level of the class factor and columns named
 #'   `obs`, `pred`, `model` (e.g. "rpart", "nnet" etc), `dataType` (e.g.
@@ -44,7 +43,6 @@
 #'                 trControl = ctrl,
 #'                 tuneGrid = data.frame(usekernel = FALSE, fL = 0))
 #' 
-#' 
 #' models <- list(para = nbFit2, nonpara = nbFit1)
 #' 
 #' predProbs <- extractProb(models, testX = testData,  testY = testY)
@@ -57,8 +55,6 @@
 #'                plotType = "densityplot",
 #'                auto.key = list(columns = 2))
 #' }
-#' 
-#' 
 #' 
 #' @export plotClassProbs
 plotClassProbs <- function(object,

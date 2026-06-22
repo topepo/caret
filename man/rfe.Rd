@@ -238,9 +238,7 @@ lmProfile <- rfe(x, logBBB,
                  rfeControl = rfeControl(functions = lmFuncs,
                                          number = 200))
 
-
 }
-
 
 }
 \seealso{

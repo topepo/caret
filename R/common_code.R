@@ -64,7 +64,6 @@ jack_sim <- function(a, b) {
 #' The function performs the opposite of `which` converting a set of integers
 #' to a binary vector
 #'
-#'
 #' @param x a vector of integers
 #' @param vars the number of possible locations
 #' @param sign a lgical; when true the data are encoded as -1/+1, and 0/1

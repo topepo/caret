@@ -42,7 +42,6 @@ downSample(fattyAcids, oilType)
 
 upSample(fattyAcids, oilType)
 
-
 }
 \author{
 Max Kuhn

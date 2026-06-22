@@ -21,7 +21,6 @@
 #' @keywords hplot
 #' @examples
 #' 
-#' 
 #' \dontrun{
 #' data(iris)
 #' TrainData <- iris[,1:4]

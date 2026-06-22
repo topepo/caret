@@ -22,7 +22,6 @@ A lattice \code{\link[lattice:dotplot]{lattice::dotplot()}} is created from an o
 }
 \examples{
 
-
 data(iris)
 TrainData <- iris[,1:4]
 TrainClasses <- iris[,5]
@@ -32,7 +31,6 @@ knnFit <- train(TrainData, TrainClasses, "knn")
 knnImp <- varImp(knnFit)
 
 dotPlot(knnImp)
-
 
 }
 \seealso{

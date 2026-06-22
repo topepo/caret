@@ -6,7 +6,6 @@
 #' cross-validation split for series data. `groupKFold` splits the data based
 #' on a grouping factor.
 #'
-#'
 #' For bootstrap samples, simple random sampling is used.
 #'
 #' For other data splitting, the random sampling is done within the levels of

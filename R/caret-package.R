@@ -11,7 +11,6 @@
 #' concentration ratio and the data fame `bbbDescr` contains the descriptor
 #' values.
 #'
-#'
 #' @name BloodBrain
 #' @aliases BloodBrain bbbDescr logBBB
 #' @docType data
@@ -39,7 +38,6 @@ NULL
 #'
 #' A set of 255 descriptors (MOE2D and QikProp) were generated. To classify the
 #' data, we used a cutoff of $2^2.5$ to determine activity
-#'
 #'
 #' @name cox2
 #' @aliases cox2 cox2Class cox2Descr cox2IC50
@@ -71,7 +69,6 @@ NULL
 #' The data frame `dhfr` contains a column called `Y` with the outcome
 #' classification. The remainder of the columns are molecular descriptor
 #' values.
-#'
 #'
 #' @name dhfr
 #' @docType data
@@ -105,7 +102,6 @@ NULL
 #' Many of these predictors are discrete and have been expanded into several
 #' 0/1 indicator variables
 #'
-#'
 #' @name GermanCredit
 #' @docType data
 #' @source UCI Machine Learning Repository
@@ -134,7 +130,6 @@ NULL
 #'
 #' The data and R code are in the Supplemental Data file for the article.
 #'
-#'
 #' @name mdrr
 #' @aliases mdrr mdrrClass mdrrDescr
 #' @docType data
@@ -158,7 +153,6 @@ NULL
 #' chromatography.  The data is used to predict the type of oil.  Note that
 #' only the known oils are in the data set. Also, the authors state that there
 #' are 95 samples of known oils. However, we count 96 in Table 1 (pgs.  33-35).
-#'
 #'
 #' @name oil
 #' @aliases oil oilType fattyAcids
@@ -184,7 +178,6 @@ NULL
 #' Pottery from Pre-Classical Sites in Italy
 #'
 #' Measurements of 58 pottery samples.
-#'
 #'
 #' @name pottery
 #' @aliases pottery potteryClass
@@ -212,7 +205,6 @@ NULL
 #' Sacramento area reported over a five-day period, as reported by the
 #' Sacramento Bee." Google was used to fill in missing/incorrect data.
 #'
-#'
 #' @name Sacramento
 #' @docType data
 #' @return:
@@ -233,7 +225,6 @@ NULL
 #' training <- Sacramento[ in_train,]
 #' testing  <- Sacramento[-in_train,]
 #'
-#'
 NULL
 
 
@@ -246,7 +237,6 @@ NULL
 #' consist of DNA verified species designations as well as fields related to
 #' the time and place of the collection and the scat itself. The data frame
 #' `scat_orig` contains while `scat` contains data on the three main species.
-#'
 #'
 #' @name scat
 #' @aliases scat scat_orig
@@ -303,7 +293,6 @@ NULL
 #' A binary version of the original data is at
 #' <http://topepo.github.io/caret/segmentationOriginal.RData>.
 #'
-#'
 #' @name segmentationData
 #' @docType data
 #' @return:
@@ -343,7 +332,6 @@ NULL
 #' three contents, measured in percent, are determined by analytic chemistry."
 #'
 #' Included here are the traning, monitoring and test sets.
-#'
 #'
 #' @name tecator
 #' @aliases tecator absorp endpoints

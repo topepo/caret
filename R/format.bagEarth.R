@@ -2,7 +2,6 @@
 #'
 #' Return a string representing the \sQuote{bagEarth} expression.
 #'
-#'
 #' @param x An [bagEarth()] object.  This is the only required argument.
 #' @param file A connection, or a character string naming the file to print to.
 #'   If "" (the default), the output prints to the standard output connection.

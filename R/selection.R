@@ -109,7 +109,6 @@
 #' # around 18 terms should yield the smallest CV RMSE
 #' }
 #'
-#'
 #' @export oneSE
 oneSE <- function(x, metric, num, maximize)
   {

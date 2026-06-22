@@ -126,7 +126,6 @@
 #'
 #' confusionMatrix(iris$Species, sample(iris$Species))
 #'
-#'
 #' @export confusionMatrix
 confusionMatrix <-
   function(data, ...){
@@ -478,7 +477,6 @@ as.table.confusionMatrix <- function(x, ...)  x$table
 #' @export
 #' @examples
 #'
-#'
 #' data(iris)
 #' TrainData <- iris[,1:4]
 #' TrainClasses <- iris[,5]
@@ -491,7 +489,6 @@ as.table.confusionMatrix <- function(x, ...)  x$table
 #' confusionMatrix(knnFit)
 #' confusionMatrix(knnFit, "average")
 #' confusionMatrix(knnFit, "none")
-#'
 #'
 #' @export confusionMatrix.train
 confusionMatrix.train <- function(data, norm = "overall", dnn = c("Prediction", "Reference"), ...){
@@ -634,7 +631,6 @@ resampName <- function(x, numbers = TRUE){
 #' Print method for confusionMatrix
 #'
 #' a print method for `confusionMatrix`
-#'
 #'
 #' @param x an object of class `confusionMatrix`
 #' @param mode a single character string either "sens_spec", "prec_recall", or

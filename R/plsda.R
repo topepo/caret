@@ -86,7 +86,6 @@
 #' histogram(~predict(useSoftmax, testDescr, type = "prob")[,"Active",]
 #'           | testMDRR, xlab = "Active Prob", xlim = c(-.1,1.1))
 #'
-#'
 #' ## different sized objects are returned
 #' length(predict(useBayes, testDescr))
 #' dim(predict(useBayes, testDescr, ncomp = 1:3))

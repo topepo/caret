@@ -64,7 +64,6 @@ of the data set, set \code{randomFrac} to be small (see the examples below).
 }
 \examples{
 
-
 example <- function(pct = 1, obj = minDiss, ...)
 {
   tmp <- matrix(rnorm(200 * 2), nrow = 200)

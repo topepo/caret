@@ -36,7 +36,6 @@
 #' @keywords utilities
 #' @examples
 #' 
-#' 
 #' example <- function(pct = 1, obj = minDiss, ...)
 #' {
 #'   tmp <- matrix(rnorm(200 * 2), nrow = 200)

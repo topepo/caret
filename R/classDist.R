@@ -5,7 +5,6 @@
 #'   matrix for a training set for determining Mahalanobis distances of samples
 #'   to each class centroid.
 #'
-#'
 #' @param x a matrix or data frame of predictor variables
 #' @param y a numeric or factor vector of class labels
 #' @param groups an integer for the number of bins for splitting a numeric

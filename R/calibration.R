@@ -86,7 +86,6 @@
 #' mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
 #' mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .5)]
 #'
-#'
 #' inTrain <- createDataPartition(mdrrClass)
 #' trainX <- mdrrDescr[inTrain[[1]], ]
 #' trainY <- mdrrClass[inTrain[[1]]]

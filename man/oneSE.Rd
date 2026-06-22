@@ -123,7 +123,6 @@ marsFit <- train(bbbDescr, logBBB,
 # around 18 terms should yield the smallest CV RMSE
 }
 
-
 }
 \references{
 Breiman, Friedman, Olshen, and Stone. (1984) \emph{Classification and

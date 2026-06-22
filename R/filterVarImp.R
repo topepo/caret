@@ -17,7 +17,6 @@ asNumeric <- function(data){
 #'
 #' Specific engines for variable importance on a model by model basis.
 #'
-#'
 #' The importance of each predictor is evaluated individually using a
 #' ``filter'' approach.
 #'

@@ -210,7 +210,6 @@ knnFit2 <- train(TrainData, TrainClasses,
                  tuneLength = 10,
                  trControl = trainControl(method = "boot"))
 
-
 library(MASS)
 nnetFit <- train(TrainData, TrainClasses,
                  method = "nnet",
@@ -257,7 +256,6 @@ earthFit <- train(medv ~ .,
                   metric = "MAD",
                   maximize = FALSE,
                   trControl = robustControl)
-
 
 #######################################
 ## Example with a recipe
@@ -312,7 +310,6 @@ usingMC <-  train(medv ~ .,
 ## library(doSMP) and so on
 
 }
-
 
 }
 \references{

@@ -163,7 +163,6 @@
 #'                  tuneLength = 10,
 #'                  trControl = trainControl(method = "boot"))
 #'
-#'
 #' library(MASS)
 #' nnetFit <- train(TrainData, TrainClasses,
 #'                  method = "nnet",
@@ -210,7 +209,6 @@
 #'                   metric = "MAD",
 #'                   maximize = FALSE,
 #'                   trControl = robustControl)
-#'
 #'
 #' #######################################
 #' ## Example with a recipe
@@ -265,7 +263,6 @@
 #' ## library(doSMP) and so on
 #'
 #' }
-#'
 #'
 #' @export train
 "train" <-

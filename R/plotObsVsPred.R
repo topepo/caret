@@ -10,7 +10,6 @@
 #' If the call to [extractPrediction()] included test data, these data are
 #' shown, but if unknowns were also included, they are not plotted
 #'
-#'
 #' @param object an object (preferably from the function [extractPrediction()].
 #'   There should be columns named `obs`, `pred`, `model` (e.g. "rpart", "nnet"
 #'   etc.)  and `dataType` (e.g. "Training", "Test" etc)
@@ -39,7 +38,6 @@
 #'                               unkX = BostonHousing[201:300, -c(4, 14)])
 #' 
 #' plotObsVsPred(predVals)
-#' 
 #' 
 #' #classification example
 #' data(Satellite)

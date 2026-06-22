@@ -34,6 +34,5 @@ in_train <- createDataPartition(log10(Sacramento$price), p = .8, list = FALSE)
 training <- Sacramento[ in_train,]
 testing  <- Sacramento[-in_train,]
 
-
 }
 \keyword{datasets}

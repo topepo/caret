@@ -54,8 +54,6 @@
 #'                      metric = "ROC",
 #'                      trControl = ctrl)
 #'
-#'
-#'
 #' ggplot(lda_data, aes(x = Training_Size, y = ROC, color = Data)) +
 #'   geom_smooth(method = loess, span = .8) +
 #'   theme_bw()

@@ -131,7 +131,6 @@ RFwithGAM <- sbf(bbbDescr, logBBB,
                                          method = "cv"))
 RFwithGAM
 
-
 ## A simple example for multivariate scoring
 rfSBF2 <- rfSBF
 rfSBF2$score <- function(x, y) apply(x, 2, rfSBF$score, y = y)
@@ -144,7 +143,6 @@ RFwithGAM2 <- sbf(bbbDescr, logBBB,
                                           method = "cv",
                                           multivariate = TRUE))
 RFwithGAM2
-
 
 }
 }

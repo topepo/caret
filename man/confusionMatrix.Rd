@@ -157,7 +157,6 @@ names(newPrior) <- levels(iris$Species)
 
 confusionMatrix(iris$Species, sample(iris$Species))
 
-
 }
 \references{
 Kuhn, M. (2008), ``Building predictive models in R using the
