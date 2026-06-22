@@ -35,8 +35,8 @@ comparisons. \code{dotplot} shows the differences along with their associated
 confidence intervals.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 #load(url("http://topepo.github.io/caret/exampleModels.RData"))
 
 resamps <- resamples(list(CART = rpartFit,
@@ -56,8 +56,7 @@ bwplot(difs,
 
 levelplot(difs, what = "differences")
 
-}
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=resamples]{resamples()}}, \code{\link[=diff.resamples]{diff.resamples()}}, \code{\link[lattice:bwplot]{lattice::bwplot()}},

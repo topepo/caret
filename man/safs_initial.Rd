@@ -86,6 +86,7 @@ exponential function to compute a probability: \preformatted{ prob =
 exp[(current-new)/current*iteration] }
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
 selected_vars <- safs_initial(vars = 10 , prob = 0.2)
 selected_vars
@@ -117,7 +118,6 @@ ggplot(grid, aes(x = iter, y = prob, color = Difference)) +
   geom_line() + facet_wrap(~Group) + theme_bw() +
   ylab("Probability") + xlab("Iteration")
 
-\dontrun{
 ###
 ## Hypothetical examples
 lda_sa <- safs(x = predictors,
@@ -125,7 +125,7 @@ lda_sa <- safs(x = predictors,
                safsControl = safsControl(functions = caretSA),
                ## now pass arguments to `train`
                method = "lda",
-               metric = "Accuracy"
+               metric = "Accuracy",
                trControl = trainControl(method = "cv", classProbs = TRUE))
 
 rf_sa <- safs(x = predictors,
@@ -134,8 +134,7 @@ rf_sa <- safs(x = predictors,
               ## these are arguments to `randomForest`
               ntree = 1000,
               importance = TRUE)
-	}
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 \url{http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html}

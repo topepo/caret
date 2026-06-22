@@ -86,8 +86,8 @@ un-clustered heatmap) can be created. For more than two parameters, this
 plot is created inside conditioning panels/facets.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 library(klaR)
 rdaFit <- train(Species ~ .,
                 data = iris,
@@ -98,8 +98,7 @@ plot(rdaFit, plotType = "level")
 
 ggplot(rdaFit) + theme_bw()
 
-}
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 Kuhn, M. (2008), "Building Predictive Models in R Using the

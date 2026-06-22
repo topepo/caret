@@ -33,8 +33,8 @@ If the call to \code{\link[=extractPrediction]{extractPrediction()}} included te
 shown, but if unknowns were also included, they are not plotted
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 # regression example
 data(BostonHousing)
 rpartFit <- train(BostonHousing[1:100, -c(4, 14)], 
@@ -83,8 +83,7 @@ predTargets <- extractPrediction(list(knnFit, rpartFit),
                                  unkX = unkX)
 
 plotObsVsPred(predTargets)
-}
-
+\dontshow{\}) # examplesIf}
 }
 \author{
 Max Kuhn

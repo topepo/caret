@@ -80,8 +80,7 @@
 #'
 #' @seealso [lattice::xyplot()], [lattice::trellis.par.set()]
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf !caret:::is_cran_check()
 #' data(mdrr)
 #' mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
 #' mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .5)]
@@ -107,7 +106,6 @@
 #' calPlotData
 #'
 #' xyplot(calPlotData, auto.key = list(columns = 2))
-#' }
 #'
 #' @keywords hplot
 #'

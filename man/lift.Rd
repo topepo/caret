@@ -127,9 +127,9 @@ plot elements can be changed via panel functions,
 \code{\link[lattice:update.trellis]{lattice::update.trellis()}} (see the examples in \code{\link[=panel.lift2]{panel.lift2()}}).
 
 The following elements are set by default in the plot but can be changed by
-passing new values into \code{xyplot.lift}: \code{xlab = "\% Samples Tested"},
-\code{ylab = "\\\% Samples Found"}, \code{type = "S"}, \code{ylim = extendrange(c(0,
-100))} and \code{xlim = extendrange(c(0, 100))}.
+passing new values into \code{xyplot.lift}: \code{xlab = "\\\% Samples Tested"},
+\code{ylab = "\\\% Samples Found"}, \code{type = "S"},
+\code{ylim = extendrange(c(0, 100))} and \code{xlim = extendrange(c(0, 100))}.
 }
 \examples{
 

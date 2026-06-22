@@ -52,9 +52,8 @@
 #' @family train
 #' @keywords hplot
 #' @export
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #'
-#' \dontrun{
 #' library(klaR)
 #' rdaFit <- train(Species ~ .,
 #'                 data = iris,
@@ -65,7 +64,6 @@
 #'
 #' ggplot(rdaFit) + theme_bw()
 #'
-#' }
 #'
 #' @export plot.train
 "plot.train" <-  function(x,

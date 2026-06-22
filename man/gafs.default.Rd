@@ -108,8 +108,8 @@ is associated with the optimal number of generations determined by
 resampling (although the update function can be used to manually set the
 number of generations).
 
-This is an example of the output produced when \code{gafsControl(verbose =
-TRUE)} is used:
+This is an example of the output produced when
+\code{gafsControl(verbose = TRUE)} is used:
 
 \preformatted{ Fold2 1 0.715 (13) Fold2 2 0.715->0.737 (13->17, 30.4\%) *
 Fold2 3 0.737->0.732 (17->14, 24.0\%) Fold2 4 0.737->0.769 (17->23, 25.0\%)
@@ -141,8 +141,8 @@ mind that if multiple levels of parallelization occur, this can effect the
 number of workers and the amount of memory required exponentially.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 set.seed(1)
 train_data <- twoClassSim(100, noiseVars = 10)
 test_data  <- twoClassSim(10,  noiseVars = 10)
@@ -158,8 +158,7 @@ rf_search <- gafs(x = train_data[, -ncol(train_data)],
                   gafsControl = ctrl)
 
 rf_search
-  }
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 Kuhn M and Johnson K (2013), Applied Predictive Modeling,

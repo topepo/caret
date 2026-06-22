@@ -127,29 +127,41 @@ The \code{functions} component contains the information about how the model
 should be fit and summarized. It also contains the elements needed for the
 GA and SA modules (e.g. cross-over, etc).
 
-The elements of \code{functions} that are the same for GAs and SAs are: \itemize{
-\item \code{fit}, with arguments \code{x}, \code{y}, \code{lev}, \code{last}, and \code{...}, is used to
-fit the classification or regression model \item \code{pred}, with arguments
-\code{object} and \code{x}, predicts new samples \item \code{fitness_intern}, with
-arguments \code{object}, \code{x}, \code{y}, \code{maximize}, and \code{p}, summarizes performance
-for the internal estimates of fitness \item \code{fitness_extern}, with arguments
-\code{data}, \code{lev}, and \code{model}, summarizes performance using the externally
-held-out samples \item \code{selectIter}, with arguments \code{x}, \code{metric}, and
-\code{maximize}, determines the best search iteration for feature selection. }
+The elements of \code{functions} that are the same for GAs and SAs are:
+\itemize{
+\item \code{fit}, with arguments \code{x}, \code{y}, \code{lev}, \code{last}, and \code{...}, is used
+to fit the classification or regression model
+\item \code{pred}, with arguments \code{object} and \code{x}, predicts new samples
+\item \code{fitness_intern}, with arguments \code{object}, \code{x}, \code{y}, \code{maximize},
+and \code{p}, summarizes performance for the internal estimates of
+fitness
+\item \code{fitness_extern}, with arguments \code{data}, \code{lev}, and \code{model},
+summarizes performance using the externally held-out samples
+\item \code{selectIter}, with arguments \code{x}, \code{metric}, and \code{maximize},
+determines the best search iteration for feature selection.
+}
 
-The elements of \code{functions} specific to genetic algorithms are: \itemize{
+The elements of \code{functions} specific to genetic algorithms are:
+\itemize{
 \item \code{initial}, with arguments \code{vars}, \code{popSize} and \code{...}, creates an
-initial population. \item \code{selection}, with arguments \code{population},
-\code{fitness}, \code{r}, \code{q}, and \code{...}, conducts selection of individuals. \item
-\code{crossover}, with arguments \code{population}, \code{fitness}, \code{parents} and \code{...},
-control genetic reproduction. \item \code{mutation}, with arguments \code{population},
-\code{parent} and \code{...}, adds mutations. }
+initial population.
+\item \code{selection}, with arguments \code{population}, \code{fitness}, \code{r}, \code{q}, and
+\code{...}, conducts selection of individuals.
+\item \code{crossover}, with arguments \code{population}, \code{fitness}, \code{parents} and
+\code{...}, control genetic reproduction.
+\item \code{mutation}, with arguments \code{population}, \code{parent} and \code{...}, adds
+mutations.
+}
 
-The elements of \code{functions} specific to simulated annealing are: \itemize{
+The elements of \code{functions} specific to simulated annealing are:
+\itemize{
 \item \code{initial}, with arguments \code{vars}, \code{prob}, and \code{...}, creates the
-initial subset. \item \code{perturb}, with arguments \code{x}, \code{vars}, and \code{number},
-makes incremental changes to the subsets. \item \code{prob}, with arguments
-\code{old}, \code{new}, and \code{iteration}, computes the acceptance probabilities }
+initial subset.
+\item \code{perturb}, with arguments \code{x}, \code{vars}, and \code{number}, makes
+incremental changes to the subsets.
+\item \code{prob}, with arguments \code{old}, \code{new}, and \code{iteration}, computes the
+acceptance probabilities
+}
 
 The pages
 \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}

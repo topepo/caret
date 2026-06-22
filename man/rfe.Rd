@@ -156,8 +156,8 @@ sizes where at least half of the resamples have associated results in the
 search for an optimal subset size.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 data(BloodBrain)
 
 x <- scale(bbbDescr[,-nearZeroVar(bbbDescr)])
@@ -219,13 +219,11 @@ plot(ldaProfile, type = c("o", "g"))
 
 postResample(predict(ldaProfile, test), testClass)
 
-}
 
 #######################################
 ## Parallel Processing Example via multicore
 
-\dontrun{
-library(doMC)
+## library(doMC)
 
 ## Note: if the underlying model also uses foreach, the
 ## number of cores specified above will double (along with
@@ -238,8 +236,7 @@ lmProfile <- rfe(x, logBBB,
                  rfeControl = rfeControl(functions = lmFuncs,
                                          number = 200))
 
-}
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=rfeControl]{rfeControl()}}

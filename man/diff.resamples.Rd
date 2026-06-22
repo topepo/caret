@@ -82,8 +82,8 @@ single metric. It returns the results of \code{\link[stats:t.test]{stats::t.test
 differences.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 #load(url("http://topepo.github.io/caret/exampleModels.RData"))
 
 resamps <- resamples(list(CART = rpartFit,
@@ -97,8 +97,7 @@ difs
 summary(difs)
 
 compare_models(rpartFit, ctreeFit)
-}
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 Hothorn et al. The design and analysis of benchmark experiments.

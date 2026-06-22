@@ -26,9 +26,9 @@ column index (\code{FALSE})?}
 each step? See Details below.}
 }
 \value{
-A vector of indices denoting the columns to remove (when \code{names
-  = TRUE}) otherwise a vector of column names. If no correlations meet the
-criteria, \code{integer(0)} is returned.
+A vector of indices denoting the columns to remove (when
+\code{names = TRUE}) otherwise a vector of column names. If no correlations
+meet the criteria, \code{integer(0)} is returned.
 }
 \description{
 This function searches through a correlation matrix and returns a vector of

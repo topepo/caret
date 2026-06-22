@@ -112,8 +112,8 @@ confidence limits) for each model and metric.
 resampling distributions while \code{splom} shows the pair-wise relationships.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 #load(url("http://topepo.github.io/caret/exampleModels.RData"))
 
 resamps <- resamples(list(CART = rpartFit,
@@ -140,8 +140,7 @@ splom(resamps, variables = "metrics")
 
 parallelplot(resamps, metric = "RMSE")
 
-}
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 Hothorn et al. The design and analysis of benchmark experiments.

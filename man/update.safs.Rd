@@ -33,8 +33,8 @@ automatically passed on to the updated model (i.e. they do not need to be
 supplied again to \code{update}.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 set.seed(1)
 train_data <- twoClassSim(100, noiseVars = 10)
 test_data  <- twoClassSim(10,  noiseVars = 10)
@@ -54,7 +54,7 @@ rf_search2 <- update(rf_search,
 	                 x = train_data[, -ncol(train_data)],
                      y = train_data$Class)
 rf_search2
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=gafs]{gafs()}}, \code{\link[=safs]{safs()}}

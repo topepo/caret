@@ -130,8 +130,8 @@ Prevalence)/((sensitivity*Prevalence) + ((1-specificity)*(1-Prevalence)))}
 See the references for discussions of the statistics.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 ###################
 ## 2 class example
 
@@ -195,8 +195,7 @@ sensitivity(model, iris$Species)
 ## be used
 sensitivity(irisTabs, "versicolor")
 specificity(irisTabs, c("setosa", "virginica"))
-}
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 Kuhn, M. (2008), "Building Predictive Models in R Using the

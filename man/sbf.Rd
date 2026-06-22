@@ -102,8 +102,8 @@ The modeling and filtering techniques are specified in \code{\link[=sbfControl]{
 Example functions are given in \code{\link[=lmSBF]{lmSBF()}}.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 data(BloodBrain)
 
 ## Use a GAM is the filter, then fit a random forest model
@@ -135,8 +135,7 @@ filteredNB <- sbf(mdrrDescr, mdrrClass,
                                          method = "repeatedcv",
                                          repeats = 5))
 confusionMatrix(filteredNB)
-}
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=sbfControl]{sbfControl()}}

@@ -115,9 +115,9 @@ In all cases, transformations and operations are estimated using the data in
 \code{x} and these operations are applied to new data using these values; nothing
 is recomputed when using the \code{predict} function.
 
-The Box-Cox (\code{method = "BoxCox"}), Yeo-Johnson (\code{method =
-"YeoJohnson"}), and exponential transformations (\code{method =
-"expoTrans"}) have been "repurposed" here: they are being used to transform
+The Box-Cox (\code{method = "BoxCox"}), Yeo-Johnson (\code{method = "YeoJohnson"}),
+and exponential transformations (\code{method = "expoTrans"}) have been
+"repurposed" here: they are being used to transform
 the predictor variables. The Box-Cox transformation was developed for
 transforming the response variable while another method, the Box-Tidwell
 transformation, was created to estimate transformations of predictor data.
@@ -189,17 +189,16 @@ data frame produced by the \code{predict} function. Note that when PCA or ICA is
 used, the non-numeric columns may be in different positions when predicted.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
 data(BloodBrain)
 # one variable has one unique value
-\dontrun{
 preProc <- preProcess(bbbDescr)
 
 preProc  <- preProcess(bbbDescr[1:100,-3])
 training <- predict(preProc, bbbDescr[1:100,-3])
 test     <- predict(preProc, bbbDescr[101:208,-3])
-}
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 \url{http://topepo.github.io/caret/pre-processing.html}

@@ -38,17 +38,33 @@ two-class problems.
 \details{
 The argument \code{statistics} designates the statistics to compute for
 each probability threshold. One or more of the following statistics can be
-selected: \itemize{ \item Sensitivity \item Specificity \item Pos Pred
-Value \item Neg Pred Value \item Precision \item Recall \item F1 \item
-Prevalence \item Detection Rate \item Detection Prevalence \item Balanced
-Accuracy \item Accuracy \item Kappa \item J \item Dist } For a description
+selected:
+\itemize{
+\item Sensitivity
+\item Specificity
+\item Pos Pred Value
+\item Neg Pred Value
+\item Precision
+\item Recall
+\item F1
+\item Prevalence
+\item Detection Rate
+\item Detection Prevalence
+\item Balanced Accuracy
+\item Accuracy
+\item Kappa
+\item J
+\item Dist
+}
+
+For a description
 of these statistics (except the last two), see the documentation of
 \code{\link[=confusionMatrix]{confusionMatrix()}}. The last two statistics are Youden's J statistic and
 the distance to the best possible cutoff (i.e. perfect sensitivity and
 specificity.
 }
 \examples{
-\dontrun{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 set.seed(2444)
 dat <- twoClassSim(500, intercept = -10)
 table(dat$Class)
@@ -76,5 +92,5 @@ ggplot(resample_stats, aes(x = prob_threshold, y = Dist)) +
 ggplot(resample_stats, aes(x = prob_threshold, y = Sensitivity)) + 
   geom_point() + 
   geom_point(aes(y = Specificity), col = "red")
-}
+\dontshow{\}) # examplesIf}
 }

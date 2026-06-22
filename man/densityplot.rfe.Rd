@@ -37,8 +37,8 @@ If leave-one-out or out-of-bag resampling was specified, plots cannot be
 produced (see the \code{method} argument of \code{\link[=rfeControl]{rfeControl()}})
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 library(mlbench)
 n <- 100
 p <- 40
@@ -68,8 +68,7 @@ stripplot(lmProfile)
 
 histogram(lmProfile)
 densityplot(lmProfile)
-}
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=rfe]{rfe()}}, \code{\link[=rfeControl]{rfeControl()}}, \code{\link[lattice:histogram]{lattice::histogram()}},

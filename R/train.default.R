@@ -141,9 +141,8 @@
 #' <https://topepo.github.io/recipes/>
 #' @family train
 #' @keywords models
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #'
-#' \dontrun{
 #'
 #' #######################################
 #' ## Classification Example
@@ -263,7 +262,6 @@
 #' ## library(doParallel) or
 #' ## library(doSMP) and so on
 #'
-#' }
 #'
 #' @export train
 "train" <-

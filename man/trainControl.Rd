@@ -165,14 +165,17 @@ run for each model. As resampling continues, a futility analysis is
 conducted and models with a low probability of being optimal are removed.
 These features are experimental. See Kuhn (2014) for more details. The
 options for this procedure are:
-
-\itemize{ \item \code{min}: the minimum number of resamples used before models
-are removed \item \code{alpha}: the confidence level of the one-sided intervals
-used to measure futility \item \code{method}: either generalized least squares
-(\code{method = "gls"}) or a Bradley-Terry model (\code{method = "BT"}) \item
-\code{complete}: if a single parameter value is found before the end of
-resampling, should the full set of resamples be computed for that parameter.
-) }
+\itemize{
+\item \code{min}: the minimum number of resamples used before models are
+removed
+\item \code{alpha}: the confidence level of the one-sided intervals used to
+measure futility
+\item \code{method}: either generalized least squares (\code{method = "gls"}) or a
+Bradley-Terry model (\code{method = "BT"})
+\item \code{complete}: if a single parameter value is found before the end of
+resampling, should the full set of resamples be computed for that
+parameter.
+}
 
 The option \code{search = "grid"} uses the default grid search routine. When
 \code{search = "random"}, a random search procedure is used (Bergstra and Bengio,
@@ -180,11 +183,14 @@ The option \code{search = "grid"} uses the default grid search routine. When
 for details and an example.
 
 The supported bootstrap methods are:
-
-\itemize{ \item \code{"boot"}: the usual bootstrap. \item \code{"boot632"}: the 0.632
-bootstrap estimator (Efron, 1983). \item \code{"optimism_boot"}: the optimism
-bootstrap estimator. (Efron and Tibshirani, 1994). \item \code{"boot_all"}: all
-of the above (for efficiency, but "boot" will be used for calculations). }
+\itemize{
+\item \code{"boot"}: the usual bootstrap.
+\item \code{"boot632"}: the 0.632 bootstrap estimator (Efron, 1983).
+\item \code{"optimism_boot"}: the optimism bootstrap estimator (Efron and
+Tibshirani, 1994).
+\item \code{"boot_all"}: all of the above (for efficiency, but "boot" will be
+used for calculations).
+}
 
 The \code{"boot632"} method should not to be confused with the 0.632+ estimator
 proposed later by the same author.
@@ -193,8 +199,8 @@ Note that if \code{index} or \code{indexOut} are specified, the label shown by \
 may not be accurate since these arguments supersede the \code{method} argument.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 
 ## Do 5 repeats of 10-Fold CV for the iris data. We will fit
 ## a KNN model that evaluates 12 values of k and set the seed
@@ -228,8 +234,7 @@ mod2 <- train(Species ~ ., data = iris,
               tuneLength = 12,
               trControl = ctrl2)
 
-}
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 Efron (1983). ``Estimating the error rate of a prediction rule:

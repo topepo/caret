@@ -80,6 +80,7 @@ this limits the user to accuracy or Kappa (for classification) and RMSE and
 R-squared (for regression).
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
 pop <- gafs_initial(vars = 10, popSize = 10)
 pop
@@ -88,14 +89,13 @@ gafs_lrSelection(population = pop, fitness = 1:10)
 
 gafs_spCrossover(population = pop, fitness = 1:10, parents = 1:2)
 
-\dontrun{
 ## Hypothetical examples
 lda_ga <- gafs(x = predictors,
                y = classes,
                gafsControl = gafsControl(functions = caretGA),
                ## now pass arguments to `train`
                method = "lda",
-               metric = "Accuracy"
+               metric = "Accuracy",
                trControl = trainControl(method = "cv", classProbs = TRUE))
 
 rf_ga <- gafs(x = predictors,
@@ -104,8 +104,7 @@ rf_ga <- gafs(x = predictors,
               ## these are arguments to `randomForest`
               ntree = 1000,
               importance = TRUE)
-	}
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 Scrucca L (2013). GA: A Package for Genetic Algorithms in R.

@@ -41,8 +41,8 @@ The table of complexity parameters used, their resampled performance and a
 flag for which rows are optimal.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 data(iris)
 TrainData <- iris[,1:4]
 TrainClasses <- iris[,5]
@@ -54,8 +54,7 @@ rdaFit <- train(TrainData, TrainClasses, method = "rda",
                 control = trainControl(method = "cv"))
 rdaFit
 print(rdaFit, showSD = TRUE)
-}
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=train]{train()}}

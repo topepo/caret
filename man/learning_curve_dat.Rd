@@ -58,8 +58,8 @@ If the model being fit has tuning parameters, the results are based on the
 optimal settings determined by \code{\link[=train]{train()}}.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 set.seed(1412)
 class_dat <- twoClassSim(1000)
 
@@ -79,8 +79,7 @@ lda_data <-
 ggplot(lda_data, aes(x = Training_Size, y = ROC, color = Data)) +
   geom_smooth(method = loess, span = .8) +
   theme_bw()
- }
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=train]{train()}}

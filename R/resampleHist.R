@@ -19,9 +19,8 @@
 #'   [histogram.train()], [densityplot.train()], [xyplot.train()],
 #'   [stripplot.train()]
 #' @keywords hplot
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #' 
-#' \dontrun{
 #' data(iris)
 #' TrainData <- iris[,1:4]
 #' TrainClasses <- iris[,5]
@@ -29,7 +28,6 @@
 #' knnFit <- train(TrainData, TrainClasses, "knn")
 #' 
 #' resampleHist(knnFit)
-#' }
 #' 
 #' @export resampleHist
 resampleHist <- function(object, type = "density", ...)

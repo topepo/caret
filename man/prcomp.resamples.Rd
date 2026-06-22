@@ -67,8 +67,8 @@ For clustering, \code{\link[stats:hclust]{stats::hclust()}} is used to determine
 based on the resampled performance values.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 #load(url("http://topepo.github.io/caret/exampleModels.RData"))
 
 resamps <- resamples(list(CART = rpartFit,
@@ -86,8 +86,7 @@ plot(resampPCA, what = "components", dims = 2, auto.key = list(columns = 3))
 
 clustered <- cluster(resamps)
 plot(clustered)
-
-}
+\dontshow{\}) # examplesIf}
 }
 \references{
 Geladi, P.; Manley, M.; and Lestander, T. (2003), "Scatter

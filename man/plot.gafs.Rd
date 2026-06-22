@@ -48,8 +48,8 @@ When \code{output = "data"}, the unaveraged data are returned with columns for
 all the performance metrics and the resample indicator.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 set.seed(1)
 train_data <- twoClassSim(100, noiseVars = 10)
 test_data  <- twoClassSim(10,  noiseVars = 10)
@@ -71,8 +71,7 @@ plot(rf_search,
 
 plot_data <- plot(rf_search, output = "data")
 summary(plot_data)
-    }
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=gafs]{gafs()}}, \code{\link[=safs]{safs()}}, \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}}, \code{\link[lattice:xyplot]{lattice::xyplot()}}

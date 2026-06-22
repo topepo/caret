@@ -35,9 +35,8 @@
 #' @author Max Kuhn
 #' @seealso [train()]
 #' @keywords models
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #'
-#' \dontrun{
 #' set.seed(1412)
 #' class_dat <- twoClassSim(1000)
 #'
@@ -57,7 +56,6 @@
 #' ggplot(lda_data, aes(x = Training_Size, y = ROC, color = Data)) +
 #'   geom_smooth(method = loess, span = .8) +
 #'   theme_bw()
-#'  }
 #'
 #' @export learning_curve_dat
 learning_curve_dat <- function(dat,

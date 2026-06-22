@@ -92,13 +92,13 @@
 #' or a set number of predictors that follow a particular correlation
 #' structure. The only two correlation structure that have been implemented are
 #'
-#' \itemize{ \item compound-symmetry (aka exchangeable) where there is a
-#' constant correlation between all the predictors
-#'
-#' \item auto-regressive 1 \[AR(1)]. While there is no time component to these
-#' data, this structure can be used to add predictors of varying levels of
-#' correlation. For example, if there were 4 predictors and `r` was the
-#' correlation parameter, the between predictor correlation matrix would be }
+#' - compound-symmetry (aka exchangeable) where there is a constant
+#'   correlation between all the predictors
+#' - auto-regressive 1 \[AR(1)\]. While there is no time component to
+#'   these data, this structure can be used to add predictors of varying
+#'   levels of correlation. For example, if there were 4 predictors and
+#'   `r` was the correlation parameter, the between predictor
+#'   correlation matrix would be
 #'
 #' \preformatted{ | 1 sym | | r 1 | | r^2 r 1 | | r^3 r^2 r 1 | | r^4 r^3 r^2 r
 #' 1 | }

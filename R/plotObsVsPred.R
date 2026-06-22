@@ -20,9 +20,8 @@
 #'   displayed (especially in a loop).
 #' @author Max Kuhn
 #' @keywords hplot
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #' 
-#' \dontrun{
 #' # regression example
 #' data(BostonHousing)
 #' rpartFit <- train(BostonHousing[1:100, -c(4, 14)], 
@@ -71,7 +70,6 @@
 #'                                  unkX = unkX)
 #' 
 #' plotObsVsPred(predTargets)
-#' }
 #' 
 #' @export plotObsVsPred
 plotObsVsPred <- function(object, equalRanges = TRUE, ...)

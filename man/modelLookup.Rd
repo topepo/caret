@@ -58,8 +58,8 @@ other options). If the session is not interactive, an error is thrown.
 The column \code{seq} is no longer included in the output of \code{modelLookup}.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 modelLookup()
 modelLookup("gbm")
 
@@ -68,8 +68,7 @@ getModelInfo("^pls")
 getModelInfo("pls", regex = FALSE)
 
 checkInstall(getModelInfo("pls")$library)
-}
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=train]{train()}}, \code{\link[utils:install.packages]{utils::install.packages()}}, \code{\link[base:grepl]{base::grepl()}}

@@ -37,9 +37,8 @@
 #' @author Max Kuhn
 #' @seealso [train()], [utils::install.packages()], [base::grepl()]
 #' @keywords utilities
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #'
-#' \dontrun{
 #' modelLookup()
 #' modelLookup("gbm")
 #'
@@ -48,7 +47,6 @@
 #' getModelInfo("pls", regex = FALSE)
 #'
 #' checkInstall(getModelInfo("pls")$library)
-#' }
 #'
 #' @export modelLookup
 modelLookup <- function(model = NULL){

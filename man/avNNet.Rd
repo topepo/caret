@@ -108,13 +108,13 @@ If a parallel backend is registered, the \pkg{foreach} package is used to
 train the networks in parallel.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 data(BloodBrain)
-\dontrun{
 modelFit <- avNNet(bbbDescr, logBBB, size = 5, linout = TRUE, trace = FALSE)
 modelFit
 
 predict(modelFit, bbbDescr)
-}
+\dontshow{\}) # examplesIf}
 }
 \references{
 Ripley, B. D. (1996) \emph{Pattern Recognition and Neural Networks.}

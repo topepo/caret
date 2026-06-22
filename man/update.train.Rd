@@ -36,8 +36,8 @@ parameter was set manually." is used to describe how the tuning parameters
 were created.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 data(iris)
 TrainData <- iris[,1:4]
 TrainClasses <- iris[,5]
@@ -49,7 +49,7 @@ knnFit1 <- train(TrainData, TrainClasses,
                  trControl = trainControl(method = "cv"))
 
 update(knnFit1, list(.k = 3))
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=train]{train()}}, \code{\link[=trainControl]{trainControl()}}

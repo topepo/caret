@@ -188,8 +188,8 @@ used when determining the model's performance metrics, the role of
 available during resampling to the \code{summaryFunction} function.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 
 #######################################
 ## Classification Example
@@ -309,8 +309,7 @@ usingMC <-  train(medv ~ .,
 ## library(doParallel) or
 ## library(doSMP) and so on
 
-}
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 \url{http://topepo.github.io/caret/}

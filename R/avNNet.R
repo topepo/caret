@@ -43,14 +43,12 @@
 #'
 #' @author These are heavily based on the `nnet` code from Brian Ripley.
 #' @seealso [nnet::nnet()], [preProcess()]
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #' data(BloodBrain)
-#' \dontrun{
 #' modelFit <- avNNet(bbbDescr, logBBB, size = 5, linout = TRUE, trace = FALSE)
 #' modelFit
 #'
 #' predict(modelFit, bbbDescr)
-#' }
 #' @keywords neural
 #' @aliases avNNet.default predict.avNNet avNNet.formula avNNet
 #' @export

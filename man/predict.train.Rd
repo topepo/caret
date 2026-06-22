@@ -107,6 +107,7 @@ single data frame (instead of a list of just the predictions). These objects
 can then be passes to \code{\link[=plotObsVsPred]{plotObsVsPred()}} or \code{\link[=plotClassProbs]{plotClassProbs()}}.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
    \dontrun{
 
@@ -127,7 +128,7 @@ predict(bothModels)
 extractPrediction(bothModels, testX = iris[1:10, -5])
 extractProb(bothModels, testX = iris[1:10, -5])
   }
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 Kuhn (2008), ``Building Predictive Models in R Using the caret''

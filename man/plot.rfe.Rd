@@ -52,8 +52,8 @@ not well-replicated over resamples. The \code{ggplot} method will only show
 subset sizes where at least half of the resamples have associated results.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 data(BloodBrain)
 
 x <- scale(bbbDescr[,-nearZeroVar(bbbDescr)])
@@ -68,7 +68,7 @@ lmProfile <- rfe(x, logBBB,
 plot(lmProfile)
 plot(lmProfile, metric = "Rsquared")
 ggplot(lmProfile)
-}
+\dontshow{\}) # examplesIf}
 }
 \references{
 Kuhn (2008), ``Building Predictive Models in R Using the caret''

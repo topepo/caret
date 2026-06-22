@@ -78,8 +78,8 @@ repeated \code{ncomp} times for every possible PLS model. The
 posterior probability calculations.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 data(mdrr)
 set.seed(1)
 inTrain <- sample(seq(along.with = mdrrClass), 450)
@@ -129,8 +129,7 @@ splsFit <- caret:::splsda(trainDescr, trainMDRR,
 
 confusionMatrix(caret:::predict.splsda(splsFit, testDescr),
                 testMDRR)
-}
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[pls:plsr]{pls::plsr()}}, \code{\link[spls:spls]{spls::spls()}}

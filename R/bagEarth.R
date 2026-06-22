@@ -30,15 +30,13 @@
 #'
 #' @seealso [earth::earth()], [predict.bagEarth()]
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf !caret:::is_cran_check()
 #' library(mda)
 #' library(earth)
 #' data(trees)
 #' fit1 <- earth(x = trees[,-3], y = trees[,3])
 #' set.seed(2189)
 #' fit2 <- bagEarth(x = trees[,-3], y = trees[,3], B = 10)
-#' }
 #'
 #' @keywords regression
 #'
@@ -225,9 +223,8 @@
 #' @seealso [bagEarth()]
 #' @keywords regression
 #' @export
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #'
-#' \dontrun{
 #' data(trees)
 #' ## out of bag predictions vs just re-predicting the training set
 #' set.seed(655)
@@ -235,7 +232,6 @@
 #' set.seed(655)
 #' fit2 <- bagEarth(Volume ~ ., data = trees, keepX = FALSE)
 #' hist(predict(fit1) - predict(fit2))
-#' }
 #'
 #' @export predict.bagEarth
 "predict.bagEarth" <-
@@ -331,14 +327,12 @@ print.bagEarth <- function(x, ...) {
 #' @author Max Kuhn
 #' @keywords manip
 #' @export
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #'
-#' \dontrun{
 #' data(trees)
 #' set.seed(9655)
 #' fit <- bagEarth(trees[,-3], trees[3])
 #' summary(fit)
-#' }
 #'
 #' @export summary.bagEarth
 "summary.bagEarth" <-

@@ -57,9 +57,8 @@
 #' *British Medical Journal*, vol 309, 102.
 #' @family performance
 #' @keywords manip
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #'
-#' \dontrun{
 #' ###################
 #' ## 2 class example
 #'
@@ -123,7 +122,6 @@
 #' ## be used
 #' sensitivity(irisTabs, "versicolor")
 #' specificity(irisTabs, c("setosa", "virginica"))
-#' }
 #'
 #' @export sensitivity
 sensitivity <-

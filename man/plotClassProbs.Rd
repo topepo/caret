@@ -34,8 +34,8 @@ If the call to \code{\link[=extractProb]{extractProb()}} included test data, the
 if unknowns were also included, these are not plotted
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 data(mdrr)
 set.seed(90)
 inTrain <- createDataPartition(mdrrClass, p = .5)[[1]]
@@ -67,8 +67,7 @@ plotClassProbs(predProbs,
                useObjects = TRUE,
                plotType = "densityplot",
                auto.key = list(columns = 2))
-}
-
+\dontshow{\}) # examplesIf}
 }
 \author{
 Max Kuhn

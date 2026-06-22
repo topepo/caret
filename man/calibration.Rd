@@ -108,7 +108,7 @@ For the \code{ggplot} method, confidence intervals on the estimated proportions
 (from \code{\link[stats:binom.test]{stats::binom.test()}}) are also shown.
 }
 \examples{
-\dontrun{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 data(mdrr)
 mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
 mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .5)]
@@ -134,8 +134,7 @@ calPlotData <- calibration(obs ~ lda + qda, data = testProbs)
 calPlotData
 
 xyplot(calPlotData, auto.key = list(columns = 2))
-}
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[lattice:xyplot]{lattice::xyplot()}}, \code{\link[lattice:trellis.par.set]{lattice::trellis.par.set()}}

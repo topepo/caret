@@ -20,9 +20,8 @@
 #'   displayed (especially in a loop).
 #' @author Max Kuhn
 #' @keywords hplot
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #' 
-#' \dontrun{
 #' data(mdrr)
 #' set.seed(90)
 #' inTrain <- createDataPartition(mdrrClass, p = .5)[[1]]
@@ -54,7 +53,6 @@
 #'                useObjects = TRUE,
 #'                plotType = "densityplot",
 #'                auto.key = list(columns = 2))
-#' }
 #' 
 #' @export plotClassProbs
 plotClassProbs <- function(object,

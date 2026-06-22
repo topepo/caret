@@ -51,9 +51,8 @@
 #' vector.
 #' @seealso [pls::plsr()], [spls::spls()]
 #' @keywords models
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #'
-#' \dontrun{
 #' data(mdrr)
 #' set.seed(1)
 #' inTrain <- sample(seq(along.with = mdrrClass), 450)
@@ -103,7 +102,6 @@
 #'
 #' confusionMatrix(caret:::predict.splsda(splsFit, testDescr),
 #'                 testMDRR)
-#' }
 #'
 #' @export plsda
 plsda <- function (x, ...)

@@ -24,9 +24,8 @@
 #' @author Max Kuhn
 #' @seealso [train()], [trainControl()]
 #' @keywords models
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #'
-#' \dontrun{
 #' data(iris)
 #' TrainData <- iris[,1:4]
 #' TrainClasses <- iris[,5]
@@ -38,7 +37,6 @@
 #'                  trControl = trainControl(method = "cv"))
 #'
 #' update(knnFit1, list(.k = 3))
-#' }
 #' @export
 #' @importFrom recipes juice all_predictors all_outcomes
 update.train <- function(object, param = NULL, ...) {

@@ -35,9 +35,8 @@ stringFunc <- function (x)  {
 #' @family train
 #' @keywords print
 #' @export  
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #'
-#' \dontrun{
 #' data(iris)
 #' TrainData <- iris[,1:4]
 #' TrainClasses <- iris[,5]
@@ -49,7 +48,6 @@ stringFunc <- function (x)  {
 #'                 control = trainControl(method = "cv"))
 #' rdaFit
 #' print(rdaFit, showSD = TRUE)
-#' }
 #'
 #' @export print.train
 

@@ -44,8 +44,8 @@ tuning parameters are used for conditioning.
 Using \code{horizontal = FALSE} in \code{stripplot} works.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 
 library(mlbench)
 data(BostonHousing)
@@ -69,8 +69,7 @@ xyplot(rpartFit,
 stripplot(rpartFit,
           horizontal = FALSE,
           jitter = TRUE)
-
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=train]{train()}}, \code{\link[=trainControl]{trainControl()}}, \code{\link[lattice:histogram]{lattice::histogram()}},

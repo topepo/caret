@@ -80,9 +80,8 @@ densityplot.train <- function(x,
 #' @seealso [train()], [trainControl()], [lattice::histogram()],
 #'   [lattice::densityplot()], [lattice::xyplot()], [lattice::stripplot()]
 #' @keywords hplot
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #' 
-#' \dontrun{
 #' 
 #' library(mlbench)
 #' data(BostonHousing)
@@ -107,7 +106,6 @@ densityplot.train <- function(x,
 #'           horizontal = FALSE,
 #'           jitter = TRUE)
 #' 
-#' }
 #' @export
 
 histogram.train <- function(x,

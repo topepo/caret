@@ -95,8 +95,8 @@ Elastic net models are ordered first on the L1 penalty, then by the L2
 penalty.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 # simulate a PLS regression model
 test <- data.frame(ncomp = 1:5,
                    RMSE = c(3, 1.1, 1.02, 1, 2),
@@ -121,8 +121,7 @@ marsFit <- train(bbbDescr, logBBB,
                                           selectionFunction = "tolerance"))
 
 # around 18 terms should yield the smallest CV RMSE
-}
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 Breiman, Friedman, Olshen, and Stone. (1984) \emph{Classification and

@@ -80,9 +80,8 @@
 #' @references Breiman, Friedman, Olshen, and Stone. (1984) *Classification and
 #'   Regression Trees*. Wadsworth.
 #' @keywords manip
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #'
-#' \dontrun{
 #' # simulate a PLS regression model
 #' test <- data.frame(ncomp = 1:5,
 #'                    RMSE = c(3, 1.1, 1.02, 1, 2),
@@ -107,7 +106,6 @@
 #'                                           selectionFunction = "tolerance"))
 #'
 #' # around 18 terms should yield the smallest CV RMSE
-#' }
 #'
 #' @export oneSE
 oneSE <- function(x, metric, num, maximize)

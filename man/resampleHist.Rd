@@ -29,8 +29,8 @@ For the plot to be made, the \code{returnResamp} argument in \code{\link[=trainC
 should be either "final" or "all".
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 data(iris)
 TrainData <- iris[,1:4]
 TrainClasses <- iris[,5]
@@ -38,8 +38,7 @@ TrainClasses <- iris[,5]
 knnFit <- train(TrainData, TrainClasses, "knn")
 
 resampleHist(knnFit)
-}
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=train]{train()}}, \code{\link[lattice:histogram]{lattice::histogram()}}, \code{\link[lattice:densityplot]{lattice::densityplot()}},

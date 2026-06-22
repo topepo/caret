@@ -20,13 +20,15 @@
 #' These features are experimental. See Kuhn (2014) for more details. The
 #' options for this procedure are:
 #'
-#' \itemize{ \item `min`: the minimum number of resamples used before models
-#' are removed \item `alpha`: the confidence level of the one-sided intervals
-#' used to measure futility \item `method`: either generalized least squares
-#' (`method = "gls"`) or a Bradley-Terry model (\code{method = "BT"}) \item
-#' `complete`: if a single parameter value is found before the end of
-#' resampling, should the full set of resamples be computed for that parameter.
-#' ) }
+#' - `min`: the minimum number of resamples used before models are
+#'   removed
+#' - `alpha`: the confidence level of the one-sided intervals used to
+#'   measure futility
+#' - `method`: either generalized least squares (`method = "gls"`) or a
+#'   Bradley-Terry model (`method = "BT"`)
+#' - `complete`: if a single parameter value is found before the end of
+#'   resampling, should the full set of resamples be computed for that
+#'   parameter.
 #'
 #' The option `search = "grid"` uses the default grid search routine. When
 #' `search = "random"`, a random search procedure is used (Bergstra and Bengio,
@@ -35,10 +37,12 @@
 #'
 #' The supported bootstrap methods are:
 #'
-#' \itemize{ \item `"boot"`: the usual bootstrap. \item `"boot632"`: the 0.632
-#' bootstrap estimator (Efron, 1983). \item `"optimism_boot"`: the optimism
-#' bootstrap estimator. (Efron and Tibshirani, 1994). \item `"boot_all"`: all
-#' of the above (for efficiency, but "boot" will be used for calculations). }
+#' - `"boot"`: the usual bootstrap.
+#' - `"boot632"`: the 0.632 bootstrap estimator (Efron, 1983).
+#' - `"optimism_boot"`: the optimism bootstrap estimator (Efron and
+#'   Tibshirani, 1994).
+#' - `"boot_all"`: all of the above (for efficiency, but "boot" will be
+#'   used for calculations).
 #'
 #' The `"boot632"` method should not to be confused with the 0.632+ estimator
 #' proposed later by the same author.
@@ -147,9 +151,8 @@
 #' <https://topepo.github.io/caret/subsampling-for-class-imbalances.html>
 #' @family train
 #' @keywords utilities
-#' @examples
+#' @examplesIf !caret:::is_cran_check()
 #'
-#' \dontrun{
 #'
 #' ## Do 5 repeats of 10-Fold CV for the iris data. We will fit
 #' ## a KNN model that evaluates 12 values of k and set the seed
@@ -183,7 +186,6 @@
 #'               tuneLength = 12,
 #'               trControl = ctrl2)
 #'
-#' }
 #'
 #' @export trainControl
 trainControl <- function(method = "boot",

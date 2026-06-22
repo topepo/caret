@@ -25,8 +25,8 @@ Predict new samples using \code{\link[=safs]{safs()}} and \code{\link[=gafs]{gaf
 Only the predictors listed in \code{object$optVariables} are required.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 
 set.seed(1)
 train_data <- twoClassSim(100, noiseVars = 10)
@@ -45,8 +45,7 @@ rf_search <- safs(x = train_data[, -ncol(train_data)],
 rf_search
 
 predict(rf_search, train_data)
-}
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=safs]{safs()}}, \code{\link[=gafs]{gafs()}}
