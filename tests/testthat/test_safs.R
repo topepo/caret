@@ -40,7 +40,7 @@ test_that("high level tests", {
   #                   safsControl = ctrl)
 })
 
-test_that("", {
+test_that("safs runs with random-forest functions", {
   skip_on_cran()
 
   set.seed(1)

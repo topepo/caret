@@ -38,3 +38,9 @@
       Error in `safsControl()`:
       ! 'improve' should be >= 2
 
+# safs runs with random-forest functions
+
+    Variable differences could not be computed: 
+      Not enough results to compute differences
+    
+
