@@ -1,4 +1,5 @@
 test_that("twoClassSummary is calculating correctly", {
+  skip_on_cran()
   set.seed(8225)
   tr_dat <- twoClassSim(100)
   te_dat <- twoClassSim(100)

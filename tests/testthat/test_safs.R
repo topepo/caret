@@ -1,4 +1,5 @@
 test_that("safsControl errors working", {
+  skip_on_cran()
   expect_snapshot(safsControl(method = "larry"), error = TRUE)
 
   expect_snapshot(
@@ -17,6 +18,7 @@ test_that("safsControl errors working", {
 })
 
 test_that("high level tests", {
+  skip_on_cran()
   expect_silent(pop <- safs_initial(vars = 10, popSize = 10))
 
   expect_silent(selected_vars <- safs_initial(vars = 10, prob = 0.2))

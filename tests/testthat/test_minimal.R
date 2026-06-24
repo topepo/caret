@@ -7,6 +7,7 @@ expect_equal(stats[['Neg Pred Value']], 1)
 
 # fmt: skip
 test_that("resampling method 'none' doesn't conflict with default tuneLength", {
+  skip_on_cran()
 
     data(BloodBrain)
 

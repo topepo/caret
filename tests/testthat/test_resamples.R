@@ -1,6 +1,7 @@
 library(caret)
 
 test_that('resample calculations', {
+  skip_on_cran()
   library(MASS)
   set.seed(4793)
   tr_dat <- SLC14_1(200)
@@ -23,24 +24,41 @@ test_that('resample calculations', {
   rlm_t_test <- t.test(rs$values$`rlm~RMSE`)
 
   rs_plot_dat <- ggplot(rs, metric = "RMSE")$data
-  expect_equivalent(lm_t_test$estimate, rs_plot_dat$Estimate[1])
-  expect_equivalent(rlm_t_test$estimate, rs_plot_dat$Estimate[2])
-  expect_equivalent(lm_t_test$conf.int[1], rs_plot_dat$LowerLimit[1])
-  expect_equivalent(rlm_t_test$conf.int[1], rs_plot_dat$LowerLimit[2])
-  expect_equivalent(lm_t_test$conf.int[2], rs_plot_dat$UpperLimit[1])
-  expect_equivalent(rlm_t_test$conf.int[2], rs_plot_dat$UpperLimit[2])
+  expect_equal(lm_t_test$estimate, rs_plot_dat$Estimate[1], ignore_attr = TRUE)
+  expect_equal(rlm_t_test$estimate, rs_plot_dat$Estimate[2], ignore_attr = TRUE)
+  expect_equal(
+    lm_t_test$conf.int[1],
+    rs_plot_dat$LowerLimit[1],
+    ignore_attr = TRUE
+  )
+  expect_equal(
+    rlm_t_test$conf.int[1],
+    rs_plot_dat$LowerLimit[2],
+    ignore_attr = TRUE
+  )
+  expect_equal(
+    lm_t_test$conf.int[2],
+    rs_plot_dat$UpperLimit[1],
+    ignore_attr = TRUE
+  )
+  expect_equal(
+    rlm_t_test$conf.int[2],
+    rs_plot_dat$UpperLimit[2],
+    ignore_attr = TRUE
+  )
 
   rs_const <- rs
   rs_const$values$`lm~RMSE` <- 3
 
   rs_plot_const_dat <- ggplot(rs_const, metric = "RMSE")$data
-  expect_equivalent(rs_plot_const_dat$Estimate[1], 3.0)
-  expect_equivalent(rs_plot_const_dat$LowerLimit[1], NA_real_)
-  expect_equivalent(rs_plot_const_dat$UpperLimit[1], NA_real_)
+  expect_equal(rs_plot_const_dat$Estimate[1], 3.0, ignore_attr = TRUE)
+  expect_equal(rs_plot_const_dat$LowerLimit[1], NA_real_, ignore_attr = TRUE)
+  expect_equal(rs_plot_const_dat$UpperLimit[1], NA_real_, ignore_attr = TRUE)
 })
 
 
 test_that('test group-k-fold', {
+  skip_on_cran()
   get_data <- function(n = 500) {
     prevalence <- seq(.1, .9, length.out = 26)
     dat <- sample(letters, size = n, replace = TRUE, prob = sample(prevalence))

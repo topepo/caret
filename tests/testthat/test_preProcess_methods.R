@@ -208,8 +208,8 @@ test_that('issue #825 for pca threshold choice', {
 ## test ica
 
 test_that('ICA trans', {
-  skip_if_not_installed("fastICA")
   skip_on_cran()
+  skip_if_not_installed("fastICA")
   set.seed(1)
   ica_dat1 <- twoClassSim(30)[, 1:5]
   ica_dat2 <- twoClassSim(30)[, 1:5]

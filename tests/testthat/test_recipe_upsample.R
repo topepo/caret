@@ -1,4 +1,5 @@
 test_that("model test", {
+  skip_on_cran()
   skip_if_not_installed("themis")
   withr::local_seed(2542)
   dat <- twoClassSim(200, intercept = 6)
@@ -13,8 +14,9 @@ test_that("model test", {
     method = "knn",
     trControl = trainControl(method = "cv")
   )
-  expect_equivalent(
+  expect_equal(
     rep(max(table(dat$Class)), 2),
-    as.vector(table(mod$finalModel$learn$y))
+    as.vector(table(mod$finalModel$learn$y)),
+    ignore_attr = TRUE
   )
 })

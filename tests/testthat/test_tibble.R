@@ -19,6 +19,7 @@ ctrl <- trainControl(
 )
 
 test_that('train runs on tibbles and recipes with glm', {
+  skip_on_cran()
   expect_no_error(
     train(
       rec,
@@ -32,6 +33,7 @@ test_that('train runs on tibbles and recipes with glm', {
 })
 
 test_that('train runs on tibbles and formulas with glm', {
+  skip_on_cran()
   expect_no_error(
     train(
       y ~ .,
@@ -45,6 +47,7 @@ test_that('train runs on tibbles and formulas with glm', {
 })
 
 test_that('train runs on tibbles and recipes with glm', {
+  skip_on_cran()
   expect_no_error(
     train(
       rec,
@@ -59,12 +62,14 @@ test_that('train runs on tibbles and recipes with glm', {
 
 
 test_that('downsampling on tibble', {
+  skip_on_cran()
   expect_no_error(
     caret:::parse_sampling("down")$func(dat_tb[, 1], dat_tb$Class)
   )
 })
 
 test_that('upsampling on tibble', {
+  skip_on_cran()
   expect_no_error(
     caret:::parse_sampling("up")$func(dat_tb[, 1], dat_tb$Class)
   )

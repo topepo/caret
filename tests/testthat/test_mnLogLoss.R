@@ -10,6 +10,7 @@ test_dat1 <- data.frame(
 )
 
 test_that("Multiclass logloss returns expected values", {
+  skip_on_cran()
   result1 <- mnLogLoss(test_dat1, classes)
 
   test_dat2 <- test_dat1
@@ -38,6 +39,7 @@ test_dat1.b <- data.frame(
 )
 
 test_that("Twoclass logloss returns expected values", {
+  skip_on_cran()
   result1 <- mnLogLoss(test_dat1.b, classes.b)
 
   test_dat2.b <- test_dat1.b
