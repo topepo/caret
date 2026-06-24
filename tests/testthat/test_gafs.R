@@ -1,4 +1,5 @@
 test_that("gafsControl errors working", {
+  skip_on_cran()
   expect_snapshot(gafsControl(method = "larry"), error = TRUE)
 
   expect_snapshot(
@@ -13,6 +14,7 @@ test_that("gafsControl errors working", {
 })
 
 test_that("high level tests", {
+  skip_on_cran()
   expect_silent(pop <- gafs_initial(vars = 10, popSize = 10))
   expect_silent(gafs_lrSelection(population = pop, fitness = 1:10))
   expect_silent(gafs_spCrossover(

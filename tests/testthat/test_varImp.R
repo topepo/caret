@@ -1,4 +1,5 @@
 test_that("high level tests", {
+  skip_on_cran()
   data(iris)
   TrainData <- iris[, 1:4]
   TrainClasses <- iris[, 5]

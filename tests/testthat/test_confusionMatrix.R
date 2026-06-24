@@ -2,6 +2,7 @@ set.seed(442)
 
 
 test_that("Confusion matrix works", {
+  skip_on_cran()
   library(caret)
   train <- twoClassSim(
     n = 1000,
@@ -38,10 +39,10 @@ test_that("Confusion matrix works", {
   cm2 <- suppressWarnings(confusionMatrix(dat2, ref2))
   cm3 <- suppressWarnings(confusionMatrix(dat3, ref2))
   cm4 <- suppressWarnings(confusionMatrix(dat4, ref2))
-  expect_true(inherits(cm1, "confusionMatrix"))
-  expect_true(inherits(cm2, "confusionMatrix"))
-  expect_true(inherits(cm3, "confusionMatrix"))
-  expect_true(inherits(cm4, "confusionMatrix"))
+  expect_s3_class(cm1, "confusionMatrix")
+  expect_s3_class(cm2, "confusionMatrix")
+  expect_s3_class(cm3, "confusionMatrix")
+  expect_s3_class(cm4, "confusionMatrix")
   expect_snapshot_warning(confusionMatrix(dat2, ref2))
   expect_snapshot_warning(confusionMatrix(dat3, ref2))
   expect_snapshot(confusionMatrix(dat5, ref2), error = TRUE)

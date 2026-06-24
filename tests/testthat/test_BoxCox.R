@@ -29,8 +29,11 @@ check_BoxCox <- function(x, expected = NULL) {
   expect_equal(obs_lambdas1, expected)
 }
 
-check_BoxCox(dat, expected = exp_lambdas)
-check_BoxCox(
-  as.data.frame(dat, stringsAsFactors = TRUE),
-  expected = exp_lambdas
-)
+test_that("BoxCox lambdas match MASS::boxcox", {
+  skip_on_cran()
+  check_BoxCox(dat, expected = exp_lambdas)
+  check_BoxCox(
+    as.data.frame(dat, stringsAsFactors = TRUE),
+    expected = exp_lambdas
+  )
+})

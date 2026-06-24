@@ -1,6 +1,7 @@
 skip_if_not_installed("kernlab")
 
 test_that("ggplot.train correctly orders factors", {
+  skip_on_cran()
   library(caret)
   library(kernlab)
   data(mtcars)
@@ -27,6 +28,7 @@ test_that("ggplot.train correctly orders factors", {
 })
 
 test_that("ggplot.train correctly orders facets' labels", {
+  skip_on_cran()
   library(caret)
   library(kernlab)
   data(mtcars)

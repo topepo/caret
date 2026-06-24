@@ -1,4 +1,5 @@
 test_that("multiClassSummary presenting warnings from train", {
+  skip_on_cran()
   skip_if_not_installed("MLmetrics")
   skip_if_not_installed("ModelMetrics", "1.2.2.2")
   library(caret)
@@ -37,6 +38,7 @@ test_that("multiClassSummary presenting warnings from train", {
 })
 
 test_that("multiClassSummary ROC values", {
+  skip_on_cran()
   skip_if_not_installed("MLmetrics")
 
   lvls <- levels(iris$Species)

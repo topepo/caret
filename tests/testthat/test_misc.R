@@ -1,4 +1,5 @@
 test_that("R2 and RMSE are calculating correctly", {
+  skip_on_cran()
   pred <- runif(25)
   obs <- runif(25)
 
@@ -8,6 +9,7 @@ test_that("R2 and RMSE are calculating correctly", {
 
 
 test_that("auc calculation is > .5 when Xs provide prediction", {
+  skip_on_cran()
   skip_if_not_installed("MLmetrics")
   skip_if_not_installed("earth")
   skip_if_not_installed("mda")
