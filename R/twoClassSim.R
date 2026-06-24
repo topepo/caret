@@ -100,8 +100,13 @@
 #'   `r` was the correlation parameter, the between predictor
 #'   correlation matrix would be
 #'
-#' \preformatted{ | 1 sym | | r 1 | | r^2 r 1 | | r^3 r^2 r 1 | | r^4 r^3 r^2 r
-#' 1 | }
+#' \preformatted{
+#'  | 1     sym       |
+#'  | r 1             |
+#'  | r^2 r 1         |
+#'  | r^3 r^2 r 1     |
+#'  | r^4 r^3 r^2 r 1 |
+#'  }
 #'
 #' @aliases twoClassSim SLC14_1 SLC14_2 LPH07_1 LPH07_2
 #' @param n The number of simulated data points
@@ -149,85 +154,109 @@
 #' Statistics, 41(6), 1247-1259.
 #' @keywords models
 #' @examples
-#' 
+#'
 #' example <- twoClassSim(100, linearVars = 1)
 #' splom(~example[, 1:6], groups = example$Class)
-#' 
+#'
 #' @export twoClassSim
-twoClassSim <- function(n = 100, 
-                        intercept = -5,
-                        linearVars = 10,
-                        noiseVars = 0,    ## Number of uncorrelated x's
-                        corrVars = 0,     ## Number of correlated x's
-                        corrType = "AR1", ## Corr structure ('AR1' or 'exch')
-                        corrValue = 0,    ## Corr parameter
-                        mislabel = 0,
-                        ordinal = FALSE) {
+twoClassSim <- function(
+  n = 100,
+  intercept = -5,
+  linearVars = 10,
+  noiseVars = 0, ## Number of uncorrelated x's
+  corrVars = 0, ## Number of correlated x's
+  corrType = "AR1", ## Corr structure ('AR1' or 'exch')
+  corrValue = 0, ## Corr parameter
+  mislabel = 0,
+  ordinal = FALSE
+) {
   requireNamespaceQuietStop("MASS")
-  sigma <- matrix(c(2,1.3,1.3,2),2,2)
-  
-  tmpData <- data.frame(MASS::mvrnorm(n=n, c(0,0), sigma))
+  sigma <- matrix(c(2, 1.3, 1.3, 2), 2, 2)
+
+  tmpData <- data.frame(MASS::mvrnorm(n = n, c(0, 0), sigma))
   names(tmpData) <- paste("TwoFactor", 1:2, sep = "")
-  if(linearVars > 0) {
-    tmpData <- cbind(tmpData, matrix(rnorm(n*linearVars), ncol = linearVars))
-    colnames(tmpData)[(1:linearVars)+2] <- paste("Linear", gsub(" ", "0", format(1:linearVars)), sep = "")
+  if (linearVars > 0) {
+    tmpData <- cbind(tmpData, matrix(rnorm(n * linearVars), ncol = linearVars))
+    colnames(tmpData)[(1:linearVars) + 2] <- paste(
+      "Linear",
+      gsub(" ", "0", format(1:linearVars)),
+      sep = ""
+    )
   }
   tmpData$Nonlinear1 <- runif(n, min = -1)
-  tmpData <- cbind(tmpData, matrix(runif(n*2), ncol = 2))
-  colnames(tmpData)[(ncol(tmpData)-1):ncol(tmpData)] <- paste("Nonlinear", 2:3, sep = "")
-  
+  tmpData <- cbind(tmpData, matrix(runif(n * 2), ncol = 2))
+  colnames(tmpData)[(ncol(tmpData) - 1):ncol(tmpData)] <- paste(
+    "Nonlinear",
+    2:3,
+    sep = ""
+  )
+
   tmpData <- as.data.frame(tmpData, stringsAsFactors = FALSE)
   p <- ncol(tmpData)
-  
-  if(noiseVars > 0) {
+
+  if (noiseVars > 0) {
     tmpData <- cbind(tmpData, matrix(rnorm(n * noiseVars), ncol = noiseVars))
-    colnames(tmpData)[(p+1):ncol(tmpData)] <- paste("Noise", 
-                                                    gsub(" ", "0", format(1:noiseVars)), 
-                                                    sep = "")
+    colnames(tmpData)[(p + 1):ncol(tmpData)] <- paste(
+      "Noise",
+      gsub(" ", "0", format(1:noiseVars)),
+      sep = ""
+    )
   }
-  if(corrVars > 0)  {
+  if (corrVars > 0) {
     p <- ncol(tmpData)
     loadNamespace("MASS")
-    if(corrType == "exch") {
-      vc <- matrix(corrValue, ncol = corrVars,  nrow = corrVars)
+    if (corrType == "exch") {
+      vc <- matrix(corrValue, ncol = corrVars, nrow = corrVars)
       diag(vc) <- 1
     }
-    if(corrType == "AR1")  {
+    if (corrType == "AR1") {
       vcValues <- corrValue^(seq(0, corrVars - 1, by = 1))
       vc <- toeplitz(vcValues)
-    }    
-    tmpData <- cbind(tmpData, MASS::mvrnorm(n, mu = rep(0, corrVars), Sigma = vc))
-    colnames(tmpData)[(p+1):ncol(tmpData)] <- paste("Corr", 
-                                                    gsub(" ", "0", format(1:corrVars)), 
-                                                    sep = "")
-  }  
-  lp <- intercept -
-    4 * tmpData$TwoFactor1 + 4*tmpData$TwoFactor2 + 
-    2*tmpData$TwoFactor1*tmpData$TwoFactor2 + 
-    (tmpData$Nonlinear1^3) + 2 * exp(-6*(tmpData$Nonlinear1 - 0.3)^2) +
-    2*sin(pi*tmpData$Nonlinear2* tmpData$Nonlinear3) 
-  
-  if(linearVars > 0) {
-    lin <- seq(10, 1, length.out = linearVars)/4 
-    lin <- lin * rep(c(-1, 1), floor(linearVars)+1)[1:linearVars] 
-    for(i in seq(along.with = lin)) lp <- lp + tmpData[, i+3]*lin[i]
+    }
+    tmpData <- cbind(
+      tmpData,
+      MASS::mvrnorm(n, mu = rep(0, corrVars), Sigma = vc)
+    )
+    colnames(tmpData)[(p + 1):ncol(tmpData)] <- paste(
+      "Corr",
+      gsub(" ", "0", format(1:corrVars)),
+      sep = ""
+    )
   }
-  
-  if(ordinal){
-    prob <- binomial()$linkinv(lp + rnorm(n,sd = 2)) 
-    tmpData$Class <- cut(prob, breaks = c(0, .2, .75, 1), 
-                         include.lowest = TRUE, 
-                         labels = c("low", "med", "high"), 
-                         ordered_result = TRUE)
+  lp <- intercept -
+    4 * tmpData$TwoFactor1 +
+    4 * tmpData$TwoFactor2 +
+    2 * tmpData$TwoFactor1 * tmpData$TwoFactor2 +
+    (tmpData$Nonlinear1^3) +
+    2 * exp(-6 * (tmpData$Nonlinear1 - 0.3)^2) +
+    2 * sin(pi * tmpData$Nonlinear2 * tmpData$Nonlinear3)
+
+  if (linearVars > 0) {
+    lin <- seq(10, 1, length.out = linearVars) / 4
+    lin <- lin * rep(c(-1, 1), floor(linearVars) + 1)[1:linearVars]
+    for (i in seq(along.with = lin)) {
+      lp <- lp + tmpData[, i + 3] * lin[i]
+    }
+  }
+
+  if (ordinal) {
+    prob <- binomial()$linkinv(lp + rnorm(n, sd = 2))
+    tmpData$Class <- cut(
+      prob,
+      breaks = c(0, .2, .75, 1),
+      include.lowest = TRUE,
+      labels = c("low", "med", "high"),
+      ordered_result = TRUE
+    )
   } else {
     prob <- binomial()$linkinv(lp)
-    if(mislabel > 0 & mislabel < 1) {
-      shuffle <- sample(1:nrow(tmpData), floor(nrow(tmpData)*mislabel))
+    if (mislabel > 0 & mislabel < 1) {
+      shuffle <- sample(1:nrow(tmpData), floor(nrow(tmpData) * mislabel))
       prob[shuffle] <- 1 - prob[shuffle]
     }
     tmpData$Class <- ifelse(prob <= runif(n), "Class1", "Class2")
     tmpData$Class <- factor(tmpData$Class, levels = c("Class1", "Class2"))
   }
-  
+
   tmpData
 }

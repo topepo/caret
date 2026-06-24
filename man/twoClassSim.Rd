@@ -190,8 +190,13 @@ levels of correlation. For example, if there were 4 predictors and
 correlation matrix would be
 }
 
-\preformatted{ | 1 sym | | r 1 | | r^2 r 1 | | r^3 r^2 r 1 | | r^4 r^3 r^2 r
-1 | }
+\preformatted{
+ | 1     sym       |
+ | r 1             |
+ | r^2 r 1         |
+ | r^3 r^2 r 1     |
+ | r^4 r^3 r^2 r 1 |
+ }
 }
 \examples{
 

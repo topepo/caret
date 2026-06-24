@@ -109,6 +109,7 @@ For the \code{ggplot} method, confidence intervals on the estimated proportions
 }
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
+
 data(mdrr)
 mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
 mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .5)]
@@ -122,15 +123,13 @@ testY <- mdrrClass[-inTrain[[1]]]
 library(MASS)
 
 ldaFit <- lda(trainX, trainY)
-qdaFit <- qda(trainX, trainY)
 
 testProbs <- data.frame(obs = testY,
-                        lda = predict(ldaFit, testX)$posterior[,1],
-                        qda = predict(qdaFit, testX)$posterior[,1])
+                        lda = predict(ldaFit, testX)$posterior[,1]
 
-calibration(obs ~ lda + qda, data = testProbs)
+calibration(obs ~ lda, data = testProbs)
 
-calPlotData <- calibration(obs ~ lda + qda, data = testProbs)
+calPlotData <- calibration(obs ~ lda, data = testProbs)
 calPlotData
 
 xyplot(calPlotData, auto.key = list(columns = 2))

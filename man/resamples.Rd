@@ -111,7 +111,7 @@ set.seed(1)
 ##                     method = "LGOCV", index = tmp))
 
 ## or load pre-calculated results using:
-## load(url("http://caret.r-forge.r-project.org/exampleModels.RData"))
+load(url("http://caret.r-forge.r-project.org/exampleModels.RData"))
 
 ## resamps <- resamples(list(CART = rpartFit,
 ##                           CondInfTree = ctreeFit,
