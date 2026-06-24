@@ -308,10 +308,6 @@ cox2_lm <- train(
 ## NOTE: don't run models form RWeka when using
 ### multicore. The session will crash.
 
-## The code for train() does not change:
-set.seed(1)
-usingMC <- train(medv ~ ., data = BostonHousing, method = "glmboost")
-
 ## or use:
 ## library(doMPI) or
 ## library(doParallel) or

@@ -76,71 +76,71 @@
 #' @family feature-selection
 #' @keywords models
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' data(BloodBrain)
-#' 
+#'
 #' x <- scale(bbbDescr[, -nearZeroVar(bbbDescr)])
 #' x <- x[, -findCorrelation(cor(x), .8)]
 #' x <- as.data.frame(x, stringsAsFactors = TRUE)
-#' 
+#'
 #' set.seed(1)
 #' lmProfile <- rfe(
 #'   x,
 #'   logBBB,
 #'   sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-#'   rfeControl = rfeControl(functions = lmFuncs, number = 200)
+#'   rfeControl = rfeControl(functions = lmFuncs, number = 10)
 #' )
 #' set.seed(1)
 #' lmProfile2 <- rfe(
 #'   x,
 #'   logBBB,
 #'   sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-#'   rfeControl = rfeControl(functions = lmFuncs, rerank = TRUE, number = 200)
+#'   rfeControl = rfeControl(functions = lmFuncs, rerank = TRUE, number = 10)
 #' )
-#' 
+#'
 #' xyplot(
 #'   lmProfile$results$RMSE + lmProfile2$results$RMSE ~
 #'     lmProfile$results$Variables,
 #'   type = c("g", "p", "l"),
 #'   auto.key = TRUE
 #' )
-#' 
+#'
 #' rfProfile <- rfe(
 #'   x,
 #'   logBBB,
 #'   sizes = c(2, 5, 10, 20),
 #'   rfeControl = rfeControl(functions = rfFuncs)
 #' )
-#' 
+#'
 #' bagProfile <- rfe(
 #'   x,
 #'   logBBB,
 #'   sizes = c(2, 5, 10, 20),
 #'   rfeControl = rfeControl(functions = treebagFuncs)
 #' )
-#' 
+#'
 #' set.seed(1)
 #' svmProfile <- rfe(x, logBBB,
 #'                   sizes = c(2, 5, 10, 20),
 #'                   rfeControl = rfeControl(functions = caretFuncs,
-#'                                           number = 200),
+#'                                           number = 10),
 #'                   ## pass options to train()
 #'                   method = "svmRadial")
-#' 
+#'
 #' ## classification
-#' 
+#'
 #' data(mdrr)
 #' mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
 #' mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .8)]
-#' 
+#'
 #' set.seed(1)
 #' inTrain <- createDataPartition(mdrrClass, p = .75, list = FALSE)[, 1]
-#' 
+#'
 #' train <- mdrrDescr[inTrain, ]
 #' test <- mdrrDescr[-inTrain, ]
 #' trainClass <- mdrrClass[inTrain]
 #' testClass <- mdrrClass[-inTrain]
-#' 
+#'
 #' set.seed(2)
 #' ldaProfile <- rfe(
 #'   train,
@@ -149,59 +149,79 @@
 #'   rfeControl = rfeControl(functions = ldaFuncs, method = "cv")
 #' )
 #' plot(ldaProfile, type = c("o", "g"))
-#' 
+#'
 #' postResample(predict(ldaProfile, test), testClass)
-#' 
-#' ## Parallel Processing Example via multicore
+#'
+#' ## Parallel Processing Example via multicore on linux or macos
 #' ## library(doMC)
 #' ## registerDoMC(cores = 2)
 #' ##
 #' ## Note: if the underlying model also uses foreach, the
 #' ## number of cores specified above will double (along with
 #' ## the memory requirements)
-#' ##
-#' ## set.seed(1)
-#' ## lmProfile <- rfe(x, logBBB,
-#' ##                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-#' ##                  rfeControl = rfeControl(functions = lmFuncs,
-#' ##                                          number = 200))
-#' 
-#' 
+#'
+#' ## Parallel Processing on Windows
+#' ## Instead of doMC, see the doParallel package and its registerDoParallel()
+#' ## function
+#'
+#' set.seed(1)
+#' lmProfile <- rfe(
+#'   x,
+#'   logBBB,
+#'   sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
+#'   rfeControl = rfeControl(functions = lmFuncs, number = 10)
+#' )
+#'
 #' @export rfe
-rfe <- function (x, ...) UseMethod("rfe")
+rfe <- function(x, ...) UseMethod("rfe")
 
 #' @rdname rfe
 #' @importFrom stats predict runif
 #' @export
 "rfe.default" <-
-  function(x, y,
-           sizes = 2^(2:4),
-           metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
-           maximize = ifelse(metric %in% c("RMSE", "MAE", "logLoss"), FALSE, TRUE),
-           rfeControl = rfeControl(), ...)
-  {
+  function(
+    x,
+    y,
+    sizes = 2^(2:4),
+    metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
+    maximize = ifelse(metric %in% c("RMSE", "MAE", "logLoss"), FALSE, TRUE),
+    rfeControl = rfeControl(),
+    ...
+  ) {
     startTime <- proc.time()
     funcCall <- match.call(expand.dots = TRUE)
-    if(!("caret" %in% loadedNamespaces())) loadNamespace("caret")
+    if (!("caret" %in% loadedNamespaces())) {
+      loadNamespace("caret")
+    }
 
-    if(nrow(x) != length(y)) stop("there should be the same number of samples in x and y")
+    if (nrow(x) != length(y)) {
+      stop("there should be the same number of samples in x and y")
+    }
     numFeat <- ncol(x)
     classLevels <- levels(y)
 
-    if(is.null(rfeControl$index))
-      rfeControl$index <- switch(tolower(rfeControl$method),
-                                 cv = createFolds(y, rfeControl$number, returnTrain = TRUE),
-                                 repeatedcv = createMultiFolds(y, rfeControl$number, rfeControl$repeats),
-                                 loocv = createFolds(y, length(y), returnTrain = TRUE),
-                                 boot =, boot632 = createResample(y, rfeControl$number),
-                                 test = createDataPartition(y, 1, rfeControl$p),
-                                 lgocv = createDataPartition(y, rfeControl$number, rfeControl$p))
+    if (is.null(rfeControl$index)) {
+      rfeControl$index <- switch(
+        tolower(rfeControl$method),
+        cv = createFolds(y, rfeControl$number, returnTrain = TRUE),
+        repeatedcv = createMultiFolds(y, rfeControl$number, rfeControl$repeats),
+        loocv = createFolds(y, length(y), returnTrain = TRUE),
+        boot = ,
+        boot632 = createResample(y, rfeControl$number),
+        test = createDataPartition(y, 1, rfeControl$p),
+        lgocv = createDataPartition(y, rfeControl$number, rfeControl$p)
+      )
+    }
 
-    if(is.null(names(rfeControl$index))) names(rfeControl$index) <- prettySeq(rfeControl$index)
-    if(is.null(rfeControl$indexOut)){
-      rfeControl$indexOut <- lapply(rfeControl$index,
-                                    function(training, allSamples) allSamples[-unique(training)],
-                                    allSamples = seq(along.with = y))
+    if (is.null(names(rfeControl$index))) {
+      names(rfeControl$index) <- prettySeq(rfeControl$index)
+    }
+    if (is.null(rfeControl$indexOut)) {
+      rfeControl$indexOut <- lapply(
+        rfeControl$index,
+        function(training, allSamples) allSamples[-unique(training)],
+        allSamples = seq(along.with = y)
+      )
       names(rfeControl$indexOut) <- prettySeq(rfeControl$indexOut)
     }
 
@@ -209,93 +229,146 @@ rfe <- function (x, ...) UseMethod("rfe")
     sizes <- sizes[sizes <= ncol(x)]
 
     ## check summary function and metric
-    testOutput <- data.frame(pred = sample(y, min(10, length(y))),
-                             obs = sample(y, min(10, length(y))))
+    testOutput <- data.frame(
+      pred = sample(y, min(10, length(y))),
+      obs = sample(y, min(10, length(y)))
+    )
 
-    if(is.factor(y))
-    {
-      for(i in seq(along.with = classLevels)) testOutput[, classLevels[i]] <- runif(nrow(testOutput))
+    if (is.factor(y)) {
+      for (i in seq(along.with = classLevels)) {
+        testOutput[, classLevels[i]] <- runif(nrow(testOutput))
+      }
     }
 
     test <- rfeControl$functions$summary(testOutput, lev = classLevels)
     perfNames <- names(test)
 
-    if(!(metric %in% perfNames))
-    {
-      warning(paste("Metric '", metric, "' is not created by the summary function; '",
-                    perfNames[1], "' will be used instead", sep = ""))
+    if (!(metric %in% perfNames)) {
+      warning(paste(
+        "Metric '",
+        metric,
+        "' is not created by the summary function; '",
+        perfNames[1],
+        "' will be used instead",
+        sep = ""
+      ))
       metric <- perfNames[1]
     }
 
     ## Set or check the seeds when needed
-    totalSize <- if(any(sizes == ncol(x))) length(sizes) else length(sizes) + 1
-    if(is.null(rfeControl$seeds))
-    {
+    totalSize <- if (any(sizes == ncol(x))) length(sizes) else length(sizes) + 1
+    if (is.null(rfeControl$seeds)) {
       seeds <- vector(mode = "list", length = length(rfeControl$index))
-      seeds <- lapply(seeds, function(x) sample.int(n = 1000000, size = totalSize))
+      seeds <- lapply(seeds, function(x) {
+        sample.int(n = 1000000, size = totalSize)
+      })
       seeds[[length(rfeControl$index) + 1]] <- sample.int(n = 1000000, size = 1)
       rfeControl$seeds <- seeds
     } else {
-      if(!(length(rfeControl$seeds) == 1 && is.na(rfeControl$seeds)))
-      {
+      if (!(length(rfeControl$seeds) == 1 && is.na(rfeControl$seeds))) {
         ## check versus number of tasks
         numSeeds <- unlist(lapply(rfeControl$seeds, length))
         badSeed <- (length(rfeControl$seeds) < length(rfeControl$index) + 1) ||
           (any(numSeeds[-length(numSeeds)] < totalSize))
-        if(badSeed) stop(paste("Bad seeds: the seed object should be a list of length",
-                               length(rfeControl$index) + 1, "with",
-                               length(rfeControl$index), "integer vectors of size",
-                               totalSize, "and the last list element having a",
-                               "single integer"))
+        if (badSeed) {
+          stop(paste(
+            "Bad seeds: the seed object should be a list of length",
+            length(rfeControl$index) + 1,
+            "with",
+            length(rfeControl$index),
+            "integer vectors of size",
+            totalSize,
+            "and the last list element having a",
+            "single integer"
+          ))
+        }
       }
     }
 
-    if(rfeControl$method == "LOOCV")
-    {
-      tmp <- looRfeWorkflow(x, y, sizes, ppOpts = NULL, ctrl = rfeControl, lev = classLevels, ...)
-      selectedVars <- do.call("c", tmp$everything[names(tmp$everything) == "finalVariables"])
+    if (rfeControl$method == "LOOCV") {
+      tmp <- looRfeWorkflow(
+        x,
+        y,
+        sizes,
+        ppOpts = NULL,
+        ctrl = rfeControl,
+        lev = classLevels,
+        ...
+      )
+      selectedVars <- do.call(
+        "c",
+        tmp$everything[names(tmp$everything) == "finalVariables"]
+      )
       selectedVars <- do.call("rbind", selectedVars)
       externPerf <- tmp$performance
     } else {
-      tmp <- nominalRfeWorkflow(x, y, sizes, ppOpts = NULL, ctrl = rfeControl, lev = classLevels, ...)
-      selectedVars <- do.call("rbind", tmp$everything[names(tmp$everything) == "selectedVars"])
-      resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "resamples"])
+      tmp <- nominalRfeWorkflow(
+        x,
+        y,
+        sizes,
+        ppOpts = NULL,
+        ctrl = rfeControl,
+        lev = classLevels,
+        ...
+      )
+      selectedVars <- do.call(
+        "rbind",
+        tmp$everything[names(tmp$everything) == "selectedVars"]
+      )
+      resamples <- do.call(
+        "rbind",
+        tmp$everything[names(tmp$everything) == "resamples"]
+      )
       rownames(resamples) <- NULL
       externPerf <- tmp$performance
     }
     rownames(selectedVars) <- NULL
 
-    bestSubset <- rfeControl$functions$selectSize(x = externPerf,
-                                                  metric = metric,
-                                                  maximize = maximize)
+    bestSubset <- rfeControl$functions$selectSize(
+      x = externPerf,
+      metric = metric,
+      maximize = maximize
+    )
 
     bestVar <- rfeControl$functions$selectVar(selectedVars, bestSubset)
 
     finalTime <- system.time(
-      fit <- rfeControl$functions$fit(x[, bestVar, drop = FALSE],
-                                      y,
-                                      first = FALSE,
-                                      last = TRUE,
-                                      ...))
+      fit <- rfeControl$functions$fit(
+        x[, bestVar, drop = FALSE],
+        y,
+        first = FALSE,
+        last = TRUE,
+        ...
+      )
+    )
 
-
-    if(is.factor(y) & any(names(tmp$performance) == ".cell1"))
-    {
-      keepers <- c("Resample", "Variables", grep("\\.cell", names(tmp$performance), value = TRUE))
+    if (is.factor(y) & any(names(tmp$performance) == ".cell1")) {
+      keepers <- c(
+        "Resample",
+        "Variables",
+        grep("\\.cell", names(tmp$performance), value = TRUE)
+      )
       resampledCM <- subset(tmp$performance, Variables == bestSubset)
-      tmp$performance <- tmp$performance[, -grep("\\.cell", names(tmp$performance))]
-    } else resampledCM <- NULL
+      tmp$performance <- tmp$performance[,
+        -grep("\\.cell", names(tmp$performance))
+      ]
+    } else {
+      resampledCM <- NULL
+    }
 
-    if(!(rfeControl$method %in% c("LOOCV"))) {
-      resamples <- switch(rfeControl$returnResamp,
-                          none = NULL,
-                          all = resamples,
-                          final = subset(resamples, Variables == bestSubset))
-    } else resamples <- NULL
+    if (!(rfeControl$method %in% c("LOOCV"))) {
+      resamples <- switch(
+        rfeControl$returnResamp,
+        none = NULL,
+        all = resamples,
+        final = subset(resamples, Variables == bestSubset)
+      )
+    } else {
+      resamples <- NULL
+    }
 
     endTime <- proc.time()
-    times <- list(everything = endTime - startTime,
-                  final = finalTime)
+    times <- list(everything = endTime - startTime, final = finalTime)
 
     #########################################################################
     ## Now, based on probability or static ranking, figure out the best vars
@@ -303,7 +376,14 @@ rfe <- function (x, ...) UseMethod("rfe")
 
     out <- structure(
       list(
-        pred = if(rfeControl$saveDetails) do.call("rbind", tmp$everything[names(tmp$everything) == "predictions"]) else NULL,
+        pred = if (rfeControl$saveDetails) {
+          do.call(
+            "rbind",
+            tmp$everything[names(tmp$everything) == "predictions"]
+          )
+        } else {
+          NULL
+        },
         variables = selectedVars,
         results = as.data.frame(externPerf, stringsAsFactors = TRUE),
         bestSubset = bestSubset,
@@ -319,12 +399,18 @@ rfe <- function (x, ...) UseMethod("rfe")
         times = times,
         resampledCM = resampledCM,
         obsLevels = classLevels,
-        dots = list(...)),
-      class = "rfe")
-    if(rfeControl$timingSamps > 0)
-    {
-      out$times$prediction <- system.time(predict(out, x[1:min(nrow(x), rfeControl$timingSamps),,drop = FALSE]))
-    } else  out$times$prediction <- rep(NA, 3)
+        dots = list(...)
+      ),
+      class = "rfe"
+    )
+    if (rfeControl$timingSamps > 0) {
+      out$times$prediction <- system.time(predict(
+        out,
+        x[1:min(nrow(x), rfeControl$timingSamps), , drop = FALSE]
+      ))
+    } else {
+      out$times$prediction <- rep(NA, 3)
+    }
     out
   }
 
@@ -332,10 +418,11 @@ rfe <- function (x, ...) UseMethod("rfe")
 #' @importFrom stats .getXlevels contrasts model.matrix model.response
 #' @rdname rfe
 #' @export
-rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
-{
+rfe.formula <- function(form, data, ..., subset, na.action, contrasts = NULL) {
   m <- match.call(expand.dots = FALSE)
-  if (is.matrix(eval.parent(m$data))) m$data <- as.data.frame(data, stringsAsFactors = TRUE)
+  if (is.matrix(eval.parent(m$data))) {
+    m$data <- as.data.frame(data, stringsAsFactors = TRUE)
+  }
   m$... <- m$contrasts <- NULL
   m[[1]] <- as.name("model.frame")
   m <- eval.parent(m)
@@ -343,7 +430,9 @@ rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
   x <- model.matrix(Terms, m, contrasts)
   cons <- attr(x, "contrast")
   xint <- match("(Intercept)", colnames(x), nomatch = 0)
-  if (xint > 0)  x <- x[, -xint, drop = FALSE]
+  if (xint > 0) {
+    x <- x[, -xint, drop = FALSE]
+  }
   y <- model.response(m)
   res <- rfe(as.data.frame(x, stringsAsFactors = TRUE), y, ...)
   res$terms <- Terms
@@ -359,9 +448,12 @@ rfe.formula <- function (form, data, ..., subset, na.action, contrasts = NULL)
 ######################################################################
 ######################################################################
 #' @export
-print.rfe <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
-{
-
+print.rfe <- function(
+  x,
+  top = 5,
+  digits = max(3, getOption("digits") - 3),
+  ...
+) {
   cat("\nRecursive feature selection\n\n")
 
   resampleN <- unlist(lapply(x$control$index, length))
@@ -376,14 +468,16 @@ print.rfe <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
   print(format(x$results, digits = digits), row.names = FALSE)
   cat("\n")
 
-  cat("The top ",
-      min(top, x$bestSubset),
-      " variables (out of ",
-      x$bestSubset,
-      "):\n   ",
-      paste(x$optVariables[1:min(top, x$bestSubset)], collapse = ", "),
-      "\n\n",
-      sep = "")
+  cat(
+    "The top ",
+    min(top, x$bestSubset),
+    " variables (out of ",
+    x$bestSubset,
+    "):\n   ",
+    paste(x$optVariables[1:min(top, x$bestSubset)], collapse = ", "),
+    "\n\n",
+    sep = ""
+  )
 
   invisible(x)
 }
@@ -395,17 +489,27 @@ print.rfe <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 #' @importFrom stats complete.cases
 #' @importFrom utils flush.console
 #' @export
-rfeIter <- function(x, y,
-                    testX, testY, sizes,
-                    rfeControl = rfeControl(),
-                    label = "",
-                    seeds = NA,
-                    ...)
-{
-  if(is.null(colnames(x))) stop("x must have column names")
+rfeIter <- function(
+  x,
+  y,
+  testX,
+  testY,
+  sizes,
+  rfeControl = rfeControl(),
+  label = "",
+  seeds = NA,
+  ...
+) {
+  if (is.null(colnames(x))) {
+    stop("x must have column names")
+  }
 
-  if(is.null(testX) | is.null(testY)) stop("a test set must be specified")
-  if(is.null(sizes)) stop("please specify the number of features")
+  if (is.null(testX) | is.null(testY)) {
+    stop("a test set must be specified")
+  }
+  if (is.null(sizes)) {
+    stop("please specify the number of features")
+  }
 
   predictionMatrix <- matrix(NA, nrow = length(testY), ncol = length(sizes))
   p <- ncol(x)
@@ -415,113 +519,139 @@ rfeIter <- function(x, y,
   sizeText <- format(sizeValues)
 
   finalVariables <- vector(length(sizeValues), mode = "list")
-  for(k in seq(along.with = sizeValues))
-  {
-    if(!any(is.na(seeds))) set.seed(seeds[k])
-    if(rfeControl$verbose)
-    {
-      cat("+(rfe) fit",
-          ifelse(label != "",
-                 label, ""),
-          "size:",  sizeText[k], "\n")
+  for (k in seq(along.with = sizeValues)) {
+    if (!any(is.na(seeds))) {
+      set.seed(seeds[k])
+    }
+    if (rfeControl$verbose) {
+      cat(
+        "+(rfe) fit",
+        ifelse(label != "", label, ""),
+        "size:",
+        sizeText[k],
+        "\n"
+      )
     }
     flush.console()
-    fitObject <- rfeControl$functions$fit(x[,retained,drop = FALSE], y,
-                                          first = p == ncol(x[,retained,drop = FALSE]),
-                                          last = FALSE,
-                                          ...)
-    if(rfeControl$verbose)
-    {
-      cat("-(rfe) fit",
-          ifelse(label != "",
-                 label, ""),
-          "size:",  sizeText[k], "\n")
+    fitObject <- rfeControl$functions$fit(
+      x[, retained, drop = FALSE],
+      y,
+      first = p == ncol(x[, retained, drop = FALSE]),
+      last = FALSE,
+      ...
+    )
+    if (rfeControl$verbose) {
+      cat(
+        "-(rfe) fit",
+        ifelse(label != "", label, ""),
+        "size:",
+        sizeText[k],
+        "\n"
+      )
     }
-    modelPred <- rfeControl$functions$pred(fitObject, testX[,retained,drop = FALSE])
-    if(is.data.frame(modelPred) | is.matrix(modelPred))
-    {
-      if(is.matrix(modelPred)) {
+    modelPred <- rfeControl$functions$pred(
+      fitObject,
+      testX[, retained, drop = FALSE]
+    )
+    if (is.data.frame(modelPred) | is.matrix(modelPred)) {
+      if (is.matrix(modelPred)) {
         modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
         ## in the case where the function returns a matrix with a single column
         ## make sure that it is named pred
-        if(ncol(modelPred) == 1) names(modelPred) <- "pred"
+        if (ncol(modelPred) == 1) names(modelPred) <- "pred"
       }
       modelPred$obs <- testY
       modelPred$Variables <- sizeValues[k]
-    } else modelPred <- data.frame(pred = modelPred, obs = testY, Variables = sizeValues[k])
+    } else {
+      modelPred <- data.frame(
+        pred = modelPred,
+        obs = testY,
+        Variables = sizeValues[k]
+      )
+    }
 
     ## save as a vector and rbind at end
-    rfePred <- if(k == 1) modelPred else rbind(rfePred, modelPred)
+    rfePred <- if (k == 1) modelPred else rbind(rfePred, modelPred)
 
-
-    if(!exists("modImp")) ##todo: get away from this since it finds object in other spaces
-    {
-      if(rfeControl$verbose)
-      {
-        cat("+(rfe) imp",
-            ifelse(label != "",
-                   label, ""), "\n")
+    if (!exists("modImp")) {
+      ##todo: get away from this since it finds object in other spaces
+      if (rfeControl$verbose) {
+        cat("+(rfe) imp", ifelse(label != "", label, ""), "\n")
       }
-      modImp <- rfeControl$functions$rank(fitObject, x[,retained,drop = FALSE], y)
-      if(rfeControl$verbose)
-      {
-        cat("-(rfe) imp",
-            ifelse(label != "",
-                   label, ""), "\n")
+      modImp <- rfeControl$functions$rank(
+        fitObject,
+        x[, retained, drop = FALSE],
+        y
+      )
+      if (rfeControl$verbose) {
+        cat("-(rfe) imp", ifelse(label != "", label, ""), "\n")
       }
     } else {
-      if(rfeControl$rerank)
-      {
-        if(rfeControl$verbose)
-        {
-          cat("+(rfe) imp",
-              ifelse(label != "",
-                     label, ""),
-              "size:",  sizeText[k], "\n")
+      if (rfeControl$rerank) {
+        if (rfeControl$verbose) {
+          cat(
+            "+(rfe) imp",
+            ifelse(label != "", label, ""),
+            "size:",
+            sizeText[k],
+            "\n"
+          )
         }
-        modImp <- rfeControl$functions$rank(fitObject, x[,retained,drop = FALSE], y)
-        if(rfeControl$verbose)
-        {
-          cat("-(rfe) imp",
-              ifelse(label != "",
-                     label, ""),
-              "size:",  sizeText[k], "\n")
+        modImp <- rfeControl$functions$rank(
+          fitObject,
+          x[, retained, drop = FALSE],
+          y
+        )
+        if (rfeControl$verbose) {
+          cat(
+            "-(rfe) imp",
+            ifelse(label != "", label, ""),
+            "size:",
+            sizeText[k],
+            "\n"
+          )
         }
       }
     }
 
-    if(nrow(modImp) < sizeValues[k]) {
-      msg1 <- paste0("rfe is expecting ", sizeValues[k],
-                     " importance values but only has ", nrow(modImp), ". ",
-                     "This may be caused by having zero-variance predictors, ",
-                     "excessively-correlated predictors, factor predictors ",
-                     "that were expanded into dummy variables or you may have ",
-                     "failed to drop one of your dummy variables.")
+    if (nrow(modImp) < sizeValues[k]) {
+      msg1 <- paste0(
+        "rfe is expecting ",
+        sizeValues[k],
+        " importance values but only has ",
+        nrow(modImp),
+        ". ",
+        "This may be caused by having zero-variance predictors, ",
+        "excessively-correlated predictors, factor predictors ",
+        "that were expanded into dummy variables or you may have ",
+        "failed to drop one of your dummy variables."
+      )
       warning(msg1, call. = FALSE)
       modImp <- repair_rank(modImp, colnames(x))
     }
-    if(any(!complete.cases(modImp))){
-      warning(paste("There were missing importance values.",
-                 "There may be linear dependencies in your predictor variables"),
-              call. = FALSE)
+    if (any(!complete.cases(modImp))) {
+      warning(
+        paste(
+          "There were missing importance values.",
+          "There may be linear dependencies in your predictor variables"
+        ),
+        call. = FALSE
+      )
     }
     if (!any(names(modImp) == "var")) {
       stop("The importance score data should include a column named `var`.")
     }
     finalVariables[[k]] <- subset(modImp, var %in% retained)
     finalVariables[[k]]$Variables <- sizeValues[[k]]
-    if(k < length(sizeValues)) retained <- as.character(modImp$var)[1:sizeValues[k+1]]
+    if (k < length(sizeValues)) {
+      retained <- as.character(modImp$var)[1:sizeValues[k + 1]]
+    }
   }
   list(finalVariables = finalVariables, pred = rfePred)
-
 }
 
 ######################################################################
 ######################################################################
-
-
-
-
 
 #' Plot RFE Performance Profiles
 #'
@@ -555,44 +685,48 @@ rfeIter <- function(x, y,
 #' @keywords hplot
 #' @export
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' data(BloodBrain)
-#' 
+#'
 #' x <- scale(bbbDescr[, -nearZeroVar(bbbDescr)])
 #' x <- x[, -findCorrelation(cor(x), .8)]
 #' x <- as.data.frame(x, stringsAsFactors = TRUE)
-#' 
+#'
 #' set.seed(1)
 #' lmProfile <- rfe(
 #'   x,
 #'   logBBB,
 #'   sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-#'   rfeControl = rfeControl(functions = lmFuncs, number = 200)
+#'   rfeControl = rfeControl(functions = lmFuncs, number = 10)
 #' )
 #' plot(lmProfile)
 #' plot(lmProfile, metric = "Rsquared")
 #' ggplot(lmProfile)
 #' @export plot.rfe
-plot.rfe <- function (x,
-                      metric = x$metric,
-                      ...) {
+plot.rfe <- function(x, metric = x$metric, ...) {
   x$results$Selected <- ""
   x$results$Selected[x$results$Variables == x$bestSubset] <- "*"
 
-  results <- x$results[, colnames(x$results) %in% c("Variables", "Selected", metric)]
+  results <- x$results[,
+    colnames(x$results) %in% c("Variables", "Selected", metric)
+  ]
   metric <- metric[which(metric %in% colnames(results))]
 
   plotForm <- as.formula(paste(metric, "~ Variables"))
-  panel.profile <- function(x, y, groups, ...)
-  {
+  panel.profile <- function(x, y, groups, ...) {
     panel.xyplot(x, y, ...)
     panel.xyplot(x[groups == "*"], y[groups == "*"], pch = 16)
   }
   resampText <- resampName(x, FALSE)
   resampText <- paste(metric, resampText)
-  out <- xyplot(plotForm, data = results, groups = Selected, panel =  panel.profile,
-                ylab = resampText,
-                ...)
+  out <- xyplot(
+    plotForm,
+    data = results,
+    groups = Selected,
+    panel = panel.profile,
+    ylab = resampText,
+    ...
+  )
 
   out
 }
@@ -694,14 +828,14 @@ plot.rfe <- function (x,
 #'   [pickSizeBest()], [pickSizeTolerance()]
 #' @keywords utilities
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #'   \dontrun{
 #' subsetSizes <- c(2, 4, 6, 8)
 #' set.seed(123)
 #' seeds <- vector(mode = "list", length = 51)
 #' for(i in 1:50) seeds[[i]] <- sample.int(1000, length(subsetSizes) + 1)
 #' seeds[[51]] <- sample.int(1000, 1)
-#' 
+#'
 #' set.seed(1)
 #' rfMod <- rfe(bbbDescr, logBBB,
 #'              sizes = subsetSizes,
@@ -709,25 +843,26 @@ plot.rfe <- function (x,
 #'                                      seeds = seeds,
 #'                                      number = 50))
 #'   }
-#' 
+#'
 #' @export rfeControl
-rfeControl <- function(functions = NULL,
-                       rerank = FALSE,
-                       method = "boot",
-                       saveDetails = FALSE,
-                       number = ifelse(method %in% c("cv", "repeatedcv"), 10, 25),
-                       repeats = ifelse(method %in% c("cv", "repeatedcv"), 1, number),
-                       verbose = FALSE,
-                       returnResamp = "final",
-                       p = .75,
-                       index = NULL,
-                       indexOut = NULL,
-                       timingSamps = 0,
-                       seeds = NA,
-                       allowParallel = TRUE)
-{
+rfeControl <- function(
+  functions = NULL,
+  rerank = FALSE,
+  method = "boot",
+  saveDetails = FALSE,
+  number = ifelse(method %in% c("cv", "repeatedcv"), 10, 25),
+  repeats = ifelse(method %in% c("cv", "repeatedcv"), 1, number),
+  verbose = FALSE,
+  returnResamp = "final",
+  p = .75,
+  index = NULL,
+  indexOut = NULL,
+  timingSamps = 0,
+  seeds = NA,
+  allowParallel = TRUE
+) {
   list(
-    functions = if(is.null(functions)) caretFuncs else functions,
+    functions = if (is.null(functions)) caretFuncs else functions,
     rerank = rerank,
     method = method,
     saveDetails = saveDetails,
@@ -740,7 +875,8 @@ rfeControl <- function(functions = NULL,
     indexOut = indexOut,
     timingSamps = timingSamps,
     seeds = seeds,
-    allowParallel = allowParallel)
+    allowParallel = allowParallel
+  )
 }
 
 ######################################################################
@@ -749,24 +885,21 @@ rfeControl <- function(functions = NULL,
 
 #' @rdname caretFuncs
 #' @export
-pickSizeBest <- function(x, metric, maximize)
-{
-  best <- if(maximize) which.max(x[,metric]) else which.min(x[,metric])
+pickSizeBest <- function(x, metric, maximize) {
+  best <- if (maximize) which.max(x[, metric]) else which.min(x[, metric])
   min(x[best, "Variables"])
 }
 
 #' @rdname caretFuncs
 #' @export
-pickSizeTolerance <- function(x, metric, tol = 1.5, maximize)
-{
-  if(!maximize)
-  {
-    best <- min(x[,metric])
-    perf <- (x[,metric] - best)/best * 100
+pickSizeTolerance <- function(x, metric, tol = 1.5, maximize) {
+  if (!maximize) {
+    best <- min(x[, metric])
+    perf <- (x[, metric] - best) / best * 100
     flag <- perf <= tol
   } else {
-    best <- max(x[,metric])
-    perf <- (best - x[,metric])/best * 100
+    best <- max(x[, metric])
+    perf <- (best - x[, metric]) / best * 100
     flag <- perf <= tol
   }
   min(x[flag, "Variables"])
@@ -774,17 +907,14 @@ pickSizeTolerance <- function(x, metric, tol = 1.5, maximize)
 
 #' @rdname caretFuncs
 #' @export
-pickVars <- function(y, size)
-{
-  finalImp <- ddply(y[, c("Overall", "var")],
-                    .(var),
-                    function(x) mean(x$Overall, na.rm = TRUE))
+pickVars <- function(y, size) {
+  finalImp <- ddply(y[, c("Overall", "var")], .(var), function(x) {
+    mean(x$Overall, na.rm = TRUE)
+  })
   names(finalImp)[2] <- "Overall"
-  finalImp <- finalImp[order(finalImp$Overall, decreasing = TRUE),]
+  finalImp <- finalImp[order(finalImp$Overall, decreasing = TRUE), ]
   as.character(finalImp$var[1:size])
 }
-
-
 
 
 #' Backwards Feature Selection Helper Functions
@@ -825,7 +955,7 @@ pickVars <- function(y, size)
 #' @seealso [rfeControl()], [rfe()]
 #' @keywords models
 #' @examples
-#' 
+#'
 #' ## For picking subset sizes:
 #' ## Minimize the RMSE
 #' example <- data.frame(
@@ -834,13 +964,13 @@ pickVars <- function(y, size)
 #' )
 #' ## Percent Loss in performance (positive)
 #' example$PctLoss <- (example$RMSE - min(example$RMSE)) / min(example$RMSE) * 100
-#' 
+#'
 #' xyplot(RMSE ~ Variables, data = example)
 #' xyplot(PctLoss ~ Variables, data = example)
-#' 
+#'
 #' absoluteBest <- pickSizeBest(example, metric = "RMSE", maximize = FALSE)
 #' within5Pct <- pickSizeTolerance(example, metric = "RMSE", maximize = FALSE)
-#' 
+#'
 #' cat(
 #'   "numerically optimal:",
 #'   example$RMSE[absoluteBest],
@@ -855,7 +985,7 @@ pickVars <- function(y, size)
 #'   within5Pct,
 #'   "\n"
 #' )
-#' 
+#'
 #' ## Example where we would like to maximize
 #' example2 <- data.frame(
 #'   Rsquared = c(0.4, 0.6, 0.94, 0.95, 0.95, 0.95, 0.95),
@@ -865,13 +995,13 @@ pickVars <- function(y, size)
 #' example2$PctLoss <- (max(example2$Rsquared) - example2$Rsquared) /
 #'   max(example2$Rsquared) *
 #'   100
-#' 
+#'
 #' xyplot(Rsquared ~ Variables, data = example2)
 #' xyplot(PctLoss ~ Variables, data = example2)
-#' 
+#'
 #' absoluteBest2 <- pickSizeBest(example2, metric = "Rsquared", maximize = TRUE)
 #' within5Pct2 <- pickSizeTolerance(example2, metric = "Rsquared", maximize = TRUE)
-#' 
+#'
 #' cat(
 #'   "numerically optimal:",
 #'   example2$Rsquared[absoluteBest2],
@@ -886,267 +1016,332 @@ pickVars <- function(y, size)
 #'   within5Pct2,
 #'   "\n"
 #' )
-#' 
+#'
 #' @export caretFuncs
-caretFuncs <- list(summary = defaultSummary,
-                   fit = function(x, y, first, last, ...) train(x, y, ...),
-                   pred = function(object, x) {
-                     tmp <- predict(object, x)
-                     if(object$modelType == "Classification" & object$control$classProbs) {
-                       out <- cbind(data.frame(pred = tmp),
-                                    as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE), stringsAsFactors = TRUE)
-                     } else out <- tmp
-                     out
-                   },
-                   rank = function(object, x, y) {
-                     vimp <- varImp(object, scale = FALSE)$importance
-                     if(!is.data.frame(vimp)) vimp <- as.data.frame(vimp, stringsAsFactors = TRUE)
-                     if(object$modelType == "Regression") {
-                       vimp <- vimp[order(vimp[,1], decreasing = TRUE),,drop = FALSE]
-                     } else {
-                       if(all(levels(y) %in% colnames(vimp)) & !("Overall" %in% colnames(vimp))) {
-                         avImp <- apply(vimp[, levels(y), drop = TRUE], 1, mean)
-                         vimp$Overall <- avImp
-                       }
-                     }
-                     vimp <- vimp[order(vimp$Overall, decreasing = TRUE),, drop = FALSE]
-                     vimp$var <- rownames(vimp)
-                     vimp
-                   },
-                   selectSize = pickSizeBest,
-                   selectVar = pickVars)
+caretFuncs <- list(
+  summary = defaultSummary,
+  fit = function(x, y, first, last, ...) train(x, y, ...),
+  pred = function(object, x) {
+    tmp <- predict(object, x)
+    if (object$modelType == "Classification" & object$control$classProbs) {
+      out <- cbind(
+        data.frame(pred = tmp),
+        as.data.frame(
+          predict(object, x, type = "prob"),
+          stringsAsFactors = TRUE
+        ),
+        stringsAsFactors = TRUE
+      )
+    } else {
+      out <- tmp
+    }
+    out
+  },
+  rank = function(object, x, y) {
+    vimp <- varImp(object, scale = FALSE)$importance
+    if (!is.data.frame(vimp)) {
+      vimp <- as.data.frame(vimp, stringsAsFactors = TRUE)
+    }
+    if (object$modelType == "Regression") {
+      vimp <- vimp[order(vimp[, 1], decreasing = TRUE), , drop = FALSE]
+    } else {
+      if (
+        all(levels(y) %in% colnames(vimp)) & !("Overall" %in% colnames(vimp))
+      ) {
+        avImp <- apply(vimp[, levels(y), drop = TRUE], 1, mean)
+        vimp$Overall <- avImp
+      }
+    }
+    vimp <- vimp[order(vimp$Overall, decreasing = TRUE), , drop = FALSE]
+    vimp$var <- rownames(vimp)
+    vimp
+  },
+  selectSize = pickSizeBest,
+  selectVar = pickVars
+)
 
 ## write a better imp sort function
 #' @rdname caretFuncs
 #' @importFrom stats predict
 #' @export
-ldaFuncs <- list(summary = defaultSummary,
-                 fit = function(x, y, first, last, ...)
-                 {
-                   loadNamespace("MASS")
-                   MASS::lda(x, y, ...)
-                 },
-                 pred = function(object, x)
-                 {
-                   tmp <- predict(object, x)
-                   out <- cbind(data.frame(pred = tmp$class),
-                                as.data.frame(tmp$posterior, stringsAsFactors = FALSE), stringsAsFactors = TRUE)
-                   out
-                 },
-                 rank = function(object, x, y)
-                 {
-                   vimp <- filterVarImp(x, y, TRUE)
+ldaFuncs <- list(
+  summary = defaultSummary,
+  fit = function(x, y, first, last, ...) {
+    loadNamespace("MASS")
+    MASS::lda(x, y, ...)
+  },
+  pred = function(object, x) {
+    tmp <- predict(object, x)
+    out <- cbind(
+      data.frame(pred = tmp$class),
+      as.data.frame(tmp$posterior, stringsAsFactors = FALSE),
+      stringsAsFactors = TRUE
+    )
+    out
+  },
+  rank = function(object, x, y) {
+    vimp <- filterVarImp(x, y, TRUE)
 
-                   vimp$Overall <- apply(vimp, 1, mean)
-                   vimp <- vimp[order(vimp$Overall, decreasing = TRUE),]
+    vimp$Overall <- apply(vimp, 1, mean)
+    vimp <- vimp[order(vimp$Overall, decreasing = TRUE), ]
 
-                   vimp <- as.data.frame(vimp, stringsAsFactors = TRUE)[, "Overall",drop = FALSE]
-                   vimp$var <- rownames(vimp)
-                   vimp
-
-                 },
-                 selectSize = pickSizeBest,
-                 selectVar = pickVars
+    vimp <- as.data.frame(vimp, stringsAsFactors = TRUE)[,
+      "Overall",
+      drop = FALSE
+    ]
+    vimp$var <- rownames(vimp)
+    vimp
+  },
+  selectSize = pickSizeBest,
+  selectVar = pickVars
 )
 
 #' @rdname caretFuncs
 #' @importFrom stats predict
 #' @export
-treebagFuncs <- list(summary = defaultSummary,
-                     fit = function(x, y, first, last, ...) {
-                       loadNamespace("ipred")
-                       ipred::ipredbagg(y, x, ...)
-                     },
-                     pred = function(object, x) {
-                       tmp <- predict(object, x)
-                       if(is.factor(object$y)) {
-                         out <- cbind(data.frame(pred = tmp),
-                                      as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE), stringsAsFactors = TRUE)
-                       } else out <- tmp
-                       out
-                     },
-                     rank = function(object, x, y) {
-                       vimp <- varImp(object)
-                       vimp <- vimp[order(vimp$Overall, decreasing = TRUE),,drop = FALSE]
-                       vimp$var <- rownames(vimp)
-                       vimp
-                     },
-                     selectSize = pickSizeBest,
-                     selectVar = pickVars)
+treebagFuncs <- list(
+  summary = defaultSummary,
+  fit = function(x, y, first, last, ...) {
+    loadNamespace("ipred")
+    ipred::ipredbagg(y, x, ...)
+  },
+  pred = function(object, x) {
+    tmp <- predict(object, x)
+    if (is.factor(object$y)) {
+      out <- cbind(
+        data.frame(pred = tmp),
+        as.data.frame(
+          predict(object, x, type = "prob"),
+          stringsAsFactors = TRUE
+        ),
+        stringsAsFactors = TRUE
+      )
+    } else {
+      out <- tmp
+    }
+    out
+  },
+  rank = function(object, x, y) {
+    vimp <- varImp(object)
+    vimp <- vimp[order(vimp$Overall, decreasing = TRUE), , drop = FALSE]
+    vimp$var <- rownames(vimp)
+    vimp
+  },
+  selectSize = pickSizeBest,
+  selectVar = pickVars
+)
 
 #' @rdname caretFuncs
 #' @importFrom stats predict
 #' @export
-gamFuncs <- list(summary = defaultSummary,
-                 fit = function(x, y, first, last, ...){
-                   loaded <- search()
-                   gamLoaded <- any(loaded == "package:gam")
-                   if(gamLoaded) detach(package:gam)
-                   loadNamespace("mgcv")
-                   gam <- get("gam", asNamespace("mgcv"))
-                   dat <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
-                   dat$y <- y
-                   args <- list(formula = gamFormula(x, smoother = "s", y = "y"),
-                                data = dat,
-                                family = if(!is.factor(y)) gaussian else  binomial)
-                   do.call("gam", args)
-                 },
-                 pred = function(object, x) {
-                   if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
-                   loaded <- search()
-                   gamLoaded <- any(loaded == "package:gam")
-                   if(gamLoaded) detach(package:gam)
-                   loadNamespace("mgcv")
-                   rsp <- predict(object, newdata = x, type = "response")
-                   if(object$family$family == "binomial") {
-                     lvl <- levels(object$model$y)
-                     out <- data.frame(p1 = rsp,
-                                       p2 = 1-rsp,
-                                       pred = factor(ifelse(rsp > .5, lvl[2], lvl[1]),
-                                                     levels = lvl))
-                     colnames(out)[1:2] <- make.names(lvl)
-                     out
-                   } else out <- data.frame(pred = rsp)
-                   out
-
-                 },
-                 rank = function(object, x, y) {
-
-                   loaded <- search()
-                   gamLoaded <- any(loaded == "package:gam")
-                   if(gamLoaded) detach(package:gam)
-                   loadNamespace("mgcv")
-                   vimp <- varImp(object)
-                   vimp$var <- rownames(vimp)
-                   if(any(!(colnames(x) %in% rownames(vimp)))) {
-                     missing <- colnames(x)[!(colnames(x) %in% rownames(vimp))]
-                     tmpdf <- data.frame(var = missing,
-                                         Overall = rep(0, length(missing)))
-                     vimp <- rbind(vimp, tmpdf)
-                   }
-                   vimp <- vimp[order(vimp$Overall, decreasing = TRUE),, drop = FALSE]
-                   vimp
-                 },
-                 selectSize = pickSizeBest,
-                 selectVar = pickVars)
+gamFuncs <- list(
+  summary = defaultSummary,
+  fit = function(x, y, first, last, ...) {
+    loaded <- search()
+    gamLoaded <- any(loaded == "package:gam")
+    if (gamLoaded) {
+      detach(package:gam)
+    }
+    loadNamespace("mgcv")
+    gam <- get("gam", asNamespace("mgcv"))
+    dat <- if (is.data.frame(x)) {
+      x
+    } else {
+      as.data.frame(x, stringsAsFactors = TRUE)
+    }
+    dat$y <- y
+    args <- list(
+      formula = gamFormula(x, smoother = "s", y = "y"),
+      data = dat,
+      family = if (!is.factor(y)) gaussian else binomial
+    )
+    do.call("gam", args)
+  },
+  pred = function(object, x) {
+    if (!is.data.frame(x)) {
+      x <- as.data.frame(x, stringsAsFactors = TRUE)
+    }
+    loaded <- search()
+    gamLoaded <- any(loaded == "package:gam")
+    if (gamLoaded) {
+      detach(package:gam)
+    }
+    loadNamespace("mgcv")
+    rsp <- predict(object, newdata = x, type = "response")
+    if (object$family$family == "binomial") {
+      lvl <- levels(object$model$y)
+      out <- data.frame(
+        p1 = rsp,
+        p2 = 1 - rsp,
+        pred = factor(ifelse(rsp > .5, lvl[2], lvl[1]), levels = lvl)
+      )
+      colnames(out)[1:2] <- make.names(lvl)
+      out
+    } else {
+      out <- data.frame(pred = rsp)
+    }
+    out
+  },
+  rank = function(object, x, y) {
+    loaded <- search()
+    gamLoaded <- any(loaded == "package:gam")
+    if (gamLoaded) {
+      detach(package:gam)
+    }
+    loadNamespace("mgcv")
+    vimp <- varImp(object)
+    vimp$var <- rownames(vimp)
+    if (any(!(colnames(x) %in% rownames(vimp)))) {
+      missing <- colnames(x)[!(colnames(x) %in% rownames(vimp))]
+      tmpdf <- data.frame(var = missing, Overall = rep(0, length(missing)))
+      vimp <- rbind(vimp, tmpdf)
+    }
+    vimp <- vimp[order(vimp$Overall, decreasing = TRUE), , drop = FALSE]
+    vimp
+  },
+  selectSize = pickSizeBest,
+  selectVar = pickVars
+)
 
 #' @rdname caretFuncs
 #' @importFrom stats predict
 #' @export
-rfFuncs <-  list(summary = defaultSummary,
-                 fit = function(x, y, first, last, ...) {
-                   loadNamespace("randomForest")
-                   randomForest::randomForest(x, y, importance = TRUE, ...)
-                 },
-                 pred = function(object, x)  {
-                   tmp <- predict(object, x)
-                   if(is.factor(object$y)) {
-                     out <- cbind(data.frame(pred = tmp),
-                                  as.data.frame(predict(object, x, type = "prob"),
-                                                stringsAsFactors = TRUE))
-                   } else out <- tmp
-                   out
-                 },
-                 rank = function(object, x, y) {
-                   vimp <- varImp(object)
+rfFuncs <- list(
+  summary = defaultSummary,
+  fit = function(x, y, first, last, ...) {
+    loadNamespace("randomForest")
+    randomForest::randomForest(x, y, importance = TRUE, ...)
+  },
+  pred = function(object, x) {
+    tmp <- predict(object, x)
+    if (is.factor(object$y)) {
+      out <- cbind(
+        data.frame(pred = tmp),
+        as.data.frame(
+          predict(object, x, type = "prob"),
+          stringsAsFactors = TRUE
+        )
+      )
+    } else {
+      out <- tmp
+    }
+    out
+  },
+  rank = function(object, x, y) {
+    vimp <- varImp(object)
 
-                   if(is.factor(y)) {
-                     if(all(levels(y) %in% colnames(vimp))) {
-                       avImp <- apply(vimp[, levels(y), drop = TRUE], 1, mean)
-                       vimp$Overall <- avImp
-                     }
-                   }
+    if (is.factor(y)) {
+      if (all(levels(y) %in% colnames(vimp))) {
+        avImp <- apply(vimp[, levels(y), drop = TRUE], 1, mean)
+        vimp$Overall <- avImp
+      }
+    }
 
-                   vimp <- vimp[order(vimp$Overall, decreasing = TRUE),, drop = FALSE]
-                   if (ncol(x) == 1) {
-                     vimp$var <- colnames(x)
-                   } else vimp$var <- rownames(vimp)
-                   vimp
-                 },
-                 selectSize = pickSizeBest,
-                 selectVar = pickVars)
+    vimp <- vimp[order(vimp$Overall, decreasing = TRUE), , drop = FALSE]
+    if (ncol(x) == 1) {
+      vimp$var <- colnames(x)
+    } else {
+      vimp$var <- rownames(vimp)
+    }
+    vimp
+  },
+  selectSize = pickSizeBest,
+  selectVar = pickVars
+)
 
 
 #' @rdname caretFuncs
 #' @importFrom stats predict lm
 #' @export
-lmFuncs <- list(summary = defaultSummary,
-                fit = function(x, y, first, last, ...) {
-                  tmp <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
-                  tmp$y <- y
-                  lm(y~., data = tmp)
-                },
-                pred = function(object, x) {
-                  if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
-                  predict(object, x)
-                },
-                rank = function(object, x, y) {
-                  coefs <- abs(coef(object))
-                  coefs <- coefs[names(coefs) != "(Intercept)"]
-                  coefs[is.na(coefs)] <- 0
-                  vimp <- data.frame(Overall = unname(coefs),
-                                     var = names(coefs))
-                  rownames(vimp) <- names(coefs)
-                  vimp <- vimp[order(vimp$Overall, decreasing = TRUE),, drop = FALSE]
-                  vimp
-                },
-                selectSize = pickSizeBest,
-                selectVar = pickVars)
+lmFuncs <- list(
+  summary = defaultSummary,
+  fit = function(x, y, first, last, ...) {
+    tmp <- if (is.data.frame(x)) {
+      x
+    } else {
+      as.data.frame(x, stringsAsFactors = TRUE)
+    }
+    tmp$y <- y
+    lm(y ~ ., data = tmp)
+  },
+  pred = function(object, x) {
+    if (!is.data.frame(x)) {
+      x <- as.data.frame(x, stringsAsFactors = TRUE)
+    }
+    predict(object, x)
+  },
+  rank = function(object, x, y) {
+    coefs <- abs(coef(object))
+    coefs <- coefs[names(coefs) != "(Intercept)"]
+    coefs[is.na(coefs)] <- 0
+    vimp <- data.frame(Overall = unname(coefs), var = names(coefs))
+    rownames(vimp) <- names(coefs)
+    vimp <- vimp[order(vimp$Overall, decreasing = TRUE), , drop = FALSE]
+    vimp
+  },
+  selectSize = pickSizeBest,
+  selectVar = pickVars
+)
 
 
 #' @rdname caretFuncs
 #' @importFrom stats predict
 #' @export
-nbFuncs <- list(summary = defaultSummary,
-                fit = function(x, y, first, last, ...){
-                  loadNamespace("klaR")
-                  klaR::NaiveBayes(x, y, usekernel = TRUE, fL = 2, ...)
-                },
-                pred = function(object, x) {
-                  tmp <- predict(object, x)
-                  out <- cbind(data.frame(pred = tmp$class),
-                               as.data.frame(tmp$posterior, stringsAsFactors = TRUE))
-                  out
-                },
-                rank = function(object, x, y) {
-                  vimp <- filterVarImp(x, y)
-                  if(is.factor(y)) {
-                    avImp <- apply(vimp, 1, mean)
-                    vimp$Overall <- avImp
-                  }
+nbFuncs <- list(
+  summary = defaultSummary,
+  fit = function(x, y, first, last, ...) {
+    loadNamespace("klaR")
+    klaR::NaiveBayes(x, y, usekernel = TRUE, fL = 2, ...)
+  },
+  pred = function(object, x) {
+    tmp <- predict(object, x)
+    out <- cbind(
+      data.frame(pred = tmp$class),
+      as.data.frame(tmp$posterior, stringsAsFactors = TRUE)
+    )
+    out
+  },
+  rank = function(object, x, y) {
+    vimp <- filterVarImp(x, y)
+    if (is.factor(y)) {
+      avImp <- apply(vimp, 1, mean)
+      vimp$Overall <- avImp
+    }
 
-                  vimp <- vimp[order(vimp$Overall,decreasing = TRUE),, drop = FALSE]
+    vimp <- vimp[order(vimp$Overall, decreasing = TRUE), , drop = FALSE]
 
-                  vimp$var <- rownames(vimp)
-                  vimp
-                },
-                selectSize = pickSizeBest,
-                selectVar = pickVars)
+    vimp$var <- rownames(vimp)
+    vimp
+  },
+  selectSize = pickSizeBest,
+  selectVar = pickVars
+)
 
 
 #' @rdname caretFuncs
 #' @importFrom stats predict glm
 #' @export
 lrFuncs <- ldaFuncs
-lrFuncs$fit <- function (x, y, first, last, ...)  {
-  tmp <- if(is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
+lrFuncs$fit <- function(x, y, first, last, ...) {
+  tmp <- if (is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
   tmp$Class <- y
   glm(Class ~ ., data = tmp, family = "binomial")
 }
-lrFuncs$pred <- function (object, x) {
-  if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
+lrFuncs$pred <- function(object, x) {
+  if (!is.data.frame(x)) {
+    x <- as.data.frame(x, stringsAsFactors = TRUE)
+  }
   lvl <- levels(object$data$Class)
   tmp <- predict(object, x, type = "response")
-  out <- data.frame(1-tmp, tmp)
+  out <- data.frame(1 - tmp, tmp)
   colnames(out) <- lvl
-  out$pred <- factor(ifelse(tmp > .5, lvl[2], lvl[1]),
-                     levels = lvl)
+  out$pred <- factor(ifelse(tmp > .5, lvl[2], lvl[1]), levels = lvl)
   out
 }
 
-lrFuncs$rank <- function (object, x, y) {
+lrFuncs$rank <- function(object, x, y) {
   vimp <- varImp(object, scale = FALSE)
-  vimp <- vimp[order(vimp$Overall, decreasing = TRUE),, drop = FALSE]
+  vimp <- vimp[order(vimp$Overall, decreasing = TRUE), , drop = FALSE]
   vimp$var <- rownames(vimp)
   vimp
 }
@@ -1181,7 +1376,7 @@ lrFuncs$rank <- function (object, x, y) {
 #'   [lattice::densityplot()], [lattice::xyplot()], [lattice::stripplot()]
 #' @keywords hplot
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' library(mlbench)
 #' n <- 100
 #' p <- 40
@@ -1191,42 +1386,44 @@ lrFuncs$rank <- function (object, x, y) {
 #' x <- cbind(sim$x, matrix(rnorm(n * p), nrow = n))
 #' y <- sim$y
 #' colnames(x) <- paste("var", 1:ncol(x), sep = "")
-#' 
+#'
 #' normalization <- preProcess(x)
 #' x <- predict(normalization, x)
 #' x <- as.data.frame(x, stringsAsFactors = TRUE)
 #' subsets <- c(10, 15, 20, 25)
-#' 
+#'
 #' ctrl <- rfeControl(
 #'   functions = lmFuncs,
 #'   method = "cv",
 #'   verbose = FALSE,
 #'   returnResamp = "all"
 #' )
-#' 
+#'
 #' lmProfile <- rfe(x, y, sizes = subsets, rfeControl = ctrl)
 #' xyplot(lmProfile)
 #' stripplot(lmProfile)
-#' 
+#'
 #' histogram(lmProfile)
 #' densityplot(lmProfile)
-#' 
+#'
 #' @importFrom stats as.formula
 #' @export
-densityplot.rfe <- function(x,
-                            data = NULL,
-                            metric = x$metric,
-                            ...)
-{
-  if (!is.null(match.call()$data))
+densityplot.rfe <- function(x, data = NULL, metric = x$metric, ...) {
+  if (!is.null(match.call()$data)) {
     warning("explicit 'data' specification ignored")
+  }
 
-  if(x$control$method %in%  c("oob", "LOOCV"))
-    stop("Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling")
+  if (x$control$method %in% c("oob", "LOOCV")) {
+    stop(
+      "Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling"
+    )
+  }
 
   data <- as.data.frame(x$resample, stringsAsFactors = TRUE)
-  data$Variable <- factor(data$Variable,
-                          levels = paste(sort(unique(data$Variable))))
+  data$Variable <- factor(
+    data$Variable,
+    levels = paste(sort(unique(data$Variable)))
+  )
 
   form <- as.formula(paste("~", metric, "|Variable"))
   densityplot(form, data = data, ...)
@@ -1234,20 +1431,22 @@ densityplot.rfe <- function(x,
 
 #' @importFrom stats as.formula
 #' @export
-histogram.rfe <- function(x,
-                          data = NULL,
-                          metric = x$metric,
-                          ...)
-{
-  if (!is.null(match.call()$data))
+histogram.rfe <- function(x, data = NULL, metric = x$metric, ...) {
+  if (!is.null(match.call()$data)) {
     warning("explicit 'data' specification ignored")
+  }
 
-  if(x$control$method %in%  c("oob", "LOOCV"))
-    stop("Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling")
+  if (x$control$method %in% c("oob", "LOOCV")) {
+    stop(
+      "Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling"
+    )
+  }
 
   data <- as.data.frame(x$resample, stringsAsFactors = TRUE)
-  data$Variable <- factor(data$Variable,
-                          levels = paste(sort(unique(data$Variable))))
+  data$Variable <- factor(
+    data$Variable,
+    levels = paste(sort(unique(data$Variable)))
+  )
 
   form <- as.formula(paste("~", metric, "|Variable"))
   histogram(form, data = data, ...)
@@ -1255,44 +1454,50 @@ histogram.rfe <- function(x,
 
 #' @importFrom stats as.formula
 #' @export
-stripplot.rfe <- function(x,
-                          data = NULL,
-                          metric = x$metric,
-                          ...)
-{
-  if (!is.null(match.call()$data))
+stripplot.rfe <- function(x, data = NULL, metric = x$metric, ...) {
+  if (!is.null(match.call()$data)) {
     warning("explicit 'data' specification ignored")
+  }
 
-  if(x$control$method %in%  c("oob", "LOOCV"))
-    stop("Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling")
+  if (x$control$method %in% c("oob", "LOOCV")) {
+    stop(
+      "Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling"
+    )
+  }
 
   data <- as.data.frame(x$resample, stringsAsFactors = TRUE)
-  data$Variable <- factor(data$Variable,
-                          levels = paste(sort(unique(data$Variable))))
+  data$Variable <- factor(
+    data$Variable,
+    levels = paste(sort(unique(data$Variable)))
+  )
   theDots <- list(...)
-  if(any(names(theDots) == "horizontal"))
-  {
-    formText <- if(theDots$horizontal) paste("Variable ~", metric) else paste(metric, "~ Variable")
-  } else  formText <- paste("Variable ~", metric)
+  if (any(names(theDots) == "horizontal")) {
+    formText <- if (theDots$horizontal) {
+      paste("Variable ~", metric)
+    } else {
+      paste(metric, "~ Variable")
+    }
+  } else {
+    formText <- paste("Variable ~", metric)
+  }
 
   form <- as.formula(formText)
 
   stripplot(form, data = data, ...)
-
 }
 
 #' @importFrom stats as.formula
 #' @export
-xyplot.rfe <- function(x,
-                       data = NULL,
-                       metric = x$metric,
-                       ...)
-{
-  if (!is.null(match.call()$data))
+xyplot.rfe <- function(x, data = NULL, metric = x$metric, ...) {
+  if (!is.null(match.call()$data)) {
     warning("explicit 'data' specification ignored")
+  }
 
-  if(x$control$method %in%  c("oob", "LOOCV"))
-    stop("Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling")
+  if (x$control$method %in% c("oob", "LOOCV")) {
+    stop(
+      "Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling"
+    )
+  }
 
   data <- as.data.frame(x$resample, stringsAsFactors = TRUE)
 
@@ -1308,46 +1513,58 @@ xyplot.rfe <- function(x,
 predictors.rfe <- function(x, ...) x$optVariables
 
 #' @export
-varImp.rfe <- function(object, drop = FALSE, ...)
-{
+varImp.rfe <- function(object, drop = FALSE, ...) {
   imp <- subset(object$variables, Variables == object$optsize)
-  imp <- ddply(imp[, c("Overall", "var")], .(var), function(x) mean(x$Overall, rm.na = TRUE))
+  imp <- ddply(imp[, c("Overall", "var")], .(var), function(x) {
+    mean(x$Overall, rm.na = TRUE)
+  })
   names(imp)[2] <- "Overall"
 
-  if(drop) imp <- subset(imp, var %in% object$optVar)
+  if (drop) {
+    imp <- subset(imp, var %in% object$optVar)
+  }
   rownames(imp) <- imp$var
   imp$var <- NULL
-  imp[order(-imp$Overall),,drop = FALSE]
+  imp[order(-imp$Overall), , drop = FALSE]
 }
 
 #' @importFrom stats .checkMFClasses delete.response model.frame model.matrix na.omit
 #' @export
 predict.rfe <- function(object, newdata, ...) {
-  if(length(list(...)) > 0)
+  if (length(list(...)) > 0) {
     warning("... are ignored for predict.rfe")
+  }
 
-  if(inherits(object, "rfe.formula")) {
+  if (inherits(object, "rfe.formula")) {
     newdata <- as.data.frame(newdata, stringsAsFactors = FALSE)
     rn <- row.names(newdata)
     Terms <- delete.response(object$terms)
-    m <- model.frame(Terms, newdata, na.action = na.omit,
-                     xlev = object$xlevels)
-    if (!is.null(cl <- attr(Terms, "dataClasses")))
+    m <- model.frame(Terms, newdata, na.action = na.omit, xlev = object$xlevels)
+    if (!is.null(cl <- attr(Terms, "dataClasses"))) {
       .checkMFClasses(cl, m)
+    }
     keep <- match(row.names(m), rn)
     newdata <- model.matrix(Terms, m, contrasts = object$contrasts)
     xint <- match("(Intercept)", colnames(newdata), nomatch = 0)
-    if (xint > 0)  newdata <- newdata[, -xint, drop = FALSE]
+    if (xint > 0) newdata <- newdata[, -xint, drop = FALSE]
   } else {
     if (any(names(object) == "recipe")) {
       newdata <-
-        bake(object$recipe, newdata, all_predictors(), composition = "data.frame")
+        bake(
+          object$recipe,
+          newdata,
+          all_predictors(),
+          composition = "data.frame"
+        )
     }
   }
   checkCols <- object$optVar %in% colnames(newdata)
-  if(!all(checkCols))
-    stop(paste("missing columns from newdata:",
-               paste(object$optVar[!checkCols], collapse = ", ")))
+  if (!all(checkCols)) {
+    stop(paste(
+      "missing columns from newdata:",
+      paste(object$optVar[!checkCols], collapse = ", ")
+    ))
+  }
 
   newdata <- newdata[, object$optVar, drop = FALSE]
   object$control$functions$pred(object$fit, newdata)
@@ -1361,23 +1578,26 @@ update.rfe <- function(object, x, y, size, ...) {
   bestVar <- object$control$functions$selectVar(selectedVars, size)
 
   if (!is.null(object$recipe)) {
-    if (is.null(object$recipe$template))
+    if (is.null(object$recipe$template)) {
       stop("Recipe is missing data to be juiced.", call. = FALSE)
+    }
     args <-
       list(
         x = juice(object$recipe, all_predictors(), composition = "data.frame"),
         y = juice(object$recipe, all_outcomes(), composition = "data.frame"),
-        first = FALSE, last = TRUE
+        first = FALSE,
+        last = TRUE
       )
-    args$y <- args$y[,1]
+    args$y <- args$y[, 1]
   } else {
     args <-
       list(x = x, y = y, first = FALSE, last = TRUE)
   }
   args$x <- args$x[, bestVar, drop = FALSE]
 
-  if (length(object$dots) > 0)
+  if (length(object$dots) > 0) {
     args <- c(args, object$dots)
+  }
 
   object$fit <- do.call(object$control$functions$fit, args)
 
@@ -1394,10 +1614,12 @@ update.rfe <- function(object, x, y, size, ...) {
 
 repair_rank <- function(imp, nms, fill = -Inf) {
   no_val <- !(nms %in% imp$var)
-  missing_rows <- imp[rep(1, sum(no_val)),]
+  missing_rows <- imp[rep(1, sum(no_val)), ]
   missing_rows$var <- nms[no_val]
   other_col <- colnames(imp)[colnames(imp) != "var"]
-  for(i in other_col) missing_rows[, i] <- NA
+  for (i in other_col) {
+    missing_rows[, i] <- NA
+  }
   out <- rbind(imp, missing_rows)
   rownames(out) <- NULL
   out
@@ -1405,22 +1627,33 @@ repair_rank <- function(imp, nms, fill = -Inf) {
 
 ###################################################################
 
-rfe_rec <- function(x, y, test_x, test_y, perf_dat,
-                    sizes, rfeControl = rfeControl(),
-                    label = "", seeds = NA, ...) {
+rfe_rec <- function(
+  x,
+  y,
+  test_x,
+  test_y,
+  perf_dat,
+  sizes,
+  rfeControl = rfeControl(),
+  label = "",
+  seeds = NA,
+  ...
+) {
   p <- ncol(x)
 
-  if (length(sizes) > 0 && max(sizes) > p)
+  if (length(sizes) > 0 && max(sizes) > p) {
     sizes <- sizes[sizes <= p]
+  }
 
-  if (all(sizes < 2))
+  if (all(sizes < 2)) {
     stop(
       "After the recipe, there are less than two predictors remaining. `rfe` ",
       "requires at least two.",
       call. = FALSE
     )
+  }
 
-  if (length(sizes) == 0)
+  if (length(sizes) == 0) {
     stop(
       "After the recipe, there are only ",
       p,
@@ -1428,6 +1661,7 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
       "The `sizes` values are inconsistent with this.",
       call. = FALSE
     )
+  }
 
   predictionMatrix <-
     matrix(NA, nrow = length(test_y), ncol = length(sizes))
@@ -1438,32 +1672,36 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
 
   finalVariables <- vector(length(sizeValues), mode = "list")
   for (k in seq(along.with = sizeValues)) {
-    if (!any(is.na(seeds)))
+    if (!any(is.na(seeds))) {
       set.seed(seeds[k])
+    }
 
     if (rfeControl$verbose) {
-      cat("+(rfe) fit",
-          ifelse(label != "",
-                 label, ""),
-          "size:",
-          sizeText[k],
-          "\n")
+      cat(
+        "+(rfe) fit",
+        ifelse(label != "", label, ""),
+        "size:",
+        sizeText[k],
+        "\n"
+      )
     }
     flush.console()
     fitObject <-
       rfeControl$functions$fit(
-        x[, retained, drop = FALSE], y,
+        x[, retained, drop = FALSE],
+        y,
         first = p == ncol(x[, retained, drop = FALSE]),
         last = FALSE,
         ...
       )
     if (rfeControl$verbose) {
-      cat("-(rfe) fit",
-          ifelse(label != "",
-                 label, ""),
-          "size:",
-          sizeText[k],
-          "\n")
+      cat(
+        "-(rfe) fit",
+        ifelse(label != "", label, ""),
+        "size:",
+        sizeText[k],
+        "\n"
+      )
     }
     modelPred <-
       rfeControl$functions$pred(fitObject, test_x[, retained, drop = FALSE])
@@ -1472,57 +1710,55 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
         modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
         ## in the case where the function returns a matrix with a single column
         ## make sure that it is named pred
-        if (ncol(modelPred) == 1)
+        if (ncol(modelPred) == 1) {
           names(modelPred) <- "pred"
+        }
       }
       modelPred$obs <- test_y
       modelPred$Variables <- sizeValues[k]
-    } else
+    } else {
       modelPred <-
-      data.frame(pred = modelPred,
-                 obs = test_y,
-                 Variables = sizeValues[k])
+        data.frame(pred = modelPred, obs = test_y, Variables = sizeValues[k])
+    }
     ## save as a vector and rbind at end
-    rfePred <- if (k == 1)
+    rfePred <- if (k == 1) {
       modelPred
-    else
+    } else {
       rbind(rfePred, modelPred)
-
+    }
 
     if (!exists("modImp")) {
       ##todo: get away from this since it finds object in other spaces
 
-      if (rfeControl$verbose){
-        cat("+(rfe) imp",
-            ifelse(label != "",
-                   label, ""), "\n")
+      if (rfeControl$verbose) {
+        cat("+(rfe) imp", ifelse(label != "", label, ""), "\n")
       }
       modImp <-
         rfeControl$functions$rank(fitObject, x[, retained, drop = FALSE], y)
-      if (rfeControl$verbose){
-        cat("-(rfe) imp",
-            ifelse(label != "",
-                   label, ""), "\n")
+      if (rfeControl$verbose) {
+        cat("-(rfe) imp", ifelse(label != "", label, ""), "\n")
       }
     } else {
-      if (rfeControl$rerank){
-        if (rfeControl$verbose){
-          cat("+(rfe) imp",
-              ifelse(label != "",
-                     label, ""),
-              "size:",
-              sizeText[k],
-              "\n")
+      if (rfeControl$rerank) {
+        if (rfeControl$verbose) {
+          cat(
+            "+(rfe) imp",
+            ifelse(label != "", label, ""),
+            "size:",
+            sizeText[k],
+            "\n"
+          )
         }
         modImp <-
           rfeControl$functions$rank(fitObject, x[, retained, drop = FALSE], y)
-        if (rfeControl$verbose){
-          cat("-(rfe) imp",
-              ifelse(label != "",
-                     label, ""),
-              "size:",
-              sizeText[k],
-              "\n")
+        if (rfeControl$verbose) {
+          cat(
+            "-(rfe) imp",
+            ifelse(label != "", label, ""),
+            "size:",
+            sizeText[k],
+            "\n"
+          )
         }
       }
     }
@@ -1553,8 +1789,9 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
     }
     finalVariables[[k]] <- subset(modImp, var %in% retained)
     finalVariables[[k]]$Variables <- sizeValues[[k]]
-    if (k < length(sizeValues))
+    if (k < length(sizeValues)) {
       retained <- as.character(modImp$var)[1:sizeValues[k + 1]]
+    }
   }
   list(finalVariables = finalVariables, pred = rfePred)
 }
@@ -1562,94 +1799,123 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
 #' @rdname rfe
 #' @export
 "rfe.recipe" <-
-  function(x,
-           data,
-           sizes = 2 ^ (2:4),
-           metric = NULL,
-           maximize = NULL,
-           rfeControl = rfeControl(),
-           ...) {
+  function(
+    x,
+    data,
+    sizes = 2^(2:4),
+    metric = NULL,
+    maximize = NULL,
+    rfeControl = rfeControl(),
+    ...
+  ) {
     startTime <- proc.time()
     funcCall <- match.call(expand.dots = TRUE)
-    if (!("caret" %in% loadedNamespaces()))
+    if (!("caret" %in% loadedNamespaces())) {
       loadNamespace("caret")
+    }
 
     ###################################################################
 
-    if(rfeControl$verbose)
+    if (rfeControl$verbose) {
       cat("Preparing recipe\n")
+    }
 
-    trained_rec <- prep(x, training = data,
-                        fresh = TRUE,
-                        retain = TRUE,
-                        verbose = FALSE,
-                        stringsAsFactors = TRUE)
+    trained_rec <- prep(
+      x,
+      training = data,
+      fresh = TRUE,
+      retain = TRUE,
+      verbose = FALSE,
+      stringsAsFactors = TRUE
+    )
     x_dat <- juice(trained_rec, all_predictors(), composition = "data.frame")
     y_dat <- juice(trained_rec, all_outcomes(), composition = "data.frame")
-    if(ncol(y_dat) > 1)
+    if (ncol(y_dat) > 1) {
       stop("`rfe` doesn't support multivariate outcomes", call. = FALSE)
+    }
     y_dat <- y_dat[[1]]
     is_weight <- summary(trained_rec)$role == "case weight"
-    if(any(is_weight))
+    if (any(is_weight)) {
       stop("`rfe` does not allow for weights.", call. = FALSE)
+    }
 
     is_perf <- summary(trained_rec)$role == "performance var"
-    if(any(is_perf)) {
+    if (any(is_perf)) {
       perf_data <- juice(trained_rec, has_role("performance var"))
-    } else perf_data <- NULL
+    } else {
+      perf_data <- NULL
+    }
 
     p <- ncol(x_dat)
     classLevels <- levels(y_dat)
 
     # now do default metrics:
-    if (is.null(metric))
+    if (is.null(metric)) {
       metric <- ifelse(is.factor(y_dat), "Accuracy", "RMSE")
+    }
 
     maximize <-
       ifelse(metric %in% c("RMSE", "MAE", "logLoss"), FALSE, TRUE) # TODO make a function
 
-
-
-    if (is.null(rfeControl$index))
+    if (is.null(rfeControl$index)) {
       rfeControl$index <- switch(
         tolower(rfeControl$method),
         cv = createFolds(y_dat, rfeControl$number, returnTrain = TRUE),
-        repeatedcv = createMultiFolds(y_dat, rfeControl$number, rfeControl$repeats),
+        repeatedcv = createMultiFolds(
+          y_dat,
+          rfeControl$number,
+          rfeControl$repeats
+        ),
         loocv = createFolds(y_dat, length(y_dat), returnTrain = TRUE),
         boot = ,
         boot632 = createResample(y_dat, rfeControl$number),
         test = createDataPartition(y_dat, 1, rfeControl$p),
         lgocv = createDataPartition(y_dat, rfeControl$number, rfeControl$p)
       )
+    }
 
-    if (is.null(names(rfeControl$index)))
+    if (is.null(names(rfeControl$index))) {
       names(rfeControl$index) <- prettySeq(rfeControl$index)
+    }
     if (is.null(rfeControl$indexOut)) {
-      rfeControl$indexOut <- lapply(rfeControl$index,
-                                    function(training, allSamples)
-                                      allSamples[-unique(training)],
-                                    allSamples = seq(along.with = y_dat))
+      rfeControl$indexOut <- lapply(
+        rfeControl$index,
+        function(training, allSamples) {
+          allSamples[-unique(training)]
+        },
+        allSamples = seq(along.with = y_dat)
+      )
       names(rfeControl$indexOut) <- prettySeq(rfeControl$indexOut)
     }
 
     sizes <- sort(unique(sizes))
-    if (any(sizes > p))
-      warning("For the training set, the recipe generated fewer predictors ",
-              "than the ", max(sizes), " expected in `sizes` and the number ",
-              "of subsets will be truncated to be <= ", p, ".",
-              call. = FALSE)
+    if (any(sizes > p)) {
+      warning(
+        "For the training set, the recipe generated fewer predictors ",
+        "than the ",
+        max(sizes),
+        " expected in `sizes` and the number ",
+        "of subsets will be truncated to be <= ",
+        p,
+        ".",
+        call. = FALSE
+      )
+    }
     sizes <- sizes[sizes <= p]
 
     ## check summary function and metric
-    testOutput <- data.frame(pred = sample(y_dat, min(10, length(y_dat))),
-                             obs = sample(y_dat, min(10, length(y_dat))))
+    testOutput <- data.frame(
+      pred = sample(y_dat, min(10, length(y_dat))),
+      obs = sample(y_dat, min(10, length(y_dat)))
+    )
     if (is.factor(y_dat)) {
-      for (i in seq(along.with = classLevels))
+      for (i in seq(along.with = classLevels)) {
         testOutput[, classLevels[i]] <- runif(nrow(testOutput))
+      }
     }
-    if(!is.null(perf_data))
+    if (!is.null(perf_data)) {
       testOutput <- cbind(testOutput, perf_data)
-
+    }
 
     test <-
       rfeControl$functions$summary(testOutput, lev = classLevels)
@@ -1671,15 +1937,17 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
 
     ## Set or check the seeds when needed
     totalSize <-
-      if (any(sizes == p))
+      if (any(sizes == p)) {
         length(sizes)
-    else
-      length(sizes) + 1
+      } else {
+        length(sizes) + 1
+      }
     if (is.null(rfeControl$seeds)) {
       seeds <- vector(mode = "list", length = length(rfeControl$index))
       seeds <-
-        lapply(seeds, function(x)
-          sample.int(n = 1000000, size = totalSize))
+        lapply(seeds, function(x) {
+          sample.int(n = 1000000, size = totalSize)
+        })
       seeds[[length(rfeControl$index) + 1]] <-
         sample.int(n = 1000000, size = 1)
       rfeControl$seeds <- seeds
@@ -1690,7 +1958,7 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
         badSeed <-
           (length(rfeControl$seeds) < length(rfeControl$index) + 1) ||
           (any(numSeeds[-length(numSeeds)] < totalSize))
-        if (badSeed)
+        if (badSeed) {
           stop(
             paste(
               "Bad seeds: the seed object should be a list of length",
@@ -1703,6 +1971,7 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
               "single integer"
             )
           )
+        }
       }
     }
 
@@ -1732,7 +2001,10 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
         )
 
       selectedVars <-
-        do.call("rbind", tmp$everything[names(tmp$everything) == "selectedVars"])
+        do.call(
+          "rbind",
+          tmp$everything[names(tmp$everything) == "selectedVars"]
+        )
       resamples <-
         do.call("rbind", tmp$everything[names(tmp$everything) == "resamples"])
       rownames(resamples) <- NULL
@@ -1752,13 +2024,16 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
     numResamples <- length(rfeControl$index)
     bestSubset <-
       rfeControl$functions$selectSize(
-        x = subset(externPerf, Num_Resamples >= floor(.5*numResamples)),
+        x = subset(externPerf, Num_Resamples >= floor(.5 * numResamples)),
         metric = metric,
         maximize = maximize
       )
 
     bestVar <-
-      rfeControl$functions$selectVar(subset(selectedVars, var %in% x_names), bestSubset)
+      rfeControl$functions$selectVar(
+        subset(selectedVars, var %in% x_names),
+        bestSubset
+      )
     # In case of orpahns:
     bestVar <- bestVar[!is.na(bestVar)]
     bestSubset <- length(bestVar)
@@ -1776,15 +2051,18 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
 
     if (is.factor(y_dat) & any(names(tmp$performance) == ".cell1")) {
       keepers <-
-        c("Resample",
+        c(
+          "Resample",
           "Variables",
-          grep("\\.cell", names(tmp$performance), value = TRUE))
+          grep("\\.cell", names(tmp$performance), value = TRUE)
+        )
       resampledCM <-
         subset(tmp$performance, Variables == bestSubset)
       tmp$performance <-
-        tmp$performance[,-grep("\\.cell", names(tmp$performance))]
-    } else
+        tmp$performance[, -grep("\\.cell", names(tmp$performance))]
+    } else {
       resampledCM <- NULL
+    }
 
     if (!(rfeControl$method %in% c("LOOCV"))) {
       resamples <- switch(
@@ -1793,12 +2071,12 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
         all = resamples,
         final = subset(resamples, Variables == bestSubset)
       )
-    } else
+    } else {
       resamples <- NULL
+    }
 
     endTime <- proc.time()
-    times <- list(everything = endTime - startTime,
-                  final = finalTime)
+    times <- list(everything = endTime - startTime, final = finalTime)
 
     #########################################################################
     ## Now, based on probability or static ranking, figure out the best vars
@@ -1806,10 +2084,14 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
 
     out <- structure(
       list(
-        pred = if (rfeControl$saveDetails)
-          do.call("rbind", tmp$everything[names(tmp$everything) == "predictions"])
-        else
-          NULL,
+        pred = if (rfeControl$saveDetails) {
+          do.call(
+            "rbind",
+            tmp$everything[names(tmp$everything) == "predictions"]
+          )
+        } else {
+          NULL
+        },
         variables = selectedVars,
         results = as.data.frame(externPerf, stringsAsFactors = FALSE),
         bestSubset = bestSubset,
@@ -1832,9 +2114,13 @@ rfe_rec <- function(x, y, test_x, test_y, perf_dat,
     )
     if (rfeControl$timingSamps > 0) {
       out$times$prediction <-
-        system.time(predict(out, x_dat[1:min(nrow(x_dat), rfeControl$timingSamps), , drop = FALSE]))
-    } else
+        system.time(predict(
+          out,
+          x_dat[1:min(nrow(x_dat), rfeControl$timingSamps), , drop = FALSE]
+        ))
+    } else {
       out$times$prediction <- rep(NA, 3)
+    }
     out
   }
 
@@ -1847,7 +2133,7 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
   if (ctrl$method %in% c("boot632")) {
     resampleIndex <- c(list("AllData" = rep(0, nrow(data))), resampleIndex)
     ctrl$indexOut <-
-      c(list("AllData" = rep(0, nrow(data))),  ctrl$indexOut)
+      c(list("AllData" = rep(0, nrow(data))), ctrl$indexOut)
   }
 
   `%op%` <- getOper(ctrl$allowParallel && foreach::getDoParWorkers() > 1)
@@ -1858,7 +2144,8 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
       .verbose = FALSE,
       .errorhandling = "stop",
       .packages = "caret"
-    ) %op% {
+    ) %op%
+    {
       loadNamespace("caret")
       requireNamespace("plyr")
       requireNamespace("methods")
@@ -1873,20 +2160,25 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
       }
 
       seeds <-
-        if (!(length(ctrl$seeds) == 1 &&
-              is.na(ctrl$seeds)))
-          ctrl$seeds[[iter]] else
-            NA
+        if (
+          !(length(ctrl$seeds) == 1 &&
+            is.na(ctrl$seeds))
+        ) {
+          ctrl$seeds[[iter]]
+        } else {
+          NA
+        }
 
-      if (ctrl$verbose)
-        cat("+(rfe)",
-            names(resampleIndex)[iter],
-            "recipe",
-            "\n")
+      if (ctrl$verbose) {
+        cat("+(rfe)", names(resampleIndex)[iter], "recipe", "\n")
+      }
 
       trained_rec <- prep(
-        rec, training = data[modelIndex,,drop = FALSE], fresh = TRUE,
-        verbose = FALSE, stringsAsFactors = TRUE,
+        rec,
+        training = data[modelIndex, , drop = FALSE],
+        fresh = TRUE,
+        verbose = FALSE,
+        stringsAsFactors = TRUE,
         retain = TRUE
       )
 
@@ -1905,28 +2197,32 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
       )[[1]]
 
       is_perf <- summary(trained_rec)$role == "performance var"
-      if(any(is_perf)) {
+      if (any(is_perf)) {
         test_perf <- bake(
           trained_rec,
           new_data = data[-modelIndex, , drop = FALSE],
           has_role("performance var"),
           composition = "data.frame"
         )
-      } else test_perf <- NULL
+      } else {
+        test_perf <- NULL
+      }
 
       p <- ncol(x)
 
-      if(length(sizes) > 0 && max(sizes) > p)
+      if (length(sizes) > 0 && max(sizes) > p) {
         sizes <- sizes[sizes <= p]
+      }
 
-      if (all(sizes < 2))
+      if (all(sizes < 2)) {
         stop(
           "After the recipe, there are less than two predictors remaining. `rfe` ",
           "requires at least two.",
           call. = FALSE
         )
+      }
 
-      if (length(sizes) == 0)
+      if (length(sizes) == 0) {
         stop(
           "After the recipe, there are only ",
           p,
@@ -1934,27 +2230,31 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
           "The `sizes` values are inconsistent with this.",
           call. = FALSE
         )
+      }
 
-      if (ctrl$verbose)
-        cat("-(rfe)",
-            names(resampleIndex)[iter],
-            "recipe",
-            "\n")
+      if (ctrl$verbose) {
+        cat("-(rfe)", names(resampleIndex)[iter], "recipe", "\n")
+      }
 
       rfeResults <- rfe_rec(
-        x, y,
-        test_x, test_y,
+        x,
+        y,
+        test_x,
+        test_y,
         test_perf,
-        sizes, ctrl,
+        sizes,
+        ctrl,
         label = names(resampleIndex)[iter],
         seeds = seeds,
         ...
       )
       resamples <-
-        plyr::ddply(rfeResults$pred,
-                    .(Variables),
-                    ctrl$functions$summary,
-                    lev = lev)
+        plyr::ddply(
+          rfeResults$pred,
+          .(Variables),
+          ctrl$functions$summary,
+          lev = lev
+        )
 
       if (ctrl$saveDetails) {
         rfeResults$pred$Resample <- names(resampleIndex)[iter]
@@ -1967,8 +2267,9 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
 
       if (is.factor(y) && length(lev) <= 50) {
         cells <-
-          plyr::ddply(rfeResults$pred, .(Variables), function(x)
-            flatTable(x$pred, x$obs))
+          plyr::ddply(rfeResults$pred, .(Variables), function(x) {
+            flatTable(x$pred, x$obs)
+          })
         resamples <- merge(resamples, cells)
       }
 
@@ -1978,8 +2279,11 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
       list(
         resamples = resamples,
         selectedVars = vars,
-        predictions = if (ctrl$saveDetails)
-          rfeResults$pred else NULL
+        predictions = if (ctrl$saveDetails) {
+          rfeResults$pred
+        } else {
+          NULL
+        }
       )
     }
 
@@ -1996,34 +2300,50 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
     apparent <-
       apparent[, !grepl("^\\.cell|Resample", colnames(apparent)), drop = FALSE]
     names(apparent)[which(names(apparent) %in% perfNames)] <-
-      paste(names(apparent)[which(names(apparent) %in% perfNames)],
-            "Apparent", sep = "")
+      paste(
+        names(apparent)[which(names(apparent) %in% perfNames)],
+        "Apparent",
+        sep = ""
+      )
     names(apparent) <- gsub("^\\.", "", names(apparent))
     resamples <- subset(resamples, Resample != "AllData")
   }
 
   externPerf <-
-    plyr::ddply(resamples[, !grepl("\\.cell|Resample", colnames(resamples)), drop = FALSE],
-                .(Variables),
-                MeanSD,
-                exclude = "Variables")
+    plyr::ddply(
+      resamples[,
+        !grepl("\\.cell|Resample", colnames(resamples)),
+        drop = FALSE
+      ],
+      .(Variables),
+      MeanSD,
+      exclude = "Variables"
+    )
   numVars <-
-    plyr::ddply(resamples[, !grepl("\\.cell|Resample", colnames(resamples)), drop = FALSE],
-                .(Variables),
-                function(x) c(Num_Resamples = nrow(x)))
+    plyr::ddply(
+      resamples[,
+        !grepl("\\.cell|Resample", colnames(resamples)),
+        drop = FALSE
+      ],
+      .(Variables),
+      function(x) c(Num_Resamples = nrow(x))
+    )
 
   externPerf <- merge(externPerf, numVars, by = "Variables", all = TRUE)
-  externPerf <- externPerf[order(externPerf$Variables),, drop = FALSE]
+  externPerf <- externPerf[order(externPerf$Variables), , drop = FALSE]
 
   if (ctrl$method %in% c("boot632")) {
     externPerf <- merge(externPerf, apparent)
     for (p in seq(along.with = perfNames)) {
       const <- 1 - exp(-1)
       externPerf[, perfNames[p]] <-
-        (const * externPerf[, perfNames[p]]) +  ((1 - const) * externPerf[, paste(perfNames[p], "Apparent", sep = "")])
+        (const * externPerf[, perfNames[p]]) +
+        ((1 - const) * externPerf[, paste(perfNames[p], "Apparent", sep = "")])
     }
     externPerf <-
-      externPerf[,!(names(externPerf) %in% paste(perfNames, "Apparent", sep = ""))]
+      externPerf[,
+        !(names(externPerf) %in% paste(perfNames, "Apparent", sep = ""))
+      ]
   }
   list(performance = externPerf, everything = result)
 }
@@ -2041,8 +2361,8 @@ rfe_rec_loo <- function(rec, data, sizes, ctrl, lev, ...) {
       .verbose = FALSE,
       .errorhandling = "stop",
       .packages = "caret"
-    ) %op% {
-
+    ) %op%
+    {
       loadNamespace("caret")
       loadNamespace("recipes")
 
@@ -2052,14 +2372,23 @@ rfe_rec_loo <- function(rec, data, sizes, ctrl, lev, ...) {
       holdoutIndex <- -unique(resampleIndex[[iter]])
 
       seeds <-
-        if (!(length(ctrl$seeds) == 1 &&
-              is.na(ctrl$seeds)))
-          ctrl$seeds[[iter]]  else NA
-      if(ctrl$verbose)
+        if (
+          !(length(ctrl$seeds) == 1 &&
+            is.na(ctrl$seeds))
+        ) {
+          ctrl$seeds[[iter]]
+        } else {
+          NA
+        }
+      if (ctrl$verbose) {
         cat("Preparing recipe\n")
+      }
       trained_rec <- prep(
-        rec, training = data[modelIndex,,drop = FALSE], fresh = TRUE,
-        verbose = FALSE, stringsAsFactors = TRUE,
+        rec,
+        training = data[modelIndex, , drop = FALSE],
+        fresh = TRUE,
+        verbose = FALSE,
+        stringsAsFactors = TRUE,
         retain = TRUE
       )
 
@@ -2078,28 +2407,32 @@ rfe_rec_loo <- function(rec, data, sizes, ctrl, lev, ...) {
       )[[1]]
 
       is_perf <- summary(trained_rec)$role == "performance var"
-      if(any(is_perf)) {
+      if (any(is_perf)) {
         test_perf <- bake(
           trained_rec,
           new_data = data[-modelIndex, , drop = FALSE],
           has_role("performance var"),
           composition = "data.frame"
         )
-      } else test_perf <- NULL
+      } else {
+        test_perf <- NULL
+      }
 
       p <- ncol(x)
 
-      if(length(sizes) > 0 && max(sizes) > p)
+      if (length(sizes) > 0 && max(sizes) > p) {
         sizes <- sizes[sizes <= p]
+      }
 
-      if (all(sizes < 2))
+      if (all(sizes < 2)) {
         stop(
           "After the recipe, there are less than two predictors remaining. `rfe` ",
           "requires at least two.",
           call. = FALSE
         )
+      }
 
-      if (length(sizes) == 0)
+      if (length(sizes) == 0) {
         stop(
           "After the recipe, there are only ",
           p,
@@ -2107,12 +2440,16 @@ rfe_rec_loo <- function(rec, data, sizes, ctrl, lev, ...) {
           "The `sizes` values are inconsistent with this.",
           call. = FALSE
         )
+      }
 
       rfeResults <- rfe_rec(
-        x, y,
-        test_x, test_y,
+        x,
+        y,
+        test_x,
+        test_y,
         test_perf,
-        sizes, ctrl,
+        sizes,
+        ctrl,
         label = names(resampleIndex)[iter],
         seeds = seeds,
         ...
@@ -2124,5 +2461,3 @@ rfe_rec_loo <- function(rec, data, sizes, ctrl, lev, ...) {
     ddply(preds, .(Variables), ctrl$functions$summary, lev = lev)
   list(performance = resamples, everything = result)
 }
-
-

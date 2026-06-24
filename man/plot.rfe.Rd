@@ -65,7 +65,7 @@ lmProfile <- rfe(
   x,
   logBBB,
   sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-  rfeControl = rfeControl(functions = lmFuncs, number = 200)
+  rfeControl = rfeControl(functions = lmFuncs, number = 10)
 )
 plot(lmProfile)
 plot(lmProfile, metric = "Rsquared")

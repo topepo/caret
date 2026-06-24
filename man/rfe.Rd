@@ -169,14 +169,14 @@ lmProfile <- rfe(
   x,
   logBBB,
   sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-  rfeControl = rfeControl(functions = lmFuncs, number = 200)
+  rfeControl = rfeControl(functions = lmFuncs, number = 10)
 )
 set.seed(1)
 lmProfile2 <- rfe(
   x,
   logBBB,
   sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-  rfeControl = rfeControl(functions = lmFuncs, rerank = TRUE, number = 200)
+  rfeControl = rfeControl(functions = lmFuncs, rerank = TRUE, number = 10)
 )
 
 xyplot(
@@ -204,7 +204,7 @@ set.seed(1)
 svmProfile <- rfe(x, logBBB,
                   sizes = c(2, 5, 10, 20),
                   rfeControl = rfeControl(functions = caretFuncs,
-                                          number = 200),
+                                          number = 10),
                   ## pass options to train()
                   method = "svmRadial")
 
@@ -233,20 +233,25 @@ plot(ldaProfile, type = c("o", "g"))
 
 postResample(predict(ldaProfile, test), testClass)
 
-## Parallel Processing Example via multicore
+## Parallel Processing Example via multicore on linux or macos
 ## library(doMC)
 ## registerDoMC(cores = 2)
 ##
 ## Note: if the underlying model also uses foreach, the
 ## number of cores specified above will double (along with
 ## the memory requirements)
-##
-## set.seed(1)
-## lmProfile <- rfe(x, logBBB,
-##                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-##                  rfeControl = rfeControl(functions = lmFuncs,
-##                                          number = 200))
 
+## Parallel Processing on Windows
+## Instead of doMC, see the doParallel package and its registerDoParallel()
+## function
+
+set.seed(1)
+lmProfile <- rfe(
+  x,
+  logBBB,
+  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
+  rfeControl = rfeControl(functions = lmFuncs, number = 10)
+)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
