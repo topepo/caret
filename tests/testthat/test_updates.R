@@ -1,6 +1,6 @@
-library(recipes)
-library(caret)
-library(testthat)
+suppressPackageStartupMessages(library(recipes))
+suppressPackageStartupMessages(library(caret))
+suppressPackageStartupMessages(library(testthat))
 
 # ------------------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
-library(caret)
-library(testthat)
+suppressPackageStartupMessages(library(caret))
+suppressPackageStartupMessages(library(testthat))
 
 load(system.file("models", "sampling.RData", package = "caret"))
 

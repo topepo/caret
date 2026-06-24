@@ -1,8 +1,8 @@
-library(caret)
+suppressPackageStartupMessages(library(caret))
 
 test_that('resample calculations', {
   skip_on_cran()
-  library(MASS)
+  suppressPackageStartupMessages(library(MASS))
   set.seed(4793)
   tr_dat <- SLC14_1(200)
 

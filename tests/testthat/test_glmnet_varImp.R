@@ -1,4 +1,4 @@
-library(caret)
+suppressPackageStartupMessages(library(caret))
 
 
 test_that('glmnet varImp returns non-negative values', {

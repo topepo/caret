@@ -170,3 +170,12 @@ test_that("Good names for dummies with reocurring patterns", {
   res_names_lvls <- colnames(predict(essai_dummyVars, data))
   expect_true(all(exp_names_lvls %in% res_names_lvls))
 })
+
+test_that("dummyVars print method", {
+  skip_on_cran()
+  # scrub the formula's environment address, which is not deterministic
+  expect_snapshot(
+    print(dummyVars(~ Species + Sepal.Length, data = iris)),
+    transform = function(x) sub("<environment: 0x[0-9a-f]+>", "<environment>", x)
+  )
+})

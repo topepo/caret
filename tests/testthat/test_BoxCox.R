@@ -2,7 +2,7 @@
 ## Generate data and do BC using the source function to get
 ## expected results
 
-library(MASS)
+suppressPackageStartupMessages(library(MASS))
 
 set.seed(1)
 dat <- matrix(runif(30), ncol = 3)

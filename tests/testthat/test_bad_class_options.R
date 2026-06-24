@@ -1,4 +1,4 @@
-library(caret)
+suppressPackageStartupMessages(library(caret))
 
 test_that('bad class levels', {
   skip_on_cran()

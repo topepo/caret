@@ -1,7 +1,7 @@
-library(caret)
-library(recipes)
-library(dplyr)
-library(testthat)
+suppressPackageStartupMessages(library(caret))
+suppressPackageStartupMessages(library(recipes))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(testthat))
 
 set.seed(8801)
 dat <- twoClassSim(100)
