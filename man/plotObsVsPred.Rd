@@ -39,17 +39,24 @@ library(mlbench)
 
 # regression example
 data(BostonHousing)
-rpartFit <- train(BostonHousing[1:100, -c(4, 14)], 
-                  BostonHousing$medv[1:100], 
-                  "rpart", tuneLength = 9)
-plsFit <- train(BostonHousing[1:100, -c(4, 14)], 
-                BostonHousing$medv[1:100], 
-                "pls")
+rpartFit <- train(
+  BostonHousing[1:100, -c(4, 14)],
+  BostonHousing$medv[1:100],
+  "rpart",
+  tuneLength = 9
+)
+plsFit <- train(
+  BostonHousing[1:100, -c(4, 14)],
+  BostonHousing$medv[1:100],
+  "pls"
+)
 
-predVals <- extractPrediction(list(rpartFit, plsFit), 
-                              testX = BostonHousing[101:200, -c(4, 14)], 
-                              testY = BostonHousing$medv[101:200], 
-                              unkX = BostonHousing[201:300, -c(4, 14)])
+predVals <- extractPrediction(
+  list(rpartFit, plsFit),
+  testX = BostonHousing[101:200, -c(4, 14)],
+  testY = BostonHousing$medv[101:200],
+  unkX = BostonHousing[201:300, -c(4, 14)]
+)
 
 plotObsVsPred(predVals)
 
@@ -76,13 +83,15 @@ testY <- Satellite[testSamples, 37]
 
 unkX <- Satellite[unkSamples, -37]
 
-knnFit  <- train(trainX, trainY, "knn")
+knnFit <- train(trainX, trainY, "knn")
 rpartFit <- train(trainX, trainY, "rpart")
 
-predTargets <- extractPrediction(list(knnFit, rpartFit), 
-                                 testX = testX, 
-                                 testY = testY, 
-                                 unkX = unkX)
+predTargets <- extractPrediction(
+  list(knnFit, rpartFit),
+  testX = testX,
+  testY = testY,
+  unkX = unkX
+)
 
 plotObsVsPred(predTargets)
 \dontshow{\}) # examplesIf}

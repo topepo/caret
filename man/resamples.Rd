@@ -89,9 +89,11 @@ combination.
 
 load(url("http://topepo.github.io/caret/exampleModels.RData"))
 
-resamps <- resamples(list(CART = rpartFit,
-                          CondInfTree = ctreeFit,
-                          MARS = earthFit))
+resamps <- resamples(list(
+  CART = rpartFit,
+  CondInfTree = ctreeFit,
+  MARS = earthFit
+))
 
 resamps
 summary(resamps)

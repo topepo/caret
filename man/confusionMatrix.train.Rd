@@ -55,14 +55,17 @@ were on average). The default is \code{norm = "overall"}, which is equivalento t
 \examples{
 
 data(iris)
-TrainData <- iris[,1:4]
-TrainClasses <- iris[,5]
+TrainData <- iris[, 1:4]
+TrainClasses <- iris[, 5]
 
-knnFit <- train(TrainData, TrainClasses,
-                method = "knn",
-                preProcess = c("center", "scale"),
-                tuneLength = 10,
-                trControl = trainControl(method = "cv"))
+knnFit <- train(
+  TrainData,
+  TrainClasses,
+  method = "knn",
+  preProcess = c("center", "scale"),
+  tuneLength = 10,
+  trControl = trainControl(method = "cv")
+)
 confusionMatrix(knnFit)
 confusionMatrix(knnFit, "average")
 confusionMatrix(knnFit, "none")

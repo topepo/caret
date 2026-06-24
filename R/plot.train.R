@@ -53,18 +53,20 @@
 #' @keywords hplot
 #' @export
 #' @examplesIf !caret:::is_cran_check()
-#'
+#' 
 #' library(klaR)
-#' rdaFit <- train(Species ~ .,
-#'                 data = iris,
-#'                 method = "rda",
-#'                 control = trainControl(method = "cv"))
+#' rdaFit <- train(
+#'   Species ~ .,
+#'   data = iris,
+#'   method = "rda",
+#'   control = trainControl(method = "cv")
+#' )
 #' plot(rdaFit)
 #' plot(rdaFit, plotType = "level")
-#'
+#' 
 #' ggplot(rdaFit) + theme_bw()
-#'
-#'
+#' 
+#' 
 #' @export plot.train
 "plot.train" <-  function(x,
                     plotType = "scatter",

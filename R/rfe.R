@@ -76,38 +76,49 @@
 #' @family feature-selection
 #' @keywords models
 #' @examplesIf !caret:::is_cran_check()
-#'
+#' 
 #' data(BloodBrain)
-#'
-#' x <- scale(bbbDescr[,-nearZeroVar(bbbDescr)])
+#' 
+#' x <- scale(bbbDescr[, -nearZeroVar(bbbDescr)])
 #' x <- x[, -findCorrelation(cor(x), .8)]
 #' x <- as.data.frame(x, stringsAsFactors = TRUE)
-#'
+#' 
 #' set.seed(1)
-#' lmProfile <- rfe(x, logBBB,
-#'                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-#'                  rfeControl = rfeControl(functions = lmFuncs,
-#'                                          number = 200))
+#' lmProfile <- rfe(
+#'   x,
+#'   logBBB,
+#'   sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
+#'   rfeControl = rfeControl(functions = lmFuncs, number = 200)
+#' )
 #' set.seed(1)
-#' lmProfile2 <- rfe(x, logBBB,
-#'                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-#'                  rfeControl = rfeControl(functions = lmFuncs,
-#'                                          rerank = TRUE,
-#'                                          number = 200))
-#'
-#' xyplot(lmProfile$results$RMSE + lmProfile2$results$RMSE  ~
-#'        lmProfile$results$Variables,
-#'        type = c("g", "p", "l"),
-#'        auto.key = TRUE)
-#'
-#' rfProfile <- rfe(x, logBBB,
-#'                  sizes = c(2, 5, 10, 20),
-#'                  rfeControl = rfeControl(functions = rfFuncs))
-#'
-#' bagProfile <- rfe(x, logBBB,
-#'                   sizes = c(2, 5, 10, 20),
-#'                   rfeControl = rfeControl(functions = treebagFuncs))
-#'
+#' lmProfile2 <- rfe(
+#'   x,
+#'   logBBB,
+#'   sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
+#'   rfeControl = rfeControl(functions = lmFuncs, rerank = TRUE, number = 200)
+#' )
+#' 
+#' xyplot(
+#'   lmProfile$results$RMSE + lmProfile2$results$RMSE ~
+#'     lmProfile$results$Variables,
+#'   type = c("g", "p", "l"),
+#'   auto.key = TRUE
+#' )
+#' 
+#' rfProfile <- rfe(
+#'   x,
+#'   logBBB,
+#'   sizes = c(2, 5, 10, 20),
+#'   rfeControl = rfeControl(functions = rfFuncs)
+#' )
+#' 
+#' bagProfile <- rfe(
+#'   x,
+#'   logBBB,
+#'   sizes = c(2, 5, 10, 20),
+#'   rfeControl = rfeControl(functions = treebagFuncs)
+#' )
+#' 
 #' set.seed(1)
 #' svmProfile <- rfe(x, logBBB,
 #'                   sizes = c(2, 5, 10, 20),
@@ -115,29 +126,32 @@
 #'                                           number = 200),
 #'                   ## pass options to train()
 #'                   method = "svmRadial")
-#'
+#' 
 #' ## classification
-#'
+#' 
 #' data(mdrr)
-#' mdrrDescr <- mdrrDescr[,-nearZeroVar(mdrrDescr)]
+#' mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
 #' mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .8)]
-#'
+#' 
 #' set.seed(1)
-#' inTrain <- createDataPartition(mdrrClass, p = .75, list = FALSE)[,1]
-#'
-#' train <- mdrrDescr[ inTrain, ]
-#' test  <- mdrrDescr[-inTrain, ]
-#' trainClass <- mdrrClass[ inTrain]
-#' testClass  <- mdrrClass[-inTrain]
-#'
+#' inTrain <- createDataPartition(mdrrClass, p = .75, list = FALSE)[, 1]
+#' 
+#' train <- mdrrDescr[inTrain, ]
+#' test <- mdrrDescr[-inTrain, ]
+#' trainClass <- mdrrClass[inTrain]
+#' testClass <- mdrrClass[-inTrain]
+#' 
 #' set.seed(2)
-#' ldaProfile <- rfe(train, trainClass,
-#'                   sizes = c(1:10, 15, 30),
-#'                   rfeControl = rfeControl(functions = ldaFuncs, method = "cv"))
+#' ldaProfile <- rfe(
+#'   train,
+#'   trainClass,
+#'   sizes = c(1:10, 15, 30),
+#'   rfeControl = rfeControl(functions = ldaFuncs, method = "cv")
+#' )
 #' plot(ldaProfile, type = c("o", "g"))
-#'
+#' 
 #' postResample(predict(ldaProfile, test), testClass)
-#'
+#' 
 #' ## Parallel Processing Example via multicore
 #' ## library(doMC)
 #' ## registerDoMC(cores = 2)
@@ -151,8 +165,8 @@
 #' ##                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
 #' ##                  rfeControl = rfeControl(functions = lmFuncs,
 #' ##                                          number = 200))
-#'
-#'
+#' 
+#' 
 #' @export rfe
 rfe <- function (x, ...) UseMethod("rfe")
 
@@ -541,18 +555,20 @@ rfeIter <- function(x, y,
 #' @keywords hplot
 #' @export
 #' @examplesIf !caret:::is_cran_check()
-#'
+#' 
 #' data(BloodBrain)
-#'
-#' x <- scale(bbbDescr[,-nearZeroVar(bbbDescr)])
+#' 
+#' x <- scale(bbbDescr[, -nearZeroVar(bbbDescr)])
 #' x <- x[, -findCorrelation(cor(x), .8)]
 #' x <- as.data.frame(x, stringsAsFactors = TRUE)
-#'
+#' 
 #' set.seed(1)
-#' lmProfile <- rfe(x, logBBB,
-#'                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-#'                  rfeControl = rfeControl(functions = lmFuncs,
-#'                                          number = 200))
+#' lmProfile <- rfe(
+#'   x,
+#'   logBBB,
+#'   sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
+#'   rfeControl = rfeControl(functions = lmFuncs, number = 200)
+#' )
 #' plot(lmProfile)
 #' plot(lmProfile, metric = "Rsquared")
 #' ggplot(lmProfile)
@@ -678,14 +694,14 @@ plot.rfe <- function (x,
 #'   [pickSizeBest()], [pickSizeTolerance()]
 #' @keywords utilities
 #' @examplesIf !caret:::is_cran_check()
-#'
+#' 
 #'   \dontrun{
 #' subsetSizes <- c(2, 4, 6, 8)
 #' set.seed(123)
 #' seeds <- vector(mode = "list", length = 51)
 #' for(i in 1:50) seeds[[i]] <- sample.int(1000, length(subsetSizes) + 1)
 #' seeds[[51]] <- sample.int(1000, 1)
-#'
+#' 
 #' set.seed(1)
 #' rfMod <- rfe(bbbDescr, logBBB,
 #'              sizes = subsetSizes,
@@ -693,7 +709,7 @@ plot.rfe <- function (x,
 #'                                      seeds = seeds,
 #'                                      number = 50))
 #'   }
-#'
+#' 
 #' @export rfeControl
 rfeControl <- function(functions = NULL,
                        rerank = FALSE,
@@ -809,50 +825,68 @@ pickVars <- function(y, size)
 #' @seealso [rfeControl()], [rfe()]
 #' @keywords models
 #' @examples
-#'
+#' 
 #' ## For picking subset sizes:
 #' ## Minimize the RMSE
-#' example <- data.frame(RMSE = c(1.2, 1.1, 1.05, 1.01, 1.01, 1.03, 1.00),
-#'                       Variables = 1:7)
+#' example <- data.frame(
+#'   RMSE = c(1.2, 1.1, 1.05, 1.01, 1.01, 1.03, 1.00),
+#'   Variables = 1:7
+#' )
 #' ## Percent Loss in performance (positive)
-#' example$PctLoss <- (example$RMSE - min(example$RMSE))/min(example$RMSE)*100
-#'
-#' xyplot(RMSE ~ Variables, data= example)
-#' xyplot(PctLoss ~ Variables, data= example)
-#'
+#' example$PctLoss <- (example$RMSE - min(example$RMSE)) / min(example$RMSE) * 100
+#' 
+#' xyplot(RMSE ~ Variables, data = example)
+#' xyplot(PctLoss ~ Variables, data = example)
+#' 
 #' absoluteBest <- pickSizeBest(example, metric = "RMSE", maximize = FALSE)
 #' within5Pct <- pickSizeTolerance(example, metric = "RMSE", maximize = FALSE)
-#'
-#' cat("numerically optimal:",
-#'     example$RMSE[absoluteBest],
-#'     "RMSE in position",
-#'     absoluteBest, "\n")
-#' cat("Accepting a 1.5 pct loss:",
-#'     example$RMSE[within5Pct],
-#'     "RMSE in position",
-#'     within5Pct, "\n")
-#'
+#' 
+#' cat(
+#'   "numerically optimal:",
+#'   example$RMSE[absoluteBest],
+#'   "RMSE in position",
+#'   absoluteBest,
+#'   "\n"
+#' )
+#' cat(
+#'   "Accepting a 1.5 pct loss:",
+#'   example$RMSE[within5Pct],
+#'   "RMSE in position",
+#'   within5Pct,
+#'   "\n"
+#' )
+#' 
 #' ## Example where we would like to maximize
-#' example2 <- data.frame(Rsquared = c(0.4, 0.6, 0.94, 0.95, 0.95, 0.95, 0.95),
-#'                       Variables = 1:7)
+#' example2 <- data.frame(
+#'   Rsquared = c(0.4, 0.6, 0.94, 0.95, 0.95, 0.95, 0.95),
+#'   Variables = 1:7
+#' )
 #' ## Percent Loss in performance (positive)
-#' example2$PctLoss <- (max(example2$Rsquared) - example2$Rsquared)/max(example2$Rsquared)*100
-#'
-#' xyplot(Rsquared ~ Variables, data= example2)
-#' xyplot(PctLoss ~ Variables, data= example2)
-#'
+#' example2$PctLoss <- (max(example2$Rsquared) - example2$Rsquared) /
+#'   max(example2$Rsquared) *
+#'   100
+#' 
+#' xyplot(Rsquared ~ Variables, data = example2)
+#' xyplot(PctLoss ~ Variables, data = example2)
+#' 
 #' absoluteBest2 <- pickSizeBest(example2, metric = "Rsquared", maximize = TRUE)
 #' within5Pct2 <- pickSizeTolerance(example2, metric = "Rsquared", maximize = TRUE)
-#'
-#' cat("numerically optimal:",
-#'     example2$Rsquared[absoluteBest2],
-#'     "R^2 in position",
-#'     absoluteBest2, "\n")
-#' cat("Accepting a 1.5 pct loss:",
-#'     example2$Rsquared[within5Pct2],
-#'     "R^2 in position",
-#'     within5Pct2, "\n")
-#'
+#' 
+#' cat(
+#'   "numerically optimal:",
+#'   example2$Rsquared[absoluteBest2],
+#'   "R^2 in position",
+#'   absoluteBest2,
+#'   "\n"
+#' )
+#' cat(
+#'   "Accepting a 1.5 pct loss:",
+#'   example2$Rsquared[within5Pct2],
+#'   "R^2 in position",
+#'   within5Pct2,
+#'   "\n"
+#' )
+#' 
 #' @export caretFuncs
 caretFuncs <- list(summary = defaultSummary,
                    fit = function(x, y, first, last, ...) train(x, y, ...),
@@ -1147,37 +1181,36 @@ lrFuncs$rank <- function (object, x, y) {
 #'   [lattice::densityplot()], [lattice::xyplot()], [lattice::stripplot()]
 #' @keywords hplot
 #' @examplesIf !caret:::is_cran_check()
-#'
+#' 
 #' library(mlbench)
 #' n <- 100
 #' p <- 40
 #' sigma <- 1
 #' set.seed(1)
 #' sim <- mlbench.friedman1(n, sd = sigma)
-#' x <- cbind(sim$x,  matrix(rnorm(n * p), nrow = n))
+#' x <- cbind(sim$x, matrix(rnorm(n * p), nrow = n))
 #' y <- sim$y
 #' colnames(x) <- paste("var", 1:ncol(x), sep = "")
-#'
+#' 
 #' normalization <- preProcess(x)
 #' x <- predict(normalization, x)
 #' x <- as.data.frame(x, stringsAsFactors = TRUE)
 #' subsets <- c(10, 15, 20, 25)
-#'
+#' 
 #' ctrl <- rfeControl(
-#'                    functions = lmFuncs,
-#'                    method = "cv",
-#'                    verbose = FALSE,
-#'                    returnResamp = "all")
-#'
-#' lmProfile <- rfe(x, y,
-#'                  sizes = subsets,
-#'                  rfeControl = ctrl)
+#'   functions = lmFuncs,
+#'   method = "cv",
+#'   verbose = FALSE,
+#'   returnResamp = "all"
+#' )
+#' 
+#' lmProfile <- rfe(x, y, sizes = subsets, rfeControl = ctrl)
 #' xyplot(lmProfile)
 #' stripplot(lmProfile)
-#'
+#' 
 #' histogram(lmProfile)
 #' densityplot(lmProfile)
-#'
+#' 
 #' @importFrom stats as.formula
 #' @export
 densityplot.rfe <- function(x,

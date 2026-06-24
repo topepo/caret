@@ -97,7 +97,13 @@ the analysis.
 \examples{
 
 data(BloodBrain)
-modelFit <- pcaNNet(bbbDescr[, 1:10], logBBB, size = 5, linout = TRUE, trace = FALSE)
+modelFit <- pcaNNet(
+  bbbDescr[, 1:10],
+  logBBB,
+  size = 5,
+  linout = TRUE,
+  trace = FALSE
+)
 modelFit
 
 predict(modelFit, bbbDescr[, 1:10])

@@ -134,9 +134,11 @@ passing new values into \code{xyplot.lift}: \code{xlab = "\\\% Samples Tested"},
 \examples{
 
 set.seed(1)
-simulated <- data.frame(obs = factor(rep(letters[1:2], each = 100)),
-                        perfect = sort(runif(200), decreasing = TRUE),
-                        random = runif(200))
+simulated <- data.frame(
+  obs = factor(rep(letters[1:2], each = 100)),
+  perfect = sort(runif(200), decreasing = TRUE),
+  random = runif(200)
+)
 
 lift1 <- lift(obs ~ random, data = simulated)
 lift1

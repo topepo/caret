@@ -111,17 +111,24 @@ can then be passes to \code{\link[=plotObsVsPred]{plotObsVsPred()}} or \code{\li
 
    \dontrun{
 
-knnFit <- train(Species ~ ., data = iris, method = "knn",
-                trControl = trainControl(method = "cv"))
+knnFit <- train(
+  Species ~ .,
+  data = iris,
+  method = "knn",
+  trControl = trainControl(method = "cv")
+)
 
-rdaFit <- train(Species ~ ., data = iris, method = "rda",
-                trControl = trainControl(method = "cv"))
+rdaFit <- train(
+  Species ~ .,
+  data = iris,
+  method = "rda",
+  trControl = trainControl(method = "cv")
+)
 
 predict(knnFit)
 predict(knnFit, type = "prob")
 
-bothModels <- list(knn = knnFit,
-                   tree = rdaFit)
+bothModels <- list(knn = knnFit, tree = rdaFit)
 
 predict(bothModels)
 

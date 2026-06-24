@@ -50,20 +50,22 @@ asNumeric <- function(data){
 #' @author Max Kuhn
 #' @keywords models
 #' @examples
-#'
+#' 
 #' data(mdrr)
 #' filterVarImp(mdrrDescr[, 1:5], mdrrClass)
-#'
+#' 
 #' data(BloodBrain)
-#'
+#' 
 #' filterVarImp(bbbDescr[, 1:5], logBBB, nonpara = FALSE)
-#' apply(bbbDescr[, 1:5],
-#'       2,
-#'       function(x, y) summary(lm(y~x))$coefficients[2,3],
-#'       y = logBBB)
-#'
+#' apply(
+#'   bbbDescr[, 1:5],
+#'   2,
+#'   function(x, y) summary(lm(y ~ x))$coefficients[2, 3],
+#'   y = logBBB
+#' )
+#' 
 #' filterVarImp(bbbDescr[, 1:5], logBBB, nonpara = TRUE)
-#'
+#' 
 #' @export filterVarImp
 #' @importFrom stats loess resid
 #' @importFrom utils combn

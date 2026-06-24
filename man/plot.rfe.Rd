@@ -56,15 +56,17 @@ subset sizes where at least half of the resamples have associated results.
 
 data(BloodBrain)
 
-x <- scale(bbbDescr[,-nearZeroVar(bbbDescr)])
+x <- scale(bbbDescr[, -nearZeroVar(bbbDescr)])
 x <- x[, -findCorrelation(cor(x), .8)]
 x <- as.data.frame(x, stringsAsFactors = TRUE)
 
 set.seed(1)
-lmProfile <- rfe(x, logBBB,
-                 sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-                 rfeControl = rfeControl(functions = lmFuncs,
-                                         number = 200))
+lmProfile <- rfe(
+  x,
+  logBBB,
+  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
+  rfeControl = rfeControl(functions = lmFuncs, number = 200)
+)
 plot(lmProfile)
 plot(lmProfile, metric = "Rsquared")
 ggplot(lmProfile)

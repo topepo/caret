@@ -38,9 +38,11 @@ model trajectories. The color of the region is determined by the lattice
 \examples{
 
 set.seed(1)
-simulated <- data.frame(obs = factor(rep(letters[1:2], each = 100)),
-                        perfect = sort(runif(200), decreasing = TRUE),
-                        random = runif(200))
+simulated <- data.frame(
+  obs = factor(rep(letters[1:2], each = 100)),
+  perfect = sort(runif(200), decreasing = TRUE),
+  random = runif(200)
+)
 
 regionInfo <- trellis.par.get("reference.line")
 regionInfo$col <- "lightblue"

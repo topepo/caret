@@ -63,8 +63,7 @@ optimal settings determined by \code{\link[=train]{train()}}.
 set.seed(1412)
 class_dat <- twoClassSim(1000)
 
-ctrl <- trainControl(classProbs = TRUE,
-                     summaryFunction = twoClassSummary)
+ctrl <- trainControl(classProbs = TRUE, summaryFunction = twoClassSummary)
 
 set.seed(29510)
 lda_data <-

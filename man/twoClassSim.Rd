@@ -201,7 +201,7 @@ correlation matrix would be
 \examples{
 
 example <- twoClassSim(100, linearVars = 1)
-splom(~example[, 1:6], groups = example$Class)
+splom(~ example[, 1:6], groups = example$Class)
 
 }
 \references{

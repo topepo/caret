@@ -58,10 +58,12 @@ the most prevalent class is returned.
 }
 \examples{
 
-outcome <- factor(sample(letters[1:2],
-                         size = 100,
-                         prob = c(.1, .9),
-                         replace = TRUE))
+outcome <- factor(sample(
+  letters[1:2],
+  size = 100,
+  prob = c(.1, .9),
+  replace = TRUE
+))
 useless <- nullModel(y = outcome)
 useless
 predict(useless, matrix(NA, nrow = 10))

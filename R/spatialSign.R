@@ -26,11 +26,11 @@
 #' # should fail since the fifth column is a factor
 #' try(spatialSign(iris), silent = TRUE)
 #' 
-#' spatialSign(iris[,-5])
+#' spatialSign(iris[, -5])
 #' 
 #' trellis.par.set(caretTheme())
-#' featurePlot(iris[,-5], iris[,5], "pairs")
-#' featurePlot(spatialSign(scale(iris[,-5])), iris[,5], "pairs")
+#' featurePlot(iris[, -5], iris[, 5], "pairs")
+#' featurePlot(spatialSign(scale(iris[, -5])), iris[, 5], "pairs")
 #' 
 #' @export spatialSign
 "spatialSign" <- function(x, ...) 

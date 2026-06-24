@@ -391,10 +391,10 @@ get_resample_perf.gafs <- function(x, ...) {
 #' @author Max Kuhn
 #' @keywords models
 #' @examples
-#'
+#' 
 #' var_seq(p = 100, len = 10)
 #' var_seq(p = 600, len = 10)
-#'
+#' 
 #' @export var_seq
 var_seq <- function(p, classification = FALSE, len = 3) {
   if(len == 1) {

@@ -105,8 +105,7 @@ nearZeroVar(bbbDescr, names = TRUE)
 
 set.seed(1)
 classes <- factor(rep(letters[1:3], each = 30))
-x <- data.frame(x1 = rep(c(0, 1), 45),
-                x2 = c(rep(0, 10), rep(1, 80)))
+x <- data.frame(x1 = rep(c(0, 1), 45), x2 = c(rep(0, 10), rep(1, 80)))
 
 lapply(x, table, y = classes)
 checkConditionalX(x, classes)

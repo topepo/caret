@@ -81,27 +81,34 @@ predict.list <- function(object, ...) {
 #' @family train
 #' @keywords manip
 #' @examplesIf !caret:::is_cran_check()
-#'
+#' 
 #'    \dontrun{
-#'
-#' knnFit <- train(Species ~ ., data = iris, method = "knn",
-#'                 trControl = trainControl(method = "cv"))
-#'
-#' rdaFit <- train(Species ~ ., data = iris, method = "rda",
-#'                 trControl = trainControl(method = "cv"))
-#'
+#' 
+#' knnFit <- train(
+#'   Species ~ .,
+#'   data = iris,
+#'   method = "knn",
+#'   trControl = trainControl(method = "cv")
+#' )
+#' 
+#' rdaFit <- train(
+#'   Species ~ .,
+#'   data = iris,
+#'   method = "rda",
+#'   trControl = trainControl(method = "cv")
+#' )
+#' 
 #' predict(knnFit)
 #' predict(knnFit, type = "prob")
-#'
-#' bothModels <- list(knn = knnFit,
-#'                    tree = rdaFit)
-#'
+#' 
+#' bothModels <- list(knn = knnFit, tree = rdaFit)
+#' 
 #' predict(bothModels)
-#'
+#' 
 #' extractPrediction(bothModels, testX = iris[1:10, -5])
 #' extractProb(bothModels, testX = iris[1:10, -5])
 #'   }
-#'
+#' 
 #' @export predict.train
 #' @export
 predict.train <- function(

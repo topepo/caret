@@ -152,41 +152,49 @@
 #' @family train
 #' @keywords utilities
 #' @examplesIf !caret:::is_cran_check()
-#'
-#'
+#' 
+#' 
 #' ## Do 5 repeats of 10-Fold CV for the iris data. We will fit
 #' ## a KNN model that evaluates 12 values of k and set the seed
 #' ## at each iteration.
-#'
+#' 
 #' set.seed(123)
 #' seeds <- vector(mode = "list", length = 51)
-#' for(i in 1:50) seeds[[i]] <- sample.int(1000, 22)
-#'
+#' for (i in 1:50) {
+#'   seeds[[i]] <- sample.int(1000, 22)
+#' }
+#' 
 #' ## For the last model:
 #' seeds[[51]] <- sample.int(1000, 1)
-#'
-#' ctrl <- trainControl(method = "repeatedcv",
-#'                      repeats = 5,
-#'                      seeds = seeds)
-#'
+#' 
+#' ctrl <- trainControl(method = "repeatedcv", repeats = 5, seeds = seeds)
+#' 
 #' set.seed(1)
-#' mod <- train(Species ~ ., data = iris,
-#'              method = "knn",
-#'              tuneLength = 12,
-#'              trControl = ctrl)
-#'
-#' ctrl2 <- trainControl(method = "adaptive_cv",
-#'                       repeats = 5,
-#'                       verboseIter = TRUE,
-#'                       seeds = seeds)
-#'
+#' mod <- train(
+#'   Species ~ .,
+#'   data = iris,
+#'   method = "knn",
+#'   tuneLength = 12,
+#'   trControl = ctrl
+#' )
+#' 
+#' ctrl2 <- trainControl(
+#'   method = "adaptive_cv",
+#'   repeats = 5,
+#'   verboseIter = TRUE,
+#'   seeds = seeds
+#' )
+#' 
 #' set.seed(1)
-#' mod2 <- train(Species ~ ., data = iris,
-#'               method = "knn",
-#'               tuneLength = 12,
-#'               trControl = ctrl2)
-#'
-#'
+#' mod2 <- train(
+#'   Species ~ .,
+#'   data = iris,
+#'   method = "knn",
+#'   tuneLength = 12,
+#'   trControl = ctrl2
+#' )
+#' 
+#' 
 #' @export trainControl
 trainControl <- function(method = "boot",
                          number = ifelse(grepl("cv", method), 10, 25),

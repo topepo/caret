@@ -32,8 +32,8 @@ should be either "final" or "all".
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
 data(iris)
-TrainData <- iris[,1:4]
-TrainClasses <- iris[,5]
+TrainData <- iris[, 1:4]
+TrainClasses <- iris[, 5]
 
 knnFit <- train(TrainData, TrainClasses, "knn")
 

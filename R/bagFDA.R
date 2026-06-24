@@ -34,18 +34,20 @@
 #' library(mlbench)
 #' library(earth)
 #' data(Glass)
-#'
+#' 
 #' set.seed(36)
 #' inTrain <- sample(1:dim(Glass)[1], 150)
-#'
-#' trainData <- Glass[ inTrain, ]
-#' testData  <- Glass[-inTrain, ]
-#'
+#' 
+#' trainData <- Glass[inTrain, ]
+#' testData <- Glass[-inTrain, ]
+#' 
 #' set.seed(3577)
 #' baggedFit <- bagFDA(Type ~ ., trainData)
-#' confusionMatrix(data = predict(baggedFit, testData[, -10]),
-#'                 reference = testData[, 10])
-#'
+#' confusionMatrix(
+#'   data = predict(baggedFit, testData[, -10]),
+#'   reference = testData[, 10]
+#' )
+#' 
 #' @keywords regression
 #'
 #' @export

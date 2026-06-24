@@ -36,13 +36,12 @@
 #' @seealso [train()]
 #' @keywords models
 #' @examplesIf !caret:::is_cran_check()
-#'
+#' 
 #' set.seed(1412)
 #' class_dat <- twoClassSim(1000)
-#'
-#' ctrl <- trainControl(classProbs = TRUE,
-#'                      summaryFunction = twoClassSummary)
-#'
+#' 
+#' ctrl <- trainControl(classProbs = TRUE, summaryFunction = twoClassSummary)
+#' 
 #' set.seed(29510)
 #' lda_data <-
 #'   learning_curve_dat(dat = class_dat,
@@ -52,11 +51,11 @@
 #'                      method = "lda",
 #'                      metric = "ROC",
 #'                      trControl = ctrl)
-#'
+#' 
 #' ggplot(lda_data, aes(x = Training_Size, y = ROC, color = Data)) +
 #'   geom_smooth(method = loess, span = .8) +
 #'   theme_bw()
-#'
+#' 
 #' @export learning_curve_dat
 learning_curve_dat <- function(dat,
                               outcome = NULL,

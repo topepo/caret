@@ -98,35 +98,36 @@
 #' @family performance
 #' @keywords utilities
 #' @examples
-#'
+#' 
 #' ###################
 #' ## 2 class example
-#'
+#' 
 #' lvs <- c("normal", "abnormal")
-#' truth <- factor(rep(lvs, times = c(86, 258)),
-#'                 levels = rev(lvs))
+#' truth <- factor(rep(lvs, times = c(86, 258)), levels = rev(lvs))
 #' pred <- factor(
-#'                c(
-#'                  rep(lvs, times = c(54, 32)),
-#'                  rep(lvs, times = c(27, 231))),
-#'                levels = rev(lvs))
-#'
+#'   c(
+#'     rep(lvs, times = c(54, 32)),
+#'     rep(lvs, times = c(27, 231))
+#'   ),
+#'   levels = rev(lvs)
+#' )
+#' 
 #' xtab <- table(pred, truth)
-#'
+#' 
 #' confusionMatrix(xtab)
 #' confusionMatrix(pred, truth)
 #' confusionMatrix(xtab, prevalence = 0.25)
-#'
+#' 
 #' ###################
 #' ## 3 class example
-#'
+#' 
 #' confusionMatrix(iris$Species, sample(iris$Species))
-#'
+#' 
 #' newPrior <- c(.05, .8, .15)
 #' names(newPrior) <- levels(iris$Species)
-#'
+#' 
 #' confusionMatrix(iris$Species, sample(iris$Species))
-#'
+#' 
 #' @export confusionMatrix
 confusionMatrix <-
   function(data, ...){
@@ -333,30 +334,31 @@ confusionMatrix.table <- function(data, positive = NULL,
 #' @examples
 #' ###################
 #' ## 2 class example
-#'
+#' 
 #' lvs <- c("normal", "abnormal")
-#' truth <- factor(rep(lvs, times = c(86, 258)),
-#'                 levels = rev(lvs))
+#' truth <- factor(rep(lvs, times = c(86, 258)), levels = rev(lvs))
 #' pred <- factor(
-#'                c(
-#'                  rep(lvs, times = c(54, 32)),
-#'                  rep(lvs, times = c(27, 231))),
-#'                levels = rev(lvs))
-#'
+#'   c(
+#'     rep(lvs, times = c(54, 32)),
+#'     rep(lvs, times = c(27, 231))
+#'   ),
+#'   levels = rev(lvs)
+#' )
+#' 
 #' xtab <- table(pred, truth)
-#'
+#' 
 #' results <- confusionMatrix(xtab)
 #' as.table(results)
 #' as.matrix(results)
 #' as.matrix(results, what = "overall")
 #' as.matrix(results, what = "classes")
-#'
+#' 
 #' ###################
 #' ## 3 class example
-#'
+#' 
 #' xtab <- confusionMatrix(iris$Species, sample(iris$Species))
 #' as.matrix(xtab)
-#'
+#' 
 #' @keywords utilities
 #'
 #' @export
@@ -475,20 +477,23 @@ as.table.confusionMatrix <- function(x, ...)  x$table
 #' @keywords utilities
 #' @export
 #' @examples
-#'
+#' 
 #' data(iris)
-#' TrainData <- iris[,1:4]
-#' TrainClasses <- iris[,5]
-#'
-#' knnFit <- train(TrainData, TrainClasses,
-#'                 method = "knn",
-#'                 preProcess = c("center", "scale"),
-#'                 tuneLength = 10,
-#'                 trControl = trainControl(method = "cv"))
+#' TrainData <- iris[, 1:4]
+#' TrainClasses <- iris[, 5]
+#' 
+#' knnFit <- train(
+#'   TrainData,
+#'   TrainClasses,
+#'   method = "knn",
+#'   preProcess = c("center", "scale"),
+#'   tuneLength = 10,
+#'   trControl = trainControl(method = "cv")
+#' )
 #' confusionMatrix(knnFit)
 #' confusionMatrix(knnFit, "average")
 #' confusionMatrix(knnFit, "none")
-#'
+#' 
 #' @export confusionMatrix.train
 confusionMatrix.train <- function(data, norm = "overall", dnn = c("Prediction", "Reference"), ...){
   if(data$control$method %in% c("oob", "LOOCV", "none"))

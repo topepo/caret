@@ -71,10 +71,10 @@ jack_sim <- function(a, b) {
 #' @return a numeric vector
 #' @author Max Kuhn
 #' @examples
-#'
+#' 
 #' index2vec(x = 1:2, vars = 5)
 #' index2vec(x = 1:2, vars = 5, sign = TRUE)
-#'
+#' 
 #' @export index2vec
 
 index2vec <- function(x, vars, sign = FALSE) {

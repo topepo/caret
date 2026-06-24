@@ -35,14 +35,14 @@ icr <- function (x, ...) UseMethod("icr")
 #' @seealso [fastICA::fastICA()], [preProcess()], [stats::lm()]
 #' @keywords multivariate
 #' @examples
-#'
+#' 
 #' data(BloodBrain)
-#'
+#' 
 #' icrFit <- icr(bbbDescr, logBBB, n.comp = 5)
-#'
+#' 
 #' icrFit
-#'
-#' predict(icrFit, bbbDescr[1:5,])
+#' 
+#' predict(icrFit, bbbDescr[1:5, ])
 #' @export
 icr.formula <- function (formula, data, weights, ...,
                          subset, na.action, contrasts = NULL)

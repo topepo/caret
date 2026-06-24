@@ -51,24 +51,22 @@ library(mlbench)
 data(BostonHousing)
 
 library(rpart)
-rpartFit <- train(medv ~ .,
-                  data = BostonHousing,
-                  "rpart", 
-                  tuneLength = 9,
-                  trControl = trainControl(
-                    method = "boot", 
-                    returnResamp = "all"))
+rpartFit <- train(
+  medv ~ .,
+  data = BostonHousing,
+  "rpart",
+  tuneLength = 9,
+  trControl = trainControl(
+    method = "boot",
+    returnResamp = "all"
+  )
+)
 
-densityplot(rpartFit,
-            adjust = 1.25)
+densityplot(rpartFit, adjust = 1.25)
 
-xyplot(rpartFit,
-       metric = "Rsquared",
-       type = c("p", "a"))
+xyplot(rpartFit, metric = "Rsquared", type = c("p", "a"))
 
-stripplot(rpartFit,
-          horizontal = FALSE,
-          jitter = TRUE)
+stripplot(rpartFit, horizontal = FALSE, jitter = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{

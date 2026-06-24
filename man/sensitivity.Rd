@@ -136,13 +136,14 @@ See the references for discussions of the statistics.
 ## 2 class example
 
 lvs <- c("normal", "abnormal")
-truth <- factor(rep(lvs, times = c(86, 258)),
-                levels = rev(lvs))
+truth <- factor(rep(lvs, times = c(86, 258)), levels = rev(lvs))
 pred <- factor(
-               c(
-                 rep(lvs, times = c(54, 32)),
-                 rep(lvs, times = c(27, 231))),
-               levels = rev(lvs))
+  c(
+    rep(lvs, times = c(54, 32)),
+    rep(lvs, times = c(27, 231))
+  ),
+  levels = rev(lvs)
+)
 
 xtab <- table(pred, truth)
 
@@ -157,25 +158,30 @@ negPredValue(xtab)
 negPredValue(pred, truth, prevalence = 0.25)
 
 prev <- seq(0.001, .99, length = 20)
-npvVals <- ppvVals <- prev  * NA
-for(i in seq(along.with = prev))
-  {
-    ppvVals[i] <- posPredValue(pred, truth, prevalence = prev[i])
-    npvVals[i] <- negPredValue(pred, truth, prevalence = prev[i])
-  }
+npvVals <- ppvVals <- prev * NA
+for (i in seq(along.with = prev)) {
+  ppvVals[i] <- posPredValue(pred, truth, prevalence = prev[i])
+  npvVals[i] <- negPredValue(pred, truth, prevalence = prev[i])
+}
 
-plot(prev, ppvVals,
-     ylim = c(0, 1),
-     type = "l",
-     ylab = "",
-     xlab = "Prevalence (i.e. prior)")
+plot(
+  prev,
+  ppvVals,
+  ylim = c(0, 1),
+  type = "l",
+  ylab = "",
+  xlab = "Prevalence (i.e. prior)"
+)
 points(prev, npvVals, type = "l", col = "red")
-abline(h=sensitivity(pred, truth), lty = 2)
-abline(h=specificity(pred, truth), lty = 2, col = "red")
-legend(.5, .5,
-       c("ppv", "npv", "sens", "spec"),
-       col = c("black", "red", "black", "red"),
-       lty = c(1, 1, 2, 2))
+abline(h = sensitivity(pred, truth), lty = 2)
+abline(h = specificity(pred, truth), lty = 2, col = "red")
+legend(
+  .5,
+  .5,
+  c("ppv", "npv", "sens", "spec"),
+  col = c("black", "red", "black", "red"),
+  lty = c(1, 1, 2, 2)
+)
 
 ###################
 ## 3 class example

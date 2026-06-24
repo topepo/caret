@@ -52,22 +52,20 @@ all the performance metrics and the resample indicator.
 
 set.seed(1)
 train_data <- twoClassSim(100, noiseVars = 10)
-test_data  <- twoClassSim(10,  noiseVars = 10)
+test_data <- twoClassSim(10, noiseVars = 10)
 
 ## A short example
-ctrl <- safsControl(functions = rfSA,
-                    method = "cv",
-                    number = 3)
+ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
 
-rf_search <- safs(x = train_data[, -ncol(train_data)],
-                  y = train_data$Class,
-                  iters = 50,
-                  safsControl = ctrl)
+rf_search <- safs(
+  x = train_data[, -ncol(train_data)],
+  y = train_data$Class,
+  iters = 50,
+  safsControl = ctrl
+)
 
 plot(rf_search)
-plot(rf_search,
-	 output = "lattice",
-	 auto.key = list(columns = 2))
+plot(rf_search, output = "lattice", auto.key = list(columns = 2))
 
 plot_data <- plot(rf_search, output = "data")
 summary(plot_data)

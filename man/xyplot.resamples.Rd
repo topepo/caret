@@ -116,24 +116,23 @@ resampling distributions while \code{splom} shows the pair-wise relationships.
 
 load(url("http://topepo.github.io/caret/exampleModels.RData"))
 
-resamps <- resamples(list(CART = rpartFit,
-                          CondInfTree = ctreeFit,
-                          MARS = earthFit))
+resamps <- resamples(list(
+  CART = rpartFit,
+  CondInfTree = ctreeFit,
+  MARS = earthFit
+))
 
-dotplot(resamps,
-        scales =list(x = list(relation = "free")),
-        between = list(x = 2))
+dotplot(
+  resamps,
+  scales = list(x = list(relation = "free")),
+  between = list(x = 2)
+)
 
-bwplot(resamps,
-       metric = "RMSE")
+bwplot(resamps, metric = "RMSE")
 
-densityplot(resamps,
-            auto.key = list(columns = 3),
-            pch = "|")
+densityplot(resamps, auto.key = list(columns = 3), pch = "|")
 
-xyplot(resamps,
-       models = c("CART", "MARS"),
-       metric = "RMSE")
+xyplot(resamps, models = c("CART", "MARS"), metric = "RMSE")
 
 splom(resamps, metric = "RMSE")
 splom(resamps, variables = "metrics")

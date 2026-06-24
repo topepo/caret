@@ -71,11 +71,9 @@ on \code{groups}. Percentiles are used to split the data.
 \examples{
 trainSet <- sample(1:150, 100)
 
-distData <- classDist(iris[trainSet, 1:4],
-                      iris$Species[trainSet])
+distData <- classDist(iris[trainSet, 1:4], iris$Species[trainSet])
 
-newDist <- predict(distData,
-                   iris[-trainSet, 1:4])
+newDist <- predict(distData, iris[-trainSet, 1:4])
 
 splom(newDist, groups = iris$Species[-trainSet])
 

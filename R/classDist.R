@@ -53,15 +53,13 @@
 #'
 #' @examples
 #' trainSet <- sample(1:150, 100)
-#'
-#' distData <- classDist(iris[trainSet, 1:4],
-#'                       iris$Species[trainSet])
-#'
-#' newDist <- predict(distData,
-#'                    iris[-trainSet, 1:4])
-#'
+#' 
+#' distData <- classDist(iris[trainSet, 1:4], iris$Species[trainSet])
+#' 
+#' newDist <- predict(distData, iris[-trainSet, 1:4])
+#' 
 #' splom(newDist, groups = iris$Species[-trainSet])
-#'
+#' 
 #' @keywords manip
 #' @export
 classDist <- function (x, ...)  UseMethod("classDist")

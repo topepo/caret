@@ -70,7 +70,7 @@ icrFit <- icr(bbbDescr, logBBB, n.comp = 5)
 
 icrFit
 
-predict(icrFit, bbbDescr[1:5,])
+predict(icrFit, bbbDescr[1:5, ])
 }
 \seealso{
 \code{\link[fastICA:fastICA]{fastICA::fastICA()}}, \code{\link[=preProcess]{preProcess()}}, \code{\link[stats:lm]{stats::lm()}}

@@ -130,40 +130,46 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
 #' @family feature-selection
 #' @keywords models
 #' @examplesIf !caret:::is_cran_check()
-#'
+#' 
 #' data(BloodBrain)
-#'
+#' 
 #' ## Use a GAM is the filter, then fit a random forest model
-#' RFwithGAM <- sbf(bbbDescr, logBBB,
-#'                  sbfControl = sbfControl(functions = rfSBF,
-#'                                          verbose = FALSE,
-#'                                          method = "cv"))
+#' RFwithGAM <- sbf(
+#'   bbbDescr,
+#'   logBBB,
+#'   sbfControl = sbfControl(functions = rfSBF, verbose = FALSE, method = "cv")
+#' )
 #' RFwithGAM
-#'
-#' predict(RFwithGAM, bbbDescr[1:10,])
-#'
+#' 
+#' predict(RFwithGAM, bbbDescr[1:10, ])
+#' 
 #' ## classification example with parallel processing
-#'
+#' 
 #' ## library(doMC)
-#'
+#' 
 #' ## Note: if the underlying model also uses foreach, the
 #' ## number of cores specified above will double (along with
 #' ## the memory requirements)
 #' ## registerDoMC(cores = 2)
-#'
+#' 
 #' data(mdrr)
-#' mdrrDescr <- mdrrDescr[,-nearZeroVar(mdrrDescr)]
+#' mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
 #' mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .8)]
-#'
+#' 
 #' set.seed(1)
-#' filteredNB <- sbf(mdrrDescr, mdrrClass,
-#'                  sbfControl = sbfControl(functions = nbSBF,
-#'                                          verbose = FALSE,
-#'                                          method = "repeatedcv",
-#'                                          repeats = 5,
-#'                                          saveDetails = TRUE))
+#' filteredNB <- sbf(
+#'   mdrrDescr,
+#'   mdrrClass,
+#'   sbfControl = sbfControl(
+#'     functions = nbSBF,
+#'     verbose = FALSE,
+#'     method = "repeatedcv",
+#'     repeats = 5,
+#'     saveDetails = TRUE
+#'   )
+#' )
 #' confusionMatrix(filteredNB)
-#'
+#' 
 #' @export sbf
 sbf <- function (x, ...) UseMethod("sbf")
 
@@ -905,31 +911,41 @@ predict.sbf <- function(object, newdata = NULL, ...) {
 #'   [ldaSBF()] and [nbSBF()]
 #' @keywords utilities
 #' @examplesIf !caret:::is_cran_check()
-#'
+#' 
 #' data(BloodBrain)
-#'
+#' 
 #' ## Use a GAM is the filter, then fit a random forest model
 #' set.seed(1)
-#' RFwithGAM <- sbf(bbbDescr, logBBB,
-#'                  sbfControl = sbfControl(functions = rfSBF,
-#'                                          verbose = FALSE,
-#'                                          seeds = sample.int(100000, 11),
-#'                                          method = "cv"))
+#' RFwithGAM <- sbf(
+#'   bbbDescr,
+#'   logBBB,
+#'   sbfControl = sbfControl(
+#'     functions = rfSBF,
+#'     verbose = FALSE,
+#'     seeds = sample.int(100000, 11),
+#'     method = "cv"
+#'   )
+#' )
 #' RFwithGAM
-#'
+#' 
 #' ## A simple example for multivariate scoring
 #' rfSBF2 <- rfSBF
 #' rfSBF2$score <- function(x, y) apply(x, 2, rfSBF$score, y = y)
-#'
+#' 
 #' set.seed(1)
-#' RFwithGAM2 <- sbf(bbbDescr, logBBB,
-#'                   sbfControl = sbfControl(functions = rfSBF2,
-#'                                           verbose = FALSE,
-#'                                           seeds = sample.int(100000, 11),
-#'                                           method = "cv",
-#'                                           multivariate = TRUE))
+#' RFwithGAM2 <- sbf(
+#'   bbbDescr,
+#'   logBBB,
+#'   sbfControl = sbfControl(
+#'     functions = rfSBF2,
+#'     verbose = FALSE,
+#'     seeds = sample.int(100000, 11),
+#'     method = "cv",
+#'     multivariate = TRUE
+#'   )
+#' )
 #' RFwithGAM2
-#'
+#' 
 #' @export sbfControl
 sbfControl <- function(functions = NULL,
                        method = "boot",
@@ -1343,15 +1359,17 @@ varImp.sbf <- function(object, onlyFinal = TRUE, ...)
 #' the class of `y`. All predictions are always the same.
 #' @keywords models
 #' @examples
-#'
-#' outcome <- factor(sample(letters[1:2],
-#'                          size = 100,
-#'                          prob = c(.1, .9),
-#'                          replace = TRUE))
+#' 
+#' outcome <- factor(sample(
+#'   letters[1:2],
+#'   size = 100,
+#'   prob = c(.1, .9),
+#'   replace = TRUE
+#' ))
 #' useless <- nullModel(y = outcome)
 #' useless
 #' predict(useless, matrix(NA, nrow = 10))
-#'
+#' 
 #' @export nullModel
 nullModel <- function (x, ...) UseMethod("nullModel")
 

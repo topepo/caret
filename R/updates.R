@@ -25,17 +25,20 @@
 #' @seealso [train()], [trainControl()]
 #' @keywords models
 #' @examplesIf !caret:::is_cran_check()
-#'
+#' 
 #' data(iris)
-#' TrainData <- iris[,1:4]
-#' TrainClasses <- iris[,5]
-#'
-#' knnFit1 <- train(TrainData, TrainClasses,
-#'                  method = "knn",
-#'                  preProcess = c("center", "scale"),
-#'                  tuneLength = 10,
-#'                  trControl = trainControl(method = "cv"))
-#'
+#' TrainData <- iris[, 1:4]
+#' TrainClasses <- iris[, 5]
+#' 
+#' knnFit1 <- train(
+#'   TrainData,
+#'   TrainClasses,
+#'   method = "knn",
+#'   preProcess = c("center", "scale"),
+#'   tuneLength = 10,
+#'   trControl = trainControl(method = "cv")
+#' )
+#' 
 #' update(knnFit1, list(.k = 3))
 #' @export
 #' @importFrom recipes juice all_predictors all_outcomes

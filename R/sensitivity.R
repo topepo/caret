@@ -58,71 +58,77 @@
 #' @family performance
 #' @keywords manip
 #' @examplesIf !caret:::is_cran_check()
-#'
+#' 
 #' ###################
 #' ## 2 class example
-#'
+#' 
 #' lvs <- c("normal", "abnormal")
-#' truth <- factor(rep(lvs, times = c(86, 258)),
-#'                 levels = rev(lvs))
+#' truth <- factor(rep(lvs, times = c(86, 258)), levels = rev(lvs))
 #' pred <- factor(
-#'                c(
-#'                  rep(lvs, times = c(54, 32)),
-#'                  rep(lvs, times = c(27, 231))),
-#'                levels = rev(lvs))
-#'
+#'   c(
+#'     rep(lvs, times = c(54, 32)),
+#'     rep(lvs, times = c(27, 231))
+#'   ),
+#'   levels = rev(lvs)
+#' )
+#' 
 #' xtab <- table(pred, truth)
-#'
+#' 
 #' sensitivity(pred, truth)
 #' sensitivity(xtab)
 #' posPredValue(pred, truth)
 #' posPredValue(pred, truth, prevalence = 0.25)
-#'
+#' 
 #' specificity(pred, truth)
 #' negPredValue(pred, truth)
 #' negPredValue(xtab)
 #' negPredValue(pred, truth, prevalence = 0.25)
-#'
+#' 
 #' prev <- seq(0.001, .99, length = 20)
-#' npvVals <- ppvVals <- prev  * NA
-#' for(i in seq(along.with = prev))
-#'   {
-#'     ppvVals[i] <- posPredValue(pred, truth, prevalence = prev[i])
-#'     npvVals[i] <- negPredValue(pred, truth, prevalence = prev[i])
-#'   }
-#'
-#' plot(prev, ppvVals,
-#'      ylim = c(0, 1),
-#'      type = "l",
-#'      ylab = "",
-#'      xlab = "Prevalence (i.e. prior)")
+#' npvVals <- ppvVals <- prev * NA
+#' for (i in seq(along.with = prev)) {
+#'   ppvVals[i] <- posPredValue(pred, truth, prevalence = prev[i])
+#'   npvVals[i] <- negPredValue(pred, truth, prevalence = prev[i])
+#' }
+#' 
+#' plot(
+#'   prev,
+#'   ppvVals,
+#'   ylim = c(0, 1),
+#'   type = "l",
+#'   ylab = "",
+#'   xlab = "Prevalence (i.e. prior)"
+#' )
 #' points(prev, npvVals, type = "l", col = "red")
-#' abline(h=sensitivity(pred, truth), lty = 2)
-#' abline(h=specificity(pred, truth), lty = 2, col = "red")
-#' legend(.5, .5,
-#'        c("ppv", "npv", "sens", "spec"),
-#'        col = c("black", "red", "black", "red"),
-#'        lty = c(1, 1, 2, 2))
-#'
+#' abline(h = sensitivity(pred, truth), lty = 2)
+#' abline(h = specificity(pred, truth), lty = 2, col = "red")
+#' legend(
+#'   .5,
+#'   .5,
+#'   c("ppv", "npv", "sens", "spec"),
+#'   col = c("black", "red", "black", "red"),
+#'   lty = c(1, 1, 2, 2)
+#' )
+#' 
 #' ###################
 #' ## 3 class example
-#'
+#' 
 #' library(MASS)
-#'
+#' 
 #' fit <- lda(Species ~ ., data = iris)
 #' model <- predict(fit)$class
-#'
+#' 
 #' irisTabs <- table(model, iris$Species)
-#'
+#' 
 #' ## When passing factors, an error occurs with more
 #' ## than two levels
 #' try(sensitivity(model, iris$Species))
-#'
+#' 
 #' ## When passing a table, more than two levels can
 #' ## be used
 #' sensitivity(irisTabs, "versicolor")
 #' specificity(irisTabs, c("setosa", "virginica"))
-#'
+#' 
 #' @export sensitivity
 sensitivity <-
   function(data, ...){

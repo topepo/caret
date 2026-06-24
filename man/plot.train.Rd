@@ -89,10 +89,12 @@ plot is created inside conditioning panels/facets.
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
 library(klaR)
-rdaFit <- train(Species ~ .,
-                data = iris,
-                method = "rda",
-                control = trainControl(method = "cv"))
+rdaFit <- train(
+  Species ~ .,
+  data = iris,
+  method = "rda",
+  control = trainControl(method = "cv")
+)
 plot(rdaFit)
 plot(rdaFit, plotType = "level")
 

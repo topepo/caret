@@ -148,17 +148,17 @@ number of workers and the amount of memory required exponentially.
 
 set.seed(1)
 train_data <- twoClassSim(100, noiseVars = 10)
-test_data  <- twoClassSim(10,  noiseVars = 10)
+test_data <- twoClassSim(10, noiseVars = 10)
 
 ## A short example
-ctrl <- gafsControl(functions = rfGA,
-                    method = "cv",
-                    number = 3)
+ctrl <- gafsControl(functions = rfGA, method = "cv", number = 3)
 
-rf_search <- gafs(x = train_data[, -ncol(train_data)],
-                  y = train_data$Class,
-                  iters = 3,
-                  gafsControl = ctrl)
+rf_search <- gafs(
+  x = train_data[, -ncol(train_data)],
+  y = train_data$Class,
+  iters = 3,
+  gafsControl = ctrl
+)
 
 rf_search
 \dontshow{\}) # examplesIf}

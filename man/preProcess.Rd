@@ -195,9 +195,9 @@ data(BloodBrain)
 # one variable has one unique value
 preProc <- preProcess(bbbDescr)
 
-preProc  <- preProcess(bbbDescr[1:100,-3])
-training <- predict(preProc, bbbDescr[1:100,-3])
-test     <- predict(preProc, bbbDescr[101:208,-3])
+preProc <- preProcess(bbbDescr[1:100, -3])
+training <- predict(preProc, bbbDescr[1:100, -3])
+test <- predict(preProc, bbbDescr[101:208, -3])
 \dontshow{\}) # examplesIf}
 }
 \references{

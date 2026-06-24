@@ -87,8 +87,8 @@ inTrain <- sample(seq(along.with = mdrrClass), 450)
 nzv <- nearZeroVar(mdrrDescr)
 filteredDescr <- mdrrDescr[, -nzv]
 
-training <- filteredDescr[inTrain,]
-test <- filteredDescr[-inTrain,]
+training <- filteredDescr[inTrain, ]
+test <- filteredDescr[-inTrain, ]
 trainMDRR <- mdrrClass[inTrain]
 testMDRR <- mdrrClass[-inTrain]
 
@@ -99,11 +99,13 @@ testDescr <- predict(preProcValues, test)
 
 useSoftmax <- plsda(trainDescr, trainMDRR, ncomp = 5)
 
-confusionMatrix(predict(useSoftmax, testDescr),
-                testMDRR)
+confusionMatrix(predict(useSoftmax, testDescr), testMDRR)
 
-histogram(~predict(useSoftmax, testDescr, type = "prob")[, "Active", ]
-          | testMDRR, xlab = "Active Prob", xlim = c(-.1, 1.1))
+histogram(
+  ~ predict(useSoftmax, testDescr, type = "prob")[, "Active", ] | testMDRR,
+  xlab = "Active Prob",
+  xlim = c(-.1, 1.1)
+)
 
 ## different sized objects are returned
 length(predict(useSoftmax, testDescr))
@@ -116,11 +118,9 @@ dim(predict(useSoftmax, testDescr, type = "prob", ncomp = 1:3))
 ## the same name. To avoid conflicts, use caret:::splsda to
 ## get this version)
 
-splsFit <- caret:::splsda(trainDescr, trainMDRR,
-                          K = 5, eta = .9)
+splsFit <- caret:::splsda(trainDescr, trainMDRR, K = 5, eta = .9)
 
-confusionMatrix(caret:::predict.splsda(splsFit, testDescr),
-                testMDRR)
+confusionMatrix(caret:::predict.splsda(splsFit, testDescr), testMDRR)
 \dontshow{\}) # examplesIf}
 }
 \seealso{

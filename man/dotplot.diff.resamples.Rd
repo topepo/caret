@@ -39,20 +39,18 @@ confidence intervals.
 
 load(url("http://topepo.github.io/caret/exampleModels.RData"))
 
-resamps <- resamples(list(CART = rpartFit,
-                          CondInfTree = ctreeFit,
-                          MARS = earthFit))
+resamps <- resamples(list(
+  CART = rpartFit,
+  CondInfTree = ctreeFit,
+  MARS = earthFit
+))
 difs <- diff(resamps)
 
 dotplot(difs)
 
-densityplot(difs,
-            metric = "RMSE",
-            auto.key = TRUE,
-            pch = "|")
+densityplot(difs, metric = "RMSE", auto.key = TRUE, pch = "|")
 
-bwplot(difs,
-       metric = "RMSE")
+bwplot(difs, metric = "RMSE")
 
 levelplot(difs, what = "differences")
 

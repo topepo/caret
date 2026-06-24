@@ -141,11 +141,16 @@ data(BloodBrain)
 
 ## Use a GAM is the filter, then fit a random forest model
 set.seed(1)
-RFwithGAM <- sbf(bbbDescr, logBBB,
-                 sbfControl = sbfControl(functions = rfSBF,
-                                         verbose = FALSE,
-                                         seeds = sample.int(100000, 11),
-                                         method = "cv"))
+RFwithGAM <- sbf(
+  bbbDescr,
+  logBBB,
+  sbfControl = sbfControl(
+    functions = rfSBF,
+    verbose = FALSE,
+    seeds = sample.int(100000, 11),
+    method = "cv"
+  )
+)
 RFwithGAM
 
 ## A simple example for multivariate scoring
@@ -153,12 +158,17 @@ rfSBF2 <- rfSBF
 rfSBF2$score <- function(x, y) apply(x, 2, rfSBF$score, y = y)
 
 set.seed(1)
-RFwithGAM2 <- sbf(bbbDescr, logBBB,
-                  sbfControl = sbfControl(functions = rfSBF2,
-                                          verbose = FALSE,
-                                          seeds = sample.int(100000, 11),
-                                          method = "cv",
-                                          multivariate = TRUE))
+RFwithGAM2 <- sbf(
+  bbbDescr,
+  logBBB,
+  sbfControl = sbfControl(
+    functions = rfSBF2,
+    verbose = FALSE,
+    seeds = sample.int(100000, 11),
+    method = "cv",
+    multivariate = TRUE
+  )
+)
 RFwithGAM2
 \dontshow{\}) # examplesIf}
 }

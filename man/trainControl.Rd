@@ -208,31 +208,39 @@ may not be accurate since these arguments supersede the \code{method} argument.
 
 set.seed(123)
 seeds <- vector(mode = "list", length = 51)
-for(i in 1:50) seeds[[i]] <- sample.int(1000, 22)
+for (i in 1:50) {
+  seeds[[i]] <- sample.int(1000, 22)
+}
 
 ## For the last model:
 seeds[[51]] <- sample.int(1000, 1)
 
-ctrl <- trainControl(method = "repeatedcv",
-                     repeats = 5,
-                     seeds = seeds)
+ctrl <- trainControl(method = "repeatedcv", repeats = 5, seeds = seeds)
 
 set.seed(1)
-mod <- train(Species ~ ., data = iris,
-             method = "knn",
-             tuneLength = 12,
-             trControl = ctrl)
+mod <- train(
+  Species ~ .,
+  data = iris,
+  method = "knn",
+  tuneLength = 12,
+  trControl = ctrl
+)
 
-ctrl2 <- trainControl(method = "adaptive_cv",
-                      repeats = 5,
-                      verboseIter = TRUE,
-                      seeds = seeds)
+ctrl2 <- trainControl(
+  method = "adaptive_cv",
+  repeats = 5,
+  verboseIter = TRUE,
+  seeds = seeds
+)
 
 set.seed(1)
-mod2 <- train(Species ~ ., data = iris,
-              method = "knn",
-              tuneLength = 12,
-              trControl = ctrl2)
+mod2 <- train(
+  Species ~ .,
+  data = iris,
+  method = "knn",
+  tuneLength = 12,
+  trControl = ctrl2
+)
 
 \dontshow{\}) # examplesIf}
 }

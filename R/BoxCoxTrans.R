@@ -55,20 +55,20 @@
 #'
 #' @examples
 #' data(BloodBrain)
-#'
+#' 
 #' ratio <- exp(logBBB)
 #' bc <- BoxCoxTrans(ratio)
 #' bc
-#'
+#' 
 #' predict(bc, ratio[1:5])
-#'
+#' 
 #' ratio[5] <- NA
 #' bc2 <- BoxCoxTrans(ratio, bbbDescr$tpsa, na.rm = TRUE)
 #' bc2
-#'
+#' 
 #' manly <- expoTrans(ratio)
 #' manly
-#'
+#' 
 #' @family preprocessing
 #' @keywords utilities
 #'

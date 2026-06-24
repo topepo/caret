@@ -81,32 +81,35 @@
 #'   Regression Trees*. Wadsworth.
 #' @keywords manip
 #' @examplesIf !caret:::is_cran_check()
-#'
+#' 
 #' # simulate a PLS regression model
-#' test <- data.frame(ncomp = 1:5,
-#'                    RMSE = c(3, 1.1, 1.02, 1, 2),
-#'                    RMSESD = .4)
-#'
+#' test <- data.frame(ncomp = 1:5, RMSE = c(3, 1.1, 1.02, 1, 2), RMSESD = .4)
+#' 
 #' best(test, "RMSE", maximize = FALSE)
 #' oneSE(test, "RMSE", maximize = FALSE, num = 10)
 #' tolerance(test, "RMSE", tol = 3, maximize = FALSE)
-#'
+#' 
 #' ### usage example
-#'
+#' 
 #' data(BloodBrain)
-#'
+#' 
 #' marsGrid <- data.frame(degree = 1, nprune = (1:10) * 3)
-#'
+#' 
 #' set.seed(1)
-#' marsFit <- train(bbbDescr, logBBB,
-#'                  method = "earth",
-#'                  tuneGrid = marsGrid,
-#'                  trControl = trainControl(method = "cv",
-#'                                           number = 10,
-#'                                           selectionFunction = "tolerance"))
-#'
+#' marsFit <- train(
+#'   bbbDescr,
+#'   logBBB,
+#'   method = "earth",
+#'   tuneGrid = marsGrid,
+#'   trControl = trainControl(
+#'     method = "cv",
+#'     number = 10,
+#'     selectionFunction = "tolerance"
+#'   )
+#' )
+#' 
 #' # around 18 terms should yield the smallest CV RMSE
-#'
+#' 
 #' @export oneSE
 oneSE <- function(x, metric, num, maximize)
   {

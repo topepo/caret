@@ -124,8 +124,10 @@ library(MASS)
 
 ldaFit <- lda(trainX, trainY)
 
-testProbs <- data.frame(obs = testY,
-                        lda = predict(ldaFit, testX)$posterior[, 1])
+testProbs <- data.frame(
+  obs = testY,
+  lda = predict(ldaFit, testX)$posterior[, 1]
+)
 
 calibration(obs ~ lda, data = testProbs)
 

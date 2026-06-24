@@ -107,13 +107,14 @@ Example functions are given in \code{\link[=lmSBF]{lmSBF()}}.
 data(BloodBrain)
 
 ## Use a GAM is the filter, then fit a random forest model
-RFwithGAM <- sbf(bbbDescr, logBBB,
-                 sbfControl = sbfControl(functions = rfSBF,
-                                         verbose = FALSE,
-                                         method = "cv"))
+RFwithGAM <- sbf(
+  bbbDescr,
+  logBBB,
+  sbfControl = sbfControl(functions = rfSBF, verbose = FALSE, method = "cv")
+)
 RFwithGAM
 
-predict(RFwithGAM, bbbDescr[1:10,])
+predict(RFwithGAM, bbbDescr[1:10, ])
 
 ## classification example with parallel processing
 
@@ -125,16 +126,21 @@ predict(RFwithGAM, bbbDescr[1:10,])
 ## registerDoMC(cores = 2)
 
 data(mdrr)
-mdrrDescr <- mdrrDescr[,-nearZeroVar(mdrrDescr)]
+mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
 mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .8)]
 
 set.seed(1)
-filteredNB <- sbf(mdrrDescr, mdrrClass,
-                 sbfControl = sbfControl(functions = nbSBF,
-                                         verbose = FALSE,
-                                         method = "repeatedcv",
-                                         repeats = 5,
-                                         saveDetails = TRUE))
+filteredNB <- sbf(
+  mdrrDescr,
+  mdrrClass,
+  sbfControl = sbfControl(
+    functions = nbSBF,
+    verbose = FALSE,
+    method = "repeatedcv",
+    repeats = 5,
+    saveDetails = TRUE
+  )
+)
 confusionMatrix(filteredNB)
 \dontshow{\}) # examplesIf}
 }

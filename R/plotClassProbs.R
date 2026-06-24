@@ -26,35 +26,42 @@
 #' set.seed(90)
 #' inTrain <- createDataPartition(mdrrClass, p = .5)[[1]]
 #' 
-#' trainData <- mdrrDescr[inTrain,1:20]
-#' testData <- mdrrDescr[-inTrain,1:20]
+#' trainData <- mdrrDescr[inTrain, 1:20]
+#' testData <- mdrrDescr[-inTrain, 1:20]
 #' 
 #' trainY <- mdrrClass[inTrain]
 #' testY <- mdrrClass[-inTrain]
 #' 
 #' ctrl <- trainControl(method = "cv")
 #' 
-#' nbFit1 <- train(trainData, trainY, "nb",
-#'                 trControl = ctrl,
-#'                 tuneGrid = data.frame(usekernel = TRUE,
-#'                                       fL = 0, adjust = 1))
-#'
-#' nbFit2 <- train(trainData, trainY, "nb",
-#'                 trControl = ctrl,
-#'                 tuneGrid = data.frame(usekernel = FALSE,
-#'                                       fL = 0, adjust = 1))
+#' nbFit1 <- train(
+#'   trainData,
+#'   trainY,
+#'   "nb",
+#'   trControl = ctrl,
+#'   tuneGrid = data.frame(usekernel = TRUE, fL = 0, adjust = 1)
+#' )
+#' 
+#' nbFit2 <- train(
+#'   trainData,
+#'   trainY,
+#'   "nb",
+#'   trControl = ctrl,
+#'   tuneGrid = data.frame(usekernel = FALSE, fL = 0, adjust = 1)
+#' )
 #' 
 #' models <- list(para = nbFit2, nonpara = nbFit1)
 #' 
-#' predProbs <- extractProb(models, testX = testData,  testY = testY)
+#' predProbs <- extractProb(models, testX = testData, testY = testY)
 #' 
 #' plotClassProbs(predProbs, useObjects = TRUE)
-#' plotClassProbs(predProbs,
-#'                subset = object == "para" & dataType == "Test")
-#' plotClassProbs(predProbs,
-#'                useObjects = TRUE,
-#'                plotType = "densityplot",
-#'                auto.key = list(columns = 2))
+#' plotClassProbs(predProbs, subset = object == "para" & dataType == "Test")
+#' plotClassProbs(
+#'   predProbs,
+#'   useObjects = TRUE,
+#'   plotType = "densityplot",
+#'   auto.key = list(columns = 2)
+#' )
 #' 
 #' @export plotClassProbs
 plotClassProbs <- function(object,

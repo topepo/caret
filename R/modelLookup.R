@@ -38,16 +38,16 @@
 #' @seealso [train()], [utils::install.packages()], [base::grepl()]
 #' @keywords utilities
 #' @examplesIf !caret:::is_cran_check()
-#'
+#' 
 #' modelLookup()
 #' modelLookup("gbm")
-#'
+#' 
 #' getModelInfo("pls")
 #' getModelInfo("^pls")
 #' getModelInfo("pls", regex = FALSE)
-#'
+#' 
 #' checkInstall(getModelInfo("pls")$library)
-#'
+#' 
 #' @export modelLookup
 modelLookup <- function(model = NULL){
   load(system.file("models", "models.RData", package = "caret"))

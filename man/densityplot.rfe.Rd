@@ -45,7 +45,7 @@ p <- 40
 sigma <- 1
 set.seed(1)
 sim <- mlbench.friedman1(n, sd = sigma)
-x <- cbind(sim$x,  matrix(rnorm(n * p), nrow = n))
+x <- cbind(sim$x, matrix(rnorm(n * p), nrow = n))
 y <- sim$y
 colnames(x) <- paste("var", 1:ncol(x), sep = "")
 
@@ -55,14 +55,13 @@ x <- as.data.frame(x, stringsAsFactors = TRUE)
 subsets <- c(10, 15, 20, 25)
 
 ctrl <- rfeControl(
-                   functions = lmFuncs,
-                   method = "cv",
-                   verbose = FALSE,
-                   returnResamp = "all")
+  functions = lmFuncs,
+  method = "cv",
+  verbose = FALSE,
+  returnResamp = "all"
+)
 
-lmProfile <- rfe(x, y,
-                 sizes = subsets,
-                 rfeControl = ctrl)
+lmProfile <- rfe(x, y, sizes = subsets, rfeControl = ctrl)
 xyplot(lmProfile)
 stripplot(lmProfile)
 

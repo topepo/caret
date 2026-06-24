@@ -88,7 +88,7 @@ exp[(current-new)/current*iteration] }
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-selected_vars <- safs_initial(vars = 10 , prob = 0.2)
+selected_vars <- safs_initial(vars = 10, prob = 0.2)
 selected_vars
 
 ###
@@ -100,23 +100,22 @@ safs_perturb(selected_vars, vars = 10, number = 1)
 safs_prob(old = .8, new = .9, iteration = 1)
 safs_prob(old = .5, new = .6, iteration = 1)
 
-grid <- expand.grid(old = c(4, 3.5),
-                    new = c(4.5, 4, 3.5) + 1,
-                    iter = 1:40)
+grid <- expand.grid(old = c(4, 3.5), new = c(4.5, 4, 3.5) + 1, iter = 1:40)
 grid <- subset(grid, old < new)
 
-grid$prob <- apply(grid, 1,
-                   function(x)
-                     safs_prob(new = x["new"],
-                               old= x["old"],
-                               iteration = x["iter"]))
+grid$prob <- apply(grid, 1, function(x) {
+  safs_prob(new = x["new"], old = x["old"], iteration = x["iter"])
+})
 
 grid$Difference <- factor(grid$new - grid$old)
 grid$Group <- factor(paste("Current Value", grid$old))
 
 ggplot(grid, aes(x = iter, y = prob, color = Difference)) +
-  geom_line() + facet_wrap(~Group) + theme_bw() +
-  ylab("Probability") + xlab("Iteration")
+  geom_line() +
+  facet_wrap(~Group) +
+  theme_bw() +
+  ylab("Probability") +
+  xlab("Iteration")
 
 ## Hypothetical usage (not run):
 ## lda_sa <- safs(x = predictors,
