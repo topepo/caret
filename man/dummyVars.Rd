@@ -89,15 +89,29 @@ For example, if a factor with 5 levels is used in a model formula alone,
 \code{\link[stats:contr.treatment]{stats::contr.treatment()}} creates columns for the intercept and all the
 factor levels except the first level of the factor. For the data in the
 Example section below, this would produce:
-\preformatted{ (Intercept) dayTue dayWed dayThu dayFri daySat daySun 1 0 0 0
-0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 1 0 0 0 0 1 0 1 0 0 0 0 1 0 0 0 1 0 0
-1 0 0 0 0 1 0 1 0 0 0 0 1 0 1 0 0 0 1 0 0}
+\preformatted{ (Intercept) dayTue dayWed dayThu dayFri daySat daySun
+           1      0      0      0      0      0      0
+           1      0      0      0      0      0      0
+           1      0      0      0      0      0      0
+           1      0      1      0      0      0      0
+           1      0      1      0      0      0      0
+           1      0      0      0      1      0      0
+           1      0      0      0      0      1      0
+           1      0      0      0      0      1      0
+           1      0      0      0      1      0      0}
 
 In some situations, there may be a need for dummy variables for all the
 levels of the factor. For the same example:
-\preformatted{ dayMon dayTue dayWed dayThu dayFri daySat daySun 1 0 0 0 0 0
-0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0
-0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 1 0 0}
+\preformatted{ dayMon dayTue dayWed dayThu dayFri daySat daySun
+      1      0      0      0      0      0      0
+      1      0      0      0      0      0      0
+      1      0      0      0      0      0      0
+      0      0      1      0      0      0      0
+      0      0      1      0      0      0      0
+      0      0      0      0      1      0      0
+      0      0      0      0      0      1      0
+      0      0      0      0      0      1      0
+      0      0      0      0      1      0      0}
 
 Given a formula and initial data set, the class \code{dummyVars} gathers all the
 information needed to produce a full set of dummy variables for any data

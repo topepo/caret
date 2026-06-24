@@ -138,22 +138,19 @@
 #'
 #' postResample(predict(ldaProfile, test), testClass)
 #'
-#'
-#' #######################################
 #' ## Parallel Processing Example via multicore
-#'
 #' ## library(doMC)
-#'
+#' ## registerDoMC(cores = 2)
+#' ##
 #' ## Note: if the underlying model also uses foreach, the
 #' ## number of cores specified above will double (along with
 #' ## the memory requirements)
-#' registerDoMC(cores = 2)
-#'
-#' set.seed(1)
-#' lmProfile <- rfe(x, logBBB,
-#'                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-#'                  rfeControl = rfeControl(functions = lmFuncs,
-#'                                          number = 200))
+#' ##
+#' ## set.seed(1)
+#' ## lmProfile <- rfe(x, logBBB,
+#' ##                  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
+#' ##                  rfeControl = rfeControl(functions = lmFuncs,
+#' ##                                          number = 200))
 #'
 #'
 #' @export rfe

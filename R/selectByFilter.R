@@ -160,7 +160,8 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
 #'                  sbfControl = sbfControl(functions = nbSBF,
 #'                                          verbose = FALSE,
 #'                                          method = "repeatedcv",
-#'                                          repeats = 5))
+#'                                          repeats = 5,
+#'                                          saveDetails = TRUE))
 #' confusionMatrix(filteredNB)
 #'
 #' @export sbf

@@ -21,7 +21,9 @@
 #' @author Max Kuhn
 #' @keywords hplot
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
+#' library(mlbench)
+#'
 #' # regression example
 #' data(BostonHousing)
 #' rpartFit <- train(BostonHousing[1:100, -c(4, 14)], 

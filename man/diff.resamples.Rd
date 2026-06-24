@@ -84,7 +84,7 @@ differences.
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-#load(url("http://topepo.github.io/caret/exampleModels.RData"))
+load(url("http://topepo.github.io/caret/exampleModels.RData"))
 
 resamps <- resamples(list(CART = rpartFit,
                           CondInfTree = ctreeFit,

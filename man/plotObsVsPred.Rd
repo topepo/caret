@@ -35,6 +35,8 @@ shown, but if unknowns were also included, they are not plotted
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
+library(mlbench)
+
 # regression example
 data(BostonHousing)
 rpartFit <- train(BostonHousing[1:100, -c(4, 14)], 

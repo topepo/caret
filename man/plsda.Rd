@@ -97,35 +97,27 @@ preProcValues <- preProcess(training)
 trainDescr <- predict(preProcValues, training)
 testDescr <- predict(preProcValues, test)
 
-useBayes   <- plsda(trainDescr, trainMDRR, ncomp = 5,
-                    probMethod = "Bayes")
 useSoftmax <- plsda(trainDescr, trainMDRR, ncomp = 5)
-
-confusionMatrix(predict(useBayes, testDescr),
-                testMDRR)
 
 confusionMatrix(predict(useSoftmax, testDescr),
                 testMDRR)
 
-histogram(~predict(useBayes, testDescr, type = "prob")[,"Active",]
-          | testMDRR, xlab = "Active Prob", xlim = c(-.1,1.1))
-histogram(~predict(useSoftmax, testDescr, type = "prob")[,"Active",]
-          | testMDRR, xlab = "Active Prob", xlim = c(-.1,1.1))
+histogram(~predict(useSoftmax, testDescr, type = "prob")[, "Active", ]
+          | testMDRR, xlab = "Active Prob", xlim = c(-.1, 1.1))
 
 ## different sized objects are returned
-length(predict(useBayes, testDescr))
-dim(predict(useBayes, testDescr, ncomp = 1:3))
-dim(predict(useBayes, testDescr, type = "prob"))
-dim(predict(useBayes, testDescr, type = "prob", ncomp = 1:3))
+length(predict(useSoftmax, testDescr))
+dim(predict(useSoftmax, testDescr, ncomp = 1:3))
+dim(predict(useSoftmax, testDescr, type = "prob"))
+dim(predict(useSoftmax, testDescr, type = "prob", ncomp = 1:3))
 
 ## Using spls:
 ## (As of 11/09, the spls package now has a similar function with
-## the same mane. To avoid conflicts, use caret:::splsda to
+## the same name. To avoid conflicts, use caret:::splsda to
 ## get this version)
 
 splsFit <- caret:::splsda(trainDescr, trainMDRR,
-                          K = 5, eta = .9,
-                          probMethod = "Bayes")
+                          K = 5, eta = .9)
 
 confusionMatrix(caret:::predict.splsda(splsFit, testDescr),
                 testMDRR)

@@ -331,7 +331,7 @@ print.bagEarth <- function(x, ...) {
 #'
 #' data(trees)
 #' set.seed(9655)
-#' fit <- bagEarth(trees[,-3], trees[3])
+#' fit <- bagEarth(trees[, -3], trees[, 3])
 #' summary(fit)
 #'
 #' @export summary.bagEarth

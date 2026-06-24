@@ -189,7 +189,7 @@ irisTabs <- table(model, iris$Species)
 
 ## When passing factors, an error occurs with more
 ## than two levels
-sensitivity(model, iris$Species)
+try(sensitivity(model, iris$Species))
 
 ## When passing a table, more than two levels can
 ## be used

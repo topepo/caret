@@ -36,11 +36,13 @@
 #' 
 #' nbFit1 <- train(trainData, trainY, "nb",
 #'                 trControl = ctrl,
-#'                 tuneGrid = data.frame(usekernel = TRUE, fL = 0))
-#' 
+#'                 tuneGrid = data.frame(usekernel = TRUE,
+#'                                       fL = 0, adjust = 1))
+#'
 #' nbFit2 <- train(trainData, trainY, "nb",
 #'                 trControl = ctrl,
-#'                 tuneGrid = data.frame(usekernel = FALSE, fL = 0))
+#'                 tuneGrid = data.frame(usekernel = FALSE,
+#'                                       fL = 0, adjust = 1))
 #' 
 #' models <- list(para = nbFit2, nonpara = nbFit1)
 #' 

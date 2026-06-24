@@ -89,21 +89,20 @@ gafs_lrSelection(population = pop, fitness = 1:10)
 
 gafs_spCrossover(population = pop, fitness = 1:10, parents = 1:2)
 
-## Hypothetical examples
-lda_ga <- gafs(x = predictors,
-               y = classes,
-               gafsControl = gafsControl(functions = caretGA),
-               ## now pass arguments to `train`
-               method = "lda",
-               metric = "Accuracy",
-               trControl = trainControl(method = "cv", classProbs = TRUE))
-
-rf_ga <- gafs(x = predictors,
-              y = classes,
-              gafsControl = gafsControl(functions = rfGA),
-              ## these are arguments to `randomForest`
-              ntree = 1000,
-              importance = TRUE)
+## Hypothetical usage (not run):
+## lda_ga <- gafs(x = predictors,
+##                y = classes,
+##                gafsControl = gafsControl(functions = caretGA),
+##                method = "lda",
+##                metric = "Accuracy",
+##                trControl = trainControl(method = "cv",
+##                                         classProbs = TRUE))
+##
+## rf_ga <- gafs(x = predictors,
+##               y = classes,
+##               gafsControl = gafsControl(functions = rfGA),
+##               ntree = 1000,
+##               importance = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \references{

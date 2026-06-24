@@ -118,22 +118,20 @@ ggplot(grid, aes(x = iter, y = prob, color = Difference)) +
   geom_line() + facet_wrap(~Group) + theme_bw() +
   ylab("Probability") + xlab("Iteration")
 
-###
-## Hypothetical examples
-lda_sa <- safs(x = predictors,
-               y = classes,
-               safsControl = safsControl(functions = caretSA),
-               ## now pass arguments to `train`
-               method = "lda",
-               metric = "Accuracy",
-               trControl = trainControl(method = "cv", classProbs = TRUE))
-
-rf_sa <- safs(x = predictors,
-              y = classes,
-              safsControl = safsControl(functions = rfSA),
-              ## these are arguments to `randomForest`
-              ntree = 1000,
-              importance = TRUE)
+## Hypothetical usage (not run):
+## lda_sa <- safs(x = predictors,
+##                y = classes,
+##                safsControl = safsControl(functions = caretSA),
+##                method = "lda",
+##                metric = "Accuracy",
+##                trControl = trainControl(method = "cv",
+##                                         classProbs = TRUE))
+##
+## rf_sa <- safs(x = predictors,
+##               y = classes,
+##               safsControl = safsControl(functions = rfSA),
+##               ntree = 1000,
+##               importance = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \references{
