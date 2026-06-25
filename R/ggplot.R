@@ -85,21 +85,21 @@ ggplot.train <- function(data = NULL, mapping = NULL, metric = data$metric[1], p
           bstRes[, dnm[col+3]] <- factor(bstRes[, dnm[col+3]], levels = lvls)
       }
 
-    out <- ggplot(dat, aes_string(x = dnm[2], y = dnm[1]))
+    out <- ggplot(dat, aes(x = .data[[dnm[2]]], y = .data[[dnm[1]]]))
     out <- out + ylab(resampText)
 
     # names(dat)[.] changed to dnm[.] to make the code more readable & (marginally) efficient
     out <- out + xlab(paramData$label[paramData$parameter == dnm[2]])
     if (highlight)
       out <- out + geom_point(data = bstRes,
-                              aes_string(x = dnm[2], y = dnm[1]),
+                              aes(x = .data[[dnm[2]]], y = .data[[dnm[1]]]),
                               size = 4, shape = 5)
 
     if(output == "layered") {
       if(p >= 2) {
         leg_name <- paramData$label[paramData$parameter == dnm[3]]
-        out <- out + geom_point(aes_string(color = dnm[3], shape = dnm[3]))
-        out <- out + geom_line(aes_string(color = dnm[3]))
+        out <- out + geom_point(aes(color = .data[[dnm[3]]], shape = .data[[dnm[3]]]))
+        out <- out + geom_line(aes(color = .data[[dnm[3]]]))
         out <- out + scale_colour_discrete(name = leg_name) +
           scale_shape_discrete(name = leg_name)
       } else out <- out + geom_point() + geom_line()
@@ -127,7 +127,7 @@ ggplot.train <- function(data = NULL, mapping = NULL, metric = data$metric[1], p
         )
     }
     ## TODO: use factor(format(x)) to make a solid block of colors?
-    out <- ggplot(dat, aes_string(x = dnm[2], y = dnm[3], fill = metric))
+    out <- ggplot(dat, aes(x = .data[[dnm[2]]], y = .data[[dnm[3]]], fill = .data[[metric]]))
     out <- out + ylab(paramData$label[paramData$parameter == dnm[3]])
     out <- out + xlab(paramData$label[paramData$parameter == dnm[2]])
     if(output == "layered") {
@@ -163,13 +163,13 @@ ggplot.rfe <- function(data = NULL, mapping = NULL, metric = data$metric[1],
   notBest <- subset(data$results, Variables != data$bestSubset)
   best <- subset(data$results, Variables == data$bestSubset)
   
-  out <- ggplot(data$results, aes_string(x = "Variables", y = metric))
+  out <- ggplot(data$results, aes(x = .data[["Variables"]], y = .data[[metric]]))
   if(output == "ggplot") return(out)
   out <- out + geom_line()
   out <- out + ylab(resampText)
-  out <- out + geom_point(data = notBest, aes_string(x = "Variables", y = metric))
-  
-  out <- out + geom_point(data=best, aes_string(x = "Variables", y = metric),
+  out <- out + geom_point(data = notBest, aes(x = .data[["Variables"]], y = .data[[metric]]))
+
+  out <- out + geom_point(data=best, aes(x = .data[["Variables"]], y = .data[[metric]]),
                           size = 3, colour="blue")
   out
 }
@@ -206,11 +206,11 @@ random_search_plot <- function(x, metric = x$metric[1]) {
   num_other <- length(p_names) - num_num
   if(num_other == 0) {
     if(num_num == 1) {
-      out <- ggplot(res, aes_string(x = num_cols[1], y = metric)) +
+      out <- ggplot(res, aes(x = .data[[num_cols[1]]], y = .data[[metric]])) +
         geom_point() + xlab(as.character(params$label[params$parameter == num_cols[1]]))
     } else {
       if(num_num == 2) {
-        out <- ggplot(res, aes_string(x = num_cols[1], y = num_cols[2], size = metric)) +
+        out <- ggplot(res, aes(x = .data[[num_cols[1]]], y = .data[[num_cols[2]]], size = .data[[metric]])) +
           geom_point() +
           xlab(as.character(params$label[params$parameter == num_cols[1]])) +
           ylab(as.character(params$label[params$parameter == num_cols[2]]))
@@ -219,7 +219,7 @@ random_search_plot <- function(x, metric = x$metric[1]) {
         vert <- melt(res[, c(metric, num_cols)], id.vars = metric, variable.name = "parameter")
         vert <- merge(vert, params)
         names(vert)[names(vert) == "label"] <- "Parameter"
-        out <- ggplot(vert, aes_string(x = "value", y = metric)) +
+        out <- ggplot(vert, aes(x = .data[["value"]], y = .data[[metric]])) +
           geom_point() + facet_wrap(~Parameter, scales = "free_x") + xlab("")
       }
     }
@@ -227,20 +227,20 @@ random_search_plot <- function(x, metric = x$metric[1]) {
     if(num_other == length(p_names)) {
       ## do an interaction plot
       if(num_other == 1) {
-        out <- ggplot(res, aes_string(x = other_cols[1], y = metric)) +
+        out <- ggplot(res, aes(x = .data[[other_cols[1]]], y = .data[[metric]])) +
           geom_point() +
           xlab(as.character(params$label[params$parameter == other_cols[1]]))
       } else {
         if(num_other == 2) {
-          out <- ggplot(res, aes_string(x = other_cols[1], shape = other_cols[2],  y = metric)) +
-            geom_point() + geom_line(aes_string(group = other_cols[2])) +
+          out <- ggplot(res, aes(x = .data[[other_cols[1]]], shape = .data[[other_cols[2]]],  y = .data[[metric]])) +
+            geom_point() + geom_line(aes(group = .data[[other_cols[2]]])) +
             xlab(as.character(params$label[params$parameter == other_cols[1]]))
         } else {
           if(num_other == 3) {
             pname <- as.character(params$label[params$parameter == other_cols[3]])
             res[,other_cols[3]] <- paste0(pname, ": ", res[,other_cols[3]])
-            out <- ggplot(res, aes_string(x = other_cols[1], shape = other_cols[2],  y = metric)) +
-              geom_point() + geom_line(aes_string(group = other_cols[2])) +
+            out <- ggplot(res, aes(x = .data[[other_cols[1]]], shape = .data[[other_cols[2]]],  y = .data[[metric]])) +
+              geom_point() + geom_line(aes(group = .data[[other_cols[2]]])) +
               facet_grid(paste0(".~", other_cols[3])) +
               xlab(as.character(params$label[params$parameter == other_cols[1]]))
           } else {
@@ -258,7 +258,7 @@ random_search_plot <- function(x, metric = x$metric[1]) {
       vert <- merge(vert, params)
       names(vert)[names(vert) == "label"] <- "Parameter"
       if(num_other == 1) {
-        out <- ggplot(vert, aes_string(x = "value", y = metric, color = other_cols)) +
+        out <- ggplot(vert, aes(x = .data[["value"]], y = .data[[metric]], color = .data[[other_cols]])) +
           geom_point() + facet_wrap(~Parameter, scales = "free_x") + xlab("")
       } else {
         stop(paste("There are", num_num, "numeric tuning variables and",

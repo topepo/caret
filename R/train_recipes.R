@@ -130,7 +130,7 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
   }
 
   trained_rec <- prep(rec, training = dat, fresh = TRUE,
-                      verbose = FALSE, strings_as_factors = TRUE,
+                      verbose = FALSE,
                       retain = TRUE)
   x <- juice(trained_rec, all_predictors())
   y <- juice(trained_rec, all_outcomes())

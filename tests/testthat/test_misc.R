@@ -14,6 +14,8 @@ test_that("auc calculation is > .5 when Xs provide prediction", {
   skip_if_not_installed("earth")
   skip_if_not_installed("mda")
 
+  suppressPackageStartupMessages(library(earth))
+
   trCntlListMulti <-
     trainControl(
       method = "cv",
