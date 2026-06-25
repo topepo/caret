@@ -1,22 +1,22 @@
-###################################################################
-## Generate data and do BC using the source function to get
-## expected results
-
-set.seed(1)
-dat <- matrix(runif(30), ncol = 3)
-dat[, 1] <- exp(dat[, 1])
-colnames(dat) <- paste0("x", 1:3)
-
-check_BoxCox <- function(x, expected = NULL) {
-  pp1 <- preProcess(x, method = "BoxCox")
-  obs_lambdas1 <- unlist(lapply(pp1$bc, function(x) x$lambda))
-  names(obs_lambdas1) <- NULL
-  expect_equal(obs_lambdas1, expected)
-}
-
 test_that("BoxCox lambdas match MASS::boxcox", {
   skip_on_cran()
   skip_if_not_installed("MASS")
+
+  ###################################################################
+  ## Generate data and do BC using the source function to get
+  ## expected results
+
+  set.seed(1)
+  dat <- matrix(runif(30), ncol = 3)
+  dat[, 1] <- exp(dat[, 1])
+  colnames(dat) <- paste0("x", 1:3)
+
+  check_BoxCox <- function(x, expected = NULL) {
+    pp1 <- preProcess(x, method = "BoxCox")
+    obs_lambdas1 <- unlist(lapply(pp1$bc, function(x) x$lambda))
+    names(obs_lambdas1) <- NULL
+    expect_equal(obs_lambdas1, expected)
+  }
 
   exp_lambdas <- rep(NA, 3)
   for (i in 1:ncol(dat)) {

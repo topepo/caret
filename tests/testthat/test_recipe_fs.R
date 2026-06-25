@@ -1,14 +1,11 @@
 # ------------------------------------------------------------------------------
 
-data(BloodBrain)
-
-x_dat <- bbbDescr[, c("tpsa", "clogp", "mw")]
-x_dat$mw <- log(x_dat$mw)
-
-# ------------------------------------------------------------------------------
-
 test_that("sbf with recipes", {
   skip_on_cran()
+  data(BloodBrain)
+  x_dat <- bbbDescr[, c("tpsa", "clogp", "mw")]
+  x_dat$mw <- log(x_dat$mw)
+
   ctrl <- sbfControl(functions = lmSBF, method = "cv")
 
   set.seed(3997)
@@ -34,6 +31,10 @@ test_that("sbf with recipes", {
 
 test_that("safs with recipes", {
   skip_on_cran()
+  data(BloodBrain)
+  x_dat <- bbbDescr[, c("tpsa", "clogp", "mw")]
+  x_dat$mw <- log(x_dat$mw)
+
   ctrl <- safsControl(functions = caretSA, method = "cv", number = 3)
 
   set.seed(3997)
@@ -75,6 +76,10 @@ test_that("safs with recipes", {
 
 test_that("gafs with recipes", {
   skip_on_cran()
+  data(BloodBrain)
+  x_dat <- bbbDescr[, c("tpsa", "clogp", "mw")]
+  x_dat$mw <- log(x_dat$mw)
+
   ctrl <- gafsControl(functions = caretGA, method = "cv", number = 3)
 
   set.seed(3997)

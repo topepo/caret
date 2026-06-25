@@ -1,22 +1,13 @@
-# ------------------------------------------------------------------------------
-
-diff_coef <- function(x, y) {
-  x_nm <- names(x$fit$finalModel$coefficients)
-  y_nm <- names(y$fit$finalModel$coefficients)
-  delta <- c(setdiff(x_nm, y_nm), setdiff(y_nm, x_nm))
-  length(delta) > 0
-}
-
-# ------------------------------------------------------------------------------
-
-set.seed(3545)
-dat <- SLC14_1(100)
-y_ind <- which(names(dat) == "y")
+# `diff_coef()` lives in helper-updates.R
 
 # ------------------------------------------------------------------------------
 
 test_that("train updating", {
   skip_on_cran()
+  set.seed(3545)
+  dat <- SLC14_1(100)
+  y_ind <- which(names(dat) == "y")
+
   ctrl <- trainControl(method = "cv")
 
   lm_obj_form <- train(
@@ -40,6 +31,10 @@ test_that("train updating", {
 
 test_that("safs updating", {
   skip_on_cran()
+  set.seed(3545)
+  dat <- SLC14_1(100)
+  y_ind <- which(names(dat) == "y")
+
   ctrl <- safsControl(functions = caretSA, method = "cv", number = 3)
 
   set.seed(3997)
@@ -82,6 +77,10 @@ test_that("safs updating", {
 
 test_that("gafs updating", {
   skip_on_cran()
+  set.seed(3545)
+  dat <- SLC14_1(100)
+  y_ind <- which(names(dat) == "y")
+
   ctrl <- gafsControl(functions = caretGA, method = "cv", number = 3)
 
   set.seed(3997)
@@ -127,6 +126,10 @@ test_that("gafs updating", {
 
 test_that("rfe updating", {
   skip_on_cran()
+  set.seed(3545)
+  dat <- SLC14_1(100)
+  y_ind <- which(names(dat) == "y")
+
   ctrl <- rfeControl(functions = caretFuncs, method = "cv", number = 3)
 
   set.seed(3997)

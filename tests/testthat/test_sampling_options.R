@@ -1,4 +1,4 @@
-load(system.file("models", "sampling.RData", package = "caret"))
+# `sampling_methods` is loaded in helper-sampling.R
 
 test_that('check appropriate sampling calls by name', {
   skip_on_cran()

@@ -1,9 +1,11 @@
-# fmt: skip
-stats <- caret:::basic2x2Stats(factor(0:1), factor(0:1), pos='1', neg='0')
-expect_equal(stats[['Sensitivity']], 1)
-expect_equal(stats[['Specificity']], 1)
-expect_equal(stats[['Pos Pred Value']], 1)
-expect_equal(stats[['Neg Pred Value']], 1)
+test_that("basic2x2Stats returns perfect metrics for a perfect 2x2 table", {
+  # fmt: skip
+  stats <- caret:::basic2x2Stats(factor(0:1), factor(0:1), pos = '1', neg = '0')
+  expect_equal(stats[['Sensitivity']], 1)
+  expect_equal(stats[['Specificity']], 1)
+  expect_equal(stats[['Pos Pred Value']], 1)
+  expect_equal(stats[['Neg Pred Value']], 1)
+})
 
 # fmt: skip
 test_that("resampling method 'none' doesn't conflict with default tuneLength", {
