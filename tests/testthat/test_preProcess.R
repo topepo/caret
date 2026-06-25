@@ -47,3 +47,11 @@ test_that("correlation filter", {
     list(ignore = "Species", remove = "Petal.Length")
   )
 })
+
+test_that("preProcess print method", {
+  skip_on_cran()
+  expect_snapshot(
+    print(preProcess(iris[, 1:4], method = c("center", "scale", "pca")))
+  )
+  expect_snapshot(print(preProcess(iris[, 1:4], method = "range")))
+})

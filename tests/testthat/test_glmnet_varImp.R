@@ -1,6 +1,3 @@
-library(caret)
-
-
 test_that('glmnet varImp returns non-negative values', {
   skip_on_cran()
   skip_if_not_installed('glmnet')

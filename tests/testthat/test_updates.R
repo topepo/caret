@@ -1,7 +1,3 @@
-library(recipes)
-library(caret)
-library(testthat)
-
 # ------------------------------------------------------------------------------
 
 diff_coef <- function(x, y) {

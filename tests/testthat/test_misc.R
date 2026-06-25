@@ -33,8 +33,6 @@ test_that("auc calculation is > .5 when Xs provide prediction", {
 
   expect_true(all(knnFit$resample$AUC > .5))
 
-  library(caret)
-
   set.seed(7686)
   tr_dat <- twoClassSim(200)
   te_dat <- tr_dat

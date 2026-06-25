@@ -1,8 +1,3 @@
-library(testthat)
-library(caret)
-library(recipes)
-
-
 # ------------------------------------------------------------------------------
 
 data(BloodBrain)

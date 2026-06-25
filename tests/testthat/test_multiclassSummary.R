@@ -2,7 +2,6 @@ test_that("multiClassSummary presenting warnings from train", {
   skip_on_cran()
   skip_if_not_installed("MLmetrics")
   skip_if_not_installed("ModelMetrics", "1.2.2.2")
-  library(caret)
   N = 1000
 
   M = 2
