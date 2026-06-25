@@ -1029,8 +1029,7 @@ train.recipe <- function(x,
   trained_rec <- prep(x, training = data,
                       fresh = TRUE,
                       retain = TRUE,
-                      verbose = FALSE,
-                      strings_as_factors = TRUE)
+                      verbose = FALSE,)
   x_dat <- juice(trained_rec, all_predictors())
   y_dat <- juice(trained_rec, all_outcomes())
   if(ncol(y_dat) > 1)
