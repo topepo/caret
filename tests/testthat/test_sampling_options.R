@@ -1,6 +1,3 @@
-suppressPackageStartupMessages(library(caret))
-suppressPackageStartupMessages(library(testthat))
-
 load(system.file("models", "sampling.RData", package = "caret"))
 
 test_that('check appropriate sampling calls by name', {

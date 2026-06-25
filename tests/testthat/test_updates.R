@@ -1,7 +1,3 @@
-suppressPackageStartupMessages(library(recipes))
-suppressPackageStartupMessages(library(caret))
-suppressPackageStartupMessages(library(testthat))
-
 # ------------------------------------------------------------------------------
 
 diff_coef <- function(x, y) {

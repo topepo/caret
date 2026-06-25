@@ -1,5 +1,3 @@
-suppressPackageStartupMessages(library(caret))
-
 test_that('bad class levels', {
   skip_on_cran()
   set.seed(5131)

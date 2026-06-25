@@ -1,11 +1,5 @@
-suppressPackageStartupMessages(library(caret))
-suppressPackageStartupMessages(library(recipes))
-suppressPackageStartupMessages(library(dplyr))
-suppressPackageStartupMessages(library(testthat))
-
 set.seed(8801)
 dat <- twoClassSim(100)
-dat_tb <- as_tibble(dat)
 a <- dat[, 5]
 y <- dat[["Class"]]
 df <- data.frame(a, y, stringsAsFactors = TRUE)
@@ -20,10 +14,11 @@ ctrl <- trainControl(
 
 test_that('train runs on tibbles and recipes with glm', {
   skip_on_cran()
+  skip_if_not_installed("dplyr")
   expect_no_error(
     train(
       rec,
-      data = as_tibble(df),
+      data = dplyr::as_tibble(df),
       method = "glm",
       family = "binomial",
       metric = "ROC",
@@ -34,10 +29,11 @@ test_that('train runs on tibbles and recipes with glm', {
 
 test_that('train runs on tibbles and formulas with glm', {
   skip_on_cran()
+  skip_if_not_installed("dplyr")
   expect_no_error(
     train(
       y ~ .,
-      data = as_tibble(df),
+      data = dplyr::as_tibble(df),
       method = "glm",
       family = "binomial",
       metric = "ROC",
@@ -48,10 +44,11 @@ test_that('train runs on tibbles and formulas with glm', {
 
 test_that('train runs on tibbles and recipes with glm', {
   skip_on_cran()
+  skip_if_not_installed("dplyr")
   expect_no_error(
     train(
       rec,
-      data = as_tibble(df),
+      data = dplyr::as_tibble(df),
       method = "glm",
       family = "binomial",
       metric = "ROC",
@@ -63,6 +60,8 @@ test_that('train runs on tibbles and recipes with glm', {
 
 test_that('downsampling on tibble', {
   skip_on_cran()
+  skip_if_not_installed("dplyr")
+  dat_tb <- dplyr::as_tibble(dat)
   expect_no_error(
     caret:::parse_sampling("down")$func(dat_tb[, 1], dat_tb$Class)
   )
@@ -70,6 +69,8 @@ test_that('downsampling on tibble', {
 
 test_that('upsampling on tibble', {
   skip_on_cran()
+  skip_if_not_installed("dplyr")
+  dat_tb <- dplyr::as_tibble(dat)
   expect_no_error(
     caret:::parse_sampling("up")$func(dat_tb[, 1], dat_tb$Class)
   )

@@ -1,8 +1,3 @@
-suppressPackageStartupMessages(library(testthat))
-suppressPackageStartupMessages(library(caret))
-suppressPackageStartupMessages(library(recipes))
-
-
 # ------------------------------------------------------------------------------
 
 data(BloodBrain)
