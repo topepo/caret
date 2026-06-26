@@ -1,10 +1,4 @@
-library(recipes)
-library(caret)
-library(testthat)
-
 # ------------------------------------------------------------------------------
-
-context('updating objects')
 
 diff_coef <- function(x, y) {
   x_nm <- names(x$fit$finalModel$coefficients)
@@ -22,6 +16,7 @@ y_ind <- which(names(dat) == "y")
 # ------------------------------------------------------------------------------
 
 test_that("train updating", {
+  skip_on_cran()
   ctrl <- trainControl(method = "cv")
 
   lm_obj_form <- train(
@@ -31,19 +26,20 @@ test_that("train updating", {
     trControl = ctrl
   )
   lm_obj_form_2 <- update(lm_obj_form, list(intercept = FALSE))
-  expect_equal(length(lm_obj_form_2$finalModel$coefficients), 2)
+  expect_length(lm_obj_form_2$finalModel$coefficients, 2)
 
   rec <- recipe(y ~ Var01 + Var02, data = dat) %>%
     step_mutate(Var01 = Var01 / 2)
   lm_obj_rec <- train(rec, data = dat, method = "lm", trControl = ctrl)
   lm_obj_rec_2 <- update(lm_obj_rec, list(intercept = FALSE))
-  expect_equal(length(lm_obj_rec_2$finalModel$coefficients), 2)
+  expect_length(lm_obj_rec_2$finalModel$coefficients, 2)
 })
 
 
 # ------------------------------------------------------------------------------
 
 test_that("safs updating", {
+  skip_on_cran()
   ctrl <- safsControl(functions = caretSA, method = "cv", number = 3)
 
   set.seed(3997)
@@ -85,6 +81,7 @@ test_that("safs updating", {
 # ------------------------------------------------------------------------------
 
 test_that("gafs updating", {
+  skip_on_cran()
   ctrl <- gafsControl(functions = caretGA, method = "cv", number = 3)
 
   set.seed(3997)
@@ -129,6 +126,7 @@ test_that("gafs updating", {
 # ------------------------------------------------------------------------------
 
 test_that("rfe updating", {
+  skip_on_cran()
   ctrl <- rfeControl(functions = caretFuncs, method = "cv", number = 3)
 
   set.seed(3997)
@@ -149,7 +147,7 @@ test_that("rfe updating", {
       y = dat$y
     )
   )
-  expect_equal(length(rfe_xy_2$fit$finalModel$coefficients), 6)
+  expect_length(rfe_xy_2$fit$finalModel$coefficients, 6)
   expect_snapshot(update(rfe_xy, size = 5), error = TRUE)
 
   rec <- recipe(y ~ ., data = dat) %>%
@@ -165,7 +163,7 @@ test_that("rfe updating", {
       trControl = trainControl(method = "none")
     )
   expect_snapshot_warning(rfe_rec_2 <- update(rfe_rec, size = 5))
-  expect_equal(length(rfe_rec_2$fit$finalModel$coefficients), 6)
+  expect_length(rfe_rec_2$fit$finalModel$coefficients, 6)
   rfe_rec$recipe$template <- NULL
   expect_snapshot(update(rfe_rec, size = 5), error = TRUE)
 })

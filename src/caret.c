@@ -23,7 +23,7 @@ knn3(Sint *kin, Sint *lin, Sint *pntr, Sint *pnte, Sint *p,
        double *train, Sint *class, double *test,
        Sint *votes, Sint *nc, Sint *cv, Sint *use_all,double *all_vote)
 {
-    int   i, index, j, k, k1, kinit = *kin, kn, l = *lin, mm, npat, ntie,
+    int   i, j, k, k1, kinit = *kin, kn, l = *lin, mm, npat, ntie,
           ntr = *pntr, nte = *pnte, extras;
     int   pos[MAX_TIES], nclass[MAX_TIES];
     int   j1, j2, needed, t;
@@ -114,15 +114,13 @@ knn3(Sint *kin, Sint *lin, Sint *pntr, Sint *pnte, Sint *p,
 	    mm = l - 1 + extras;
 	else
 	    mm = 0;
-	index = 0;
 	for (i = 1; i <= *nc; i++){
 	    if (votes[i] > mm) {
 		ntie = 1;
-		index = i;
 		mm = votes[i];
 	    } else if (votes[i] == mm && votes[i] >= l) {
-		if (++ntie * UNIF < 1.0)
-		    index = i;
+		/* consume an RNG draw to preserve tie-breaking behavior */
+		(void) (++ntie * UNIF < 1.0);
 	    }
 
 		all_vote[npat*(*nc) + (i-1)] = (double)votes[i]/(kinit+extras);
@@ -184,7 +182,7 @@ knn3reg(Sint *kin, Sint *pntr, Sint *pnte, Sint *p,
 								error("too many ties in knn");
 						break;
 					}
-					nndist[kn] = 0.99 * DBL_MAX;
+			nndist[kn] = 0.99 * DBL_MAX;
 		}
 
 		if (*use_all) {

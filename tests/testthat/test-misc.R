@@ -1,7 +1,5 @@
-context('misc functions')
-
-
 test_that("R2 and RMSE are calculating correctly", {
+  skip_on_cran()
   pred <- runif(25)
   obs <- runif(25)
 
@@ -11,9 +9,12 @@ test_that("R2 and RMSE are calculating correctly", {
 
 
 test_that("auc calculation is > .5 when Xs provide prediction", {
+  skip_on_cran()
   skip_if_not_installed("MLmetrics")
   skip_if_not_installed("earth")
   skip_if_not_installed("mda")
+
+  suppressPackageStartupMessages(library(earth))
 
   trCntlListMulti <-
     trainControl(
@@ -33,8 +34,6 @@ test_that("auc calculation is > .5 when Xs provide prediction", {
   )
 
   expect_true(all(knnFit$resample$AUC > .5))
-
-  library(caret)
 
   set.seed(7686)
   tr_dat <- twoClassSim(200)

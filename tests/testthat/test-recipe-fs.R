@@ -1,9 +1,3 @@
-library(testthat)
-library(caret)
-library(recipes)
-
-context('selection with recipes')
-
 # ------------------------------------------------------------------------------
 
 data(BloodBrain)
@@ -14,6 +8,7 @@ x_dat$mw <- log(x_dat$mw)
 # ------------------------------------------------------------------------------
 
 test_that("sbf with recipes", {
+  skip_on_cran()
   ctrl <- sbfControl(functions = lmSBF, method = "cv")
 
   set.seed(3997)
@@ -38,6 +33,7 @@ test_that("sbf with recipes", {
 # ------------------------------------------------------------------------------
 
 test_that("safs with recipes", {
+  skip_on_cran()
   ctrl <- safsControl(functions = caretSA, method = "cv", number = 3)
 
   set.seed(3997)
@@ -78,6 +74,7 @@ test_that("safs with recipes", {
 # ------------------------------------------------------------------------------
 
 test_that("gafs with recipes", {
+  skip_on_cran()
   ctrl <- gafsControl(functions = caretGA, method = "cv", number = 3)
 
   set.seed(3997)

@@ -1336,8 +1336,7 @@ train.recipe <- function(
     training = data,
     fresh = TRUE,
     retain = TRUE,
-    verbose = FALSE,
-    strings_as_factors = TRUE
+    verbose = FALSE
   )
   x_dat <- juice(trained_rec, all_predictors())
   y_dat <- juice(trained_rec, all_outcomes())

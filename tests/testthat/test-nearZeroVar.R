@@ -1,6 +1,5 @@
-context("Test nearZeroVar")
-
 test_that("nearZeroVar works properly with foreach", {
+  skip_on_cran()
   ## shouldn't trigger error
   r <- nearZeroVar(iris, foreach = T)
 

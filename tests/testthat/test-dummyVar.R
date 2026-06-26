@@ -1,5 +1,3 @@
-context('Dummy Variables')
-
 ## Test cases by Josh Brady (doublej2) from issue #344
 
 check_dummies <- function(x, expected = NULL) {
@@ -140,6 +138,7 @@ check_dummies <- function(x, expected = NULL) {
 
 
 test_that("Good names for dummies with reocurring patterns", {
+  skip_on_cran()
   set.seed(176)
   # 200 all but guarantees (99.999% chance) 1:15 all represented, #1350
   data = data.frame(
@@ -170,4 +169,13 @@ test_that("Good names for dummies with reocurring patterns", {
   )
   res_names_lvls <- colnames(predict(essai_dummyVars, data))
   expect_true(all(exp_names_lvls %in% res_names_lvls))
+})
+
+test_that("dummyVars print method", {
+  skip_on_cran()
+  # scrub the formula's environment address, which is not deterministic
+  expect_snapshot(
+    print(dummyVars(~ Species + Sepal.Length, data = iris)),
+    transform = function(x) sub("<environment: 0x[0-9a-f]+>", "<environment>", x)
+  )
 })

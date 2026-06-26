@@ -1,6 +1,5 @@
-context('classDist')
-
 test_that("errors working", {
+  skip_on_cran()
   trainSet = 1:3
 
   expect_snapshot(
@@ -13,6 +12,7 @@ test_that("errors working", {
 })
 
 test_that("Object matches expectations - factor y", {
+  skip_on_cran()
   trainSet <- sample(1:150, 100)
   x = iris[trainSet, 1:4]
   y = iris$Species[trainSet]
@@ -47,6 +47,7 @@ test_that("Object matches expectations - factor y", {
 
 
 test_that("Object matches expectations - numeric y", {
+  skip_on_cran()
   trainSet <- sample(1:150, 100)
   x = iris[trainSet, 1:4]
   y = as.numeric(iris$Species[trainSet])
@@ -76,6 +77,7 @@ test_that("Object matches expectations - numeric y", {
 
 
 test_that("predictions", {
+  skip_on_cran()
   trainSet <- sample(1:150, 100)
   x = iris[trainSet, 1:4]
   y = iris$Species[trainSet]

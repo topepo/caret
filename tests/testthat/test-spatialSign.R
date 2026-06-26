@@ -1,6 +1,5 @@
-context('spatialSign')
-
 test_that("errors working", {
+  skip_on_cran()
   # vector
   expect_snapshot(spatialSign(iris$Species), error = TRUE)
 
@@ -12,6 +11,7 @@ test_that("errors working", {
 })
 
 test_that("results match", {
+  skip_on_cran()
   x = -100:100
   expect_true(all(spatialSign(x) == x / sqrt(sum(x^2))))
 
@@ -21,6 +21,7 @@ test_that("results match", {
 
 
 test_that("high level tests", {
+  skip_on_cran()
   i4 <- spatialSign(iris[, 1:4])
 
   expect_true(all(colnames(i4) == names(iris[1:4])))
@@ -29,6 +30,7 @@ test_that("high level tests", {
 
 
 test_that("missing data", {
+  skip_on_cran()
   iris[c(1, 51, 101), 1] <- NA
 
   i5 <- spatialSign(iris[, 1:4])
@@ -36,5 +38,5 @@ test_that("missing data", {
   exp_res <- iris[, 1:4] /
     apply(iris[, 1:4], 1, function(x) sqrt(sum(x^2, na.rm = TRUE)))
 
-  expect_equivalent(i5, as.matrix(exp_res))
+  expect_equal(i5, as.matrix(exp_res), ignore_attr = TRUE)
 })

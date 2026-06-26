@@ -1,9 +1,6 @@
-context("Test ggplot")
-skip_if_not_installed("kernlab")
-
 test_that("ggplot.train correctly orders factors", {
-  library(caret)
-  library(kernlab)
+  skip_on_cran()
+  skip_if_not_installed("kernlab")
   data(mtcars)
   m <- train(
     mpg ~ cyl + disp,
@@ -28,8 +25,8 @@ test_that("ggplot.train correctly orders factors", {
 })
 
 test_that("ggplot.train correctly orders facets' labels", {
-  library(caret)
-  library(kernlab)
+  skip_on_cran()
+  skip_if_not_installed("kernlab")
   data(mtcars)
   m <- suppressWarnings(train(
     mpg ~ cyl + disp,

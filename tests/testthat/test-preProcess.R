@@ -1,5 +1,3 @@
-context('Test preProcess')
-
 # Helper function
 check.medianImpute <- function(x) {
   # Reference column medians for checks
@@ -33,16 +31,27 @@ x[, 3] <- NA
 colnames(x) <- paste0("Var.", 1:ncol(x))
 
 test_that("median Impute works for matrix with named columns", {
+  skip_on_cran()
   check.medianImpute(x)
 })
 
 test_that("median Impute works for data.frames", {
+  skip_on_cran()
   check.medianImpute(as.data.frame(x, stringsAsFactors = TRUE))
 })
 
 test_that("correlation filter", {
+  skip_on_cran()
   expect_equal(
     preProcess(iris, "corr")$method,
     list(ignore = "Species", remove = "Petal.Length")
   )
+})
+
+test_that("preProcess print method", {
+  skip_on_cran()
+  expect_snapshot(
+    print(preProcess(iris[, 1:4], method = c("center", "scale", "pca")))
+  )
+  expect_snapshot(print(preProcess(iris[, 1:4], method = "range")))
 })

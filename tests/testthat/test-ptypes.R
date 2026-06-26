@@ -1,5 +1,3 @@
-context('ptypes')
-
 data("Sacramento", package = "caret")
 
 mtcars_0 <- mtcars[0, -1]
@@ -37,6 +35,7 @@ xy_dmmy <- train(
 # ------------------------------------------------------------------------------
 
 test_that("ptypes for formulas", {
+  skip_on_cran()
   expect_equal(f_plain$ptype, mtcars_0)
   expect_equal(f_oned$ptype, wt_0)
   expect_equal(f_inter$ptype, mtcars_0)
@@ -44,6 +43,7 @@ test_that("ptypes for formulas", {
 })
 
 test_that("ptypes for formulas", {
+  skip_on_cran()
   expect_equal(xy_plain$ptype, mtcars_0)
   expect_equal(xy_oned$ptype, wt_0)
   expect_equal(xy_dmmy$ptype, sac_0)

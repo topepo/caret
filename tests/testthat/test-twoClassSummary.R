@@ -1,7 +1,5 @@
-context('twoClassSummary testing')
-
-
 test_that("twoClassSummary is calculating correctly", {
+  skip_on_cran()
   set.seed(8225)
   tr_dat <- twoClassSim(100)
   te_dat <- twoClassSim(100)
@@ -11,7 +9,6 @@ test_that("twoClassSummary is calculating correctly", {
   te_prob <- as.data.frame(te_prob, stringsAsFactors = TRUE)
 
   cm <- caret::confusionMatrix(te_pred, te_dat$Class)
-  library(pROC)
   roc_crv <- pROC::roc(
     te_dat$Class,
     te_prob$Class1,

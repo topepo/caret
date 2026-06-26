@@ -1,7 +1,3 @@
-library(caret)
-library(testthat)
-
-context("sampling options")
 load(system.file("models", "sampling.RData", package = "caret"))
 
 test_that('check appropriate sampling calls by name', {
@@ -14,7 +10,7 @@ test_that('check appropriate sampling calls by name', {
   for (i in arg_names) {
     out <- caret:::parse_sampling(i, check_install = FALSE)
     expected <- list(name = i, func = sampling_methods[[i]], first = TRUE)
-    expect_equivalent(out, expected)
+    expect_equal(out, expected, ignore_attr = TRUE)
   }
 })
 
@@ -32,7 +28,7 @@ test_that('check appropriate sampling calls by function', {
       func = sampling_methods[[i]],
       first = TRUE
     )
-    expect_equivalent(out, expected)
+    expect_equal(out, expected, ignore_attr = TRUE)
   }
 })
 
@@ -87,7 +83,7 @@ test_that('check call', {
 
 test_that('check getting all methods', {
   skip_on_cran()
-  expect_equivalent(getSamplingInfo(), sampling_methods)
+  expect_equal(getSamplingInfo(), sampling_methods, ignore_attr = TRUE)
 })
 
 test_that('check getting one method', {
@@ -97,7 +93,7 @@ test_that('check getting one method', {
     out <- getSamplingInfo(i, regex = FALSE)
     expected <- list(sampling_methods[[i]])
     names(expected) <- i
-    expect_equivalent(out, expected)
+    expect_equal(out, expected, ignore_attr = TRUE)
   }
 })
 

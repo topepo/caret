@@ -1,6 +1,5 @@
-context("Data Spliting")
-
 test_that("createTimeSlices works as expected", {
+  skip_on_cran()
   s1 <- createTimeSlices(1:8, 5, horizon = 1)
   s2 <- createTimeSlices(1:8, 5, horizon = 1, skip = 3)
   s3 <- createTimeSlices(1:10, 5, horizon = 1, fixedWindow = FALSE, skip = 3)
