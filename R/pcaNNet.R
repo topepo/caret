@@ -200,7 +200,7 @@ predict.pcaNNet <- function(object, newdata, type = c("raw", "class", "prob"), .
           if (is.null(dim(newdata)))
             dim(newdata) <- c(1, length(newdata))
           x <- as.matrix(newdata)
-          if (any(is.na(x)))
+          if (anyNA(x))
             stop("missing values in 'x'")
           keep <- seq_len(nrow(x))
           rn <- rownames(x)
