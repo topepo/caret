@@ -701,7 +701,7 @@ xyplot.resamples <- function(
   if (length(metric) != 1) {
     stop("exactly one metric must be given")
   }
-  if (what == "BlandAltman" & length(models) != 2) {
+  if (what == "BlandAltman" && length(models) != 2) {
     stop("exactly two model names must be given")
   }
   if (what == "BlandAltman") {

@@ -179,8 +179,8 @@ predict.train <- function(
 
   if (
     "xNames" %in%
-      names(object$finalModel) &
-      is.null(object$preProcess$method$pca) &
+      names(object$finalModel) &&
+      is.null(object$preProcess$method$pca) &&
       is.null(object$preProcess$method$ica)
   ) {
     newdata <- newdata[,

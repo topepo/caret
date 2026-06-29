@@ -60,7 +60,7 @@ extractProb <- function(models,
       dataType <- c(dataType, rep("Training", length(tempTrainPred)))
 
       # Test Data
-      if(!is.null(testX) & !is.null(testY)) {
+      if(!is.null(testX) && !is.null(testY)) {
         if(!is.data.frame(testX)) testX <- as.data.frame(testX, stringsAsFactors = TRUE)
         tempX <- testX
         tempY <- testY

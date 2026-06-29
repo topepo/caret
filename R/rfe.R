@@ -342,7 +342,7 @@ rfe <- function(x, ...) UseMethod("rfe")
       )
     )
 
-    if (is.factor(y) & any(names(tmp$performance) == ".cell1")) {
+    if (is.factor(y) && any(names(tmp$performance) == ".cell1")) {
       keepers <- c(
         "Resample",
         "Variables",
@@ -504,7 +504,7 @@ rfeIter <- function(
     stop("x must have column names")
   }
 
-  if (is.null(testX) | is.null(testY)) {
+  if (is.null(testX) || is.null(testY)) {
     stop("a test set must be specified")
   }
   if (is.null(sizes)) {
@@ -553,7 +553,7 @@ rfeIter <- function(
       fitObject,
       testX[, retained, drop = FALSE]
     )
-    if (is.data.frame(modelPred) | is.matrix(modelPred)) {
+    if (is.data.frame(modelPred) || is.matrix(modelPred)) {
       if (is.matrix(modelPred)) {
         modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
         ## in the case where the function returns a matrix with a single column
@@ -1023,7 +1023,7 @@ caretFuncs <- list(
   fit = function(x, y, first, last, ...) train(x, y, ...),
   pred = function(object, x) {
     tmp <- predict(object, x)
-    if (object$modelType == "Classification" & object$control$classProbs) {
+    if (object$modelType == "Classification" && object$control$classProbs) {
       out <- cbind(
         data.frame(pred = tmp),
         as.data.frame(
@@ -1046,7 +1046,7 @@ caretFuncs <- list(
       vimp <- vimp[order(vimp[, 1], decreasing = TRUE), , drop = FALSE]
     } else {
       if (
-        all(levels(y) %in% colnames(vimp)) & !("Overall" %in% colnames(vimp))
+        all(levels(y) %in% colnames(vimp)) && !("Overall" %in% colnames(vimp))
       ) {
         avImp <- apply(vimp[, levels(y), drop = TRUE], 1, mean)
         vimp$Overall <- avImp
@@ -1705,7 +1705,7 @@ rfe_rec <- function(
     }
     modelPred <-
       rfeControl$functions$pred(fitObject, test_x[, retained, drop = FALSE])
-    if (is.data.frame(modelPred) | is.matrix(modelPred)) {
+    if (is.data.frame(modelPred) || is.matrix(modelPred)) {
       if (is.matrix(modelPred)) {
         modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
         ## in the case where the function returns a matrix with a single column
@@ -2049,7 +2049,7 @@ rfe_rec <- function(
         )
       )
 
-    if (is.factor(y_dat) & any(names(tmp$performance) == ".cell1")) {
+    if (is.factor(y_dat) && any(names(tmp$performance) == ".cell1")) {
       keepers <-
         c(
           "Resample",

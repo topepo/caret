@@ -29,7 +29,7 @@ predict.train.recipe <- function(object,
 
 ## drop dimensions from a `tibble`
 get_vector <- function(object) {
-  if(!inherits(object, "tbl_df") & !is.data.frame(object))
+  if(!inherits(object, "tbl_df") && !is.data.frame(object))
     return(object)
   if(ncol(object) > 1)
     stop("Only one column should be available")
@@ -116,8 +116,8 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
     other_cols <- var_info[var_info$role %in% c("predictor", "case weight", "performance var"),]
 
     other_cols <- other_cols$variable
-    other_dat <- if (is.matrix(dat) |
-                     (is.data.frame(dat) & !inherits(dat, "tbl_df")))
+    other_dat <- if (is.matrix(dat) ||
+                     (is.data.frame(dat) && !inherits(dat, "tbl_df")))
       dat[, other_cols, drop = FALSE]
     else
       dat[, other_cols]
@@ -161,7 +161,7 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
   ## for models using S4 classes, you can't easily append data, so
   ## exclude these and we'll use other methods to get this information
   if(is.null(method$label)) method$label <- ""
-  if(!isS4(modelFit) & !model_failed(modelFit)) {
+  if(!isS4(modelFit) && !model_failed(modelFit)) {
     modelFit$xNames <- colnames(x)
     modelFit$problemType <- if(is.factor(y)) "Classification" else "Regression"
     modelFit$tuneValue <- tuneValue
@@ -177,7 +177,7 @@ rec_pred <- function (method, object, newdata, param = NULL)  {
   x <- bake(object$recipe, new_data = newdata, all_predictors())
   out <- method$predict(modelFit = object$fit, newdata = x,
                         submodels = param)
-  if(is.matrix(out) | is.data.frame(out))
+  if(is.matrix(out) || is.data.frame(out))
     out <- out[,1]
   out
 }
@@ -188,7 +188,7 @@ rec_prob <- function (method, object, newdata = NULL, param = NULL)  {
   obsLevels <- levels(object$fit)
   classProb <- method$prob(modelFit = object$fit, newdata = x,
                            submodels = param)
-  if (!is.data.frame(classProb) & is.null(param)) {
+  if (!is.data.frame(classProb) && is.null(param)) {
     classProb <- as.data.frame(classProb, stringsAsFactors = FALSE)
     if (!is.null(obsLevels))
       classprob <- classProb[, obsLevels]

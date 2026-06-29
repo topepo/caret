@@ -39,7 +39,7 @@
 #' @export
 #' @rdname spatialSign
 "spatialSign.default" <- function(x, na.rm = TRUE, ...) {
-  if (is.character(x) | is.factor(x))
+  if (is.character(x) || is.factor(x))
     stop("spatial sign is not defined for character or factor data",
          call. = FALSE)
   denom <- sum(x ^ 2, na.rm = na.rm)
@@ -61,7 +61,7 @@
   xNames <- dimnames(x)
   p <- ncol(x)
   tmp <- t(apply(x, 1, spatialSign.default, na.rm = na.rm))
-  if (p == 1 & nrow(tmp) == 1)
+  if (p == 1 && nrow(tmp) == 1)
     tmp <- t(tmp)
   dimnames(tmp) <- xNames
   tmp

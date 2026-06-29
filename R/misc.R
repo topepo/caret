@@ -60,7 +60,7 @@ evalSummaryFunction <- function(y, wts = NULL, perf = NULL, ctrl, lev, metric, m
     for(i in seq(along.with = lev)) testOutput[, lev[i]] <- runif(nrow(testOutput))
     testOutput[, lev] <- t(apply(testOutput[, lev], 1, function(x) x/sum(x)))
   } else {
-    if(metric == "ROC" & !ctrl$classProbs)
+    if(metric == "ROC" && !ctrl$classProbs)
       stop("train()'s use of ROC codes requires class probabilities. See the classProbs option of trainControl()")
   }
   if(!is.null(wts)) testOutput$weights <- sample(wts, min(10, length(wts)))
@@ -450,7 +450,7 @@ parse_sampling <- function(x, check_install = TRUE) {
                 first = TRUE)
     }
     pkgs <- switch(x$name, rose = "ROSE", smote = "themis", "")
-    if(pkgs != "" & check_install)
+    if(pkgs != "" && check_install)
       checkInstall(pkgs)
   } else {
     if(x_class == "function") {
@@ -564,7 +564,7 @@ get_range <- function(y) {
 #' @rdname caret-internal
 #' @export
 outcome_conversion <- function(x, lv) {
-  if(is.factor(x) | is.character(x)) {
+  if(is.factor(x) || is.character(x)) {
     if(!is.null(attributes(lv)) && any(names(attributes(lv)) == "ordered" && attr(lv, "ordered")))
       x <- ordered(as.character(x), levels = lv) else
         x <- factor(as.character(x), levels = lv)
@@ -586,7 +586,7 @@ check_na_conflict <- function(call_obj) {
     imputes <- if(any(grepl("impute", tolower(pp)))) TRUE else FALSE
   } else imputes <- FALSE
 
-  if(imputes & any(nam %in% c("na.omit", "na.exclude")))
+  if(imputes && any(nam %in% c("na.omit", "na.exclude")))
     warning(paste0("`preProcess` includes an imputation method but missing ",
                    "data will be eliminated by the formula method using `na.action=",
                    nam, "`. Consider using `na.actin=na.pass` instead."),
@@ -598,7 +598,7 @@ check_na_conflict <- function(call_obj) {
 # in case an object is a sparse matrix or tibble
 # do not use `drop` as an argument
 subset_x <- function(x, ind) {
-  if(is.matrix(x) | is.data.frame(x) | inherits(x, "dgCMatrix"))
+  if(is.matrix(x) || is.data.frame(x) || inherits(x, "dgCMatrix"))
     x <- x[ind,,drop = FALSE] else
       x <- x[ind,]
     x

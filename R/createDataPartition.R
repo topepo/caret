@@ -347,11 +347,11 @@ make_resamples <- function(ctrl_obj, outcome) {
     }
   }
 
-  if(ctrl_obj$method != "oob" & is.null(ctrl_obj$index))
+  if(ctrl_obj$method != "oob" && is.null(ctrl_obj$index))
     names(ctrl_obj$index) <- prettySeq(ctrl_obj$index)
-  if(ctrl_obj$method != "oob" & is.null(names(ctrl_obj$index)))
+  if(ctrl_obj$method != "oob" && is.null(names(ctrl_obj$index)))
     names(ctrl_obj$index)    <- prettySeq(ctrl_obj$index)
-  if(ctrl_obj$method != "oob" & is.null(names(ctrl_obj$indexOut)))
+  if(ctrl_obj$method != "oob" && is.null(names(ctrl_obj$indexOut)))
     names(ctrl_obj$indexOut) <- prettySeq(ctrl_obj$indexOut)
   ctrl_obj
 }

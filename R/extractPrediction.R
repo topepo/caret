@@ -59,7 +59,7 @@ extractPrediction <- function(models,
       objName <- c(objName, rep(objectNames[[i]], length(tempTrainPred)))
       dataType <- c(dataType, rep("Training", length(tempTrainPred)))
       
-      if(!is.null(testX) & !is.null(testY))
+      if(!is.null(testX) && !is.null(testY))
       {
         if(any(colnames(testX) == ".outcome")) 
           testX <- testX[, colnames(testX) != ".outcome", drop = FALSE]

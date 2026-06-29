@@ -146,7 +146,7 @@
         ## position #2 of dat) is plotted on the x-axis,
         ## the second parameter is the grouping variable
         ## and the rest are conditioning variables
-        if(!is.null(xTrans) & plotType == "scatter") dat[,2] <- xTrans(dat[,2])
+        if(!is.null(xTrans) && plotType == "scatter") dat[,2] <- xTrans(dat[,2])
 
         ## We need to pretty-up some of the values of grouping
         ## or conditioning variables
@@ -166,7 +166,7 @@
                   dat[,i] <- prettyVal(dat[,i], dig = digits, Name = if(i > 3) params[i-1] else  NULL)
               }
             for(i in 2:ncol(dat)) if(is.logical(dat[,i])) dat[,i] <- factor(dat[,i])
-            if(p > 2 & nameInStrip) {
+            if(p > 2 && nameInStrip) {
               strip_vars <- params[-(1:2)]
               strip_lab <- subset(x$modelInfo$parameters, parameter %in% strip_vars)$label
               for(i in seq_along(strip_vars))
@@ -187,8 +187,8 @@
             lNames <- names(defaultArgs)
             if(!("ylab" %in% lNames))  defaultArgs$ylab <- paste(metric, resampText)
 
-            if(!("type" %in% lNames) & plotType == "scatter") defaultArgs$type <- c("g", "o")
-            if(!("type" %in% lNames) & plotType == "line") defaultArgs$type <- c("g", "o")
+            if(!("type" %in% lNames) && plotType == "scatter") defaultArgs$type <- c("g", "o")
+            if(!("type" %in% lNames) && plotType == "line") defaultArgs$type <- c("g", "o")
             if(p > 1)
               {
                 ## I apologize in advance for the following 3 line kludge.
@@ -225,7 +225,7 @@
 
             for(i in 2:ncol(dat))
               dat[,i] <- prettyVal(dat[,i], dig = digits, Name = if(i > 3) params[i-1] else  NULL)
-            if(p > 2 & nameInStrip) {
+            if(p > 2 && nameInStrip) {
               strip_vars <- params[-(1:2)]
               strip_lab <- subset(x$modelInfo$parameters, parameter %in% strip_vars)$label
               for(i in seq_along(strip_vars))

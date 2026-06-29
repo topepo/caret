@@ -82,7 +82,7 @@ findCorrelation_exact <- function(x, cutoff = 0.90, verbose = FALSE) {
       next
     }
     for (j in (i + 1):varnum) {
-      if (!deletecol[i] & !deletecol[j]) {
+      if (!deletecol[i] && !deletecol[j]) {
         if (x[i, j] > cutoff) {
           mn1 <- mean(x2[i, ], na.rm = TRUE)
           mn2 <- mean(x2[-j, ], na.rm = TRUE)
@@ -210,7 +210,7 @@ findCorrelation <- function(
   names = FALSE,
   exact = ncol(x) < 100
 ) {
-  if (names & is.null(colnames(x))) {
+  if (names && is.null(colnames(x))) {
     stop("'x' must have column names when `names = TRUE`")
   }
   out <- if (exact) {

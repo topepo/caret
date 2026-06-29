@@ -148,14 +148,14 @@ bagControl <- function(
       stop("vars must be an integer > 0")
     }
 
-    if (bagControl$downSample & is.numeric(y)) {
+    if (bagControl$downSample && is.numeric(y)) {
       warning("down-sampling with regression... downSample changed to FALSE")
       bagControl$downSample <- FALSE
     }
 
     if (
-      is.null(bagControl$fit) |
-        is.null(bagControl$predict) |
+      is.null(bagControl$fit) ||
+        is.null(bagControl$predict) ||
         is.null(bagControl$aggregate)
     ) {
       stop(
@@ -194,7 +194,7 @@ bagControl <- function(
         } else {
           out <- as.data.frame(pred, stringsAsFactors = TRUE)
           out$obs <- y[-unique(index)]
-          if (is.factor(y) & !(any(names(out) == "pred"))) {
+          if (is.factor(y) && !(any(names(out) == "pred"))) {
             ## Try to detect class probs and make a pred factor
             if (all(levels(y) %in% names(out))) {
               pred <- apply(out[, levels(y)], 1, which.max)
@@ -328,7 +328,7 @@ print.bag <- function(x, ...) {
 "summary.bag" <-
   function(object, ...) {
     hasPred <- any(names(object$fits[[1]]$oob) == "pred")
-    if (object$control$oob & hasPred) {
+    if (object$control$oob && hasPred) {
       ## to avoid a 'no visible binding for global variable' warning
       key <- NULL
       oobData <- lapply(object$fits, function(x) x$oob)
@@ -504,7 +504,7 @@ ctreeBag <- list(
     out
   },
   aggregate = function(x, type = "class") {
-    if (is.matrix(x[[1]]) | is.data.frame(x[[1]])) {
+    if (is.matrix(x[[1]]) || is.data.frame(x[[1]])) {
       pooled <- x[[1]] & NA
 
       classes <- colnames(pooled)
@@ -548,7 +548,7 @@ svmBag <- list(
     out
   },
   aggregate = function(x, type = "class") {
-    if (is.matrix(x[[1]]) | is.data.frame(x[[1]])) {
+    if (is.matrix(x[[1]]) || is.data.frame(x[[1]])) {
       pooled <- x[[1]] & NA
 
       classes <- colnames(pooled)
@@ -598,7 +598,7 @@ nnetBag <- list(
     out
   },
   aggregate = function(x, type = "class") {
-    if (is.matrix(x[[1]]) | is.data.frame(x[[1]])) {
+    if (is.matrix(x[[1]]) || is.data.frame(x[[1]])) {
       pooled <- x[[1]] & NA
 
       classes <- colnames(pooled)

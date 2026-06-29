@@ -396,7 +396,7 @@ safsControl <- function(
       'method should be one of: "cv", "boot", "repeatedcv", "LGOCV" or "LOOCV"'
     )
   }
-  if (holdout < 0 | holdout >= 1) {
+  if (holdout < 0 || holdout >= 1) {
     stop("'holdout' should be in [0, 1)")
   }
   if (improve < 2) {
@@ -1022,7 +1022,7 @@ sa_wrapper <- function(
   )
   if (!is.null(testX)) {
     modelPred <- funcs$pred(mod, testX[, ind, drop = FALSE])
-    if (is.data.frame(modelPred) | is.matrix(modelPred)) {
+    if (is.data.frame(modelPred) || is.matrix(modelPred)) {
       if (is.matrix(modelPred)) {
         modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
       }
@@ -1247,7 +1247,7 @@ sa_select <- function(
       internal$Note[i] <- "Improved"
       last_improve <- i
       since_improve <- 0
-      if (sa_verbose & i > 1) cat(" *\n")
+      if (sa_verbose && i > 1) cat(" *\n")
     } else {
       if (i > 1) {
         internal$Prob[i] <- funcs$prob(
@@ -1267,12 +1267,12 @@ sa_select <- function(
         current_subset <- new_subset
         internal$Best[i] <- internal$Best[i - 1]
         internal$Note[i] <- "Accepted"
-        if (sa_verbose & i > 1) cat("A\n")
+        if (sa_verbose && i > 1) cat("A\n")
       } else {
         internal$Obj[i] <- internal$Obj[i - 1]
         internal$Best[i] <- internal$Best[i - 1]
         internal$Note[i] <- "Discarded"
-        if (sa_verbose & i > 1) cat("\n")
+        if (sa_verbose && i > 1) cat("\n")
       }
     }
 
@@ -1573,7 +1573,7 @@ update.safs <- function(object, iter, x, y, ...) {
         last = TRUE
       )
   } else {
-    if (is.null(x) | is.null(y)) {
+    if (is.null(x) || is.null(y)) {
       stop("the original training data is needed to refit the model")
     }
     args <- list(

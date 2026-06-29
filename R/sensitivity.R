@@ -141,7 +141,7 @@ sensitivity <-
 "sensitivity.default" <-
   function(data, reference, positive = levels(reference)[1], na.rm = TRUE, ...)
 {
-  if(!is.factor(reference) | !is.factor(data))
+  if(!is.factor(reference) || !is.factor(data))
     stop("inputs must be factors")
 
   ## todo: relax the =2 constraint and let ngative length be > 2

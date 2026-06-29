@@ -317,7 +317,7 @@ gafsControl <- function(
       'method should be one of: "cv", "boot", "repeatedcv", "LGOCV" or "LOOCV"'
     )
   }
-  if (holdout < 0 | holdout >= 1) {
+  if (holdout < 0 || holdout >= 1) {
     stop("'holdout' should be in [0, 1)")
   }
 
@@ -411,7 +411,7 @@ ga_wrapper <- function(
     )
   if (!is.null(testX)) {
     modelPred <- funcs$pred(mod, testX[, ind, drop = FALSE])
-    if (is.data.frame(modelPred) | is.matrix(modelPred)) {
+    if (is.data.frame(modelPred) || is.matrix(modelPred)) {
       if (is.matrix(modelPred)) {
         modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
       }
@@ -733,7 +733,7 @@ ga_select <- function(
     .Fit <- Fitness
 
     # crossover
-    if (is.function(funcs$crossover) & pcrossover > 0) {
+    if (is.function(funcs$crossover) && pcrossover > 0) {
       nmating <- floor(popSize / 2)
       mating <- matrix(sample(1:(2 * nmating), size = (2 * nmating)), ncol = 2)
       for (i in seq_len(nmating)) {
@@ -754,7 +754,7 @@ ga_select <- function(
 
     # mutation
     pm <- if (is.function(pmutation)) pmutation(object) else pmutation
-    if (is.function(funcs$mutation) & pm > 0) {
+    if (is.function(funcs$mutation) && pm > 0) {
       for (i in seq_len(popSize)) {
         if (pm > runif(1)) {
           Mutation <- funcs$mutation(population = .Pop, parent = i)
@@ -1703,7 +1703,7 @@ update.gafs <- function(object, iter, x, y, ...) {
         last = TRUE
       )
   } else {
-    if (is.null(x) | is.null(y)) {
+    if (is.null(x) || is.null(y)) {
       stop("the original training data is needed to refit the model")
     }
     args <- list(

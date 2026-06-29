@@ -207,7 +207,7 @@ print.dummyVars <- function(x, ...) {
   cat("Formula: ")
   print(x$form)
   cat(length(x$vars), " variables, ", length(x$facVars), " factors\n", sep = "")
-  if (!is.null(x$sep) & !x$levelsOnly) {
+  if (!is.null(x$sep) && !x$levelsOnly) {
     cat("Variables and levels will be separated by '", x$sep, "'\n", sep = "")
   }
   if (x$levelsOnly) {
@@ -269,7 +269,7 @@ predict.dummyVars <- function(object, newdata, na.action = na.pass, ...) {
       }
     }
   }
-  if (!is.null(object$sep) & !object$levelsOnly) {
+  if (!is.null(object$sep) && !object$levelsOnly) {
     for (i in object$facVars[order(-nchar(object$facVars))]) {
       ## the default output form model.matrix is NAMElevel with no separator.
       for (j in object$lvls[[i]]) {
@@ -378,7 +378,7 @@ class2ind <- function(x, drop2nd = FALSE) {
   colnames(y) <- gsub("^x", "", colnames(y))
   attributes(y)$assign <- NULL
   attributes(y)$contrasts <- NULL
-  if (length(levels(x)) == 2 & drop2nd) {
+  if (length(levels(x)) == 2 && drop2nd) {
     y <- y[, 1]
   }
   y

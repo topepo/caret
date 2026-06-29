@@ -314,7 +314,7 @@ train.default <- function(
     y <- as.factor(y)
   }
 
-  if (!is.numeric(y) & !is.factor(y)) {
+  if (!is.numeric(y) && !is.factor(y)) {
     msg <- paste(
       "Please make sure that the outcome column is a factor or numeric.",
       "The class(es) of the column:",
@@ -371,7 +371,7 @@ train.default <- function(
     stop(paste("wrong model type for", tolower(modelType)), call. = FALSE)
   }
 
-  if (grepl("^svm", method) & grepl("String$", method)) {
+  if (grepl("^svm", method) && grepl("String$", method)) {
     if (is.vector(x) && is.character(x)) {
       stop(
         "'x' should be a character matrix with a single column for string kernel methods",
@@ -392,7 +392,7 @@ train.default <- function(
     }
   }
 
-  if (modelType == "Regression" & length(unique(y)) == 2) {
+  if (modelType == "Regression" && length(unique(y)) == 2) {
     warning(paste(
       "You are trying to do regression and your outcome only has",
       "two possible values Are you trying to do classification?",
@@ -400,7 +400,7 @@ train.default <- function(
     ))
   }
 
-  if (modelType != "Classification" & !is.null(trControl$sampling)) {
+  if (modelType != "Classification" && !is.null(trControl$sampling)) {
     stop(
       "sampling methods are only implemented for classification problems",
       call. = FALSE
@@ -509,7 +509,7 @@ train.default <- function(
     }
   }
 
-  if (trControl$method == "oob" & is.null(models$oob)) {
+  if (trControl$method == "oob" && is.null(models$oob)) {
     stop(
       "Out of bag estimates are not implemented for this model",
       call. = FALSE
@@ -592,7 +592,7 @@ train.default <- function(
   tuneGrid <- tuneGrid[!duplicated(tuneGrid), , drop = FALSE]
 
   ## Check to make sure that there are tuning parameters in some cases
-  if (grepl("adaptive", trControl$method) & nrow(tuneGrid) == 1) {
+  if (grepl("adaptive", trControl$method) && nrow(tuneGrid) == 1) {
     stop(
       paste(
         "For adaptive resampling, there needs to be more than one",
@@ -1374,7 +1374,7 @@ train.recipe <- function(
 
   ## RECIPE the rec might produce character `x_dat` so convert if these
   ## models are used? These need to be re-though since no matrix results
-  if (grepl("^svm", method) & grepl("String$", method)) {
+  if (grepl("^svm", method) && grepl("String$", method)) {
     if (is.vector(x_dat) && is.character(x_dat)) {
       stop(
         "'x_dat' should be a character matrix with a single column for string kernel methods",
@@ -1395,7 +1395,7 @@ train.recipe <- function(
     }
   }
 
-  if (modelType == "Regression" & length(unique(y_dat)) == 2) {
+  if (modelType == "Regression" && length(unique(y_dat)) == 2) {
     warning(paste(
       "You are trying to do regression and your outcome only has",
       "two possible values Are you trying to do classification?",
@@ -1403,7 +1403,7 @@ train.recipe <- function(
     ))
   }
 
-  if (modelType != "Classification" & !is.null(trControl$sampling)) {
+  if (modelType != "Classification" && !is.null(trControl$sampling)) {
     stop(
       "sampling methods are only implemented for classification problems",
       call. = FALSE
@@ -1498,7 +1498,7 @@ train.recipe <- function(
     }
   }
 
-  if (trControl$method == "oob" & is.null(models$oob)) {
+  if (trControl$method == "oob" && is.null(models$oob)) {
     stop(
       "Out of bag estimates are not implemented for this model",
       call. = FALSE
@@ -1545,7 +1545,7 @@ train.recipe <- function(
   }
 
   ## Check to make sure that there are tuning parameters in some cases
-  if (grepl("adaptive", trControl$method) & nrow(tuneGrid) == 1) {
+  if (grepl("adaptive", trControl$method) && nrow(tuneGrid) == 1) {
     stop(
       paste(
         "For adaptive resampling, there needs to be more than one",

@@ -64,8 +64,8 @@ function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
   requireNamespaceQuietStop("mda")
   requireNamespaceQuietStop("earth")
    if(!is.matrix(x)) x <- as.matrix(x)
-   if(!is.vector(y) & !is.factor(y)) y <- as.vector(y)
-   if(!is.vector(y) & !is.factor(y)) y <- factor(y[,1])
+   if(!is.vector(y) && !is.factor(y)) y <- as.vector(y)
+   if(!is.vector(y) && !is.factor(y)) y <- factor(y[,1])
    if(is.null(weights)) weights <- rep(1, dim(x)[1])
    foo <- function(index, x, y, w, ...)
    {
@@ -170,7 +170,7 @@ function(object, newdata = NULL, type = "class", ...)
        out
      }
 
-   if(is.null(newdata) & !is.null(object$x)) newdata <- object$x
+   if(is.null(newdata) && !is.null(object$x)) newdata <- object$x
 
    if(is.null(newdata))
      {
