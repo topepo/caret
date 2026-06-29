@@ -16,23 +16,21 @@ spatialSign(x, ...)
 \method{spatialSign}{data.frame}(x, na.rm = TRUE, ...)
 }
 \arguments{
-\item{x}{an object full of numeric data (which should probably
-be scaled). Factors are not allowed. This could be a vector,
-matrix or data frame.}
+\item{x}{an object full of numeric data (which should probably be scaled).
+Factors are not allowed. This could be a vector, matrix or data frame.}
 
 \item{...}{Not currently used.}
 
-\item{na.rm}{A logical; should missing data be removed when
-computing the norm of the vector?}
+\item{na.rm}{A logical; should missing data be removed when computing the
+norm of the vector?}
 }
 \value{
-A vector, matrix or data frame with the same dim names
- of the original data.
+A vector, matrix or data frame with the same dim names of the
+original data.
 }
 \description{
-Compute the spatial sign (a projection of a data vector to a
- unit length circle). The spatial sign of a vector \code{w} is
- \code{w /norm(w)}.
+Compute the spatial sign (a projection of a data vector to a unit length
+circle). The spatial sign of a vector \code{w} is \code{w /norm(w)}.
 }
 \examples{
 
@@ -43,19 +41,30 @@ spatialSign(matrix(rnorm(12), ncol = 3))
 # should fail since the fifth column is a factor
 try(spatialSign(iris), silent = TRUE)
 
-spatialSign(iris[,-5])
+spatialSign(iris[, -5])
 
 trellis.par.set(caretTheme())
-featurePlot(iris[,-5], iris[,5], "pairs")
-featurePlot(spatialSign(scale(iris[,-5])), iris[,5], "pairs")
+featurePlot(iris[, -5], iris[, 5], "pairs")
+featurePlot(spatialSign(scale(iris[, -5])), iris[, 5], "pairs")
 
 }
 \references{
-Serneels et al. Spatial sign preprocessing: a
- simple way to impart moderate robustness to multivariate
- estimators. J. Chem. Inf. Model (2006) vol. 46 (3) pp. 1402-1409
+Serneels et al. Spatial sign preprocessing: a simple way to
+impart moderate robustness to multivariate estimators. J. Chem. Inf. Model
+(2006) vol. 46 (3) pp. 1402-1409
+}
+\seealso{
+Other preprocessing:
+\code{\link[=BoxCoxTrans]{BoxCoxTrans()}},
+\code{\link[=avNNet]{avNNet()}},
+\code{\link[=dummyVars]{dummyVars()}},
+\code{\link[=findCorrelation]{findCorrelation()}},
+\code{\link[=nearZeroVar]{nearZeroVar()}},
+\code{\link[=pcaNNet]{pcaNNet()}},
+\code{\link[=preProcess]{preProcess()}}
 }
 \author{
 Max Kuhn
 }
+\concept{preprocessing}
 \keyword{manip}

@@ -20,7 +20,7 @@
 \method{ggplot}{safs}(data = NULL, mapping = NULL, ..., environment = NULL)
 }
 \arguments{
-\item{x}{an object of class \code{\link{gafs}} or \code{\link{safs}}}
+\item{x}{an object of class \code{\link[=gafs]{gafs()}} or \code{\link[=safs]{safs()}}}
 
 \item{metric}{the measure of performance to plot (e.g. RMSE, accuracy, etc)}
 
@@ -28,12 +28,11 @@
 
 \item{output}{either "data", "ggplot" or "lattice"}
 
-\item{\dots}{For \code{plot} methods, these are options passed
-to \code{\link[lattice]{xyplot}}. For \code{ggplot} methods,
-they are not used.}
+\item{\dots}{For \code{plot} methods, these are options passed to
+\code{\link[lattice:xyplot]{lattice::xyplot()}}. For \code{ggplot} methods, they are not used.}
 
-\item{data, mapping, environment}{kept for consistency with
-\code{ggplot} and are not used here.}
+\item{data, mapping, environment}{kept for consistency with \code{ggplot} and are
+not used here.}
 }
 \value{
 Either a data frame, ggplot object or lattice object
@@ -45,39 +44,35 @@ Plot the performance values versus search iteration
 The mean (averaged over the resamples) is plotted against the search
 iteration using a scatter plot.
 
-When \code{output = "data"}, the unaveraged data are returned with columns
-for all the performance metrics and the resample indicator.
+When \code{output = "data"}, the unaveraged data are returned with columns for
+all the performance metrics and the resample indicator.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 set.seed(1)
 train_data <- twoClassSim(100, noiseVars = 10)
-test_data  <- twoClassSim(10,  noiseVars = 10)
+test_data <- twoClassSim(10, noiseVars = 10)
 
 ## A short example
-ctrl <- safsControl(functions = rfSA,
-                    method = "cv",
-                    number = 3)
+ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
 
-rf_search <- safs(x = train_data[, -ncol(train_data)],
-                  y = train_data$Class,
-                  iters = 50,
-                  safsControl = ctrl)
+rf_search <- safs(
+  x = train_data[, -ncol(train_data)],
+  y = train_data$Class,
+  iters = 50,
+  safsControl = ctrl
+)
 
 plot(rf_search)
-plot(rf_search,
-	 output = "lattice",
-	 auto.key = list(columns = 2))
+plot(rf_search, output = "lattice", auto.key = list(columns = 2))
 
 plot_data <- plot(rf_search, output = "data")
 summary(plot_data)
-    }
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link{gafs}}, \code{\link{safs}},
-\code{\link[ggplot2]{ggplot}}, \code{\link[lattice]{xyplot}}
+\code{\link[=gafs]{gafs()}}, \code{\link[=safs]{safs()}}, \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}}, \code{\link[lattice:xyplot]{lattice::xyplot()}}
 }
 \author{
 Max Kuhn

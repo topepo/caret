@@ -19,16 +19,16 @@ findCorrelation(
 
 \item{verbose}{A boolean for printing the details}
 
-\item{names}{a logical; should the column names be returned (\code{TRUE}) or
-the column index (\code{FALSE})?}
+\item{names}{a logical; should the column names be returned (\code{TRUE}) or the
+column index (\code{FALSE})?}
 
 \item{exact}{a logical; should the average correlations be recomputed at
 each step? See Details below.}
 }
 \value{
-A vector of indices denoting the columns to remove (when \code{names
-= TRUE}) otherwise a vector of column names. If no correlations meet the
-criteria, \code{integer(0)} is returned.
+A vector of indices denoting the columns to remove (when
+\code{names = TRUE}) otherwise a vector of column names. If no correlations
+meet the criteria, \code{integer(0)} is returned.
 }
 \description{
 This function searches through a correlation matrix and returns a vector of
@@ -42,24 +42,49 @@ correlation of each variable and removes the variable with the largest mean
 absolute correlation.
 
 Using \code{exact = TRUE} will cause the function to re-evaluate the average
-correlations at each step while \code{exact = FALSE} uses all the
-correlations regardless of whether they have been eliminated or not. The
-exact calculations will remove a smaller number of predictors but can be
-much slower when the problem dimensions are "big".
+correlations at each step while \code{exact = FALSE} uses all the correlations
+regardless of whether they have been eliminated or not. The exact
+calculations will remove a smaller number of predictors but can be much
+slower when the problem dimensions are "big".
 }
 \examples{
 
-R1 <- structure(c(1, 0.86, 0.56, 0.32, 0.85, 0.86, 1, 0.01, 0.74, 0.32,
-                  0.56, 0.01, 1, 0.65, 0.91, 0.32, 0.74, 0.65, 1, 0.36,
-                  0.85, 0.32, 0.91, 0.36, 1),
-                .Dim = c(5L, 5L))
+R1 <- structure(
+  c(
+    1,
+    0.86,
+    0.56,
+    0.32,
+    0.85,
+    0.86,
+    1,
+    0.01,
+    0.74,
+    0.32,
+    0.56,
+    0.01,
+    1,
+    0.65,
+    0.91,
+    0.32,
+    0.74,
+    0.65,
+    1,
+    0.36,
+    0.85,
+    0.32,
+    0.91,
+    0.36,
+    1
+  ),
+  .Dim = c(5L, 5L)
+)
 colnames(R1) <- rownames(R1) <- paste0("x", 1:ncol(R1))
 R1
 
 findCorrelation(R1, cutoff = .6, exact = FALSE)
 findCorrelation(R1, cutoff = .6, exact = TRUE)
 findCorrelation(R1, cutoff = .6, exact = TRUE, names = FALSE)
-
 
 R2 <- diag(rep(1, 5))
 R2[2, 3] <- R2[3, 2] <- .7
@@ -76,9 +101,19 @@ findCorrelation(R2, cutoff = .99, verbose = TRUE)
 
 }
 \seealso{
-\code{\link{findLinearCombos}}
+\code{\link[=findLinearCombos]{findLinearCombos()}}
+
+Other preprocessing:
+\code{\link[=BoxCoxTrans]{BoxCoxTrans()}},
+\code{\link[=avNNet]{avNNet()}},
+\code{\link[=dummyVars]{dummyVars()}},
+\code{\link[=nearZeroVar]{nearZeroVar()}},
+\code{\link[=pcaNNet]{pcaNNet()}},
+\code{\link[=preProcess]{preProcess()}},
+\code{\link[=spatialSign]{spatialSign()}}
 }
 \author{
 Original R code by Dong Li, modified by Max Kuhn
 }
+\concept{preprocessing}
 \keyword{manip}

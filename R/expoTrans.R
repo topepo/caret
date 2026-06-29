@@ -96,4 +96,3 @@ manlyLik <- function(lambda, x, neg = FALSE)
   if(!is.finite(out) | is.na(out)) out <- .Machine$double.xmax
   if(neg) -out else out
 }
-

@@ -375,27 +375,26 @@ get_resample_perf.gafs <- function(x, ...) {
 
 #' Sequences of Variables for Tuning
 #'
-#' This function generates a sequence of \code{mtry} values for random forests.
+#' This function generates a sequence of `mtry` values for random forests.
 #'
 #' If the number of predictors is less than 500, a simple sequence of values of
-#' length \code{len} is generated between 2 and \code{p}. For larger numbers of
-#' predictors, the sequence is created using \code{log2} steps.
+#' length `len` is generated between 2 and `p`. For larger numbers of
+#' predictors, the sequence is created using `log2` steps.
 #'
-#' If \code{len = 1}, the defaults from the \code{randomForest} package are
-#' used.
+#' If `len = 1`, the defaults from the `randomForest` package are used.
 #'
 #' @param p The number of predictors
-#' @param classification Is the outcome a factor (\code{classification = TRUE}
-#' or numeric?)
-#' @param len The number of \code{mtry} values to generate.
+#' @param classification Is the outcome a factor (`classification = TRUE` or
+#'   numeric?)
+#' @param len The number of `mtry` values to generate.
 #' @return a numeric vector
 #' @author Max Kuhn
 #' @keywords models
 #' @examples
-#'
+#' 
 #' var_seq(p = 100, len = 10)
 #' var_seq(p = 600, len = 10)
-#'
+#' 
 #' @export var_seq
 var_seq <- function(p, classification = FALSE, len = 3) {
   if(len == 1) {

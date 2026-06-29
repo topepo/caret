@@ -13,7 +13,7 @@
 )
 }
 \arguments{
-\item{object}{an \code{\link{safs}} or \code{\link{gafs}} object}
+\item{object}{an \code{\link[=safs]{safs()}} or \code{\link[=gafs]{gafs()}} object}
 
 \item{metric}{a metric to compute importance (see Details below)}
 
@@ -26,28 +26,27 @@ a data frame where the rownames are the predictor names and the
 column is the average t-statistic
 }
 \description{
-Variable importance scores for \code{\link{safs}} and \code{\link{gafs}}
-objects.
+Variable importance scores for \code{\link[=safs]{safs()}} and \code{\link[=gafs]{gafs()}} objects.
 }
 \details{
 A crude measure of importance is computed for thee two search procedures. At
 the end of a search process, the difference in the fitness values is
 computed for models with and without each feature (based on the search
 history). If a predictor has at least two subsets that include and did not
-include the predictor, a t-statistic is computed (otherwise a value of
-\code{NA} is assigned to the predictor).
+include the predictor, a t-statistic is computed (otherwise a value of \code{NA}
+is assigned to the predictor).
 
 This computation is done separately for each resample and the t-statistics
-are averaged (\code{NA} values are ignored) and this average is reported as
-the importance. If the fitness value should be minimized, the negative value
-of the t-statistic is used in the average.
+are averaged (\code{NA} values are ignored) and this average is reported as the
+importance. If the fitness value should be minimized, the negative value of
+the t-statistic is used in the average.
 
 As such, the importance score reflects the standardized increase in fitness
 that occurs when the predict is included in the subset. Values near zero (or
 negative) indicate that the predictor may not be important to the model.
 }
 \seealso{
-\code{\link{safs}}, \code{\link{gafs}}
+\code{\link[=safs]{safs()}}, \code{\link[=gafs]{gafs()}}
 }
 \author{
 Max Kuhn

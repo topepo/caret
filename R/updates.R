@@ -1,45 +1,45 @@
 #' Update or Re-fit a Model
 #'
-#' \code{update} allows a user to over-ride the tuning parameter selection
-#' process by specifying a set of tuning parameters or to update the model
-#' object to the latest version of this package.
+#' `update` allows a user to over-ride the tuning parameter selection process
+#' by specifying a set of tuning parameters or to update the model object to
+#' the latest version of this package.
 #'
 #' If the model object was created with version 5.17-7 or earlier, the
-#' underlying package structure was different. To make old \code{\link{train}}
-#' objects consistent with the new structure, use \code{param = NULL} to get
-#' the same object back with updates.
+#' underlying package structure was different. To make old [train()] objects
+#' consistent with the new structure, use `param = NULL` to get the same object
+#' back with updates.
 #'
 #' To update the model parameters, the training data must be stored in the
-#' model object (see the option \code{returnData} in
-#' \code{\link{trainControl}}. Also, all tuning parameters must be specified in
-#' the \code{param} slot. All other options are held constant, including the
-#' original pre-processing (if any), options passed in using code... and so on.
-#' When printing, the verbiage "The tuning parameter was set manually." is used
-#' to describe how the tuning parameters were created.
+#' model object (see the option `returnData` in [trainControl()]. Also, all
+#' tuning parameters must be specified in the `param` slot. All other options
+#' are held constant, including the original pre-processing (if any), options
+#' passed in using code... and so on. When printing, the verbiage "The tuning
+#' parameter was set manually." is used to describe how the tuning parameters
+#' were created.
 #'
-#' @param object an object of class \code{\link{train}}
+#' @param object an object of class [train()]
 #' @param param a data frame or named list of all tuning parameters
 #' @param \dots not currently used
-#' @return a new \code{\link{train}} object
+#' @return a new [train()] object
 #' @author Max Kuhn
-#' @seealso \code{\link{train}}, \code{\link{trainControl}}
+#' @seealso [train()], [trainControl()]
 #' @keywords models
-#' @examples
-#'
-#' \dontrun{
+#' @examplesIf !caret:::is_cran_check()
+#' 
 #' data(iris)
-#' TrainData <- iris[,1:4]
-#' TrainClasses <- iris[,5]
-#'
-#' knnFit1 <- train(TrainData, TrainClasses,
-#'                  method = "knn",
-#'                  preProcess = c("center", "scale"),
-#'                  tuneLength = 10,
-#'                  trControl = trainControl(method = "cv"))
-#'
+#' TrainData <- iris[, 1:4]
+#' TrainClasses <- iris[, 5]
+#' 
+#' knnFit1 <- train(
+#'   TrainData,
+#'   TrainClasses,
+#'   method = "knn",
+#'   preProcess = c("center", "scale"),
+#'   tuneLength = 10,
+#'   trControl = trainControl(method = "cv")
+#' )
+#' 
 #' update(knnFit1, list(.k = 3))
-#' }
-#' @method update train
 #' @export
 #' @importFrom recipes juice all_predictors all_outcomes
 update.train <- function(object, param = NULL, ...) {

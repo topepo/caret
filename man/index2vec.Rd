@@ -18,8 +18,8 @@ otherwise}
 a numeric vector
 }
 \description{
-The function performs the opposite of \code{which} converting a set of
-integers to a binary vector
+The function performs the opposite of \code{which} converting a set of integers
+to a binary vector
 }
 \examples{
 

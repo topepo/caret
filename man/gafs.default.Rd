@@ -52,19 +52,19 @@ matrix). For the recipes method, \code{x} is a recipe object. See Details below}
 \item{elite}{the number of best subsets to survive at each generation}
 
 \item{suggestions}{a binary matrix of subsets strings to be included in the
-initial population. If provided the number of columns must match the number
-of columns in \code{x}}
+initial population. If provided the number of columns must match the
+number of columns in \code{x}}
 
 \item{differences}{a logical: should the difference in fitness values with
 and without each predictor be calculated?}
 
 \item{gafsControl}{a list of values that define how this function acts. See
-\code{\link{gafsControl}} and URL.}
+\code{\link[=gafsControl]{gafsControl()}} and URL.}
 
 \item{...}{additional arguments to be passed to other methods}
 
-\item{data}{Data frame from which variables specified in
-\code{formula} or \code{recipe} are preferentially to be taken.}
+\item{data}{Data frame from which variables specified in \code{formula} or
+\code{recipe} are preferentially to be taken.}
 }
 \value{
 an object of class \code{gafs}
@@ -73,9 +73,9 @@ an object of class \code{gafs}
 Supervised feature selection using genetic algorithms
 }
 \details{
-\code{\link{gafs}} conducts a supervised binary search of the predictor
-space using a genetic algorithm. See Mitchell (1996) and Scrucca (2013) for
-more details on genetic algorithms.
+\code{\link[=gafs]{gafs()}} conducts a supervised binary search of the predictor space using a
+genetic algorithm. See Mitchell (1996) and Scrucca (2013) for more details
+on genetic algorithms.
 
 This function conducts the search of the feature space repeatedly within
 resampling iterations. First, the training data are split be whatever
@@ -108,8 +108,8 @@ is associated with the optimal number of generations determined by
 resampling (although the update function can be used to manually set the
 number of generations).
 
-This is an example of the output produced when \code{gafsControl(verbose =
-TRUE)} is used:
+This is an example of the output produced when
+\code{gafsControl(verbose = TRUE)} is used:
 
 \preformatted{
 Fold2 1 0.715 (13)
@@ -122,20 +122,20 @@ For the second resample (e.g. fold 2), the best subset across all
 individuals tested in the first generation contained 13 predictors and was
 associated with a fitness value of 0.715. The second generation produced a
 better subset containing 17 samples with an associated fitness values of
-0.737 (and improvement is symbolized by the \code{*}. The percentage listed
-is the Jaccard similarity between the previous best individual (with 13
+0.737 (and improvement is symbolized by the \code{*}. The percentage listed is
+the Jaccard similarity between the previous best individual (with 13
 predictors) and the new best. The third generation did not produce a better
 fitness value but the fourth generation did.
 
 The search algorithm can be parallelized in several places: \enumerate{
 \item each externally resampled GA can be run independently (controlled by
-the \code{allowParallel} option of \code{\link{gafsControl}}) \item within a
-GA, the fitness calculations at a particular generation can be run in
-parallel over the current set of individuals (see the \code{genParallel}
-option in \code{\link{gafsControl}}) \item if inner resampling is used,
-these can be run in parallel (controls depend on the function used. See, for
-example, \code{\link[caret]{trainControl}}) \item any parallelization of the
-individual model fits. This is also specific to the modeling function.  }
+the \code{allowParallel} option of \code{\link[=gafsControl]{gafsControl()}}) \item within a GA, the
+fitness calculations at a particular generation can be run in parallel over
+the current set of individuals (see the \code{genParallel} option in
+\code{\link[=gafsControl]{gafsControl()}}) \item if inner resampling is used, these can be run in
+parallel (controls depend on the function used. See, for example,
+\code{\link[=trainControl]{trainControl()}}) \item any parallelization of the individual model
+fits. This is also specific to the modeling function.  }
 
 It is probably best to pick one of these areas for parallelization and the
 first is likely to produces the largest decrease in run-time since it is the
@@ -144,40 +144,40 @@ mind that if multiple levels of parallelization occur, this can effect the
 number of workers and the amount of memory required exponentially.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 set.seed(1)
 train_data <- twoClassSim(100, noiseVars = 10)
-test_data  <- twoClassSim(10,  noiseVars = 10)
+test_data <- twoClassSim(10, noiseVars = 10)
 
 ## A short example
-ctrl <- gafsControl(functions = rfGA,
-                    method = "cv",
-                    number = 3)
+ctrl <- gafsControl(functions = rfGA, method = "cv", number = 3)
 
-rf_search <- gafs(x = train_data[, -ncol(train_data)],
-                  y = train_data$Class,
-                  iters = 3,
-                  gafsControl = ctrl)
+rf_search <- gafs(
+  x = train_data[, -ncol(train_data)],
+  y = train_data$Class,
+  iters = 3,
+  gafsControl = ctrl
+)
 
 rf_search
-  }
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 Kuhn M and Johnson K (2013), Applied Predictive Modeling,
 Springer, Chapter 19 \url{http://appliedpredictivemodeling.com}
 
 Scrucca L (2013). GA: A Package for Genetic Algorithms in R. Journal of
-Statistical Software, 53(4), 1-37. \url{https://www.jstatsoft.org/article/view/v053i04}
+Statistical Software, 53(4), 1-37.
+\url{https://www.jstatsoft.org/article/view/v053i04}
 
 Mitchell M (1996), An Introduction to Genetic Algorithms, MIT Press.
 
 \url{https://en.wikipedia.org/wiki/Jaccard_index}
 }
 \seealso{
-\code{\link{gafsControl}}, \code{\link{predict.gafs}},
-\code{\link{caretGA}}, \code{\link{rfGA}} \code{\link{treebagGA}}
+\code{\link[=gafsControl]{gafsControl()}}, \code{\link[=predict.gafs]{predict.gafs()}}, \code{\link[=caretGA]{caretGA()}}, \code{\link[=rfGA]{rfGA()}}
+\code{\link[=treebagGA]{treebagGA()}}
 }
 \author{
 Max Kuhn, Luca Scrucca (for GA internals)

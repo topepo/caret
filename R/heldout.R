@@ -140,6 +140,7 @@ oob_pred.list <- function(x, direction = "wide", what = "both", ...) {
 get_averages <- function (x, ...) UseMethod("get_averages")
 
 #' @importFrom stats complete.cases
+#' @export
 get_averages.train <- function(x, prd, bycol = "rowIndex", ...) {
   if("Regression" %in% x$modelType) {
     out <- ddply(prd, bycol,
@@ -162,6 +163,7 @@ get_averages.train <- function(x, prd, bycol = "rowIndex", ...) {
 }
 
 #' @importFrom stats complete.cases
+#' @export
 get_averages.rfe <- function(x, prd, bycol = "rowIndex", ...) {
   if(is.null(x$obsLevels)) {
     out <- ddply(prd, bycol,
@@ -184,6 +186,7 @@ get_averages.rfe <- function(x, prd, bycol = "rowIndex", ...) {
 }
 
 #' @importFrom stats complete.cases
+#' @export
 get_averages.sbf <- function(x, prd, bycol = "rowIndex", ...) {
   if(is.null(x$obsLevels)) {
     out <- ddply(prd, bycol,
@@ -238,6 +241,5 @@ corr_mat <- function (object, metric = object$metrics,
   dat <- cor(dat, ...)
   dat
 }
-
 
 

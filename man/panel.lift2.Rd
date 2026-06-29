@@ -15,34 +15,34 @@ panel.lift2(x, y, pct = 0, values = NULL, ...)
 \item{pct}{the baseline percentage of true events in the data}
 
 \item{values}{A vector of numbers between 0 and 100 specifying reference
-values for the percentage of samples found (i.e. the y-axis). Corresponding
-points on the x-axis are found via interpolation and line segments are shown
-to indicate how many samples must be tested before these percentages are
-found. The lines use either the \code{plot.line} or \code{superpose.line}
-component of the current lattice theme to draw the lines (depending on
-whether groups were used}
+values for the percentage of samples found (i.e. the y-axis).
+Corresponding points on the x-axis are found via interpolation and line
+segments are shown to indicate how many samples must be tested before
+these percentages are found. The lines use either the \code{plot.line} or
+\code{superpose.line} component of the current lattice theme to draw the lines
+(depending on whether groups were used}
 
-\item{\dots}{options to pass to
-\code{\link[lattice:panel.xyplot]{panel.xyplot}}}
+\item{\dots}{options to pass to \code{\link[lattice:panel.xyplot]{lattice::panel.xyplot()}}}
 }
 \description{
-Two panel functions that be used in conjunction with \code{\link{lift}}.
+Two panel functions that be used in conjunction with \code{\link[=lift]{lift()}}.
 }
 \details{
-\code{panel.lift} plots the data with a simple (black) 45 degree reference
-line.
+\code{panel.lift} plots the data with a simple (black) 45 degree reference line.
 
-\code{panel.lift2} is the default for \code{\link{lift}} and plots the data
-points with a shaded region encompassing the space between to the random
-model and perfect model trajectories. The color of the region is determined
-by the lattice \code{reference.line} information (see example below).
+\code{panel.lift2} is the default for \code{\link[=lift]{lift()}} and plots the data points with a
+shaded region encompassing the space between to the random model and perfect
+model trajectories. The color of the region is determined by the lattice
+\code{reference.line} information (see example below).
 }
 \examples{
 
 set.seed(1)
-simulated <- data.frame(obs = factor(rep(letters[1:2], each = 100)),
-                        perfect = sort(runif(200), decreasing = TRUE),
-                        random = runif(200))
+simulated <- data.frame(
+  obs = factor(rep(letters[1:2], each = 100)),
+  perfect = sort(runif(200), decreasing = TRUE),
+  random = runif(200)
+)
 
 regionInfo <- trellis.par.get("reference.line")
 regionInfo$col <- "lightblue"
@@ -57,10 +57,8 @@ xyplot(lift2, panel = panel.lift)
 
 }
 \seealso{
-\code{\link{lift}},
-\code{\link[lattice:panel.xyplot]{panel.xyplot}},
-\code{\link[lattice:xyplot]{xyplot}},
-\link[lattice:trellis.par.get]{trellis.par.set}
+\code{\link[=lift]{lift()}}, \code{\link[lattice:panel.xyplot]{lattice::panel.xyplot()}}, \code{\link[lattice:xyplot]{lattice::xyplot()}},
+\code{\link[lattice:trellis.par.set]{lattice::trellis.par.set()}}
 }
 \author{
 Max Kuhn

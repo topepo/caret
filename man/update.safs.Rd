@@ -8,56 +8,58 @@
 \method{update}{safs}(object, iter, x, y, ...)
 }
 \arguments{
-\item{object}{An object produced by \code{\link{gafs}} or \code{\link{safs}}}
+\item{object}{An object produced by \code{\link[=gafs]{gafs()}} or \code{\link[=safs]{safs()}}}
 
 \item{iter}{a single numeric integer}
 
-\item{x, y}{the original training data used in the call to \code{\link{gafs}}
-or \code{\link{safs}}. Only required for non-recipe methods.}
+\item{x, y}{the original training data used in the call to \code{\link[=gafs]{gafs()}} or
+\code{\link[=safs]{safs()}}. Only required for non-recipe methods.}
 
 \item{\dots}{not currently used}
 }
 \value{
-an object of class \code{\link{gafs}} or \code{\link{safs}}
+an object of class \code{\link[=gafs]{gafs()}} or \code{\link[=safs]{safs()}}
 }
 \description{
-\code{update} allows a user to over-ride the search iteration selection
-process.
+\code{update} allows a user to over-ride the search iteration
+selection process.
 
-Based on the results of plotting a \code{\link{gafs}} or \code{\link{safs}}
-object, these functions can be used to supersede the number of iterations
-determined analytically from the resamples.
+Based on the results of plotting a \code{\link[=gafs]{gafs()}} or \code{\link[=safs]{safs()}} object, these
+functions can be used to supersede the number of iterations determined
+analytically from the resamples.
 
-Any values of \code{...} originally passed to \code{\link{gafs}} or
-\code{\link{safs}} are automatically passed on to the updated model (i.e.
-they do not need to be supplied again to \code{update}.
+Any values of \code{...} originally passed to \code{\link[=gafs]{gafs()}} or \code{\link[=safs]{safs()}} are
+automatically passed on to the updated model (i.e. they do not need to be
+supplied again to \code{update}.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 set.seed(1)
 train_data <- twoClassSim(100, noiseVars = 10)
-test_data  <- twoClassSim(10,  noiseVars = 10)
+test_data <- twoClassSim(10, noiseVars = 10)
 
 ## A short example
-ctrl <- safsControl(functions = rfSA,
-                    method = "cv",
-                    number = 3)
+ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
 
-rf_search <- safs(x = train_data[, -ncol(train_data)],
-                  y = train_data$Class,
-                  iters = 3,
-                  safsControl = ctrl)
+rf_search <- safs(
+  x = train_data[, -ncol(train_data)],
+  y = train_data$Class,
+  iters = 3,
+  safsControl = ctrl
+)
 
-rf_search2 <- update(rf_search,
-	                 iter = 1,
-	                 x = train_data[, -ncol(train_data)],
-                     y = train_data$Class)
+rf_search2 <- update(
+  rf_search,
+  iter = 1,
+  x = train_data[, -ncol(train_data)],
+  y = train_data$Class
+)
 rf_search2
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link{gafs}}, \code{\link{safs}}
+\code{\link[=gafs]{gafs()}}, \code{\link[=safs]{safs()}}
 }
 \author{
 Max Kuhn

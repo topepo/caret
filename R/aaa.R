@@ -24,6 +24,10 @@ NULL
 .onUnload <- function(libpath) { library.dynam.unload("caret", libpath) }
 
 
+is_cran_check <- function() {
+  !identical(Sys.getenv("NOT_CRAN"), "true")
+}
+
 ###################################################################
 ## Global Variables
 ###################################################################

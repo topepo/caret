@@ -26,20 +26,17 @@ This class uses a model fit to determine which predictors were used in the
 final model.
 }
 \details{
-For \code{\link[randomForest]{randomForest}}, \code{\link[party]{cforest}},
-\code{\link[party]{ctree}}, \code{\link[rpart]{rpart}},
-\code{\link[ipred:bagging]{ipredbagg}}, \code{\link[ipred]{bagging}},
-\code{\link[earth]{earth}}, \code{\link[mda]{fda}},
-\code{\link[pamr]{pamr.train}}, \code{\link[superpc]{superpc.train}},
-\code{\link{bagEarth}} and \code{\link{bagFDA}}, an attempt was made to
-report the predictors that were actually used in the final model.
+For \code{\link[randomForest:randomForest]{randomForest::randomForest()}}, \code{\link[party:cforest]{party::cforest()}}, \code{\link[party:ctree]{party::ctree()}},
+\code{\link[rpart:rpart]{rpart::rpart()}}, \code{\link[ipred:ipredbagg]{ipred::ipredbagg()}}, \code{\link[ipred:bagging]{ipred::bagging()}},
+\code{\link[earth:earth]{earth::earth()}}, \code{\link[mda:fda]{mda::fda()}}, \code{\link[pamr:pamr.train]{pamr::pamr.train()}},
+\code{\link[superpc:superpc.train]{superpc::superpc.train()}}, \code{\link[=bagEarth]{bagEarth()}} and \code{\link[=bagFDA]{bagFDA()}}, an attempt was made
+to report the predictors that were actually used in the final model.
 
-The \code{predictors} function can be called on the model object (as opposed
-to the \code{\link{train}}) object) and the package will try to find the
-appropriate coed (if it exists).
+The \code{predictors} function can be called on the model object (as opposed to
+the \code{\link[=train]{train()}}) object) and the package will try to find the appropriate coed
+(if it exists).
 
-In cases where the predictors cannot be determined, \code{NA} is returned.
-For example, \code{\link[nnet]{nnet}} may return missing values from
-\code{predictors}.
+In cases where the predictors cannot be determined, \code{NA} is returned. For
+example, \code{\link[nnet:nnet]{nnet::nnet()}} may return missing values from \code{predictors}.
 }
 \keyword{models}

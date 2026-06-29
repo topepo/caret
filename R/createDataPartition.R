@@ -1,105 +1,104 @@
 #' Data Splitting functions
 #'
-#' A series of test/training partitions are created using
-#' \code{createDataPartition} while \code{createResample} creates one or more
-#' bootstrap samples. \code{createFolds} splits the data into \code{k} groups
-#' while \code{createTimeSlices} creates cross-validation split for series data.
-#' \code{groupKFold} splits the data based on a grouping factor.
-#'
+#' A series of test/training partitions are created using `createDataPartition`
+#' while `createResample` creates one or more bootstrap samples. `createFolds`
+#' splits the data into `k` groups while `createTimeSlices` creates
+#' cross-validation split for series data. `groupKFold` splits the data based
+#' on a grouping factor.
 #'
 #' For bootstrap samples, simple random sampling is used.
 #'
 #' For other data splitting, the random sampling is done within the levels of
-#' \code{y} when \code{y} is a factor in an attempt to balance the class
-#' distributions within the splits.
+#' `y` when `y` is a factor in an attempt to balance the class distributions
+#' within the splits.
 #'
-#' For numeric \code{y}, the sample is split into groups sections based on
+#' For numeric `y`, the sample is split into groups sections based on
 #' percentiles and sampling is done within these subgroups. For
-#' \code{createDataPartition}, the number of percentiles is set via the
-#' \code{groups} argument. For \code{createFolds} and \code{createMultiFolds},
-#' the number of groups is set dynamically based on the sample size and
-#' \code{k}.  For smaller samples sizes, these two functions may not do
-#' stratified splitting and, at most, will split the data into quartiles.
+#' `createDataPartition`, the number of percentiles is set via the `groups`
+#' argument. For `createFolds` and `createMultiFolds`, the number of groups is
+#' set dynamically based on the sample size and `k`.  For smaller samples
+#' sizes, these two functions may not do stratified splitting and, at most,
+#' will split the data into quartiles.
 #'
-#' Also, for \code{createDataPartition}, very small class sizes (<= 3) the
-#' classes may not show up in both the training and test data
+#' Also, for `createDataPartition`, very small class sizes (<= 3) the classes
+#' may not show up in both the training and test data
 #'
 #' For multiple k-fold cross-validation, completely independent folds are
 #' created.  The names of the list objects will denote the fold membership
 #' using the pattern "Foldi.Repj" meaning the ith section (of k) of the jth
-#' cross-validation set (of \code{times}). Note that this function calls
-#' \code{createFolds} with \code{list = TRUE} and \code{returnTrain = TRUE}.
+#' cross-validation set (of `times`). Note that this function calls
+#' `createFolds` with `list = TRUE` and `returnTrain = TRUE`.
 #'
 #' Hyndman and Athanasopoulos (2013)) discuss rolling forecasting origin
-#' techniques that move the training and test sets in time.
-#' \code{createTimeSlices} can create the indices for this type of splitting.
+#' techniques that move the training and test sets in time. `createTimeSlices`
+#' can create the indices for this type of splitting.
 #'
-#' For Group k-fold cross-validation, the data are split such that no group
-#' is contained in both the modeling and holdout sets. One or more group
-#' could be left out, depending on the value of \code{k}.
+#' For Group k-fold cross-validation, the data are split such that no group is
+#' contained in both the modeling and holdout sets. One or more group could be
+#' left out, depending on the value of `k`.
 #'
-#' @aliases createDataPartition createResample createFolds createMultiFolds
-#'   createTimeSlices groupKFold
-#' @param y a vector of outcomes. For \code{createTimeSlices}, these should be
-#'   in chronological order.
+#' @aliases createDataPartition createResample createFolds createMultiFolds createTimeSlices groupKFold
+#' @param y a vector of outcomes. For `createTimeSlices`, these should be in
+#'   chronological order.
 #' @param group a vector of groups whose length matches the number of rows in
-#' the overall data set.
+#'   the overall data set.
 #' @param times the number of partitions to create
 #' @param p the percentage of data that goes to training
-#' @param list logical - should the results be in a list (\code{TRUE}) or a
-#'   matrix with the number of rows equal to \code{floor(p * length(y))} and
-#'   \code{times} columns.
-#' @param groups for numeric \code{y}, the number of breaks in the quantiles
-#'   (see below)
+#' @param list logical - should the results be in a list (`TRUE`) or a matrix
+#'   with the number of rows equal to `floor(p * length(y))` and `times`
+#'   columns.
+#' @param groups for numeric `y`, the number of breaks in the quantiles (see
+#'   below)
 #' @param k an integer for the number of folds.
 #' @param returnTrain a logical. When true, the values returned are the sample
 #'   positions corresponding to the data used during training. This argument
-#'   only works in conjunction with \code{list = TRUE}
+#'   only works in conjunction with `list = TRUE`
 #' @param initialWindow The initial number of consecutive values in each
 #'   training set sample
 #' @param horizon the number of consecutive values in test set sample
-#' @param fixedWindow logical, if \code{FALSE}, all training samples start at 1
+#' @param fixedWindow logical, if `FALSE`, all training samples start at 1
 #' @param skip integer, how many (if any) resamples to skip to thin the total
 #'   amount
 #' @return A list or matrix of row position integers corresponding to the
-#'   training data. For \code{createTimeSlices} subsamples are named by the end
+#'   training data. For `createTimeSlices` subsamples are named by the end
 #'   index of each training subsample.
-#' @author Max Kuhn, \code{createTimeSlices} by Tony Cooper
-#' @references \url{http://topepo.github.io/caret/data-splitting.html}
+#' @author Max Kuhn, `createTimeSlices` by Tony Cooper
+#' @references <http://topepo.github.io/caret/data-splitting.html>
 #'
 #' Hyndman and Athanasopoulos (2013), Forecasting: principles and practice.
-#' \url{https://otexts.com/fpp2/}
+#' <https://otexts.com/fpp2/>
+#' @family resampling
 #' @keywords utilities
 #' @examples
-#'
+#' 
 #' data(oil)
 #' createDataPartition(oilType, 2)
-#'
+#' 
 #' x <- rgamma(50, 3, .5)
 #' inA <- createDataPartition(x, list = FALSE)
-#'
+#' 
 #' plot(density(x[inA]))
 #' rug(x[inA])
-#'
+#' 
 #' points(density(x[-inA]), type = "l", col = 4)
 #' rug(x[-inA], col = 4)
-#'
+#' 
 #' createResample(oilType, 2)
-#'
+#' 
 #' createFolds(oilType, 10)
 #' createFolds(oilType, 5, FALSE)
-#'
+#' 
 #' createFolds(rnorm(21))
-#'
+#' 
 #' createTimeSlices(1:9, 5, 1, fixedWindow = FALSE)
 #' createTimeSlices(1:9, 5, 1, fixedWindow = TRUE)
 #' createTimeSlices(1:9, 5, 3, fixedWindow = TRUE)
 #' createTimeSlices(1:9, 5, 3, fixedWindow = FALSE)
-#'
+#' 
 #' createTimeSlices(1:15, 5, 3)
 #' createTimeSlices(1:15, 5, 3, skip = 2)
 #' createTimeSlices(1:15, 5, 3, skip = 3)
-#'
+#' 
 #' set.seed(131)
 #' groups <- sort(sample(letters[1:4], size = 20, replace = TRUE))
 #' table(groups)
@@ -356,7 +355,6 @@ make_resamples <- function(ctrl_obj, outcome) {
     names(ctrl_obj$indexOut) <- prettySeq(ctrl_obj$indexOut)
   ctrl_obj
 }
-
 
 
 

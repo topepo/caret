@@ -8,6 +8,7 @@
 \alias{knnreg.matrix}
 \alias{knnreg.data.frame}
 \alias{print.knnreg}
+\alias{predict.knnreg}
 \title{k-Nearest Neighbour Regression}
 \usage{
 knnreg(x, ...)
@@ -22,6 +23,8 @@ knnreg(x, ...)
 
 \method{print}{knnreg}(x, ...)
 
+\method{predict}{knnreg}(object, newdata, ...)
+
 knnregTrain(train, test, y, k = 5, use.all = TRUE)
 }
 \arguments{
@@ -29,8 +32,8 @@ knnregTrain(train, test, y, k = 5, use.all = TRUE)
 
 \item{...}{additional parameters to pass to \code{knnregTrain}.}
 
-\item{formula}{a formula of the form \code{lhs ~ rhs} where \code{lhs} is
-the response variable and \code{rhs} a set of predictors.}
+\item{formula}{a formula of the form \code{lhs ~ rhs} where \code{lhs} is the response
+variable and \code{rhs} a set of predictors.}
 
 \item{data}{optional data frame containing the variables in the model
 formula.}
@@ -45,28 +48,30 @@ contain \code{NA}s.}
 
 \item{y}{a numeric vector of outcomes.}
 
+\item{object}{object of class \code{knnreg}.}
+
+\item{newdata}{a data frame or matrix of new observations.}
+
 \item{train}{matrix or data frame of training set cases.}
 
 \item{test}{matrix or data frame of test set cases. A vector will be
 interpreted as a row vector for a single case.}
 
 \item{use.all}{controls handling of ties. If true, all distances equal to
-the \code{k}th largest are included. If false, a random selection of
-distances equal to the \code{k}th is chosen to use exactly \code{k}
-neighbours.}
+the \code{k}th largest are included. If false, a random selection of distances
+equal to the \code{k}th is chosen to use exactly \code{k} neighbours.}
 }
 \value{
-An object of class \code{knnreg}. See \code{\link{predict.knnreg}}.
+An object of class \code{knnreg}.
 }
 \description{
 $k$-nearest neighbour regression that can return the average value for the
 neighbours.
 }
 \details{
-\code{knnreg} is similar to \code{\link[ipred]{ipredknn}} and
-\code{knnregTrain} is a modification of \code{\link[class]{knn}}. The
-underlying C code from the \code{class} package has been modified to return
-average outcome.
+\code{knnreg} is similar to \code{\link[ipred:ipredknn]{ipred::ipredknn()}} and \code{knnregTrain} is a
+modification of \code{\link[class:knn]{class::knn()}}. The underlying C code from the \code{class}
+package has been modified to return average outcome.
 }
 \examples{
 
@@ -74,10 +79,10 @@ data(BloodBrain)
 
 inTrain <- createDataPartition(logBBB, p = .8)[[1]]
 
-trainX <- bbbDescr[inTrain,]
+trainX <- bbbDescr[inTrain, ]
 trainY <- logBBB[inTrain]
 
-testX <- bbbDescr[-inTrain,]
+testX <- bbbDescr[-inTrain, ]
 testY <- logBBB[-inTrain]
 
 fit <- knnreg(trainX, trainY, k = 3)
@@ -86,9 +91,9 @@ plot(testY, predict(fit, testX))
 
 }
 \author{
-\code{\link[class]{knn}} by W. N. Venables and B. D. Ripley and
-\code{\link[ipred]{ipredknn}} by Torsten.Hothorn
-<Torsten.Hothorn@rzmail.uni-erlangen.de>, modifications by Max Kuhn and
+\code{\link[class:knn]{class::knn()}} by W. N. Venables and B. D. Ripley and
+\code{\link[ipred:ipredknn]{ipred::ipredknn()}} by Torsten.Hothorn
+\href{mailto:Torsten.Hothorn@rzmail.uni-erlangen.de}{Torsten.Hothorn@rzmail.uni-erlangen.de}, modifications by Max Kuhn and
 Chris Keefer
 }
 \keyword{multivariate}

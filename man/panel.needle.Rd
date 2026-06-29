@@ -21,8 +21,7 @@ panel.needle(
 \arguments{
 \item{x, y}{variables to be plotted in the panel. Typically y is the 'factor'}
 
-\item{horizontal}{logical. If FALSE, the plot is `transposed' in the sense
-that the behaviours of x and y are switched. x is now the `factor'.
+\item{horizontal}{logical. If FALSE, the plot is \verb{transposed' in the sense that the behaviours of x and y are switched. x is now the }factor'.
 Interpretation of other arguments change accordingly. See documentation of
 \code{bwplot} for a fuller explanation.}
 
@@ -32,23 +31,21 @@ Interpretation of other arguments change accordingly. See documentation of
 
 \item{groups}{grouping variable (affects graphical parameters)}
 
-\item{\dots}{extra parameters, passed to \code{panel.xyplot} which is
-responsible for drawing the foreground points (\code{panel.dotplot} only
-draws the background reference lines).}
+\item{\dots}{extra parameters, passed to \code{panel.xyplot} which is responsible
+for drawing the foreground points (\code{panel.dotplot} only draws the
+background reference lines).}
 }
 \description{
-A variation of \code{panel.dotplot} that plots horizontal lines from zero to
-the data point.
+A variation of \code{panel.dotplot} that plots horizontal lines from zero to the
+data point.
 }
 \details{
-Creates (possibly grouped) needleplot of \code{x} against \code{y} or vice
-versa
+Creates (possibly grouped) needleplot of \code{x} against \code{y} or vice versa
 }
 \seealso{
-\code{\link{dotplot}}
+\code{\link[=dotplot]{dotplot()}}
 }
 \author{
-Max Kuhn, based on \code{\link[lattice]{panel.dotplot}} by Deepayan
-Sarkar
+Max Kuhn, based on \code{\link[lattice:panel.dotplot]{lattice::panel.dotplot()}} by Deepayan Sarkar
 }
 \keyword{graphs}

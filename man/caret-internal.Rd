@@ -77,6 +77,7 @@ expandParameters(fixed, seq)
 Internal functions
 }
 \author{
-Max Kuhn, but \code{caretTheme} uses an expanded grid of the "Blues" palette designed by Cynthia Brewer and Mark Harrower
+Max Kuhn, but \code{caretTheme} uses an expanded grid of the "Blues"
+palette designed by Cynthia Brewer and Mark Harrower
 }
 \keyword{internal}

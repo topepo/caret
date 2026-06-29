@@ -9,8 +9,8 @@ var_seq(p, classification = FALSE, len = 3)
 \arguments{
 \item{p}{The number of predictors}
 
-\item{classification}{Is the outcome a factor (\code{classification = TRUE}
-or numeric?)}
+\item{classification}{Is the outcome a factor (\code{classification = TRUE} or
+numeric?)}
 
 \item{len}{The number of \code{mtry} values to generate.}
 }
@@ -25,8 +25,7 @@ If the number of predictors is less than 500, a simple sequence of values of
 length \code{len} is generated between 2 and \code{p}. For larger numbers of
 predictors, the sequence is created using \code{log2} steps.
 
-If \code{len = 1}, the defaults from the \code{randomForest} package are
-used.
+If \code{len = 1}, the defaults from the \code{randomForest} package are used.
 }
 \examples{
 

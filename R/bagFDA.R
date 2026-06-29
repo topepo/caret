@@ -1,64 +1,53 @@
 #' Bagged FDA
 #' @aliases bagFDA print.bagFDA bagFDA.default bagFDA.formula
 #'
-#' @description A bagging wrapper for flexible discriminant analysis (FDA) using multivariate adaptive regression splines (MARS) basis functions
+#' @description A bagging wrapper for flexible discriminant analysis (FDA)
+#'   using multivariate adaptive regression splines (MARS) basis functions
 #'
-#'
-#' @param formula A formula of the form \code{y ~ x1 + x2 + ...}
+#' @template param-formula-data
 #' @param x matrix or data frame of 'x' values for examples.
 #' @param y matrix or data frame of numeric values outcomes.
-#' @param weights (case) weights for each example - if missing defaults to 1.
-#' @param data Data frame from which variables specified in  'formula' are
-#'         preferentially to be taken.
-#' @param subset An index vector specifying the cases to be used in the
-#'         training sample.  (NOTE: If given, this argument must be
-#'         named.)
-#' @param na.action A function to specify the action to be taken if 'NA's are
-#'         found. The default action is for the procedure to fail.  An
-#'         alternative is na.omit, which leads to rejection of cases
-#'         with missing values on any required variable.  (NOTE: If
-#'         given, this argument must be named.)
 #'
 #' @param B the number of bootstrap samples
 #'
 #' @param keepX a logical: should the original training data be kept?
 #'
-#' @param \dots arguments passed to the \code{mars} function
+#' @param \dots arguments passed to the `mars` function
 #'
 #' @details The function computes a FDA model for each bootstap sample.
 #'
-#' @return
-#' A list with elements
-#' \item{fit }{a list of \code{B} FDA fits}
-#' \item{B }{the number of bootstrap samples}
-#' \item{call }{the function call}
-#' \item{x }{either \code{NULL} or the value of \code{x}, depending on the
-#'   value of \code{keepX}}
-#' \item{oob}{a matrix of performance estimates for each bootstrap sample}
+#' @return A list with elements:
 #'
-#' @references J. Friedman, ``Multivariate Adaptive Regression Splines'' (with discussion) (1991).  Annals of Statistics, 19/1, 1-141.
+#' * `fit`: a list of `B` FDA fits
+#' * `B`: the number of bootstrap samples
+#' * `call`: the function call
+#' * `x`: either `NULL` or the value of `x`, depending on the value of `keepX`
+#' * `oob`: a matrix of performance estimates for each bootstrap sample
+#' @references J. Friedman, ``Multivariate Adaptive Regression Splines'' (with
+#'   discussion) (1991).  Annals of Statistics, 19/1, 1-141.
 #'
-#' @author Max Kuhn (\code{bagFDA.formula} is based on Ripley's \code{nnet.formula})
+#' @author Max Kuhn (`bagFDA.formula` is based on Ripley's `nnet.formula`)
 #'
-#' @seealso \code{\link[mda]{fda}}, \code{\link{predict.bagFDA}}
+#' @seealso [mda::fda()], [predict.bagFDA()]
 #'
 #' @examples
 #' library(mlbench)
 #' library(earth)
 #' data(Glass)
-#'
+#' 
 #' set.seed(36)
 #' inTrain <- sample(1:dim(Glass)[1], 150)
-#'
-#' trainData <- Glass[ inTrain, ]
-#' testData  <- Glass[-inTrain, ]
-#'
-#'
+#' 
+#' trainData <- Glass[inTrain, ]
+#' testData <- Glass[-inTrain, ]
+#' 
 #' set.seed(3577)
 #' baggedFit <- bagFDA(Type ~ ., trainData)
-#' confusionMatrix(data = predict(baggedFit, testData[, -10]),
-#'                 reference = testData[, 10])
-#'
+#' confusionMatrix(
+#'   data = predict(baggedFit, testData[, -10]),
+#'   reference = testData[, 10]
+#' )
+#' 
 #' @keywords regression
 #'
 #' @export
@@ -67,7 +56,6 @@ function(x, ...)
    UseMethod("bagFDA")
 
 #' @rdname bagFDA
-#' @method bagFDA default
 #' @importFrom stats predict
 #' @export
 "bagFDA.default" <-
@@ -113,7 +101,6 @@ function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
 }
 
 #' @rdname bagFDA
-#' @method bagFDA formula
 #' @importFrom stats contrasts model.matrix model.response model.weights na.omit
 #' @export
 "bagFDA.formula" <-
@@ -143,7 +130,6 @@ function (formula, data = NULL, B = 50, keepX = TRUE, ..., subset, weights = NUL
 }
 
 #' @rdname bagFDA
-#' @method print bagFDA
 #' @export
 "print.bagFDA" <-
 function (x, ...)
@@ -213,7 +199,6 @@ function(object, newdata = NULL, type = "class", ...)
 }
 
 #' @rdname summary.bagEarth
-#' @method summary bagFDA
 #' @importFrom stats quantile
 #' @export
 "summary.bagFDA" <-
@@ -251,4 +236,3 @@ function(x, digits = max(3, getOption("digits") - 3), ...)
    print(summary(x$modelInfo))
    cat("\n")
 }
-

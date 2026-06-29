@@ -32,7 +32,7 @@ printed}
 a print method for \code{confusionMatrix}
 }
 \seealso{
-\code{\link{confusionMatrix}}
+\code{\link[=confusionMatrix]{confusionMatrix()}}
 }
 \author{
 Max Kuhn

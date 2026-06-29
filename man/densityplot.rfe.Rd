@@ -11,18 +11,15 @@ selection}
 \method{densityplot}{rfe}(x, data = NULL, metric = x$metric, ...)
 }
 \arguments{
-\item{x}{An object produced by \code{\link{rfe}}}
+\item{x}{An object produced by \code{\link[=rfe]{rfe()}}}
 
 \item{data}{This argument is not used}
 
 \item{metric}{A character string specifying the single performance metric
 that will be plotted}
 
-\item{\dots}{arguments to pass to either
-\code{\link[lattice:histogram]{histogram}},
-\code{\link[lattice:histogram]{densityplot}},
-\code{\link[lattice:xyplot]{xyplot}} or
-\code{\link[lattice:xyplot]{stripplot}}}
+\item{\dots}{arguments to pass to either \code{\link[lattice:histogram]{lattice::histogram()}},
+\code{\link[lattice:densityplot]{lattice::densityplot()}}, \code{\link[lattice:xyplot]{lattice::xyplot()}} or \code{\link[lattice:stripplot]{lattice::stripplot()}}}
 }
 \value{
 A lattice plot object
@@ -33,22 +30,22 @@ estimates (e.g. classification accuracy, RMSE) over different subset sizes.
 }
 \details{
 By default, only the resampling results for the optimal model are saved in
-the \code{rfe} object. The function \code{\link{rfeControl}} can be used to
-save all the results using the \code{returnResamp} argument.
+the \code{rfe} object. The function \code{\link[=rfeControl]{rfeControl()}} can be used to save all the
+results using the \code{returnResamp} argument.
 
 If leave-one-out or out-of-bag resampling was specified, plots cannot be
-produced (see the \code{method} argument of \code{\link{rfeControl}})
+produced (see the \code{method} argument of \code{\link[=rfeControl]{rfeControl()}})
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 library(mlbench)
 n <- 100
 p <- 40
 sigma <- 1
 set.seed(1)
 sim <- mlbench.friedman1(n, sd = sigma)
-x <- cbind(sim$x,  matrix(rnorm(n * p), nrow = n))
+x <- cbind(sim$x, matrix(rnorm(n * p), nrow = n))
 y <- sim$y
 colnames(x) <- paste("var", 1:ncol(x), sep = "")
 
@@ -58,28 +55,23 @@ x <- as.data.frame(x, stringsAsFactors = TRUE)
 subsets <- c(10, 15, 20, 25)
 
 ctrl <- rfeControl(
-                   functions = lmFuncs,
-                   method = "cv",
-                   verbose = FALSE,
-                   returnResamp = "all")
+  functions = lmFuncs,
+  method = "cv",
+  verbose = FALSE,
+  returnResamp = "all"
+)
 
-lmProfile <- rfe(x, y,
-                 sizes = subsets,
-                 rfeControl = ctrl)
+lmProfile <- rfe(x, y, sizes = subsets, rfeControl = ctrl)
 xyplot(lmProfile)
 stripplot(lmProfile)
 
 histogram(lmProfile)
 densityplot(lmProfile)
-}
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link{rfe}}, \code{\link{rfeControl}},
-\code{\link[lattice:histogram]{histogram}},
-\code{\link[lattice:histogram]{densityplot}},
-\code{\link[lattice:xyplot]{xyplot}},
-\code{\link[lattice:xyplot]{stripplot}}
+\code{\link[=rfe]{rfe()}}, \code{\link[=rfeControl]{rfeControl()}}, \code{\link[lattice:histogram]{lattice::histogram()}},
+\code{\link[lattice:densityplot]{lattice::densityplot()}}, \code{\link[lattice:xyplot]{lattice::xyplot()}}, \code{\link[lattice:stripplot]{lattice::stripplot()}}
 }
 \author{
 Max Kuhn

@@ -12,9 +12,8 @@ downSample(x, y, list = FALSE, yname = "Class")
 
 \item{y}{a factor variable with the class memberships}
 
-\item{list}{should the function return \code{list(x, y)} or bind \code{x}
-and \code{y} together? If \code{FALSE}, the output will be coerced to a data
-frame.}
+\item{list}{should the function return \code{list(x, y)} or bind \code{x} and \code{y}
+together? If \code{FALSE}, the output will be coerced to a data frame.}
 
 \item{yname}{if \code{list = FALSE}, a label for the class column}
 }
@@ -22,9 +21,9 @@ frame.}
 Either a data frame or a list with elements \code{x} and \code{y}.
 }
 \description{
-\code{downSample} will randomly sample a data set so that all classes have
-the same frequency as the minority class. \code{upSample} samples with
-replacement to make the class distributions equal
+\code{downSample} will randomly sample a data set so that all classes have the
+same frequency as the minority class. \code{upSample} samples with replacement to
+make the class distributions equal
 }
 \details{
 Simple random sampling is used to down-sample for the majority class(es).
@@ -42,7 +41,6 @@ table(oilType)
 downSample(fattyAcids, oilType)
 
 upSample(fattyAcids, oilType)
-
 
 }
 \author{

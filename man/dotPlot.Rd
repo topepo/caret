@@ -11,21 +11,20 @@ dotPlot(x, top = min(20, dim(x$importance)[1]), ...)
 
 \item{top}{the number of predictors to plot}
 
-\item{\dots}{options passed to \code{\link[lattice:xyplot]{dotplot}}}
+\item{\dots}{options passed to \code{\link[lattice:dotplot]{lattice::dotplot()}}}
 }
 \value{
 an object of class \code{trellis}.
 }
 \description{
-A lattice \code{\link[lattice:xyplot]{dotplot}} is created from an object of
-class \code{varImp.train}.
+A lattice \code{\link[lattice:dotplot]{lattice::dotplot()}} is created from an object of class
+\code{varImp.train}.
 }
 \examples{
 
-
 data(iris)
-TrainData <- iris[,1:4]
-TrainClasses <- iris[,5]
+TrainData <- iris[, 1:4]
+TrainClasses <- iris[, 5]
 
 knnFit <- train(TrainData, TrainClasses, "knn")
 
@@ -33,10 +32,9 @@ knnImp <- varImp(knnFit)
 
 dotPlot(knnImp)
 
-
 }
 \seealso{
-\code{\link{varImp}}, \code{\link[lattice:xyplot]{dotplot}}
+\code{\link[=varImp]{varImp()}}, \code{\link[lattice:dotplot]{lattice::dotplot()}}
 }
 \author{
 Max Kuhn

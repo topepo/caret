@@ -11,4 +11,3 @@ predictionFunction <- function(method, modelFit, newdata, preProc = NULL, param 
   out 
 }
 
-

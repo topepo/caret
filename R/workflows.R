@@ -772,4 +772,3 @@ looRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
   list(performance = resamples, everything = result)
 }
 
-

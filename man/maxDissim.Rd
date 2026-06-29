@@ -53,10 +53,10 @@ samples and the existing subset.
 \details{
 Given an initial set of m samples and a larger pool of n samples, this
 function iteratively adds points to the smaller set by finding with of the n
-samples is most dissimilar to the initial set. The argument \code{obj}
-measures the overall dissimilarity between the initial set and a candidate
-point. For example, maximizing the minimum or the sum of the m
-dissimilarities are two common approaches.
+samples is most dissimilar to the initial set. The argument \code{obj} measures
+the overall dissimilarity between the initial set and a candidate point. For
+example, maximizing the minimum or the sum of the m dissimilarities are two
+common approaches.
 
 This algorithm tends to select points on the edge of the data mainstream and
 will reliably select outliers. To select more samples towards the interior
@@ -64,30 +64,36 @@ of the data set, set \code{randomFrac} to be small (see the examples below).
 }
 \examples{
 
-
 example <- function(pct = 1, obj = minDiss, ...)
 {
   tmp <- matrix(rnorm(200 * 2), nrow = 200)
 
   ## start with 15 data points
-  start <- sample(1:dim(tmp)[1], 15)
-  base <- tmp[start,]
-  pool <- tmp[-start,]
+start <- sample(1:dim(tmp)[1], 15)
+base <- tmp[start, ]
+pool <- tmp[-start, ]
   
   ## select 9 for addition
-  newSamp <- maxDissim(
-                       base, pool, 
-                       n = 9, 
-                       randomFrac = pct, obj = obj, ...)
+newSamp <- maxDissim(
+  base,
+  pool,
+  n = 9,
+  randomFrac = pct,
+  obj = obj,
+  ...
+)
   
-  allSamp <- c(start, newSamp)
+allSamp <- c(start, newSamp)
   
-  plot(
-       tmp[-newSamp,], 
-       xlim = extendrange(tmp[,1]), ylim = extendrange(tmp[,2]), 
-       col = "darkgrey", 
-       xlab = "variable 1", ylab = "variable 2")
-  points(base, pch = 16, cex = .7)
+plot(
+  tmp[-newSamp, ],
+  xlim = extendrange(tmp[, 1]),
+  ylim = extendrange(tmp[, 2]),
+  col = "darkgrey",
+  xlab = "variable 1",
+  ylab = "variable 2"
+)
+points(base, pch = 16, cex = .7)
   
   for(i in seq(along.with = newSamp))
     points(
@@ -96,7 +102,7 @@ example <- function(pct = 1, obj = minDiss, ...)
            pch = paste(i), col = "darkred") 
 }
 
-par(mfrow=c(2,2))
+par(mfrow = c(2, 2))
 
 set.seed(414)
 example(1, minDiss)
@@ -121,7 +127,7 @@ Selecting Structurally Diverse Sets of Compounds," \emph{Journal of
 Computational Biology}, 6, 447-457.
 }
 \seealso{
-\code{\link{dist}}
+\code{\link[stats:dist]{stats::dist()}}
 }
 \author{
 Max Kuhn \email{max.kuhn@pfizer.com}

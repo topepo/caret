@@ -67,4 +67,3 @@ function(data, reference, negative = levels(reference)[2], prevalence = NULL, ..
   data <- as.table(data)
   negPredValue.table(data, prevalence = prevalence)
 }
-
