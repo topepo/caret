@@ -260,7 +260,7 @@ predict.avNNet <- function(
         dim(newdata) <- c(1, length(newdata))
       }
       x <- as.matrix(newdata)
-      if (any(is.na(x))) {
+      if (anyNA(x)) {
         stop("missing values in 'x'")
       }
       keep <- seq_len(nrow(x))

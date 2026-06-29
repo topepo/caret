@@ -174,7 +174,7 @@ stats <- function(dat) {
 }
 
 summ_stats <- function(x, cols) {
-  na_cols <- apply(x, 2, function(x) any(is.na(x)))
+  na_cols <- apply(x, 2, function(x) anyNA(x))
   na_col_names <- colnames(x)[na_cols]
   relevant_col_names <- intersect(na_col_names, cols)
   if (length(relevant_col_names) > 0)

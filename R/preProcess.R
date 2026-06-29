@@ -533,7 +533,7 @@ preProcess.default <- function(
       sd,
       na.rm = na.remove
     )
-    if (any(is.na(scaleValue))) {
+    if (anyNA(scaleValue)) {
       wrn <- paste(
         "Std. deviations could not be computed for:",
         paste(names(scaleValue)[which(is.na(scaleValue))], collapse = ", ")
@@ -639,7 +639,7 @@ preProcess.default <- function(
       na.rm = TRUE
     )
 
-    if (any(is.na(medianValue))) {
+    if (anyNA(medianValue)) {
       warning(
         paste(
           "These variables are never filled:",
@@ -849,7 +849,7 @@ predict.preProcess <- function(object, newdata, ...) {
   if (any(names(object$method) == "bagImpute") && any(!cc)) {
     requireNamespaceQuietStop("ipred")
     hasMiss <- newdata[!cc, , drop = FALSE]
-    missingVars <- apply(hasMiss, 2, function(x) any(is.na(x)))
+    missingVars <- apply(hasMiss, 2, function(x) anyNA(x))
     missingVars <- names(missingVars)[missingVars]
     ## ipred's bagging procedure only allows for data frames
     if (!is.data.frame(hasMiss)) {
@@ -878,7 +878,7 @@ predict.preProcess <- function(object, newdata, ...) {
   }
 
   if (any(names(object$method) == "medianImpute") && any(!cc)) {
-    missingVars <- apply(newdata, 2, function(x) any(is.na(x)))
+    missingVars <- apply(newdata, 2, function(x) anyNA(x))
     missingVars <- if (is.null(names(missingVars))) {
       which(missingVars)
     } else {
@@ -1427,7 +1427,7 @@ group_bc <- function(x, outcome = NULL, fudge, na.remove, numUnique, verbose) {
     )
   }
   lambdas <- unlist(lapply(bc, function(x) x$lambda))
-  if (any(is.na(lambdas))) {
+  if (anyNA(lambdas)) {
     bad_lambda <- lambdas[is.na(lambdas)]
     bad_lambda <- names(bad_lambda)
     if (verbose) {

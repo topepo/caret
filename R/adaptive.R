@@ -890,7 +890,7 @@ gls_eval <- function(x, metric, maximize, alpha = 0.05) {
       lvl2 <- 1 - (2*alpha) ## convert to one sided
       ci <- intervals(gls_fit, which = "coef", level = lvl2)$coef[,1]
       keepers <- ci <= 0
-      if(any(is.na(keepers))) keepers[is.na(keepers)] <- TRUE
+      if(anyNA(keepers)) keepers[is.na(keepers)] <- TRUE
       keepers <- names(ci)[keepers]
       keepers <- gsub("model_id", "", keepers)
     } else keepers <- levs
@@ -923,7 +923,7 @@ seq_eval <- function(x, metric, maximize, alpha = 0.05) {
     pvals <- pt(coef(fit)[, 3], fit$df[2], lower.tail = FALSE)
     names(pvals) <- gsub("model_id", "", names(pvals))
     keepers <- pvals >= alpha
-    if(any(is.na(keepers))) keepers[is.na(keepers)] <- TRUE
+    if(anyNA(keepers)) keepers[is.na(keepers)] <- TRUE
     keepers <- names(pvals)[keepers]
     keepers <- gsub("model_id", "", keepers)
   } else {

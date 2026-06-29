@@ -83,7 +83,7 @@ BoxCoxTrans <- function(y, ...) UseMethod("BoxCoxTrans")
 BoxCoxTrans.default <- function(y, x = rep(1, length(y)), fudge = 0.2, numUnique = 3,  na.rm = FALSE, ...) {
   requireNamespaceQuietStop("MASS")
   requireNamespaceQuietStop("e1071")
-  if(na.rm && (any(is.na(y)) | any(is.na(x)))) {
+  if(na.rm && (anyNA(y) | anyNA(x))) {
     rmv <- is.na(y) | is.na(x)
     y <- y[!rmv]
     x <- x[!rmv]

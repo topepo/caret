@@ -27,7 +27,7 @@ extractPrediction <- function(models,
   if(!is.null(testX))
   {
     #if(!is.data.frame(testX)) testX <- as.data.frame(testX)
-    hasNa <- apply(testX, 1, function(data) any(is.na(data)))
+    hasNa <- apply(testX, 1, function(data) anyNA(data))
     if(verbose) cat("There were ", sum(hasNa), "rows with missing values\n\n")
   }
   
