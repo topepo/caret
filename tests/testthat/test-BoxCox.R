@@ -19,14 +19,14 @@ test_that("BoxCox lambdas match MASS::boxcox", {
   skip_if_not_installed("MASS")
 
   exp_lambdas <- rep(NA, 3)
-  for (i in 1:ncol(dat)) {
+  for (i in seq_len(ncol(dat))) {
     tmp <- as.data.frame(dat, stringsAsFactors = TRUE)[, i, drop = FALSE]
     names(tmp)[1] <- "x"
     tmp_bc <- MASS::boxcox(
       x ~ 1,
       data = tmp,
       plotit = FALSE,
-      lambda = seq(-2, 2, by = .1)
+      lambda = seq(-2, 2, by = 0.1)
     )
     exp_lambdas[i] <- tmp_bc$x[which.max(tmp_bc$y)]
   }

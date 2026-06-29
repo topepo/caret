@@ -8,7 +8,7 @@ test_that('glmnet varImp returns non-negative values', {
     y ~ .,
     data = dat,
     method = "glmnet",
-    tuneGrid = data.frame(lambda = .1, alpha = .5),
+    tuneGrid = data.frame(lambda = 0.1, alpha = 0.5),
     trControl = trainControl(method = "none")
   )
 

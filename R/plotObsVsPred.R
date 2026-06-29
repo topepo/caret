@@ -115,9 +115,9 @@ plotObsVsPred <- function(object, equalRanges = TRUE, ...)
          xlim = xLimits, ylim = yLimits,
          panel = function(x, y, groups, subscripts, ...)
          {      
-            panel.xyplot(x, y,  cex = .6)
+            panel.xyplot(x, y,  cex = 0.6)
             panel.abline(0, 1, col = trellis.par.get("superpose.line")$col[1], lty = 2)            
-            panel.loess(x, y,  span = .75)
+            panel.loess(x, y,  span = 0.75)
          },
          xlab = "Predicted", ylab = "Observed", ...)
    }

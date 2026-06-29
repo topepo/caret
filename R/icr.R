@@ -153,7 +153,7 @@ predict.icr <- function(object, newdata, ...)
           x <- as.matrix(newdata)
           if (any(is.na(x)))
             stop("missing values in 'x'")
-          keep <- 1:nrow(x)
+          keep <- seq_len(nrow(x))
           rn <- rownames(x)
         }
       }

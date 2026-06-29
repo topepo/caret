@@ -199,7 +199,7 @@
 trainControl <- function(method = "boot",
                          number = ifelse(grepl("cv", method), 10, 25),
                          repeats = ifelse(grepl("[d_]cv$", method), 1, NA),
-                         p = .75,
+                         p = 0.75,
                          search = "grid",
                          initialWindow = NULL,
                          horizon = 1,
@@ -235,7 +235,7 @@ trainControl <- function(method = "boot",
     warning("`repeats` has no meaning for this resampling method.", call. = FALSE)
 
   if(!(adaptive$method %in% c("gls", "BT"))) stop("incorrect value of adaptive$method")
-  if(adaptive$alpha < .0000001 || adaptive$alpha > 1) stop("incorrect value of adaptive$alpha")
+  if(adaptive$alpha < 0.0000001 || adaptive$alpha > 1) stop("incorrect value of adaptive$alpha")
   if(grepl("adapt", method)) {
     num <- if(method == "adaptive_cv") number*repeats else number
     if(adaptive$min >= num) stop(paste("adaptive$min should be less than", num))

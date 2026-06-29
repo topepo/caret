@@ -227,7 +227,7 @@ plsda.default <- function(x, y, ncomp = 2, probMethod = "softmax", prior = NULL,
 
   if(!is.matrix(x)) x <- as.matrix(x)
 
-  tmpData <- data.frame(n = paste("row", 1:nrow(y), sep = ""))
+  tmpData <- data.frame(n = paste("row", seq_len(nrow(y)), sep = ""))
   tmpData$y <- y
   tmpData$x <- x
 

@@ -986,7 +986,7 @@ train.default <- function(
         as.character(models$parameters$parameter),
         drop = FALSE
       ]
-      performance$order <- 1:nrow(performance)
+      performance$order <- seq_len(nrow(performance))
       bestIter <- merge(performance, best_perf)$order
       performance$order <- NULL
     }
@@ -1184,7 +1184,7 @@ train.default <- function(
 
   if (trControl$timingSamps > 0) {
     pData <- x[
-      sample(1:nrow(x), trControl$timingSamps, replace = TRUE),
+      sample(seq_len(nrow(x)), trControl$timingSamps, replace = TRUE),
       ,
       drop = FALSE
     ]
@@ -1843,7 +1843,7 @@ train.recipe <- function(
         as.character(models$parameters$parameter),
         drop = FALSE
       ]
-      performance$order <- 1:nrow(performance)
+      performance$order <- seq_len(nrow(performance))
       bestIter <- merge(performance, best_perf)$order
       performance$order <- NULL
     }
@@ -2018,7 +2018,7 @@ train.recipe <- function(
 
   if (trControl$timingSamps > 0) {
     pData <- x_dat[
-      sample(1:nrow(x_dat), trControl$timingSamps, replace = TRUE),
+      sample(seq_len(nrow(x_dat)), trControl$timingSamps, replace = TRUE),
       ,
       drop = FALSE
     ]

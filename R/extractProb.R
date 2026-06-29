@@ -11,7 +11,7 @@ extractProb <- function(models,
 {
 
   objectNames <- names(models)
-  if(is.null(objectNames)) objectNames <- paste("Object", 1:length(models), sep = "")
+  if(is.null(objectNames)) objectNames <- paste("Object", seq_along(models), sep = "")
 
 
   if(any(unlist(lapply(models, function(x) is.null(x$modelInfo$prob)))))

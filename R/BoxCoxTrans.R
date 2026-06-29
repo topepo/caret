@@ -80,7 +80,7 @@ BoxCoxTrans <- function(y, ...) UseMethod("BoxCoxTrans")
 ## TODO add exclusion list to preProc?
 #' @rdname BoxCoxTrans
 #' @export
-BoxCoxTrans.default <- function(y, x = rep(1, length(y)), fudge = .2, numUnique = 3,  na.rm = FALSE, ...) {
+BoxCoxTrans.default <- function(y, x = rep(1, length(y)), fudge = 0.2, numUnique = 3,  na.rm = FALSE, ...) {
   requireNamespaceQuietStop("MASS")
   requireNamespaceQuietStop("e1071")
   if(na.rm && (any(is.na(y)) | any(is.na(x)))) {

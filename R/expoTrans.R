@@ -90,7 +90,7 @@ manlyLik <- function(lambda, x, neg = FALSE)
   y <- manly(x, lambda)
   v <- var(y, na.rm = TRUE)
   L1 <- lambda * sum(x, na.rm= TRUE)
-  L2 <- .5 * sum(y - mean(y, na.rm = TRUE))/v
+  L2 <- 0.5 * sum(y - mean(y, na.rm = TRUE))/v
   L3 <- sum(!is.na(x)) * log(sqrt(2*pi)*sqrt(v))
   out <- L1 - L2 - L3
   if(!is.finite(out) || is.na(out)) out <- .Machine$double.xmax

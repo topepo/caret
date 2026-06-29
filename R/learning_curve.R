@@ -69,7 +69,7 @@ learning_curve_dat <- function(dat,
 
   if(test_prop > 0) {
     for_model <- createDataPartition(dat[, outcome], p = 1 - test_prop, list = FALSE)
-  } else for_model <- 1:nrow(dat)
+  } else for_model <- seq_len(nrow(dat))
 
   n <- length(for_model)
 

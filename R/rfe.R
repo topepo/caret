@@ -854,7 +854,7 @@ rfeControl <- function(
   repeats = ifelse(method %in% c("cv", "repeatedcv"), 1, number),
   verbose = FALSE,
   returnResamp = "final",
-  p = .75,
+  p = 0.75,
   index = NULL,
   indexOut = NULL,
   timingSamps = 0,
@@ -1173,7 +1173,7 @@ gamFuncs <- list(
       out <- data.frame(
         p1 = rsp,
         p2 = 1 - rsp,
-        pred = factor(ifelse(rsp > .5, lvl[2], lvl[1]), levels = lvl)
+        pred = factor(ifelse(rsp > 0.5, lvl[2], lvl[1]), levels = lvl)
       )
       colnames(out)[1:2] <- make.names(lvl)
       out
@@ -1335,7 +1335,7 @@ lrFuncs$pred <- function(object, x) {
   tmp <- predict(object, x, type = "response")
   out <- data.frame(1 - tmp, tmp)
   colnames(out) <- lvl
-  out$pred <- factor(ifelse(tmp > .5, lvl[2], lvl[1]), levels = lvl)
+  out$pred <- factor(ifelse(tmp > 0.5, lvl[2], lvl[1]), levels = lvl)
   out
 }
 
@@ -2024,7 +2024,7 @@ rfe_rec <- function(
     numResamples <- length(rfeControl$index)
     bestSubset <-
       rfeControl$functions$selectSize(
-        x = subset(externPerf, Num_Resamples >= floor(.5 * numResamples)),
+        x = subset(externPerf, Num_Resamples >= floor(0.5 * numResamples)),
         metric = metric,
         maximize = maximize
       )
@@ -2155,7 +2155,7 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
         modelIndex <- resampleIndex[[iter]]
         holdoutIndex <- ctrl$indexOut[[iter]]
       } else {
-        modelIndex <- 1:nrow(data)
+        modelIndex <- seq_len(nrow(data))
         holdoutIndex <- modelIndex
       }
 
