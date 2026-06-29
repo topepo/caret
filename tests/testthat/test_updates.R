@@ -1,27 +1,23 @@
-# `diff_coef()` lives in helper-updates.R
+# `diff_coef()` and the shared `updates_dat` / `updates_y_ind` live in helper-updates.R
 
 # ------------------------------------------------------------------------------
 
 test_that("train updating", {
   skip_on_cran()
-  set.seed(3545)
-  dat <- SLC14_1(100)
-  y_ind <- which(names(dat) == "y")
-
   ctrl <- trainControl(method = "cv")
 
   lm_obj_form <- train(
     y ~ Var01 + Var02,
-    data = dat,
+    data = updates_dat,
     method = "lm",
     trControl = ctrl
   )
   lm_obj_form_2 <- update(lm_obj_form, list(intercept = FALSE))
   expect_length(lm_obj_form_2$finalModel$coefficients, 2)
 
-  rec <- recipe(y ~ Var01 + Var02, data = dat) %>%
+  rec <- recipe(y ~ Var01 + Var02, data = updates_dat) %>%
     step_mutate(Var01 = Var01 / 2)
-  lm_obj_rec <- train(rec, data = dat, method = "lm", trControl = ctrl)
+  lm_obj_rec <- train(rec, data = updates_dat, method = "lm", trControl = ctrl)
   lm_obj_rec_2 <- update(lm_obj_rec, list(intercept = FALSE))
   expect_length(lm_obj_rec_2$finalModel$coefficients, 2)
 })
@@ -31,17 +27,13 @@ test_that("train updating", {
 
 test_that("safs updating", {
   skip_on_cran()
-  set.seed(3545)
-  dat <- SLC14_1(100)
-  y_ind <- which(names(dat) == "y")
-
   ctrl <- safsControl(functions = caretSA, method = "cv", number = 3)
 
   set.seed(3997)
   sa_xy <-
     safs(
-      x = dat[, -y_ind],
-      y = dat$y,
+      x = updates_dat[, -updates_y_ind],
+      y = updates_dat$y,
       safsControl = ctrl,
       iters = 2,
       differences = FALSE,
@@ -49,17 +41,17 @@ test_that("safs updating", {
       trControl = trainControl(method = "cv")
     )
   new_iter <- ifelse(sa_xy$optIter == 1, 2, 1)
-  sa_xy_2 <- update(sa_xy, iter = new_iter, x = dat[, -y_ind], y = dat$y)
+  sa_xy_2 <- update(sa_xy, iter = new_iter, x = updates_dat[, -updates_y_ind], y = updates_dat$y)
   expect_true(diff_coef(sa_xy, sa_xy_2))
   expect_snapshot(update(sa_xy, iter = new_iter), error = TRUE)
 
-  rec <- recipe(y ~ ., data = dat) %>%
+  rec <- recipe(y ~ ., data = updates_dat) %>%
     step_mutate(Var01 = Var01 / 2)
   set.seed(3997)
   sa_rec <-
     safs(
       rec,
-      data = dat,
+      data = updates_dat,
       safsControl = ctrl,
       iters = 2,
       differences = FALSE,
@@ -77,17 +69,13 @@ test_that("safs updating", {
 
 test_that("gafs updating", {
   skip_on_cran()
-  set.seed(3545)
-  dat <- SLC14_1(100)
-  y_ind <- which(names(dat) == "y")
-
   ctrl <- gafsControl(functions = caretGA, method = "cv", number = 3)
 
   set.seed(3997)
   ga_xy <-
     gafs(
-      x = dat[, -y_ind],
-      y = dat$y,
+      x = updates_dat[, -updates_y_ind],
+      y = updates_dat$y,
       gafsControl = ctrl,
       popSize = 4,
       iters = 2,
@@ -96,17 +84,17 @@ test_that("gafs updating", {
       trControl = trainControl(method = "cv")
     )
   new_iter <- ifelse(ga_xy$optIter == 1, 2, 1)
-  ga_xy_2 <- update(ga_xy, iter = new_iter, x = dat[, -y_ind], y = dat$y)
+  ga_xy_2 <- update(ga_xy, iter = new_iter, x = updates_dat[, -updates_y_ind], y = updates_dat$y)
   expect_true(diff_coef(ga_xy, ga_xy_2))
   expect_snapshot(update(ga_xy, iter = new_iter), error = TRUE)
 
-  rec <- recipe(y ~ ., data = dat) %>%
+  rec <- recipe(y ~ ., data = updates_dat) %>%
     step_mutate(Var01 = Var01 / 2)
   set.seed(3997)
   ga_rec <-
     gafs(
       rec,
-      data = dat,
+      data = updates_dat,
       gafsControl = ctrl,
       popSize = 4,
       iters = 2,
@@ -126,17 +114,13 @@ test_that("gafs updating", {
 
 test_that("rfe updating", {
   skip_on_cran()
-  set.seed(3545)
-  dat <- SLC14_1(100)
-  y_ind <- which(names(dat) == "y")
-
   ctrl <- rfeControl(functions = caretFuncs, method = "cv", number = 3)
 
   set.seed(3997)
   rfe_xy <-
     rfe(
-      x = dat[, -y_ind],
-      y = dat$y,
+      x = updates_dat[, -updates_y_ind],
+      y = updates_dat$y,
       rfeControl = ctrl,
       sizes = 1:5,
       method = "lm",
@@ -146,20 +130,20 @@ test_that("rfe updating", {
     rfe_xy_2 <- update(
       rfe_xy,
       size = 5,
-      x = dat[, -y_ind],
-      y = dat$y
+      x = updates_dat[, -updates_y_ind],
+      y = updates_dat$y
     )
   )
   expect_length(rfe_xy_2$fit$finalModel$coefficients, 6)
   expect_snapshot(update(rfe_xy, size = 5), error = TRUE)
 
-  rec <- recipe(y ~ ., data = dat) %>%
+  rec <- recipe(y ~ ., data = updates_dat) %>%
     step_mutate(Var01 = Var01 / 2)
   set.seed(3997)
   rfe_rec <-
     rfe(
       rec,
-      data = dat,
+      data = updates_dat,
       rfeControl = ctrl,
       sizes = 1:5,
       method = "lm",
