@@ -17,7 +17,6 @@ asNumeric <- function(data){
 #'
 #' Specific engines for variable importance on a model by model basis.
 #'
-#'
 #' The importance of each predictor is evaluated individually using a
 #' ``filter'' approach.
 #'
@@ -33,39 +32,40 @@ asNumeric <- function(data){
 #' pair-wise AUC's is used as the variable importance measure.
 #'
 #' For regression, the relationship between each predictor and the outcome is
-#' evaluated. An argument, \code{nonpara}, is used to pick the model fitting
-#' technique. When \code{nonpara = FALSE}, a linear model is fit and the
-#' absolute value of the $t$-value for the slope of the predictor is used.
-#' Otherwise, a loess smoother is fit between the outcome and the predictor.
-#' The $R^2$ statistic is calculated for this model against the intercept only
-#' null model.
+#' evaluated. An argument, `nonpara`, is used to pick the model fitting
+#' technique. When `nonpara = FALSE`, a linear model is fit and the absolute
+#' value of the $t$-value for the slope of the predictor is used. Otherwise, a
+#' loess smoother is fit between the outcome and the predictor. The $R^2$
+#' statistic is calculated for this model against the intercept only null
+#' model.
 #'
 #' @param x A matrix or data frame of predictor data
 #' @param y A vector (numeric or factor) of outcomes)
 #' @param nonpara should nonparametric methods be used to assess the
-#' relationship between the features and response
-#' @param ... options to pass to either \code{\link[stats]{lm}} or
-#' \code{\link[stats]{loess}}
+#'   relationship between the features and response
+#' @param ... options to pass to either [stats::lm()] or [stats::loess()]
 #' @return A data frame with variable importances. Column names depend on the
-#' problem type.  For regression, the data frame contains one column: "Overall"
-#' for the importance values.
+#'   problem type.  For regression, the data frame contains one column:
+#'   "Overall" for the importance values.
 #' @author Max Kuhn
 #' @keywords models
 #' @examples
-#'
+#' 
 #' data(mdrr)
 #' filterVarImp(mdrrDescr[, 1:5], mdrrClass)
-#'
+#' 
 #' data(BloodBrain)
-#'
+#' 
 #' filterVarImp(bbbDescr[, 1:5], logBBB, nonpara = FALSE)
-#' apply(bbbDescr[, 1:5],
-#'       2,
-#'       function(x, y) summary(lm(y~x))$coefficients[2,3],
-#'       y = logBBB)
-#'
+#' apply(
+#'   bbbDescr[, 1:5],
+#'   2,
+#'   function(x, y) summary(lm(y ~ x))$coefficients[2, 3],
+#'   y = logBBB
+#' )
+#' 
 #' filterVarImp(bbbDescr[, 1:5], logBBB, nonpara = TRUE)
-#'
+#' 
 #' @export filterVarImp
 #' @importFrom stats loess resid
 #' @importFrom utils combn

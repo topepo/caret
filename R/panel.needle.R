@@ -1,25 +1,23 @@
 #' Needle Plot Lattice Panel
-#' 
-#' A variation of \code{panel.dotplot} that plots horizontal lines from zero to
-#' the data point.
-#' 
-#' Creates (possibly grouped) needleplot of \code{x} against \code{y} or vice
-#' versa
-#' 
+#'
+#' A variation of `panel.dotplot` that plots horizontal lines from zero to the
+#' data point.
+#'
+#' Creates (possibly grouped) needleplot of `x` against `y` or vice versa
+#'
 #' @param x,y variables to be plotted in the panel. Typically y is the 'factor'
 #' @param horizontal logical. If FALSE, the plot is `transposed' in the sense
-#' that the behaviours of x and y are switched. x is now the `factor'.
-#' Interpretation of other arguments change accordingly. See documentation of
-#' \code{bwplot} for a fuller explanation.
+#'   that the behaviours of x and y are switched. x is now the `factor'.
+#'   Interpretation of other arguments change accordingly. See documentation of
+#'   `bwplot` for a fuller explanation.
 #' @param pch,col,lty,lwd,col.line graphical parameters
 #' @param levels.fos locations where reference lines will be drawn
 #' @param groups grouping variable (affects graphical parameters)
-#' @param \dots extra parameters, passed to \code{panel.xyplot} which is
-#' responsible for drawing the foreground points (\code{panel.dotplot} only
-#' draws the background reference lines).
-#' @author Max Kuhn, based on \code{\link[lattice]{panel.dotplot}} by Deepayan
-#' Sarkar
-#' @seealso \code{\link{dotplot}}
+#' @param \dots extra parameters, passed to `panel.xyplot` which is responsible
+#'   for drawing the foreground points (`panel.dotplot` only draws the
+#'   background reference lines).
+#' @author Max Kuhn, based on [lattice::panel.dotplot()] by Deepayan Sarkar
+#' @seealso [dotplot()]
 #' @keywords graphs
 #' @export panel.needle
 "panel.needle" <-
@@ -58,4 +56,3 @@
       else panel.superpose(x = x, y = y, groups = groups, col = col, pch = pch, ...)
     }
   }
-

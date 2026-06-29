@@ -22,16 +22,15 @@ sbf(x, ...)
 \item{x}{a data frame containing training data where samples are in rows and
 features are in columns. For the recipes method, \code{x} is a recipe object.}
 
-\item{\dots}{for \code{sbf}: arguments passed to the classification or
-regression routine (such as \code{\link[randomForest]{randomForest}}). For
-\code{predict.sbf}: augments cannot be passed to the prediction function
-using \code{predict.sbf} as it uses the function originally specified for
-prediction.}
+\item{\dots}{for \code{sbf}: arguments passed to the classification or regression
+routine (such as \code{\link[randomForest:randomForest]{randomForest::randomForest()}}). For \code{predict.sbf}:
+augments cannot be passed to the prediction function using \code{predict.sbf}
+as it uses the function originally specified for prediction.}
 
 \item{y}{a numeric or factor vector containing the outcome for each sample.}
 
 \item{sbfControl}{a list of values that define how this function acts. See
-\code{\link{sbfControl}}. (NOTE: If given, this argument must be named.)}
+\code{\link[=sbfControl]{sbfControl()}}. (NOTE: If given, this argument must be named.)}
 
 \item{form}{A formula of the form \code{y ~ x1 + x2 + ...}}
 
@@ -56,18 +55,23 @@ non-null column names}
 }
 \value{
 for \code{sbf}, an object of class \code{sbf} with elements:
-\item{pred}{if \code{sbfControl$saveDetails} is \code{TRUE}, this is a list
-of predictions for the hold-out samples at each resampling iteration.
-Otherwise it is \code{NULL}} \item{variables}{a list of variable names that
-survived the filter at each resampling iteration} \item{results}{a data
-frame of results aggregated over the resamples} \item{fit}{the final model
-fit with only the filtered variables} \item{optVariables}{the names of the
-variables that survived the filter using the training set} \item{ call}{the
-function call} \item{control}{the control object} \item{resample}{if
-\code{sbfControl$returnResamp} is "all", a data frame of the resampled
-performance measures. Otherwise, \code{NULL}} \item{metrics}{a character
-vector of names of the performance measures} \item{dots}{a list of optional
-arguments that were passed in}
+\itemize{
+\item \code{pred}: if \code{sbfControl$saveDetails} is \code{TRUE}, this is a list of
+predictions for the hold-out samples at each resampling iteration.
+Otherwise it is \code{NULL}
+\item \code{variables}: a list of variable names that survived the filter at each
+resampling iteration
+\item \code{results}: a data frame of results aggregated over the resamples
+\item \code{fit}: the final model fit with only the filtered variables
+\item \code{optVariables}: the names of the variables that survived the filter using
+the training set
+\item \code{call}: the function call
+\item \code{control}: the control object
+\item \code{resample}: if \code{sbfControl$returnResamp} is "all", a data frame of the
+resampled performance measures. Otherwise, \code{NULL}
+\item \code{metrics}: a character vector of names of the performance measures
+\item \code{dots}: a list of optional arguments that were passed in
+}
 
 For \code{predict.sbf}, a vector of predictions.
 }
@@ -86,32 +90,31 @@ filtered prior to modeling. Performance of this approach is estimated using
 resampling. The same filter and model are then applied to the entire
 training set and the final model (and final features) are saved.
 
-\code{sbf} can be used with "explicit parallelism", where different
-resamples (e.g. cross-validation group) can be split up and run on multiple
-machines or processors. By default, \code{sbf} will use a single processor
-on the host machine. As of version 4.99 of this package, the framework used
-for parallel processing uses the \pkg{foreach} package. To run the resamples
-in parallel, the code for \code{sbf} does not change; prior to the call to
-\code{sbf}, a parallel backend is registered with \pkg{foreach} (see the
-examples below).
+\code{sbf} can be used with "explicit parallelism", where different resamples
+(e.g. cross-validation group) can be split up and run on multiple machines
+or processors. By default, \code{sbf} will use a single processor on the host
+machine. As of version 4.99 of this package, the framework used for parallel
+processing uses the \pkg{foreach} package. To run the resamples in parallel,
+the code for \code{sbf} does not change; prior to the call to \code{sbf}, a parallel
+backend is registered with \pkg{foreach} (see the examples below).
 
-The modeling and filtering techniques are specified in
-\code{\link{sbfControl}}. Example functions are given in
-\code{\link{lmSBF}}.
+The modeling and filtering techniques are specified in \code{\link[=sbfControl]{sbfControl()}}.
+Example functions are given in \code{\link[=lmSBF]{lmSBF()}}.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 data(BloodBrain)
 
 ## Use a GAM is the filter, then fit a random forest model
-RFwithGAM <- sbf(bbbDescr, logBBB,
-                 sbfControl = sbfControl(functions = rfSBF,
-                                         verbose = FALSE,
-                                         method = "cv"))
+RFwithGAM <- sbf(
+  bbbDescr,
+  logBBB,
+  sbfControl = sbfControl(functions = rfSBF, verbose = FALSE, method = "cv")
+)
 RFwithGAM
 
-predict(RFwithGAM, bbbDescr[1:10,])
+predict(RFwithGAM, bbbDescr[1:10, ])
 
 ## classification example with parallel processing
 
@@ -123,24 +126,34 @@ predict(RFwithGAM, bbbDescr[1:10,])
 ## registerDoMC(cores = 2)
 
 data(mdrr)
-mdrrDescr <- mdrrDescr[,-nearZeroVar(mdrrDescr)]
+mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
 mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .8)]
 
 set.seed(1)
-filteredNB <- sbf(mdrrDescr, mdrrClass,
-                 sbfControl = sbfControl(functions = nbSBF,
-                                         verbose = FALSE,
-                                         method = "repeatedcv",
-                                         repeats = 5))
+filteredNB <- sbf(
+  mdrrDescr,
+  mdrrClass,
+  sbfControl = sbfControl(
+    functions = nbSBF,
+    verbose = FALSE,
+    method = "repeatedcv",
+    repeats = 5,
+    saveDetails = TRUE
+  )
+)
 confusionMatrix(filteredNB)
-}
-
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link{sbfControl}}
+\code{\link[=sbfControl]{sbfControl()}}
+
+Other feature-selection:
+\code{\link[=gafsControl]{gafsControl()}},
+\code{\link[=predict.gafs]{predict.gafs()}},
+\code{\link[=rfe]{rfe()}}
 }
 \author{
 Max Kuhn
 }
+\concept{feature-selection}
 \keyword{models}

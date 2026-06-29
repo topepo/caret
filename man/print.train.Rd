@@ -14,14 +14,13 @@
 )
 }
 \arguments{
-\item{x}{an object of class \code{\link{train}}.}
+\item{x}{an object of class \code{\link[=train]{train()}}.}
 
 \item{printCall}{a logical to print the call at the top of the output}
 
 \item{details}{a logical to show print or summary methods for the final
-model. In some cases (such as \code{gbm}, \code{knn}, \code{lvq}, naive
-Bayes and bagged tree models), no information will be printed even if
-\code{details = TRUE}}
+model. In some cases (such as \code{gbm}, \code{knn}, \code{lvq}, naive Bayes and bagged
+tree models), no information will be printed even if \code{details = TRUE}}
 
 \item{selectCol}{a logical whether to add a column with a star next to the
 selected parameters}
@@ -29,39 +28,50 @@ selected parameters}
 \item{showSD}{a logical whether to show the standard deviation of the
 resampling results within parentheses (e.g. "4.24 (0.493)")}
 
-\item{\dots}{options passed to \code{\link[base]{format}}}
+\item{\dots}{options passed to \code{\link[base:format]{base::format()}}}
 }
 \value{
 A matrix with the complexity parameters and performance (invisibly).
 }
 \description{
-Print the results of a \code{\link{train}} object.
+Print the results of a \code{\link[=train]{train()}} object.
 }
 \details{
 The table of complexity parameters used, their resampled performance and a
 flag for which rows are optimal.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 data(iris)
-TrainData <- iris[,1:4]
-TrainClasses <- iris[,5]
+TrainData <- iris[, 1:4]
+TrainClasses <- iris[, 5]
 
 options(digits = 3)
 
 library(klaR)
-rdaFit <- train(TrainData, TrainClasses, method = "rda",
-                control = trainControl(method = "cv"))
+rdaFit <- train(
+  TrainData,
+  TrainClasses,
+  method = "rda",
+  control = trainControl(method = "cv")
+)
 rdaFit
 print(rdaFit, showSD = TRUE)
-}
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link{train}}
+\code{\link[=train]{train()}}
+
+Other train:
+\code{\link[=extractPrediction]{extractPrediction()}},
+\code{\link[=ggplot.train]{ggplot.train()}},
+\code{\link[=train]{train()}},
+\code{\link[=trainControl]{trainControl()}},
+\code{\link[=varImp]{varImp()}}
 }
 \author{
 Max Kuhn
 }
+\concept{train}
 \keyword{print}

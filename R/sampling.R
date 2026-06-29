@@ -1,8 +1,8 @@
 #' Down- and Up-Sampling Imbalanced Data
 #'
-#' \code{downSample} will randomly sample a data set so that all classes have
-#' the same frequency as the minority class. \code{upSample} samples with
-#' replacement to make the class distributions equal
+#' `downSample` will randomly sample a data set so that all classes have the
+#' same frequency as the minority class. `upSample` samples with replacement to
+#' make the class distributions equal
 #'
 #' Simple random sampling is used to down-sample for the majority class(es).
 #' Note that the minority class data are left intact and that the samples will
@@ -14,23 +14,21 @@
 #' @aliases downSample upSample
 #' @param x a matrix or data frame of predictor variables
 #' @param y a factor variable with the class memberships
-#' @param list should the function return \code{list(x, y)} or bind \code{x}
-#' and \code{y} together? If \code{FALSE}, the output will be coerced to a data
-#' frame.
-#' @param yname if \code{list = FALSE}, a label for the class column
-#' @return Either a data frame or a list with elements \code{x} and \code{y}.
+#' @param list should the function return `list(x, y)` or bind `x` and `y`
+#'   together? If `FALSE`, the output will be coerced to a data frame.
+#' @param yname if `list = FALSE`, a label for the class column
+#' @return Either a data frame or a list with elements `x` and `y`.
 #' @author Max Kuhn
 #' @keywords utilities
 #' @examples
-#'
+#' 
 #' ## A ridiculous example...
 #' data(oil)
 #' table(oilType)
 #' downSample(fattyAcids, oilType)
-#'
+#' 
 #' upSample(fattyAcids, oilType)
-#'
-#'
+#' 
 #' @export downSample
 downSample <- function(x, y, list = FALSE, yname = "Class") {
   if (!is.data.frame(x)) {
@@ -104,7 +102,6 @@ upSample <- function(x, y, list = FALSE, yname = "Class") {
   }
   out
 }
-
 
 
 

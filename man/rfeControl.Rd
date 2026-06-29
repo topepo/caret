@@ -28,8 +28,14 @@ variable importance (see Details below)}
 \item{rerank}{a logical: should variable importance be re-calculated each
 time features are removed?}
 
-\item{method}{The external resampling method: \code{boot}, \code{cv},
-\code{LOOCV} or \code{LGOCV} (for repeated training/test splits}
+\item{method}{The resampling method: \code{"boot"}, \code{"boot632"},
+\code{"optimism_boot"}, \code{"boot_all"}, \code{"cv"}, \code{"repeatedcv"}, \code{"LOOCV"},
+\code{"LGOCV"} (for repeated training/test splits), \code{"none"} (only fits one
+model to the entire training set), \code{"oob"} (only for random forest, bagged
+trees, bagged earth, bagged flexible discriminant analysis, or conditional
+tree forest models), \code{"timeslice"}, \code{"adaptive_cv"}, \code{"adaptive_boot"}, or
+\code{"adaptive_LGOCV"}. Not all methods are available for all control
+functions; see Details.}
 
 \item{saveDetails}{a logical to save the predictions and variable
 importances from the selection process}
@@ -43,8 +49,8 @@ complete sets of folds to compute}
 iteration}
 
 \item{returnResamp}{A character string indicating how much of the resampled
-summary metrics should be saved. Values can be ``final'', ``all'' or
-``none''}
+summary metrics should be saved. Values can be \code{"final"}, \code{"all"} or
+\code{"none"}}
 
 \item{p}{For leave-group out cross-validation: the training percentage}
 
@@ -52,23 +58,23 @@ summary metrics should be saved. Values can be ``final'', ``all'' or
 Each list element is the sample rows used for training at that iteration.}
 
 \item{indexOut}{a list (the same length as \code{index}) that dictates which
-sample are held-out for each resample. If \code{NULL}, then the unique set
-of samples not contained in \code{index} is used.}
+sample are held-out for each resample. If \code{NULL}, then the unique set of
+samples not contained in \code{index} is used.}
 
 \item{timingSamps}{the number of training set samples that will be used to
-measure the time for predicting samples (zero indicates that the prediction
-time should not be estimated).}
+measure the time for predicting samples (zero indicates that the
+prediction time should not be estimated.}
 
 \item{seeds}{an optional set of integers that will be used to set the seed
 at each resampling iteration. This is useful when the models are run in
 parallel. A value of \code{NA} will stop the seed from being set within the
-worker processes while a value of \code{NULL} will set the seeds using a
-random set of integers. Alternatively, a list can be used. The list should
-have \code{B+1} elements where \code{B} is the number of resamples. The
-first \code{B} elements of the list should be vectors of integers of length
-\code{P} where \code{P} is the number of subsets being evaluated (including
-the full set). The last element of the list only needs to be a single
-integer (for the final model). See the Examples section below.}
+worker processes while a value of \code{NULL} will set the seeds using a random
+set of integers. Alternatively, a list can be used. The list should have
+\code{B+1} elements where \code{B} is the number of resamples. The first \code{B}
+elements of the list should be vectors of integers of length \code{M} where \code{M}
+is the number of models or subsets being evaluated. The last element of
+the list only needs to be a single integer (for the final model). See the
+Examples section below and the Details section.}
 
 \item{allowParallel}{if a parallel backend is loaded and available, should
 the function use it?}
@@ -87,63 +93,82 @@ More details on this function can be found at
 Backwards selection requires function to be specified for some operations.
 
 The \code{fit} function builds the model based on the current data set. The
-arguments for the function must be: \itemize{ \item\code{x} the current
-training set of predictor data with the appropriate subset of variables
-\item\code{y} the current outcome data (either a numeric or factor vector)
-\item\code{first} a single logical value for whether the current predictor
-set has all possible variables \item\code{last} similar to \code{first}, but
-\code{TRUE} when the last model is fit with the final subset size and
-predictors.  \item\code{...}optional arguments to pass to the fit function
-in the call to \code{rfe} } The function should return a model object that
-can be used to generate predictions.
+arguments for the function must be:
+\itemize{
+\item \code{x} the current training set of predictor data with the appropriate
+subset of variables
+\item \code{y} the current outcome data (either a numeric or factor vector)
+\item \code{first} a single logical value for whether the current predictor
+set has all possible variables
+\item \code{last} similar to \code{first}, but \code{TRUE} when the last model is fit
+with the final subset size and predictors.
+\item \code{...} optional arguments to pass to the fit function in the call to
+\code{rfe}
+}
 
-The \code{pred} function returns a vector of predictions (numeric or
-factors) from the current model. The arguments are: \itemize{
-\item\code{object} the model generated by the \code{fit} function
-\item\code{x} the current set of predictor set for the held-back samples }
+The function should return a model object that can be used to generate
+predictions.
 
-The \code{rank} function is used to return the predictors in the order of
-the most important to the least important. Inputs are: \itemize{
-\item\code{object} the model generated by the \code{fit} function
-\item\code{x} the current set of predictor set for the training samples
-\item\code{y} the current training outcomes } The function should return a
-data frame with a column called \code{var} that has the current variable
-names. The first row should be the most important predictor etc. Other
-columns can be included in the output and will be returned in the final
-\code{rfe} object.
+The \code{pred} function returns a vector of predictions (numeric or factors)
+from the current model. The arguments are:
+\itemize{
+\item \code{object} the model generated by the \code{fit} function
+\item \code{x} the current set of predictor set for the held-back samples
+}
+
+The \code{rank} function is used to return the predictors in the order of the
+most important to the least important. Inputs are:
+\itemize{
+\item \code{object} the model generated by the \code{fit} function
+\item \code{x} the current set of predictor set for the training samples
+\item \code{y} the current training outcomes
+}
+
+The function should return a data frame with a column called \code{var} that
+has the current variable names. The first row should be the most important
+predictor etc. Other columns can be included in the output and will be
+returned in the final \code{rfe} object.
 
 The \code{selectSize} function determines the optimal number of predictors
-based on the resampling output. Inputs for the function are: \itemize{
-\item\code{x}a matrix with columns for the performance metrics and the
-number of variables, called "\code{Variables}" \item\code{metric}a character
-string of the performance measure to optimize (e.g. "RMSE", "Rsquared",
-"Accuracy" or "Kappa") \item\code{maximize}a single logical for whether the
-metric should be maximized } This function should return an integer
-corresponding to the optimal subset size. \pkg{caret} comes with two
-examples functions for this purpose: \code{\link{pickSizeBest}} and
-\code{\link{pickSizeTolerance}}.
+based on the resampling output. Inputs for the function are:
+\itemize{
+\item \code{x} a matrix with columns for the performance metrics and the
+number of variables, called "\code{Variables}"
+\item \code{metric} a character string of the performance measure to optimize
+(e.g. "RMSE", "Rsquared", "Accuracy" or "Kappa")
+\item \code{maximize} a single logical for whether the metric should be
+maximized
+}
+
+This function should return an integer corresponding to the optimal
+subset size. \pkg{caret} comes with two examples functions for this
+purpose: \code{\link[=pickSizeBest]{pickSizeBest()}} and \code{\link[=pickSizeTolerance]{pickSizeTolerance()}}.
 
 After the optimal subset size is determined, the \code{selectVar} function
-will be used to calculate the best rankings for each variable across all the
-resampling iterations. Inputs for the function are: \itemize{ \item\code{y}
-a list of variables importance for each resampling iteration and each subset
-size (generated by the user-defined \code{rank} function). In the example,
-each each of the cross-validation groups the output of the \code{rank}
-function is saved for each of the subset sizes (including the original
-subset). If the rankings are not recomputed at each iteration, the values
-will be the same within each cross-validation iteration.  \item\code{size}
-the integer returned by the \code{selectSize} function } This function
-should return a character string of predictor names (of length \code{size})
-in the order of most important to least important
+will be used to calculate the best rankings for each variable across all
+the resampling iterations. Inputs for the function are:
+\itemize{
+\item \code{y} a list of variables importance for each resampling iteration
+and each subset size (generated by the user-defined \code{rank}
+function). In the example, each of the cross-validation groups the
+output of the \code{rank} function is saved for each of the subset sizes
+(including the original subset). If the rankings are not recomputed
+at each iteration, the values will be the same within each
+cross-validation iteration.
+\item \code{size} the integer returned by the \code{selectSize} function
+}
 
-Examples of these functions are included in the package:
-\code{\link{lmFuncs}}, \code{\link{rfFuncs}}, \code{\link{treebagFuncs}} and
-\code{\link{nbFuncs}}.
+This function should return a character string of predictor names (of
+length \code{size}) in the order of most important to least important
+
+Examples of these functions are included in the package: \code{\link[=lmFuncs]{lmFuncs()}},
+\code{\link[=rfFuncs]{rfFuncs()}}, \code{\link[=treebagFuncs]{treebagFuncs()}} and \code{\link[=nbFuncs]{nbFuncs()}}.
 
 Model details about these functions, including examples, are at
 \url{http://topepo.github.io/caret/recursive-feature-elimination.html}. .
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
   \dontrun{
 subsetSizes <- c(2, 4, 6, 8)
@@ -159,12 +184,11 @@ rfMod <- rfe(bbbDescr, logBBB,
                                      seeds = seeds,
                                      number = 50))
   }
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link{rfe}}, \code{\link{lmFuncs}}, \code{\link{rfFuncs}},
-\code{\link{treebagFuncs}}, \code{\link{nbFuncs}},
-\code{\link{pickSizeBest}}, \code{\link{pickSizeTolerance}}
+\code{\link[=rfe]{rfe()}}, \code{\link[=lmFuncs]{lmFuncs()}}, \code{\link[=rfFuncs]{rfFuncs()}}, \code{\link[=treebagFuncs]{treebagFuncs()}}, \code{\link[=nbFuncs]{nbFuncs()}},
+\code{\link[=pickSizeBest]{pickSizeBest()}}, \code{\link[=pickSizeTolerance]{pickSizeTolerance()}}
 }
 \author{
 Max Kuhn

@@ -76,8 +76,8 @@ specificity(data, ...)
 }
 \arguments{
 \item{data}{for the default functions, a factor containing the discrete
-measurements. For the \code{table} or \code{matrix} functions, a table or
-matric object, respectively.}
+measurements. For the \code{table} or \code{matrix} functions, a table or matric
+object, respectively.}
 
 \item{...}{not currently used}
 
@@ -109,8 +109,8 @@ The sensitivity is defined as the proportion of positive results out of the
 number of samples which were actually positive. When there are no positive
 results, sensitivity is not defined and a value of \code{NA} is returned.
 Similarly, when there are no negative results, specificity is not defined
-and a value of \code{NA} is returned. Similar statements are true for
-predictive values.
+and a value of \code{NA} is returned. Similar statements are true for predictive
+values.
 
 The positive predictive value is defined as the percent of predicted
 positives that are actually positive while the negative predictive value is
@@ -130,19 +130,20 @@ Prevalence)/((sensitivity*Prevalence) + ((1-specificity)*(1-Prevalence)))}
 See the references for discussions of the statistics.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 ###################
 ## 2 class example
 
 lvs <- c("normal", "abnormal")
-truth <- factor(rep(lvs, times = c(86, 258)),
-                levels = rev(lvs))
+truth <- factor(rep(lvs, times = c(86, 258)), levels = rev(lvs))
 pred <- factor(
-               c(
-                 rep(lvs, times = c(54, 32)),
-                 rep(lvs, times = c(27, 231))),
-               levels = rev(lvs))
+  c(
+    rep(lvs, times = c(54, 32)),
+    rep(lvs, times = c(27, 231))
+  ),
+  levels = rev(lvs)
+)
 
 xtab <- table(pred, truth)
 
@@ -156,27 +157,31 @@ negPredValue(pred, truth)
 negPredValue(xtab)
 negPredValue(pred, truth, prevalence = 0.25)
 
-
 prev <- seq(0.001, .99, length = 20)
-npvVals <- ppvVals <- prev  * NA
-for(i in seq(along.with = prev))
-  {
-    ppvVals[i] <- posPredValue(pred, truth, prevalence = prev[i])
-    npvVals[i] <- negPredValue(pred, truth, prevalence = prev[i])
-  }
+npvVals <- ppvVals <- prev * NA
+for (i in seq(along.with = prev)) {
+  ppvVals[i] <- posPredValue(pred, truth, prevalence = prev[i])
+  npvVals[i] <- negPredValue(pred, truth, prevalence = prev[i])
+}
 
-plot(prev, ppvVals,
-     ylim = c(0, 1),
-     type = "l",
-     ylab = "",
-     xlab = "Prevalence (i.e. prior)")
+plot(
+  prev,
+  ppvVals,
+  ylim = c(0, 1),
+  type = "l",
+  ylab = "",
+  xlab = "Prevalence (i.e. prior)"
+)
 points(prev, npvVals, type = "l", col = "red")
-abline(h=sensitivity(pred, truth), lty = 2)
-abline(h=specificity(pred, truth), lty = 2, col = "red")
-legend(.5, .5,
-       c("ppv", "npv", "sens", "spec"),
-       col = c("black", "red", "black", "red"),
-       lty = c(1, 1, 2, 2))
+abline(h = sensitivity(pred, truth), lty = 2)
+abline(h = specificity(pred, truth), lty = 2, col = "red")
+legend(
+  .5,
+  .5,
+  c("ppv", "npv", "sens", "spec"),
+  col = c("black", "red", "black", "red"),
+  lty = c(1, 1, 2, 2)
+)
 
 ###################
 ## 3 class example
@@ -190,30 +195,35 @@ irisTabs <- table(model, iris$Species)
 
 ## When passing factors, an error occurs with more
 ## than two levels
-sensitivity(model, iris$Species)
+try(sensitivity(model, iris$Species))
 
 ## When passing a table, more than two levels can
 ## be used
 sensitivity(irisTabs, "versicolor")
 specificity(irisTabs, c("setosa", "virginica"))
-}
-
+\dontshow{\}) # examplesIf}
 }
 \references{
-Kuhn, M. (2008), ``Building predictive models in R using the
-caret package, '' \emph{Journal of Statistical Software},
+Kuhn, M. (2008), "Building Predictive Models in R Using the
+caret Package," \emph{Journal of Statistical Software}, 28(5), 1-26.
 (\doi{10.18637/jss.v028.i05}).
 
-Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 1: sensitivity and
-specificity,'' \emph{British Medical Journal}, vol 308, 1552.
+Altman, D.G., Bland, J.M. (1994) "Diagnostic tests 1: sensitivity and
+specificity," \emph{British Medical Journal}, vol 308, 1552.
 
-Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 2: predictive values,''
+Altman, D.G., Bland, J.M. (1994) "Diagnostic tests 2: predictive values,"
 \emph{British Medical Journal}, vol 309, 102.
 }
 \seealso{
-\code{\link{confusionMatrix}}
+\code{\link[=confusionMatrix]{confusionMatrix()}}
+
+Other performance:
+\code{\link[=confusionMatrix]{confusionMatrix()}},
+\code{\link[=defaultSummary]{defaultSummary()}},
+\code{\link[=recall]{recall()}}
 }
 \author{
 Max Kuhn
 }
+\concept{performance}
 \keyword{manip}

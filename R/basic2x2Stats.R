@@ -8,4 +8,3 @@ basic2x2Stats <- function(x, y, pos, neg)
    names(out) <- c("Sensitivity", "Specificity", "Pos Pred Value", "Neg Pred Value")
    out
 }
-

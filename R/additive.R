@@ -43,4 +43,3 @@ additivePlot <- function(x, data, n = 100, quant = 0, plot = TRUE, ...)
       } else out <- predGrid
     out
   }
-

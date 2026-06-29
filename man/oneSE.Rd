@@ -16,11 +16,11 @@ least complex models to the mst complex}
 
 \item{metric}{a string that specifies what summary metric will be used to
 select the optimal model. By default, possible values are "RMSE" and
-"Rsquared" for regression and "Accuracy" and "Kappa" for classification. If
-custom performance metrics are used (via the \code{summaryFunction} argument
-in \code{\link{trainControl}}, the value of \code{metric} should match one
-of the arguments. If it does not, a warning is issued and the first metric
-given by the \code{summaryFunction} is used.}
+"Rsquared" for regression and "Accuracy" and "Kappa" for classification.
+If custom performance metrics are used (via the \code{summaryFunction} argument
+in \code{\link[=trainControl]{trainControl()}}, the value of \code{metric} should match one of the
+arguments. If it does not, a warning is issued and the first metric given
+by the \code{summaryFunction} is used.}
 
 \item{num}{the number of resamples (for \code{oneSE} only)}
 
@@ -35,38 +35,37 @@ a row index
 Various functions for setting tuning parameters
 }
 \details{
-These functions can be used by \code{\link{train}} to select the "optimal"
-model from a series of models. Each requires the user to select a metric
-that will be used to judge performance. For regression models, values of
-\code{"RMSE"} and \code{"Rsquared"} are applicable. Classification models
-use either \code{"Accuracy"} or \code{"Kappa"} (for unbalanced class
-distributions.
+These functions can be used by \code{\link[=train]{train()}} to select the "optimal" model from
+a series of models. Each requires the user to select a metric that will be
+used to judge performance. For regression models, values of \code{"RMSE"} and
+\code{"Rsquared"} are applicable. Classification models use either \code{"Accuracy"}
+or \code{"Kappa"} (for unbalanced class distributions.
 
 More details on these functions can be found at
 \url{http://topepo.github.io/caret/model-training-and-tuning.html#custom}.
 
-By default, \code{\link{train}} uses \code{best}.
+By default, \code{\link[=train]{train()}} uses \code{best}.
 
-\code{best} simply chooses the tuning parameter associated with the largest
-(or lowest for \code{"RMSE"}) performance.
+\code{best} simply chooses the tuning parameter associated with the largest (or
+lowest for \code{"RMSE"}) performance.
 
-\code{oneSE} is a rule in the spirit of the "one standard error" rule of
-Breiman et al. (1984), who suggest that the tuning parameter associated with
-the best performance may over fit. They suggest that the simplest model
-within one standard error of the empirically optimal model is the better
-choice. This assumes that the models can be easily ordered from simplest to
-most complex (see the Details section below).
+\code{oneSE} is a rule in the spirit of the "one standard error" rule of Breiman
+et al. (1984), who suggest that the tuning parameter associated with the
+best performance may over fit. They suggest that the simplest model within
+one standard error of the empirically optimal model is the better choice.
+This assumes that the models can be easily ordered from simplest to most
+complex (see the Details section below).
 
-\code{tolerance} takes the simplest model that is within a percent tolerance
-of the empirically optimal model. For example, if the largest Kappa value is
+\code{tolerance} takes the simplest model that is within a percent tolerance of
+the empirically optimal model. For example, if the largest Kappa value is
 0.5 and a simpler model within 3 percent is acceptable, we score the other
-models using \code{(x - 0.5)/0.5 * 100}. The simplest model whose score is
-not less than 3 is chosen (in this case, a model with a Kappa value of 0.35
-is acceptable).
+models using \code{(x - 0.5)/0.5 * 100}. The simplest model whose score is not
+less than 3 is chosen (in this case, a model with a Kappa value of 0.35 is
+acceptable).
 
-User-defined functions can also be used. The argument
-\code{selectionFunction} in \code{\link{trainControl}} can be used to pass
-the function directly or to pass the function by name.
+User-defined functions can also be used. The argument \code{selectionFunction} in
+\code{\link[=trainControl]{trainControl()}} can be used to pass the function directly or to pass the
+function by name.
 }
 \note{
 In many cases, it is not very clear how to order the models on
@@ -96,12 +95,10 @@ Elastic net models are ordered first on the L1 penalty, then by the L2
 penalty.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 # simulate a PLS regression model
-test <- data.frame(ncomp = 1:5,
-                   RMSE = c(3, 1.1, 1.02, 1, 2),
-                   RMSESD = .4)
+test <- data.frame(ncomp = 1:5, RMSE = c(3, 1.1, 1.02, 1, 2), RMSESD = .4)
 
 best(test, "RMSE", maximize = FALSE)
 oneSE(test, "RMSE", maximize = FALSE, num = 10)
@@ -114,24 +111,27 @@ data(BloodBrain)
 marsGrid <- data.frame(degree = 1, nprune = (1:10) * 3)
 
 set.seed(1)
-marsFit <- train(bbbDescr, logBBB,
-                 method = "earth",
-                 tuneGrid = marsGrid,
-                 trControl = trainControl(method = "cv",
-                                          number = 10,
-                                          selectionFunction = "tolerance"))
+marsFit <- train(
+  bbbDescr,
+  logBBB,
+  method = "earth",
+  tuneGrid = marsGrid,
+  trControl = trainControl(
+    method = "cv",
+    number = 10,
+    selectionFunction = "tolerance"
+  )
+)
 
 # around 18 terms should yield the smallest CV RMSE
-}
-
-
+\dontshow{\}) # examplesIf}
 }
 \references{
-Breiman, Friedman, Olshen, and Stone. (1984)
-\emph{Classification and Regression Trees}. Wadsworth.
+Breiman, Friedman, Olshen, and Stone. (1984) \emph{Classification and
+Regression Trees}. Wadsworth.
 }
 \seealso{
-\code{\link{train}}, \code{\link{trainControl}}
+\code{\link[=train]{train()}}, \code{\link[=trainControl]{trainControl()}}
 }
 \author{
 Max Kuhn

@@ -1,113 +1,100 @@
 #' Partial Least Squares and Sparse Partial Least Squares Discriminant Analysis
 #'
-#' \code{plsda} is used to fit standard PLS models for classification while
-#' \code{splsda} performs sparse PLS that embeds feature selection and
-#' regularization for the same purpose.
+#' `plsda` is used to fit standard PLS models for classification while `splsda`
+#' performs sparse PLS that embeds feature selection and regularization for the
+#' same purpose.
 #'
 #' If a factor is supplied, the appropriate indicator matrix is created.
 #'
 #' A multivariate PLS model is fit to the indicator matrix using the
-#' \code{\link[pls:mvr]{plsr}} or \code{\link[spls]{spls}} function.
+#' [pls::plsr()] or [spls::spls()] function.
 #'
 #' Two prediction methods can be used.
 #'
-#' The \bold{softmax function} transforms the model predictions to
-#' "probability-like" values (e.g. on [0, 1] and sum to 1). The class with the
+#' The **softmax function** transforms the model predictions to
+#' "probability-like" values (e.g. on \[0, 1] and sum to 1). The class with the
 #' largest class probability is the predicted class.
 #'
-#' Also, \bold{Bayes rule} can be applied to the model predictions to form
+#' Also, **Bayes rule** can be applied to the model predictions to form
 #' posterior probabilities. Here, the model predictions for the training set
 #' are used along with the training set outcomes to create conditional
 #' distributions for each class. When new samples are predicted, the raw model
 #' predictions are run through these conditional distributions to produce a
 #' posterior probability for each class (along with the prior). This process is
-#' repeated \code{ncomp} times for every possible PLS model. The
-#' \code{\link[klaR]{NaiveBayes}} function is used with \code{usekernel = TRUE}
-#' for the posterior probability calculations.
+#' repeated `ncomp` times for every possible PLS model. The
+#' [klaR::NaiveBayes()] function is used with `usekernel = TRUE` for the
+#' posterior probability calculations.
 #'
-#' @aliases plsda.default predict.plsda plsda splsda.default predict.splsda
-#' splsda
+#' @aliases plsda.default predict.plsda plsda splsda.default predict.splsda splsda
 #' @param x a matrix or data frame of predictors
 #' @param y a factor or indicator matrix for the discrete outcome. If a matrix,
-#' the entries must be either 0 or 1 and rows must sum to one
+#'   the entries must be either 0 or 1 and rows must sum to one
 #' @param ncomp the number of components to include in the model. Predictions
-#' can be made for models with values less than \code{ncomp}.
+#'   can be made for models with values less than `ncomp`.
 #' @param probMethod either "softmax" or "Bayes" (see Details)
 #' @param prior a vector or prior probabilities for the classes (only used for
-#' \code{probeMethod = "Bayes"})
-#' @param \dots arguments to pass to \code{\link[pls:mvr]{plsr}} or
-#' \code{\link[spls]{spls}}. For \code{splsda}, this is the method for passing
-#' tuning parameters specifications (e.g. \code{K}, \code{eta} or \code{kappa})
-#' @param object an object produced by \code{plsda}
+#'   `probeMethod = "Bayes"`)
+#' @param \dots arguments to pass to [pls::plsr()] or [spls::spls()]. For
+#'   `splsda`, this is the method for passing tuning parameters specifications
+#'   (e.g. `K`, `eta` or `kappa`)
+#' @param object an object produced by `plsda`
 #' @param newdata a matrix or data frame of predictors
-#' @param type either \code{"class"}, \code{"prob"} or \code{"raw"} to produce
-#' the predicted class, class probabilities or the raw model scores,
-#' respectively.
-#' @return For \code{plsda}, an object of class "plsda" and "mvr". For
-#' \code{splsda}, an object of class \code{splsda}.
+#' @param type either `"class"`, `"prob"` or `"raw"` to produce the predicted
+#'   class, class probabilities or the raw model scores, respectively.
+#' @return For `plsda`, an object of class "plsda" and "mvr". For `splsda`, an
+#'   object of class `splsda`.
 #'
 #' The predict methods produce either a vector, matrix or three-dimensional
-#' array, depending on the values of \code{type} of \code{ncomp}. For example,
-#' specifying more than one value of \code{ncomp} with \code{type = "class"}
-#' with produce a three dimensional array but the default specification would
-#' produce a factor vector.
-#' @seealso \code{\link[pls:mvr]{plsr}}, \code{\link[spls]{spls}}
+#' array, depending on the values of `type` of `ncomp`. For example, specifying
+#' more than one value of `ncomp` with `type = "class"` with produce a three
+#' dimensional array but the default specification would produce a factor
+#' vector.
+#' @seealso [pls::plsr()], [spls::spls()]
 #' @keywords models
-#' @examples
-#'
-#' \dontrun{
+#' @examplesIf !caret:::is_cran_check()
+#' 
 #' data(mdrr)
 #' set.seed(1)
 #' inTrain <- sample(seq(along.with = mdrrClass), 450)
-#'
+#' 
 #' nzv <- nearZeroVar(mdrrDescr)
 #' filteredDescr <- mdrrDescr[, -nzv]
-#'
-#' training <- filteredDescr[inTrain,]
-#' test <- filteredDescr[-inTrain,]
+#' 
+#' training <- filteredDescr[inTrain, ]
+#' test <- filteredDescr[-inTrain, ]
 #' trainMDRR <- mdrrClass[inTrain]
 #' testMDRR <- mdrrClass[-inTrain]
-#'
+#' 
 #' preProcValues <- preProcess(training)
-#'
+#' 
 #' trainDescr <- predict(preProcValues, training)
 #' testDescr <- predict(preProcValues, test)
-#'
-#' useBayes   <- plsda(trainDescr, trainMDRR, ncomp = 5,
-#'                     probMethod = "Bayes")
+#' 
 #' useSoftmax <- plsda(trainDescr, trainMDRR, ncomp = 5)
-#'
-#' confusionMatrix(predict(useBayes, testDescr),
-#'                 testMDRR)
-#'
-#' confusionMatrix(predict(useSoftmax, testDescr),
-#'                 testMDRR)
-#'
-#' histogram(~predict(useBayes, testDescr, type = "prob")[,"Active",]
-#'           | testMDRR, xlab = "Active Prob", xlim = c(-.1,1.1))
-#' histogram(~predict(useSoftmax, testDescr, type = "prob")[,"Active",]
-#'           | testMDRR, xlab = "Active Prob", xlim = c(-.1,1.1))
-#'
-#'
+#' 
+#' confusionMatrix(predict(useSoftmax, testDescr), testMDRR)
+#' 
+#' histogram(
+#'   ~ predict(useSoftmax, testDescr, type = "prob")[, "Active", ] | testMDRR,
+#'   xlab = "Active Prob",
+#'   xlim = c(-.1, 1.1)
+#' )
+#' 
 #' ## different sized objects are returned
-#' length(predict(useBayes, testDescr))
-#' dim(predict(useBayes, testDescr, ncomp = 1:3))
-#' dim(predict(useBayes, testDescr, type = "prob"))
-#' dim(predict(useBayes, testDescr, type = "prob", ncomp = 1:3))
-#'
+#' length(predict(useSoftmax, testDescr))
+#' dim(predict(useSoftmax, testDescr, ncomp = 1:3))
+#' dim(predict(useSoftmax, testDescr, type = "prob"))
+#' dim(predict(useSoftmax, testDescr, type = "prob", ncomp = 1:3))
+#' 
 #' ## Using spls:
 #' ## (As of 11/09, the spls package now has a similar function with
-#' ## the same mane. To avoid conflicts, use caret:::splsda to
+#' ## the same name. To avoid conflicts, use caret:::splsda to
 #' ## get this version)
-#'
-#' splsFit <- caret:::splsda(trainDescr, trainMDRR,
-#'                           K = 5, eta = .9,
-#'                           probMethod = "Bayes")
-#'
-#' confusionMatrix(caret:::predict.splsda(splsFit, testDescr),
-#'                 testMDRR)
-#' }
-#'
+#' 
+#' splsFit <- caret:::splsda(trainDescr, trainMDRR, K = 5, eta = .9)
+#' 
+#' confusionMatrix(caret:::predict.splsda(splsFit, testDescr), testMDRR)
+#' 
 #' @export plsda
 plsda <- function (x, ...)
   UseMethod("plsda")

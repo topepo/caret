@@ -3,57 +3,59 @@
 #' $k$-nearest neighbour classification that can return class votes for all
 #' classes.
 #'
-#' \code{knn3} is essentially the same code as \code{\link[ipred]{ipredknn}}
-#' and \code{knn3Train} is a copy of \code{\link[class]{knn}}. The underlying C
-#' code from the \code{class} package has been modified to return the vote
-#' percentages for each class (previously the percentage for the winning class
-#' was returned).
+#' `knn3` is essentially the same code as [ipred::ipredknn()] and `knn3Train`
+#' is a copy of [class::knn()]. The underlying C code from the `class` package
+#' has been modified to return the vote percentages for each class (previously
+#' the percentage for the winning class was returned).
 #'
 #' @aliases knn3 knn3.formula knn3.matrix knn3.data.frame knn3Train
-#' @param formula a formula of the form \code{lhs ~ rhs} where \code{lhs} is
-#' the response variable and \code{rhs} a set of predictors.
+#' @param formula a formula of the form `lhs ~ rhs` where `lhs` is the response
+#'   variable and `rhs` a set of predictors.
 #' @param data optional data frame containing the variables in the model
-#' formula.
+#'   formula.
 #' @param subset optional vector specifying a subset of observations to be
-#' used.
+#'   used.
 #' @param na.action function which indicates what should happen when the data
-#' contain \code{NA}s.
+#'   contain `NA`s.
 #' @param k number of neighbours considered.
 #' @param x a matrix of training set predictors
 #' @param y a factor vector of training set classes
-#' @param ... additional parameters to pass to \code{knn3Train}. However,
-#' passing \code{prob = FALSE} will be over-ridden.
+#' @param ... additional parameters to pass to `knn3Train`. However, passing
+#'   `prob = FALSE` will be over-ridden.
 #' @param train matrix or data frame of training set cases.
 #' @param test matrix or data frame of test set cases. A vector will be
-#' interpreted as a row vector for a single case.
+#'   interpreted as a row vector for a single case.
 #' @param cl factor of true classifications of training set
-#' @param l minimum vote for definite decision, otherwise \code{doubt}. (More
-#' precisely, less than \code{k-l} dissenting votes are allowed, even if
-#' \code{k} is increased by ties.)
+#' @param l minimum vote for definite decision, otherwise `doubt`. (More
+#'   precisely, less than `k-l` dissenting votes are allowed, even if `k` is
+#'   increased by ties.)
 #' @param prob If this is true, the proportion of the votes for each class are
-#' returned as attribute \code{prob}.
+#'   returned as attribute `prob`.
 #' @param use.all controls handling of ties. If true, all distances equal to
-#' the \code{k}th largest are included. If false, a random selection of
-#' distances equal to the \code{k}th is chosen to use exactly \code{k}
-#' neighbours.
-#' @return An object of class \code{knn3}. See \code{\link{predict.knn3}}.
-#' @author \code{\link[class]{knn}} by W. N. Venables and B. D. Ripley and
-#' \code{\link[ipred]{ipredknn}} by Torsten.Hothorn
-#' <Torsten.Hothorn@@rzmail.uni-erlangen.de>, modifications by Max Kuhn and
-#' Andre Williams
+#'   the `k`th largest are included. If false, a random selection of distances
+#'   equal to the `k`th is chosen to use exactly `k` neighbours.
+#' @param object object of class `knn3`.
+#' @param newdata a data frame of new observations.
+#' @param type return either the predicted class or the proportion of the
+#'   votes for the winning class.
+#' @return An object of class `knn3`.
+#' @author [class::knn()] by W. N. Venables and B. D. Ripley and
+#'   [ipred::ipredknn()] by Torsten.Hothorn
+#'   <Torsten.Hothorn@@rzmail.uni-erlangen.de>, modifications by Max Kuhn and
+#'   Andre Williams
 #' @keywords multivariate
 #' @examples
-#'
+#' 
 #' irisFit1 <- knn3(Species ~ ., iris)
-#'
-#' irisFit2 <- knn3(as.matrix(iris[, -5]), iris[,5])
-#'
+#' 
+#' irisFit2 <- knn3(as.matrix(iris[, -5]), iris[, 5])
+#' 
 #' data(iris3)
-#' train <- rbind(iris3[1:25,,1], iris3[1:25,,2], iris3[1:25,,3])
-#' test <- rbind(iris3[26:50,,1], iris3[26:50,,2], iris3[26:50,,3])
-#' cl <- factor(c(rep("s",25), rep("c",25), rep("v",25)))
+#' train <- rbind(iris3[1:25, , 1], iris3[1:25, , 2], iris3[1:25, , 3])
+#' test <- rbind(iris3[26:50, , 1], iris3[26:50, , 2], iris3[26:50, , 3])
+#' cl <- factor(c(rep("s", 25), rep("c", 25), rep("v", 25)))
 #' knn3Train(train, test, cl, k = 5, prob = TRUE)
-#'
+#' 
 #' @export
 "knn3" <- function(x, ...)   UseMethod("knn3")
 
@@ -64,7 +66,6 @@ knn3.default <- function(x, ...)
 }
 
 #' @rdname knn3
-#' @method knn3 formula
 #' @importFrom stats model.matrix terms model.extract
 #' @export
 knn3.formula <- function (formula, data, subset, na.action, k = 5, ...)
@@ -109,7 +110,6 @@ knn3.formula <- function (formula, data, subset, na.action, k = 5, ...)
 }
 
 #' @rdname knn3
-#' @method knn3 data.frame
 #' @export
 knn3.data.frame <- function(x, y, k = 5, ...)
 {
@@ -119,7 +119,6 @@ knn3.data.frame <- function(x, y, k = 5, ...)
 }
 
 #' @rdname knn3
-#' @method knn3 matrix
 #' @export
 knn3.matrix <- function(x, y, k = 5, ...)
 {
@@ -136,7 +135,6 @@ knn3.matrix <- function(x, y, k = 5, ...)
 }
 
 #' @rdname knn3
-#' @method print knn3
 #' @export
 print.knn3 <- function (x, ...)
 {
@@ -152,25 +150,7 @@ print.knn3 <- function (x, ...)
 
 
 
-#' Predictions from k-Nearest Neighbors
-#'
-#' Predict the class of a new observation based on k-NN.
-#'
-#' This function is a method for the generic function \code{\link{predict}} for
-#' class \code{knn3}. For the details see \code{\link{knn3}}. This is
-#' essentially a copy of \code{\link[ipred]{predict.ipredknn}}.
-#'
-#' @param object object of class \code{knn3}.
-#' @param newdata a data frame of new observations.
-#' @param type return either the predicted class or the proportion of the votes
-#' for the winning class.
-#' @param ... additional arguments.
-#' @return Either the predicted class or the proportion of the votes for each
-#' class.
-#' @author \code{\link[ipred]{predict.ipredknn}} by Torsten.Hothorn
-#' <Torsten.Hothorn@@rzmail.uni-erlangen.de>
-#' @keywords multivariate
-#' @method predict knn3
+#' @rdname knn3
 #' @export
 predict.knn3 <- function (object, newdata, type = c("prob", "class"), ...)
 {

@@ -10,18 +10,15 @@
 \method{histogram}{train}(x, data = NULL, metric = x$metric, ...)
 }
 \arguments{
-\item{x}{An object produced by \code{\link{train}}}
+\item{x}{An object produced by \code{\link[=train]{train()}}}
 
 \item{data}{This argument is not used}
 
 \item{metric}{A character string specifying the single performance metric
 that will be plotted}
 
-\item{\dots}{arguments to pass to either
-\code{\link[lattice:histogram]{histogram}},
-\code{\link[lattice:histogram]{densityplot}},
-\code{\link[lattice:xyplot]{xyplot}} or
-\code{\link[lattice:xyplot]{stripplot}}}
+\item{\dots}{arguments to pass to either \code{\link[lattice:histogram]{lattice::histogram()}},
+\code{\link[lattice:densityplot]{lattice::densityplot()}}, \code{\link[lattice:xyplot]{lattice::xyplot()}} or \code{\link[lattice:stripplot]{lattice::stripplot()}}}
 }
 \value{
 A lattice plot object
@@ -33,54 +30,48 @@ any).
 }
 \details{
 By default, only the resampling results for the optimal model are saved in
-the \code{train} object. The function \code{\link{trainControl}} can be used
-to save all the results (see the example below).
+the \code{train} object. The function \code{\link[=trainControl]{trainControl()}} can be used to save all
+the results (see the example below).
 
 If leave-one-out or out-of-bag resampling was specified, plots cannot be
-produced (see the \code{method} argument of \code{\link{trainControl}})
+produced (see the \code{method} argument of \code{\link[=trainControl]{trainControl()}})
 
-For \code{xyplot} and \code{stripplot}, the tuning parameter with the most
-unique values will be plotted on the x-axis. The remaining parameters (if
-any) will be used as conditioning variables. For \code{densityplot} and
-\code{histogram}, all tuning parameters are used for conditioning.
+For \code{xyplot} and \code{stripplot}, the tuning parameter with the most unique
+values will be plotted on the x-axis. The remaining parameters (if any) will
+be used as conditioning variables. For \code{densityplot} and \code{histogram}, all
+tuning parameters are used for conditioning.
 
 Using \code{horizontal = FALSE} in \code{stripplot} works.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 
 library(mlbench)
 data(BostonHousing)
 
 library(rpart)
-rpartFit <- train(medv ~ .,
-                  data = BostonHousing,
-                  "rpart", 
-                  tuneLength = 9,
-                  trControl = trainControl(
-                    method = "boot", 
-                    returnResamp = "all"))
+rpartFit <- train(
+  medv ~ .,
+  data = BostonHousing,
+  "rpart",
+  tuneLength = 9,
+  trControl = trainControl(
+    method = "boot",
+    returnResamp = "all"
+  )
+)
 
-densityplot(rpartFit,
-            adjust = 1.25)
+densityplot(rpartFit, adjust = 1.25)
 
-xyplot(rpartFit,
-       metric = "Rsquared",
-       type = c("p", "a"))
+xyplot(rpartFit, metric = "Rsquared", type = c("p", "a"))
 
-stripplot(rpartFit,
-          horizontal = FALSE,
-          jitter = TRUE)
-
-}
+stripplot(rpartFit, horizontal = FALSE, jitter = TRUE)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link{train}}, \code{\link{trainControl}},
-\code{\link[lattice:histogram]{histogram}},
-\code{\link[lattice:histogram]{densityplot}},
-\code{\link[lattice:xyplot]{xyplot}},
-\code{\link[lattice:xyplot]{stripplot}}
+\code{\link[=train]{train()}}, \code{\link[=trainControl]{trainControl()}}, \code{\link[lattice:histogram]{lattice::histogram()}},
+\code{\link[lattice:densityplot]{lattice::densityplot()}}, \code{\link[lattice:xyplot]{lattice::xyplot()}}, \code{\link[lattice:stripplot]{lattice::stripplot()}}
 }
 \author{
 Max Kuhn

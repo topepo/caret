@@ -33,7 +33,7 @@ gafs_uCrossover(population, parents, ...)
 \arguments{
 \item{vars}{number of possible predictors}
 
-\item{popSize}{the population size passed into \code{\link{gafs}}}
+\item{popSize}{the population size passed into \code{\link[=gafs]{gafs()}}}
 
 \item{\dots}{not currently used}
 
@@ -53,35 +53,34 @@ The return value depends on the function.
 Built-in functions related to genetic algorithms
 
 These functions are used with the \code{functions} argument of the
-\code{\link{gafsControl}} function. More information on the details of these
-functions are at \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}.
+\code{\link[=gafsControl]{gafsControl()}} function. More information on the details of these functions
+are at
+\url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}.
 
-Most of the \code{gafs_*} functions are based on those from the GA package
-by Luca Scrucca. These functions here are small re-writes to work outside of
+Most of the \verb{gafs_*} functions are based on those from the GA package by
+Luca Scrucca. These functions here are small re-writes to work outside of
 the GA package.
 
-The objects \code{caretGA}, \code{rfGA} and \code{treebagGA} are example
-lists that can be used with the \code{functions} argument of
-\code{\link{gafsControl}}.
+The objects \code{caretGA}, \code{rfGA} and \code{treebagGA} are example lists that can be
+used with the \code{functions} argument of \code{\link[=gafsControl]{gafsControl()}}.
 
-In the case of \code{caretGA}, the \code{...} structure of
-\code{\link{gafs}} passes through to the model fitting routine. As a
-consequence, the \code{\link{train}} function can easily be accessed by
-passing important arguments belonging to \code{\link{train}} to
-\code{\link{gafs}}. See the examples below. By default, using \code{caretGA}
-will used the resampled performance estimates produced by
-\code{\link{train}} as the internal estimate of fitness.
+In the case of \code{caretGA}, the \code{...} structure of \code{\link[=gafs]{gafs()}} passes through to
+the model fitting routine. As a consequence, the \code{\link[=train]{train()}} function can
+easily be accessed by passing important arguments belonging to \code{\link[=train]{train()}} to
+\code{\link[=gafs]{gafs()}}. See the examples below. By default, using \code{caretGA} will used the
+resampled performance estimates produced by \code{\link[=train]{train()}} as the internal
+estimate of fitness.
 
-For \code{rfGA} and \code{treebagGA}, the \code{randomForest} and
-\code{bagging} functions are used directly (i.e. \code{\link{train}} is not
-used). Arguments to either of these functions can also be passed to them
-though the \code{\link{gafs}} call (see examples below). For these two
-functions, the internal fitness is estimated using the out-of-bag estimates
-naturally produced by those functions. While faster, this limits the user to
-accuracy or Kappa (for classification) and RMSE and R-squared (for
-regression).
+For \code{rfGA} and \code{treebagGA}, the \code{randomForest} and \code{bagging} functions are
+used directly (i.e. \code{\link[=train]{train()}} is not used). Arguments to either of these
+functions can also be passed to them though the \code{\link[=gafs]{gafs()}} call (see examples
+below). For these two functions, the internal fitness is estimated using the
+out-of-bag estimates naturally produced by those functions. While faster,
+this limits the user to accuracy or Kappa (for classification) and RMSE and
+R-squared (for regression).
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
 pop <- gafs_initial(vars = 10, popSize = 10)
 pop
@@ -90,26 +89,21 @@ gafs_lrSelection(population = pop, fitness = 1:10)
 
 gafs_spCrossover(population = pop, fitness = 1:10, parents = 1:2)
 
-
-\dontrun{
-## Hypothetical examples
-lda_ga <- gafs(x = predictors,
-               y = classes,
-               gafsControl = gafsControl(functions = caretGA),
-               ## now pass arguments to `train`
-               method = "lda",
-               metric = "Accuracy"
-               trControl = trainControl(method = "cv", classProbs = TRUE))
-
-rf_ga <- gafs(x = predictors,
-              y = classes,
-              gafsControl = gafsControl(functions = rfGA),
-              ## these are arguments to `randomForest`
-              ntree = 1000,
-              importance = TRUE)
-	}
-
-
+## Hypothetical usage (not run):
+## lda_ga <- gafs(x = predictors,
+##                y = classes,
+##                gafsControl = gafsControl(functions = caretGA),
+##                method = "lda",
+##                metric = "Accuracy",
+##                trControl = trainControl(method = "cv",
+##                                         classProbs = TRUE))
+##
+## rf_ga <- gafs(x = predictors,
+##               y = classes,
+##               gafsControl = gafsControl(functions = rfGA),
+##               ntree = 1000,
+##               importance = TRUE)
+\dontshow{\}) # examplesIf}
 }
 \references{
 Scrucca L (2013). GA: A Package for Genetic Algorithms in R.
@@ -120,9 +114,9 @@ Journal of Statistical Software, 53(4), 1-37.
 \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}
 }
 \seealso{
-\code{\link{gafs}}, \code{\link{gafsControl}}
+\code{\link[=gafs]{gafs()}}, \code{\link[=gafsControl]{gafsControl()}}
 }
 \author{
-Luca Scrucca, \code{gafs_initial}, \code{caretGA}, \code{rfGA} and
-\code{treebagGA} by Max Kuhn
+Luca Scrucca, \code{gafs_initial}, \code{caretGA}, \code{rfGA} and \code{treebagGA} by
+Max Kuhn
 }

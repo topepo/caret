@@ -15,7 +15,8 @@ safs(x, ...)
 \arguments{
 \item{x}{An object where samples are in rows and features are in columns.
 This could be a simple matrix, data frame or other type (e.g. sparse
-matrix). For the recipes method, \code{x} is a recipe object.  See Details below.}
+matrix). For the recipes method, \code{x} is a recipe object.  See Details
+below.}
 
 \item{\dots}{arguments passed to the classification or regression routine
 specified in the function \code{safsControl$functions$fit}}
@@ -28,9 +29,9 @@ specified in the function \code{safsControl$functions$fit}}
 and without each predictor be calculated?}
 
 \item{safsControl}{a list of values that define how this function acts. See
-\code{\link{safsControl}} and URL.}
+\code{\link[=safsControl]{safsControl()}} and URL.}
 
-\item{data}{an object of class \code{\link{rfe}}.}
+\item{data}{an object of class \code{\link[=rfe]{rfe()}}.}
 }
 \value{
 an object of class \code{safs}
@@ -38,9 +39,9 @@ an object of class \code{safs}
 \description{
 Supervised feature selection using simulated annealing
 
-\code{\link{safs}} conducts a supervised binary search of the predictor
-space using simulated annealing (SA). See Kirkpatrick et al (1983) for more
-information on this search algorithm.
+\code{\link[=safs]{safs()}} conducts a supervised binary search of the predictor space using
+simulated annealing (SA). See Kirkpatrick et al (1983) for more information
+on this search algorithm.
 }
 \details{
 This function conducts the search of the feature space repeatedly within
@@ -74,40 +75,38 @@ subset that is associated with the optimal number of iterations determined
 by resampling (although the update function can be used to manually set the
 number of iterations).
 
-This is an example of the output produced when \code{safsControl(verbose =
-TRUE)} is used:
+This is an example of the output produced when \code{safsControl(verbose = TRUE)}
+is used:
 
 \preformatted{
-Fold03 1 0.401 (11)
-Fold03 2 0.401->0.410 (11+1, 91.7\%) *
-Fold03 3 0.410->0.396 (12+1, 92.3\%) 0.969 A
-Fold03 4 0.410->0.370 (12+2, 85.7\%) 0.881
-Fold03 5 0.410->0.399 (12+2, 85.7\%) 0.954 A
-Fold03 6 0.410->0.399 (12+1, 78.6\%) 0.940 A
-Fold03 7 0.410->0.428 (12+2, 73.3\%) *
-}
+ Fold03 1 0.401 (11)
+ Fold03 2 0.401->0.410 (11+1, 91.7\%) *
+ Fold03 3 0.410->0.396 (12+1, 92.3\%) 0.969 A
+ Fold03 4 0.410->0.370 (12+2, 85.7\%) 0.881
+ Fold03 5 0.410->0.399 (12+2, 85.7\%) 0.954 A
+ Fold03 6 0.410->0.399 (12+1, 78.6\%) 0.940 A
+ Fold03 7 0.410->0.428 (12+2, 73.3\%) *}
 
 The text "Fold03" indicates that this search is for the third
 cross-validation fold. The initial subset of 11 predictors had a fitness
 value of 0.401. The next iteration added a single feature the the existing
 best subset of 11 (as indicated by "11+1") that increased the fitness value
-to 0.410. This new solution, which has a Jaccard similarity value of 91.7\%
+to 0.410. This new solution, which has a Jaccard similarity value of 91.7\\%
 to the current best solution, is automatically accepted. The third iteration
 adds another feature to the current set of 12 but does not improve the
 fitness. The acceptance probability for this difference is shown to be
-95.6\% and the "A" indicates that this new sub-optimal subset is accepted.
+95.6\\% and the "A" indicates that this new sub-optimal subset is accepted.
 The fourth iteration does not show an increase and is not accepted. Note
-that the Jaccard similarity value of 85.7\% is the similarity to the current
+that the Jaccard similarity value of 85.7\\% is the similarity to the current
 best solution (from iteration 2) and the "12+2" indicates that there are two
 additional features added from the current best that contains 12 predictors.
 
 The search algorithm can be parallelized in several places: \enumerate{
 \item each externally resampled SA can be run independently (controlled by
-the \code{allowParallel} option of \code{\link{safsControl}}) \item if inner
-resampling is used, these can be run in parallel (controls depend on the
-function used. See, for example, \code{\link[caret]{trainControl}}) \item
-any parallelization of the individual model fits. This is also specific to
-the modeling function.  }
+the \code{allowParallel} option of \code{\link[=safsControl]{safsControl()}}) \item if inner resampling is
+used, these can be run in parallel (controls depend on the function used.
+See, for example, \code{\link[=trainControl]{trainControl()}}) \item any parallelization of the
+individual model fits. This is also specific to the modeling function.  }
 
 It is probably best to pick one of these areas for parallelization and the
 first is likely to produces the largest decrease in run-time since it is the
@@ -116,26 +115,25 @@ mind that if multiple levels of parallelization occur, this can effect the
 number of workers and the amount of memory required exponentially.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 
 set.seed(1)
 train_data <- twoClassSim(100, noiseVars = 10)
-test_data  <- twoClassSim(10,  noiseVars = 10)
+test_data <- twoClassSim(10, noiseVars = 10)
 
 ## A short example
-ctrl <- safsControl(functions = rfSA,
-                    method = "cv",
-                    number = 3)
+ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
 
-rf_search <- safs(x = train_data[, -ncol(train_data)],
-                  y = train_data$Class,
-                  iters = 3,
-                  safsControl = ctrl)
+rf_search <- safs(
+  x = train_data[, -ncol(train_data)],
+  y = train_data$Class,
+  iters = 3,
+  safsControl = ctrl
+)
 
 rf_search
-}
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 \url{http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html}
@@ -148,7 +146,7 @@ Kirkpatrick, S., Gelatt, C. D., and Vecchi, M. P. (1983). Optimization by
 simulated annealing. Science, 220(4598), 671.
 }
 \seealso{
-\code{\link{safsControl}}, \code{\link{predict.safs}}
+\code{\link[=safsControl]{safsControl()}}, \code{\link[=predict.safs]{predict.safs()}}
 }
 \author{
 Max Kuhn

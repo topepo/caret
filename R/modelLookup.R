@@ -1,59 +1,53 @@
-#' Tools for Models Available in \code{train}
+#' Tools for Models Available in `train`
 #'
 #' These function show information about models and packages that are
-#' accessible via \code{\link{train}}
+#' accessible via [train()]
 #'
-#' \code{modelLookup} is good for getting information related to the tuning
-#' parameters for a model. \code{getModelInfo} will return all the functions
-#' and metadata associated with a model. Both of these functions will only
-#' search within the models bundled in this package.
+#' `modelLookup` is good for getting information related to the tuning
+#' parameters for a model. `getModelInfo` will return all the functions and
+#' metadata associated with a model. Both of these functions will only search
+#' within the models bundled in this package.
 #'
-#' \code{checkInstall} will check to see if packages are installed. If they are
-#' not and the session is interactive, an option is given to install the
-#' packages using \code{\link[utils]{install.packages}} using that functions
-#' default arguments (the missing packages are listed if you would like to
-#' install them with other options). If the session is not interactive, an
-#' error is thrown.
+#' `checkInstall` will check to see if packages are installed. If they are not
+#' and the session is interactive, an option is given to install the packages
+#' using [utils::install.packages()] using that functions default arguments
+#' (the missing packages are listed if you would like to install them with
+#' other options). If the session is not interactive, an error is thrown.
 #'
 #' @aliases modelLookup getModelInfo checkInstall
-#' @param model a character string associated with the \code{method} argument
-#' of \code{\link{train}}. If no value is passed, all models are returned. For
-#' \code{getModelInfo}, regular expressions can be used.
-#' @param regex a logical: should a regular expressions be used? If
-#' \code{FALSE}, a simple match is conducted against the whole name of the
-#' model.
+#' @param model a character string associated with the `method` argument of
+#'   [train()]. If no value is passed, all models are returned. For
+#'   `getModelInfo`, regular expressions can be used.
+#' @param regex a logical: should a regular expressions be used? If `FALSE`, a
+#'   simple match is conducted against the whole name of the model.
 #' @param pkg a character string of package names.
-#' @param ...  options to pass to \code{\link[base]{grepl}}
-#' @return \code{modelLookup} produces a data frame with columns \item{model
-#' }{a character string for the model code} \item{parameter }{the tuning
-#' parameter name} \item{label }{a tuning parameter label (used in plots)}
-#' \item{forReg }{a logical; can the model be used for regression?}
-#' \item{forClass }{a logical; can the model be used for classification?}
-#' \item{probModel }{a logical; does the model produce class probabilities?}
+#' @param ...  options to pass to [base::grepl()]
+#' @return `modelLookup` produces a data frame with columns:
 #'
-#' \code{getModelInfo} returns a list containing one or more lists of the
-#' standard model information.
+#' * `model`: a character string for the model code
+#' * `parameter`: the tuning parameter name
+#' * `label`: a tuning parameter label (used in plots)
+#' * `forReg`: a logical; can the model be used for regression?
+#' * `forClass`: a logical; can the model be used for classification?
+#' * `probModel`: a logical; does the model produce class probabilities?
 #'
-#' \code{checkInstall} returns not value.
-#' @note The column \code{seq} is no longer included in the output of
-#' \code{modelLookup}.
+#' `getModelInfo` returns a list containing one or more lists of the standard
+#' model information. `checkInstall` returns not value.
+#' @note The column `seq` is no longer included in the output of `modelLookup`.
 #' @author Max Kuhn
-#' @seealso \code{\link{train}}, \code{\link[utils]{install.packages}},
-#' \code{\link[base]{grepl}}
+#' @seealso [train()], [utils::install.packages()], [base::grepl()]
 #' @keywords utilities
-#' @examples
-#'
-#' \dontrun{
+#' @examplesIf !caret:::is_cran_check()
+#' 
 #' modelLookup()
 #' modelLookup("gbm")
-#'
+#' 
 #' getModelInfo("pls")
 #' getModelInfo("^pls")
 #' getModelInfo("pls", regex = FALSE)
-#'
+#' 
 #' checkInstall(getModelInfo("pls")$library)
-#' }
-#'
+#' 
 #' @export modelLookup
 modelLookup <- function(model = NULL){
   load(system.file("models", "models.RData", package = "caret"))

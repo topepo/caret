@@ -1,84 +1,87 @@
 #' Generate Data to Choose a Probability Threshold
-#' 
-#' This function uses the resampling results from a \code{\link{train}}
-#'  object to generate performance statistics over a set of probability
-#'  thresholds for two-class problems. 
-#' 
-#' @param x A \code{\link{train}} object where the values of
-#'  \code{savePredictions} was either \code{TRUE}, \code{"all"},
-#'  or \code{"final"} in \code{\link{trainControl}}. Also, the 
-#'  control argument \code{clasProbs} should have been \code{TRUE}.
+#'
+#' This function uses the resampling results from a [train()] object to
+#' generate performance statistics over a set of probability thresholds for
+#' two-class problems.
+#'
+#' @param x A [train()] object where the values of `savePredictions` was either
+#'   `TRUE`, `"all"`, or `"final"` in [trainControl()]. Also, the control
+#'   argument `clasProbs` should have been `TRUE`.
 #' @param threshold A numeric vector of candidate probability thresholds
-#'  between [0,1]. If the class probability corresponding to the first
-#'  level of the outcome is greater than the threshold, the data point
-#'  is classified as that level. 
-#' @param final A logical: should only the final tuning parameters
-#'   chosen by \code{\link{train}} be used when 
-#'   \code{savePredictions = 'all'}?
+#'   between \[0,1]. If the class probability corresponding to the first level
+#'   of the outcome is greater than the threshold, the data point is classified
+#'   as that level.
+#' @param final A logical: should only the final tuning parameters chosen by
+#'   [train()] be used when `savePredictions = 'all'`?
 #' @param statistics A character vector indicating which statistics to
 #'   calculate. See details below for possible choices; the default value
-#'   \code{"all"} computes all of these.
-#' @return A data frame with columns for each of the tuning parameters
-#'  from the model along with an additional column called
-#'  \code{prob_threshold} for the probability threshold. There are
-#'  also columns for summary statistics averaged over resamples with
-#'  column names corresponding to the input argument \code{statistics}. 
-#' @details The argument \code{statistics} designates the statistics to compute
-#'  for each probability threshold. One or more of the following statistics can
-#'  be selected:
-#'  \itemize{
-#'  \item Sensitivity
-#'  \item Specificity
-#'  \item Pos Pred Value
-#'  \item Neg Pred Value
-#'  \item Precision
-#'  \item Recall
-#'  \item F1
-#'  \item Prevalence
-#'  \item Detection Rate
-#'  \item Detection Prevalence
-#'  \item Balanced Accuracy
-#'  \item Accuracy
-#'  \item Kappa
-#'  \item J
-#'  \item Dist
-#' }
-#' For a description of these statistics (except the last two), see the
-#' documentation of \code{\link{confusionMatrix}}. The last two statistics
-#' are Youden's J statistic and the distance to the best possible cutoff (i.e.
-#' perfect sensitivity and specificity.
+#'   `"all"` computes all of these.
+#' @return A data frame with columns for each of the tuning parameters from the
+#'   model along with an additional column called `prob_threshold` for the
+#'   probability threshold. There are also columns for summary statistics
+#'   averaged over resamples with column names corresponding to the input
+#'   argument `statistics`.
+#' @details The argument `statistics` designates the statistics to compute for
+#'   each probability threshold. One or more of the following statistics can be
+#'   selected:
+#'   - Sensitivity
+#'   - Specificity
+#'   - Pos Pred Value
+#'   - Neg Pred Value
+#'   - Precision
+#'   - Recall
+#'   - F1
+#'   - Prevalence
+#'   - Detection Rate
+#'   - Detection Prevalence
+#'   - Balanced Accuracy
+#'   - Accuracy
+#'   - Kappa
+#'   - J
+#'   - Dist
+#'
+#'   For a description
+#'   of these statistics (except the last two), see the documentation of
+#'   [confusionMatrix()]. The last two statistics are Youden's J statistic and
+#'   the distance to the best possible cutoff (i.e. perfect sensitivity and
+#'   specificity.
 #' @export
 #' @importFrom plyr ddply
-#' @examples 
-#' \dontrun{
+#' @examplesIf !caret:::is_cran_check()
 #' set.seed(2444)
 #' dat <- twoClassSim(500, intercept = -10)
 #' table(dat$Class)
 #' 
-#' ctrl <- trainControl(method = "cv", 
-#'                      classProbs = TRUE,
-#'                      savePredictions = "all",
-#'                      summaryFunction = twoClassSummary)
+#' ctrl <- trainControl(
+#'   method = "cv",
+#'   classProbs = TRUE,
+#'   savePredictions = "all",
+#'   summaryFunction = twoClassSummary
+#' )
 #' 
 #' set.seed(2863)
-#' mod <- train(Class ~ ., data = dat, 
-#'              method = "rda",
-#'              tuneLength = 4,
-#'              metric = "ROC",
-#'              trControl = ctrl)
+#' mod <- train(
+#'   Class ~ .,
+#'   data = dat,
+#'   method = "rda",
+#'   tuneLength = 4,
+#'   metric = "ROC",
+#'   trControl = ctrl
+#' )
 #' 
-#' resample_stats <- thresholder(mod, 
-#'                               threshold = seq(.5, 1, by = 0.05), 
-#'                               final = TRUE)
+#' resample_stats <- thresholder(
+#'   mod,
+#'   threshold = seq(.5, 1, by = 0.05),
+#'   final = TRUE
+#' )
 #' 
-#' ggplot(resample_stats, aes(x = prob_threshold, y = J)) + 
+#' ggplot(resample_stats, aes(x = prob_threshold, y = J)) +
 #'   geom_point()
-#' ggplot(resample_stats, aes(x = prob_threshold, y = Dist)) + 
+#' ggplot(resample_stats, aes(x = prob_threshold, y = Dist)) +
 #'   geom_point()
-#' ggplot(resample_stats, aes(x = prob_threshold, y = Sensitivity)) + 
-#'   geom_point() + 
+#' ggplot(resample_stats, aes(x = prob_threshold, y = Sensitivity)) +
+#'   geom_point() +
 #'   geom_point(aes(y = Specificity), col = "red")
-#' }
 thresholder <- function(x, threshold, final = TRUE, statistics = "all") {
   if(!inherits(x, "train"))
     stop("`x` should be an object of class 'train'", 

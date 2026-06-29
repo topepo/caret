@@ -67,4 +67,3 @@ caretTheme <- function()
            "#9E0142", "#3288BD", "#F46D43", "#5E4FA2", "#66C2A5", "black", 
            "#9E0142", "#3288BD", "#F46D43", "#5E4FA2", "#66C2A5", "black")))
          
-

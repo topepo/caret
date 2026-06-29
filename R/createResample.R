@@ -25,4 +25,3 @@ createResample <- function(y, times = 10, list = TRUE) {
 
   out
 }
-

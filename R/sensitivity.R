@@ -7,10 +7,10 @@
 #'
 #' The sensitivity is defined as the proportion of positive results out of the
 #' number of samples which were actually positive. When there are no positive
-#' results, sensitivity is not defined and a value of \code{NA} is returned.
+#' results, sensitivity is not defined and a value of `NA` is returned.
 #' Similarly, when there are no negative results, specificity is not defined
-#' and a value of \code{NA} is returned. Similar statements are true for
-#' predictive values.
+#' and a value of `NA` is returned. Similar statements are true for predictive
+#' values.
 #'
 #' The positive predictive value is defined as the percent of predicted
 #' positives that are actually positive while the negative predictive value is
@@ -29,106 +29,106 @@
 #'
 #' See the references for discussions of the statistics.
 #'
-#' @aliases sensitivity sensitivity.default sensitivity.table
-#' sensitivity.matrix specificity specificity.default specificity.table
-#' specificity.matrix posPredValue posPredValue.default posPredValue.table
-#' posPredValue.matrix negPredValue negPredValue.default negPredValue.table
-#' negPredValue.matrix
+#' @aliases sensitivity sensitivity.default sensitivity.table sensitivity.matrix specificity specificity.default specificity.table specificity.matrix posPredValue posPredValue.default posPredValue.table posPredValue.matrix negPredValue negPredValue.default negPredValue.table negPredValue.matrix
 #' @param data for the default functions, a factor containing the discrete
-#' measurements. For the \code{table} or \code{matrix} functions, a table or
-#' matric object, respectively.
+#'   measurements. For the `table` or `matrix` functions, a table or matric
+#'   object, respectively.
 #' @param reference a factor containing the reference values
 #' @param positive a character string that defines the factor level
-#' corresponding to the "positive" results
+#'   corresponding to the "positive" results
 #' @param negative a character string that defines the factor level
-#' corresponding to the "negative" results
+#'   corresponding to the "negative" results
 #' @param prevalence a numeric value for the rate of the "positive" class of
-#' the data
-#' @param na.rm a logical value indicating whether \code{NA} values should be
-#' stripped before the computation proceeds
+#'   the data
+#' @param na.rm a logical value indicating whether `NA` values should be
+#'   stripped before the computation proceeds
 #' @param ... not currently used
 #' @return A number between 0 and 1 (or NA).
 #' @author Max Kuhn
-#' @seealso \code{\link{confusionMatrix}}
-#' @references Kuhn, M. (2008), ``Building predictive models in R using the
-#' caret package, '' \emph{Journal of Statistical Software},
-#' (\doi{10.18637/jss.v028.i05}).
+#' @seealso [confusionMatrix()]
+#' @references Kuhn, M. (2008), "Building Predictive Models in R Using the
+#'   caret Package," *Journal of Statistical Software*, 28(5), 1-26.
+#'   (\doi{10.18637/jss.v028.i05}).
 #'
-#' Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 1: sensitivity and
-#' specificity,'' \emph{British Medical Journal}, vol 308, 1552.
+#' Altman, D.G., Bland, J.M. (1994) "Diagnostic tests 1: sensitivity and
+#' specificity," *British Medical Journal*, vol 308, 1552.
 #'
-#' Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 2: predictive values,''
-#' \emph{British Medical Journal}, vol 309, 102.
+#' Altman, D.G., Bland, J.M. (1994) "Diagnostic tests 2: predictive values,"
+#' *British Medical Journal*, vol 309, 102.
+#' @family performance
 #' @keywords manip
-#' @examples
-#'
-#' \dontrun{
+#' @examplesIf !caret:::is_cran_check()
+#' 
 #' ###################
 #' ## 2 class example
-#'
+#' 
 #' lvs <- c("normal", "abnormal")
-#' truth <- factor(rep(lvs, times = c(86, 258)),
-#'                 levels = rev(lvs))
+#' truth <- factor(rep(lvs, times = c(86, 258)), levels = rev(lvs))
 #' pred <- factor(
-#'                c(
-#'                  rep(lvs, times = c(54, 32)),
-#'                  rep(lvs, times = c(27, 231))),
-#'                levels = rev(lvs))
-#'
+#'   c(
+#'     rep(lvs, times = c(54, 32)),
+#'     rep(lvs, times = c(27, 231))
+#'   ),
+#'   levels = rev(lvs)
+#' )
+#' 
 #' xtab <- table(pred, truth)
-#'
+#' 
 #' sensitivity(pred, truth)
 #' sensitivity(xtab)
 #' posPredValue(pred, truth)
 #' posPredValue(pred, truth, prevalence = 0.25)
-#'
+#' 
 #' specificity(pred, truth)
 #' negPredValue(pred, truth)
 #' negPredValue(xtab)
 #' negPredValue(pred, truth, prevalence = 0.25)
-#'
-#'
+#' 
 #' prev <- seq(0.001, .99, length = 20)
-#' npvVals <- ppvVals <- prev  * NA
-#' for(i in seq(along.with = prev))
-#'   {
-#'     ppvVals[i] <- posPredValue(pred, truth, prevalence = prev[i])
-#'     npvVals[i] <- negPredValue(pred, truth, prevalence = prev[i])
-#'   }
-#'
-#' plot(prev, ppvVals,
-#'      ylim = c(0, 1),
-#'      type = "l",
-#'      ylab = "",
-#'      xlab = "Prevalence (i.e. prior)")
+#' npvVals <- ppvVals <- prev * NA
+#' for (i in seq(along.with = prev)) {
+#'   ppvVals[i] <- posPredValue(pred, truth, prevalence = prev[i])
+#'   npvVals[i] <- negPredValue(pred, truth, prevalence = prev[i])
+#' }
+#' 
+#' plot(
+#'   prev,
+#'   ppvVals,
+#'   ylim = c(0, 1),
+#'   type = "l",
+#'   ylab = "",
+#'   xlab = "Prevalence (i.e. prior)"
+#' )
 #' points(prev, npvVals, type = "l", col = "red")
-#' abline(h=sensitivity(pred, truth), lty = 2)
-#' abline(h=specificity(pred, truth), lty = 2, col = "red")
-#' legend(.5, .5,
-#'        c("ppv", "npv", "sens", "spec"),
-#'        col = c("black", "red", "black", "red"),
-#'        lty = c(1, 1, 2, 2))
-#'
+#' abline(h = sensitivity(pred, truth), lty = 2)
+#' abline(h = specificity(pred, truth), lty = 2, col = "red")
+#' legend(
+#'   .5,
+#'   .5,
+#'   c("ppv", "npv", "sens", "spec"),
+#'   col = c("black", "red", "black", "red"),
+#'   lty = c(1, 1, 2, 2)
+#' )
+#' 
 #' ###################
 #' ## 3 class example
-#'
+#' 
 #' library(MASS)
-#'
+#' 
 #' fit <- lda(Species ~ ., data = iris)
 #' model <- predict(fit)$class
-#'
+#' 
 #' irisTabs <- table(model, iris$Species)
-#'
+#' 
 #' ## When passing factors, an error occurs with more
 #' ## than two levels
-#' sensitivity(model, iris$Species)
-#'
+#' try(sensitivity(model, iris$Species))
+#' 
 #' ## When passing a table, more than two levels can
 #' ## be used
 #' sensitivity(irisTabs, "versicolor")
 #' specificity(irisTabs, c("setosa", "virginica"))
-#' }
-#'
+#' 
 #' @export sensitivity
 sensitivity <-
   function(data, ...){

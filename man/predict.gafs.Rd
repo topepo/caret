@@ -8,7 +8,7 @@
 \method{predict}{gafs}(object, newdata, ...)
 }
 \arguments{
-\item{object}{an object of class \code{\link{safs}} or \code{\link{gafs}}}
+\item{object}{an object of class \code{\link[=safs]{safs()}} or \code{\link[=gafs]{gafs()}}}
 
 \item{newdata}{a data frame or matrix of predictors.}
 
@@ -19,39 +19,44 @@ The type of result depends on what was specified in
 \code{object$control$functions$predict}.
 }
 \description{
-Predict new samples using \code{\link{safs}} and \code{\link{gafs}} objects.
+Predict new samples using \code{\link[=safs]{safs()}} and \code{\link[=gafs]{gafs()}} objects.
 }
 \details{
 Only the predictors listed in \code{object$optVariables} are required.
 }
 \examples{
+\dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-\dontrun{
 
 set.seed(1)
 train_data <- twoClassSim(100, noiseVars = 10)
-test_data  <- twoClassSim(10,  noiseVars = 10)
+test_data <- twoClassSim(10, noiseVars = 10)
 
 ## A short example
-ctrl <- safsControl(functions = rfSA,
-                    method = "cv",
-                    number = 3)
+ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
 
-rf_search <- safs(x = train_data[, -ncol(train_data)],
-                  y = train_data$Class,
-                  iters = 3,
-                  safsControl = ctrl)
+rf_search <- safs(
+  x = train_data[, -ncol(train_data)],
+  y = train_data$Class,
+  iters = 3,
+  safsControl = ctrl
+)
 
 rf_search
 
 predict(rf_search, train_data)
-}
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link{safs}}, \code{\link{gafs}}
+\code{\link[=safs]{safs()}}, \code{\link[=gafs]{gafs()}}
+
+Other feature-selection:
+\code{\link[=gafsControl]{gafsControl()}},
+\code{\link[=rfe]{rfe()}},
+\code{\link[=sbf]{sbf()}}
 }
 \author{
 Max Kuhn
 }
+\concept{feature-selection}
 \keyword{multivariate}

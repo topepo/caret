@@ -11,7 +11,10 @@ Bioinformatics}, Vol. 8, pg. 340,
 \url{https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-8-340}.
 }
 \value{
-\item{segmentationData}{data frame of cells}
+:
+\itemize{
+\item \code{segmentationData}: data frame of cells
+}
 }
 \description{
 Hill, LaPan, Li and Haney (2007) develop models to predict which cells in a
@@ -29,9 +32,8 @@ contained in \code{segmentationData} is modified. First, several discrete
 versions of some of the predictors (with the suffix "Status") were removed.
 Second, there are several skewed predictors with minimum values of zero
 (that would benefit from some transformation, such as the log). A constant
-value of 1 was added to these fields: \code{AvgIntenCh2},
-\code{FiberAlign2Ch3}, \code{FiberAlign2Ch4}, \code{SpotFiberCountCh4} and
-\code{TotalIntenCh2}.
+value of 1 was added to these fields: \code{AvgIntenCh2}, \code{FiberAlign2Ch3},
+\code{FiberAlign2Ch4}, \code{SpotFiberCountCh4} and \code{TotalIntenCh2}.
 
 A binary version of the original data is at
 \url{http://topepo.github.io/caret/segmentationOriginal.RData}.

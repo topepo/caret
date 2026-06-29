@@ -19,18 +19,20 @@ produced.}
 \item{keepData}{A logical for returning the observed and predicted data.}
 }
 \value{
-A list with: \item{metrics }{A vector of values describing the
-bootstrap distribution.} \item{data }{A data frame or \code{NULL}. Columns
-include \code{obs}, \code{pred} and \code{group} (for tracking
-cross-validation folds or bootstrap samples)}
+A list with:
+\itemize{
+\item \code{metrics}: A vector of values describing the bootstrap distribution.
+\item \code{data}: A data frame or \code{NULL}. Columns include \code{obs}, \code{pred} and \code{group}
+(for tracking cross-validation folds or bootstrap samples)
+}
 }
 \description{
 This function uses the out-of-bag predictions to calculate overall
 performance metrics and returns the observed and predicted data.
 }
 \details{
-The mean and standard deviation of the values produced by
-\code{\link{postResample}} are calculated.
+The mean and standard deviation of the values produced by \code{\link[=postResample]{postResample()}}
+are calculated.
 }
 \examples{
 
@@ -38,7 +40,7 @@ resampleSummary(rnorm(10), matrix(rnorm(50), ncol = 5))
 
 }
 \seealso{
-\code{\link{postResample}}
+\code{\link[=postResample]{postResample()}}
 }
 \author{
 Max Kuhn

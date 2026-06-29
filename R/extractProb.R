@@ -124,4 +124,3 @@ extractProb <- function(models,
   out$object <- objName
   out
 }
-

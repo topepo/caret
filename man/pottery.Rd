@@ -10,9 +10,12 @@ R. G. Brereton (2003). \emph{Chemometrics: Data Analysis for the
 Laboratory and Chemical Plant}, pg. 261.
 }
 \value{
-\item{pottery}{11 elemental composition measurements }
-\item{potteryClass}{factor of pottery type: black carbon containing bulks
-(A) and clayey (B)}
+:
+\itemize{
+\item \code{pottery}: 11 elemental composition measurements
+\item \code{potteryClass}: factor of pottery type: black carbon containing bulks (A)
+and clayey (B)
+}
 }
 \description{
 Measurements of 58 pottery samples.

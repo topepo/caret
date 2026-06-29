@@ -14,22 +14,22 @@
 \method{predict}{icr}(object, newdata, ...)
 }
 \arguments{
-\item{formula}{A formula of the form \code{class ~ x1 + x2 + \dots{}}}
+\item{formula}{A formula of the form \code{y ~ x1 + x2 + ...}}
 
 \item{data}{Data frame from which variables specified in \code{formula} are
 preferentially to be taken.}
 
 \item{weights}{(case) weights for each example - if missing defaults to 1.}
 
-\item{\dots}{arguments passed to \code{\link[fastICA]{fastICA}}}
+\item{\dots}{arguments passed to \code{\link[fastICA:fastICA]{fastICA::fastICA()}}}
 
 \item{subset}{An index vector specifying the cases to be used in the
-training sample.  (NOTE: If given, this argument must be named.)}
+training sample. (NOTE: If given, this argument must be named.)}
 
-\item{na.action}{A function to specify the action to be taken if \code{NA}s
-are found. The default action is for the procedure to fail.  An alternative
-is na.omit, which leads to rejection of cases with missing values on any
-required variable.  (NOTE: If given, this argument must be named.)}
+\item{na.action}{A function to specify the action to be taken if \code{NA}s are
+found. The default action is for the procedure to fail. An alternative is
+\code{na.omit}, which leads to rejection of cases with missing values on any
+required variable. (NOTE: If given, this argument must be named.)}
 
 \item{contrasts}{a list of contrasts to be used for some or all of the
 factors appearing as variables in the model formula.}
@@ -43,10 +43,13 @@ factors appearing as variables in the model formula.}
 \item{newdata}{matrix or data frame of test examples.}
 }
 \value{
-For \code{icr}, a list with elements \item{model }{the results of
-\code{\link[stats]{lm}} after the ICA transformation} \item{ica
-}{pre-processing information} \item{n.comp }{number of ICA components}
-\item{names }{column names of the original data}
+For \code{icr}, a list with elements:
+\itemize{
+\item \code{model}: the results of \code{\link[stats:lm]{stats::lm()}} after the ICA transformation
+\item \code{ica}: pre-processing information
+\item \code{n.comp}: number of ICA components
+\item \code{names}: column names of the original data
+}
 }
 \description{
 Fit a linear regression model using independent components
@@ -54,11 +57,10 @@ Fit a linear regression model using independent components
 \details{
 This produces a model analogous to Principal Components Regression (PCR) but
 uses Independent Component Analysis (ICA) to produce the scores. The user
-must specify a value of \code{n.comp} to pass to
-\code{\link[fastICA]{fastICA}}.
+must specify a value of \code{n.comp} to pass to \code{\link[fastICA:fastICA]{fastICA::fastICA()}}.
 
-The function \code{\link{preProcess}} to produce the ICA scores for the
-original data and for \code{newdata}.
+The function \code{\link[=preProcess]{preProcess()}} to produce the ICA scores for the original data
+and for \code{newdata}.
 }
 \examples{
 
@@ -68,11 +70,10 @@ icrFit <- icr(bbbDescr, logBBB, n.comp = 5)
 
 icrFit
 
-predict(icrFit, bbbDescr[1:5,])
+predict(icrFit, bbbDescr[1:5, ])
 }
 \seealso{
-\code{\link[fastICA]{fastICA}}, \code{\link{preProcess}},
-\code{\link[stats]{lm}}
+\code{\link[fastICA:fastICA]{fastICA::fastICA()}}, \code{\link[=preProcess]{preProcess()}}, \code{\link[stats:lm]{stats::lm()}}
 }
 \author{
 Max Kuhn

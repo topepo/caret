@@ -8,3 +8,4 @@
 ^inst/bookdown$
 ^inst/model_sources$
 ^inst/release_process$
+^man-roxygen$

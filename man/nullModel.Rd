@@ -30,17 +30,21 @@ the number of predictions to return)}
 classification)}
 }
 \value{
-The output of \code{nullModel} is a list of class \code{nullModel}
-with elements \item{call }{the function call} \item{value }{the mean of
-\code{y} or the most prevalent class} \item{levels }{when \code{y} is a
-factor, a vector of levels. \code{NULL} otherwise} \item{pct }{when \code{y}
-is a factor, a data frame with a column for each class (\code{NULL}
-otherwise). The column for the most prevalent class has the proportion of
-the training samples with that class (the other columns are zero). } \item{n
-}{the number of elements in \code{y}}
+The output of \code{nullModel} is a list of class \code{nullModel} with
+elements
+\itemize{
+\item \code{call}: the function call
+\item \code{value}: the mean of \code{y} or the most prevalent class
+\item \code{levels}: when \code{y} is a factor, a vector of levels. \code{NULL} otherwise
+\item \code{pct}: when \code{y} is a factor, a data frame with a column for each class
+(\code{NULL} otherwise). The column for the most prevalent class has the
+proportion of the training samples with that class (the other
+columns are zero).
+\item \code{n}: the number of elements in \code{y}
+}
 
-\code{predict.nullModel} returns a either a factor or numeric vector
-depending on the class of \code{y}. All predictions are always the same.
+\code{predict.nullModel} returns a either a factor or numeric vector depending on
+the class of \code{y}. All predictions are always the same.
 }
 \description{
 Fit a single mean or largest class model
@@ -54,14 +58,15 @@ the most prevalent class is returned.
 }
 \examples{
 
-outcome <- factor(sample(letters[1:2],
-                         size = 100,
-                         prob = c(.1, .9),
-                         replace = TRUE))
+outcome <- factor(sample(
+  letters[1:2],
+  size = 100,
+  prob = c(.1, .9),
+  replace = TRUE
+))
 useless <- nullModel(y = outcome)
 useless
 predict(useless, matrix(NA, nrow = 10))
-
 
 }
 \keyword{models}

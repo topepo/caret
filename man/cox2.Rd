@@ -14,11 +14,13 @@ Classification Structure-Activity Relationships, \emph{Journal of Chemical
 Information and Computer Sciences}, Vol. 43, pg. 1906-1915.
 }
 \value{
-\item{cox2Descr}{the descriptors} \item{cox2IC50}{the IC50 data used
-to determine activity}
-
-\item{cox2Class}{the categorical outcome ("Active" or "Inactive") based on
-the $2^2.5$ cutoff}
+:
+\itemize{
+\item \code{cox2Descr}: the descriptors
+\item \code{cox2IC50}: the IC50 data used to determine activity
+\item \code{cox2Class}: the categorical outcome ("Active" or "Inactive") based on the
+$2^2.5$ cutoff
+}
 }
 \description{
 From Sutherland, O'Brien, and Weaver (2003): "A set of 467 cyclooxygenase-2

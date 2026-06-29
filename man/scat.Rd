@@ -11,14 +11,16 @@ distinguishing among bobcat, coyote and gray fox scats. \emph{Wildlife
 Biology}, 21(5), 254-262
 }
 \value{
-\item{scat_orig}{the entire data set in the Supplemental Materials}
-\item{scat}{data on the three main species}
+:
+\itemize{
+\item \code{scat_orig}: the entire data set in the Supplemental Materials
+\item \code{scat}: data on the three main species
+}
 }
 \description{
 Reid (2015) collected data on animal feses in coastal California. The data
 consist of DNA verified species designations as well as fields related to
 the time and place of the collection and the scat itself. The data frame
-\code{scat_orig} contains while \code{scat} contains data on the three main
-species.
+\code{scat_orig} contains while \code{scat} contains data on the three main species.
 }
 \keyword{datasets}

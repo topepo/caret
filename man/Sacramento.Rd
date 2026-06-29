@@ -9,9 +9,12 @@ SpatialKey website:
 \url{https://support.spatialkey.com/spatialkey-sample-csv-data/}
 }
 \value{
-\item{Sacramento}{a data frame with columns '\code{city}',
-'\code{zip}', '\code{beds}', '\code{baths}', '\code{sqft}', '\code{type}',
-'\code{price}', '\code{latitude}', and '\code{longitude}'}
+:
+\itemize{
+\item \code{Sacramento}: a data frame with columns '\code{city}', '\code{zip}', '\code{beds}',
+'\code{baths}', '\code{sqft}', '\code{type}', '\code{price}', '\code{latitude}', and
+'\code{longitude}'
+}
 }
 \description{
 This data frame contains house and sale price data for 932 homes in
@@ -28,9 +31,8 @@ data(Sacramento)
 set.seed(955)
 in_train <- createDataPartition(log10(Sacramento$price), p = .8, list = FALSE)
 
-training <- Sacramento[ in_train,]
-testing  <- Sacramento[-in_train,]
-
+training <- Sacramento[in_train, ]
+testing <- Sacramento[-in_train, ]
 
 }
 \keyword{datasets}

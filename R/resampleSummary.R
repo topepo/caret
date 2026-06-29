@@ -1,24 +1,25 @@
 #' Summary of resampled performance estimates
-#' 
+#'
 #' This function uses the out-of-bag predictions to calculate overall
 #' performance metrics and returns the observed and predicted data.
-#' 
-#' The mean and standard deviation of the values produced by
-#' \code{\link{postResample}} are calculated.
-#' 
+#'
+#' The mean and standard deviation of the values produced by [postResample()]
+#' are calculated.
+#'
 #' @param obs A vector (numeric or factor) of the outcome data
 #' @param resampled For bootstrapping, this is either a matrix (for numeric
-#' outcomes) or a data frame (for factors). For cross-validation, a vector is
-#' produced.
+#'   outcomes) or a data frame (for factors). For cross-validation, a vector is
+#'   produced.
 #' @param index The list to index of samples in each cross-validation fold
-#' (only used for cross-validation).
+#'   (only used for cross-validation).
 #' @param keepData A logical for returning the observed and predicted data.
-#' @return A list with: \item{metrics }{A vector of values describing the
-#' bootstrap distribution.} \item{data }{A data frame or \code{NULL}. Columns
-#' include \code{obs}, \code{pred} and \code{group} (for tracking
-#' cross-validation folds or bootstrap samples)}
+#' @return A list with:
+#'
+#' * `metrics`: A vector of values describing the bootstrap distribution.
+#' * `data`: A data frame or `NULL`. Columns include `obs`, `pred` and `group`
+#'           (for tracking cross-validation folds or bootstrap samples)
 #' @author Max Kuhn
-#' @seealso \code{\link{postResample}}
+#' @seealso [postResample()]
 #' @keywords utilities
 #' @examples
 #' 
@@ -95,4 +96,3 @@ resampleSummary <- function(obs, resampled, index = NULL, keepData = TRUE)
    if(keepData) outResample <- outResample[!is.na(outResample$pred),] 
    list(metrics = out, data = outResample)
 }
-
