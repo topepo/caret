@@ -1,6 +1,7 @@
 ## Test cases by Josh Brady (doublej2) from issue #344
 
-check_dummies <- function(x, expected = NULL) {
+test_that("dummyVars handles factors, missing data, and naming (issues #344, #390)", {
+  skip_on_cran()
   dfTrain <- data.frame(xf = c('a', 'b', 'c'), stringsAsFactors = TRUE)
   dfTest <- data.frame(xf = c('a', 'b'), stringsAsFactors = TRUE)
 
@@ -134,7 +135,7 @@ check_dummies <- function(x, expected = NULL) {
   exp_names_lvls <- paste(1:9)
   res_names_lvls <- colnames(predict(foosbarsbars, test_data))
   expect_equal(exp_names_lvls, res_names_lvls)
-}
+})
 
 
 test_that("Good names for dummies with reocurring patterns", {
