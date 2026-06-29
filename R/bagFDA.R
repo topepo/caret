@@ -159,14 +159,14 @@ function(object, newdata = NULL, type = "class", ...)
   requireNamespaceQuietStop("earth")
    getTrainPred <- function(x)
      {
-       oobIndex <- 1:nrow(x$fit$fitted.values)
+       oobIndex <- seq_len(nrow(x$fit$fitted.values))
        oobIndex <- oobIndex[!(oobIndex %in% unique(x$index))]
        tmp <- predict(x, type = "posterior")[oobIndex,,drop = FALSE]
-       rownames(tmp) <- 1:nrow(tmp)
+       rownames(tmp) <- seq_len(nrow(tmp))
        out <- data.frame(pred = tmp,
                          sample = oobIndex,
                          check.rows = FALSE)
-       colnames(out)[1:ncol(tmp)] <- names(x$prior)
+       colnames(out)[seq_len(ncol(tmp))] <- names(x$prior)
        out
      }
 
@@ -183,7 +183,7 @@ function(object, newdata = NULL, type = "class", ...)
                         nms <- colnames(tmp)
                         tmp <- as.data.frame(tmp, stringsAsFactors = FALSE)
                         names(tmp) <- nms
-                        tmp$sample <- 1:nrow(tmp)
+                        tmp$sample <- seq_len(nrow(tmp))
                         tmp
                       },
                       y = newdata)

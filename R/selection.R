@@ -113,7 +113,7 @@
 #' @export oneSE
 oneSE <- function(x, metric, num, maximize)
   {
-    index <- 1:nrow(x)
+    index <- seq_len(nrow(x))
     
     if(!maximize)
       {
@@ -136,7 +136,7 @@ oneSE <- function(x, metric, num, maximize)
 tolerance <- function(x, metric, tol = 1.5, maximize)
   {
        
-    index <- 1:nrow(x)
+    index <- seq_len(nrow(x))
     
     if(!maximize)
       {

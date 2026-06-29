@@ -406,7 +406,7 @@ plotRef <- function(x, y, v, iter = 0) {
   ref_values <- get_ref_point(tmp_dat, v = v)
   ref_values <- ref_values[!is.na(ref_values$CumTestedPct), ]
   if (nrow(ref_values) > 0) {
-    for (i in 1:nrow(ref_values)) {
+    for (i in seq_len(nrow(ref_values))) {
       panel.segments(
         x0 = ref_values$CumTestedPct[i],
         x1 = ref_values$CumTestedPct[i],

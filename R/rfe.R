@@ -2155,7 +2155,7 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
         modelIndex <- resampleIndex[[iter]]
         holdoutIndex <- ctrl$indexOut[[iter]]
       } else {
-        modelIndex <- 1:nrow(data)
+        modelIndex <- seq_len(nrow(data))
         holdoutIndex <- modelIndex
       }
 

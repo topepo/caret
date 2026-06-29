@@ -31,7 +31,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                          .combine = "c",
                          .verbose = FALSE,
                          .errorhandling = "stop") %:%
-    foreach(parm = 1:nrow(info$loop),
+    foreach(parm = seq_len(nrow(info$loop)),
             .combine = "c",
             .verbose = FALSE,
             .packages = pkgs,
@@ -266,7 +266,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
       printed <- format(new_info$loop, digits = 4)
       colnames(printed) <- gsub("^\\.", "", colnames(printed))
 
-      adapt_results <- foreach(parm = 1:nrow(new_info$loop),
+      adapt_results <- foreach(parm = seq_len(nrow(new_info$loop)),
                                .combine = "c",
                                .verbose = FALSE,
                                .packages = pkgs)  %op% {
@@ -545,7 +545,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
     final_result <- foreach(iter = final_index,
                             .combine = "c",
                             .verbose = FALSE) %:%
-      foreach(parm = 1:nrow(new_info$loop),
+      foreach(parm = seq_len(nrow(new_info$loop)),
               .combine = "c",
               .verbose = FALSE,
               .packages = pkgs)  %op% {
@@ -791,7 +791,7 @@ long2wide <- function(x, metric) {
 get_id <- function(x, param) {
   params <- x[,param,drop=FALSE]
   params <- params[!duplicated(params),,drop=FALSE]
-  params$model_id <- paste("m", gsub(" ", "0", format(1:nrow(params))), sep = "")
+  params$model_id <- paste("m", gsub(" ", "0", format(seq_len(nrow(params)))), sep = "")
   rownames(params) <- NULL
   params
 }

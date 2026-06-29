@@ -236,14 +236,14 @@ sbf <- function (x, ...) UseMethod("sbf")
       tmp <- looSbfWorkflow(x = x, y = y, ppOpts = preProcess,
                             ctrl = sbfControl, lev = classLevels, ...)
       resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "pred"])
-      rownames(resamples) <- 1:nrow(resamples)
+      rownames(resamples) <- seq_len(nrow(resamples))
       selectedVars <- tmp$everything[names(tmp$everything) == "variables"]
       performance <- tmp$performance
     } else {
       tmp <- nominalSbfWorkflow(x = x, y = y, ppOpts = preProcess,
                                 ctrl = sbfControl, lev = classLevels, ...)
       resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "resamples"])
-      rownames(resamples) <- 1:nrow(resamples)
+      rownames(resamples) <- seq_len(nrow(resamples))
       selectedVars <- tmp$everything[names(tmp$everything) == "selectedVars"]
       performance <- tmp$performance
     }
@@ -408,7 +408,7 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
     if(!is.null(perf_data))
       testOutput <- cbind(
         testOutput,
-        perf_data[sample(1:nrow(perf_data), nrow(testOutput)),, drop = FALSE]
+        perf_data[sample(seq_len(nrow(perf_data)), nrow(testOutput)),, drop = FALSE]
       )
 
     test <- sbfControl$functions$summary(testOutput, lev = classLevels)
@@ -433,14 +433,14 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
       tmp <- sbf_loo_rec(rec = orig_rec, data = data,
                          ctrl = sbfControl, lev = classLevels, ...)
       resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "pred"])
-      rownames(resamples) <- 1:nrow(resamples)
+      rownames(resamples) <- seq_len(nrow(resamples))
       selectedVars <- tmp$everything[names(tmp$everything) == "variables"]
       performance <- tmp$performance
     } else {
       tmp <- sbf_rec(rec = orig_rec, data = data,
                      ctrl = sbfControl, lev = classLevels, ...)
       resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "resamples"])
-      rownames(resamples) <- 1:nrow(resamples)
+      rownames(resamples) <- seq_len(nrow(resamples))
       selectedVars <- tmp$everything[names(tmp$everything) == "selectedVars"]
       performance <- tmp$performance
     }
@@ -543,7 +543,7 @@ sbf_rec <- function(rec, data, ctrl, lev, ...) {
         modelIndex <- resampleIndex[[iter]]
         holdoutIndex <- ctrl$indexOut[[iter]]
       } else {
-        modelIndex <- 1:nrow(data)
+        modelIndex <- seq_len(nrow(data))
         holdoutIndex <- modelIndex
       }
 
@@ -603,7 +603,7 @@ sbf_rec <- function(rec, data, ctrl, lev, ...) {
   performance <- MeanSD(resamples[,!grepl("Resample", colnames(resamples)),drop = FALSE])
 
   if(ctrl$method %in% c("boot632")) {
-    modelIndex <- 1:nrow(x)
+    modelIndex <- seq_len(nrow(x))
     holdoutIndex <- modelIndex
     appResults <- sbfIter(x = x_tr,
                           y = y_tr,

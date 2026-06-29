@@ -924,7 +924,7 @@ predict.preProcess <- function(object, newdata, ...) {
     }
     ##if(object$ica$row.norm) newdata <- apply(newdata, 1, function(u) u/sd(u))
     ica_cols <- ica_cols %*% object$ica$K %*% object$ica$W
-    colnames(ica_cols) <- paste("ICA", 1:ncol(object$ica$W), sep = "")
+    colnames(ica_cols) <- paste("ICA", seq_len(ncol(object$ica$W)), sep = "")
     if (is.data.frame(newdata)) {
       ica_cols <- as.data.frame(ica_cols, stringsAsFactors = TRUE)
     }

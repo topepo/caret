@@ -52,7 +52,7 @@ evalSummaryFunction <- function(y, wts = NULL, perf = NULL, ctrl, lev, metric, m
   if(!is.null(perf)) {
     if(is.vector(perf))
       stop("`perf` should be a data frame", call. = FALSE)
-    perf <- perf[sample(1:nrow(perf), nrow(testOutput)),, drop = FALSE]
+    perf <- perf[sample(seq_len(nrow(perf)), nrow(testOutput)),, drop = FALSE]
     testOutput <-cbind(testOutput, perf)
   }
 

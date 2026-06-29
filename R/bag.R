@@ -171,7 +171,7 @@ bagControl <- function(
         if (v > ncol(x)) {
           v <- ncol(x)
         }
-        subVars <- sample(1:ncol(subX), ceiling(v))
+        subVars <- sample(seq_len(ncol(subX)), ceiling(v))
         subX <- subX[, subVars, drop = FALSE]
       } else {
         subVars <- NULL
@@ -389,7 +389,7 @@ ldaBag <- list(
     pooled <- x[[1]] * NA
     n <- nrow(pooled)
     classes <- colnames(pooled)
-    for (i in 1:ncol(pooled)) {
+    for (i in seq_len(ncol(pooled))) {
       tmp <- lapply(x, function(y, col) y[, col], col = i)
       tmp <- do.call("rbind", tmp)
       pooled[, i] <- apply(tmp, 2, median)
@@ -425,7 +425,7 @@ plsBag <- list(
   aggregate = function(x, type = "class") {
     pooled <- x[[1]] * NA
     classes <- colnames(pooled)
-    for (i in 1:ncol(pooled)) {
+    for (i in seq_len(ncol(pooled))) {
       tmp <- lapply(x, function(y, col) y[, col], col = i)
       tmp <- do.call("rbind", tmp)
       pooled[, i] <- apply(tmp, 2, median)
@@ -457,7 +457,7 @@ nbBag <- list(
   aggregate = function(x, type = "class") {
     pooled <- x[[1]] * NA
     classes <- colnames(pooled)
-    for (i in 1:ncol(pooled)) {
+    for (i in seq_len(ncol(pooled))) {
       tmp <- lapply(x, function(y, col) y[, col], col = i)
       tmp <- do.call("rbind", tmp)
       pooled[, i] <- apply(tmp, 2, median)
@@ -508,7 +508,7 @@ ctreeBag <- list(
       pooled <- x[[1]] & NA
 
       classes <- colnames(pooled)
-      for (i in 1:ncol(pooled)) {
+      for (i in seq_len(ncol(pooled))) {
         tmp <- lapply(x, function(y, col) y[, col], col = i)
         tmp <- do.call("rbind", tmp)
         pooled[, i] <- apply(tmp, 2, median)
@@ -552,7 +552,7 @@ svmBag <- list(
       pooled <- x[[1]] & NA
 
       classes <- colnames(pooled)
-      for (i in 1:ncol(pooled)) {
+      for (i in seq_len(ncol(pooled))) {
         tmp <- lapply(x, function(y, col) y[, col], col = i)
         tmp <- do.call("rbind", tmp)
         pooled[, i] <- apply(tmp, 2, median)
@@ -602,7 +602,7 @@ nnetBag <- list(
       pooled <- x[[1]] & NA
 
       classes <- colnames(pooled)
-      for (i in 1:ncol(pooled)) {
+      for (i in seq_len(ncol(pooled))) {
         tmp <- lapply(x, function(y, col) y[, col], col = i)
         tmp <- do.call("rbind", tmp)
         pooled[, i] <- apply(tmp, 2, median)

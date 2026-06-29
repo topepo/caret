@@ -81,10 +81,10 @@ upSample <- function(x, y, list = FALSE, yname = "Class") {
   x <- ddply(x, .(y),
              function(x, top = maxClass) {
                if (nrow(x) < top) {
-                 ind <- sample(1:nrow(x),
+                 ind <- sample(seq_len(nrow(x)),
                                size = top - nrow(x),
                                replace = TRUE)
-                 ind <- c(1:nrow(x), ind)
+                 ind <- c(seq_len(nrow(x)), ind)
                  x <- x[ind, , drop = FALSE]
                }
                x

@@ -162,7 +162,7 @@ avNNet.default <- function(
       }
       set.seed(as.integer(seeds[i]))
       if (bag) {
-        ind <- sample(1:nrow(x), replace = TRUE)
+        ind <- sample(seq_len(nrow(x)), replace = TRUE)
       }
       thisMod <- if (is.null(classLev)) {
         nnet::nnet(x[ind, , drop = FALSE], y[ind], ...)
@@ -263,7 +263,7 @@ predict.avNNet <- function(
       if (any(is.na(x))) {
         stop("missing values in 'x'")
       }
-      keep <- 1:nrow(x)
+      keep <- seq_len(nrow(x))
       rn <- rownames(x)
     }
     if (!is.null(object$names)) {
