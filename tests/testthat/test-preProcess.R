@@ -1,42 +1,26 @@
-# Helper function
-check.medianImpute <- function(x) {
-  # Reference column medians for checks
-  med <- apply(x, 2, median, na.rm = TRUE)
-  anyEmptyColumn <- anyNA(med)
-  med[is.na(med)] <- 0
-
-  if (anyEmptyColumn) {
-    expect_snapshot_warning(
-      pp <- preProcess(x, method = "medianImpute")
-    )
-  } else {
-    pp <- preProcess(x, method = "medianImpute")
-  }
-  expect_equal(pp$median, med)
-
-  x.filled <- predict(pp, newdata = x)
-  expect_false(anyNA(x.filled))
-  expect_equal(x[!is.na(x)], x.filled[!is.na(x)])
-
-  med.filled <- apply(x.filled, 2, median)
-  expect_equal(med.filled, med)
-}
-
-# Tested data matrix
-set.seed(9019)
-x <- matrix(rnorm(20, mean = 10, sd = 5), nrow = 4)
-x[2, 1] <- x[3, 4] <- x[2, 5] <- x[4, 5] <- NA
-x[, 3] <- NA
-
-colnames(x) <- paste0("Var.", seq_len(ncol(x)))
+# `check.medianImpute()` lives in helper-preProcess.R
 
 test_that("median Impute works for matrix with named columns", {
   skip_on_cran()
+  # Tested data matrix
+  set.seed(9019)
+  x <- matrix(rnorm(20, mean = 10, sd = 5), nrow = 4)
+  x[2, 1] <- x[3, 4] <- x[2, 5] <- x[4, 5] <- NA
+  x[, 3] <- NA
+  colnames(x) <- paste0("Var.", 1:ncol(x))
+
   check.medianImpute(x)
 })
 
 test_that("median Impute works for data.frames", {
   skip_on_cran()
+  # Tested data matrix
+  set.seed(9019)
+  x <- matrix(rnorm(20, mean = 10, sd = 5), nrow = 4)
+  x[2, 1] <- x[3, 4] <- x[2, 5] <- x[4, 5] <- NA
+  x[, 3] <- NA
+  colnames(x) <- paste0("Var.", 1:ncol(x))
+
   check.medianImpute(as.data.frame(x, stringsAsFactors = TRUE))
 })
 

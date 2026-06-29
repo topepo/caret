@@ -1,8 +1,6 @@
-set.seed(442)
-
-
 test_that("Confusion matrix works", {
   skip_on_cran()
+  set.seed(442)
   train <- twoClassSim(
     n = 1000,
     intercept = -8,
