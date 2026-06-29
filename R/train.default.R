@@ -774,7 +774,7 @@ train.default <- function(
             call. = FALSE
           )
         }
-        if (any(is.na(unlist(trControl$seeds)))) {
+        if (anyNA(unlist(trControl$seeds))) {
           stop("At least one seed is missing (NA)", call. = FALSE)
         }
       }
@@ -939,7 +939,7 @@ train.default <- function(
       performance <- models$sort(performance)
     }
 
-    if (any(is.na(performance[, metric]))) {
+    if (anyNA(performance[, metric])) {
       warning("missing values found in aggregated results")
     }
 
@@ -1639,7 +1639,7 @@ train.recipe <- function(
             call. = FALSE
           )
         }
-        if (any(is.na(unlist(trControl$seeds)))) {
+        if (anyNA(unlist(trControl$seeds))) {
           stop("At least one seed is missing (NA)", call. = FALSE)
         }
       }
@@ -1793,7 +1793,7 @@ train.recipe <- function(
       performance <- models$sort(performance)
     }
 
-    if (any(is.na(performance[, metric]))) {
+    if (anyNA(performance[, metric])) {
       warning("missing values found in aggregated results")
     }
 

@@ -520,7 +520,7 @@ rfeIter <- function(
 
   finalVariables <- vector(length(sizeValues), mode = "list")
   for (k in seq(along.with = sizeValues)) {
-    if (!any(is.na(seeds))) {
+    if (!anyNA(seeds)) {
       set.seed(seeds[k])
     }
     if (rfeControl$verbose) {
@@ -1672,7 +1672,7 @@ rfe_rec <- function(
 
   finalVariables <- vector(length(sizeValues), mode = "list")
   for (k in seq(along.with = sizeValues)) {
-    if (!any(is.na(seeds))) {
+    if (!anyNA(seeds)) {
       set.seed(seeds[k])
     }
 
