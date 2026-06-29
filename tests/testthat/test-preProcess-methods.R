@@ -11,7 +11,7 @@ test_that('centering and scaling trans', {
   cs_dat1_sds <- apply(cs_dat1, 2, sd)
 
   cs_dat2_centered_exp <- cs_dat2
-  for (i in 1:ncol(cs_dat2_centered_exp)) {
+  for (i in seq_len(ncol(cs_dat2_centered_exp))) {
     cs_dat2_centered_exp[, i] <- cs_dat2_centered_exp[, i] - cs_dat1_means[i]
   }
 
@@ -20,7 +20,7 @@ test_that('centering and scaling trans', {
   expect_equal(cs_dat2_centered_exp, cs_dat2_centered)
 
   cs_dat2_scaled_exp <- cs_dat2
-  for (i in 1:ncol(cs_dat2_scaled_exp)) {
+  for (i in seq_len(ncol(cs_dat2_scaled_exp))) {
     cs_dat2_scaled_exp[, i] <- cs_dat2_scaled_exp[, i] / cs_dat1_sds[i]
   }
 
@@ -41,7 +41,7 @@ test_that('centering and scaling trans with missing data', {
   cs_dat1_sds <- apply(cs_dat1, 2, sd, na.rm = TRUE)
 
   cs_dat2_centered_exp <- cs_dat2
-  for (i in 1:ncol(cs_dat2_centered_exp)) {
+  for (i in seq_len(ncol(cs_dat2_centered_exp))) {
     cs_dat2_centered_exp[, i] <- cs_dat2_centered_exp[, i] - cs_dat1_means[i]
   }
 
@@ -50,7 +50,7 @@ test_that('centering and scaling trans with missing data', {
   expect_equal(cs_dat2_centered_exp, cs_dat2_centered)
 
   cs_dat2_scaled_exp <- cs_dat2
-  for (i in 1:ncol(cs_dat2_scaled_exp)) {
+  for (i in seq_len(ncol(cs_dat2_scaled_exp))) {
     cs_dat2_scaled_exp[, i] <- cs_dat2_scaled_exp[, i] / cs_dat1_sds[i]
   }
 
@@ -75,7 +75,7 @@ test_that('conversion to range trans', {
 
   # Default range [0, 1]:
   rng_dat2_ranged_exp <- rng_dat2
-  for (i in 1:ncol(rng_dat2_ranged_exp)) {
+  for (i in seq_len(ncol(rng_dat2_ranged_exp))) {
     rng_dat2_ranged_exp[, i] <- (rng_dat2_ranged_exp[, i] - rng_dat1_min[i]) /
       rng_dat1_rng[i]
   }
@@ -88,7 +88,7 @@ test_that('conversion to range trans', {
   rangeBounds = c(-0.7, 0.4)
 
   rng_dat2_ranged_custom_exp <- rng_dat2_ranged_exp
-  for (i in 1:ncol(rng_dat2_ranged_custom_exp)) {
+  for (i in seq_len(ncol(rng_dat2_ranged_custom_exp))) {
     rng_dat2_ranged_custom_exp[, i] <-
       rng_dat2_ranged_custom_exp[, i] *
       (rangeBounds[2] - rangeBounds[1]) +
@@ -124,7 +124,7 @@ test_that('conversion to range trans with missing data', {
 
   # Default range [0, 1]:
   rng_dat2_ranged_exp <- rng_dat2
-  for (i in 1:ncol(rng_dat2_ranged_exp)) {
+  for (i in seq_len(ncol(rng_dat2_ranged_exp))) {
     rng_dat2_ranged_exp[, i] <- (rng_dat2_ranged_exp[, i] - rng_dat1_min[i]) /
       rng_dat1_rng[i]
   }
@@ -137,7 +137,7 @@ test_that('conversion to range trans with missing data', {
   rangeBounds = c(-0.7, 0.4)
 
   rng_dat2_ranged_custom_exp <- rng_dat2_ranged_exp
-  for (i in 1:ncol(rng_dat2_ranged_custom_exp)) {
+  for (i in seq_len(ncol(rng_dat2_ranged_custom_exp))) {
     rng_dat2_ranged_custom_exp[, i] <-
       rng_dat2_ranged_custom_exp[, i] *
       (rangeBounds[2] - rangeBounds[1]) +
@@ -169,7 +169,7 @@ test_that('PCA trans', {
     predict(pca_dat2_pp, pca_dat2),
     stringsAsFactors = TRUE
   )
-  expect_equal(pca_dat2_pca, pca_dat2_exp[, 1:ncol(pca_dat2_pca)])
+  expect_equal(pca_dat2_pca, pca_dat2_exp[, seq_len(ncol(pca_dat2_pca))])
 })
 
 
@@ -192,7 +192,7 @@ test_that('PCA trans with missing data', {
 
   pca_dat2_pp <- preProcess(pca_dat1, "pca")
   expect_equal(
-    pc_obj$rotation[, 1:ncol(pca_dat2_pp$rotation)],
+    pc_obj$rotation[, seq_len(ncol(pca_dat2_pp$rotation))],
     pca_dat2_pp$rotation
   )
 })
@@ -221,7 +221,7 @@ test_that('ICA trans', {
   ica_dat1_means <- apply(ica_dat1, 2, mean)
   ica_dat1_sds <- apply(ica_dat1, 2, sd)
   ica_dat2_scaled <- ica_dat2
-  for (i in 1:ncol(ica_dat2_scaled)) {
+  for (i in seq_len(ncol(ica_dat2_scaled))) {
     ica_dat2_scaled[, i] <- (ica_dat2_scaled[, i] - ica_dat1_means[i]) /
       ica_dat1_sds[i]
   }
@@ -232,11 +232,11 @@ test_that('ICA trans', {
     n.comp = 3
   )
   ica_dat2_exp <- as.matrix(ica_dat2_scaled) %*% ic_obj$K %*% ic_obj$W
-  colnames(ica_dat2_exp) <- paste("ICA", 1:ncol(ic_obj$W), sep = "")
+  colnames(ica_dat2_exp) <- paste("ICA", seq_len(ncol(ic_obj$W)), sep = "")
   expect_equal(
     as.data.frame(ica_dat2_exp, stringsAsFactors = TRUE),
     ica_dat2_ica,
-    tolerance = .00001
+    tolerance = 0.00001
   )
 })
 
@@ -256,7 +256,7 @@ test_that('Spatial sign trans', {
   ss_dat1_means <- apply(ss_dat1, 2, mean)
   ss_dat1_sds <- apply(ss_dat1, 2, sd)
   ss_dat2_scaled <- ss_dat2
-  for (i in 1:ncol(ss_dat2_scaled)) {
+  for (i in seq_len(ncol(ss_dat2_scaled))) {
     ss_dat2_scaled[, i] <- (ss_dat2_scaled[, i] - ss_dat1_means[i]) /
       ss_dat1_sds[i]
   }
@@ -291,7 +291,7 @@ test_that('Box-Cox trans', {
     MASS::boxcox(x ~ rep(1, length(x)), plotit = FALSE)
   })
   bc_dat2_bc_exp <- bc_dat2
-  for (i in 1:ncol(bc_dat2)) {
+  for (i in seq_len(ncol(bc_dat2))) {
     lambda <- bc_trans[[i]]$x[which.max(bc_trans[[i]]$y)]
     bc_dat2_bc_exp[, i] <- (bc_dat2_bc_exp[, i]^lambda - 1) / lambda
   }
@@ -322,7 +322,7 @@ test_that('Box-Cox trans with missing data', {
   })
 
   bc_dat2_bc_exp <- bc_dat2
-  for (i in 1:ncol(bc_dat2)) {
+  for (i in seq_len(ncol(bc_dat2))) {
     lambda <- bc_trans[[i]]$x[which.max(bc_trans[[i]]$y)]
     bc_dat2_bc_exp[, i] <- (bc_dat2_bc_exp[, i]^lambda - 1) / lambda
   }

@@ -28,7 +28,7 @@ MeanSD <- function(x, exclude = NULL)
 {
   if(!is.null(exclude)) x <- x[, !(colnames(x) %in% exclude), drop = FALSE]
   out <- c(colMeans(x, na.rm = TRUE), sapply(x, sd, na.rm = TRUE))
-  names(out)[-(1:ncol(x))] <- paste(names(out)[-(1:ncol(x))], "SD", sep = "")
+  names(out)[-(seq_len(ncol(x)))] <- paste(names(out)[-(seq_len(ncol(x)))], "SD", sep = "")
   out
 }
 
@@ -40,7 +40,7 @@ expandParameters <- function(fixed, seq)
 
   isSeq <- names(fixed) %in% names(seq)
   out <- fixed
-  for(i in 1:nrow(seq))
+  for(i in seq_len(nrow(seq)))
   {
     tmp <- fixed
     tmp[,isSeq] <- seq[i,]
@@ -78,7 +78,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
   export <- c()
 
   result <- foreach(iter = seq(along.with = resampleIndex), .combine = "c", .verbose = FALSE, .export = export, .packages = "caret") %:%
-    foreach(parm = 1L:nrow(info$loop), .combine = "c", .verbose = FALSE, .export = export , .packages = "caret")  %op%
+    foreach(parm = seq_len(nrow(info$loop)), .combine = "c", .verbose = FALSE, .export = export , .packages = "caret")  %op%
     {
       if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
 
@@ -92,7 +92,7 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
         modelIndex <- resampleIndex[[iter]]
         holdoutIndex <- ctrl$indexOut[[iter]]
       } else {
-        modelIndex <- 1:nrow(x)
+        modelIndex <- seq_len(nrow(x))
         holdoutIndex <- modelIndex
       }
 
@@ -348,7 +348,7 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
 
   result <- foreach(iter = seq(along.with = ctrl$index), .combine = "rbind", .verbose = FALSE, .errorhandling = "stop", .packages = "caret") %:%
-    foreach(parm = 1:nrow(info$loop), .combine = "rbind", .verbose = FALSE, .errorhandling = "stop", .packages = "caret") %op% {
+    foreach(parm = seq_len(nrow(info$loop)), .combine = "rbind", .verbose = FALSE, .errorhandling = "stop", .packages = "caret") %op% {
 
       if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) set.seed(ctrl$seeds[[iter]][parm])
       if(testing) cat("after loops\n")
@@ -480,7 +480,7 @@ oobTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
   pkgs <- c("methods", "caret")
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
-  result <- foreach(parm = 1:nrow(info$loop), .combine = "rbind", .packages = "caret") %op%
+  result <- foreach(parm = seq_len(nrow(info$loop)), .combine = "rbind", .packages = "caret") %op%
   {
     loadNamespace("caret")
     lapply(pkgs, requireNamespaceQuietStop)
@@ -539,7 +539,7 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...) {
       modelIndex <- resampleIndex[[iter]]
       holdoutIndex <- ctrl$indexOut[[iter]]
     } else {
-      modelIndex <- 1:nrow(x)
+      modelIndex <- seq_len(nrow(x))
       holdoutIndex <- modelIndex
     }
 
@@ -568,7 +568,7 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...) {
   performance <- MeanSD(resamples[,!grepl("Resample", colnames(resamples)),drop = FALSE])
 
   if(ctrl$method %in% c("boot632")) {
-    modelIndex <- 1:nrow(x)
+    modelIndex <- seq_len(nrow(x))
     holdoutIndex <- modelIndex
     appResults <- sbfIter(subset_x(x, modelIndex),
                           y[modelIndex],
@@ -672,7 +672,7 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
       modelIndex <- resampleIndex[[iter]]
       holdoutIndex <- ctrl$indexOut[[iter]]
     } else {
-      modelIndex <- 1:nrow(x)
+      modelIndex <- seq_len(nrow(x))
       holdoutIndex <- modelIndex
     }
 

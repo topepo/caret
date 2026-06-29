@@ -87,5 +87,5 @@ test_that("predictions", {
   distData2 <- classDist(x, y, pca = TRUE, groups = groups)
 
   ## PCA and non-PCA preds match
-  expect_equal(predict(distData, x), predict(distData2, x), tolerance = .0001)
+  expect_equal(predict(distData, x), predict(distData2, x), tolerance = 0.0001)
 })

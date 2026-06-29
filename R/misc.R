@@ -52,7 +52,7 @@ evalSummaryFunction <- function(y, wts = NULL, perf = NULL, ctrl, lev, metric, m
   if(!is.null(perf)) {
     if(is.vector(perf))
       stop("`perf` should be a data frame", call. = FALSE)
-    perf <- perf[sample(1:nrow(perf), nrow(testOutput)),, drop = FALSE]
+    perf <- perf[sample(seq_len(nrow(perf)), nrow(testOutput)),, drop = FALSE]
     testOutput <-cbind(testOutput, perf)
   }
 
@@ -60,7 +60,7 @@ evalSummaryFunction <- function(y, wts = NULL, perf = NULL, ctrl, lev, metric, m
     for(i in seq(along.with = lev)) testOutput[, lev[i]] <- runif(nrow(testOutput))
     testOutput[, lev] <- t(apply(testOutput[, lev], 1, function(x) x/sum(x)))
   } else {
-    if(metric == "ROC" & !ctrl$classProbs)
+    if(metric == "ROC" && !ctrl$classProbs)
       stop("train()'s use of ROC codes requires class probabilities. See the classProbs option of trainControl()")
   }
   if(!is.null(wts)) testOutput$weights <- sample(wts, min(10, length(wts)))
@@ -103,7 +103,7 @@ Kim2009 <- function(n)
   grid <- as.data.frame(grid, stringsAsFactors = TRUE)
   names(grid) = paste("x", 1:10, sep = "")
   grid$x5 <- floor((grid$x5*3)+1)
-  pred <- -10 + 10 * sin(pi * grid$x1* grid$x2) + 5*(grid$x3 - .5)^2 + 5*grid$x4 + 2*grid$x5
+  pred <- -10 + 10 * sin(pi * grid$x1* grid$x2) + 5*(grid$x3 - 0.5)^2 + 5*grid$x4 + 2*grid$x5
   prob <-  binomial()$linkinv(pred)
   grid$Class <- ifelse(prob <= runif(n), "Class1", "Class2")
   grid$Class <- factor(grid$Class, levels = c("Class1","Class2"))
@@ -269,12 +269,12 @@ useMathSymbols <- function(x)
 depth2cp <- function(x, depth)
 {
   out <- approx(x[,"nsplit"], x[,"CP"], depth)$y
-  out[depth > max(x[,"nsplit"])] <- min(x[,"CP"]) * .99
+  out[depth > max(x[,"nsplit"])] <- min(x[,"CP"]) * 0.99
   out
 }
 
 #' @importFrom stats as.formula
-smootherFormula <- function(data, smoother = "s", cut = 10, df = 0, span = .5, degree = 1, y = ".outcome")
+smootherFormula <- function(data, smoother = "s", cut = 10, df = 0, span = 0.5, degree = 1, y = ".outcome")
 {
   nzv <- nearZeroVar(data)
   if(length(nzv) > 0) data <- data[, -nzv, drop = FALSE]
@@ -450,7 +450,7 @@ parse_sampling <- function(x, check_install = TRUE) {
                 first = TRUE)
     }
     pkgs <- switch(x$name, rose = "ROSE", smote = "themis", "")
-    if(pkgs != "" & check_install)
+    if(pkgs != "" && check_install)
       checkInstall(pkgs)
   } else {
     if(x_class == "function") {
@@ -564,7 +564,7 @@ get_range <- function(y) {
 #' @rdname caret-internal
 #' @export
 outcome_conversion <- function(x, lv) {
-  if(is.factor(x) | is.character(x)) {
+  if(is.factor(x) || is.character(x)) {
     if(!is.null(attributes(lv)) && any(names(attributes(lv)) == "ordered" && attr(lv, "ordered")))
       x <- ordered(as.character(x), levels = lv) else
         x <- factor(as.character(x), levels = lv)
@@ -586,7 +586,7 @@ check_na_conflict <- function(call_obj) {
     imputes <- if(any(grepl("impute", tolower(pp)))) TRUE else FALSE
   } else imputes <- FALSE
 
-  if(imputes & any(nam %in% c("na.omit", "na.exclude")))
+  if(imputes && any(nam %in% c("na.omit", "na.exclude")))
     warning(paste0("`preProcess` includes an imputation method but missing ",
                    "data will be eliminated by the formula method using `na.action=",
                    nam, "`. Consider using `na.actin=na.pass` instead."),
@@ -598,7 +598,7 @@ check_na_conflict <- function(call_obj) {
 # in case an object is a sparse matrix or tibble
 # do not use `drop` as an argument
 subset_x <- function(x, ind) {
-  if(is.matrix(x) | is.data.frame(x) | inherits(x, "dgCMatrix"))
+  if(is.matrix(x) || is.data.frame(x) || inherits(x, "dgCMatrix"))
     x <- x[ind,,drop = FALSE] else
       x <- x[ind,]
     x

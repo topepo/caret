@@ -383,7 +383,7 @@ safsControl <- function(
   repeats = ifelse(grepl("cv", method), 1, 5),
   verbose = FALSE,
   returnResamp = "final",
-  p = .75,
+  p = 0.75,
   index = NULL,
   indexOut = NULL,
   seeds = NULL,
@@ -396,7 +396,7 @@ safsControl <- function(
       'method should be one of: "cv", "boot", "repeatedcv", "LGOCV" or "LOOCV"'
     )
   }
-  if (holdout < 0 | holdout >= 1) {
+  if (holdout < 0 || holdout >= 1) {
     stop("'holdout' should be in [0, 1)")
   }
   if (improve < 2) {
@@ -684,11 +684,11 @@ safs <- function(x, ...) UseMethod("safs")
         paste(
           "The external fitness results should be a *named* vector;",
           "new name(s) are",
-          paste(paste0("external", 1:length(test)), sep = "", collapse = ", ")
+          paste(paste0("external", seq_along(test)), sep = "", collapse = ", ")
         ),
         immediate. = TRUE
       )
-      perfNames <- paste0("external", 1:length(test))
+      perfNames <- paste0("external", seq_along(test))
     }
 
     if (!(safsControl$metric["external"] %in% perfNames)) {
@@ -960,13 +960,13 @@ safs <- function(x, ...) UseMethod("safs")
 #' ##               importance = TRUE)
 #' 
 #' @export safs_initial
-safs_initial <- function(vars, prob = .20, ...) {
+safs_initial <- function(vars, prob = 0.20, ...) {
   sort(sample.int(vars, size = floor(vars * prob) + 1))
 }
 
 #' @rdname safs_initial
 #' @export
-safs_perturb <- function(x, vars, number = floor(length(x) * .01) + 1) {
+safs_perturb <- function(x, vars, number = floor(length(x) * 0.01) + 1) {
   bin <- index2vec(x, vars)
   change <- sample(seq(along.with = bin), size = number)
   bin[change] <- ifelse(bin[change] == 1, 0, 1)
@@ -1022,7 +1022,7 @@ sa_wrapper <- function(
   )
   if (!is.null(testX)) {
     modelPred <- funcs$pred(mod, testX[, ind, drop = FALSE])
-    if (is.data.frame(modelPred) | is.matrix(modelPred)) {
+    if (is.data.frame(modelPred) || is.matrix(modelPred)) {
       if (is.matrix(modelPred)) {
         modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
       }
@@ -1042,7 +1042,7 @@ sa_wrapper <- function(
 
     external <- funcs$fitness_extern(modelPred, lev = levels(testY))
     if (is.null(names(external))) {
-      names(external) <- paste0("external", 1:length(external))
+      names(external) <- paste0("external", seq_along(external))
     }
   } else {
     external <- NULL
@@ -1247,7 +1247,7 @@ sa_select <- function(
       internal$Note[i] <- "Improved"
       last_improve <- i
       since_improve <- 0
-      if (sa_verbose & i > 1) cat(" *\n")
+      if (sa_verbose && i > 1) cat(" *\n")
     } else {
       if (i > 1) {
         internal$Prob[i] <- funcs$prob(
@@ -1267,12 +1267,12 @@ sa_select <- function(
         current_subset <- new_subset
         internal$Best[i] <- internal$Best[i - 1]
         internal$Note[i] <- "Accepted"
-        if (sa_verbose & i > 1) cat("A\n")
+        if (sa_verbose && i > 1) cat("A\n")
       } else {
         internal$Obj[i] <- internal$Obj[i - 1]
         internal$Best[i] <- internal$Best[i - 1]
         internal$Note[i] <- "Discarded"
-        if (sa_verbose & i > 1) cat("\n")
+        if (sa_verbose && i > 1) cat("\n")
       }
     }
 
@@ -1573,7 +1573,7 @@ update.safs <- function(object, iter, x, y, ...) {
         last = TRUE
       )
   } else {
-    if (is.null(x) | is.null(y)) {
+    if (is.null(x) || is.null(y)) {
       stop("the original training data is needed to refit the model")
     }
     args <- list(
@@ -1755,7 +1755,7 @@ update.safs <- function(object, iter, x, y, ...) {
     if (!is.null(perf_data)) {
       testOutput <- cbind(
         testOutput,
-        perf_data[sample(1:nrow(perf_data), nrow(testOutput)), , drop = FALSE]
+        perf_data[sample(seq_len(nrow(perf_data)), nrow(testOutput)), , drop = FALSE]
       )
     }
 
@@ -1766,11 +1766,11 @@ update.safs <- function(object, iter, x, y, ...) {
         paste(
           "The external fitness results should be a *named* vector;",
           "new name(s) are",
-          paste(paste0("external", 1:length(test)), sep = "", collapse = ", ")
+          paste(paste0("external", seq_along(test)), sep = "", collapse = ", ")
         ),
         immediate. = TRUE
       )
-      perfNames <- paste0("external", 1:length(test))
+      perfNames <- paste0("external", seq_along(test))
     }
 
     if (!(safsControl$metric["external"] %in% perfNames)) {

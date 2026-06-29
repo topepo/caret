@@ -35,7 +35,7 @@
     sup.symbol <- trellis.par.get("superpose.symbol")
     
     if (horizontal) {
-      yscale <- extendrange(y, f = .2)   
+      yscale <- extendrange(y, f = 0.2)   
       if (is.null(levels.fos)) levels.fos <- floor(yscale[2]) - ceiling(yscale[1]) + 1
       panel.abline(v = 0, col =1, lty = 1, lwd = 1)
       pch <- rep(pch, length(x))
@@ -47,7 +47,7 @@
       else panel.superpose(x = x, y = y, groups = groups, col = col, pch = pch, ...)        
     }
     else {
-      xscale <- extendrange(x, f = .2)
+      xscale <- extendrange(x, f = 0.2)
       if (is.null(levels.fos)) levels.fos <- floor(xscale[2]) - ceiling(xscale[1]) + 1
       panel.abline(h = 0, col = col.line, lty = lty, lwd = lwd)
       pch <- rep(pch, length(x))

@@ -64,8 +64,8 @@ function(x, y, weights = NULL, B = 50, keepX = TRUE, ...)
   requireNamespaceQuietStop("mda")
   requireNamespaceQuietStop("earth")
    if(!is.matrix(x)) x <- as.matrix(x)
-   if(!is.vector(y) & !is.factor(y)) y <- as.vector(y)
-   if(!is.vector(y) & !is.factor(y)) y <- factor(y[,1])
+   if(!is.vector(y) && !is.factor(y)) y <- as.vector(y)
+   if(!is.vector(y) && !is.factor(y)) y <- factor(y[,1])
    if(is.null(weights)) weights <- rep(1, dim(x)[1])
    foo <- function(index, x, y, w, ...)
    {
@@ -159,18 +159,18 @@ function(object, newdata = NULL, type = "class", ...)
   requireNamespaceQuietStop("earth")
    getTrainPred <- function(x)
      {
-       oobIndex <- 1:nrow(x$fit$fitted.values)
+       oobIndex <- seq_len(nrow(x$fit$fitted.values))
        oobIndex <- oobIndex[!(oobIndex %in% unique(x$index))]
        tmp <- predict(x, type = "posterior")[oobIndex,,drop = FALSE]
-       rownames(tmp) <- 1:nrow(tmp)
+       rownames(tmp) <- seq_len(nrow(tmp))
        out <- data.frame(pred = tmp,
                          sample = oobIndex,
                          check.rows = FALSE)
-       colnames(out)[1:ncol(tmp)] <- names(x$prior)
+       colnames(out)[seq_len(ncol(tmp))] <- names(x$prior)
        out
      }
 
-   if(is.null(newdata) & !is.null(object$x)) newdata <- object$x
+   if(is.null(newdata) && !is.null(object$x)) newdata <- object$x
 
    if(is.null(newdata))
      {
@@ -183,7 +183,7 @@ function(object, newdata = NULL, type = "class", ...)
                         nms <- colnames(tmp)
                         tmp <- as.data.frame(tmp, stringsAsFactors = FALSE)
                         names(tmp) <- nms
-                        tmp$sample <- 1:nrow(tmp)
+                        tmp$sample <- seq_len(nrow(tmp))
                         tmp
                       },
                       y = newdata)
@@ -205,7 +205,7 @@ function(object, newdata = NULL, type = "class", ...)
 function(object, ...)
 {
 
-   oobStat <- apply(object$oob, 2, function(x) quantile(x, probs = c(0, 0.025, .5, .975, 1)))
+   oobStat <- apply(object$oob, 2, function(x) quantile(x, probs = c(0, 0.025, 0.5, 0.975, 1)))
 
    numTerms <- unlist(lapply(object$fit, function(x) length(x$fit$selected.terms)))
    numVar <- unlist(lapply(
@@ -229,7 +229,7 @@ function(object, ...)
 "print.summary.bagFDA" <-
 function(x, digits = max(3, getOption("digits") - 3), ...)
 {
-   oobStat <- apply(x$oob, 2, function(x) quantile(x, probs = c(0, 0.025, .25, .5, .75, .975, 1)))
+   oobStat <- apply(x$oob, 2, function(x) quantile(x, probs = c(0, 0.025, 0.25, 0.5, 0.75, 0.975, 1)))
    cat("Out of bag statistics:\n\n")
    print(x$oobStat, digits = digits)
    cat("\nModel Selection Statistics:\n\n")

@@ -10,7 +10,7 @@ posPredValue <-
 "posPredValue.default" <-
   function(data, reference, positive = levels(reference)[1], prevalence = NULL, ...)
 {
-  if(!is.factor(reference) | !is.factor(data)) 
+  if(!is.factor(reference) || !is.factor(data)) 
     stop("inputs must be factors")
   
   if(length(unique(c(levels(reference), levels(data)))) != 2)

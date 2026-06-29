@@ -84,7 +84,7 @@ plotClassProbs <- function(object,
   if(length(unique(stackProbs$dataType)) > 1) keepVars <- c(keepVars, "dataType")
   if(length(unique(stackProbs$model)) > 1) keepVars <- c(keepVars, "model")     
 
-  if(any(names(object) == "object") & useObjects)
+  if(any(names(object) == "object") && useObjects)
     {
       if(length(unique(stackProbs$object)) > 1) keepVars <- c(keepVars, "object")
     }

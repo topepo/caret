@@ -122,7 +122,7 @@ recall <- function(data, ...) UseMethod("recall")
 #' @export
 recall.default <- function(data, reference, relevant = levels(reference)[1],
                            na.rm = TRUE, ...) {
-  if (!is.factor(reference) | !is.factor(data))
+  if (!is.factor(reference) || !is.factor(data))
     stop("input data must be a factor")
   if (length(unique(c(levels(reference), levels(data)))) != 2)
     stop("input data must have the same two levels")
@@ -146,7 +146,7 @@ precision <- function(data, ...) UseMethod("precision")
 #' @export
 precision.default <- function(data, reference, relevant = levels(reference)[1],
                               na.rm = TRUE, ...) {
-  if (!is.factor(reference) | !is.factor(data))
+  if (!is.factor(reference) || !is.factor(data))
     stop("input data must be a factor")
   if (length(unique(c(levels(reference), levels(data)))) != 2)
     stop("input data must have the same two levels")
@@ -198,7 +198,7 @@ F_meas <- function(data, ...) UseMethod("F_meas")
 #' @export
 F_meas.default <- function(data, reference, relevant = levels(reference)[1],
                            beta = 1,  na.rm = TRUE, ...) {
-  if (!is.factor(reference) | !is.factor(data))
+  if (!is.factor(reference) || !is.factor(data))
     stop("input data must be a factor")
   if (length(unique(c(levels(reference), levels(data)))) != 2)
     stop("input data must have the same two levels")

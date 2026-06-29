@@ -29,7 +29,7 @@ predict.train.recipe <- function(object,
 
 ## drop dimensions from a `tibble`
 get_vector <- function(object) {
-  if(!inherits(object, "tbl_df") & !is.data.frame(object))
+  if(!inherits(object, "tbl_df") && !is.data.frame(object))
     return(object)
   if(ncol(object) > 1)
     stop("Only one column should be available")
@@ -116,8 +116,8 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
     other_cols <- var_info[var_info$role %in% c("predictor", "case weight", "performance var"),]
 
     other_cols <- other_cols$variable
-    other_dat <- if (is.matrix(dat) |
-                     (is.data.frame(dat) & !inherits(dat, "tbl_df")))
+    other_dat <- if (is.matrix(dat) ||
+                     (is.data.frame(dat) && !inherits(dat, "tbl_df")))
       dat[, other_cols, drop = FALSE]
     else
       dat[, other_cols]
@@ -161,7 +161,7 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
   ## for models using S4 classes, you can't easily append data, so
   ## exclude these and we'll use other methods to get this information
   if(is.null(method$label)) method$label <- ""
-  if(!isS4(modelFit) & !model_failed(modelFit)) {
+  if(!isS4(modelFit) && !model_failed(modelFit)) {
     modelFit$xNames <- colnames(x)
     modelFit$problemType <- if(is.factor(y)) "Classification" else "Regression"
     modelFit$tuneValue <- tuneValue
@@ -177,7 +177,7 @@ rec_pred <- function (method, object, newdata, param = NULL)  {
   x <- bake(object$recipe, new_data = newdata, all_predictors())
   out <- method$predict(modelFit = object$fit, newdata = x,
                         submodels = param)
-  if(is.matrix(out) | is.data.frame(out))
+  if(is.matrix(out) || is.data.frame(out))
     out <- out[,1]
   out
 }
@@ -188,7 +188,7 @@ rec_prob <- function (method, object, newdata = NULL, param = NULL)  {
   obsLevels <- levels(object$fit)
   classProb <- method$prob(modelFit = object$fit, newdata = x,
                            submodels = param)
-  if (!is.data.frame(classProb) & is.null(param)) {
+  if (!is.data.frame(classProb) && is.null(param)) {
     classProb <- as.data.frame(classProb, stringsAsFactors = FALSE)
     if (!is.null(obsLevels))
       classprob <- classProb[, obsLevels]
@@ -216,7 +216,7 @@ loo_train_rec <- function(rec, dat, info, method,
                     .verbose = FALSE,
                     .packages = pkgs,
                     .errorhandling = "stop") %:%
-    foreach(parm = 1:nrow(info$loop),
+    foreach(parm = seq_len(nrow(info$loop)),
             .combine = "rbind",
             .verbose = FALSE,
             .packages = pkgs,
@@ -354,7 +354,7 @@ oob_train_rec <- function(rec, dat, info, method,
   pkgs <- c("methods", "caret", "recipes")
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
   result <- foreach(
-    parm = 1:nrow(info$loop),
+    parm = seq_len(nrow(info$loop)),
     .packages = pkgs,
     .combine = "rbind") %op%  {
 
@@ -410,7 +410,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
   export <- c()
 
   result <- foreach(iter = seq(along.with = resampleIndex), .combine = "c", .packages = pkgs, .export = export) %:%
-    foreach(parm = 1L:nrow(info$loop), .combine = "c", .packages = pkgs, .export = export)  %op% {
+    foreach(parm = seq_len(nrow(info$loop)), .combine = "c", .packages = pkgs, .export = export)  %op% {
 
       if(!(length(ctrl$seeds) == 1L && is.na(ctrl$seeds)))
         set.seed(ctrl$seeds[[iter]][parm])
@@ -425,7 +425,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
         modelIndex <- resampleIndex[[iter]]
         holdoutIndex <- ctrl$indexOut[[iter]]
       } else {
-        modelIndex <- 1:nrow(dat)
+        modelIndex <- seq_len(nrow(dat))
         holdoutIndex <- modelIndex
       }
 
@@ -673,7 +673,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                          .verbose = FALSE,
                          .packages = pkgs,
                          .errorhandling = "stop") %:%
-    foreach(parm = 1:nrow(info$loop),
+    foreach(parm = seq_len(nrow(info$loop)),
             .combine = "c",
             .verbose = FALSE,
             .packages = pkgs,
@@ -860,7 +860,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
       colnames(printed) <- gsub("^\\.", "", colnames(printed))
 
       adapt_results <-
-        foreach(parm = 1:nrow(new_info$loop),
+        foreach(parm = seq_len(nrow(new_info$loop)),
                 .combine = "c",
                 .verbose = FALSE,
                 .packages = c("methods", "caret"),
@@ -1036,7 +1036,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
 
     if(iter == ctrl$adaptive$min+1) {
       rs <- filter_on_diff(rs, metric,
-                           cutoff = .001,
+                           cutoff = 0.001,
                            maximize = maximize,
                            verbose = ctrl$verboseIter)
     }
@@ -1099,7 +1099,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                             .verbose = FALSE,
                             .packages = pkgs,
                             .errorhandling = "stop") %:%
-      foreach(parm = 1:nrow(new_info$loop),
+      foreach(parm = seq_len(nrow(new_info$loop)),
               .combine = "c",
               .verbose = FALSE,
               .packages = pkgs,

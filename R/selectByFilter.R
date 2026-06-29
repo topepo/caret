@@ -5,7 +5,7 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
   if (is.null(colnames(x)))
     stop("x must have column names")
 
-  if (is.null(testX) |
+  if (is.null(testX) ||
       is.null(testY))
     stop("a test set must be specified")
 
@@ -37,7 +37,7 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
       )
 
     modelPred <- sbfControl$functions$pred(fitObject, testX)
-    if (is.data.frame(modelPred) | is.matrix(modelPred)) {
+    if (is.data.frame(modelPred) || is.matrix(modelPred)) {
       if (is.matrix(modelPred))
         modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
       modelPred$obs <- testY
@@ -236,14 +236,14 @@ sbf <- function (x, ...) UseMethod("sbf")
       tmp <- looSbfWorkflow(x = x, y = y, ppOpts = preProcess,
                             ctrl = sbfControl, lev = classLevels, ...)
       resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "pred"])
-      rownames(resamples) <- 1:nrow(resamples)
+      rownames(resamples) <- seq_len(nrow(resamples))
       selectedVars <- tmp$everything[names(tmp$everything) == "variables"]
       performance <- tmp$performance
     } else {
       tmp <- nominalSbfWorkflow(x = x, y = y, ppOpts = preProcess,
                                 ctrl = sbfControl, lev = classLevels, ...)
       resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "resamples"])
-      rownames(resamples) <- 1:nrow(resamples)
+      rownames(resamples) <- seq_len(nrow(resamples))
       selectedVars <- tmp$everything[names(tmp$everything) == "selectedVars"]
       performance <- tmp$performance
     }
@@ -273,7 +273,7 @@ sbf <- function (x, ...) UseMethod("sbf")
     performance <- data.frame(t(performance))
     performance <- performance[,!grepl("\\.cell|Resample", colnames(performance))]
 
-    if(is.factor(y) & any(names(resamples) == ".cell1")) {
+    if(is.factor(y) && any(names(resamples) == ".cell1")) {
       keepers <- c("Resample", grep("\\.cell", names(resamples), value = TRUE))
       resampledCM <- resamples[,keepers]
       resamples <- resamples[, -grep("\\.cell", names(resamples))]
@@ -408,7 +408,7 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
     if(!is.null(perf_data))
       testOutput <- cbind(
         testOutput,
-        perf_data[sample(1:nrow(perf_data), nrow(testOutput)),, drop = FALSE]
+        perf_data[sample(seq_len(nrow(perf_data)), nrow(testOutput)),, drop = FALSE]
       )
 
     test <- sbfControl$functions$summary(testOutput, lev = classLevels)
@@ -433,14 +433,14 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
       tmp <- sbf_loo_rec(rec = orig_rec, data = data,
                          ctrl = sbfControl, lev = classLevels, ...)
       resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "pred"])
-      rownames(resamples) <- 1:nrow(resamples)
+      rownames(resamples) <- seq_len(nrow(resamples))
       selectedVars <- tmp$everything[names(tmp$everything) == "variables"]
       performance <- tmp$performance
     } else {
       tmp <- sbf_rec(rec = orig_rec, data = data,
                      ctrl = sbfControl, lev = classLevels, ...)
       resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "resamples"])
-      rownames(resamples) <- 1:nrow(resamples)
+      rownames(resamples) <- seq_len(nrow(resamples))
       selectedVars <- tmp$everything[names(tmp$everything) == "selectedVars"]
       performance <- tmp$performance
     }
@@ -470,7 +470,7 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
     performance <- data.frame(t(performance))
     performance <- performance[,!grepl("\\.cell|Resample", colnames(performance))]
 
-    if(is.factor(y) & any(names(resamples) == ".cell1")) {
+    if(is.factor(y) && any(names(resamples) == ".cell1")) {
       keepers <- c("Resample", grep("\\.cell", names(resamples), value = TRUE))
       resampledCM <- resamples[,keepers]
       resamples <- resamples[, -grep("\\.cell", names(resamples))]
@@ -543,7 +543,7 @@ sbf_rec <- function(rec, data, ctrl, lev, ...) {
         modelIndex <- resampleIndex[[iter]]
         holdoutIndex <- ctrl$indexOut[[iter]]
       } else {
-        modelIndex <- 1:nrow(data)
+        modelIndex <- seq_len(nrow(data))
         holdoutIndex <- modelIndex
       }
 
@@ -603,7 +603,7 @@ sbf_rec <- function(rec, data, ctrl, lev, ...) {
   performance <- MeanSD(resamples[,!grepl("Resample", colnames(resamples)),drop = FALSE])
 
   if(ctrl$method %in% c("boot632")) {
-    modelIndex <- 1:nrow(x)
+    modelIndex <- seq_len(nrow(x))
     holdoutIndex <- modelIndex
     appResults <- sbfIter(x = x_tr,
                           y = y_tr,
@@ -954,7 +954,7 @@ sbfControl <- function(functions = NULL,
                        repeats = ifelse(method %in% c("cv", "repeatedcv"), 1, number),
                        verbose = FALSE,
                        returnResamp = "final",
-                       p = .75,
+                       p = 0.75,
                        index = NULL,
                        indexOut = NULL,
                        timingSamps = 0,
@@ -1025,7 +1025,7 @@ caretSBF <- list(summary = defaultSummary,
                    if(!inherits(object, "nullModel"))
                    {
                      tmp <- predict(object, x)
-                     if(object$modelType == "Classification" &
+                     if(object$modelType == "Classification" &&
                           !is.null(object$modelInfo$prob))
                      {
                        out <- cbind(data.frame(pred = tmp),

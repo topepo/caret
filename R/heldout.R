@@ -216,7 +216,7 @@ char_mode <- function(x, random = TRUE, na.rm = FALSE) {
   if(na.rm) x <- x[complete.cases(x)]
   tab <- table(x)
   tab <- tab[tab == max(tab)]
-  tab <- if(length(tab) > 1 & random) sample(tab, 1) else tab[1]
+  tab <- if(length(tab) > 1 && random) sample(tab, 1) else tab[1]
   as.vector(names(tab))
 }
 

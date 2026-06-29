@@ -148,14 +148,14 @@ bagControl <- function(
       stop("vars must be an integer > 0")
     }
 
-    if (bagControl$downSample & is.numeric(y)) {
+    if (bagControl$downSample && is.numeric(y)) {
       warning("down-sampling with regression... downSample changed to FALSE")
       bagControl$downSample <- FALSE
     }
 
     if (
-      is.null(bagControl$fit) |
-        is.null(bagControl$predict) |
+      is.null(bagControl$fit) ||
+        is.null(bagControl$predict) ||
         is.null(bagControl$aggregate)
     ) {
       stop(
@@ -171,7 +171,7 @@ bagControl <- function(
         if (v > ncol(x)) {
           v <- ncol(x)
         }
-        subVars <- sample(1:ncol(subX), ceiling(v))
+        subVars <- sample(seq_len(ncol(subX)), ceiling(v))
         subX <- subX[, subVars, drop = FALSE]
       } else {
         subVars <- NULL
@@ -194,7 +194,7 @@ bagControl <- function(
         } else {
           out <- as.data.frame(pred, stringsAsFactors = TRUE)
           out$obs <- y[-unique(index)]
-          if (is.factor(y) & !(any(names(out) == "pred"))) {
+          if (is.factor(y) && !(any(names(out) == "pred"))) {
             ## Try to detect class probs and make a pred factor
             if (all(levels(y) %in% names(out))) {
               pred <- apply(out[, levels(y)], 1, which.max)
@@ -328,7 +328,7 @@ print.bag <- function(x, ...) {
 "summary.bag" <-
   function(object, ...) {
     hasPred <- any(names(object$fits[[1]]$oob) == "pred")
-    if (object$control$oob & hasPred) {
+    if (object$control$oob && hasPred) {
       ## to avoid a 'no visible binding for global variable' warning
       key <- NULL
       oobData <- lapply(object$fits, function(x) x$oob)
@@ -336,7 +336,7 @@ print.bag <- function(x, ...) {
       oobResults <- ddply(oobData, .(key), defaultSummary)
       oobResults$key <- NULL
       oobStat <- apply(oobResults, 2, function(x) {
-        quantile(x, na.rm = TRUE, probs = c(0, 0.025, .25, .5, .75, .975, 1))
+        quantile(x, na.rm = TRUE, probs = c(0, 0.025, 0.25, 0.5, 0.75, 0.975, 1))
       })
       rownames(oobStat) <- paste(
         format(as.numeric(format(gsub("%", "", rownames(oobStat))))),
@@ -389,7 +389,7 @@ ldaBag <- list(
     pooled <- x[[1]] * NA
     n <- nrow(pooled)
     classes <- colnames(pooled)
-    for (i in 1:ncol(pooled)) {
+    for (i in seq_len(ncol(pooled))) {
       tmp <- lapply(x, function(y, col) y[, col], col = i)
       tmp <- do.call("rbind", tmp)
       pooled[, i] <- apply(tmp, 2, median)
@@ -425,7 +425,7 @@ plsBag <- list(
   aggregate = function(x, type = "class") {
     pooled <- x[[1]] * NA
     classes <- colnames(pooled)
-    for (i in 1:ncol(pooled)) {
+    for (i in seq_len(ncol(pooled))) {
       tmp <- lapply(x, function(y, col) y[, col], col = i)
       tmp <- do.call("rbind", tmp)
       pooled[, i] <- apply(tmp, 2, median)
@@ -457,7 +457,7 @@ nbBag <- list(
   aggregate = function(x, type = "class") {
     pooled <- x[[1]] * NA
     classes <- colnames(pooled)
-    for (i in 1:ncol(pooled)) {
+    for (i in seq_len(ncol(pooled))) {
       tmp <- lapply(x, function(y, col) y[, col], col = i)
       tmp <- do.call("rbind", tmp)
       pooled[, i] <- apply(tmp, 2, median)
@@ -504,11 +504,11 @@ ctreeBag <- list(
     out
   },
   aggregate = function(x, type = "class") {
-    if (is.matrix(x[[1]]) | is.data.frame(x[[1]])) {
+    if (is.matrix(x[[1]]) || is.data.frame(x[[1]])) {
       pooled <- x[[1]] & NA
 
       classes <- colnames(pooled)
-      for (i in 1:ncol(pooled)) {
+      for (i in seq_len(ncol(pooled))) {
         tmp <- lapply(x, function(y, col) y[, col], col = i)
         tmp <- do.call("rbind", tmp)
         pooled[, i] <- apply(tmp, 2, median)
@@ -548,11 +548,11 @@ svmBag <- list(
     out
   },
   aggregate = function(x, type = "class") {
-    if (is.matrix(x[[1]]) | is.data.frame(x[[1]])) {
+    if (is.matrix(x[[1]]) || is.data.frame(x[[1]])) {
       pooled <- x[[1]] & NA
 
       classes <- colnames(pooled)
-      for (i in 1:ncol(pooled)) {
+      for (i in seq_len(ncol(pooled))) {
         tmp <- lapply(x, function(y, col) y[, col], col = i)
         tmp <- do.call("rbind", tmp)
         pooled[, i] <- apply(tmp, 2, median)
@@ -598,11 +598,11 @@ nnetBag <- list(
     out
   },
   aggregate = function(x, type = "class") {
-    if (is.matrix(x[[1]]) | is.data.frame(x[[1]])) {
+    if (is.matrix(x[[1]]) || is.data.frame(x[[1]])) {
       pooled <- x[[1]] & NA
 
       classes <- colnames(pooled)
-      for (i in 1:ncol(pooled)) {
+      for (i in seq_len(ncol(pooled))) {
         tmp <- lapply(x, function(y, col) y[, col], col = i)
         tmp <- do.call("rbind", tmp)
         pooled[, i] <- apply(tmp, 2, median)

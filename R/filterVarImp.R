@@ -83,7 +83,7 @@ filterVarImp <- function(x, y, nonpara = FALSE, ...){
         Combs <- combn(classLevels, 2)
         CombsN <- combn(1:k, 2)
 
-          lStat <- lapply(1:ncol(Combs), FUN = function(cc){
+          lStat <- lapply(seq_len(ncol(Combs)), FUN = function(cc){
             yLevs <- as.character(y) %in% Combs[,cc]
             tmpX <- x[yLevs,]
             tmpY <- as.numeric(y[yLevs] == Combs[,cc][2])
@@ -121,7 +121,7 @@ filterVarImp <- function(x, y, nonpara = FALSE, ...){
             } else {
               regMod <- try(loess(y~x, na.action = na.omit, ...), silent = TRUE)
 
-              if(inherits(regMod, "try-error") | any(is.nan(regMod$residuals))) try(regMod <- lm(y~x, ...))
+              if(inherits(regMod, "try-error") || any(is.nan(regMod$residuals))) try(regMod <- lm(y~x, ...))
               if(inherits(regMod, "try-error")) return(NA)
             }
 

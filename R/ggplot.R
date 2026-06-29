@@ -67,7 +67,7 @@ ggplot.train <- function(data = NULL, mapping = NULL, metric = data$metric[1], p
 
     dnm <- names(dat)
     if(p > 1 && is.numeric(dat[, 3])) dat[, 3] <- factor(format(dat[, 3]))
-    if(p > 2 & nameInStrip) {
+    if(p > 2 && nameInStrip) {
       strip_vars <- names(dat)[-(1:3)]
       strip_lab <- as.character(subset(data$modelInfo$parameters, parameter %in% strip_vars)$label)
       for(i in seq_along(strip_vars))
@@ -117,7 +117,7 @@ ggplot.train <- function(data = NULL, mapping = NULL, metric = data$metric[1], p
     dnm <- names(dat)
     if(is.numeric(dat[,2])) dat[,2] <- factor(format(dat[,2]), levels = format(sort(unique(dat[,2]))))
     if(is.numeric(dat[,3])) dat[,3] <- factor(format(dat[,3]), levels = format(sort(unique(dat[,3]))))
-    if(p > 2 & nameInStrip) {
+    if(p > 2 && nameInStrip) {
       strip_vars <- names(dat)[-(1:3)]
       strip_lab <- as.character(subset(data$modelInfo$parameters, parameter %in% strip_vars)$label)
       for(i in seq_along(strip_vars))
@@ -157,7 +157,7 @@ ggplot.rfe <- function(data = NULL, mapping = NULL, metric = data$metric[1],
 
     if(any(names(data$results) == "Num_Resamples")) {
       data$results <- 
-        subset(data$results, Num_Resamples >= floor(.5 * length(data$control$index)))
+        subset(data$results, Num_Resamples >= floor(0.5 * length(data$control$index)))
   }
   
   notBest <- subset(data$results, Variables != data$bestSubset)
@@ -193,7 +193,7 @@ random_search_plot <- function(x, metric = x$metric[1]) {
   nvals <- unlist(lapply(combos, function(x) length(unique(x))))
   p_names <- p_names[which(nvals > 1)]
 
-  if(nrow(combos) == 1 | length(p_names) == 0)
+  if(nrow(combos) == 1 || length(p_names) == 0)
     stop("Can't plot results with a single tuning parameter combination")
   combos <- combos[, p_names, drop = FALSE]
   nvals <- sort(nvals[p_names], decreasing = TRUE)

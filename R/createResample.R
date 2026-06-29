@@ -20,7 +20,7 @@ createResample <- function(y, times = 10, list = TRUE) {
     attributes(out) <- NULL
     names(out) <- prettySeq(out)
   } else {
-    colnames(out) <- prettySeq(1:ncol(out))
+    colnames(out) <- prettySeq(seq_len(ncol(out)))
   }
 
   out

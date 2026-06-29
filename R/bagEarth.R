@@ -254,7 +254,7 @@
       data.frame(pred = x$fitted.values[oobIndex], sample = oobIndex)
     }
 
-    if (is.null(newdata) & !is.null(object$x)) {
+    if (is.null(newdata) && !is.null(object$x)) {
       newdata <- object$x
     }
 
@@ -339,7 +339,7 @@ print.bagEarth <- function(x, ...) {
   function(object, ...) {
     requireNamespaceQuietStop("earth")
     oobStat <- apply(object$oob, 2, function(x) {
-      quantile(x, probs = c(0, 0.025, .25, .5, .75, .975, 1))
+      quantile(x, probs = c(0, 0.025, 0.25, 0.5, 0.75, 0.975, 1))
     })
 
     numTerms <- unlist(lapply(object$fit, function(x) length(x$selected.terms)))
@@ -370,7 +370,7 @@ print.bagEarth <- function(x, ...) {
 
     oobStat <-
       apply(x$oob, 2, function(x) {
-        quantile(x, probs = c(0, 0.025, .5, .975, 1))
+        quantile(x, probs = c(0, 0.025, 0.5, 0.975, 1))
       })
     cat("Out of bag statistics:\n\n")
     print(x$oobStat, digits = digits)

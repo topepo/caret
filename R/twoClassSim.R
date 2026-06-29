@@ -243,15 +243,15 @@ twoClassSim <- function(
     prob <- binomial()$linkinv(lp + rnorm(n, sd = 2))
     tmpData$Class <- cut(
       prob,
-      breaks = c(0, .2, .75, 1),
+      breaks = c(0, 0.2, 0.75, 1),
       include.lowest = TRUE,
       labels = c("low", "med", "high"),
       ordered_result = TRUE
     )
   } else {
     prob <- binomial()$linkinv(lp)
-    if (mislabel > 0 & mislabel < 1) {
-      shuffle <- sample(1:nrow(tmpData), floor(nrow(tmpData) * mislabel))
+    if (mislabel > 0 && mislabel < 1) {
+      shuffle <- sample(seq_len(nrow(tmpData)), floor(nrow(tmpData) * mislabel))
       prob[shuffle] <- 1 - prob[shuffle]
     }
     tmpData$Class <- ifelse(prob <= runif(n), "Class1", "Class2")

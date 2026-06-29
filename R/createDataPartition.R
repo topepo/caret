@@ -151,7 +151,7 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
 
   if (!list) {
     out <- matrix(unlist(out), ncol = times)
-    colnames(out) <- prettySeq(1:ncol(out))
+    colnames(out) <- prettySeq(seq_len(ncol(out)))
   } else {
     names(out) <- prettySeq(out)
   }
@@ -193,7 +193,7 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
       ## For each class, balance the fold allocation as far
       ## as possible, then resample the remainder.
       ## The final assignment of folds is also randomized.
-      for(i in 1:length(numInClass)) {
+      for(i in seq_along(numInClass)) {
         ## create a vector of integers from 1:k as many times as possible without
         ## going over the number of samples in the class. Note that if the number
         ## of samples in a class is less than k, nothing is produced here.
@@ -325,7 +325,7 @@ make_resamples <- function(ctrl_obj, outcome) {
     if(tolower(ctrl_obj$method) != "timeslice") {
       y_index <-
         if (inherits(outcome, "Surv"))
-          1:nrow(outcome)
+          seq_len(nrow(outcome))
       else
         seq(along.with = outcome)
       ctrl_obj$indexOut <-
@@ -347,11 +347,11 @@ make_resamples <- function(ctrl_obj, outcome) {
     }
   }
 
-  if(ctrl_obj$method != "oob" & is.null(ctrl_obj$index))
+  if(ctrl_obj$method != "oob" && is.null(ctrl_obj$index))
     names(ctrl_obj$index) <- prettySeq(ctrl_obj$index)
-  if(ctrl_obj$method != "oob" & is.null(names(ctrl_obj$index)))
+  if(ctrl_obj$method != "oob" && is.null(names(ctrl_obj$index)))
     names(ctrl_obj$index)    <- prettySeq(ctrl_obj$index)
-  if(ctrl_obj$method != "oob" & is.null(names(ctrl_obj$indexOut)))
+  if(ctrl_obj$method != "oob" && is.null(names(ctrl_obj$indexOut)))
     names(ctrl_obj$indexOut) <- prettySeq(ctrl_obj$indexOut)
   ctrl_obj
 }

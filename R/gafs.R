@@ -5,7 +5,7 @@ check_ga_pop <- function(x) {
   no_vars <- apply(x, 1, sum) == 0
   if (any(no_vars)) {
     for (i in which(no_vars)) {
-      here <- sample(1:ncol(x), 1)
+      here <- sample(seq_len(ncol(x)), 1)
       x[i, here] <- 1
     }
   }
@@ -142,7 +142,7 @@ ga_func_check <- function(x) {
 #' @export gafs_initial
 gafs_initial <- function(vars, popSize, ...) {
   x <- matrix(NA, nrow = popSize, ncol = vars)
-  probs <- seq(.9, .1, length.out = popSize)
+  probs <- seq(0.9, 0.1, length.out = popSize)
   for (i in 1:popSize) {
     x[i, ] <- sample(
       0:1,
@@ -304,7 +304,7 @@ gafsControl <- function(
   repeats = ifelse(grepl("cv", method), 1, 5),
   verbose = FALSE,
   returnResamp = "final",
-  p = .75,
+  p = 0.75,
   index = NULL,
   indexOut = NULL,
   seeds = NULL,
@@ -317,7 +317,7 @@ gafsControl <- function(
       'method should be one of: "cv", "boot", "repeatedcv", "LGOCV" or "LOOCV"'
     )
   }
-  if (holdout < 0 | holdout >= 1) {
+  if (holdout < 0 || holdout >= 1) {
     stop("'holdout' should be in [0, 1)")
   }
 
@@ -411,7 +411,7 @@ ga_wrapper <- function(
     )
   if (!is.null(testX)) {
     modelPred <- funcs$pred(mod, testX[, ind, drop = FALSE])
-    if (is.data.frame(modelPred) | is.matrix(modelPred)) {
+    if (is.data.frame(modelPred) || is.matrix(modelPred)) {
       if (is.matrix(modelPred)) {
         modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
       }
@@ -430,7 +430,7 @@ ga_wrapper <- function(
 
     external <- funcs$fitness_extern(modelPred, lev = levels(testY))
     if (is.null(names(external))) {
-      names(external) <- paste0("external", 1:length(external))
+      names(external) <- paste0("external", seq_along(external))
     }
   } else {
     external <- NULL
@@ -733,7 +733,7 @@ ga_select <- function(
     .Fit <- Fitness
 
     # crossover
-    if (is.function(funcs$crossover) & pcrossover > 0) {
+    if (is.function(funcs$crossover) && pcrossover > 0) {
       nmating <- floor(popSize / 2)
       mating <- matrix(sample(1:(2 * nmating), size = (2 * nmating)), ncol = 2)
       for (i in seq_len(nmating)) {
@@ -754,7 +754,7 @@ ga_select <- function(
 
     # mutation
     pm <- if (is.function(pmutation)) pmutation(object) else pmutation
-    if (is.function(funcs$mutation) & pm > 0) {
+    if (is.function(funcs$mutation) && pm > 0) {
       for (i in seq_len(popSize)) {
         if (pm > runif(1)) {
           Mutation <- funcs$mutation(population = .Pop, parent = i)
@@ -1276,11 +1276,11 @@ gafs <- function(x, ...) UseMethod("gafs")
         paste(
           "The external fitness results should be a *named* vector;",
           "new name(s) are",
-          paste(paste0("external", 1:length(test)), sep = "", collapse = ", ")
+          paste(paste0("external", seq_along(test)), sep = "", collapse = ", ")
         ),
         immediate. = TRUE
       )
-      perfNames <- paste0("external", 1:length(test))
+      perfNames <- paste0("external", seq_along(test))
     }
     if (!(gafsControl$metric["external"] %in% perfNames)) {
       warning(paste(
@@ -1703,7 +1703,7 @@ update.gafs <- function(object, iter, x, y, ...) {
         last = TRUE
       )
   } else {
-    if (is.null(x) | is.null(y)) {
+    if (is.null(x) || is.null(y)) {
       stop("the original training data is needed to refit the model")
     }
     args <- list(
@@ -1919,7 +1919,7 @@ update.gafs <- function(object, iter, x, y, ...) {
     if (!is.null(perf_data)) {
       testOutput <- cbind(
         testOutput,
-        perf_data[sample(1:nrow(perf_data), nrow(testOutput)), , drop = FALSE]
+        perf_data[sample(seq_len(nrow(perf_data)), nrow(testOutput)), , drop = FALSE]
       )
     }
 
@@ -1931,11 +1931,11 @@ update.gafs <- function(object, iter, x, y, ...) {
         paste(
           "The external fitness results should be a *named* vector;",
           "new name(s) are",
-          paste(paste0("external", 1:length(test)), sep = "", collapse = ", ")
+          paste(paste0("external", seq_along(test)), sep = "", collapse = ", ")
         ),
         immediate. = TRUE
       )
-      perfNames <- paste0("external", 1:length(test))
+      perfNames <- paste0("external", seq_along(test))
     }
     if (!(gafsControl$metric["external"] %in% perfNames)) {
       warning(paste(

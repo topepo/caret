@@ -11,7 +11,7 @@ extractProb <- function(models,
 {
 
   objectNames <- names(models)
-  if(is.null(objectNames)) objectNames <- paste("Object", 1:length(models), sep = "")
+  if(is.null(objectNames)) objectNames <- paste("Object", seq_along(models), sep = "")
 
 
   if(any(unlist(lapply(models, function(x) is.null(x$modelInfo$prob)))))
@@ -60,7 +60,7 @@ extractProb <- function(models,
       dataType <- c(dataType, rep("Training", length(tempTrainPred)))
 
       # Test Data
-      if(!is.null(testX) & !is.null(testY)) {
+      if(!is.null(testX) && !is.null(testY)) {
         if(!is.data.frame(testX)) testX <- as.data.frame(testX, stringsAsFactors = TRUE)
         tempX <- testX
         tempY <- testY

@@ -99,7 +99,7 @@ maxDissim <- function(a, b, n = 2, obj = minDiss, useNames = FALSE, randomFrac =
   if(nrow(b) < 2) stop("there must be at least 2 samples in b")
   if(ncol(a) != ncol(b)) stop("a and b must have the same number of columns")
   if(nrow(b) < n) stop("n must be less than nrow(b)")
-  if(randomFrac > 1 | randomFrac <= 0) stop("randomFrac must be in (0, 1]")
+  if(randomFrac > 1 || randomFrac <= 0) stop("randomFrac must be in (0, 1]")
 
 
   if(useNames)
@@ -107,9 +107,9 @@ maxDissim <- function(a, b, n = 2, obj = minDiss, useNames = FALSE, randomFrac =
       if(is.null(rownames(b)))
         {
           warning("Cannot use rownames; swithcing to indices")
-          free <- 1:nrow(b)
+          free <- seq_len(nrow(b))
         } else free <- rownames(b)
-    } else free <- 1:nrow(b)
+    } else free <- seq_len(nrow(b))
 
   inSubset <- NULL
   newA <- a
@@ -150,7 +150,7 @@ sumDiss <- function(u) sum(u, na.rm = TRUE)
 
 
 
-splitter <- function(x, p = .8, start = NULL, ...)
+splitter <- function(x, p = 0.8, start = NULL, ...)
   {
     n <- nrow(x)
     if(is.null(start)) start <- sample(1:n, 1)
@@ -164,7 +164,7 @@ splitter <- function(x, p = .8, start = NULL, ...)
   }
 
 
-splitByDissim <- function(x, p = .8, y = NULL, start = NULL, ...)
+splitByDissim <- function(x, p = 0.8, y = NULL, start = NULL, ...)
   {
     if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
     

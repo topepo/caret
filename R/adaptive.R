@@ -31,7 +31,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                          .combine = "c",
                          .verbose = FALSE,
                          .errorhandling = "stop") %:%
-    foreach(parm = 1:nrow(info$loop),
+    foreach(parm = seq_len(nrow(info$loop)),
             .combine = "c",
             .verbose = FALSE,
             .packages = pkgs,
@@ -163,7 +163,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                 ## collate the predicitons across all the sub-models
                 predicted <- lapply(predicted,
                                     function(x, y, wts, lv) {
-                                      if(!is.factor(x) & is.character(x)) x <- factor(as.character(x), levels = lv)
+                                      if(!is.factor(x) && is.character(x)) x <- factor(as.character(x), levels = lv)
                                       out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
                                       if(!is.null(wts)) out$weights <- wts
                                       out
@@ -266,7 +266,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
       printed <- format(new_info$loop, digits = 4)
       colnames(printed) <- gsub("^\\.", "", colnames(printed))
 
-      adapt_results <- foreach(parm = 1:nrow(new_info$loop),
+      adapt_results <- foreach(parm = seq_len(nrow(new_info$loop)),
                                .combine = "c",
                                .verbose = FALSE,
                                .packages = pkgs)  %op% {
@@ -388,7 +388,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                    ## collate the predicitons across all the sub-models
                                    predicted <- lapply(predicted,
                                                        function(x, y, wts, lv) {
-                                                         if(!is.factor(x) & is.character(x)) x <- factor(as.character(x), levels = lv)
+                                                         if(!is.factor(x) && is.character(x)) x <- factor(as.character(x), levels = lv)
                                                          out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
                                                          if(!is.null(wts)) out$weights <- wts
                                                          out
@@ -485,7 +485,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
 
     if(iter == ctrl$adaptive$min+1) {
       rs <- filter_on_diff(rs, metric,
-                           cutoff = .001,
+                           cutoff = 0.001,
                            maximize = maximize,
                            verbose = ctrl$verboseIter)
     }
@@ -545,7 +545,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
     final_result <- foreach(iter = final_index,
                             .combine = "c",
                             .verbose = FALSE) %:%
-      foreach(parm = 1:nrow(new_info$loop),
+      foreach(parm = seq_len(nrow(new_info$loop)),
               .combine = "c",
               .verbose = FALSE,
               .packages = pkgs)  %op% {
@@ -677,7 +677,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                   ## collate the predicitons across all the sub-models
                   predicted <- lapply(predicted,
                                       function(x, y, wts, lv) {
-                                        if(!is.factor(x) & is.character(x)) x <- factor(as.character(x), levels = lv)
+                                        if(!is.factor(x) && is.character(x)) x <- factor(as.character(x), levels = lv)
                                         out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
                                         if(!is.null(wts)) out$weights <- wts
                                         out
@@ -791,7 +791,7 @@ long2wide <- function(x, metric) {
 get_id <- function(x, param) {
   params <- x[,param,drop=FALSE]
   params <- params[!duplicated(params),,drop=FALSE]
-  params$model_id <- paste("m", gsub(" ", "0", format(1:nrow(params))), sep = "")
+  params$model_id <- paste("m", gsub(" ", "0", format(seq_len(nrow(params)))), sep = "")
   rownames(params) <- NULL
   params
 }
@@ -834,7 +834,7 @@ get_scores <- function(x, maximize = NULL, metric = NULL)
 {
   if (!requireNamespace("BradleyTerry2")) stop("BradleyTerry2 package missing")
   delta <- outer(x[,metric], x[,metric], "-")
-  tied <- ifelse(delta == 0, 1, 0)*.5
+  tied <- ifelse(delta == 0, 1, 0)*0.5
   diag(tied) <- 0
   binary <- if(maximize) ifelse(delta > 0, 1, 0) else ifelse(delta > 0, 0, 1)
   binary <- binary + tied
@@ -1021,7 +1021,7 @@ filter_on_diff <- function(dat, metric, cutoff = 0.01, maximize = TRUE, verbose 
   deletecol <- 0
   for (i in 1:(varnum - 1)) {
     for (j in (i + 1):varnum) {
-      if (!any(i == deletecol) & !any(j == deletecol)) {
+      if (!any(i == deletecol) && !any(j == deletecol)) {
         if (abs(x[i, j]) < cutoff) {
           if (mns[i] < mns[j]) {
             deletecol <- unique(c(deletecol, i))
@@ -1068,7 +1068,7 @@ filter_on_corr <- function(dat, metric, cutoff, verbose = FALSE) {
   deletecol <- 0
   for (i in 1:(varnum - 1)) {
     for (j in (i + 1):varnum) {
-      if (!any(i == deletecol) & !any(j == deletecol)) {
+      if (!any(i == deletecol) && !any(j == deletecol)) {
         if (abs(x[i, j]) > cutoff) {
           if (mean(x[i, -i], na.rm = TRUE) > mean(x[-j, j], na.rm = TRUE)) {
             deletecol <- unique(c(deletecol, i))

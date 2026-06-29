@@ -63,7 +63,7 @@ splsda.default <- function(x, y, probMethod = "softmax", prior = NULL, ...)
 
   if(!is.matrix(x)) x <- as.matrix(x)
 
-  tmpData <- data.frame(n = paste("row", 1:nrow(y), sep = ""))
+  tmpData <- data.frame(n = paste("row", seq_len(nrow(y)), sep = ""))
   tmpData$y <- y
   tmpData$x <- x
 
@@ -131,7 +131,7 @@ print.splsda <- function (x, ...)
         p, " variables\n\n", sep = ""))
     cat("Selected variables: \n")
     if (!is.null(xAnames)) {
-        for (i in 1:length(A)) {
+        for (i in seq_along(A)) {
             cat(paste(xAnames[i], "\t", sep = ""))
             if (i%%5 == 0) {
                 cat("\n")
@@ -139,7 +139,7 @@ print.splsda <- function (x, ...)
         }
     }
     else {
-        for (i in 1:length(A)) {
+        for (i in seq_along(A)) {
             cat(paste(A[i], "\t", sep = ""))
             if (i%%5 == 0) {
                 cat("\n")

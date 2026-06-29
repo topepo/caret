@@ -7,7 +7,7 @@ expoTrans <- function(y, ...) UseMethod("expoTrans")
 expoTrans.default <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method = "Brent", numUnique = 3, ...)
 {
   requireNamespaceQuietStop("e1071")
-  if(any(is.na(y)) & !na.rm) stop("missing data found")
+  if(any(is.na(y)) && !na.rm) stop("missing data found")
   call <- match.call()
   rat <- max(y, na.rm = TRUE)/min(y, na.rm = TRUE)
   if(length(unique(y[!is.na(y)])) >= numUnique)
@@ -15,7 +15,7 @@ expoTrans.default <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method
     results <- optim(init, manlyLik, x = y[!is.na(y)], neg = TRUE, method = method,
                      lower = lim[1], upper = lim[2])
     out <- list(lambda = results$par, est = manly(y, results$par))
-    if(length(unique(out$est)) == 1 | results$convergence > 0)
+    if(length(unique(out$est)) == 1 || results$convergence > 0)
       out <- list(lambda = NA, est = y)
   } else out <- list(lambda = NA, est = y)
   out$n <- sum(!is.na(y))
@@ -31,7 +31,7 @@ expoTrans.default <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method
 expoTrans.numeric <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method = "Brent", numUnique = 3, ...)
 {
   requireNamespaceQuietStop("e1071")
-  if(any(is.na(y)) & !na.rm) stop("missing data found")
+  if(any(is.na(y)) && !na.rm) stop("missing data found")
   call <- match.call()
   rat <- max(y, na.rm = TRUE)/min(y, na.rm = TRUE)
   if(length(unique(y[!is.na(y)])) >= numUnique)
@@ -39,7 +39,7 @@ expoTrans.numeric <- function(y, na.rm  = TRUE, init = 0, lim = c(-4, 4), method
     results <- optim(init, manlyLik, x = y[!is.na(y)], neg = TRUE, method = method,
                      lower = lim[1], upper = lim[2])
     out <- list(lambda = results$par, est = manly(y, results$par))
-    if(length(unique(out$est)) == 1 | results$convergence > 0)
+    if(length(unique(out$est)) == 1 || results$convergence > 0)
       out <- list(lambda = NA, est = y)
   } else out <- list(lambda = NA, est = y)
   out$n <- sum(!is.na(y))
@@ -90,9 +90,9 @@ manlyLik <- function(lambda, x, neg = FALSE)
   y <- manly(x, lambda)
   v <- var(y, na.rm = TRUE)
   L1 <- lambda * sum(x, na.rm= TRUE)
-  L2 <- .5 * sum(y - mean(y, na.rm = TRUE))/v
+  L2 <- 0.5 * sum(y - mean(y, na.rm = TRUE))/v
   L3 <- sum(!is.na(x)) * log(sqrt(2*pi)*sqrt(v))
   out <- L1 - L2 - L3
-  if(!is.finite(out) | is.na(out)) out <- .Machine$double.xmax
+  if(!is.finite(out) || is.na(out)) out <- .Machine$double.xmax
   if(neg) -out else out
 }
