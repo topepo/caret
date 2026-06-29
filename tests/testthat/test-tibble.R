@@ -6,7 +6,7 @@ test_that('train runs on tibbles and recipes with glm', {
   expect_no_error(
     train(
       tibble_rec,
-      data = dplyr::as_tibble(tibble_df),
+      data = tibble_df,
       method = "glm",
       family = "binomial",
       metric = "ROC",
@@ -21,7 +21,7 @@ test_that('train runs on tibbles and formulas with glm', {
   expect_no_error(
     train(
       y ~ .,
-      data = dplyr::as_tibble(tibble_df),
+      data = tibble_df,
       method = "glm",
       family = "binomial",
       metric = "ROC",
