@@ -51,8 +51,6 @@ test_that("dummyVars handles factors, missing data, and naming (issues #344, #39
   )
 
   mainEffects <- dummyVars(~ day + time, data = when)
-  interactionModel <- dummyVars(~ day + time + day:time, data = when, sep = ".")
-  noNames <- dummyVars(~ day + time + day:time, data = when, levelsOnly = TRUE)
 
   # fmt: skip
   exp_main_nomissing <- structure(c(1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -111,7 +109,7 @@ test_that("dummyVars handles factors, missing data, and naming (issues #344, #39
     stringsAsFactors = TRUE
   )
 
-  foosbars <- dummies <- dummyVars(
+  foosbars <- dummyVars(
     formula = id ~ .,
     data = test_data,
     sep = '-'
@@ -125,7 +123,7 @@ test_that("dummyVars handles factors, missing data, and naming (issues #344, #39
   res_names <- colnames(predict(foosbars, test_data))
   expect_equal(exp_names, res_names)
 
-  foosbarsbars <- dummies <- dummyVars(
+  foosbarsbars <- dummyVars(
     formula = id ~ .,
     data = test_data,
     sep = '-',
