@@ -9,7 +9,7 @@ extractPrediction <- function(models,
 {
   
   objectNames <- names(models)
-  if(is.null(objectNames)) objectNames <- paste("Object", 1:length(models), sep = "")
+  if(is.null(objectNames)) objectNames <- paste("Object", seq_along(models), sep = "")
   
   if(!unkOnly) {
     trainX <- models[[1]]$trainingData[,!(colnames(models[[1]]$trainingData) %in% ".outcome"), drop = FALSE]

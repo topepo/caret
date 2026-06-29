@@ -216,7 +216,7 @@ loo_train_rec <- function(rec, dat, info, method,
                     .verbose = FALSE,
                     .packages = pkgs,
                     .errorhandling = "stop") %:%
-    foreach(parm = 1:nrow(info$loop),
+    foreach(parm = seq_len(nrow(info$loop)),
             .combine = "rbind",
             .verbose = FALSE,
             .packages = pkgs,
@@ -354,7 +354,7 @@ oob_train_rec <- function(rec, dat, info, method,
   pkgs <- c("methods", "caret", "recipes")
   if(!is.null(method$library)) pkgs <- c(pkgs, method$library)
   result <- foreach(
-    parm = 1:nrow(info$loop),
+    parm = seq_len(nrow(info$loop)),
     .packages = pkgs,
     .combine = "rbind") %op%  {
 
@@ -410,7 +410,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
   export <- c()
 
   result <- foreach(iter = seq(along.with = resampleIndex), .combine = "c", .packages = pkgs, .export = export) %:%
-    foreach(parm = 1L:nrow(info$loop), .combine = "c", .packages = pkgs, .export = export)  %op% {
+    foreach(parm = seq_len(nrow(info$loop)), .combine = "c", .packages = pkgs, .export = export)  %op% {
 
       if(!(length(ctrl$seeds) == 1L && is.na(ctrl$seeds)))
         set.seed(ctrl$seeds[[iter]][parm])
@@ -425,7 +425,7 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
         modelIndex <- resampleIndex[[iter]]
         holdoutIndex <- ctrl$indexOut[[iter]]
       } else {
-        modelIndex <- 1:nrow(dat)
+        modelIndex <- seq_len(nrow(dat))
         holdoutIndex <- modelIndex
       }
 
@@ -673,7 +673,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                          .verbose = FALSE,
                          .packages = pkgs,
                          .errorhandling = "stop") %:%
-    foreach(parm = 1:nrow(info$loop),
+    foreach(parm = seq_len(nrow(info$loop)),
             .combine = "c",
             .verbose = FALSE,
             .packages = pkgs,
@@ -860,7 +860,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
       colnames(printed) <- gsub("^\\.", "", colnames(printed))
 
       adapt_results <-
-        foreach(parm = 1:nrow(new_info$loop),
+        foreach(parm = seq_len(nrow(new_info$loop)),
                 .combine = "c",
                 .verbose = FALSE,
                 .packages = c("methods", "caret"),
@@ -1099,7 +1099,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
                             .verbose = FALSE,
                             .packages = pkgs,
                             .errorhandling = "stop") %:%
-      foreach(parm = 1:nrow(new_info$loop),
+      foreach(parm = seq_len(nrow(new_info$loop)),
               .combine = "c",
               .verbose = FALSE,
               .packages = pkgs,

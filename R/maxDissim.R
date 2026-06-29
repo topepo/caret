@@ -107,9 +107,9 @@ maxDissim <- function(a, b, n = 2, obj = minDiss, useNames = FALSE, randomFrac =
       if(is.null(rownames(b)))
         {
           warning("Cannot use rownames; swithcing to indices")
-          free <- 1:nrow(b)
+          free <- seq_len(nrow(b))
         } else free <- rownames(b)
-    } else free <- 1:nrow(b)
+    } else free <- seq_len(nrow(b))
 
   inSubset <- NULL
   newA <- a

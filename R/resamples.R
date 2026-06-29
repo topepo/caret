@@ -396,7 +396,7 @@ prcomp.resamples <- function(x, metric = x$metrics[1], ...) {
   tmpData <- as.data.frame(t(tmpData), stringsAsFactors = TRUE)
   colnames(tmpData) <- paste(
     "Resample",
-    gsub(" ", "0", format(1:ncol(tmpData))),
+    gsub(" ", "0", format(seq_len(ncol(tmpData)))),
     sep = ""
   )
   out <- prcomp(~., data = tmpData, ...)
@@ -1290,7 +1290,7 @@ diff.resamples <- function(
     dif <- matrix(NA, nrow = nrow(x$values), ncol = choose(length(models), 2))
     stat <- vector(mode = "list", length = choose(length(models), 2))
 
-    colnames(dif) <- paste("tmp", 1:ncol(dif), sep = "")
+    colnames(dif) <- paste("tmp", seq_len(ncol(dif)), sep = "")
     for (i in seq(along.with = models)) {
       for (j in seq(along.with = models)) {
         if (i < j) {

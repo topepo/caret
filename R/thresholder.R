@@ -148,7 +148,7 @@ expand_preds <- function(df, th, excl = NULL) {
   ndf <- nrow(df)
   if (!is.null(excl))
     df <- df[, !(names(df) %in% excl), drop = FALSE]
-  df <- df[rep(1:nrow(df), times = nth),]
+  df <- df[rep(seq_len(nrow(df)), times = nth),]
   df$prob_threshold <- rep(th, each = ndf)
   df
 }

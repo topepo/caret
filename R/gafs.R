@@ -5,7 +5,7 @@ check_ga_pop <- function(x) {
   no_vars <- apply(x, 1, sum) == 0
   if (any(no_vars)) {
     for (i in which(no_vars)) {
-      here <- sample(1:ncol(x), 1)
+      here <- sample(seq_len(ncol(x)), 1)
       x[i, here] <- 1
     }
   }
@@ -430,7 +430,7 @@ ga_wrapper <- function(
 
     external <- funcs$fitness_extern(modelPred, lev = levels(testY))
     if (is.null(names(external))) {
-      names(external) <- paste0("external", 1:length(external))
+      names(external) <- paste0("external", seq_along(external))
     }
   } else {
     external <- NULL
@@ -1276,11 +1276,11 @@ gafs <- function(x, ...) UseMethod("gafs")
         paste(
           "The external fitness results should be a *named* vector;",
           "new name(s) are",
-          paste(paste0("external", 1:length(test)), sep = "", collapse = ", ")
+          paste(paste0("external", seq_along(test)), sep = "", collapse = ", ")
         ),
         immediate. = TRUE
       )
-      perfNames <- paste0("external", 1:length(test))
+      perfNames <- paste0("external", seq_along(test))
     }
     if (!(gafsControl$metric["external"] %in% perfNames)) {
       warning(paste(
@@ -1919,7 +1919,7 @@ update.gafs <- function(object, iter, x, y, ...) {
     if (!is.null(perf_data)) {
       testOutput <- cbind(
         testOutput,
-        perf_data[sample(1:nrow(perf_data), nrow(testOutput)), , drop = FALSE]
+        perf_data[sample(seq_len(nrow(perf_data)), nrow(testOutput)), , drop = FALSE]
       )
     }
 
@@ -1931,11 +1931,11 @@ update.gafs <- function(object, iter, x, y, ...) {
         paste(
           "The external fitness results should be a *named* vector;",
           "new name(s) are",
-          paste(paste0("external", 1:length(test)), sep = "", collapse = ", ")
+          paste(paste0("external", seq_along(test)), sep = "", collapse = ", ")
         ),
         immediate. = TRUE
       )
-      perfNames <- paste0("external", 1:length(test))
+      perfNames <- paste0("external", seq_along(test))
     }
     if (!(gafsControl$metric["external"] %in% perfNames)) {
       warning(paste(
