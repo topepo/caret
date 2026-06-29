@@ -13,7 +13,7 @@
 "createModel" <-function(x, y, wts, method, tuneValue, obsLevels, pp = NULL, last = FALSE, sampling = NULL, classProbs, ...) {
 
   ## To get of warnings "some row.names duplicated: " when resampling with replacement
-  if(is.data.frame(x) | is.matrix(x)) 
+  if(is.data.frame(x) || is.matrix(x)) 
     rownames(x) <- make.names(rownames(x), unique = TRUE)
 
   if(!is.null(sampling) && sampling$first) {
@@ -51,7 +51,7 @@
   ## for models using S4 classes, you can't easily append data, so
   ## exclude these and we'll use other methods to get this information
   if(is.null(method$label)) method$label <- ""
-  if(!isS4(modelFit) &
+  if(!isS4(modelFit) &&
        !(method$label %in% c("Ensemble Partial Least Squares Regression",
                              "Ensemble Partial Least Squares Regression with Feature Selection"))) {
     modelFit$xNames <- colnames(x)

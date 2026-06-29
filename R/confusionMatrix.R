@@ -145,10 +145,10 @@ confusionMatrix.default <- function(data, reference,
                                     ...) {
   if(!(mode %in% c("sens_spec", "prec_recall", "everything")))
     stop("`mode` should be either 'sens_spec', 'prec_recall', or 'everything'")
-  if(!is.factor(data) | !is.factor(reference)) {
+  if(!is.factor(data) || !is.factor(reference)) {
     stop("`data` and `reference` should be factors with the same levels.", call. = FALSE)
   }
-  if(!is.character(positive) & !is.null(positive)) stop("positive argument must be character")
+  if(!is.character(positive) && !is.null(positive)) stop("positive argument must be character")
 
   if(length(levels(data)) > length(levels(reference)))
     stop("the data cannot have more levels than the reference")
@@ -177,7 +177,7 @@ confusionMatrix.default <- function(data, reference,
   if(numLevels < 2)
     stop("there must be at least 2 factors levels in the data")
 
-  if(numLevels == 2 & is.null(positive))  positive <- levels(reference)[1]
+  if(numLevels == 2 && is.null(positive))  positive <- levels(reference)[1]
 
   classTable <- table(data, reference, dnn = dnn, ...)
 
@@ -209,14 +209,14 @@ confusionMatrix.table <- function(data, positive = NULL,
   if(length(dim(data)) != 2) stop("the table must have two dimensions")
   if(!all.equal(nrow(data), ncol(data))) stop("the table must nrow = ncol")
   if(!isTRUE(all.equal(rownames(data), colnames(data)))) stop("the table must the same classes in the same order")
-  if(!is.character(positive) & !is.null(positive)) stop("positive argument must be character")
+  if(!is.character(positive) && !is.null(positive)) stop("positive argument must be character")
 
   classLevels <- rownames(data)
   numLevels <- length(classLevels)
   if(numLevels < 2)
     stop("there must be at least 2 factors levels in the data")
 
-  if(numLevels == 2 & is.null(positive))  positive <- rownames(data)[1]
+  if(numLevels == 2 && is.null(positive))  positive <- rownames(data)[1]
 
 
   if(numLevels == 2 & !is.null(prevalence) && length(prevalence) != 1)
@@ -560,7 +560,7 @@ print.confusionMatrix.train <- function(x, digits = 1, ...){
                      overall = "\n(entries are percentual average cell counts across resamples)\n",
                      "")
   cat(normText, "\n")
-  if(x$norm == "none" & x$B == 1) {
+  if(x$norm == "none" && x$B == 1) {
     print(getFromNamespace("confusionMatrix.table", "caret")(x$table))
   } else {
     print(round(x$table, digits))

@@ -5,7 +5,7 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
   if (is.null(colnames(x)))
     stop("x must have column names")
 
-  if (is.null(testX) |
+  if (is.null(testX) ||
       is.null(testY))
     stop("a test set must be specified")
 
@@ -37,7 +37,7 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
       )
 
     modelPred <- sbfControl$functions$pred(fitObject, testX)
-    if (is.data.frame(modelPred) | is.matrix(modelPred)) {
+    if (is.data.frame(modelPred) || is.matrix(modelPred)) {
       if (is.matrix(modelPred))
         modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
       modelPred$obs <- testY
@@ -273,7 +273,7 @@ sbf <- function (x, ...) UseMethod("sbf")
     performance <- data.frame(t(performance))
     performance <- performance[,!grepl("\\.cell|Resample", colnames(performance))]
 
-    if(is.factor(y) & any(names(resamples) == ".cell1")) {
+    if(is.factor(y) && any(names(resamples) == ".cell1")) {
       keepers <- c("Resample", grep("\\.cell", names(resamples), value = TRUE))
       resampledCM <- resamples[,keepers]
       resamples <- resamples[, -grep("\\.cell", names(resamples))]
@@ -470,7 +470,7 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
     performance <- data.frame(t(performance))
     performance <- performance[,!grepl("\\.cell|Resample", colnames(performance))]
 
-    if(is.factor(y) & any(names(resamples) == ".cell1")) {
+    if(is.factor(y) && any(names(resamples) == ".cell1")) {
       keepers <- c("Resample", grep("\\.cell", names(resamples), value = TRUE))
       resampledCM <- resamples[,keepers]
       resamples <- resamples[, -grep("\\.cell", names(resamples))]
@@ -1025,7 +1025,7 @@ caretSBF <- list(summary = defaultSummary,
                    if(!inherits(object, "nullModel"))
                    {
                      tmp <- predict(object, x)
-                     if(object$modelType == "Classification" &
+                     if(object$modelType == "Classification" &&
                           !is.null(object$modelInfo$prob))
                      {
                        out <- cbind(data.frame(pred = tmp),

@@ -11,7 +11,7 @@ specificity <-
 "specificity.default" <-
 function(data, reference, negative = levels(reference)[-1], na.rm = TRUE, ...)
 {
-   if(!is.factor(reference) | !is.factor(data))
+   if(!is.factor(reference) || !is.factor(data))
       stop("input data must be a factor")
 
    ## todo: relax the =2 constraint and let ngative length be > 2

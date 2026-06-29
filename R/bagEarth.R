@@ -254,7 +254,7 @@
       data.frame(pred = x$fitted.values[oobIndex], sample = oobIndex)
     }
 
-    if (is.null(newdata) & !is.null(object$x)) {
+    if (is.null(newdata) && !is.null(object$x)) {
       newdata <- object$x
     }
 

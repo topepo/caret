@@ -5,12 +5,12 @@ predict.PLS <- function(object, newdata,
    type = ifelse(object$isRegression, "response", "class"), ...)
 {
 
-   if(is.null(ncomp) & !is.null(object$bestIter$.ncomp)) ncomp <- object$bestIter$.ncomp
+   if(is.null(ncomp) && !is.null(object$bestIter$.ncomp)) ncomp <- object$bestIter$.ncomp
 
    if(is.null(ncomp)) stop("the number of components must be given")
 
    # adapted from the pls package
-   if(object$isRegression & c(type %in% c("class", "prob")))
+   if(object$isRegression && c(type %in% c("class", "prob")))
       stop("cannot get a class estimate if the original y was not a factor")
 
    if(!(type %in% c("response", "class", "prob")))

@@ -163,7 +163,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                 ## collate the predicitons across all the sub-models
                 predicted <- lapply(predicted,
                                     function(x, y, wts, lv) {
-                                      if(!is.factor(x) & is.character(x)) x <- factor(as.character(x), levels = lv)
+                                      if(!is.factor(x) && is.character(x)) x <- factor(as.character(x), levels = lv)
                                       out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
                                       if(!is.null(wts)) out$weights <- wts
                                       out
@@ -388,7 +388,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                                    ## collate the predicitons across all the sub-models
                                    predicted <- lapply(predicted,
                                                        function(x, y, wts, lv) {
-                                                         if(!is.factor(x) & is.character(x)) x <- factor(as.character(x), levels = lv)
+                                                         if(!is.factor(x) && is.character(x)) x <- factor(as.character(x), levels = lv)
                                                          out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
                                                          if(!is.null(wts)) out$weights <- wts
                                                          out
@@ -677,7 +677,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
                   ## collate the predicitons across all the sub-models
                   predicted <- lapply(predicted,
                                       function(x, y, wts, lv) {
-                                        if(!is.factor(x) & is.character(x)) x <- factor(as.character(x), levels = lv)
+                                        if(!is.factor(x) && is.character(x)) x <- factor(as.character(x), levels = lv)
                                         out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
                                         if(!is.null(wts)) out$weights <- wts
                                         out
@@ -1021,7 +1021,7 @@ filter_on_diff <- function(dat, metric, cutoff = 0.01, maximize = TRUE, verbose 
   deletecol <- 0
   for (i in 1:(varnum - 1)) {
     for (j in (i + 1):varnum) {
-      if (!any(i == deletecol) & !any(j == deletecol)) {
+      if (!any(i == deletecol) && !any(j == deletecol)) {
         if (abs(x[i, j]) < cutoff) {
           if (mns[i] < mns[j]) {
             deletecol <- unique(c(deletecol, i))
@@ -1068,7 +1068,7 @@ filter_on_corr <- function(dat, metric, cutoff, verbose = FALSE) {
   deletecol <- 0
   for (i in 1:(varnum - 1)) {
     for (j in (i + 1):varnum) {
-      if (!any(i == deletecol) & !any(j == deletecol)) {
+      if (!any(i == deletecol) && !any(j == deletecol)) {
         if (abs(x[i, j]) > cutoff) {
           if (mean(x[i, -i], na.rm = TRUE) > mean(x[-j, j], na.rm = TRUE)) {
             deletecol <- unique(c(deletecol, i))

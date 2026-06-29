@@ -230,7 +230,7 @@ preProcess.default <- function(
   rangeBounds = c(0, 1),
   ...
 ) {
-  if (!inherits(x, "matrix") & !inherits(x, "data.frame")) {
+  if (!inherits(x, "matrix") && !inherits(x, "data.frame")) {
     stop(
       "Matrices or data frames are required for preprocessing",
       call. = FALSE
@@ -241,7 +241,7 @@ preProcess.default <- function(
   method <- tmp$opts
   wildcards <- tmp$wildcards
 
-  if (any(method == "corr") & !any(method == "zv")) {
+  if (any(method == "corr") && !any(method == "zv")) {
     method <- unique(c(method, "zv"))
     if (verbose) {
       cat("A zero-variance filter was added for the correlation filter\n")
@@ -321,7 +321,7 @@ preProcess.default <- function(
   }
   ##  check the distribution of the columns of x conditioned on the levels of y and
   ## identifies columns of x that are sparse within groups of y
-  if (any(names(method) == "conditionalX") & is.factor(outcome)) {
+  if (any(names(method) == "conditionalX") && is.factor(outcome)) {
     bad_pred <- checkConditionalX(
       x = x[, !(colnames(x) %in% method$ignore), drop = FALSE],
       y = outcome
@@ -727,7 +727,7 @@ preProcess.default <- function(
 #' @importFrom stats complete.cases
 #' @export
 predict.preProcess <- function(object, newdata, ...) {
-  if (is.vector(object$method) & !is.list(object$method)) {
+  if (is.vector(object$method) && !is.list(object$method)) {
     object <- convert_method(object)
   }
 
@@ -944,8 +944,8 @@ predict.preProcess <- function(object, newdata, ...) {
 
   wc <- object$wildcards
   if (
-    any(names(object$method) == "spatialSign") |
-      any(wc$PCA == "spatialSign") |
+    any(names(object$method) == "spatialSign") ||
+      any(wc$PCA == "spatialSign") ||
       any(wc$ICA == "spatialSign")
   ) {
     ss_col_names <- object$method$spatialSign
@@ -1119,7 +1119,7 @@ pre_process_options <- function(opts, vars) {
   vars <- vars %in% c("integer", "numeric", "double")
   names(vars) <- names(orig_vars)
   ## convert simple vectors to list mode:
-  if (is.vector(opts) & !is.list(opts)) {
+  if (is.vector(opts) && !is.list(opts)) {
     op_list <- vector(mode = "list", length = length(opts))
     names(op_list) <- opts
     op_list <- lapply(
@@ -1204,8 +1204,8 @@ pre_process_options <- function(opts, vars) {
   }
 
   if (
-    all(unlist(wildcards) != "spatialSign") &
-      "spatialSign" %in% methods &
+    all(unlist(wildcards) != "spatialSign") &&
+      "spatialSign" %in% methods &&
       length(opts[["spatialSign"]]) == 1
   ) {
     warning(
@@ -1252,7 +1252,7 @@ pre_process_options <- function(opts, vars) {
   }
 
   if (
-    any(methods %in% "range") & any(methods %in% c("center", "scale", "BoxCox"))
+    any(methods %in% "range") && any(methods %in% c("center", "scale", "BoxCox"))
   ) {
     stop(
       "Centering, scaling and/or Box-Cox transformations are inconsistent with scaling to a range"
@@ -1299,7 +1299,7 @@ pre_process_options <- function(opts, vars) {
 
   ## check length of options and remove zero lengths
   opt_len <- unlist(lapply(opts, length))
-  if (opt_len["spatialSign"] == 0 & any(unlist(wildcards) == "spatialSign")) {
+  if (opt_len["spatialSign"] == 0 && any(unlist(wildcards) == "spatialSign")) {
     opt_len["spatialSign"] <- 1
   }
   if (any(opt_len < 1)) {

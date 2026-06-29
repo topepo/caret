@@ -10,7 +10,7 @@ negPredValue <-
 "negPredValue.default" <-
 function(data, reference, negative = levels(reference)[2], prevalence = NULL, ...)
 {
-   if(!is.factor(reference) | !is.factor(data)) 
+   if(!is.factor(reference) || !is.factor(data)) 
       stop("input data must be a factor")
    
    if(length(unique(c(levels(reference), levels(data)))) != 2)

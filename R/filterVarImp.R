@@ -121,7 +121,7 @@ filterVarImp <- function(x, y, nonpara = FALSE, ...){
             } else {
               regMod <- try(loess(y~x, na.action = na.omit, ...), silent = TRUE)
 
-              if(inherits(regMod, "try-error") | any(is.nan(regMod$residuals))) try(regMod <- lm(y~x, ...))
+              if(inherits(regMod, "try-error") || any(is.nan(regMod$residuals))) try(regMod <- lm(y~x, ...))
               if(inherits(regMod, "try-error")) return(NA)
             }
 
