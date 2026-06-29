@@ -243,7 +243,7 @@ twoClassSim <- function(
     prob <- binomial()$linkinv(lp + rnorm(n, sd = 2))
     tmpData$Class <- cut(
       prob,
-      breaks = c(0, .2, .75, 1),
+      breaks = c(0, 0.2, 0.75, 1),
       include.lowest = TRUE,
       labels = c("low", "med", "high"),
       ordered_result = TRUE

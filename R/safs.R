@@ -383,7 +383,7 @@ safsControl <- function(
   repeats = ifelse(grepl("cv", method), 1, 5),
   verbose = FALSE,
   returnResamp = "final",
-  p = .75,
+  p = 0.75,
   index = NULL,
   indexOut = NULL,
   seeds = NULL,
@@ -960,13 +960,13 @@ safs <- function(x, ...) UseMethod("safs")
 #' ##               importance = TRUE)
 #' 
 #' @export safs_initial
-safs_initial <- function(vars, prob = .20, ...) {
+safs_initial <- function(vars, prob = 0.20, ...) {
   sort(sample.int(vars, size = floor(vars * prob) + 1))
 }
 
 #' @rdname safs_initial
 #' @export
-safs_perturb <- function(x, vars, number = floor(length(x) * .01) + 1) {
+safs_perturb <- function(x, vars, number = floor(length(x) * 0.01) + 1) {
   bin <- index2vec(x, vars)
   change <- sample(seq(along.with = bin), size = number)
   bin[change] <- ifelse(bin[change] == 1, 0, 1)

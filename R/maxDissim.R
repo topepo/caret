@@ -150,7 +150,7 @@ sumDiss <- function(u) sum(u, na.rm = TRUE)
 
 
 
-splitter <- function(x, p = .8, start = NULL, ...)
+splitter <- function(x, p = 0.8, start = NULL, ...)
   {
     n <- nrow(x)
     if(is.null(start)) start <- sample(1:n, 1)
@@ -164,7 +164,7 @@ splitter <- function(x, p = .8, start = NULL, ...)
   }
 
 
-splitByDissim <- function(x, p = .8, y = NULL, start = NULL, ...)
+splitByDissim <- function(x, p = 0.8, y = NULL, start = NULL, ...)
   {
     if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
     

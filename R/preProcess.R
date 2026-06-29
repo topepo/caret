@@ -221,7 +221,7 @@ preProcess.default <- function(
   k = 5,
   knnSummary = mean,
   outcome = NULL,
-  fudge = .2,
+  fudge = 0.2,
   numUnique = 3,
   verbose = FALSE,
   freqCut = 95 / 5,

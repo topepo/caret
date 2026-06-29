@@ -205,7 +205,7 @@ function(object, newdata = NULL, type = "class", ...)
 function(object, ...)
 {
 
-   oobStat <- apply(object$oob, 2, function(x) quantile(x, probs = c(0, 0.025, .5, .975, 1)))
+   oobStat <- apply(object$oob, 2, function(x) quantile(x, probs = c(0, 0.025, 0.5, 0.975, 1)))
 
    numTerms <- unlist(lapply(object$fit, function(x) length(x$fit$selected.terms)))
    numVar <- unlist(lapply(
@@ -229,7 +229,7 @@ function(object, ...)
 "print.summary.bagFDA" <-
 function(x, digits = max(3, getOption("digits") - 3), ...)
 {
-   oobStat <- apply(x$oob, 2, function(x) quantile(x, probs = c(0, 0.025, .25, .5, .75, .975, 1)))
+   oobStat <- apply(x$oob, 2, function(x) quantile(x, probs = c(0, 0.025, 0.25, 0.5, 0.75, 0.975, 1)))
    cat("Out of bag statistics:\n\n")
    print(x$oobStat, digits = digits)
    cat("\nModel Selection Statistics:\n\n")
