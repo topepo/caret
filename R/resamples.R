@@ -769,7 +769,7 @@ xyplot.resamples <- function(
           ux[groups == gps[i]],
           y[groups == gps[i]],
           col = theme$superpose.line$col[i],
-          length = .01,
+          length = 0.01,
           unit = "npc",
           angle = 90,
           code = 3
@@ -1097,7 +1097,7 @@ dotplot.resamples <- function(
         col = plotTheme$plot.line$col[1],
         lwd = plotTheme$plot.line$lwd[1]
       )
-      len <- .03
+      len <- 0.03
       panel.segments(
         vals$x[, "min"],
         vals$group + len,
@@ -1174,7 +1174,7 @@ ggplot.resamples <-
 
     p <- ggplot(results, aes(x = Model)) +
       geom_point(aes(y = Estimate)) +
-      geom_errorbar(aes(ymin = LowerLimit, ymax = UpperLimit), width = .1) +
+      geom_errorbar(aes(ymin = LowerLimit, ymax = UpperLimit), width = 0.1) +
       coord_flip() +
       xlab("") +
       ylab("")
@@ -1668,7 +1668,7 @@ dotplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], ...) {
           lwd = plotTheme$plot.line$lwd[1],
           lty = plotTheme$plot.line$lty[1]
         )
-        len <- .03
+        len <- 0.03
         panel.segments(
           lower$x[i],
           upper$mod[i] + len,

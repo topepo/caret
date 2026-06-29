@@ -11,7 +11,7 @@ test_that('glmnet classification', {
     Class ~ .,
     data = tr_dat,
     method = "glmnet",
-    tuneGrid = data.frame(lambda = .1, alpha = .5),
+    tuneGrid = data.frame(lambda = 0.1, alpha = 0.5),
     trControl = trainControl(method = "none", classProbs = TRUE, trim = TRUE)
   )
 
@@ -20,7 +20,7 @@ test_that('glmnet classification', {
     Class ~ .,
     data = tr_dat,
     method = "glmnet",
-    tuneGrid = data.frame(lambda = .1, alpha = .5),
+    tuneGrid = data.frame(lambda = 0.1, alpha = 0.5),
     trControl = trainControl(method = "none", classProbs = TRUE, trim = FALSE)
   )
 
@@ -45,7 +45,7 @@ test_that('glmnet regression', {
     y ~ .,
     data = tr_dat,
     method = "glmnet",
-    tuneGrid = data.frame(lambda = .1, alpha = .5),
+    tuneGrid = data.frame(lambda = 0.1, alpha = 0.5),
     trControl = trainControl(method = "none", trim = TRUE)
   )
 
@@ -54,7 +54,7 @@ test_that('glmnet regression', {
     y ~ .,
     data = tr_dat,
     method = "glmnet",
-    tuneGrid = data.frame(lambda = .1, alpha = .5),
+    tuneGrid = data.frame(lambda = 0.1, alpha = 0.5),
     trControl = trainControl(method = "none", trim = FALSE)
   )
   expect_equal(predict(reg_trim, te_dat), predict(reg_notrim, te_dat))

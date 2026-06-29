@@ -157,7 +157,7 @@ ggplot.rfe <- function(data = NULL, mapping = NULL, metric = data$metric[1],
 
     if(any(names(data$results) == "Num_Resamples")) {
       data$results <- 
-        subset(data$results, Num_Resamples >= floor(.5 * length(data$control$index)))
+        subset(data$results, Num_Resamples >= floor(0.5 * length(data$control$index)))
   }
   
   notBest <- subset(data$results, Variables != data$bestSubset)

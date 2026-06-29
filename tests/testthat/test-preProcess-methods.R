@@ -236,7 +236,7 @@ test_that('ICA trans', {
   expect_equal(
     as.data.frame(ica_dat2_exp, stringsAsFactors = TRUE),
     ica_dat2_ica,
-    tolerance = .00001
+    tolerance = 0.00001
   )
 })
 

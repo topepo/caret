@@ -83,7 +83,7 @@ SLC14_2 <- function(n = 100, noiseVars = 0,
 LPH07_1 <- function(n = 100, noiseVars = 0, 
                     corrVars = 0, corrType = "AR1", corrValue = 0, factors = FALSE, class = FALSE) {
   
-  dat <- matrix(rbinom(n*10, size = 1, prob = .4), ncol = 10)
+  dat <- matrix(rbinom(n*10, size = 1, prob = 0.4), ncol = 10)
   dat <- as.data.frame(dat, stringsAsFactors = TRUE)
   colnames(dat) <- well_numbered("Var", ncol(dat))
   foo <- function(w) 2*w[1]*w[10] + 4*w[2]*w[7] + 3*w[4]*w[5] -

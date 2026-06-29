@@ -76,7 +76,7 @@ pcaNNet <- function (x, ...)
 #' @importFrom stats .getXlevels contrasts model.matrix model.response model.weights
 #' @export
 pcaNNet.formula <- function (formula, data, weights, ...,
-                             thresh = .99,
+                             thresh = 0.99,
                              subset, na.action, contrasts = NULL)
 {
 
@@ -109,7 +109,7 @@ pcaNNet.formula <- function (formula, data, weights, ...,
 
 #' @rdname pcaNNet
 #' @export
-pcaNNet.default <- function(x, y, thresh = .99, ...)
+pcaNNet.default <- function(x, y, thresh = 0.99, ...)
   {
     requireNamespaceQuietStop("nnet")
 

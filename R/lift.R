@@ -466,19 +466,19 @@ ggplot.lift <- function(
       geom_segment(
         data = lines1,
         aes(x = x1, y = y1, xend = x2, yend = y2),
-        alpha = .2,
+        alpha = 0.2,
         lty = 2
       ) +
       geom_segment(
         data = lines2,
         aes(x = x1, y = y1, xend = x2, yend = y2),
-        alpha = .2,
+        alpha = 0.2,
         lty = 2
       ) +
       geom_segment(
         data = lines3,
         aes(x = x1, y = y1, xend = x2, yend = y2),
-        alpha = .2,
+        alpha = 0.2,
         lty = 2
       ) +
       xlab("% Samples Tested") +

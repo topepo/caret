@@ -26,7 +26,7 @@ test_that("BoxCox lambdas match MASS::boxcox", {
       x ~ 1,
       data = tmp,
       plotit = FALSE,
-      lambda = seq(-2, 2, by = .1)
+      lambda = seq(-2, 2, by = 0.1)
     )
     exp_lambdas[i] <- tmp_bc$x[which.max(tmp_bc$y)]
   }

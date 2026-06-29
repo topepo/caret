@@ -485,7 +485,7 @@ adaptiveWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev,
 
     if(iter == ctrl$adaptive$min+1) {
       rs <- filter_on_diff(rs, metric,
-                           cutoff = .001,
+                           cutoff = 0.001,
                            maximize = maximize,
                            verbose = ctrl$verboseIter)
     }
@@ -834,7 +834,7 @@ get_scores <- function(x, maximize = NULL, metric = NULL)
 {
   if (!requireNamespace("BradleyTerry2")) stop("BradleyTerry2 package missing")
   delta <- outer(x[,metric], x[,metric], "-")
-  tied <- ifelse(delta == 0, 1, 0)*.5
+  tied <- ifelse(delta == 0, 1, 0)*0.5
   diag(tied) <- 0
   binary <- if(maximize) ifelse(delta > 0, 1, 0) else ifelse(delta > 0, 0, 1)
   binary <- binary + tied

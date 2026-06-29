@@ -1036,7 +1036,7 @@ train_adapt_rec <- function(rec, dat, info, method, ctrl, lev, metric, maximize,
 
     if(iter == ctrl$adaptive$min+1) {
       rs <- filter_on_diff(rs, metric,
-                           cutoff = .001,
+                           cutoff = 0.001,
                            maximize = maximize,
                            verbose = ctrl$verboseIter)
     }

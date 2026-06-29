@@ -33,7 +33,7 @@ test_that("auc calculation is > .5 when Xs provide prediction", {
     trControl = trCntlListMulti
   )
 
-  expect_true(all(knnFit$resample$AUC > .5))
+  expect_true(all(knnFit$resample$AUC > 0.5))
 
   set.seed(7686)
   tr_dat <- twoClassSim(200)
@@ -52,5 +52,5 @@ test_that("auc calculation is > .5 when Xs provide prediction", {
     )
   )
 
-  expect_true(all(modle$resample$AUC > .5))
+  expect_true(all(modle$resample$AUC > 0.5))
 })

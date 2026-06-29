@@ -232,7 +232,7 @@ calibCalc <- function(x, class = levels(obs)[1], cuts = 11) {
   )
   dataPoints$midpoint <- NA
   for (i in 2:length(cuts)) {
-    dataPoints$midpoint[i - 1] <- .5 * (cuts[i] + cuts[i - 1]) * 100
+    dataPoints$midpoint[i - 1] <- 0.5 * (cuts[i] + cuts[i - 1]) * 100
   }
   dataPoints$Percent <- ifelse(dataPoints$Count == 0, 0, dataPoints$Percent)
   dataPoints
@@ -307,7 +307,7 @@ ggplot.calibration <- function(data, ..., bwidth = 2, dwidth = 3) {
         intercept = 0,
         col = "black",
         lty = 2,
-        alpha = .3
+        alpha = 0.3
       ) +
       geom_point() +
       geom_errorbar(aes(ymin = Lower, ymax = Upper), width = bwidth)
@@ -321,7 +321,7 @@ ggplot.calibration <- function(data, ..., bwidth = 2, dwidth = 3) {
         intercept = 0,
         col = "black",
         lty = 2,
-        alpha = .3
+        alpha = 0.3
       ) +
       geom_point(position = position_dodge(width = dwidth)) +
       geom_errorbar(
