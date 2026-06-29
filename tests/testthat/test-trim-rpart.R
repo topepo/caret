@@ -1,7 +1,6 @@
-library(caret)
-
-test_that('train classification', {
+test_that('rpart classification', {
   skip_on_cran()
+  skip_if_not_installed("rpart")
   set.seed(1)
   tr_dat <- twoClassSim(200)
   te_dat <- twoClassSim(200)
@@ -12,10 +11,8 @@ test_that('train classification', {
     data = tr_dat,
     method = "rpart",
     tuneGrid = data.frame(cp = 0.22),
-    preProc = c("center", "bagImpute"),
     trControl = trainControl(method = "none", classProbs = TRUE, trim = TRUE)
   )
-  class_trim <- caret:::trim.train(class_trim)
 
   set.seed(2)
   class_notrim <- train(
@@ -23,7 +20,6 @@ test_that('train classification', {
     data = tr_dat,
     method = "rpart",
     tuneGrid = data.frame(cp = 0.22),
-    preProc = c("center", "bagImpute"),
     trControl = trainControl(method = "none", classProbs = TRUE, trim = FALSE)
   )
 
@@ -34,11 +30,12 @@ test_that('train classification', {
     predict(class_notrim, te_dat, type = "prob")
   )
 
-  expect_less_than(object.size(class_trim) - object.size(class_notrim), 0)
+  expect_lt(object.size(class_trim) - object.size(class_notrim), 0)
 })
 
-test_that('train regression', {
+test_that('rpart regression', {
   skip_on_cran()
+  skip_if_not_installed("rpart")
   set.seed(1)
   tr_dat <- SLC14_1(200)
   te_dat <- SLC14_1(200)
@@ -51,7 +48,6 @@ test_that('train regression', {
     tuneGrid = data.frame(cp = 0.12),
     trControl = trainControl(method = "none", trim = TRUE)
   )
-  reg_trim <- caret:::trim.train(reg_trim)
 
   set.seed(2)
   reg_notrim <- train(
@@ -62,12 +58,13 @@ test_that('train regression', {
     trControl = trainControl(method = "none", trim = FALSE)
   )
   expect_equal(predict(reg_trim, te_dat), predict(reg_notrim, te_dat))
-  expect_less_than(object.size(reg_trim) - object.size(reg_notrim), 0)
+  expect_lt(object.size(reg_trim) - object.size(reg_notrim), 0)
 })
 
 
-test_that('train/earth classification', {
+test_that('rpart2 classification', {
   skip_on_cran()
+  skip_if_not_installed("rpart")
   set.seed(1)
   tr_dat <- twoClassSim(200)
   te_dat <- twoClassSim(200)
@@ -76,18 +73,17 @@ test_that('train/earth classification', {
   class_trim <- train(
     Class ~ .,
     data = tr_dat,
-    method = "earth",
-    tuneGrid = data.frame(nprune = 3, degree = 1),
+    method = "rpart2",
+    tuneGrid = data.frame(maxdepth = 3),
     trControl = trainControl(method = "none", classProbs = TRUE, trim = TRUE)
   )
-  class_trim <- caret:::trim.train(class_trim)
 
   set.seed(2)
   class_notrim <- train(
     Class ~ .,
     data = tr_dat,
-    method = "earth",
-    tuneGrid = data.frame(nprune = 3, degree = 1),
+    method = "rpart2",
+    tuneGrid = data.frame(maxdepth = 3),
     trControl = trainControl(method = "none", classProbs = TRUE, trim = FALSE)
   )
 
@@ -98,11 +94,12 @@ test_that('train/earth classification', {
     predict(class_notrim, te_dat, type = "prob")
   )
 
-  expect_less_than(object.size(class_trim) - object.size(class_notrim), 0)
+  expect_lt(object.size(class_trim) - object.size(class_notrim), 0)
 })
 
-test_that('train/earth regression', {
+test_that('rpart2 regression', {
   skip_on_cran()
+  skip_if_not_installed("rpart")
   set.seed(1)
   tr_dat <- SLC14_1(200)
   te_dat <- SLC14_1(200)
@@ -111,8 +108,8 @@ test_that('train/earth regression', {
   reg_trim <- train(
     y ~ .,
     data = tr_dat,
-    method = "earth",
-    tuneGrid = data.frame(nprune = 3, degree = 1),
+    method = "rpart2",
+    tuneGrid = data.frame(maxdepth = 3),
     trControl = trainControl(method = "none", trim = TRUE)
   )
 
@@ -120,10 +117,10 @@ test_that('train/earth regression', {
   reg_notrim <- train(
     y ~ .,
     data = tr_dat,
-    method = "earth",
-    tuneGrid = data.frame(nprune = 3, degree = 1),
+    method = "rpart2",
+    tuneGrid = data.frame(maxdepth = 3),
     trControl = trainControl(method = "none", trim = FALSE)
   )
   expect_equal(predict(reg_trim, te_dat), predict(reg_notrim, te_dat))
-  expect_less_than(object.size(reg_trim) - object.size(reg_notrim), 0)
+  expect_lt(object.size(reg_trim) - object.size(reg_notrim), 0)
 })

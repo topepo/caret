@@ -1,7 +1,6 @@
-library(caret)
-
 test_that('bayesglm classification', {
   skip_on_cran()
+  skip_if_not_installed("arm")
   set.seed(1)
   tr_dat <- twoClassSim(200)
   te_dat <- twoClassSim(200)
@@ -31,11 +30,12 @@ test_that('bayesglm classification', {
     predict(class_notrim, te_dat, type = "prob")
   )
 
-  expect_less_than(object.size(class_trim) - object.size(class_notrim), 0)
+  expect_lt(object.size(class_trim) - object.size(class_notrim), 0)
 })
 
 test_that('bayesglm regression', {
   skip_on_cran()
+  skip_if_not_installed("arm")
   set.seed(1)
   tr_dat <- SLC14_1(200)
   te_dat <- SLC14_1(200)
@@ -58,5 +58,5 @@ test_that('bayesglm regression', {
     trControl = trainControl(method = "none", trim = FALSE)
   )
   expect_equal(predict(reg_trim, te_dat), predict(reg_notrim, te_dat))
-  expect_less_than(object.size(reg_trim) - object.size(reg_notrim), 0)
+  expect_lt(object.size(reg_trim) - object.size(reg_notrim), 0)
 })

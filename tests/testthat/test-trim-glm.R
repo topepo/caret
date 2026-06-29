@@ -1,5 +1,3 @@
-library(caret)
-
 test_that('glm classification', {
   skip_on_cran()
   set.seed(1)
@@ -31,7 +29,7 @@ test_that('glm classification', {
     predict(class_notrim, te_dat, type = "prob")
   )
 
-  expect_less_than(object.size(class_trim) - object.size(class_notrim), 0)
+  expect_lt(object.size(class_trim) - object.size(class_notrim), 0)
 })
 
 test_that('glm regression', {
@@ -58,5 +56,5 @@ test_that('glm regression', {
     trControl = trainControl(method = "none", trim = FALSE)
   )
   expect_equal(predict(reg_trim, te_dat), predict(reg_notrim, te_dat))
-  expect_less_than(object.size(reg_trim) - object.size(reg_notrim), 0)
+  expect_lt(object.size(reg_trim) - object.size(reg_notrim), 0)
 })
