@@ -25,7 +25,7 @@ model_info <- model_info[order(model_info$name),]
 
 # Available Models
 
-The models below are available in `train`. The code behind these protocols can be obtained using the function `getModelInfo` or by going to the [github repository](https://github.com/topepo/caret/tree/master/models/files). 
+The models below are available in `train`. The code behind these protocols can be obtained using the function `getModelInfo` or by going to the [github repository](https://github.com/topepo/caret/tree/main/inst/model_sources/files). 
 
  
 ```{r list_table, echo = FALSE}
