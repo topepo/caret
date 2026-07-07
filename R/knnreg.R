@@ -61,7 +61,6 @@ knnreg.default <- function(x, ...)
 }
 
 #' @rdname knnreg
-#' @importFrom stats model.matrix terms model.extract
 #' @export
 knnreg.formula <- function (formula, data, subset, na.action, k = 5, ...)
 {

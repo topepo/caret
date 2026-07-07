@@ -1,3 +1,25 @@
+# Package-wide imports, deduplicated into a single block so individual R files
+# don't need to carry their own @importFrom/@import tags.
+#' @import foreach ggplot2 lattice methods nlme plyr recipes reshape2
+#' @importFrom ModelMetrics auc
+#' @importFrom grDevices extendrange
+#' @importFrom pROC roc
+#' @importFrom plyr ddply
+#' @importFrom recipes all_outcomes all_predictors bake has_role juice prep
+#' @importFrom stats .checkMFClasses .getXlevels aggregate anova approx
+#' @importFrom stats as.formula binom.test binomial complete.cases contrasts cor
+#' @importFrom stats cov delete.response dist fitted fitted.values glm hclust lm
+#' @importFrom stats loess mahalanobis mcnemar.test median model.extract
+#' @importFrom stats model.frame model.matrix model.response model.weights
+#' @importFrom stats na.fail na.omit na.pass optim p.adjust prcomp predict pt
+#' @importFrom stats qnorm quantile rbinom reorder reshape resid residuals rnorm
+#' @importFrom stats runif sd t.test terms toeplitz update var
+#' @importFrom stats4 coef
+#' @importFrom utils capture.output combn flush.console getFromNamespace
+#' @importFrom utils globalVariables head install.packages installed.packages
+#' @importFrom utils menu modifyList object.size stack
+#' @importFrom withr with_seed
+NULL
 
 
 #' Blood Brain Barrier Data

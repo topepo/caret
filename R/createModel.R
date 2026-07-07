@@ -7,7 +7,6 @@
 #' @author Max Kuhn, but `caretTheme` uses an expanded grid of the "Blues"
 #'   palette designed by Cynthia Brewer and Mark Harrower
 #'
-#' @importFrom stats predict
 #' @export
 #' @keywords internal
 "createModel" <-function(x, y, wts, method, tuneValue, obsLevels, pp = NULL, last = FALSE, sampling = NULL, classProbs, ...) {

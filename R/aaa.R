@@ -17,7 +17,6 @@
 
 
 #' @useDynLib caret
-#' @import methods plyr reshape2 ggplot2 lattice nlme
 NULL
 
 

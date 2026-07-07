@@ -174,7 +174,6 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
 sbf <- function (x, ...) UseMethod("sbf")
 
 #' @rdname sbf
-#' @importFrom stats predict runif
 #' @export
 "sbf.default" <-
   function(x, y,
@@ -317,7 +316,6 @@ sbf <- function (x, ...) UseMethod("sbf")
   }
 
 #' @rdname sbf
-#' @importFrom stats .getXlevels contrasts model.matrix model.response
 #' @export
 sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
   m <- match.call(expand.dots = FALSE)
@@ -515,7 +513,6 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
   }
 
 
-#' @import foreach
 sbf_rec <- function(rec, data, ctrl, lev, ...) {
   loadNamespace("caret")
 
@@ -783,7 +780,6 @@ print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
 ######################################################################
 ######################################################################
 #' @rdname sbf
-#' @importFrom stats .checkMFClasses delete.response model.frame model.matrix na.omit
 #' @export
 predict.sbf <- function(object, newdata = NULL, ...) {
   if (!is.null(newdata)) {
@@ -1049,7 +1045,6 @@ caretSBF <- list(summary = defaultSummary,
                  filter = function(score, x, y) score <= 0.05
 )
 
-#' @importFrom stats predict
 #' @export
 rfSBF <- list(summary = defaultSummary,
               fit = function(x, y, ...)
@@ -1089,7 +1084,6 @@ rfSBF <- list(summary = defaultSummary,
               filter = function(score, x, y) score <= 0.05
 )
 
-#' @importFrom stats predict lm
 #' @export
 lmSBF <- list(summary = defaultSummary,
               fit = function(x, y, ...)
@@ -1112,7 +1106,6 @@ lmSBF <- list(summary = defaultSummary,
               filter = function(score, x, y) score <= 0.05
 )
 
-#' @importFrom stats predict
 #' @export
 ldaSBF <- list(summary = defaultSummary,
                fit = function(x, y, ...)
@@ -1148,7 +1141,6 @@ ldaSBF <- list(summary = defaultSummary,
                filter = function(score, x, y) score <= 0.05
 )
 
-#' @importFrom stats predict
 #' @export
 nbSBF <- list(summary = defaultSummary,
               fit = function(x, y, ...)
@@ -1190,7 +1182,6 @@ nbSBF <- list(summary = defaultSummary,
               filter = function(score, x, y) score <= 0.05
 )
 
-#' @importFrom stats predict
 #' @export
 treebagSBF <- list(summary = defaultSummary,
                    fit = function(x, y, ...)
@@ -1232,7 +1223,6 @@ treebagSBF <- list(summary = defaultSummary,
 
 
 #' @rdname caretSBF
-#' @importFrom stats anova lm
 #' @export
 anovaScores <- function(x, y) {
   if(is.factor(x)) stop("The predictors should be numeric")
@@ -1242,7 +1232,6 @@ anovaScores <- function(x, y) {
 }
 
 #' @rdname caretSBF
-#' @importFrom stats anova lm
 #' @export
 gamScores <- function(x, y) {
   if(is.factor(x)) stop("The predictors should be numeric")
@@ -1259,7 +1248,6 @@ gamScores <- function(x, y) {
 ######################################################################
 ## lattice functions
 
-#' @importFrom stats as.formula
 #' @export
 densityplot.sbf <- function(x,
                             data = NULL,
@@ -1277,7 +1265,6 @@ densityplot.sbf <- function(x,
   densityplot(form, data = data, ...)
 }
 
-#' @importFrom stats as.formula
 #' @export
 histogram.sbf <- function(x,
                           data = NULL,

@@ -147,7 +147,6 @@ postResample <- function(pred, obs)
 
 
 #' @rdname postResample
-#' @importFrom pROC roc
 #' @export
 twoClassSummary <- function (data, lev = NULL, model = NULL) {
   if(length(lev) > 2) {
@@ -168,7 +167,6 @@ twoClassSummary <- function (data, lev = NULL, model = NULL) {
 }
 
 #' @rdname postResample
-#' @importFrom stats complete.cases
 #' @export
 mnLogLoss <- function(data, lev = NULL, model = NULL){
   if(is.null(lev)) stop("'lev' cannot be NULL")

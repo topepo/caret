@@ -93,7 +93,6 @@ sa_bl_correct0 <- function(x) {
 
 sa_bl_correct <- function(x) ddply(x, .(Resample), sa_bl_correct0)
 
-#' @importFrom utils getFromNamespace
 #' @export
 print.safs <- function(
   x,
@@ -1058,7 +1057,6 @@ sa_wrapper <- function(
 ###################################################################
 ##
 
-#' @importFrom stats runif
 sa_select <- function(
   x,
   y,
@@ -1330,7 +1328,6 @@ sa_select <- function(
 ###################################################################
 ##
 
-#' @importFrom stats update
 #' @export
 #' @export plot.safs
 plot.safs <- function(
@@ -1411,7 +1408,6 @@ ggplot.safs <-
 ###################################################################
 ##
 #' @rdname safs_initial
-#' @importFrom stats predict
 #' @export
 caretSA <- list(
   fit = function(x, y, lev = NULL, last = FALSE, ...) train(x, y, ...),
@@ -1623,7 +1619,6 @@ update.safs <- function(object, iter, x, y, ...) {
 }
 
 #' @rdname safs
-#' @import recipes
 #' @export
 "safs.recipe" <-
   function(

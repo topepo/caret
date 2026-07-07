@@ -22,7 +22,6 @@ progress <- function(x, names, iter, start = TRUE)
 }
 
 #' @rdname caret-internal
-#' @importFrom stats sd
 #' @export
 MeanSD <- function(x, exclude = NULL)
 {
@@ -49,9 +48,6 @@ expandParameters <- function(fixed, seq)
   out
 }
 
-#' @importFrom utils head
-#' @importFrom stats complete.cases
-#' @import foreach
 nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing = FALSE, ...)
 {
   loadNamespace("caret")
@@ -331,7 +327,6 @@ nominalTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, tes
 }
 
 
-#' @import foreach
 looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing = FALSE, ...)
 {
   loadNamespace("caret")
@@ -469,7 +464,6 @@ looTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
   list(performance = out, predictions = result)
 }
 
-#' @import foreach
 oobTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing = FALSE, ...)
 {
   loadNamespace("caret")
@@ -511,7 +505,6 @@ oobTrainWorkflow <- function(x, y, wts, info, method, ppOpts, ctrl, lev, testing
 
 ################################################################################################
 
-#' @import foreach
 nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...) {
   loadNamespace("caret")
   ppp <- list(options = ppOpts)
@@ -597,7 +590,6 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...) {
   )
 }
 
-#' @import foreach
 looSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...) {
   loadNamespace("caret")
   ppp <- list(options = ppOpts)
@@ -648,7 +640,6 @@ looSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...) {
 
 ################################################################################################
 
-#' @import foreach
 nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
 {
   loadNamespace("caret")
@@ -740,7 +731,6 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
   list(performance = externPerf, everything = result)
 }
 
-#' @import foreach
 looRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...)
 {
   loadNamespace("caret")

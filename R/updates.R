@@ -41,7 +41,6 @@
 #' 
 #' update(knnFit1, list(.k = 3))
 #' @export
-#' @importFrom recipes juice all_predictors all_outcomes
 update.train <- function(object, param = NULL, ...) {
   if(is.null(param)) {
     if (all(names(object) != "modelInfo")) {

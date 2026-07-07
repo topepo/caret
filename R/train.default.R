@@ -274,9 +274,6 @@
   }
 
 #' @rdname train
-#' @importFrom stats predict
-#' @importFrom utils object.size flush.console
-#' @importFrom withr with_seed
 #' @export
 train.default <- function(
   x,
@@ -1196,7 +1193,6 @@ train.default <- function(
 }
 
 #' @rdname train
-#' @importFrom stats .getXlevels complete.cases contrasts model.frame model.matrix model.response model.weights na.fail
 #' @export
 train.formula <- function(
   form,
@@ -1261,7 +1257,6 @@ train.formula <- function(
 }
 
 #' @rdname train
-#' @importFrom withr with_seed
 #' @export
 train.recipe <- function(
   x,
@@ -2033,7 +2028,6 @@ train.recipe <- function(
 #' @export
 summary.train <- function(object, ...) summary(object$finalModel, ...)
 
-#' @importFrom stats predict residuals
 #' @export
 residuals.train <- function(object, ...) {
   if (object$modelType != "Regression") {
@@ -2060,7 +2054,6 @@ residuals.train <- function(object, ...) {
   resid
 }
 
-#' @importFrom stats predict fitted
 #' @export
 fitted.train <- function(object, ...) {
   prd <- fitted(object$finalModel)

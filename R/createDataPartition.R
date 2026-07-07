@@ -160,7 +160,6 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
 
 
 #' @rdname createDataPartition
-#' @importFrom stats quantile
 #' @export
 "createFolds" <-
   function(y, k = 10, list = TRUE, returnTrain = FALSE) {

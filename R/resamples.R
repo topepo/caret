@@ -292,7 +292,6 @@ as.data.frame.resamples <- function(
 }
 
 #' @rdname resamples
-#' @importFrom stats cor
 #' @export
 modelCor <- function(x, metric = x$metric[1], ...) {
   dat <- x$values[, grep(paste("~", metric[1], sep = ""), names(x$values))]
@@ -415,7 +414,6 @@ cluster.default <- function(x, ...) {
   stop("only implemented for resamples objects")
 }
 
-#' @importFrom stats dist hclust
 #' @export
 cluster.resamples <- function(x, metric = x$metrics[1], ...) {
   if (length(metric) != 1) {
@@ -443,7 +441,6 @@ cluster.resamples <- function(x, metric = x$metrics[1], ...) {
 }
 
 #' @rdname prcomp.resamples
-#' @importFrom grDevices extendrange
 #' @export
 plot.prcomp.resamples <- function(
   x,
@@ -844,7 +841,6 @@ xyplot.resamples <- function(
 }
 
 #' @rdname xyplot.resamples
-#' @importFrom stats median
 #' @export
 parallelplot.resamples <- function(
   x,
@@ -883,7 +879,6 @@ parallelplot.resamples <- function(
 }
 
 #' @rdname xyplot.resamples
-#' @importFrom grDevices extendrange
 #' @export
 splom.resamples <- function(
   x,
@@ -948,7 +943,6 @@ splom.resamples <- function(
 }
 
 #' @rdname xyplot.resamples
-#' @importFrom stats as.formula
 #' @export
 densityplot.resamples <- function(
   x,
@@ -979,7 +973,6 @@ densityplot.resamples <- function(
 }
 
 #' @rdname xyplot.resamples
-#' @importFrom stats as.formula
 #' @export
 bwplot.resamples <- function(
   x,
@@ -1013,7 +1006,6 @@ bwplot.resamples <- function(
 }
 
 #' @rdname xyplot.resamples
-#' @importFrom stats aggregate as.formula median t.test
 #' @export
 dotplot.resamples <- function(
   x,
@@ -1123,7 +1115,6 @@ dotplot.resamples <- function(
 }
 
 #' @rdname xyplot.resamples
-#' @importFrom stats reorder
 #' @param mapping,environment Not used.
 #' @export
 ggplot.resamples <-
@@ -1331,8 +1322,6 @@ diff.resamples <- function(
   out
 }
 
-#' @importFrom stats as.formula
-#' @importFrom utils stack
 #' @export
 densityplot.diff.resamples <- function(x, data, metric = x$metric, ...) {
   plotData <- lapply(x$difs, function(x) {
@@ -1358,8 +1347,6 @@ densityplot.diff.resamples <- function(x, data, metric = x$metric, ...) {
   )
 }
 
-#' @importFrom stats as.formula
-#' @importFrom utils stack
 #' @export
 bwplot.diff.resamples <- function(x, data, metric = x$metric, ...) {
   plotData <- lapply(x$difs, function(x) {
@@ -1394,7 +1381,6 @@ print.diff.resamples <- function(x, ...) {
   invisible(x)
 }
 
-#' @importFrom stats p.adjust
 #' @rdname diff.resamples
 #' @export
 summary.diff.resamples <- function(
@@ -1464,7 +1450,6 @@ summary.diff.resamples <- function(
   out
 }
 
-#' @importFrom stats complete.cases
 #' @export
 levelplot.diff.resamples <- function(
   x,
@@ -1704,5 +1689,4 @@ compare_models <- function(a, b, metric = a$metric[1]) {
 }
 
 
-#' @importFrom utils globalVariables
 utils::globalVariables(c("LowerLimit", "UpperLimit"))
