@@ -47,7 +47,6 @@
   }
 
 #' @rdname bagEarth
-#' @importFrom stats predict
 #' @export
 "bagEarth.default" <-
   function(x, y, weights = NULL, B = 50, summary = mean, keepX = TRUE, ...) {
@@ -135,7 +134,6 @@
   }
 
 #' @rdname bagEarth
-#' @importFrom stats contrasts model.matrix model.response model.weights na.omit
 #' @export
 "bagEarth.formula" <-
   function(
@@ -362,7 +360,6 @@ print.bagEarth <- function(x, ...) {
     out
   }
 
-#' @importFrom stats quantile
 #' @export
 "print.summary.bagEarth" <-
   function(x, digits = max(3, getOption("digits") - 3), ...) {

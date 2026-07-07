@@ -1,11 +1,9 @@
 
-#' @importFrom ModelMetrics auc
 rocPerCol <- function(dat, cls){
   roc_auc <- auc(cls, dat)
   max(roc_auc, 1 - roc_auc)
 }
 
-#' @importFrom utils modifyList
 asNumeric <- function(data){
   fc <- sapply(data, is.factor)
   modifyList(data, lapply(data[, fc], as.numeric))
@@ -67,8 +65,6 @@ asNumeric <- function(data){
 #' filterVarImp(bbbDescr[, 1:5], logBBB, nonpara = TRUE)
 #' 
 #' @export filterVarImp
-#' @importFrom stats loess resid
-#' @importFrom utils combn
 filterVarImp <- function(x, y, nonpara = FALSE, ...){
   # converting factors to numeric
   notNumber <- sapply(x, function(x) !is.numeric(x))

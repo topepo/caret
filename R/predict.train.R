@@ -1,4 +1,3 @@
-#' @importFrom stats predict
 #' @export
 predict.list <- function(object, ...) {
   out <- lapply(object, predict, ... = ...)

@@ -210,7 +210,6 @@ getRangeBounds <- function(pp) {
 preProcess <- function(x, ...) UseMethod("preProcess")
 
 #' @rdname preProcess
-#' @importFrom stats complete.cases median sd prcomp
 #' @export
 preProcess.default <- function(
   x,
@@ -724,7 +723,6 @@ preProcess.default <- function(
 }
 
 #' @rdname preProcess
-#' @importFrom stats complete.cases
 #' @export
 predict.preProcess <- function(object, newdata, ...) {
   if (is.vector(object$method) && !is.list(object$method)) {
@@ -1089,7 +1087,6 @@ nnimp <- function(new, old, k, foo) {
   new
 }
 
-#' @importFrom stats as.formula
 bagImp <- function(var, x, B = 10) {
   requireNamespaceQuietStop("ipred")
   ## The formula interface is much slower than the

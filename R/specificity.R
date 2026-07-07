@@ -5,7 +5,6 @@ specificity <-
     UseMethod("specificity")
   }
 
-#' @importFrom stats complete.cases
 #' @export
 #' @rdname sensitivity
 "specificity.default" <-

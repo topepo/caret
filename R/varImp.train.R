@@ -1,6 +1,5 @@
 #' @rdname varImp
 #' @export
-#' @importFrom recipes juice all_predictors all_outcomes
 "varImp.train" <- function(object, useModel = TRUE, nonpara = TRUE, scale = TRUE, ...) {
   code <- object$modelInfo
   if(is.null(code$varImp)) useModel <- FALSE

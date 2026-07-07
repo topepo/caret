@@ -29,7 +29,6 @@ well_numbered <- function(prefix, items) {
 }
 
 
-#' @importFrom stats runif
 evalSummaryFunction <- function(y, wts = NULL, perf = NULL, ctrl, lev, metric, method) {
   n <- if(inherits(y, "Surv")) nrow(y) else length(y)
   ## sample doesn't work for Surv objects
@@ -96,7 +95,6 @@ model2method <- function(x)
          x)
 }
 
-#' @importFrom stats runif binomial
 Kim2009 <- function(n)
 {
   grid <- matrix(runif(n*10), ncol = 10)
@@ -111,7 +109,6 @@ Kim2009 <- function(n)
 }
 
 #' @rdname caret-internal
-#' @importFrom stats as.formula
 #' @export
 gamFormula <- function(data, smoother = "s", cut = 8, y = "y")
 {
@@ -169,7 +166,6 @@ cforestStats  <- function(x) getModelInfo("cforest", regex = FALSE)[[1]]$oob(x)
 bagEarthStats <- function(x) getModelInfo("bagEarth", regex = FALSE)[[1]]$oob(x)
 
 
-#' @importFrom stats complete.cases cor
 #' @export
 R2 <- function(pred, obs, formula = "corr", na.rm = FALSE)
 {
@@ -185,7 +181,6 @@ RMSE <- function(pred, obs, na.rm = FALSE) sqrt(mean((pred - obs)^2, na.rm = na.
 #' @export
 MAE <- function(pred, obs, na.rm = FALSE) mean(abs(pred - obs), na.rm = na.rm)
 
-#' @importFrom utils capture.output
 partRuleSummary <- function(x)
 {
   predictors <- all.vars(x$terms)
@@ -210,7 +205,6 @@ partRuleSummary <- function(x)
 
 }
 
-#' @importFrom utils capture.output
 ripperRuleSummary <- function(x)
 {
   predictors <- all.vars(x$terms)
@@ -265,7 +259,6 @@ useMathSymbols <- function(x)
   x
 }
 
-#' @importFrom stats approx
 depth2cp <- function(x, depth)
 {
   out <- approx(x[,"nsplit"], x[,"CP"], depth)$y
@@ -273,7 +266,6 @@ depth2cp <- function(x, depth)
   out
 }
 
-#' @importFrom stats as.formula
 smootherFormula <- function(data, smoother = "s", cut = 10, df = 0, span = 0.5, degree = 1, y = ".outcome")
 {
   nzv <- nearZeroVar(data)
@@ -555,7 +547,6 @@ get_model_type <- function(y, method = NULL) {
   type
 }
 
-#' @importFrom grDevices extendrange
 get_range <- function(y) {
   if(class(y)[1] == "factor") return(NA)
   if(class(y)[1] %in% c("numeric", "integer")) extendrange(y) else extendrange(y[, "time"])

@@ -1,4 +1,3 @@
-#' @importFrom stats as.formula
 #' @export
 densityplot.train <- function(x,
                               data = NULL,
@@ -152,7 +151,6 @@ histogram.train <- function(x,
     histogram(form, data = resamp, ...)
 }
 
-#' @importFrom stats as.formula
 #' @export
 stripplot.train <- function(x,
                               data = NULL,
@@ -223,7 +221,6 @@ stripplot.train <- function(x,
     stripplot(form, data = resamp, ...)
 }
 
-#' @importFrom stats as.formula
 #' @export
 xyplot.train <- function(x,
                               data = NULL,
