@@ -1,4 +1,3 @@
-#' @importFrom stats complete.cases
 findCorrelation_fast <- function(x, cutoff = 0.90, verbose = FALSE) {
   if (any(!complete.cases(x))) {
     stop("The correlation matrix has some missing values.")

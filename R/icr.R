@@ -75,7 +75,6 @@ icr.formula <- function (formula, data, weights, ...,
 }
 
 #' @rdname icr.formula
-#' @importFrom stats predict lm
 #' @export
 icr.default <- function(x, y, ...)
   {
@@ -100,7 +99,6 @@ icr.default <- function(x, y, ...)
   }
 
 
-#' @importFrom stats4 coef
 #' @export
 print.icr <- function (x, digits = max(3, getOption("digits") - 3), ...)
 {
@@ -123,7 +121,6 @@ print.icr <- function (x, digits = max(3, getOption("digits") - 3), ...)
 }
 
 #' @rdname icr.formula
-#' @importFrom stats .checkMFClasses delete.response model.frame model.matrix predict na.omit fitted
 #' @export
 predict.icr <- function(object, newdata, ...)
   {

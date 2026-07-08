@@ -71,7 +71,6 @@ pred_failed <- function(x)
   inherits(x, "try-error")
 
 ## Convert the recipe to holdout data.
-#' @importFrom recipes bake all_predictors all_outcomes has_role
 holdout_rec <- function(object, dat, index) {
   ##
   ho_data <- bake(object$recipe,
@@ -100,7 +99,6 @@ holdout_rec <- function(object, dat, index) {
   ho_data <- as.data.frame(ho_data, stringsAsFactors = FALSE)
 }
 
-#' @importFrom recipes bake prep juice has_role
 rec_model <- function(rec, dat, method, tuneValue, obsLevels,
                       last = FALSE, sampling = NULL, classProbs, ...) {
 
@@ -172,7 +170,6 @@ rec_model <- function(rec, dat, method, tuneValue, obsLevels,
   list(fit = modelFit, recipe = trained_rec)
 }
 
-#' @importFrom recipes bake all_predictors
 rec_pred <- function (method, object, newdata, param = NULL)  {
   x <- bake(object$recipe, new_data = newdata, all_predictors())
   out <- method$predict(modelFit = object$fit, newdata = x,
@@ -182,7 +179,6 @@ rec_pred <- function (method, object, newdata, param = NULL)  {
   out
 }
 
-#' @importFrom recipes bake all_predictors
 rec_prob <- function (method, object, newdata = NULL, param = NULL)  {
   x <- bake(object$recipe, new_data = newdata, all_predictors())
   obsLevels <- levels(object$fit)

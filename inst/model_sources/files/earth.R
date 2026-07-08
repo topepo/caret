@@ -149,6 +149,17 @@ modelInfo <- list(label = "Multivariate Adaptive Regression Spline",
                     out
                   },
                   levels = function(x) x$levels,
+                  trim = function(x) {
+                    # earth is fit with keepxy = TRUE (needed for update.earth on
+                    # submodels during tuning); the final model keeps copies of the
+                    # data and a large call that prediction/varImp don't need.
+                    # (fitted.values/residuals are kept: predict.earth(type="class")
+                    # uses fitted.values to size its output.)
+                    x$x <- NULL
+                    x$y <- NULL
+                    x$call <- NULL
+                    x
+                  },
                   tags = c("Multivariate Adaptive Regression Splines",
                            "Implicit Feature Selection",
                            "Accepts Case Weights"),

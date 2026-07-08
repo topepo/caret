@@ -136,7 +136,6 @@ sensitivity <-
   }
 
 #' @rdname sensitivity
-#' @importFrom stats complete.cases
 #' @export
 "sensitivity.default" <-
   function(data, reference, positive = levels(reference)[1], na.rm = TRUE, ...)

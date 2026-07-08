@@ -7,6 +7,7 @@
  \itemize{
    \item CRAN mandated update.
    \item caret will be 20 years old in March of 2026. The package is currently in maintenance mode; the author will fix bugs and make CRAN releases as needed, but there will not be any major features in the package. It will stay on CRAN long-term; it's not going away.
+   \item The \code{earth} model now defines a \code{trim} method, so \code{trainControl(trim = TRUE)} reduces the size of fitted \code{earth} models (dropping the stored \code{x}, \code{y}, and \code{call}) without affecting predictions.
   }
 }
 
@@ -340,7 +341,7 @@
 		\item A bug in the naive Bayes prediction code was found by github user pverspeelt and was fixed. \issue{345}
 		\item Josh Brady (doublej2) found and fixed an issue with \code{DummyVars} \issue{344}
 		\item A bug related to recent changes to the \cpkg{ranger} package was fixed \issue{320}
-		\item Dependencies on external software can now be checked in the model code. See \href{https://github.com/topepo/caret/blob/master/models/deprecated/pythonKnnReg.R}{\code{pythonKnnReg}} for an example. This also removes the overall package dependency on \cpkg{rPython} \issue{328}.
+		\item Dependencies on external software can now be checked in the model code. See \href{https://github.com/topepo/caret-archive/blob/main/models/deprecated/pythonKnnReg.R}{\code{pythonKnnReg}} for an example. This also removes the overall package dependency on \cpkg{rPython} \issue{328}.
 		\item The tuning parameter grid for \code{enpls} and \code{enpls.fs} were changed to avoid errors.
 		\item A bug was fixed \issue{342} where the data used for prediction was inappropriately converted from its original class.
 		\item Matt (aka washcycle) added option to return column names to \code{nearZeroVar} function
@@ -495,7 +496,7 @@
 		\item A few bug fixes to \code{preProcess} were made related to KNN imputation.
 		\item The parameter labels for polynomial SVM models were fixed
 		\item The tags for \code{dnn} models were fixed.
-		\item The following functions were removed from the package: \code{generateExprVal.method.trimMean}, \code{normalize.AffyBatch.normalize2Reference}, \code{normalize2Reference}, and \code{PLS}. The original code and the man files can be found at \href{https://github.com/topepo/caret/tree/master/deprecated}{https://github.com/topepo/caret/tree/master/deprecated}.
+		\item The following functions were removed from the package: \code{generateExprVal.method.trimMean}, \code{normalize.AffyBatch.normalize2Reference}, \code{normalize2Reference}, and \code{PLS}. The original code and the man files can be found at \href{https://github.com/topepo/caret-archive/tree/main/deprecated}{https://github.com/topepo/caret-archive/tree/main/deprecated}.
 		\item A number of changes to comply with section 1.1.3.1 of "Writing R Extensions" were made.
 	}
 }

@@ -23,7 +23,6 @@ enumLC.lm <- function(object, ...)
    internalEnumLC(object$qr)
 }
 
-#' @importFrom stats lm
 #' @export
 enumLC.formula <- function(object, ...)
 {
