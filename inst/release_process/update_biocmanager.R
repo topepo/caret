@@ -35,7 +35,9 @@ options(repos = "http://cran.r-project.org")
 all_pkg <- rownames(available.packages(type = "source"))
 
 diffs <- libs[!(libs %in% all_pkg)]
-if (length(diffs) > 0) print(diffs)
+if (length(diffs) > 0) {
+  print(diffs)
+}
 
 # ------------------------------------------------------------------------------
 ## Install the files. This might re-install caret so beware.
@@ -70,7 +72,7 @@ for (i in seq_along(libs)) {
 # ------------------------------------------------------------------------------
 # exceptions:
 
-install.packages("CHAID", repos="http://R-Forge.R-project.org")
+install.packages("CHAID", repos = "http://R-Forge.R-project.org")
 
 # ------------------------------------------------------------------------------
 

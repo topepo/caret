@@ -9,5 +9,6 @@ registerDoMC(cores = parallel::detectCores(logical = TRUE))
 
 render_book("index.Rmd", "bookdown::gitbook")
 
-if (!interactive()) 
+if (!interactive()) {
   q("no")
+}
