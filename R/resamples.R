@@ -1702,7 +1702,3 @@ compare_models <- function(a, b, metric = a$metric[1]) {
   diffs <- diff(rs, metric = metric[1])
   diffs$statistics[[1]][[1]]
 }
-
-
-#' @importFrom utils globalVariables
-utils::globalVariables(c("LowerLimit", "UpperLimit"))
