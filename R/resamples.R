@@ -1688,5 +1688,3 @@ compare_models <- function(a, b, metric = a$metric[1]) {
   diffs$statistics[[1]][[1]]
 }
 
-
-utils::globalVariables(c("LowerLimit", "UpperLimit"))

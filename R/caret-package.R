@@ -21,6 +21,19 @@
 ## usethis namespace: end
 NULL
 
+# fmt: skip
+global_false_positives <-
+  c(".alpha", ".B", ".k", ".lambda", ".outcome", ".phi", ".size",
+    ".xdim", ".ydim", "bin", "CumEventPct", "CumTestedPct", "cuts",
+    "dat", "Estimate", "groups", "ilevels", "ind", "iter", "Iter",
+    "j", "Lower", "LowerLimit", "lvls", "Mean", "method", "Metric",
+    "midpoint", "min_prob", "Model", "model_id", "name", "Num_Resamples",
+    "object", "obs", "Observed", "parameter", "parm", "Percent",
+    "playa", "player1", "player2", "probValues", "rel.inf", "Resample",
+    "sampling_methods", "Selected", "thresh", "trainData", "Upper",
+    "UpperLimit", "Variables", "varIndex", "win1", "win2", "x", "x1",
+    "x2", "X2", "y1", "y2")
+utils::globalVariables(global_false_positives)
 
 #' Blood Brain Barrier Data
 #'
@@ -78,9 +91,6 @@ NULL
 NULL
 
 
-
-
-
 #' Dihydrofolate Reductase Inhibitors Data
 #'
 #' Sutherland and Weaver (2004) discuss QSAR models for dihydrofolate reductase
@@ -105,9 +115,6 @@ NULL
 NULL
 
 
-
-
-
 #' German Credit Data
 #'
 #' Data from Dr. Hans Hofmann of the University of Hamburg.
@@ -129,8 +136,6 @@ NULL
 #' @source UCI Machine Learning Repository
 #' @keywords datasets
 NULL
-
-
 
 
 #' Multidrug Resistance Reversal (MDRR) Agent Data
@@ -167,8 +172,6 @@ NULL
 NULL
 
 
-
-
 #' Fatty acid composition of commercial oils
 #'
 #' Fatty acid concentrations of commercial oils were measured using gas
@@ -194,9 +197,6 @@ NULL
 NULL
 
 
-
-
-
 #' Pottery from Pre-Classical Sites in Italy
 #'
 #' Measurements of 58 pottery samples.
@@ -213,9 +213,6 @@ NULL
 #'   Laboratory and Chemical Plant*, pg. 261.
 #' @keywords datasets
 NULL
-
-
-
 
 
 #' Sacramento CA Home Prices
@@ -238,19 +235,16 @@ NULL
 #'   <https://support.spatialkey.com/spatialkey-sample-csv-data/>
 #' @keywords datasets
 #' @examples
-#' 
+#'
 #' data(Sacramento)
-#' 
+#'
 #' set.seed(955)
 #' in_train <- createDataPartition(log10(Sacramento$price), p = .8, list = FALSE)
-#' 
+#'
 #' training <- Sacramento[in_train, ]
 #' testing <- Sacramento[-in_train, ]
-#' 
+#'
 NULL
-
-
-
 
 
 #' Morphometric Data on Scat
@@ -328,9 +322,6 @@ NULL
 NULL
 
 
-
-
-
 #' Fat, Water and Protein Content of Meat Samples
 #'
 #' "These data are recorded on a Tecator Infratec Food and Feed Analyzer
@@ -365,24 +356,24 @@ NULL
 #' * `endpoints`: the percentages of water, fat and protein
 #' @keywords datasets
 #' @examples
-#' 
+#'
 #' data(tecator)
-#' 
+#'
 #' splom(~endpoints)
-#' 
+#'
 #' # plot 10 random spectra
 #' set.seed(1)
 #' inSubset <- sample(1:dim(endpoints)[1], 10)
-#' 
+#'
 #' absorpSubset <- absorp[inSubset, ]
 #' endpointSubset <- endpoints[inSubset, 3]
-#' 
+#'
 #' newOrder <- order(absorpSubset[, 1])
 #' absorpSubset <- absorpSubset[newOrder, ]
 #' endpointSubset <- endpointSubset[newOrder]
-#' 
+#'
 #' plotColors <- rainbow(10)
-#' 
+#'
 #' plot(
 #'   absorpSubset[1, ],
 #'   type = "n",
@@ -391,12 +382,11 @@ NULL
 #'   xlab = "Wavelength Index",
 #'   ylab = "Absorption"
 #' )
-#' 
+#'
 #' for (i in 1:10) {
 #'   points(absorpSubset[i, ], type = "l", col = plotColors[i], lwd = 2)
 #'   text(105, absorpSubset[i, 100], endpointSubset[i], col = plotColors[i])
 #' }
 #' title("Predictor Profiles for 10 Random Samples")
-#' 
+#'
 NULL
-

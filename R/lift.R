@@ -427,16 +427,6 @@ plotRef <- function(x, y, v, iter = 0) {
   }
 }
 
-
-utils::globalVariables(c(
-  "CumEventPct",
-  "CumTestedPct",
-  "cuts",
-  "x1",
-  "x2",
-  "y1",
-  "y2"
-))
 #' @rdname lift
 #' @param mapping,environment Not used (required for `ggplot` consistency).
 #' @export
