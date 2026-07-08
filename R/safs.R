@@ -556,24 +556,24 @@ safsControl <- function(
 #' simulated annealing. Science, 220(4598), 671.
 #' @keywords models
 #' @examplesIf !caret:::is_cran_check()
-#' 
-#' 
+#'
+#'
 #' set.seed(1)
 #' train_data <- twoClassSim(100, noiseVars = 10)
 #' test_data <- twoClassSim(10, noiseVars = 10)
-#' 
+#'
 #' ## A short example
 #' ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
-#' 
+#'
 #' rf_search <- safs(
 #'   x = train_data[, -ncol(train_data)],
 #'   y = train_data$Class,
 #'   iters = 3,
 #'   safsControl = ctrl
 #' )
-#' 
+#'
 #' rf_search
-#' 
+#'
 #' @export safs
 safs <- function(x, ...) UseMethod("safs")
 
@@ -913,36 +913,36 @@ safs <- function(x, ...) UseMethod("safs")
 #' @references
 #'   <http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html>
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' selected_vars <- safs_initial(vars = 10, prob = 0.2)
 #' selected_vars
-#' 
+#'
 #' ###
-#' 
+#'
 #' safs_perturb(selected_vars, vars = 10, number = 1)
-#' 
+#'
 #' ###
-#' 
+#'
 #' safs_prob(old = .8, new = .9, iteration = 1)
 #' safs_prob(old = .5, new = .6, iteration = 1)
-#' 
+#'
 #' grid <- expand.grid(old = c(4, 3.5), new = c(4.5, 4, 3.5) + 1, iter = 1:40)
 #' grid <- subset(grid, old < new)
-#' 
+#'
 #' grid$prob <- apply(grid, 1, function(x) {
 #'   safs_prob(new = x["new"], old = x["old"], iteration = x["iter"])
 #' })
-#' 
+#'
 #' grid$Difference <- factor(grid$new - grid$old)
 #' grid$Group <- factor(paste("Current Value", grid$old))
-#' 
+#'
 #' ggplot(grid, aes(x = iter, y = prob, color = Difference)) +
 #'   geom_line() +
 #'   facet_wrap(~Group) +
 #'   theme_bw() +
 #'   ylab("Probability") +
 #'   xlab("Iteration")
-#' 
+#'
 #' ## Hypothetical usage (not run):
 #' ## lda_sa <- safs(x = predictors,
 #' ##                y = classes,
@@ -957,7 +957,7 @@ safs <- function(x, ...) UseMethod("safs")
 #' ##               safsControl = safsControl(functions = rfSA),
 #' ##               ntree = 1000,
 #' ##               importance = TRUE)
-#' 
+#'
 #' @export safs_initial
 safs_initial <- function(vars, prob = 0.20, ...) {
   sort(sample.int(vars, size = floor(vars * prob) + 1))
@@ -1527,21 +1527,21 @@ rfSA <- list(
 #' @seealso [gafs()], [safs()]
 #' @keywords models
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' set.seed(1)
 #' train_data <- twoClassSim(100, noiseVars = 10)
 #' test_data <- twoClassSim(10, noiseVars = 10)
-#' 
+#'
 #' ## A short example
 #' ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
-#' 
+#'
 #' rf_search <- safs(
 #'   x = train_data[, -ncol(train_data)],
 #'   y = train_data$Class,
 #'   iters = 3,
 #'   safsControl = ctrl
 #' )
-#' 
+#'
 #' rf_search2 <- update(
 #'   rf_search,
 #'   iter = 1,
@@ -1750,7 +1750,11 @@ update.safs <- function(object, iter, x, y, ...) {
     if (!is.null(perf_data)) {
       testOutput <- cbind(
         testOutput,
-        perf_data[sample(seq_len(nrow(perf_data)), nrow(testOutput)), , drop = FALSE]
+        perf_data[
+          sample(seq_len(nrow(perf_data)), nrow(testOutput)),
+          ,
+          drop = FALSE
+        ]
       )
     }
 

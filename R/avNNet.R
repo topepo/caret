@@ -47,7 +47,7 @@
 #' data(BloodBrain)
 #' modelFit <- avNNet(bbbDescr, logBBB, size = 5, linout = TRUE, trace = FALSE)
 #' modelFit
-#' 
+#'
 #' predict(modelFit, bbbDescr)
 #' @keywords neural
 #' @aliases avNNet.default predict.avNNet avNNet.formula avNNet

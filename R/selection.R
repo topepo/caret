@@ -1,4 +1,3 @@
-
 ## In these functions, x is the data fram of performance values and tuning parameters.
 #' Selecting tuning Parameters
 #'
@@ -81,20 +80,20 @@
 #'   Regression Trees*. Wadsworth.
 #' @keywords manip
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' # simulate a PLS regression model
 #' test <- data.frame(ncomp = 1:5, RMSE = c(3, 1.1, 1.02, 1, 2), RMSESD = .4)
-#' 
+#'
 #' best(test, "RMSE", maximize = FALSE)
 #' oneSE(test, "RMSE", maximize = FALSE, num = 10)
 #' tolerance(test, "RMSE", tol = 3, maximize = FALSE)
-#' 
+#'
 #' ### usage example
-#' 
+#'
 #' data(BloodBrain)
-#' 
+#'
 #' marsGrid <- data.frame(degree = 1, nprune = (1:10) * 3)
-#' 
+#'
 #' set.seed(1)
 #' marsFit <- train(
 #'   bbbDescr,
@@ -107,49 +106,45 @@
 #'     selectionFunction = "tolerance"
 #'   )
 #' )
-#' 
+#'
 #' # around 18 terms should yield the smallest CV RMSE
-#' 
+#'
 #' @export oneSE
-oneSE <- function(x, metric, num, maximize)
-  {
-    index <- seq_len(nrow(x))
-    
-    if(!maximize)
-      {
-        bestIndex <- which.min(x[,metric])  
-        perf <- x[bestIndex,metric] + (x[bestIndex,paste(metric, "SD", sep = "")])/sqrt(num)
-        candidates <- index[x[, metric] <= perf]
-        bestIter <- min(candidates)
-      } else {
-        bestIndex <- which.max(x[,metric])  
-        perf <- x[bestIndex,metric] - (x[bestIndex,paste(metric, "SD", sep = "")])/sqrt(num)
+oneSE <- function(x, metric, num, maximize) {
+  index <- seq_len(nrow(x))
 
-        candidates <- index[x[, metric] >= perf]
-        bestIter <- min(candidates)
-      }
-    bestIter
+  if (!maximize) {
+    bestIndex <- which.min(x[, metric])
+    perf <- x[bestIndex, metric] +
+      (x[bestIndex, paste(metric, "SD", sep = "")]) / sqrt(num)
+    candidates <- index[x[, metric] <= perf]
+    bestIter <- min(candidates)
+  } else {
+    bestIndex <- which.max(x[, metric])
+    perf <- x[bestIndex, metric] -
+      (x[bestIndex, paste(metric, "SD", sep = "")]) / sqrt(num)
+
+    candidates <- index[x[, metric] >= perf]
+    bestIter <- min(candidates)
   }
+  bestIter
+}
 
 #' @rdname oneSE
 #' @export
-tolerance <- function(x, metric, tol = 1.5, maximize)
-  {
-       
-    index <- seq_len(nrow(x))
-    
-    if(!maximize)
-      {
-        best <- min(x[,metric])  
-        perf <- (x[,metric] - best)/best * 100
-        candidates <- index[perf < tol]
-        bestIter <- min(candidates)
-      } else {
-        best <- max(x[,metric])  
-        perf <- (x[,metric] - best)/best * -100
-        candidates <- index[perf < tol]
-        bestIter <- min(candidates)
-      }
-    bestIter
-  }
+tolerance <- function(x, metric, tol = 1.5, maximize) {
+  index <- seq_len(nrow(x))
 
+  if (!maximize) {
+    best <- min(x[, metric])
+    perf <- (x[, metric] - best) / best * 100
+    candidates <- index[perf < tol]
+    bestIter <- min(candidates)
+  } else {
+    best <- max(x[, metric])
+    perf <- (x[, metric] - best) / best * -100
+    candidates <- index[perf < tol]
+    bestIter <- min(candidates)
+  }
+  bestIter
+}

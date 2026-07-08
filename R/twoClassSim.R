@@ -154,10 +154,10 @@
 #' Statistics, 41(6), 1247-1259.
 #' @keywords models
 #' @examples
-#' 
+#'
 #' example <- twoClassSim(100, linearVars = 1)
 #' splom(~ example[, 1:6], groups = example$Class)
-#' 
+#'
 #' @export twoClassSim
 twoClassSim <- function(
   n = 100,

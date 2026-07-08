@@ -12,10 +12,10 @@
 #' @seealso [earth::earth()]
 #' @keywords models
 #' @examples
-#' 
+#'
 #' a <- bagEarth(Volume ~ ., data = trees, B = 3)
 #' format(a)
-#' 
+#'
 #' # yields:
 #' # (
 #' #   31.61075
@@ -34,22 +34,23 @@
 #' #   -  3.660456 * pmax(0,   14.2 -  Girth)
 #' #   + 0.6489774 * pmax(0, Height -     80)
 #' # )/3
-#' 
+#'
 #' @export
-format.bagEarth <- function(x, file = "", cat = TRUE, ...) 
-{
+format.bagEarth <- function(x, file = "", cat = TRUE, ...) {
   requireNamespaceQuietStop("earth")
 
   eachEq <- lapply(
-                   x$fit,
-                   function(u, ...) format(u, ...),
-                   ...)
+    x$fit,
+    function(u, ...) format(u, ...),
+    ...
+  )
   allEq <- paste(
-                 "(",
-                 paste(eachEq, collapse = "+"),
-                 ") /",
-                 x$B,
-                 "\n")
-  
-  if(cat) cat(allEq, file = file) else return(allEq)  
+    "(",
+    paste(eachEq, collapse = "+"),
+    ") /",
+    x$B,
+    "\n"
+  )
+
+  if (cat) cat(allEq, file = file) else return(allEq)
 }

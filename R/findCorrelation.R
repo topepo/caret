@@ -150,7 +150,7 @@ findCorrelation_exact <- function(x, cutoff = 0.90, verbose = FALSE) {
 #' @family preprocessing
 #' @keywords manip
 #' @examples
-#' 
+#'
 #' R1 <- structure(
 #'   c(
 #'     1,
@@ -183,24 +183,24 @@ findCorrelation_exact <- function(x, cutoff = 0.90, verbose = FALSE) {
 #' )
 #' colnames(R1) <- rownames(R1) <- paste0("x", 1:ncol(R1))
 #' R1
-#' 
+#'
 #' findCorrelation(R1, cutoff = .6, exact = FALSE)
 #' findCorrelation(R1, cutoff = .6, exact = TRUE)
 #' findCorrelation(R1, cutoff = .6, exact = TRUE, names = FALSE)
-#' 
+#'
 #' R2 <- diag(rep(1, 5))
 #' R2[2, 3] <- R2[3, 2] <- .7
 #' R2[5, 3] <- R2[3, 5] <- -.7
 #' R2[4, 1] <- R2[1, 4] <- -.67
-#' 
+#'
 #' corrDF <- expand.grid(row = 1:5, col = 1:5)
 #' corrDF$correlation <- as.vector(R2)
 #' levelplot(correlation ~ row + col, corrDF)
-#' 
+#'
 #' findCorrelation(R2, cutoff = .65, verbose = TRUE)
-#' 
+#'
 #' findCorrelation(R2, cutoff = .99, verbose = TRUE)
-#' 
+#'
 #' @export findCorrelation
 findCorrelation <- function(
   x,

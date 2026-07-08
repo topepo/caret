@@ -81,33 +81,33 @@
 #' @seealso [lattice::xyplot()], [lattice::trellis.par.set()]
 #'
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' data(mdrr)
 #' mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
 #' mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .5)]
-#' 
+#'
 #' inTrain <- createDataPartition(mdrrClass)
 #' trainX <- mdrrDescr[inTrain[[1]], ]
 #' trainY <- mdrrClass[inTrain[[1]]]
 #' testX <- mdrrDescr[-inTrain[[1]], ]
 #' testY <- mdrrClass[-inTrain[[1]]]
-#' 
+#'
 #' library(MASS)
-#' 
+#'
 #' ldaFit <- lda(trainX, trainY)
-#' 
+#'
 #' testProbs <- data.frame(
 #'   obs = testY,
 #'   lda = predict(ldaFit, testX)$posterior[, 1]
 #' )
-#' 
+#'
 #' calibration(obs ~ lda, data = testProbs)
-#' 
+#'
 #' calPlotData <- calibration(obs ~ lda, data = testProbs)
 #' calPlotData
-#' 
+#'
 #' xyplot(calPlotData, auto.key = list(columns = 2))
-#' 
+#'
 #' @keywords hplot
 #'
 #' @export

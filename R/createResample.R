@@ -1,12 +1,13 @@
-
 #' @rdname createDataPartition
 #' @export
 createResample <- function(y, times = 10, list = TRUE) {
-  if (inherits(y, "Surv"))
+  if (inherits(y, "Surv")) {
     y <- y[, "time"]
+  }
   trainIndex <- matrix(0, ncol = times, nrow = length(y))
   out <- apply(
-    trainIndex, 2,
+    trainIndex,
+    2,
     function(data) {
       index <- seq(along.with = data)
       out <-
@@ -15,7 +16,7 @@ createResample <- function(y, times = 10, list = TRUE) {
     }
   )
 
-  if (list)  {
+  if (list) {
     out <- as.data.frame(out, stringsAsFactors = TRUE)
     attributes(out) <- NULL
     names(out) <- prettySeq(out)

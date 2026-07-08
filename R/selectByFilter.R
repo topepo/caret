@@ -1,17 +1,28 @@
 #' @rdname caret-internal
 #' @export
-sbfIter <- function(x, y, testX, testY, testPerf = NULL,
-                    sbfControl = sbfControl(), ...) {
-  if (is.null(colnames(x)))
+sbfIter <- function(
+  x,
+  y,
+  testX,
+  testY,
+  testPerf = NULL,
+  sbfControl = sbfControl(),
+  ...
+) {
+  if (is.null(colnames(x))) {
     stop("x must have column names")
+  }
 
-  if (is.null(testX) ||
-      is.null(testY))
+  if (
+    is.null(testX) ||
+      is.null(testY)
+  ) {
     stop("a test set must be specified")
+  }
 
   if (sbfControl$multivariate) {
     scores <- sbfControl$functions$score(x, y)
-    if (length(scores) != ncol(x))
+    if (length(scores) != ncol(x)) {
       stop(
         paste(
           "when control$multivariate == TRUE, 'scores'",
@@ -20,41 +31,42 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
           "numeric values"
         )
       )
-  } else  {
+    }
+  } else {
     scores <- vapply(x, sbfControl$functions$score, double(1), y = y)
   }
 
-    retained <- sbfControl$functions$filter(scores, x, y)
-    ## deal with zero length results
+  retained <- sbfControl$functions$filter(scores, x, y)
+  ## deal with zero length results
 
-    testX <- testX[, which(retained), drop = FALSE]
+  testX <- testX[, which(retained), drop = FALSE]
 
-    fitObject <-
-      sbfControl$functions$fit(
-        x = x[, which(retained), drop = FALSE],
-        y = y,
-        ...
-      )
+  fitObject <-
+    sbfControl$functions$fit(
+      x = x[, which(retained), drop = FALSE],
+      y = y,
+      ...
+    )
 
-    modelPred <- sbfControl$functions$pred(fitObject, testX)
-    if (is.data.frame(modelPred) || is.matrix(modelPred)) {
-      if (is.matrix(modelPred))
-        modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
-      modelPred$obs <- testY
-    } else
-      modelPred <- data.frame(pred = modelPred, obs = testY)
-    if (!is.null(testPerf))
-      modelPred <- cbind(modelPred, testPerf)
-
-    list(variables = names(retained)[which(retained)],
-         pred = modelPred)
+  modelPred <- sbfControl$functions$pred(fitObject, testX)
+  if (is.data.frame(modelPred) || is.matrix(modelPred)) {
+    if (is.matrix(modelPred)) {
+      modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
+    }
+    modelPred$obs <- testY
+  } else {
+    modelPred <- data.frame(pred = modelPred, obs = testY)
+  }
+  if (!is.null(testPerf)) {
+    modelPred <- cbind(modelPred, testPerf)
   }
 
+  list(variables = names(retained)[which(retained)], pred = modelPred)
+}
 
-  ######################################################################
-  ######################################################################
 
-
+######################################################################
+######################################################################
 
 #' Selection By Filtering (SBF)
 #'
@@ -130,9 +142,9 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
 #' @family feature-selection
 #' @keywords models
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' data(BloodBrain)
-#' 
+#'
 #' ## Use a GAM is the filter, then fit a random forest model
 #' RFwithGAM <- sbf(
 #'   bbbDescr,
@@ -140,22 +152,22 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
 #'   sbfControl = sbfControl(functions = rfSBF, verbose = FALSE, method = "cv")
 #' )
 #' RFwithGAM
-#' 
+#'
 #' predict(RFwithGAM, bbbDescr[1:10, ])
-#' 
+#'
 #' ## classification example with parallel processing
-#' 
+#'
 #' ## library(doMC)
-#' 
+#'
 #' ## Note: if the underlying model also uses foreach, the
 #' ## number of cores specified above will double (along with
 #' ## the memory requirements)
 #' ## registerDoMC(cores = 2)
-#' 
+#'
 #' data(mdrr)
 #' mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
 #' mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .8)]
-#' 
+#'
 #' set.seed(1)
 #' filteredNB <- sbf(
 #'   mdrrDescr,
@@ -169,79 +181,111 @@ sbfIter <- function(x, y, testX, testY, testPerf = NULL,
 #'   )
 #' )
 #' confusionMatrix(filteredNB)
-#' 
+#'
 #' @export sbf
-sbf <- function (x, ...) UseMethod("sbf")
+sbf <- function(x, ...) UseMethod("sbf")
 
 #' @rdname sbf
 #' @export
 "sbf.default" <-
-  function(x, y,
-           sbfControl = sbfControl(), ...) {
+  function(x, y, sbfControl = sbfControl(), ...) {
     startTime <- proc.time()
     funcCall <- match.call(expand.dots = TRUE)
 
     numFeat <- ncol(x)
     classLevels <- levels(y)
 
-    if (sbfControl$method == "oob")
+    if (sbfControl$method == "oob") {
       stop("out-of-bag resampling cannot be used with this function")
+    }
 
-    if(is.null(sbfControl$index)) sbfControl$index <- switch(
-      tolower(sbfControl$method),
-      cv = createFolds(y, sbfControl$number, returnTrain = TRUE),
-      repeatedcv = createMultiFolds(y, sbfControl$number, sbfControl$repeats),
-      loocv = createFolds(y, length(y), returnTrain = TRUE),
-      boot =, boot632 = createResample(y, sbfControl$number),
-      test = createDataPartition(y, 1, sbfControl$p),
-      lgocv = createDataPartition(y, sbfControl$number, sbfControl$p))
+    if (is.null(sbfControl$index)) {
+      sbfControl$index <- switch(
+        tolower(sbfControl$method),
+        cv = createFolds(y, sbfControl$number, returnTrain = TRUE),
+        repeatedcv = createMultiFolds(y, sbfControl$number, sbfControl$repeats),
+        loocv = createFolds(y, length(y), returnTrain = TRUE),
+        boot = ,
+        boot632 = createResample(y, sbfControl$number),
+        test = createDataPartition(y, 1, sbfControl$p),
+        lgocv = createDataPartition(y, sbfControl$number, sbfControl$p)
+      )
+    }
 
-    if(is.null(names(sbfControl$index)))
+    if (is.null(names(sbfControl$index))) {
       names(sbfControl$index) <- prettySeq(sbfControl$index)
-    if(is.null(sbfControl$indexOut)){
-      sbfControl$indexOut <- lapply(sbfControl$index,
-                                    function(training, allSamples) allSamples[-unique(training)],
-                                    allSamples = seq(along.with = y))
+    }
+    if (is.null(sbfControl$indexOut)) {
+      sbfControl$indexOut <- lapply(
+        sbfControl$index,
+        function(training, allSamples) allSamples[-unique(training)],
+        allSamples = seq(along.with = y)
+      )
       names(sbfControl$indexOut) <- prettySeq(sbfControl$indexOut)
     }
     ## check summary function and metric
-    testOutput <- data.frame(pred = sample(y, min(10, length(y))),
-                             obs = sample(y, min(10, length(y))))
+    testOutput <- data.frame(
+      pred = sample(y, min(10, length(y))),
+      obs = sample(y, min(10, length(y)))
+    )
 
-    if(is.factor(y))
-      for(i in seq(along.with = classLevels))
+    if (is.factor(y)) {
+      for (i in seq(along.with = classLevels)) {
         testOutput[, classLevels[i]] <- runif(nrow(testOutput))
-
+      }
+    }
 
     test <- sbfControl$functions$summary(testOutput, lev = classLevels)
     perfNames <- names(test)
 
     ## Set or check the seeds when needed
-    if(is.null(sbfControl$seeds)) {
-      sbfControl$seeds <- sample.int(n = 1000000, size = length(sbfControl$index) + 1)
+    if (is.null(sbfControl$seeds)) {
+      sbfControl$seeds <- sample.int(
+        n = 1000000,
+        size = length(sbfControl$index) + 1
+      )
     } else {
-      if(!(length(sbfControl$seeds) == 1 && is.na(sbfControl$seeds))) {
-        if(length(sbfControl$seeds) != length(sbfControl$index) + 1)
-          stop(paste("Bad seeds: the seed object should be an integer vector of length",
-                     length(sbfControl$index) + 1))
+      if (!(length(sbfControl$seeds) == 1 && is.na(sbfControl$seeds))) {
+        if (length(sbfControl$seeds) != length(sbfControl$index) + 1) {
+          stop(paste(
+            "Bad seeds: the seed object should be an integer vector of length",
+            length(sbfControl$index) + 1
+          ))
+        }
       }
     }
 
-
-
     #########################################################################
 
-    if(sbfControl$method == "LOOCV") {
-      tmp <- looSbfWorkflow(x = x, y = y, ppOpts = preProcess,
-                            ctrl = sbfControl, lev = classLevels, ...)
-      resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "pred"])
+    if (sbfControl$method == "LOOCV") {
+      tmp <- looSbfWorkflow(
+        x = x,
+        y = y,
+        ppOpts = preProcess,
+        ctrl = sbfControl,
+        lev = classLevels,
+        ...
+      )
+      resamples <- do.call(
+        "rbind",
+        tmp$everything[names(tmp$everything) == "pred"]
+      )
       rownames(resamples) <- seq_len(nrow(resamples))
       selectedVars <- tmp$everything[names(tmp$everything) == "variables"]
       performance <- tmp$performance
     } else {
-      tmp <- nominalSbfWorkflow(x = x, y = y, ppOpts = preProcess,
-                                ctrl = sbfControl, lev = classLevels, ...)
-      resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "resamples"])
+      tmp <- nominalSbfWorkflow(
+        x = x,
+        y = y,
+        ppOpts = preProcess,
+        ctrl = sbfControl,
+        lev = classLevels,
+        ...
+      )
+      resamples <- do.call(
+        "rbind",
+        tmp$everything[names(tmp$everything) == "resamples"]
+      )
       rownames(resamples) <- seq_len(nrow(resamples))
       selectedVars <- tmp$everything[names(tmp$everything) == "selectedVars"]
       performance <- tmp$performance
@@ -250,12 +294,17 @@ sbf <- function (x, ...) UseMethod("sbf")
     #########################################################################
 
     varList <- unique(unlist(selectedVars))
-    if(sbfControl$multivariate) {
+    if (sbfControl$multivariate) {
       scores <- sbfControl$functions$score(x, y)
-      if(length(scores) != ncol(x))
-        stop(paste("when control$multivariate == TRUE, 'scores'",
-                   "should return a vector with", ncol(x), "numeric values"))
-    } else  {
+      if (length(scores) != ncol(x)) {
+        stop(paste(
+          "when control$multivariate == TRUE, 'scores'",
+          "should return a vector with",
+          ncol(x),
+          "numeric values"
+        ))
+      }
+    } else {
       scores <- apply(x, 2, sbfControl$functions$score, y = y)
     }
     retained <- sbfControl$functions$filter(scores, x, y)
@@ -270,21 +319,27 @@ sbf <- function (x, ...) UseMethod("sbf")
     )
 
     performance <- data.frame(t(performance))
-    performance <- performance[,!grepl("\\.cell|Resample", colnames(performance))]
+    performance <- performance[,
+      !grepl("\\.cell|Resample", colnames(performance))
+    ]
 
-    if(is.factor(y) && any(names(resamples) == ".cell1")) {
+    if (is.factor(y) && any(names(resamples) == ".cell1")) {
       keepers <- c("Resample", grep("\\.cell", names(resamples), value = TRUE))
-      resampledCM <- resamples[,keepers]
+      resampledCM <- resamples[, keepers]
       resamples <- resamples[, -grep("\\.cell", names(resamples))]
-    } else resampledCM <- NULL
+    } else {
+      resampledCM <- NULL
+    }
 
-    resamples <- switch(sbfControl$returnResamp,
-                        none = NULL,
-                        all =, final = resamples)
+    resamples <- switch(
+      sbfControl$returnResamp,
+      none = NULL,
+      all = ,
+      final = resamples
+    )
 
     endTime <- proc.time()
-    times <- list(everything = endTime - startTime,
-                  final = finalTime)
+    times <- list(everything = endTime - startTime, final = finalTime)
 
     #########################################################################
     ## Now, based on probability or static ranking, figure out the best vars
@@ -292,7 +347,7 @@ sbf <- function (x, ...) UseMethod("sbf")
 
     out <- structure(
       list(
-        pred = if(sbfControl$saveDetails) tmp else NULL,
+        pred = if (sbfControl$saveDetails) tmp else NULL,
         variables = selectedVars,
         results = performance,
         fit = fit,
@@ -304,22 +359,31 @@ sbf <- function (x, ...) UseMethod("sbf")
         times = times,
         resampledCM = resampledCM,
         obsLevels = classLevels,
-        dots = list(...)),
-      class = "sbf")
-    if(sbfControl$timingSamps > 0) {
+        dots = list(...)
+      ),
+      class = "sbf"
+    )
+    if (sbfControl$timingSamps > 0) {
       out$times$prediction <-
         system.time(
-          predict(out, x[1:min(nrow(x), sbfControl$timingSamps),,drop = FALSE])
+          predict(
+            out,
+            x[1:min(nrow(x), sbfControl$timingSamps), , drop = FALSE]
+          )
         )
-    } else  out$times$prediction <- rep(NA, 3)
+    } else {
+      out$times$prediction <- rep(NA, 3)
+    }
     out
   }
 
 #' @rdname sbf
 #' @export
-sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
+sbf.formula <- function(form, data, ..., subset, na.action, contrasts = NULL) {
   m <- match.call(expand.dots = FALSE)
-  if (is.matrix(eval.parent(m$data))) m$data <- as.data.frame(data, stringsAsFactors = FALSE)
+  if (is.matrix(eval.parent(m$data))) {
+    m$data <- as.data.frame(data, stringsAsFactors = FALSE)
+  }
   m$... <- m$contrasts <- NULL
   m[[1]] <- as.name("model.frame")
   m <- eval.parent(m)
@@ -327,7 +391,9 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
   x <- model.matrix(Terms, m, contrasts)
   cons <- attr(x, "contrast")
   xint <- match("(Intercept)", colnames(x), nomatch = 0)
-  if (xint > 0)  x <- x[, -xint, drop = FALSE]
+  if (xint > 0) {
+    x <- x[, -xint, drop = FALSE]
+  }
   y <- model.response(m)
   res <- sbf(as.data.frame(x, stringsAsFactors = TRUE), y, ...)
   res$terms <- Terms
@@ -346,14 +412,14 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
 #' @rdname sbf
 #' @export
 "sbf.recipe" <-
-  function(x, data,
-           sbfControl = sbfControl(), ...) {
+  function(x, data, sbfControl = sbfControl(), ...) {
     startTime <- proc.time()
     funcCall <- match.call(expand.dots = TRUE)
 
     orig_rec <- x
     trained_rec <- prep(
-      x, training = data,
+      x,
+      training = data,
       fresh = TRUE,
       retain = TRUE,
       verbose = FALSE,
@@ -361,83 +427,124 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
     )
     x <- juice(trained_rec, all_predictors(), composition = "data.frame")
     y <- juice(trained_rec, all_outcomes(), composition = "data.frame")
-    if(ncol(y) > 1)
+    if (ncol(y) > 1) {
       stop("`safs` doesn't support multivariate outcomes", call. = FALSE)
+    }
     y <- y[[1]]
     is_weight <- summary(trained_rec)$role == "case weight"
-    if(any(is_weight))
+    if (any(is_weight)) {
       stop("`safs` does not allow for weights.", call. = FALSE)
+    }
 
     is_perf <- summary(trained_rec)$role == "performance var"
-    if(any(is_perf)) {
+    if (any(is_perf)) {
       perf_data <- juice(trained_rec, has_role("performance var"))
-    } else perf_data <- NULL
+    } else {
+      perf_data <- NULL
+    }
 
     numFeat <- ncol(x)
     classLevels <- levels(y)
 
-    if (sbfControl$method == "oob")
+    if (sbfControl$method == "oob") {
       stop("out-of-bag resampling cannot be used with this function")
+    }
 
-    if(is.null(sbfControl$index)) sbfControl$index <- switch(
-      tolower(sbfControl$method),
-      cv = createFolds(y, sbfControl$number, returnTrain = TRUE),
-      repeatedcv = createMultiFolds(y, sbfControl$number, sbfControl$repeats),
-      loocv = createFolds(y, length(y), returnTrain = TRUE),
-      boot =, boot632 = createResample(y, sbfControl$number),
-      test = createDataPartition(y, 1, sbfControl$p),
-      lgocv = createDataPartition(y, sbfControl$number, sbfControl$p))
+    if (is.null(sbfControl$index)) {
+      sbfControl$index <- switch(
+        tolower(sbfControl$method),
+        cv = createFolds(y, sbfControl$number, returnTrain = TRUE),
+        repeatedcv = createMultiFolds(y, sbfControl$number, sbfControl$repeats),
+        loocv = createFolds(y, length(y), returnTrain = TRUE),
+        boot = ,
+        boot632 = createResample(y, sbfControl$number),
+        test = createDataPartition(y, 1, sbfControl$p),
+        lgocv = createDataPartition(y, sbfControl$number, sbfControl$p)
+      )
+    }
 
-    if(is.null(names(sbfControl$index)))
+    if (is.null(names(sbfControl$index))) {
       names(sbfControl$index) <- prettySeq(sbfControl$index)
-    if(is.null(sbfControl$indexOut)){
-      sbfControl$indexOut <- lapply(sbfControl$index,
-                                    function(training, allSamples) allSamples[-unique(training)],
-                                    allSamples = seq(along.with = y))
+    }
+    if (is.null(sbfControl$indexOut)) {
+      sbfControl$indexOut <- lapply(
+        sbfControl$index,
+        function(training, allSamples) allSamples[-unique(training)],
+        allSamples = seq(along.with = y)
+      )
       names(sbfControl$indexOut) <- prettySeq(sbfControl$indexOut)
     }
     ## check summary function and metric
-    testOutput <- data.frame(pred = sample(y, min(10, length(y))),
-                             obs = sample(y, min(10, length(y))))
+    testOutput <- data.frame(
+      pred = sample(y, min(10, length(y))),
+      obs = sample(y, min(10, length(y)))
+    )
 
-    if(is.factor(y))
-      for(i in seq(along.with = classLevels))
+    if (is.factor(y)) {
+      for (i in seq(along.with = classLevels)) {
         testOutput[, classLevels[i]] <- runif(nrow(testOutput))
-    if(!is.null(perf_data))
+      }
+    }
+    if (!is.null(perf_data)) {
       testOutput <- cbind(
         testOutput,
-        perf_data[sample(seq_len(nrow(perf_data)), nrow(testOutput)),, drop = FALSE]
+        perf_data[
+          sample(seq_len(nrow(perf_data)), nrow(testOutput)),
+          ,
+          drop = FALSE
+        ]
       )
+    }
 
     test <- sbfControl$functions$summary(testOutput, lev = classLevels)
     perfNames <- names(test)
 
     ## Set or check the seeds when needed
-    if(is.null(sbfControl$seeds)) {
-      sbfControl$seeds <- sample.int(n = 1000000, size = length(sbfControl$index) + 1)
+    if (is.null(sbfControl$seeds)) {
+      sbfControl$seeds <- sample.int(
+        n = 1000000,
+        size = length(sbfControl$index) + 1
+      )
     } else {
-      if(!(length(sbfControl$seeds) == 1 && is.na(sbfControl$seeds))) {
-        if(length(sbfControl$seeds) != length(sbfControl$index) + 1)
-          stop(paste("Bad seeds: the seed object should be an integer vector of length",
-                     length(sbfControl$index) + 1))
+      if (!(length(sbfControl$seeds) == 1 && is.na(sbfControl$seeds))) {
+        if (length(sbfControl$seeds) != length(sbfControl$index) + 1) {
+          stop(paste(
+            "Bad seeds: the seed object should be an integer vector of length",
+            length(sbfControl$index) + 1
+          ))
+        }
       }
     }
 
-
-
     #########################################################################
 
-    if(sbfControl$method == "LOOCV") {
-      tmp <- sbf_loo_rec(rec = orig_rec, data = data,
-                         ctrl = sbfControl, lev = classLevels, ...)
-      resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "pred"])
+    if (sbfControl$method == "LOOCV") {
+      tmp <- sbf_loo_rec(
+        rec = orig_rec,
+        data = data,
+        ctrl = sbfControl,
+        lev = classLevels,
+        ...
+      )
+      resamples <- do.call(
+        "rbind",
+        tmp$everything[names(tmp$everything) == "pred"]
+      )
       rownames(resamples) <- seq_len(nrow(resamples))
       selectedVars <- tmp$everything[names(tmp$everything) == "variables"]
       performance <- tmp$performance
     } else {
-      tmp <- sbf_rec(rec = orig_rec, data = data,
-                     ctrl = sbfControl, lev = classLevels, ...)
-      resamples <- do.call("rbind", tmp$everything[names(tmp$everything) == "resamples"])
+      tmp <- sbf_rec(
+        rec = orig_rec,
+        data = data,
+        ctrl = sbfControl,
+        lev = classLevels,
+        ...
+      )
+      resamples <- do.call(
+        "rbind",
+        tmp$everything[names(tmp$everything) == "resamples"]
+      )
       rownames(resamples) <- seq_len(nrow(resamples))
       selectedVars <- tmp$everything[names(tmp$everything) == "selectedVars"]
       performance <- tmp$performance
@@ -446,12 +553,17 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
     #########################################################################
 
     varList <- unique(unlist(selectedVars))
-    if(sbfControl$multivariate) {
+    if (sbfControl$multivariate) {
       scores <- sbfControl$functions$score(x, y)
-      if(length(scores) != ncol(x))
-        stop(paste("when control$multivariate == TRUE, 'scores'",
-                   "should return a vector with", ncol(x), "numeric values"))
-    } else  {
+      if (length(scores) != ncol(x)) {
+        stop(paste(
+          "when control$multivariate == TRUE, 'scores'",
+          "should return a vector with",
+          ncol(x),
+          "numeric values"
+        ))
+      }
+    } else {
       scores <- apply(x, 2, sbfControl$functions$score, y = y)
     }
     retained <- sbfControl$functions$filter(scores, x, y)
@@ -466,21 +578,27 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
     )
 
     performance <- data.frame(t(performance))
-    performance <- performance[,!grepl("\\.cell|Resample", colnames(performance))]
+    performance <- performance[,
+      !grepl("\\.cell|Resample", colnames(performance))
+    ]
 
-    if(is.factor(y) && any(names(resamples) == ".cell1")) {
+    if (is.factor(y) && any(names(resamples) == ".cell1")) {
       keepers <- c("Resample", grep("\\.cell", names(resamples), value = TRUE))
-      resampledCM <- resamples[,keepers]
+      resampledCM <- resamples[, keepers]
       resamples <- resamples[, -grep("\\.cell", names(resamples))]
-    } else resampledCM <- NULL
+    } else {
+      resampledCM <- NULL
+    }
 
-    resamples <- switch(sbfControl$returnResamp,
-                        none = NULL,
-                        all =, final = resamples)
+    resamples <- switch(
+      sbfControl$returnResamp,
+      none = NULL,
+      all = ,
+      final = resamples
+    )
 
     endTime <- proc.time()
-    times <- list(everything = endTime - startTime,
-                  final = finalTime)
+    times <- list(everything = endTime - startTime, final = finalTime)
 
     #########################################################################
     ## Now, based on probability or static ranking, figure out the best vars
@@ -488,7 +606,7 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
 
     out <- structure(
       list(
-        pred = if(sbfControl$saveDetails) tmp else NULL,
+        pred = if (sbfControl$saveDetails) tmp else NULL,
         variables = selectedVars,
         results = performance,
         fit = fit,
@@ -501,14 +619,21 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
         resampledCM = resampledCM,
         obsLevels = classLevels,
         dots = list(...),
-        recipe = trained_rec),
-      class = "sbf")
-    if(sbfControl$timingSamps > 0) {
+        recipe = trained_rec
+      ),
+      class = "sbf"
+    )
+    if (sbfControl$timingSamps > 0) {
       out$times$prediction <-
         system.time(
-          predict(out, x[1:min(nrow(x), sbfControl$timingSamps),,drop = FALSE])
+          predict(
+            out,
+            x[1:min(nrow(x), sbfControl$timingSamps), , drop = FALSE]
+          )
         )
-    } else  out$times$prediction <- rep(NA, 3)
+    } else {
+      out$times$prediction <- rep(NA, 3)
+    }
     out
   }
 
@@ -516,11 +641,10 @@ sbf.formula <- function (form, data, ..., subset, na.action, contrasts = NULL) {
 sbf_rec <- function(rec, data, ctrl, lev, ...) {
   loadNamespace("caret")
 
-
   resampleIndex <- ctrl$index
-  if(ctrl$method %in% c("boot632")){
+  if (ctrl$method %in% c("boot632")) {
     resampleIndex <- c(list("AllData" = rep(0, nrow(x))), resampleIndex)
-    ctrl$indexOut <- c(list("AllData" = rep(0, nrow(x))),  ctrl$indexOut)
+    ctrl$indexOut <- c(list("AllData" = rep(0, nrow(x))), ctrl$indexOut)
   }
 
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
@@ -529,14 +653,17 @@ sbf_rec <- function(rec, data, ctrl, lev, ...) {
     .combine = "c",
     .verbose = FALSE,
     .errorhandling = "stop",
-    .packages = c("caret", "recipes")) %op% {
-      if (!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds)))
+    .packages = c("caret", "recipes")
+  ) %op%
+    {
+      if (!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) {
         set.seed(ctrl$seeds[iter])
+      }
 
       loadNamespace("caret")
       requireNamespaceQuietStop("methods")
 
-      if(names(resampleIndex)[iter] != "AllData") {
+      if (names(resampleIndex)[iter] != "AllData") {
         modelIndex <- resampleIndex[[iter]]
         holdoutIndex <- ctrl$indexOut[[iter]]
       } else {
@@ -556,17 +683,25 @@ sbf_rec <- function(rec, data, ctrl, lev, ...) {
       x_tr <- juice(resampled_rec, all_predictors(), composition = "data.frame")
       y_tr <- juice(resampled_rec, all_outcomes(), composition = "data.frame")
       y_tr <- y_tr[[1]]
-      x_te <- bake(resampled_rec, new_data = data[ holdoutIndex, ],
-                   all_predictors(), composition = "data.frame")
-      y_te <- bake(resampled_rec, new_data = data[ holdoutIndex, ],
-                   all_outcomes(), composition = "data.frame")
+      x_te <- bake(
+        resampled_rec,
+        new_data = data[holdoutIndex, ],
+        all_predictors(),
+        composition = "data.frame"
+      )
+      y_te <- bake(
+        resampled_rec,
+        new_data = data[holdoutIndex, ],
+        all_outcomes(),
+        composition = "data.frame"
+      )
       y_te <- y_te[[1]]
       is_perf <- summary(resampled_rec)$role == "performance var"
-      if(any(is_perf)) {
+      if (any(is_perf)) {
         perf_tr <- juice(resampled_rec, has_role("performance var"))
         perf_te <- bake(
           resampled_rec,
-          new_data = data[ holdoutIndex, ],
+          new_data = data[holdoutIndex, ],
           has_role("performance var")
         )
       } else {
@@ -574,59 +709,83 @@ sbf_rec <- function(rec, data, ctrl, lev, ...) {
         perf_te <- NULL
       }
 
-      sbfResults <- sbfIter(x = x_tr,
-                            y = y_tr,
-                            testX = x_te,
-                            testY = y_te,
-                            testPerf = perf_te,
-                            sbfControl = ctrl,
-                            ...)
-      if(ctrl$saveDetails) {
+      sbfResults <- sbfIter(
+        x = x_tr,
+        y = y_tr,
+        testX = x_te,
+        testY = y_te,
+        testPerf = perf_te,
+        sbfControl = ctrl,
+        ...
+      )
+      if (ctrl$saveDetails) {
         tmpPred <- sbfResults$pred
         tmpPred$Resample <- names(resampleIndex)[iter]
         tmpPred$rowIndex <- (1:nrow(data))[unique(holdoutIndex)]
-      } else tmpPred <- NULL
+      } else {
+        tmpPred <- NULL
+      }
       resamples <- ctrl$functions$summary(sbfResults$pred, lev = lev)
-      if(is.factor(y_tr) && length(lev) <= 50)
-        resamples <- c(resamples, flatTable(sbfResults$pred$pred, sbfResults$pred$obs))
+      if (is.factor(y_tr) && length(lev) <= 50) {
+        resamples <- c(
+          resamples,
+          flatTable(sbfResults$pred$pred, sbfResults$pred$obs)
+        )
+      }
       resamples <- data.frame(t(resamples))
       resamples$Resample <- names(resampleIndex)[iter]
 
-      list(resamples = resamples, selectedVars = sbfResults$variables, pred = tmpPred)
+      list(
+        resamples = resamples,
+        selectedVars = sbfResults$variables,
+        pred = tmpPred
+      )
     }
 
   resamples <- rbind.fill(result[names(result) == "resamples"])
-  pred <- if(ctrl$saveDetails) rbind.fill(result[names(result) == "pred"]) else NULL
-  performance <- MeanSD(resamples[,!grepl("Resample", colnames(resamples)),drop = FALSE])
+  pred <- if (ctrl$saveDetails) {
+    rbind.fill(result[names(result) == "pred"])
+  } else {
+    NULL
+  }
+  performance <- MeanSD(resamples[,
+    !grepl("Resample", colnames(resamples)),
+    drop = FALSE
+  ])
 
-  if(ctrl$method %in% c("boot632")) {
+  if (ctrl$method %in% c("boot632")) {
     modelIndex <- seq_len(nrow(x))
     holdoutIndex <- modelIndex
-    appResults <- sbfIter(x = x_tr,
-                          y = y_tr,
-                          testX = x_te,
-                          testY = y_te,
-                          testPerf = perf_te,
-                          ctrl,
-                          ...)
+    appResults <- sbfIter(
+      x = x_tr,
+      y = y_tr,
+      testX = x_te,
+      testY = y_te,
+      testPerf = perf_te,
+      ctrl,
+      ...
+    )
     apparent <- ctrl$functions$summary(appResults$pred, lev = lev)
     perfNames <- names(apparent)
     perfNames <- perfNames[perfNames != "Resample"]
 
-    const <- 1-exp(-1)
+    const <- 1 - exp(-1)
 
-    for(p in seq(along.with = perfNames))
+    for (p in seq(along.with = perfNames)) {
       performance[perfNames[p]] <-
-      (const * performance[perfNames[p]]) +  ((1-const) * apparent[perfNames[p]])
+        (const * performance[perfNames[p]]) +
+        ((1 - const) * apparent[perfNames[p]])
+    }
   }
 
   list(
     performance = performance,
     everything = result,
-    predictions = if (ctrl$saveDetails)
+    predictions = if (ctrl$saveDetails) {
       pred
-    else
+    } else {
       NULL
+    }
   )
 }
 
@@ -644,10 +803,12 @@ sbf_loo_rec <- function(rec, data, ctrl, lev, ...) {
     .combine = "c",
     .verbose = FALSE,
     .errorhandling = "stop",
-    .packages = c("caret", "recipes")) %op% {
-
-      if(!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds)))
+    .packages = c("caret", "recipes")
+  ) %op%
+    {
+      if (!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) {
         set.seed(ctrl$seeds[iter])
+      }
 
       loadNamespace("caret")
       requireNamespaceQuietStop("methods")
@@ -666,17 +827,25 @@ sbf_loo_rec <- function(rec, data, ctrl, lev, ...) {
       x_tr <- juice(resampled_rec, all_predictors(), composition = "data.frame")
       y_tr <- juice(resampled_rec, all_outcomes(), composition = "data.frame")
       y_tr <- y_tr[[1]]
-      x_te <- bake(resampled_rec, new_data = data[ holdoutIndex, ],
-                   all_predictors(), composition = "data.frame")
-      y_te <- bake(resampled_rec, new_data = data[ holdoutIndex, ],
-                   all_outcomes(), composition = "data.frame")
+      x_te <- bake(
+        resampled_rec,
+        new_data = data[holdoutIndex, ],
+        all_predictors(),
+        composition = "data.frame"
+      )
+      y_te <- bake(
+        resampled_rec,
+        new_data = data[holdoutIndex, ],
+        all_outcomes(),
+        composition = "data.frame"
+      )
       y_te <- y_te[[1]]
       is_perf <- summary(resampled_rec)$role == "performance var"
-      if(any(is_perf)) {
+      if (any(is_perf)) {
         perf_tr <- juice(resampled_rec, has_role("performance var"))
         perf_te <- bake(
           resampled_rec,
-          new_data = data[ holdoutIndex, ],
+          new_data = data[holdoutIndex, ],
           has_role("performance var")
         )
       } else {
@@ -684,13 +853,15 @@ sbf_loo_rec <- function(rec, data, ctrl, lev, ...) {
         perf_te <- NULL
       }
 
-      sbfResults <- sbfIter(x = x_tr,
-                            y = y_tr,
-                            testX = x_te,
-                            testY = y_te,
-                            testPerf = perf_te,
-                            sbfControl = ctrl,
-                            ...)
+      sbfResults <- sbfIter(
+        x = x_tr,
+        y = y_tr,
+        testX = x_te,
+        testY = y_te,
+        testPerf = perf_te,
+        sbfControl = ctrl,
+        ...
+      )
 
       sbfResults
     }
@@ -700,18 +871,23 @@ sbf_loo_rec <- function(rec, data, ctrl, lev, ...) {
   list(
     performance = performance,
     everything = result,
-    predictions = if (ctrl$saveDetails)
+    predictions = if (ctrl$saveDetails) {
       resamples
-    else
+    } else {
       NULL
+    }
   )
 }
 
 ######################################################################
 
 #' @export
-print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...) {
-
+print.sbf <- function(
+  x,
+  top = 5,
+  digits = max(3, getOption("digits") - 3),
+  ...
+) {
   cat("\nSelection By Filter\n\n")
 
   resampleN <- unlist(lapply(x$control$index, length))
@@ -724,32 +900,38 @@ print.sbf <- function(x, top = 5, digits = max(3, getOption("digits") - 3), ...)
   print(format(x$results, digits = digits), row.names = FALSE)
   cat("\n")
 
-  if(length(x$optVariables) > 0) {
-    cat("Using the training set, ",
-        length(x$optVariables),
-        ifelse(length(x$optVariables) > 1,
-               " variables were selected:\n   ",
-               " variable was selected:\n   "),
-        paste(x$optVariables[1:min(top, length(x$optVariables))],
-              collapse = ", "),
-        ifelse(length(x$optVariables) > top, "..", ""),
-        ".\n\n",
-        sep = "")
-  } else cat("No variables were selected from the training set.\n\n")
-
+  if (length(x$optVariables) > 0) {
+    cat(
+      "Using the training set, ",
+      length(x$optVariables),
+      ifelse(
+        length(x$optVariables) > 1,
+        " variables were selected:\n   ",
+        " variable was selected:\n   "
+      ),
+      paste(
+        x$optVariables[1:min(top, length(x$optVariables))],
+        collapse = ", "
+      ),
+      ifelse(length(x$optVariables) > top, "..", ""),
+      ".\n\n",
+      sep = ""
+    )
+  } else {
+    cat("No variables were selected from the training set.\n\n")
+  }
 
   vars <- sort(table(unlist(x$variables)), decreasing = TRUE)
 
   top <- min(top, length(vars))
 
   smallVars <- vars[1:top]
-  smallVars <- round(smallVars/length(x$control$index)*100, 1)
+  smallVars <- round(smallVars / length(x$control$index) * 100, 1)
 
-  varText <- paste(names(smallVars), " (",
-                   smallVars, "%)", sep = "")
+  varText <- paste(names(smallVars), " (", smallVars, "%)", sep = "")
   varText <- paste(varText, collapse = ", ")
 
-  if(!all(is.na(smallVars))) {
+  if (!all(is.na(smallVars))) {
     cat(
       "During resampling, the top ",
       top,
@@ -787,22 +969,35 @@ predict.sbf <- function(object, newdata = NULL, ...) {
       newdata <- as.data.frame(newdata, stringsAsFactors = FALSE)
       rn <- row.names(newdata)
       Terms <- delete.response(object$terms)
-      m <- model.frame(Terms, newdata, na.action = na.omit, xlev = object$xlevels)
-      if (!is.null(cl <- attr(Terms, "dataClasses")))
+      m <- model.frame(
+        Terms,
+        newdata,
+        na.action = na.omit,
+        xlev = object$xlevels
+      )
+      if (!is.null(cl <- attr(Terms, "dataClasses"))) {
         .checkMFClasses(cl, m)
+      }
       keep <- match(row.names(m), rn)
       newdata <- model.matrix(Terms, m, contrasts = object$contrasts)
       xint <- match("(Intercept)", colnames(newdata), nomatch = 0)
-      if (xint > 0)
-        newdata <- newdata[,-xint, drop = FALSE]
+      if (xint > 0) {
+        newdata <- newdata[, -xint, drop = FALSE]
+      }
     } else {
       if (any(names(object) == "recipe") && !is.null(object$recipe)) {
         newdata <-
-          bake(object$recipe, newdata, all_predictors(), composition = "data.frame")
+          bake(
+            object$recipe,
+            newdata,
+            all_predictors(),
+            composition = "data.frame"
+          )
       }
     }
-    if (!all(object$optVariables %in% colnames(newdata)))
+    if (!all(object$optVariables %in% colnames(newdata))) {
       stop("required columns in newdata are missing", call. = FALSE)
+    }
     newdata <- newdata[, object$optVariables, drop = FALSE]
     out <- object$control$functions$pred(object$fit, newdata)
   } else {
@@ -907,9 +1102,9 @@ predict.sbf <- function(object, newdata = NULL, ...) {
 #'   [ldaSBF()] and [nbSBF()]
 #' @keywords utilities
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' data(BloodBrain)
-#' 
+#'
 #' ## Use a GAM is the filter, then fit a random forest model
 #' set.seed(1)
 #' RFwithGAM <- sbf(
@@ -923,11 +1118,11 @@ predict.sbf <- function(object, newdata = NULL, ...) {
 #'   )
 #' )
 #' RFwithGAM
-#' 
+#'
 #' ## A simple example for multivariate scoring
 #' rfSBF2 <- rfSBF
 #' rfSBF2$score <- function(x, y) apply(x, 2, rfSBF$score, y = y)
-#' 
+#'
 #' set.seed(1)
 #' RFwithGAM2 <- sbf(
 #'   bbbDescr,
@@ -941,25 +1136,26 @@ predict.sbf <- function(object, newdata = NULL, ...) {
 #'   )
 #' )
 #' RFwithGAM2
-#' 
+#'
 #' @export sbfControl
-sbfControl <- function(functions = NULL,
-                       method = "boot",
-                       saveDetails = FALSE,
-                       number = ifelse(method %in% c("cv", "repeatedcv"), 10, 25),
-                       repeats = ifelse(method %in% c("cv", "repeatedcv"), 1, number),
-                       verbose = FALSE,
-                       returnResamp = "final",
-                       p = 0.75,
-                       index = NULL,
-                       indexOut = NULL,
-                       timingSamps = 0,
-                       seeds = NA,
-                       allowParallel = TRUE,
-                       multivariate = FALSE)
-{
+sbfControl <- function(
+  functions = NULL,
+  method = "boot",
+  saveDetails = FALSE,
+  number = ifelse(method %in% c("cv", "repeatedcv"), 10, 25),
+  repeats = ifelse(method %in% c("cv", "repeatedcv"), 1, number),
+  verbose = FALSE,
+  returnResamp = "final",
+  p = 0.75,
+  index = NULL,
+  indexOut = NULL,
+  timingSamps = 0,
+  seeds = NA,
+  allowParallel = TRUE,
+  multivariate = FALSE
+) {
   list(
-    functions = if(is.null(functions)) caretSBF else functions,
+    functions = if (is.null(functions)) caretSBF else functions,
     method = method,
     saveDetails = saveDetails,
     number = number,
@@ -972,7 +1168,8 @@ sbfControl <- function(functions = NULL,
     timingSamps = timingSamps,
     seeds = seeds,
     allowParallel = allowParallel,
-    multivariate = multivariate)
+    multivariate = multivariate
+  )
 }
 
 ######################################################################
@@ -1008,240 +1205,280 @@ sbfControl <- function(functions = NULL,
 #' @seealso [sbfControl()], [sbf()], [gam::summary.Gam()]
 #' @keywords models
 #' @export caretSBF
-caretSBF <- list(summary = defaultSummary,
-                 fit = function(x, y, ...)
-                 {
-                   if(ncol(x) > 0)
-                   {
-                     train(x, y, ...)
-                   } else nullModel(y = y)
-                 },
-                 pred = function(object, x)
-                 {
-                   if(!inherits(object, "nullModel"))
-                   {
-                     tmp <- predict(object, x)
-                     if(object$modelType == "Classification" &&
-                          !is.null(object$modelInfo$prob))
-                     {
-                       out <- cbind(data.frame(pred = tmp),
-                                    as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
-                     } else out <- tmp
-                   } else {
-                     tmp <- predict(object, x)
-                     if(!is.null(object$levels))
-                     {
-                       out <- cbind(data.frame(pred = tmp),
-                                    as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
-                     } else out <- tmp
-                   }
-                   out
-                 },
-                 score = function(x, y)
-                 {
-                   ## should return a named logical vector
-                   if(is.factor(y)) anovaScores(x, y) else gamScores(x, y)
-                 },
-                 filter = function(score, x, y) score <= 0.05
+caretSBF <- list(
+  summary = defaultSummary,
+  fit = function(x, y, ...) {
+    if (ncol(x) > 0) {
+      train(x, y, ...)
+    } else {
+      nullModel(y = y)
+    }
+  },
+  pred = function(object, x) {
+    if (!inherits(object, "nullModel")) {
+      tmp <- predict(object, x)
+      if (
+        object$modelType == "Classification" &&
+          !is.null(object$modelInfo$prob)
+      ) {
+        out <- cbind(
+          data.frame(pred = tmp),
+          as.data.frame(
+            predict(object, x, type = "prob"),
+            stringsAsFactors = TRUE
+          )
+        )
+      } else {
+        out <- tmp
+      }
+    } else {
+      tmp <- predict(object, x)
+      if (!is.null(object$levels)) {
+        out <- cbind(
+          data.frame(pred = tmp),
+          as.data.frame(
+            predict(object, x, type = "prob"),
+            stringsAsFactors = TRUE
+          )
+        )
+      } else {
+        out <- tmp
+      }
+    }
+    out
+  },
+  score = function(x, y) {
+    ## should return a named logical vector
+    if (is.factor(y)) anovaScores(x, y) else gamScores(x, y)
+  },
+  filter = function(score, x, y) score <= 0.05
 )
 
 #' @export
-rfSBF <- list(summary = defaultSummary,
-              fit = function(x, y, ...)
-              {
-                if(ncol(x) > 0)
-                {
-                  loadNamespace("randomForest")
-                  randomForest::randomForest(x, y, ...)
-                } else nullModel(y = y)
-              },
-              pred = function(object, x)
-              {
-                if (inherits(object, "nullModel"))
-                {
-                  tmp <- predict(object, x)
-                  if(!is.null(object$levels))
-                  {
-                    out <- cbind(data.frame(pred = tmp),
-                                 as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
-                  } else out <- tmp
-                } else {
-                  tmp <- predict(object, x)
-                  if(is.factor(object$y))
-                  {
-                    out <- cbind(data.frame(pred = tmp),
-                                 as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
-                  } else out <- tmp
-                }
+rfSBF <- list(
+  summary = defaultSummary,
+  fit = function(x, y, ...) {
+    if (ncol(x) > 0) {
+      loadNamespace("randomForest")
+      randomForest::randomForest(x, y, ...)
+    } else {
+      nullModel(y = y)
+    }
+  },
+  pred = function(object, x) {
+    if (inherits(object, "nullModel")) {
+      tmp <- predict(object, x)
+      if (!is.null(object$levels)) {
+        out <- cbind(
+          data.frame(pred = tmp),
+          as.data.frame(
+            predict(object, x, type = "prob"),
+            stringsAsFactors = TRUE
+          )
+        )
+      } else {
+        out <- tmp
+      }
+    } else {
+      tmp <- predict(object, x)
+      if (is.factor(object$y)) {
+        out <- cbind(
+          data.frame(pred = tmp),
+          as.data.frame(
+            predict(object, x, type = "prob"),
+            stringsAsFactors = TRUE
+          )
+        )
+      } else {
+        out <- tmp
+      }
+    }
 
-                out
-              },
-              score = function(x, y)
-              {
-                ## should return a named logical vector
-                if(is.factor(y)) anovaScores(x, y) else gamScores(x, y)
-              },
-              filter = function(score, x, y) score <= 0.05
+    out
+  },
+  score = function(x, y) {
+    ## should return a named logical vector
+    if (is.factor(y)) anovaScores(x, y) else gamScores(x, y)
+  },
+  filter = function(score, x, y) score <= 0.05
 )
 
 #' @export
-lmSBF <- list(summary = defaultSummary,
-              fit = function(x, y, ...)
-              {
-                if(ncol(x) > 0)
-                {
-                  tmp <- as.data.frame(x, stringsAsFactors = TRUE)
-                  tmp$y <- y
-                  lm(y~., data = tmp)
-                } else nullModel(y = y)
-              },
-              pred = function(object, x)
-              {
-                predict(object, x)
-              },
-              score = function(x, y)
-              {
-                anovaScores(y, x)
-              },
-              filter = function(score, x, y) score <= 0.05
+lmSBF <- list(
+  summary = defaultSummary,
+  fit = function(x, y, ...) {
+    if (ncol(x) > 0) {
+      tmp <- as.data.frame(x, stringsAsFactors = TRUE)
+      tmp$y <- y
+      lm(y ~ ., data = tmp)
+    } else {
+      nullModel(y = y)
+    }
+  },
+  pred = function(object, x) {
+    predict(object, x)
+  },
+  score = function(x, y) {
+    anovaScores(y, x)
+  },
+  filter = function(score, x, y) score <= 0.05
 )
 
 #' @export
-ldaSBF <- list(summary = defaultSummary,
-               fit = function(x, y, ...)
-               {
-                 if(ncol(x) > 0)
-                 {
-                   loadNamespace("MASS")
-                   MASS::lda(x, y, ...)
-                 } else nullModel(y = y)
-               },
-               pred = function(object, x)
-               {
-                 if (inherits(object, "nullModel"))
-                 {
-                   tmp <- predict(object, x)
-                   out <- cbind(data.frame(pred = tmp),
-                                as.data.frame(
-                                  predict(object,
-                                          x,
-                                          type = "prob")))
-                 } else {
-                   tmp <- predict(object, x)
-                   out <- cbind(data.frame(pred = tmp$class),
-                                as.data.frame(tmp$posterior, stringsAsFactors = FALSE))
-                 }
-                 out
-               },
-               score = function(x, y)
-               {
-                 ## should return a named logical vector
-                 anovaScores(x, y)
-               },
-               filter = function(score, x, y) score <= 0.05
+ldaSBF <- list(
+  summary = defaultSummary,
+  fit = function(x, y, ...) {
+    if (ncol(x) > 0) {
+      loadNamespace("MASS")
+      MASS::lda(x, y, ...)
+    } else {
+      nullModel(y = y)
+    }
+  },
+  pred = function(object, x) {
+    if (inherits(object, "nullModel")) {
+      tmp <- predict(object, x)
+      out <- cbind(
+        data.frame(pred = tmp),
+        as.data.frame(
+          predict(object, x, type = "prob")
+        )
+      )
+    } else {
+      tmp <- predict(object, x)
+      out <- cbind(
+        data.frame(pred = tmp$class),
+        as.data.frame(tmp$posterior, stringsAsFactors = FALSE)
+      )
+    }
+    out
+  },
+  score = function(x, y) {
+    ## should return a named logical vector
+    anovaScores(x, y)
+  },
+  filter = function(score, x, y) score <= 0.05
 )
 
 #' @export
-nbSBF <- list(summary = defaultSummary,
-              fit = function(x, y, ...)
-              {
-                if(ncol(x) > 0)
-                {
-                  loadNamespace("klaR")
-                  klaR::NaiveBayes(x, y, usekernel = TRUE, fL = 2, ...)
+nbSBF <- list(
+  summary = defaultSummary,
+  fit = function(x, y, ...) {
+    if (ncol(x) > 0) {
+      loadNamespace("klaR")
+      klaR::NaiveBayes(x, y, usekernel = TRUE, fL = 2, ...)
+    } else {
+      nullModel(y = y)
+    }
+  },
+  pred = function(object, x) {
+    if (inherits(object, "nullModel")) {
+      tmp <- predict(object, x)
+      out <- cbind(
+        data.frame(pred = tmp),
+        as.data.frame(
+          predict(object, x, type = "prob")
+        )
+      )
+    } else {
+      tmp <- predict(object, x)
+      out <- cbind(
+        data.frame(pred = tmp$class),
+        as.data.frame(tmp$posterior, stringsAsFactors = FALSE)
+      )
+    }
+    out
+  },
 
-                } else nullModel(y = y)
-              },
-              pred = function(object, x)
-              {
-                if (inherits(object, "nullModel"))
-                {
-                  tmp <- predict(object, x)
-                  out <- cbind(data.frame(pred = tmp),
-                               as.data.frame(
-                                 predict(object,
-                                         x,
-                                         type = "prob")))
-                } else {
-                  tmp <- predict(object, x)
-                  out <- cbind(data.frame(pred = tmp$class),
-                               as.data.frame(tmp$posterior, stringsAsFactors = FALSE))
-                }
-                out
-              },
-
-              pred = function(object, x)
-              {
-                predict(object, x)$class
-              },
-              score = function(x, y)
-              {
-                ## should return a named logical vector
-                anovaScores(x, y)
-              },
-              filter = function(score, x, y) score <= 0.05
+  pred = function(object, x) {
+    predict(object, x)$class
+  },
+  score = function(x, y) {
+    ## should return a named logical vector
+    anovaScores(x, y)
+  },
+  filter = function(score, x, y) score <= 0.05
 )
 
 #' @export
-treebagSBF <- list(summary = defaultSummary,
-                   fit = function(x, y, ...)
-                   {
-                     if(ncol(x) > 0)
-                     {
-                       loadNamespace("ipred")
-                       ipred::ipredbagg(y, x, ...)
-                     } else nullModel(y = y)
-                   },
+treebagSBF <- list(
+  summary = defaultSummary,
+  fit = function(x, y, ...) {
+    if (ncol(x) > 0) {
+      loadNamespace("ipred")
+      ipred::ipredbagg(y, x, ...)
+    } else {
+      nullModel(y = y)
+    }
+  },
 
-                   pred = function(object, x)
-                   {
-                     if (inherits(object, "nullModel"))
-                     {
-                       tmp <- predict(object, x)
-                       if(!is.null(object$levels))
-                       {
-                         out <- cbind(data.frame(pred = tmp),
-                                      as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
-                       } else out <- tmp
-                     } else {
-                       tmp <- predict(object, x)
-                       if(is.factor(object$y))
-                       {
-                         out <- cbind(data.frame(pred = tmp),
-                                      as.data.frame(predict(object, x, type = "prob"), stringsAsFactors = TRUE))
-                       } else out <- tmp
-                     }
-                     out
-                   },
-                   score = function(x, y)
-                   {
-                     ## should return a named logical vector
-                     anovaScores(x, y)
-                   },
-                   filter = function(score, x, y) score <= 0.05
+  pred = function(object, x) {
+    if (inherits(object, "nullModel")) {
+      tmp <- predict(object, x)
+      if (!is.null(object$levels)) {
+        out <- cbind(
+          data.frame(pred = tmp),
+          as.data.frame(
+            predict(object, x, type = "prob"),
+            stringsAsFactors = TRUE
+          )
+        )
+      } else {
+        out <- tmp
+      }
+    } else {
+      tmp <- predict(object, x)
+      if (is.factor(object$y)) {
+        out <- cbind(
+          data.frame(pred = tmp),
+          as.data.frame(
+            predict(object, x, type = "prob"),
+            stringsAsFactors = TRUE
+          )
+        )
+      } else {
+        out <- tmp
+      }
+    }
+    out
+  },
+  score = function(x, y) {
+    ## should return a named logical vector
+    anovaScores(x, y)
+  },
+  filter = function(score, x, y) score <= 0.05
 )
 
 
 #' @rdname caretSBF
 #' @export
 anovaScores <- function(x, y) {
-  if(is.factor(x)) stop("The predictors should be numeric")
+  if (is.factor(x)) {
+    stop("The predictors should be numeric")
+  }
   pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
-  if(any(class(pv) == "try-error") || is.na(pv) || is.nan(pv)) pv <- 1
+  if (any(class(pv) == "try-error") || is.na(pv) || is.nan(pv)) {
+    pv <- 1
+  }
   pv
 }
 
 #' @rdname caretSBF
 #' @export
 gamScores <- function(x, y) {
-  if(is.factor(x)) stop("The predictors should be numeric")
+  if (is.factor(x)) {
+    stop("The predictors should be numeric")
+  }
   requireNamespaceQuietStop("gam")
   pv <- try(anova(gam::gam(y ~ s(x)), test = "F")[2, "Pr(F)"], silent = TRUE)
-  if(any(class(pv) == "try-error")) pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
-  if(any(class(pv) == "try-error") || is.na(pv) || is.nan(pv)) pv <- 1
+  if (any(class(pv) == "try-error")) {
+    pv <- try(anova(lm(x ~ y), test = "F")[1, "Pr(>F)"], silent = TRUE)
+  }
+  if (any(class(pv) == "try-error") || is.na(pv) || is.nan(pv)) {
+    pv <- 1
+  }
   pv
 }
-
 
 
 ######################################################################
@@ -1249,16 +1486,16 @@ gamScores <- function(x, y) {
 ## lattice functions
 
 #' @export
-densityplot.sbf <- function(x,
-                            data = NULL,
-                            metric = x$metric[1],
-                            ...)
-{
-  if (!is.null(match.call()$data))
+densityplot.sbf <- function(x, data = NULL, metric = x$metric[1], ...) {
+  if (!is.null(match.call()$data)) {
     warning("explicit 'data' specification ignored")
+  }
 
-  if(x$control$method %in%  c("oob", "LOOCV"))
-    stop("Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling")
+  if (x$control$method %in% c("oob", "LOOCV")) {
+    stop(
+      "Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling"
+    )
+  }
 
   data <- as.data.frame(x$resample, stringsAsFactors = TRUE)
   form <- as.formula(paste("~", metric))
@@ -1266,24 +1503,22 @@ densityplot.sbf <- function(x,
 }
 
 #' @export
-histogram.sbf <- function(x,
-                          data = NULL,
-                          metric = x$metric[1],
-                          ...)
-{
-  if (!is.null(match.call()$data))
+histogram.sbf <- function(x, data = NULL, metric = x$metric[1], ...) {
+  if (!is.null(match.call()$data)) {
     warning("explicit 'data' specification ignored")
+  }
 
-  if(x$control$method %in%  c("oob", "LOOCV"))
-    stop("Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling")
+  if (x$control$method %in% c("oob", "LOOCV")) {
+    stop(
+      "Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling"
+    )
+  }
 
   data <- as.data.frame(x$resample, stringsAsFactors = TRUE)
 
   form <- as.formula(paste("~", metric))
   histogram(form, data = data, ...)
 }
-
-
 
 
 ######################################################################
@@ -1293,22 +1528,20 @@ histogram.sbf <- function(x,
 predictors.sbf <- function(x, ...) x$optVariables
 
 #' @export
-varImp.sbf <- function(object, onlyFinal = TRUE, ...)
-{
-
-  vars <- sort(table(unlist(object$variables)), decreasing = TRUE)/length(object$control$index)
-
+varImp.sbf <- function(object, onlyFinal = TRUE, ...) {
+  vars <- sort(table(unlist(object$variables)), decreasing = TRUE) /
+    length(object$control$index)
 
   out <- as.data.frame(vars, stringsAsFactors = FALSE)
   names(out) <- "Overall"
-  if(onlyFinal) out <- subset(out, rownames(out) %in% object$optVariables)
-  out[order(-out$Overall),,drop = FALSE]
-
+  if (onlyFinal) {
+    out <- subset(out, rownames(out) %in% object$optVariables)
+  }
+  out[order(-out$Overall), , drop = FALSE]
 }
 
 ######################################################################
 ## what to do when no predictors are selected?
-
 
 #' Fit a simple, non-informative model
 #'
@@ -1346,7 +1579,7 @@ varImp.sbf <- function(object, onlyFinal = TRUE, ...)
 #' the class of `y`. All predictions are always the same.
 #' @keywords models
 #' @examples
-#' 
+#'
 #' outcome <- factor(sample(
 #'   letters[1:2],
 #'   size = 100,
@@ -1356,62 +1589,61 @@ varImp.sbf <- function(object, onlyFinal = TRUE, ...)
 #' useless <- nullModel(y = outcome)
 #' useless
 #' predict(useless, matrix(NA, nrow = 10))
-#' 
+#'
 #' @export nullModel
-nullModel <- function (x, ...) UseMethod("nullModel")
+nullModel <- function(x, ...) UseMethod("nullModel")
 
 #' @rdname nullModel
 #' @export
-nullModel.default <- function(x = NULL, y, ...)
-{
-
-  if(is.factor(y))
-  {
+nullModel.default <- function(x = NULL, y, ...) {
+  if (is.factor(y)) {
     lvls <- levels(y)
     tab <- table(y)
     value <- names(tab)[which.max(tab)]
-    pct <- tab/sum(tab)
+    pct <- tab / sum(tab)
   } else {
     lvls <- NULL
     pct <- NULL
     value <- mean(y, na.rm = TRUE)
   }
   structure(
-    list(call = match.call(),
-         value = value,
-         levels = lvls,
-         pct = pct,
-         n = length(y)),
-    class = "nullModel")
+    list(
+      call = match.call(),
+      value = value,
+      levels = lvls,
+      pct = pct,
+      n = length(y)
+    ),
+    class = "nullModel"
+  )
 }
 
 #' @export
-print.nullModel <- function(x, digits = max(3, getOption("digits") - 3), ...)
-{
-  cat("Null",
-      ifelse(is.null(x$levels), "Classification", "Regression"),
-      "Model\n")
+print.nullModel <- function(x, digits = max(3, getOption("digits") - 3), ...) {
+  cat(
+    "Null",
+    ifelse(is.null(x$levels), "Classification", "Regression"),
+    "Model\n"
+  )
   printCall(x$call)
 
-  cat("Predicted Value:",
-      ifelse(is.null(x$levels), format(x$value, digitis = digits), x$value),
-      "\n")
+  cat(
+    "Predicted Value:",
+    ifelse(is.null(x$levels), format(x$value, digitis = digits), x$value),
+    "\n"
+  )
 }
 
 #' @rdname nullModel
 #' @export
-predict.nullModel <- function (object, newdata = NULL, type  = NULL, ...)
-{
-  if(is.null(type))
-  {
-    type <- if(is.null(object$levels)) "raw" else "class"
+predict.nullModel <- function(object, newdata = NULL, type = NULL, ...) {
+  if (is.null(type)) {
+    type <- if (is.null(object$levels)) "raw" else "class"
   }
 
-  n <- if(is.null(newdata)) object$n else nrow(newdata)
-  if(!is.null(object$levels))
-  {
-    if(type == "prob")
-    {
+  n <- if (is.null(newdata)) object$n else nrow(newdata)
+  if (!is.null(object$levels)) {
+    if (type == "prob") {
       out <- matrix(rep(object$pct, n), nrow = n, byrow = TRUE)
       colnames(out) <- object$levels
       out <- as.data.frame(out, stringsAsFactors = TRUE)
@@ -1419,7 +1651,9 @@ predict.nullModel <- function (object, newdata = NULL, type  = NULL, ...)
       out <- factor(rep(object$value, n), levels = object$levels)
     }
   } else {
-    if(type %in% c("prob", "class")) stop("ony raw predicitons are applicable to regression models")
+    if (type %in% c("prob", "class")) {
+      stop("ony raw predicitons are applicable to regression models")
+    }
     out <- rep(object$value, n)
   }
   out

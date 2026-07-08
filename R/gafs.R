@@ -116,14 +116,14 @@ ga_func_check <- function(x) {
 #'
 #' <http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html>
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' pop <- gafs_initial(vars = 10, popSize = 10)
 #' pop
-#' 
+#'
 #' gafs_lrSelection(population = pop, fitness = 1:10)
-#' 
+#'
 #' gafs_spCrossover(population = pop, fitness = 1:10, parents = 1:2)
-#' 
+#'
 #' ## Hypothetical usage (not run):
 #' ## lda_ga <- gafs(x = predictors,
 #' ##                y = classes,
@@ -138,7 +138,7 @@ ga_func_check <- function(x) {
 #' ##               gafsControl = gafsControl(functions = rfGA),
 #' ##               ntree = 1000,
 #' ##               importance = TRUE)
-#' 
+#'
 #' @export gafs_initial
 gafs_initial <- function(vars, popSize, ...) {
   x <- matrix(NA, nrow = popSize, ncol = vars)
@@ -996,26 +996,26 @@ print.gafs <- function(
 #' @keywords multivariate
 #' @export
 #' @examplesIf !caret:::is_cran_check()
-#' 
-#' 
+#'
+#'
 #' set.seed(1)
 #' train_data <- twoClassSim(100, noiseVars = 10)
 #' test_data <- twoClassSim(10, noiseVars = 10)
-#' 
+#'
 #' ## A short example
 #' ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
-#' 
+#'
 #' rf_search <- safs(
 #'   x = train_data[, -ncol(train_data)],
 #'   y = train_data$Class,
 #'   iters = 3,
 #'   safsControl = ctrl
 #' )
-#' 
+#'
 #' rf_search
-#' 
+#'
 #' predict(rf_search, train_data)
-#' 
+#'
 #' @export predict.gafs
 predict.gafs <- function(object, newdata, ...) {
   if (any(names(object) == "recipe") && !is.null(object$recipe)) {
@@ -1144,23 +1144,23 @@ gafs <- function(x, ...) UseMethod("gafs")
 #' @keywords models
 #' @export
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' set.seed(1)
 #' train_data <- twoClassSim(100, noiseVars = 10)
 #' test_data <- twoClassSim(10, noiseVars = 10)
-#' 
+#'
 #' ## A short example
 #' ctrl <- gafsControl(functions = rfGA, method = "cv", number = 3)
-#' 
+#'
 #' rf_search <- gafs(
 #'   x = train_data[, -ncol(train_data)],
 #'   y = train_data$Class,
 #'   iters = 3,
 #'   gafsControl = ctrl
 #' )
-#' 
+#'
 #' rf_search
-#' 
+#'
 #' @export gafs.default
 "gafs.default" <-
   function(
@@ -1481,27 +1481,27 @@ gafs <- function(x, ...) UseMethod("gafs")
 #' @keywords hplot
 #' @export
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' set.seed(1)
 #' train_data <- twoClassSim(100, noiseVars = 10)
 #' test_data <- twoClassSim(10, noiseVars = 10)
-#' 
+#'
 #' ## A short example
 #' ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
-#' 
+#'
 #' rf_search <- safs(
 #'   x = train_data[, -ncol(train_data)],
 #'   y = train_data$Class,
 #'   iters = 50,
 #'   safsControl = ctrl
 #' )
-#' 
+#'
 #' plot(rf_search)
 #' plot(rf_search, output = "lattice", auto.key = list(columns = 2))
-#' 
+#'
 #' plot_data <- plot(rf_search, output = "data")
 #' summary(plot_data)
-#' 
+#'
 #' @export plot.gafs
 plot.gafs <- function(
   x,
@@ -1913,7 +1913,11 @@ update.gafs <- function(object, iter, x, y, ...) {
     if (!is.null(perf_data)) {
       testOutput <- cbind(
         testOutput,
-        perf_data[sample(seq_len(nrow(perf_data)), nrow(testOutput)), , drop = FALSE]
+        perf_data[
+          sample(seq_len(nrow(perf_data)), nrow(testOutput)),
+          ,
+          drop = FALSE
+        ]
       )
     }
 

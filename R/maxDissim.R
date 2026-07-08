@@ -35,16 +35,16 @@
 #'   Computational Biology*, 6, 447-457.
 #' @keywords utilities
 #' @examples
-#' 
+#'
 #' example <- function(pct = 1, obj = minDiss, ...)
 #' {
 #'   tmp <- matrix(rnorm(200 * 2), nrow = 200)
-#' 
+#'
 #'   ## start with 15 data points
 #' start <- sample(1:dim(tmp)[1], 15)
 #' base <- tmp[start, ]
 #' pool <- tmp[-start, ]
-#'   
+#'
 #'   ## select 9 for addition
 #' newSamp <- maxDissim(
 #'   base,
@@ -54,9 +54,9 @@
 #'   obj = obj,
 #'   ...
 #' )
-#'   
+#'
 #' allSamp <- c(start, newSamp)
-#'   
+#'
 #' plot(
 #'   tmp[-newSamp, ],
 #'   xlim = extendrange(tmp[, 1]),
@@ -66,73 +66,95 @@
 #'   ylab = "variable 2"
 #' )
 #' points(base, pch = 16, cex = .7)
-#'   
+#'
 #'   for(i in seq(along.with = newSamp))
 #'     points(
-#'            pool[newSamp[i],1], 
-#'            pool[newSamp[i],2], 
-#'            pch = paste(i), col = "darkred") 
+#'            pool[newSamp[i],1],
+#'            pool[newSamp[i],2],
+#'            pch = paste(i), col = "darkred")
 #' }
-#' 
+#'
 #' par(mfrow = c(2, 2))
-#' 
+#'
 #' set.seed(414)
 #' example(1, minDiss)
 #' title("No Random Sampling, Min Score")
-#' 
+#'
 #' set.seed(414)
 #' example(.1, minDiss)
 #' title("10 Pct Random Sampling, Min Score")
-#' 
+#'
 #' set.seed(414)
 #' example(1, sumDiss)
 #' title("No Random Sampling, Sum Score")
-#' 
+#'
 #' set.seed(414)
 #' example(.1, sumDiss)
 #' title("10 Pct Random Sampling, Sum Score")
-#' 
+#'
 #' @export maxDissim
-maxDissim <- function(a, b, n = 2, obj = minDiss, useNames = FALSE, randomFrac = 1, verbose = FALSE, ...) 
-{
+maxDissim <- function(
+  a,
+  b,
+  n = 2,
+  obj = minDiss,
+  useNames = FALSE,
+  randomFrac = 1,
+  verbose = FALSE,
+  ...
+) {
   loadNamespace("proxy")
-  if(nrow(b) < 2) stop("there must be at least 2 samples in b")
-  if(ncol(a) != ncol(b)) stop("a and b must have the same number of columns")
-  if(nrow(b) < n) stop("n must be less than nrow(b)")
-  if(randomFrac > 1 || randomFrac <= 0) stop("randomFrac must be in (0, 1]")
+  if (nrow(b) < 2) {
+    stop("there must be at least 2 samples in b")
+  }
+  if (ncol(a) != ncol(b)) {
+    stop("a and b must have the same number of columns")
+  }
+  if (nrow(b) < n) {
+    stop("n must be less than nrow(b)")
+  }
+  if (randomFrac > 1 || randomFrac <= 0) {
+    stop("randomFrac must be in (0, 1]")
+  }
 
-
-  if(useNames)
-    {
-      if(is.null(rownames(b)))
-        {
-          warning("Cannot use rownames; swithcing to indices")
-          free <- seq_len(nrow(b))
-        } else free <- rownames(b)
-    } else free <- seq_len(nrow(b))
+  if (useNames) {
+    if (is.null(rownames(b))) {
+      warning("Cannot use rownames; swithcing to indices")
+      free <- seq_len(nrow(b))
+    } else {
+      free <- rownames(b)
+    }
+  } else {
+    free <- seq_len(nrow(b))
+  }
 
   inSubset <- NULL
   newA <- a
-  
-  
-  if(verbose) cat("  adding:")
-  for(i in 1:n)
-    {
-      pool <- if(randomFrac == 1) free else sample(free, max(2, floor(randomFrac * length(free))))
-      if(verbose)
-        {
-          cat("\nIter", i, "\n")
-          cat("Number of candidates:", length(free), "\n")
-          cat("Sampling from", length(pool), "samples\n")		
-        }
-      diss <- proxy::dist(newA, b[pool,, drop = FALSE], ...)
-      bNames <- colnames(b)[pool] 
-      tmp <- pool[which.max(apply(diss, 2, obj))]
-      if(verbose)cat("new sample:", tmp, "\n")      
-      inSubset <- c(inSubset, tmp)
-      newA <- rbind(newA, b[tmp,, drop = FALSE])
-      free <- free[!(free %in% inSubset)]
+
+  if (verbose) {
+    cat("  adding:")
+  }
+  for (i in 1:n) {
+    pool <- if (randomFrac == 1) {
+      free
+    } else {
+      sample(free, max(2, floor(randomFrac * length(free))))
     }
+    if (verbose) {
+      cat("\nIter", i, "\n")
+      cat("Number of candidates:", length(free), "\n")
+      cat("Sampling from", length(pool), "samples\n")
+    }
+    diss <- proxy::dist(newA, b[pool, , drop = FALSE], ...)
+    bNames <- colnames(b)[pool]
+    tmp <- pool[which.max(apply(diss, 2, obj))]
+    if (verbose) {
+      cat("new sample:", tmp, "\n")
+    }
+    inSubset <- c(inSubset, tmp)
+    newA <- rbind(newA, b[tmp, , drop = FALSE])
+    free <- free[!(free %in% inSubset)]
+  }
   inSubset
 }
 
@@ -145,49 +167,49 @@ minDiss <- function(u) min(u, na.rm = TRUE)
 sumDiss <- function(u) sum(u, na.rm = TRUE)
 
 
+splitter <- function(x, p = 0.8, start = NULL, ...) {
+  n <- nrow(x)
+  if (is.null(start)) {
+    start <- sample(1:n, 1)
+  }
+  n2 <- n - length(start)
+  m <- ceiling(p * n2)
+  pool <- maxDissim(
+    x[start, , drop = FALSE],
+    x[-start, , drop = FALSE],
+    n = m,
+    ...
+  )
+  c(start, pool)
+}
 
 
-
-
-
-splitter <- function(x, p = 0.8, start = NULL, ...)
-  {
-    n <- nrow(x)
-    if(is.null(start)) start <- sample(1:n, 1)
-    n2 <- n - length(start)
-    m <- ceiling(p * n2)
-    pool <- maxDissim(x[ start,,drop = FALSE],
-                      x[-start,,drop = FALSE],
-                      n = m,
-                      ...)
-    c(start, pool)
+splitByDissim <- function(x, p = 0.8, y = NULL, start = NULL, ...) {
+  if (!is.data.frame(x)) {
+    x <- as.data.frame(x, stringsAsFactors = TRUE)
   }
 
+  if (!is.null(y)) {
+    if (!is.factor(y)) {
+      y <- as.factor(y)
+    }
+    lvl <- levels(y)
 
-splitByDissim <- function(x, p = 0.8, y = NULL, start = NULL, ...)
-  {
-    if(!is.data.frame(x)) x <- as.data.frame(x, stringsAsFactors = TRUE)
-    
-    if(!is.null(y))
-      {
-        if(!is.factor(y)) y <- as.factor(y)
-        lvl <- levels(y)
-        
-        ind <- split(seq(along.with = y), y)
-        ind2 <- lapply(ind, function(x) seq(along.with = x))
-        start2 <- lapply(ind, function(x, start) which(x %in% start),
-                         start = start)
-        for(i in seq(along.with = lvl))
-          {
-            tmp <- splitter(x[ind[[i]],, drop = FALSE],
-                            p = p,
-                            start = start2[[i]],
-                            ...)
-            tmp2 <- ind[[i]][which(ind2[[i]] %in% tmp)]
-            out <- if(i == 1) tmp2 else c(tmp2, out)
-          }
-      } else {
-        out <- splitter(x, p = p, start = start, ...)
-      }
-    out
+    ind <- split(seq(along.with = y), y)
+    ind2 <- lapply(ind, function(x) seq(along.with = x))
+    start2 <- lapply(ind, function(x, start) which(x %in% start), start = start)
+    for (i in seq(along.with = lvl)) {
+      tmp <- splitter(
+        x[ind[[i]], , drop = FALSE],
+        p = p,
+        start = start2[[i]],
+        ...
+      )
+      tmp2 <- ind[[i]][which(ind2[[i]] %in% tmp)]
+      out <- if (i == 1) tmp2 else c(tmp2, out)
+    }
+  } else {
+    out <- splitter(x, p = p, start = start, ...)
   }
+  out
+}

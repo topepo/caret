@@ -84,11 +84,11 @@
 #' @family performance
 #' @keywords utilities
 #' @examples
-#' 
+#'
 #' predicted <- matrix(rnorm(50), ncol = 5)
 #' observed <- rnorm(10)
 #' apply(predicted, 2, postResample, obs = observed)
-#' 
+#'
 #' classes <- c("class1", "class2")
 #' set.seed(1)
 #' dat <- data.frame(
@@ -97,85 +97,96 @@
 #'   class1 = runif(50)
 #' )
 #' dat$class2 <- 1 - dat$class1
-#' 
+#'
 #' defaultSummary(dat, lev = classes)
 #' twoClassSummary(dat, lev = classes)
 #' prSummary(dat, lev = classes)
 #' mnLogLoss(dat, lev = classes)
-#' 
+#'
 #' @export postResample
-postResample <- function(pred, obs)
-{
-
+postResample <- function(pred, obs) {
   isNA <- is.na(pred)
   pred <- pred[!isNA]
   obs <- obs[!isNA]
 
-  if (!is.factor(obs) && is.numeric(obs))
-    {
-      if(length(obs) + length(pred) == 0)
-        {
-          out <- rep(NA, 3)
-        } else {
-          if(length(unique(pred)) < 2 || length(unique(obs)) < 2)
-            {
-              resamplCor <- NA
-            } else {
-              resamplCor <- try(cor(pred, obs, use = "pairwise.complete.obs"), silent = TRUE)
-              if (inherits(resamplCor, "try-error")) resamplCor <- NA
-            }
-          mse <- mean((pred - obs)^2)
-          mae <- mean(abs(pred - obs))
-
-          out <- c(sqrt(mse), resamplCor^2, mae)
-        }
-      names(out) <- c("RMSE", "Rsquared", "MAE")
+  if (!is.factor(obs) && is.numeric(obs)) {
+    if (length(obs) + length(pred) == 0) {
+      out <- rep(NA, 3)
     } else {
-      if(length(obs) + length(pred) == 0)
-        {
-          out <- rep(NA, 2)
-        } else {
-          pred <- factor(pred, levels = levels(obs))
-          requireNamespaceQuietStop("e1071")
-          out <- unlist(e1071::classAgreement(table(obs, pred)))[c("diag", "kappa")]
-        }
-      names(out) <- c("Accuracy", "Kappa")
+      if (length(unique(pred)) < 2 || length(unique(obs)) < 2) {
+        resamplCor <- NA
+      } else {
+        resamplCor <- try(
+          cor(pred, obs, use = "pairwise.complete.obs"),
+          silent = TRUE
+        )
+        if (inherits(resamplCor, "try-error")) resamplCor <- NA
+      }
+      mse <- mean((pred - obs)^2)
+      mae <- mean(abs(pred - obs))
+
+      out <- c(sqrt(mse), resamplCor^2, mae)
     }
-  if(any(is.nan(out))) out[is.nan(out)] <- NA
+    names(out) <- c("RMSE", "Rsquared", "MAE")
+  } else {
+    if (length(obs) + length(pred) == 0) {
+      out <- rep(NA, 2)
+    } else {
+      pred <- factor(pred, levels = levels(obs))
+      requireNamespaceQuietStop("e1071")
+      out <- unlist(e1071::classAgreement(table(obs, pred)))[c("diag", "kappa")]
+    }
+    names(out) <- c("Accuracy", "Kappa")
+  }
+  if (any(is.nan(out))) {
+    out[is.nan(out)] <- NA
+  }
   out
 }
 
 
 #' @rdname postResample
 #' @export
-twoClassSummary <- function (data, lev = NULL, model = NULL) {
-  if(length(lev) > 2) {
-    stop(paste("Your outcome has", length(lev),
-               "levels. The twoClassSummary() function isn't appropriate."))
+twoClassSummary <- function(data, lev = NULL, model = NULL) {
+  if (length(lev) > 2) {
+    stop(paste(
+      "Your outcome has",
+      length(lev),
+      "levels. The twoClassSummary() function isn't appropriate."
+    ))
   }
   requireNamespaceQuietStop('pROC')
   if (!all(levels(data[, "pred"]) == lev)) {
     stop("levels of observed and predicted data do not match")
   }
-  rocObject <- try(pROC::roc(data$obs, data[, lev[1]], direction = ">", quiet = TRUE), silent = TRUE)
-  rocAUC <- if(inherits(rocObject, "try-error")) NA else rocObject$auc
-  out <- c(rocAUC,
-           sensitivity(data[, "pred"], data[, "obs"], lev[1]),
-           specificity(data[, "pred"], data[, "obs"], lev[2]))
+  rocObject <- try(
+    pROC::roc(data$obs, data[, lev[1]], direction = ">", quiet = TRUE),
+    silent = TRUE
+  )
+  rocAUC <- if (inherits(rocObject, "try-error")) NA else rocObject$auc
+  out <- c(
+    rocAUC,
+    sensitivity(data[, "pred"], data[, "obs"], lev[1]),
+    specificity(data[, "pred"], data[, "obs"], lev[2])
+  )
   names(out) <- c("ROC", "Sens", "Spec")
   out
 }
 
 #' @rdname postResample
 #' @export
-mnLogLoss <- function(data, lev = NULL, model = NULL){
-  if(is.null(lev)) stop("'lev' cannot be NULL")
-  if(!all(lev %in% colnames(data)))
+mnLogLoss <- function(data, lev = NULL, model = NULL) {
+  if (is.null(lev)) {
+    stop("'lev' cannot be NULL")
+  }
+  if (!all(lev %in% colnames(data))) {
     stop("'data' should have columns consistent with 'lev'")
-  if(!all(sort(lev) %in% sort(levels(data$obs))))
+  }
+  if (!all(sort(lev) %in% sort(levels(data$obs)))) {
     stop("'data$obs' should have levels consistent with 'lev'")
+  }
 
-  dataComplete <- data[complete.cases(data),]
+  dataComplete <- data[complete.cases(data), ]
   probs <- as.matrix(dataComplete[, lev, drop = FALSE])
 
   logLoss <- ModelMetrics::mlogLoss(dataComplete$obs, probs)
@@ -184,14 +195,15 @@ mnLogLoss <- function(data, lev = NULL, model = NULL){
 
 #' @rdname postResample
 #' @export
-multiClassSummary <- function(data, lev = NULL, model = NULL){
+multiClassSummary <- function(data, lev = NULL, model = NULL) {
   #Check data
-  if (!all(levels(data[, "pred"]) == levels(data[, "obs"])))
+  if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) {
     stop("levels of observed and predicted data do not match")
+  }
 
   has_class_probs <- all(lev %in% colnames(data))
 
-  if(has_class_probs) {
+  if (has_class_probs) {
     ## Overall multinomial loss
     lloss <- mnLogLoss(data = data, lev = lev, model = model)
 
@@ -200,27 +212,31 @@ multiClassSummary <- function(data, lev = NULL, model = NULL){
 
     #Calculate custom one-vs-all ROC curves for each class
     prob_stats <-
-      lapply(levels(data[, "pred"]),
-             function(x){
-               #Grab one-vs-all data for the class
-               obs  <- ifelse(data[,"obs"] == x, 1, 0)
-               prob <- data[,x]
-               roc_auc <- try(pROC::roc(obs, data[,x], direction = "<", quiet = TRUE), silent = TRUE)
-               roc_auc <- if (inherits(roc_auc, "try-error")) NA else roc_auc$auc
-               pr_auc <- try(MLmetrics::PRAUC(y_pred = data[,x], y_true = obs),
-                             silent = TRUE)
-               if(inherits(pr_auc, "try-error"))
-                 pr_auc <- NA
-               res <- c(ROC = roc_auc, AUC = pr_auc)
-               return(res)
-               })
+      lapply(levels(data[, "pred"]), function(x) {
+        #Grab one-vs-all data for the class
+        obs <- ifelse(data[, "obs"] == x, 1, 0)
+        prob <- data[, x]
+        roc_auc <- try(
+          pROC::roc(obs, data[, x], direction = "<", quiet = TRUE),
+          silent = TRUE
+        )
+        roc_auc <- if (inherits(roc_auc, "try-error")) NA else roc_auc$auc
+        pr_auc <- try(
+          MLmetrics::PRAUC(y_pred = data[, x], y_true = obs),
+          silent = TRUE
+        )
+        if (inherits(pr_auc, "try-error")) {
+          pr_auc <- NA
+        }
+        res <- c(ROC = roc_auc, AUC = pr_auc)
+        return(res)
+      })
     prob_stats <- do.call("rbind", prob_stats)
     prob_stats <- colMeans(prob_stats, na.rm = TRUE)
   }
 
   #Calculate confusion matrix-based statistics
-  CM <- confusionMatrix(data[, "pred"], data[, "obs"],
-                        mode = "everything")
+  CM <- confusionMatrix(data[, "pred"], data[, "obs"], mode = "everything")
 
   #Aggregate and average class-wise stats
   #Todo: add weights
@@ -234,34 +250,56 @@ multiClassSummary <- function(data, lev = NULL, model = NULL){
 
   # Aggregate overall stats
   overall_stats <-
-    if (has_class_probs)
-      c(CM$overall,
+    if (has_class_probs) {
+      c(
+        CM$overall,
         logLoss = as.numeric(lloss),
         AUC = unname(prob_stats["ROC"]),
-        prAUC = unname(prob_stats["AUC"]))
-  else
-    CM$overall
-
+        prAUC = unname(prob_stats["AUC"])
+      )
+    } else {
+      CM$overall
+    }
 
   # Combine overall with class-wise stats and remove some stats we don't want
   stats <- c(overall_stats, class_stats)
-  stats <- stats[! names(stats) %in% c('AccuracyNull', "AccuracyLower", "AccuracyUpper",
-                                       "AccuracyPValue", "McnemarPValue",
-                                       'Mean Prevalence', 'Mean Detection Prevalence')]
+  stats <- stats[
+    !names(stats) %in%
+      c(
+        'AccuracyNull',
+        "AccuracyLower",
+        "AccuracyUpper",
+        "AccuracyPValue",
+        "McnemarPValue",
+        'Mean Prevalence',
+        'Mean Detection Prevalence'
+      )
+  ]
 
   # Clean names
   names(stats) <- gsub('[[:blank:]]+', '_', names(stats))
 
   # Change name ordering to place most useful first
   # May want to remove some of these eventually
-  stat_list <- c("Accuracy", "Kappa", "Mean_F1",
-                 "Mean_Sensitivity", "Mean_Specificity",
-                 "Mean_Pos_Pred_Value", "Mean_Neg_Pred_Value",
-                 "Mean_Precision", "Mean_Recall",
-                 "Mean_Detection_Rate",
-                 "Mean_Balanced_Accuracy")
-  if(has_class_probs) stat_list <- c("logLoss", "AUC", "prAUC", stat_list)
-  if (length(levels(data[, "pred"])) == 2) stat_list <- gsub("^Mean_", "", stat_list)
+  stat_list <- c(
+    "Accuracy",
+    "Kappa",
+    "Mean_F1",
+    "Mean_Sensitivity",
+    "Mean_Specificity",
+    "Mean_Pos_Pred_Value",
+    "Mean_Neg_Pred_Value",
+    "Mean_Precision",
+    "Mean_Recall",
+    "Mean_Detection_Rate",
+    "Mean_Balanced_Accuracy"
+  )
+  if (has_class_probs) {
+    stat_list <- c("logLoss", "AUC", "prAUC", stat_list)
+  }
+  if (length(levels(data[, "pred"])) == 2) {
+    stat_list <- gsub("^Mean_", "", stat_list)
+  }
 
   stats <- stats[c(stat_list)]
 

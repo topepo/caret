@@ -19,7 +19,7 @@
 ## a fast version of diag(n, .) / sparse-Diagonal() + dimnames
 ## Originally .Diag in stats:contrast.R
 
-.RDiag <- function (nms, sparse) {
+.RDiag <- function(nms, sparse) {
   n <- as.integer(length(nms))
   d <- c(n, n)
   dn <- list(nms, nms)

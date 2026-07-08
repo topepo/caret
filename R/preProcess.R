@@ -197,15 +197,15 @@ getRangeBounds <- function(pp) {
 #' @family preprocessing
 #' @keywords utilities
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' data(BloodBrain)
 #' # one variable has one unique value
 #' preProc <- preProcess(bbbDescr)
-#' 
+#'
 #' preProc <- preProcess(bbbDescr[1:100, -3])
 #' training <- predict(preProc, bbbDescr[1:100, -3])
 #' test <- predict(preProc, bbbDescr[101:208, -3])
-#' 
+#'
 #' @export preProcess
 preProcess <- function(x, ...) UseMethod("preProcess")
 
@@ -1249,7 +1249,8 @@ pre_process_options <- function(opts, vars) {
   }
 
   if (
-    any(methods %in% "range") && any(methods %in% c("center", "scale", "BoxCox"))
+    any(methods %in% "range") &&
+      any(methods %in% c("center", "scale", "BoxCox"))
   ) {
     stop(
       "Centering, scaling and/or Box-Cox transformations are inconsistent with scaling to a range"

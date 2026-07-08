@@ -37,7 +37,7 @@
 #' fit1 <- earth(x = trees[, -3], y = trees[, 3])
 #' set.seed(2189)
 #' fit2 <- bagEarth(x = trees[, -3], y = trees[, 3], B = 10)
-#' 
+#'
 #' @keywords regression
 #'
 #' @export
@@ -222,7 +222,7 @@
 #' @keywords regression
 #' @export
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' data(trees)
 #' ## out of bag predictions vs just re-predicting the training set
 #' set.seed(655)
@@ -230,7 +230,7 @@
 #' set.seed(655)
 #' fit2 <- bagEarth(Volume ~ ., data = trees, keepX = FALSE)
 #' hist(predict(fit1) - predict(fit2))
-#' 
+#'
 #' @export predict.bagEarth
 "predict.bagEarth" <-
   function(object, newdata = NULL, type = NULL, ...) {
@@ -326,12 +326,12 @@ print.bagEarth <- function(x, ...) {
 #' @keywords manip
 #' @export
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' data(trees)
 #' set.seed(9655)
 #' fit <- bagEarth(trees[, -3], trees[, 3])
 #' summary(fit)
-#' 
+#'
 #' @export summary.bagEarth
 "summary.bagEarth" <-
   function(object, ...) {

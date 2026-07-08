@@ -52,137 +52,166 @@
 #' @seealso [pls::plsr()], [spls::spls()]
 #' @keywords models
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' data(mdrr)
 #' set.seed(1)
 #' inTrain <- sample(seq(along.with = mdrrClass), 450)
-#' 
+#'
 #' nzv <- nearZeroVar(mdrrDescr)
 #' filteredDescr <- mdrrDescr[, -nzv]
-#' 
+#'
 #' training <- filteredDescr[inTrain, ]
 #' test <- filteredDescr[-inTrain, ]
 #' trainMDRR <- mdrrClass[inTrain]
 #' testMDRR <- mdrrClass[-inTrain]
-#' 
+#'
 #' preProcValues <- preProcess(training)
-#' 
+#'
 #' trainDescr <- predict(preProcValues, training)
 #' testDescr <- predict(preProcValues, test)
-#' 
+#'
 #' useSoftmax <- plsda(trainDescr, trainMDRR, ncomp = 5)
-#' 
+#'
 #' confusionMatrix(predict(useSoftmax, testDescr), testMDRR)
-#' 
+#'
 #' histogram(
 #'   ~ predict(useSoftmax, testDescr, type = "prob")[, "Active", ] | testMDRR,
 #'   xlab = "Active Prob",
 #'   xlim = c(-.1, 1.1)
 #' )
-#' 
+#'
 #' ## different sized objects are returned
 #' length(predict(useSoftmax, testDescr))
 #' dim(predict(useSoftmax, testDescr, ncomp = 1:3))
 #' dim(predict(useSoftmax, testDescr, type = "prob"))
 #' dim(predict(useSoftmax, testDescr, type = "prob", ncomp = 1:3))
-#' 
+#'
 #' ## Using spls:
 #' ## (As of 11/09, the spls package now has a similar function with
 #' ## the same name. To avoid conflicts, use caret:::splsda to
 #' ## get this version)
-#' 
+#'
 #' splsFit <- caret:::splsda(trainDescr, trainMDRR, K = 5, eta = .9)
-#' 
+#'
 #' confusionMatrix(caret:::predict.splsda(splsFit, testDescr), testMDRR)
-#' 
+#'
 #' @export plsda
-plsda <- function (x, ...)
+plsda <- function(x, ...) {
   UseMethod("plsda")
+}
 
 #' @rdname plsda
 #' @export
-predict.plsda <- function(object, newdata = NULL, ncomp = NULL, type = "class", ...){
+predict.plsda <- function(
+  object,
+  newdata = NULL,
+  ncomp = NULL,
+  type = "class",
+  ...
+) {
   requireNamespaceQuietStop('pls')
-  if(is.null(ncomp))
-    if(!is.null(object$ncomp)) ncomp <- object$ncomp else stop("specify ncomp")
+  if (is.null(ncomp)) {
+    if (!is.null(object$ncomp)) ncomp <- object$ncomp else stop("specify ncomp")
+  }
 
-  if(!is.null(newdata)) {
-    if(!is.matrix(newdata)) newdata <- as.matrix(newdata)
+  if (!is.null(newdata)) {
+    if (!is.matrix(newdata)) newdata <- as.matrix(newdata)
   }
 
   ## make sure that the prediction function from pls is used
   class(object) <- "mvr"
-  tmpPred <- predict(object, newdata = newdata)[,,ncomp,drop = FALSE]
+  tmpPred <- predict(object, newdata = newdata)[,, ncomp, drop = FALSE]
 
-  if(type == "raw") return(tmpPred)
+  if (type == "raw") {
+    return(tmpPred)
+  }
 
-  if(is.null(object$probModel)) {
+  if (is.null(object$probModel)) {
     ## use softmax
-    switch(type,
+    switch(
+      type,
 
-           class = {
-             if(length(dim(tmpPred)) < 3) {
-               ##only requested one component
-               out <- object$obsLevels[apply(tmpPred, 1, which.max)]
-               out <- factor(out, levels = object$obsLevels)
-             } else {
-               ## more than one component
-               tmpOut <- matrix("", nrow = dim(tmpPred)[1], ncol = dim(tmpPred)[3])
-               for(i in 1:dim(tmpPred)[3]) {
-                 tmpOut[,i] <- object$obsLevels[apply(tmpPred[,,i,drop=FALSE], 1, which.max)]
-               }
-               out <- as.data.frame(tmpOut, stringsAsFactors = TRUE)
-               out <- as.data.frame(
-                 lapply(out, function(x, y) factor(x, levels = y),
-                        y = object$obsLevels),
-                 stringsAsFactors = TRUE
-               )
-               names(out) <- paste("ncomp", ncomp, sep = "")
-               rownames(out) <- rownames(newdata)
-               if(length(ncomp) == 1) out <- out[,1]
-             }
-           },
-           prob = {
-             ## fix prob names
-             if(length(dim(tmpPred)) < 3) {
-               out <- t(apply(tmpPred, 1, function(data) exp(data)/sum(exp(data))))
-             } else {
-               ## more than one component
-               out <- tmpPred * NA
-               for(i in 1:dim(tmpPred)[3]) {
-                 out[,,i] <- t(apply(tmpPred[,,i,drop=FALSE], 1, function(data) exp(data)/sum(exp(data))))
-               }
-             }
-           })
+      class = {
+        if (length(dim(tmpPred)) < 3) {
+          ##only requested one component
+          out <- object$obsLevels[apply(tmpPred, 1, which.max)]
+          out <- factor(out, levels = object$obsLevels)
+        } else {
+          ## more than one component
+          tmpOut <- matrix("", nrow = dim(tmpPred)[1], ncol = dim(tmpPred)[3])
+          for (i in 1:dim(tmpPred)[3]) {
+            tmpOut[, i] <- object$obsLevels[apply(
+              tmpPred[,, i, drop = FALSE],
+              1,
+              which.max
+            )]
+          }
+          out <- as.data.frame(tmpOut, stringsAsFactors = TRUE)
+          out <- as.data.frame(
+            lapply(
+              out,
+              function(x, y) factor(x, levels = y),
+              y = object$obsLevels
+            ),
+            stringsAsFactors = TRUE
+          )
+          names(out) <- paste("ncomp", ncomp, sep = "")
+          rownames(out) <- rownames(newdata)
+          if (length(ncomp) == 1) out <- out[, 1]
+        }
+      },
+      prob = {
+        ## fix prob names
+        if (length(dim(tmpPred)) < 3) {
+          out <- t(apply(tmpPred, 1, function(data) exp(data) / sum(exp(data))))
+        } else {
+          ## more than one component
+          out <- tmpPred * NA
+          for (i in 1:dim(tmpPred)[3]) {
+            out[,, i] <- t(apply(
+              tmpPred[,, i, drop = FALSE],
+              1,
+              function(data) exp(data) / sum(exp(data))
+            ))
+          }
+        }
+      }
+    )
   } else {
     ## Bayes rule
 
     requireNamespaceQuietStop("klaR")
     tmp <- vector(mode = "list", length = length(ncomp))
-    for(i in seq(along.with = ncomp)) {
-      tmp[[i]] <- predict(object$probModel[[ ncomp[i] ]],
-                          as.data.frame(tmpPred[,-length(object$obsLevels),i]), stringsAsFactors = TRUE)
+    for (i in seq(along.with = ncomp)) {
+      tmp[[i]] <- predict(
+        object$probModel[[ncomp[i]]],
+        as.data.frame(tmpPred[, -length(object$obsLevels), i]),
+        stringsAsFactors = TRUE
+      )
     }
 
-    if(type == "class") {
-      out <- t(do.call("rbind",
-                       lapply(tmp, function(x) as.character(x$class))))
+    if (type == "class") {
+      out <- t(do.call("rbind", lapply(tmp, function(x) as.character(x$class))))
       rownames(out) <- names(tmp[[1]]$class)
       colnames(out) <- paste("ncomp", ncomp, sep = "")
       out <- as.data.frame(out, stringsAsFactors = TRUE)
       out <- as.data.frame(
-        lapply(out, function(x, y) factor(x, levels = y),
-               y = object$obsLevels),
+        lapply(out, function(x, y) factor(x, levels = y), y = object$obsLevels),
         stringsAsFactors = TRUE
       )
-      if(length(ncomp) == 1) out <- out[,1]
+      if (length(ncomp) == 1) out <- out[, 1]
     } else {
-      out <- array(dim = c(dim(tmp[[1]]$posterior), length(ncomp)),
-                   dimnames = list(
-                     rownames(tmp[[1]]$posterior),
-                     colnames(tmp[[1]]$posterior),
-                     paste("ncomp", ncomp, sep = "")))
-      for(i in seq(along.with = ncomp)) out[,,i] <- tmp[[i]]$posterior
+      out <- array(
+        dim = c(dim(tmp[[1]]$posterior), length(ncomp)),
+        dimnames = list(
+          rownames(tmp[[1]]$posterior),
+          colnames(tmp[[1]]$posterior),
+          paste("ncomp", ncomp, sep = "")
+        )
+      )
+      for (i in seq(along.with = ncomp)) {
+        out[,, i] <- tmp[[i]]$posterior
+      }
     }
   }
   out
@@ -190,40 +219,59 @@ predict.plsda <- function(object, newdata = NULL, ncomp = NULL, type = "class", 
 
 #' @rdname plsda
 #' @export
-plsda.default <- function(x, y, ncomp = 2, probMethod = "softmax", prior = NULL, ...) {
+plsda.default <- function(
+  x,
+  y,
+  ncomp = 2,
+  probMethod = "softmax",
+  prior = NULL,
+  ...
+) {
   requireNamespaceQuietStop('pls')
 
   funcCall <- match.call(expand.dots = TRUE)
 
-  if(!is.matrix(x)) x <- as.matrix(x)
-  if(length(ncomp) > 1) {
+  if (!is.matrix(x)) {
+    x <- as.matrix(x)
+  }
+  if (length(ncomp) > 1) {
     ncomp <- max(ncomp)
     warning(paste(
       "A value single ncomp must be specified.",
       "max(ncomp) was used.",
-      "Predictions can be obtained for values <= ncomp"))
+      "Predictions can be obtained for values <= ncomp"
+    ))
   }
 
-  if(probMethod == "softmax") {
-    if(!is.null(prior)) warning("Priors are ignored unless probMethod = \"Bayes\"")
+  if (probMethod == "softmax") {
+    if (!is.null(prior)) {
+      warning("Priors are ignored unless probMethod = \"Bayes\"")
+    }
   }
 
-
-  if(is.factor(y)) {
+  if (is.factor(y)) {
     obsLevels <- levels(y)
     oldY <- y
     y <- class2ind(y)
   } else {
-    if(is.matrix(y)) {
+    if (is.matrix(y)) {
       test <- apply(y, 1, sum)
-      if(any(test != 1)) stop("the rows of y must be 0/1 and sum to 1")
+      if (any(test != 1)) {
+        stop("the rows of y must be 0/1 and sum to 1")
+      }
       obsLevels <- colnames(y)
-      if(is.null(obsLevels)) stop("the y matrix must have column names")
+      if (is.null(obsLevels)) {
+        stop("the y matrix must have column names")
+      }
       oldY <- obsLevels[apply(y, 1, which.max)]
-    } else stop("y must be a matrix or a factor")
+    } else {
+      stop("y must be a matrix or a factor")
+    }
   }
 
-  if(!is.matrix(x)) x <- as.matrix(x)
+  if (!is.matrix(x)) {
+    x <- as.matrix(x)
+  }
 
   tmpData <- data.frame(n = paste("row", seq_len(nrow(y)), sep = ""))
   tmpData$y <- y
@@ -233,7 +281,7 @@ plsda.default <- function(x, y, ncomp = 2, probMethod = "softmax", prior = NULL,
 
   out$obsLevels <- obsLevels
   out$probMethod <- probMethod
-  if(probMethod == "Bayes") {
+  if (probMethod == "Bayes") {
     requireNamespaceQuietStop('klaR')
     makeModels <- function(x, y, pri) {
       probModel <- klaR::NaiveBayes(x, y, prior = pri, usekernel = TRUE)
@@ -246,10 +294,12 @@ plsda.default <- function(x, y, ncomp = 2, probMethod = "softmax", prior = NULL,
     train <- predict(out, as.matrix(tmpData$x), ncomp = 1:ncomp)
     ## Get the raw model predictions, but leave one behind since the
     ## final class probs sum to one
-    train <- train[, -length(obsLevels),, drop = FALSE]
+    train <- train[, -length(obsLevels), , drop = FALSE]
 
     out$probModel <- apply(train, 3, makeModels, y = oldY, pri = prior)
-  } else out$probModel <- NULL
+  } else {
+    out$probModel <- NULL
+  }
 
   ##out$call <- funcCall
   class(out) <- c("plsda", class(out))
@@ -257,29 +307,44 @@ plsda.default <- function(x, y, ncomp = 2, probMethod = "softmax", prior = NULL,
 }
 
 #' @export
-print.plsda <- function (x, ...) {
+print.plsda <- function(x, ...) {
   ## minor change to print.mvr
-  switch(x$method,
-         kernelpls = {
-           regr = "Partial least squares"
-           alg = "kernel"
-         }, simpls = {
-           regr = "Partial least squares"
-           alg = "simpls"
-         }, oscorespls = {
-           regr = "Partial least squares"
-           alg = "orthogonal scores"
-         }, svdpc = {
-           regr = "Principal component"
-           alg = "singular value decomposition"
-         }, stop("Unknown fit method."))
+  switch(
+    x$method,
+    kernelpls = {
+      regr = "Partial least squares"
+      alg = "kernel"
+    },
+    simpls = {
+      regr = "Partial least squares"
+      alg = "simpls"
+    },
+    oscorespls = {
+      regr = "Partial least squares"
+      alg = "orthogonal scores"
+    },
+    svdpc = {
+      regr = "Principal component"
+      alg = "singular value decomposition"
+    },
+    stop("Unknown fit method.")
+  )
   cat(regr, "classification, fitted with the", alg, "algorithm.")
-  if (!is.null(x$validation))
-    cat("\nCross-validated using", length(x$validation$segments),
-        attr(x$validation$segments, "type"), "segments.")
+  if (!is.null(x$validation)) {
+    cat(
+      "\nCross-validated using",
+      length(x$validation$segments),
+      attr(x$validation$segments, "type"),
+      "segments."
+    )
+  }
 
-  switch(x$probMethod,
-         softmax = cat("\nThe softmax function was used to compute class probabilities.\n"),
-         Bayes = cat("\nBayes rule was used to compute class probabilities.\n"))
+  switch(
+    x$probMethod,
+    softmax = cat(
+      "\nThe softmax function was used to compute class probabilities.\n"
+    ),
+    Bayes = cat("\nBayes rule was used to compute class probabilities.\n")
+  )
   invisible(x)
 }

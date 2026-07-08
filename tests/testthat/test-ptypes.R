@@ -19,14 +19,24 @@ test_that("ptypes for x/y interface", {
   skip_on_cran()
   none <- trainControl(method = "none")
 
-  xy_plain <- train(x = mtcars_x, y = mtcars$mpg, method = "lm", trControl = none)
+  xy_plain <- train(
+    x = mtcars_x,
+    y = mtcars$mpg,
+    method = "lm",
+    trControl = none
+  )
   xy_oned <- train(
     x = mtcars[, "wt", drop = FALSE],
     y = mtcars$mpg,
     method = "lm",
     trControl = none
   )
-  xy_dmmy <- train(x = sac_x_train, y = sac_y_train, method = "lm", trControl = none)
+  xy_dmmy <- train(
+    x = sac_x_train,
+    y = sac_y_train,
+    method = "lm",
+    trControl = none
+  )
 
   expect_equal(xy_plain$ptype, mtcars_0)
   expect_equal(xy_oned$ptype, wt_0)

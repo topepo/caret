@@ -98,10 +98,10 @@
 #' @family performance
 #' @keywords utilities
 #' @examples
-#' 
+#'
 #' ###################
 #' ## 2 class example
-#' 
+#'
 #' lvs <- c("normal", "abnormal")
 #' truth <- factor(rep(lvs, times = c(86, 258)), levels = rev(lvs))
 #' pred <- factor(
@@ -111,85 +111,109 @@
 #'   ),
 #'   levels = rev(lvs)
 #' )
-#' 
+#'
 #' xtab <- table(pred, truth)
-#' 
+#'
 #' confusionMatrix(xtab)
 #' confusionMatrix(pred, truth)
 #' confusionMatrix(xtab, prevalence = 0.25)
-#' 
+#'
 #' ###################
 #' ## 3 class example
-#' 
+#'
 #' confusionMatrix(iris$Species, sample(iris$Species))
-#' 
+#'
 #' newPrior <- c(.05, .8, .15)
 #' names(newPrior) <- levels(iris$Species)
-#' 
+#'
 #' confusionMatrix(iris$Species, sample(iris$Species))
-#' 
+#'
 #' @export confusionMatrix
 confusionMatrix <-
-  function(data, ...){
+  function(data, ...) {
     UseMethod("confusionMatrix")
   }
 
 #' @rdname confusionMatrix
 #' @export
-confusionMatrix.default <- function(data, reference,
-                                    positive = NULL,
-                                    dnn = c("Prediction", "Reference"),
-                                    prevalence = NULL,
-                                    mode = "sens_spec",
-                                    ...) {
-  if(!(mode %in% c("sens_spec", "prec_recall", "everything")))
+confusionMatrix.default <- function(
+  data,
+  reference,
+  positive = NULL,
+  dnn = c("Prediction", "Reference"),
+  prevalence = NULL,
+  mode = "sens_spec",
+  ...
+) {
+  if (!(mode %in% c("sens_spec", "prec_recall", "everything"))) {
     stop("`mode` should be either 'sens_spec', 'prec_recall', or 'everything'")
-  if(!is.factor(data) || !is.factor(reference)) {
-    stop("`data` and `reference` should be factors with the same levels.", call. = FALSE)
   }
-  if(!is.character(positive) && !is.null(positive)) stop("positive argument must be character")
+  if (!is.factor(data) || !is.factor(reference)) {
+    stop(
+      "`data` and `reference` should be factors with the same levels.",
+      call. = FALSE
+    )
+  }
+  if (!is.character(positive) && !is.null(positive)) {
+    stop("positive argument must be character")
+  }
 
-  if(length(levels(data)) > length(levels(reference)))
+  if (length(levels(data)) > length(levels(reference))) {
     stop("the data cannot have more levels than the reference")
+  }
 
-  if(!any(levels(data) %in% levels(reference))){
+  if (!any(levels(data) %in% levels(reference))) {
     stop("The data must contain some levels that overlap the reference.")
   }
 
-  if(!all(levels(data) %in% levels(reference))){
+  if (!all(levels(data) %in% levels(reference))) {
     badLevel <- levels(data)[!levels(data) %in% levels(reference)]
-    if(sum(table(data)[badLevel]) > 0){
+    if (sum(table(data)[badLevel]) > 0) {
       stop("The data contain levels not found in the data.")
-    } else{
-      warning("The data contains levels not found in the data, but they are empty and will be dropped.")
+    } else {
+      warning(
+        "The data contains levels not found in the data, but they are empty and will be dropped."
+      )
       data <- factor(as.character(data))
     }
   }
 
-  if(any(levels(reference) != levels(data))) {
-    warning("Levels are not in the same order for reference and data. Refactoring data to match.")
+  if (any(levels(reference) != levels(data))) {
+    warning(
+      "Levels are not in the same order for reference and data. Refactoring data to match."
+    )
     data <- as.character(data)
     data <- factor(data, levels = levels(reference))
   }
   classLevels <- levels(data)
   numLevels <- length(classLevels)
-  if(numLevels < 2)
+  if (numLevels < 2) {
     stop("there must be at least 2 factors levels in the data")
+  }
 
-  if(numLevels == 2 && is.null(positive))  positive <- levels(reference)[1]
+  if (numLevels == 2 && is.null(positive)) {
+    positive <- levels(reference)[1]
+  }
 
   classTable <- table(data, reference, dnn = dnn, ...)
 
-  getFromNamespace("confusionMatrix.table", "caret")(classTable, positive, prevalence = prevalence, mode = mode)
+  getFromNamespace("confusionMatrix.table", "caret")(
+    classTable,
+    positive,
+    prevalence = prevalence,
+    mode = mode
+  )
 }
 
 #' @rdname confusionMatrix
 #' @export
-confusionMatrix.matrix <- function(data,
-                                   positive = NULL,
-                                   prevalence = NULL,
-                                   mode = "sens_spec",
-                                   ...) {
+confusionMatrix.matrix <- function(
+  data,
+  positive = NULL,
+  prevalence = NULL,
+  mode = "sens_spec",
+  ...
+) {
   if (length(unique(dim(data))) != 1) {
     stop("matrix must have equal dimensions")
   }
@@ -199,116 +223,181 @@ confusionMatrix.matrix <- function(data,
 
 #' @rdname confusionMatrix
 #' @export
-confusionMatrix.table <- function(data, positive = NULL,
-                                  prevalence = NULL, mode = "sens_spec", ...){
-  if(!(mode %in% c("sens_spec", "prec_recall", "everything")))
+confusionMatrix.table <- function(
+  data,
+  positive = NULL,
+  prevalence = NULL,
+  mode = "sens_spec",
+  ...
+) {
+  if (!(mode %in% c("sens_spec", "prec_recall", "everything"))) {
     stop("`mode` should be either 'sens_spec', 'prec_recall', or 'everything'")
-  if(length(dim(data)) != 2) stop("the table must have two dimensions")
-  if(!all.equal(nrow(data), ncol(data))) stop("the table must nrow = ncol")
-  if(!isTRUE(all.equal(rownames(data), colnames(data)))) stop("the table must the same classes in the same order")
-  if(!is.character(positive) && !is.null(positive)) stop("positive argument must be character")
+  }
+  if (length(dim(data)) != 2) {
+    stop("the table must have two dimensions")
+  }
+  if (!all.equal(nrow(data), ncol(data))) {
+    stop("the table must nrow = ncol")
+  }
+  if (!isTRUE(all.equal(rownames(data), colnames(data)))) {
+    stop("the table must the same classes in the same order")
+  }
+  if (!is.character(positive) && !is.null(positive)) {
+    stop("positive argument must be character")
+  }
 
   classLevels <- rownames(data)
   numLevels <- length(classLevels)
-  if(numLevels < 2)
+  if (numLevels < 2) {
     stop("there must be at least 2 factors levels in the data")
+  }
 
-  if(numLevels == 2 && is.null(positive))  positive <- rownames(data)[1]
+  if (numLevels == 2 && is.null(positive)) {
+    positive <- rownames(data)[1]
+  }
 
-
-  if(numLevels == 2 & !is.null(prevalence) && length(prevalence) != 1)
+  if (numLevels == 2 & !is.null(prevalence) && length(prevalence) != 1) {
     stop("with two levels, one prevalence probability must be specified")
+  }
 
-  if(numLevels > 2 & !is.null(prevalence) && length(prevalence) != numLevels)
-    stop("the number of prevalence probability must be the same as the number of levels")
+  if (numLevels > 2 & !is.null(prevalence) && length(prevalence) != numLevels) {
+    stop(
+      "the number of prevalence probability must be the same as the number of levels"
+    )
+  }
 
-  if(numLevels > 2 & !is.null(prevalence) && is.null(names(prevalence)))
+  if (numLevels > 2 & !is.null(prevalence) && is.null(names(prevalence))) {
     stop("with >2 classes, the prevalence vector must have names")
+  }
 
   propCI <- function(x) {
     res <- try(binom.test(sum(diag(x)), sum(x))$conf.int, silent = TRUE)
-    if(inherits(res, "try-error"))
+    if (inherits(res, "try-error")) {
       res <- rep(NA, 2)
+    }
     res
   }
 
-  propTest <- function(x){
+  propTest <- function(x) {
     res <- try(
-      binom.test(sum(diag(x)),
-                 sum(x),
-                 p = max(apply(x, 2, sum)/sum(x)),
-                 alternative = "greater"),
-      silent = TRUE)
-    res <- if(inherits(res, "try-error"))
+      binom.test(
+        sum(diag(x)),
+        sum(x),
+        p = max(apply(x, 2, sum) / sum(x)),
+        alternative = "greater"
+      ),
+      silent = TRUE
+    )
+    res <- if (inherits(res, "try-error")) {
       c("null.value.probability of success" = NA, p.value = NA)
-    else
+    } else {
       res <- unlist(res[c("null.value", "p.value")])
+    }
     res
   }
 
-  overall <- c(unlist(e1071::classAgreement(data))[c("diag", "kappa")],
-               propCI(data),
-               propTest(data),
-               mcnemar.test(data)$p.value)
+  overall <- c(
+    unlist(e1071::classAgreement(data))[c("diag", "kappa")],
+    propCI(data),
+    propTest(data),
+    mcnemar.test(data)$p.value
+  )
 
-  names(overall) <- c("Accuracy", "Kappa", "AccuracyLower", "AccuracyUpper", "AccuracyNull", "AccuracyPValue", "McnemarPValue")
+  names(overall) <- c(
+    "Accuracy",
+    "Kappa",
+    "AccuracyLower",
+    "AccuracyUpper",
+    "AccuracyNull",
+    "AccuracyPValue",
+    "McnemarPValue"
+  )
 
-  if(numLevels == 2) {
-    if(is.null(prevalence)) prevalence <- sum(data[, positive])/sum(data)
+  if (numLevels == 2) {
+    if (is.null(prevalence)) {
+      prevalence <- sum(data[, positive]) / sum(data)
+    }
     negative <- classLevels[!(classLevels %in% positive)]
-    tableStats <- c(sensitivity.table(data, positive),
-                    specificity.table(data, negative),
-                    posPredValue.table(data, positive, prevalence = prevalence),
-                    negPredValue.table(data, negative, prevalence = prevalence),
-                    precision.table(data, relevant = positive),
-                    recall.table(data, relevant = positive),
-                    F_meas.table(data, relevant = positive),
-                    prevalence,
-                    sum(data[positive, positive])/sum(data),
-                    sum(data[positive, ])/sum(data))
-    names(tableStats) <- c("Sensitivity", "Specificity",
-                           "Pos Pred Value", "Neg Pred Value",
-                           "Precision", "Recall", "F1",
-                           "Prevalence", "Detection Rate",
-                           "Detection Prevalence")
-    tableStats["Balanced Accuracy"] <- (tableStats["Sensitivity"]+tableStats["Specificity"])/2
-
+    tableStats <- c(
+      sensitivity.table(data, positive),
+      specificity.table(data, negative),
+      posPredValue.table(data, positive, prevalence = prevalence),
+      negPredValue.table(data, negative, prevalence = prevalence),
+      precision.table(data, relevant = positive),
+      recall.table(data, relevant = positive),
+      F_meas.table(data, relevant = positive),
+      prevalence,
+      sum(data[positive, positive]) / sum(data),
+      sum(data[positive, ]) / sum(data)
+    )
+    names(tableStats) <- c(
+      "Sensitivity",
+      "Specificity",
+      "Pos Pred Value",
+      "Neg Pred Value",
+      "Precision",
+      "Recall",
+      "F1",
+      "Prevalence",
+      "Detection Rate",
+      "Detection Prevalence"
+    )
+    tableStats["Balanced Accuracy"] <- (tableStats["Sensitivity"] +
+      tableStats["Specificity"]) /
+      2
   } else {
-
     tableStats <- matrix(NA, nrow = length(classLevels), ncol = 11)
 
-    for(i in seq(along.with = classLevels)) {
+    for (i in seq(along.with = classLevels)) {
       pos <- classLevels[i]
       neg <- classLevels[!(classLevels %in% classLevels[i])]
-      prev <- if(is.null(prevalence)) sum(data[, pos])/sum(data) else prevalence[pos]
-      tableStats[i,] <- c(sensitivity.table(data, pos),
-                          specificity.table(data, neg),
-                          posPredValue.table(data, pos, prevalence = prev),
-                          negPredValue.table(data, neg, prevalence = prev),
-                          precision.table(data, relevant = pos),
-                          recall.table(data, relevant = pos),
-                          F_meas.table(data, relevant = pos),
-                          prev,
-                          sum(data[pos, pos])/sum(data),
-                          sum(data[pos, ])/sum(data), NA)
-      tableStats[i,11] <- (tableStats[i,1] + tableStats[i,2])/2
+      prev <- if (is.null(prevalence)) {
+        sum(data[, pos]) / sum(data)
+      } else {
+        prevalence[pos]
+      }
+      tableStats[i, ] <- c(
+        sensitivity.table(data, pos),
+        specificity.table(data, neg),
+        posPredValue.table(data, pos, prevalence = prev),
+        negPredValue.table(data, neg, prevalence = prev),
+        precision.table(data, relevant = pos),
+        recall.table(data, relevant = pos),
+        F_meas.table(data, relevant = pos),
+        prev,
+        sum(data[pos, pos]) / sum(data),
+        sum(data[pos, ]) / sum(data),
+        NA
+      )
+      tableStats[i, 11] <- (tableStats[i, 1] + tableStats[i, 2]) / 2
     }
     rownames(tableStats) <- paste("Class:", classLevels)
-    colnames(tableStats) <- c("Sensitivity", "Specificity",
-                              "Pos Pred Value", "Neg Pred Value",
-                              "Precision", "Recall", "F1",
-                              "Prevalence", "Detection Rate",
-                              "Detection Prevalence", "Balanced Accuracy")
+    colnames(tableStats) <- c(
+      "Sensitivity",
+      "Specificity",
+      "Pos Pred Value",
+      "Neg Pred Value",
+      "Precision",
+      "Recall",
+      "F1",
+      "Prevalence",
+      "Detection Rate",
+      "Detection Prevalence",
+      "Balanced Accuracy"
+    )
   }
 
   structure(
-    list(positive = positive,
-         table = data,
-         overall = overall,
-         byClass = tableStats,
-         mode = mode,
-         dots = list(...)),
-    class = "confusionMatrix")
+    list(
+      positive = positive,
+      table = data,
+      overall = overall,
+      byClass = tableStats,
+      mode = mode,
+      dots = list(...)
+    ),
+    class = "confusionMatrix"
+  )
 }
 
 #' Confusion matrix as a table
@@ -331,7 +420,7 @@ confusionMatrix.table <- function(data, positive = NULL,
 #' @examples
 #' ###################
 #' ## 2 class example
-#' 
+#'
 #' lvs <- c("normal", "abnormal")
 #' truth <- factor(rep(lvs, times = c(86, 258)), levels = rev(lvs))
 #' pred <- factor(
@@ -341,35 +430,40 @@ confusionMatrix.table <- function(data, positive = NULL,
 #'   ),
 #'   levels = rev(lvs)
 #' )
-#' 
+#'
 #' xtab <- table(pred, truth)
-#' 
+#'
 #' results <- confusionMatrix(xtab)
 #' as.table(results)
 #' as.matrix(results)
 #' as.matrix(results, what = "overall")
 #' as.matrix(results, what = "classes")
-#' 
+#'
 #' ###################
 #' ## 3 class example
-#' 
+#'
 #' xtab <- confusionMatrix(iris$Species, sample(iris$Species))
 #' as.matrix(xtab)
-#' 
+#'
 #' @keywords utilities
 #'
 #' @export
-as.matrix.confusionMatrix <- function(x, what = "xtabs", ...){
-  if(!(what %in% c("xtabs", "overall", "classes")))
+as.matrix.confusionMatrix <- function(x, what = "xtabs", ...) {
+  if (!(what %in% c("xtabs", "overall", "classes"))) {
     stop("what must be either xtabs, overall or classes")
-  out <- switch(what,
-                xtabs = matrix(as.vector(x$table),
-                               nrow = length(colnames(x$table)),
-                               dimnames = list(rownames(x$table), colnames(x$table))),
-                overall = as.matrix(x$overall),
-                classes = as.matrix(x$byClass))
-  if(what == "classes"){
-    if(length(colnames(x$table)) > 2){
+  }
+  out <- switch(
+    what,
+    xtabs = matrix(
+      as.vector(x$table),
+      nrow = length(colnames(x$table)),
+      dimnames = list(rownames(x$table), colnames(x$table))
+    ),
+    overall = as.matrix(x$overall),
+    classes = as.matrix(x$byClass)
+  )
+  if (what == "classes") {
+    if (length(colnames(x$table)) > 2) {
       out <- t(out)
       colnames(out) <- gsub("Class: ", "", colnames(out), fixed = TRUE)
     }
@@ -379,54 +473,74 @@ as.matrix.confusionMatrix <- function(x, what = "xtabs", ...){
 
 sbf_resampledCM <- function(x) {
   lev <- x$obsLevels
-  if("pred" %in% names(x) && !is.null(x$pred)) {
+  if ("pred" %in% names(x) && !is.null(x$pred)) {
     resampledCM <- do.call("rbind", x$pred[names(x$pred) == "predictions"])
-    resampledCM <- ddply(resampledCM, .(Resample), function(y) flatTable(pred  = y$pred, obs = y$obs))
-  } else stop(paste("When there are 50+ classes, the function does not automatically pre-compute the",
-                    "resampled confusion matrices. You can get them when the option",
-                    "`saveDetails = TRUE`."))
+    resampledCM <- ddply(resampledCM, .(Resample), function(y) {
+      flatTable(pred = y$pred, obs = y$obs)
+    })
+  } else {
+    stop(paste(
+      "When there are 50+ classes, the function does not automatically pre-compute the",
+      "resampled confusion matrices. You can get them when the option",
+      "`saveDetails = TRUE`."
+    ))
+  }
   resampledCM
 }
 rfe_resampledCM <- function(x) {
   lev <- x$obsLevels
-  if("resample" %in% names(x) &&
-     !is.null(x$resample) &&
-     sum(grepl("\\.cell[1-9]", names(x$resample))) > 3) {
+  if (
+    "resample" %in%
+      names(x) &&
+      !is.null(x$resample) &&
+      sum(grepl("\\.cell[1-9]", names(x$resample))) > 3
+  ) {
     resampledCM <- subset(x$resample, Variables == x$optsize)
-    resampledCM <- resampledCM[,grepl("\\.cell[1-9]", names(resampledCM))]
+    resampledCM <- resampledCM[, grepl("\\.cell[1-9]", names(resampledCM))]
   } else {
-    if(!is.null(x$pred)) {
-      resampledCM <- ddply(x$pred, .(Resample), function(y) flatTable(pred  = y$pred, obs = y$obs))
+    if (!is.null(x$pred)) {
+      resampledCM <- ddply(x$pred, .(Resample), function(y) {
+        flatTable(pred = y$pred, obs = y$obs)
+      })
     } else {
-      if(length(lev) > 50)
-        stop(paste("When there are 50+ classes, `the function does not automatically pre-compute the",
-                   "resampled confusion matrices. You can get them when the object",
-                   "has a `pred` element."))
+      if (length(lev) > 50) {
+        stop(paste(
+          "When there are 50+ classes, `the function does not automatically pre-compute the",
+          "resampled confusion matrices. You can get them when the object",
+          "has a `pred` element."
+        ))
+      }
     }
   }
   resampledCM
 }
 train_resampledCM <- function(x) {
-  if(x$modelType == "Regression")
+  if (x$modelType == "Regression") {
     stop("confusion matrices are only valid for classification models")
+  }
 
   lev <- levels(x)
 
   ## For problems with large numbers of classes, `train`, `rfe`, and `sbf` do not pre-compute the
   ## the resampled matrices. If the predictions have been saved, we can get them from there.
 
-  if("resampledCM" %in% names(x) && !is.null(x$resampledCM)) {
+  if ("resampledCM" %in% names(x) && !is.null(x$resampledCM)) {
     ## get only best tune
     names(x$bestTune) <- gsub("^\\.", "", names(x$bestTune))
     resampledCM <- merge(x$bestTune, x$resampledCM)
   } else {
-    if(!is.null(x$pred)) {
-      resampledCM <- ddply(merge(x$pred, x$bestTune), .(Resample), function(y) flatTable(pred  = y$pred, obs = y$obs))
+    if (!is.null(x$pred)) {
+      resampledCM <- ddply(merge(x$pred, x$bestTune), .(Resample), function(y) {
+        flatTable(pred = y$pred, obs = y$obs)
+      })
     } else {
-      if(length(lev) > 50)
-        stop(paste("When there are 50+ classes, `train` does not automatically pre-compute the",
-                   "resampled confusion matrices. You can get them from this function",
-                   "using a value of `savePredictions` other than FALSE."))
+      if (length(lev) > 50) {
+        stop(paste(
+          "When there are 50+ classes, `train` does not automatically pre-compute the",
+          "resampled confusion matrices. You can get them from this function",
+          "using a value of `savePredictions` other than FALSE."
+        ))
+      }
     }
   }
   resampledCM
@@ -434,8 +548,7 @@ train_resampledCM <- function(x) {
 
 
 #' @export
-as.table.confusionMatrix <- function(x, ...)  x$table
-
+as.table.confusionMatrix <- function(x, ...) x$table
 
 
 #' Estimate a Resampled Confusion Matrix
@@ -474,11 +587,11 @@ as.table.confusionMatrix <- function(x, ...)  x$table
 #' @keywords utilities
 #' @export
 #' @examples
-#' 
+#'
 #' data(iris)
 #' TrainData <- iris[, 1:4]
 #' TrainClasses <- iris[, 5]
-#' 
+#'
 #' knnFit <- train(
 #'   TrainData,
 #'   TrainClasses,
@@ -490,26 +603,37 @@ as.table.confusionMatrix <- function(x, ...)  x$table
 #' confusionMatrix(knnFit)
 #' confusionMatrix(knnFit, "average")
 #' confusionMatrix(knnFit, "none")
-#' 
+#'
 #' @export confusionMatrix.train
-confusionMatrix.train <- function(data, norm = "overall", dnn = c("Prediction", "Reference"), ...){
-  if(data$control$method %in% c("oob", "LOOCV", "none"))
-    stop("cannot compute confusion matrices for leave-one-out, out-of-bag resampling, or no resampling")
+confusionMatrix.train <- function(
+  data,
+  norm = "overall",
+  dnn = c("Prediction", "Reference"),
+  ...
+) {
+  if (data$control$method %in% c("oob", "LOOCV", "none")) {
+    stop(
+      "cannot compute confusion matrices for leave-one-out, out-of-bag resampling, or no resampling"
+    )
+  }
 
   if (inherits(data, "train")) {
-    if(data$modelType == "Regression")
+    if (data$modelType == "Regression") {
       stop("confusion matrices are only valid for classification models")
+    }
     lev <- levels(data)
     ## For problems with large numbers of classes, `train`, `rfe`, and `sbf` do not pre-compute the
     ## the resampled matrices. If the predictions have been saved, we can get them from there.
     resampledCM <- train_resampledCM(data)
   } else {
     lev <- data$obsLevels
-    if (inherits(data, "rfe")) resampledCM <- rfe_resampledCM(data)
+    if (inherits(data, "rfe")) {
+      resampledCM <- rfe_resampledCM(data)
+    }
     if (inherits(data, "sbf")) resampledCM <- sbf_resampledCM(data)
   }
 
-  if(!is.null(data$control$index)) {
+  if (!is.null(data$control$index)) {
     resampleN <- unlist(lapply(data$control$index, length))
     numResamp <- length(resampleN)
     resampText <- resampName(data)
@@ -518,25 +642,32 @@ confusionMatrix.train <- function(data, norm = "overall", dnn = c("Prediction", 
     numResamp <- 0
   }
 
-  counts <- as.matrix(resampledCM[ , grep("^\\.?cell", colnames(resampledCM))])
+  counts <- as.matrix(resampledCM[, grep("^\\.?cell", colnames(resampledCM))])
 
   ## normalize?
   norm <- match.arg(norm, c("none", "overall", "average"))
 
-  if(norm == "none") counts <- matrix(apply(counts, 2, sum), nrow = length(lev))
-  else counts <- matrix(apply(counts, 2, mean), nrow = length(lev))
+  if (norm == "none") {
+    counts <- matrix(apply(counts, 2, sum), nrow = length(lev))
+  } else {
+    counts <- matrix(apply(counts, 2, mean), nrow = length(lev))
+  }
 
-  if(norm == "overall") counts <- counts / sum(counts) * 100
+  if (norm == "overall") {
+    counts <- counts / sum(counts) * 100
+  }
 
   ## names
   rownames(counts) <- colnames(counts) <- lev
   names(dimnames(counts)) <- dnn
 
   ## out
-  out <- list(table = as.table(counts),
-              norm = norm,
-              B = length(data$control$index),
-              text = paste(resampText, "Confusion Matrix"))
+  out <- list(
+    table = as.table(counts),
+    norm = norm,
+    B = length(data$control$index),
+    text = paste(resampText, "Confusion Matrix")
+  )
   class(out) <- paste0("confusionMatrix.", class(data))
   out
 }
@@ -548,20 +679,26 @@ confusionMatrix.rfe <- confusionMatrix.train
 confusionMatrix.sbf <- confusionMatrix.train
 
 #' @export
-print.confusionMatrix.train <- function(x, digits = 1, ...){
+print.confusionMatrix.train <- function(x, digits = 1, ...) {
   cat(x$text, "\n")
-  normText <- switch(x$norm,
-                     none = "\n(entries are un-normalized aggregated counts)\n",
-                     average = "\n(entries are average cell counts across resamples)\n",
-                     overall = "\n(entries are percentual average cell counts across resamples)\n",
-                     "")
+  normText <- switch(
+    x$norm,
+    none = "\n(entries are un-normalized aggregated counts)\n",
+    average = "\n(entries are average cell counts across resamples)\n",
+    overall = "\n(entries are percentual average cell counts across resamples)\n",
+    ""
+  )
   cat(normText, "\n")
-  if(x$norm == "none" && x$B == 1) {
+  if (x$norm == "none" && x$B == 1) {
     print(getFromNamespace("confusionMatrix.table", "caret")(x$table))
   } else {
     print(round(x$table, digits))
 
-    out <- cbind("Accuracy (average)", ":", formatC(sum(diag(x$table) / sum(x$table))))
+    out <- cbind(
+      "Accuracy (average)",
+      ":",
+      formatC(sum(diag(x$table) / sum(x$table)))
+    )
 
     dimnames(out) <- list(rep("", nrow(out)), rep("", ncol(out)))
     print(out, quote = FALSE)
@@ -576,50 +713,89 @@ print.confusionMatrix.rfe <- print.confusionMatrix.train
 #' @export
 print.confusionMatrix.sbf <- print.confusionMatrix.train
 
-resampName <- function(x, numbers = TRUE){
-  if(!("control" %in% names(x))) return("")
-  if(numbers) {
+resampName <- function(x, numbers = TRUE) {
+  if (!("control" %in% names(x))) {
+    return("")
+  }
+  if (numbers) {
     resampleN <- unlist(lapply(x$control$index, length))
     numResamp <- length(resampleN)
-    out <- switch(tolower(x$control$method),
-                  none = "None",
-                  apparent = "Apparent",
-                  custom = paste("Custom Resampling (", numResamp, " reps)", sep = ""),
-                  timeslice = paste("Rolling Forecasting Origin Resampling (",
-                                    x$control$horizon, " held-out with",
-                                    ifelse(x$control$fixedWindow, " a ", " no "),
-                                    "fixed window)", sep = ""),
-                  oob = "Out of Bag Resampling",
-                  boot =, optimism_boot =, boot_all =,
-                  boot632 = paste("Bootstrapped (", numResamp, " reps)", sep = ""),
-                  cv = paste("Cross-Validated (", x$control$number, " fold)", sep = ""),
-                  repeatedcv = paste("Cross-Validated (", x$control$number, " fold, repeated ",
-                                     x$control$repeats, " times)", sep = ""),
-                  lgocv = paste("Repeated Train/Test Splits Estimated (", numResamp, " reps, ",
-                                round(x$control$p*100, 1), "%)", sep = ""),
-                  loocv = "Leave-One-Out Cross-Validation",
-                  adaptive_boot = paste("Adaptively Bootstrapped (", numResamp, " reps)", sep = ""),
-                  adaptive_cv = paste("Adaptively Cross-Validated (", x$control$number, " fold, repeated ",
-                                      x$control$repeats, " times)", sep = ""),
-                  adaptive_lgocv = paste("Adaptive Repeated Train/Test Splits Estimated (", numResamp, " reps, ",
-                                         round(x$control$p, 2), "%)", sep = "")
+    out <- switch(
+      tolower(x$control$method),
+      none = "None",
+      apparent = "Apparent",
+      custom = paste("Custom Resampling (", numResamp, " reps)", sep = ""),
+      timeslice = paste(
+        "Rolling Forecasting Origin Resampling (",
+        x$control$horizon,
+        " held-out with",
+        ifelse(x$control$fixedWindow, " a ", " no "),
+        "fixed window)",
+        sep = ""
+      ),
+      oob = "Out of Bag Resampling",
+      boot = ,
+      optimism_boot = ,
+      boot_all = ,
+      boot632 = paste("Bootstrapped (", numResamp, " reps)", sep = ""),
+      cv = paste("Cross-Validated (", x$control$number, " fold)", sep = ""),
+      repeatedcv = paste(
+        "Cross-Validated (",
+        x$control$number,
+        " fold, repeated ",
+        x$control$repeats,
+        " times)",
+        sep = ""
+      ),
+      lgocv = paste(
+        "Repeated Train/Test Splits Estimated (",
+        numResamp,
+        " reps, ",
+        round(x$control$p * 100, 1),
+        "%)",
+        sep = ""
+      ),
+      loocv = "Leave-One-Out Cross-Validation",
+      adaptive_boot = paste(
+        "Adaptively Bootstrapped (",
+        numResamp,
+        " reps)",
+        sep = ""
+      ),
+      adaptive_cv = paste(
+        "Adaptively Cross-Validated (",
+        x$control$number,
+        " fold, repeated ",
+        x$control$repeats,
+        " times)",
+        sep = ""
+      ),
+      adaptive_lgocv = paste(
+        "Adaptive Repeated Train/Test Splits Estimated (",
+        numResamp,
+        " reps, ",
+        round(x$control$p, 2),
+        "%)",
+        sep = ""
+      )
     )
   } else {
-    out <- switch(tolower(x$control$method),
-                  none = "None",
-                  apparent = "(Apparent)",
-                  custom = "Custom Resampling",
-                  timeslice = "Rolling Forecasting Origin Resampling",
-                  oob = "Out of Bag Resampling",
-                  boot = "(Bootstrap)",
-                  optimism_boot = "(Optimism Bootstrap)",
-                  boot_all = "(Bootstrap All)",
-                  boot632 = "(Bootstrap 632 Rule)",
-                  cv = "(Cross-Validation)",
-                  repeatedcv = "(Repeated Cross-Validation)",
-                  loocv = "Leave-One-Out Cross-Validation",
-                  lgocv = "(Repeated Train/Test Splits)")
-
+    out <- switch(
+      tolower(x$control$method),
+      none = "None",
+      apparent = "(Apparent)",
+      custom = "Custom Resampling",
+      timeslice = "Rolling Forecasting Origin Resampling",
+      oob = "Out of Bag Resampling",
+      boot = "(Bootstrap)",
+      optimism_boot = "(Optimism Bootstrap)",
+      boot_all = "(Bootstrap All)",
+      boot632 = "(Bootstrap 632 Rule)",
+      cv = "(Cross-Validation)",
+      repeatedcv = "(Repeated Cross-Validation)",
+      loocv = "Leave-One-Out Cross-Validation",
+      lgocv = "(Repeated Train/Test Splits)"
+    )
   }
   out
 }
@@ -642,47 +818,62 @@ resampName <- function(x, numbers = TRUE){
 #' @keywords utilities
 #' @export
 
-print.confusionMatrix <- function(x, mode = x$mode, digits = max(3, getOption("digits") - 3), printStats = TRUE, ...){
-  if(is.null(mode)) mode <- "sens_spec"
-  if(!(mode %in% c("sens_spec", "prec_recall", "everything")))
+print.confusionMatrix <- function(
+  x,
+  mode = x$mode,
+  digits = max(3, getOption("digits") - 3),
+  printStats = TRUE,
+  ...
+) {
+  if (is.null(mode)) {
+    mode <- "sens_spec"
+  }
+  if (!(mode %in% c("sens_spec", "prec_recall", "everything"))) {
     stop("`mode` should be either 'sens_spec', 'prec_recall', or 'everything'")
+  }
   cat("Confusion Matrix and Statistics\n\n")
   print(x$table, ...)
 
-  if(printStats) {
+  if (printStats) {
     tmp <- round(x$overall, digits = digits)
     pIndex <- grep("PValue", names(x$overall))
     tmp[pIndex] <- format.pval(x$overall[pIndex], digits = digits)
     overall <- tmp
 
-    accCI <- paste("(",
-                   paste(
-                     overall[ c("AccuracyLower", "AccuracyUpper")],
-                     collapse = ", "),
-                   ")",
-                   sep = "")
+    accCI <- paste(
+      "(",
+      paste(
+        overall[c("AccuracyLower", "AccuracyUpper")],
+        collapse = ", "
+      ),
+      ")",
+      sep = ""
+    )
 
-    overallText <- c(paste(overall["Accuracy"]),
-                     accCI,
-                     paste(overall[c("AccuracyNull", "AccuracyPValue")]),
-                     "",
-                     paste(overall["Kappa"]),
-                     "",
-                     paste(overall["McnemarPValue"]))
+    overallText <- c(
+      paste(overall["Accuracy"]),
+      accCI,
+      paste(overall[c("AccuracyNull", "AccuracyPValue")]),
+      "",
+      paste(overall["Kappa"]),
+      "",
+      paste(overall["McnemarPValue"])
+    )
 
-    overallNames <- c("Accuracy", "95% CI",
-                      "No Information Rate",
-                      "P-Value [Acc > NIR]",
-                      "",
-                      "Kappa",
-                      "",
-                      "Mcnemar's Test P-Value")
+    overallNames <- c(
+      "Accuracy",
+      "95% CI",
+      "No Information Rate",
+      "P-Value [Acc > NIR]",
+      "",
+      "Kappa",
+      "",
+      "Mcnemar's Test P-Value"
+    )
 
-    if(dim(x$table)[1] > 2){
+    if (dim(x$table)[1] > 2) {
       cat("\nOverall Statistics\n")
-      overallNames <- ifelse(overallNames == "",
-                             "",
-                             paste(overallNames, ":"))
+      overallNames <- ifelse(overallNames == "", "", paste(overallNames, ":"))
       out <- cbind(format(overallNames, justify = "right"), overallText)
       colnames(out) <- rep("", ncol(out))
       rownames(out) <- rep("", nrow(out))
@@ -690,23 +881,36 @@ print.confusionMatrix <- function(x, mode = x$mode, digits = max(3, getOption("d
       print(out, quote = FALSE)
 
       cat("\nStatistics by Class:\n\n")
-      if(mode == "prec_recall")
-        x$byClass <- x$byClass[,!grepl("(Sensitivity)|(Specificity)|(Pos Pred Value)|(Neg Pred Value)",
-                                     colnames(x$byClass))]
-      if(mode == "sens_spec")
-        x$byClass <- x$byClass[,!grepl("(Precision)|(Recall)|(F1)", colnames(x$byClass))]
+      if (mode == "prec_recall") {
+        x$byClass <- x$byClass[,
+          !grepl(
+            "(Sensitivity)|(Specificity)|(Pos Pred Value)|(Neg Pred Value)",
+            colnames(x$byClass)
+          )
+        ]
+      }
+      if (mode == "sens_spec") {
+        x$byClass <- x$byClass[,
+          !grepl("(Precision)|(Recall)|(F1)", colnames(x$byClass))
+        ]
+      }
       print(t(x$byClass), digits = digits)
-
     } else {
-      if(mode == "prec_recall")
-        x$byClass <- x$byClass[!grepl("(Sensitivity)|(Specificity)|(Pos Pred Value)|(Neg Pred Value)",
-                                       names(x$byClass))]
-      if(mode == "sens_spec")
-        x$byClass <- x$byClass[!grepl("(Precision)|(Recall)|(F1)", names(x$byClass))]
+      if (mode == "prec_recall") {
+        x$byClass <- x$byClass[
+          !grepl(
+            "(Sensitivity)|(Specificity)|(Pos Pred Value)|(Neg Pred Value)",
+            names(x$byClass)
+          )
+        ]
+      }
+      if (mode == "sens_spec") {
+        x$byClass <- x$byClass[
+          !grepl("(Precision)|(Recall)|(F1)", names(x$byClass))
+        ]
+      }
 
-      overallText <- c(overallText,
-                       "",
-                       format(x$byClass, digits = digits))
+      overallText <- c(overallText, "", format(x$byClass, digits = digits))
       overallNames <- c(overallNames, "", names(x$byClass))
       overallNames <- ifelse(overallNames == "", "", paste(overallNames, ":"))
 
