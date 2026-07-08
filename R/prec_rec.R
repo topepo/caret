@@ -118,7 +118,6 @@ recall <- function(data, ...) UseMethod("recall")
 }
 
 #' @rdname recall
-#' @importFrom stats complete.cases
 #' @export
 recall.default <- function(data, reference, relevant = levels(reference)[1],
                            na.rm = TRUE, ...) {
@@ -142,7 +141,6 @@ recall.default <- function(data, reference, relevant = levels(reference)[1],
 precision <- function(data, ...) UseMethod("precision")
 
 #' @rdname recall
-#' @importFrom stats complete.cases
 #' @export
 precision.default <- function(data, reference, relevant = levels(reference)[1],
                               na.rm = TRUE, ...) {
@@ -194,7 +192,6 @@ precision.table <- function (data, relevant = rownames(data)[1], ...) {
 F_meas <- function(data, ...) UseMethod("F_meas")
 
 #' @rdname recall
-#' @importFrom stats complete.cases
 #' @export
 F_meas.default <- function(data, reference, relevant = levels(reference)[1],
                            beta = 1,  na.rm = TRUE, ...) {

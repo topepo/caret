@@ -90,7 +90,6 @@ oob_pred.sbf <- function(x, average = TRUE, ...) {
   prd
 }
 
-#' @importFrom stats reshape
 #' @export
 oob_pred.list <- function(x, direction = "wide", what = "both", ...) {
   num <- length(x)
@@ -139,7 +138,6 @@ oob_pred.list <- function(x, direction = "wide", what = "both", ...) {
 
 get_averages <- function (x, ...) UseMethod("get_averages")
 
-#' @importFrom stats complete.cases
 #' @export
 get_averages.train <- function(x, prd, bycol = "rowIndex", ...) {
   if("Regression" %in% x$modelType) {
@@ -162,7 +160,6 @@ get_averages.train <- function(x, prd, bycol = "rowIndex", ...) {
   out
 }
 
-#' @importFrom stats complete.cases
 #' @export
 get_averages.rfe <- function(x, prd, bycol = "rowIndex", ...) {
   if(is.null(x$obsLevels)) {
@@ -185,7 +182,6 @@ get_averages.rfe <- function(x, prd, bycol = "rowIndex", ...) {
   out
 }
 
-#' @importFrom stats complete.cases
 #' @export
 get_averages.sbf <- function(x, prd, bycol = "rowIndex", ...) {
   if(is.null(x$obsLevels)) {
@@ -211,7 +207,6 @@ get_averages.sbf <- function(x, prd, bycol = "rowIndex", ...) {
 ###################################################################
 ##
 
-#' @importFrom stats complete.cases
 char_mode <- function(x, random = TRUE, na.rm = FALSE) {
   if(na.rm) x <- x[complete.cases(x)]
   tab <- table(x)
@@ -232,7 +227,6 @@ train_lev <- function(x) {
 }
 
 
-#' @importFrom stats cor
 corr_mat <- function (object, metric = object$metrics,
                        ...) {
   dat <- object$values[, grepl(paste0("~", metric[1]),

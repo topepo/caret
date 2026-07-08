@@ -237,7 +237,6 @@ bagControl <- function(
   }
 
 
-#' @importFrom stats contrasts model.matrix model.response model.weights na.omit
 #' @export
 "bag.formula" <-
   function(formula, data = NULL, ..., subset, weights, na.action = na.omit) {
@@ -274,7 +273,6 @@ bagControl <- function(
   }
 
 #' @rdname bag
-#' @importFrom stats predict
 #' @export
 "predict.bag" <-
   function(object, newdata = NULL, ...) {
@@ -323,7 +321,6 @@ print.bag <- function(x, ...) {
 }
 
 #' @rdname bag
-#' @importFrom stats quantile
 #' @export
 "summary.bag" <-
   function(object, ...) {
@@ -368,7 +365,6 @@ print.bag <- function(x, ...) {
   }
 
 #' @rdname bag
-#' @importFrom stats median predict
 #' @export
 ldaBag <- list(
   fit = function(x, y, ...) {
@@ -408,7 +404,6 @@ ldaBag <- list(
 )
 
 #' @rdname bag
-#' @importFrom stats median predict
 #' @export
 plsBag <- list(
   fit = function(x, y, ...) {
@@ -440,7 +435,6 @@ plsBag <- list(
 )
 
 #' @rdname bag
-#' @importFrom stats median predict
 #' @export
 nbBag <- list(
   fit = function(x, y, ...) {
@@ -473,7 +467,6 @@ nbBag <- list(
 
 
 #' @rdname bag
-#' @importFrom stats median
 #' @export
 ctreeBag <- list(
   fit = function(x, y, ...) {
@@ -527,7 +520,6 @@ ctreeBag <- list(
 )
 
 #' @rdname bag
-#' @importFrom stats median predict
 #' @export
 svmBag <- list(
   fit = function(x, y, ...) {
@@ -572,7 +564,6 @@ svmBag <- list(
 
 
 #' @rdname bag
-#' @importFrom stats median predict
 #' @export
 nnetBag <- list(
   fit = function(x, y, ...) {

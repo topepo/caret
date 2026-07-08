@@ -46,7 +46,6 @@
 #'   the distance to the best possible cutoff (i.e. perfect sensitivity and
 #'   specificity.
 #' @export
-#' @importFrom plyr ddply
 #' @examplesIf !caret:::is_cran_check()
 #' set.seed(2444)
 #' dat <- twoClassSim(500, intercept = -10)

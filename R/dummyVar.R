@@ -145,7 +145,6 @@
   }
 
 #' @rdname dummyVars
-#' @importFrom stats as.formula model.frame
 #' @export
 dummyVars.default <- function(
   formula,
@@ -223,7 +222,6 @@ print.dummyVars <- function(x, ...) {
 }
 
 #' @rdname dummyVars
-#' @importFrom stats delete.response model.frame model.matrix na.pass
 #' @export
 predict.dummyVars <- function(object, newdata, na.action = na.pass, ...) {
   if (is.null(newdata)) {
@@ -366,7 +364,6 @@ contr.dummy <- function(n, ...) {
 }
 
 #' @rdname dummyVars
-#' @importFrom stats model.matrix
 #' @export
 #' @param drop2nd A logical: if the factor has two levels, should a single
 #'   binary vector be returned?

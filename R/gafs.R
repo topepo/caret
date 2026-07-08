@@ -278,7 +278,6 @@ gafs_tourSelection <- function(population, fitness, k = 3, ...) {
 }
 
 #' @rdname gafs_initial
-#' @importFrom stats runif
 #' @export
 gafs_uCrossover <- function(population, parents, ...) {
   parents <- population[parents, , drop = FALSE]
@@ -449,8 +448,6 @@ ga_wrapper <- function(
 ###################################################################
 ##
 
-#' @importFrom stats runif
-#' @import foreach
 ga_select <- function(
   x,
   y,
@@ -822,7 +819,6 @@ ga_select <- function(
 ###################################################################
 ##
 
-#' @importFrom utils getFromNamespace
 #' @export
 print.gafs <- function(
   x,
@@ -1585,7 +1581,6 @@ ggplot.gafs <-
 ###################################################################
 ##
 
-#' @importFrom stats predict
 #' @export
 caretGA <- list(
   fit = function(x, y, lev = NULL, last = FALSE, ...) train(x, y, ...),
@@ -1619,7 +1614,6 @@ caretGA <- list(
   selectIter = best
 )
 
-#' @importFrom stats predict
 #' @export
 treebagGA <- list(
   fit = function(x, y, lev = NULL, last = FALSE, ...) {

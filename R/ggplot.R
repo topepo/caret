@@ -1,5 +1,4 @@
 #' @rdname plot.train
-#' @importFrom stats as.formula
 #' @export
 ggplot.train <- function(data = NULL, mapping = NULL, metric = data$metric[1], plotType = "scatter", output = "layered",
                nameInStrip = FALSE, highlight = FALSE, ..., environment = NULL) {
@@ -174,7 +173,6 @@ ggplot.rfe <- function(data = NULL, mapping = NULL, metric = data$metric[1],
   out
 }
 
-#' @importFrom stats complete.cases
 random_search_plot <- function(x, metric = x$metric[1]) {
 
   params <- x$modelInfo$parameters

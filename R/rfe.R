@@ -176,7 +176,6 @@
 rfe <- function(x, ...) UseMethod("rfe")
 
 #' @rdname rfe
-#' @importFrom stats predict runif
 #' @export
 "rfe.default" <-
   function(
@@ -415,7 +414,6 @@ rfe <- function(x, ...) UseMethod("rfe")
   }
 
 #' @inheritParams train
-#' @importFrom stats .getXlevels contrasts model.matrix model.response
 #' @rdname rfe
 #' @export
 rfe.formula <- function(form, data, ..., subset, na.action, contrasts = NULL) {
@@ -486,8 +484,6 @@ print.rfe <- function(
 ######################################################################
 
 #' @rdname rfe
-#' @importFrom stats complete.cases
-#' @importFrom utils flush.console
 #' @export
 rfeIter <- function(
   x,
@@ -1062,7 +1058,6 @@ caretFuncs <- list(
 
 ## write a better imp sort function
 #' @rdname caretFuncs
-#' @importFrom stats predict
 #' @export
 ldaFuncs <- list(
   summary = defaultSummary,
@@ -1097,7 +1092,6 @@ ldaFuncs <- list(
 )
 
 #' @rdname caretFuncs
-#' @importFrom stats predict
 #' @export
 treebagFuncs <- list(
   summary = defaultSummary,
@@ -1132,7 +1126,6 @@ treebagFuncs <- list(
 )
 
 #' @rdname caretFuncs
-#' @importFrom stats predict
 #' @export
 gamFuncs <- list(
   summary = defaultSummary,
@@ -1204,7 +1197,6 @@ gamFuncs <- list(
 )
 
 #' @rdname caretFuncs
-#' @importFrom stats predict
 #' @export
 rfFuncs <- list(
   summary = defaultSummary,
@@ -1251,7 +1243,6 @@ rfFuncs <- list(
 
 
 #' @rdname caretFuncs
-#' @importFrom stats predict lm
 #' @export
 lmFuncs <- list(
   summary = defaultSummary,
@@ -1285,7 +1276,6 @@ lmFuncs <- list(
 
 
 #' @rdname caretFuncs
-#' @importFrom stats predict
 #' @export
 nbFuncs <- list(
   summary = defaultSummary,
@@ -1319,7 +1309,6 @@ nbFuncs <- list(
 
 
 #' @rdname caretFuncs
-#' @importFrom stats predict glm
 #' @export
 lrFuncs <- ldaFuncs
 lrFuncs$fit <- function(x, y, first, last, ...) {
@@ -1406,7 +1395,6 @@ lrFuncs$rank <- function(object, x, y) {
 #' histogram(lmProfile)
 #' densityplot(lmProfile)
 #'
-#' @importFrom stats as.formula
 #' @export
 densityplot.rfe <- function(x, data = NULL, metric = x$metric, ...) {
   if (!is.null(match.call()$data)) {
@@ -1429,7 +1417,6 @@ densityplot.rfe <- function(x, data = NULL, metric = x$metric, ...) {
   densityplot(form, data = data, ...)
 }
 
-#' @importFrom stats as.formula
 #' @export
 histogram.rfe <- function(x, data = NULL, metric = x$metric, ...) {
   if (!is.null(match.call()$data)) {
@@ -1452,7 +1439,6 @@ histogram.rfe <- function(x, data = NULL, metric = x$metric, ...) {
   histogram(form, data = data, ...)
 }
 
-#' @importFrom stats as.formula
 #' @export
 stripplot.rfe <- function(x, data = NULL, metric = x$metric, ...) {
   if (!is.null(match.call()$data)) {
@@ -1486,7 +1472,6 @@ stripplot.rfe <- function(x, data = NULL, metric = x$metric, ...) {
   stripplot(form, data = data, ...)
 }
 
-#' @importFrom stats as.formula
 #' @export
 xyplot.rfe <- function(x, data = NULL, metric = x$metric, ...) {
   if (!is.null(match.call()$data)) {
@@ -1528,7 +1513,6 @@ varImp.rfe <- function(object, drop = FALSE, ...) {
   imp[order(-imp$Overall), , drop = FALSE]
 }
 
-#' @importFrom stats .checkMFClasses delete.response model.frame model.matrix na.omit
 #' @export
 predict.rfe <- function(object, newdata, ...) {
   if (length(list(...)) > 0) {
