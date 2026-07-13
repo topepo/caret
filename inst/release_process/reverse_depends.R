@@ -7,12 +7,14 @@ options(repos = "http://cran.r-project.org")
 ###  Make a time stamped path for the source code
 
 devel_path <- paste0("~/tmp/rev_deps_devel_", format(Sys.time(), "%Y_%m_%d_%H"))
-prod_path  <- paste0("~/tmp/rev_deps_prod_",  format(Sys.time(), "%Y_%m_%d_%H"))
+prod_path <- paste0("~/tmp/rev_deps_prod_", format(Sys.time(), "%Y_%m_%d_%H"))
 
-if(!dir.exists(devel_path))
+if (!dir.exists(devel_path)) {
   dir.create(devel_path)
-if(!dir.exists(prod_path))
+}
+if (!dir.exists(prod_path)) {
   dir.create(prod_path)
+}
 
 ##############################################################
 ### Copy the current tar file of caret sources to this path
@@ -41,7 +43,7 @@ summarize_check_packages_in_dir_results(prod_path)
 ### Look at differences
 
 has_error <- function(x) {
-  txt <- read.delim(x, sep = "\n", stringsAsFactors = FALSE)[,1]
+  txt <- read.delim(x, sep = "\n", stringsAsFactors = FALSE)[, 1]
   status_txt <- grep("^Status", txt, value = TRUE)
   pkg_issue <- any(grepl("but not available:", txt))
   isTRUE(grepl("ERROR", status_txt)) & !pkg_issue
@@ -50,12 +52,12 @@ has_error <- function(x) {
 check_dirs <- list.dirs(prod_path, recursive = FALSE)
 check_dirs <- grep("Rcheck$", basename(check_dirs), value = TRUE)
 
-for(i in check_dirs) {
+for (i in check_dirs) {
   old_check <- file.path(prod_path, i, "00check.log")
   new_check <- file.path(devel_path, i, "00check.log")
-  if(file.exists(old_check) && file.exists(new_check)) {
+  if (file.exists(old_check) && file.exists(new_check)) {
     # look for errors in either
-    if(has_error(old_check) || has_error(new_check)) {
+    if (has_error(old_check) || has_error(new_check)) {
       file_diff <- diffr(old_check, new_check)
       print(file_diff)
     }
@@ -63,21 +65,18 @@ for(i in check_dirs) {
 }
 
 
-
-
 # For the future:
-if(FALSE) {
+if (FALSE) {
   source("https://install-github.me/r-lib/revdepcheck")
   library(revdepcheck)
   library(parallel)
-  
+
   setwd("~/github/caret/")
-  
+
   revdep_check(num_workers = detectCores() - 1)
 }
 
 
-if(!interactive()) q("no")
-
-
-
+if (!interactive()) {
+  q("no")
+}
