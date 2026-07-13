@@ -31,7 +31,11 @@ modelInfo <- list(
     theDots <- list(...)
 
     if (!any(names(theDots) == "family")) {
-      args$family <- if (is.factor(y)) binomial else gaussian
+      if (is.factor(y)) {
+        args$family <- binomial
+      } else {
+        args$family <- gaussian
+      }
     }
 
     if (length(theDots) > 0) {

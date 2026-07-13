@@ -108,10 +108,10 @@ modelInfo <- list(
       apply(eachStat, 1, mean, na.rm = TRUE),
       apply(eachStat, 1, sd, na.rm = TRUE)
     )
-    names(out) <- if (is.factor(x$y)) {
-      c("Accuracy", "Kappa", "AccuracySD", "KappaSD")
+    if (is.factor(x$y)) {
+      names(out) <- c("Accuracy", "Kappa", "AccuracySD", "KappaSD")
     } else {
-      c("RMSE", "Rsquared", "RMSESD", "RsquaredSD")
+      names(out) <- c("RMSE", "Rsquared", "RMSESD", "RsquaredSD")
     }
     out
   }

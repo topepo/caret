@@ -12,10 +12,10 @@ modelInfo <- list(
     data.frame(parameter = "none")
   },
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-    dat <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      dat <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     dat$.outcome <- y
     if (length(levels(y)) > 2) {
@@ -24,7 +24,11 @@ modelInfo <- list(
 
     theDots <- list(...)
     if (!any(names(theDots) == "family")) {
-      theDots$family <- if (is.factor(y)) binomial() else gaussian()
+      if (is.factor(y)) {
+        theDots$family <- binomial()
+      } else {
+        theDots$family <- gaussian()
+      }
     }
 
     ## pass in any model weights
@@ -77,7 +81,13 @@ modelInfo <- list(
     vimp
   },
   predictors = function(x, ...) predictors(x$terms),
-  levels = function(x) if (any(names(x) == "obsLevels")) x$obsLevels else NULL,
+  levels = function(x) {
+    if (any(names(x) == "obsLevels")) {
+      x$obsLevels
+    } else {
+      NULL
+    }
+  },
   trim = function(x) {
     #Based off: http://www.win-vector.com/blog/2014/05/trimming-the-fat-from-glm-models-in-r/
     x$y = c()

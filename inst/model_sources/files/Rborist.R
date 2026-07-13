@@ -69,10 +69,10 @@ modelInfo <- list(
         e1071::classAgreement(x$validation$confusion)[["kappa"]]
       )
     )
-    names(out) <- if (x$problemType == "Regression") {
-      c("RMSE", "Rsquared")
+    if (x$problemType == "Regression") {
+      names(out) <- c("RMSE", "Rsquared")
     } else {
-      c("Accuracy", "Kappa")
+      names(out) <- c("Accuracy", "Kappa")
     }
     out
   }

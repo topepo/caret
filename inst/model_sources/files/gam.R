@@ -23,10 +23,10 @@ modelInfo <- list(
   },
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
     require(mgcv)
-    dat <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      dat <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     modForm <- caret:::smootherFormula(x)
     if (is.factor(y)) {

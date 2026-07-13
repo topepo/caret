@@ -45,7 +45,11 @@ modelInfo <- list(
     predEarth <- function(x) {
       vi <- varImp(x)
       notZero <- sort(unique(unlist(lapply(vi, function(x) which(x > 0)))))
-      if (length(notZero) > 0) rownames(vi)[notZero] else NULL
+      if (length(notZero) > 0) {
+        rownames(vi)[notZero]
+      } else {
+        NULL
+      }
     }
     eachFit <- lapply(x$fit, predEarth)
     unique(unlist(eachFit))

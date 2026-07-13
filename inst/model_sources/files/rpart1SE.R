@@ -12,10 +12,10 @@ modelInfo <- list(
   },
   loop = NULL,
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-    dat <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      dat <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     dat$.outcome <- y
 
@@ -32,10 +32,10 @@ modelInfo <- list(
       newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
     }
 
-    out <- if (modelFit$problemType == "Classification") {
-      predict(modelFit, newdata, type = "class")
+    if (modelFit$problemType == "Classification") {
+      out <- predict(modelFit, newdata, type = "class")
     } else {
-      predict(modelFit, newdata)
+      out <- predict(modelFit, newdata)
     }
     out
   },

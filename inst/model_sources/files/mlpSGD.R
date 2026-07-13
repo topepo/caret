@@ -131,8 +131,8 @@ modelInfo <- list(
       })[, -1]
       out <- modelFit$obsLevels[apply(out, 1, which.max)]
     } else {
-      out <- if (length(out) == 1) {
-        out[[1]][, 1]
+      if (length(out) == 1) {
+        out <- out[[1]][, 1]
       } else {
         out <- do.call("cbind", out)
         out <- apply(out, 1, mean)

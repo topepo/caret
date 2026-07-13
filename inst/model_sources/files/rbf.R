@@ -27,7 +27,9 @@ modelInfo <- list(
     }
     if (!any(names(theDots) == "initFuncParams")) {
       theDots$initFuncParams <- c(0, 1, 0, 0.02, 0.04)
-      if (is.factor(y)) theDots$initFuncParams[1:2] <- c(-4, 4)
+      if (is.factor(y)) {
+        theDots$initFuncParams[1:2] <- c(-4, 4)
+      }
     }
 
     if (!any(names(theDots) == "learnFuncParams")) {

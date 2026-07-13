@@ -23,16 +23,16 @@ modelInfo <- list(
   },
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
     ncomp <- min(ncol(x), param$ncomp)
-    out <- if (is.factor(y)) {
-      plsda(x, y, method = "oscorespls", ncomp = ncomp, ...)
+    if (is.factor(y)) {
+      out <- plsda(x, y, method = "oscorespls", ncomp = ncomp, ...)
     } else {
-      dat <- if (is.data.frame(x)) {
-        x
+      if (is.data.frame(x)) {
+        dat <- x
       } else {
-        as.data.frame(x, stringsAsFactors = TRUE)
+        dat <- as.data.frame(x, stringsAsFactors = TRUE)
       }
       dat$.outcome <- y
-      pls::plsr(
+      out <- pls::plsr(
         .outcome ~ .,
         data = dat,
         method = "oscorespls",
@@ -43,13 +43,13 @@ modelInfo <- list(
     out
   },
   predict = function(modelFit, newdata, submodels = NULL) {
-    out <- if (modelFit$problemType == "Classification") {
+    if (modelFit$problemType == "Classification") {
       if (!is.matrix(newdata)) {
         newdata <- as.matrix(newdata)
       }
       out <- predict(modelFit, newdata, type = "class")
     } else {
-      as.vector(pls:::predict.mvr(
+      out <- as.vector(pls:::predict.mvr(
         modelFit,
         newdata,
         ncomp = max(modelFit$ncomp)
@@ -130,7 +130,11 @@ modelInfo <- list(
 
     nms <- dimnames(perf)
     if (length(nms$estimate) > 1) {
-      pIndex <- if (is.null(estimate)) 1 else which(nms$estimate == estimate)
+      if (is.null(estimate)) {
+        pIndex <- 1
+      } else {
+        pIndex <- which(nms$estimate == estimate)
+      }
       perf <- perf[pIndex, , , drop = FALSE]
     }
     numResp <- dim(modelCoef)[2]

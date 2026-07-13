@@ -34,10 +34,10 @@ modelInfo <- list(
       list(formula = as.formula(".outcome ~ ."), control = ctl),
       theDots
     )
-    modelArgs$data <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      modelArgs$data <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      modelArgs$data <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     modelArgs$data$.outcome <- y
 

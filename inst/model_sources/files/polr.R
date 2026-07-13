@@ -27,10 +27,10 @@ modelInfo <- list(
     modelArgs <- list(...)
 
     ## Set up data
-    dat <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      dat <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     dat$.outcome <- y
     modelArgs <- c(
@@ -84,7 +84,11 @@ modelInfo <- list(
   },
   predictors = function(x, ...) predictors(terms(x)),
   levels = function(x) {
-    if (any(names(x) == "obsLevels")) x$obsLevels else NULL
+    if (any(names(x) == "obsLevels")) {
+      x$obsLevels
+    } else {
+      NULL
+    }
   },
   tags = c(
     "Logistic Regression",

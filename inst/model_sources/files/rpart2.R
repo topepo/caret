@@ -8,10 +8,10 @@ modelInfo <- list(
     label = c("Max Tree Depth")
   ),
   grid = function(x, y, len = NULL, search = "grid") {
-    dat <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      dat <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     dat$.outcome <- y
     initialFit <- rpart::rpart(
@@ -104,7 +104,11 @@ modelInfo <- list(
       newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
     }
 
-    pType <- if (modelFit$problemType == "Classification") "class" else "vector"
+    if (modelFit$problemType == "Classification") {
+      pType <- "class"
+    } else {
+      pType <- "vector"
+    }
     out <- predict(modelFit, newdata, type = pType)
 
     if (!is.null(submodels)) {

@@ -75,7 +75,11 @@ modelInfo <- list(
     }
     if (!is.null(submodels)) {
       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
-      tmp[[1]] <- if (is.matrix(out)) out[, 1] else out
+      if (is.matrix(out)) {
+        tmp[[1]] <- out[, 1]
+      } else {
+        tmp[[1]] <- out
+      }
       for (i in seq(along = submodels$maxdepth)) {
         exec <- inTrees::extractRules(
           modelFit$rf,
@@ -115,7 +119,11 @@ modelInfo <- list(
     }
 
     var_index <- unique(unlist(lapply(split_up, isolate)))
-    if (length(var_index) > 0) x$xNames[var_index] else NULL
+    if (length(var_index) > 0) {
+      x$xNames[var_index]
+    } else {
+      NULL
+    }
   },
   varImp = function(object, ...) {
     split_up <- strsplit(object$model[, "condition"], "&")

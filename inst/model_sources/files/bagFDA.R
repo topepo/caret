@@ -9,10 +9,10 @@ modelInfo <- list(
     label = c('Product Degree', '#Terms')
   ),
   grid = function(x, y, len = NULL, search = "grid") {
-    dat <- if (!is.data.frame(x)) {
-      as.data.frame(x, stringsAsFactors = TRUE)
+    if (!is.data.frame(x)) {
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     } else {
-      x
+      dat <- x
     }
     dat$.outcome <- y
 
@@ -40,10 +40,10 @@ modelInfo <- list(
   },
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
     require(earth)
-    dat <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      dat <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     dat$.outcome <- y
     bagFDA(
@@ -72,7 +72,11 @@ modelInfo <- list(
     fdaPreds <- function(x) {
       code <- getModelInfo("earth", regex = FALSE)[[1]]$predictors
       tmp <- predictors(x$terms)
-      out <- if (class(x$fit) == "earth") code(x$fit) else tmp
+      if (class(x$fit) == "earth") {
+        out <- code(x$fit)
+      } else {
+        out <- tmp
+      }
       out
     }
     eachFit <- lapply(x$fit, fdaPreds)

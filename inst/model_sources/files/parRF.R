@@ -28,10 +28,8 @@ modelInfo <- list(
     workers <- foreach::getDoParWorkers()
     import::from(foreach, `%dopar%`)
     theDots <- list(...)
-    theDots$ntree <- if (is.null(theDots$ntree)) {
-      formals(randomForest:::randomForest.default)$ntree
-    } else {
-      theDots$ntree
+    if (is.null(theDots$ntree)) {
+      theDots$ntree <- formals(randomForest:::randomForest.default)$ntree
     }
 
     theDots$x <- x
@@ -106,10 +104,10 @@ modelInfo <- list(
         e1071::classAgreement(x$confusion[, -dim(x$confusion)[2]])[["kappa"]]
       )
     )
-    names(out) <- if (x$type == "regression") {
-      c("RMSE", "Rsquared")
+    if (x$type == "regression") {
+      names(out) <- c("RMSE", "Rsquared")
     } else {
-      c("Accuracy", "Kappa")
+      names(out) <- c("Accuracy", "Kappa")
     }
     out
   }

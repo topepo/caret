@@ -11,7 +11,9 @@ modelInfo <- list(
       index <- which(grid$lambda == loop$lambda[i])
       subK <- grid[index, "K"]
       otherK <- data.frame(K = subK[subK != loop$K[i]])
-      if (nrow(otherK) > 0) submodels[[i]] <- otherK
+      if (nrow(otherK) > 0) {
+        submodels[[i]] <- otherK
+      }
     }
     list(loop = loop, submodels = submodels)
   },

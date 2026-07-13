@@ -8,10 +8,10 @@ modelInfo <- list(
     label = c("Complexity Parameter", "Split Function", "Pruning Measure")
   ),
   grid = function(x, y, len = NULL, search = "grid") {
-    dat <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      dat <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     dat$.outcome <- y
     initialFit <- rpart::rpart(
@@ -62,7 +62,11 @@ modelInfo <- list(
   #                     list(loop = loop, submodels = submodels)
   #                   },
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-    cpValue <- if (!last) param$cp else 0
+    if (!last) {
+      cpValue <- param$cp
+    } else {
+      cpValue <- 0
+    }
     theDots <- list(...)
     if (any(names(theDots) == "control")) {
       theDots$control$cp <- cpValue

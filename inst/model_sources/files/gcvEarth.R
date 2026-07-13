@@ -53,7 +53,11 @@ modelInfo <- list(
   predictors = function(x, ...) {
     vi <- varImp(x)
     notZero <- sort(unique(unlist(lapply(vi, function(x) which(x > 0)))))
-    if (length(notZero) > 0) rownames(vi)[notZero] else NULL
+    if (length(notZero) > 0) {
+      rownames(vi)[notZero]
+    } else {
+      NULL
+    }
   },
   varImp = function(object, value = "gcv", ...) {
     earthImp <- earth::evimp(object)

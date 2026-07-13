@@ -12,7 +12,11 @@ modelInfo <- list(
     if (search == "grid") {
       out <- data.frame(k = (5:((2 * len) + 4))[(5:((2 * len) + 4)) %% 2 > 0])
     } else {
-      by_val <- if (is.factor(y)) length(levels(y)) else 1
+      if (is.factor(y)) {
+        by_val <- length(levels(y))
+      } else {
+        by_val <- 1
+      }
       out <- data.frame(
         k = sample(
           seq(1, floor(nrow(x) / 3), by = by_val),

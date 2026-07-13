@@ -27,12 +27,11 @@ modelInfo <- list(
   ),
   grid = function(x, y, len = NULL, search = "grid") {
     if (search == "grid") {
-      srule <-
-        if (is.factor(y)) {
-          "gini"
-        } else {
-          "variance"
-        }
+      if (is.factor(y)) {
+        srule <- "gini"
+      } else {
+        srule <- "variance"
+      }
       out <- expand.grid(
         mtry = caret::var_seq(
           p = ncol(x),
@@ -43,10 +42,10 @@ modelInfo <- list(
         splitrule = c(srule, "extratrees")[1:min(2, len)]
       )
     } else {
-      srules <- if (is.factor(y)) {
-        c("gini", "extratrees")
+      if (is.factor(y)) {
+        srules <- c("gini", "extratrees")
       } else {
-        c("variance", "extratrees", "maxstat")
+        srules <- c("variance", "extratrees", "maxstat")
       }
       out <-
         data.frame(

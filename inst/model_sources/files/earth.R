@@ -8,10 +8,10 @@ modelInfo <- list(
     label = c('#Terms', 'Product Degree')
   ),
   grid = function(x, y, len = NULL, search = "grid") {
-    dat <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      dat <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     dat$.outcome <- y
 
@@ -78,7 +78,11 @@ modelInfo <- list(
 
     if (!is.null(submodels)) {
       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
-      tmp[[1]] <- if (is.matrix(out)) out[, 1] else out
+      if (is.matrix(out)) {
+        tmp[[1]] <- out[, 1]
+      } else {
+        tmp[[1]] <- out
+      }
       for (j in seq(along = submodels$nprune)) {
         prunedFit <- earth:::update.earth(
           modelFit,
@@ -93,7 +97,9 @@ modelInfo <- list(
         } else {
           tmp[[j + 1]] <- earth:::predict.earth(prunedFit, newdata)
         }
-        if (is.matrix(tmp[[j + 1]])) tmp[[j + 1]] <- tmp[[j + 1]][, 1]
+        if (is.matrix(tmp[[j + 1]])) {
+          tmp[[j + 1]] <- tmp[[j + 1]][, 1]
+        }
       }
       out <- tmp
     }
@@ -135,7 +141,11 @@ modelInfo <- list(
   predictors = function(x, ...) {
     vi <- varImp(x)
     notZero <- sort(unique(unlist(lapply(vi, function(x) which(x > 0)))))
-    if (length(notZero) > 0) rownames(vi)[notZero] else NULL
+    if (length(notZero) > 0) {
+      rownames(vi)[notZero]
+    } else {
+      NULL
+    }
   },
   varImp = function(object, value = "gcv", ...) {
     earthImp <- earth::evimp(object)

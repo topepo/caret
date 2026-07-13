@@ -23,10 +23,10 @@ modelInfo <- list(
     out
   },
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-    dat <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      dat <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     dat$.outcome <- y
     if (!is.null(wts)) {
@@ -79,7 +79,13 @@ modelInfo <- list(
     }
     imp
   },
-  predictors = function(x, ...) if (hasTerms(x)) predictors(x$terms) else NA,
+  predictors = function(x, ...) {
+    if (hasTerms(x)) {
+      predictors(x$terms)
+    } else {
+      NA
+    }
+  },
   tags = c("Neural Network", "L2 Regularization", "Accepts Case Weights"),
   levels = function(x) x$lev,
   sort = function(x) x[order(x$size, -x$decay), ]

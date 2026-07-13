@@ -26,10 +26,10 @@ modelInfo <- list(
   },
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
     colNames <- colnames(x)
-    dat <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      dat <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     dat$.outcome <- y
     form <- as.formula(paste(".outcome ~", paste(colNames, collapse = "+")))
@@ -44,7 +44,9 @@ modelInfo <- list(
     nodes <- c(param$layer1)
     if (param$layer2 > 0) {
       nodes <- c(nodes, param$layer2)
-      if (param$layer3 > 0) nodes <- c(nodes, param$layer3)
+      if (param$layer3 > 0) {
+        nodes <- c(nodes, param$layer3)
+      }
     }
     neuralnet::neuralnet(form, data = dat, hidden = nodes, ...)
   },

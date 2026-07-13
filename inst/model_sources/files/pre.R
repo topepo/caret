@@ -83,14 +83,14 @@ modelInfo <- list(
   ) {
     theDots <- list(...)
     if (!any(names(theDots) == "family")) {
-      theDots$family <- if (is.factor(y)) {
+      if (is.factor(y)) {
         if (nlevels(y) == 2L) {
-          "binomial"
+          theDots$family <- "binomial"
         } else {
-          "multinomial"
+          theDots$family <- "multinomial"
         }
       } else {
-        "gaussian"
+        theDots$family <- "gaussian"
       }
     }
     data <- data.frame(x, .outcome = y)

@@ -25,7 +25,11 @@ modelInfo <- list(
     label = c('# Boosting Iterations', 'Model Type', 'Winnow', "Cost")
   ),
   grid = function(x, y, len = NULL, search = "grid") {
-    c5seq <- if (len == 1) 1 else c(1, 10 * ((2:min(len, 11)) - 1))
+    if (len == 1) {
+      c5seq <- 1
+    } else {
+      c5seq <- c(1, 10 * ((2:min(len, 11)) - 1))
+    }
     expand.grid(
       trials = c5seq,
       model = c("tree", "rules"),
@@ -33,7 +37,11 @@ modelInfo <- list(
       cost = 1:2
     )
     if (search == "grid") {
-      c5seq <- if (len == 1) 1 else c(1, 10 * ((2:min(len, 11)) - 1))
+      if (len == 1) {
+        c5seq <- 1
+      } else {
+        c5seq <- c(1, 10 * ((2:min(len, 11)) - 1))
+      }
       out <- expand.grid(
         trials = c5seq,
         model = c("tree", "rules"),

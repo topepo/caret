@@ -9,7 +9,11 @@ modelInfo <- list(
   ),
   grid = function(x, y, len = NULL, search = "grid") {
     if (search == "grid") {
-      numLev <- if (is.character(y) | is.factor(y)) length(levels(y)) else NA
+      if (is.character(y) | is.factor(y)) {
+        numLev <- length(levels(y))
+      } else {
+        numLev <- NA
+      }
       if (!is.na(numLev)) {
         fam <- ifelse(numLev > 2, "multinomial", "binomial")
       } else {
@@ -44,7 +48,11 @@ modelInfo <- list(
     list(loop = loop, submodels = submodels)
   },
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-    numLev <- if (is.character(y) | is.factor(y)) length(levels(y)) else NA
+    if (is.character(y) | is.factor(y)) {
+      numLev <- length(levels(y))
+    } else {
+      numLev <- NA
+    }
 
     theDots <- list(...)
 
@@ -99,10 +107,10 @@ modelInfo <- list(
         ))
       } else {
         tmp <- predict(modelFit, newdata, s = submodels$lambda, type = "class")
-        tmp <- if (is.matrix(tmp)) {
-          as.data.frame(tmp, stringsAsFactors = FALSE)
+        if (is.matrix(tmp)) {
+          tmp <- as.data.frame(tmp, stringsAsFactors = FALSE)
         } else {
-          as.character(tmp)
+          tmp <- as.character(tmp)
         }
         tmp <- as.list(tmp)
       }
@@ -111,10 +119,10 @@ modelInfo <- list(
     out
   },
   prob = function(modelFit, newdata, submodels = NULL) {
-    obsLevels <- if ("classnames" %in% names(modelFit)) {
-      modelFit$classnames
+    if ("classnames" %in% names(modelFit)) {
+      obsLevels <- modelFit$classnames
     } else {
-      NULL
+      obsLevels <- NULL
     }
     if (!is.matrix(newdata) && !inherits(newdata, "sparseMatrix")) {
       newdata <- Matrix::as.matrix(newdata)
@@ -153,7 +161,11 @@ modelInfo <- list(
       } else {
         tmp <- apply(tmp, 3, function(x) data.frame(x))
       }
-      probs <- if (is.list(tmp)) c(list(probs), tmp) else list(probs, tmp)
+      if (is.list(tmp)) {
+        probs <- c(list(probs), tmp)
+      } else {
+        probs <- list(probs, tmp)
+      }
     }
     probs
   },
@@ -168,7 +180,11 @@ modelInfo <- list(
         stop("must supply a value of lambda")
       }
     }
-    allVar <- if (is.list(x$beta)) rownames(x$beta[[1]]) else rownames(x$beta)
+    if (is.list(x$beta)) {
+      allVar <- rownames(x$beta[[1]])
+    } else {
+      allVar <- rownames(x$beta)
+    }
     out <- unlist(predict(x, s = lambda, type = "nonzero"))
     out <- unique(out)
     if (length(out) > 0) {
@@ -198,7 +214,13 @@ modelInfo <- list(
     out <- abs(out[rownames(out) != "(Intercept)", , drop = FALSE])
     out
   },
-  levels = function(x) if (any(names(x) == "obsLevels")) x$obsLevels else NULL,
+  levels = function(x) {
+    if (any(names(x) == "obsLevels")) {
+      x$obsLevels
+    } else {
+      NULL
+    }
+  },
   tags = c(
     "Generalized Linear Model",
     "Implicit Feature Selection",

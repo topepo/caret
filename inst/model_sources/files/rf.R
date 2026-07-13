@@ -27,7 +27,11 @@ modelInfo <- list(
     randomForest::randomForest(x, y, mtry = param$mtry, ...)
   },
   predict = function(modelFit, newdata, submodels = NULL) {
-    if (!is.null(newdata)) predict(modelFit, newdata) else predict(modelFit)
+    if (!is.null(newdata)) {
+      predict(modelFit, newdata)
+    } else {
+      predict(modelFit)
+    }
   },
   prob = function(modelFit, newdata, submodels = NULL) {
     if (!is.null(newdata)) {
@@ -86,10 +90,10 @@ modelInfo <- list(
         e1071::classAgreement(x$confusion[, -dim(x$confusion)[2]])[["kappa"]]
       )
     )
-    names(out) <- if (x$type == "regression") {
-      c("RMSE", "Rsquared")
+    if (x$type == "regression") {
+      names(out) <- c("RMSE", "Rsquared")
     } else {
-      c("Accuracy", "Kappa")
+      names(out) <- c("Accuracy", "Kappa")
     }
     out
   }

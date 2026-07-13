@@ -32,7 +32,11 @@ modelInfo <- list(
   },
   predict = function(modelFit, newdata, submodels = NULL) {
     out <- penalized::predict(modelFit, newdata)
-    out <- if (is.vector(out)) out["mu"] else out[, "mu"]
+    if (is.vector(out)) {
+      out <- out["mu"]
+    } else {
+      out <- out[, "mu"]
+    }
     out
   },
   prob = NULL,

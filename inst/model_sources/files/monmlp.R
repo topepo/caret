@@ -23,10 +23,10 @@ modelInfo <- list(
     if (!is.matrix(x)) {
       x <- as.matrix(x)
     }
-    y <- if (is.numeric(y)) {
-      matrix(y, ncol = 1)
+    if (is.numeric(y)) {
+      y <- matrix(y, ncol = 1)
     } else {
-      class2ind(y)
+      y <- class2ind(y)
     }
     out <- monmlp::monmlp.fit(
       y = y,

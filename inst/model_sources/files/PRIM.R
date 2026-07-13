@@ -69,7 +69,13 @@ modelInfo <- list(
     names(out) <- modelFit$levels[1:2]
     return(out)
   },
-  predictors = function(x, ...) if (hasTerms(x)) predictors(x$terms) else NA,
+  predictors = function(x, ...) {
+    if (hasTerms(x)) {
+      predictors(x$terms)
+    } else {
+      NA
+    }
+  },
   tags = c("Rule-Based Model", "Patient Rule Induction Method"),
   levels = function(x) x$lev,
   sort = function(x) x[order(x$peel.alpha, x$paste.alpha, x$mass.min), ]

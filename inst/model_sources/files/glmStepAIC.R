@@ -12,10 +12,10 @@ modelInfo <- list(
     data.frame(parameter = "none")
   },
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-    dat <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      dat <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     dat$.outcome <- y
     if (length(levels(y)) > 2) {
@@ -31,7 +31,11 @@ modelInfo <- list(
     glmArgs <- list()
 
     if (!any(names(theDots) == "family")) {
-      glmArgs$family <- if (is.factor(y)) binomial() else gaussian()
+      if (is.factor(y)) {
+        glmArgs$family <- binomial()
+      } else {
+        glmArgs$family <- gaussian()
+      }
     } else {
       glmArgs$family <- theDots$family
     }

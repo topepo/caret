@@ -62,7 +62,13 @@ modelInfo <- list(
     colnames(out) <- "Overall"
     out
   },
-  levels = function(x) if (any(names(x) == "obsLevels")) x$obsLevels else NULL,
+  levels = function(x) {
+    if (any(names(x) == "obsLevels")) {
+      x$obsLevels
+    } else {
+      NULL
+    }
+  },
   tags = c(
     "Discriminant Analysis Models",
     "Implicit Feature Selection",

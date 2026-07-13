@@ -31,7 +31,13 @@ modelInfo <- list(
   },
   varImp = NULL,
   predictors = function(x, ...) predictors(x$terms),
-  levels = function(x) if (any(names(x) == "obsLevels")) x$obsLevels else NULL,
+  levels = function(x) {
+    if (any(names(x) == "obsLevels")) {
+      x$obsLevels
+    } else {
+      NULL
+    }
+  },
   tags = c("Discriminant Analysis", "Mixture Model"),
   sort = function(x) x
 )

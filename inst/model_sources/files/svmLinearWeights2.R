@@ -29,7 +29,11 @@ modelInfo <- list(
     #
     # 2 - L2-regularized L2-loss support vector classification (primal)
     # 3 - L2-regularized L1-loss support vector classification (dual)
-    model_type <- if (param$Loss == "L2") 2 else 3
+    if (param$Loss == "L2") {
+      model_type <- 2
+    } else {
+      model_type <- 3
+    }
     if (length(levels(y)) != 2) {
       stop("Currently implemented for 2-class problems")
     }

@@ -31,7 +31,11 @@ modelInfo <- list(
     out
   },
   predictors = function(x, ...) {
-    out <- if (hasTerms(x)) predictors(x$terms) else colnames(x$data$x.order)
+    if (hasTerms(x)) {
+      out <- predictors(x$terms)
+    } else {
+      out <- colnames(x$data$x.order)
+    }
     out[!(out %in% "Intercept")]
   },
   tags = c("Logistic Regression", "Partial Least Squares", "Linear Classifier"),

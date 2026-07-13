@@ -14,7 +14,11 @@ modelInfo <- list(
     if (search == "grid") {
       out <- data.frame(k = floor(p_seq * nrow(x)))
     } else {
-      by_val <- if (is.factor(y)) length(levels(y)) else 1
+      if (is.factor(y)) {
+        by_val <- length(levels(y))
+      } else {
+        by_val <- 1
+      }
       out <- data.frame(
         k = floor(runif(
           len,
@@ -35,7 +39,11 @@ modelInfo <- list(
     predict(modelFit, newdata)$posterior
   },
   predictors = function(x, ...) {
-    if (hasTerms(x)) predictors(x$terms) else colnames(x$means)
+    if (hasTerms(x)) {
+      predictors(x$terms)
+    } else {
+      colnames(x$means)
+    }
   },
   tags = c("Discriminant Analysis", "Linear Classifier"),
   levels = function(x) names(x$prior),

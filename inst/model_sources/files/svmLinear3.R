@@ -28,9 +28,17 @@ modelInfo <- list(
     # 13 - L2-regularized L1-loss support vector regression (dual)
 
     if (param$Loss == "L2") {
-      model_type <- if (is.factor(y)) 2 else 12
+      if (is.factor(y)) {
+        model_type <- 2
+      } else {
+        model_type <- 12
+      }
     } else {
-      model_type <- if (is.factor(y)) 3 else 13
+      if (is.factor(y)) {
+        model_type <- 3
+      } else {
+        model_type <- 13
+      }
     }
 
     out <- LiblineaR::LiblineaR(

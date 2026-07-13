@@ -99,7 +99,9 @@ modelInfo <- list(
     if (is.null(cuts) & !is.null(x$tuneValue)) {
       cuts <- x$tuneValue$cut.off.growth[1]
     } else {
-      if (is.null(cuts)) stop("please supply a value for 'cuts'")
+      if (is.null(cuts)) {
+        stop("please supply a value for 'cuts'")
+      }
     }
     tmp <- x$var.importance[, cuts]
     names(tmp)[which(tmp != 0)]
@@ -111,7 +113,9 @@ modelInfo <- list(
     if (is.null(cuts) & !is.null(object$tuneValue)) {
       cuts <- object$tuneValue$cut.off.growth[1]
     } else {
-      if (is.null(cuts)) stop("please supply a value for 'cuts'")
+      if (is.null(cuts)) {
+        stop("please supply a value for 'cuts'")
+      }
     }
     tmp <- object$var.importance[, cuts]
     out <- data.frame(Overall = tmp)

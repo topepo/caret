@@ -16,7 +16,11 @@ modelInfo <- list(
         kernel = "optimal"
       )
     } else {
-      by_val <- if (is.factor(y)) length(levels(y)) else 1
+      if (is.factor(y)) {
+        by_val <- length(levels(y))
+      } else {
+        by_val <- 1
+      }
       kerns <- c(
         "rectangular",
         "triangular",
@@ -40,10 +44,10 @@ modelInfo <- list(
     out
   },
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-    dat <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      dat <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     dat$.outcome <- y
     kknn::train.kknn(

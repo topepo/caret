@@ -45,7 +45,11 @@ modelInfo <- list(
     attr(out, "probabilities")
   },
   predictors = function(x, ...) {
-    out <- if (!is.null(x$terms)) predictors.terms(x$terms) else x$xNames
+    if (!is.null(x$terms)) {
+      out <- predictors.terms(x$terms)
+    } else {
+      out <- x$xNames
+    }
     if (is.null(out)) {
       out <- names(attr(x, "scaling")$x.scale$`scaled:center`)
     }

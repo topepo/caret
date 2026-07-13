@@ -44,10 +44,10 @@ modelInfo <- list(
     }
 
     if (!any(names(theDots) == "family")) {
-      theDots$family <- if (is.factor(y)) {
-        mboost::Binomial()
+      if (is.factor(y)) {
+        theDots$family <- mboost::Binomial()
       } else {
-        mboost::GaussReg()
+        theDots$family <- mboost::GaussReg()
       }
     }
 
@@ -56,10 +56,10 @@ modelInfo <- list(
       theDots$weights <- wts
     }
 
-    dat <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      dat <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     dat$.outcome <- y
     modelArgs <- c(
@@ -78,12 +78,14 @@ modelInfo <- list(
     ## by mstop(x) <- i.
 
     if (param$prune == "yes") {
-      iters <- if (is.factor(y)) {
-        mboost::mstop(AIC(out, "classical"))
+      if (is.factor(y)) {
+        iters <- mboost::mstop(AIC(out, "classical"))
       } else {
-        mboost::mstop(AIC(out))
+        iters <- mboost::mstop(AIC(out))
       }
-      if (iters < out$mstop()) out <- out[iters]
+      if (iters < out$mstop()) {
+        out <- out[iters]
+      }
     }
     out$.org.mstop <- out$mstop()
 
@@ -111,13 +113,13 @@ modelInfo <- list(
         ## If the model has been pruned, make sure that the requested `mstop`
         ## is not greater than the original value. If it is, use the orignal value.
         ## This should only occur whenm the model was pruned .
-        this_mstop <- if (
+        if (
           submodels$prune[j] == "yes" &
             submodels$mstop[j] > modelFit$.org.mstop
         ) {
-          modelFit$.org.mstop
+          this_mstop <- modelFit$.org.mstop
         } else {
-          submodels$mstop[j]
+          this_mstop <- submodels$mstop[j]
         }
         tmp[[j + 1]] <- as.vector(predict(
           modelFit[this_mstop],
@@ -142,13 +144,13 @@ modelInfo <- list(
       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
       tmp[[1]] <- out
       for (j in seq(along = submodels$mstop)) {
-        this_mstop <- if (
+        if (
           submodels$prune[j] == "yes" &
             submodels$mstop[j] > modelFit$.org.mstop
         ) {
-          modelFit$.org.mstop
+          this_mstop <- modelFit$.org.mstop
         } else {
-          submodels$mstop[j]
+          this_mstop <- submodels$mstop[j]
         }
 
         tmpProb <- predict(modelFit[this_mstop], newdata, type = "response")

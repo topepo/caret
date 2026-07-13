@@ -12,15 +12,19 @@ modelInfo <- list(
     data.frame(parameter = "none")
   },
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-    dat <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      dat <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     dat$.outcome <- y
     theDots <- list(...)
     if (!any(names(theDots) == "family")) {
-      theDots$family <- if (is.factor(dat$.outcome)) binomial() else gaussian()
+      if (is.factor(dat$.outcome)) {
+        theDots$family <- binomial()
+      } else {
+        theDots$family <- gaussian()
+      }
     }
 
     ## pass in any model weights

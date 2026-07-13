@@ -104,7 +104,13 @@ modelInfo <- list(
     colnames(coefs) <- "Overall"
     coefs
   },
-  levels = function(x) if (any(names(x) == "obsLevels")) x$obsLevels else NULL,
+  levels = function(x) {
+    if (any(names(x) == "obsLevels")) {
+      x$obsLevels
+    } else {
+      NULL
+    }
+  },
   tags = c(
     "Generalized Linear Model",
     "Implicit Feature Selection",

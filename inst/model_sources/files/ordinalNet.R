@@ -121,7 +121,13 @@ modelInfo <- list(
     rownames(out) <- names(betas)
     out
   },
-  levels = function(x) if (any(names(x) == "obsLevels")) x$obsLevels else NULL,
+  levels = function(x) {
+    if (any(names(x) == "obsLevels")) {
+      x$obsLevels
+    } else {
+      NULL
+    }
+  },
   tags = c(
     "Generalized Linear Model",
     "Implicit Feature Selection",

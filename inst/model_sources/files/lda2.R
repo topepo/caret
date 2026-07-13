@@ -61,7 +61,11 @@ modelInfo <- list(
     out
   },
   predictors = function(x, ...) {
-    if (hasTerms(x)) predictors(x$terms) else colnames(x$means)
+    if (hasTerms(x)) {
+      predictors(x$terms)
+    } else {
+      colnames(x$means)
+    }
   },
   tags = c("Discriminant Analysis", "Linear Classifier"),
   levels = function(x) names(x$prior),

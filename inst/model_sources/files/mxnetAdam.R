@@ -128,7 +128,11 @@ modelInfo <- list(
     pred
   },
   predictors = function(x, ...) {
-    if (any(names(x) == "xNames")) x$xNames else NA
+    if (any(names(x) == "xNames")) {
+      x$xNames
+    } else {
+      NA
+    }
   },
   prob = function(modelFit, newdata, submodels = NULL) {
     if (!is.matrix(newdata)) {

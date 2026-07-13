@@ -39,7 +39,11 @@ modelInfo <- list(
     predict(modelFit, newdata, type = "raw")$posterior
   },
   predictors = function(x, ...) {
-    if (hasTerms(x)) predictors(x$terms) else x$varnames
+    if (hasTerms(x)) {
+      predictors(x$terms)
+    } else {
+      x$varnames
+    }
   },
   tags = c("Bayesian Model"),
   levels = function(x) x$levels,

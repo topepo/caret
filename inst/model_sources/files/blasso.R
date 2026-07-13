@@ -48,7 +48,9 @@ modelInfo <- list(
         betas <- modelFit$.betas
         betas[modelFit$.percent <= submodels$sparsity[i]] <- 0
         tmp[[i]] <- (newdata %*% betas)[, 1]
-        if (modelFit$icept) tmp[[i]] <- tmp[[i]] + mean(modelFit$mu)
+        if (modelFit$icept) {
+          tmp[[i]] <- tmp[[i]] + mean(modelFit$mu)
+        }
       }
       out <- c(list(out), tmp)
     }

@@ -27,17 +27,21 @@ modelInfo <- list(
     out
   },
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-    dat <-
-      if (!is.data.frame(x) | inherits(x, "tbl_df")) {
-        as.data.frame(x, stringsAsFactors = TRUE)
-      } else {
-        x
-      }
-    dat$.outcome <- y
-    out <- if (param$method == "Adaboost.M1") {
-      fastAdaboost::adaboost(.outcome ~ ., data = dat, nIter = param$nIter, ...)
+    if (!is.data.frame(x) | inherits(x, "tbl_df")) {
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     } else {
-      fastAdaboost::real_adaboost(
+      dat <- x
+    }
+    dat$.outcome <- y
+    if (param$method == "Adaboost.M1") {
+      out <- fastAdaboost::adaboost(
+        .outcome ~ .,
+        data = dat,
+        nIter = param$nIter,
+        ...
+      )
+    } else {
+      out <- fastAdaboost::real_adaboost(
         .outcome ~ .,
         data = dat,
         nIter = param$nIter,

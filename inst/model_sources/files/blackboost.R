@@ -55,10 +55,10 @@ modelInfo <- list(
 
     if (!any(names(theDots) == "family")) {
       if (is.factor(y)) {
-        theDots$family <- if (length(lev) == 2) {
-          mboost::Binomial()
+        if (length(lev) == 2) {
+          theDots$family <- mboost::Binomial()
         } else {
-          mboost::Multinomial()
+          theDots$family <- mboost::Multinomial()
         }
       } else {
         theDots$family <- mboost::GaussReg()

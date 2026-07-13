@@ -66,7 +66,11 @@ modelInfo <- list(
       if (is.numeric(y)) {
         modDist <- "gaussian"
       } else {
-        modDist <- if (length(lev) == 2) "bernoulli" else "multinomial"
+        if (length(lev) == 2) {
+          modDist <- "bernoulli"
+        } else {
+          modDist <- "multinomial"
+        }
       }
     }
 
@@ -193,10 +197,10 @@ modelInfo <- list(
     out <- switch(
       modelFit$distribution$name,
       multinomial = {
-        out <- if (dim(out)[3] == 1) {
-          as.data.frame(out, stringsAsFactors = TRUE)
+        if (dim(out)[3] == 1) {
+          out <- as.data.frame(out, stringsAsFactors = TRUE)
         } else {
-          out[,, 1]
+          out <- out[,, 1]
         }
         colnames(out) <- modelFit$obsLevels
         out
@@ -272,7 +276,11 @@ modelInfo <- list(
       return(NULL)
     }
     if (is.null(x$classes)) {
-      out <- if (any(names(x) == "obsLevels")) x$obsLevels else NULL
+      if (any(names(x) == "obsLevels")) {
+        out <- x$obsLevels
+      } else {
+        out <- NULL
+      }
     } else {
       out <- x$classes
     }

@@ -8,16 +8,15 @@ sampling_methods <- list(
   smote = function(x, y) {
     checkInstall("themis")
     library(themis)
-    dat <-
-      if (is.data.frame(x)) {
-        if (inherits(x, "tbl_df")) {
-          as.data.frame(x)
-        } else {
-          x
-        }
+    if (is.data.frame(x)) {
+      if (inherits(x, "tbl_df")) {
+        dat <- as.data.frame(x)
       } else {
-        as.data.frame(x)
+        dat <- x
       }
+    } else {
+      dat <- as.data.frame(x)
+    }
     dat$.y <- y
     dat <- themis::smote(dat, var = ".y")
     list(
@@ -28,12 +27,11 @@ sampling_methods <- list(
   rose = function(x, y) {
     checkInstall("ROSE")
     library(ROSE)
-    dat <-
-      if (is.data.frame(x)) {
-        x
-      } else {
-        as.data.frame(x)
-      }
+    if (is.data.frame(x)) {
+      dat <- x
+    } else {
+      dat <- as.data.frame(x)
+    }
     dat$.y <- y
     dat <- ROSE(.y ~ ., data = dat)$data
     list(

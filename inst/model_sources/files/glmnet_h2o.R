@@ -23,10 +23,10 @@ modelInfo <- list(
   },
   loop = NULL,
   fit = function(x, y, wts, param, lev, last, classProbs, ...) {
-    dat <- if (!is.data.frame(x)) {
-      as.data.frame(x, stringsAsFactors = TRUE)
+    if (!is.data.frame(x)) {
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     } else {
-      x
+      dat <- x
     }
     dat$.outcome <- y
     p <- ncol(dat)

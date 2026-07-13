@@ -36,9 +36,15 @@ modelInfo <- list(
     }
 
     theDots <- list(...)
-    modDist <- if (is.factor(y)) "hinge" else "gaussian"
+    if (is.factor(y)) {
+      modDist <- "hinge"
+    } else {
+      modDist <- "gaussian"
+    }
 
-    y <- if (is.factor(y)) ifelse(y == lev[1], 1, -1) else y
+    if (is.factor(y)) {
+      y <- ifelse(y == lev[1], 1, -1)
+    }
 
     if (any(names(theDots) == "ctrl")) {
       theDots$ctrl$mstop <- param$mstop

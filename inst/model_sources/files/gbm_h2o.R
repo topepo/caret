@@ -50,10 +50,10 @@ modelInfo <- list(
       fam <- "multinomial"
     } ## intercept ... for family arg
 
-    dat <- if (!is.data.frame(x)) {
-      as.data.frame(x, stringsAsFactors = TRUE)
+    if (!is.data.frame(x)) {
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     } else {
-      x
+      dat <- x
     }
     dat$.outcome <- y
     frame_name <- paste0("tmp_gbm_dat_", sample.int(100000, 1))

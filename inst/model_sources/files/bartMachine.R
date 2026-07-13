@@ -41,8 +41,8 @@ modelInfo <- list(
     if (!is.data.frame(x) | inherits(x, "tbl_df")) {
       x <- as.data.frame(x, stringsAsFactors = TRUE)
     }
-    out <- if (is.factor(y)) {
-      bartMachine::bartMachine(
+    if (is.factor(y)) {
+      out <- bartMachine::bartMachine(
         X = x,
         y = y,
         num_trees = param$num_trees,
@@ -51,7 +51,7 @@ modelInfo <- list(
         ...
       )
     } else {
-      bartMachine::bartMachine(
+      out <- bartMachine::bartMachine(
         X = x,
         y = y,
         num_trees = param$num_trees,
@@ -68,10 +68,10 @@ modelInfo <- list(
     if (!is.data.frame(newdata) | inherits(newdata, "tbl_df")) {
       newdata <- as.data.frame(newdata, stringsAsFactors = TRUE)
     }
-    out <- if (is.factor(modelFit$y)) {
-      predict(modelFit, newdata, type = "class")
+    if (is.factor(modelFit$y)) {
+      out <- predict(modelFit, newdata, type = "class")
     } else {
-      predict(modelFit, newdata)
+      out <- predict(modelFit, newdata)
     }
   },
   prob = function(modelFit, newdata, submodels = NULL) {

@@ -48,7 +48,11 @@ modelInfo <- list(
     getVarIndex <- function(y) unique(y$trees$knot)
     varNums <- unique(unlist(lapply(x$model$trees, getVarIndex)))
     varNums <- varNums[varNums > 0]
-    if (length(varNums) > 0) colnames(x$binary)[varNums] else NA
+    if (length(varNums) > 0) {
+      colnames(x$binary)[varNums]
+    } else {
+      NA
+    }
   },
   levels = function(x) x$obsLevels,
   tags = c(

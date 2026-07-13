@@ -48,7 +48,11 @@ modelInfo <- list(
     )
   },
   predictors = function(x, ...) {
-    if (hasTerms(x)) predictors(x$terms) else names(x$tables)
+    if (hasTerms(x)) {
+      predictors(x$terms)
+    } else {
+      names(x$tables)
+    }
   },
   tags = c("Bayesian Model"),
   levels = function(x) x$levels,
