@@ -82,10 +82,10 @@
       if (!is.null(w)) {
         subW <- w[index]
       }
-      fit <- if (is.null(w)) {
-        mda::fda(.outcome ~ ., data = tmp, method = earth::earth, ...)
+      if (is.null(w)) {
+        fit <- mda::fda(.outcome ~ ., data = tmp, method = earth::earth, ...)
       } else {
-        mda::fda(
+        fit <- mda::fda(
           .outcome ~ .,
           data = tmp,
           method = earth::earth,

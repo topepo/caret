@@ -31,7 +31,9 @@ extractPrediction <- function(
   if (!is.null(testX)) {
     #if(!is.data.frame(testX)) testX <- as.data.frame(testX)
     hasNa <- apply(testX, 1, function(data) anyNA(data))
-    if (verbose) cat("There were ", sum(hasNa), "rows with missing values\n\n")
+    if (verbose) {
+      cat("There were ", sum(hasNa), "rows with missing values\n\n")
+    }
   }
 
   for (i in seq(along.with = models)) {
@@ -109,7 +111,9 @@ extractPrediction <- function(
         objName <- c(objName, rep(objectNames[[i]], length(tempTestPred)))
         dataType <- c(dataType, rep("Test", length(tempTestPred)))
       }
-      if (verbose) cat("\n")
+      if (verbose) {
+        cat("\n")
+      }
     }
     if (!is.null(unkX)) {
       if (any(colnames(unkX) == ".outcome")) {
@@ -149,7 +153,9 @@ extractPrediction <- function(
       objName <- c(objName, rep(objectNames[[i]], length(tempUnkPred)))
       dataType <- c(dataType, rep("Unknown", length(tempUnkPred)))
     }
-    if (verbose) cat("\n")
+    if (verbose) {
+      cat("\n")
+    }
   }
   if (models[[1]]$modelType == "Classification") {
     pred <- factor(pred, levels = obsLevels)
@@ -171,13 +177,17 @@ trimPredictions <- function(pred, mod_type, bounds, limits) {
     if (bounds[1]) {
       pred <- ifelse(pred < limits[1], limits[1], pred)
     }
-    if (bounds[2]) pred <- ifelse(pred > limits[2], limits[2], pred)
+    if (bounds[2]) {
+      pred <- ifelse(pred > limits[2], limits[2], pred)
+    }
   }
   if (mod_type == "Regression" && is.numeric(bounds) && any(!is.na(bounds))) {
     if (!is.na(bounds[1])) {
       pred <- ifelse(pred < bounds[1], bounds[1], pred)
     }
-    if (!is.na(bounds[2])) pred <- ifelse(pred > bounds[2], bounds[2], pred)
+    if (!is.na(bounds[2])) {
+      pred <- ifelse(pred > bounds[2], bounds[2], pred)
+    }
   }
   pred
 }

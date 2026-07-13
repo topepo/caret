@@ -151,10 +151,10 @@ calibration.formula <- function(
   probNames <- strsplit(form$right.name, " + ", fixed = TRUE)[[1]]
 
   calibData <- data.frame(calibClassVar = form$left, calibProbVar = form$right)
-  calibData$calibModelVar <- if (length(probNames) > 1) {
-    form$condition[[length(form$condition)]]
+  if (length(probNames) > 1) {
+    calibData$calibModelVar <- form$condition[[length(form$condition)]]
   } else {
-    probNames
+    calibData$calibModelVar <- probNames
   }
 
   if (length(form$condition) > 0 && any(names(form$condition) != "")) {

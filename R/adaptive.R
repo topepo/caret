@@ -221,7 +221,9 @@ adaptiveWorkflow <- function(
             rm(tmp)
           }
         }
-        if (testing) print(head(probValues))
+        if (testing) {
+          print(head(probValues))
+        }
       }
 
       ##################################
@@ -348,10 +350,10 @@ adaptiveWorkflow <- function(
     } ## end initial loop over resamples and models
 
   init_resamp <- rbind.fill(init_result[names(init_result) == "resamples"])
-  init_pred <- if (keep_pred) {
-    rbind.fill(init_result[names(init_result) == "pred"])
+  if (keep_pred) {
+    init_pred <- rbind.fill(init_result[names(init_result) == "pred"])
   } else {
-    NULL
+    init_pred <- NULL
   }
   names(init_resamp) <- gsub("^\\.", "", names(init_resamp))
   if (
@@ -555,7 +557,9 @@ adaptiveWorkflow <- function(
                 rm(tmp)
               }
             }
-            if (testing) print(head(probValues))
+            if (testing) {
+              print(head(probValues))
+            }
           }
 
           ##################################
@@ -785,7 +789,9 @@ adaptiveWorkflow <- function(
 
     last_iter <- iter
 
-    if (num_left == 1) break
+    if (num_left == 1) {
+      break
+    }
   }
   ## finish up last resamples
   if (ctrl$adaptive$complete && last_iter < length(ctrl$index)) {
@@ -977,7 +983,9 @@ adaptiveWorkflow <- function(
               rm(tmp)
             }
           }
-          if (testing) print(head(probValues))
+          if (testing) {
+            print(head(probValues))
+          }
         }
 
         ##################################
@@ -1115,10 +1123,10 @@ adaptiveWorkflow <- function(
     init_result <- c(init_result, final_result)
   }
   resamples <- rbind.fill(init_result[names(init_result) == "resamples"])
-  pred <- if (keep_pred) {
-    rbind.fill(init_result[names(init_result) == "pred"])
+  if (keep_pred) {
+    pred <- rbind.fill(init_result[names(init_result) == "pred"])
   } else {
-    NULL
+    pred <- NULL
   }
   names(resamples) <- gsub("^\\.", "", names(resamples))
 
@@ -1198,7 +1206,9 @@ bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
   })
   if (length(unique(rs$Resample)) >= 5) {
     tmp_scores <- try(skunked(scores), silent = TRUE)
-    if (inherits(tmp_scores, "try-error")) scores <- tmp_scores
+    if (inherits(tmp_scores, "try-error")) {
+      scores <- tmp_scores
+    }
   }
   best_mod <- ddply(
     rs,
@@ -1206,10 +1216,10 @@ bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
     function(x, metric) mean(x[, metric], na.rm = TRUE),
     metric = metric
   )
-  best_mod <- if (maximize) {
-    best_mod$model_id[which.max(best_mod$V1)]
+  if (maximize) {
+    best_mod <- best_mod$model_id[which.max(best_mod$V1)]
   } else {
-    best_mod$model_id[which.min(best_mod$V1)]
+    best_mod <- best_mod$model_id[which.min(best_mod$V1)]
   }
   btModel <- BradleyTerry2::BTm(
     cbind(win1, win2),
@@ -1225,10 +1235,10 @@ bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
   if (any(btCoef[, "Std. Error"] > se_thresh)) {
     ## These players either are uniformly dominated (='dom') or dominating
     dom1 <- btCoef[, "Std. Error"] > se_thresh
-    dom2 <- if (maximize) {
-      btCoef[, "Estimate"] <= 0
+    if (maximize) {
+      dom2 <- btCoef[, "Estimate"] <= 0
     } else {
-      btCoef[, "Estimate"] >= 0
+      dom2 <- btCoef[, "Estimate"] >= 0
     }
     dom <- dom1 & dom2
   } else {
@@ -1246,7 +1256,11 @@ get_scores <- function(x, maximize = NULL, metric = NULL) {
   delta <- outer(x[, metric], x[, metric], "-")
   tied <- ifelse(delta == 0, 1, 0) * 0.5
   diag(tied) <- 0
-  binary <- if (maximize) ifelse(delta > 0, 1, 0) else ifelse(delta > 0, 0, 1)
+  if (maximize) {
+    binary <- ifelse(delta > 0, 1, 0)
+  } else {
+    binary <- ifelse(delta > 0, 0, 1)
+  }
   binary <- binary + tied
   diag(binary) <- 0
   rownames(binary) <- colnames(binary) <- x$model_id
@@ -1290,20 +1304,20 @@ gls_eval <- function(x, metric, maximize, alpha = 0.05) {
     function(x, met) c(mean = mean(x[, met], na.rm = TRUE)),
     met = metric
   )
-  means <- if (maximize) {
-    means[order(-means$mean), ]
+  if (maximize) {
+    means <- means[order(-means$mean), ]
   } else {
-    means[order(means$mean), ]
+    means <- means[order(means$mean), ]
   }
   levs <- as.character(means$model_id)
   bl <- levs[1]
   bldat <- subset(x, model_id == bl)[, c("Resample", metric)]
   colnames(bldat)[2] <- ".baseline"
   x2 <- merge(bldat, x[, c("Resample", "model_id", metric)])
-  x2$value <- if (maximize) {
-    x2$.baseline - x2[, metric]
+  if (maximize) {
+    x2$value <- x2$.baseline - x2[, metric]
   } else {
-    x2[, metric] - x2$.baseline
+    x2$value <- x2[, metric] - x2$.baseline
   }
   x2 <- subset(x2, model_id != bl)
   x2$model_id <- factor(x2$model_id, levels = levs[-1])
@@ -1331,7 +1345,11 @@ gls_eval <- function(x, metric, maximize, alpha = 0.05) {
     }
   } else {
     ttest <- t.test(x2$value, alternative = "greater")$p.value
-    keepers <- if (!is.na(ttest) && ttest >= alpha) levs[-1] else NULL
+    if (!is.na(ttest) && ttest >= alpha) {
+      keepers <- levs[-1]
+    } else {
+      keepers <- NULL
+    }
   }
   unique(c(bl, keepers))
 }
@@ -1343,20 +1361,20 @@ seq_eval <- function(x, metric, maximize, alpha = 0.05) {
     function(x, met) c(mean = mean(x[, met], na.rm = TRUE)),
     met = metric
   )
-  means <- if (maximize) {
-    means[order(-means$mean), ]
+  if (maximize) {
+    means <- means[order(-means$mean), ]
   } else {
-    means[order(means$mean), ]
+    means <- means[order(means$mean), ]
   }
   levs <- as.character(means$model_id)
   bl <- levs[1]
   bldat <- subset(x, model_id == bl)[, c("Resample", metric)]
   colnames(bldat)[2] <- ".baseline"
   x2 <- merge(bldat, x[, c("Resample", "model_id", metric)])
-  x2$value <- if (maximize) {
-    x2$.baseline - x2[, metric]
+  if (maximize) {
+    x2$value <- x2$.baseline - x2[, metric]
   } else {
-    x2[, metric] - x2$.baseline
+    x2$value <- x2[, metric] - x2$.baseline
   }
   x2 <- subset(x2, model_id != bl)
   x2$model_id <- factor(x2$model_id, levels = levs[-1])
@@ -1373,7 +1391,11 @@ seq_eval <- function(x, metric, maximize, alpha = 0.05) {
     keepers <- gsub("model_id", "", keepers)
   } else {
     ttest <- t.test(x2$value, alternative = "greater")$p.value
-    keepers <- if (!is.na(ttest) && ttest >= alpha) levs[-1] else NULL
+    if (!is.na(ttest) && ttest >= alpha) {
+      keepers <- levs[-1]
+    } else {
+      keepers <- NULL
+    }
   }
   unique(c(bl, keepers))
 }
@@ -1440,10 +1462,10 @@ diffmat <- function(dat) {
         x <- dat[, i] - dat[, j]
         tmpm <- abs(mean(x, na.rm = TRUE))
         tmps <- sd(x, na.rm = TRUE)
-        out[i, j] <- out[j, i] <- if (tmps < .Machine$double.eps^0.5) {
-          0
+        if (tmps < .Machine$double.eps^0.5) {
+          out[i, j] <- out[j, i] <- 0
         } else {
-          tmpm / tmps
+          out[i, j] <- out[j, i] <- tmpm / tmps
         }
       }
     }

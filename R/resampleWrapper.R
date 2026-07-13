@@ -8,10 +8,14 @@ resampleWrapper <- function(x, ind) {
   outBagData <- trainData[-ind, ]
   outBagData$.outcome <- NULL
 
-  out[-ind] <- if (is.factor(x$data$.outcome)) {
-    as.character(predictionFunction(x$method, tmpModelFit, outBagData))
+  if (is.factor(x$data$.outcome)) {
+    out[-ind] <- as.character(predictionFunction(
+      x$method,
+      tmpModelFit,
+      outBagData
+    ))
   } else {
-    predictionFunction(x$method, tmpModelFit, outBagData)
+    out[-ind] <- predictionFunction(x$method, tmpModelFit, outBagData)
   }
   out
 }

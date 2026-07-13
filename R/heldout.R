@@ -45,7 +45,9 @@ oob_pred.train <- function(x, best = TRUE, average = TRUE, ...) {
       if (is.character(prd$obs)) {
         prd$obs <- factor(prd$obs, levels = lev)
       }
-      if (is.character(prd$pred)) prd$pred <- factor(prd$pred, levels = lev)
+      if (is.character(prd$pred)) {
+        prd$pred <- factor(prd$pred, levels = lev)
+      }
     }
   }
   prd
@@ -249,7 +251,11 @@ char_mode <- function(x, random = TRUE, na.rm = FALSE) {
   }
   tab <- table(x)
   tab <- tab[tab == max(tab)]
-  tab <- if (length(tab) > 1 && random) sample(tab, 1) else tab[1]
+  if (length(tab) > 1 && random) {
+    tab <- sample(tab, 1)
+  } else {
+    tab <- tab[1]
+  }
   as.vector(names(tab))
 }
 
@@ -258,7 +264,11 @@ train_lev <- function(x) {
     if (!is.null(x$modelInfo$levels)) {
       lev <- x$modelInfo$levels(x$finalModel)
     } else {
-      lev <- if (!isS4(x)) x$finalModel$obsLevel else unique(x$pred$obs)
+      if (!isS4(x)) {
+        lev <- x$finalModel$obsLevel
+      } else {
+        lev <- unique(x$pred$obs)
+      }
     }
   } else {
     lev <- NULL

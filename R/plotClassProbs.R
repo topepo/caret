@@ -92,15 +92,17 @@ plotClassProbs <- function(
   }
 
   if (any(names(object) == "object") && useObjects) {
-    if (length(unique(stackProbs$object)) > 1) keepVars <- c(keepVars, "object")
+    if (length(unique(stackProbs$object)) > 1) {
+      keepVars <- c(keepVars, "object")
+    }
   }
 
   if (plotType == "histogram") {
-    form <- if (length(obsLevels) == 2) {
-      form <- if (length(keepVars) > 0) {
-        paste("~ Probability|", paste(keepVars, collapse = "*"))
+    if (length(obsLevels) == 2) {
+      if (length(keepVars) > 0) {
+        form <- paste("~ Probability|", paste(keepVars, collapse = "*"))
       } else {
-        "~ Probability"
+        form <- "~ Probability"
       }
       form <- as.formula(form)
       out <- histogram(
@@ -110,20 +112,20 @@ plotClassProbs <- function(
         ...
       )
     } else {
-      form <- if (length(keepVars) > 0) {
-        paste("~ Probability|Class*", paste(keepVars, collapse = "*"))
+      if (length(keepVars) > 0) {
+        form <- paste("~ Probability|Class*", paste(keepVars, collapse = "*"))
       } else {
-        "~ Probability|Class"
+        form <- "~ Probability|Class"
       }
       form <- as.formula(form)
       out <- histogram(form, data = stackProbs, ...)
     }
   } else {
     keepVars <- keepVars[keepVars != "Observed"]
-    form <- if (length(keepVars) > 0) {
-      paste("~ Probability|", paste(keepVars, collapse = "*"))
+    if (length(keepVars) > 0) {
+      form <- paste("~ Probability|", paste(keepVars, collapse = "*"))
     } else {
-      "~ Probability"
+      form <- "~ Probability"
     }
     form <- as.formula(form)
 

@@ -279,7 +279,11 @@ createMultiFolds <- function(y, k = 10, times = 5) {
       prettyNums[i],
       sep = ""
     )
-    out <- if (i == 1) tmp else c(out, tmp)
+    if (i == 1) {
+      out <- tmp
+    } else {
+      out <- c(out, tmp)
+    }
   }
   out
 }
@@ -395,12 +399,11 @@ make_resamples <- function(ctrl_obj, outcome) {
   ## Create holdout indices
   if (is.null(ctrl_obj$indexOut) && ctrl_obj$method != "oob") {
     if (tolower(ctrl_obj$method) != "timeslice") {
-      y_index <-
-        if (inherits(outcome, "Surv")) {
-          seq_len(nrow(outcome))
-        } else {
-          seq(along.with = outcome)
-        }
+      if (inherits(outcome, "Surv")) {
+        y_index <- seq_len(nrow(outcome))
+      } else {
+        y_index <- seq(along.with = outcome)
+      }
       ctrl_obj$indexOut <-
         lapply(ctrl_obj$index, function(training) {
           setdiff(y_index, training)

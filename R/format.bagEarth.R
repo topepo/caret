@@ -52,5 +52,9 @@ format.bagEarth <- function(x, file = "", cat = TRUE, ...) {
     "\n"
   )
 
-  if (cat) cat(allEq, file = file) else return(allEq)
+  if (cat) {
+    cat(allEq, file = file)
+  } else {
+    return(allEq)
+  }
 }

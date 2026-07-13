@@ -3,13 +3,13 @@ stringFunc <- function(x) {
     x <- format(x)
   }
   numElements <- length(x)
-  out <- if (length(x) > 0) {
-    switch(min(numElements, 3), x, paste(x, collapse = " and "), {
+  if (length(x) > 0) {
+    out <- switch(min(numElements, 3), x, paste(x, collapse = " and "), {
       x <- paste0(x, c(rep(",", numElements - 2), " and", ""))
       paste(x, collapse = " ")
     })
   } else {
-    ""
+    out <- ""
   }
   out
 }
@@ -79,7 +79,9 @@ stringFunc <- function(x) {
       chDim[2] <- chDim[2] - 1
       if (x$modelType == "Classification") {
         lev <- levels(x)
-        if (is.character(lev)) chDim <- c(chDim, length(lev))
+        if (is.character(lev)) {
+          chDim <- c(chDim, length(lev))
+        }
       } else {
         lev <- NULL
       }
@@ -212,7 +214,9 @@ stringFunc <- function(x) {
           tuneAcc <- tuneAcc[, !(names(tuneAcc) %in% rmCols)]
         }
       } else {
-        if (length(sdCols) > 0) tuneAcc <- tuneAcc[, -sdCols, drop = FALSE]
+        if (length(sdCols) > 0) {
+          tuneAcc <- tuneAcc[, -sdCols, drop = FALSE]
+        }
       }
 
       params <- names(x$bestTune)
@@ -327,7 +331,9 @@ stringFunc <- function(x) {
       }
 
       cat(truncateText(optString))
-      if (nzchar(optString)) cat("\n")
+      if (nzchar(optString)) {
+        cat("\n")
+      }
     } else {
       printMat <- NULL
     }
@@ -406,8 +412,14 @@ truncateText <- function(x) {
     spaceIndex <- gregexpr("[[:space:]]", tmp2)[[1]]
     stopIndex <- spaceIndex[length(spaceIndex) - 1] - 1
     tmp <- c(substring(tmp2, 1, stopIndex), substring(tmp, stopIndex + 1))
-    out <- if (length(out) == 1) tmp else c(out[1:(length(x) - 1)], tmp)
-    if (all(nchar(out) <= w)) cont <- FALSE
+    if (length(out) == 1) {
+      out <- tmp
+    } else {
+      out <- c(out[1:(length(x) - 1)], tmp)
+    }
+    if (all(nchar(out) <= w)) {
+      cont <- FALSE
+    }
   }
 
   paste(out, collapse = "\n")

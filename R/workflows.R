@@ -4,8 +4,20 @@
 ### functions inside of caret cannot be found despite using the
 ### ".packages" argument or even calling the caret package via library().
 
-getOper <- function(x) if (x) `%dopar%` else `%do%`
-getTrainOper <- function(x) if (x) `%dopar%` else `%do%`
+getOper <- function(x) {
+  if (x) {
+    `%dopar%`
+  } else {
+    `%do%`
+  }
+}
+getTrainOper <- function(x) {
+  if (x) {
+    `%dopar%`
+  } else {
+    `%do%`
+  }
+}
 
 
 #' @rdname caret-internal
@@ -207,7 +219,9 @@ nominalTrainWorkflow <- function(
         } else {
           probValues <- fill_failed_prob(holdoutIndex, lev, submod)
         }
-        if (testing) print(head(probValues))
+        if (testing) {
+          print(head(probValues))
+        }
       }
 
       ##################################
@@ -416,10 +430,10 @@ nominalTrainWorkflow <- function(
     out <- merge(out, apparent)
     const <- 1 - exp(-1)
     sapply(perfNames, function(perfName) {
-      perfOut <- if (ctrl$method == "boot_all") {
-        paste0(perfName, "_632")
+      if (ctrl$method == "boot_all") {
+        perfOut <- paste0(perfName, "_632")
       } else {
-        perfName
+        perfOut <- perfName
       }
       out[, perfOut] <<- (const * out[, perfName]) +
         ((1 - const) * out[, paste(perfName, "Apparent", sep = "")])
@@ -450,10 +464,10 @@ nominalTrainWorkflow <- function(
       ## Remove unnecessary values
       out[, paste0(perfName, "Orig")] <<- NULL
       out[, paste0(perfName, "Boot")] <<- NULL
-      perfOut <- if (ctrl$method == "boot_all") {
-        paste0(perfName, "_OptBoot")
+      if (ctrl$method == "boot_all") {
+        perfOut <- paste0(perfName, "_OptBoot")
       } else {
-        perfName
+        perfOut <- perfName
       }
       ## Update estimates
       out[, paste0(perfName, "Optimism")] <<- optimism
@@ -595,7 +609,9 @@ looTrainWorkflow <- function(
         } else {
           probValues <- fill_failed_prob(holdoutIndex, lev, submod)
         }
-        if (testing) print(head(probValues))
+        if (testing) {
+          print(head(probValues))
+        }
       }
 
       predicted <- trim_values(predicted, ctrl, is.null(lev))
@@ -803,10 +819,10 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...) {
     }
 
   resamples <- rbind.fill(result[names(result) == "resamples"])
-  pred <- if (ctrl$saveDetails) {
-    rbind.fill(result[names(result) == "pred"])
+  if (ctrl$saveDetails) {
+    pred <- rbind.fill(result[names(result) == "pred"])
   } else {
-    NULL
+    pred <- NULL
   }
   performance <- MeanSD(resamples[,
     !grepl("Resample", colnames(resamples)),
@@ -935,10 +951,10 @@ nominalRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...) {
         holdoutIndex <- modelIndex
       }
 
-      seeds <- if (!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) {
-        ctrl$seeds[[iter]]
+      if (!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) {
+        seeds <- ctrl$seeds[[iter]]
       } else {
-        NA
+        seeds <- NA
       }
       rfeResults <- rfeIter(
         subset_x(x, modelIndex),
@@ -1046,10 +1062,10 @@ looRfeWorkflow <- function(x, y, sizes, ppOpts, ctrl, lev, ...) {
       modelIndex <- resampleIndex[[iter]]
       holdoutIndex <- -unique(resampleIndex[[iter]])
 
-      seeds <- if (!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) {
-        ctrl$seeds[[iter]]
+      if (!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) {
+        seeds <- ctrl$seeds[[iter]]
       } else {
-        NA
+        seeds <- NA
       }
       rfeResults <- rfeIter(
         subset_x(x, modelIndex),

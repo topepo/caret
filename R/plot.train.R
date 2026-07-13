@@ -201,7 +201,9 @@
         }
       }
       for (i in 2:ncol(dat)) {
-        if (is.logical(dat[, i])) dat[, i] <- factor(dat[, i])
+        if (is.logical(dat[, i])) {
+          dat[, i] <- factor(dat[, i])
+        }
       }
       if (p > 2 && nameInStrip) {
         strip_vars <- params[-(1:2)]
@@ -218,12 +220,12 @@
         }
       }
       ## make formula
-      form <- if (p <= 2) {
-        as.formula(
+      if (p <= 2) {
+        form <- as.formula(
           paste(metric, "~", params[1], sep = "")
         )
       } else {
-        as.formula(paste(
+        form <- as.formula(paste(
           metric,
           "~",
           params[1],
@@ -317,10 +319,17 @@
         }
       }
       ## make formula
-      form <- if (p <= 2) {
-        as.formula(paste(metric, "~", params[1], "*", params[2], sep = ""))
+      if (p <= 2) {
+        form <- as.formula(paste(
+          metric,
+          "~",
+          params[1],
+          "*",
+          params[2],
+          sep = ""
+        ))
       } else {
-        as.formula(paste(
+        form <- as.formula(paste(
           metric,
           "~",
           params[1],

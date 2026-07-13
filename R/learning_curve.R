@@ -84,7 +84,11 @@ learning_curve_dat <- function(
   n <- length(for_model)
 
   resampled <- vector(mode = "list", length = n_size)
-  tested <- if (test_prop > 0) resampled else NULL
+  if (test_prop > 0) {
+    tested <- resampled
+  } else {
+    tested <- NULL
+  }
   apparent <- resampled
   for (i in seq(along.with = proportion)) {
     if (verbose) {
@@ -97,10 +101,10 @@ learning_curve_dat <- function(
         sep = ""
       )
     }
-    in_mod <- if (proportion[i] < 1) {
-      sample(for_model, size = floor(n * proportion[i]))
+    if (proportion[i] < 1) {
+      in_mod <- sample(for_model, size = floor(n * proportion[i]))
     } else {
-      for_model
+      in_mod <- for_model
     }
     mod <- train(
       x = dat[in_mod, colnames(dat) != outcome, drop = FALSE],

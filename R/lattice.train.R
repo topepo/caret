@@ -197,10 +197,10 @@ stripplot.train <- function(x, data = NULL, metric = x$metric, ...) {
   if (any(tNames %in% colnames(resamp))) {
     theDots <- list(...)
     if (any(names(theDots) == "horizontal")) {
-      formText <- if (theDots$horizontal) {
-        paste(tNames1, "~", mName)
+      if (theDots$horizontal) {
+        formText <- paste(tNames1, "~", mName)
       } else {
-        paste(mName, "~", tNames1)
+        formText <- paste(mName, "~", tNames1)
       }
     } else {
       formText <- paste(tNames1, "~", mName)

@@ -103,12 +103,16 @@ findCorrelation_exact <- function(x, cutoff = 0.90, verbose = FALSE) {
             deletecol[i] <- TRUE
             x2[i, ] <- NA
             x2[, i] <- NA
-            if (verbose) cat(" so flagging column", newOrder[i], "\n")
+            if (verbose) {
+              cat(" so flagging column", newOrder[i], "\n")
+            }
           } else {
             deletecol[j] <- TRUE
             x2[j, ] <- NA
             x2[, j] <- NA
-            if (verbose) cat(" so flagging column", newOrder[j], "\n")
+            if (verbose) {
+              cat(" so flagging column", newOrder[j], "\n")
+            }
           }
         }
       }
@@ -212,10 +216,10 @@ findCorrelation <- function(
   if (names && is.null(colnames(x))) {
     stop("'x' must have column names when `names = TRUE`")
   }
-  out <- if (exact) {
-    findCorrelation_exact(x = x, cutoff = cutoff, verbose = verbose)
+  if (exact) {
+    out <- findCorrelation_exact(x = x, cutoff = cutoff, verbose = verbose)
   } else {
-    findCorrelation_fast(x = x, cutoff = cutoff, verbose = verbose)
+    out <- findCorrelation_fast(x = x, cutoff = cutoff, verbose = verbose)
   }
   out
   if (names) {

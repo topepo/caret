@@ -20,7 +20,9 @@ probFunction <- function(
   )
   if (!is.data.frame(classProb) && is.null(param)) {
     classProb <- as.data.frame(classProb, stringsAsFactors = TRUE)
-    if (!is.null(obsLevels)) classprob <- classProb[, obsLevels]
+    if (!is.null(obsLevels)) {
+      classprob <- classProb[, obsLevels]
+    }
   }
   classProb
 }

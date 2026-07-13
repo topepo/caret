@@ -252,7 +252,11 @@ preProcess.default <- function(
   ## we would center *and* scale before the ICA step, so let's adjust the "scale" method too
   if (any(names(method) == "ica")) {
     theDots <- list(...)
-    row.norm <- if (is.null(list(...)$row.norm)) FALSE else list(...)$row.norm
+    if (is.null(list(...)$row.norm)) {
+      row.norm <- FALSE
+    } else {
+      row.norm <- list(...)$row.norm
+    }
   }
 
   ## check for zero-variance predictors
@@ -408,7 +412,11 @@ preProcess.default <- function(
       cat(" applying them to training data\n")
     }
     if (length(bc) != length(method$BoxCox)) {
-      method$BoxCox <- if (length(bc) == 0) NULL else names(bc)
+      if (length(bc) == 0) {
+        method$BoxCox <- NULL
+      } else {
+        method$BoxCox <- names(bc)
+      }
     }
     for (i in method$BoxCox) {
       x[, i] <- predict(bc[[i]], x[, i])
@@ -622,7 +630,9 @@ preProcess.default <- function(
     bagModels <- as.list(method$bagImpute)
     names(bagModels) <- method$bagImpute
     bagModels <- lapply(bagModels, bagImp, x = x)
-    if (verbose) cat(" done\n")
+    if (verbose) {
+      cat(" done\n")
+    }
   } else {
     bagModels <- NULL
   }
@@ -648,7 +658,9 @@ preProcess.default <- function(
       )
       medianValue[is.na(medianValue)] <- 0
     }
-    if (verbose) cat(" done\n")
+    if (verbose) {
+      cat(" done\n")
+    }
   } else {
     medianValue <- NULL
   }
@@ -877,10 +889,10 @@ predict.preProcess <- function(object, newdata, ...) {
 
   if (any(names(object$method) == "medianImpute") && any(!cc)) {
     missingVars <- apply(newdata, 2, function(x) anyNA(x))
-    missingVars <- if (is.null(names(missingVars))) {
-      which(missingVars)
+    if (is.null(names(missingVars))) {
+      missingVars <- which(missingVars)
     } else {
-      names(missingVars)[missingVars]
+      missingVars <- names(missingVars)[missingVars]
     }
     for (v in missingVars) {
       newdata[is.na(newdata[, v]), v] <- object$median[v]
@@ -889,10 +901,10 @@ predict.preProcess <- function(object, newdata, ...) {
 
   if (any(names(object$method) == "pca")) {
     pca_cols <- newdata[, object$method$pca, drop = FALSE]
-    pca_cols <- if (is.matrix(pca_cols)) {
-      pca_cols %*% object$rotation
+    if (is.matrix(pca_cols)) {
+      pca_cols <- pca_cols %*% object$rotation
     } else {
-      as.matrix(pca_cols) %*% object$rotation
+      pca_cols <- as.matrix(pca_cols) %*% object$rotation
     }
     if (ncol(pca_cols) == 1) {
       colnames(pca_cols) <- "PC1"
@@ -1013,7 +1025,9 @@ print.preProcess <- function(x, ...) {
       lmbda <- unlist(lapply(x$bc, function(x) x$lambda))
       naLmbda <- sum(is.na(lmbda))
       cat(paste(round(lmbda[!is.na(lmbda)], 2), collapse = ", "))
-      if (naLmbda > 0) cat(" (#NA: ", naLmbda, ")\n", sep = "")
+      if (naLmbda > 0) {
+        cat(" (#NA: ", naLmbda, ")\n", sep = "")
+      }
     } else {
       print(summary(unlist(lapply(x$bc, function(x) x$lambda))))
     }
@@ -1026,7 +1040,9 @@ print.preProcess <- function(x, ...) {
     if (length(lmbda) < 11) {
       naLmbda <- sum(is.na(lmbda))
       cat(paste(round(lmbda[!is.na(lmbda)], 2), collapse = ", "))
-      if (naLmbda > 0) cat(" (#NA: ", naLmbda, ")\n", sep = "")
+      if (naLmbda > 0) {
+        cat(" (#NA: ", naLmbda, ")\n", sep = "")
+      }
     } else {
       print(summary(lmbda))
     }
@@ -1367,7 +1383,9 @@ check_for_wildcards <- function(opts, verbose = TRUE) {
         opts[[i]] <- opts[[i]][opts[[i]] != "_PC_"]
       }
     }
-    if (verbose) cat("\n")
+    if (verbose) {
+      cat("\n")
+    }
   }
   ic_wc <- unlist(lapply(opts, function(x) any(x == "_IC_")))
   if (any(ic_wc)) {
@@ -1391,7 +1409,9 @@ check_for_wildcards <- function(opts, verbose = TRUE) {
         opts[[i]] <- opts[[i]][opts[[i]] != "_IC_"]
       }
     }
-    if (verbose) cat("\n")
+    if (verbose) {
+      cat("\n")
+    }
   }
 
   pc_wc <- unlist(lapply(opts, function(x) any(x == "_PC_")))

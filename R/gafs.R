@@ -509,7 +509,11 @@ ga_select <- function(
     Similarity_M = rep(0 * NA, iters),
     stringsAsFactors = FALSE
   )
-  external <- if (!is.null(testX)) data.frame(Iter = 1:(iters)) else NULL
+  if (!is.null(testX)) {
+    external <- data.frame(Iter = 1:(iters))
+  } else {
+    external <- NULL
+  }
 
   ## add GA package warnings
 
@@ -611,7 +615,11 @@ ga_select <- function(
     rownames(current_int) <- NULL
     rm(currennt_results)
 
-    Fitness <- if (is.matrix(current_int)) current_int[, ga_metric["internal"]]
+    if (is.matrix(current_int)) {
+      Fitness <- current_int[, ga_metric["internal"]]
+    } else {
+      Fitness <- NULL
+    }
     best_index <- which.max(Fitness)
     best_internal <- current_int[best_index, ]
     if (!is.null(testX)) {
@@ -658,7 +666,9 @@ ga_select <- function(
       }
     } else {
       internal[generation, (nr - k + 1):nr] <- best_internal
-      if (!is.null(testX)) external[generation, -1] <- best_external
+      if (!is.null(testX)) {
+        external[generation, -1] <- best_external
+      }
     }
 
     if (ga_verbose) {
@@ -750,7 +760,11 @@ ga_select <- function(
     }
 
     # mutation
-    pm <- if (is.function(pmutation)) pmutation(object) else pmutation
+    if (is.function(pmutation)) {
+      pm <- pmutation(object)
+    } else {
+      pm <- pmutation
+    }
     if (is.function(funcs$mutation) && pm > 0) {
       for (i in seq_len(popSize)) {
         if (pm > runif(1)) {
@@ -1400,10 +1414,10 @@ gafs <- function(x, ...) UseMethod("gafs")
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_ga$subsets[[best_index]]]
     } else {
-      best_index <- if (gafsControl$maximize["external"]) {
-        which.max(averages[, gafsControl$metric["external"]])
+      if (gafsControl$maximize["external"]) {
+        best_index <- which.max(averages[, gafsControl$metric["external"]])
       } else {
-        which.min(averages[, gafsControl$metric["external"]])
+        best_index <- which.min(averages[, gafsControl$metric["external"]])
       }
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_ga$subsets[[best_index]]]
@@ -1542,27 +1556,30 @@ plot.gafs <- function(
   if (output == "data") {
     out <- plot_dat
   }
-  plot_dat <- if (both_estimates) {
-    ddply(plot_dat, c("Iter", "Estimate"), function(x) {
+  if (both_estimates) {
+    plot_dat <- ddply(plot_dat, c("Iter", "Estimate"), function(x) {
       c(Mean = mean(x[, metric]))
     })
   } else {
-    ddply(plot_dat, c("Iter"), function(x) c(Mean = mean(x[, metric])))
+    plot_dat <- ddply(plot_dat, c("Iter"), function(x) {
+      c(Mean = mean(x[, metric]))
+    })
   }
 
   if (output == "ggplot") {
-    out <- if (both_estimates) {
-      ggplot(plot_dat, aes(x = Iter, y = Mean, color = Estimate)) + geom_point()
+    if (both_estimates) {
+      out <- ggplot(plot_dat, aes(x = Iter, y = Mean, color = Estimate)) +
+        geom_point()
     } else {
-      ggplot(plot_dat, aes(x = Iter, y = Mean)) + geom_point()
+      out <- ggplot(plot_dat, aes(x = Iter, y = Mean)) + geom_point()
     }
     out <- out + xlab("Generation")
   }
   if (output == "lattice") {
-    out <- if (both_estimates) {
-      xyplot(Mean ~ Iter, data = plot_dat, groups = Estimate, ...)
+    if (both_estimates) {
+      out <- xyplot(Mean ~ Iter, data = plot_dat, groups = Estimate, ...)
     } else {
-      xyplot(Mean ~ Iter, data = plot_dat, ...)
+      out <- xyplot(Mean ~ Iter, data = plot_dat, ...)
     }
     out <- update(out, xlab = "Generation")
   }
@@ -2065,10 +2082,10 @@ update.gafs <- function(object, iter, x, y, ...) {
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_ga$subsets[[best_index]]]
     } else {
-      best_index <- if (gafsControl$maximize["external"]) {
-        which.max(averages[, gafsControl$metric["external"]])
+      if (gafsControl$maximize["external"]) {
+        best_index <- which.max(averages[, gafsControl$metric["external"]])
       } else {
-        which.min(averages[, gafsControl$metric["external"]])
+        best_index <- which.min(averages[, gafsControl$metric["external"]])
       }
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_ga$subsets[[best_index]]]

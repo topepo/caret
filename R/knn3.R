@@ -61,7 +61,9 @@
 
 #' @export
 knn3.default <- function(x, ...) {
-  if (!inherits(x, "formula")) stop("knn3 only implemented for formula objects")
+  if (!inherits(x, "formula")) {
+    stop("knn3 only implemented for formula objects")
+  }
 }
 
 #' @rdname knn3
@@ -90,9 +92,11 @@ knn3.formula <- function(formula, data, subset, na.action, k = 5, ...) {
   if ((yvar <- attr(Terms, "response")) > 0) {
     xvars <- xvars[-yvar]
   }
-  xlev <- if (length(xvars) > 0) {
+  if (length(xvars) > 0) {
     xlev <- lapply(m[xvars], levels)
-    xlev[!sapply(xlev, is.null)]
+    xlev <- xlev[!sapply(xlev, is.null)]
+  } else {
+    xlev <- NULL
   }
   xint <- match("(Intercept)", colnames(x), nomatch = 0)
   if (xint > 0) {

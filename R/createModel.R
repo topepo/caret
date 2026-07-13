@@ -82,7 +82,11 @@
         ))
   ) {
     modelFit$xNames <- colnames(x)
-    modelFit$problemType <- if (is.factor(y)) "Classification" else "Regression"
+    if (is.factor(y)) {
+      modelFit$problemType <- "Classification"
+    } else {
+      modelFit$problemType <- "Regression"
+    }
     modelFit$tuneValue <- tuneValue
     modelFit$obsLevels <- obsLevels
     modelFit$param <- list(...)

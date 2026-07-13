@@ -182,7 +182,11 @@ resamples.default <- function(x, modelNames = names(x), ...) {
         names(rs_values[[mod]])[names(rs_values[[mod]]) %in% pNames],
         sep = "~"
       )
-    out <- if (mod == 1) rs_values[[mod]] else merge(out, rs_values[[mod]])
+    if (mod == 1) {
+      out <- rs_values[[mod]]
+    } else {
+      out <- merge(out, rs_values[[mod]])
+    }
   }
 
   timings <- do.call("rbind", lapply(x, getTimes))
@@ -689,10 +693,10 @@ xyplot.resamples <- function(
   }
 
   if (is.null(models)) {
-    models <- if (what %in% c("tTime", "mTime", "pTime")) {
-      x$models
+    if (what %in% c("tTime", "mTime", "pTime")) {
+      models <- x$models
     } else {
-      x$models[1:2]
+      models <- x$models[1:2]
     }
   }
   if (length(metric) != 1) {
@@ -958,10 +962,10 @@ densityplot.resamples <- function(
   plotData <- subset(plotData, Model %in% models & Metric %in% metric)
 
   metricVals <- unique(plotData$Metric)
-  plotForm <- if (length(metricVals) > 1) {
-    as.formula(~ value | Metric)
+  if (length(metricVals) > 1) {
+    plotForm <- as.formula(~ value | Metric)
   } else {
-    as.formula(~value)
+    plotForm <- as.formula(~value)
   }
   densityplot(
     plotForm,
@@ -992,10 +996,10 @@ bwplot.resamples <- function(
   avPerf <- avPerf[order(avPerf$Median), ]
   plotData$Model <- factor(as.character(plotData$Model), levels = avPerf$Model)
   metricVals <- unique(plotData$Metric)
-  plotForm <- if (length(metricVals) > 1) {
-    as.formula(Model ~ value | Metric)
+  if (length(metricVals) > 1) {
+    plotForm <- as.formula(Model ~ value | Metric)
   } else {
-    as.formula(Model ~ value)
+    plotForm <- as.formula(Model ~ value)
   }
   bwplot(
     plotForm,
@@ -1057,10 +1061,10 @@ dotplot.resamples <- function(
   avPerf <- avPerf[order(avPerf$Median), ]
   results$Model <- factor(as.character(results$Model), levels = avPerf$Model)
   metricVals <- unique(results$Metric)
-  plotForm <- if (length(metricVals) > 1) {
-    as.formula(Model ~ value | Metric)
+  if (length(metricVals) > 1) {
+    plotForm <- as.formula(Model ~ value | Metric)
   } else {
-    as.formula(Model ~ value)
+    plotForm <- as.formula(Model ~ value)
   }
   dotplot(
     plotForm,
@@ -1332,10 +1336,10 @@ densityplot.diff.resamples <- function(x, data, metric = x$metric, ...) {
   plotData$ind <- gsub(".diff.", " - ", plotData$ind, fixed = TRUE)
   plotData <- subset(plotData, Metric %in% metric)
   metricVals <- unique(plotData$Metric)
-  plotForm <- if (length(metricVals) > 1) {
-    as.formula(~ values | Metric)
+  if (length(metricVals) > 1) {
+    plotForm <- as.formula(~ values | Metric)
   } else {
-    as.formula(~values)
+    plotForm <- as.formula(~values)
   }
 
   densityplot(
@@ -1357,10 +1361,10 @@ bwplot.diff.resamples <- function(x, data, metric = x$metric, ...) {
   plotData$ind <- gsub(".diff.", " - ", plotData$ind, fixed = TRUE)
   plotData <- subset(plotData, Metric %in% metric)
   metricVals <- unique(plotData$Metric)
-  plotForm <- if (length(metricVals) > 1) {
-    as.formula(ind ~ values | Metric)
+  if (length(metricVals) > 1) {
+    plotForm <- as.formula(ind ~ values | Metric)
   } else {
-    as.formula(ind ~ values)
+    plotForm <- as.formula(ind ~ values)
   }
 
   bwplot(
@@ -1473,10 +1477,10 @@ levelplot.diff.resamples <- function(
       for (j in seq(along.with = x$models)) {
         if (i < j) {
           index <- index + 1
-          temp[i, j] <- if (what == "pvalues") {
-            x$statistics[[h]][index][[1]]$p.value
+          if (what == "pvalues") {
+            temp[i, j] <- x$statistics[[h]][index][[1]]$p.value
           } else {
-            x$statistics[[h]][index][[1]]$estimate
+            temp[i, j] <- x$statistics[[h]][index][[1]]$estimate
           }
           temp[j, i] <- temp[i, j]
         }

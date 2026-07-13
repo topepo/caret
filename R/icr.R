@@ -93,7 +93,11 @@ icr.default <- function(x, y, ...) {
     stop("y must be numeric")
   }
 
-  data <- if (is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
+  if (is.data.frame(x)) {
+    data <- x
+  } else {
+    data <- as.data.frame(x, stringsAsFactors = TRUE)
+  }
   data$y <- y
 
   modelFit <- lm(y ~ ., data = data)

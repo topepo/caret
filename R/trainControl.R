@@ -261,11 +261,17 @@ trainControl <- function(
     stop("incorrect value of adaptive$alpha")
   }
   if (grepl("adapt", method)) {
-    num <- if (method == "adaptive_cv") number * repeats else number
+    if (method == "adaptive_cv") {
+      num <- number * repeats
+    } else {
+      num <- number
+    }
     if (adaptive$min >= num) {
       stop(paste("adaptive$min should be less than", num))
     }
-    if (adaptive$min <= 1) stop("adaptive$min should be greater than 1")
+    if (adaptive$min <= 1) {
+      stop("adaptive$min should be greater than 1")
+    }
   }
   if (!(search %in% c("grid", "random"))) {
     stop("`search` should be either 'grid' or 'random'")

@@ -213,7 +213,11 @@ bagControl <- function(
 
     btSamples <- createResample(y, times = B)
 
-    `%op%` <- if (bagControl$allowParallel) `%dopar%` else `%do%`
+    if (bagControl$allowParallel) {
+      `%op%` <- `%dopar%`
+    } else {
+      `%op%` <- `%do%`
+    }
     btFits <- foreach(
       iter = seq(along.with = btSamples),
       .verbose = FALSE,

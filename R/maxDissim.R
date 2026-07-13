@@ -135,10 +135,10 @@ maxDissim <- function(
     cat("  adding:")
   }
   for (i in 1:n) {
-    pool <- if (randomFrac == 1) {
-      free
+    if (randomFrac == 1) {
+      pool <- free
     } else {
-      sample(free, max(2, floor(randomFrac * length(free))))
+      pool <- sample(free, max(2, floor(randomFrac * length(free))))
     }
     if (verbose) {
       cat("\nIter", i, "\n")
@@ -206,7 +206,11 @@ splitByDissim <- function(x, p = 0.8, y = NULL, start = NULL, ...) {
         ...
       )
       tmp2 <- ind[[i]][which(ind2[[i]] %in% tmp)]
-      out <- if (i == 1) tmp2 else c(tmp2, out)
+      if (i == 1) {
+        out <- tmp2
+      } else {
+        out <- c(tmp2, out)
+      }
     }
   } else {
     out <- splitter(x, p = p, start = start, ...)

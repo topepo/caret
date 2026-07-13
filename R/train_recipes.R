@@ -13,10 +13,10 @@ predict.train.recipe <- function(
     )
     names(predicted) <- NULL
     if (!is.null(object$levels) && all(!is.na(object$levels))) {
-      predicted <- if (attr(object$levels, "ordered")) {
-        ordered(as.character(predicted), levels = object$levels)
+      if (attr(object$levels, "ordered")) {
+        predicted <- ordered(as.character(predicted), levels = object$levels)
       } else {
-        factor(as.character(predicted), levels = object$levels)
+        predicted <- factor(as.character(predicted), levels = object$levels)
       }
     }
   } else {
@@ -148,13 +148,13 @@ rec_model <- function(
     ]
 
     other_cols <- other_cols$variable
-    other_dat <- if (
+    if (
       is.matrix(dat) ||
         (is.data.frame(dat) && !inherits(dat, "tbl_df"))
     ) {
-      dat[, other_cols, drop = FALSE]
+      other_dat <- dat[, other_cols, drop = FALSE]
     } else {
-      dat[, other_cols]
+      other_dat <- dat[, other_cols]
     }
 
     tmp <- sampling$func(other_dat, y)
@@ -214,7 +214,11 @@ rec_model <- function(
   }
   if (!isS4(modelFit) && !model_failed(modelFit)) {
     modelFit$xNames <- colnames(x)
-    modelFit$problemType <- if (is.factor(y)) "Classification" else "Regression"
+    if (is.factor(y)) {
+      modelFit$problemType <- "Classification"
+    } else {
+      modelFit$problemType <- "Regression"
+    }
     modelFit$tuneValue <- tuneValue
     modelFit$obsLevels <- obsLevels
     modelFit$param <- list(...)
@@ -369,7 +373,9 @@ loo_train_rec <- function(
         } else {
           probValues <- fill_failed_prob(holdoutIndex, lev, submod)
         }
-        if (testing) print(head(probValues))
+        if (testing) {
+          print(head(probValues))
+        }
       }
 
       predicted <- trim_values(predicted, ctrl, is.null(lev))
@@ -633,7 +639,9 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
         } else {
           probValues <- fill_failed_prob(holdoutIndex, lev, submod)
         }
-        if (testing) print(head(probValues))
+        if (testing) {
+          print(head(probValues))
+        }
       }
 
       ##################################
@@ -830,10 +838,10 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
     out <- merge(out, apparent)
     const <- 1 - exp(-1)
     sapply(perfNames, function(perfName) {
-      perfOut <- if (ctrl$method == "boot_all") {
-        paste0(perfName, "_632")
+      if (ctrl$method == "boot_all") {
+        perfOut <- paste0(perfName, "_632")
       } else {
-        perfName
+        perfOut <- perfName
       }
       out[, perfOut] <<- (const * out[, perfName]) +
         ((1 - const) * out[, paste(perfName, "Apparent", sep = "")])
@@ -864,10 +872,10 @@ train_rec <- function(rec, dat, info, method, ctrl, lev, testing = FALSE, ...) {
       ## Remove unnecessary values
       out[, paste0(perfName, "Orig")] <<- NULL
       out[, paste0(perfName, "Boot")] <<- NULL
-      perfOut <- if (ctrl$method == "boot_all") {
-        paste0(perfName, "_OptBoot")
+      if (ctrl$method == "boot_all") {
+        perfOut <- paste0(perfName, "_OptBoot")
       } else {
-        perfName
+        perfOut <- perfName
       }
       ## Update estimates
       out[, paste0(perfName, "Optimism")] <<- optimism
@@ -1017,7 +1025,9 @@ train_adapt_rec <- function(
         } else {
           probValues <- fill_failed_prob(holdoutIndex, lev, submod)
         }
-        if (testing) print(head(probValues))
+        if (testing) {
+          print(head(probValues))
+        }
       }
 
       ##################################
@@ -1134,10 +1144,10 @@ train_adapt_rec <- function(
     } ## end initial loop over resamples and models
 
   init_resamp <- rbind.fill(init_result[names(init_result) == "resamples"])
-  init_pred <- if (keep_pred) {
-    rbind.fill(init_result[names(init_result) == "pred"])
+  if (keep_pred) {
+    init_pred <- rbind.fill(init_result[names(init_result) == "pred"])
   } else {
-    NULL
+    init_pred <- NULL
   }
   names(init_resamp) <- gsub("^\\.", "", names(init_resamp))
   if (
@@ -1267,7 +1277,9 @@ train_adapt_rec <- function(
             } else {
               probValues <- fill_failed_prob(holdoutIndex, lev, submod)
             }
-            if (testing) print(head(probValues))
+            if (testing) {
+              print(head(probValues))
+            }
           }
 
           ##################################
@@ -1489,7 +1501,9 @@ train_adapt_rec <- function(
 
     last_iter <- iter
 
-    if (num_left == 1) break
+    if (num_left == 1) {
+      break
+    }
   }
 
   ## finish up last resamples
@@ -1605,7 +1619,9 @@ train_adapt_rec <- function(
           } else {
             probValues <- fill_failed_prob(holdoutIndex, lev, submod)
           }
-          if (testing) print(head(probValues))
+          if (testing) {
+            print(head(probValues))
+          }
         }
         ##################################
 
@@ -1734,10 +1750,10 @@ train_adapt_rec <- function(
   }
 
   resamples <- rbind.fill(init_result[names(init_result) == "resamples"])
-  pred <- if (keep_pred) {
-    rbind.fill(init_result[names(init_result) == "pred"])
+  if (keep_pred) {
+    pred <- rbind.fill(init_result[names(init_result) == "pred"])
   } else {
-    NULL
+    pred <- NULL
   }
   names(resamples) <- gsub("^\\.", "", names(resamples))
 

@@ -120,7 +120,9 @@ postResample <- function(pred, obs) {
           cor(pred, obs, use = "pairwise.complete.obs"),
           silent = TRUE
         )
-        if (inherits(resamplCor, "try-error")) resamplCor <- NA
+        if (inherits(resamplCor, "try-error")) {
+          resamplCor <- NA
+        }
       }
       mse <- mean((pred - obs)^2)
       mae <- mean(abs(pred - obs))
@@ -163,7 +165,11 @@ twoClassSummary <- function(data, lev = NULL, model = NULL) {
     pROC::roc(data$obs, data[, lev[1]], direction = ">", quiet = TRUE),
     silent = TRUE
   )
-  rocAUC <- if (inherits(rocObject, "try-error")) NA else rocObject$auc
+  if (inherits(rocObject, "try-error")) {
+    rocAUC <- NA
+  } else {
+    rocAUC <- rocObject$auc
+  }
   out <- c(
     rocAUC,
     sensitivity(data[, "pred"], data[, "obs"], lev[1]),
@@ -220,7 +226,11 @@ multiClassSummary <- function(data, lev = NULL, model = NULL) {
           pROC::roc(obs, data[, x], direction = "<", quiet = TRUE),
           silent = TRUE
         )
-        roc_auc <- if (inherits(roc_auc, "try-error")) NA else roc_auc$auc
+        if (inherits(roc_auc, "try-error")) {
+          roc_auc <- NA
+        } else {
+          roc_auc <- roc_auc$auc
+        }
         pr_auc <- try(
           MLmetrics::PRAUC(y_pred = data[, x], y_true = obs),
           silent = TRUE
@@ -249,17 +259,16 @@ multiClassSummary <- function(data, lev = NULL, model = NULL) {
   }
 
   # Aggregate overall stats
-  overall_stats <-
-    if (has_class_probs) {
-      c(
-        CM$overall,
-        logLoss = as.numeric(lloss),
-        AUC = unname(prob_stats["ROC"]),
-        prAUC = unname(prob_stats["AUC"])
-      )
-    } else {
-      CM$overall
-    }
+  if (has_class_probs) {
+    overall_stats <- c(
+      CM$overall,
+      logLoss = as.numeric(lloss),
+      AUC = unname(prob_stats["ROC"]),
+      prAUC = unname(prob_stats["AUC"])
+    )
+  } else {
+    overall_stats <- CM$overall
+  }
 
   # Combine overall with class-wise stats and remove some stats we don't want
   stats <- c(overall_stats, class_stats)

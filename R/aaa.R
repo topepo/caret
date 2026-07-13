@@ -17,10 +17,10 @@ altTrainWorkflow <- function(x) x
 
 #' @export
 best <- function(x, metric, maximize) {
-  bestIter <- if (maximize) {
-    which.max(x[, metric])
+  if (maximize) {
+    bestIter <- which.max(x[, metric])
   } else {
-    which.min(x[, metric])
+    bestIter <- which.min(x[, metric])
   }
 
   bestIter

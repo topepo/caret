@@ -117,7 +117,9 @@ filterVarImp <- function(x, y, nonpara = FALSE, ...) {
         if (inherits(regMod, "try-error") || any(is.nan(regMod$residuals))) {
           try(regMod <- lm(y ~ x, ...))
         }
-        if (inherits(regMod, "try-error")) return(NA)
+        if (inherits(regMod, "try-error")) {
+          return(NA)
+        }
       }
 
       pR2 <- 1 - (sum(resid(regMod)^2) / meanMod)
@@ -127,7 +129,11 @@ filterVarImp <- function(x, y, nonpara = FALSE, ...) {
       pR2
     }
 
-    testFunc <- if (nonpara) nonparaFoo else paraFoo
+    if (nonpara) {
+      testFunc <- nonparaFoo
+    } else {
+      testFunc <- paraFoo
+    }
 
     outStat <- apply(x, 2, testFunc, y = y)
     outStat <- data.frame(Overall = outStat)

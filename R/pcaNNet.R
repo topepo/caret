@@ -189,7 +189,11 @@ predict.pcaNNet <- function(
       scores <- fitted(object$model)
       classes <- colnames(scores)[apply(scores, 1, which.max)]
       classes <- factor(as.character(classes), levels = object$model$lev)
-      if (type[1] == "raw") return(scores) else return(classes)
+      if (type[1] == "raw") {
+        return(scores)
+      } else {
+        return(classes)
+      }
     }
   } else {
     if (inherits(object, "pcaNNet.formula")) {

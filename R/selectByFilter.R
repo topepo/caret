@@ -743,10 +743,10 @@ sbf_rec <- function(rec, data, ctrl, lev, ...) {
     }
 
   resamples <- rbind.fill(result[names(result) == "resamples"])
-  pred <- if (ctrl$saveDetails) {
-    rbind.fill(result[names(result) == "pred"])
+  if (ctrl$saveDetails) {
+    pred <- rbind.fill(result[names(result) == "pred"])
   } else {
-    NULL
+    pred <- NULL
   }
   performance <- MeanSD(resamples[,
     !grepl("Resample", colnames(resamples)),
@@ -1249,7 +1249,11 @@ caretSBF <- list(
   },
   score = function(x, y) {
     ## should return a named logical vector
-    if (is.factor(y)) anovaScores(x, y) else gamScores(x, y)
+    if (is.factor(y)) {
+      anovaScores(x, y)
+    } else {
+      gamScores(x, y)
+    }
   },
   filter = function(score, x, y) score <= 0.05
 )
@@ -1298,7 +1302,11 @@ rfSBF <- list(
   },
   score = function(x, y) {
     ## should return a named logical vector
-    if (is.factor(y)) anovaScores(x, y) else gamScores(x, y)
+    if (is.factor(y)) {
+      anovaScores(x, y)
+    } else {
+      gamScores(x, y)
+    }
   },
   filter = function(score, x, y) score <= 0.05
 )
@@ -1638,10 +1646,18 @@ print.nullModel <- function(x, digits = max(3, getOption("digits") - 3), ...) {
 #' @export
 predict.nullModel <- function(object, newdata = NULL, type = NULL, ...) {
   if (is.null(type)) {
-    type <- if (is.null(object$levels)) "raw" else "class"
+    if (is.null(object$levels)) {
+      type <- "raw"
+    } else {
+      type <- "class"
+    }
   }
 
-  n <- if (is.null(newdata)) object$n else nrow(newdata)
+  if (is.null(newdata)) {
+    n <- object$n
+  } else {
+    n <- nrow(newdata)
+  }
   if (!is.null(object$levels)) {
     if (type == "prob") {
       out <- matrix(rep(object$pct, n), nrow = n, byrow = TRUE)

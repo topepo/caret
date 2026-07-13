@@ -122,7 +122,11 @@ predict.expoTrans <- function(object, newdata, ...) {
 
 
 manly <- function(x, lambda) {
-  if (lambda == 0) x else (exp(lambda * x) - 1) / lambda
+  if (lambda == 0) {
+    x
+  } else {
+    (exp(lambda * x) - 1) / lambda
+  }
 }
 
 manlyLik <- function(lambda, x, neg = FALSE) {
@@ -135,5 +139,9 @@ manlyLik <- function(lambda, x, neg = FALSE) {
   if (!is.finite(out) || is.na(out)) {
     out <- .Machine$double.xmax
   }
-  if (neg) -out else out
+  if (neg) {
+    -out
+  } else {
+    out
+  }
 }

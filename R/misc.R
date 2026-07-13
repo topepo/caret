@@ -46,7 +46,11 @@ evalSummaryFunction <- function(
   metric,
   method
 ) {
-  n <- if (inherits(y, "Surv")) nrow(y) else length(y)
+  if (inherits(y, "Surv")) {
+    n <- nrow(y)
+  } else {
+    n <- length(y)
+  }
   ## sample doesn't work for Surv objects
   if (!inherits(y, "Surv")) {
     if (is.factor(y)) {
@@ -334,10 +338,10 @@ smootherFormula <- function(
   suffix <- rep("", ncol(data))
   prefix[numValues > cut] <- paste(smoother, "(", sep = "")
   if (smoother == "s") {
-    suffix[numValues > cut] <- if (df == 0) {
-      ")"
+    if (df == 0) {
+      suffix[numValues > cut] <- ")"
     } else {
-      paste(", df=", df, ")", sep = "")
+      suffix[numValues > cut] <- paste(", df=", df, ")", sep = "")
     }
   }
   if (smoother == "lo") {
@@ -396,7 +400,9 @@ makeTable <- function(x) {
 scrubCall <- function(x) {
   items <- c("x", "y", "data")
   for (i in items) {
-    if (nchar(as.character(x[i])) > 100) x[i] <- "scrubbed"
+    if (nchar(as.character(x[i])) > 100) {
+      x[i] <- "scrubbed"
+    }
   }
   x
 }
@@ -474,7 +480,11 @@ get_resample_perf.gafs <- function(x, ...) {
 #' @export var_seq
 var_seq <- function(p, classification = FALSE, len = 3) {
   if (len == 1) {
-    tuneSeq <- if (!classification) max(floor(p / 3), 1) else floor(sqrt(p))
+    if (!classification) {
+      tuneSeq <- max(floor(p / 3), 1)
+    } else {
+      tuneSeq <- floor(sqrt(p))
+    }
   } else {
     if (p <= len) {
       tuneSeq <- floor(seq(2, to = p, length.out = p))
@@ -610,10 +620,10 @@ check_samp_list <- function(x) {
 getSamplingInfo <- function(method = NULL, regex = TRUE, ...) {
   load(system.file("models", "sampling.RData", package = "caret"))
   if (!is.null(method)) {
-    keepers <- if (regex) {
-      grepl(method, names(sampling_methods), ...)
+    if (regex) {
+      keepers <- grepl(method, names(sampling_methods), ...)
     } else {
-      which(method == names(sampling_methods))[1]
+      keepers <- which(method == names(sampling_methods))[1]
     }
     sampling_methods <- sampling_methods[keepers]
   }
@@ -644,21 +654,29 @@ get_labels <- function(mods, format = FALSE) {
     labs <- gsub("Multivariate Adaptive Regression Spline", "MARS", labs)
     labs[labs == "glmnet"] <- "\\textsf{glmnet}"
   }
-  if (length(mods) > 1) data.frame(model = mods, label = labs) else labs[1]
+  if (length(mods) > 1) {
+    data.frame(model = mods, label = labs)
+  } else {
+    labs[1]
+  }
 }
 
 check_dims <- function(x, y) {
-  n <- if (inherits(y, "Surv")) nrow(y) else length(y)
+  if (inherits(y, "Surv")) {
+    n <- nrow(y)
+  } else {
+    n <- length(y)
+  }
   stopifnot(nrow(x) > 1)
   stopifnot(nrow(x) == n)
   invisible(NULL)
 }
 
 get_model_type <- function(y, method = NULL) {
-  type <- if (class(y)[1] %in% c("numeric", "Surv", "integer")) {
-    "Regression"
+  if (class(y)[1] %in% c("numeric", "Surv", "integer")) {
+    type <- "Regression"
   } else {
-    "Classification"
+    type <- "Classification"
   }
   type
 }
@@ -702,7 +720,11 @@ check_na_conflict <- function(call_obj) {
   has_pp <- grepl("^preProc", names(call_obj))
   if (any(has_pp)) {
     pp <- as.character(call_obj[has_pp])
-    imputes <- if (any(grepl("impute", tolower(pp)))) TRUE else FALSE
+    if (any(grepl("impute", tolower(pp)))) {
+      imputes <- TRUE
+    } else {
+      imputes <- FALSE
+    }
   } else {
     imputes <- FALSE
   }

@@ -288,8 +288,8 @@ confusionMatrix.table <- function(
       ),
       silent = TRUE
     )
-    res <- if (inherits(res, "try-error")) {
-      c("null.value.probability of success" = NA, p.value = NA)
+    if (inherits(res, "try-error")) {
+      res <- c("null.value.probability of success" = NA, p.value = NA)
     } else {
       res <- unlist(res[c("null.value", "p.value")])
     }
@@ -351,10 +351,10 @@ confusionMatrix.table <- function(
     for (i in seq(along.with = classLevels)) {
       pos <- classLevels[i]
       neg <- classLevels[!(classLevels %in% classLevels[i])]
-      prev <- if (is.null(prevalence)) {
-        sum(data[, pos]) / sum(data)
+      if (is.null(prevalence)) {
+        prev <- sum(data[, pos]) / sum(data)
       } else {
-        prevalence[pos]
+        prev <- prevalence[pos]
       }
       tableStats[i, ] <- c(
         sensitivity.table(data, pos),
@@ -630,7 +630,9 @@ confusionMatrix.train <- function(
     if (inherits(data, "rfe")) {
       resampledCM <- rfe_resampledCM(data)
     }
-    if (inherits(data, "sbf")) resampledCM <- sbf_resampledCM(data)
+    if (inherits(data, "sbf")) {
+      resampledCM <- sbf_resampledCM(data)
+    }
   }
 
   if (!is.null(data$control$index)) {

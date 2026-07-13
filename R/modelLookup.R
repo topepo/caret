@@ -99,7 +99,9 @@ checkInstall <- function(pkg) {
   good <- rep(TRUE, length(pkg))
   for (i in seq(along.with = pkg)) {
     tested <- try(find.package(pkg[i]), silent = TRUE)
-    if (inherits(tested, "try-error")) good[i] <- FALSE
+    if (inherits(tested, "try-error")) {
+      good[i] <- FALSE
+    }
   }
   if (any(!good)) {
     pkList <- paste(pkg[!good], collapse = ", ")
@@ -149,10 +151,10 @@ checkInstall <- function(pkg) {
 getModelInfo <- function(model = NULL, regex = TRUE, ...) {
   load(system.file("models", "models.RData", package = "caret"))
   if (!is.null(model)) {
-    keepers <- if (regex) {
-      grepl(model, names(models), ...)
+    if (regex) {
+      keepers <- grepl(model, names(models), ...)
     } else {
-      which(model == names(models))[1]
+      keepers <- which(model == names(models))[1]
     }
     models <- models[keepers]
   }

@@ -111,11 +111,17 @@ predict.plsda <- function(
 ) {
   requireNamespaceQuietStop('pls')
   if (is.null(ncomp)) {
-    if (!is.null(object$ncomp)) ncomp <- object$ncomp else stop("specify ncomp")
+    if (!is.null(object$ncomp)) {
+      ncomp <- object$ncomp
+    } else {
+      stop("specify ncomp")
+    }
   }
 
   if (!is.null(newdata)) {
-    if (!is.matrix(newdata)) newdata <- as.matrix(newdata)
+    if (!is.matrix(newdata)) {
+      newdata <- as.matrix(newdata)
+    }
   }
 
   ## make sure that the prediction function from pls is used
@@ -157,7 +163,9 @@ predict.plsda <- function(
           )
           names(out) <- paste("ncomp", ncomp, sep = "")
           rownames(out) <- rownames(newdata)
-          if (length(ncomp) == 1) out <- out[, 1]
+          if (length(ncomp) == 1) {
+            out <- out[, 1]
+          }
         }
       },
       prob = {
@@ -199,7 +207,9 @@ predict.plsda <- function(
         lapply(out, function(x, y) factor(x, levels = y), y = object$obsLevels),
         stringsAsFactors = TRUE
       )
-      if (length(ncomp) == 1) out <- out[, 1]
+      if (length(ncomp) == 1) {
+        out <- out[, 1]
+      }
     } else {
       out <- array(
         dim = c(dim(tmp[[1]]$posterior), length(ncomp)),

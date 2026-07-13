@@ -67,7 +67,13 @@ same_args <- function(a, b) {
   TRUE
 }
 
-getOper <- function(x) if (x) `%dopar%` else `%do%`
+getOper <- function(x) {
+  if (x) {
+    `%dopar%`
+  } else {
+    `%do%`
+  }
+}
 
 jack_sim <- function(a, b) {
   if (is.matrix(a) && nrow(a) > 1) {
@@ -116,10 +122,10 @@ change_text <- function(old, new, p, show_diff = TRUE) {
   size_diff <- length(new) - length(old)
   if (show_diff) {
     if (abs(size_diff) >= 0) {
-      num_text <- if (size_diff >= 0) {
-        paste0(length(old), "+", size_diff)
+      if (size_diff >= 0) {
+        num_text <- paste0(length(old), "+", size_diff)
       } else {
-        paste0(length(old), size_diff)
+        num_text <- paste0(length(old), size_diff)
       }
     } else {
       num_text <- paste(length(old))

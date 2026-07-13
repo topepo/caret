@@ -131,7 +131,11 @@ nearZeroVar <- function(
           saveMetrics = FALSE
         )
         ## needed because either integer() or 1, r is never 0
-        if (length(r) > 0 && r == 1) TRUE else FALSE
+        if (length(r) > 0 && r == 1) {
+          TRUE
+        } else {
+          FALSE
+        }
       }
     res <- which(res)
     if (names) {

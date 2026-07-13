@@ -17,7 +17,9 @@ trim.train <- function(object, ...) {
     "times"
   )
   for (i in removals) {
-    if (i %in% names(object)) object[i] <- NULL
+    if (i %in% names(object)) {
+      object[i] <- NULL
+    }
   }
   c_removals <- c(
     'method',
@@ -41,7 +43,9 @@ trim.train <- function(object, ...) {
     'yLimits'
   )
   for (i in c_removals) {
-    if (i %in% names(object$control)) object$control[i] <- NULL
+    if (i %in% names(object$control)) {
+      object$control[i] <- NULL
+    }
   }
   if (!is.null(object$modelInfo$trim)) {
     object$finalModel <- object$modelInfo$trim(object$finalModel)

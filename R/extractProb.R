@@ -70,10 +70,10 @@ extractProb <- function(
       }
       flush.console()
 
-      predProb <- if (is.null(predProb)) {
-        tempTrainProb
+      if (is.null(predProb)) {
+        predProb <- tempTrainProb
       } else {
-        rbind(predProb, tempTrainProb)
+        predProb <- rbind(predProb, tempTrainProb)
       }
       predClass <- c(predClass, as.character(tempTrainPred))
       obs <- c(obs, as.character(trainY))
@@ -108,10 +108,10 @@ extractProb <- function(
           )
         }
 
-        predProb <- if (is.null(predProb)) {
-          tempTestProb
+        if (is.null(predProb)) {
+          predProb <- tempTestProb
         } else {
-          rbind(predProb, tempTestProb)
+          predProb <- rbind(predProb, tempTestProb)
         }
         predClass <- c(predClass, as.character(tempTestPred))
         obs <- c(obs, as.character(testY))
@@ -148,10 +148,10 @@ extractProb <- function(
         )
       }
 
-      predProb <- if (is.null(predProb)) {
-        tempUnkProb
+      if (is.null(predProb)) {
+        predProb <- tempUnkProb
       } else {
-        rbind(predProb, tempUnkProb)
+        predProb <- rbind(predProb, tempUnkProb)
       }
       predClass <- c(predClass, as.character(tempUnkPred))
       obs <- c(obs, rep(NA, length(tempUnkPred)))
@@ -159,7 +159,9 @@ extractProb <- function(
       objName <- c(objName, rep(objectNames[[i]], length(tempUnkPred)))
       dataType <- c(dataType, rep("Unknown", length(tempUnkPred)))
     }
-    if (verbose) cat("\n")
+    if (verbose) {
+      cat("\n")
+    }
   }
 
   predClass <- factor(predClass, levels = obsLevels)

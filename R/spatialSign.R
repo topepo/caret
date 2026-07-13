@@ -47,12 +47,11 @@
     )
   }
   denom <- sum(x^2, na.rm = na.rm)
-  out <-
-    if (sqrt(denom) > .Machine$double.eps) {
-      x / sqrt(denom)
-    } else {
-      x * 0
-    }
+  if (sqrt(denom) > .Machine$double.eps) {
+    out <- x / sqrt(denom)
+  } else {
+    out <- x * 0
+  }
   out
 }
 

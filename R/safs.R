@@ -804,10 +804,10 @@ safs <- function(x, ...) UseMethod("safs")
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_sa$subsets[[best_index]]]
     } else {
-      best_index <- if (safsControl$maximize["external"]) {
-        which.max(averages[, safsControl$metric["external"]])
+      if (safsControl$maximize["external"]) {
+        best_index <- which.max(averages[, safsControl$metric["external"]])
       } else {
-        which.min(averages[, safsControl$metric["external"]])
+        best_index <- which.min(averages[, safsControl$metric["external"]])
       }
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_sa$subsets[[best_index]]]
@@ -1120,7 +1120,11 @@ sa_select <- function(
     Similarity_B = rep(0 * NA, iters),
     stringsAsFactors = FALSE
   )
-  external <- if (!is.null(testX)) data.frame(Iter = 1:(iters)) else NULL
+  if (!is.null(testX)) {
+    external <- data.frame(Iter = 1:(iters))
+  } else {
+    external <- NULL
+  }
 
   for (i in 1:iters) {
     if (i == 1) {
@@ -1191,7 +1195,9 @@ sa_select <- function(
       }
     } else {
       internal[i, (nr - k + 1):nr] <- new_obj$internal
-      if (!is.null(testX)) external[i, -1] <- new_obj$external
+      if (!is.null(testX)) {
+        external[i, -1] <- new_obj$external
+      }
     }
 
     if (sa_verbose) {
@@ -1245,7 +1251,9 @@ sa_select <- function(
       internal$Note[i] <- "Improved"
       last_improve <- i
       since_improve <- 0
-      if (sa_verbose && i > 1) cat(" *\n")
+      if (sa_verbose && i > 1) {
+        cat(" *\n")
+      }
     } else {
       if (i > 1) {
         internal$Prob[i] <- funcs$prob(
@@ -1265,12 +1273,16 @@ sa_select <- function(
         current_subset <- new_subset
         internal$Best[i] <- internal$Best[i - 1]
         internal$Note[i] <- "Accepted"
-        if (sa_verbose && i > 1) cat("A\n")
+        if (sa_verbose && i > 1) {
+          cat("A\n")
+        }
       } else {
         internal$Obj[i] <- internal$Obj[i - 1]
         internal$Best[i] <- internal$Best[i - 1]
         internal$Note[i] <- "Discarded"
-        if (sa_verbose && i > 1) cat("\n")
+        if (sa_verbose && i > 1) {
+          cat("\n")
+        }
       }
     }
 
@@ -1369,27 +1381,30 @@ plot.safs <- function(
   if (output == "data") {
     out <- plot_dat
   }
-  plot_dat <- if (both_estimates) {
-    ddply(plot_dat, c("Iter", "Estimate"), function(x) {
+  if (both_estimates) {
+    plot_dat <- ddply(plot_dat, c("Iter", "Estimate"), function(x) {
       c(Mean = mean(x[, metric]))
     })
   } else {
-    ddply(plot_dat, c("Iter"), function(x) c(Mean = mean(x[, metric])))
+    plot_dat <- ddply(plot_dat, c("Iter"), function(x) {
+      c(Mean = mean(x[, metric]))
+    })
   }
 
   if (output == "ggplot") {
-    out <- if (both_estimates) {
-      ggplot(plot_dat, aes(x = Iter, y = Mean, color = Estimate)) + geom_point()
+    if (both_estimates) {
+      out <- ggplot(plot_dat, aes(x = Iter, y = Mean, color = Estimate)) +
+        geom_point()
     } else {
-      ggplot(plot_dat, aes(x = Iter, y = Mean)) + geom_point()
+      out <- ggplot(plot_dat, aes(x = Iter, y = Mean)) + geom_point()
     }
     out <- out + xlab("Iteration")
   }
   if (output == "lattice") {
-    out <- if (both_estimates) {
-      xyplot(Mean ~ Iter, data = plot_dat, groups = Estimate, ...)
+    if (both_estimates) {
+      out <- xyplot(Mean ~ Iter, data = plot_dat, groups = Estimate, ...)
     } else {
-      xyplot(Mean ~ Iter, data = plot_dat, ...)
+      out <- xyplot(Mean ~ Iter, data = plot_dat, ...)
     }
     out <- update(out, xlab = "Iteration")
   }
@@ -1935,10 +1950,10 @@ update.safs <- function(object, iter, x, y, ...) {
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_sa$subsets[[best_index]]]
     } else {
-      best_index <- if (safsControl$maximize["external"]) {
-        which.max(averages[, safsControl$metric["external"]])
+      if (safsControl$maximize["external"]) {
+        best_index <- which.max(averages[, safsControl$metric["external"]])
       } else {
-        which.min(averages[, safsControl$metric["external"]])
+        best_index <- which.min(averages[, safsControl$metric["external"]])
       }
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_sa$subsets[[best_index]]]

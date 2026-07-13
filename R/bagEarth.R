@@ -98,12 +98,11 @@
       index <- fit$index
       subX <- x[-index, , drop = FALSE]
       subY <- y[-index]
-      predY <-
-        if (is.null(fit$levels)) {
-          predict(fit, subX)
-        } else {
-          predict(fit, subX, type = "class")
-        }
+      if (is.null(fit$levels)) {
+        predY <- predict(fit, subX)
+      } else {
+        predY <- predict(fit, subX, type = "class")
+      }
       postResample(predY, subY)
     }
 
@@ -235,10 +234,10 @@
 "predict.bagEarth" <-
   function(object, newdata = NULL, type = NULL, ...) {
     if (is.null(type)) {
-      type <- if (all(is.na(object$levels))) {
-        "response"
+      if (all(is.na(object$levels))) {
+        type <- "response"
       } else {
-        "class"
+        type <- "class"
       }
     }
     if (!any(type %in% c("response", "class", "prob"))) {
