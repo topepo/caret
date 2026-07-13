@@ -45,73 +45,80 @@
 #'   Andre Williams
 #' @keywords multivariate
 #' @examples
-#' 
+#'
 #' irisFit1 <- knn3(Species ~ ., iris)
-#' 
+#'
 #' irisFit2 <- knn3(as.matrix(iris[, -5]), iris[, 5])
-#' 
+#'
 #' data(iris3)
 #' train <- rbind(iris3[1:25, , 1], iris3[1:25, , 2], iris3[1:25, , 3])
 #' test <- rbind(iris3[26:50, , 1], iris3[26:50, , 2], iris3[26:50, , 3])
 #' cl <- factor(c(rep("s", 25), rep("c", 25), rep("v", 25)))
 #' knn3Train(train, test, cl, k = 5, prob = TRUE)
-#' 
+#'
 #' @export
-"knn3" <- function(x, ...)   UseMethod("knn3")
+"knn3" <- function(x, ...) UseMethod("knn3")
 
 #' @export
-knn3.default <- function(x, ...)
-{
-   if(!inherits(x, "formula"))  stop("knn3 only implemented for formula objects")
+knn3.default <- function(x, ...) {
+  if (!inherits(x, "formula")) {
+    stop("knn3 only implemented for formula objects")
+  }
 }
 
 #' @rdname knn3
 #' @export
-knn3.formula <- function (formula, data, subset, na.action, k = 5, ...)
-{
-
-    if (missing(formula) ||
-        (length(formula) != 3) ||
-        (length(attr(terms(formula[-2], data = data), "term.labels")) < 1) ||
-        (length(attr(terms(formula[-3], data = data), "term.labels")) != 1))
-        stop("formula missing or incorrect")
-    m <- match.call(expand.dots = FALSE)
-    if (is.matrix(eval(m$data, parent.frame())))
-        m$data <- as.data.frame(data, stringsAsFactors = TRUE)
-    m[[1]] <- as.name("model.frame")
-    m$... <- NULL
-    m$k <- NULL
-    m <- eval(m, parent.frame())
-    Terms <- attr(m, "terms")
-    y <- model.extract(m, "response")
-    x <- model.matrix(Terms, m)
-    xvars <- as.character(attr(Terms, "variables"))[-1]
-    if ((yvar <- attr(Terms, "response")) > 0)
-        xvars <- xvars[-yvar]
-    xlev <- if (length(xvars) > 0) {
-        xlev <- lapply(m[xvars], levels)
-        xlev[!sapply(xlev, is.null)]
-    }
-    xint <- match("(Intercept)", colnames(x), nomatch = 0)
-    if (xint > 0)
-        x <- x[, -xint, drop = FALSE]
-    RET <- list(learn = list(y = y, X = x))
-    RET$k <- k
-    RET$terms <- Terms
-    RET$contrasts <- attr(x, "contrasts")
-    RET$xlevels <- xlev
-    RET$theDots <- list(...)
-    attr(RET, "na.message") <- attr(m, "na.message")
-    if (!is.null(attr(m, "na.action")))
-        RET$na.action <- attr(m, "na.action")
-    class(RET) <- "knn3"
-    RET
+knn3.formula <- function(formula, data, subset, na.action, k = 5, ...) {
+  if (
+    missing(formula) ||
+      (length(formula) != 3) ||
+      (length(attr(terms(formula[-2], data = data), "term.labels")) < 1) ||
+      (length(attr(terms(formula[-3], data = data), "term.labels")) != 1)
+  ) {
+    stop("formula missing or incorrect")
+  }
+  m <- match.call(expand.dots = FALSE)
+  if (is.matrix(eval(m$data, parent.frame()))) {
+    m$data <- as.data.frame(data, stringsAsFactors = TRUE)
+  }
+  m[[1]] <- as.name("model.frame")
+  m$... <- NULL
+  m$k <- NULL
+  m <- eval(m, parent.frame())
+  Terms <- attr(m, "terms")
+  y <- model.extract(m, "response")
+  x <- model.matrix(Terms, m)
+  xvars <- as.character(attr(Terms, "variables"))[-1]
+  if ((yvar <- attr(Terms, "response")) > 0) {
+    xvars <- xvars[-yvar]
+  }
+  if (length(xvars) > 0) {
+    xlev <- lapply(m[xvars], levels)
+    xlev <- xlev[!sapply(xlev, is.null)]
+  } else {
+    xlev <- NULL
+  }
+  xint <- match("(Intercept)", colnames(x), nomatch = 0)
+  if (xint > 0) {
+    x <- x[, -xint, drop = FALSE]
+  }
+  RET <- list(learn = list(y = y, X = x))
+  RET$k <- k
+  RET$terms <- Terms
+  RET$contrasts <- attr(x, "contrasts")
+  RET$xlevels <- xlev
+  RET$theDots <- list(...)
+  attr(RET, "na.message") <- attr(m, "na.message")
+  if (!is.null(attr(m, "na.action"))) {
+    RET$na.action <- attr(m, "na.action")
+  }
+  class(RET) <- "knn3"
+  RET
 }
 
 #' @rdname knn3
 #' @export
-knn3.data.frame <- function(x, y, k = 5, ...)
-{
+knn3.data.frame <- function(x, y, k = 5, ...) {
   x <- as.matrix(x)
   out <- knn3(x, y = y, k = k, ...)
   out
@@ -119,107 +126,141 @@ knn3.data.frame <- function(x, y, k = 5, ...)
 
 #' @rdname knn3
 #' @export
-knn3.matrix <- function(x, y, k = 5, ...)
-{
-    if(!is.matrix(x)) x <- as.matrix(x)
-    if(!is.factor(y)) stop("y must be a factor")
-    RET <- list(learn = list(y = y, X = x))
-    RET$k <- k
-    RET$terms <- NULL
-    RET$contrasts <- NULL
-    RET$xlevels <- NULL
-    RET$theDots <- list(...)
-     class(RET) <- "knn3"
-    RET
+knn3.matrix <- function(x, y, k = 5, ...) {
+  if (!is.matrix(x)) {
+    x <- as.matrix(x)
+  }
+  if (!is.factor(y)) {
+    stop("y must be a factor")
+  }
+  RET <- list(learn = list(y = y, X = x))
+  RET$k <- k
+  RET$terms <- NULL
+  RET$contrasts <- NULL
+  RET$xlevels <- NULL
+  RET$theDots <- list(...)
+  class(RET) <- "knn3"
+  RET
 }
 
 #' @rdname knn3
 #' @export
-print.knn3 <- function (x, ...)
-{
-   cat(x$k, "-nearest neighbor model\n", sep = "")
-   cat("Training set outcome distribution:\n")
-   if(is.factor(x$learn$y)) {
-     print(table(x$learn$y))
-   } else print(summary(x$learn$y))
+print.knn3 <- function(x, ...) {
+  cat(x$k, "-nearest neighbor model\n", sep = "")
+  cat("Training set outcome distribution:\n")
+  if (is.factor(x$learn$y)) {
+    print(table(x$learn$y))
+  } else {
+    print(summary(x$learn$y))
+  }
 
-   cat("\n")
-   invisible(x)
+  cat("\n")
+  invisible(x)
 }
-
 
 
 #' @rdname knn3
 #' @export
-predict.knn3 <- function (object, newdata, type = c("prob", "class"), ...)
-{
-    type <- match.arg(type)
-    if (!inherits(object, "knn3"))
-        stop("object not of class knn3")
-    if (!is.null(Terms <- object$terms)) {
-        if (missing(newdata))
-            newdata <- model.frame(object)
-        else {
-            newdata <- model.frame(as.formula(delete.response(Terms)),
-                newdata, na.action = function(x) x, xlev = object$xlevels)
-        }
-        x <- model.matrix(delete.response(Terms), newdata, contrasts = object$contrasts)
-        xint <- match("(Intercept)", colnames(x), nomatch = 0)
-        if (xint > 0)
-            x <- x[, -xint, drop = FALSE]
+predict.knn3 <- function(object, newdata, type = c("prob", "class"), ...) {
+  type <- match.arg(type)
+  if (!inherits(object, "knn3")) {
+    stop("object not of class knn3")
+  }
+  if (!is.null(Terms <- object$terms)) {
+    if (missing(newdata)) {
+      newdata <- model.frame(object)
+    } else {
+      newdata <- model.frame(
+        as.formula(delete.response(Terms)),
+        newdata,
+        na.action = function(x) x,
+        xlev = object$xlevels
+      )
     }
-    else {
-        x <- as.matrix(newdata)
+    x <- model.matrix(
+      delete.response(Terms),
+      newdata,
+      contrasts = object$contrasts
+    )
+    xint <- match("(Intercept)", colnames(x), nomatch = 0)
+    if (xint > 0) {
+      x <- x[, -xint, drop = FALSE]
     }
+  } else {
+    x <- as.matrix(newdata)
+  }
 
-    argList <- list(
-      train = object$learn$X,
-      test = x,
-      cl = object$learn$y,
-      k = object$k)
+  argList <- list(
+    train = object$learn$X,
+    test = x,
+    cl = object$learn$y,
+    k = object$k
+  )
 
-    if(length(object$theDots) == 0) object$theDots <- list(prob = TRUE)
-    if(any(names(object$theDots) == "prob")) object$theDots$prob <- TRUE
+  if (length(object$theDots) == 0) {
+    object$theDots <- list(prob = TRUE)
+  }
+  if (any(names(object$theDots) == "prob")) {
+    object$theDots$prob <- TRUE
+  }
 
-    argList <- c(argList, object$theDots)
+  argList <- c(argList, object$theDots)
 
-    RET <- do.call(
-      "knn3Train",
-      argList)
+  RET <- do.call(
+    "knn3Train",
+    argList
+  )
 
-    if (type == "prob")
-    {
-       return(attr(RET, "prob"))
-    }  else {
-      RET <- factor(RET, levels = levels(object$learn$y))
-      return(RET)
-    }
+  if (type == "prob") {
+    return(attr(RET, "prob"))
+  } else {
+    RET <- factor(RET, levels = levels(object$learn$y))
+    return(RET)
+  }
 }
 
 #' @rdname knn3
 #' @export
-knn3Train <- function(train, test, cl, k=1, l=0, prob = TRUE, use.all=TRUE)
-{
+knn3Train <- function(
+  train,
+  test,
+  cl,
+  k = 1,
+  l = 0,
+  prob = TRUE,
+  use.all = TRUE
+) {
   train <- as.matrix(train)
-  if(is.null(dim(test))) dim(test) <- c(1, length(test))
+  if (is.null(dim(test))) {
+    dim(test) <- c(1, length(test))
+  }
   test <- as.matrix(test)
-        if(anyNA(train) || anyNA(test) || anyNA(cl))
-            stop("no missing values are allowed")
+  if (anyNA(train) || anyNA(test) || anyNA(cl)) {
+    stop("no missing values are allowed")
+  }
   p <- ncol(train)
   ntr <- nrow(train)
-  if(length(cl) != ntr) stop("'train' and 'class' have different lengths")
-  if(ntr < k) {
-            warning(gettextf("k = %d exceeds number %d of patterns", k, ntr),
-                    domain = NA)
-     k <- ntr
+  if (length(cl) != ntr) {
+    stop("'train' and 'class' have different lengths")
   }
-  if (k < 1)
-            stop(gettextf("k = %d must be at least 1", k), domain = NA)
+  if (ntr < k) {
+    warning(
+      gettextf("k = %d exceeds number %d of patterns", k, ntr),
+      domain = NA
+    )
+    k <- ntr
+  }
+  if (k < 1) {
+    stop(gettextf("k = %d must be at least 1", k), domain = NA)
+  }
   nte <- nrow(test)
-  if(ncol(test) != p) stop("dims of 'test' and 'train differ")
+  if (ncol(test) != p) {
+    stop("dims of 'test' and 'train differ")
+  }
   clf <- as.factor(cl)
   nc <- max(unclass(clf))
-  Z <- .C("knn3",
+  Z <- .C(
+    "knn3",
     as.integer(k),
     as.integer(l),
     as.integer(ntr),
@@ -228,30 +269,34 @@ knn3Train <- function(train, test, cl, k=1, l=0, prob = TRUE, use.all=TRUE)
     as.double(train),
     as.integer(unclass(clf)),
     as.double(test),
-    integer(nc+1),
+    integer(nc + 1),
     as.integer(nc),
     as.integer(FALSE),
     as.integer(use.all),
-    all_vote=double(as.integer(nte*nc))
+    all_vote = double(as.integer(nte * nc))
+  )
 
-    )
+  classProbs <- matrix(Z$all_vote, nrow = nte, ncol = nc, byrow = TRUE)
+  colnames(classProbs) <- sort(unique(clf))
 
-  classProbs <- matrix(Z$all_vote,nrow=nte,ncol=nc,byrow=TRUE)
-  colnames(classProbs)<-sort(unique(clf))
+  bestClass <- function(x) {
+    out <- which(x == max(x))
+    if (length(out) > 1) {
+      out <- sample(out, 1)
+    }
+    out
+  }
 
-   bestClass <- function(x)
-   {
-      out <- which(x == max(x))
-      if(length(out) > 1) out <- sample(out, 1)
-      out
-   }
+  res <- colnames(classProbs)[apply(classProbs, 1, bestClass)]
 
-   res <- colnames(classProbs)[apply(classProbs, 1, bestClass)]
+  votes <- apply(classProbs * k, 1, max)
+  inDoubt <- (votes < l)
+  if (any(inDoubt)) {
+    res[inDoubt] <- NA
+  }
 
-   votes <- apply(classProbs * k, 1, max)
-   inDoubt <- (votes < l)
-   if(any(inDoubt)) res[inDoubt] <- NA
-
-   if (prob) attr(res, "prob") <- classProbs
-   res
+  if (prob) {
+    attr(res, "prob") <- classProbs
+  }
+  res
 }

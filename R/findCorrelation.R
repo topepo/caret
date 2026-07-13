@@ -103,12 +103,16 @@ findCorrelation_exact <- function(x, cutoff = 0.90, verbose = FALSE) {
             deletecol[i] <- TRUE
             x2[i, ] <- NA
             x2[, i] <- NA
-            if (verbose) cat(" so flagging column", newOrder[i], "\n")
+            if (verbose) {
+              cat(" so flagging column", newOrder[i], "\n")
+            }
           } else {
             deletecol[j] <- TRUE
             x2[j, ] <- NA
             x2[, j] <- NA
-            if (verbose) cat(" so flagging column", newOrder[j], "\n")
+            if (verbose) {
+              cat(" so flagging column", newOrder[j], "\n")
+            }
           }
         }
       }
@@ -150,7 +154,7 @@ findCorrelation_exact <- function(x, cutoff = 0.90, verbose = FALSE) {
 #' @family preprocessing
 #' @keywords manip
 #' @examples
-#' 
+#'
 #' R1 <- structure(
 #'   c(
 #'     1,
@@ -183,24 +187,24 @@ findCorrelation_exact <- function(x, cutoff = 0.90, verbose = FALSE) {
 #' )
 #' colnames(R1) <- rownames(R1) <- paste0("x", 1:ncol(R1))
 #' R1
-#' 
+#'
 #' findCorrelation(R1, cutoff = .6, exact = FALSE)
 #' findCorrelation(R1, cutoff = .6, exact = TRUE)
 #' findCorrelation(R1, cutoff = .6, exact = TRUE, names = FALSE)
-#' 
+#'
 #' R2 <- diag(rep(1, 5))
 #' R2[2, 3] <- R2[3, 2] <- .7
 #' R2[5, 3] <- R2[3, 5] <- -.7
 #' R2[4, 1] <- R2[1, 4] <- -.67
-#' 
+#'
 #' corrDF <- expand.grid(row = 1:5, col = 1:5)
 #' corrDF$correlation <- as.vector(R2)
 #' levelplot(correlation ~ row + col, corrDF)
-#' 
+#'
 #' findCorrelation(R2, cutoff = .65, verbose = TRUE)
-#' 
+#'
 #' findCorrelation(R2, cutoff = .99, verbose = TRUE)
-#' 
+#'
 #' @export findCorrelation
 findCorrelation <- function(
   x,
@@ -212,10 +216,10 @@ findCorrelation <- function(
   if (names && is.null(colnames(x))) {
     stop("'x' must have column names when `names = TRUE`")
   }
-  out <- if (exact) {
-    findCorrelation_exact(x = x, cutoff = cutoff, verbose = verbose)
+  if (exact) {
+    out <- findCorrelation_exact(x = x, cutoff = cutoff, verbose = verbose)
   } else {
-    findCorrelation_fast(x = x, cutoff = cutoff, verbose = verbose)
+    out <- findCorrelation_fast(x = x, cutoff = cutoff, verbose = verbose)
   }
   out
   if (names) {

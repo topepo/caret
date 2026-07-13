@@ -37,7 +37,7 @@
 #' fit1 <- earth(x = trees[, -3], y = trees[, 3])
 #' set.seed(2189)
 #' fit2 <- bagEarth(x = trees[, -3], y = trees[, 3], B = 10)
-#' 
+#'
 #' @keywords regression
 #'
 #' @export
@@ -98,12 +98,11 @@
       index <- fit$index
       subX <- x[-index, , drop = FALSE]
       subY <- y[-index]
-      predY <-
-        if (is.null(fit$levels)) {
-          predict(fit, subX)
-        } else {
-          predict(fit, subX, type = "class")
-        }
+      if (is.null(fit$levels)) {
+        predY <- predict(fit, subX)
+      } else {
+        predY <- predict(fit, subX, type = "class")
+      }
       postResample(predY, subY)
     }
 
@@ -222,7 +221,7 @@
 #' @keywords regression
 #' @export
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' data(trees)
 #' ## out of bag predictions vs just re-predicting the training set
 #' set.seed(655)
@@ -230,15 +229,15 @@
 #' set.seed(655)
 #' fit2 <- bagEarth(Volume ~ ., data = trees, keepX = FALSE)
 #' hist(predict(fit1) - predict(fit2))
-#' 
+#'
 #' @export predict.bagEarth
 "predict.bagEarth" <-
   function(object, newdata = NULL, type = NULL, ...) {
     if (is.null(type)) {
-      type <- if (all(is.na(object$levels))) {
-        "response"
+      if (all(is.na(object$levels))) {
+        type <- "response"
       } else {
-        "class"
+        type <- "class"
       }
     }
     if (!any(type %in% c("response", "class", "prob"))) {
@@ -326,12 +325,12 @@ print.bagEarth <- function(x, ...) {
 #' @keywords manip
 #' @export
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' data(trees)
 #' set.seed(9655)
 #' fit <- bagEarth(trees[, -3], trees[, 3])
 #' summary(fit)
-#' 
+#'
 #' @export summary.bagEarth
 "summary.bagEarth" <-
   function(object, ...) {

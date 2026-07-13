@@ -18,36 +18,40 @@
 #' @family preprocessing
 #' @keywords manip
 #' @examples
-#' 
+#'
 #' spatialSign(rnorm(5))
-#' 
+#'
 #' spatialSign(matrix(rnorm(12), ncol = 3))
-#' 
+#'
 #' # should fail since the fifth column is a factor
 #' try(spatialSign(iris), silent = TRUE)
-#' 
+#'
 #' spatialSign(iris[, -5])
-#' 
+#'
 #' trellis.par.set(caretTheme())
 #' featurePlot(iris[, -5], iris[, 5], "pairs")
 #' featurePlot(spatialSign(scale(iris[, -5])), iris[, 5], "pairs")
-#' 
+#'
 #' @export spatialSign
-"spatialSign" <- function(x, ...) 
+"spatialSign" <- function(x, ...) {
   UseMethod("spatialSign")
+}
 
 #' @export
 #' @rdname spatialSign
 "spatialSign.default" <- function(x, na.rm = TRUE, ...) {
-  if (is.character(x) || is.factor(x))
-    stop("spatial sign is not defined for character or factor data",
-         call. = FALSE)
-  denom <- sum(x ^ 2, na.rm = na.rm)
-  out <-
-    if (sqrt(denom) > .Machine$double.eps)
-      x / sqrt(denom)
-  else
-    x * 0
+  if (is.character(x) || is.factor(x)) {
+    stop(
+      "spatial sign is not defined for character or factor data",
+      call. = FALSE
+    )
+  }
+  denom <- sum(x^2, na.rm = na.rm)
+  if (sqrt(denom) > .Machine$double.eps) {
+    out <- x / sqrt(denom)
+  } else {
+    out <- x * 0
+  }
   out
 }
 
@@ -55,14 +59,15 @@
 #' @rdname spatialSign
 "spatialSign.matrix" <- function(x, na.rm = TRUE, ...) {
   # check for character data
-  if (is.character(x))
-    stop("spatial sign is not defined for character data",
-         call. = FALSE)
+  if (is.character(x)) {
+    stop("spatial sign is not defined for character data", call. = FALSE)
+  }
   xNames <- dimnames(x)
   p <- ncol(x)
   tmp <- t(apply(x, 1, spatialSign.default, na.rm = na.rm))
-  if (p == 1 && nrow(tmp) == 1)
+  if (p == 1 && nrow(tmp) == 1) {
     tmp <- t(tmp)
+  }
   dimnames(tmp) <- xNames
   tmp
 }
@@ -70,15 +75,21 @@
 #' @export
 #' @rdname spatialSign
 "spatialSign.data.frame" <- function(x, na.rm = TRUE, ...) {
-  if (any(apply(x, 2, function(data)
-    is.character(data) | is.factor(data))))
-    stop("spatial sign is not defined for character or factor data",
-         call. = FALSE)
+  if (
+    any(apply(x, 2, function(data) {
+      is.character(data) | is.factor(data)
+    }))
+  ) {
+    stop(
+      "spatial sign is not defined for character or factor data",
+      call. = FALSE
+    )
+  }
   xNames <- dimnames(x)
   x <- as.matrix(x)
-  if (!is.numeric(x))
-    stop("a character matrix was the result of as.matrix",
-         call. = FALSE)
+  if (!is.numeric(x)) {
+    stop("a character matrix was the result of as.matrix", call. = FALSE)
+  }
   tmp <- spatialSign(x, na.rm = na.rm)
   dimnames(tmp) <- xNames
   tmp

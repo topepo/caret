@@ -1,5 +1,6 @@
 #' @export
-caretTheme <- function() 
+# fmt: skip
+caretTheme <- function()
    list(
       plot.polygon = list(alpha = 1, col = "aliceblue", border = "black",
          lty = 1, lwd = 1),
@@ -66,4 +67,3 @@ caretTheme <- function()
            "#9E0142", "#3288BD", "#F46D43", "#5E4FA2", "#66C2A5", "black", 
            "#9E0142", "#3288BD", "#F46D43", "#5E4FA2", "#66C2A5", "black", 
            "#9E0142", "#3288BD", "#F46D43", "#5E4FA2", "#66C2A5", "black")))
-         

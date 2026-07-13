@@ -255,7 +255,11 @@ rfe <- function(x, ...) UseMethod("rfe")
     }
 
     ## Set or check the seeds when needed
-    totalSize <- if (any(sizes == ncol(x))) length(sizes) else length(sizes) + 1
+    if (any(sizes == ncol(x))) {
+      totalSize <- length(sizes)
+    } else {
+      totalSize <- length(sizes) + 1
+    }
     if (is.null(rfeControl$seeds)) {
       seeds <- vector(mode = "list", length = length(rfeControl$index))
       seeds <- lapply(seeds, function(x) {
@@ -554,7 +558,9 @@ rfeIter <- function(
         modelPred <- as.data.frame(modelPred, stringsAsFactors = TRUE)
         ## in the case where the function returns a matrix with a single column
         ## make sure that it is named pred
-        if (ncol(modelPred) == 1) names(modelPred) <- "pred"
+        if (ncol(modelPred) == 1) {
+          names(modelPred) <- "pred"
+        }
       }
       modelPred$obs <- testY
       modelPred$Variables <- sizeValues[k]
@@ -567,7 +573,11 @@ rfeIter <- function(
     }
 
     ## save as a vector and rbind at end
-    rfePred <- if (k == 1) modelPred else rbind(rfePred, modelPred)
+    if (k == 1) {
+      rfePred <- modelPred
+    } else {
+      rfePred <- rbind(rfePred, modelPred)
+    }
 
     if (!exists("modImp")) {
       ##todo: get away from this since it finds object in other spaces
@@ -882,7 +892,11 @@ rfeControl <- function(
 #' @rdname caretFuncs
 #' @export
 pickSizeBest <- function(x, metric, maximize) {
-  best <- if (maximize) which.max(x[, metric]) else which.min(x[, metric])
+  if (maximize) {
+    best <- which.max(x[, metric])
+  } else {
+    best <- which.min(x[, metric])
+  }
   min(x[best, "Variables"])
 }
 
@@ -1137,10 +1151,10 @@ gamFuncs <- list(
     }
     loadNamespace("mgcv")
     gam <- get("gam", asNamespace("mgcv"))
-    dat <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      dat <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      dat <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     dat$y <- y
     args <- list(
@@ -1247,10 +1261,10 @@ rfFuncs <- list(
 lmFuncs <- list(
   summary = defaultSummary,
   fit = function(x, y, first, last, ...) {
-    tmp <- if (is.data.frame(x)) {
-      x
+    if (is.data.frame(x)) {
+      tmp <- x
     } else {
-      as.data.frame(x, stringsAsFactors = TRUE)
+      tmp <- as.data.frame(x, stringsAsFactors = TRUE)
     }
     tmp$y <- y
     lm(y ~ ., data = tmp)
@@ -1312,7 +1326,11 @@ nbFuncs <- list(
 #' @export
 lrFuncs <- ldaFuncs
 lrFuncs$fit <- function(x, y, first, last, ...) {
-  tmp <- if (is.data.frame(x)) x else as.data.frame(x, stringsAsFactors = TRUE)
+  if (is.data.frame(x)) {
+    tmp <- x
+  } else {
+    tmp <- as.data.frame(x, stringsAsFactors = TRUE)
+  }
   tmp$Class <- y
   glm(Class ~ ., data = tmp, family = "binomial")
 }
@@ -1458,10 +1476,10 @@ stripplot.rfe <- function(x, data = NULL, metric = x$metric, ...) {
   )
   theDots <- list(...)
   if (any(names(theDots) == "horizontal")) {
-    formText <- if (theDots$horizontal) {
-      paste("Variable ~", metric)
+    if (theDots$horizontal) {
+      formText <- paste("Variable ~", metric)
     } else {
-      paste(metric, "~ Variable")
+      formText <- paste(metric, "~ Variable")
     }
   } else {
     formText <- paste("Variable ~", metric)
@@ -1530,7 +1548,9 @@ predict.rfe <- function(object, newdata, ...) {
     keep <- match(row.names(m), rn)
     newdata <- model.matrix(Terms, m, contrasts = object$contrasts)
     xint <- match("(Intercept)", colnames(newdata), nomatch = 0)
-    if (xint > 0) newdata <- newdata[, -xint, drop = FALSE]
+    if (xint > 0) {
+      newdata <- newdata[, -xint, drop = FALSE]
+    }
   } else {
     if (any(names(object) == "recipe")) {
       newdata <-
@@ -1705,10 +1725,10 @@ rfe_rec <- function(
         data.frame(pred = modelPred, obs = test_y, Variables = sizeValues[k])
     }
     ## save as a vector and rbind at end
-    rfePred <- if (k == 1) {
-      modelPred
+    if (k == 1) {
+      rfePred <- modelPred
     } else {
-      rbind(rfePred, modelPred)
+      rfePred <- rbind(rfePred, modelPred)
     }
 
     if (!exists("modImp")) {
@@ -1920,12 +1940,11 @@ rfe_rec <- function(
     }
 
     ## Set or check the seeds when needed
-    totalSize <-
-      if (any(sizes == p)) {
-        length(sizes)
-      } else {
-        length(sizes) + 1
-      }
+    if (any(sizes == p)) {
+      totalSize <- length(sizes)
+    } else {
+      totalSize <- length(sizes) + 1
+    }
     if (is.null(rfeControl$seeds)) {
       seeds <- vector(mode = "list", length = length(rfeControl$index))
       seeds <-
@@ -2143,15 +2162,14 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
         holdoutIndex <- modelIndex
       }
 
-      seeds <-
-        if (
-          !(length(ctrl$seeds) == 1 &&
-            is.na(ctrl$seeds))
-        ) {
-          ctrl$seeds[[iter]]
-        } else {
-          NA
-        }
+      if (
+        !(length(ctrl$seeds) == 1 &&
+          is.na(ctrl$seeds))
+      ) {
+        seeds <- ctrl$seeds[[iter]]
+      } else {
+        seeds <- NA
+      }
 
       if (ctrl$verbose) {
         cat("+(rfe)", names(resampleIndex)[iter], "recipe", "\n")
@@ -2355,15 +2373,14 @@ rfe_rec_loo <- function(rec, data, sizes, ctrl, lev, ...) {
       modelIndex <- resampleIndex[[iter]]
       holdoutIndex <- -unique(resampleIndex[[iter]])
 
-      seeds <-
-        if (
-          !(length(ctrl$seeds) == 1 &&
-            is.na(ctrl$seeds))
-        ) {
-          ctrl$seeds[[iter]]
-        } else {
-          NA
-        }
+      if (
+        !(length(ctrl$seeds) == 1 &&
+          is.na(ctrl$seeds))
+      ) {
+        seeds <- ctrl$seeds[[iter]]
+      } else {
+        seeds <- NA
+      }
       if (ctrl$verbose) {
         cat("Preparing recipe\n")
       }

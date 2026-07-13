@@ -213,7 +213,11 @@ bagControl <- function(
 
     btSamples <- createResample(y, times = B)
 
-    `%op%` <- if (bagControl$allowParallel) `%dopar%` else `%do%`
+    if (bagControl$allowParallel) {
+      `%op%` <- `%dopar%`
+    } else {
+      `%op%` <- `%do%`
+    }
     btFits <- foreach(
       iter = seq(along.with = btSamples),
       .verbose = FALSE,
@@ -333,7 +337,11 @@ print.bag <- function(x, ...) {
       oobResults <- ddply(oobData, .(key), defaultSummary)
       oobResults$key <- NULL
       oobStat <- apply(oobResults, 2, function(x) {
-        quantile(x, na.rm = TRUE, probs = c(0, 0.025, 0.25, 0.5, 0.75, 0.975, 1))
+        quantile(
+          x,
+          na.rm = TRUE,
+          probs = c(0, 0.025, 0.25, 0.5, 0.75, 0.975, 1)
+        )
       })
       rownames(oobStat) <- paste(
         format(as.numeric(format(gsub("%", "", rownames(oobStat))))),

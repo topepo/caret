@@ -38,38 +38,53 @@
 #' @seealso [train()], [utils::install.packages()], [base::grepl()]
 #' @keywords utilities
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' modelLookup()
 #' modelLookup("gbm")
-#' 
+#'
 #' getModelInfo("pls")
 #' getModelInfo("^pls")
 #' getModelInfo("pls", regex = FALSE)
-#' 
+#'
 #' checkInstall(getModelInfo("pls")$library)
-#' 
+#'
 #' @export modelLookup
-modelLookup <- function(model = NULL){
+modelLookup <- function(model = NULL) {
   load(system.file("models", "models.RData", package = "caret"))
-  if(!is.null(model)){
-    if(!(model %in% names(models))) stop(paste("Model '", method, "' is not in the ",
-                                               "set of existing models", sep = ""))
+  if (!is.null(model)) {
+    if (!(model %in% names(models))) {
+      stop(paste(
+        "Model '",
+        method,
+        "' is not in the ",
+        "set of existing models",
+        sep = ""
+      ))
+    }
 
     models <- models[model == names(models)]
   }
-  out <- lapply(models,
-                function(x) {
-                  out <- x$parameters[, c("parameter", "label")]
-                  out$forReg <- "Regression" %in% x$type
-                  out$forClass <- "Classification" %in% x$type
-                  out$probModel <- !is.null(x$prob)
-                  out
-                })
-  for(i in seq(along.with = out)) out[[i]]$model <- names(models)[i]
+  out <- lapply(models, function(x) {
+    out <- x$parameters[, c("parameter", "label")]
+    out$forReg <- "Regression" %in% x$type
+    out$forClass <- "Classification" %in% x$type
+    out$probModel <- !is.null(x$prob)
+    out
+  })
+  for (i in seq(along.with = out)) {
+    out[[i]]$model <- names(models)[i]
+  }
   out <- do.call("rbind", out)
   rownames(out) <- NULL
-  out <- out[, c('model', 'parameter', 'label', 'forReg', 'forClass', 'probModel')]
-  out[order(out$model),]
+  out <- out[, c(
+    'model',
+    'parameter',
+    'label',
+    'forReg',
+    'forClass',
+    'probModel'
+  )]
+  out[order(out$model), ]
 }
 
 missing_packages <- function(mods = getModelInfo()) {
@@ -80,43 +95,49 @@ missing_packages <- function(mods = getModelInfo()) {
 
 #' @rdname modelLookup
 #' @export
-checkInstall <- function(pkg){
+checkInstall <- function(pkg) {
   good <- rep(TRUE, length(pkg))
-  for(i in seq(along.with = pkg)){
+  for (i in seq(along.with = pkg)) {
     tested <- try(find.package(pkg[i]), silent = TRUE)
-    if (inherits(tested, "try-error")) good[i] <- FALSE
+    if (inherits(tested, "try-error")) {
+      good[i] <- FALSE
+    }
   }
-  if(any(!good)){
+  if (any(!good)) {
     pkList <- paste(pkg[!good], collapse = ", ")
-    msg <- paste(sum(!good),
-                 ifelse(sum(!good) > 1, " packages are", " package is"),
-                 " needed and",
-                 ifelse(sum(!good) > 1, " are", " is"),
-                 " not installed. (",
-                 pkList,
-                 "). Would you like to try to install",
-                 ifelse(sum(!good) > 1, " them", " it"),
-                 " now?",
-                 sep = "")
+    msg <- paste(
+      sum(!good),
+      ifelse(sum(!good) > 1, " packages are", " package is"),
+      " needed and",
+      ifelse(sum(!good) > 1, " are", " is"),
+      " not installed. (",
+      pkList,
+      "). Would you like to try to install",
+      ifelse(sum(!good) > 1, " them", " it"),
+      " now?",
+      sep = ""
+    )
 
-    if(interactive()) {
+    if (interactive()) {
       cat(msg)
       bioc <- c("affy", "logicFS", "gpls", "vbmp")
       installChoice <- menu(c("yes", "no"))
-      if(installChoice == 1){
+      if (installChoice == 1) {
         hasBioc <- any(pkg[!good] %in% bioc)
-        if(!hasBioc) {
+        if (!hasBioc) {
           install.packages(pkg[!good])
         } else {
           inst <- pkg[!good]
           instC <- inst[!(inst %in% bioc)]
           instB <- inst[inst %in% bioc]
-          if(length(instC) > 0) install.packages(instC)
+          if (length(instC) > 0) {
+            install.packages(instC)
+          }
           biocLite <- NULL
           source("http://bioconductor.org/biocLite.R")
           biocLite(instB)
         }
-      } else  {
+      } else {
         stop("Required packages are missing: ", pkList, call. = FALSE)
       }
     } else {
@@ -129,10 +150,16 @@ checkInstall <- function(pkg){
 #' @export
 getModelInfo <- function(model = NULL, regex = TRUE, ...) {
   load(system.file("models", "models.RData", package = "caret"))
-  if(!is.null(model)){
-    keepers <- if(regex) grepl(model, names(models), ...) else which(model == names(models))[1]
+  if (!is.null(model)) {
+    if (regex) {
+      keepers <- grepl(model, names(models), ...)
+    } else {
+      keepers <- which(model == names(models))[1]
+    }
     models <- models[keepers]
   }
-  if(length(models) == 0) stop("That model is not in caret's built-in library")
+  if (length(models) == 0) {
+    stop("That model is not in caret's built-in library")
+  }
   models
 }

@@ -186,21 +186,12 @@ GarsonWeights <- function(object) {
     ## S. (2003). Review and comparison of methods to study the
     ## contribution of variables in artificial neural network
     ## models. ecological modelling, 160(3), 249-264.
+    # fmt: skip
     i2h <- matrix(
-      c(
-        -1.67624,
-        3.29022,
-        1.32466,
-        -0.51874,
-        -0.22921,
-        -0.25526,
-        -4.01764,
-        2.12486,
-        -0.08168,
-        -1.75691,
-        -1.44702,
-        0.58286
-      ),
+      c(-1.67624,  3.29022,  1.32466,
+        -0.51874, -0.22921, -0.25526,
+        -4.01764,  2.12486, -0.08168,
+        -1.75691, -1.44702,  0.58286),
       ncol = 3,
       byrow = TRUE
     )
@@ -250,15 +241,15 @@ GarsonWeights <- function(object) {
     rm(Pij, Qij, Sj)
   }
 
-  colnames(imp) <- if (!is.null(colnames(object$residuals))) {
-    colnames(object$residuals)
+  if (!is.null(colnames(object$residuals))) {
+    colnames(imp) <- colnames(object$residuals)
   } else {
-    paste("Y", 1:object$n[3], sep = "")
+    colnames(imp) <- paste("Y", 1:object$n[3], sep = "")
   }
-  rownames(imp) <- if (!is.null(object$coefnames)) {
-    object$coefnames
+  if (!is.null(object$coefnames)) {
+    rownames(imp) <- object$coefnames
   } else {
-    paste("X", 1:object$n[1], sep = "")
+    rownames(imp) <- paste("X", 1:object$n[1], sep = "")
   }
   imp
 }
@@ -289,15 +280,15 @@ GarsonWeights_FCNN4R <- function(object, xnames = NULL, ynames = NULL) {
     imp[, output] <- Sj / sum(Sj) * 100
     rm(Pij, Qij, Sj)
   }
-  rownames(imp) <- if (is.null(xnames)) {
-    paste("X", 1:dims[1], sep = "")
+  if (is.null(xnames)) {
+    rownames(imp) <- paste("X", 1:dims[1], sep = "")
   } else {
-    xnames
+    rownames(imp) <- xnames
   }
-  colnames(imp) <- if (is.null(ynames)) {
-    paste("Y", 1:dims[3], sep = "")
+  if (is.null(ynames)) {
+    colnames(imp) <- paste("Y", 1:dims[3], sep = "")
   } else {
-    ynames
+    colnames(imp) <- ynames
   }
   imp
 }

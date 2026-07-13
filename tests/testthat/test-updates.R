@@ -41,7 +41,12 @@ test_that("safs updating", {
       trControl = trainControl(method = "cv")
     )
   new_iter <- ifelse(sa_xy$optIter == 1, 2, 1)
-  sa_xy_2 <- update(sa_xy, iter = new_iter, x = updates_dat[, -updates_y_ind], y = updates_dat$y)
+  sa_xy_2 <- update(
+    sa_xy,
+    iter = new_iter,
+    x = updates_dat[, -updates_y_ind],
+    y = updates_dat$y
+  )
   expect_true(diff_coef(sa_xy, sa_xy_2))
   expect_snapshot(update(sa_xy, iter = new_iter), error = TRUE)
 
@@ -84,7 +89,12 @@ test_that("gafs updating", {
       trControl = trainControl(method = "cv")
     )
   new_iter <- ifelse(ga_xy$optIter == 1, 2, 1)
-  ga_xy_2 <- update(ga_xy, iter = new_iter, x = updates_dat[, -updates_y_ind], y = updates_dat$y)
+  ga_xy_2 <- update(
+    ga_xy,
+    iter = new_iter,
+    x = updates_dat[, -updates_y_ind],
+    y = updates_dat$y
+  )
   expect_true(diff_coef(ga_xy, ga_xy_2))
   expect_snapshot(update(ga_xy, iter = new_iter), error = TRUE)
 

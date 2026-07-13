@@ -57,10 +57,10 @@
 #' @family performance
 #' @keywords manip
 #' @examples
-#' 
+#'
 #' ###################
 #' ## Data in Table 2 of Powers (2007)
-#' 
+#'
 #' lvs <- c("Relevant", "Irrelevant")
 #' tbl_2_1_pred <- factor(rep(lvs, times = c(42, 58)), levels = lvs)
 #' tbl_2_1_truth <- factor(
@@ -68,34 +68,38 @@
 #'   levels = lvs
 #' )
 #' tbl_2_1 <- table(tbl_2_1_pred, tbl_2_1_truth)
-#' 
+#'
 #' precision(tbl_2_1)
 #' precision(data = tbl_2_1_pred, reference = tbl_2_1_truth, relevant = "Relevant")
 #' recall(tbl_2_1)
 #' recall(data = tbl_2_1_pred, reference = tbl_2_1_truth, relevant = "Relevant")
-#' 
+#'
 #' tbl_2_2_pred <- factor(rep(lvs, times = c(76, 24)), levels = lvs)
 #' tbl_2_2_truth <- factor(
 #'   c(rep(lvs, times = c(56, 20)), rep(lvs, times = c(12, 12))),
 #'   levels = lvs
 #' )
 #' tbl_2_2 <- table(tbl_2_2_pred, tbl_2_2_truth)
-#' 
+#'
 #' precision(tbl_2_2)
 #' precision(data = tbl_2_2_pred, reference = tbl_2_2_truth, relevant = "Relevant")
 #' recall(tbl_2_2)
 #' recall(data = tbl_2_2_pred, reference = tbl_2_2_truth, relevant = "Relevant")
-#' 
+#'
 #' @export recall
 recall <- function(data, ...) UseMethod("recall")
 
 #' @rdname recall
 #' @export
-"recall.table" <- function(data, relevant = rownames(data)[1], ...){
-  if(!all.equal(nrow(data), ncol(data))) stop("the table must have nrow = ncol")
-  if(!all.equal(rownames(data), colnames(data))) stop("the table must the same groups in the same order")
+"recall.table" <- function(data, relevant = rownames(data)[1], ...) {
+  if (!all.equal(nrow(data), ncol(data))) {
+    stop("the table must have nrow = ncol")
+  }
+  if (!all.equal(rownames(data), colnames(data))) {
+    stop("the table must the same groups in the same order")
+  }
 
-  if(nrow(data) > 2) {
+  if (nrow(data) > 2) {
     tmp <- data
     data <- matrix(NA, 2, 2)
 
@@ -119,12 +123,19 @@ recall <- function(data, ...) UseMethod("recall")
 
 #' @rdname recall
 #' @export
-recall.default <- function(data, reference, relevant = levels(reference)[1],
-                           na.rm = TRUE, ...) {
-  if (!is.factor(reference) || !is.factor(data))
+recall.default <- function(
+  data,
+  reference,
+  relevant = levels(reference)[1],
+  na.rm = TRUE,
+  ...
+) {
+  if (!is.factor(reference) || !is.factor(data)) {
     stop("input data must be a factor")
-  if (length(unique(c(levels(reference), levels(data)))) != 2)
+  }
+  if (length(unique(c(levels(reference), levels(data)))) != 2) {
     stop("input data must have the same two levels")
+  }
   if (na.rm) {
     cc <- complete.cases(data) & complete.cases(reference)
     if (any(!cc)) {
@@ -142,12 +153,19 @@ precision <- function(data, ...) UseMethod("precision")
 
 #' @rdname recall
 #' @export
-precision.default <- function(data, reference, relevant = levels(reference)[1],
-                              na.rm = TRUE, ...) {
-  if (!is.factor(reference) || !is.factor(data))
+precision.default <- function(
+  data,
+  reference,
+  relevant = levels(reference)[1],
+  na.rm = TRUE,
+  ...
+) {
+  if (!is.factor(reference) || !is.factor(data)) {
     stop("input data must be a factor")
-  if (length(unique(c(levels(reference), levels(data)))) != 2)
+  }
+  if (length(unique(c(levels(reference), levels(data)))) != 2) {
     stop("input data must have the same two levels")
+  }
   if (na.rm) {
     cc <- complete.cases(data) & complete.cases(reference)
     if (any(!cc)) {
@@ -161,11 +179,13 @@ precision.default <- function(data, reference, relevant = levels(reference)[1],
 
 #' @rdname recall
 #' @export
-precision.table <- function (data, relevant = rownames(data)[1], ...) {
-  if (!all.equal(nrow(data), ncol(data)))
+precision.table <- function(data, relevant = rownames(data)[1], ...) {
+  if (!all.equal(nrow(data), ncol(data))) {
     stop("the table must have nrow = ncol")
-  if (!all.equal(rownames(data), colnames(data)))
+  }
+  if (!all.equal(rownames(data), colnames(data))) {
     stop("the table must the same groups in the same order")
+  }
   if (nrow(data) > 2) {
     tmp <- data
     data <- matrix(NA, 2, 2)
@@ -183,7 +203,7 @@ precision.table <- function (data, relevant = rownames(data)[1], ...) {
   }
   numer <- data[relevant, relevant]
   denom <- sum(data[relevant, ])
-  spec <- ifelse(denom > 0, numer/denom, NA)
+  spec <- ifelse(denom > 0, numer / denom, NA)
   spec
 }
 
@@ -193,12 +213,20 @@ F_meas <- function(data, ...) UseMethod("F_meas")
 
 #' @rdname recall
 #' @export
-F_meas.default <- function(data, reference, relevant = levels(reference)[1],
-                           beta = 1,  na.rm = TRUE, ...) {
-  if (!is.factor(reference) || !is.factor(data))
+F_meas.default <- function(
+  data,
+  reference,
+  relevant = levels(reference)[1],
+  beta = 1,
+  na.rm = TRUE,
+  ...
+) {
+  if (!is.factor(reference) || !is.factor(data)) {
     stop("input data must be a factor")
-  if (length(unique(c(levels(reference), levels(data)))) != 2)
+  }
+  if (length(unique(c(levels(reference), levels(data)))) != 2) {
     stop("input data must have the same two levels")
+  }
   if (na.rm) {
     cc <- complete.cases(data) & complete.cases(reference)
     if (any(!cc)) {
@@ -212,39 +240,66 @@ F_meas.default <- function(data, reference, relevant = levels(reference)[1],
 
 #' @rdname recall
 #' @export
-F_meas.table <- function (data, relevant = rownames(data)[1], beta = 1, ...) {
+F_meas.table <- function(data, relevant = rownames(data)[1], beta = 1, ...) {
   prec <- precision.table(data, relevant = relevant)
   rec <- recall.table(data, relevant = relevant)
-  (1+beta^2)*prec*rec/((beta^2 * prec)+rec)
+  (1 + beta^2) * prec * rec / ((beta^2 * prec) + rec)
 }
 
 #' @rdname postResample
 #' @export
-prSummary <- function (data, lev = NULL, model = NULL)  {
-
+prSummary <- function(data, lev = NULL, model = NULL) {
   requireNamespaceQuietStop("MLmetrics")
-  if (length(levels(data$obs)) > 2)
-    stop(paste("Your outcome has", length(levels(data$obs)),
-               "levels. `prSummary`` function isn't appropriate.",
-         call. = FALSE))
-  if (!all(levels(data[, "pred"]) == levels(data[, "obs"])))
-    stop("Levels of observed and predicted data do not match.",
-         call. = FALSE)
-  if (!lev[1] %in% colnames(data))
-    stop(paste("Class probabilities are needed to score models using the",
-               "area under the PR curve. Set `classProbs = TRUE`",
-               "in the trainControl() function."),
-         call. = FALSE)
+  if (length(levels(data$obs)) > 2) {
+    stop(paste(
+      "Your outcome has",
+      length(levels(data$obs)),
+      "levels. `prSummary`` function isn't appropriate.",
+      call. = FALSE
+    ))
+  }
+  if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) {
+    stop("Levels of observed and predicted data do not match.", call. = FALSE)
+  }
+  if (!lev[1] %in% colnames(data)) {
+    stop(
+      paste(
+        "Class probabilities are needed to score models using the",
+        "area under the PR curve. Set `classProbs = TRUE`",
+        "in the trainControl() function."
+      ),
+      call. = FALSE
+    )
+  }
 
   pr_auc <-
-    try(MLmetrics::PRAUC(y_pred = data[, lev[1]],
-                         y_true = ifelse(data$obs == lev[1], 1, 0)),
-        silent = TRUE)
-  if(inherits(pr_auc, "try-error"))
+    try(
+      MLmetrics::PRAUC(
+        y_pred = data[, lev[1]],
+        y_true = ifelse(data$obs == lev[1], 1, 0)
+      ),
+      silent = TRUE
+    )
+  if (inherits(pr_auc, "try-error")) {
     pr_auc <- NA
+  }
 
-  c(AUC = pr_auc,
-    Precision = precision.default(data = data$pred, reference = data$obs, relevant = lev[1]),
-    Recall = recall.default(data = data$pred, reference = data$obs, relevant = lev[1]),
-    F = F_meas.default(data = data$pred, reference = data$obs, relevant = lev[1]))
+  c(
+    AUC = pr_auc,
+    Precision = precision.default(
+      data = data$pred,
+      reference = data$obs,
+      relevant = lev[1]
+    ),
+    Recall = recall.default(
+      data = data$pred,
+      reference = data$obs,
+      relevant = lev[1]
+    ),
+    F = F_meas.default(
+      data = data$pred,
+      reference = data$obs,
+      relevant = lev[1]
+    )
+  )
 }

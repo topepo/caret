@@ -411,7 +411,11 @@ train.default <- function(
     x <- as.data.frame(x, stringsAsFactors = TRUE)
   }
   check_dims(x = x, y = y)
-  n <- if (inherits(y, "Surv")) nrow(y) else length(y)
+  if (inherits(y, "Surv")) {
+    n <- nrow(y)
+  } else {
+    n <- length(y)
+  }
 
   ## TODO add check method and execute here
 
@@ -520,10 +524,10 @@ train.default <- function(
   )
 
   if (is.logical(trControl$savePredictions)) {
-    trControl$savePredictions <- if (trControl$savePredictions) {
-      "all"
+    if (trControl$savePredictions) {
+      trControl$savePredictions <- "all"
     } else {
-      "none"
+      trControl$savePredictions <- "none"
     }
   } else {
     if (!(trControl$savePredictions %in% c("all", "final", "none"))) {
@@ -637,7 +641,11 @@ train.default <- function(
 
   ## In case prediction bounds are used, compute the limits. For now,
   ## store these in the control object since that gets passed everywhere
-  trControl$yLimits <- if (is.numeric(y)) get_range(y) else NULL
+  if (is.numeric(y)) {
+    trControl$yLimits <- get_range(y)
+  } else {
+    trControl$yLimits <- NULL
+  }
 
   if (trControl$method != "none") {
     ##------------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -726,12 +734,18 @@ train.default <- function(
         )
       }
       lengths <- unlist(lapply(trainInfo$submodels, nrow))
-      if (all(lengths == 0)) trainInfo$submodels <- NULL
+      if (all(lengths == 0)) {
+        trainInfo$submodels <- NULL
+      }
     } else {
       trainInfo <- list(loop = tuneGrid)
     }
 
-    num_rs <- if (trControl$method != "oob") length(trControl$index) else 1L
+    if (trControl$method != "oob") {
+      num_rs <- length(trControl$index)
+    } else {
+      num_rs <- 1L
+    }
     if (trControl$method %in% c("boot632", "optimism_boot", "boot_all")) {
       num_rs <- num_rs + 1L
     }
@@ -1050,10 +1064,10 @@ train.default <- function(
 
   ## Make the final model based on the tuning results
 
-  indexFinal <- if (is.null(trControl$indexFinal)) {
-    seq(along.with = y)
+  if (is.null(trControl$indexFinal)) {
+    indexFinal <- seq(along.with = y)
   } else {
-    trControl$indexFinal
+    indexFinal <- trControl$indexFinal
   }
 
   if (!(length(trControl$seeds) == 1 && is.na(trControl$seeds))) {
@@ -1089,10 +1103,10 @@ train.default <- function(
       p_reduction <- (unclass(old_size) - unclass(new_size)) /
         unclass(old_size) *
         100
-      p_reduction <- if (p_reduction < 1) {
-        "< 1%"
+      if (p_reduction < 1) {
+        p_reduction <- "< 1%"
       } else {
-        paste0(round(p_reduction, 0), "%")
+        p_reduction <- paste0(round(p_reduction, 0), "%")
       }
       cat(
         "Final model footprint reduced by",
@@ -1121,7 +1135,11 @@ train.default <- function(
   }
 
   if (trControl$returnData) {
-    outData <- if (inherits(x, "sparseMatrix")) as.matrix(x) else x
+    if (inherits(x, "sparseMatrix")) {
+      outData <- as.matrix(x)
+    } else {
+      outData <- x
+    }
     if (!is.data.frame(outData)) {
       outData <- try(
         as.data.frame(outData, stringsAsFactors = TRUE),
@@ -1135,7 +1153,9 @@ train.default <- function(
       outData <- NULL
     } else {
       outData$.outcome <- y
-      if (!is.null(weights)) outData$.weights <- weights
+      if (!is.null(weights)) {
+        outData$.weights <- weights
+      }
     }
   } else {
     outData <- NULL
@@ -1250,7 +1270,9 @@ train.formula <- function(
     ## since it has not been converted to dummy variables.
     res$trainingData <- data[, all.vars(Terms), drop = FALSE]
     isY <- names(res$trainingData) %in% as.character(form[[2]])
-    if (any(isY)) colnames(res$trainingData)[isY] <- ".outcome"
+    if (any(isY)) {
+      colnames(res$trainingData)[isY] <- ".outcome"
+    }
   }
   class(res) <- c("train", "train.formula")
   res
@@ -1409,7 +1431,11 @@ train.recipe <- function(
   }
 
   check_dims(x = x_dat, y = y_dat)
-  n <- if (inherits(y_dat, "Surv")) nrow(y_dat) else length(y_dat)
+  if (inherits(y_dat, "Surv")) {
+    n <- nrow(y_dat)
+  } else {
+    n <- length(y_dat)
+  }
 
   ## Some models that use RWeka start multiple threads and this conflicts with multicore:
   parallel_check("RWeka", models)
@@ -1513,10 +1539,10 @@ train.recipe <- function(
   )
 
   if (is.logical(trControl$savePredictions)) {
-    trControl$savePredictions <- if (trControl$savePredictions) {
-      "all"
+    if (trControl$savePredictions) {
+      trControl$savePredictions <- "all"
     } else {
-      "none"
+      trControl$savePredictions <- "none"
     }
   } else {
     if (!(trControl$savePredictions %in% c("all", "final", "none"))) {
@@ -1577,7 +1603,11 @@ train.recipe <- function(
 
   ## In case prediction bounds are used, compute the limits. For now,
   ## store these in the control object since that gets passed everywhere
-  trControl$yLimits <- if (is.numeric(y_dat)) get_range(y_dat) else NULL
+  if (is.numeric(y_dat)) {
+    trControl$yLimits <- get_range(y_dat)
+  } else {
+    trControl$yLimits <- NULL
+  }
 
   if (trControl$method != "none") {
     if (is.function(models$loop) && nrow(tuneGrid) > 1) {
@@ -1589,12 +1619,18 @@ train.recipe <- function(
         )
       }
       lengths <- unlist(lapply(trainInfo$submodels, nrow))
-      if (all(lengths == 0)) trainInfo$submodels <- NULL
+      if (all(lengths == 0)) {
+        trainInfo$submodels <- NULL
+      }
     } else {
       trainInfo <- list(loop = tuneGrid)
     }
 
-    num_rs <- if (trControl$method != "oob") length(trControl$index) else 1L
+    if (trControl$method != "oob") {
+      num_rs <- length(trControl$index)
+    } else {
+      num_rs <- 1L
+    }
     if (trControl$method %in% c("boot632", "optimism_boot", "boot_all")) {
       num_rs <- num_rs + 1L
     }
@@ -1903,10 +1939,10 @@ train.recipe <- function(
   }
 
   ## Make the final model based on the tuning results
-  indexFinal <- if (is.null(trControl$indexFinal)) {
-    seq(along.with = data[[y_orig_val]])
+  if (is.null(trControl$indexFinal)) {
+    indexFinal <- seq(along.with = data[[y_orig_val]])
   } else {
-    trControl$indexFinal
+    indexFinal <- trControl$indexFinal
   }
 
   if (!(length(trControl$seeds) == 1 && is.na(trControl$seeds))) {
@@ -1940,10 +1976,10 @@ train.recipe <- function(
       p_reduction <- (unclass(old_size) - unclass(new_size)) /
         unclass(old_size) *
         100
-      p_reduction <- if (p_reduction < 1) {
-        "< 1%"
+      if (p_reduction < 1) {
+        p_reduction <- "< 1%"
       } else {
-        paste0(round(p_reduction, 0), "%")
+        p_reduction <- paste0(round(p_reduction, 0), "%")
       }
       cat(
         "Final model footprint reduced by",

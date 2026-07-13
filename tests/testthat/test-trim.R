@@ -633,4 +633,3 @@ test_that('train/earth regression', {
   # the earth trim fix (separate PR, branch fix-earth-trim) is merged.
   # expect_lt(object.size(reg_trim), object.size(reg_notrim))
 })
-

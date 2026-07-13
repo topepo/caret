@@ -58,10 +58,10 @@
 #' @family performance
 #' @keywords manip
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' ###################
 #' ## 2 class example
-#' 
+#'
 #' lvs <- c("normal", "abnormal")
 #' truth <- factor(rep(lvs, times = c(86, 258)), levels = rev(lvs))
 #' pred <- factor(
@@ -71,26 +71,26 @@
 #'   ),
 #'   levels = rev(lvs)
 #' )
-#' 
+#'
 #' xtab <- table(pred, truth)
-#' 
+#'
 #' sensitivity(pred, truth)
 #' sensitivity(xtab)
 #' posPredValue(pred, truth)
 #' posPredValue(pred, truth, prevalence = 0.25)
-#' 
+#'
 #' specificity(pred, truth)
 #' negPredValue(pred, truth)
 #' negPredValue(xtab)
 #' negPredValue(pred, truth, prevalence = 0.25)
-#' 
+#'
 #' prev <- seq(0.001, .99, length = 20)
 #' npvVals <- ppvVals <- prev * NA
 #' for (i in seq(along.with = prev)) {
 #'   ppvVals[i] <- posPredValue(pred, truth, prevalence = prev[i])
 #'   npvVals[i] <- negPredValue(pred, truth, prevalence = prev[i])
 #' }
-#' 
+#'
 #' plot(
 #'   prev,
 #'   ppvVals,
@@ -109,69 +109,76 @@
 #'   col = c("black", "red", "black", "red"),
 #'   lty = c(1, 1, 2, 2)
 #' )
-#' 
+#'
 #' ###################
 #' ## 3 class example
-#' 
+#'
 #' library(MASS)
-#' 
+#'
 #' fit <- lda(Species ~ ., data = iris)
 #' model <- predict(fit)$class
-#' 
+#'
 #' irisTabs <- table(model, iris$Species)
-#' 
+#'
 #' ## When passing factors, an error occurs with more
 #' ## than two levels
 #' try(sensitivity(model, iris$Species))
-#' 
+#'
 #' ## When passing a table, more than two levels can
 #' ## be used
 #' sensitivity(irisTabs, "versicolor")
 #' specificity(irisTabs, c("setosa", "virginica"))
-#' 
+#'
 #' @export sensitivity
 sensitivity <-
-  function(data, ...){
+  function(data, ...) {
     UseMethod("sensitivity")
   }
 
 #' @rdname sensitivity
 #' @export
 "sensitivity.default" <-
-  function(data, reference, positive = levels(reference)[1], na.rm = TRUE, ...)
-{
-  if(!is.factor(reference) || !is.factor(data))
-    stop("inputs must be factors")
-
-  ## todo: relax the =2 constraint and let ngative length be > 2
-  if(length(unique(c(levels(reference), levels(data)))) != 2)
-    stop("input data must have the same two levels")
-  if(na.rm)
-    {
-      cc <- complete.cases(data) & complete.cases(reference)
-      if(any(!cc))
-        {
-          data <- data[cc]
-          reference <- reference[cc]
-        }
+  function(
+    data,
+    reference,
+    positive = levels(reference)[1],
+    na.rm = TRUE,
+    ...
+  ) {
+    if (!is.factor(reference) || !is.factor(data)) {
+      stop("inputs must be factors")
     }
-  numer <- sum(data %in% positive & reference %in% positive)
-  denom <- sum(reference %in% positive)
-  sens <- ifelse(denom > 0, numer / denom, NA)
-  sens
-}
+
+    ## todo: relax the =2 constraint and let ngative length be > 2
+    if (length(unique(c(levels(reference), levels(data)))) != 2) {
+      stop("input data must have the same two levels")
+    }
+    if (na.rm) {
+      cc <- complete.cases(data) & complete.cases(reference)
+      if (any(!cc)) {
+        data <- data[cc]
+        reference <- reference[cc]
+      }
+    }
+    numer <- sum(data %in% positive & reference %in% positive)
+    denom <- sum(reference %in% positive)
+    sens <- ifelse(denom > 0, numer / denom, NA)
+    sens
+  }
 
 #' @rdname sensitivity
 #' @export
 "sensitivity.table" <-
-  function(data, positive = rownames(data)[1], ...)
-{
-  ## "truth" in columns, predictions in rows
-  if(!all.equal(nrow(data), ncol(data))) stop("the table must have nrow = ncol")
-  if(!all.equal(rownames(data), colnames(data))) stop("the table must the same groups in the same order")
+  function(data, positive = rownames(data)[1], ...) {
+    ## "truth" in columns, predictions in rows
+    if (!all.equal(nrow(data), ncol(data))) {
+      stop("the table must have nrow = ncol")
+    }
+    if (!all.equal(rownames(data), colnames(data))) {
+      stop("the table must the same groups in the same order")
+    }
 
-  if(nrow(data) > 2)
-    {
+    if (nrow(data) > 2) {
       tmp <- data
       data <- matrix(NA, 2, 2)
 
@@ -188,17 +195,16 @@ sensitivity <-
       rm(tmp)
     }
 
-  numer <- sum(data[positive, positive])
-  denom <- sum(data[, positive])
-  sens <- ifelse(denom > 0, numer / denom, NA)
-  sens
-}
+    numer <- sum(data[positive, positive])
+    denom <- sum(data[, positive])
+    sens <- ifelse(denom > 0, numer / denom, NA)
+    sens
+  }
 
 #' @rdname sensitivity
 #' @export
 "sensitivity.matrix" <-
-  function(data, positive = rownames(data)[1], ...)
-{
-  data <- as.table(data)
-  sensitivity.table(data)
-}
+  function(data, positive = rownames(data)[1], ...) {
+    data <- as.table(data)
+    sensitivity.table(data)
+  }

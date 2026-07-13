@@ -175,6 +175,8 @@ test_that("dummyVars print method", {
   # scrub the formula's environment address, which is not deterministic
   expect_snapshot(
     print(dummyVars(~ Species + Sepal.Length, data = iris)),
-    transform = function(x) sub("<environment: 0x[0-9a-f]+>", "<environment>", x)
+    transform = function(x) {
+      sub("<environment: 0x[0-9a-f]+>", "<environment>", x)
+    }
   )
 })

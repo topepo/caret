@@ -152,23 +152,23 @@
 #' @family train
 #' @keywords utilities
 #' @examplesIf !caret:::is_cran_check()
-#' 
-#' 
+#'
+#'
 #' ## Do 5 repeats of 10-Fold CV for the iris data. We will fit
 #' ## a KNN model that evaluates 12 values of k and set the seed
 #' ## at each iteration.
-#' 
+#'
 #' set.seed(123)
 #' seeds <- vector(mode = "list", length = 51)
 #' for (i in 1:50) {
 #'   seeds[[i]] <- sample.int(1000, 22)
 #' }
-#' 
+#'
 #' ## For the last model:
 #' seeds[[51]] <- sample.int(1000, 1)
-#' 
+#'
 #' ctrl <- trainControl(method = "repeatedcv", repeats = 5, seeds = seeds)
-#' 
+#'
 #' set.seed(1)
 #' mod <- train(
 #'   Species ~ .,
@@ -177,14 +177,14 @@
 #'   tuneLength = 12,
 #'   trControl = ctrl
 #' )
-#' 
+#'
 #' ctrl2 <- trainControl(
 #'   method = "adaptive_cv",
 #'   repeats = 5,
 #'   verboseIter = TRUE,
 #'   seeds = seeds
 #' )
-#' 
+#'
 #' set.seed(1)
 #' mod2 <- train(
 #'   Species ~ .,
@@ -193,87 +193,124 @@
 #'   tuneLength = 12,
 #'   trControl = ctrl2
 #' )
-#' 
-#' 
+#'
+#'
 #' @export trainControl
-trainControl <- function(method = "boot",
-                         number = ifelse(grepl("cv", method), 10, 25),
-                         repeats = ifelse(grepl("[d_]cv$", method), 1, NA),
-                         p = 0.75,
-                         search = "grid",
-                         initialWindow = NULL,
-                         horizon = 1,
-                         fixedWindow = TRUE,
-                         skip = 0,
-                         verboseIter = FALSE,
-                         returnData = TRUE,
-                         returnResamp = "final",
-                         savePredictions = FALSE,
-                         classProbs = FALSE,
-                         summaryFunction = defaultSummary,
-                         selectionFunction = "best",
-                         preProcOptions = list(thresh = 0.95, ICAcomp = 3, k = 5,
-                                               freqCut = 95/5, uniqueCut = 10,
-                                               cutoff = 0.9),
-                         sampling = NULL,
-                         index = NULL,
-                         indexOut = NULL,
-                         indexFinal = NULL,
-                         timingSamps = 0,
-                         predictionBounds = rep(FALSE, 2),
-                         seeds = NA,
-                         adaptive = list(min = 5, alpha = 0.05, method = "gls", complete = TRUE),
-                         trim = FALSE,
-                         allowParallel = TRUE)
-{
-  if(is.null(selectionFunction)) stop("null selectionFunction values not allowed")
-  if(!(returnResamp %in% c("all", "final", "none"))) stop("incorrect value of returnResamp")
-  if(length(predictionBounds) > 0 && length(predictionBounds) != 2) stop("'predictionBounds' should be a logical or numeric vector of length 2")
-  if(any(names(preProcOptions) == "method")) stop("'method' cannot be specified here")
-  if(any(names(preProcOptions) == "x")) stop("'x' cannot be specified here")
-  if(!is.na(repeats) && !(method %in% c("repeatedcv", "adaptive_cv")))
-    warning("`repeats` has no meaning for this resampling method.", call. = FALSE)
-
-  if(!(adaptive$method %in% c("gls", "BT"))) stop("incorrect value of adaptive$method")
-  if(adaptive$alpha < 0.0000001 || adaptive$alpha > 1) stop("incorrect value of adaptive$alpha")
-  if(grepl("adapt", method)) {
-    num <- if(method == "adaptive_cv") number*repeats else number
-    if(adaptive$min >= num) stop(paste("adaptive$min should be less than", num))
-    if(adaptive$min <= 1) stop("adaptive$min should be greater than 1")
+trainControl <- function(
+  method = "boot",
+  number = ifelse(grepl("cv", method), 10, 25),
+  repeats = ifelse(grepl("[d_]cv$", method), 1, NA),
+  p = 0.75,
+  search = "grid",
+  initialWindow = NULL,
+  horizon = 1,
+  fixedWindow = TRUE,
+  skip = 0,
+  verboseIter = FALSE,
+  returnData = TRUE,
+  returnResamp = "final",
+  savePredictions = FALSE,
+  classProbs = FALSE,
+  summaryFunction = defaultSummary,
+  selectionFunction = "best",
+  preProcOptions = list(
+    thresh = 0.95,
+    ICAcomp = 3,
+    k = 5,
+    freqCut = 95 / 5,
+    uniqueCut = 10,
+    cutoff = 0.9
+  ),
+  sampling = NULL,
+  index = NULL,
+  indexOut = NULL,
+  indexFinal = NULL,
+  timingSamps = 0,
+  predictionBounds = rep(FALSE, 2),
+  seeds = NA,
+  adaptive = list(min = 5, alpha = 0.05, method = "gls", complete = TRUE),
+  trim = FALSE,
+  allowParallel = TRUE
+) {
+  if (is.null(selectionFunction)) {
+    stop("null selectionFunction values not allowed")
   }
-  if(!(search %in% c("grid", "random")))
+  if (!(returnResamp %in% c("all", "final", "none"))) {
+    stop("incorrect value of returnResamp")
+  }
+  if (length(predictionBounds) > 0 && length(predictionBounds) != 2) {
+    stop("'predictionBounds' should be a logical or numeric vector of length 2")
+  }
+  if (any(names(preProcOptions) == "method")) {
+    stop("'method' cannot be specified here")
+  }
+  if (any(names(preProcOptions) == "x")) {
+    stop("'x' cannot be specified here")
+  }
+  if (!is.na(repeats) && !(method %in% c("repeatedcv", "adaptive_cv"))) {
+    warning(
+      "`repeats` has no meaning for this resampling method.",
+      call. = FALSE
+    )
+  }
+
+  if (!(adaptive$method %in% c("gls", "BT"))) {
+    stop("incorrect value of adaptive$method")
+  }
+  if (adaptive$alpha < 0.0000001 || adaptive$alpha > 1) {
+    stop("incorrect value of adaptive$alpha")
+  }
+  if (grepl("adapt", method)) {
+    if (method == "adaptive_cv") {
+      num <- number * repeats
+    } else {
+      num <- number
+    }
+    if (adaptive$min >= num) {
+      stop(paste("adaptive$min should be less than", num))
+    }
+    if (adaptive$min <= 1) {
+      stop("adaptive$min should be greater than 1")
+    }
+  }
+  if (!(search %in% c("grid", "random"))) {
     stop("`search` should be either 'grid' or 'random'")
-  if(method == "oob" && any(names(match.call()) == "summaryFunction")) {
-    warning("Custom summary measures cannot be computed for out-of-bag resampling. ",
-            "This value of `summaryFunction` will be ignored.",
-            call. = FALSE)
+  }
+  if (method == "oob" && any(names(match.call()) == "summaryFunction")) {
+    warning(
+      "Custom summary measures cannot be computed for out-of-bag resampling. ",
+      "This value of `summaryFunction` will be ignored.",
+      call. = FALSE
+    )
   }
 
-  list(method = method,
-       number = number,
-       repeats = repeats,
-       search = search,
-       p = p,
-       initialWindow = initialWindow,
-       horizon = horizon,
-       fixedWindow = fixedWindow,
-       skip = skip,
-       verboseIter = verboseIter,
-       returnData = returnData,
-       returnResamp = returnResamp,
-       savePredictions = savePredictions,
-       classProbs = classProbs,
-       summaryFunction = summaryFunction,
-       selectionFunction = selectionFunction,
-       preProcOptions = preProcOptions,
-       sampling = sampling,
-       index = index,
-       indexOut = indexOut,
-       indexFinal = indexFinal,
-       timingSamps = timingSamps,
-       predictionBounds = predictionBounds,
-       seeds = seeds,
-       adaptive = adaptive,
-       trim = trim,
-       allowParallel = allowParallel)
+  list(
+    method = method,
+    number = number,
+    repeats = repeats,
+    search = search,
+    p = p,
+    initialWindow = initialWindow,
+    horizon = horizon,
+    fixedWindow = fixedWindow,
+    skip = skip,
+    verboseIter = verboseIter,
+    returnData = returnData,
+    returnResamp = returnResamp,
+    savePredictions = savePredictions,
+    classProbs = classProbs,
+    summaryFunction = summaryFunction,
+    selectionFunction = selectionFunction,
+    preProcOptions = preProcOptions,
+    sampling = sampling,
+    index = index,
+    indexOut = indexOut,
+    indexFinal = indexFinal,
+    timingSamps = timingSamps,
+    predictionBounds = predictionBounds,
+    seeds = seeds,
+    adaptive = adaptive,
+    trim = trim,
+    allowParallel = allowParallel
+  )
 }

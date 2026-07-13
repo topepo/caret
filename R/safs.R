@@ -556,24 +556,24 @@ safsControl <- function(
 #' simulated annealing. Science, 220(4598), 671.
 #' @keywords models
 #' @examplesIf !caret:::is_cran_check()
-#' 
-#' 
+#'
+#'
 #' set.seed(1)
 #' train_data <- twoClassSim(100, noiseVars = 10)
 #' test_data <- twoClassSim(10, noiseVars = 10)
-#' 
+#'
 #' ## A short example
 #' ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
-#' 
+#'
 #' rf_search <- safs(
 #'   x = train_data[, -ncol(train_data)],
 #'   y = train_data$Class,
 #'   iters = 3,
 #'   safsControl = ctrl
 #' )
-#' 
+#'
 #' rf_search
-#' 
+#'
 #' @export safs
 safs <- function(x, ...) UseMethod("safs")
 
@@ -804,10 +804,10 @@ safs <- function(x, ...) UseMethod("safs")
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_sa$subsets[[best_index]]]
     } else {
-      best_index <- if (safsControl$maximize["external"]) {
-        which.max(averages[, safsControl$metric["external"]])
+      if (safsControl$maximize["external"]) {
+        best_index <- which.max(averages[, safsControl$metric["external"]])
       } else {
-        which.min(averages[, safsControl$metric["external"]])
+        best_index <- which.min(averages[, safsControl$metric["external"]])
       }
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_sa$subsets[[best_index]]]
@@ -913,36 +913,36 @@ safs <- function(x, ...) UseMethod("safs")
 #' @references
 #'   <http://topepo.github.io/caret/feature-selection-using-simulated-annealing.html>
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' selected_vars <- safs_initial(vars = 10, prob = 0.2)
 #' selected_vars
-#' 
+#'
 #' ###
-#' 
+#'
 #' safs_perturb(selected_vars, vars = 10, number = 1)
-#' 
+#'
 #' ###
-#' 
+#'
 #' safs_prob(old = .8, new = .9, iteration = 1)
 #' safs_prob(old = .5, new = .6, iteration = 1)
-#' 
+#'
 #' grid <- expand.grid(old = c(4, 3.5), new = c(4.5, 4, 3.5) + 1, iter = 1:40)
 #' grid <- subset(grid, old < new)
-#' 
+#'
 #' grid$prob <- apply(grid, 1, function(x) {
 #'   safs_prob(new = x["new"], old = x["old"], iteration = x["iter"])
 #' })
-#' 
+#'
 #' grid$Difference <- factor(grid$new - grid$old)
 #' grid$Group <- factor(paste("Current Value", grid$old))
-#' 
+#'
 #' ggplot(grid, aes(x = iter, y = prob, color = Difference)) +
 #'   geom_line() +
 #'   facet_wrap(~Group) +
 #'   theme_bw() +
 #'   ylab("Probability") +
 #'   xlab("Iteration")
-#' 
+#'
 #' ## Hypothetical usage (not run):
 #' ## lda_sa <- safs(x = predictors,
 #' ##                y = classes,
@@ -957,7 +957,7 @@ safs <- function(x, ...) UseMethod("safs")
 #' ##               safsControl = safsControl(functions = rfSA),
 #' ##               ntree = 1000,
 #' ##               importance = TRUE)
-#' 
+#'
 #' @export safs_initial
 safs_initial <- function(vars, prob = 0.20, ...) {
   sort(sample.int(vars, size = floor(vars * prob) + 1))
@@ -1120,7 +1120,11 @@ sa_select <- function(
     Similarity_B = rep(0 * NA, iters),
     stringsAsFactors = FALSE
   )
-  external <- if (!is.null(testX)) data.frame(Iter = 1:(iters)) else NULL
+  if (!is.null(testX)) {
+    external <- data.frame(Iter = 1:(iters))
+  } else {
+    external <- NULL
+  }
 
   for (i in 1:iters) {
     if (i == 1) {
@@ -1191,7 +1195,9 @@ sa_select <- function(
       }
     } else {
       internal[i, (nr - k + 1):nr] <- new_obj$internal
-      if (!is.null(testX)) external[i, -1] <- new_obj$external
+      if (!is.null(testX)) {
+        external[i, -1] <- new_obj$external
+      }
     }
 
     if (sa_verbose) {
@@ -1245,7 +1251,9 @@ sa_select <- function(
       internal$Note[i] <- "Improved"
       last_improve <- i
       since_improve <- 0
-      if (sa_verbose && i > 1) cat(" *\n")
+      if (sa_verbose && i > 1) {
+        cat(" *\n")
+      }
     } else {
       if (i > 1) {
         internal$Prob[i] <- funcs$prob(
@@ -1265,12 +1273,16 @@ sa_select <- function(
         current_subset <- new_subset
         internal$Best[i] <- internal$Best[i - 1]
         internal$Note[i] <- "Accepted"
-        if (sa_verbose && i > 1) cat("A\n")
+        if (sa_verbose && i > 1) {
+          cat("A\n")
+        }
       } else {
         internal$Obj[i] <- internal$Obj[i - 1]
         internal$Best[i] <- internal$Best[i - 1]
         internal$Note[i] <- "Discarded"
-        if (sa_verbose && i > 1) cat("\n")
+        if (sa_verbose && i > 1) {
+          cat("\n")
+        }
       }
     }
 
@@ -1369,27 +1381,30 @@ plot.safs <- function(
   if (output == "data") {
     out <- plot_dat
   }
-  plot_dat <- if (both_estimates) {
-    ddply(plot_dat, c("Iter", "Estimate"), function(x) {
+  if (both_estimates) {
+    plot_dat <- ddply(plot_dat, c("Iter", "Estimate"), function(x) {
       c(Mean = mean(x[, metric]))
     })
   } else {
-    ddply(plot_dat, c("Iter"), function(x) c(Mean = mean(x[, metric])))
+    plot_dat <- ddply(plot_dat, c("Iter"), function(x) {
+      c(Mean = mean(x[, metric]))
+    })
   }
 
   if (output == "ggplot") {
-    out <- if (both_estimates) {
-      ggplot(plot_dat, aes(x = Iter, y = Mean, color = Estimate)) + geom_point()
+    if (both_estimates) {
+      out <- ggplot(plot_dat, aes(x = Iter, y = Mean, color = Estimate)) +
+        geom_point()
     } else {
-      ggplot(plot_dat, aes(x = Iter, y = Mean)) + geom_point()
+      out <- ggplot(plot_dat, aes(x = Iter, y = Mean)) + geom_point()
     }
     out <- out + xlab("Iteration")
   }
   if (output == "lattice") {
-    out <- if (both_estimates) {
-      xyplot(Mean ~ Iter, data = plot_dat, groups = Estimate, ...)
+    if (both_estimates) {
+      out <- xyplot(Mean ~ Iter, data = plot_dat, groups = Estimate, ...)
     } else {
-      xyplot(Mean ~ Iter, data = plot_dat, ...)
+      out <- xyplot(Mean ~ Iter, data = plot_dat, ...)
     }
     out <- update(out, xlab = "Iteration")
   }
@@ -1527,21 +1542,21 @@ rfSA <- list(
 #' @seealso [gafs()], [safs()]
 #' @keywords models
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' set.seed(1)
 #' train_data <- twoClassSim(100, noiseVars = 10)
 #' test_data <- twoClassSim(10, noiseVars = 10)
-#' 
+#'
 #' ## A short example
 #' ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
-#' 
+#'
 #' rf_search <- safs(
 #'   x = train_data[, -ncol(train_data)],
 #'   y = train_data$Class,
 #'   iters = 3,
 #'   safsControl = ctrl
 #' )
-#' 
+#'
 #' rf_search2 <- update(
 #'   rf_search,
 #'   iter = 1,
@@ -1750,7 +1765,11 @@ update.safs <- function(object, iter, x, y, ...) {
     if (!is.null(perf_data)) {
       testOutput <- cbind(
         testOutput,
-        perf_data[sample(seq_len(nrow(perf_data)), nrow(testOutput)), , drop = FALSE]
+        perf_data[
+          sample(seq_len(nrow(perf_data)), nrow(testOutput)),
+          ,
+          drop = FALSE
+        ]
       )
     }
 
@@ -1931,10 +1950,10 @@ update.safs <- function(object, iter, x, y, ...) {
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_sa$subsets[[best_index]]]
     } else {
-      best_index <- if (safsControl$maximize["external"]) {
-        which.max(averages[, safsControl$metric["external"]])
+      if (safsControl$maximize["external"]) {
+        best_index <- which.max(averages[, safsControl$metric["external"]])
       } else {
-        which.min(averages[, safsControl$metric["external"]])
+        best_index <- which.min(averages[, safsControl$metric["external"]])
       }
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_sa$subsets[[best_index]]]

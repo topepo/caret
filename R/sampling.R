@@ -21,14 +21,14 @@
 #' @author Max Kuhn
 #' @keywords utilities
 #' @examples
-#' 
+#'
 #' ## A ridiculous example...
 #' data(oil)
 #' table(oilType)
 #' downSample(fattyAcids, oilType)
-#' 
+#'
 #' upSample(fattyAcids, oilType)
-#' 
+#'
 #' @export downSample
 downSample <- function(x, y, list = FALSE, yname = "Class") {
   if (!is.data.frame(x)) {
@@ -44,10 +44,14 @@ downSample <- function(x, y, list = FALSE, yname = "Class") {
   minClass <- min(table(y))
   x$.outcome <- y
 
-  x <- ddply(x, .(y),
-             function(dat, n)
-               dat[sample(seq(along.with = dat$.outcome), n), , drop = FALSE],
-             n = minClass)
+  x <- ddply(
+    x,
+    .(y),
+    function(dat, n) {
+      dat[sample(seq(along.with = dat$.outcome), n), , drop = FALSE]
+    },
+    n = minClass
+  )
   y <- x$.outcome
   x <- x[, !(colnames(x) %in% c("y", ".outcome")), drop = FALSE]
   if (list) {
@@ -78,19 +82,16 @@ upSample <- function(x, y, list = FALSE, yname = "Class") {
   maxClass <- max(table(y))
   x$.outcome <- y
 
-  x <- ddply(x, .(y),
-             function(x, top = maxClass) {
-               if (nrow(x) < top) {
-                 ind <- sample(seq_len(nrow(x)),
-                               size = top - nrow(x),
-                               replace = TRUE)
-                 ind <- c(seq_len(nrow(x)), ind)
-                 x <- x[ind, , drop = FALSE]
-               }
-               x
-             })
+  x <- ddply(x, .(y), function(x, top = maxClass) {
+    if (nrow(x) < top) {
+      ind <- sample(seq_len(nrow(x)), size = top - nrow(x), replace = TRUE)
+      ind <- c(seq_len(nrow(x)), ind)
+      x <- x[ind, , drop = FALSE]
+    }
+    x
+  })
   y <- x$.outcome
-  x <- x[,!(colnames(x) %in% c("y", ".outcome")), drop = FALSE]
+  x <- x[, !(colnames(x) %in% c("y", ".outcome")), drop = FALSE]
   if (list) {
     if (inherits(x, "matrix")) {
       x <- as.matrix(x)
@@ -102,6 +103,3 @@ upSample <- function(x, y, list = FALSE, yname = "Class") {
   }
   out
 }
-
-
-

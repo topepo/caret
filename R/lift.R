@@ -82,26 +82,26 @@
 #' @seealso [lattice::xyplot()], [lattice::trellis.par.set()]
 #' @keywords hplot
 #' @examples
-#' 
+#'
 #' set.seed(1)
 #' simulated <- data.frame(
 #'   obs = factor(rep(letters[1:2], each = 100)),
 #'   perfect = sort(runif(200), decreasing = TRUE),
 #'   random = runif(200)
 #' )
-#' 
+#'
 #' lift1 <- lift(obs ~ random, data = simulated)
 #' lift1
 #' xyplot(lift1)
-#' 
+#'
 #' lift2 <- lift(obs ~ random + perfect, data = simulated)
 #' lift2
 #' xyplot(lift2, auto.key = list(columns = 2))
-#' 
+#'
 #' xyplot(lift2, auto.key = list(columns = 2), value = c(10, 30))
-#' 
+#'
 #' xyplot(lift2, plot = "lift", auto.key = list(columns = 2))
-#' 
+#'
 #' @export lift
 lift <- function(x, ...) UseMethod("lift")
 
@@ -161,10 +161,10 @@ lift.formula <- function(
     liftClassVar = rep(form$left, length(probNames)),
     liftProbVar = form$right
   )
-  liftData$liftModelVar <- if (length(probNames) > 1) {
-    form$condition[[length(form$condition)]]
+  if (length(probNames) > 1) {
+    liftData$liftModelVar <- form$condition[[length(form$condition)]]
   } else {
-    probNames
+    liftData$liftModelVar <- probNames
   }
 
   if (length(form$condition) > 0 && any(names(form$condition) != "")) {
@@ -242,7 +242,9 @@ xyplot.lift <- function(x, data = NULL, plot = "gain", values = NULL, ...) {
     if (!any(names(opts) == "xlim")) {
       opts$xlim <- rng
     }
-    if (!any(names(opts) == "panel")) opts$panel <- panel.lift2
+    if (!any(names(opts) == "panel")) {
+      opts$panel <- panel.lift2
+    }
   } else {
     lFormula <- "lift ~ cuts"
     x$data <- x$data[order(x$data$liftModelVar, x$data$cuts), ]
@@ -254,7 +256,9 @@ xyplot.lift <- function(x, data = NULL, plot = "gain", values = NULL, ...) {
     if (!any(names(opts) == "ylab")) {
       opts$ylab <- "Lift"
     }
-    if (!any(names(opts) == "type")) opts$type <- "l"
+    if (!any(names(opts) == "type")) {
+      opts$type <- "l"
+    }
   }
   args <- list(
     x = as.formula(lFormula),
@@ -345,25 +349,25 @@ panel.lift <- function(x, y, ...) {
 #'   [lattice::trellis.par.set()]
 #' @keywords hplot
 #' @examples
-#' 
+#'
 #' set.seed(1)
 #' simulated <- data.frame(
 #'   obs = factor(rep(letters[1:2], each = 100)),
 #'   perfect = sort(runif(200), decreasing = TRUE),
 #'   random = runif(200)
 #' )
-#' 
+#'
 #' regionInfo <- trellis.par.get("reference.line")
 #' regionInfo$col <- "lightblue"
 #' trellis.par.set("reference.line", regionInfo)
-#' 
+#'
 #' lift2 <- lift(obs ~ random + perfect, data = simulated)
 #' lift2
 #' xyplot(lift2, auto.key = list(columns = 2))
-#' 
+#'
 #' ## use a different panel function
 #' xyplot(lift2, panel = panel.lift)
-#' 
+#'
 #' @export panel.lift2
 panel.lift2 <- function(x, y, pct = 0, values = NULL, ...) {
   polyx <- c(0, pct, 100, 0)
@@ -471,10 +475,10 @@ ggplot.lift <- function(
       ylab("% Samples Found") +
       xlim(rng) +
       ylim(rng)
-    res <- if (nmod == 1) {
-      res + geom_line()
+    if (nmod == 1) {
+      res <- res + geom_line()
     } else {
-      res + geom_line(aes(col = Model))
+      res <- res + geom_line(aes(col = Model))
     }
     if (!is.null(values)) {
       ref_values <- ddply(data$data, .(Model), get_ref_point, v = values)
@@ -530,10 +534,10 @@ ggplot.lift <- function(
     res <- ggplot(data$data, aes(x = cuts, y = lift)) +
       xlab("Cut-Off") +
       ylab("Lift")
-    res <- if (nmod == 1) {
-      res + geom_line()
+    if (nmod == 1) {
+      res <- res + geom_line()
     } else {
-      res + geom_line(aes(col = Model))
+      res <- res + geom_line(aes(col = Model))
     }
   }
   res
@@ -551,12 +555,11 @@ get_ref_point <- function(dat, v, window = 5) {
   for (i in seq(along.with = v)) {
     nearest <- which.min((y - v[i])^2)
     index <- max(1, nearest - window):min(length(y), nearest + window)
-    res$CumTestedPct[i] <-
-      if (length(index) > 2) {
-        approx(y[index], x[index], xout = v[i])$y
-      } else {
-        NA
-      }
+    if (length(index) > 2) {
+      res$CumTestedPct[i] <- approx(y[index], x[index], xout = v[i])$y
+    } else {
+      res$CumTestedPct[i] <- NA
+    }
   }
   res
 }

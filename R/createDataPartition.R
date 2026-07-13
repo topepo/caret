@@ -70,70 +70,88 @@
 #' @family resampling
 #' @keywords utilities
 #' @examples
-#' 
+#'
 #' data(oil)
 #' createDataPartition(oilType, 2)
-#' 
+#'
 #' x <- rgamma(50, 3, .5)
 #' inA <- createDataPartition(x, list = FALSE)
-#' 
+#'
 #' plot(density(x[inA]))
 #' rug(x[inA])
-#' 
+#'
 #' points(density(x[-inA]), type = "l", col = 4)
 #' rug(x[-inA], col = 4)
-#' 
+#'
 #' createResample(oilType, 2)
-#' 
+#'
 #' createFolds(oilType, 10)
 #' createFolds(oilType, 5, FALSE)
-#' 
+#'
 #' createFolds(rnorm(21))
-#' 
+#'
 #' createTimeSlices(1:9, 5, 1, fixedWindow = FALSE)
 #' createTimeSlices(1:9, 5, 1, fixedWindow = TRUE)
 #' createTimeSlices(1:9, 5, 3, fixedWindow = TRUE)
 #' createTimeSlices(1:9, 5, 3, fixedWindow = FALSE)
-#' 
+#'
 #' createTimeSlices(1:15, 5, 3)
 #' createTimeSlices(1:15, 5, 3, skip = 2)
 #' createTimeSlices(1:15, 5, 3, skip = 3)
-#' 
+#'
 #' set.seed(131)
 #' groups <- sort(sample(letters[1:4], size = 20, replace = TRUE))
 #' table(groups)
 #' folds <- groupKFold(groups)
 #' lapply(folds, function(x, y) table(y[x]), y = groups)
 #' @export createDataPartition
-createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = min(5, length(y))){
-  if(inherits(y, "Surv")) y <- y[,"time"]
+createDataPartition <- function(
+  y,
+  times = 1,
+  p = 0.5,
+  list = TRUE,
+  groups = min(5, length(y))
+) {
+  if (inherits(y, "Surv")) {
+    y <- y[, "time"]
+  }
   out <- vector(mode = "list", times)
 
-  if(length(y) < 2) stop("y must have at least 2 data points")
+  if (length(y) < 2) {
+    stop("y must have at least 2 data points")
+  }
 
-  if(groups < 2) groups <- 2
+  if (groups < 2) {
+    groups <- 2
+  }
 
-  if(is.numeric(y)) {
-    y <- cut(y,
-             unique(quantile(y, probs = seq(0, 1, length.out = groups))),
-             include.lowest = TRUE)
+  if (is.numeric(y)) {
+    y <- cut(
+      y,
+      unique(quantile(y, probs = seq(0, 1, length.out = groups))),
+      include.lowest = TRUE
+    )
   } else {
     xtab <- table(y)
-    if(any(xtab == 0)) {
-      warning(paste("Some classes have no records (",
-                    paste(names(xtab)[xtab  == 0], sep = "", collapse = ", "),
-                    ") and these will be ignored"))
+    if (any(xtab == 0)) {
+      warning(paste(
+        "Some classes have no records (",
+        paste(names(xtab)[xtab == 0], sep = "", collapse = ", "),
+        ") and these will be ignored"
+      ))
       y <- factor(as.character(y))
     }
-    if(any(xtab == 1)) {
-      warning(paste("Some classes have a single record (",
-                    paste(names(xtab)[xtab  == 1], sep = "", collapse = ", "),
-                    ") and these will be selected for the sample"))
+    if (any(xtab == 1)) {
+      warning(paste(
+        "Some classes have a single record (",
+        paste(names(xtab)[xtab == 1], sep = "", collapse = ", "),
+        ") and these will be selected for the sample"
+      ))
     }
   }
 
   subsample <- function(dat, p) {
-    if(nrow(dat) == 1) {
+    if (nrow(dat) == 1) {
       out <- dat$index
     } else {
       num <- ceiling(nrow(dat) * p)
@@ -143,8 +161,12 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
   }
 
   for (j in 1:times) {
-    tmp <- dlply(data.frame(y = y, index = seq(along.with = y)),
-                 .(y), subsample, p = p)
+    tmp <- dlply(
+      data.frame(y = y, index = seq(along.with = y)),
+      .(y),
+      subsample,
+      p = p
+    )
     tmp <- sort(as.vector(unlist(tmp)))
     out[[j]] <- tmp
   }
@@ -163,8 +185,10 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
 #' @export
 "createFolds" <-
   function(y, k = 10, list = TRUE, returnTrain = FALSE) {
-    if(inherits(y, "Surv")) y <- y[,"time"]
-    if(is.numeric(y)) {
+    if (inherits(y, "Surv")) {
+      y <- y[, "time"]
+    }
+    if (is.numeric(y)) {
       ## Group the numeric data based on their magnitudes
       ## and sample within those groups.
 
@@ -175,14 +199,18 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
       ## At most, we will use quantiles. If the sample
       ## is too small, we just do regular unstratified
       ## CV
-      cuts <- floor(length(y)/k)
-      if(cuts < 2) cuts <- 2
-      if(cuts > 5) cuts <- 5
+      cuts <- floor(length(y) / k)
+      if (cuts < 2) {
+        cuts <- 2
+      }
+      if (cuts > 5) {
+        cuts <- 5
+      }
       breaks <- unique(quantile(y, probs = seq(0, 1, length.out = cuts)))
       y <- cut(y, breaks, include.lowest = TRUE)
     }
 
-    if(k < length(y)) {
+    if (k < length(y)) {
       ## reset levels so that the possible levels and
       ## the levels in the vector are the same
       y <- factor(as.character(y))
@@ -192,48 +220,70 @@ createDataPartition <- function (y, times = 1, p = 0.5, list = TRUE, groups = mi
       ## For each class, balance the fold allocation as far
       ## as possible, then resample the remainder.
       ## The final assignment of folds is also randomized.
-      for(i in seq_along(numInClass)) {
+      for (i in seq_along(numInClass)) {
         ## create a vector of integers from 1:k as many times as possible without
         ## going over the number of samples in the class. Note that if the number
         ## of samples in a class is less than k, nothing is produced here.
         min_reps <- numInClass[i] %/% k
-        if(min_reps > 0) {
+        if (min_reps > 0) {
           spares <- numInClass[i] %% k
           seqVector <- rep(1:k, min_reps)
           ## add enough random integers to get  length(seqVector) == numInClass[i]
-          if(spares > 0) seqVector <- c(seqVector, sample(1:k, spares))
+          if (spares > 0) {
+            seqVector <- c(seqVector, sample(1:k, spares))
+          }
           ## shuffle the integers for fold assignment and assign to this classes's data
           foldVector[which(y == names(numInClass)[i])] <- sample(seqVector)
         } else {
           ## Here there are less records in the class than unique folds so
           ## randomly sprinkle them into folds.
-          foldVector[which(y == names(numInClass)[i])] <- sample(1:k, size = numInClass[i])
+          foldVector[which(y == names(numInClass)[i])] <- sample(
+            1:k,
+            size = numInClass[i]
+          )
         }
       }
-    } else foldVector <- seq(along.with = y)
+    } else {
+      foldVector <- seq(along.with = y)
+    }
 
-    if(list) {
+    if (list) {
       out <- split(seq(along.with = y), foldVector)
-      names(out) <- paste("Fold", gsub(" ", "0", format(seq(along.with = out))), sep = "")
-      if(returnTrain) out <- lapply(out, function(data, y) y[-data], y = seq(along.with = y))
-    } else out <- foldVector
+      names(out) <- paste(
+        "Fold",
+        gsub(" ", "0", format(seq(along.with = out))),
+        sep = ""
+      )
+      if (returnTrain) {
+        out <- lapply(out, function(data, y) y[-data], y = seq(along.with = y))
+      }
+    } else {
+      out <- foldVector
+    }
     out
   }
 
 #' @rdname createDataPartition
 #' @export
 createMultiFolds <- function(y, k = 10, times = 5) {
-  if(inherits(y, "Surv")) y <- y[,"time"]
+  if (inherits(y, "Surv")) {
+    y <- y[, "time"]
+  }
   prettyNums <- paste("Rep", gsub(" ", "0", format(1:times)), sep = "")
-  for(i in 1:times) {
+  for (i in 1:times) {
     tmp <- createFolds(y, k = k, list = TRUE, returnTrain = TRUE)
-    names(tmp) <- paste("Fold",
-                        gsub(" ", "0", format(seq(along.with = tmp))),
-                        ".",
-                        prettyNums[i],
-                        sep = "")
-    out <- if(i == 1) tmp else c(out, tmp)
-
+    names(tmp) <- paste(
+      "Fold",
+      gsub(" ", "0", format(seq(along.with = tmp))),
+      ".",
+      prettyNums[i],
+      sep = ""
+    )
+    if (i == 1) {
+      out <- tmp
+    } else {
+      out <- c(out, tmp)
+    }
   }
   out
 }
@@ -241,7 +291,13 @@ createMultiFolds <- function(y, k = 10, times = 5) {
 ## From Tony Cooper <tonyc@iconz.co.nz> on 1/9/13
 #' @rdname createDataPartition
 #' @export
-createTimeSlices <- function(y, initialWindow, horizon = 1, fixedWindow = TRUE, skip = 0) {
+createTimeSlices <- function(
+  y,
+  initialWindow,
+  horizon = 1,
+  fixedWindow = TRUE,
+  skip = 0
+) {
   ## initialwindow = initial number of consecutive values in each training set sample
   ## horizon = number of consecutive values in test set sample
   ## fixedwindow = FALSE if we use the maximum possible length for the training set
@@ -256,7 +312,7 @@ createTimeSlices <- function(y, initialWindow, horizon = 1, fixedWindow = TRUE, 
   }
 
   train <- mapply(seq, starts, stops, SIMPLIFY = FALSE)
-  test <- mapply(seq, stops+1, stops+horizon, SIMPLIFY = FALSE)
+  test <- mapply(seq, stops + 1, stops + horizon, SIMPLIFY = FALSE)
   nums <- gsub(" ", "0", format(stops))
   names(train) <- paste("Training", nums, sep = "")
   names(test) <- paste("Testing", nums, sep = "")
@@ -284,53 +340,75 @@ groupKFold <- function(group, k = length(unique(group))) {
 
 make_resamples <- function(ctrl_obj, outcome) {
   n <- length(outcome)
-  if(is.null(ctrl_obj$index)) {
-    if(ctrl_obj$method == "custom")
-      stop("'custom' resampling is appropriate when the `trControl` argument `index` is used", call. = FALSE)
+  if (is.null(ctrl_obj$index)) {
+    if (ctrl_obj$method == "custom") {
+      stop(
+        "'custom' resampling is appropriate when the `trControl` argument `index` is used",
+        call. = FALSE
+      )
+    }
     ctrl_obj$index <-
-      switch(tolower(ctrl_obj$method),
-             oob = NULL,
-             none = list(seq(along.with = outcome)),
-             apparent = list(all = seq(along.with = outcome)),
-             alt_cv =, cv = createFolds(outcome, ctrl_obj$number, returnTrain = TRUE),
-             repeatedcv =, adaptive_cv = createMultiFolds(outcome, ctrl_obj$number, ctrl_obj$repeats),
-             loocv = createFolds(outcome, n, returnTrain = TRUE),
-             boot =, boot632 =, optimism_boot =, boot_all =,
-             adaptive_boot = createResample(outcome, ctrl_obj$number),
-             test = createDataPartition(outcome, 1, ctrl_obj$p),
-             adaptive_lgocv =, lgocv = createDataPartition(outcome, ctrl_obj$number, ctrl_obj$p),
-             timeslice = createTimeSlices(seq(along.with = outcome),
-                                          initialWindow = ctrl_obj$initialWindow,
-                                          horizon = ctrl_obj$horizon,
-                                          fixedWindow = ctrl_obj$fixedWindow,
-                                          skip = ctrl_obj$skip)$train,
-             stop("Not a recognized resampling method.", call. = FALSE))
+      switch(
+        tolower(ctrl_obj$method),
+        oob = NULL,
+        none = list(seq(along.with = outcome)),
+        apparent = list(all = seq(along.with = outcome)),
+        alt_cv = ,
+        cv = createFolds(outcome, ctrl_obj$number, returnTrain = TRUE),
+        repeatedcv = ,
+        adaptive_cv = createMultiFolds(
+          outcome,
+          ctrl_obj$number,
+          ctrl_obj$repeats
+        ),
+        loocv = createFolds(outcome, n, returnTrain = TRUE),
+        boot = ,
+        boot632 = ,
+        optimism_boot = ,
+        boot_all = ,
+        adaptive_boot = createResample(outcome, ctrl_obj$number),
+        test = createDataPartition(outcome, 1, ctrl_obj$p),
+        adaptive_lgocv = ,
+        lgocv = createDataPartition(outcome, ctrl_obj$number, ctrl_obj$p),
+        timeslice = createTimeSlices(
+          seq(along.with = outcome),
+          initialWindow = ctrl_obj$initialWindow,
+          horizon = ctrl_obj$horizon,
+          fixedWindow = ctrl_obj$fixedWindow,
+          skip = ctrl_obj$skip
+        )$train,
+        stop("Not a recognized resampling method.", call. = FALSE)
+      )
   } else {
     index_types <- unlist(lapply(ctrl_obj$index, is.integer))
-    if(!isTRUE(all(index_types)))
+    if (!isTRUE(all(index_types))) {
       stop("`index` should be lists of integers.", call. = FALSE)
-    if(!is.null(ctrl_obj$indexOut)) {
+    }
+    if (!is.null(ctrl_obj$indexOut)) {
       index_types <- unlist(lapply(ctrl_obj$indexOut, is.integer))
-      if(!isTRUE(all(index_types)))
+      if (!isTRUE(all(index_types))) {
         stop("`indexOut` should be lists of integers.", call. = FALSE)
+      }
     }
   }
 
-  if(ctrl_obj$method == "apparent")
+  if (ctrl_obj$method == "apparent") {
     ctrl_obj$indexOut <- list(all = seq(along.with = outcome))
+  }
 
   ## Create holdout indices
-  if(is.null(ctrl_obj$indexOut) && ctrl_obj$method != "oob"){
-    if(tolower(ctrl_obj$method) != "timeslice") {
-      y_index <-
-        if (inherits(outcome, "Surv"))
-          seq_len(nrow(outcome))
-      else
-        seq(along.with = outcome)
+  if (is.null(ctrl_obj$indexOut) && ctrl_obj$method != "oob") {
+    if (tolower(ctrl_obj$method) != "timeslice") {
+      if (inherits(outcome, "Surv")) {
+        y_index <- seq_len(nrow(outcome))
+      } else {
+        y_index <- seq(along.with = outcome)
+      }
       ctrl_obj$indexOut <-
-        lapply(ctrl_obj$index, function(training)
-          setdiff(y_index, training))
-      if(ctrl_obj$method %in% c("optimism_boot", "boot_all")) {
+        lapply(ctrl_obj$index, function(training) {
+          setdiff(y_index, training)
+        })
+      if (ctrl_obj$method %in% c("optimism_boot", "boot_all")) {
         ctrl_obj$indexExtra <- lapply(ctrl_obj$index, function(training) {
           list(origIndex = y_index, bootIndex = training)
         })
@@ -338,22 +416,24 @@ make_resamples <- function(ctrl_obj, outcome) {
       names(ctrl_obj$indexOut) <- prettySeq(ctrl_obj$indexOut)
     } else {
       ctrl_obj$indexOut <-
-        createTimeSlices(seq(along.with = outcome),
-                         initialWindow = ctrl_obj$initialWindow,
-                         horizon = ctrl_obj$horizon,
-                         fixedWindow = ctrl_obj$fixedWindow,
-                         skip = ctrl_obj$skip)$test
+        createTimeSlices(
+          seq(along.with = outcome),
+          initialWindow = ctrl_obj$initialWindow,
+          horizon = ctrl_obj$horizon,
+          fixedWindow = ctrl_obj$fixedWindow,
+          skip = ctrl_obj$skip
+        )$test
     }
   }
 
-  if(ctrl_obj$method != "oob" && is.null(ctrl_obj$index))
+  if (ctrl_obj$method != "oob" && is.null(ctrl_obj$index)) {
     names(ctrl_obj$index) <- prettySeq(ctrl_obj$index)
-  if(ctrl_obj$method != "oob" && is.null(names(ctrl_obj$index)))
-    names(ctrl_obj$index)    <- prettySeq(ctrl_obj$index)
-  if(ctrl_obj$method != "oob" && is.null(names(ctrl_obj$indexOut)))
+  }
+  if (ctrl_obj$method != "oob" && is.null(names(ctrl_obj$index))) {
+    names(ctrl_obj$index) <- prettySeq(ctrl_obj$index)
+  }
+  if (ctrl_obj$method != "oob" && is.null(names(ctrl_obj$indexOut))) {
     names(ctrl_obj$indexOut) <- prettySeq(ctrl_obj$indexOut)
+  }
   ctrl_obj
 }
-
-
-

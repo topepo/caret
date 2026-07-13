@@ -57,18 +57,18 @@
 #' @family resampling
 #' @keywords models
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' load(url("http://topepo.github.io/caret/exampleModels.RData"))
-#' 
+#'
 #' resamps <- resamples(list(
 #'   CART = rpartFit,
 #'   CondInfTree = ctreeFit,
 #'   MARS = earthFit
 #' ))
-#' 
+#'
 #' resamps
 #' summary(resamps)
-#' 
+#'
 #' @export resamples
 "resamples" <- function(x, ...) UseMethod("resamples")
 
@@ -182,7 +182,11 @@ resamples.default <- function(x, modelNames = names(x), ...) {
         names(rs_values[[mod]])[names(rs_values[[mod]]) %in% pNames],
         sep = "~"
       )
-    out <- if (mod == 1) rs_values[[mod]] else merge(out, rs_values[[mod]])
+    if (mod == 1) {
+      out <- rs_values[[mod]]
+    } else {
+      out <- merge(out, rs_values[[mod]])
+    }
   }
 
   timings <- do.call("rbind", lapply(x, getTimes))
@@ -354,27 +358,27 @@ modelCor <- function(x, metric = x$metric[1], ...) {
 #'   plotting in multivariate data analysis," J. Chemometrics, 17: 503-511
 #' @keywords hplot
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' load(url("http://topepo.github.io/caret/exampleModels.RData"))
-#' 
+#'
 #' resamps <- resamples(list(
 #'   CART = rpartFit,
 #'   CondInfTree = ctreeFit,
 #'   MARS = earthFit
 #' ))
 #' resampPCA <- prcomp(resamps)
-#' 
+#'
 #' resampPCA
-#' 
+#'
 #' plot(resampPCA, what = "scree")
-#' 
+#'
 #' plot(resampPCA, what = "components")
-#' 
+#'
 #' plot(resampPCA, what = "components", dims = 2, auto.key = list(columns = 3))
-#' 
+#'
 #' clustered <- cluster(resamps)
 #' plot(clustered)
-#' 
+#'
 #' @export
 prcomp.resamples <- function(x, metric = x$metrics[1], ...) {
   if (length(metric) != 1) {
@@ -642,33 +646,33 @@ print.summary.resamples <- function(x, ...) {
 #' Statistics, Tech. Rep (2008) vol. 30
 #' @keywords hplot
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' load(url("http://topepo.github.io/caret/exampleModels.RData"))
-#' 
+#'
 #' resamps <- resamples(list(
 #'   CART = rpartFit,
 #'   CondInfTree = ctreeFit,
 #'   MARS = earthFit
 #' ))
-#' 
+#'
 #' dotplot(
 #'   resamps,
 #'   scales = list(x = list(relation = "free")),
 #'   between = list(x = 2)
 #' )
-#' 
+#'
 #' bwplot(resamps, metric = "RMSE")
-#' 
+#'
 #' densityplot(resamps, auto.key = list(columns = 3), pch = "|")
-#' 
+#'
 #' xyplot(resamps, models = c("CART", "MARS"), metric = "RMSE")
-#' 
+#'
 #' splom(resamps, metric = "RMSE")
 #' splom(resamps, variables = "metrics")
-#' 
+#'
 #' parallelplot(resamps, metric = "RMSE")
-#' 
-#' 
+#'
+#'
 #' @export
 xyplot.resamples <- function(
   x,
@@ -689,10 +693,10 @@ xyplot.resamples <- function(
   }
 
   if (is.null(models)) {
-    models <- if (what %in% c("tTime", "mTime", "pTime")) {
-      x$models
+    if (what %in% c("tTime", "mTime", "pTime")) {
+      models <- x$models
     } else {
-      x$models[1:2]
+      models <- x$models[1:2]
     }
   }
   if (length(metric) != 1) {
@@ -958,10 +962,10 @@ densityplot.resamples <- function(
   plotData <- subset(plotData, Model %in% models & Metric %in% metric)
 
   metricVals <- unique(plotData$Metric)
-  plotForm <- if (length(metricVals) > 1) {
-    as.formula(~ value | Metric)
+  if (length(metricVals) > 1) {
+    plotForm <- as.formula(~ value | Metric)
   } else {
-    as.formula(~value)
+    plotForm <- as.formula(~value)
   }
   densityplot(
     plotForm,
@@ -992,10 +996,10 @@ bwplot.resamples <- function(
   avPerf <- avPerf[order(avPerf$Median), ]
   plotData$Model <- factor(as.character(plotData$Model), levels = avPerf$Model)
   metricVals <- unique(plotData$Metric)
-  plotForm <- if (length(metricVals) > 1) {
-    as.formula(Model ~ value | Metric)
+  if (length(metricVals) > 1) {
+    plotForm <- as.formula(Model ~ value | Metric)
   } else {
-    as.formula(Model ~ value)
+    plotForm <- as.formula(Model ~ value)
   }
   bwplot(
     plotForm,
@@ -1057,10 +1061,10 @@ dotplot.resamples <- function(
   avPerf <- avPerf[order(avPerf$Median), ]
   results$Model <- factor(as.character(results$Model), levels = avPerf$Model)
   metricVals <- unique(results$Metric)
-  plotForm <- if (length(metricVals) > 1) {
-    as.formula(Model ~ value | Metric)
+  if (length(metricVals) > 1) {
+    plotForm <- as.formula(Model ~ value | Metric)
   } else {
-    as.formula(Model ~ value)
+    plotForm <- as.formula(Model ~ value)
   }
   dotplot(
     plotForm,
@@ -1238,23 +1242,23 @@ ggplot.resamples <-
 #' Statistics, Tech. Rep (2008) vol. 30
 #' @keywords models
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' load(url("http://topepo.github.io/caret/exampleModels.RData"))
-#' 
+#'
 #' resamps <- resamples(list(
 #'   CART = rpartFit,
 #'   CondInfTree = ctreeFit,
 #'   MARS = earthFit
 #' ))
-#' 
+#'
 #' difs <- diff(resamps)
-#' 
+#'
 #' difs
-#' 
+#'
 #' summary(difs)
-#' 
+#'
 #' compare_models(rpartFit, ctreeFit)
-#' 
+#'
 #' @export
 diff.resamples <- function(
   x,
@@ -1332,10 +1336,10 @@ densityplot.diff.resamples <- function(x, data, metric = x$metric, ...) {
   plotData$ind <- gsub(".diff.", " - ", plotData$ind, fixed = TRUE)
   plotData <- subset(plotData, Metric %in% metric)
   metricVals <- unique(plotData$Metric)
-  plotForm <- if (length(metricVals) > 1) {
-    as.formula(~ values | Metric)
+  if (length(metricVals) > 1) {
+    plotForm <- as.formula(~ values | Metric)
   } else {
-    as.formula(~values)
+    plotForm <- as.formula(~values)
   }
 
   densityplot(
@@ -1357,10 +1361,10 @@ bwplot.diff.resamples <- function(x, data, metric = x$metric, ...) {
   plotData$ind <- gsub(".diff.", " - ", plotData$ind, fixed = TRUE)
   plotData <- subset(plotData, Metric %in% metric)
   metricVals <- unique(plotData$Metric)
-  plotForm <- if (length(metricVals) > 1) {
-    as.formula(ind ~ values | Metric)
+  if (length(metricVals) > 1) {
+    plotForm <- as.formula(ind ~ values | Metric)
   } else {
-    as.formula(ind ~ values)
+    plotForm <- as.formula(ind ~ values)
   }
 
   bwplot(
@@ -1473,10 +1477,10 @@ levelplot.diff.resamples <- function(
       for (j in seq(along.with = x$models)) {
         if (i < j) {
           index <- index + 1
-          temp[i, j] <- if (what == "pvalues") {
-            x$statistics[[h]][index][[1]]$p.value
+          if (what == "pvalues") {
+            temp[i, j] <- x$statistics[[h]][index][[1]]$p.value
           } else {
-            x$statistics[[h]][index][[1]]$estimate
+            temp[i, j] <- x$statistics[[h]][index][[1]]$estimate
           }
           temp[j, i] <- temp[i, j]
         }
@@ -1558,25 +1562,25 @@ print.summary.diff.resamples <- function(x, ...) {
 #'   [lattice::densityplot()], [lattice::xyplot()], [lattice::splom()]
 #' @keywords hplot
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' load(url("http://topepo.github.io/caret/exampleModels.RData"))
-#' 
+#'
 #' resamps <- resamples(list(
 #'   CART = rpartFit,
 #'   CondInfTree = ctreeFit,
 #'   MARS = earthFit
 #' ))
 #' difs <- diff(resamps)
-#' 
+#'
 #' dotplot(difs)
-#' 
+#'
 #' densityplot(difs, metric = "RMSE", auto.key = TRUE, pch = "|")
-#' 
+#'
 #' bwplot(difs, metric = "RMSE")
-#' 
+#'
 #' levelplot(difs, what = "differences")
-#' 
-#' 
+#'
+#'
 #' @export
 dotplot.diff.resamples <- function(x, data = NULL, metric = x$metric[1], ...) {
   if (length(metric) > 1) {
@@ -1687,4 +1691,3 @@ compare_models <- function(a, b, metric = a$metric[1]) {
   diffs <- diff(rs, metric = metric[1])
   diffs$statistics[[1]][[1]]
 }
-

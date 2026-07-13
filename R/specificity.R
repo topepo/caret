@@ -1,47 +1,54 @@
 #' @export
 #' @rdname sensitivity
 specificity <-
-  function(data, ...){
+  function(data, ...) {
     UseMethod("specificity")
   }
 
 #' @export
 #' @rdname sensitivity
 "specificity.default" <-
-function(data, reference, negative = levels(reference)[-1], na.rm = TRUE, ...)
-{
-   if(!is.factor(reference) || !is.factor(data))
+  function(
+    data,
+    reference,
+    negative = levels(reference)[-1],
+    na.rm = TRUE,
+    ...
+  ) {
+    if (!is.factor(reference) || !is.factor(data)) {
       stop("input data must be a factor")
+    }
 
-   ## todo: relax the =2 constraint and let ngative length be > 2
-   if(length(unique(c(levels(reference), levels(data)))) != 2)
+    ## todo: relax the =2 constraint and let ngative length be > 2
+    if (length(unique(c(levels(reference), levels(data)))) != 2) {
       stop("input data must have the same two levels")
-   if(na.rm)
-     {
-       cc <- complete.cases(data) & complete.cases(reference)
-       if(any(!cc))
-         {
-           data <- data[cc]
-           reference <- reference[cc]
-         }
-     }
-   numer <- sum(data %in% negative & reference %in% negative)
-   denom <- sum(reference %in% negative)
-   spec <- ifelse(denom > 0, numer / denom, NA)
-   spec
-}
+    }
+    if (na.rm) {
+      cc <- complete.cases(data) & complete.cases(reference)
+      if (any(!cc)) {
+        data <- data[cc]
+        reference <- reference[cc]
+      }
+    }
+    numer <- sum(data %in% negative & reference %in% negative)
+    denom <- sum(reference %in% negative)
+    spec <- ifelse(denom > 0, numer / denom, NA)
+    spec
+  }
 
 #' @export
 #' @rdname sensitivity
 "specificity.table" <-
-  function(data, negative = rownames(data)[-1], ...)
-{
-  ## "truth" in columns, predictions in rows
-  if(!all.equal(nrow(data), ncol(data))) stop("the table must have nrow = ncol")
-  if(!all.equal(rownames(data), colnames(data))) stop("the table must the same groups in the same order")
+  function(data, negative = rownames(data)[-1], ...) {
+    ## "truth" in columns, predictions in rows
+    if (!all.equal(nrow(data), ncol(data))) {
+      stop("the table must have nrow = ncol")
+    }
+    if (!all.equal(rownames(data), colnames(data))) {
+      stop("the table must the same groups in the same order")
+    }
 
-  if(nrow(data) > 2)
-    {
+    if (nrow(data) > 2) {
       tmp <- data
       data <- matrix(NA, 2, 2)
 
@@ -58,16 +65,15 @@ function(data, reference, negative = levels(reference)[-1], na.rm = TRUE, ...)
       rm(tmp)
     }
 
-  numer <- sum(data[negative, negative])
-  denom <- sum(data[, negative])
-  spec <- ifelse(denom > 0, numer / denom, NA)
-  spec
-}
+    numer <- sum(data[negative, negative])
+    denom <- sum(data[, negative])
+    spec <- ifelse(denom > 0, numer / denom, NA)
+    spec
+  }
 
 #' @export
 "specificity.matrix" <-
-  function(data, negative = rownames(data)[-1], ...)
-{
-  data <- as.table(data)
-  specificity.table(data)
-}
+  function(data, negative = rownames(data)[-1], ...) {
+    data <- as.table(data)
+    specificity.table(data)
+  }

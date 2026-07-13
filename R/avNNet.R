@@ -47,7 +47,7 @@
 #' data(BloodBrain)
 #' modelFit <- avNNet(bbbDescr, logBBB, size = 5, linout = TRUE, trace = FALSE)
 #' modelFit
-#' 
+#'
 #' predict(modelFit, bbbDescr)
 #' @keywords neural
 #' @aliases avNNet.default predict.avNNet avNNet.formula avNNet
@@ -145,7 +145,11 @@ avNNet.default <- function(
 
   ## to avoid a "no visible binding for global variable 'i'" warning:
   i <- NULL
-  `%op%` <- if (allowParallel) `%dopar%` else `%do%`
+  if (allowParallel) {
+    `%op%` <- `%dopar%`
+  } else {
+    `%op%` <- `%do%`
+  }
   mods <- foreach(
     i = 1:repeats,
     .verbose = FALSE,
@@ -154,7 +158,9 @@ avNNet.default <- function(
   ) %op%
     {
       if (any(names(theDots) == "trace")) {
-        if (theDots$trace) cat("\nFitting Repeat", i, "\n\n")
+        if (theDots$trace) {
+          cat("\nFitting Repeat", i, "\n\n")
+        }
       } else {
         cat("Fitting Repeat", i, "\n\n")
       }
@@ -162,10 +168,10 @@ avNNet.default <- function(
       if (bag) {
         ind <- sample(seq_len(nrow(x)), replace = TRUE)
       }
-      thisMod <- if (is.null(classLev)) {
-        nnet::nnet(x[ind, , drop = FALSE], y[ind], ...)
+      if (is.null(classLev)) {
+        thisMod <- nnet::nnet(x[ind, , drop = FALSE], y[ind], ...)
       } else {
-        nnet::nnet(x[ind, , drop = FALSE], y[ind, ], ...)
+        thisMod <- nnet::nnet(x[ind, , drop = FALSE], y[ind, ], ...)
       }
       thisMod$lev <- classLev
       thisMod
@@ -219,7 +225,11 @@ predict.avNNet <- function(
       for (i in 1:object$repeats) {
         rawTmp <- fitted.values(object$model[[i]])
         rawTmp <- t(apply(rawTmp, 1, function(x) exp(x) / sum(exp(x))))
-        scores <- if (i == 1) rawTmp else scores + rawTmp
+        if (i == 1) {
+          scores <- rawTmp
+        } else {
+          scores <- scores + rawTmp
+        }
       }
       scores <- scores / object$repeats
       classes <- colnames(scores)[apply(scores, 1, which.max)]
@@ -230,7 +240,9 @@ predict.avNNet <- function(
       if (type[1] == "class") {
         out <- (classes)
       }
-      if (type[1] == "prob") out <- t(apply(scores, 1, function(x) x / sum(x)))
+      if (type[1] == "prob") {
+        out <- t(apply(scores, 1, function(x) x / sum(x)))
+      }
     }
   } else {
     if (inherits(object, "avNNet.formula")) {
@@ -272,10 +284,10 @@ predict.avNNet <- function(
       return(apply(out, 1, mean))
     } else {
       for (i in 1:object$repeats) {
-        scores <- if (i == 1) {
-          predict(object$model[[i]], newdata = x)
+        if (i == 1) {
+          scores <- predict(object$model[[i]], newdata = x)
         } else {
-          scores + predict(object$model[[i]], newdata = x)
+          scores <- scores + predict(object$model[[i]], newdata = x)
         }
       }
       scores <- scores / object$repeats
@@ -287,7 +299,9 @@ predict.avNNet <- function(
       if (type[1] == "class") {
         out <- (classes)
       }
-      if (type[1] == "prob") out <- t(apply(scores, 1, function(x) x / sum(x)))
+      if (type[1] == "prob") {
+        out <- t(apply(scores, 1, function(x) x / sum(x)))
+      }
     }
   }
   out

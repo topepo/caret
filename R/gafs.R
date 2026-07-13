@@ -116,14 +116,14 @@ ga_func_check <- function(x) {
 #'
 #' <http://topepo.github.io/caret/feature-selection-using-genetic-algorithms.html>
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' pop <- gafs_initial(vars = 10, popSize = 10)
 #' pop
-#' 
+#'
 #' gafs_lrSelection(population = pop, fitness = 1:10)
-#' 
+#'
 #' gafs_spCrossover(population = pop, fitness = 1:10, parents = 1:2)
-#' 
+#'
 #' ## Hypothetical usage (not run):
 #' ## lda_ga <- gafs(x = predictors,
 #' ##                y = classes,
@@ -138,7 +138,7 @@ ga_func_check <- function(x) {
 #' ##               gafsControl = gafsControl(functions = rfGA),
 #' ##               ntree = 1000,
 #' ##               importance = TRUE)
-#' 
+#'
 #' @export gafs_initial
 gafs_initial <- function(vars, popSize, ...) {
   x <- matrix(NA, nrow = popSize, ncol = vars)
@@ -509,7 +509,11 @@ ga_select <- function(
     Similarity_M = rep(0 * NA, iters),
     stringsAsFactors = FALSE
   )
-  external <- if (!is.null(testX)) data.frame(Iter = 1:(iters)) else NULL
+  if (!is.null(testX)) {
+    external <- data.frame(Iter = 1:(iters))
+  } else {
+    external <- NULL
+  }
 
   ## add GA package warnings
 
@@ -611,7 +615,11 @@ ga_select <- function(
     rownames(current_int) <- NULL
     rm(currennt_results)
 
-    Fitness <- if (is.matrix(current_int)) current_int[, ga_metric["internal"]]
+    if (is.matrix(current_int)) {
+      Fitness <- current_int[, ga_metric["internal"]]
+    } else {
+      Fitness <- NULL
+    }
     best_index <- which.max(Fitness)
     best_internal <- current_int[best_index, ]
     if (!is.null(testX)) {
@@ -658,7 +666,9 @@ ga_select <- function(
       }
     } else {
       internal[generation, (nr - k + 1):nr] <- best_internal
-      if (!is.null(testX)) external[generation, -1] <- best_external
+      if (!is.null(testX)) {
+        external[generation, -1] <- best_external
+      }
     }
 
     if (ga_verbose) {
@@ -750,7 +760,11 @@ ga_select <- function(
     }
 
     # mutation
-    pm <- if (is.function(pmutation)) pmutation(object) else pmutation
+    if (is.function(pmutation)) {
+      pm <- pmutation(object)
+    } else {
+      pm <- pmutation
+    }
     if (is.function(funcs$mutation) && pm > 0) {
       for (i in seq_len(popSize)) {
         if (pm > runif(1)) {
@@ -996,26 +1010,26 @@ print.gafs <- function(
 #' @keywords multivariate
 #' @export
 #' @examplesIf !caret:::is_cran_check()
-#' 
-#' 
+#'
+#'
 #' set.seed(1)
 #' train_data <- twoClassSim(100, noiseVars = 10)
 #' test_data <- twoClassSim(10, noiseVars = 10)
-#' 
+#'
 #' ## A short example
 #' ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
-#' 
+#'
 #' rf_search <- safs(
 #'   x = train_data[, -ncol(train_data)],
 #'   y = train_data$Class,
 #'   iters = 3,
 #'   safsControl = ctrl
 #' )
-#' 
+#'
 #' rf_search
-#' 
+#'
 #' predict(rf_search, train_data)
-#' 
+#'
 #' @export predict.gafs
 predict.gafs <- function(object, newdata, ...) {
   if (any(names(object) == "recipe") && !is.null(object$recipe)) {
@@ -1144,23 +1158,23 @@ gafs <- function(x, ...) UseMethod("gafs")
 #' @keywords models
 #' @export
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' set.seed(1)
 #' train_data <- twoClassSim(100, noiseVars = 10)
 #' test_data <- twoClassSim(10, noiseVars = 10)
-#' 
+#'
 #' ## A short example
 #' ctrl <- gafsControl(functions = rfGA, method = "cv", number = 3)
-#' 
+#'
 #' rf_search <- gafs(
 #'   x = train_data[, -ncol(train_data)],
 #'   y = train_data$Class,
 #'   iters = 3,
 #'   gafsControl = ctrl
 #' )
-#' 
+#'
 #' rf_search
-#' 
+#'
 #' @export gafs.default
 "gafs.default" <-
   function(
@@ -1400,10 +1414,10 @@ gafs <- function(x, ...) UseMethod("gafs")
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_ga$subsets[[best_index]]]
     } else {
-      best_index <- if (gafsControl$maximize["external"]) {
-        which.max(averages[, gafsControl$metric["external"]])
+      if (gafsControl$maximize["external"]) {
+        best_index <- which.max(averages[, gafsControl$metric["external"]])
       } else {
-        which.min(averages[, gafsControl$metric["external"]])
+        best_index <- which.min(averages[, gafsControl$metric["external"]])
       }
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_ga$subsets[[best_index]]]
@@ -1481,27 +1495,27 @@ gafs <- function(x, ...) UseMethod("gafs")
 #' @keywords hplot
 #' @export
 #' @examplesIf !caret:::is_cran_check()
-#' 
+#'
 #' set.seed(1)
 #' train_data <- twoClassSim(100, noiseVars = 10)
 #' test_data <- twoClassSim(10, noiseVars = 10)
-#' 
+#'
 #' ## A short example
 #' ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
-#' 
+#'
 #' rf_search <- safs(
 #'   x = train_data[, -ncol(train_data)],
 #'   y = train_data$Class,
 #'   iters = 50,
 #'   safsControl = ctrl
 #' )
-#' 
+#'
 #' plot(rf_search)
 #' plot(rf_search, output = "lattice", auto.key = list(columns = 2))
-#' 
+#'
 #' plot_data <- plot(rf_search, output = "data")
 #' summary(plot_data)
-#' 
+#'
 #' @export plot.gafs
 plot.gafs <- function(
   x,
@@ -1542,27 +1556,30 @@ plot.gafs <- function(
   if (output == "data") {
     out <- plot_dat
   }
-  plot_dat <- if (both_estimates) {
-    ddply(plot_dat, c("Iter", "Estimate"), function(x) {
+  if (both_estimates) {
+    plot_dat <- ddply(plot_dat, c("Iter", "Estimate"), function(x) {
       c(Mean = mean(x[, metric]))
     })
   } else {
-    ddply(plot_dat, c("Iter"), function(x) c(Mean = mean(x[, metric])))
+    plot_dat <- ddply(plot_dat, c("Iter"), function(x) {
+      c(Mean = mean(x[, metric]))
+    })
   }
 
   if (output == "ggplot") {
-    out <- if (both_estimates) {
-      ggplot(plot_dat, aes(x = Iter, y = Mean, color = Estimate)) + geom_point()
+    if (both_estimates) {
+      out <- ggplot(plot_dat, aes(x = Iter, y = Mean, color = Estimate)) +
+        geom_point()
     } else {
-      ggplot(plot_dat, aes(x = Iter, y = Mean)) + geom_point()
+      out <- ggplot(plot_dat, aes(x = Iter, y = Mean)) + geom_point()
     }
     out <- out + xlab("Generation")
   }
   if (output == "lattice") {
-    out <- if (both_estimates) {
-      xyplot(Mean ~ Iter, data = plot_dat, groups = Estimate, ...)
+    if (both_estimates) {
+      out <- xyplot(Mean ~ Iter, data = plot_dat, groups = Estimate, ...)
     } else {
-      xyplot(Mean ~ Iter, data = plot_dat, ...)
+      out <- xyplot(Mean ~ Iter, data = plot_dat, ...)
     }
     out <- update(out, xlab = "Generation")
   }
@@ -1913,7 +1930,11 @@ update.gafs <- function(object, iter, x, y, ...) {
     if (!is.null(perf_data)) {
       testOutput <- cbind(
         testOutput,
-        perf_data[sample(seq_len(nrow(perf_data)), nrow(testOutput)), , drop = FALSE]
+        perf_data[
+          sample(seq_len(nrow(perf_data)), nrow(testOutput)),
+          ,
+          drop = FALSE
+        ]
       )
     }
 
@@ -2061,10 +2082,10 @@ update.gafs <- function(object, iter, x, y, ...) {
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_ga$subsets[[best_index]]]
     } else {
-      best_index <- if (gafsControl$maximize["external"]) {
-        which.max(averages[, gafsControl$metric["external"]])
+      if (gafsControl$maximize["external"]) {
+        best_index <- which.max(averages[, gafsControl$metric["external"]])
       } else {
-        which.min(averages[, gafsControl$metric["external"]])
+        best_index <- which.min(averages[, gafsControl$metric["external"]])
       }
       best_iter <- averages$Iter[best_index]
       best_vars <- colnames(x)[final_ga$subsets[[best_index]]]
