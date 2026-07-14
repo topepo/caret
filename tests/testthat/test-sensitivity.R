@@ -1,5 +1,5 @@
 # Fixture data (sens_lvs, sens_truth, sens_pred, sens_xtab, sens_mtab) lives in
-# helper-sensitivity.R
+# helper-2x2-tables.R
 
 # --- sensitivity ------------------------------------------------------------
 
