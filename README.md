@@ -1,4 +1,4 @@
-![R-CMD-check](https://github.com/topepo/caret/actions/workflows/R-CMD-check.yaml/badge.svg)]
+![R-CMD-check](https://github.com/topepo/caret/actions/workflows/R-CMD-check.yaml/badge.svg)
 [![Codecov test coverage](https://codecov.io/gh/topepo/caret/graph/badge.svg)](https://app.codecov.io/gh/topepo/caret)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/caret)](http://cran.r-project.org/web/packages/caret)
 [![Downloads](http://cranlogs.r-pkg.org/badges/caret)](http://cran.rstudio.com/package=caret)
