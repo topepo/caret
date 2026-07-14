@@ -37,3 +37,10 @@ corr_R2 <- diag(rep(1, 5))
 corr_R2[2, 3] <- corr_R2[3, 2] <- 0.7
 corr_R2[5, 3] <- corr_R2[3, 5] <- -0.7
 corr_R2[4, 1] <- corr_R2[1, 4] <- -0.67
+# Give column 4 an extra sub-cutoff correlation so that, of the highly
+# correlated pair (1, 4), column 4 has the clearly larger mean absolute
+# correlation and is the one dropped. Without this, columns 1 and 4 are
+# symmetric and their mean correlations tie at the floating-point level; the
+# tie then breaks differently across platforms (64- vs 80-bit long double), so
+# findCorrelation removes column 4 on macOS but column 1 on Linux.
+corr_R2[4, 2] <- corr_R2[2, 4] <- 0.5
