@@ -1,5 +1,24 @@
-# Shared test data for test-prec_rec.R
+# Shared 2x2 confusion-table fixtures for the metric tests
+# (test-sensitivity.R and test-prec_rec.R).
 
+# --- sensitivity / specificity / predictive values --------------------------
+# Reference data from the sensitivity() documentation example
+sens_lvs <- c("normal", "abnormal")
+sens_truth <- factor(rep(sens_lvs, times = c(86, 258)), levels = rev(sens_lvs))
+sens_pred <- factor(
+  c(rep(sens_lvs, times = c(54, 32)), rep(sens_lvs, times = c(27, 231))),
+  levels = rev(sens_lvs)
+)
+sens_xtab <- table(sens_pred, sens_truth)
+# a plain matrix (class "matrix") to exercise the `.matrix` methods, since
+# as.matrix() on a table keeps the "table" class
+sens_mtab <- matrix(
+  as.vector(sens_xtab),
+  nrow = 2,
+  dimnames = dimnames(sens_xtab)
+)
+
+# --- recall / precision / F_meas / prSummary --------------------------------
 # Reference data from Table 2 of Powers (2007), used in the prec_rec docs
 pr_lvs <- c("Relevant", "Irrelevant")
 pr_pred <- factor(rep(pr_lvs, times = c(42, 58)), levels = pr_lvs)

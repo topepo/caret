@@ -1,5 +1,5 @@
 # Fixture data (pr_lvs, pr_pred, pr_truth, pr_tbl, pr_precision, pr_recall,
-# pr_fmeas) lives in helper-prec_rec.R
+# pr_fmeas, pr_prob_data) lives in helper-2x2-tables.R
 
 # --- precision --------------------------------------------------------------
 
