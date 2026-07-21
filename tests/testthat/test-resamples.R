@@ -93,25 +93,25 @@ test_that("test group-k-fold", {
 test_that("as.data.frame.resamples pulls out one metric in long-ish form", {
   df <- as.data.frame(rs_fixture, metric = "RMSE")
   # one column per model, plus the Resample labels tacked on the end
-  expect_equal(colnames(df), c("A", "B", "C", "Resample"))
-  expect_equal(df$A, c(1, 2, 3, 4, 5))
-  expect_equal(df$Resample, paste0("Fold", 1:5))
+  expect_identical(colnames(df), c("A", "B", "C", "Resample"))
+  expect_identical(df$A, c(1, 2, 3, 4, 5))
+  expect_identical(df$Resample, paste0("Fold", 1:5))
 })
 
 test_that("as.matrix.resamples returns a resample-by-model matrix", {
   m <- as.matrix(rs_fixture, metric = "RMSE")
-  expect_equal(dim(m), c(5, 3))
-  expect_equal(colnames(m), c("A", "B", "C"))
-  expect_equal(rownames(m), paste0("Fold", 1:5))
-  expect_equal(m[, "C"], c(7, 6, 5, 4, 3), ignore_attr = TRUE)
+  expect_identical(dim(m), c(5L, 3L))
+  expect_identical(colnames(m), c("A", "B", "C"))
+  expect_identical(rownames(m), paste0("Fold", 1:5))
+  expect_identical(unname(m[, "C"]), c(7, 6, 5, 4, 3))
   # asking for a metric that isn't there should be an error, not empty output
-  expect_error(as.matrix(rs_fixture, metric = "nope"), "no columns fit")
+  expect_snapshot(as.matrix(rs_fixture, metric = "nope"), error = TRUE)
 })
 
 test_that("sort.resamples orders models by mean performance", {
   # A has the lowest mean RMSE, C the highest
-  expect_equal(sort(rs_fixture, metric = "RMSE"), c("A", "B", "C"))
-  expect_equal(
+  expect_identical(sort(rs_fixture, metric = "RMSE"), c("A", "B", "C"))
+  expect_identical(
     sort(rs_fixture, metric = "RMSE", decreasing = TRUE),
     c("C", "B", "A")
   )
@@ -119,8 +119,8 @@ test_that("sort.resamples orders models by mean performance", {
 
 test_that("modelCor correlates models across resamples", {
   cm <- modelCor(rs_fixture, metric = "RMSE")
-  expect_equal(diag(cm), c(A = 1, B = 1, C = 1))
-  # C was built as a mirror image of A, so they land at exactly -1
+  expect_identical(diag(cm), c(A = 1, B = 1, C = 1))
+  # C was built as a mirror image of A, so they sit at -1 (up to floating point)
   expect_equal(cm["A", "C"], -1)
   # A and B rise together
   expect_gt(cm["A", "B"], 0)
@@ -129,19 +129,19 @@ test_that("modelCor correlates models across resamples", {
 test_that("summary.resamples reports the usual five-number summary per model", {
   sm <- summary(rs_fixture)
   expect_s3_class(sm, "summary.resamples")
-  expect_equal(names(sm$statistics), c("RMSE", "Rsquared"))
+  expect_identical(names(sm$statistics), c("RMSE", "Rsquared"))
   # the row means match what we put in (A averages 3, C averages 5)
-  expect_equal(sm$statistics$RMSE["A", "Mean"], 3)
-  expect_equal(sm$statistics$RMSE["C", "Mean"], 5)
+  expect_identical(sm$statistics$RMSE["A", "Mean"], 3)
+  expect_identical(sm$statistics$RMSE["C", "Mean"], 5)
 })
 
 test_that("diff.resamples computes pairwise differences and tests", {
   d <- diff(rs_fixture, metric = "RMSE")
   expect_s3_class(d, "diff.resamples")
-  expect_equal(colnames(d$difs$RMSE), c("A.diff.B", "A.diff.C", "B.diff.C"))
+  expect_identical(colnames(d$difs$RMSE), c("A.diff.B", "A.diff.C", "B.diff.C"))
   # A - B averages -1, A - C averages -2 (A is the better, lower-RMSE model)
-  expect_equal(mean(d$difs$RMSE[, "A.diff.B"]), -1)
-  expect_equal(mean(d$difs$RMSE[, "A.diff.C"]), -2)
+  expect_identical(mean(d$difs$RMSE[, "A.diff.B"]), -1)
+  expect_identical(mean(d$difs$RMSE[, "A.diff.C"]), -2)
   # each comparison carries a t-test, and the CI is Bonferroni-widened
   expect_s3_class(d$statistics$RMSE[["A.diff.B"]], "htest")
   expect_gt(d$confLevel, 0.95)
