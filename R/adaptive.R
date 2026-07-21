@@ -1435,13 +1435,12 @@ cccmat <- function(dat) {
   out <- matrix(1, ncol = p, nrow = p)
   for (i in 1:p) {
     for (j in i:p) {
-      if (i > j) {
+      if (i < j) {
         tmp <- ccc(dat[, i], dat[, j])
         out[i, j] <- out[j, i] <- tmp
       }
     }
   }
-  out[lower.tri(out)] <- out[upper.tri(out)]
   colnames(out) <- rownames(out) <- colnames(dat)
   out
 }
@@ -1470,7 +1469,6 @@ diffmat <- function(dat) {
       }
     }
   }
-  out[lower.tri(out)] <- out[upper.tri(out)]
   colnames(out) <- rownames(out) <- colnames(dat)
   out
 }
@@ -1495,14 +1493,12 @@ filter_on_diff <- function(
     return(dat)
   }
   varnum <- dim(x)[1]
-  originalOrder <- 1:varnum
   averageDiff <- function(x) mean(x, na.rm = TRUE)
   tmp <- x
   diag(tmp) <- NA
   maxAbsCorOrder <- order(apply(tmp, 2, averageDiff), decreasing = TRUE)
   x <- x[maxAbsCorOrder, maxAbsCorOrder]
   mns <- mns[maxAbsCorOrder]
-  newOrder <- originalOrder[maxAbsCorOrder]
   deletecol <- 0
   for (i in 1:(varnum - 1)) {
     for (j in (i + 1):varnum) {
@@ -1520,7 +1516,7 @@ filter_on_diff <- function(
 
   deletecol <- deletecol[deletecol != 0]
   if (length(deletecol) > 0) {
-    dumped <- colnames(x)[newOrder[deletecol]]
+    dumped <- colnames(x)[deletecol]
     if (verbose) {
       cat(paste(
         "o",
@@ -1549,13 +1545,11 @@ filter_on_corr <- function(dat, metric, cutoff, verbose = FALSE) {
     stop("only one variable given")
   }
   x <- abs(x)
-  originalOrder <- 1:varnum
   averageCorr <- function(x) mean(x, na.rm = TRUE)
   tmp <- x
   diag(tmp) <- NA
   maxAbsCorOrder <- order(apply(tmp, 2, averageCorr), decreasing = TRUE)
   x <- x[maxAbsCorOrder, maxAbsCorOrder]
-  newOrder <- originalOrder[maxAbsCorOrder]
   deletecol <- 0
   for (i in 1:(varnum - 1)) {
     for (j in (i + 1):varnum) {
@@ -1572,7 +1566,7 @@ filter_on_corr <- function(dat, metric, cutoff, verbose = FALSE) {
   }
   deletecol <- deletecol[deletecol != 0]
   if (length(deletecol) > 0) {
-    dumped <- colnames(x)[newOrder[deletecol]]
+    dumped <- colnames(x)[deletecol]
     if (verbose) {
       cat(paste(
         "o",
