@@ -104,7 +104,10 @@ test_that("filter_on_corr keeps everything when nothing exceeds the cutoff", {
 
 test_that("filter_on_corr errors with a single model", {
   one <- adapt_results[adapt_results$model_id == "m1", ]
-  expect_error(caret:::filter_on_corr(one, "RMSE", cutoff = 0.9))
+  expect_snapshot(
+    caret:::filter_on_corr(one, "RMSE", cutoff = 0.9),
+    error = TRUE
+  )
 })
 
 # --- filter_on_diff ---------------------------------------------------------
