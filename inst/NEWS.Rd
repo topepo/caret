@@ -8,6 +8,7 @@
    \item CRAN mandated update.
    \item caret will be 20 years old in March of 2026. The package is currently in maintenance mode; the author will fix bugs and make CRAN releases as needed, but there will not be any major features in the package. It will stay on CRAN long-term; it's not going away.
    \item The \code{earth} model now defines a \code{trim} method, so \code{trainControl(trim = TRUE)} reduces the size of fitted \code{earth} models (dropping the stored \code{x}, \code{y}, and \code{call}) without affecting predictions.
+   \item \code{confusionMatrix()} now gives its intended "the table must nrow = ncol" error for non-square tables, instead of an "invalid argument to unary operator" error from a mis-written check.
   }
 }
 
