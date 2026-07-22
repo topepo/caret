@@ -11,9 +11,9 @@ test_that("get_vector passes vectors through and unwraps one-column frames", {
   # a single-column frame is turned into the bare column
   expect_identical(caret:::get_vector(data.frame(a = 1:3)), 1:3)
   # anything wider is ambiguous and should error
-  expect_error(
+  expect_snapshot(
     caret:::get_vector(data.frame(a = 1:3, b = 4:6)),
-    "Only one column"
+    error = TRUE
   )
 })
 
@@ -37,10 +37,7 @@ test_that("role_cols returns the variable names for a given recipe role", {
 
 test_that("preproc_dots warns only about leftover preProc arguments", {
   # old-style preProc* arguments are ignored with a heads-up
-  expect_warning(
-    caret:::preproc_dots(preProcOptions = list(k = 5)),
-    "will be ignored"
-  )
+  expect_snapshot(caret:::preproc_dots(preProcOptions = list(k = 5)))
   # unrelated arguments pass quietly
   expect_no_warning(caret:::preproc_dots(foo = 1))
 })
@@ -105,7 +102,7 @@ test_that("train() with a recipe returns class probabilities", {
 
   probs <- predict(fit, iris, type = "prob")
   expect_identical(colnames(probs), levels(iris$Species))
-  expect_equal(unname(rowSums(probs)), rep(1, nrow(iris)))
+  expect_identical(unname(rowSums(probs)), rep(1, nrow(iris)))
 })
 
 # ------------------------------------------------------------------------------
@@ -143,12 +140,14 @@ test_that("train() drives a recipe through adaptive resampling", {
   rec <- recipes::recipe(Species ~ ., data = iris)
   rec <- recipes::step_normalize(rec, recipes::all_predictors())
 
+  k_grid <- c(1, 5, 9, 13, 17)
+
   set.seed(1)
   fit <- suppressWarnings(train(
     rec,
     data = iris,
     method = "knn",
-    tuneGrid = data.frame(k = c(1, 5, 9, 13, 17)),
+    tuneGrid = data.frame(k = k_grid),
     trControl = trainControl(
       method = "adaptive_cv",
       number = 10,
@@ -158,5 +157,5 @@ test_that("train() drives a recipe through adaptive resampling", {
 
   expect_s3_class(fit, "train.recipe")
   expect_identical(fit$control$method, "adaptive_cv")
-  expect_true(fit$bestTune$k %in% c(1, 5, 9, 13, 17))
+  expect_true(fit$bestTune$k %in% k_grid)
 })
