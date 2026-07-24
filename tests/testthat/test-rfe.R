@@ -56,7 +56,7 @@ test_that("repair_rank fills in variables that are missing from the ranking", {
   out <- caret:::repair_rank(imp, nms = c("a", "b", "c"))
   expect_identical(nrow(out), 3L)
   expect_identical(out$var[3], "c")
-  expect_true(is.na(out$Overall[3]))
+  expect_identical(out$Overall[3], NA_real_)
 })
 
 # ------------------------------------------------------------------------------
