@@ -9,6 +9,7 @@
    \item caret will be 20 years old in March of 2026. The package is currently in maintenance mode; the author will fix bugs and make CRAN releases as needed, but there will not be any major features in the package. It will stay on CRAN long-term; it's not going away.
    \item The \code{earth} model now defines a \code{trim} method, so \code{trainControl(trim = TRUE)} reduces the size of fitted \code{earth} models (dropping the stored \code{x}, \code{y}, and \code{call}) without affecting predictions.
    \item Fixed three bugs in the model-diversity filters used by adaptive resampling: the concordance matrix (\code{cccmat}) was never populated and always returned a matrix of ones; both \code{cccmat} and \code{diffmat} scrambled their entries (breaking symmetry) for four or more models; and \code{filter_on_corr}/\code{filter_on_diff} removed the wrong models due to an index-permutation error.
+   \item \code{confusionMatrix()} now gives its intended "the table must nrow = ncol" error for non-square tables, instead of an "invalid argument to unary operator" error from a mis-written check.
    \item \code{print.nullModel()} no longer swaps the model-type label; a classification null model now prints "Null Classification Model" (and regression prints "Null Regression Model").
   }
 }

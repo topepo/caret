@@ -236,7 +236,7 @@ confusionMatrix.table <- function(
   if (length(dim(data)) != 2) {
     stop("the table must have two dimensions")
   }
-  if (!all.equal(nrow(data), ncol(data))) {
+  if (!isTRUE(all.equal(nrow(data), ncol(data)))) {
     stop("the table must nrow = ncol")
   }
   if (!isTRUE(all.equal(rownames(data), colnames(data)))) {
