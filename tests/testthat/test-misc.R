@@ -179,10 +179,7 @@ test_that("var_seq builds a default grid of predictor counts", {
   expect_identical(caret:::var_seq(16, classification = TRUE, len = 1), 4)
   expect_identical(caret:::var_seq(9, classification = FALSE, len = 1), 3)
   # a tiny p collapses to duplicate counts, which are dropped with a note
-  expect_output(
-    vs <- caret:::var_seq(2, classification = FALSE, len = 3),
-    "unique complexity"
-  )
+  expect_snapshot(vs <- caret:::var_seq(2, classification = FALSE, len = 3))
   expect_identical(vs, 2)
 })
 

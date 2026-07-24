@@ -1,3 +1,11 @@
+# var_seq builds a default grid of predictor counts
+
+    Code
+      vs <- caret:::var_seq(2, classification = FALSE, len = 3)
+    Output
+      note: only 1 unique complexity parameters in default grid. Truncating the grid to 1 .
+      
+
 # check_dims requires x rows to match the outcome length
 
     Code
