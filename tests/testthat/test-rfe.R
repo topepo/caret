@@ -95,7 +95,7 @@ test_that("rfe runs and its methods behave (default interface)", {
   # predict returns one row per new observation
   expect_identical(nrow(predict(rf, dat[, 1:8])), nrow(dat))
   expect_s3_class(varImp(rf), "data.frame")
-  expect_output(print(rf), "Outer resampling")
+  expect_snapshot(print(rf))
 
   # update() refits the final model at a chosen size
   up <- suppressWarnings(update(rf, x = dat[, 1:8], y = dat$Class, size = 4))
