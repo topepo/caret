@@ -1,1 +1,11 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.travis\.yml$
+^revdep$
+^\.github/workflows/R-CMD-check\.yaml$
+^codecov\.yml$
 ^\.github$
+^inst/bookdown$
+^inst/model_sources$
+^inst/release_process$
+^man-roxygen$

@@ -1,0 +1,49 @@
+test_that("basic2x2Stats returns perfect metrics for a perfect 2x2 table", {
+  # fmt: skip
+  stats <- caret:::basic2x2Stats(factor(0:1), factor(0:1), pos = '1', neg = '0')
+  expect_equal(stats[['Sensitivity']], 1)
+  expect_equal(stats[['Specificity']], 1)
+  expect_equal(stats[['Pos Pred Value']], 1)
+  expect_equal(stats[['Neg Pred Value']], 1)
+})
+
+# fmt: skip
+test_that("resampling method 'none' doesn't conflict with default tuneLength", {
+  skip_on_cran()
+
+    data(BloodBrain)
+
+    expect_snapshot(
+        train(
+            bbbDescr,
+            logBBB,
+            method = "earth",
+            tuneLength = 2,
+            trControl = trainControl(method = "none")
+        ),
+        error = TRUE
+    )
+
+    expect_snapshot(
+        train(
+            bbbDescr,
+            logBBB,
+            method = "earth",
+            tuneLength = 2,
+            trControl = trainControl(method = "none")
+        ),
+        error = TRUE
+    )
+
+    expect_snapshot(
+        train(
+            mpg ~ cyl + disp,
+            data = mtcars,
+            method = "gam",
+            tuneLength = 2,
+            trControl = trainControl(method = "none")
+        ),
+        error = TRUE
+    )
+
+})

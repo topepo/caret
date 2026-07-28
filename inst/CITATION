@@ -1,0 +1,17 @@
+citHeader("To cite caret in publications use:")
+
+utils::bibentry(
+  bibtype    = "Article",
+  title    = "Building Predictive Models in R Using the caret Package",
+  volume   = "28",
+  url      = "https://www.jstatsoft.org/index.php/jss/article/view/v028i05",
+  doi      = "10.18637/jss.v028.i05",
+  number   = "5",
+  journal  = "Journal of Statistical Software",
+  author   = "Kuhn, Max",
+  year     = "2008",
+  pages    = "1–26",
+  textVersion = paste(
+    "Kuhn, M. (2008). Building Predictive Models in R Using the caret Package. Journal of Statistical Software, 28(5), 1–26. https://doi.org/10.18637/jss.v028.i05"
+  )
+)
