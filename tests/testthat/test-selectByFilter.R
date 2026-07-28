@@ -57,16 +57,9 @@ test_that("nullModel predicts the mean for a numeric outcome", {
 })
 
 test_that("print.nullModel labels the model type correctly", {
-  # regression tests would depend on formatted numbers, so snapshot the
-  # deterministic type label via the classification model
-  expect_output(
-    print(caret:::nullModel(y = factor(c("a", "a", "b")))),
-    "Null Classification Model"
-  )
-  expect_output(
-    print(caret:::nullModel(y = c(1, 2, 3))),
-    "Null Regression Model"
-  )
+  # both prints are deterministic (fixed inputs, exact predicted values)
+  expect_snapshot(print(caret:::nullModel(y = factor(c("a", "a", "b")))))
+  expect_snapshot(print(caret:::nullModel(y = c(1, 2, 3))))
 })
 
 # ------------------------------------------------------------------------------
@@ -88,7 +81,7 @@ test_that("sbf runs and its methods behave (default interface)", {
   expect_s3_class(sf, "sbf")
   expect_identical(predictors(sf), sf$optVariables)
   expect_identical(nrow(predict(sf, dat[, 1:8])), nrow(dat))
-  expect_output(print(sf), "Selection By Filter")
+  expect_snapshot(print(sf))
 })
 
 test_that("sbf works with the formula and recipe interfaces", {
