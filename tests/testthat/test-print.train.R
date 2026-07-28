@@ -43,12 +43,7 @@ test_that("print.train describes a classification model with tuning", {
     trControl = trainControl(method = "cv", number = 3)
   )
 
-  expect_output(print(fit), "150 samples")
-  expect_output(print(fit), "3 classes")
-  expect_output(print(fit), "Pre-processing: centered")
-  expect_output(print(fit), "Resampling: Cross-Validated")
-  expect_output(print(fit), "Resampling results across tuning parameters")
-  expect_output(print(fit), "select the optimal model")
+  expect_snapshot(print(fit))
 })
 
 test_that("print.train abbreviates the sample sizes with many resamples", {
@@ -64,7 +59,7 @@ test_that("print.train abbreviates the sample sizes with many resamples", {
   )
 
   # more than five resamples -> the sample-size list is truncated with "..."
-  expect_output(print(fit), "Summary of sample sizes:.*\\.\\.\\.")
+  expect_snapshot(print(fit))
 })
 
 test_that("print.train handles a model fit without resampling", {
@@ -96,7 +91,5 @@ test_that("print.train reports regression metrics", {
     trControl = trainControl(method = "cv", number = 3)
   )
 
-  expect_output(print(fit), "predictor")
-  expect_output(print(fit), "Resampling results")
-  expect_output(print(fit), "RMSE")
+  expect_snapshot(print(fit))
 })
