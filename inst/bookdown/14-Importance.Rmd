@@ -9,7 +9,7 @@ library(caret)
 theme_set(theme_bw())
 ```
 
-Variable importance evaluation functions can be separated into two groups: those that use the model information and those that do not. The advantage of using a model-based approach is that is more closely tied to the model performance and that it _may_ be able to incorporate the correlation structure between the predictors into the importance calculation. Regardless of how the importance is calculated:
+Variable importance evaluation functions can be separated into two groups: those that use the model information and those that do not. The advantage of using a model-based approach is that it is more closely tied to the model performance and that it _may_ be able to incorporate the correlation structure between the predictors into the importance calculation. Regardless of how the importance is calculated:
 
  - For most classification models, each predictor will have a separate variable importance for each class (the exceptions are classification trees, bagged trees and boosted trees).
  - All measures of importance are scaled to have a maximum value of 100, unless the `scale` argument of `varImp.train` is set to `FALSE`.
