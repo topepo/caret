@@ -1630,7 +1630,7 @@ nullModel.default <- function(x = NULL, y, ...) {
 print.nullModel <- function(x, digits = max(3, getOption("digits") - 3), ...) {
   cat(
     "Null",
-    ifelse(is.null(x$levels), "Classification", "Regression"),
+    ifelse(is.null(x$levels), "Regression", "Classification"),
     "Model\n"
   )
   printCall(x$call)
