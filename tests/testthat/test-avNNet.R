@@ -66,6 +66,29 @@ test_that("avNNet works with the formula interface", {
   expect_length(predict(fit, iris, type = "class"), nrow(iris))
 })
 
+test_that("avNNet handles a single predictor and single-row prediction", {
+  skip_on_cran()
+  skip_if_not_installed("nnet")
+
+  set.seed(1)
+  fit <- avNNet(
+    iris[, 1, drop = FALSE],
+    iris$Species,
+    size = 2,
+    repeats = 2,
+    trace = FALSE,
+    allowParallel = FALSE
+  )
+
+  # one predictor: still one prediction per row
+  expect_length(
+    predict(fit, iris[, 1, drop = FALSE], type = "class"),
+    nrow(iris)
+  )
+  # a single new row returns a single prediction
+  expect_length(predict(fit, iris[1, 1, drop = FALSE], type = "class"), 1)
+})
+
 test_that("predict.avNNet rejects objects of the wrong class", {
   expect_snapshot(
     caret:::predict.avNNet(structure(list(), class = "notAvNNet"), iris),
