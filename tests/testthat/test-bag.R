@@ -87,3 +87,62 @@ test_that("bag works with the formula interface", {
   expect_s3_class(fit, "bag")
   expect_length(predict(fit, iris), nrow(iris))
 })
+
+# ------------------------------------------------------------------------------
+# the other built-in base learners (each behind its Suggests package)
+
+# fit a small bagged classifier on iris with the given function set
+fit_iris_bag <- function(funcs, ...) {
+  set.seed(1)
+  suppressWarnings(bag(
+    iris[, 1:4],
+    iris$Species,
+    B = 3,
+    bagControl = bagControl(
+      fit = funcs$fit,
+      predict = funcs$pred,
+      aggregate = funcs$aggregate
+    ),
+    ...
+  ))
+}
+
+test_that("bag works with plsBag", {
+  skip_on_cran()
+  skip_if_not_installed("pls")
+  fit <- fit_iris_bag(plsBag)
+  expect_s3_class(fit, "bag")
+  expect_length(predict(fit, iris[, 1:4]), nrow(iris))
+})
+
+test_that("bag works with nnetBag", {
+  skip_on_cran()
+  skip_if_not_installed("nnet")
+  fit <- fit_iris_bag(nnetBag, size = 3)
+  expect_s3_class(fit, "bag")
+  expect_length(predict(fit, iris[, 1:4]), nrow(iris))
+})
+
+test_that("bag works with svmBag", {
+  skip_on_cran()
+  skip_if_not_installed("kernlab")
+  fit <- fit_iris_bag(svmBag)
+  expect_s3_class(fit, "bag")
+  expect_length(predict(fit, iris[, 1:4]), nrow(iris))
+})
+
+test_that("bag works with ctreeBag", {
+  skip_on_cran()
+  skip_if_not_installed("party")
+  fit <- fit_iris_bag(ctreeBag)
+  expect_s3_class(fit, "bag")
+  expect_length(predict(fit, iris[, 1:4]), nrow(iris))
+})
+
+test_that("bag works with nbBag", {
+  skip_on_cran()
+  skip_if_not_installed("klaR")
+  fit <- fit_iris_bag(nbBag)
+  expect_s3_class(fit, "bag")
+  expect_length(predict(fit, iris[, 1:4]), nrow(iris))
+})

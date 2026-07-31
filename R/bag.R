@@ -538,12 +538,13 @@ svmBag <- list(
   },
 
   pred = function(object, x) {
-    if (is.character(lev(object))) {
-      out <- predict(object, as.matrix(x), type = "probabilities")
-      colnames(out) <- lev(object)
+    loadNamespace("kernlab")
+    if (is.character(kernlab::lev(object))) {
+      out <- kernlab::predict(object, as.matrix(x), type = "probabilities")
+      colnames(out) <- kernlab::lev(object)
       rownames(out) <- NULL
     } else {
-      out <- predict(object, as.matrix(x))[, 1]
+      out <- kernlab::predict(object, as.matrix(x))[, 1]
     }
     out
   },
