@@ -541,3 +541,52 @@ test_that('filters', {
   expect_equal(colnames(filter_mean_pred), c("x1", "x3"))
   expect_equal(filter_mean_pred$x1, x1_exp)
 })
+
+###################################################################
+## imputation and additional transforms
+
+test_that("knnImpute fills in missing values", {
+  skip_on_cran()
+  skip_if_not_installed("RANN")
+  set.seed(1)
+  x <- as.data.frame(matrix(rnorm(200), ncol = 5))
+  x[3, 1] <- NA
+  x[7, 4] <- NA
+
+  pp <- preProcess(x, method = "knnImpute")
+  filled <- predict(pp, x)
+  expect_false(any(is.na(filled)))
+})
+
+test_that("bagImpute fills in missing values", {
+  skip_on_cran()
+  skip_if_not_installed("ipred")
+  set.seed(1)
+  x <- as.data.frame(matrix(rnorm(200), ncol = 5))
+  x[3, 1] <- NA
+
+  pp <- preProcess(x, method = "bagImpute")
+  filled <- predict(pp, x)
+  expect_false(any(is.na(filled)))
+})
+
+test_that("expoTrans and invHyperbolicSine transforms run and invert", {
+  skip_on_cran()
+  set.seed(1)
+  x <- data.frame(a = rexp(50) + 1, b = rexp(50) + 1)
+
+  et <- predict(preProcess(x, method = "expoTrans"), x)
+  expect_identical(dim(et), dim(x))
+
+  ihs <- predict(preProcess(x, method = "invHyperbolicSine"), x)
+  # applied elementwise; equal (not identical) since caret uses log(x+sqrt(...))
+  expect_equal(ihs$a, asinh(x$a))
+})
+
+test_that("print.preProcess summarises the transformations", {
+  skip_on_cran()
+  set.seed(1)
+  x <- as.data.frame(matrix(rnorm(40), ncol = 4))
+  # a fixed object with no fitted values -> deterministic print
+  expect_snapshot(print(preProcess(x, method = c("center", "scale"))))
+})
