@@ -206,7 +206,13 @@ test_that("resamples plot methods return trellis objects", {
   expect_s3_class(densityplot(rs_fixture), "trellis")
   expect_s3_class(splom(rs_fixture), "trellis")
   expect_s3_class(parallelplot(rs_fixture), "trellis")
-  expect_s3_class(plot(prcomp(rs_fixture)), "trellis")
+})
+
+test_that("plot.prcomp.resamples draws each type of PCA plot", {
+  pc <- prcomp(rs_fixture)
+  for (what in c("scree", "cumulative", "loadings", "components")) {
+    expect_s3_class(plot(pc, what = what), "trellis")
+  }
 })
 
 test_that("diff.resamples plot methods return trellis objects", {
