@@ -57,3 +57,92 @@ test_that("ggplot.train correctly orders facets' labels", {
   ))
   expect_equal(obj_labels, sort(obj_labels))
 })
+
+# ------------------------------------------------------------------------------
+
+test_that("ggplot.train returns a scatter plot and the underlying data", {
+  skip_on_cran()
+
+  set.seed(1)
+  fit <- train(
+    Species ~ .,
+    data = iris,
+    method = "knn",
+    tuneLength = 4,
+    trControl = trainControl(method = "cv", number = 3)
+  )
+
+  expect_s3_class(ggplot(fit, plotType = "scatter"), "ggplot")
+  expect_s3_class(ggplot(fit, output = "ggplot"), "ggplot")
+  # output = "data" returns the tidied results frame instead of a plot
+  expect_s3_class(ggplot(fit, output = "data"), "data.frame")
+})
+
+test_that("ggplot.train validates output and needs a varying parameter", {
+  skip_on_cran()
+
+  set.seed(1)
+  fit <- train(
+    Species ~ .,
+    data = iris,
+    method = "knn",
+    tuneLength = 4,
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  expect_snapshot(ggplot(fit, output = "nope"), error = TRUE)
+
+  # a model with no varying tuning parameter cannot be plotted
+  set.seed(1)
+  reg <- train(
+    y ~ .,
+    data = SLC14_1(80),
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  expect_snapshot(ggplot(reg), error = TRUE)
+})
+
+test_that("ggplot.train draws random-search results", {
+  skip_on_cran()
+
+  # single tuning parameter
+  set.seed(1)
+  fit <- train(
+    Species ~ .,
+    data = iris,
+    method = "knn",
+    tuneLength = 5,
+    trControl = trainControl(method = "cv", number = 3, search = "random")
+  )
+  expect_s3_class(ggplot(fit), "ggplot")
+})
+
+test_that("ggplot.train draws random-search results for several parameters", {
+  skip_on_cran()
+  skip_if_not_installed("earth")
+
+  # two tuning parameters exercise the faceting path
+  set.seed(1)
+  fit <- suppressWarnings(suppressMessages(train(
+    y ~ .,
+    data = SLC14_1(100),
+    method = "earth",
+    tuneLength = 6,
+    trControl = trainControl(method = "cv", number = 3, search = "random")
+  )))
+  expect_s3_class(ggplot(fit), "ggplot")
+})
+
+test_that("ggplot.rfe plots the feature-selection profile", {
+  skip_on_cran()
+
+  set.seed(1)
+  dat <- twoClassSim(120)
+  rf <- rfe(
+    dat[, 1:8],
+    dat$Class,
+    sizes = c(2, 4),
+    rfeControl = rfeControl(functions = lrFuncs, method = "cv", number = 3)
+  )
+  expect_s3_class(ggplot(rf), "ggplot")
+})
