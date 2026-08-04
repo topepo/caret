@@ -165,3 +165,59 @@ test_that("compare_models runs a paired test between two fitted models", {
   expect_s3_class(cmp, "htest")
   expect_false(is.null(cmp$p.value))
 })
+
+# ------------------------------------------------------------------------------
+# PCA, clustering and diff summaries (computations)
+
+test_that("prcomp.resamples runs a PCA on the resampled results", {
+  pc <- prcomp(rs_fixture)
+  expect_s3_class(pc, "prcomp.resamples")
+  expect_identical(pc$metric, "RMSE")
+})
+
+test_that("cluster.resamples clusters the models", {
+  cl <- cluster(rs_fixture)
+  expect_s3_class(cl, "cluster.resamples")
+})
+
+test_that("summary.diff.resamples summarises the pairwise differences", {
+  sm <- summary(diff(rs_fixture))
+  expect_s3_class(sm, "summary.diff.resamples")
+  expect_identical(names(sm$table), c("RMSE", "Rsquared"))
+})
+
+# ------------------------------------------------------------------------------
+# print methods (deterministic fixture -> snapshot)
+
+test_that("resamples print methods render", {
+  expect_snapshot(print(rs_fixture))
+  expect_snapshot(print(summary(rs_fixture)))
+  expect_snapshot(print(diff(rs_fixture)))
+  expect_snapshot(print(summary(diff(rs_fixture))))
+})
+
+# ------------------------------------------------------------------------------
+# plot methods (smoke tests: they should build a trellis object)
+
+test_that("resamples plot methods return trellis objects", {
+  expect_s3_class(xyplot(rs_fixture), "trellis")
+  expect_s3_class(dotplot(rs_fixture), "trellis")
+  expect_s3_class(bwplot(rs_fixture), "trellis")
+  expect_s3_class(densityplot(rs_fixture), "trellis")
+  expect_s3_class(splom(rs_fixture), "trellis")
+  expect_s3_class(parallelplot(rs_fixture), "trellis")
+})
+
+test_that("plot.prcomp.resamples draws each type of PCA plot", {
+  pc <- prcomp(rs_fixture)
+  for (what in c("scree", "cumulative", "loadings", "components")) {
+    expect_s3_class(plot(pc, what = what), "trellis")
+  }
+})
+
+test_that("diff.resamples plot methods return trellis objects", {
+  d <- diff(rs_fixture)
+  expect_s3_class(densityplot(d), "trellis")
+  expect_s3_class(bwplot(d), "trellis")
+  expect_s3_class(dotplot(d), "trellis")
+})
