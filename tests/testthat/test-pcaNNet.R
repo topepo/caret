@@ -52,3 +52,27 @@ test_that("predict.pcaNNet rejects objects of the wrong class", {
     error = TRUE
   )
 })
+
+test_that("pcaNNet handles a single predictor and single-row prediction", {
+  skip_on_cran()
+  skip_if_not_installed("nnet")
+
+  # a single predictor drops the PCA step (a group transform needs >= 2 cols),
+  # but the network still fits and predicts
+  set.seed(1)
+  fit <- suppressWarnings(
+    pcaNNet(iris[, 1, drop = FALSE], iris$Species, size = 3, trace = FALSE)
+  )
+  expect_length(
+    predict(fit, iris[, 1, drop = FALSE], type = "class"),
+    nrow(iris)
+  )
+
+  # a single new row returns a single set of class probabilities
+  set.seed(1)
+  full <- pcaNNet(iris[, 1:4], iris$Species, size = 3, trace = FALSE)
+  expect_identical(
+    nrow(predict(full, iris[1, 1:4, drop = FALSE], type = "prob")),
+    1L
+  )
+})
