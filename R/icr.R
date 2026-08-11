@@ -72,7 +72,7 @@ icr.formula <- function(
   }
   y <- model.response(m)
 
-  res <- icr.default(x, y, weights = w, thresh = thresh, ...)
+  res <- icr.default(x, y, ...)
   res$terms <- Terms
   res$coefnames <- colnames(x)
   res$na.action <- attr(m, "na.action")
