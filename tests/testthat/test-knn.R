@@ -42,6 +42,20 @@ test_that("print.knn3 shows the neighbour count and class distribution", {
   expect_snapshot(print(knn3(Species ~ ., data = iris, k = 5)))
 })
 
+test_that("knn3 handles a single predictor and single-row prediction", {
+  fit <- knn3(iris[, 1, drop = FALSE], iris$Species, k = 5)
+  # one predictor: still one prediction per row
+  expect_length(
+    predict(fit, iris[, 1, drop = FALSE], type = "class"),
+    nrow(iris)
+  )
+  # a single new row returns a single set of class probabilities
+  expect_identical(
+    nrow(predict(fit, iris[1, 1, drop = FALSE], type = "prob")),
+    1L
+  )
+})
+
 # --- knnreg (regression) ----------------------------------------------------
 
 test_that("knnreg fits from a formula, matrix and data frame", {
@@ -72,4 +86,12 @@ test_that("knnregTrain predicts held-out cases directly", {
 
 test_that("print.knnreg identifies the model", {
   expect_snapshot(print(knnreg(mpg ~ ., data = mtcars, k = 5)))
+})
+
+test_that("knnreg handles a single predictor and single-row prediction", {
+  fit <- knnreg(mtcars[, "hp", drop = FALSE], mtcars$mpg, k = 5)
+  # one predictor: still one prediction per row
+  expect_length(predict(fit, mtcars[, "hp", drop = FALSE]), nrow(mtcars))
+  # a single new row returns a single prediction
+  expect_length(predict(fit, mtcars[1, "hp", drop = FALSE]), 1)
 })
