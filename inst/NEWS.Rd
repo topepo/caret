@@ -13,6 +13,8 @@
    \item \code{print.nullModel()} no longer swaps the model-type label; a classification null model now prints "Null Classification Model" (and regression prints "Null Regression Model").
    \item Fixed \code{svmBag$pred} so that bagging with \code{svmBag} works: it called an undefined \code{lev()} and dispatched \code{predict()} without loading \pkg{kernlab}; both now use the \code{kernlab} namespace explicitly.
    \item \code{modelLookup()} now gives its intended "Model '...' is not in the set of existing models" error for an unknown model, instead of an "object 'method' not found" error from a mistyped variable name.
+   \item The formula interface for \code{icr()} now works; it previously forwarded an unused \code{weights} argument (and an undefined \code{thresh}) into \code{fastICA}, which errored with "unused argument (weights = ...)".
+
   }
 }
 
