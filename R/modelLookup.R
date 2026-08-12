@@ -55,7 +55,7 @@ modelLookup <- function(model = NULL) {
     if (!(model %in% names(models))) {
       stop(paste(
         "Model '",
-        method,
+        model,
         "' is not in the ",
         "set of existing models",
         sep = ""
