@@ -23,6 +23,25 @@ test_that("BoxCoxTrans estimates a lambda and transforms the data", {
   expect_identical(predict(bc_na, skew_y), skew_y)
 })
 
+test_that("BoxCoxTrans applies the power transform for a non-zero lambda", {
+  bc <- BoxCoxTrans(skew_y)
+
+  # a non-zero lambda uses the (y^lambda - 1) / lambda branch; lambda = 0.5 is
+  # the square-root-like transform
+  bc$lambda <- 0.5
+  expect_identical(
+    unname(predict(bc, skew_y)),
+    (skew_y^0.5 - 1) / 0.5
+  )
+
+  # lambda = -1 is the inverse transform
+  bc$lambda <- -1
+  expect_identical(
+    unname(predict(bc, skew_y)),
+    (skew_y^-1 - 1) / -1
+  )
+})
+
 test_that("BoxCoxTrans validates its input", {
   expect_snapshot(BoxCoxTrans(factor(letters)), error = TRUE)
   expect_snapshot(predict(BoxCoxTrans(skew_y), "abc"), error = TRUE)
