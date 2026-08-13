@@ -189,3 +189,55 @@ test_that("check_dims requires x rows to match the outcome length", {
   expect_snapshot(caret:::check_dims(m, 1:3), error = TRUE)
   expect_snapshot(caret:::check_dims(matrix(1:3, nrow = 1), 1), error = TRUE)
 })
+
+test_that("cranRef builds a LaTeX link to a package's CRAN page", {
+  expect_identical(
+    caret:::cranRef("caret"),
+    "{\\tt \\href{http://cran.r-project.org/web/packages/caret/index.html}{caret}}"
+  )
+})
+
+test_that("scrubCall replaces over-long x/y/data arguments", {
+  long <- paste(rep("a", 150), collapse = "")
+  scrubbed <- caret:::scrubCall(bquote(train(x = .(long), y = 1)))
+  expect_identical(as.character(scrubbed[["x"]]), "scrubbed")
+  # short arguments are left alone
+  short <- caret:::scrubCall(quote(train(x = predictors, y = 1)))
+  expect_identical(as.character(short[["x"]]), "predictors")
+})
+
+test_that("get_labels maps a method to its human-readable label", {
+  expect_identical(caret:::get_labels("knn"), "k-Nearest Neighbors")
+})
+
+test_that("Kim2009 simulates a two-class data frame", {
+  set.seed(1)
+  dat <- caret:::Kim2009(20)
+  expect_identical(nrow(dat), 20L)
+  expect_s3_class(dat$Class, "factor")
+  expect_identical(levels(dat$Class), c("Class1", "Class2"))
+})
+
+test_that("subsemble_index returns model and holdout index lists", {
+  set.seed(1)
+  idx <- caret:::subsemble_index(factor(rep(c("a", "b"), each = 20)))
+  expect_identical(names(idx), c("model", "holdout"))
+})
+
+test_that("printCall prints the call under a 'Call:' header", {
+  expect_snapshot(caret:::printCall(quote(train(y ~ x, data = dat))))
+})
+
+test_that("fail_warning warns about a failed model fit", {
+  expect_snapshot(
+    caret:::fail_warning(list(method = "knn"), "boom", iter = 1, verb = FALSE)
+  )
+})
+
+test_that("check_na_conflict warns when imputation clashes with na.action", {
+  expect_snapshot(
+    caret:::check_na_conflict(
+      quote(train(y ~ x, na.action = na.omit, preProcess = "knnImpute"))
+    )
+  )
+})
