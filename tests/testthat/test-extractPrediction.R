@@ -1,7 +1,8 @@
 # Tests for the prediction-extraction pipeline. extractPrediction and extractProb
-# are twins (same signature, a list of fitted models), and plotClassProbs consumes
-# extractProb's output, so they're tested together off one fitted model list.
-# The regression trimming path (trimPredictions) is covered separately.
+# are twins (same signature, a list of fitted models); plotClassProbs consumes
+# extractProb's output and plotObsVsPred consumes extractPrediction's, so they
+# are tested together off one fitted model list. The regression trimming path
+# (trimPredictions) is covered separately.
 
 test_that("extractPrediction / extractProb / plotClassProbs work on a model list", {
   skip_on_cran()
@@ -43,6 +44,10 @@ test_that("extractPrediction / extractProb / plotClassProbs work on a model list
   expect_s3_class(plotClassProbs(prob), "trellis")
   expect_s3_class(plotClassProbs(prob, plotType = "densityplot"), "trellis")
 
+  # plotObsVsPred consumes the extractPrediction output; for a factor outcome it
+  # draws an accuracy dotplot
+  expect_s3_class(plotObsVsPred(pred), "trellis")
+
   # unlabelled ("unknown") data is predicted with dataType "Unknown"
   unk <- extractPrediction(mods, unkX = te_x)
   expect_setequal(unique(unk$dataType), "Unknown")
@@ -65,6 +70,11 @@ test_that("extractPrediction trims regression predictions to the bounds", {
   expect_s3_class(pred, "data.frame")
   # the lower bound of 0 is enforced on the predictions
   expect_true(min(pred$pred) >= 0)
+
+  # for a numeric outcome plotObsVsPred draws an obs-vs-pred scatter; both the
+  # shared-range and independent-range branches build a trellis object
+  expect_s3_class(plotObsVsPred(pred), "trellis")
+  expect_s3_class(plotObsVsPred(pred, equalRanges = FALSE), "trellis")
 })
 
 test_that("trimPredictions clamps regression predictions to bounds", {
