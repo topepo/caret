@@ -44,3 +44,10 @@ corr_R2[4, 1] <- corr_R2[1, 4] <- -0.67
 # tie then breaks differently across platforms (64- vs 80-bit long double), so
 # findCorrelation removes column 4 on macOS but column 1 on Linux.
 corr_R2[4, 2] <- corr_R2[2, 4] <- 0.5
+
+# The verbose output of findCorrelation() prints rounded mean absolute
+# correlations whose last digit differs across platforms (64- vs 80-bit long
+# double), so verbose snapshots mask every decimal number before comparison.
+mask_decimals <- function(lines) {
+  gsub("[0-9]+[.][0-9]+", "<num>", lines)
+}

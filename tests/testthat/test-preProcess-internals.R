@@ -46,7 +46,7 @@ test_that("convert_method rewrites a legacy character method into a list", {
   expect_type(new$method, "list")
   expect_identical(new$method$center, c("a", "b"))
   expect_identical(new$method$scale, c("a", "b"))
-  expect_identical(names(new$method), old$method)
+  expect_named(new$method, old$method)
 })
 
 test_that("check_for_wildcards reports and strips PCA/ICA wildcards", {

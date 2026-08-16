@@ -1,4 +1,4 @@
-# Shared test data for test_mnLogLoss.R
+# Shared test data for the mnLogLoss tests in test-postResample.R
 
 mnll_classes <- LETTERS[1:3]
 

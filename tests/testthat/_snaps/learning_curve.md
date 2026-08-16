@@ -1,3 +1,11 @@
+# learning_curve_dat prints progress when verbose
+
+    Code
+      lc <- learning_curve_fixture(proportion = c(0.5, 1), verbose = TRUE)
+    Output
+      Training for 50% (n = 100)
+      Training for 100% (n = 200)
+
 # learning_curve_dat requires an outcome column name
 
     Code

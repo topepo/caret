@@ -44,5 +44,5 @@ test_that("featurePlot handles a single predictor", {
   expect_s3_class(featurePlot(one, iris$Species, "density"), "trellis")
   expect_s3_class(featurePlot(one, iris$Sepal.Width, "scatter"), "trellis")
   # a scatterplot matrix needs at least two predictors
-  expect_error(featurePlot(one, iris$Species, "pairs"))
+  expect_snapshot(featurePlot(one, iris$Species, "pairs"), error = TRUE)
 })

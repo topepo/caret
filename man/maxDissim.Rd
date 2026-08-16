@@ -72,7 +72,7 @@ example <- function(pct = 1, obj = minDiss, ...)
 start <- sample(1:dim(tmp)[1], 15)
 base <- tmp[start, ]
 pool <- tmp[-start, ]
-  
+
   ## select 9 for addition
 newSamp <- maxDissim(
   base,
@@ -82,9 +82,9 @@ newSamp <- maxDissim(
   obj = obj,
   ...
 )
-  
+
 allSamp <- c(start, newSamp)
-  
+
 plot(
   tmp[-newSamp, ],
   xlim = extendrange(tmp[, 1]),
@@ -94,12 +94,12 @@ plot(
   ylab = "variable 2"
 )
 points(base, pch = 16, cex = .7)
-  
+
   for(i in seq(along.with = newSamp))
     points(
-           pool[newSamp[i],1], 
-           pool[newSamp[i],2], 
-           pch = paste(i), col = "darkred") 
+           pool[newSamp[i],1],
+           pool[newSamp[i],2],
+           pch = paste(i), col = "darkred")
 }
 
 par(mfrow = c(2, 2))

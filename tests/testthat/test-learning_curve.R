@@ -10,7 +10,7 @@ test_that("learning_curve_dat returns performance at each training size", {
   lc <- learning_curve_fixture(proportion = c(0.5, 0.75, 1))
 
   expect_s3_class(lc, "data.frame")
-  expect_true(all(c("Training_Size", "Data", "ROC") %in% colnames(lc)))
+  expect_in(c("Training_Size", "Data", "ROC"), colnames(lc))
   # without a test set there are resampling and training estimates
   expect_setequal(unique(lc$Data), c("Resampling", "Training"))
   # one training size per requested proportion
@@ -27,9 +27,10 @@ test_that("learning_curve_dat adds a testing set when test_prop > 0", {
 test_that("learning_curve_dat prints progress when verbose", {
   skip_on_cran()
 
-  expect_output(
-    learning_curve_fixture(proportion = c(0.5, 1), verbose = TRUE),
-    "Training for"
+  # assign inside the snapshot so only the progress text is captured, not the
+  # RNG-dependent metric values
+  expect_snapshot(
+    lc <- learning_curve_fixture(proportion = c(0.5, 1), verbose = TRUE)
   )
 })
 

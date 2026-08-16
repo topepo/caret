@@ -9,8 +9,12 @@ test_that("resample calculations", {
   set.seed(5423)
   lm_fit <- train(y ~ ., data = tr_dat, method = "lm", trControl = ctrl)
   set.seed(5423)
-  expect_snapshot_warning(
-    rlm_fit <- train(y ~ ., data = tr_dat, method = "rlm", trControl = ctrl)
+  # the snapshot captures the first convergence warning; rlm warns once per
+  # non-converged fold, so silence the repeats
+  suppressWarnings(
+    expect_snapshot_warning(
+      rlm_fit <- train(y ~ ., data = tr_dat, method = "rlm", trControl = ctrl)
+    )
   )
 
   rs <- resamples(list(lm = lm_fit, rlm = rlm_fit))
@@ -93,7 +97,7 @@ test_that("test group-k-fold", {
 test_that("as.data.frame.resamples pulls out one metric in long-ish form", {
   df <- as.data.frame(rs_fixture, metric = "RMSE")
   # one column per model, plus the Resample labels tacked on the end
-  expect_identical(colnames(df), c("A", "B", "C", "Resample"))
+  expect_named(df, c("A", "B", "C", "Resample"))
   expect_identical(df$A, c(1, 2, 3, 4, 5))
   expect_identical(df$Resample, paste0("Fold", 1:5))
 })
@@ -129,7 +133,7 @@ test_that("modelCor correlates models across resamples", {
 test_that("summary.resamples reports the usual five-number summary per model", {
   sm <- summary(rs_fixture)
   expect_s3_class(sm, "summary.resamples")
-  expect_identical(names(sm$statistics), c("RMSE", "Rsquared"))
+  expect_named(sm$statistics, c("RMSE", "Rsquared"))
   # the row means match what we put in (A averages 3, C averages 5)
   expect_identical(sm$statistics$RMSE["A", "Mean"], 3)
   expect_identical(sm$statistics$RMSE["C", "Mean"], 5)
@@ -183,7 +187,7 @@ test_that("cluster.resamples clusters the models", {
 test_that("summary.diff.resamples summarises the pairwise differences", {
   sm <- summary(diff(rs_fixture))
   expect_s3_class(sm, "summary.diff.resamples")
-  expect_identical(names(sm$table), c("RMSE", "Rsquared"))
+  expect_named(sm$table, c("RMSE", "Rsquared"))
 })
 
 # ------------------------------------------------------------------------------

@@ -104,7 +104,6 @@ test_that("rfe runs and its methods behave (default interface)", {
 
 test_that("rfe works with a recipe", {
   skip_on_cran()
-  skip_if_not_installed("recipes")
 
   set.seed(1)
   full <- twoClassSim(150)
@@ -137,5 +136,5 @@ test_that("rfe works with the formula interface", {
   )
 
   expect_s3_class(rf, "rfe")
-  expect_true(all(rf$optVariables %in% colnames(dat)))
+  expect_in(rf$optVariables, colnames(dat))
 })

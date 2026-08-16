@@ -64,7 +64,6 @@ test_that("pred_failed only flags try-errors", {
 
 test_that("train() fits and predicts from a recipe", {
   skip_on_cran()
-  skip_if_not_installed("recipes")
 
   rec <- recipes::recipe(Species ~ ., data = iris)
   rec <- recipes::step_normalize(rec, recipes::all_predictors())
@@ -87,7 +86,6 @@ test_that("train() fits and predicts from a recipe", {
 
 test_that("train() with a recipe returns class probabilities", {
   skip_on_cran()
-  skip_if_not_installed("recipes")
 
   rec <- recipes::recipe(Species ~ ., data = iris)
   rec <- recipes::step_normalize(rec, recipes::all_predictors())
@@ -109,7 +107,6 @@ test_that("train() with a recipe returns class probabilities", {
 
 test_that("train() drives a recipe through leave-one-out resampling", {
   skip_on_cran()
-  skip_if_not_installed("recipes")
 
   # a small, balanced subset keeps the LOOCV fold count manageable
   small <- iris[c(1:12, 51:62, 101:112), ]
@@ -134,7 +131,6 @@ test_that("train() drives a recipe through leave-one-out resampling", {
 
 test_that("train() drives a recipe through adaptive resampling", {
   skip_on_cran()
-  skip_if_not_installed("recipes")
   skip_if_not_installed("nlme")
 
   rec <- recipes::recipe(Species ~ ., data = iris)
@@ -158,4 +154,27 @@ test_that("train() drives a recipe through adaptive resampling", {
   expect_s3_class(fit, "train.recipe")
   expect_identical(fit$control$method, "adaptive_cv")
   expect_true(fit$bestTune$k %in% k_grid)
+})
+
+test_that("themis::step_upsample balances the classes inside train", {
+  skip_on_cran()
+  skip_if_not_installed("themis")
+  withr::local_seed(2542)
+  dat <- twoClassSim(200, intercept = 6)
+
+  rec <-
+    recipe(Class ~ TwoFactor1 + TwoFactor2 + Linear01, data = dat) %>%
+    themis::step_upsample(Class, seed = 534)
+
+  mod <- train(
+    rec,
+    dat,
+    method = "knn",
+    trControl = trainControl(method = "cv")
+  )
+  expect_equal(
+    rep(max(table(dat$Class)), 2),
+    as.vector(table(mod$finalModel$learn$y)),
+    ignore_attr = TRUE
+  )
 })

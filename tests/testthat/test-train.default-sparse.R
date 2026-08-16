@@ -1,7 +1,7 @@
 test_that("caret can return sparse Matrix object", {
   skip_on_cran()
-  skip_if_not_installed('glmnet')
-  skip_if_not_installed('Matrix')
+  skip_if_not_installed("glmnet")
+  skip_if_not_installed("Matrix")
 
   x <- Matrix::Matrix(as.matrix(mtcars)[, -1], sparse = TRUE)
   y <- mtcars$mpg

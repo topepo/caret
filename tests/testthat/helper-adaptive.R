@@ -55,3 +55,25 @@ adapt_results <- data.frame(
 # A little tuning grid with a repeated row, for get_id() - the two k = 3 rows
 # should collapse into a single model.
 adapt_grid <- data.frame(k = c(3, 3, 5, 7, 9))
+
+# A tiny end-to-end adaptive_cv fit through train(), used by test-adaptive.R;
+# the racing method ("gls" or "BT") is the only moving part.
+adaptive_knn_fit <- function(eval_method) {
+  set.seed(1)
+  suppressWarnings(train(
+    Species ~ .,
+    data = iris,
+    method = "knn",
+    tuneGrid = data.frame(k = c(1, 5, 9, 13, 17)),
+    trControl = trainControl(
+      method = "adaptive_cv",
+      number = 10,
+      adaptive = list(
+        min = 3,
+        alpha = 0.05,
+        method = eval_method,
+        complete = TRUE
+      )
+    )
+  ))
+}

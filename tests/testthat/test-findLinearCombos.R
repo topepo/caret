@@ -28,7 +28,7 @@ test_that("findLinearCombos coerces non-matrix input", {
 # --- enumLC methods ---------------------------------------------------------
 
 test_that("enumLC errors for unsupported objects", {
-  expect_error(caret:::enumLC("nope"), "does not support")
+  expect_snapshot(caret:::enumLC("nope"), error = TRUE)
 })
 
 test_that("enumLC works for lm and formula objects", {

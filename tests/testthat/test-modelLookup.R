@@ -16,7 +16,7 @@ test_that("modelLookup with no argument lists every model", {
   all <- modelLookup()
   expect_s3_class(all, "data.frame")
   expect_gt(nrow(all), 100)
-  expect_true(all(c("knn", "rf", "glm") %in% all$model))
+  expect_in(c("knn", "rf", "glm"), all$model)
 })
 
 test_that("modelLookup errors for an unknown model", {

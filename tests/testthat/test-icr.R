@@ -21,9 +21,12 @@ test_that("icr handles a single predictor and single-row prediction", {
   skip_on_cran()
   skip_if_not_installed("fastICA")
 
-  # with one predictor, n.comp cannot exceed 1
+  # with one predictor, n.comp cannot exceed 1, and preProcess warns that the
+  # ICA step is dropped
   set.seed(1)
-  fit <- icr(mtcars[, "hp", drop = FALSE], mtcars$mpg, n.comp = 1)
+  expect_snapshot_warning(
+    fit <- icr(mtcars[, "hp", drop = FALSE], mtcars$mpg, n.comp = 1)
+  )
   expect_length(predict(fit, mtcars[, "hp", drop = FALSE]), nrow(mtcars))
 
   # a single new row returns a single prediction

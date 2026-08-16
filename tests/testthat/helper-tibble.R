@@ -1,4 +1,4 @@
-# Shared fixtures for test_tibble.R
+# Shared fixtures for test-train.default-tibble.R and test-misc-sampling.R
 
 # tibble isn't in depends or imports but recipes is. Here is a helper function
 # to convert a data frame to tibble in the tests without having to worry about

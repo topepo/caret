@@ -535,10 +535,10 @@ test_that('filters', {
 
   x1_exp <- dat$x1 - mean(dat$x1)
 
-  expect_equal(colnames(no_zv_pred), c("x1", "x3", "x4", "y"))
-  expect_equal(colnames(no_nzv_pred), c("x1", "x4", "y"))
-  expect_equal(colnames(no_xgy_pred), c("x1", "x3"))
-  expect_equal(colnames(filter_mean_pred), c("x1", "x3"))
+  expect_named(no_zv_pred, c("x1", "x3", "x4", "y"))
+  expect_named(no_nzv_pred, c("x1", "x4", "y"))
+  expect_named(no_xgy_pred, c("x1", "x3"))
+  expect_named(filter_mean_pred, c("x1", "x3"))
   expect_equal(filter_mean_pred$x1, x1_exp)
 })
 
@@ -555,7 +555,7 @@ test_that("knnImpute fills in missing values", {
 
   pp <- preProcess(x, method = "knnImpute")
   filled <- predict(pp, x)
-  expect_false(any(is.na(filled)))
+  expect_all_false(as.vector(is.na(filled)))
 })
 
 test_that("bagImpute fills in missing values", {
@@ -567,7 +567,7 @@ test_that("bagImpute fills in missing values", {
 
   pp <- preProcess(x, method = "bagImpute")
   filled <- predict(pp, x)
-  expect_false(any(is.na(filled)))
+  expect_all_false(as.vector(is.na(filled)))
 })
 
 test_that("expoTrans and invHyperbolicSine transforms run and invert", {
@@ -589,4 +589,42 @@ test_that("print.preProcess summarises the transformations", {
   x <- as.data.frame(matrix(rnorm(40), ncol = 4))
   # a fixed object with no fitted values -> deterministic print
   expect_snapshot(print(preProcess(x, method = c("center", "scale"))))
+})
+
+# --- Box-Cox lambda estimation -----------------------------------------------
+
+test_that("BoxCox lambdas match MASS::boxcox", {
+  skip_on_cran()
+  skip_if_not_installed("MASS")
+
+  set.seed(1)
+  dat <- matrix(runif(30), ncol = 3)
+  dat[, 1] <- exp(dat[, 1])
+  colnames(dat) <- paste0("x", 1:3)
+
+  check_BoxCox <- function(x, expected = NULL) {
+    pp1 <- preProcess(x, method = "BoxCox")
+    obs_lambdas1 <- unlist(lapply(pp1$bc, function(x) x$lambda))
+    names(obs_lambdas1) <- NULL
+    expect_equal(obs_lambdas1, expected)
+  }
+
+  exp_lambdas <- rep(NA, 3)
+  for (i in seq_len(ncol(dat))) {
+    tmp <- as.data.frame(dat, stringsAsFactors = TRUE)[, i, drop = FALSE]
+    names(tmp)[1] <- "x"
+    tmp_bc <- MASS::boxcox(
+      x ~ 1,
+      data = tmp,
+      plotit = FALSE,
+      lambda = seq(-2, 2, by = 0.1)
+    )
+    exp_lambdas[i] <- tmp_bc$x[which.max(tmp_bc$y)]
+  }
+
+  check_BoxCox(dat, expected = exp_lambdas)
+  check_BoxCox(
+    as.data.frame(dat, stringsAsFactors = TRUE),
+    expected = exp_lambdas
+  )
 })

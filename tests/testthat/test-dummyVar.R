@@ -167,7 +167,7 @@ test_that("Good names for dummies with reocurring patterns", {
     collapse = ""
   )
   res_names_lvls <- colnames(predict(essai_dummyVars, data))
-  expect_true(all(exp_names_lvls %in% res_names_lvls))
+  expect_in(exp_names_lvls, res_names_lvls)
 })
 
 test_that("dummyVars print method", {

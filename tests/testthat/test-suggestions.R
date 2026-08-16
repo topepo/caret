@@ -37,7 +37,7 @@ test_that("suggestions returns all FALSE for an unrecognised model", {
 test_that("suggestions never recommends the correlation filter", {
   # corr is initialised FALSE and never set, so it is FALSE for every model
   models <- c("knn", "glmnet", "lm", "lda", "nnet", "pls", "rf")
-  expect_true(all(
-    !vapply(models, function(m) caret:::suggestions(m)["corr"], logical(1))
-  ))
+  expect_all_false(
+    vapply(models, function(m) caret:::suggestions(m)["corr"], logical(1))
+  )
 })

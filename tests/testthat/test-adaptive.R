@@ -21,7 +21,7 @@ test_that("cccmat builds a symmetric concordance matrix with unit diagonal", {
   expect_equal(dim(cc), c(4, 4))
   expect_equal(unname(diag(cc)), rep(1, 4))
   expect_equal(cc, t(cc))
-  expect_equal(colnames(cc), colnames(adapt_wide))
+  expect_identical(colnames(cc), colnames(adapt_wide))
 })
 
 test_that("cccmat off-diagonals match ccc() and reflect the data", {
@@ -46,7 +46,7 @@ test_that("cccmat off-diagonals match ccc() and reflect the data", {
 test_that("diffmat is symmetric with an NA diagonal", {
   dm <- caret:::diffmat(adapt_wide)
   expect_equal(dim(dm), c(4, 4))
-  expect_true(all(is.na(diag(dm))))
+  expect_all_true(is.na(diag(dm)))
   # it should match its own transpose (leaving the NA diagonal aside)
   expect_equal(dm[lower.tri(dm)], t(dm)[lower.tri(dm)])
 })
@@ -63,7 +63,7 @@ test_that("diffmat returns 0 when two columns differ by a constant", {
 
 test_that("long2wide reshapes resampling results to one row per resample", {
   w <- caret:::long2wide(adapt_results, "RMSE")
-  expect_equal(colnames(w), c("Resample", "m1", "m2", "m3", "m4"))
+  expect_named(w, c("Resample", "m1", "m2", "m3", "m4"))
   expect_equal(nrow(w), length(unique(adapt_results$Resample)))
   expect_equal(w$Resample, sort(unique(adapt_results$Resample)))
   # pick one cell and make sure it survived the reshape intact
@@ -137,4 +137,38 @@ test_that("filter_on_diff keeps everything when nothing is below the cutoff", {
     )$model_id
   ))
   expect_equal(keep, c("m1", "m2", "m3", "m4"))
+})
+
+# --- end-to-end through train() ----------------------------------------------
+# These run adaptive resampling the way someone actually would - through
+# train() - and check we get a sensible model back. It's the only route that
+# reaches adaptiveWorkflow() (and the diversity filters underneath it), so we
+# keep the runs tiny and skip when the optional racing packages aren't around.
+# adaptive_knn_fit() lives in helper-adaptive.R.
+
+test_that("adaptive_cv tuning runs end to end with the gls racer", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  fit <- adaptive_knn_fit("gls")
+
+  expect_s3_class(fit, "train")
+  expect_equal(fit$control$method, "adaptive_cv")
+  expect_false(is.null(fit$finalModel))
+  # every candidate still shows up in the results, and the winner is one of them
+  expect_equal(sort(fit$results$k), c(1, 5, 9, 13, 17))
+  expect_true(fit$bestTune$k %in% fit$results$k)
+  # and the model we get back can actually make predictions
+  expect_length(predict(fit, iris), nrow(iris))
+})
+
+test_that("adaptive_cv tuning runs end to end with the Bradley-Terry racer", {
+  skip_on_cran()
+  skip_if_not_installed("BradleyTerry2")
+
+  fit <- adaptive_knn_fit("BT")
+
+  expect_s3_class(fit, "train")
+  expect_true(fit$bestTune$k %in% fit$results$k)
+  expect_length(predict(fit, iris), nrow(iris))
 })
