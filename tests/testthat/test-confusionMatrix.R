@@ -337,3 +337,156 @@ test_that("confusionMatrix works for rfe and sbf objects", {
   )
   expect_s3_class(confusionMatrix(sf), "confusionMatrix.sbf")
 })
+
+test_that("confusionMatrix needs at least two factor levels", {
+  one <- factor(rep("a", 4), levels = "a")
+  expect_snapshot(confusionMatrix(one, one), error = TRUE)
+})
+
+test_that("confusionMatrix.matrix rejects non-square matrices", {
+  expect_snapshot(confusionMatrix(matrix(1:6, nrow = 2)), error = TRUE)
+})
+
+test_that("confusionMatrix.table rejects tables with other than 2 dimensions", {
+  expect_snapshot(
+    confusionMatrix(as.table(array(1:8, dim = c(2, 2, 2)))),
+    error = TRUE
+  )
+})
+
+test_that("confusionMatrix requires named prevalences for 3+ classes", {
+  expect_snapshot(
+    confusionMatrix(cm_tab3, prevalence = c(0.2, 0.3, 0.5)),
+    error = TRUE
+  )
+})
+
+test_that("confusionMatrix reports missing test statistics for empty tables", {
+  # binomial tests cannot run on an all-zero table, so their statistics are NA
+  zt <- as.table(matrix(0L, 2, 2, dimnames = list(c("a", "b"), c("a", "b"))))
+  cm <- confusionMatrix(zt)
+  expect_true(is.na(cm$overall["AccuracyLower"]))
+  expect_true(is.na(cm$overall["AccuracyPValue"]))
+})
+
+test_that("print.confusionMatrix defaults and validates the mode", {
+  cm <- confusionMatrix(cm_tab2)
+  # a NULL mode falls back to sens_spec
+  expect_snapshot(print(cm, mode = NULL))
+  expect_snapshot(print(cm, mode = "nope"), error = TRUE)
+})
+
+test_that("print.confusionMatrix filters multiclass statistics by mode", {
+  # a perfect table keeps the printed statistics exact
+  cm <- confusionMatrix(table(iris$Species, iris$Species), mode = "everything")
+  expect_snapshot(print(cm, mode = "prec_recall"))
+})
+
+test_that("confusionMatrix.train works without stored resampling indices", {
+  skip_on_cran()
+
+  set.seed(1)
+  fit <- train(
+    Species ~ .,
+    data = iris,
+    method = "knn",
+    tuneGrid = data.frame(k = 5),
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  bare <- fit
+  bare$control$index <- NULL
+  cm <- confusionMatrix(bare)
+  expect_s3_class(cm, "confusionMatrix.train")
+})
+
+test_that("print.confusionMatrix.train shows counts for a single resample", {
+  skip_on_cran()
+
+  set.seed(1)
+  fit <- train(
+    Species ~ .,
+    data = iris,
+    method = "knn",
+    tuneGrid = data.frame(k = 5),
+    trControl = trainControl(method = "LGOCV", number = 1, p = 0.75)
+  )
+  cm <- confusionMatrix(fit, norm = "none")
+  expect_snapshot(print(cm))
+})
+
+test_that("confusionMatrix.train can rebuild resampled tables from predictions", {
+  skip_on_cran()
+
+  set.seed(1)
+  fit <- train(
+    Species ~ .,
+    data = iris,
+    method = "knn",
+    tuneGrid = data.frame(k = 5),
+    trControl = trainControl(method = "cv", number = 3, savePredictions = "all")
+  )
+  # without the pre-computed tables, the saved predictions are used
+  bare <- fit
+  bare$resampledCM <- NULL
+  cm <- confusionMatrix(bare)
+  expect_s3_class(cm, "confusionMatrix.train")
+  expect_equal(sum(cm$table), 100)
+})
+
+test_that("confusion matrices are refused for regression fits", {
+  fake <- structure(list(modelType = "Regression"), class = "train")
+  expect_snapshot(caret:::train_resampledCM(fake), error = TRUE)
+})
+
+test_that("the resampled-table helpers explain what 50+ class objects need", {
+  fake_train <- structure(
+    list(
+      modelType = "Classification",
+      levels = paste0("class", 1:51),
+      resampledCM = NULL,
+      pred = NULL
+    ),
+    class = "train"
+  )
+  expect_snapshot(caret:::train_resampledCM(fake_train), error = TRUE)
+
+  fake_rfe <- structure(
+    list(
+      obsLevels = paste0("class", 1:51),
+      resample = data.frame(Variables = 1),
+      pred = NULL
+    ),
+    class = "rfe"
+  )
+  expect_snapshot(caret:::rfe_resampledCM(fake_rfe), error = TRUE)
+
+  fake_sbf <- structure(
+    list(obsLevels = c("a", "b"), pred = NULL),
+    class = "sbf"
+  )
+  expect_snapshot(caret:::sbf_resampledCM(fake_sbf), error = TRUE)
+})
+
+test_that("confusionMatrix.rfe can rebuild resampled tables from predictions", {
+  skip_on_cran()
+
+  set.seed(1)
+  dat <- twoClassSim(120)
+  set.seed(1)
+  rf <- rfe(
+    dat[, 1:8],
+    dat$Class,
+    sizes = c(2, 4),
+    rfeControl = rfeControl(
+      functions = lrFuncs,
+      method = "cv",
+      number = 3,
+      saveDetails = TRUE
+    )
+  )
+  # drop the pre-computed per-resample cells so the saved predictions are used
+  bare <- rf
+  bare$resample <- bare$resample[, !grepl("\\.cell", names(bare$resample))]
+  cm <- confusionMatrix(bare)
+  expect_s3_class(cm, "confusionMatrix.rfe")
+})

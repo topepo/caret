@@ -62,3 +62,31 @@ test_that("resampleSummary summarises classification resamples", {
   expect_s3_class(out$data$pred, "factor")
   expect_identical(levels(out$data$pred), c("a", "b"))
 })
+
+test_that("resampleSummary stacks complete factor resamples", {
+  obs <- factor(c("a", "b", "a", "b"), levels = c("a", "b"))
+  resampled <- data.frame(
+    R1 = factor(c("a", "b", "a", "a"), levels = c("a", "b")),
+    R2 = factor(c("a", "b", "b", "b"), levels = c("a", "b"))
+  )
+  out <- resampleSummary(obs, resampled)
+  expect_s3_class(out$data$pred, "factor")
+  expect_identical(levels(out$data$pred), levels(obs))
+})
+
+test_that("resampleSummary handles leave-one-out factor resamples", {
+  # in the LOO layout each column holds a single held-out prediction
+  lv <- c("a", "b")
+  obs <- factor(c("a", "b", "a", "b"), levels = lv)
+  resampled <- data.frame(
+    R1 = factor(c("a", NA, NA, NA), levels = lv),
+    R2 = factor(c(NA, "b", NA, NA), levels = lv),
+    R3 = factor(c(NA, NA, "b", NA), levels = lv),
+    R4 = factor(c(NA, NA, NA, "b"), levels = lv)
+  )
+  out <- resampleSummary(obs, resampled)
+  expect_s3_class(out$data$pred, "factor")
+  expect_identical(levels(out$data$pred), lv)
+  # a single stacked resample has no spread, so the sds are zeroed
+  expect_all_equal(unname(out$metrics[3:4]), 0)
+})

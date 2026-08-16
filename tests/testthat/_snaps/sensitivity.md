@@ -19,8 +19,8 @@
     Code
       sensitivity(as.table(matrix(1:6, nrow = 2)))
     Condition
-      Error in `!all.equal(nrow(data), ncol(data))`:
-      ! invalid argument type
+      Error in `sensitivity.table()`:
+      ! the table must have nrow = ncol
 
 # specificity errors on bad input
 
@@ -43,8 +43,8 @@
     Code
       specificity(as.table(matrix(1:6, nrow = 2)))
     Condition
-      Error in `!all.equal(nrow(data), ncol(data))`:
-      ! invalid argument type
+      Error in `specificity.table()`:
+      ! the table must have nrow = ncol
 
 # posPredValue errors on bad input
 
@@ -77,4 +77,52 @@
     Condition
       Error in `negPredValue.default()`:
       ! input data must have the same two levels
+
+# the table methods reject malformed tables with clear errors
+
+    Code
+      sensitivity(as.table(bad_names))
+    Condition
+      Error in `sensitivity.table()`:
+      ! the table must the same groups in the same order
+
+---
+
+    Code
+      specificity(as.table(bad_names))
+    Condition
+      Error in `specificity.table()`:
+      ! the table must the same groups in the same order
+
+---
+
+    Code
+      posPredValue(as.table(bad_names))
+    Condition
+      Error in `posPredValue.table()`:
+      ! the table must the same groups in the same order
+
+---
+
+    Code
+      negPredValue(as.table(bad_names))
+    Condition
+      Error in `negPredValue.table()`:
+      ! the table must the same groups in the same order
+
+---
+
+    Code
+      posPredValue(as.table(matrix(1:6, nrow = 2)))
+    Condition
+      Error in `posPredValue.table()`:
+      ! the table must have nrow = ncol
+
+---
+
+    Code
+      negPredValue(as.table(matrix(1:6, nrow = 2)))
+    Condition
+      Error in `negPredValue.table()`:
+      ! the table must have nrow = ncol
 

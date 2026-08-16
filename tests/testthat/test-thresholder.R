@@ -66,3 +66,44 @@ test_that("thresholder only supports two-class problems", {
   )
   expect_snapshot(thresholder(fit, threshold = 0.5), error = TRUE)
 })
+
+test_that("thresholder requires threshold values and saved logical flag", {
+  skip_on_cran()
+
+  fit <- threshold_fit(classProbs = TRUE, savePredictions = "all")
+  expect_snapshot(thresholder(fit, threshold = NULL), error = TRUE)
+
+  # train() normalizes logical savePredictions to a string, so restore the
+  # logical form to exercise that validation branch
+  logical_flag <- fit
+  logical_flag$control$savePredictions <- FALSE
+  expect_snapshot(thresholder(logical_flag, threshold = 0.5), error = TRUE)
+})
+
+test_that("thresholder validates the statistics argument", {
+  skip_on_cran()
+
+  fit <- threshold_fit(classProbs = TRUE, savePredictions = "all")
+  expect_snapshot(
+    thresholder(fit, threshold = 0.5, statistics = "bogus"),
+    error = TRUE
+  )
+  # 'all' cannot be combined with other statistics
+  expect_snapshot(
+    thresholder(fit, threshold = 0.5, statistics = c("all", "J")),
+    error = TRUE
+  )
+})
+
+test_that("summ_stats warns about and removes missing values", {
+  x <- matrix(
+    c(1, 2, NA, 4, 5, 6),
+    ncol = 2,
+    dimnames = list(NULL, c("a", "b"))
+  )
+  expect_snapshot_warning(out <- caret:::summ_stats(x, cols = c("a", "b")))
+  expect_identical(out, c(a = 1.5, b = 5))
+
+  # no warning when the missing column is not requested
+  expect_no_warning(caret:::summ_stats(x, cols = "b"))
+})

@@ -113,10 +113,19 @@ test_that("trim_values applies bounds for numeric outcomes only", {
   expect_identical(
     caret:::trim_values(
       c(-1, 5, 15),
-      list(predictionBounds = c(TRUE, TRUE), yLimit = c(0, 10)),
+      list(predictionBounds = c(TRUE, TRUE), yLimits = c(0, 10)),
       TRUE
     ),
     c(0, 5, 10)
+  )
+  # a list of predictions with logical bounds is trimmed elementwise
+  expect_identical(
+    caret:::trim_values(
+      list(c(-1, 5), c(15, 2)),
+      list(predictionBounds = c(TRUE, TRUE), yLimits = c(0, 10)),
+      TRUE
+    ),
+    list(c(0, 5), c(10, 2))
   )
   # a list of prediction vectors is trimmed elementwise
   expect_identical(
@@ -145,4 +154,64 @@ test_that("extractProb requires models that produce probabilities", {
     trControl = trainControl(method = "cv", number = 3)
   )
   expect_snapshot(extractProb(list(lm = fit)), error = TRUE)
+})
+
+test_that("extractPrediction reports progress and handles unknowns", {
+  skip_on_cran()
+
+  set.seed(1)
+  fit <- train(
+    Species ~ .,
+    data = iris,
+    method = "knn",
+    tuneGrid = data.frame(k = 5),
+    trControl = trainControl(method = "cv", number = 3)
+  )
+
+  # a stray .outcome column is dropped from the test and unknown sets; the
+  # verbose counts are all integers, so the snapshot is stable
+  te <- iris[1:20, 1:4]
+  te$.outcome <- iris$Species[1:20]
+  unk <- iris[21:30, 1:4]
+  unk$.outcome <- iris$Species[21:30]
+
+  expect_snapshot(
+    ep <- extractPrediction(
+      list(fit),
+      testX = te,
+      testY = iris$Species[1:20],
+      unkX = unk,
+      verbose = TRUE
+    )
+  )
+  # unnamed model lists get Object1, ... labels
+  expect_identical(unique(as.character(ep$object)), "Object1")
+  expect_setequal(
+    unique(as.character(ep$dataType)),
+    c("Training", "Test", "Unknown")
+  )
+  # unknown samples have no observed values (the "" placeholder is not a
+  # factor level, so it becomes NA)
+  expect_all_true(is.na(ep$obs[ep$dataType == "Unknown"]))
+})
+
+test_that("extractPrediction handles unknown-only regression extraction", {
+  skip_on_cran()
+
+  set.seed(1)
+  fit <- train(
+    mpg ~ .,
+    data = mtcars,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3)
+  )
+
+  ep <- extractPrediction(
+    list(lm = fit),
+    unkX = mtcars[1:5, -1],
+    unkOnly = TRUE
+  )
+  expect_identical(unique(as.character(ep$dataType)), "Unknown")
+  # regression unknowns have missing observed values
+  expect_all_true(is.na(ep$obs))
 })

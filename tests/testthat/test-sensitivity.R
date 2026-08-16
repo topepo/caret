@@ -145,3 +145,28 @@ test_that("negPredValue errors on bad input", {
     error = TRUE
   )
 })
+
+# --- table-shape validation (shared by all four metric families) --------------
+
+test_that("the table methods reject malformed tables with clear errors", {
+  bad_names <- matrix(1:4, 2, dimnames = list(c("a", "b"), c("b", "a")))
+
+  expect_snapshot(sensitivity(as.table(bad_names)), error = TRUE)
+  expect_snapshot(specificity(as.table(bad_names)), error = TRUE)
+  expect_snapshot(posPredValue(as.table(bad_names)), error = TRUE)
+  expect_snapshot(negPredValue(as.table(bad_names)), error = TRUE)
+  expect_snapshot(
+    posPredValue(as.table(matrix(1:6, nrow = 2))),
+    error = TRUE
+  )
+  expect_snapshot(
+    negPredValue(as.table(matrix(1:6, nrow = 2))),
+    error = TRUE
+  )
+})
+
+test_that("specificity drops incomplete cases when na.rm = TRUE", {
+  p <- sens_pred
+  p[1:5] <- NA
+  expect_false(is.na(specificity(p, sens_truth)))
+})

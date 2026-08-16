@@ -5,7 +5,7 @@ rocPerCol <- function(dat, cls) {
 
 asNumeric <- function(data) {
   fc <- sapply(data, is.factor)
-  modifyList(data, lapply(data[, fc], as.numeric))
+  modifyList(data, lapply(data[, fc, drop = FALSE], as.numeric))
 }
 
 
@@ -99,8 +99,8 @@ filterVarImp <- function(x, y, nonpara = FALSE, ...) {
     rownames(outStat) <- dimnames(x)[[2]]
     outStat <- data.frame(outStat)
   } else {
-    paraFoo <- function(data, y) {
-      abs(coef(summary(lm(y ~ data, na.action = na.omit)))[2, "t value"])
+    paraFoo <- function(data, y, ...) {
+      abs(coef(summary(lm(y ~ data, na.action = na.omit, ...)))[2, "t value"])
     }
     nonparaFoo <- function(x, y, ...) {
       meanMod <- sum((y - mean(y, rm.na = TRUE))^2)
@@ -115,7 +115,7 @@ filterVarImp <- function(x, y, nonpara = FALSE, ...) {
         regMod <- try(loess(y ~ x, na.action = na.omit, ...), silent = TRUE)
 
         if (inherits(regMod, "try-error") || any(is.nan(regMod$residuals))) {
-          try(regMod <- lm(y ~ x, ...))
+          try(regMod <- lm(y ~ x, ...), silent = TRUE)
         }
         if (inherits(regMod, "try-error")) {
           return(NA)
@@ -135,7 +135,7 @@ filterVarImp <- function(x, y, nonpara = FALSE, ...) {
       testFunc <- paraFoo
     }
 
-    outStat <- apply(x, 2, testFunc, y = y)
+    outStat <- apply(x, 2, testFunc, y = y, ...)
     outStat <- data.frame(Overall = outStat)
   }
   outStat

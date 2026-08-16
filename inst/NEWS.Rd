@@ -14,6 +14,8 @@
    \item Fixed \code{svmBag$pred} so that bagging with \code{svmBag} works: it called an undefined \code{lev()} and dispatched \code{predict()} without loading \pkg{kernlab}; both now use the \code{kernlab} namespace explicitly.
    \item \code{modelLookup()} now gives its intended "Model '...' is not in the set of existing models" error for an unknown model, instead of an "object 'method' not found" error from a mistyped variable name.
    \item The formula interface for \code{icr()} now works; it previously forwarded an unused \code{weights} argument (and an undefined \code{thresh}) into \code{fastICA}, which errored with "unused argument (weights = ...)".
+   \item The table methods for \code{sensitivity()}, \code{specificity()}, \code{posPredValue()}, \code{negPredValue()}, \code{precision()}, and \code{recall()} now give their intended "the table must have nrow = ncol" and "the table must the same groups in the same order" errors, instead of an "invalid argument type" error from the same mis-written \code{!all.equal()} check that was fixed for \code{confusionMatrix()}.
+   \item Fixed two bugs in \code{filterVarImp()}: a data set with exactly one factor predictor errored during the factor-to-numeric conversion (a missing \code{drop = FALSE}), and the documented \code{...} options were never actually forwarded to \code{lm()} or \code{loess()} for regression outcomes.
 
   }
 }

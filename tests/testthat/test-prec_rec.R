@@ -141,3 +141,26 @@ test_that("prSummary errors when class probabilities are missing", {
   )
   expect_snapshot(prSummary(d, lev = c("A", "B")), error = TRUE)
 })
+
+test_that("the table methods reject malformed tables with clear errors", {
+  bad_names <- matrix(1:4, 2, dimnames = list(c("a", "b"), c("b", "a")))
+
+  expect_snapshot(precision(as.table(bad_names)), error = TRUE)
+  expect_snapshot(recall(as.table(bad_names)), error = TRUE)
+  expect_snapshot(precision(as.table(matrix(1:6, nrow = 2))), error = TRUE)
+  expect_snapshot(recall(as.table(matrix(1:6, nrow = 2))), error = TRUE)
+})
+
+test_that("prSummary reports a missing AUC when the PR curve fails", {
+  skip_if_not_installed("MLmetrics")
+
+  # a single observed class breaks the precision-recall curve
+  d <- data.frame(
+    obs = factor(rep("A", 4), levels = c("A", "B")),
+    pred = factor(c("A", "B", "A", "B"), levels = c("A", "B")),
+    A = c(0.9, 0.1, 0.8, 0.2),
+    B = c(0.1, 0.9, 0.2, 0.8)
+  )
+  out <- prSummary(d, lev = c("A", "B"))
+  expect_true(is.na(out["AUC"]))
+})

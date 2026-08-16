@@ -136,3 +136,114 @@ test_that("multiClassSummary ROC values", {
   }
   expect_equal(mean(exp_roc), unname(obs_roc["AUC"]))
 })
+
+# --- postResample ---------------------------------------------------------------
+
+test_that("postResample computes regression and classification metrics", {
+  reg <- postResample(c(1, 2, 3, 4), c(1.1, 2.1, 2.9, 4.2))
+  expect_named(reg, c("RMSE", "Rsquared", "MAE"))
+  expect_all_true(!is.na(reg))
+
+  cls <- postResample(
+    factor(c("a", "b", "a", "b")),
+    factor(c("a", "b", "b", "b"))
+  )
+  expect_named(cls, c("Accuracy", "Kappa"))
+  expect_equal(unname(cls["Accuracy"]), 0.75)
+})
+
+test_that("postResample handles degenerate inputs", {
+  # empty inputs give all-missing results
+  empty_reg <- postResample(numeric(0), numeric(0))
+  expect_named(empty_reg, c("RMSE", "Rsquared", "MAE"))
+  expect_all_true(is.na(empty_reg))
+
+  lv <- c("a", "b")
+  empty_cls <- postResample(
+    factor(character(0), levels = lv),
+    factor(character(0), levels = lv)
+  )
+  expect_named(empty_cls, c("Accuracy", "Kappa"))
+  expect_all_true(is.na(empty_cls))
+
+  # a single observation cannot support a correlation
+  one <- postResample(1.5, 2)
+  expect_true(is.na(one["Rsquared"]))
+
+  # a single-class agreement table gives a NaN kappa, reported as NA
+  single <- postResample(
+    factor(c("a", "a"), levels = lv),
+    factor(c("a", "a"), levels = lv)
+  )
+  expect_equal(unname(single["Accuracy"]), 1)
+  expect_true(is.na(single["Kappa"]))
+
+  # an unusable observed vector makes the correlation error, giving NA
+  odd <- suppressWarnings(postResample(c(1, 2, 3), matrix(1:4, 2)))
+  expect_true(is.na(odd["Rsquared"]))
+})
+
+test_that("twoClassSummary validates its levels and tolerates flat ROC input", {
+  d <- data.frame(
+    obs = factor(c("A", "B"), levels = c("A", "B")),
+    pred = factor(c("A", "B"), levels = c("B", "A")),
+    A = c(0.9, 0.1),
+    B = c(0.1, 0.9)
+  )
+  expect_snapshot(twoClassSummary(d, lev = c("A", "B")), error = TRUE)
+
+  # a single observed class breaks the ROC curve, giving NA
+  one_class <- data.frame(
+    obs = factor(rep("A", 5), levels = c("A", "B")),
+    pred = factor(rep("A", 5), levels = c("A", "B")),
+    A = runif(5),
+    B = runif(5)
+  )
+  out <- twoClassSummary(one_class, lev = c("A", "B"))
+  expect_true(is.na(out["ROC"]))
+  expect_equal(unname(out["Sens"]), 1)
+})
+
+test_that("mnLogLoss validates its inputs", {
+  d <- data.frame(
+    obs = factor(c("A", "B"), levels = c("A", "B")),
+    A = c(0.9, 0.1),
+    B = c(0.1, 0.9)
+  )
+  expect_snapshot(mnLogLoss(d, lev = NULL), error = TRUE)
+  expect_snapshot(mnLogLoss(d, lev = c("A", "C")), error = TRUE)
+  d2 <- d
+  levels(d2$obs) <- c("X", "Y")
+  expect_snapshot(mnLogLoss(d2, lev = c("A", "B")), error = TRUE)
+})
+
+test_that("multiClassSummary validates levels and works without probabilities", {
+  d <- data.frame(
+    obs = factor(c("A", "B"), levels = c("A", "B")),
+    pred = factor(c("A", "B"), levels = c("B", "A"))
+  )
+  expect_snapshot(multiClassSummary(d, lev = c("A", "B")), error = TRUE)
+
+  # without probability columns, only the confusion-matrix statistics appear
+  d2 <- data.frame(
+    obs = factor(c("A", "B", "A", "B"), levels = c("A", "B")),
+    pred = factor(c("A", "B", "B", "B"), levels = c("A", "B"))
+  )
+  out <- multiClassSummary(d2, lev = c("A", "B"))
+  expect_all_false(names(out) %in% c("logLoss", "AUC", "prAUC"))
+  expect_contains(names(out), c("Accuracy", "Kappa", "Sensitivity"))
+})
+
+test_that("multiClassSummary reports NA AUCs when the curves fail", {
+  skip_if_not_installed("MLmetrics")
+
+  # a single observed class breaks both the ROC and PR curves
+  d <- data.frame(
+    obs = factor(rep("A", 6), levels = c("A", "B")),
+    pred = factor(rep(c("A", "B"), 3), levels = c("A", "B")),
+    A = c(0.9, 0.4, 0.8, 0.3, 0.7, 0.2),
+    B = c(0.1, 0.6, 0.2, 0.7, 0.3, 0.8)
+  )
+  out <- multiClassSummary(d, lev = c("A", "B"))
+  expect_true(is.na(out["AUC"]))
+})
