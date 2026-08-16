@@ -31,24 +31,21 @@ test_that("findCorrelation returns nothing when nothing exceeds the cutoff", {
 test_that("findCorrelation errors when names are requested but unavailable", {
   m <- corr_R2
   dimnames(m) <- NULL
-  expect_error(findCorrelation(m, names = TRUE), "must have column names")
+  expect_snapshot(findCorrelation(m, names = TRUE), error = TRUE)
 })
 
 test_that("findCorrelation prints details when verbose", {
-  expect_output(findCorrelation(corr_R2, cutoff = 0.65, verbose = TRUE))
+  expect_snapshot(findCorrelation(corr_R2, cutoff = 0.65, verbose = TRUE))
   # the exact method prints which column it flags at each comparison
-  expect_output(
+  expect_snapshot(
     findCorrelation(corr_R1, cutoff = 0.6, exact = TRUE, verbose = TRUE)
   )
   # the fast method has its own verbose output
-  expect_output(
+  expect_snapshot(
     findCorrelation(corr_R1, cutoff = 0.6, exact = FALSE, verbose = TRUE)
   )
   # the exact method reports when every correlation is below the cutoff
-  expect_output(
-    findCorrelation(corr_R2, cutoff = 0.99, verbose = TRUE),
-    "All correlations"
-  )
+  expect_snapshot(findCorrelation(corr_R2, cutoff = 0.99, verbose = TRUE))
 })
 
 # --- internal helpers -------------------------------------------------------
@@ -56,15 +53,15 @@ test_that("findCorrelation prints details when verbose", {
 test_that("findCorrelation_fast rejects missing values", {
   m <- corr_R1
   m[1, 2] <- NA
-  expect_error(caret:::findCorrelation_fast(m, cutoff = 0.6), "missing values")
+  expect_snapshot(caret:::findCorrelation_fast(m, cutoff = 0.6), error = TRUE)
 })
 
 test_that("findCorrelation_exact rejects non-symmetric and singleton input", {
   ns <- corr_R1
   ns[1, 2] <- 0.1 # break symmetry
-  expect_error(caret:::findCorrelation_exact(ns), "not symmetric")
-  expect_error(
+  expect_snapshot(caret:::findCorrelation_exact(ns), error = TRUE)
+  expect_snapshot(
     caret:::findCorrelation_exact(matrix(1, 1, 1)),
-    "only one variable"
+    error = TRUE
   )
 })

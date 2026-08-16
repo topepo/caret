@@ -15,7 +15,7 @@ check.medianImpute <- function(x) {
   expect_equal(pp$median, med)
 
   x.filled <- predict(pp, newdata = x)
-  expect_false(any(is.na(x.filled)))
+  expect_all_false(as.vector(is.na(x.filled)))
   expect_equal(x[!is.na(x)], x.filled[!is.na(x)])
 
   med.filled <- apply(x.filled, 2, median)

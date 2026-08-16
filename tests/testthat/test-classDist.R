@@ -20,19 +20,19 @@ test_that("Object matches expectations - factor y", {
   distData <- classDist(x, y, pca = FALSE)
 
   # values
-  expect_true(length(distData$values) == length(levels(y)))
+  expect_length(distData$values, length(levels(y)))
 
   # classes
-  expect_true(all(distData$classes %in% levels(y)))
+  expect_in(distData$classes, levels(y))
 
   ## n
-  expect_true(all(table(y) == distData$n))
+  expect_all_true(as.vector(table(y) == distData$n))
 
   ## cuts
   expect_null(distData$cuts)
 
   ## p
-  expect_true(distData$p == ncol(x))
+  expect_equal(distData$p, ncol(x))
 
   ## PCA - FALSE
   expect_null(distData$pca)
@@ -41,8 +41,8 @@ test_that("Object matches expectations - factor y", {
   distData2 <- classDist(x, y, pca = TRUE)
   PCA <- prcomp(x, center = TRUE, scale = TRUE, tol = sqrt(.Machine$double.eps))
 
-  expect_true(all(distData2$pca$sdev == PCA$sdev))
-  expect_true(all(distData2$pca$rotation == PCA$rotation))
+  expect_equal(distData2$pca$sdev, PCA$sdev)
+  expect_equal(distData2$pca$rotation, PCA$rotation)
 })
 
 
@@ -56,13 +56,13 @@ test_that("Object matches expectations - numeric y", {
   distData <- classDist(x, y, pca = FALSE, groups = groups)
 
   # values
-  expect_true(length(distData$values) == length(unique(y)) - 1)
+  expect_length(distData$values, length(unique(y)) - 1)
 
   # classes
-  expect_true(all(distData$classes %in% as.character(seq(0, 100, 25))[2:5]))
+  expect_in(distData$classes, as.character(seq(0, 100, 25))[2:5])
 
   ## p
-  expect_true(distData$p == ncol(x))
+  expect_equal(distData$p, ncol(x))
 
   ## PCA - FALSE
   expect_null(distData$pca)
@@ -71,8 +71,8 @@ test_that("Object matches expectations - numeric y", {
   distData2 <- classDist(x, y, pca = TRUE)
   PCA <- prcomp(x, center = TRUE, scale = TRUE, tol = sqrt(.Machine$double.eps))
 
-  expect_true(all(distData2$pca$sdev == PCA$sdev))
-  expect_true(all(distData2$pca$rotation == PCA$rotation))
+  expect_equal(distData2$pca$sdev, PCA$sdev)
+  expect_equal(distData2$pca$rotation, PCA$rotation)
 })
 
 

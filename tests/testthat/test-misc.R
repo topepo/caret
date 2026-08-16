@@ -33,7 +33,7 @@ test_that("auc calculation is > .5 when Xs provide prediction", {
     trControl = trCntlListMulti
   )
 
-  expect_true(all(knnFit$resample$AUC > 0.5))
+  expect_all_true(knnFit$resample$AUC > 0.5)
 
   set.seed(7686)
   tr_dat <- twoClassSim(200)
@@ -52,7 +52,9 @@ test_that("auc calculation is > .5 when Xs provide prediction", {
     )
   )
 
-  expect_true(all(modle$resample$AUC > 0.5))
+  # twoClassSummary names its area-under-the-curve column ROC (the old check
+  # against an absent AUC column passed vacuously)
+  expect_all_true(modle$resample$ROC > 0.5)
 })
 
 # ------------------------------------------------------------------------------
@@ -89,7 +91,7 @@ test_that("prettySeq labels resamples", {
 
 test_that("flatTable flattens a confusion table into named cells", {
   ft <- caret:::flatTable(factor(c("a", "b", "a")), factor(c("a", "b", "b")))
-  expect_identical(names(ft), paste0(".cell", 1:4))
+  expect_named(ft, paste0(".cell", 1:4))
   # column-major counts: [a,a]=1, [b,a]=0, [a,b]=1, [b,b]=1
   expect_identical(unname(ft), c(1L, 0L, 1L, 1L))
 })
@@ -100,7 +102,7 @@ test_that("splitIndicies splits evenly when it can", {
   # with a remainder, every index is still a valid group label
   si <- caret:::splitIndicies(7, 3)
   expect_length(si, 7)
-  expect_true(all(si %in% 1:3))
+  expect_in(si, 1:3)
 })
 
 test_that("repList makes repeated copies, optionally indexed", {
@@ -221,7 +223,7 @@ test_that("Kim2009 simulates a two-class data frame", {
 test_that("subsemble_index returns model and holdout index lists", {
   set.seed(1)
   idx <- caret:::subsemble_index(factor(rep(c("a", "b"), each = 20)))
-  expect_identical(names(idx), c("model", "holdout"))
+  expect_named(idx, c("model", "holdout"))
 })
 
 test_that("printCall prints the call under a 'Call:' header", {

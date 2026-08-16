@@ -44,7 +44,7 @@ test_that("oob_pred averages the held-out predictions of a classifier", {
   expect_s3_class(op, "data.frame")
   # one averaged row per training sample, with predicted/observed and class probs
   expect_identical(nrow(op), nrow(iris))
-  expect_true(all(c("pred", "obs", levels(iris$Species)) %in% colnames(op)))
+  expect_in(c("pred", "obs", levels(iris$Species)), colnames(op))
   # train_lev recovers the class levels
   expect_identical(caret:::train_lev(fit), levels(iris$Species))
 })
@@ -62,7 +62,7 @@ test_that("oob_pred averages the held-out predictions of a regression model", {
 
   op <- caret:::oob_pred(fit)
   expect_s3_class(op, "data.frame")
-  expect_true(all(c("pred", "obs") %in% colnames(op)))
+  expect_in(c("pred", "obs"), colnames(op))
   # regression models have no class levels
   expect_null(caret:::train_lev(fit))
 })
@@ -101,7 +101,7 @@ test_that("oob_pred works for rfe objects", {
   )
   op <- caret:::oob_pred(rf)
   expect_s3_class(op, "data.frame")
-  expect_true(all(c("pred", "obs") %in% colnames(op)))
+  expect_in(c("pred", "obs"), colnames(op))
 })
 
 test_that("oob_pred works for sbf objects", {
@@ -123,7 +123,7 @@ test_that("oob_pred works for sbf objects", {
   )
   op <- caret:::oob_pred(sf)
   expect_s3_class(op, "data.frame")
-  expect_true(all(c("pred", "obs") %in% colnames(op)))
+  expect_in(c("pred", "obs"), colnames(op))
 })
 
 test_that("oob_pred combines a list of models", {

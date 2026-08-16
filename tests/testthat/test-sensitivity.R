@@ -12,23 +12,23 @@ test_that("sensitivity works for factors, tables and matrices", {
 })
 
 test_that("sensitivity errors on bad input", {
-  expect_error(
+  expect_snapshot(
     sensitivity(as.character(sens_pred), sens_truth),
-    "must be factors"
+    error = TRUE
   )
-  expect_error(
+  expect_snapshot(
     sensitivity(factor(letters[1:3]), factor(letters[1:3])),
-    "same two levels"
+    error = TRUE
   )
   # a non-square table is rejected
-  expect_error(sensitivity(as.table(matrix(1:6, nrow = 2))))
+  expect_snapshot(sensitivity(as.table(matrix(1:6, nrow = 2))), error = TRUE)
 })
 
 test_that("sensitivity handles NAs and empty denominators", {
   p <- sens_pred
   p[1:5] <- NA
   # na.rm = TRUE (default) drops incomplete cases without error
-  expect_true(!is.na(sensitivity(p, sens_truth)))
+  expect_false(is.na(sensitivity(p, sens_truth)))
   # no positive cases -> NA
   no_pos <- factor(rep("normal", 10), levels = rev(sens_lvs))
   expect_true(is.na(sensitivity(no_pos, no_pos, positive = "abnormal")))
@@ -50,15 +50,15 @@ test_that("specificity works for factors, tables and matrices", {
 })
 
 test_that("specificity errors on bad input", {
-  expect_error(
+  expect_snapshot(
     specificity(as.character(sens_pred), sens_truth),
-    "must be a factor"
+    error = TRUE
   )
-  expect_error(
+  expect_snapshot(
     specificity(factor(letters[1:3]), factor(letters[1:3])),
-    "same two levels"
+    error = TRUE
   )
-  expect_error(specificity(as.table(matrix(1:6, nrow = 2))))
+  expect_snapshot(specificity(as.table(matrix(1:6, nrow = 2))), error = TRUE)
 })
 
 test_that("specificity handles empty denominators and multiclass tables", {
@@ -82,7 +82,8 @@ test_that("posPredValue matches the sensitivity/specificity identity", {
 
 test_that("posPredValue respects a supplied prevalence", {
   ppv_25 <- posPredValue(sens_pred, sens_truth, prevalence = 0.25)
-  expect_true(ppv_25 >= 0 && ppv_25 <= 1)
+  expect_gte(ppv_25, 0)
+  expect_lte(ppv_25, 1)
   # table method also accepts prevalence
   expect_equal(
     posPredValue(sens_xtab, prevalence = 0.25),
@@ -96,13 +97,13 @@ test_that("posPredValue collapses multiclass tables", {
 })
 
 test_that("posPredValue errors on bad input", {
-  expect_error(
+  expect_snapshot(
     posPredValue(as.character(sens_pred), sens_truth),
-    "must be factors"
+    error = TRUE
   )
-  expect_error(
+  expect_snapshot(
     posPredValue(factor(letters[1:3]), factor(letters[1:3])),
-    "same two levels"
+    error = TRUE
   )
 })
 
@@ -121,7 +122,8 @@ test_that("negPredValue matches the sensitivity/specificity identity", {
 
 test_that("negPredValue respects a supplied prevalence", {
   npv_25 <- negPredValue(sens_pred, sens_truth, prevalence = 0.25)
-  expect_true(npv_25 >= 0 && npv_25 <= 1)
+  expect_gte(npv_25, 0)
+  expect_lte(npv_25, 1)
   expect_equal(
     negPredValue(sens_xtab, prevalence = 0.25),
     negPredValue(sens_pred, sens_truth, prevalence = 0.25)
@@ -134,12 +136,12 @@ test_that("negPredValue collapses multiclass tables", {
 })
 
 test_that("negPredValue errors on bad input", {
-  expect_error(
+  expect_snapshot(
     negPredValue(as.character(sens_pred), sens_truth),
-    "must be a factor"
+    error = TRUE
   )
-  expect_error(
+  expect_snapshot(
     negPredValue(factor(letters[1:3]), factor(letters[1:3])),
-    "same two levels"
+    error = TRUE
   )
 })

@@ -26,11 +26,3 @@
     Output
       [1]       NaN 0.0000000 0.6931472
 
-# expoTrans validates its newdata
-
-    Code
-      predict(expoTrans(skew_y), "abc")
-    Condition
-      Error in `predict.expoTrans()`:
-      ! newdata should be a numeric vector
-

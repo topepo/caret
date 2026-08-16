@@ -1,22 +1,22 @@
-test_that("high level tests", {
+test_that('glmnet varImp returns non-negative values', {
   skip_on_cran()
-  data(iris)
-  TrainData <- iris[, 1:4]
-  TrainClasses <- iris[, 5]
+  skip_if_not_installed("glmnet")
+  set.seed(1)
+  dat <- SLC14_1(200)
 
-  expect_silent(
-    knnFit1 <- train(
-      TrainData,
-      TrainClasses,
-      method = "knn",
-      preProcess = c("center", "scale"),
-      tuneLength = 10,
-      trControl = trainControl(method = "cv")
-    )
+  reg <- train(
+    y ~ .,
+    data = dat,
+    method = "glmnet",
+    tuneGrid = data.frame(lambda = 0.1, alpha = 0.5),
+    trControl = trainControl(method = "none")
   )
 
-  expect_silent(vv <- varImp(knnFit1))
-
-  expect_true(ncol(vv$importance) == length(levels(TrainClasses)))
-  expect_true(nrow(vv$importance) == ncol(TrainData))
+  # this checks that some coefficients are negative
+  coefs <- predict(reg$finalModel, s = 0.1, type = "coef")
+  expect_lt(0, sum(0 > coefs))
+  # now check that all elements of varImp are nonnegative,
+  # in spite of negative coefficients
+  vis <- varImp(reg, s = 0.1, scale = F)$importance
+  expect_all_true(vis$Overall >= 0)
 })

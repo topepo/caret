@@ -13,10 +13,14 @@ test_that("errors working", {
 test_that("results match", {
   skip_on_cran()
   x = -100:100
-  expect_true(all(spatialSign(x) == x / sqrt(sum(x^2))))
+  expect_equal(spatialSign(x), x / sqrt(sum(x^2)))
 
   i4 <- spatialSign(iris[, 1:4])
-  expect_true(all(as.matrix(i4) == t(apply(iris[, 1:4], 1, spatialSign))))
+  expect_equal(
+    as.matrix(i4),
+    t(apply(iris[, 1:4], 1, spatialSign)),
+    ignore_attr = TRUE
+  )
 })
 
 
@@ -24,8 +28,8 @@ test_that("high level tests", {
   skip_on_cran()
   i4 <- spatialSign(iris[, 1:4])
 
-  expect_true(all(colnames(i4) == names(iris[1:4])))
-  expect_true(all(dim(i4) == dim(iris[1:4])))
+  expect_identical(colnames(i4), names(iris[1:4]))
+  expect_shape(i4, dim = dim(iris[1:4]))
 })
 
 

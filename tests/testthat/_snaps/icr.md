@@ -1,3 +1,7 @@
+# icr handles a single predictor and single-row prediction
+
+    ICA is a group transformation and only a single predictor is listed. This method is eliminated.
+
 # icr requires a numeric outcome
 
     Code

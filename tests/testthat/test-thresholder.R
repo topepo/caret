@@ -13,11 +13,9 @@ test_that("thresholder returns performance for each probability cut-off", {
   expect_s3_class(th, "data.frame")
   # one row per threshold (the final tuning parameter is used by default)
   expect_identical(nrow(th), 5L)
-  expect_true(all(
-    c("prob_threshold", "Sensitivity", "Specificity") %in% colnames(th)
-  ))
+  expect_in(c("prob_threshold", "Sensitivity", "Specificity"), colnames(th))
   # sensitivity/specificity are proportions
-  expect_true(all(th$Sensitivity >= 0 & th$Sensitivity <= 1))
+  expect_all_true(th$Sensitivity >= 0 & th$Sensitivity <= 1)
 })
 
 test_that("thresholder can report every tuning parameter and a stats subset", {
@@ -35,7 +33,7 @@ test_that("thresholder can report every tuning parameter and a stats subset", {
     threshold = 0.5,
     statistics = c("Sensitivity", "Specificity")
   )
-  expect_true(all(c("Sensitivity", "Specificity") %in% colnames(subset)))
+  expect_in(c("Sensitivity", "Specificity"), colnames(subset))
 })
 
 test_that("thresholder validates its inputs", {

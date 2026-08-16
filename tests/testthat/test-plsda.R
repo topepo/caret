@@ -1,8 +1,8 @@
-# Tests for PLS discriminant analysis (plsda) and its sparse variant (splsda).
-# Fits need the pls package; the Bayes probability method needs klaR and splsda
-# needs spls, so those paths are guarded. Fits are RNG-independent here, but the
-# predictions are floats, so the tests assert on structure and snapshot only the
-# deterministic print and error output.
+# Tests for PLS discriminant analysis (plsda, R/plsda.R); its sparse variant
+# splsda is tested in test-splsda.R. Fits need the pls package and the Bayes
+# probability method needs klaR, so those paths are guarded. Fits are
+# RNG-independent here, but the predictions are floats, so the tests assert on
+# structure and snapshot only the deterministic print and error output.
 
 test_that("plsda fits and predicts classes, probabilities and raw scores", {
   skip_on_cran()
@@ -68,17 +68,4 @@ test_that("print.plsda describes the model", {
   set.seed(1)
   fit <- plsda(iris[, 1:4], iris$Species, ncomp = 2)
   expect_snapshot(print(fit))
-})
-
-test_that("splsda fits a sparse PLS discriminant model", {
-  skip_on_cran()
-  skip_if_not_installed("spls")
-
-  set.seed(1)
-  fit <- caret:::splsda(as.matrix(iris[, 1:4]), iris$Species, K = 2, eta = 0.5)
-  expect_s3_class(fit, "splsda")
-  expect_length(
-    caret:::predict.splsda(fit, as.matrix(iris[, 1:4])),
-    nrow(iris)
-  )
 })

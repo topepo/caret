@@ -89,23 +89,8 @@ test_that("bag works with the formula interface", {
 })
 
 # ------------------------------------------------------------------------------
-# the other built-in base learners (each behind its Suggests package)
-
-# fit a small bagged classifier on iris with the given function set
-fit_iris_bag <- function(funcs, ...) {
-  set.seed(1)
-  suppressWarnings(bag(
-    iris[, 1:4],
-    iris$Species,
-    B = 3,
-    bagControl = bagControl(
-      fit = funcs$fit,
-      predict = funcs$pred,
-      aggregate = funcs$aggregate
-    ),
-    ...
-  ))
-}
+# the other built-in base learners (each behind its Suggests package);
+# fit_iris_bag() lives in helper-bag.R
 
 test_that("bag works with plsBag", {
   skip_on_cran()

@@ -30,15 +30,13 @@ test_that("extractPrediction / extractProb / plotClassProbs work on a model list
   # extractPrediction: class predictions for the training and test sets
   pred <- extractPrediction(mods, testX = te_x, testY = te$Class)
   expect_s3_class(pred, "data.frame")
-  expect_true(all(
-    c("obs", "pred", "model", "dataType", "object") %in% colnames(pred)
-  ))
+  expect_in(c("obs", "pred", "model", "dataType", "object"), colnames(pred))
   expect_setequal(unique(pred$dataType), c("Training", "Test"))
 
   # extractProb: the same but with per-class probability columns
   prob <- extractProb(mods, testX = te_x, testY = te$Class)
   expect_s3_class(prob, "data.frame")
-  expect_true(all(levels(tr$Class) %in% colnames(prob)))
+  expect_in(levels(tr$Class), colnames(prob))
 
   # plotClassProbs consumes the extractProb output
   expect_s3_class(plotClassProbs(prob), "trellis")

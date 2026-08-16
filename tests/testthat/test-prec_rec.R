@@ -12,10 +12,10 @@ test_that("precision works for tables and factors", {
 })
 
 test_that("precision errors on bad input", {
-  expect_error(precision(as.character(pr_pred), pr_truth), "must be a factor")
-  expect_error(
+  expect_snapshot(precision(as.character(pr_pred), pr_truth), error = TRUE)
+  expect_snapshot(
     precision(factor(letters[1:3]), factor(letters[1:3])),
-    "same two levels"
+    error = TRUE
   )
 })
 
@@ -35,10 +35,10 @@ test_that("recall works for tables and factors", {
 })
 
 test_that("recall errors on bad input", {
-  expect_error(recall(as.character(pr_pred), pr_truth), "must be a factor")
-  expect_error(
+  expect_snapshot(recall(as.character(pr_pred), pr_truth), error = TRUE)
+  expect_snapshot(
     recall(factor(letters[1:3]), factor(letters[1:3])),
-    "same two levels"
+    error = TRUE
   )
 })
 
@@ -72,10 +72,10 @@ test_that("F_meas respects the beta weighting", {
 })
 
 test_that("F_meas errors on bad input", {
-  expect_error(F_meas(as.character(pr_pred), pr_truth), "must be a factor")
-  expect_error(
+  expect_snapshot(F_meas(as.character(pr_pred), pr_truth), error = TRUE)
+  expect_snapshot(
     F_meas(factor(letters[1:3]), factor(letters[1:3])),
-    "same two levels"
+    error = TRUE
   )
 })
 
@@ -121,7 +121,7 @@ test_that("prSummary rejects outcomes with more than two classes", {
     obs = factor(c("a", "b", "c")),
     pred = factor(c("a", "b", "c"))
   )
-  expect_error(prSummary(d, lev = c("a", "b", "c")), "isn't appropriate")
+  expect_snapshot(prSummary(d, lev = c("a", "b", "c")), error = TRUE)
 })
 
 test_that("prSummary errors when predicted and observed levels differ", {
@@ -130,7 +130,7 @@ test_that("prSummary errors when predicted and observed levels differ", {
     obs = factor(c("A", "B"), levels = c("A", "B")),
     pred = factor(c("A", "B"), levels = c("B", "A"))
   )
-  expect_error(prSummary(d, lev = c("A", "B")), "do not match")
+  expect_snapshot(prSummary(d, lev = c("A", "B")), error = TRUE)
 })
 
 test_that("prSummary errors when class probabilities are missing", {
@@ -139,8 +139,5 @@ test_that("prSummary errors when class probabilities are missing", {
     obs = factor(c("A", "B"), levels = c("A", "B")),
     pred = factor(c("A", "B"), levels = c("A", "B"))
   )
-  expect_error(
-    prSummary(d, lev = c("A", "B")),
-    "Class probabilities are needed"
-  )
+  expect_snapshot(prSummary(d, lev = c("A", "B")), error = TRUE)
 })

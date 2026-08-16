@@ -87,7 +87,6 @@ test_that("sbf runs and its methods behave (default interface)", {
 test_that("sbf works with the formula and recipe interfaces", {
   skip_on_cran()
   skip_if_not_installed("MASS")
-  skip_if_not_installed("recipes")
 
   set.seed(1)
   full <- twoClassSim(150)

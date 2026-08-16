@@ -42,7 +42,9 @@ test_that('numeric y and classification', {
   foo <- function(train_dat) {
     train(Class ~ ., data = train_dat, method = "rpart")
   }
-  expect_snapshot_warning(foo(dat))
+  # the snapshot captures the two-valued-outcome warning; the follow-on
+  # missing-performance warning from the same fit is silenced
+  suppressWarnings(expect_snapshot_warning(foo(dat)))
 })
 
 test_that('3+ classes and twoClassSummary', {
