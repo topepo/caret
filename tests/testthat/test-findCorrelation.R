@@ -35,17 +35,27 @@ test_that("findCorrelation errors when names are requested but unavailable", {
 })
 
 test_that("findCorrelation prints details when verbose", {
-  expect_snapshot(findCorrelation(corr_R2, cutoff = 0.65, verbose = TRUE))
+  # the printed correlation means are platform-sensitive in their last digit,
+  # so mask_decimals (helper-collinearity.R) hides the numbers
+  expect_snapshot(
+    findCorrelation(corr_R2, cutoff = 0.65, verbose = TRUE),
+    transform = mask_decimals
+  )
   # the exact method prints which column it flags at each comparison
   expect_snapshot(
-    findCorrelation(corr_R1, cutoff = 0.6, exact = TRUE, verbose = TRUE)
+    findCorrelation(corr_R1, cutoff = 0.6, exact = TRUE, verbose = TRUE),
+    transform = mask_decimals
   )
   # the fast method has its own verbose output
   expect_snapshot(
-    findCorrelation(corr_R1, cutoff = 0.6, exact = FALSE, verbose = TRUE)
+    findCorrelation(corr_R1, cutoff = 0.6, exact = FALSE, verbose = TRUE),
+    transform = mask_decimals
   )
   # the exact method reports when every correlation is below the cutoff
-  expect_snapshot(findCorrelation(corr_R2, cutoff = 0.99, verbose = TRUE))
+  expect_snapshot(
+    findCorrelation(corr_R2, cutoff = 0.99, verbose = TRUE),
+    transform = mask_decimals
+  )
 })
 
 # --- internal helpers -------------------------------------------------------
