@@ -70,3 +70,35 @@
       Error:
       ! Class probabilities are needed to score models using the area under the PR curve. Set `classProbs = TRUE` in the trainControl() function.
 
+# the table methods reject malformed tables with clear errors
+
+    Code
+      precision(as.table(bad_names))
+    Condition
+      Error in `precision.table()`:
+      ! the table must the same groups in the same order
+
+---
+
+    Code
+      recall(as.table(bad_names))
+    Condition
+      Error in `recall.table()`:
+      ! the table must the same groups in the same order
+
+---
+
+    Code
+      precision(as.table(matrix(1:6, nrow = 2)))
+    Condition
+      Error in `precision.table()`:
+      ! the table must have nrow = ncol
+
+---
+
+    Code
+      recall(as.table(matrix(1:6, nrow = 2)))
+    Condition
+      Error in `recall.table()`:
+      ! the table must have nrow = ncol
+

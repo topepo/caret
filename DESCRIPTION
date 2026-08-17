@@ -80,6 +80,7 @@ Imports:
     withr (>= 2.0.0)
 Suggests:
     BradleyTerry2,
+    C50,
     covr,
     Cubist,
     dplyr,
@@ -87,6 +88,7 @@ Suggests:
     ellipse,
     fastICA,
     gam (>= 1.15),
+    gbm,
     ipred,
     kernlab,
     klaR,
@@ -106,6 +108,7 @@ Suggests:
     RANN,
     rmarkdown,
     rpart,
+    RRF,
     spls,
     superpc,
     testthat (>= 3.0.0),

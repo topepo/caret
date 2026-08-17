@@ -181,22 +181,10 @@ GarsonWeights <- function(object) {
     }
   }
 
-  if (FALSE) {
-    ## Test case from Gevrey, M., Dimopoulos, I., & Lek,
-    ## S. (2003). Review and comparison of methods to study the
-    ## contribution of variables in artificial neural network
-    ## models. ecological modelling, 160(3), 249-264.
-    # fmt: skip
-    i2h <- matrix(
-      c(-1.67624,  3.29022,  1.32466,
-        -0.51874, -0.22921, -0.25526,
-        -4.01764,  2.12486, -0.08168,
-        -1.75691, -1.44702,  0.58286),
-      ncol = 3,
-      byrow = TRUE
-    )
-    h2o <- matrix(c(4.57857, -0.48815, -5.73901, -2.65221), ncol = 1)
-  }
+  ## A worked test case for this calculation appears in Table 1 of Gevrey,
+  ## M., Dimopoulos, I., & Lek, S. (2003). Review and comparison of methods
+  ## to study the contribution of variables in artificial neural network
+  ## models. Ecological Modelling, 160(3), 249-264.
 
   ##  From Gevrey et al. (2003): "For each hidden neuron i, multiply
   ##  the absolute value of the hidden-output layer connection

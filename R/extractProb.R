@@ -81,11 +81,8 @@ extractProb <- function(
       objName <- c(objName, rep(objectNames[[i]], length(tempTrainPred)))
       dataType <- c(dataType, rep("Training", length(tempTrainPred)))
 
-      # Test Data
+      # Test Data (testX was already converted to a data frame above)
       if (!is.null(testX) && !is.null(testY)) {
-        if (!is.data.frame(testX)) {
-          testX <- as.data.frame(testX, stringsAsFactors = TRUE)
-        }
         tempX <- testX
         tempY <- testY
         tempX$.outcome <- NULL
@@ -108,11 +105,8 @@ extractProb <- function(
           )
         }
 
-        if (is.null(predProb)) {
-          predProb <- tempTestProb
-        } else {
-          predProb <- rbind(predProb, tempTestProb)
-        }
+        # the training block above always fills predProb first
+        predProb <- rbind(predProb, tempTestProb)
         predClass <- c(predClass, as.character(tempTestPred))
         obs <- c(obs, as.character(testY))
         modelName <- c(modelName, rep(models[[i]]$method, length(tempTestPred)))

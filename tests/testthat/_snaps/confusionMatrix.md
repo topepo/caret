@@ -299,3 +299,183 @@
       Error in `confusionMatrix.train()`:
       ! cannot compute confusion matrices for leave-one-out, out-of-bag resampling, or no resampling
 
+# confusionMatrix needs at least two factor levels
+
+    Code
+      confusionMatrix(one, one)
+    Condition
+      Error in `confusionMatrix.default()`:
+      ! there must be at least 2 factors levels in the data
+
+# confusionMatrix.matrix rejects non-square matrices
+
+    Code
+      confusionMatrix(matrix(1:6, nrow = 2))
+    Condition
+      Error in `confusionMatrix.matrix()`:
+      ! matrix must have equal dimensions
+
+# confusionMatrix.table rejects tables with other than 2 dimensions
+
+    Code
+      confusionMatrix(as.table(array(1:8, dim = c(2, 2, 2))))
+    Condition
+      Error in `confusionMatrix.table()`:
+      ! the table must have two dimensions
+
+# confusionMatrix requires named prevalences for 3+ classes
+
+    Code
+      confusionMatrix(cm_tab3, prevalence = c(0.2, 0.3, 0.5))
+    Condition
+      Error in `confusionMatrix.table()`:
+      ! with >2 classes, the prevalence vector must have names
+
+# print.confusionMatrix defaults and validates the mode
+
+    Code
+      print(cm, mode = NULL)
+    Output
+      Confusion Matrix and Statistics
+      
+                Reference
+      Prediction yes no
+             yes   8  1
+             no    2  9
+                                                
+                     Accuracy : 0.85            
+                       95% CI : (0.6211, 0.9679)
+          No Information Rate : 0.5             
+          P-Value [Acc > NIR] : 0.001288        
+                                                
+                        Kappa : 0.7             
+                                                
+       Mcnemar's Test P-Value : 1.000000        
+                                                
+                  Sensitivity : 0.8000          
+                  Specificity : 0.9000          
+               Pos Pred Value : 0.8889          
+               Neg Pred Value : 0.8182          
+                   Prevalence : 0.5000          
+               Detection Rate : 0.4000          
+         Detection Prevalence : 0.4500          
+            Balanced Accuracy : 0.8500          
+                                                
+             'Positive' Class : yes             
+                                                
+
+---
+
+    Code
+      print(cm, mode = "nope")
+    Condition
+      Error in `print.confusionMatrix()`:
+      ! `mode` should be either 'sens_spec', 'prec_recall', or 'everything'
+
+# print.confusionMatrix filters multiclass statistics by mode
+
+    Code
+      print(cm, mode = "prec_recall")
+    Output
+      Confusion Matrix and Statistics
+      
+                  
+                   setosa versicolor virginica
+        setosa         50          0         0
+        versicolor      0         50         0
+        virginica       0          0        50
+      
+      Overall Statistics
+                                           
+                     Accuracy : 1          
+                       95% CI : (0.9757, 1)
+          No Information Rate : 0.3333     
+          P-Value [Acc > NIR] : < 2.2e-16  
+                                           
+                        Kappa : 1          
+                                           
+       Mcnemar's Test P-Value : NA         
+      
+      Statistics by Class:
+      
+                           Class: setosa Class: versicolor Class: virginica
+      Precision                   1.0000            1.0000           1.0000
+      Recall                      1.0000            1.0000           1.0000
+      F1                          1.0000            1.0000           1.0000
+      Prevalence                  0.3333            0.3333           0.3333
+      Detection Rate              0.3333            0.3333           0.3333
+      Detection Prevalence        0.3333            0.3333           0.3333
+      Balanced Accuracy           1.0000            1.0000           1.0000
+
+# print.confusionMatrix.train shows counts for a single resample
+
+    Code
+      print(cm)
+    Output
+      Repeated Train/Test Splits Estimated (1 reps, 75%) Confusion Matrix 
+      
+      (entries are un-normalized aggregated counts)
+       
+      Confusion Matrix and Statistics
+      
+                  Reference
+      Prediction   setosa versicolor virginica
+        setosa         12          0         0
+        versicolor      0         12         0
+        virginica       0          0        12
+      
+      Overall Statistics
+                                           
+                     Accuracy : 1          
+                       95% CI : (0.9026, 1)
+          No Information Rate : 0.3333     
+          P-Value [Acc > NIR] : < 2.2e-16  
+                                           
+                        Kappa : 1          
+                                           
+       Mcnemar's Test P-Value : NA         
+      
+      Statistics by Class:
+      
+                           Class: setosa Class: versicolor Class: virginica
+      Sensitivity                 1.0000            1.0000           1.0000
+      Specificity                 1.0000            1.0000           1.0000
+      Pos Pred Value              1.0000            1.0000           1.0000
+      Neg Pred Value              1.0000            1.0000           1.0000
+      Prevalence                  0.3333            0.3333           0.3333
+      Detection Rate              0.3333            0.3333           0.3333
+      Detection Prevalence        0.3333            0.3333           0.3333
+      Balanced Accuracy           1.0000            1.0000           1.0000
+
+# confusion matrices are refused for regression fits
+
+    Code
+      caret:::train_resampledCM(fake)
+    Condition
+      Error in `caret:::train_resampledCM()`:
+      ! confusion matrices are only valid for classification models
+
+# the resampled-table helpers explain what 50+ class objects need
+
+    Code
+      caret:::train_resampledCM(fake_train)
+    Condition
+      Error in `caret:::train_resampledCM()`:
+      ! When there are 50+ classes, `train` does not automatically pre-compute the resampled confusion matrices. You can get them from this function using a value of `savePredictions` other than FALSE.
+
+---
+
+    Code
+      caret:::rfe_resampledCM(fake_rfe)
+    Condition
+      Error in `caret:::rfe_resampledCM()`:
+      ! When there are 50+ classes, `the function does not automatically pre-compute the resampled confusion matrices. You can get them when the object has a `pred` element.
+
+---
+
+    Code
+      caret:::sbf_resampledCM(fake_sbf)
+    Condition
+      Error in `caret:::sbf_resampledCM()`:
+      ! When there are 50+ classes, the function does not automatically pre-compute the resampled confusion matrices. You can get them when the option `saveDetails = TRUE`.
+

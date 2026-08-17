@@ -208,7 +208,7 @@ trim_values <- function(preds, ctrl, is_num) {
         preds <- trimPredictions(
           mod_type = "Regression",
           bounds = ctrl$predictionBounds,
-          limits = ctrl$yLimit,
+          limits = ctrl$yLimits,
           pred = preds
         )
       }
@@ -228,7 +228,7 @@ trim_values <- function(preds, ctrl, is_num) {
           preds <- trimPredictions(
             mod_type = "Regression",
             bounds = ctrl$predictionBounds,
-            limits = ctrl$yLimit,
+            limits = ctrl$yLimits,
             pred = preds
           )
         }
