@@ -82,10 +82,8 @@ test_that("createDataPartition needs at least two data points", {
 })
 
 test_that("createDataPartition samples the times of a Surv outcome", {
-  skip_if_not_installed("survival")
-
   set.seed(4062)
-  y <- survival::Surv(rnorm(40, 10), rep(0:1, 20))
+  y <- fake_surv(rnorm(40, 10))
   idx <- createDataPartition(y, p = 0.5)
   expect_length(idx, 1)
 })
@@ -125,10 +123,8 @@ test_that("createFolds bins numeric outcomes and handles small samples", {
 })
 
 test_that("createFolds splits the times of a Surv outcome", {
-  skip_if_not_installed("survival")
-
   set.seed(9548)
-  y <- survival::Surv(rnorm(40, 10), rep(0:1, 20))
+  y <- fake_surv(rnorm(40, 10))
   folds <- createFolds(y, k = 4)
   expect_setequal(unlist(folds), 1:40)
 })
@@ -142,10 +138,8 @@ test_that("createMultiFolds repeats a k-fold split", {
 })
 
 test_that("createMultiFolds splits the times of a Surv outcome", {
-  skip_if_not_installed("survival")
-
   set.seed(6395)
-  y <- survival::Surv(rnorm(40, 10), rep(0:1, 20))
+  y <- fake_surv(rnorm(40, 10))
   folds <- createMultiFolds(y, k = 4, times = 2)
   expect_length(folds, 8)
 })
@@ -270,10 +264,8 @@ test_that("make_resamples names unnamed user indices", {
 })
 
 test_that("make_resamples computes hold-outs for a Surv outcome", {
-  skip_if_not_installed("survival")
-
   set.seed(1902)
-  y <- survival::Surv(rnorm(30, 10), rep(0:1, 15))
+  y <- fake_surv(rnorm(30, 10))
   ctrl <- caret:::make_resamples(trainControl(method = "cv", number = 3), y)
   expect_length(ctrl$indexOut, 3)
 })

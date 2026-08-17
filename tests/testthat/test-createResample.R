@@ -20,10 +20,8 @@ test_that("createResample can return a matrix", {
 })
 
 test_that("createResample samples the survival times of a Surv outcome", {
-  skip_if_not_installed("survival")
-
   set.seed(6180)
-  y <- survival::Surv(c(5, 6, 7, 8, 9, 10), c(1, 0, 1, 1, 0, 1))
+  y <- fake_surv(c(5, 6, 7, 8, 9, 10), c(1, 0, 1, 1, 0, 1))
   out <- createResample(y, times = 2)
   expect_named(out, paste0("Resample", 1:2))
   expect_all_true(lengths(out) == 6)
