@@ -20,3 +20,11 @@
       Error in `caret:::predict.pcaNNet()`:
       ! object not of class "pcaNNet"
 
+# predict.pcaNNet checks the object's class
+
+    Code
+      caret:::predict.pcaNNet(structure(list(), class = "nope"))
+    Condition
+      Error in `caret:::predict.pcaNNet()`:
+      ! object not of class "pcaNNet"
+

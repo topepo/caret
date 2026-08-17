@@ -58,13 +58,9 @@
     if (!is.matrix(x)) {
       x <- as.matrix(x)
     }
-    if (!is.factor(y)) {
-      if (!is.vector(y)) {
-        y <- as.vector(y)
-      }
-      if (!is.vector(y)) {
-        y <- y[, 1]
-      }
+    ## a matrix or data frame outcome is reduced to its first column
+    if (!is.factor(y) && (is.matrix(y) || is.data.frame(y))) {
+      y <- y[, 1]
     }
     if (is.null(weights)) {
       weights <- rep(1, dim(x)[1])

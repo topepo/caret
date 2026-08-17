@@ -38,3 +38,129 @@ test_that('bagEarth simple classification', {
   expect_true(0 <= min(pred_prob))
   expect_true(max(pred_prob) <= 1)
 })
+
+# ------------------------------------------------------------------------------
+# constructors
+
+test_that("bagEarth coerces its inputs and can drop the stored predictors", {
+  skip_on_cran()
+  skip_if_not_installed("earth")
+
+  # a one-column matrix or data frame outcome is reduced to its column
+  set.seed(2314)
+  fit <- bagEarth(as.matrix(trees[, -3]), as.matrix(trees[, 3]), B = 2)
+  expect_s3_class(fit, "bagEarth")
+
+  set.seed(2314)
+  from_df <- bagEarth(trees[, -3], trees[, "Volume", drop = FALSE], B = 2)
+  expect_s3_class(from_df, "bagEarth")
+
+  # keepX = FALSE leaves the training predictors out of the object
+  set.seed(2314)
+  lean <- bagEarth(trees[, -3], trees[, 3], B = 2, keepX = FALSE)
+  expect_null(lean$x)
+})
+
+test_that("bagEarth requires a binomial glm for a factor outcome", {
+  skip_on_cran()
+  skip_if_not_installed("earth")
+
+  set.seed(5566)
+  dat <- twoClassSim(60)
+  expect_snapshot(bagEarth(dat[, 1:5], dat$Class, B = 2), error = TRUE)
+})
+
+test_that("bagEarth fits a classification model through earth's glm", {
+  skip_on_cran()
+  skip_if_not_installed("earth")
+
+  set.seed(7418)
+  dat <- twoClassSim(60)
+  fit <- suppressWarnings(
+    bagEarth(dat[, 1:5], dat$Class, B = 2, glm = list(family = binomial))
+  )
+  expect_identical(fit$levels, levels(dat$Class))
+
+  # both classification prediction types work
+  cls <- suppressWarnings(predict(fit, dat[, 1:5], type = "class"))
+  expect_s3_class(cls, "factor")
+  probs <- suppressWarnings(predict(fit, dat[, 1:5], type = "prob"))
+  expect_named(probs, levels(dat$Class))
+})
+
+test_that("predict.bagEarth validates the type and can use the training data", {
+  skip_on_cran()
+  skip_if_not_installed("earth")
+
+  set.seed(4192)
+  fit <- bagEarth(trees[, -3], trees[, 3], B = 3)
+
+  expect_snapshot(predict(fit, trees[, -3], type = "nope"), error = TRUE)
+
+  # with no newdata the out-of-bag predictions of the stored data are summarised
+  oob <- predict(fit)
+  expect_length(oob, nrow(trees))
+})
+
+# ------------------------------------------------------------------------------
+# print and summary
+
+test_that("print.bagEarth describes the ensemble", {
+  skip_on_cran()
+  skip_if_not_installed("earth")
+
+  set.seed(9655)
+  fit <- bagEarth(trees[, -3], trees[, 3], B = 3)
+  # the call is deparsed into the output, so only the data shape and B vary
+  expect_snapshot(print(fit))
+})
+
+test_that("summary.bagEarth reports the term and variable counts", {
+  skip_on_cran()
+  skip_if_not_installed("earth")
+
+  set.seed(9655)
+  fit <- bagEarth(trees[, -3], trees[, 3], B = 3)
+  smry <- summary(fit)
+  expect_s3_class(smry, "summary.bagEarth")
+  expect_named(smry, c("modelInfo", "oobStat", "bagEarthCall"))
+  expect_identical(colnames(smry$modelInfo), c("Num Terms", "Num Variables"))
+  # one row of model information per bootstrap sample
+  expect_identical(nrow(smry$modelInfo), 3L)
+
+  # the printed statistics are resampled floats, so mask the numbers
+  expect_snapshot(print(smry), transform = mask_decimals)
+})
+
+test_that("bagEarth.formula needs a formula", {
+  skip_on_cran()
+  skip_if_not_installed("earth")
+  expect_snapshot(caret:::bagEarth.formula(iris[, 1:4]), error = TRUE)
+})
+
+test_that("bagEarth fits from a formula and formats its terms", {
+  skip_on_cran()
+  skip_if_not_installed("earth")
+
+  set.seed(3078)
+  fit <- bagEarth(Volume ~ ., data = trees, B = 2)
+  expect_s3_class(fit, "bagEarth")
+
+  # format.bagEarth writes out the pooled model expression; cat = FALSE
+  # returns it instead of printing, and the coefficients are fitted floats
+  expect_type(format(fit, cat = FALSE), "character")
+  expect_snapshot(format(fit), transform = mask_decimals)
+})
+
+test_that("predict.bagEarth averages out-of-bag predictions without stored x", {
+  skip_on_cran()
+  skip_if_not_installed("earth")
+
+  # keepX = FALSE means there is no training data to fall back on, so the
+  # out-of-bag predictions of each bootstrap fit are pooled instead
+  set.seed(5721)
+  fit <- bagEarth(trees[, -3], trees[, 3], B = 5, keepX = FALSE)
+  expect_null(fit$x)
+  oob <- predict(fit)
+  expect_true(length(oob) > 0)
+})
