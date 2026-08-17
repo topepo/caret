@@ -175,8 +175,128 @@ test_that("dummyVars print method", {
   # scrub the formula's environment address, which is not deterministic
   expect_snapshot(
     print(dummyVars(~ Species + Sepal.Length, data = iris)),
-    transform = function(x) {
-      sub("<environment: 0x[0-9a-f]+>", "<environment>", x)
-    }
+    transform = mask_env
   )
+})
+
+test_that("dummyVars expands a dot formula and handles all-numeric data", {
+  # a dot picks up every column of the data
+  dv <- dummyVars(~., data = iris)
+  expect_setequal(dv$vars, names(iris))
+  expect_identical(dv$facVars, "Species")
+
+  # with no factors at all there is nothing to expand
+  num_only <- dummyVars(~., data = iris[, 1:4])
+  expect_null(num_only$facVars)
+  expect_null(num_only$lvls)
+  expect_identical(ncol(predict(num_only, iris[, 1:4])), 4L)
+})
+
+test_that("dummyVars rejects levelsOnly when levels are shared", {
+  dat <- data.frame(
+    a = factor(c("x", "y", "x", "y")),
+    b = factor(c("x", "x", "y", "y"))
+  )
+  expect_snapshot(dummyVars(~., data = dat, levelsOnly = TRUE), error = TRUE)
+})
+
+test_that("dummyVars can drop the variable names from the columns", {
+  dat <- data.frame(
+    size = factor(c("small", "large", "small", "large")),
+    hue = factor(c("red", "red", "blue", "blue"))
+  )
+  dv <- dummyVars(~., data = dat, levelsOnly = TRUE)
+  expect_setequal(
+    colnames(predict(dv, dat)),
+    c("small", "large", "red", "blue")
+  )
+})
+
+test_that("dummyVars can separate names and levels", {
+  dat <- data.frame(size = factor(c("small", "large", "small", "large")))
+  dv <- dummyVars(~., data = dat, sep = ".")
+  expect_setequal(colnames(predict(dv, dat)), c("size.small", "size.large"))
+})
+
+test_that("print.dummyVars describes the encoding", {
+  dat <- data.frame(
+    size = factor(c("small", "large", "small", "large")),
+    n = 1:4
+  )
+  # the printed formula carries its environment, whose address varies by
+  # session, so mask_env (helper-snapshots.R) hides it
+  expect_snapshot(print(dummyVars(~., data = dat)), transform = mask_env)
+  expect_snapshot(
+    print(dummyVars(~., data = dat, sep = ".")),
+    transform = mask_env
+  )
+  expect_snapshot(
+    print(dummyVars(~., data = dat, levelsOnly = TRUE)),
+    transform = mask_env
+  )
+  expect_snapshot(
+    print(dummyVars(~., data = dat, fullRank = TRUE)),
+    transform = mask_env
+  )
+})
+
+test_that("predict.dummyVars validates its newdata", {
+  dat <- data.frame(size = factor(c("small", "large")), n = 1:2)
+  dv <- dummyVars(~., data = dat)
+
+  expect_snapshot(predict(dv, newdata = NULL), error = TRUE)
+  expect_snapshot(predict(dv, newdata = dat[, "n", drop = FALSE]), error = TRUE)
+  # a matrix is converted to a data frame first
+  num <- dummyVars(~., data = iris[, 1:4])
+  expect_identical(nrow(predict(num, as.matrix(iris[, 1:4]))), 150L)
+})
+
+test_that("contr.ltfr builds a less-than-full-rank contrast matrix", {
+  # from a level count
+  out <- contr.ltfr(3)
+  expect_shape(out, dim = c(3L, 3L))
+  expect_identical(colnames(out), c("1", "2", "3"))
+  # from level names
+  named <- contr.ltfr(c("a", "b"))
+  expect_identical(rownames(named), c("a", "b"))
+  # a sparse version routes through .RDiag's Matrix branch
+  skip_if_not_installed("Matrix")
+  sp <- contr.ltfr(3, sparse = TRUE)
+  expect_identical(dim(sp), c(3L, 3L))
+})
+
+test_that("contr.ltfr needs at least two levels", {
+  expect_snapshot(contr.ltfr(1), error = TRUE)
+  expect_snapshot(contr.ltfr("a"), error = TRUE)
+})
+
+test_that("contr.dummy builds an identity contrast matrix", {
+  out <- caret:::contr.dummy(3)
+  expect_identical(unname(out), diag(3))
+  expect_identical(rownames(out), c("1", "2", "3"))
+
+  named <- caret:::contr.dummy(c("a", "b"))
+  expect_identical(rownames(named), c("a", "b"))
+
+  expect_snapshot(caret:::contr.dummy(1), error = TRUE)
+})
+
+test_that("class2ind converts a factor to indicator columns", {
+  f <- factor(c("a", "b", "c", "a"))
+  out <- class2ind(f)
+  expect_shape(out, dim = c(4L, 3L))
+  expect_identical(colnames(out), c("a", "b", "c"))
+
+  # a two-level factor can collapse to a single binary vector
+  two <- factor(c("yes", "no", "yes"))
+  expect_identical(unname(class2ind(two, drop2nd = TRUE)), c(0, 1, 0))
+
+  expect_snapshot(class2ind(1:4), error = TRUE)
+})
+
+test_that("dummyVars converts matrix input to a data frame", {
+  x <- as.matrix(iris[, 1:4])
+  dv <- dummyVars(~., data = x)
+  expect_setequal(dv$vars, colnames(x))
+  expect_identical(ncol(predict(dv, iris[, 1:4])), 4L)
 })

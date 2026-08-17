@@ -17,7 +17,8 @@
    \item The table methods for \code{sensitivity()}, \code{specificity()}, \code{posPredValue()}, \code{negPredValue()}, \code{precision()}, and \code{recall()} now give their intended "the table must have nrow = ncol" and "the table must the same groups in the same order" errors, instead of an "invalid argument type" error from the same mis-written \code{!all.equal()} check that was fixed for \code{confusionMatrix()}.
    \item Fixed two bugs in \code{filterVarImp()}: a data set with exactly one factor predictor errored during the factor-to-numeric conversion (a missing \code{drop = FALSE}), and the documented \code{...} options were never actually forwarded to \code{lm()} or \code{loess()} for regression outcomes.
    \item Removed the unused \code{predict.PLS()} method. It was left over from an internal \code{PLS()} function that caret dropped before version 6.0: nothing in the package creates objects of class \code{"PLS"}, the fields it reads (\code{isRegression}, \code{yLevels}, \code{bestIter$.ncomp}) exist nowhere else, and \pkg{pls} models are of class \code{"mvr"}, so no object could ever dispatch to it.
-
+   \item \code{checkInstall()} can install Bioconductor packages again. It sourced \code{biocLite.R}, which Bioconductor retired with release 3.8, and now uses \cpkg{BiocManager} instead (installing it first if needed).
+   \item \code{preProcess(method = "corr")} now really does add the zero-variance filter it promises. The check that adds it ran after \code{method} had been converted from a character vector to a named list, so it never fired, and a zero-variance predictor made the correlation matrix undefined: the call failed with "missing value where TRUE/FALSE needed".
   }
 }
 

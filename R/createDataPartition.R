@@ -426,9 +426,8 @@ make_resamples <- function(ctrl_obj, outcome) {
     }
   }
 
-  if (ctrl_obj$method != "oob" && is.null(ctrl_obj$index)) {
-    names(ctrl_obj$index) <- prettySeq(ctrl_obj$index)
-  }
+  ## every non-oob method has indices by this point, so only their names can
+  ## be missing
   if (ctrl_obj$method != "oob" && is.null(names(ctrl_obj$index))) {
     names(ctrl_obj$index) <- prettySeq(ctrl_obj$index)
   }
