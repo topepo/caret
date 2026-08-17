@@ -146,3 +146,125 @@ test_that("ggplot.rfe plots the feature-selection profile", {
   )
   expect_s3_class(ggplot(rf), "ggplot")
 })
+
+# ------------------------------------------------------------------------------
+# plot types, highlighting and strip labels
+#
+# ggplot_build() runs the layer computations, which is where a malformed plot
+# would surface.
+
+test_that("ggplot.train can highlight the chosen tuning parameters", {
+  skip_on_cran()
+
+  set.seed(4506)
+  fit <- train(
+    Species ~ .,
+    data = iris,
+    method = "knn",
+    tuneLength = 4,
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  p <- ggplot(fit, highlight = TRUE)
+  expect_s3_class(ggplot2::ggplot_build(p), "ggplot_built")
+})
+
+test_that("ggplot.train draws a level plot for two tuning parameters", {
+  skip_on_cran()
+  skip_if_not_installed("earth")
+
+  set.seed(9825)
+  fit <- suppressWarnings(suppressMessages(train(
+    y ~ .,
+    data = SLC14_1(80),
+    method = "earth",
+    tuneGrid = expand.grid(nprune = 2:4, degree = 1:2),
+    trControl = trainControl(method = "cv", number = 3)
+  )))
+
+  lvl <- ggplot(fit, plotType = "level")
+  expect_s3_class(ggplot2::ggplot_build(lvl), "ggplot_built")
+
+  # the scatter version of the same fit facets over the second parameter
+  expect_s3_class(
+    ggplot2::ggplot_build(ggplot(fit, plotType = "scatter")),
+    "ggplot_built"
+  )
+  expect_s3_class(
+    ggplot2::ggplot_build(ggplot(fit, plotType = "scatter", highlight = TRUE)),
+    "ggplot_built"
+  )
+})
+
+test_that("a level plot needs two tuning parameters", {
+  skip_on_cran()
+
+  set.seed(3384)
+  fit <- train(
+    Species ~ .,
+    data = iris,
+    method = "knn",
+    tuneLength = 4,
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  expect_snapshot(ggplot(fit, plotType = "level"), error = TRUE)
+})
+
+test_that("ggplot.train can put the parameter name in the strip", {
+  skip_on_cran()
+  skip_if_not_installed("C50")
+
+  # three tuning parameters exercise the strip-labelling branches
+  set.seed(7742)
+  fit <- suppressWarnings(train(
+    Species ~ .,
+    data = iris,
+    method = "C5.0",
+    tuneGrid = expand.grid(
+      trials = c(1, 5),
+      model = c("tree", "rules"),
+      winnow = c(TRUE, FALSE)
+    ),
+    trControl = trainControl(method = "cv", number = 3)
+  ))
+
+  expect_s3_class(
+    ggplot2::ggplot_build(ggplot(fit, nameInStrip = TRUE)),
+    "ggplot_built"
+  )
+  expect_s3_class(
+    ggplot2::ggplot_build(ggplot(fit, plotType = "level", nameInStrip = TRUE)),
+    "ggplot_built"
+  )
+})
+
+test_that("the existing ggplot.train objects build cleanly", {
+  skip_on_cran()
+
+  set.seed(2531)
+  fit <- train(
+    Species ~ .,
+    data = iris,
+    method = "knn",
+    tuneLength = 4,
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  expect_s3_class(
+    ggplot2::ggplot_build(ggplot(fit, output = "ggplot")),
+    "ggplot_built"
+  )
+})
+
+test_that("random_search_plot needs more than one parameter combination", {
+  skip_on_cran()
+
+  set.seed(6968)
+  fit <- train(
+    Species ~ .,
+    data = iris,
+    method = "knn",
+    tuneGrid = data.frame(k = 5),
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  # a random-search plot of a single combination has nothing to show
+  expect_snapshot(caret:::random_search_plot(fit), error = TRUE)
+})

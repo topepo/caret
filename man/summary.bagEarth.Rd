@@ -19,7 +19,7 @@ a list with elements:
 \itemize{
 \item \code{modelInfo}: a matrix with the number of model terms and variables used
 \item \code{oobStat}: a summary of the out-of-bag statistics
-\item \code{bmarsCall}: the original call to \code{bagEarth}
+\item \code{bagEarthCall}: the original call to \code{bagEarth}
 }
 }
 \description{

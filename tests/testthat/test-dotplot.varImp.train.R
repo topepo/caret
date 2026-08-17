@@ -7,7 +7,7 @@ test_that("dotPlot builds a lattice object from a varImp.train", {
   skip_if_not_installed("rpart")
 
   vi <- varimp_fixture()
-  expect_s3_class(caret:::dotPlot(vi), "trellis")
+  expect_s3_class(draw_trellis(caret:::dotPlot(vi)), "trellis")
 })
 
 test_that("dotPlot groups the classes for per-class importances", {
@@ -25,5 +25,5 @@ test_that("dotPlot groups the classes for per-class importances", {
     trControl = trainControl(method = "cv", number = 3)
   )
   vi <- varImp(fit)
-  expect_s3_class(caret:::dotPlot(vi), "trellis")
+  expect_s3_class(draw_trellis(caret:::dotPlot(vi)), "trellis")
 })
