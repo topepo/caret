@@ -75,3 +75,30 @@ test_that("findCorrelation_exact rejects non-symmetric and singleton input", {
     error = TRUE
   )
 })
+
+test_that("findCorrelation_exact skips columns it has already flagged", {
+  # v1 and v2 are flagged early, so later passes over them are skipped
+  m <- matrix(
+    c(
+      1,
+      0.95,
+      0.9,
+      0.2,
+      0.95,
+      1,
+      0.9,
+      0.2,
+      0.9,
+      0.9,
+      1,
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      1
+    ),
+    nrow = 4,
+    dimnames = list(paste0("v", 1:4), paste0("v", 1:4))
+  )
+  expect_identical(caret:::findCorrelation_exact(m, cutoff = 0.8), c(1L, 2L))
+})

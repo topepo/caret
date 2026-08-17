@@ -240,8 +240,10 @@ preProcess.default <- function(
   method <- tmp$opts
   wildcards <- tmp$wildcards
 
-  if (any(method == "corr") && !any(method == "zv")) {
-    method <- unique(c(method, "zv"))
+  ## `method` is a named list of predictors by this point, so the filters are
+  ## its names rather than its values
+  if (any(names(method) == "corr") && !any(names(method) == "zv")) {
+    method$zv <- method$corr
     if (verbose) {
       cat("A zero-variance filter was added for the correlation filter\n")
     }

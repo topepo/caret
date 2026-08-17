@@ -44,3 +44,21 @@ test_that("missing data", {
 
   expect_equal(i5, as.matrix(exp_res), ignore_attr = TRUE)
 })
+
+test_that("spatialSign returns zeros for an all-zero vector", {
+  # the projection is undefined at the origin, so the result is left at zero
+  expect_identical(spatialSign(c(0, 0, 0)), c(0, 0, 0))
+})
+
+test_that("spatialSign keeps the orientation of a one-cell matrix", {
+  # a single row of a single column would otherwise be transposed by apply()
+  res <- spatialSign(matrix(5, nrow = 1, ncol = 1))
+  expect_shape(res, dim = c(1L, 1L))
+  expect_identical(res[1, 1], 1)
+})
+
+test_that("spatialSign rejects data frames that are not numeric", {
+  # a complex column passes the character/factor screen but still does not
+  # give a numeric matrix
+  expect_snapshot(spatialSign(data.frame(a = c(1 + 2i, 3 + 1i))), error = TRUE)
+})
