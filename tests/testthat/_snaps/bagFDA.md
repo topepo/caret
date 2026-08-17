@@ -38,3 +38,11 @@
        Max.   :10.000   Max.   :3    
       
 
+# bagFDA.formula needs a formula
+
+    Code
+      caret:::bagFDA.formula(iris[, 1:4])
+    Condition
+      Error in `caret:::bagFDA.formula()`:
+      ! method is only for formula objects
+

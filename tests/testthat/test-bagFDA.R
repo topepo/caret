@@ -75,3 +75,56 @@ test_that("bagFDA accepts case weights and can drop the stored x", {
   # keepX = FALSE drops the training predictors from the object
   expect_null(fit$x)
 })
+
+test_that("bagFDA coerces a matrix outcome and accepts a formula", {
+  skip_on_cran()
+  skip_if_not_installed("mda")
+  skip_if_not_installed("earth")
+
+  x <- as.matrix(iris[, 1:4])
+
+  # a one-column data frame outcome is reduced to its column and refactored
+  set.seed(6274)
+  fit <- suppressWarnings(bagFDA(x, iris[, "Species", drop = FALSE], B = 2))
+  expect_s3_class(fit, "bagFDA")
+
+  set.seed(6274)
+  form <- suppressWarnings(bagFDA(Species ~ ., data = iris, B = 2))
+  expect_s3_class(form, "bagFDA")
+})
+
+test_that("predict.bagFDA can use the out-of-bag training predictions", {
+  skip_on_cran()
+  skip_if_not_installed("mda")
+  skip_if_not_installed("earth")
+
+  set.seed(3959)
+  fit <- suppressWarnings(bagFDA(iris[, 1:4], iris$Species, B = 3))
+
+  # with no newdata the stored predictors are used
+  oob <- suppressWarnings(predict(fit))
+  expect_length(oob, nrow(iris))
+
+  probs <- suppressWarnings(predict(fit, iris[, 1:4], type = "probs"))
+  expect_identical(ncol(probs), 3L)
+})
+
+test_that("bagFDA.formula needs a formula", {
+  skip_on_cran()
+  skip_if_not_installed("mda")
+  expect_snapshot(caret:::bagFDA.formula(iris[, 1:4]), error = TRUE)
+})
+
+test_that("predict.bagFDA pools out-of-bag predictions without stored x", {
+  skip_on_cran()
+  skip_if_not_installed("mda")
+  skip_if_not_installed("earth")
+
+  set.seed(1590)
+  fit <- suppressWarnings(
+    bagFDA(iris[, 1:4], iris$Species, B = 5, keepX = FALSE)
+  )
+  expect_null(fit$x)
+  oob <- suppressWarnings(predict(fit))
+  expect_true(length(oob) > 0)
+})

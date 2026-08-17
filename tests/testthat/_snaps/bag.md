@@ -61,3 +61,71 @@
       100.0%   1.0000 1.0000
       
 
+# bag can down-sample the classes and says so when printing
+
+    Code
+      print(fit)
+    Output
+      
+      Call:
+      bag.default(x = unbalanced[, 1:4], y = unbalanced$Species, B = 3, bagControl
+       = bagControl(fit = ldaBag$fit, predict = ldaBag$pred, aggregate
+       = ldaBag$aggregate, downSample = TRUE))
+      
+      
+      B: 3 
+      Training data: 4 variables and 110 samples
+      All variables were used in each model
+      Training data was down-sampled to balance the classes to 10 samples per class
+      
+
+# bag refuses to down-sample a numeric outcome
+
+    down-sampling with regression... downSample changed to FALSE
+
+# bag rejects a non-positive number of variables
+
+    Code
+      bag(iris[, 1:4], iris$Species, B = 2, vars = 0, bagControl = bagControl(fit = ldaBag$
+        fit, predict = ldaBag$pred, aggregate = ldaBag$aggregate))
+    Condition
+      Error in `bag.default()`:
+      ! vars must be an integer > 0
+
+# summary.bag reports out-of-bag statistics or their absence
+
+    Code
+      print(smry)
+    Output
+      
+      Call:
+      bag.default(x = iris[, 1:4], y = iris$Species, B = 3, bagControl
+       = bagControl(fit = ldaBag$fit, predict = ldaBag$pred, aggregate
+       = ldaBag$aggregate, oob = TRUE))
+      
+      Out of bag statistics (B = 3):
+      
+             Accuracy  Kappa
+        <num>%   <num> <num>
+        <num>%   <num> <num>
+       <num>%   <num> <num>
+       <num>%   <num> <num>
+       <num>%   <num> <num>
+       <num>%   <num> <num>
+      <num>%   <num> <num>
+      
+
+---
+
+    Code
+      print(no_stats)
+    Output
+      
+      Call:
+      bag.default(x = iris[, 1:4], y = iris$Species, B = 3, bagControl
+       = bagControl(fit = ldaBag$fit, predict = ldaBag$pred, aggregate
+       = ldaBag$aggregate, oob = FALSE))
+      
+      No out of bag statistics
+      
+
