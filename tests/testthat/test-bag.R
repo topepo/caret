@@ -131,3 +131,125 @@ test_that("bag works with nbBag", {
   expect_s3_class(fit, "bag")
   expect_length(predict(fit, iris[, 1:4]), nrow(iris))
 })
+
+# ------------------------------------------------------------------------------
+# bagControl options
+
+test_that("bag can sample a subset of the predictors", {
+  skip_on_cran()
+  skip_if_not_installed("rpart")
+
+  # `vars` larger than the data is capped at the number of columns
+  set.seed(8004)
+  fit <- bag(
+    iris[, 1:4],
+    iris$Species,
+    B = 3,
+    vars = 10,
+    bagControl = bagControl(
+      fit = ctreeBag$fit,
+      predict = ctreeBag$pred,
+      aggregate = ctreeBag$aggregate
+    )
+  )
+  expect_s3_class(fit, "bag")
+})
+
+test_that("bag can down-sample the classes and says so when printing", {
+  skip_on_cran()
+  skip_if_not_installed("MASS")
+
+  # an unbalanced outcome, so down-sampling has something to do
+  set.seed(1637)
+  unbalanced <- iris[c(1:10, 51:100, 101:150), ]
+  fit <- bag(
+    unbalanced[, 1:4],
+    unbalanced$Species,
+    B = 3,
+    bagControl = bagControl(
+      fit = ldaBag$fit,
+      predict = ldaBag$pred,
+      aggregate = ldaBag$aggregate,
+      downSample = TRUE
+    )
+  )
+  expect_true(fit$control$downSample)
+  expect_snapshot(print(fit))
+})
+
+test_that("bag refuses to down-sample a numeric outcome", {
+  skip_on_cran()
+  skip_if_not_installed("party")
+
+  set.seed(2896)
+  expect_snapshot_warning(
+    fit <- bag(
+      mtcars[, -1],
+      mtcars$mpg,
+      B = 2,
+      bagControl = bagControl(
+        fit = ctreeBag$fit,
+        predict = ctreeBag$pred,
+        aggregate = ctreeBag$aggregate,
+        downSample = TRUE
+      )
+    )
+  )
+  expect_false(fit$control$downSample)
+})
+
+test_that("bag rejects a non-positive number of variables", {
+  skip_on_cran()
+  expect_snapshot(
+    bag(
+      iris[, 1:4],
+      iris$Species,
+      B = 2,
+      vars = 0,
+      bagControl = bagControl(
+        fit = ldaBag$fit,
+        predict = ldaBag$pred,
+        aggregate = ldaBag$aggregate
+      )
+    ),
+    error = TRUE
+  )
+})
+
+test_that("summary.bag reports out-of-bag statistics or their absence", {
+  skip_on_cran()
+  skip_if_not_installed("MASS")
+
+  set.seed(4130)
+  with_oob <- bag(
+    iris[, 1:4],
+    iris$Species,
+    B = 3,
+    bagControl = bagControl(
+      fit = ldaBag$fit,
+      predict = ldaBag$pred,
+      aggregate = ldaBag$aggregate,
+      oob = TRUE
+    )
+  )
+  smry <- summary(with_oob)
+  expect_s3_class(smry, "summary.bag")
+  # the accuracy statistics are resampled floats, so mask the numbers
+  expect_snapshot(print(smry), transform = mask_decimals)
+
+  set.seed(4130)
+  without_oob <- bag(
+    iris[, 1:4],
+    iris$Species,
+    B = 3,
+    bagControl = bagControl(
+      fit = ldaBag$fit,
+      predict = ldaBag$pred,
+      aggregate = ldaBag$aggregate,
+      oob = FALSE
+    )
+  )
+  no_stats <- summary(without_oob)
+  expect_null(no_stats$oobStat)
+  expect_snapshot(print(no_stats))
+})

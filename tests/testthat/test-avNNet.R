@@ -95,3 +95,44 @@ test_that("predict.avNNet rejects objects of the wrong class", {
     error = TRUE
   )
 })
+
+test_that("predict.avNNet averages the committee's fitted values", {
+  skip_on_cran()
+  skip_if_not_installed("nnet")
+
+  # regression: the fitted values of each network are averaged
+  set.seed(4610)
+  reg <- suppressWarnings(avNNet(
+    mtcars[, -1],
+    mtcars$mpg,
+    size = 2,
+    repeats = 2,
+    linout = TRUE,
+    trace = FALSE,
+    maxit = 20
+  ))
+  expect_length(predict(reg), nrow(mtcars))
+
+  # classification: the class probabilities are averaged before the vote
+  set.seed(4610)
+  cls <- suppressWarnings(avNNet(
+    iris[, 1:4],
+    iris$Species,
+    size = 2,
+    repeats = 2,
+    trace = FALSE,
+    maxit = 20
+  ))
+  # the default type is "raw", giving the averaged class scores
+  expect_identical(dim(predict(cls)), c(150L, 3L))
+  expect_s3_class(predict(cls, type = "class"), "factor")
+  probs <- predict(cls, type = "prob")
+  expect_equal(unname(rowSums(probs)), rep(1, 150))
+})
+
+test_that("predict.avNNet checks the object's class", {
+  expect_snapshot(
+    caret:::predict.avNNet(structure(list(), class = "nope")),
+    error = TRUE
+  )
+})

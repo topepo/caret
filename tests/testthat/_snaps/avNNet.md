@@ -17,3 +17,11 @@
       Error in `caret:::predict.avNNet()`:
       ! object not of class "avNNet"
 
+# predict.avNNet checks the object's class
+
+    Code
+      caret:::predict.avNNet(structure(list(), class = "nope"))
+    Condition
+      Error in `caret:::predict.avNNet()`:
+      ! object not of class "avNNet"
+
