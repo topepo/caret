@@ -263,22 +263,10 @@ preProcess.default <- function(
 
   ## check for zero-variance predictors
   if (any(names(method) == "zv")) {
-    if (is.data.frame(x)) {
-      is_zv <- unlist(lapply(
-        x[, !(colnames(x) %in% method$ignore), drop = FALSE],
-        function(x) {
-          ifelse(na.remove, length(na.omit(unique(x))), length(unique(x))) <= 1
-        }
-      ))
-    } else {
-      is_zv <- apply(
-        x[, !(colnames(x) %in% method$ignore), drop = FALSE],
-        2,
-        function(x) {
-          ifelse(na.remove, length(na.omit(unique(x))), length(unique(x))) <= 1
-        }
-      )
-    }
+    is_zv <- has_one_value(
+      x[, !(colnames(x) %in% method$ignore), drop = FALSE],
+      na.remove = na.remove
+    )
     if (any(is_zv)) {
       removed <- names(is_zv)[is_zv]
       method <- lapply(
@@ -1341,6 +1329,22 @@ pre_process_options <- function(opts, vars) {
   list(opts = opts, wildcards = wildcards)
 }
 
+
+## Which columns of `x` hold fewer than two distinct values? Works for both
+## the data frame and matrix forms that preProcess() accepts.
+has_one_value <- function(x, na.remove = TRUE) {
+  x <- as.data.frame(x, stringsAsFactors = FALSE)
+  vapply(
+    x,
+    function(column) {
+      if (na.remove) {
+        column <- column[!is.na(column)]
+      }
+      vctrs::vec_unique_count(column) < 2
+    },
+    logical(1)
+  )
+}
 
 get_types <- function(x, coarse = TRUE) {
   if (is.null(colnames(x))) {

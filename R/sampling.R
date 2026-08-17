@@ -55,9 +55,7 @@ downSample <- function(x, y, list = FALSE, yname = "Class") {
   y <- x$.outcome
   x <- x[, !(colnames(x) %in% c("y", ".outcome")), drop = FALSE]
   if (list) {
-    if (inherits(x, "matrix")) {
-      x <- as.matrix(x)
-    }
+    ## `x` was coerced to a data frame on the way in, so it stays one here
     out <- list(x = x, y = y)
   } else {
     out <- cbind(x, y)
@@ -93,9 +91,7 @@ upSample <- function(x, y, list = FALSE, yname = "Class") {
   y <- x$.outcome
   x <- x[, !(colnames(x) %in% c("y", ".outcome")), drop = FALSE]
   if (list) {
-    if (inherits(x, "matrix")) {
-      x <- as.matrix(x)
-    }
+    ## `x` was coerced to a data frame on the way in, so it stays one here
     out <- list(x = x, y = y)
   } else {
     out <- cbind(x, y)

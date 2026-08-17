@@ -65,3 +65,16 @@ test_that("expoTrans.default guards its input like the numeric method", {
   et <- caret:::expoTrans.default(rep(4, 20))
   expect_true(is.na(et$lambda))
 })
+
+test_that("expoTrans rejects an estimate that collapses the data", {
+  # a large lambda overflows the transform, so every value becomes Inf; the
+  # estimate is discarded and the data passes through untouched
+  y <- c(500, 600, 700, 800)
+  et <- caret:::expoTrans.default(y, lim = c(1, 4))
+  expect_true(is.na(et$lambda))
+  expect_identical(et$est, y)
+
+  et2 <- caret:::expoTrans.numeric(y, lim = c(1, 4))
+  expect_true(is.na(et2$lambda))
+  expect_identical(et2$est, y)
+})

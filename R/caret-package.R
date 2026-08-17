@@ -17,6 +17,7 @@
 #' @importFrom utils capture.output combn flush.console getFromNamespace
 #' @importFrom utils globalVariables head install.packages installed.packages
 #' @importFrom utils menu modifyList object.size stack
+#' @importFrom vctrs vec_unique_count
 #' @importFrom withr with_seed
 ## usethis namespace: end
 NULL
