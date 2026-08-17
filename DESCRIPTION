@@ -77,8 +77,10 @@ Imports:
     stats,
     stats4,
     utils,
+    vctrs,
     withr (>= 2.0.0)
 Suggests:
+    BiocManager,
     BradleyTerry2,
     C50,
     covr,

@@ -109,3 +109,6 @@ inst/release_process/make_model_Rd.Rout
 revdep
 
 inst/release_process/update_pak.Rout
+
+^plans$
+

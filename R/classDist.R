@@ -105,11 +105,8 @@ classDist.default <- function(x, y, groups = 5, pca = FALSE, keep = NULL, ...) {
     if (nrow(u) < ncol(u)) {
       stop("there must be more rows than columns for this class")
     }
-    A <- try(cov(u), silent = TRUE)
-    if (inherits(A, "try-error")) {
-      stop("Cannot compute the covariance matrix")
-    }
-    A <- try(solve(A), silent = TRUE)
+    ## `u` is numeric here, so cov() succeeds; only the inversion can fail
+    A <- try(solve(cov(u)), silent = TRUE)
     if (inherits(A, "try-error")) {
       stop("Cannot invert the covariance matrix")
     }

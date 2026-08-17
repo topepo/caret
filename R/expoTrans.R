@@ -17,7 +17,7 @@ expoTrans.default <- function(
   }
   call <- match.call()
   rat <- max(y, na.rm = TRUE) / min(y, na.rm = TRUE)
-  if (length(unique(y[!is.na(y)])) >= numUnique) {
+  if (vctrs::vec_unique_count(y[!is.na(y)]) >= numUnique) {
     results <- optim(
       init,
       manlyLik,
@@ -28,7 +28,9 @@ expoTrans.default <- function(
       upper = lim[2]
     )
     out <- list(lambda = results$par, est = manly(y, results$par))
-    if (length(unique(out$est)) == 1 || results$convergence > 0) {
+    ## a large lambda can overflow the transform, collapsing every value to
+    ## Inf; that estimate is no better than leaving the data alone
+    if (vctrs::vec_unique_count(out$est) < 2 || results$convergence > 0) {
       out <- list(lambda = NA, est = y)
     }
   } else {
@@ -59,7 +61,7 @@ expoTrans.numeric <- function(
   }
   call <- match.call()
   rat <- max(y, na.rm = TRUE) / min(y, na.rm = TRUE)
-  if (length(unique(y[!is.na(y)])) >= numUnique) {
+  if (vctrs::vec_unique_count(y[!is.na(y)]) >= numUnique) {
     results <- optim(
       init,
       manlyLik,
@@ -70,7 +72,9 @@ expoTrans.numeric <- function(
       upper = lim[2]
     )
     out <- list(lambda = results$par, est = manly(y, results$par))
-    if (length(unique(out$est)) == 1 || results$convergence > 0) {
+    ## a large lambda can overflow the transform, collapsing every value to
+    ## Inf; that estimate is no better than leaving the data alone
+    if (vctrs::vec_unique_count(out$est) < 2 || results$convergence > 0) {
       out <- list(lambda = NA, est = y)
     }
   } else {

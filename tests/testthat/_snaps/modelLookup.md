@@ -22,3 +22,18 @@
       Error:
       ! Required packages are missing: nopkg99xyz
 
+# checkInstall errors when the install is declined
+
+    Code
+      caret:::checkInstall("nopkg99xyz")
+    Condition
+      Error:
+      ! Required packages are missing: nopkg99xyz
+
+# install_prompt shows the message and returns the menu choice
+
+    Code
+      choice <- caret:::install_prompt("Install them now?")
+    Output
+      Install them now?
+

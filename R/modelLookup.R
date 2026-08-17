@@ -118,32 +118,53 @@ checkInstall <- function(pkg) {
       sep = ""
     )
 
-    if (interactive()) {
-      cat(msg)
-      bioc <- c("affy", "logicFS", "gpls", "vbmp")
-      installChoice <- menu(c("yes", "no"))
-      if (installChoice == 1) {
-        hasBioc <- any(pkg[!good] %in% bioc)
-        if (!hasBioc) {
-          install.packages(pkg[!good])
-        } else {
-          inst <- pkg[!good]
-          instC <- inst[!(inst %in% bioc)]
-          instB <- inst[inst %in% bioc]
-          if (length(instC) > 0) {
-            install.packages(instC)
-          }
-          biocLite <- NULL
-          source("http://bioconductor.org/biocLite.R")
-          biocLite(instB)
-        }
-      } else {
-        stop("Required packages are missing: ", pkList, call. = FALSE)
-      }
+    if (is_interactive() && install_prompt(msg) == 1) {
+      install_missing(pkg[!good])
     } else {
       stop("Required packages are missing: ", pkList, call. = FALSE)
     }
   }
+  invisible(NULL)
+}
+
+## Whether to offer the install. The option makes the prompt reachable from
+## tests, which never run interactively.
+is_interactive <- function() {
+  opt <- getOption("caret.interactive")
+  if (!is.null(opt)) {
+    return(isTRUE(opt))
+  }
+  interactive()
+}
+
+## Ask whether to install, returning 1 for yes and 2 for no.
+install_prompt <- function(msg) {
+  cat(msg)
+  menu(c("yes", "no"))
+}
+
+## Install the missing packages, sending the Bioconductor ones to
+## BiocManager (the biocLite installer this used to source was retired with
+## Bioconductor 3.8).
+install_missing <- function(pkg) {
+  bioc <- c("affy", "logicFS", "gpls", "vbmp")
+  from_bioc <- pkg[pkg %in% bioc]
+  from_cran <- pkg[!(pkg %in% bioc)]
+
+  if (length(from_cran) > 0) {
+    install.packages(from_cran)
+  }
+  if (length(from_bioc) > 0) {
+    if (!has_biocmanager()) {
+      install.packages("BiocManager")
+    }
+    BiocManager::install(from_bioc)
+  }
+  invisible(pkg)
+}
+
+has_biocmanager <- function() {
+  requireNamespace("BiocManager", quietly = TRUE)
 }
 
 #' @rdname modelLookup
