@@ -91,3 +91,111 @@
       
       Tuning parameter 'intercept' was held constant at a value of TRUE
 
+# pp_list says None when there is nothing to report
+
+    Code
+      caret:::pp_list(list(center = character(0)))
+    Output
+      Pre-processing:  (None) 
+
+---
+
+    Code
+      caret:::pp_list(character(0))
+    Output
+      Pre-processing: None 
+
+# print.train can show the call and the final-model rows
+
+    Code
+      print(fit, printCall = TRUE)
+    Output
+      k-Nearest Neighbors 
+      
+      
+      Call:
+      train.formula(form = Species ~ ., data = dat, method = "knn", tuneGrid
+       = data.frame(k = 5), trControl = trainControl(method = "cv", index =
+       folds, indexFinal = folds[[1]]))
+      
+      45 samples, 30 used for final model
+       4 predictor
+       3 classes: 'setosa', 'versicolor', 'virginica' 
+      
+      No pre-processing
+      Resampling: Cross-Validated (10 fold) 
+      Summary of sample sizes: 30, 30, 30 
+      Resampling results:
+      
+        Accuracy   Kappa    
+        <num>  <num>
+      
+      Tuning parameter 'k' was held constant at a value of 5
+
+# print.train lists the steps of a recipe
+
+    Code
+      print(fit)
+    Output
+      k-Nearest Neighbors 
+      
+      45 samples
+       4 predictor
+       3 classes: 'setosa', 'versicolor', 'virginica' 
+      
+      Recipe steps: normalize, pca 
+      Resampling: Cross-Validated (3 fold) 
+      Summary of sample sizes: 30, 30, 30 
+      Resampling results:
+      
+        Accuracy   Kappa    
+        <num>  <num>
+      
+      Tuning parameter 'k' was held constant at a value of 5
+
+# print.train names the additional sampling scheme
+
+    Code
+      print(fit)
+    Output
+      k-Nearest Neighbors 
+      
+      60 samples
+      17 predictors
+       2 classes: 'Class1', 'Class2' 
+      
+      Pre-processing: centered (17) 
+      Resampling: Cross-Validated (3 fold) 
+      Summary of sample sizes: 40, 40, 40 
+      Addtional sampling using down-sampling prior to pre-processing
+      
+      Resampling results:
+      
+        Accuracy   Kappa    
+        <num>  <num>
+      
+      Tuning parameter 'k' was held constant at a value of 5
+
+# print.train can show the standard deviations
+
+    Code
+      print(fit, showSD = TRUE)
+    Output
+      k-Nearest Neighbors 
+      
+      45 samples
+       4 predictor
+       3 classes: 'setosa', 'versicolor', 'virginica' 
+      
+      No pre-processing
+      Resampling: Cross-Validated (3 fold) 
+      Summary of sample sizes: 30, 30, 30 
+      Resampling results across tuning parameters (values below are 'mean (sd)'):
+      
+        k  Accuracy                Kappa                 
+        3  <num> (<num>)  <num> (<num>)
+        5  <num> (<num>)  <num> (<num>)
+      
+      Accuracy was used to select the optimal model using the largest value.
+      The final value used for the model was k = 5.
+

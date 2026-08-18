@@ -187,3 +187,108 @@ test_that("check_for_wildcards rejects wildcards in the wrong methods", {
   expect_length(res$opts$pca, 0)
   expect_length(res$opts$ica, 0)
 })
+
+# ------------------------------------------------------------------------------
+# option juggling
+
+test_that("getRangeBounds falls back to zero and one", {
+  # a preProcess object made before rangeBounds existed has none stored
+  expect_identical(
+    caret:::getRangeBounds(list()),
+    list(lower = 0, upper = 1)
+  )
+  expect_identical(
+    caret:::getRangeBounds(list(rangeBounds = c(-1, 1))),
+    list(lower = -1, upper = 1)
+  )
+})
+
+test_that("pre_process_options scales for the methods that need it", {
+  types <- c(a = "numeric", b = "numeric", c = "numeric")
+
+  # pca, ica and the spatial sign all need the predictors on one scale; when
+  # range is asked for they use it instead of centering and scaling
+  for (m in c("pca", "ica", "spatialSign")) {
+    opts <- caret:::pre_process_options(c("range", m), types)$opts
+    expect_setequal(opts$range, names(types))
+    expect_null(opts$center)
+    expect_null(opts$scale)
+
+    # without range, the predictors are centered and scaled
+    opts <- caret:::pre_process_options(c("center", "scale", m), types)$opts
+    expect_setequal(opts$center, names(types))
+    expect_setequal(opts$scale, names(types))
+  }
+
+  # nearest-neighbour imputation needs a common scale as well
+  opts <- caret:::pre_process_options(c("range", "knnImpute"), types)$opts
+  expect_setequal(opts$range, names(types))
+})
+
+test_that("pre_process_options drops methods with no columns to work on", {
+  # centering only applies to numeric columns, so with none left there is
+  # nothing for the method to do
+  expect_snapshot_warning(
+    caret:::pre_process_options("center", c(a = "factor", b = "factor"))
+  )
+})
+
+test_that("get_types needs column names", {
+  x <- matrix(1:6, ncol = 2)
+  expect_snapshot(caret:::get_types(x), error = TRUE)
+})
+
+test_that("convert_method rebuilds the method list of an old object", {
+  # objects made before the method list existed carry a character vector; the
+  # column names then have to come from the stored statistics
+  dat <- data.frame(a = c(1, 2, NA, 4, 5), b = c(2, 4, 6, NA, 10))
+  skip_if_not_installed("RANN")
+
+  knn_obj <- preProcess(dat, method = "knnImpute", k = 2)
+  knn_obj$method <- "knnImpute"
+  expect_setequal(caret:::convert_method(knn_obj)$method$knnImpute, c("a", "b"))
+
+  skip_if_not_installed("ipred")
+  bag_obj <- preProcess(dat, method = "bagImpute")
+  bag_obj$method <- "bagImpute"
+  expect_setequal(caret:::convert_method(bag_obj)$method$bagImpute, c("a", "b"))
+})
+
+test_that("get_yj_lambda reads the lambdas of an old car-based object", {
+  # caret once used car::powerTransform, whose objects name the lambda after
+  # the response column
+  old <- list(
+    a = structure(list(lambda = c(Y1 = 0.5)), class = "powerTransform"),
+    b = structure(list(lambda = c(Y1 = 1.5)), class = "powerTransform")
+  )
+  out <- caret:::get_yj_lambda(old)
+  expect_named(out, c("a", "b"))
+  expect_equal(unname(out), c(0.5, 1.5))
+
+  # the current form is a plain named vector, with failures dropped
+  expect_identical(
+    caret:::get_yj_lambda(c(a = 0.5, b = NA_real_)),
+    c(a = 0.5)
+  )
+})
+
+test_that("convert_method rebuilds the component and sine methods", {
+  skip_on_cran()
+  skip_if_not_installed("fastICA")
+
+  set.seed(1902)
+  dat <- as.data.frame(matrix(rnorm(80), ncol = 4))
+
+  ica_obj <- preProcess(dat, method = "ica", n.comp = 2)
+  ica_obj$method <- "ica"
+  expect_setequal(caret:::convert_method(ica_obj)$method$ica, names(dat))
+
+  # the sine transformation stores nothing of its own, so its columns come from
+  # the centring statistics, as they do for the component methods
+  sine_obj <- preProcess(dat, method = c("center", "invHyperbolicSine"))
+  sine_obj$method <- c("center", "invHyperbolicSine")
+  expect_setequal(
+    caret:::convert_method(sine_obj)$method$invHyperbolicSine,
+    names(dat)
+  )
+})

@@ -79,7 +79,7 @@ jack_sim <- function(a, b) {
   if (is.matrix(a) && nrow(a) > 1) {
     a <- a[1, , drop = FALSE]
   }
-  if (is.matrix(a) && nrow(b) > 1) {
+  if (is.matrix(b) && nrow(b) > 1) {
     b <- b[1, , drop = FALSE]
   }
   sum(a == 1 & b == 1) /
@@ -121,7 +121,7 @@ change_text <- function(old, new, p, show_diff = TRUE) {
   b <- index2vec(old, p)
   size_diff <- length(new) - length(old)
   if (show_diff) {
-    if (abs(size_diff) >= 0) {
+    if (abs(size_diff) > 0) {
       if (size_diff >= 0) {
         num_text <- paste0(length(old), "+", size_diff)
       } else {

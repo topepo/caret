@@ -628,3 +628,340 @@ test_that("BoxCox lambdas match MASS::boxcox", {
     expected = exp_lambdas
   )
 })
+
+###################################################################
+## transformations that cannot be estimated for every column
+
+test_that("YeoJohnson skips the columns it cannot estimate", {
+  skip_on_cran()
+
+  # two distinct values is too few to estimate a transformation from, so that
+  # column is left out of the ones the object carries
+  dat <- data.frame(
+    ok = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+    too_few = rep(c(1, 2), 5)
+  )
+  pp <- preProcess(dat, method = "YeoJohnson")
+  expect_named(pp$yj, "ok")
+  expect_identical(pp$method$YeoJohnson, "ok")
+})
+
+test_that("YeoJohnson reports when nothing could be transformed", {
+  skip_on_cran()
+
+  dat <- data.frame(a = rep(c(1, 2), 5), b = rep(c(3, 4), 5))
+  # with every column refused the transformation is dropped altogether
+  expect_snapshot(pp <- preProcess(dat, method = "YeoJohnson", verbose = TRUE))
+  expect_null(pp$yj)
+})
+
+test_that("expoTrans is dropped for columns it sends to infinity", {
+  skip_on_cran()
+
+  # the exponential transformation of large values overflows
+  set.seed(1508)
+  dat <- data.frame(big = c(rnorm(20, 100, 10), 1000), small = rnorm(21))
+  expect_snapshot_warning(pp <- preProcess(dat, method = "expoTrans"))
+  expect_false("big" %in% names(pp$et))
+})
+
+test_that("expoTrans works on a matrix", {
+  skip_on_cran()
+
+  # matrices are transformed column-wise with apply() rather than lapply()
+  set.seed(9143)
+  x <- cbind(a = rnorm(30, 10), b = rnorm(30, 20))
+  pp <- preProcess(x, method = "expoTrans")
+  expect_named(pp$et, c("a", "b"))
+  expect_identical(dim(predict(pp, x)), dim(x))
+})
+
+test_that("scaling substitutes one for a standard deviation it cannot compute", {
+  skip_on_cran()
+
+  # an all-missing column has no standard deviation, so scaling would divide by
+  # NA; the column is scaled by one instead
+  dat <- data.frame(ok = c(1, 5, 9, 13), empty = rep(NA_real_, 4))
+  expect_snapshot_warning(pp <- preProcess(dat, method = c("center", "scale")))
+  expect_identical(unname(pp$std["empty"]), 1)
+})
+
+test_that("preProcess keeps the components that reach the variance threshold", {
+  skip_on_cran()
+
+  set.seed(6017)
+  x <- matrix(rnorm(300), ncol = 6)
+  colnames(x) <- paste0("x", 1:6)
+  # thresh picks the number of components, unlike pcaComp which sets it
+  pp <- preProcess(x, method = "pca", thresh = 0.75)
+  expect_lt(pp$numComp, 6)
+  expect_equal(ncol(predict(pp, x)), pp$numComp)
+})
+
+###################################################################
+## progress reporting
+
+test_that("preProcess reports its progress when asked", {
+  skip_on_cran()
+  skip_if_not_installed("ipred")
+  skip_if_not_installed("RANN")
+
+  dat <- data.frame(
+    a = c(1, 2, NA, 4, 5, 6, 7, 8),
+    b = c(2, 4, 6, 8, NA, 12, 14, 16),
+    c = c(1, 3, 5, 7, 9, 11, 13, NA)
+  )
+
+  # each method announces itself, and the imputers say when they are done
+  expect_snapshot(pp <- preProcess(dat, method = "bagImpute", verbose = TRUE))
+  expect_snapshot(
+    pp <- preProcess(dat, method = "medianImpute", verbose = TRUE)
+  )
+  expect_snapshot(pp <- preProcess(dat, method = "range", verbose = TRUE))
+})
+
+test_that("preProcess reports progress for the component methods", {
+  skip_on_cran()
+  skip_if_not_installed("fastICA")
+
+  set.seed(3729)
+  dat <- as.data.frame(matrix(rnorm(120), ncol = 4))
+  expect_snapshot(
+    pp <- preProcess(dat, method = "ica", n.comp = 2, verbose = TRUE)
+  )
+})
+
+###################################################################
+## predict.preProcess
+
+test_that("predict.preProcess imputes missing rows of a matrix", {
+  skip_on_cran()
+  skip_if_not_installed("RANN")
+
+  x <- cbind(a = c(1, 2, 3, 4, 5, 6), b = c(2, 4, 6, 8, 10, 12))
+  pp <- preProcess(x, method = "knnImpute", k = 2)
+
+  new_x <- cbind(a = c(1, NA), b = c(2, 8))
+  out <- predict(pp, new_x)
+  # the imputed matrix keeps its shape and has no missing values left
+  expect_identical(dim(out), dim(new_x))
+  expect_all_false(is.na(as.vector(out)))
+})
+
+test_that("predict.preProcess bag-imputes missing rows of a matrix", {
+  skip_on_cran()
+  skip_if_not_installed("ipred")
+
+  set.seed(4291)
+  x <- cbind(a = rnorm(20), b = rnorm(20), c = rnorm(20))
+  pp <- preProcess(x, method = "bagImpute")
+
+  new_x <- x[1:3, ]
+  new_x[2, "a"] <- NA
+  out <- predict(pp, new_x)
+  expect_all_false(is.na(as.vector(out)))
+})
+
+test_that("predict.preProcess median-imputes a matrix without column names", {
+  skip_on_cran()
+
+  x <- cbind(a = c(1, 2, 3, 4, 5), b = c(2, 4, 6, 8, 10))
+  pp <- preProcess(x, method = "medianImpute")
+
+  new_x <- x[1:2, ]
+  new_x[1, 1] <- NA
+  out <- predict(pp, new_x)
+  expect_all_false(is.na(as.vector(out)))
+})
+
+test_that("predict.preProcess names a single principal component", {
+  skip_on_cran()
+
+  set.seed(8620)
+  x <- data.frame(a = rnorm(20), b = rnorm(20))
+  pp <- preProcess(x, method = "pca", pcaComp = 1)
+  out <- predict(pp, x)
+  expect_named(out, "PC1")
+})
+
+test_that("predict.preProcess errors when everything was filtered out", {
+  skip_on_cran()
+
+  # a constant predictor is removed, leaving nothing to return
+  dat <- data.frame(a = rep(1, 10))
+  pp <- preProcess(dat, method = "zv")
+  expect_snapshot(predict(pp, dat), error = TRUE)
+})
+
+test_that("predict.preProcess keeps the columns it was told to keep", {
+  skip_on_cran()
+
+  set.seed(2504)
+  dat <- data.frame(a = rnorm(20), b = rnorm(20))
+  dat$dup <- dat$a + rnorm(20, sd = 0.01)
+
+  # the columns that went into the components are normally dropped; naming one
+  # under `keep` holds on to it. The methods have to be given per column, since
+  # only the list form of `method` can say which columns `keep` refers to
+  pp <- preProcess(
+    dat,
+    method = list(
+      pca = c("a", "dup"),
+      keep = "b",
+      center = c("a", "dup"),
+      scale = c("a", "dup")
+    ),
+    pcaComp = 1
+  )
+  expect_named(predict(pp, dat), c("b", "PC1"))
+})
+
+test_that("preProcess can be given a plain character method vector to predict", {
+  skip_on_cran()
+
+  # objects from older versions carry a character vector rather than a list, and
+  # predict() converts it before using it
+  dat <- data.frame(a = c(1, 5, 9, 13), b = c(2, 4, 6, 8))
+  pp <- preProcess(dat, method = c("center", "scale"))
+  pp$method <- c("center", "scale")
+  out <- predict(pp, dat)
+  expect_equal(unname(colMeans(out)), c(0, 0))
+})
+
+test_that("preProcess warns when the correlation matrix cannot be computed", {
+  skip_on_cran()
+
+  # every column is constant, so the zero-variance filter removes them all and
+  # there is nothing left to correlate
+  dat <- data.frame(a = rep(1, 5), b = rep(2, 5))
+  expect_snapshot_warning(pp <- preProcess(dat, method = c("zv", "corr")))
+  expect_null(pp$method$corr)
+})
+
+test_that("preProcess has nothing to correlate with a single predictor", {
+  skip_on_cran()
+
+  # the all-missing column is dropped as zero variance, leaving one predictor;
+  # a correlation filter needs two, so it is skipped rather than erroring
+  dat <- data.frame(a = c(1, 2, 3, 4), b = rep(NA_real_, 4))
+  pp <- suppressWarnings(preProcess(dat, method = "corr"))
+  expect_identical(pp$method$remove, "b")
+  expect_null(pp$method$corr)
+})
+
+test_that("preProcess keeps every component when none reaches the threshold", {
+  skip_on_cran()
+
+  set.seed(7482)
+  x <- matrix(rnorm(60), ncol = 3)
+  colnames(x) <- c("a", "b", "c")
+  # no cumulative proportion of variance can exceed one
+  pp <- preProcess(x, method = "pca", thresh = 1.5)
+  expect_identical(pp$numComp, 3L)
+})
+
+test_that("predict.preProcess median-imputes a matrix with no column names", {
+  skip_on_cran()
+
+  x <- cbind(a = c(1, 2, 3, 4, 5), b = c(2, 4, 6, 8, 10))
+  pp <- preProcess(x, method = "medianImpute")
+
+  # preProcess needs names to work out the column types, but the data being
+  # predicted may not have them, and then the columns to impute are found by
+  # position instead
+  new_x <- x[1:2, ]
+  new_x[1, 1] <- NA
+  colnames(new_x) <- NULL
+  out <- predict(pp, new_x)
+  expect_all_false(is.na(as.vector(out)))
+})
+
+test_that("nearest-neighbour imputation needs something to go on", {
+  skip_on_cran()
+  skip_if_not_installed("RANN")
+
+  x <- cbind(a = c(1, 2, 3, 4, 5), b = c(2, 4, 6, 8, 10))
+  pp <- preProcess(x, method = "knnImpute", k = 2)
+
+  all_missing <- rbind(c(a = NA_real_, b = NA_real_))
+  expect_snapshot(predict(pp, all_missing), error = TRUE)
+})
+
+test_that("preProcess applies the spatial sign to the components", {
+  skip_on_cran()
+
+  set.seed(5169)
+  dat <- data.frame(a = rnorm(30), b = rnorm(30), c = rnorm(30))
+
+  # "_PC_" is the wildcard for "whatever comes out of PCA"
+  pp <- preProcess(
+    dat,
+    method = list(
+      pca = c("a", "b", "c"),
+      spatialSign = "_PC_",
+      center = c("a", "b", "c"),
+      scale = c("a", "b", "c")
+    ),
+    pcaComp = 2
+  )
+  out <- predict(pp, dat)
+  expect_named(out, c("PC1", "PC2"))
+  # the spatial sign projects each row onto the unit circle
+  expect_equal(unname(rowSums(out^2)), rep(1, nrow(dat)))
+
+  # and the object says so when printed
+  expect_snapshot(print(pp))
+})
+
+test_that("preProcess applies the spatial sign to independent components", {
+  skip_on_cran()
+  skip_if_not_installed("fastICA")
+
+  set.seed(4526)
+  dat <- data.frame(a = rnorm(30), b = rnorm(30), c = rnorm(30))
+
+  pp <- preProcess(
+    dat,
+    method = list(
+      ica = c("a", "b", "c"),
+      spatialSign = "_IC_",
+      center = c("a", "b", "c"),
+      scale = c("a", "b", "c")
+    ),
+    n.comp = 2
+  )
+  out <- predict(pp, dat)
+  expect_named(out, c("ICA1", "ICA2"))
+  expect_snapshot(print(pp))
+})
+
+test_that("predict.preProcess keeps a column asked for alongside components", {
+  skip_on_cran()
+  skip_if_not_installed("fastICA")
+
+  set.seed(3078)
+  dat <- data.frame(a = rnorm(30), b = rnorm(30), c = rnorm(30))
+  pp <- preProcess(
+    dat,
+    method = list(
+      ica = c("a", "c"),
+      keep = "b",
+      center = c("a", "c"),
+      scale = c("a", "c")
+    ),
+    n.comp = 2
+  )
+  expect_named(predict(pp, dat), c("b", "ICA1", "ICA2"))
+})
+
+test_that("print.preProcess counts the Box-Cox transformations it could not fit", {
+  skip_on_cran()
+
+  set.seed(2841)
+  dat <- data.frame(a = rlnorm(30), b = rlnorm(30))
+  pp <- preProcess(dat, method = "BoxCox")
+
+  # objects made before caret dropped the failures carry a missing lambda
+  pp$bc$b$lambda <- NA_real_
+  expect_snapshot(print(pp))
+})

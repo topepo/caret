@@ -246,13 +246,15 @@ test_that("preProcess reports conditionally zero-variance predictors", {
   expect_contains(pp$method$remove, "flat_in_a")
 })
 
-test_that("the correlation filter needs more than one predictor", {
+test_that("the correlation filter is a no-op with a single predictor", {
   skip_on_cran()
 
-  # a single predictor gives a 1x1 correlation matrix, which findCorrelation
-  # rejects rather than treating the filter as a no-op
+  # one predictor cannot be correlated with another, so there is nothing to
+  # remove; this used to reach findCorrelation() and fail on the 1x1 matrix
   dat <- data.frame(a = c(1, 2, 3, 4, 5, 6))
-  expect_snapshot(preProcess(dat, method = "corr"), error = TRUE)
+  pp <- preProcess(dat, method = "corr")
+  expect_null(pp$method$remove)
+  expect_identical(predict(pp, dat), dat)
 })
 
 test_that("preProcess drops transformations that fail for every predictor", {

@@ -230,14 +230,6 @@
     Output
         1 conditionally zero variance predictors.
 
-# the correlation filter needs more than one predictor
-
-    Code
-      preProcess(dat, method = "corr")
-    Condition
-      Error in `findCorrelation_exact()`:
-      ! only one variable given
-
 # preProcess drops transformations that fail for every predictor
 
     Code

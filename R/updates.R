@@ -44,7 +44,10 @@
 update.train <- function(object, param = NULL, ...) {
   if (is.null(param)) {
     if (all(names(object) != "modelInfo")) {
-      funcs <- try(getModelInfo(object$method)[[1]], silent = TRUE)
+      funcs <- try(
+        getModelInfo(object$method, regex = FALSE)[[1]],
+        silent = TRUE
+      )
       if (class(funcs)[1] == "list" && length(funcs) > 0) {
         funcs$updated <- TRUE
         object$modelInfo <- funcs
@@ -104,7 +107,12 @@ update.train <- function(object, param = NULL, ...) {
 
     ## get pre-processing options
     if (!is.null(object$preProcess)) {
-      ppOpt <- list(options = object$preProcess$method)
+      ## the fitted object's method list carries an entry per method, including
+      ## empty ones; passing those back in makes preProcess() complain that they
+      ## were eliminated
+      pp_method <- object$preProcess$method
+      pp_method <- pp_method[lengths(pp_method) > 0]
+      ppOpt <- list(options = pp_method)
       if (length(object$control$preProcOptions) > 0) {
         ppOpt <- c(ppOpt, object$control$preProcOptions)
       }
