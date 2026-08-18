@@ -160,3 +160,25 @@ test_that("predict.plsda handles several components at once", {
   probs <- predict(fit, x, ncomp = 1:3, type = "prob")
   expect_identical(dim(probs)[3], 3L)
 })
+
+test_that("predict.plsda tolerates repeated row names in newdata", {
+  skip_on_cran()
+  skip_if_not_installed("pls")
+
+  x <- as.matrix(iris[, 1:4])
+  rownames(x) <- paste0("s", seq_len(nrow(x)))
+  fit <- plsda(x, iris$Species, ncomp = 3)
+
+  # a bootstrap sample of the training set has the same row more than once,
+  # which cannot be used as data frame row names (issue #1515)
+  boot <- x[c(1, 1, 2, 51, 51, 101), , drop = FALSE]
+  cls <- predict(fit, boot, ncomp = 1:3, type = "class")
+  expect_identical(dim(cls), c(6L, 3L))
+  # the duplicated labels give way to positions rather than erroring
+  expect_identical(rownames(cls), as.character(1:6))
+
+  # unique row names are still carried over
+  unique_rows <- x[c(1, 2, 51, 101), , drop = FALSE]
+  kept <- predict(fit, unique_rows, ncomp = 1:3, type = "class")
+  expect_identical(rownames(kept), rownames(unique_rows))
+})

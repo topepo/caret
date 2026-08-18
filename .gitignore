@@ -2,6 +2,10 @@
 
 *.so
 
+*.gcda
+
+*.gcno
+
 DESCRIPTION~
 
 *.tar.gz
