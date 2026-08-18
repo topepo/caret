@@ -162,7 +162,13 @@ predict.plsda <- function(
             stringsAsFactors = TRUE
           )
           names(out) <- paste("ncomp", ncomp, sep = "")
-          rownames(out) <- rownames(newdata)
+          ## `newdata` can carry repeated row names (predicting on a bootstrap
+          ## sample, say), which a data frame cannot hold, so only copy them
+          ## over when they are unique
+          rn <- rownames(newdata)
+          if (!is.null(rn) && !anyDuplicated(rn)) {
+            rownames(out) <- rn
+          }
           if (length(ncomp) == 1) {
             out <- out[, 1]
           }

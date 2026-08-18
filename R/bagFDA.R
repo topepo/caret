@@ -251,7 +251,11 @@
       colMeans(x[, seq(along.with = object$levels)], na.rm = TRUE)
     })
     out <- out[, -1, drop = FALSE]
-    rownames(out) <- rownames(newdata)
+    ## repeated row names in `newdata` cannot be copied onto a data frame
+    rn <- rownames(newdata)
+    if (!is.null(rn) && !anyDuplicated(rn)) {
+      rownames(out) <- rn
+    }
     predClass <- object$levels[apply(out, 1, which.max)]
     predClass <- factor(predClass, levels = object$levels)
     switch(type, class = predClass, probs = out, posterior = out)

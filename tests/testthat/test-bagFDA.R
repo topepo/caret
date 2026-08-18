@@ -128,3 +128,20 @@ test_that("predict.bagFDA pools out-of-bag predictions without stored x", {
   oob <- suppressWarnings(predict(fit))
   expect_true(length(oob) > 0)
 })
+
+test_that("predict.bagFDA tolerates repeated row names in newdata", {
+  skip_on_cran()
+  skip_if_not_installed("earth")
+  skip_if_not_installed("mda")
+  withr::local_package("plyr")
+
+  dat <- engine_three_class()
+  set.seed(4188)
+  fit <- bagFDA(dat[, 1:4], dat$Species, B = 2)
+
+  # as for plsda, predicting a bootstrap sample repeats rows
+  boot <- dat[c(1, 1, 2, 16, 16, 31), 1:4]
+  probs <- predict(fit, boot, type = "probs")
+  expect_identical(nrow(probs), 6L)
+  expect_length(predict(fit, boot, type = "class"), 6L)
+})
