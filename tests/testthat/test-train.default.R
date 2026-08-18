@@ -445,7 +445,8 @@ test_that("train stops when every resample fails", {
         tuneLength = 2,
         trControl = trainControl(method = "cv", number = 3)
       ),
-      error = TRUE
+      error = TRUE,
+      transform = mask_na_label
     )
   )
 })
@@ -465,7 +466,8 @@ test_that("train warns when predictions fail in a resample", {
         tuneLength = 2,
         trControl = trainControl(method = "cv", number = 3)
       ),
-      error = TRUE
+      error = TRUE,
+      transform = mask_na_label
     )
   )
 })

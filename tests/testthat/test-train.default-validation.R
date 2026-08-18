@@ -111,7 +111,8 @@ test_that("train rejects unknown preProcess methods", {
   dat <- engine_regression(20)
   expect_snapshot(
     train(dat[, 1:3], dat$y, method = "lm", preProcess = "bogus"),
-    error = TRUE
+    error = TRUE,
+    transform = mask_na_label
   )
 })
 
