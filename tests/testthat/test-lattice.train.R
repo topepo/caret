@@ -8,12 +8,12 @@ test_that("the resampling plot methods return trellis objects", {
   skip_on_cran()
 
   fit <- lattice_train_fit()
-  expect_s3_class(densityplot(fit), "trellis")
-  expect_s3_class(histogram(fit), "trellis")
-  expect_s3_class(stripplot(fit), "trellis")
-  expect_s3_class(xyplot(fit), "trellis")
+  expect_s3_class(draw_trellis(densityplot(fit)), "trellis")
+  expect_s3_class(draw_trellis(histogram(fit)), "trellis")
+  expect_s3_class(draw_trellis(stripplot(fit)), "trellis")
+  expect_s3_class(draw_trellis(xyplot(fit)), "trellis")
   # a non-default metric is accepted
-  expect_s3_class(densityplot(fit, metric = "Kappa"), "trellis")
+  expect_s3_class(draw_trellis(densityplot(fit, metric = "Kappa")), "trellis")
 })
 
 test_that("the plot methods warn when 'data' is supplied", {

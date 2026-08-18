@@ -39,12 +39,15 @@ test_that("extractPrediction / extractProb / plotClassProbs work on a model list
   expect_in(levels(tr$Class), colnames(prob))
 
   # plotClassProbs consumes the extractProb output
-  expect_s3_class(plotClassProbs(prob), "trellis")
-  expect_s3_class(plotClassProbs(prob, plotType = "densityplot"), "trellis")
+  expect_s3_class(draw_trellis(plotClassProbs(prob)), "trellis")
+  expect_s3_class(
+    draw_trellis(plotClassProbs(prob, plotType = "densityplot")),
+    "trellis"
+  )
 
   # plotObsVsPred consumes the extractPrediction output; for a factor outcome it
   # draws an accuracy dotplot
-  expect_s3_class(plotObsVsPred(pred), "trellis")
+  expect_s3_class(draw_trellis(plotObsVsPred(pred)), "trellis")
 
   # unlabelled ("unknown") data is predicted with dataType "Unknown"
   unk <- extractPrediction(mods, unkX = te_x)
@@ -71,8 +74,11 @@ test_that("extractPrediction trims regression predictions to the bounds", {
 
   # for a numeric outcome plotObsVsPred draws an obs-vs-pred scatter; both the
   # shared-range and independent-range branches build a trellis object
-  expect_s3_class(plotObsVsPred(pred), "trellis")
-  expect_s3_class(plotObsVsPred(pred, equalRanges = FALSE), "trellis")
+  expect_s3_class(draw_trellis(plotObsVsPred(pred)), "trellis")
+  expect_s3_class(
+    draw_trellis(plotObsVsPred(pred, equalRanges = FALSE)),
+    "trellis"
+  )
 })
 
 test_that("trimPredictions clamps regression predictions to bounds", {

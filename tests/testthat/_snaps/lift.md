@@ -42,3 +42,19 @@
       Models: prob1 
       Event: yes (50%)
 
+# the lift plot methods reject an unknown plot type
+
+    Code
+      xyplot(lf, plot = "nope")
+    Condition
+      Error:
+      ! `plot`` should be either 'lift' or 'gain'
+
+---
+
+    Code
+      ggplot(lf, plot = "nope")
+    Condition
+      Error:
+      ! `plot`` should be either 'lift' or 'gain'
+

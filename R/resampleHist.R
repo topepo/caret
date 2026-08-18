@@ -34,11 +34,14 @@ resampleHist <- function(object, type = "density", ...) {
   if (object$control$method == "oob") {
     stop("out-of-bag error rate was selected. This plot cannot be created")
   }
-  if (is.null(object$resample)) {
+  ## `[[` matches exactly; `$resample` would partially match the
+  ## `resampledCM` element that classification fits carry, hiding the absence
+  ## of the resampled results this plot needs
+  if (is.null(object[["resample"]])) {
     stop("No resample values were found. This plot cannot be created")
   }
 
-  resample <- object$resample
+  resample <- object[["resample"]]
   tuneNames <- as.character(object$modelInfo$parameter$parameter)
   if (any(names(resample) %in% tuneNames)) {
     bestTune <- object$bestTune

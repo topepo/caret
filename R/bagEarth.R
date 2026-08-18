@@ -316,7 +316,7 @@ print.bagEarth <- function(x, ...) {
 #'
 #' * `modelInfo`: a matrix with the number of model terms and variables used
 #' * `oobStat`: a summary of the out-of-bag statistics
-#' * `bmarsCall`: the original call to `bagEarth`
+#' * `bagEarthCall`: the original call to `bagEarth`
 #' @author Max Kuhn
 #' @keywords manip
 #' @export

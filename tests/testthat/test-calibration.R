@@ -32,7 +32,7 @@ test_that("calibration needs a factor on the left-hand side", {
 
 test_that("calibration plot methods build lattice and ggplot objects", {
   cal <- calibration(Class ~ prob1, data = lift_data)
-  expect_s3_class(xyplot(cal), "trellis")
+  expect_s3_class(draw_trellis(xyplot(cal)), "trellis")
   expect_s3_class(ggplot(cal), "ggplot")
 })
 
