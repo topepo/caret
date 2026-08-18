@@ -60,3 +60,24 @@ test_that("learning_curve_dat rejects method = 'none'", {
     error = TRUE
   )
 })
+
+test_that("learning_curve_dat works without class probabilities", {
+  skip_on_cran()
+
+  # with classProbs turned off the predictions come from extractPrediction()
+  # rather than extractProb(), for both the testing and the training estimates
+  reg <- engine_regression(80)
+
+  set.seed(2688)
+  lc <- learning_curve_dat(
+    reg,
+    outcome = "y",
+    proportion = c(0.5, 1),
+    test_prop = 0.3,
+    verbose = FALSE,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  expect_setequal(unique(lc$Data), c("Resampling", "Training", "Testing"))
+  expect_in(c("RMSE", "Rsquared", "Training_Size"), colnames(lc))
+})

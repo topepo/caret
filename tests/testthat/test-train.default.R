@@ -646,3 +646,53 @@ test_that("the optimism bootstrap works for a single-row grid", {
     expect_all_false(is.na(fit$results$ROC))
   }
 })
+
+test_that("the optimism bootstrap works without class probabilities", {
+  skip_on_cran()
+
+  # without classProbs the extra predictions get a frame of missing probability
+  # values instead, which is a separate branch of optimism_xy()
+  reg <- engine_regression(40)
+
+  set.seed(3308)
+  fit <- train(
+    reg[, 1:3],
+    reg$y,
+    method = "lm",
+    trControl = trainControl(method = "optimism_boot", number = 2)
+  )
+  expect_contains(names(fit$results), c("RMSEApparent", "RMSEOptimism"))
+  expect_all_false(is.na(fit$results$RMSE))
+})
+
+test_that("the optimism bootstrap carries case weights into the extra summaries", {
+  skip_on_cran()
+  skip_if_not_installed("pls")
+
+  reg <- engine_regression(40)
+  wts <- rep(c(1, 2), length.out = nrow(reg))
+
+  # one fit per candidate: the weights are attached to each extra prediction set
+  set.seed(1177)
+  plain <- train(
+    reg[, 1:3],
+    reg$y,
+    method = "lm",
+    weights = wts,
+    trControl = trainControl(method = "optimism_boot", number = 2)
+  )
+  expect_all_false(is.na(plain$results$RMSE))
+
+  # and with sub-models, where the extra predictions are a list per candidate
+  set.seed(1177)
+  subs <- train(
+    reg[, 1:3],
+    reg$y,
+    method = "pls",
+    tuneGrid = data.frame(ncomp = 1:3),
+    weights = wts,
+    trControl = trainControl(method = "boot_all", number = 2)
+  )
+  expect_identical(nrow(subs$results), 3L)
+  expect_all_false(is.na(subs$results$RMSE))
+})

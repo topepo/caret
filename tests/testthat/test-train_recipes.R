@@ -178,3 +178,105 @@ test_that("themis::step_upsample balances the classes inside train", {
     ignore_attr = TRUE
   )
 })
+
+# ------------------------------------------------------------------------------
+
+test_that("train() drives a recipe through the optimism bootstrap", {
+  skip_on_cran()
+
+  # optimism_boot scores the resampled training set as well as the held-out
+  # rows, which is the only path through optimism_rec()
+  rec <- recipes::recipe(Species ~ ., data = iris)
+  rec <- recipes::step_normalize(rec, recipes::all_predictors())
+
+  set.seed(4132)
+  fit <- train(
+    rec,
+    data = iris[c(1:20, 51:70, 101:120), ],
+    method = "knn",
+    tuneGrid = data.frame(k = c(3, 5)),
+    trControl = trainControl(method = "optimism_boot", number = 2)
+  )
+  expect_s3_class(fit, "train.recipe")
+  expect_identical(nrow(fit$results), 2L)
+  # the apparent performance and the optimism estimate sit alongside the
+  # ordinary columns
+  expect_contains(
+    names(fit$results),
+    c("Accuracy", "AccuracyApparent", "AccuracyOptimism")
+  )
+  expect_all_false(is.na(fit$results$Accuracy))
+})
+
+test_that("train() runs the recipe optimism bootstrap with class probabilities", {
+  skip_on_cran()
+
+  rec <- recipes::recipe(Species ~ ., data = iris)
+  rec <- recipes::step_normalize(rec, recipes::all_predictors())
+
+  set.seed(8877)
+  fit <- train(
+    rec,
+    data = iris[c(1:20, 51:70, 101:120), ],
+    method = "knn",
+    tuneGrid = data.frame(k = 5),
+    metric = "logLoss",
+    trControl = trainControl(
+      method = "boot_all",
+      number = 2,
+      classProbs = TRUE,
+      summaryFunction = multiClassSummary
+    )
+  )
+  expect_identical(nrow(fit$results), 1L)
+  expect_all_false(is.na(fit$results$logLoss))
+})
+
+test_that("train() runs the recipe optimism bootstrap with sub-models", {
+  skip_on_cran()
+  skip_if_not_installed("rpart")
+
+  # rpart scores several cp values from one fit, so the sub-model branch of
+  # optimism_rec() has to line the extra predictions up with the candidates
+  rec <- recipes::recipe(Species ~ ., data = iris)
+
+  set.seed(6390)
+  fit <- train(
+    rec,
+    data = iris[c(1:20, 51:70, 101:120), ],
+    method = "rpart",
+    tuneGrid = data.frame(cp = c(0.01, 0.1, 0.3)),
+    trControl = trainControl(method = "optimism_boot", number = 2)
+  )
+  expect_identical(nrow(fit$results), 3L)
+  expect_contains(
+    names(fit$results),
+    c("AccuracyApparent", "AccuracyOptimism")
+  )
+})
+
+test_that("the recipe optimism bootstrap combines sub-models and probabilities", {
+  skip_on_cran()
+  skip_if_not_installed("rpart")
+
+  # sub-models and class probabilities together: the extra predictions are a
+  # list per candidate and each has to be bound to its own probability frame
+  rec <- recipes::recipe(Species ~ ., data = iris)
+
+  set.seed(3121)
+  fit <- train(
+    rec,
+    data = iris[c(1:20, 51:70, 101:120), ],
+    method = "rpart",
+    tuneGrid = data.frame(cp = c(0.01, 0.1)),
+    metric = "logLoss",
+    trControl = trainControl(
+      method = "optimism_boot",
+      number = 2,
+      classProbs = TRUE,
+      summaryFunction = multiClassSummary
+    )
+  )
+  expect_identical(nrow(fit$results), 2L)
+  expect_contains(names(fit$results), c("logLossApparent", "logLossOptimism"))
+})

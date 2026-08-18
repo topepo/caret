@@ -72,3 +72,15 @@
       ICA wildcards found for: ica 
        ...but should not be in methods: ica
 
+# pre_process_options drops methods with no columns to work on
+
+    The following pre-processing methods were eliminated: 'center'
+
+# get_types needs column names
+
+    Code
+      caret:::get_types(x)
+    Condition
+      Error in `caret:::get_types()`:
+      ! `x` must have column names
+

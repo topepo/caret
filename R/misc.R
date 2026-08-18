@@ -419,7 +419,11 @@ get_resample_perf <- function(x, ...) UseMethod("get_resample_perf")
 #' @export
 get_resample_perf.train <- function(x, ...) {
   if (x$control$returnResamp == "none") {
-    stop("use returnResamp == 'none' in trainControl()", call. = FALSE)
+    stop(
+      "no resampled results were saved; use a `returnResamp` other than ",
+      "'none' in trainControl()",
+      call. = FALSE
+    )
   }
   out <- merge(x$resample, x$bestTune)
   out[, c(x$perfNames, "Resample")]
@@ -428,7 +432,11 @@ get_resample_perf.train <- function(x, ...) {
 #' @export
 get_resample_perf.rfe <- function(x, ...) {
   if (x$control$returnResamp == "none") {
-    stop("use returnResamp == 'none' in trainControl()", call. = FALSE)
+    stop(
+      "no resampled results were saved; use a `returnResamp` other than ",
+      "'none' in trainControl()",
+      call. = FALSE
+    )
   }
   out <- subset(x$resample, Variables == x$bestSubset)
   out[, c(x$perfNames, "Resample")]
@@ -437,7 +445,11 @@ get_resample_perf.rfe <- function(x, ...) {
 #' @export
 get_resample_perf.sbf <- function(x, ...) {
   if (x$control$returnResamp == "none") {
-    stop("use returnResamp == 'none' in trainControl()", call. = FALSE)
+    stop(
+      "no resampled results were saved; use a `returnResamp` other than ",
+      "'none' in trainControl()",
+      call. = FALSE
+    )
   }
   x$resample
 }

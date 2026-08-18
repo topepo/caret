@@ -12,8 +12,6 @@ is_cran_check <- function() {
 ###################################################################
 ## Global Functions
 ###################################################################
-altTrainWorkflow <- function(x) x
-
 
 #' @export
 best <- function(x, metric, maximize) {

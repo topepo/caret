@@ -1273,6 +1273,11 @@ train.formula <- function(
     if (any(isY)) {
       colnames(res$trainingData)[isY] <- ".outcome"
     }
+    ## the case weights are not part of the formula, so put them back the way
+    ## the x/y interface saves them (update() re-fits with them)
+    if (!is.null(w) && length(w) == nrow(res$trainingData)) {
+      res$trainingData$.weights <- w
+    }
   }
   class(res) <- c("train", "train.formula")
   res

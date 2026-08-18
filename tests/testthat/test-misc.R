@@ -243,3 +243,504 @@ test_that("check_na_conflict warns when imputation clashes with na.action", {
     )
   )
 })
+
+# ------------------------------------------------------------------------------
+# formula builders
+
+test_that("gamFormula smooths the predictors with enough unique values", {
+  dat <- data.frame(few = rep(1:2, 10), many = seq_len(20), constant = 1)
+
+  # the constant column is dropped as near-zero variance, `many` has more than
+  # `cut` unique values so it is smoothed, and `few` is left as it is
+  form <- caret:::gamFormula(dat, y = "y")
+  expect_s3_class(form, "formula")
+  expect_identical(deparse1(form), "y ~ few + s(many)")
+
+  # with a high enough cut-off nothing is smoothed
+  expect_identical(
+    deparse1(caret:::gamFormula(dat, cut = 25, y = "y")),
+    "y ~ few + many"
+  )
+})
+
+test_that("smootherFormula writes each smoother's arguments", {
+  dat <- data.frame(few = rep(1:2, 10), many = seq_len(20), constant = 1)
+
+  # the default outcome name is the one train() gives the outcome column
+  expect_identical(
+    deparse1(caret:::smootherFormula(dat)),
+    ".outcome ~ few + s(many)"
+  )
+  # s() takes the degrees of freedom only when one was asked for
+  expect_identical(
+    deparse1(caret:::smootherFormula(dat, df = 3)),
+    ".outcome ~ few + s(many, df = 3)"
+  )
+  expect_identical(
+    deparse1(caret:::smootherFormula(dat, smoother = "lo")),
+    ".outcome ~ few + lo(many, span = 0.5, degree = 1)"
+  )
+  expect_identical(
+    deparse1(caret:::smootherFormula(dat, smoother = "rcs")),
+    ".outcome ~ few + rcs(many)"
+  )
+})
+
+test_that("depth2cp interpolates the complexity parameter", {
+  cp_table <- cbind(nsplit = c(0, 1, 3), CP = c(0.5, 0.2, 0.01))
+
+  out <- caret:::depth2cp(cp_table, c(0, 1, 2))
+  # the first two depths are in the table, the third is interpolated
+  expect_equal(out, c(0.5, 0.2, 0.105))
+
+  # a depth beyond the deepest tree gets just under the smallest cp
+  expect_equal(caret:::depth2cp(cp_table, 9), 0.01 * 0.99)
+})
+
+test_that("varSeq lists the predictors in each subset", {
+  out <- caret:::varSeq(fake_regsubsets())
+  expect_length(out, 3)
+  # the intercept is dropped and the subsets grow
+  expect_identical(out[[1]], "x1")
+  expect_identical(out[[3]], c("x1", "x2", "x3"))
+})
+
+test_that("var_seq uses log2 steps for many predictors", {
+  # below 500 predictors the sequence is evenly spaced
+  expect_identical(caret:::var_seq(100, len = 3), c(2, 51, 100))
+  # above it, the steps are powers of two
+  expect_identical(caret:::var_seq(1000, len = 3), c(2, 44, 1000))
+})
+
+test_that("makeTable describes a model for the documentation tables", {
+  info <- data.frame(model = "knn", parameter = "k", Package = "base")
+  out <- caret:::makeTable(info)
+  expect_named(out, c("method", "Package", "Parameters"))
+  expect_identical(out$Parameters, "\\code{k}")
+  expect_identical(out$Package, caret:::cranRef("base"))
+
+  # models with nothing to tune carry the placeholder parameter name
+  none <- data.frame(model = "lm", parameter = "parameter", Package = "stats")
+  expect_identical(caret:::makeTable(none)$Parameters, "None")
+})
+
+test_that("get_labels can format labels for LaTeX", {
+  out <- caret:::get_labels(c("svmPoly", "lda", "earth"), format = TRUE)
+  # several models come back as a table
+  expect_s3_class(out, "data.frame")
+  expect_named(out, c("model", "label"))
+  expect_identical(
+    out$label,
+    c("Support Vector Machines (Polynomial)", "LDA", "MARS")
+  )
+
+  # glmnet has no label of its own and is typeset instead
+  expect_identical(
+    caret:::get_labels(c("glmnet", "knn"), format = TRUE)$label[1],
+    "\\textsf{glmnet}"
+  )
+  # a method that is not in the library keeps the name it was given
+  expect_identical(caret:::get_labels("not_a_model"), "not_a_model")
+})
+
+test_that("flatTable fills in the cells when the table comes back empty", {
+  # a failed prediction has no levels, so the table has no rows; the cell count
+  # then has to come from the observed levels
+  out <- caret:::flatTable(
+    factor(character(0)),
+    factor(character(0), levels = c("a", "b"))
+  )
+  expect_length(out, 4)
+  expect_named(out, paste0(".cell", 1:4))
+  expect_all_true(is.na(out))
+})
+
+test_that("requireNamespaceQuietStop asks for a missing package by name", {
+  expect_null(caret:::requireNamespaceQuietStop("stats"))
+  expect_snapshot(
+    caret:::requireNamespaceQuietStop("notARealPackage"),
+    error = TRUE
+  )
+})
+
+# ------------------------------------------------------------------------------
+# the sampling argument
+
+test_that("parse_sampling accepts a built-in scheme by name", {
+  out <- caret:::parse_sampling("down")
+  expect_named(out, c("name", "func", "first"))
+  expect_identical(out$name, "down")
+  expect_true(out$first)
+})
+
+test_that("parse_sampling checks that an installed package is available", {
+  # the schemes that need another package ask for it before train() starts;
+  # checkInstall is mocked so the test never tries to install anything
+  asked <- NULL
+  with_mocked_bindings(
+    caret:::parse_sampling("rose"),
+    checkInstall = function(pkg) {
+      asked <<- pkg
+      invisible(NULL)
+    },
+    .package = "caret"
+  )
+  expect_identical(asked, "ROSE")
+
+  # and it can be told not to look
+  expect_identical(
+    caret:::parse_sampling("rose", check_install = FALSE)$name,
+    "rose"
+  )
+})
+
+test_that("parse_sampling wraps a function of x and y", {
+  out <- caret:::parse_sampling(function(x, y) list(x = x, y = y))
+  expect_identical(out$name, "custom")
+  expect_true(out$first)
+})
+
+test_that("parse_sampling rejects anything it cannot use", {
+  expect_snapshot(caret:::parse_sampling(1:3), error = TRUE)
+  expect_snapshot(caret:::parse_sampling("not_a_scheme"), error = TRUE)
+})
+
+test_that("check_samp_func insists on arguments x and y", {
+  expect_null(caret:::check_samp_func(function(x, y) NULL))
+  # too few arguments
+  expect_snapshot(caret:::check_samp_func(function(x) NULL), error = TRUE)
+  # the right number, the wrong names
+  expect_snapshot(caret:::check_samp_func(function(a, b) NULL), error = TRUE)
+})
+
+test_that("check_samp_list insists on the three elements it needs", {
+  good <- list(name = "custom", func = function(x, y) NULL, first = TRUE)
+  expect_null(caret:::check_samp_list(good))
+
+  # too few elements
+  expect_snapshot(
+    caret:::check_samp_list(good[c("name", "func")]),
+    error = TRUE
+  )
+  # the right number, the wrong names
+  wrong <- good
+  names(wrong) <- c("name", "func", "before_pp")
+  expect_snapshot(caret:::check_samp_list(wrong), error = TRUE)
+  # `first` says when the sampling happens, so it has to be a logical
+  bad_first <- good
+  bad_first$first <- "yes"
+  expect_snapshot(caret:::check_samp_list(bad_first), error = TRUE)
+})
+
+# ------------------------------------------------------------------------------
+# stand-ins for failed resamples
+
+test_that("fill_failed_pred makes a placeholder of the right shape", {
+  # classification placeholders are missing character values, so they can be
+  # turned into a factor with the model's levels later on
+  cls <- caret:::fill_failed_pred(1:3, lev = c("a", "b"), submod = NULL)
+  expect_length(cls, 3)
+  expect_all_true(is.na(cls))
+
+  reg <- caret:::fill_failed_pred(1:3, lev = NULL, submod = NULL)
+  expect_identical(reg, rep(NA, 3))
+
+  # with sub-models there is one placeholder per candidate, plus the loop's own
+  subs <- caret:::fill_failed_pred(
+    1:3,
+    lev = NULL,
+    submod = data.frame(k = 1:2)
+  )
+  expect_length(subs, 3)
+  expect_all_true(vapply(subs, function(x) all(is.na(x)), logical(1)))
+})
+
+test_that("fill_failed_prob makes a placeholder for each class", {
+  out <- caret:::fill_failed_prob(1:2, lev = c("a", "b"), submod = NULL)
+  expect_s3_class(out, "data.frame")
+  expect_named(out, c("a", "b"))
+  expect_identical(nrow(out), 2L)
+  expect_all_true(is.na(as.vector(as.matrix(out))))
+
+  # one frame per sub-model candidate, plus the loop's own
+  subs <- caret:::fill_failed_prob(
+    1:2,
+    lev = c("a", "b"),
+    submod = data.frame(k = 1)
+  )
+  expect_length(subs, 2)
+  expect_named(subs[[1]], c("a", "b"))
+})
+
+test_that("fail_warning reports the settings that failed", {
+  settings <- data.frame(shift = 1, scale = 2)
+
+  # the messages arrive as a list of try-errors from the workflow
+  failures <- list(
+    try(stop("first problem"), silent = TRUE),
+    "not a failure",
+    try(stop("second problem"), silent = TRUE)
+  )
+  expect_snapshot_warning(
+    caret:::fail_warning(settings, failures, iter = "Fold1", verb = FALSE)
+  )
+
+  # verboseIter also prints the warning as it happens
+  expect_snapshot(
+    wrn <- caret:::fail_warning(
+      settings,
+      "boom",
+      where = "predictions",
+      iter = "Fold2",
+      verb = TRUE
+    )
+  )
+})
+
+# ------------------------------------------------------------------------------
+# evalSummaryFunction
+
+test_that("evalSummaryFunction names the metrics for a numeric outcome", {
+  ctrl <- trainControl(method = "cv")
+  set.seed(7451)
+  out <- caret:::evalSummaryFunction(
+    rnorm(20),
+    ctrl = ctrl,
+    lev = NULL,
+    metric = "RMSE",
+    method = "lm"
+  )
+  expect_named(out, c("RMSE", "Rsquared", "MAE"))
+})
+
+test_that("evalSummaryFunction handles a survival outcome", {
+  # a Surv outcome cannot be sampled like a vector, so the times are taken from
+  # the matrix; the summary function has to be one that can read it
+  y <- fake_surv(time = c(5, 10, 15, 20), status = c(1, 0, 1, 1))
+  ctrl <- trainControl(
+    method = "cv",
+    summaryFunction = function(data, lev = NULL, model = NULL) {
+      c(Rows = nrow(data), Cols = ncol(data))
+    }
+  )
+  set.seed(2843)
+  out <- caret:::evalSummaryFunction(
+    y,
+    ctrl = ctrl,
+    lev = NULL,
+    metric = "Rows",
+    method = "coxph"
+  )
+  expect_identical(unname(out["Rows"]), 4L)
+})
+
+test_that("evalSummaryFunction appends extra performance columns", {
+  ctrl <- trainControl(
+    method = "cv",
+    summaryFunction = function(data, lev = NULL, model = NULL) {
+      c(Cols = ncol(data))
+    }
+  )
+  perf <- data.frame(extra1 = 1:20, extra2 = 21:40)
+  set.seed(9613)
+  out <- caret:::evalSummaryFunction(
+    rnorm(20),
+    perf = perf,
+    ctrl = ctrl,
+    lev = NULL,
+    metric = "Cols",
+    method = "lm"
+  )
+  # pred, obs, the two extra columns and rowIndex
+  expect_identical(unname(out["Cols"]), 5L)
+})
+
+test_that("evalSummaryFunction validates its arguments", {
+  ctrl <- trainControl(method = "cv")
+
+  # `perf` has to be a data frame, since it is bound to the predictions
+  expect_snapshot(
+    caret:::evalSummaryFunction(
+      rnorm(20),
+      perf = 1:20,
+      ctrl = ctrl,
+      lev = NULL,
+      metric = "RMSE",
+      method = "lm"
+    ),
+    error = TRUE
+  )
+
+  # the ROC metric needs class probabilities to compute
+  expect_snapshot(
+    caret:::evalSummaryFunction(
+      factor(rep(c("a", "b"), 10)),
+      ctrl = ctrl,
+      lev = c("a", "b"),
+      metric = "ROC",
+      method = "glm"
+    ),
+    error = TRUE
+  )
+})
+
+test_that("evalSummaryFunction passes case weights to the summary function", {
+  ctrl <- trainControl(
+    method = "cv",
+    summaryFunction = function(data, lev = NULL, model = NULL) {
+      c(HasWeights = as.numeric("weights" %in% names(data)))
+    }
+  )
+  set.seed(6528)
+  out <- caret:::evalSummaryFunction(
+    rnorm(20),
+    wts = runif(20),
+    ctrl = ctrl,
+    lev = NULL,
+    metric = "HasWeights",
+    method = "lm"
+  )
+  expect_identical(unname(out["HasWeights"]), 1)
+})
+
+# ------------------------------------------------------------------------------
+# get_resample_perf
+
+test_that("get_resample_perf pulls the resampled results out of each object", {
+  # train keeps every candidate, so the chosen settings are merged back in
+  trn <- caret:::get_resample_perf(fake_resample_perf_obj("train"))
+  expect_named(trn, c("RMSE", "Rsquared", "Resample"))
+  expect_identical(nrow(trn), 3L)
+
+  # rfe keeps one row per subset size
+  rfe_obj <- caret:::get_resample_perf(fake_resample_perf_obj("rfe"))
+  expect_named(rfe_obj, c("RMSE", "Rsquared", "Resample"))
+  expect_identical(nrow(rfe_obj), 2L)
+
+  # sbf has nothing to select, so its resamples are returned as they are
+  expect_identical(
+    nrow(caret:::get_resample_perf(fake_resample_perf_obj("sbf"))),
+    3L
+  )
+
+  # the two feature-selection searches report the external resamples of the
+  # iteration that was chosen, with the iteration number dropped
+  for (cls in c("safs", "gafs")) {
+    out <- caret:::get_resample_perf(fake_resample_perf_obj(cls))
+    expect_identical(nrow(out), 2L)
+    expect_false("Iter" %in% names(out))
+  }
+})
+
+test_that("get_resample_perf needs the resamples to have been saved", {
+  for (cls in c("train", "rfe", "sbf")) {
+    obj <- fake_resample_perf_obj(cls, return_resamp = "none")
+    expect_snapshot(caret:::get_resample_perf(obj), error = TRUE)
+  }
+})
+
+# ------------------------------------------------------------------------------
+# rule-based model summaries
+
+test_that("partRuleSummary counts conditions, variables and classes", {
+  out <- caret:::partRuleSummary(fake_part_rules())
+  expect_named(out, c("varUsage", "numCond", "classes"))
+  # three conditions mention a variable, one per rule line
+  expect_identical(out$numCond, 3L)
+  expect_identical(out$varUsage$Var, c("Petal.Width", "Petal.Length"))
+  expect_identical(out$varUsage$Overall, c(2, 1))
+  # only the lines that end in a count name a class
+  expect_identical(unname(out$classes), c(1L, 1L, 0L))
+  expect_named(out$classes, c("setosa", "versicolor", "virginica"))
+})
+
+test_that("ripperRuleSummary counts conditions, variables and classes", {
+  out <- caret:::ripperRuleSummary(fake_ripper_rules())
+  expect_named(out, c("varUsage", "numCond", "classes"))
+  expect_identical(out$numCond, 3L)
+  expect_identical(out$varUsage$Var, c("Petal.Width", "Petal.Length"))
+  # the conditions are parenthesised, so each variable is counted once per rule
+  expect_identical(out$varUsage$Overall, c(2, 1))
+  expect_identical(unname(out$classes), c(1L, 1L, 1L))
+})
+
+# ------------------------------------------------------------------------------
+# parallel_check
+
+test_that("parallel_check warns about multicore with the wrong package", {
+  # doMC is not a dependency, so stand in for it on the search path; the
+  # warning depends on the name being there and a backend being registered
+  withr::defer(detach("package:doMC", character.only = TRUE))
+  attach(new.env(), name = "package:doMC")
+  foreach::registerDoSEQ()
+
+  expect_snapshot_warning(caret:::parallel_check(
+    "rJava",
+    list(library = "rJava")
+  ))
+  # a model that does not use the package is fine
+  expect_silent(caret:::parallel_check("rJava", list(library = "stats")))
+})
+
+# ------------------------------------------------------------------------------
+# out-of-bag statistics
+
+test_that("the *Stats helpers delegate to the model library's oob function", {
+  skip_on_cran()
+  skip_if_not_installed("earth")
+  withr::local_package("plyr")
+
+  set.seed(3120)
+  bagged <- bagEarth(iris[, 1:3], iris[, 4], B = 2)
+  # bagEarth stores its own out-of-bag estimates, which are summarised by median
+  expect_named(caret:::bagEarthStats(bagged), c("RMSE", "Rsquared", "MAE"))
+})
+
+test_that("ipredStats summarises a bagged tree's out-of-bag predictions", {
+  skip_on_cran()
+  skip_if_not_installed("ipred")
+
+  dat <- engine_three_class()
+  set.seed(9204)
+  # keepX is what lets the out-of-bag rows be predicted afterwards
+  bagged <- ipred::bagging(Species ~ ., data = dat, nbagg = 3, keepX = TRUE)
+  out <- caret:::ipredStats(bagged)
+  expect_named(out, c("Accuracy", "Kappa", "AccuracySD", "KappaSD"))
+})
+
+test_that("cforestStats summarises a conditional forest's out-of-bag predictions", {
+  skip_on_cran()
+  skip_if_not_installed("party")
+
+  dat <- engine_three_class()
+  set.seed(7715)
+  # enough trees that every row is left out of at least one of them
+  forest <- suppressWarnings(party::cforest(
+    Species ~ .,
+    data = dat,
+    controls = party::cforest_unbiased(ntree = 50, mtry = 2)
+  ))
+  expect_named(caret:::cforestStats(forest), c("Accuracy", "Kappa"))
+})
+
+test_that("subset_x subsets objects that do not take a drop argument", {
+  skip_if_not_installed("Matrix")
+
+  # a Matrix object is not a matrix as far as is.matrix() is concerned, so it
+  # takes the branch that leaves `drop` out
+  m <- Matrix::Matrix(as.numeric(1:12), nrow = 4)
+  out <- caret:::subset_x(m, c(1, 3))
+  expect_identical(dim(out), c(2L, 3L))
+})
+
+test_that("check_dims and get_range read a survival outcome by row", {
+  x <- matrix(1:8, nrow = 4)
+  y <- fake_surv(time = c(5, 10, 15, 20))
+
+  # a Surv outcome has one row per observation rather than one element
+  expect_null(caret:::check_dims(x, y))
+  expect_snapshot(caret:::check_dims(x[1:3, ], y), error = TRUE)
+
+  # its range comes from the event times
+  expect_identical(caret:::get_range(y), extendrange(c(5, 10, 15, 20)))
+})

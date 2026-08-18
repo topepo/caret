@@ -164,3 +164,151 @@ test_that("rfe updating", {
   rfe_rec$recipe$template <- NULL
   expect_snapshot(update(rfe_rec, size = 5), error = TRUE)
 })
+
+# ------------------------------------------------------------------------------
+# update.train argument checking
+
+test_that("update.train needs the training data to re-fit", {
+  skip_on_cran()
+
+  # without the data there is nothing to re-fit the model on
+  fit <- train(
+    y ~ Var01 + Var02,
+    data = updates_dat,
+    method = "lm",
+    trControl = trainControl(method = "cv", returnData = FALSE)
+  )
+  expect_snapshot(update(fit, list(intercept = FALSE)), error = TRUE)
+})
+
+test_that("update.train checks the parameters it is given", {
+  skip_on_cran()
+
+  fit <- train(
+    y ~ Var01 + Var02,
+    data = updates_dat,
+    method = "lm",
+    trControl = trainControl(method = "cv")
+  )
+
+  # not a data frame or a named list
+  expect_snapshot(update(fit, 3), error = TRUE)
+  # one model at a time
+  expect_snapshot(
+    update(fit, data.frame(intercept = c(TRUE, FALSE))),
+    error = TRUE
+  )
+  # every tuning parameter has to be given, and named as the model names it
+  expect_snapshot(update(fit, list(intercept = TRUE, extra = 1)), error = TRUE)
+  expect_snapshot(update(fit, list(wrong_name = TRUE)), error = TRUE)
+})
+
+test_that("update.train accepts the old dot-prefixed parameter names", {
+  skip_on_cran()
+
+  fit <- train(
+    Species ~ .,
+    data = engine_three_class(),
+    method = "knn",
+    tuneGrid = data.frame(k = c(3, 5)),
+    trControl = trainControl(method = "cv", number = 3)
+  )
+
+  updated <- update(fit, list(.k = 3))
+  # the dot is dropped, so the re-fit uses the parameter the model knows
+  expect_identical(updated$bestTune, data.frame(k = 3))
+  expect_identical(updated$update, data.frame(k = 3))
+})
+
+test_that("update.train re-applies pre-processing, weights and extra arguments", {
+  skip_on_cran()
+
+  wts <- rep(c(1, 2), length.out = nrow(updates_dat))
+  fit <- train(
+    y ~ Var01 + Var02,
+    data = updates_dat,
+    method = "lm",
+    weights = wts,
+    preProcess = c("center", "scale"),
+    singular.ok = TRUE,
+    trControl = trainControl(method = "cv")
+  )
+
+  # re-fitting does not complain about the pre-processing methods it was given
+  expect_no_warning(updated <- update(fit, list(intercept = FALSE)))
+  expect_length(updated$finalModel$coefficients, 2)
+  # the pre-processing is re-estimated rather than dropped
+  expect_s3_class(updated$preProcess, "preProcess")
+  # and the case weights are used again, whichever interface was used
+  expect_identical(updated$finalModel$weights, wts)
+
+  xy_fit <- train(
+    updates_dat[, c("Var01", "Var02")],
+    updates_dat$y,
+    method = "lm",
+    weights = wts,
+    trControl = trainControl(method = "cv")
+  )
+  expect_identical(
+    update(xy_fit, list(intercept = FALSE))$finalModel$weights,
+    wts
+  )
+})
+
+# ------------------------------------------------------------------------------
+# update.train on objects from old caret versions
+
+test_that("update.train fills in the model information of an old object", {
+  skip_on_cran()
+
+  fit <- train(
+    y ~ Var01 + Var02,
+    data = updates_dat,
+    method = "lm",
+    trControl = trainControl(method = "cv")
+  )
+  # objects from caret 5.17-7 and earlier had no modelInfo element
+  old <- fit
+  old$modelInfo <- NULL
+
+  expect_snapshot_warning(updated <- update(old))
+  expect_true(updated$modelInfo$updated)
+  # the method is matched exactly, so "lm" does not pick up bayesglm or glmnet
+  expect_identical(updated$modelInfo$label, "Linear Regression")
+})
+
+test_that("update.train cannot rescue an old object of an unknown type", {
+  skip_on_cran()
+
+  fit <- train(
+    y ~ Var01 + Var02,
+    data = updates_dat,
+    method = "lm",
+    trControl = trainControl(method = "cv")
+  )
+  old <- fit
+  old$modelInfo <- NULL
+  old$method <- "a_method_that_never_existed"
+
+  expect_snapshot(update(old), error = TRUE)
+})
+
+test_that("update.train keeps the class levels of a recipe model", {
+  skip_on_cran()
+
+  # the outcome comes back out of the recipe, so its levels have to be read from
+  # there rather than from the (dropped) training data
+  rec <- recipes::recipe(Species ~ ., data = engine_three_class())
+  set.seed(9556)
+  fit <- train(
+    rec,
+    data = engine_three_class(),
+    method = "knn",
+    tuneGrid = data.frame(k = c(3, 5)),
+    trControl = trainControl(method = "cv", number = 3)
+  )
+
+  updated <- update(fit, list(k = 3))
+  expect_identical(updated$finalModel$obsLevels, levels(iris$Species))
+  expect_identical(updated$bestTune, data.frame(k = 3))
+})

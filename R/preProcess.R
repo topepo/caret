@@ -349,7 +349,7 @@ preProcess.default <- function(
       ),
       silent = TRUE
     )
-    if (!inherits(cmat, "try-error")) {
+    if (!inherits(cmat, "try-error") && ncol(cmat) > 1) {
       high_corr <- findCorrelation(cmat, cutoff = cutoff)
       if (length(high_corr) > 0) {
         removed <- colnames(cmat)[high_corr]
@@ -363,7 +363,11 @@ preProcess.default <- function(
         }
       }
     } else {
-      warning(paste("correlation matrix could not be computed:\n", cmat))
+      ## one predictor cannot be correlated with another, so there is nothing to
+      ## filter; anything else means the matrix could not be computed
+      if (inherits(cmat, "try-error")) {
+        warning(paste("correlation matrix could not be computed:\n", cmat))
+      }
     }
     method$corr <- NULL
   }
@@ -977,7 +981,9 @@ print.preProcess <- function(x, ...) {
       pp_num["spatialSign"] <- pp_num["spatialSign"] + x$pcaComp
     }
     if (any(x$wildcards$ICA == "spatialSign")) {
-      pp_num["spatialSign"] <- pp_num["spatialSign"] + x$numComp
+      ## `numComp` is the PCA count; the number of independent components is
+      ## only recorded in the fastICA weights
+      pp_num["spatialSign"] <- pp_num["spatialSign"] + ncol(x$ica$W)
     }
   }
   pp <- paste0("  - ", names(x$method), " (", pp_num, ")\n")
@@ -1499,7 +1505,9 @@ convert_method <- function(x) {
     new_method$spatialSign <- names(x$mean)
   }
   if ("invHyperbolicSine" %in% x$method) {
-    new_method$invHyperbolicSine <- x$method$invHyperbolicSine
+    ## `x$method` is the character vector being converted, so the columns have
+    ## to come from the stored statistics like every other method here
+    new_method$invHyperbolicSine <- names(x$mean)
   }
   x$method <- new_method
   x
