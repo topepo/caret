@@ -204,24 +204,24 @@ test_that("resamples print methods render", {
 # plot methods (smoke tests: they should build a trellis object)
 
 test_that("resamples plot methods return trellis objects", {
-  expect_s3_class(xyplot(rs_fixture), "trellis")
-  expect_s3_class(dotplot(rs_fixture), "trellis")
-  expect_s3_class(bwplot(rs_fixture), "trellis")
-  expect_s3_class(densityplot(rs_fixture), "trellis")
-  expect_s3_class(splom(rs_fixture), "trellis")
-  expect_s3_class(parallelplot(rs_fixture), "trellis")
+  expect_s3_class(draw_trellis(xyplot(rs_fixture)), "trellis")
+  expect_s3_class(draw_trellis(dotplot(rs_fixture)), "trellis")
+  expect_s3_class(draw_trellis(bwplot(rs_fixture)), "trellis")
+  expect_s3_class(draw_trellis(densityplot(rs_fixture)), "trellis")
+  expect_s3_class(draw_trellis(splom(rs_fixture)), "trellis")
+  expect_s3_class(draw_trellis(parallelplot(rs_fixture)), "trellis")
 })
 
 test_that("plot.prcomp.resamples draws each type of PCA plot", {
   pc <- prcomp(rs_fixture)
   for (what in c("scree", "cumulative", "loadings", "components")) {
-    expect_s3_class(plot(pc, what = what), "trellis")
+    expect_s3_class(draw_trellis(plot(pc, what = what)), "trellis")
   }
 })
 
 test_that("diff.resamples plot methods return trellis objects", {
   d <- diff(rs_fixture)
-  expect_s3_class(densityplot(d), "trellis")
-  expect_s3_class(bwplot(d), "trellis")
-  expect_s3_class(dotplot(d), "trellis")
+  expect_s3_class(draw_trellis(densityplot(d)), "trellis")
+  expect_s3_class(draw_trellis(bwplot(d)), "trellis")
+  expect_s3_class(draw_trellis(dotplot(d)), "trellis")
 })

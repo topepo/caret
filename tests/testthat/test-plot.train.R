@@ -14,8 +14,8 @@ test_that("plot.train draws scatter and line plots for a tuned model", {
     trControl = trainControl(method = "cv", number = 3)
   )
 
-  expect_s3_class(plot(fit, plotType = "scatter"), "trellis")
-  expect_s3_class(plot(fit, plotType = "line"), "trellis")
+  expect_s3_class(draw_trellis(plot(fit, plotType = "scatter")), "trellis")
+  expect_s3_class(draw_trellis(plot(fit, plotType = "line")), "trellis")
   # an unknown plot type is rejected
   expect_snapshot(plot(fit, plotType = "nope"), error = TRUE)
 })
@@ -34,8 +34,8 @@ test_that("plot.train draws a level plot for two tuning parameters", {
     trControl = trainControl(method = "cv", number = 3)
   )))
 
-  expect_s3_class(plot(fit, plotType = "level"), "trellis")
-  expect_s3_class(plot(fit, plotType = "scatter"), "trellis")
+  expect_s3_class(draw_trellis(plot(fit, plotType = "level")), "trellis")
+  expect_s3_class(draw_trellis(plot(fit, plotType = "scatter")), "trellis")
 })
 
 test_that("plot.train errors when no tuning parameter varies", {

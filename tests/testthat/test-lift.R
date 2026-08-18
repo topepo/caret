@@ -81,3 +81,102 @@ test_that("print.lift reports the models and event rate", {
   lf <- lift(Class ~ prob1, data = lift_data)
   expect_snapshot(print(lf))
 })
+
+# ------------------------------------------------------------------------------
+# plot methods
+#
+# The panel functions (panel.lift2, plotRef) only run when the trellis object
+# is drawn, so every lattice object here is printed via draw_trellis().
+
+test_that("xyplot.lift draws gain and lift curves", {
+  lf <- lift(Class ~ prob1, data = lift_data)
+
+  gain <- xyplot(lf)
+  expect_s3_class(draw_trellis(gain), "trellis")
+
+  lift_curve <- xyplot(lf, plot = "lift")
+  expect_s3_class(draw_trellis(lift_curve), "trellis")
+
+  # plot() is a thin wrapper around xyplot()
+  expect_s3_class(draw_trellis(plot(lf)), "trellis")
+})
+
+test_that("xyplot.lift honours supplied axis labels", {
+  lf <- lift(Class ~ prob1, data = lift_data)
+
+  labelled <- xyplot(lf, xlab = "tested", ylab = "found")
+  expect_s3_class(draw_trellis(labelled), "trellis")
+
+  labelled_lift <- xyplot(lf, plot = "lift", xlab = "cut", ylab = "value")
+  expect_s3_class(draw_trellis(labelled_lift), "trellis")
+})
+
+test_that("xyplot.lift marks reference points on the gain curve", {
+  lf <- lift(Class ~ prob1, data = lift_data)
+
+  # `values` draws a guide at each requested percentage of events found.
+  # Interpolating those guides calls approx(), which warns about the tied gain
+  # values that every lift curve has.
+  with_values <- xyplot(lf, values = c(50, 80))
+  expect_s3_class(suppressWarnings(draw_trellis(with_values)), "trellis")
+})
+
+test_that("xyplot.lift draws reference points for several models", {
+  lf <- lift(Class ~ prob1 + prob2, data = lift_data)
+  expect_length(lf$probNames, 2)
+
+  # with more than one model the reference lines use the superpose style
+  expect_s3_class(
+    suppressWarnings(draw_trellis(xyplot(lf, values = 60))),
+    "trellis"
+  )
+  expect_s3_class(draw_trellis(xyplot(lf, plot = "lift")), "trellis")
+})
+
+test_that("the lift plot methods reject an unknown plot type", {
+  lf <- lift(Class ~ prob1, data = lift_data)
+  expect_snapshot(xyplot(lf, plot = "nope"), error = TRUE)
+  expect_snapshot(ggplot(lf, plot = "nope"), error = TRUE)
+})
+
+test_that("ggplot.lift builds gain and lift curves", {
+  lf <- lift(Class ~ prob1, data = lift_data)
+
+  gain <- ggplot(lf)
+  expect_s3_class(gain, "ggplot")
+  # building the plot runs the layer computations
+  expect_s3_class(ggplot2::ggplot_build(gain), "ggplot_built")
+
+  lift_curve <- ggplot(lf, plot = "lift")
+  expect_s3_class(ggplot2::ggplot_build(lift_curve), "ggplot_built")
+})
+
+test_that("ggplot.lift adds reference points and handles several models", {
+  one <- lift(Class ~ prob1, data = lift_data)
+  expect_s3_class(
+    suppressWarnings(ggplot2::ggplot_build(ggplot(one, values = c(50, 80)))),
+    "ggplot_built"
+  )
+
+  two <- lift(Class ~ prob1 + prob2, data = lift_data)
+  expect_s3_class(ggplot2::ggplot_build(ggplot(two)), "ggplot_built")
+  expect_s3_class(
+    suppressWarnings(ggplot2::ggplot_build(ggplot(two, values = 60))),
+    "ggplot_built"
+  )
+  expect_s3_class(
+    ggplot2::ggplot_build(ggplot(two, plot = "lift")),
+    "ggplot_built"
+  )
+})
+
+test_that("get_ref_point interpolates the tested percentage for a target", {
+  lf <- lift(Class ~ prob1, data = lift_data)
+
+  # approx() warns about the tied gain values inherent to a lift curve
+  ref <- suppressWarnings(caret:::get_ref_point(lf$data, v = c(50, 100)))
+  expect_named(ref, c("CumEventPct", "CumTestedPct"))
+  expect_identical(ref$CumEventPct, c(50, 100))
+  # the interpolated positions lie within the observed range
+  expect_all_true(!is.na(ref$CumTestedPct))
+})
