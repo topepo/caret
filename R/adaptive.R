@@ -53,7 +53,6 @@ adaptiveWorkflow <- function(
       .errorhandling = "stop"
     ) %op%
     {
-      testing <- FALSE
       if (!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) {
         set.seed(ctrl$seeds[[iter]][parm])
       }
@@ -365,6 +364,18 @@ adaptiveWorkflow <- function(
     )
   ) {
     warning("There were missing values in resampled performance measures.")
+  }
+
+  ## the race compares the candidates on these resamples; with nothing to
+  ## compare, the racing code fails deep inside instead of saying why
+  if (!is.null(init_resamp[[metric]]) && all(is.na(init_resamp[[metric]]))) {
+    stop(
+      "Something is wrong; all the ",
+      metric,
+      " metric values are missing in the resamples the race starts from, so",
+      " the candidate models cannot be compared.",
+      call. = FALSE
+    )
   }
 
   init_summary <- ddply(
@@ -813,7 +824,6 @@ adaptiveWorkflow <- function(
         .packages = pkgs
       ) %op%
       {
-        testing <- FALSE
         if (!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) {
           set.seed(ctrl$seeds[[iter]][parm])
         }
@@ -1187,9 +1197,7 @@ get_id <- function(x, param) {
 }
 
 bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
-  if (!requireNamespace("BradleyTerry2")) {
-    stop("BradleyTerry2 package missing")
-  }
+  requireNamespaceQuietStop("BradleyTerry2")
   se_thresh <- 100
   constant <- qnorm(1 - alpha)
   rs <- rs[order(rs$Resample, rs$model_id), ]
@@ -1205,8 +1213,10 @@ bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
     c(win1 = sum(x$win1), win2 = sum(x$win2))
   })
   if (length(unique(rs$Resample)) >= 5) {
-    tmp_scores <- try(skunked(scores), silent = TRUE)
-    if (inherits(tmp_scores, "try-error")) {
+    ## drop the models that have not won a single comparison, unless that leaves
+    ## BTm() with nothing to fit
+    tmp_scores <- try(skunked(scores, verbose = FALSE), silent = TRUE)
+    if (!inherits(tmp_scores, "try-error")) {
       scores <- tmp_scores
     }
   }
@@ -1250,9 +1260,7 @@ bt_eval <- function(rs, metric, maximize, alpha = 0.05) {
 }
 
 get_scores <- function(x, maximize = NULL, metric = NULL) {
-  if (!requireNamespace("BradleyTerry2")) {
-    stop("BradleyTerry2 package missing")
-  }
+  requireNamespaceQuietStop("BradleyTerry2")
   delta <- outer(x[, metric], x[, metric], "-")
   tied <- ifelse(delta == 0, 1, 0) * 0.5
   diag(tied) <- 0
