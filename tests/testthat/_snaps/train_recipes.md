@@ -66,7 +66,7 @@
        Mean   :NaN   Mean   :NaN   Mean   :NaN  
        3rd Qu.: NA   3rd Qu.: NA   3rd Qu.: NA  
        Max.   : NA   Max.   : NA   Max.   : NA  
-       NAs:2     NAs:2     NAs:2    
+       NAs:2 NAs:2 NAs:2 
     Condition
       Error:
       ! Stopping
@@ -229,7 +229,7 @@
       Something is wrong; all the RMSE metric values are missing:
          RMSE         Rsquared         MAE         
        Mode:logical   Mode:logical   Mode:logical  
-       NAs:2         NAs:2         NAs:2        
+       NAs:2 NAs:2 NAs:2 
     Condition
       Error:
       ! Stopping

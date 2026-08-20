@@ -157,7 +157,7 @@
        Mean   :NaN   Mean   :NaN   Mean   :NaN  
        3rd Qu.: NA   3rd Qu.: NA   3rd Qu.: NA  
        Max.   : NA   Max.   : NA   Max.   : NA  
-       NAs:1     NAs:1     NAs:1    
+       NAs:1 NAs:1 NAs:1 
     Condition
       Error:
       ! Stopping

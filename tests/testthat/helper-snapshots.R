@@ -16,9 +16,17 @@ mask_env <- function(lines) {
 
 # R 4.6.0 relabelled the missing-value count in summary() output from "NA's" to
 # "NAs", so anything that prints summary(<data frame>) differs by R version.
-# The label is padded out to the width of the column's widest label, so the two
-# spellings also carry different amounts of trailing space; drop the padding
-# along with the label rather than rewriting one spelling as the other.
+# Rewriting one spelling as the other is not enough: the label is one character
+# shorter now, and how that character is absorbed depends on the column. In a
+# numeric summary the labels are padded out to the width of the widest one
+# ("1st Qu."), so the difference lands between the label and the colon; where
+# the column is only as wide as its contents (an all-missing logical column
+# prints "Mode:logical"), the label sits against the colon and the difference
+# lands in the alignment of everything after it. Normalise the label, then
+# collapse the runs of spaces on the lines that carry it, so neither can leak.
 mask_na_label <- function(lines) {
-  gsub("NA'?s +:", "NAs:", lines)
+  lines <- gsub("NA'?s *:", "NAs:", lines)
+  carries_count <- grepl("NAs:", lines, fixed = TRUE)
+  lines[carries_count] <- gsub("[ ]+", " ", lines[carries_count])
+  lines
 }
