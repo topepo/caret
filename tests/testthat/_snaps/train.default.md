@@ -70,7 +70,7 @@
        Mean   :NaN   Mean   :NaN   Mean   :NaN  
        3rd Qu.: NA   3rd Qu.: NA   3rd Qu.: NA  
        Max.   : NA   Max.   : NA   Max.   : NA  
-       NAs:2     NAs:2     NAs:2    
+       NAs:2 NAs:2 NAs:2 
     Condition
       Error:
       ! Stopping
@@ -104,7 +104,7 @@
        Mean   :NaN   Mean   :NaN   Mean   :NaN  
        3rd Qu.: NA   3rd Qu.: NA   3rd Qu.: NA  
        Max.   : NA   Max.   : NA   Max.   : NA  
-       NAs:2     NAs:2     NAs:2    
+       NAs:2 NAs:2 NAs:2 
     Condition
       Error:
       ! Stopping
