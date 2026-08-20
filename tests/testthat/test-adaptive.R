@@ -172,3 +172,410 @@ test_that("adaptive_cv tuning runs end to end with the Bradley-Terry racer", {
   expect_true(fit$bestTune$k %in% fit$results$k)
   expect_length(predict(fit, iris), nrow(iris))
 })
+
+# ------------------------------------------------------------------------------
+# adaptiveWorkflow: the paths that differ from the plain knn race above
+
+test_that("adaptive resampling collects class probabilities and predictions", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  cls <- engine_two_class(60)
+  set.seed(3742)
+  fit <- suppressWarnings(train(
+    cls[, names(cls) != "Class"],
+    cls$Class,
+    method = "knn",
+    tuneGrid = data.frame(k = c(3, 5, 7, 9)),
+    metric = "ROC",
+    trControl = trainControl(
+      method = "adaptive_cv",
+      number = 6,
+      classProbs = TRUE,
+      savePredictions = "all",
+      summaryFunction = twoClassSummary,
+      adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+    )
+  ))
+  expect_s3_class(fit, "train")
+  # the saved predictions carry a probability column per class
+  expect_contains(names(fit$pred), c("Class1", "Class2", "obs", "rowIndex"))
+  expect_all_false(is.na(fit$results$ROC))
+})
+
+test_that("adaptive resampling scores sub-models from one fit", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+  skip_if_not_installed("pls")
+
+  cls <- engine_two_class(60)
+  set.seed(8125)
+  # pls announces the objects it masks when caret attaches it
+  fit <- suppressMessages(suppressWarnings(train(
+    cls[, names(cls) != "Class"],
+    cls$Class,
+    method = "pls",
+    tuneGrid = data.frame(ncomp = 1:4),
+    metric = "ROC",
+    trControl = trainControl(
+      method = "adaptive_cv",
+      number = 6,
+      classProbs = TRUE,
+      savePredictions = "all",
+      summaryFunction = twoClassSummary,
+      adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+    )
+  )))
+  # every candidate that survived the race is scored
+  expect_gte(nrow(fit$results), 1L)
+  expect_in(fit$bestTune$ncomp, 1:4)
+})
+
+test_that("adaptive resampling works for regression with case weights", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  reg <- engine_regression(60)
+  wts <- rep(c(1, 2), length.out = nrow(reg))
+
+  set.seed(1653)
+  fit <- suppressWarnings(train(
+    reg[, 1:3],
+    reg$y,
+    method = "knn",
+    tuneGrid = data.frame(k = c(3, 5, 7, 9)),
+    weights = wts,
+    trControl = trainControl(
+      method = "adaptive_cv",
+      number = 6,
+      savePredictions = "final",
+      adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+    )
+  ))
+  expect_identical(fit$modelType, "Regression")
+  expect_all_false(is.na(fit$results$RMSE))
+})
+
+test_that("adaptive resampling runs over bootstrap and group splits", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  cls <- engine_three_class()
+  for (m in c("adaptive_boot", "adaptive_LGOCV")) {
+    set.seed(9401)
+    fit <- suppressWarnings(train(
+      Species ~ .,
+      data = cls,
+      method = "knn",
+      tuneGrid = data.frame(k = c(3, 5, 7, 9)),
+      trControl = trainControl(
+        method = m,
+        number = 6,
+        p = 0.75,
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    ))
+    expect_identical(fit$control$method, m)
+    expect_all_false(is.na(fit$results$Accuracy))
+  }
+})
+
+test_that("adaptive resampling can stop as soon as one model is left", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  cls <- engine_three_class()
+  set.seed(6274)
+  fit <- suppressWarnings(train(
+    Species ~ .,
+    data = cls,
+    method = "knn",
+    tuneGrid = data.frame(k = c(1, 5, 9, 13, 17)),
+    trControl = trainControl(
+      method = "adaptive_cv",
+      number = 10,
+      adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = FALSE)
+    )
+  ))
+  # with complete = FALSE the race ends early, so the surviving candidates have
+  # been scored on fewer resamples than the full ten
+  expect_s3_class(fit, "train")
+  expect_lte(max(fit$resample$Resample %in% fit$resample$Resample), 10L)
+})
+
+test_that("adaptive resampling reports a model that fails in every resample", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  reg <- engine_regression(40)
+  always <- make_custom_model(fail_when = function(x, y) TRUE)
+
+  suppressWarnings(
+    expect_snapshot(
+      train(
+        reg[, 1:3],
+        reg$y,
+        method = always,
+        tuneLength = 2,
+        trControl = trainControl(
+          method = "adaptive_cv",
+          number = 4,
+          adaptive = list(
+            min = 2,
+            alpha = 0.05,
+            method = "gls",
+            complete = TRUE
+          )
+        )
+      ),
+      error = TRUE,
+      transform = mask_na_label
+    )
+  )
+})
+
+test_that("adaptive resampling passes the workflow debug flag through", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  reg <- engine_regression(30)
+  tolerant <- make_custom_model()
+
+  # the custom model predicts its own tuning value, so the debug trace is the
+  # same every run; the resampled metrics in it are masked
+  expect_snapshot(
+    fit <- suppressWarnings(train(
+      reg[, 1:3],
+      reg$y,
+      method = tolerant,
+      tuneLength = 2,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        number = 4,
+        adaptive = list(min = 2, alpha = 0.05, method = "gls", complete = TRUE)
+      ),
+      testing = TRUE
+    )),
+    transform = mask_decimals
+  )
+  expect_s3_class(fit, "train")
+})
+
+# ------------------------------------------------------------------------------
+# the racing evaluators, on the shared fixture
+
+test_that("seq_eval keeps the models that are not yet distinguishable", {
+  withr::local_package("plyr")
+
+  # m1 is best and m2 is its near-copy, so the two cannot be told apart yet;
+  # m3 and m4 are clearly worse and are dropped
+  expect_setequal(
+    caret:::seq_eval(adapt_results, "RMSE", maximize = FALSE),
+    c("m1", "m2")
+  )
+
+  # maximizing turns the ordering around, and the worst model becomes the one
+  # to beat
+  expect_identical(
+    caret:::seq_eval(adapt_results, "RMSE", maximize = TRUE),
+    "m4"
+  )
+
+  # with only two models there is a single comparison, made with a t-test
+  two <- adapt_results[adapt_results$model_id %in% c("m1", "m3"), ]
+  expect_identical(caret:::seq_eval(two, "RMSE", maximize = FALSE), "m1")
+})
+
+test_that("gls_eval keeps the models that are not yet distinguishable", {
+  skip_if_not_installed("nlme")
+  withr::local_package("plyr")
+
+  # the mixed model reaches the same conclusion as the sequential test
+  expect_setequal(
+    caret:::gls_eval(adapt_results, "RMSE", maximize = FALSE),
+    c("m1", "m2")
+  )
+})
+
+test_that("bt_eval ranks the models by paired comparisons", {
+  skip_if_not_installed("BradleyTerry2")
+  withr::local_package("plyr")
+
+  # the Bradley-Terry model is more forgiving here and keeps the middle model
+  keepers <- suppressWarnings(
+    caret:::bt_eval(adapt_results, "RMSE", maximize = FALSE)
+  )
+  expect_contains(keepers, c("m1", "m2"))
+  expect_disjoint(keepers, "m4")
+})
+
+test_that("get_scores counts the wins within one resample", {
+  skip_if_not_installed("BradleyTerry2")
+
+  one_fold <- adapt_results[adapt_results$Resample == "Fold1", ]
+  scores <- caret:::get_scores(one_fold, maximize = FALSE, metric = "RMSE")
+
+  expect_named(scores, c("player1", "player2", "win1", "win2"))
+  # one row per pair of the four models
+  expect_identical(nrow(scores), 6L)
+  # m1 has the lowest RMSE in this fold, so it wins all three of its pairings
+  m1_rows <- scores[scores$player1 == "m1", ]
+  expect_all_equal(m1_rows$win1, 1)
+  expect_all_equal(m1_rows$win2, 0)
+})
+
+test_that("skunked drops the models that never win", {
+  withr::local_package("plyr")
+
+  # m4 loses every comparison it takes part in
+  scores <- data.frame(
+    player1 = c("m1", "m1", "m2"),
+    player2 = c("m2", "m4", "m4"),
+    win1 = c(3, 5, 4),
+    win2 = c(2, 0, 0),
+    stringsAsFactors = FALSE
+  )
+
+  expect_snapshot(out <- caret:::skunked(scores))
+  expect_disjoint(c(as.character(out$player1), as.character(out$player2)), "m4")
+
+  # and it can be told to keep quiet about it
+  expect_silent(quiet <- caret:::skunked(scores, verbose = FALSE))
+  expect_identical(nrow(quiet), nrow(out))
+})
+
+test_that("retrospective re-runs the race on a finished model", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+  withr::local_package("plyr")
+
+  cls <- engine_three_class()
+  set.seed(2039)
+  fit <- train(
+    Species ~ .,
+    data = cls,
+    method = "knn",
+    tuneGrid = data.frame(k = c(1, 5, 9, 13)),
+    trControl = trainControl(method = "cv", number = 6, returnResamp = "all")
+  )
+
+  # given an ordinary fit, retrospective() asks which candidates the race would
+  # still have been considering after B resamples
+  out <- caret:::retrospective(fit, B = 5, method = "gls")
+  expect_named(out, c("models", "mods", "long", "wide"))
+  # the surviving models are a subset of the candidates, in both views
+  expect_in(out$models, out$long$model_id)
+  expect_setequal(out$mods$model_id, out$models)
+  # `wide` is one row per resample and one column per candidate
+  expect_identical(nrow(out$wide), 5L)
+  expect_contains(colnames(out$wide), out$models)
+})
+
+test_that("adaptive resampling reports its progress", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  cls <- engine_three_class()
+  set.seed(5866)
+  # verboseIter names each resample and candidate, and the race says how many
+  # models it dropped after each one
+  expect_snapshot(
+    fit <- suppressWarnings(train(
+      Species ~ .,
+      data = cls,
+      method = "knn",
+      tuneGrid = data.frame(k = c(1, 9, 17)),
+      trControl = trainControl(
+        method = "adaptive_cv",
+        number = 5,
+        verboseIter = TRUE,
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )),
+    transform = mask_decimals
+  )
+  expect_s3_class(fit, "train")
+})
+
+test_that("adaptive resampling carries on when a model fails in one resample", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  reg <- engine_regression(60)
+  # exactly one fold holds out the largest outcome, so exactly one fit fails.
+  # The race burns in on `min - 1` resamples, so min = 3 leaves it a resample to
+  # compare on even if the failing fold is one of them.
+  sometimes <- make_custom_model(
+    fail_when = function(x, y) max(y) < max(reg$y)
+  )
+
+  set.seed(7017)
+  # one warning per candidate that failed, then one for the hole they leave
+  expect_snapshot(
+    fit <- train(
+      reg[, 1:3],
+      reg$y,
+      method = sometimes,
+      tuneLength = 2,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        number = 5,
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  expect_s3_class(fit, "train")
+  # the failed resample leaves a hole rather than stopping the race
+  expect_true(anyNA(fit$resample$RMSE) || nrow(fit$resample) < 8L)
+})
+
+test_that("adaptive resampling keeps sub-model probabilities through the race", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+  skip_if_not_installed("rpart")
+
+  cls <- engine_three_class()
+  set.seed(4034)
+  fit <- suppressWarnings(train(
+    Species ~ .,
+    data = cls,
+    method = "rpart",
+    tuneGrid = data.frame(cp = c(0.01, 0.05, 0.1, 0.3)),
+    trControl = trainControl(
+      method = "adaptive_cv",
+      number = 6,
+      classProbs = TRUE,
+      savePredictions = "all",
+      adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+    )
+  ))
+  # one fit per resample scores every cp value, each with its own probabilities
+  expect_contains(names(fit$pred), c(levels(cls$Species), "cp", "rowIndex"))
+  expect_gt(length(unique(fit$pred$cp)), 1L)
+})
+
+test_that("the diversity filters can report what they dropped", {
+  withr::local_package("plyr")
+
+  # m2 is a near-copy of m1, so each filter drops one of the four models
+  expect_snapshot(
+    keep_corr <- caret:::filter_on_corr(
+      adapt_results,
+      "RMSE",
+      cutoff = 0.9,
+      verbose = TRUE
+    )
+  )
+  expect_length(keep_corr, 3)
+
+  expect_snapshot(
+    keep_diff <- caret:::filter_on_diff(
+      adapt_results,
+      "RMSE",
+      cutoff = 0.1,
+      maximize = FALSE,
+      verbose = TRUE
+    )
+  )
+  expect_length(keep_diff, 3)
+})

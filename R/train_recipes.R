@@ -247,7 +247,7 @@ rec_prob <- function(method, object, newdata = NULL, param = NULL) {
   if (!is.data.frame(classProb) && is.null(param)) {
     classProb <- as.data.frame(classProb, stringsAsFactors = FALSE)
     if (!is.null(obsLevels)) {
-      classprob <- classProb[, obsLevels]
+      classProb <- classProb[, obsLevels, drop = FALSE]
     }
   }
   classProb
@@ -939,7 +939,6 @@ train_adapt_rec <- function(
       .errorhandling = "stop"
     ) %op%
     {
-      testing <- FALSE
       if (!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) {
         set.seed(ctrl$seeds[[iter]][parm])
       }
@@ -1159,6 +1158,18 @@ train_adapt_rec <- function(
     )
   ) {
     warning("There were missing values in resampled performance measures.")
+  }
+
+  ## the race compares the candidates on these resamples; with nothing to
+  ## compare, the racing code fails deep inside instead of saying why
+  if (!is.null(init_resamp[[metric]]) && all(is.na(init_resamp[[metric]]))) {
+    stop(
+      "Something is wrong; all the ",
+      metric,
+      " metric values are missing in the resamples the race starts from, so",
+      " the candidate models cannot be compared.",
+      call. = FALSE
+    )
   }
 
   init_summary <- ddply(
@@ -1529,7 +1540,6 @@ train_adapt_rec <- function(
         .errorhandling = "stop"
       ) %op%
       {
-        testing <- FALSE
         if (!(length(ctrl$seeds) == 1 && is.na(ctrl$seeds))) {
           set.seed(ctrl$seeds[[iter]][parm])
         }
