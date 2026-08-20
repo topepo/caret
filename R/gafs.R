@@ -33,7 +33,6 @@ ga_func_check <- function(x) {
     ))
   }
   invisible(x)
-  args <- lapply(x, function(x) names(formals(x)))
   expected <- list(
     fit = c('x', 'y', 'lev', 'last', '...'),
     fitness_intern = c('object', 'x', 'y', 'maximize', 'p'),
@@ -761,7 +760,10 @@ ga_select <- function(
 
     # mutation
     if (is.function(pmutation)) {
-      pm <- pmutation(object)
+      ## a varying mutation probability is a function of the generation; there
+      ## is no wider search object here to hand it (this used to reference an
+      ## undefined `object`)
+      pm <- pmutation(generation)
     } else {
       pm <- pmutation
     }
@@ -1787,7 +1789,8 @@ update.gafs <- function(object, iter, x, y, ...) {
   out <- object$differences[, metric, drop = FALSE]
   rownames(out) <- as.character(object$differences$Variable)
   if (!maximize) {
-    out[, metric, drop = FALSE] <- -out[, metric, drop = FALSE]
+    ## `[<-.data.frame` takes no `drop` argument
+    out[, metric] <- -out[, metric]
   }
   out <- out[order(-out[, metric]), , drop = FALSE]
   out
