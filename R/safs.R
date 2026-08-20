@@ -34,7 +34,6 @@ sa_func_check <- function(x) {
     ))
   }
   invisible(x)
-  args <- lapply(x, function(x) names(formals(x)))
   expected <- list(
     fit = c('x', 'y', 'lev', 'last', '...'),
     fitness_intern = c('object', 'x', 'y', 'maximize', 'p'),
@@ -83,7 +82,9 @@ sa_bl_correct0 <- function(x) {
     'Resample'
   )
   bl <- x[which.min(x$Iter), ]
-  bl <- bl[, !(names(bl) %in% extras)]
+  ## `drop = FALSE`: with a single performance metric this would collapse to a
+  ## vector, and the loop below (driven by its names) would do nothing
+  bl <- bl[, !(names(bl) %in% extras), drop = FALSE]
   perf_names <- names(bl)
   for (i in perf_names) {
     x[, i] <- x[, i] - bl[, i]
@@ -1627,7 +1628,8 @@ update.safs <- function(object, iter, x, y, ...) {
   out <- object$differences[, metric, drop = FALSE]
   rownames(out) <- as.character(object$differences$Variable)
   if (!maximize) {
-    out[, metric, drop = FALSE] <- -out[, metric, drop = FALSE]
+    ## `[<-.data.frame` takes no `drop` argument
+    out[, metric] <- -out[, metric]
   }
   out <- out[order(-out[, metric]), , drop = FALSE]
   out

@@ -20,3 +20,72 @@
          TwoFactor2, TwoFactor1, Linear02, Linear03, Linear04
       
 
+# rfeIter validates its arguments
+
+    Code
+      rfeIter(unnamed, y, testX = x, testY = y, sizes = 2)
+    Condition
+      Error in `rfeIter()`:
+      ! x must have column names
+
+---
+
+    Code
+      rfeIter(x, y, testX = NULL, testY = y, sizes = 2)
+    Condition
+      Error in `rfeIter()`:
+      ! a test set must be specified
+
+---
+
+    Code
+      rfeIter(x, y, testX = x, testY = y, sizes = NULL)
+    Condition
+      Error in `rfeIter()`:
+      ! please specify the number of features
+
+# rfe refuses a case-weight role
+
+    Code
+      rfe(rec, data = reg, sizes = c(1, 2), rfeControl = rfeControl(functions = lmFuncs,
+        method = "cv", number = 3))
+    Condition
+      Error:
+      ! `rfe` does not allow for weights.
+
+# the rfe resampling plots need saved resamples
+
+    explicit 'data' specification ignored
+
+# the rfe resampling plots refuse leave-one-out results
+
+    Code
+      xyplot(rf)
+    Condition
+      Error in `xyplot.rfe()`:
+      ! Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling
+
+---
+
+    Code
+      stripplot(rf)
+    Condition
+      Error in `stripplot.rfe()`:
+      ! Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling
+
+---
+
+    Code
+      densityplot(rf)
+    Condition
+      Error in `densityplot.rfe()`:
+      ! Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling
+
+---
+
+    Code
+      histogram(rf)
+    Condition
+      Error in `histogram.rfe()`:
+      ! Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling
+

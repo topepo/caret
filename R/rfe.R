@@ -1724,6 +1724,11 @@ rfe_rec <- function(
       modelPred <-
         data.frame(pred = modelPred, obs = test_y, Variables = sizeValues[k])
     }
+    ## columns with a "performance var" role are made available to the summary
+    ## function, as they are for train() and the gafs/safs searches
+    if (!is.null(perf_dat)) {
+      modelPred <- cbind(modelPred, perf_dat)
+    }
     ## save as a vector and rbind at end
     if (k == 1) {
       rfePred <- modelPred
@@ -2025,9 +2030,19 @@ rfe_rec <- function(
     externPerf <- subset(externPerf, Variables <= length(x_names))
 
     numResamples <- length(rfeControl$index)
+    ## leave-one-out pools every prediction into one estimate per subset size,
+    ## so there is no per-size resample count to screen on
+    if (any(names(externPerf) == "Num_Resamples")) {
+      candidates <- subset(
+        externPerf,
+        Num_Resamples >= floor(0.5 * numResamples)
+      )
+    } else {
+      candidates <- externPerf
+    }
     bestSubset <-
       rfeControl$functions$selectSize(
-        x = subset(externPerf, Num_Resamples >= floor(0.5 * numResamples)),
+        x = candidates,
         metric = metric,
         maximize = maximize
       )
