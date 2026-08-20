@@ -234,3 +234,123 @@
       Error:
       ! Stopping
 
+# train rejects a recipe whose outcome the model cannot handle
+
+    Code
+      train(rec, data = reg, method = "lda")
+    Condition
+      Error:
+      ! wrong model type for regression
+
+# train wants a character matrix for the string kernels
+
+    Code
+      train(rec, data = reg, method = "svmSpectrumString")
+    Condition
+      Error:
+      ! 'x_dat' should be a character matrix with a single column for string kernel methods
+
+# train warns about a two-valued numeric outcome from a recipe
+
+    You are trying to do regression and your outcome only has two possible values Are you trying to do classification? If so, use a 2 level factor as your outcome column.
+
+# train refuses sampling for a recipe with a numeric outcome
+
+    Code
+      train(rec, data = reg, method = "lm", trControl = trainControl(method = "cv",
+        number = 3, sampling = "down"))
+    Condition
+      Error:
+      ! sampling methods are only implemented for classification problems
+
+# train rejects a recipe outcome level with no data
+
+    Code
+      train(rec, data = cls, method = "lda")
+    Condition
+      Error:
+      ! One or more factor levels in the outcome has no data: 'empty'
+
+# train needs valid level names for recipe class probabilities
+
+    Code
+      train(rec, data = cls, method = "lda", trControl = trainControl(method = "cv",
+        number = 3, classProbs = TRUE))
+    Condition
+      Error:
+      ! At least one of the class levels is not a valid R variable name; This will cause errors when class probabilities are generated because the variables names will be converted to  one, X2.two, three . Please use factor levels that can be used as valid R variable names  (see ?make.names for help).
+
+# train checks the metric against the recipe's outcome type
+
+    Code
+      train(cls_rec, data = cls, method = "lda", metric = "RMSE")
+    Condition
+      Error:
+      ! Metric RMSE not applicable for classification models
+
+---
+
+    Code
+      train(reg_rec, data = reg, method = "lm", metric = "Kappa")
+    Condition
+      Error:
+      ! Metric Kappa not applicable for regression models
+
+---
+
+    Code
+      train(cls_rec, data = cls, method = "lda", metric = "ROC")
+    Condition
+      Error:
+      ! Class probabilities are needed to score models using the area under the ROC curve. Set `classProbs = TRUE` in the trainControl() function.
+
+# train drops recipe class probabilities it cannot produce
+
+    Class probabilities were requested for a model that does not implement them
+
+# train drops class probabilities for a recipe regression outcome
+
+    cannnot compute class probabilities for regression
+
+# train validates the recipe fit's other options
+
+    Code
+      train(rec, data = reg, method = "lm", trControl = trainControl(method = "cv",
+        savePredictions = "some"))
+    Condition
+      Error:
+      ! `savePredictions` should be either logical or "all", "final" or "none"
+
+---
+
+    Code
+      train(rec, data = reg, method = "knn", tuneGrid = data.frame(k = 5), trControl = trainControl(
+        method = "adaptive_cv", number = 4))
+    Condition
+      Error in `trainControl()`:
+      ! adaptive$min should be less than 4
+
+# train checks a recipe fit's tuning grid
+
+    Code
+      train(rec, data = cls, method = "knn", tuneGrid = data.frame(bogus = 5))
+    Condition
+      Error:
+      ! The tuning parameter grid should have columns k
+
+---
+
+    Code
+      train(rec, data = cls, method = "knn", tuneGrid = data.frame(k = 5, bogus = 1))
+    Condition
+      Error:
+      ! The tuning parameter grid should have columns k
+
+# train checks what a recipe model's loop function returns
+
+    Code
+      train(rec, data = reg, method = bad_loop, tuneLength = 2)
+    Condition
+      Error:
+      ! The 'loop' function should produce a list with elements 'loop' and 'submodels'
+

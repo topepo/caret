@@ -71,96 +71,8 @@
     Code
       train(dat[, 1:3], dat$y, method = "lm", preProcess = "bogus")
     Condition
-      Warning:
-      model fit failed for Resample01: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample02: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample03: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample04: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample05: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample06: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample07: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample08: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample09: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample10: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample11: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample12: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample13: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample14: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample15: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample16: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample17: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample18: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample19: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample20: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample21: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample22: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample23: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample24: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning:
-      model fit failed for Resample25: intercept=TRUE Error in pre_process_options(method, column_types) : 
-        These pre-processing methods are unknown: 'bogus'
-      Warning in `nominalTrainWorkflow()`:
-      There were missing values in resampled performance measures.
-    Output
-      Something is wrong; all the RMSE metric values are missing:
-            RMSE        Rsquared        MAE     
-       Min.   : NA   Min.   : NA   Min.   : NA  
-       1st Qu.: NA   1st Qu.: NA   1st Qu.: NA  
-       Median : NA   Median : NA   Median : NA  
-       Mean   :NaN   Mean   :NaN   Mean   :NaN  
-       3rd Qu.: NA   3rd Qu.: NA   3rd Qu.: NA  
-       Max.   : NA   Max.   : NA   Max.   : NA  
-       NAs:1 NAs:1 NAs:1 
-    Condition
       Error:
-      ! Stopping
+      ! pre-processing methods are limited to: BoxCox, YeoJohnson, expoTrans, invHyperbolicSine, center, scale, range, knnImpute, bagImpute, medianImpute, pca, ica, spatialSign, ignore, keep, remove, zv, nzv, conditionalX, corr
 
 # train rejects an outcome level with no data
 
@@ -213,4 +125,92 @@
 # train drops class probabilities for a regression outcome
 
     cannnot compute class probabilities for regression
+
+# train needs a numeric or factor outcome
+
+    Code
+      train(reg[, 1:3], rep(c(TRUE, FALSE), 10), method = "lda")
+    Condition
+      Error:
+      ! Please make sure that the outcome column is a factor or numeric. The class(es) of the column: 'logical'
+
+---
+
+    Code
+      train(reg[, 1:3], as.Date("2020-01-01") + 1:20, method = "lda")
+    Condition
+      Error:
+      ! Please make sure that the outcome column is a factor or numeric. The class(es) of the column: 'Date'
+
+# train wants a character matrix for the string kernels
+
+    Code
+      train(strings, y, method = "svmSpectrumString")
+    Condition
+      Error:
+      ! Please use column names for `x`
+
+---
+
+    Code
+      train(numeric_x, y, method = "svmSpectrumString")
+    Condition
+      Error:
+      ! 'x' should be a character matrix with a single column for string kernel methods
+
+---
+
+    Code
+      train(data.frame(a = strings), y, method = "svmSpectrumString")
+    Condition
+      Error:
+      ! 'x' should be a character matrix with a single column for string kernel methods
+
+# train checks the columns of a supplied tuning grid
+
+    Code
+      train(Species ~ ., data = cls, method = "knn", tuneGrid = data.frame(bogus = 5))
+    Condition
+      Error:
+      ! The tuning parameter grid should have columns k
+
+---
+
+    Code
+      train(Species ~ ., data = cls, method = "knn", tuneGrid = data.frame(k = 5,
+        bogus = 1))
+    Condition
+      Error:
+      ! The tuning parameter grid should have columns k
+
+# train checks the savePredictions option
+
+    Code
+      train(reg[, 1:3], reg$y, method = "lm", trControl = trainControl(method = "cv",
+        savePredictions = "some"))
+    Condition
+      Error:
+      ! `savePredictions` should be either logical or "all", "final" or "none"
+
+# train needs more than one candidate for adaptive resampling
+
+    Code
+      train(Species ~ ., data = cls, method = "knn", tuneGrid = data.frame(k = 5),
+      trControl = trainControl(method = "adaptive_cv", number = 4, adaptive = list(
+        min = 2, alpha = 0.05, method = "gls", complete = TRUE)))
+    Condition
+      Error:
+      ! For adaptive resampling, there needs to be more than one tuning parameter for evaluation
+
+# train checks what a model's loop function returns
+
+    Code
+      train(reg[, 1:3], reg$y, method = bad_loop, tuneLength = 2)
+    Condition
+      Error:
+      ! The 'loop' function should produce a list with elements 'loop' and 'submodels'
+
+# train falls back when the metric is not in the results
+
+    The metric "RMSE" was not in the result set. MedianError will be used instead.
 
