@@ -51,3 +51,62 @@ test_that("the varImp plot methods handle per-class importances", {
   expect_s3_class(draw_trellis(plot(vi)), "trellis")
   expect_s3_class(ggplot(vi), "ggplot")
 })
+
+test_that("plot.varImp.train collapses a two-column importance table", {
+  # some models report one column per class of a two-class problem, holding the
+  # same numbers twice; only the first column is plotted
+  vi <- varimp_fixture()
+  vi$importance <- data.frame(
+    one = vi$importance[[1]],
+    two = vi$importance[[1]],
+    row.names = rownames(vi$importance)
+  )
+
+  drawn <- draw_trellis(plot(vi))
+  expect_s3_class(drawn, "trellis")
+  # a single panel, since the class conditioning is gone
+  expect_identical(dim(drawn), 1L)
+
+  # ggplot takes the same route
+  expect_s3_class(ggplot2::ggplot(vi), "ggplot")
+})
+
+test_that("plot.varImp.train draws signed importances as needles with groups", {
+  # pam is the model whose importances carry a sign; the plot splits them into
+  # positive and negative groups and draws them with panel.needle()
+  vi <- varimp_fixture()
+  vi$model <- "pam"
+  vi$importance[[1]] <- vi$importance[[1]] - mean(vi$importance[[1]])
+
+  drawn <- plot(vi)
+  expect_s3_class(drawn, "trellis")
+  # drawing is what runs panel.needle, including its grouped branch
+  draw_trellis(drawn)
+
+  # and per-class signed importances, so the panel function sees several panels
+  multi <- varimp_fixture(
+    formula = Species ~ .,
+    data = engine_three_class()
+  )
+  multi$model <- "pam"
+  multi$importance <- multi$importance - 0.5
+  draw_trellis(plot(multi))
+})
+
+test_that("panel.needle draws vertically as well as horizontally", {
+  vi <- varimp_fixture()
+
+  # `horizontal = FALSE` swaps the axes, which is a separate branch of the
+  # panel function
+  drawn <- dotplot(
+    Feature ~ Importance,
+    data = data.frame(
+      Importance = vi$importance[[1]],
+      Feature = factor(rownames(vi$importance))
+    ),
+    panel = panel.needle,
+    horizontal = FALSE
+  )
+  draw_trellis(drawn)
+  expect_s3_class(drawn, "trellis")
+})

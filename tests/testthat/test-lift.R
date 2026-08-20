@@ -180,3 +180,17 @@ test_that("get_ref_point interpolates the tested percentage for a target", {
   # the interpolated positions lie within the observed range
   expect_all_true(!is.na(ref$CumTestedPct))
 })
+
+test_that("the lift plot passes lattice options through", {
+  lft <- lift(Class ~ prob1, data = lift_data)
+  drawn <- xyplot(lft, lattice.options = list(default.theme = list()))
+  expect_s3_class(draw_trellis(drawn), "trellis")
+})
+
+test_that("lift needs a two-class outcome", {
+  three <- data.frame(
+    Class = factor(rep(c("a", "b", "c"), each = 4)),
+    prob = seq(0.05, 0.95, length.out = 12)
+  )
+  expect_snapshot(lift(Class ~ prob, data = three), error = TRUE)
+})

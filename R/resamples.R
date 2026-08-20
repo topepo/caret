@@ -107,9 +107,11 @@ resamples.default <- function(x, modelNames = names(x), ...) {
   }
 
   for (i in 1:numResamp[1]) {
-    indices <- lapply(x, function(x, i) sort(x$control$index[[1]]), i = i)
+    indices <- lapply(x, function(x, i) sort(x$control$index[[i]]), i = i)
+    ## every row should appear once per model; more than one count means the
+    ## models were not resampled the same way
     uniqueIndex <- length(table(table(unlist(indices))))
-    if (length(uniqueIndex) > 1) {
+    if (uniqueIndex > 1) {
       stop("The samples indices are not equal across resamples")
     }
   }
@@ -1488,21 +1490,26 @@ levelplot.diff.resamples <- function(
     }
     colnames(temp) <- x$models
     temp <- as.data.frame(temp, stringsAsFactors = TRUE)
-    temp$A <- x$models
-    temp$Metric <- x$metric[h]
+    ## the matrix columns are named after the models, so the columns added here
+    ## need names no model can have: "A" and "B" used to collide with models of
+    ## those names and left melt() with nothing to reshape
+    temp$.row_model <- x$models
+    temp$.metric <- x$metric[h]
     all[[h]] <- temp
   }
   all <- do.call("rbind", all)
   all <- melt(all, measure.vars = x$models)
-  names(all)[names(all) == "variable"] <- "B"
-  all$A <- factor(all$A, levels = x$models)
-  all$B <- factor(as.character(all$B), levels = x$models)
+  names(all)[names(all) == "variable"] <- ".col_model"
+  all$.row_model <- factor(all$.row_model, levels = x$models)
+  all$.col_model <- factor(as.character(all$.col_model), levels = x$models)
 
   all <- all[complete.cases(all), ]
+  ## filter here rather than with levelplot's `subset`, which would evaluate a
+  ## bare column name and trip the "no visible binding" check
+  all <- all[all$.metric %in% metric, , drop = FALSE]
   levelplot(
-    value ~ A + B | Metric,
+    value ~ .row_model + .col_model | .metric,
     data = all,
-    subset = Metric %in% metric,
     xlab = "",
     ylab = "",
     sub = ifelse(

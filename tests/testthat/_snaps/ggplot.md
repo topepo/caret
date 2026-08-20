@@ -30,3 +30,27 @@
       Error in `caret:::random_search_plot()`:
       ! Can't plot results with a single tuning parameter combination
 
+# random search plots refuse what they cannot draw
+
+    Code
+      caret:::random_search_plot(random_search_obj(num = 2, constant = TRUE))
+    Condition
+      Error in `caret:::random_search_plot()`:
+      ! Can't plot results with a single tuning parameter combination
+
+---
+
+    Code
+      caret:::random_search_plot(random_search_obj(num = 0, other = 4))
+    Condition
+      Error in `caret:::random_search_plot()`:
+      ! There are 4 non-numeric variables; I don't have code for that Dave
+
+---
+
+    Code
+      caret:::random_search_plot(random_search_obj(num = 2, other = 2))
+    Condition
+      Error in `caret:::random_search_plot()`:
+      ! There are 2 numeric tuning variables and 2 non-numeric variables; I don't have code for that Dave
+

@@ -225,3 +225,96 @@ test_that("diff.resamples plot methods return trellis objects", {
   expect_s3_class(draw_trellis(bwplot(d)), "trellis")
   expect_s3_class(draw_trellis(dotplot(d)), "trellis")
 })
+
+test_that("xyplot.resamples draws each comparison it offers", {
+  # a scatter of two models, and the Bland-Altman view of their difference
+  expect_s3_class(
+    draw_trellis(xyplot(rs_fixture, what = "BlandAltman")),
+    "trellis"
+  )
+
+  # the three timing views plot performance against how long each model took
+  for (w in c("tTime", "mTime", "pTime")) {
+    drawn <- draw_trellis(xyplot(rs_fixture, what = w))
+    expect_s3_class(drawn, "trellis")
+  }
+
+  # the times can be shown in other units
+  for (u in c("sec", "min", "hour")) {
+    expect_s3_class(
+      draw_trellis(xyplot(rs_fixture, what = "tTime", units = u)),
+      "trellis"
+    )
+  }
+})
+
+test_that("xyplot.resamples checks what it was asked to draw", {
+  expect_snapshot(xyplot(rs_fixture, units = "fortnight"), error = TRUE)
+  expect_snapshot(xyplot(rs_fixture, what = "bogus"), error = TRUE)
+  expect_snapshot(
+    xyplot(rs_fixture, metric = c("RMSE", "Rsquared")),
+    error = TRUE
+  )
+  # Bland-Altman compares exactly two models
+  expect_snapshot(
+    xyplot(rs_fixture, what = "BlandAltman", models = c("A", "B", "C")),
+    error = TRUE
+  )
+})
+
+test_that("splom.resamples draws each of its variants", {
+  # the default matrix of scatterplots, and the two panel layouts
+  expect_s3_class(
+    draw_trellis(splom(rs_fixture, variables = "models")),
+    "trellis"
+  )
+  expect_s3_class(
+    draw_trellis(splom(rs_fixture, variables = "metrics")),
+    "trellis"
+  )
+  expect_snapshot(splom(rs_fixture, variables = "bogus"), error = TRUE)
+})
+
+test_that("levelplot.diff.resamples draws p-values and differences", {
+  d <- diff(rs_fixture)
+  for (w in c("pvalues", "differences")) {
+    expect_s3_class(draw_trellis(levelplot(d, what = w)), "trellis")
+  }
+  expect_snapshot(levelplot(d, metric = c("RMSE", "Rsquared")), error = TRUE)
+})
+
+test_that("dotplot.resamples and its diff method draw with options", {
+  # a confidence level and a metric subset
+  expect_s3_class(
+    draw_trellis(dotplot(rs_fixture, metric = "RMSE", conf.level = 0.8)),
+    "trellis"
+  )
+  d <- diff(rs_fixture)
+  expect_s3_class(draw_trellis(dotplot(d, metric = "RMSE")), "trellis")
+})
+
+test_that("print.prcomp.resamples reports the rotation", {
+  pc <- prcomp(rs_fixture)
+
+  # The rotation is not snapshotted: the sign of an eigenvector is arbitrary, so
+  # the values (and the sign of the near-zero third component in particular)
+  # differ between BLAS implementations. The headings and labels are stable.
+  out <- capture.output(print(pc))
+  expect_true(any(grepl("Metric: RMSE", out)))
+  expect_true(any(grepl("Std. Dev.", out, fixed = TRUE)))
+  expect_true(any(grepl("Cum. Percent Var.", out, fixed = TRUE)))
+  expect_true(any(grepl("Rotation:", out, fixed = TRUE)))
+  # one column per component, and one row per row of the rotation matrix
+  expect_true(any(grepl("PC1 *PC2 *PC3", out)))
+  expect_all_true(vapply(
+    rownames(pc$rotation),
+    function(r) any(grepl(r, out, fixed = TRUE)),
+    logical(1)
+  ))
+})
+
+test_that("plot.prcomp.resamples ignores a plot type it does not know", {
+  pc <- prcomp(rs_fixture)
+  # there is no validation, so an unknown `what` simply draws nothing
+  expect_null(plot(pc, what = "bogus"))
+})
