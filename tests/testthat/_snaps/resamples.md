@@ -137,25 +137,3 @@
       Error in `levelplot.diff.resamples()`:
       ! exactly one metric must be given
 
-# print.prcomp.resamples reports the rotation
-
-    Code
-      print(pc)
-    Output
-      
-      Call:
-      prcomp.resamples(x = rs_fixture)
-      
-      Metric: RMSE 
-                                                
-      Std. Dev.          <num> <num> <num>e-16
-      Cum. Percent Var.  <num> <num> <num>e+00
-      
-      Rotation:
-                     PC1     PC2     PC3
-      Resample1  <num> -<num>  <num>
-      Resample2  <num>  <num>  <num>
-      Resample3  <num> -<num> -<num>
-      Resample4 -<num> -<num> -<num>
-      Resample5 -<num> -<num>  <num>
-

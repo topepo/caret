@@ -1504,10 +1504,12 @@ levelplot.diff.resamples <- function(
   all$.col_model <- factor(as.character(all$.col_model), levels = x$models)
 
   all <- all[complete.cases(all), ]
+  ## filter here rather than with levelplot's `subset`, which would evaluate a
+  ## bare column name and trip the "no visible binding" check
+  all <- all[all$.metric %in% metric, , drop = FALSE]
   levelplot(
     value ~ .row_model + .col_model | .metric,
     data = all,
-    subset = .metric %in% metric,
     xlab = "",
     ylab = "",
     sub = ifelse(

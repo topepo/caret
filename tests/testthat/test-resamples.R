@@ -295,7 +295,22 @@ test_that("dotplot.resamples and its diff method draw with options", {
 
 test_that("print.prcomp.resamples reports the rotation", {
   pc <- prcomp(rs_fixture)
-  expect_snapshot(print(pc), transform = mask_decimals)
+
+  # The rotation is not snapshotted: the sign of an eigenvector is arbitrary, so
+  # the values (and the sign of the near-zero third component in particular)
+  # differ between BLAS implementations. The headings and labels are stable.
+  out <- capture.output(print(pc))
+  expect_true(any(grepl("Metric: RMSE", out)))
+  expect_true(any(grepl("Std. Dev.", out, fixed = TRUE)))
+  expect_true(any(grepl("Cum. Percent Var.", out, fixed = TRUE)))
+  expect_true(any(grepl("Rotation:", out, fixed = TRUE)))
+  # one column per component, and one row per row of the rotation matrix
+  expect_true(any(grepl("PC1 *PC2 *PC3", out)))
+  expect_all_true(vapply(
+    rownames(pc$rotation),
+    function(r) any(grepl(r, out, fixed = TRUE)),
+    logical(1)
+  ))
 })
 
 test_that("plot.prcomp.resamples ignores a plot type it does not know", {
