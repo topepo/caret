@@ -58,3 +58,11 @@
       Error:
       ! `plot`` should be either 'lift' or 'gain'
 
+# lift needs a two-class outcome
+
+    Code
+      lift(Class ~ prob, data = three)
+    Condition
+      Error in `sensitivity.default()`:
+      ! input data must have the same two levels
+

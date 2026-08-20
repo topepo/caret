@@ -40,3 +40,33 @@ test_that("print.calibration reports the models and event", {
   cal <- calibration(Class ~ prob1, data = lift_data)
   expect_snapshot(print(cal))
 })
+
+test_that("the calibration plots handle several models", {
+  cal <- calibration(Class ~ prob1 + prob2, data = lift_data)
+
+  # several models are dodged and coloured rather than drawn plainly
+  gg <- ggplot(cal)
+  expect_s3_class(gg, "ggplot")
+  built <- ggplot2::ggplot_build(gg)
+  expect_contains(names(built$data[[2]]), "colour")
+
+  # the lattice version groups by model, and plot() is the same as xyplot()
+  expect_s3_class(draw_trellis(xyplot(cal)), "trellis")
+  expect_s3_class(draw_trellis(plot(cal)), "trellis")
+})
+
+test_that("calibration normalises the cut points it is given", {
+  # cuts that do not span the unit interval are extended to it, so the first
+  # bin starts at zero and the last one ends at one
+  cal <- calibration(Class ~ prob1, data = lift_data, cuts = c(0.25, 0.5, 0.75))
+  bins <- as.character(cal$data$bin)
+  expect_identical(bins[1], "[0,0.25]")
+  expect_identical(bins[length(bins)], "(0.75,1]")
+})
+
+test_that("the calibration plot passes lattice options through", {
+  cal <- calibration(Class ~ prob1, data = lift_data)
+  # supplying lattice.options exercises the branch that sets and restores them
+  drawn <- xyplot(cal, lattice.options = list(default.theme = list()))
+  expect_s3_class(draw_trellis(drawn), "trellis")
+})

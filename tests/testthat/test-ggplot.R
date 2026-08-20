@@ -268,3 +268,47 @@ test_that("random_search_plot needs more than one parameter combination", {
   # a random-search plot of a single combination has nothing to show
   expect_snapshot(caret:::random_search_plot(fit), error = TRUE)
 })
+
+# ------------------------------------------------------------------------------
+# random search plots (fabricated objects: see helper-plots.R)
+
+test_that("random search plots pick a layout for each parameter mix", {
+  # one, two and three or more numeric parameters: a scatter, a bubble chart
+  # and a faceted feature plot
+  for (n in 1:3) {
+    gg <- caret:::random_search_plot(random_search_obj(num = n))
+    expect_s3_class(gg, "ggplot")
+    expect_no_error(ggplot2::ggplot_build(gg))
+  }
+
+  # one, two and three non-numeric parameters
+  for (n in 1:3) {
+    gg <- caret:::random_search_plot(random_search_obj(num = 0, other = n))
+    expect_s3_class(gg, "ggplot")
+    expect_no_error(ggplot2::ggplot_build(gg))
+  }
+
+  # and a mixture of the two, which colours the feature plot
+  gg <- caret:::random_search_plot(random_search_obj(num = 2, other = 1))
+  expect_s3_class(gg, "ggplot")
+  expect_no_error(ggplot2::ggplot_build(gg))
+})
+
+test_that("random search plots refuse what they cannot draw", {
+  # nothing varies, so there is nothing to plot against
+  expect_snapshot(
+    caret:::random_search_plot(random_search_obj(num = 2, constant = TRUE)),
+    error = TRUE
+  )
+
+  # four non-numeric parameters is more than the code handles, and so is more
+  # than one non-numeric alongside numeric ones
+  expect_snapshot(
+    caret:::random_search_plot(random_search_obj(num = 0, other = 4)),
+    error = TRUE
+  )
+  expect_snapshot(
+    caret:::random_search_plot(random_search_obj(num = 2, other = 2)),
+    error = TRUE
+  )
+})

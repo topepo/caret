@@ -22,6 +22,7 @@
       Models: A, B, C 
       Number of resamples: 5 
       Performance metrics: RMSE, Rsquared 
+      Time estimates for: everything, final model fit, prediction 
 
 ---
 
@@ -87,4 +88,74 @@
       B 0.0001722           0.12
       C 0.1422620 0.4967353     
       
+
+# xyplot.resamples checks what it was asked to draw
+
+    Code
+      xyplot(rs_fixture, units = "fortnight")
+    Condition
+      Error in `xyplot.resamples()`:
+      ! units should be 'sec', 'min' or 'hour'
+
+---
+
+    Code
+      xyplot(rs_fixture, what = "bogus")
+    Condition
+      Error in `xyplot.resamples()`:
+      ! the what arg should be 'scatter', 'BlandAltman', 'tTime', 'mTime' or 'pTime'
+
+---
+
+    Code
+      xyplot(rs_fixture, metric = c("RMSE", "Rsquared"))
+    Condition
+      Error in `xyplot.resamples()`:
+      ! exactly one metric must be given
+
+---
+
+    Code
+      xyplot(rs_fixture, what = "BlandAltman", models = c("A", "B", "C"))
+    Condition
+      Error in `xyplot.resamples()`:
+      ! exactly two model names must be given
+
+# splom.resamples draws each of its variants
+
+    Code
+      splom(rs_fixture, variables = "bogus")
+    Condition
+      Error in `splom.resamples()`:
+      ! 'variables' should be either 'models' or 'metrics'
+
+# levelplot.diff.resamples draws p-values and differences
+
+    Code
+      levelplot(d, metric = c("RMSE", "Rsquared"))
+    Condition
+      Error in `levelplot.diff.resamples()`:
+      ! exactly one metric must be given
+
+# print.prcomp.resamples reports the rotation
+
+    Code
+      print(pc)
+    Output
+      
+      Call:
+      prcomp.resamples(x = rs_fixture)
+      
+      Metric: RMSE 
+                                                
+      Std. Dev.          <num> <num> <num>e-16
+      Cum. Percent Var.  <num> <num> <num>e+00
+      
+      Rotation:
+                     PC1     PC2     PC3
+      Resample1  <num> -<num>  <num>
+      Resample2  <num>  <num>  <num>
+      Resample3  <num> -<num> -<num>
+      Resample4 -<num> -<num> -<num>
+      Resample5 -<num> -<num>  <num>
 

@@ -29,8 +29,10 @@ rs_fixture <- structure(
     values = rs_values,
     models = c("A", "B", "C"),
     metrics = c("RMSE", "Rsquared"),
+    # seconds per model, as train() records them. Real values (rather than the
+    # NAs this used to hold) let the timing plots be drawn.
     timings = as.data.frame(matrix(
-      NA,
+      c(120, 240, 3600, 12, 30, 600, 1, 2, 6),
       nrow = 3,
       ncol = 3,
       dimnames = list(

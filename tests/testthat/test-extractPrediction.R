@@ -221,3 +221,37 @@ test_that("extractPrediction handles unknown-only regression extraction", {
   # regression unknowns have missing observed values
   expect_all_true(is.na(ep$obs))
 })
+
+test_that("plotClassProbs conditions on the columns that vary", {
+  skip_on_cran()
+
+  dat <- engine_three_class()
+  ctrl <- trainControl(method = "cv", number = 3, classProbs = TRUE)
+  set.seed(6106)
+  fit <- train(
+    Species ~ .,
+    data = dat,
+    method = "knn",
+    tuneGrid = data.frame(k = 5),
+    trControl = ctrl
+  )
+  prob <- extractProb(list(knn = fit))
+
+  # more than two classes puts each class in its own panel
+  drawn <- draw_trellis(plotClassProbs(prob))
+  expect_s3_class(drawn, "trellis")
+  expect_gt(prod(dim(drawn)), 1)
+
+  # with a single model and no test set there is nothing but the observed class
+  # to condition on, and the density plot drops even that (it groups by it)
+  expect_s3_class(
+    draw_trellis(plotClassProbs(prob, plotType = "densityplot")),
+    "trellis"
+  )
+
+  # the per-object panels can be turned off
+  expect_s3_class(
+    draw_trellis(plotClassProbs(prob, useObjects = FALSE)),
+    "trellis"
+  )
+})
