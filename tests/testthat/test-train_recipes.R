@@ -931,3 +931,222 @@ test_that("leave-one-out resampling reports a failing recipe model", {
     )
   )
 })
+
+# ------------------------------------------------------------------------------
+# validation, the recipe interface's mirror of test-train.default-validation.R
+
+test_that("train rejects a recipe whose outcome the model cannot handle", {
+  reg <- engine_regression(30)
+  rec <- recipes::recipe(y ~ ., data = reg)
+  # lda is classification only
+  expect_snapshot(train(rec, data = reg, method = "lda"), error = TRUE)
+})
+
+test_that("train wants a character matrix for the string kernels", {
+  skip_if_not_installed("kernlab")
+
+  reg <- engine_regression(20)
+  rec <- recipes::recipe(y ~ ., data = reg)
+  # a recipe always yields a data frame, so that is the shape reported
+  expect_snapshot(
+    train(rec, data = reg, method = "svmSpectrumString"),
+    error = TRUE
+  )
+})
+
+test_that("train warns about a two-valued numeric outcome from a recipe", {
+  reg <- engine_regression(30)
+  reg$y <- rep(c(0, 1), length.out = nrow(reg))
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  expect_snapshot_warning(
+    train(
+      rec,
+      data = reg,
+      method = "lm",
+      trControl = trainControl(method = "cv", number = 3)
+    )
+  )
+})
+
+test_that("train refuses sampling for a recipe with a numeric outcome", {
+  reg <- engine_regression(30)
+  rec <- recipes::recipe(y ~ ., data = reg)
+  expect_snapshot(
+    train(
+      rec,
+      data = reg,
+      method = "lm",
+      trControl = trainControl(method = "cv", number = 3, sampling = "down")
+    ),
+    error = TRUE
+  )
+})
+
+test_that("train rejects a recipe outcome level with no data", {
+  cls <- engine_three_class()
+  cls$Species <- factor(cls$Species, levels = c(levels(cls$Species), "empty"))
+  rec <- recipes::recipe(Species ~ ., data = cls)
+
+  expect_snapshot(train(rec, data = cls, method = "lda"), error = TRUE)
+})
+
+test_that("train needs valid level names for recipe class probabilities", {
+  cls <- engine_three_class()
+  levels(cls$Species) <- c("one", "2 two", "three")
+  rec <- recipes::recipe(Species ~ ., data = cls)
+
+  expect_snapshot(
+    train(
+      rec,
+      data = cls,
+      method = "lda",
+      trControl = trainControl(method = "cv", number = 3, classProbs = TRUE)
+    ),
+    error = TRUE
+  )
+})
+
+test_that("train checks the metric against the recipe's outcome type", {
+  cls <- engine_three_class()
+  cls_rec <- recipes::recipe(Species ~ ., data = cls)
+  reg <- engine_regression(30)
+  reg_rec <- recipes::recipe(y ~ ., data = reg)
+
+  # regression metrics for a factor outcome, and the other way round
+  expect_snapshot(
+    train(cls_rec, data = cls, method = "lda", metric = "RMSE"),
+    error = TRUE
+  )
+  expect_snapshot(
+    train(reg_rec, data = reg, method = "lm", metric = "Kappa"),
+    error = TRUE
+  )
+  # the ROC curve needs probabilities to be computed from
+  expect_snapshot(
+    train(cls_rec, data = cls, method = "lda", metric = "ROC"),
+    error = TRUE
+  )
+})
+
+test_that("train drops recipe class probabilities it cannot produce", {
+  skip_on_cran()
+
+  cls <- engine_three_class()
+  rec <- recipes::recipe(Species ~ ., data = cls)
+  # `prob` has to be present for the method list to be accepted, so it is left
+  # in place but is not a function
+  no_prob <- make_custom_model()
+  no_prob$prob <- NA
+
+  set.seed(8817)
+  expect_snapshot_warning(
+    fit <- train(
+      rec,
+      data = cls,
+      method = no_prob,
+      tuneLength = 2,
+      trControl = trainControl(method = "cv", number = 2, classProbs = TRUE)
+    )
+  )
+  expect_false(fit$control$classProbs)
+})
+
+test_that("train drops class probabilities for a recipe regression outcome", {
+  skip_on_cran()
+
+  reg <- engine_regression(30)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  expect_snapshot_warning(
+    fit <- train(
+      rec,
+      data = reg,
+      method = "lm",
+      trControl = trainControl(method = "cv", number = 2, classProbs = TRUE)
+    )
+  )
+  expect_false(fit$control$classProbs)
+})
+
+test_that("train validates the recipe fit's other options", {
+  reg <- engine_regression(30)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  # `preProcess` is not checked here: the recipe does the pre-processing, so
+  # train.recipe ignores the argument rather than validating it
+  expect_snapshot(
+    train(
+      rec,
+      data = reg,
+      method = "lm",
+      trControl = trainControl(method = "cv", savePredictions = "some")
+    ),
+    error = TRUE
+  )
+  # adaptive resampling needs something to choose between
+  expect_snapshot(
+    train(
+      rec,
+      data = reg,
+      method = "knn",
+      tuneGrid = data.frame(k = 5),
+      trControl = trainControl(method = "adaptive_cv", number = 4)
+    ),
+    error = TRUE
+  )
+})
+
+test_that("train checks a recipe fit's tuning grid", {
+  cls <- engine_three_class()
+  rec <- recipes::recipe(Species ~ ., data = cls)
+
+  expect_snapshot(
+    train(rec, data = cls, method = "knn", tuneGrid = data.frame(bogus = 5)),
+    error = TRUE
+  )
+  expect_snapshot(
+    train(
+      rec,
+      data = cls,
+      method = "knn",
+      tuneGrid = data.frame(k = 5, bogus = 1)
+    ),
+    error = TRUE
+  )
+})
+
+test_that("train checks what a recipe model's loop function returns", {
+  reg <- engine_regression(30)
+  rec <- recipes::recipe(y ~ ., data = reg)
+  bad_loop <- make_custom_model()
+  bad_loop$loop <- function(grid) list(nonsense = grid)
+
+  expect_snapshot(
+    train(rec, data = reg, method = bad_loop, tuneLength = 2),
+    error = TRUE
+  )
+})
+
+test_that("train accepts logical savePredictions and dot-named grids", {
+  skip_on_cran()
+
+  cls <- engine_three_class()
+  rec <- recipes::recipe(Species ~ ., data = cls)
+
+  set.seed(1633)
+  fit <- train(
+    rec,
+    data = cls,
+    method = "knn",
+    tuneGrid = data.frame(.k = c(3, 5)),
+    trControl = trainControl(
+      method = "cv",
+      number = 3,
+      savePredictions = TRUE
+    )
+  )
+  # TRUE means "all", and the dots are stripped from the grid names
+  expect_identical(fit$control$savePredictions, "all")
+  expect_in("k", names(fit$results))
+})

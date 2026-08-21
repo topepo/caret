@@ -423,14 +423,24 @@ train.default <- function(
   parallel_check("RWeka", models)
   parallel_check("keras", models)
 
-  if (!is.null(preProcess) && !(all(names(preProcess) %in% ppMethods))) {
-    stop(
-      paste(
-        'pre-processing methods are limited to:',
-        paste(ppMethods, collapse = ", ")
-      ),
-      call. = FALSE
-    )
+  if (!is.null(preProcess)) {
+    ## `preProcess` is usually an unnamed character vector of method names; only
+    ## the list form carries them as names, and checking the names of a plain
+    ## vector let anything through
+    pp_given <- if (is.null(names(preProcess))) {
+      preProcess
+    } else {
+      names(preProcess)
+    }
+    if (!all(pp_given %in% ppMethods)) {
+      stop(
+        paste(
+          'pre-processing methods are limited to:',
+          paste(ppMethods, collapse = ", ")
+        ),
+        call. = FALSE
+      )
+    }
   }
   if (modelType == "Classification") {
     ## We should get and save the class labels to ensure that predictions are coerced
