@@ -25,3 +25,30 @@ engine_regression <- function(n = 60) {
     )
   })
 }
+
+# Data with a sentinel row for make_submodel_model(): the last row carries a
+# predictor value no other row has, so a model can tell which resample held it
+# out. The outcome is balanced so every fold has both classes.
+engine_sentinel_data <- function(
+  n = 60,
+  classification = TRUE,
+  sentinel = 999
+) {
+  dat <- withr::with_seed(3517, {
+    data.frame(
+      x1 = rnorm(n),
+      x2 = rnorm(n),
+      x3 = rnorm(n)
+    )
+  })
+  dat$x1[n] <- sentinel
+  if (classification) {
+    dat$y <- factor(
+      rep(c("one", "two"), length.out = n),
+      levels = c("one", "two")
+    )
+  } else {
+    dat$y <- withr::with_seed(8240, rnorm(n))
+  }
+  dat
+}

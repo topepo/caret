@@ -354,3 +354,42 @@
       Error:
       ! The 'loop' function should produce a list with elements 'loop' and 'submodels'
 
+# the recipe race fills in sub-model predictions when a fit fails
+
+    Code
+      fit <- train(rec, data = dat, method = failing, tuneLength = 3, trControl = trainControl(
+        method = "adaptive_cv", number = 5, classProbs = TRUE, savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)))
+    Condition
+      Warning:
+      model fit failed for Fold2.Rep1: shift=1, scale=1 Error : fit failed on purpose
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
+
+# the recipe race fills in sub-models when prediction fails
+
+    Code
+      fit <- train(rec, data = dat, method = bad_pred, tuneLength = 3, trControl = trainControl(
+        method = "adaptive_cv", number = 5, adaptive = list(min = 3, alpha = 0.05,
+          method = "gls", complete = TRUE)))
+    Condition
+      Warning:
+      predictions failed for Fold2.Rep1: shift=1, scale=1 Error : predict failed on purpose
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
+
+# the recipe workflows report a sub-model fit that fails
+
+    Code
+      fit <- train(rec, data = dat, method = failing, tuneLength = 3, trControl = trainControl(
+        method = "cv", number = 5, classProbs = TRUE, savePredictions = "all"))
+    Condition
+      Warning:
+      model fit failed for Fold5: shift=1, scale=1 Error : fit failed on purpose
+      Warning in `train_rec()`:
+      There were missing values in resampled performance measures.
+
