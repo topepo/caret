@@ -579,3 +579,94 @@ test_that("the diversity filters can report what they dropped", {
   )
   expect_length(keep_diff, 3)
 })
+
+# ------------------------------------------------------------------------------
+# the race's failure paths, crossed with sub-models and class probabilities
+#
+# make_submodel_model() fails for whichever resample holds out the sentinel row,
+# so exactly one resample fails and the race still has something to compare.
+
+test_that("the race fills in sub-model predictions when a fit fails", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  dat <- engine_sentinel_data(60)
+  failing <- make_submodel_model(fail_fit = TRUE)
+
+  set.seed(4471)
+  # one warning for the resample that failed, then one for the hole it leaves
+  expect_snapshot(
+    fit <- train(
+      dat[, 1:3],
+      dat$y,
+      method = failing,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        number = 5,
+        classProbs = TRUE,
+        savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  # every candidate is still scored, from the resamples that worked
+  expect_identical(nrow(fit$results), 3L)
+  # and the failed resample leaves missing probabilities behind rather than
+  # dropping the rows
+  expect_contains(names(fit$pred), c("one", "two", "shift", "scale"))
+  expect_true(anyNA(fit$pred$one))
+})
+
+test_that("the race fills in sub-model predictions when prediction fails", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  dat <- engine_sentinel_data(60)
+  bad_pred <- make_submodel_model(fail_pred = TRUE)
+
+  set.seed(4471)
+  # one warning for the resample that failed, then one for the hole it leaves
+  expect_snapshot(
+    fit <- train(
+      dat[, 1:3],
+      dat$y,
+      method = bad_pred,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        number = 5,
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  expect_identical(nrow(fit$results), 3L)
+  expect_all_false(is.na(fit$results$Accuracy))
+})
+
+test_that("the race scores sub-models without class probabilities", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  # a regression outcome, so there are no probabilities to collect and the
+  # placeholder frames are built instead
+  dat <- engine_sentinel_data(60, classification = FALSE)
+  subs <- make_submodel_model()
+
+  set.seed(6907)
+  fit <- suppressWarnings(train(
+    dat[, 1:3],
+    dat$y,
+    method = subs,
+    tuneLength = 3,
+    trControl = trainControl(
+      method = "adaptive_cv",
+      number = 5,
+      savePredictions = "all",
+      adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+    )
+  ))
+  expect_identical(fit$modelType, "Regression")
+  expect_identical(nrow(fit$results), 3L)
+  expect_contains(names(fit$pred), c("pred", "obs", "shift", "scale"))
+})

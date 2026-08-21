@@ -122,3 +122,27 @@
     Output
       o 1 model of 4 was eliminated due to linear dependencies
 
+# the race fills in sub-model predictions when a fit fails
+
+    Code
+      fit <- train(dat[, 1:3], dat$y, method = failing, tuneLength = 3, trControl = trainControl(
+        method = "adaptive_cv", number = 5, classProbs = TRUE, savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)))
+    Condition
+      Warning:
+      model fit failed for Fold3.Rep1: shift=1, scale=1 Error : fit failed on purpose
+      Warning in `adaptiveWorkflow()`:
+      There were missing values in resampled performance measures.
+
+# the race fills in sub-model predictions when prediction fails
+
+    Code
+      fit <- train(dat[, 1:3], dat$y, method = bad_pred, tuneLength = 3, trControl = trainControl(
+        method = "adaptive_cv", number = 5, adaptive = list(min = 3, alpha = 0.05,
+          method = "gls", complete = TRUE)))
+    Condition
+      Warning:
+      predictions failed for Fold3.Rep1: shift=1, scale=1 Error : predict failed on purpose
+      Warning in `adaptiveWorkflow()`:
+      There were missing values in resampled performance measures.
+

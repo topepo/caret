@@ -1150,3 +1150,106 @@ test_that("train accepts logical savePredictions and dot-named grids", {
   expect_identical(fit$control$savePredictions, "all")
   expect_in("k", names(fit$results))
 })
+
+test_that("the recipe race fills in sub-model predictions when a fit fails", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  # as in test-adaptive.R: the fit fails for whichever resample holds out the
+  # sentinel row, so exactly one of them fails
+  dat <- engine_sentinel_data(60)
+  rec <- recipes::recipe(y ~ ., data = dat)
+  failing <- make_submodel_model(fail_fit = TRUE)
+
+  set.seed(5590)
+  expect_snapshot(
+    fit <- train(
+      rec,
+      data = dat,
+      method = failing,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        number = 5,
+        classProbs = TRUE,
+        savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  expect_identical(nrow(fit$results), 3L)
+  expect_contains(names(fit$pred), c("one", "two", "shift", "scale"))
+})
+
+test_that("the recipe race fills in sub-models when prediction fails", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  dat <- engine_sentinel_data(60)
+  rec <- recipes::recipe(y ~ ., data = dat)
+  bad_pred <- make_submodel_model(fail_pred = TRUE)
+
+  set.seed(5590)
+  expect_snapshot(
+    fit <- train(
+      rec,
+      data = dat,
+      method = bad_pred,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        number = 5,
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  expect_identical(nrow(fit$results), 3L)
+})
+
+test_that("the recipe workflows score sub-models for a numeric outcome", {
+  skip_on_cran()
+
+  # no probabilities to collect, so the placeholder frames are built instead
+  dat <- engine_sentinel_data(60, classification = FALSE)
+  rec <- recipes::recipe(y ~ ., data = dat)
+  subs <- make_submodel_model()
+
+  for (m in c("cv", "LOOCV")) {
+    small <- if (m == "LOOCV") dat[1:16, ] else dat
+    set.seed(7714)
+    fit <- suppressWarnings(train(
+      recipes::recipe(y ~ ., data = small),
+      data = small,
+      method = subs,
+      tuneLength = 3,
+      trControl = trainControl(method = m, number = 3, savePredictions = "all")
+    ))
+    expect_identical(nrow(fit$results), 3L)
+    expect_contains(names(fit$pred), c("pred", "obs", "shift", "scale"))
+  }
+})
+
+test_that("the recipe workflows report a sub-model fit that fails", {
+  skip_on_cran()
+
+  dat <- engine_sentinel_data(60)
+  rec <- recipes::recipe(y ~ ., data = dat)
+  failing <- make_submodel_model(fail_fit = TRUE)
+
+  set.seed(3161)
+  expect_snapshot(
+    fit <- train(
+      rec,
+      data = dat,
+      method = failing,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "cv",
+        number = 5,
+        classProbs = TRUE,
+        savePredictions = "all"
+      )
+    )
+  )
+  expect_identical(nrow(fit$results), 3L)
+})
