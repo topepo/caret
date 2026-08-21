@@ -263,20 +263,24 @@ test_that("train wants a character matrix for the string kernels", {
 
 test_that("train converts a data.table to a data frame", {
   skip_on_cran()
-  skip_if_not_installed("data.table")
 
+  # A stand-in for the class rather than the package: train() only asks
+  # `inherits(x, "data.table")` before coercing, and data.table is not a caret
+  # dependency (declaring one just for this test is not worth it).
   reg <- engine_regression(30)
-  dt <- data.table::as.data.table(reg[, 1:3])
+  fake_dt <- reg[, 1:3]
+  class(fake_dt) <- c("data.table", "data.frame")
 
   set.seed(2811)
   fit <- train(
-    dt,
+    fake_dt,
     reg$y,
     method = "lm",
     trControl = trainControl(method = "cv", number = 3)
   )
   expect_s3_class(fit, "train")
-  expect_s3_class(fit$trainingData, "data.frame")
+  # the coercion is what drops the extra class, so this is the evidence it ran
+  expect_identical(class(fit$trainingData), "data.frame")
 })
 
 # ------------------------------------------------------------------------------
