@@ -139,3 +139,28 @@
       Error in `plot.gafs()`:
       ! ' Bogus ' not computed internally
 
+# gafs needs a seed per resample plus one
+
+    Code
+      gafs(x = dat[, 1:4], y = dat$y, gafsControl = ctrl, popSize = 4, iters = 2,
+      method = "lm", trControl = trainControl(method = "cv", number = 3))
+    Condition
+      Error in `gafs.default()`:
+      ! There must be at least 4 random number seeds passed to gafsControl
+
+# gafs names an unnamed external fitness result
+
+    Code
+      fit <- gafs(x = dat[, 1:4], y = dat$y, gafsControl = ctrl, popSize = 4, iters = 2,
+      differences = FALSE, method = "lm", trControl = trainControl(method = "cv",
+        number = 3))
+    Condition
+      Warning in `gafs.default()`:
+      The external fitness results should be a *named* vector; new name(s) are external1, external2, external3
+      Warning in `gafs.default()`:
+      The metric 'RMSE' is not created by the summary function; 'external1' will be used instead
+
+# gafs falls back when the external metric is not computed
+
+    The metric 'Bogus' is not created by the summary function; 'RMSE' will be used instead
+
