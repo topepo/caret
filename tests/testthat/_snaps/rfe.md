@@ -89,3 +89,80 @@
       Error in `histogram.rfe()`:
       ! Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling
 
+# rfe checks the seeds it is given
+
+    Code
+      rfe(reg[, 1:3], reg$y, sizes = c(1, 2), rfeControl = rfeControl(functions = lmFuncs,
+        method = "cv", index = folds, seeds = good[1:2]))
+    Condition
+      Error in `rfe.default()`:
+      ! Bad seeds: the seed object should be a list of length 4 with 3 integer vectors of size 3 and the last list element having a single integer
+
+---
+
+    Code
+      rfe(reg[, 1:3], reg$y, sizes = c(1, 2), rfeControl = rfeControl(functions = lmFuncs,
+        method = "cv", index = folds, seeds = c(lapply(1:3, function(i) 1L), list(1L))))
+    Condition
+      Error in `rfe.default()`:
+      ! Bad seeds: the seed object should be a list of length 4 with 3 integer vectors of size 3 and the last list element having a single integer
+
+# rfe reports its progress
+
+    Code
+      fit <- rfe(reg[, 1:3], reg$y, sizes = c(1, 2), rfeControl = rfeControl(
+        functions = lmFuncs, method = "cv", number = 2, verbose = TRUE))
+    Output
+      +(rfe) fit Fold1 size: 3 
+      -(rfe) fit Fold1 size: 3 
+      +(rfe) imp Fold1 
+      -(rfe) imp Fold1 
+      +(rfe) fit Fold1 size: 2 
+      -(rfe) fit Fold1 size: 2 
+      +(rfe) fit Fold1 size: 1 
+      -(rfe) fit Fold1 size: 1 
+      +(rfe) fit Fold2 size: 3 
+      -(rfe) fit Fold2 size: 3 
+      +(rfe) imp Fold2 
+      -(rfe) imp Fold2 
+      +(rfe) fit Fold2 size: 2 
+      -(rfe) fit Fold2 size: 2 
+      +(rfe) fit Fold2 size: 1 
+      -(rfe) fit Fold2 size: 1 
+
+# rfe reports its progress for a recipe
+
+    Code
+      fit <- rfe(rec, data = reg, sizes = c(1, 2), rfeControl = rfeControl(functions = lmFuncs,
+        method = "cv", number = 2, verbose = TRUE))
+    Output
+      Preparing recipe
+      +(rfe) Fold1 recipe 
+      -(rfe) Fold1 recipe 
+      +(rfe) fit Fold1 size: 3 
+      -(rfe) fit Fold1 size: 3 
+      +(rfe) imp Fold1 
+      -(rfe) imp Fold1 
+      +(rfe) fit Fold1 size: 2 
+      -(rfe) fit Fold1 size: 2 
+      +(rfe) fit Fold1 size: 1 
+      -(rfe) fit Fold1 size: 1 
+      +(rfe) Fold2 recipe 
+      -(rfe) Fold2 recipe 
+      +(rfe) fit Fold2 size: 3 
+      -(rfe) fit Fold2 size: 3 
+      +(rfe) imp Fold2 
+      -(rfe) imp Fold2 
+      +(rfe) fit Fold2 size: 2 
+      -(rfe) fit Fold2 size: 2 
+      +(rfe) fit Fold2 size: 1 
+      -(rfe) fit Fold2 size: 1 
+
+# predict.rfe needs the variables it selected
+
+    Code
+      predict(fit, without)
+    Condition
+      Error in `predict.rfe()`:
+      ! missing columns from newdata: x1
+

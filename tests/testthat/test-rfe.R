@@ -445,3 +445,210 @@ test_that("predict.rfe works from the formula interface", {
   expect_length(predict(rf, reg), nrow(reg))
   expect_s3_class(rf, "rfe.formula")
 })
+
+# ------------------------------------------------------------------------------
+# seeds, timing and progress
+
+test_that("rfe checks the seeds it is given", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  folds <- createFolds(reg$y, k = 3, returnTrain = TRUE)
+
+  # one integer vector per resample, each as long as the number of subset sizes
+  # plus the full set, and a single integer for the final fit
+  good <- c(lapply(1:3, function(i) 1:3), list(1L))
+  set.seed(7712)
+  fit <- rfe(
+    reg[, 1:3],
+    reg$y,
+    sizes = c(1, 2),
+    rfeControl = rfeControl(
+      functions = lmFuncs,
+      method = "cv",
+      index = folds,
+      seeds = good
+    )
+  )
+  expect_s3_class(fit, "rfe")
+
+  # too few vectors, and vectors that are too short, are both refused
+  expect_snapshot(
+    rfe(
+      reg[, 1:3],
+      reg$y,
+      sizes = c(1, 2),
+      rfeControl = rfeControl(
+        functions = lmFuncs,
+        method = "cv",
+        index = folds,
+        seeds = good[1:2]
+      )
+    ),
+    error = TRUE
+  )
+  expect_snapshot(
+    rfe(
+      reg[, 1:3],
+      reg$y,
+      sizes = c(1, 2),
+      rfeControl = rfeControl(
+        functions = lmFuncs,
+        method = "cv",
+        index = folds,
+        seeds = c(lapply(1:3, function(i) 1L), list(1L))
+      )
+    ),
+    error = TRUE
+  )
+})
+
+test_that("rfe times its predictions when asked", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  set.seed(5528)
+  fit <- rfe(
+    reg[, 1:3],
+    reg$y,
+    sizes = c(1, 2),
+    rfeControl = rfeControl(
+      functions = lmFuncs,
+      method = "cv",
+      number = 3,
+      timingSamps = 5
+    )
+  )
+  # the prediction time is recorded alongside the fitting time
+  expect_in("prediction", names(fit$times))
+  expect_s3_class(fit$times$prediction, "proc_time")
+})
+
+test_that("rfe reports its progress", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  set.seed(3390)
+  # the fitting, importance and elimination steps each announce themselves
+  expect_snapshot(
+    fit <- rfe(
+      reg[, 1:3],
+      reg$y,
+      sizes = c(1, 2),
+      rfeControl = rfeControl(
+        functions = lmFuncs,
+        method = "cv",
+        number = 2,
+        verbose = TRUE
+      )
+    )
+  )
+  expect_s3_class(fit, "rfe")
+})
+
+test_that("rfe reports its progress for a recipe", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  rec <- recipes::recipe(y ~ ., data = reg)
+  set.seed(3390)
+  expect_snapshot(
+    fit <- rfe(
+      rec,
+      data = reg,
+      sizes = c(1, 2),
+      rfeControl = rfeControl(
+        functions = lmFuncs,
+        method = "cv",
+        number = 2,
+        verbose = TRUE
+      )
+    )
+  )
+  expect_s3_class(fit, "rfe")
+})
+
+# ------------------------------------------------------------------------------
+# what a recipe leaves to select from
+
+test_that("rfe needs at least two predictors after the recipe", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  # the recipe reduces the predictors to one, which leaves nothing to eliminate
+  rec <- recipes::recipe(y ~ ., data = reg)
+  rec <- recipes::step_rm(rec, x2, x3)
+
+  # Not snapshotted: the error is raised inside the resampling loop, and foreach
+  # re-raises it with the whole loop body as the call, which covr rewrites when
+  # it instruments the package.
+  expect_error(
+    rfe(
+      rec,
+      data = reg,
+      sizes = 1,
+      rfeControl = rfeControl(functions = lmFuncs, method = "cv", number = 3)
+    ),
+    "less than two predictors remaining"
+  )
+})
+
+test_that("rfe checks the sizes against what the recipe produces", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  rec <- recipes::recipe(y ~ ., data = reg)
+  rec <- recipes::step_rm(rec, x3)
+
+  # Asking only for sizes larger than the two remaining predictors leaves the
+  # search with nothing to do. The recipe also warns that it will truncate the
+  # subset sizes, which is captured here. As above, the error is not snapshotted
+  # because it carries the resampling loop's body as its call.
+  expect_error(
+    suppressWarnings(
+      rfe(
+        rec,
+        data = reg,
+        sizes = c(5, 6),
+        rfeControl = rfeControl(functions = lmFuncs, method = "cv", number = 3)
+      )
+    ),
+    "values are inconsistent with this"
+  )
+})
+
+test_that("predict.rfe needs the variables it selected", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  set.seed(8830)
+  fit <- rfe(
+    reg[, 1:3],
+    reg$y,
+    sizes = c(1, 2),
+    rfeControl = rfeControl(functions = lmFuncs, method = "cv", number = 3)
+  )
+
+  # drop whichever variables the search settled on, so the message names them
+  # however the selection turned out
+  without <- reg[, setdiff(names(reg), fit$optVariables), drop = FALSE]
+  expect_snapshot(predict(fit, without), error = TRUE)
+})
+
+test_that("predict.rfe prepares new data with the recipe", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  rec <- recipes::recipe(y ~ ., data = reg)
+  rec <- recipes::step_normalize(rec, recipes::all_predictors())
+
+  set.seed(1160)
+  fit <- rfe(
+    rec,
+    data = reg,
+    sizes = c(1, 2),
+    rfeControl = rfeControl(functions = lmFuncs, method = "cv", number = 3)
+  )
+  # the recipe is applied to the new data before the model sees it
+  expect_length(predict(fit, reg), nrow(reg))
+})

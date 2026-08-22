@@ -345,19 +345,10 @@ rfe <- function(x, ...) UseMethod("rfe")
       )
     )
 
-    if (is.factor(y) && any(names(tmp$performance) == ".cell1")) {
-      keepers <- c(
-        "Resample",
-        "Variables",
-        grep("\\.cell", names(tmp$performance), value = TRUE)
-      )
-      resampledCM <- subset(tmp$performance, Variables == bestSubset)
-      tmp$performance <- tmp$performance[,
-        -grep("\\.cell", names(tmp$performance))
-      ]
-    } else {
-      resampledCM <- NULL
-    }
+    ## The resampled confusion-matrix cells stay in `resample`, which is where
+    ## confusionMatrix.rfe() reads them from; the aggregated `performance` never
+    ## carries them, so this element is always empty.
+    resampledCM <- NULL
 
     if (!(rfeControl$method %in% c("LOOCV"))) {
       resamples <- switch(
@@ -1649,20 +1640,22 @@ rfe_rec <- function(
     sizes <- sizes[sizes <= p]
   }
 
-  if (all(sizes < 2)) {
-    stop(
-      "After the recipe, there are less than two predictors remaining. `rfe` ",
-      "requires at least two.",
-      call. = FALSE
-    )
-  }
-
+  ## `all()` is TRUE for an empty vector, so this has to be asked first
+  ## or the more specific message below can never be reached
   if (length(sizes) == 0) {
     stop(
       "After the recipe, there are only ",
       p,
       " predictors remaining. ",
       "The `sizes` values are inconsistent with this.",
+      call. = FALSE
+    )
+  }
+
+  if (all(sizes < 2)) {
+    stop(
+      "After the recipe, there are less than two predictors remaining. `rfe` ",
+      "requires at least two.",
       call. = FALSE
     )
   }
@@ -2067,20 +2060,10 @@ rfe_rec <- function(
         )
       )
 
-    if (is.factor(y_dat) && any(names(tmp$performance) == ".cell1")) {
-      keepers <-
-        c(
-          "Resample",
-          "Variables",
-          grep("\\.cell", names(tmp$performance), value = TRUE)
-        )
-      resampledCM <-
-        subset(tmp$performance, Variables == bestSubset)
-      tmp$performance <-
-        tmp$performance[, -grep("\\.cell", names(tmp$performance))]
-    } else {
-      resampledCM <- NULL
-    }
+    ## The resampled confusion-matrix cells stay in `resample`, which is where
+    ## confusionMatrix.rfe() reads them from; the aggregated `performance` never
+    ## carries them, so this element is always empty.
+    resampledCM <- NULL
 
     if (!(rfeControl$method %in% c("LOOCV"))) {
       resamples <- switch(
@@ -2231,20 +2214,22 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
         sizes <- sizes[sizes <= p]
       }
 
-      if (all(sizes < 2)) {
-        stop(
-          "After the recipe, there are less than two predictors remaining. `rfe` ",
-          "requires at least two.",
-          call. = FALSE
-        )
-      }
-
+      ## `all()` is TRUE for an empty vector, so this has to be asked first
+      ## or the more specific message below can never be reached
       if (length(sizes) == 0) {
         stop(
           "After the recipe, there are only ",
           p,
           " predictors remaining. ",
           "The `sizes` values are inconsistent with this.",
+          call. = FALSE
+        )
+      }
+
+      if (all(sizes < 2)) {
+        stop(
+          "After the recipe, there are less than two predictors remaining. `rfe` ",
+          "requires at least two.",
           call. = FALSE
         )
       }
@@ -2440,20 +2425,22 @@ rfe_rec_loo <- function(rec, data, sizes, ctrl, lev, ...) {
         sizes <- sizes[sizes <= p]
       }
 
-      if (all(sizes < 2)) {
-        stop(
-          "After the recipe, there are less than two predictors remaining. `rfe` ",
-          "requires at least two.",
-          call. = FALSE
-        )
-      }
-
+      ## `all()` is TRUE for an empty vector, so this has to be asked first
+      ## or the more specific message below can never be reached
       if (length(sizes) == 0) {
         stop(
           "After the recipe, there are only ",
           p,
           " predictors remaining. ",
           "The `sizes` values are inconsistent with this.",
+          call. = FALSE
+        )
+      }
+
+      if (all(sizes < 2)) {
+        stop(
+          "After the recipe, there are less than two predictors remaining. `rfe` ",
+          "requires at least two.",
           call. = FALSE
         )
       }
