@@ -2152,6 +2152,9 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
       requireNamespace("methods")
       loadNamespace("recipes")
 
+      ## the apparent pass fits on every row, so the rows to score come from
+      ## `holdoutIndex` (all of them there) rather than the complement of
+      ## `modelIndex`, which would be empty
       if (names(resampleIndex)[iter] != "AllData") {
         modelIndex <- resampleIndex[[iter]]
         holdoutIndex <- ctrl$indexOut[[iter]]
@@ -2186,13 +2189,13 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
       y <- juice(trained_rec, all_outcomes())[[1]]
       test_x <- bake(
         trained_rec,
-        new_data = data[-modelIndex, , drop = FALSE],
+        new_data = data[holdoutIndex, , drop = FALSE],
         all_predictors(),
         composition = "data.frame"
       )
       test_y <- bake(
         trained_rec,
-        new_data = data[-modelIndex, , drop = FALSE],
+        new_data = data[holdoutIndex, , drop = FALSE],
         all_outcomes()
       )[[1]]
 
@@ -2200,7 +2203,7 @@ rfe_rec_workflow <- function(rec, data, sizes, ctrl, lev, ...) {
       if (any(is_perf)) {
         test_perf <- bake(
           trained_rec,
-          new_data = data[-modelIndex, , drop = FALSE],
+          new_data = data[holdoutIndex, , drop = FALSE],
           has_role("performance var"),
           composition = "data.frame"
         )
