@@ -24,6 +24,30 @@ test_that("sbf with recipes", {
 
 # ------------------------------------------------------------------------------
 
+test_that("sbf with recipes and boot632 resampling", {
+  skip_on_cran()
+
+  rec <- recipe(y ~ ., data = recipe_fs_dat) %>% step_log(mw)
+
+  set.seed(3997)
+  sbf_rec <- sbf(
+    rec,
+    data = recipe_fs_dat[-(1:100), ],
+    sbfControl = sbfControl(functions = lmSBF, method = "boot632", number = 5)
+  )
+
+  metrics <- c("RMSE", "Rsquared", "MAE")
+  apparent <- sbf_rec$resample$Resample == "AllData"
+  expected <- (1 - exp(-1)) *
+    colMeans(sbf_rec$resample[!apparent, metrics]) +
+    exp(-1) * unlist(sbf_rec$resample[apparent, metrics])
+
+  expect_equal(unlist(sbf_rec$results[metrics]), expected)
+})
+
+
+# ------------------------------------------------------------------------------
+
 test_that("safs with recipes", {
   skip_on_cran()
   ctrl <- safsControl(functions = caretSA, method = "cv", number = 3)

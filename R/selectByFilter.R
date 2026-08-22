@@ -642,9 +642,9 @@ sbf_rec <- function(rec, data, ctrl, lev, ...) {
   loadNamespace("caret")
 
   resampleIndex <- ctrl$index
-  if (ctrl$method %in% c("boot632")) {
-    resampleIndex <- c(list("AllData" = rep(0, nrow(x))), resampleIndex)
-    ctrl$indexOut <- c(list("AllData" = rep(0, nrow(x))), ctrl$indexOut)
+  if (ctrl$method == "boot632") {
+    resampleIndex <- c(list("AllData" = rep(0, nrow(data))), resampleIndex)
+    ctrl$indexOut <- c(list("AllData" = rep(0, nrow(data))), ctrl$indexOut)
   }
 
   `%op%` <- getOper(ctrl$allowParallel && getDoParWorkers() > 1)
@@ -748,33 +748,30 @@ sbf_rec <- function(rec, data, ctrl, lev, ...) {
   } else {
     pred <- NULL
   }
-  performance <- MeanSD(resamples[,
-    !grepl("Resample", colnames(resamples)),
+  if (ctrl$method == "boot632") {
+    apparent <- resamples[
+      resamples$Resample == "AllData",
+      !grepl("Resample", colnames(resamples)),
+      drop = FALSE
+    ]
+    performanceResamples <- resamples[resamples$Resample != "AllData", ]
+  } else {
+    performanceResamples <- resamples
+  }
+  performance <- MeanSD(performanceResamples[,
+    !grepl("Resample", colnames(performanceResamples)),
     drop = FALSE
   ])
 
-  if (ctrl$method %in% c("boot632")) {
-    modelIndex <- seq_len(nrow(x))
-    holdoutIndex <- modelIndex
-    appResults <- sbfIter(
-      x = x_tr,
-      y = y_tr,
-      testX = x_te,
-      testY = y_te,
-      testPerf = perf_te,
-      ctrl,
-      ...
-    )
-    apparent <- ctrl$functions$summary(appResults$pred, lev = lev)
+  if (ctrl$method == "boot632") {
     perfNames <- names(apparent)
-    perfNames <- perfNames[perfNames != "Resample"]
 
     const <- 1 - exp(-1)
 
     for (p in seq(along.with = perfNames)) {
       performance[perfNames[p]] <-
         (const * performance[perfNames[p]]) +
-        ((1 - const) * apparent[perfNames[p]])
+        ((1 - const) * apparent[[perfNames[p]]])
     }
   }
 
