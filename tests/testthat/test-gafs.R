@@ -242,3 +242,191 @@ test_that("plot.gafs checks the metric it was asked for", {
     error = TRUE
   )
 })
+
+# ------------------------------------------------------------------------------
+# control validation, suggestions and elitism
+
+test_that("gafs needs a seed per resample plus one", {
+  skip_on_cran()
+
+  dat <- fs_data()
+  ctrl <- gafsControl(
+    functions = caretGA,
+    method = "cv",
+    number = 3,
+    seeds = 1:2
+  )
+  expect_snapshot(
+    gafs(
+      x = dat[, 1:4],
+      y = dat$y,
+      gafsControl = ctrl,
+      popSize = 4,
+      iters = 2,
+      method = "lm",
+      trControl = trainControl(method = "cv", number = 3)
+    ),
+    error = TRUE
+  )
+})
+
+test_that("gafs checks a suggested starting population", {
+  skip_on_cran()
+
+  dat <- fs_data()
+  ctrl <- gafsControl(functions = caretGA, method = "cv", number = 3)
+
+  # One column per predictor is expected; this has too few. Not snapshotted: the
+  # error is raised inside the resampling loop, so foreach re-raises it with the
+  # loop body as its call, and covr rewrites that when it instruments the
+  # package.
+  expect_error(
+    gafs(
+      x = dat[, 1:4],
+      y = dat$y,
+      gafsControl = ctrl,
+      popSize = 4,
+      iters = 2,
+      suggestions = matrix(1, nrow = 2, ncol = 2),
+      method = "lm",
+      trControl = trainControl(method = "cv", number = 3)
+    ),
+    "do not match number of variables"
+  )
+})
+
+test_that("gafs accepts a suggested starting population", {
+  skip_on_cran()
+
+  dat <- fs_data()
+  ctrl <- gafsControl(functions = caretGA, method = "cv", number = 3)
+
+  set.seed(1058)
+  fit <- gafs(
+    x = dat[, 1:4],
+    y = dat$y,
+    gafsControl = ctrl,
+    popSize = 4,
+    iters = 2,
+    # two of the four individuals are given, the rest are drawn
+    suggestions = matrix(c(1, 0, 1, 0, 0, 1, 0, 1), nrow = 2, byrow = TRUE),
+    differences = FALSE,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  expect_s3_class(fit, "gafs")
+})
+
+test_that("gafs names an unnamed external fitness result", {
+  skip_on_cran()
+
+  dat <- fs_data()
+  unnamed <- caretGA
+  unnamed$fitness_extern <- function(data, lev = NULL, model = NULL) {
+    unname(defaultSummary(data, lev, model))
+  }
+  ctrl <- gafsControl(functions = unnamed, method = "cv", number = 3)
+
+  set.seed(3364)
+  # two warnings: the unnamed result, then the metric that is therefore missing
+  expect_snapshot(
+    fit <- gafs(
+      x = dat[, 1:4],
+      y = dat$y,
+      gafsControl = ctrl,
+      popSize = 4,
+      iters = 2,
+      differences = FALSE,
+      method = "lm",
+      trControl = trainControl(method = "cv", number = 3)
+    )
+  )
+  expect_in("external1", names(fit$external))
+})
+
+test_that("gafs falls back when the external metric is not computed", {
+  skip_on_cran()
+
+  dat <- fs_data()
+  ctrl <- gafsControl(
+    functions = caretGA,
+    method = "cv",
+    number = 3,
+    metric = c(internal = "RMSE", external = "Bogus")
+  )
+
+  set.seed(9903)
+  expect_snapshot_warning(
+    fit <- gafs(
+      x = dat[, 1:4],
+      y = dat$y,
+      gafsControl = ctrl,
+      popSize = 4,
+      iters = 2,
+      differences = FALSE,
+      method = "lm",
+      trControl = trainControl(method = "cv", number = 3)
+    )
+  )
+  expect_identical(unname(fit$control$metric["external"]), "RMSE")
+})
+
+test_that("gafs can hold out data and keep an elite", {
+  skip_on_cran()
+
+  dat <- fs_data(n = 80)
+  ctrl <- gafsControl(
+    functions = caretGA,
+    method = "cv",
+    number = 3,
+    holdout = 0.25
+  )
+
+  set.seed(7551)
+  fit <- gafs(
+    x = dat[, 1:4],
+    y = dat$y,
+    gafsControl = ctrl,
+    popSize = 6,
+    iters = 3,
+    # the best individuals are carried into the next generation unchanged
+    elite = 2,
+    differences = FALSE,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  expect_identical(fit$control$holdout, 0.25)
+  expect_identical(fit$ga_param$elite, 2)
+})
+
+test_that("gafs reports each generation when asked", {
+  skip_on_cran()
+
+  dat <- fs_data()
+  ctrl <- gafsControl(
+    functions = caretGA,
+    method = "cv",
+    number = 2,
+    verbose = TRUE
+  )
+
+  # as for safs, the lines carry resampled performance values, so the text is
+  # matched rather than snapshotted
+  set.seed(2242)
+  progress <- capture.output(
+    fit <- gafs(
+      x = dat[, 1:4],
+      y = dat$y,
+      gafsControl = ctrl,
+      popSize = 4,
+      iters = 3,
+      differences = FALSE,
+      method = "lm",
+      trControl = trainControl(method = "cv", number = 3)
+    )
+  )
+  joined <- paste(progress, collapse = " ")
+  expect_match(joined, "Fold1")
+  expect_match(joined, "->")
+  expect_s3_class(fit, "gafs")
+})

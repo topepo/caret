@@ -269,3 +269,140 @@ test_that("plot.safs checks the metric it was asked for", {
     error = TRUE
   )
 })
+
+# ------------------------------------------------------------------------------
+# control validation and the external fitness function
+
+test_that("safs needs a seed per resample plus one", {
+  skip_on_cran()
+
+  dat <- fs_data()
+  ctrl <- safsControl(
+    functions = caretSA,
+    method = "cv",
+    number = 3,
+    seeds = 1:2
+  )
+  expect_snapshot(
+    safs(
+      x = dat[, 1:4],
+      y = dat$y,
+      safsControl = ctrl,
+      iters = 2,
+      method = "lm",
+      trControl = trainControl(method = "cv", number = 3)
+    ),
+    error = TRUE
+  )
+})
+
+test_that("safs names an unnamed external fitness result", {
+  skip_on_cran()
+
+  dat <- fs_data()
+  unnamed <- caretSA
+  unnamed$fitness_extern <- function(data, lev = NULL, model = NULL) {
+    unname(defaultSummary(data, lev, model))
+  }
+  ctrl <- safsControl(functions = unnamed, method = "cv", number = 3)
+
+  set.seed(3364)
+  # two warnings: the unnamed result, then the metric that is therefore missing
+  expect_snapshot(
+    fit <- safs(
+      x = dat[, 1:4],
+      y = dat$y,
+      safsControl = ctrl,
+      iters = 2,
+      differences = FALSE,
+      method = "lm",
+      trControl = trainControl(method = "cv", number = 3)
+    )
+  )
+  # the results are named for their position instead
+  expect_in("external1", names(fit$external))
+})
+
+test_that("safs falls back when the external metric is not computed", {
+  skip_on_cran()
+
+  dat <- fs_data()
+  ctrl <- safsControl(
+    functions = caretSA,
+    method = "cv",
+    number = 3,
+    metric = c(internal = "RMSE", external = "Bogus")
+  )
+
+  set.seed(9903)
+  expect_snapshot_warning(
+    fit <- safs(
+      x = dat[, 1:4],
+      y = dat$y,
+      safsControl = ctrl,
+      iters = 2,
+      differences = FALSE,
+      method = "lm",
+      trControl = trainControl(method = "cv", number = 3)
+    )
+  )
+  expect_identical(unname(fit$control$metric["external"]), "RMSE")
+})
+
+test_that("safs can hold out data for the internal fitness", {
+  skip_on_cran()
+
+  dat <- fs_data(n = 80)
+  ctrl <- safsControl(
+    functions = caretSA,
+    method = "cv",
+    number = 3,
+    holdout = 0.25
+  )
+
+  set.seed(7551)
+  fit <- safs(
+    x = dat[, 1:4],
+    y = dat$y,
+    safsControl = ctrl,
+    iters = 3,
+    differences = FALSE,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  expect_identical(fit$control$holdout, 0.25)
+  expect_s3_class(fit, "safs")
+})
+
+test_that("safs reports each iteration when asked", {
+  skip_on_cran()
+
+  dat <- fs_data()
+  ctrl <- safsControl(
+    functions = caretSA,
+    method = "cv",
+    number = 2,
+    verbose = TRUE
+  )
+
+  # The per-iteration lines carry resampled performance values, and whether a
+  # worse subset is accepted depends on comparing them, so the text is matched
+  # rather than snapshotted.
+  set.seed(2242)
+  progress <- capture.output(
+    fit <- safs(
+      x = dat[, 1:4],
+      y = dat$y,
+      safsControl = ctrl,
+      iters = 3,
+      differences = FALSE,
+      method = "lm",
+      trControl = trainControl(method = "cv", number = 3)
+    )
+  )
+  joined <- paste(progress, collapse = " ")
+  # the first iteration reports the subset size, later ones the change
+  expect_match(joined, "Fold1")
+  expect_match(joined, "->")
+  expect_s3_class(fit, "safs")
+})

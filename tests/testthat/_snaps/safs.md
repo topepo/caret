@@ -155,3 +155,28 @@
       Error in `plot.safs()`:
       ! ' Bogus ' not computed internally
 
+# safs needs a seed per resample plus one
+
+    Code
+      safs(x = dat[, 1:4], y = dat$y, safsControl = ctrl, iters = 2, method = "lm",
+      trControl = trainControl(method = "cv", number = 3))
+    Condition
+      Error in `safs.default()`:
+      ! There must be at least 4 random number seeds passed to safsControl
+
+# safs names an unnamed external fitness result
+
+    Code
+      fit <- safs(x = dat[, 1:4], y = dat$y, safsControl = ctrl, iters = 2,
+      differences = FALSE, method = "lm", trControl = trainControl(method = "cv",
+        number = 3))
+    Condition
+      Warning in `safs.default()`:
+      The external fitness results should be a *named* vector; new name(s) are external1, external2, external3
+      Warning in `safs.default()`:
+      The metric 'RMSE' is not created by the external summary function; 'external1' will be used instead
+
+# safs falls back when the external metric is not computed
+
+    The metric 'Bogus' is not created by the external summary function; 'RMSE' will be used instead
+
