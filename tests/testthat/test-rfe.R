@@ -222,9 +222,7 @@ test_that("rfe drives a recipe through several resampling methods", {
   rec <- recipes::recipe(y ~ ., data = reg)
   rec <- recipes::step_normalize(rec, recipes::all_predictors())
 
-  # "boot632" is left out: with a recipe it fails in the apparent-error pass,
-  # the same defect PR #1468 fixes for sbf
-  for (m in c("cv", "boot")) {
+  for (m in c("cv", "boot", "boot632")) {
     set.seed(1148)
     rf <- rfe(
       rec,
@@ -651,4 +649,135 @@ test_that("predict.rfe prepares new data with the recipe", {
   )
   # the recipe is applied to the new data before the model sees it
   expect_length(predict(fit, reg), nrow(reg))
+})
+
+test_that("rfe applies the .632 correction with a recipe", {
+  skip_on_cran()
+
+  reg <- engine_regression(60)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  # boot632 scores an extra "apparent" pass on the whole training set and
+  # weights it against the bootstrap estimates
+  set.seed(1148)
+  fit <- rfe(
+    rec,
+    data = reg,
+    sizes = c(1, 2),
+    rfeControl = rfeControl(functions = lmFuncs, method = "boot632", number = 3)
+  )
+  expect_identical(fit$control$method, "boot632")
+  expect_all_false(is.na(fit$results$RMSE))
+  # the apparent pass is kept alongside the bootstrap resamples
+  expect_contains(unique(fit$resample$Resample), "AllData")
+
+  # the recipe and x/y interfaces agree, which is what went wrong before: the
+  # apparent pass had no rows to score
+  set.seed(1148)
+  xy <- rfe(
+    reg[, 1:3],
+    reg$y,
+    sizes = c(1, 2),
+    rfeControl = rfeControl(functions = lmFuncs, method = "boot632", number = 3)
+  )
+  expect_equal(fit$results$RMSE, xy$results$RMSE)
+})
+
+# ------------------------------------------------------------------------------
+# importance values that do not line up with the subset size
+
+test_that("rfe repairs a ranking that is missing variables", {
+  skip_on_cran()
+
+  reg <- engine_regression(60)
+  # a rank function that drops a variable, as a sparse model would
+  short_rank <- lmFuncs
+  short_rank$rank <- function(object, x, y) {
+    out <- lmFuncs$rank(object, x, y)
+    out[-1, , drop = FALSE]
+  }
+
+  set.seed(4471)
+  expect_snapshot(
+    fit <- rfe(
+      reg[, 1:3],
+      reg$y,
+      sizes = c(1, 2),
+      rfeControl = rfeControl(functions = short_rank, method = "cv", number = 3)
+    )
+  )
+  # the missing variable is filled in at the bottom of the ranking
+  expect_s3_class(fit, "rfe")
+  expect_setequal(fit$variables$var, names(reg)[1:3])
+})
+
+test_that("rfe generates its own seeds when asked to", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  # `seeds = NULL` (rather than the default NA) means "make them up"
+  set.seed(6693)
+  fit <- rfe(
+    reg[, 1:3],
+    reg$y,
+    sizes = c(1, 2),
+    rfeControl = rfeControl(
+      functions = lmFuncs,
+      method = "cv",
+      number = 3,
+      seeds = NULL
+    )
+  )
+  # one integer vector per resample, plus one for the final fit
+  expect_length(fit$control$seeds, 4)
+  expect_length(fit$control$seeds[[4]], 1)
+})
+
+test_that("rfe reports a model that fails in a resample", {
+  skip_on_cran()
+
+  reg <- engine_regression(60)
+  # the fit fails for whichever resample holds out the sentinel row
+  sentinel <- engine_sentinel_data(60, classification = FALSE)
+  failing <- lmFuncs
+  failing$fit <- function(x, y, first, last, ...) {
+    if (!any(unlist(x, use.names = FALSE) >= 999)) {
+      stop("fit failed on purpose", call. = FALSE)
+    }
+    lm(.outcome ~ ., data = cbind(x, .outcome = y))
+  }
+
+  # Not snapshotted: the failure surfaces from inside the resampling loop, so
+  # the error carries the loop body as its call and covr rewrites that.
+  set.seed(2262)
+  expect_error(
+    rfe(
+      sentinel[, 1:3],
+      sentinel$y,
+      sizes = c(1, 2),
+      rfeControl = rfeControl(functions = failing, method = "cv", number = 3)
+    ),
+    "fit failed on purpose"
+  )
+})
+
+test_that("rfe times its predictions from a recipe", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  set.seed(5528)
+  fit <- rfe(
+    rec,
+    data = reg,
+    sizes = c(1, 2),
+    rfeControl = rfeControl(
+      functions = lmFuncs,
+      method = "cv",
+      number = 3,
+      timingSamps = 5
+    )
+  )
+  expect_in("prediction", names(fit$times))
 })

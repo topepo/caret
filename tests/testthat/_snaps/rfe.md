@@ -166,3 +166,34 @@
       Error in `predict.rfe()`:
       ! missing columns from newdata: x1
 
+# rfe repairs a ranking that is missing variables
+
+    Code
+      fit <- rfe(reg[, 1:3], reg$y, sizes = c(1, 2), rfeControl = rfeControl(
+        functions = short_rank, method = "cv", number = 3))
+    Condition
+      Warning:
+      rfe is expecting 3 importance values but only has 2. This may be caused by having zero-variance predictors, excessively-correlated predictors, factor predictors that were expanded into dummy variables or you may have failed to drop one of your dummy variables.
+      Warning:
+      There were missing importance values. There may be linear dependencies in your predictor variables
+      Warning:
+      There were missing importance values. There may be linear dependencies in your predictor variables
+      Warning:
+      There were missing importance values. There may be linear dependencies in your predictor variables
+      Warning:
+      rfe is expecting 3 importance values but only has 2. This may be caused by having zero-variance predictors, excessively-correlated predictors, factor predictors that were expanded into dummy variables or you may have failed to drop one of your dummy variables.
+      Warning:
+      There were missing importance values. There may be linear dependencies in your predictor variables
+      Warning:
+      There were missing importance values. There may be linear dependencies in your predictor variables
+      Warning:
+      There were missing importance values. There may be linear dependencies in your predictor variables
+      Warning:
+      rfe is expecting 3 importance values but only has 2. This may be caused by having zero-variance predictors, excessively-correlated predictors, factor predictors that were expanded into dummy variables or you may have failed to drop one of your dummy variables.
+      Warning:
+      There were missing importance values. There may be linear dependencies in your predictor variables
+      Warning:
+      There were missing importance values. There may be linear dependencies in your predictor variables
+      Warning:
+      There were missing importance values. There may be linear dependencies in your predictor variables
+
