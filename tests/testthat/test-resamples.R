@@ -318,3 +318,268 @@ test_that("plot.prcomp.resamples ignores a plot type it does not know", {
   # there is no validation, so an unknown `what` simply draws nothing
   expect_null(plot(pc, what = "bogus"))
 })
+
+# ------------------------------------------------------------------------------
+# resamples() on real fits: what it checks and what it warns about
+
+test_that("resamples refuses models that cannot be compared", {
+  skip_on_cran()
+
+  reg <- engine_regression(60)
+  ctrl <- trainControl(method = "cv", number = 3)
+  set.seed(1121)
+  a <- train(y ~ ., data = reg, method = "lm", trControl = ctrl)
+  set.seed(1121)
+  b <- train(
+    y ~ .,
+    data = reg,
+    method = "knn",
+    tuneGrid = data.frame(k = 5),
+    trControl = ctrl
+  )
+
+  # the same folds, so these two are comparable
+  expect_s3_class(resamples(list(a = a, b = b)), "resamples")
+
+  # a different seed means different folds
+  set.seed(8802)
+  other_folds <- train(y ~ ., data = reg, method = "lm", trControl = ctrl)
+  expect_snapshot(resamples(list(a = a, b = other_folds)), error = TRUE)
+
+  # a different number of resamples
+  set.seed(1121)
+  fewer <- train(
+    y ~ .,
+    data = reg,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 2)
+  )
+  expect_snapshot(resamples(list(a = a, b = fewer)), error = TRUE)
+
+  # leave-one-out gives a single estimate, so there is nothing to compare
+  set.seed(1121)
+  loo <- train(
+    y ~ .,
+    data = reg[1:16, ],
+    method = "lm",
+    trControl = trainControl(method = "LOOCV")
+  )
+  expect_snapshot(resamples(list(a = loo)), error = TRUE)
+})
+
+test_that("resamples warns when a model kept every candidate", {
+  skip_on_cran()
+
+  dat <- engine_three_class()
+  folds <- createFolds(dat$Species, k = 3, returnTrain = TRUE)
+  ctrl <- trainControl(method = "cv", index = folds, returnResamp = "all")
+
+  set.seed(3390)
+  a <- train(
+    Species ~ .,
+    data = dat,
+    method = "knn",
+    tuneGrid = data.frame(k = c(3, 5)),
+    trControl = ctrl
+  )
+  set.seed(3390)
+  b <- train(Species ~ ., data = dat, method = "lda", trControl = ctrl)
+
+  # with returnResamp = "all" the resamples cover every candidate, so caret says
+  # it is using the chosen one -- once per model
+  expect_snapshot(rs <- resamples(list(a = a, b = b)))
+  expect_s3_class(rs, "resamples")
+})
+
+test_that("resamples reports models with different metrics", {
+  skip_on_cran()
+
+  dat <- engine_three_class()
+  folds <- createFolds(dat$Species, k = 3, returnTrain = TRUE)
+
+  set.seed(3390)
+  a <- train(
+    Species ~ .,
+    data = dat,
+    method = "knn",
+    tuneGrid = data.frame(k = 5),
+    trControl = trainControl(method = "cv", index = folds)
+  )
+  set.seed(3390)
+  b <- train(
+    Species ~ .,
+    data = dat,
+    method = "knn",
+    tuneGrid = data.frame(k = 5),
+    trControl = trainControl(
+      method = "cv",
+      index = folds,
+      summaryFunction = function(data, lev = NULL, model = NULL) {
+        c(Custom = mean(data$obs == data$pred))
+      }
+    ),
+    metric = "Custom"
+  )
+
+  # only the metrics both models computed can be compared
+  expect_snapshot_warning(rs <- resamples(list(a = a, b = b)))
+  expect_length(rs$metrics, 0)
+})
+
+test_that("resamples collects the timings a model recorded", {
+  skip_on_cran()
+
+  reg <- engine_regression(60)
+  folds <- createFolds(reg$y, k = 3, returnTrain = TRUE)
+  set.seed(6210)
+  timed <- train(
+    y ~ .,
+    data = reg,
+    method = "lm",
+    trControl = trainControl(method = "cv", index = folds, timingSamps = 5)
+  )
+  set.seed(6210)
+  plain <- train(
+    y ~ .,
+    data = reg,
+    method = "knn",
+    tuneGrid = data.frame(k = 5),
+    trControl = trainControl(method = "cv", index = folds)
+  )
+
+  rs <- resamples(list(timed = timed, plain = plain))
+  # the prediction time is only recorded for the model that asked for it
+  expect_false(is.na(rs$timings["timed", "Prediction"]))
+  expect_true(is.na(rs$timings["plain", "Prediction"]))
+})
+
+# ------------------------------------------------------------------------------
+# the argument checks on the resamples methods
+
+test_that("the resamples methods each want a single metric", {
+  both <- c("RMSE", "Rsquared")
+
+  expect_snapshot(as.matrix(rs_fixture, metric = "Bogus"), error = TRUE)
+  expect_snapshot(prcomp(rs_fixture, metric = both), error = TRUE)
+  expect_snapshot(cluster(rs_fixture, metric = both), error = TRUE)
+  expect_snapshot(parallelplot(rs_fixture, metric = both), error = TRUE)
+  expect_snapshot(splom(rs_fixture, metric = both), error = TRUE)
+
+  # cluster() only knows how to handle a resamples object
+  expect_snapshot(cluster(1:10), error = TRUE)
+
+  # the PCA plot draws one thing at a time
+  pc <- prcomp(rs_fixture)
+  expect_snapshot(plot(pc, what = c("scree", "loadings")), error = TRUE)
+})
+
+test_that("splom.resamples needs two metrics for a metric panel", {
+  expect_snapshot(
+    splom(rs_fixture, variables = "metrics", metric = "RMSE"),
+    error = TRUE
+  )
+})
+
+test_that("the distribution plots can show a single metric", {
+  # with one metric there is nothing to condition on, so the formula has no
+  # conditioning term
+  for (f in list(densityplot, bwplot, dotplot)) {
+    drawn <- draw_trellis(f(rs_fixture, metric = "RMSE"))
+    expect_s3_class(drawn, "trellis")
+    expect_identical(dim(drawn), 1L)
+  }
+
+  d <- diff(rs_fixture)
+  for (f in list(densityplot, bwplot)) {
+    drawn <- draw_trellis(f(d, metric = "RMSE"))
+    expect_identical(dim(drawn), 1L)
+  }
+
+  # dotplot.diff.resamples takes the first metric when given several, and says so
+  expect_snapshot_warning(drawn <- dotplot(d, metric = c("RMSE", "Rsquared")))
+  expect_s3_class(draw_trellis(drawn), "trellis")
+})
+
+test_that("ggplot.resamples facets only when there is more than one metric", {
+  # the default is the first metric only, so there is nothing to facet by
+  plain <- ggplot2::ggplot_build(ggplot2::ggplot(rs_fixture))
+  expect_identical(nrow(plain$layout$layout), 1L)
+
+  # asking for both gives a panel each
+  faceted <- ggplot2::ggplot_build(
+    ggplot2::ggplot(rs_fixture, metric = c("RMSE", "Rsquared"))
+  )
+  expect_identical(nrow(faceted$layout$layout), 2L)
+})
+
+test_that("plot.prcomp.resamples draws the remaining plot types", {
+  pc <- prcomp(rs_fixture)
+
+  # `dims` is how many components to show: two gives a scatter of PC2 on PC1,
+  # more than two a scatterplot matrix
+  draw_trellis(plot(pc, what = "components", dims = 2))
+  draw_trellis(plot(pc, what = "components", dims = 3))
+  expect_snapshot(print(pc, digits = 2))
+})
+
+# ------------------------------------------------------------------------------
+# resamples() on the other object types
+
+test_that("resamples names models that were given without one", {
+  skip_on_cran()
+
+  reg <- engine_regression(60)
+  folds <- createFolds(reg$y, k = 3, returnTrain = TRUE)
+  ctrl <- trainControl(method = "cv", index = folds)
+  set.seed(1121)
+  a <- train(y ~ ., data = reg, method = "lm", trControl = ctrl)
+  set.seed(1121)
+  b <- train(
+    y ~ .,
+    data = reg,
+    method = "knn",
+    tuneGrid = data.frame(k = 5),
+    trControl = ctrl
+  )
+
+  # an empty name is filled in with a numbered one
+  rs <- resamples(list(a = a, b))
+  expect_identical(rs$models, c("a", "Model2"))
+})
+
+test_that("resamples warns for rfe and sbf models that kept every subset", {
+  skip_on_cran()
+  skip_if_not_installed("MASS")
+
+  cls <- engine_two_class(80)
+  x <- cls[, names(cls) != "Class"]
+  folds <- createFolds(cls$Class, k = 3, returnTrain = TRUE)
+
+  set.seed(3390)
+  rf <- rfe(
+    x,
+    cls$Class,
+    sizes = c(2, 4),
+    rfeControl = rfeControl(
+      functions = ldaFuncs,
+      method = "cv",
+      index = folds,
+      returnResamp = "all"
+    )
+  )
+  set.seed(3390)
+  sf <- suppressWarnings(sbf(
+    x,
+    cls$Class,
+    sbfControl = sbfControl(
+      functions = ldaSBF,
+      method = "cv",
+      index = folds,
+      returnResamp = "all"
+    )
+  ))
+
+  # both say they are using the chosen subset rather than all of them
+  expect_snapshot(rs <- resamples(list(rfe = rf, sbf = sf)))
+  expect_s3_class(rs, "resamples")
+})

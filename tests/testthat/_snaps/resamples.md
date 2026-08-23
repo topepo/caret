@@ -137,3 +137,141 @@
       Error in `levelplot.diff.resamples()`:
       ! exactly one metric must be given
 
+# resamples refuses models that cannot be compared
+
+    Code
+      resamples(list(a = a, b = other_folds))
+    Condition
+      Error in `resamples.default()`:
+      ! The samples indices are not equal across resamples
+
+---
+
+    Code
+      resamples(list(a = a, b = fewer))
+    Condition
+      Error in `resamples.default()`:
+      ! There are different numbers of resamples in each model
+
+---
+
+    Code
+      resamples(list(a = loo))
+    Condition
+      Error in `resamples.default()`:
+      ! at least two train objects are needed
+
+# resamples warns when a model kept every candidate
+
+    Code
+      rs <- resamples(list(a = a, b = b))
+    Condition
+      Warning in `resamples.default()`:
+      'a' did not have 'returnResamp="final"; the optimal tuning parameters are used
+      Warning in `resamples.default()`:
+      'b' did not have 'returnResamp="final"; the optimal tuning parameters are used
+
+# resamples reports models with different metrics
+
+    Some performance measures were not computed for each model: Accuracy, Custom, Kappa
+
+# the resamples methods each want a single metric
+
+    Code
+      as.matrix(rs_fixture, metric = "Bogus")
+    Condition
+      Error in `as.matrix.resamples()`:
+      ! no columns fit that metric
+
+---
+
+    Code
+      prcomp(rs_fixture, metric = both)
+    Condition
+      Error in `prcomp.resamples()`:
+      ! exactly one metric must be given
+
+---
+
+    Code
+      cluster(rs_fixture, metric = both)
+    Condition
+      Error in `cluster.resamples()`:
+      ! exactly one metric must be given
+
+---
+
+    Code
+      parallelplot(rs_fixture, metric = both)
+    Condition
+      Error in `parallelplot.resamples()`:
+      ! exactly one metric must be given
+
+---
+
+    Code
+      splom(rs_fixture, metric = both)
+    Condition
+      Error in `splom.resamples()`:
+      ! exactly one metric must be given
+
+---
+
+    Code
+      cluster(1:10)
+    Condition
+      Error in `cluster.default()`:
+      ! only implemented for resamples objects
+
+---
+
+    Code
+      plot(pc, what = c("scree", "loadings"))
+    Condition
+      Error in `plot.prcomp.resamples()`:
+      ! one plot at a time please
+
+# splom.resamples needs two metrics for a metric panel
+
+    Code
+      splom(rs_fixture, variables = "metrics", metric = "RMSE")
+    Condition
+      Error in `splom.resamples()`:
+      ! There should be at least two metrics
+
+# the distribution plots can show a single metric
+
+    Sorry Dave, only one value of metric is allowed right now. I'll use the first value
+
+# plot.prcomp.resamples draws the remaining plot types
+
+    Code
+      print(pc, digits = 2)
+    Output
+      
+      Call:
+      prcomp.resamples(x = rs_fixture)
+      
+      Metric: RMSE 
+                                        
+      Std. Dev.          3.98 0.71 3e-16
+      Cum. Percent Var.  0.97 1.00 1e+00
+      
+      Rotation:
+                   PC1   PC2    PC3
+      Resample1  0.767 -0.19  0.127
+      Resample2  0.523  0.14  0.437
+      Resample3  0.244 -0.33 -0.676
+      Resample4 -0.034 -0.79 -0.016
+      Resample5 -0.278 -0.46  0.580
+
+# resamples warns for rfe and sbf models that kept every subset
+
+    Code
+      rs <- resamples(list(rfe = rf, sbf = sf))
+    Condition
+      Warning in `resamples.default()`:
+      'rfe' did not have 'returnResamp="final"; the optimal subset is used
+      Warning in `resamples.default()`:
+      'sbf' did not have 'returnResamp="final"; the optimal subset is used
+
