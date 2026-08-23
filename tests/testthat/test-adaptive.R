@@ -670,3 +670,110 @@ test_that("the race scores sub-models without class probabilities", {
   expect_identical(nrow(fit$results), 3L)
   expect_contains(names(fit$pred), c("pred", "obs", "shift", "scale"))
 })
+
+# ------------------------------------------------------------------------------
+# the race's first and last phases
+#
+# adaptiveWorkflow() has three phases with the same failure handling in each:
+# the burn-in (the first `min - 1` resamples), the race itself, and the
+# "finish up last resamples" pass that runs when the race narrows to one model
+# and `complete = TRUE`. Which phase a failing resample lands in depends on its
+# position, so these tests supply the folds directly rather than leaving it to
+# chance: the sentinel row (see engine_sentinel_data) is held out by a chosen
+# fold, and the model fails for whichever fit does not see it.
+
+test_that("the race fills in a failure during the burn-in", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  dat <- engine_sentinel_data(60)
+  # the sentinel is in the first fold's holdout, so the first fit fails, and
+  # min = 3 makes the first two resamples the burn-in
+  holdouts <- list(51:60, 1:10, 11:20, 21:30, 31:40, 41:50)
+  index <- lapply(holdouts, function(h) setdiff(seq_len(nrow(dat)), h))
+  failing <- make_submodel_model(fail_fit = TRUE)
+
+  set.seed(4471)
+  expect_snapshot(
+    fit <- train(
+      dat[, 1:3],
+      dat$y,
+      method = failing,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        index = index,
+        indexOut = holdouts,
+        classProbs = TRUE,
+        savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  expect_s3_class(fit, "train")
+  # the failed burn-in resample leaves missing probabilities behind
+  expect_true(anyNA(fit$pred$one))
+})
+
+test_that("the race fills in a failure while finishing the last resamples", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  # A numeric outcome here: the fixture predicts each candidate's own `shift`,
+  # so the candidates are far apart and the race settles on one after the
+  # burn-in. The remaining resamples - including the failing one, whose fold
+  # holds out the sentinel - are then scored by the completion pass. (With a
+  # factor outcome the fixture predicts the same class for every candidate, so
+  # the race has nothing to choose between and never narrows.)
+  dat <- engine_sentinel_data(60, classification = FALSE)
+  holdouts <- split(seq_len(nrow(dat)), rep(1:6, each = 10))
+  index <- lapply(holdouts, function(h) setdiff(seq_len(nrow(dat)), h))
+  failing <- make_submodel_model(fail_fit = TRUE)
+
+  set.seed(4471)
+  expect_snapshot(
+    fit <- train(
+      dat[, 1:3],
+      dat$y,
+      method = failing,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        index = index,
+        indexOut = holdouts,
+        savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  expect_s3_class(fit, "train")
+  # the surviving candidate was scored on more resamples than the others
+  expect_gt(max(fit$results$.B), min(fit$results$.B))
+})
+
+test_that("the race reports predictions that fail in the last resamples", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  dat <- engine_sentinel_data(60, classification = FALSE)
+  holdouts <- split(seq_len(nrow(dat)), rep(1:6, each = 10))
+  index <- lapply(holdouts, function(h) setdiff(seq_len(nrow(dat)), h))
+  bad_pred <- make_submodel_model(fail_pred = TRUE)
+
+  set.seed(4471)
+  expect_snapshot(
+    fit <- train(
+      dat[, 1:3],
+      dat$y,
+      method = bad_pred,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        index = index,
+        indexOut = holdouts,
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  expect_s3_class(fit, "train")
+})

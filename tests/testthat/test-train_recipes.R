@@ -1253,3 +1253,168 @@ test_that("the recipe workflows report a sub-model fit that fails", {
   )
   expect_identical(nrow(fit$results), 3L)
 })
+
+# ------------------------------------------------------------------------------
+# the recipe path's remaining options
+
+test_that("train checks the seeds given for a recipe fit", {
+  reg <- engine_regression(30)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  # one integer vector per resample plus one for the final fit
+  expect_snapshot(
+    train(
+      rec,
+      data = reg,
+      method = "knn",
+      tuneGrid = data.frame(k = c(3, 5)),
+      trControl = trainControl(method = "cv", number = 3, seeds = 1:2)
+    ),
+    error = TRUE
+  )
+})
+
+test_that("train falls back when a recipe fit's metric is not computed", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  rec <- recipes::recipe(y ~ ., data = reg)
+  median_error <- function(data, lev = NULL, model = NULL) {
+    c(MedianError = median(abs(data$obs - data$pred)))
+  }
+
+  expect_snapshot_warning(
+    fit <- train(
+      rec,
+      data = reg,
+      method = "lm",
+      metric = "RMSE",
+      trControl = trainControl(
+        method = "cv",
+        number = 3,
+        summaryFunction = median_error
+      )
+    )
+  )
+  expect_identical(fit$metric, "MedianError")
+})
+
+test_that("train uses a custom selection function for a recipe fit", {
+  skip_on_cran()
+
+  dat <- engine_three_class()
+  rec <- recipes::recipe(Species ~ ., data = dat)
+
+  # the function is handed the candidates in the order the model sorts them
+  # (descending k, for knn), and here it always takes the first
+  offered <- NULL
+  set.seed(1094)
+  fit <- train(
+    rec,
+    data = dat,
+    method = "knn",
+    tuneGrid = data.frame(k = c(3, 5, 7)),
+    trControl = trainControl(
+      method = "cv",
+      number = 3,
+      selectionFunction = function(x, metric, maximize) {
+        offered <<- x
+        1
+      }
+    )
+  )
+  expect_setequal(offered$k, c(3, 5, 7))
+  expect_identical(fit$bestTune$k, offered$k[1])
+})
+
+test_that("train fits a recipe without resampling", {
+  skip_on_cran()
+
+  dat <- engine_three_class()
+  rec <- recipes::recipe(Species ~ ., data = dat)
+  rec <- recipes::step_normalize(rec, recipes::all_predictors())
+
+  set.seed(6006)
+  fit <- train(
+    rec,
+    data = dat,
+    method = "knn",
+    tuneGrid = data.frame(k = 5),
+    trControl = trainControl(method = "none")
+  )
+  # the single candidate is taken as given; with no resampling there is nothing
+  # to report, so the results table has the metric columns but no rows
+  expect_identical(fit$bestTune, data.frame(k = 5))
+  expect_identical(nrow(fit$results), 0L)
+  expect_contains(names(fit$results), c("Accuracy", "Kappa", "k"))
+  expect_length(predict(fit, dat), nrow(dat))
+})
+
+test_that("train trims a recipe fit's model object", {
+  skip_on_cran()
+  skip_if_not_installed("earth")
+
+  reg <- engine_regression(60)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  # earth defines a trim method, and verboseIter reports how much was saved
+  set.seed(9204)
+  expect_snapshot(
+    fit <- suppressMessages(train(
+      rec,
+      data = reg,
+      method = "earth",
+      tuneGrid = data.frame(degree = 1, nprune = 3),
+      trControl = trainControl(
+        method = "cv",
+        number = 2,
+        trim = TRUE,
+        verboseIter = TRUE
+      )
+    )),
+    transform = mask_decimals
+  )
+  expect_s3_class(fit, "train.recipe")
+})
+
+test_that("train times a recipe fit's predictions", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  set.seed(5528)
+  fit <- train(
+    rec,
+    data = reg,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3, timingSamps = 5)
+  )
+  expect_in("prediction", names(fit$times))
+})
+
+test_that("fitted values come from a recipe fit", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  set.seed(8109)
+  fit <- train(
+    rec,
+    data = reg,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  expect_length(fitted(fit), nrow(reg))
+
+  # the model object carries its own fitted values, so dropping the stored
+  # training data does not prevent this
+  dropped <- train(
+    rec,
+    data = reg,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3, returnData = FALSE)
+  )
+  expect_length(fitted(dropped), nrow(reg))
+})

@@ -393,3 +393,36 @@
       Warning in `train_rec()`:
       There were missing values in resampled performance measures.
 
+# train checks the seeds given for a recipe fit
+
+    Code
+      train(rec, data = reg, method = "knn", tuneGrid = data.frame(k = c(3, 5)),
+      trControl = trainControl(method = "cv", number = 3, seeds = 1:2))
+    Condition
+      Error:
+      ! Bad seeds: the seed object should be a list of length 4 with 3 integer vectors of size 2 and the last list element having at least a single integer
+
+# train falls back when a recipe fit's metric is not computed
+
+    The metric "RMSE" was not in the result set. MedianError will be used instead.
+
+# train trims a recipe fit's model object
+
+    Code
+      fit <- suppressMessages(train(rec, data = reg, method = "earth", tuneGrid = data.frame(
+        degree = 1, nprune = 3), trControl = trainControl(method = "cv", number = 2,
+        trim = TRUE, verboseIter = TRUE)))
+    Output
+      Preparing recipe
+      + Fold1: degree=1, nprune=3 
+      - Fold1: degree=1, nprune=3 
+      + Fold2: degree=1, nprune=3 
+      - Fold2: degree=1, nprune=3 
+    Condition
+      Warning in `train_rec()`:
+      There were missing values in resampled performance measures.
+    Output
+      Aggregating results
+      Fitting final model on full training set
+      Final model footprint reduced by < 0 Mb or 32% 
+
