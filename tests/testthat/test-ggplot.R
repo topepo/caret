@@ -312,3 +312,155 @@ test_that("random search plots refuse what they cannot draw", {
     error = TRUE
   )
 })
+
+# ------------------------------------------------------------------------------
+# the parameter labels and limits ggplot.train shares with plot.train
+
+test_that("ggplot.train relabels a naive Bayes kernel switch", {
+  skip_on_cran()
+  skip_if_not_installed("klaR")
+
+  dat <- engine_three_class()
+  set.seed(4118)
+  fit <- suppressWarnings(train(
+    Species ~ .,
+    data = dat,
+    method = "nb",
+    tuneGrid = expand.grid(fL = 0, usekernel = c(TRUE, FALSE), adjust = 1),
+    trControl = trainControl(method = "cv", number = 3)
+  ))
+
+  gg <- ggplot2::ggplot(fit)
+  built <- ggplot2::ggplot_build(gg)
+  # the logical parameter is drawn as "Nonparametric"/"Gaussian"
+  expect_setequal(
+    as.character(unique(built$plot$data$usekernel)),
+    c("Nonparametric", "Gaussian")
+  )
+})
+
+test_that("ggplot.train relabels the other logical parameters", {
+  skip_on_cran()
+
+  # as in test-plot.train.R, these branches only relabel a column of
+  # `x$results` keyed on the method name, so the objects are doctored
+  dat <- engine_three_class()
+  set.seed(6210)
+  base <- train(
+    Species ~ .,
+    data = dat,
+    method = "knn",
+    tuneGrid = data.frame(k = c(3, 5)),
+    trControl = trainControl(method = "cv", number = 3)
+  )
+
+  relabelled <- list(
+    gam = list(select = c(TRUE, FALSE), method = "GCV.Cp"),
+    qrnn = list(bag = c(TRUE, FALSE), n.hidden = 1, penalty = 0),
+    C5.0 = list(winnow = c(TRUE, FALSE), trials = 1, model = "tree"),
+    M5 = list(rules = c("Yes", "No"), pruned = "Yes", smoothed = "Yes")
+  )
+
+  for (nm in names(relabelled)) {
+    fake <- base
+    fake$method <- nm
+    params <- relabelled[[nm]]
+    fake$results <- data.frame(
+      params,
+      Accuracy = c(0.7, 0.8),
+      Kappa = c(0.5, 0.6),
+      stringsAsFactors = FALSE
+    )
+    fake$modelInfo$parameters <- data.frame(
+      parameter = names(params),
+      class = "character",
+      label = names(params),
+      stringsAsFactors = FALSE
+    )
+    fake$bestTune <- fake$results[2, names(params), drop = FALSE]
+    expect_no_error(ggplot2::ggplot_build(ggplot2::ggplot(fake)))
+  }
+})
+
+test_that("ggplot.train warns about adaptive resampling", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  dat <- engine_three_class()
+  set.seed(5866)
+  fit <- suppressWarnings(train(
+    Species ~ .,
+    data = dat,
+    method = "knn",
+    tuneGrid = data.frame(k = c(1, 9, 17)),
+    trControl = trainControl(
+      method = "adaptive_cv",
+      number = 5,
+      adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+    )
+  ))
+
+  # the candidates were not all scored on the same resamples, and only those
+  # scored on at least half of them are kept
+  expect_snapshot_warning(gg <- ggplot2::ggplot(fit))
+  expect_lte(nrow(ggplot2::ggplot_build(gg)$plot$data), nrow(fit$results))
+})
+
+test_that("ggplot.train draws a highlighted plot with several parameters", {
+  skip_on_cran()
+  skip_if_not_installed("C50")
+
+  dat <- engine_two_class(120)
+  set.seed(9928)
+  fit <- train(
+    Class ~ .,
+    data = dat,
+    method = "C5.0",
+    tuneGrid = expand.grid(
+      trials = c(1, 5),
+      model = c("tree", "rules"),
+      winnow = c(TRUE, FALSE)
+    ),
+    trControl = trainControl(method = "cv", number = 2)
+  )
+
+  # highlighting marks the chosen candidate, which needs the same factor levels
+  # as the rest of the data
+  gg <- ggplot2::ggplot(fit, highlight = TRUE)
+  expect_no_error(ggplot2::ggplot_build(gg))
+})
+
+test_that("ggplot.train refuses more than four tuning parameters", {
+  skip_on_cran()
+
+  dat <- engine_three_class()
+  set.seed(6210)
+  fake <- train(
+    Species ~ .,
+    data = dat,
+    method = "knn",
+    tuneGrid = data.frame(k = c(3, 5)),
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  # five varying parameters is more than the faceting can express
+  params <- paste0("p", 1:5)
+  fake$results <- data.frame(
+    p1 = c(1, 2),
+    p2 = c(1, 2),
+    p3 = c(1, 2),
+    p4 = c(1, 2),
+    p5 = c(1, 2),
+    Accuracy = c(0.7, 0.8),
+    Kappa = c(0.5, 0.6)
+  )
+  fake$modelInfo$parameters <- data.frame(
+    parameter = params,
+    class = "numeric",
+    label = params,
+    stringsAsFactors = FALSE
+  )
+  fake$bestTune <- fake$results[2, params, drop = FALSE]
+
+  expect_snapshot(ggplot2::ggplot(fake), error = TRUE)
+  expect_snapshot(ggplot2::ggplot(fake, plotType = "level"), error = TRUE)
+})

@@ -366,3 +366,164 @@ test_that("gamScores scores a predictor with a smooth term", {
   expect_length(score, 2)
   expect_all_true(score >= 0 & score <= 1)
 })
+
+test_that("sbf can generate its own seeds", {
+  skip_on_cran()
+  skip_if_not_installed("MASS")
+
+  cls <- engine_two_class(60)
+  x <- cls[, names(cls) != "Class"]
+
+  # `seeds = NULL` (rather than the default NA) means "make them up"
+  for (interface in c("xy", "recipe")) {
+    set.seed(6693)
+    ctrl <- sbfControl(
+      functions = ldaSBF,
+      method = "cv",
+      number = 3,
+      seeds = NULL
+    )
+    sf <- suppressWarnings(
+      if (interface == "xy") {
+        sbf(x, cls$Class, sbfControl = ctrl)
+      } else {
+        sbf(
+          recipes::recipe(Class ~ ., data = cls),
+          data = cls,
+          sbfControl = ctrl
+        )
+      }
+    )
+    expect_length(sf$control$seeds, 4)
+  }
+})
+
+test_that("sbf checks the seeds given for a recipe fit", {
+  skip_on_cran()
+  skip_if_not_installed("MASS")
+
+  cls <- engine_two_class(60)
+  rec <- recipes::recipe(Class ~ ., data = cls)
+  folds <- createFolds(cls$Class, k = 3, returnTrain = TRUE)
+
+  expect_snapshot(
+    sbf(
+      rec,
+      data = cls,
+      sbfControl = sbfControl(
+        functions = ldaSBF,
+        method = "cv",
+        index = folds,
+        seeds = 1:2
+      )
+    ),
+    error = TRUE
+  )
+})
+
+test_that("sbf scores a recipe's predictors all at once", {
+  skip_on_cran()
+  skip_if_not_installed("MASS")
+
+  cls <- engine_two_class(60)
+  rec <- recipes::recipe(Class ~ ., data = cls)
+
+  multi <- ldaSBF
+  multi$score <- function(x, y) {
+    vapply(x, function(col) anovaScores(col, y), double(1))
+  }
+  ctrl <- function(funcs) {
+    sbfControl(
+      functions = funcs,
+      method = "cv",
+      number = 3,
+      multivariate = TRUE
+    )
+  }
+
+  set.seed(1155)
+  sf <- suppressWarnings(sbf(rec, data = cls, sbfControl = ctrl(multi)))
+  expect_s3_class(sf, "sbf")
+
+  # and the score function has to return one value per predictor
+  wrong <- multi
+  wrong$score <- function(x, y) 1
+  expect_error(
+    sbf(rec, data = cls, sbfControl = ctrl(wrong)),
+    "should return a vector with"
+  )
+})
+
+test_that("sbf keeps the held-out predictions when asked", {
+  skip_on_cran()
+  skip_if_not_installed("MASS")
+
+  cls <- engine_two_class(60)
+  rec <- recipes::recipe(Class ~ ., data = cls)
+
+  set.seed(4198)
+  sf <- suppressWarnings(sbf(
+    rec,
+    data = cls,
+    sbfControl = sbfControl(
+      functions = ldaSBF,
+      method = "cv",
+      number = 3,
+      saveDetails = TRUE
+    )
+  ))
+  # sbf keeps the whole workflow result in `pred`, with the held-out
+  # predictions under `predictions`: one row per observation, labelled with its
+  # resample and row
+  expect_named(sf$pred, c("performance", "everything", "predictions"))
+  expect_identical(nrow(sf$pred$predictions), nrow(cls))
+  expect_contains(names(sf$pred$predictions), c("Resample", "rowIndex"))
+})
+
+test_that("sbf times a recipe fit's predictions", {
+  skip_on_cran()
+  skip_if_not_installed("MASS")
+
+  cls <- engine_two_class(60)
+  rec <- recipes::recipe(Class ~ ., data = cls)
+
+  set.seed(5528)
+  sf <- suppressWarnings(sbf(
+    rec,
+    data = cls,
+    sbfControl = sbfControl(
+      functions = ldaSBF,
+      method = "cv",
+      number = 3,
+      timingSamps = 5
+    )
+  ))
+  expect_in("prediction", names(sf$times))
+})
+
+test_that("sbf uses a performance-var role with leave-one-out resampling", {
+  skip_on_cran()
+  skip_if_not_installed("MASS")
+
+  cls <- engine_two_class(24)
+  cls$extra <- seq_len(nrow(cls))
+  rec <- recipes::recipe(Class ~ ., data = cls)
+  rec <- recipes::update_role(rec, extra, new_role = "performance var")
+
+  perf_funcs <- ldaSBF
+  perf_funcs$summary <- function(data, lev = NULL, model = NULL) {
+    c(
+      Accuracy = mean(data$obs == data$pred),
+      HasExtra = as.numeric("extra" %in% names(data))
+    )
+  }
+
+  set.seed(6011)
+  sf <- suppressWarnings(sbf(
+    rec,
+    data = cls,
+    sbfControl = sbfControl(functions = perf_funcs, method = "LOOCV")
+  ))
+  expect_all_equal(sf$results$HasExtra, 1)
+  expect_disjoint(sf$optVariables, "extra")
+})
