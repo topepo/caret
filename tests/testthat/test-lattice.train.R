@@ -35,3 +35,43 @@ test_that("the plot methods reject LOOCV/oob resampling", {
   expect_snapshot(stripplot(fit), error = TRUE)
   expect_snapshot(xyplot(fit), error = TRUE)
 })
+
+test_that("the resampling plots respect the horizontal option", {
+  skip_on_cran()
+
+  dat <- engine_three_class()
+  set.seed(4471)
+  fit <- train(
+    Species ~ .,
+    data = dat,
+    method = "knn",
+    tuneGrid = data.frame(k = c(3, 5, 7)),
+    trControl = trainControl(method = "cv", number = 3, returnResamp = "all")
+  )
+
+  # `horizontal` swaps which side of the formula the metric goes on
+  for (h in c(TRUE, FALSE)) {
+    drawn <- stripplot(fit, horizontal = h)
+    expect_s3_class(drawn, "trellis")
+    draw_trellis(drawn)
+  }
+})
+
+test_that("the resampling plots need a varying tuning parameter", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  set.seed(9081)
+  # glm has no tuning parameters, so there is nothing to plot the metric against
+  fit <- train(
+    y ~ .,
+    data = reg,
+    method = "glm",
+    trControl = trainControl(method = "cv", number = 3, returnResamp = "all")
+  )
+
+  expect_snapshot(xyplot(fit), error = TRUE)
+  # the distribution plots do not need one
+  draw_trellis(densityplot(fit))
+  draw_trellis(histogram(fit))
+})

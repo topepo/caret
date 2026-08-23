@@ -62,3 +62,11 @@
       Error in `xyplot.train()`:
       ! Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling
 
+# the resampling plots need a varying tuning parameter
+
+    Code
+      xyplot(fit)
+    Condition
+      Error in `xyplot.train()`:
+      ! there must be at least one tuning parameter for a scatter plot
+
