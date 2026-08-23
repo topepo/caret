@@ -517,8 +517,14 @@ test_that("plot.prcomp.resamples draws the remaining plot types", {
 
   # `dims` is how many components to show: two gives a scatter of PC2 on PC1,
   # more than two a scatterplot matrix
-  draw_trellis(plot(pc, what = "components", dims = 2))
-  draw_trellis(plot(pc, what = "components", dims = 3))
+  expect_s3_class(
+    draw_trellis(plot(pc, what = "components", dims = 2)),
+    "trellis"
+  )
+  expect_s3_class(
+    draw_trellis(plot(pc, what = "components", dims = 3)),
+    "trellis"
+  )
 })
 
 test_that("print.prcomp.resamples honours the digits argument", {
