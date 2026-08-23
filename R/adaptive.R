@@ -128,24 +128,11 @@ adaptiveWorkflow <- function(
           rm(wrn)
 
           ## setup a dummy results with NA values for all predictions
-          nPred <- length(holdoutIndex)
-          if (!is.null(lev)) {
-            predicted <- rep("", nPred)
-            predicted[seq(along.with = predicted)] <- NA
-          } else {
-            predicted <- rep(NA, nPred)
-          }
-          if (!is.null(submod)) {
-            tmp <- predicted
-            predicted <- vector(
-              mode = "list",
-              length = nrow(info$submodels[[parm]]) + 1
-            )
-            for (i in seq(along.with = predicted)) {
-              predicted[[i]] <- tmp
-            }
-            rm(tmp)
-          }
+          predicted <- fill_failed_pred(
+            index = holdoutIndex,
+            lev = lev,
+            submod
+          )
         }
       } else {
         wrn <- paste(
@@ -170,24 +157,11 @@ adaptiveWorkflow <- function(
         rm(wrn)
 
         ## setup a dummy results with NA values for all predictions
-        nPred <- length(holdoutIndex)
-        if (!is.null(lev)) {
-          predicted <- rep("", nPred)
-          predicted[seq(along.with = predicted)] <- NA
-        } else {
-          predicted <- rep(NA, nPred)
-        }
-        if (!is.null(submod)) {
-          tmp <- predicted
-          predicted <- vector(
-            mode = "list",
-            length = nrow(info$submodels[[parm]]) + 1
-          )
-          for (i in seq(along.with = predicted)) {
-            predicted[[i]] <- tmp
-          }
-          rm(tmp)
-        }
+        predicted <- fill_failed_pred(
+          index = holdoutIndex,
+          lev = lev,
+          submod
+        )
       }
 
       if (testing) {
@@ -203,22 +177,7 @@ adaptiveWorkflow <- function(
             param = submod
           )
         } else {
-          probValues <- as.data.frame(
-            matrix(NA, nrow = nPred, ncol = length(lev)),
-            stringsAsFactors = FALSE
-          )
-          colnames(probValues) <- lev
-          if (!is.null(submod)) {
-            tmp <- probValues
-            probValues <- vector(
-              mode = "list",
-              length = nrow(info$submodels[[parm]]) + 1
-            )
-            for (i in seq(along.with = probValues)) {
-              probValues[[i]] <- tmp
-            }
-            rm(tmp)
-          }
+          probValues <- fill_failed_prob(holdoutIndex, lev, submod)
         }
         if (testing) {
           print(head(probValues))
@@ -476,24 +435,11 @@ adaptiveWorkflow <- function(
               rm(wrn)
 
               ## setup a dummy results with NA values for all predictions
-              nPred <- length(holdoutIndex)
-              if (!is.null(lev)) {
-                predicted <- rep("", nPred)
-                predicted[seq(along.with = predicted)] <- NA
-              } else {
-                predicted <- rep(NA, nPred)
-              }
-              if (!is.null(submod)) {
-                tmp <- predicted
-                predicted <- vector(
-                  mode = "list",
-                  length = nrow(new_info$submodels[[parm]]) + 1
-                )
-                for (i in seq(along.with = predicted)) {
-                  predicted[[i]] <- tmp
-                }
-                rm(tmp)
-              }
+              predicted <- fill_failed_pred(
+                index = holdoutIndex,
+                lev = lev,
+                submod
+              )
             }
           } else {
             wrn <- paste(
@@ -518,24 +464,11 @@ adaptiveWorkflow <- function(
             rm(wrn)
 
             ## setup a dummy results with NA values for all predictions
-            nPred <- length(holdoutIndex)
-            if (!is.null(lev)) {
-              predicted <- rep("", nPred)
-              predicted[seq(along.with = predicted)] <- NA
-            } else {
-              predicted <- rep(NA, nPred)
-            }
-            if (!is.null(submod)) {
-              tmp <- predicted
-              predicted <- vector(
-                mode = "list",
-                length = nrow(new_info$submodels[[parm]]) + 1
-              )
-              for (i in seq(along.with = predicted)) {
-                predicted[[i]] <- tmp
-              }
-              rm(tmp)
-            }
+            predicted <- fill_failed_pred(
+              index = holdoutIndex,
+              lev = lev,
+              submod
+            )
           }
 
           if (testing) {
@@ -551,22 +484,7 @@ adaptiveWorkflow <- function(
                 param = submod
               )
             } else {
-              probValues <- as.data.frame(
-                matrix(NA, nrow = nPred, ncol = length(lev)),
-                stringsAsFactors = FALSE
-              )
-              colnames(probValues) <- lev
-              if (!is.null(submod)) {
-                tmp <- probValues
-                probValues <- vector(
-                  mode = "list",
-                  length = nrow(new_info$submodels[[parm]]) + 1
-                )
-                for (i in seq(along.with = probValues)) {
-                  probValues[[i]] <- tmp
-                }
-                rm(tmp)
-              }
+              probValues <- fill_failed_prob(holdoutIndex, lev, submod)
             }
             if (testing) {
               print(head(probValues))
@@ -842,14 +760,6 @@ adaptiveWorkflow <- function(
           cat("pre-model\n")
         }
 
-        if (
-          is.null(info$submodels[[parm]]) || nrow(info$submodels[[parm]]) > 0
-        ) {
-          submod <- info$submodels[[parm]]
-        } else {
-          submod <- NULL
-        }
-
         mod <- try(
           createModel(
             x = x[modelIndex, , drop = FALSE],
@@ -873,7 +783,7 @@ adaptiveWorkflow <- function(
               modelFit = mod$fit,
               newdata = x[holdoutIndex, , drop = FALSE],
               preProc = mod$preProc,
-              param = submod
+              param = NULL
             ),
             silent = TRUE
           )
@@ -901,24 +811,11 @@ adaptiveWorkflow <- function(
             rm(wrn)
 
             ## setup a dummy results with NA values for all predictions
-            nPred <- length(holdoutIndex)
-            if (!is.null(lev)) {
-              predicted <- rep("", nPred)
-              predicted[seq(along.with = predicted)] <- NA
-            } else {
-              predicted <- rep(NA, nPred)
-            }
-            if (!is.null(submod)) {
-              tmp <- predicted
-              predicted <- vector(
-                mode = "list",
-                length = nrow(info$submodels[[parm]]) + 1
-              )
-              for (i in seq(along.with = predicted)) {
-                predicted[[i]] <- tmp
-              }
-              rm(tmp)
-            }
+            predicted <- fill_failed_pred(
+              index = holdoutIndex,
+              lev = lev,
+              submod = NULL
+            )
           }
         } else {
           wrn <- paste(
@@ -943,24 +840,11 @@ adaptiveWorkflow <- function(
           rm(wrn)
 
           ## setup a dummy results with NA values for all predictions
-          nPred <- length(holdoutIndex)
-          if (!is.null(lev)) {
-            predicted <- rep("", nPred)
-            predicted[seq(along.with = predicted)] <- NA
-          } else {
-            predicted <- rep(NA, nPred)
-          }
-          if (!is.null(submod)) {
-            tmp <- predicted
-            predicted <- vector(
-              mode = "list",
-              length = nrow(info$submodels[[parm]]) + 1
-            )
-            for (i in seq(along.with = predicted)) {
-              predicted[[i]] <- tmp
-            }
-            rm(tmp)
-          }
+          predicted <- fill_failed_pred(
+            index = holdoutIndex,
+            lev = lev,
+            submod = NULL
+          )
         }
 
         if (testing) {
@@ -973,25 +857,10 @@ adaptiveWorkflow <- function(
               modelFit = mod$fit,
               newdata = x[holdoutIndex, , drop = FALSE],
               preProc = mod$preProc,
-              param = submod
+              param = NULL
             )
           } else {
-            probValues <- as.data.frame(
-              matrix(NA, nrow = nPred, ncol = length(lev)),
-              stringsAsFactors = FALSE
-            )
-            colnames(probValues) <- lev
-            if (!is.null(submod)) {
-              tmp <- probValues
-              probValues <- vector(
-                mode = "list",
-                length = nrow(info$submodels[[parm]]) + 1
-              )
-              for (i in seq(along.with = probValues)) {
-                probValues[[i]] <- tmp
-              }
-              rm(tmp)
-            }
+            probValues <- fill_failed_prob(holdoutIndex, lev, submod = NULL)
           }
           if (testing) {
             print(head(probValues))
@@ -1000,125 +869,55 @@ adaptiveWorkflow <- function(
 
         ##################################
 
-        if (!is.null(submod)) {
-          ## merge the fixed and seq parameter values together
-          allParam <- expandParameters(
-            new_info$loop[parm, , drop = FALSE],
-            new_info$submodels[[parm]]
-          )
-          allParam <- allParam[complete.cases(allParam), , drop = FALSE]
-
-          ## collate the predicitons across all the sub-models
-          predicted <- lapply(
-            predicted,
-            function(x, y, wts, lv) {
-              if (!is.factor(x) && is.character(x)) {
-                x <- factor(as.character(x), levels = lv)
-              }
-              out <- data.frame(pred = x, obs = y, stringsAsFactors = FALSE)
-              if (!is.null(wts)) {
-                out$weights <- wts
-              }
-              out
-            },
-            y = y[holdoutIndex],
-            wts = wts[holdoutIndex],
-            lv = lev
-          )
-          if (testing) {
-            print(head(predicted))
-          }
-
-          ## same for the class probabilities
-          if (ctrl$classProbs) {
-            for (k in seq(along.with = predicted)) {
-              predicted[[k]] <- cbind(predicted[[k]], probValues[[k]])
-            }
-          }
-
-          if (keep_pred) {
-            tmpPred <- predicted
-            for (modIndex in seq(along.with = tmpPred)) {
-              tmpPred[[modIndex]]$rowIndex <- holdoutIndex
-              tmpPred[[modIndex]] <- merge(
-                tmpPred[[modIndex]],
-                allParam[modIndex, , drop = FALSE],
-                all = TRUE
-              )
-            }
-            tmpPred <- rbind.fill(tmpPred)
-            tmpPred$Resample <- names(resampleIndex)[iter]
-          } else {
-            tmpPred <- NULL
-          }
-
-          ## get the performance for this resample for each sub-model
-          thisResample <- lapply(
-            predicted,
-            ctrl$summaryFunction,
-            lev = lev,
-            model = method
-          )
-          if (testing) {
-            print(head(thisResample))
-          }
-          ## for classification, add the cell counts
-          if (length(lev) > 1) {
-            cells <- lapply(predicted, function(x) flatTable(x$pred, x$obs))
-            for (ind in seq(along.with = cells)) {
-              thisResample[[ind]] <- c(thisResample[[ind]], cells[[ind]])
-            }
-          }
-          thisResample <- do.call("rbind", thisResample)
-          thisResample <- cbind(allParam, thisResample)
-        } else {
-          if (is.factor(y)) {
-            predicted <- factor(as.character(predicted), levels = lev)
-          }
-          tmp <- data.frame(
-            pred = predicted,
-            obs = y[holdoutIndex],
-            stringsAsFactors = FALSE
-          )
-          ## Sometimes the code above does not coerce the first
-          ## columnn to be named "pred" so force it
-          names(tmp)[1] <- "pred"
-          if (!is.null(wts)) {
-            tmp$weights <- wts[holdoutIndex]
-          }
-          if (ctrl$classProbs) {
-            tmp <- cbind(tmp, probValues)
-          }
-
-          if (keep_pred) {
-            tmpPred <- tmp
-            tmpPred$rowIndex <- holdoutIndex
-            tmpPred <- merge(
-              tmpPred,
-              new_info$loop[parm, , drop = FALSE],
-              all = TRUE
-            )
-            tmpPred$Resample <- names(resampleIndex)[iter]
-          } else {
-            tmpPred <- NULL
-          }
-
-          ##################################
-          thisResample <- ctrl$summaryFunction(tmp, lev = lev, model = method)
-
-          ## if classification, get the confusion matrix
-          if (length(lev) > 1) {
-            thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-          }
-          thisResample <- as.data.frame(
-            t(thisResample),
-            stringsAsFactors = FALSE
-          )
-          thisResample <- cbind(
-            thisResample,
-            new_info$loop[parm, , drop = FALSE]
-          )
+        ## `complete = TRUE` only leaves resamples to run when the race
+        ## stopped early, which happens once a single candidate is left, so
+        ## there are no sub-models to score here - see caret#1533
+        if (is.factor(y)) {
+          predicted <- factor(as.character(predicted), levels = lev)
         }
+        tmp <- data.frame(
+          pred = predicted,
+          obs = y[holdoutIndex],
+          stringsAsFactors = FALSE
+        )
+        ## Sometimes the code above does not coerce the first
+        ## columnn to be named "pred" so force it
+        names(tmp)[1] <- "pred"
+        if (!is.null(wts)) {
+          tmp$weights <- wts[holdoutIndex]
+        }
+        if (ctrl$classProbs) {
+          tmp <- cbind(tmp, probValues)
+        }
+
+        if (keep_pred) {
+          tmpPred <- tmp
+          tmpPred$rowIndex <- holdoutIndex
+          tmpPred <- merge(
+            tmpPred,
+            new_info$loop[parm, , drop = FALSE],
+            all = TRUE
+          )
+          tmpPred$Resample <- names(resampleIndex)[iter]
+        } else {
+          tmpPred <- NULL
+        }
+
+        ##################################
+        thisResample <- ctrl$summaryFunction(tmp, lev = lev, model = method)
+
+        ## if classification, get the confusion matrix
+        if (length(lev) > 1) {
+          thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
+        }
+        thisResample <- as.data.frame(
+          t(thisResample),
+          stringsAsFactors = FALSE
+        )
+        thisResample <- cbind(
+          thisResample,
+          new_info$loop[parm, , drop = FALSE]
+        )
         thisResample$Resample <- names(resampleIndex)[iter]
         if (ctrl$verboseIter) {
           progress(

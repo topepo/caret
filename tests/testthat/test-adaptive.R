@@ -843,3 +843,149 @@ test_that("the race reports its progress while finishing up", {
   expect_match(joined, "eliminated")
   expect_s3_class(fit, "train")
 })
+
+test_that("the race labels sub-model results while finishing the last resamples", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  dat <- engine_sentinel_data(60, classification = FALSE)
+  holdouts <- split(seq_len(nrow(dat)), rep(1:6, each = 10))
+  index <- lapply(holdouts, function(h) setdiff(seq_len(nrow(dat)), h))
+  mod <- make_submodel_model()
+
+  set.seed(4471)
+  suppressWarnings(
+    fit <- train(
+      dat[, 1:3],
+      dat$y,
+      method = mod,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        index = index,
+        indexOut = holdouts,
+        savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+
+  # the completion pass has to look up the sub-models of the candidates that
+  # survived the race, not of the whole grid it started from; each candidate
+  # predicts its own `shift`, so a mismatch says the results were labelled with
+  # the wrong tuning parameters
+  expect_equal(fit$pred$pred, fit$pred$shift)
+  expect_in(names(index), fit$pred$Resample)
+})
+
+test_that("the race scores probabilities and weights while finishing up", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  # three classes and folds this small make k = 30 nearly useless, so the race
+  # drops it after the burn-in and the completion pass scores the winner on the
+  # resamples that are left
+  cls <- engine_three_class()
+  wts <- rep(c(1, 2), length.out = nrow(cls))
+
+  set.seed(9527)
+  fit <- train(
+    cls[, names(cls) != "Species"],
+    cls$Species,
+    method = "knn",
+    tuneGrid = data.frame(k = c(1, 30)),
+    weights = wts,
+    trControl = trainControl(
+      method = "adaptive_cv",
+      number = 6,
+      classProbs = TRUE,
+      savePredictions = "all",
+      adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+    )
+  )
+
+  scored <- tapply(fit$pred$Resample, fit$pred$k, function(x) length(unique(x)))
+  expect_equal(as.vector(scored), c(6, 3))
+  expect_equal(fit$bestTune$k, 1)
+  # the completion pass keeps carrying the probabilities and the case weights
+  expect_contains(names(fit$pred), c(levels(cls$Species), "weights"))
+  expect_all_false(is.na(fit$pred$setosa))
+})
+
+test_that("the race reports a failure as it happens when it is verbose", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  # two candidates and four resamples, to keep the progress log short: the
+  # burn-in scores the first two resamples and the race the rest
+  dat <- engine_sentinel_data(40, classification = FALSE)
+  holdouts <- split(seq_len(nrow(dat)), rep(1:4, each = 10))
+  index <- lapply(holdouts, function(h) setdiff(seq_len(nrow(dat)), h))
+  failing <- make_submodel_model(fail_fit = TRUE)
+  ctrl <- function(...) {
+    trainControl(
+      method = "adaptive_cv",
+      index = index,
+      indexOut = holdouts,
+      verboseIter = TRUE,
+      adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE),
+      ...
+    )
+  }
+
+  # the sentinel is held out by the first resample, so the burn-in reports it
+  set.seed(4471)
+  expect_snapshot(
+    fit <- train(
+      dat[, 1:3],
+      dat$y,
+      method = failing,
+      tuneLength = 2,
+      trControl = ctrl()
+    )
+  )
+  expect_s3_class(fit, "train")
+
+  # and here by the last one, which the completion pass scores
+  dat$x1 <- rev(dat$x1)
+  set.seed(4471)
+  expect_snapshot(
+    fit <- train(
+      dat[, 1:3],
+      dat$y,
+      method = failing,
+      tuneLength = 2,
+      trControl = ctrl()
+    )
+  )
+  expect_s3_class(fit, "train")
+})
+
+test_that("the race carries case weights through to the sub-models", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  # sub-models are scored from the same fit, so the weights have to be copied
+  # onto each set of predictions
+  dat <- engine_sentinel_data(60, classification = FALSE)
+  wts <- rep(c(1, 2), length.out = nrow(dat))
+
+  set.seed(4471)
+  fit <- suppressWarnings(train(
+    dat[, 1:3],
+    dat$y,
+    method = make_submodel_model(),
+    tuneLength = 3,
+    weights = wts,
+    trControl = trainControl(
+      method = "adaptive_cv",
+      number = 6,
+      savePredictions = "all",
+      adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+    )
+  ))
+
+  expect_contains(names(fit$pred), "weights")
+  expect_setequal(fit$pred$weights, c(1, 2))
+  expect_equal(fit$pred$pred, fit$pred$shift)
+})

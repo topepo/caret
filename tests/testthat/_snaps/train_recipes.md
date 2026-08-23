@@ -450,14 +450,8 @@
     Condition
       Warning in `train_adapt_rec()`:
       There were missing values in resampled performance measures.
-      Warning in `data.frame()`:
-      row names were found from a short variable and have been discarded
-      Warning in `data.frame()`:
-      row names were found from a short variable and have been discarded
       Warning:
       model fit failed for 6: shift=1, scale=1 Error : fit failed on purpose
-      Warning in `data.frame()`:
-      row names were found from a short variable and have been discarded
       Warning in `train_adapt_rec()`:
       There were missing values in resampled performance measures.
 
@@ -508,4 +502,48 @@
 # train falls back on a recipe fit's metric with class probabilities
 
     The metric "Accuracy" was not in the result set. HitRate will be used instead.
+
+# leave-one-out resampling reports a recipe prediction that fails
+
+    predictions failed for Fold16: shift=1, scale=1 Error : predict failed on purpose
+    
+
+# the recipe race reports a prediction failure while racing
+
+    Code
+      fit <- train(rec, data = dat, method = bad_pred, tuneLength = 3, trControl = trainControl(
+        method = "adaptive_cv", index = index, indexOut = holdouts, classProbs = TRUE,
+        savePredictions = "all", adaptive = list(min = 3, alpha = 0.05, method = "gls",
+          complete = TRUE)))
+    Condition
+      Warning:
+      predictions failed for Resample4: shift=1, scale=1 Error : predict failed on purpose
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
+
+# the recipe race reports a prediction failure while finishing up
+
+    Code
+      fit <- train(rec, data = dat, method = bad_pred, tuneLength = 3, trControl = trainControl(
+        method = "adaptive_cv", index = index, indexOut = holdouts, savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)))
+    Condition
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
+      Warning:
+      predictions failed for 6: shift=1, scale=1 Error : predict failed on purpose
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
+
+# the recipe race reports a model fit failure while racing
+
+    Code
+      fit <- train(rec, data = dat, method = failing, tuneLength = 3, trControl = trainControl(
+        method = "adaptive_cv", index = index, indexOut = holdouts, adaptive = list(
+          min = 3, alpha = 0.05, method = "gls", complete = TRUE)))
+    Condition
+      Warning:
+      model fit failed for Resample4: shift=1, scale=1 Error : fit failed on purpose
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
 

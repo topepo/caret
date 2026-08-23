@@ -1115,6 +1115,7 @@ train_adapt_rec <- function(
         if (keep_pred) {
           tmpPred <- tmp
           tmpPred$rowIndex <- holdoutIndex
+          tmpPred <- merge(tmpPred, info$loop[parm, , drop = FALSE], all = TRUE)
           tmpPred$Resample <- names(resampleIndex)[iter]
         } else {
           tmpPred <- NULL
@@ -1124,7 +1125,7 @@ train_adapt_rec <- function(
         thisResample <- ctrl$summaryFunction(tmp, lev = lev, model = method)
 
         ## if classification, get the confusion matrix
-        if (length(lev) > 1 && length(lev) <= 5) {
+        if (length(lev) > 1 && length(lev) <= 50) {
           thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
         }
         thisResample <- as.data.frame(t(thisResample), stringsAsFactors = FALSE)
@@ -1556,14 +1557,6 @@ train_adapt_rec <- function(
           cat("pre-model\n")
         }
 
-        if (
-          is.null(info$submodels[[parm]]) || nrow(info$submodels[[parm]]) > 0
-        ) {
-          submod <- info$submodels[[parm]]
-        } else {
-          submod <- NULL
-        }
-
         mod_rec <- try(
           rec_model(
             rec,
@@ -1584,7 +1577,7 @@ train_adapt_rec <- function(
               method = method,
               object = mod_rec,
               newdata = subset_x(dat, holdoutIndex),
-              param = submod
+              param = NULL
             ),
             silent = TRUE
           )
@@ -1601,7 +1594,7 @@ train_adapt_rec <- function(
             predicted <- fill_failed_pred(
               index = holdoutIndex,
               lev = lev,
-              submod
+              submod = NULL
             )
           }
         } else {
@@ -1612,7 +1605,11 @@ train_adapt_rec <- function(
             verb = ctrl$verboseIter
           )
           ## setup a dummy results with NA values for all predictions
-          predicted <- fill_failed_pred(index = holdoutIndex, lev = lev, submod)
+          predicted <- fill_failed_pred(
+            index = holdoutIndex,
+            lev = lev,
+            submod = NULL
+          )
         }
 
         if (testing) {
@@ -1624,10 +1621,10 @@ train_adapt_rec <- function(
               method = method,
               object = mod_rec,
               newdata = subset_x(dat, holdoutIndex),
-              param = submod
+              param = NULL
             )
           } else {
-            probValues <- fill_failed_prob(holdoutIndex, lev, submod)
+            probValues <- fill_failed_prob(holdoutIndex, lev, submod = NULL)
           }
           if (testing) {
             print(head(probValues))
@@ -1643,108 +1640,44 @@ train_adapt_rec <- function(
 
         ##################################
 
-        if (!is.null(submod)) {
-          ## merge the fixed and seq parameter values together
-          allParam <- expandParameters(
-            new_info$loop[parm, , drop = FALSE],
-            new_info$submodels[[parm]]
-          )
-          allParam <- allParam[complete.cases(allParam), , drop = FALSE]
-
-          ## collate the predicitons across all the sub-models
-          predicted <- lapply(
-            predicted,
-            function(x, lv, dat) {
-              x <- outcome_conversion(x, lv = lev)
-              dat$pred <- x
-              dat
-            },
-            lv = lev,
-            dat = ho_data
-          )
-          if (testing) {
-            print(head(predicted))
-          }
-
-          ## same for the class probabilities
-          if (ctrl$classProbs) {
-            for (k in seq(along.with = predicted)) {
-              predicted[[k]] <- cbind(predicted[[k]], probValues[[k]])
-            }
-          }
-
-          if (keep_pred) {
-            tmpPred <- predicted
-            for (modIndex in seq(along.with = tmpPred)) {
-              tmpPred[[modIndex]]$rowIndex <- holdoutIndex
-              tmpPred[[modIndex]] <- merge(
-                tmpPred[[modIndex]],
-                allParam[modIndex, , drop = FALSE],
-                all = TRUE
-              )
-            }
-            tmpPred <- rbind.fill(tmpPred)
-            tmpPred$Resample <- names(resampleIndex)[iter]
-          } else {
-            tmpPred <- NULL
-          }
-
-          ## get the performance for this resample for each sub-model
-          thisResample <- lapply(
-            predicted,
-            ctrl$summaryFunction,
-            lev = lev,
-            model = method
-          )
-          if (testing) {
-            print(head(thisResample))
-          }
-          ## for classification, add the cell counts
-          if (length(lev) > 1 && length(lev) <= 50) {
-            cells <- lapply(predicted, function(x) flatTable(x$pred, x$obs))
-            for (ind in seq(along.with = cells)) {
-              thisResample[[ind]] <- c(thisResample[[ind]], cells[[ind]])
-            }
-          }
-          thisResample <- do.call("rbind", thisResample)
-          thisResample <- cbind(allParam, thisResample)
-        } else {
-          pred_val <- outcome_conversion(predicted, lv = lev)
-          tmp <- ho_data
-          tmp$pred <- pred_val
-          if (ctrl$classProbs) {
-            tmp <- cbind(tmp, probValues)
-          }
-
-          if (keep_pred) {
-            tmpPred <- tmp
-            tmpPred$rowIndex <- holdoutIndex
-            tmpPred <- merge(
-              tmpPred,
-              new_info$loop[parm, , drop = FALSE],
-              all = TRUE
-            )
-            tmpPred$Resample <- names(resampleIndex)[iter]
-          } else {
-            tmpPred <- NULL
-          }
-
-          ##################################
-          thisResample <- ctrl$summaryFunction(tmp, lev = lev, model = method)
-
-          ## if classification, get the confusion matrix
-          if (length(lev) > 1 && length(lev) <= 50) {
-            thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
-          }
-          thisResample <- as.data.frame(
-            t(thisResample),
-            stringsAsFactors = FALSE
-          )
-          thisResample <- cbind(
-            thisResample,
-            new_info$loop[parm, , drop = FALSE]
-          )
+        ## `complete = TRUE` only leaves resamples to run when the race
+        ## stopped early, which happens once a single candidate is left, so
+        ## there are no sub-models to score here - see caret#1533
+        pred_val <- outcome_conversion(predicted, lv = lev)
+        tmp <- ho_data
+        tmp$pred <- pred_val
+        if (ctrl$classProbs) {
+          tmp <- cbind(tmp, probValues)
         }
+
+        if (keep_pred) {
+          tmpPred <- tmp
+          tmpPred$rowIndex <- holdoutIndex
+          tmpPred <- merge(
+            tmpPred,
+            new_info$loop[parm, , drop = FALSE],
+            all = TRUE
+          )
+          tmpPred$Resample <- names(resampleIndex)[iter]
+        } else {
+          tmpPred <- NULL
+        }
+
+        ##################################
+        thisResample <- ctrl$summaryFunction(tmp, lev = lev, model = method)
+
+        ## if classification, get the confusion matrix
+        if (length(lev) > 1 && length(lev) <= 50) {
+          thisResample <- c(thisResample, flatTable(tmp$pred, tmp$obs))
+        }
+        thisResample <- as.data.frame(
+          t(thisResample),
+          stringsAsFactors = FALSE
+        )
+        thisResample <- cbind(
+          thisResample,
+          new_info$loop[parm, , drop = FALSE]
+        )
         thisResample$Resample <- names(resampleIndex)[iter]
         if (ctrl$verboseIter) {
           progress(
