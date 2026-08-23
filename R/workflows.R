@@ -832,12 +832,13 @@ nominalSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...) {
   if (ctrl$method %in% c("boot632")) {
     modelIndex <- seq_len(nrow(x))
     holdoutIndex <- modelIndex
+    ## named, so the control does not land in `testPerf` (the fifth formal)
     appResults <- sbfIter(
-      subset_x(x, modelIndex),
-      y[modelIndex],
-      subset_x(x, holdoutIndex),
-      y[holdoutIndex],
-      ctrl,
+      x = subset_x(x, modelIndex),
+      y = y[modelIndex],
+      testX = subset_x(x, holdoutIndex),
+      testY = y[holdoutIndex],
+      sbfControl = ctrl,
       ...
     )
     apparent <- ctrl$functions$summary(appResults$pred, lev = lev)
@@ -891,12 +892,13 @@ looSbfWorkflow <- function(x, y, ppOpts, ctrl, lev, ...) {
       modelIndex <- resampleIndex[[iter]]
       holdoutIndex <- -unique(resampleIndex[[iter]])
 
+      ## named, so the control does not land in `testPerf` (the fifth formal)
       sbfResults <- sbfIter(
-        subset_x(x, modelIndex),
-        y[modelIndex],
-        subset_x(x, holdoutIndex),
-        y[holdoutIndex],
-        ctrl,
+        x = subset_x(x, modelIndex),
+        y = y[modelIndex],
+        testX = subset_x(x, holdoutIndex),
+        testY = y[holdoutIndex],
+        sbfControl = ctrl,
         ...
       )
 

@@ -61,3 +61,28 @@
       
       On average, 4.3 variables were selected (min = 3, max = 6)
 
+# sbf checks the seeds it is given and can make its own
+
+    Code
+      sbf(x, cls$Class, sbfControl = sbfControl(functions = ldaSBF, method = "cv",
+        index = folds, seeds = 1:2))
+    Condition
+      Error in `sbf.default()`:
+      ! Bad seeds: the seed object should be an integer vector of length 4
+
+# the sbf resampling plots draw and refuse leave-one-out results
+
+    Code
+      densityplot(loo)
+    Condition
+      Error in `densityplot.sbf()`:
+      ! Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling
+
+---
+
+    Code
+      histogram(loo)
+    Condition
+      Error in `histogram.sbf()`:
+      ! Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling
+

@@ -1537,8 +1537,9 @@ varImp.sbf <- function(object, onlyFinal = TRUE, ...) {
   vars <- sort(table(unlist(object$variables)), decreasing = TRUE) /
     length(object$control$index)
 
-  out <- as.data.frame(vars, stringsAsFactors = FALSE)
-  names(out) <- "Overall"
+  ## as.data.frame() on a table gives a column of names and a column of counts,
+  ## so the frequencies have to be pulled out by hand
+  out <- data.frame(Overall = as.vector(vars), row.names = names(vars))
   if (onlyFinal) {
     out <- subset(out, rownames(out) %in% object$optVariables)
   }
