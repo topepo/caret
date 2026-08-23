@@ -1418,3 +1418,97 @@ test_that("fitted values come from a recipe fit", {
   )
   expect_length(fitted(dropped), nrow(reg))
 })
+
+# ------------------------------------------------------------------------------
+# the recipe race's outer phases, mirroring test-adaptive.R
+
+test_that("the recipe race fills in a failure during the burn-in", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  dat <- engine_sentinel_data(60)
+  rec <- recipes::recipe(y ~ ., data = dat)
+  # the sentinel is in the first fold's holdout, and min = 3 makes the first two
+  # resamples the burn-in
+  holdouts <- list(51:60, 1:10, 11:20, 21:30, 31:40, 41:50)
+  index <- lapply(holdouts, function(h) setdiff(seq_len(nrow(dat)), h))
+  failing <- make_submodel_model(fail_fit = TRUE)
+
+  set.seed(4471)
+  expect_snapshot(
+    fit <- train(
+      rec,
+      data = dat,
+      method = failing,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        index = index,
+        indexOut = holdouts,
+        classProbs = TRUE,
+        savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  expect_s3_class(fit, "train.recipe")
+  expect_true(anyNA(fit$pred$one))
+})
+
+test_that("the recipe race fills in a failure while finishing up", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  # a numeric outcome, so the candidates differ and the race settles early;
+  # the failing fold is then scored by the completion pass
+  dat <- engine_sentinel_data(60, classification = FALSE)
+  rec <- recipes::recipe(y ~ ., data = dat)
+  holdouts <- split(seq_len(nrow(dat)), rep(1:6, each = 10))
+  index <- lapply(holdouts, function(h) setdiff(seq_len(nrow(dat)), h))
+  failing <- make_submodel_model(fail_fit = TRUE)
+
+  set.seed(4471)
+  expect_snapshot(
+    fit <- train(
+      rec,
+      data = dat,
+      method = failing,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        index = index,
+        indexOut = holdouts,
+        savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  # the recipe path reports how many resamples each candidate was scored on;
+  # the survivor has more than the ones the race dropped
+  expect_in("Num_Resamples", names(fit$results))
+  expect_gt(max(fit$results$Num_Resamples), min(fit$results$Num_Resamples))
+})
+
+test_that("the recipe workflow reports predictions that fail", {
+  skip_on_cran()
+
+  dat <- engine_sentinel_data(60, classification = FALSE)
+  rec <- recipes::recipe(y ~ ., data = dat)
+  bad_pred <- make_submodel_model(fail_pred = TRUE)
+
+  set.seed(6011)
+  expect_snapshot(
+    fit <- train(
+      rec,
+      data = dat,
+      method = bad_pred,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "cv",
+        number = 3,
+        savePredictions = "all"
+      )
+    )
+  )
+  expect_identical(nrow(fit$results), 3L)
+})

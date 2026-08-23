@@ -197,3 +197,75 @@
       Warning:
       There were missing importance values. There may be linear dependencies in your predictor variables
 
+# rfe falls back when the metric is not computed
+
+    Metric 'RMSE' is not created by the summary function; 'MedianError' will be used instead
+
+---
+
+    Metric 'RMSE' is not created by the summary function; 'MedianError' will be used instead
+
+# rfe checks the seeds given for a recipe fit
+
+    Code
+      rfe(rec, data = reg, sizes = c(1, 2), rfeControl = rfeControl(functions = lmFuncs,
+        method = "cv", index = folds, seeds = good[1:2]))
+    Condition
+      Error in `rfe.recipe()`:
+      ! Bad seeds: the seed object should be a list of length 4 with 3 integer vectors of size 3 and the last list element having a single integer
+
+# rfe reports a recipe fit's progress and repairs its ranking
+
+    Code
+      fit <- rfe(rec, data = reg, sizes = c(1, 2), rfeControl = rfeControl(functions = short_rank,
+        method = "cv", number = 2, verbose = TRUE))
+    Output
+      Preparing recipe
+      +(rfe) Fold1 recipe 
+      -(rfe) Fold1 recipe 
+      +(rfe) fit Fold1 size: 3 
+      -(rfe) fit Fold1 size: 3 
+      +(rfe) imp Fold1 
+      -(rfe) imp Fold1 
+    Condition
+      Warning:
+      rfe is expecting 3 importance values but only has 2. This may be caused by having zero-variance predictors, excessively-correlated predictors, factor predictors that were expanded into dummy variables or you may have failed to drop one of your dummy variables.
+      Warning:
+      There were missing importance values. There may be linear dependencies in your predictor variables
+    Output
+      +(rfe) fit Fold1 size: 2 
+      -(rfe) fit Fold1 size: 2 
+    Condition
+      Warning:
+      There were missing importance values. There may be linear dependencies in your predictor variables
+    Output
+      +(rfe) fit Fold1 size: 1 
+      -(rfe) fit Fold1 size: 1 
+    Condition
+      Warning:
+      There were missing importance values. There may be linear dependencies in your predictor variables
+    Output
+      +(rfe) Fold2 recipe 
+      -(rfe) Fold2 recipe 
+      +(rfe) fit Fold2 size: 3 
+      -(rfe) fit Fold2 size: 3 
+      +(rfe) imp Fold2 
+      -(rfe) imp Fold2 
+    Condition
+      Warning:
+      rfe is expecting 3 importance values but only has 2. This may be caused by having zero-variance predictors, excessively-correlated predictors, factor predictors that were expanded into dummy variables or you may have failed to drop one of your dummy variables.
+      Warning:
+      There were missing importance values. There may be linear dependencies in your predictor variables
+    Output
+      +(rfe) fit Fold2 size: 2 
+      -(rfe) fit Fold2 size: 2 
+    Condition
+      Warning:
+      There were missing importance values. There may be linear dependencies in your predictor variables
+    Output
+      +(rfe) fit Fold2 size: 1 
+      -(rfe) fit Fold2 size: 1 
+    Condition
+      Warning:
+      There were missing importance values. There may be linear dependencies in your predictor variables
+
