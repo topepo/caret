@@ -777,3 +777,69 @@ test_that("the race reports predictions that fail in the last resamples", {
   )
   expect_s3_class(fit, "train")
 })
+
+test_that("the race fills in predictions that fail during the burn-in", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  dat <- engine_sentinel_data(60)
+  # the sentinel is in the first fold's holdout, so the first fit's predictions
+  # fail, and min = 3 makes the first two resamples the burn-in
+  holdouts <- list(51:60, 1:10, 11:20, 21:30, 31:40, 41:50)
+  index <- lapply(holdouts, function(h) setdiff(seq_len(nrow(dat)), h))
+  bad_pred <- make_submodel_model(fail_pred = TRUE)
+
+  set.seed(4471)
+  expect_snapshot(
+    fit <- train(
+      dat[, 1:3],
+      dat$y,
+      method = bad_pred,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        index = index,
+        indexOut = holdouts,
+        classProbs = TRUE,
+        savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  expect_s3_class(fit, "train")
+})
+
+test_that("the race reports its progress while finishing up", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  # a numeric outcome so the race settles early and the completion pass runs,
+  # with verboseIter to cover its progress reporting
+  dat <- engine_sentinel_data(60, classification = FALSE)
+  holdouts <- split(seq_len(nrow(dat)), rep(1:6, each = 10))
+  index <- lapply(holdouts, function(h) setdiff(seq_len(nrow(dat)), h))
+  subs <- make_submodel_model()
+
+  set.seed(4471)
+  progress <- capture.output(
+    fit <- suppressWarnings(train(
+      dat[, 1:3],
+      dat$y,
+      method = subs,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        index = index,
+        indexOut = holdouts,
+        verboseIter = TRUE,
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    ))
+  )
+  joined <- paste(progress, collapse = " ")
+  # each candidate is announced as it is fit, and the race reports what it threw
+  # out before the remaining resamples are scored
+  expect_match(joined, "shift=")
+  expect_match(joined, "eliminated")
+  expect_s3_class(fit, "train")
+})

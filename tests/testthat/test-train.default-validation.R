@@ -464,3 +464,52 @@ test_that("train truncates a random search to the requested length", {
   # a random search proposes tuneLength combinations, no more
   expect_lte(nrow(fit$results), 2L)
 })
+
+test_that("train checks that a supplied grid matches the model exactly", {
+  cls <- engine_three_class()
+  # the right number of columns, but one is misnamed
+  expect_snapshot(
+    train(
+      Species ~ .,
+      data = cls,
+      method = "knn",
+      tuneGrid = data.frame(kk = 5)
+    ),
+    error = TRUE
+  )
+})
+
+test_that("train builds a default grid from the pre-processed predictors", {
+  skip_on_cran()
+  skip_if_not_installed("randomForest")
+
+  reg <- engine_regression(40)
+  # rf's default grid is built from the number of predictors, and PCA changes
+  # that number, so the grid has to be built after pre-processing
+  # randomForest announces the objects it masks as it attaches
+  set.seed(3517)
+  invisible(capture.output(
+    invisible(capture.output(
+      fit <- train(
+        reg[, 1:3],
+        reg$y,
+        method = "rf",
+        tuneLength = 2,
+        ntree = 20,
+        preProcess = "pca",
+        # a fixed number of components, so every resample has the same number
+        # of predictors and rf never sees an mtry larger than it can use
+        trControl = trainControl(
+          method = "cv",
+          number = 2,
+          preProcOptions = list(pcaComp = 2)
+        )
+      ),
+      type = "message"
+    ))
+  ))
+  # the components, not the original predictors, set the mtry values - if they
+  # did not, randomForest would warn that mtry was out of range
+  expect_lte(max(fit$results$mtry), fit$preProcess$numComp)
+  expect_equal(fit$preProcess$numComp, 2)
+})

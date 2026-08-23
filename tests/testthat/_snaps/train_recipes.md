@@ -472,3 +472,40 @@
       Warning in `train_rec()`:
       There were missing values in resampled performance measures.
 
+# train checks a custom method list given with a recipe
+
+    Code
+      train(rec, data = reg, method = incomplete)
+    Condition
+      Error:
+      ! some required components are missing: grid, fit, predict, prob
+
+---
+
+    Code
+      train(rec, data = reg, method = "not_a_caret_model")
+    Condition
+      Error:
+      ! Model not_a_caret_model is not in caret's built-in library
+
+# train validates the resampling method for a recipe fit
+
+    Code
+      train(rec, data = reg, method = "lm", trControl = trainControl(method = "oob"))
+    Condition
+      Error:
+      ! Out of bag estimates are not implemented for this model
+
+---
+
+    Code
+      train(rec, data = reg, method = "knn", tuneGrid = data.frame(k = c(3, 5)),
+      trControl = trainControl(method = "none"))
+    Condition
+      Error:
+      ! Only one model should be specified in tuneGrid with no resampling
+
+# train falls back on a recipe fit's metric with class probabilities
+
+    The metric "Accuracy" was not in the result set. HitRate will be used instead.
+

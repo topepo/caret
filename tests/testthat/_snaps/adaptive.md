@@ -201,3 +201,18 @@
       Warning in `adaptiveWorkflow()`:
       There were missing values in resampled performance measures.
 
+# the race fills in predictions that fail during the burn-in
+
+    Code
+      fit <- train(dat[, 1:3], dat$y, method = bad_pred, tuneLength = 3, trControl = trainControl(
+        method = "adaptive_cv", index = index, indexOut = holdouts, classProbs = TRUE,
+        savePredictions = "all", adaptive = list(min = 3, alpha = 0.05, method = "gls",
+          complete = TRUE)))
+    Condition
+      Warning:
+      predictions failed for Resample1: shift=1, scale=1 Error : predict failed on purpose
+      Warning in `adaptiveWorkflow()`:
+      There were missing values in resampled performance measures.
+      Warning in `adaptiveWorkflow()`:
+      There were missing values in resampled performance measures.
+

@@ -1512,3 +1512,73 @@ test_that("the recipe workflow reports predictions that fail", {
   )
   expect_identical(nrow(fit$results), 3L)
 })
+
+test_that("train checks a custom method list given with a recipe", {
+  reg <- engine_regression(30)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  # a method list has to provide the required elements
+  incomplete <- make_custom_model()[c("library", "type", "parameters")]
+  expect_snapshot(train(rec, data = reg, method = incomplete), error = TRUE)
+
+  # and a named method has to be one caret knows
+  expect_snapshot(
+    train(rec, data = reg, method = "not_a_caret_model"),
+    error = TRUE
+  )
+})
+
+test_that("train validates the resampling method for a recipe fit", {
+  reg <- engine_regression(30)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  # out-of-bag estimates need a model that reports them
+  expect_snapshot(
+    train(
+      rec,
+      data = reg,
+      method = "lm",
+      trControl = trainControl(method = "oob")
+    ),
+    error = TRUE
+  )
+
+  # and without resampling there can only be one candidate
+  expect_snapshot(
+    train(
+      rec,
+      data = reg,
+      method = "knn",
+      tuneGrid = data.frame(k = c(3, 5)),
+      trControl = trainControl(method = "none")
+    ),
+    error = TRUE
+  )
+})
+
+test_that("train falls back on a recipe fit's metric with class probabilities", {
+  skip_on_cran()
+
+  cls <- engine_three_class()
+  rec <- recipes::recipe(Species ~ ., data = cls)
+
+  # the summary function does not compute Accuracy, so the first thing it does
+  # compute is used instead
+  expect_snapshot_warning(
+    fit <- train(
+      rec,
+      data = cls,
+      method = "lda",
+      metric = "Accuracy",
+      trControl = trainControl(
+        method = "cv",
+        number = 3,
+        classProbs = TRUE,
+        summaryFunction = function(data, lev = NULL, model = NULL) {
+          c(HitRate = mean(data$obs == data$pred))
+        }
+      )
+    )
+  )
+  expect_identical(fit$metric, "HitRate")
+})
