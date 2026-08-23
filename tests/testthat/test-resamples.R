@@ -519,7 +519,22 @@ test_that("plot.prcomp.resamples draws the remaining plot types", {
   # more than two a scatterplot matrix
   draw_trellis(plot(pc, what = "components", dims = 2))
   draw_trellis(plot(pc, what = "components", dims = 3))
-  expect_snapshot(print(pc, digits = 2))
+})
+
+test_that("print.prcomp.resamples honours the digits argument", {
+  pc <- prcomp(rs_fixture)
+
+  # As above, the rotation itself is never snapshotted: two of the three models
+  # in the fixture are perfectly (negatively) correlated, so the third component
+  # is numerical noise whose values differ between BLAS implementations. Only
+  # the number of digits asked for is checked here.
+  out <- capture.output(print(pc, digits = 2))
+  expect_true(any(grepl("Rotation:", out, fixed = TRUE)))
+  loadings <- out[grepl("^Resample", out)]
+  expect_length(loadings, nrow(pc$rotation))
+  # two significant digits, so no loading is printed with more than four
+  # characters after its decimal point
+  expect_all_true(!grepl("[0-9]\\.[0-9]{5,}", loadings))
 })
 
 # ------------------------------------------------------------------------------

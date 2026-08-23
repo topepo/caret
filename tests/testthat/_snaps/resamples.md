@@ -243,28 +243,6 @@
 
     Sorry Dave, only one value of metric is allowed right now. I'll use the first value
 
-# plot.prcomp.resamples draws the remaining plot types
-
-    Code
-      print(pc, digits = 2)
-    Output
-      
-      Call:
-      prcomp.resamples(x = rs_fixture)
-      
-      Metric: RMSE 
-                                        
-      Std. Dev.          3.98 0.71 3e-16
-      Cum. Percent Var.  0.97 1.00 1e+00
-      
-      Rotation:
-                   PC1   PC2    PC3
-      Resample1  0.767 -0.19  0.127
-      Resample2  0.523  0.14  0.437
-      Resample3  0.244 -0.33 -0.676
-      Resample4 -0.034 -0.79 -0.016
-      Resample5 -0.278 -0.46  0.580
-
 # resamples warns for rfe and sbf models that kept every subset
 
     Code
