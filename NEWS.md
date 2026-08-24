@@ -50,12 +50,12 @@
 - Adaptive resampling now attributes the results of the resamples it finishes up with (`adaptive = list(complete = TRUE)`) to the right tuning parameters when the model has sub-models. Those resamples are only run once a single candidate is left, but its sub-models were looked up in the grid the race started from, so predictions for candidates that had already been eliminated were scored and then labelled with the surviving parameters ("row names were found from a short variable and have been discarded"). Both the x/y and the recipe interface were affected, and the sub-model handling that pass carried -- unreachable, since the race stops at one candidate -- has been removed [(issue 1533)](https://github.com/topepo/caret/issues/1533).
 - Adaptive resampling with a recipe and `trainControl(savePredictions = "all")` now records which candidate made each prediction for the resamples the race starts from. That phase was the only one that did not merge the tuning parameters into the predictions it saved, so those rows came back with `NA` for every parameter. The x/y interface was unaffected [(issue 1534)](https://github.com/topepo/caret/issues/1534).
 - Adaptive resampling with a recipe now keeps the resampled confusion-matrix counts for up to fifty classes throughout. The resamples the race starts from stopped at five (a mistyped threshold; the seven other places that gate those counts use fifty), so with six or more classes `resampledCM` held `NA` counts for them [(issue 1534)](https://github.com/topepo/caret/issues/1534).
+- Removed the exported `resampleWrapper()` function, which could not run. It passed `data` to `createModel()`, a signature that has not existed in this repository's history -- `createModel()` has always taken `x`/`y` -- so every call failed with "argument "x" is missing, with no default". Nothing in the package called it, and no reverse dependency mentions it [(issue 1518)](https://github.com/topepo/caret/issues/1518).
 
 ## Changes in version 7.0-1
 
 - CRAN mandated update.
 - caret will be 20 years old in March of 2026. The package is currently in maintenance mode; the author will fix bugs and make CRAN releases as needed, but there will not be any major features in the package. It will stay on CRAN long-term; it's not going away.
-
 
 ## Changes in version 6.0-94
 
