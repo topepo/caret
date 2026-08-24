@@ -39,34 +39,38 @@ produced (see the \code{method} argument of \code{\link[=rfeControl]{rfeControl(
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-library(mlbench)
-n <- 100
-p <- 40
-sigma <- 1
-set.seed(1)
-sim <- mlbench.friedman1(n, sd = sigma)
-x <- cbind(sim$x, matrix(rnorm(n * p), nrow = n))
-y <- sim$y
-colnames(x) <- paste("var", 1:ncol(x), sep = "")
+\dontrun{
+if (caret:::has_packages("mlbench")) {
+  library(mlbench)
+  n <- 100
+  p <- 40
+  sigma <- 1
+  set.seed(1)
+  sim <- mlbench.friedman1(n, sd = sigma)
+  x <- cbind(sim$x, matrix(rnorm(n * p), nrow = n))
+  y <- sim$y
+  colnames(x) <- paste("var", 1:ncol(x), sep = "")
 
-normalization <- preProcess(x)
-x <- predict(normalization, x)
-x <- as.data.frame(x, stringsAsFactors = TRUE)
-subsets <- c(10, 15, 20, 25)
+  normalization <- preProcess(x)
+  x <- predict(normalization, x)
+  x <- as.data.frame(x, stringsAsFactors = TRUE)
+  subsets <- c(10, 15, 20, 25)
 
-ctrl <- rfeControl(
-  functions = lmFuncs,
-  method = "cv",
-  verbose = FALSE,
-  returnResamp = "all"
-)
+  ctrl <- rfeControl(
+    functions = lmFuncs,
+    method = "cv",
+    verbose = FALSE,
+    returnResamp = "all"
+  )
 
-lmProfile <- rfe(x, y, sizes = subsets, rfeControl = ctrl)
-xyplot(lmProfile)
-stripplot(lmProfile)
+  lmProfile <- rfe(x, y, sizes = subsets, rfeControl = ctrl)
+  xyplot(lmProfile)
+  stripplot(lmProfile)
 
-histogram(lmProfile)
-densityplot(lmProfile)
+  histogram(lmProfile)
+  densityplot(lmProfile)
+}
+}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

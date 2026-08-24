@@ -73,12 +73,16 @@ The function computes a Earth model for each bootstap sample.
 }
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
-library(mda)
-library(earth)
-data(trees)
-fit1 <- earth(x = trees[, -3], y = trees[, 3])
-set.seed(2189)
-fit2 <- bagEarth(x = trees[, -3], y = trees[, 3], B = 10)
+\dontrun{
+if (caret:::has_packages("earth", "mda")) {
+  library(mda)
+  library(earth)
+  data(trees)
+  fit1 <- earth(x = trees[, -3], y = trees[, 3])
+  set.seed(2189)
+  fit2 <- bagEarth(x = trees[, -3], y = trees[, 3], B = 10)
+}
+}
 \dontshow{\}) # examplesIf}
 }
 \references{

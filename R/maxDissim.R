@@ -34,7 +34,7 @@
 #'   Selecting Structurally Diverse Sets of Compounds," *Journal of
 #'   Computational Biology*, 6, 447-457.
 #' @keywords utilities
-#' @examples
+#' @examplesIf caret:::has_packages("proxy")
 #'
 #' example <- function(pct = 1, obj = minDiss, ...)
 #' {
@@ -103,7 +103,6 @@ maxDissim <- function(
   verbose = FALSE,
   ...
 ) {
-  loadNamespace("proxy")
   if (nrow(b) < 2) {
     stop("there must be at least 2 samples in b")
   }
@@ -116,6 +115,7 @@ maxDissim <- function(
   if (randomFrac > 1 || randomFrac <= 0) {
     stop("randomFrac must be in (0, 1]")
   }
+  loadNamespace("proxy")
 
   if (useNames) {
     if (is.null(rownames(b))) {

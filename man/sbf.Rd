@@ -104,44 +104,48 @@ Example functions are given in \code{\link[=lmSBF]{lmSBF()}}.
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-data(BloodBrain)
+\dontrun{
+if (caret:::has_packages("randomForest", "klaR")) {
+  data(BloodBrain)
 
-## Use a GAM is the filter, then fit a random forest model
-RFwithGAM <- sbf(
-  bbbDescr,
-  logBBB,
-  sbfControl = sbfControl(functions = rfSBF, verbose = FALSE, method = "cv")
-)
-RFwithGAM
-
-predict(RFwithGAM, bbbDescr[1:10, ])
-
-## classification example with parallel processing
-
-## library(doMC)
-
-## Note: if the underlying model also uses foreach, the
-## number of cores specified above will double (along with
-## the memory requirements)
-## registerDoMC(cores = 2)
-
-data(mdrr)
-mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
-mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .8)]
-
-set.seed(1)
-filteredNB <- sbf(
-  mdrrDescr,
-  mdrrClass,
-  sbfControl = sbfControl(
-    functions = nbSBF,
-    verbose = FALSE,
-    method = "repeatedcv",
-    repeats = 5,
-    saveDetails = TRUE
+  ## Use a GAM is the filter, then fit a random forest model
+  RFwithGAM <- sbf(
+    bbbDescr,
+    logBBB,
+    sbfControl = sbfControl(functions = rfSBF, verbose = FALSE, method = "cv")
   )
-)
-confusionMatrix(filteredNB)
+  RFwithGAM
+
+  predict(RFwithGAM, bbbDescr[1:10, ])
+
+  ## classification example with parallel processing
+
+  ## library(doMC)
+
+  ## Note: if the underlying model also uses foreach, the
+  ## number of cores specified above will double (along with
+  ## the memory requirements)
+  ## registerDoMC(cores = 2)
+
+  data(mdrr)
+  mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
+  mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .8)]
+
+  set.seed(1)
+  filteredNB <- sbf(
+    mdrrDescr,
+    mdrrClass,
+    sbfControl = sbfControl(
+      functions = nbSBF,
+      verbose = FALSE,
+      method = "repeatedcv",
+      repeats = 5,
+      saveDetails = TRUE
+    )
+  )
+  confusionMatrix(filteredNB)
+}
+}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

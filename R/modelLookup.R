@@ -39,14 +39,18 @@
 #' @keywords utilities
 #' @examplesIf !caret:::is_cran_check()
 #'
-#' modelLookup()
-#' modelLookup("gbm")
+#' \dontrun{
+#' if (caret:::has_packages("pls")) {
+#'   modelLookup()
+#'   modelLookup("gbm")
 #'
-#' getModelInfo("pls")
-#' getModelInfo("^pls")
-#' getModelInfo("pls", regex = FALSE)
+#'   getModelInfo("pls")
+#'   getModelInfo("^pls")
+#'   getModelInfo("pls", regex = FALSE)
 #'
-#' checkInstall(getModelInfo("pls")$library)
+#'   checkInstall(getModelInfo("pls")$library)
+#' }
+#' }
 #'
 #' @export modelLookup
 modelLookup <- function(model = NULL) {

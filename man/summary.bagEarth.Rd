@@ -33,10 +33,14 @@ samples.
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-data(trees)
-set.seed(9655)
-fit <- bagEarth(trees[, -3], trees[, 3])
-summary(fit)
+\dontrun{
+if (caret:::has_packages("earth")) {
+  data(trees)
+  set.seed(9655)
+  fit <- bagEarth(trees[, -3], trees[, 3])
+  summary(fit)
+}
+}
 \dontshow{\}) # examplesIf}
 }
 \author{

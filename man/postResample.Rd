@@ -127,7 +127,9 @@ dat$class2 <- 1 - dat$class1
 
 defaultSummary(dat, lev = classes)
 twoClassSummary(dat, lev = classes)
-prSummary(dat, lev = classes)
+if (caret:::has_packages("MLmetrics")) {
+  prSummary(dat, lev = classes)
+}
 mnLogLoss(dat, lev = classes)
 
 }

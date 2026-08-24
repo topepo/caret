@@ -22,7 +22,9 @@
 #' y <- factor(rep(c("A", "B"), 25))
 #'
 #' trellis.par.set(theme = col.whitebg(), warn = FALSE)
-#' featurePlot(x, y, "ellipse")
+#' if (caret:::has_packages("ellipse")) {
+#'   featurePlot(x, y, "ellipse")
+#' }
 #' featurePlot(x, y, "strip", jitter = TRUE)
 #' featurePlot(x, y, "box")
 #' featurePlot(x, y, "pairs")

@@ -47,40 +47,44 @@
 #'   specificity.
 #' @export
 #' @examplesIf !caret:::is_cran_check()
-#' set.seed(2444)
-#' dat <- twoClassSim(500, intercept = -10)
-#' table(dat$Class)
+#' \dontrun{
+#' if (caret:::has_packages("klaR")) {
+#'   set.seed(2444)
+#'   dat <- twoClassSim(500, intercept = -10)
+#'   table(dat$Class)
 #'
-#' ctrl <- trainControl(
-#'   method = "cv",
-#'   classProbs = TRUE,
-#'   savePredictions = "all",
-#'   summaryFunction = twoClassSummary
-#' )
+#'   ctrl <- trainControl(
+#'     method = "cv",
+#'     classProbs = TRUE,
+#'     savePredictions = "all",
+#'     summaryFunction = twoClassSummary
+#'   )
 #'
-#' set.seed(2863)
-#' mod <- train(
-#'   Class ~ .,
-#'   data = dat,
-#'   method = "rda",
-#'   tuneLength = 4,
-#'   metric = "ROC",
-#'   trControl = ctrl
-#' )
+#'   set.seed(2863)
+#'   mod <- train(
+#'     Class ~ .,
+#'     data = dat,
+#'     method = "rda",
+#'     tuneLength = 4,
+#'     metric = "ROC",
+#'     trControl = ctrl
+#'   )
 #'
-#' resample_stats <- thresholder(
-#'   mod,
-#'   threshold = seq(.5, 1, by = 0.05),
-#'   final = TRUE
-#' )
+#'   resample_stats <- thresholder(
+#'     mod,
+#'     threshold = seq(.5, 1, by = 0.05),
+#'     final = TRUE
+#'   )
 #'
-#' ggplot(resample_stats, aes(x = prob_threshold, y = J)) +
-#'   geom_point()
-#' ggplot(resample_stats, aes(x = prob_threshold, y = Dist)) +
-#'   geom_point()
-#' ggplot(resample_stats, aes(x = prob_threshold, y = Sensitivity)) +
-#'   geom_point() +
-#'   geom_point(aes(y = Specificity), col = "red")
+#'   ggplot(resample_stats, aes(x = prob_threshold, y = J)) +
+#'     geom_point()
+#'   ggplot(resample_stats, aes(x = prob_threshold, y = Dist)) +
+#'     geom_point()
+#'   ggplot(resample_stats, aes(x = prob_threshold, y = Sensitivity)) +
+#'     geom_point() +
+#'     geom_point(aes(y = Specificity), col = "red")
+#' }
+#' }
 thresholder <- function(x, threshold, final = TRUE, statistics = "all") {
   if (!inherits(x, "train")) {
     stop("`x` should be an object of class 'train'", call. = FALSE)

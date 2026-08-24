@@ -35,27 +35,31 @@ supplied again to \code{update}.
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-set.seed(1)
-train_data <- twoClassSim(100, noiseVars = 10)
-test_data <- twoClassSim(10, noiseVars = 10)
+\dontrun{
+if (caret:::has_packages("randomForest")) {
+  set.seed(1)
+  train_data <- twoClassSim(100, noiseVars = 10)
+  test_data <- twoClassSim(10, noiseVars = 10)
 
-## A short example
-ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
+  ## A short example
+  ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
 
-rf_search <- safs(
-  x = train_data[, -ncol(train_data)],
-  y = train_data$Class,
-  iters = 3,
-  safsControl = ctrl
-)
+  rf_search <- safs(
+    x = train_data[, -ncol(train_data)],
+    y = train_data$Class,
+    iters = 3,
+    safsControl = ctrl
+  )
 
-rf_search2 <- update(
-  rf_search,
-  iter = 1,
-  x = train_data[, -ncol(train_data)],
-  y = train_data$Class
-)
-rf_search2
+  rf_search2 <- update(
+    rf_search,
+    iter = 1,
+    x = train_data[, -ncol(train_data)],
+    y = train_data$Class
+  )
+  rf_search2
+}
+}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

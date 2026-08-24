@@ -158,100 +158,104 @@ search for an optimal subset size.
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-data(BloodBrain)
+\dontrun{
+if (caret:::has_packages("randomForest", "ipred", "kernlab")) {
+  data(BloodBrain)
 
-x <- scale(bbbDescr[, -nearZeroVar(bbbDescr)])
-x <- x[, -findCorrelation(cor(x), .8)]
-x <- as.data.frame(x, stringsAsFactors = TRUE)
+  x <- scale(bbbDescr[, -nearZeroVar(bbbDescr)])
+  x <- x[, -findCorrelation(cor(x), .8)]
+  x <- as.data.frame(x, stringsAsFactors = TRUE)
 
-set.seed(1)
-lmProfile <- rfe(
-  x,
-  logBBB,
-  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-  rfeControl = rfeControl(functions = lmFuncs, number = 10)
-)
-set.seed(1)
-lmProfile2 <- rfe(
-  x,
-  logBBB,
-  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-  rfeControl = rfeControl(functions = lmFuncs, rerank = TRUE, number = 10)
-)
+  set.seed(1)
+  lmProfile <- rfe(
+    x,
+    logBBB,
+    sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
+    rfeControl = rfeControl(functions = lmFuncs, number = 10)
+  )
+  set.seed(1)
+  lmProfile2 <- rfe(
+    x,
+    logBBB,
+    sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
+    rfeControl = rfeControl(functions = lmFuncs, rerank = TRUE, number = 10)
+  )
 
-xyplot(
-  lmProfile$results$RMSE + lmProfile2$results$RMSE ~
-    lmProfile$results$Variables,
-  type = c("g", "p", "l"),
-  auto.key = TRUE
-)
+  xyplot(
+    lmProfile$results$RMSE + lmProfile2$results$RMSE ~
+      lmProfile$results$Variables,
+    type = c("g", "p", "l"),
+    auto.key = TRUE
+  )
 
-rfProfile <- rfe(
-  x,
-  logBBB,
-  sizes = c(2, 5, 10, 20),
-  rfeControl = rfeControl(functions = rfFuncs)
-)
+  rfProfile <- rfe(
+    x,
+    logBBB,
+    sizes = c(2, 5, 10, 20),
+    rfeControl = rfeControl(functions = rfFuncs)
+  )
 
-bagProfile <- rfe(
-  x,
-  logBBB,
-  sizes = c(2, 5, 10, 20),
-  rfeControl = rfeControl(functions = treebagFuncs)
-)
+  bagProfile <- rfe(
+    x,
+    logBBB,
+    sizes = c(2, 5, 10, 20),
+    rfeControl = rfeControl(functions = treebagFuncs)
+  )
 
-set.seed(1)
-svmProfile <- rfe(x, logBBB,
-                  sizes = c(2, 5, 10, 20),
-                  rfeControl = rfeControl(functions = caretFuncs,
-                                          number = 10),
-                  ## pass options to train()
-                  method = "svmRadial")
+  set.seed(1)
+  svmProfile <- rfe(x, logBBB,
+                    sizes = c(2, 5, 10, 20),
+                    rfeControl = rfeControl(functions = caretFuncs,
+                                            number = 10),
+                    ## pass options to train()
+                    method = "svmRadial")
 
-## classification
+  ## classification
 
-data(mdrr)
-mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
-mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .8)]
+  data(mdrr)
+  mdrrDescr <- mdrrDescr[, -nearZeroVar(mdrrDescr)]
+  mdrrDescr <- mdrrDescr[, -findCorrelation(cor(mdrrDescr), .8)]
 
-set.seed(1)
-inTrain <- createDataPartition(mdrrClass, p = .75, list = FALSE)[, 1]
+  set.seed(1)
+  inTrain <- createDataPartition(mdrrClass, p = .75, list = FALSE)[, 1]
 
-train <- mdrrDescr[inTrain, ]
-test <- mdrrDescr[-inTrain, ]
-trainClass <- mdrrClass[inTrain]
-testClass <- mdrrClass[-inTrain]
+  train <- mdrrDescr[inTrain, ]
+  test <- mdrrDescr[-inTrain, ]
+  trainClass <- mdrrClass[inTrain]
+  testClass <- mdrrClass[-inTrain]
 
-set.seed(2)
-ldaProfile <- rfe(
-  train,
-  trainClass,
-  sizes = c(1:10, 15, 30),
-  rfeControl = rfeControl(functions = ldaFuncs, method = "cv")
-)
-plot(ldaProfile, type = c("o", "g"))
+  set.seed(2)
+  ldaProfile <- rfe(
+    train,
+    trainClass,
+    sizes = c(1:10, 15, 30),
+    rfeControl = rfeControl(functions = ldaFuncs, method = "cv")
+  )
+  plot(ldaProfile, type = c("o", "g"))
 
-postResample(predict(ldaProfile, test), testClass)
+  postResample(predict(ldaProfile, test), testClass)
 
-## Parallel Processing Example via multicore on linux or macos
-## library(doMC)
-## registerDoMC(cores = 2)
-##
-## Note: if the underlying model also uses foreach, the
-## number of cores specified above will double (along with
-## the memory requirements)
+  ## Parallel Processing Example via multicore on linux or macos
+  ## library(doMC)
+  ## registerDoMC(cores = 2)
+  ##
+  ## Note: if the underlying model also uses foreach, the
+  ## number of cores specified above will double (along with
+  ## the memory requirements)
 
-## Parallel Processing on Windows
-## Instead of doMC, see the doParallel package and its registerDoParallel()
-## function
+  ## Parallel Processing on Windows
+  ## Instead of doMC, see the doParallel package and its registerDoParallel()
+  ## function
 
-set.seed(1)
-lmProfile <- rfe(
-  x,
-  logBBB,
-  sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
-  rfeControl = rfeControl(functions = lmFuncs, number = 10)
-)
+  set.seed(1)
+  lmProfile <- rfe(
+    x,
+    logBBB,
+    sizes = c(2:25, 30, 35, 40, 45, 50, 55, 60, 65),
+    rfeControl = rfeControl(functions = lmFuncs, number = 10)
+  )
+}
+}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

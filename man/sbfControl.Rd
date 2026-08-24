@@ -137,39 +137,43 @@ related to this function.
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-data(BloodBrain)
+\dontrun{
+if (caret:::has_packages("randomForest")) {
+  data(BloodBrain)
 
-## Use a GAM is the filter, then fit a random forest model
-set.seed(1)
-RFwithGAM <- sbf(
-  bbbDescr,
-  logBBB,
-  sbfControl = sbfControl(
-    functions = rfSBF,
-    verbose = FALSE,
-    seeds = sample.int(100000, 11),
-    method = "cv"
+  ## Use a GAM is the filter, then fit a random forest model
+  set.seed(1)
+  RFwithGAM <- sbf(
+    bbbDescr,
+    logBBB,
+    sbfControl = sbfControl(
+      functions = rfSBF,
+      verbose = FALSE,
+      seeds = sample.int(100000, 11),
+      method = "cv"
+    )
   )
-)
-RFwithGAM
+  RFwithGAM
 
-## A simple example for multivariate scoring
-rfSBF2 <- rfSBF
-rfSBF2$score <- function(x, y) apply(x, 2, rfSBF$score, y = y)
+  ## A simple example for multivariate scoring
+  rfSBF2 <- rfSBF
+  rfSBF2$score <- function(x, y) apply(x, 2, rfSBF$score, y = y)
 
-set.seed(1)
-RFwithGAM2 <- sbf(
-  bbbDescr,
-  logBBB,
-  sbfControl = sbfControl(
-    functions = rfSBF2,
-    verbose = FALSE,
-    seeds = sample.int(100000, 11),
-    method = "cv",
-    multivariate = TRUE
+  set.seed(1)
+  RFwithGAM2 <- sbf(
+    bbbDescr,
+    logBBB,
+    sbfControl = sbfControl(
+      functions = rfSBF2,
+      verbose = FALSE,
+      seeds = sample.int(100000, 11),
+      method = "cv",
+      multivariate = TRUE
+    )
   )
-)
-RFwithGAM2
+  RFwithGAM2
+}
+}
 \dontshow{\}) # examplesIf}
 }
 \seealso{
