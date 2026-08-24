@@ -1253,3 +1253,550 @@ test_that("the recipe workflows report a sub-model fit that fails", {
   )
   expect_identical(nrow(fit$results), 3L)
 })
+
+# ------------------------------------------------------------------------------
+# the recipe path's remaining options
+
+test_that("train checks the seeds given for a recipe fit", {
+  reg <- engine_regression(30)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  # one integer vector per resample plus one for the final fit
+  expect_snapshot(
+    train(
+      rec,
+      data = reg,
+      method = "knn",
+      tuneGrid = data.frame(k = c(3, 5)),
+      trControl = trainControl(method = "cv", number = 3, seeds = 1:2)
+    ),
+    error = TRUE
+  )
+})
+
+test_that("train falls back when a recipe fit's metric is not computed", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  rec <- recipes::recipe(y ~ ., data = reg)
+  median_error <- function(data, lev = NULL, model = NULL) {
+    c(MedianError = median(abs(data$obs - data$pred)))
+  }
+
+  expect_snapshot_warning(
+    fit <- train(
+      rec,
+      data = reg,
+      method = "lm",
+      metric = "RMSE",
+      trControl = trainControl(
+        method = "cv",
+        number = 3,
+        summaryFunction = median_error
+      )
+    )
+  )
+  expect_identical(fit$metric, "MedianError")
+})
+
+test_that("train uses a custom selection function for a recipe fit", {
+  skip_on_cran()
+
+  dat <- engine_three_class()
+  rec <- recipes::recipe(Species ~ ., data = dat)
+
+  # the function is handed the candidates in the order the model sorts them
+  # (descending k, for knn), and here it always takes the first
+  offered <- NULL
+  set.seed(1094)
+  fit <- train(
+    rec,
+    data = dat,
+    method = "knn",
+    tuneGrid = data.frame(k = c(3, 5, 7)),
+    trControl = trainControl(
+      method = "cv",
+      number = 3,
+      selectionFunction = function(x, metric, maximize) {
+        offered <<- x
+        1
+      }
+    )
+  )
+  expect_setequal(offered$k, c(3, 5, 7))
+  expect_identical(fit$bestTune$k, offered$k[1])
+})
+
+test_that("train fits a recipe without resampling", {
+  skip_on_cran()
+
+  dat <- engine_three_class()
+  rec <- recipes::recipe(Species ~ ., data = dat)
+  rec <- recipes::step_normalize(rec, recipes::all_predictors())
+
+  set.seed(6006)
+  fit <- train(
+    rec,
+    data = dat,
+    method = "knn",
+    tuneGrid = data.frame(k = 5),
+    trControl = trainControl(method = "none")
+  )
+  # the single candidate is taken as given; with no resampling there is nothing
+  # to report, so the results table has the metric columns but no rows
+  expect_identical(fit$bestTune, data.frame(k = 5))
+  expect_identical(nrow(fit$results), 0L)
+  expect_contains(names(fit$results), c("Accuracy", "Kappa", "k"))
+  expect_length(predict(fit, dat), nrow(dat))
+})
+
+test_that("train trims a recipe fit's model object", {
+  skip_on_cran()
+  skip_if_not_installed("earth")
+
+  reg <- engine_regression(60)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  # earth defines a trim method, and verboseIter reports how much was saved
+  set.seed(9204)
+  expect_snapshot(
+    fit <- suppressMessages(train(
+      rec,
+      data = reg,
+      method = "earth",
+      tuneGrid = data.frame(degree = 1, nprune = 3),
+      trControl = trainControl(
+        method = "cv",
+        number = 2,
+        trim = TRUE,
+        verboseIter = TRUE
+      )
+    )),
+    transform = mask_decimals
+  )
+  expect_s3_class(fit, "train.recipe")
+})
+
+test_that("train times a recipe fit's predictions", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  set.seed(5528)
+  fit <- train(
+    rec,
+    data = reg,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3, timingSamps = 5)
+  )
+  expect_in("prediction", names(fit$times))
+})
+
+test_that("fitted values come from a recipe fit", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  set.seed(8109)
+  fit <- train(
+    rec,
+    data = reg,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  expect_length(fitted(fit), nrow(reg))
+
+  # the model object carries its own fitted values, so dropping the stored
+  # training data does not prevent this
+  dropped <- train(
+    rec,
+    data = reg,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3, returnData = FALSE)
+  )
+  expect_length(fitted(dropped), nrow(reg))
+})
+
+# ------------------------------------------------------------------------------
+# the recipe race's outer phases, mirroring test-adaptive.R
+
+test_that("the recipe race fills in a failure during the burn-in", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  dat <- engine_sentinel_data(60)
+  rec <- recipes::recipe(y ~ ., data = dat)
+  # the sentinel is in the first fold's holdout, and min = 3 makes the first two
+  # resamples the burn-in
+  holdouts <- list(51:60, 1:10, 11:20, 21:30, 31:40, 41:50)
+  index <- lapply(holdouts, function(h) setdiff(seq_len(nrow(dat)), h))
+  failing <- make_submodel_model(fail_fit = TRUE)
+
+  set.seed(4471)
+  expect_snapshot(
+    fit <- train(
+      rec,
+      data = dat,
+      method = failing,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        index = index,
+        indexOut = holdouts,
+        classProbs = TRUE,
+        savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  expect_s3_class(fit, "train.recipe")
+  expect_true(anyNA(fit$pred$one))
+})
+
+test_that("the recipe race fills in a failure while finishing up", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  # a numeric outcome, so the candidates differ and the race settles early;
+  # the failing fold is then scored by the completion pass
+  dat <- engine_sentinel_data(60, classification = FALSE)
+  rec <- recipes::recipe(y ~ ., data = dat)
+  holdouts <- split(seq_len(nrow(dat)), rep(1:6, each = 10))
+  index <- lapply(holdouts, function(h) setdiff(seq_len(nrow(dat)), h))
+  failing <- make_submodel_model(fail_fit = TRUE)
+
+  set.seed(4471)
+  expect_snapshot(
+    fit <- train(
+      rec,
+      data = dat,
+      method = failing,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        index = index,
+        indexOut = holdouts,
+        savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  # the recipe path reports how many resamples each candidate was scored on;
+  # the survivor has more than the ones the race dropped
+  expect_in("Num_Resamples", names(fit$results))
+  expect_gt(max(fit$results$Num_Resamples), min(fit$results$Num_Resamples))
+})
+
+test_that("the recipe workflow reports predictions that fail", {
+  skip_on_cran()
+
+  dat <- engine_sentinel_data(60, classification = FALSE)
+  rec <- recipes::recipe(y ~ ., data = dat)
+  bad_pred <- make_submodel_model(fail_pred = TRUE)
+
+  set.seed(6011)
+  expect_snapshot(
+    fit <- train(
+      rec,
+      data = dat,
+      method = bad_pred,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "cv",
+        number = 3,
+        savePredictions = "all"
+      )
+    )
+  )
+  expect_identical(nrow(fit$results), 3L)
+})
+
+test_that("train checks a custom method list given with a recipe", {
+  reg <- engine_regression(30)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  # a method list has to provide the required elements
+  incomplete <- make_custom_model()[c("library", "type", "parameters")]
+  expect_snapshot(train(rec, data = reg, method = incomplete), error = TRUE)
+
+  # and a named method has to be one caret knows
+  expect_snapshot(
+    train(rec, data = reg, method = "not_a_caret_model"),
+    error = TRUE
+  )
+})
+
+test_that("train validates the resampling method for a recipe fit", {
+  reg <- engine_regression(30)
+  rec <- recipes::recipe(y ~ ., data = reg)
+
+  # out-of-bag estimates need a model that reports them
+  expect_snapshot(
+    train(
+      rec,
+      data = reg,
+      method = "lm",
+      trControl = trainControl(method = "oob")
+    ),
+    error = TRUE
+  )
+
+  # and without resampling there can only be one candidate
+  expect_snapshot(
+    train(
+      rec,
+      data = reg,
+      method = "knn",
+      tuneGrid = data.frame(k = c(3, 5)),
+      trControl = trainControl(method = "none")
+    ),
+    error = TRUE
+  )
+})
+
+test_that("train falls back on a recipe fit's metric with class probabilities", {
+  skip_on_cran()
+
+  cls <- engine_three_class()
+  rec <- recipes::recipe(Species ~ ., data = cls)
+
+  # the summary function does not compute Accuracy, so the first thing it does
+  # compute is used instead
+  expect_snapshot_warning(
+    fit <- train(
+      rec,
+      data = cls,
+      method = "lda",
+      metric = "Accuracy",
+      trControl = trainControl(
+        method = "cv",
+        number = 3,
+        classProbs = TRUE,
+        summaryFunction = function(data, lev = NULL, model = NULL) {
+          c(HitRate = mean(data$obs == data$pred))
+        }
+      )
+    )
+  )
+  expect_identical(fit$metric, "HitRate")
+})
+
+test_that("leave-one-out resampling reports a recipe prediction that fails", {
+  skip_on_cran()
+
+  dat <- engine_sentinel_data(16)
+  rec <- recipes::recipe(y ~ ., data = dat)
+  # the predictions fail for whichever held-out row leaves the sentinel out of
+  # the training set, which with leave-one-out is exactly one row
+  bad_pred <- make_submodel_model(fail_pred = TRUE)
+
+  set.seed(6011)
+  expect_snapshot_warning(
+    fit <- train(
+      rec,
+      data = dat,
+      method = bad_pred,
+      tuneLength = 2,
+      trControl = trainControl(method = "LOOCV", classProbs = TRUE)
+    )
+  )
+  expect_s3_class(fit, "train.recipe")
+})
+
+test_that("the recipe race reports a prediction failure while racing", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  # a factor outcome, so every candidate predicts the same class and the race
+  # never narrows: the fold holding out the sentinel (the fourth) is scored by
+  # the racing loop rather than the burn-in or the completion pass
+  dat <- engine_sentinel_data(60)
+  rec <- recipes::recipe(y ~ ., data = dat)
+  holdouts <- list(1:10, 11:20, 21:30, 51:60, 31:40, 41:50)
+  index <- lapply(holdouts, function(h) setdiff(seq_len(nrow(dat)), h))
+  bad_pred <- make_submodel_model(fail_pred = TRUE)
+
+  set.seed(4471)
+  expect_snapshot(
+    fit <- train(
+      rec,
+      data = dat,
+      method = bad_pred,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        index = index,
+        indexOut = holdouts,
+        classProbs = TRUE,
+        savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  expect_s3_class(fit, "train.recipe")
+})
+
+test_that("the recipe race reports a prediction failure while finishing up", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  # a numeric outcome, so the race settles early and the failing fold is scored
+  # by the completion pass
+  dat <- engine_sentinel_data(60, classification = FALSE)
+  rec <- recipes::recipe(y ~ ., data = dat)
+  holdouts <- split(seq_len(nrow(dat)), rep(1:6, each = 10))
+  index <- lapply(holdouts, function(h) setdiff(seq_len(nrow(dat)), h))
+  bad_pred <- make_submodel_model(fail_pred = TRUE)
+
+  set.seed(4471)
+  expect_snapshot(
+    fit <- train(
+      rec,
+      data = dat,
+      method = bad_pred,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        index = index,
+        indexOut = holdouts,
+        savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  expect_gt(max(fit$results$Num_Resamples), min(fit$results$Num_Resamples))
+})
+
+test_that("the recipe race labels sub-model results while finishing up", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  dat <- engine_sentinel_data(60, classification = FALSE)
+  rec <- recipes::recipe(y ~ ., data = dat)
+  holdouts <- split(seq_len(nrow(dat)), rep(1:6, each = 10))
+  index <- lapply(holdouts, function(h) setdiff(seq_len(nrow(dat)), h))
+  mod <- make_submodel_model()
+
+  set.seed(4471)
+  suppressWarnings(
+    fit <- train(
+      rec,
+      data = dat,
+      method = mod,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        index = index,
+        indexOut = holdouts,
+        savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+
+  # as in the non-recipe race: each candidate predicts its own `shift`, so a
+  # mismatch means the completion pass scored the wrong sub-models
+  expect_equal(fit$pred$pred, fit$pred$shift)
+  expect_in(names(index), fit$pred$Resample)
+})
+
+test_that("the recipe race scores class probabilities while finishing up", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  # as in the non-recipe race: k = 30 is dropped after the burn-in, leaving the
+  # completion pass to score the winner on the remaining resamples
+  cls <- engine_three_class()
+  rec <- recipes::recipe(Species ~ ., data = cls)
+
+  set.seed(9527)
+  fit <- train(
+    rec,
+    data = cls,
+    method = "knn",
+    tuneGrid = data.frame(k = c(1, 30)),
+    trControl = trainControl(
+      method = "adaptive_cv",
+      number = 6,
+      classProbs = TRUE,
+      savePredictions = "all",
+      adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+    )
+  )
+
+  # every saved prediction says which candidate made it, the resamples the race
+  # starts from included
+  expect_all_false(is.na(fit$pred$k))
+  scored <- tapply(fit$pred$Resample, fit$pred$k, function(x) length(unique(x)))
+  expect_equal(as.vector(scored), c(6, 3))
+  expect_equal(fit$results$Num_Resamples[order(fit$results$k)], c(6L, 3L))
+  expect_contains(names(fit$pred), levels(cls$Species))
+  expect_all_false(is.na(fit$pred$setosa))
+})
+
+test_that("the recipe race keeps the cell counts for more than five classes", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  # the confusion-matrix cells are kept for up to fifty classes, and every
+  # phase of the race has to agree on that: the resamples the race starts from
+  # were dropping them past five
+  set.seed(7712)
+  many <- data.frame(
+    x1 = rnorm(72),
+    x2 = rnorm(72),
+    y = factor(rep(paste0("class", 1:6), each = 12))
+  )
+  rec <- recipes::recipe(y ~ ., data = many)
+
+  set.seed(9527)
+  fit <- train(
+    rec,
+    data = many,
+    method = "knn",
+    tuneGrid = data.frame(k = c(1, 30)),
+    trControl = trainControl(
+      method = "adaptive_cv",
+      number = 6,
+      adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+    )
+  )
+
+  cells <- grep("^cell", names(fit$resampledCM), value = TRUE)
+  expect_length(cells, 36)
+  # the counts are complete for every resample, the first ones included
+  expect_all_false(as.vector(is.na(as.matrix(fit$resampledCM[, cells]))))
+  expect_setequal(fit$resampledCM$Resample, names(fit$control$index))
+})
+
+test_that("the recipe race reports a model fit failure while racing", {
+  skip_on_cran()
+  skip_if_not_installed("nlme")
+
+  # as above, but the fit rather than the prediction fails in the fourth
+  # resample, which the racing loop scores
+  dat <- engine_sentinel_data(60)
+  rec <- recipes::recipe(y ~ ., data = dat)
+  holdouts <- list(1:10, 11:20, 21:30, 51:60, 31:40, 41:50)
+  index <- lapply(holdouts, function(h) setdiff(seq_len(nrow(dat)), h))
+  failing <- make_submodel_model(fail_fit = TRUE)
+
+  set.seed(4471)
+  expect_snapshot(
+    fit <- train(
+      rec,
+      data = dat,
+      method = failing,
+      tuneLength = 3,
+      trControl = trainControl(
+        method = "adaptive_cv",
+        index = index,
+        indexOut = holdouts,
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)
+      )
+    )
+  )
+  expect_s3_class(fit, "train.recipe")
+})

@@ -562,9 +562,12 @@ train.default <- function(
   ## If no default training grid is specified, get one. We have to pass in the formula
   ## and data for some models (rpart, pam, etc - see manual for more details)
   if (is.null(tuneGrid)) {
+    ## Any model with tuning parameters can have a grid that depends on the
+    ## predictors (`mtry` is the obvious one), so this runs for single-parameter
+    ## models too; it used to require more than one.
     if (
       !is.null(ppOpt) &&
-        length(models$parameters$parameter) > 1 &&
+        length(models$parameters$parameter) >= 1 &&
         all(as.character(models$parameters$parameter) != "parameter")
     ) {
       pp <- list(method = ppOpt$options)
@@ -573,6 +576,7 @@ train.default <- function(
       }
       if ("pca" %in% pp$method) {
         pp$thresh <- ppOpt$thresh
+        pp$pcaComp <- ppOpt$pcaComp
       }
       if ("knnImpute" %in% pp$method) {
         pp$k <- ppOpt$k

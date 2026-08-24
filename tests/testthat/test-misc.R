@@ -3,7 +3,9 @@ test_that("R2 and RMSE are calculating correctly", {
   pred <- runif(25)
   obs <- runif(25)
 
-  expect_equal(R2(pred, obs), cor(obs, pred)^2)
+  # caret::R2 is masked whenever pls has been attached (which fitting a pls
+  # model does), so name the one being tested
+  expect_equal(caret::R2(pred, obs), cor(obs, pred)^2)
   expect_equal(RMSE(pred, obs), sqrt(mean((pred - obs)^2)))
 })
 
@@ -68,7 +70,7 @@ test_that("MAE returns the mean absolute error", {
 
 test_that("R2 supports the traditional formula", {
   # perfect predictions -> R^2 of 1 (computed metric -> tolerant comparison)
-  expect_equal(R2(c(1, 2, 3), c(1, 2, 3), formula = "traditional"), 1)
+  expect_equal(caret::R2(c(1, 2, 3), c(1, 2, 3), formula = "traditional"), 1)
 })
 
 test_that("well_numbered builds zero-padded, sortable names", {

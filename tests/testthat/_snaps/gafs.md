@@ -164,3 +164,31 @@
 
     The metric 'Bogus' is not created by the summary function; 'RMSE' will be used instead
 
+# gafsControl wants named metric and maximize vectors
+
+    Code
+      gafsControl(metric = c("RMSE", "Rsquared"))
+    Condition
+      Error in `gafsControl()`:
+      ! 'metric' should have names 'internal' and 'external' See ?gafsControl
+
+---
+
+    Code
+      gafsControl(maximize = c(internal = TRUE, wrong = FALSE))
+    Condition
+      Error in `gafsControl()`:
+      ! 'maximize' should have names 'internal' and 'external' See ?gafsControl
+
+# the gafs recipe path checks its external fitness function
+
+    Code
+      fit <- gafs(rec, data = dat, gafsControl = gafsControl(functions = unnamed,
+        method = "cv", number = 3), popSize = 4, iters = 2, differences = FALSE,
+      method = "lm", trControl = trainControl(method = "cv", number = 3))
+    Condition
+      Warning in `gafs.recipe()`:
+      The external fitness results should be a *named* vector; new name(s) are external1, external2, external3, external4
+      Warning in `gafs.recipe()`:
+      The metric 'RMSE' is not created by the summary function; 'external1' will be used instead
+

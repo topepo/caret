@@ -393,3 +393,157 @@
       Warning in `train_rec()`:
       There were missing values in resampled performance measures.
 
+# train checks the seeds given for a recipe fit
+
+    Code
+      train(rec, data = reg, method = "knn", tuneGrid = data.frame(k = c(3, 5)),
+      trControl = trainControl(method = "cv", number = 3, seeds = 1:2))
+    Condition
+      Error:
+      ! Bad seeds: the seed object should be a list of length 4 with 3 integer vectors of size 2 and the last list element having at least a single integer
+
+# train falls back when a recipe fit's metric is not computed
+
+    The metric "RMSE" was not in the result set. MedianError will be used instead.
+
+# train trims a recipe fit's model object
+
+    Code
+      fit <- suppressMessages(train(rec, data = reg, method = "earth", tuneGrid = data.frame(
+        degree = 1, nprune = 3), trControl = trainControl(method = "cv", number = 2,
+        trim = TRUE, verboseIter = TRUE)))
+    Output
+      Preparing recipe
+      + Fold1: degree=1, nprune=3 
+      - Fold1: degree=1, nprune=3 
+      + Fold2: degree=1, nprune=3 
+      - Fold2: degree=1, nprune=3 
+    Condition
+      Warning in `train_rec()`:
+      There were missing values in resampled performance measures.
+    Output
+      Aggregating results
+      Fitting final model on full training set
+      Final model footprint reduced by < 0 Mb or 32% 
+
+# the recipe race fills in a failure during the burn-in
+
+    Code
+      fit <- train(rec, data = dat, method = failing, tuneLength = 3, trControl = trainControl(
+        method = "adaptive_cv", index = index, indexOut = holdouts, classProbs = TRUE,
+        savePredictions = "all", adaptive = list(min = 3, alpha = 0.05, method = "gls",
+          complete = TRUE)))
+    Condition
+      Warning:
+      model fit failed for Resample1: shift=1, scale=1 Error : fit failed on purpose
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
+
+# the recipe race fills in a failure while finishing up
+
+    Code
+      fit <- train(rec, data = dat, method = failing, tuneLength = 3, trControl = trainControl(
+        method = "adaptive_cv", index = index, indexOut = holdouts, savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)))
+    Condition
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
+      Warning:
+      model fit failed for 6: shift=1, scale=1 Error : fit failed on purpose
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
+
+# the recipe workflow reports predictions that fail
+
+    Code
+      fit <- train(rec, data = dat, method = bad_pred, tuneLength = 3, trControl = trainControl(
+        method = "cv", number = 3, savePredictions = "all"))
+    Condition
+      Warning:
+      predictions failed for Fold3: shift=1, scale=1 Error : predict failed on purpose
+      Warning in `train_rec()`:
+      There were missing values in resampled performance measures.
+
+# train checks a custom method list given with a recipe
+
+    Code
+      train(rec, data = reg, method = incomplete)
+    Condition
+      Error:
+      ! some required components are missing: grid, fit, predict, prob
+
+---
+
+    Code
+      train(rec, data = reg, method = "not_a_caret_model")
+    Condition
+      Error:
+      ! Model not_a_caret_model is not in caret's built-in library
+
+# train validates the resampling method for a recipe fit
+
+    Code
+      train(rec, data = reg, method = "lm", trControl = trainControl(method = "oob"))
+    Condition
+      Error:
+      ! Out of bag estimates are not implemented for this model
+
+---
+
+    Code
+      train(rec, data = reg, method = "knn", tuneGrid = data.frame(k = c(3, 5)),
+      trControl = trainControl(method = "none"))
+    Condition
+      Error:
+      ! Only one model should be specified in tuneGrid with no resampling
+
+# train falls back on a recipe fit's metric with class probabilities
+
+    The metric "Accuracy" was not in the result set. HitRate will be used instead.
+
+# leave-one-out resampling reports a recipe prediction that fails
+
+    predictions failed for Fold16: shift=1, scale=1 Error : predict failed on purpose
+    
+
+# the recipe race reports a prediction failure while racing
+
+    Code
+      fit <- train(rec, data = dat, method = bad_pred, tuneLength = 3, trControl = trainControl(
+        method = "adaptive_cv", index = index, indexOut = holdouts, classProbs = TRUE,
+        savePredictions = "all", adaptive = list(min = 3, alpha = 0.05, method = "gls",
+          complete = TRUE)))
+    Condition
+      Warning:
+      predictions failed for Resample4: shift=1, scale=1 Error : predict failed on purpose
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
+
+# the recipe race reports a prediction failure while finishing up
+
+    Code
+      fit <- train(rec, data = dat, method = bad_pred, tuneLength = 3, trControl = trainControl(
+        method = "adaptive_cv", index = index, indexOut = holdouts, savePredictions = "all",
+        adaptive = list(min = 3, alpha = 0.05, method = "gls", complete = TRUE)))
+    Condition
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
+      Warning:
+      predictions failed for 6: shift=1, scale=1 Error : predict failed on purpose
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
+
+# the recipe race reports a model fit failure while racing
+
+    Code
+      fit <- train(rec, data = dat, method = failing, tuneLength = 3, trControl = trainControl(
+        method = "adaptive_cv", index = index, indexOut = holdouts, adaptive = list(
+          min = 3, alpha = 0.05, method = "gls", complete = TRUE)))
+    Condition
+      Warning:
+      model fit failed for Resample4: shift=1, scale=1 Error : fit failed on purpose
+      Warning in `train_adapt_rec()`:
+      There were missing values in resampled performance measures.
+

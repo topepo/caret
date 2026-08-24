@@ -406,3 +406,83 @@ test_that("safs reports each iteration when asked", {
   expect_match(joined, "->")
   expect_s3_class(fit, "safs")
 })
+
+# ------------------------------------------------------------------------------
+# control validation, unnamed folds and the recipe interface
+
+test_that("safsControl wants named metric and maximize vectors", {
+  expect_snapshot(safsControl(metric = c("RMSE", "Rsquared")), error = TRUE)
+  expect_snapshot(
+    safsControl(maximize = c(internal = TRUE, wrong = FALSE)),
+    error = TRUE
+  )
+})
+
+test_that("safs names the resamples it was handed", {
+  skip_on_cran()
+
+  dat <- fs_data()
+  folds <- unname(createFolds(dat$y, k = 3, returnTrain = TRUE))
+
+  set.seed(2242)
+  xy <- safs(
+    x = dat[, 1:4],
+    y = dat$y,
+    safsControl = safsControl(
+      functions = caretSA,
+      method = "cv",
+      index = folds
+    ),
+    iters = 2,
+    differences = FALSE,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  expect_match(names(xy$control$index)[1], "^Resample")
+
+  set.seed(2242)
+  rec_fit <- safs(
+    recipes::recipe(y ~ ., data = dat),
+    data = dat,
+    safsControl = safsControl(
+      functions = caretSA,
+      method = "cv",
+      index = folds
+    ),
+    iters = 2,
+    differences = FALSE,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  expect_match(names(rec_fit$control$index)[1], "^Resample")
+})
+
+test_that("the safs recipe path reports its progress", {
+  skip_on_cran()
+
+  dat <- fs_data()
+  rec <- recipes::recipe(y ~ ., data = dat)
+
+  # as for the x/y interface, the per-iteration lines carry resampled values, so
+  # the text is matched rather than snapshotted
+  set.seed(2242)
+  progress <- capture.output(
+    fit <- safs(
+      rec,
+      data = dat,
+      safsControl = safsControl(
+        functions = caretSA,
+        method = "cv",
+        number = 2,
+        verbose = TRUE
+      ),
+      iters = 3,
+      differences = FALSE,
+      method = "lm",
+      trControl = trainControl(method = "cv", number = 3)
+    )
+  )
+  joined <- paste(progress, collapse = " ")
+  expect_match(joined, "Fold1")
+  expect_s3_class(fit, "safs")
+})

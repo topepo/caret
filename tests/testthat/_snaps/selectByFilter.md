@@ -86,3 +86,12 @@
       Error in `histogram.sbf()`:
       ! Resampling plots cannot be done with leave-out-out CV or out-of-bag resampling
 
+# sbf checks the seeds given for a recipe fit
+
+    Code
+      sbf(rec, data = cls, sbfControl = sbfControl(functions = ldaSBF, method = "cv",
+        index = folds, seeds = 1:2))
+    Condition
+      Error in `sbf.recipe()`:
+      ! Bad seeds: the seed object should be an integer vector of length 4
+

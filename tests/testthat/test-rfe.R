@@ -781,3 +781,182 @@ test_that("rfe times its predictions from a recipe", {
   )
   expect_in("prediction", names(fit$times))
 })
+
+# ------------------------------------------------------------------------------
+# the recipe interface's remaining options
+
+test_that("rfe falls back when the metric is not computed", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  # a summary function that computes something else entirely
+  median_funcs <- lmFuncs
+  median_funcs$summary <- function(data, lev = NULL, model = NULL) {
+    c(MedianError = median(abs(data$obs - data$pred)))
+  }
+  ctrl <- rfeControl(functions = median_funcs, method = "cv", number = 3)
+
+  set.seed(2242)
+  expect_snapshot_warning(
+    xy <- rfe(reg[, 1:3], reg$y, sizes = c(1, 2), rfeControl = ctrl)
+  )
+  expect_identical(xy$metric, "MedianError")
+
+  # and the same for a recipe
+  set.seed(2242)
+  expect_snapshot_warning(
+    rc <- rfe(
+      recipes::recipe(y ~ ., data = reg),
+      data = reg,
+      sizes = c(1, 2),
+      rfeControl = ctrl
+    )
+  )
+  expect_identical(rc$metric, "MedianError")
+})
+
+test_that("rfe checks the seeds given for a recipe fit", {
+  skip_on_cran()
+
+  reg <- engine_regression(40)
+  rec <- recipes::recipe(y ~ ., data = reg)
+  folds <- createFolds(reg$y, k = 3, returnTrain = TRUE)
+
+  # one integer vector per resample, each as long as the sizes plus the full
+  # set, and a single integer for the final fit
+  good <- c(lapply(1:3, function(i) 1:3), list(1L))
+  set.seed(7712)
+  fit <- rfe(
+    rec,
+    data = reg,
+    sizes = c(1, 2),
+    rfeControl = rfeControl(
+      functions = lmFuncs,
+      method = "cv",
+      index = folds,
+      seeds = good
+    )
+  )
+  expect_s3_class(fit, "rfe")
+
+  expect_snapshot(
+    rfe(
+      rec,
+      data = reg,
+      sizes = c(1, 2),
+      rfeControl = rfeControl(
+        functions = lmFuncs,
+        method = "cv",
+        index = folds,
+        seeds = good[1:2]
+      )
+    ),
+    error = TRUE
+  )
+
+  # and it can generate its own
+  set.seed(6693)
+  own <- rfe(
+    rec,
+    data = reg,
+    sizes = c(1, 2),
+    rfeControl = rfeControl(
+      functions = lmFuncs,
+      method = "cv",
+      number = 3,
+      seeds = NULL
+    )
+  )
+  expect_length(own$control$seeds, 4)
+})
+
+test_that("rfe reports a recipe fit's progress and repairs its ranking", {
+  skip_on_cran()
+
+  reg <- engine_regression(60)
+  rec <- recipes::recipe(y ~ ., data = reg)
+  # a rank function that drops a variable, as a sparse model would
+  short_rank <- lmFuncs
+  short_rank$rank <- function(object, x, y) {
+    out <- lmFuncs$rank(object, x, y)
+    out[-1, , drop = FALSE]
+  }
+
+  set.seed(4471)
+  expect_snapshot(
+    fit <- rfe(
+      rec,
+      data = reg,
+      sizes = c(1, 2),
+      rfeControl = rfeControl(
+        functions = short_rank,
+        method = "cv",
+        number = 2,
+        verbose = TRUE
+      )
+    )
+  )
+  expect_setequal(fit$variables$var, names(reg)[1:3])
+})
+
+test_that("rfe uses a performance-var role with leave-one-out resampling", {
+  skip_on_cran()
+
+  small <- engine_regression(16)
+  small$extra <- seq_len(nrow(small))
+  rec <- recipes::recipe(y ~ ., data = small)
+  rec <- recipes::update_role(rec, extra, new_role = "performance var")
+
+  perf_funcs <- lmFuncs
+  perf_funcs$summary <- function(data, lev = NULL, model = NULL) {
+    c(
+      RMSE = sqrt(mean((data$obs - data$pred)^2)),
+      HasExtra = as.numeric("extra" %in% names(data))
+    )
+  }
+
+  set.seed(5017)
+  fit <- rfe(
+    rec,
+    data = small,
+    sizes = c(1, 2),
+    metric = "RMSE",
+    maximize = FALSE,
+    rfeControl = rfeControl(functions = perf_funcs, method = "LOOCV")
+  )
+  expect_all_equal(fit$results$HasExtra, 1)
+  expect_disjoint(fit$optVariables, "extra")
+})
+
+test_that("rfe checks the sizes a recipe leaves for leave-one-out", {
+  skip_on_cran()
+
+  small <- engine_regression(16)
+  one_left <- recipes::step_rm(
+    recipes::recipe(y ~ ., data = small),
+    x2,
+    x3
+  )
+  two_left <- recipes::step_rm(recipes::recipe(y ~ ., data = small), x3)
+
+  # the errors come from inside the resampling loop, so they carry the loop body
+  # as their call and are matched rather than snapshotted
+  expect_error(
+    rfe(
+      one_left,
+      data = small,
+      sizes = 1,
+      rfeControl = rfeControl(functions = lmFuncs, method = "LOOCV")
+    ),
+    "less than two predictors remaining"
+  )
+  expect_error(
+    suppressWarnings(rfe(
+      two_left,
+      data = small,
+      sizes = c(5, 6),
+      rfeControl = rfeControl(functions = lmFuncs, method = "LOOCV")
+    )),
+    "values are inconsistent with this"
+  )
+})

@@ -214,3 +214,11 @@
 
     The metric "RMSE" was not in the result set. MedianError will be used instead.
 
+# train checks that a supplied grid matches the model exactly
+
+    Code
+      train(Species ~ ., data = cls, method = "knn", tuneGrid = data.frame(kk = 5))
+    Condition
+      Error:
+      ! The tuning parameter grid should have columns k
+

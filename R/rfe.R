@@ -1916,7 +1916,18 @@ rfe_rec <- function(
       }
     }
     if (!is.null(perf_data)) {
-      testOutput <- cbind(testOutput, perf_data)
+      ## `testOutput` is a dry run of at most ten rows, so the performance data
+      ## has to be sampled down to match it (as safs() and gafs() do); binding
+      ## it whole only worked when the number of rows was a multiple of ten,
+      ## where cbind() recycled instead of erroring
+      testOutput <- cbind(
+        testOutput,
+        perf_data[
+          sample(seq_len(nrow(perf_data)), nrow(testOutput)),
+          ,
+          drop = FALSE
+        ]
+      )
     }
 
     test <-

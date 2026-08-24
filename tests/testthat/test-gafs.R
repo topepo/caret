@@ -430,3 +430,123 @@ test_that("gafs reports each generation when asked", {
   expect_match(joined, "->")
   expect_s3_class(fit, "gafs")
 })
+
+# ------------------------------------------------------------------------------
+# control validation, unnamed folds and the recipe interface's checks
+
+test_that("gafsControl wants named metric and maximize vectors", {
+  # both need an internal and an external element, by name
+  expect_snapshot(gafsControl(metric = c("RMSE", "Rsquared")), error = TRUE)
+  expect_snapshot(
+    gafsControl(maximize = c(internal = TRUE, wrong = FALSE)),
+    error = TRUE
+  )
+})
+
+test_that("gafs names the resamples it was handed", {
+  skip_on_cran()
+
+  dat <- fs_data()
+  # an unnamed index gets numbered names
+  folds <- unname(createFolds(dat$y, k = 3, returnTrain = TRUE))
+  ctrl <- gafsControl(functions = caretGA, method = "cv", index = folds)
+
+  set.seed(2242)
+  fit <- gafs(
+    x = dat[, 1:4],
+    y = dat$y,
+    gafsControl = ctrl,
+    popSize = 4,
+    iters = 2,
+    differences = FALSE,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  expect_setequal(unique(fit$external$Resample), names(fit$control$index))
+  expect_match(names(fit$control$index)[1], "^Resample")
+})
+
+test_that("gafs names the resamples for a recipe fit", {
+  skip_on_cran()
+
+  dat <- fs_data()
+  rec <- recipes::recipe(y ~ ., data = dat)
+  folds <- unname(createFolds(dat$y, k = 3, returnTrain = TRUE))
+
+  set.seed(2242)
+  fit <- gafs(
+    rec,
+    data = dat,
+    gafsControl = gafsControl(
+      functions = caretGA,
+      method = "cv",
+      index = folds
+    ),
+    popSize = 4,
+    iters = 2,
+    differences = FALSE,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  expect_match(names(fit$control$index)[1], "^Resample")
+})
+
+test_that("the gafs recipe path checks its external fitness function", {
+  skip_on_cran()
+
+  dat <- fs_data()
+  dat$extra <- seq_len(nrow(dat))
+  rec <- recipes::recipe(y ~ ., data = dat)
+  rec <- recipes::update_role(rec, extra, new_role = "performance var")
+
+  # an unnamed result is named by position, and a metric the function does not
+  # compute falls back to the first one it does
+  unnamed <- caretGA
+  unnamed$fitness_extern <- function(data, lev = NULL, model = NULL) {
+    unname(c(
+      defaultSummary(data, lev, model),
+      Extra = as.numeric("extra" %in% names(data))
+    ))
+  }
+
+  set.seed(3364)
+  expect_snapshot(
+    fit <- gafs(
+      rec,
+      data = dat,
+      gafsControl = gafsControl(functions = unnamed, method = "cv", number = 3),
+      popSize = 4,
+      iters = 2,
+      differences = FALSE,
+      method = "lm",
+      trControl = trainControl(method = "cv", number = 3)
+    )
+  )
+  expect_in("external1", names(fit$external))
+})
+
+test_that("the gafs recipe path computes differences with a holdout", {
+  skip_on_cran()
+
+  dat <- fs_data(n = 80)
+  rec <- recipes::recipe(y ~ ., data = dat)
+
+  set.seed(3388)
+  fit <- gafs(
+    rec,
+    data = dat,
+    gafsControl = gafsControl(
+      functions = caretGA,
+      method = "cv",
+      number = 3,
+      holdout = 0.25
+    ),
+    popSize = 8,
+    iters = 8,
+    differences = TRUE,
+    method = "lm",
+    trControl = trainControl(method = "cv", number = 3)
+  )
+  expect_identical(fit$control$holdout, 0.25)
+  expect_s3_class(fit$differences, "data.frame")
+})

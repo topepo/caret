@@ -180,3 +180,19 @@
 
     The metric 'Bogus' is not created by the external summary function; 'RMSE' will be used instead
 
+# safsControl wants named metric and maximize vectors
+
+    Code
+      safsControl(metric = c("RMSE", "Rsquared"))
+    Condition
+      Error in `safsControl()`:
+      ! 'metric' should have names 'internal' and 'external' See ?safsControl
+
+---
+
+    Code
+      safsControl(maximize = c(internal = TRUE, wrong = FALSE))
+    Condition
+      Error in `safsControl()`:
+      ! 'maximize' should have names 'internal' and 'external' See ?safsControl
+

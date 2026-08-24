@@ -54,3 +54,23 @@
       Error in `caret:::random_search_plot()`:
       ! There are 2 numeric tuning variables and 2 non-numeric variables; I don't have code for that Dave
 
+# ggplot.train warns about adaptive resampling
+
+    When using adaptive resampling, this plot may not accurately capture the relationship between the tuning parameters and model performance.
+
+# ggplot.train refuses more than four tuning parameters
+
+    Code
+      ggplot2::ggplot(fake)
+    Condition
+      Error in `ggplot.train()`:
+      ! The function can only handle <= 4 tuning parameters for scatter plots. Use output = 'ggplot' to create your own
+
+---
+
+    Code
+      ggplot2::ggplot(fake, plotType = "level")
+    Condition
+      Error in `ggplot.train()`:
+      ! The function can only handle <= 4 tuning parameters for level plots. Use output = 'ggplot' to create your own
+
