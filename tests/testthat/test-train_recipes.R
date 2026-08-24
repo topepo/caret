@@ -210,6 +210,7 @@ test_that("train() drives a recipe through the optimism bootstrap", {
 
 test_that("train() runs the recipe optimism bootstrap with class probabilities", {
   skip_on_cran()
+  skip_if_not_installed("MLmetrics")
 
   rec <- recipes::recipe(Species ~ ., data = iris)
   rec <- recipes::step_normalize(rec, recipes::all_predictors())
