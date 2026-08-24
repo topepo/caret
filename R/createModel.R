@@ -1,6 +1,6 @@
 #' Internal Functions
 #' @name caret-internal
-#' @aliases createModel resampleWrapper sortImp caretTheme progress hasTerms predictionFunction probFunction expandParameters flatTable MeanSD sbfIter gamFormula bagEarthStats cforestStats ipredStats rfStats well_numbered
+#' @aliases createModel sortImp caretTheme progress hasTerms predictionFunction probFunction expandParameters flatTable MeanSD sbfIter gamFormula bagEarthStats cforestStats ipredStats rfStats well_numbered
 #'
 #' @description Internal functions
 #'
