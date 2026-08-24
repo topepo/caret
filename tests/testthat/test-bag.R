@@ -137,7 +137,7 @@ test_that("bag works with nbBag", {
 
 test_that("bag can sample a subset of the predictors", {
   skip_on_cran()
-  skip_if_not_installed("rpart")
+  skip_if_not_installed("party")
 
   # `vars` larger than the data is capped at the number of columns
   set.seed(8004)

@@ -12,6 +12,8 @@ test_that("minDiss and sumDiss reduce a vector, ignoring NAs", {
 # --- maxDissim --------------------------------------------------------------
 
 test_that("maxDissim selects the most dissimilar points in order", {
+  skip_if_not_installed("proxy")
+
   # farthest single point is p3 (distance 10 from the origin)
   expect_equal(maxDissim(maxdiss_base, maxdiss_pool, n = 1), 3)
   # then, by the minimum-distance objective, p2 is the next most dissimilar
@@ -19,6 +21,8 @@ test_that("maxDissim selects the most dissimilar points in order", {
 })
 
 test_that("maxDissim can return row names instead of indices", {
+  skip_if_not_installed("proxy")
+
   expect_equal(
     maxDissim(maxdiss_base, maxdiss_pool, n = 1, useNames = TRUE),
     "p3"
@@ -26,6 +30,8 @@ test_that("maxDissim can return row names instead of indices", {
 })
 
 test_that("maxDissim warns and falls back to indices without row names", {
+  skip_if_not_installed("proxy")
+
   pool_noname <- maxdiss_pool
   rownames(pool_noname) <- NULL
   expect_snapshot_warning(
@@ -35,6 +41,8 @@ test_that("maxDissim warns and falls back to indices without row names", {
 })
 
 test_that("maxDissim supports alternative objective functions", {
+  skip_if_not_installed("proxy")
+
   # with the sum objective the ties resolve to p1 as the second pick
   expect_equal(
     maxDissim(maxdiss_base, maxdiss_pool, n = 2, obj = sumDiss),
@@ -43,6 +51,8 @@ test_that("maxDissim supports alternative objective functions", {
 })
 
 test_that("maxDissim can subsample candidates with randomFrac", {
+  skip_if_not_installed("proxy")
+
   set.seed(1)
   res <- maxDissim(maxdiss_base, maxdiss_pool, n = 2, randomFrac = 0.9)
   expect_length(res, 2)
@@ -50,6 +60,8 @@ test_that("maxDissim can subsample candidates with randomFrac", {
 })
 
 test_that("maxDissim prints progress when verbose", {
+  skip_if_not_installed("proxy")
+
   expect_snapshot(maxDissim(maxdiss_base, maxdiss_pool, n = 1, verbose = TRUE))
 })
 
@@ -76,6 +88,8 @@ test_that("maxDissim validates its arguments", {
 # --- splitter / splitByDissim (internal) ------------------------------------
 
 test_that("splitByDissim returns a subsample of row indices", {
+  skip_if_not_installed("proxy")
+
   res <- caret:::splitByDissim(maxdiss_split_x, p = 0.5, start = 1)
   expect_true(is.numeric(res))
   expect_contains(res, 1)
@@ -83,6 +97,8 @@ test_that("splitByDissim returns a subsample of row indices", {
 })
 
 test_that("splitter picks a random start when none is supplied", {
+  skip_if_not_installed("proxy")
+
   set.seed(2)
   res <- caret:::splitter(maxdiss_split_x, p = 0.5)
   expect_true(is.numeric(res))
@@ -90,6 +106,8 @@ test_that("splitter picks a random start when none is supplied", {
 })
 
 test_that("splitByDissim stratifies by a factor outcome", {
+  skip_if_not_installed("proxy")
+
   # a character outcome exercises the as.factor() coercion path
   y <- rep(c("a", "b"), each = nrow(maxdiss_split_x) / 2)
   # start needs one index per group (rows 1-5 are "a", 6-10 are "b")

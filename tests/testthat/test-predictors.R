@@ -68,6 +68,7 @@ test_that("predictors.default finds registry code from the model class", {
 test_that("predictors.default resolves the two gam flavours", {
   skip_on_cran()
   skip_if_not_installed("mgcv")
+  skip_if_not_installed("gam")
 
   # an mgcv fit carries an 'optimizer' element
   fit <- mgcv::gam(mpg ~ s(hp) + cyl, data = mtcars)

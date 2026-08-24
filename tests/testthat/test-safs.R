@@ -42,6 +42,7 @@ test_that("high level tests", {
 
 test_that("safs runs with random-forest functions", {
   skip_on_cran()
+  skip_if_not_installed("randomForest")
 
   set.seed(1)
   train_data <- caret::twoClassSim(100, noiseVars = 10)

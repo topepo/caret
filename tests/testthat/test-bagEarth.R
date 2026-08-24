@@ -4,6 +4,7 @@
 # bagEarth cannot model a simplistic kind of linear equation.
 test_that('bagEarth simple regression', {
   skip_on_cran()
+  skip_if_not_installed("earth")
   data <- data.frame(X = 1:100)
   data$Y <- data$X * 2
   data$training <- data$X %% 2
@@ -18,6 +19,7 @@ test_that('bagEarth simple regression', {
 
 test_that('bagEarth simple classification', {
   skip_on_cran()
+  skip_if_not_installed("earth")
   data <- twoClassSim(n = 1000)
   fit <- bagEarth(Class ~ ., data = data, B = 3, glm = list(family = binomial))
   expect_type(format(fit, cat = FALSE), "character")

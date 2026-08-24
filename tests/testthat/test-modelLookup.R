@@ -121,6 +121,7 @@ test_that("install_prompt shows the message and returns the menu choice", {
 })
 
 test_that("install_missing routes CRAN and Bioconductor packages separately", {
+  skip_if_not_installed("BiocManager")
   cran <- NULL
   bioc <- NULL
   local_mocked_bindings(
@@ -151,6 +152,7 @@ test_that("install_missing routes CRAN and Bioconductor packages separately", {
 })
 
 test_that("install_missing installs BiocManager when it is absent", {
+  skip_if_not_installed("BiocManager")
   cran <- NULL
   local_mocked_bindings(
     install.packages = function(pkgs, ...) {
