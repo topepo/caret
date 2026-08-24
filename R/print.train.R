@@ -40,21 +40,25 @@ stringFunc <- function(x) {
 #' @export
 #' @examplesIf !caret:::is_cran_check()
 #'
-#' data(iris)
-#' TrainData <- iris[, 1:4]
-#' TrainClasses <- iris[, 5]
+#' \dontrun{
+#' if (caret:::has_packages("klaR")) {
+#'   data(iris)
+#'   TrainData <- iris[, 1:4]
+#'   TrainClasses <- iris[, 5]
 #'
-#' options(digits = 3)
+#'   options(digits = 3)
 #'
-#' library(klaR)
-#' rdaFit <- train(
-#'   TrainData,
-#'   TrainClasses,
-#'   method = "rda",
-#'   control = trainControl(method = "cv")
-#' )
-#' rdaFit
-#' print(rdaFit, showSD = TRUE)
+#'   library(klaR)
+#'   rdaFit <- train(
+#'     TrainData,
+#'     TrainClasses,
+#'     method = "rda",
+#'     control = trainControl(method = "cv")
+#'   )
+#'   rdaFit
+#'   print(rdaFit, showSD = TRUE)
+#' }
+#' }
 #'
 #' @export print.train
 

@@ -63,6 +63,7 @@ will reliably select outliers. To select more samples towards the interior
 of the data set, set \code{randomFrac} to be small (see the examples below).
 }
 \examples{
+\dontshow{if (caret:::has_packages("proxy")) withAutoprint(\{ # examplesIf}
 
 example <- function(pct = 1, obj = minDiss, ...)
 {
@@ -119,7 +120,7 @@ title("No Random Sampling, Sum Score")
 set.seed(414)
 example(.1, sumDiss)
 title("10 Pct Random Sampling, Sum Score")
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 Willett, P. (1999), "Dissimilarity-Based Algorithms for

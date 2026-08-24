@@ -33,7 +33,7 @@ icr <- function(x, ...) UseMethod("icr")
 #' @author Max Kuhn
 #' @seealso [fastICA::fastICA()], [preProcess()], [stats::lm()]
 #' @keywords multivariate
-#' @examples
+#' @examplesIf caret:::has_packages("fastICA")
 #'
 #' data(BloodBrain)
 #'
@@ -140,10 +140,10 @@ print.icr <- function(x, digits = max(3, getOption("digits") - 3), ...) {
 #' @rdname icr.formula
 #' @export
 predict.icr <- function(object, newdata, ...) {
-  loadNamespace("fastICA")
   if (!inherits(object, "icr")) {
     stop("object not of class \"icr\"")
   }
+  loadNamespace("fastICA")
   if (missing(newdata)) {
     return(fitted(object$model))
   } else {

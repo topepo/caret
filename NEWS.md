@@ -2,6 +2,7 @@
 
 ## Changes in version 7.1.0
 
+- The vignette, examples, and tests now degrade gracefully when the suggested modelling packages are not installed, so the package can be checked with only its hard dependencies available. `maxDissim()` and `predict.icr()` also validate their arguments before loading **proxy** and **fastICA**.
 - The `earth` model now defines a `trim` method, so `trainControl(trim = TRUE)` reduces the size of fitted `earth` models (dropping the stored `x`, `y`, and `call`) without affecting predictions.
 - Fixed three bugs in the model-diversity filters used by adaptive resampling: the concordance matrix (`cccmat`) was never populated and always returned a matrix of ones; both `cccmat` and `diffmat` scrambled their entries (breaking symmetry) for four or more models; and `filter_on_corr`/`filter_on_diff` removed the wrong models due to an index-permutation error.
 - `confusionMatrix()` now gives its intended "the table must nrow = ncol" error for non-square tables, instead of an "invalid argument to unary operator" error from a mis-written check.

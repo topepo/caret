@@ -2,6 +2,8 @@
 
 test_that("resampling method 'none' doesn't conflict with default tuneLength", {
   skip_on_cran()
+  skip_if_not_installed("earth")
+  skip_if_not_installed("mgcv")
 
   data(BloodBrain)
 

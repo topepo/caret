@@ -9,6 +9,13 @@ is_cran_check <- function() {
   !identical(Sys.getenv("NOT_CRAN"), "true")
 }
 
+# Used by @examplesIf, and inside examples, so that an example is skipped when
+# the suggested packages that it needs are not installed.
+has_packages <- function(...) {
+  pkgs <- c(...)
+  all(vapply(pkgs, requireNamespace, logical(1), quietly = TRUE))
+}
+
 ###################################################################
 ## Global Functions
 ###################################################################

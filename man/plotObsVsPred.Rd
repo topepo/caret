@@ -35,65 +35,69 @@ shown, but if unknowns were also included, they are not plotted
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-library(mlbench)
+\dontrun{
+if (caret:::has_packages("mlbench", "pls", "rpart")) {
+  library(mlbench)
 
-# regression example
-data(BostonHousing)
-rpartFit <- train(
-  BostonHousing[1:100, -c(4, 14)],
-  BostonHousing$medv[1:100],
-  "rpart",
-  tuneLength = 9
-)
-plsFit <- train(
-  BostonHousing[1:100, -c(4, 14)],
-  BostonHousing$medv[1:100],
-  "pls"
-)
+  # regression example
+  data(BostonHousing)
+  rpartFit <- train(
+    BostonHousing[1:100, -c(4, 14)],
+    BostonHousing$medv[1:100],
+    "rpart",
+    tuneLength = 9
+  )
+  plsFit <- train(
+    BostonHousing[1:100, -c(4, 14)],
+    BostonHousing$medv[1:100],
+    "pls"
+  )
 
-predVals <- extractPrediction(
-  list(rpartFit, plsFit),
-  testX = BostonHousing[101:200, -c(4, 14)],
-  testY = BostonHousing$medv[101:200],
-  unkX = BostonHousing[201:300, -c(4, 14)]
-)
+  predVals <- extractPrediction(
+    list(rpartFit, plsFit),
+    testX = BostonHousing[101:200, -c(4, 14)],
+    testY = BostonHousing$medv[101:200],
+    unkX = BostonHousing[201:300, -c(4, 14)]
+  )
 
-plotObsVsPred(predVals)
+  plotObsVsPred(predVals)
 
-#classification example
-data(Satellite)
-numSamples <- dim(Satellite)[1]
-set.seed(716)
+  #classification example
+  data(Satellite)
+  numSamples <- dim(Satellite)[1]
+  set.seed(716)
 
-varIndex <- 1:numSamples
+  varIndex <- 1:numSamples
 
-trainSamples <- sample(varIndex, 150)
+  trainSamples <- sample(varIndex, 150)
 
-varIndex <- (1:numSamples)[-trainSamples]
-testSamples <- sample(varIndex, 100)
+  varIndex <- (1:numSamples)[-trainSamples]
+  testSamples <- sample(varIndex, 100)
 
-varIndex <- (1:numSamples)[-c(testSamples, trainSamples)]
-unkSamples <- sample(varIndex, 50)
+  varIndex <- (1:numSamples)[-c(testSamples, trainSamples)]
+  unkSamples <- sample(varIndex, 50)
 
-trainX <- Satellite[trainSamples, -37]
-trainY <- Satellite[trainSamples, 37]
+  trainX <- Satellite[trainSamples, -37]
+  trainY <- Satellite[trainSamples, 37]
 
-testX <- Satellite[testSamples, -37]
-testY <- Satellite[testSamples, 37]
+  testX <- Satellite[testSamples, -37]
+  testY <- Satellite[testSamples, 37]
 
-unkX <- Satellite[unkSamples, -37]
+  unkX <- Satellite[unkSamples, -37]
 
-knnFit <- train(trainX, trainY, "knn")
-rpartFit <- train(trainX, trainY, "rpart")
+  knnFit <- train(trainX, trainY, "knn")
+  rpartFit <- train(trainX, trainY, "rpart")
 
-predTargets <- extractPrediction(
-  list(knnFit, rpartFit),
-  testX = testX,
-  testY = testY,
-  unkX = unkX
-)
+  predTargets <- extractPrediction(
+    list(knnFit, rpartFit),
+    testX = testX,
+    testY = testY,
+    unkX = unkX
+  )
 
-plotObsVsPred(predTargets)
+  plotObsVsPred(predTargets)
+}
+}
 \dontshow{\}) # examplesIf}
 }
 \author{

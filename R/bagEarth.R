@@ -31,12 +31,16 @@
 #' @seealso [earth::earth()], [predict.bagEarth()]
 #'
 #' @examplesIf !caret:::is_cran_check()
-#' library(mda)
-#' library(earth)
-#' data(trees)
-#' fit1 <- earth(x = trees[, -3], y = trees[, 3])
-#' set.seed(2189)
-#' fit2 <- bagEarth(x = trees[, -3], y = trees[, 3], B = 10)
+#' \dontrun{
+#' if (caret:::has_packages("earth", "mda")) {
+#'   library(mda)
+#'   library(earth)
+#'   data(trees)
+#'   fit1 <- earth(x = trees[, -3], y = trees[, 3])
+#'   set.seed(2189)
+#'   fit2 <- bagEarth(x = trees[, -3], y = trees[, 3], B = 10)
+#' }
+#' }
 #'
 #' @keywords regression
 #'
@@ -218,13 +222,17 @@
 #' @export
 #' @examplesIf !caret:::is_cran_check()
 #'
-#' data(trees)
-#' ## out of bag predictions vs just re-predicting the training set
-#' set.seed(655)
-#' fit1 <- bagEarth(Volume ~ ., data = trees, keepX = TRUE)
-#' set.seed(655)
-#' fit2 <- bagEarth(Volume ~ ., data = trees, keepX = FALSE)
-#' hist(predict(fit1) - predict(fit2))
+#' \dontrun{
+#' if (caret:::has_packages("earth")) {
+#'   data(trees)
+#'   ## out of bag predictions vs just re-predicting the training set
+#'   set.seed(655)
+#'   fit1 <- bagEarth(Volume ~ ., data = trees, keepX = TRUE)
+#'   set.seed(655)
+#'   fit2 <- bagEarth(Volume ~ ., data = trees, keepX = FALSE)
+#'   hist(predict(fit1) - predict(fit2))
+#' }
+#' }
 #'
 #' @export predict.bagEarth
 "predict.bagEarth" <-
@@ -322,10 +330,14 @@ print.bagEarth <- function(x, ...) {
 #' @export
 #' @examplesIf !caret:::is_cran_check()
 #'
-#' data(trees)
-#' set.seed(9655)
-#' fit <- bagEarth(trees[, -3], trees[, 3])
-#' summary(fit)
+#' \dontrun{
+#' if (caret:::has_packages("earth")) {
+#'   data(trees)
+#'   set.seed(9655)
+#'   fit <- bagEarth(trees[, -3], trees[, 3])
+#'   summary(fit)
+#' }
+#' }
 #'
 #' @export summary.bagEarth
 "summary.bagEarth" <-

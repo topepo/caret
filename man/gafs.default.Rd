@@ -146,21 +146,25 @@ number of workers and the amount of memory required exponentially.
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-set.seed(1)
-train_data <- twoClassSim(100, noiseVars = 10)
-test_data <- twoClassSim(10, noiseVars = 10)
+\dontrun{
+if (caret:::has_packages("randomForest")) {
+  set.seed(1)
+  train_data <- twoClassSim(100, noiseVars = 10)
+  test_data <- twoClassSim(10, noiseVars = 10)
 
-## A short example
-ctrl <- gafsControl(functions = rfGA, method = "cv", number = 3)
+  ## A short example
+  ctrl <- gafsControl(functions = rfGA, method = "cv", number = 3)
 
-rf_search <- gafs(
-  x = train_data[, -ncol(train_data)],
-  y = train_data$Class,
-  iters = 3,
-  gafsControl = ctrl
-)
+  rf_search <- gafs(
+    x = train_data[, -ncol(train_data)],
+    y = train_data$Class,
+    iters = 3,
+    gafsControl = ctrl
+  )
 
-rf_search
+  rf_search
+}
+}
 \dontshow{\}) # examplesIf}
 }
 \references{

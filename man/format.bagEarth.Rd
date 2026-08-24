@@ -24,6 +24,7 @@ A character representation of the bagged earth object.
 Return a string representing the \sQuote{bagEarth} expression.
 }
 \examples{
+\dontshow{if (caret:::has_packages("earth")) withAutoprint(\{ # examplesIf}
 
 a <- bagEarth(Volume ~ ., data = trees, B = 3)
 format(a)
@@ -46,7 +47,7 @@ format(a)
 #   -  3.660456 * pmax(0,   14.2 -  Girth)
 #   + 0.6489774 * pmax(0, Height -     80)
 # )/3
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[earth:earth]{earth::earth()}}

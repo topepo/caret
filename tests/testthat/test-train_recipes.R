@@ -210,6 +210,7 @@ test_that("train() drives a recipe through the optimism bootstrap", {
 
 test_that("train() runs the recipe optimism bootstrap with class probabilities", {
   skip_on_cran()
+  skip_if_not_installed("MLmetrics")
 
   rec <- recipes::recipe(Species ~ ., data = iris)
   rec <- recipes::step_normalize(rec, recipes::all_predictors())
@@ -258,6 +259,7 @@ test_that("train() runs the recipe optimism bootstrap with sub-models", {
 test_that("the recipe optimism bootstrap combines sub-models and probabilities", {
   skip_on_cran()
   skip_if_not_installed("rpart")
+  skip_if_not_installed("MLmetrics")
 
   # sub-models and class probabilities together: the extra predictions are a
   # list per candidate and each has to be bound to its own probability frame

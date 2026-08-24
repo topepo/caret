@@ -30,7 +30,7 @@
 #'
 #' @seealso [mda::fda()], [predict.bagFDA()]
 #'
-#' @examples
+#' @examplesIf caret:::has_packages("earth", "mda", "mlbench")
 #' library(mlbench)
 #' library(earth)
 #' data(Glass)

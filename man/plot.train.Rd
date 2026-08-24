@@ -88,17 +88,21 @@ plot is created inside conditioning panels/facets.
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-library(klaR)
-rdaFit <- train(
-  Species ~ .,
-  data = iris,
-  method = "rda",
-  control = trainControl(method = "cv")
-)
-plot(rdaFit)
-plot(rdaFit, plotType = "level")
+\dontrun{
+if (caret:::has_packages("klaR")) {
+  library(klaR)
+  rdaFit <- train(
+    Species ~ .,
+    data = iris,
+    method = "rda",
+    control = trainControl(method = "cv")
+  )
+  plot(rdaFit)
+  plot(rdaFit, plotType = "level")
 
-ggplot(rdaFit) + theme_bw()
+  ggplot(rdaFit) + theme_bw()
+}
+}
 
 \dontshow{\}) # examplesIf}
 }

@@ -144,127 +144,131 @@
 #' @examplesIf !caret:::is_cran_check()
 #'
 #'
-#' #######################################
-#' ## Classification Example
+#' \dontrun{
+#' if (caret:::has_packages("earth", "mlbench")) {
+#'   #######################################
+#'   ## Classification Example
 #'
-#' data(iris)
-#' TrainData <- iris[, 1:4]
-#' TrainClasses <- iris[, 5]
+#'   data(iris)
+#'   TrainData <- iris[, 1:4]
+#'   TrainClasses <- iris[, 5]
 #'
-#' knnFit1 <- train(
-#'   TrainData,
-#'   TrainClasses,
-#'   method = "knn",
-#'   preProcess = c("center", "scale"),
-#'   tuneLength = 10,
-#'   trControl = trainControl(method = "cv")
-#' )
+#'   knnFit1 <- train(
+#'     TrainData,
+#'     TrainClasses,
+#'     method = "knn",
+#'     preProcess = c("center", "scale"),
+#'     tuneLength = 10,
+#'     trControl = trainControl(method = "cv")
+#'   )
 #'
-#' knnFit2 <- train(
-#'   TrainData,
-#'   TrainClasses,
-#'   method = "knn",
-#'   preProcess = c("center", "scale"),
-#'   tuneLength = 10,
-#'   trControl = trainControl(method = "boot")
-#' )
+#'   knnFit2 <- train(
+#'     TrainData,
+#'     TrainClasses,
+#'     method = "knn",
+#'     preProcess = c("center", "scale"),
+#'     tuneLength = 10,
+#'     trControl = trainControl(method = "boot")
+#'   )
 #'
-#' library(MASS)
-#' nnetFit <- train(
-#'   TrainData,
-#'   TrainClasses,
-#'   method = "nnet",
-#'   preProcess = "range",
-#'   tuneLength = 2,
-#'   trace = FALSE,
-#'   maxit = 100
-#' )
+#'   library(MASS)
+#'   nnetFit <- train(
+#'     TrainData,
+#'     TrainClasses,
+#'     method = "nnet",
+#'     preProcess = "range",
+#'     tuneLength = 2,
+#'     trace = FALSE,
+#'     maxit = 100
+#'   )
 #'
-#' #######################################
-#' ## Regression Example
+#'   #######################################
+#'   ## Regression Example
 #'
-#' library(mlbench)
-#' data(BostonHousing)
+#'   library(mlbench)
+#'   data(BostonHousing)
 #'
-#' lmFit <- train(medv ~ . + rm:lstat, data = BostonHousing, method = "lm")
+#'   lmFit <- train(medv ~ . + rm:lstat, data = BostonHousing, method = "lm")
 #'
-#' library(rpart)
-#' rpartFit <- train(
-#'   medv ~ .,
-#'   data = BostonHousing,
-#'   method = "rpart",
-#'   tuneLength = 9
-#' )
+#'   library(rpart)
+#'   rpartFit <- train(
+#'     medv ~ .,
+#'     data = BostonHousing,
+#'     method = "rpart",
+#'     tuneLength = 9
+#'   )
 #'
-#' #######################################
-#' ## Example with a custom metric
+#'   #######################################
+#'   ## Example with a custom metric
 #'
-#' madSummary <- function(data, lev = NULL, model = NULL) {
-#'   out <- mad(data$obs - data$pred, na.rm = TRUE)
-#'   names(out) <- "MAD"
-#'   out
+#'   madSummary <- function(data, lev = NULL, model = NULL) {
+#'     out <- mad(data$obs - data$pred, na.rm = TRUE)
+#'     names(out) <- "MAD"
+#'     out
+#'   }
+#'
+#'   robustControl <- trainControl(summaryFunction = madSummary)
+#'   marsGrid <- expand.grid(degree = 1, nprune = (1:10) * 2)
+#'
+#'   earthFit <- train(
+#'     medv ~ .,
+#'     data = BostonHousing,
+#'     method = "earth",
+#'     tuneGrid = marsGrid,
+#'     metric = "MAD",
+#'     maximize = FALSE,
+#'     trControl = robustControl
+#'   )
+#'
+#'   #######################################
+#'   ## Example with a recipe
+#'
+#'   data(cox2)
+#'
+#'   cox2 <- cox2Descr
+#'   cox2$potency <- cox2IC50
+#'
+#'   library(recipes)
+#'
+#'   cox2_recipe <- recipe(potency ~ ., data = cox2) %>%
+#'     ## Log the outcome
+#'     step_log(potency, base = 10) %>%
+#'     ## Remove sparse and unbalanced predictors
+#'     step_nzv(all_predictors()) %>%
+#'     ## Surface area predictors are highly correlated so
+#'     ## conduct PCA just on these.
+#'     step_pca(contains("VSA"), prefix = "surf_area_",
+#'              threshold = .95) %>%
+#'     ## Remove other highly correlated predictors
+#'     step_corr(all_predictors(), -starts_with("surf_area_"),
+#'               threshold = .90) %>%
+#'     ## Center and scale all of the non-PCA predictors
+#'   step_center(all_predictors(), -starts_with("surf_area_")) %>%
+#'     step_scale(all_predictors(), -starts_with("surf_area_"))
+#'
+#'   set.seed(888)
+#'   cox2_lm <- train(
+#'     cox2_recipe,
+#'     data = cox2,
+#'     method = "lm",
+#'     trControl = trainControl(method = "cv")
+#'   )
+#'
+#'   #######################################
+#'   ## Parallel Processing Example via multicore package
+#'
+#'   ## library(doMC)
+#'   ## registerDoMC(2)
+#'
+#'   ## NOTE: don't run models form RWeka when using
+#'   ### multicore. The session will crash.
+#'
+#'   ## or use:
+#'   ## library(doMPI) or
+#'   ## library(doParallel) or
+#'   ## library(doSMP) and so on
 #' }
-#'
-#' robustControl <- trainControl(summaryFunction = madSummary)
-#' marsGrid <- expand.grid(degree = 1, nprune = (1:10) * 2)
-#'
-#' earthFit <- train(
-#'   medv ~ .,
-#'   data = BostonHousing,
-#'   method = "earth",
-#'   tuneGrid = marsGrid,
-#'   metric = "MAD",
-#'   maximize = FALSE,
-#'   trControl = robustControl
-#' )
-#'
-#' #######################################
-#' ## Example with a recipe
-#'
-#' data(cox2)
-#'
-#' cox2 <- cox2Descr
-#' cox2$potency <- cox2IC50
-#'
-#' library(recipes)
-#'
-#' cox2_recipe <- recipe(potency ~ ., data = cox2) %>%
-#'   ## Log the outcome
-#'   step_log(potency, base = 10) %>%
-#'   ## Remove sparse and unbalanced predictors
-#'   step_nzv(all_predictors()) %>%
-#'   ## Surface area predictors are highly correlated so
-#'   ## conduct PCA just on these.
-#'   step_pca(contains("VSA"), prefix = "surf_area_",
-#'            threshold = .95) %>%
-#'   ## Remove other highly correlated predictors
-#'   step_corr(all_predictors(), -starts_with("surf_area_"),
-#'             threshold = .90) %>%
-#'   ## Center and scale all of the non-PCA predictors
-#' step_center(all_predictors(), -starts_with("surf_area_")) %>%
-#'   step_scale(all_predictors(), -starts_with("surf_area_"))
-#'
-#' set.seed(888)
-#' cox2_lm <- train(
-#'   cox2_recipe,
-#'   data = cox2,
-#'   method = "lm",
-#'   trControl = trainControl(method = "cv")
-#' )
-#'
-#' #######################################
-#' ## Parallel Processing Example via multicore package
-#'
-#' ## library(doMC)
-#' ## registerDoMC(2)
-#'
-#' ## NOTE: don't run models form RWeka when using
-#' ### multicore. The session will crash.
-#'
-#' ## or use:
-#' ## library(doMPI) or
-#' ## library(doParallel) or
-#' ## library(doSMP) and so on
+#' }
 #'
 #'
 #' @export train

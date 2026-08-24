@@ -63,6 +63,7 @@ The function \code{\link[=preProcess]{preProcess()}} to produce the ICA scores f
 and for \code{newdata}.
 }
 \examples{
+\dontshow{if (caret:::has_packages("fastICA")) withAutoprint(\{ # examplesIf}
 
 data(BloodBrain)
 
@@ -71,6 +72,7 @@ icrFit <- icr(bbbDescr, logBBB, n.comp = 5)
 icrFit
 
 predict(icrFit, bbbDescr[1:5, ])
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[fastICA:fastICA]{fastICA::fastICA()}}, \code{\link[=preProcess]{preProcess()}}, \code{\link[stats:lm]{stats::lm()}}

@@ -80,47 +80,51 @@ posterior probability calculations.
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-data(mdrr)
-set.seed(1)
-inTrain <- sample(seq(along.with = mdrrClass), 450)
+\dontrun{
+if (caret:::has_packages("pls", "spls")) {
+  data(mdrr)
+  set.seed(1)
+  inTrain <- sample(seq(along.with = mdrrClass), 450)
 
-nzv <- nearZeroVar(mdrrDescr)
-filteredDescr <- mdrrDescr[, -nzv]
+  nzv <- nearZeroVar(mdrrDescr)
+  filteredDescr <- mdrrDescr[, -nzv]
 
-training <- filteredDescr[inTrain, ]
-test <- filteredDescr[-inTrain, ]
-trainMDRR <- mdrrClass[inTrain]
-testMDRR <- mdrrClass[-inTrain]
+  training <- filteredDescr[inTrain, ]
+  test <- filteredDescr[-inTrain, ]
+  trainMDRR <- mdrrClass[inTrain]
+  testMDRR <- mdrrClass[-inTrain]
 
-preProcValues <- preProcess(training)
+  preProcValues <- preProcess(training)
 
-trainDescr <- predict(preProcValues, training)
-testDescr <- predict(preProcValues, test)
+  trainDescr <- predict(preProcValues, training)
+  testDescr <- predict(preProcValues, test)
 
-useSoftmax <- plsda(trainDescr, trainMDRR, ncomp = 5)
+  useSoftmax <- plsda(trainDescr, trainMDRR, ncomp = 5)
 
-confusionMatrix(predict(useSoftmax, testDescr), testMDRR)
+  confusionMatrix(predict(useSoftmax, testDescr), testMDRR)
 
-histogram(
-  ~ predict(useSoftmax, testDescr, type = "prob")[, "Active", ] | testMDRR,
-  xlab = "Active Prob",
-  xlim = c(-.1, 1.1)
-)
+  histogram(
+    ~ predict(useSoftmax, testDescr, type = "prob")[, "Active", ] | testMDRR,
+    xlab = "Active Prob",
+    xlim = c(-.1, 1.1)
+  )
 
-## different sized objects are returned
-length(predict(useSoftmax, testDescr))
-dim(predict(useSoftmax, testDescr, ncomp = 1:3))
-dim(predict(useSoftmax, testDescr, type = "prob"))
-dim(predict(useSoftmax, testDescr, type = "prob", ncomp = 1:3))
+  ## different sized objects are returned
+  length(predict(useSoftmax, testDescr))
+  dim(predict(useSoftmax, testDescr, ncomp = 1:3))
+  dim(predict(useSoftmax, testDescr, type = "prob"))
+  dim(predict(useSoftmax, testDescr, type = "prob", ncomp = 1:3))
 
-## Using spls:
-## (As of 11/09, the spls package now has a similar function with
-## the same name. To avoid conflicts, use caret:::splsda to
-## get this version)
+  ## Using spls:
+  ## (As of 11/09, the spls package now has a similar function with
+  ## the same name. To avoid conflicts, use caret:::splsda to
+  ## get this version)
 
-splsFit <- caret:::splsda(trainDescr, trainMDRR, K = 5, eta = .9)
+  splsFit <- caret:::splsda(trainDescr, trainMDRR, K = 5, eta = .9)
 
-confusionMatrix(caret:::predict.splsda(splsFit, testDescr), testMDRR)
+  confusionMatrix(caret:::predict.splsda(splsFit, testDescr), testMDRR)
+}
+}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

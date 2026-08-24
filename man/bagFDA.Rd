@@ -68,6 +68,7 @@ using multivariate adaptive regression splines (MARS) basis functions
 The function computes a FDA model for each bootstap sample.
 }
 \examples{
+\dontshow{if (caret:::has_packages("earth", "mda", "mlbench")) withAutoprint(\{ # examplesIf}
 library(mlbench)
 library(earth)
 data(Glass)
@@ -84,7 +85,7 @@ confusionMatrix(
   data = predict(baggedFit, testData[, -10]),
   reference = testData[, 10]
 )
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 J. Friedman, ``Multivariate Adaptive Regression Splines'' (with

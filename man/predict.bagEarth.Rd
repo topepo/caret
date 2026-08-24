@@ -49,13 +49,17 @@ used, otherwise the values are calculated via the second method.
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-data(trees)
-## out of bag predictions vs just re-predicting the training set
-set.seed(655)
-fit1 <- bagEarth(Volume ~ ., data = trees, keepX = TRUE)
-set.seed(655)
-fit2 <- bagEarth(Volume ~ ., data = trees, keepX = FALSE)
-hist(predict(fit1) - predict(fit2))
+\dontrun{
+if (caret:::has_packages("earth")) {
+  data(trees)
+  ## out of bag predictions vs just re-predicting the training set
+  set.seed(655)
+  fit1 <- bagEarth(Volume ~ ., data = trees, keepX = TRUE)
+  set.seed(655)
+  fit2 <- bagEarth(Volume ~ ., data = trees, keepX = FALSE)
+  hist(predict(fit1) - predict(fit2))
+}
+}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

@@ -1014,23 +1014,27 @@ print.gafs <- function(
 #' @examplesIf !caret:::is_cran_check()
 #'
 #'
-#' set.seed(1)
-#' train_data <- twoClassSim(100, noiseVars = 10)
-#' test_data <- twoClassSim(10, noiseVars = 10)
+#' \dontrun{
+#' if (caret:::has_packages("randomForest")) {
+#'   set.seed(1)
+#'   train_data <- twoClassSim(100, noiseVars = 10)
+#'   test_data <- twoClassSim(10, noiseVars = 10)
 #'
-#' ## A short example
-#' ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
+#'   ## A short example
+#'   ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
 #'
-#' rf_search <- safs(
-#'   x = train_data[, -ncol(train_data)],
-#'   y = train_data$Class,
-#'   iters = 3,
-#'   safsControl = ctrl
-#' )
+#'   rf_search <- safs(
+#'     x = train_data[, -ncol(train_data)],
+#'     y = train_data$Class,
+#'     iters = 3,
+#'     safsControl = ctrl
+#'   )
 #'
-#' rf_search
+#'   rf_search
 #'
-#' predict(rf_search, train_data)
+#'   predict(rf_search, train_data)
+#' }
+#' }
 #'
 #' @export predict.gafs
 predict.gafs <- function(object, newdata, ...) {
@@ -1161,21 +1165,25 @@ gafs <- function(x, ...) UseMethod("gafs")
 #' @export
 #' @examplesIf !caret:::is_cran_check()
 #'
-#' set.seed(1)
-#' train_data <- twoClassSim(100, noiseVars = 10)
-#' test_data <- twoClassSim(10, noiseVars = 10)
+#' \dontrun{
+#' if (caret:::has_packages("randomForest")) {
+#'   set.seed(1)
+#'   train_data <- twoClassSim(100, noiseVars = 10)
+#'   test_data <- twoClassSim(10, noiseVars = 10)
 #'
-#' ## A short example
-#' ctrl <- gafsControl(functions = rfGA, method = "cv", number = 3)
+#'   ## A short example
+#'   ctrl <- gafsControl(functions = rfGA, method = "cv", number = 3)
 #'
-#' rf_search <- gafs(
-#'   x = train_data[, -ncol(train_data)],
-#'   y = train_data$Class,
-#'   iters = 3,
-#'   gafsControl = ctrl
-#' )
+#'   rf_search <- gafs(
+#'     x = train_data[, -ncol(train_data)],
+#'     y = train_data$Class,
+#'     iters = 3,
+#'     gafsControl = ctrl
+#'   )
 #'
-#' rf_search
+#'   rf_search
+#' }
+#' }
 #'
 #' @export gafs.default
 "gafs.default" <-
@@ -1498,25 +1506,29 @@ gafs <- function(x, ...) UseMethod("gafs")
 #' @export
 #' @examplesIf !caret:::is_cran_check()
 #'
-#' set.seed(1)
-#' train_data <- twoClassSim(100, noiseVars = 10)
-#' test_data <- twoClassSim(10, noiseVars = 10)
+#' \dontrun{
+#' if (caret:::has_packages("randomForest")) {
+#'   set.seed(1)
+#'   train_data <- twoClassSim(100, noiseVars = 10)
+#'   test_data <- twoClassSim(10, noiseVars = 10)
 #'
-#' ## A short example
-#' ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
+#'   ## A short example
+#'   ctrl <- safsControl(functions = rfSA, method = "cv", number = 3)
 #'
-#' rf_search <- safs(
-#'   x = train_data[, -ncol(train_data)],
-#'   y = train_data$Class,
-#'   iters = 50,
-#'   safsControl = ctrl
-#' )
+#'   rf_search <- safs(
+#'     x = train_data[, -ncol(train_data)],
+#'     y = train_data$Class,
+#'     iters = 50,
+#'     safsControl = ctrl
+#'   )
 #'
-#' plot(rf_search)
-#' plot(rf_search, output = "lattice", auto.key = list(columns = 2))
+#'   plot(rf_search)
+#'   plot(rf_search, output = "lattice", auto.key = list(columns = 2))
 #'
-#' plot_data <- plot(rf_search, output = "data")
-#' summary(plot_data)
+#'   plot_data <- plot(rf_search, output = "data")
+#'   summary(plot_data)
+#' }
+#' }
 #'
 #' @export plot.gafs
 plot.gafs <- function(

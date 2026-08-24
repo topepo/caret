@@ -11,7 +11,7 @@
 #' @return A character representation of the bagged earth object.
 #' @seealso [earth::earth()]
 #' @keywords models
-#' @examples
+#' @examplesIf caret:::has_packages("earth")
 #'
 #' a <- bagEarth(Volume ~ ., data = trees, B = 3)
 #' format(a)

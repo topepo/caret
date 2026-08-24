@@ -97,33 +97,37 @@ penalty.
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-# simulate a PLS regression model
-test <- data.frame(ncomp = 1:5, RMSE = c(3, 1.1, 1.02, 1, 2), RMSESD = .4)
+\dontrun{
+if (caret:::has_packages("earth")) {
+  # simulate a PLS regression model
+  test <- data.frame(ncomp = 1:5, RMSE = c(3, 1.1, 1.02, 1, 2), RMSESD = .4)
 
-best(test, "RMSE", maximize = FALSE)
-oneSE(test, "RMSE", maximize = FALSE, num = 10)
-tolerance(test, "RMSE", tol = 3, maximize = FALSE)
+  best(test, "RMSE", maximize = FALSE)
+  oneSE(test, "RMSE", maximize = FALSE, num = 10)
+  tolerance(test, "RMSE", tol = 3, maximize = FALSE)
 
-### usage example
+  ### usage example
 
-data(BloodBrain)
+  data(BloodBrain)
 
-marsGrid <- data.frame(degree = 1, nprune = (1:10) * 3)
+  marsGrid <- data.frame(degree = 1, nprune = (1:10) * 3)
 
-set.seed(1)
-marsFit <- train(
-  bbbDescr,
-  logBBB,
-  method = "earth",
-  tuneGrid = marsGrid,
-  trControl = trainControl(
-    method = "cv",
-    number = 10,
-    selectionFunction = "tolerance"
+  set.seed(1)
+  marsFit <- train(
+    bbbDescr,
+    logBBB,
+    method = "earth",
+    tuneGrid = marsGrid,
+    trControl = trainControl(
+      method = "cv",
+      number = 10,
+      selectionFunction = "tolerance"
+    )
   )
-)
 
-# around 18 terms should yield the smallest CV RMSE
+  # around 18 terms should yield the smallest CV RMSE
+}
+}
 \dontshow{\}) # examplesIf}
 }
 \references{

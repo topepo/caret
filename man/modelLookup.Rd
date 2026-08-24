@@ -60,14 +60,18 @@ The column \code{seq} is no longer included in the output of \code{modelLookup}.
 \examples{
 \dontshow{if (!caret:::is_cran_check()) withAutoprint(\{ # examplesIf}
 
-modelLookup()
-modelLookup("gbm")
+\dontrun{
+if (caret:::has_packages("pls")) {
+  modelLookup()
+  modelLookup("gbm")
 
-getModelInfo("pls")
-getModelInfo("^pls")
-getModelInfo("pls", regex = FALSE)
+  getModelInfo("pls")
+  getModelInfo("^pls")
+  getModelInfo("pls", regex = FALSE)
 
-checkInstall(getModelInfo("pls")$library)
+  checkInstall(getModelInfo("pls")$library)
+}
+}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

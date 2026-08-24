@@ -10,3 +10,4 @@
 ^inst/release_process$
 ^man-roxygen$
 ^plans$
+^\.git-blame-ignore-revs$
