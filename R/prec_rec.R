@@ -91,61 +91,32 @@ recall <- function(data, ...) UseMethod("recall")
 
 #' @rdname recall
 #' @export
-"recall.table" <- function(data, relevant = rownames(data)[1], ...) {
-  if (!isTRUE(all.equal(nrow(data), ncol(data)))) {
-    stop("the table must have nrow = ncol")
-  }
-  if (!isTRUE(all.equal(rownames(data), colnames(data)))) {
-    stop("the table must the same groups in the same order")
-  }
-
-  if (nrow(data) > 2) {
-    tmp <- data
-    data <- matrix(NA, 2, 2)
-
-    colnames(data) <- rownames(data) <- c("rel", "irrel")
-    irrelCol <- which(!(colnames(tmp) %in% relevant))
-    relCol <- which(colnames(tmp) %in% relevant)
-
-    data[1, 1] <- sum(tmp[relCol, relCol])
-    data[1, 2] <- sum(tmp[relCol, irrelCol])
-    data[2, 1] <- sum(tmp[irrelCol, relCol])
-    data[2, 2] <- sum(tmp[irrelCol, irrelCol])
-    data <- as.table(data)
-    relevant <- "rel"
-    rm(tmp)
-  }
-  numer <- data[relevant, relevant]
-  denom <- sum(data[, relevant])
-  rec <- ifelse(denom > 0, numer / denom, NA)
-  rec
+recall.table <- function(data, relevant = rownames(data)[1], ...) {
+  check_conf_table(data)
+  table_metric(yardstick::recall, data, relevant)
 }
 
 #' @rdname recall
 #' @export
-recall.default <- function(
-  data,
-  reference,
-  relevant = levels(reference)[1],
-  na.rm = TRUE,
-  ...
-) {
-  if (!is.factor(reference) || !is.factor(data)) {
-    stop("input data must be a factor")
-  }
-  if (length(unique(c(levels(reference), levels(data)))) != 2) {
-    stop("input data must have the same two levels")
-  }
-  if (na.rm) {
-    cc <- complete.cases(data) & complete.cases(reference)
-    if (any(!cc)) {
-      data <- data[cc]
-      reference <- reference[cc]
+"recall.default" <-
+  function(
+    data,
+    reference,
+    relevant = levels(reference)[1],
+    na.rm = TRUE,
+    ...
+  ) {
+    xtab <- factor_conf_table(
+      data,
+      reference,
+      na.rm,
+      "input data must be a factor"
+    )
+    if (is.null(xtab)) {
+      return(NA_real_)
     }
+    recall.table(xtab, relevant = relevant)
   }
-  xtab <- table(data, reference)
-  recall.table(xtab, relevant = relevant)
-}
 
 #' @rdname recall
 #' @export
@@ -153,58 +124,31 @@ precision <- function(data, ...) UseMethod("precision")
 
 #' @rdname recall
 #' @export
-precision.default <- function(
-  data,
-  reference,
-  relevant = levels(reference)[1],
-  na.rm = TRUE,
-  ...
-) {
-  if (!is.factor(reference) || !is.factor(data)) {
-    stop("input data must be a factor")
-  }
-  if (length(unique(c(levels(reference), levels(data)))) != 2) {
-    stop("input data must have the same two levels")
-  }
-  if (na.rm) {
-    cc <- complete.cases(data) & complete.cases(reference)
-    if (any(!cc)) {
-      data <- data[cc]
-      reference <- reference[cc]
+"precision.default" <-
+  function(
+    data,
+    reference,
+    relevant = levels(reference)[1],
+    na.rm = TRUE,
+    ...
+  ) {
+    xtab <- factor_conf_table(
+      data,
+      reference,
+      na.rm,
+      "input data must be a factor"
+    )
+    if (is.null(xtab)) {
+      return(NA_real_)
     }
+    precision.table(xtab, relevant = relevant)
   }
-  xtab <- table(data, reference)
-  precision.table(xtab, relevant = relevant)
-}
 
 #' @rdname recall
 #' @export
 precision.table <- function(data, relevant = rownames(data)[1], ...) {
-  if (!isTRUE(all.equal(nrow(data), ncol(data)))) {
-    stop("the table must have nrow = ncol")
-  }
-  if (!isTRUE(all.equal(rownames(data), colnames(data)))) {
-    stop("the table must the same groups in the same order")
-  }
-  if (nrow(data) > 2) {
-    tmp <- data
-    data <- matrix(NA, 2, 2)
-    colnames(data) <- rownames(data) <- c("rel", "irrel")
-    irrelCol <- which(!(colnames(tmp) %in% relevant))
-    relCol <- which(colnames(tmp) %in% relevant)
-    data[1, 1] <- sum(tmp[relCol, relCol])
-    data[1, 2] <- sum(tmp[relCol, irrelCol])
-    data[2, 1] <- sum(tmp[irrelCol, relCol])
-    data[2, 2] <- sum(tmp[irrelCol, irrelCol])
-    data <- as.table(data)
-    relevant <- "rel"
-    relevant
-    rm(tmp)
-  }
-  numer <- data[relevant, relevant]
-  denom <- sum(data[relevant, ])
-  spec <- ifelse(denom > 0, numer / denom, NA)
-  spec
+  check_conf_table(data)
+  table_metric(yardstick::precision, data, relevant)
 }
 
 #' @rdname recall
@@ -213,37 +157,32 @@ F_meas <- function(data, ...) UseMethod("F_meas")
 
 #' @rdname recall
 #' @export
-F_meas.default <- function(
-  data,
-  reference,
-  relevant = levels(reference)[1],
-  beta = 1,
-  na.rm = TRUE,
-  ...
-) {
-  if (!is.factor(reference) || !is.factor(data)) {
-    stop("input data must be a factor")
-  }
-  if (length(unique(c(levels(reference), levels(data)))) != 2) {
-    stop("input data must have the same two levels")
-  }
-  if (na.rm) {
-    cc <- complete.cases(data) & complete.cases(reference)
-    if (any(!cc)) {
-      data <- data[cc]
-      reference <- reference[cc]
+"F_meas.default" <-
+  function(
+    data,
+    reference,
+    relevant = levels(reference)[1],
+    beta = 1,
+    na.rm = TRUE,
+    ...
+  ) {
+    xtab <- factor_conf_table(
+      data,
+      reference,
+      na.rm,
+      "input data must be a factor"
+    )
+    if (is.null(xtab)) {
+      return(NA_real_)
     }
+    F_meas.table(xtab, relevant = relevant, beta = beta)
   }
-  xtab <- table(data, reference)
-  F_meas.table(xtab, relevant = relevant, beta = beta)
-}
 
 #' @rdname recall
 #' @export
 F_meas.table <- function(data, relevant = rownames(data)[1], beta = 1, ...) {
-  prec <- precision.table(data, relevant = relevant)
-  rec <- recall.table(data, relevant = relevant)
-  (1 + beta^2) * prec * rec / ((beta^2 * prec) + rec)
+  check_conf_table(data)
+  table_metric(yardstick::f_meas, data, relevant, beta = beta)
 }
 
 #' @rdname postResample

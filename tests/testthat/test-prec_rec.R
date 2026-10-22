@@ -158,3 +158,33 @@ test_that("prSummary gives a PR AUC of one when every sample is an event", {
   out <- prSummary(d, lev = c("A", "B"))
   expect_equal(unname(out["AUC"]), 1)
 })
+
+test_that("the factor methods accept levels in a different order", {
+  ref <- factor(
+    c("yes", "yes", "no", "no", "yes", "no"),
+    levels = c("yes", "no")
+  )
+  prd <- factor(
+    c("yes", "no", "no", "yes", "yes", "no"),
+    levels = c("no", "yes")
+  )
+  expect_equal(precision(prd, ref, relevant = "yes"), 2 / 3)
+  expect_equal(recall(prd, ref, relevant = "yes"), 2 / 3)
+  expect_equal(F_meas(prd, ref, relevant = "yes"), 2 / 3)
+})
+
+test_that("F_meas is zero when precision and recall are both zero", {
+  tab <- as.table(matrix(
+    c(0, 5, 5, 0),
+    2,
+    dimnames = list(c("a", "b"), c("a", "b"))
+  ))
+  expect_equal(F_meas(tab), 0)
+})
+
+test_that("F_meas passes beta to yardstick", {
+  expect_equal(
+    F_meas(pr_pred, pr_truth, relevant = "Relevant", beta = 2),
+    yardstick::f_meas_vec(pr_truth, pr_pred, beta = 2)
+  )
+})

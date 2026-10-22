@@ -90,7 +90,8 @@ filterVarImp <- function(x, y, nonpara = FALSE, ...) {
       Stat = do.call("cbind", lStat)
 
       loutStat <- lapply(1:k, function(j) {
-        apply(Stat[, CombsN[, j], drop = FALSE], 1, max)
+        in_pair <- CombsN[1, ] == j | CombsN[2, ] == j
+        apply(Stat[, in_pair, drop = FALSE], 1, max)
       })
 
       outStat = do.call("cbind", loutStat)

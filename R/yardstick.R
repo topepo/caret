@@ -194,3 +194,67 @@ yardstick_direction <- function(metric) {
   }
   attr(fn, "direction")
 }
+
+# caret's confusion matrices have predictions in the rows and the reference
+# data in the columns. These helpers collapse one into a 2x2 table with the
+# event class(es) first, the layout that yardstick's table methods expect, so
+# that multiclass tables are treated as "event versus the rest".
+check_conf_table <- function(data) {
+  # report errors from the user-facing method (e.g. sensitivity.table())
+  caller <- sys.call(-1)
+  if (!isTRUE(all.equal(nrow(data), ncol(data)))) {
+    stop(simpleError("the table must have nrow = ncol", call = caller))
+  }
+  if (!isTRUE(all.equal(rownames(data), colnames(data)))) {
+    stop(simpleError(
+      "the table must the same groups in the same order",
+      call = caller
+    ))
+  }
+  invisible(data)
+}
+
+event_table <- function(data, event) {
+  is_event <- colnames(data) %in% event
+  groups <- list(which(is_event), which(!is_event))
+  counts <- matrix(0, 2, 2)
+  for (i in 1:2) {
+    for (j in 1:2) {
+      counts[i, j] <- sum(data[groups[[i]], groups[[j]]])
+    }
+  }
+  dimnames(counts) <- list(c("event", "other"), c("event", "other"))
+  as.table(counts)
+}
+
+# Undefined values (e.g. from a zero denominator) are NA; yardstick also warns
+# about them. S3 dispatch looks for methods in the calling environment first,
+# where caret's own precision.table() and recall.table() would be found
+# instead of yardstick's, so the generic is called from an empty environment.
+table_metric <- function(fn, data, event, ...) {
+  args <- list(event_table(data, event), ...)
+  res <- suppressWarnings(do.call(fn, args, envir = emptyenv()))$.estimate
+  if (is.nan(res)) {
+    res <- NA_real_
+  }
+  res
+}
+
+# Validation shared by the default (factor) methods; returns the 2x2 table of
+# predictions by reference values, or NULL when missing values should give NA
+factor_conf_table <- function(data, reference, na.rm, msg) {
+  # report errors from the user-facing method (e.g. sensitivity.default())
+  caller <- sys.call(-1)
+  if (!is.factor(reference) || !is.factor(data)) {
+    stop(simpleError(msg, call = caller))
+  }
+  ## todo: relax the =2 constraint and let ngative length be > 2
+  if (length(unique(c(levels(reference), levels(data)))) != 2) {
+    stop(simpleError("input data must have the same two levels", call = caller))
+  }
+  if (!na.rm && (anyNA(data) || anyNA(reference))) {
+    return(NULL)
+  }
+  data <- factor(data, levels = levels(reference))
+  table(data, reference)
+}

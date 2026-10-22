@@ -745,3 +745,29 @@ test_that("check_dims and get_range read a survival outcome by row", {
   # its range comes from the event times
   expect_identical(caret:::get_range(y), extendrange(c(5, 10, 15, 20)))
 })
+
+test_that("RMSE, MAE and R2 agree with yardstick", {
+  set.seed(8650)
+  obs <- rnorm(30)
+  pred <- obs + rnorm(30)
+  pred[3] <- NA
+  expect_equal(RMSE(pred, obs, na.rm = TRUE), yardstick::rmse_vec(obs, pred))
+  expect_equal(MAE(pred, obs, na.rm = TRUE), yardstick::mae_vec(obs, pred))
+  expect_equal(
+    caret::R2(pred, obs, na.rm = TRUE),
+    yardstick::rsq_vec(obs, pred)
+  )
+  expect_equal(
+    caret::R2(pred, obs, formula = "traditional", na.rm = TRUE),
+    yardstick::rsq_trad_vec(obs, pred)
+  )
+  expect_true(is.na(RMSE(pred, obs)))
+})
+
+test_that("RMSE, MAE and R2 accept one-column prediction matrices", {
+  pred <- matrix(c(1, 2, 3, 4), ncol = 1)
+  obs <- c(1, 2, 3, 5)
+  expect_equal(RMSE(pred, obs), 0.5)
+  expect_equal(MAE(pred, obs), 0.25)
+  expect_equal(caret::R2(pred, obs), cor(obs, c(1, 2, 3, 4))^2)
+})

@@ -63,6 +63,25 @@ test_that("filterVarImp works with one predictor and more than two classes", {
   expect_equal(vi, filterVarImp(iris[, 1:2], iris$Species)[1, ])
 })
 
+test_that("filterVarImp uses every class pair for four or more classes", {
+  set.seed(6431)
+  cl <- letters[1:4]
+  y <- factor(rep(cl, each = 25))
+  x <- data.frame(p = rnorm(100) + as.integer(y), q = rnorm(100))
+  vi <- filterVarImp(x, y)
+
+  pair_auc <- function(pred, a, b) {
+    keep <- y %in% c(a, b)
+    auc <- yardstick::roc_auc_vec(factor(y[keep], levels = c(a, b)), pred[keep])
+    max(auc, 1 - auc)
+  }
+  for (k in cl) {
+    others <- setdiff(cl, k)
+    expected <- max(vapply(others, function(o) pair_auc(x$p, k, o), numeric(1)))
+    expect_equal(vi["p", k], expected)
+  }
+})
+
 test_that("filterVarImp converts factor predictors to numeric", {
   x <- data.frame(a = iris$Sepal.Length, f = factor(rep(letters[1:5], 30)))
   vi <- filterVarImp(x, iris$Species)
