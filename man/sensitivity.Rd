@@ -220,7 +220,8 @@ Altman, D.G., Bland, J.M. (1994) "Diagnostic tests 2: predictive values,"
 Other performance:
 \code{\link[=confusionMatrix]{confusionMatrix()}},
 \code{\link[=defaultSummary]{defaultSummary()}},
-\code{\link[=recall]{recall()}}
+\code{\link[=recall]{recall()}},
+\code{\link[=yardstickSummary]{yardstickSummary()}}
 }
 \author{
 Max Kuhn

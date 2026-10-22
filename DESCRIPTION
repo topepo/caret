@@ -64,13 +64,13 @@ Depends:
     lattice (>= 0.20),
     R (>= 4.1)
 Imports:
+    cli,
     e1071,
     foreach,
     grDevices,
     methods,
     nlme,
     plyr,
-    pROC,
     recipes (>= 0.1.10),
     reshape2,
     stats,
@@ -100,7 +100,6 @@ Suggests:
     mda,
     mgcv,
     mlbench,
-    MLmetrics,
     nnet,
     pamr,
     party (>= 0.9-99992),

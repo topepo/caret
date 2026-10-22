@@ -1207,14 +1207,7 @@ gafs <- function(x, ...) UseMethod("gafs")
       gafsControl$metric <- rep(ifelse(is.factor(y), "Accuracy", "RMSE"), 2)
     }
     if (is.null(gafsControl$maximize)) {
-      gafsControl$maximize <- rep(
-        ifelse(
-          gafsControl$metric %in% c("RMSE", "MAE", "logLoss"),
-          FALSE,
-          TRUE
-        ),
-        2
-      )
+      gafsControl$maximize <- rep(!is_minimized(gafsControl$metric), 2)
     }
     if (is.null(names(gafsControl$metric))) {
       names(gafsControl$metric) <- c("internal", "external")
@@ -1862,14 +1855,7 @@ update.gafs <- function(object, iter, x, y, ...) {
       gafsControl$metric <- rep(ifelse(is.factor(y), "Accuracy", "RMSE"), 2)
     }
     if (is.null(gafsControl$maximize)) {
-      gafsControl$maximize <- rep(
-        ifelse(
-          gafsControl$metric %in% c("RMSE", "MAE", "logLoss"),
-          FALSE,
-          TRUE
-        ),
-        2
-      )
+      gafsControl$maximize <- rep(!is_minimized(gafsControl$metric), 2)
     }
     if (is.null(names(gafsControl$metric))) {
       names(gafsControl$metric) <- c("internal", "external")

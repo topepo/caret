@@ -15,13 +15,7 @@ test_that("twoClassSummary is calculating correctly", {
   te_prob <- as.data.frame(te_prob, stringsAsFactors = TRUE)
 
   cm <- caret::confusionMatrix(te_pred, te_dat$Class)
-  roc_crv <- pROC::roc(
-    te_dat$Class,
-    te_prob$Class1,
-    direction = ">",
-    quiet = TRUE
-  )
-  roc_auc <- as.numeric(pROC::auc(roc_crv))
+  roc_auc <- yardstick::roc_auc_vec(te_dat$Class, te_prob$Class1)
 
   te_res <- te_prob
   te_res$pred <- te_pred
@@ -86,7 +80,6 @@ test_that("mnLogLoss clips probabilities of zero instead of returning Inf", {
 
 test_that("multiClassSummary presenting warnings from train", {
   skip_on_cran()
-  skip_if_not_installed("MLmetrics")
   N = 1000
 
   M = 2
@@ -123,7 +116,6 @@ test_that("multiClassSummary presenting warnings from train", {
 
 test_that("multiClassSummary ROC values", {
   skip_on_cran()
-  skip_if_not_installed("MLmetrics")
 
   lvls <- levels(iris$Species)
   set.seed(46337)
@@ -145,7 +137,7 @@ test_that("multiClassSummary ROC values", {
     tmp <- dat
     tmp$obs <- ifelse(dat$obs == i, "pos", "neg")
     tmp$obs <- factor(tmp$obs, levels = c("pos", "neg"))
-    exp_roc[i] <- pROC::roc(tmp$obs, tmp[, i], direct = ">", quiet = TRUE)$auc
+    exp_roc[i] <- yardstick::roc_auc_vec(tmp$obs, tmp[, i])
   }
   expect_equal(mean(exp_roc), unname(obs_roc["AUC"]))
 })
@@ -191,9 +183,8 @@ test_that("postResample handles degenerate inputs", {
   expect_equal(unname(single["Accuracy"]), 1)
   expect_true(is.na(single["Kappa"]))
 
-  # an unusable observed vector makes the correlation error, giving NA
-  odd <- suppressWarnings(postResample(c(1, 2, 3), matrix(1:4, 2)))
-  expect_true(is.na(odd["Rsquared"]))
+  # predictions and observations of different lengths are an error
+  expect_snapshot(postResample(c(1, 2, 3), matrix(1:4, 2)), error = TRUE)
 })
 
 test_that("twoClassSummary validates its levels and tolerates flat ROC input", {
@@ -248,8 +239,6 @@ test_that("multiClassSummary validates levels and works without probabilities", 
 })
 
 test_that("multiClassSummary reports NA AUCs when the curves fail", {
-  skip_if_not_installed("MLmetrics")
-
   # a single observed class breaks both the ROC and PR curves
   d <- data.frame(
     obs = factor(rep("A", 6), levels = c("A", "B")),
@@ -259,4 +248,48 @@ test_that("multiClassSummary reports NA AUCs when the curves fail", {
   )
   out <- multiClassSummary(d, lev = c("A", "B"))
   expect_true(is.na(out["AUC"]))
+})
+
+test_that("multiClassSummary macro averages agree with yardstick", {
+  set.seed(2617)
+  cl <- c("a", "b", "c")
+  obs <- factor(sample(cl, 60, replace = TRUE), levels = cl)
+  pred <- factor(sample(cl, 60, replace = TRUE), levels = cl)
+  res <- multiClassSummary(data.frame(obs = obs, pred = pred), lev = cl)
+  expect_equal(
+    res[["Mean_F1"]],
+    yardstick::f_meas_vec(obs, pred, estimator = "macro")
+  )
+  expect_equal(
+    res[["Mean_Neg_Pred_Value"]],
+    yardstick::npv_vec(obs, pred, estimator = "macro")
+  )
+  expect_equal(
+    res[["Mean_Detection_Rate"]],
+    mean(obs == pred) / 3
+  )
+})
+
+test_that("multiClassSummary drops classes that are never predicted", {
+  cl <- c("a", "b", "c")
+  d <- data.frame(
+    obs = factor(c("a", "b", "c", "a", "b", "c"), levels = cl),
+    pred = factor(c("a", "b", "b", "a", "a", "b"), levels = cl)
+  )
+  expect_no_warning(res <- multiClassSummary(d, lev = cl))
+  # precision for "c" is undefined, so the mean uses "a" and "b" only
+  expect_equal(res[["Mean_Precision"]], mean(c(2 / 3, 1 / 3)))
+})
+
+test_that("twoClassSummary silently gives NA for undefined metrics", {
+  d <- data.frame(
+    obs = factor(rep("A", 4), levels = c("A", "B")),
+    pred = factor(c("A", "B", "A", "B"), levels = c("A", "B")),
+    A = c(0.9, 0.1, 0.8, 0.2),
+    B = c(0.1, 0.9, 0.2, 0.8)
+  )
+  expect_no_warning(res <- twoClassSummary(d, lev = c("A", "B")))
+  expect_true(is.na(res[["ROC"]]))
+  expect_true(is.na(res[["Spec"]]))
+  expect_equal(res[["Sens"]], 0.5)
 })

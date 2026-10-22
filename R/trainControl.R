@@ -80,7 +80,8 @@
 #'   classification models (along with predicted values) in each resample?
 #' @param summaryFunction a function to compute performance metrics across
 #'   resamples. The arguments to the function should be the same as those in
-#'   [defaultSummary()]. Note that if `method = "oob"` is used, this option is
+#'   [defaultSummary()]. [yardstickSummary()] can be used to compute metrics
+#'   from the yardstick package. Note that if `method = "oob"` is used, this option is
 #'   ignored and a warning is issued.
 #' @param selectionFunction the function used to select the optimal tuning
 #'   parameter. This can be a name of the function or the function itself. See

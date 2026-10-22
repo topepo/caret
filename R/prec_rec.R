@@ -249,7 +249,6 @@ F_meas.table <- function(data, relevant = rownames(data)[1], beta = 1, ...) {
 #' @rdname postResample
 #' @export
 prSummary <- function(data, lev = NULL, model = NULL) {
-  requireNamespaceQuietStop("MLmetrics")
   if (length(levels(data$obs)) > 2) {
     stop(paste(
       "Your outcome has",
@@ -272,34 +271,15 @@ prSummary <- function(data, lev = NULL, model = NULL) {
     )
   }
 
-  pr_auc <-
-    try(
-      MLmetrics::PRAUC(
-        y_pred = data[, lev[1]],
-        y_true = ifelse(data$obs == lev[1], 1, 0)
-      ),
-      silent = TRUE
-    )
-  if (inherits(pr_auc, "try-error")) {
-    pr_auc <- NA
-  }
-
-  c(
-    AUC = pr_auc,
-    Precision = precision.default(
-      data = data$pred,
-      reference = data$obs,
-      relevant = lev[1]
-    ),
-    Recall = recall.default(
-      data = data$pred,
-      reference = data$obs,
-      relevant = lev[1]
-    ),
-    F = F_meas.default(
-      data = data$pred,
-      reference = data$obs,
-      relevant = lev[1]
+  # undefined metrics (e.g. no predicted events) are NA; yardstick also warns
+  # about them
+  suppressWarnings(
+    out <- c(
+      AUC = yardstick::pr_auc_vec(data$obs, data[, lev[1]]),
+      Precision = yardstick::precision_vec(data$obs, data$pred),
+      Recall = yardstick::recall_vec(data$obs, data$pred),
+      F = yardstick::f_meas_vec(data$obs, data$pred)
     )
   )
+  out
 }

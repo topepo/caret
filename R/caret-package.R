@@ -1,7 +1,6 @@
 ## usethis namespace: start
 #' @import foreach ggplot2 lattice methods nlme plyr recipes reshape2
 #' @importFrom grDevices extendrange
-#' @importFrom pROC roc
 #' @importFrom plyr ddply
 #' @importFrom recipes all_outcomes all_predictors bake has_role juice prep
 #' @importFrom stats .checkMFClasses .getXlevels aggregate anova approx

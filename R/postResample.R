@@ -78,7 +78,7 @@
 #'   `method` argument of [train()].
 #' @return A vector of performance estimates.
 #' @author Max Kuhn, Zachary Mayer
-#' @seealso [trainControl()]
+#' @seealso [trainControl()], [yardstickSummary()]
 #' @references Kvalseth. Cautionary note about \eqn{R^2}. American Statistician
 #'   (1985) vol. 39 (4) pp. 279-285
 #' @family performance
@@ -100,9 +100,7 @@
 #'
 #' defaultSummary(dat, lev = classes)
 #' twoClassSummary(dat, lev = classes)
-#' if (caret:::has_packages("MLmetrics")) {
-#'   prSummary(dat, lev = classes)
-#' }
+#' prSummary(dat, lev = classes)
 #' mnLogLoss(dat, lev = classes)
 #'
 #' @export postResample
@@ -115,21 +113,12 @@ postResample <- function(pred, obs) {
     if (length(obs) + length(pred) == 0) {
       out <- rep(NA, 3)
     } else {
-      if (length(unique(pred)) < 2 || length(unique(obs)) < 2) {
-        resamplCor <- NA
-      } else {
-        resamplCor <- try(
-          cor(pred, obs, use = "pairwise.complete.obs"),
-          silent = TRUE
-        )
-        if (inherits(resamplCor, "try-error")) {
-          resamplCor <- NA
-        }
-      }
-      mse <- mean((pred - obs)^2)
-      mae <- mean(abs(pred - obs))
-
-      out <- c(sqrt(mse), resamplCor^2, mae)
+      # rsq is undefined (and yardstick warns) when either vector is constant
+      out <- c(
+        yardstick::rmse_vec(obs, pred),
+        suppressWarnings(yardstick::rsq_vec(obs, pred)),
+        yardstick::mae_vec(obs, pred)
+      )
     }
     names(out) <- c("RMSE", "Rsquared", "MAE")
   } else {
@@ -137,8 +126,10 @@ postResample <- function(pred, obs) {
       out <- rep(NA, 2)
     } else {
       pred <- factor(pred, levels = levels(obs))
-      requireNamespaceQuietStop("e1071")
-      out <- unlist(e1071::classAgreement(table(obs, pred)))[c("diag", "kappa")]
+      out <- c(
+        yardstick::accuracy_vec(obs, pred),
+        yardstick::kap_vec(obs, pred)
+      )
     }
     names(out) <- c("Accuracy", "Kappa")
   }
@@ -159,23 +150,17 @@ twoClassSummary <- function(data, lev = NULL, model = NULL) {
       "levels. The twoClassSummary() function isn't appropriate."
     ))
   }
-  requireNamespaceQuietStop('pROC')
   if (!all(levels(data[, "pred"]) == lev)) {
     stop("levels of observed and predicted data do not match")
   }
-  rocObject <- try(
-    pROC::roc(data$obs, data[, lev[1]], direction = ">", quiet = TRUE),
-    silent = TRUE
-  )
-  if (inherits(rocObject, "try-error")) {
-    rocAUC <- NA
-  } else {
-    rocAUC <- rocObject$auc
-  }
-  out <- c(
-    rocAUC,
-    sensitivity(data[, "pred"], data[, "obs"], lev[1]),
-    specificity(data[, "pred"], data[, "obs"], lev[2])
+  # undefined metrics (e.g. a resample with one class) are NA; yardstick also
+  # warns about them
+  suppressWarnings(
+    out <- c(
+      yardstick::roc_auc_vec(data$obs, data[, lev[1]]),
+      yardstick::sens_vec(data$obs, data$pred),
+      yardstick::spec_vec(data$obs, data$pred)
+    )
   )
   names(out) <- c("ROC", "Sens", "Spec")
   out
@@ -215,109 +200,74 @@ multiClassSummary <- function(data, lev = NULL, model = NULL) {
   }
 
   has_class_probs <- all(lev %in% colnames(data))
+  obs <- data[, "obs"]
+  pred <- data[, "pred"]
+  classes <- levels(pred)
+  is_binary <- length(classes) == 2
 
   if (has_class_probs) {
     ## Overall multinomial loss
     lloss <- mnLogLoss(data = data, lev = lev, model = model)
 
-    requireNamespaceQuietStop("pROC")
-    requireNamespaceQuietStop("MLmetrics")
-
-    #Calculate custom one-vs-all ROC curves for each class
+    # One-vs-all ROC and PR curves for each class, averaged over the classes
+    # that occur in the data
     prob_stats <-
-      lapply(levels(data[, "pred"]), function(x) {
-        #Grab one-vs-all data for the class
-        obs <- ifelse(data[, "obs"] == x, 1, 0)
-        prob <- data[, x]
-        roc_auc <- try(
-          pROC::roc(obs, data[, x], direction = "<", quiet = TRUE),
-          silent = TRUE
+      lapply(classes, function(x) {
+        is_x <- factor(obs == x, levels = c(TRUE, FALSE))
+        suppressWarnings(
+          res <- c(
+            ROC = yardstick::roc_auc_vec(is_x, data[, x]),
+            AUC = yardstick::pr_auc_vec(is_x, data[, x])
+          )
         )
-        if (inherits(roc_auc, "try-error")) {
-          roc_auc <- NA
-        } else {
-          roc_auc <- roc_auc$auc
-        }
-        pr_auc <- try(
-          MLmetrics::PRAUC(y_pred = data[, x], y_true = obs),
-          silent = TRUE
-        )
-        if (inherits(pr_auc, "try-error")) {
-          pr_auc <- NA
-        }
-        res <- c(ROC = roc_auc, AUC = pr_auc)
-        return(res)
+        res
       })
     prob_stats <- do.call("rbind", prob_stats)
     prob_stats <- colMeans(prob_stats, na.rm = TRUE)
   }
 
-  #Calculate confusion matrix-based statistics
-  CM <- confusionMatrix(data[, "pred"], data[, "obs"], mode = "everything")
-
-  #Aggregate and average class-wise stats
-  #Todo: add weights
-  # RES: support two classes here as well
-  if (length(levels(data[, "pred"])) == 2) {
-    class_stats <- CM$byClass
+  # With two classes, the first level is the event; otherwise, the per-class
+  # statistics are macro averaged
+  if (is_binary) {
+    estimator <- "binary"
   } else {
-    class_stats <- colMeans(CM$byClass)
-    names(class_stats) <- paste("Mean", names(class_stats))
+    estimator <- "macro"
+  }
+  class_stat <- function(fn) {
+    suppressWarnings(fn(obs, pred, estimator = estimator))
+  }
+  if (is_binary) {
+    detection_rate <- mean(pred == classes[1] & obs == classes[1])
+  } else {
+    detection_rate <- mean(pred == obs) / length(classes)
   }
 
-  # Aggregate overall stats
+  stats <- c(
+    Accuracy = yardstick::accuracy_vec(obs, pred),
+    Kappa = yardstick::kap_vec(obs, pred),
+    Mean_F1 = class_stat(yardstick::f_meas_vec),
+    Mean_Sensitivity = class_stat(yardstick::sens_vec),
+    Mean_Specificity = class_stat(yardstick::spec_vec),
+    Mean_Pos_Pred_Value = class_stat(yardstick::ppv_vec),
+    Mean_Neg_Pred_Value = class_stat(yardstick::npv_vec),
+    Mean_Precision = class_stat(yardstick::precision_vec),
+    Mean_Recall = class_stat(yardstick::recall_vec),
+    Mean_Detection_Rate = detection_rate,
+    Mean_Balanced_Accuracy = class_stat(yardstick::bal_accuracy_vec)
+  )
+
   if (has_class_probs) {
-    overall_stats <- c(
-      CM$overall,
+    stats <- c(
       logLoss = as.numeric(lloss),
       AUC = unname(prob_stats["ROC"]),
-      prAUC = unname(prob_stats["AUC"])
+      prAUC = unname(prob_stats["AUC"]),
+      stats
     )
-  } else {
-    overall_stats <- CM$overall
   }
-
-  # Combine overall with class-wise stats and remove some stats we don't want
-  stats <- c(overall_stats, class_stats)
-  stats <- stats[
-    !names(stats) %in%
-      c(
-        'AccuracyNull',
-        "AccuracyLower",
-        "AccuracyUpper",
-        "AccuracyPValue",
-        "McnemarPValue",
-        'Mean Prevalence',
-        'Mean Detection Prevalence'
-      )
-  ]
-
-  # Clean names
-  names(stats) <- gsub('[[:blank:]]+', '_', names(stats))
-
-  # Change name ordering to place most useful first
-  # May want to remove some of these eventually
-  stat_list <- c(
-    "Accuracy",
-    "Kappa",
-    "Mean_F1",
-    "Mean_Sensitivity",
-    "Mean_Specificity",
-    "Mean_Pos_Pred_Value",
-    "Mean_Neg_Pred_Value",
-    "Mean_Precision",
-    "Mean_Recall",
-    "Mean_Detection_Rate",
-    "Mean_Balanced_Accuracy"
-  )
-  if (has_class_probs) {
-    stat_list <- c("logLoss", "AUC", "prAUC", stat_list)
+  if (is_binary) {
+    names(stats) <- gsub("^Mean_", "", names(stats))
   }
-  if (length(levels(data[, "pred"])) == 2) {
-    stat_list <- gsub("^Mean_", "", stat_list)
-  }
+  stats[is.nan(stats)] <- NA
 
-  stats <- stats[c(stat_list)]
-
-  return(stats)
+  stats
 }
