@@ -195,9 +195,14 @@ mnLogLoss <- function(data, lev = NULL, model = NULL) {
   }
 
   dataComplete <- data[complete.cases(data), ]
-  probs <- as.matrix(dataComplete[, lev, drop = FALSE])
+  # yardstick matches probability columns to the factor levels by position
+  probs <- as.matrix(dataComplete[, levels(dataComplete$obs), drop = FALSE])
+  # yardstick's binary estimator expects only the first level's probabilities
+  if (ncol(probs) == 2) {
+    probs <- probs[, 1]
+  }
 
-  logLoss <- ModelMetrics::mlogLoss(dataComplete$obs, probs)
+  logLoss <- yardstick::mn_log_loss_vec(dataComplete$obs, probs)
   c(logLoss = logLoss)
 }
 

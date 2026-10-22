@@ -19,6 +19,43 @@ test_that("filterVarImp scores multi-class data with pairwise ROC curves", {
   expect_identical(rownames(vi), colnames(iris[, 1:4]))
 })
 
+test_that("filterVarImp ROC values are unchanged by the move to yardstick", {
+  # expected values were computed with ModelMetrics::auc() before it was
+  # replaced by yardstick::roc_auc_vec()
+  set.seed(8361)
+  n <- 150
+  x <- data.frame(
+    a = rnorm(n),
+    b = runif(n),
+    c = factor(sample(letters[1:3], n, TRUE))
+  )
+  y2 <- factor(ifelse(x$a + rnorm(n) > 0, "yes", "no"))
+  y3 <- factor(sample(c("u", "v", "w"), n, TRUE))
+
+  vi2 <- filterVarImp(x, y2)
+  expect_equal(
+    vi2$no,
+    c(0.855318372559752, 0.569968983762087, 0.536763364349571)
+  )
+
+  vi3 <- filterVarImp(x, y3)
+  expect_equal(
+    vi3$u,
+    c(0.556818181818182, 0.573181818181818, 0.611818181818182)
+  )
+  expect_equal(
+    vi3$v,
+    c(0.541487603305785, 0.551363636363636, 0.603181818181818)
+  )
+})
+
+test_that("filterVarImp gives NA for a class pair with an empty class", {
+  y <- factor(rep(c("a", "b"), each = 10), levels = c("a", "b", "c"))
+  x <- data.frame(p = seq_len(20), q = rev(seq_len(20)))
+  expect_no_warning(vi <- filterVarImp(x, y))
+  expect_all_true(is.na(vi$c))
+})
+
 test_that("filterVarImp converts factor predictors to numeric", {
   x <- data.frame(a = iris$Sepal.Length, f = factor(rep(letters[1:5], 30)))
   vi <- filterVarImp(x, iris$Species)

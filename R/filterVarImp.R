@@ -1,5 +1,10 @@
 rocPerCol <- function(dat, cls) {
-  roc_auc <- auc(cls, dat)
+  if (!is.factor(cls)) {
+    cls <- factor(cls, levels = c(0, 1))
+  }
+  # a pairwise subset with an empty class has no defined AUC; yardstick warns
+  # and returns NA
+  roc_auc <- suppressWarnings(yardstick::roc_auc_vec(cls, dat))
   max(roc_auc, 1 - roc_auc)
 }
 

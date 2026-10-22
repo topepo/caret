@@ -68,12 +68,25 @@ test_that("Twoclass logloss returns expected values", {
   expect_equal(result3, c(logLoss = 0.244998), tolerance = 0.00001)
 })
 
+test_that("mnLogLoss clips probabilities of zero instead of returning Inf", {
+  dat <- data.frame(
+    obs = factor(c("a", "b", "a"), levels = c("a", "b")),
+    a = c(0, 0.2, 0.9),
+    b = c(1, 0.8, 0.1)
+  )
+  res <- mnLogLoss(dat, lev = c("a", "b"))
+  expect_true(is.finite(res))
+  expect_equal(
+    res,
+    c(logLoss = -mean(log(c(.Machine$double.eps, 0.8, 0.9))))
+  )
+})
+
 # --- multiClassSummary --------------------------------------------------------
 
 test_that("multiClassSummary presenting warnings from train", {
   skip_on_cran()
   skip_if_not_installed("MLmetrics")
-  skip_if_not_installed("ModelMetrics", "1.2.2.2")
   N = 1000
 
   M = 2

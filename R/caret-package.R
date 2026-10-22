@@ -1,6 +1,5 @@
 ## usethis namespace: start
 #' @import foreach ggplot2 lattice methods nlme plyr recipes reshape2
-#' @importFrom ModelMetrics auc
 #' @importFrom grDevices extendrange
 #' @importFrom pROC roc
 #' @importFrom plyr ddply

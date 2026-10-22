@@ -62,13 +62,12 @@ BugReports: https://github.com/topepo/caret/issues
 Depends:
     ggplot2,
     lattice (>= 0.20),
-    R (>= 3.2.0)
+    R (>= 4.1)
 Imports:
     e1071,
     foreach,
     grDevices,
     methods,
-    ModelMetrics (>= 1.2.2.2),
     nlme,
     plyr,
     pROC,
@@ -78,7 +77,8 @@ Imports:
     stats4,
     utils,
     vctrs,
-    withr (>= 2.0.0)
+    withr (>= 2.0.0),
+    yardstick (>= 1.4.0)
 Suggests:
     BiocManager,
     BradleyTerry2,
