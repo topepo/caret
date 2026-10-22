@@ -83,14 +83,14 @@ filterVarImp <- function(x, y, nonpara = FALSE, ...) {
 
       lStat <- lapply(seq_len(ncol(Combs)), FUN = function(cc) {
         yLevs <- as.character(y) %in% Combs[, cc]
-        tmpX <- x[yLevs, ]
+        tmpX <- x[yLevs, , drop = FALSE]
         tmpY <- as.numeric(y[yLevs] == Combs[, cc][2])
         apply(tmpX, 2, rocPerCol, cls = tmpY)
       })
       Stat = do.call("cbind", lStat)
 
       loutStat <- lapply(1:k, function(j) {
-        apply(Stat[, CombsN[, j]], 1, max)
+        apply(Stat[, CombsN[, j], drop = FALSE], 1, max)
       })
 
       outStat = do.call("cbind", loutStat)

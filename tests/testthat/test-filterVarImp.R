@@ -56,6 +56,13 @@ test_that("filterVarImp gives NA for a class pair with an empty class", {
   expect_all_true(is.na(vi$c))
 })
 
+test_that("filterVarImp works with one predictor and more than two classes", {
+  vi <- filterVarImp(iris[, 1, drop = FALSE], iris$Species)
+  expect_named(vi, levels(iris$Species))
+  expect_identical(rownames(vi), "Sepal.Length")
+  expect_equal(vi, filterVarImp(iris[, 1:2], iris$Species)[1, ])
+})
+
 test_that("filterVarImp converts factor predictors to numeric", {
   x <- data.frame(a = iris$Sepal.Length, f = factor(rep(letters[1:5], 30)))
   vi <- filterVarImp(x, iris$Species)
