@@ -182,7 +182,8 @@ reduction.," \emph{Genetic Epidemiology}, vol 4, 306.
 Other performance:
 \code{\link[=defaultSummary]{defaultSummary()}},
 \code{\link[=negPredValue]{negPredValue()}},
-\code{\link[=recall]{recall()}}
+\code{\link[=recall]{recall()}},
+\code{\link[=yardstickSummary]{yardstickSummary()}}
 }
 \author{
 Max Kuhn

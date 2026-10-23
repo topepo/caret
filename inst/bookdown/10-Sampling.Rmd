@@ -1,6 +1,5 @@
 ```{r samp_load, echo = FALSE, message=FALSE, warning=FALSE}
 library(caret)
-library(pROC)
 library(DMwR)
 library(ROSE)
 library(randomForest)
@@ -14,7 +13,6 @@ theme_set(theme_bw())
 
 library(knitr)
 opts_chunk$set(digits = 3, tidy = FALSE, fig.path = 'sampling/', dev = 'svg', dev.args = list(bg = "transparent"))
-library(pROC)
 ```
 
 # Subsampling For Class Imbalances

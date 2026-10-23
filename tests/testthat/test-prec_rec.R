@@ -102,21 +102,19 @@ test_that("na.rm drops incomplete cases before scoring", {
 # --- prSummary --------------------------------------------------------------
 
 test_that("prSummary returns AUC, precision, recall and F", {
-  skip_if_not_installed("MLmetrics")
   res <- prSummary(pr_prob_data, lev = pr_lvs)
   expect_named(res, c("AUC", "Precision", "Recall", "F"))
   expect_equal(unname(res["Precision"]), pr_precision)
   expect_equal(unname(res["Recall"]), pr_recall)
   expect_equal(unname(res["F"]), pr_fmeas)
-  expected_auc <- MLmetrics::PRAUC(
-    y_pred = pr_prob_data[, pr_lvs[1]],
-    y_true = ifelse(pr_prob_data$obs == pr_lvs[1], 1, 0)
+  expected_auc <- yardstick::pr_auc_vec(
+    pr_prob_data$obs,
+    pr_prob_data[, pr_lvs[1]]
   )
   expect_equal(unname(res["AUC"]), expected_auc)
 })
 
 test_that("prSummary rejects outcomes with more than two classes", {
-  skip_if_not_installed("MLmetrics")
   d <- data.frame(
     obs = factor(c("a", "b", "c")),
     pred = factor(c("a", "b", "c"))
@@ -125,7 +123,6 @@ test_that("prSummary rejects outcomes with more than two classes", {
 })
 
 test_that("prSummary errors when predicted and observed levels differ", {
-  skip_if_not_installed("MLmetrics")
   d <- data.frame(
     obs = factor(c("A", "B"), levels = c("A", "B")),
     pred = factor(c("A", "B"), levels = c("B", "A"))
@@ -134,7 +131,6 @@ test_that("prSummary errors when predicted and observed levels differ", {
 })
 
 test_that("prSummary errors when class probabilities are missing", {
-  skip_if_not_installed("MLmetrics")
   d <- data.frame(
     obs = factor(c("A", "B"), levels = c("A", "B")),
     pred = factor(c("A", "B"), levels = c("A", "B"))
@@ -151,10 +147,8 @@ test_that("the table methods reject malformed tables with clear errors", {
   expect_snapshot(recall(as.table(matrix(1:6, nrow = 2))), error = TRUE)
 })
 
-test_that("prSummary reports a missing AUC when the PR curve fails", {
-  skip_if_not_installed("MLmetrics")
-
-  # a single observed class breaks the precision-recall curve
+test_that("prSummary gives a PR AUC of one when every sample is an event", {
+  # precision is one at every threshold
   d <- data.frame(
     obs = factor(rep("A", 4), levels = c("A", "B")),
     pred = factor(c("A", "B", "A", "B"), levels = c("A", "B")),
@@ -162,5 +156,35 @@ test_that("prSummary reports a missing AUC when the PR curve fails", {
     B = c(0.1, 0.9, 0.2, 0.8)
   )
   out <- prSummary(d, lev = c("A", "B"))
-  expect_true(is.na(out["AUC"]))
+  expect_equal(unname(out["AUC"]), 1)
+})
+
+test_that("the factor methods accept levels in a different order", {
+  ref <- factor(
+    c("yes", "yes", "no", "no", "yes", "no"),
+    levels = c("yes", "no")
+  )
+  prd <- factor(
+    c("yes", "no", "no", "yes", "yes", "no"),
+    levels = c("no", "yes")
+  )
+  expect_equal(precision(prd, ref, relevant = "yes"), 2 / 3)
+  expect_equal(recall(prd, ref, relevant = "yes"), 2 / 3)
+  expect_equal(F_meas(prd, ref, relevant = "yes"), 2 / 3)
+})
+
+test_that("F_meas is zero when precision and recall are both zero", {
+  tab <- as.table(matrix(
+    c(0, 5, 5, 0),
+    2,
+    dimnames = list(c("a", "b"), c("a", "b"))
+  ))
+  expect_equal(F_meas(tab), 0)
+})
+
+test_that("F_meas passes beta to yardstick", {
+  expect_equal(
+    F_meas(pr_pred, pr_truth, relevant = "Relevant", beta = 2),
+    yardstick::f_meas_vec(pr_truth, pr_pred, beta = 2)
+  )
 })

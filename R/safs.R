@@ -600,14 +600,7 @@ safs <- function(x, ...) UseMethod("safs")
       safsControl$metric <- rep(ifelse(is.factor(y), "Accuracy", "RMSE"), 2)
     }
     if (is.null(safsControl$maximize)) {
-      safsControl$maximize <- rep(
-        ifelse(
-          safsControl$metric %in% c("RMSE", "MAE", "logLoss"),
-          FALSE,
-          TRUE
-        ),
-        2
-      )
+      safsControl$maximize <- rep(!is_minimized(safsControl$metric), 2)
     }
     if (is.null(names(safsControl$metric))) {
       names(safsControl$metric) <- c("internal", "external")
@@ -1692,14 +1685,7 @@ update.safs <- function(object, iter, x, y, ...) {
       safsControl$metric <- rep(ifelse(is.factor(y), "Accuracy", "RMSE"), 2)
     }
     if (is.null(safsControl$maximize)) {
-      safsControl$maximize <- rep(
-        ifelse(
-          safsControl$metric %in% c("RMSE", "MAE", "logLoss"),
-          FALSE,
-          TRUE
-        ),
-        2
-      )
+      safsControl$maximize <- rep(!is_minimized(safsControl$metric), 2)
     }
     if (is.null(names(safsControl$metric))) {
       names(safsControl$metric) <- c("internal", "external")

@@ -1,6 +1,5 @@
 ```{r adapt_load, echo = FALSE, message=FALSE, warning=FALSE}
 library(caret)
-library(pROC)
 library(kernlab)
 library(nlme)
 library(QSARdata)

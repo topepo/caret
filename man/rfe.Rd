@@ -17,7 +17,7 @@ rfe(x, ...)
   y,
   sizes = 2^(2:4),
   metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
-  maximize = ifelse(metric \%in\% c("RMSE", "MAE", "logLoss"), FALSE, TRUE),
+  maximize = !is_minimized(metric, rfeControl$functions$summary),
   rfeControl = rfeControl(),
   ...
 )

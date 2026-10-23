@@ -19,6 +19,69 @@ test_that("filterVarImp scores multi-class data with pairwise ROC curves", {
   expect_identical(rownames(vi), colnames(iris[, 1:4]))
 })
 
+test_that("filterVarImp ROC values are unchanged by the move to yardstick", {
+  # expected values were computed with ModelMetrics::auc() before it was
+  # replaced by yardstick::roc_auc_vec()
+  set.seed(8361)
+  n <- 150
+  x <- data.frame(
+    a = rnorm(n),
+    b = runif(n),
+    c = factor(sample(letters[1:3], n, TRUE))
+  )
+  y2 <- factor(ifelse(x$a + rnorm(n) > 0, "yes", "no"))
+  y3 <- factor(sample(c("u", "v", "w"), n, TRUE))
+
+  vi2 <- filterVarImp(x, y2)
+  expect_equal(
+    vi2$no,
+    c(0.855318372559752, 0.569968983762087, 0.536763364349571)
+  )
+
+  vi3 <- filterVarImp(x, y3)
+  expect_equal(
+    vi3$u,
+    c(0.556818181818182, 0.573181818181818, 0.611818181818182)
+  )
+  expect_equal(
+    vi3$v,
+    c(0.541487603305785, 0.551363636363636, 0.603181818181818)
+  )
+})
+
+test_that("filterVarImp gives NA for a class pair with an empty class", {
+  y <- factor(rep(c("a", "b"), each = 10), levels = c("a", "b", "c"))
+  x <- data.frame(p = seq_len(20), q = rev(seq_len(20)))
+  expect_no_warning(vi <- filterVarImp(x, y))
+  expect_all_true(is.na(vi$c))
+})
+
+test_that("filterVarImp works with one predictor and more than two classes", {
+  vi <- filterVarImp(iris[, 1, drop = FALSE], iris$Species)
+  expect_named(vi, levels(iris$Species))
+  expect_identical(rownames(vi), "Sepal.Length")
+  expect_equal(vi, filterVarImp(iris[, 1:2], iris$Species)[1, ])
+})
+
+test_that("filterVarImp uses every class pair for four or more classes", {
+  set.seed(6431)
+  cl <- letters[1:4]
+  y <- factor(rep(cl, each = 25))
+  x <- data.frame(p = rnorm(100) + as.integer(y), q = rnorm(100))
+  vi <- filterVarImp(x, y)
+
+  pair_auc <- function(pred, a, b) {
+    keep <- y %in% c(a, b)
+    auc <- yardstick::roc_auc_vec(factor(y[keep], levels = c(a, b)), pred[keep])
+    max(auc, 1 - auc)
+  }
+  for (k in cl) {
+    others <- setdiff(cl, k)
+    expected <- max(vapply(others, function(o) pair_auc(x$p, k, o), numeric(1)))
+    expect_equal(vi["p", k], expected)
+  }
+})
+
 test_that("filterVarImp converts factor predictors to numeric", {
   x <- data.frame(a = iris$Sepal.Length, f = factor(rep(letters[1:5], 30)))
   vi <- filterVarImp(x, iris$Species)

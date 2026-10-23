@@ -139,7 +139,8 @@ Flinders University
 Other performance:
 \code{\link[=confusionMatrix]{confusionMatrix()}},
 \code{\link[=defaultSummary]{defaultSummary()}},
-\code{\link[=negPredValue]{negPredValue()}}
+\code{\link[=negPredValue]{negPredValue()}},
+\code{\link[=yardstickSummary]{yardstickSummary()}}
 }
 \author{
 Max Kuhn
