@@ -61,7 +61,7 @@
 ## Changes in version 6.0-94
 
 - Bug fix in how some S3 signatures were designed (for R-devel).
-- Adrián Panella fixed a bug with \`method = "svmRadial" that occured when the SVM probability model failed [(issue 1327)](https://github.com/topepo/caret/issues/1327)
+- Adrián Panella fixed a bug with \`method = "svmRadial" that occurred when the SVM probability model failed [(issue 1327)](https://github.com/topepo/caret/issues/1327)
 - Theodore Pak fixed a bug in glmnet prediction when sparse matrices are used [(issue 1315)](https://github.com/topepo/caret/issues/1315)
 - Carlos Cinelli fixed two bugs (one for GAMs and another for ranger models) where an error would occur when using `trainControl(method = "none")` [(issue 1307)](https://github.com/topepo/caret/issues/1307) [(issue 1308)](https://github.com/topepo/caret/issues/1308)
 
@@ -550,7 +550,7 @@
 - Option in `trainControl`, `rfeControl` and `sbfControl` were added so that the user can set the seed at each resampling iteration (most useful for parallel processing). Thanks to Allan Engelhardt for the recommendation.
 - Some internal refactoring of the data was done to prepare for some upcoming resampling options.
 - `predict.train` now has an explicit `na.action` argument defaulted to `na.omit`. If imputation is used in `train`, then `na.action = na.pass` is recommended.
-- A bug was fixed in `dummyVars` that occured when missing data were in `newdata`. The function `contr.dummy` is now deprecated and `contr.ltfr` should be used (if you are using it at all). Thanks to stackexchange user mchangun for finding the bug.
+- A bug was fixed in `dummyVars` that occurred when missing data were in `newdata`. The function `contr.dummy` is now deprecated and `contr.ltfr` should be used (if you are using it at all). Thanks to stackexchange user mchangun for finding the bug.
 - A check is now done inside `dummyVars` when `levelsOnly = TRUE` to see if any predictors share common levels.
 - A new option `fullRank` was added to `dummyVars`. When true, `contr.treatment` is used. Otherwise, `contr.ltfr` is used.
 - A bug in `train` was fixed with `gbm` models (thanks to stackoverflow user screechOwl for finding it).
