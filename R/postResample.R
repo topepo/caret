@@ -105,6 +105,11 @@
 #'
 #' @export postResample
 postResample <- function(pred, obs) {
+  if (length(pred) != length(obs)) {
+    cli::cli_abort(
+      "{.arg pred} (length {length(pred)}) and {.arg obs} (length {length(obs)}) must be the same length."
+    )
+  }
   isNA <- is.na(pred)
   pred <- pred[!isNA]
   obs <- obs[!isNA]

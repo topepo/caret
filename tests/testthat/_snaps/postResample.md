@@ -3,8 +3,8 @@
     Code
       postResample(c(1, 2, 3), matrix(1:4, 2))
     Condition
-      Error in `yardstick::rmse_vec()`:
-      ! `truth` (4) and `estimate` (3) must be the same length.
+      Error in `postResample()`:
+      ! `pred` (length 3) and `obs` (length 4) must be the same length.
 
 # twoClassSummary validates its levels and tolerates flat ROC input
 
