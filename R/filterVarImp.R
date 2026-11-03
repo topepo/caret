@@ -1,5 +1,10 @@
 rocPerCol <- function(dat, cls) {
-  roc_auc <- auc(cls, dat)
+  if (!is.factor(cls)) {
+    cls <- factor(cls, levels = c(0, 1))
+  }
+  # a pairwise subset with an empty class has no defined AUC; yardstick warns
+  # and returns NA
+  roc_auc <- suppressWarnings(yardstick::roc_auc_vec(cls, dat))
   max(roc_auc, 1 - roc_auc)
 }
 
@@ -78,14 +83,15 @@ filterVarImp <- function(x, y, nonpara = FALSE, ...) {
 
       lStat <- lapply(seq_len(ncol(Combs)), FUN = function(cc) {
         yLevs <- as.character(y) %in% Combs[, cc]
-        tmpX <- x[yLevs, ]
+        tmpX <- x[yLevs, , drop = FALSE]
         tmpY <- as.numeric(y[yLevs] == Combs[, cc][2])
         apply(tmpX, 2, rocPerCol, cls = tmpY)
       })
       Stat = do.call("cbind", lStat)
 
       loutStat <- lapply(1:k, function(j) {
-        apply(Stat[, CombsN[, j]], 1, max)
+        in_pair <- CombsN[1, ] == j | CombsN[2, ] == j
+        apply(Stat[, in_pair, drop = FALSE], 1, max)
       })
 
       outStat = do.call("cbind", loutStat)

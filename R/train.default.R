@@ -287,11 +287,7 @@ train.default <- function(
   ...,
   weights = NULL,
   metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
-  maximize = ifelse(
-    metric %in% c("RMSE", "logLoss", "MAE", "logLoss"),
-    FALSE,
-    TRUE
-  ),
+  maximize = !is_minimized(metric, trControl$summaryFunction),
   trControl = trainControl(),
   tuneGrid = NULL,
   tuneLength = ifelse(trControl$method == "none", 1, 3)
@@ -1309,7 +1305,7 @@ train.recipe <- function(
   method = "rf",
   ...,
   metric = ifelse(is.factor(y_dat), "Accuracy", "RMSE"),
-  maximize = ifelse(metric %in% c("RMSE", "logLoss", "MAE"), FALSE, TRUE),
+  maximize = !is_minimized(metric, trControl$summaryFunction),
   trControl = trainControl(),
   tuneGrid = NULL,
   tuneLength = ifelse(trControl$method == "none", 1, 3)

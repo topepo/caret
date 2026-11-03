@@ -77,7 +77,8 @@ classification models (along with predicted values) in each resample?}
 
 \item{summaryFunction}{a function to compute performance metrics across
 resamples. The arguments to the function should be the same as those in
-\code{\link[=defaultSummary]{defaultSummary()}}. Note that if \code{method = "oob"} is used, this option is
+\code{\link[=defaultSummary]{defaultSummary()}}. \code{\link[=yardstickSummary]{yardstickSummary()}} can be used to compute metrics
+from the yardstick package. Note that if \code{method = "oob"} is used, this option is
 ignored and a warning is issued.}
 
 \item{selectionFunction}{the function used to select the optimal tuning

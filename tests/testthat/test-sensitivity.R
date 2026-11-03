@@ -170,3 +170,41 @@ test_that("specificity drops incomplete cases when na.rm = TRUE", {
   p[1:5] <- NA
   expect_false(is.na(specificity(p, sens_truth)))
 })
+
+test_that("missing values give NA when na.rm = FALSE", {
+  p <- sens_pred
+  p[1] <- NA
+  expect_true(is.na(sensitivity(p, sens_truth, na.rm = FALSE)))
+  expect_true(is.na(specificity(p, sens_truth, na.rm = FALSE)))
+})
+
+test_that("the matrix methods use the positive and negative arguments", {
+  m <- matrix(c(10, 3, 4, 20), 2, dimnames = list(c("a", "b"), c("a", "b")))
+  expect_equal(sensitivity(m, positive = "b"), 20 / 24)
+  expect_equal(specificity(m, negative = "a"), 10 / 13)
+  expect_equal(
+    posPredValue(m, positive = "b"),
+    posPredValue(as.table(m), positive = "b")
+  )
+  expect_equal(
+    negPredValue(m, negative = "a", prevalence = 0.4),
+    negPredValue(as.table(m), negative = "a", prevalence = 0.4)
+  )
+})
+
+test_that("the metrics agree with yardstick", {
+  set.seed(4472)
+  lv <- c("x", "y")
+  truth <- factor(sample(lv, 50, replace = TRUE), levels = lv)
+  est <- factor(sample(lv, 50, replace = TRUE), levels = lv)
+  expect_equal(sensitivity(est, truth), yardstick::sens_vec(truth, est))
+  expect_equal(specificity(est, truth), yardstick::spec_vec(truth, est))
+  expect_equal(
+    posPredValue(est, truth, prevalence = 0.3),
+    yardstick::ppv_vec(truth, est, prevalence = 0.3)
+  )
+  expect_equal(
+    negPredValue(est, truth, negative = "x"),
+    yardstick::npv_vec(truth, est, event_level = "second")
+  )
+})

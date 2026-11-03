@@ -211,22 +211,44 @@ bagEarthStats <- function(x) getModelInfo("bagEarth", regex = FALSE)[[1]]$oob(x)
 
 #' @export
 R2 <- function(pred, obs, formula = "corr", na.rm = FALSE) {
-  n <- sum(complete.cases(pred))
+  pred <- as_metric_vector(pred)
+  obs <- as_metric_vector(obs)
+  # R^2 is undefined (and yardstick warns) when either vector is constant
   switch(
     formula,
-    corr = cor(obs, pred, use = ifelse(na.rm, "complete.obs", "everything"))^2,
-    traditional = 1 -
-      (sum((obs - pred)^2, na.rm = na.rm) / ((n - 1) * var(obs, na.rm = na.rm)))
+    corr = suppressWarnings(yardstick::rsq_vec(obs, pred, na_rm = na.rm)),
+    traditional = suppressWarnings(
+      yardstick::rsq_trad_vec(obs, pred, na_rm = na.rm)
+    )
   )
 }
 
 #' @export
 RMSE <- function(pred, obs, na.rm = FALSE) {
-  sqrt(mean((pred - obs)^2, na.rm = na.rm))
+  yardstick::rmse_vec(
+    as_metric_vector(obs),
+    as_metric_vector(pred),
+    na_rm = na.rm
+  )
 }
 
 #' @export
-MAE <- function(pred, obs, na.rm = FALSE) mean(abs(pred - obs), na.rm = na.rm)
+MAE <- function(pred, obs, na.rm = FALSE) {
+  yardstick::mae_vec(
+    as_metric_vector(obs),
+    as_metric_vector(pred),
+    na_rm = na.rm
+  )
+}
+
+# yardstick requires plain numeric vectors, but predictions often come as a
+# one-column matrix (e.g. from glmnet) or data frame (e.g. from caretEnsemble)
+as_metric_vector <- function(x) {
+  if (is.data.frame(x) && ncol(x) == 1) {
+    x <- x[[1]]
+  }
+  as.vector(x)
+}
 
 partRuleSummary <- function(x) {
   predictors <- all.vars(x$terms)

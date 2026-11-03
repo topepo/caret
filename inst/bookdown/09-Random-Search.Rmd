@@ -5,7 +5,6 @@ library(gbm)
 library(klaR)
 library(mlbench)
 library(kernlab)
-library(pROC)
 theme_set(theme_bw())
 ```
 

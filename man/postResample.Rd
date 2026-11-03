@@ -127,9 +127,7 @@ dat$class2 <- 1 - dat$class1
 
 defaultSummary(dat, lev = classes)
 twoClassSummary(dat, lev = classes)
-if (caret:::has_packages("MLmetrics")) {
-  prSummary(dat, lev = classes)
-}
+prSummary(dat, lev = classes)
 mnLogLoss(dat, lev = classes)
 
 }
@@ -138,12 +136,13 @@ Kvalseth. Cautionary note about \eqn{R^2}. American Statistician
 (1985) vol. 39 (4) pp. 279-285
 }
 \seealso{
-\code{\link[=trainControl]{trainControl()}}
+\code{\link[=trainControl]{trainControl()}}, \code{\link[=yardstickSummary]{yardstickSummary()}}
 
 Other performance:
 \code{\link[=confusionMatrix]{confusionMatrix()}},
 \code{\link[=negPredValue]{negPredValue()}},
-\code{\link[=recall]{recall()}}
+\code{\link[=recall]{recall()}},
+\code{\link[=yardstickSummary]{yardstickSummary()}}
 }
 \author{
 Max Kuhn, Zachary Mayer

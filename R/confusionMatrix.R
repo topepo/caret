@@ -297,7 +297,8 @@ confusionMatrix.table <- function(
   }
 
   overall <- c(
-    unlist(e1071::classAgreement(data))[c("diag", "kappa")],
+    yardstick::accuracy(data)$.estimate,
+    yardstick::kap(data)$.estimate,
     propCI(data),
     propTest(data),
     mcnemar.test(data)$p.value
