@@ -17,7 +17,7 @@
 #'   for drawing the foreground points (`panel.dotplot` only draws the
 #'   background reference lines).
 #' @author Max Kuhn, based on [lattice::panel.dotplot()] by Deepayan Sarkar
-#' @seealso [dotplot()]
+#' @seealso [lattice::dotplot()]
 #' @keywords graphs
 #' @export panel.needle
 "panel.needle" <-

@@ -5,8 +5,7 @@
 \alias{Sacramento}
 \title{Sacramento CA Home Prices}
 \source{
-SpatialKey website:
-\url{https://support.spatialkey.com/spatialkey-sample-csv-data/}
+SpatialKey website (the original download page is no longer available).
 }
 \value{
 :

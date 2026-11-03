@@ -325,7 +325,7 @@ if (caret:::has_packages("earth", "mlbench")) {
 Kuhn (2008), ``Building Predictive Models in R Using the caret''
 (\doi{10.18637/jss.v028.i05})
 
-\url{https://topepo.github.io/recipes/}
+\url{https://recipes.tidymodels.org/}
 }
 \seealso{
 \code{\link[=models]{models()}}, \code{\link[=trainControl]{trainControl()}}, \code{\link[=update.train]{update.train()}}, \code{\link[=modelLookup]{modelLookup()}},

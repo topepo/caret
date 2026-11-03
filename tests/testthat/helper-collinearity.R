@@ -28,7 +28,7 @@ corr_R1 <- structure(
     0.56, 0.01, 1.00, 0.65, 0.91,
     0.32, 0.74, 0.65, 1.00, 0.36,
     0.85, 0.32, 0.91, 0.36, 1.00),
-  .Dim = c(5L, 5L)
+  dim = c(5L, 5L)
 )
 colnames(corr_R1) <- rownames(corr_R1) <- paste0("x", 1:5)
 
