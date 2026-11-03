@@ -764,10 +764,16 @@ test_that("RMSE, MAE and R2 agree with yardstick", {
   expect_true(is.na(RMSE(pred, obs)))
 })
 
-test_that("RMSE, MAE and R2 accept one-column prediction matrices", {
+test_that("RMSE, MAE and R2 accept one-column matrices and data frames", {
   pred <- matrix(c(1, 2, 3, 4), ncol = 1)
   obs <- c(1, 2, 3, 5)
   expect_equal(RMSE(pred, obs), 0.5)
   expect_equal(MAE(pred, obs), 0.25)
   expect_equal(caret::R2(pred, obs), cor(obs, c(1, 2, 3, 4))^2)
+
+  # e.g. the data.table returned by caretEnsemble's predict() method
+  pred_df <- data.frame(pred = c(1, 2, 3, 4))
+  expect_equal(RMSE(pred_df, obs), 0.5)
+  expect_equal(MAE(pred_df, obs), 0.25)
+  expect_equal(caret::R2(pred_df, obs), cor(obs, c(1, 2, 3, 4))^2)
 })

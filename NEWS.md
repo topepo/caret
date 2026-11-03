@@ -10,6 +10,7 @@
 - `sensitivity()`, `specificity()`, `posPredValue()`, `negPredValue()`, `precision()`, `recall()`, `F_meas()`, `R2()`, `RMSE()`, and `MAE()` (and so the by-class statistics of `confusionMatrix()` and `thresholder()`) are also computed with **yardstick**. Their arguments and values are unchanged, except:
   - With `na.rm = FALSE`, missing values now give `NA`; previously a missing prediction was counted as an incorrect one.
   - `R2(formula = "traditional", na.rm = TRUE)` now drops incomplete pairs of observed and predicted values consistently.
+  - `R2()`, `RMSE()`, and `MAE()` accept predictions in a one-column matrix or data frame (such as the data.table returned by **caretEnsemble**'s `predict()` method). A data frame previously gave `NA` with a warning.
   - `F_meas()` is 0, not `NaN`, when both precision and recall are 0.
   - `precision()`, `recall()`, and `F_meas()` no longer error when the two factors have the same levels in a different order.
   - The matrix methods of `sensitivity()`, `specificity()`, `posPredValue()`, and `negPredValue()` now use their `positive`/`negative` arguments, which were silently ignored.

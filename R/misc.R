@@ -211,10 +211,8 @@ bagEarthStats <- function(x) getModelInfo("bagEarth", regex = FALSE)[[1]]$oob(x)
 
 #' @export
 R2 <- function(pred, obs, formula = "corr", na.rm = FALSE) {
-  # as.vector() drops the dimensions of one-column prediction matrices (e.g.
-  # from glmnet), which yardstick does not accept
-  pred <- as.vector(pred)
-  obs <- as.vector(obs)
+  pred <- as_metric_vector(pred)
+  obs <- as_metric_vector(obs)
   # R^2 is undefined (and yardstick warns) when either vector is constant
   switch(
     formula,
@@ -227,12 +225,29 @@ R2 <- function(pred, obs, formula = "corr", na.rm = FALSE) {
 
 #' @export
 RMSE <- function(pred, obs, na.rm = FALSE) {
-  yardstick::rmse_vec(as.vector(obs), as.vector(pred), na_rm = na.rm)
+  yardstick::rmse_vec(
+    as_metric_vector(obs),
+    as_metric_vector(pred),
+    na_rm = na.rm
+  )
 }
 
 #' @export
 MAE <- function(pred, obs, na.rm = FALSE) {
-  yardstick::mae_vec(as.vector(obs), as.vector(pred), na_rm = na.rm)
+  yardstick::mae_vec(
+    as_metric_vector(obs),
+    as_metric_vector(pred),
+    na_rm = na.rm
+  )
+}
+
+# yardstick requires plain numeric vectors, but predictions often come as a
+# one-column matrix (e.g. from glmnet) or data frame (e.g. from caretEnsemble)
+as_metric_vector <- function(x) {
+  if (is.data.frame(x) && ncol(x) == 1) {
+    x <- x[[1]]
+  }
+  as.vector(x)
 }
 
 partRuleSummary <- function(x) {
