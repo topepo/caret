@@ -230,8 +230,7 @@ NULL
 #' * `Sacramento`: a data frame with columns '`city`', '`zip`', '`beds`',
 #'                 '`baths`', '`sqft`', '`type`', '`price`', '`latitude`', and
 #'                 '`longitude`'
-#' @source SpatialKey website:
-#'   <https://support.spatialkey.com/spatialkey-sample-csv-data/>
+#' @source SpatialKey website (the original download page is no longer available).
 #' @keywords datasets
 #' @examples
 #'
@@ -316,7 +315,7 @@ NULL
 #' @source Hill, LaPan, Li and Haney (2007). Impact of image segmentation on
 #'   high-content screening data quality for SK-BR-3 cells, *BMC
 #'   Bioinformatics*, Vol. 8, pg. 340,
-#'   <https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-8-340>.
+#'   <https://link.springer.com/article/10.1186/1471-2105-8-340>.
 #' @keywords datasets
 NULL
 

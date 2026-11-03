@@ -43,7 +43,7 @@ data point.
 Creates (possibly grouped) needleplot of \code{x} against \code{y} or vice versa
 }
 \seealso{
-\code{\link[=dotplot]{dotplot()}}
+\code{\link[lattice:dotplot]{lattice::dotplot()}}
 }
 \author{
 Max Kuhn, based on \code{\link[lattice:panel.dotplot]{lattice::panel.dotplot()}} by Deepayan Sarkar

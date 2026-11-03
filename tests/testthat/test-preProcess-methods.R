@@ -359,7 +359,7 @@ test_that('Yeo-Johnson trans', {
       -1.03306249319229,
       -0.75439768809812
     ),
-    .Names = c("TwoFactor1", "TwoFactor2", "Linear01", "Linear02", "Linear03")
+    names = c("TwoFactor1", "TwoFactor2", "Linear01", "Linear02", "Linear03")
   )
 
   expect_equal(yj_lambda_exp, yj_dat2_pp$yj, tolerance = 0.00001)
@@ -411,7 +411,7 @@ test_that('Yeo-Johnson trans', {
                    0.740571102400277, 0.482810402342108, 1.25094448369284, 0.646306153405863,
                    0.699357380858777, 0.689749274634193, 0.512604738920554, 0.934295181373473,
                    1.02826478194202, 0.680507562338646, 0.571037802377044)),
-    .Names = c("TwoFactor1", "TwoFactor2", "Linear01", "Linear02", "Linear03"),
+    names = c("TwoFactor1", "TwoFactor2", "Linear01", "Linear02", "Linear03"),
     row.names = c(NA, -30L), class = "data.frame")
 
   expect_equal(yj_pred_exp, yj_dat2_yj, tolerance = 0.00001)
@@ -444,7 +444,7 @@ test_that('Yeo-Johnson trans with mising data', {
         -1.03306249319229,
         -0.736848020368422
       ),
-      .Names = c("TwoFactor1", "TwoFactor2", "Linear01", "Linear02", "Linear03")
+      names = c("TwoFactor1", "TwoFactor2", "Linear01", "Linear02", "Linear03")
     )
   expect_equal(yj_lambda_exp, yj_dat2_pp$yj, tolerance = 0.00001)
 
@@ -500,7 +500,7 @@ test_that('Yeo-Johnson trans with mising data', {
                      0.746703310040928, 0.485170543055165, 1.27545020954066, 0.650798314402513,
                      0.70473143893381, 0.694955980686517, 0.515292996577666, 0.945013657354694,
                      1.04198422179449, 0.68555654074888, 0.574445121616549)),
-      .Names = c("TwoFactor1", "TwoFactor2", "Linear01", "Linear02", "Linear03"),
+      names = c("TwoFactor1", "TwoFactor2", "Linear01", "Linear02", "Linear03"),
       row.names = c(NA, -30L),
       class = "data.frame")
 

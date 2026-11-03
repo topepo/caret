@@ -183,7 +183,7 @@ findCorrelation_exact <- function(x, cutoff = 0.90, verbose = FALSE) {
 #'     0.36,
 #'     1
 #'   ),
-#'   .Dim = c(5L, 5L)
+#'   dim = c(5L, 5L)
 #' )
 #' colnames(R1) <- rownames(R1) <- paste0("x", 1:ncol(R1))
 #' R1

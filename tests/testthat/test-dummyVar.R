@@ -58,8 +58,8 @@ test_that("dummyVars handles factors, missing data, and naming (issues #344, #39
                                     0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0,
                                     0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1,
                                     1, 0, 1, 0, 0, 0, 0, 0, 0, 0),
-                                  .Dim = 9:10,
-                                  .Dimnames = list(
+                                  dim = 9:10,
+                                  dimnames = list(
                                     c("1", "2", "3", "4", "5", "6", "7", "8", "9"),
                                     c("day.Mon",  "day.Tue", "day.Wed", "day.Thu", "day.Fri",
                                       "day.Sat", "day.Sun", "time.morning", "time.afternoon", "time.night")))
@@ -75,8 +75,8 @@ test_that("dummyVars handles factors, missing data, and naming (issues #344, #39
                                   0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0,
                                   0, 0, 0, 0, NA, 0, 0, 1, 1, 1, 1, 0, 0, NA, 0, 1, 0, 0, 0, 0,
                                   1, 1, NA, 1, 0, 0, 0, 0, 0, 0, 0),
-                                .Dim = 9:10,
-                                .Dimnames = list(
+                                dim = 9:10,
+                                dimnames = list(
                                   c("1", "2", "3", "4", "5", "6", "7", "8", "9"),
                                   c("day.Mon", "day.Tue", "day.Wed", "day.Thu",
                                     "day.Fri", "day.Sat", "day.Sun", "time.morning",
@@ -90,8 +90,8 @@ test_that("dummyVars handles factors, missing data, and naming (issues #344, #39
                                0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
                                0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
                                1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0),
-                             .Dim = c(8L, 10L),
-                             .Dimnames = list(c("2", "3", "4", "5",  "6", "7", "8", "9"),
+                             dim = c(8L, 10L),
+                             dimnames = list(c("2", "3", "4", "5",  "6", "7", "8", "9"),
                                               c("day.Mon", "day.Tue", "day.Wed", "day.Thu",
                                                 "day.Fri", "day.Sat", "day.Sun", "time.morning",
                                                 "time.afternoon",  "time.night")))

@@ -441,76 +441,82 @@ import(recipes)
 import(reshape2)
 importFrom(grDevices,extendrange)
 importFrom(plyr,ddply)
-importFrom(recipes,all_outcomes)
-importFrom(recipes,all_predictors)
-importFrom(recipes,bake)
-importFrom(recipes,has_role)
-importFrom(recipes,juice)
-importFrom(recipes,prep)
-importFrom(stats,.checkMFClasses)
-importFrom(stats,.getXlevels)
-importFrom(stats,aggregate)
-importFrom(stats,anova)
-importFrom(stats,approx)
-importFrom(stats,as.formula)
-importFrom(stats,binom.test)
-importFrom(stats,binomial)
-importFrom(stats,complete.cases)
-importFrom(stats,contrasts)
-importFrom(stats,cor)
-importFrom(stats,cov)
-importFrom(stats,delete.response)
-importFrom(stats,dist)
-importFrom(stats,fitted)
-importFrom(stats,fitted.values)
-importFrom(stats,glm)
-importFrom(stats,hclust)
-importFrom(stats,lm)
-importFrom(stats,loess)
-importFrom(stats,mahalanobis)
-importFrom(stats,mcnemar.test)
-importFrom(stats,median)
-importFrom(stats,model.extract)
-importFrom(stats,model.frame)
-importFrom(stats,model.matrix)
-importFrom(stats,model.response)
-importFrom(stats,model.weights)
-importFrom(stats,na.fail)
-importFrom(stats,na.omit)
-importFrom(stats,na.pass)
-importFrom(stats,optim)
-importFrom(stats,p.adjust)
-importFrom(stats,prcomp)
-importFrom(stats,predict)
-importFrom(stats,pt)
-importFrom(stats,qnorm)
-importFrom(stats,quantile)
-importFrom(stats,rbinom)
-importFrom(stats,reorder)
-importFrom(stats,reshape)
-importFrom(stats,resid)
-importFrom(stats,residuals)
-importFrom(stats,rnorm)
-importFrom(stats,runif)
-importFrom(stats,sd)
-importFrom(stats,t.test)
-importFrom(stats,terms)
-importFrom(stats,toeplitz)
-importFrom(stats,update)
-importFrom(stats,var)
+importFrom(recipes,
+  all_outcomes,
+  all_predictors,
+  bake,
+  has_role,
+  juice,
+  prep
+)
+importFrom(stats,
+  .checkMFClasses,
+  .getXlevels,
+  aggregate,
+  anova,
+  approx,
+  as.formula,
+  binom.test,
+  binomial,
+  complete.cases,
+  contrasts,
+  cor,
+  cov,
+  delete.response,
+  dist,
+  fitted,
+  fitted.values,
+  glm,
+  hclust,
+  lm,
+  loess,
+  mahalanobis,
+  mcnemar.test,
+  median,
+  model.extract,
+  model.frame,
+  model.matrix,
+  model.response,
+  model.weights,
+  na.fail,
+  na.omit,
+  na.pass,
+  optim,
+  p.adjust,
+  prcomp,
+  predict,
+  pt,
+  qnorm,
+  quantile,
+  rbinom,
+  reorder,
+  reshape,
+  resid,
+  residuals,
+  rnorm,
+  runif,
+  sd,
+  t.test,
+  terms,
+  toeplitz,
+  update,
+  var
+)
 importFrom(stats4,coef)
-importFrom(utils,capture.output)
-importFrom(utils,combn)
-importFrom(utils,flush.console)
-importFrom(utils,getFromNamespace)
-importFrom(utils,globalVariables)
-importFrom(utils,head)
-importFrom(utils,install.packages)
-importFrom(utils,installed.packages)
-importFrom(utils,menu)
-importFrom(utils,modifyList)
-importFrom(utils,object.size)
-importFrom(utils,stack)
+importFrom(utils,
+  capture.output,
+  combn,
+  flush.console,
+  getFromNamespace,
+  globalVariables,
+  head,
+  install.packages,
+  installed.packages,
+  menu,
+  modifyList,
+  object.size,
+  stack
+)
 importFrom(vctrs,vec_unique_count)
 importFrom(withr,with_seed)
 useDynLib(caret)
