@@ -1,6 +1,6 @@
 # News for Package caret
 
-## Changes in version 7.1.0
+## Changes in version 7.1-0
 
 - New `yardstickSummary()` turns a `yardstick::metric_set()` into a function for the `summaryFunction` argument of `trainControl()`, so any **yardstick** metric (e.g. `mcc`, `brier_class`, `ccc`, `huber_loss`) can be used to evaluate and tune models. The default `maximize` value in `train()`, `rfe()`, `gafs()`, and `safs()` now uses each yardstick metric's direction, so loss metrics such as `brier_class` are minimized instead of maximized.
 - The performance metrics in `postResample()`, `defaultSummary()`, `twoClassSummary()`, `prSummary()`, `multiClassSummary()`, and the accuracy and Kappa values of `confusionMatrix()` are now computed with **yardstick**. **pROC** is no longer a dependency and **MLmetrics** is no longer suggested. The metric names are unchanged and most values are identical, with these exceptions:
@@ -468,7 +468,7 @@
 - Both `rfe` and `sbf` get arguments for `indexOut` for their control functions.
 - A reworked version of `nearZerVar` based on code from Michael Benesty was added the old version is now called `nzv` that uses less memory and can be used in parallel.
 - The adaptive mixture discriminant model from the [**adaptDA**](https://CRAN.R-project.org/package=adaptDA) package was added as well as a robust mixture discriminant model from the [**robustDA**](https://CRAN.R-project.org/package=robustDA) package.
-- The multi-class discriminant model using binary predictors in the [**binda**](https://CRAN.R-project.org/package=binda) package was added.
+- The multi-class discriminant model using binary predictors in the **binda**. 
 - Ensembles of partial least squares models (via the [**enpls**](https://CRAN.R-project.org/package=enpls)) package was added.
 - A bug using `gbm` with Poisson data was fixed (thanks to user eriklampa)
 - `sbfControl` now has a `multivariate` option where all the predictors are exposed to the scoring function at once.
@@ -518,7 +518,7 @@
 - A bug was fixed related to how seeds were set inside of `train`.
 - The model `"parRF"` (parallel random forest) was added back into the library.
 - When case weights are specified in `train`, the hold-out weights are exposed when computing the summary function.
-- A check was made to convert a `data.table` given to `train` to a data frame (see <https://stackoverflow.com/questions/23256177/r-caret-renames-column-in-data-table-after-training>).
+- A check was made to convert a `data.table` given to `train` to a data frame.
 
 ## Changes in version 6.0-25
 
