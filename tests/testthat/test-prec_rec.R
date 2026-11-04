@@ -1,0 +1,190 @@
+# Fixture data (pr_lvs, pr_pred, pr_truth, pr_tbl, pr_precision, pr_recall,
+# pr_fmeas, pr_prob_data) lives in helper-2x2-tables.R
+
+# --- precision --------------------------------------------------------------
+
+test_that("precision works for tables and factors", {
+  expect_equal(precision(pr_tbl), pr_precision)
+  expect_equal(
+    precision(data = pr_pred, reference = pr_truth, relevant = "Relevant"),
+    pr_precision
+  )
+})
+
+test_that("precision errors on bad input", {
+  expect_snapshot(precision(as.character(pr_pred), pr_truth), error = TRUE)
+  expect_snapshot(
+    precision(factor(letters[1:3]), factor(letters[1:3])),
+    error = TRUE
+  )
+})
+
+test_that("precision collapses multiclass tables", {
+  irisTabs <- table(iris$Species, iris$Species)
+  expect_equal(precision(irisTabs, "versicolor"), 1)
+})
+
+# --- recall -----------------------------------------------------------------
+
+test_that("recall works for tables and factors", {
+  expect_equal(recall(pr_tbl), pr_recall)
+  expect_equal(
+    recall(data = pr_pred, reference = pr_truth, relevant = "Relevant"),
+    pr_recall
+  )
+})
+
+test_that("recall errors on bad input", {
+  expect_snapshot(recall(as.character(pr_pred), pr_truth), error = TRUE)
+  expect_snapshot(
+    recall(factor(letters[1:3]), factor(letters[1:3])),
+    error = TRUE
+  )
+})
+
+test_that("recall returns NA when there are no relevant references", {
+  none_rel <- factor(rep("Irrelevant", 10), levels = pr_lvs)
+  expect_true(is.na(recall(none_rel, none_rel, relevant = "Relevant")))
+})
+
+test_that("recall collapses multiclass tables", {
+  irisTabs <- table(iris$Species, iris$Species)
+  expect_equal(recall(irisTabs, "versicolor"), 1)
+})
+
+# --- F_meas -----------------------------------------------------------------
+
+test_that("F_meas works for tables and factors", {
+  expect_equal(F_meas(pr_tbl), pr_fmeas)
+  expect_equal(
+    F_meas(data = pr_pred, reference = pr_truth, relevant = "Relevant"),
+    pr_fmeas
+  )
+})
+
+test_that("F_meas respects the beta weighting", {
+  beta <- 2
+  f_beta <- (1 + beta^2) *
+    pr_precision *
+    pr_recall /
+    ((beta^2 * pr_precision) + pr_recall)
+  expect_equal(F_meas(pr_tbl, beta = beta), f_beta)
+})
+
+test_that("F_meas errors on bad input", {
+  expect_snapshot(F_meas(as.character(pr_pred), pr_truth), error = TRUE)
+  expect_snapshot(
+    F_meas(factor(letters[1:3]), factor(letters[1:3])),
+    error = TRUE
+  )
+})
+
+test_that("na.rm drops incomplete cases before scoring", {
+  p <- pr_pred
+  r <- pr_truth
+  p[1:5] <- NA
+  r[6:10] <- NA
+  # recall, precision and F_meas all drop the incomplete cases identically
+  expect_equal(
+    recall(p, r, relevant = "Relevant"),
+    recall(p[11:100], r[11:100], relevant = "Relevant")
+  )
+  expect_equal(
+    precision(p, r, relevant = "Relevant"),
+    precision(p[11:100], r[11:100], relevant = "Relevant")
+  )
+  expect_equal(
+    F_meas(p, r, relevant = "Relevant"),
+    F_meas(p[11:100], r[11:100], relevant = "Relevant")
+  )
+})
+
+# --- prSummary --------------------------------------------------------------
+
+test_that("prSummary returns AUC, precision, recall and F", {
+  res <- prSummary(pr_prob_data, lev = pr_lvs)
+  expect_named(res, c("AUC", "Precision", "Recall", "F"))
+  expect_equal(unname(res["Precision"]), pr_precision)
+  expect_equal(unname(res["Recall"]), pr_recall)
+  expect_equal(unname(res["F"]), pr_fmeas)
+  expected_auc <- yardstick::pr_auc_vec(
+    pr_prob_data$obs,
+    pr_prob_data[, pr_lvs[1]]
+  )
+  expect_equal(unname(res["AUC"]), expected_auc)
+})
+
+test_that("prSummary rejects outcomes with more than two classes", {
+  d <- data.frame(
+    obs = factor(c("a", "b", "c")),
+    pred = factor(c("a", "b", "c"))
+  )
+  expect_snapshot(prSummary(d, lev = c("a", "b", "c")), error = TRUE)
+})
+
+test_that("prSummary errors when predicted and observed levels differ", {
+  d <- data.frame(
+    obs = factor(c("A", "B"), levels = c("A", "B")),
+    pred = factor(c("A", "B"), levels = c("B", "A"))
+  )
+  expect_snapshot(prSummary(d, lev = c("A", "B")), error = TRUE)
+})
+
+test_that("prSummary errors when class probabilities are missing", {
+  d <- data.frame(
+    obs = factor(c("A", "B"), levels = c("A", "B")),
+    pred = factor(c("A", "B"), levels = c("A", "B"))
+  )
+  expect_snapshot(prSummary(d, lev = c("A", "B")), error = TRUE)
+})
+
+test_that("the table methods reject malformed tables with clear errors", {
+  bad_names <- matrix(1:4, 2, dimnames = list(c("a", "b"), c("b", "a")))
+
+  expect_snapshot(precision(as.table(bad_names)), error = TRUE)
+  expect_snapshot(recall(as.table(bad_names)), error = TRUE)
+  expect_snapshot(precision(as.table(matrix(1:6, nrow = 2))), error = TRUE)
+  expect_snapshot(recall(as.table(matrix(1:6, nrow = 2))), error = TRUE)
+})
+
+test_that("prSummary gives a PR AUC of one when every sample is an event", {
+  # precision is one at every threshold
+  d <- data.frame(
+    obs = factor(rep("A", 4), levels = c("A", "B")),
+    pred = factor(c("A", "B", "A", "B"), levels = c("A", "B")),
+    A = c(0.9, 0.1, 0.8, 0.2),
+    B = c(0.1, 0.9, 0.2, 0.8)
+  )
+  out <- prSummary(d, lev = c("A", "B"))
+  expect_equal(unname(out["AUC"]), 1)
+})
+
+test_that("the factor methods accept levels in a different order", {
+  ref <- factor(
+    c("yes", "yes", "no", "no", "yes", "no"),
+    levels = c("yes", "no")
+  )
+  prd <- factor(
+    c("yes", "no", "no", "yes", "yes", "no"),
+    levels = c("no", "yes")
+  )
+  expect_equal(precision(prd, ref, relevant = "yes"), 2 / 3)
+  expect_equal(recall(prd, ref, relevant = "yes"), 2 / 3)
+  expect_equal(F_meas(prd, ref, relevant = "yes"), 2 / 3)
+})
+
+test_that("F_meas is zero when precision and recall are both zero", {
+  tab <- as.table(matrix(
+    c(0, 5, 5, 0),
+    2,
+    dimnames = list(c("a", "b"), c("a", "b"))
+  ))
+  expect_equal(F_meas(tab), 0)
+})
+
+test_that("F_meas passes beta to yardstick", {
+  expect_equal(
+    F_meas(pr_pred, pr_truth, relevant = "Relevant", beta = 2),
+    yardstick::f_meas_vec(pr_truth, pr_pred, beta = 2)
+  )
+})

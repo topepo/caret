@@ -1,0 +1,224 @@
+#' Calculate recall, precision and F values
+#'
+#' These functions calculate the recall, precision or F values of a measurement
+#' system for finding/retrieving relevant documents compared to reference
+#' results (the truth regarding relevance). The measurement and "truth" data
+#' must have the same two possible outcomes and one of the outcomes must be
+#' thought of as a "relevant" results.
+#'
+#' The recall (aka sensitivity) is defined as the proportion of relevant
+#' results out of the number of samples which were actually relevant. When
+#' there are no relevant results, recall is not defined and a value of `NA` is
+#' returned.
+#'
+#' The precision is percentage of predicted truly relevant results of the total
+#' number of predicted relevant results and characterizes the "purity in
+#' retrieval performance" (Buckland and Gey, 1994)
+#'
+#' The measure "F" is a combination of precision and recall (see below).
+#'
+#' Suppose a 2x2 table with notation
+#'
+#' \tabular{rcc}{ \tab Reference \tab \cr Predicted \tab relevant \tab
+#' Irrelevant \cr relevant \tab A \tab B \cr Irrelevant \tab C \tab D \cr }
+#'
+#' The formulas used here are: \deqn{recall = A/(A+C)} \deqn{precision =
+#' A/(A+B)} \deqn{F_i = (1+i^2)*prec*recall/((i^2 * precision)+recall)}
+#'
+#' See the references for discussions of the statistics.
+#'
+#' @aliases recall recall.default recall.table precision precision.default precision.table precision.matrix F_meas F_meas.default F_meas.table
+#' @param data for the default functions, a factor containing the discrete
+#'   measurements. For the `table` function, a table.
+#' @param reference a factor containing the reference values (i.e. truth)
+#' @param relevant a character string that defines the factor level
+#'   corresponding to the "relevant" results
+#' @param beta a numeric value used to weight precision and recall. A value of
+#'   1 is traditionally used and corresponds to the harmonic mean of the two
+#'   values but other values weight recall beta times more important than
+#'   precision.
+#' @param na.rm a logical value indicating whether `NA` values should be
+#'   stripped before the computation proceeds
+#' @param ... not currently used
+#' @return A number between 0 and 1 (or NA).
+#' @author Max Kuhn
+#' @seealso [confusionMatrix()]
+#' @references Kuhn, M. (2008), "Building Predictive Models in R Using the
+#'   caret Package," *Journal of Statistical Software*, 28(5), 1-26.
+#'   (\doi{10.18637/jss.v028.i05}).
+#'
+#' Buckland, M., & Gey, F. (1994). The relationship between Recall and
+#' Precision. *Journal of the American Society for Information Science*, 45(1),
+#' 12-19.
+#'
+#' Powers, D. (2007). Evaluation: From Precision, Recall and F Factor to ROC,
+#' Informedness, Markedness and Correlation. Technical Report SIE-07-001,
+#' Flinders University
+#' @family performance
+#' @keywords manip
+#' @examples
+#'
+#' ###################
+#' ## Data in Table 2 of Powers (2007)
+#'
+#' lvs <- c("Relevant", "Irrelevant")
+#' tbl_2_1_pred <- factor(rep(lvs, times = c(42, 58)), levels = lvs)
+#' tbl_2_1_truth <- factor(
+#'   c(rep(lvs, times = c(30, 12)), rep(lvs, times = c(30, 28))),
+#'   levels = lvs
+#' )
+#' tbl_2_1 <- table(tbl_2_1_pred, tbl_2_1_truth)
+#'
+#' precision(tbl_2_1)
+#' precision(data = tbl_2_1_pred, reference = tbl_2_1_truth, relevant = "Relevant")
+#' recall(tbl_2_1)
+#' recall(data = tbl_2_1_pred, reference = tbl_2_1_truth, relevant = "Relevant")
+#'
+#' tbl_2_2_pred <- factor(rep(lvs, times = c(76, 24)), levels = lvs)
+#' tbl_2_2_truth <- factor(
+#'   c(rep(lvs, times = c(56, 20)), rep(lvs, times = c(12, 12))),
+#'   levels = lvs
+#' )
+#' tbl_2_2 <- table(tbl_2_2_pred, tbl_2_2_truth)
+#'
+#' precision(tbl_2_2)
+#' precision(data = tbl_2_2_pred, reference = tbl_2_2_truth, relevant = "Relevant")
+#' recall(tbl_2_2)
+#' recall(data = tbl_2_2_pred, reference = tbl_2_2_truth, relevant = "Relevant")
+#'
+#' @export recall
+recall <- function(data, ...) UseMethod("recall")
+
+#' @rdname recall
+#' @export
+recall.table <- function(data, relevant = rownames(data)[1], ...) {
+  check_conf_table(data)
+  table_metric(yardstick::recall, data, relevant)
+}
+
+#' @rdname recall
+#' @export
+"recall.default" <-
+  function(
+    data,
+    reference,
+    relevant = levels(reference)[1],
+    na.rm = TRUE,
+    ...
+  ) {
+    xtab <- factor_conf_table(
+      data,
+      reference,
+      na.rm,
+      "input data must be a factor"
+    )
+    if (is.null(xtab)) {
+      return(NA_real_)
+    }
+    recall.table(xtab, relevant = relevant)
+  }
+
+#' @rdname recall
+#' @export
+precision <- function(data, ...) UseMethod("precision")
+
+#' @rdname recall
+#' @export
+"precision.default" <-
+  function(
+    data,
+    reference,
+    relevant = levels(reference)[1],
+    na.rm = TRUE,
+    ...
+  ) {
+    xtab <- factor_conf_table(
+      data,
+      reference,
+      na.rm,
+      "input data must be a factor"
+    )
+    if (is.null(xtab)) {
+      return(NA_real_)
+    }
+    precision.table(xtab, relevant = relevant)
+  }
+
+#' @rdname recall
+#' @export
+precision.table <- function(data, relevant = rownames(data)[1], ...) {
+  check_conf_table(data)
+  table_metric(yardstick::precision, data, relevant)
+}
+
+#' @rdname recall
+#' @export
+F_meas <- function(data, ...) UseMethod("F_meas")
+
+#' @rdname recall
+#' @export
+"F_meas.default" <-
+  function(
+    data,
+    reference,
+    relevant = levels(reference)[1],
+    beta = 1,
+    na.rm = TRUE,
+    ...
+  ) {
+    xtab <- factor_conf_table(
+      data,
+      reference,
+      na.rm,
+      "input data must be a factor"
+    )
+    if (is.null(xtab)) {
+      return(NA_real_)
+    }
+    F_meas.table(xtab, relevant = relevant, beta = beta)
+  }
+
+#' @rdname recall
+#' @export
+F_meas.table <- function(data, relevant = rownames(data)[1], beta = 1, ...) {
+  check_conf_table(data)
+  table_metric(yardstick::f_meas, data, relevant, beta = beta)
+}
+
+#' @rdname postResample
+#' @export
+prSummary <- function(data, lev = NULL, model = NULL) {
+  if (length(levels(data$obs)) > 2) {
+    stop(paste(
+      "Your outcome has",
+      length(levels(data$obs)),
+      "levels. `prSummary`` function isn't appropriate.",
+      call. = FALSE
+    ))
+  }
+  if (!all(levels(data[, "pred"]) == levels(data[, "obs"]))) {
+    stop("Levels of observed and predicted data do not match.", call. = FALSE)
+  }
+  if (!lev[1] %in% colnames(data)) {
+    stop(
+      paste(
+        "Class probabilities are needed to score models using the",
+        "area under the PR curve. Set `classProbs = TRUE`",
+        "in the trainControl() function."
+      ),
+      call. = FALSE
+    )
+  }
+
+  # undefined metrics (e.g. no predicted events) are NA; yardstick also warns
+  # about them
+  suppressWarnings(
+    out <- c(
+      AUC = yardstick::pr_auc_vec(data$obs, data[, lev[1]]),
+      Precision = yardstick::precision_vec(data$obs, data$pred),
+      Recall = yardstick::recall_vec(data$obs, data$pred),
+      F = yardstick::f_meas_vec(data$obs, data$pred)
+    )
+  )
+  out
+}

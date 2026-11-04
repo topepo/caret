@@ -1,0 +1,96 @@
+# Fixtures (corr_R1, corr_R2) live in helper-collinearity.R
+
+# --- findCorrelation --------------------------------------------------------
+
+test_that("findCorrelation (exact) flags the expected columns", {
+  expect_equal(findCorrelation(corr_R1, cutoff = 0.6, exact = TRUE), c(1, 5, 4))
+})
+
+test_that("findCorrelation (fast) flags the expected columns", {
+  expect_equal(
+    findCorrelation(corr_R1, cutoff = 0.6, exact = FALSE),
+    c(4, 5, 1, 3)
+  )
+})
+
+test_that("findCorrelation can return column names", {
+  expect_equal(
+    findCorrelation(corr_R1, cutoff = 0.6, exact = TRUE, names = TRUE),
+    c("x1", "x5", "x4")
+  )
+})
+
+test_that("findCorrelation handles negative correlations", {
+  expect_equal(findCorrelation(corr_R2, cutoff = 0.65), c(3, 4))
+})
+
+test_that("findCorrelation returns nothing when nothing exceeds the cutoff", {
+  expect_length(findCorrelation(corr_R2, cutoff = 0.99), 0)
+})
+
+test_that("findCorrelation errors when names are requested but unavailable", {
+  m <- corr_R2
+  dimnames(m) <- NULL
+  expect_snapshot(findCorrelation(m, names = TRUE), error = TRUE)
+})
+
+test_that("findCorrelation prints details when verbose", {
+  # the printed correlation means are platform-sensitive in their last digit,
+  # so mask_decimals (helper-collinearity.R) hides the numbers
+  expect_snapshot(
+    findCorrelation(corr_R2, cutoff = 0.65, verbose = TRUE),
+    transform = mask_decimals
+  )
+  # the exact method prints which column it flags at each comparison
+  expect_snapshot(
+    findCorrelation(corr_R1, cutoff = 0.6, exact = TRUE, verbose = TRUE),
+    transform = mask_decimals
+  )
+  # the fast method has its own verbose output
+  expect_snapshot(
+    findCorrelation(corr_R1, cutoff = 0.6, exact = FALSE, verbose = TRUE),
+    transform = mask_decimals
+  )
+  # the exact method reports when every correlation is below the cutoff
+  expect_snapshot(
+    findCorrelation(corr_R2, cutoff = 0.99, verbose = TRUE),
+    transform = mask_decimals
+  )
+})
+
+# --- internal helpers -------------------------------------------------------
+
+test_that("findCorrelation_fast rejects missing values", {
+  m <- corr_R1
+  m[1, 2] <- NA
+  expect_snapshot(caret:::findCorrelation_fast(m, cutoff = 0.6), error = TRUE)
+})
+
+test_that("findCorrelation_exact rejects non-symmetric and singleton input", {
+  ns <- corr_R1
+  ns[1, 2] <- 0.1 # break symmetry
+  expect_snapshot(caret:::findCorrelation_exact(ns), error = TRUE)
+  expect_snapshot(
+    caret:::findCorrelation_exact(matrix(1, 1, 1)),
+    error = TRUE
+  )
+})
+
+test_that("findCorrelation_exact skips columns it has already flagged", {
+  # v4 is flagged while comparing it with v1, so when the loop later reaches
+  # v4 itself there is nothing left to do and it moves on
+  # fmt: skip
+  m <- matrix(
+    c(1.00, 0.70, 0.14, 0.99, 0.38,
+      0.70, 1.00, 0.66, 0.98, 0.51,
+      0.14, 0.66, 1.00, 0.24, 0.96,
+      0.99, 0.98, 0.24, 1.00, 0.14,
+      0.38, 0.51, 0.96, 0.14, 1.00),
+    nrow = 5,
+    dimnames = list(paste0("v", 1:5), paste0("v", 1:5))
+  )
+  expect_identical(
+    caret:::findCorrelation_exact(m, cutoff = 0.8),
+    c(2L, 1L, 3L)
+  )
+})

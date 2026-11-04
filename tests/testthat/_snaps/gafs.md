@@ -1,0 +1,194 @@
+# gafsControl errors working
+
+    Code
+      gafsControl(method = "larry")
+    Condition
+      Error in `gafsControl()`:
+      ! method should be one of: "cv", "boot", "repeatedcv", "LGOCV" or "LOOCV"
+
+---
+
+    Code
+      gafsControl(metric = c("larry", "harry", "moe"))
+    Condition
+      Error in `gafsControl()`:
+      ! 'metric' should be a two-element named vector. See ?gafsControl
+
+---
+
+    Code
+      gafsControl(maximize = c("larry", "harry", "moe"))
+    Condition
+      Error in `gafsControl()`:
+      ! 'maximize' should be a two-element named vector. See ?gafsControl
+
+# ga_func_check reports the functions a search needs
+
+    Code
+      caret:::ga_func_check(caretGA[c("fit", "pred")])
+    Condition
+      Error in `caret:::ga_func_check()`:
+      ! The following functions are missing from the 'func' argument: fitness_intern,fitness_extern,initial,selection,crossover,mutation,selectIter
+
+# ga_func_check checks each function's arguments
+
+    Code
+      caret:::ga_func_check(wrong_args)
+    Condition
+      Error in `caret:::ga_func_check()`:
+      ! Arguments to function mutation should be { population, parent, ... }  and these were given { x, y }
+
+# print.gafs describes the search
+
+    Code
+      print(ga)
+    Output
+      
+      Genetic Algorithm Feature Selection
+      
+      60 samples
+      4 predictors
+      
+      Maximum generations: 3 
+      Population per generation: 4 
+      Crossover probability: <num> 
+      Mutation probability: <num> 
+      Elitism: 0 
+      
+      Internal performance values: RMSE, Rsquared, MAE
+      Subset selection driven to minimize internal RMSE 
+      
+      External performance values: RMSE, Rsquared, MAE
+      Best iteration chose by minimizing external RMSE 
+      External resampling method: Cross-Validated (3 fold) 
+      
+      During resampling:
+        * the top 4 selected variables (out of a possible 4):
+          x1 (100%), x2 (100%), x3 (100%), x4 (<num>%)
+        * on average, <num> variables were selected (min = 3, max = 4)
+      
+      In the final search using the entire training set:
+         * 4 features selected at iteration 1 including:
+           x1, x2, x3, x4  
+         * external performance at this iteration is
+      
+             RMSE    Rsquared         MAE 
+           <num>      <num>      <num> 
+      
+
+# print.gafs names the classes and a varying mutation rate
+
+    Code
+      print(ga)
+    Output
+      
+      Genetic Algorithm Feature Selection
+      
+      60 samples
+      4 predictors
+      2 classes: 'one', 'two' 
+      
+      Maximum generations: 2 
+      Population per generation: 4 
+      Crossover probability: <num> 
+      Mutation probability: variable
+      Elitism: 0 
+      
+      Internal performance values: Accuracy, Kappa
+      Subset selection driven to maximize internal Accuracy 
+      
+      External performance values: Accuracy, Kappa
+      Best iteration chose by maximizing external Accuracy 
+      External resampling method: Cross-Validated (3 fold) 
+      
+      During resampling:
+        * the top 4 selected variables (out of a possible 4):
+          x1 (100%), x2 (<num>%), x3 (<num>%), x4 (<num>%)
+        * on average, <num> variables were selected (min = 2, max = 3)
+      
+      In the final search using the entire training set:
+         * 3 features selected at iteration 1 including:
+           x1, x2, x3  
+         * external performance at this iteration is
+      
+         Accuracy       Kappa 
+           <num>      <num> 
+      
+
+# varImp.gafs needs the differences to have been computed
+
+    Code
+      varImp(ga)
+    Condition
+      Error in `varImp.gafs()`:
+      ! must have used `differences = TRUE`
+
+# plot.gafs checks the metric it was asked for
+
+    Code
+      plot(ga, metric = "Bogus")
+    Condition
+      Error in `plot.gafs()`:
+      ! ' Bogus ' not computed in both estimates
+
+---
+
+    Code
+      plot(ga, metric = "Bogus", estimate = "internal")
+    Condition
+      Error in `plot.gafs()`:
+      ! ' Bogus ' not computed internally
+
+# gafs needs a seed per resample plus one
+
+    Code
+      gafs(x = dat[, 1:4], y = dat$y, gafsControl = ctrl, popSize = 4, iters = 2,
+      method = "lm", trControl = trainControl(method = "cv", number = 3))
+    Condition
+      Error in `gafs.default()`:
+      ! There must be at least 4 random number seeds passed to gafsControl
+
+# gafs names an unnamed external fitness result
+
+    Code
+      fit <- gafs(x = dat[, 1:4], y = dat$y, gafsControl = ctrl, popSize = 4, iters = 2,
+      differences = FALSE, method = "lm", trControl = trainControl(method = "cv",
+        number = 3))
+    Condition
+      Warning in `gafs.default()`:
+      The external fitness results should be a *named* vector; new name(s) are external1, external2, external3
+      Warning in `gafs.default()`:
+      The metric 'RMSE' is not created by the summary function; 'external1' will be used instead
+
+# gafs falls back when the external metric is not computed
+
+    The metric 'Bogus' is not created by the summary function; 'RMSE' will be used instead
+
+# gafsControl wants named metric and maximize vectors
+
+    Code
+      gafsControl(metric = c("RMSE", "Rsquared"))
+    Condition
+      Error in `gafsControl()`:
+      ! 'metric' should have names 'internal' and 'external' See ?gafsControl
+
+---
+
+    Code
+      gafsControl(maximize = c(internal = TRUE, wrong = FALSE))
+    Condition
+      Error in `gafsControl()`:
+      ! 'maximize' should have names 'internal' and 'external' See ?gafsControl
+
+# the gafs recipe path checks its external fitness function
+
+    Code
+      fit <- gafs(rec, data = dat, gafsControl = gafsControl(functions = unnamed,
+        method = "cv", number = 3), popSize = 4, iters = 2, differences = FALSE,
+      method = "lm", trControl = trainControl(method = "cv", number = 3))
+    Condition
+      Warning in `gafs.recipe()`:
+      The external fitness results should be a *named* vector; new name(s) are external1, external2, external3, external4
+      Warning in `gafs.recipe()`:
+      The metric 'RMSE' is not created by the summary function; 'external1' will be used instead
+
