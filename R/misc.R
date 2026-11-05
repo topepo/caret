@@ -873,7 +873,7 @@ fill_failed_pred <- function(index, lev, submod) {
 }
 
 fill_failed_prob <- function(index, lev, submod) {
-  probValues <- matrix(NA, nrow = length(index), ncol = length(lev))
+  probValues <- matrix(NA_real_, nrow = length(index), ncol = length(lev))
   probValues <- as.data.frame(probValues, stringsAsFactors = TRUE)
   colnames(probValues) <- lev
   if (!is.null(submod)) {
@@ -927,7 +927,7 @@ optimism_xy <- function(
     })
   } else {
     probValuesExtra <- lapply(indexExtra, function(index) {
-      probValues <- matrix(NA, nrow = length(index), ncol = length(lev))
+      probValues <- matrix(NA_real_, nrow = length(index), ncol = length(lev))
       probValues <- as.data.frame(probValues, stringsAsFactors = TRUE)
       colnames(probValues) <- lev
       if (!is.null(submod)) {

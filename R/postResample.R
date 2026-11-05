@@ -162,7 +162,7 @@ twoClassSummary <- function(data, lev = NULL, model = NULL) {
   # warns about them
   suppressWarnings(
     out <- c(
-      yardstick::roc_auc_vec(data$obs, data[, lev[1]]),
+      prob_metric(yardstick::roc_auc_vec, data$obs, data[, lev[1]]),
       yardstick::sens_vec(data$obs, data$pred),
       yardstick::spec_vec(data$obs, data$pred)
     )
@@ -185,6 +185,9 @@ mnLogLoss <- function(data, lev = NULL, model = NULL) {
   }
 
   dataComplete <- data[complete.cases(data), ]
+  if (nrow(dataComplete) == 0) {
+    return(c(logLoss = NA_real_))
+  }
   # yardstick matches probability columns to the factor levels by position
   probs <- as.matrix(dataComplete[, levels(dataComplete$obs), drop = FALSE])
   # yardstick's binary estimator expects only the first level's probabilities
@@ -221,8 +224,8 @@ multiClassSummary <- function(data, lev = NULL, model = NULL) {
         is_x <- factor(obs == x, levels = c(TRUE, FALSE))
         suppressWarnings(
           res <- c(
-            ROC = yardstick::roc_auc_vec(is_x, data[, x]),
-            AUC = yardstick::pr_auc_vec(is_x, data[, x])
+            ROC = prob_metric(yardstick::roc_auc_vec, is_x, data[, x]),
+            AUC = prob_metric(yardstick::pr_auc_vec, is_x, data[, x])
           )
         )
         res
