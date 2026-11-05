@@ -113,7 +113,8 @@ Suggests:
     spls,
     superpc,
     testthat (>= 3.0.0),
-    themis (>= 0.1.3)
+    themis (>= 0.1.3),
+    xgboost (>= 3.0.0)
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

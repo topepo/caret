@@ -115,6 +115,41 @@ fill_param_defaults <- function(grid, info) {
   grid
 }
 
+# caret adds information about the fit (e.g. the predictor names and class
+# levels) to the model object. Boosters from xgboost >= 3 are ALTREP lists that
+# can't have elements added, so the information is stored as attributes instead.
+add_fit_info <- function(fit, x_names, y, tuneValue, obsLevels, param) {
+  if (is.factor(y)) {
+    problem_type <- "Classification"
+  } else {
+    problem_type <- "Regression"
+  }
+  if (inherits(fit, "xgb.Booster")) {
+    attr(fit, "xNames") <- x_names
+    attr(fit, "problemType") <- problem_type
+    attr(fit, "tuneValue") <- tuneValue
+    attr(fit, "obsLevels") <- obsLevels
+    attr(fit, "param") <- param
+  } else {
+    fit$xNames <- x_names
+    fit$problemType <- problem_type
+    fit$tuneValue <- tuneValue
+    fit$obsLevels <- obsLevels
+    fit$param <- param
+  }
+  fit
+}
+
+get_fit_info <- function(fit, name) {
+  if (inherits(fit, "xgb.Booster")) {
+    return(attr(fit, name, exact = TRUE))
+  }
+  if (!any(names(fit) == name)) {
+    return(NULL)
+  }
+  fit[[name]]
+}
+
 model2method <- function(x) {
   ## There are some disconnecs between the object class and the
   ## method used by train.

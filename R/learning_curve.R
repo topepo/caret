@@ -141,7 +141,7 @@ learning_curve_dat <- function(
       }
       test_perf <- mod$control$summaryFunction(
         test_preds,
-        lev = mod$finalModel$obsLevels
+        lev = get_fit_info(mod$finalModel, "obsLevels")
       )
       test_perf <- as.data.frame(t(test_perf), stringsAsFactors = FALSE)
       test_perf$Training_Size <- length(in_mod)
@@ -164,7 +164,7 @@ learning_curve_dat <- function(
     }
     app_perf <- mod$control$summaryFunction(
       app_preds,
-      lev = mod$finalModel$obsLevels
+      lev = get_fit_info(mod$finalModel, "obsLevels")
     )
     app_perf <- as.data.frame(t(app_perf), stringsAsFactors = FALSE)
     app_perf$Training_Size <- length(in_mod)

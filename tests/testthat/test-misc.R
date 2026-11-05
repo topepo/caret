@@ -808,3 +808,40 @@ test_that("fill_param_defaults adds only the missing parameters", {
     data.frame(a = 1)
   )
 })
+
+test_that("add_fit_info uses attributes for xgboost boosters", {
+  args <- list(
+    x_names = c("x1", "x2"),
+    y = factor(c("a", "b")),
+    tuneValue = data.frame(k = 1),
+    obsLevels = c("a", "b"),
+    param = list(verbose = 0)
+  )
+
+  fit <- do.call(add_fit_info, c(list(fit = list(coef = 1)), args))
+  expect_named(
+    fit,
+    c("coef", "xNames", "problemType", "tuneValue", "obsLevels", "param")
+  )
+  expect_equal(get_fit_info(fit, "problemType"), "Classification")
+  expect_equal(get_fit_info(fit, "xNames"), c("x1", "x2"))
+
+  booster <- structure(list(ptr = 1), class = "xgb.Booster")
+  booster <- do.call(add_fit_info, c(list(fit = booster), args))
+  expect_named(booster, "ptr")
+  expect_equal(attr(booster, "obsLevels"), c("a", "b"))
+  expect_equal(get_fit_info(booster, "obsLevels"), c("a", "b"))
+  expect_equal(get_fit_info(booster, "param"), list(verbose = 0))
+
+  reg <- add_fit_info(
+    list(),
+    x_names = "x1",
+    y = 1:2,
+    tuneValue = NULL,
+    obsLevels = NULL,
+    param = list()
+  )
+  expect_equal(get_fit_info(reg, "problemType"), "Regression")
+  expect_null(get_fit_info(reg, "obsLevels"))
+  expect_null(get_fit_info(function(x) x, "xNames"))
+})

@@ -5,8 +5,10 @@ levels.train <- function(x, ...) {
     attributes(out) <- NULL
   } else {
     if (x$modelType == "Classification") {
-      if (!isS4(x$finalModel) && !is.null(x$finalModel$obsLevels)) {
-        return(x$finalModel$obsLevels)
+      if (
+        !isS4(x$finalModel) && !is.null(get_fit_info(x$finalModel, "obsLevels"))
+      ) {
+        return(get_fit_info(x$finalModel, "obsLevels"))
       }
       if (is.null(x$modelInfo)) {
         code <- getModelInfo(x$method, regex = FALSE)[[1]]

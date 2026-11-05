@@ -81,15 +81,14 @@
           "Ensemble Partial Least Squares Regression with Feature Selection"
         ))
   ) {
-    modelFit$xNames <- colnames(x)
-    if (is.factor(y)) {
-      modelFit$problemType <- "Classification"
-    } else {
-      modelFit$problemType <- "Regression"
-    }
-    modelFit$tuneValue <- tuneValue
-    modelFit$obsLevels <- obsLevels
-    modelFit$param <- list(...)
+    modelFit <- add_fit_info(
+      modelFit,
+      x_names = colnames(x),
+      y = y,
+      tuneValue = tuneValue,
+      obsLevels = obsLevels,
+      param = list(...)
+    )
   }
 
   list(fit = modelFit, preProc = ppObj)

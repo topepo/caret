@@ -177,13 +177,12 @@ predict.train <- function(
   }
 
   if (
-    "xNames" %in%
-      names(object$finalModel) &&
+    !is.null(get_fit_info(object$finalModel, "xNames")) &&
       is.null(object$preProcess$method$pca) &&
       is.null(object$preProcess$method$ica)
   ) {
     newdata <- newdata[,
-      colnames(newdata) %in% object$finalModel$xNames,
+      colnames(newdata) %in% get_fit_info(object$finalModel, "xNames"),
       drop = FALSE
     ]
   }
