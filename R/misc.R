@@ -97,14 +97,57 @@ evalSummaryFunction <- function(
 
 
 hasDots <- function(grid, info) {
-  mnames <- sort(as.character(info$parameters$parameter))
-  mnames2 <- paste(".", mnames, sep = "")
-  gnames <- sort(colnames(grid))
-  out <- all.equal(mnames2, gnames)
-  if (!inherits(out, "logical")) {
-    out <- FALSE
+  mnames <- as.character(info$parameters$parameter)
+  # parameters with a default value can be left out of the grid
+  required <- setdiff(mnames, names(info$defaults))
+  gnames <- colnames(grid)
+  all(gnames %in% paste0(".", mnames)) && all(paste0(".", required) %in% gnames)
+}
+
+# Some models give default values for tuning parameters that were added after
+# their first release (e.g. `lambda` and `alpha` for `xgbTree`), so that
+# existing grids without those columns keep working.
+fill_param_defaults <- function(grid, info) {
+  missing_params <- setdiff(names(info$defaults), colnames(grid))
+  for (param in missing_params) {
+    grid[[param]] <- rep(info$defaults[[param]], nrow(grid))
   }
-  out
+  grid
+}
+
+# caret adds information about the fit (e.g. the predictor names and class
+# levels) to the model object. Boosters from xgboost >= 3 are ALTREP lists that
+# can't have elements added, so the information is stored as attributes instead.
+add_fit_info <- function(fit, x_names, y, tuneValue, obsLevels, param) {
+  if (is.factor(y)) {
+    problem_type <- "Classification"
+  } else {
+    problem_type <- "Regression"
+  }
+  if (inherits(fit, "xgb.Booster")) {
+    attr(fit, "xNames") <- x_names
+    attr(fit, "problemType") <- problem_type
+    attr(fit, "tuneValue") <- tuneValue
+    attr(fit, "obsLevels") <- obsLevels
+    attr(fit, "param") <- param
+  } else {
+    fit$xNames <- x_names
+    fit$problemType <- problem_type
+    fit$tuneValue <- tuneValue
+    fit$obsLevels <- obsLevels
+    fit$param <- param
+  }
+  fit
+}
+
+get_fit_info <- function(fit, name) {
+  if (inherits(fit, "xgb.Booster")) {
+    return(attr(fit, name, exact = TRUE))
+  }
+  if (!any(names(fit) == name)) {
+    return(NULL)
+  }
+  fit[[name]]
 }
 
 model2method <- function(x) {
@@ -830,7 +873,7 @@ fill_failed_pred <- function(index, lev, submod) {
 }
 
 fill_failed_prob <- function(index, lev, submod) {
-  probValues <- matrix(NA, nrow = length(index), ncol = length(lev))
+  probValues <- matrix(NA_real_, nrow = length(index), ncol = length(lev))
   probValues <- as.data.frame(probValues, stringsAsFactors = TRUE)
   colnames(probValues) <- lev
   if (!is.null(submod)) {
@@ -884,7 +927,7 @@ optimism_xy <- function(
     })
   } else {
     probValuesExtra <- lapply(indexExtra, function(index) {
-      probValues <- matrix(NA, nrow = length(index), ncol = length(lev))
+      probValues <- matrix(NA_real_, nrow = length(index), ncol = length(lev))
       probValues <- as.data.frame(probValues, stringsAsFactors = TRUE)
       colnames(probValues) <- lev
       if (!is.null(submod)) {

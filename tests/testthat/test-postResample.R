@@ -293,3 +293,84 @@ test_that("twoClassSummary silently gives NA for undefined metrics", {
   expect_true(is.na(res[["Spec"]]))
   expect_equal(res[["Sens"]], 0.5)
 })
+
+# --- failed models ------------------------------------------------------------
+
+test_that("summary functions give NA when the model failed", {
+  failed_data <- function(lev, na_value) {
+    obs <- factor(rep(lev, length.out = 12), levels = lev)
+    dat <- data.frame(obs = obs, pred = obs)
+    for (x in lev) {
+      dat[[x]] <- rep(na_value, 12)
+    }
+    dat
+  }
+  two_lev <- c("A", "B")
+  three_lev <- c("A", "B", "C")
+
+  for (na_value in list(NA, NA_real_)) {
+    two_cls <- failed_data(two_lev, na_value)
+    three_cls <- failed_data(three_lev, na_value)
+
+    res <- twoClassSummary(two_cls, lev = two_lev)
+    expect_identical(res[["ROC"]], NA_real_)
+    expect_equal(res[c("Sens", "Spec")], c(Sens = 1, Spec = 1))
+
+    res <- prSummary(two_cls, lev = two_lev)
+    expect_identical(res[["AUC"]], NA_real_)
+    expect_equal(res[["Precision"]], 1)
+
+    expect_identical(
+      mnLogLoss(three_cls, lev = three_lev),
+      c(logLoss = NA_real_)
+    )
+
+    res <- multiClassSummary(three_cls, lev = three_lev)
+    expect_identical(
+      unname(res[c("logLoss", "AUC", "prAUC")]),
+      rep(NA_real_, 3)
+    )
+    expect_equal(res[["Accuracy"]], 1)
+  }
+})
+
+test_that("train() gives NA performance for failed models", {
+  fail_glm <- getModelInfo("glm", regex = FALSE)[[1]]
+  fail_glm$parameters <- data.frame(
+    parameter = "fail",
+    class = "numeric",
+    label = "fail"
+  )
+  fail_glm$grid <- function(x, y, len = NULL, search = "grid") {
+    data.frame(fail = 0:1)
+  }
+  glm_fit <- fail_glm$fit
+  fail_glm$fit <- function(x, y, wts, param, lev, last, classProbs, ...) {
+    if (param$fail == 1) {
+      stop("planned failure")
+    }
+    glm_fit(x, y, wts, param, lev, last, classProbs, ...)
+  }
+
+  set.seed(4071)
+  dat <- twoClassSim(100)
+  ctrl <- trainControl(
+    method = "cv",
+    number = 3,
+    classProbs = TRUE,
+    summaryFunction = twoClassSummary
+  )
+  expect_snapshot(
+    fit <- train(
+      Class ~ TwoFactor1 + TwoFactor2,
+      data = dat,
+      method = fail_glm,
+      metric = "ROC",
+      tuneGrid = data.frame(fail = 0:1),
+      trControl = ctrl
+    )
+  )
+  res <- fit$results[order(fit$results$fail), ]
+  expect_all_false(is.na(unlist(res[1, c("ROC", "Sens", "Spec")])))
+  expect_all_true(is.na(unlist(res[2, c("ROC", "Sens", "Spec")])))
+})

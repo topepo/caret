@@ -214,7 +214,7 @@ prSummary <- function(data, lev = NULL, model = NULL) {
   # about them
   suppressWarnings(
     out <- c(
-      AUC = yardstick::pr_auc_vec(data$obs, data[, lev[1]]),
+      AUC = prob_metric(yardstick::pr_auc_vec, data$obs, data[, lev[1]]),
       Precision = yardstick::precision_vec(data$obs, data$pred),
       Recall = yardstick::recall_vec(data$obs, data$pred),
       F = yardstick::f_meas_vec(data$obs, data$pred)

@@ -258,3 +258,13 @@ factor_conf_table <- function(data, reference, na.rm, msg) {
   data <- factor(data, levels = levels(reference))
   table(data, reference)
 }
+
+# When a model fails, all of its class probabilities are missing (and logical
+# when they come from the user's data). yardstick errors on logical estimates
+# and returns 0 for the PR AUC of an empty curve, so these are NA instead.
+prob_metric <- function(fn, truth, estimate) {
+  if (all(is.na(estimate))) {
+    return(NA_real_)
+  }
+  suppressWarnings(fn(truth, estimate))
+}

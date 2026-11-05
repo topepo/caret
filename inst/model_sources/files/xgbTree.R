@@ -1,6 +1,15 @@
 modelInfo <- list(
   label = "eXtreme Gradient Boosting",
   library = c("xgboost", "plyr"),
+  check = function(pkg) {
+    requireNamespace("xgboost")
+    if (utils::packageVersion("xgboost") < "3.0.0") {
+      cli::cli_abort(
+        "{.code method = \"xgbTree\"} requires {.pkg xgboost} 3.0.0 or later.",
+        call = NULL
+      )
+    }
+  },
   type = c("Regression", "Classification"),
   parameters = data.frame(
     parameter = c(
@@ -10,9 +19,11 @@ modelInfo <- list(
       'gamma',
       'colsample_bytree',
       'min_child_weight',
-      'subsample'
+      'subsample',
+      'lambda',
+      'alpha'
     ),
-    class = rep("numeric", 7),
+    class = rep("numeric", 9),
     label = c(
       '# Boosting Iterations',
       'Max Tree Depth',
@@ -20,9 +31,14 @@ modelInfo <- list(
       "Minimum Loss Reduction",
       'Subsample Ratio of Columns',
       'Minimum Sum of Instance Weight',
-      'Subsample Percentage'
+      'Subsample Percentage',
+      'L2 Regularization',
+      'L1 Regularization'
     )
   ),
+  # used when `lambda` or `alpha` are missing from a user's `tuneGrid`; these
+  # parameters were added after many grids had been written without them
+  defaults = list(lambda = 1, alpha = 0),
   grid = function(x, y, len = NULL, search = "grid") {
     if (search == "grid") {
       out <- expand.grid(
@@ -32,7 +48,9 @@ modelInfo <- list(
         gamma = 0,
         colsample_bytree = c(.6, .8),
         min_child_weight = c(1),
-        subsample = seq(.5, 1, length = len)
+        subsample = seq(.5, 1, length = len),
+        lambda = 1,
+        alpha = 0
       )
     } else {
       out <- data.frame(
@@ -42,7 +60,9 @@ modelInfo <- list(
         gamma = runif(len, min = 0, max = 10),
         colsample_bytree = runif(len, min = .3, max = .7),
         min_child_weight = sample(0:20, size = len, replace = TRUE),
-        subsample = runif(len, min = .25, max = 1)
+        subsample = runif(len, min = .25, max = 1),
+        lambda = 10^runif(len, min = -5, max = 0),
+        alpha = 10^runif(len, min = -5, max = 0)
       )
       out$nrounds <- floor(out$nrounds)
     }
@@ -57,7 +77,9 @@ modelInfo <- list(
         "gamma",
         "colsample_bytree",
         "min_child_weight",
-        "subsample"
+        "subsample",
+        "lambda",
+        "alpha"
       ),
       function(x) c(nrounds = max(x$nrounds))
     )
@@ -69,7 +91,9 @@ modelInfo <- list(
           grid$gamma == loop$gamma[i] &
           grid$colsample_bytree == loop$colsample_bytree[i] &
           grid$min_child_weight == loop$min_child_weight[i] &
-          grid$subsample == loop$subsample[i]
+          grid$subsample == loop$subsample[i] &
+          grid$lambda == loop$lambda[i] &
+          grid$alpha == loop$alpha[i]
       )
       trees <- grid[index, "nrounds"]
       submodels[[i]] <- data.frame(nrounds = trees[trees != loop$nrounds[i]])
@@ -81,106 +105,84 @@ modelInfo <- list(
       x <- as.matrix(x)
     }
 
+    params <- list(
+      eta = param$eta,
+      max_depth = param$max_depth,
+      gamma = param$gamma,
+      colsample_bytree = param$colsample_bytree,
+      min_child_weight = param$min_child_weight,
+      subsample = param$subsample,
+      lambda = param$lambda,
+      alpha = param$alpha
+    )
+
     if (is.factor(y)) {
       if (length(lev) == 2) {
         y <- ifelse(y == lev[1], 1, 0)
-
-        if (!inherits(x, "xgb.DMatrix")) {
-          x <- xgboost::xgb.DMatrix(x, label = y, missing = NA)
-        } else {
-          xgboost::setinfo(x, "label", y)
-        }
-
-        if (!is.null(wts)) {
-          xgboost::setinfo(x, 'weight', wts)
-        }
-
-        out <- xgboost::xgb.train(
-          list(
-            eta = param$eta,
-            max_depth = param$max_depth,
-            gamma = param$gamma,
-            colsample_bytree = param$colsample_bytree,
-            min_child_weight = param$min_child_weight,
-            subsample = param$subsample
-          ),
-          data = x,
-          nrounds = param$nrounds,
-          objective = "binary:logistic",
-          ...
-        )
+        params$objective <- "binary:logistic"
       } else {
         y <- as.numeric(y) - 1
-
-        if (!inherits(x, "xgb.DMatrix")) {
-          x <- xgboost::xgb.DMatrix(x, label = y, missing = NA)
-        } else {
-          xgboost::setinfo(x, "label", y)
-        }
-
-        if (!is.null(wts)) {
-          xgboost::setinfo(x, 'weight', wts)
-        }
-
-        out <- xgboost::xgb.train(
-          list(
-            eta = param$eta,
-            max_depth = param$max_depth,
-            gamma = param$gamma,
-            colsample_bytree = param$colsample_bytree,
-            min_child_weight = param$min_child_weight,
-            subsample = param$subsample
-          ),
-          data = x,
-          num_class = length(lev),
-          nrounds = param$nrounds,
-          objective = "multi:softprob",
-          ...
-        )
+        params$objective <- "multi:softprob"
+        params$num_class <- length(lev)
       }
     } else {
-      if (!inherits(x, "xgb.DMatrix")) {
-        x <- xgboost::xgb.DMatrix(x, label = y, missing = NA)
-      } else {
-        xgboost::setinfo(x, "label", y)
-      }
+      params$objective <- "reg:squarederror"
+    }
 
-      if (!is.null(wts)) {
-        xgboost::setinfo(x, 'weight', wts)
-      }
+    if (!inherits(x, "xgb.DMatrix")) {
+      x <- xgboost::xgb.DMatrix(x, label = y, missing = NA)
+    } else {
+      xgboost::setinfo(x, "label", y)
+    }
 
-      out <- xgboost::xgb.train(
-        list(
-          eta = param$eta,
-          max_depth = param$max_depth,
-          gamma = param$gamma,
-          colsample_bytree = param$colsample_bytree,
-          min_child_weight = param$min_child_weight,
-          subsample = param$subsample
-        ),
+    if (!is.null(wts)) {
+      xgboost::setinfo(x, 'weight', wts)
+    }
+
+    # xgboost >= 3 wants all booster options in `params`, so options passed
+    # through `...` that aren't arguments to `xgb.train()` are moved there
+    dots <- list(...)
+    dot_names <- names(dots)
+    if (is.null(dot_names)) {
+      dot_names <- rep("", length(dots))
+    }
+    is_param <- !(dot_names %in% names(formals(xgboost::xgb.train)))
+    if (is.character(dots$objective)) {
+      is_param[dot_names == "objective"] <- TRUE
+    }
+    if (is.function(dots$objective)) {
+      # a custom objective function replaces the built-in one
+      params$objective <- NULL
+    }
+    params[dot_names[is_param]] <- dots[is_param]
+
+    xgb_train <- function(...) {
+      xgboost::xgb.train(
+        params = params,
         data = x,
         nrounds = param$nrounds,
-        objective = "reg:squarederror",
         ...
       )
     }
-    out
+    do.call(xgb_train, dots[!is_param])
   },
   predict = function(modelFit, newdata, submodels = NULL) {
     if (!inherits(newdata, "xgb.DMatrix")) {
       newdata <- as.matrix(newdata)
       newdata <- xgboost::xgb.DMatrix(data = newdata, missing = NA)
     }
-    out <- predict(modelFit, newdata)
-    if (modelFit$problemType == "Classification") {
-      if (length(modelFit$obsLevels) == 2) {
-        out <- ifelse(out >= .5, modelFit$obsLevels[1], modelFit$obsLevels[2])
-      } else {
-        out <- matrix(out, ncol = length(modelFit$obsLevels), byrow = TRUE)
-        out <- modelFit$obsLevels[apply(out, 1, which.max)]
+    lev <- attr(modelFit, "obsLevels")
+    to_class <- function(pred) {
+      if (attr(modelFit, "problemType") != "Classification") {
+        return(pred)
       }
+      if (length(lev) == 2) {
+        return(ifelse(pred >= .5, lev[1], lev[2]))
+      }
+      # multiclass predictions are a matrix with a column per class
+      lev[apply(pred, 1, which.max)]
     }
-
+    out <- to_class(predict(modelFit, newdata))
     if (!is.null(submodels)) {
       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
       tmp[[1]] <- out
@@ -188,25 +190,9 @@ modelInfo <- list(
         tmp_pred <- predict(
           modelFit,
           newdata,
-          ntreelimit = submodels$nrounds[j]
+          iterationrange = c(1, submodels$nrounds[j])
         )
-        if (modelFit$problemType == "Classification") {
-          if (length(modelFit$obsLevels) == 2) {
-            tmp_pred <- ifelse(
-              tmp_pred >= .5,
-              modelFit$obsLevels[1],
-              modelFit$obsLevels[2]
-            )
-          } else {
-            tmp_pred <- matrix(
-              tmp_pred,
-              ncol = length(modelFit$obsLevels),
-              byrow = TRUE
-            )
-            tmp_pred <- modelFit$obsLevels[apply(tmp_pred, 1, which.max)]
-          }
-        }
-        tmp[[j + 1]] <- tmp_pred
+        tmp[[j + 1]] <- to_class(tmp_pred)
       }
       out <- tmp
     }
@@ -217,24 +203,22 @@ modelInfo <- list(
       newdata <- as.matrix(newdata)
       newdata <- xgboost::xgb.DMatrix(data = newdata, missing = NA)
     }
-
-    if (
-      !is.null(modelFit$param$objective) &&
-        modelFit$param$objective == 'binary:logitraw'
-    ) {
-      p <- predict(modelFit, newdata)
-      out <- binomial()$linkinv(p) # exp(p)/(1+exp(p))
-    } else {
-      out <- predict(modelFit, newdata)
+    lev <- attr(modelFit, "obsLevels")
+    logit_raw <- identical(
+      attr(modelFit, "params")$objective,
+      "binary:logitraw"
+    )
+    to_prob <- function(pred) {
+      if (logit_raw) {
+        pred <- binomial()$linkinv(pred) # exp(p)/(1+exp(p))
+      }
+      if (length(lev) == 2) {
+        pred <- cbind(pred, 1 - pred)
+      }
+      colnames(pred) <- lev
+      as.data.frame(pred, stringsAsFactors = TRUE)
     }
-    if (length(modelFit$obsLevels) == 2) {
-      out <- cbind(out, 1 - out)
-      colnames(out) <- modelFit$obsLevels
-    } else {
-      out <- matrix(out, ncol = length(modelFit$obsLevels), byrow = TRUE)
-      colnames(out) <- modelFit$obsLevels
-    }
-    out <- as.data.frame(out, stringsAsFactors = TRUE)
+    out <- to_prob(predict(modelFit, newdata))
 
     if (!is.null(submodels)) {
       tmp <- vector(mode = "list", length = nrow(submodels) + 1)
@@ -243,51 +227,43 @@ modelInfo <- list(
         tmp_pred <- predict(
           modelFit,
           newdata,
-          ntreelimit = submodels$nrounds[j]
+          iterationrange = c(1, submodels$nrounds[j])
         )
-        if (length(modelFit$obsLevels) == 2) {
-          tmp_pred <- cbind(tmp_pred, 1 - tmp_pred)
-          colnames(tmp_pred) <- modelFit$obsLevels
-        } else {
-          tmp_pred <- matrix(
-            tmp_pred,
-            ncol = length(modelFit$obsLevels),
-            byrow = TRUE
-          )
-          colnames(tmp_pred) <- modelFit$obsLevels
-        }
-        tmp_pred <- as.data.frame(tmp_pred, stringsAsFactors = TRUE)
-        tmp[[j + 1]] <- tmp_pred
+        tmp[[j + 1]] <- to_prob(tmp_pred)
       }
       out <- tmp
     }
     out
   },
   predictors = function(x, ...) {
-    imp <- xgboost::xgb.importance(x$xNames, model = x)
-    x$xNames[x$xNames %in% imp$Feature]
+    x_names <- attr(x, "xNames")
+    imp <- xgboost::xgb.importance(model = x, feature_names = x_names)
+    x_names[x_names %in% imp$Feature]
   },
   varImp = function(object, numTrees = NULL, ...) {
-    imp <- xgboost::xgb.importance(object$xNames, model = object)
+    x_names <- attr(object, "xNames")
+    imp <- xgboost::xgb.importance(model = object, feature_names = x_names)
     imp <- as.data.frame(imp, stringsAsFactors = TRUE)[, 1:2]
     rownames(imp) <- as.character(imp[, 1])
     imp <- imp[, 2, drop = FALSE]
     colnames(imp) <- "Overall"
 
-    missing <- object$xNames[!(object$xNames %in% rownames(imp))]
+    missing <- x_names[!(x_names %in% rownames(imp))]
     missing_imp <- data.frame(Overall = rep(0, times = length(missing)))
     rownames(missing_imp) <- missing
     imp <- rbind(imp, missing_imp)
 
     imp
   },
-  levels = function(x) x$obsLevels,
+  levels = function(x) attr(x, "obsLevels"),
   tags = c(
     "Tree-Based Model",
     "Boosting",
     "Ensemble Model",
     "Implicit Feature Selection",
-    "Accepts Case Weights"
+    "Accepts Case Weights",
+    "L1 Regularization Models",
+    "L2 Regularization Models"
   ),
   sort = function(x) {
     # This is a toss-up, but the # trees probably adds
@@ -299,7 +275,9 @@ modelInfo <- list(
         x$eta,
         x$gamma,
         x$colsample_bytree,
-        x$min_child_weight
+        x$min_child_weight,
+        x$lambda,
+        x$alpha
       ),
     ]
   }

@@ -222,3 +222,11 @@
       Error:
       ! The tuning parameter grid should have columns k
 
+# train fills in tuning parameters that have defaults
+
+    Code
+      train(Species ~ ., data = cls, method = knn_extra, tuneGrid = data.frame(extra = 1))
+    Condition
+      Error:
+      ! The tuning parameter grid should have columns k, extra
+

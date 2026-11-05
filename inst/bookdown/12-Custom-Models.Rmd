@@ -68,6 +68,7 @@ There are some basic components of the list for custom models. A brief descripti
  - `type` is a simple character vector with values `"Classification"`, `"Regression"` or both.
  - `parameters` is a data frame with three simple attributes for each tuning parameter (if any): the argument name (e.g. `mtry`), the type of data in
     the parameter grid and textual labels for the parameter.
+ - `defaults` is an **optional** named list of values for tuning parameters that can be left out of a user's `tuneGrid`. It is useful when a parameter is added to an existing model, so that grids written before the change keep working. For example, `xgbTree` uses `defaults = list(lambda = 1, alpha = 0)`.
  - `grid` is a function that is used to create the tuning grid (unless the user gives the exact values of the parameters via `tuneGrid`)
  - `fit` is a function that fits the model
  - `predict` is the function that creates predictions

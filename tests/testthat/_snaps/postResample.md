@@ -46,3 +46,23 @@
       Error in `multiClassSummary()`:
       ! levels of observed and predicted data do not match
 
+# train() gives NA performance for failed models
+
+    Code
+      fit <- train(Class ~ TwoFactor1 + TwoFactor2, data = dat, method = fail_glm,
+      metric = "ROC", tuneGrid = data.frame(fail = 0:1), trControl = ctrl)
+    Condition
+      Warning:
+      model fit failed for Fold1: fail=1 Error in method$fit(x = x, y = y, wts = wts, param = tuneValue, lev = obsLevels,  : 
+        planned failure
+      Warning:
+      model fit failed for Fold2: fail=1 Error in method$fit(x = x, y = y, wts = wts, param = tuneValue, lev = obsLevels,  : 
+        planned failure
+      Warning:
+      model fit failed for Fold3: fail=1 Error in method$fit(x = x, y = y, wts = wts, param = tuneValue, lev = obsLevels,  : 
+        planned failure
+      Warning in `nominalTrainWorkflow()`:
+      There were missing values in resampled performance measures.
+      Warning in `train.default()`:
+      missing values found in aggregated results
+
