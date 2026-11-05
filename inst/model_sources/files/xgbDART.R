@@ -26,9 +26,11 @@ modelInfo <- list(
       "colsample_bytree",
       "rate_drop",
       "skip_drop",
-      "min_child_weight"
+      "min_child_weight",
+      "lambda",
+      "alpha"
     ),
-    class = c(rep("numeric", 9)),
+    class = c(rep("numeric", 11)),
     label = c(
       "# Boosting Iterations",
       "Max Tree Depth",
@@ -38,9 +40,14 @@ modelInfo <- list(
       "Subsample Ratio of Columns",
       "Fraction of Trees Dropped",
       "Prob. of Skipping Drop-out",
-      "Minimum Sum of Instance Weight"
+      "Minimum Sum of Instance Weight",
+      "L2 Regularization",
+      "L1 Regularization"
     )
   ),
+  # used when `lambda` or `alpha` are missing from a user's `tuneGrid`; these
+  # parameters were added after many grids had been written without them
+  defaults = list(lambda = 1, alpha = 0),
   grid = function(x, y, len = NULL, search = "grid") {
     if (search == "grid") {
       out <- expand.grid(
@@ -52,7 +59,9 @@ modelInfo <- list(
         colsample_bytree = c(0.6, 0.8),
         rate_drop = c(0.01, 0.50),
         skip_drop = c(0.05, 0.95),
-        min_child_weight = c(1)
+        min_child_weight = c(1),
+        lambda = 1,
+        alpha = 0
       )
     } else {
       out <- data.frame(
@@ -64,7 +73,9 @@ modelInfo <- list(
         colsample_bytree = runif(len, min = 0.30, max = 0.70),
         rate_drop = runif(len, min = 0.01, max = 0.50),
         skip_drop = runif(len, min = 0.05, max = 0.95),
-        min_child_weight = sample(0:20, size = len, replace = TRUE)
+        min_child_weight = sample(0:20, size = len, replace = TRUE),
+        lambda = 10^runif(len, min = -5, max = 0),
+        alpha = 10^runif(len, min = -5, max = 0)
       )
       out$nrounds <- floor(out$nrounds)
     }
@@ -81,7 +92,9 @@ modelInfo <- list(
         "min_child_weight",
         "subsample",
         "colsample_bytree",
-        "gamma"
+        "gamma",
+        "lambda",
+        "alpha"
       ),
       function(x) c(nrounds = max(x$nrounds))
     )
@@ -95,7 +108,9 @@ modelInfo <- list(
           grid$colsample_bytree == loop$colsample_bytree[i] &
           grid$rate_drop == loop$rate_drop[i] &
           grid$skip_drop == loop$skip_drop[i] &
-          grid$min_child_weight == loop$min_child_weight[i]
+          grid$min_child_weight == loop$min_child_weight[i] &
+          grid$lambda == loop$lambda[i] &
+          grid$alpha == loop$alpha[i]
       )
       trees <- grid[index, "nrounds"]
       submodels[[i]] <- data.frame(nrounds = trees[trees != loop$nrounds[i]])
@@ -130,7 +145,9 @@ modelInfo <- list(
             min_child_weight = param$min_child_weight,
             gamma = param$gamma,
             subsample = param$subsample,
-            colsample_bytree = param$colsample_bytree
+            colsample_bytree = param$colsample_bytree,
+            lambda = param$lambda,
+            alpha = param$alpha
           ),
           data = x,
           nrounds = param$nrounds,
@@ -160,7 +177,9 @@ modelInfo <- list(
             min_child_weight = param$min_child_weight,
             gamma = param$gamma,
             subsample = param$subsample,
-            colsample_bytree = param$colsample_bytree
+            colsample_bytree = param$colsample_bytree,
+            lambda = param$lambda,
+            alpha = param$alpha
           ),
           data = x,
           num_class = length(lev),
@@ -190,7 +209,9 @@ modelInfo <- list(
           min_child_weight = param$min_child_weight,
           gamma = param$gamma,
           subsample = param$subsample,
-          colsample_bytree = param$colsample_bytree
+          colsample_bytree = param$colsample_bytree,
+          lambda = param$lambda,
+          alpha = param$alpha
         ),
         data = x,
         nrounds = param$nrounds,
@@ -322,7 +343,9 @@ modelInfo <- list(
     "Boosting",
     "Ensemble Model",
     "Implicit Feature Selection",
-    "Accepts Case Weights"
+    "Accepts Case Weights",
+    "L1 Regularization Models",
+    "L2 Regularization Models"
   ),
   sort = function(x) {
     x[
@@ -335,7 +358,9 @@ modelInfo <- list(
         x$min_child_weight,
         x$subsample,
         x$colsample_bytree,
-        x$gamma
+        x$gamma,
+        x$lambda,
+        x$alpha
       ),
     ]
   }

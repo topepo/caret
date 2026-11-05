@@ -513,3 +513,83 @@ test_that("train builds a default grid from the pre-processed predictors", {
   expect_lte(max(fit$results$mtry), fit$preProcess$numComp)
   expect_equal(fit$preProcess$numComp, 2)
 })
+
+test_that("train fills in tuning parameters that have defaults", {
+  skip_on_cran()
+
+  # knn with a second (unused) parameter that has a default value, like
+  # `lambda` and `alpha` for xgbTree
+  knn_info <- getModelInfo("knn", regex = FALSE)[[1]]
+  knn_extra <- knn_info
+  knn_extra$parameters <- data.frame(
+    parameter = c("k", "extra"),
+    class = c("numeric", "numeric"),
+    label = c("#Neighbors", "Extra")
+  )
+  knn_extra$defaults <- list(extra = 0)
+  knn_extra$grid <- function(x, y, len = NULL, search = "grid") {
+    out <- knn_info$grid(x, y, len, search)
+    out$extra <- 0
+    out
+  }
+  knn_extra$fit <- function(x, y, wts, param, lev, last, classProbs, ...) {
+    knn_info$fit(x, y, wts, param["k"], lev, last, classProbs, ...)
+  }
+  knn_extra$sort <- function(x) x[order(x$k, x$extra), ]
+
+  cls <- engine_three_class()
+  ctrl <- trainControl(method = "cv", number = 3)
+  fits <- list(
+    plain = train(
+      Species ~ .,
+      data = cls,
+      method = knn_extra,
+      tuneGrid = data.frame(k = c(3, 5)),
+      trControl = ctrl
+    ),
+    dots = train(
+      Species ~ .,
+      data = cls,
+      method = knn_extra,
+      tuneGrid = data.frame(.k = c(3, 5)),
+      trControl = ctrl
+    ),
+    recipe = train(
+      recipe(Species ~ ., data = cls),
+      data = cls,
+      method = knn_extra,
+      tuneGrid = data.frame(k = c(3, 5)),
+      trControl = ctrl
+    )
+  )
+  for (fit in fits) {
+    expect_identical(fit$results$extra, c(0, 0))
+    expect_identical(fit$results$k, c(3, 5))
+  }
+
+  # given values are used instead of the default
+  tuned <- train(
+    Species ~ .,
+    data = cls,
+    method = knn_extra,
+    tuneGrid = expand.grid(k = 3, extra = c(1, 2)),
+    trControl = ctrl
+  )
+  expect_identical(tuned$results$extra, c(1, 2))
+
+  # parameters without a default are still required
+  expect_snapshot(
+    train(
+      Species ~ .,
+      data = cls,
+      method = knn_extra,
+      tuneGrid = data.frame(extra = 1)
+    ),
+    error = TRUE
+  )
+
+  # update() also fills in the default
+  updated <- update(fits$plain, list(k = 7))
+  expect_identical(updated$bestTune$extra, 0)
+  expect_identical(updated$bestTune$k, 7)
+})
