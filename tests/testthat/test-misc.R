@@ -777,3 +777,34 @@ test_that("RMSE, MAE and R2 accept one-column matrices and data frames", {
   expect_equal(MAE(pred_df, obs), 0.25)
   expect_equal(caret::R2(pred_df, obs), cor(obs, c(1, 2, 3, 4))^2)
 })
+
+test_that("hasDots allows parameters with defaults to be left out", {
+  info <- list(
+    parameters = data.frame(parameter = c("a", "b")),
+    defaults = list(b = 1)
+  )
+  expect_true(hasDots(data.frame(.a = 1, .b = 2), info))
+  expect_true(hasDots(data.frame(.a = 1), info))
+  expect_false(hasDots(data.frame(.b = 1), info))
+  expect_false(hasDots(data.frame(a = 1), info))
+  expect_false(hasDots(data.frame(.a = 1, .c = 2), info))
+
+  info$defaults <- NULL
+  expect_false(hasDots(data.frame(.a = 1), info))
+})
+
+test_that("fill_param_defaults adds only the missing parameters", {
+  info <- list(defaults = list(b = 1, c = "x"))
+  expect_identical(
+    fill_param_defaults(data.frame(a = 1:2), info),
+    data.frame(a = 1:2, b = c(1, 1), c = c("x", "x"))
+  )
+  expect_identical(
+    fill_param_defaults(data.frame(a = 1, b = 5), info),
+    data.frame(a = 1, b = 5, c = "x")
+  )
+  expect_identical(
+    fill_param_defaults(data.frame(a = 1), list()),
+    data.frame(a = 1)
+  )
+})

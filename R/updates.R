@@ -87,6 +87,7 @@ update.train <- function(object, param = NULL, ...) {
     if (!is.data.frame(param)) {
       stop("param should be a data frame or a named list")
     }
+    param <- fill_param_defaults(param, object$modelInfo)
     if (nrow(param) > 1) {
       stop("only one set of parameters should be specified")
     }

@@ -93,8 +93,10 @@ If given, this argument must be named.)}
 \item{tuneGrid}{A data frame with possible tuning values. The columns are
 named the same as the tuning parameters. Use \code{\link[=getModelInfo]{getModelInfo()}} to get a
 list of tuning parameters for each model or see
-\url{http://topepo.github.io/caret/available-models.html}. (NOTE: If given,
-this argument must be named.)}
+\url{http://topepo.github.io/caret/available-models.html}. Columns for
+parameters that have a default value in the model's \code{defaults} element
+(such as \code{lambda} and \code{alpha} for \code{xgbTree}) can be omitted. (NOTE: If
+given, this argument must be named.)}
 
 \item{tuneLength}{An integer denoting the amount of granularity in the
 tuning parameter grid. By default, this argument is the number of levels

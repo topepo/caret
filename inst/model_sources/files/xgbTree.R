@@ -27,6 +27,9 @@ modelInfo <- list(
       'L1 Regularization'
     )
   ),
+  # used when `lambda` or `alpha` are missing from a user's `tuneGrid`; these
+  # parameters were added after many grids had been written without them
+  defaults = list(lambda = 1, alpha = 0),
   grid = function(x, y, len = NULL, search = "grid") {
     if (search == "grid") {
       out <- expand.grid(

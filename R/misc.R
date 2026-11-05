@@ -97,14 +97,22 @@ evalSummaryFunction <- function(
 
 
 hasDots <- function(grid, info) {
-  mnames <- sort(as.character(info$parameters$parameter))
-  mnames2 <- paste(".", mnames, sep = "")
-  gnames <- sort(colnames(grid))
-  out <- all.equal(mnames2, gnames)
-  if (!inherits(out, "logical")) {
-    out <- FALSE
+  mnames <- as.character(info$parameters$parameter)
+  # parameters with a default value can be left out of the grid
+  required <- setdiff(mnames, names(info$defaults))
+  gnames <- colnames(grid)
+  all(gnames %in% paste0(".", mnames)) && all(paste0(".", required) %in% gnames)
+}
+
+# Some models give default values for tuning parameters that were added after
+# their first release (e.g. `lambda` and `alpha` for `xgbTree`), so that
+# existing grids without those columns keep working.
+fill_param_defaults <- function(grid, info) {
+  missing_params <- setdiff(names(info$defaults), colnames(grid))
+  for (param in missing_params) {
+    grid[[param]] <- rep(info$defaults[[param]], nrow(grid))
   }
-  out
+  grid
 }
 
 model2method <- function(x) {
