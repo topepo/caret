@@ -13,7 +13,7 @@ opts_chunk$set(digits = 3, tidy = FALSE)
 
 Models can benefit significantly from tuning but the optimal values are rarely known beforehand. `train` can be used to define a grid of possible points and resampling can be used to generate good estimates of performance for each tuning parameter combination. However, in the nominal resampling process, all the tuning parameter combinations are computed for all the resamples before a choice is made about which parameters are good and which are poor.
 
-[`caret`](http://cran.r-project.org/web/packages/caret/index.html) contains the ability to adaptively resample the tuning parameter grid in a way that concentrates on values that are the in the neighborhood of the optimal settings. See [this paper](http://arxiv.org/abs/1405.6974) for the details.
+[`caret`](http://cran.r-project.org/web/packages/caret/index.html) contains the ability to adaptively resample the tuning parameter grid in a way that concentrates on values that are the in the neighborhood of the optimal settings. See \doi{10.48550/arXiv.1405.6974} for the details.
 
 To illustrate, we will use the Sonar data from one of the [previous pages](https://topepo.github.io/caret/model-training-and-tuning.html#tune). 
 
