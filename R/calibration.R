@@ -233,7 +233,6 @@ calibCalc <- function(x, class = levels(obs)[1], cuts = 11) {
   for (i in 2:length(cuts)) {
     dataPoints$midpoint[i - 1] <- 0.5 * (cuts[i] + cuts[i - 1]) * 100
   }
-  dataPoints$Percent <- ifelse(dataPoints$Count == 0, 0, dataPoints$Percent)
   dataPoints
 }
 
@@ -306,8 +305,12 @@ ggplot.calibration <- function(data, ..., bwidth = 2, dwidth = 3) {
         lty = 2,
         alpha = 0.3
       ) +
-      geom_point() +
-      geom_errorbar(aes(ymin = Lower, ymax = Upper), width = bwidth)
+      geom_point(na.rm = TRUE) +
+      geom_errorbar(
+        aes(ymin = Lower, ymax = Upper),
+        width = bwidth,
+        na.rm = TRUE
+      )
   } else {
     out <- ggplot(
       data$data,
@@ -320,11 +323,12 @@ ggplot.calibration <- function(data, ..., bwidth = 2, dwidth = 3) {
         lty = 2,
         alpha = 0.3
       ) +
-      geom_point(position = position_dodge(width = dwidth)) +
+      geom_point(position = position_dodge(width = dwidth), na.rm = TRUE) +
       geom_errorbar(
         aes(ymin = Lower, ymax = Upper),
         width = bwidth,
-        position = position_dodge(width = dwidth)
+        position = position_dodge(width = dwidth),
+        na.rm = TRUE
       )
   }
   out + xlab("Bin Midpoint") + ylab("Observed Event Percentage")

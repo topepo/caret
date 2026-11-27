@@ -70,3 +70,13 @@ test_that("the calibration plot passes lattice options through", {
   drawn <- xyplot(cal, lattice.options = list(default.theme = list()))
   expect_s3_class(draw_trellis(drawn), "trellis")
 })
+
+test_that("empty calibration bins have a missing event rate, not 0%", {
+  # the first bin holds the five non-events and no probabilities fall above
+  # 0.95, so only the last bin is empty
+  cal <- calibration(Class ~ prob1, data = lift_data, cuts = c(0.5, 0.95))
+  expect_identical(cal$data$Count, c(0, 5, 0))
+  expect_identical(cal$data$Percent, c(0, 100, NA))
+  expect_no_warning(ggplot2::ggplot_build(ggplot(cal)))
+  expect_s3_class(draw_trellis(xyplot(cal)), "trellis")
+})

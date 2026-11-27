@@ -1,5 +1,6 @@
 ## Changes in version 7.1-1
 
+- `calibration()` now gives a missing event rate (`NA`) for an empty bin instead of 0%, so the plots no longer show empty bins as 0% observed events (e.g. the upper bins for a model whose predicted probabilities are all low).
 
 ## Changes in version 7.1-0
 
